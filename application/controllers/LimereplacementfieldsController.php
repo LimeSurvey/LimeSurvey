@@ -337,6 +337,7 @@ class LimeReplacementFieldsController extends LSBaseController
             $replFields['ADMINNAME'] = gT("Survey administrator - Name");
             $replFields['ADMINEMAIL'] = gT("Survey administrator - Email address");
             $replFields['SURVEYURL'] = gT("Survey URL");
+            $replFields['SURVEYIDURL'] = gT("Survey URL based on survey ID");
             $replFields['EXPIRY'] = gT("Survey expiration date");
             return array($replFields, false);
 
@@ -356,6 +357,7 @@ class LimeReplacementFieldsController extends LSBaseController
             $replFields['ADMINNAME'] = gT("Survey administrator - Name");
             $replFields['ADMINEMAIL'] = gT("Survey administrator - Email address");
             $replFields['SURVEYURL'] = gT("Survey URL");
+            $replFields['SURVEYIDURL'] = gT("Survey URL based on survey ID");
             $replFields['EXPIRY'] = gT("Survey expiration date");
             return array($replFields, false);
         } elseif (strpos($fieldtype, 'email_confirmation') !== false) {
@@ -375,6 +377,7 @@ class LimeReplacementFieldsController extends LSBaseController
             $replFields['ADMINNAME'] = gT("Survey administrator - Name");
             $replFields['ADMINEMAIL'] = gT("Survey administrator - Email address");
             $replFields['SURVEYURL'] = gT("Survey URL");
+            $replFields['SURVEYIDURL'] = gT("Survey URL based on survey ID");
             $replFields['EXPIRY'] = gT("Survey expiration date");
 
             // email-conf can accept insertans fields for non anonymous surveys

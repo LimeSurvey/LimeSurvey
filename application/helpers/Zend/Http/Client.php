@@ -999,7 +999,7 @@ class Zend_Http_Client
         if (!is_string($this->_stream_name)) {
             // If name is not given, create temp name
             $this->_stream_name = tempnam(
-                isset($this->config['stream_tmp_dir']) ? $this->config['stream_tmp_dir'] : sys_get_temp_dir(),
+                $this->config['stream_tmp_dir'] ?? sys_get_temp_dir(),
                 'Zend_Http_Client'
             );
         }

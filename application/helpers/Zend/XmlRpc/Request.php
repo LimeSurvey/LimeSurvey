@@ -386,7 +386,7 @@ class Zend_XmlRpc_Request
         if (is_array($this->_xmlRpcParams)) {
             foreach ($this->_xmlRpcParams as $param) {
                 $value = $param['value'];
-                $type  = isset($param['type']) ? $param['type'] : Zend_XmlRpc_Value::AUTO_DETECT_TYPE;
+                $type  = $param['type'] ?? Zend_XmlRpc_Value::AUTO_DETECT_TYPE;
 
                 if (!$value instanceof Zend_XmlRpc_Value) {
                     $value = Zend_XmlRpc_Value::getXmlRpcValue($value, $type);

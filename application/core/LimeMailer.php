@@ -1,7 +1,4 @@
 <?php
-
-require_once(APPPATH . '/third_party/phpmailer/load_phpmailer.php');
-
 /**
  * WIP
  * A SubClass of phpMailer adapted for LimeSurvey
@@ -135,8 +132,8 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         $emailcharset = Yii::app()->getConfig("emailcharset");
 
         /* Set language for errors */
-        if (!$this->SetLanguage(Yii::app()->getConfig("defaultlang"), APPPATH . '/third_party/phpmailer/language/')) {
-            $this->SetLanguage('en', APPPATH . '/third_party/phpmailer/language/');
+        if (!$this->SetLanguage(Yii::app()->getConfig("defaultlang"), APPPATH . '/vendor/phpmailer/language/')) {
+            $this->SetLanguage('en', APPPATH . '/vendor/phpmailer/language/');
         }
         /* Default language to current one */
         $this->mailLanguage = Yii::app()->getLanguage();
@@ -794,9 +791,10 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         if (empty($this->oToken)) { // Did need to check if sent to token ?
             return $aTokenReplacements;
         }
+        $survey = Survey::model()->findByPk($this->surveyId);
         $language = Yii::app()->getLanguage();
-        if (!in_array($language, Survey::model()->findByPk($this->surveyId)->getAllLanguages())) {
-            $language = Survey::model()->findByPk($this->surveyId)->language;
+        if (!in_array($language, $survey->getAllLanguages())) {
+            $language = $survey->language;
         }
         $token = $this->oToken->token;
         if (!empty($this->oToken->language)) {
@@ -821,9 +819,10 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         $aTokenReplacements["GLOBALOPTINURL"] = App()->getController()
             ->createAbsoluteUrl("/optin/participants", array("surveyid" => $this->surveyId, "token" => $token,"langcode" => $language));
         $this->addUrlsPlaceholders("GLOBALOPTINURL");
-        $aTokenReplacements["SURVEYURL"] = App()->getController()
-            ->createAbsoluteUrl("/survey/index", array("sid" => $this->surveyId, "token" => $token,"lang" => $language));
+        $aTokenReplacements["SURVEYURL"] = $survey->getSurveyUrl($language, ["token" => $token]);
         $this->addUrlsPlaceholders("SURVEY");
+        $aTokenReplacements["SURVEYIDURL"] = $survey->getSurveyUrl($language, ["token" => $token], false);
+        $this->addUrlsPlaceholders("SURVEYID");
         return $aTokenReplacements;
     }
 

@@ -2200,8 +2200,8 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                         $aThemeOptionsData = array();
                         foreach ((array)$options as $key => $value) {
                             if ($value == 'inherit') {
-                                $sOldValue = isset($aTemplateConfiguration['theme_original']['options'][$key]) ? $aTemplateConfiguration['theme_original']['options'][$key] : '';
-                                $sNewValue = isset($aTemplateConfiguration['theme_current']['options'][$key]) ? $aTemplateConfiguration['theme_current']['options'][$key] : '';
+                                $sOldValue = $aTemplateConfiguration['theme_original']['options'][$key] ?? '';
+                                $sNewValue = $aTemplateConfiguration['theme_current']['options'][$key] ?? '';
                                 if (!empty($sOldValue) && !empty($sNewValue) && $sOldValue !== $sNewValue) {
                                     // used to send original theme options data to controller action if client wants to restore original theme options
                                     $aThemeOptionsData[$key] = $aTemplateConfiguration['theme_original']['options'][$key];
@@ -2804,7 +2804,7 @@ function TSVImportSurvey($sFullFilePath)
     while (($row = fgetcsv($tmp, 0, "\t", '"')) !== false) {
         $rowarray = array();
         for ($i = 0; $i < $iHeaderCount; ++$i) {
-            $val = (isset($row[$i]) ? $row[$i] : '');
+            $val = ($row[$i] ?? '');
             // if Excel was used, it surrounds strings with quotes and doubles internal double quotes.  Fix that.
             if (preg_match('/^".*"$/', $val)) {
                 $val = str_replace('""', '"', substr($val, 1, -1));
@@ -2913,10 +2913,10 @@ function TSVImportSurvey($sFullFilePath)
                 //use group id/number from file. if missing, use an increasing number (s.a.)
                 $sGroupseq = (!empty($row['type/scale']) ? $row['type/scale'] : 'G' . $iGroupcounter++);
                 $group['group_name'] = $gname;
-                $group['grelevance'] = (isset($row['relevance']) ? $row['relevance'] : '');
-                $group['description'] = (isset($row['text']) ? $row['text'] : '');
+                $group['grelevance'] = ($row['relevance'] ?? '');
+                $group['description'] = ($row['text'] ?? '');
                 $group['language'] = $glang;
-                $group['randomization_group'] = (isset($row['random_group']) ? $row['random_group'] : '');
+                $group['randomization_group'] = ($row['random_group'] ?? '');
 
                 // For multi language survey: same gid/sort order across all languages
                 if (isset($ginfo[$sGroupseq])) {
@@ -2949,21 +2949,21 @@ function TSVImportSurvey($sFullFilePath)
             case 'Q':
                 $question = array();
                 $question['sid'] = $iNewSID;
-                $qtype = (isset($row['type/scale']) ? $row['type/scale'] : 'T');
-                $qname = (isset($row['name']) ? $row['name'] : 'Q' . $qseq);
+                $qtype = ($row['type/scale'] ?? 'T');
+                $qname = ($row['name'] ?? 'Q' . $qseq);
                 $question['gid'] = $gid;
                 $question['type'] = $qtype;
                 $question['title'] = $qname;
-                $question['question'] = (isset($row['text']) ? $row['text'] : '');
-                $question['relevance'] = (isset($row['relevance']) ? $row['relevance'] : '');
-                $question['preg'] = (isset($row['validation']) ? $row['validation'] : '');
-                $question['help'] = (isset($row['help']) ? $row['help'] : '');
-                $question['language'] = (isset($row['language']) ? $row['language'] : $baselang);
-                $question['mandatory'] = (isset($row['mandatory']) ? $row['mandatory'] : '');
-                $question['encrypted'] = (isset($row['encrypted']) ? $row['encrypted'] : 'N');
-                $lastother = $question['other'] = (isset($row['other']) ? $row['other'] : 'N'); // Keep trace of other settings for sub question
-                $question['same_default'] = (isset($row['same_default']) ? $row['same_default'] : 0);
-                $question['same_script'] = (isset($row['same_script']) ? $row['same_script'] : 0);
+                $question['question'] = ($row['text'] ?? '');
+                $question['relevance'] = ($row['relevance'] ?? '');
+                $question['preg'] = ($row['validation'] ?? '');
+                $question['help'] = ($row['help'] ?? '');
+                $question['language'] = ($row['language'] ?? $baselang);
+                $question['mandatory'] = ($row['mandatory'] ?? '');
+                $question['encrypted'] = ($row['encrypted'] ?? 'N');
+                $lastother = $question['other'] = ($row['other'] ?? 'N'); // Keep trace of other settings for sub question
+                $question['same_default'] = ($row['same_default'] ?? 0);
+                $question['same_script'] = ($row['same_script'] ?? 0);
                 $question['parent_qid'] = 0;
 
                 // For multi language survey : same name, add the gid to have same name on different gid. Bad for EM.
@@ -3018,7 +3018,7 @@ function TSVImportSurvey($sFullFilePath)
                                 // check if attribute is a i18n attribute. If yes, set language, else set language to null in attribute table
                                 $aAttributeList[$qtype] = QuestionAttribute::getQuestionAttributesSettings($qtype);
                                 if (!empty($aAttributeList[$qtype][$key]['i18n'])) {
-                                    $attribute['language'] = (isset($row['language']) ? $row['language'] : $baselang);
+                                    $attribute['language'] = ($row['language'] ?? $baselang);
                                 } else {
                                     $attribute['language'] = null;
                                 }
@@ -3036,14 +3036,14 @@ function TSVImportSurvey($sFullFilePath)
                     $defaultvalue = array();
                     $defaultvalue['qid'] = $qid;
                     $defaultvalue['sqid'] = '';
-                    $defaultvalue['language'] = (isset($row['language']) ? $row['language'] : $baselang);
+                    $defaultvalue['language'] = ($row['language'] ?? $baselang);
                     $defaultvalue['defaultvalue'] = $row['default'];
                     $defaultvalues[] = $defaultvalue;
                 }
                 break;
 
             case 'SQ':
-                $sqname = (isset($row['name']) ? $row['name'] : 'SQ' . $sqseq);
+                $sqname = ($row['name'] ?? 'SQ' . $sqseq);
                 $sqid = '';
                 if ($qtype == Question::QT_O_LIST_WITH_COMMENT || $qtype == Question::QT_VERTICAL_FILE_UPLOAD) {
                     ;   // these are fake rows to show naming of comment and filecount fields
@@ -3056,25 +3056,25 @@ function TSVImportSurvey($sFullFilePath)
                             $defaultvalue['qid'] = $qid;
                             $defaultvalue['sqid'] = $sqid;
                             $defaultvalue['specialtype'] = 'other';
-                            $defaultvalue['language'] = (isset($row['language']) ? $row['language'] : $baselang);
+                            $defaultvalue['language'] = ($row['language'] ?? $baselang);
                             $defaultvalue['defaultvalue'] = $row['default'];
                             $defaultvalues[] = $defaultvalue;
                         }
                     }
                 } else {
-                    $scale_id = (isset($row['type/scale']) ? $row['type/scale'] : 0);
+                    $scale_id = ($row['type/scale'] ?? 0);
                     $subquestion = array();
                     $subquestion['sid'] = $iNewSID;
                     $subquestion['gid'] = $gid;
                     $subquestion['parent_qid'] = $qid;
                     $subquestion['type'] = $qtype;
                     $subquestion['title'] = $sqname;
-                    $subquestion['question'] = (isset($row['text']) ? $row['text'] : '');
-                    $subquestion['relevance'] = (isset($row['relevance']) ? $row['relevance'] : '');
-                    $subquestion['preg'] = (isset($row['validation']) ? $row['validation'] : '');
-                    $subquestion['help'] = (isset($row['help']) ? $row['help'] : '');
-                    $subquestion['language'] = (isset($row['language']) ? $row['language'] : $baselang);
-                    $subquestion['mandatory'] = (isset($row['mandatory']) ? $row['mandatory'] : '');
+                    $subquestion['question'] = ($row['text'] ?? '');
+                    $subquestion['relevance'] = ($row['relevance'] ?? '');
+                    $subquestion['preg'] = ($row['validation'] ?? '');
+                    $subquestion['help'] = ($row['help'] ?? '');
+                    $subquestion['language'] = ($row['language'] ?? $baselang);
+                    $subquestion['mandatory'] = ($row['mandatory'] ?? '');
                     $subquestion['scale_id'] = $scale_id;
                     // For multi language, qid is needed, why not gid. name is not unique.
                     $fullsqname = 'G' . $gid . 'Q' . $qid . '_' . $scale_id . '_' . $sqname;
@@ -3108,7 +3108,7 @@ function TSVImportSurvey($sFullFilePath)
                         $defaultvalue['qid'] = $qid;
                         $defaultvalue['sqid'] = $sqid;
                         $defaultvalue['scale_id'] = $scale_id;
-                        $defaultvalue['language'] = (isset($row['language']) ? $row['language'] : $baselang);
+                        $defaultvalue['language'] = ($row['language'] ?? $baselang);
                         $defaultvalue['defaultvalue'] = $row['default'];
                         $defaultvalues[] = $defaultvalue;
                     }
@@ -3117,64 +3117,64 @@ function TSVImportSurvey($sFullFilePath)
             case 'A':
                 $answer = array();
                 $answer['qid'] = $qid;
-                $answer['code'] = (isset($row['name']) ? $row['name'] : 'A' . $aseq);
-                $answer['answer'] = (isset($row['text']) ? $row['text'] : '');
-                $answer['scale_id'] = (isset($row['type/scale']) ? $row['type/scale'] : 0);
-                $answer['language'] = (isset($row['language']) ? $row['language'] : $baselang);
-                $answer['assessment_value'] = (int) (isset($row['assessment_value']) ? $row['assessment_value'] : '');
+                $answer['code'] = ($row['name'] ?? 'A' . $aseq);
+                $answer['answer'] = ($row['text'] ?? '');
+                $answer['scale_id'] = ($row['type/scale'] ?? 0);
+                $answer['language'] = ($row['language'] ?? $baselang);
+                $answer['assessment_value'] = (int) ($row['assessment_value'] ?? '');
                 $answer['sortorder'] = ++$aseq;
                 $answers[] = $answer;
                 break;
             case 'AS':
                 $assessment = array();
                 $assessment['sid'] = $iNewSID;
-                $assessment['scope'] = isset($row['type/scale']) ? $row['type/scale'] : '';
+                $assessment['scope'] = $row['type/scale'] ?? '';
                 $assessment['gid'] = $gid;
-                $assessment['name'] = isset($row['name']) ? $row['name'] : '';
-                $assessment['minimum'] = isset($row['min_num_value']) ? $row['min_num_value'] : '';
-                $assessment['maximum'] = isset($row['max_num_value']) ? $row['max_num_value'] : '';
-                $assessment['message'] = isset($row['text']) ? $row['text'] : '';
-                $assessment['language'] = isset($row['language']) ? $row['language'] : '';
-                $assessment['id'] = isset($row['id']) ? $row['id'] : '';
+                $assessment['name'] = $row['name'] ?? '';
+                $assessment['minimum'] = $row['min_num_value'] ?? '';
+                $assessment['maximum'] = $row['max_num_value'] ?? '';
+                $assessment['message'] = $row['text'] ?? '';
+                $assessment['language'] = $row['language'] ?? '';
+                $assessment['id'] = $row['id'] ?? '';
                 $assessments[] = $assessment;
                 break;
             case 'QTA':
                 $quota = array();
-                $quota['id'] = isset($row['id']) ? $row['id'] : '';
+                $quota['id'] = $row['id'] ?? '';
                 $quota['sid'] = $iNewSID;
-                $quota['name'] = isset($row['name']) ? $row['name'] : '';
-                $quota['qlimit'] = isset($row['mandatory']) ? $row['mandatory'] : '';
-                $quota['action'] = isset($row['other']) ? $row['other'] : '';
-                $quota['active'] = isset($row['default']) ? $row['default'] : '';
-                $quota['autoload_url'] = isset($row['same_default']) ? $row['same_default'] : '';
+                $quota['name'] = $row['name'] ?? '';
+                $quota['qlimit'] = $row['mandatory'] ?? '';
+                $quota['action'] = $row['other'] ?? '';
+                $quota['active'] = $row['default'] ?? '';
+                $quota['autoload_url'] = $row['same_default'] ?? '';
                 $quotas[] = $quota;
                 break;
             case 'QTAM':
                 $quota_member = array();
-                $quota_member['quota_id'] = isset($row['related_id']) ? $row['related_id'] : '';
+                $quota_member['quota_id'] = $row['related_id'] ?? '';
                 $quota_member['sid'] = $iNewSID;
                 $quota_member['qid'] = $qid;
-                $quota_member['code'] = isset($row['name']) ? $row['name'] : '';
+                $quota_member['code'] = $row['name'] ?? '';
                 $quota_members[] = $quota_member;
                 break;
             case 'QTALS':
                 $quota_languagesetting = array();
-                $quota_languagesetting['quotals_quota_id'] = isset($row['related_id']) ? $row['related_id'] : '';
-                $quota_languagesetting['quotals_language'] = isset($row['language']) ? $row['language'] : '';
+                $quota_languagesetting['quotals_quota_id'] = $row['related_id'] ?? '';
+                $quota_languagesetting['quotals_language'] = $row['language'] ?? '';
                 //$quota_languagesetting['quotals_name'] = isset($row['name'])?$row['name']:'';
-                $quota_languagesetting['quotals_message'] = isset($row['relevance']) ? $row['relevance'] : '';
-                $quota_languagesetting['quotals_url'] = isset($row['text']) ? $row['text'] : '';
-                $quota_languagesetting['quotals_urldescrip'] = isset($row['help']) ? $row['help'] : '';
+                $quota_languagesetting['quotals_message'] = $row['relevance'] ?? '';
+                $quota_languagesetting['quotals_url'] = $row['text'] ?? '';
+                $quota_languagesetting['quotals_urldescrip'] = $row['help'] ?? '';
                 $quota_languagesettings[] = $quota_languagesetting;
                 break;
             case 'C':
                 $condition = array();
                 $condition['qid'] = $qid;
                 $condition['scenario'] = $row['type/scale'];
-                $condition['cqid'] = isset($row['related_id']) ? $row['related_id'] : '';
+                $condition['cqid'] = $row['related_id'] ?? '';
                 $condition['cfieldname'] = $row['name'];
                 $condition['method'] = $row['relevance'];
-                $condition['value'] = isset($row['text']) ? $row['text'] : '';
+                $condition['value'] = $row['text'] ?? '';
                 $conditions[] = $condition;
                 break;
         }

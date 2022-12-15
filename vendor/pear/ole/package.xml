@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package packagerversion="1.9.4" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd                      http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
+ <name>OLE</name>
+ <channel>pear.php.net</channel>
+ <summary>Package for reading and writing OLE containers</summary>
+ <description>This package allows reading and writing of OLE (Object Linking and Embedding) compound documents. This format is used as container for Excel (.xls), Word (.doc) and other Microsoft file formats.</description>
+ <lead>
+  <name>Christian Schmidt</name>
+  <user>schmidt</user>
+  <email>schmidt@php.net</email>
+  <active>yes</active>
+ </lead>
+ <lead>
+  <name>Xavier Noguer</name>
+  <user>xnoguer</user>
+  <email>xnoguer@php.net</email>
+  <active>no</active>
+ </lead>
+ <date>2017-06-20</date>
+ <version>
+  <release>1.0.0RC3</release>
+  <api>1.0.0RC3</api>
+ </version>
+ <stability>
+  <release>beta</release>
+  <api>beta</api>
+ </stability>
+ <license uri="http://www.php.net/license">PHP</license>
+ <notes>
+Bug #19284:  RC2 breaks header in excel files from Spreadsheet_Excel_Writer
+Bug #21216:  Call to undefined method PEAR::OLE_PPS()
+ </notes>
+ <contents>
+  <dir baseinstalldir="/" name="/">
+   <file baseinstalldir="/" name="OLE/ChainedBlockStream.php" role="php" />
+   <file baseinstalldir="/" name="OLE/PPS.php" role="php" />
+   <file baseinstalldir="/" name="OLE/PPS/File.php" role="php" />
+   <file baseinstalldir="/" name="OLE/PPS/Root.php" role="php" />
+   <file baseinstalldir="/" name="OLE.php" role="php" />
+  </dir>
+ </contents>
+ <dependencies>
+  <required>
+   <php>
+    <min>5.0.0</min>
+   </php>
+   <pearinstaller>
+    <min>1.4.0b1</min>
+   </pearinstaller>
+  </required>
+ </dependencies>
+ <phprelease />
+ <changelog>
+  <release>
+   <version>
+    <release>0.2.1</release>
+    <api>0.2.1</api>
+   </version>
+   <stability>
+    <release>alpha</release>
+    <api>alpha</api>
+   </stability>
+   <date>2003-05-12</date>
+   <license uri="http://www.php.net/license">PHP</license>
+   <notes>
+Fixing install dir
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.3</release>
+    <api>0.3</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2003-08-21</date>
+   <license uri="http://www.php.net/license">PHP</license>
+   <notes>
+-added OLE_PPS_File::init() initialization method.
+-better error handling.
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.4</release>
+    <api>0.4</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2003-09-25</date>
+   <license uri="http://www.php.net/license">PHP</license>
+   <notes>
+-deleting tmp files (Herman Kuiper).
+-fixed hardcoded tmp dir (Herman Kuiper).
+-fixed pass by reference warning (Herman Kuiper).
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.5</release>
+    <api>0.5</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2003-12-14</date>
+   <license uri="http://www.php.net/license">PHP</license>
+   <notes>
+- BC break!!! OLE/OLE.php file moved to OLE.php to comply with PEAR
+  standards. You will have to change your require(&apos;OLE/OLE.php&apos;)&apos;s
+  for require(&apos;OLE.php&apos;)&apos;s
+- If you are using Spreadsheet_Excel_Writer, do not upgrade to this
+  version yet. A new version of Spreadsheet_Excel_Writer will be
+  released soon so the BC break won&apos;t affect you.
+- allowing setting of temp dir for OLE_PPS_File and OLE_PPS_Root objects
+- fixed problem when reading files (not reading the whole OLE tree)
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.6.0</release>
+    <api>0.6.0</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2007-12-09</date>
+   <license uri="http://www.php.net/license">PHP</license>
+   <notes>
+Rewrite of parser (no change to writer):
+- Files inside OLE container are now saved in directory structure.
+- Parser now properly uses Big Block, Small Block and Master Block Allocation Tables.
+- Added stream interface for reading files inside OLE container.
+
+- Bug #6516. Fix &quot;PPS at 1 has unknown type&quot; errors. (Christian Schmidt)
+- Coding Standard cleanups (by helgi)
+- Bug #3951 OLE_PPS_File::init() does not return true on success (by helgi)
+- Bug #3955 OLE::_readPpsWks() does not return true on success (by helgi)
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.6.1</release>
+    <api>0.6.1</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2007-12-18</date>
+   <license uri="http://www.php.net/license">PHP</license>
+   <notes>
+- fixed bug #12693: wrong order of require_once
+- added missing file to package: ChainedBlockStream.php
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.6.2</release>
+    <api>0.6.2</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2012-01-26</date>
+   <license uri="http://www.php.net/license">PHP</license>
+   <notes>
+- fixed bug #12944: Incompatibility open_basedir restriction.
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.0.0RC2</release>
+    <api>1.0.0RC2</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2012-01-26</date>
+   <license uri="http://www.php.net/license">PHP</license>
+   <notes>
+QA release
+Bug #15904 Invalid Bigblock chain with files &gt; 200MB
+Bug #17685 OLE doesn&apos;t save multistreams
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.0.0RC3</release>
+    <api>1.0.0RC3</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2017-06-20</date>
+   <license uri="http://www.php.net/license">PHP</license>
+   <notes>
+Bug #19284:  RC2 breaks header in excel files from Spreadsheet_Excel_Writer
+Bug #21216:  Call to undefined method PEAR::OLE_PPS()
+   </notes>
+  </release>
+ </changelog>
+</package>

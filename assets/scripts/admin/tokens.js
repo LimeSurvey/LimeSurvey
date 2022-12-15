@@ -334,7 +334,10 @@ $(document).on('ready  pjax:scriptcomplete', function(){
             !LS.validateEndDateHigherThanStart(
                 $('#validfrom').data('DateTimePicker'),
                 $('#validuntil').data('DateTimePicker'),
-                () => {showError($('#edittoken').attr('data-expiration-validation-error'))}
+                () => {
+                    showError($('#edittoken').attr('data-expiration-validation-error'));
+                    $('#validuntil').trigger('invalid');
+                }
             )
         ) {
             event.preventDefault();
@@ -344,6 +347,19 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         if (!eventParams.confirm_empty_save && !validateNotEmptyTokenForm()) {
             return false;
         }
+    });
+
+    // Disable Save and Close button on click
+    $("#save-and-close-button").on('click', function() {
+        $(this).addClass('disabled');
+    });
+
+    /**
+     * Handle form inputs 'invalid' event.
+     */
+    $('#edittoken').find('button, input, select, textarea').on('invalid', function () {
+        // Enable the Save and Close button
+        $("#save-and-close-button").removeClass("disabled");
     });
 
     /**

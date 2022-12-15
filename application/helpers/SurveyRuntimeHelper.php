@@ -325,7 +325,7 @@ class SurveyRuntimeHelper
                 $this->aSurveyInfo['progress']['total']       = $_SESSION[$this->LEMsessid]['totalsteps'];
             } else {
                 $this->aSurveyInfo['progress']['currentstep'] = $_SESSION[$this->LEMsessid]['step'];
-                $this->aSurveyInfo['progress']['total']       = isset($_SESSION[$this->LEMsessid]['totalsteps']) ? $_SESSION[$this->LEMsessid]['totalsteps'] : 1;
+                $this->aSurveyInfo['progress']['total']       = $_SESSION[$this->LEMsessid]['totalsteps'] ?? 1;
             }
             /* String used in vanilla/views/subviews/header/progress_bar.twig : for autotranslation */
             $this->aSurveyInfo['progress']['string'] = gT('You have completed %s%% of this survey');
@@ -525,7 +525,7 @@ class SurveyRuntimeHelper
         /**
          *  ExpressionScript Engine Scrips and inputs
          */
-        $step = isset($_SESSION[$this->LEMsessid]['step']) ? $_SESSION[$this->LEMsessid]['step'] : '';
+        $step = $_SESSION[$this->LEMsessid]['step'] ?? '';
         $this->aSurveyInfo['EM']['ScriptsAndHiddenInputs'] = "<!-- emScriptsAndHiddenInputs -->";
         /**
          * Navigator
@@ -538,7 +538,7 @@ class SurveyRuntimeHelper
             $this->aSurveyInfo['hiddenInputs']          = \CHtml::hiddenField('thisstep', $_SESSION[$this->LEMsessid]['step'], array('id' => 'thisstep'));
             $this->aSurveyInfo['hiddenInputs']         .= \CHtml::hiddenField('sid', $this->iSurveyid, array('id' => 'sid'));
             $this->aSurveyInfo['hiddenInputs']         .= \CHtml::hiddenField('start_time', time(), array('id' => 'start_time'));
-            $_SESSION[$this->LEMsessid]['LEMpostKey'] =  isset($_POST['LEMpostKeyPreset']) ? $_POST['LEMpostKeyPreset'] : mt_rand();
+            $_SESSION[$this->LEMsessid]['LEMpostKey'] =  $_POST['LEMpostKeyPreset'] ?? mt_rand();
             $this->aSurveyInfo['hiddenInputs']         .= \CHtml::hiddenField('LEMpostKey', $_SESSION[$this->LEMsessid]['LEMpostKey'], array('id' => 'LEMpostKey'));
             /* Reset session with multiple tabs (show Token mismatch issue) , but only for not anonymous survey */
             if (!empty($_SESSION[$this->LEMsessid]['token']) and $this->aSurveyInfo['anonymized'] != 'Y') {
@@ -744,8 +744,8 @@ class SurveyRuntimeHelper
             'radix'                       => $radix,
             'refurl'                      => (($this->aSurveyInfo['refurl'] == "Y" && isset($_SESSION[$this->LEMsessid]['refurl'])) ? $_SESSION[$this->LEMsessid]['refurl'] : null),
             'savetimings'                 => ($this->aSurveyInfo['savetimings'] == "Y"),
-            'surveyls_dateformat'         => isset($this->aSurveyInfo['surveyls_dateformat']) ? $this->aSurveyInfo['surveyls_dateformat'] : 1,
-            'startlanguage'               => (isset(App()->language) ? App()->language : $this->aSurveyInfo['language']),
+            'surveyls_dateformat'         => $this->aSurveyInfo['surveyls_dateformat'] ?? 1,
+            'startlanguage'               => (App()->language ?? $this->aSurveyInfo['language']),
             'target'                      => Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . 'surveys' . DIRECTORY_SEPARATOR . $this->aSurveyInfo['sid'] . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR,
             'tempdir'                     => Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR,
             'timeadjust'                  => $timeadjust,
@@ -1056,7 +1056,7 @@ class SurveyRuntimeHelper
     private function displayFirstPageIfNeeded()
     {
         $bDisplayFirstPage = ($this->sSurveyMode != 'survey' && $_SESSION[$this->LEMsessid]['step'] == 0);
-        $this->aSurveyInfo['move'] = isset($this->sMove) ? $this->sMove : '';
+        $this->aSurveyInfo['move'] = $this->sMove ?? '';
 
         if ($this->sSurveyMode == 'survey' || $bDisplayFirstPage) {
             //Failsave to have a general standard value
@@ -1405,18 +1405,18 @@ class SurveyRuntimeHelper
         $this->param = $param;
 
         // Todo: check which ones are really needed
-        $this->LEMskipReprocessing    = isset($LEMskipReprocessing) ? $LEMskipReprocessing : null;
-        $this->thissurvey             = isset($thissurvey) ? $thissurvey : null;
-        $this->iSurveyid              = isset($surveyid) ? $surveyid : null;
+        $this->LEMskipReprocessing    = $LEMskipReprocessing ?? null;
+        $this->thissurvey             = $thissurvey ?? null;
+        $this->iSurveyid              = $surveyid ?? null;
         $this->LEMsessid              = $this->iSurveyid ? 'survey_' . $this->iSurveyid : null;
-        $this->aSurveyOptions         = isset($surveyOptions) ? $surveyOptions : null;
-        $this->aMoveResult            = isset($moveResult) ? $moveResult : null;
-        $this->sMove                  = isset($move) ? $move : null;
-        $this->bInvalidLastPage       = isset($invalidLastPage) ? $invalidLastPage : null;
-        $this->notanswered            = isset($notanswered) ? $notanswered : null;
-        $this->filenotvalidated       = isset($filenotvalidated) ? $filenotvalidated : null;
-        $this->completed              = isset($completed) ? $completed : null;
-        $this->notvalidated           = isset($notvalidated) ? $notvalidated : null;
+        $this->aSurveyOptions         = $surveyOptions ?? null;
+        $this->aMoveResult            = $moveResult ?? null;
+        $this->sMove                  = $move ?? null;
+        $this->bInvalidLastPage       = $invalidLastPage ?? null;
+        $this->notanswered            = $notanswered ?? null;
+        $this->filenotvalidated       = $filenotvalidated ?? null;
+        $this->completed              = $completed ?? null;
+        $this->notvalidated           = $notvalidated ?? null;
     }
 
     /**
@@ -1530,7 +1530,7 @@ class SurveyRuntimeHelper
             if (!empty(App()->getLanguage())) {
                 $restartparam['lang'] = sanitize_languagecode(App()->getLanguage());
             } else {
-                $s_lang = isset(Yii::app()->session['survey_' . $this->iSurveyid]['s_lang']) ? Yii::app()->session['survey_' . $this->iSurveyid]['s_lang'] : 'en';
+                $s_lang = Yii::app()->session['survey_' . $this->iSurveyid]['s_lang'] ?? 'en';
                 $restartparam['lang'] = $s_lang;
             }
 

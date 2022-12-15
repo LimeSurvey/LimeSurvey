@@ -2028,7 +2028,7 @@ function createBoxes250()
 
 function fixKCFinder184()
 {
-    $sThirdPartyDir = Yii::app()->getConfig('homedir') . DIRECTORY_SEPARATOR . 'third_party' . DIRECTORY_SEPARATOR;
+    $sThirdPartyDir = Yii::app()->getConfig('homedir') . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR;
     rmdirr($sThirdPartyDir . 'ckeditor/plugins/toolbar');
     rmdirr($sThirdPartyDir . 'ckeditor/plugins/toolbar/ls-office2003');
     $aUnlink = glob($sThirdPartyDir . 'kcfinder/cache/*.js');
