@@ -81,7 +81,7 @@ class TestBaseClass extends TestCase
             null
         );
         if ($result) {
-            if ($result['error']) {
+            if (isset($result['error'])) {
                 throw new Exception(sprintf('Could not import survey %s: %s', $fileName, $result['error']));
             }
             \Survey::model()->resetCache(); // Reset the cache so findByPk doesn't return a previously cached survey
