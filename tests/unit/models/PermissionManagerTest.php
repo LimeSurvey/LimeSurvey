@@ -51,34 +51,14 @@ class PermissionManagerTest extends TestCase
         return new class implements PermissionInterface {
             use PermissionTrait;
 
-            public function getOwnerId()
-            {
-                return 0;
-            }
             public static function getPermissionData()
             {
                 // TODO: Return something meaningful.
                 return [];
             }
-            public static function getMinimalPermissionRead()
-            {
-                return null;
-            }
-            public function hasPermission($sPermission, $sCRUD = 'read', $iUserID = null)
-            {
-                return false;
-            }
             public function getPrimaryKey()
             {
                 return 'id';
-            }
-            public static function getPermissionCriteria($iUserID = null)
-            {
-                return new CDbCriteria();
-            }
-            public function withListRight($userid = null)
-            {
-                return $this;
             }
         };
     }
