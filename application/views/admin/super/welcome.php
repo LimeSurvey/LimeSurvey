@@ -29,12 +29,10 @@ echo viewHelper::getViewTestTag('index');
 
     <!-- Logo & Presentation -->
     <?php if ($bShowLogo) :?>
-        <div class="row">
             <div class="jumbotron" id="welcome-jumbotron">
                 <img alt="logo" src="<?php echo LOGO_URL;?>" id="lime-logo"  class="profile-img-card img-fluid" />
                 <p class="d-xs-none custom custom-margin top-25 fs-4 text" ><?php echo PRESENTATION; // Defined in AdminController?></p>
             </div>
-        </div>
     <?php endif;?>
 
     <!-- Message when first start -->
@@ -129,7 +127,7 @@ echo viewHelper::getViewTestTag('index');
     ?>
     <!-- Last visited survey/question -->
     <?php if ($bShowLastSurveyAndQuestion && ($showLastSurvey || $showLastQuestion)) : // bShowLastSurveyAndQuestion is the homepage setting, showLastSurvey & showLastQuestion are about if infos are available ?>
-        <div class="row text-end">
+        <div class="text-end">
             <div class="col-xl-9 col-md-9  ">
                 <div class='float-end'>
                 <?php if ($showLastSurvey) :?>
