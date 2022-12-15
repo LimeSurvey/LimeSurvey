@@ -2064,6 +2064,7 @@ function do_multiplechoice($ia)
         'iMaxRowsByColumn' => $iMaxRowsByColumn,
         'iNbCols'          => $iNbCols,
         'coreClass'        => $coreClass,
+        'othertext'        => $othertext,
         ), true);
 
     return array($answer, $inputnames);
