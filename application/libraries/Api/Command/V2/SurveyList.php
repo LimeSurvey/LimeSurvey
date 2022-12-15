@@ -8,6 +8,7 @@ use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthSession;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermission;
 use LimeSurvey\Api\Command\Mixin\CommandResponse;
+use LimeSurvey\Api\Command\V2\Transformer\Output\TransformerOutputSurvey;
 
 class SurveyList implements CommandInterface
 {
@@ -38,7 +39,9 @@ class SurveyList implements CommandInterface
             'pageSize' => $pageSize,
             'currentPage' => $page + 1 // one based rather than zero based
         ]);
-        $data = $dataProvider->getData();
+
+        $data = (new TransformerOutputSurvey)
+            ->transformAll($dataProvider->getData());
 
         return $this->responseSuccess($data);
     }
