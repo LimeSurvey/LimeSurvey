@@ -507,7 +507,7 @@ class SurveyCommonAction extends CAction
             $aData['extraMenus'] = $this->fetchExtraMenus($aData);
 
             // Get notification menu
-            $surveyId = isset($aData['surveyid']) ? $aData['surveyid'] : null;
+            $surveyId = $aData['surveyid'] ?? null;
             Yii::import('application.controllers.admin.NotificationController');
             $aData['adminNotifications'] = NotificationController::getMenuWidget($surveyId, true /* show spinner */);
 
@@ -560,7 +560,7 @@ class SurveyCommonAction extends CAction
      */
     public function generaltopbar($aData)
     {
-        $aData['topBar'] = isset($aData['topBar']) ? $aData['topBar'] : [];
+        $aData['topBar'] = $aData['topBar'] ?? [];
         $aData['topBar'] = array_merge(
             [
                 'type' => 'survey',
@@ -746,7 +746,7 @@ class SurveyCommonAction extends CAction
             $iSurveyID = $aData['surveyid'];
             /** @var Survey $oSurvey */
             $oSurvey = $aData['oSurvey'];
-            $gid = isset($aData['gid']) ? $aData['gid'] : null;
+            $gid = $aData['gid'] ?? null;
             $aData['baselang'] = $oSurvey->language;
             App()->getClientScript()->registerPackage('js-cookie');
 
@@ -1062,7 +1062,7 @@ class SurveyCommonAction extends CAction
      */
     public function userGroupBar(array $aData)
     {
-        $ugid = (isset($aData['ugid'])) ? $aData['ugid'] : 0;
+        $ugid = $aData['ugid'] ?? 0;
         if (!empty($aData['display']['menu_bars']['user_group'])) {
             $data = $aData;
             Yii::app()->loadHelper('database');

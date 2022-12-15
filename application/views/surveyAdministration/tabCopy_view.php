@@ -27,11 +27,11 @@
                     <div class="form-group">
                         <label for='copysurveyname' class=" control-label"><?php echo  eT("New survey title:"); ?> </label>
                         <div class="">
-                            <input type='text' id='copysurveyname' size='82' maxlength='200' name='copysurveyname' value='' required="required" class="form-control" />
+                            <input type='text' id='copysurveyname' size='82' maxlength='200' name='copysurveyname' placeholder="<?php eT('Copy original survey title');?>" value='' class="form-control" />
                         </div>
                         <div class="">
                           <p class="form-control-static">
-                            <span class='annotation text-warning'><?php echo  gT("Required"); ?> </span>
+                            <span class='annotation text-warning'><?php echo  gT("Optional"); ?>  </span>
                           </p>
                         </div>
                     </div>

@@ -185,6 +185,12 @@ class SurveyAdministrationController extends LSBaseController
             $aData['display']['menu_bars']['surveysummary'] = 'viewgroup';
         }
 
+        $surveyUrls = [];
+        foreach ($survey->allLanguages as $language) {
+            $surveyUrls[$language] = $survey->getSurveyUrl($language);
+        }
+        $aData['surveyUrls'] = $surveyUrls;
+
         $this->surveysummary($aData);
 
         // Display 'Overview' in Green Bar
@@ -1199,7 +1205,7 @@ class SurveyAdministrationController extends LSBaseController
         $changes = Yii::app()->request->getPost('changes', []);
         $aSuccess = [];
 
-        $oSurvey->showsurveypolicynotice = isset($changes['showsurveypolicynotice']) ? $changes['showsurveypolicynotice'] : 0;
+        $oSurvey->showsurveypolicynotice = $changes['showsurveypolicynotice'] ?? 0;
         $aSuccess[] = $oSurvey->save();
         foreach ($oSurvey->allLanguages as $sLanguage) {
             $oSurveyLanguageSetting = SurveyLanguageSetting::model()->findByPk([
@@ -1213,9 +1219,9 @@ class SurveyAdministrationController extends LSBaseController
                 $oSurveyLanguageSetting->surveyls_language = $sLanguage;
             }
 
-            $oSurveyLanguageSetting->surveyls_policy_notice = isset($changes['datasecmessage'][$sLanguage]) ? $changes['datasecmessage'][$sLanguage] : '';
-            $oSurveyLanguageSetting->surveyls_policy_error = isset($changes['datasecerror'][$sLanguage]) ? $changes['datasecerror'][$sLanguage] : '';
-            $oSurveyLanguageSetting->surveyls_policy_notice_label = isset($changes['dataseclabel'][$sLanguage]) ? $changes['dataseclabel'][$sLanguage] : '';
+            $oSurveyLanguageSetting->surveyls_policy_notice = $changes['datasecmessage'][$sLanguage] ?? '';
+            $oSurveyLanguageSetting->surveyls_policy_error = $changes['datasecerror'][$sLanguage] ?? '';
+            $oSurveyLanguageSetting->surveyls_policy_notice_label = $changes['dataseclabel'][$sLanguage] ?? '';
             $aSuccess[$sLanguage] = $oSurveyLanguageSetting->save();
             unset($oSurveyLanguageSetting);
         }
@@ -2098,9 +2104,6 @@ class SurveyAdministrationController extends LSBaseController
             } elseif ($action == 'copysurvey') {
                 $iSurveyID = sanitize_int(Yii::app()->request->getParam('copysurveylist'));
                 $aExcludes = array();
-
-                $sNewSurveyName = Yii::app()->request->getPost('copysurveyname');
-
                 if (Yii::app()->request->getPost('copysurveyexcludequotas') == "1") {
                     $aExcludes['quotas'] = true;
                 }
@@ -2140,6 +2143,12 @@ class SurveyAdministrationController extends LSBaseController
                 } else {
                     Yii::app()->loadHelper('export');
                     $copysurveydata = surveyGetXMLData($iSurveyID, $aExcludes);
+                    if (empty(Yii::app()->request->getPost('copysurveyname'))) {
+                        $sourceSurvey = Survey::model()->findByPk($iSurveyID);
+                        $sNewSurveyName = $sourceSurvey->currentLanguageSettings->surveyls_title;
+                    } else {
+                        $sNewSurveyName = Yii::app()->request->getPost('copysurveyname');
+                    }
                 }
             }
 

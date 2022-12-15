@@ -3,6 +3,20 @@
 interface PermissionInterface
 {
     /**
+     * these are the single permissions that could be set to true or false in db
+     * for a permission like 'survey'
+     */
+    public const SINGLE_PERMISSIONS =
+        [
+        'create',
+        'read',
+        'update',
+        'delete',
+        'import',
+        'export'
+        ];
+
+    /**
      * Get the owner id of this record
      * @return integer|null the owner id of the object
      */
