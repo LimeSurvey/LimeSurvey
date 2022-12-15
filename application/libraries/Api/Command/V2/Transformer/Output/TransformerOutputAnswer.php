@@ -9,12 +9,12 @@ class TransformerOutputAnswer extends TransformerOutputActiveRecord
     public function __construct()
     {
         $this->setDataMap([
-            'aid' => true,
-            'qid' => true,
+            'aid' => ['type' => 'int'],
+            'qid' => ['type' => 'int'],
             'code' => true,
-            'sortorder' => true,
-            'assessment_value' => true,
-            'scale_id' => true
+            'sortorder' => ['type' => 'int'],
+            'assessment_value' => ['type' => 'int'],
+            'scale_id' => ['type' => 'int']
         ]);
     }
 
