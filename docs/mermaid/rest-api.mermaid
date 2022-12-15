@@ -21,18 +21,6 @@ CommandInterface --* TransformerOutputInterface : composes
 CommandInterface --* TransformerInputInterface : composes
 CommandInterface : run(Request) Response
 
-class V1CommandA
-CommandInterface <|-- V1CommandA : implements
-
-class V1CommandB
-CommandInterface <|-- V1CommandB : implements
-
-class V2CommandA
-CommandInterface <|-- V2CommandA : implements
-
-class V2CommandB
-CommandInterface <|-- V2CommandB : implements
-
 
 class RestRendererInterface
 <<interface>> RestRendererInterface
@@ -49,33 +37,20 @@ RestRendererInterface <|-- RestRendererV2 : implements
 RestRendererV2 : returnResponse(Response) void
 RestRendererV2 : returnException(Exception) void
 
-class TransformerOutputInterface
-<<interface>> TransformerOutputInterface
-TransformerOutputInterface : transform(array) array
-TransformerOutputInterface : transformAll(array) array
+class TransformerInterface
+<<interface>> TransformerInterface
+TransformerInterface : transform(array) array
+TransformerInterface : transformAll(array) array
 
-class TransformerInputInterface
-<<interface>> TransformerInputInterface
-TransformerInputInterface : transform(array) array
-TransformerInputInterface : transformAll(array) array
 
-class TransformerInputA
-TransformerInputInterface <|-- TransformerInputA : implements
+class Transformer
+TransformerInterface <|-- Transformer : implements
+Transformer : transform(array) array
+Transformer : transformAll(array) array
 
-class TransformerInputB
-TransformerInputInterface <|-- TransformerInputB : implements
+class TransformerOutputActiveRecord
+Transformer --|> TransformerOutputActiveRecord
 
-class TransformerOutputAbstract
-TransformerOutputInterface <|-- TransformerOutputAbstract : implements
-TransformerOutputAbstract : transform(array) array
-TransformerOutputAbstract : transformAll(array) array
 
-class TransformerOutputActiveRecordAbstract
-TransformerOutputAbstract --|> TransformerOutputActiveRecordAbstract
 
-class TransformerOutputA
-TransformerOutputActiveRecordAbstract --|> TransformerOutputA
-
-class TransformerOutputB
-TransformerOutputActiveRecordAbstract --|> TransformerOutputB
 
