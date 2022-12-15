@@ -4,6 +4,12 @@ namespace LimeSurvey\Api\Transformer;
 
 class TypeFormat
 {
+    /**
+     * Cast Y/N to boolean
+     *
+     * @param mixed $value
+     * @return boolean|null
+     */
     public static function ynToBool($value)
     {
         $lowercase = strtolower($value);
@@ -17,6 +23,12 @@ class TypeFormat
         return $lowercase === 'y';
     }
 
+    /**
+     * Cast UTC datetime string to JSON datetime string
+     *
+     * @param string $value
+     * @return string|null
+     */
     public static function dateTimeUtcToJson($value)
     {
         if ($value === null || $value === "") {
