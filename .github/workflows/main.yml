@@ -17,8 +17,7 @@ jobs:
     strategy:
       matrix:
         # Specify what versions of php you want to test
-        #php-versions: ['7.2', '8.0']
-        php-versions: ['8.0']
+        php-versions: ['7.2', '8.0']
     # Env vars for this job
     env:
       DBENGINE: INNODB
@@ -87,10 +86,11 @@ jobs:
 
           sudo systemctl start mysql
           sudo service mysql status
-          mysql -uroot -proot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH caching_sha2_password BY 'root';" || true
+          mysql -uroot -proot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';" || true
           mysql -uroot -proot -e "Show  variables like '%large%';"
           mysql -uroot -proot -e "Show  variables like '%innodb_file%';"
           mysql -uroot -proot -e "Show  variables like '%innodb_default%';"
+          mysql -uroot -proot -e "CREATE DATABASE limesurvey;"
 
       - name: Load custom console and start the Application
         run: |
