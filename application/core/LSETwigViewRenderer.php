@@ -767,11 +767,11 @@ window.addEventListener('message', function(event) {
         foreach ($extensions as $extName) {
             if ($extName == "Twig_Extension_Sandbox") {
                 // Process to load the sandBox
-                $tags       = isset($this->sandboxConfig['tags']) ? $this->sandboxConfig['tags'] : array();
-                $filters    = isset($this->sandboxConfig['filters']) ? $this->sandboxConfig['filters'] : array();
-                $methods    = isset($this->sandboxConfig['methods']) ? $this->sandboxConfig['methods'] : array();
-                $properties = isset($this->sandboxConfig['properties']) ? $this->sandboxConfig['properties'] : array();
-                $functions  = isset($this->sandboxConfig['functions']) ? $this->sandboxConfig['functions'] : array();
+                $tags       = $this->sandboxConfig['tags'] ?? array();
+                $filters    = $this->sandboxConfig['filters'] ?? array();
+                $methods    = $this->sandboxConfig['methods'] ?? array();
+                $properties = $this->sandboxConfig['properties'] ?? array();
+                $functions  = $this->sandboxConfig['functions'] ?? array();
                 $policy     = new Twig_Sandbox_SecurityPolicy($tags, $filters, $methods, $properties, $functions);
                 $sandbox    = new Twig_Extension_Sandbox($policy, true);
 

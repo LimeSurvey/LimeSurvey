@@ -144,7 +144,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
         $aData['sidemenu']['questiongroups'] = true;
         $aData['sidemenu']['group_name'] = $oQuestionGroup->questiongroupl10ns[$baselang]->group_name ?? '';
         $aData['sidemenu']['explorer']['state'] = true;
-        $aData['sidemenu']['explorer']['gid'] = (isset($gid)) ? $gid : false;
+        $aData['sidemenu']['explorer']['gid'] = $gid ?? false;
         $aData['sidemenu']['explorer']['qid'] = false;
         $aData['sidemenu']['landOnSideMenuTab'] = $landOnSideMenuTab;
 
@@ -254,7 +254,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
         $aData['sidemenu']['questiongroups'] = true;
         $aData['sidemenu']['group_name'] = $oQuestionGroup->questiongroupl10ns[$sBaseLanguage]->group_name ?? '';
         $aData['sidemenu']['explorer']['state'] = true;
-        $aData['sidemenu']['explorer']['gid'] = (isset($gid)) ? $gid : false;
+        $aData['sidemenu']['explorer']['gid'] = $gid ?? false;
         $aData['sidemenu']['explorer']['qid'] = false;
         $aData['sidemenu']['landOnSideMenuTab'] = $landOnSideMenuTab;
 
@@ -889,9 +889,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
                         $oQuestiongroups
                     );
 
-                    $aQuestiongroup['questions'] = isset($aQuestiongroup['questions'])
-                        ? $aQuestiongroup['questions']
-                        : [];
+                    $aQuestiongroup['questions'] = $aQuestiongroup['questions'] ?? [];
 
                     foreach ($aQuestiongroup['questions'] as $aQuestion) {
                         $aQuestions = Question::model()->findAll(

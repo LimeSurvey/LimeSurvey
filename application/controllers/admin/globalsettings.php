@@ -13,6 +13,8 @@
 *
 */
 
+use LimeSurvey\Libraries\FormExtension\Inputs\TextInput;
+
 /**
 * GlobalSettings Controller
 *
@@ -401,6 +403,9 @@ class GlobalSettings extends SurveyCommonAction
         }
         SettingGlobal::setSetting('timeadjust', $savetime);
         SettingGlobal::setSetting('usercontrolSameGroupPolicy', strip_tags(Yii::app()->getRequest()->getPost('usercontrolSameGroupPolicy')));
+
+        $request = App()->request;
+        Yii::app()->formExtensionService->applySave('globalsettings', $request);
 
         if (!empty($warning)) {
             Yii::app()->setFlashMessage($warning, 'warning');
