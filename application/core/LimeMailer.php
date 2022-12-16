@@ -515,25 +515,27 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         $event->set('updateDisable', array());
         App()->getPluginManager()->dispatchEvent($event);
         /* Manage what can be updated */
+        /* For default (if is empty) use default from PHPMailer (avoiding set to null) */
         $updateDisable = $event->get('updateDisable');
         if (empty($updateDisable['subject'])) {
-            $this->Subject = $event->get('subject');
+            $this->Subject = $event->get('subject', '');
         }
         if (empty($updateDisable['body'])) {
-            $this->Body = $event->get('body');
+            $this->Body = $event->get('body', '');
         }
         if (empty($updateDisable['from'])) {
-            $this->setFrom($event->get('from'));
+            $this->setFrom($event->get('from', ''));
         }
         if (empty($updateDisable['to'])) {
             /* Warning : pre 4 version send array of string, here we send array of array (email+name) */
-            $this->to = $event->get('to');
+            /* Set default as array to avoid the to to null and broke on PHP8 */
+            $this->to = $event->get('to', array());
         }
         if (empty($updateDisable['bounce'])) {
-            $this->Sender = $event->get('bounce');
+            $this->Sender = $event->get('bounce', '');
         }
         $this->eventMessage = $event->get('message');
-        if ($event->get('send', true) == false) {
+        if ($event->get('send', true) === false) {
             $this->ErrorInfo = $event->get('error');
             return $event->get('error') == null;
         }
