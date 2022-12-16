@@ -16,12 +16,13 @@ $active-green : #14AE5C; // buttons & links
 
 $white        : #fff;
 $black        : #000;
+$black60      : rgba(0, 0, 0, 0.6);
 $black75      : rgba(0, 0, 0, 0.75);
 
 $g-900        : #1E1E1E;
 $g-800        : #333641;
 $g-700        : #5E6372;
-$g-600        : #7C8191;
+$g-600        : #6384ee;
 $g-400        : #C2C5D1;
 $g-300        : #DDDEE8;
 $g-200        : #EEEFF7;
@@ -36,6 +37,7 @@ $theme-colors: (
     "info":       $grape,
     "light":      $g-200,
     "dark":       $g-900,
+    "black60":    $black60,
     "cancel":     $g-600, // replace with secondary
 );
 

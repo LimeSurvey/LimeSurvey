@@ -79,6 +79,14 @@ foreach ($systemInfos as $key => $systemInfo) {
                 <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')) { ?>
                     </a> 
                 <?php } ?>
+                <div class="dropup">
+                    <button type="button" class="btn btn-black60 btn-circle" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="ri-questionnaire-line remix-xl"></i>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <!-- Dropdown menu links -->
+                    </ul>
+                </div>
             </div>
         </div>
     </div>

@@ -1,0 +1,43 @@
+.btn-circle {
+  width: 44px;
+  height: 44px;
+  padding: 12px 10px;
+  border-radius: 35px;
+  text-align: center;
+}
+
+.btn-black60 {
+  color: $white;
+  border: 1px solid $black;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+  &:hover {
+    @extend %default_hover;
+    background-color: $black_60;
+    border: 1px solid $black;
+  }
+
+  &:focus {
+    @extend %default_hover;
+    background-color: $black_60;
+    border: 1px solid $black;
+  }
+
+  &:active {
+    @extend %default_hover;
+    background-color: $black_60;
+    border: 1px solid $black;
+  }
+
+  &.active {
+    @extend %default_hover;
+    background-color: $black_60;
+    border: 1px solid $black;
+  }
+
+  &.dropdown-toggle.show, &.dropdown-toggle.show:focus {
+    @extend %default_focus;
+    background-color: $black_60;
+    border: 1px solid $black;
+  }
+}
