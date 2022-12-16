@@ -168,7 +168,7 @@ themes/survey/no_bootstrap/files/*
 adminer.php
 
 # Used by tests.
-geckodriver
+geckodriver.exe
 selenium-server-standalone-3.7.1.jar
 
 # Used by Vim and Emacs
