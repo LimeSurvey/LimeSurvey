@@ -79,7 +79,7 @@ var TFAUserSettingsClass = function(){
 
     var startSubmit = function(){
         $(formId).before(
-            '<div class="col-12 text-center"><i class="ri-loader-2-fill remix-pulse fa-4x TFA--usereditspinner"></i></div>'
+            '<div class="col-12 text-center"><i class="ri-loader-2-fill remix-pulse remix-4x TFA--usereditspinner"></i></div>'
         ).find('button').prop('disabled',true);
     };
     var stopSubmit = function(){
