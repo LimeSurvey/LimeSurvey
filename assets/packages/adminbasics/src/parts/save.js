@@ -36,7 +36,7 @@ const SaveController = () => {
     isSubmitting = () => formSubmitting,
     displayLoadingState = (el) => {
         if($(el).data('form-id') == 'addnewsurvey') {
-            const loadingSpinner = '<i class="fa fa-cog fa-spin lsLoadingStateIndicator"></i>';
+            const loadingSpinner = '<i class="ri-settings-5-fill remix-spin lsLoadingStateIndicator"></i>';
             $(el).prop('disabled', true).append(loadingSpinner);
         }
     },

@@ -88,7 +88,7 @@ App()->getClientScript()->registerScript('TokenInviteLooper', "
 
     var submitInviteForm = function() {
         $('body').append('<div class=\"overlay\"></div>');
-        $('#sendTokenInvitationsNow').after('<p class=\"text-center\"><i class=\"ri-settings-5-fill fa-spin\"></i></p>');
+        $('#sendTokenInvitationsNow').after('<p class=\"text-center\"><i class=\"ri-settings-5-fill remix-spin\"></i></p>');
         $('#cancelAutomaticSubmission').remove();
         $('#sendTokenInvitationsNow').remove();
         $('#tokenSubmitInviteForm').trigger('submit');
