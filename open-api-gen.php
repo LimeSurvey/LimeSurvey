@@ -7,8 +7,10 @@ use GoldSpecDigital\ObjectOrientedOAS\Objects\MediaType;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Operation;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\PathItem;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Parameter;
+use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
+use GoldSpecDigital\ObjectOrientedOAS\Objects\RequestBody;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Response;
-use GoldSpecDigital\ObjectOrientedOAS\Objects\Response\Schema;
+use GoldSpecDigital\ObjectOrientedOAS\Objects\Response\Schema as ResponseSchema;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Tag;
 use GoldSpecDigital\ObjectOrientedOAS\OpenApi;
 
@@ -94,16 +96,38 @@ foreach ($rest as $path => $config) {
 
         ///////////////////////////////////////////////////////////////////////////
         // Params
-        $paramsConfig = !empty($methodConfig['params']) ? $methodConfig['params'] : [];
         $params = [];
+
+        // Entity id param
         if ($id) {
             $params[] = Parameter::path()->name('id');
         }
+
+        // Query params
+        // TODO: allow proper param type definition via config
+        $paramsConfig = !empty($methodConfig['params']) ? $methodConfig['params'] : [];
         foreach ($paramsConfig as $paramName => $paramConfig) {
             $params[] = Parameter::query()->name($paramName);
         }
-        if (!empty($params)) {
-            $oaOperation = $oaOperation->parameters(...$params);
+        $oaOperation = $oaOperation->parameters(...$params);
+
+        ///////////////////////////////////////////////////////////////////////////
+        // Request Body
+        // TODO: allow proper schema definition via config
+        $bodyParamsConfig = !empty($methodConfig['bodyParams']) ? $methodConfig['bodyParams'] : [];
+        if (!empty($bodyParamsConfig)) {
+            $props = [];
+
+            $schemaBody = Schema::object();
+            foreach ($bodyParamsConfig as $propName => $propConfig) {
+                $props[] = Schema::string($propName);
+            }
+            $schemaBody = $schemaBody->properties(...$props);
+            if (!empty($params)) {
+                $oaOperation = $oaOperation->requestBody(RequestBody::create()->content(
+                    MediaType::json()->schema($schemaBody)
+                ));
+            }
         }
 
         //////////////////////////////////////////////////////////////////////////

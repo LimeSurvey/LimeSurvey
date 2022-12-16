@@ -24,7 +24,7 @@ $rest['v2/survey'] = [
                 'schema' => null
             ],
             'unauthorized' => [
-                'code' => 403,
+                'code' => 401,
                 'description' => 'Unauthorized',
                 'schema' => null
             ]
@@ -47,7 +47,7 @@ $rest['v2/survey-detail/$surveyId'] = [
                 'schema' => null
             ],
             'unauthorized' => [
-                'code' => 403,
+                'code' => 401,
                 'description' => 'Unauthorized',
                 'schema' => null
             ],
@@ -64,7 +64,9 @@ $rest['v2/survey-detail/$surveyId'] = [
         'commandClass' => $v2Namespace . 'SurveyPatch',
         'auth' => 'session',
         'params' => [],
-        'bodyParams' => [],
+        'bodyParams' => [
+            'patch' => true
+        ],
         'responses' => [
             'success' => [
                 'code' => 200,
@@ -72,7 +74,7 @@ $rest['v2/survey-detail/$surveyId'] = [
                 'schema' => null
             ],
             'unauthorized' => [
-                'code' => 403,
+                'code' => 401,
                 'description' => 'Unauthorized',
                 'schema' => null
             ],
