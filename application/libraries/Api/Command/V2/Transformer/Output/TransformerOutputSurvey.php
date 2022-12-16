@@ -4,8 +4,6 @@ namespace LimeSurvey\Api\Command\V2\Transformer\Output;
 
 use LimeSurvey\Api\Transformer\Output\TransformerOutputActiveRecord;
 
-
-
 class TransformerOutputSurvey extends TransformerOutputActiveRecord
 {
     public function __construct()

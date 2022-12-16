@@ -10,6 +10,9 @@ use GoldSpecDigital\ObjectOrientedOAS\Objects\Parameter;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\RequestBody;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Response;
+use GoldSpecDigital\ObjectOrientedOAS\Objects\Components;
+use GoldSpecDigital\ObjectOrientedOAS\Objects\SecurityScheme;
+use GoldSpecDigital\ObjectOrientedOAS\Objects\SecurityRequirement;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Response\Schema as ResponseSchema;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Tag;
 use GoldSpecDigital\ObjectOrientedOAS\OpenApi;
@@ -34,9 +37,20 @@ $info = Info::create()
         !empty($apiConfig['description']) ? $apiConfig['description'] : 'description'
     );
 
+
+$securityScheme = SecurityScheme::create('bearerAuth')
+    ->scheme('bearer')
+    ->type('http')
+    ->name('Bearer Auth');
+$securityRequirement = SecurityRequirement::create()
+    ->securityScheme($securityScheme);
+
+$components = Components::create()->securitySchemes($securityScheme);
+
 $openApi = OpenApi::create()
     ->openapi(OpenApi::OPENAPI_3_0_2)
-    ->info($info);
+    ->info($info)
+    ->components($components);
 
 $tags = [];
 $schemas = [];
@@ -74,6 +88,10 @@ foreach ($rest as $path => $config) {
         $oaOperation = Operation::$oaMethod()->summary(
                         !empty($methodConfig['description']) ? $methodConfig['description'] : ''
                     )->operationId($oaOpId);
+
+        if (!empty($methodConfig['auth'])) {
+            $oaOperation = $oaOperation->security($securityRequirement);
+        }
 
         ///////////////////////////////////////////////////////////////////////////
         // Tag
