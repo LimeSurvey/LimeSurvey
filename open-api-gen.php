@@ -6,6 +6,7 @@ use GoldSpecDigital\ObjectOrientedOAS\Objects\Info;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\MediaType;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Operation;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\PathItem;
+use GoldSpecDigital\ObjectOrientedOAS\Objects\Parameter;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Response;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Response\Schema;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Tag;
@@ -20,6 +21,8 @@ $outputFile = __DIR__ . '/docs/open-api/' . $version . '.json';
 
 $apiConfig = isset($rest[$version]) ? $rest[$version] : [];
 
+///////////////////////////////////////////////////////////////////////////
+// Main API Details
 $info = Info::create()
     ->title(
         !empty($apiConfig['title']) ? $apiConfig['title'] : 'Title'
@@ -38,6 +41,9 @@ $schemas = [];
 $paths = [];
 
 foreach ($rest as $path => $config) {
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Path
     $pathParts = explode('/', $path);
     $pathPartsCount = count($pathParts);
 
@@ -56,12 +62,19 @@ foreach ($rest as $path => $config) {
 
     $operations = [];
     foreach ($config as $method => $methodConfig) {
+        ///////////////////////////////////////////////////////////////////////////
+        // Method
         $oaMethod = strtolower($method);
         $oaOpId = !empty($id)
             ? $oaMethod . '.' . $entity . '.id'
             : $oaMethod . '.' . $entity;
 
+        $oaOperation = Operation::$oaMethod()->summary(
+                        !empty($methodConfig['description']) ? $methodConfig['description'] : ''
+                    )->operationId($oaOpId);
 
+        ///////////////////////////////////////////////////////////////////////////
+        // Tag
         $tagId = !empty($methodConfig['tag']) ? $methodConfig['tag'] : $entity;
         $tagConfig = isset($tagsConfig[$tagId])? $tagsConfig[$tagId] : null;
         if ($tagConfig) {
@@ -74,17 +87,27 @@ foreach ($rest as $path => $config) {
                 );
             $openApi = $openApi->tags(...$tags);
         }
-
-        $oaOperation = Operation::$oaMethod();
-
         if (isset($tags[$tagId])) {
             $oaOperation = $oaOperation->tags($tags[$tagId]);
         }
 
-        $oaOperation = $oaOperation->summary(
-                        !empty($methodConfig['description']) ? $methodConfig['description'] : ''
-                    )->operationId($oaOpId);
 
+        ///////////////////////////////////////////////////////////////////////////
+        // Params
+        $paramsConfig = !empty($methodConfig['params']) ? $methodConfig['params'] : [];
+        $params = [];
+        if ($id) {
+            $params[] = Parameter::path()->name('id');
+        }
+        foreach ($paramsConfig as $paramName => $paramConfig) {
+            $params[] = Parameter::query()->name($paramName);
+        }
+        if (!empty($params)) {
+            $oaOperation = $oaOperation->parameters(...$params);
+        }
+
+        //////////////////////////////////////////////////////////////////////////
+        // Responses
         $responsesConfig = !empty($methodConfig['responses']) ? $methodConfig['responses'] : [];
         $responses = [];
         foreach ($responsesConfig as $responseId => $responseConfig) {
@@ -95,20 +118,26 @@ foreach ($rest as $path => $config) {
                 ->description(
                     !empty($responseConfig['description']) ? $responseConfig['description'] : ''
                 );
-            $oaOperation = $oaOperation->responses(...$responses);
         }
-
-        $oaPathString = '/rest/' . implode('/', [$version, $entity]);
-        if (!empty($id)) {
-            $oaPathString = $oaPathString . '/{id}';
+        if (!empty($responses)) {
+            $oaOperation = $oaOperation->responses(...$responses);
         }
 
         $operations[] = $oaOperation;
     }
 
+    /////////////////////////////////////////////////////////////////////////
+    // Path
+    $oaPathString = '/rest/' . implode('/', [$version, $entity]);
+    if (!empty($id)) {
+        $oaPathString = $oaPathString . '/{id}';
+    }
     $oaPath = PathItem::create()
-        ->route($oaPathString)
-        ->operations(...$operations);
+        ->route($oaPathString);
+
+    if (!empty($operations)) {
+        $oaPath = $oaPath->operations(...$operations);
+    }
 
     $paths[] = $oaPath;
 }
