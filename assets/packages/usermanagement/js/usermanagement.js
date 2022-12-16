@@ -67,7 +67,7 @@ var UserManagement = function () {
 
     var startSubmit = function () {
         $('#submitForm').append(
-            '<i class="fa fa-spinner fa-pulse UserManagement-spinner"></i>'
+            '<i class="ri-loader-2-fill remix-pulse UserManagement-spinner"></i>'
         ).prop('disabled', true);
     };
     var stopSubmit = function () {

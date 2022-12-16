@@ -3,7 +3,7 @@ var TFALOG = new ConsoleShim('TFA', !window.debugState.backend);
 
 // Spinner to indicate loading on ajax requests
 var loaderSpinner = '<div class="ls-flex ls-flex-column align-items-center align-content-center" style="height: 200px;">';
-loaderSpinner  +='<i class="fa fa-gear fa-spin" style="font-size: 128px;color:rgba(50, 134, 55, 0.5);"></i>';
+loaderSpinner  +='<i class="ri-settings-5-fill remix-spin" style="font-size: 128px;color:rgba(50, 134, 55, 0.5);"></i>';
 loaderSpinner  +='</div>';
 var loaderHtml = '<div class="modal-body">';
 loaderHtml += loaderSpinner;
@@ -79,7 +79,7 @@ var TFAUserSettingsClass = function(){
 
     var startSubmit = function(){
         $(formId).before(
-            '<div class="col-12 text-center"><i class="fa fa-spinner fa-pulse fa-4x TFA--usereditspinner"></i></div>'
+            '<div class="col-12 text-center"><i class="ri-loader-2-fill remix-pulse remix-4x TFA--usereditspinner"></i></div>'
         ).find('button').prop('disabled',true);
     };
     var stopSubmit = function(){
