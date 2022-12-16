@@ -1,6 +1,6 @@
 <!-- General -->
 <div class="card" id="panel-various">
-  <div class="card-header bg-primary">
+  <div class="card-header ">
       <?php eT("General"); ?>
   </div>
   <div class="card-body">

@@ -1,6 +1,6 @@
 <!-- Heading -->
 <div class="card" id="panel-4">
-  <div class="card-header bg-primary">
+  <div class="card-header ">
       <?php eT("Headings");?>
   </div>
   <div class="card-body">

@@ -272,16 +272,8 @@ var UserManagement = function () {
     }
 
     var wireDatePicker = function () {
-        //$('#expires_datetimepicker').datetimepicker({
-            //locale: $('#User_Form_expires').data('locale'),
-            //allowInputToggle: true,
-            //showClear: true
-        //});
-        $('#expires_datetimepicker').data('DateTimePicker');
         const expires = document.getElementById('expires');
-        const dateFormatDetails = document.getElementById('dateFormatDetails');
-        const locale = document.getElementById('locale');
-        initDatePicker(expires, 'expires', locale.value, dateFormat);
+        initDatePicker(expires);
     }
 
     var applyModalHtml = function (html) {

@@ -25,14 +25,14 @@ if (!empty($aTutorials) && Permission::model()->hasGlobalPermission('surveys', '
             <li>
                 <a href="<?=App()->createUrl('admin/tutorials/sa/view')?>">
                     <span class="ri-rocket-fill" ></span>
-                    <?php eT('See all Tutorials');?>
+                    <?php eT('View all tutorials');?>
                     <i class="ri-search-line float-end"></i>
                 </a>
             </li>
             <li>
                 <a href="<?=App()->createUrl('admin/tutorials/sa/create')?>">
                     <span class="ri-rocket-fill" ></span>
-                    <?php eT('Create Tutorial');?>
+                    <?php eT('Create tutorial');?>
                     <i class="ri-add-line float-end"></i>
                 </a>
             </li>

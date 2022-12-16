@@ -108,7 +108,7 @@
                     <ul class="dropdown-menu dropdown-menu-end" role="menu">
                         <li>
                             <a class="dropdown-item" href="<?php echo $this->createUrl("/admin/user/sa/personalsettings"); ?>">
-                                <?php eT("My account"); ?>
+                                <?php eT("Account"); ?>
                             </a>
                         </li>
 

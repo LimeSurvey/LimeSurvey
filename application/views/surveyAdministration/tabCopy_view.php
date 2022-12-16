@@ -30,7 +30,7 @@
                 <p class="form-control-static">
                     <span class='annotation text-info'><?php echo  gT("Optional"); ?> </span>
                 </p>
-
+                            <?= gT("If the new survey ID is already used, a random one will be assigned."); ?> </span>
                 <!-- Submit -->
                 <div class="text-center">
                     <input type='submit' class='btn btn-primary col-4' value='<?php eT("Copy survey"); ?>' />

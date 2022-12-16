@@ -122,6 +122,35 @@ $coreFonts = array(
         ),
     ),
 
+    'font-opensans' => array(
+        'title' => 'Open Sans',
+        'type' => 'core',
+        'devBaseUrl' => 'assets/fonts/',
+        'basePath' => 'fonts',
+        'css' => array(
+            'opensans.css',
+        ),
+    ),
+
+    'font-raleway' => array(
+        'title' => 'Raleway',
+        'type' => 'core',
+        'devBaseUrl' => 'assets/fonts/',
+        'basePath' => 'fonts',
+        'css' => array(
+            'raleway.css',
+        ),
+    ),
+
+    'font-source-sans-pro' => array(
+        'title' => 'Source Sans Pro',
+        'type' => 'core',
+        'devBaseUrl' => 'assets/fonts/',
+        'basePath' => 'fonts',
+        'css' => array(
+            'source-sans-pro.css',
+        ),
+    ),
 );
 
 // get user fonts configuration from /upload/fonts directory
