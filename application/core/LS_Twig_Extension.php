@@ -692,4 +692,58 @@ class LS_Twig_Extension extends Twig_Extension
         Yii::app()->loadHelper('surveytranslator');
         return getLanguageRTL($sLanguageCode);
     }
+
+    /**
+     * Returns the "tracking url" for Google Analytics when style is "Survey-SID/GROUP"
+     * @param int $surveyId
+     * @param string $trackUrlPageName  Specific page name to include in the tracking url. If it's empty, we will try to infer it from the context.
+     * @return string The tracking URL as "<survey name>-[<survey id>]/[<page name|group seq>]-<group name>"
+     */
+    public static function getGoogleAnalyticsTrackingUrl($surveyId, $trackUrlPageName = '')
+    {
+        $survey = Survey::model()->findByPk($surveyId);
+
+        $googleAnalyticsAPIKey = $survey->getGoogleanalyticsapikey();
+        $googleAnalyticsStyle = isset($survey->googleanalyticsstyle) ? $survey->googleanalyticsstyle : '1';
+
+        // Tracking URL can only be used if there is an API key and the style is set to "Survey-SID/GROUP"
+        if ($googleAnalyticsAPIKey == '' || $googleAnalyticsStyle != 2) {
+            return '';
+        }
+
+        $surveyName = $survey->localizedTitle;
+        $groupName = '';
+
+        // If a page name is specified, use that. Otherwise, try to get it from the context.
+        if (!empty($trackUrlPageName)) {
+            $page = $trackUrlPageName;
+        } else {
+            $moveInfo = LimeExpressionManager::GetLastMoveResult();
+            if (is_null($moveInfo) || (isset($moveInfo['at_start']) && $moveInfo['at_start'])) {
+                $page = 'welcome';
+            } elseif ($moveInfo['finished']) {
+                $page = 'finished';
+            } else {
+                $showgroupinfo = Yii::app()->getConfig('showgroupinfo');
+                if ($survey->format == 'A') {
+                    $page = 1;
+                } else {
+                    if (
+                        $showgroupinfo == 'both'
+                        || $showgroupinfo == 'name'
+                        || ($showgroupinfo == 'choose' && !isset($survey->showgroupinfo))
+                        || ($showgroupinfo == 'choose' && $survey->showgroupinfo == 'B')
+                        || ($showgroupinfo == 'choose' && $survey->showgroupinfo == 'N')
+                    ) {
+                        $groupInfo = LimeExpressionManager::GetStepIndexInfo($moveInfo['seq']);
+                        $groupName = isset($groupInfo['gname']) ? $groupInfo['gname'] : '';
+                    }
+                    $page = $moveInfo['gseq']+1;
+                };
+            }
+        }
+
+        $trackURL = htmlspecialchars($surveyName . '-[' . $surveyId . ']/[' . $page . ']-' . $groupName);
+        return $trackURL;
+    }
 }

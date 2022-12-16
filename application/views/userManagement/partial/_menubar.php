@@ -13,8 +13,7 @@ App()->getClientScript()->registerScriptFile(
                         ?>
                         <!-- Add User -->
                     <button 
-                    	data-href="<?= $this->createUrl("userManagement/addEditUser") ?>" 
-                    	data-bs-toggle="modal" 
+                    	data-href="<?= $this->createUrl("userManagement/addEditUser") ?>"
                     	title="<?php eT('Add a new survey administrator'); ?>"
                         class="btn btn-outline-secondary UserManagement--action--openmodal">
                             <i class="ri-add-circle-fill text-success"></i> <?php eT("Add user"); ?>
@@ -22,20 +21,19 @@ App()->getClientScript()->registerScriptFile(
 
                         <!-- Add Dummy User -->
                     <button 
-                    	data-href="<?= $this->createUrl("userManagement/addDummyUser") ?>" 
-                    	data-bs-toggle="modal" 
+                    	data-href="<?= $this->createUrl("userManagement/addDummyUser") ?>"
                     	title="<?php eT('Add a new survey administrator with random values'); ?>"
                      	class="btn btn-outline-secondary UserManagement--action--openmodal">
                             <i class="ri-add-box-fill text-success"></i> <?= gT('Add dummy user') ?>
                         </button>
 
                         <!-- Import CSV -->
-                    <button data-href="<?= $this->createUrl("userManagement/renderUserImport", ["importFormat" => "csv"]) ?>" data-bs-toggle="modal" title="<?php eT('Import survey administrators from CSV'); ?>" class="btn btn-outline-secondary UserManagement--action--openmodal">
+                    <button data-href="<?= $this->createUrl("userManagement/renderUserImport", ["importFormat" => "csv"]) ?>" title="<?php eT('Import survey administrators from CSV'); ?>" class="btn btn-outline-secondary UserManagement--action--openmodal">
                             <span class="ri-upload-fill text-success"></span> <?php eT("Import (CSV)"); ?>
                         </button>
 
                         <!-- Import JSON -->
-                    <button data-href="<?= App()->createUrl("userManagement/renderUserImport", ["importFormat" => "json"]) ?>" data-bs-toggle="modal" title="<?php eT('Import survey administrators from Json'); ?>" class="btn btn-outline-secondary UserManagement--action--openmodal">
+                    <button data-href="<?= App()->createUrl("userManagement/renderUserImport", ["importFormat" => "json"]) ?>" title="<?php eT('Import survey administrators from Json'); ?>" class="btn btn-outline-secondary UserManagement--action--openmodal">
                             <span class="ri-upload-fill text-success"></span> <?php eT("Import (JSON)"); ?>
                         </button>
 

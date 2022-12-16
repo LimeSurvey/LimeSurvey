@@ -71,6 +71,7 @@ class DateTimePicker extends CInputWidget
         $this->name = $name;
 
         $this->htmlOptions['id'] = $this->getValue('id', $this->htmlOptions, $this->getEscapedId());
+        $this->htmlOptions['autocomplete'] = 'off';
         foreach ($this->pluginOptions as $key => $pluginOption) {
             if (is_array($pluginOption)) {
                 continue;
@@ -144,6 +145,7 @@ class DateTimePicker extends CInputWidget
             // bug workaround allowInputToggle
             var id_$id = '$id';
             var input_$id = document.getElementById('$id');
+            input_$id.removeEventListener('click', picker_$id._toggleClickEvent);
             if(input_$id != null) {
                 if((id_$id.indexOf('answer') >= 0 && input_$id.value !== '') || id_$id.indexOf('answer') < 0) {
                         input_$id.onfocus = function () {

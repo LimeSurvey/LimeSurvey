@@ -29,11 +29,11 @@
                 code
               },
               success: (data) => {
-                if (data) {
-                    $('#question-title-warning').text(data);
-                    $('#question-title-warning').removeClass('d-none');
-                } else {
+                if (data.hasOwnProperty('message') && data.message === null) {
                     $("#submit-copy-question").click();
+                } else {
+                    $('#question-title-warning').text(data.hasOwnProperty('message') ? data.message : data);
+                    $('#question-title-warning').removeClass('d-none');
                 }
               },
               error: (data) => {

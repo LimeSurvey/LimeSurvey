@@ -1,18 +1,18 @@
 @media only screen and (max-width: 760px) {
     .slider-list .slider-left {
-        text-align: left
+        text-align: left!important;
     }
 
     .slider-list .slider-right {
-        text-align: right;
+        text-align: right!important;
     }
 
     .dir-rtl .slider-list .slider-left {
-        text-align: right
+        text-align: right!important;
     }
 
     .dir-rtl .slider-list .slider-right {
-        text-align: left;
+        text-align: left!important;
     }
 }
 

@@ -188,6 +188,7 @@ class QuestionThemeTest extends TestBaseClassWeb
      */
     public function testExecuteQuestionThemeSurvey()
     {
+        $this->markTestSkipped('external theme needs to be updated');
         // Import lsa
         $surveyFile = self::$surveysFolder . '/survey_archive_222923_executeQuestionThemeSurvey.lsa';
         self::importSurvey($surveyFile);

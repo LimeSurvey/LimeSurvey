@@ -757,7 +757,7 @@
         const jsonstring = $("#java" + fieldname).val();
 
         if (jsonstring == '[]' || jsonstring == '') {
-          $('#' + this.fieldname + '_uploadedfiles').addClass('hidden');
+          $('#' + this.fieldname + '_uploadedfiles').addClass('d-none');
           $('#' + this.fieldname + '_uploadedfiles').find('table>tbody').html('');
           return;
         }
@@ -768,7 +768,7 @@
           try {
             jsonobj = JSON.parse(jsonstring);
           } catch (e) {}
-          $('#' + this.fieldname + '_uploadedfiles').removeClass('hidden');
+          $('#' + this.fieldname + '_uploadedfiles').removeClass('d-none');
           $('#' + this.fieldname + '_uploadedfiles').find('table>tbody').html('');
           const image_extensions = new Array('gif', 'jpeg', 'jpg', 'png', 'swf', 'psd', 'bmp', 'tiff', 'jp2', 'iff', 'bmp', 'xbm', 'ico');
           const templateHtml = $('#filerowtemplate_' + this.fieldname).html();

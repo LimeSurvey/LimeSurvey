@@ -6,7 +6,7 @@
 <div class="row justify-content-start">
     <div class='col-4'>
         <div id="csvattribute" class="card card-primary h-100">
-            <div class="card-header bg-primary">
+            <div class="card-header ">
                 <?php eT("CSV field names "); ?>
                 <div class='float-end'>
                     <span id='move-all' class='btn ri-arrow-right-fill no-padding' data-bs-toggle='tooltip' data-title='<?php eT('Move all fields to create column'); ?>'></span>
@@ -31,7 +31,7 @@
     </div>
     <div class='col-4'>
         <div id="newcreated" class="card card-primary h-100">
-            <div class="card-header bg-primary">
+            <div class="card-header ">
                 <?php eT("Attributes to be created") ?>
             </div>
             <div class='card-body'>
@@ -43,7 +43,7 @@
     </div>
     <div class='col-4'>
         <div id="centralattribute" class="card card-primary h-100">
-            <div class="card-header bg-primary"><?php eT("Existing attribute"); ?></div>
+            <div class="card-header "><?php eT("Existing attribute"); ?></div>
             <div class='card-body'>
                 <p class='help-block'><?php eT("Drop a CSV field into an existing participant attribute listed below to import your data into it."); ?></p>
                 <div class="centralatt">

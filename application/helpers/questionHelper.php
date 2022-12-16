@@ -1229,7 +1229,7 @@ class questionHelper
             'expression' => 1,
             'i18n' => true,
             'default' => "",
-            "help" => sprintf(gT("Replace choice header (default: \"%s\")"), gT("Your choices")),
+            "help" => sprintf(gT("Replace choice header (default: \"%s\")"), gT("Available items")),
             "caption" => gT("Choice header")
         );
 

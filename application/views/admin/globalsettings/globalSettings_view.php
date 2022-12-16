@@ -10,7 +10,7 @@ App()->getClientScript()->registerScript('GlobalSettingsBSSwitcher', "LS.renderB
 
 ?>
 <?php if (YII_DEBUG): ?>
-    <p class="alert alert-info "> this view is rendered from globall setting module. This message is shown only when debug mode is on </p>
+    <p class="alert alert-info "> this view is rendered from global setting module. This message is shown only when debug mode is on </p>
 <?php endif; ?>
 <script type="text/javascript">
     var msgCantRemoveDefaultLanguage = '<?php eT("You can't remove the default language.", 'js'); ?>';

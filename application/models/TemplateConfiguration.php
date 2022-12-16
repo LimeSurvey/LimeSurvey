@@ -1011,7 +1011,10 @@ class TemplateConfiguration extends TemplateConfig
             }
             // Get full list of files
             $fileList = Template::getOtherFiles($basePath);
-
+            // Order File List alphabetically
+            usort($fileList, function ($a, $b) {
+                return strcasecmp($a['name'], $b['name']);
+            });
             // Keep only image files
             foreach ($fileList as $file) {
                 $imageInfo = $this->getImageInfo($basePath . $file['name'], $pathPrefix);

@@ -260,7 +260,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
         <script type='text/javascript'>
             <!--
             var aRankingTranslations = {
-                choicetitle: '<?php echo gT("Your choices",'js') ?>',
+                choicetitle: '<?php echo gT("Available items",'js') ?>',
                 ranktitle: '<?php echo gT("Your ranking",'js') ?>'
             };
             function checkconditions(){
