@@ -580,7 +580,19 @@ JAVASCRIPT
 
         // Green SurveyManagerBar Page Title
         $pageTitle = gT('Theme editor:') . ' ' . $templatename;
-        $aData['pageTitle'] = $pageTitle;
+
+        //$aData['pageTitle'] = $pageTitle;
+        $aData['topbar']['title'] = $pageTitle;
+
+        $aData['topbar']['middleButtons'] = Yii::app()->getController()->renderPartial(
+            '/admin/themes/partial/topbarBtns/leftSideButtons',
+            [
+                'isExport' => (Permission::model()->hasGlobalPermission('templates', 'export') && class_exists('ZipArchive')),
+                'templatename' => $templatename,
+                'isExtend' => true,
+            ],
+            true
+        );
 
         // White Bar
         $aData['templateEditorBar']['buttons']['returnbutton'] = true;
