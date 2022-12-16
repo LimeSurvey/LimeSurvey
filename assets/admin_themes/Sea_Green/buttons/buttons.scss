@@ -2,15 +2,20 @@
   color: $white;
 }
 
+%default_hover {
+  box-shadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
+  color: $white;
+}
+
 %default_outline_hover {
   box-shadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
   background-color: $white;
   border-color: $g-900;
-  color: $g-900!important;
+  color: $g-900;
 }
 
-%default_hover {
-  box-shadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
+%default_focus {
+  box-shadow: 4px 4px 0px rgba(123, 97, 255, 0.4);
   color: $white;
 }
 
@@ -19,11 +24,6 @@
   background-color: $white;
   color: $g-900;
   border-color: $g-900;
-}
-
-%default_focus {
-  box-shadow: 4px 4px 0px rgba(123, 97, 255, 0.4);
-  color: $white;
 }
 
 %default_disabled {
