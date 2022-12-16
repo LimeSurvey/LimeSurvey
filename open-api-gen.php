@@ -12,9 +12,11 @@ use GoldSpecDigital\ObjectOrientedOAS\Objects\Tag;
 use GoldSpecDigital\ObjectOrientedOAS\OpenApi;
 
 
-$version = !empty($argv[1]) ? $argv[1] : 'v1';
+$versionNum = !empty($argv[1]) ? ltrim($argv[1], 'v') : '1';
+$version = 'v' . $versionNum;
 
 $rest = include(__DIR__ . '/application/config/rest/' . $version . '.php');
+$outputFile = __DIR__ . '/docs/open-api/' . $version . '.json';
 
 $apiConfig = isset($rest[$version]) ? $rest[$version] : [];
 
@@ -22,7 +24,7 @@ $info = Info::create()
     ->title(
         !empty($apiConfig['title']) ? $apiConfig['title'] : 'Title'
     )
-    ->version($version)
+    ->version($versionNum)
     ->description(
         !empty($apiConfig['description']) ? $apiConfig['description'] : 'description'
     );
@@ -50,32 +52,38 @@ foreach ($rest as $path => $config) {
         continue;
     }
 
-    $entities = !empty($rest[$version]['entity']) ? $rest[$version]['entity'] : [];
-    $entityConfig = !empty($entities[$entity]) ? $entities[$entity] : [];
+    $tagsConfig = !empty($rest[$version]['tags']) ? $rest[$version]['tags'] : [];
 
-    if (!isset($tags[$entity])) {
-        $tags[$entity] = Tag::create($entity)
-            ->name(
-                !empty($entityConfig['name']) ? $entityConfig['name'] : ucfirst($entity)
-            )
-            ->description(
-                !empty($entityConfig['description']) ? $entityConfig['description'] : ''
-            );
-        $openApi = $openApi->tags(...$tags);
-    }
-
+    $operations = [];
     foreach ($config as $method => $methodConfig) {
-
         $oaMethod = strtolower($method);
         $oaOpId = !empty($id)
             ? $oaMethod . '.' . $entity . '.id'
             : $oaMethod . '.' . $entity;
 
-        $oaOperation = Operation::get()
-            ->tags($tags[$entity])
-            ->summary(
-                !empty($methodConfig['description']) ? $methodConfig['description'] : ''
-            )->operationId($oaOpId);
+
+        $tagId = !empty($methodConfig['tag']) ? $methodConfig['tag'] : $entity;
+        $tagConfig = isset($tagsConfig[$tagId])? $tagsConfig[$tagId] : null;
+        if ($tagConfig) {
+            $tags[$tagId] = Tag::create($tagId)
+                ->name(
+                    !empty($tagConfig['name']) ? $tagConfig['name'] : ucfirst($entity)
+                )
+                ->description(
+                    !empty($tagConfig['description']) ? $tagConfig['description'] : ''
+                );
+            $openApi = $openApi->tags(...$tags);
+        }
+
+        $oaOperation = Operation::$oaMethod();
+
+        if (isset($tags[$tagId])) {
+            $oaOperation = $oaOperation->tags($tags[$tagId]);
+        }
+
+        $oaOperation = $oaOperation->summary(
+                        !empty($methodConfig['description']) ? $methodConfig['description'] : ''
+                    )->operationId($oaOpId);
 
         $responsesConfig = !empty($methodConfig['responses']) ? $methodConfig['responses'] : [];
         $responses = [];
@@ -95,15 +103,18 @@ foreach ($rest as $path => $config) {
             $oaPathString = $oaPathString . '/{id}';
         }
 
-        $oaPath = PathItem::create()
-            ->route($oaPathString)
-            ->operations($oaOperation);
-
-        $paths[] = $oaPath;
-
-        $openApi = $openApi->paths(...$paths);
+        $operations[] = $oaOperation;
     }
+
+    $oaPath = PathItem::create()
+        ->route($oaPathString)
+        ->operations(...$operations);
+
+    $paths[] = $oaPath;
 }
 
-header('Content-Type: application/json');
-echo $openApi->toJson();
+$openApi = $openApi->paths(...$paths);
+
+file_put_contents($outputFile, $openApi->toJson());
+
+echo 'Created ' . $outputFile;

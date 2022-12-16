@@ -69,18 +69,39 @@ $v1Namespace = '\LimeSurvey\Api\Command\V2\\';
  */
 $rest['v2/session'] = [
     'POST' => [
+        'description' => '',
         'commandClass' => $v1Namespace . 'SessionKeyCreate',
         'params' => [
             'username' => true,
             'password' => true
         ],
-        'bodyParams' => []
+        'bodyParams' => [],
+        'responses' => [
+            'success' => [
+                'code' => 200,
+                'description' => 'Success',
+                'schema' => null
+            ]
+        ]
     ],
     'DELETE' => [
+        'description' => '',
         'commandClass' => $v1Namespace . 'SessionKeyRelease',
         'auth' => 'session',
         'params' => [],
-        'bodyParams' => []
+        'bodyParams' => [],
+        'responses' => [
+            'success' => [
+                'code' => 200,
+                'description' => 'Success',
+                'schema' => null
+            ],
+            'unauthorized' => [
+                'code' => 403,
+                'description' => 'Unauthorized',
+                'schema' => null
+            ]
+        ]
     ]
 ];
 

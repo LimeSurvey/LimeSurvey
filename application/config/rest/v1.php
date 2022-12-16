@@ -21,7 +21,7 @@ $rest = [
                 'name' => 'Session',
                 'description' => 'Session',
             ],
-            'session' => [
+            'site-settings' => [
                 'name' => 'Site Settings',
                 'description' => 'Site Settings',
             ]
