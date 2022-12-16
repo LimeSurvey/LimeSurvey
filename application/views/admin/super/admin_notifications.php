@@ -21,7 +21,7 @@
         </a>
         <ul class='dropdown-menu dropdown-menu-end' role='menu'>
             <li>
-                <a class="dropdown-item"><span class='ri-loader-fill fa-spin'></span><span class='visually-hidden'>Loading notifications</span></a>
+                <a class="dropdown-item"><span class='ri-loader-2-fill remix-spin'></span><span class='visually-hidden'>Loading notifications</span></a>
             </li>
         </ul>
     </li>

@@ -63,7 +63,7 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
             <?php /* Small loading animation to give the scripts time to parse and render the correct values */ ?>
             <div class="" style="display:none;height:100%;width:100%;position:absolute;left:0;top:0;background:rgb(255,255,255);background:rgba(235,235,235,0.8);z-index:2000;">
                 <div style="position:absolute; left:49%;top:35%;" class="text-center">
-                    <i class="ri-loader-fill fa-pulse fa-3x fa-fw"></i>
+                    <i class="ri-loader-2-fill remix-pulse remix-3x fa-fw"></i>
                 </div>
             </div>
             <?php /* If this is a surveyspecific settings page, offer the possibility to do a full inheritance of the parent template */
