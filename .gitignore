@@ -214,7 +214,7 @@ themes/survey/no_bootstrap/files/*
 !themes/survey/*/files/print_img_radio.png
 
 # Used by tests.
-geckodriver
+geckodriver.exe
 selenium-server-standalone-3.7.1.jar
 
 # Used by Vim and Emacs
