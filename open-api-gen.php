@@ -106,28 +106,61 @@ foreach ($rest as $path => $config) {
         // Query params
         // TODO: allow proper param type definition via config
         $paramsConfig = !empty($methodConfig['params']) ? $methodConfig['params'] : [];
+        $formProps = [];
         foreach ($paramsConfig as $paramName => $paramConfig) {
-            $params[] = Parameter::query()->name($paramName);
+            if ($paramConfig) {
+                $src = is_array($paramConfig) && !empty($paramConfig['src']) ? $paramConfig['src'] : 'query';
+
+                $paramSchema = null;
+
+                if (!empty($paramConfig['schema']) && $paramConfig['schema'] instanceof Schema) {
+                    $paramSchema = $paramConfig['schema'];
+                } else {
+                    $type = !empty($paramConfig['type']) ? $paramConfig['type'] : '';
+                    switch ($type) {
+                        case 'int':
+                            $paramSchema = Schema::integer($paramName);
+                        break;
+                        case 'number':
+                            $paramSchema = Schema::number($paramName);
+                            break;
+                        case 'string':
+                        default:
+                            $paramSchema = Schema::string($paramName);
+                        break;
+                    }
+                }
+
+                if ($src == 'query') {
+                    $params[] = Parameter::query()
+                        ->name($paramName)->schema(
+                            $paramSchema
+                        );
+                } elseif ($src == 'form') {
+                    $formProps[] = $paramSchema;
+                }
+            }
         }
         $oaOperation = $oaOperation->parameters(...$params);
+        $formSchema = null;
+        if (!empty($formProps)) {
+            $formSchema = Schema::object()->properties(...$formProps);
+        }
 
         ///////////////////////////////////////////////////////////////////////////
-        // Request Body
+        // Request Content
         // TODO: allow proper schema definition via config
-        $bodyParamsConfig = !empty($methodConfig['bodyParams']) ? $methodConfig['bodyParams'] : [];
-        if (!empty($bodyParamsConfig)) {
-            $props = [];
-
-            $schemaBody = Schema::object();
-            foreach ($bodyParamsConfig as $propName => $propConfig) {
-                $props[] = Schema::string($propName);
-            }
-            $schemaBody = $schemaBody->properties(...$props);
-            if (!empty($params)) {
-                $oaOperation = $oaOperation->requestBody(RequestBody::create()->content(
-                    MediaType::json()->schema($schemaBody)
-                ));
-            }
+        $schema = !empty($methodConfig['schema']) ? $methodConfig['schema'] : null;
+        $requestBody = null;
+        if (!empty($schema) && $schema instanceof Schema) {
+            $requestBody = MediaType::json()->schema($schema);
+        } elseif ($formSchema) {
+            $requestBody = MediaType::formUrlEncoded()->schema($formSchema);
+        }
+        if ($requestBody) {
+            $oaOperation = $oaOperation->requestBody(RequestBody::create()->content(
+                $requestBody
+            ));
         }
 
         //////////////////////////////////////////////////////////////////////////
@@ -135,13 +168,22 @@ foreach ($rest as $path => $config) {
         $responsesConfig = !empty($methodConfig['responses']) ? $methodConfig['responses'] : [];
         $responses = [];
         foreach ($responsesConfig as $responseId => $responseConfig) {
-            $responses[] = Response::create()
+            $response = Response::create()
                 ->statusCode(
                     !empty($responseConfig['code']) ? $responseConfig['code'] : 200
                 )
                 ->description(
                     !empty($responseConfig['description']) ? $responseConfig['description'] : ''
                 );
+
+            $schema = !empty($responseConfig['schema']) ? $responseConfig['schema'] : null;
+            if (!empty($schema) && $schema instanceof Schema) {
+                $response = $response->content(
+                    MediaType::json()->schema($schema)
+                );
+            }
+
+            $responses[] = $response;
         }
         if (!empty($responses)) {
             $oaOperation = $oaOperation->responses(...$responses);

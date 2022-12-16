@@ -1,5 +1,7 @@
 <?php
 
+use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // REST V2 Survey Config
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -13,20 +15,21 @@ $rest['v2/survey'] = [
         'commandClass' => $v2Namespace . 'SurveyList',
         'auth' => 'session',
         'params' => [
-            'pageSize' => true,
-            'page' => true
+            'pageSize' => ['type' => 'int'],
+            'page' => ['type' => 'int']
         ],
-        'bodyParams' => [],
+        'content' => null,
+        'schema' => null,
         'responses' => [
             'success' => [
                 'code' => 200,
                 'description' => 'Success',
+                'content' => null,
                 'schema' => null
             ],
             'unauthorized' => [
                 'code' => 401,
-                'description' => 'Unauthorized',
-                'schema' => null
+                'description' => 'Unauthorized'
             ]
         ]
     ]
@@ -39,22 +42,22 @@ $rest['v2/survey-detail/$surveyId'] = [
         'commandClass' => $v2Namespace . 'SurveyDetail',
         'auth' => 'session',
         'params' => [],
-        'bodyParams' => [],
+        'content' => null,
+        'schema' => null,
         'responses' => [
             'success' => [
                 'code' => 200,
                 'description' => 'Success',
-                'schema' => null
+                'content' => null,
+                'schema' => null,
             ],
             'unauthorized' => [
                 'code' => 401,
-                'description' => 'Unauthorized',
-                'schema' => null
+                'description' => 'Unauthorized'
             ],
             'not-found' => [
                 'code' => 404,
-                'description' => 'Not Found',
-                'schema' => null
+                'description' => 'Not Found'
             ]
         ]
     ],
@@ -64,24 +67,25 @@ $rest['v2/survey-detail/$surveyId'] = [
         'commandClass' => $v2Namespace . 'SurveyPatch',
         'auth' => 'session',
         'params' => [],
-        'bodyParams' => [
-            'patch' => true
-        ],
+        'content' => null,
+        'schema' => (
+            Schema::object()
+            ->properties(
+                Schema::array('patch')
+            )
+        ),
         'responses' => [
             'success' => [
                 'code' => 200,
-                'description' => 'Success',
-                'schema' => null
+                'description' => 'Success'
             ],
             'unauthorized' => [
                 'code' => 401,
-                'description' => 'Unauthorized',
-                'schema' => null
+                'description' => 'Unauthorized'
             ],
             'not-found' => [
                 'code' => 404,
-                'description' => 'Not Found',
-                'schema' => null
+                'description' => 'Not Found'
             ]
         ]
     ]

@@ -113,14 +113,19 @@ class RestEndpointFactory
             $params[$idName] = $id;
         }
 
+        $content = $request->getRestParams();
+        $query = $this->getParams($endpoint, $request);
+        $source = [
+            '_content' => $content,
+            '_query' => $query
+        ];
 
-        $params = array_merge(
-            $this->getParams($endpoint, $request),
-            $this->getBodyParams($endpoint, $request),
-            $params
+        return array_merge(
+            $query,
+            $params,
+            is_array($content) ? $content : null,
+            $source
         );
-
-        return $params;
     }
 
     /**
@@ -146,36 +151,6 @@ class RestEndpointFactory
                 $result[$paramName] = $request->getParam($paramName, $default);
             }
         }
-        return $result;
-    }
-
-    /**
-     * Get Body Params
-     *
-     * Params from JSON body.
-     *
-     * @param array $endpoint
-     * @param LSHttpRequest $request
-     * @return array
-     */
-    protected function getBodyParams($endpoint, LSHttpRequest $request)
-    {
-        $result = [];
-        if (
-            $endpoint
-            && is_array($endpoint['bodyParams'])
-        ) {
-            $input = $request->getRestParams();
-            foreach ($endpoint['bodyParams'] as $paramName => $options) {
-                if ($options === false) {
-                    continue; // turned off
-                }
-                $opts = $this->normaliseParamOptions($options);
-                $result[$paramName] = isset($input[$paramName])
-                    ? $input[$paramName] : $opts['default'];
-            }
-        }
-
         return $result;
     }
 

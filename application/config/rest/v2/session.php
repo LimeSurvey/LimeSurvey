@@ -72,8 +72,8 @@ $rest['v2/session'] = [
         'description' => '',
         'commandClass' => $v1Namespace . 'SessionKeyCreate',
         'params' => [
-            'username' => true,
-            'password' => true
+            'username' => ['src' => 'form'],
+            'password' => ['src' => 'form']
         ],
         'bodyParams' => [],
         'responses' => [
