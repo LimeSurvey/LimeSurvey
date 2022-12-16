@@ -79,7 +79,6 @@ jobs:
           mysql -uroot -proot -e "Show  variables like '%large%';"
           mysql -uroot -proot -e "Show  variables like '%innodb_file%';"
           mysql -uroot -proot -e "Show  variables like '%innodb_default%';"
-          mysql -uroot -proot -e "CREATE DATABASE limesurvey;"
         # Enable debug=2 in config file. OBS: This assumes debug is on line 61.
         # TODO: Disable, a lines was added to config file and some tests started to fail.
         # NB: EmCache is always disabled when debug => 2
