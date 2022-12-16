@@ -6,8 +6,8 @@
 
 $rest = [
     'v2' => [
-        'title' => 'LimeSurvey v2 REST API',
-        'description' => 'LimeSurvey v2 REST API',
+        'title' => 'LimeSurvey V2',
+        'description' => 'LimeSurvey V2 REST API',
         'tags' => [
             'survey' => [
                 'name' => 'Survey',

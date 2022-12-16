@@ -53,8 +53,7 @@
 		"mk-j/php_xlsxwriter": "^0.38.0",
 		"html2text/html2text": "^4.3",
 		"pear/ole": "1.*@dev",
-		"pear/spreadsheet_excel_writer": "^0.9.7",
-		"zircote/swagger-php": "^4.4"
+		"pear/spreadsheet_excel_writer": "^0.9.7"
 	},
 	"config": {
 		"vendor-dir": "vendor",
@@ -78,10 +77,10 @@
 		"goldspecdigital/oooas": "^2.10"
 	},
 	"scripts": {
-		"openapi-gen": "php ./open-api-gen.php",
-		"openapi": ["@composer run openapi-v1", "@composer run openapi-v2"],
-		"openapi-v1": "./vendor/bin/openapi ./application/config/rest/v1 -l -o ./docs/open-api/v1.json",
-		"openapi-v2": "./vendor/bin/openapi ./application/config/rest/v2 -l -o ./docs/open-api/v2.json",
+		"openapi": [
+			"php ./open-api-gen.php v1",
+			"php ./open-api-gen.php v2"
+		],
 		"phpunit": "./vendor/bin/phpunit --testdox --coverage-text",
 		"phpunit-api": "./vendor/bin/phpunit --testdox --coverage-text tests/unit/api/",
 		"test": [

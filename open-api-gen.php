@@ -230,4 +230,4 @@ $openApi = $openApi->paths(...$paths);
 
 file_put_contents($outputFile, $openApi->toJson());
 
-echo 'Created ' . $outputFile;
+echo "\n" . 'Created ' . $outputFile . "\n";

@@ -1,19 +1,23 @@
 <?php
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// REST V1 Config
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 $rest = [
     'v1' => [
-        'title' => 'LimeSurvey v1 REST API',
-        'description' => 'LimeSurvey v1 REST API',
+        'title' => 'LimeSurvey V1',
+        'description' => 'LimeSurvey V1 REST API',
         'tags' => [
             'survey' => [
                 'name' => 'Survey',
                 'description' => 'Survey',
             ],
-            'session' => [
+            'questionGroup' => [
                 'name' => 'Question Group',
                 'description' => 'Question Group',
             ],
-            'session' => [
+            'question' => [
                 'name' => 'Question',
                 'description' => 'Question',
             ],
