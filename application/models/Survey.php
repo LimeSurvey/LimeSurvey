@@ -185,7 +185,11 @@ class Survey extends LSActiveRecord implements PermissionInterface
     public function init()
     {
         /** @inheritdoc */
-
+        /* Do not set any default when search, reset gsid */
+        if ($this->scenario == 'search') {
+            $this->gsid = null;
+            return;
+        }
         // Set the default values
         $this->htmlemail = 'Y';
         $this->format = 'G';
@@ -1604,11 +1608,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
         // Survey group filter
         if (isset($this->gsid)) {
             $criteria->compare("t.gsid", $this->gsid, false);
-        }
-
-        // show only surveys belonging to selected survey group
-        if (!empty(Yii::app()->request->getParam('id'))) {
-            $criteria->addCondition("t.gsid = " . sanitize_int(Yii::app()->request->getParam('id')), 'AND');
         }
 
         // Active filter
