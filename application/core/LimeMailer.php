@@ -535,7 +535,8 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
             $this->Sender = $event->get('bounce', '');
         }
         $this->eventMessage = $event->get('message');
-        if ($event->get('send', true) === false) {
+        /* Need loose compare (default to true) */
+        if ($event->get('send', true) == false) {
             $this->ErrorInfo = $event->get('error');
             return $event->get('error') == null;
         }
