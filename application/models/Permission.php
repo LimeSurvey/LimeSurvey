@@ -100,6 +100,7 @@ class Permission extends LSActiveRecord
     public static function getEntityBasePermissions($sEntityName)
     {
         /* @todo : check $sEntityName implement PermissionInterface */
+        /* array_combine(\PermissionInterface::SINGLE_PERMISSIONS, [true, true, true, true, true, true]) ? */
         $defaults = array(
             'create' => true,
             'read' => true,
@@ -138,6 +139,7 @@ class Permission extends LSActiveRecord
         if (self::$aGlobalBasePermissions) {
             return self::$aGlobalBasePermissions;
         }
+        /* array_combine(\PermissionInterface::SINGLE_PERMISSIONS, [true, true, true, true, true, true]) ? */
         $defaults = array(
             'create' => true,
             'read' => true,
@@ -230,23 +232,10 @@ class Permission extends LSActiveRecord
                 'entity_id' => $iEntityID,
                 'permission' => $sPermission
             ));
-            if ($aPermissionDetail['create']) {
-                $aPermissionDetail['create'] = ($oCurrentPermissions ? (bool) $oCurrentPermissions->create_p : false);
-            }
-            if ($aPermissionDetail['read']) {
-                $aPermissionDetail['read'] = ($oCurrentPermissions ? (bool) $oCurrentPermissions->read_p : false);
-            }
-            if ($aPermissionDetail['update']) {
-                $aPermissionDetail['update'] = ($oCurrentPermissions ? (bool) $oCurrentPermissions->update_p : false);
-            }
-            if ($aPermissionDetail['delete']) {
-                $aPermissionDetail['delete'] = ($oCurrentPermissions ? (bool) $oCurrentPermissions->delete_p : false);
-            }
-            if ($aPermissionDetail['import']) {
-                $aPermissionDetail['import'] = ($oCurrentPermissions ? (bool) $oCurrentPermissions->import_p : false);
-            }
-            if ($aPermissionDetail['export']) {
-                $aPermissionDetail['export'] = ($oCurrentPermissions ? (bool) $oCurrentPermissions->export_p : false);
+            foreach (\PermissionInterface::SINGLE_PERMISSIONS as $scrud) {
+                if ($aPermissionDetail[$scrud]) {
+                    $aPermissionDetail[$scrud] = ($oCurrentPermissions ? (bool) $oCurrentPermissions->getAttribute($scrud . '_p') : false);
+                }
             }
         }
         return $aBasePermissions;
@@ -306,12 +295,9 @@ class Permission extends LSActiveRecord
 
         $aFilteredPermissions = array();
         foreach ($aBasePermissions as $sPermissionname => $aPermission) {
-            $aFilteredPermissions[$sPermissionname]['create'] = (isset($aPermissions[$sPermissionname]['create']) && $aPermissions[$sPermissionname]['create']);
-            $aFilteredPermissions[$sPermissionname]['read'] = (isset($aPermissions[$sPermissionname]['read']) && $aPermissions[$sPermissionname]['read']);
-            $aFilteredPermissions[$sPermissionname]['update'] = (isset($aPermissions[$sPermissionname]['update']) && $aPermissions[$sPermissionname]['update']);
-            $aFilteredPermissions[$sPermissionname]['delete'] = (isset($aPermissions[$sPermissionname]['delete']) && $aPermissions[$sPermissionname]['delete']);
-            $aFilteredPermissions[$sPermissionname]['import'] = (isset($aPermissions[$sPermissionname]['import']) && $aPermissions[$sPermissionname]['import']);
-            $aFilteredPermissions[$sPermissionname]['export'] = (isset($aPermissions[$sPermissionname]['export']) && $aPermissions[$sPermissionname]['export']);
+            foreach (\PermissionInterface::SINGLE_PERMISSIONS as $scrud) {
+                $aFilteredPermissions[$sPermissionname][$scrud] = (isset($aPermissions[$sPermissionname][$scrud]) && $aPermissions[$sPermissionname][$scrud]);
+            }
         }
         $condition = array(
             'entity' => $sEntityName,
@@ -440,7 +426,7 @@ class Permission extends LSActiveRecord
             throw new InvalidArgumentException('Survey ID cannot be 0 (collides with superadmin permission entity id)');
         }
         $aPermissions = Survey::getPermissionData();
-        $aCrud = array('create', 'read', 'update', 'delete', 'import', 'export');
+        $aCrud = \PermissionInterface::SINGLE_PERMISSIONS;
         foreach ($aPermissions as $sPermissionName => $aPermissionDetails) {
             $oPermission = Permission::model()->findByAttributes(array(
                 'entity' => 'survey',
@@ -548,7 +534,7 @@ class Permission extends LSActiveRecord
 
         /* Always return false for unknow sCRUD */
         // TODO: should not be necessary
-        if (!in_array($sCRUD, array('create', 'read', 'update', 'delete', 'import', 'export'))) {
+        if (!in_array($sCRUD, \PermissionInterface::SINGLE_PERMISSIONS)) {
             return false;
         }
         $sCRUD = $sCRUD . '_p';
