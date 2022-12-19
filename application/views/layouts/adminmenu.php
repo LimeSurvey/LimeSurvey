@@ -14,7 +14,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <a class="navbar-brand" href="<?php echo $this->createUrl("/admin/"); ?>">
-            <img id="nav-logo" alt="logo" src="/themes/admin/Sea_Green/images/logo.png" class="d-inline-block">
+            <img id="nav-logo" alt="logo" src="/themes/admin/Sea_Green/images/logo-limesurvey-white.svg" class="d-inline-block">
         </a>
         <!-- Only on xs screens -->
         <div class="collapse navbar-collapse " id="small-screens-menus">
@@ -99,8 +99,7 @@
                 <li class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">
                     <!-- <i class="ri-user-fill"></i> <?php echo Yii::app()->session['user']; ?> <span class="caret"></span></a> -->
-<!--                         @TODO remove inline style and put it into corresponding SCSS file. This is here just for demo purpose -->
-                        <span class='badge rounded-pill' style="background-color: #3BFFB7; color: #25003E;">
+                        <span class='badge rounded-pill'>
                             <?= strtoupper(substr(Yii::app()->session['user'], 0, 1)) ?>
                         </span>
                         <?= Yii::app()->session['user']; ?>

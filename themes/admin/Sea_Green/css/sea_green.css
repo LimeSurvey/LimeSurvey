@@ -10926,14 +10926,16 @@ a {
   text-decoration: none;
 }
 
-.page-item {
-  border-radius: 25px;
-  margin-right: 2px;
-  margin-left: 2px;
-}
-
 .table > :not(:first-child) {
   border-top: 0;
+}
+
+.ls-text-underline-hover {
+  text-decoration: none;
+}
+
+.ls-text-underline-hover:hover {
+  text-decoration: underline;
 }
 
 /**
@@ -14729,6 +14731,20 @@ label {
   overflow-x: visible;
 }
 
+.accordion-button:not(.collapsed) {
+  background-color: #fff;
+  color: #000;
+}
+
+.pagination {
+  font-size: 1.2em;
+}
+.pagination .page-item .page-link {
+  margin: 1px;
+  padding: 5px 14px;
+  border-radius: 4px;
+}
+
 .jcarousel-wrapper {
   margin: 20px auto;
   position: relative;
@@ -18168,8 +18184,9 @@ footer.footer {
   color: #fff;
 }
 .navbar #nav-logo {
-  height: 48px;
+  height: 30px;
   width: auto;
+  margin-left: 8px;
 }
 .navbar .navbar-toggler {
   margin: 0.5rem;

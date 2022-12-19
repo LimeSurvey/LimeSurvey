@@ -3,7 +3,7 @@
     <li id='notification-li' class='dropdown nav-item'>
         <a aria-expanded='false' class="nav-link"
             href='#'>
-            <span class='ri-notification-2-fill text-muted'></span>
+            <span class='ri-notification-2-line text-muted'></span>
 	    <span class='visually-hidden'>Notifications</span>
         </a>
     </li>
@@ -12,7 +12,7 @@
         <a class='nav-link dropdown-toggle' data-bs-toggle='dropdown' role='button' aria-expanded='false' href='#'>
             <?php // Use class 'notification-bell-pulse' for pulsating bell ?>
             <!-- <span id='notification-bell' class='ri-notification-2-fill <?php echo $bellColor; ?>'></span> -->
-            <i id='notification-bell' class="ri-notification-2-fill  <?php echo $bellColor; ?>"></i>
+            <i id='notification-bell' class="ri-notification-2-line  <?php echo $bellColor; ?>"></i>
             <?php if ($nrOfNewNotifications): ?>
                 <span class='badge rounded-pill'><?php echo $nrOfNewNotifications; ?></span>
             <?php endif; ?>
@@ -29,7 +29,7 @@
     <li id='notification-li' class='dropdown nav-item' onclick='LS.styleNotificationMenu();'>
         <a class='nav-link dropdown-toggle' data-bs-toggle='dropdown' role='button' aria-expanded='false' href='#'>
             <?php // Use class 'notification-bell-pulse' for pulsating bell ?>
-            <span id='notification-bell' class='ri-notification-2-fill <?php echo $bellColor; ?>'></span>
+            <span id='notification-bell' class='ri-notification-2-line <?php echo $bellColor; ?>'></span>
 
             <?php if ($nrOfNewNotifications): ?>
                 <span class='badge rounded-pill'><?php echo $nrOfNewNotifications; ?></span>
