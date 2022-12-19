@@ -30,7 +30,6 @@ class Tokens extends SurveyCommonAction
      */
     public function index(int $surveyid)
     {
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'datepickerInit.js', LSYii_ClientScript::POS_BEGIN);
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'tokens.js', LSYii_ClientScript::POS_BEGIN);
         $iSurveyId = $surveyid;
         $iSurveyId = (int) $iSurveyId;
@@ -307,7 +306,6 @@ class Tokens extends SurveyCommonAction
         $aData['topBar']['rightSideView'] = 'tokensTopbarRight_view';
 
         // Javascript
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'datepickerInit.js', LSYii_ClientScript::POS_BEGIN);
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'tokens.js', LSYii_ClientScript::POS_BEGIN);
 
         Yii::app()->loadHelper('surveytranslator');
@@ -501,8 +499,6 @@ class Tokens extends SurveyCommonAction
     {
         $aData = array();
         App()->getClientScript()->registerScriptFile(App()
-                ->getConfig('adminscripts') . 'datepickerInit.js', LSYii_ClientScript::POS_BEGIN);
-        App()->getClientScript()->registerScriptFile(App()
                 ->getConfig('adminscripts') . 'tokens.js', LSYii_ClientScript::POS_BEGIN);
         $iSurveyId = (int) $iSurveyId;
         $survey = Survey::model()->findByPk($iSurveyId);
@@ -524,8 +520,6 @@ class Tokens extends SurveyCommonAction
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title . " ("
             . gT("ID") . ":" . $iSurveyId . ")";
         $aData['sidemenu']["token_menu"] = true;
-        App()->getClientScript()->registerScriptFile(App()
-                ->getConfig('adminscripts') . 'datepickerInit.js', LSYii_ClientScript::POS_BEGIN);
         App()->getClientScript()->registerScriptFile(App()
                 ->getConfig('adminscripts') . 'tokens.js', LSYii_ClientScript::POS_BEGIN);
         $request = App()->request;
@@ -638,7 +632,6 @@ class Tokens extends SurveyCommonAction
      */
     public function edit($iSurveyId, $iTokenId, $ajax = false)
     {
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'datepickerInit.js', LSYii_ClientScript::POS_BEGIN);
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'tokens.js', LSYii_ClientScript::POS_BEGIN);
         $iSurveyId = (int) $iSurveyId;
         $iTokenId = (int) $iTokenId;
@@ -774,7 +767,6 @@ class Tokens extends SurveyCommonAction
      */
     public function delete($iSurveyID)
     {
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'datepickerInit.js', LSYii_ClientScript::POS_BEGIN);
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'tokens.js', LSYii_ClientScript::POS_BEGIN);
         $iSurveyID = (int) $iSurveyID;
         $sTokenIDs = Yii::app()->request->getPost('tid');
@@ -1412,8 +1404,17 @@ class Tokens extends SurveyCommonAction
                 $mail->emailType = $sSubAction;
                 $mail->replaceTokenAttributes = true;
                 foreach ($emresult as $emrow) {
-                    if (empty($emrow['language'])) {
-                        $emrow['language'] = $sBaseLanguage;
+                    $mailLanguage = $emrow['language'];
+                    if (empty($mailLanguage)) {
+                        $mailLanguage = $sBaseLanguage;
+                    }
+                    if (!in_array($mailLanguage, Survey::model()->findByPk($iSurveyId)->getAllLanguages())) {
+                        $mailLanguage = $sBaseLanguage;
+                        $tokenoutput .= CHtml::tag(
+                            "div",
+                            array('class' => 'text-warning'),
+                            sprintf(gT("Invalid language %s for token ID: %s."), $emrow['language'], $emrow['tid'])
+                        );
                     }
                     $mail = \LimeMailer::getInstance();
                     if ($this->tokenIsSetInEmailCache($iSurveyId, $emrow['tid'], $bIsInvitation)) {
@@ -1427,9 +1428,9 @@ class Tokens extends SurveyCommonAction
                         continue;
                     }
                     $mail->setToken($emrow['token']);
-                    $mail->setFrom(Yii::app()->request->getPost('from_' . $emrow['language']));
-                    $mail->rawSubject = $sSubject[$emrow['language']];
-                    $mail->rawBody = $sMessage[$emrow['language']];
+                    $mail->setFrom(Yii::app()->request->getPost('from_' . $mailLanguage));
+                    $mail->rawSubject = $sSubject[$mailLanguage];
+                    $mail->rawBody = $sMessage[$mailLanguage];
 
                     // If "Bypass date control before sending email" is disabled, check the token validity range
                     if (!Yii::app()->request->getPost('bypassdatecontrol')) {
@@ -1465,7 +1466,16 @@ class Tokens extends SurveyCommonAction
                             $oToken->remindercount++;
                         }
                         $tokenSaveError = "";
-                        if (!$oToken->encryptSave(true)) {
+                        if (
+                            !$oToken->save( // Save only uncrypted value, no need to crypt/encryt
+                                true, // Validate but only the date part
+                                array(
+                                    'sent',
+                                    'remindersent',
+                                    'remindercount'
+                                )
+                            )
+                        ) {
                             // Add the error when try to save token
                             $tokenSaveError = CHtml::errorSummary(
                                 $oToken,

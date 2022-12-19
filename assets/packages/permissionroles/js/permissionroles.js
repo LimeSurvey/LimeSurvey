@@ -62,7 +62,7 @@ var RoleControl = function () {
     };
     var startSubmit = function () {
         $('#submitForm').append(
-            '<i class="fa fa-spinner fa-pulse RoleControl-spinner"></i>'
+            '<i class="ri-loader-2-fill remix-pulse RoleControl-spinner"></i>'
         ).prop('disabled', true);
     };
     var stopSubmit = function () {

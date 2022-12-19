@@ -264,7 +264,7 @@ class SurveyDynamic extends LSActiveRecord
      */
     public function getCompleted()
     {
-        return ($this->submitdate != '') ? '<span class="text-success fa fa-check"></span>' : '<span class="text-warning fa fa-times"></span>';
+        return ($this->submitdate != '') ? '<span class="text-success ri-check-fill"></span>' : '<span class="text-warning ri-close-fill"></span>';
     }
 
     /**
@@ -286,7 +286,7 @@ class SurveyDynamic extends LSActiveRecord
         target='_blank'
         data-bs-toggle='tooltip'
         title='" . gt("View response details") . "'>
-            <i class='fa fa-eye'></i>
+            <i class='ri-eye-fill'></i>
         </a>";
 
         /* quexmlpdf button */
@@ -296,7 +296,7 @@ class SurveyDynamic extends LSActiveRecord
         target='_blank'
         data-bs-toggle='tooltip'
         title='" . gt("View response details as queXML PDF") . "'>
-            <i class='fa fa-file-o'></i>
+            <i class='ri-file-3-line'></i>
         </a>";
 
         /* edit button */
@@ -307,7 +307,7 @@ class SurveyDynamic extends LSActiveRecord
             target='_blank'
             data-bs-toggle='tooltip'
             title='" . gt("Edit this response") . "'>
-                <i class='fa fa-pencil text-success'></i>
+                <i class='ri-pencil-fill text-success'></i>
             </a>";
         }
 
@@ -319,7 +319,7 @@ class SurveyDynamic extends LSActiveRecord
             target='_blank'
             data-bs-toggle='tooltip'
             title='" . gt("Download all files in this response as a zip file") . "'>
-                <i class='fa fa-download text-success'></i>
+                <i class='ri-download-fill text-success'></i>
             </a>";
         }
 
@@ -338,7 +338,7 @@ class SurveyDynamic extends LSActiveRecord
             data-bs-toggle='tooltip'
             class='btn btn-outline-secondary btn-sm btn-deletefiles'
             title='" . gt("Delete all files of this response") . "'>
-            <i class='fa fa-paperclip text-danger'></i>
+            <i class='ri-attachment-2 text-danger'></i>
             </button>
             </span>";
         }
@@ -358,7 +358,7 @@ class SurveyDynamic extends LSActiveRecord
             data-bs-toggle='tooltip'
             class='btn btn-outline-secondary btn-sm btn-delete'
             title='" . gt("Delete this response") . "'>
-            <i class='fa fa-trash text-danger'></i>
+            <i class='ri-delete-bin-fill text-danger'></i>
             </button>
             </span>";
         }
@@ -388,7 +388,7 @@ class SurveyDynamic extends LSActiveRecord
         $oFieldMap = json_decode(base64_decode($base64jsonFieldMap));
         $value     = $this->$colName;
 
-        $sFullValue = strip_tags(getExtendedAnswer(self::$sid, $oFieldMap->fieldname, $value, $sLanguage));
+        $sFullValue = viewHelper::flatten(getExtendedAnswer(self::$sid, $oFieldMap->fieldname, $value, $sLanguage));
         if (strlen($sFullValue) > 50) {
             $sElipsizedValue = ellipsize($sFullValue, $this->ellipsize_question_value);
             $sValue          = '<span data-bs-toggle="tooltip" data-bs-placement="left" title="' . quoteText($sFullValue) . '">' . $sElipsizedValue . '</span>';
@@ -607,7 +607,7 @@ class SurveyDynamic extends LSActiveRecord
     public function getTokenForGrid()
     {
         if (is_object($this->tokens) && !is_null($this->tokens->tid)) {
-            $sToken = "<a class='btn btn-outline-secondary btn-xs edit-token' href='#' data-sid='" . self::$sid . "' data-tid='" . $this->tokens->tid . "'  data-url='" . App()->createUrl("admin/tokens", array("sa" => "edit", "iSurveyId" => self::$sid, "iTokenId" => $this->tokens->tid, 'ajax' => 'true')) . "' data-bs-toggle='tooltip' title='" . gT("Edit this survey participant") . "'>" . CHtml::encode($this->token) . "&nbsp;&nbsp;&nbsp;<span class='fa fa-pencil'></span></a>";
+            $sToken = "<a class='btn btn-outline-secondary btn-xs edit-token' href='#' data-sid='" . self::$sid . "' data-tid='" . $this->tokens->tid . "'  data-url='" . App()->createUrl("admin/tokens", array("sa" => "edit", "iSurveyId" => self::$sid, "iTokenId" => $this->tokens->tid, 'ajax' => 'true')) . "' data-bs-toggle='tooltip' title='" . gT("Edit this survey participant") . "'>" . CHtml::encode($this->token) . "&nbsp;&nbsp;&nbsp;<span class='ri-pencil-fill'></span></a>";
         } else {
             $sToken = '<span class="badge rounded-pill">' . CHtml::encode($this->token) . '</span>';
         }

@@ -346,20 +346,20 @@ class PluginManagerController extends SurveyCommonAction
             $url = App()->createUrl("admin/pluginmanager/sa/index");
             $aButtons = array(
                 'cancel' => array(
-                    'label' => '<span class="fa fa-close"></span> ' . gT('Close'),
+                    'label' => '<span class="ri-close-fill"></span> ' . gT('Close'),
                     'class' => array('btn btn-danger'),
                     'type'  => 'link',
                     'href' => $url,
                 ),
                 'redirect' => array(
-                    'label' => '<span class="fa fa-check-square"></span> ' . gT('Save and close'),
+                    'label' => '<span class="ri-chat-check-fill"></span> ' . gT('Save and close'),
                     'class' => array('btn btn-outline-secondary'),
                     'role'  => 'button',
                     'type'  => 'submit',
                     'value' => $url,
                 ),
                 'save' => array(
-                    'label' => '<span class="fa fa-check"></span> ' . gT('Save'),
+                    'label' => '<span class="ri-check-fill"></span> ' . gT('Save'),
                     'class' => array('btn btn-success'),
                     'type'  => 'submit'
                 ),
@@ -441,7 +441,7 @@ class PluginManagerController extends SurveyCommonAction
         $this->checkUpdatePermission();
 
         $request = Yii::app()->request;
-        $pluginName = $request->getPost('pluginName');
+        $pluginName = sanitize_alphanumeric($request->getPost('pluginName'));
 
         $pluginManager = App()->getPluginManager();
         $pluginInfo = $pluginManager->getPluginInfo($pluginName);

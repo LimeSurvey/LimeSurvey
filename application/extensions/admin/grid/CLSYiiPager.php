@@ -3,11 +3,6 @@
 class CLSYiiPager extends CLinkPager
 {
     /**
-     * @var string the CSS class for the internal page buttons .
-     */
-    public $internalPageCssClass = 'page-item';
-
-    /**
      * @var string the text label for the next page button.
      */
     public $nextPageLabel = '&rsaquo;';
@@ -67,7 +62,7 @@ class CLSYiiPager extends CLinkPager
 
         // internal pages
         for ($i = $beginPage; $i <= $endPage; ++$i) {
-            $buttons[] = $this->createPageButton($i + 1, $i, $this->internalPageCssClass, false, $i == $currentPage);
+            $buttons[] = $this->createPageButton($i + 1, $i, '', false, $i == $currentPage);
         }
 
         // next page
@@ -100,6 +95,6 @@ class CLSYiiPager extends CLinkPager
             $class .= ' ' . ($hidden ? $this->hiddenPageCssClass : 'active');
         }
 
-        return '<li class="' . $class . '">' . CHtml::link($label, $this->createPageUrl($page), ['class' => 'page-link']) . '</li>';
+        return '<li class="page-item ' . $class . '">' . CHtml::link($label, $this->createPageUrl($page), ['class' => 'page-link']) . '</li>';
     }
 }

@@ -17,7 +17,7 @@
         <p class="card-body-link">
             <?php echo viewHelper::filterScript(gT($description)); ?>
             <?php if ($external): ?>
-                &nbsp;<i class="fa fa-external-link"></i>
+                &nbsp;<i class="ri-external-link-fill"></i>
             <?php endif; ?>
         </p>
     </div>

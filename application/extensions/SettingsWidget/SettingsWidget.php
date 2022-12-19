@@ -586,8 +586,8 @@ class SettingsWidget extends CWidget
                 [
                     'type' => 'link',
                     'buttons' => array(
-                        ['icon' => 'icon-minus', 'htmlOptions' => ['class' => 'remove']],
-                        ['icon' => 'icon-plus', 'htmlOptions' => ['class' => 'add']]
+                        ['icon' => 'ri-subtract-fill', 'htmlOptions' => ['class' => 'remove']],
+                        ['icon' => 'ri-add-fill', 'htmlOptions' => ['class' => 'add']]
                     )
                 ],
                 true
@@ -620,7 +620,7 @@ class SettingsWidget extends CWidget
         $value = $metaData['current'] ?? '';
         $html = Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', array(
                 'name' => $name,
-                'id' => $name,
+                'id' => \CHtml::getIdByName($name),
                 'value' => $value,
                 'pluginOptions' => array(
                     'format' => $dateformatdetails['jsdate'] . " HH:mm",

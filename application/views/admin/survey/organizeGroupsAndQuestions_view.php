@@ -9,14 +9,14 @@
         <div class='row'>
             <div class='col-md-8'>
                 <p class='alert alert-info'>
-                    <span class='fa fa-info-circle'></span>&nbsp;
+                    <span class='ri-information-fill'></span>&nbsp;
                     <?php eT("To reorder questions/questiongroups just drag the question/group with your mouse to the desired position.");?>
                     <?php eT("After you are done, please click the 'Save' button to save your changes.");?>
                 </p>
             </div>
             <div class='col-md-4'>
-                <button id='organizer-collapse-all' class='btn btn-outline-secondary'><span class='fa fa-compress'></span>&nbsp;<?php eT("Collapse all"); ?></button>
-                <button id='organizer-expand-all' class='btn btn-outline-secondary'><span class='fa fa-expand'></span>&nbsp;<?php eT("Expand all"); ?></button>
+                <button id='organizer-collapse-all' class='btn btn-outline-secondary'><span class='ri-link '></span>&nbsp;<?php eT("Collapse all"); ?></button>
+                <button id='organizer-expand-all' class='btn btn-outline-secondary'><span class='ri-link-unlink'></span>&nbsp;<?php eT("Expand all"); ?></button>
             </div>
         </div>
 
@@ -27,7 +27,7 @@
                     {?>
                     <li id='list_g<?php echo $aGroupAndQuestions['gid'];?>' class='card mjs-nestedSortable-expanded' data-level='group'>
 
-                    <div class="card-header bg-primary">
+                    <div class="card-header ">
                         <a class='btn btn-outline-secondary btn-xs disclose'><span title="Click to show/hide children" class="caret"></span></a>
                         &nbsp;
                         <?php echo ellipsize($aGroupAndQuestions['group_text'], 80);?>

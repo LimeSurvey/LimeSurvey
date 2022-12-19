@@ -188,7 +188,7 @@ class RemoteControlListParticipantsTest extends TestBaseClass
             999,
             false,
             ['validuntil', 'validfrom'],
-            ['validuntil' => '']
+            ['validuntil' => null]
         );
 
         $expected = [

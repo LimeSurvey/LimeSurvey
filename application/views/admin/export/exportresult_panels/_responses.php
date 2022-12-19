@@ -1,5 +1,5 @@
 <div class="card" id="panel-5">
-    <div class="card-header bg-primary">
+    <div class="card-header ">
         <div class="">
             <?php eT("Responses");?>
         </div>

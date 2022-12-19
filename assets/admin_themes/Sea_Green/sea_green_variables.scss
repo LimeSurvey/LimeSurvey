@@ -97,15 +97,18 @@ $tooltip-padding-x:                 $spacer * 1.2;
 $tooltip-arrow-color:               $tooltip-bg;
 // $tooltip-arrow-color:               null; // Deprecated in Bootstrap 5.2.0 for CSS variables
 
+// links
+$link-color:                              $active-green !default;
+$link-decoration:                         none !default;
+$link-shade-percentage:                   20% !default;
+$link-hover-color:                        shift-color($link-color, $link-shade-percentage) !default;
+
 // breadcrumb variables
 $breadcrumb-font-size:              14px;
 $breadcrumb-spacing:                12px;
 $breadcrumb-divider-color:          $g-600;
 $breadcrumb-active-color:           $g-900;
-$breadcrumb-link-color:             $action;
+$breadcrumb-link-color:             $link-color;
 
-// navbar
-$navbar-bg-color: $g-800;
-$navbar-color: $white;
-$navbar-badges-bg-color: $white;
-$navbar-badges-color: $navbar-bg-color;
+// modal
+$modal-inner-padding: 1.5rem; // 24px
