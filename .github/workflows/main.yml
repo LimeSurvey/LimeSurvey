@@ -70,6 +70,7 @@ jobs:
         run: |
           cp application/config/config-sample-mysql.php application/config/config.php
           php application/commands/console.php install admin password TravisLS no@email.com verbose
+          cat application/config/config.php
       - name: Check MySQL service
         run: |
           # InnoDB needs large_file_prefix & Barracuda file format
