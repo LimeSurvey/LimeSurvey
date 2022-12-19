@@ -109,4 +109,4 @@ jobs:
 
       - name: Run the test script
         run: |
-          DOMAIN=localhost ./third_party/bin/phpunit --stop-on-failure
+          DOMAIN=localhost ./third_party/bin/phpunit --stop-on-failure --testdox
