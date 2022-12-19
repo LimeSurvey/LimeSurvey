@@ -1165,7 +1165,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             $bExpired = ($oStop < $oNow);
             $bWillRun = ($oStart > $oNow);
 
-            $sStop = $sStop!=null?convertToGlobalSettingFormat($sStop):null;
+            $sStop = $sStop!=null ? convertToGlobalSettingFormat($sStop) : null;
             $sStart = convertToGlobalSettingFormat($sStart);
 
             // Icon generaton (for CGridView)
@@ -1635,14 +1635,11 @@ class Survey extends LSActiveRecord implements PermissionInterface
                     $criteria->compare("t.active", 'Y');
                     $subCriteria1 = new CDbCriteria();
                     $subCriteria2 = new CDbCriteria();
-                    $subCriteria1->addCondition("'{$sNow}' > t.startdate", 'OR');
+                    $subCriteria1->addCondition("'{$sNow}' > t.startdate", 'AND');
+                    $subCriteria1->addCondition("t.startdate IS NULL", 'OR');
+                    $subCriteria2->addCondition("t.expires IS NULL", 'AND');
                     $subCriteria2->addCondition("'{$sNow}' < t.expires", 'OR');
-                    $subCriteria1->addCondition('t.expires IS NULL', "OR");
-                    $subCriteria1->addCondition("'{$sNow}' < t.expires", 'OR');
-                    $subCriteria2->addCondition('t.startdate IS NULL', "OR");
-                    $subCriteria2->addCondition('t.startdate IS NOT NULL', "OR");
                     $criteria->mergeWith($subCriteria1);
-                    $criteria->mergeWith($subCriteria2);
                 }
             }
         }
