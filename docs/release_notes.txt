@@ -34,6 +34,29 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.4.15 (build 221212) to 5.5.0 (build 221219) December 19, 2022
++New feature #8436: Enable / disable users and fields to manage users (#2636) (Gabriel Jenik)
++New feature #8239: Allow for user friendly survey URLS (#2218) (Gabriel Jenik)
++New feature #18375: [security] Some plugin settings need encryption (#2645) (Gabriel Jenik)
++New feature #18204: Extend form via plugin (Olle Haerstedt)
+-Fixed issue: Return JSON instead of string from actionCheckQuestionValidateTitle (Olle Haerstedt)
+-Fixed issue: Also allow to compare with null in list_participants (Olle Haerstedt)
+-Fixed issue [security] #18553: SQL injection on surveygroup update (#2790) (Denis Chenu)
+-Fixed issue #18449: Impossible to add participant after correcting an e-mail address error (#2748) (Gabriel Jenik)
+-Fixed issue #18415: Copy Survey: New Title shouldn't be mandatory (#2709) (Gabriel Jenik)
+-Fixed issue #18373: Saving statistics exports to excel fails (#2656) (Gabriel Jenik)
+-Fixed issue #18310: Inconsistent GUI: Sort alphabetically vs. random (#2666) (Gabriel Jenik)
+-Fixed issue #18250: admin css hide logic file part (#2761) (Gabriel Jenik)
+#Updated translation: Ukrainian by apache_borys
+#Updated translation: Slovak by jelen1
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1, slansky
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Bosnian by PawelAtroszko
+#Updated translation: Azerbaijani by PawelAtroszko
+
+
 Changes from 5.4.14 (build 221205) to 5.4.15 (build 221212) December 12, 2022
 -Fixed issue #14310: Google Analytics functionality doesn't work (#2762) (Gabriel Jenik)
 #Updated translation: Slovak by jelen1
