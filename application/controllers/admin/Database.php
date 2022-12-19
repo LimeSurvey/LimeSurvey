@@ -887,7 +887,7 @@ class Database extends SurveyCommonAction
         $oSurvey->admin = $request->getPost('admin');
         $oSurvey->adminemail = $request->getPost('adminemail');
         $oSurvey->bounce_email = $request->getPost('bounce_email');
-        $oSurvey->faxto = $request->getPost('faxto');
+        /* gsid need access control */
         $gsid = $request->getPost('gsid');
         $oSurveysInGroup = SurveysInGroup::model()->withListRight()->findByPK($gsid);
         if (!$oSurveysInGroup) {
