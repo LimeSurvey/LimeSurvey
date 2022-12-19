@@ -1,5 +1,7 @@
 <?php
 
+use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Session
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -69,7 +71,7 @@ $v1Namespace = '\LimeSurvey\Api\Command\V2\\';
  */
 $rest['v2/session'] = [
     'POST' => [
-        'description' => '',
+        'description' => 'Generate new authentication token',
         'commandClass' => $v1Namespace . 'SessionKeyCreate',
         'params' => [
             'username' => ['src' => 'form'],
@@ -79,13 +81,13 @@ $rest['v2/session'] = [
         'responses' => [
             'success' => [
                 'code' => 200,
-                'description' => 'Success',
-                'schema' => null
+                'description' => 'Success - returns string access token for use in "Authorization: bearer $token" header',
+                'schema' => Schema::string()->example('%7&!T%EYd@PnDB49MRfwQ!KjX48J^3x6rDhyB6DK')
             ]
         ]
     ],
     'DELETE' => [
-        'description' => '',
+        'description' => 'Destroy currently used authentication token',
         'commandClass' => $v1Namespace . 'SessionKeyRelease',
         'auth' => 'session',
         'params' => [],
@@ -94,12 +96,10 @@ $rest['v2/session'] = [
             'success' => [
                 'code' => 200,
                 'description' => 'Success',
-                'schema' => null
             ],
             'unauthorized' => [
                 'code' => 403,
-                'description' => 'Unauthorized',
-                'schema' => null
+                'description' => 'Unauthorized'
             ]
         ]
     ]

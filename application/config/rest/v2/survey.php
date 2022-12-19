@@ -15,7 +15,7 @@ $v2Namespace = '\LimeSurvey\Api\Command\V2\\';
 
 $rest['v2/survey'] = [
     'GET' => [
-        'description' => '',
+        'description' => 'Survey list',
         'commandClass' => $v2Namespace . 'SurveyList',
         'auth' => 'session',
         'params' => [
@@ -43,7 +43,7 @@ $rest['v2/survey'] = [
 $rest['v2/survey-detail/$surveyId'] = [
     'GET' => [
         'tag' => 'survey',
-        'description' => '',
+        'description' => 'Survey detail',
         'commandClass' => $v2Namespace . 'SurveyDetail',
         'auth' => 'session',
         'params' => [],
@@ -69,7 +69,7 @@ $rest['v2/survey-detail/$surveyId'] = [
     ],
     'PATCH' => [
         'tag' => 'survey',
-        'description' => '',
+        'description' => 'Survey update via RFC 6902 based patch',
         'commandClass' => $v2Namespace . 'SurveyPatch',
         'auth' => 'session',
         'params' => [],
