@@ -4,6 +4,7 @@ include './vendor/autoload.php';
 
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Info;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\MediaType;
+use GoldSpecDigital\ObjectOrientedOAS\Objects\Example;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Operation;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\PathItem;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Parameter;
@@ -30,11 +31,15 @@ $apiConfig = isset($rest[$version]) ? $rest[$version] : [];
 // Main API Details
 $info = Info::create()
     ->title(
-        !empty($apiConfig['title']) ? $apiConfig['title'] : 'Title'
+        !empty($apiConfig['title'])
+        ? $apiConfig['title']
+        : 'Title'
     )
     ->version($versionNum)
     ->description(
-        !empty($apiConfig['description']) ? $apiConfig['description'] : 'description'
+        !empty($apiConfig['description'])
+        ? $apiConfig['description']
+        : 'description'
     );
 
 
@@ -45,7 +50,10 @@ $securityScheme = SecurityScheme::create('bearerAuth')
 $securityRequirement = SecurityRequirement::create()
     ->securityScheme($securityScheme);
 
-$components = Components::create()->securitySchemes($securityScheme);
+$components = Components::create()
+    ->securitySchemes(
+        $securityScheme
+    );
 
 $openApi = OpenApi::create()
     ->openapi(OpenApi::OPENAPI_3_0_2)
@@ -57,7 +65,6 @@ $schemas = [];
 $paths = [];
 
 foreach ($rest as $path => $config) {
-
     ///////////////////////////////////////////////////////////////////////////
     // Path
     $pathParts = explode('/', $path);
@@ -110,7 +117,6 @@ foreach ($rest as $path => $config) {
         if (isset($tags[$tagId])) {
             $oaOperation = $oaOperation->tags($tags[$tagId]);
         }
-
 
         ///////////////////////////////////////////////////////////////////////////
         // Params
@@ -169,16 +175,31 @@ foreach ($rest as $path => $config) {
         // Request Content
         // TODO: allow proper schema definition via config
         $schema = !empty($methodConfig['schema']) ? $methodConfig['schema'] : null;
-        $requestBody = null;
+        $examples = !empty($methodConfig['examples']) ? $methodConfig['examples'] : null;
+        $mediaType = null;
         if (!empty($schema) && $schema instanceof Schema) {
-            $requestBody = MediaType::json()->schema($schema);
+            $mediaType = MediaType::json()
+                ->schema($schema);
         } elseif ($formSchema) {
-            $requestBody = MediaType::formUrlEncoded()->schema($formSchema);
+            $mediaType = MediaType::formUrlEncoded()
+                ->schema($formSchema);
+        }
+        $requestBody = null;
+        if ($mediaType) {
+            if (is_array($examples)) {
+                $examples = array_filter($examples, function ($example) {
+                    return $example instanceof Example;
+                });
+                $mediaType = $mediaType->examples(...$examples);
+            }
+            $requestBody = RequestBody::create()->content(
+                $mediaType
+            );
         }
         if ($requestBody) {
-            $oaOperation = $oaOperation->requestBody(RequestBody::create()->content(
-                $requestBody
-            ));
+            $oaOperation = $oaOperation->requestBody(
+               $requestBody
+            );
         }
 
         //////////////////////////////////////////////////////////////////////////
@@ -195,9 +216,18 @@ foreach ($rest as $path => $config) {
                 );
 
             $schema = !empty($responseConfig['schema']) ? $responseConfig['schema'] : null;
+            $examples = !empty($responseConfig['examples']) ? $responseConfig['examples'] : null;
+            $mediaType = MediaType::json();
             if (!empty($schema) && $schema instanceof Schema) {
+                $mediaType = MediaType::json()->schema($schema);
+                if (is_array($examples)) {
+                    $examples = array_filter($examples, function ($example) {
+                        return $example instanceof Example;
+                    });
+                    $mediaType = $mediaType->examples(...$examples);
+                }
                 $response = $response->content(
-                    MediaType::json()->schema($schema)
+                    $mediaType
                 );
             }
 
@@ -228,6 +258,9 @@ foreach ($rest as $path => $config) {
 
 $openApi = $openApi->paths(...$paths);
 
-file_put_contents($outputFile, $openApi->toJson());
+file_put_contents(
+    $outputFile,
+    $openApi->toJson()
+);
 
 echo "\n" . 'Created ' . $outputFile . "\n";

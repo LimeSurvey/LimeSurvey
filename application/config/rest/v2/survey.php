@@ -6,6 +6,10 @@ use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
 // REST V2 Survey Config
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+$schema = [
+    'SurveyListSuccess' => require(__DIR__ . '/schema/SurveyListSuccess.php')
+];
+
 $rest = [];
 $v2Namespace = '\LimeSurvey\Api\Command\V2\\';
 
@@ -18,6 +22,7 @@ $rest['v2/survey'] = [
             'pageSize' => ['type' => 'int'],
             'page' => ['type' => 'int']
         ],
+        'examples' => [],
         'content' => null,
         'schema' => null,
         'responses' => [
@@ -25,7 +30,7 @@ $rest['v2/survey'] = [
                 'code' => 200,
                 'description' => 'Success',
                 'content' => null,
-                'schema' => null
+                'schema' => $schema['SurveyListSuccess']
             ],
             'unauthorized' => [
                 'code' => 401,
@@ -42,6 +47,7 @@ $rest['v2/survey-detail/$surveyId'] = [
         'commandClass' => $v2Namespace . 'SurveyDetail',
         'auth' => 'session',
         'params' => [],
+        'examples' => null,
         'content' => null,
         'schema' => null,
         'responses' => [
@@ -67,6 +73,7 @@ $rest['v2/survey-detail/$surveyId'] = [
         'commandClass' => $v2Namespace . 'SurveyPatch',
         'auth' => 'session',
         'params' => [],
+        'examples' => null,
         'content' => null,
         'schema' => (
             Schema::object()
@@ -77,7 +84,10 @@ $rest['v2/survey-detail/$surveyId'] = [
         'responses' => [
             'success' => [
                 'code' => 200,
-                'description' => 'Success'
+                'description' => 'Success',
+                'examples' => null,
+                'content' => null,
+                'schema' => null
             ],
             'unauthorized' => [
                 'code' => 401,
