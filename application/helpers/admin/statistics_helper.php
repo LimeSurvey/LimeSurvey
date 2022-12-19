@@ -131,11 +131,7 @@ function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $
 
             $lblout = array();
             if ($sLanguageCode == 'ar') {
-                if (!class_exists('I18N_Arabic_Glyphs', false)) {
-                    $Arabic = new I18N_Arabic('Glyphs');
-                } else {
-                    $Arabic = new I18N_Arabic_Glyphs();
-                }
+                $Arabic = new \ArPHP\I18N\Arabic('Glyphs');
 
                 foreach ($lbl as $kkey => $kval) {
                     if (preg_match("^[A-Za-z]^", $kkey)) {
@@ -220,12 +216,7 @@ function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $
             $lbl = $labelTmp;
 
             if ($sLanguageCode == 'ar') {
-                if (!class_exists('I18N_Arabic_Glyphs', false)) {
-                    $Arabic = new I18N_Arabic('Glyphs');
-                } else {
-                    $Arabic = new I18N_Arabic_Glyphs();
-                }
-
+                $Arabic = new \ArPHP\I18N\Arabic('Glyphs');
                 foreach ($lbl as $kkey => $kval) {
                     if (preg_match("^[A-Za-z]^", $kkey)) {
                         //auto detect if english
@@ -1809,9 +1800,9 @@ class statistics_helper
         //we need to know which item we are editing
         $itemcounter = 1;
 
-        $aData['outputs'] = (isset($outputs)) ? $outputs : '';
-        $aData['bSum'] = (isset($bSum)) ? $bSum : '';
-        $aData['bAnswer'] = (isset($bAnswer)) ? $bAnswer : '';
+        $aData['outputs'] = $outputs ?? '';
+        $aData['bSum'] = $bSum ?? '';
+        $aData['bAnswer'] = $bAnswer ?? '';
         $aData['usegraph'] = $usegraph;
 
         $statisticsoutput = Yii::app()->getController()->renderPartial('/admin/export/generatestats/simplestats/_statisticsoutput_header', $aData, true);
@@ -1930,13 +1921,13 @@ class statistics_helper
             $aData['label'] = $label;
             $aData['grawdata'] = $grawdata;
             $aData['gdata'] = $gdata;
-            $aData['extraline'] = (isset($extraline)) ? $extraline : false;
-            $aData['aggregated'] = (isset($aggregated)) ? $aggregated : false;
-            $aData['aggregatedPercentage'] = (isset($aggregatedPercentage)) ? $aggregatedPercentage : false;
-            $aData['sumitems'] = (isset($sumitems)) ? $sumitems : false;
-            $aData['sumpercentage'] = (isset($sumpercentage)) ? $sumpercentage : false;
-            $aData['TotalCompleted'] = (isset($TotalCompleted)) ? $TotalCompleted : false;
-            $aData['casepercentage'] = (isset($casepercentage)) ? $casepercentage : false;
+            $aData['extraline'] = $extraline ?? false;
+            $aData['aggregated'] = $aggregated ?? false;
+            $aData['aggregatedPercentage'] = $aggregatedPercentage ?? false;
+            $aData['sumitems'] = $sumitems ?? false;
+            $aData['sumpercentage'] = $sumpercentage ?? false;
+            $aData['TotalCompleted'] = $TotalCompleted ?? false;
+            $aData['casepercentage'] = $casepercentage ?? false;
 
             // Generate answer
             // _statisticsoutput_answer
@@ -2189,9 +2180,9 @@ class statistics_helper
 
         if ($usegraph == 1 && $outputType != 'html') {
             //for creating graphs we need some more scripts which are included here
-            require_once(APPPATH . '/third_party/pchart/pChart.class.php');
-            require_once(APPPATH . '/third_party/pchart/pData.class.php');
-            require_once(APPPATH . '/third_party/pchart/pCache.class.php');
+            require_once(APPPATH . '/../vendor/pchart/pChart.class.php');
+            require_once(APPPATH . '/../vendor/pchart/pData.class.php');
+            require_once(APPPATH . '/../vendor/pchart/pCache.class.php');
             $MyCache = new pCache($tempdir . '/');
         }
 
@@ -2798,11 +2789,11 @@ class statistics_helper
         $aData['nbcols']          = $nbcols;
         $aData['canvaWidth']      = $canvaWidth;
         $aData['canvaHeight']     = $canvaHeight;
-        $aData['outputs']         = (isset($outputs)) ? $outputs : '';
-        $aData['bSum']            = (isset($bSum)) ? $bSum : false;
-        $aData['bAnswer']         = (isset($bAnswer)) ? $bAnswer : false;
-        $aData['bShowCount']      = (isset($bShowCount)) ? $bShowCount : false;
-        $aData['bShowPercentage'] = (isset($bShowPercentage)) ? $bShowPercentage : false;
+        $aData['outputs']         = $outputs ?? '';
+        $aData['bSum']            = $bSum ?? false;
+        $aData['bAnswer']         = $bAnswer ?? false;
+        $aData['bShowCount']      = $bShowCount ?? false;
+        $aData['bShowPercentage'] = $bShowPercentage ?? false;
         $statisticsoutput         = Yii::app()->getController()->renderPartial('/admin/export/generatestats/_statisticsoutput_header', $aData, true);
         //loop through all available answers
         ////
@@ -3059,19 +3050,19 @@ class statistics_helper
             $aData['grawdata_percent']     = $grawdata_percents;
             $aData['gdata']                = $gdata;
 
-            $aData['extraline']            = (isset($extraline)) ? $extraline : false;
-            $aData['aggregated']           = (isset($aggregated)) ? $aggregated : false;
+            $aData['extraline']            = $extraline ?? false;
+            $aData['aggregated']           = $aggregated ?? false;
             $aData['aggregatedPercentage'] = (isset($aggregatedPercentage)) ? ($i < 6 ? $aggregatedPercentage : false) : false;
-            $aData['sumitems']             = (isset($sumitems)) ? $sumitems : false;
-            $aData['sumpercentage']        = (isset($sumpercentage)) ? $sumpercentage : false;
-            $aData['TotalCompleted']       = (isset($TotalCompleted)) ? $TotalCompleted : false;
-            $aData['casepercentage']       = (isset($casepercentage)) ? $casepercentage : false;
+            $aData['sumitems']             = $sumitems ?? false;
+            $aData['sumpercentage']        = $sumpercentage ?? false;
+            $aData['TotalCompleted']       = $TotalCompleted ?? false;
+            $aData['casepercentage']       = $casepercentage ?? false;
 
-            $aData['bNAgData']                      = (isset($bNAgData)) ? $bNAgData : false;
-            $aData['bNAgDataExtraLine']             = (isset($bNAgDataExtraLine)) ? $bNAgDataExtraLine : false;
-            $aData['showAggregatedPercentage']      = (isset($showAggregatedPercentage)) ? $showAggregatedPercentage : false;
-            $aData['showEmptyAggregatedPercentage'] = (isset($showEmptyAggregatedPercentage)) ? $showEmptyAggregatedPercentage : false;
-            $aData['bShowSumAnswer']                = (isset($bShowSumAnswer)) ? $bShowSumAnswer : false;
+            $aData['bNAgData']                      = $bNAgData ?? false;
+            $aData['bNAgDataExtraLine']             = $bNAgDataExtraLine ?? false;
+            $aData['showAggregatedPercentage']      = $showAggregatedPercentage ?? false;
+            $aData['showEmptyAggregatedPercentage'] = $showEmptyAggregatedPercentage ?? false;
+            $aData['bShowSumAnswer']                = $bShowSumAnswer ?? false;
 
             // Generate answer
             // _statisticsoutput_answer
@@ -3449,7 +3440,7 @@ class statistics_helper
                 $aData['graph_labels_percent'] = $labels_percent;
                 $aData['labels'] = $labels;
                 //$aData['COLORS_FOR_SURVEY'] = COLORS_FOR_SURVEY;
-                $aData['charttype'] = (isset($charttype)) ? $charttype : 'Bar';
+                $aData['charttype'] = $charttype ?? 'Bar';
                 $aData['sChartname'] = '';
                 $aData['grawdata'] = $grawdata;
                 $aData['color'] = 0;
@@ -3478,7 +3469,6 @@ class statistics_helper
         $survey = Survey::model()->findByPk($surveyid);
 
         Yii::import('application.helpers.surveytranslator_helper', true);
-        Yii::import('application.third_party.ar-php.Arabic', true);
 
         //pick the best font file if font setting is 'auto'
         if (is_null($sLanguageCode)) {
@@ -3582,7 +3572,6 @@ class statistics_helper
         //load surveytranslator helper
 
         Yii::import('application.helpers.surveytranslator_helper', true);
-        Yii::import('application.third_party.ar-php.Arabic', true);
 
         //pick the best font file if font setting is 'auto'
         if (is_null($sLanguageCode)) {
@@ -3732,7 +3721,7 @@ class statistics_helper
 
         $aData['results'] = $results;
         $aData['total'] = $total;
-        $aData['percent'] = (isset($percent)) ? $percent : ''; // If nobody passed the survey
+        $aData['percent'] = $percent ?? ''; // If nobody passed the survey
         $aData['browse'] = $bBrowse;
         $aData['surveyid'] = $surveyid;
         $aData['sql'] = $sql;
@@ -3805,7 +3794,6 @@ class statistics_helper
         $aStatisticsData = array(); //astatdata generates data for the output page's javascript so it can rebuild graphs on the fly
         //load surveytranslator helper
         Yii::import('application.helpers.surveytranslator_helper', true);
-        Yii::import('application.third_party.ar-php.Arabic', true);
 
         $sOutputHTML = ""; //This string carries all the actual HTML code to print.
         $sTempDir = Yii::app()->getConfig("tempdir");
@@ -3901,8 +3889,6 @@ class statistics_helper
             /**
              * Initiate the Spreadsheet_Excel_Writer
              */
-            require_once(APPPATH . '/third_party/pear/Spreadsheet/Excel/Writer.php');
-
             if ($outputTarget == 'F') {
                 $sFileName = $sTempDir . '/statistic-survey' . $surveyid . '.xls';
                 $this->workbook = new Spreadsheet_Excel_Writer($sFileName);

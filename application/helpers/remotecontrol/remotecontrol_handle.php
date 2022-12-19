@@ -2203,7 +2203,7 @@ class remotecontrol_handle
                                 $value = $valueOrTuple[1];
                                 $oCriteria->compare($columnName, $operator . $value);
                             }
-                        } elseif (is_string($valueOrTuple)) {
+                        } elseif (is_string($valueOrTuple) || is_null($valueOrTuple)) {
                             if (array_key_exists($columnName, $aConditionFields)) {
                                 $aAttributeValues[$columnName] = $valueOrTuple;
                             }
@@ -3509,7 +3509,7 @@ class remotecontrol_handle
             $model->firstname   = $participant['firstname'];
             $model->lastname    = $participant['lastname'];
             $model->email       = $participant['email'];
-            $model->language    = isset($participant['language']) ? $participant['language'] : 'en';
+            $model->language    = $participant['language'] ?? 'en';
             $model->owner_uid   = Yii::app()->session['loginID'];
             $model->blacklisted = (isset($participant['blacklisted']) && $participant['blacklisted'] === 'Y') ? 'Y' : 'N';
 

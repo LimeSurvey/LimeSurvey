@@ -6,7 +6,7 @@
  */
 ?>
 <?php if(count($aErrors) > 1) : ?>
-<ul class='<?php echo isset($class) ? $class: "" ?> alert alert-danger list-unstyled' role='alert'>
+<ul class='<?php echo $class ?? "" ?> alert alert-danger list-unstyled' role='alert'>
     <?php foreach($aErrors as $key=>$error) : ?>
     <li><?php echo $error; ?></li>
     <?php endforeach; ?>

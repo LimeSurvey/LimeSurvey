@@ -26,7 +26,6 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property string $startdate Survey Start date (YYYY-MM-DD hh:mm:ss)
  * @property string $adminemail Survey administrator email address
  * @property string $anonymized Whether survey is anonymized or not (Y/N)
- * @property string $faxto
  * @property string $format A : All in one, G : Group by group, Q : question by question, I : inherit value from survey group
  * @property string $savetimings Whether survey timings are saved (Y/N)
  * @property string $template Template name
@@ -186,7 +185,11 @@ class Survey extends LSActiveRecord implements PermissionInterface
     public function init()
     {
         /** @inheritdoc */
-
+        /* Do not set any default when search, reset gsid */
+        if ($this->scenario == 'search') {
+            $this->gsid = null;
+            return;
+        }
         // Set the default values
         $this->htmlemail = 'Y';
         $this->format = 'G';
@@ -460,7 +463,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             'quotas' => array(self::HAS_MANY, 'Quota', 'sid', 'order' => 'name ASC'),
             'surveymenus' => array(self::HAS_MANY, 'Surveymenu', array('survey_id' => 'sid')),
             'surveygroup' => array(self::BELONGS_TO, 'SurveysGroups', array('gsid' => 'gsid')),
-            'surveysettings' => array(self::BELONGS_TO, 'SurveysGroupSettings', array('gsid' => 'gsid')),
+            'surveysettings' => array(self::BELONGS_TO, SurveysGroupsettings::class, array('gsid' => 'gsid')),
             'templateModel' => array(self::HAS_ONE, 'Template', array('name' => 'template')),
             'templateConfiguration' => array(self::HAS_ONE, 'TemplateConfiguration', array('sid' => 'sid'))
         );
@@ -493,9 +496,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
             array('datecreated', 'default', 'value' => date("Y-m-d H:m:s")),
             array('startdate', 'default', 'value' => null),
             array('expires', 'default', 'value' => null),
-            array('admin,faxto', 'LSYii_Validators'),
+            array('admin', 'LSYii_Validators'),
             array('admin', 'length', 'min' => 1, 'max' => 50),
-            array('faxto', 'length', 'min' => 0, 'max' => 20),
             array('adminemail', 'filter', 'filter' => 'trim'),
             array('bounce_email', 'filter', 'filter' => 'trim'),
             //array('bounce_email', 'LSYii_EmailIDNAValidator', 'allowEmpty'=>true),
@@ -842,9 +844,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
     public function getGoogleanalyticsapikey()
     {
         if ($this->googleanalyticsapikey === "9999useGlobal9999") {
-            return getGlobalSetting('googleanalyticsapikey');
+            return trim(Yii::app()->getConfig('googleanalyticsapikey'));
         } else {
-            return $this->googleanalyticsapikey;
+            return trim($this->googleanalyticsapikey);
         }
     }
 
@@ -1608,11 +1610,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
             $criteria->compare("t.gsid", $this->gsid, false);
         }
 
-        // show only surveys belonging to selected survey group
-        if (!empty(Yii::app()->request->getParam('id'))) {
-            $criteria->addCondition("t.gsid = " . sanitize_int(Yii::app()->request->getParam('id')), 'AND');
-        }
-
         // Active filter
         if (isset($this->active)) {
             if ($this->active == 'N' || $this->active == "Y") {
@@ -1890,6 +1887,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
         Question::model()->deleteAll($criteria); // Must log count of deleted ?
     }
 
+    /**
+     * TODO: Not used anywhere. Deprecate it?
+     */
     public function getsSurveyUrl()
     {
         if ($this->sSurveyUrl == '') {
@@ -2140,7 +2140,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function getOwnerUserName()
     {
-        return isset($this->owner["users_name"]) ? $this->owner["users_name"] : "";
+        return $this->owner["users_name"] ?? "";
     }
 
     /**
@@ -2306,6 +2306,74 @@ class Survey extends LSActiveRecord implements PermissionInterface
             }
         );
         return $aSurveys;
+    }
+
+    /**
+     * Returns the survey URL with the specified params.
+     * If $preferShortUrl is true (default), and an alias is available, it returns the short
+     * version of the URL.
+     * @param string|null $language
+     * @param array<string,mixed> $params   Optional parameters to include in the URL.
+     * @param bool $preferShortUrl  If true, tries to return the short URL instead of the traditional one.
+     * @return string
+     */
+    public function getSurveyUrl($language = null, $params = [], $preferShortUrl = true)
+    {
+        if (empty($language)) {
+            $language = $this->language;
+        }
+        if ($preferShortUrl) {
+            $alias = $this->getAliasForLanguage($language);
+
+            if (!empty($alias)) {
+                // Check if there is other language with the same alias. If it does, we need to include the 'lang' parameter in the URL.
+                foreach ($this->languagesettings as $otherLang => $settings) {
+                    if ($otherLang == $language || empty($settings->surveyls_alias)) {
+                        continue;
+                    }
+                    if ($settings->surveyls_alias == $alias) {
+                        $params['lang'] = $language;
+                        break;
+                    }
+                }
+
+                // Create the URL according to the configured format
+                $urlManager = Yii::app()->getUrlManager();
+                $urlFormat = $urlManager->getUrlFormat();
+                if ($urlFormat == CUrlManager::GET_FORMAT) {
+                    $url = Yii::app()->getBaseUrl(true);
+                    $params = [$urlManager->routeVar => $alias] + $params;
+                } else {
+                    $url = Yii::app()->getBaseUrl(true) . '/' . $alias;
+                }
+                $query = $urlManager->createPathInfo($params, '=', '&');
+                if (!empty($query)) {
+                    $url .= "?" . $query;
+                }
+                return $url;
+            }
+        }
+
+        // If short url is not preferred or no alias is found, return a traditional URL
+        $urlParams = array_merge($params, ['sid' => $this->sid, 'lang' => $language]);
+        $url = Yii::app()->createAbsoluteUrl('survey/index', $urlParams);
+        return $url;
+    }
+
+    /**
+     * Returns the survey alias for the specified language.
+     * @param string|null $language
+     * @return string|null
+     */
+    public function getAliasForLanguage($language = null)
+    {
+        if (!empty($language) && !empty($this->languagesettings[$language]->surveyls_alias)) {
+            return $this->languagesettings[$language]->surveyls_alias;
+        }
+        if (!empty($this->languagesettings[$this->language]->surveyls_alias)) {
+            return $this->languagesettings[$this->language]->surveyls_alias;
+        }
+        return null;
     }
 
     /**

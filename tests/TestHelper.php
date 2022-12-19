@@ -376,7 +376,7 @@ class TestHelper extends TestCase
      * @param $exception
      * @param $seen      - array passed to recursive calls to accumulate trace lines already seen
      *                     leave as NULL when calling this function
-     * @return array of strings, one entry per trace line
+     * @return string
      */
     public function javaTrace($ex, $seen = null)
     {

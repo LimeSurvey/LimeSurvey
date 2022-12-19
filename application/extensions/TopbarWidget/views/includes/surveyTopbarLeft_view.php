@@ -108,7 +108,7 @@
 
                     <!-- Quick-translation -->
                     <li>
-                        <a href="<?php echo App()->createUrl("admin/translate/sa/index/surveyid/{$oSurvey->sid}"); ?>">
+                        <a href="<?php echo App()->createUrl("quickTranslation/index/surveyid/{$oSurvey->sid}"); ?>">
                         <span class="fa fa-language" ></span>
                         <?php eT("Quick-translation"); ?>
                         </a>
