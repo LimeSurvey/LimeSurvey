@@ -234,7 +234,7 @@ class Permission extends LSActiveRecord
             ));
             foreach (\PermissionInterface::SINGLE_PERMISSIONS as $scrud) {
                 if ($aPermissionDetail[$scrud]) {
-                    $aPermissionDetail[$scrud] = ($oCurrentPermissions ? (bool) $oCurrentPermissions->getAttribute($scrud . '_p') : false);
+                    $aPermissionDetail[$scrud] = boolval($oCurrentPermissions->getAttribute($scrud . '_p') ?? false);
                 }
             }
         }
@@ -296,7 +296,7 @@ class Permission extends LSActiveRecord
         $aFilteredPermissions = array();
         foreach ($aBasePermissions as $sPermissionname => $aPermission) {
             foreach (\PermissionInterface::SINGLE_PERMISSIONS as $scrud) {
-                $aFilteredPermissions[$sPermissionname][$scrud] = (isset($aPermissions[$sPermissionname][$scrud]) && $aPermissions[$sPermissionname][$scrud]);
+                $aFilteredPermissions[$sPermissionname][$scrud] = $aPermissions[$sPermissionname][$scrud] ?? false;
             }
         }
         $condition = array(
