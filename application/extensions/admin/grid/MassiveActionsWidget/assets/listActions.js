@@ -360,3 +360,7 @@ $(document).off('pjax:scriptcomplete.listActions').on('pjax:scriptcomplete.listA
     });
     bindListItemclick();
 });
+
+$(document).off('bindscroll.listActions').on('bindscroll.listActions, ready ', function () {
+    bindListItemclick();
+});

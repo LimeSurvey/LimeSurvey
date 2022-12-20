@@ -133,13 +133,15 @@ $questionTheme = !empty($oQuestion->questionTheme) ? $oQuestion->questionTheme :
                     <?= gT('Settings'); ?>
                 </div>
                 <div class="row">
-                            <div class="col-12" id="accordion-container">
-                                <div class="accordion" id="accordion" role="tablist">
+                    <div class="col-12" id="accordion-container">
+                        <div class="accordion" id="accordion" role="tablist">
                             <!-- General settings -->
-                            <?php $this->renderPartial("generalSettings", ['generalSettings' => $generalSettings]); ?>
+                            <?php
+                            $this->renderPartial("generalSettings", ['generalSettings' => $generalSettings]); ?>
 
                             <!-- Advanced settings -->
-                            <?php $this->renderPartial(
+                            <?php
+                            $this->renderPartial(
                                 "advancedSettings",
                                 [
                                     'oSurvey' => $oSurvey,

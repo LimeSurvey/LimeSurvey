@@ -1,7 +1,7 @@
 <div class="container-fluid">
     <div class="col-12 list-surveys" id="comfortUpdateGeneralWrap">
         <h3>
-            <span id="comfortUpdateIcon" class="icon-shield text-success"></span>
+            <span id="comfortUpdateIcon" class="ri-shield-check-fill text-success"></span>
             <?php eT('ComfortUpdate'); ?>
             <?php if (YII_DEBUG): ?>
                 <small>Server:<em class="text-warning"> <?php echo Yii::app()->getConfig("comfort_update_server_url"); ?></em></small>
@@ -59,7 +59,7 @@
                         <td>
                             <span data-bs-toggle="tooltip" title="<?php eT("Delete");?>" >
                                 <a data-post-url="<?php echo App()->createUrl('/admin/update/sa/deleteKey');?>" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#confirmation-modal">
-                                    <span class="fa fa-trash text-danger"></span>
+                                    <span class="ri-delete-bin-fill text-danger"></span>
                                 </a>
                             </span>
                         </td>

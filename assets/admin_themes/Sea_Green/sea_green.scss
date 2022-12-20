@@ -10,7 +10,7 @@
 // 3. Include remainder of required Bootstrap stylesheets
 @import "node_modules/bootstrap/scss/variables";
 @import "node_modules/bootstrap/scss/mixins";
-@import "node_modules/bootstrap/scss/maps";
+//@import "node_modules/bootstrap/scss/maps";
 @import "node_modules/bootstrap/scss/root";
 
 // 4. Include any optional Bootstrap CSS as needed
@@ -63,6 +63,7 @@
 
 @import "buttons/buttons.scss";
 @import "buttons/btn-group.scss";
+@import "modal/modal.scss";
 @import "typography/typography.scss";
 @import "tooltip/tooltip.scss";
 @import "well/well.scss";
@@ -70,4 +71,7 @@
 @import "footer/footer.scss";
 @import "navbar/navbar.scss";
 @import "box/box.scss";
+@import "icons/icons.scss";
+@import "ckeditor/ckeditor.scss";
+@import "tabs/tabs.scss";
 @import "datetimepicker/datetimepicker.scss";

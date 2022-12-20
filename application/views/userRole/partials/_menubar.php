@@ -10,17 +10,17 @@ App()->getClientScript()->registerScriptFile(
             <div class="col-lg-9">
                 <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')) { ?>
                 <button data-href="<?= App()->createUrl("userRole/editRoleModal") ?>" data-bs-toggle="modal" title="<?php eT('Add a new permission role'); ?>" class="btn btn-outline-secondary RoleControl--action--openmodal">
-                        <i class="fa fa-plus-circle text-success"></i> <?php eT("Add user role"); ?>
+                        <i class="ri-add-circle-fill text-success"></i> <?php eT("Add user role"); ?>
                     </button>
                 <button data-href="<?= App()->createUrl("userRole/showImportXML") ?>" data-bs-toggle="modal" title="<?php eT('Import permission role from XML'); ?>" class="btn btn-outline-secondary RoleControl--action--openmodal">
-                        <i class="fa fa-upload text-success"></i> <?php eT("Import (XML)"); ?>
+                        <i class="ri-upload-fill text-success"></i> <?php eT("Import (XML)"); ?>
                     </button>
                 <?php } ?>
             </div>
             <div class="col-lg-3 text-end">
                 <?php if (!isset($inImportView)) : ?>
                 <a class="btn btn-outline-secondary" href="<?php echo $this->createUrl('admin/index'); ?>" role="button">
-                        <span class="fa fa-backward"></span>
+                        <span class="ri-rewind-fill"></span>
                         &nbsp;
                         <?php eT('Back'); ?>
                     </a>

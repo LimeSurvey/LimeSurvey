@@ -88,6 +88,9 @@ export default {
                     <template v-else-if="menuItem.menu_icon_type == 'iconclass'">
                         <i class="quickmenuIcon"  :class="menuItem.menu_icon" ></i>
                     </template>
+                    <template v-else-if="menuItem.menu_icon_type == 'remix'">
+                        <i class="quickmenuIcon"  :class="menuItem.menu_icon" ></i>
+                    </template>
                 </a>
             </div>
         </div>

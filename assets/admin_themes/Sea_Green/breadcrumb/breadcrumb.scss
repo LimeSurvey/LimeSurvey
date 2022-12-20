@@ -32,10 +32,10 @@ ol.breadcrumb.title-bar-breadcrumb {
   color: $breadcrumb-active-color;
   a {
     color: $breadcrumb-link-color;
-    //&.animate::after {
-    //  background: $white;
-    //  transition: width .3s;
-    //}
+
+    &:hover {
+      color: $link-hover-color
+    }
   }
   li {
     background: transparent;

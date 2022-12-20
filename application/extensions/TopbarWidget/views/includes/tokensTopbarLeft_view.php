@@ -2,7 +2,7 @@
 <?php if ($hasTokensReadPermission): ?>
     <div class="d-inline-flex">
         <a class="btn btn-outline-secondary pjax" href='<?php echo Yii::App()->createUrl("admin/tokens/sa/browse/surveyid/$oSurvey->sid"); ?>' role="button">
-            <span class="fa fa-list-alt"></span>
+            <span class="ri-list-unordered "></span>
             <?php eT("Display participants"); ?>
         </a>
     </div>
@@ -19,7 +19,7 @@
             'name' => 'ls-create-token-button',
             'id' => 'ls-create-token-button',
             'text' => gT('Create...'),
-            'icon' => 'icon-add',
+            'icon' => 'ri-add-circle-fill',
             'isDropDown' => true,
             'dropDownContent' => $createDropdownItems,
             'htmlOptions' => [
@@ -32,7 +32,7 @@
 <?php if ($hasTokensUpdatePermission || $hasSurveySettingsUpdatePermission): ?>
     <div class="d-inline-flex">
         <a class="btn btn-outline-secondary pjax" href='<?php echo Yii::App()->createUrl("admin/tokens/sa/managetokenattributes/surveyid/$oSurvey->sid"); ?>' role="button">
-            <span class="icon-token_manage"></span>
+            <span class="ri-server-fill"></span>
             <?php eT("Manage attributes"); ?>
         </a>
     </div>
@@ -42,7 +42,7 @@
 <?php if ($hasTokensExportPermission): ?>
     <div class="d-inline-flex">
         <a class="btn btn-outline-secondary pjax" href="<?php echo Yii::App()->createUrl("admin/tokens/sa/exportdialog/surveyid/$oSurvey->sid"); ?>" role="button">
-            <span class="icon-exportcsv"></span>
+            <span class="ri-download-fill"></span>
             <?php eT("Export"); ?>
         </a>
     </div>
@@ -57,7 +57,7 @@
             'name' => 'ls-inv-rem-button',
             'id' => 'ls-inv-rem-button',
             'text' => gT('Invitations & reminders'),
-            'icon' => 'icon-emailtemplates',
+            'icon' => 'ri-mail-settings-line',
             'isDropDown' => true,
             'dropDownContent' => $invRemDropDownItems,
             'htmlOptions' => [
@@ -69,14 +69,14 @@
     <div class="d-inline-flex">
         <!-- Generate tokens -->
         <a class="btn btn-outline-secondary" href="<?php echo Yii::App()->createUrl("admin/tokens/sa/tokenify/surveyid/$oSurvey->sid"); ?>" role="button">
-            <span class="icon-do"></span>
-            <?php eT("Generate tokens"); ?>
+            <span class="ri-settings-5-fill"></span>
+            <?php eT("Generate access codes"); ?>
         </a>
     </div>
     <div class="d-inline-flex">
         <!-- View participants of this survey in CPDB -->
         <a class="btn btn-outline-secondary" href="#" role="button" onclick="window.LS.sendPost('<?php echo Yii::App()->createUrl("/admin/participants/sa/displayParticipants"); ?>',false,{'searchcondition': 'surveyid||equal|| <?php echo $oSurvey->sid ?>'});">
-            <i class="fa fa-users"></i>
+            <i class="ri-group-fill"></i>
             <?php eT("View in CPDB"); ?>
         </a>
     </div>
@@ -85,7 +85,7 @@
 <div class="d-inline-flex">
 <!-- Survey Quotas -->
     <a class="btn btn-outline-secondary" href='<?php echo Yii::App()->createUrl("admin/quotas/sa/index/surveyid/$oSurvey->sid"); ?>' role="button">
-        <span class="fa fa-tasks"></span>
+        <span class="ri-bar-chart-horizontal-fill"></span>
         <?php eT("Survey quotas"); ?>
     </a>
 </div>

@@ -1232,6 +1232,49 @@ body {
             color: $color_gunsmoke_approx;
         }
     }
+
+    // btn-check
+    .btn-check:focus + .btn-primary, .btn-check:checked + .btn-primary, .btn-check:active + .btn-primary {
+        @extend %extend_2;
+    }
+    .btn-check:focus + .btn-primary, .btn-check:checked + .btn-primary:focus, .btn-check:active + .btn-primary:focus {
+        box-shadow: 0 0 0 0.25rem rgba(mix($color_parsley_approx, $color_parsley_approx, 15%), .5);
+    }
+    .btn-check:focus + .btn-outline-secondary, .btn-check:checked + .btn-outline-secondary, .btn-check:active + .btn-outline-secondary, .btn-outline-secondary:active, .btn-outline-secondary.active, .show > .btn-outline-secondary.dropdown-toggle {
+        @extend %extend_1;
+    }
+    .btn-check:focus + .btn-outline-secondary, .btn-check:checked + .btn-outline-secondary:focus, .btn-check:active + .btn-outline-secondary:focus, .btn-outline-secondary:active:focus, .btn-outline-secondary.active:focus, .show > .btn-outline-secondary.dropdown-toggle:focus {
+        box-shadow: 0 0 0 0.25rem rgba(mix($color_parsley_approx, $color_parsley_approx, 15%), .5);
+    }
+    .btn-check:focus + .btn-success, .btn-check:checked + .btn-success, .btn-check:active + .btn-success, .btn-success:active, .btn-success.active, .show > .btn-success.dropdown-toggle {
+        @extend %extend_3;
+    }
+    .btn-check:focus + .btn-success, .btn-check:checked + .btn-success:focus, .btn-check:active + .btn-success:focus, .btn-success:active:focus, .btn-success.active:focus, .show > .btn-success.dropdown-toggle:focus {
+        box-shadow: 0 0 0 0.25rem rgba(mix($color_parsley_approx, $color_parsley_approx, 15%), .5)
+    }
+    .btn-check:focus + .btn-info, .btn-check:checked + .btn-info, .btn-check:active + .btn-info, .btn-info:active, .btn-info.active, .show > .btn-info.dropdown-toggle {
+        @extend %extend_4;
+    }
+    .btn-check:focus + .btn-info, .btn-check:checked + .btn-info:focus, .btn-check:active + .btn-info:focus, .btn-info:active:focus, .btn-info.active:focus, .show > .btn-info.dropdown-toggle:focus {
+        box-shadow: 0 0 0 0.25rem rgba(mix($color_elephant_approx, $color_elephant_approx, 15%), .5)
+    }
+    .btn-check:focus + .btn-warning, .btn-check:checked + .btn-warning, .btn-check:active + .btn-warning, .btn-warning:active, .btn-warning.active, .show > .btn-warning.dropdown-toggle {
+        @extend %extend_5;
+    }
+    .btn-check:focus + .btn-warning, .btn-check:checked + .btn-warning:focus, .btn-check:active + .btn-warning:focus, .btn-warning:active:focus, .btn-warning.active:focus, .show > .btn-warning.dropdown-toggle:focus {
+        box-shadow: 0 0 0 0.25rem rgba(mix($color_jambalaya_approx, $color_jambalaya_approx, 15%), .5)
+    }
+    .btn-check:focus + .btn-danger, .btn-check:checked + .btn-danger, .btn-check:active + .btn-danger, .btn-danger:active, .btn-danger.active, .show > .btn-danger.dropdown-toggle {
+        color: $color_danger;
+        background-color: $color_background_variant;
+        border-color: $color_danger;
+    }
+    .btn-check:focus + .btn-danger, .btn-check:checked + .btn-danger:focus, .btn-check:active + .btn-danger:focus, .btn-danger:active:focus, .btn-danger.active:focus, .show > .btn-danger.dropdown-toggle:focus {
+        box-shadow: 0 0 0 0.25rem rgba(mix($color_background_variant, $color_danger, 15%), .5)
+    }
+
+
+
     .dropdown-menu {
         background-color: $white;
         border:           1px solid $color_celeste_approx;

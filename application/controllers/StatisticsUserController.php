@@ -111,9 +111,9 @@ class StatisticsUserController extends SurveyController
         //True -> include
         //False -> forget about charts
         if (isset($publicgraphs) && $publicgraphs == 1) {
-            require_once(APPPATH . 'vendor/pchart/pChart.class.php');
-            require_once(APPPATH . 'vendor/pchart/pData.class.php');
-            require_once(APPPATH . 'vendor/pchart/pCache.class.php');
+            require_once(APPPATH . '../vendor/pchart/pChart.class.php');
+            require_once(APPPATH . '../vendor/pchart/pData.class.php');
+            require_once(APPPATH . '../vendor/pchart/pCache.class.php');
 
             $MyCache = new pCache(Yii::app()->getConfig("tempdir") . DIRECTORY_SEPARATOR);
             //$currentuser is created as prefix for pchart files
@@ -214,6 +214,7 @@ class StatisticsUserController extends SurveyController
 
         Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'statistics_user.js');
         $data['aSurveyInfo']['include_content'] = 'statistics_user';
+        $data['aSurveyInfo']['trackUrlPageName'] = 'statistics_user';
         // Set template into last instance. Will be picked up later by the renderer
         $oTemplate = Template::model()->getInstance('', $iSurveyID);
         Yii::app()->twigRenderer->renderTemplateFromFile('layout_statistics_user.twig', $data, false);

@@ -14,7 +14,7 @@
         <div class="col-12">
             <div class="col-lg-3 text-start">
                 <h4>
-                    <span class="fa fa-bar-chart"></span> &nbsp;&nbsp;&nbsp;
+                    <span class="ri-bar-chart-fill"></span> &nbsp;&nbsp;&nbsp;
                     <?php eT("Statistics"); ?>
                 </h4>
             </div>

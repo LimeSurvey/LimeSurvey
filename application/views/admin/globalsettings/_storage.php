@@ -14,7 +14,7 @@
             <div class="">
                 <input type='hidden' name='global-settings-storage-url' value='<?php echo Yii::app()->createUrl('admin/globalsettings', array('sa' => 'getStorageData')); ?>' />
                 <a id='global-settings-calculate-storage' class='btn btn-outline-secondary '>
-                    <span class='fa fa-cogs'></span>&nbsp;
+                    <i class="ri-settings-5-fill"></i>&nbsp;
                     <?php eT('Calculate storage');?>
                 </a>
                 <br/>

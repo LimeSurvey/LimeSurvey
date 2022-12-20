@@ -22,6 +22,7 @@
 ): ?>
     <li class="dropdown mega-dropdown nav-item">
         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+            <!-- <i class="ri-settings-5-fill"></i> -->
             <?php eT('Configuration'); ?>
             <span class="caret"></span>
         </a>
@@ -34,7 +35,7 @@
 
                         <div class="box" id="systemoverview">
                             <div class="box-icon">
-                                <span class="fa fa-info-circle" id="info-header"></span>
+                                <span class="ri-information-fill" id="info-header"></span>
                             </div>
                             <div class="box--info">
                                 <div class="box__title text-center"><?php eT("System overview"); ?></div>
@@ -67,7 +68,7 @@
 
                             <!-- ExpressionScript Engine -->
                             <li class="dropdown-header">
-                                <span class="icon-expression"></span>
+                                <span class="ri-superscript"></span>
                                 <?php eT("Expression Engine"); ?>
                             </li>
 
@@ -135,7 +136,7 @@
 
                         <!-- Advanced -->
                         <li class="dropdown-header">
-                            <span class="icon-tools"></span>
+                            <span class="ri-tools-fill"></span>
                             <?php eT('Advanced'); ?>
                         </li>
                         <?php if (Permission::model()->hasGlobalPermission('templates', 'read')): ?>
@@ -193,7 +194,7 @@
                         <!-- Users -->
                         <li class="dropdown-header">
 
-                            <span class="icon-user"></span>
+                            <i class="ri-user-fill"></i>
                             <?php eT('Users'); ?>
                         </li>
 
@@ -248,7 +249,7 @@
 
                         <!-- Settings -->
                         <li class="dropdown-header">
-                            <span class="icon-global"></span>
+                            <span class="ri-list-settings-line"></span>
                             <?php eT('Settings'); ?>
                         </li>
 

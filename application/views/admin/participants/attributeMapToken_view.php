@@ -2,7 +2,7 @@
     var redUrl = "<?php echo $this->createUrl("/admin/participants/sa/displayParticipants"); ?>";
     var copyUrl = "<?php echo $this->createUrl("/admin/participants/sa/addToCentral"); ?>";
 
-    var surveyId = "<?php echo Yii::app()->request->getQuery('sid'); ?>";
+    var surveyId = "<?php echo (int) Yii::app()->request->getQuery('sid'); ?>";
 
     /* LANGUAGE */
     var attributesMappedText = "<?php eT("There are no unmapped attributes") ?>";
@@ -18,7 +18,7 @@
     <div class='row'>
         <div class='col-md-4'>
             <div id="tokenattribute" class="card attribute-column card-primary">
-                <div class="card-header bg-primary"><?php eT("Unmapped survey participant attributes") ?></div>
+                <div class="card-header "><?php eT("Unmapped survey participant attributes") ?></div>
                 <div id="tokenatt" class="tokenatt droppable">
                     <?php
                         if (!empty($tokenattribute))
@@ -36,7 +36,7 @@
 
         <div class='col-md-4'>
             <div id="newcreated" class="card attribute-column">
-                <div class="card-header bg-primary"><?php eT("Participant attributes to create") ?></div>
+                <div class="card-header "><?php eT("Participant attributes to create") ?></div>
                 <div class="card-body newcreate droppable" style ="height: 40px">
                 </div>
             </div>
@@ -44,7 +44,7 @@
 
         <div class='col-md-4'>
             <div id="centralattribute" class="card attribute-column">
-                <div class="card-header bg-primary"><?php eT("Existing participant attributes")?></div>
+                <div class="card-header "><?php eT("Existing participant attributes")?></div>
                 <div class="centralatt">
                     <?php
                     if (!empty($attribute))

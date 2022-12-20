@@ -28,7 +28,7 @@
                 <?php endif; ?>
             </div>
             <div class="modal-footer modal-footer-buttons">
-                <a role="button" class="btn btn-primary btn-ok"><span class='fa fa-check'></span>
+                <a role="button" class="btn btn-primary btn-ok"><span class='ri-check-fill'></span>
                     &nbsp;
                     <?php if(isset($aAction['yes'])):?>
                         <?php echo $aAction['yes'];?>

@@ -12,7 +12,7 @@ Yii::app()->getController()->renderPartial(
     <?=TbHtml::formTb(null, App()->createUrl('userManagement/deleteUser'), 'post', ["id"=>"UserManagement--modalform"])?>
         <input type="hidden" name="userid" value="<?= $userId ?>" />
         <input type="hidden" name="user" value="<?= $sUserName ?>" />
-        <button class="btn btn-cancel" data-bs-dismiss="modal">&nbsp;<?php eT("Cancel"); ?></button>
+        <button type="button"  class="btn btn-cancel" data-bs-dismiss="modal">&nbsp;<?php eT("Cancel"); ?></button>
         <button class="btn btn-danger" id="submitForm">&nbsp;<?php eT("Delete"); ?></button>
     </form>
 </div>

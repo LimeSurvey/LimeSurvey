@@ -2,7 +2,7 @@
 <?php if ($hasResponsesReadPermission): ?>
     <a class="btn btn-outline-secondary pjax"
        href='<?php echo Yii::App()->createUrl("responses/index/", ['surveyId' => $oSurvey->sid]); ?>' role="button">
-        <span class="fa fa-list-alt"></span>
+        <span class="ri-list-unordered "></span>
         <?php eT("Summary"); ?>
     </a>
 <?php endif; ?>
@@ -11,7 +11,7 @@
     <!-- Display Responses -->
     <a class="btn btn-outline-secondary pjax"
        href='<?php echo Yii::App()->createUrl("responses/browse/", ['surveyId' => $oSurvey->sid]); ?>' role="button">
-        <span class="fa fa-list"></span>
+        <span class="ri-list-check"></span>
         <?php eT("Display responses"); ?>
     </a>
 <?php endif; ?>
@@ -21,7 +21,7 @@
 <?php if ($hasResponsesCreatePermission): ?>
     <a class="btn btn-outline-secondary"
        href='<?php echo Yii::App()->createUrl("admin/dataentry/sa/view/surveyid/$oSurvey->sid"); ?>' role="button">
-        <span class="fa fa-keyboard-o"></span>
+        <span class="ri-keyboard-box-line"></span>
         <?php eT("Data entry"); ?>
     </a>
 <?php endif; ?>
@@ -30,7 +30,7 @@
     <!-- Get statistics from these responses -->
     <a class="btn btn-outline-secondary"
        href='<?php echo Yii::App()->createUrl("admin/statistics/sa/index/surveyid/$oSurvey->sid"); ?>' role="button">
-        <span class="fa fa-bar-chart"></span>
+        <span class="ri-bar-chart-fill"></span>
         <?php eT("Statistics"); ?>
     </a>
 
@@ -38,7 +38,7 @@
     <?php if ($isTimingEnabled == "Y"): ?>
         <a class="btn btn-outline-secondary"
            href='<?php echo Yii::App()->createUrl("responses/time/", ['surveyId' => $oSurvey->sid]); ?>' role="button">
-            <span class="fa fa-clock-o"></span>
+            <span class="ri-time-line"></span>
             <?php eT("Timing statistics"); ?>
         </a>
     <?php endif; ?>
@@ -54,7 +54,7 @@
         'name' => 'ls-tools-button',
         'id' => 'ls-tools-button',
         'text' => gT('Export'),
-        'icon' => 'icon-export',
+        'icon' => 'ri-download-fill',
         'isDropDown' => true,
         'dropDownContent' => $exportDropdownItems,
         'htmlOptions' => [
@@ -75,7 +75,7 @@
         'name' => 'ls-tools-button',
         'id' => 'ls-tools-button',
         'text' => gT('Import'),
-        'icon' => 'icon-import',
+        'icon' => 'ri-upload-fill',
         'isDropDown' => true,
         'dropDownContent' => $importDropdownItems,
         'htmlOptions' => [
@@ -91,7 +91,7 @@
 <?php if ($hasResponsesReadPermission): ?>
     <a class="btn btn-outline-secondary"
             href='<?php echo Yii::App()->createUrl("admin/saved/sa/view/surveyid/$oSurvey->sid"); ?>' role="button">
-        <span class="icon-saved"></span>
+        <span class="ri-save-line"></span>
         <?php eT("View Saved but not submitted Responses"); ?>
     </a>
 <?php endif; ?>
@@ -103,7 +103,7 @@
         <a class="btn btn-outline-secondary"
                 href='<?php echo Yii::App()->createUrl("admin/dataentry/sa/iteratesurvey/surveyid/$oSurvey->sid"); ?>'
                 role="button">
-            <span class="fa fa-repeat"></span>
+            <span class="ri-repeat-fill"></span>
             <?php eT("Iterate survey"); ?>
         </a>
     <?php endif; ?>
@@ -124,7 +124,7 @@
         title="<?php eT('Batch deletion') ?>"
         class="btn btn-outline-secondary selector--ConfirmModal">
 
-        <span class="fa fa-trash text-danger"></span>
+        <span class="ri-delete-bin-fill text-danger"></span>
         <?php eT("Batch deletion"); ?>
     </a>
 <?php endif; ?>

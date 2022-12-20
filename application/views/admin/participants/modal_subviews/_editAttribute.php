@@ -61,7 +61,7 @@
     <div id="ParticipantAttributeNamesDropdownEdit" class="row ex-form-group mb-3" style="display: none;">
         <div class="row">
             <div class="col-2">
-                <button class="btn btn-outline-secondary btn-block" id="addDropdownField" data-bs-toggle="tooltip" title="<?php eT('Add dropdown field'); ?>"><i class="fa fa-plus-circle text-success"></i></button>
+                <button class="btn btn-outline-secondary btn-block" id="addDropdownField" data-bs-toggle="tooltip" title="<?php eT('Add dropdown field'); ?>"><i class="ri-add-circle-fill text-success"></i></button>
             </div>
             <h4 class="col-8 col-offset-2"><?php eT("Dropdown fields") ?></h4>
         </div>
@@ -77,7 +77,7 @@
                     echo "</div>";
                     echo '<div class="col-1">
                             <button class="btn btn-outline-secondary ex-form-group mb-3 action_delDropdownField">
-                                <i class="fa fa-trash text-danger"></i>
+                                <i class="ri-delete-bin-fill text-danger"></i>
                             </button>
                         </div>
                     </div>';
@@ -89,26 +89,26 @@
                 </div>
                 <div class="col-1">
                     <button class="btn btn-outline-secondary ex-form-group mb-3 action_delDropdownField">
-                        <i class="fa fa-trash text-danger"></i>
+                        <i class="ri-delete-bin-fill text-danger"></i>
                     </button>
                 </div>
             </div>
         </div>
     </div>
      <legend><?php eT("Languages") ?></legend>
-        <div class="row ex-form-group mb-3">
+        <div class="col-12 ex-form-group mb-3">
             <label class=" col-12 form-label" for="ParticipantAttributeName_addLanguage_language"><?php eT("Add language");?></label>
-            <div>
+            <div class="d-flex flex-row align-items-center flex-wrap">
                 <div class=" col-11">
                 <?php
                     echo TbHtml::dropDownList("ParticipantAttributeName_addLanguage_language", '', $languagesForDropdown,array('encode' => false, 'class' => 'form-select'));
                 ?>
                 </div>
-            </div>
-            <div class="col-1">
-                <button class="btn btn-outline-secondary ex-form-group mb-3" id="addLanguageField" data-bs-toggle="tooltip" title="<?php eT("Add a new language") ?>">
-                    <i class="fa fa-plus-circle text-success"></i>
-                </button>
+                <div class="col-1">
+                    <button class="btn btn-outline-secondary ex-form-group ms-2" id="addLanguageField" data-bs-toggle="tooltip" title="<?php eT("Add a new language") ?>">
+                        <i class="ri-add-circle-fill text-success"></i>
+                    </button>
+                </div>
             </div>
         </div>
         <div id='languagesList' class="row">
@@ -118,13 +118,13 @@
                     echo 
                     '<div class="ex-form-group mb-3" data-lang="'.$languageKey .'">
                         <label class="col-12 form-label" for="ParticipantAttributeNameLanguages_'.$languageKey.'">'.getLanguageNameFromCode($languageKey,false).'</label>
-                        <div>
-                            <div class=" col-11">
+                        <div class="d-flex flex-row align-items-center flex-wrap">
+                            <div class=" col-10">
                                 <input required class="form-control" name="ParticipantAttributeNameLanguages['.$languageKey.']" id="ParticipantAttributeNameLanguages_'.$languageKey.'" type="text" value="">
                             </div>
                             <div class="col-1">
-                                <button class="btn btn-outline-secondary ex-form-group mb-3 action_delLanguageField">
-                                    <i class="fa fa-trash text-danger"></i>
+                                <button class="btn btn-outline-secondary ex-form-group ms-2 action_delLanguageField">
+                                    <i class="ri-delete-bin-fill text-danger"></i>
                                 </button>
                             </div>
                         </div>
@@ -135,13 +135,13 @@
                     echo 
                     '<div class="col-12 ex-form-group mb-3" data-lang="'.$languageKey.'">
                         <label class=" form-label" for="ParticipantAttributeNameLanguages_'.$languageKey.'">'.getLanguageNameFromCode($languageKey,false).'</label>
-                        <div>
+                        <div class="d-flex flex-row align-items-center flex-wrap">
                             <div class=" col-11">
                                 <input class="form-control" name="ParticipantAttributeNameLanguages['.$languageKey.']" id="ParticipantAttributeNameLanguages_'.$languageKey.'" type="text" value="'.$languageOfAttribute.'">
                             </div>
                             <div class="col-1">
-                                <button class="btn btn-outline-secondary ex-form-group mb-3 action_delLanguageField">
-                                    <i class="fa fa-trash text-danger"></i>
+                                <button class="btn btn-outline-secondary ex-form-group ms-2 action_delLanguageField">
+                                    <i class="ri-delete-bin-fill text-danger"></i>
                                 </button>
                             </div>
                         </div>
@@ -163,7 +163,7 @@
                     </div>
                     <div class="col-1">
                         <button class="btn btn-outline-secondary ex-form-group mb-3 action_delDropdownField">
-                            <i class="fa fa-trash text-danger"></i>
+                            <i class="ri-delete-bin-fill text-danger"></i>
                         </button>
                     </div>
                 </div>

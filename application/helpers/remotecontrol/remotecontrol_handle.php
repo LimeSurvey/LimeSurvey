@@ -85,6 +85,29 @@ class remotecontrol_handle
     }
 
     /**
+     * Get the available site settings
+     *
+     * Using this function you can get the available site settings.
+     *
+     * @access public
+     * @param string $sSessionKey the session key
+     * @return array
+     */
+    public function get_available_site_settings($sSessionKey)
+    {
+        $sSessionKey = (string) $sSessionKey;
+        if (!$this->_checkSessionKey($sSessionKey)) {
+            return array('status' => self::INVALID_SESSION_KEY);
+        }
+
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+            return array('status' => 'User is not allowed to read the available site settings');
+        }
+
+        return Yii::app()->getAvailableConfigs();
+    }
+
+    /**
      * Get a global setting
      *
      * Function to query site settings. Can only be used by super administrators.
@@ -575,12 +598,16 @@ class remotecontrol_handle
         $helper = new statistics_helper();
         switch ($docType) {
             case 'pdf':
-                $sTempFile = $helper->generate_statistics($iSurveyID, $aSummary, $aSummary, $graph, $docType, 'F', $sLanguage);
+                $sTempFile = sanitize_filename(
+                    $helper->generate_statistics($iSurveyID, $aSummary, $aSummary, $graph, $docType, 'F', $sLanguage)
+                );
                 $sResult = file_get_contents($sTempFile);
                 unlink($sTempFile);
                 break;
             case 'xls':
-                $sTempFile = $helper->generate_statistics($iSurveyID, $aSummary, $aSummary, '0', $docType, 'F', $sLanguage);
+                $sTempFile = sanitize_filename(
+                    $helper->generate_statistics($iSurveyID, $aSummary, $aSummary, '0', $docType, 'F', $sLanguage)
+                );
                 $sResult = file_get_contents($sTempFile);
                 unlink($sTempFile);
                 break;
@@ -2199,7 +2226,7 @@ class remotecontrol_handle
                                 $value = $valueOrTuple[1];
                                 $oCriteria->compare($columnName, $operator . $value);
                             }
-                        } elseif (is_string($valueOrTuple)) {
+                        } elseif (is_string($valueOrTuple) || is_null($valueOrTuple)) {
                             if (array_key_exists($columnName, $aConditionFields)) {
                                 $aAttributeValues[$columnName] = $valueOrTuple;
                             }

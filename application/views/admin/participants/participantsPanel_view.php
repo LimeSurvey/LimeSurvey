@@ -28,7 +28,7 @@ App()->getClientScript()->registerScriptFile(
     var editValueParticipantPanel = "<?php echo Yii::app()->getController()->createUrl("/admin/participants/sa/editValueParticipantPanel"); ?>";
 
     var translate_blacklisted = "<?php echo '<i class=\"fa fa-undo\"></i> ' . gT('Remove from blacklist?'); ?>";
-    var translate_notBlacklisted = "<?php echo '<i class=\"fa fa-ban\"></i> ' . gT('Add to blacklist?'); ?>";
+    var translate_notBlacklisted = "<?php echo '<i class=\"ri-forbid-2-line\"></i> ' . gT('Add to blacklist?'); ?>";
     var datepickerConfig =     <?php
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
         echo json_encode(
@@ -69,7 +69,7 @@ App()->getClientScript()->registerScriptFile(
                 <a class="btn btn-outline-secondary" 
                    href="<?php echo $this->createUrl("admin/participants/sa/displayParticipants"); ?>" 
                    role="button">
-                        <span class="fa fa-list text-success"></span>
+                        <span class="ri-list-check text-success"></span>
                         <?php eT("Display CPDB participants"); ?>
                     </a>
                 <?php elseif (
@@ -80,7 +80,7 @@ App()->getClientScript()->registerScriptFile(
                 <a class="btn btn-outline-secondary" 
                    href="<?php echo $this->createUrl("admin/participants/sa/displayParticipants"); ?>" 
                    role="button">
-                        <span class="fa fa-list text-success"></span>
+                        <span class="ri-list-check text-success"></span>
                         <?php eT("Display my CPDB participants"); ?>
                     </a>
                 <?php endif; ?>
@@ -89,7 +89,7 @@ App()->getClientScript()->registerScriptFile(
             <a class="btn btn-outline-secondary" 
                href="<?php echo $this->createUrl("admin/participants/sa/index"); ?>" 
                role="button">
-                    <span class="fa fa-list-alt text-success"></span>
+                    <span class="ri-list-unordered text-success"></span>
                     <?php eT("Summary"); ?>
                 </a>
 
@@ -99,7 +99,7 @@ App()->getClientScript()->registerScriptFile(
                 <a class="btn btn-outline-secondary" 
                    href="<?php echo $this->createUrl("admin/participants/sa/importCSV"); ?>" 
                    role="button">
-                        <span class="icon-importcsv text-success"></span>
+                        <span class="ri-upload-fill text-success"></span>
                         <?php eT("Import"); ?>
                     </a>
                 <?php endif; ?>
@@ -109,7 +109,7 @@ App()->getClientScript()->registerScriptFile(
                 <a class="btn btn-outline-secondary" 
                    href="<?php echo $this->createUrl("admin/participants/sa/blacklistControl"); ?>" 
                    role="button">
-                        <span class="icon-global text-success"></span>
+                        <span class="ri-list-settings-line text-success"></span>
                         <?php eT("Blacklist settings"); ?>
                     </a>
 
@@ -117,7 +117,7 @@ App()->getClientScript()->registerScriptFile(
                 <a class="btn btn-outline-secondary" 
                    href="<?php echo $this->createUrl("admin/participants/sa/attributeControl"); ?>" 
                    role="button">
-                        <span class="fa fa-tag text-success"></span>
+                        <span class="ri-price-tag-3-fill text-success"></span>
                         <?php eT("Attributes"); ?>
                     </a>
 
@@ -127,7 +127,7 @@ App()->getClientScript()->registerScriptFile(
             <a class="btn btn-outline-secondary" 
                href="<?php echo $this->createUrl("admin/participants/sa/sharePanel"); ?>" 
                role="button">
-                    <span class="fa fa-share text-success"></span>
+                    <span class="ri-share-forward-fill text-success"></span>
                     <?php eT("Share panel"); ?>
                 </a>
 
@@ -148,7 +148,7 @@ App()->getClientScript()->registerScriptFile(
                 <?php if (isset($ownsAddParticipantsButton) && ($ownsAddParticipantsButton)) : ?>
                 <button class="btn btn-outline-secondary" 
                         id="addParticipantToCPP">
-                        <i class="fa fa-plus-circle text-success"></i>&nbsp;
+                        <i class="ri-add-circle-fill text-success"></i>&nbsp;
                         <?php eT("Add participant"); ?>
                     </button>
                 <?php endif; ?>
@@ -160,7 +160,7 @@ App()->getClientScript()->registerScriptFile(
                 <?php if (isset($ownsAddAttributeButton) && ($ownsAddAttributeButton)) : ?>
                 <button class="btn btn-outline-secondary" 
                         id="addParticipantAttributeName">
-                        <i class="fa fa-plus-circle text-success"></i>
+                        <i class="ri-add-circle-fill text-success"></i>
                         &nbsp;
                         <?php eT("Add new attribute"); ?>
                     </button>
@@ -170,7 +170,7 @@ App()->getClientScript()->registerScriptFile(
             <a class="btn btn-outline-secondary" 
                href="<?php echo $this->createUrl('admin/index'); ?>" 
                role="button">
-                    <span class="fa fa-backward"></span>
+                    <span class="ri-rewind-fill"></span>
                     &nbsp;
                     <?php eT('Back'); ?>
                 </a>

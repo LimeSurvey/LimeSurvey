@@ -400,7 +400,7 @@ class SurveymenuEntries extends LSActiveRecord
             ),
             array(
                 'name' => 'data',
-                'value' => '$data->data ? "<i class=\'fa fa-info-circle bigIcons\' title=\'".$data->data."\'></i>"
+                'value' => '$data->data ? "<i class=\'ri-information-fill bigIcons\' title=\'".$data->data."\'></i>"
                 : ( $data->getdatamethod ? gT("GET data method:")."<br/>".$data->getdatamethod : "")',
                 'type' => 'raw',
                 'filter' => false,
@@ -412,7 +412,7 @@ class SurveymenuEntries extends LSActiveRecord
             ),
             array(
                 'name' => 'user_id',
-                'value' => '$data->user_id ? $data->user->full_name : "<i class=\'fa fa-minus\'></i>"',
+                'value' => '$data->user_id ? $data->user->full_name : "<i class=\'ri-subtract-fill\'></i>"',
                 'type' => 'raw',
                 'filter' => $this->getUserOptions()
             )

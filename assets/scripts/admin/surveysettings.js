@@ -1,8 +1,8 @@
 
 var defineActions = function (dataArray) {
     var iconRow = $('<div class="icon-btn-row"></div>');
-    var buttonEdit = $('<button><i class="fa fa-pencil"></i></button>');
-    var buttonDelete = $('<button><i class="fa fa-trash text-danger"></i></button>');
+    var buttonEdit = $('<button><i class="ri-pencil-fill"></i></button>');
+    var buttonDelete = $('<button><i class="ri-delete-bin-fill text-danger"></i></button>');
     var container = $('<div><div class="icon-btn-row"></div></div>');
     buttonEdit
         .addClass('btn btn-sm btn-outline-secondary surveysettings_edit_intparameter')
@@ -158,32 +158,14 @@ function guidGenerator() {
 function validateSettingsForm($form) {
     switch ($form.attr('id')) {
         case 'publication':
-            return validateEndDateHigherThanStart(
+            return LS.validateEndDateHigherThanStart(
                 $('#startdate_datetimepicker').data('DateTimePicker'),
                 $('#expires_datetimepicker').data('DateTimePicker'),
-                expirationLowerThanStartError
+                () => {LS.LsGlobalNotifier.createFlash(expirationLowerThanStartError, 'alert-danger fade in')}
             );
         default:
             return true;
     }
-}
-
-/**
- * Validates that an end date is not lower than a start date
- */
-function validateEndDateHigherThanStart(startDatePicker, endDatePicker, errorMessage) {
-    if (!startDatePicker || !startDatePicker.date()) {
-        return true;
-    }
-    if (!endDatePicker || !endDatePicker.date()) {
-        return true;
-    }
-    const difference = endDatePicker.date().diff(startDatePicker.date());
-    if (difference >= 0) {
-        return true;
-    }
-    LS.LsGlobalNotifier.createFlash(errorMessage, 'alert-danger fade in');
-    return false;
 }
 
 $(document).on('ready  pjax:scriptcomplete', function(){
