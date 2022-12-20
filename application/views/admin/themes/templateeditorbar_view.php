@@ -52,11 +52,64 @@ App()->getClientScript()->registerScriptFile(
     App()->getConfig('adminscripts') . 'topbar.js',
     CClientScript::POS_END
 );
+
+//this line is from old part (see old_templateTopbar.php), it has always been false
+$importModal = false;
 ?>
 
 <?php if ($importModal) : ?>
     <?php $this->renderPartial('themeOptions/import_modal', ['importTemplate' => 'importtemplate', 'importModal' => 'importModal']); ?>
 <?php endif; ?>
+
+<!-- theme dropdown select boxes-->
+
+<!-- Right Menu -->
+<div class="col">
+    <div class="row row-cols-lg-auto gx-1 gy-0 text-end">
+        <!-- Theme Select Box -->
+        <label class="col col-form-label text-nowrap" for='templatedir'><?php eT("Theme:"); ?></label>
+        <div class="col">
+            <select class="col listboxtemplates form-select" id='templatedir' name='templatedir'
+                    onchange="javascript: var uri = new Uri('<?php
+                    // Don't put 'sa' into the URL dirctly because Yii will then try to use filenames directly in the path because of the route
+                    echo $this->createUrl("admin/themes",
+                        [
+                            'sa'         => 'view',
+                            'editfile'   => $relativePathEditfile,
+                            'screenname' => $screenname
+                        ]); ?>'); uri.addQueryParam('templatename',this.value); window.open(uri.toString(), '_top')">
+                <?php echo themeoptions($templates, $templatename); ?>
+            </select>
+        </div>
+
+        <!-- Screen Select Box -->
+        <label class="col col-form-label text-nowrap" for='listboxtemplates'><?php eT("Screen:"); ?></label>
+        <div>
+            <?php echo CHtml::dropDownList('screenname',
+                $screenname,
+                $screens,
+                [
+                    'id'       => 'listboxtemplates',
+                    'class'    => "col listboxtemplates form-select",
+                    'onchange' => "javascript:  var uri = new Uri('" . $this->createUrl("admin/themes",
+                            [
+                                'sa'           => 'view',
+                                'editfile'     => $relativePathEditfile,
+                                'templatename' => $templatename
+                            ]) . "'); uri.addQueryParam('screenname',this.value); window.open(uri.toString(), '_top')"
+                ]); ?>
+        </div>
+
+        <?php if (isset($fullpagebar['savebutton']['form'])) : ?>
+            <a class="btn btn-success" href="#" role="button" id="save-form-button"
+               data-form-id="<?php echo $fullpagebar['savebutton']['form']; ?>">
+                <span class="fa fa-floppy-o"></span>
+                <?php eT("Save"); ?>
+            </a>
+        <?php endif; ?>
+
+    </div>
+</div>
 
 <!-- Template Editor -->
 <div class="col-12 templateeditor">

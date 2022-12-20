@@ -38,12 +38,53 @@ if ($isExtend) {
                 'link' => '',
                 'htmlOptions' => [
                     'class' => 'btn btn-outline-secondary',
-                    'onclick' => "javascript: copyprompt('$text1', '$text2', '<?php echo $templatename; ?>', 'copy')",
+                    'onclick' => "javascript: copyprompt('$text1', '$text2', '$templatename', 'copy')",
                     'role' => 'button',
                 ],
             ]
         );
-    } /*else {
-        //copy
-    } */
+    }
+}
+
+if (is_template_editable($templatename)) {
+    if (Permission::model()->hasGlobalPermission('templates', 'update')) {
+        $text1 = gT("Rename this theme to:");
+        $this->widget(
+            'ext.ButtonWidget.ButtonWidget',
+            [
+                'name' => 'button-rename-theme',
+                'id' => 'button-rename-theme',
+                'text' => gT('Rename'),
+                'icon' => 'fa fa-pencil  text-success',
+                'link' => '',
+                'htmlOptions' => [
+                    'class' => 'btn btn-outline-secondary',
+                    'onclick' => "javascript: copyprompt('$text1', '$templatename', '$templatename', 'rename')",
+                    'role' => 'button',
+                ],
+            ]
+        );
+    }
+}
+
+if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
+    $dataPost = json_encode(['templatename' => $templatename]);
+    $this->widget(
+        'ext.ButtonWidget.ButtonWidget',
+        [
+            'name' => 'button-delete',
+            'id' => 'button-delete',
+            'text' => gT('Delete'),
+            'icon' => 'fa fa-trash text-success',
+            'link' => Yii::app()->getController()->createUrl('admin/themes/sa/delete/'),
+            'htmlOptions' => [
+                'class' => 'btn btn-danger selector--ConfirmModal',
+                'data-post' => $dataPost,
+                'data-text' => gT('Are you sure you want to delete this theme?'),
+                'data-button-no' => gT('Cancel'),
+                'data-button-yes' => gT('Delete'),
+                'data-button-type' => 'btn-danger',
+            ],
+        ]
+    );
 }

@@ -594,6 +594,12 @@ JAVASCRIPT
             true
         );
 
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/admin/themes/partial/topbarBtns/rightSideButtons',
+            [],
+            true
+        );
+
         // White Bar
         $aData['templateEditorBar']['buttons']['returnbutton'] = true;
 
