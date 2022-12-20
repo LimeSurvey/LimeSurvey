@@ -1,0 +1,51 @@
+// Dropdowns
+.dropdown-menu {
+  background-color: $white;
+  border: 1.33px solid $g-900;
+  box-shadow: 4px 4px 0px $g-200;
+  border-radius: $border-radius;
+  .divider {
+    background-color: $gray-06;
+  }
+  > {
+    li > a {
+      color: $g-800;
+      &:hover {
+        color: $g-800;
+        background-color: $g-200;
+      }
+      &:focus {
+        color: $white;
+        background-color: var(--bs-primary);
+      }
+    }
+    .active > a {
+      color: $white;
+      background-color: var(--bs-primary);
+      &:hover {
+        color: $white;
+        background-color: var(--bs-primary);
+      }
+      &:focus {
+        color: $white;
+        background-color: var(--bs-primary);
+      }
+    }
+    .disabled > a {
+      color: $g-600;
+      &:hover {
+        background-color: $g-200;
+        color: $g-600;
+      }
+      &:focus {
+        background-color: $g-200;
+        color: $g-600;
+      }
+    }
+  }
+}
+.dropdown-header {
+  color: $g-600;
+  font-weight: 600;
+  font-size: 14px;
+}
