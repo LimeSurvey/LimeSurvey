@@ -336,7 +336,7 @@ export default {
                         </span>
                         <div class="ms-auto">
                           <span
-                              class="badge rounded-pill ls-space margin right-5"
+                              class="badge reverse-color ls-space margin right-5"
                               @click.stop="openQuestionGroup(questiongroup)"
                           >
                                   {{ questiongroup.questions.length }}
