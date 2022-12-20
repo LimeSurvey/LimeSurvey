@@ -17654,9 +17654,13 @@ body.onStatistics .btn {
   border: 1.33px solid #1E1E1E;
   box-shadow: -4px 4px 0px #EEEFF7;
   border-radius: 4px;
+  padding: 8px 0px;
 }
 .dropdown-menu .divider {
   background-color: #e6e6e6;
+}
+.dropdown-menu .larger-dropdown {
+  min-width: 240px;
 }
 .dropdown-menu > li > a {
   color: #333641;
@@ -17905,10 +17909,17 @@ footer.footer {
 }
 
 .navbar a {
-  font-weight: 400;
+  font-weight: 500;
+}
+.navbar .dropdown-menu {
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+  border: none;
+}
+.navbar .dropdown-menu[data-bs-popper] {
+  margin-top: -0.5rem;
 }
 .navbar .dropdown-menu > li > a {
-  font-weight: 400;
+  font-weight: 500;
 }
 .navbar .nav-icon-btn > a .label {
   font-size: 10px;
@@ -17937,9 +17948,6 @@ footer.footer {
   margin: 0.5rem;
 }
 .navbar a {
-  font-weight: 400;
-}
-.navbar .dropdown-menu > li > a {
   font-weight: 400;
 }
 .navbar .nav-icon-btn > a .label {

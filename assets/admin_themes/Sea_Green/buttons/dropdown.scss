@@ -4,8 +4,12 @@
   border: 1.33px solid $g-900;
   box-shadow: 4px 4px 0px $g-200;
   border-radius: $border-radius;
+  padding: 8px 0px;
   .divider {
     background-color: $gray-06;
+  }
+  .larger-dropdown {
+    min-width: 240px;
   }
   > {
     li > a {

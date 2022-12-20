@@ -38,13 +38,18 @@
 }
 
 .navbar {
-  //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
   a {
-    font-weight : 400;
+    font-weight : $font-weight-500;
+  }
+  .dropdown-menu {
+    box-shadow: 0px 2px 6px $elevation-shadow-soft;
+    border: none;
+    &[data-bs-popper] {
+      margin-top: -0.5rem;
+    }
   }
   .dropdown-menu > li > a {
-    font-weight : 400;
-
+    font-weight : $font-weight-500;
   }
   .nav-icon-btn > a .label {
     font-size   : 10px;
@@ -76,10 +81,6 @@
   }
 
   a {
-    font-weight: 400;
-  }
-
-  .dropdown-menu > li > a {
     font-weight: 400;
   }
 
