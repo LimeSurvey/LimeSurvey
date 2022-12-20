@@ -42,7 +42,7 @@
             </ul>
         </div>
 
-        <div class="collapse navbar-collapse justify-content-end">
+        <div class="collapse navbar-collapse justify-content-center">
             <ul class="nav navbar-nav">
                 <!-- Maintenance mode -->
                 <?php $sMaintenanceMode = getGlobalSetting('maintenancemode');
@@ -92,7 +92,10 @@
 
                 <!-- Extra menus from plugins -->
                 <?php $this->renderPartial( "application.libraries.MenuObjects.views._extraMenu", ['extraMenus' => $extraMenus, 'prependedMenu' => false]); ?>
-
+            </ul>
+        </div>
+        <div class="collapse navbar-collapse justify-content-end">
+            <ul class="nav navbar-nav">
                 <!-- Admin notification system -->
                 <?php echo $adminNotifications; ?>
 
