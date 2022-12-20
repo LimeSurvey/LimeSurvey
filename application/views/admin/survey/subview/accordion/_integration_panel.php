@@ -13,20 +13,22 @@ echo viewHelper::getViewTestTag('surveyPanelIntegration');
 ?>
   <!-- Datatable translation-data -->
   <!-- Container -->
-  <div id='panelintegration' class=" tab-pane fade in" >
-    <div class="container-center">
+  <div id='panelintegration' class=" tab-pane fade show active" >
+    <div class="container">
         <div class="row">
             <div class="col-lg-12 ls-flex ls-flex-row">
-                <div class="ls-flex-item text-left">
+                <div class="ls-flex-item text-start">
                     <button class="btn btn-success" id="addParameterButton"><?= gT('Add URL parameter') ?></button>
                 </div>
-                <div class="ls-flex-item text-right">
+                <div class="ls-flex-item justify-content-end row row-cols-lg-auto g-1 align-items-center mb-3">
                     <!-- Search Box -->
-                    <div class="form-inline">
-                        <div class="form-group">
-                            <label class="control-label text-right" for="search_query">Search:</label>
-                            <input class="form-control" name="search_query" id="search_query" type="text">
-                        </div>
+                    <div class="col-12">
+                        <label class="control-label text-right" for="search_query">Search:</label>
+                    </div>
+                    <div class="col-12">
+                        <input class="form-control" name="search_query" id="search_query" type="text">
+                    </div>
+                    <div class="col-12">
                         <button class="btn btn-success" type="button" id="searchParameterButton"><?= gT('Search', 'unescaped') ?></button>
                         <a href="<?= $updateUrl ?>" class="btn btn-warning"><?= gT('Reset') ?></a>
                     </div>

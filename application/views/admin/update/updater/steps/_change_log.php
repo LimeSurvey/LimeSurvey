@@ -14,7 +14,7 @@
 
 
 <div class="row">
-    <div class="col-lg-12">
+    <div class="col-12">
 <?php if ($html_from_server != "") :?>
     <div>
         <?php echo $html_from_server;?>
@@ -22,10 +22,7 @@
 <?php endif;?>
 
 <?php
-    $changelog = "";
-if ($changelogs->changingBranch) {
-    $changelog .= gT("Note: Because you are updating from a stable to an unstable version or vice versa a change log might not be available or incomplete.") . "\n\n";
-}
+$changelog = "";
 $currentVersion = Yii::app()->getConfig("versionnumber") . " Build " . Yii::app()->getConfig("buildnumber");
 foreach (array_reverse($changelogs->changelogentries) as $changelogentry) {
     if (trim($changelogentry->changelog != '')) {
@@ -49,7 +46,7 @@ echo $changelog;
     </div>
 </div>
 <div class="row">
-    <div class="col-lg-12" style="margin-top : 1em">
+    <div class="col-12" style="margin-top : 1em">
 
         <?php
             $formUrl = Yii::app()->getController()->createUrl("admin/update/sa/filesystem/");
@@ -58,13 +55,13 @@ echo $changelog;
             echo CHtml::hiddenField('access_token', $access_token);
         ?>
 
-        <a class="btn btn-default" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
+        <a class="btn btn-cancel" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
             <?php eT("Cancel"); ?>
         </a>
 
 
     <?php
-        echo CHtml::submitButton(gT('Continue', 'unescaped'), array('id' => 'step2launch', "class" => "btn btn-default ajax_button launch_update"));
+        echo CHtml::submitButton(gT('Continue', 'unescaped'), array('id' => 'step2launch', "class" => "btn btn-outline-secondary ajax_button launch_update"));
         echo CHtml::endForm();
     ?>
 

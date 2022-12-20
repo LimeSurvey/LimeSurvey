@@ -52,7 +52,7 @@
             <span
               class="fa fa-bars bigIcons move-icon"
               role="button"
-              data-toggle="tooltip"
+              data-bs-toggle="tooltip"
               data-title="{{ gT("Drag to sort") }}"
             ></span>
         </td>
@@ -135,7 +135,7 @@
     {% if first and scale_id == 0 %}
         <td class="relevance-equation">
             <input
-                data-toggle="tooltip"
+                data-bs-toggle="tooltip"
                 data-title="{{ relevanceTooltip }}"
                 type='text'
                 class='relevance form-control input'
@@ -156,21 +156,21 @@
     <!-- Icons add/edit/delete -->
     <td style="vertical-align: middle; white-space: nowrap;" class="subquestion-actions">
         {% if activated != 'Y' and first %}
-            <button class="btn btn-default btn-sm btnaddsubquestion">
+            <button class="btn btn-outline-secondary btn-sm btnaddsubquestion">
                 <i
                     class="icon-add text-success"
                     data-code="{{ subquestion.title|escape('html_attr') }}"
-                    data-toggle="tooltip"
+                    data-bs-toggle="tooltip"
                     data-scale-id="{{ scale_id }}"
-                    data-placement="bottom"
+                    data-bs-placement="bottom"
                     title="{{ gT("Insert a new subquestion after this one") }}"
                 ></i>
             </button>
-            <button class="btn btn-default btn-sm btndelsubquestion">
+            <button class="btn btn-outline-secondary btn-sm btndelsubquestion">
                 <i
                     class="fa fa-minus-circle text-danger"
-                    data-toggle="tooltip"
-                    data-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
                     title="{{ gT("Delete this subquestion") }}"
                 ></i>
             </button>

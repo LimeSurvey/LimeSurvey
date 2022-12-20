@@ -4,10 +4,10 @@
 ?>
 <?php if (!empty(trim($toolsDropdownItems))): ?>
     <!-- Tools  -->
-    <div class="btn-group hidden-xs">
+    <div class="btn-group ">
 
         <!-- Main button dropdown -->
-        <button id="ls-question-tools-button" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button id="ls-question-tools-button" role="button" type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="icon-tools" ></span>
             <?php eT('Tools'); ?>&nbsp;<span class="caret"></span>
         </button>
@@ -30,14 +30,14 @@ $this->render('includes/previewSurveyAndGroupButtons_view', get_defined_vars());
     <?php if (count($surveyLanguages) > 1): ?>
         <!-- Preview question multilanguage -->
         <div class="btn-group">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button type="button" role="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="fa fa-eye"></span>
                 <?php eT("Preview question"); ?> <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" style="min-width : 252px;">
                 <?php foreach ($surveyLanguages as $languageCode => $languageName): ?>
                     <li>
-                        <a target="_blank" href="<?php echo Yii::App()->createUrl("survey/index/action/previewquestion/sid/{$surveyid}/gid/{$gid}/qid/{$qid}/lang/{$languageCode}"); ?>" >
+                        <a class="dropdown-item" target="_blank" href="<?php echo Yii::App()->createUrl("survey/index/action/previewquestion/sid/{$surveyid}/gid/{$gid}/qid/{$qid}/lang/{$languageCode}"); ?>" >
                             <?php echo $languageName; ?>
                         </a>
                     </li>
@@ -46,7 +46,7 @@ $this->render('includes/previewSurveyAndGroupButtons_view', get_defined_vars());
         </div>
     <?php else:?>
         <!-- Preview question single language -->
-        <a class="btn btn-default" href="<?php echo Yii::App()->createUrl("survey/index/action/previewquestion/sid/$surveyid/gid/$gid/qid/$qid"); ?>" role="button" target="_blank">
+        <a class="btn btn-outline-secondary" href="<?php echo Yii::App()->createUrl("survey/index/action/previewquestion/sid/$surveyid/gid/$gid/qid/$qid"); ?>" target="_blank">
             <span class="fa fa-eye"></span>
             <?php eT("Preview question");?>
         </a>

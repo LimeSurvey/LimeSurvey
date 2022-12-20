@@ -1,6 +1,6 @@
 {% extends "./views/basic.twig" %}
 {% block choice %}
-    <div class="col-sm-12">
+    <div class="col-12">
         <p><strong class="sortable-subtitle sortable-rank-subtitle">{{rank_title}}</strong></p>
         <!-- @todo : move htmlblock at the good place -->      
         <div id="sortable-choice-{{qId}}" class="sortable-choice sortable-list display_bubble_group">
@@ -13,16 +13,16 @@
                     {{ansrow.answer}}
                 </div>
             {% endfor %}
-            <div class="hidden ls-remove"></div>
+            <div class="d-none ls-remove"></div>
         </div>
     </div>
 {% endblock %}
 
 {% block rank %}
-    <div class="col-sm-12">
+    <div class="col-12">
         <p><strong class="sortable-subtitle sortable-rank-subtitle">{{choice_title}}</strong></p>
         <div id="sortable-rank-{{qId}}" class="sortable-rank sortable-list display_bubble_group">
-            <div class="hidden ls-remove"></div>
+            <div class="d-none ls-remove"></div>
         </div>
     </div>
 {% endblock %}

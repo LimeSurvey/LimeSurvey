@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /** @var array $userConfig */
@@ -24,50 +26,73 @@ return array(
 
     // jQuery
     'jquery' => array(
-        'devBaseUrl' => 'vendor/jquery',
-        'basePath' => 'vendor.jquery',
-        'position' =>CClientScript::POS_HEAD,
+        'devBaseUrl' => 'node_modules/jquery/dist',
+        'basePath' => 'node_modules.jquery.dist',
+        'position' => CClientScript::POS_HEAD,
         'js' => array(
-            'jquery-3.5.1'.$minVersion.'.js',
-            'jquery-migrate-3.3.2'.$minVersion.'.js',
-        )
+            'jquery' . $minVersion . '.js'
+        ),
     ),
 
     // Bootstrap
     // This package replace the Yiistrap register() function
     // Then instead of using the composer dependency system for themes
     // We can use the package dependency system (easier for now)
-    'bootstrap' => array(
-        'devBaseUrl' => 'assets/packages/bootstrap/',
-        'basePath' => 'core.bootstrap',
-        'css'=> array(
-            'bootstrap'.$minVersion.'.css', /* Admin need it, not public */
-            'yiistrap'.$minVersion.'.css',
-        ),
-        'js'=>array(
-            'bootstrap'.$minVersion.'.js',
-            'plugins/bootstrapconfirm/bootstrapconfirm'.$minVersion.'.js'
-        ),
-        'depends' => array(
-            'jquery',
-        )
-    ),
+    'bootstrap' => new class () implements ArrayAccess {
+        private $value = [
+            'devBaseUrl' => 'assets/bootstrap_5/build',
+            'basePath' => 'bootstrap.build',
+            'css' => [
+                'css/bootstrap_5.min.css',
+            ],
+            'js' => [
+                'js/bootstrap_5.min.js',
+            ]
+        ];
+        public function offsetExists($offset)
+        {
+            return isset($this->value[$offset]);
+        }
+        // NB: '&' is needed to unset values in $value property after getting it
+        // Else, a copy of the array will be returned (so called "value semantics").
+        public function &offsetGet($offset)
+        {
+            $this->setRtl();
+            return $this->value[$offset];
+        }
+        public function offsetSet($offset, $value)
+        {
+            $this->value[$offset] = $value;
+        }
+        public function offsetUnset($offset)
+        {
+            unset($this->value[$offset]);
+        }
+        private function setRtl()
+        {
+            // NB: During installation, getLanguageRTL won't be loaded here.
+            if (function_exists('getLanguageRTL')) {
+                $dir = getLanguageRTL(App()->getLanguage()) ? 'rtl' : 'ltr';
+                if ($dir === "rtl") {
+                    $this->value['css'] = [
+                        'css/bootstrap_5-rtl.min.css',
+                    ];
+                }
+            }
+        }
+    },
 
     // Bootstrap admin
     // must be different for theme editor not to colide with theme files replacement
     'bootstrap-admin' => array(
-        'devBaseUrl' => 'assets/packages/bootstrap/',
-        'basePath' => 'core.bootstrap',
-        'css'=> array(
-            'bootstrap'.$minVersion.'.css', /* Admin need it, not public */
-            'yiistrap'.$minVersion.'.css',
+        'devBaseUrl' => 'assets/bootstrap_5/',
+        'basePath' => 'bootstrap',
+        'css' => array(
+            'build/css/bootstrap_5.min.css',
         ),
-        'js'=>array(
-            'bootstrap'.$minVersion.'.js'
+        'js' => array(
+            'build/js/bootstrap_5.min.js',
         ),
-        'depends' => array(
-            'jquery',
-        )
     ),
 
     // bootstrap-slider : for multinumeric with slider
@@ -75,11 +100,11 @@ return array(
         'devBaseUrl' => 'assets/packages/bootstrap/plugins/slider',
         'basePath' => 'core.bootstrap.plugins.slider',
         'position' => CClientScript::POS_BEGIN,
-        'css'=> array(
-            'css/bootstrap-slider'.$minVersion.'.css'
+        'css' => array(
+            'css/bootstrap-slider' . $minVersion . '.css'
         ),
         'js' => array(
-            'bootstrap-slider'.$minVersion.'.js'
+            'bootstrap-slider' . $minVersion . '.js'
         ),
         'depends' => array(
             'jquery',
@@ -104,20 +129,30 @@ return array(
         )
     ),
 
-    // Bootstrap Multiselect2
-    'bootstrap-select2' => array(
-        'devBaseUrl' => 'assets/packages/bootstrap/plugins/select2',
-        'basePath' => 'core.bootstrap.plugins.select2',
+    // Bootstrap select2
+    'select2' => array(
+        'devBaseUrl' => 'node_modules/select2/dist',
+        'basePath' => 'node_modules.select2.dist',
         'js' => array(
-            'js/select2.full'.$minVersion.'.js',
+            'js/select2.full' . $minVersion . '.js'
         ),
         'css' => array(
-            'css/select2.css',
-            'css/select2-bootstrap.css',
+            'css/select2' . $minVersion . '.css',
         ),
         'depends' => array(
             'jquery',
             'bootstrap'
+        )
+    ),
+
+    'select2-bootstrap' => array(
+        'devBaseUrl' => 'node_modules/select2-bootstrap-5-theme/dist',
+        'basePath' => 'node_modules.select2-bootstrap-5-theme.dist',
+        'css' => array(
+            'select2-bootstrap-5-theme' . $minVersion . '.css',
+        ),
+        'depends' => array(
+            'select2'
         )
     ),
 
@@ -126,7 +161,7 @@ return array(
         'basePath' => 'core.bootstrap.plugins.datetimepicker.build',
         'position' => CClientScript::POS_BEGIN,
         'css' => array(
-            'css/bootstrap-datetimepicker'.$minVersion.'.css'
+            'css/bootstrap-datetimepicker' . $minVersion . '.css'
         ),
         'js' => array(
             'js/bootstrap-datetimepicker.min.js'
@@ -143,10 +178,10 @@ return array(
         'basePath' => 'core.bootstrap.plugins.switch',
         'position' => CClientScript::POS_BEGIN,
         'css' => array(
-            'css/bootstrap-switch'.$minVersion.'.css'
+            'css/bootstrap-switch' . $minVersion . '.css'
         ),
         'js' => array(
-            'js/bootstrap-switch'.$minVersion.'.js'
+            'js/bootstrap-switch' . $minVersion . '.js'
         ),
         'depends' => array(
             'jquery',
@@ -157,36 +192,39 @@ return array(
 
     // jQuery UI
     'jqueryui' => array(
-        'devBaseUrl' => 'vendor/jquery-ui',
-        'basePath' => 'vendor.jquery-ui',
-        'position' =>CClientScript::POS_HEAD,
+        'devBaseUrl' => 'node_modules/jquery-ui-dist',
+        'basePath' => 'node_modules.jquery-ui-dist',
+        'position' => CClientScript::POS_HEAD,
         'js' => array(
-            'jquery-ui'.$minVersion.'.js',
+            'jquery-ui' . $minVersion . '.js',
         ),
         'css' => array(
-            'jquery-ui.structure.css', /* else autocomplete or other broken */
+            'jquery-ui' . $minVersion . '.css', /* else autocomplete or other broken */
         ),
         'depends' => array(
             'jquery',
         )
     ),
 
-    // jquery bindWithDelay
-    'jquery-bindWithDelay' => array(
-        'basePath' => 'vendor.jquery-bindWithDelay',
+    // jQuery migrate
+    'jquery-migrate' => array(
+        'devBaseUrl' => 'node_modules/jquery-migrate/dist',
+        'basePath' => 'node_modules.jquery-migrate.dist',
+        'position' => CClientScript::POS_HEAD,
         'js' => array(
-            'bindWithDelay.js'
+            'jquery-migrate' . $minVersion . '.js',
         ),
         'depends' => array(
-            'jquery'
+            'jquery',
         )
     ),
 
     // jQuery Cookie
     'js-cookie' => array(
-        'basePath' => 'vendor.js-cookie',
+        'devBaseUrl' => 'node_modules/js-cookie/dist',
+        'basePath' => 'node_modules.js-cookie.dist',
         'js' => array(
-            'js.cookie.js'
+            'js.cookie' . $minVersion . '.js'
         )
     ),
 
@@ -201,22 +239,11 @@ return array(
         )
     ),
 
-    // jQuery blockUI
-    'jquery-blockUI' => array(
-        'basePath' => 'vendor.jquery-blockui',
-        'js' => array(
-            'jquery.blockUI.js'
-        ),
-        'depends' => array(
-            'jquery'
-        )
-    ),
-
     // jQuery Table Sorter
     'jquery-tablesorter' => array(
-        'basePath' => 'vendor.jquery-tablesorter',
+        'basePath' => 'node_modules.tablesorter.dist.js',
         'js' => array(
-            'jquery.tablesorter.min.js'
+            'jquery.tablesorter' . $minVersion . '.js'
         ),
         'depends' => array(
             'jquery'
@@ -225,7 +252,8 @@ return array(
 
     // jQuery NestedSortable
     'jquery-nestedSortable' => array(
-        'basePath' => 'vendor.jquery-nestedSortable',
+        'devBaseUrl' => 'node_modules/nestedSortable',
+        'basePath' => 'node_modules.nestedSortable',
         'position' => CClientScript::POS_BEGIN,
         'js' => array(
             'jquery.mjs.nestedSortable.js'
@@ -237,46 +265,22 @@ return array(
 
     // Ace
     'ace' => array(
-        'devBaseUrl' => 'vendor/ace',
-        'basePath' => 'vendor.ace',
+        'devBaseUrl' => 'node_modules/ace-builds',
+        'basePath' => 'node_modules.ace-builds',
         'position' => CClientScript::POS_BEGIN,
-        'js' => array(
-            $minFolder.'/ace.js'
-        ),
+        'js' => ($debug > 0) ? array("/src/ace.js") : array("/src-min/ace.js"),
         'depends' => array(
             'jquery-ace'
         )
     ),
 
-    // jQuery Ace
-        'jquery-ace' => array(
-            'devBaseUrl' => 'vendor/jquery-ace',
-            'basePath' => 'vendor.jquery-ace',
-            'position' => CClientScript::POS_BEGIN,
-        'js' => array(
-            'jquery.ace.js',
-        ),
-        'depends' => array(
-            'jquery',
-        )
-    ),
 
-    // jQuery selectboxes
-    'jquery-selectboxes' => array(
-        'basePath' => 'vendor.jquery-selectboxes.selectboxes',
-        'js' => array(
-            'jquery.selectboxes.js'
-        ),
-        'depends' => array(
-            'jquery'
-        )
-    ),
 
     // jQuery touch punch : seems uneended now ?
     'jquery-touch-punch' => array(
-        'basePath' => 'vendor.jquery-touch-punch',
+        'basePath' => 'node_modules.jquery-ui-touch-punch',
         'js' => array(
-            'jquery.ui.touch-punch.min.js'
+            'jquery.ui.touch-punch' . $minVersion . '.js'
         ),
         'depends' => array(
             'jqueryui'
@@ -286,8 +290,7 @@ return array(
     // Decimal.js calculate in js
     'decimal' => array(
         'position' => CClientScript::POS_BEGIN,
-        'devBaseUrl' => 'vendor/decimal',
-        'basePath' => 'vendor.decimal',
+        'basePath' => 'node_modules_decimal',
         'js' => array(
             'decimal.js'
         ),
@@ -297,10 +300,10 @@ return array(
 
     // Moment.js use real simple dateTime modification
     'moment' => array(
-        'devBaseUrl' => 'vendor/moment',
-        'basePath' => 'vendor.moment',
+        'devBaseUrl' => 'node_modules/moment/min',
+        'basePath' => 'node_modules.moment.min',
         'js' => array(
-            'moment-with-locales'.$minVersion.'.js'
+            'moment-with-locales' . $minVersion . '.js'
         ),
         'depends' => array(
         )
@@ -309,27 +312,39 @@ return array(
     // leaflet, needed for short text question with map (OSM)
 
     'jsuri' => array(
-        'basePath' => 'vendor.jsUri',
+        'basePath' => 'node_modules.jsuri',
         'js' => array(
             'Uri.js'
         ),
     ),
 
     'jquery-datatable' => array(
-        'basePath' => 'vendor.datatables',
+        'basePath' => 'node_modules_datatables',
         'position' => CClientScript::POS_BEGIN,
-        'css' => array(
-            'css/datatables'.$minVersion.'.css'
-        ),
+
         'js' => array(
-            'js/jquery.dataTables'.$minVersion.'.js',
-            'js/dataTables.bootstrap'.$minVersion.'.js'
+            'js/jquery.dataTables' . $minVersion . '.js'
         ),
         'depends' => array(
             'jquery',
             'bootstrap'
         )
     ),
+
+    'jquery-datatable-bs5' => array(
+        'basePath' => 'node_modules_datatables_bs5',
+        'position' => CClientScript::POS_BEGIN,
+        'css' => array(
+            'css/dataTables.bootstrap5' . $minVersion . '.css'
+        ),
+        'js' => array(
+            'js/dataTables.bootstrap5' . $minVersion . '.js'
+        ),
+        'depends' => array(
+            'jquery-datatable'
+        )
+    ),
+
     'es6promise' => array(
         'basePath' => 'vendor.es6promise',
         'js' => array(
@@ -338,23 +353,22 @@ return array(
     ),
 
     'dom2image' => array(
-        'basePath' => 'vendor.dom-to-image',
+        'basePath' => 'node_modules.dom-to-image',
         'js' => array(
             'dist/dom-to-image.min.js',
         )
     ),
-
     'jspdf' => array(
-        'basePath' => 'vendor.jspdf',
+        'basePath' => 'node_modules.jspdf.dist',
+        'position' => CClientScript::POS_BEGIN,
         'js' => array(
-            'jspdf.min.js',
-            'createpdf_worker.js'
+            'jspdf.min.js'
         ),
         'depends' => array(
             'dom2image',
             'es6promise',
             'jquery',
-            'bootstrap'
+            'jszip'
         )
     ),
     /* Used by ranking question type */
@@ -363,20 +377,22 @@ return array(
         'basePath' => 'vendor.sortable', /* for sorting ability */
         'position' => CClientScript::POS_BEGIN,
         'js' => array(
-            'jquery.fn.sortable'.$minVersion.'.js'
+            'jquery.fn.sortable' . $minVersion . '.js'
             )
         ),
+    /* Used for samechoiceheight/samelistheight */
     'jquery-actual' => array(
         'position' => CClientScript::POS_BEGIN,
-        'devBaseUrl' => 'vendor/jquery-actual',
-        'basePath' => 'vendor.jquery-actual', /* for samechoiceheight/samelistheight */
+        'devBaseUrl' => 'node_modules/jquery.actual',
+        'basePath' => 'node_modules_jquery_actual',
         'js' => array(
-            'jquery.actual'.$minVersion.'.js'
+            'jquery.actual' . $minVersion . '.js'
         ),
     ),
     /* Used by short text with map by leaflet */
     'leaflet' => array(
-        'basePath' => 'vendor.leaflet',
+        'devBaseUrl' => 'node_modules/leaflet/dist',
+        'basePath' => 'node_modules.leaflet.dist',
         'position' => CClientScript::POS_BEGIN,
         'js' => array(
             'leaflet.js'
@@ -386,20 +402,36 @@ return array(
         ),
     ),
     'devbridge-autocomplete' => array(
-        'basePath' => 'vendor.devbridge-autocomplete.dist', /* For geoname search autocomplete without jquery */
+        'basePath' => 'node_modules.devbridge-autocomplete.dist', /* For geoname search autocomplete without jquery */
         'position' => CClientScript::POS_BEGIN,
         'js' => array(
-            'jquery.autocomplete'.$minVersion.'.js'
+            'jquery.autocomplete' . $minVersion . '.js'
         ),
     ),
     'jszip' => array(
-        'basePath' => 'vendor.jszip',
+        'basePath' => 'node_modules.jszip',
+        'position' => CClientScript::POS_BEGIN,
         'js' => array(
-            'jszip.js',
-            'fileSaver.js',
+            'dist/jszip' . $minVersion . '.js',
+            'vendor/FileSaver.js'
         ),
         'depends' => array(
             'jquery',
         )
-    )
+    ),
+    // DateTimePicker for BS5
+    'tempus-dominus' => array(
+        'devBaseUrl' => 'assets/packages/datetimepicker',
+        'basePath' => 'core.datetimepicker',
+        'css' => array(
+            'build/tempus-dominus.min.css',
+        ),
+        'js' => array(
+            'build/popper-tempus.min.js',
+            'datepickerInit.js'
+        ),
+        'depends' => array(
+            'moment'
+        )
+    ),
 );

@@ -1,11 +1,11 @@
-<div class="panel panel-default">
-    <div class="panel-heading">
+<div class="card m-2">
+    <div class="card-header">
         <strong>{{ gT("Survey general settings")}} </strong>
-        <a class="pull-right btn btn-default btn-xs pjax" data-toggle="tooltip" title="{{gT('General survey settings')}}" href="{{createUrl('surveyAdministration/rendersidemenulink', {'subaction':'generalsettings', 'surveyid':surveyid})}}">
+        <a class="float-end btn btn-outline-secondary btn-xs pjax" data-bs-toggle="tooltip" title="{{gT('General survey settings')}}" href="{{createUrl('surveyAdministration/rendersidemenulink', {'subaction':'generalsettings', 'surveyid':surveyid})}}">
             <i class="fa fa-cogs"></i>
         </a>
     </div>
-    <ul class="list-group">
+    <ul class="list-group list-group-flush">
         <!-- Owner -->
 
         <li class="list-group-item">
@@ -42,8 +42,8 @@
                             {% set sTemplateOptionsUrl = createUrl("themeOptions/updateSurvey", {'surveyid' : oSurvey.sid} ) %}
                             {% set sTemplateEditorUrl = createUrl("admin/themes/sa/view", {'templatename' : oSurvey.aOptions['template'] } ) %}
                             {{templateModel.title}} ( {{templateModel.name}})
-                            <a href='{{sTemplateOptionsUrl}}' title="{{ gT("Edit theme options")}}" class="btn btn-default btn-xs pull-right"><i class="fa fa-paint-brush"></i></a>
-                            <a href='{{sTemplateEditorUrl}}' title="{{ gT("Open theme editor in new window")}}" target="_blank" class="btn btn-default btn-xs pull-right"><i class="fa fa-object-group"></i></a>
+                            <a href='{{sTemplateOptionsUrl}}' title="{{ gT("Edit theme options")}}" class="btn btn-outline-secondary btn-xs float-end"><i class="fa fa-paint-brush"></i></a>
+                            <a href='{{sTemplateEditorUrl}}' title="{{ gT("Open theme editor in new window")}}" target="_blank" class="btn btn-outline-secondary btn-xs float-end"><i class="fa fa-object-group"></i></a>
                         {% else %}
                             {{oSurvey.aOptions['template']}}
                         {% endif %}

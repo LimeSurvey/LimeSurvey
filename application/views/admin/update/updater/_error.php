@@ -137,28 +137,31 @@ switch ($errorObject->error) {
 ?>
 
 
-<h2 class="maintitle" style="color: red;"><?php echo $title;?></h2>
+<h2 class="maintitle" style="color: red;"><?php echo $title; ?></h2>
 <div style="padding: 10px">
     <?php echo $message; ?>
 </div>
 
 <div>
-
 <?php if ($buttons == 1) : ?>
-        <a class="btn btn-default" href="https://community.limesurvey.org/comfort-update-extension/" role="button" aria-disabled="false" target="_blank">
+        <a class="btn btn-outline-secondary" href="https://community.limesurvey.org/comfort-update-extension/"
+           role="button" aria-disabled="false" target="_blank">
             <?php eT("Buy a new key"); ?>
         </a>
 
-        <a class="btn btn-default" href="<?php echo Yii::app()->createUrl("admin/update/sa/managekey");?>" role="button" aria-disabled="false">
+        <a class="btn btn-outline-secondary" href="<?php echo Yii::app()->createUrl("admin/update/sa/managekey"); ?>"
+           role="button" aria-disabled="false">
             <?php eT("Enter a new key"); ?>
         </a>
 <?php endif; ?>
 <?php if ($buttons == 3) : ?>
-        <a class="btn btn-default" href="<?php echo Yii::app()->createUrl("admin/update/sa/managekey");?>" role="button" aria-disabled="false">
+        <a class="btn btn-outline-secondary" href="<?php echo Yii::app()->createUrl("admin/update/sa/managekey"); ?>"
+           role="button" aria-disabled="false">
             <?php eT("Enter a new key"); ?>
         </a>
-<?php endif;?>
-<a class="btn btn-default" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
-    <?php eT("Cancel"); ?>
-</a>
+    <?php endif; ?>
+    <a class="btn btn-outline-secondary" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button"
+       aria-disabled="false">
+        <?php eT("Cancel"); ?>
+    </a>
 </div>

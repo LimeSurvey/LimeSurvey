@@ -624,8 +624,8 @@ class TokenDynamic extends LSActiveRecord
             ),
             array(
                 'header' => gT('Action'),
-                'class' => 'bootstrap.widgets.TbButtonColumn',
-                'template' => '{edit}{viewresponse}{spacerviewresponse}{previewsurvey}{launchsurvey}{previewsurveyspacer}{mail}{remind}{mailspacer}{viewparticipant}<span data-toggle="tooltip" title="' . gt('Delete survey participant') . '">{deletetoken}</span>{viewparticipantspacer}',
+                'class' => 'yiistrap_fork.widgets.TbButtonColumn',
+                'template' => '{edit}{viewresponse}{spacerviewresponse}{previewsurvey}{launchsurvey}{previewsurveyspacer}{mail}{remind}{mailspacer}{viewparticipant}<span data-bs-toggle="tooltip" title="' . gt('Delete survey participant') . '">{deletetoken}</span>{viewparticipantspacer}',
                 'htmlOptions' => array('class' => 'icon-btn-row'),
                 'buttons' => $this->getGridButtons(),
             ),
@@ -634,8 +634,8 @@ class TokenDynamic extends LSActiveRecord
                 'header' => gT('ID'),
                 'name' => 'tid',
                 'value' => '$data->tid',
-                'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs text-right'),
+                'headerHtmlOptions' => array('class' => ''),
+                'htmlOptions' => array('class' => ' text-end'),
             ),
 
 
@@ -643,16 +643,16 @@ class TokenDynamic extends LSActiveRecord
                 'header' => gT('First name') . $this->setEncryptedAttributeLabel(self::$sid, 'Token', 'firstname'),
                 'name' => 'firstname',
                 'value' => '$data->firstname',
-                'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs name'),
+                'headerHtmlOptions' => array('class' => ''),
+                'htmlOptions' => array('class' => ' name'),
             ),
 
             array(
                 'header' => gT('Last name') . $this->setEncryptedAttributeLabel(self::$sid, 'Token', 'lastname'),
                 'name' => 'lastname',
                 'value' => '$data->lastname',
-                'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs name'),
+                'headerHtmlOptions' => array('class' => ''),
+                'htmlOptions' => array('class' => ' name'),
             ),
 
             array(
@@ -660,8 +660,8 @@ class TokenDynamic extends LSActiveRecord
                 'name' => 'email',
                 'type' => 'raw',
                 'value' => '$data->emailFormated',
-                'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs name'),
+                'headerHtmlOptions' => array('class' => ''),
+                'htmlOptions' => array('class' => ' name'),
             ),
 
             array(
@@ -669,24 +669,24 @@ class TokenDynamic extends LSActiveRecord
                 'name' => 'emailstatus',
                 'value' => '$data->emailstatusFormated',
                 'type' => 'raw',
-                'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs'),
+                'headerHtmlOptions' => array('class' => ''),
+                'htmlOptions' => array('class' => ''),
             ),
 
             array(
                 'header' => gT('Access code'),
                 'name' => 'token',
                 'value' => '$data->token',
-                'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs'),
+                'headerHtmlOptions' => array('class' => ''),
+                'htmlOptions' => array('class' => ''),
             ),
 
             array(
                 'header' => gT('Language'),
                 'name' => 'language',
                 'value' => '$data->language',
-                'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs'),
+                'headerHtmlOptions' => array('class' => ''),
+                'htmlOptions' => array('class' => ''),
             ),
 
             array(
@@ -694,8 +694,8 @@ class TokenDynamic extends LSActiveRecord
                 'name' => 'sent',
                 'type' => 'raw',
                 'value' => '$data->sentFormated',
-                'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs  text-center'),
+                'headerHtmlOptions' => array('class' => ''),
+                'htmlOptions' => array('class' => '  text-center'),
             ),
 
             array(
@@ -703,16 +703,16 @@ class TokenDynamic extends LSActiveRecord
                 'name' => 'remindersent',
                 'type' => 'raw',
                 'value' => '$data->remindersentFormated',
-                'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs text-center'),
+                'headerHtmlOptions' => array('class' => ''),
+                'htmlOptions' => array('class' => ' text-center'),
             ),
 
             array(
                 'header' => gT('Reminder count'),
                 'name' => 'remindercount',
                 'value' => '$data->remindercount',
-                'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs text-right'),
+                'headerHtmlOptions' => array('class' => ''),
+                'htmlOptions' => array('class' => ' text-end'),
             ),
 
             array(
@@ -720,32 +720,32 @@ class TokenDynamic extends LSActiveRecord
                 'name' => 'completed',
                 'type' => 'raw',
                 'value' => '$data->completedFormated',
-                'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs text-center'),
+                'headerHtmlOptions' => array('class' => ''),
+                'htmlOptions' => array('class' => ' text-center'),
             ),
 
             array(
                 'header' => gT('Uses left'),
                 'name' => 'usesleft',
                 'value' => '$data->usesleft',
-                'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs text-right'),
+                'headerHtmlOptions' => array('class' => ''),
+                'htmlOptions' => array('class' => ' text-end'),
             ),
             array(
                 'header' => gT('Valid from'),
                 'name' => 'validfrom',
                 'type' => 'raw',
                 'value' => '$data->validfromFormated',
-                'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs name'),
+                'headerHtmlOptions' => array('class' => ''),
+                'htmlOptions' => array('class' => ' name'),
             ),
             array(
                 'header' => gT('Valid until'),
                 'type' => 'raw',
                 'name' => 'validuntil',
                 'value' => '$data->validuntilFormated',
-                'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs name'),
+                'headerHtmlOptions' => array('class' => ''),
+                'htmlOptions' => array('class' => ' name'),
             ),
         );
     }
@@ -767,8 +767,8 @@ class TokenDynamic extends LSActiveRecord
                 'header' => $desc . $this->setEncryptedAttributeLabel(self::$sid, 'Token', $sColName), // $aAttributedescriptions->$sColName->description,
                 'name' => $sColName,
                 'value' => '$data->' . $sColName,
-                'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs'),
+                'headerHtmlOptions' => array('class' => ''),
+                'htmlOptions' => array('class' => ''),
             );
         }
 
@@ -787,12 +787,12 @@ class TokenDynamic extends LSActiveRecord
         /* viewresponse button */
         $baseView = intval(Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'read') && $this->survey->active == "Y" && $this->survey->anonymized != "Y");
         $gridButtons['viewresponse'] = array(
-            'label' => '<span class="sr-only">' . gT("View response details") . '</span><span class="fa fa-list-alt" aria-hidden="true"></span>',
+            'label' => '<span class="visually-hidden">' . gT("View response details") . '</span><span class="fa fa-list-alt" aria-hidden="true"></span>',
             'imageUrl' => false,
             'url' => 'App()->createUrl("responses/viewbytoken",array("surveyId"=>' . self::$sid . ',"token"=>$data->token));',
             'options' => array(
-                'class' => "btn btn-default btn-sm",
-                'data-toggle' => "tooltip",
+                'class' => "btn btn-outline-secondary btn-sm",
+                'data-bs-toggle' => "tooltip",
                 'title' => gT("View response details")
             ),
             'visible' => $baseView . ' && $data->getHasResponses($data->token)',
@@ -802,7 +802,7 @@ class TokenDynamic extends LSActiveRecord
             'imageUrl' => false,
             'url' => '#',
             'options' => array(
-                'class' => "btn btn-default btn-sm invisible",
+                'class' => "btn btn-outline-secondary btn-sm invisible",
                 'disabled' => 'disabled',
                 'title' => ''
             ),
@@ -812,11 +812,11 @@ class TokenDynamic extends LSActiveRecord
         /* previewsurvey button */
         $baseView = intval(Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'create'));
         $gridButtons['previewsurvey'] = array(
-            'label' => '<span class="sr-only">' . gT("Preview the survey with this participant") . '</span><span class="fa fa-eye" aria-hidden="true"></span>',
+            'label' => '<span class="visually-hidden">' . gT("Preview the survey with this participant") . '</span><span class="fa fa-eye" aria-hidden="true"></span>',
             'imageUrl' => false,
             'url' => 'App()->createUrl("/survey/index",array("sid"=>' . self::$sid . ',"token"=>$data->token,"newtest"=>"Y"));',
             'options' => array(
-                'class' => "btn btn-default btn-sm",
+                'class' => "btn btn-outline-secondary btn-sm",
                 'target' => "_blank",
                 'data-toggle' => "tooltip",
                 'title' => gT("Preview the survey with this participant")
@@ -824,13 +824,13 @@ class TokenDynamic extends LSActiveRecord
             'visible' => $baseView . ' && !$data->survey->isActive && !empty($data->token) && ( $data->completed == "N" || empty($data->completed) || $data->survey->alloweditaftercompletion == "Y")'
         );
         $gridButtons['launchsurvey'] = array(
-            'label' => '<span class="sr-only">' . gT("Launch the survey with this participant") . '</span><span class="fa fa-play" aria-hidden="true"></span>',
+            'label' => '<span class="visually-hidden">' . gT("Launch the survey with this participant") . '</span><span class="fa fa-play" aria-hidden="true"></span>',
             'imageUrl' => false,
             'url' => 'App()->createUrl("/survey/index",array("sid"=>' . self::$sid . ',"token"=>$data->token,"newtest"=>"Y"));',
             'options' => array(
-                'class' => "btn btn-default btn-sm",
+                'class' => "btn btn-outline-secondary btn-sm",
                 'target' => "_blank",
-                'data-toggle' => "tooltip",
+                'data-bs-toggle' => "tooltip",
                 'title' => gT("Launch the survey with this participant")
             ),
             'visible' => $baseView . ' && $data->survey->isActive && !empty($data->token) && ( $data->completed == "N" || empty($data->completed) || $data->survey->alloweditaftercompletion == "Y")'
@@ -840,7 +840,7 @@ class TokenDynamic extends LSActiveRecord
             'imageUrl' => false,
             'url' => '#',
             'options' => array(
-                'class' => "btn btn-default btn-sm invisible",
+                'class' => "btn btn-outline-secondary btn-sm invisible",
                 'disabled' => 'disabled',
                 'title' => ''
             ),
@@ -851,24 +851,24 @@ class TokenDynamic extends LSActiveRecord
         $baseView = Permission::model()->hasSurveyPermission(self::$sid, 'tokens', 'update');
         /* mailing mail button */
         $gridButtons['mail'] = array(
-            'label' => '<span class="sr-only">' . gT("Send email invitation") . '</span><span class="icon-invite" aria-hidden="true"></span>',// fa-enveloppe-o
+            'label' => '<span class="visually-hidden">' . gT("Send email invitation") . '</span><span class="icon-invite" aria-hidden="true"></span>',// fa-enveloppe-o
             'imageUrl' => false,
             'url' => 'App()->createUrl("/admin/tokens/sa/email",array("surveyid"=>' . self::$sid . ',"tokenids"=>$data->tid,));',
             'options' => array(
-                'class' => "btn btn-default btn-sm btn-email",
-                'data-toggle' => "tooltip",
+                'class' => "btn btn-outline-secondary btn-sm btn-email",
+                'data-bs-toggle' => "tooltip",
                 'title' => gT("Send email invitation")
             ),
             'visible' => $baseView . ' && !empty($data->token) && ($data->sent== "N" || empty($data->sent)) && $data->emailstatus == "OK" && $data->email && $data->completed == "N" && ($data->usesleft > 0 || $data->survey->alloweditaftercompletion == "Y")',
         );
         /* mailing remind button */
         $gridButtons['remind'] = array(
-            'label' => '<span class="sr-only">' . gT("Send email reminder") . '</span><span class="icon-remind" aria-hidden="true"></span>',
+            'label' => '<span class="visually-hidden">' . gT("Send email reminder") . '</span><span class="icon-remind" aria-hidden="true"></span>',
             'imageUrl' => false,
             'url' => 'App()->createUrl("/admin/tokens/sa/email/action/remind",array("surveyid"=>' . self::$sid . ',"tokenids"=>$data->tid));',
             'options' => array(
-                'class' => "btn btn-default btn-sm btn-email",
-                'data-toggle' => "tooltip",
+                'class' => "btn btn-outline-secondary btn-sm btn-email",
+                'data-bs-toggle' => "tooltip",
                 'title' => gT("Send email reminder")
             ),
             'visible' => $baseView . ' && !empty($data->token) && !($data->sent== "N" || empty($data->sent)) && $data->emailstatus == "OK" && $data->email && $data->completed == "N" && ($data->usesleft > 0 || $data->survey->alloweditaftercompletion == "Y")',
@@ -878,7 +878,7 @@ class TokenDynamic extends LSActiveRecord
             'imageUrl' => false,
             'url' => '#',
             'options' => array(
-                'class' => "btn btn-default btn-sm invisible",
+                'class' => "btn btn-outline-secondary btn-sm invisible",
                 'disabled' => 'disabled',
                 'title' => ''
             ),
@@ -886,12 +886,12 @@ class TokenDynamic extends LSActiveRecord
         );
         /* edit button button */
         $gridButtons['edit'] = array(
-            'label' => '<span class="sr-only">' . gT('Edit this survey participant') . '</span><span class="fa fa-pencil" aria-hidden="true"></span>',
+            'label' => '<span class="visually-hidden">' . gT('Edit this survey participant') . '</span><span class="fa fa-pencil" aria-hidden="true"></span>',
             'imageUrl' => false,
             'url' => 'App()->createUrl("/admin/tokens/sa/edit",array("iSurveyId"=>' . self::$sid . ',"iTokenId"=>$data->tid,"ajax"=>"true"));',
             'options' => array(
-                'class' => "btn btn-default btn-sm btn-edit",
-                'data-toggle' => "tooltip",
+                'class' => "btn btn-outline-secondary btn-sm btn-edit",
+                'data-bs-toggle' => "tooltip",
                 'title' => gT('Edit this survey participant'),
                 'data-sid' => self::$sid
             ),
@@ -900,14 +900,14 @@ class TokenDynamic extends LSActiveRecord
         );
         /* delete button */
         $gridButtons['deletetoken'] = array(
-            'label' => '<span class="sr-only">' . gT('Delete survey participant') . '</span><span class="fa fa-trash text-danger" aria-hidden="true"></span>',
+            'label' => '<span class="visually-hidden">' . gT('Delete survey participant') . '</span><span class="fa fa-trash text-danger" aria-hidden="true"></span>',
             'imageUrl' => false,
             //'url' => 'App()->createUrl("/admin/tokens/sa/deleteToken",array("sid"=>' . self::$sid . ',"sItem"=>$data->tid,"ajax"=>"true"));',
             'options' => array(
-                'class' => "btn btn-default btn-sm btn-delete",
-                ///'data-toggle' => "tooltip",
-                'data-toggle' => "modal",
-                'data-target' => '#confirmation-modal',
+                'class' => "btn btn-outline-secondary btn-sm btn-delete",
+                ///'data-bs-toggle' => "tooltip",
+                'data-bs-toggle' => "modal",
+                'data-bs-target' => '#confirmation-modal',
                 'data-message' => gt('Do you really want to delete this participant') . '?',
                 'data-post-url' => 'App()->createUrl("/admin/tokens/sa/deleteToken",array("sid"=>' . self::$sid . ',"sItem"=>$data->tid));',
                 'evaluateOptions' => array('data-post-url'),
@@ -920,12 +920,12 @@ class TokenDynamic extends LSActiveRecord
         /* CPDB link */
         $baseVisible = intval(Permission::model()->hasGlobalPermission('participantpanel', 'read') && self::model(self::$sid)->count("participant_id is not null"));
         $gridButtons['viewparticipant'] = array(
-            'label' => '<span class="sr-only">' . gT('View this participant in the central participants database') . '</span><span class="icon-cpdb" aria-hidden="true"></span>',
+            'label' => '<span class="visually-hidden">' . gT('View this participant in the central participants database') . '</span><span class="icon-cpdb" aria-hidden="true"></span>',
             'imageUrl' => false,
             'url' => 'App()->createUrl("admin/participants/sa/displayParticipants",array("#" => json_encode(["searchcondition"=>"participant_id||equal||".$data->participant_id],JSON_FORCE_OBJECT)))',
             'options' => array(
-                'class' => "btn btn-default btn-sm btn-participant",
-                'data-toggle' => "tooltip",
+                'class' => "btn btn-outline-secondary btn-sm btn-participant",
+                'data-bs-toggle' => "tooltip",
                 'title' => gT('View this participant in the central participants database'),
             ),
             'click' => 'function(event){ window.LS.gridButton.postGridAction(event,$(this)); }',
@@ -936,8 +936,8 @@ class TokenDynamic extends LSActiveRecord
             'imageUrl' => false,
             'url' => '#',
             'options' => array(
-                'class' => "btn btn-default btn-sm invisible",
-                'data-toggle' => "tooltip",
+                'class' => "btn btn-outline-secondary btn-sm invisible",
+                'data-bs-toggle' => "tooltip",
                 'title' => "",
             ),
             'visible' => $baseVisible . ' && empty($data->participant_id)',
@@ -1071,14 +1071,18 @@ class TokenDynamic extends LSActiveRecord
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
         if ($this->validfrom) {
             $s = DateTime::createFromFormat($dateformatdetails['phpdate'] . ' H:i', $this->validfrom);
-            $s2 = $s->format('Y-m-d H:i');
-            $criteria->addCondition('validfrom <= \'' . $s2 . '\'');
+            if (is_object($s)) {
+                $s2 = $s->format('Y-m-d H:i');
+                $criteria->addCondition('validfrom <= \'' . $s2 . '\'');
+            }
         }
 
         if ($this->validuntil) {
             $s = DateTime::createFromFormat($dateformatdetails['phpdate'] . ' H:i', $this->validuntil);
-            $s2 = $s->format('Y-m-d H:i');
-            $criteria->addCondition('validuntil >= \'' . $s2 . '\'');
+            if (is_object($s)) {
+                $s2 = $s->format('Y-m-d H:i');
+                $criteria->addCondition('validuntil >= \'' . $s2 . '\'');
+            }
         }
 
         foreach ($this->custom_attributes as $sColName => $oColumn) {

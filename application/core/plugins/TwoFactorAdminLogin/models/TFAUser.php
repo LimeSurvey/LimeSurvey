@@ -60,9 +60,9 @@ class TFAUser extends User
         }
         $buttons = "<div class='icon-btn-row'>";
         $buttons .= '<button '
-            . 'class="btn btn-icon btn-default btn-sm TFA--management--action-deleteToken" '
+            . 'class="btn btn-icon btn-outline-secondary btn-sm TFA--management--action-deleteToken" '
             . 'title="' . gT("Delete 2FA key") . '" '
-            . 'data-toggle="tooltip" '
+            . 'data-bs-toggle="tooltip" '
             . 'data-confirmtext="' . gT('Are you sure you want to delete this 2FA key?') . '" '
             . 'data-buttons="{confirm_cancel: \'' . gT('No, cancel') . '\', confirm_ok: \'' . gT('Yes, I am sure') . '\'}" '
             . 'data-href="' . Yii::app()->createUrl("plugins/direct/plugin/TwoFactorAdminLogin/function/directCallDeleteKey") . '" '

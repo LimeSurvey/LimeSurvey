@@ -1,18 +1,16 @@
 <!-- General -->
-<div class="panel panel-primary" id="panel-various">
-  <div class="panel-heading">
-    <div class="panel-title h4">
+<div class="card" id="panel-various">
+  <div class="card-header ">
       <?php eT("General"); ?>
-    </div>
   </div>
-  <div class="panel-body">
-    <div class="form-group row">
-      <label for='completionstate' class="control-label">
+  <div class="card-body">
+    <div class="mb-3 row">
+      <label for='completionstate' class="form-label">
         <?php eT("Completion state:");?>
       </label>
 
       <div class="">
-        <select name='completionstate' id='completionstate' class='form-control'>
+        <select name='completionstate' id='completionstate' class='form-select'>
           <option value='complete' <?php echo $selecthide;?>>
             <?php eT("Completed responses only");?>
           </option>
@@ -26,12 +24,12 @@
       </div>
     </div>
 
-    <div class="form-group row">
-      <label for='exportlang' class="control-label">
+    <div class="mb-3 row">
+      <label for='exportlang' class="form-label">
         <?php eT("Export language:"); ?>
       </label>
       <div class=''>
-        <?php echo CHtml::dropDownList('exportlang', null, $aLanguages, array('class'=>'form-control')); ?>
+        <?php echo CHtml::dropDownList('exportlang', null, $aLanguages, array('class'=>'form-select')); ?>
       </div>
     </div>
   </div>

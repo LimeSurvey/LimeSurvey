@@ -321,7 +321,7 @@ export default {
                         this.$store.commit("maxSideBarWidth", true);
                         return;
                     }
-                    self.sideBarWidth = e.pageX + 8 + "px";
+                    self.sideBarWidth = e.pageX - 4 + "px";
                     this.$store.commit("changeSidebarwidth", self.sideBarWidth);
                     this.$store.commit("maxSideBarWidth", false);
                 }
@@ -454,10 +454,11 @@ export default {
     }
 };
 </script>
+
 <template>
     <div 
         id="sidebar" 
-        class="ls-flex ls-ba ls-space padding left-0 col-md-4 nofloat transition-animate-width scoped-hide-on-small" 
+        class="d-flex col-lg-4 ls-ba position-relative transition-animate-width"
         :class=" smallScreenHidden ? 'toggled' : ''"
         :style="{'max-height': $store.state.inSurveyViewHeight, 'display': hiddenStateToggleDisplay}" 
         @mouseleave="mouseleave" 
@@ -475,11 +476,10 @@ export default {
                 </div>
             </div>
             <div 
-                class="col-12 fill-height ls-space padding all-0 mainContentContainer" 
-                style="height: 100%" 
+                class="col-12 mainContentContainer"
                 key="mainContentContainer"
             >
-                <div class="mainMenu container-fluid col-12 ls-space padding right-0 fill-height">
+                <div class="mainMenu container-fluid col-12">
                     <sidebar-state-toggle @collapse="toggleCollapse"/>
                     <transition name="slide-fade">
                         <sidemenu 
@@ -518,7 +518,7 @@ export default {
         >
             <button 
                 v-show="!$store.getters.isCollapsed" 
-                class="btn btn-default" 
+                class="btn btn-outline-secondary" 
                 @mousedown="mousedown" @click.prevent="()=>{return false;}"
             >
                 <i class="fa fa-ellipsis-v" />

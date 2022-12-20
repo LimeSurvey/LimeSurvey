@@ -11,7 +11,7 @@
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <h3><?php echo sprintf(gT("View response ID %d"), $id); ?></h3>
     <div class="row">
-        <div class="col-lg-12 content-right">
+        <div class="col-12 content-right">
             <?php echo CHtml::form(["responses/browse/", ['surveyId' => $surveyid]], 'post', ['id' => 'resulttableform']); ?>
             <input id='downloadfile' name='downloadfile' value='' type='hidden'>
             <input id='sid' name='sid' value='<?php echo $surveyid; ?>' type='hidden'>

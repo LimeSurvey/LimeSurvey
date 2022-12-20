@@ -85,7 +85,7 @@ export default {
           self.sideBarWidth = screen.width / 2;
           return;
         }
-        self.sideBarWidth = e.pageX + 8 + "px";
+        self.sideBarWidth = e.pageX - 4 + "px";
         window.clearTimeout(self.isMouseDownTimeOut);
         self.isMouseDownTimeOut = null;
       }
@@ -110,13 +110,13 @@ export default {
 <template>
   <div
     id="sidebar"
-    class="ls-flex ls-ba ls-space padding left-0 col-md-4 hidden-xs nofloat transition-animate-width"
+    class="d-flex col-lg-4 ls-ba position-relative transition-animate-width"
     :style="{'height': '100%', 'min-width': '250px', width: sideBarWidth }"
     @mouseleave="mouseleave"
     @mouseup="mouseup"
   >
-    <div class="col-12 fill-height ls-space padding all-0" style="height: 100%">
-      <div class="mainMenu container-fluid col-12 ls-space padding right-0 fill-height">
+    <div class="col-12">
+      <div class="mainMenu col-12 ">
         <sidemenu :menu="currentMenue" :style="{'min-height': calculateSideBarMenuHeight}"></sidemenu>
       </div>
     </div>
@@ -126,7 +126,7 @@ export default {
     >
       <button
         v-show="!$store.state.isCollapsed"
-        class="btn btn-default"
+        class="btn btn-outline-secondary"
         @mousedown="mousedown"
         @click.prevent="()=>{return false;}"
       >
@@ -135,37 +135,3 @@ export default {
     </div>
   </div>
 </template>
-
-
-<style lang="scss" scoped>
-.resize-handle {
-  position: absolute;
-  right: 14px;
-  top: 0;
-  bottom: 0;
-  height: 100%;
-  width: 4px;
-  cursor: col-resize;
-  button {
-    outline: 0;
-    &:focus,
-    &:active,
-    &:hover {
-      outline: 0 !important;
-    }
-    cursor: col-resize;
-    width: 100%;
-    height: 100%;
-    text-align: left;
-    border-radius: 0;
-    padding: 0px 7px 0px 4px;
-    i {
-      font-size: 12px;
-      width: 5px;
-    }
-  }
-  .dragPointer {
-      cursor: move;
-  }
-}
-</style>

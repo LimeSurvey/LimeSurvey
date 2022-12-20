@@ -946,56 +946,6 @@ class QuestionGroupsAdministrationController extends LSBaseController
         );
     }
 
-    /**
-     * Ajax request to get the question group topbar as json (see view question_group_topbar)
-     *
-     * @param int $sid ID of survey
-     * @param null |int $gid ID of group
-     *
-     * @return mixed
-     * @throws CException
-     */
-    public function actionGetQuestionGroupTopBar(int $sid, $gid = null)
-    {
-        //permission ??
-        if (!Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'read')) {
-            App()->user->setFlash('error', gT("Access denied"));
-            $this->redirect(App()->request->urlReferrer);
-        }
-
-        $oSurvey = Survey::model()->findByPk($sid);
-        $oQuestionGroup = null;
-        if ($gid) {
-            $oQuestionGroup = QuestionGroup::model()->findByPk($gid);
-            $sumcount  = safecount($oQuestionGroup->questions);
-        } else {
-            $gid = 0;
-            $sumcount = 0;
-        }
-
-        $activated = $oSurvey->active;
-        $languagelist = $oSurvey->allLanguages;
-        $ownsSaveButton = true;
-        $ownsSaveAndCloseButton = true;
-
-        return $this->renderPartial(
-            'question_group_topbar',
-            array(
-                'oSurvey' => $oSurvey,
-                'oQuestionGroup' => $oQuestionGroup,
-                'sid'     => $oSurvey->sid,
-                'gid'     => $gid,
-                'sumcount4' => $sumcount,
-                'languagelist' => $languagelist,
-                'activated' => $activated,
-                'ownsSaveButton'         => $ownsSaveButton,
-                'ownsSaveAndCloseButton' => $ownsSaveAndCloseButton,
-            ),
-            false,
-            false
-        );
-    }
-
     /** ++++++++++++  the following functions should be moved to model or a service class ++++++++++++++++++++++++++ */
 
     /**

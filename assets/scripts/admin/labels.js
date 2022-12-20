@@ -293,7 +293,8 @@ function add_label(event) {
 function del_label(event) {
     event.preventDefault();
     var sRowID = $(event.target).closest('tr').attr('id');
-
+    // tooltip remains after delete label after bootstrap 5 upgrade, so remove tooltip manually here until find better solution.
+    $('.tooltip').tooltip('dispose');
     var aRowInfo = sRowID.split('_');// first is row, second langage and last the row number
     $(".tab-pane").each(function(divindex,divelement){
         var div_language = $(".lslanguage",divelement).val();
@@ -346,10 +347,10 @@ function createNewLabelTR(alternate, first) {
     x = x + "<td><input class=' form-control  ' name=\"title_###lang###_###next###\" id=\"title_###lang###_###next###\" type=\"text\" value=\"\" size=\"80\" maxlength=\"3000\" >"+
     "</td>";
 
-    x = x + "<td style=\"text-align: center;\">&nbsp;&nbsp;&nbsp;<a href='#' class='btn btn-default btn-sm htmleditor--openmodal' data-target-field-id='title_###lang###_###next###' data-toggle='tooltip' title='Open editor'><i class='fa fa-edit'></i></a>";
+    x = x + "<td style=\"text-align: center;\">&nbsp;&nbsp;&nbsp;<a href='#' class='btn btn-outline-secondary btn-sm htmleditor--openmodal' data-bs-target-field-id='title_###lang###_###next###' data-bs-toggle='tooltip' title='Open editor'><i class='fa fa-edit'></i></a>";
 
     if (first) {
-        x = x + "&nbsp<button class='btn btn-default btn-sm btnaddanswer'><i class=\"icon-add text-success\"></i></button> <button class='btn btn-default btn-sm btndelanswer'><i class=\" fa fa-trash  text-warning\"></i></button>";
+        x = x + "&nbsp<button class='btn btn-outline-secondary btn-sm btnaddanswer'><i class=\"icon-add text-success\"></i></button> <button class='btn btn-outline-secondary btn-sm btndelanswer'><i class=\" fa fa-trash  text-warning\"></i></button>";
     }
 
     x = x + "</td></tr>";

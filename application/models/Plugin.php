@@ -126,7 +126,7 @@ class Plugin extends LSActiveRecord
     {
         if ($this->load_error == 1) {
             return sprintf(
-                "<span data-toggle='tooltip' title='%s' class='btntooltip fa fa-times text-warning'></span>",
+                "<span data-bs-toggle='tooltip' title='%s' class='btntooltip fa fa-times text-warning'></span>",
                 gT('Plugin load error')
             );
         } elseif ($this->active == 1) {
@@ -205,7 +205,7 @@ class Plugin extends LSActiveRecord
                         'pluginId' => $this->id
                     ]
                 );
-                $output .= "<a href='" . $reloadUrl . "' data-toggle='tooltip' title='" . gT('Attempt plugin reload') . "' class='btn btn-default btn-sm btntooltip'><span class='fa fa-refresh'></span></a>";
+                $output .= "<a href='" . $reloadUrl . "' data-bs-toggle='tooltip' title='" . gT('Attempt plugin reload') . "' class='btn btn-outline-secondary btn-sm btntooltip'><span class='fa fa-refresh'></span></a>";
             } elseif ($this->active == 0) {
                 $output .= $this->getActivateButton();
             } else {
@@ -241,7 +241,7 @@ class Plugin extends LSActiveRecord
         );
         $output .= "
                 <input type='hidden' name='pluginId' value='" . $this->id . "' />
-                <button data-toggle='tooltip' title='" . gT('Activate plugin') . "' class='btntooltip btn btn-default btn-sm'>
+                <button data-bs-toggle='tooltip' title='" . gT('Activate plugin') . "' class='btntooltip btn btn-outline-secondary btn-sm'>
                     <i class='fa fa-power-off'></i>
                 </button>
             </form>
@@ -269,7 +269,7 @@ class Plugin extends LSActiveRecord
         );
         $output .= "
                 <input type='hidden' name='pluginId' value='" . $this->id . "' />
-                <button data-toggle='tooltip' onclick='return confirm(\"" . gT('Are you sure you want to deactivate this plugin?') . "\");' title='" . gT('Deactivate plugin') . "' class='btntooltip btn btn-warning btn-sm'>
+                <button data-bs-toggle='tooltip' onclick='return confirm(\"" . gT('Are you sure you want to deactivate this plugin?') . "\");' title='" . gT('Deactivate plugin') . "' class='btntooltip btn btn-warning btn-sm'>
                     <i class='fa fa-power-off'></i>
                 </button>
             </form>
@@ -298,7 +298,7 @@ class Plugin extends LSActiveRecord
         );
         $output .= "
                 <input type='hidden' name='pluginId' value='" . $this->id . "' />
-                <button data-toggle='tooltip' onclick='return confirm(\"" . gT('Are you sure you want to uninstall this plugin?') . "\");' title='" . gT('Uninstall plugin') . "' class='btntooltip btn btn-danger btn-sm'>
+                <button data-bs-toggle='tooltip' onclick='return confirm(\"" . gT('Are you sure you want to uninstall this plugin?') . "\");' title='" . gT('Uninstall plugin') . "' class='btntooltip btn btn-danger btn-sm'>
                     <i class='fa fa-times-circle'></i>
                 </button>
             </form>

@@ -279,7 +279,7 @@ class LsDefaultDataSets
                 'lock',
                 'fontawesome',
                 '',
-                'admin/surveypermission/sa/view/',
+                'surveyPermissions/index',
                 '',
                 '',
                 '',
@@ -475,7 +475,7 @@ class LsDefaultDataSets
                 'tasks',
                 'fontawesome',
                 '',
-                'admin/quotas/sa/index/',
+                'quotas/index/',
                 '',
                 '',
                 '',
@@ -1080,14 +1080,14 @@ class LsDefaultDataSets
                 'template' => ""
                 . "<div class='popover tour lstutorial__template--mainContainer'>"
                 . "<div class='arrow'></div>"
-                . "<button class='pull-right ls-space margin top-5 right-5 btn btn-warning btn-sm' data-role='end' data-toggle='tooltip' title='" . gT('End tour', 'js') . "'><i class='fa fa-close'></i></button>"
+                . "<button class='float-end ls-space margin top-5 right-5 btn btn-warning btn-sm' type='button' data-role='end' data-bs-toggle='tooltip' title='" . gT('End tour', 'js') . "'><i class='fa fa-close'></i></button>"
                 . "<h3 class='popover-title lstutorial__template--title'></h3>"
                     . "<div class='popover-content lstutorial__template--content'></div>"
                     . "<div class='popover-navigation lstutorial__template--navigation'>"
                         . "<div class='row'>"
-                            . "<div class='btn-group col-xs-12' role='group' aria-label='...'>"
-                                . "<button class='btn btn-default col-md-6' data-role='prev'>" . gT('Previous', 'js') . "</button>"
-                                . "<button class='btn btn-primary col-md-6' data-role='next'>" . gT('Next', 'js') . "</button>"
+                            . "<div class='btn-group col-12' role='group' aria-label='...'>"
+                                . "<button role='button' type='button' class='btn btn-outline-secondary col-lg-6' data-role='prev'>" . gT('Previous', 'js') . "</button>"
+                                . "<button role='button' type='button' class='btn btn-primary col-lg-6' data-role='next'>" . gT('Next', 'js') . "</button>"
                             . "</div>"
                         . "</div>"
                     . "</div>"

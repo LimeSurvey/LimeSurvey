@@ -5,14 +5,14 @@ var defineActions = function (dataArray) {
     var buttonDelete = $('<button><i class="fa fa-trash text-danger"></i></button>');
     var container = $('<div><div class="icon-btn-row"></div></div>');
     buttonEdit
-        .addClass('btn btn-sm btn-default surveysettings_edit_intparameter')
+        .addClass('btn btn-sm btn-outline-secondary surveysettings_edit_intparameter')
         .data('id', dataArray.id)
         .data('sid', dataArray.sid)
         .data('qid', (dataArray.qid || null))
         .data('sqid', (dataArray.qid || null))
         .appendTo(iconRow);
     buttonDelete
-        .addClass('btn btn-sm btn-default surveysettings_delete_intparameter')
+        .addClass('btn btn-sm btn-outline-secondary surveysettings_delete_intparameter')
         .data('id', dataArray.id)
         .data('sid', dataArray.sid)
         .data('qid', (dataArray.qid || null))
@@ -49,7 +49,7 @@ function PostParameterGrid() {
 function saveParameter() {
     var sParamname = $.trim($('#paramname').val());
     if (sParamname == '' || !/^[a-zA-Z_][a-zA-Z0-9_]*$/.test(sParamname) || sParamname == 'sid' || sParamname == 'newtest' || sParamname == 'token' || sParamname == 'lang') {
-        $('#dlgEditParameter').prepend('<div class="alert alert-danger alert-dismissible fade in"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' + sEnterValidParam + '</div>');
+        $('#dlgEditParameter').prepend('<div class="alert alert-danger alert-dismissible fade in"><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' + sEnterValidParam + '</div>');
         return;
     }
     $('#dlgEditParameter').dialog('close');
@@ -143,10 +143,10 @@ function guidGenerator() {
 function validateSettingsForm($form) {
     switch ($form.attr('id')) {
         case 'publication':
-            return validateEndDateHigherThanStart(
+            return LS.validateEndDateHigherThanStart(
                 $('#startdate_datetimepicker').data('DateTimePicker'),
                 $('#expires_datetimepicker').data('DateTimePicker'),
-                expirationLowerThanStartError
+                () => {LS.LsGlobalNotifier.createAlert(expirationLowerThanStartError, 'danger')}
             );
         default:
             return true;
@@ -167,7 +167,7 @@ function validateEndDateHigherThanStart(startDatePicker, endDatePicker, errorMes
     if (difference >= 0) {
         return true;
     }
-    LS.LsGlobalNotifier.createFlash(errorMessage, 'alert-danger fade in');
+    LS.LsGlobalNotifier.createAlert(errorMessage, 'danger');
     return false;
 }
 
@@ -185,11 +185,11 @@ function sendPostAndUpdate(url, data) {
             if (!result.success) {
                 var errorMsg = result.message || '';
                 if (!errorMsg) errorMsg = "Unexpected error";
-                LS.LsGlobalNotifier.createFlash(errorMsg, 'alert-danger fade in');
+                LS.LsGlobalNotifier.createAlert(errorMsg, 'danger');
                 return;
             }
 
-            LS.LsGlobalNotifier.createFlash(result.message, 'alert-success fade in');
+            LS.LsGlobalNotifier.createAlert(result.message, 'success');
 
             try {
                 $.fn.yiiGridView.update('urlparams');
@@ -200,7 +200,7 @@ function sendPostAndUpdate(url, data) {
             }
         },
         error :  function(result){
-            LS.LsGlobalNotifier.createFlash(result.statusText ?? "Unexpected error", 'alert-danger fade in');
+            LS.LsGlobalNotifier.createAlert(result.statusText ?? "Unexpected error", 'danger');
         }
     });
 }

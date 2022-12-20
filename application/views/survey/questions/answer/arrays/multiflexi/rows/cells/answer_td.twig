@@ -36,7 +36,8 @@
         {% if inputboxlayout == false %}
             <!-- InputBox Layout False -->
             <select
-                class="multiflexiselect form-control text-right"
+                {# class="multiflexiselect form-control text-end" #}
+                class="form-select text-end"
                 name="{{ myfname2 }}"
                 id="answer{{ myfname2 }}">
                 <option value="">
@@ -53,7 +54,7 @@
             <!-- InputBox Layout -->
             {{ C.Html.textField(myfname2,value,({
                 'id' : "answer"~myfname2,
-                'class' : "multiflexitext form-control "~answertypeclass~" text-right ",
+                'class' : "multiflexitext form-control "~answertypeclass~" text-end ",
                 'title' : gT('Only numbers may be entered in this field.'),
                 'size' : (inputsize ? inputsize : null),
                 'maxlength' : (maxlength ? maxlength : null),

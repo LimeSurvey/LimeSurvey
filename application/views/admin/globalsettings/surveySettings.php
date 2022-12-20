@@ -2,91 +2,98 @@
 /* @var $this SurveysGroupsController */
 
 Yii::app()->getClientScript()->registerScript(
-    'GlobalSurveySettings', 
-    "window.GlobalSideMenuData = ".json_encode($jsData).";", 
+    'GlobalSurveySettings',
+    "window.GlobalSideMenuData = " . json_encode($jsData) . ";",
     LSYii_ClientScript::POS_BEGIN
 );
 
 
 $optionsOnOff = array(
-    'Y' => gT('On','unescaped'),
-    'N' => gT('Off','unescaped'),
+    'Y' => gT('On', 'unescaped'),
+    'N' => gT('Off', 'unescaped'),
 );
 
 ?>
-
-<div class="col-lg-12 list-surveys">
-
-    <div class="row">
-        <?php echo CHtml::form(array("admin/globalsettings/sa/surveysettings"), 'post', array('id'=>'survey-settings-form')); ?>    
-            <div id="surveySettingsForThisGroup" style="display: flex; flex-wrap:nowrap;">
-                <div id="global-sidebar-container">
-                    <global-sidemenu />
-                </div>
-                <div id="pjax-content" class="tab-content col-md-10">
-                    <div class="row">
-                        <div class="alert alert-info controls col-sm-12" role="alert">
-                            <?php eT('All changes of global survey settings will immediately affect all related survey groups and surveys that use inherited values.'); ?>
-                        </div>
-                    </div>
-                    <?php if($partial == '_generaloptions_panel') { ?> 
-                        <div id="surveySettingsGeneral" class="row">
-                            <?php $this->renderPartial('survey/subview/accordion/_generaloptions_panel', array(
-                                    'oSurvey'=>$oSurvey,
-                                    'oSurveyOptions' => $oSurvey->oOptionLabels,
-                                    'bShowInherited' => $oSurvey->showInherited,
-                                    'optionsOnOff' => $optionsOnOff,
-                                    'bShowAllOptions' => false,
-                                    'users' => $users,
-                            )); ?>
-                        </div>
-                    <?php } else if($partial == '_presentation_panel') { ?> 
-                        <div id="surveySettingsPresentation" >
-                            <?php $this->renderPartial('survey/subview/accordion/_presentation_panel', array(
-                                'oSurvey'=>$oSurvey,
-                                'oSurveyOptions' => $oSurvey->oOptionLabels,
-                                'bShowInherited' => $oSurvey->showInherited,
-                                'optionsOnOff' => $optionsOnOff
-                        )); ?>
-                        </div>
-                    <?php } else if($partial == '_tokens_panel') { ?> 
-                        <div id="surveySettingsParticipants" >
-                            <?php $this->renderPartial('survey/subview/accordion/_tokens_panel', array(
-                                'oSurvey'=>$oSurvey,
-                                'oSurveyOptions' => $oSurvey->oOptionLabels,
-                                'bShowInherited' => $oSurvey->showInherited,
-                                'optionsOnOff' => $optionsOnOff
-                        )); ?>
-                        </div>
-                    <?php } else if($partial == '_notification_panel') { ?> 
-                        <div id="surveySettingsNotification" >
-                            <?php $this->renderPartial('survey/subview/accordion/_notification_panel', array(
-                                'oSurvey'=>$oSurvey,
-                                'oSurveyOptions' => $oSurvey->oOptionLabels,
-                                'bShowInherited' => $oSurvey->showInherited,
-                                'optionsOnOff' => $optionsOnOff,
-                                'bShowAllOptions' => false,
-                            )); ?>
-                        </div>
-                    <?php } else if($partial == '_publication_panel') { ?> 
-                        <div id="surveySettingsPublication" >
-                            <?php $this->renderPartial('survey/subview/accordion/_publication_panel', array(
-                                    'oSurvey'=>$oSurvey,
-                                    'oSurveyOptions' => $oSurvey->oOptionLabels,
-                                    'bShowInherited' => $oSurvey->showInherited,
-                                    'optionsOnOff' => $optionsOnOff,
-                                    'dateformatdetails' => $aDateFormatDetails,
-                                    'bShowAllOptions' => false,
-                            )); ?>
-                        </div>
-                    <?php } ?>
-                    <div class="hidden">
-                            <?php echo TbHtml::submitButton('Save', array('class'=>'btn btn-success col-md-2 col-sm-4', "id"=>"survey-settings-form")); ?>
-                    </div>
-                
-                </div>
-            </form>
+<div class="container-fluid position-relative">
+    <?php echo CHtml::form(array("admin/globalsettings/sa/surveysettings"), 'post', array('id' => 'survey-settings-form')); ?>
+    <div class="d-flex flex-wrap flex-lg-nowrap" id="surveySettingsForThisGroup">
+        <div class="" id="global-sidebar-container">
+            <global-sidemenu/>
         </div>
+        <div id="pjax-content" class="tab-content col-lg-10 flex-lg-shrink-1 ps-3">
+            <div class="row">
+                <div class="col-12">
+                    <div class="alert alert-info controls" role="alert">
+                        <?php eT('All changes of global survey settings will immediately affect all related survey groups and surveys that use inherited values.'); ?>
+                    </div>
+                </div>
+            </div>
+            <?php if ($partial === '_generaloptions_panel') { ?>
+                <div id="surveySettingsGeneral" class="row">
+                    <?php $this->renderPartial('survey/subview/accordion/_generaloptions_panel',
+                        array(
+                            'oSurvey' => $oSurvey,
+                            'oSurveyOptions' => $oSurvey->oOptionLabels,
+                            'bShowInherited' => $oSurvey->showInherited,
+                            'optionsOnOff' => $optionsOnOff,
+                            'bShowAllOptions' => false,
+                            'users' => $users,
+                        )
+                    ); ?>
+                </div>
+            <?php } elseif ($partial === '_presentation_panel') { ?>
+                <div id="surveySettingsPresentation">
+                    <?php $this->renderPartial('survey/subview/accordion/_presentation_panel',
+                        array(
+                            'oSurvey' => $oSurvey,
+                            'oSurveyOptions' => $oSurvey->oOptionLabels,
+                            'bShowInherited' => $oSurvey->showInherited,
+                            'optionsOnOff' => $optionsOnOff
+                        )
+                    ); ?>
+                </div>
+            <?php } elseif ($partial === '_tokens_panel') { ?>
+                <div id="surveySettingsParticipants">
+                    <?php $this->renderPartial('survey/subview/accordion/_tokens_panel',
+                        array(
+                            'oSurvey' => $oSurvey,
+                            'oSurveyOptions' => $oSurvey->oOptionLabels,
+                            'bShowInherited' => $oSurvey->showInherited,
+                            'optionsOnOff' => $optionsOnOff
+                        )
+                    ); ?>
+                </div>
+            <?php } elseif ($partial === '_notification_panel') { ?>
+                <div id="surveySettingsNotification">
+                    <?php $this->renderPartial('survey/subview/accordion/_notification_panel',
+                        array(
+                            'oSurvey' => $oSurvey,
+                            'oSurveyOptions' => $oSurvey->oOptionLabels,
+                            'bShowInherited' => $oSurvey->showInherited,
+                            'optionsOnOff' => $optionsOnOff,
+                            'bShowAllOptions' => false,
+                        )
+                    ); ?>
+                </div>
+            <?php } elseif ($partial === '_publication_panel') { ?>
+                <div id="surveySettingsPublication">
+                    <?php $this->renderPartial('survey/subview/accordion/_publication_panel',
+                        array(
+                            'oSurvey' => $oSurvey,
+                            'oSurveyOptions' => $oSurvey->oOptionLabels,
+                            'bShowInherited' => $oSurvey->showInherited,
+                            'optionsOnOff' => $optionsOnOff,
+                            'dateformatdetails' => $aDateFormatDetails,
+                            'bShowAllOptions' => false,
+                        )
+                    ); ?>
+                </div>
+            <?php } ?>
+            <div class="d-none">
+                <?php echo TbHtml::submitButton('Save', array('class' => 'btn btn-success col-md-2 col-sm-4', "id" => "survey-settings-form")); ?>
+            </div>
+        </div>
+        <?php echo CHtml::endForm() ?>
     </div>
 </div>
 
@@ -97,14 +104,14 @@ $optionsOnOff = array(
     $('#surveySettings a').click(function (e) {
         window.location.hash = $(this).attr('href');
         e.preventDefault();
-        $("#survey-settings-form").attr('action',' <?php echo Yii::app()->getController()->createUrl('/admin/globalsettings/sa/surveysettings') ?>'+window.location.hash);
-        $(this).tab('show');       
+        $("#survey-settings-form").attr('action', ' <?php echo Yii::app()->getController()->createUrl('/admin/globalsettings/sa/surveysettings') ?>' + window.location.hash);
+        $(this).tab('show');
     });
 
-    
-    $(document).on('ready pjax:scriptcomplete', function(){
-        if(window.location.hash){
-            $('#surveySettings').find('a[href='+window.location.hash+']').trigger('click');
+
+    $(document).on('ready pjax:scriptcomplete', function () {
+        if (window.location.hash) {
+            $('#surveySettings').find('a[href=' + window.location.hash + ']').trigger('click');
         }
 
         $('#save-form-button, #save-and-close-form-button').attr('data-form-id', 'survey-settings-form');

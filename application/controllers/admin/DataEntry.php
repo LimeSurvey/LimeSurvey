@@ -56,8 +56,7 @@ class DataEntry extends SurveyCommonAction
 {
     /**
      * Dataentry Constructor
-     * @param Controller $controller Given Controller
-     * @param int        $id         Given ID
+     * @inherit
      */
     public function __construct($controller, $id)
     {
@@ -178,7 +177,7 @@ class DataEntry extends SurveyCommonAction
      * Move uploaded files Method.
      *
      * @param array $aData Given Data
-     * @return void
+     * @return void|string
      */
     private function moveUploadedFile($aData)
     {
@@ -208,7 +207,7 @@ class DataEntry extends SurveyCommonAction
 
     /**
      * Show upload form Method.
-     * @param string $aEncodings Given Encoding
+     * @param string[] $aEncodings Given Encoding
      * @param int    $surveyid   Given Survey ID
      * @param array  $aData      Given Data
      * @return void
@@ -314,7 +313,10 @@ class DataEntry extends SurveyCommonAction
                 $tbl_name = substr($sourceSchema->name, strlen(Yii::app()->db->tablePrefix));
             }
             $archivedTableSettings = ArchivedTableSettings::model()->findByAttributes(['tbl_name' => $tbl_name]);
-            $archivedEncryptedAttributes = json_decode($archivedTableSettings->properties);
+            $archivedEncryptedAttributes = [];
+            if ($archivedTableSettings) {
+                $archivedEncryptedAttributes = json_decode($archivedTableSettings->properties);
+            }
 
             $fieldMap = [];
             $pattern = '/([\d]+)X([\d]+)X([\d]+.*)/';
@@ -339,12 +341,13 @@ class DataEntry extends SurveyCommonAction
             }
             $imported = 0;
             $sourceResponses = new CDataProviderIterator(new CActiveDataProvider($sourceTable), 500);
+            /* @var boolean preserveIDs */
+            $preserveIDs = boolval(App()->getRequest()->getPost('preserveIDs'));
             foreach ($sourceResponses as $sourceResponse) {
                 $iOldID = $sourceResponse->id;
                 // Using plugindynamic model because I dont trust surveydynamic.
                 $targetResponse = new PluginDynamic("{{survey_$iSurveyId}}");
-
-                if (isset($_POST['preserveIDs']) && $_POST['preserveIDs'] == 1) {
+                if ($preserveIDs) {
                     $targetResponse->id = $sourceResponse->id;
                 }
 
@@ -372,7 +375,13 @@ class DataEntry extends SurveyCommonAction
                 App()->getPluginManager()->dispatchEvent($beforeDataEntryImport);
 
                 $imported++;
+                if ($preserveIDs) {
+                    switchMSSQLIdentityInsert("survey_$iSurveyId", true);
+                }
                 $targetResponse->save();
+                if ($preserveIDs) {
+                    switchMSSQLIdentityInsert("survey_$iSurveyId", false);
+                }
                 $aSRIDConversions[$iOldID] = $targetResponse->id;
                 unset($targetResponse);
             }
@@ -624,7 +633,7 @@ class DataEntry extends SurveyCommonAction
                             'Y' => gT('Yes', 'unescaped')
                         );
 
-                        $aDataentryoutput .= CHtml::dropDownList('completed', $selected, $select_options, array('class' => 'form-control'));
+                        $aDataentryoutput .= CHtml::dropDownList('completed', $selected, $select_options, array('class' => 'form-select'));
 
                         break;
                     case Question::QT_X_TEXT_DISPLAY: //Boilerplate question
@@ -721,8 +730,7 @@ class DataEntry extends SurveyCommonAction
                             . htmlspecialchars($idrow[$fname['fieldname']], ENT_QUOTES) . "' />\n";
                         } else {
                             $lresult = Answer::model()->with('answerl10ns')->findAll(array('condition' => 'qid =:qid AND language = :language', 'params' => array('qid' => $fname['qid'], 'language' => $sDataEntryLanguage)));
-                            $aDataentryoutput .= "\t<select name='{$fname['fieldname']}' class='form-control'>\n"
-                            . "<option value=''";
+                                $aDataentryoutput .= "\t<select name='{$fname['fieldname']}' class='form-select'>\n" . "<option value=''";
                             if ($idrow[$fname['fieldname']] == "") {
                                 $aDataentryoutput .= " selected='selected'";
                             }
@@ -780,7 +788,7 @@ class DataEntry extends SurveyCommonAction
                         break;
                     case Question::QT_O_LIST_WITH_COMMENT: //LIST WITH COMMENT drop-down/radio-button list + textarea
                         $lresult = Answer::model()->findAll("qid={$fname['qid']}");
-                        $aDataentryoutput .= "\t<select name='{$fname['fieldname']}' class='form-control'>\n"
+                        $aDataentryoutput .= "\t<select name='{$fname['fieldname']}' class='form-select'>\n"
                         . "<option value=''";
                         if ($idrow[$fname['fieldname']] == "") {
                             $aDataentryoutput .= " selected='selected'";
@@ -827,7 +835,7 @@ class DataEntry extends SurveyCommonAction
                             }
 
                             $aDataentryoutput .= "</label>";
-                            $aDataentryoutput .= "<select name=\"{$myfname}{$i}\" id=\"answer{$myfname}{$i}\" class='form-control'>\n";
+                            $aDataentryoutput .= "<select name=\"{$myfname}{$i}\" id=\"answer{$myfname}{$i}\" class='form-select'>\n";
                             (!isset($currentvalues[$i - 1])) ? $selected = " selected=\"selected\"" : $selected = "";
                             $aDataentryoutput .= "\t<option value=\"\" $selected>" . gT('None') . "</option>\n";
                             foreach ($ansresult as $ansrow) {
@@ -855,8 +863,8 @@ class DataEntry extends SurveyCommonAction
                         $aDataentryoutput .= "<script type='text/javascript'>\n"
                             .  "  <!--\n"
                             . "var aRankingTranslations = {
-                                     choicetitle: '" . gT("Your Choices", 'js') . "',
-                                     ranktitle: '" . gT("Your Ranking", 'js') . "'
+                                     choicetitle: '" . gT("Your choices", 'js') . "',
+                                     ranktitle: '" . gT("Your ranking", 'js') . "'
                                     };\n"
                             . "function checkconditions(){};"
                             . "$(function() {"
@@ -893,7 +901,7 @@ class DataEntry extends SurveyCommonAction
                         $slangs = $oSurvey->allLanguages;
                         $baselang = $oSurvey->language;
 
-                        $aDataentryoutput .= "<select name='{$fname['fieldname']}' class='form-control'>\n";
+                        $aDataentryoutput .= "<select name='{$fname['fieldname']}' class='form-select'>\n";
                         $aDataentryoutput .= "<option value=''";
                         if ($idrow[$fname['fieldname']] == "") {
                             $aDataentryoutput .= " selected='selected'";
@@ -1010,7 +1018,7 @@ class DataEntry extends SurveyCommonAction
                         $aDataentryoutput .= CHtml::textArea($fname['fieldname'], $idrow[$fname['fieldname']], array('cols' => 70,'rows' => 50));
                         break;
                     case Question::QT_Y_YES_NO_RADIO: //YES/NO radio-buttons
-                        $aDataentryoutput .= "\t<select name='{$fname['fieldname']}' class='form-control'>\n"
+                        $aDataentryoutput .= "\t<select name='{$fname['fieldname']}' class='form-select'>\n"
                         . "<option value=''";
                         if ($idrow[$fname['fieldname']] == "") {
                             $aDataentryoutput .= " selected='selected'";
@@ -1209,7 +1217,7 @@ class DataEntry extends SurveyCommonAction
                             if ($qidattributes['input_boxes'] != 0) {
                                 $aDataentryoutput .= CHtml::numberField($fname['fieldname'], $idrow[$fname['fieldname']], array('step' => 'any'));
                             } else {
-                                $aDataentryoutput .= "\t<select name='{$fname['fieldname']}' class='form-control'>\n";
+                                $aDataentryoutput .= "\t<select name='{$fname['fieldname']}' class='form-select'>\n";
                                 $aDataentryoutput .= "<option value=''>...</option>\n";
                                 for ($ii = $minvalue; $ii <= $maxvalue; $ii += $stepvalue) {
                                     $aDataentryoutput .= "<option value='$ii'";
@@ -1264,7 +1272,7 @@ class DataEntry extends SurveyCommonAction
                             }
                         }
                         $aDataentryoutput .= App()->getController()->widget(
-                            'yiiwheels.widgets.datetimepicker.WhDateTimePicker',
+                            'ext.DateTimePickerWidget.DateTimePicker',
                             array(
                                 'name' => $fname['fieldname'],
                                 'id' => $fname['fieldname'],
@@ -1276,20 +1284,6 @@ class DataEntry extends SurveyCommonAction
                                     'format' => $dateformatdetails['jsdate'] . " HH:mm",
                                     'allowInputToggle' => true,
                                     'showClear' => true,
-                                    'tooltips' => array(
-                                        'clear' => gT('Clear selection'),
-                                        'prevMonth' => gT('Previous month'),
-                                        'nextMonth' => gT('Next month'),
-                                        'selectYear' => gT('Select year'),
-                                        'prevYear' => gT('Previous year'),
-                                        'nextYear' => gT('Next year'),
-                                        'selectDecade' => gT('Select decade'),
-                                        'prevDecade' => gT('Previous decade'),
-                                        'nextDecade' => gT('Next decade'),
-                                        'prevCentury' => gT('Previous century'),
-                                        'nextCentury' => gT('Next century'),
-                                        'selectTime' => gT('Select time')
-                                    ),
                                     'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']),
                                 )
                             ),
@@ -1301,7 +1295,7 @@ class DataEntry extends SurveyCommonAction
                         foreach ($slangs as $lang) {
                             $LanguageList[$lang] = getLanguageNameFromCode($lang, false);
                         }
-                        $aDataentryoutput .= CHtml::dropDownList($fname['fieldname'], $idrow[$fname['fieldname']], $LanguageList, array('class' => 'form-control'));
+                        $aDataentryoutput .= CHtml::dropDownList($fname['fieldname'], $idrow[$fname['fieldname']], $LanguageList, array('class' => 'form-select'));
                         break;
                     default:
                         $aDataentryoutput .= CHtml::textField(
@@ -1775,7 +1769,7 @@ class DataEntry extends SurveyCommonAction
                     $arSaveControl->email = $saver['email'];
                     $arSaveControl->ip = !empty($aUserData['ip_address']) ? $aUserData['ip_address'] : "";
                     $arSaveControl->refurl = (string) getenv("HTTP_REFERER");
-                    $arSaveControl->saved_thisstep = 0;
+                    $arSaveControl->saved_thisstep = '0';
                     $arSaveControl->status = 'S';
                     $arSaveControl->saved_date = dateShift((string) date("Y-m-d H:i:s"), "Y-m-d H:i", "'" . Yii::app()->getConfig('timeadjust'));
                     $arSaveControl->save();
@@ -1792,7 +1786,7 @@ class DataEntry extends SurveyCommonAction
                             "sent" => date("Y-m-d H:i:s"),
                             "completed" => "N");
 
-                            $aToken = new Token($surveyid);
+                            $aToken = new TokenDynamic($surveyid);
                             $aToken->setAttributes($tokendata, false);
                             $aToken->encryptSave(true);
                             $aDataentrymsgs[] = CHtml::tag('font', array('class' => 'successtitle'), gT("A survey participant entry for the saved survey has been created, too."));
@@ -2019,7 +2013,7 @@ class DataEntry extends SurveyCommonAction
                     $arrayFilterHelp = flattenText($this->arrayFilterHelp($qidattributes, $sDataEntryLanguage, $surveyid));
 
                     if (($relevance != '' && $relevance != '1') || ($validation != '') || ($arrayFilterHelp != '')) {
-                        $showme = '<div class="alert alert-warning col-sm-8 col-sm-offset-2" role="alert">';
+                        $showme = '<div class="alert alert-warning col-md-8 offset-md-2" role="alert">';
                         if ($bgc == "even") {
                             $bgc = "odd";
                         } else {
@@ -2146,7 +2140,6 @@ class DataEntry extends SurveyCommonAction
                             App()->getClientScript()->registerPackage('jquery-actual');
                             App()->getClientScript()->registerScriptFile(App()->getConfig('generalscripts') . 'ranking.js');
                             App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'ranking.css');
-                            unset($answers);
                             break;
                         case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox (Quite tricky really!)
                             if (trim($qidattributes['display_columns']) != '') {
@@ -2208,13 +2201,13 @@ class DataEntry extends SurveyCommonAction
 
                             $cdata['lresult'] = $arQuestion->findAllByAttributes(['parent_qid' => $arQuestion['qid'], 'scale_id' => 1]);
                             if (empty($cdata['lresult'])) {
-                                $eMessage = "Couldn't get labels, Type \":\"<br />$lquery<br />";
+                                $eMessage = "Couldn't get labels";
                                 Yii::app()->setFlashMessage($eMessage);
                                 $this->getController()->redirect($this->getController()->createUrl("/admin/"));
                             }
                             $cdata['mearesult'] = $arQuestion->findAllByAttributes(['parent_qid' => $arQuestion['qid'], 'scale_id' => 0]);
                             if (empty($cdata['mearesult'])) {
-                                $eMessage = "Couldn't get answers, Type \":\"<br />$meaquery<br />";
+                                $eMessage = "Couldn't get answers";
                                 Yii::app()->setFlashMessage($eMessage);
                                 $this->getController()->redirect($this->getController()->createUrl("/admin/"));
                             }
@@ -2313,7 +2306,7 @@ class DataEntry extends SurveyCommonAction
      * @param string       $sAction     Current action, the folder to fetch views from
      * @param string|array $aViewUrls   View url(s)
      * @param array        $aData       Data to be passed on. Optional.
-     * @param bool         $sRenderFile Boolean value if file will be rendered.
+     * @param bool|string  $sRenderFile Boolean value if file will be rendered.
      * @return void
      */
     protected function renderWrappedTemplate($sAction = 'dataentry', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
