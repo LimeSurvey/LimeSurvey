@@ -2,8 +2,8 @@
   color : $white;
 }
 
-.btn, .btn-sm, .btn-lg, .btn-xl {
-  color : $white;
+.btn {
+  color : $g-900;
 
   &:hover, &:focus {
     //default hover
@@ -43,6 +43,8 @@
 //from lime-admin-colors.scss
 //Buttons
 .btn-primary, .btn-info {
+  color: $white;
+
   &:hover, &:focus, &:active, &.active {
     //default hover
     box-shadow       : $btn-hover-boxshadow;
@@ -52,6 +54,7 @@
 }
 
 .btn-secondary, .btn-cancel {
+  color: $white;
   &:hover, &:focus, &:active, &.active {
     //default hover
     box-shadow       : $btn-hover-boxshadow;
@@ -70,7 +73,6 @@
 }
 
 .btn-outline-secondary {
-  color            : $g-900;
   background-color : $white;
   border           : 1px solid $g-900;
 
@@ -104,7 +106,7 @@
 
 .btn-success {
   &:hover, &:focus, &:active, &.active {
-    color            : $white;
+    color            : $g-900;
     background-color : $success;
     border           : 1px solid $success;
     box-shadow       : 0 0 0 .25rem rgba(mix($success, $success, 15%), .5);
@@ -113,7 +115,7 @@
 
 .btn-warning {
   &:hover, &:focus, &:active, &.active {
-    color            : $white;
+    color            : $g-900;
     background-color : $warning;
     border           : 1px solid $warning;
     box-shadow       : 0 0 0 .25rem rgba(mix($warning, $warning, 15%), .5);
@@ -122,7 +124,7 @@
 
 .btn-danger {
   &:hover, &:focus, &:active, &.active {
-    color            : $white;
+    color            : $g-900;
     background-color : $error;
     border           : 1px solid $error;
     box-shadow       : 0 0 0 .25rem rgba(mix($error, $error, 15%), .5);
