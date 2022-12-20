@@ -1,6 +1,6 @@
 <!-- Range -->
 <div class="card" id="panel-2" <?php if ($SingleResponse) { echo 'style="display:none"';} ?> >
-  <div class="card-header bg-primary">
+  <div class="card-header ">
     <div class="">
       <?php eT("Range");?>
     </div>

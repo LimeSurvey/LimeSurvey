@@ -70,7 +70,7 @@
         <!-- Generate tokens -->
         <a class="btn btn-outline-secondary" href="<?php echo Yii::App()->createUrl("admin/tokens/sa/tokenify/surveyid/$oSurvey->sid"); ?>" role="button">
             <span class="ri-settings-5-fill"></span>
-            <?php eT("Generate tokens"); ?>
+            <?php eT("Generate access codes"); ?>
         </a>
     </div>
     <div class="d-inline-flex">

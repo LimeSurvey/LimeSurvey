@@ -72,6 +72,16 @@ class Permission extends LSActiveRecord
     }
 
     /**
+     * @inheritdoc
+     */
+    public function relations()
+    {
+        return [
+            'user' => array(self::BELONGS_TO, 'User', 'uid'),
+        ];
+    }
+
+    /**
      * Returns the base permissions for survey
      * @see self::getEntityBasePermissions
      *
@@ -476,25 +486,6 @@ class Permission extends LSActiveRecord
             $permission->$k = $v;
         }
         return $permission->save();
-    }
-
-    /**
-     * @param integer $iEntityID
-     * @param string $sEntityName
-     * @return array
-     */
-    public function getUserDetails($iEntityID, $sEntityName = 'survey')
-    {
-        $sQuery = "SELECT p.entity_id, p.uid, u.users_name, u.full_name FROM {{permissions}} AS p INNER JOIN {{users}}  AS u ON p.uid = u.uid
-            WHERE p.entity_id = :entityid AND u.uid != :userid and p.entity= :entity
-            GROUP BY p.entity_id, p.uid, u.users_name, u.full_name
-            ORDER BY u.users_name";
-        $iUserID = Yii::app()->user->getId();
-        return Yii::app()->db->createCommand($sQuery)
-            ->bindParam(":userid", $iUserID, PDO::PARAM_INT)
-            ->bindParam("entityid", $iEntityID, PDO::PARAM_INT)
-            ->bindParam("entity", $sEntityName, PDO::PARAM_STR)
-            ->query()->readAll(); //Checked
     }
 
     /**

@@ -16,26 +16,8 @@
 
     <div class="col-md-3">
 
-        <?php /* Bootstrap 5 version
-                <div class="card">
-                    <img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/comfortupdate-logo.png" class="card-img-top" alt="ComfortUpdate Logo">
-                    <div class="card-body">
-                        <h5 class="card-title">ComfortUpdate</h6>
-                        <p class="card-text">
-                            Subscribe to ComfortUpdate to get access to:
-                            <li>
-                                <ul>Easy updates</ul>
-                                <ul>Technical support*</ul>
-                                <ul>More?</ul>
-                            </li>
-                        </p>
-                        <a href="https://community.limesurvey.org/comfort-update-extension/" class="card-link">Free trial</a>
-                    </div>
-                </div>
-         */ ?>
-
         <div class="thumbnail" style="padding: 1em;">
-            <img style="width: 50%;" src="<?php echo Yii::app()->baseUrl; ?>/installer/images/comfortupdate-logo.png" alt="ComfortUpdate Logo">
+            <img class="rounded mx-auto d-block m-3" style="width: 50%;" src="<?php echo Yii::app()->baseUrl; ?>/installer/images/comfortupdate-logo.png" alt="ComfortUpdate Logo">
             <div class="caption">
                 <h3><?= gT("ComfortUpdate"); ?></h3>
                 <p>
@@ -46,7 +28,7 @@
                         <li><?= gT("Legacy and LTS versions"); ?></li>
                     </ul>
                 </p>
-                <p class="text-center">
+                <p class="text-center d-grid gap-2">
                     <a href="https://community.limesurvey.org/comfort-update-extension/" class="btn btn-primary btn-block" role="button" target="_blank">
                         <?= gT("Free trial"); ?>
                     </a>

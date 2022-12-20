@@ -358,6 +358,7 @@ return array(
     ),
     'jspdf' => array(
         'basePath' => 'node_modules.jspdf.dist',
+        'position' => CClientScript::POS_BEGIN,
         'js' => array(
             'jspdf.min.js'
         ),
@@ -407,6 +408,7 @@ return array(
     ),
     'jszip' => array(
         'basePath' => 'node_modules.jszip',
+        'position' => CClientScript::POS_BEGIN,
         'js' => array(
             'dist/jszip' . $minVersion . '.js',
             'vendor/FileSaver.js'
@@ -423,7 +425,8 @@ return array(
             'build/tempus-dominus.min.css',
         ),
         'js' => array(
-            'build/popper-tempus.min.js'
+            'build/popper-tempus.min.js',
+            'datepickerInit.js'
         ),
         'depends' => array(
             'moment'
