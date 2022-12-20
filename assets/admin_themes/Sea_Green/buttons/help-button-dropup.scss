@@ -8,36 +8,9 @@
 
 .btn-black60 {
   color: $white;
-  border: none;
+  border: 1px solid $black60;
 
-  &:hover {
-    //@extend %default_hover;
-    background-color: $black60;
-  }
-
-  &:focus {
-    //@extend %default_hover;
-    border: none;
-    box-shadow: none;
-    background-color: $black60;
-  }
-
-  &:active {
-    //@extend %default_hover;
-    background-color: $black60;
-    border: 1px solid $black;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  }
-
-  &.active {
-    //@extend %default_hover;
-    background-color: $black60;
-    border: 1px solid $black;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  }
-
-  &.dropdown-toggle.show, &.dropdown-toggle.show:focus, &[aria-expanded="true"] {
-    //@extend %default_focus;
+  &:hover, &:focus, &:active, &.active, &.dropdown-toggle.show, &.dropdown-toggle.show:focus, &[aria-expanded="true"] {
     background-color: $black60;
     border: 1px solid $black;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
