@@ -17,6 +17,7 @@ $elevation-shadow: rgba(66, 0, 255, 0.2); // LSD/Elevation/Shadow
 
 $white        : #fff;
 $black        : #000;
+$black60      : #666666; // rgba(0, 0, 0, 0.6);
 $black75      : rgba(0, 0, 0, 0.75);
 $grape75 : rgba(123, 97, 255, 0.4);
 
@@ -39,6 +40,7 @@ $theme-colors: (
     "info":       $grape,
     "light":      $g-200,
     "dark":       $g-900,
+    "black60":    $black60,
     "cancel":     $g-600, // replace with secondary
 );
 
