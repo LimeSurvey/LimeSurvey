@@ -136,7 +136,6 @@ class TestBaseClassWeb extends TestBaseClass
     {
         $url = self::getUrl(['login', 'route'=>'authentication/sa/login']);
         self::openView($url);
-        self::$webDriver->dumpBody();
         try {
             self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::presenceOfAllElementsLocatedBy(
