@@ -974,7 +974,7 @@ class Question extends LSActiveRecord
                 'htmlOptions' => array('class' => ''),
             ),
             array(
-                'header' => gT('Question type/theme'),
+                'header' => gT('Question type'),
                 'name' => 'type',
                 'type' => 'raw',
                 'value' => '$data->question_theme->description',
