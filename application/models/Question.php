@@ -547,6 +547,7 @@ class Question extends LSActiveRecord
 
     /**
      * @return string
+     * NOTE: Not used anymore. Based on a deprecated method. Should be deprecated.
      */
     public function getTypedesc()
     {
