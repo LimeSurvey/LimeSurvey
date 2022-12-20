@@ -23,7 +23,7 @@ $grape75 : rgba(123, 97, 255, 0.4);
 $g-900        : #1E1E1E;
 $g-800        : #333641;
 $g-700        : #5E6372;
-$g-600        : #7C8191;
+$g-600        : #ACACAC;
 $g-500        : #ACACAC;
 $g-400        : #C2C5D1;
 $g-300        : #DDDEE8;
@@ -42,9 +42,13 @@ $theme-colors: (
     "cancel":     $g-600, // replace with secondary
 );
 
+$border-radius: 4px;
+
 // Buttons
 $line-height-16: 16px;
 $line-height-20: 20px;
+$line-height-28: 28px;
+$line-height-38: 38px;
 
 $btn-font-weight: 500;
 
@@ -55,6 +59,9 @@ $btn-height-xl: 52px;
 
 $btn-font-size: 14px;
 $btn-font-size-sm: 12px;
+
+$btn-hover-boxshadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
+$btn-focus-boxshadow: 4px 4px 0px rgba(123, 97, 255, 0.4);
 
 $ibm-font-family:
 "IBMPlexSans",
