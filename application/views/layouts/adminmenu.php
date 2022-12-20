@@ -14,7 +14,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <a class="navbar-brand" href="<?php echo $this->createUrl("/admin/"); ?>">
-            <img id="nav-logo" alt="logo" src="/themes/admin/Sea_Green/images/logo-limesurvey-white.svg" class="d-inline-block">
+            <?php echo $sitename; ?>
         </a>
         <!-- Only on xs screens -->
         <div class="collapse navbar-collapse " id="small-screens-menus">

@@ -62,10 +62,11 @@
   padding: 0;
 
   .navbar-brand {
-    font-weight: 400;
-    color: $white;
-  }
-  #nav-logo {
+    //font-family: Montserrat;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    color: $navbar-color;
     height: 30px;
     width: auto;
     margin-left: 8px;

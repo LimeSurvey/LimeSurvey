@@ -18157,10 +18157,10 @@ footer.footer {
   padding: 0;
 }
 .navbar .navbar-brand {
-  font-weight: 400;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
   color: #fff;
-}
-.navbar #nav-logo {
   height: 30px;
   width: auto;
   margin-right: 8px;
