@@ -1,0 +1,21 @@
+.form-control {
+  box-shadow: 4px 4px 0px $g-200;
+  border: $input-border-width solid $input-border-color !important;
+
+  &:focus {
+    box-shadow: 4px 4px 0px rgba(66, 0, 255, 0.2);
+  }
+}
+
+.form-control.ls-important-field {
+  padding: 14px 13px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16px;
+  border: 2px solid $g-900;
+  box-shadow: 8px 8px 0px $g-200;
+
+  &:focus {
+    box-shadow: 8px 8px 0px rgba(66, 0, 255, 0.2);
+  }
+}

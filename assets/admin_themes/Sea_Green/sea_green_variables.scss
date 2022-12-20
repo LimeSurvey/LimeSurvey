@@ -110,5 +110,17 @@ $breadcrumb-divider-color:          $g-600;
 $breadcrumb-active-color:           $g-900;
 $breadcrumb-link-color:             $link-color;
 
+// forms
+// input variables
+$input-padding-y:                   10px;
+$input-padding-x:                   13px;
+$input-color:                       $g-900;
+$input-border-radius:               4px;
+$input-line-height:                 1;
+$input-font-weight:                 400;
+$input-border-width:                1px;
+$input-border-color:                $g-900;
+$input-focus-color:                 $g-900;
+$input-focus-border-color:           $g-900;
 // modal
 $modal-inner-padding: 1.5rem; // 24px
