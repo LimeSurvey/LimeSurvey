@@ -30,8 +30,7 @@
   padding: 0px !important;
   border-bottom-left-radius: 4px !important;
   border-bottom-right-radius: 4px !important;
-  // box-shadow: 4px 4px $g-600 !important;
-  filter: drop-shadow(4px 4px 0px #eeeff7);
+  filter: drop-shadow(4px 4px 0px $g-200);
   border: none !important;
 }
 
