@@ -5,33 +5,21 @@
 .btn {
   color : $white;
 
-  &:hover {
+  &:hover, &:focus {
     //default hover
-    box-shadow : 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
+    box-shadow : $btn-hover-boxshadow;
     color      : $white;
   }
 
-  &:focus {
+  &:active, &.active  {
     //default hover
-    box-shadow : 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
-    color      : $white;
-  }
-
-  &:active {
-    //default hover
-    box-shadow : 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
-    color      : $white;
-  }
-
-  &.active {
-    //default hover
-    box-shadow : 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
+    box-shadow : $btn-hover-boxshadow;
     color      : $white;
   }
 
   &.dropdown-toggle.show, &.dropdown-toggle.show:focus {
     // default_focus
-    box-shadow : 4px 4px 0px rgba(123, 97, 255, 0.4);
+    box-shadow : $btn-focus-boxshadow;
     color      : $white;
   }
 
@@ -42,31 +30,7 @@
     border           : 1px solid $g-400;
     box-shadow       : none;
 
-    &:hover {
-      // default_disabled
-      color            : $g-600;
-      background-color : $g-400;
-      border           : 1px solid $g-400;
-      box-shadow       : none;
-    }
-
-    &:focus {
-      // default_disabled
-      color            : $g-600;
-      background-color : $g-400;
-      border           : 1px solid $g-400;
-      box-shadow       : none;
-    }
-
-    &:active {
-      // default_disabled
-      color            : $g-600;
-      background-color : $g-400;
-      border           : 1px solid $g-400;
-      box-shadow       : none;
-    }
-
-    &.active {
+    &:hover, &:focus, &:active, &.active {
       // default_disabled
       color            : $g-600;
       background-color : $g-400;
@@ -79,63 +43,18 @@
 //from lime-admin-colors.scss
 //Buttons
 .btn-primary, .btn-info {
-  &:hover {
+  &:hover, &:focus, &:active, &.active {
     //default hover
-    box-shadow       : 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
-    color            : $white;
-    background-color : $active-green;
-  }
-
-  &:focus {
-    //default hover
-    box-shadow       : 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
-    color            : $white;
-    background-color : $active-green;
-  }
-
-  &:active {
-    //default hover
-    box-shadow       : 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
-    color            : $white;
-    background-color : $active-green;
-  }
-
-  &.active {
-    //default hover
-    box-shadow       : 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
+    box-shadow       : $btn-hover-boxshadow;
     color            : $white;
     background-color : $active-green;
   }
 }
 
 .btn-secondary, .btn-cancel {
-  &:hover {
+  &:hover, &:focus, &:active, &.active {
     //default hover
-    box-shadow       : 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
-    color            : $white;
-    background-color : $g-600;
-    border-color     : $g-600;
-  }
-
-  &:focus {
-    //default hover
-    box-shadow       : 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
-    color            : $white;
-    background-color : $g-600;
-    border-color     : $g-600;
-  }
-
-  &:active {
-    //default hover
-    box-shadow       : 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
-    color            : $white;
-    background-color : $g-600;
-    border-color     : $g-600;
-  }
-
-  &.active {
-    //default hover
-    box-shadow       : 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
+    box-shadow       : $btn-hover-boxshadow;
     color            : $white;
     background-color : $g-600;
     border-color     : $g-600;
@@ -143,7 +62,7 @@
 
   &.dropdown-toggle.show, &.dropdown-toggle.show:focus {
     // default_focus
-    box-shadow       : 4px 4px 0px rgba(123, 97, 255, 0.4);
+    box-shadow       : $btn-focus-boxshadow;
     color            : $white;
     background-color : $g-600;
     border-color     : $g-600;
@@ -157,39 +76,15 @@
 
   &:hover {
     // default_outline_hover
-    box-shadow       : 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
+    box-shadow       : $btn-hover-boxshadow;
     background-color : $white;
     border-color     : $g-900;
     color            : $g-900;
   }
 
-  &:focus {
+  &:focus, &:active, &.active, &.dropdown-toggle.show, &.dropdown-toggle.show:focus, &.show {
     // default_outline_focus
-    box-shadow       : 4px 4px 0px rgba(123, 97, 255, 0.4);
-    background-color : $white;
-    color            : $g-900;
-    border-color     : $g-900;
-  }
-
-  &:active {
-    // default_outline_focus
-    box-shadow       : 4px 4px 0px rgba(123, 97, 255, 0.4);
-    background-color : $white;
-    color            : $g-900;
-    border-color     : $g-900;
-  }
-
-  &.active {
-    // default_outline_focus
-    box-shadow       : 4px 4px 0px rgba(123, 97, 255, 0.4);
-    background-color : $white;
-    color            : $g-900;
-    border-color     : $g-900;
-  }
-
-  &.dropdown-toggle.show, &.dropdown-toggle.show:focus, &.show {
-    // default_outline_focus
-    box-shadow       : 4px 4px 0px rgba(123, 97, 255, 0.4);
+    box-shadow       : $btn-focus-boxshadow;
     background-color : $white;
     color            : $g-900;
     border-color     : $g-900;
@@ -200,22 +95,7 @@
     border           : 1px solid $g-600;
     color            : $g-600;
 
-    &:hover {
-      background-color : $white;
-      border           : 1px solid $g-600;
-    }
-
-    &:focus {
-      background-color : $white;
-      border           : 1px solid $g-600;
-    }
-
-    &:active {
-      background-color : $white;
-      border           : 1px solid $g-600;
-    }
-
-    &.active {
+    &:hover, &:focus, &:active, &.active {
       background-color : $white;
       border           : 1px solid $g-600;
     }
@@ -223,28 +103,7 @@
 }
 
 .btn-success {
-  &:hover {
-    color            : $white;
-    background-color : $success;
-    border           : 1px solid $success;
-    box-shadow       : 0 0 0 .25rem rgba(mix($success, $success, 15%), .5);
-  }
-
-  &:focus {
-    color            : $white;
-    background-color : $success;
-    border           : 1px solid $success;
-    box-shadow       : 0 0 0 .25rem rgba(mix($success, $success, 15%), .5);
-  }
-
-  &:active {
-    color            : $white;
-    background-color : $success;
-    border           : 1px solid $success;
-    box-shadow       : 0 0 0 .25rem rgba(mix($success, $success, 15%), .5);
-  }
-
-  &.active {
+  &:hover, &:focus, &:active, &.active {
     color            : $white;
     background-color : $success;
     border           : 1px solid $success;
@@ -253,28 +112,7 @@
 }
 
 .btn-warning {
-  &:hover {
-    color            : $white;
-    background-color : $warning;
-    border           : 1px solid $warning;
-    box-shadow       : 0 0 0 .25rem rgba(mix($warning, $warning, 15%), .5);
-  }
-
-  &:focus {
-    color            : $white;
-    background-color : $warning;
-    border           : 1px solid $warning;
-    box-shadow       : 0 0 0 .25rem rgba(mix($warning, $warning, 15%), .5);
-  }
-
-  &:active {
-    color            : $white;
-    background-color : $warning;
-    border           : 1px solid $warning;
-    box-shadow       : 0 0 0 .25rem rgba(mix($warning, $warning, 15%), .5);
-  }
-
-  &.active {
+  &:hover, &:focus, &:active, &.active {
     color            : $white;
     background-color : $warning;
     border           : 1px solid $warning;
@@ -283,28 +121,7 @@
 }
 
 .btn-danger {
-  &:hover {
-    color            : $white;
-    background-color : $error;
-    border           : 1px solid $error;
-    box-shadow       : 0 0 0 .25rem rgba(mix($error, $error, 15%), .5);
-  }
-
-  &:focus {
-    color            : $white;
-    background-color : $error;
-    border           : 1px solid $error;
-    box-shadow       : 0 0 0 .25rem rgba(mix($error, $error, 15%), .5);
-  }
-
-  &:active {
-    color            : $white;
-    background-color : $error;
-    border           : 1px solid $error;
-    box-shadow       : 0 0 0 .25rem rgba(mix($error, $error, 15%), .5);
-  }
-
-  &.active {
+  &:hover, &:focus, &:active, &.active {
     color            : $white;
     background-color : $error;
     border           : 1px solid $error;
@@ -316,11 +133,7 @@
 .btn-link {
   color : $active-green;
 
-  &:hover {
-    color : $active-green;
-  }
-
-  &:focus {
+  &:hover, &:focus {
     color : $active-green;
   }
 }
