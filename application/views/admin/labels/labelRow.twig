@@ -38,17 +38,17 @@
             {% if hasLabelSetUpdatePermission %}
                 <a
                     href='#'
-                    class="btn btn-default btn-sm htmleditor--openmodal"
+                    class="btn btn-outline-secondary btn-sm htmleditor--openmodal"
                     data-target-field-id="title_{{ language }}_{{ rowId }}"
-                    data-toggle="tooltip"
+                    data-bs-toggle="tooltip"
                     title="{{ gT("Open editor") }}">
                     <i class="fa fa-edit"></i>
                 </a>
                 {% if first %}
-                    <button class="btn btn-default btn-sm btnaddanswer" type="button" data-toggle="tooltip" title="{{ gT("Add label") }}">
+                    <button class="btn btn-outline-secondary btn-sm btnaddanswer" type="button" data-bs-toggle="tooltip" title="{{ gT("Add label") }}">
                         <i class="icon-add text-success"></i>
                     </button>
-                    <button class="btn btn-default btn-sm btndelanswer" type="button" data-toggle="tooltip" title="{{ gT("Delete label") }}">
+                    <button class="btn btn-outline-secondary btn-sm btndelanswer" type="button" data-bs-toggle="tooltip" title="{{ gT("Delete label") }}">
                         <i class="fa fa-minus-circle text-danger "></i>
                     </button>
                 {% endif %}

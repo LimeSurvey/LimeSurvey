@@ -9,7 +9,7 @@
     {% if empty %}
         &nbsp;
     {% else %}
-        <label class="sr-only">{{ gT("Total") }}</label>
+        <label class="visually-hidden">{{ gT("Total") }}</label>
         <input title="[[ROW_NAME]] total" {% if inputsize %}size="{{ inputsize }}"{% endif %} value="" type="text" disabled="disabled" class="disabled form-control total"  data-number='1' />
     {% endif %}
 </td>

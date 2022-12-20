@@ -30,7 +30,7 @@ return array(
             'em_javascript.js',
         ),
         'depends' => array(
-            'jquery',
+            'jquery-migrate',
             'moment', // Used by LEMval function
             'decimalcustom', // Use by fixnum_checkconditions
         )
@@ -120,14 +120,14 @@ return array(
     ),
 
     'bootstrap-rtl'=>array( /* Adding boostrap rtl package */
-        'devBaseUrl'  => 'assets/packages/bootstrap/',
-        'basePath' => 'core.bootstrap',
+        'devBaseUrl'  => 'assets/bootstrap_5/',
+        'basePath' => 'bootstrap',
         'css'=> array(
-            'bootstrap-rtl.css',
+            'build/css/bootstrap_5-rtl.min.css',
         ),
-        'depends' => array(
-            'bootstrap',
-        )
+        'js'=>array(
+            'build/js/bootstrap_5.min.js',
+        ),
     ),
     'ckeditor' => array(
         'devBaseUrl'  => 'assets/packages/ckeditor',
@@ -439,10 +439,23 @@ return array(
             'popup-dialog.css'
         ),
         'js' => array(
-            'emailtemplates'.$minVersion.'.js',
+            'emailtemplates.js',
         ),
         'depends' => array(
             'adminbasics',
         )
     ),
+    // jQuery Ace
+    'jquery-ace' => array(
+        'devBaseUrl' => 'assets/packages/jquery-ace/',
+        'basePath' => 'core.jquery-ace',
+        'position' => CClientScript::POS_BEGIN,
+    'js' => array(
+        'jquery.ace.js',
+    ),
+    'depends' => array(
+        'jquery',
+    )
+    )
+
 );

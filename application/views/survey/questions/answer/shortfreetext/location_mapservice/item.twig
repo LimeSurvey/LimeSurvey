@@ -24,9 +24,9 @@
     , "POS_END") }}
 
 
-<div class="{{ coreClass }} {{ extraclass }}" row" role="group" aria-labelledby="ls-question-text-{{ basename }}">
+<div class="row {{ coreClass }} {{ extraclass }}" role="group" aria-labelledby="ls-question-text-{{ basename }}">
     <!-- Input Text Location -->
-    <div class="col-sm-12" >
+    <div class="col-12" >
             <input
                 class="text location {{ kpclass }}"
                 type="text"
@@ -40,7 +40,7 @@
     <!-- Map -->
     <div
         id="gmap_canvas_{{ name }}_c"
-        class='col-xs-12'
+        class='col-12'
         style='height: {{ location_mapheight }}px'>
     </div>
 
@@ -68,7 +68,7 @@
         />
 
     {% if questionHelp %}
-        <div class="questionhelp col-sm-12">
+        <div class="questionhelp col-12">
             {{ question_text_help }}
         </div>
     {% endif %}

@@ -6,24 +6,25 @@ $codeids = '';
 ?>
 
 <div class="tab-content">
-    <?php foreach ($lslanguages as $lslanguage): ?>
-        <div id='neweditlblset<?php echo $i ?>' class="table-responsive tab-pane fade in lang-<?= $lslanguage ?> <?php if($i==0){ echo 'active first';} else {echo "not_first";}?>">
-            <input type='hidden' class='lslanguage' value='<?php echo $lslanguage ?>' <?php if($i==0){ echo 'id="lslanguagemain"';}?> />
+    <?php foreach ($lslanguages as $lslanguage) : ?>
+        <div id='neweditlblset<?php echo $i ?>' class="table-responsive tab-pane lang-<?= $lslanguage ?> <?= $i === 0 ? "active show first" : "not_first" ?>">
+            <input type='hidden' class='lslanguage' value='<?= $lslanguage ?>' <?= $i === 0 ? 'id="lslanguagemain"' : '' ?>/>
             <table class='answertable table table-hover'>
                 <thead>
-                    <tr>
-                        <?php if ($first): ?>
-                            <th><?php eT('Position');?></th>
-                            <?php endif;?>
-                        <th><?php eT("Code") ?></th>
-                        <th><?php eT("Assessment value") ?></th>
-                        <th><?php eT("Title") ?></th>
-                        <th><?php eT("Action") ?></th>
-                    </tr>
+                <tr>
+                    <?php if ($first): ?>
+                        <th><?php eT('Position'); ?></th>
+                    <?php endif; ?>
+                    <th><?php eT("Code") ?></th>
+                    <th><?php eT("Assessment value") ?></th>
+                    <th><?php eT("Title") ?></th>
+                    <th><?php eT("Action") ?></th>
+                </tr>
                 </thead>
 
                 <tbody>
-                    <?php $position = 0; $alternate = false; ?>
+                <?php $position = 0;
+                $alternate = false; ?>
 
                     <?php foreach ($results as $row): ?>
                         <?php
@@ -53,15 +54,16 @@ $codeids = '';
             </table>
 
             <!-- Action Buttons Quick Add and Save Changes -->
-            <div class="action-buttons text-right">
-                <?php $i++; ?>
-                <?php if (Permission::model()->hasGlobalPermission('labelsets','update')): ?>
-                    <button type="button" id='btnquickadd_<?php echo $i ?>' class="btnquickadd btn btn-default " data-toggle="modal" data-target="#quickadd">
+            <div class="action-buttons text-end">
+                <?php $i++;
+                if (Permission::model()->hasGlobalPermission('labelsets', 'update')): ?>
+                    <button type="button" id='btnquickadd_<?php echo $i ?>' class="btnquickadd btn btn-outline-secondary " data-bs-toggle="modal"
+                            data-bs-target="#quickadd">
                         <?php eT('Quick add labels') ?>
                     </button>
                 <?php endif; ?>
             </div>
         </div>
-        <?php  $first=false;
-        endforeach;?>
+        <?php $first = false; ?>
+    <?php endforeach ?>
 </div>

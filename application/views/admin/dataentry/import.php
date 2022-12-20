@@ -8,7 +8,7 @@
 <div class="side-body <?php echo getSideBodyClass(false); ?>">
     <h3><?php eT("Import responses from a deactivated survey table"); ?></h3>
     <div class="row">
-        <div class="col-lg-12 content-right">
+        <div class="col-12 content-right">
             <?php
             //  echo CHtml::tag('div', array('class' => 'header ui-widget-header'), gT("Import responses from a deactivated survey table"));
             $this->widget('ext.SettingsWidget.SettingsWidget', array(
@@ -17,11 +17,11 @@
                 'buttons' => array(
                     gT('Import responses') => array(
                         'name' => 'ok',
-                        'class' => array('hidden')
+                        'class' => array('d-none')
                     ),
                     gT('Cancel') => array(
                         'type' => 'link',
-                        'class' => array('hidden'),
+                        'class' => array('d-none'),
                         'href' => App()->createUrl('plugins/index')
                     )
                 )

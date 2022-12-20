@@ -1,4 +1,4 @@
-<div class="form-group">
+<div class="mb-3">
     <div class="question-option-general-setting-block">
         <?php if (in_array($this->generalOption->inputType, GeneralOptionWidget::SINGLEINPUTTYPE)): ?>
             <label class="form-label" for="<?= CHtml::getIdByName($this->generalOption->name); ?>">
@@ -16,9 +16,9 @@
                 href="#help-<?= CHtml::getIdByName($this->generalOption->name); ?>"
             ><i
                 class="fa fa-question-circle text-info"
-                data-toggle="tooltip"
+                data-bs-toggle="tooltip"
                 title="<?= CHtml::encode(strip_tags($this->generalOption->formElement->help)) ?>"
-            > </i><span class="sr-only"><?= gT("Show help"); ?></span> </a>
+            > </i><span class="visually-hidden"><?= gT("Show help"); ?></span> </a>
             <div class="help-block collapse" id="help-<?= CHtml::getIdByName($this->generalOption->name); ?>" aria-expanded="false"><?= $this->generalOption->formElement->help; ?></div>
         <?php endif; ?>
         <?= $content; ?>

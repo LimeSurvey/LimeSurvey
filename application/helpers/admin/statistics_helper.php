@@ -326,6 +326,8 @@ function buildSelects($allfields, $surveyid, $language)
         $postvars[] = $key;
     }
 
+    $responseModel = SurveyDynamic::model($surveyid);
+
     /*
     * Iterate through postvars to create "nice" data for SQL later.
     *
@@ -372,7 +374,7 @@ function buildSelects($allfields, $surveyid, $language)
 
                 $db = Yii::app()->db;
                 foreach ($_POST[$pv] as $condition) {
-                    $thisquestion .= "{$db->quoteValue($condition)}, ";
+                    $thisquestion .=  Yii::app()->db->quoteValue(getEncryptedCondition($responseModel, $pv, $condition)) . ", ";
                 }
 
                 $thisquestion = substr($thisquestion, 0, -2)
@@ -393,7 +395,8 @@ function buildSelects($allfields, $surveyid, $language)
                 foreach ($aresult as $arow) {
                     // only add condition if answer has been chosen
                     if (in_array($arow['title'], $_POST[$pv])) {
-                        $mselects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)) . $arow['title']) . " = 'Y'";
+                        $fieldname = substr($pv, 1, strlen($pv)) . $arow['title'];
+                        $mselects[] = Yii::app()->db->quoteColumnName($fieldname) . " = " . Yii::app()->db->quoteValue(getEncryptedCondition($responseModel, $fieldname, 'Y'));
                     }
                 }
                 /* If there are mutliple conditions generated from this multiple choice question, join them using the boolean "OR" */
@@ -469,12 +472,16 @@ function buildSelects($allfields, $surveyid, $language)
                     $dateValue = $datetimeobj->convert("Y-m-d H:i");
                     //date less than
                     if (substr($pv, -4) == "more") {
-                        $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv) - 5))." >= ".App()->db->quoteValue($dateValue);
+                        $dateTimeObj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'] . ' H:i');
+                        $sDateValue = $dateTimeObj->convert("Y-m-d H:i:s");
+                        $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv) - 5)) . " >= " . App()->db->quoteValue($sDateValue);
                     }
 
                     //date greater than
                     if (substr($pv, -4) == "less") {
-                        $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv) - 5))." <= ".App()->db->quoteValue($dateValue);
+                        $dateTimeObj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'] . ' H:i');
+                        $sDateValue = $dateTimeObj->convert("Y-m-d H:i:s");
+                        $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv) - 5)) . " <= " . App()->db->quoteValue($sDateValue);
                     }
                 }
             }
@@ -522,6 +529,13 @@ function square($number)
         $squarenumber = $number * $number;
     }
     return $squarenumber;
+}
+
+function getEncryptedCondition($responseModel, $attribute, $value)
+{
+    $attributes = [$attribute => $value];
+    $attributes = $responseModel->encryptAttributeValues($attributes);
+    return $attributes[$attribute] ?? $value;
 }
 
 class statistics_helper
@@ -957,11 +971,19 @@ class statistics_helper
                 }
 
                 //calculate statistical values
-                $standardDeviation = standardDeviation($rows);
-                $sum = array_sum($rows);
-                $average = $sum / count($rows);
-                $min = min($rows);
-                $max = max($rows);
+                if (!empty($rows)) {
+                    $standardDeviation = standardDeviation($rows);
+                    $sum = array_sum($rows);
+                    $average = $sum / count($rows);
+                    $min = min($rows);
+                    $max = max($rows);
+                } else {
+                    $standardDeviation = 0;
+                    $sum = 0;
+                    $average = 0;
+                    $min = 0;
+                    $max = 0;
+                }
 
                 //put translation of mean and calculated data into $showem array
                 $showem[] = [gT("Sum"), $sum];
@@ -1057,7 +1079,7 @@ class statistics_helper
                         if ($browse) {
                             $statisticsoutput .= "\t<tr>\n"
                             . "\t\t<td align='right'  colspan='4'>
-                            <input type='button' class='statisticsbrowsebutton numericalbrowse btn btn-default btn-large' value='"
+                            <input type='button' class='statisticsbrowsebutton numericalbrowse btn btn-outline-secondary btn-large' value='"
                             . gT("Browse") . "' id='$fieldname' /></td>\n</tr>";
                             $statisticsoutput .= "<tr><td class='statisticsbrowsecolumn' colspan='3' style='display: none'>
                             <div class='statisticsbrowsecolumn' id='columnlist_{$fieldname}'></div></td></tr>";
@@ -1596,7 +1618,7 @@ class statistics_helper
                 }
                 $fname = "$al[1]";
                 if ($browse === true) {
-                    $fname .= " <input type='button' class='statisticsbrowsebutton btn btn-default btn-large' value='"
+                    $fname .= " <input type='button' class='statisticsbrowsebutton btn btn-outline-secondary btn-large' value='"
                     . gT("Browse") . "' id='$sColumnName' />";
                 }
             }
@@ -1617,7 +1639,7 @@ class statistics_helper
                 if ($al[0] == "Answer") {
                     $fname = "$al[1]";
                     if ($browse === true) {
-                        $fname .= " <input type='button'  class='statisticsbrowsebutton btn btn-default btn-large' value='"
+                        $fname .= " <input type='button'  class='statisticsbrowsebutton btn btn-outline-secondary btn-large' value='"
                         . gT("Browse") . "' id='$sColumnName' />";
                     }
                 } elseif ($al[0] == "NoAnswer") {
@@ -2363,7 +2385,7 @@ class statistics_helper
                 }
                 $fname = "$al[1]";
                 if ($browse === true) {
-                    $fname .= " <input type='button' class='statisticsbrowsebutton btn btn-default btn-large' value='"
+                    $fname .= " <input type='button' class='statisticsbrowsebutton btn btn-outline-secondary btn-large' value='"
                     . gT("Browse") . "' id='$sColumnName' />";
                 }
 
@@ -2405,7 +2427,7 @@ class statistics_helper
                 if ($al[0] == "Answer") {
                     $fname = "$al[1]";
                     if ($browse === true) {
-                        $fname .= " <input type='button'  class='statisticsbrowsebutton btn btn-default btn-large' value='"
+                        $fname .= " <input type='button'  class='statisticsbrowsebutton btn btn-outline-secondary btn-large' value='"
                         . gT("Browse") . "' id='$sColumnName' />";
                     }
                 } elseif ($al[0] == "NoAnswer") {
@@ -3493,7 +3515,6 @@ class statistics_helper
         //START Chop up fieldname and find matching questions
 
         //loop through all selected questions
-        $count = 0;
         foreach ($runthrough as $rt) {
             ////Step 1: Get information about this response field (SGQA) for the summary
             $outputs = $this->buildOutputList($rt, $language, $surveyid, $outputType, $sql, $sLanguageCode);
@@ -3501,22 +3522,10 @@ class statistics_helper
             //2. Collect and Display results #######################################################################
 
             if (isset($outputs['alist']) && $outputs['alist']) {
-                $count = $count + 1;
-
                 $display = $this->displaySimpleResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $sLanguageCode);
                 $sOutputHTML .= $display['statisticsoutput'];
                 $aStatisticsData = array_merge($aStatisticsData, $display['astatdata']);
-
-                // Add row break after every second column for md size
-                if ($count % 2 == 0) {
-                    $sOutputHTML .= '<div class="clearfix visible-md-block"></div>';
-                }
-                // Add row break after every third column for lg size
-                if ($count % 3 == 0) {
-                    $sOutputHTML .= '<div class="clearfix visible-lg-block"></div>';
-                }
             }    //end if -> collect and display results
-
 
             //Delete Build Outputs data
             unset($outputs);
@@ -4005,7 +4014,7 @@ class statistics_helper
                 // add a buttons to browse results
                 $sOutputHTML .= CHtml::form(["responses/browse/", 'surveyId' => $surveyid], 'post', array('target' => '_blank')) . "\n"
                 . "\t\t<p>"
-                . "\t\t\t<input type='submit' class='btn btn-default' value='" . gT("Browse") . "'  />\n"
+                . "\t\t\t<input type='submit' class='btn btn-outline-secondary' value='" . gT("Browse") . "'  />\n"
                 . "\t\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
                 . "\t\t\t<input type='hidden' name='sql' value=\"$sql\" />\n"
                 . "\t\t\t<input type='hidden' name='subaction' value='all' />\n"
@@ -4272,7 +4281,7 @@ class statistics_helper
             $shortstring = htmlspecialchars(mb_strcut(html_entity_decode($shortstring, ENT_QUOTES, 'UTF-8'), 0, $maxchars, 'UTF-8'));
             $sTextToShow = gT("Question", "js") . ': ' . $jshinttext;
             $reshtml = '<span>' . $shortstring . '...</span>';
-            $reshtml .= '<span  class="show_speaker icon-assessments text-success" style="cursor: pointer" title="' . $sTextToShow . '"  data-toggle="tooltip" data-placement="bottom"  >';
+            $reshtml .= '<span  class="show_speaker icon-assessments text-success" style="cursor: pointer" title="' . $sTextToShow . '"  data-bs-toggle="tooltip" data-bs-placement="bottom"  >';
             $reshtml .= '</span>';
         } else {
             $reshtml = "<span style='cursor: pointer' title='" . $htmlhinttext . "'> \"$htmlhinttext\"</span>";

@@ -32,13 +32,13 @@
                 <?php
                     $url = Yii::app()->createUrl('/admin/update');
                     echo CHtml::beginForm($url, 'post');
-                    echo CHtml::hiddenField('destinationBuild', $destinationBuild);
-                    echo CHtml::hiddenField('access_token', $access_token);
-                    echo CHtml::hiddenField('update', 'checkFiles');
-                    echo '<a class="btn btn-default" href="' . Yii::app()->createUrl("admin/update") . '" role="button" aria-disabled="false">
-                            ' . gT("Cancel") . '
-                        </a>';
-                    echo CHtml::submitButton(gT('Check again', 'unescaped'), array("class" => "btn btn-default"));
+                    echo CHtml::hiddenField('destinationBuild' , $destinationBuild);
+                    echo CHtml::hiddenField('access_token' , $access_token);
+                    echo CHtml::hiddenField('update' , 'checkFiles');
+                    echo '<a class="btn btn-cancel" href="'.Yii::app()->createUrl("admin/update").'" role="button" aria-disabled="false">
+                            '.gT("Cancel").'
+                        </a>&nbsp;';
+                    echo CHtml::submitButton(gT('Check again','unescaped'), array("class"=>"btn btn-outline-secondary"));
                     echo CHtml::endForm();
                 ?>
             </p>
@@ -46,11 +46,11 @@
         <p>
             <?php
                 $url = Yii::app()->createUrl('/admin/update/sa/backup');
-                echo CHtml::beginForm($url, 'post', array("id" => "launchBackupForm"));
-                echo CHtml::hiddenField('destinationBuild', $destinationBuild);
-                echo CHtml::hiddenField('access_token', $access_token);
-                echo '<a class="btn btn-default" href="' . Yii::app()->createUrl("admin/update") . '" role="button" aria-disabled="false">
-                        ' . gT("Cancel") . '
+                echo CHtml::beginForm($url, 'post', array("id"=>"launchBackupForm"));
+                echo CHtml::hiddenField('destinationBuild' , $destinationBuild);
+                echo CHtml::hiddenField('access_token' , $access_token);
+                echo '<a class="btn btn-cancel" href="'.Yii::app()->createUrl("admin/update").'" role="button" aria-disabled="false">
+                        '.gT("Cancel").'
                     </a>';
                 echo CHtml::submitButton(sprintf(gT('Continue')), array("class" => "btn btn-default"));
                 echo CHtml::endForm();

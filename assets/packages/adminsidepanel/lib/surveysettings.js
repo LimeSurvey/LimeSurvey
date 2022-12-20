@@ -5,7 +5,7 @@ var defineActions = function (dataArray) {
     var buttonDelete = $('<button><i class="fa fa-trash"></i></button>');
     var container = $('<div></div>');
     buttonEdit
-        .addClass('btn btn-xs btn-default surveysettings_edit_intparameter')
+        .addClass('btn btn-xs btn-outline-secondary surveysettings_edit_intparameter')
         .data('id', dataArray.id)
         .data('sid', dataArray.sid)
         .data('qid', (dataArray.qid || null))
@@ -108,7 +108,7 @@ function PostParameterGrid() {
 function saveParameter() {
     var sParamname = $.trim($('#paramname').val());
     if (sParamname == '' || !/^[a-zA-Z_][a-zA-Z0-9_]*$/.test(sParamname) || sParamname == 'sid' || sParamname == 'newtest' || sParamname == 'token' || sParamname == 'lang') {
-        $('#dlgEditParameter').prepend('<div class="alert alert-danger alert-dismissible fade in"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' + sEnterValidParam + '</div>');
+        $('#dlgEditParameter').prepend('<div class="alert alert-danger alert-dismissible fade in"><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' + sEnterValidParam + '</div>');
         return;
     }
     $('#dlgEditParameter').dialog('close');

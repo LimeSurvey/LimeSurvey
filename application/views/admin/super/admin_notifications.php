@@ -1,45 +1,45 @@
 <!-- Admin notification system -->
 <?php if ($nrOfNotifications == 0): ?>
-    <li id='notification-li' class='dropdown'>
-        <a aria-expanded='false' 
+    <li id='notification-li' class='dropdown nav-item'>
+        <a aria-expanded='false' class="nav-link"
             href='#'>
             <span class='fa fa-bell text-muted'></span>
-	    <span class='sr-only'>Notifications</span>
+	    <span class='visually-hidden'>Notifications</span>
         </a>
     </li>
 <?php elseif($showLoader): ?>
-<li id='notification-li' class='dropdown' onclick='LS.updateNotificationWidget("<?php echo $updateUrl; ?>");' >
-        <a class='dropdown-toggle' data-toggle='dropdown' role='button' aria-expanded='false' href='#'>
+<li id='notification-li' class='dropdown nav-item' onclick='LS.updateNotificationWidget("<?php echo $updateUrl; ?>");' >
+        <a class='nav-link dropdown-toggle' data-bs-toggle='dropdown' role='button' aria-expanded='false' href='#'>
             <?php // Use class 'notification-bell-pulse' for pulsating bell ?>
             <span id='notification-bell' class='fa fa-bell <?php echo $bellColor; ?>'></span>
 
             <?php if ($nrOfNewNotifications): ?>
-                <span class='badge'><?php echo $nrOfNewNotifications; ?></span>
+                <span class='badge rounded-pill'><?php echo $nrOfNewNotifications; ?></span>
             <?php endif; ?>
 
             <span class='caret'></span>
         </a>
-        <ul class='dropdown-menu' role='menu'>
+        <ul class='dropdown-menu dropdown-menu-end' role='menu'>
             <li>
-                <a><span class='fa fa-spinner fa-spin'></span><span class='sr-only'>Loading notifications</span></a>
+                <a class="dropdown-item"><span class='fa fa-spinner fa-spin'></span><span class='visually-hidden'>Loading notifications</span></a>
             </li>
         </ul>
     </li>
 <?php else: ?>
-    <li id='notification-li' class='dropdown' onclick='LS.styleNotificationMenu();'>
-        <a class='dropdown-toggle' data-toggle='dropdown' role='button' aria-expanded='false' href='#'>
+    <li id='notification-li' class='dropdown nav-item' onclick='LS.styleNotificationMenu();'>
+        <a class='nav-link dropdown-toggle' data-bs-toggle='dropdown' role='button' aria-expanded='false' href='#'>
             <?php // Use class 'notification-bell-pulse' for pulsating bell ?>
             <span id='notification-bell' class='fa fa-bell <?php echo $bellColor; ?>'></span>
 
             <?php if ($nrOfNewNotifications): ?>
-                <span class='badge'><?php echo $nrOfNewNotifications; ?></span>
+                <span class='badge rounded-pill'><?php echo $nrOfNewNotifications; ?></span>
             <?php endif; ?>
 
             <span class='caret'></span>
         </a>
 
-        <ul id='notification-outer-ul' class='dropdown-menu' role='menu'>
-            <li id='notification-inner-li' style='height: 88%;'>
+        <ul id='notification-outer-ul' class='dropdown-menu dropdown-menu-end' role='menu'>
+            <li id='notification-inner-li'>
                 <ul id='notification-inner-ul' class='notification-list'>
                     <?php foreach ($notifications as $not): ?>
                         <li>
@@ -67,13 +67,10 @@
                     <?php endforeach; ?>
                 </ul>
             </li>
-            <li id='notification-divider' class="divider"></li>
+            <li id='notification-divider' class="dropdown-divider"></li>
 
             <li id='notification-clear-all'>
-                <a 
-                    href='#'
-                    onclick='(function() { LS.deleteAllNotifications("<?php echo $clearAllNotificationsUrl ?>", "<?php echo $updateUrl; ?>"); })()'
-                >
+                <a href='#'  class="dropdown-item" onclick='(function() { LS.deleteAllNotifications("<?php echo $clearAllNotificationsUrl ?>", "<?php echo $updateUrl; ?>"); })()'>
                     <span class='fa fa-trash text-danger'></span>&nbsp;
                     <?php eT('Delete all notifications'); ?>
                 </a>

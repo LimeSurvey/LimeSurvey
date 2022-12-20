@@ -113,8 +113,9 @@ class UserManagementTest extends TestBaseClassWeb
             );
             $save->click();
 
-            // Wait for "Saved successfully" modal
-            $this->waitForModal('Saved successfully');
+            // Wait for "Saved successfully" alert
+            $alert = $this->waitForElementShim($web, '#notif-container .alert-success');
+            $web->wait(10)->until(WebDriverExpectedCondition::visibilityOf($alert));
 
             // Make sure the user was saved in database.
             $users = \User::model()->findAllByAttributes(['users_name' => $username]);
@@ -191,7 +192,7 @@ class UserManagementTest extends TestBaseClassWeb
             $this->fillInputById("User_Form_email", $email);
 
             // Fill in the expiration date.
-            $this->fillDateById('User_Form_expires', $expiration);
+            $this->fillDateById('expires', $expiration);
 
             // Enable "Set password now" to avoid mailing errors
             $setPasswordSwitch = self::$webDriver->findElement(
@@ -229,8 +230,9 @@ class UserManagementTest extends TestBaseClassWeb
             );
             $save->click();
 
-            // Wait for "Saved successfully" modal
-            $this->waitForModal('Saved successfully');
+            // Wait for "Saved successfully" alert
+            $alert = $this->waitForElementShim($web, '#notif-container .alert-success');
+            $web->wait(10)->until(WebDriverExpectedCondition::visibilityOf($alert));
 
             // Make sure the user was saved in database.
             $users = \User::model()->findAllByAttributes(['users_name' => $username]);
@@ -308,7 +310,7 @@ class UserManagementTest extends TestBaseClassWeb
             $this->fillInputById("User_Form_email", $email);
 
             // Fill in the expiration date.
-            $this->fillDateById('User_Form_expires', $expiration);
+            $this->fillDateById('expires', $expiration);
 
             // Enable "Set password now" to avoid mailing errors
             $setPasswordSwitch = self::$webDriver->findElement(
@@ -346,8 +348,9 @@ class UserManagementTest extends TestBaseClassWeb
             );
             $save->click();
 
-            // Wait for "Saved successfully" modal
-            $this->waitForModal('Saved successfully');
+            // Wait for "Saved successfully" alert
+            $alert = $this->waitForElementShim($web, '#notif-container .alert-success');
+            $web->wait(10)->until(WebDriverExpectedCondition::visibilityOf($alert));
 
             // Make sure the user was saved in database.
             $users = \User::model()->findAllByAttributes(['users_name' => $username]);
@@ -398,15 +401,17 @@ class UserManagementTest extends TestBaseClassWeb
         );
         $input->click();
         // Give time for the datepicker to open and click again before clearing
-        $wrapperId = $input->findElement(WebDriverBy::xpath("parent::*"))->getAttribute('id');
         $clearButton = self::$webDriver->wait($timeout)->until(
             WebDriverExpectedCondition::elementToBeClickable(
-                WebDriverBy::cssSelector('#' . $wrapperId . ' .picker-switch a[data-action="clear"]')
+                WebDriverBy::cssSelector('.tempus-dominus-widget.show div[data-action="clear"]')
             )
         );
+        $otherInput = self::$webDriver->findElement(WebDriverBy::id('User_Form_full_name'));
         $clearButton->click();
         $input->click();
         $input->clear()->sendKeys($value);
+        // click on other input field to close the datepicker
+        $otherInput->click();
     }
 
     protected function waitForModal($title, $timeout = 10)

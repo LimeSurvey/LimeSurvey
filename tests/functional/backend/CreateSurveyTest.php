@@ -54,7 +54,7 @@ class CreateSurveyTest extends TestBaseClassWeb
             try {
                 $button = self::$webDriver->wait(1)->until(
                     WebDriverExpectedCondition::elementToBeClickable(
-                        WebDriverBy::cssSelector('#welcomeModal button.btn-default')
+                        WebDriverBy::cssSelector('#welcomeModal button.btn-outline-secondary')
                     )
                 );
                 $button->click();
@@ -70,7 +70,7 @@ class CreateSurveyTest extends TestBaseClassWeb
             try {
                 $button = self::$webDriver->wait(1)->until(
                     WebDriverExpectedCondition::elementToBeClickable(
-                        WebDriverBy::cssSelector('#admin-notification-modal button.btn-default')
+                        WebDriverBy::cssSelector('#admin-notification-modal button.btn-outline-secondary')
                     )
                 );
                 $button->click();
@@ -85,7 +85,7 @@ class CreateSurveyTest extends TestBaseClassWeb
             // Click on big "Create survey" button.
             $link = self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
-                    WebDriverBy::cssSelector('#panel-1[data-url]')
+                    WebDriverBy::cssSelector('#card-1[data-url]')
                 )
             );
             $link->click();

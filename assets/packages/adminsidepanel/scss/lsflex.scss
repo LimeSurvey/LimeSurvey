@@ -41,9 +41,6 @@ $x-directions: center flex-start flex-end space-between space-around;
         .shrink-#{$i} {
             flex-shrink: $i;
         }
-        .col-#{$i} {
-            width: 100*( $i/12)*1%;
-        }
     }
 }
 
@@ -52,9 +49,6 @@ $x-directions: center flex-start flex-end space-between space-around;
     @for $i from 1 through 12 {
         .grow-#{$i} {
             flex-grow: $i;
-        }
-        .col-#{$i} {
-            width: 100*( $i/12)*1%;
         }
     }
 }
