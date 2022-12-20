@@ -1165,7 +1165,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             $bExpired = ($oStop < $oNow);
             $bWillRun = ($oStart > $oNow);
 
-            $sStop = $sStop!=null ? convertToGlobalSettingFormat($sStop) : null;
+            $sStop = $sStop != null ? convertToGlobalSettingFormat($sStop) : null;
             $sStart = convertToGlobalSettingFormat($sStart);
 
             // Icon generaton (for CGridView)
