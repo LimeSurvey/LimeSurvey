@@ -1,463 +1,493 @@
 .btn:hover {
-  color: $white;
-}
-
-%default_hover {
-  box-shadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
-  color: $white;
-}
-
-%default_outline_hover {
-  box-shadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
-  background-color: $white;
-  border-color: $g-900;
-  color: $g-900;
-}
-
-%default_focus {
-  box-shadow: 4px 4px 0px rgba(123, 97, 255, 0.4);
-  color: $white;
-}
-
-%default_outline_focus {
-  box-shadow: 4px 4px 0px rgba(123, 97, 255, 0.4);
-  background-color: $white;
-  color: $g-900;
-  border-color: $g-900;
-}
-
-%default_disabled {
-  color: $g-600;
-  background-color: $g-400;
-  border: 1px solid $g-400;
-  box-shadow: none;
+  color : $white;
 }
 
 .btn {
-  color: $white;
+  color : $white;
+
   &:hover {
-    @extend %default_hover;
+    //default hover
+    box-shadow : 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
+    color      : $white;
   }
 
   &:focus {
-    @extend %default_hover;
+    //default hover
+    box-shadow : 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
+    color      : $white;
   }
 
   &:active {
-    @extend %default_hover;
+    //default hover
+    box-shadow : 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
+    color      : $white;
   }
 
   &.active {
-    @extend %default_hover;
+    //default hover
+    box-shadow : 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
+    color      : $white;
   }
 
   &.dropdown-toggle.show, &.dropdown-toggle.show:focus {
-    @extend %default_focus;
+    // default_focus
+    box-shadow : 4px 4px 0px rgba(123, 97, 255, 0.4);
+    color      : $white;
   }
 
   &.disabled, &[disabled] {
-    @extend %default_disabled;
+    // default_disabled
+    color            : $g-600;
+    background-color : $g-400;
+    border           : 1px solid $g-400;
+    box-shadow       : none;
 
     &:hover {
-      @extend %default_disabled;
+      // default_disabled
+      color            : $g-600;
+      background-color : $g-400;
+      border           : 1px solid $g-400;
+      box-shadow       : none;
     }
 
     &:focus {
-      @extend %default_disabled;
+      // default_disabled
+      color            : $g-600;
+      background-color : $g-400;
+      border           : 1px solid $g-400;
+      box-shadow       : none;
     }
 
     &:active {
-      @extend %default_disabled;
+      // default_disabled
+      color            : $g-600;
+      background-color : $g-400;
+      border           : 1px solid $g-400;
+      box-shadow       : none;
     }
 
     &.active {
-      @extend %default_disabled;
+      // default_disabled
+      color            : $g-600;
+      background-color : $g-400;
+      border           : 1px solid $g-400;
+      box-shadow       : none;
     }
   }
 }
 
- //from lime-admin-colors.scss
- //Buttons
+//from lime-admin-colors.scss
+//Buttons
 .btn-primary, .btn-info {
   &:hover {
-    @extend %default_hover;
-    background-color: $active-green;
+    //default hover
+    box-shadow       : 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
+    color            : $white;
+    background-color : $active-green;
   }
 
   &:focus {
-    @extend %default_hover;
-    background-color: $active-green;
+    //default hover
+    box-shadow       : 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
+    color            : $white;
+    background-color : $active-green;
   }
 
   &:active {
-    @extend %default_hover;
-    background-color: $active-green;
+    //default hover
+    box-shadow       : 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
+    color            : $white;
+    background-color : $active-green;
   }
 
   &.active {
-    @extend %default_hover;
-    background-color: $active-green;
+    //default hover
+    box-shadow       : 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
+    color            : $white;
+    background-color : $active-green;
   }
 }
 
 .btn-secondary, .btn-cancel {
   &:hover {
-    @extend %default_hover;
-    background-color: $g-600;
-    border-color: $g-600;
+    //default hover
+    box-shadow       : 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
+    color            : $white;
+    background-color : $g-600;
+    border-color     : $g-600;
   }
 
   &:focus {
-    @extend %default_hover;
-    background-color: $g-600;
-    border-color: $g-600;
+    //default hover
+    box-shadow       : 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
+    color            : $white;
+    background-color : $g-600;
+    border-color     : $g-600;
   }
 
   &:active {
-    @extend %default_hover;
-    background-color: $g-600;
-    border-color: $g-600;
+    //default hover
+    box-shadow       : 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
+    color            : $white;
+    background-color : $g-600;
+    border-color     : $g-600;
   }
 
   &.active {
-    @extend %default_hover;
-    background-color: $g-600;
-    border-color: $g-600;
+    //default hover
+    box-shadow       : 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
+    color            : $white;
+    background-color : $g-600;
+    border-color     : $g-600;
   }
 
   &.dropdown-toggle.show, &.dropdown-toggle.show:focus {
-    @extend %default_focus;
-    background-color: $g-600;
-    border-color: $g-600;
+    // default_focus
+    box-shadow       : 4px 4px 0px rgba(123, 97, 255, 0.4);
+    color            : $white;
+    background-color : $g-600;
+    border-color     : $g-600;
   }
 }
 
 .btn-outline-secondary {
-  color: $g-900;
-  background-color: $white;
-  border: 1px solid $g-900;
+  color            : $g-900;
+  background-color : $white;
+  border           : 1px solid $g-900;
 
   &:hover {
-    @extend %default_outline_hover;
+    // default_outline_hover
+    box-shadow       : 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
+    background-color : $white;
+    border-color     : $g-900;
+    color            : $g-900;
   }
 
   &:focus {
-    @extend %default_outline_focus;
+    // default_outline_focus
+    box-shadow       : 4px 4px 0px rgba(123, 97, 255, 0.4);
+    background-color : $white;
+    color            : $g-900;
+    border-color     : $g-900;
   }
 
   &:active {
-    @extend %default_outline_focus;
+    // default_outline_focus
+    box-shadow       : 4px 4px 0px rgba(123, 97, 255, 0.4);
+    background-color : $white;
+    color            : $g-900;
+    border-color     : $g-900;
   }
 
   &.active {
-    @extend %default_outline_focus;
+    // default_outline_focus
+    box-shadow       : 4px 4px 0px rgba(123, 97, 255, 0.4);
+    background-color : $white;
+    color            : $g-900;
+    border-color     : $g-900;
   }
 
   &.dropdown-toggle.show, &.dropdown-toggle.show:focus, &.show {
-    @extend %default_outline_focus;
+    // default_outline_focus
+    box-shadow       : 4px 4px 0px rgba(123, 97, 255, 0.4);
+    background-color : $white;
+    color            : $g-900;
+    border-color     : $g-900;
   }
 
   &.disabled, &[disabled] {
-    background-color: $white;
-    border: 1px solid $g-600;
-    color: $g-600;
+    background-color : $white;
+    border           : 1px solid $g-600;
+    color            : $g-600;
 
     &:hover {
-      background-color: $white;
-      border: 1px solid $g-600;
+      background-color : $white;
+      border           : 1px solid $g-600;
     }
 
     &:focus {
-      background-color: $white;
-      border: 1px solid $g-600;
+      background-color : $white;
+      border           : 1px solid $g-600;
     }
 
     &:active {
-      background-color: $white;
-      border: 1px solid $g-600;
+      background-color : $white;
+      border           : 1px solid $g-600;
     }
 
     &.active {
-      background-color: $white;
-      border: 1px solid $g-600;
+      background-color : $white;
+      border           : 1px solid $g-600;
     }
   }
 }
 
 .btn-success {
   &:hover {
-    color: $white;
-    background-color: $success;
-    border: 1px solid $success;
-    box-shadow: 0 0 0 .25rem rgba(mix($success, $success, 15%), .5);
+    color            : $white;
+    background-color : $success;
+    border           : 1px solid $success;
+    box-shadow       : 0 0 0 .25rem rgba(mix($success, $success, 15%), .5);
   }
 
   &:focus {
-    color: $white;
-    background-color: $success;
-    border: 1px solid $success;
-    box-shadow: 0 0 0 .25rem rgba(mix($success, $success, 15%), .5);
+    color            : $white;
+    background-color : $success;
+    border           : 1px solid $success;
+    box-shadow       : 0 0 0 .25rem rgba(mix($success, $success, 15%), .5);
   }
 
   &:active {
-    color: $white;
-    background-color: $success;
-    border: 1px solid $success;
-    box-shadow: 0 0 0 .25rem rgba(mix($success, $success, 15%), .5);
+    color            : $white;
+    background-color : $success;
+    border           : 1px solid $success;
+    box-shadow       : 0 0 0 .25rem rgba(mix($success, $success, 15%), .5);
   }
 
   &.active {
-    color: $white;
-    background-color: $success;
-    border: 1px solid $success;
-    box-shadow: 0 0 0 .25rem rgba(mix($success, $success, 15%), .5);
+    color            : $white;
+    background-color : $success;
+    border           : 1px solid $success;
+    box-shadow       : 0 0 0 .25rem rgba(mix($success, $success, 15%), .5);
   }
 }
 
 .btn-warning {
   &:hover {
-    color: $white;
-    background-color: $warning;
-    border: 1px solid $warning;
-    box-shadow: 0 0 0 .25rem rgba(mix($warning, $warning, 15%), .5);
+    color            : $white;
+    background-color : $warning;
+    border           : 1px solid $warning;
+    box-shadow       : 0 0 0 .25rem rgba(mix($warning, $warning, 15%), .5);
   }
 
   &:focus {
-    color: $white;
-    background-color: $warning;
-    border: 1px solid $warning;
-    box-shadow: 0 0 0 .25rem rgba(mix($warning, $warning, 15%), .5);
+    color            : $white;
+    background-color : $warning;
+    border           : 1px solid $warning;
+    box-shadow       : 0 0 0 .25rem rgba(mix($warning, $warning, 15%), .5);
   }
 
   &:active {
-    color: $white;
-    background-color: $warning;
-    border: 1px solid $warning;
-    box-shadow: 0 0 0 .25rem rgba(mix($warning, $warning, 15%), .5);
+    color            : $white;
+    background-color : $warning;
+    border           : 1px solid $warning;
+    box-shadow       : 0 0 0 .25rem rgba(mix($warning, $warning, 15%), .5);
   }
 
   &.active {
-    color: $white;
-    background-color: $warning;
-    border: 1px solid $warning;
-    box-shadow: 0 0 0 .25rem rgba(mix($warning, $warning, 15%), .5);
+    color            : $white;
+    background-color : $warning;
+    border           : 1px solid $warning;
+    box-shadow       : 0 0 0 .25rem rgba(mix($warning, $warning, 15%), .5);
   }
 }
 
 .btn-danger {
   &:hover {
-    color: $white;
-    background-color: $error;
-    border: 1px solid $error;
-    box-shadow: 0 0 0 .25rem rgba(mix($error, $error, 15%), .5);
+    color            : $white;
+    background-color : $error;
+    border           : 1px solid $error;
+    box-shadow       : 0 0 0 .25rem rgba(mix($error, $error, 15%), .5);
   }
 
   &:focus {
-    color: $white;
-    background-color: $error;
-    border: 1px solid $error;
-    box-shadow: 0 0 0 .25rem rgba(mix($error, $error, 15%), .5);
+    color            : $white;
+    background-color : $error;
+    border           : 1px solid $error;
+    box-shadow       : 0 0 0 .25rem rgba(mix($error, $error, 15%), .5);
   }
 
   &:active {
-    color: $white;
-    background-color: $error;
-    border: 1px solid $error;
-    box-shadow: 0 0 0 .25rem rgba(mix($error, $error, 15%), .5);
+    color            : $white;
+    background-color : $error;
+    border           : 1px solid $error;
+    box-shadow       : 0 0 0 .25rem rgba(mix($error, $error, 15%), .5);
   }
 
   &.active {
-    color: $white;
-    background-color: $error;
-    border: 1px solid $error;
-    box-shadow: 0 0 0 .25rem rgba(mix($error, $error, 15%), .5);
+    color            : $white;
+    background-color : $error;
+    border           : 1px solid $error;
+    box-shadow       : 0 0 0 .25rem rgba(mix($error, $error, 15%), .5);
   }
 }
 
 // btn-link should be outsourced to links.scss or whatever it will be called
 .btn-link {
-  color: $active-green;
+  color : $active-green;
 
   &:hover {
-    color: $active-green;
+    color : $active-green;
   }
 
   &:focus {
-    color: $active-green;
+    color : $active-green;
   }
 }
 
 // from 000-lime-admin-common.scss
 .row-button-margin-bottom {
-  margin-bottom: -5px;
+  margin-bottom : -5px;
 }
 
 .row-button-margin-bottom .btn {
-  margin-bottom: 5px;
+  margin-bottom : 5px;
 }
 
 .icon-btn-row {
-  display: flex;
+  display : flex;
 
   .btn.btn-lg {
-    width: $btn-height-lg;
-    padding-left: 0;
-    padding-right: 0;
+    width         : $btn-height-lg;
+    padding-left  : 0;
+    padding-right : 0;
   }
+
   .btn {
-    width: $btn-height;
-    padding-left: 0;
-    padding-right: 0;
+    width         : $btn-height;
+    padding-left  : 0;
+    padding-right : 0;
   }
+
   .btn.btn-sm {
-    width: $btn-height-sm;
-    padding: 1px 0;
+    width   : $btn-height-sm;
+    padding : 1px 0;
   }
+
   .btn.btn-xs {
-    width: 22px;
-    padding-left: 0;
-    padding-right: 0;
+    width         : 22px;
+    padding-left  : 0;
+    padding-right : 0;
   }
 
   :not(:first-child).btn, :not(:first-child) .btn {
-    margin-left: 5px;
+    margin-left : 5px;
   }
+
   :not(:first-child).btn.btn-xs, :not(:first-child) .btn.btn-xs {
-    margin-left: 3px;
+    margin-left : 3px;
   }
 }
 
 // new admin theme customization
 //Sizing
 .btn {
-  min-height: $btn-height;
+  min-height    : $btn-height;
   //padding: 8px 12px;
-  font-size: $btn-font-size;
-  line-height: $line-height-20;
-  border-radius: 4px;
-  font-weight: $btn-font-weight;
+  font-size     : $btn-font-size;
+  line-height   : $line-height-20;
+  border-radius : $border-radius;
+  font-weight   : $btn-font-weight;
 }
 
 .btn-sm {
-  min-height: $btn-height-sm;
-  padding: 0.375rem 0.75rem;
-  font-size: $btn-font-size-sm;
-  line-height: $line-height-16;
-  border-radius: 3px;
+  min-height    : $btn-height-sm;
+  padding       : 0.375rem 0.75rem;
+  font-size     : $btn-font-size-sm;
+  line-height   : $line-height-16;
+  border-radius : 3px;
 }
 
 .btn-lg {
-  min-height: $btn-height-lg;
+  min-height    : $btn-height-lg;
   //padding: 12px;
-  font-size: $btn-font-size;
-  line-height: $line-height-28;
-  border-radius: 4px;
+  font-size     : $btn-font-size;
+  line-height   : $line-height-28;
+  border-radius : $border-radius;
 }
 
 .btn-xl {
-  min-height: $btn-height-xl;
+  min-height    : $btn-height-xl;
   //padding: 12px 16px;
-  font-size: $btn-font-size;
-  line-height: $line-height-38;
-  border-radius: 4px;
+  font-size     : $btn-font-size;
+  line-height   : $line-height-38;
+  border-radius : $border-radius;
 }
 
 .btn-xs {
-  min-height: auto;
+  min-height : auto;
 }
 
 //Dropdown divider
 .menu-button-divider {
-  margin: 0 8px;
+  margin : 0 8px;
 }
 
-.btn-primary .menu-button-divider, .btn-info .menu-button-divider {
-  border-left: 1px solid $white;
-}
-.btn-primary[disabled] .menu-button-divider {
-  border-left: 1px solid $g-600;
-}
-
-.btn-outline-secondary .menu-button-divider {
-  border-left: 1px solid $g-900;
-}
-.btn-outline-secondary[disabled] .menu-button-divider, .btn-outline-secondary.disabled .menu-button-divider {
-  border-left: 1px solid $g-600;
-}
-
+.btn-primary .menu-button-divider,
+.btn-info .menu-button-divider,
 .btn-secondary .menu-button-divider {
-  border-left: 1px solid $white;
-}
-.btn-secondary[disabled] .menu-button-divider {
-  border-left: 1px solid $g-600;
+  border-left : 1px solid $white;
 }
 
-.btn-success .menu-button-divider {
-  border-left: 1px solid $g-900;
-}
-.btn-success[disabled] .menu-button-divider {
-  border-left: 1px solid $g-600;
-}
-
-.btn-warning .menu-button-divider {
-  border-left: 1px solid $g-900;
-}
-.btn-warning[disabled] .menu-button-divider {
-  border-left: 1px solid $g-600;
-}
-
+.btn-outline-secondary .menu-button-divider,
+.btn-success .menu-button-divider,
+.btn-warning .menu-button-divider,
 .btn-danger .menu-button-divider {
-  border-left: 1px solid $g-900;
+  border-left : 1px solid $g-900;
 }
-.btn-danger[disabled] .menu-button-divider {
-  border-left: 1px solid $g-600;
+
+.btn-primary[disabled] .menu-button-divider,
+.btn-primary.disabled .menu-button-divider,
+.btn-info[disabled] .menu-button-divider,
+.btn-info.disabled .menu-button-divider,
+.btn-outline-secondary[disabled] .menu-button-divider,
+.btn-outline-secondary.disabled .menu-button-divider,
+.btn-secondary[disabled] .menu-button-divider,
+.btn-secondary.disabled .menu-button-divider,
+.btn-success[disabled] .menu-button-divider,
+.btn-success.disabled .menu-button-divider,
+.btn-warning[disabled] .menu-button-divider,
+.btn-warning.disabled .menu-button-divider,
+.btn-danger[disabled] .menu-button-divider,
+.btn-danger.disabled .menu-button-divider {
+  border-left : 1px solid $g-600;
 }
 
 // Custom from adminbasics:
 .surveybar .btn, .surveybar button {
-  margin-bottom: 5px;
+  margin-bottom : 5px;
 }
 
 .btn.float-end {
-  margin-left: 5px;
+  margin-left : 5px;
 }
 
-@media screen and (min-width: 1280px) and (max-width: 1366px) {
+@media screen and (min-width : 1280px) and (max-width : 1366px) {
   #add_user_btn {
-    margin-top: 1.5em;
+    margin-top : 1.5em;
   }
 }
 
 .side-menu #search .card-body .navbar-form .btn {
-  position: absolute;
-  right: 0;
-  top: 0;
-  border: 0;
-  border-radius: 0;
-  padding: 15px 18px;
+  position      : absolute;
+  right         : 0;
+  top           : 0;
+  border        : 0;
+  border-radius : 0;
+  padding       : 15px 18px;
 }
 
 .btnaddanswer:hover,
 .btndelanswer:hover {
-  cursor: pointer;
+  cursor : pointer;
 }
 
 .modal-footer .btn {
-  margin-bottom: 0;
+  margin-bottom : 0;
 }
 
 .btn.readonly,
 .btn.readonly:hover {
-  cursor: not-allowed;
-  opacity: 0.65;
-  filter: alpha(opacity=65);
-  -webkit-box-shadow: none;
-  box-shadow: none;
-  border: 1px solid #cccccc;
+  cursor             : not-allowed;
+  opacity            : 0.65;
+  filter             : alpha(opacity=65);
+  -webkit-box-shadow : none;
+  box-shadow         : none;
+  border             : 1px solid #cccccc;
 }
 
 body.onStatistics .btn {
-  display: none;
+  display : none;
 }
 
 // used anywhere?
