@@ -17224,28 +17224,28 @@ tr.info, tr.danger {
   color: #fff;
 }
 
-.btn {
+.btn, .btn-sm, .btn-group-sm > .btn, .btn-lg, .btn-group-lg > .btn, .btn-xl {
   color: #fff;
 }
-.btn:hover, .btn:focus {
+.btn:hover, .btn:focus, .btn-sm:hover, .btn-sm:focus, .btn-lg:hover, .btn-lg:focus, .btn-xl:hover, .btn-xl:focus {
   box-shadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
   color: #fff;
 }
-.btn:active, .btn.active {
+.btn:active, .btn.active, .btn-sm:active, .btn-sm.active, .btn-lg:active, .btn-lg.active, .btn-xl:active, .btn-xl.active {
   box-shadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
   color: #fff;
 }
-.btn.dropdown-toggle.show, .btn.dropdown-toggle.show:focus {
+.btn.dropdown-toggle.show, .btn.dropdown-toggle.show:focus, .btn-sm.dropdown-toggle.show, .btn-sm.dropdown-toggle.show:focus, .btn-lg.dropdown-toggle.show, .btn-lg.dropdown-toggle.show:focus, .btn-xl.dropdown-toggle.show, .btn-xl.dropdown-toggle.show:focus {
   box-shadow: -4px 4px 0px rgba(123, 97, 255, 0.4);
   color: #fff;
 }
-.btn.disabled, .btn[disabled] {
+.btn.disabled, .btn[disabled], .btn-sm.disabled, .btn-sm[disabled], .btn-lg.disabled, .btn-lg[disabled], .btn-xl.disabled, .btn-xl[disabled] {
   color: #ACACAC;
   background-color: #C2C5D1;
   border: 1px solid #C2C5D1;
   box-shadow: none;
 }
-.btn.disabled:hover, .btn.disabled:focus, .btn.disabled:active, .btn.disabled.active, .btn[disabled]:hover, .btn[disabled]:focus, .btn[disabled]:active, .btn[disabled].active {
+.btn.disabled:hover, .btn.disabled:focus, .btn.disabled:active, .btn.disabled.active, .btn[disabled]:hover, .btn[disabled]:focus, .btn[disabled]:active, .btn[disabled].active, .btn-sm.disabled:hover, .btn-sm.disabled:focus, .btn-sm.disabled:active, .btn-sm.disabled.active, .btn-sm[disabled]:hover, .btn-sm[disabled]:focus, .btn-sm[disabled]:active, .btn-sm[disabled].active, .btn-lg.disabled:hover, .btn-lg.disabled:focus, .btn-lg.disabled:active, .btn-lg.disabled.active, .btn-lg[disabled]:hover, .btn-lg[disabled]:focus, .btn-lg[disabled]:active, .btn-lg[disabled].active, .btn-xl.disabled:hover, .btn-xl.disabled:focus, .btn-xl.disabled:active, .btn-xl.disabled.active, .btn-xl[disabled]:hover, .btn-xl[disabled]:focus, .btn-xl[disabled]:active, .btn-xl[disabled].active {
   color: #ACACAC;
   background-color: #C2C5D1;
   border: 1px solid #C2C5D1;
@@ -17365,6 +17365,7 @@ tr.info, tr.danger {
 
 .btn {
   min-height: 36px;
+  padding: 8px 12px;
   font-size: 14px;
   line-height: 20px;
   border-radius: 4px;
@@ -17373,7 +17374,7 @@ tr.info, tr.danger {
 
 .btn-sm, .btn-group-sm > .btn {
   min-height: 24px;
-  padding: 0.375rem 0.75rem;
+  padding: 4px 8px;
   font-size: 12px;
   line-height: 16px;
   border-radius: 3px;
@@ -17381,6 +17382,7 @@ tr.info, tr.danger {
 
 .btn-lg, .btn-group-lg > .btn {
   min-height: 44px;
+  padding: 12px;
   font-size: 14px;
   line-height: 28px;
   border-radius: 4px;
@@ -17388,6 +17390,7 @@ tr.info, tr.danger {
 
 .btn-xl {
   min-height: 52px;
+  padding: 12px 16px;
   font-size: 14px;
   line-height: 38px;
   border-radius: 4px;
