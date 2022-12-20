@@ -18,7 +18,7 @@
     }
     ?>
     <li>
-        <a target="_blank" href="<?= $link; ?>" >
+        <a class="dropdown-item" target="_blank" href="<?= $link; ?>" >
             <?php echo $languageName; ?>
         </a>
     </li>

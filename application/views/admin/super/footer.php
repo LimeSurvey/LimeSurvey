@@ -52,26 +52,10 @@ foreach ($systemInfos as $key => $systemInfo) {
 <!-- Footer -->
 <footer class='footer'>
     <div class="container-fluid">
-        <div class="row ps-3 pe-3">
-            <!-- Link to manual -->
-            <div class="col-6 col-md-4">
-                <a href='http://manual.limesurvey.org' onclick='function go(ev) { ev.preventDefault(); var win = window.open("http://manual.limesurvey.org", "_blank"); win.focus(); }; go(event);'>
-                <i class="ri-question-fill" id="info-footer"></i>
-
-            <span class="visually-hidden"><?php eT('Limesurvey online manual'); ?></span>
-                </a>
-            </div>
-
-            <!-- Support / Donate -->
-            <div  class="col-6 col-md-4 text-center" >
-                <a href='https://donate.limesurvey.org' target="_blank">
-                    <img alt='<?php printf(gT("Support this project - Donate to %s!"), 'LimeSurvey'); ?>' title='<?php printf(gT("Support this project - Donate to %s!"), 'LimeSurvey'); ?>' src='<?php echo Yii::app()->getConfig('adminimageurl');?>donate.png'/>
-                </a>
-            </div>
-
+        <div class="row ps-3 pe-3 pb-3">
             <!-- Lime survey website -->
-            <div class="col-12 col-md-4 text-end">
-                <a  title='<?php eT("Visit our website!"); ?>' href='https://community.limesurvey.org' target='_blank'>LimeSurvey Community Edition</a><br />
+            <div class="offset-lg-4 offset-xl-6 col-lg-8 col-xl-6 text-end">
+                <a  data-bs-toggle="tooltip" title='<?php eT("Visit our website!"); ?>' href='https://community.limesurvey.org' target='_blank'>LimeSurvey Community Edition</a>
                 <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')) { ?> 
                     <a href="#modalSystemInformation" data-bs-toggle="modal" title="<?=gT("Get system information")?>"> 
                 <?php } ?>
@@ -79,7 +63,31 @@ foreach ($systemInfos as $key => $systemInfo) {
                 <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')) { ?>
                     </a> 
                 <?php } ?>
-            </div>
+
+            <!-- Support / Donate -->
+                <?php
+                $this->widget('ext.ButtonWidget.ButtonWidget', [
+                    'name' => '',
+                    'id' => 'donate-button',
+                    'text' => gT('Donate'),
+                    'icon' => 'ri-service-fill',
+                    'iconPosition' => 'right',
+                    'link' => 'https://donate.limesurvey.org',
+                    'htmlOptions' =>
+                        [
+                                'class' => 'btn btn-primary btn-sm ms-4',
+                                'title' => sprintf(gT("Support this project - Donate to %s!"), 'LimeSurvey'),
+                                'data-bs-toggle' => 'tooltip',
+                                'target' => '_blank'
+                        ],
+                ]); ?>
+
+            <!-- Help button -->
+                <div class="d-inline-block ms-5 mt-3 mt-sm-0">
+                <?php
+                $this->renderPartial('/admin/super/help_button_dropup', []);
+                ?>
+                </div>
         </div>
     </div>
 </footer>
