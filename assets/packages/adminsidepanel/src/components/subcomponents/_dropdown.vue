@@ -26,37 +26,37 @@ export default {
             <!-- Survey structure -->
             <li>
                 <a href="/index.php/admin/export/sa/survey/action/exportstructurexml/surveyid/229189">
-                    <span class="icon-export"></span>
+                    <span class="ri-upload-fill"></span>
                     Survey structure (.lss) </a>
             </li>
             <!-- Survey archive unactivated -->
             <li>
                 <a href="#" onclick="alert('You can only archive active surveys.');">
-                    <span class="icon-export"></span>
+                    <span class="ri-upload-fill"></span>
                     Survey archive (.lsa) </a>
             </li>
             <!-- queXML -->
             <li>
                 <a href="/index.php/admin/export/sa/survey/action/exportstructurequexml/surveyid/229189">
-                    <span class="icon-export"></span>
+                    <span class="ri-upload-fill"></span>
                     queXML format (*.xml) </a>
             </li>
             <!-- queXMLPDF -->
             <li>
                 <a href="/index.php/admin/export/sa/quexml/surveyid/229189">
-                    <span class="icon-export"></span>
+                    <span class="ri-upload-fill"></span>
                     queXML PDF export </a>
             </li>
             <!-- Tab-separated-values -->
             <li>
                 <a href="/index.php/admin/export/sa/survey/action/exportstructuretsv/surveyid/229189">
-                    <span class="icon-export"></span>
+                    <span class="ri-upload-fill"></span>
                     Tab-separated-values format (*.txt) </a>
             </li>
             <!-- Survey printable version  -->
             <li>
                 <a href="/index.php/admin/export/sa/survey/action/exportprintables/surveyid/229189">
-                    <span class="icon-export"></span>
+                    <span class="ri-upload-fill"></span>
                     Printable survey (*.html) </a>
             </li>
             <!-- Printable version -->

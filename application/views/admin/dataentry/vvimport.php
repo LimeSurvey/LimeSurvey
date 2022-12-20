@@ -23,7 +23,7 @@
     
     
     <div class="card card-primary" id="panel-1">
-        <div class="card-header bg-primary">
+        <div class="card-header ">
             <div class="">
                 <?php eT("General");?>
             </div>

@@ -183,9 +183,10 @@ class User extends LSActiveRecord
      * @param string $new_full_name
      * @param string $new_email
      * @param int $parent_user
+     * @param string|null $expires
      * @return integer|boolean User ID if success
      */
-    public static function insertUser($new_user, $new_pass, $new_full_name, $parent_user, $new_email)
+    public static function insertUser($new_user, $new_pass, $new_full_name, $parent_user, $new_email, $expires = null)
     {
         $oUser = new self();
         $oUser->users_name = $new_user;
@@ -196,6 +197,7 @@ class User extends LSActiveRecord
         $oUser->email = $new_email;
         $oUser->created = date('Y-m-d H:i:s');
         $oUser->modified = date('Y-m-d H:i:s');
+        $oUser->expires = $expires;
         if ($oUser->save()) {
             return $oUser->uid;
         } else {
@@ -465,7 +467,7 @@ class User extends LSActiveRecord
                 class='btn btn-sm btn-outline-secondary UserManagement--action--openmodal UserManagement--action--userdetail' 
                 data-href='" . $detailUrl . "'
                 >
-                <i class='fa fa-search'></i>
+                <i class='ri-search-line'></i>
                 </button>";
 
         $editPermissionButton = ""
@@ -475,25 +477,25 @@ class User extends LSActiveRecord
                 class='btn btn-sm btn-outline-secondary UserManagement--action--openmodal UserManagement--action--permissions' 
                 data-href='" . $setPermissionsUrl . "'
                 data-modalsize='modal-lg'
-                ><i class='fa fa-lock'></i></button>";
+                ><i class='ri-lock-fill'></i></button>";
         $addRoleButton = ""
             . "<button 
                 data-bs-toggle='tooltip' 
                 title='" . gT("User role") . "'
                 class='btn btn-sm btn-outline-secondary UserManagement--action--openmodal UserManagement--action--addrole' 
-                data-href='" . $setRoleUrl . "'><i class='fa fa-users'></i></button>";
+                data-href='" . $setRoleUrl . "'><i class='ri-group-fill'></i></button>";
         $editUserButton = ""
             . "<button 
                 data-bs-toggle='tooltip' 
                 title='" . gT("Edit user") . "'
                 class='btn btn-sm btn-outline-secondary UserManagement--action--openmodal UserManagement--action--edituser green-border' 
-                data-href='" . $editUrl . "'><i class='fa fa-pencil'></i></button>";
+                data-href='" . $editUrl . "'><i class='ri-pencil-fill'></i></button>";
         $editTemplatePermissionButton = ""
             . "<button 
         data-bs-toggle='tooltip' 
         title='" . gT("Template permissions") . "'
         class='btn btn-sm btn-outline-secondary UserManagement--action--openmodal UserManagement--action--templatepermissions' 
-        data-href='" . $setTemplatePermissionsUrl . "'><i class='fa fa-paint-brush'></i></button>";
+        data-href='" . $setTemplatePermissionsUrl . "'><i class='ri-brush-fill'></i></button>";
         $takeOwnershipButton = ""
         . "<button 
                 id='UserManagement--takeown-" . $this->uid . "'
@@ -516,7 +518,7 @@ class User extends LSActiveRecord
                 class='btn btn-outline-secondary btn-sm UserManagement--action--openmodal UserManagement--action--delete red-border'
                 data-bs-toggle='tooltip' 
                 title='" . gT("Delete User") . "' 
-                data-href='" . $deleteUrl . "'><i class='fa fa-trash text-danger'></i></button>";
+                data-href='" . $deleteUrl . "'><i class='ri-delete-bin-fill text-danger'></i></button>";
 
         // Superadmins can do everything, no need to do further filtering
         if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
@@ -555,13 +557,7 @@ class User extends LSActiveRecord
             $buttonArray[] = $userDetail;
         }
         // Check if user is editable
-        if (
-            $this->uid == Yii::app()->user->getId()                             //One can edit onesself of course
-            || (
-                Permission::model()->hasGlobalPermission('users', 'update')     //Global permission to edit users given
-                && $this->parent_id == Yii::app()->session['loginID']           //AND User is owned by admin
-            )
-        ) {
+        if ($this->canEdit(Yii::app()->session['loginID'])) {
             $buttonArray[] = $editUserButton;
         }
 
@@ -905,7 +901,7 @@ class User extends LSActiveRecord
             ['userGroupId' => $userGroupId, 'userGroup' => $userGroup, 'currentUserId' => $currentUserId]
         );
     }
-    
+
     /**
      * Returns true if logged in user with id $loginId can edit this user
      *

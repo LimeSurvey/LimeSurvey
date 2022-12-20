@@ -2,7 +2,7 @@ $('#copysurveyform').submit(copysurvey);
 
 var defineActions = function (dataArray) {
     var buttonEdit = $('<button><i class="fa fa-edit"></i></button>');
-    var buttonDelete = $('<button><i class="fa fa-trash"></i></button>');
+    var buttonDelete = $('<button><i class="fri-delete-bin-fill"></i></button>');
     var container = $('<div></div>');
     buttonEdit
         .addClass('btn btn-xs btn-outline-secondary surveysettings_edit_intparameter')
@@ -184,7 +184,7 @@ function deleteParameter(event, aRowData) {
 
 function templatechange($element) {
     $('#preview-image-container').html(
-        '<div style="height:200px;" class="ls-flex ls-flex-column align-content-center align-items-center"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i></div>'
+        '<div style="height:200px;" class="ls-flex ls-flex-column align-content-center align-items-center"><i class="ri-loader-2-fill remix-spin remix-3x fa-fw"></i></div>'
     );
     let templateName = $element.val();
     if (templateName === 'inherit')

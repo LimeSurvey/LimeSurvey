@@ -22,12 +22,12 @@
     <?php if($hasSurveyContentCreatePermission):?>
         <?php if($oSurvey->active!='Y'): ?>
             <a class="btn btn-outline-secondary" id="import-button" href="<?php echo Yii::App()->createUrl("questionAdministration/importView", ["surveyid" => $surveyid, "groupid" => $gid]); ?>" role="button">
-                <span class="icon-import icon"></span>
+                <span class="ri-upload-fill icon"></span>
                 <?php eT("Import question"); ?>
             </a>
         <?php else: ?>
             <a role="button" class="btn btn-outline-secondary btntooltip" disabled data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("You can not import questions because the survey is currently active."); ?>">
-                <span class="icon-import icon"></span>
+                <span class="ri-upload-fill icon"></span>
                 <?php eT("Import question"); ?>
             </a>
         <?php endif; ?>

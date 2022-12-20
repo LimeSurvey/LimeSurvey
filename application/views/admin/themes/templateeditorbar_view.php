@@ -63,42 +63,42 @@ $importModal = false;
 
 <!-- theme dropdown select boxes-->
 
-<!-- Right Menu -->
-<div class="col">
-    <div class="row row-cols-lg-auto gx-1 gy-0 text-end">
-        <!-- Theme Select Box -->
-        <label class="col col-form-label text-nowrap" for='templatedir'><?php eT("Theme:"); ?></label>
-        <div class="col">
-            <select class="col listboxtemplates form-select" id='templatedir' name='templatedir'
-                    onchange="javascript: var uri = new Uri('<?php
-                    // Don't put 'sa' into the URL dirctly because Yii will then try to use filenames directly in the path because of the route
-                    echo $this->createUrl("admin/themes",
-                        [
-                            'sa'         => 'view',
-                            'editfile'   => $relativePathEditfile,
-                            'screenname' => $screenname
-                        ]); ?>'); uri.addQueryParam('templatename',this.value); window.open(uri.toString(), '_top')">
-                <?php echo themeoptions($templates, $templatename); ?>
-            </select>
-        </div>
+            <!-- Right Menu -->
+            <div class="col">
+            <div class="row row-cols-lg-auto gx-1 gy-0 text-end">
+                <!-- Theme Select Box -->
+                <label class="col col-form-label text-nowrap" for='templatedir'><?php eT("Theme:"); ?></label>
+                <div class="col">
+                    <select class="col listboxtemplates form-select" id='templatedir' name='templatedir'
+                            onchange="javascript: var uri = new Uri('<?php
+                            // Don't put 'sa' into the URL dirctly because Yii will then try to use filenames directly in the path because of the route
+                            echo $this->createUrl("admin/themes",
+                                [
+                                    'sa'         => 'view',
+                                    'editfile'   => $relativePathEditfile,
+                                    'screenname' => $screenname
+                                ]); ?>'); uri.addQueryParam('templatename',this.value); window.open(uri.toString(), '_top')">
+                        <?php echo themeoptions($templates, $templatename); ?>
+                    </select>
+                </div>
 
-        <!-- Screen Select Box -->
-        <label class="col col-form-label text-nowrap" for='listboxtemplates'><?php eT("Screen:"); ?></label>
-        <div>
-            <?php echo CHtml::dropDownList('screenname',
-                $screenname,
-                $screens,
-                [
-                    'id'       => 'listboxtemplates',
-                    'class'    => "col listboxtemplates form-select",
-                    'onchange' => "javascript:  var uri = new Uri('" . $this->createUrl("admin/themes",
-                            [
-                                'sa'           => 'view',
-                                'editfile'     => $relativePathEditfile,
-                                'templatename' => $templatename
-                            ]) . "'); uri.addQueryParam('screenname',this.value); window.open(uri.toString(), '_top')"
-                ]); ?>
-        </div>
+                <!-- Screen Select Box -->
+                <label class="col col-form-label text-nowrap" for='listboxtemplates'><?php eT("Screen:"); ?></label>
+                <div>
+                    <?php echo CHtml::dropDownList('screenname',
+                        $screenname,
+                        $screens,
+                        [
+                            'id'       => 'listboxtemplates',
+                            'class'    => "col listboxtemplates form-select",
+                            'onchange' => "javascript:  var uri = new Uri('" . $this->createUrl("admin/themes",
+                                    [
+                                        'sa'           => 'view',
+                                        'editfile'     => $relativePathEditfile,
+                                        'templatename' => $templatename
+                                    ]) . "'); uri.addQueryParam('screenname',this.value); window.open(uri.toString(), '_top')"
+                        ]); ?>
+                </div>
 
         <?php if (isset($fullpagebar['savebutton']['form'])) : ?>
             <a class="btn btn-success" href="#" role="button" id="save-form-button"

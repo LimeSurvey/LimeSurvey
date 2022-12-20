@@ -2,7 +2,7 @@
     <!-- Check survey logic -->
     <li>
         <a class="pjax dropdown-item" href="<?php echo Yii::App()->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/"); ?>">
-            <span class="icon-expressionmanagercheck"></span>
+            <span class="ri-checkbox-fill"></span>
             <?php eT("Check logic"); ?>
         </a>
     </li>
@@ -12,7 +12,7 @@
     <!-- Export -->
     <li>
         <a class="dropdown-item" href="<?php echo Yii::App()->createUrl("admin/export/sa/group/surveyid/$surveyid/gid/$gid");?>">
-            <span class="icon-export"></span>
+            <span class="ri-download-fill"></span>
             <?php eT("Export"); ?>
         </a>
     </li>

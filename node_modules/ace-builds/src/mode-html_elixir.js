@@ -226,7 +226,7 @@ var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
 var identifierRe = "[a-zA-Z\\$_\u00a1-\uffff][a-zA-Z\\d\\$_\u00a1-\uffff]*";
 var JavaScriptHighlightRules = function (options) {
     var keywordMapper = this.createKeywordMapper({
-        "variable.language": "Array|Boolean|Date|Function|Iterator|Number|Object|RegExp|String|Proxy|" + // Constructors
+        "variable.language": "Array|Boolean|Date|Function|Iterator|Number|Object|RegExp|String|Proxy|Symbol|" + // Constructors
             "Namespace|QName|XML|XMLList|" + // E4X
             "ArrayBuffer|Float32Array|Float64Array|Int16Array|Int32Array|Int8Array|" +
             "Uint16Array|Uint32Array|Uint8Array|Uint8ClampedArray|" +
@@ -240,7 +240,7 @@ var JavaScriptHighlightRules = function (options) {
             "break|case|catch|continue|default|delete|do|else|finally|for|function|" +
             "if|in|of|instanceof|new|return|switch|throw|try|typeof|let|var|while|with|debugger|" +
             "__parent__|__count__|escape|unescape|with|__proto__|" +
-            "class|enum|extends|super|export|implements|private|public|interface|package|protected|static",
+            "class|enum|extends|super|export|implements|private|public|interface|package|protected|static|constructor",
         "storage.type": "const|let|var|function",
         "constant.language": "null|Infinity|NaN|undefined",
         "support.function": "alert",
@@ -284,14 +284,14 @@ var JavaScriptHighlightRules = function (options) {
                     "storage.type", "punctuation.operator", "entity.name.function", "text",
                     "keyword.operator", "text", "storage.type", "text", "paren.lparen"
                 ],
-                regex: "(" + identifierRe + ")(\\.)(" + identifierRe + ")(\\s*)(=)(\\s*)(function)(\\s*)(\\()",
+                regex: "(" + identifierRe + ")(\\.)(" + identifierRe + ")(\\s*)(=)(\\s*)(function\\*?)(\\s*)(\\()",
                 next: "function_arguments"
             }, {
                 token: [
                     "entity.name.function", "text", "keyword.operator", "text", "storage.type",
                     "text", "paren.lparen"
                 ],
-                regex: "(" + identifierRe + ")(\\s*)(=)(\\s*)(function)(\\s*)(\\()",
+                regex: "(" + identifierRe + ")(\\s*)(=)(\\s*)(function\\*?)(\\s*)(\\()",
                 next: "function_arguments"
             }, {
                 token: [
@@ -299,26 +299,26 @@ var JavaScriptHighlightRules = function (options) {
                     "keyword.operator", "text",
                     "storage.type", "text", "entity.name.function", "text", "paren.lparen"
                 ],
-                regex: "(" + identifierRe + ")(\\.)(" + identifierRe + ")(\\s*)(=)(\\s*)(function)(\\s+)(\\w+)(\\s*)(\\()",
+                regex: "(" + identifierRe + ")(\\.)(" + identifierRe + ")(\\s*)(=)(\\s*)(function\\*?)(\\s+)(\\w+)(\\s*)(\\()",
                 next: "function_arguments"
             }, {
                 token: [
                     "storage.type", "text", "entity.name.function", "text", "paren.lparen"
                 ],
-                regex: "(function)(\\s+)(" + identifierRe + ")(\\s*)(\\()",
+                regex: "(function\\*?)(\\s+)(" + identifierRe + ")(\\s*)(\\()",
                 next: "function_arguments"
             }, {
                 token: [
                     "entity.name.function", "text", "punctuation.operator",
                     "text", "storage.type", "text", "paren.lparen"
                 ],
-                regex: "(" + identifierRe + ")(\\s*)(:)(\\s*)(function)(\\s*)(\\()",
+                regex: "(" + identifierRe + ")(\\s*)(:)(\\s*)(function\\*?)(\\s*)(\\()",
                 next: "function_arguments"
             }, {
                 token: [
                     "text", "text", "storage.type", "text", "paren.lparen"
                 ],
-                regex: "(:)(\\s*)(function)(\\s*)(\\()",
+                regex: "(:)(\\s*)(function\\*?)(\\s*)(\\()",
                 next: "function_arguments"
             }, {
                 token: "keyword",
@@ -328,7 +328,7 @@ var JavaScriptHighlightRules = function (options) {
                 regex: "(?:" + kwBeforeRe + ")\\b",
                 next: "start"
             }, {
-                token: ["support.constant"],
+                token: "support.constant",
                 regex: /that\b/
             }, {
                 token: ["storage.type", "punctuation.operator", "support.function.firebug"],
@@ -373,14 +373,14 @@ var JavaScriptHighlightRules = function (options) {
                     "keyword.operator", "text",
                     "storage.type", "text", "entity.name.function", "text", "paren.lparen"
                 ],
-                regex: "(" + identifierRe + ")(\\.)(" + identifierRe + ")(\\s*)(=)(\\s*)(function)(?:(\\s+)(\\w+))?(\\s*)(\\()",
+                regex: "(" + identifierRe + ")(\\.)(" + identifierRe + ")(\\s*)(=)(\\s*)(function\\*?)(?:(\\s+)(\\w+))?(\\s*)(\\()",
                 next: "function_arguments"
             }, {
                 token: "punctuation.operator",
                 regex: /[.](?![.])/
             }, {
                 token: "support.function",
-                regex: /(s(?:h(?:ift|ow(?:Mod(?:elessDialog|alDialog)|Help))|croll(?:X|By(?:Pages|Lines)?|Y|To)?|t(?:op|rike)|i(?:n|zeToContent|debar|gnText)|ort|u(?:p|b(?:str(?:ing)?)?)|pli(?:ce|t)|e(?:nd|t(?:Re(?:sizable|questHeader)|M(?:i(?:nutes|lliseconds)|onth)|Seconds|Ho(?:tKeys|urs)|Year|Cursor|Time(?:out)?|Interval|ZOptions|Date|UTC(?:M(?:i(?:nutes|lliseconds)|onth)|Seconds|Hours|Date|FullYear)|FullYear|Active)|arch)|qrt|lice|avePreferences|mall)|h(?:ome|andleEvent)|navigate|c(?:har(?:CodeAt|At)|o(?:s|n(?:cat|textual|firm)|mpile)|eil|lear(?:Timeout|Interval)?|a(?:ptureEvents|ll)|reate(?:StyleSheet|Popup|EventObject))|t(?:o(?:GMTString|S(?:tring|ource)|U(?:TCString|pperCase)|Lo(?:caleString|werCase))|est|a(?:n|int(?:Enabled)?))|i(?:s(?:NaN|Finite)|ndexOf|talics)|d(?:isableExternalCapture|ump|etachEvent)|u(?:n(?:shift|taint|escape|watch)|pdateCommands)|j(?:oin|avaEnabled)|p(?:o(?:p|w)|ush|lugins.refresh|a(?:ddings|rse(?:Int|Float)?)|r(?:int|ompt|eference))|e(?:scape|nableExternalCapture|val|lementFromPoint|x(?:p|ec(?:Script|Command)?))|valueOf|UTC|queryCommand(?:State|Indeterm|Enabled|Value)|f(?:i(?:nd|le(?:ModifiedDate|Size|CreatedDate|UpdatedDate)|xed)|o(?:nt(?:size|color)|rward)|loor|romCharCode)|watch|l(?:ink|o(?:ad|g)|astIndexOf)|a(?:sin|nchor|cos|t(?:tachEvent|ob|an(?:2)?)|pply|lert|b(?:s|ort))|r(?:ou(?:nd|teEvents)|e(?:size(?:By|To)|calc|turnValue|place|verse|l(?:oad|ease(?:Capture|Events)))|andom)|g(?:o|et(?:ResponseHeader|M(?:i(?:nutes|lliseconds)|onth)|Se(?:conds|lection)|Hours|Year|Time(?:zoneOffset)?|Da(?:y|te)|UTC(?:M(?:i(?:nutes|lliseconds)|onth)|Seconds|Hours|Da(?:y|te)|FullYear)|FullYear|A(?:ttention|llResponseHeaders)))|m(?:in|ove(?:B(?:y|elow)|To(?:Absolute)?|Above)|ergeAttributes|a(?:tch|rgins|x))|b(?:toa|ig|o(?:ld|rderWidths)|link|ack))\b(?=\()/
+                regex: /(s(?:h(?:ift|ow(?:Mod(?:elessDialog|alDialog)|Help))|croll(?:X|By(?:Pages|Lines)?|Y|To)?|t(?:op|rike)|i(?:n|zeToContent|debar|gnText)|ort|u(?:p|b(?:str(?:ing)?)?)|pli(?:ce|t)|e(?:nd|t(?:Re(?:sizable|questHeader)|M(?:i(?:nutes|lliseconds)|onth)|Seconds|Ho(?:tKeys|urs)|Year|Cursor|Time(?:out)?|Interval|ZOptions|Date|UTC(?:M(?:i(?:nutes|lliseconds)|onth)|Seconds|Hours|Date|FullYear)|FullYear|Active)|arch)|qrt|lice|avePreferences|mall)|h(?:ome|andleEvent)|navigate|c(?:har(?:CodeAt|At)|o(?:s|n(?:cat|textual|firm)|mpile)|eil|lear(?:Timeout|Interval)?|a(?:ptureEvents|ll)|reate(?:StyleSheet|Popup|EventObject))|t(?:o(?:GMTString|S(?:tring|ource)|U(?:TCString|pperCase)|Lo(?:caleString|werCase))|est|a(?:n|int(?:Enabled)?))|i(?:s(?:NaN|Finite)|ndexOf|talics)|d(?:isableExternalCapture|ump|etachEvent)|u(?:n(?:shift|taint|escape|watch)|pdateCommands)|j(?:oin|avaEnabled)|p(?:o(?:p|w)|ush|lugins.refresh|a(?:ddings|rse(?:Int|Float)?)|r(?:int|ompt|eference))|e(?:scape|nableExternalCapture|val|lementFromPoint|x(?:p|ec(?:Script|Command)?))|valueOf|UTC|queryCommand(?:State|Indeterm|Enabled|Value)|f(?:i(?:nd|lter|le(?:ModifiedDate|Size|CreatedDate|UpdatedDate)|xed)|o(?:nt(?:size|color)|rward|rEach)|loor|romCharCode)|watch|l(?:ink|o(?:ad|g)|astIndexOf)|a(?:sin|nchor|cos|t(?:tachEvent|ob|an(?:2)?)|pply|lert|b(?:s|ort))|r(?:ou(?:nd|teEvents)|e(?:size(?:By|To)|calc|turnValue|place|verse|l(?:oad|ease(?:Capture|Events)))|andom)|g(?:o|et(?:ResponseHeader|M(?:i(?:nutes|lliseconds)|onth)|Se(?:conds|lection)|Hours|Year|Time(?:zoneOffset)?|Da(?:y|te)|UTC(?:M(?:i(?:nutes|lliseconds)|onth)|Seconds|Hours|Da(?:y|te)|FullYear)|FullYear|A(?:ttention|llResponseHeaders)))|m(?:in|ove(?:B(?:y|elow)|To(?:Absolute)?|Above)|ergeAttributes|a(?:tch|rgins|x))|b(?:toa|ig|o(?:ld|rderWidths)|link|ack))\b(?=\()/
             }, {
                 token: "support.function.dom",
                 regex: /(s(?:ub(?:stringData|mit)|plitText|e(?:t(?:NamedItem|Attribute(?:Node)?)|lect))|has(?:ChildNodes|Feature)|namedItem|c(?:l(?:ick|o(?:se|neNode))|reate(?:C(?:omment|DATASection|aption)|T(?:Head|extNode|Foot)|DocumentFragment|ProcessingInstruction|E(?:ntityReference|lement)|Attribute))|tabIndex|i(?:nsert(?:Row|Before|Cell|Data)|tem)|open|delete(?:Row|C(?:ell|aption)|T(?:Head|Foot)|Data)|focus|write(?:ln)?|a(?:dd|ppend(?:Child|Data))|re(?:set|place(?:Child|Data)|move(?:NamedItem|Child|Attribute(?:Node)?)?)|get(?:NamedItem|Element(?:sBy(?:Name|TagName|ClassName)|ById)|Attribute(?:Node)?)|blur)\b(?=\()/
@@ -461,13 +461,67 @@ var JavaScriptHighlightRules = function (options) {
                 defaultToken: "string.regexp.charachterclass"
             }
         ],
+        "default_parameter": [
+            {
+                token: "string",
+                regex: "'(?=.)",
+                push: [
+                    {
+                        token: "string",
+                        regex: "'|$",
+                        next: "pop"
+                    }, {
+                        include: "qstring"
+                    }
+                ]
+            }, {
+                token: "string",
+                regex: '"(?=.)',
+                push: [
+                    {
+                        token: "string",
+                        regex: '"|$',
+                        next: "pop"
+                    }, {
+                        include: "qqstring"
+                    }
+                ]
+            }, {
+                token: "constant.language",
+                regex: "null|Infinity|NaN|undefined"
+            }, {
+                token: "constant.numeric",
+                regex: /0(?:[xX][0-9a-fA-F]+|[oO][0-7]+|[bB][01]+)\b/
+            }, {
+                token: "constant.numeric",
+                regex: /(?:\d\d*(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+\b)?/
+            }, {
+                token: "punctuation.operator",
+                regex: ",",
+                next: "function_arguments"
+            }, {
+                token: "text",
+                regex: "\\s+"
+            }, {
+                token: "punctuation.operator",
+                regex: "$"
+            }, {
+                token: "empty",
+                regex: "",
+                next: "no_regex"
+            }
+        ],
         "function_arguments": [
+            comments("function_arguments"),
             {
                 token: "variable.parameter",
                 regex: identifierRe
             }, {
                 token: "punctuation.operator",
-                regex: "[, ]+"
+                regex: ","
+            }, {
+                token: "text",
+                regex: "\\s+"
             }, {
                 token: "punctuation.operator",
                 regex: "$"
@@ -543,6 +597,32 @@ var JavaScriptHighlightRules = function (options) {
                 }, {
                     defaultToken: "string.quasi"
                 }]
+        }, {
+            token: ["variable.parameter", "text"],
+            regex: "(" + identifierRe + ")(\\s*)(?=\\=>)"
+        }, {
+            token: "paren.lparen",
+            regex: "(\\()(?=.+\\s*=>)",
+            next: "function_arguments"
+        }, {
+            token: "variable.language",
+            regex: "(?:(?:(?:Weak)?(?:Set|Map))|Promise)\\b"
+        });
+        this.$rules["function_arguments"].unshift({
+            token: "keyword.operator",
+            regex: "=",
+            next: "default_parameter"
+        }, {
+            token: "keyword.operator",
+            regex: "\\.{3}"
+        });
+        this.$rules["property"].unshift({
+            token: "support.function",
+            regex: "(findIndex|repeat|startsWith|endsWith|includes|isSafeInteger|trunc|cbrt|log2|log10|sign|then|catch|"
+                + "finally|resolve|reject|race|any|all|allSettled|keys|entries|isInteger)\\b(?=\\()"
+        }, {
+            token: "constant.language",
+            regex: "(?:MAX_SAFE_INTEGER|MIN_SAFE_INTEGER|EPSILON)\\b"
         });
         if (!options || options.jsx != false)
             JSX.call(this);
@@ -2014,12 +2094,10 @@ oop.inherits(FoldMode, BaseFoldMode);
 
 });
 
-define("ace/mode/folding/xml",["require","exports","module","ace/lib/oop","ace/lib/lang","ace/range","ace/mode/folding/fold_mode","ace/token_iterator"], function(require, exports, module){"use strict";
+define("ace/mode/folding/xml",["require","exports","module","ace/lib/oop","ace/range","ace/mode/folding/fold_mode"], function(require, exports, module){"use strict";
 var oop = require("../../lib/oop");
-var lang = require("../../lib/lang");
 var Range = require("../../range").Range;
 var BaseFoldMode = require("./fold_mode").FoldMode;
-var TokenIterator = require("../../token_iterator").TokenIterator;
 var FoldMode = exports.FoldMode = function (voidElements, optionalEndTags) {
     BaseFoldMode.call(this);
     this.voidElements = voidElements || {};
@@ -2044,7 +2122,7 @@ function is(token, type) {
         if (!tag)
             return this.getCommentFoldWidget(session, row);
         if (tag.closing || (!tag.tagName && tag.selfClosing))
-            return foldStyle == "markbeginend" ? "end" : "";
+            return foldStyle === "markbeginend" ? "end" : "";
         if (!tag.tagName || tag.selfClosing || this.voidElements.hasOwnProperty(tag.tagName.toLowerCase()))
             return "";
         if (this._findEndTagInLine(session, row, tag.tagName, tag.end.column))
@@ -2103,135 +2181,14 @@ function is(token, type) {
         }
         return false;
     };
-    this._readTagForward = function (iterator) {
-        var token = iterator.getCurrentToken();
-        if (!token)
-            return null;
-        var tag = new Tag();
-        do {
-            if (is(token, "tag-open")) {
-                tag.closing = is(token, "end-tag-open");
-                tag.start.row = iterator.getCurrentTokenRow();
-                tag.start.column = iterator.getCurrentTokenColumn();
-            }
-            else if (is(token, "tag-name")) {
-                tag.tagName = token.value;
-            }
-            else if (is(token, "tag-close")) {
-                tag.selfClosing = token.value == "/>";
-                tag.end.row = iterator.getCurrentTokenRow();
-                tag.end.column = iterator.getCurrentTokenColumn() + token.value.length;
-                iterator.stepForward();
-                return tag;
-            }
-        } while (token = iterator.stepForward());
-        return null;
-    };
-    this._readTagBackward = function (iterator) {
-        var token = iterator.getCurrentToken();
-        if (!token)
-            return null;
-        var tag = new Tag();
-        do {
-            if (is(token, "tag-open")) {
-                tag.closing = is(token, "end-tag-open");
-                tag.start.row = iterator.getCurrentTokenRow();
-                tag.start.column = iterator.getCurrentTokenColumn();
-                iterator.stepBackward();
-                return tag;
-            }
-            else if (is(token, "tag-name")) {
-                tag.tagName = token.value;
-            }
-            else if (is(token, "tag-close")) {
-                tag.selfClosing = token.value == "/>";
-                tag.end.row = iterator.getCurrentTokenRow();
-                tag.end.column = iterator.getCurrentTokenColumn() + token.value.length;
-            }
-        } while (token = iterator.stepBackward());
-        return null;
-    };
-    this._pop = function (stack, tag) {
-        while (stack.length) {
-            var top = stack[stack.length - 1];
-            if (!tag || top.tagName == tag.tagName) {
-                return stack.pop();
-            }
-            else if (this.optionalEndTags.hasOwnProperty(top.tagName)) {
-                stack.pop();
-                continue;
-            }
-            else {
-                return null;
-            }
-        }
-    };
     this.getFoldWidgetRange = function (session, foldStyle, row) {
-        var firstTag = this._getFirstTagInLine(session, row);
-        if (!firstTag) {
-            return this.getCommentFoldWidget(session, row)
-                && session.getCommentFoldRange(row, session.getLine(row).length);
-        }
-        var isBackward = firstTag.closing || firstTag.selfClosing;
-        var stack = [];
-        var tag;
-        if (!isBackward) {
-            var iterator = new TokenIterator(session, row, firstTag.start.column);
-            var start = {
-                row: row,
-                column: firstTag.start.column + firstTag.tagName.length + 2
-            };
-            if (firstTag.start.row == firstTag.end.row)
-                start.column = firstTag.end.column;
-            while (tag = this._readTagForward(iterator)) {
-                if (tag.selfClosing) {
-                    if (!stack.length) {
-                        tag.start.column += tag.tagName.length + 2;
-                        tag.end.column -= 2;
-                        return Range.fromPoints(tag.start, tag.end);
-                    }
-                    else
-                        continue;
-                }
-                if (tag.closing) {
-                    this._pop(stack, tag);
-                    if (stack.length == 0)
-                        return Range.fromPoints(start, tag.start);
-                }
-                else {
-                    stack.push(tag);
-                }
-            }
+        var tags = session.getMatchingTags({ row: row, column: 0 });
+        if (tags) {
+            return new Range(tags.openTag.end.row, tags.openTag.end.column, tags.closeTag.start.row, tags.closeTag.start.column);
         }
         else {
-            var iterator = new TokenIterator(session, row, firstTag.end.column);
-            var end = {
-                row: row,
-                column: firstTag.start.column
-            };
-            while (tag = this._readTagBackward(iterator)) {
-                if (tag.selfClosing) {
-                    if (!stack.length) {
-                        tag.start.column += tag.tagName.length + 2;
-                        tag.end.column -= 2;
-                        return Range.fromPoints(tag.start, tag.end);
-                    }
-                    else
-                        continue;
-                }
-                if (!tag.closing) {
-                    this._pop(stack, tag);
-                    if (stack.length == 0) {
-                        tag.start.column += tag.tagName.length + 2;
-                        if (tag.start.row == tag.end.row && tag.start.column < tag.end.column)
-                            tag.start.column = tag.end.column;
-                        return Range.fromPoints(tag.start, end);
-                    }
-                }
-                else {
-                    stack.push(tag);
-                }
-            }
+            return this.getCommentFoldWidget(session, row)
+                && session.getCommentFoldRange(row, session.getLine(row).length);
         }
     };
 }).call(FoldMode.prototype);

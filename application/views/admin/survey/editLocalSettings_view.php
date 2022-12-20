@@ -42,132 +42,154 @@ echo viewHelper::getViewTestTag('surveyTexts');
         </div>
     </div>
     <hr class="col-12"/>
-</div>
-<div class="row">
-    <div class="col-12 col-xl-6">
-        <!-- Description -->
-        <div class="mb-3">
-            <label class=" form-label" for="description_<?php echo $aSurveyLanguageSettings['surveyls_language']; ?>"><?php eT("Description:"); ?></label>
-            <div class="">
-                <div class="htmleditor input-group">
-                    <?php echo CHtml::textArea("description_{$aSurveyLanguageSettings['surveyls_language']}",
-                        $aSurveyLanguageSettings['surveyls_description'],
-                        array('class' => 'form-control', 'cols' => '80', 'rows' => '15', 'id' => "description_{$aSurveyLanguageSettings['surveyls_language']}")
+            <div class="col-sm-6">
+                <!-- Survey alias -->
+                <div class="form-group">
+                    <label class=" control-label" for="alias_<?php echo $aSurveyLanguageSettings['surveyls_language']; ?>">
+                        <?php eT("Survey alias:"); ?>
+                    </label>
+                    <div class="">
+                        <?php echo CHtml::textField(
+                                "alias_{$aSurveyLanguageSettings['surveyls_language']}",
+                                $aSurveyLanguageSettings['surveyls_alias'],
+                                [
+                                    'class' => 'form-control',
+                                    'size' => "80",
+                                    'maxlength' => 100,
+                                    'id' => "alias_{$aSurveyLanguageSettings['surveyls_language']}",
+                                    //'pattern' => '[\w\d-]+'
+                                ]
+                            ); ?>
+                    </div>
+                </div>
+            </div>
+
+    <div class="row">
+        <div class="col-12 col-xl-6">
+            <!-- Description -->
+            <div class="mb-3">
+                <label class=" form-label" for="description_<?php echo $aSurveyLanguageSettings['surveyls_language']; ?>"><?php eT("Description:"); ?></label>
+                <div class="">
+                    <div class="htmleditor input-group">
+                        <?php echo CHtml::textArea("description_{$aSurveyLanguageSettings['surveyls_language']}",
+                            $aSurveyLanguageSettings['surveyls_description'],
+                            array('class' => 'form-control', 'cols' => '80', 'rows' => '15', 'id' => "description_{$aSurveyLanguageSettings['surveyls_language']}")
+                        ); ?>
+                        <?php echo getEditor("survey-desc",
+                            "description_" . $aSurveyLanguageSettings['surveyls_language'],
+                            "[" . gT("Description:", "js") . "](" . $aSurveyLanguageSettings['surveyls_language'] . ")",
+                            $surveyid,
+                            '',
+                            '',
+                            $action
+                        ); ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-xl-6">
+            <!-- End URL -->
+            <div class="mb-3">
+                <label class="form-label "><?php eT("End URL:"); ?></label>
+                <div class="">
+                    <?php echo CHtml::textField("url_{$aSurveyLanguageSettings['surveyls_language']}",
+                        htmlspecialchars_decode($aSurveyLanguageSettings['surveyls_url']),
+                        array('class' => 'form-control', 'size' => "80", 'placeholder' => 'http://', 'id' => "url_{$aSurveyLanguageSettings['surveyls_language']}")
                     ); ?>
-                    <?php echo getEditor("survey-desc",
-                        "description_" . $aSurveyLanguageSettings['surveyls_language'],
-                        "[" . gT("Description:", "js") . "](" . $aSurveyLanguageSettings['surveyls_language'] . ")",
-                        $surveyid,
-                        '',
-                        '',
-                        $action
+                </div>
+            </div>
+
+            <!-- URL description -->
+            <div class="mb-3">
+                <label class="form-label "><?php eT("URL description:"); ?></label>
+                <div class="">
+                    <?php echo CHtml::textField("urldescrip_{$aSurveyLanguageSettings['surveyls_language']}",
+                        $aSurveyLanguageSettings['surveyls_urldescription'],
+                        array('class' => 'form-control', 'size' => "80", 'maxlength' => 255, 'id' => "urldescrip_{$aSurveyLanguageSettings['surveyls_language']}")
                     ); ?>
+                </div>
+            </div>
+
+            <!-- Date format -->
+            <div class="mb-3">
+                <label class="form-label "><?php eT("Date format:"); ?></label>
+
+                <div class="">
+                    <select size='1' id='dateformat_<?php echo $aSurveyLanguageSettings['surveyls_language']; ?>' name='dateformat_<?php echo $aSurveyLanguageSettings['surveyls_language']; ?>'
+                            class="form-select">
+                        <?php foreach (getDateFormatData(0, Yii::app()->session['adminlang']) as $index => $dateformatdata): ?>
+                            <option value='<?php echo $index; ?>'
+                                <?php if ($aSurveyLanguageSettings['surveyls_dateformat'] == $index): ?>
+                                    selected='selected'
+                                <?php endif; ?>
+                            ><?php echo $dateformatdata['dateformat']; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Decimal mark -->
+            <div class="mb-3">
+                <label class="form-label "><?php eT("Decimal mark:"); ?></label>
+                <div>
+                    <?php $aRadixPoint = [];
+                    foreach (getRadixPointData() as $index => $radixptdata) {
+                        $aRadixPoint[$index] = html_entity_decode($radixptdata['desc']);
+                    }
+                    $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'name'          => 'numberformat_' . $aSurveyLanguageSettings['surveyls_language'],
+                        'checkedOption' => $aSurveyLanguageSettings['surveyls_numberformat'],
+                        'selectOptions' => $aRadixPoint,
+                        'htmlOptions'   => [
+                            "style" => "z-index:0"
+                        ]
+                    ]); ?>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-12 col-xl-6">
-        <!-- End URL -->
-        <div class="mb-3">
-            <label class="form-label "><?php eT("End URL:"); ?></label>
-            <div class="">
-                <?php echo CHtml::textField("url_{$aSurveyLanguageSettings['surveyls_language']}",
-                    htmlspecialchars_decode($aSurveyLanguageSettings['surveyls_url']),
-                    array('class' => 'form-control', 'size' => "80", 'placeholder' => 'http://', 'id' => "url_{$aSurveyLanguageSettings['surveyls_language']}")
-                ); ?>
-            </div>
-        </div>
-
-        <!-- URL description -->
-        <div class="mb-3">
-            <label class="form-label "><?php eT("URL description:"); ?></label>
-            <div class="">
-                <?php echo CHtml::textField("urldescrip_{$aSurveyLanguageSettings['surveyls_language']}",
-                    $aSurveyLanguageSettings['surveyls_urldescription'],
-                    array('class' => 'form-control', 'size' => "80", 'maxlength' => 255, 'id' => "urldescrip_{$aSurveyLanguageSettings['surveyls_language']}")
-                ); ?>
-            </div>
-        </div>
-
-        <!-- Date format -->
-        <div class="mb-3">
-            <label class="form-label "><?php eT("Date format:"); ?></label>
-
-            <div class="">
-                <select size='1' id='dateformat_<?php echo $aSurveyLanguageSettings['surveyls_language']; ?>' name='dateformat_<?php echo $aSurveyLanguageSettings['surveyls_language']; ?>'
-                        class="form-select">
-                    <?php foreach (getDateFormatData(0, Yii::app()->session['adminlang']) as $index => $dateformatdata): ?>
-                        <option value='<?php echo $index; ?>'
-                            <?php if ($aSurveyLanguageSettings['surveyls_dateformat'] == $index): ?>
-                                selected='selected'
-                            <?php endif; ?>
-                        ><?php echo $dateformatdata['dateformat']; ?></option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-        </div>
-
-        <!-- Decimal mark -->
-        <div class="mb-3">
-            <label class="form-label "><?php eT("Decimal mark:"); ?></label>
-            <div>
-                <?php $aRadixPoint = [];
-                foreach (getRadixPointData() as $index => $radixptdata) {
-                    $aRadixPoint[$index] = html_entity_decode($radixptdata['desc']);
-                }
-                $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
-                    'name'          => 'numberformat_' . $aSurveyLanguageSettings['surveyls_language'],
-                    'checkedOption' => $aSurveyLanguageSettings['surveyls_numberformat'],
-                    'selectOptions' => $aRadixPoint,
-                    'htmlOptions'   => [
-                        "style" => "z-index:0"
-                    ]
-                ]); ?>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-12 col-xl-6">
-        <!-- Welcome message -->
-        <div class="mb-3">
-            <label class=" form-label" for='welcome_<?php echo $aSurveyLanguageSettings['surveyls_language']; ?>'><?php eT("Welcome message:"); ?></label>
-            <div class="">
-                <div class="htmleditor input-group">
-                    <?php echo CHtml::textArea("welcome_{$aSurveyLanguageSettings['surveyls_language']}",
-                        $aSurveyLanguageSettings['surveyls_welcometext'],
-                        array('class' => 'form-control', 'cols' => '80', 'rows' => '15', 'id' => "welcome_{$aSurveyLanguageSettings['surveyls_language']}")
-                    ); ?>
-                    <?php echo getEditor("survey-welc",
-                        "welcome_" . $aSurveyLanguageSettings['surveyls_language'],
-                        "[" . gT("Welcome:", "js") . "](" . $aSurveyLanguageSettings['surveyls_language'] . ")",
-                        $surveyid,
-                        '',
-                        '',
-                        $action
-                    ); ?>
+    <div class="row">
+        <div class="col-12 col-xl-6">
+            <!-- Welcome message -->
+            <div class="mb-3">
+                <label class=" form-label" for='welcome_<?php echo $aSurveyLanguageSettings['surveyls_language']; ?>'><?php eT("Welcome message:"); ?></label>
+                <div class="">
+                    <div class="htmleditor input-group">
+                        <?php echo CHtml::textArea("welcome_{$aSurveyLanguageSettings['surveyls_language']}",
+                            $aSurveyLanguageSettings['surveyls_welcometext'],
+                            array('class' => 'form-control', 'cols' => '80', 'rows' => '15', 'id' => "welcome_{$aSurveyLanguageSettings['surveyls_language']}")
+                        ); ?>
+                        <?php echo getEditor("survey-welc",
+                            "welcome_" . $aSurveyLanguageSettings['surveyls_language'],
+                            "[" . gT("Welcome:", "js") . "](" . $aSurveyLanguageSettings['surveyls_language'] . ")",
+                            $surveyid,
+                            '',
+                            '',
+                            $action
+                        ); ?>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="col-12 col-xl-6">
-        <!-- End message -->
-        <div class="mb-3">
-            <label class=" form-label" for='endtext_<?php echo $aSurveyLanguageSettings['surveyls_language']; ?>'><?php eT("End message:"); ?></label>
-            <div class="">
-                <div class="htmleditor input-group">
-                    <?php echo CHtml::textArea("endtext_{$aSurveyLanguageSettings['surveyls_language']}",
-                        $aSurveyLanguageSettings['surveyls_endtext'],
-                        array('class' => 'form-control', 'cols' => '80', 'rows' => '15', 'id' => "endtext_{$aSurveyLanguageSettings['surveyls_language']}")
-                    ); ?>
-                    <?php echo getEditor("survey-endtext",
-                        "endtext_" . $aSurveyLanguageSettings['surveyls_language'],
-                        "[" . gT("End message:", "js") . "](" . $aSurveyLanguageSettings['surveyls_language'] . ")",
-                        $surveyid,
-                        '',
-                        '',
-                        $action
-                    ); ?>
+        <div class="col-12 col-xl-6">
+            <!-- End message -->
+            <div class="mb-3">
+                <label class=" form-label" for='endtext_<?php echo $aSurveyLanguageSettings['surveyls_language']; ?>'><?php eT("End message:"); ?></label>
+                <div class="">
+                    <div class="htmleditor input-group">
+                        <?php echo CHtml::textArea("endtext_{$aSurveyLanguageSettings['surveyls_language']}",
+                            $aSurveyLanguageSettings['surveyls_endtext'],
+                            array('class' => 'form-control', 'cols' => '80', 'rows' => '15', 'id' => "endtext_{$aSurveyLanguageSettings['surveyls_language']}")
+                        ); ?>
+                        <?php echo getEditor("survey-endtext",
+                            "endtext_" . $aSurveyLanguageSettings['surveyls_language'],
+                            "[" . gT("End message:", "js") . "](" . $aSurveyLanguageSettings['surveyls_language'] . ")",
+                            $surveyid,
+                            '',
+                            '',
+                            $action
+                        ); ?>
+                    </div>
                 </div>
             </div>
         </div>

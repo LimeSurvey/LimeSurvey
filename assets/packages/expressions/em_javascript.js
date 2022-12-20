@@ -227,16 +227,24 @@ $(document).on("change",".select-item select:not([onchange]),.ls-dropdown-item s
     checkconditions($(this).val(), $(this).attr('name'), 'select-one', 'change')
 });
 /* radio/button item */
-$(document).on("change",".radio-item :radio:not([onclick]), .button-item :radio:not([onclick])",function(event){
+$(document).on("change",".radio-item :radio:not([onclick]), .button-item :radio:not([onclick]), .ls-button-radio",function(event){
     checkconditions($(this).val(), $(this).attr('name'), 'radio', 'click')
 });
 /* checkbox item */
-$(document).on("change",".checkbox-item :checkbox:not([onclick]),.button-item :checkbox:not([onclick])",function(event){
+$(document).on("change",".checkbox-item :checkbox:not([onclick]),.button-item :checkbox:not([onclick]), .ls-button-checkbox",function(event){
     checkconditions($(this).val(), $(this).attr('name'), 'checkbox', 'click')
 });
 /* hidden item */
 $(document).on("updated",".answer-item :hidden, .upload-item :hidden",function(event){
     checkconditions($(this).val(), $(this).attr('name'), 'equation', 'updated')
+});
+/* new multiple choice bootstrap buttons */
+$(document).on("change","input:checkbox.button-item.btn-check",function(event){
+    checkconditions($(this).val(), $(this).attr('name'), 'checkbox', 'click')
+});
+/* new singlechoice radio bootstrap buttons */
+$(document).on("change","input:radio.button-item.btn-check",function(event){
+    checkconditions($(this).val(), $(this).attr('name'), 'radio', 'click')
 });
 /**
  * For number

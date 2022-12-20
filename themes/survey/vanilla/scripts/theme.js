@@ -66,9 +66,9 @@ var ThemeScripts = function () {
                 colWidth = '6';
             }
 
-            $(this).clone().removeClass('col-12').addClass('d-block col-' + colWidth).prop('aria-hidden', true).insertBefore($(this).prev('.slider-container'));
+            $(this).clone().addClass('d-block d-md-none col-' + colWidth).prop('aria-hidden', true).insertBefore($(this).prev('.slider-container'));
             $(this).addClass('d-none d-md-block');
-            $(this).closest('.slider-item').find('.slider-left').removeClass('col-12').addClass('col-12');
+            $(this).closest('.slider-item').find('.slider-left');
         });
 
     };

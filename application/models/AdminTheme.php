@@ -151,6 +151,7 @@ class AdminTheme extends CFormModel
             App()->getClientScript()->registerPackage('js-cookie'); // js-cookie
             App()->getClientScript()->registerPackage('fontawesome'); // fontawesome
             App()->getClientScript()->registerPackage('font-ibm-sans'); // font-ibm-sans
+            App()->getClientScript()->registerPackage('remix'); // remix
 //            App()->getClientScript()->registerPackage('bootstrap-switch');
             App()->getClientScript()->registerPackage('tempus-dominus');
 //            App()->getClientScript()->registerPackage('bootstrap-datetimepicker');

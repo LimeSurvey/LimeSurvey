@@ -43,6 +43,7 @@ class Authdb extends AuthPluginBase
 
         $oEvent = $this->getEvent();
         $preCollectedUserArray = $oEvent->get('preCollectedUserArray', []);
+        $expires = null;
 
         if (empty($preCollectedUserArray)) {
             // Do nothing if the user to be added is not DB type
@@ -53,11 +54,17 @@ class Authdb extends AuthPluginBase
             $new_email = flattenText(Yii::app()->request->getPost('new_email'), false, true);
             $new_full_name = flattenText(Yii::app()->request->getPost('new_full_name'), false, true);
             $presetPassword = null;
+            if (Yii::app()->request->getPost('expires')) {
+                $expires = flattenText(Yii::app()->request->getPost('expires'), false, true);
+            }
         } else {
             $new_user = flattenText($preCollectedUserArray['users_name']);
             $new_email = flattenText($preCollectedUserArray['email']);
             $new_full_name = flattenText($preCollectedUserArray['full_name']);
             $presetPassword = flattenText($preCollectedUserArray['password']);
+            if (!empty($preCollectedUserArray['expires'])) {
+                $expires = $preCollectedUserArray['expires'];
+            }
         }
         
         if (!LimeMailer::validateAddress($new_email)) {
@@ -68,7 +75,7 @@ class Authdb extends AuthPluginBase
         }
 
         $new_pass = $presetPassword ?? createPassword();
-        $iNewUID = User::insertUser($new_user, $new_pass, $new_full_name, Yii::app()->session['loginID'], $new_email);
+        $iNewUID = User::insertUser($new_user, $new_pass, $new_full_name, Yii::app()->session['loginID'], $new_email, $expires);
         if (!$iNewUID) {
             $oEvent->set('errorCode', self::ERROR_ALREADY_EXISTING_USER);
             $oEvent->set('errorMessageTitle', '');
@@ -286,5 +293,14 @@ class Authdb extends AuthPluginBase
         }
 
         $event->set('writer', $writer);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function getAuthMethodName()
+    {
+        // Using string literal here so it can be picked by translation bot
+        return gT('LimeSurvey internal database');
     }
 }

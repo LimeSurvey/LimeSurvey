@@ -47,7 +47,7 @@
                         <?php echo CHtml::submitButton(gT('Search', 'unescaped'), array('class' => 'btn btn-success')); ?>
                         <a href="<?php echo Yii::app()->createUrl('questionGroupsAdministration/listquestiongroups/surveyid/' . $surveyid);?>"
                            class="btn btn-warning">
-                            <span class="fa fa-refresh"></span>
+                            <span class="ri-refresh-line"></span>
                             <?php eT('Reset');?>
                         </a>
                     </div>

@@ -20,16 +20,6 @@ class DateTimePicker extends CInputWidget
     public $format = 'dd/MM/yyyy hh:mm:ss';
 
     /**
-     * @var string the icon to display when selecting times
-     */
-    public $iconTime = 'icon-time';
-
-    /**
-     * @var string the icon to display when selecting dates
-     */
-    public $iconDate = 'icon-calendar';
-
-    /**
      * @var string id for the parent div
      */
     public $mainId = '';
@@ -81,6 +71,7 @@ class DateTimePicker extends CInputWidget
         $this->name = $name;
 
         $this->htmlOptions['id'] = $this->getValue('id', $this->htmlOptions, $this->getEscapedId());
+        $this->htmlOptions['autocomplete'] = 'off';
         foreach ($this->pluginOptions as $key => $pluginOption) {
             if (is_array($pluginOption)) {
                 continue;
@@ -154,6 +145,7 @@ class DateTimePicker extends CInputWidget
             // bug workaround allowInputToggle
             var id_$id = '$id';
             var input_$id = document.getElementById('$id');
+            input_$id.removeEventListener('click', picker_$id._toggleClickEvent);
             if(input_$id != null) {
                 if((id_$id.indexOf('answer') >= 0 && input_$id.value !== '') || id_$id.indexOf('answer') < 0) {
                         input_$id.onfocus = function () {
@@ -334,15 +326,15 @@ class DateTimePicker extends CInputWidget
     private function getCustomIconsString()
     {
         return "icons: {
-                   time: 'fa fa-clock-o text-success',
-                   date: 'fa fa-calendar text-success',
-                   up: 'fa fa-caret-up',
-                   down: 'fa fa-caret-down',
-                   previous: 'fa fa-caret-left',
-                   next: 'fa fa-caret-right',
-                   today: 'fa fa-today text-success',
-                   clear: 'fa fa-trash text-success',
-                   close: 'fa fa-close text-success',
+                   time: 'ri-time-line text-success',
+                   date: 'ri-calendar-2-fill text-success',
+                   up: 'ri-arrow-up-s-fill',
+                   down: 'ri-arrow-down-s-fill',
+                   previous: 'ri-arrow-left-s-fill',
+                   next: 'ri-arrow-right-s-fill',
+                   today: 'ri-calendar-check-fill text-success',
+                   clear: 'ri-delete-bin-fill text-danger',
+                   close: 'ri-close-fill text-danger',
                 },";
     }
 

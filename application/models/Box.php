@@ -145,7 +145,7 @@ class Box extends CActiveRecord
          . 'title="' . gT('Edit') . '"'
          . 'href="'
          . $url
-         . '" role="button"><span class="fa fa-pencil" ></span></a>';
+         . '" role="button"><span class="ri-pencil-fill" ></span></a>';
 
         $url = Yii::app()->createUrl("/homepageSettings/deleteBox");
         $button .= '<a class="btn btn-sm btn-outline-secondary selector--ConfirmModal"'
@@ -158,7 +158,7 @@ class Box extends CActiveRecord
         . ' title="' . gT('Delete the box') . '"'
         . ' role="button" data-post=\'' . json_encode(['id' => $this->id]) . '\''
         . ' data-text="' . gT('Are you sure you want to delete this box ?') . '"'
-        . '><span class="fa fa-trash text-danger" ></span></a>';
+        . '><span class="ri-delete-bin-fill text-danger" ></span></a>';
         $button .= "</div>";
         return $button;
     }

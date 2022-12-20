@@ -89,16 +89,16 @@ echo $oQuestionSelector->getModal();
         <div class="row">
             <div class="col-12">
                 <ul class="nav nav-tabs" role="tablist">
-                    <li role="presentation" class="nav-item"><a class="nav-link active" href="#your-profile" role="tab" data-bs-toggle="tab"><?php eT("My profile"); ?></a></li>
-                    <li role="presentation" class="nav-item"><a class="nav-link" href="#your-personal-settings" role="tab" data-bs-toggle="tab"><?php eT("My personal settings"); ?></a></li>
-                    <li role="presentation" class="nav-item"><a class="nav-link" href="#your-personal-menues" role="tab" data-bs-toggle="tab"><?php eT("My personal menus"); ?></a></li>
-                    <li role="presentation" class="nav-item"><a class="nav-link" href="#your-personal-menueentries" role="tab" data-bs-toggle="tab"><?php eT("My personal menu entries"); ?></a></li>
+                    <li role="presentation" class="nav-item"><a class="nav-link active" href="#your-profile" role="tab" data-bs-toggle="tab"><?php eT("Profile"); ?></a></li>
+                    <li role="presentation" class="nav-item"><a class="nav-link" href="#your-personal-settings" role="tab" data-bs-toggle="tab"><?php eT("Personal settings"); ?></a></li>
+                    <li role="presentation" class="nav-item"><a class="nav-link" href="#your-personal-menues" role="tab" data-bs-toggle="tab"><?php eT("Personalized menus"); ?></a></li>
+                    <li role="presentation" class="nav-item"><a class="nav-link" href="#your-personal-menueentries" role="tab" data-bs-toggle="tab"><?php eT("Personalized menu entries"); ?></a></li>
                 </ul>
                 <div class="tab-content">
 
                     <!-- TAB: My profile settings -->
                     <div role="tabpanel" class="tab-pane fade show active" id="your-profile">
-                        <div class="pagetitle h3"><?php eT("My profile"); ?></div>
+                        <div class="pagetitle h3"><?php eT("Profile"); ?></div>
                         <div class="container-fluid">
                             <div class="row">
                                 <div class="col-12">
@@ -140,11 +140,11 @@ echo $oQuestionSelector->getModal();
                             <div class="row">
                                 <div class="col-lg-6">
                                     <button type="button" class="btn btn-outline-secondary btn-warning " id="selector__showChangePassword" style="color: white; outline: none;">
-                                        <i class="fa fa-lock"></i>
+                                        <i class="ri-lock-fill"></i>
                                         <?= gT("Change password") ?>
                                     </button>
                                     <button type="button" class="btn btn-outline-secondary btn-warning " id="selector__showChangeEmail" style="color: white; outline: none;">
-                                        <i class="fa fa-lock"></i>
+                                        <i class="ri-lock-fill"></i>
                                         <?= gT("Change email address") ?>
                                     </button>
                                     <br/>

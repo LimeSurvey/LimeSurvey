@@ -109,6 +109,7 @@ class UserManagementController extends LSBaseController
                 $this->redirect(App()->request->urlReferrer);
             }
         }
+
         $randomPassword = \LimeSurvey\Models\Services\PasswordManagement::getRandomPassword();
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
         return $this->renderPartial('partial/addedituser', ['oUser' => $oUser, 'randomPassword' => $randomPassword, 'dateformatdetails' => $dateformatdetails]);

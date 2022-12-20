@@ -104,7 +104,7 @@ echo viewHelper::getViewTestTag('templateOptions');
                                             <?php if (Permission::model()->hasGlobalPermission('templates', 'export') && class_exists('ZipArchive')) : ?>
                                                 <a class="btn btn-outline-secondary btn-block" id="button-export"
                                                    href="<?php echo $this->createUrl('admin/themes/sa/brokentemplatezip/templatename/' . $sName) ?>">
-                                                    <span class="icon-export text-success"></span>
+                                                    <span class="ri-upload-fill text-success"></span>
                                                     <?php eT("Export"); ?>
                                                 </a>
                                             <?php endif; ?>
@@ -118,7 +118,7 @@ echo viewHelper::getViewTestTag('templateOptions');
                                                    data-button-yes="<?= gT('Delete'); ?>"
                                                    title="<?php eT('Delete'); ?>"
                                                    class="btn btn-danger selector--ConfirmModal">
-                                                    <span class="fa fa-trash"></span>
+                                                    <span class="ri-delete-bin-fill"></span>
                                                     <?php eT('Delete'); ?>
                                                 </a>
                                             <?php endif; ?>
@@ -154,7 +154,7 @@ echo viewHelper::getViewTestTag('templateOptions');
                                                 <a class="btn btn-outline-secondary id="button-export"
                                                    href="<?php echo $this->createUrl('admin/themes/sa/deprecatedtemplatezip/templatename/' . $aDeprecatedTheme['name']) ?>"
                                                    role="button">
-                                                    <span class="icon-export text-success"></span>
+                                                    <span class="ri-upload-fill text-success"></span>
                                                     <?php eT("Export"); ?>
                                                 </a>
                                             <?php endif; ?>

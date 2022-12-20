@@ -3398,9 +3398,9 @@ class LimeExpressionManager
             }
 
             $questionNum = $fielddata['qid'];
-            $relevance = (isset($fielddata['relevance'])) ? $fielddata['relevance'] : 1;
-            $SQrelevance = (isset($fielddata['SQrelevance'])) ? $fielddata['SQrelevance'] : 1;
-            $grelevance = (isset($fielddata['grelevance'])) ? $fielddata['grelevance'] : 1;
+            $relevance = (isset($fielddata['relevance'])) ? trim($fielddata['relevance']) : 1;
+            $SQrelevance = (isset($fielddata['SQrelevance'])) ? trim($fielddata['SQrelevance']) : 1;
+            $grelevance = (isset($fielddata['grelevance'])) ? trim($fielddata['grelevance']) : 1;
             $hidden = (isset($qattr[$questionNum]['hidden'])) ? ($qattr[$questionNum]['hidden'] == '1') : false;
             $scale_id = (isset($fielddata['scale_id'])) ? $fielddata['scale_id'] : '0';
             $preg = (isset($fielddata['preg'])) ? $fielddata['preg'] : null; // a perl regular exrpession validation function
@@ -4251,7 +4251,6 @@ class LimeExpressionManager
             $questionSeq = isset($this->questionId2questionSeq[$questionNum]) ? $this->questionId2questionSeq[$questionNum] : -1;
             $groupSeq = isset($this->questionId2groupSeq[$questionNum]) ? $this->questionId2groupSeq[$questionNum] : -1;
         }
-
         $stringToParse = htmlspecialchars_decode($eqn, ENT_QUOTES);
         $result = $this->em->ProcessBooleanExpression($stringToParse, $groupSeq, $questionSeq);
         $hasErrors = $this->em->HasErrors();
@@ -8312,11 +8311,14 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
     public function getAnswerSetsForEM($surveyid = null, $lang = null)
     {
         $where = ' 1=1';
+        $db = Yii::app()->db;
         if (!is_null($surveyid)) {
+            $surveyid = (int) $surveyid;
             $where .= " and a.qid = q.qid and q.sid = " . $surveyid;
         }
         if (!is_null($lang)) {
-            $where .= " and l.language='" . $lang . "'";
+            $lang = sanitize_languagecode($lang);
+            $where .= " and l.language={$db->quoteValue($lang)}";
         }
 
         $sQuery = "SELECT a.qid, a.code, l.answer, a.scale_id, a.assessment_value"

@@ -20,7 +20,7 @@
                     <!-- Create Box Button -->
                 <a href="<?php echo $this->createUrl('homepageSettings/createBox/'); ?>"
                    class="btn btn-outline-secondary">
-                        <span class="icon-add"></span>
+                        <span class="ri-add-circle-fill"></span>
                         <?php eT("Create box"); ?>
                 </a>
                 <?php endif; ?>
@@ -33,7 +33,7 @@
             <?php if (isset($fullpagebar['closebutton']['url'])) : ?>
                 <a class="btn btn-danger"
                    href="<?php echo $fullpagebar['closebutton']['url']; ?>">
-                        <span class="fa fa-close"></span>
+                        <span class="ri-close-fill"></span>
                     <?php eT("Close"); ?>
                 </a>
             <?php endif; ?>
@@ -42,7 +42,7 @@
                 <?php if (isset($fullpagebar['white_closebutton']['url'])) : ?>
                 <a class="btn btn-outline-secondary"
                    href="<?php echo $fullpagebar['white_closebutton']['url']; ?>">
-                    <span class="fa fa-close"></span>
+                    <i class="ri-close-fill"></i>
                     <?php eT("Close"); ?>
                 </a>
             <?php endif; ?>
@@ -51,7 +51,7 @@
             <?php if (isset($fullpagebar['returnbutton']['url'])) : ?>
                 <a class="btn btn-outline-secondary"
                    href="<?php echo $this->createUrl($fullpagebar['returnbutton']['url']); ?>">
-                        <span class="fa fa-backward"></span>
+                        <span class="ri-rewind-fill"></span>
                         &nbsp;&nbsp;
                         <?php echo $fullpagebar['returnbutton']['text']; ?>
                 </a>
@@ -77,7 +77,7 @@
                    id="save-form-button"
                    onclick="$(this).addClass('disabled').attr('onclick', 'return false;');"
                    data-form-id="<?php echo $fullpagebar['savebutton']['form']; ?>">
-                        <span class="fa fa-check"></span>
+                        <span class="ri-check-fill"></span>
                     <?php eT("Save"); ?>
                 </a>
             <?php endif; ?>
@@ -86,7 +86,7 @@
             <?php if (isset($fullpagebar['update'])) : ?>
                 <a href="<?php echo $this->createUrl('admin/update/sa/managekey/'); ?>"
                    class="btn btn-outline-secondary">
-                        <span class="fa fa-key"></span>
+                        <span class="ri-key-2-fill"></span>
                     <?php eT("Manage your key"); ?>
                 </a>
             <?php endif; ?>

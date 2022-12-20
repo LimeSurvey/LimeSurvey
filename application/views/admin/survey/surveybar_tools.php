@@ -18,7 +18,7 @@
 
     <!-- Main button dropdown -->
     <button id="ls-tools-button" type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <span class="icon-tools" ></span>
+        <span class="ri-tools-fill" ></span>
          <?php eT('Tools'); ?><span class="caret"></span>
     </button>
 
@@ -29,7 +29,7 @@
               <!-- Delete survey -->
               <li>
                   <a href="<?php echo $this->createUrl("surveyAdministration/delete/surveyid/{$oSurvey->sid}"); ?>">
-                    <span class="fa fa-trash text-danger" ></span>
+                    <span class="ri-delete-bin-fill text-danger" ></span>
                     <?php eT("Delete survey"); ?>
                   </a>
               </li>
@@ -43,7 +43,7 @@
                     <!-- Quick-translation -->
                     <li>
                         <a href="<?php echo $this->createUrl("quicktranslation/index/surveyid/{$oSurvey->sid}"); ?>">
-                        <span class="fa fa-language" ></span>
+                        <span class="ri-global-line" ></span>
                         <?php eT("Quick-translation"); ?>
                         </a>
                     </li>
@@ -53,7 +53,7 @@
                     <!-- Quick-translation disabled -->
                     <li>
                         <a href="#" onclick="alert('<?php eT("Currently there are no additional languages configured for this survey.", "js"); ?>');" >
-                          <span class="fa fa-language" ></span>
+                          <span class="ri-global-line" ></span>
                           <?php eT("Quick-translation"); ?>
                         </a>
                     </li>
@@ -66,7 +66,7 @@
 
                       <!-- condition -->
                       <a href="<?php echo $this->createUrl("/admin/conditions/sa/index/subaction/resetsurveylogic/surveyid/{$oSurvey->sid}"); ?>">
-                        <span class="icon-resetsurveylogic" ></span>
+                        <span class="ri-survey-fill" ></span>
                         <?php eT("Reset conditions"); ?>
                       </a>
                 <?php else : ?>
@@ -74,7 +74,7 @@
                       <!-- condition disabled -->
                       <a href="#" onclick="alert('<?php eT("Currently there are no conditions configured for this survey.", "js");
 ?>');" >
-                        <span class="icon-resetsurveylogic" ></span>
+                        <span class="ri-survey-fill" ></span>
                         <?php eT("Reset conditions"); ?>
                       </a>
                 <?php endif; ?>
@@ -109,7 +109,7 @@
                 <!-- Survey logic file -->
                 <li>
                     <a href='<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/$oSurvey->sid/"); ?>' >
-                        <span class="icon-expressionmanagercheck" ></span>
+                        <span class="ri-checkbox-fill" ></span>
                         <?php eT("Survey logic file"); ?>
                     </a>
                 </li>
@@ -125,7 +125,7 @@
 
                     <li>
                         <a  href='<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/$oSurvey->sid/lang/$tmp_lang"); ?>'>
-                               <span class="icon-expressionmanagercheck" ></span>
+                               <span class="ri-checkbox-fill" ></span>
                                <?php echo getLanguageNameFromCode($tmp_lang, false); ?>
                            </a>
                     </li>
@@ -145,7 +145,7 @@
                 <a href="<?php
                 echo $this->createUrl("/surveyAdministration/regenerateQuestionCodes/surveyid/{$oSurvey->sid}/subaction/straight");
                 ?>">
-                <span class="icon-resetsurveylogic" ></span>
+                <span class="ri-survey-fill" ></span>
                 <?php eT("Straight"); ?>
                 </a>
             </li>
@@ -153,7 +153,7 @@
             <!-- By question group -->
             <li>
             <a href="<?php echo $this->createUrl("surveyAdministration/regenerateQuestionCodes/surveyid/{$oSurvey->sid}/subaction/bygroup"); ?>">
-                <span class="icon-resetsurveylogic" ></span>
+                <span class="ri-survey-fill" ></span>
                 <?php eT("By question group"); ?>
             </a>
             </li>
