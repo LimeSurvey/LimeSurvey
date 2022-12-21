@@ -2479,11 +2479,11 @@ class ParticipantsAction extends SurveyCommonAction
         $response = Participant::model()->copyToCentral((int) Yii::app()->request->getPost('surveyid'), $newarr, $mapped, $overwriteauto, $overwriteman, $createautomap);
 
         echo "<p>";
-        printf(gT("%s participants have been copied to the central participants table"), "<span class='badge rounded-pill alert-success'>" . $response['success'] . "</span>&nbsp;");
+        printf(gT("%s participants have been copied to the central participants table"), "<span class='badge rounded-pill bg-success'>" . $response['success'] . "</span>&nbsp;");
         echo "</p>";
         if ($response['duplicate'] > 0) {
             echo "<p>";
-            printf(gT("%s entries were not copied because they already existed"), "<span class='badge rounded-pill alert-warning'>" . $response['duplicate'] . "</span>&nbsp;");
+            printf(gT("%s entries were not copied because they already existed"), "<span class='badge rounded-pill bg-warning'>" . $response['duplicate'] . "</span>&nbsp;");
             echo "</p>";
         }
         if ($response['overwriteman'] == "true" || $response['overwriteauto']) {
@@ -2541,16 +2541,16 @@ class ParticipantsAction extends SurveyCommonAction
 
         // TODO: This code can't be reached
         echo "<p>";
-        printf(gT("%s participants have been copied to the survey survey participants table"), "<span class='badge rounded-pill alert-success'>" . $response['success'] . "</span>");
+        printf(gT("%s participants have been copied to the survey survey participants table"), "<span class='badge rounded-pill bg-success'>" . $response['success'] . "</span>");
         echo "</p>";
         if ($response['duplicate'] > 0) {
             echo "<p>";
-            printf(gT("%s entries were not copied because they already existed"), "<span class='badge rounded-pill alert-warning'>" . $response['duplicate'] . "</span>");
+            printf(gT("%s entries were not copied because they already existed"), "<span class='badge rounded-pill bg-warning'>" . $response['duplicate'] . "</span>");
             echo "</p>";
         }
         if ($response['blacklistskipped'] > 0) {
             echo "<p>";
-            printf(gT("%s entries were skipped because they are blacklisted"), "<span class='badge rounded-pill alert-danger'>" . $response['blacklistskipped'] . "</span>");
+            printf(gT("%s entries were skipped because they are blacklisted"), "<span class='badge rounded-pill bg-danger'>" . $response['blacklistskipped'] . "</span>");
             echo "</p>";
         }
         if ($response['overwriteauto'] == "true" || $response['overwriteman'] == "true") {

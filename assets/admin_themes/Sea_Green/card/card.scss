@@ -1,0 +1,29 @@
+
+$card-header-line-height: 26px;
+
+.card {
+    background-color: $white;
+    position: relative;
+    width: 95%;
+    height: 100%;
+    border-radius: 4px;
+    box-shadow: 8px 8px $g-200;
+    border: 1px solid $g-900;
+    color: $g-900;
+
+    .card-header {
+        height: unset;
+        background-color: unset;
+        border: none;
+        color: $g-900;
+        font-weight: $font-weight-600;
+        font-size: $font-size-lg;
+        line-height: $card-header-line-height;
+    }
+
+    .card-body {
+        height: unset;
+        background-color: unset;
+        border: none;
+    }
+}

@@ -248,7 +248,7 @@ return array(
             'adminbasics',
         )
     ),
-    
+
     'lstutorial' => array(
         'devBaseUrl' => 'assets/packages/lstutorial/',
         'basePath' => 'core.lstutorial',
@@ -276,7 +276,7 @@ return array(
         'devBaseUrl' => 'assets/packages/panelboxes/',
         'basePath' => 'core.panelboxes',
         'css' => array(
-            'build/panelboxes'.$minVersion.'.css',
+            //'build/panelboxes'.$minVersion.'.css',
         )
     ),
 
@@ -392,8 +392,8 @@ return array(
         ),
         'css' => array(
             'expressions.css'
-        )  
-    ),    
+        )
+    ),
     /* Replace bbq package from Yii core to set position */
     'bbq'=>array(
         'position' => CClientScript::POS_BEGIN,

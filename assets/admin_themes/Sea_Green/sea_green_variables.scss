@@ -2,6 +2,7 @@ $aubergine    : #25003E; // background
 $zucchini     : #003E24; // background
 $focus        : #3BFFB7; // background
 $grape        : #8146F6; // background secondary
+$grape-light  : #D3C5FA; // background secondary
 $litschi      : #FF9AA2; // background secondary
 $blueberry    : #A3C8FF; // background passive
 $orange       : #FFBA68; // tertiary
@@ -147,6 +148,10 @@ $td-secondary-border-color-rgba: rgba(0, 0, 0, 0.2) !default;
 $td-primary-border-color: $td-light !default;
 $td-text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25) !default;
 $td-dow-color: $td-font-color;
+
+// badge
+$badge-padding-y:                   2px;
+$badge-padding-x:                   5px;
 
 // navbar
 $navbar-bg-color: $g-800;

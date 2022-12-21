@@ -14,7 +14,7 @@
             <!-- <span id='notification-bell' class='ri-notification-2-fill <?php echo $bellColor; ?>'></span> -->
             <i id='notification-bell' class="ri-notification-2-line  <?php echo $bellColor; ?>"></i>
             <?php if ($nrOfNewNotifications): ?>
-                <span class='badge rounded-pill'><?php echo $nrOfNewNotifications; ?></span>
+                <span class='badge'><?php echo $nrOfNewNotifications; ?></span>
             <?php endif; ?>
 
             <span class='caret'></span>
@@ -32,7 +32,7 @@
             <span id='notification-bell' class='ri-notification-2-line <?php echo $bellColor; ?>'></span>
 
             <?php if ($nrOfNewNotifications): ?>
-                <span class='badge rounded-pill'><?php echo $nrOfNewNotifications; ?></span>
+                <span class='badge '><?php echo $nrOfNewNotifications; ?></span>
             <?php endif; ?>
 
             <span class='caret'></span>
