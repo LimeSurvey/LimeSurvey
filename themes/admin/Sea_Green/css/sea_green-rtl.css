@@ -18062,6 +18062,31 @@ footer.footer {
   text-decoration: none;
 }
 
+.card {
+  background-color: #fff;
+  position: relative;
+  width: 95%;
+  height: 100%;
+  border-radius: 4px;
+  box-shadow: -8px 8px #EEEFF7;
+  border: 1px solid #1E1E1E;
+  color: #1E1E1E;
+}
+.card .card-header {
+  height: unset;
+  background-color: unset;
+  border: none;
+  color: #1E1E1E;
+  font-weight: 600;
+  font-size: 1.25rem;
+  line-height: 26px;
+}
+.card .card-body {
+  height: unset;
+  background-color: unset;
+  border: none;
+}
+
 #statisticsview .box {
   text-align: right;
   margin-bottom: 1em;
