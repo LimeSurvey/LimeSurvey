@@ -1603,22 +1603,6 @@ fieldset[disabled] {
         color: $black;
     }
 }
-// Modals
-.modal-content {
-    background-color: $white;
-    //border: 1px solid $gray-12;
-    border: 1px solid $black_opac_20;
-    box-shadow: 0 3px 9px $black_opac_50;
-}
-.modal-backdrop {
-    background-color: $black;
-}
-.modal-header {
-    border-bottom: 1px solid $gray-06;
-}
-.modal-footer {
-    border-top: 1px solid $gray-06;
-}
 
 // Popover
 .popover {
