@@ -15267,18 +15267,6 @@ div.mappable-attribute-wrapper.paired.ui-state-disabled {
   display: inline-block;
 }
 
-.select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__rendered {
-  float: right;
-}
-
-.select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__rendered .select2-selection__choice {
-  padding: 0em 0.65em;
-}
-
-.select2-container--bootstrap-5 .select2-search {
-  width: auto !important;
-}
-
 :root {
   --LS-admintheme-basecolor: #328637;
   --bs-info-rgb: 57, 153, 63;
@@ -18559,4 +18547,8 @@ footer.footer {
 }
 .tempus-dominus-widget .date-container-days div:not(.no-highlight) {
   width: 24px;
+}
+
+.select2-container--bootstrap-5 .select2-selection--multiple textarea:focus {
+  box-shadow: none;
 }
