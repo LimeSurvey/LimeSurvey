@@ -15052,18 +15052,6 @@ div.mappable-attribute-wrapper.paired.ui-state-disabled {
   display: inline-block;
 }
 
-.select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__rendered {
-  float: right;
-}
-
-.select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__rendered .select2-selection__choice {
-  padding: 0em 0.65em;
-}
-
-.select2-container--bootstrap-5 .select2-search {
-  width: auto !important;
-}
-
 :root {
   --LS-admintheme-basecolor: #328637;
   --bs-info-rgb: 57, 153, 63;
@@ -16966,63 +16954,6 @@ tr.info, tr.danger {
   font-weight: normal;
 }
 
-body {
-  color: #1E1E1E;
-  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  font-weight: 400;
-  font-size: 1rem;
-  line-height: 24px;
-}
-
-h1,
-.h1 {
-  color: #152536;
-  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  font-weight: 600;
-  font-size: 1.25rem;
-  line-height: 26px;
-}
-
-h2,
-.h2 {
-  color: #152536;
-  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  font-weight: 600;
-  font-size: 1rem;
-  line-height: 20px;
-}
-
-h3,
-.h3 {
-  color: #152536;
-  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  font-weight: 500;
-  font-size: 0.875rem;
-  line-height: 20px;
-}
-
-label {
-  color: #152536;
-  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  font-weight: 500;
-  font-size: 0.875rem;
-  line-height: 20px;
-}
-
-dl {
-  color: #333641;
-  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  font-weight: 400;
-  font-size: 1rem;
-  line-height: 24px;
-}
-dl dt {
-  color: #1E1E1E;
-  font-weight: 600;
-  font-size: 1rem;
-  line-height: 24px;
-}
-
 .btn:hover {
   color: #fff;
 }
@@ -17485,6 +17416,63 @@ dl dt {
   padding: 1.5rem;
 }
 
+body {
+  color: #1E1E1E;
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 24px;
+}
+
+h1,
+.h1 {
+  color: #152536;
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-weight: 600;
+  font-size: 1.25rem;
+  line-height: 26px;
+}
+
+h2,
+.h2 {
+  color: #152536;
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 20px;
+}
+
+h3,
+.h3 {
+  color: #152536;
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 20px;
+}
+
+label {
+  color: #152536;
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 20px;
+}
+
+dl {
+  color: #333641;
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 24px;
+}
+dl dt {
+  color: #1E1E1E;
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 24px;
+}
+
 .tooltip {
   opacity: 0;
 }
@@ -17854,27 +17842,6 @@ footer.footer {
   text-align: center;
 }
 
-.ls-panelboxes .ls-panelboxes-panelbox {
-  height: 200px;
-  margin: 10px 0;
-  position: relative;
-}
-.ls-panelboxes .ls-panelboxes-panelbox .card {
-  width: 95%;
-  height: 100%;
-}
-.ls-panelboxes .ls-panelboxes-panelbox .card .card-title, .ls-panelboxes .ls-panelboxes-panelbox .card .card-header {
-  font-size: 1.5rem;
-}
-.ls-panelboxes .ls-panelboxes-panelbox .card .card-body {
-  justify-content: flex-start;
-  text-align: right !important;
-}
-.ls-panelboxes .ls-panelboxes-panelbox .card .btn {
-  width: fit-content;
-  border-width: 1px;
-}
-
 [class^=ri-], [class*=" ri-"] {
   vertical-align: middle;
 }
@@ -17967,6 +17934,27 @@ footer.footer {
   to {
     transform: rotate(-360deg);
   }
+}
+
+.ls-panelboxes .ls-panelboxes-panelbox {
+  height: 200px;
+  margin: 10px 0;
+  position: relative;
+}
+.ls-panelboxes .ls-panelboxes-panelbox .card {
+  width: 95%;
+  height: 100%;
+}
+.ls-panelboxes .ls-panelboxes-panelbox .card .card-title, .ls-panelboxes .ls-panelboxes-panelbox .card .card-header {
+  font-size: 1.5rem;
+}
+.ls-panelboxes .ls-panelboxes-panelbox .card .card-body {
+  justify-content: flex-start;
+  text-align: right !important;
+}
+.ls-panelboxes .ls-panelboxes-panelbox .card .btn {
+  width: fit-content;
+  border-width: 1px;
 }
 
 .cke_top {
@@ -18254,19 +18242,6 @@ footer.footer {
   width: 24px;
 }
 
-.badge {
-  background-color: #F9F9FB;
-  color: #1E1E1E;
-}
-.badge.bg-primary, .badge.bg-secondary, .badge.bg-info, .badge.bg-dark {
-  color: #fff;
-}
-
-.badge.reverse-color {
-  color: #F9F9FB !important;
-  background-color: #1E1E1E !important;
-}
-
-.badge.rounded-pill {
-  padding: 4px 12px !important;
+.select2-container--bootstrap-5 .select2-selection--multiple textarea:focus {
+  box-shadow: none;
 }

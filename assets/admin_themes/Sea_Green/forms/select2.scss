@@ -1,0 +1,7 @@
+.select2-container--bootstrap-5 {
+    .select2-selection--multiple {
+        textarea:focus {
+            box-shadow: none;
+        }
+    }
+}
