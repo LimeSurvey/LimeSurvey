@@ -1,5 +1,6 @@
 // Dropdowns
 .dropdown-menu {
+  font-size: $dropdown-font-size;
   background-color: $white;
   border: 1.33px solid $g-900;
   box-shadow: 4px 4px 0px $g-200;
@@ -51,5 +52,5 @@
 .dropdown-header {
   color: $g-600;
   font-weight: 600;
-  font-size: 14px;
+  font-size: $dropdown-font-size;
 }

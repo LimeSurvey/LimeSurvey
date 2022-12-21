@@ -66,6 +66,8 @@ $btn-font-size-sm: 12px;
 $btn-hover-boxshadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
 $btn-focus-boxshadow: 4px 4px 0px rgba(123, 97, 255, 0.4);
 
+$dropdown-font-size: 14px;
+
 $ibm-font-family:
 "IBMPlexSans",
  // Cross-platform generic font family (default user interface font)
@@ -151,3 +153,4 @@ $navbar-bg-color: $g-800;
 $navbar-color: $white;
 $navbar-badges-bg-color: $white;
 $navbar-badges-color: $navbar-bg-color;
+$navbar-link-hover-color: shift-color($navbar-color, $link-shade-percentage) !default;

@@ -3452,7 +3452,7 @@ textarea.form-control-lg {
   min-width: 10rem;
   padding: 0.5rem 0;
   margin: 0;
-  font-size: 1rem;
+  font-size: 0.875rem;
   color: #212529;
   text-align: left;
   list-style: none;
@@ -17673,6 +17673,7 @@ body.onStatistics .btn {
 }
 
 .dropdown-menu {
+  font-size: 14px;
   background-color: #fff;
   border: 1.33px solid #1E1E1E;
   box-shadow: 4px 4px 0px #EEEFF7;
@@ -17906,56 +17907,7 @@ footer.footer {
   color: #fff;
   background-color: #333641;
   border-bottom: none;
-  border-radius: 0 !important;
-}
-.navbar .ls--selector--configuration-menu a {
-  border-bottom: 1px solid #fff;
-}
-.navbar .nav-icon-btn.nav-icon-btn-danger .label {
-  background: #a15426;
-}
-.navbar .nav-link {
-  color: #fff;
-  font-weight: 500;
-  font-size: 14px;
-}
-.navbar .badge {
-  background-color: #fff;
-  color: #333641;
-}
-
-.mega-dropdown-menu .dropdown-header {
-  color: #0f3e12;
-}
-.mega-dropdown-menu > li > ul > li > a {
-  color: #252b1c;
-}
-
-.navbar a {
-  font-weight: 500;
-}
-.navbar .dropdown-menu {
-  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
-  border: none;
-}
-.navbar .dropdown-menu[data-bs-popper] {
-  margin-top: -0.5rem;
-}
-.navbar .dropdown-menu > li > a {
-  font-weight: 500;
-}
-.navbar .nav-icon-btn > a .label {
-  font-size: 10px;
-  padding: 0 3px;
-  line-height: 15px;
-  position: absolute;
-  display: block;
-  right: 5px;
-  top: 10px;
-}
-
-.navbar {
-  border-radius: 0 !important;
+  border-radius: 0;
   padding: 0;
 }
 .navbar .navbar-brand {
@@ -17970,46 +17922,30 @@ footer.footer {
 .navbar .navbar-toggler {
   margin: 0.5rem;
 }
-.navbar a {
-  font-weight: 400;
-}
-.navbar .nav-icon-btn > a .label {
-  font-size: 10px;
-  padding: 0 3px;
-  line-height: 15px;
-  position: absolute;
-  display: block;
-  right: 5px;
-  top: 10px;
-}
-
-.nav .nav-divider {
-  background-color: #e6e6e6;
-}
-.nav > li > a:hover {
-  font-weight: 600;
-}
-.nav > li > a:focus {
-  font-weight: 600;
-}
-.nav > li.disabled > a {
-  color: #858585;
-}
-.nav > li.disabled > a:hover {
-  color: #858585;
-}
-.nav > li.disabled > a:focus {
-  color: #858585;
-}
-.nav .open > a {
+.navbar .nav-link {
   color: #fff;
-  background-color: #1E1E1E;
+  font-weight: 500;
+  font-size: 14px;
 }
-.nav .open > a:hover {
-  font-weight: 600;
+.navbar .nav-link:hover, .navbar .nav-link:focus {
+  color: #cccccc;
 }
-.nav .open > a:focus {
-  font-weight: 600;
+.navbar .badge {
+  background-color: #fff;
+  color: #333641;
+}
+.navbar a {
+  font-weight: 500;
+}
+.navbar .dropdown-menu {
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+  border: none;
+}
+.navbar .dropdown-menu[data-bs-popper] {
+  margin-top: -0.5rem;
+}
+.navbar .dropdown-menu > li > a {
+  font-weight: 500;
 }
 
 @media screen and (min-width: 768px) {
@@ -18025,14 +17961,18 @@ footer.footer {
 }
 
 .mega-dropdown {
-  position: static !important;
+  position: static;
 }
 
 .mega-dropdown-menu {
-  padding: 20px 0;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 1.5rem var(--bs-gutter-x, 0.75rem);
   width: 100%;
 }
 .mega-dropdown-menu .dropdown-header {
+  color: #ACACAC;
+  font-weight: 600;
   font-size: 18px;
   padding: 5px 60px 5px 5px;
   line-height: 30px;
@@ -18047,6 +17987,8 @@ footer.footer {
 .mega-dropdown-menu > li > ul > li > a {
   display: block;
   padding: 3px 5px;
+  font-weight: 500;
+  color: #333641;
 }
 .mega-dropdown-menu > li ul > li > a:hover {
   text-decoration: none;
@@ -18057,23 +17999,6 @@ footer.footer {
 
 #mainmenu-dropdown {
   z-index: 20002;
-}
-
-.mega-dropdown {
-  position: static !important;
-}
-
-.mega-dropdown-menu {
-  margin-left: auto;
-  margin-right: auto;
-  padding: 1.5rem var(--bs-gutter-x, 0.75rem);
-  width: 100%;
-}
-
-.mega-dropdown-menu .dropdown-header {
-  font-size: 18px;
-  padding: 5px 60px 5px 5px;
-  line-height: 30px;
 }
 
 .mega-dropdown__column > ul {
@@ -18093,14 +18018,19 @@ footer.footer {
 .mega-dropdown__column > ul > li > a {
   display: block;
   padding: 3px 5px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333641;
 }
-
-.mega-dropdown__column ul > li > a:hover {
+.mega-dropdown__column > ul > li > a:hover {
   text-decoration: none;
+  color: #333641;
+  background-color: #EEEFF7;
 }
-
-.mega-dropdown__column ul > li > a:focus {
+.mega-dropdown__column > ul > li > a:focus {
   text-decoration: none;
+  color: #fff;
+  background-color: var(--bs-primary);
 }
 
 #statisticsview .box {
