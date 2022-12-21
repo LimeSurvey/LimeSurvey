@@ -1,0 +1,57 @@
+$panelbox-header-font-size: $font-size-lg * 1.2;
+$panelbox-header-line-height: 26px;
+
+.ls-panelboxes {
+    .ls-panelboxes-inner-container {
+
+    }
+    .ls-panelboxes-panelbox {
+        padding: 20px;
+        height: 200px;
+        position: relative;
+        margin: 10px 0;
+
+        .ls-panelboxes-panelbox-inner {
+            background-color: $white;
+            position: absolute;
+            width: 95%;
+            height: 100%;
+            border-radius: 4px;
+            box-shadow: 8px 8px $g-200;
+            border: 1px solid $g-900;
+            color: $g-900;
+
+            &:hover {
+                box-shadow: 8px 8px $grape-light;
+            }
+
+            .card-header {
+                height: unset;
+                background-color: unset;
+                border: none;
+                color: $g-900;
+                font-weight: $font-weight-600;
+                font-size: $panelbox-header-font-size;
+                line-height: $panelbox-header-line-height;
+                justify-content: flex-start;
+            }
+
+            .card-body {
+                justify-content: flex-start;
+                text-align: left !important;
+            }
+
+            .card-footer {
+                justify-content: flex-start;
+                height: unset;
+                background-color: unset;
+                border: none;
+            }
+
+            .btn {
+                width: fit-content;
+                border-width: 1px;
+            }
+        }
+    }
+}
