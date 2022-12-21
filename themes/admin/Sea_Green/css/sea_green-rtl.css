@@ -18202,6 +18202,50 @@ footer.footer {
   }
 }
 
+.ls-panelboxes .ls-panelboxes-panelbox {
+  padding: 20px;
+  height: 200px;
+  position: relative;
+  margin: 10px 0;
+}
+.ls-panelboxes .ls-panelboxes-panelbox .ls-panelboxes-panelbox-inner {
+  background-color: #fff;
+  position: absolute;
+  width: 95%;
+  height: 100%;
+  border-radius: 4px;
+  box-shadow: -8px 8px #EEEFF7;
+  border: 1px solid #1E1E1E;
+  color: #1E1E1E;
+}
+.ls-panelboxes .ls-panelboxes-panelbox .ls-panelboxes-panelbox-inner:hover {
+  box-shadow: -8px 8px #D3C5FA;
+}
+.ls-panelboxes .ls-panelboxes-panelbox .ls-panelboxes-panelbox-inner .card-header {
+  height: unset;
+  background-color: unset;
+  border: none;
+  color: #1E1E1E;
+  font-weight: 600;
+  font-size: 1.5rem;
+  line-height: 26px;
+  justify-content: flex-start;
+}
+.ls-panelboxes .ls-panelboxes-panelbox .ls-panelboxes-panelbox-inner .card-body {
+  justify-content: flex-start;
+  text-align: right !important;
+}
+.ls-panelboxes .ls-panelboxes-panelbox .ls-panelboxes-panelbox-inner .card-footer {
+  justify-content: flex-start;
+  height: unset;
+  background-color: unset;
+  border: none;
+}
+.ls-panelboxes .ls-panelboxes-panelbox .ls-panelboxes-panelbox-inner .btn {
+  width: fit-content;
+  border-width: 1px;
+}
+
 .cke_top {
   background: #fff !important;
   border: 1px solid #1e1e1e !important;
