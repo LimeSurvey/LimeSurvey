@@ -55,20 +55,26 @@ function emailTokens($iSurveyID, $aResultTokens, $sType)
             break 1;
         }
         if ($mail->sendMessage()) {
+            $warnings = null;
             $oToken = Token::model($iSurveyID)->findByPk($aTokenRow['tid']);
             if ($sType == 'invite' || $sType == 'register') {
                 $oToken->sent = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
-                $oToken->save();
+                if (!$oToken->save(true, ['sent'])) {
+                    $warnings = $oToken->getErrors();
+                }
             }
             if ($sType == 'remind') {
                 $oToken->remindersent = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
                 $oToken->remindercount++;
-                $oToken->save();
+                if (!$oToken->save(true, ['remindersent', 'remindercount'])) {
+                    $warnings = $oToken->getErrors();
+                }
             }
             $aResult[$aTokenRow['tid']] = array(
                 'name' => $aTokenRow["firstname"] . " " . $aTokenRow["lastname"],
                 'email' => $aTokenRow["email"],
-                'status' => 'OK'
+                'status' => 'OK',
+                'warning' => $warnings
             );
         } else {
             $aResult[$aTokenRow['tid']] = array(
