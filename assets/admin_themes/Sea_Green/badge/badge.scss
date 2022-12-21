@@ -1,0 +1,12 @@
+.badge {
+  background-color: $g-100 ;
+  color: $g-900 ;
+}
+.badge.reverse-color {
+  color: $g-100 !important;
+  background-color: $g-900 !important;
+}
+.badge.rounded-pill {
+  padding: 4px 12px !important;
+}
+

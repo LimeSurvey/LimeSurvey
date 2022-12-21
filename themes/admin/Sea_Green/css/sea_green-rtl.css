@@ -4767,7 +4767,7 @@ textarea.form-control-lg {
 
 .badge {
   display: inline-block;
-  padding: 0.35em 0.65em;
+  padding: 2px 5px;
   font-size: 0.75em;
   font-weight: 700;
   line-height: 1;
@@ -16275,11 +16275,6 @@ fieldset[disabled] .form-control {
   background-color: #7b2824;
 }
 
-.badge {
-  color: #fff;
-  background-color: #858585;
-}
-
 .jumbotron {
   background-color: transparent;
   text-align: center;
@@ -18559,4 +18554,18 @@ footer.footer {
 }
 .tempus-dominus-widget .date-container-days div:not(.no-highlight) {
   width: 24px;
+}
+
+.badge {
+  background-color: #F9F9FB;
+  color: #1E1E1E;
+}
+
+.badge.reverse-color {
+  color: #F9F9FB !important;
+  background-color: #1E1E1E !important;
+}
+
+.badge.rounded-pill {
+  padding: 4px 12px !important;
 }
