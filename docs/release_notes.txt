@@ -34,6 +34,19 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.42 (build 221213) to 3.28.43 (build 221221) December 21, 2022
+-Fixed issue #18086: Custom "other" label text not applied to Bootstrap button layout (#2749) (Gabriel Jenik)
+-Fixed issue #18338: For participants, expiration date can be set before start date (#2726) (Gabriel Jenik)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Luxembourgish by Mazi
+#Updated translation: German by c_schmitz, eddylackmann
+#Updated translation: Galician by Calidonia
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Bosnian by PawelAtroszko
+#Updated translation: Azerbaijani by PawelAtroszko
+
+
 Changes from 3.28.41 (build 221206) to 3.28.42 (build 221213) December 12, 2022
 -Fixed issue [security] #18514: No CSRF control when deleting token table (#2760) (Denis Chenu)
 #Updated translation: Portuguese (Brazil) by mauriciofurtado
