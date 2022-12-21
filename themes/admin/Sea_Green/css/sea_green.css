@@ -17925,9 +17925,21 @@ footer.footer {
 .navbar .nav-link:hover, .navbar .nav-link:focus {
   color: #cccccc;
 }
-.navbar .badge {
+.navbar .badge, .navbar .rounded-circle {
   background-color: #fff;
   color: #333641;
+}
+.navbar .badge {
+  width: 20px;
+  height: 20px;
+  padding: 2px 5px;
+  font-size: 14px;
+  font-weight: 600;
+}
+.navbar .rounded-circle {
+  font-size: 12px;
+  width: 25px;
+  height: 25px;
 }
 .navbar a {
   font-weight: 500;
