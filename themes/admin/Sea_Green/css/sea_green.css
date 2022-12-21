@@ -13265,21 +13265,6 @@ a.explorer-group:focus {
   overflow: hidden;
 }
 
-h1,
-.h1 {
-  font-size: 24px;
-}
-
-h2,
-.h2 {
-  font-size: 22px;
-}
-
-h3,
-.h3 {
-  font-size: 20px;
-}
-
 .statisticstable {
   word-wrap: break-word;
 }
@@ -14807,10 +14792,6 @@ html[dir=rtl] th {
   background-color: #eee;
 }
 
-label {
-  font-weight: bold;
-}
-
 .list-group-item.disabled {
   color: #777;
   cursor: not-allowed;
@@ -16219,10 +16200,6 @@ fieldset[disabled] .form-control {
 .pager .disabled > span {
   color: #858585;
   background-color: #fff;
-}
-
-.label {
-  color: #fff;
 }
 
 .label[href]:hover {
@@ -17764,6 +17741,7 @@ body.onStatistics .btn {
 }
 
 body {
+  color: #1E1E1E;
   font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-weight: 400;
   font-size: 1rem;
@@ -17772,6 +17750,7 @@ body {
 
 h1,
 .h1 {
+  color: #152536;
   font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-weight: 600;
   font-size: 1.25rem;
@@ -17780,14 +17759,16 @@ h1,
 
 h2,
 .h2 {
+  color: #152536;
   font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-weight: 600;
-  font-size: 1.25rem;
+  font-size: 1rem;
   line-height: 20px;
 }
 
 h3,
 .h3 {
+  color: #152536;
   font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-weight: 500;
   font-size: 0.875rem;
@@ -17795,10 +17776,25 @@ h3,
 }
 
 label {
+  color: #152536;
   font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-weight: 500;
   font-size: 0.875rem;
   line-height: 20px;
+}
+
+dl {
+  color: #333641;
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 24px;
+}
+dl dt {
+  color: #1E1E1E;
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 24px;
 }
 
 .tooltip {

@@ -2278,21 +2278,6 @@ a.explorer-group:focus {
     overflow: hidden;
 }
 
-h1,
-.h1 {
-    font-size: 24px;
-}
-
-h2,
-.h2 {
-    font-size: 22px;
-}
-
-h3,
-.h3 {
-    font-size: 20px;
-}
-
 .statisticstable {
     word-wrap: break-word;
 }
@@ -3966,10 +3951,6 @@ html[dir="rtl"] th {
     color: #777;
     cursor: not-allowed;
     background-color: #eee;
-}
-
-label {
-    font-weight: bold;
 }
 
 .list-group-item.disabled {
