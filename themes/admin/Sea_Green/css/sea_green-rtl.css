@@ -2611,7 +2611,7 @@ textarea.form-control-lg {
   z-index: 5;
   display: none;
   max-width: 100%;
-  padding: 0.5rem 1.2rem;
+  padding: 0.5rem 1.25rem;
   margin-top: 0.1rem;
   font-size: 0.875rem;
   color: #000;
@@ -2700,7 +2700,7 @@ textarea.form-control-lg {
   z-index: 5;
   display: none;
   max-width: 100%;
-  padding: 0.5rem 1.2rem;
+  padding: 0.5rem 1.25rem;
   margin-top: 0.1rem;
   font-size: 0.875rem;
   color: #fff;
@@ -5760,7 +5760,7 @@ textarea.form-control-lg {
 
 .tooltip-inner {
   max-width: 200px;
-  padding: 0.5rem 1.2rem;
+  padding: 0.5rem 1.25rem;
   color: #fff;
   text-align: center;
   background-color: #1E1E1E;
@@ -13046,11 +13046,6 @@ $color_norway_approx: adjust-color($base-color, $hue: 0deg, $saturation: -28%, $
   padding-left: 4px;
 }
 
-/* z-index fix */
-.tooltip {
-  position: fixed;
-}
-
 /** For survey participants table */
 .scrolling-wrapper {
   overflow-x: scroll;
@@ -17782,7 +17777,7 @@ dl dt {
 }
 
 .tooltip-inner {
-  padding: 0.5rem 1.2rem;
+  padding: 0.5rem 1.25rem;
   text-align: center;
   background-color: #1E1E1E;
 }
