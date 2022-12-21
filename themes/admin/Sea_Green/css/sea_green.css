@@ -16317,7 +16317,7 @@ fieldset[disabled] .form-control {
 .alert-success {
   background-color: #fff;
   border: 1px solid #afdbb1;
-  color: #328637 !important;
+  color: #328637;
 }
 .alert-success hr {
   border-top-color: #9dd39f;
@@ -16329,7 +16329,7 @@ fieldset[disabled] .form-control {
 .alert-info {
   background-color: #fff;
   border: 1px solid #40ab82;
-  color: #40ab82 !important;
+  color: #40ab82;
 }
 .alert-info hr {
   border-top-color: #8cb5b5;
@@ -16341,7 +16341,7 @@ fieldset[disabled] .form-control {
 .alert-warning {
   background-color: #fff;
   border: 1px solid #a15426;
-  color: #a15426 !important;
+  color: #a15426;
 }
 .alert-warning hr {
   border-top-color: #a8876a;
@@ -16352,7 +16352,7 @@ fieldset[disabled] .form-control {
 
 .alert-danger {
   border: 1px solid #b95967;
-  color: #b95967 !important;
+  color: #b95967;
 }
 .alert-danger hr {
   border-top-color: #b04a59;
