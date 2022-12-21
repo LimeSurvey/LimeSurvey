@@ -16985,10 +16985,6 @@ input[type=checkbox]:checked:after,
   border: 1px solid #cccccc;
 }
 
-input[type=text], input[type=password], .ui-autocomplete-input, textarea, .uneditable-input {
-  color: #636363;
-}
-
 .em-function {
   color: #328637;
 }

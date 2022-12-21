@@ -2133,10 +2133,6 @@ input[type="checkbox"]:checked:after,
     border: 1px solid $gray-09;
 }
 
-// Forms
-input[type="text"], input[type="password"], .ui-autocomplete-input, textarea, .uneditable-input {
-    color: $gray-17;
-}
 
 // Expression Manager
 .em-function {
