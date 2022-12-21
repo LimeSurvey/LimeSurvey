@@ -38,10 +38,13 @@ class UploaderController extends SurveyController
         $sFileGetContent = Yii::app()->request->getParam('filegetcontents', ''); // The file to view fu_ or fu_tmp
         $bDelete = Yii::app()->request->getParam('delete');
         $sFieldName = Yii::app()->request->getParam('fieldname');
-        $aFieldMap = createFieldMap($oSurvey, 'short', false, false, $sLanguage);
-        if (!isset($aFieldMap[$sFieldName])) {
-            throw new CHttpException(400); // See for debug > 1
-        }        
+        // Make sure the fieldname is valid, but only when it's needed (it's not needed on 'filegetcontents' requests)
+        if (empty($sFileGetContent)) {
+            $aFieldMap = createFieldMap($oSurvey, 'short', false, false, $sLanguage);
+            if (!isset($aFieldMap[$sFieldName])) {
+                throw new CHttpException(400); // See for debug > 1
+            }
+        }
         $sFileName = Yii::app()->request->getParam('filename', ''); // The file to delete fu_ or fu_tmp
         $sOriginalFileName = Yii::app()->request->getParam('name', ''); // Used for javascript return only
         $sMode = Yii::app()->request->getParam('mode');
