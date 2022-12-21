@@ -189,7 +189,13 @@ require_once APPPATH . 'core/LSYii_Application' . EXT;
 $config = require_once(APPPATH . 'config/internal' . EXT);
 
 Yii::$enableIncludePath = false;
-Yii::createApplication('LSYii_Application', $config)->run();
+
+try {
+    Yii::createApplication('LSYii_Application', $config)->run();
+} catch (\Throwable $e) {
+    error_log(sprintf("General error: %s, stack trace: %s", $e->getMessage(), $e->getTraceAsString()));
+    throw $e;
+}
 
 /* End of file index.php */
 /* Location: ./index.php */
