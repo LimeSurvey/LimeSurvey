@@ -41,19 +41,19 @@
                                 <div class="box__title text-center"><?php eT("System overview"); ?></div>
                                 <dl class="dl-horizontal">
                                     <div class="row">
-                                        <dt class="text-info col-8 text-truncate text-end"><?php eT('Users'); ?></dt>
+                                        <dt class="col-8 text-truncate text-end"><?php eT('Users'); ?></dt>
                                         <dd class="col-4 text-end"><?php echo $userscount; ?></dd>
                                     </div>
                                     <div class="row">
-                                        <dt class="text-info col-8 text-truncate text-end"><?php eT('Surveys'); ?></dt>
+                                        <dt class="col-8 text-truncate text-end"><?php eT('Surveys'); ?></dt>
                                         <dd class="col-4 text-end"><?php echo $surveyscount; ?></dd>
                                     </div>
                                     <div class="row">
-                                        <dt class="text-info col-8 text-truncate text-end"><?php eT('Active surveys'); ?></dt>
+                                        <dt class="col-8 text-truncate text-end"><?php eT('Active surveys'); ?></dt>
                                         <dd class="col-4 text-end"><?php echo $activesurveyscount; ?></dd>
                                     </div>
                                     <div class="row">
-                                        <dt class="text-info col-8 text-truncate text-end"><?php eT('ComfortUpdate key'); ?></dt>
+                                        <dt class="col-8 text-truncate text-end"><?php eT('ComfortUpdate key'); ?></dt>
                                         <dd class="col-4 text-end"><?php echo $comfortUpdateKey; ?></dd>
                                     </div>
                                 </dl>

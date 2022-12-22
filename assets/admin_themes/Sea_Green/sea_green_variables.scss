@@ -22,6 +22,7 @@ $black        : #000;
 $black60      : #666666; // rgba(0, 0, 0, 0.6);
 $black75      : rgba(0, 0, 0, 0.75);
 $grape75 : rgba(123, 97, 255, 0.4);
+$heading-title-color: #152536;
 
 $g-900        : #1E1E1E;
 $g-800        : #333641;
@@ -109,7 +110,7 @@ $tooltip-bg:                        $g-900;
 // $tooltip-border-radius:             $border-radius;
 $tooltip-opacity:                   1;
 $tooltip-padding-y:                 $spacer * .5;
-$tooltip-padding-x:                 $spacer * 1.2;
+$tooltip-padding-x:                 $spacer * 1.25;
 
 $tooltip-arrow-color:               $tooltip-bg;
 // $tooltip-arrow-color:               null; // Deprecated in Bootstrap 5.2.0 for CSS variables
@@ -152,6 +153,9 @@ $td-dow-color: $td-font-color;
 // badge
 $badge-padding-y:                   2px;
 $badge-padding-x:                   5px;
+
+//card
+$card-header-line-height: 26px;
 
 // navbar
 $navbar-bg-color: $g-800;
