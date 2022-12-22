@@ -1,7 +1,7 @@
-<div class="card m-2">
+<div class="card m-2 h-100">
     <!-- Default panel contents -->
     <div class="card-header">
-        <strong> {{ gT("Share survey") }} </strong>
+        <h5 class="card-title">{{ gT("Share survey") }}</h5>
     </div>
     <!-- List group -->
     <ul class="list-group list-group-flush">
@@ -77,7 +77,7 @@
 </div>
 
 {% if oSurvey.active == 'Y' %}
-    <div class="modal fade" tabindex="-1" role="dialog" id="sharingdialog"> 
+    <div class="modal fade" tabindex="-1" role="dialog" id="sharingdialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -86,7 +86,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <div class="card">
+                        <div class="card h-100">
                             <div class="card-header">
                                 <h5 class="modal-title">{{ gT("Share QR-code:") }}</h5>
                             </div>
@@ -131,7 +131,7 @@
                         </div>
                     </div>
                     <div class="mb-3">
-                        <div class="card">
+                        <div class="card h-100">
                             <div class="card-header">
                                 <h5 class="card-title">
                                     {{ gT("Share on Facebook:") }}
@@ -175,7 +175,7 @@
                         </div>
                     </div>
                     <div class="mb-3">
-                        <div class="card">
+                        <div class="card h-100">
                             <div class="card-header">
                                 <h5 class="card-title">
                                     {{ gT("Share on Twitter:") }}

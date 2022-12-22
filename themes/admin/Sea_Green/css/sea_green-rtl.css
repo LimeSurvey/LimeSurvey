@@ -2611,7 +2611,7 @@ textarea.form-control-lg {
   z-index: 5;
   display: none;
   max-width: 100%;
-  padding: 0.5rem 1.2rem;
+  padding: 0.5rem 1.25rem;
   margin-top: 0.1rem;
   font-size: 0.875rem;
   color: #000;
@@ -2700,7 +2700,7 @@ textarea.form-control-lg {
   z-index: 5;
   display: none;
   max-width: 100%;
-  padding: 0.5rem 1.2rem;
+  padding: 0.5rem 1.25rem;
   margin-top: 0.1rem;
   font-size: 0.875rem;
   color: #fff;
@@ -4428,7 +4428,7 @@ textarea.form-control-lg {
   padding: 1rem 1rem;
 }
 
-.card-title {
+.card-title, .ls-panelboxes .ls-panelboxes-panelbox .card .card-header {
   margin-bottom: 0.5rem;
 }
 
@@ -4767,7 +4767,7 @@ textarea.form-control-lg {
 
 .badge {
   display: inline-block;
-  padding: 0.35em 0.65em;
+  padding: 2px 5px;
   font-size: 0.75em;
   font-weight: 700;
   line-height: 1;
@@ -5760,7 +5760,7 @@ textarea.form-control-lg {
 
 .tooltip-inner {
   max-width: 200px;
-  padding: 0.5rem 1.2rem;
+  padding: 0.5rem 1.25rem;
   color: #fff;
   text-align: center;
   background-color: #1E1E1E;
@@ -11563,7 +11563,7 @@ html {
   justify-content: center;
 }
 
-.welcome .card-title {
+.welcome .card-title, .welcome .ls-panelboxes .ls-panelboxes-panelbox .card .card-header, .ls-panelboxes .ls-panelboxes-panelbox .card .welcome .card-header {
   font-weight: 500;
 }
 
@@ -12705,7 +12705,7 @@ h3 .glyphicon-chevron-left,
   left: -20px;
 }
 
-#carousel-example-generic .card-title {
+#carousel-example-generic .card-title, #carousel-example-generic .ls-panelboxes .ls-panelboxes-panelbox .card .card-header, .ls-panelboxes .ls-panelboxes-panelbox .card #carousel-example-generic .card-header {
   text-align: center;
   padding-top: 0px;
 }
@@ -13046,11 +13046,6 @@ $color_norway_approx: adjust-color($base-color, $hue: 0deg, $saturation: -28%, $
   padding-left: 4px;
 }
 
-/* z-index fix */
-.tooltip {
-  position: fixed;
-}
-
 /** For survey participants table */
 .scrolling-wrapper {
   overflow-x: scroll;
@@ -13240,21 +13235,6 @@ a.explorer-group:focus {
 #displayResponsesContainer .ui-jqgrid-bdiv,
 #gbox_displaytokens .ui-jqgrid-bdiv {
   overflow: hidden;
-}
-
-h1,
-.h1 {
-  font-size: 24px;
-}
-
-h2,
-.h2 {
-  font-size: 22px;
-}
-
-h3,
-.h3 {
-  font-size: 20px;
 }
 
 .statisticstable {
@@ -13671,7 +13651,7 @@ table#responsedetail tr td {
   display: block;
 }
 
-#accordion_questionTypeSelector .card-title > a {
+#accordion_questionTypeSelector .card-title > a, #accordion_questionTypeSelector .ls-panelboxes .ls-panelboxes-panelbox .card .card-header > a, .ls-panelboxes .ls-panelboxes-panelbox .card #accordion_questionTypeSelector .card-header > a {
   width: 100%;
   display: block;
 }
@@ -14782,10 +14762,6 @@ html[dir=ltr] th {
   color: #777;
   cursor: not-allowed;
   background-color: #eee;
-}
-
-label {
-  font-weight: bold;
 }
 
 .list-group-item.disabled {
@@ -16164,10 +16140,6 @@ fieldset[disabled] .form-control {
   background-color: #fff;
 }
 
-.label {
-  color: #fff;
-}
-
 .label[href]:hover {
   color: #fff;
 }
@@ -16239,11 +16211,6 @@ fieldset[disabled] .form-control {
 }
 .label-danger[href]:focus {
   background-color: #7b2824;
-}
-
-.badge {
-  color: #fff;
-  background-color: #858585;
 }
 
 .jumbotron {
@@ -16499,24 +16466,6 @@ fieldset[disabled] .form-control {
 }
 .close:focus {
   color: #000;
-}
-
-.modal-content {
-  background-color: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
-}
-
-.modal-backdrop {
-  background-color: #000;
-}
-
-.modal-header {
-  border-bottom: 1px solid #e6e6e6;
-}
-
-.modal-footer {
-  border-top: 1px solid #e6e6e6;
 }
 
 .popover {
@@ -17283,6 +17232,63 @@ tr.info, tr.danger {
   font-weight: normal;
 }
 
+body {
+  color: #1E1E1E;
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 24px;
+}
+
+h1,
+.h1 {
+  color: #152536;
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-weight: 600;
+  font-size: 1.25rem;
+  line-height: 26px;
+}
+
+h2,
+.h2 {
+  color: #152536;
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 20px;
+}
+
+h3,
+.h3 {
+  color: #152536;
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 20px;
+}
+
+label {
+  color: #152536;
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 20px;
+}
+
+dl {
+  color: #333641;
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 24px;
+}
+dl dt {
+  color: #1E1E1E;
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 24px;
+}
+
 .btn:hover {
   color: #fff;
 }
@@ -17703,46 +17709,38 @@ body.onStatistics .btn {
   font-size: var(--bs-root-font-size);
 }
 
-.modal-footer {
-  padding: 1.5rem;
+.modal-content {
+  background-color: #fff;
+  border: none;
+  box-shadow: none;
+  border-radius: 0px;
 }
 
-body {
-  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  font-weight: 400;
-  font-size: 1rem;
-  line-height: 24px;
+.modal-backdrop {
+  background-color: #000;
 }
 
-h1,
-.h1 {
-  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  font-weight: 600;
-  font-size: 1.25rem;
+.modal-header {
+  border-bottom: none;
+}
+.modal-header .btn-close {
+  color: #1E1E1E;
+  width: 0.75em;
+  height: 0.75em;
+  opacity: 1;
+}
+.modal-header .btn-close:focus {
+  box-shadow: none;
+}
+
+.modal-title {
+  color: #1E1E1E;
   line-height: 26px;
 }
 
-h2,
-.h2 {
-  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  font-weight: 600;
-  font-size: 1.25rem;
-  line-height: 20px;
-}
-
-h3,
-.h3 {
-  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  font-weight: 500;
-  font-size: 0.875rem;
-  line-height: 20px;
-}
-
-label {
-  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  font-weight: 500;
-  font-size: 0.875rem;
-  line-height: 20px;
+.modal-footer {
+  border-top: none;
+  padding: 1.5rem;
 }
 
 .tooltip {
@@ -17753,7 +17751,7 @@ label {
 }
 
 .tooltip-inner {
-  padding: 0.5rem 1.2rem;
+  padding: 0.5rem 1.25rem;
   text-align: center;
   background-color: #1E1E1E;
 }
@@ -18029,6 +18027,48 @@ footer.footer {
   text-decoration: none;
 }
 
+.card {
+  background-color: #fff;
+  position: relative;
+  border-radius: 4px;
+  box-shadow: -8px 8px #EEEFF7;
+  border: 1px solid #1E1E1E;
+  color: #1E1E1E;
+}
+.card.card-clickable:hover {
+  box-shadow: -8px 8px #D3C5FA;
+}
+.card .card-title, .ls-panelboxes .ls-panelboxes-panelbox .card .card-header {
+  padding: unset;
+  display: inline-block;
+  color: #1E1E1E;
+  font-weight: 600;
+  font-size: 1.25rem;
+  line-height: 26px;
+}
+.card .card-header {
+  padding: 1rem;
+  height: unset;
+  background-color: unset;
+  border: none;
+  color: #1E1E1E;
+  font-weight: 600;
+  font-size: 1.25rem;
+  line-height: 26px;
+}
+.card .card-body {
+  height: unset;
+  padding: unset;
+  background-color: unset;
+  border: none;
+}
+.card .card-footer {
+  justify-content: flex-start;
+  height: unset;
+  background-color: unset;
+  border: none;
+}
+
 #statisticsview .box {
   text-align: right;
   margin-bottom: 1em;
@@ -18073,6 +18113,47 @@ footer.footer {
   line-height: 1.1;
   color: inherit;
   text-align: center;
+}
+
+.form-control {
+  box-shadow: -4px 4px 0px #EEEFF7;
+  border: 1px solid #1E1E1E !important;
+}
+.form-control:focus {
+  box-shadow: -4px 4px 0px rgba(66, 0, 255, 0.2);
+}
+
+.form-control.ls-important-field {
+  padding: 14px 13px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16px;
+  border: 2px solid #1E1E1E;
+  box-shadow: -8px 8px 0px #EEEFF7;
+}
+.form-control.ls-important-field:focus {
+  box-shadow: -8px 8px 0px rgba(66, 0, 255, 0.2);
+}
+
+.ls-panelboxes .ls-panelboxes-panelbox {
+  height: 200px;
+  margin: 10px 0;
+  position: relative;
+}
+.ls-panelboxes .ls-panelboxes-panelbox .card {
+  width: 95%;
+  height: 100%;
+}
+.ls-panelboxes .ls-panelboxes-panelbox .card .card-title, .ls-panelboxes .ls-panelboxes-panelbox .card .card-header {
+  font-size: 1.5rem;
+}
+.ls-panelboxes .ls-panelboxes-panelbox .card .card-body {
+  justify-content: flex-start;
+  text-align: right !important;
+}
+.ls-panelboxes .ls-panelboxes-panelbox .card .btn {
+  width: fit-content;
+  border-width: 1px;
 }
 
 [class^=ri-], [class*=" ri-"] {
@@ -18167,70 +18248,6 @@ footer.footer {
   to {
     transform: rotate(-360deg);
   }
-}
-
-.form-control {
-  box-shadow: -4px 4px 0px #EEEFF7;
-  border: 1px solid #1E1E1E !important;
-}
-.form-control:focus {
-  box-shadow: -4px 4px 0px rgba(66, 0, 255, 0.2);
-}
-
-.form-control.ls-important-field {
-  padding: 14px 13px;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 16px;
-  border: 2px solid #1E1E1E;
-  box-shadow: -8px 8px 0px #EEEFF7;
-}
-.form-control.ls-important-field:focus {
-  box-shadow: -8px 8px 0px rgba(66, 0, 255, 0.2);
-}
-
-.ls-panelboxes .ls-panelboxes-panelbox {
-  padding: 20px;
-  height: 200px;
-  position: relative;
-  margin: 10px 0;
-}
-.ls-panelboxes .ls-panelboxes-panelbox .ls-panelboxes-panelbox-inner {
-  background-color: #fff;
-  position: absolute;
-  width: 95%;
-  height: 100%;
-  border-radius: 4px;
-  box-shadow: -8px 8px #EEEFF7;
-  border: 1px solid #1E1E1E;
-  color: #1E1E1E;
-}
-.ls-panelboxes .ls-panelboxes-panelbox .ls-panelboxes-panelbox-inner:hover {
-  box-shadow: -8px 8px #D3C5FA;
-}
-.ls-panelboxes .ls-panelboxes-panelbox .ls-panelboxes-panelbox-inner .card-header {
-  height: unset;
-  background-color: unset;
-  border: none;
-  color: #1E1E1E;
-  font-weight: 600;
-  font-size: 1.5rem;
-  line-height: 26px;
-  justify-content: flex-start;
-}
-.ls-panelboxes .ls-panelboxes-panelbox .ls-panelboxes-panelbox-inner .card-body {
-  justify-content: flex-start;
-  text-align: right !important;
-}
-.ls-panelboxes .ls-panelboxes-panelbox .ls-panelboxes-panelbox-inner .card-footer {
-  justify-content: flex-start;
-  height: unset;
-  background-color: unset;
-  border: none;
-}
-.ls-panelboxes .ls-panelboxes-panelbox .ls-panelboxes-panelbox-inner .btn {
-  width: fit-content;
-  border-width: 1px;
 }
 
 .cke_top {
@@ -18516,4 +18533,18 @@ footer.footer {
 }
 .tempus-dominus-widget .date-container-days div:not(.no-highlight) {
   width: 24px;
+}
+
+.badge {
+  background-color: #F9F9FB;
+  color: #1E1E1E;
+}
+
+.badge.reverse-color {
+  color: #F9F9FB !important;
+  background-color: #1E1E1E !important;
+}
+
+.badge.rounded-pill {
+  padding: 4px 12px !important;
 }

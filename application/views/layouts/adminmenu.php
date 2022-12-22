@@ -23,7 +23,7 @@
                 <?php if ($activesurveyscount > 0): ?>
                     <li class="nav-item">
                         <a class="nav-link" href="<?php echo $this->createUrl('surveyAdministration/listsurveys/active/Y'); ?>">
-                            <?php eT("Active surveys"); ?> <span class="badge rounded-pill"><?php echo $activesurveyscount ?></span>
+                            <?php eT("Active surveys"); ?> <span class="badge"><?php echo $activesurveyscount ?></span>
                         </a>
                     </li>
                 <?php endif; ?>
@@ -85,7 +85,7 @@
                 <?php if ($activesurveyscount > 0): ?>
                     <li class="nav-item">
                         <a href="<?php echo $this->createUrl('surveyAdministration/listsurveys/active/Y'); ?>" class="nav-link">
-                            <?php eT("Active surveys"); ?> <span class="badge rounded-pill"> <?php echo $activesurveyscount ?> </span>
+                            <?php eT("Active surveys"); ?> <span class="badge"> <?php echo $activesurveyscount ?> </span>
                         </a>
                     </li>
                 <?php endif; ?>
@@ -97,10 +97,10 @@
                 <?php echo $adminNotifications; ?>
 
                 <li class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">
+                    <a href="#" class="nav-link dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" role="button" aria-expanded="false">
                     <!-- <i class="ri-user-fill"></i> <?php echo Yii::app()->session['user']; ?> <span class="caret"></span></a> -->
 <!--                         @TODO remove inline style and put it into corresponding SCSS file. This is here just for demo purpose -->
-                        <span class='badge rounded-pill' style="background-color: #3BFFB7; color: #25003E;">
+                        <span class='rounded-circle text-center d-flex align-items-center justify-content-center me-1' style="background-color: #F9F9FB; color: #1E1E1E; width:25px; height:25px;">
                             <?= strtoupper(substr(Yii::app()->session['user'], 0, 1)) ?>
                         </span>
                         <?= Yii::app()->session['user']; ?>
