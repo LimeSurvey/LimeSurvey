@@ -13110,18 +13110,6 @@ a.explorer-group:focus {
   min-height: 25em;
 }
 
-.has-link {
-  cursor: pointer;
-}
-
-.has-link a:hover {
-  text-decoration: none;
-}
-
-.has-link a {
-  color: black;
-}
-
 .hoverAction .table-striped > tbody > tr:hover > td {
   background-color: transparent;
 }
@@ -15201,15 +15189,6 @@ mark, .mark {
   color: #000;
 }
 
-a {
-  color: #328637;
-}
-a:hover {
-  color: #0f3e12;
-}
-a:focus {
-  color: #0f3e12;
-}
 a.badge:hover {
   color: #fff;
 }
@@ -15294,37 +15273,6 @@ a.list-group-item-danger:focus {
   color: #e8afae;
   background-color: #b65453;
 }
-a.text-primary:hover {
-  color: #246128;
-}
-a.text-success:hover {
-  color: #246128;
-}
-a.text-info:hover {
-  color: #1c575a;
-}
-a.text-warning:hover {
-  color: #f6863a;
-}
-a.text-danger:hover {
-  color: #dd8988;
-}
-a.bg-primary:hover {
-  background-color: #246128;
-}
-a.bg-success:hover {
-  background-color: #9dd39f;
-}
-a.bg-info:hover {
-  background-color: #8cb5b5;
-}
-a.bg-warning:hover {
-  background-color: #a8876a;
-}
-a.bg-danger:hover {
-  background-color: #a94847;
-}
-
 .img-thumbnail {
   background-color: #fff;
   border: 1px solid #dadada;
@@ -15332,30 +15280,6 @@ a.bg-danger:hover {
 
 hr {
   border-top: 1px solid #9cba9e;
-}
-
-.text-muted {
-  color: #858585;
-}
-
-.text-primary {
-  color: #328637;
-}
-
-.text-success {
-  color: #328637;
-}
-
-.text-info {
-  color: #39993f;
-}
-
-.text-warning {
-  color: #a15426 !important;
-}
-
-.text-danger {
-  color: #e8afae !important;
 }
 
 .bg-primary {
@@ -17044,6 +16968,24 @@ dl dt {
   font-weight: 600;
   font-size: 1rem;
   line-height: 24px;
+}
+
+a {
+  color: #14AE5C;
+  font-weight: 500;
+}
+
+.has-link {
+  cursor: pointer;
+}
+
+.has-link a:hover {
+  text-decoration: none;
+}
+
+.has-link a {
+  color: #1E1E1E;
+  font-weight: 400;
 }
 
 .btn:hover {
