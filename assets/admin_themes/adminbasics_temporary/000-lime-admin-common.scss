@@ -1076,20 +1076,6 @@ html {
         transform-style: preserve-3d;
     }
 
-    /*
-    #search .card-body .navbar-form {
-        border-bottom: 0;
-    }
-
-    #search .card-body .navbar-form .form-group {
-        margin: 0;
-    }
-
-    #dropdown .card-body .navbar-nav {
-        margin: 0;
-    }
-    */
-
 }
 
 .toWhite a:hover {
@@ -1582,10 +1568,6 @@ h3 .glyphicon-chevron-right {
     right: -20px;
 }
 
-#carousel-example-generic .card-title {
-    text-align: center;
-    padding-top: 0px;
-}
 
 #carousel-example-generic .carousel-inner img {
     margin: auto;
@@ -1813,10 +1795,6 @@ html body .nav-tabs > li.active > a:focus {
 
 .answertable .glyphicon-pencil {
     margin-left: 3px;
-}
-
-#statisticsview .card {
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
 }
 
 #explorer-collapse {
@@ -2073,11 +2051,6 @@ div#gview_displayresponses th#displayresponses_cb {
 
 #quick-menu-container .navbar-brand {
     padding: 0
-}
-
-/* Needed for DateTimePicker in survey settings */
-.card-group .card {
-    overflow: visible;
 }
 
 a.explorer-group:hover,
@@ -2533,16 +2506,6 @@ table#responsedetail tr td {
 
 .currentQuestionTypeImageContainer img {
     max-width: 100%;
-}
-
-#accordion-container .card-header > a {
-    width: 100%;
-    display: block;
-}
-
-#accordion_questionTypeSelector .card-title > a {
-    width: 100%;
-    display: block;
 }
 
 /*custom margin and padding*/
