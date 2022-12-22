@@ -133,6 +133,7 @@ class UploaderController extends SurveyController
             //$filename = sanitize_filename($_FILES['uploadfile']['name']);// This remove all non alpha numeric characters and replaced by _ . Leave only one dot .
             $size = $_FILES['uploadfile']['size'] / 1024;
             $preview = Yii::app()->session['preview'];
+            // TODO: Remove this validation. It's already done at the start.
             $aFieldMap = createFieldMap($oSurvey, 'short', false, false, $sLanguage);
             if (!isset($aFieldMap[$sFieldName])) {
                 throw new CHttpException(400); // See for debug > 1
