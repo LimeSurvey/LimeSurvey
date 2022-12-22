@@ -51,6 +51,7 @@ $card-header-line-height: 26px;
     // Remove body top padding if it comes after a header
     .card-header + .card-body {
         padding-top: 0;
+        margin-top: -1rem;
     }
 
     .card-footer {
@@ -59,6 +60,11 @@ $card-header-line-height: 26px;
         padding: 1rem;
         background-color: unset;
         border: none;
+    }
+
+    .card-body + .card-footer,
+    .card-header + .card-footer {
+        padding-top: 0;
     }
 }
 
