@@ -1,3 +1,4 @@
+// Most likely not used?!
 #statisticsview .box {
   text-align    : left;
   margin-bottom : 1em;
@@ -5,22 +6,15 @@
 
 // Boxes
 .box {
-  box-shadow: 0 2px 5px 0 $black_opac_16, 0 2px 10px 0 $black_opac_12;
-}
-.box-icon {
-  span {
-    color: $white;
-  }
-}
-
-.box {
-  border-radius: 3px;
+  border-radius: $border-radius;
+  box-shadow: 8px 8px $g-200;
+  border: 1px solid $g-900;
+  color: $g-900;
   padding: 10px 25px;
   text-align: right;
   display: block;
   margin-top: 10px;
 }
-
 .box-icon {
   border-radius: 50%;
   display: table;
@@ -28,20 +22,23 @@
   margin: 0 auto;
   width: 50px;
   margin-top: -31px;
-}
-
-.box-icon span {
-  display: table-cell;
-  text-align: center;
-  vertical-align: middle;
+  span {
+    color: $white;
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+  }
+  #info-header {
+    color: $g-900;
+  }
 }
 
 #systemoverview .box__title {
-  font-size: 14px;
+  font-size: 18px;
   margin-top: 10px;
   margin-bottom: 10px;
-  font-weight: 500;
-  line-height: 1.1;
-  color: inherit;
+  font-weight: $font-weight-600;
+  line-height: $line-height-20;
+  color: $g-900;
   text-align: center;
 }

@@ -17987,15 +17987,10 @@ footer.footer {
 }
 
 .box {
-  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
-}
-
-.box-icon span {
-  color: #fff;
-}
-
-.box {
-  border-radius: 3px;
+  border-radius: 4px;
+  box-shadow: -8px 8px #EEEFF7;
+  border: 1px solid #1E1E1E;
+  color: #1E1E1E;
   padding: 10px 25px;
   text-align: left;
   display: block;
@@ -18010,20 +18005,23 @@ footer.footer {
   width: 50px;
   margin-top: -31px;
 }
-
 .box-icon span {
+  color: #fff;
   display: table-cell;
   text-align: center;
   vertical-align: middle;
 }
+.box-icon #info-header {
+  color: #1E1E1E;
+}
 
 #systemoverview .box__title {
-  font-size: 14px;
+  font-size: 18px;
   margin-top: 10px;
   margin-bottom: 10px;
-  font-weight: 500;
-  line-height: 1.1;
-  color: inherit;
+  font-weight: 600;
+  line-height: 20px;
+  color: #1E1E1E;
   text-align: center;
 }
 
