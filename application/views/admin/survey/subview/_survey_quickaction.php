@@ -15,6 +15,7 @@ $respstatsread  = Permission::model()->hasSurveyPermission($oSurvey->sid, 'respo
     || Permission::model()->hasSurveyPermission($oSurvey->sid, 'responses', 'export');
 $groups_count   = count($oSurvey->groups);
 
+
 ?>
 
 <!-- Quick Actions -->

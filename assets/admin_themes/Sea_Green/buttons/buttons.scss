@@ -42,7 +42,7 @@
 
 //from lime-admin-colors.scss
 //Buttons
-.btn-primary, .btn-info {
+.btn-primary {
   color: $white;
 
   &:hover, &:focus, &:active, &.active {
@@ -50,6 +50,15 @@
     box-shadow       : $btn-hover-boxshadow;
     color            : $white;
     background-color : $active-green;
+  }
+}
+
+.btn-info {
+  &:hover, &:focus, &:active, &.active {
+    color            : $g-900;
+    background-color : $grape;
+    border           : 1px solid $grape;
+    box-shadow       : 0 0 0 .25rem rgba(mix($grape, $grape, 15%), .5);
   }
 }
 
@@ -301,9 +310,10 @@
   border             : 1px solid #cccccc;
 }
 
-body.onStatistics .btn {
-  display : none;
-}
+//Why???
+//body.onStatistics .btn {
+//  display : none;
+//}
 
 // used anywhere?
 [data-toggle="buttons"] > .btn input[type="radio"],

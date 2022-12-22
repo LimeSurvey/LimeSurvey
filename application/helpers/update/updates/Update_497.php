@@ -13,6 +13,16 @@ class Update_497 extends DatabaseUpdateBase
         $this->db->createCommand()
             ->addColumn('{{boxes}}', 'buttontext', 'string(255)');
 
+        $this->updateCreateSurvey();
+        $this->updateSurveyList();
+        $this->updateGlobalSettings();
+        $this->updateComfortUpdate();
+        $this->updateLimeStore();
+        $this->updateThemes();
+    }
+
+    public function updateCreateSurvey()
+    {
         // Update existing boxes
         $this->db->createCommand()
             ->update(
@@ -23,7 +33,10 @@ class Update_497 extends DatabaseUpdateBase
                 ],
                 "title = 'Create survey' AND page = 'welcome'"
             );
+    }
 
+    public function updateSurveyList()
+    {
         $this->db->createCommand()
             ->update(
                 '{{boxes}}',
@@ -33,7 +46,11 @@ class Update_497 extends DatabaseUpdateBase
                 ],
                 "title = 'Survey list' AND page = 'welcome'"
             );
+    }
 
+
+    public function updateGlobalSettings()
+    {
         $this->db->createCommand()
             ->update(
                 '{{boxes}}',
@@ -43,8 +60,10 @@ class Update_497 extends DatabaseUpdateBase
                 ],
                 "title = 'Global settings' AND page = 'welcome'"
             );
+    }
 
-
+    public function updateComfortUpdate()
+    {
         $this->db->createCommand()
             ->update(
                 '{{boxes}}',
@@ -57,7 +76,10 @@ class Update_497 extends DatabaseUpdateBase
                 ],
                 "title = 'ComfortUpdate' AND page = 'welcome'"
             );
+    }
 
+    public function updateLimeStore()
+    {
         $this->db->createCommand()
             ->update(
                 '{{boxes}}',
@@ -70,7 +92,10 @@ class Update_497 extends DatabaseUpdateBase
                 ],
                 "title = 'LimeStore' AND page = 'welcome'"
             );
+    }
 
+    public function updateThemes()
+    {
         $this->db->createCommand()
             ->update(
                 '{{boxes}}',

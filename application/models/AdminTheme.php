@@ -217,7 +217,8 @@ class AdminTheme extends CFormModel
      * @param $aCssFiles
      * @return void
      */
-    private function registerAdminTheme($files, $aCssFiles) {
+    private function registerAdminTheme($files, $aCssFiles)
+    {
         $aJsFiles = [];
         if (!empty($files->js->filename)) {
             if (is_array($files->js->filename)) {
@@ -230,9 +231,9 @@ class AdminTheme extends CFormModel
         }
 
         $package = [];
-        $package['css']     = $aCssFiles; // add the css files to the package
-        $package['js']      = $aJsFiles; // add the js files to the package
-        $package['depends'] = array('bootstrap');
+        $package['css'] = $aCssFiles; // add the css files to the package
+        $package['js'] = $aJsFiles; // add the js files to the package
+        $package['depends'] = ['bootstrap'];
 
         // We check if the asset manager should be use.
         // When defining the package with a base path (a directory on the file system), the asset manager is used

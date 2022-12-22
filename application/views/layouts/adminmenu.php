@@ -14,7 +14,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <a class="navbar-brand" href="<?php echo $this->createUrl("/admin/"); ?>">
-            <img id="nav-logo" alt="logo" src="/themes/admin/Sea_Green/images/logo.png" class="d-inline-block">
+            <?php echo $sitename; ?>
         </a>
         <!-- Only on xs screens -->
         <div class="collapse navbar-collapse " id="small-screens-menus">
@@ -42,7 +42,7 @@
             </ul>
         </div>
 
-        <div class="collapse navbar-collapse justify-content-end">
+        <div class="collapse navbar-collapse justify-content-center">
             <ul class="nav navbar-nav">
                 <!-- Maintenance mode -->
                 <?php $sMaintenanceMode = getGlobalSetting('maintenancemode');
@@ -92,15 +92,17 @@
 
                 <!-- Extra menus from plugins -->
                 <?php $this->renderPartial( "application.libraries.MenuObjects.views._extraMenu", ['extraMenus' => $extraMenus, 'prependedMenu' => false]); ?>
-
+            </ul>
+        </div>
+        <div class="collapse navbar-collapse justify-content-end">
+            <ul class="nav navbar-nav">
                 <!-- Admin notification system -->
                 <?php echo $adminNotifications; ?>
 
                 <li class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" role="button" aria-expanded="false">
                     <!-- <i class="ri-user-fill"></i> <?php echo Yii::app()->session['user']; ?> <span class="caret"></span></a> -->
-<!--                         @TODO remove inline style and put it into corresponding SCSS file. This is here just for demo purpose -->
-                        <span class='rounded-circle text-center d-flex align-items-center justify-content-center me-1' style="background-color: #F9F9FB; color: #1E1E1E; width:25px; height:25px;">
+                        <span class='rounded-circle text-center d-flex align-items-center justify-content-center me-1'>
                             <?= strtoupper(substr(Yii::app()->session['user'], 0, 1)) ?>
                         </span>
                         <?= Yii::app()->session['user']; ?>

@@ -533,74 +533,6 @@ html {
     }
 }
 
-.welcome .card {
-  position: relative;
-  top: 50px;
-  opacity: 0;
-}
-
-.welcome .card-body {
-  text-align: center;
-  padding: 0px;
-  height: 75%;
-  width: 100%;
-}
-
-.welcome .card-body img {
-  height: 4em;
-  margin-bottom: 1em;
-}
-
-.welcome .card-body .row {
-    margin-left: -21px;
-    margin-right: -21px;
-}
-
-.welcome .login-panel .card-body img {
-  margin-bottom: 0;
-}
-
-.welcome .card-header {
-    height: 25%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.welcome .card-title {
-    font-weight: 500;
-}
-
-.welcome .card-body .card-body-ico,
-.welcome .card-body .card-body-link {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-}
-
-.welcome .card-body .card-body-ico {
-    height: 70%;
-}
-
-.welcome .card-body .card-body-link {
-    height: 30%;
-}
-
-.login-panel {
-    margin-top: 40px;
-}
-
-.login-content {
-    text-align: left;
-    padding: 1em;
-}
-
-.login-submit {
-    text-align: right;
-}
-
 #s2id_loginlang {
     border: none;
     padding: 0;
@@ -667,33 +599,6 @@ html {
     padding-left: 4px;
     padding-top: 2px;
     font-size: 9px;
-}
-
-.survey-action .card-body img {
-    height: 3em;
-}
-
-div.card.disabled {
-    opacity: 0.5;
-    border: none;
-}
-
-div.card.disabled * {
-    opacity: 0.5;
-    border: none;
-}
-
-div.card.disabled a {
-    cursor: default;
-}
-
-#edit-group .tab-pane {
-    padding: 1em;
-}
-
-.card-clickable:hover {
-    cursor: pointer;
-    cursor: hand;
 }
 
 .ui-widget-content .ui-state-default {
@@ -803,45 +708,6 @@ div.card.disabled a {
     float: right;
 }
 
-.side-menu #dropdown .card-body {
-    padding: 0;
-}
-
-.side-menu #dropdown .card-body .navbar-nav {
-    width: 100%;
-}
-
-.side-menu #dropdown .card-body .navbar-nav li {
-    padding-left: 15px;
-    border: none;
-}
-
-.side-menu #dropdown .card-body .navbar-nav li.card {
-    margin-bottom: 0;
-    background-color: transparent;
-    border: none;
-    border-radius: 0;
-    box-shadow: none;
-}
-
-.side-menu #dropdown .card-body .navbar-nav li.card-default {
-    padding-left: 15px;
-    border: none;
-}
-
-.side-menu #dropdown .card-body .navbar-nav li:last-child {
-    border-bottom: none;
-}
-
-.side-menu #dropdown .card-body .card-body {
-    margin-left: -15px;
-}
-
-.side-menu #dropdown .card-body .card > a {
-    margin-left: -20px;
-    padding-left: 35px;
-}
-
 .side-menu #dropdown .question-group-collapse .caret {
     float: none;
     margin-bottom: 9px;
@@ -864,31 +730,6 @@ div.card.disabled a {
 .side-menu #search {
     position: relative;
     z-index: 1000;
-}
-
-.side-menu #search .card-body {
-    padding: 0;
-}
-
-.side-menu #search .card-body .navbar-form {
-    padding: 0;
-    padding-right: 50px;
-    width: 100%;
-    margin: 0;
-    position: relative;
-}
-
-.side-menu #search .card-body .navbar-form .form-group {
-    width: 100%;
-    position: relative;
-}
-
-.side-menu #search .card-body .navbar-form input {
-    border: 0;
-    border-radius: 0;
-    box-shadow: none;
-    width: 100%;
-    height: 50px;
 }
 
 .side-menu #explorer-collapse .caret {
@@ -1233,18 +1074,6 @@ div.card.disabled a {
     .side-menu-container > .navbar-nav.slide-in {
         animation: slidein 300ms forwards;
         transform-style: preserve-3d;
-    }
-
-    #search .card-body .navbar-form {
-        border-bottom: 0;
-    }
-
-    #search .card-body .navbar-form .form-group {
-        margin: 0;
-    }
-
-    #dropdown .card-body .navbar-nav {
-        margin: 0;
     }
 
 }
@@ -1739,10 +1568,6 @@ h3 .glyphicon-chevron-right {
     right: -20px;
 }
 
-#carousel-example-generic .card-title {
-    text-align: center;
-    padding-top: 0px;
-}
 
 #carousel-example-generic .carousel-inner img {
     margin: auto;
@@ -1970,10 +1795,6 @@ html body .nav-tabs > li.active > a:focus {
 
 .answertable .glyphicon-pencil {
     margin-left: 3px;
-}
-
-#statisticsview .card {
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
 }
 
 #explorer-collapse {
@@ -2230,11 +2051,6 @@ div#gview_displayresponses th#displayresponses_cb {
 
 #quick-menu-container .navbar-brand {
     padding: 0
-}
-
-/* Needed for DateTimePicker in survey settings */
-.card-group .card {
-    overflow: visible;
 }
 
 a.explorer-group:hover,
@@ -2690,16 +2506,6 @@ table#responsedetail tr td {
 
 .currentQuestionTypeImageContainer img {
     max-width: 100%;
-}
-
-#accordion-container .card-header > a {
-    width: 100%;
-    display: block;
-}
-
-#accordion_questionTypeSelector .card-title > a {
-    width: 100%;
-    display: block;
 }
 
 /*custom margin and padding*/
