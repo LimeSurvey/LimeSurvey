@@ -17932,6 +17932,7 @@ footer.footer {
   cursor: default;
 }
 .card.card-primary .card-title, .ls-panelboxes .ls-panelboxes-panelbox .card.card-primary .card-header, .card.card-primary .card-header {
+  font-size: 1.25rem;
   display: inline-block;
   color: #1E1E1E;
   font-weight: 600;
@@ -17944,8 +17945,8 @@ footer.footer {
   border: none;
 }
 .card.card-primary .card-body {
-  height: unset;
   padding: 1rem;
+  height: unset;
   background-color: unset;
   border: none;
 }

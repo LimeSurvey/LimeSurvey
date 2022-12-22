@@ -26,6 +26,7 @@ $card-header-line-height: 26px;
     }
 
     .card-title {
+        font-size: $font-size-lg;
         display: inline-block;
         color: $g-900;
         font-weight: $font-weight-600;
@@ -41,8 +42,8 @@ $card-header-line-height: 26px;
     }
 
     .card-body {
-        height: unset;
         padding: 1rem;
+        height: unset;
         background-color: unset;
         border: none;
     }
