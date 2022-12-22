@@ -1,3 +1,4 @@
+
 <?php
 $massiveAction = App()->getController()->renderPartial(
     '/themeOptions/_selector',
