@@ -17513,11 +17513,11 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 
 .breadcrumb-item + .breadcrumb-item:before {
   color: #ACACAC;
-  padding-left: 12px;
+  padding-left: 6px;
 }
 
 .breadcrumb-item + .breadcrumb-item {
-  padding-right: 12px;
+  padding-right: 6px;
 }
 
 .footer {
@@ -18259,6 +18259,9 @@ input[type=file]::file-selector-button {
 .badge {
   background-color: #F9F9FB;
   color: #1E1E1E;
+}
+.badge.bg-primary, .badge.bg-secondary, .badge.bg-info, .badge.bg-dark {
+  color: #fff;
 }
 
 .badge.reverse-color {
