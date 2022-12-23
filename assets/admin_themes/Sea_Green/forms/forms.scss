@@ -20,19 +20,21 @@
   }
 }
 
-input[type=file] {
+input[type="file"] {
   position: relative;
   padding: 13px 14px;
-  box-shadow: 8px 8px 0px #EEEFF7;
+  box-shadow: 8px 8px 0px #eeeff7;
 }
-input[type=file]::file-selector-button {
+input[type="file"]::file-selector-button {
   border: none;
   background: #ffffff;
   padding: 8px 12px;
-  color: #1E1E1E;
-  border: 1px solid #1E1E1E;
+  color: #1e1e1e;
+  border: 1px solid #1e1e1e;
   border-radius: 4px;
   cursor: pointer;
   position: absolute;
   right: -10px;
+  font-weight: 500;
+  font-size: 14px;
 }
