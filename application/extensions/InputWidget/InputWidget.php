@@ -52,7 +52,13 @@ class InputWidget extends CInputWidget
 
   private function setDefaultOptions()
   {
-    $this->wrapperHtmlOptions['class'] = $this->wrapperHtmlOptions['class'] . ' position-relative';
+
+    if (array_key_exists('class', $this->wrapperHtmlOptions)) {
+      $this->wrapperHtmlOptions['class'] = $this->wrapperHtmlOptions['class'] . ' position-relative';
+    } else {
+      $this->wrapperHtmlOptions['class'] = 'position-relative';
+    }
+
 
 
     if (!array_key_exists('class', $this->htmlOptions)) {
