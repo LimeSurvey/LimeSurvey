@@ -13,12 +13,13 @@
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
     "core-js": "^2.6.5",
-    "lodash": "^4.17.21",
+    "lodash": "^4.17.15",
     "sass": "^1.51.0",
     "vue": "^2.6.10",
     "vue-localstorage": "^0.5.0",
     "vuex": "^2.3.1",
-    "vuex-persist": "^1.0.3"
+    "vuex-persist": "^1.0.3",
+    "rtlcss": "^3.5.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.6.0",

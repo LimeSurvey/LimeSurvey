@@ -3,7 +3,7 @@ const appName = 'adminsidepanel';
 const outputDir = process.env.NODE_ENV === 'production' ? 'build.min/' : 'build/';
 const entryPoint = ['./lib/surveysettings.js','./src/'+appName+'main.js', './scss/'+appName+'main.scss'];
 
-const RtlCSS = require("../meta/LSRTLPlugin/LSRTLPlugin.js");
+const RtlCSS = require("./lib/LSRTLPlugin.js");
 
 
 module.exports = {
@@ -36,7 +36,7 @@ module.exports = {
                 }
               ]);
           }
-        
+
         if(process.env.NODE_ENV === 'development') {
 
             ['vue-modules', 'vue', 'normal-modules', 'normal'].forEach((type) => {
@@ -113,7 +113,7 @@ module.exports = {
             .delete("html")
             .delete("prefetch")
             .delete("preload");
-        
+
         config.optimization.delete('splitChunks');
     }
 };
