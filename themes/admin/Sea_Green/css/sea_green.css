@@ -18281,6 +18281,9 @@ footer.footer {
   background-color: #F9F9FB;
   color: #1E1E1E;
 }
+.badge.bg-primary, .badge.bg-secondary, .badge.bg-info, .badge.bg-dark {
+  color: #fff;
+}
 
 .badge.reverse-color {
   color: #F9F9FB !important;

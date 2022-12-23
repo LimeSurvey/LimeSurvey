@@ -1,6 +1,9 @@
 .badge {
   background-color: $g-100 ;
   color: $g-900 ;
+  &.bg-primary, &.bg-secondary, &.bg-info, &.bg-dark  {
+    color: $white;
+  }
 }
 .badge.reverse-color {
   color: $g-100 !important;
