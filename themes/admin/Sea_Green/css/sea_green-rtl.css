@@ -17551,11 +17551,11 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 
 .breadcrumb-item + .breadcrumb-item:before {
   color: #ACACAC;
-  padding-left: 12px;
+  padding-left: 6px;
 }
 
 .breadcrumb-item + .breadcrumb-item {
-  padding-right: 12px;
+  padding-right: 6px;
 }
 
 .footer {
