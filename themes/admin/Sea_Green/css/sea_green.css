@@ -11297,37 +11297,6 @@ body {
   line-height: inherit;
 }
 
-.jumbotron {
-  text-align: center;
-  background-color: transparent;
-  padding: 48px 60px;
-  border-radius: 6px;
-  margin-bottom: 30px;
-  margin-top: 14px;
-}
-
-.jumbotron h1,
-.jumbotron .h1 {
-  color: inherit;
-}
-
-.jumbotron p {
-  margin-bottom: 15px;
-  font-size: 21px;
-}
-
-.container .jumbotron {
-  border-radius: 6px;
-}
-
-.jumbotron .container {
-  max-width: 100%;
-}
-
-.jumbotron.message-box {
-  margin-top: 1em;
-}
-
 html {
   font-family: Roboto;
   font-weight: 400;
@@ -11504,12 +11473,6 @@ html {
   cursor: pointer;
   cursor: hand;
   border-radius: 0;
-}
-
-.message-box {
-  position: relative;
-  margin-top: 20px;
-  animation: slidefromtop 1s;
 }
 
 .welcome #lime-logo {
@@ -16079,14 +16042,6 @@ fieldset[disabled] .form-control {
   background-color: #7b2824;
 }
 
-.jumbotron {
-  background-color: transparent;
-  text-align: center;
-}
-.jumbotron.message-box {
-  background-color: transparent;
-}
-
 .thumbnail {
   background-color: #fff;
   border: 1px solid #dadada;
@@ -16337,19 +16292,6 @@ fieldset[disabled] .form-control {
   background-color: #fff;
   border: 1px solid #800052;
   color: #800052;
-}
-
-.message-box {
-  border: 1px solid #8bc68e;
-  color: #2e2e2e;
-}
-
-.message-box-error {
-  border: 1px solid #a0352f;
-}
-
-.message-box-warning {
-  border: 1px solid #a15426;
 }
 
 legend {
@@ -18289,4 +18231,50 @@ footer.footer {
 
 .badge.rounded-pill {
   padding: 4px 12px !important;
+}
+
+.jumbotron {
+  text-align: center;
+  background-color: transparent;
+  padding: 48px 60px;
+  border-radius: 4px;
+  margin-bottom: 30px;
+  margin-top: 14px;
+}
+.jumbotron.message-box {
+  background-color: transparent;
+  margin-top: 1em;
+}
+.jumbotron h2, .jumbotron .h2, .jumbotron.h2 {
+  color: #152536;
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-weight: 600;
+  font-size: 1.25rem;
+  line-height: 26px;
+}
+.jumbotron p {
+  margin-bottom: 15px;
+  font-size: 1.25rem;
+}
+.jumbotron .container {
+  max-width: 100%;
+}
+
+.container .jumbotron {
+  border-radius: 4px;
+}
+
+.message-box {
+  position: relative;
+  margin-top: 20px;
+  animation: slidefromtop 1s;
+  border: 1px solid #14AE5C;
+}
+
+.message-box-error {
+  border: 1px solid #FF515F;
+}
+
+.message-box-warning {
+  border: 1px solid #FFE046;
 }

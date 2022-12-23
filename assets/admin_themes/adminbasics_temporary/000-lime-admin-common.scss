@@ -258,33 +258,6 @@ body {
     line-height: inherit;
 }
 
-.jumbotron{
-    text-align: center;
-    background-color: transparent;
-    padding: 48px 60px;
-    border-radius: 6px;
-    margin-bottom: 30px;
-    margin-top: 14px;
-
-}
-.jumbotron h1,
-.jumbotron .h1 {
-    color: inherit;
-}
-.jumbotron p {
-    margin-bottom: 15px;
-    font-size: 21px;
-}
-.container .jumbotron {
-    border-radius: 6px;
-}
-.jumbotron .container {
-    max-width: 100%;
-}
-
-.jumbotron.message-box {
-    margin-top: 1em;
-}
 
 html {
     font-family: Roboto;
@@ -483,12 +456,6 @@ html {
     cursor: pointer;
     cursor: hand;
     border-radius: 0;
-}
-
-.message-box {
-    position: relative;
-    margin-top: 20px;
-    animation: slidefromtop 1s;
 }
 
 .welcome #lime-logo {
