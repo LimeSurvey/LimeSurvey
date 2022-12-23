@@ -110,7 +110,7 @@
                     type="button"
                     class="btn btn-warning"
                        id="reorderentries">
-                        <i class="fa fa-sort"></i>&nbsp;
+                        <i class="ri-order-play-fill"></i>&nbsp;
                     &nbsp;
                         <?php eT('Reorder') ?>
                     </a>
