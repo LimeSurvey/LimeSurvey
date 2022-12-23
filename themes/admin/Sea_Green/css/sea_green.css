@@ -17859,6 +17859,24 @@ footer.footer {
   box-shadow: 8px 8px 0px rgba(66, 0, 255, 0.2);
 }
 
+input[type=file] {
+  position: relative;
+  padding: 13px 14px;
+  box-shadow: 8px 8px 0px #EEEFF7;
+}
+
+input[type=file]::file-selector-button {
+  border: none;
+  background: #ffffff;
+  padding: 8px 12px;
+  color: #1E1E1E;
+  border: 1px solid #1E1E1E;
+  border-radius: 4px;
+  cursor: pointer;
+  position: absolute;
+  right: -10px;
+}
+
 .ls-panelboxes .ls-panelboxes-panelbox {
   height: 200px;
   margin: 10px 0;
