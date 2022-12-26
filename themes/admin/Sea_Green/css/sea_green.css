@@ -17842,6 +17842,7 @@ footer.footer {
 .form-control {
   box-shadow: 4px 4px 0px #EEEFF7;
   border: 1px solid #1E1E1E !important;
+  border-radius: 4px !important;
 }
 .form-control:focus {
   box-shadow: 4px 4px 0px rgba(66, 0, 255, 0.2);
@@ -17870,7 +17871,7 @@ input[type=file]::file-selector-button {
   padding: 8px 12px;
   color: #1E1E1E;
   border: 1px solid #1E1E1E !important;
-  border-radius: 4px;
+  border-radius: 4px !important;
   cursor: pointer;
   position: absolute;
   right: -10px;
