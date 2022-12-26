@@ -1,3 +1,4 @@
+// input field
 .form-control {
   box-shadow: 4px 4px 0px $g-200;
   border: $input-border-width solid $input-border-color !important;
@@ -35,5 +36,12 @@ input[type="file"]::file-selector-button {
   position: absolute;
   right: -10px;
   font-weight: 500;
+  font-size: 14px;
+}
+
+// select
+.form-select {
+  border: 1px solid $g-900;
+  font-weight: 400;
   font-size: 14px;
 }
