@@ -3,7 +3,7 @@
   border: $input-border-width solid $input-border-color !important;
 
   &:focus {
-    box-shadow: 4px 4px 0px rgba(66, 0, 255, 0.2);
+    box-shadow: 4px 4px 0px $elevation-shadow;
   }
 }
 
@@ -12,11 +12,11 @@
   font-weight: 400;
   font-size: 14px;
   line-height: 16px;
-  border: 2px solid $g-900;
+  border: 2px solid $g-900 !important;
   box-shadow: 8px 8px 0px $g-200;
 
   &:focus {
-    box-shadow: 8px 8px 0px rgba(66, 0, 255, 0.2);
+    box-shadow: 8px 8px 0px $elevation-shadow;
   }
 }
 
@@ -26,11 +26,10 @@ input[type="file"] {
   box-shadow: 8px 8px 0px #eeeff7;
 }
 input[type="file"]::file-selector-button {
-  border: none;
-  background: #ffffff;
+  background: $white;
   padding: 8px 12px;
-  color: #1e1e1e;
-  border: 1px solid #1e1e1e;
+  color: $g-900;
+  border: 1px solid $g-900 !important;
   border-radius: 4px;
   cursor: pointer;
   position: absolute;
