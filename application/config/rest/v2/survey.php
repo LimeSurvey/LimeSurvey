@@ -2,13 +2,12 @@
 
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
 
+use LimeSurvey\Api\Rest\V2\SchemaFactory\SchemaFactorySurveyList;
+use LimeSurvey\Api\Rest\V2\SchemaFactory\SchemaFactorySurveyDetail;
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // REST V2 Survey Config
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-$schema = [
-    'SurveyListSuccess' => require(__DIR__ . '/schema/SurveyListSuccess.php')
-];
 
 $rest = [];
 $v2Namespace = '\LimeSurvey\Api\Command\V2\\';
@@ -30,7 +29,7 @@ $rest['v2/survey'] = [
                 'code' => 200,
                 'description' => 'Success',
                 'content' => null,
-                'schema' => $schema['SurveyListSuccess']
+                'schema' => (new SchemaFactorySurveyList)->create()
             ],
             'unauthorized' => [
                 'code' => 401,
@@ -55,7 +54,7 @@ $rest['v2/survey-detail/$surveyId'] = [
                 'code' => 200,
                 'description' => 'Success',
                 'content' => null,
-                'schema' => null,
+                'schema' => (new SchemaFactorySurveyDetail)->create()
             ],
             'unauthorized' => [
                 'code' => 401,

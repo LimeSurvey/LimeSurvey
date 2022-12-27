@@ -1,6 +1,6 @@
 <?php
 
-namespace LimeSurvey\Api\Rest\V2\SchemaFactory\SchemaFactoryQuestion;
+namespace LimeSurvey\Api\Rest\V2\SchemaFactory;
 
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
 

@@ -1,6 +1,7 @@
 <?php
 
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
+use LimeSurvey\Api\Rest\V2\SchemaFactory\SchemaFactoryAuthToken;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Session
@@ -23,7 +24,7 @@ $rest['v2/session'] = [
                 'code' => 200,
                 'description' => 'Success - returns string access token for use in header '
                     . '"Authorization: Bearer $token"',
-                'schema' => Schema::string()->example('%7&!T%EYd@PnDB49MRfwQ!KjX48J^3x6rDhyB6DK')
+                'schema' => (new SchemaFactoryAuthToken)->create()
             ]
         ]
     ],

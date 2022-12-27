@@ -1,6 +1,6 @@
 <?php
 
-namespace LimeSurvey\Api\Rest\Renderer;
+namespace LimeSurvey\Api\Rest;
 
 use LimeSurvey\Api\Command\Response\Response;
 use Exception;

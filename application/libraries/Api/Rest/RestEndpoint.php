@@ -39,9 +39,11 @@ class RestEndpoint
 
     public function getResponseRenderer()
     {
-        $class = 'LimeSurvey\Api\Rest\Renderer\RestRenderer'
-            . ucfirst($this->config['apiVersion']);
-        return new $class();
+        $apiVersion = ucfirst($this->config['apiVersion']);
+        $class = 'LimeSurvey\Api\Rest\\'
+            . $apiVersion
+            . '\RestRenderer' . $apiVersion;
+        return new $class;
     }
 
     /**

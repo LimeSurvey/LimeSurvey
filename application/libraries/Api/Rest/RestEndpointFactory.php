@@ -44,13 +44,14 @@ class RestEndpointFactory
         foreach ($restConfig as $key => $config) {
             $keyParts = explode('/', $key);
 
+            $keyApiVersion = null;
+            $keyEntity = null;
             $keyId = null;
             $keyPartsCount = count($keyParts);
             if ($keyPartsCount == 2) {
                 [$keyApiVersion, $keyEntity] = $keyParts;
             } elseif ($keyPartsCount == 3) {
                 [$keyApiVersion, $keyEntity, $keyId] = $keyParts;
-
             }
 
             $keyId = !empty($keyId)

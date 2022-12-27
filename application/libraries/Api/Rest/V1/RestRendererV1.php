@@ -1,6 +1,6 @@
 <?php
 
-namespace LimeSurvey\Api\Rest\Renderer;
+namespace LimeSurvey\Api\Rest\V1;
 
 use CJSON;
 use CWebLogRoute;
@@ -9,7 +9,7 @@ use Yii;
 
 use LimeSurvey\Api\Command\Response\Response;
 use LimeSurvey\Api\Command\Response\Status\StatusAbstract;
-use LimeSurvey\Api\Rest\Renderer\RestRendererInterface;
+use LimeSurvey\Api\Rest\RestRendererInterface;
 
 class RestRendererV1 implements RestRendererInterface
 {
@@ -35,7 +35,6 @@ class RestRendererV1 implements RestRendererInterface
 
         $this->renderJson(['error' => $error]);
     }
-
 
     /**
      * Return data to browser as JSON and end application.
