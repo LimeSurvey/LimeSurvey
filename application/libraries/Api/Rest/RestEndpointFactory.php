@@ -32,12 +32,14 @@ class RestEndpointFactory
      */
     protected function getEndpointConfig(LSHttpRequest $request)
     {
+        // rest config contains specification of all endpoints
         $restConfig = Yii::app()->getConfig('rest');
         $apiVersion = $request->getParam('_api_version');
         $entity = $request->getParam('_entity');
         $id = $request->getParam('_id', null);
         $requestMethod = $request->getRequestType();
 
+        // lookup the endpoint config matching the http request
         $endpointConfig = null;
         foreach ($restConfig as $key => $config) {
             $keyParts = explode('/', $key);
@@ -86,6 +88,8 @@ class RestEndpointFactory
     /**
      * Get Command Params
      *
+     * Parse REST API command params from HTTP request.
+     *
      * @param array $endpoint
      * @param LSHttpRequest $request
      * @return array
@@ -102,6 +106,8 @@ class RestEndpointFactory
             $params['sessionKey'] = $this->getAuthToken();
         }
 
+        // REST route defines param 'id'
+        // endpoint config can specify byId, the id param name to pass into the command
         $id = $request->getParam('_id');
         if (
             $endpoint
@@ -130,6 +136,8 @@ class RestEndpointFactory
 
     /**
      * Get Query Params
+     *
+     * Parse REST config params from the HTTP request.
      *
      * @param array $endpoint
      * @param LSHttpRequest $request
