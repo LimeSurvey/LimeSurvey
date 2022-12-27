@@ -57,7 +57,7 @@
 <!-- Export -->
 <?php if (!empty($showExportButton)): ?>
     <button class="btn btn-success" type="button" name="export-button" id="export-button" data-submit-form=1>
-        <span class="fa fa-download-alt"></span>
+        <span class="ri-download-fill"></span>
         <?php eT("Export"); ?>
     </button>
 <?php endif; ?>
