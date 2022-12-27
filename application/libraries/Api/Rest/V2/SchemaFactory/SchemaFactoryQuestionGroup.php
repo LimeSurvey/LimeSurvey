@@ -20,11 +20,9 @@ class SchemaFactoryQuestionGroup
                 Schema::string('randomization_group')->default(null),
                 Schema::string('grelevance')->default(null),
                 Schema::create('l10ns')
-                ->properties(
-                    AllOf::create()->schemas(
+                    ->additionalProperties(
                         (new SchemaFactoryQuestionGroupL10ns())->create()
                     )
-                )
             );
     }
 }

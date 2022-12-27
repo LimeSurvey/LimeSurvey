@@ -31,7 +31,11 @@ class SchemaFactoryQuestion
                 Schema::integer('gid')->default(0),
                 Schema::string('relevance')->default(null),
                 Schema::string('same_script')->default(null),
-                Schema::boolean('mandatory')->default(null)
+                Schema::boolean('mandatory')->default(null),
+                Schema::create('l10ns')
+                    ->additionalProperties(
+                        (new SchemaFactoryQuestionL10ns())->create()
+                    )
             );
     }
 }

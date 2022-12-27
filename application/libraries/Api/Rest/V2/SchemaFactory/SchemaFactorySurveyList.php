@@ -13,10 +13,12 @@ class SchemaFactorySurveyList
             ->title('Survey List')
             ->description('Survey List')
             ->type(Schema::TYPE_OBJECT)
-            ->properties(Schema::array('surveys')->items(
+            ->properties(
+                Schema::array('surveys')->items(
             AllOf::create()->schemas(
-                    (new SchemaFactorySurvey)->create()
+                        (new SchemaFactorySurvey)->create()
+                    )
                 )
-            ));
+            );
     }
 }
