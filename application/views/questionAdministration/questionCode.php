@@ -16,7 +16,7 @@
             type='button'
             class='btn btn-success position-absolute' 
             data-save-with-ajax='true'
-            style='position: absolute; top:4px; right:5px'
+            style='top:4px; right:5px'
             onclick='return LS.questionEditor.checkIfSaveIsValid(event, editor);'
             >
             Save Template
