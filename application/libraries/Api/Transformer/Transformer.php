@@ -36,7 +36,7 @@ class Transformer implements TransformerInterface
 
             // Null value reverts to default value
             // - the default value itself defaults to null
-            if (is_null($value)) {
+            if (is_null($value) && isset($config['default'])) {
                 $value = $config['default'];
             }
 
@@ -59,6 +59,7 @@ class Transformer implements TransformerInterface
     {
         $key = null;
         $type = null;
+        $default = null;
         $null = true;
         $empty = true;
 
@@ -95,12 +96,11 @@ class Transformer implements TransformerInterface
     private function cast($value, $config)
     {
         $type = $config['type'];
-        if (!is_null($type)) {
-            if (is_string($type)) {
-                settype($value, $type);
-            }
+        if (!empty($type)) {
             if (is_callable($type)) {
                 $value = $type($value);
+            } elseif (is_string($type)) {
+                settype($value, $type);
             }
         }
 
