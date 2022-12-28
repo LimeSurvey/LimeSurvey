@@ -123,16 +123,3 @@
     <?php endforeach; ?>
 <?php endif; ?>
 
-<!-- Export -->
-<?php if (Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'export')) : ?>
-    <?php App()->getController()->renderPartial(
-        '/admin/survey/surveybar_displayexport',
-        [
-            'hasResponsesExportPermission' => $hasResponsesExportPermission,
-            'hasTokensExportPermission' => $hasSurveyTokensExportPermission,
-            'hasSurveyExportPermission' => $hasSurveyExportPermission,
-            'oSurvey' => $oSurvey,
-            'onelanguage' => (count($oSurvey->allLanguages) == 1)
-        ]
-    ); ?>
-<?php endif; ?>

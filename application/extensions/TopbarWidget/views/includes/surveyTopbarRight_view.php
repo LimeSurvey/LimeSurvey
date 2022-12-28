@@ -55,6 +55,21 @@
 <?php endif; ?>
 
 <!-- Export -->
+<?php if (Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'export')) : ?>
+    <?php App()->getController()->renderPartial(
+        '/admin/survey/surveybar_displayexport',
+        [
+            'hasResponsesExportPermission' => $hasResponsesExportPermission,
+            'hasTokensExportPermission' => $hasSurveyTokensExportPermission,
+            'hasSurveyExportPermission' => $hasSurveyExportPermission,
+            'oSurvey' => $oSurvey,
+            'onelanguage' => (count($oSurvey->allLanguages) == 1)
+        ]
+    ); ?>
+<?php endif; ?>
+
+
+<!-- Export -->
 <?php if (!empty($showExportButton)): ?>
     <button class="btn btn-success" type="button" name="export-button" id="export-button" data-submit-form=1>
         <span class="ri-download-fill"></span>

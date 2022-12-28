@@ -50,6 +50,7 @@ $oQuestionSelector = $this->beginWidget(
 <div class="mb-3 col-12 col-xl-8 contains-question-selector">
     <label for="questionCode"><?= gT('Question type'); ?></label>
     <div class="btn-group" style="width: 100%;">
+        <!-- ?= $oQuestionSelector->getButtonOrSelect(); ?> -->
 
         <?php $this->widget('ext.InputWidget.InputWidget', [
             'name' => 'title',

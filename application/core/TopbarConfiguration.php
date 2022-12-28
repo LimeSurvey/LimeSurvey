@@ -285,11 +285,20 @@ class TopbarConfiguration
         if (empty($sid)) {
             return [];
         }
-
+        $survey = Survey::model()->findByPk($sid);
         $closeUrl = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl("responses/browse/", ['surveyId' => $sid]));
+        $hasResponsesExportPermission = Permission::model()->hasSurveyPermission($sid, 'responses', 'export');
+        $hasSurveyExportPermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'export');
+        $hasSurveyTokensExportPermission = Permission::model()->hasSurveyPermission($sid, 'tokens', 'export');
 
         return array(
             'closeUrl' => $closeUrl,
+            'oSurvey' => $survey,
+            'hasSurveyExportPermission' => $hasSurveyExportPermission,
+            'hasSurveyTokensExportPermission' => $hasSurveyTokensExportPermission,
+            'hasResponsesExportPermission' => $hasResponsesExportPermission,
+
+
         );
     }
 
