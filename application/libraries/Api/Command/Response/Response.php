@@ -2,14 +2,14 @@
 
 namespace LimeSurvey\Api\Command\Response;
 
-use LimeSurvey\Api\Command\Response\Status\StatusAbstract;
+use LimeSurvey\Api\Command\Response\Status;
 
 class Response
 {
     private $status = null;
     private $data = null;
 
-    public function __construct($data, StatusAbstract $status = null)
+    public function __construct($data, Status $status = null)
     {
         $this->status = $status;
         $this->data = $data;

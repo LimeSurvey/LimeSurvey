@@ -1,13 +1,13 @@
 <?php
 
-namespace LimeSurvey\Api\Rest;
+namespace LimeSurvey\Api\Rest\Endpoint;
 
 use Exception;
 use LSHttpRequest;
 use Yii;
-use LimeSurvey\Api\Rest\RestEndpoint;
+use LimeSurvey\Api\Rest\Endpoint;
 
-class RestEndpointFactory
+class EndpointFactory
 {
     /**
      * Create
@@ -18,7 +18,7 @@ class RestEndpointFactory
     public function create(LSHttpRequest $request)
     {
         $endpointConfig = $this->getEndpointConfig($request);
-        return new RestEndpoint(
+        return new Endpoint(
             $endpointConfig,
             $this->getCommandParams($endpointConfig, $request)
         );

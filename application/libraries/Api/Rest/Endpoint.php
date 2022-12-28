@@ -3,13 +3,12 @@
 namespace LimeSurvey\Api\Rest;
 
 use LimeSurvey\Api\Command\Request\Request;
-use LimeSurvey\Api\Command\Response\Response;
 
 /**
  * RestEndpoint
  *
  */
-class RestEndpoint
+class Endpoint
 {
     protected $config = [];
     protected $commandParams = [];
@@ -32,12 +31,12 @@ class RestEndpoint
      *
      * @return LimeSurvey\Api\Command\CommandInterface
      */
-    public function getCommand()
+    protected function getCommand()
     {
         return new $this->config['commandClass']();
     }
 
-    public function getResponseRenderer()
+    protected function getResponseRenderer()
     {
         $apiVersion = ucfirst($this->config['apiVersion']);
         $class = 'LimeSurvey\Api\Rest\\'
@@ -49,12 +48,18 @@ class RestEndpoint
     /**
      * Run Command
      *
-     * @return Response
+     * @return void
      */
-    public function runCommand()
+    public function run()
     {
-        return $this->getCommand()->run(
-            new Request($this->commandParams)
-        );
+        $renderer = $this->getResponseRenderer();
+        try {
+            $response = $this->getCommand()->run(
+                new Request($this->commandParams)
+            );
+            return $renderer->returnResponse($response);
+        } catch (\Exception $e) {
+            $renderer->returnException($e);
+        }
     }
 }

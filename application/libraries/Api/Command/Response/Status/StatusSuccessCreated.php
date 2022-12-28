@@ -2,7 +2,9 @@
 
 namespace LimeSurvey\Api\Command\Response\Status;
 
-class StatusSuccessCreated extends StatusAbstract
+use LimeSurvey\Api\Command\Response\Status;
+
+class StatusSuccessCreated extends Status
 {
     public function __construct()
     {

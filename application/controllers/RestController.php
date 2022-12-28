@@ -18,7 +18,7 @@ if (!defined('BASEPATH')) {
  */
 
 
-use LimeSurvey\Api\Rest\RestEndpointFactory;
+use LimeSurvey\Api\Rest\Endpoint\EndpointFactory;
 
 // phpcs:ignore
 class RestController extends LSYii_Controller
@@ -32,17 +32,8 @@ class RestController extends LSYii_Controller
     public function run($actionId = null)
     {
         Yii::app()->loadConfig('rest');
-        $endpoint = (new RestEndpointFactory())->create(
+        (new EndpointFactory())->create(
             Yii::app()->request
-        );
-        $renderer = $endpoint->getResponseRenderer();
-
-        try {
-            $renderer->returnResponse(
-                $endpoint->runCommand()
-            );
-        } catch (Exception $e) {
-            $renderer->returnException($e);
-        }
+        )->run();
     }
 }
