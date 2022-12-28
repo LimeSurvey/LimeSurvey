@@ -5,6 +5,7 @@ namespace LimeSurvey\Api\Command\Mixin\Auth;
 use LimeSurvey\Api\Command\Response\Response;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorUnauthorised;
 use LimeSurvey\Api\ApiSession;
+use LimeSurvey\Api\Command\ResponseData\ResponseDataError;
 
 trait AuthSession
 {
@@ -30,7 +31,10 @@ trait AuthSession
             return true;
         } else {
             return new Response(
-                array('status' => ApiSession::INVALID_SESSION_KEY),
+                (new ResponseDataError(
+                    ApiSession::ERROR_INVALID_SESSION_KEY,
+                    'Invalid session key'
+                ))->toArray(),
                 new StatusErrorUnauthorised()
             );
         }

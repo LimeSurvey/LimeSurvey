@@ -9,7 +9,7 @@ use Yii;
 
 class ApiSession
 {
-    const INVALID_SESSION_KEY = 'Invalid session key';
+    const ERROR_INVALID_SESSION_KEY = 'INVALID_SESSION_KEY';
 
     /**
      * Login with username and password

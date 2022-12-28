@@ -9,6 +9,7 @@ use LimeSurvey\Api\Command\Mixin\Auth\AuthSession;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermission;
 use LimeSurvey\Api\Command\Mixin\CommandResponse;
 use LimeSurvey\Api\Command\V2\Transformer\Output\TransformerOutputSurveyDetail;
+use LimeSurvey\Api\Command\ResponseData\ResponseDataError;
 
 class SurveyDetail implements CommandInterface
 {
@@ -48,7 +49,9 @@ class SurveyDetail implements CommandInterface
             )->findByPk($surveyId);
 
         if (!$surveyModel) {
-            return null;
+            return $this->responseErrorNotFound(
+                (new ResponseDataError('SURVEY_NOT_FOUND', 'Survey not found'))->toArray()
+            );
         }
 
         $survey = (new TransformerOutputSurveyDetail)

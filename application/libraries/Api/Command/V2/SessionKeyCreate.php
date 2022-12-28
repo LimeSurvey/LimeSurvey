@@ -7,6 +7,7 @@ use LimeSurvey\Api\Command\CommandInterface;
 use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\ApiSession;
 use LimeSurvey\Api\Command\Mixin\CommandResponse;
+use LimeSurvey\Api\Command\ResponseData\ResponseDataError;
 
 class SessionKeyCreate implements CommandInterface
 {
@@ -40,13 +41,7 @@ class SessionKeyCreate implements CommandInterface
             );
         } catch (ExceptionInvalidUser $e) {
             return $this->responseErrorUnauthorised(
-                [
-                    'error' => [
-                        'code' => 'INVALID_USER',
-                        'message' => 'Invalid user name or password',
-                        'data' => []
-                    ]
-                ]
+                (new ResponseDataError('INVALID_USER', 'Invalid user name or password'))->toArray()
             );
         }
     }
