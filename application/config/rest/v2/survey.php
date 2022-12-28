@@ -2,6 +2,7 @@
 
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
 
+use LimeSurvey\Api\Rest\V2\SchemaFactory\SchemaFactoryError;
 use LimeSurvey\Api\Rest\V2\SchemaFactory\SchemaFactorySurveyList;
 use LimeSurvey\Api\Rest\V2\SchemaFactory\SchemaFactorySurveyDetail;
 
@@ -33,7 +34,8 @@ $rest['v2/survey'] = [
             ],
             'unauthorized' => [
                 'code' => 401,
-                'description' => 'Unauthorized'
+                'description' => 'Unauthorized',
+                'schema' => (new SchemaFactoryError)->create()
             ]
         ]
     ]
@@ -58,11 +60,13 @@ $rest['v2/survey-detail/$surveyId'] = [
             ],
             'unauthorized' => [
                 'code' => 401,
-                'description' => 'Unauthorized'
+                'description' => 'Unauthorized',
+                'schema' => (new SchemaFactoryError)->create()
             ],
             'not-found' => [
                 'code' => 404,
-                'description' => 'Not Found'
+                'description' => 'Not Found',
+                'schema' => (new SchemaFactoryError)->create()
             ]
         ]
     ],
@@ -90,11 +94,13 @@ $rest['v2/survey-detail/$surveyId'] = [
             ],
             'unauthorized' => [
                 'code' => 401,
-                'description' => 'Unauthorized'
+                'description' => 'Unauthorized',
+                'schema' => (new SchemaFactoryError)->create()
             ],
             'not-found' => [
                 'code' => 404,
-                'description' => 'Not Found'
+                'description' => 'Not Found',
+                'schema' => (new SchemaFactoryError)->create()
             ]
         ]
     ]

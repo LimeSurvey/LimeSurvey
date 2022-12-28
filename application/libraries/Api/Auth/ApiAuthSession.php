@@ -1,13 +1,13 @@
 <?php
 
-namespace LimeSurvey\Api;
+namespace LimeSurvey\Api\Auth;
 
 use LimeSurvey\Api\Command\V1\Exception\ExceptionInvalidUser;
 use CDbCriteria;
 use Session;
 use Yii;
 
-class ApiSession
+class ApiAuthSession
 {
     const ERROR_INVALID_SESSION_KEY = 'INVALID_SESSION_KEY';
 
