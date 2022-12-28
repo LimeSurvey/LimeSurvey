@@ -35,7 +35,9 @@ class SurveyList implements CommandInterface
             return $response;
         }
 
-        $dataProvider = Survey::model()->search([
+        $dataProvider = Survey::model()
+        ->with('defaultlanguage')
+        ->search([
             'pageSize' => $pageSize,
             'currentPage' => $page + 1 // one based rather than zero based
         ]);

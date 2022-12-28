@@ -68,4 +68,13 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
             "showsurveypolicynotice" =>  ['type' => 'int'],
         ]);
     }
+
+    public function transform($surveyModel)
+    {
+        $survey = parent::transform($surveyModel);
+        $survey['defaultlanguage'] = (new TransformerOutputSurveyLanguageSettings())->transform(
+            $surveyModel->defaultlanguage
+        );
+        return $survey;
+    }
 }

@@ -9,6 +9,10 @@ class SchemaFactorySurveyDetail
 {
     public function create(): Schema
     {
+        $schemaSurveyLanguageSettings = (new SchemaFactorySurveyLanguageSettings)->create();
+        $schemaSurveyDefaultLanguage = Schema::object('defaultlanguage')
+            ->properties(...$schemaSurveyLanguageSettings->properties);
+
         $questionAttributeSchema = (new SchemaFactoryQuestionAttribute)->create();
         $questionAttributesSchema = Schema::object('attributes')->additionalProperties(
             $questionAttributeSchema
@@ -95,9 +99,10 @@ class SchemaFactorySurveyDetail
             Schema::integer('googleanalyticsstyle')->default(null),
             Schema::string('googleanalyticsapikey')->default(null),
             Schema::integer('showsurveypolicynotice')->default(null),
+            $schemaSurveyDefaultLanguage,
             Schema::array('languages')->items(
                 AllOf::create()->schemas(
-                    Schema::string('')
+                    Schema::string()
                 )
             ),
             Schema::array('questionGroups')->items(
@@ -107,7 +112,6 @@ class SchemaFactorySurveyDetail
             ),
             Schema::string('created_at')->format(Schema::FORMAT_DATE_TIME)
         ];
-
 
         return Schema::create()
             ->title('Survey Detail')

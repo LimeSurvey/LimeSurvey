@@ -36,6 +36,7 @@ class SurveyDetail implements CommandInterface
 
         $surveyModel = Survey::model()
             ->with(
+            'defaultlanguage',
                 'groups',
                 'groups.questiongroupl10ns',
                 'groups.questions',
