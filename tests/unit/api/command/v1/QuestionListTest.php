@@ -13,7 +13,7 @@ use LimeSurvey\Api\Command\Response\Status\StatusSuccess;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorBadRequest;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorNotFound;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorUnauthorised;
-use LimeSurvey\Api\ApiSession;
+use LimeSurvey\Api\Auth\AuthSession;
 use Mockery;
 
 /**
@@ -40,7 +40,7 @@ class QuestionListTest extends TestBaseClass
 
         $this->assertResponseDataStatus(
             $response,
-            'Invalid session key'
+            AuthSession::ERROR_INVALID_SESSION_KEY
         );
     }
 
@@ -56,14 +56,14 @@ class QuestionListTest extends TestBaseClass
             'language' => 'language'
         ));
 
-        $mockApiSession= Mockery::mock(ApiSession::class);
-        $mockApiSession
+        $mockAuthSession = Mockery::mock(AuthSession::class);
+        $mockAuthSession
             ->allows()
             ->checkKey('mock')
             ->andReturns(true);
 
         $command = new QuestionList();
-        $command->setApiSession($mockApiSession);
+        $command->setAuthSession($mockAuthSession);
 
         $response = $command->run($request);
 
@@ -90,8 +90,8 @@ class QuestionListTest extends TestBaseClass
             'language' => 'language'
         ));
 
-        $mockApiSession= Mockery::mock(ApiSession::class);
-        $mockApiSession
+        $mockAuthSession= Mockery::mock(AuthSession::class);
+        $mockAuthSession
             ->allows()
             ->checkKey('mock')
             ->andReturns(true);
@@ -105,7 +105,7 @@ class QuestionListTest extends TestBaseClass
             ->andReturns(false);
 
         $command = new QuestionList();
-        $command->setApiSession($mockApiSession);
+        $command->setAuthSession($mockAuthSession);
         $command->setPermissionModel($mockModelPermission);
         $command->setSurveyModel($mockSurveyModel);
 
@@ -135,8 +135,8 @@ class QuestionListTest extends TestBaseClass
             'language' => 'invalid-language'
         ));
 
-        $mockApiSession= Mockery::mock(ApiSession::class);
-        $mockApiSession
+        $mockAuthSession= Mockery::mock(AuthSession::class);
+        $mockAuthSession
             ->allows()
             ->checkKey('mock')
             ->andReturns(true);
@@ -150,7 +150,7 @@ class QuestionListTest extends TestBaseClass
             ->andReturns(true);
 
         $command = new QuestionList();
-        $command->setApiSession($mockApiSession);
+        $command->setAuthSession($mockAuthSession);
         $command->setPermissionModel($mockModelPermission);
         $command->setSurveyModel($mockSurveyModel);
 
@@ -179,8 +179,8 @@ class QuestionListTest extends TestBaseClass
             'language' => 'en'
         ));
 
-        $mockApiSession= Mockery::mock(ApiSession::class);
-        $mockApiSession
+        $mockAuthSession= Mockery::mock(AuthSession::class);
+        $mockAuthSession
             ->allows()
             ->checkKey('mock')
             ->andReturns(true);
@@ -198,7 +198,7 @@ class QuestionListTest extends TestBaseClass
             ->andReturns(true);
 
         $command = new QuestionList();
-        $command->setApiSession($mockApiSession);
+        $command->setAuthSession($mockAuthSession);
         $command->setPermissionModel($mockModelPermission);
         $command->setSurveyModel($mockSurveyModel);
 
@@ -227,8 +227,8 @@ class QuestionListTest extends TestBaseClass
             'language' => 'en'
         ));
 
-        $mockApiSession= Mockery::mock(ApiSession::class);
-        $mockApiSession
+        $mockAuthSession= Mockery::mock(AuthSession::class);
+        $mockAuthSession
             ->allows()
             ->checkKey('mock')
             ->andReturns(true);
@@ -246,7 +246,7 @@ class QuestionListTest extends TestBaseClass
             ->andReturns(true);
 
         $command = new QuestionList();
-        $command->setApiSession($mockApiSession);
+        $command->setAuthSession($mockAuthSession);
         $command->setPermissionModel($mockModelPermission);
         $command->setSurveyModel($mockSurveyModel);
         $command->setQuestionGroupModel(new QuestionGroup());

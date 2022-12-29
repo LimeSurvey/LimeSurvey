@@ -12,7 +12,7 @@ use LimeSurvey\Api\Command\Response\Status\StatusSuccess;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorBadRequest;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorNotFound;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorUnauthorised;
-use LimeSurvey\Api\ApiSession;
+use LimeSurvey\Api\Auth\AuthSession;
 use Mockery;
 
 /**
@@ -40,7 +40,7 @@ class QuestionGroupPropertiesGetTest extends TestBaseClass
 
         $this->assertResponseDataStatus(
             $response,
-            'Invalid session key'
+            AuthSession::ERROR_INVALID_SESSION_KEY
         );
     }
 
@@ -56,14 +56,14 @@ class QuestionGroupPropertiesGetTest extends TestBaseClass
             'language' => 'language'
         ));
 
-        $mockApiSession= Mockery::mock(ApiSession::class);
-        $mockApiSession
+        $mockAuthSession = Mockery::mock(AuthSession::class);
+        $mockAuthSession
             ->allows()
             ->checkKey('mock')
             ->andReturns(true);
 
         $command = new QuestionGroupPropertiesGet();
-        $command->setApiSession($mockApiSession);
+        $command->setAuthSession($mockAuthSession);
 
         $response = $command->run($request);
 
@@ -90,22 +90,22 @@ class QuestionGroupPropertiesGetTest extends TestBaseClass
             'language' => 'language'
         ));
 
-        $mockApiSession= Mockery::mock(ApiSession::class);
-        $mockApiSession
+        $mockAuthSession = Mockery::mock(AuthSession::class);
+        $mockAuthSession
             ->allows()
             ->checkKey('mock')
             ->andReturns(true);
 
-        $mockQuestionGroupModel= $this->createStub(QuestionGroup::class);
+        $mockQuestionGroupModel = $this->createStub(QuestionGroup::class);
 
-        $mockModelPermission= Mockery::mock(Permission::class);
+        $mockModelPermission = Mockery::mock(Permission::class);
         $mockModelPermission
             ->allows()
             ->hasSurveyPermission(0, 'survey', 'read', null)
             ->andReturns(false);
 
         $command = new QuestionGroupPropertiesGet();
-        $command->setApiSession($mockApiSession);
+        $command->setAuthSession($mockAuthSession);
         $command->setQuestionGroupModelWithL10nsById($mockQuestionGroupModel);
         $command->setPermissionModel($mockModelPermission);
 
@@ -134,22 +134,22 @@ class QuestionGroupPropertiesGetTest extends TestBaseClass
             'language' => 'invalid-language'
         ));
 
-        $mockApiSession= Mockery::mock(ApiSession::class);
-        $mockApiSession
+        $mockAuthSession = Mockery::mock(AuthSession::class);
+        $mockAuthSession
             ->allows()
             ->checkKey('mock')
             ->andReturns(true);
 
-        $mockQuestionGroupModel= $this->createStub(QuestionGroup::class);
+        $mockQuestionGroupModel = $this->createStub(QuestionGroup::class);
 
-        $mockModelPermission= Mockery::mock(Permission::class);
+        $mockModelPermission = Mockery::mock(Permission::class);
         $mockModelPermission
             ->allows()
             ->hasSurveyPermission(0, 'survey', 'read', null)
             ->andReturns(true);
 
         $command = new QuestionGroupPropertiesGet();
-        $command->setApiSession($mockApiSession);
+        $command->setAuthSession($mockAuthSession);
         $command->setQuestionGroupModelWithL10nsById($mockQuestionGroupModel);
         $command->setPermissionModel($mockModelPermission);
 
@@ -178,22 +178,22 @@ class QuestionGroupPropertiesGetTest extends TestBaseClass
             'language' => 'en'
         ));
 
-        $mockApiSession= Mockery::mock(ApiSession::class);
-        $mockApiSession
+        $mockAuthSession = Mockery::mock(AuthSession::class);
+        $mockAuthSession
             ->allows()
             ->checkKey('mock')
             ->andReturns(true);
 
         $mockQuestionGroupModel= $this->createStub(QuestionGroup::class);
 
-        $mockModelPermission= Mockery::mock(Permission::class);
+        $mockModelPermission = Mockery::mock(Permission::class);
         $mockModelPermission
             ->allows()
             ->hasSurveyPermission(0, 'survey', 'read', null)
             ->andReturns(true);
 
         $command = new QuestionGroupPropertiesGet();
-        $command->setApiSession($mockApiSession);
+        $command->setAuthSession($mockAuthSession);
         $command->setQuestionGroupModelWithL10nsById($mockQuestionGroupModel);
         $command->setPermissionModel($mockModelPermission);
 
@@ -222,22 +222,22 @@ class QuestionGroupPropertiesGetTest extends TestBaseClass
             'language' => 'en'
         ));
 
-        $mockApiSession= Mockery::mock(ApiSession::class);
-        $mockApiSession
+        $mockAuthSession= Mockery::mock(AuthSession::class);
+        $mockAuthSession
             ->allows()
             ->checkKey('mock')
             ->andReturns(true);
 
-        $mockQuestionGroupModel= $this->createStub(QuestionGroup::class);
+        $mockQuestionGroupModel = $this->createStub(QuestionGroup::class);
 
-        $mockModelPermission= Mockery::mock(Permission::class);
+        $mockModelPermission = Mockery::mock(Permission::class);
         $mockModelPermission
             ->allows()
             ->hasSurveyPermission(0, 'survey', 'read', null)
             ->andReturns(true);
 
         $command = new QuestionGroupPropertiesGet();
-        $command->setApiSession($mockApiSession);
+        $command->setAuthSession($mockAuthSession);
         $command->setQuestionGroupModelWithL10nsById($mockQuestionGroupModel);
         $command->setPermissionModel($mockModelPermission);
 

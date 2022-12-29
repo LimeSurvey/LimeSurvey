@@ -3,15 +3,15 @@
 namespace ls\tests\unit\api;
 
 use ls\tests\TestBaseClass;
-use LimeSurvey\Api\ApiSession;
+use LimeSurvey\Api\Auth\AuthSession;
 
 /**
- * @testdox API Session
+ * @testdox Auth Session
  */
-class ApiSessionTest extends TestBaseClass
+class AuthSessionTest extends TestBaseClass
 {
     /**
-     * @testdox doLogin() Returns boolean true if login successful.
+     * @testdox doLogin() Returns boolean token if login successful.
      */
     public function testDoLogin()
     {
@@ -25,13 +25,14 @@ class ApiSessionTest extends TestBaseClass
             $password = 'password';
         }
 
-        $apiSession = new ApiSession();
-        $result = $apiSession->doLogin(
+        $AuthSession = new AuthSession();
+        $result = $AuthSession->doLogin(
             $username,
             $password
         );
 
-        $this->assertTrue($result);
+        $this->assertNotEmpty($result);
+        $this->assertIsString($result);
     }
 
     /**
@@ -39,8 +40,8 @@ class ApiSessionTest extends TestBaseClass
      */
     public function testCheckKeySessionNotFound()
     {
-        $apiSession = new ApiSession();
-        $result = $apiSession->checkKey('invalid-key');
+        $AuthSession = new AuthSession();
+        $result = $AuthSession->checkKey('invalid-key');
         $this->assertFalse($result);
     }
 
@@ -54,8 +55,8 @@ class ApiSessionTest extends TestBaseClass
             $username = 'admin';
         }
 
-        $apiSession = new ApiSession();
-        $result = $apiSession->jumpStartSession($username);
+        $AuthSession = new AuthSession();
+        $result = $AuthSession->jumpStartSession($username);
         $this->assertTrue($result);
     }
 }

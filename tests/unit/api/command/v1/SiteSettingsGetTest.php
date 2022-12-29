@@ -10,7 +10,7 @@ use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorBadRequest;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorUnauthorised;
 use LimeSurvey\Api\Command\Response\Status\StatusSuccess;
-use LimeSurvey\Api\ApiSession;
+use LimeSurvey\Api\Auth\AuthSession;
 use Mockery;
 
 /**
@@ -44,8 +44,8 @@ class SiteSettingsGetTest extends TestBaseClass
             'settingName' => 'settingName'
         ));
 
-        $mockApiSession= Mockery::mock(ApiSession::class);
-        $mockApiSession
+        $mockAuthSession= Mockery::mock(AuthSession::class);
+        $mockAuthSession
             ->allows()
             ->checkKey('mock')
             ->andReturns(true);
@@ -57,7 +57,7 @@ class SiteSettingsGetTest extends TestBaseClass
             ->andReturns(false);
 
         $command = new SiteSettingsGet();
-        $command->setApiSession($mockApiSession);
+        $command->setAuthSession($mockAuthSession);
         $command->setPermissionModel($mockModelPermission);
 
         $response = $command->run($request);
@@ -83,8 +83,8 @@ class SiteSettingsGetTest extends TestBaseClass
             'settingName' => 'invalid-setting-name'
         ));
 
-        $mockApiSession= Mockery::mock(ApiSession::class);
-        $mockApiSession
+        $mockAuthSession= Mockery::mock(AuthSession::class);
+        $mockAuthSession
             ->allows()
             ->checkKey('mock')
             ->andReturns(true);
@@ -96,7 +96,7 @@ class SiteSettingsGetTest extends TestBaseClass
             ->andReturns(true);
 
         $command = new SiteSettingsGet();
-        $command->setApiSession($mockApiSession);
+        $command->setAuthSession($mockAuthSession);
         $command->setPermissionModel($mockModelPermission);
 
         $response = $command->run($request);
@@ -122,8 +122,8 @@ class SiteSettingsGetTest extends TestBaseClass
             'settingName' => 'invalid-setting-name'
         ));
 
-        $mockApiSession= Mockery::mock(ApiSession::class);
-        $mockApiSession
+        $mockAuthSession= Mockery::mock(AuthSession::class);
+        $mockAuthSession
             ->allows()
             ->checkKey('mock')
             ->andReturns(true);
@@ -141,7 +141,7 @@ class SiteSettingsGetTest extends TestBaseClass
             ->andReturns(true);
 
         $command = new SiteSettingsGet();
-        $command->setApiSession($mockApiSession);
+        $command->setAuthSession($mockAuthSession);
         $command->setPermissionModel($mockModelPermission);
         $command->setApp($mockApp);
 

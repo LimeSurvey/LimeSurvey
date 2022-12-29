@@ -10,7 +10,7 @@ use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorBadRequest;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorUnauthorised;
 use LimeSurvey\Api\Command\Response\Status\StatusSuccess;
-use LimeSurvey\Api\ApiSession;
+use LimeSurvey\Api\Auth\AuthSession;
 use Survey;
 use Mockery;
 
@@ -45,8 +45,8 @@ class SurveyDeleteTest extends TestBaseClass
             'surveyID' => 'surveyID'
         ));
 
-        $mockApiSession= Mockery::mock(ApiSession::class);
-        $mockApiSession
+        $mockAuthSession= Mockery::mock(AuthSession::class);
+        $mockAuthSession
             ->allows()
             ->checkKey('mock')
             ->andReturns(true);
@@ -60,7 +60,7 @@ class SurveyDeleteTest extends TestBaseClass
         $mockSurveyModel= $this->createStub(Survey::class);
 
         $command= new SurveyDelete();
-        $command->setApiSession($mockApiSession);
+        $command->setAuthSession($mockAuthSession);
         $command->setPermissionModel($mockModelPermission);
         $command->setSurveyModel($mockSurveyModel);
 
@@ -87,8 +87,8 @@ class SurveyDeleteTest extends TestBaseClass
             'surveyID' => 'surveyID'
         ));
 
-        $mockApiSession= Mockery::mock(ApiSession::class);
-        $mockApiSession
+        $mockAuthSession= Mockery::mock(AuthSession::class);
+        $mockAuthSession
             ->allows()
             ->checkKey('mock')
             ->andReturns(true);
@@ -102,7 +102,7 @@ class SurveyDeleteTest extends TestBaseClass
         $mockSurveyModel= $this->createStub(Survey::class);
 
         $command= new SurveyDelete();
-        $command->setApiSession($mockApiSession);
+        $command->setAuthSession($mockAuthSession);
         $command->setPermissionModel($mockModelPermission);
 
         $response = $command->run($request);

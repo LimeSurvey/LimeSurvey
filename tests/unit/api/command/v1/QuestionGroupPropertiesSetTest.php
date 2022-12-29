@@ -12,7 +12,7 @@ use LimeSurvey\Api\Command\Response\Status\StatusSuccess;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorBadRequest;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorNotFound;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorUnauthorised;
-use LimeSurvey\Api\ApiSession;
+use LimeSurvey\Api\Auth\AuthSession;
 use Mockery;
 
 /**
@@ -49,14 +49,14 @@ class QuestionGroupPropertiesSetTest extends TestBaseClass
             'language' => 'language'
         ));
 
-        $mockApiSession = Mockery::mock(ApiSession::class);
-        $mockApiSession
+        $mockAuthSession = Mockery::mock(AuthSession::class);
+        $mockAuthSession
             ->allows()
             ->checkKey('mock')
             ->andReturns(true);
 
         $command = new QuestionGroupPropertiesSet();
-        $command->setApiSession($mockApiSession);
+        $command->setAuthSession($mockAuthSession);
 
         $response = $command->run($request);
 
@@ -83,22 +83,22 @@ class QuestionGroupPropertiesSetTest extends TestBaseClass
             'language' => 'language'
         ));
 
-        $mockApiSession= Mockery::mock(ApiSession::class);
-        $mockApiSession
+        $mockAuthSession= Mockery::mock(AuthSession::class);
+        $mockAuthSession
             ->allows()
             ->checkKey('mock')
             ->andReturns(true);
 
         $mockQuestionGroupModel= $this->createStub(QuestionGroup::class);
 
-        $mockModelPermission= Mockery::mock(Permission::class);
+        $mockModelPermission = Mockery::mock(Permission::class);
         $mockModelPermission
             ->allows()
             ->hasSurveyPermission(0, 'survey', 'update', null)
             ->andReturns(false);
 
         $command = new QuestionGroupPropertiesSet();
-        $command->setApiSession($mockApiSession);
+        $command->setAuthSession($mockAuthSession);
         $command->setQuestionGroupModelWithL10nsById($mockQuestionGroupModel);
         $command->setPermissionModel($mockModelPermission);
 

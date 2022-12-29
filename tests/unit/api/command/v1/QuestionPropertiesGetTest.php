@@ -11,7 +11,7 @@ use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorBadRequest;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorNotFound;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorUnauthorised;
-use LimeSurvey\Api\ApiSession;
+use LimeSurvey\Api\Auth\AuthSession;
 use Mockery;
 
 /**
@@ -49,14 +49,14 @@ class QuestionPropertiesGetTest extends TestBaseClass
             'language' => 'language'
         ));
 
-        $mockApiSession= Mockery::mock(ApiSession::class);
-        $mockApiSession
+        $mockAuthSession= Mockery::mock(AuthSession::class);
+        $mockAuthSession
             ->allows()
             ->checkKey('mock')
             ->andReturns(true);
 
         $command = new QuestionPropertiesGet();
-        $command->setApiSession($mockApiSession);
+        $command->setAuthSession($mockAuthSession);
 
         $response = $command->run($request);
 
@@ -83,8 +83,8 @@ class QuestionPropertiesGetTest extends TestBaseClass
             'language' => 'language'
         ));
 
-        $mockApiSession= Mockery::mock(ApiSession::class);
-        $mockApiSession
+        $mockAuthSession= Mockery::mock(AuthSession::class);
+        $mockAuthSession
             ->allows()
             ->checkKey('mock')
             ->andReturns(true);
@@ -98,7 +98,7 @@ class QuestionPropertiesGetTest extends TestBaseClass
             ->andReturns(false);
 
         $command = new QuestionPropertiesGet();
-        $command->setApiSession($mockApiSession);
+        $command->setAuthSession($mockAuthSession);
         $command->setQuestionModel($mockQuestion);
         $command->setPermissionModel($mockModelPermission);
 
@@ -127,8 +127,8 @@ class QuestionPropertiesGetTest extends TestBaseClass
             'language' => 'invalid'
         ));
 
-        $mockApiSession= Mockery::mock(ApiSession::class);
-        $mockApiSession
+        $mockAuthSession= Mockery::mock(AuthSession::class);
+        $mockAuthSession
             ->allows()
             ->checkKey('mock')
             ->andReturns(true);
@@ -142,7 +142,7 @@ class QuestionPropertiesGetTest extends TestBaseClass
             ->andReturns(true);
 
         $command = new QuestionPropertiesGet();
-        $command->setApiSession($mockApiSession);
+        $command->setAuthSession($mockAuthSession);
         $command->setQuestionModel($mockQuestion);
         $command->setPermissionModel($mockModelPermission);
 
@@ -171,8 +171,8 @@ class QuestionPropertiesGetTest extends TestBaseClass
             'language' => 'language'
         ));
 
-        $mockApiSession= Mockery::mock(ApiSession::class);
-        $mockApiSession
+        $mockAuthSession= Mockery::mock(AuthSession::class);
+        $mockAuthSession
             ->allows()
             ->checkKey('mock')
             ->andReturns(true);
@@ -186,7 +186,7 @@ class QuestionPropertiesGetTest extends TestBaseClass
             ->andReturns(true);
 
         $command = new QuestionPropertiesGet();
-        $command->setApiSession($mockApiSession);
+        $command->setAuthSession($mockAuthSession);
         $command->setQuestionModel($mockQuestion);
         $command->setPermissionModel($mockModelPermission);
 

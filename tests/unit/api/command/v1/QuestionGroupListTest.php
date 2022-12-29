@@ -13,7 +13,7 @@ use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorNotFound;
 use LimeSurvey\Api\Command\Response\Status\StatusSuccess;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorUnauthorised;
-use LimeSurvey\Api\ApiSession;
+use LimeSurvey\Api\Auth\AuthSession;
 use Mockery;
 
 /**
@@ -50,14 +50,14 @@ class QuestionGroupListTest extends TestBaseClass
             'language' => 'language'
         ));
 
-        $mockApiSession = Mockery::mock(ApiSession::class);
-        $mockApiSession
+        $mockAuthSession = Mockery::mock(AuthSession::class);
+        $mockAuthSession
             ->allows()
             ->checkKey('invalid-id')
             ->andReturns(true);
 
         $command = new QuestionGroupList();
-        $command->setApiSession($mockApiSession);
+        $command->setAuthSession($mockAuthSession);
 
         $response = $command->run($request);
 
@@ -83,8 +83,8 @@ class QuestionGroupListTest extends TestBaseClass
             'language' => 'language'
         ));
 
-        $mockApiSession = $this->createStub(ApiSession::class);
-        $mockApiSession
+        $mockAuthSession = $this->createStub(AuthSession::class);
+        $mockAuthSession
             ->method('checkKey')
             ->willReturn(true);
 
@@ -101,7 +101,7 @@ class QuestionGroupListTest extends TestBaseClass
             ->andReturns(false);
 
         $command = new QuestionGroupList();
-        $command->setApiSession($mockApiSession);
+        $command->setAuthSession($mockAuthSession);
         $command->setSurveyModel($mockSurveyModel);
         $command->setPermissionModel($mockModelPermission);
 
@@ -124,8 +124,8 @@ class QuestionGroupListTest extends TestBaseClass
             'language' => 'language'
         ));
 
-        $mockApiSession = Mockery::mock(ApiSession::class);
-        $mockApiSession
+        $mockAuthSession = Mockery::mock(AuthSession::class);
+        $mockAuthSession
             ->allows()
             ->checkKey('invalid-id')
             ->andReturns(true);
@@ -143,7 +143,7 @@ class QuestionGroupListTest extends TestBaseClass
             ->andReturns(true);
 
         $command = new QuestionGroupList();
-        $command->setApiSession($mockApiSession);
+        $command->setAuthSession($mockAuthSession);
         $command->setSurveyModel($mockSurveyModel);
         $command->setPermissionModel($mockModelPermission);
         $command->setQuestionGroupModelCollectionWithL10nsBySid([]);
@@ -167,8 +167,8 @@ class QuestionGroupListTest extends TestBaseClass
             'language' => 'en'
         ));
 
-        $mockApiSession = Mockery::mock(ApiSession::class);
-        $mockApiSession
+        $mockAuthSession = Mockery::mock(AuthSession::class);
+        $mockAuthSession
             ->allows()
             ->checkKey('invalid-id')
             ->andReturns(true);
@@ -205,7 +205,7 @@ class QuestionGroupListTest extends TestBaseClass
         $questionGroup->questiongroupl10ns = array('en' => $questionGroupL10n);
 
         $command = new QuestionGroupList();
-        $command->setApiSession($mockApiSession);
+        $command->setAuthSession($mockAuthSession);
         $command->setSurveyModel($mockSurveyModel);
         $command->setPermissionModel($mockModelPermission);
         $command->setQuestionGroupModelCollectionWithL10nsBySid([

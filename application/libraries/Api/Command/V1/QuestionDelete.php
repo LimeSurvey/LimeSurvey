@@ -10,7 +10,7 @@ use Survey;
 use LimeSurvey\Api\Command\CommandInterface;
 use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\Mixin\{
-    CommandResponsTrait,
+    CommandResponseTrait,
     Auth\AuthSessionTrait,
     Auth\AuthPermissionTrait
 };

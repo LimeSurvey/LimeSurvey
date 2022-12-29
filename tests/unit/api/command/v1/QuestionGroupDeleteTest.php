@@ -11,7 +11,7 @@ use LimeSurvey\Api\Command\V1\QuestionGroupDelete;
 use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorNotFound;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorUnauthorised;
-use LimeSurvey\Api\ApiSession;
+use LimeSurvey\Api\AuthSession;
 use Mockery;
 
 /**
@@ -45,14 +45,14 @@ class QuestionGroupDeleteTest extends TestBaseClass
             'groupID' => '99999999999999999999'
         ));
 
-        $mockApiSession= Mockery::mock(ApiSession::class);
-        $mockApiSession
+        $mockAuthSession= Mockery::mock(AuthSession::class);
+        $mockAuthSession
             ->allows()
             ->checkKey('mocked')
             ->andReturns(true);
 
         $command = new QuestionGroupDelete();
-        $command->setApiSession($mockApiSession);
+        $command->setAuthSession($mockAuthSession);
 
         $response = $command->run($request);
 
@@ -77,10 +77,10 @@ class QuestionGroupDeleteTest extends TestBaseClass
             'groupID' => '1'
         ));
 
-        $mockApiSession= $this->getMockBuilder(ApiSession::class)
+        $mockAuthSession= $this->getMockBuilder(AuthSession::class)
             ->setMethods(['checkKey'])
             ->getMock();
-        $mockApiSession->method('checkKey')->willReturn(true);
+        $mockAuthSession->method('checkKey')->willReturn(true);
 
         $mockModelGroup  = $this->createStub(QuestionGroup::class);
         $mockModelSurvey = $this->createStub(Survey::class);
@@ -93,7 +93,7 @@ class QuestionGroupDeleteTest extends TestBaseClass
         $command = new QuestionGroupDelete();
         $command->setQuestionGroupModel($mockModelGroup);
         $command->setSurveyModel($mockModelSurvey);
-        $command->setApiSession($mockApiSession);
+        $command->setAuthSession($mockAuthSession);
         $command->setPermissionModel($mockModelPermission);
 
         $response = $command->run($request);

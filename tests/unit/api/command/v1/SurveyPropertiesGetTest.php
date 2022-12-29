@@ -10,7 +10,7 @@ use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorBadRequest;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorUnauthorised;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorNotFound;
-use LimeSurvey\Api\ApiSession;
+use LimeSurvey\Api\Auth\AuthSession;
 use LimeSurvey\Api\Command\Response\Status\StatusSuccess;
 use Survey;
 use Mockery;
@@ -48,14 +48,14 @@ class SurveyPropertiesGetTest extends TestBaseClass
             'surveySettings' => array()
         ));
 
-        $mockApiSession= Mockery::mock(ApiSession::class);
-        $mockApiSession
+        $mockAuthSession= Mockery::mock(AuthSession::class);
+        $mockAuthSession
             ->allows()
             ->checkKey('mock')
             ->andReturns(true);
 
         $command = new SurveyPropertiesGet();
-        $command->setApiSession($mockApiSession);
+        $command->setAuthSession($mockAuthSession);
 
         $response = $command->run($request);
 
@@ -81,8 +81,8 @@ class SurveyPropertiesGetTest extends TestBaseClass
             'surveySettings' => array()
         ));
 
-        $mockApiSession= Mockery::mock(ApiSession::class);
-        $mockApiSession
+        $mockAuthSession= Mockery::mock(AuthSession::class);
+        $mockAuthSession
             ->allows()
             ->checkKey('mock')
             ->andReturns(true);
@@ -94,7 +94,7 @@ class SurveyPropertiesGetTest extends TestBaseClass
             ->andReturns(false);
 
         $command = new SurveyPropertiesGet();
-        $command->setApiSession($mockApiSession);
+        $command->setAuthSession($mockAuthSession);
         $command->setPermissionModel($mockModelPermission);
         $command->setSurveyModel(new Survey());
 
@@ -122,8 +122,8 @@ class SurveyPropertiesGetTest extends TestBaseClass
             'surveySettings' => array('invalid')
         ));
 
-        $mockApiSession= Mockery::mock(ApiSession::class);
-        $mockApiSession
+        $mockAuthSession= Mockery::mock(AuthSession::class);
+        $mockAuthSession
             ->allows()
             ->checkKey('mock')
             ->andReturns(true);
@@ -135,7 +135,7 @@ class SurveyPropertiesGetTest extends TestBaseClass
             ->andReturns(true);
 
         $command = new SurveyPropertiesGet();
-        $command->setApiSession($mockApiSession);
+        $command->setAuthSession($mockAuthSession);
         $command->setPermissionModel($mockModelPermission);
         $command->setSurveyModel(new Survey());
 
@@ -163,8 +163,8 @@ class SurveyPropertiesGetTest extends TestBaseClass
             'surveySettings' => array()
         ));
 
-        $mockApiSession= Mockery::mock(ApiSession::class);
-        $mockApiSession
+        $mockAuthSession= Mockery::mock(AuthSession::class);
+        $mockAuthSession
             ->allows()
             ->checkKey('mock')
             ->andReturns(true);
@@ -176,7 +176,7 @@ class SurveyPropertiesGetTest extends TestBaseClass
             ->andReturns(true);
 
         $command = new SurveyPropertiesGet();
-        $command->setApiSession($mockApiSession);
+        $command->setAuthSession($mockAuthSession);
         $command->setPermissionModel($mockModelPermission);
         $command->setSurveyModel(new Survey());
 
