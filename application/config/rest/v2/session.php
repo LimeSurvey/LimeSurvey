@@ -10,6 +10,8 @@ use LimeSurvey\Api\Rest\V2\SchemaFactory\SchemaFactoryAuthToken;
 // Session
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+$errorSchema = (new SchemaFactoryError)->create();
+
 $rest = [];
 
 $rest['v2/session'] = [
@@ -31,7 +33,7 @@ $rest['v2/session'] = [
             'unauthorized' => [
                 'code' => 403,
                 'description' => 'Unauthorized',
-                'schema' => (new SchemaFactoryError)->create()
+                'schema' => $errorSchema
             ]
         ]
     ],
@@ -49,7 +51,7 @@ $rest['v2/session'] = [
             'unauthorized' => [
                 'code' => 403,
                 'description' => 'Unauthorized',
-                'schema' => (new SchemaFactoryError)->create()
+                'schema' => $errorSchema
             ]
         ]
     ]

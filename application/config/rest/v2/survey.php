@@ -14,6 +14,8 @@ use LimeSurvey\Api\Rest\V2\SchemaFactory\SchemaFactorySurveyDetail;
 // REST V2 Survey Config
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+$errorSchema = (new SchemaFactoryError)->create();
+
 $rest = [];
 
 $rest['v2/survey'] = [
@@ -38,7 +40,7 @@ $rest['v2/survey'] = [
             'unauthorized' => [
                 'code' => 401,
                 'description' => 'Unauthorized',
-                'schema' => (new SchemaFactoryError)->create()
+                'schema' => $errorSchema
             ]
         ]
     ]
@@ -64,12 +66,12 @@ $rest['v2/survey-detail/$surveyId'] = [
             'unauthorized' => [
                 'code' => 401,
                 'description' => 'Unauthorized',
-                'schema' => (new SchemaFactoryError)->create()
+                'schema' => $errorSchema
             ],
             'not-found' => [
                 'code' => 404,
                 'description' => 'Not Found',
-                'schema' => (new SchemaFactoryError)->create()
+                'schema' => $errorSchema
             ]
         ]
     ],
@@ -98,12 +100,12 @@ $rest['v2/survey-detail/$surveyId'] = [
             'unauthorized' => [
                 'code' => 401,
                 'description' => 'Unauthorized',
-                'schema' => (new SchemaFactoryError)->create()
+                'schema' => $errorSchema
             ],
             'not-found' => [
                 'code' => 404,
                 'description' => 'Not Found',
-                'schema' => (new SchemaFactoryError)->create()
+                'schema' => $errorSchema
             ]
         ]
     ]
