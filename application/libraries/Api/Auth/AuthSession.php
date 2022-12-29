@@ -7,7 +7,7 @@ use CDbCriteria;
 use Session;
 use Yii;
 
-class ApiAuthSession
+class AuthSession
 {
     const ERROR_INVALID_SESSION_KEY = 'INVALID_SESSION_KEY';
 

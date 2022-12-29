@@ -2,7 +2,7 @@
 
 namespace LimeSurvey\Api\Command\V2;
 
-use LimeSurvey\Api\Auth\ApiAuthSession;
+use LimeSurvey\Api\Auth\AuthSession;
 use LimeSurvey\Api\Command\{
     CommandInterface,
     Mixin\CommandResponseTrait,
@@ -22,7 +22,7 @@ class SessionKeyRelease implements CommandInterface
      */
     public function run(Request $request)
     {
-        (new ApiAuthSession())->doLogout(
+        (new AuthSession())->doLogout(
             $request
             ->getData('sessionKey')
         );

@@ -5,34 +5,34 @@ namespace LimeSurvey\Api\Command\Mixin\Auth;
 use LimeSurvey\Api\Command\Response\Response;
 use LimeSurvey\Api\Command\ResponseData\ResponseDataError;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorUnauthorised;
-use LimeSurvey\Api\Auth\ApiAuthSession;
+use LimeSurvey\Api\Auth\AuthSession;
 
 trait AuthSessionTrait
 {
-    private $apiAuthSession = null;
+    private $authSession = null;
 
-    public function setApiAuthSession(ApiAuthSession $apiSession)
+    public function setAuthSession(AuthSession $apiSession)
     {
-        $this->apiAuthSession = $apiSession;
+        $this->authSession = $apiSession;
     }
 
-    protected function getApiAuthSession(): ApiAuthSession
+    protected function getAuthSession(): AuthSession
     {
-        if (!$this->apiAuthSession) {
-            $this->apiAuthSession = new ApiAuthSession();
+        if (!$this->authSession) {
+            $this->authSession = new AuthSession();
         }
 
-        return $this->apiAuthSession;
+        return $this->authSession;
     }
 
     protected function checkKey($sSessionKey)
     {
-        if ($this->getApiAuthSession()->checkKey($sSessionKey)) {
+        if ($this->getAuthSession()->checkKey($sSessionKey)) {
             return true;
         } else {
             return new Response(
                 (new ResponseDataError(
-                    ApiAuthSession::ERROR_INVALID_SESSION_KEY,
+                    AuthSession::ERROR_INVALID_SESSION_KEY,
                     'Invalid session key'
                 ))->toArray(),
                 new StatusErrorUnauthorised()

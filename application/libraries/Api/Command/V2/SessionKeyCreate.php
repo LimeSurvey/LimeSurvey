@@ -2,7 +2,7 @@
 
 namespace LimeSurvey\Api\Command\V2;
 
-use LimeSurvey\Api\Auth\ApiAuthSession;
+use LimeSurvey\Api\Auth\AuthSession;
 use LimeSurvey\Api\Command\V1\Exception\ExceptionInvalidUser;
 use LimeSurvey\Api\Command\{
     CommandInterface,
@@ -24,7 +24,7 @@ class SessionKeyCreate implements CommandInterface
      */
     public function run(Request $request)
     {
-        $apiSession = new ApiAuthSession();
+        $apiSession = new AuthSession();
 
         $username = (string) $request->getData('username');
         $password = (string) $request->getData('password');
