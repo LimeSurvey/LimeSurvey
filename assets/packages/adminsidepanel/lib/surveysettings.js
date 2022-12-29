@@ -245,3 +245,11 @@ function guidGenerator() {
     };
     return (S4() + S4() + '-' + S4() + '-' + S4() + '-' + S4() + '-' + S4() + S4() + S4());
 }
+
+$(document).on('change', '#importsurvey #surveysgroup', function () {
+    if ($(this).val() == 'import') {
+        $('#survey_group_import_warning').removeClass('hide');
+    } else {
+        $('#survey_group_import_warning').addClass('hide');
+    }
+});

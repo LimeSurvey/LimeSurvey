@@ -28,6 +28,27 @@
                 </div>
             </div>
 
+            <!-- Survey group to use -->
+            <div class='form-group col-4'>
+                <label class='control-label ' for='surveysgroup'><?php  eT("Survey group:"); ?> </label>
+                <div class=''>
+                    <?php $this->widget('yiiwheels.widgets.select2.WhSelect2', [
+                        'asDropDownList' => true,
+                        'htmlOptions' => [],
+                        'data' => [
+                            'default' => gT("Import on default survey group"),
+                            'import' => gT("Keep the survey group from the imported file"),
+                        ],
+                        'value' => 'default',
+                        'name' => 'surveysgroup',
+                        'pluginOptions' => ['minimumResultsForSearch' => -1]
+                    ]);?>
+                </div>
+                <div class="form-control-static hide" id="survey_group_import_warning">
+                    <span class='annotation text-warning'><?php echo  gT("Survey group will be matched by name. Please note that survey group permissions will be inherited by the imported survey."); ?> </span>
+                </div>
+            </div>
+
             <!-- Convert resource links and INSERTANS fields? -->
             <div class='form-group'>
                 <label class='control-label ' for='translinksfields'><?php  eT("Convert resource links and expression fields?"); ?> </label>
