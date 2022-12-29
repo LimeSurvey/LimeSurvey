@@ -8,20 +8,20 @@ use LimeSurvey\Api\Command\{
     Request\Request
 };
 use LimeSurvey\Api\Command\Mixin\{
-    CommandResponse,
-    Auth\AuthSession,
-    Auth\AuthPermission,
-    Accessor\QuestionGroupModel,
-    Accessor\SurveyModel
+    CommandResponseTrait,
+    Auth\AuthSessionTrait,
+    Auth\AuthPermissionTrait,
+    Accessor\QuestionGroupModelTrait,
+    Accessor\SurveyModelTrait
 };
 
 class QuestionGroupDelete implements CommandInterface
 {
-    use AuthSession;
-    use AuthPermission;
-    use CommandResponse;
-    use QuestionGroupModel;
-    use SurveyModel;
+    use AuthSessionTrait;
+    use AuthPermissionTrait;
+    use CommandResponseTrait;
+    use QuestionGroupModelTrait;
+    use SurveyModelTrait;
 
     /**
      * Run group delete command.

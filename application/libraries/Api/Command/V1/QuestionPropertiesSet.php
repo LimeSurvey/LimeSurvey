@@ -11,18 +11,18 @@ use LimeSurvey\Api\Command\{
     Request\Request
 };
 use LimeSurvey\Api\Command\Mixin\{
-    CommandResponse,
-    Auth\AuthSession,
-    Auth\AuthPermission,
-    Accessor\QuestionModel
+    CommandResponseTrait,
+    Auth\AuthSessionTrait,
+    Auth\AuthPermissionTrait,
+    Accessor\QuestionModelTrait
 };
 
 class QuestionPropertiesSet implements CommandInterface
 {
-    use AuthSession;
-    use AuthPermission;
-    use CommandResponse;
-    use QuestionModel;
+    use AuthSessionTrait;
+    use AuthPermissionTrait;
+    use CommandResponseTrait;
+    use QuestionModelTrait;
 
     /**
      * Run survey question properties set command.

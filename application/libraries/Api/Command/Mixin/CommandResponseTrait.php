@@ -11,7 +11,7 @@ use LimeSurvey\Api\Command\Response\{
     Status\StatusErrorUnauthorised
 };
 
-trait CommandResponse
+trait CommandResponseTrait
 {
     protected function responseSuccess($data = null): Response
     {

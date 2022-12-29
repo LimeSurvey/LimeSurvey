@@ -11,20 +11,20 @@ use LimeSurvey\Api\Command\{
     Request\Request
 };
 use LimeSurvey\Api\Command\Mixin\{
-    CommandResponse,
-    Auth\AuthSession,
-    Auth\AuthPermission,
-    Accessor\QuestionGroupModelWithL10nsById,
-    Accessor\SurveyModel
+    CommandResponseTrait,
+    Auth\AuthSessionTrait,
+    Auth\AuthPermissionTrait,
+    Accessor\QuestionGroupModelWithL10nsByIdTrait,
+    Accessor\SurveyModelTrait
 };
 
 class QuestionGroupPropertiesSet implements CommandInterface
 {
-    use AuthSession;
-    use AuthPermission;
-    use CommandResponse;
-    use QuestionGroupModelWithL10nsById;
-    use SurveyModel;
+    use AuthSessionTrait;
+    use AuthPermissionTrait;
+    use CommandResponseTrait;
+    use QuestionGroupModelWithL10nsByIdTrait;
+    use SurveyModelTrait;
 
     /**
      * Run group properties get command.

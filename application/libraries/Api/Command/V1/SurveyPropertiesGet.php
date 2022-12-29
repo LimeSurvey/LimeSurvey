@@ -9,18 +9,18 @@ use LimeSurvey\Api\Command\{
     Request\Request
 };
 use LimeSurvey\Api\Command\Mixin\{
-    CommandResponse,
-    Auth\AuthSession,
-    Auth\AuthPermission,
-    Accessor\SurveyModel
+    CommandResponseTrait,
+    Auth\AuthSessionTrait,
+    Auth\AuthPermissionTrait,
+    Accessor\SurveyModelTrait
 };
 
 class SurveyPropertiesGet implements CommandInterface
 {
-    use AuthSession;
-    use AuthPermission;
-    use SurveyModel;
-    use CommandResponse;
+    use AuthSessionTrait;
+    use AuthPermissionTrait;
+    use SurveyModelTrait;
+    use CommandResponseTrait;
 
     /**
      * Run survey properties get command.

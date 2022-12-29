@@ -5,19 +5,19 @@ namespace LimeSurvey\Api\Command\V1;
 use QuestionGroup;
 use LimeSurvey\Api\Command\CommandInterface;
 use LimeSurvey\Api\Command\Request\Request;
-use LimeSurvey\Api\Command\Mixin\Auth\AuthSession;
-use LimeSurvey\Api\Command\Mixin\Auth\AuthPermission;
-use LimeSurvey\Api\Command\Mixin\CommandResponse;
-use LimeSurvey\Api\Command\Mixin\Accessor\QuestionGroupModelWithL10nsById;
-use LimeSurvey\Api\Command\Mixin\Accessor\SurveyModel;
+use LimeSurvey\Api\Command\Mixin\Auth\AuthSessionTrait;
+use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
+use LimeSurvey\Api\Command\Mixin\CommandResponseTrait;
+use LimeSurvey\Api\Command\Mixin\Accessor\QuestionGroupModelWithL10nsByIdTrait;
+use LimeSurvey\Api\Command\Mixin\Accessor\SurveyModelTrait;
 
 class QuestionGroupPropertiesGet implements CommandInterface
 {
-    use AuthSession;
-    use AuthPermission;
-    use CommandResponse;
-    use QuestionGroupModelWithL10nsById;
-    use SurveyModel;
+    use AuthSessionTrait;
+    use AuthPermissionTrait;
+    use CommandResponseTrait;
+    use QuestionGroupModelWithL10nsByIdTrait;
+    use SurveyModelTrait;
 
     /**
      * Run group properties get command.

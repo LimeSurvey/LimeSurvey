@@ -12,9 +12,9 @@ use LimeSurvey\Api\Command\{
     Request\Request
 };
 use LimeSurvey\Api\Command\Mixin\{
-    CommandResponse,
-    Auth\AuthSession,
-    Auth\AuthPermission
+    CommandResponseTrait,
+    Auth\AuthSessionTrait,
+    Auth\AuthPermissionTrait
 };
 
 
@@ -22,9 +22,9 @@ use LimeSurvey\Api\Command\Mixin\{
 
 class QuestionImport implements CommandInterface
 {
-    use AuthSession;
-    use AuthPermission;
-    use CommandResponse;
+    use AuthSessionTrait;
+    use AuthPermissionTrait;
+    use CommandResponseTrait;
 
     /**
      * Run survey question import command.

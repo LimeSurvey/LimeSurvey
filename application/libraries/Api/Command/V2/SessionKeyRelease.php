@@ -5,13 +5,13 @@ namespace LimeSurvey\Api\Command\V2;
 use LimeSurvey\Api\Auth\ApiAuthSession;
 use LimeSurvey\Api\Command\{
     CommandInterface,
-    Mixin\CommandResponse,
+    Mixin\CommandResponseTrait,
     Request\Request
 };
 
 class SessionKeyRelease implements CommandInterface
 {
-    use CommandResponse;
+    use CommandResponseTrait;
 
     /**
      * Run session key release command.

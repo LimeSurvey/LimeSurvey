@@ -10,16 +10,16 @@ use LimeSurvey\Api\Command\{
     ResponseData\ResponseDataError
 };
 use LimeSurvey\Api\Command\Mixin\{
-    CommandResponse,
-    Auth\AuthSession,
-    Auth\AuthPermission
+    CommandResponseTrait,
+    Auth\AuthSessionTrait,
+    Auth\AuthPermissionTrait
 };
 
 class SurveyDetail implements CommandInterface
 {
-    use AuthSession;
-    use AuthPermission;
-    use CommandResponse;
+    use AuthSessionTrait;
+    use AuthPermissionTrait;
+    use CommandResponseTrait;
 
     /**
      * Run survey detail command

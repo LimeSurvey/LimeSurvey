@@ -10,18 +10,18 @@ use LimeSurvey\Api\Command\{
     Response\Response
 };
 use LimeSurvey\Api\Command\Mixin\{
-    CommandResponse,
-    Auth\AuthSession,
-    Auth\AuthPermission,
-    Accessor\SurveyModel
+    CommandResponseTrait,
+    Auth\AuthSessionTrait,
+    Auth\AuthPermissionTrait,
+    Accessor\SurveyModelTrait
 };
 
 class QuestionGroupAdd implements CommandInterface
 {
-    use AuthSession;
-    use AuthPermission;
-    use CommandResponse;
-    use SurveyModel;
+    use AuthSessionTrait;
+    use AuthPermissionTrait;
+    use CommandResponseTrait;
+    use SurveyModelTrait;
 
     /**
      * Run group add command.

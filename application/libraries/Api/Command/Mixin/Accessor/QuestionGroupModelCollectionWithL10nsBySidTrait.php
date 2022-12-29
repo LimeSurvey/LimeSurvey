@@ -4,7 +4,7 @@ namespace LimeSurvey\Api\Command\Mixin\Accessor;
 
 use QuestionGroup;
 
-trait QuestionGroupModelCollectionWithL10nsBySid
+trait QuestionGroupModelCollectionWithL10nsBySidTrait
 {
     private $questionGroupListWithL10nsBySid = null;
 

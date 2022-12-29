@@ -8,7 +8,7 @@ use LimeSurvey\Api\Command\Response\{
     Status\StatusErrorUnauthorised
 };
 
-trait AuthPermission
+trait AuthPermissionTrait
 {
     private $permissionModel = null;
 

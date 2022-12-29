@@ -9,20 +9,20 @@ use LimeSurvey\Api\Command\{
     Request\Request
 };
 use LimeSurvey\Api\Command\Mixin\{
-    CommandResponse,
-    Auth\AuthSession,
-    Auth\AuthPermission,
-    Accessor\SurveyModel,
-    Accessor\QuestionGroupModel
+    CommandResponseTrait,
+    Auth\AuthSessionTrait,
+    Auth\AuthPermissionTrait,
+    Accessor\SurveyModelTrait,
+    Accessor\QuestionGroupModelTrait
 };
 
 class QuestionList implements CommandInterface
 {
-    use AuthSession;
-    use AuthPermission;
-    use CommandResponse;
-    use SurveyModel;
-    use QuestionGroupModel;
+    use AuthSessionTrait;
+    use AuthPermissionTrait;
+    use CommandResponseTrait;
+    use SurveyModelTrait;
+    use QuestionGroupModelTrait;
 
     /**
      * Run survey question list command.

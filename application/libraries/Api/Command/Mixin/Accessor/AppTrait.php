@@ -4,7 +4,7 @@ namespace LimeSurvey\Api\Command\Mixin\Accessor;
 
 use Yii;
 
-trait App
+trait AppTrait
 {
     private $app = null;
 

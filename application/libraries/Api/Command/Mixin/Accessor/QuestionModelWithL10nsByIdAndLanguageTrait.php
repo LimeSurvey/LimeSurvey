@@ -4,7 +4,7 @@ namespace LimeSurvey\Api\Command\Mixin\Accessor;
 
 use Question;
 
-trait QuestionModelWithL10nsByIdAndLanguage
+trait QuestionModelWithL10nsByIdAndLanguageTrait
 {
     private $questionWithL10nsByIdAndLanguage = null;
 

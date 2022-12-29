@@ -7,7 +7,7 @@ use LimeSurvey\Api\Command\ResponseData\ResponseDataError;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorUnauthorised;
 use LimeSurvey\Api\Auth\ApiAuthSession;
 
-trait AuthSession
+trait AuthSessionTrait
 {
     private $apiAuthSession = null;
 

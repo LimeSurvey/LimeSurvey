@@ -7,22 +7,22 @@ use LimeSurvey\Api\Command\{
     Request\Request
 };
 use LimeSurvey\Api\Command\Mixin\{
-    CommandResponse,
-    Auth\AuthSession,
-    Auth\AuthPermission
+    CommandResponseTrait,
+    Auth\AuthSessionTrait,
+    Auth\AuthPermissionTrait
 };
 use LimeSurvey\Api\Command\Mixin\Accessor\{
-    SurveyModel,
-    QuestionGroupModelCollectionWithL10nsBySid
+    SurveyModelTrait,
+    QuestionGroupModelCollectionWithL10nsBySidTrait
 };
 
 class QuestionGroupList implements CommandInterface
 {
-    use AuthSession;
-    use AuthPermission;
-    use CommandResponse;
-    use SurveyModel;
-    use QuestionGroupModelCollectionWithL10nsBySid;
+    use AuthSessionTrait;
+    use AuthPermissionTrait;
+    use CommandResponseTrait;
+    use SurveyModelTrait;
+    use QuestionGroupModelCollectionWithL10nsBySidTrait;
 
     /**
      * Run group list command.

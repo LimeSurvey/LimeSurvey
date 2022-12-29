@@ -4,7 +4,7 @@ namespace LimeSurvey\Api\Command\Mixin\Accessor;
 
 use Survey;
 
-trait SurveyModel
+trait SurveyModelTrait
 {
     private $survey = null;
 

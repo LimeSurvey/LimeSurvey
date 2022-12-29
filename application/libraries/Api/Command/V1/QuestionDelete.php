@@ -10,16 +10,16 @@ use Survey;
 use LimeSurvey\Api\Command\CommandInterface;
 use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\Mixin\{
-    CommandResponse,
-    Auth\AuthSession,
-    Auth\AuthPermission
+    CommandResponsTrait,
+    Auth\AuthSessionTrait,
+    Auth\AuthPermissionTrait
 };
 
 class QuestionDelete implements CommandInterface
 {
-    use AuthSession;
-    use AuthPermission;
-    use CommandResponse;
+    use AuthSessionTrait;
+    use AuthPermissionTrait;
+    use CommandResponseTrait;
 
     /**
      * Run survey question delete command.

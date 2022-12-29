@@ -13,22 +13,21 @@ use LimeSurvey\Api\Command\{
     Request\Request
 };
 use LimeSurvey\Api\Command\Mixin\{
-    CommandResponse,
-    Auth\AuthSession,
-    Auth\AuthPermission,
-    Accessor\QuestionModel,
-    Accessor\QuestionModelWithL10nsByIdAndLanguage
+    CommandResponseTrait,
+    Auth\AuthSessionTrait,
+    Auth\AuthPermissionTrait,
+    Accessor\QuestionModelTrait,
+    Accessor\QuestionModelWithL10nsByIdAndLanguageTrait
 };
 
 
 class QuestionPropertiesGet implements CommandInterface
 {
-    use AuthSession;
-    use AuthPermission;
-    use CommandResponse;
-    use QuestionModel;
-    use QuestionModelWithL10nsByIdAndLanguage;
-
+    use AuthSessionTrait;
+    use AuthPermissionTrait;
+    use CommandResponseTrait;
+    use QuestionModelTrait;
+    use QuestionModelWithL10nsByIdAndLanguageTrait;
 
     /**
      * Run survey question properties get command.

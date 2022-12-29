@@ -7,16 +7,16 @@ use LimeSurvey\Api\Command\{
     Request\Request
 };
 use LimeSurvey\Api\Command\Mixin\{
-    CommandResponse,
-    Auth\AuthSession,
-    Auth\AuthPermission
+    CommandResponseTrait,
+    Auth\AuthSessionTrait,
+    Auth\AuthPermissionTrait
 };
 
 class SurveyPatch implements CommandInterface
 {
-    use AuthSession;
-    use AuthPermission;
-    use CommandResponse;
+    use AuthSessionTrait;
+    use AuthPermissionTrait;
+    use CommandResponseTrait;
 
     /**
      * Run survey patch command

@@ -4,7 +4,7 @@ namespace LimeSurvey\Api\Command\Mixin\Accessor;
 
 use Question;
 
-trait QuestionModel
+trait QuestionModelTrait
 {
     private $question = null;
 

@@ -7,11 +7,11 @@ use LimeSurvey\Api\Command\{
     CommandInterface,
     Request\Request
 };
-use LimeSurvey\Api\Command\Mixin\CommandResponse;
+use LimeSurvey\Api\Command\Mixin\CommandResponseTrait;
 
 class SessionKeyRelease implements CommandInterface
 {
-    use CommandResponse;
+    use CommandResponseTrait;
 
     /**
      * Run session key release command.

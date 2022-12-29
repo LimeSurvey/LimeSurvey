@@ -7,13 +7,13 @@ use LimeSurvey\Api\Command\V1\Exception\ExceptionInvalidUser;
 use LimeSurvey\Api\Command\{
     CommandInterface,
     Request\Request,
-    Mixin\CommandResponse,
+    Mixin\CommandResponseTrait,
     ResponseData\ResponseDataError
 };
 
 class SessionKeyCreate implements CommandInterface
 {
-    use CommandResponse;
+    use CommandResponseTrait;
 
     /**
      * Run session key create command.
