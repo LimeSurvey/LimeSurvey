@@ -124,7 +124,7 @@ foreach ($rest as $path => $config) {
 
         // Entity id param
         if ($id) {
-            $params[] = Parameter::path()->name('id');
+            $params[] = Parameter::path()->name('_id');
         }
 
         // Query params
@@ -244,7 +244,7 @@ foreach ($rest as $path => $config) {
     // Path
     $oaPathString = '/rest/' . implode('/', [$version, $entity]);
     if (!empty($id)) {
-        $oaPathString = $oaPathString . '/{id}';
+        $oaPathString = $oaPathString . '/{_id}';
     }
     $oaPath = PathItem::create()
         ->route($oaPathString);
