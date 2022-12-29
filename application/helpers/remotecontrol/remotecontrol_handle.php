@@ -102,7 +102,7 @@ class remotecontrol_handle
         return (new SiteSettingsGet)
             ->run(new Request(array(
                 'sessionKey' => (string) $sSessionKey,
-                'setttingName' => (string) $sSetttingName
+                '_id' => (string) $sSetttingName
             )))->getData();
     }
 
@@ -151,7 +151,7 @@ class remotecontrol_handle
         return (new SurveyDelete)
             ->run(new Request(array(
                 'sessionKey' => (string) $sSessionKey,
-                'surveyID' => (int) $iSurveyID
+                '_id' => (int) $iSurveyID
             )))->getData();
     }
 
@@ -274,7 +274,7 @@ class remotecontrol_handle
         return (new SurveyPropertiesGet)
             ->run(new Request(array(
                 'sessionKey' => (string) $sSessionKey,
-                'surveyID' => (int) $iSurveyID,
+                '_id' => (int) $iSurveyID,
                 'surveySettings' => (array) $aSurveySettings
             )))->getData();
     }
@@ -923,7 +923,7 @@ class remotecontrol_handle
         return (new QuestionGroupAdd)
             ->run(new Request(array(
                 'sessionKey' => (string) $sSessionKey,
-                'surveyID' => (int) $iSurveyID,
+                '_id' => (int) $iSurveyID,
                 'groupTitle' => (string) $sGroupTitle,
                 'groupDescription' => (string) $sGroupDescription
             )))->getData();
@@ -945,7 +945,7 @@ class remotecontrol_handle
         return (new QuestionGroupDelete)
             ->run(new Request(array(
                 'sessionKey' => (string) $sSessionKey,
-                'surveyID' => (int) $iSurveyID,
+                '_id' => (int) $iSurveyID,
                 'groupID' => (int) $iGroupID
             )))->getData();
     }
@@ -1081,7 +1081,7 @@ class remotecontrol_handle
         return (new QuestionGroupPropertiesGet)
             ->run(new Request(array(
                 'sessionKey' => (string) $sSessionKey,
-                'groupID' => (int) $iGroupID,
+                '_id' => (int) $iGroupID,
                 'groupSettings' => $aGroupSettings,
                 'language' => $sLanguage
             )))->getData();
@@ -1108,7 +1108,7 @@ class remotecontrol_handle
         return (new QuestionGroupPropertiesSet)
             ->run(new Request(array(
                 'sessionKey' => (string) $sSessionKey,
-                'groupID' => (int) $iGroupID,
+                '_id' => (int) $iGroupID,
                 'groupData' => $aGroupData
             )))->getData();
     }
@@ -1131,7 +1131,7 @@ class remotecontrol_handle
         return (new QuestionDelete)
             ->run(new Request(array(
                 'sessionKey' => (string) $sSessionKey,
-                'questionID' => (int) $iQuestionID
+                '_id' => (int) $iQuestionID
             )))->getData();
     }
 
@@ -1289,7 +1289,7 @@ class remotecontrol_handle
         return (new QuestionPropertiesGet)
             ->run(new Request(array(
                 'sessionKey' => (string) $sSessionKey,
-                'questionID' => (int) $iQuestionID,
+                '_id' => (int) $iQuestionID,
                 'questionSettings' => $aQuestionSettings,
                 'language' => $sLanguage
             )))->getData();
@@ -1321,7 +1321,7 @@ class remotecontrol_handle
         return (new QuestionPropertiesSet)
             ->run(new Request(array(
                 'sessionKey' => (string) $sSessionKey,
-                'questionID' => (int) $iQuestionID,
+                '_id' => (int) $iQuestionID,
                 'questionData' => $aQuestionData,
                 'language' => $sLanguage
             )))->getData();
@@ -1642,7 +1642,7 @@ class remotecontrol_handle
                 $aAttributeValues = array();
                 if (count($aConditions) > 0) {
                     $aConditionFields = array_flip(Token::model($iSurveyID)->getMetaData()->tableSchema->columnNames);
-                    // NB: $valueOrTuple is either a value or tuple like [$operator, $value].                    
+                    // NB: $valueOrTuple is either a value or tuple like [$operator, $value].
                     foreach ($aConditions as $columnName => $valueOrTuple) {
                         if (is_array($valueOrTuple)) {
                             /** @var string[] List of operators allowed in query. */
