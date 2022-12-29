@@ -2,12 +2,14 @@
 
 namespace LimeSurvey\Api\Command\Mixin;
 
-use LimeSurvey\Api\Command\Response\Response;
-use LimeSurvey\Api\Command\Response\Status\StatusSuccess;
-use LimeSurvey\Api\Command\Response\Status\StatusError;
-use LimeSurvey\Api\Command\Response\Status\StatusErrorNotFound;
-use LimeSurvey\Api\Command\Response\Status\StatusErrorBadRequest;
-use LimeSurvey\Api\Command\Response\Status\StatusErrorUnauthorised;
+use LimeSurvey\Api\Command\Response\{
+    Response,
+    Status\StatusSuccess,
+    Status\StatusError,
+    Status\StatusErrorNotFound,
+    Status\StatusErrorBadRequest,
+    Status\StatusErrorUnauthorised
+};
 
 trait CommandResponse
 {

@@ -7,14 +7,19 @@ use DefaultValue;
 use Question;
 use Survey;
 use Yii;
-use LimeSurvey\Api\Command\CommandInterface;
-use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Models\Services\QuestionAttributeHelper;
-use LimeSurvey\Api\Command\Mixin\Auth\AuthSession;
-use LimeSurvey\Api\Command\Mixin\Auth\AuthPermission;
-use LimeSurvey\Api\Command\Mixin\Accessor\QuestionModel;
-use LimeSurvey\Api\Command\Mixin\Accessor\QuestionModelWithL10nsByIdAndLanguage;
-use LimeSurvey\Api\Command\Mixin\CommandResponse;
+use LimeSurvey\Api\Command\{
+    CommandInterface,
+    Request\Request
+};
+use LimeSurvey\Api\Command\Mixin\{
+    CommandResponse,
+    Auth\AuthSession,
+    Auth\AuthPermission,
+    Accessor\QuestionModel,
+    Accessor\QuestionModelWithL10nsByIdAndLanguage
+};
+
 
 class QuestionPropertiesGet implements CommandInterface
 {

@@ -1,10 +1,13 @@
 <?php
 
-use \LimeSurvey\Api\Command\V2\SessionKeyCreate;
-use \LimeSurvey\Api\Command\V2\SessionKeyRelease;
-
-use LimeSurvey\Api\Rest\V2\SchemaFactory\SchemaFactoryError;
-use LimeSurvey\Api\Rest\V2\SchemaFactory\SchemaFactoryAuthToken;
+use \LimeSurvey\Api\Command\V2\{
+    SessionKeyCreate,
+    SessionKeyRelease
+};
+use LimeSurvey\Api\Rest\V2\SchemaFactory\{
+    SchemaFactoryError,
+    SchemaFactoryAuthToken
+};
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Session

@@ -3,9 +3,9 @@
 namespace LimeSurvey\Api\Command\Mixin\Auth;
 
 use LimeSurvey\Api\Command\Response\Response;
+use LimeSurvey\Api\Command\ResponseData\ResponseDataError;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorUnauthorised;
 use LimeSurvey\Api\Auth\ApiAuthSession;
-use LimeSurvey\Api\Command\ResponseData\ResponseDataError;
 
 trait AuthSession
 {

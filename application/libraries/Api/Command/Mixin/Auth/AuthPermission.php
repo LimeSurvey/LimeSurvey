@@ -3,8 +3,10 @@
 namespace LimeSurvey\Api\Command\Mixin\Auth;
 
 use Permission;
-use LimeSurvey\Api\Command\Response\Response;
-use LimeSurvey\Api\Command\Response\Status\StatusErrorUnauthorised;
+use LimeSurvey\Api\Command\Response\{
+    Response,
+    Status\StatusErrorUnauthorised
+};
 
 trait AuthPermission
 {

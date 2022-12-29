@@ -2,11 +2,15 @@
 
 namespace LimeSurvey\Api\Command\V2;
 
-use LimeSurvey\Api\Command\CommandInterface;
-use LimeSurvey\Api\Command\Request\Request;
-use LimeSurvey\Api\Command\Mixin\Auth\AuthSession;
-use LimeSurvey\Api\Command\Mixin\Auth\AuthPermission;
-use LimeSurvey\Api\Command\Mixin\CommandResponse;
+use LimeSurvey\Api\Command\{
+    CommandInterface,
+    Request\Request
+};
+use LimeSurvey\Api\Command\Mixin\{
+    CommandResponse,
+    Auth\AuthSession,
+    Auth\AuthPermission
+};
 
 class SurveyPatch implements CommandInterface
 {

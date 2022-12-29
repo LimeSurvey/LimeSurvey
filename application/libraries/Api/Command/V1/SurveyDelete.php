@@ -3,12 +3,16 @@
 namespace LimeSurvey\Api\Command\V1;
 
 use Survey;
-use LimeSurvey\Api\Command\CommandInterface;
-use LimeSurvey\Api\Command\Request\Request;
-use LimeSurvey\Api\Command\Mixin\Auth\AuthSession;
-use LimeSurvey\Api\Command\Mixin\Auth\AuthPermission;
-use LimeSurvey\Api\Command\Mixin\CommandResponse;
-use LimeSurvey\Api\Command\Mixin\Accessor\SurveyModel;
+use LimeSurvey\Api\Command\{
+    CommandInterface,
+    Request\Request
+};
+use LimeSurvey\Api\Command\Mixin\{
+    CommandResponse,
+    Auth\AuthSession,
+    Auth\AuthPermission,
+    Accessor\SurveyModel
+};
 
 class SurveyDelete implements CommandInterface
 {

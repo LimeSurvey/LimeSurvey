@@ -3,9 +3,11 @@
 namespace LimeSurvey\Api\Command\V2;
 
 use LimeSurvey\Api\Auth\ApiAuthSession;
-use LimeSurvey\Api\Command\CommandInterface;
-use LimeSurvey\Api\Command\Request\Request;
-use LimeSurvey\Api\Command\Mixin\CommandResponse;
+use LimeSurvey\Api\Command\{
+    CommandInterface,
+    Mixin\CommandResponse,
+    Request\Request
+};
 
 class SessionKeyRelease implements CommandInterface
 {

@@ -7,9 +7,11 @@ use CWebLogRoute;
 use Exception;
 use Yii;
 
-use LimeSurvey\Api\Command\Response\Response;
-use LimeSurvey\Api\Command\Response\Status;
 use LimeSurvey\Api\Rest\Renderer\RendererInterface;
+use LimeSurvey\Api\Command\Response\{
+    Response,
+    Status
+};
 
 class RendererBasic implements RendererInterface
 {

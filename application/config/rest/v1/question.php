@@ -1,10 +1,12 @@
 <?php
 
-use \LimeSurvey\Api\Command\V1\QuestionPropertiesGet;
-use \LimeSurvey\Api\Command\V1\QuestionPropertiesSet;
-use \LimeSurvey\Api\Command\V1\QuestionDelete;
-use \LimeSurvey\Api\Command\V1\QuestionImport;
-use \LimeSurvey\Api\Command\V1\QuestionList;
+use \LimeSurvey\Api\Command\V1\{
+    QuestionPropertiesGet,
+    QuestionPropertiesSet,
+    QuestionDelete,
+    QuestionImport,
+    QuestionList
+};
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Question

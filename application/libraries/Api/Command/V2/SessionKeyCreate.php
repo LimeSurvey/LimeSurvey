@@ -2,12 +2,14 @@
 
 namespace LimeSurvey\Api\Command\V2;
 
-use LimeSurvey\Api\Command\V1\Exception\ExceptionInvalidUser;
-use LimeSurvey\Api\Command\CommandInterface;
-use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Auth\ApiAuthSession;
-use LimeSurvey\Api\Command\Mixin\CommandResponse;
-use LimeSurvey\Api\Command\ResponseData\ResponseDataError;
+use LimeSurvey\Api\Command\V1\Exception\ExceptionInvalidUser;
+use LimeSurvey\Api\Command\{
+    CommandInterface,
+    Request\Request,
+    Mixin\CommandResponse,
+    ResponseData\ResponseDataError
+};
 
 class SessionKeyCreate implements CommandInterface
 {

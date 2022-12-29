@@ -1,10 +1,12 @@
 <?php
 
-use \LimeSurvey\Api\Command\V1\QuestionGroupPropertiesGet;
-use \LimeSurvey\Api\Command\V1\QuestionGroupPropertiesSet;
-use \LimeSurvey\Api\Command\V1\QuestionGroupDelete;
-use \LimeSurvey\Api\Command\V1\QuestionGroupAdd;
-use \LimeSurvey\Api\Command\V1\QuestionGroupList;
+use \LimeSurvey\Api\Command\V1\{
+    QuestionGroupPropertiesGet,
+    QuestionGroupPropertiesSet,
+    QuestionGroupDelete,
+    QuestionGroupAdd,
+    QuestionGroupList
+};
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Question Group

@@ -1,7 +1,9 @@
 <?php
 
-use \LimeSurvey\Api\Command\V1\SurveyAdd;
-use \LimeSurvey\Api\Command\V1\SurveyDelete;
+use \LimeSurvey\Api\Command\V1\{
+    SurveyAdd,
+    SurveyDelete
+};
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Survey

@@ -1,14 +1,16 @@
 <?php
 
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
-
-use \LimeSurvey\Api\Command\V2\SurveyList;
-use \LimeSurvey\Api\Command\V2\SurveyDetail;
-use \LimeSurvey\Api\Command\V2\SurveyPatch;
-
-use LimeSurvey\Api\Rest\V2\SchemaFactory\SchemaFactoryError;
-use LimeSurvey\Api\Rest\V2\SchemaFactory\SchemaFactorySurveyList;
-use LimeSurvey\Api\Rest\V2\SchemaFactory\SchemaFactorySurveyDetail;
+use \LimeSurvey\Api\Command\V2\{
+    SurveyList,
+    SurveyDetail,
+    SurveyPatch
+};
+use LimeSurvey\Api\Rest\V2\SchemaFactory\{
+    SchemaFactoryError,
+    SchemaFactorySurveyList,
+    SchemaFactorySurveyDetail
+};
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // REST V2 Survey Config
