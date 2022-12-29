@@ -132,21 +132,27 @@ class SurveyAdministrationController extends LSBaseController
         LimeExpressionManager::SetSurveyId($iSurveyID);
         LimeExpressionManager::StartProcessingPage(false, true);
 
+        //breadcrumb
         if (isset($survey->currentLanguageSettings) && isset($survey->currentLanguageSettings->surveyls_title)) {
             $aData['title_bar']['title'] =
                 $survey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyID . ")";
         } else {
             $aData['title_bar']['title'] = 'Unknown_language_title' . " (" . gT("ID") . ":" . $iSurveyID . ")";
         }
-        $aData['surveyid'] = $iSurveyID;
-        $aData['sid'] = $iSurveyID; //frontend need this to render topbar for the view
-
+        //buttons in topbar
         $topbarData = TopbarConfiguration::getSurveyTopbarData($iSurveyID);
-   /*     $aData['topbar']['middleButtons'] = $this->renderPartial(
-            'partial/topbar/surveyTopbarLeft_view',
+       $aData['topbar']['middleButtons'] = $this->renderPartial(
+           'partial/topbar/surveyTopbarLeft_view',
+           $topbarData,
+           true
+       );
+        $aData['topbar']['rightButtons'] = $this->renderPartial(
+            'partial/topbar/surveyTopbarRight_view',
             $topbarData,
             true
-        ); */
+        );
+        $aData['surveyid'] = $iSurveyID;
+        $aData['sid'] = $iSurveyID; //frontend need this to render topbar for the view
 
         // Last survey visited
         $userId = App()->user->getId();
@@ -155,7 +161,7 @@ class SurveyAdministrationController extends LSBaseController
         //$aData['surveybar']['buttons']['view'] = true;
         //$aData['surveybar']['returnbutton']['url'] = $this->createUrl("surveyAdministration/listsurveys");
         //$aData['surveybar']['returnbutton']['text'] = gT('Return to survey list');
-        //$aData['sidemenu']["survey_menu"] = true;
+        $aData['sidemenu']["survey_menu"] = true;
 
         // We get the last question visited by user for this survey
         // TODO: getGlobalSetting() DEPRECATED
@@ -1845,17 +1851,27 @@ class SurveyAdministrationController extends LSBaseController
         $aData['subaction'] = $menuEntry->title;
         $aData['display']['menu_bars']['surveysummary'] = $menuEntry->title;
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyID . ")";
-        $aData['surveybar']['buttons']['view'] = true;
-        $aData['surveybar']['savebutton']['form'] = 'globalsetting';
-        $aData['surveybar']['savebutton']['useformid'] = 'true';
-        $aData['surveybar']['saveandclosebutton']['form'] = true;
-        $aData['topBar']['closeUrl'] = $this->createUrl("surveyAdministration/view/", ['surveyid' => $iSurveyID]); // Close button
+
 
         if ($subaction === 'resources') {
             $aData['topBar']['showSaveButton'] = false;
         } else {
             $aData['topBar']['showSaveButton'] = true;
         }
+        $topbarData = TopbarConfiguration::getSurveyTopbarData($iSurveyID);
+        $topbarData = array_merge($topbarData, $aData['topBar']);
+        $aData['topbar']['middleButtons'] = $this->renderPartial(
+            'partial/topbar/surveyTopbarLeft_view',
+            $topbarData,
+            true
+        );
+        $aData['topbar']['rightButtons'] = $this->renderPartial(
+            'partial/topbar/surveyTopbarRight_view',
+            $topbarData,
+            true
+        );
+
+        $aData['topBar']['closeUrl'] = $this->createUrl("surveyAdministration/view/", ['surveyid' => $iSurveyID]); // Close button
 
         $aData['optionsOnOff'] = array(
             'Y' => gT('On', 'unescaped'),

@@ -1,12 +1,14 @@
 <?php
+
 /**
  * Left side buttons for general Survey Topbar
  *
  * todo: this view comes from old topbarWidget
  */
+
 ?>
 <!-- survey activation -->
-<?php if (!$oSurvey->isActive) : ?>
+<?php if (!$oSurvey->isActive) { ?>
     <!-- activate -->
     <?php
     $htmlOptions = [
@@ -28,35 +30,42 @@
             'link' => App()->createUrl("surveyAdministration/activate/", ['iSurveyID' => $sid]),
             'htmlOptions' => $htmlOptions,
         ]); ?>
-    <?php if (!$canactivate) : ?>
+    <?php if (!$canactivate) { ?>
         </span>
-    <?php endif; ?>
-<?php else : ?>
-
+    <?php } ?>
+<?php } else { ?>
     <!-- Stop survey -->
-    <?php if ($canactivate) : ?>
+    <?php if ($canactivate) { ?>
         <a class="btn btn-danger btntooltip"
            href="<?php echo App()->createUrl("surveyAdministration/deactivate/", ['iSurveyID' => $sid]); ?>">
             <i class="fa fa-stop-circle"></i>
             <?php eT("Stop this survey"); ?>
         </a>
-    <?php endif; ?>
-<?php endif; ?>
-
+    <?php }
+}
+?>
 
 <!-- Preview/Run survey -->
-<?php if ($hasSurveyContentPermission) : ?>
-    <?php $this->render('partial/topbar/previewOrRunButton_view',
+<?php
+if ($hasSurveyContentPermission) {
+    $this->renderPartial(
+        '/surveyAdministration/partial/topbar/previewOrRunButton_view',
         [
             'survey' => $oSurvey,
             'surveyLanguages' => $surveyLanguages,
             'id' => $contextbutton . '_button',
             'name' => $contextbutton . '_button',
-            ]); ?>
-<?php endif; ?>
+            ]
+    );
+}
+?>
 
-<?php if ($showToolsMenu) : ?>
-    <?php $toolsDropDownItems = $this->render('partial/topbar/surveyToolsDropdownItems', get_defined_vars(), true); ?>
+<?php if ($showToolsMenu) {
+    $toolsDropDownItems = $this->renderPartial(
+        '/surveyAdministration/partial/topbar/surveyToolsDropdownItems',
+        get_defined_vars(),
+        true
+    ); ?>
     <!-- Tools  -->
     <div class="d-inline-flex ">
         <!-- Main button dropdown -->
@@ -72,11 +81,11 @@
             ],
         ]); ?>
     </div>
-<?php endif; ?>
+<?php } ?>
 
-<?php if (!empty($beforeSurveyBarRender)) : ?>
+<?php if (!empty($beforeSurveyBarRender)) { ?>
 <!--@TODO adjust to new theme-->
-    <?php foreach ($beforeSurveyBarRender as $menu) : ?>
+    <?php foreach ($beforeSurveyBarRender as $menu) { ?>
         <div class='btn-group'>
             <?php if ($menu->isDropDown()) : ?>
                 <button class="dropdown-toggle btn btn-outline-secondary" data-bs-toggle="dropdown" href="#">
@@ -88,7 +97,7 @@
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" role="menu">
-                    <?php foreach ($menu->getMenuItems() as $menuItem) : ?>
+                    <?php foreach ($menu->getMenuItems() as $menuItem) { ?>
                         <?php if ($menuItem->isDivider()) : ?>
                             <li class="dropdown-divider"></li>
                         <?php elseif ($menuItem->isSmallText()) : ?>
@@ -104,7 +113,7 @@
                                 </a>
                             </li>
                         <?php endif; ?>
-                    <?php endforeach; ?>
+                    <?php } ?>
                 </ul>
             <?php else : ?>
                 <a class='btn btn-outline-secondary' href="<?php echo $menu->getHref(); ?>">
@@ -115,8 +124,8 @@
                 </a>
             <?php endif; ?>
         </div>
-    <?php endforeach; ?>
-<?php endif; ?>
+    <?php }  //end foreach?>
+<?php } ?>
 
 <!-- Export -->
 <?php if (Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'export')) : ?>

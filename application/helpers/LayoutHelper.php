@@ -226,14 +226,13 @@ class LayoutHelper
     {
         $titleTextBreadcrumb = null;
         $isBreadCrumb = isset($aData['title_bar']);
-        $surveyAdministrationTop = '';
 
         if (isset($aData['topbar']['title'])) {
             $titleTextBreadcrumb = $aData['topbar']['title'];
         } elseif ($isBreadCrumb) {
             $titleTextBreadcrumb = Yii::app()->getController()->renderPartial("/layouts/title_bar", $aData, true);
         }
-        $middle = $aData['topbar']['middleButtons'] ?? $surveyAdministrationTop;
+        $middle = $aData['topbar']['middleButtons'] ?? '';
         $rightSide = $aData['topbar']['rightButtons'] ?? '';
         if ($titleTextBreadcrumb !== null) {
             return Yii::app()->getController()->widget(

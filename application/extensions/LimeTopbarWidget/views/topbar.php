@@ -2,9 +2,10 @@
 /** @var string $leftSide this could be a simple text or a breadcrumb */
 /** @var ButtonWidget[] $middle */
 /** @var ButtonWidget[] $rightSide */
+
 ?>
 
-<div class="topbar" >
+<div class="topbar" id="pjax-content">
     <div class="container-fluid">
         <div class="row">
             <!-- Title or breadcrumb -->
@@ -13,26 +14,19 @@
             </div>
 
             <!-- middle part with buttons -->
-            <div class="col">
+            <div class="pjax col">
                 <?php
                 if ($middle !== null) {
                     echo $middle;
-                    /*foreach ($middle as $buttonWidget) {
-                        echo $buttonWidget;
-                    }*/
                 }
                 ?>
             </div>
 
             <!-- left part with buttons -->
-            <div class="col-md-auto text-end">
+            <div class="pjax col-md-auto text-end">
                 <?php
                 if ($rightSide !== null) {
                     echo $rightSide;
-                    /*
-                    foreach ($rightSide as $buttonWidget) {
-                        echo $buttonWidget;
-                    } */
                 }
                 ?>
             </div>

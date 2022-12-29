@@ -769,7 +769,7 @@ class ThemeOptionsController extends LSBaseController
         $aData['topbar']['rightButtons'] = $this->renderPartial(
             '/layouts/partial_topbar/right_close_saveclose_save',
             [
-                'isCloseBtn' => true,
+                'isCloseBtn' => false,
                 'isSaveAndCloseBtn' => false,
                 'isSaveBtn' => true,
                 'backUrl' => $this->createUrl("/themeOptions/index"),

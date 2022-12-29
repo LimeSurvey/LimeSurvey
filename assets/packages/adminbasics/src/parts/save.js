@@ -26,6 +26,9 @@ const SaveController = () => {
             form = $(document).find(formId).first();
         } else {
             form = $('#pjax-content').find('form:not(#translatemenu)').first(); // #translatemenu is a first form on survey quick translate page, so we want to skip it
+            if (form.length < 1) {
+                form = $('#trigger-save-button').find('form:not(#translatemenu)').first();
+            }
         }
 
         if (form.length < 1)

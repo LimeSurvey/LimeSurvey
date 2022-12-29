@@ -22,7 +22,7 @@
         }
         ?>
     </h3>
-    <div class="row">
+    <div class="row" id="trigger-save-button">
         <div class="col-lg-12 content-right">
             <?php echo CHtml::form(
                 array("surveyPermissions/savePermissions/surveyid/{$surveyid}")
@@ -32,7 +32,7 @@
                 ['aPermissions' => $aPermissions],
                 true
             );?>
-            <input class='standardbtn d-none'  type='submit' value='<?=gT("Save Now") ?>' />
+            <input class='btn btn-default d-none'  type='submit' value='<?=gT("Save Now") ?>' />
             <?php
             if ($isUserGroup) { ?>
                     <input type='hidden' name='ugid' value="<?= $id?>" />

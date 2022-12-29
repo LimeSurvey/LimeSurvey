@@ -40,8 +40,8 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
             </ul>
         </div>
     </div>
-    <div class="row">
-        <div class="col-12">
+    <div class="row" id="trigger-save-button">
+        <div class="col-12" >
             <form class='form action_update_options_string_form' action=''>
                 <?php echo TbHtml::submitButton($model->isNewRecord ? gT('Create') : gT('Save'), ['id' => 'theme-options--submit', 'class' => 'd-none action_update_options_string_button']); ?>
             <!-- Tab panes -->

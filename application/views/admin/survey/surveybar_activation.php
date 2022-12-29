@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @TODO check if this still used
+ * @TODO check if this still used, this is deprcated and can be deleted
  * Subview of surveybar_view.
  * @param $oSurvey
  * @param $canactivate
