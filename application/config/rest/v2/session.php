@@ -1,5 +1,8 @@
 <?php
 
+use \LimeSurvey\Api\Command\V2\SessionKeyCreate;
+use \LimeSurvey\Api\Command\V2\SessionKeyRelease;
+
 use LimeSurvey\Api\Rest\V2\SchemaFactory\SchemaFactoryError;
 use LimeSurvey\Api\Rest\V2\SchemaFactory\SchemaFactoryAuthToken;
 
@@ -8,12 +11,11 @@ use LimeSurvey\Api\Rest\V2\SchemaFactory\SchemaFactoryAuthToken;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 $rest = [];
-$v1Namespace = '\LimeSurvey\Api\Command\V2\\';
 
 $rest['v2/session'] = [
     'POST' => [
         'description' => 'Generate new authentication token',
-        'commandClass' => $v1Namespace . 'SessionKeyCreate',
+        'commandClass' => SessionKeyCreate::class,
         'params' => [
             'username' => ['src' => 'form'],
             'password' => ['src' => 'form']
@@ -35,7 +37,7 @@ $rest['v2/session'] = [
     ],
     'DELETE' => [
         'description' => 'Destroy currently used authentication token',
-        'commandClass' => $v1Namespace . 'SessionKeyRelease',
+        'commandClass' => SessionKeyRelease::class,
         'auth' => 'session',
         'params' => [],
         'bodyParams' => [],

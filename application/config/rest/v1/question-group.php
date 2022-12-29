@@ -1,15 +1,20 @@
 <?php
 
+use \LimeSurvey\Api\Command\V1\QuestionGroupPropertiesGet;
+use \LimeSurvey\Api\Command\V1\QuestionGroupPropertiesSet;
+use \LimeSurvey\Api\Command\V1\QuestionGroupDelete;
+use \LimeSurvey\Api\Command\V1\QuestionGroupAdd;
+use \LimeSurvey\Api\Command\V1\QuestionGroupList;
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Question Group
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 $rest = [];
-$v1Namespace = '\LimeSurvey\Api\Command\V1\\';
 
 $rest['v1/questionGroup/$groupID'] = [
     'GET' => [
-        'commandClass' => $v1Namespace . 'QuestionGroupPropertiesGet',
+        'commandClass' => QuestionGroupPropertiesGet::class,
         'auth' => 'session',
         'params' => [
             'language' => true
@@ -31,7 +36,7 @@ $rest['v1/questionGroup/$groupID'] = [
         ]
     ],
     'PUT' => [
-        'commandClass' => $v1Namespace . 'QuestionGroupPropertiesSet',
+        'commandClass' => QuestionGroupPropertiesSet::class,
         'auth' => 'session',
         'params' => [],
         'content' => null,
@@ -51,7 +56,7 @@ $rest['v1/questionGroup/$groupID'] = [
         ]
     ],
     'DELETE' => [
-        'commandClass' => $v1Namespace . 'QuestionGroupDelete',
+        'commandClass' => QuestionGroupDelete::class,
         'auth' => 'session',
         'params' => [],
         'content' => null,
@@ -74,7 +79,7 @@ $rest['v1/questionGroup/$groupID'] = [
 
 $rest['v1/questionGroup'] = [
     'POST' => [
-        'commandClass' => $v1Namespace . 'QuestionGroupAdd',
+        'commandClass' => QuestionGroupAdd::class,
         'auth' => 'session',
         'params' => [],
         'content' => null,
@@ -94,7 +99,7 @@ $rest['v1/questionGroup'] = [
         ]
     ],
     'GET' => [
-        'commandClass' => $v1Namespace . 'QuestionGroupList',
+        'commandClass' => QuestionGroupList::class,
         'auth' => 'session',
         'params' => [
             'surveyID' => true,

@@ -2,6 +2,10 @@
 
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
 
+use \LimeSurvey\Api\Command\V2\SurveyList;
+use \LimeSurvey\Api\Command\V2\SurveyDetail;
+use \LimeSurvey\Api\Command\V2\SurveyPatch;
+
 use LimeSurvey\Api\Rest\V2\SchemaFactory\SchemaFactoryError;
 use LimeSurvey\Api\Rest\V2\SchemaFactory\SchemaFactorySurveyList;
 use LimeSurvey\Api\Rest\V2\SchemaFactory\SchemaFactorySurveyDetail;
@@ -11,12 +15,11 @@ use LimeSurvey\Api\Rest\V2\SchemaFactory\SchemaFactorySurveyDetail;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 $rest = [];
-$v2Namespace = '\LimeSurvey\Api\Command\V2\\';
 
 $rest['v2/survey'] = [
     'GET' => [
         'description' => 'Survey list',
-        'commandClass' => $v2Namespace . 'SurveyList',
+        'commandClass' => SurveyList::class,
         'auth' => 'session',
         'params' => [
             'pageSize' => ['type' => 'int'],
@@ -45,7 +48,7 @@ $rest['v2/survey-detail/$surveyId'] = [
     'GET' => [
         'tag' => 'survey',
         'description' => 'Survey detail',
-        'commandClass' => $v2Namespace . 'SurveyDetail',
+        'commandClass' => SurveyDetail::class,
         'auth' => 'session',
         'params' => [],
         'examples' => null,
@@ -73,7 +76,7 @@ $rest['v2/survey-detail/$surveyId'] = [
     'PATCH' => [
         'tag' => 'survey',
         'description' => 'Survey update via RFC 6902 based patch',
-        'commandClass' => $v2Namespace . 'SurveyPatch',
+        'commandClass' => SurveyPatch::class,
         'auth' => 'session',
         'params' => [],
         'examples' => null,

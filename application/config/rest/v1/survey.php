@@ -1,15 +1,17 @@
 <?php
 
+use \LimeSurvey\Api\Command\V1\SurveyAdd;
+use \LimeSurvey\Api\Command\V1\SurveyDelete;
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Survey
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 $rest = [];
-$v1Namespace = '\LimeSurvey\Api\Command\V1\\';
 
 $rest['v1/survey'] = [
     'POST' => [
-        'commandClass' => $v1Namespace . 'SurveyAdd',
+        'commandClass' => SurveyAdd::class,
         'auth' => 'session',
         'params' => [],
         'content' => null,
@@ -25,7 +27,7 @@ $rest['v1/survey'] = [
         ]
     ],
     'DELETE' => [
-        'commandClass' => $v1Namespace . 'SurveyDelete',
+        'commandClass' => SurveyDelete::class,
         'auth' => 'session',
         'params' => [],
         'content' => null,

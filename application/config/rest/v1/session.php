@@ -1,15 +1,17 @@
 <?php
 
+use \LimeSurvey\Api\Command\V1\SessionKeyCreate;
+use \LimeSurvey\Api\Command\V1\SessionKeyRelease;
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Session
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 $rest = [];
-$v1Namespace = '\LimeSurvey\Api\Command\V1\\';
 
 $rest['v1/session'] = [
     'POST' => [
-        'commandClass' => $v1Namespace . 'SessionKeyCreate',
+        'commandClass' => SessionKeyCreate::class,
         'params' => [
             'username' => true,
             'password' => true
@@ -27,7 +29,7 @@ $rest['v1/session'] = [
         ]
     ],
     'DELETE' => [
-        'commandClass' => $v1Namespace . 'SessionKeyRelease',
+        'commandClass' => SessionKeyRelease::class,
         'auth' => 'session',
         'params' => [],
         'content' => null,

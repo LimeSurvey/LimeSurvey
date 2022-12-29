@@ -1,16 +1,16 @@
 <?php
 
+use \LimeSurvey\Api\Command\V1\SiteSettingsGet;
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Site Settings
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 $rest = [];
-$v1Namespace = '\LimeSurvey\Api\Command\V1\\';
-
 
 $rest['v1/siteSettings/$settingName'] = [
     'GET' => [
-        'commandClass' => $v1Namespace . 'SiteSettingsGet',
+        'commandClass' => SiteSettingsGet::class,
         'auth' => 'session',
         'params' => [],
         'content' => null,

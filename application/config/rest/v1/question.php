@@ -1,15 +1,20 @@
 <?php
 
+use \LimeSurvey\Api\Command\V1\QuestionPropertiesGet;
+use \LimeSurvey\Api\Command\V1\QuestionPropertiesSet;
+use \LimeSurvey\Api\Command\V1\QuestionDelete;
+use \LimeSurvey\Api\Command\V1\QuestionImport;
+use \LimeSurvey\Api\Command\V1\QuestionGroupList;
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Question
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 $rest = [];
-$v1Namespace = '\LimeSurvey\Api\Command\V1\\';
 
 $rest['v1/question/$questionID'] = [
     'GET' => [
-        'commandClass' => $v1Namespace . 'QuestionPropertiesGet',
+        'commandClass' => QuestionPropertiesGet::class,
         'auth' => 'session',
         'params' => [
             'questionSettings' => true,
@@ -32,7 +37,7 @@ $rest['v1/question/$questionID'] = [
         ]
     ],
     'PUT' => [
-        'commandClass' => $v1Namespace . 'QuestionPropertiesSet',
+        'commandClass' => QuestionPropertiesSet::class,
         'auth' => 'session',
         'params' => [],
         'content' => null,
@@ -52,7 +57,7 @@ $rest['v1/question/$questionID'] = [
         ]
     ],
     'DELETE' => [
-        'commandClass' => $v1Namespace . 'QuestionDelete',
+        'commandClass' => QuestionDelete::class,
         'auth' => 'session',
         'params' => [],
         'content' => null,
@@ -75,7 +80,7 @@ $rest['v1/question/$questionID'] = [
 
 $rest['v1/question'] = [
     'POST' => [
-        'commandClass' => $v1Namespace . 'QuestionImport',
+        'commandClass' => QuestionImport::class,
         'auth' => 'session',
         'params' => [],
         'content' => null,
@@ -91,7 +96,7 @@ $rest['v1/question'] = [
         ]
     ],
     'GET' => [
-        'commandClass' => $v1Namespace . 'QuestionGroupList',
+        'commandClass' => QuestionGroupList::class,
         'auth' => 'session',
         'params' => [
             'surveyID' => true,
