@@ -12,7 +12,7 @@ use \LimeSurvey\Api\Command\V1\QuestionGroupList;
 
 $rest = [];
 
-$rest['v1/questionGroup/$groupID'] = [
+$rest['v1/questionGroup/$id'] = [
     'GET' => [
         'commandClass' => QuestionGroupPropertiesGet::class,
         'auth' => 'session',

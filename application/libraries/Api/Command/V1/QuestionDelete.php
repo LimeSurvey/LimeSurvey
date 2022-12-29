@@ -29,7 +29,7 @@ class QuestionDelete implements CommandInterface
     public function run(Request $request)
     {
         $sSessionKey = (string) $request->getData('sessionKey');
-        $iQuestionID = (int) $request->getData('questionID');
+        $iQuestionID = (int) $request->getData('_id');
 
         if (
             ($response = $this->checkKey($sSessionKey)) !== true

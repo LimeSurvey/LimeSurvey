@@ -68,7 +68,6 @@ class EndpointFactory
                 $endpointConfig = $config[$requestMethod];
 
                 $endpointConfig['apiVersion'] = $apiVersion;
-                $endpointConfig['byId'] = $keyId;
                 break;
             }
         }
@@ -107,17 +106,9 @@ class EndpointFactory
             $params['sessionKey'] = $this->getAuthToken();
         }
 
-        // REST route defines param 'id'
-        // endpoint config can specify byId, the id param name to pass into the command
-        $id = $request->getParam('_id');
-        if (
-            $endpoint
-            && !empty($endpoint['byId'])
-            && !empty($id)
-        ) {
-            $idName = is_string($endpoint['byId'])
-            ? $endpoint['byId'] : 'id';
-            $params[$idName] = $id;
+        // REST route defines optional param '_id'
+        if ($id = $request->getParam('_id')) {
+            $params['_id'] = $id;
         }
 
         $content = $request->getRestParams();

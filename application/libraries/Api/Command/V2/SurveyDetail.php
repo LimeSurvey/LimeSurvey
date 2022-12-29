@@ -27,7 +27,7 @@ class SurveyDetail implements CommandInterface
     public function run(Request $request)
     {
         $sessionKey = (string) $request->getData('sessionKey');
-        $surveyId = (string) $request->getData('surveyId');
+        $surveyId = (string) $request->getData('_id');
 
         if (
             ($response = $this->checkKey($sessionKey)) !== true

@@ -25,7 +25,7 @@ class SiteSettingsGet implements CommandInterface
      */
     public function run(Request $request)
     {
-        $sessionKey = (string) $request->getData('sessionKey');
+        $sessionKey = (string) $request->getData('_id');
         $settingName = (string) $request->getData('settingName');
 
         if (

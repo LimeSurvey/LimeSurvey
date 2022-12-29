@@ -32,7 +32,7 @@ class QuestionGroupPropertiesSet implements CommandInterface
     public function run(Request $request)
     {
         $sSessionKey = (string) $request->getData('sessionKey');
-        $iGroupID = (int) $request->getData('groupID');
+        $iGroupID = (int) $request->getData('_id');
         $aGroupData = $request->getData('groupData', null);
 
         if (

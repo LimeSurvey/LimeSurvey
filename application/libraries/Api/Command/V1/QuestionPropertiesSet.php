@@ -30,7 +30,7 @@ class QuestionPropertiesSet implements CommandInterface
     public function run(Request $request)
     {
         $sSessionKey = (string) $request->getData('sessionKey');
-        $iQuestionID = (int) $request->getData('questionID');
+        $iQuestionID = (int) $request->getData('_id');
         $aQuestionData = $request->getData('questionData');
         $sLanguage = (string) $request->getData('language');
 

@@ -28,7 +28,7 @@ class QuestionGroupAdd implements CommandInterface
     public function run(Request $request)
     {
         $sSessionKey = (string) $request->getData('sessionKey');
-        $iSurveyID = (int) $request->getData('surveyID');
+        $iSurveyID = (int) $request->getData('_id');
         $sGroupTitle = (string) $request->getData('groupTitle');
         $sGroupDescription = (string) $request->getData('groupDescription');
 

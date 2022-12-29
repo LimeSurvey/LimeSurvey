@@ -29,7 +29,7 @@ class QuestionGroupDelete implements CommandInterface
     public function run(Request $request)
     {
         $sSessionKey = (string) $request->getData('sessionKey');
-        $iGroupID = (int) $request->getData('groupID');
+        $iGroupID = (int) $request->getData('_id');
 
         if (
             ($response = $this->checkKey($sSessionKey)) !== true

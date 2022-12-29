@@ -35,7 +35,7 @@ class QuestionPropertiesGet implements CommandInterface
     public function run(Request $request)
     {
         $sSessionKey = (string) $request->getData('sessionKey');
-        $iQuestionID = (int) $request->getData('questionID');
+        $iQuestionID = (int) $request->getData('_id');
         $aQuestionSettings = $request->getData('questionSettings');
         $sLanguage = (string) $request->getData('language');
 

@@ -4,7 +4,7 @@ use \LimeSurvey\Api\Command\V1\QuestionPropertiesGet;
 use \LimeSurvey\Api\Command\V1\QuestionPropertiesSet;
 use \LimeSurvey\Api\Command\V1\QuestionDelete;
 use \LimeSurvey\Api\Command\V1\QuestionImport;
-use \LimeSurvey\Api\Command\V1\QuestionGroupList;
+use \LimeSurvey\Api\Command\V1\QuestionList;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Question
@@ -12,7 +12,7 @@ use \LimeSurvey\Api\Command\V1\QuestionGroupList;
 
 $rest = [];
 
-$rest['v1/question/$questionID'] = [
+$rest['v1/question/$id'] = [
     'GET' => [
         'commandClass' => QuestionPropertiesGet::class,
         'auth' => 'session',
@@ -96,7 +96,7 @@ $rest['v1/question'] = [
         ]
     ],
     'GET' => [
-        'commandClass' => QuestionGroupList::class,
+        'commandClass' => QuestionList::class,
         'auth' => 'session',
         'params' => [
             'surveyID' => true,

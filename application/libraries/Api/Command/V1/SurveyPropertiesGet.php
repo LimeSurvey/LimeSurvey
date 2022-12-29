@@ -29,7 +29,7 @@ class SurveyPropertiesGet implements CommandInterface
     public function run(Request $request)
     {
         $sSessionKey = (string) $request->getData('sessionKey');
-        $iSurveyID = (int) $request->getData('surveyID');
+        $iSurveyID = (int) $request->getData('_id');
         $aSurveySettings = $request->getData('surveySettings', []);
 
         Yii::app()->loadHelper('surveytranslator');

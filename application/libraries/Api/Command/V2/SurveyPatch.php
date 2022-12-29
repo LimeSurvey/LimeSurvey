@@ -24,7 +24,7 @@ class SurveyPatch implements CommandInterface
     public function run(Request $request)
     {
         $sessionKey = (string) $request->getData('sessionKey');
-        $id = (string) $request->getData('surveyId');
+        $id = (string) $request->getData('_id');
 
         if (
             ($response = $this->checkKey($sessionKey)) !== true

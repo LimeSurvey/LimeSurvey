@@ -27,7 +27,7 @@ class SurveyDelete implements CommandInterface
     public function run(Request $request)
     {
         $sSessionKey = (string) $request->getData('sessionKey');
-        $iSurveyID = (int) $request->getData('surveyID');
+        $iSurveyID = (int) $request->getData('_id');
 
         if (
             ($response = $this->checkKey($sSessionKey)) !== true

@@ -8,7 +8,7 @@ use \LimeSurvey\Api\Command\V1\SiteSettingsGet;
 
 $rest = [];
 
-$rest['v1/siteSettings/$settingName'] = [
+$rest['v1/siteSettings/$id'] = [
     'GET' => [
         'commandClass' => SiteSettingsGet::class,
         'auth' => 'session',

@@ -25,7 +25,10 @@ $rest['v1/survey'] = [
                 'description' => 'Unauthorized'
             ]
         ]
-    ],
+    ]
+];
+
+$rest['v1/survey/$id'] = [
     'DELETE' => [
         'commandClass' => SurveyDelete::class,
         'auth' => 'session',
