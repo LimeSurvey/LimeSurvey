@@ -1,0 +1,18 @@
+table {
+    .ls-sticky-column {
+        &:first-child {
+            position         : sticky;
+            background-color : $white;
+            left             : 0;
+            padding-right    : 1.5rem;
+            box-shadow       : inset -15px 0px 15px -15px rgba(0, 0, 0, 0.15);
+        }
+        &:last-child {
+            position         : sticky;
+            background-color : $white;
+            right            : 0;
+            padding-left     : 1.5rem;
+            box-shadow       : inset 15px 0 15px -15px rgba(0, 0, 0, 0.15);
+        }
+    }
+}

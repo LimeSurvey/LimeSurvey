@@ -62,7 +62,6 @@
                             'dataProvider' => $model->searchMine(false),
                             'id' => 'usergroups-grid-belong-to',
                             'emptyText' => gT('No user groups found.'),
-                            'template' => "{items}\n<div id='tokenListPager'><div class=\"col-md-4\" id=\"massive-action-container\"></div><div class=\"col-md-4 pager-container ls-ba \">{pager}</div><div class=\"col-md-4 summary-container\">{summary}</div></div>",
                             'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
                                     gT('%s rows per page'),
                                     CHtml::dropDownList(

@@ -35,16 +35,11 @@
                 'columns' => array(
 
                     array(
-                        'id'=>'sid',
-                        'class'=>'CCheckBoxColumn',
-                        'selectableRows' => '100',
-                    ),
-                     array(
-                        'header' => gT('Action'),
-                        'name' => 'actions',
-                        'value'=>'$data->buttons',
-                        'type'=>'raw',
-                        'htmlOptions' => array('class' => 'text-center'),
+                        'id'                => 'sid',
+                        'class'             => 'CCheckBoxColumn',
+                        'selectableRows'    => '100',
+                        'headerHtmlOptions' => array('class' => 'ls-sticky-column'),
+                        'htmlOptions'       => ['class' => 'ls-sticky-column']
                     ),
                     array(
                         'header' => gT('Survey ID'),
@@ -135,6 +130,104 @@
                         'type' => 'raw',
                         'value'=>'CHtml::link($data->hasTokensTable ? gT("Yes"):gT("No"), Yii::app()->createUrl("surveyAdministration/view/",array("surveyid"=>$data->sid)))',
                         'htmlOptions' => array('class' => 'has-link'),
+                    ),
+                    array(
+                        'header' => gT('Survey ID'),
+                        'name' => 'survey_id',
+                        'type' => 'raw',
+                        'value'=>'CHtml::link($data->sid, Yii::app()->createUrl("surveyAdministration/view/",array("iSurveyID"=>$data->sid)))',
+                        'headerHtmlOptions'=>array('class' => 'd-none d-sm-table-cell text-nowrap'),
+                        'htmlOptions' => array('class' => 'd-none d-sm-table-cell has-link'),
+                    ),
+                    array(
+                        'header' => gT('Status'),
+                        'name' => 'running',
+                        'value'=>'$data->running',
+                        'type'=>'raw',
+                        'headerHtmlOptions'=>array('class' => 'd-none d-sm-table-cell text-nowrap'),
+                        'htmlOptions' => array('class' => 'd-none d-sm-table-cell has-link'),
+                    ),
+                    array(
+                        'header' => gT('Title'),
+                        'name' => 'title',
+                        'type' => 'raw',
+                        'value'=>'isset($data->defaultlanguage) ? CHtml::link(flattenText($data->defaultlanguage->surveyls_title), Yii::app()->createUrl("surveyAdministration/view/",array("surveyid"=>$data->sid))) : ""',
+                        'htmlOptions' => array('class' => 'has-link'),
+                        'headerHtmlOptions'=>array('class' => 'text-nowrap'),
+                    ),
+                    array(
+                        'header' => gT('Group'),
+                        'name' => 'group',
+                        'type' => 'raw',
+                        'value'=>'isset($data->surveygroup) ? CHtml::link(flattenText($data->surveygroup->title), Yii::app()->createUrl("surveyAdministration/view/",array("surveyid"=>$data->sid))) : ""',
+                        'htmlOptions' => array('class' => 'has-link'),
+                        'headerHtmlOptions'=>array('class' => 'text-nowrap'),
+                    ),
+                    array(
+                        'header' => gT('Created'),
+                        'name' => 'creation_date',
+                        'type' => 'raw',
+                        'value'=>'CHtml::link($data->creationdate, Yii::app()->createUrl("surveyAdministration/view/",array("surveyid"=>$data->sid)))',
+                        'headerHtmlOptions'=>array('class' => 'd-none d-sm-table-cell text-nowrap'),
+                        'htmlOptions' => array('class' => 'd-none d-sm-table-cell has-link'),
+                    ),
+                    array(
+                        'header' => gT('Owner'),
+                        'name' => 'owner',
+                        'type' => 'raw',
+                        'value'=>'CHtml::link(CHtml::encode($data->ownerUserName), Yii::app()->createUrl("surveyAdministration/view/",array("surveyid"=>$data->sid)))',
+                        'headerHtmlOptions'=>array('class' => 'd-md-none d-xl-table-cell text-nowrap'),
+                        'htmlOptions' => array('class' => 'd-md-none d-xl-table-cell has-link'),
+                    ),
+
+                    array(
+                        'header' => gT('Anonymized responses'),
+                        'name' => 'anonymized_responses',
+                        'type' => 'raw',
+                        'value'=>'CHtml::link($data->anonymizedResponses, Yii::app()->createUrl("surveyAdministration/view/",array("surveyid"=>$data->sid)))',
+                        'headerHtmlOptions'=>array('class' => 'd-md-none d-lg-table-cell'),
+                        'htmlOptions' => array('class' => 'd-md-none d-lg-table-cell has-link'),
+                    ),
+
+
+                    array(
+                        'header' => gT('Partial'),
+                        'type' => 'raw',
+                        'value'=>'CHtml::link($data->countPartialAnswers, Yii::app()->createUrl("surveyAdministration/view/",array("surveyid"=>$data->sid)))',
+                        'name' => 'partial',
+                        'htmlOptions' => array('class' => 'has-link'),
+                    ),
+
+                    array(
+                        'header' => gT('Full'),
+                        'name' => 'full',
+                        'type' => 'raw',
+                        'value'=>'CHtml::link($data->countFullAnswers, Yii::app()->createUrl("surveyAdministration/view/",array("surveyid"=>$data->sid)))',
+                        'htmlOptions' => array('class' => 'has-link'),
+                    ),
+
+                    array(
+                        'header' => gT('Total'),
+                        'name' => 'total',
+                        'type' => 'raw',
+                        'value'=>'CHtml::link($data->countTotalAnswers, Yii::app()->createUrl("surveyAdministration/view/",array("surveyid"=>$data->sid)))',
+                        'htmlOptions' => array('class' => 'has-link'),
+                    ),
+
+                    array(
+                        'header' => gT('Closed group'),
+                        'name' => 'uses_tokens',
+                        'type' => 'raw',
+                        'value'=>'CHtml::link($data->hasTokensTable ? gT("Yes"):gT("No"), Yii::app()->createUrl("surveyAdministration/view/",array("surveyid"=>$data->sid)))',
+                        'htmlOptions' => array('class' => 'has-link'),
+                    ),
+                    array(
+                        'header' => gT('Action'),
+                        'name' => 'actions',
+                        'value'=>'$data->buttons',
+                        'type'=>'raw',
+                        'headerHtmlOptions' => array('class' => 'ls-sticky-column'),
+                        'htmlOptions' => array('class' => 'text-center ls-sticky-column'),
                     ),
 
                 ),

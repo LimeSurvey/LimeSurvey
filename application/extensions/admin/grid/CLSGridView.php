@@ -11,28 +11,20 @@ class CLSGridView extends TbGridView
 
     /**
      * Initializes the widget.
+     * @throws CException
      */
     public function init()
     {
         parent::init();
-        Yii::app()->clientScript->registerScriptFile(
-            Yii::app()->getConfig("extensionsurl") . 'admin/grid/assets/gridScrollbar.js',
-            LSYii_ClientScript::POS_BEGIN
+        App()->clientScript->registerScriptFile(
+            App()->getConfig("extensionsurl") . 'admin/grid/assets/gridScrollbar.js',
+            CClientScript::POS_BEGIN
         );
 
         $this->pager = ['class' => 'application.extensions.admin.grid.CLSYiiPager'];
         $this->htmlOptions['class'] = '';
         $classes = array('table', 'table-hover');
-        $this->template = "
-        <div id=\"bottom-scroller\" class=\"content-right scrolling-wrapper\">
-            {items}
-         </div>
-         <div class=\"row mx-auto mt-4\" id=''>
-            <div class=\"col-md-4\" id=\"massive-action-container\">$this->massiveActionTemplate</div>
-            <div class=\"col-md-4 \">{pager}</div>
-            <div class=\"col-md-4 summary-container\">{summary}</div>
-         </div>
-        ";
+        $this->template = $this->render('template', ['massiveActionTemplate' => $this->massiveActionTemplate], true);
 
         if (!empty($classes)) {
             $classes = implode(' ', $classes);
@@ -43,12 +35,6 @@ class CLSGridView extends TbGridView
             }
         }
     }
-
-    /**
-     * Overwritten because of additional scrollbar at bottom of the gridview itself.
-     *
-     * @return void
-     */
 
     /**
      * Creates column objects and initializes them.
@@ -62,6 +48,4 @@ class CLSGridView extends TbGridView
         }
         parent::initColumns();
     }
-
-
 }
