@@ -10,30 +10,28 @@ class CLSGridView extends TbGridView
     public $massiveActionTemplate = '';
 
     /**
+     * An array of Javascript functions that will be passed to afterAjaxUpdate
+     * @var array
+     */
+    public $lsAfterAjaxUpdate;
+
+    /**
      * Initializes the widget.
+     * @throws CException
      */
     public function init()
     {
         parent::init();
-        Yii::app()->clientScript->registerScriptFile(
-            Yii::app()->getConfig("extensionsurl") . 'admin/grid/assets/gridScrollbar.js',
-            LSYii_ClientScript::POS_BEGIN
+        App()->clientScript->registerScriptFile(
+            App()->getConfig("extensionsurl") . 'admin/grid/assets/gridScrollbar.js',
+            CClientScript::POS_BEGIN
         );
 
         $this->pager = ['class' => 'application.extensions.admin.grid.CLSYiiPager'];
         $this->htmlOptions['class'] = '';
         $classes = array('table', 'table-hover');
-        $this->template = "
-        <div id=\"bottom-scroller\" class=\"content-right scrolling-wrapper\">
-            {items}
-         </div>
-         <div class=\"row mx-auto mt-4\" id=''>
-            <div class=\"col-md-4\" id=\"massive-action-container\">$this->massiveActionTemplate</div>
-            <div class=\"col-md-4 \">{pager}</div>
-            <div class=\"col-md-4 summary-container\">{summary}</div>
-         </div>
-        ";
-
+        $this->template = $this->render('template', ['massiveActionTemplate' => $this->massiveActionTemplate], true);
+        $this->lsAfterAjaxUpdate();
         if (!empty($classes)) {
             $classes = implode(' ', $classes);
             if (isset($this->itemsCssClass)) {
@@ -43,12 +41,6 @@ class CLSGridView extends TbGridView
             }
         }
     }
-
-    /**
-     * Overwritten because of additional scrollbar at bottom of the gridview itself.
-     *
-     * @return void
-     */
 
     /**
      * Creates column objects and initializes them.
@@ -63,5 +55,19 @@ class CLSGridView extends TbGridView
         parent::initColumns();
     }
 
-
+    /**
+     * parse javascript snippets to TbGridView's afterAjaxUpdate and insert global javascript snippets for griviews
+     * @return void
+     */
+    protected function lsAfterAjaxUpdate(): void
+    {
+        if (isset($this->lsAfterAjaxUpdate)) {
+            $this->afterAjaxUpdate = 'function(id, data){';
+            foreach ($this->lsAfterAjaxUpdate as $jsCode) {
+                $this->afterAjaxUpdate .= $jsCode;
+            }
+            $this->afterAjaxUpdate .= 'action_dropdown()';
+            $this->afterAjaxUpdate .= '}';
+        }
+    }
 }
