@@ -247,7 +247,7 @@ function guidGenerator() {
 }
 
 $(document).on('change', '#importsurvey #surveysgroup', function () {
-    if ($(this).val() == 'import') {
+    if ($(this).val() == 'from_survey') {
         $('#survey_group_import_warning').removeClass('hide');
     } else {
         $('#survey_group_import_warning').addClass('hide');

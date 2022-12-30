@@ -1273,8 +1273,8 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         if (!$isCopying) {
             // Set to 1 by default
             $insertdata['gsid'] = 1;
-            // If $targetSurveyGroup is set to 'import' and the xml includes survey group details, try to find the group by name.
-            if ($targetSurveyGroup == 'import' && !empty($xml->surveys_groups->rows->row[0]->name)) {
+            // If $targetSurveyGroup is set to 'from_survey' and the xml includes survey group details, try to find the group by name.
+            if ($targetSurveyGroup == 'from_survey' && !empty($xml->surveys_groups->rows->row[0]->name)) {
                 $surveyGroupName = (string) $xml->surveys_groups->rows->row[0]->name;
                 $surveyGroup = SurveysGroups::model()->findByAttributes(["name" => $surveyGroupName]);
                 if (!empty($surveyGroup)) {

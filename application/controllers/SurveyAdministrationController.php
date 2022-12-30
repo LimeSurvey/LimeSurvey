@@ -2147,8 +2147,9 @@ class SurveyAdministrationController extends LSBaseController
             Yii::app()->loadHelper('admin/import');
 
             if ($action == 'importsurvey' && !$aData['bFailed']) {
-
-                $aImportResults = importSurveyFile($sFullFilepath, (Yii::app()->request->getPost('translinksfields') == '1'), null, null, Yii::app()->request->getParam('surveysgroup'));
+                $translateLinks = Yii::app()->request->getPost('translinksfields') == '1';
+                $targetSurveysGroup = Yii::app()->request->getParam('surveysgroup');
+                $aImportResults = importSurveyFile($sFullFilepath, $translateLinks, null, null, $targetSurveysGroup);
                 if (is_null($aImportResults)) {
                     $aImportResults = array(
                         'error' => gT("Unknown error while reading the file, no survey created.")

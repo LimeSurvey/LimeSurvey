@@ -37,7 +37,7 @@
                         'htmlOptions' => [],
                         'data' => [
                             'default' => gT("Import on default survey group"),
-                            'import' => gT("Keep the survey group from the imported file"),
+                            'from_survey' => gT("Keep the survey group from the imported file"),
                         ],
                         'value' => 'default',
                         'name' => 'surveysgroup',
