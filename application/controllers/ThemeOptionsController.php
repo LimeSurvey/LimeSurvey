@@ -742,9 +742,6 @@ class ThemeOptionsController extends LSBaseController
         );
 
         if ($sid !== null) {
-            $aData['topBar']['showSaveButton'] = true;
-            $aData['surveybar']['buttons']['view'] = true;
-            $aData['surveybar']['savebutton']['form'] = true;
             $aData['surveyid'] = $sid;
             $aData['title_bar']['title'] = gT("Survey theme options");
             $aData['subaction'] = gT("Survey theme options");
@@ -766,16 +763,18 @@ class ThemeOptionsController extends LSBaseController
         $pageTitle = $basePageTitle . " (" . $addictionalSubtitle . " )";
 
         $aData['topbar']['title'] = $pageTitle;
+        //buttons in topbar
+        $aData['topBar']['showSaveButton'] = true;
+        $topbarData = TopbarConfiguration::getSurveyTopbarData($sid);
+        $topbarData = array_merge($topbarData, $aData['topBar']);
+        $aData['topbar']['middleButtons'] = $this->renderPartial(
+            '/surveyAdministration/partial/topbar/surveyTopbarLeft_view',
+            $topbarData,
+            true
+        );
         $aData['topbar']['rightButtons'] = $this->renderPartial(
-            '/layouts/partial_topbar/right_close_saveclose_save',
-            [
-                'isCloseBtn' => false,
-                'isSaveAndCloseBtn' => false,
-                'isSaveBtn' => true,
-                'backUrl' => $this->createUrl("/themeOptions/index"),
-                'formIdSaveClose' => '',
-                'formIdSave' => 'template-options-form'
-            ],
+            '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
+            $topbarData,
             true
         );
 
