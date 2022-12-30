@@ -12064,7 +12064,7 @@ msgid "%s is an invalid value for this question"
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:9811
-msgid "This question only accept 30 digits including 10 decimals."
+msgid "This question only accepts 30 digits including 10 decimals."
 msgstr ""
 
 #: application/helpers/expressions/warnings/EMWarningAssignment.php:23
