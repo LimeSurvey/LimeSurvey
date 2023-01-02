@@ -381,6 +381,7 @@ class Update extends DynamicSurveyCommonAction
      */
     public function step4()
     {
+        Yii::app()->loadLibrary("admin/pclzip");
         if (Permission::model()->hasGlobalPermission('superadmin')) {
             if (App()->request->getPost('destinationBuild')) {
                 $destinationBuild = App()->request->getPost('destinationBuild');
