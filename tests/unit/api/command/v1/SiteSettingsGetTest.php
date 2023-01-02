@@ -44,16 +44,14 @@ class SiteSettingsGetTest extends TestBaseClass
             'settingName' => 'settingName'
         ));
 
-        $mockAuthSession= Mockery::mock(AuthSession::class);
+        $mockAuthSession = Mockery::mock(AuthSession::class);
         $mockAuthSession
-            ->allows()
-            ->checkKey('mock')
+            ->shouldReceive('checkKey')
             ->andReturns(true);
 
-        $mockModelPermission= Mockery::mock(Permission::class);
+        $mockModelPermission = Mockery::mock(Permission::class);
         $mockModelPermission
-            ->allows()
-            ->hasGlobalPermission('superadmin', 'read', null)
+            ->shouldReceive('hasGlobalPermission')
             ->andReturns(false);
 
         $command = new SiteSettingsGet();
@@ -83,16 +81,14 @@ class SiteSettingsGetTest extends TestBaseClass
             'settingName' => 'invalid-setting-name'
         ));
 
-        $mockAuthSession= Mockery::mock(AuthSession::class);
+        $mockAuthSession = Mockery::mock(AuthSession::class);
         $mockAuthSession
-            ->allows()
-            ->checkKey('mock')
+            ->shouldReceive('checkKey')
             ->andReturns(true);
 
-        $mockModelPermission= Mockery::mock(Permission::class);
+        $mockModelPermission = Mockery::mock(Permission::class);
         $mockModelPermission
-            ->allows()
-            ->hasGlobalPermission('superadmin', 'read', null)
+            ->shouldReceive('hasGlobalPermission')
             ->andReturns(true);
 
         $command = new SiteSettingsGet();
@@ -119,16 +115,16 @@ class SiteSettingsGetTest extends TestBaseClass
     {
         $request = new Request(array(
             'sessionKey' => 'mock',
-            'settingName' => 'invalid-setting-name'
+            'settingName' => 'setting-name'
         ));
 
-        $mockAuthSession= Mockery::mock(AuthSession::class);
+        $mockAuthSession = Mockery::mock(AuthSession::class);
         $mockAuthSession
             ->allows()
             ->checkKey('mock')
             ->andReturns(true);
 
-        $mockModelPermission= Mockery::mock(Permission::class);
+        $mockModelPermission = Mockery::mock(Permission::class);
         $mockModelPermission
             ->allows()
             ->hasGlobalPermission('superadmin', 'read', null)
@@ -137,7 +133,7 @@ class SiteSettingsGetTest extends TestBaseClass
         $mockApp = Mockery::mock(LSYii_Application::class);
         $mockApp
             ->allows()
-            ->getConfig('invalid-setting-name')
+            ->getConfig('setting-name')
             ->andReturns(true);
 
         $command = new SiteSettingsGet();

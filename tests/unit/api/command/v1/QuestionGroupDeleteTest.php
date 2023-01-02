@@ -11,7 +11,7 @@ use LimeSurvey\Api\Command\V1\QuestionGroupDelete;
 use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorNotFound;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorUnauthorised;
-use LimeSurvey\Api\AuthSession;
+use LimeSurvey\Api\Auth\AuthSession;
 use Mockery;
 
 /**

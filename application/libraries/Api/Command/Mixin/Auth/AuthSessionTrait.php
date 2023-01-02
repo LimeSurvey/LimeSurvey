@@ -11,9 +11,9 @@ trait AuthSessionTrait
 {
     private $authSession = null;
 
-    public function setAuthSession(AuthSession $apiSession)
+    public function setAuthSession(AuthSession $authSession)
     {
-        $this->authSession = $apiSession;
+        $this->authSession = $authSession;
     }
 
     protected function getAuthSession(): AuthSession
