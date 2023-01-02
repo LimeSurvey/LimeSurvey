@@ -35,7 +35,8 @@ foreach ($tokendata as $Key => $Value) {
     <?php echo CHtml::form(array("admin/tokens/sa/{$token_subaction}/surveyid/{$surveyid}/tokenid/{$tokenid}"), 'post', array(
         'id' => 'edittoken',
         'class' => '',
-        'data-validation-error' => gT("Some mandatory additional attributes were left blank. Please review them.")
+        'data-additional-attributes-validation-error' => gT("Some mandatory additional attributes were left blank. Please review them."),
+        'data-expiration-validation-error' => gT('Participant expiration date can\'t be lower than the "Valid from" date'),
     )); ?>
       <!-- Tabs -->
       <?php if( count($attrfieldnames) > 0 ):?>

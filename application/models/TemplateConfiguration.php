@@ -472,12 +472,13 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * @todo document me
+     * Retrieves a list of models based on the current search/filter conditions.
      *
+     * @param integer $gsid Survey group, else get global
      * @return CActiveDataProvider
      * @throws Exception
      */
-    public function searchGrid()
+    public function searchGrid(?int $gsid = null)
     {
         // @todo Please modify the following code to remove attributes that should not be searched.
 
@@ -492,11 +493,11 @@ class TemplateConfiguration extends TemplateConfig
         $criteria->addCondition('t.sid IS NULL');
         $criteria->addCondition('template.name IS NOT NULL');
 
-        // check if survey group id is present
-        $gsid = App()->request->getQuery('id', null);
         if ($gsid !== null) {
-            $criteria->addCondition('t.gsid = ' . $gsid);
+            /* Group configuration */
+            $criteria->compare('t.gsid', $gsid);
         } else {
+            /* Global configuration */
             $criteria->addCondition('t.gsid IS NULL');
         }
 
@@ -1010,7 +1011,10 @@ class TemplateConfiguration extends TemplateConfig
             }
             // Get full list of files
             $fileList = Template::getOtherFiles($basePath);
-
+            // Order File List alphabetically
+            usort($fileList, function ($a, $b) {
+                return strcasecmp($a['name'], $b['name']);
+            });
             // Keep only image files
             foreach ($fileList as $file) {
                 $imageInfo = $this->getImageInfo($basePath . $file['name'], $pathPrefix);

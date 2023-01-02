@@ -774,8 +774,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
     } else {
         $('#current_scale_id').val(scaleId);
     }
-
-    $('#labelsets').select2();
+    $('#labelsets').select2({dropdownParent: $("#labelsetbrowserModal")});
     $('#labelsetpreview').html('');
     $('#labelsetsSelectorContainer').hide();
     hideLabelSetAlert();

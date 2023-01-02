@@ -346,6 +346,7 @@ return array(
 
     'jspdf' => array(
         'basePath' => 'vendor.jspdf',
+        'position' => CClientScript::POS_BEGIN,
         'js' => array(
             'jspdf.min.js',
             'createpdf_worker.js'
@@ -394,6 +395,7 @@ return array(
     ),
     'jszip' => array(
         'basePath' => 'vendor.jszip',
+        'position' => CClientScript::POS_BEGIN,
         'js' => array(
             'jszip.js',
             'fileSaver.js',
