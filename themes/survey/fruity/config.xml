@@ -85,6 +85,7 @@
         <bodybackgroundcolor type="colorpicker" category="Colors" width="4" title="Background color" options="on|off" optionlabels="Yes|No">#ffffff</bodybackgroundcolor>
         <fontcolor type="colorpicker" category="Colors" width="4" title="Font color" options="on|off" optionlabels="Yes|No">#444444</fontcolor>
         <questionbackgroundcolor type="colorpicker" category="Colors" width="4" title="Question background color" options="on|off" optionlabels="Yes|No">#ffffff</questionbackgroundcolor>
+        <!--  When adding new items, please keep fonts ordered alphabetically -->
         <checkicon type="icon" category="Colors" width="4" title="Check icon">f00c
             <dropdownoptions>
                 <option value="f061"> <i class="fa fa-arrow-right"></i> Arrow right </option>
@@ -657,7 +658,8 @@
             </dropdownoptions>
         </radioanimation>
         <radioanimationduration type="duration" category="Animations" width="2" title="Duration" parent="animateradio">500</radioanimationduration>
-       <!-- fonts -->
+        <!-- fonts -->
+        <!--  When adding new items, please keep fonts ordered alphabetically -->
          <font type="dropdown" category="Fonts" width="12" title="Fonts" parent="font">noto
             <dropdownoptions>
                 <optgroup  label="User browser">
