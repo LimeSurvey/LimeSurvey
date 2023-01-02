@@ -963,6 +963,9 @@ class UpdateForm extends CFormModel
             if (isset($_REQUEST['access_token'])) {
                 $getters .= "&access_token=" . urlencode($_REQUEST['access_token']);
             }
+            if (Yii::app()->getConfig("allow_non_public_release")) {
+                $getters .= "&debug=1";
+            }
             $ch = curl_init($this->getProtocol() . Yii::app()->getConfig("comfort_update_server_url") . $getters);
 
             if ($this->proxy_host_name != '') {
