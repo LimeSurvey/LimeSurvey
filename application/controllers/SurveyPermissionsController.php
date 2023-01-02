@@ -154,7 +154,7 @@ class SurveyPermissionsController extends LSBaseController
             Yii::app()->user->setFlash('error', gT("No users from group could be added."));
             $this->redirect(['surveyPermissions/index', 'surveyid' => $surveyid]);
         } else {
-            Yii::app()->user->setFlash('success', $amountUsersAdded . ' ' . gT("users from group could be added"));
+            Yii: :app()->user->setFlash('success', $amountUsersAdded . ' ' . gT("users from group could be added"));
             $this->redirect(array(
                 'surveyPermissions/settingsPermissions',
                 'surveyid' => $surveyid,
@@ -268,7 +268,7 @@ class SurveyPermissionsController extends LSBaseController
                 }
                 $success = $oSurveyPermissions->saveUserGroupPermissions($userGroupId, $setOfPermissions['Survey']);
                 if ($success) {
-                    Yii::app()->user->setFlash('success', gT("Saved permissions for usergroup."));
+                    Yii::app()->user->setFlash('success', gT("Successfully saved permissions for usergroup."));
                 } else {
                     Yii::app()->user->setFlash('error', gT("Error saving permissions for usergroup."));
                 }
