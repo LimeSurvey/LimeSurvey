@@ -17,6 +17,8 @@ $minVersion = ($debug > 0) ? "" : ".min";
 if (isset($_GET['isAjax'])) {
     return array();
 }
+
+// When adding new fonts, please keep fonts ordered alphabetically
 $coreFonts = array(
     
     'fontawesome' => array(
