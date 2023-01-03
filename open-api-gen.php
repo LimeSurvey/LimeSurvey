@@ -128,7 +128,6 @@ foreach ($rest as $path => $config) {
         }
 
         // Query params
-        // TODO: allow proper param type definition via config
         $paramsConfig = !empty($methodConfig['params']) ? $methodConfig['params'] : [];
         $formProps = [];
         foreach ($paramsConfig as $paramName => $paramConfig) {
@@ -173,7 +172,6 @@ foreach ($rest as $path => $config) {
 
         ///////////////////////////////////////////////////////////////////////////
         // Request Content
-        // TODO: allow proper schema definition via config
         $schema = !empty($methodConfig['schema']) ? $methodConfig['schema'] : null;
         $examples = !empty($methodConfig['examples']) ? $methodConfig['examples'] : null;
         $mediaType = null;

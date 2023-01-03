@@ -146,7 +146,7 @@ class EndpointFactory
                 if ($options == false) {
                     continue; // turned off
                 }
-                $opts = $this->normaliseParamOptions($options);
+                $opts = is_array($options) ? $this->normaliseParamOptions($options) : [];
                 $default = isset($opts['default']) ? $opts['default'] : null;
                 $result[$paramName] = $request->getParam($paramName, $default);
             }
@@ -165,7 +165,6 @@ class EndpointFactory
     protected function normaliseParamOptions($options)
     {
         $defaults = [
-            'required' => false,
             'default' => null
         ];
 
