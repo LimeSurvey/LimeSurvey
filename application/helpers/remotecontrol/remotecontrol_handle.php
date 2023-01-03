@@ -1983,11 +1983,12 @@ class remotecontrol_handle
                 } else {
                     // If aTokenQueryProperties is not an array, but an integer
                     $iTokenID = $aTokenQueryProperties;
-                    $token = Token::model($iSurveyID)->findByPk($iTokenID)->decrypt();
+                    $token = Token::model($iSurveyID)->findByPk($iTokenID);
                 }
                 if (!isset($token)) {
                     return array('status' => 'Error: Invalid tokenid');
                 }
+                $token->decrypt();
                 if (!empty($aTokenProperties)) {
                     $result = array_intersect_key($token->attributes, array_flip($aTokenProperties));
                 } else {
