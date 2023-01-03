@@ -16,5 +16,5 @@ $config['dbversionnumber'] = 497;
 $config['buildnumber'] = '';
 $config['updatable'] = true;
 $config['templateapiversion']  = 3;
-$config['assetsversionnumber'] = '30311';
+$config['assetsversionnumber'] = '30312';
 return $config;

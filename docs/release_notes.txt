@@ -34,6 +34,25 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.5.0 (build 221219) to 5.5.1 (build 230103) January 3, 2023
+-Fixed issue #18564: Fixed JS part for copy functionality (#2805) (Borys)
+-Fixed issue #18503: Label sets: When adding a label set e.g. at the edit responses screen, the loaded label sets can not be searched (#2796) (Gabriel Jenik)
+-Fixed issue #18471: Data Entry: Data entry with multiple languages does not work (#2797) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by c_schmitz, samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: French (France) by aschwey, DenisChenu
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Chinese (Simplified) by duestin, FangZhijian, humandynamic, xiongrui, zengqing, zhanginshanghai, Zoctan
+
+
 Changes from 5.4.15 (build 221212) to 5.5.0 (build 221219) December 19, 2022
 +New feature #8436: Enable / disable users and fields to manage users (#2636) (Gabriel Jenik)
 +New feature #8239: Allow for user friendly survey URLS (#2218) (Gabriel Jenik)
