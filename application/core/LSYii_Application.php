@@ -385,12 +385,15 @@ class LSYii_Application extends CWebApplication
      */
     public function onException($event)
     {
+        /* Always log Yii Exception on error_log */
+        error_log(sprintf("Exception: %s, stack trace: %s", $event->exception->getMessage(), $event->exception->getTraceAsString()));
+
         if (!Yii::app() instanceof CWebApplication) {
-            /* Don't update for CLI */
+            /* Don't do anything more with CLI */
             return;
         }
         if (defined('PHP_ENV') && PHP_ENV == 'test') {
-            // If run from phpunit, die with exception message.
+            /* If run from phpunit, die with exception message. */
             die($event->exception->getMessage());
         }
         if (!$this->dbVersion) {
