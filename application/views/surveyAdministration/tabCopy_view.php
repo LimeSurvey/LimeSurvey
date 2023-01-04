@@ -161,3 +161,14 @@
     </div>
 </div>
 </div>
+
+<script>
+    $(document).on('ready pjax:scriptcomplete', function(){
+        $('#copysurveyform').on('submit',  function(event){
+            // Disable both buttons. Normally there's no need to re-enable them. The 'save-form-button' may already be disabled by it's onclick event.
+            $('#copysurveyform').find('input[type="submit"]').prop('disabled', true);
+            $('#save-form-button').addClass('disabled').attr('onclick', 'return false;');
+        });
+    });
+
+</script>
