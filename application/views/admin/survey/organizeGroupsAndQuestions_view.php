@@ -7,16 +7,16 @@
 <div id='edit-survey-text-element' class='side-body <?php echo getSideBodyClass(true); ?>'>
         <h3><?php eT('Organize question group/questions');?></h3>
         <div class='row'>
-            <div class='col-sm-8'>
+            <div class='col-md-8'>
                 <p class='alert alert-info'>
                     <span class='fa fa-info-circle'></span>&nbsp;
                     <?php eT("To reorder questions/questiongroups just drag the question/group with your mouse to the desired position.");?>
                     <?php eT("After you are done, please click the 'Save' button to save your changes.");?>
                 </p>
             </div>
-            <div class='col-sm-4'>
-                <button id='organizer-collapse-all' class='btn btn-default'><span class='fa fa-compress'></span>&nbsp;<?php eT("Collapse all"); ?></button>
-                <button id='organizer-expand-all' class='btn btn-default'><span class='fa fa-expand'></span>&nbsp;<?php eT("Expand all"); ?></button>
+            <div class='col-md-4'>
+                <button id='organizer-collapse-all' class='btn btn-outline-secondary'><span class='fa fa-compress'></span>&nbsp;<?php eT("Collapse all"); ?></button>
+                <button id='organizer-expand-all' class='btn btn-outline-secondary'><span class='fa fa-expand'></span>&nbsp;<?php eT("Expand all"); ?></button>
             </div>
         </div>
 
@@ -25,16 +25,16 @@
                 <?php
                     foreach ($aGroupsAndQuestions as  $aGroupAndQuestions)
                     {?>
-                    <li id='list_g<?php echo $aGroupAndQuestions['gid'];?>' class='panel panel-primary mjs-nestedSortable-expanded' data-level='group'>
+                    <li id='list_g<?php echo $aGroupAndQuestions['gid'];?>' class='card mjs-nestedSortable-expanded' data-level='group'>
 
-                    <div class="panel-heading">
-                        <a class='btn btn-default btn-xs disclose'><span title="Click to show/hide children" class="caret"></span></a>
+                    <div class="card-header ">
+                        <a class='btn btn-outline-secondary btn-xs disclose'><span title="Click to show/hide children" class="caret"></span></a>
                         &nbsp;
                         <?php echo ellipsize($aGroupAndQuestions['group_text'], 80);?>
                     </div>
                         <?php if (isset ($aGroupAndQuestions['questions']))
                             {?>
-                            <ol class='question-list list-unstyled panel-body' data-level='question'>
+                            <ol class='question-list list-unstyled card-body' data-level='question'>
                                 <?php
                                     foreach($aGroupAndQuestions['questions'] as $aQuestion)
                                     {?>
@@ -55,7 +55,7 @@
             <p>
                 <input type='hidden' id='orgdata' name='orgdata' value='' />
                 <input type='hidden' id='close-after-save' name='close-after-save' value='' />
-                <button class='hidden' type="submit" id='btnSave'>
+                <button class="d-none" type="submit" id='btnSave'>
                     <?php echo eT('Save'); ?>
                 </button>
             </p>

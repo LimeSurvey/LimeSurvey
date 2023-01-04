@@ -7,11 +7,11 @@
 /** @var array<string,array<mixed>> $advancedSettings */
 ?>
 
-<div class="container-fluid" id="question-overview"<?= empty($visibilityOverview) ? ' style="display:none;"' : '' ?>>
+<div id="question-overview"<?= empty($visibilityOverview) ? ' style="display:none;"' : '' ?>>
     <?php if ($question->qid !== 0): ?>
         <form>
         <!-- Question summary -->
-        <div class="container-center scoped-new-questioneditor">
+        <div class="container-fluid scoped-new-questioneditor">
             <div class="pagetitle h3">
                 <?php eT('Question summary'); ?>&nbsp;
                 <small>
@@ -34,15 +34,15 @@
             <?php if (Permission::model()->hasSurveyPermission($survey->sid, 'surveycontent', 'update')): ?>
                 <div id="survey-action-title" class="pagetitle h3"><?php eT('Question quick actions'); ?></div>
                 <div class="row welcome survey-action">
-                    <div class="col-lg-12 content-right">
+                    <div class="col-12 content-right">
 
                         <!-- create question in this group -->
-                        <div class="col-lg-3">
-                            <div class="panel panel-primary <?php if ($survey->isActive) { echo 'disabled'; } else { echo 'panel-clickable'; } ?>" id="panel-1" data-url="<?php echo $this->createUrl('questionAdministration/create/surveyid/'.$survey->sid.'/gid/'.$question->gid); ?>">
-                                <div class="panel-heading">
-                                    <div class="panel-title h4"><?php eT("Add new question to group");?></div>
+                        <div class="col-xl-3">
+                            <div class="card card-primary text-center <?php if ($survey->isActive) { echo 'disabled'; } else { echo 'card-clickable'; } ?>" id="panel-1" data-url="<?php echo $this->createUrl('questionAdministration/create/surveyid/'.$survey->sid.'/gid/'.$question->gid); ?>">
+                                <div class="card-header ">
+                                    <div class=""><?php eT("Add new question to group");?></div>
                                 </div>
-                                <div class="panel-body">
+                                <div class="card-body">
                                     <span class="icon-add text-success"  style="font-size: 3em;"></span>
                                     <p class='btn-link'>
                                             <?php eT("Add new question to group");?>

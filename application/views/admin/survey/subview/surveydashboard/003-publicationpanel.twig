@@ -1,11 +1,11 @@
-<div class="panel panel-default">
-    <div class="panel-heading">
+<div class="card m-2">
+    <div class="card-header">
         <strong>{{gT("Publication and access settings")}}:</strong>
-        <a class="pull-right btn btn-default btn-xs pjax" data-toggle="tooltip" title="{{gT('Edit publication and access settings')}}" href="{{createUrl('surveyAdministration/rendersidemenulink', {'subaction':'publication', 'surveyid':surveyid})}}">
+        <a class="float-end btn btn-outline-secondary btn-xs pjax" data-bs-toggle="tooltip" title="{{gT('Edit publication and access settings')}}" href="{{createUrl('surveyAdministration/rendersidemenulink', {'subaction':'publication', 'surveyid':surveyid})}}">
             <i class="fa fa-cogs"></i>
         </a>
     </div>
-    <ul class="list-group">
+    <ul class="list-group list-group-flush">
         <!-- Start date/time -->
         <li class="list-group-item">
             <div class="ls-flex-row col-12">

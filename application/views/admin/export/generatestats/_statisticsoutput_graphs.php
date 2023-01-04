@@ -20,7 +20,7 @@
     <?php if(count($labels) < 70): ?>
         <!-- Charts -->
         <div class="row">
-            <div class="col-lg-8 col-md-12 chartjs-container text-center" id="chartjs-container-<?php echo $qqid; ?>"
+            <div class="col-xl-8 col-12 chartjs-container text-center" id="chartjs-container-<?php echo $qqid; ?>"
                 data-chartname="<?php echo $sChartname; // The name of the jschart object ?>"
                 data-qid="<?php echo $qqid; // the question id ?>"
                 data-type="<?php echo $charttype; // the chart start type (bar, donut, etc.) ?>"
@@ -40,15 +40,15 @@
 
             </div>
             <!-- legends -->
-            <div class="legend legend-no-percent col-lg-4 col-md-12" id="legend-no-percent-<?php echo $qqid;?>">
+            <div class="legend legend-no-percent col-xl-4 col-12" id="legend-no-percent-<?php echo $qqid;?>">
                 <?php foreach($labels as $i=>$label): ?>
                     <?php $colorindex = $color+$i; $colorindex = ($colorindex < 72)?$colorindex:0;?>
                     <div class="row" style="margin-bottom: 10px;">
-                        <div class="col-sm-1">
+                        <div class="col-md-1">
                             <span style="background-color:rgba(<?php echo $COLORS_FOR_SURVEY[$colorindex];?>,0.6) !important; display: block;    width: 20px;    height: 20px;    border-radius: 5px; margin: 0px; padding: 0px;">
                             </span>
                         </div>
-                        <div class="col-sm-10">
+                        <div class="col-md-10">
                             <?php echo $label;?>
                         </div>
                     </div>
@@ -59,44 +59,44 @@
 </tr>
 
 <!-- Buttons to change graph type -->
-<tr class="hidden-print">
+<tr class="d-print-none">
     <td colspan='4'>
         <div class="chartjs-buttons" style="text-align:center">
 
             <!-- Bar chart -->
-            <button type="button" data-qid="<?php echo $qqid; ?>" id="button-chartjs-Bar-<?php echo $qqid; ?>" class="btn btn-default chart-type-control" data-type="Bar" data-canva-id="chartjs-Bar-<?php echo $qqid; ?>" aria-label="Left Align">
+            <button type="button" data-qid="<?php echo $qqid; ?>" id="button-chartjs-Bar-<?php echo $qqid; ?>" class="btn btn-outline-secondary chart-type-control" data-type="Bar" data-canva-id="chartjs-Bar-<?php echo $qqid; ?>" aria-label="Left Align">
                 <i class="fa fa-bar-chart"></i>
                     <?php eT('Bar chart'); ?>
             </button>
 
 
             <!-- Pie chart -->
-            <button type="button" data-qid="<?php echo $qqid; ?>" id="button-chartjs-Pie-<?php echo $qqid; ?>" class="btn btn-default chart-type-control" data-type="Pie" data-canva-id="chartjs-Pie-<?php echo $qqid; ?>" aria-label="Left Align">
+            <button type="button" data-qid="<?php echo $qqid; ?>" id="button-chartjs-Pie-<?php echo $qqid; ?>" class="btn btn-outline-secondary chart-type-control" data-type="Pie" data-canva-id="chartjs-Pie-<?php echo $qqid; ?>" aria-label="Left Align">
                 <i class="fa fa-pie-chart"></i>
                 <?php eT('Pie chart'); ?>
             </button>
 
             <!-- Radar chart -->
-            <button type="button" data-qid="<?php echo $qqid; ?>" id="button-chartjs-Radar-<?php echo $qqid; ?>" class="btn btn-default chart-type-control" data-type="Radar" data-canva-id="chartjs-Radar-<?php echo $qqid; ?>" aria-label="Left Align">
+            <button type="button" data-qid="<?php echo $qqid; ?>" id="button-chartjs-Radar-<?php echo $qqid; ?>" class="btn btn-outline-secondary chart-type-control" data-type="Radar" data-canva-id="chartjs-Radar-<?php echo $qqid; ?>" aria-label="Left Align">
                 <i class="fa fa-crosshairs"></i>
                     <?php eT('Radar chart'); ?>
             </button>
 
 
             <!-- Line chart -->
-            <button type="button" data-qid="<?php echo $qqid; ?>" id="button-chartjs-Line-<?php echo $qqid; ?>" class="btn btn-default chart-type-control" data-type="Line" data-canva-id="chartjs-Line-<?php echo $qqid; ?>" aria-label="Left Align">
+            <button type="button" data-qid="<?php echo $qqid; ?>" id="button-chartjs-Line-<?php echo $qqid; ?>" class="btn btn-outline-secondary chart-type-control" data-type="Line" data-canva-id="chartjs-Line-<?php echo $qqid; ?>" aria-label="Left Align">
                 <i class="fa fa-line-chart"></i>
                 <?php eT('Line chart'); ?>
             </button>
 
             <!-- Polar chart -->
-            <button type="button" data-qid="<?php echo $qqid; ?>" id="button-chartjs-PolarArea-<?php echo $qqid; ?>" class="btn btn-default chart-type-control" data-type="PolarArea" data-canva-id="chartjs-PolarArea-<?php echo $qqid; ?>" aria-label="Left Align">
+            <button type="button" data-qid="<?php echo $qqid; ?>" id="button-chartjs-PolarArea-<?php echo $qqid; ?>" class="btn btn-outline-secondary chart-type-control" data-type="PolarArea" data-canva-id="chartjs-PolarArea-<?php echo $qqid; ?>" aria-label="Left Align">
                 <i class="fa fa-sun-o"></i>
                 <?php eT('Polar chart'); ?>
             </button>
 
             <!-- Doughnut chart -->
-            <button type="button" data-qid="<?php echo $qqid; ?>" id="button-chartjs-Doughnut-<?php echo $qqid; ?>" class="btn btn-default chart-type-control" data-type="Doughnut" data-canva-id="chartjs-Doughnut-<?php echo $qqid; ?>" aria-label="Left Align">
+            <button type="button" data-qid="<?php echo $qqid; ?>" id="button-chartjs-Doughnut-<?php echo $qqid; ?>" class="btn btn-outline-secondary chart-type-control" data-type="Doughnut" data-canva-id="chartjs-Doughnut-<?php echo $qqid; ?>" aria-label="Left Align">
                 <i class="fa fa fa-circle-o"></i>
                 <?php eT('Doughnut chart'); ?>
             </button>
@@ -105,7 +105,7 @@
         </div>
     <?php else: ?>
         <div class="row">
-            <div class="col-sm-12">
+            <div class="col-md-12">
                 <div class="alert alert-warning" role="alert">
                     <?php eT("Too many labels, can't generate chart");?>
                 </div>

@@ -1,0 +1,1 @@
+Discontinued: Use native JSON.stringify and JSON.parse instead, or https://github.com/douglascrockford/JSON-js.

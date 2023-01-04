@@ -1,7 +1,7 @@
 <?php if($hasSurveyContentReadPermission): ?>
     <!-- Check survey logic -->
     <li>
-        <a class="pjax" href="<?php echo Yii::App()->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/"); ?>">
+        <a class="pjax dropdown-item" href="<?php echo Yii::App()->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/"); ?>">
             <span class="icon-expressionmanagercheck"></span>
             <?php eT("Check logic"); ?>
         </a>
@@ -11,7 +11,7 @@
 <?php if($hasSurveyContentExportPermission):?>
     <!-- Export -->
     <li>
-        <a href="<?php echo Yii::App()->createUrl("admin/export/sa/group/surveyid/$surveyid/gid/$gid");?>">
+        <a class="dropdown-item" href="<?php echo Yii::App()->createUrl("admin/export/sa/group/surveyid/$surveyid/gid/$gid");?>">
             <span class="icon-export"></span>
             <?php eT("Export"); ?>
         </a>
@@ -24,9 +24,9 @@
         <?php if(is_null($condarray)):?>
             <?php // can delete group and question ?>
             <li>
-                <a href="#" onclick="return false;"
-                    data-toggle="modal"
-                    data-target="#confirmation-modal"
+                <a class="dropdown-item" href="#" onclick="return false;"
+                    data-bs-toggle="modal"
+                    data-bs-target="#confirmation-modal"
                     data-onclick='(function() { <?php echo convertGETtoPOST(
                         Yii::app()->createUrl(
                             "questionGroupsAdministration/delete/",
@@ -47,7 +47,7 @@
         <?php else: ?>
             <?php // there is at least one question having a condition on its content ?>
             <li class="disabled">
-                <a class="btntooltip" disabled data-toggle="tooltip" data-placement="bottom" title="<?php eT("Impossible to delete this group because there is at least one question having a condition on its content"); ?>" >
+                <a class="btntooltip dropdown-item" disabled data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("Impossible to delete this group because there is at least one question having a condition on its content"); ?>" >
                     <span class="fa fa-trash text-danger"></span>
                     <?php eT("Delete group"); ?>
                 </a>
@@ -56,7 +56,7 @@
     <?php else:?>
         <!-- Activated -->
         <li class="disabled">
-            <a class="btntooltip" disabled data-toggle="tooltip" data-placement="bottom" title="<?php eT("It is not possible to add/delete groups if the survey is active."); ?>" >
+            <a class="btntooltip dropdown-item" disabled data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("It is not possible to add/delete groups if the survey is active."); ?>" >
                 <span class="fa fa-trash text-danger"></span>
                 <?php eT("Delete group"); ?>
             </a>

@@ -8,7 +8,7 @@
  * @package YiiWheels.widgets.sparklines
  * @uses YiiStrap.helpers.TbArray
  */
-Yii::import('bootstrap.helpers.TbArray');
+Yii::import('yiistrap_fork.helpers.TbArray');
 
 class WhSparkLines extends CWidget
 {

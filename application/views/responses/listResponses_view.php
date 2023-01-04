@@ -15,40 +15,57 @@
 echo viewHelper::getViewTestTag('surveyResponsesBrowse');
 
 ?>
+<!-- for filter columns with datepicker-->
+<div style="display: none;">
+    <?php
+    $datePickerWidget = Yii::app()->getController()->widget(
+        'ext.DateTimePickerWidget.DateTimePicker',
+        [
+            'name'  => "no",
+            'id'    => "no_listResponses",
+            'pluginOptions' => array(
+                'format' => $dateformatdetails['jsdate'],
+                'allowInputToggle' => true,
+                'showClear' => true,
+                'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
+            )
+        ]
+    );
+    $datePickerWidgetConfig = str_replace('"', '', json_encode($datePickerWidget->getTempusConfigString()));
+    $datePickerWidgetConfig = str_replace('\n', '', $datePickerWidgetConfig);
+
+    ?>
+</div>
+
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="col-12">
         <h3><?php eT('Survey responses'); ?></h3>
         <!-- Display mode -->
-        <div class="text-right in-title">
-            <div class="pull-right">
-                <div class="form text-right">
+        <div class="text-end in-title">
+            <div class="float-end">
+                <div class="form text-end">
                     <form action="<?= App()->createUrl('/responses/browse/', ['surveyId' => $surveyid]) ?>" class="pjax" method="POST" id="change-display-mode-form">
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label for="display-mode">
-                                <?php
-                                eT('Display mode:');
-                                ?>
+                                <?php eT('Display mode:'); ?>
                             </label>
-                            <?php
-                            $state = App()->user->getState('responsesGridSwitchDisplayState') == "" ? 'compact' : App()->user->getState('responsesGridSwitchDisplayState');
-                            $this->widget(
-                                'yiiwheels.widgets.buttongroup.WhButtonGroup',
-                                [
-                                    'name'          => 'displaymode',
-                                    'value'         => $state,
-                                    'selectOptions' => [
-                                        'extended' => gT('Extended'),
-                                        'compact'  => gT('Compact')
-                                    ],
-                                    'htmlOptions'   => [
-                                        'classes' => 'selector__action-change-display-mode'
-                                    ]
+                            <?php $state = App()->user->getState('responsesGridSwitchDisplayState') == ""
+                                ? 'compact'
+                                : App()->user->getState('responsesGridSwitchDisplayState');
+                            $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                'name'          => 'displaymode',
+                                'checkedOption' => $state,
+                                'selectOptions' => [
+                                    'extended' => gT('Extended'),
+                                    'compact'  => gT('Compact')
+                                ],
+                                'htmlOptions'   => [
+                                    'classes' => 'selector__action-change-display-mode'
                                 ]
-                            );
-                            ?>
+                            ]); ?>
                             <input type="hidden" name="surveyid" value="<?= $surveyid ?>"/>
                             <input type="hidden" name="<?= Yii::app()->request->csrfTokenName ?>" value="<?= Yii::app()->request->csrfToken ?>"/>
-                            <input type="submit" class="hidden" name="submit" value="submit"/>
+                            <input type="submit" class="d-none" name="submit" value="submit"/>
                         </div>
                     </form>
                 </div>
@@ -58,18 +75,15 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
 
         <div class="ls-flex-row col-12">
             <div class="col-12 ls-flex-column">
-                <div id='top-scroller' class="content-right scrolling-wrapper">
-                    <div id='fake-content'>&nbsp;</div>
-                </div>
-                <div id='bottom-scroller' class="content-right scrolling-wrapper">
-                    <input type='hidden' name='dateFormatDetails' value='<?php echo json_encode($dateformatdetails); ?>'/>
+                    <input type='hidden' id="dateFormatDetails" name='dateFormatDetails' value='<?php echo json_encode($dateformatdetails); ?>'/>
+                    <input type="hidden" id="locale" name="locale" value="<?= convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']) ?>"/>
                     <input type='hidden' name='rtl' value='<?php echo getLanguageRTL($_SESSION['adminlang']) ? '1' : '0'; ?>'/>
 
                     <?php if (!empty(App()->user->getState('sql_' . $surveyid))) : ?>
                         <!-- Filter is on -->
                         <?php eT("Showing filtered results"); ?>
 
-                        <a class="btn btn-default" href="<?php echo Yii::app()->createUrl('responses/browse', ['surveyId' => $surveyid, 'filters' => 'reset']); ?>" role="button">
+                        <a class="btn btn-outline-secondary" href="<?php echo Yii::app()->createUrl('responses/browse', ['surveyId' => $surveyid, 'filters' => 'reset']); ?>" role="button">
                             <?php eT("View without the filter."); ?>
                             <span aria-hidden="true">&times;</span>
                         </a>
@@ -98,8 +112,8 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                         ],
 //                        [
 //                            'header'      => gT('Action'),
-//                            'class'       => 'bootstrap.widgets.TbButtonColumn',
-//                            'template'    => '{edit}{detail}{quexmlpdf}{downloadfiles}{deletefiles}<span data-toggle="tooltip" title="' . gT("Delete this response") . '">{deleteresponse}</span>',
+//                            'class'       => 'yiistrap_fork.widgets.TbButtonColumn',
+//                            'template'    => '{edit}{detail}{quexmlpdf}{downloadfiles}{deletefiles}<span data-bs-toggle="tooltip" title="' . gT("Delete this response") . '">{deleteresponse}</span>',
 //                            'htmlOptions' => ['class' => 'icon-btn-row'],
 //                            'buttons'     => $model->getGridButtons(),
 //                        ],
@@ -136,7 +150,8 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                             'filter' => TbHtml::dropDownList(
                                 'SurveyDynamic[completed_filter]',
                                 $model->completed_filter,
-                                ['' => gT('All'), 'Y' => gT('Yes'), 'N' => gT('No')]
+                                ['' => gT('All'), 'Y' => gT('Yes'), 'N' => gT('No')],
+                                ['class' => 'form-select']
                             )
                         ];
                     }
@@ -213,7 +228,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                             /* Add encryption symbole to question title for table header (if question is encrypted) */
                             $encryptionSymbol = '';
                             if (isset($fieldmap[$column->name]['encrypted']) && $fieldmap[$column->name]['encrypted'] === 'Y') {
-                                $encryptionSymbol = ' <span  data-toggle="tooltip" title="' . $encryptionNotice . '" class="fa fa-key text-success"></span>';
+                                $encryptionSymbol = ' <span  data-bs-toggle="tooltip" title="' . $encryptionNotice . '" class="fa fa-key text-success"></span>';
                             }
 
                             $colName = viewHelper::getFieldCode($fieldmap[$column->name], ['LEMcompat' => true]); // This must be unique ......
@@ -225,10 +240,14 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
 
                             if (!isset($filteredColumns) || in_array($column->name, $filteredColumns)) {
                                 $aColumns[] = [
-                                    'header'            => '<div data-toggle="popover" data-trigger="hover focus" data-placement="bottom" title="' . $colName . '" data-content="' . CHtml::encode($colTitle) . '" data-html="1" data-container="#responses-grid">' . $colName . ' <br/> ' . $colDetails . $encryptionSymbol . '</div>',
+                                    'header'            => '<div data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="bottom" title="' . $colName . '" data-bs-content="' . CHtml::encode($colTitle) . '" data-bs-html="true" data-container="#responses-grid">' . $colName . ' <br/> ' . $colDetails . $encryptionSymbol . '</div>',
                                     'headerHtmlOptions' => ['style' => 'min-width: 350px;'],
                                     'name'              => $column->name,
                                     'type'              => 'raw',
+                                    'filter' => TbHtml::textField(
+                                        'SurveyDynamic[' . $column->name . ']',
+                                        $model->{$column->name}
+                                    ),
                                     'value'             => '$data->getExtendedData("' . $column->name . '", "' . $language . '", "' . $base64jsonFieldMap . '")',
                                 ];
                             }
@@ -240,31 +259,29 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                     $filterColumns = App()->getController()->renderPartial('/responses/modal_subviews/filterColumns', ['filterableColumns' => $filterableColumns, 'filteredColumns' => $filteredColumns, 'surveyId' => $surveyid], true);
 
                     $this->widget(
-                        'ext.LimeGridView.LimeGridView',
+                        'application.extensions.admin.grid.CLSGridView',
                         [
-                            'dataProvider'    => $model->search(),
-                            'filter'          => $model,
-                            'columns'         => $aColumns,
-                            //'htmlOptions'     => ['class' => 'table-responsive'],
-                            'id'              => 'responses-grid',
-                            'ajaxUpdate'      => 'responses-grid',
-                            'ajaxType'        => 'POST',
-                            'afterAjaxUpdate' => 'js:function(id, data){ LS.resp.bindScrollWrapper(); onUpdateTokenGrid();$(".grid-view [data-toggle=\'popover\']").popover(); }',
-                            'template'        => "{items}\n<div id='responsesListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction$filterColumns</div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
-                            'summaryText'     => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
+                            'dataProvider'          => $model->search(),
+                            'filter'                => $model,
+                            'columns'               => $aColumns,
+                            'id'                    => 'responses-grid',
+                            'ajaxUpdate'            => 'responses-grid',
+                            'ajaxType'              => 'POST',
+                            'afterAjaxUpdate'       => 'js:function(id, data){ afterAjaxResponsesReload(); onUpdateTokenGrid(); $(".grid-view [data-bs-toggle=\'popover\']").popover(); }',
+                            'massiveActionTemplate' => $massiveAction . $filterColumns,
+                            'summaryText'           => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
                                 gT('%s rows per page'),
                                 CHtml::dropDownList(
                                     'pageSize',
                                     $pageSize,
                                     Yii::app()->params['pageSizeOptions'],
-                                    ['class' => 'changePageSize form-control', 'style' => 'display: inline; width: auto']
+                                    ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
                                 )
                             ),
                         ]
                     );
 
                     ?>
-                </div>
 
                 <!-- To update rows per page via ajax setSession-->
                 <?php
@@ -274,7 +291,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                     ';
                 $script = '
                     var postUrl = "' . Yii::app()->getController()->createUrl("responses/setSession") . '"; // For massive export
-                    $(".grid-view [data-toggle=\'popover\']").popover();
+                    $(".grid-view [data-bs-toggle=\'popover\']").popover();
                     ';
                 App()->getClientScript()->registerScript('listresponses', $scriptVars, LSYii_ClientScript::POS_BEGIN);
                 App()->getClientScript()->registerScript('listresponses', $script, LSYii_ClientScript::POS_POSTSCRIPT);
@@ -283,14 +300,14 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
         </div>
     </div>
 
-
     <!-- Edit Token Modal -->
+    <?php // @todo Duplicate, original in application/views/admin/token/browse.php. Remove this? ?>
     <div class="modal fade" tabindex="-1" role="dialog" id="editTokenModal">
         <div class="modal-dialog" style="width: 1100px">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title"><?php eT('Edit survey participant'); ?></h4>
+                    <h5 class="modal-title"><?php eT('Edit survey participant'); ?></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <!-- the ajax loader -->
@@ -309,22 +326,12 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT("Close"); ?></button>
-                    <button type="button" class="btn btn-primary" id="save-edittoken"><?php eT("Save"); ?></button>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><?php eT("Close"); ?></button>
+                    <button role="button" type="button" class="btn btn-primary" id="save-edittoken">
+                        <?php eT("Save"); ?>
+                    </button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
-    <div style="display: none;">
-        <?php
-        Yii::app()->getController()->widget(
-            'yiiwheels.widgets.datetimepicker.WhDateTimePicker',
-            [
-                'name'  => "no",
-                'id'    => "no",
-                'value' => '',
-            ]
-        );
-        ?>
-    </div>
 </div>

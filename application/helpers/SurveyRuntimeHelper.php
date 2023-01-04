@@ -1293,17 +1293,15 @@ class SurveyRuntimeHelper
             $redata['completed'] = $this->completed;
             // event afterSurveyComplete
             $blocks = array();
-            if ($surveyActive) { // @todo : enable event even when survey is not active, but broke API
-                $event = new PluginEvent('afterSurveyComplete');
-                if ($surveyActive && isset($_SESSION[$this->LEMsessid]['srid'])) {
-                    $event->set('responseId', $_SESSION[$this->LEMsessid]['srid']);
-                }
-                $event->set('surveyId', $this->iSurveyid);
-                App()->getPluginManager()->dispatchEvent($event);
-                foreach ($event->getAllContent() as $blockData) {
-                    /* @var $blockData PluginEventContent */
-                    $blocks[] = CHtml::tag('div', array('id' => $blockData->getCssId(), 'class' => $blockData->getCssClass()), $blockData->getContent());
-                }
+            $event = new PluginEvent('afterSurveyComplete');
+            if ($surveyActive && isset($_SESSION[$this->LEMsessid]['srid'])) {
+                $event->set('responseId', $_SESSION[$this->LEMsessid]['srid']);
+            }
+            $event->set('surveyId', $this->iSurveyid);
+            App()->getPluginManager()->dispatchEvent($event);
+            foreach ($event->getAllContent() as $blockData) {
+                /* @var $blockData PluginEventContent */
+                $blocks[] = CHtml::tag('div', array('id' => $blockData->getCssId(), 'class' => $blockData->getCssClass()), $blockData->getContent());
             }
 
             $this->aSurveyInfo['aCompleted']['sPluginHTML']  = implode("\n", $blocks) . "\n";

@@ -32,7 +32,7 @@
                 ['aPermissions' => $aPermissions],
                 true
             );?>
-            <input class='btn btn-default hidden'  type='submit' value='<?=gT("Save Now") ?>' />"
+            <input class='standardbtn d-none'  type='submit' value='<?=gT("Save Now") ?>' />
             <?php
             if ($isUserGroup) { ?>
                     <input type='hidden' name='ugid' value="<?= $id?>" />

@@ -19,39 +19,28 @@ $active = Yii::app()->request->getParam('tab', 'create');
     standardthemerooturl = '<?php echo Yii::app()->getConfig('standardthemerooturl');?>';
     templaterooturl = '<?php echo Yii::app()->getConfig('userthemerooturl');?>';
 </script>
-<div class="row">
-    <div class="col-lg-12">
-        <!-- tabs -->
-        <?php $this->renderPartial('tab_survey_view', $data); ?>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <!-- tabs -->
+            <?php $this->renderPartial('tab_survey_view', $data); ?>
 
-        <!-- tabs content -->
-        <div class="tab-content">
-            <!-- General Tab (contains accrodion) -->
-            <div id="general" class="tab-pane fade in
-            <?php
-            if ($active === 'create') {
-                echo ' active ';
-            }
-            ?>">
-                <?php $this->renderPartial('tabCreate_view', ['data' => $data]); ?>
-            </div>
+            <!-- tabs content -->
+            <div class="tab-content">
+                <!-- General Tab (contains accrodion) -->
+                <div id="general" class="tab-pane fade <?= $active === 'create' ? 'show active' : '' ?>">
+                    <?php $this->renderPartial('tabCreate_view', ['data' => $data]); ?>
+                </div>
 
-            <!-- Import -->
-            <div id='import' class="tab-pane fade in
-            <?php
-            if ($active === 'import') {
-                echo ' active ';
-            } ?>">
-                <?php $this->renderPartial('tabImport_view', $data); ?>
-            </div>
+                <!-- Import -->
+                <div id='import' class="tab-pane fade <?= $active === 'import' ? 'show active' : '' ?>">
+                    <?php $this->renderPartial('tabImport_view', $data); ?>
+                </div>
 
-            <!-- Copy -->
-            <div id='copy' class="tab-pane fade in
-            <?php
-            if ($active === 'copy') {
-                echo ' active ';
-            } ?>">
-                <?php $this->renderPartial('tabCopy_view', $data); ?>
+                <!-- Copy -->
+                <div id='copy' class="tab-pane fade <?= $active === 'copy' ? 'show active' : '' ?>">
+                    <?php $this->renderPartial('tabCopy_view', $data); ?>
+                </div>
             </div>
         </div>
     </div>

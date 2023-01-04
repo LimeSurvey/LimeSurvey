@@ -69,21 +69,35 @@ function defaultLanguageChange(ui,evt){
 function removeLanguages(ui,evt)
 {
     // Do not allow to remove the standard language
-    if ($.inArray($('#defaultlang').val(),$("#includedLanguages").selectedValues())>-1)
+    if ($("#includedLanguages option[value="+$('#defaultlang').val()+"]:selected").length>0)
     {
         $("#includedLanguages option[value='"+$('#defaultlang').val()+"']").prop("selected", false);
         alert (msgCantRemoveDefaultLanguage);
     }
-    $('#includedLanguages').copyOptions('#excludedLanguages');
-    $("#excludedLanguages").sortOptions();
-    $("#includedLanguages").removeOption(/./,true);
+    var options = $('#includedLanguages option:selected').sort().clone();
+    $('#excludedLanguages').append(options);    
+    $('#includedLanguages option:selected').remove();
+    var options = $("#excludedLanguages option");                    // Collect options         
+    options.detach().sort(function(a,b) {               // Detach from select, then Sort
+        var at = $(a).text();
+        var bt = $(b).text();         
+        return (at > bt)?1:((at < bt)?-1:0);            // Tell the sort function how to order
+    });
+    options.appendTo("#excludedLanguages");      
 }
 
 function addLanguages(ui,evt)
 {
-    $('#excludedLanguages').copyOptions('#includedLanguages');
-    $("#includedLanguages").sortOptions();
-    $("#excludedLanguages").removeOption(/./,true);
+    var options = $('#excludedLanguages option:selected').sort().clone();
+    $('#includedLanguages').append(options);    
+    $('#excludedLanguages option:selected').remove();
+    var options = $("#includedLanguages option");                    // Collect options         
+    options.detach().sort(function(a,b) {               // Detach from select, then Sort
+        var at = $(a).text();
+        var bt = $(b).text();         
+        return (at > bt)?1:((at < bt)?-1:0);            // Tell the sort function how to order
+    });
+    options.appendTo("#includedLanguages");     
 }
 
 function UpdateRestrictedLanguages(){

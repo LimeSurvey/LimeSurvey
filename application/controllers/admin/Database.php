@@ -655,7 +655,7 @@ class Database extends SurveyCommonAction
                                     Chtml::tag(
                                         "p",
                                         ['class' => 'strong'],
-                                        sprintf(gT("Texts for %s language could not be updated:"), $languageDescription)
+                                        sprintf(gT("Texts for language %s could not be updated:"), $languageDescription)
                                     )
                                 ),
                                 "error"

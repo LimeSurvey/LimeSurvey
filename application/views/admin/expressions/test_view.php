@@ -5,15 +5,15 @@
 echo viewHelper::getViewTestTag('expressionsTest');
 
 ?>
-
-<table class="table table-striped ">
-    <thead>
+<div class="container-fluid">
+    <table class="table table-striped ">
+        <thead>
         <tr>
             <th>Test</th>
             <th>Description</th>
         </tr>
-    </thead>
-    <tbody>
+        </thead>
+        <tbody>
         <tr>
             <td><a href="<?php echo $this->createUrl('admin/expressions/sa/functions'); ?>">Available Functions</a></td>
             <td>Show the list of functions available within ExpressionScript Engine.</td>
@@ -42,5 +42,6 @@ echo viewHelper::getViewTestTag('expressionsTest');
             <td><a href="<?php echo $this->createUrl('admin/expressions/sa/survey_logic_file'); ?>">Show Survey logic file</a></td>
             <td>Shows the logic for a survey (e.g. relevance, validation), and all tailoring</td>
         </tr>
-    </tbody>
-</table>
+        </tbody>
+    </table>
+</div>

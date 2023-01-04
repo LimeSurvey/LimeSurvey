@@ -550,15 +550,33 @@ class Themes extends SurveyCommonAction
         }
 
         /* Keep Bootstrap Package clean after loading template : because template can update boostrap */
-        $aBootstrapPackage = Yii::app()->clientScript->packages['bootstrap-admin'];
 
         $aViewUrls = $this->initialise($templatename, $screenname, $editfile, true, true);
 
         App()->getClientScript()->reset();
-        Yii::app()->clientScript->packages['bootstrap'] = $aBootstrapPackage;
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'templates.js');
+        App()->getClientScript()->registerPackage('bootstrap-admin');
+
+        $undo    = gT("Undo (ctrl + Z)", "js");
+        $redo    = gT("Redo (ctrl + Y)", "js");
+        $find    = gT("Find (ctrl + F)", "js");
+        $replace = gT("Replace (ctrl + H)", "js");
+        App()->getClientScript()->registerScript(
+            "SurveyThemeEditorLanguageData",
+            <<<JAVASCRIPT
+surveyThemeEditorLanguageData = {
+    undo: "$undo",
+    redo: "$redo",
+    find: "$find",
+    replace: "$replace"
+};
+JAVASCRIPT
+            ,
+            CClientScript::POS_BEGIN
+        );
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'templates.js', CClientScript::POS_END);
         App()->getClientScript()->registerPackage('ace');
         App()->getClientScript()->registerPackage('jsuri');
+        AdminTheme::getInstance()->registerStylesAndScripts();
 
         // Green SurveyManagerBar Page Title
         $pageTitle = gT('Theme editor:') . ' ' . $templatename;

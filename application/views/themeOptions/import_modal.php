@@ -5,6 +5,7 @@
      * @var string          $themeType
      *
      */
+
 ?>
 <div class="modal fade" tabindex="-1" role="dialog" id="<?php echo $importModal;?>">
     <div class="modal-dialog">
@@ -31,16 +32,18 @@
                     <?php if (isset($themeType)) : ?>
                         <input type='hidden' name='theme' value='<?php echo $themeType; ?>'/>
                     <?php endif; ?>
-                    <div class="form-group">
-                        <label for='the_file'>
+                    <div class="mb-3">
+                        <label for='the_file' class="form-label">
                             <?php eT("Select theme ZIP file:") ?>
                         </label>
-                        <input id='the_file' name='the_file' type="file" accept='.zip' />
-                        <?php printf(gT('(Maximum file size: %01.2f MB)'),getMaximumFileUploadSize()/1024/1024); ?>
+                        <input id='the_file' class="form-control" name='the_file' type="file" accept='.zip' />
+                        <div class="form-text">
+                            <?php printf(gT('(Maximum file size: %01.2f MB)'),getMaximumFileUploadSize()/1024/1024); ?>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-cancel" data-dismiss="modal">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                         <?php eT("Cancel");?>
                     </button>
                     <?php if (!class_exists('ZipArchive')) {?>

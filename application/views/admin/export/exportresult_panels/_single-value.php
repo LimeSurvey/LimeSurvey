@@ -6,24 +6,22 @@
     }
 ?>
 
-<div class="panel panel-primary" id="panel-2" <?php if ($SingleResponse) { echo 'style="display:none"';} ?> >
-  <div class="panel-heading">
-    <h4 class="panel-title">
-<?php eT("Selection");?>
-</h4>
+<div class="card" id="panel-2" <?php if ($SingleResponse) { echo 'style="display:none"';} ?> >
+  <div class="card-header ">
+    <?php eT("Selection");?>
   </div>
-  <div class="panel-body">
-    <div class="form-group">
+  <div class="card-body">
+    <div class="mb-3">
         <!-- From -->
-        <label for='export_ids' class="col-sm-2 control-label">
+        <label for='export_ids' class="col-md-2 form-label">
           <?php eT("Selected answers"); ?>
         </label>
 
-        <div class="col-sm-6">
+        <div class="col-md-6">
           <input type="text" readonly value="<?php echo  $sResponsesId; ?>" class="form-control" name="responses_id" id="responses_id" />
         </div>
-        <div class="col-sm-2">
-          <a class="btn btn-default" href="<?php echo Yii::app()->getController()->createUrl("responses/setSession/", ['unset' => 'true', 'surveyId' => $surveyid]); ?>" role="button">
+        <div class="col-md-2">
+          <a class="btn btn-outline-secondary" href="<?php echo Yii::app()->getController()->createUrl("responses/setSession/", ['unset' => 'true', 'surveyId' => $surveyid]); ?>" role="button">
             <?php eT("Reset");?>
           </a>
         </div>

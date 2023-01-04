@@ -1,15 +1,15 @@
 # LimeSurvey LANGUAGE FILE.
-# Copyright (C) 2022 LimeSurvey
+# Copyright (C) 2023 LimeSurvey
 # This file is distributed under the same license as the LimeSurvey package.
 msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2022-12-19 09:54:55+00:00\n"
+"POT-Creation-Date: 2023-01-02 11:17:30+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2022-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2023-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LimeSurvey Team <c_schmitz@users.sourceforge.net>\n"
 "X-Poedit-KeywordsList: gT;ngT:1,2;eT;neT:1,2\n"
@@ -1510,7 +1510,7 @@ msgstr ""
 
 #: application/controllers/ResponsesController.php:150
 #: application/helpers/common_helper.php:1357
-#: application/helpers/common_helper.php:2888
+#: application/helpers/common_helper.php:2887
 #: application/models/SurveyLink.php:233 application/models/Token.php:96
 #: application/models/TokenDynamic.php:677
 #: application/views/admin/dataentry/caption_view.php:36
@@ -1518,7 +1518,7 @@ msgid "Access code"
 msgstr ""
 
 #: application/controllers/ResponsesController.php:151
-#: application/helpers/common_helper.php:2868
+#: application/helpers/common_helper.php:2867
 #: application/models/Participant.php:249
 #: application/models/ParticipantShare.php:231 application/models/Token.php:92
 #: application/models/TokenDynamic.php:643
@@ -1531,7 +1531,7 @@ msgid "First name"
 msgstr ""
 
 #: application/controllers/ResponsesController.php:152
-#: application/helpers/common_helper.php:2873
+#: application/helpers/common_helper.php:2872
 #: application/models/Participant.php:250
 #: application/models/ParticipantShare.php:226 application/models/Token.php:93
 #: application/models/TokenDynamic.php:651
@@ -1566,7 +1566,7 @@ msgstr ""
 #: application/controllers/admin/DataEntry.php:524
 #: application/controllers/admin/Quotas.php:259
 #: application/controllers/admin/Tokens.php:1612
-#: application/helpers/common_helper.php:2918
+#: application/helpers/common_helper.php:2917
 #: application/models/TemplateManifest.php:166 application/models/Token.php:102
 #: application/views/admin/quotas/viewquotas_view.php:81
 #: application/views/admin/token/exportdialog.php:17
@@ -3066,7 +3066,7 @@ msgid "Unknown user."
 msgstr ""
 
 #: application/controllers/SurveyPermissionsController.php:259
-msgid "Saved permissions for user."
+msgid "Successfully saved permissions for user."
 msgstr ""
 
 #: application/controllers/SurveyPermissionsController.php:261
@@ -3079,7 +3079,7 @@ msgid "You do not have permission to this user group."
 msgstr ""
 
 #: application/controllers/SurveyPermissionsController.php:271
-msgid "Saved permissions for usergroup."
+msgid "Successfully saved permissions for usergroup."
 msgstr ""
 
 #: application/controllers/SurveyPermissionsController.php:273
@@ -4993,7 +4993,7 @@ msgid "Default value settings were successfully saved."
 msgstr ""
 
 #: application/controllers/admin/Database.php:658
-msgid "Texts for %s language could not be updated:"
+msgid "Texts for language %s could not be updated:"
 msgstr ""
 
 #: application/controllers/admin/Database.php:788
@@ -7277,7 +7277,7 @@ msgid "This file is not a supported image format - only the following ones are a
 msgstr ""
 
 #: application/core/LSYii_ShortUrlValidator.php:45
-msgid "Survey Alias matches an existing route."
+msgid "The survey alias matches an existing URL and cannot be used."
 msgstr ""
 
 #: application/core/LS_Twig_Extension.php:245
@@ -10996,7 +10996,7 @@ msgstr ""
 msgid "Question time"
 msgstr ""
 
-#: application/helpers/common_helper.php:2878
+#: application/helpers/common_helper.php:2877
 #: application/models/Participant.php:251
 #: application/models/ParticipantShare.php:236
 #: application/models/SavedControl.php:185 application/models/Token.php:94
@@ -11007,181 +11007,181 @@ msgstr ""
 msgid "Email address"
 msgstr ""
 
-#: application/helpers/common_helper.php:2883 application/models/Token.php:95
+#: application/helpers/common_helper.php:2882 application/models/Token.php:95
 #: application/models/TokenDynamic.php:668
 msgid "Email status"
 msgstr ""
 
-#: application/helpers/common_helper.php:2893 application/models/Token.php:97
+#: application/helpers/common_helper.php:2892 application/models/Token.php:97
 msgid "Language code"
 msgstr ""
 
-#: application/helpers/common_helper.php:2898 application/models/Token.php:99
+#: application/helpers/common_helper.php:2897 application/models/Token.php:99
 msgid "Invitation sent date"
 msgstr ""
 
-#: application/helpers/common_helper.php:2903 application/models/Token.php:100
+#: application/helpers/common_helper.php:2902 application/models/Token.php:100
 msgid "Last reminder sent date"
 msgstr ""
 
-#: application/helpers/common_helper.php:2908 application/models/Token.php:101
+#: application/helpers/common_helper.php:2907 application/models/Token.php:101
 msgid "Total numbers of sent reminders"
 msgstr ""
 
-#: application/helpers/common_helper.php:2913 application/models/Token.php:103
+#: application/helpers/common_helper.php:2912 application/models/Token.php:103
 #: application/models/TokenDynamic.php:728
 msgid "Uses left"
 msgstr ""
 
-#: application/helpers/common_helper.php:4268
+#: application/helpers/common_helper.php:4267
 msgid "SQL command failed: %s"
 msgstr ""
 
-#: application/helpers/common_helper.php:4483
+#: application/helpers/common_helper.php:4482
 msgid "ARMSCII-8 Armenian"
 msgstr ""
 
-#: application/helpers/common_helper.php:4484
+#: application/helpers/common_helper.php:4483
 msgid "US ASCII"
 msgstr ""
 
-#: application/helpers/common_helper.php:4485
+#: application/helpers/common_helper.php:4484
 msgid "Big5 Traditional Chinese"
 msgstr ""
 
-#: application/helpers/common_helper.php:4486
+#: application/helpers/common_helper.php:4485
 msgid "Binary pseudo charset"
 msgstr ""
 
-#: application/helpers/common_helper.php:4487
+#: application/helpers/common_helper.php:4486
 msgid "Windows Central European (Windows-1250)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4488
+#: application/helpers/common_helper.php:4487
 msgid "Windows Cyrillic (Windows-1251)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4489
+#: application/helpers/common_helper.php:4488
 msgid "Windows Arabic (Windows-1256)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4490
+#: application/helpers/common_helper.php:4489
 msgid "Windows Baltic (Windows-1257)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4491
+#: application/helpers/common_helper.php:4490
 msgid "DOS West European (cp850)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4492
+#: application/helpers/common_helper.php:4491
 msgid "DOS Central European (cp852)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4493
+#: application/helpers/common_helper.php:4492
 msgid "DOS Cyrillic (cp866)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4494
+#: application/helpers/common_helper.php:4493
 msgid "Windows-31J - SJIS for Windows Japanese (cp932)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4495
+#: application/helpers/common_helper.php:4494
 msgid "DEC West European"
 msgstr ""
 
-#: application/helpers/common_helper.php:4496
+#: application/helpers/common_helper.php:4495
 msgid "UJIS for Windows Japanese"
 msgstr ""
 
-#: application/helpers/common_helper.php:4497
+#: application/helpers/common_helper.php:4496
 msgid "EUC-KR Korean"
 msgstr ""
 
-#: application/helpers/common_helper.php:4498
+#: application/helpers/common_helper.php:4497
 msgid "GB2312 Simplified Chinese"
 msgstr ""
 
-#: application/helpers/common_helper.php:4499
+#: application/helpers/common_helper.php:4498
 msgid "GBK Simplified Chinese"
 msgstr ""
 
-#: application/helpers/common_helper.php:4500
+#: application/helpers/common_helper.php:4499
 msgid "GEOSTD8 Georgian"
 msgstr ""
 
-#: application/helpers/common_helper.php:4501
+#: application/helpers/common_helper.php:4500
 msgid "ISO 8859-7 Greek"
 msgstr ""
 
-#: application/helpers/common_helper.php:4502
+#: application/helpers/common_helper.php:4501
 msgid "ISO 8859-8 Hebrew"
 msgstr ""
 
-#: application/helpers/common_helper.php:4503
+#: application/helpers/common_helper.php:4502
 msgid "HP West European"
 msgstr ""
 
-#: application/helpers/common_helper.php:4504
+#: application/helpers/common_helper.php:4503
 msgid "DOS Kamenicky Czech-Slovak (cp895)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4505
+#: application/helpers/common_helper.php:4504
 msgid "KOI8-R Relcom Russian"
 msgstr ""
 
-#: application/helpers/common_helper.php:4506
+#: application/helpers/common_helper.php:4505
 msgid "KOI8-U Ukrainian"
 msgstr ""
 
-#: application/helpers/common_helper.php:4507
+#: application/helpers/common_helper.php:4506
 msgid "ISO 8859-1 West European (latin1)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4508
+#: application/helpers/common_helper.php:4507
 msgid "ISO 8859-2 Central European (latin2)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4509
+#: application/helpers/common_helper.php:4508
 msgid "ISO 8859-9 Turkish (latin5)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4510
+#: application/helpers/common_helper.php:4509
 msgid "ISO 8859-13 Baltic (latin7)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4511
+#: application/helpers/common_helper.php:4510
 msgid "Mac Central European"
 msgstr ""
 
-#: application/helpers/common_helper.php:4512
+#: application/helpers/common_helper.php:4511
 msgid "Mac West European"
 msgstr ""
 
-#: application/helpers/common_helper.php:4513
+#: application/helpers/common_helper.php:4512
 msgid "Shift-JIS Japanese"
 msgstr ""
 
-#: application/helpers/common_helper.php:4514
+#: application/helpers/common_helper.php:4513
 msgid "7bit Swedish"
 msgstr ""
 
-#: application/helpers/common_helper.php:4515
+#: application/helpers/common_helper.php:4514
 msgid "TIS620 Thai"
 msgstr ""
 
-#: application/helpers/common_helper.php:4516
+#: application/helpers/common_helper.php:4515
 msgid "UCS-2 Unicode"
 msgstr ""
 
-#: application/helpers/common_helper.php:4517
+#: application/helpers/common_helper.php:4516
 msgid "EUC-JP Japanese"
 msgstr ""
 
-#: application/helpers/common_helper.php:4518
+#: application/helpers/common_helper.php:4517
 msgid "UTF-8 Unicode"
 msgstr ""
 
-#: application/helpers/common_helper.php:4522
+#: application/helpers/common_helper.php:4521
 msgid "(Automatic)"
 msgstr ""
 
@@ -23622,10 +23622,6 @@ msgstr ""
 
 #: application/views/installer/welcome_view.php:32
 msgid "Start installation"
-msgstr ""
-
-#: application/views/installer/welcome_view.php:42
-msgid "LimeSurvey Cloud"
 msgstr ""
 
 #: application/views/installer/welcome_view.php:44

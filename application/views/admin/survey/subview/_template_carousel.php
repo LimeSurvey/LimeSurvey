@@ -14,9 +14,9 @@
 ?>
 
 <div class="row template-caroussel">
-    <div class="col-sm-12" id='carrousel-container'>
+    <div class="col-12" id='carrousel-container'>
         <div class="row">
-            <div class="col-sm-12" id="item-container"> <!-- width defined in css -->
+            <div class="col-12" id="item-container"> <!-- width defined in css -->
                 <div class="h4"><?php eT('Select your theme:'); ?></div>
 
                 <?php foreach($templates as $key=>$template):?>
@@ -26,7 +26,7 @@
                             <h3><?php echo $key;?></h3>
                             <?php if($key==$oSurvey->template):?>
                                 <button
-                                    class="selectTemplate btn btn-default btn-success  disabled"
+                                    class="selectTemplate btn btn-outline-secondary btn-success  disabled"
                                     data-selectedtext="<?php eT("Selected!");?>"
                                     data-unselectedtext="<?php eT('Select');?> &nbsp; <?php echo $key;?>">
                                         <?php eT('Selected!');?>
@@ -37,7 +37,7 @@
                                     data-unselectedtext="<?php eT('Select');?> &nbsp; <?php echo $key;?>"
                                     data-url="<?php echo Yii::app()->urlManager->createUrl("surveyAdministration/changetemplate/surveyid/$iSurveyId/template/$key" ); ?>"
                                     data-template="<?php echo $key;?>"
-                                    class="selectTemplate btn btn-default">
+                                    class="selectTemplate btn btn-outline-secondary">
                                     <?php eT('Select');?>&nbsp;<?php echo $key;?>
                                 </button>
                             <?php endif;?>
@@ -47,7 +47,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-12" id="jcarousel-wrapper-container"> <!-- width defined in css -->
+            <div class="col-12" id="jcarousel-wrapper-container"> <!-- width defined in css -->
                 <div class="jcarousel-wrapper" >
                     <div class="jcarousel">
                         <ul >

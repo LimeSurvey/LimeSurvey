@@ -843,8 +843,8 @@ class ResponsesController extends LSBaseController
                 'header'            => gT('ID'),
                 'name'              => 'id',
                 'value'             => '$data->id',
-                'headerHtmlOptions' => ['class' => 'hidden-xs'],
-                'htmlOptions'       => ['class' => 'hidden-xs']
+                'headerHtmlOptions' => ['class' => ''],
+                'htmlOptions'       => ['class' => '']
             ],
             [
                 'header' => gT('Total time'),

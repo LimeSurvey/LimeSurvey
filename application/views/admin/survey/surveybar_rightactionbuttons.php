@@ -8,11 +8,11 @@
 
 ?>
 
-<div class=" col-md-4 text-right">
+<div class=" col-lg-4 text-end">
     <?php if (isset($surveybar['savebutton']['form'])):?>
 
         <!-- Save -->
-        <a class="btn btn-success" href="#" role="button" id="save-button" >
+        <button class="btn btn-success" href="#" type="button" id="save-button">
             <span class="fa fa-floppy-o"></span>
             <?php if (isset($surveybar['savebutton']['text']))
             {
@@ -21,7 +21,7 @@
             else {
                 eT("Save");
             }?>
-        </a>
+        </button>
         <?php if (isset($surveybar['importquestiongroup'])):?>
             <?php
                 //Save and new button
@@ -31,15 +31,15 @@
                 $saveAndAddQuestionLink = $this->createUrl("questionAdministration/view/", $paramArray);
             ?>
 
-            <a class="btn btn-success" id='save-and-new-question-button' href="<?php echo $saveAndAddQuestionLink ?>" role="button">
+            <button class="btn btn-success" id='save-and-new-question-button' href="<?php echo $saveAndAddQuestionLink ?>" type="button">
                 <span class="fa fa-floppy-o"></span>
                 <?php eT("Save & add new question"); ?>
-            </a>
+            </button>
 
-            <a class="btn btn-success" id='save-and-new-button' href="<?php echo $saveAndNewLink ?>" role="button">
+            <button class="btn btn-success" id='save-and-new-button' href="<?php echo $saveAndNewLink ?>" type="button">
                 <span class="fa fa-floppy-o"></span>
                 <?php eT("Save & add new group"); ?>
-            </a>
+            </button>
         <?php endif; ?>
         <?php if (isset($surveybar['importquestion'])):?>
             <?php
@@ -54,10 +54,10 @@
                 $saveAndNewLink = $this->createUrl("questionAdministration/view/", $paramArray);
             ?>
 
-            <a class="btn btn-success" id='save-and-new-button' href="<?php echo $saveAndNewLink ?>" role="button">
+            <button class="btn btn-success" id='save-and-new-button' href="<?php echo $saveAndNewLink ?>" type="button">
                 <span class="fa fa-floppy-o"></span>
                 <?php eT("Save and new"); ?>
-            </a>
+            </button>
         <?php endif; ?>
     <?php endif; ?>
 </div>

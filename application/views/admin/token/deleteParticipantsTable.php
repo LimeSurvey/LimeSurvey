@@ -5,7 +5,7 @@
 ?>
 <div class="side-body <?php echo getSideBodyClass(false); ?>">
     <div class="row welcom survey-action">
-        <div class="col-lg-12 content-right">
+        <div class="col-12 content-right">
             <div class="jumbotron message-box">
                 <h3 class="lead"><?php eT('Delete survey participants table'); ?></h3>
                 <p>
@@ -21,7 +21,7 @@
             <br /> <br />
         </p>
         <input
-            class="btn btn-default"
+            class="btn btn-cancel"
             type="submit"
             value="<?php eT('Cancel'); ?>"
             onclick="window.open(

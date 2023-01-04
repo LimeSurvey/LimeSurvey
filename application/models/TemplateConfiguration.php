@@ -33,7 +33,6 @@
  * @property string $packages_to_load
  * @property string $packages_ltr
  * @property string $packages_rtl
- * @property string $packages_rtl
  * @property Template $template
  *
  * @package       LimeSurvey
@@ -740,7 +739,7 @@ class TemplateConfiguration extends TemplateConfig
         $sEditorLink = "<a
             id='template_editor_link_" . $this->template_name . "'
             href='" . $sEditorUrl . "'
-            class='btn btn-default btn-block'>
+            class='btn btn-outline-secondary'>
                 <span class='icon-templates'></span>
                 " . gT('Theme editor') . "
             </a>";
@@ -750,7 +749,7 @@ class TemplateConfiguration extends TemplateConfig
             $OptionLink .= "<a
                 id='template_options_link_" . $this->template_name . "'
                 href='" . $sOptionUrl . "'
-                class='btn btn-default btn-block'>
+                class='btn btn-outline-secondary'>
                     <span class='fa fa-tachometer'></span>
                     " . gT('Theme options') . "
                 </a>";
@@ -766,7 +765,7 @@ class TemplateConfiguration extends TemplateConfig
                 "newname" => [
                     "value" => "extends_" . $this->template_name,
                     "type" => "text",
-                    "class" => "form-control col-sm-12"
+                    "class" => "form-control col-md-12"
                 ]
             ])
             . '\'
@@ -774,7 +773,7 @@ class TemplateConfiguration extends TemplateConfig
             data-button-no="' . gt('Cancel') . '"
             data-button-yes="' . gt('Extend') . '"
             title="' . sprintf(gT('Type in the new name to extend %s'), $this->template_name) . '"
-            class="btn btn-primary btn-block selector--ConfirmModal">
+            role="button" class="btn btn-primary selector--ConfirmModal">
                 <i class="fa fa-copy"></i>
                 ' . gT('Extend') . '
             </a>';
@@ -788,7 +787,7 @@ class TemplateConfiguration extends TemplateConfig
             data-button-yes="' . gt('Uninstall') . '"
             data-button-type="btn-danger"
             title="' . gT('Uninstall this theme') . '"
-            class="btn btn-danger btn-block selector--ConfirmModal">
+            class="btn btn-danger selector--ConfirmModal">
                 <span class="fa fa-trash"></span>
                 ' . gT('Uninstall') . '
             </a>';
@@ -802,24 +801,25 @@ class TemplateConfiguration extends TemplateConfig
                 data-button-yes="' . gt('Reset') . '"
                 data-button-type="btn-warning"
                 title="' . gT('Reset this theme') . '"
-                class="btn btn-warning btn-block selector--ConfirmModal">
+                class="btn btn-warning selector--ConfirmModal">
                     <span class="fa fa-refresh"></span>
                     ' . gT('Reset') . '
             </a>';
 
+        $sButtons = '<div class="d-grid gap-2">';
         if (App()->getController()->action->id == "surveysgroups") {
-            $sButtons = $OptionLink;
+            $sButtons .= $OptionLink;
         } else {
-            $sButtons = $sEditorLink . $OptionLink . $sExtendLink;
+            $sButtons .= $sEditorLink . $OptionLink . $sExtendLink;
 
             if ($this->template_name != getGlobalSetting('defaulttheme')) {
                 $sButtons .= $sUninstallLink;
             } else {
                 $sButtons .= '
                     <a
-                        class="btn btn-danger btn-block disabled"
-                        data-toggle="tooltip"
-                        data-placement="top"
+                        class="btn btn-danger disabled"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="top"
                         title="' . gT('You cannot uninstall the default template.') . '"
                     >
                         <span class="fa fa-trash"></span>
@@ -830,6 +830,7 @@ class TemplateConfiguration extends TemplateConfig
         }
 
         $sButtons .= $sResetLink;
+        $sButtons .= '</div>';
 
         return $sButtons;
     }
