@@ -381,6 +381,8 @@ class Update extends DynamicSurveyCommonAction
      */
     public function step4()
     {
+        Yii::app()->loadLibrary("admin/pclzip");
+        $event = new CExceptionEvent($this, new Exception());  // Dummy line to preload CExceptionEvent class.
         if (Permission::model()->hasGlobalPermission('superadmin')) {
             if (App()->request->getPost('destinationBuild')) {
                 $destinationBuild = App()->request->getPost('destinationBuild');

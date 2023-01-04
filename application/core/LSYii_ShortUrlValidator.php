@@ -42,7 +42,7 @@ class LSYii_ShortUrlValidator extends CValidator
             || $this->matchesExistingRoute($object->$attribute)
             || $this->matchesExistingController($object->$attribute)
         ) {
-            $this->addError($object, $attribute, gT('Survey Alias matches an existing route.'));
+            $this->addError($object, $attribute, gT('The survey alias matches an existing URL and cannot be used.'));
         }
     }
 
