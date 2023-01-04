@@ -4845,7 +4845,7 @@ class LimeExpressionManager
                     $result = $LEM->_ValidateGroup($LEM->currentGroupSeq);
                     $message .= $result['message'];
                     $updatedValues = array_merge($updatedValues, $result['updatedValues']);
-                    if (!is_null($result) && ($result['mandViolation'] || !$result['valid']) && empty(App()->request->getPost('mandSoft'))) {
+                    if (!is_null($result) && ($result['mandViolation'] || !$result['valid'])) {
                         // redisplay the current group
                         $message .= $LEM->_UpdateValuesInDatabase();
                         $LEM->runtimeTimings[] = [__METHOD__, (microtime(true) - $now)];
@@ -4924,7 +4924,7 @@ class LimeExpressionManager
                     $updatedValues = array_merge($updatedValues, $result['updatedValues']);
                     $gRelInfo = $LEM->gRelInfo[$LEM->currentGroupSeq];
                     $grel = $gRelInfo['result'];
-                    if ($grel && !is_null($result) && ($result['mandViolation'] || !$result['valid']) && empty(App()->request->getPost('mandSoft'))) {
+                    if ($grel && !is_null($result) && ($result['mandViolation'] || !$result['valid'])) {
                         // redisplay the current question with all error
                         $message .= $LEM->_UpdateValuesInDatabase();
                         $LEM->runtimeTimings[] = [__METHOD__, (microtime(true) - $now)];
@@ -5640,7 +5640,6 @@ class LimeExpressionManager
         /////////////////////////////////////////////////////////
         for ($i = $groupSeqInfo['qstart']; $i <= $groupSeqInfo['qend']; ++$i) {
             $qStatus = $LEM->_ValidateQuestion($i, $force);
-
             $updatedValues = array_merge($updatedValues, $qStatus['updatedValues']);
 
             if ($gRelInfo['result'] == true && $qStatus['relevant'] == true) {
@@ -6087,7 +6086,7 @@ class LimeExpressionManager
         $qmandViolation = false;    // assume there is no mandatory violation until discover otherwise
         $mandatoryTip = '';
         // bypass validation if soft mandatory button was pressed
-        if (($qrel && !$qhidden && ($qInfo['mandatory'] == 'Y' || $qInfo['mandatory'] == 'S')) && empty(App()->request->getPost('mandSoft'))) {
+        if (($qrel && !$qhidden && ($qInfo['mandatory'] == 'Y' || $qInfo['mandatory'] == 'S'))) {
             //$mandatoryTip = "<p class='errormandatory alert alert-danger' role='alert'><span class='fa fa-exclamation-sign'></span>&nbsp" . $LEM->gT('This question is mandatory') . "</p>";
             $mandatoryTip = App()->twigRenderer->renderPartial(
                 '/survey/questions/question_help/mandatory_tip.twig',
@@ -6249,6 +6248,13 @@ class LimeExpressionManager
                         $qmandViolation = true;
                     }
                     break;
+            }
+        }
+        /* Set qmandViolation to false if mandSoft and POST is set */
+        if ($qmandViolation && $qInfo['mandatory'] == 'S') {
+            if (App()->request->getPost('mandSoft')) {
+                $qmandViolation = false;
+                $mandatoryTip = '';
             }
         }
 
