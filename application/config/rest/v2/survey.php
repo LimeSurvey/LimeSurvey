@@ -9,7 +9,8 @@ use \LimeSurvey\Api\Command\V2\{
 use LimeSurvey\Api\Rest\V2\SchemaFactory\{
     SchemaFactoryError,
     SchemaFactorySurveyList,
-    SchemaFactorySurveyDetail
+    SchemaFactorySurveyDetail,
+    SchemaFactorySurveyPatch
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -17,6 +18,7 @@ use LimeSurvey\Api\Rest\V2\SchemaFactory\{
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 $errorSchema = (new SchemaFactoryError)->create();
+$surveyPatchSchema = (new SchemaFactorySurveyPatch)->create();
 
 $rest = [];
 
@@ -85,12 +87,7 @@ $rest['v2/survey-detail/$id'] = [
         'params' => [],
         'examples' => null,
         'content' => null,
-        'schema' => (
-            Schema::object()
-            ->properties(
-                Schema::array('patch')
-            )
-        ),
+        'schema' => $surveyPatchSchema,
         'responses' => [
             'success' => [
                 'code' => 200,
