@@ -15,6 +15,7 @@ $lime-green   : #7FF409; // links on dark
 $action       : #4200FF; // links on light
 $active-green : #14AE5C; // buttons & links
 $elevation-shadow: rgba(66, 0, 255, 0.2); // LSD/Elevation/Shadow
+$elevation-shadow-soft: rgba(0, 0, 0, 0.2); // LSD/Elevation/ShadowSoft
 
 $white        : #fff;
 $black        : #000;
@@ -66,6 +67,8 @@ $btn-font-size-sm: 12px;
 
 $btn-hover-boxshadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
 $btn-focus-boxshadow: 4px 4px 0px rgba(123, 97, 255, 0.4);
+
+$dropdown-font-size: 14px;
 
 $ibm-font-family:
 "IBMPlexSans",
@@ -122,7 +125,7 @@ $link-hover-color:                        shift-color($link-color, $link-shade-p
 
 // breadcrumb variables
 $breadcrumb-font-size:              14px;
-$breadcrumb-spacing:                12px;
+$breadcrumb-spacing:                6px;
 $breadcrumb-divider-color:          $g-600;
 $breadcrumb-active-color:           $g-900;
 $breadcrumb-link-color:             $link-color;
@@ -155,3 +158,10 @@ $badge-padding-x:                   5px;
 
 //card
 $card-header-line-height: 26px;
+
+// navbar
+$navbar-bg-color: $g-800;
+$navbar-color: $white;
+$navbar-badges-bg-color: $white;
+$navbar-badges-color: $navbar-bg-color;
+$navbar-link-hover-color: shift-color($navbar-color, $link-shade-percentage) !default;
