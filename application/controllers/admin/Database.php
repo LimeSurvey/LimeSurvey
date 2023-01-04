@@ -887,7 +887,16 @@ class Database extends SurveyCommonAction
         $oSurvey->admin = $request->getPost('admin');
         $oSurvey->adminemail = $request->getPost('adminemail');
         $oSurvey->bounce_email = $request->getPost('bounce_email');
-        $oSurvey->gsid = $request->getPost('gsid');
+        $gsid = $request->getPost('gsid');
+        $SurveysInGroup = SurveysInGroup::model()->findByPK($gsid);
+        if (!$SurveysInGroup || !$SurveysInGroup->hasPermission('surveys', 'create')) {
+            App()->setFlashMessage(gT("Invalid group id, survey group not updated."), 'warning');
+            if (empty($oSurvey->gsid)) {
+                $oSurvey->gsid = SurveysInGroup::DEFAULTGROUP;
+            }
+        } else {
+            $oSurvey->gsid = $gsid;
+        }
         $oSurvey->format = $request->getPost('format');
 
         // For the new template system we have to check that the changed template is also applied.

@@ -323,12 +323,17 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
 
     /**
      * Get the group list for current user
+     * @gsid null|integer : allow to restrict to a specific gid
      * @return array
      */
-    public static function getSurveyGroupsList()
+    public static function getSurveyGroupsList($gsid = null)
     {
         $aSurveyList = [];
         $criteria = new CDbCriteria();
+        $criteria->select = array('t.gsid', 'title');
+        if ($gsid) {
+            $criteria->compare('t.gsid', $gsid);
+        }
         $criteriaPerm = self::getPermissionCriteria();
         $criteria->mergeWith($criteriaPerm, 'AND');
         $criteria->order = 'title ASC';
@@ -495,6 +500,10 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
         /* Specific need gsid */
         if (!$this->gsid) {
             return false;
+        }
+        /* Create and import need access to SurveysGroup */
+        if ($sCRUD == 'create' or $sCRUD == 'import') {
+            return !empty(SurveysGroups::getSurveyGroupsList($this->gsid));
         }
         /* Finally : return specific one */
         return Permission::model()->hasPermission($this->gsid, 'surveysgroups', $sPermission, $sCRUD, $iUserID);
