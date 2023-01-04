@@ -502,7 +502,7 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
             return false;
         }
         /* Create and import need access to SurveysGroup */
-        if ($sCRUD == 'create' or $sCRUD == 'import') {
+        if ($sCRUD == 'create' || $sCRUD == 'import') {
             return !empty(SurveysGroups::getSurveyGroupsList($this->gsid));
         }
         /* Finally : return specific one */
