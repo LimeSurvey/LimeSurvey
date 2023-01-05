@@ -14,7 +14,7 @@
 <!-- Array -->
 
 <!-- answer -->
-<table class="{{ coreClass }} table table-bordered table-hover table-array-radio" role="group" aria-labelledby="ls-question-text-{{ basename }}">
+<table class="{{ coreClass }} table table-bordered table-hover table-array-radio" role="presentation" aria-labelledby="ls-question-text-{{ basename }}">
     <colgroup class="col-responses">
         <col class="col-answers"  style='width: {{ answerwidth }}%;' />
         {# columns/col.php #}
@@ -22,23 +22,21 @@
             <col class="{{ aColumn.class }}" style='width: {{ aColumn.cellwidth }}%'/>
         {% endfor %}
     </colgroup>
-    <thead aria-hidden="true">
-        <tr class="ls-heading">
+    <!-- No header or th : table used for presentation -->
+    <tbody>
+        tr class="ls-heading ls-table-head" aria-hidden="true">
             {{sHeaders}}
         </tr>
-    </thead>
-    <tbody>
-         {% if anscount==0 %}
-            <tr>
-                <th class="answertext">
-                     {{ gT('Error: This question has no answers.') }}
-                </th>
-            </tr>
-         {% endif %}
-        
-            {% for aRow in aRows %}
-                {% include aRow.template with aRow.content only %}
-            {% endfor %}
+        {% if anscount==0 %}
+        <tr>
+            <td class="answertext strong">
+                 {{ gT('Error: This question has no answers.') }}
+            </td>
+        </tr>
+        {% endif %}
+        {% for aRow in aRows %}
+            {% include aRow.template with aRow.content only %}
+        {% endfor %}
         
     </tbody>
 </table>

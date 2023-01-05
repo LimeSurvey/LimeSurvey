@@ -51,7 +51,8 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
         text-align: right;
     }
 
-    table.ls-answers thead {
+    table.ls-answers thead,
+    table.ls-answers .ls-heading {
         display: none
     }
 

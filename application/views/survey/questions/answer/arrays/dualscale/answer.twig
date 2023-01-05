@@ -9,7 +9,7 @@
 #}
 
 <!-- answer -->
-<table class="{{ coreClass }} table table-bordered table-hover" role="group" aria-labelledby="ls-question-text-{{ basename }}">
+<table class="{{ coreClass }} table table-bordered table-hover" role="presentation" aria-labelledby="ls-question-text-{{ basename }}">
     <col class="col-answers" style='width: {{ answerwidth }}%;' >
     {% if leftheader != '' or rightheader !='' %}
         <col style='width: 0%;'  class="hidden"> <!-- see https://bugs.limesurvey.org/view.php?id=11863 -->
@@ -36,21 +36,21 @@
     {% if shownoanswer %}
         <col class="col-no-answer"  style="width: {{ cellwidth }}%;" />
     {% endif %}
-
-    <thead>
+    <!-- No header or th : table used for presentation -->
+    <tbody>
         {% if leftheader != '' or rightheader !='' %}
-            <tr class="ls-heading groups header_row">
-                <th class="header_answer_text"></th>
+            <tr class="ls-heading groups header_row ls-table-head">
+                <td class="header_answer_text"></td>
                 {% if leftheader != '' or rightheader !='' %}
                     <td class="hidden"></td>
                 {% endif %}
-                <th colspan="{{ labelans0|length }}" class="dsheader">{{ processString(leftheader) }}</th>
+                <td colspan="{{ labelans0|length }} control-label" class="dsheader">{{ processString(leftheader) }}</td>
                 {% if labelans1|length > 0 %}
                     <td class="header_separator"></td>  <!-- // Separator -->
                     {% if leftheader != '' or rightheader !='' %}
                         <td class="hidden"></td>
                     {% endif %}
-                    <th colspan="{{ labelans1|length }}" class="dsheader">{{ processString(rightheader) }}</th>
+                    <td colspan="{{ labelans1|length }} control-label" class="dsheader">{{ processString(rightheader) }}</td>
                 {% endif %}
 
                 {% if shownoanswer or rightexists %}
@@ -76,10 +76,6 @@
                 true
             )
         }}
-
-    </thead>
-
-    <tbody>
         <!-- Loop all subquestions -->
         {% for ansrow in aSubQuestions %}
             <!-- Check for repeat headings -->
