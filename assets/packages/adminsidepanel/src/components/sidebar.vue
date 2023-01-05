@@ -499,14 +499,7 @@ export default {
                             @questiongrouporder="changedQuestionGroupOrder"
                         />
                     </transition>
-                    <transition name="slide-fade">
-                        <quickmenu 
-                            v-show="$store.getters.isCollapsed" 
-                            :loading="loading" 
-                            :style="{'min-height': calculateSideBarMenuHeight}" 
-                            @changeLoadingState="applyLoadingState" 
-                        />
-                    </transition>
+                 
                 </div>
             </div>
         </template>

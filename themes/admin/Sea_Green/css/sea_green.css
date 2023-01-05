@@ -11039,6 +11039,10 @@ a {
   text-decoration: underline;
 }
 
+.list-group-item {
+  border: none !important;
+}
+
 /**
  * Lime Admin Common CSS File
  *
