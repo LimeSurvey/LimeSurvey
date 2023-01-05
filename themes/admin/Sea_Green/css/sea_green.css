@@ -11297,6 +11297,37 @@ body {
   line-height: inherit;
 }
 
+.jumbotron {
+  text-align: center;
+  background-color: transparent;
+  padding: 48px 60px;
+  border-radius: 6px;
+  margin-bottom: 30px;
+  margin-top: 14px;
+}
+
+.jumbotron h1,
+.jumbotron .h1 {
+  color: inherit;
+}
+
+.jumbotron p {
+  margin-bottom: 15px;
+  font-size: 21px;
+}
+
+.container .jumbotron {
+  border-radius: 6px;
+}
+
+.jumbotron .container {
+  max-width: 100%;
+}
+
+.jumbotron.message-box {
+  margin-top: 1em;
+}
+
 html {
   font-family: Roboto;
   font-weight: 400;
@@ -11473,6 +11504,12 @@ html {
   cursor: pointer;
   cursor: hand;
   border-radius: 0;
+}
+
+.message-box {
+  position: relative;
+  margin-top: 20px;
+  animation: slidefromtop 1s;
 }
 
 .welcome #lime-logo {
@@ -15038,18 +15075,6 @@ div.mappable-attribute-wrapper.paired.ui-state-disabled {
   display: inline-block;
 }
 
-.select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__rendered {
-  float: left;
-}
-
-.select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__rendered .select2-selection__choice {
-  padding: 0em 0.65em;
-}
-
-.select2-container--bootstrap-5 .select2-search {
-  width: auto !important;
-}
-
 :root {
   --LS-admintheme-basecolor: #328637;
   --bs-info-rgb: 57, 153, 63;
@@ -16042,6 +16067,14 @@ fieldset[disabled] .form-control {
   background-color: #7b2824;
 }
 
+.jumbotron {
+  background-color: transparent;
+  text-align: center;
+}
+.jumbotron.message-box {
+  background-color: transparent;
+}
+
 .thumbnail {
   background-color: #fff;
   border: 1px solid #dadada;
@@ -16292,6 +16325,19 @@ fieldset[disabled] .form-control {
   background-color: #fff;
   border: 1px solid #800052;
   color: #800052;
+}
+
+.message-box {
+  border: 1px solid #8bc68e;
+  color: #2e2e2e;
+}
+
+.message-box-error {
+  border: 1px solid #a0352f;
+}
+
+.message-box-warning {
+  border: 1px solid #a15426;
 }
 
 legend {
@@ -16931,63 +16977,6 @@ tr.info, tr.danger {
   font-weight: normal;
 }
 
-body {
-  color: #1E1E1E;
-  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  font-weight: 400;
-  font-size: 1rem;
-  line-height: 24px;
-}
-
-h1,
-.h1 {
-  color: #152536;
-  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  font-weight: 600;
-  font-size: 1.25rem;
-  line-height: 26px;
-}
-
-h2,
-.h2 {
-  color: #152536;
-  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  font-weight: 600;
-  font-size: 1rem;
-  line-height: 20px;
-}
-
-h3,
-.h3 {
-  color: #152536;
-  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  font-weight: 500;
-  font-size: 0.875rem;
-  line-height: 20px;
-}
-
-label {
-  color: #152536;
-  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  font-weight: 500;
-  font-size: 0.875rem;
-  line-height: 20px;
-}
-
-dl {
-  color: #333641;
-  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  font-weight: 400;
-  font-size: 1rem;
-  line-height: 24px;
-}
-dl dt {
-  color: #1E1E1E;
-  font-weight: 600;
-  font-size: 1rem;
-  line-height: 24px;
-}
-
 .btn:hover {
   color: #fff;
 }
@@ -17450,6 +17439,63 @@ dl dt {
   padding: 1.5rem;
 }
 
+body {
+  color: #1E1E1E;
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 24px;
+}
+
+h1,
+.h1 {
+  color: #152536;
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-weight: 600;
+  font-size: 1.25rem;
+  line-height: 26px;
+}
+
+h2,
+.h2 {
+  color: #152536;
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 20px;
+}
+
+h3,
+.h3 {
+  color: #152536;
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 20px;
+}
+
+label {
+  color: #152536;
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 20px;
+}
+
+dl {
+  color: #333641;
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 24px;
+}
+dl dt {
+  color: #1E1E1E;
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 24px;
+}
+
 .tooltip {
   opacity: 0;
 }
@@ -17516,11 +17562,11 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 
 .breadcrumb-item + .breadcrumb-item:before {
   color: #ACACAC;
-  padding-right: 12px;
+  padding-right: 6px;
 }
 
 .breadcrumb-item + .breadcrumb-item {
-  padding-left: 12px;
+  padding-left: 6px;
 }
 
 .footer {
@@ -17819,27 +17865,6 @@ footer.footer {
   text-align: center;
 }
 
-.ls-panelboxes .ls-panelboxes-panelbox {
-  height: 200px;
-  margin: 10px 0;
-  position: relative;
-}
-.ls-panelboxes .ls-panelboxes-panelbox .card {
-  width: 95%;
-  height: 100%;
-}
-.ls-panelboxes .ls-panelboxes-panelbox .card .card-title, .ls-panelboxes .ls-panelboxes-panelbox .card .card-header {
-  font-size: 1.5rem;
-}
-.ls-panelboxes .ls-panelboxes-panelbox .card .card-body {
-  justify-content: flex-start;
-  text-align: left !important;
-}
-.ls-panelboxes .ls-panelboxes-panelbox .card .btn {
-  width: fit-content;
-  border-width: 1px;
-}
-
 [class^=ri-], [class*=" ri-"] {
   vertical-align: middle;
 }
@@ -17932,6 +17957,27 @@ footer.footer {
   to {
     transform: rotate(360deg);
   }
+}
+
+.ls-panelboxes .ls-panelboxes-panelbox {
+  height: 200px;
+  margin: 10px 0;
+  position: relative;
+}
+.ls-panelboxes .ls-panelboxes-panelbox .card {
+  width: 95%;
+  height: 100%;
+}
+.ls-panelboxes .ls-panelboxes-panelbox .card .card-title, .ls-panelboxes .ls-panelboxes-panelbox .card .card-header {
+  font-size: 1.5rem;
+}
+.ls-panelboxes .ls-panelboxes-panelbox .card .card-body {
+  justify-content: flex-start;
+  text-align: left !important;
+}
+.ls-panelboxes .ls-panelboxes-panelbox .card .btn {
+  width: fit-content;
+  border-width: 1px;
 }
 
 .cke_top {
@@ -18219,62 +18265,6 @@ footer.footer {
   width: 24px;
 }
 
-.badge {
-  background-color: #F9F9FB;
-  color: #1E1E1E;
-}
-
-.badge.reverse-color {
-  color: #F9F9FB !important;
-  background-color: #1E1E1E !important;
-}
-
-.badge.rounded-pill {
-  padding: 4px 12px !important;
-}
-
-.jumbotron {
-  text-align: center;
-  background-color: transparent;
-  padding: 48px 60px;
-  border-radius: 4px;
-  margin-bottom: 30px;
-  margin-top: 14px;
-}
-.jumbotron.message-box {
-  background-color: transparent;
-  margin-top: 1em;
-}
-.jumbotron h2, .jumbotron .h2, .jumbotron.h2 {
-  color: #152536;
-  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  font-weight: 600;
-  font-size: 1.25rem;
-  line-height: 26px;
-}
-.jumbotron p {
-  margin-bottom: 15px;
-  font-size: 1.25rem;
-}
-.jumbotron .container {
-  max-width: 100%;
-}
-
-.container .jumbotron {
-  border-radius: 4px;
-}
-
-.message-box {
-  position: relative;
-  margin-top: 20px;
-  animation: slidefromtop 1s;
-  border: 1px solid #14AE5C;
-}
-
-.message-box-error {
-  border: 1px solid #FF515F;
-}
-
-.message-box-warning {
-  border: 1px solid #FFE046;
+.select2-container--bootstrap-5 .select2-selection--multiple textarea:focus {
+  box-shadow: none;
 }

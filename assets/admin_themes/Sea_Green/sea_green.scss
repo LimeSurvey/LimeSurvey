@@ -62,12 +62,12 @@
 @import "lime-admin-colors";
 @import "statistics";
 
-@import "typography/typography.scss";
 @import "buttons/buttons.scss";
 @import "buttons/btn-group.scss";
 @import "buttons/dropdown.scss";
 @import "buttons/help-button-dropup.scss";
 @import "modal/modal.scss";
+@import "typography/typography.scss";
 @import "tooltip/tooltip.scss";
 @import "well/well.scss";
 @import "breadcrumb/breadcrumb.scss";
@@ -75,10 +75,11 @@
 @import "navbar/navbar.scss";
 @import "card/card.scss";
 @import "box/box.scss";
-@import "panelbox/panelbox.scss";
 @import "icons/icons.scss";
+@import "panelbox/panelbox.scss";
 @import "ckeditor/ckeditor.scss";
 @import "tabs/tabs.scss";
 @import "datetimepicker/datetimepicker.scss";
+@import "forms/forms.scss";
 @import "badge/badge.scss";
 @import "jumbotron/jumbotron.scss";
