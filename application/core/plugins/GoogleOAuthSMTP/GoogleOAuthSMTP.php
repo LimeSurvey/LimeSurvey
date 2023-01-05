@@ -3,6 +3,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 use League\OAuth2\Client\Provider\Google;
 use League\OAuth2\Client\Grant\RefreshToken;
+use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 
 class GoogleOAuthSMTP extends PluginBase
 {
@@ -41,39 +42,64 @@ class GoogleOAuthSMTP extends PluginBase
         return parent::getPluginSettings($getValues);
     }
 
+    /**
+     * Renders the contents of the "information" setting depending on
+     * settings and token validity.
+     * @return string
+     */
     private function getRefreshTokenInfo()
     {
         $this->subscribe('getPluginTwigPath');
 
         $clientId = $this->get('clientId');
         $clientSecret = $this->get('clientSecret');
+        // If either "Client ID" or "Client Secret" is missing, show the "incomplete settings" message.
         if (empty($clientId) || empty($clientSecret)) {
             return Yii::app()->twigRenderer->renderPartial('/IncompleteSettingsMessage.twig', []);
         }
 
         $refreshToken = $this->get('refreshToken');
+        $googleRedirectionUrl = $this->api->createUrl('plugins/direct', ['plugin' => $this->getName()]);
+        $reloadSettingsUrl = $this->getConfigUrl();
+
+        // If there is no refresh token stored, ask the user to get one.
         if (empty($refreshToken)) {
-            $class = "warning";
-            $message = gT("Get token for currently saved Client ID and Secret.");
-        } elseif (!$this->validateRefreshToken($refreshToken, $clientId, $clientSecret)) {
-            $class = "danger";
-            $message = gT("The saved token isn't valid. You need to get a new one.");
-        } else {
-            return Yii::app()->twigRenderer->renderPartial('/ValidTokenMessage.twig', []);
+            return Yii::app()->twigRenderer->renderPartial('/GetTokenMessage.twig', [
+                'class' => "warning",
+                'message' => gT("Get token for currently saved Client ID and Secret."),
+                'tokenUrl' => $googleRedirectionUrl,
+                'reloadUrl' => $reloadSettingsUrl,
+            ]);
         }
-        return Yii::app()->twigRenderer->renderPartial('/GetTokenMessage.twig', [
-            'class' => $class,
-            'message' => $message,
-            'tokenUrl' => $this->api->createUrl('plugins/direct', ['plugin' => $this->getName()])
-        ]);
+
+        // Check if the refresh token is still valid. If it's not, ask the user to get a new one.
+        if (!$this->validateRefreshToken($refreshToken, $clientId, $clientSecret)) {
+            return Yii::app()->twigRenderer->renderPartial('/GetTokenMessage.twig', [
+                'class' => "danger",
+                'message' => gT("The saved token isn't valid. You need to get a new one."),
+                'tokenUrl' => $googleRedirectionUrl,
+                'reloadUrl' => $reloadSettingsUrl,
+            ]);
+        }
+
+        // If we got here, inform the user everything is Ok.
+        return Yii::app()->twigRenderer->renderPartial('/ValidTokenMessage.twig', []);
 
         // Translations here just so the translations bot can pick them up.
         $lang = [
             gT("Currently saved settings are incomplete. After saving both 'Client ID' and 'Client Secret' you will be able to validate the credentials."),
+            gT("Configuration is complete. If 'Client ID' or 'Client Secret' is changed, you will need to re-validate the credentials."),
             gT("Get token")
         ];
     }
 
+    /**
+     * Returns true if the specified refresh token is valid
+     * @param string $refreshToken
+     * @param string $clientId
+     * @param string $clientSecret
+     * @return bool
+     */
     private function validateRefreshToken($refreshToken, $clientId, $clientSecret)
     {
         $refreshTokenMetadata = $this->get('refreshTokenMetadata') ?? [];
@@ -86,18 +112,22 @@ class GoogleOAuthSMTP extends PluginBase
             return false;
         }
 
-        if (!empty($refreshTokenMetadata['expires']) && $refreshTokenMetadata['expires'] < time()) {
-            return false;
-        }
-
         $provider = $this->getProvider($clientId, $clientSecret);
-        $token = $provider->getAccessToken(
-            new RefreshToken(),
-            ['refresh_token' => $refreshToken]
-        );
+        try {
+            $token = $provider->getAccessToken(
+                new RefreshToken(),
+                ['refresh_token' => $refreshToken]
+            );
+            // TODO: Handle token with invalid scope (missing https://mail.google.com/)
+        } catch (IdentityProviderException $ex) {
+            // Don't do anything. Just leave $token unset.
+        }
         return !empty($token);
     }
 
+    /**
+     * Redirects to the Google's authorization page
+     */
     public function redirectToGoogle()
     {
         $oEvent = $this->event;
@@ -116,13 +146,15 @@ class GoogleOAuthSMTP extends PluginBase
             ]
         ];
         $authUrl = $provider->getAuthorizationUrl($options);
-        $this->setSession('oauth2state', $provider->getState());
+
+        // Keep the 'state' in the session so we can later use it for validation.
+        Yii::app()->session['googleOAuth-state'] = $provider->getState();
         header('Location: ' . $authUrl);
         exit;
     }
 
     /**
-     * Receives the response after Google redirection
+     * Receives the response from Google
      */
     public function receiveGoogleResponse()
     {
@@ -132,10 +164,20 @@ class GoogleOAuthSMTP extends PluginBase
         /** @var LSHttpRequest */
         $request = Yii::app()->getRequest();
 
-        $oauth2state = $this->getSession('oauth2state');
+        $code = $request->getParam("code");
+        if (empty($code)) {
+            throw new Exception("Invalid request");
+        }
+
+        $oauth2state = Yii::app()->session['googleOAuth-state'];
         if (empty($oauth2state)) {
-            //Yii::app()->setFlashMessage(gT("Invalid request."), 'error');
-            $this->redirectToConfig();
+            throw new Exception("Invalid state");
+        }
+
+        $state = $request->getParam("state");
+        if ($state != $oauth2state) {
+            unset(Yii::app()->session['googleOAuth-state']);
+            throw new Exception("Invalid state");
         }
 
         $clientId = $this->get('clientId');
@@ -144,54 +186,43 @@ class GoogleOAuthSMTP extends PluginBase
             throw new Exception("Invalid Google OAuth settings");
         }
 
-        $code = $request->getParam("code");
-        $state = $request->getParam("state");
-        if ($code) {
-            if ($state == $oauth2state) {
-                $this->retrieveRefreshToken($code, $clientId, $clientSecret);
-            } else {
-                $this->cleanupSession();
-                throw new Exception("Invalid state");
-            }
-        }
+        // If all checks are Ok, try to retrieve the refresh token
+        $this->retrieveRefreshToken($code, $clientId, $clientSecret);
     }
 
+    /**
+     * Retrieve and store the refresh token from google
+     */
     private function retrieveRefreshToken($code, $clientId, $clientSecret)
     {
         $provider = $this->getProvider($clientId, $clientSecret);
         // Get an access token (using the authorization code grant)
         $token = $provider->getAccessToken('authorization_code', ['code' => $code]);
         $refreshToken = $token->getRefreshToken();
+        // Store the token and related credentials (so we can later check if the token belongs to the saved settings)
         $this->set('refreshToken', $refreshToken);
         $this->set('refreshTokenMetadata', [
             'clientId' => $clientId,
             'clientSecret' => $clientSecret,
-            'expires' => $token->getExpires(),
         ]);
-
-        Yii::app()->setFlashMessage(gT("Refresh Token saved."), 'success');
-        $this->redirectToConfig();
+        // Renders a "success" html. It actually doesn't show any message.
+        // It just closes the window after sending a message to the opener.
+        $this->renderPartial('TokenSuccess', []);
     }
 
-    private function cleanupSession()
-    {
-        unset($_SESSION['googleOAuth']);
-    }
-
-    private function getSession($key, $default = null) {
-        return $_SESSION['googleOAuth'][$key] ?? $default;
-    }
-
-    private function setSession($key, $value) {
-        $_SESSION['googleOAuth'][$key] = $value;
-    }
-
+    /**
+     * Redirects the browser to the plugin settings
+     */
     private function redirectToConfig()
     {
         $url = $this->getConfigUrl();
         Yii::app()->getController()->redirect($url);
     }
 
+    /**
+     * Returns the URL for plugin settings
+     * @return string
+     */
     private function getConfigUrl()
     {
         return $this->api->createUrl(
@@ -199,11 +230,17 @@ class GoogleOAuthSMTP extends PluginBase
             [
                 'sa' => 'configure',
                 'id' => $this->id,
-                'tab' => 'settings'
+                'tab' => 'settings' // Used in JS to switch tabs
             ]
         );
     }
 
+    /**
+     * Returns the OAuth provider object for the specified credentials
+     * @param string $clientId
+     * @param string $clientSecret
+     * @return League\OAuth2\Client\Provider\Google
+     */
     private function getProvider($clientId, $clientSecret)
     {
         $redirectUri = $this->api->createUrl('plugins/unsecure', ['plugin' => $this->getName()]);
@@ -211,14 +248,14 @@ class GoogleOAuthSMTP extends PluginBase
             'clientId' => $clientId,
             'clientSecret' => $clientSecret,
             'redirectUri' => $redirectUri,
-            'accessType' => 'offline'
+            'accessType' => 'offline',
+            'prompt' => 'consent',
         ];
-        $provider = new Google($params);
-        return $provider;
+        return new Google($params);
     }
 
     /**
-     * Add some views for this and other plugin
+     * Adds view's path to twig system
      */
     public function getPluginTwigPath()
     {
@@ -232,11 +269,14 @@ class GoogleOAuthSMTP extends PluginBase
      */
     public function saveSettings($settings)
     {
+        // Get the current credentials (before saving new settings)
         $oldClientId = $this->get('clientId');
         $oldClientSecret = $this->get('clientSecret');
 
+        // Save settings
         parent::saveSettings($settings);
 
+        // Get new credentials
         $clientId = $this->get('clientId');
         $clientSecret = $this->get('clientSecret');
 
