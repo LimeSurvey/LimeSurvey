@@ -1,6 +1,5 @@
 <?php
 
-use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
 use \LimeSurvey\Api\Command\V2\{
     SurveyList,
     SurveyDetail,
