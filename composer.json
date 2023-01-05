@@ -24,8 +24,6 @@
 				"application/libraries/PluginManager/Storage"
 			],
 			"LimeSurvey\\Menu\\": "application/libraries/MenuObjects/",
-			"LimeSurvey\\Api\\": "application/libraries/Api/",
-			"LimeSurvey\\Libraries\\": "application/libraries/",
 			"LimeSurvey\\ExtensionInstaller\\": "application/libraries/ExtensionInstaller/",
 			"LimeSurvey\\Helpers\\": "application/helpers",
 			"LimeSurvey\\Helpers\\Update\\": [
@@ -35,6 +33,8 @@
 			"LimeSurvey\\Models\\Services\\": "application/models/services",
 			"LimeSurvey\\Datavalueobjects\\": "application/datavalueobjects",
 			"LimeSurvey\\Exceptions\\": "application/exceptions",
+			"LimeSurvey\\Libraries\\": "application/libraries",
+			"LimeSurvey\\": "application/libraries",
 			"ls\\tests\\": "tests"
 		}
 	},
