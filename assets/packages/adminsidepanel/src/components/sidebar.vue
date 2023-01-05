@@ -503,20 +503,7 @@ export default {
                 </div>
             </div>
         </template>
-        <div 
-            v-if="(useMobileView && !smallScreenHidden) || !useMobileView"
-            class="resize-handle ls-flex-column" 
-            key="resizeHandle"
-            :style="{'height': calculateSideBarMenuHeight, 'max-height': getWindowHeight}" 
-        >
-            <button 
-                v-show="!$store.getters.isCollapsed" 
-                class="btn btn-outline-secondary" 
-                @mousedown="mousedown" @click.prevent="()=>{return false;}"
-            >
-                <i class="fa fa-ellipsis-v" />
-            </button>
-        </div>
+
         <div class="scoped-placeholder-greyed-area" 
             v-if="(useMobileView && smallScreenHidden)" 
             @click="toggleSmallScreenHide" 

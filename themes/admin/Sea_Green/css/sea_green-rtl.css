@@ -15161,8 +15161,7 @@ a.list-group-item-danger.active:focus, a.list-group-item-danger.active:hover, a.
 }
 
 body {
-  color: #35363F;
-  background-color: #fff;
+  background-color: #F9F9FB;
 }
 
 mark, .mark {
