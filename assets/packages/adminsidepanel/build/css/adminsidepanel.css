@@ -27,6 +27,10 @@
 }
 #questionexplorer {
   overflow: auto;
+  background-color: #fff;
+  /* position: relative; */
+  /* z-index: 2; */
+  min-height: 100vh;
 }
 .loader-adminpanel.loader-quickmenu .contain-pulse {
   width: 2em;

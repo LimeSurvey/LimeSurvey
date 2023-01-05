@@ -253,7 +253,7 @@ export default {
 };
 </script>
 <template>
-    <div id="questionexplorer" class="ls-flex-column fill ls-ba menu-pane ls-space padding left-0 top-0 bottom-0 right-5 margin top-5">
+    <div id="questionexplorer" class="ls-flex-column fill ls-ba menu-pane ls-space padding left-0 top-0 bottom-0 right-5 margin pt-5">
         <div
             class="ls-flex-row wrap align-content-center align-items-center ls-space margin top-5 bottom-15 button-sub-bar"
             v-if="createAllowance != ''"
@@ -427,6 +427,10 @@ export default {
 }
 #questionexplorer {
     overflow: auto;
+    background-color: #fff;
+    /* position: relative; */
+    /* z-index: 2; */
+    min-height: 100vh;
 }
 
 </style>

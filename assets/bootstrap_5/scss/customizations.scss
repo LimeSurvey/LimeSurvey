@@ -19,6 +19,10 @@ a {
 .ls-text-underline-hover:hover {
     text-decoration: underline;
 }
+
+.list-group {
+    border-radius: 0px !important;
+}
 .list-group-item {
     border: none !important;
 }
