@@ -479,7 +479,7 @@ export default {
                 class="col-12 mainContentContainer"
                 key="mainContentContainer"
             >
-                <div class="mainMenu container-fluid col-12">
+                <div class="mainMenu container-fluid col-12" style="position: relative;">
                     <sidebar-state-toggle @collapse="toggleCollapse"/>
                     <transition name="slide-fade">
                         <sidemenu 
@@ -499,15 +499,11 @@ export default {
                             @questiongrouporder="changedQuestionGroupOrder"
                         />
                     </transition>
-                 
-                </div>
-            </div>
-        </template>
-        <div 
+                    <div 
             v-if="(useMobileView && !smallScreenHidden) || !useMobileView"
             class="resize-handle ls-flex-column" 
             key="resizeHandle"
-            :style="{'height': calculateSideBarMenuHeight, 'max-height': '50px','margin':'auto'}" 
+            :style="{'height': calculateSideBarMenuHeight, 'max-height': '50px','margin':'auto', 'right':'15px'}" 
         >
             <button 
                 v-show="!$store.getters.isCollapsed" 
@@ -519,6 +515,10 @@ export default {
                 </svg>
             </button>
         </div>
+                </div>
+            </div>
+        </template>
+      
         <div class="scoped-placeholder-greyed-area" 
             v-if="(useMobileView && smallScreenHidden)" 
             @click="toggleSmallScreenHide" 

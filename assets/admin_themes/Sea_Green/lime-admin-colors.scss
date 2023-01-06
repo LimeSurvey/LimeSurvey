@@ -2085,7 +2085,7 @@ input[type="text"], input[type="password"], .ui-autocomplete-input, textarea, .u
             &:focus, &:active, &:hover {
                 background-color: $white !important;
             }
-            background: $white;
+            // background-color: transparent !important;
         }
     }
 

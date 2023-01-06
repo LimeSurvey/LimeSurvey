@@ -16711,9 +16711,6 @@ input[type=text], input[type=password], .ui-autocomplete-input, textarea, .unedi
   background-color: #fff;
   box-shadow: none;
 }
-#sidebar .resize-handle button {
-  background: #fff;
-}
 #sidebar .resize-handle button:focus, #sidebar .resize-handle button:active, #sidebar .resize-handle button:hover {
   background-color: #fff !important;
 }
