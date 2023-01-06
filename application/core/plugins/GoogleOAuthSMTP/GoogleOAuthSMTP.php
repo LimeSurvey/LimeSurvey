@@ -42,6 +42,8 @@ class GoogleOAuthSMTP extends PluginBase
         $this->subscribe('beforeEmail', 'beforeEmail');
         $this->subscribe('beforeSurveyEmail', 'beforeEmail');
         $this->subscribe('beforeTokenEmail', 'beforeEmail');
+
+        $this->subscribe('beforeControllerAction');
     }
 
     /**
@@ -369,5 +371,20 @@ class GoogleOAuthSMTP extends PluginBase
 
         // Set "Reply To" because Gmail overrides the From/Sender with the logged user.
         $limeMailer->AddReplyTo($limeMailer->From, $limeMailer->FromName);
+    }
+
+    public function beforeControllerAction()
+    {
+        if (!$this->get('enable')) {
+            return;
+        }
+
+        $controller = $this->getEvent()->get('controller');
+        $action = $this->getEvent()->get('action');
+
+        if ($controller == 'admin' && $action == 'globalsettings') {
+            $assetsUrl = Yii::app()->assetManager->publish(dirname(__FILE__). '/assets/js');
+            Yii::app()->clientScript->registerScriptFile($assetsUrl . '/globalSettingsOverride.js');
+        }
     }
 }
