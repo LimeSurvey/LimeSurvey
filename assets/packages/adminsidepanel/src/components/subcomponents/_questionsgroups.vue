@@ -308,9 +308,12 @@ export default {
                     class="list-group-item ls-flex-column"
                     v-bind:class="questionGroupItemClasses(questiongroup)"
                     @dragenter="dragoverQuestiongroup($event, questiongroup)"
+                    style=" background: linear-gradient(90deg, rgba(29,181,5,1) 0%, rgba(29,181,5,1) 13px, rgba(217,217,217,1) 12px, rgba(217,217,217,1) 22px, rgba(253,253,253,1) 22px, rgba(255,255,255,1) 100%); padding: 0;"
                 >
 
-                  <div class="d-flex nowrap ls-space padding right-5 bottom-5">
+                  <div class="d-flex nowrap ls-space padding right-5 bottom-5" style=" margin-left: 13px;
+    background: white;
+    padding: 10px;">
                     <div
                         v-if="!surveyIsActive"
                         class="bigIcons dragPointer me-3"
@@ -368,6 +371,7 @@ export default {
                                 :data-has-condition="questionHasCondition(question)"
                                 :title="question.question_flat"
                                 @dragenter="dragoverQuestion($event, question, questiongroup)"
+                                style="margin: 0; margin-left: 22px;"
                             >
                                     <div
                                         v-if="!$store.state.surveyActiveState"
