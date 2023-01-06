@@ -27,16 +27,6 @@
     top: 30%;
 }
 
-#notif-container {
-    position: fixed;
-    top: 5%;
-    left: 20%;
-    width: 60%;
-    z-index: 3500;
-    background: rgba(255, 255, 255, 0.1);
-    min-height: 0;
-}
-
 .bg-white {
     background: #fff;
 }
@@ -493,11 +483,6 @@ html {
 
 .welcome #lime-logo {
     animation: fadein 1s;
-}
-
-.alert {
-    position: relative;
-    animation: slidefromtop 1s;
 }
 
 #welcomeModal {

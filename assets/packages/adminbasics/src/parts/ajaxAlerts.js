@@ -22,33 +22,37 @@ class AjaxAlerts {
         customOptions = customOptions || {};
         const options = {
             useHtml : customOptions.useHtml || true,
-            timeout : customOptions.timeout || 3500,
+            timeout : customOptions.timeout || 3000,
             styles: customOptions.styles || {},
             classes: customOptions.classes || ""
         };
 
         //bs5 alert types (e.g. alter-success)
-        let alertTypes = [
-            'success',
-            'primary',
-            'secondary',
-            'danger',
-            'warning',
-            'info',
-            'light',
-            'dark',
-        ];
+        let alertTypesAndIcons = {
+            'success': 'ri-checkbox-circle-fill',
+            'primary': 'ri-notification-2-line',
+            'secondary': 'ri-notification-2-line',
+            'danger': 'ri-error-warning-fill',
+            'warning': 'ri-alert-fill',
+            'info': 'ri-notification-2-line',
+            'light': 'ri-notification-2-line',
+            'dark': 'ri-notification-2-line',
+        };
 
         let alertDefault = 'success';
-        let currentAlertType = alertTypes.includes(alertType) ? alertType : alertDefault;
+        let currentAlertType = alertTypesAndIcons.hasOwnProperty(alertType) ? alertType : alertDefault;
+        let iconDefault = 'ri-notification-2-line';
+        let icon = alertTypesAndIcons.hasOwnProperty(alertType) ? alertTypesAndIcons[alertType] : iconDefault;
+        let iconElement = '<span class="' + icon + ' me-2"></span>';
         let buttonDismiss = '<button type="button" class="btn-close limebutton" data-bs-dismiss="alert" aria-label="Close"></button>';
-        const container = $('<div class="alert alert-' + currentAlertType + ' ' + options.classes + ' alert-dismissible" role="alert"></div>');
+        const container = $('<div class="alert alert-outline-' + currentAlertType + ' ' + options.classes + ' alert-dismissible" role="alert"></div>');
 
         if (options.useHtml) {
             container.html(message);
         } else {
             container.text(message);
         }
+        $(iconElement).prependTo(container);
         $(buttonDismiss).appendTo(container);
 
         container.css(options.styles);

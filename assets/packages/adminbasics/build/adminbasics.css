@@ -834,10 +834,6 @@ html {
   animation: fadein 1s;
 }
 
-.alert {
-  position: relative;
-  animation: slidefromtop 1s;
-}
 
 #welcomeModal {
   z-index: 20000;
