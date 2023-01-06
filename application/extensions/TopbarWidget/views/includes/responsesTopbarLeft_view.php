@@ -2,7 +2,7 @@
 <?php if ($hasResponsesReadPermission): ?>
     <a class="btn btn-outline-secondary pjax"
        href='<?php echo Yii::App()->createUrl("responses/index/", ['surveyId' => $oSurvey->sid]); ?>' role="button">
-        <span class="fa fa-list-alt text-success"></span>
+        <span class="ri-list-unordered "></span>
         <?php eT("Summary"); ?>
     </a>
 <?php endif; ?>
@@ -11,7 +11,7 @@
     <!-- Display Responses -->
     <a class="btn btn-outline-secondary pjax"
        href='<?php echo Yii::App()->createUrl("responses/browse/", ['surveyId' => $oSurvey->sid]); ?>' role="button">
-        <span class="fa fa-list text-success"></span>
+        <span class="ri-list-check"></span>
         <?php eT("Display responses"); ?>
     </a>
 <?php endif; ?>
@@ -21,7 +21,7 @@
 <?php if ($hasResponsesCreatePermission): ?>
     <a class="btn btn-outline-secondary"
        href='<?php echo Yii::App()->createUrl("admin/dataentry/sa/view/surveyid/$oSurvey->sid"); ?>' role="button">
-        <span class="fa fa-keyboard-o text-success"></span>
+        <span class="ri-keyboard-box-line"></span>
         <?php eT("Data entry"); ?>
     </a>
 <?php endif; ?>
@@ -30,7 +30,7 @@
     <!-- Get statistics from these responses -->
     <a class="btn btn-outline-secondary"
        href='<?php echo Yii::App()->createUrl("admin/statistics/sa/index/surveyid/$oSurvey->sid"); ?>' role="button">
-        <span class="fa fa-bar-chart text-success"></span>
+        <span class="ri-bar-chart-fill"></span>
         <?php eT("Statistics"); ?>
     </a>
 
@@ -38,7 +38,7 @@
     <?php if ($isTimingEnabled == "Y"): ?>
         <a class="btn btn-outline-secondary"
            href='<?php echo Yii::App()->createUrl("responses/time/", ['surveyId' => $oSurvey->sid]); ?>' role="button">
-            <span class="fa fa-clock-o text-success"></span>
+            <span class="ri-time-line"></span>
             <?php eT("Timing statistics"); ?>
         </a>
     <?php endif; ?>
@@ -47,71 +47,42 @@
 
 <!-- Export -->
 <?php if ($hasResponsesExportPermission): ?>
-    <div class="btn-group">
-        <button type="button" role="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
-            <span class="icon-export text-success"></span>
-            <?php eT("Export"); ?> <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-
-            <!-- Export results to application -->
-            <li>
-                <a class="dropdown-item"
-                   href='<?php echo Yii::App()->createUrl("admin/export/sa/exportresults/surveyid/$oSurvey->sid"); ?>'>
-                    <?php eT("Export responses"); ?>
-                </a>
-            </li>
-
-            <!-- Export results to a SPSS/PASW command file -->
-            <li>
-                <a class="dropdown-item"
-                   href='<?php echo Yii::App()->createUrl("admin/export/sa/exportspss/sid/$oSurvey->sid"); ?>'>
-                    <?php eT("Export responses to SPSS"); ?>
-                </a>
-            </li>
-
-            <!-- Export a VV survey file -->
-            <li>
-                <a class="dropdown-item"
-                   href='<?php echo Yii::App()->createUrl("admin/export/sa/vvexport/surveyid/$oSurvey->sid"); ?>'>
-                    <?php eT("Export a VV survey file"); ?>
-                </a>
-            </li>
-
-        </ul>
+    <div class="d-inline-flex">
+    <?php
+    $exportDropdownItems = $this->render('includes/responsesExportDropdownItems', get_defined_vars(), true);
+    $this->widget('ext.ButtonWidget.ButtonWidget', [
+        'name' => 'ls-tools-button',
+        'id' => 'ls-tools-button',
+        'text' => gT('Export'),
+        'icon' => 'ri-download-fill',
+        'isDropDown' => true,
+        'dropDownContent' => $exportDropdownItems,
+        'htmlOptions' => [
+            'class' => 'btn btn-outline-secondary',
+        ],
+    ]);
+    ?>
     </div>
 <?php endif; ?>
 
 
 <!-- Import -->
 <?php if ($hasResponsesCreatePermission): ?>
-    <div class="btn-group">
-        <button type="button" role="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
-            <span class="icon-import text-success"></span>
-            <?php eT("Import"); ?> <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-
-            <!-- Import responses from a deactivated survey table -->
-            <li>
-                <a class="dropdown-item"
-                   href='<?php echo Yii::App()->createUrl("admin/dataentry/sa/import/surveyid/$oSurvey->sid"); ?>'
-                   role="button">
-                    <?php eT("Import responses from a deactivated survey table"); ?>
-                </a>
-            </li>
-
-            <!-- Import a VV survey file -->
-            <li>
-                <a class="dropdown-item"
-                   href='<?php echo Yii::App()->createUrl("admin/dataentry/sa/vvimport/surveyid/$oSurvey->sid"); ?>'
-                   role="button">
-                    <?php eT("Import a VV survey file"); ?>
-                </a>
-            </li>
-        </ul>
+    <div class="d-inline-flex">
+    <?php
+    $importDropdownItems = $this->render('includes/responsesImportDropdownItems', get_defined_vars(), true);
+    $this->widget('ext.ButtonWidget.ButtonWidget', [
+        'name' => 'ls-tools-button',
+        'id' => 'ls-tools-button',
+        'text' => gT('Import'),
+        'icon' => 'ri-upload-fill',
+        'isDropDown' => true,
+        'dropDownContent' => $importDropdownItems,
+        'htmlOptions' => [
+            'class' => 'btn btn-outline-secondary',
+        ],
+    ]);
+    ?>
     </div>
 <?php endif; ?>
 
@@ -120,7 +91,7 @@
 <?php if ($hasResponsesReadPermission): ?>
     <a class="btn btn-outline-secondary"
             href='<?php echo Yii::App()->createUrl("admin/saved/sa/view/surveyid/$oSurvey->sid"); ?>' role="button">
-        <span class="icon-saved text-success"></span>
+        <span class="ri-save-line"></span>
         <?php eT("View Saved but not submitted Responses"); ?>
     </a>
 <?php endif; ?>
@@ -132,7 +103,7 @@
         <a class="btn btn-outline-secondary"
                 href='<?php echo Yii::App()->createUrl("admin/dataentry/sa/iteratesurvey/surveyid/$oSurvey->sid"); ?>'
                 role="button">
-            <span class="fa fa-repeat text-success"></span>
+            <span class="ri-repeat-fill"></span>
             <?php eT("Iterate survey"); ?>
         </a>
     <?php endif; ?>
@@ -153,7 +124,7 @@
         title="<?php eT('Batch deletion') ?>"
         class="btn btn-outline-secondary selector--ConfirmModal">
 
-        <span class="fa fa-trash text-danger"></span>
+        <span class="ri-delete-bin-fill text-danger"></span>
         <?php eT("Batch deletion"); ?>
     </a>
 <?php endif; ?>

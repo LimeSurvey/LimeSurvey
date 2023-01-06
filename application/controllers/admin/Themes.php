@@ -554,7 +554,7 @@ class Themes extends SurveyCommonAction
         $aViewUrls = $this->initialise($templatename, $screenname, $editfile, true, true);
 
         App()->getClientScript()->reset();
-        App()->getClientScript()->registerPackage('bootstrap-admin');
+        App()->getClientScript()->registerPackage('bootstrap-themeeditor');
 
         $undo    = gT("Undo (ctrl + Z)", "js");
         $redo    = gT("Redo (ctrl + Y)", "js");
@@ -656,8 +656,8 @@ JAVASCRIPT
         if (Permission::model()->hasGlobalPermission('templates', 'update')) {
             if (returnGlobal('action') == "templaterename" && returnGlobal('newname') && returnGlobal('copydir')) {
                 $sNewName = sanitize_dirname(returnGlobal('newname'));
-                $sNewDirectoryPath = Yii::app()->getConfig('userthemerootdir') . "/" . $sNewName;
-                $sOldDirectoryPath = Yii::app()->getConfig('userthemerootdir') . "/" . returnGlobal('copydir');
+                $sNewDirectoryPath = sanitize_dirname(Yii::app()->getConfig('userthemerootdir') . "/" . $sNewName);
+                $sOldDirectoryPath = sanitize_dirname(Yii::app()->getConfig('userthemerootdir') . "/" . returnGlobal('copydir'));
 
                 if (Template::isStandardTemplate(returnGlobal('newname'))) {
                     Yii::app()->user->setFlash('error', sprintf(gT("Template could not be renamed to '%s'."), $sNewName) . " " . gT("This name is reserved for standard template."));
@@ -893,7 +893,7 @@ JAVASCRIPT
                         in_array($relativePathEditfile, $jsfiles) === false
                     ) {
                         Yii::app()->user->setFlash('error', gT('Invalid theme name'));
-                        $this->getController()->redirect(array("admin/themes/sa/upload"));
+                         $this->getController()->redirect(array("admin/themes/sa/upload"));
                     }
 
                     //$savefilename = $oEditedTemplate
@@ -901,7 +901,7 @@ JAVASCRIPT
                         $oEditedTemplate->extendsFile($relativePathEditfile);
                     }
 
-                    $savefilename = $oEditedTemplate->extendsFile($relativePathEditfile);
+                    $savefilename = $oEditedTemplate->extendsFile($relativePathEditfile, $relativePathEditfile);
 
                     if (is_writable($savefilename)) {
                         if (!$handle = fopen($savefilename, 'w')) {

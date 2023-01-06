@@ -43,31 +43,31 @@ $respstatsread  = Permission::model()->hasSurveyPermission($iSurveyID, 'response
 /// Survey quick actions have been removed -> deprecated
 <div class="row">
     <div class="col-12">
-        <?php echo $this->renderPartial('/admin/survey/subview/_survey_quickaction', $subviewData); ?>    
+        <?php echo $this->renderPartial('/admin/survey/subview/_survey_quickaction', $subviewData); ?>
     </div>
 </div>
 */ ?>
-<div class="row ls-space top-10">
+<div class="row survey-summary">
     <?php
     $possiblePanelFolder = realpath(Yii::app()->getConfig('rootdir') . '/application/views/admin/survey/subview/surveydashboard/');
     $possiblePanels      = scandir($possiblePanelFolder);
     foreach ($possiblePanels
 
-    as $i => $panel) {
-    // If it's no twig file => ignore
-    if (!preg_match('/^.*\.twig$/', $panel)) {
-        continue;
-    }
-    //every two entries close it up
-    if ($i % 2 === 0) { ?>
+        as $i => $panel) {
+        // If it's no twig file => ignore
+        if (!preg_match('/^.*\.twig$/', $panel)) {
+            continue;
+        }
+        //every two entries close it up
+        if ($i % 2 === 0) { ?>
 </div>
-<div class="row ls-space top-10">
-    <?php } ?>
-    <div class="col-12 col-xl-6">
-        <?php $surveyTextContent = $oSurvey->currentLanguageSettings->attributes; ?>
-        <?= App()->twigRenderer->renderViewFromFile('/application/views/admin/survey/subview/surveydashboard/' . $panel, get_defined_vars(), true) ?>
-    </div>
-    <?php }
-    ?>
+<div class="row survey-summary">
+<?php } ?>
+<div class="col-12 col-xl-6 mb-4">
+    <?php $surveyTextContent = $oSurvey->currentLanguageSettings->attributes; ?>
+    <?= App()->twigRenderer->renderViewFromFile('/application/views/admin/survey/subview/surveydashboard/' . $panel, get_defined_vars(), true) ?>
+</div>
+<?php }
+?>
 </div>
 <!-- END surveySummary -->

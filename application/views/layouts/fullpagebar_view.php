@@ -24,7 +24,7 @@
                        data-bs-toggle="modal"
                        data-bs-target="#<?php echo $fullpagebar['themes']['buttons']['uploadAndInstall']['modalSurvey']; ?>"
                     >
-                            <span class="icon-import text-success"></span>
+                            <span class="ri-upload-fill"></span>
                             <?php eT("Upload & install"); ?>
                     </a>
                     <?php elseif (isset($fullpagebar['themes']['buttons']['uploadAndInstall']) && !$fullpagebar['themes']['canImport'] && isset($fullpagebar['themes']['importErrorMessage'])) : ?>
@@ -34,7 +34,7 @@
                           style="display: inline-block">
                     <button type="button" role="button" class="btn btn-outline-secondary btntooltip"
                             disabled="disabled">
-                        <span class="icon-import text-success"></span>
+                        <span class="ri-upload-fill"></span>
                         <?php eT("Import"); ?>
                     </button>
                 </span>
@@ -46,9 +46,9 @@
                     isset($fullpagebar['listSurveys']['buttons']['createSurvey']) &&
                     Permission::model()->hasGlobalPermission('surveys', 'create')
                 ) : ?>
-                <a class="btn btn-outline-secondary tab-dependent-button" data-tab="#surveys"
+                <a class="btn btn-primary tab-dependent-button" data-tab="#surveys"
                    href="<?php echo $fullpagebar['listSurveys']['buttons']['createSurvey']['url']; ?>">
-                        <span class="icon-add text-success"></span>
+                        <span class="ri-add-circle-fill"></span>
                     <?php eT("Create survey"); ?>
                 </a>
             <?php endif; ?>
@@ -58,10 +58,10 @@
                     isset($fullpagebar['listSurveys']['buttons']['createSurveyGroup']) &&
                     Permission::model()->hasGlobalPermission('surveysgroups', 'create')
                 ) : ?>
-                    <a class="btn btn-outline-secondary tab-dependent-button d-none"
+                    <a class="btn btn-primary tab-dependent-button d-none"
                        data-tab="#surveygroups"
                        href="<?php echo $fullpagebar['listSurveys']['buttons']['createSurveyGroup']['url']; ?>">
-                        <span class="icon-add text-success"></span>
+                        <span class="ri-add-circle-fill"></span>
                         <?php eT("Create survey group"); ?>
                     </a>
             <?php endif; ?>
@@ -71,7 +71,7 @@
                     <!-- Create Box Button -->
                 <a href="<?php echo $this->createUrl('homepageSettings/createBox/'); ?>"
                    class="btn btn-outline-secondary">
-                        <span class="icon-add text-success"></span>
+                        <span class="ri-add-circle-fill"></span>
                         <?php eT("Create box"); ?>
                 </a>
                 <?php endif; ?>
@@ -84,7 +84,7 @@
             <?php if (isset($fullpagebar['closebutton']['url'])) : ?>
                 <a class="btn btn-danger"
                    href="<?php echo $fullpagebar['closebutton']['url']; ?>">
-                        <span class="fa fa-close"></span>
+                        <span class="ri-close-fill"></span>
                     <?php eT("Close"); ?>
                 </a>
             <?php endif; ?>
@@ -93,7 +93,7 @@
                 <?php if (isset($fullpagebar['white_closebutton']['url'])) : ?>
                 <a class="btn btn-outline-secondary"
                    href="<?php echo $fullpagebar['white_closebutton']['url']; ?>">
-                    <span class="fa fa-close"></span>
+                    <i class="ri-close-fill"></i>
                     <?php eT("Close"); ?>
                 </a>
             <?php endif; ?>
@@ -102,7 +102,7 @@
             <?php if (isset($fullpagebar['returnbutton']['url'])) : ?>
                 <a class="btn btn-outline-secondary"
                    href="<?php echo $this->createUrl($fullpagebar['returnbutton']['url']); ?>">
-                        <span class="fa fa-backward"></span>
+                        <span class="ri-rewind-fill"></span>
                         &nbsp;&nbsp;
                         <?php echo $fullpagebar['returnbutton']['text']; ?>
                 </a>
@@ -128,7 +128,7 @@
                    id="save-form-button"
                    onclick="$(this).addClass('disabled').attr('onclick', 'return false;');"
                    data-form-id="<?php echo $fullpagebar['savebutton']['form']; ?>">
-                        <span class="fa fa-check"></span>
+                        <span class="ri-check-fill"></span>
                     <?php eT("Save"); ?>
                 </a>
             <?php endif; ?>
@@ -139,7 +139,7 @@
                 <a href="<?php echo $this->createUrl('homepageSettings/resetAllBoxes/'); ?>"
                    class="btn btn-warning"
                    data-confirm="<?php eT('This will delete all current boxes to restore the default ones. Are you sure you want to continue?'); ?>">
-                    <span class="fa fa-refresh"></span>
+                    <span class="ri-refresh-line"></span>
                     <?php eT("Reset"); ?>
                 </a>
                     <!-- Save Box Settings Button -->
@@ -154,7 +154,7 @@
             <?php if (isset($fullpagebar['update'])) : ?>
                 <a href="<?php echo $this->createUrl('admin/update/sa/managekey/'); ?>"
                    class="btn btn-outline-secondary">
-                        <span class="fa fa-key text-success"></span>
+                        <span class="ri-key-2-fill"></span>
                     <?php eT("Manage your key"); ?>
                 </a>
             <?php endif; ?>

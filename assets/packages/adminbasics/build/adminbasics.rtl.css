@@ -116,12 +116,139 @@
   display: none;
 }
 
+#cpdbatt {
+  min-height: 100px;
+}
+
+.draggable-container {
+  min-height: 300px;
+}
+
+#newcreated,
+#tokenattribute,
+#csvattribute,
+#centralattribute {
+  margin-right: 0.75%;
+  margin-left: 0.75%;
+  margin-bottom: 20px;
+}
+
+#tokenattribute {
+  margin-right: 1.5%;
+}
+
+#centralattribute {
+  margin-left: 1.5%;
+}
+
+#centralattribute .centralatt {
+  padding-bottom: 15px;
+}
+
+#newcreated .attribute-item input {
+  display: block;
+  margin: 2px auto;
+  width: 80%;
+}
+
+#centralattribute div.centralatt div.token-attribute {
+  margin-top: -5px;
+  min-height: 20px;
+}
+
+#newcreated,
+#tokenattribute {
+  height: 100%;
+}
+
+.heading {
+  height: auto;
+  padding-top: 7px;
+  font-weight: bold;
+}
+
+div.mappable-attribute-wrapper {
+  width: 80%;
+  margin: 6px auto;
+  padding: 6px;
+}
+
+div.attribute-item, .already-mapped-attribute {
+  width: 80%;
+  margin: 6px auto;
+  padding: 4px;
+  text-align: center;
+}
+
+#centralattribute .explanation {
+  width: 90%;
+  margin: 0 auto;
+  text-align: right;
+}
+
+#centralattribute .explanation-row {
+  display: table-row;
+}
+
+#centralattribute .explanation input,
+#centralattribute .explanation label {
+  display: table-cell;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#centralattribute .explanation label {
+  padding-right: 8px;
+}
+
+.attribute-item.draggable {
+  cursor: move;
+}
+
+div.mappable-attribute-wrapper.target-hover {
+  padding-bottom: 27px;
+}
+
+div.mappable-attribute-wrapper.paired.target-hover {
+  padding-bottom: 4px;
+}
+
+div.mappable-attribute-wrapper.paired.ui-state-disabled {
+  opacity: 1;
+  filter: alpha(opacity=100);
+}
+
+.draggable-container .attribute-column .ui-draggable-dragging {
+  z-index: 100;
+}
+
+/* Existing attribute column in CSV CPDB import */
+.centralatt {
+  min-height: 100px;
+}
+
+#responses-column-filter-modal .checkbox label {
+  vertical-align: text-bottom;
+  white-space: nowrap;
+  overflow-x: hidden;
+}
+
+.responses-multiselect-checkboxes {
+  overflow-y: scroll;
+  height: 60vh;
+}
+
+.responses-column-filter-modal-checkbox-buttons {
+  text-align: right;
+  padding-bottom: 15px;
+}
+
 /**
- * Lime Admin Common CSS File
- *
- * This file contain all the common css definitions for the different admin theme.
- * It should not contain color definition (grey, blacks, and white are acceptable)
- */
+* Lime Admin Common CSS File
+*
+* This file contain all the common css definitions for the different admin theme.
+* It should not contain color definition (grey, blacks, and white are acceptable)
+*/
 /**
  * Custom variables for Bootstrap 5
  */
@@ -190,21 +317,14 @@ a {
   text-decoration: none;
 }
 
-/*
- * btn-xs was removed from Bootstrap 4.
- * @see https://stackoverflow.com/questions/33911049/btn-xs-no-longer-a-valid-option-in-bootstrap-4
- */
-.btn-group-xs > .btn, .btn-xs {
-  padding: 1px 5px;
-  font-size: 12px;
-  line-height: 1.5;
-  border-radius: 3px;
-}
-
 .page-item {
   border-radius: 25px;
   margin-left: 2px;
   margin-right: 2px;
+}
+
+.table > :not(:first-child) {
+  border-top: 0;
 }
 
 #ls-loading {
@@ -239,14 +359,6 @@ a {
 
 .bg-white {
   background: #fff;
-}
-
-.row-button-margin-bottom {
-  margin-bottom: -5px;
-}
-
-.row-button-margin-bottom .btn {
-  margin-bottom: 5px;
 }
 
 .ui-datepicker {
@@ -539,14 +651,6 @@ html {
   box-shadow: -3px 3px 3px #35363f;
 }
 
-.surveybar .btn, .surveybar button {
-  margin-bottom: 5px;
-}
-
-.btn.float-end {
-  margin-right: 5px;
-}
-
 .list-surveys {
   margin-top: 10px;
 }
@@ -563,87 +667,10 @@ html {
   outline: none;
 }
 
-.navbar {
-  border-radius: 0 !important;
-  padding: 0;
-}
-.navbar .navbar-brand {
-  font-weight: 400;
-}
-.navbar .navbar-toggler {
-  margin: 0.5rem;
-}
-.navbar .nav-link {
-  border: 1px solid #ffffff;
-}
-.navbar a {
-  font-weight: 400;
-}
-.navbar .dropdown-menu > li > a {
-  font-weight: 400;
-}
-.navbar .nav-icon-btn > a .label {
-  font-size: 10px;
-  padding: 0 3px;
-  line-height: 15px;
-  position: absolute;
-  display: block;
-  left: 5px;
-  top: 10px;
-}
-
 .lime-icon {
   display: inline-block;
   height: 1em;
   width: 1em;
-}
-
-.mega-dropdown {
-  position: static !important;
-}
-
-.mega-dropdown-menu {
-  margin-right: auto;
-  margin-left: auto;
-  padding: 1.5rem var(--bs-gutter-x, 0.75rem);
-  width: 100%;
-}
-
-.mega-dropdown-menu .dropdown-header {
-  font-size: 18px;
-  padding: 5px 5px 5px 60px;
-  line-height: 30px;
-}
-
-.mega-dropdown__column > ul {
-  padding: 0;
-  margin: 0;
-}
-
-.mega-dropdown__column > ul > li {
-  list-style: none;
-}
-
-.mega-dropdown__column .dropdown-item {
-  padding: 0;
-  white-space: unset;
-}
-
-.mega-dropdown__column > ul > li > a {
-  display: block;
-  padding: 3px 5px;
-}
-
-.mega-dropdown__column ul > li > a:hover {
-  text-decoration: none;
-}
-
-.mega-dropdown__column ul > li > a:focus {
-  text-decoration: none;
-}
-
-#mainmenu-dropdown {
-  z-index: 20002;
 }
 
 .footer {
@@ -817,10 +844,6 @@ html {
 }
 
 @media screen and (min-width: 1280px) and (max-width: 1366px) {
-  #add_user_btn {
-    margin-top: 1.5em;
-  }
-
   #user-control-table .form-group label {
     min-width: 80px;
   }
@@ -1204,15 +1227,6 @@ div.card.disabled a {
   height: 50px;
 }
 
-.side-menu #search .card-body .navbar-form .btn {
-  position: absolute;
-  left: 0;
-  top: 0;
-  border: 0;
-  border-radius: 0;
-  padding: 15px 18px;
-}
-
 .side-menu #explorer-collapse .caret {
   float: none;
   margin-bottom: 9px;
@@ -1559,47 +1573,6 @@ div.card.disabled a {
   color: #fff;
 }
 
-.btn-success:hover,
-.btn-danger:hover,
-.btn-warning:hover,
-.btn-info:hover {
-  color: #fff;
-}
-
-.icon-btn-row {
-  display: flex;
-}
-.icon-btn-row .btn.btn-lg {
-  width: 46px;
-  padding-right: 0;
-  padding-left: 0;
-}
-.icon-btn-row .btn {
-  width: 34px;
-  padding-right: 0;
-  padding-left: 0;
-}
-.icon-btn-row .btn.btn-sm {
-  width: 30px;
-  padding-right: 0;
-  padding-left: 0;
-}
-.icon-btn-row .btn.btn-xs {
-  width: 22px;
-  padding-right: 0;
-  padding-left: 0;
-}
-.icon-btn-row :not(:first-child).btn, .icon-btn-row :not(:first-child) .btn {
-  margin-right: 5px;
-}
-.icon-btn-row :not(:first-child).btn.btn-xs, .icon-btn-row :not(:first-child) .btn.btn-xs {
-  margin-right: 3px;
-}
-
-.btn-group .btn-check {
-  position: absolute;
-}
-
 .radio,
 .checkbox {
   position: relative;
@@ -1704,13 +1677,6 @@ fieldset[disabled] .checkbox label {
   .navbar-form .radio label,
 .navbar-form .checkbox label {
     padding-right: 0;
-  }
-
-  .navbar .navbar-nav .nav-link {
-    padding: 1rem;
-  }
-  .navbar #small-screens-menus {
-    display: none !important;
   }
 }
 .form-horizontal .radio,
@@ -2308,11 +2274,6 @@ html body .nav-tabs > li.active > a:focus {
   vertical-align: middle;
 }
 
-.btnaddanswer:hover,
-.btndelanswer:hover {
-  cursor: pointer;
-}
-
 .glyphicon-move:hover {
   cursor: pointer;
 }
@@ -2384,10 +2345,6 @@ html body .nav-tabs > li.active > a:focus {
 
 #available_languages {
   min-width: 200px;
-}
-
-.modal-footer .btn {
-  margin-bottom: 0;
 }
 
 #tokensidemenu {
@@ -2622,16 +2579,6 @@ a.explorer-group:focus {
 
 .explorer-group-title a.disabled {
   opacity: 0.5;
-}
-
-.btn.readonly,
-.btn.readonly:hover {
-  cursor: not-allowed;
-  opacity: 0.65;
-  filter: alpha(opacity=65);
-  -webkit-box-shadow: none;
-  box-shadow: none;
-  border: 1px solid #cccccc;
 }
 
 #displayResponsesContainer .ui-jqgrid-bdiv,
@@ -3038,10 +2985,6 @@ table#responsedetail tr td {
 
   /* Only for stat ? */
   .statisticsbrowsebutton {
-    display: none;
-  }
-
-  body.onStatistics .btn {
     display: none;
   }
 
@@ -4370,115 +4313,14 @@ label {
   overflow-x: visible;
 }
 
-#cpdbatt {
-  min-height: 100px;
+.translate > table {
+  table-layout: fixed;
 }
 
-.draggable-container {
-  min-height: 300px;
-}
-
-#newcreated,
-#tokenattribute,
-#csvattribute,
-#centralattribute {
-  margin-right: 0.75%;
-  margin-left: 0.75%;
-  margin-bottom: 20px;
-}
-
-#tokenattribute {
-  margin-right: 1.5%;
-}
-
-#centralattribute {
-  margin-left: 1.5%;
-}
-
-#centralattribute .centralatt {
-  padding-bottom: 15px;
-}
-
-#newcreated .attribute-item input {
-  display: block;
-  margin: 2px auto;
-  width: 80%;
-}
-
-#centralattribute div.centralatt div.token-attribute {
-  margin-top: -5px;
-  min-height: 20px;
-}
-
-#newcreated,
-#tokenattribute {
-  height: 100%;
-}
-
-.heading {
-  height: auto;
-  padding-top: 7px;
-  font-weight: bold;
-}
-
-div.mappable-attribute-wrapper {
-  width: 80%;
-  margin: 6px auto;
-  padding: 6px;
-}
-
-div.attribute-item, .already-mapped-attribute {
-  width: 80%;
-  margin: 6px auto;
-  padding: 4px;
-  text-align: center;
-}
-
-#centralattribute .explanation {
-  width: 90%;
-  margin: 0 auto;
-  text-align: right;
-}
-
-#centralattribute .explanation-row {
-  display: table-row;
-}
-
-#centralattribute .explanation input,
-#centralattribute .explanation label {
-  display: table-cell;
-  padding-top: 4px;
-  padding-bottom: 4px;
-}
-
-#centralattribute .explanation label {
-  padding-right: 8px;
-}
-
-.attribute-item.draggable {
-  cursor: move;
-}
-
-div.mappable-attribute-wrapper.target-hover {
-  padding-bottom: 27px;
-}
-
-div.mappable-attribute-wrapper.paired.target-hover {
-  padding-bottom: 4px;
-}
-
-div.mappable-attribute-wrapper.paired.ui-state-disabled {
-  opacity: 1;
-  filter: alpha(opacity=100);
-}
-
-.draggable-container .attribute-column .ui-draggable-dragging {
-  z-index: 100;
-}
-
-/* Existing attribute column in CSV CPDB import */
-.centralatt {
-  min-height: 100px;
+.translate td._from_ > .question-text-from {
+  width: 100%;
+  overflow: auto;
+  word-wrap: break-word;
 }
 
 #selectable .ui-selecting {
@@ -4539,32 +4381,6 @@ div.mappable-attribute-wrapper.paired.ui-state-disabled {
   padding: 10px;
   border-radius: 3px;
   margin: 8px;
-}
-
-#responses-column-filter-modal .checkbox label {
-  vertical-align: text-bottom;
-  white-space: nowrap;
-  overflow-x: hidden;
-}
-
-.responses-multiselect-checkboxes {
-  overflow-y: scroll;
-  height: 60vh;
-}
-
-.responses-column-filter-modal-checkbox-buttons {
-  text-align: right;
-  padding-bottom: 15px;
-}
-
-.translate > table {
-  table-layout: fixed;
-}
-
-.translate td._from_ > .question-text-from {
-  width: 100%;
-  overflow: auto;
-  word-wrap: break-word;
 }
 
 .grid-view .table td.button-column, .grid-view .table th.button-column, .grid-view-ls .table td.button-column, .grid-view-ls .table th.button-column {

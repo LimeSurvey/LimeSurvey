@@ -35,7 +35,7 @@
                     <td><?php echo $file->name;?></td>
                     <td></td>
                     <?php if($file->freespace): ?>
-                        <td><span class="fa fa-check text-success" alt="right"></span></td>
+                        <td><span class="ri-check-fill text-success" alt="right"></span></td>
                     <?php else: ?>
                         <td>
                             <h3 class="badge bg-danger">
@@ -72,7 +72,7 @@
                 <td><?php echo $localChecks->mysql->mysql_ver;?></td>
                 <td></td>
                 <?php if($localChecks->mysql->result): ?>
-                    <td><span class="fa fa-check text-success" alt="right"></span></td>
+                    <td><span class="ri-check-fill text-success" alt="right"></span></td>
                 <?php else: ?>
                     <td>
                         <h3 class="badge bg-danger">
@@ -102,7 +102,7 @@
 
             <?php if($localChecks->php->result): ?>
                 <td>
-                    <span class="fa fa-check text-success" alt="right"></span>
+                    <span class="ri-check-fill text-success" alt="right"></span>
                 </td>
             <?php else: ?>
                 <td>
@@ -132,7 +132,7 @@
 
             <?php if($module->installed): ?>
                 <td>
-                    <span class="fa fa-check text-success" alt="right"></span>
+                    <span class="ri-check-fill text-success" alt="right"></span>
                 </td>
             <?php elseif(isset($module->required)): ?>
                 <td>

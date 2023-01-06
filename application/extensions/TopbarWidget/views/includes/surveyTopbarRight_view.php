@@ -9,7 +9,7 @@
 <!-- White Close button -->
 <?php if (!empty($showWhiteCloseButton)) : ?>
     <a class="btn btn-outline-secondary" href="<?php echo $closeUrl ?>" role="button">
-        <span class="fa fa-close"></span>
+        <span class="ri-close-fill"></span>
         <?php eT("Close"); ?>
     </a>
 <?php endif; ?>
@@ -29,7 +29,7 @@
 <!-- Return -->
 <?php if (!empty($showBackButton)): ?>
     <a class="btn btn-outline-secondary" href="<?php echo $returnUrl; ?>" role="button">
-        <span class="fa fa-backward"></span>
+        <span class="ri-rewind-fill"></span>
         &nbsp;&nbsp;
         <?php eT('Back') ?>
     </a>
@@ -49,7 +49,7 @@
 <!-- Save -->
 <?php if (!empty($showSaveButton)): ?>
     <a id="save-button" class="btn btn-success float-end">
-        <i class="fa fa-check"></i>
+        <i class="ri-check-fill"></i>
         <?php eT("Save"); ?>
     </a>
 <?php endif; ?>
@@ -57,7 +57,7 @@
 <!-- Export -->
 <?php if (!empty($showExportButton)): ?>
     <button class="btn btn-success" type="button" name="export-button" id="export-button" data-submit-form=1>
-        <span class="fa fa-download-alt"></span>
+        <span class="ri-download-fill"></span>
         <?php eT("Export"); ?>
     </button>
 <?php endif; ?>
@@ -65,7 +65,7 @@
 <!-- Import -->
 <?php if (!empty($showImportButton)): ?>
     <button class="btn btn-success" type="button" name="import-button" id="import-button" data-submit-form=1>
-        <span class="fa fa-upload"></span>
+        <span class="ri-upload-fill"></span>
         <?php eT("Import"); ?>
     </button>
 <?php endif; ?>
@@ -73,7 +73,7 @@
 <!-- Close -->
 <?php if (!empty($showCloseButton)): ?>
     <a class="btn btn-danger" href="<?php echo $closeUrl; ?>" type="button">
-        <span class="fa fa-close"></span>
+        <span class="ri-close-fill"></span>
         <?php eT("Close"); ?>
     </a>
 <?php endif; ?>

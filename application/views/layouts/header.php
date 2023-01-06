@@ -61,7 +61,7 @@
     </div>
 <!-- Loading wrapper -->
 <div id='ls-loading'>
-    <span id='ls-loading-spinner' class='fa fa-spinner fa-spin fa-4x'></span>
+    <span id='ls-loading-spinner' class='ri-loader-2-fill remix-spin remix-4x'></span>
     <span class='visually-hidden'><?php eT('Loading...'); ?></span>
 </div>
 

@@ -80,7 +80,7 @@ return array(
         ],
         'depends' => [
             'jquery',
-            'bootstrap'
+//            'bootstrap'
         ]
     ],
     /* For public template extended functionnality (based on default template) */
@@ -119,16 +119,6 @@ return array(
         )
     ),
 
-    'bootstrap-rtl'=>array( /* Adding boostrap rtl package */
-        'devBaseUrl'  => 'assets/bootstrap_5/',
-        'basePath' => 'bootstrap',
-        'css'=> array(
-            'build/css/bootstrap_5-rtl.min.css',
-        ),
-        'js'=>array(
-            'build/js/bootstrap_5.min.js',
-        ),
-    ),
     'ckeditor' => array(
         'devBaseUrl'  => 'assets/packages/ckeditor',
         'basePath' => 'core.ckeditor',
@@ -258,7 +248,7 @@ return array(
             'adminbasics',
         )
     ),
-    
+
     'lstutorial' => array(
         'devBaseUrl' => 'assets/packages/lstutorial/',
         'basePath' => 'core.lstutorial',
@@ -270,7 +260,7 @@ return array(
             'build/lstutorial.css'
         ),
         'depends' => array(
-            'bootstrap',
+//            'bootstrap',
             'adminbasics',
         )
     ),
@@ -286,27 +276,7 @@ return array(
         'devBaseUrl' => 'assets/packages/panelboxes/',
         'basePath' => 'core.panelboxes',
         'css' => array(
-            'build/panelboxes'.$minVersion.'.css',
-        )
-    ),
-    'adminbasicsrtl' => array(
-        'devBaseUrl' => 'assets/packages/adminbasics/',
-        'basePath' => 'core.adminbasics',
-        'css' => array(
-            'build/adminbasics.rtl'.$minVersion.'.css'
-        ),
-        'depends' => array(
-            'adminbasics'
-        )
-    ),
-    'adminbasicsltr' => array(
-        'devBaseUrl' => 'assets/packages/adminbasics/',
-        'basePath' => 'core.adminbasics',
-        'css' => array(
-            'build/adminbasics'.$minVersion.'.css'
-        ),
-        'depends' => array(
-            'adminbasics'
+            //'build/panelboxes'.$minVersion.'.css',
         )
     ),
 
@@ -422,8 +392,8 @@ return array(
         ),
         'css' => array(
             'expressions.css'
-        )  
-    ),    
+        )
+    ),
     /* Replace bbq package from Yii core to set position */
     'bbq'=>array(
         'position' => CClientScript::POS_BEGIN,

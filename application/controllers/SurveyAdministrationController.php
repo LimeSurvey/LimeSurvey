@@ -185,6 +185,12 @@ class SurveyAdministrationController extends LSBaseController
             $aData['display']['menu_bars']['surveysummary'] = 'viewgroup';
         }
 
+        $surveyUrls = [];
+        foreach ($survey->allLanguages as $language) {
+            $surveyUrls[$language] = $survey->getSurveyUrl($language);
+        }
+        $aData['surveyUrls'] = $surveyUrls;
+
         $this->surveysummary($aData);
 
         // Display 'Overview' in Green Bar
@@ -508,8 +514,7 @@ class SurveyAdministrationController extends LSBaseController
                 $iNewGroupID = $this->createSampleGroup($iNewSurveyid);
                 $iNewQuestionID = $this->createSampleQuestion($iNewSurveyid, $iNewGroupID);
 
-                Yii::app()->setFlashMessage(gT("Your new survey was created. 
-                We also created a first question group and an example question for you."), 'info');
+                Yii::app()->setFlashMessage(gT("Your new survey was created. We also created a first question group and an example question for you."), 'info');
                 $redirecturl = $this->getSurveyAndSidemenueDirectionURL(
                     $iNewSurveyid,
                     $iNewGroupID,
@@ -566,7 +571,7 @@ class SurveyAdministrationController extends LSBaseController
      */
     public function actionImportsurveyresources()
     {
-        $iSurveyID = Yii::app()->request->getPost('surveyid');
+        $iSurveyID = sanitize_int(Yii::app()->request->getPost('surveyid'));
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update')) {
             Yii::app()->user->setFlash('error', gT("Access denied"));
             $this->redirect(Yii::app()->request->urlReferrer);
@@ -1288,7 +1293,7 @@ class SurveyAdministrationController extends LSBaseController
         $uploadValidator = new LimeSurvey\Models\Services\UploadValidator();
         $uploadValidator->renderJsonOnError('file', $debug);
 
-        $iSurveyID = Yii::app()->request->getPost('surveyid');
+        $iSurveyID = (int) Yii::app()->request->getPost('surveyid');
         $success = false;
         $debug = [];
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update')) {
@@ -2000,9 +2005,6 @@ class SurveyAdministrationController extends LSBaseController
             } elseif ($action == 'copysurvey') {
                 $iSurveyID = sanitize_int(Yii::app()->request->getParam('copysurveylist'));
                 $aExcludes = array();
-
-                $sNewSurveyName = Yii::app()->request->getPost('copysurveyname');
-
                 if (Yii::app()->request->getPost('copysurveyexcludequotas') == "1") {
                     $aExcludes['quotas'] = true;
                 }
@@ -2042,6 +2044,12 @@ class SurveyAdministrationController extends LSBaseController
                 } else {
                     Yii::app()->loadHelper('export');
                     $copysurveydata = surveyGetXMLData($iSurveyID, $aExcludes);
+                    if (empty(Yii::app()->request->getPost('copysurveyname'))) {
+                        $sourceSurvey = Survey::model()->findByPk($iSurveyID);
+                        $sNewSurveyName = $sourceSurvey->currentLanguageSettings->surveyls_title;
+                    } else {
+                        $sNewSurveyName = Yii::app()->request->getPost('copysurveyname');
+                    }
                 }
             }
 
@@ -2884,7 +2892,7 @@ class SurveyAdministrationController extends LSBaseController
             "window.TextEditData = {
                 connectorBaseUrl: '" . Yii::app()->getController()->createUrl('surveyAdministration/') . "',
                 isNewSurvey: " . ($survey->getIsNewRecord() ? "true" : "false") . ",
-                sid: $survey->sid, 
+                sid: $survey->sid,
                 i10N: {
                     'Survey title' : '" . gT('Survey title') . "',
                     'Date format' : '" . gT('Date format') . "',

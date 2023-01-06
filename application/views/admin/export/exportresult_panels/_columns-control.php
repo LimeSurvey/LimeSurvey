@@ -1,6 +1,6 @@
 <!-- Column control -->
 <div class="card" id="panel-6">
-  <div class="card-header bg-primary">
+  <div class="card-header ">
     <div class="">
       <?php eT("Columns");?>
     </div>

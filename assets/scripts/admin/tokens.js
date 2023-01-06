@@ -28,7 +28,7 @@ Tokens = {
          });
 
          // Generate the date time picker
-         initDatePicker($elDate, $elDate.name, $elDate.dataset.locale, $elDate.dataset.dateformat);
+         initDatePicker($elDate);
 
          console.ls.log('$elSwitch', $elSwitch);
          // When user switch
@@ -36,8 +36,9 @@ Tokens = {
              console.ls.log('$elSwitch', event, state);
              if ($elSwitch.querySelector('input').checked) {
                  // Show date
+
                  $elDateContainer.classList.remove('d-none');
-                 $elHiddenInput.value = $elDate.value = moment().format($elDate.dataset.dateformat);
+                 $elHiddenInput.value = $elDate.value = moment().format($elDate.dataset.format);
              } else {
                  // Hide date, set hidden input to "N"
                  $elDateContainer.classList.add('d-none');
@@ -178,7 +179,7 @@ function showError(msg) {
  * Validates that mandatory additional attributes are filled
  */
 function validateAdditionalAttributes() {
-    const validationErrorMsg = $('#edittoken').attr('data-validation-error');
+    const validationErrorMsg = $('#edittoken').attr('data-additional-attributes-validation-error');
 
     let valid = true;
     $('.mandatory-attribute').each(function () {
@@ -306,25 +307,61 @@ $(document).on('ready pjax:scriptcomplete', function(){
 
     $(document).off('submit.edittoken', '#edittoken').on('submit.edittoken', '#edittoken', function(event, params){
         var eventParams = params || {};
+        // When saving from the Edit Participant modal, handle the event in submitEditToken().
         if($('#editTokenModal').length > 0 ){
             event.preventDefault();
             submitEditToken();
             return;
         }
+        // Validate additional (custom) participant attributes
         if (!validateAdditionalAttributes()) {
             event.preventDefault();
             return false;
         }
+        // Validate expiration date isn't lower than the "Valid from" date
+        if (
+            !LS.validateEndDateHigherThanStart(
+                $('#validfrom').data('DateTimePicker'),
+                $('#validuntil').data('DateTimePicker'),
+                () => {
+                    showError($('#edittoken').attr('data-expiration-validation-error'));
+                    $('#validuntil').trigger('invalid');
+                }
+            )
+        ) {
+            event.preventDefault();
+            return false;
+        }
+
         if (!eventParams.confirm_empty_save && !validateNotEmptyTokenForm()) {
             return false;
         }
+    });
+
+    // Disable Save and Close button on click
+    $("#save-and-close-button").on('click', function() {
+        $(this).addClass('disabled');
+    });
+
+    /**
+     * Handle form inputs 'invalid' event.
+     */
+    $('#edittoken').find('button, input, select, textarea').on('invalid', function () {
+        // Enable the Save and Close button
+        $("#save-and-close-button").removeClass("disabled");
     });
 
     /**
      * Save token
      */
     $("#save-edittoken").off('click.token-save').on('click.token-save', function() {
-        if (validateAdditionalAttributes()) {
+        const valid = validateAdditionalAttributes()
+            && LS.validateEndDateHigherThanStart(
+                $('#validfrom').data('DateTimePicker'),
+                $('#validuntil').data('DateTimePicker'),
+                () => {showError($('#edittoken').attr('data-expiration-validation-error'))}
+            );
+        if (valid) {
             submitEditToken();
         }
     });
@@ -403,7 +440,7 @@ $(document).on('ready pjax:scriptcomplete', function(){
         <option value='greaterthan'>"+searchtypes[4]+"</option>\n\
         <option value='lessthan'>"+searchtypes[5]+"</option>\n\
         </select></td>\n\<td><input class='form-control' type='text' id='conditiontext_"+conditionid+"' /></td>\n\
-        <td><span data-bs-toggle='tooltip' title='" + sDelete + "' class='ui-pg-button fa fa-trash text-danger' onClick= $(this).parent().parent().remove();$('#joincondition_"+conditionid+"').remove() id='ui-icon removebutton'"+conditionid+"></span>\n\
+        <td><span data-bs-toggle='tooltip' title='" + sDelete + "' class='ui-pg-button ri-delete-bin-fill text-danger' onClick= $(this).parent().parent().remove();$('#joincondition_"+conditionid+"').remove() id='ui-icon removebutton'"+conditionid+"></span>\n\
         <span data-bs-toggle='tooltip' title='" + sAdd + "' class='ui-pg-button addcondition-button ui-icon text-success icon-add' style='margin-bottom:4px'></span></td></tr><tr></tr>";
         $('#searchtable tr:last').after(html);
         window.LS.doToolTip();
@@ -547,13 +584,13 @@ function reinstallParticipantsFilterDatePicker() {
         dateFormatDetails = JSON.parse(dateFormatDetails.value);
         var dateFormat = dateFormatDetails.jsdate + ' HH:mm';
         if (validfromElement) {
-            initDatePicker(validfromElement, 'TokenDynamic_validfrom', locale.value, dateFormat);
+            initDatePicker(validfromElement, locale.value, dateFormat);
             validfromElement.addEventListener("hide.td", function () {
                 reloadTokenGrid();
             });
         }
         if (validuntilElement) {
-            initDatePicker(validuntilElement, 'TokenDynamic_validuntil', locale.value, dateFormat);
+            initDatePicker(validuntilElement, locale.value, dateFormat);
             validuntilElement.addEventListener("hide.td", function () {
                 reloadTokenGrid();
             });

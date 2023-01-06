@@ -1,0 +1,32 @@
+$panelbox-title-font-size: $font-size-lg * 1.2;
+
+.ls-panelboxes {
+    .ls-panelboxes-panelbox {
+        height: 200px;
+        margin: 10px 0;
+        position: relative;
+
+        .card {
+            width: 95%;
+            height: 100%;
+
+            .card-title {
+                font-size: $panelbox-title-font-size;
+            }
+
+            .card-header {
+                @extend .card-title;
+            }
+
+            .card-body {
+                justify-content: flex-start;
+                text-align: left !important;
+            }
+
+            .btn {
+                width: fit-content;
+                border-width: 1px;
+            }
+        }
+    }
+}

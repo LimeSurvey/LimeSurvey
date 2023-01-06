@@ -72,6 +72,16 @@ class Permission extends LSActiveRecord
     }
 
     /**
+     * @inheritdoc
+     */
+    public function relations()
+    {
+        return [
+            'user' => array(self::BELONGS_TO, 'User', 'uid'),
+        ];
+    }
+
+    /**
      * Returns the base permissions for survey
      * @see self::getEntityBasePermissions
      *
@@ -147,7 +157,7 @@ class Permission extends LSActiveRecord
             'export' => false,
             'title' => gT("Superadministrator"),
             'description' => gT("Unlimited administration permissions"),
-            'img' => 'icon-superadmin',
+            'img' => 'ri-star-fill',
         );
         $aPermissions['auth_db'] = array(
             'create' => false,
@@ -479,25 +489,6 @@ class Permission extends LSActiveRecord
     }
 
     /**
-     * @param integer $iEntityID
-     * @param string $sEntityName
-     * @return array
-     */
-    public function getUserDetails($iEntityID, $sEntityName = 'survey')
-    {
-        $sQuery = "SELECT p.entity_id, p.uid, u.users_name, u.full_name FROM {{permissions}} AS p INNER JOIN {{users}}  AS u ON p.uid = u.uid
-            WHERE p.entity_id = :entityid AND u.uid != :userid and p.entity= :entity
-            GROUP BY p.entity_id, p.uid, u.users_name, u.full_name
-            ORDER BY u.users_name";
-        $iUserID = Yii::app()->user->getId();
-        return Yii::app()->db->createCommand($sQuery)
-            ->bindParam(":userid", $iUserID, PDO::PARAM_INT)
-            ->bindParam("entityid", $iEntityID, PDO::PARAM_INT)
-            ->bindParam("entity", $sEntityName, PDO::PARAM_STR)
-            ->query()->readAll(); //Checked
-    }
-
-    /**
      * @param integer $iSurveyIDSource
      * @param integer $iSurveyIDTarget
      */
@@ -785,7 +776,7 @@ class Permission extends LSActiveRecord
                 'import' => false,
                 'title' => gT("Surveys"),
                 'description' => gT("Permission to create surveys (for which all permissions are automatically given) and view, update and delete surveys from other users"),
-                'img' => ' icon-list',
+                'img' => ' ri-list-unordered',
             ),
             'surveysgroups' => array(
                 'create' => true,
@@ -795,31 +786,31 @@ class Permission extends LSActiveRecord
                 'export' => false,
                 'title' => gT("Survey groups"),
                 'description' => gT("Permission to create survey groups (for which all permissions are automatically given) and view, update and delete survey groups from other users."),
-                'img' => ' fa fa-indent',
+                'img' => ' ri-indent-increase',
             ),
             'users' => array(
                 'import' => false,
                 'export' => false,
                 'title' => gT("Users"),
                 'description' => gT("Permission to create, view, update and delete users"),
-                'img' => ' fa fa-shield',
+                'img' => ' ri-shield-check-fill',
             ),
             'usergroups' => array(
                 'import' => false,
                 'export' => false,
                 'title' => gT("User groups"),
                 'description' => gT("Permission to create, view, update and delete user groups"),
-                'img' => ' fa fa-users',
+                'img' => ' ri-group-fill',
             ),
             'templates' => array(
                 'title' => gT("Themes"),
                 'description' => gT("Permission to create, view, update, delete, export and import themes"),
-                'img' => ' fa fa-paint-brush',
+                'img' => ' ri-brush-fill',
             ),
             'labelsets' => array(
                 'title' => gT("Label sets"),
                 'description' => gT("Permission to create, view, update, delete, export and import label sets/labels"),
-                'img' => ' icon-defaultanswers',
+                'img' => ' ri-grid-line',
             ),
             'settings' => array(
                 'create' => false,
@@ -827,12 +818,12 @@ class Permission extends LSActiveRecord
                 'export' => false,
                 'title' => gT("Settings & Plugins"),
                 'description' => gT("Permission to view and update global settings & plugins and to delete and import plugins"),
-                'img' => 'fa fa-globe',
+                'img' => 'ri-earth-fil',
             ),
             'participantpanel' => array(
                 'title' => gT("Central participant database"),
                 'description' => gT("Permission to create participants in the central participants database (for which all permissions are automatically given) and view, update and delete participants from other users"),
-                'img' => 'fa fa-user-circle-o',
+                'img' => 'ri-user-fill',
             ),
         );
         return $key == null ? $aPermissions : ($aPermissions[$key] ?? $key);

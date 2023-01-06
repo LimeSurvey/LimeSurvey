@@ -1,7 +1,7 @@
-<div class="card m-2">
+<div class="card card-primary h-100">
     <!-- Default panel contents -->
     <div class="card-header">
-        <strong> {{ gT("Share survey") }} </strong>
+        <h5 class="card-title">{{ gT("Share survey") }}</h5>
     </div>
     <!-- List group -->
     <ul class="list-group list-group-flush">
@@ -13,7 +13,7 @@
                 </div>
                 <div class="col-8">
                     {% if oSurvey.sid %} {# pseudo condition due to reverse parsing problems while generating twig admin cache via console.php twig generateAdminCache #}
-                        {% set tmp_url = createAbsoluteUrl("survey/index", { "sid" : oSurvey.sid, "lang" : oSurvey.language}) %}
+                        {% set tmp_url = surveyUrls[oSurvey.language] %}
                     {% endif %}
                     <a href='{{tmp_url}}' target='_blank'> {{tmp_url}} </a>
                 </div>
@@ -28,7 +28,7 @@
                 </div>
                 <div class="col-8">
                     {% if oSurvey.sid %} {# pseudo condition due to reverse parsing problems while generating twig admin cache via console.php twig generateAdminCache #}
-                        {% set tmp_url = createAbsoluteUrl("survey/index", { "sid" : oSurvey.sid, "lang" : langname}) %}
+                        {% set tmp_url = surveyUrls[langname] %}
                     {% endif %}
                     <a href='{{tmp_url}}' target='_blank'> {{tmp_url}} </a>
                 </div>
@@ -77,7 +77,7 @@
 </div>
 
 {% if oSurvey.active == 'Y' %}
-    <div class="modal fade" tabindex="-1" role="dialog" id="sharingdialog"> 
+    <div class="modal fade" tabindex="-1" role="dialog" id="sharingdialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -86,7 +86,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <div class="card">
+                        <div class="card card-primary h-100">
                             <div class="card-header">
                                 <h5 class="modal-title">{{ gT("Share QR-code:") }}</h5>
                             </div>
@@ -131,7 +131,7 @@
                         </div>
                     </div>
                     <div class="mb-3">
-                        <div class="card">
+                        <div class="card card-primary h-100">
                             <div class="card-header">
                                 <h5 class="card-title">
                                     {{ gT("Share on Facebook:") }}
@@ -175,7 +175,7 @@
                         </div>
                     </div>
                     <div class="mb-3">
-                        <div class="card">
+                        <div class="card card-primary h-100">
                             <div class="card-header">
                                 <h5 class="card-title">
                                     {{ gT("Share on Twitter:") }}

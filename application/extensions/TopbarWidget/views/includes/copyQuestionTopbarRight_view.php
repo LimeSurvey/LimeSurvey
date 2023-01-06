@@ -1,12 +1,12 @@
 <!-- Close -->
 <a class="btn btn-outline-secondary" href="<?php echo $closeUrl; ?>">
-    <span class="fa fa-close"></span>
+    <i class="ri-close-fill"></i>
     <?php eT("Close");?>
 </a>
 
 <!-- Save and close -->
 <a id="save-and-close-button-copy-question" class="btn btn-success">
-    <i class="fa fa-check"></i>
+    <i class="ri-check-fill"></i>
     <?php eT("Save and close");?>
 </a>
 
@@ -29,12 +29,12 @@
                 code
               },
               success: (data) => {
-                if (data) {
-                    $('#question-title-warning').text(data);
-                    $('#question-title-warning').removeClass('d-none');
-                } else {
-                    $("#submit-copy-question").click();
-                }
+                if (data.hasOwnProperty('message') && data.message === null) {
+                      $("#submit-copy-question").click();
+                  } else {
+                      $('#question-title-warning').text(data.hasOwnProperty('message') ? data.message : data);
+                      $('#question-title-warning').removeClass('d-none');
+                  }
               },
               error: (data) => {
                 alert('Internal error: ' + data);

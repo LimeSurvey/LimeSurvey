@@ -1,35 +1,30 @@
 <!-- Text element tabs -->
-<nav class="navbar">
-    <ul class="nav nav-tabs me-auto" role="tablist">
+<ul class="nav nav-tabs me-auto" role="tablist">
+    <li class="nav-item" role="presentation">
+        <a class="nav-link active" href="#question-tab" aria-controls="question-tab" role="tab" data-bs-toggle="tab">
+            <?= gT('Question'); ?>
+        </a>
+    </li>
+    <li class="nav-item" role="presentation">
+        <a class="nav-link" href="#question-help-tab" aria-controls="question-help-tab" role="tab" data-bs-toggle="tab">
+            <?= gT('Help'); ?>
+        </a>
+    </li>
+    <?php if ($showScriptField): ?>
         <li class="nav-item" role="presentation">
-            <a class="nav-link active" href="#question-tab" aria-controls="question-tab" role="tab" data-bs-toggle="tab">
-                <?= gT('Question'); ?>
+            <a class="nav-link" href="#script-field-tab" aria-controls="script-field-tab" role="tab" data-bs-toggle="tab">
+                <?= gT('Script'); ?>
             </a>
         </li>
-        <li class="nav-item" role="presentation">
-            <a class="nav-link" href="#question-help-tab" aria-controls="question-help-tab" role="tab" data-bs-toggle="tab">
-                <?= gT('Help'); ?>
-            </a>
-        </li>
-        <?php if ($showScriptField): ?>
-            <li class="nav-item" role="presentation">
-                <a class="nav-link" href="#script-field-tab" aria-controls="script-field-tab" role="tab" data-bs-toggle="tab">
-                    <?= gT('Script'); ?>
-                </a>
-            </li>
-        <?php endif; ?>
-    </ul>
-    <ul class="nav ms-auto" role="tablist">
-        <!-- Language label -->
-        <li class="nav-item">
-            <?php foreach($oSurvey->allLanguages as $lang): ?>
-                <h5 class="lang-hide lang-<?= $lang; ?>" style="<?= $lang != $oSurvey->language ? 'display: none;' : '' ?>">
-                    <span class="badge"><?= strtoupper($lang) ?></span>
-                </h5>
-            <?php endforeach; ?>
-        </li>
-    </ul>
-</nav>
+    <?php endif; ?>
+    <li class="nav-item ms-auto">
+        <?php foreach($oSurvey->allLanguages as $lang): ?>
+            <h5 class="lang-hide lang-<?= $lang; ?>" style="<?= $lang != $oSurvey->language ? 'display: none;' : '' ?>">
+                <span class="badge bg-secondary"><?= strtoupper($lang) ?></span>
+            </h5>
+        <?php endforeach; ?>
+    </li>
+</ul>
 <div class="tab-content">
     <!-- Question text tab content -->
     <div role="tabpanel" class="tab-pane show active" id="question-tab">

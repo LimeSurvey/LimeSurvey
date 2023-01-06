@@ -5,16 +5,16 @@
 <?php if(Permission::model()->hasSurveyPermission($surveyid,'responses','read')){ ?>
     <div class='statisticscolumnid'>
         <?php
-        $iconClass=' fa fa-sort-desc ';
+        $iconClass=' ri-arrow-down-s-fill ';
         $disabled=true;
         if($sortby=="id") {
             $disabled = false;
             switch($sortmethod) {
                 case "asc":
-                    $iconClass="fa fa-sort-desc";
+                    $iconClass="ri-arrow-down-s-fill";
                     break;
                 case "desc":
-                    $image="fa fa-sort-asc";
+                    $image="ri-sort-asc";
                     break;
             }
         }
@@ -29,16 +29,16 @@
 <?php } ?>
 <div class='statisticscolumndata'>
     <?php
-    $iconClass=' fa fa-sort-desc ';
+    $iconClass=' ri-arrow-down-s-fill ';
     $disabled=true;
     if($sortby==$column) {
         $disabled = false;
         switch($sortmethod) {
             case "asc":
-                $iconClass="fa fa-sort-desc";
+                $iconClass="ri-arrow-down-s-fill";
                 break;
             case "desc":
-                $image="fa fa-sort-asc";
+                $image="ri-sort-asc";
                 break;
         }
     }
@@ -58,7 +58,7 @@ foreach ($data as $row) {
 <?php if(Permission::model()->hasSurveyPermission($surveyid,'responses','read')){ ?>
     <div class='statisticscolumnid col-md-1 d-print-none'>
         <a href='<?php echo Yii::app()->getController()->createUrl("responses/view/", ['surveyId' => $surveyid, 'id' => $row['id']]); ?>' target='_blank' title='<?php eT("View response"); ?>' data-bs-toggle="tooltip" data-bs-placement="top">
-            <span class="fa fa-search"></span>
+            <span class="ri-search-line"></span>
         </a>
     </div>
 <?php } ?>

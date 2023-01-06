@@ -38,53 +38,51 @@ return array(
     // This package replace the Yiistrap register() function
     // Then instead of using the composer dependency system for themes
     // We can use the package dependency system (easier for now)
-    'bootstrap' => new class () implements ArrayAccess {
-        private $value = [
-            'devBaseUrl' => 'assets/bootstrap_5/build',
-            'basePath' => 'bootstrap.build',
-            'css' => [
-                'css/bootstrap_5.min.css',
-            ],
-            'js' => [
-                'js/bootstrap_5.min.js',
-            ]
-        ];
-        public function offsetExists($offset)
-        {
-            return isset($this->value[$offset]);
-        }
-        // NB: '&' is needed to unset values in $value property after getting it
-        // Else, a copy of the array will be returned (so called "value semantics").
-        public function &offsetGet($offset)
-        {
-            $this->setRtl();
-            return $this->value[$offset];
-        }
-        public function offsetSet($offset, $value)
-        {
-            $this->value[$offset] = $value;
-        }
-        public function offsetUnset($offset)
-        {
-            unset($this->value[$offset]);
-        }
-        private function setRtl()
-        {
-            // NB: During installation, getLanguageRTL won't be loaded here.
-            if (function_exists('getLanguageRTL')) {
-                $dir = getLanguageRTL(App()->getLanguage()) ? 'rtl' : 'ltr';
-                if ($dir === "rtl") {
-                    $this->value['css'] = [
-                        'css/bootstrap_5-rtl.min.css',
-                    ];
-                }
-            }
-        }
-    },
+    'bootstrap' => array(
+        'devBaseUrl' => 'assets/bootstrap_5/build',
+        'basePath' => 'bootstrap.build',
+        'css' => array(
+            'css/bootstrap_5.min.css',
+        ),
+        'js' => array(
+            'js/bootstrap_5.min.js',
+        ),
+    ),
+    'bootstrap-rtl' => array(
+        'devBaseUrl' => 'assets/bootstrap_5/',
+        'basePath' => 'bootstrap.build',
+        'css' => array(
+            'css/bootstrap_5-rtl.min.css',
+        ),
+        'js' => array(
+            'js/bootstrap_5.min.js',
+        ),
+    ),
+    'bootstrap-css' => [
+        'devBaseUrl' => 'assets/bootstrap_5/build',
+        'basePath'   => 'bootstrap.build',
+        'css'         => [
+            'css/bootstrap_5.min.css',
+        ]
+    ],
+    'bootstrap-js' => [
+        'devBaseUrl' => 'assets/bootstrap_5/build',
+        'basePath'   => 'bootstrap.build',
+        'js'         => [
+            'js/bootstrap_5.min.js',
+        ]
+    ],
+    'bootstrap-css-rtl' => [
+        'devBaseUrl' => 'assets/bootstrap_5/build',
+        'basePath'   => 'bootstrap.build',
+        'css'         => [
+            'css/bootstrap_5-rtl.min.css',
+        ]
+    ],
 
-    // Bootstrap admin
-    // must be different for theme editor not to colide with theme files replacement
-    'bootstrap-admin' => array(
+    // Bootstrap for theme editor,
+    // must be different for theme editor not to collide with theme files replacement
+    'bootstrap-themeeditor' => array(
         'devBaseUrl' => 'assets/bootstrap_5/',
         'basePath' => 'bootstrap',
         'css' => array(
@@ -108,7 +106,7 @@ return array(
         ),
         'depends' => array(
             'jquery',
-            'bootstrap'
+//            'bootstrap'
         )
     ),
 
@@ -125,7 +123,7 @@ return array(
         ),
         'depends' => array(
             'jquery',
-            'bootstrap'
+//            'bootstrap'
         )
     ),
 
@@ -141,7 +139,7 @@ return array(
         ),
         'depends' => array(
             'jquery',
-            'bootstrap'
+//            'bootstrap'
         )
     ),
 
@@ -168,7 +166,7 @@ return array(
         ),
         'depends' => array(
             'jquery',
-            'bootstrap',
+//            'bootstrap',
             'moment'
         )
     ),
@@ -185,7 +183,7 @@ return array(
         ),
         'depends' => array(
             'jquery',
-            'bootstrap',
+//            'bootstrap',
             'moment'
         )
     ),
@@ -327,7 +325,7 @@ return array(
         ),
         'depends' => array(
             'jquery',
-            'bootstrap'
+//            'bootstrap'
         )
     ),
 
@@ -360,6 +358,7 @@ return array(
     ),
     'jspdf' => array(
         'basePath' => 'node_modules.jspdf.dist',
+        'position' => CClientScript::POS_BEGIN,
         'js' => array(
             'jspdf.min.js'
         ),
@@ -409,6 +408,7 @@ return array(
     ),
     'jszip' => array(
         'basePath' => 'node_modules.jszip',
+        'position' => CClientScript::POS_BEGIN,
         'js' => array(
             'dist/jszip' . $minVersion . '.js',
             'vendor/FileSaver.js'
@@ -425,7 +425,8 @@ return array(
             'build/tempus-dominus.min.css',
         ),
         'js' => array(
-            'build/popper-tempus.min.js'
+            'build/popper-tempus.min.js',
+            'datepickerInit.js'
         ),
         'depends' => array(
             'moment'

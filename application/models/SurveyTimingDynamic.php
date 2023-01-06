@@ -200,17 +200,17 @@ class SurveyTimingDynamic extends LSActiveRecord
         // Edit
         if (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'update')) {
             $editUrl = App()->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/" . self::$sid . "/id/" . $this->id);
-            $buttons .= '<a class="btn btn-sm btn-outline-secondary" href="' . $editUrl . '" role="button" data-bs-toggle="tooltip" title="' . gT('Edit this response') . '"><span class="fa fa-pencil" ></span></a>';
+            $buttons .= '<a class="btn btn-sm btn-outline-secondary" href="' . $editUrl . '" role="button" data-bs-toggle="tooltip" title="' . gT('Edit this response') . '"><span class="ri-pencil-fill" ></span></a>';
         }
         // View details
         $viewUrl = App()->createUrl("responses/view/", ['surveyId' => self::$sid, 'id' => $this->id]);
-        $buttons .= '<a class="btn btn-sm btn-outline-secondary" href="' . $viewUrl . '" role="button" data-bs-toggle="tooltip" title="' . gT('View response details') . '"><span class="fa fa-list-alt" ></span></a>';
+        $buttons .= '<a class="btn btn-sm btn-outline-secondary" href="' . $viewUrl . '" role="button" data-bs-toggle="tooltip" title="' . gT('View response details') . '"><span class="ri-list-unordered" ></span></a>';
 
 
         // Delete
         if (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'delete')) {
             $deleteUrl = App()->createUrl("admin/dataentry/sa/delete/subaction/edit/surveyid/" . self::$sid . "/id/" . $this->id);
-            $buttons .= '<span data-bs-toggle="tooltip" title="' . gT('Delete this response') . '"><a class="btn btn-sm btn-outline-secondary" data-bs-target="#confirmation-modal" data-post-url="' . $deleteUrl . '" role="button" data-bs-toggle="modal"><span class="fa fa-trash text-danger" ></span></a></span>';
+            $buttons .= '<span data-bs-toggle="tooltip" title="' . gT('Delete this response') . '"><a class="btn btn-sm btn-outline-secondary" data-bs-target="#confirmation-modal" data-post-url="' . $deleteUrl . '" role="button" data-bs-toggle="modal"><span class="ri-delete-bin-fill text-danger" ></span></a></span>';
         }
         $buttons .= '</div>';
         return $buttons;

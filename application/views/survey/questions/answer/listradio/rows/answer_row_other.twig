@@ -16,10 +16,9 @@
 #}
 
 <!-- answer_row_other -->
-<li id='javatbd{{ myfname }}' class='answer-item radio-text-item' role='group' {{ sDisplayStyle }} >
-    <div class="row row-cols-lg-auto g-1 align-items-center mb-3">
+<li id='javatbd{{ myfname }}' class='row answer-item radio-text-item radio-item d-flex' role='group' {{ sDisplayStyle }} >
         <!-- Checkbox + label -->
-        <div class="othertext-label-checkox-container radio-item">
+        <div class="othertext-label-checkox-container  col-auto">
             <input
             type="radio"
             value="-oth-"
@@ -32,7 +31,7 @@
         </div>
 
         <!-- comment -->
-        <div class="text-item other-text-item">
+        <div class="text-item other-text-item col-auto">
             <input
             type="text"
             class="form-control {{ kpclass }} input-sm"
@@ -44,7 +43,6 @@
             {% if numbers_only %} data-number="1" {% endif %}
             />
         </div>
-    </div>
     <script>
         $("#answer{{ name }}othertext").on("keyup",function(){
             if($.trim($(this).val())!=''){ $('#SOTH{{ name }}').click(); };

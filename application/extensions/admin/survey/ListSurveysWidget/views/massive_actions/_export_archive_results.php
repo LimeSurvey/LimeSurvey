@@ -44,7 +44,7 @@
         eT("Cancel"); ?>
     </button>
     <a role="button" class='btn btn-primary' href="<?php echo App()->createUrl('/admin/export/sa/downloadZip/sZip/'.$sZip);?>">
-        <span class="fa fa-download"></span>
+        <span class="ri-download-fill"></span>
         <?php eT('Download archive');?>
     </a>
 </div>

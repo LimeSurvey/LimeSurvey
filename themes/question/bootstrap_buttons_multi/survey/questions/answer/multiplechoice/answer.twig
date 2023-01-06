@@ -6,6 +6,7 @@
  *
  * @var $name
  * @var $anscount
+ * @var $othertext
  */
  #}
 <!-- Multiple Choice -->
@@ -25,9 +26,9 @@
     </div>
     <!-- other -->
     {% if other in aRows|keys %}
-    <div class="hide col-12" id="{{ name }}other-div">
-            <div class="mb-3 text-item other-text-item">
-                {{ gT('Other:') }}
+    <div class="d-none col-12" id="{{ name }}other-div">
+            <div class="mb-3 text-item other-text-item form-check">
+                {{ processString(othertext) }}
                 <input
                     class="form-control input-sm {{kpclass}} bootstrap-other-input"
                     type="text"

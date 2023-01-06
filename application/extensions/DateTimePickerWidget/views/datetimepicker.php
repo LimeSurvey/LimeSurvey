@@ -25,6 +25,6 @@
         data-td-target='#<?= $id ?>'
         data-td-toggle='datetimepicker'
     >
-     <span class='fa fa-calendar'></span>
+     <span class='ri-calendar-2-fill'></span>
    </span>
 </div>

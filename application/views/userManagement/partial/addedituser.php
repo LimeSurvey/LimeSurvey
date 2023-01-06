@@ -1,7 +1,6 @@
 <?php
 /** @var  User $oUser */
 
-App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'datepickerInit.js', LSYii_ClientScript::POS_BEGIN);
 $modalTitle = $oUser->isNewRecord ? gT('Add user') : gT('Edit user');
 Yii::app()->getController()->renderPartial(
     '/layouts/partial_modals/modal_header',
@@ -48,17 +47,21 @@ Yii::app()->getController()->renderPartial(
         <div class="mb-3">
             <label class="form-label" for='expires'><?php eT("Expire date/time:"); ?></label>
             <div class="has-feedback">
-                <?php Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', array(
-                        'name'  => 'expires',
-                        'id'    => 'expires',
-                        'value' => $oUser->expires ? date($dateformatdetails['phpdate']." H:i",strtotime($oUser->expires)) : '',
-                        'pluginOptions' => [
-                            'format' => $dateformatdetails['jsdate'] . " HH:mm",
-                            'allowInputToggle' =>true,
-                            'showClear' => true,
-                            'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
-                        ]
-                    ));
+                <?php
+                Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', array(
+                    'name' => 'expires',
+                    'id' => 'expires',
+                    'value' => $oUser->expires ? date(
+                        $dateformatdetails['phpdate'] . " H:i",
+                        strtotime($oUser->expires)
+                    ) : '',
+                    'pluginOptions' => [
+                        'format' => $dateformatdetails['jsdate'] . " HH:mm",
+                        'allowInputToggle' => true,
+                        'showClear' => true,
+                        'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
+                    ]
+                ));
                 ?>
             </div>
             <?php echo $form->error($oUser, 'expires'); ?>

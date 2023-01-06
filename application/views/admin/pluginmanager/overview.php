@@ -61,9 +61,9 @@
     <div class="row">
         <label class="col-md-4 form-label text-end"><?php eT("Compatible"); ?></label>
         <?php if ($plugin->isCompatible()): ?>
-            <div class="col-md-4"><span class="fa fa-check text-success"></span></div>
+            <div class="col-md-4"><span class="ri-check-fill text-success"></span></div>
         <?php else: ?>
-            <div class="col-md-4"><span class="fa fa-times text-warning"></span></div>
+            <div class="col-md-4"><span class="ri-close-fill text-warning"></span></div>
         <?php endif; ?>
     </div>
 
@@ -72,12 +72,12 @@
         <div class="row">
             <label class="col-md-4 form-label text-end"><?php eT("Active:"); ?></label>
             <?php if ($plugin['active']): ?>
-                <div class="col-md-2"><span class="fa fa-check text-success"></span></div>
+                <div class="col-md-2"><span class="ri-check-fill text-success"></span></div>
                 <div class="col-md-2">
                     <?= $plugin->getDeactivateButton() ?>
                 </div>
             <?php else: ?>
-                <div class="col-md-2"><span class="fa fa-times text-warning"></span></div>
+                <div class="col-md-2"><span class="ri-close-fill text-warning"></span></div>
                 <div class="col-md-2">
                     <?= $plugin->getActivateButton() ?>
                 </div>

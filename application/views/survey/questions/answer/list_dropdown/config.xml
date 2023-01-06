@@ -73,23 +73,27 @@
             <expression></expression>
         </attribute>
         <attribute>
-            <name>alphasort</name>
+            <name>answer_order</name>
             <category>Display</category>
             <sortorder>100</sortorder>
-            <inputtype>switch</inputtype>
+            <inputtype>singleselect</inputtype>
             <options>
                 <option>
-                    <value>0</value>
-                    <text>No</text>
+                    <value>normal</value>
+                    <text>Normal</text>
                 </option>
                 <option>
-                    <value>1</value>
-                    <text>Yes</text>
+                    <value>random</value>
+                    <text>Random</text>
+                </option>
+                <option>
+                    <value>alphabetical</value>
+                    <text>Alphabetical</text>
                 </option>
             </options>
-            <default>0</default>
-            <help>Sort the answer options alphabetically</help>
-            <caption>Sort answers alphabetically</caption>
+            <default>normal</default>
+            <help>Present answer options in normal, random or alphabetical order</help>
+            <caption>Answer options order</caption>
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
@@ -185,29 +189,6 @@
             <caption>Answer code for &#039;After specific answer option&#039;</caption>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
-        </attribute>
-        <attribute>
-            <name>random_order</name>
-            <category>Display</category>
-            <sortorder>100</sortorder>
-            <inputtype>singleselect</inputtype>
-            <options>
-                <option>
-                    <value>0</value>
-                    <text>No</text>
-                </option>
-                <option>
-                    <value>1</value>
-                    <text>Yes</text>
-                </option>
-            </options>
-            <default>0</default>
-            <help>Present subquestions/answer options in random order</help>
-            <caption>Random order</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
         </attribute>
         <attribute>
             <name>hide_tip</name>

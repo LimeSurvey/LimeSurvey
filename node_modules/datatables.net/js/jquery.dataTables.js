@@ -1,11 +1,11 @@
-/*! DataTables 1.12.1
+/*! DataTables 1.13.1
  * ©2008-2022 SpryMedia Ltd - datatables.net/license
  */
 
 /**
  * @summary     DataTables
  * @description Paginate, search and order HTML tables
- * @version     1.12.1
+ * @version     1.13.1
  * @author      SpryMedia Ltd
  * @contact     www.datatables.net
  * @copyright   SpryMedia Ltd.
@@ -1149,6 +1149,10 @@
 			
 				$( rowOne[0] ).children('th, td').each( function (i, cell) {
 					var col = oSettings.aoColumns[i];
+			
+					if (! col) {
+						_fnLog( oSettings, 0, 'Incorrect column count', 18 );
+					}
 			
 					if ( col.mData === i ) {
 						var sort = a( cell, 'sort' ) || a( cell, 'order' );
@@ -3154,6 +3158,11 @@
 				create = nTrIn ? false : true;
 	
 				nTd = create ? document.createElement( oCol.sCellType ) : anTds[i];
+	
+				if (! nTd) {
+					_fnLog( oSettings, 0, 'Incorrect column count', 18 );
+				}
+	
 				nTd._DT_CellIndex = {
 					row: iRow,
 					column: i
@@ -3304,10 +3313,16 @@
 	
 			for ( i=0, ien=cells.length ; i<ien ; i++ ) {
 				column = columns[i];
-				column.nTf = cells[i].cell;
 	
-				if ( column.sClass ) {
-					$(column.nTf).addClass( column.sClass );
+				if (column) {
+					column.nTf = cells[i].cell;
+		
+					if ( column.sClass ) {
+						$(column.nTf).addClass( column.sClass );
+					}
+				}
+				else {
+					_fnLog( oSettings, 0, 'Incorrect column count', 18 );
 				}
 			}
 		}
@@ -5066,6 +5081,10 @@
 			if ( redraw ) {
 				_fnDraw( settings );
 			}
+		}
+		else {
+			// No change event - paging was called, but no change
+			_fnCallbackFire( settings, null, 'page-nc', [settings] );
 		}
 	
 		return changed;
@@ -8322,8 +8341,12 @@
 	
 	$(document).on('plugin-init.dt', function (e, context) {
 		var api = new _Api( context );
+		
+		const namespace = 'on-plugin-init';
+		const stateSaveParamsEvent = `stateSaveParams.${namespace}`;
+		const destroyEvent = `destroy.${namespace}`;
 	
-		api.on( 'stateSaveParams', function ( e, settings, d ) {
+		api.on( stateSaveParamsEvent, function ( e, settings, d ) {
 			// This could be more compact with the API, but it is a lot faster as a simple
 			// internal loop
 			var idFn = settings.rowIdFn;
@@ -8337,7 +8360,11 @@
 			}
 	
 			d.childRows = ids;
-		})
+		});
+	
+		api.on( destroyEvent, function () {
+			api.off(`${stateSaveParamsEvent} ${destroyEvent}`);
+		});
 	
 		var loaded = api.state.loaded();
 	
@@ -9658,7 +9685,7 @@
 	 *  @type string
 	 *  @default Version number
 	 */
-	DataTable.version = "1.12.1";
+	DataTable.version = "1.13.1";
 	
 	/**
 	 * Private data store, containing all of the settings objects that are
@@ -14720,7 +14747,7 @@
 				var classes = settings.oClasses;
 				var lang = settings.oLanguage.oPaginate;
 				var aria = settings.oLanguage.oAria.paginate || {};
-				var btnDisplay, btnClass, counter=0;
+				var btnDisplay, btnClass;
 	
 				var attach = function( container, buttons ) {
 					var i, ien, node, button, tabIndex;
@@ -14795,7 +14822,7 @@
 										'class': classes.sPageButton+' '+btnClass,
 										'aria-controls': settings.sTableId,
 										'aria-label': aria[ button ],
-										'data-dt-idx': counter,
+										'data-dt-idx': button,
 										'tabindex': tabIndex,
 										'id': idx === 0 && typeof button === 'string' ?
 											settings.sTableId +'_'+ button :
@@ -14807,8 +14834,6 @@
 								_fnBindAction(
 									node, {action: button}, clickHandler
 								);
-	
-								counter++;
 							}
 						}
 					}
@@ -15153,7 +15178,7 @@
 			}
 		}
 		else if (window.luxon) {
-			dt = format
+			dt = format && typeof d === 'string'
 				? window.luxon.DateTime.fromFormat( d, format )
 				: window.luxon.DateTime.fromISO( d );
 	
@@ -15575,6 +15600,6 @@
 	$.each( DataTable, function ( prop, val ) {
 		$.fn.DataTable[ prop ] = val;
 	} );
-	
+
 	return DataTable;
 }));

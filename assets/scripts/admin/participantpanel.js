@@ -184,8 +184,8 @@ LS.CPDB = (function() {
                 data,
                 'action_save_modal_editParticipant',
                 'editPartcipantActiveForm',
-                'list_central_participants' 
-                function(result) {
+                'list_central_participants',
+                function (result) {
                     if (!result.error) {
                         window.LS.ajaxAlerts(result.success, 'success');
                     }

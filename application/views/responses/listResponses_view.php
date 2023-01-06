@@ -228,7 +228,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                             /* Add encryption symbole to question title for table header (if question is encrypted) */
                             $encryptionSymbol = '';
                             if (isset($fieldmap[$column->name]['encrypted']) && $fieldmap[$column->name]['encrypted'] === 'Y') {
-                                $encryptionSymbol = ' <span  data-bs-toggle="tooltip" title="' . $encryptionNotice . '" class="fa fa-key text-success"></span>';
+                                $encryptionSymbol = ' <span  data-bs-toggle="tooltip" title="' . $encryptionNotice . '" class="ri-key-2-fill text-success"></span>';
                             }
 
                             $colName = viewHelper::getFieldCode($fieldmap[$column->name], ['LEMcompat' => true]); // This must be unique ......

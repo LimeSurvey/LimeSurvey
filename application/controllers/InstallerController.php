@@ -47,7 +47,11 @@ class InstallerController extends CController
     {
         $this->checkInstallation();
         $this->sessioncontrol();
-        Yii::import('application.helpers.common_helper', true);
+        App()->loadHelper('common');
+        App()->loadHelper('surveytranslator');
+        AdminTheme::getInstance();
+        App()->getClientScript()->registerCssFile(App()->baseUrl . '/installer/css/main.css');
+        App()->getClientScript()->registerCssFile(App()->baseUrl . '/installer/css/fonts.css');
 
         switch ($action) {
             case 'welcome':
@@ -592,9 +596,9 @@ class InstallerController extends CController
     public function chekHtmlImage($result)
     {
         if ($result) {
-            return "<span class='fa fa-check text-success' alt='right'></span>";
+            return "<span class='ri-check-fill text-success' alt='right'></span>";
         } else {
-            return "<span class='fa fa-exclamation-triangle text-danger' alt='wrong'></span>";
+            return "<span class='ri-error-warning-fill text-danger' alt='wrong'></span>";
         }
     }
 

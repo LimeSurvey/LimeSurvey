@@ -17,11 +17,11 @@ export default {
     computed: {
         allowOrganizer() {return this.$store.state.allowOrganizer===1},
         surveyIsActive() {return window.SideMenuData.isActive; },
-        createQuestionGroupLink() { 
+        createQuestionGroupLink() {
             return window.SideMenuData.createQuestionGroupLink
         },
-        createQuestionLink() { 
-            return window.SideMenuData.createQuestionLink 
+        createQuestionLink() {
+            return window.SideMenuData.createQuestionLink
         },
         calculatedHeight() {
             let containerHeight = this.$store.state.maxHeight;
@@ -63,7 +63,7 @@ export default {
         collapseAll() {
             this.active = [];
         },
-        createFullQuestionLink() { 
+        createFullQuestionLink() {
             if (LS.reparsedParameters().combined.gid) {
                 return this.createQuestionLink + '&gid=' + LS.reparsedParameters().combined.gid;
             } else {
@@ -164,20 +164,20 @@ export default {
         dragoverQuestiongroup($event, questiongroupObject) {
             if(this.draggedQuestion == undefined || this.draggedQuestion == null) {
                 this.$log.log({
-                    this: this, 
+                    this: this,
                     questiongroupObject: questiongroupObject,
                     draggedQuestion: this.draggedQuestion
                     });
             }
-                
+
             if (this.questiongroupDragging) {
                 const targetPosition = parseInt(questiongroupObject.group_order);
                 const currentPosition = parseInt(this.draggedQuestionGroup.group_order);
                 if(Math.abs(parseInt(targetPosition)-parseInt(currentPosition)) == 1){
                     questiongroupObject.group_order = currentPosition;
                     this.draggedQuestionGroup.group_order = targetPosition
-                } 
-                
+                }
+
             } else {
                 if(window.SideMenuData.isActive) {return;}
                 this.addActive(questiongroupObject.gid);
@@ -254,26 +254,29 @@ export default {
 </script>
 <template>
     <div id="questionexplorer" class="ls-flex-column fill ls-ba menu-pane ls-space padding left-0 top-0 bottom-0 right-5 margin top-5">
-        <div 
-            class="ls-flex-row wrap align-content-center align-items-center ls-space margin top-5 bottom-15 button-sub-bar" 
+        <div
+            class="ls-flex-row wrap align-content-center align-items-center ls-space margin top-5 bottom-15 button-sub-bar"
             v-if="createAllowance != ''"
         >
             <div class="scoped-toolbuttons-left">
-                <a 
-                    id="adminsidepanel__sidebar--selectorCreateQuestionGroup" 
-                    v-if="( createQuestionGroupLink!=undefined && createQuestionGroupLink.length>1 )" 
+                <a
+                    id="adminsidepanel__sidebar--selectorCreateQuestionGroup"
+                    v-if="( createQuestionGroupLink!=undefined && createQuestionGroupLink.length>1 )"
                     :href="createQuestionGroupLink" class="btn btn-small btn-primary pjax"
                 >
-                    <i class="fa fa-plus"></i>&nbsp;
+                    <!-- <i class="fa fa-plus"></i> -->
+                    <i class="ri-add-fill"></i>
+                    &nbsp;
                     {{"createPage"|translate}}
                 </a>
-                <a 
-                    id="adminsidepanel__sidebar--selectorCreateQuestion" 
-                    v-if="createQuestionAllowed" 
-                    :href="createFullQuestionLink()" 
+                <a
+                    id="adminsidepanel__sidebar--selectorCreateQuestion"
+                    v-if="createQuestionAllowed"
+                    :href="createFullQuestionLink()"
                     class="btn btn-small btn-outline-secondary ls-space margin right-10 pjax"
                 >
-                    <i class="fa fa-plus-circle"></i>&nbsp;
+                    <i class="ri-add-circle-fill"></i>
+                    &nbsp;
                     {{"createQuestion"|translate}}
                 </a>
             </div>
@@ -283,14 +286,14 @@ export default {
                     @click="toggleOrganizer"
                     :title="translate(allowOrganizer ? 'lockOrganizerTitle' : 'unlockOrganizerTitle')"
                 >
-                    <i :class="allowOrganizer ? 'fa fa-unlock' : 'fa fa-lock'" />
+                    <i :class="allowOrganizer ? 'ri-lock-unlock-fill' : 'ri-lock-fill'" />
                 </button>
                 <button
                     class="btn btn-outline-secondary"
                     @click="collapseAll"
                     :title="translate('collapseAll')"
                 >
-                    <i class="fa fa-compress" />
+                    <i class="ri-fullscreen-exit-line" />
                 </button>
             </div>
         </div>
@@ -310,7 +313,7 @@ export default {
                   <div class="d-flex nowrap ls-space padding right-5 bottom-5">
                     <i
                         v-if="!surveyIsActive"
-                        class="fa fa-bars bigIcons dragPointer"
+                        class="ri-menu-fill bigIcons dragPointer"
                         :class=" allowOrganizer ? '' : 'disabled' "
                         :draggable="allowOrganizer"
                         @dragend="endDraggingGroup($event, questiongroup)"
@@ -333,7 +336,7 @@ export default {
                         </span>
                         <div class="ms-auto">
                           <span
-                              class="badge rounded-pill ls-space margin right-5"
+                              class="badge reverse-color ls-space margin right-5"
                               @click.stop="openQuestionGroup(questiongroup)"
                           >
                                   {{ questiongroup.questions.length }}
@@ -366,7 +369,7 @@ export default {
                             >
                                     <i
                                         v-if="!$store.state.surveyActiveState"
-                                        class="fa fa-bars margin-right bigIcons dragPointer question-question-list-item-drag"
+                                        class="ri-menu-fill margin-right bigIcons dragPointer question-question-list-item-drag"
                                         :class=" allowOrganizer ? '' : 'disabled' "
                                         :draggable="allowOrganizer"
                                         @dragend="endDraggingQuestion($event, question)"
@@ -377,7 +380,7 @@ export default {
                                     </i>
                                 <a
                                     :href="question.link"
-                                    class="col-9 pjax question-question-list-item-link display-as-container"
+                                    class="col-9 pjax question-question-list-item-link display-as-container ls-text-underline-hover"
                                     @click.stop.prevent="openQuestion(question)"
                                 >
                                     <span

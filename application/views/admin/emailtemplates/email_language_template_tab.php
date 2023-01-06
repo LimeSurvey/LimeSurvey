@@ -103,7 +103,7 @@ $script = array();
     <tr>
         <td>
             <button class="btn btn-outline-secondary btn-xs btnattachmentremove" title="<?php eT('Remove attachment') ?>" data-bs-toggle="tooltip" data-bs-placement="bottom">
-                <i class="fa fa-trash text-danger" aria-hidden="true"></i><span class="visually-hidden"><?php eT('Remove attachment') ?></span>
+                <i class="ri-delete-bin-fill text-danger" aria-hidden="true"></i><span class="visually-hidden"><?php eT('Remove attachment') ?></span>
             </button>
         </td>
         <td>
@@ -119,7 +119,7 @@ $script = array();
             	    title="<?php eT('Edit condition') ?>" 
             	    data-bs-toggle="tooltip" 
             	    data-bs-placement="bottom">
-                <i class="fa fa-pencil" aria-hidden="true"></i><span class="visually-hidden"><?php eT('Edit condition')?></span>
+                <i class="ri-pencil-fill" aria-hidden="true"></i><span class="visually-hidden"><?php eT('Edit condition')?></span>
             </button>
             <input class="relevance" type="hidden">
         </td>

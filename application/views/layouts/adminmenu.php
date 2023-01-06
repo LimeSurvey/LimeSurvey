@@ -8,7 +8,7 @@
 ?>
 
 <!-- admin menu bar -->
-<nav class="navbar navbar-light navbar-expand-md border border-white">
+<nav class="navbar navbar-expand-md">
     <div class="container-fluid">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#small-screens-menus" aria-controls="small-screens-menus" aria-expanded="false">
             <span class="navbar-toggler-icon"></span>
@@ -23,7 +23,7 @@
                 <?php if ($activesurveyscount > 0): ?>
                     <li class="nav-item">
                         <a class="nav-link" href="<?php echo $this->createUrl('surveyAdministration/listsurveys/active/Y'); ?>">
-                            <?php eT("Active surveys"); ?> <span class="badge rounded-pill"><?php echo $activesurveyscount ?></span>
+                            <?php eT("Active surveys"); ?> <span class="badge"><?php echo $activesurveyscount ?></span>
                         </a>
                     </li>
                 <?php endif; ?>
@@ -42,7 +42,7 @@
             </ul>
         </div>
 
-        <div class="collapse navbar-collapse justify-content-end">
+        <div class="collapse navbar-collapse justify-content-center">
             <ul class="nav navbar-nav">
                 <!-- Maintenance mode -->
                 <?php $sMaintenanceMode = getGlobalSetting('maintenancemode');
@@ -61,14 +61,14 @@
                 <!-- create survey -->
                 <li class="nav-item">
                     <a href="<?php echo $this->createUrl("surveyAdministration/newSurvey"); ?>" class="nav-link">
-                        <span class="icon-add"></span>
+                        <!-- <i class="ri-add-circle-fill"></i> -->
                         <?php eT("Create survey"); ?>
                     </a>
                 </li>
                 <!-- Surveys menus -->
                 <li class="dropdown-split-left nav-item">
                     <a href="<?php echo $this->createUrl("surveyAdministration/listsurveys"); ?>" class="nav-link">
-                        <span class="fa fa-list"></span>
+                        <!-- <i class="ri-list-check"></i> -->
                         <?php eT("Surveys"); ?>
                     </a>
                 </li>
@@ -85,23 +85,32 @@
                 <?php if ($activesurveyscount > 0): ?>
                     <li class="nav-item">
                         <a href="<?php echo $this->createUrl('surveyAdministration/listsurveys/active/Y'); ?>" class="nav-link">
-                            <?php eT("Active surveys"); ?> <span class="badge rounded-pill"> <?php echo $activesurveyscount ?> </span>
+                            <?php eT("Active surveys"); ?> <span class="badge"> <?php echo $activesurveyscount ?> </span>
                         </a>
                     </li>
                 <?php endif; ?>
 
                 <!-- Extra menus from plugins -->
                 <?php $this->renderPartial( "application.libraries.MenuObjects.views._extraMenu", ['extraMenus' => $extraMenus, 'prependedMenu' => false]); ?>
-
+            </ul>
+        </div>
+        <div class="collapse navbar-collapse justify-content-end">
+            <ul class="nav navbar-nav">
                 <!-- Admin notification system -->
                 <?php echo $adminNotifications; ?>
 
                 <li class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false"><span class="icon-user"></span> <?php echo Yii::app()->session['user']; ?> <span class="caret"></span></a>
+                    <a href="#" class="nav-link dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" role="button" aria-expanded="false">
+                    <!-- <i class="ri-user-fill"></i> <?php echo Yii::app()->session['user']; ?> <span class="caret"></span></a> -->
+                        <span class='rounded-circle text-center d-flex align-items-center justify-content-center me-1'>
+                            <?= strtoupper(substr(Yii::app()->session['user'], 0, 1)) ?>
+                        </span>
+                        <?= Yii::app()->session['user']; ?>
+                        <span class="caret"></span></a>
                     <ul class="dropdown-menu dropdown-menu-end" role="menu">
                         <li>
                             <a class="dropdown-item" href="<?php echo $this->createUrl("/admin/user/sa/personalsettings"); ?>">
-                                <?php eT("My account"); ?>
+                                <?php eT("Account"); ?>
                             </a>
                         </li>
 
