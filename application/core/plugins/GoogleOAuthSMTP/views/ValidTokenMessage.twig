@@ -1,0 +1,16 @@
+<div class="col-8 offset-2 mb-3">
+    <div class="card border-success">
+        <div class="card-body text-success">
+                <p>{{ gT("Configuration is complete. If 'Client ID' or 'Client Secret' is changed, you will need to re-validate the credentials.") }}</p>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const tab = urlParams.get('tab');
+        if (tab) {
+            $('[href="#' + tab + '"]').tab('show');
+        }
+    });
+</script>
