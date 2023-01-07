@@ -11,7 +11,7 @@
 #}
 
 <!-- answer -->
-<table class="{{ coreClass }} table table-bordered table-hover" role="group" aria-labelledby="ls-question-text-{{ basename }}">
+<table class="{{ coreClass }} table table-bordered table-hover" role="presentation" aria-labelledby="ls-question-text-{{ basename }}">
 
 <!-- Column groups -->
 <colgroup>
@@ -22,14 +22,12 @@
 </colgroup>
 <!-- Header -->
 {% if leftheader != '' or rightheader !='' %}
-    <thead>
-        <tr class="ls-heading">
+        <tr class="ls-heading ls-table-head">
             <td></td>
-            <th class='left-header'>{{ processString(leftheader) }}</th>
+            <td class='left-header answer-text'>{{ processString(leftheader) }}</td>
             <td></td>
-            <th class='right-header'>{{ processString(rightheader) }}</th>
+            <td class='right-header answer-text'>{{ processString(rightheader) }}</td>
         </tr>
-    </thead>
 {% endif %}
 
 <tbody>
@@ -40,8 +38,7 @@
         <!-- <tr> -->
         <tr id="javatbd{{ ansrow.myfname }}" role="group" class="answers-list radio-list {% if ansrow.odd %}ls-odd{% else %}ls-even{% endif %}{% if ansrow.mandatoryviolation %} ls-error-mandatory {% endif %}">
             <!-- Answer text (actual question) -->
-
-            <th id="answertext{{ ansrow.myfname }}" class="answertext control-label{% if ansrow.mandatoryviolation %} text-danger{% endif %}">
+            <td id="answertext{{ ansrow.myfname }}" class="answertext control-label{% if ansrow.mandatoryviolation %} text-danger{% endif %}">
                 <label class="control-label" for="answer{{ ansrow.myfid0 }}" id="label-{{ ansrow.myfname }}">
                     {{ processString(ansrow.question) }}
                 </label>
@@ -56,7 +53,7 @@
                     'disabled' : true,
                 }))
                 }}
-            </th>
+            </td>
 
             <!-- First dropdown -->
 
@@ -160,9 +157,7 @@
             </td>
         </tr>
     {% endfor %}
-
 </tbody>
-
 </table>
 
 <!-- end of answer -->

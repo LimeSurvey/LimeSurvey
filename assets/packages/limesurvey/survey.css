@@ -177,3 +177,10 @@ box-shadow: 0 0 0 #fff;
     display: inline-block;
     vertical-align: middle;
 }
+
+/* Set font of control-label and answer-text like th (useag of presentation role */
+/* resetted in template-core */
+.ls-answers td.control-label,
+.ls-answers td.answer-text {
+    font-weight:700
+}

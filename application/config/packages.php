@@ -95,7 +95,8 @@ return array(
         ),
         'depends' => array(
             'limesurvey-public',
-            'embeddables'
+            'embeddables',
+            'bootstrap'
         )
     ),
     'template-core-ltr'=>array( /* complement for ltr */

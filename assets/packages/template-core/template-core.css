@@ -273,7 +273,8 @@ table.ls-answers input[type="radio"] {
 #datasecurity_accepted {
     vertical-align: top;
 }
-
+/* BS5 .table > :not(:first-child){border-top:0} reset color to currentcolor, reset to inhertit*/
+.table > :not(:first-child){border-top-color:inherit}
 /*
 Max width before this PARTICULAR table gets nasty
 For iPads specifically : add this : (min-device-width: 768px) and (max-device-width: 1024px)

@@ -336,6 +336,7 @@ body {
 }
 
 /* Show more the heading in table */
+/* Set globally for  control-label and answer-text in survey, set to 400 in template-core*/
 .ls-answers .ls-heading td.control-label,
 .ls-answers .ls-heading td.answer-text {
     font-weight:700

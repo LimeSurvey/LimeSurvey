@@ -44,19 +44,19 @@
                 {% if leftheader != '' or rightheader !='' %}
                     <td class="d-none"></td>
                 {% endif %}
-                <td colspan="{{ labelans0|length }} control-label" class="dsheader">{{ processString(leftheader) }}</td>
+                <td colspan="{{ labelans0|length }}" class="dsheader control-label">{{ processString(leftheader) }}</td>
                 {% if labelans1|length > 0 %}
                     <td class="header_separator"></td>  <!-- // Separator -->
                     {% if leftheader != '' or rightheader !='' %}
                         <td class="d-none"></td>
                     {% endif %}
-                    <td colspan="{{ labelans1|length }} control-label" class="dsheader">{{ processString(rightheader) }}</td>
+                    <td colspan="{{ labelans1|length }}" class="dsheader control-label">{{ processString(rightheader) }}</td>
                 {% endif %}
 
                 {% if shownoanswer or rightexists %}
                     <td class="header_separator {{ rightclass }}"></td>
                     {% if shownoanswer %}
-                        <th class="header_no_answer"></th>
+                        <td class="header_no_answer"></td>
                     {% endif %}
                 {% endif %}
             </tr>
@@ -71,7 +71,7 @@
                     'rightexists'  : rightexists,
                     'leftheader'   : leftheader,
                     'rightheader'  : rightheader,
-                    'class'        : ''
+                    'class'        : ' ls-table-head'
                 }),
                 true
             )
@@ -80,9 +80,6 @@
         {% for ansrow in aSubQuestions %}
             <!-- Check for repeat headings -->
             {% if ansrow.repeatheadings %}
-                <!-- Close body and open another one -->
-                </tbody>
-                <tbody>
                     <!-- Render repeated header -->
                     {{ doRender('/survey/questions/answer/arrays/dualscale/answer_header',
                             ({
@@ -103,7 +100,7 @@
             <tr id="javatbd{{ ansrow.myfname }}" role="group" aria-labelledby="answertext{{ ansrow.myfname }}"
                 class="answers-list radio-list {% if ansrow.odd %}ls-odd{% else %}ls-even{% endif %}{% if ansrow.showmandatoryviolation %} ls-error-mandatory has-error{% endif %}"
             >
-            <th id="answertext{{ ansrow.myfname }}" class="answertext control-label{% if answerwidth==0 %} visually-hidden{% endif %}">
+            <td id="answertext{{ ansrow.myfname }}" class="answertext control-label{% if answerwidth==0 %} visually-hidden{% endif %}">
                 {{ processString(ansrow.answertext) }}
                 {# Value for expression manager javascript (use id) ; no need to submit #}
                 {{ C.Html.hiddenField("java"~ansrow.myfid0,ansrow.sessionfname0,({
@@ -119,7 +116,7 @@
                     }}
                 {% endif %}
 
-            </th>
+            </td>
 
             <!-- First label set -->
             {% for j, ld in labelcode0 %}
