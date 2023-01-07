@@ -23,9 +23,9 @@
 <table class="table">
     <thead>
         <tr>
-            <th class="col-sm-10"><?php eT('Available space in directory:');?></th>
-            <th class="col-sm-1"  style="text-align: right"></th>
-            <th class="col-sm-1"  style="text-align: right"></th>
+            <th class="col-md-10"><?php eT('Available space in directory:');?></th>
+            <th class="col-md-1"  style="text-align: right"></th>
+            <th class="col-md-1"  style="text-align: right"></th>
         </tr>
     </thead>
     <tbody>
@@ -38,7 +38,7 @@
                         <td><span class="fa fa-check text-success" alt="right"></span></td>
                     <?php else: ?>
                         <td>
-                            <h3 class="label label-danger">
+                            <h3 class="badge bg-danger">
                                 <?php eT('Not enough space'); ?>
                             </h3>
                         </td>
@@ -62,9 +62,9 @@
     <table class="table">
         <thead>
             <tr>
-                <th class="col-sm-10"><?php eT('MYSQL version required:');?></th>
-                <th class="col-sm-1"  style="text-align: right"></th>
-                <th class="col-sm-1"  style="text-align: right"></th>
+                <th class="col-md-10"><?php eT('MYSQL version required:');?></th>
+                <th class="col-md-1"  style="text-align: right"></th>
+                <th class="col-md-1"  style="text-align: right"></th>
             </tr>
         </thead>
         <tbody>
@@ -75,7 +75,7 @@
                     <td><span class="fa fa-check text-success" alt="right"></span></td>
                 <?php else: ?>
                     <td>
-                        <h3 class="label label-danger">
+                        <h3 class="badge bg-danger">
                             <?php printf(gT('MYSQL version is only %s'),$localChecks->mysql->local_mysql_ver);?>
                         </h3>
                     </td>
@@ -89,16 +89,16 @@
 <table class="table">
     <thead>
         <tr>
-            <th class="col-sm-10"><?php eT('PHP version required:');?></th>
-            <th class="col-sm-1"  style="text-align: right"></th>
-            <th class="col-sm-1"  style="text-align: right"></th>
+            <th class="col-md-10"><?php eT('PHP version required:');?></th>
+            <th class="col-md-1"  style="text-align: right"></th>
+            <th class="col-md-1"  style="text-align: right"></th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td class="col-sm-8"><?php echo $localChecks->php->php_ver;?></td>
+            <td class="col-md-8"><?php echo $localChecks->php->php_ver;?></td>
 
-            <td class="col-sm-1"></td>
+            <td class="col-md-1"></td>
 
             <?php if($localChecks->php->result): ?>
                 <td>
@@ -106,7 +106,7 @@
                 </td>
             <?php else: ?>
                 <td>
-                    <span class="label label-danger">
+                    <span class="badge bg-danger">
                         <?php printf(gT('PHP version is only %s'),$localChecks->php->local_php_ver);?>
                     </span>
                 </td>
@@ -119,9 +119,9 @@
 <table class="table">
     <thead>
         <tr>
-            <th class="col-sm-10"><?php eT('Required PHP modules:');?></th>
-            <th class="col-sm-1"  style="text-align: right"></th>
-            <th class="col-sm-1"  style="text-align: right"></th>
+            <th class="col-md-10"><?php eT('Required PHP modules:');?></th>
+            <th class="col-md-1"  style="text-align: right"></th>
+            <th class="col-md-1"  style="text-align: right"></th>
         </tr>
     </thead>
     <tbody>
@@ -136,14 +136,14 @@
                 </td>
             <?php elseif(isset($module->required)): ?>
                 <td>
-                    <span class="label label-danger">
+                    <span class="badge bg-danger">
                         <?php eT('Not found!'); ?>
                     </span>
                 </td>
                 <?php $errors = TRUE; $cant_ignore = true; $ignore = false;?>
             <?php else: ?>
                 <td>
-                    <span class="label label-danger">
+                    <span class="badge bg-danger">
                         <?php eT('No (but optional)'); ?>
                     </span>
                 </td>
@@ -166,17 +166,17 @@
     ?>
 
 <p>
-    <a class="btn btn-default" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
+    <a class="btn btn-cancel" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
         <?php eT("Cancel"); ?>
     </a>
-    <a class="btn btn-default" href="<?php echo $urlNew;?>" role="button" aria-disabled="false">
+    <a class="btn btn-outline-secondary" href="<?php echo $urlNew;?>" role="button" aria-disabled="false">
         <?php eT('Check again');?>
     </a>
 
     <?php if($ignore  && ! $cant_ignore): ?>
 
         <?php
-            echo CHtml::submitButton(gT('Ignore','unescaped'), array('id'=>'Ignorestep1launch', "class"=>"btn btn-default"));
+            echo CHtml::submitButton(gT('Ignore','unescaped'), array('id'=>'Ignorestep1launch', "class"=>"btn btn-outline-secondary"));
         ?>
     <?php endif;?>
 </p>
@@ -194,12 +194,12 @@
         echo CHtml::hiddenField('destinationBuild' , $destinationBuild);
         echo CHtml::hiddenField('access_token' , $access_token);
     ?>
-        <a class="btn btn-default" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
+        <a class="btn btn-cancel" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
             <?php eT("Cancel"); ?>
         </a>
 
     <?php
-        echo CHtml::submitButton(gT('Continue','unescaped'), array('id'=>'step1launch', "class"=>"btn btn-default"));
+        echo CHtml::submitButton(gT('Continue','unescaped'), array('id'=>'step1launch', "class"=>"btn btn-outline-secondary"));
         echo CHtml::endForm();
     ?>
 </p>

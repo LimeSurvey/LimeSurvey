@@ -129,13 +129,13 @@ class RenderRanking extends QuestionBaseRenderer
         if (trim($this->getQuestionAttribute('choice_title', App()->language)) != '') {
             $choice_title = htmlspecialchars(trim($this->getQuestionAttribute('choice_title', App()->language)), ENT_QUOTES);
         } else {
-            $choice_title = gT("Your Choices", 'html');
+            $choice_title = gT("Available items", 'html');
         }
 
         if (trim($this->getQuestionAttribute('rank_title', App()->language)) != '') {
             $rank_title = htmlspecialchars(trim($this->getQuestionAttribute('rank_title', App()->language)), ENT_QUOTES);
         } else {
-            $rank_title = gT("Your Ranking", 'html');
+            $rank_title = gT("Your ranking", 'html');
         }
 
         $answer .=  Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/answer', array(

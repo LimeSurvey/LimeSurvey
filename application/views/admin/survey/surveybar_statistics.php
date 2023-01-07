@@ -13,12 +13,12 @@
 <div class="btn-group">
     <!-- main  dropdown header -->
     <?php if ($oSurvey->isActive):?>
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="icon-responses"></span>
             <?php eT("Responses"); ?><span class="caret"></span>
         </button>
     <?php else:?>
-        <button type="button" data-toggle="tooltip" data-placement="bottom" title="<?php eT("This survey is not active - no responses are available."); ?>" class="readonly btn btn-default">
+        <button type="button" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("This survey is not active - no responses are available."); ?>" class="readonly btn btn-outline-secondary">
             <span class="icon-responses"></span>
             <?php eT("Responses"); ?><span class="caret"></span>
         </button>

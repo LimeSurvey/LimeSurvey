@@ -17,6 +17,8 @@ $minVersion = ($debug > 0) ? "" : ".min";
 if (isset($_GET['isAjax'])) {
     return array();
 }
+
+// When adding new fonts, please keep fonts ordered alphabetically
 $coreFonts = array(
     
     'fontawesome' => array(
@@ -30,16 +32,6 @@ $coreFonts = array(
         ),
     ),
 
-    'font-roboto' => array(
-        'title' => 'Roboto',
-        'type' => 'core',
-        'devBaseUrl' => 'assets/fonts/',
-        'basePath' => 'fonts',
-        'css' => array(
-            'roboto.css',
-        ),
-    ),
-
     'font-icomoon' => array(
         'title' => 'IcoMoon',
         'type' => 'core',
@@ -47,36 +39,6 @@ $coreFonts = array(
         'basePath' => 'fonts',
         'css' => array(
             'icomoon.css',
-        ),
-    ),
-
-    'font-noto' => array(
-        'title' => 'Noto',
-        'type' => 'core',
-        'devBaseUrl' => 'assets/fonts/',
-        'basePath' => 'fonts',
-        'css' => array(
-            'noto.css',
-        ),
-    ),
-
-    'font-news_cycle' => array(
-        'title' => 'News Cycle',
-        'type' => 'core',
-        'devBaseUrl' => 'assets/fonts/',
-        'basePath' => 'fonts',
-        'css' => array(
-            'news_cycle.css',
-        ),
-    ),
-
-    'font-ubuntu' => array(
-        'title' => 'Ubuntu',
-        'type' => 'core',
-        'devBaseUrl' => 'assets/fonts/',
-        'basePath' => 'fonts',
-        'css' => array(
-            'ubuntu.css',
         ),
     ),
 
@@ -90,6 +52,37 @@ $coreFonts = array(
         ),
     ),
 
+    'font-news_cycle' => array(
+        'title' => 'News Cycle',
+        'type' => 'core',
+        'devBaseUrl' => 'assets/fonts/',
+        'basePath' => 'fonts',
+        'css' => array(
+            'news_cycle.css',
+        ),
+    ),
+
+    'font-noto' => array(
+        'title' => 'Noto',
+        'type' => 'core',
+        'devBaseUrl' => 'assets/fonts/',
+        'basePath' => 'fonts',
+        'css' => array(
+            'noto.css',
+        ),
+    ),
+
+    'font-roboto' => array(
+        'title' => 'Roboto',
+        'type' => 'core',
+        'devBaseUrl' => 'assets/fonts/',
+        'basePath' => 'fonts',
+        'css' => array(
+            'roboto.css',
+        ),
+    ),
+
+
     // see: https://www.w3schools.com/cssref/css_websafe_fonts.asp
     'font-websafe' => array(
         'title' => 'Websafe',
@@ -100,6 +93,47 @@ $coreFonts = array(
             'websafe.css',
         ),
     ),
+
+    'font-opensans' => array(
+        'title' => 'Open Sans',
+        'type' => 'core',
+        'devBaseUrl' => 'assets/fonts/',
+        'basePath' => 'fonts',
+        'css' => array(
+            'opensans.css',
+        ),
+    ),
+
+    'font-source-sans-pro' => array(
+        'title' => 'Source Sans Pro',
+        'type' => 'core',
+        'devBaseUrl' => 'assets/fonts/',
+        'basePath' => 'fonts',
+        'css' => array(
+            'source-sans-pro.css',
+        ),
+    ),
+
+    'font-raleway' => array(
+        'title' => 'Raleway',
+        'type' => 'core',
+        'devBaseUrl' => 'assets/fonts/',
+        'basePath' => 'fonts',
+        'css' => array(
+            'raleway.css',
+        ),
+    ),
+
+    'font-ubuntu' => array(
+        'title' => 'Ubuntu',
+        'type' => 'core',
+        'devBaseUrl' => 'assets/fonts/',
+        'basePath' => 'fonts',
+        'css' => array(
+            'ubuntu.css',
+        ),
+    ),
+
 
 );
 

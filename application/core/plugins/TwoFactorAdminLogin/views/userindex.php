@@ -13,33 +13,37 @@ echo viewHelper::getViewTestTag('2faUsersIndex');
 
 <div class="container-fluid ls-space padding left-50 right-50">
     <div class="row">
-        <div class="col-xs-12 h1 pagetitle">
+        <div class="col-12 h1 pagetitle">
         <?=gT("Two-factor authentication (2FA)");?>
         </div>
     </div>
     <div class="row">
         <?php if ($oTFAModel == null ) { ?>
             <div class="jumbotron">
-                <div class="col-sm-12">
+                <div class="col-12">
                     <h2>
                     <?=gT("You don't have two-factor authentication (2FA) activated.");?> <br/>
                         <?=($force2FA == true ? gT("Please activate it now.") : gT("Do you want to activate it now?"))?> 
                     </h2>
                     <p>
-                        <a class="btn btn-default TFA--actionopenmodal TFA--excludefromlock" data-href="<?=App()->createUrl("plugins/direct/plugin/TwoFactorAdminLogin/function/directCallCreateNewKey")?>" data-toggle="modal" id="TFA--register2fa"><?=gt("Activate 2FA now");?> </a>
-                    <?php if ($force2FA == true) { ?> 
-                        <a class="btn btn-danger TFA--excludefromlock" href="<?=App()->createUrl("admin")?>" id="TFA--excludeNotNow"><?=gT("Not now");?> </a>
+                        <a role="button" class="btn btn-outline-secondary TFA--actionopenmodal TFA--excludefromlock" data-href="<?=App()->createUrl("plugins/direct/plugin/TwoFactorAdminLogin/function/directCallCreateNewKey")?>" data-bs-toggle="modal" id="TFA--register2fa">
+                            <?=gt("Activate 2FA now");?>
+                        </a>
+                    <?php if ($force2FA == true) { ?>
+                        <a role="button" class="btn btn-danger TFA--excludefromlock" href="<?=App()->createUrl("admin")?>" id="TFA--excludeNotNow">
+                            <?=gT("Not now");?>
+                        </a>
                     <?php } ?>
                     </p>
                 </div>
             </div>
         <?php } else { ?>
-            <div class="col-sm-12">
+            <div class="col-12">
                 <p><?=sprintf(gT("Currently activated two-factor authentication: %s"), $oTFAModel->authTypeDescription);?> </p>
                 <p><?=gT("Do you want to remove/renew it?");?></p>
                 <p>
                     <a 
-                        class="btn btn-default TFA--actionconfirm" 
+                        class="btn btn-outline-secondary TFA--actionconfirm" 
                         data-href="<?=App()->createUrl("plugins/direct/plugin/TwoFactorAdminLogin/function/directCallDeleteKey")?>" 
                         id="TFA--unset2fa"
                         data-confirmtext="<?=gT('Are you sure you want to disable two-factor authentication (2FA) for your account?')?>"
@@ -48,9 +52,9 @@ echo viewHelper::getViewTestTag('2faUsersIndex');
                         data-errortext="<?=gT('An error has occurred, and the key could not be deleted.')?>"
                     ><?=gT("Remove 2FA")?></a>
                     <a 
-                        class="btn btn-default TFA--actionopenmodal" 
+                        class="btn btn-outline-secondary TFA--actionopenmodal" 
                         data-href="<?=App()->createUrl("plugins/direct/plugin/TwoFactorAdminLogin/function/directCallCreateNewKey", ['uid' => $oTFAModel->uid])?>" 
-                        data-toggle="modal" id="TFA--reset2fa"
+                        data-bs-toggle="modal" id="TFA--reset2fa"
                     ><?=gT("Renew 2FA")?></a>
                 </p>
             </div>

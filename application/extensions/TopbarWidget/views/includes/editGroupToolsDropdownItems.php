@@ -1,7 +1,7 @@
 <?php if($hasSurveyContentReadPermission): ?>
     <!-- Check survey logic -->
     <li>
-        <a class="pjax" href="<?php echo Yii::App()->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/"); ?>">
+        <a class="pjax dropdown-item" href="<?php echo Yii::App()->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/"); ?>">
             <span class="icon-expressionmanagercheck"></span>
             <?php eT("Check logic"); ?>
         </a>
@@ -11,7 +11,7 @@
 <?php if($hasSurveyContentExportPermission):?>
     <!-- Export -->
     <li>
-        <a href="<?php echo Yii::App()->createUrl("admin/export/sa/group/surveyid/$surveyid/gid/$gid");?>">
+        <a class="dropdown-item" href="<?php echo Yii::App()->createUrl("admin/export/sa/group/surveyid/$surveyid/gid/$gid");?>">
             <span class="icon-export"></span>
             <?php eT("Export"); ?>
         </a>

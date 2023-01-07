@@ -29,7 +29,7 @@
             <span
               class="fa fa-bars bigIcons move-icon"
               role="button"
-              data-toggle="tooltip"
+              data-bs-toggle="tooltip"
               data-title="{{ gT("Drag to sort") }}"
             ></span>
         </td>
@@ -132,20 +132,20 @@
     <!-- Icons edit/delete -->
     <td style="vertical-align: middle; white-space: nowrap;" class="answeroption-actions">
         {% if first %}
-            <button type="button" class="btn btn-default btn-sm btnaddanswer">
+            <button type="button" class="btn btn-outline-secondary btn-sm btnaddanswer">
                 <i
                     class="icon-add text-success"
                     data-assessmentvisible='{{ assessmentvisible }}'
                     data-position="{{ position }}"
                     data-code="{{ answerOption.code }}"
                     data-scale-id="{{ scale_id }}"
-                    data-toggle="tooltip"
-                    data-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
                     title="{{ gT("Insert a new answer option after this one") }}"
                 ></i>
             </button>
-            <button type="button" class="btn btn-default btn-sm btndelanswer">
-                <i class="fa fa-minus-circle text-danger " data-toggle="tooltip" data-placement="bottom" title="{{ gT("Delete this entry") }}"></i>
+            <button type="button" class="btn btn-outline-secondary btn-sm btndelanswer">
+                <i class="fa fa-minus-circle text-danger " data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ gT("Delete this entry") }}"></i>
             </button>
         {% endif %}
     </td>

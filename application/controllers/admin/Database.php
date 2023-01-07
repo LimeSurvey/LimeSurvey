@@ -577,6 +577,7 @@ class Database extends SurveyCommonAction
 
         Yii::app()->loadHelper('database');
 
+        $hasSurveyLanguageSettingError = false;
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'update')) {
             foreach ($languagelist as $langname) {
                 if ($langname) {
@@ -584,6 +585,7 @@ class Database extends SurveyCommonAction
                     $sURLDescription = Yii::app()->request->getPost('urldescrip_' . $langname, null);
                     $sURL = Yii::app()->request->getPost('url_' . $langname, null);
                     $short_title = Yii::app()->request->getPost('short_title_' . $langname, null);
+                    $alias = Yii::app()->request->getPost('alias_' . $langname, null);
                     $description = Yii::app()->request->getPost('description_' . $langname, null);
                     $welcome = Yii::app()->request->getPost('welcome_' . $langname, null);
                     $endtext = Yii::app()->request->getPost('endtext_' . $langname, null);
@@ -597,6 +599,9 @@ class Database extends SurveyCommonAction
                         // Fix bug with FCKEditor saving strange BR types
                         $short_title = $this->oFixCKeditor->fixCKeditor($short_title);
                         $data['surveyls_title'] = $short_title;
+                    }
+                    if ($alias !== null) {
+                        $data['surveyls_alias'] = $alias;
                     }
                     if ($description !== null) {
                         // Fix bug with FCKEditor saving strange BR types
@@ -642,7 +647,21 @@ class Database extends SurveyCommonAction
                     if (count($data) > 0) {
                         $oSurveyLanguageSetting = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id' => $iSurveyID, 'surveyls_language' => $langname));
                         $oSurveyLanguageSetting->setAttributes($data);
-                        $oSurveyLanguageSetting->save(); // save the change to database
+                        if (!$oSurveyLanguageSetting->save()) { // save the change to database
+                            $languageDescription = getLanguageNameFromCode($langname, false);
+                            Yii::app()->setFlashMessage(
+                                Chtml::errorSummary(
+                                    $oSurveyLanguageSetting,
+                                    Chtml::tag(
+                                        "p",
+                                        ['class' => 'strong'],
+                                        sprintf(gT("Texts for language %s could not be updated:"), $languageDescription)
+                                    )
+                                ),
+                                "error"
+                            );
+                            $hasSurveyLanguageSettingError = true;
+                        }
                     }
                 }
             }
@@ -765,7 +784,11 @@ class Database extends SurveyCommonAction
             $aAfterApplyAttributes = $oSurvey->attributes;
 
             if ($oSurvey->save()) {
-                Yii::app()->setFlashMessage(gT("Survey settings were successfully saved."));
+                if (!$hasSurveyLanguageSettingError) {
+                    Yii::app()->setFlashMessage(gT("Survey settings were successfully saved."));
+                } else {
+                    Yii::app()->setFlashMessage(gT("Survey settings were saved, but there where errors with some languages."), "warning");
+                }
             } else {
                 Yii::app()->setFlashMessage(CHtml::errorSummary($oSurvey, CHtml::tag("p", array('class' => 'strong'), gT("Survey could not be updated, please fix the following error:"))), "error");
             }

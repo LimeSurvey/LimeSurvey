@@ -32,8 +32,8 @@
             {% endfor %}
         </tr>
         {% for key, ansrow in labels %}
-            <tr id="javatbd{{ basename }}-{{ ansrow.code }}" class="answers-list">
-                <td id="label-{{ ansrow.code }}" class="answertext{% if answerwidth==0 %} sr-only{% endif %}">
+            <tr id="javatbd{{ aQuestions[key].myfname }}" class="answers-list">
+                <td id="label-{{ ansrow.code }}" class="answertext{% if answerwidth==0 %} visually-hidden{% endif %}">
                     {{ ansrow.answer }}
                 </td>
                 {% for i, ld in anscode %}

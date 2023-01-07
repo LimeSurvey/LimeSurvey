@@ -732,6 +732,7 @@ class ParticipantsAction extends SurveyCommonAction
 
     /**
      * Add new participant to database
+     *
      * @param array $aData
      * @param array $extraAttributes
      * @return string json
@@ -862,7 +863,6 @@ class ParticipantsAction extends SurveyCommonAction
                 'filterbea' => $filterblankemails,
                 'participant_id_exists' => in_array('participant_id', $fieldlist)
             );
-            App()->getClientScript()->registerPackage('qTip2');
             App()->getClientScript()->registerPackage('jquery-nestedSortable');
             App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'attributeMapCSV.js');
 
@@ -1343,10 +1343,12 @@ class ParticipantsAction extends SurveyCommonAction
     {
         $participantId = Yii::app()->request->getPost('participant_id');
         $blacklistStatus = Yii::app()->request->getPost('blacklist');
-        $blacklistValue = ($blacklistStatus == "true" ? "Y" : "N");
+        $blacklistValue = $blacklistStatus == true ? "Y" : "N";
         $participant = Participant::model()->findByPk($participantId);
-        $participant->blacklisted = $blacklistValue;
-        $participant->update(array('blacklisted'));
+        if ($participant) {
+            $participant->blacklisted = $blacklistValue;
+            $participant->update(['blacklisted']);
+        }
         echo json_encode(array(
             "success" => true,
             "newValue" => $blacklistValue
@@ -1406,10 +1408,12 @@ class ParticipantsAction extends SurveyCommonAction
     {
         $attributeId = Yii::app()->request->getPost('attribute_id');
         $visible = Yii::app()->request->getPost('visible');
-        $visible_value = ($visible == "true" ? "TRUE" : "FALSE");
+        $visible_value = ($visible ? "TRUE" : "FALSE");
         $attributeName = ParticipantAttributeName::model()->findByPk($attributeId);
-        $attributeName->visible = $visible_value;
-        $attributeName->update(array('visible'));
+        if (isset($attributeName)) {
+            $attributeName->visible = $visible_value;
+            $attributeName->update(['visible']);
+        }
         echo json_encode(array(
             "debug" => Yii::app()->request,
             "debug_p1" => Yii::app()->request->getPost('attribute_id'),
@@ -1427,7 +1431,7 @@ class ParticipantsAction extends SurveyCommonAction
     {
         $attributeId = Yii::app()->request->getPost('attribute_id');
         $encrypted = Yii::app()->request->getPost('encrypted');
-        $encrypted_value = $encrypted == "true" ? 'Y' : 'N';
+        $encrypted_value = $encrypted ? 'Y' : 'N';
         $attributeName = ParticipantAttributeName::model()->findByPk($attributeId);
         $sEncryptedBeforeChange = $attributeName->encrypted;
         $attributeName->encrypted = $encrypted_value;
@@ -1454,7 +1458,10 @@ class ParticipantsAction extends SurveyCommonAction
                 }
             } else {
                 // custom participant attributes
-                $oAttributes = ParticipantAttribute::model()->findAll("attribute_id=:attribute_id", array("attribute_id" => $attributeId));
+                $oAttributes = ParticipantAttribute::model()->findAll(
+                    'attribute_id = :attribute_id',
+                    array(':attribute_id' => $attributeId)
+                );
                 foreach ($oAttributes as $attribute) {
                     $aUpdateData = array();
                     if ($sEncryptedBeforeChange == 'Y' && $sEncryptedAfterChange == 'N') {
@@ -1463,7 +1470,15 @@ class ParticipantsAction extends SurveyCommonAction
                         $aUpdateData['value'] = LSActiveRecord::encryptSingle($attribute->value);
                     }
                     if (!empty($aUpdateData) && $aUpdateData['value'] !== null) {
-                        $oDB->createCommand()->update('{{participant_attribute}}', $aUpdateData, "attribute_id='" . $attributeId . "' AND participant_id = '" . $attribute->participant_id . "'");
+                        $oDB->createCommand()->update(
+                            '{{participant_attribute}}',
+                            $aUpdateData,
+                            'attribute_id = :attribute_id AND participant_id = :participant_id',
+                            array(
+                                ':attribute_id' => $attributeId,
+                                ':participant_id' => $attribute->participant_id
+                            )
+                        );
                     }
                 }
             }
@@ -1607,7 +1622,15 @@ class ParticipantsAction extends SurveyCommonAction
                     $aUpdateData['value'] = LSActiveRecord::encryptSingle($attribute->value);
                 }
                 if (!empty($aUpdateData)) {
-                    $oDB->createCommand()->update('{{participant_attribute}}', $aUpdateData, "attribute_id='" . $iAttributeId . "' AND participant_id = '" . $attribute->participant_id . "'");
+                    $oDB->createCommand()->update(
+                        '{{participant_attribute}}',
+                        $aUpdateData,
+                        "attribute_id = :attribute_id AND participant_id = :participant_id",
+                        array(
+                            ':attribute_id' => $iAttributeId,
+                            ':participant_id' => $attribute->participant_id
+                        )
+                    );
                 }
             }
 
@@ -1670,7 +1693,7 @@ class ParticipantsAction extends SurveyCommonAction
      */
     public function deleteSingleAttribute()
     {
-        $attribute_id = Yii::app()->request->getPost('attribute_id');
+        $attribute_id = (int) Yii::app()->request->getPost('attribute_id');
         ParticipantAttributeName::model()->delAttribute($attribute_id);
         $this->ajaxHelper::outputSuccess(gT("Attribute successfully deleted"));
     }
@@ -1689,6 +1712,7 @@ class ParticipantsAction extends SurveyCommonAction
 
         $request = Yii::app()->request;
         $attributeIds = json_decode($request->getPost('sItems'));
+        $attributeIds = array_map('sanitize_int', $attributeIds);
 
         $deletedAttributes = 0;
 
@@ -1840,25 +1864,6 @@ class ParticipantsAction extends SurveyCommonAction
     }
 
     /**
-     * Responsible for showing the additional attribute for CPDB
-     * Edit attribute form
-     *
-     * @return void
-     */
-    public function viewAttribute()
-    {
-        $iAttributeId = Yii::app()->request->getQuery('aid');
-        $aData = array(
-            'attributes' => ParticipantAttributeName::model()->getAttribute($iAttributeId),
-            'attributenames' => ParticipantAttributeName::model()->getAttributeNames($iAttributeId),
-            'attributevalues' => ParticipantAttributeName::model()->getAttributesValues($iAttributeId),
-            'aAttributes' => ParticipantAttributeName::model()->getAllAttributes()
-        );
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'viewAttribute.js');
-        $this->renderWrappedTemplate('participants', array('participantsPanel', 'viewAttribute'), $aData);
-    }
-
-    /**
      * Responsible for saving the additional attribute. It iterates through all the new attributes added dynamically
      * and iterates through them
      *
@@ -1933,8 +1938,8 @@ class ParticipantsAction extends SurveyCommonAction
      */
     public function delAttributeValues()
     {
-        $iAttributeId = Yii::app()->request->getQuery('aid');
-        $iValueId = Yii::app()->request->getQuery('vid');
+        $iAttributeId = (int) Yii::app()->request->getQuery('aid');
+        $iValueId = (int) Yii::app()->request->getQuery('vid');
         ParticipantAttributeName::model()->delAttributeValues($iAttributeId, $iValueId);
         Yii::app()->getController()->redirect(array('/admin/participants/sa/viewAttribute/aid/' . $iAttributeId));
     }
@@ -2285,7 +2290,7 @@ class ParticipantsAction extends SurveyCommonAction
         ];
         $participantIds = Yii::app()->request->getPost('participant_id');
         $iShareUserId = (int) Yii::app()->request->getPost('shareuser');
-        $bCanEdit = Yii::app()->request->getPost('can_edit') == 'on';
+        $bCanEdit = Yii::app()->request->getPost('can_edit') == true;
 
         if (!is_array($participantIds)) {
             $participantIds = array($participantIds);
@@ -2449,7 +2454,7 @@ class ParticipantsAction extends SurveyCommonAction
         $shareModel = ParticipantShare::model()->findByAttributes(array('participant_id' => $participant_id, 'share_uid' => $share_uid));
 
         if ($shareModel) {
-            $shareModel->can_edit = ($can_edit == 'true' ? 1 : 0);
+            $shareModel->can_edit = $can_edit ? 1 : 0;
             $success = $shareModel->save();
         } else {
             $success = false;
@@ -2471,14 +2476,14 @@ class ParticipantsAction extends SurveyCommonAction
         $overwriteman = Yii::app()->request->getPost('overwriteman', false);
         $createautomap = Yii::app()->request->getPost('createautomap');
 
-        $response = Participant::model()->copyToCentral(Yii::app()->request->getPost('surveyid'), $newarr, $mapped, $overwriteauto, $overwriteman, $createautomap);
+        $response = Participant::model()->copyToCentral((int) Yii::app()->request->getPost('surveyid'), $newarr, $mapped, $overwriteauto, $overwriteman, $createautomap);
 
         echo "<p>";
-        printf(gT("%s participants have been copied to the central participants table"), "<span class='badge alert-success'>" . $response['success'] . "</span>&nbsp;");
+        printf(gT("%s participants have been copied to the central participants table"), "<span class='badge rounded-pill alert-success'>" . $response['success'] . "</span>&nbsp;");
         echo "</p>";
         if ($response['duplicate'] > 0) {
             echo "<p>";
-            printf(gT("%s entries were not copied because they already existed"), "<span class='badge alert-warning'>" . $response['duplicate'] . "</span>&nbsp;");
+            printf(gT("%s entries were not copied because they already existed"), "<span class='badge rounded-pill alert-warning'>" . $response['duplicate'] . "</span>&nbsp;");
             echo "</p>";
         }
         if ($response['overwriteman'] == "true" || $response['overwriteauto']) {
@@ -2502,7 +2507,7 @@ class ParticipantsAction extends SurveyCommonAction
         $participantIdsString = Yii::app()->request->getPost('participant_id'); // TODO: This is a comma separated string of ids
         $participantIds = explode(",", $participantIdsString);
 
-        $surveyId = Yii::app()->request->getPost('surveyid');
+        $surveyId = (int)Yii::app()->request->getPost('surveyid');
 
         /**
          * mapped can take values like
@@ -2536,16 +2541,16 @@ class ParticipantsAction extends SurveyCommonAction
 
         // TODO: This code can't be reached
         echo "<p>";
-        printf(gT("%s participants have been copied to the survey survey participants table"), "<span class='badge alert-success'>" . $response['success'] . "</span>");
+        printf(gT("%s participants have been copied to the survey survey participants table"), "<span class='badge rounded-pill alert-success'>" . $response['success'] . "</span>");
         echo "</p>";
         if ($response['duplicate'] > 0) {
             echo "<p>";
-            printf(gT("%s entries were not copied because they already existed"), "<span class='badge alert-warning'>" . $response['duplicate'] . "</span>");
+            printf(gT("%s entries were not copied because they already existed"), "<span class='badge rounded-pill alert-warning'>" . $response['duplicate'] . "</span>");
             echo "</p>";
         }
         if ($response['blacklistskipped'] > 0) {
             echo "<p>";
-            printf(gT("%s entries were skipped because they are blacklisted"), "<span class='badge alert-danger'>" . $response['blacklistskipped'] . "</span>");
+            printf(gT("%s entries were skipped because they are blacklisted"), "<span class='badge rounded-pill alert-danger'>" . $response['blacklistskipped'] . "</span>");
             echo "</p>";
         }
         if ($response['overwriteauto'] == "true" || $response['overwriteman'] == "true") {

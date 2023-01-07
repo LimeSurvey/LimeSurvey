@@ -123,7 +123,7 @@ class PrintableSurvey extends SurveyCommonAction
             $printarray = array(
                 'sitename' => Yii::app()->getConfig("sitename"),
                 'therearexquestions' => 0,
-                'submit_text' => gT("Submit Your Survey."),
+                'submit_text' => gT("Submit your survey."),
                 'end' => $end,
                 'submit_by' => $surveyexpirydate,
                 'thanks' => gT("Thank you for completing this survey."),
@@ -732,8 +732,8 @@ class PrintableSurvey extends SurveyCommonAction
                             foreach ($mearesult as $mearow) {
                                 $longest_string = longestString($mearow->questionl10ns[$sLanguageCode]->question, $longest_string);
                                 $question['answer'] .= "\t<li class='row'>";
-                                $question['answer'] .= "<div class='col-sm-{$aWidth['label']}'>\n\t\t" . self::inputTypeImage('checkbox', $mearow->questionl10ns[$sLanguageCode]->question) . $mearow->questionl10ns[$sLanguageCode]->question . self::addsgqacode(" (" . $fieldname . $mearow['title'] . ") ") . "</div>\n";
-                                $question['answer'] .= "\t\t<div class='col-sm-{$aWidth['answer']}'>" . self::inputTypeImage('text', 'comment box', 50) . self::addsgqacode(" (" . $fieldname . $mearow['title'] . "comment) ") . "</div>\n";
+                                $question['answer'] .= "<div class='col-md-{$aWidth['label']}'>\n\t\t" . self::inputTypeImage('checkbox', $mearow->questionl10ns[$sLanguageCode]->question) . $mearow->questionl10ns[$sLanguageCode]->question . self::addsgqacode(" (" . $fieldname . $mearow['title'] . ") ") . "</div>\n";
+                                $question['answer'] .= "\t\t<div class='col-md-{$aWidth['answer']}'>" . self::inputTypeImage('text', 'comment box', 50) . self::addsgqacode(" (" . $fieldname . $mearow['title'] . "comment) ") . "</div>\n";
                                 $question['answer'] .= "\t</li>\n";
                                 $j++;
                             }
@@ -774,8 +774,8 @@ class PrintableSurvey extends SurveyCommonAction
                                     $rowQuestion = $mearow->questionl10ns[$sLanguageCode]->question[0];
                                 }
                                 $question['answer'] .= "\t<li class='row'>\n";
-                                $question['answer'] .= "\t\t<div class='col-sm-{$aWidth['label']}'>" . $rowQuestion . "</div>\n";
-                                $question['answer'] .= "\t\t<div class='col-sm-{$aWidth['answer']}'>" . self::inputTypeImage('text', $rowQuestion, $width, $height) . self::addsgqacode(" (" . $fieldname . $mearow['title'] . ") ") . "</div>\n";
+                                $question['answer'] .= "\t\t<div class='col-md-{$aWidth['label']}'>" . $rowQuestion . "</div>\n";
+                                $question['answer'] .= "\t\t<div class='col-md-{$aWidth['answer']}'>" . self::inputTypeImage('text', $rowQuestion, $width, $height) . self::addsgqacode(" (" . $fieldname . $mearow['title'] . ") ") . "</div>\n";
                                 $question['answer'] .= "\t</li>\n";
                             }
                             $question['answer'] = "\n<ul class='list-print-answers list-unstyled'>\n" . $question['answer'] . "</ul>\n";

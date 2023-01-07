@@ -110,7 +110,7 @@ $.ajax(
         method: "GET",
         success: function() {
             $("#ls-loading").hide();
-            LS.updateNotificationWidget("$notificationUpdateUrl", false);
+            LS.updateNotificationWidget("$notificationUpdateUrl");
         },
     }
 );

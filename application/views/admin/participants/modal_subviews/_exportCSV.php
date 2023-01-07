@@ -2,22 +2,24 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><?php eT("Export participants"); ?> </h4>
+                <h5 class="modal-title"><?php eT("Export participants"); ?> </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="form container-center">
-                    <div class='form-group row'>
-                        <label class='control-label col-sm-4' for='attributes'><?php  eT('Attributes to export:');?></label>
-                        <div class='col-sm-8'>
-                            <select id="attributes" name="attributes" multiple="multiple" >
-                                <?php
-                                foreach ($aAttributes as $value)
-                                {
-                                    echo "<option value=" . $value['attribute_id'] . ">" . $value['defaultname'] . "</option>\n";
-                                }
-                                ?>
-                            </select>
+                <div class="form container">
+                    <div class='mb-3 row'>
+                        <label class='form-label col-md-4' for='attributes'><?php eT('Attributes to export:');?></label>
+                        <div class='col-md-8'>
+                            <?php $this->widget('yiiwheels.widgets.select2.WhSelect2',
+                                array(
+                                    'asDropDownList' => true,
+                                    'htmlOptions' => ['multiple' => 'multiple', 'id' => 'attributes'],
+                                    'data' => array_combine(array_column($aAttributes, 'attribute_id'), array_column($aAttributes, 'defaultname')),
+                                    'value' => null,
+                                    'name' => 'attributes',
+                                    'pluginOptions' => []
+                                )
+                            ); ?>
                         </div>
                     </div>
                 <?php if (Yii::app()->getConfig('hideblacklisted') != 'N'): ?>
@@ -28,8 +30,10 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-cancel" data-dismiss="modal"><?php eT('Cancel'); ?></button>
-                <button type="button" class="btn btn-success exportButton"><?php eT('Export'); ?></button>
+                <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT('Cancel'); ?></button>
+                <button type="button" class="btn btn-success exportButton">
+                    <?php eT('Export'); ?>
+                </button>
             </div>
         </div>
     </div>
@@ -51,30 +55,15 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><?php eT("Export participants"); ?></h4>
+                <h5 class="modal-title"><?php eT("Export participants"); ?></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <?php eT("There are no participants to be exported."); ?>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT('Close'); ?></button>
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><?php eT('Close'); ?></button>
             </div>
         </div>
     </div>
 </div>
-
-<?php
-   // @todo THis seems to be a duplicate to the same snippet in participantpanel.js
-    App()->getClientScript()->registerScript('ExportCSVMultiSelectInit', "
-    $('#attributes').multiselect({
-        includeSelectAllOption: true, 
-        enableFiltering: true,
-        enableCaseInsensitiveFiltering: true, 
-        selectAllValue: 0,
-        filterBehavior : \"text\",
-        selectAllText: '".gT("Select all")."',
-        filterPlaceholder: '".gT("Search for something...")."'
-    });
-    ", LSYii_ClientScript::POS_POSTSCRIPT);
-?>

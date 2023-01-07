@@ -18,13 +18,13 @@
 
     <!-- activate -->
     <?php if ($canactivate): ?>
-        <a id='ls-activate-survey' class="btn btn-success" href="<?php echo $this->createUrl("surveyAdministration/activate/surveyid/$oSurvey->sid"); ?>" role="button">
+        <button id='ls-activate-survey' class="btn btn-success" href="<?php echo $this->createUrl("surveyAdministration/activate/surveyid/$oSurvey->sid"); ?>" type="button">
             <?php eT("Activate this survey"); ?>
-        </a>
+        </button>
 
     <!-- can't activate -->
     <?php elseif (Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveyactivation', 'update')): ?>
-        <span class="btntooltip" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>">
+        <span class="btntooltip" style="display: inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>">
             <button id='ls-activate-survey' type="button" class="btn btn-success btntooltip" disabled="disabled">
                 <?php eT("Activate this survey"); ?>
             </button>
@@ -34,16 +34,20 @@
 
     <!-- activate expired survey -->
     <?php if ($expired) : ?>
-        <span class="btntooltip" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" data-html="true" title="<?php eT('This survey is active but expired.'); ?><br><?php eT('Click to adjust.'); ?>">
-            <a href='<?php echo $this->createUrl("surveyAdministration/rendersidemenulink/subaction/publication", ['surveyid' => $oSurvey->sid]); ?>'class="btn btn-success btntooltip" >
-                <span class="fa fa-ban">&nbsp;</span>
+        <span class="btntooltip" style="display: inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true" title="<?php eT('This survey is active but expired.'); ?><br><?php eT('Click to adjust.'); ?>">
+            <button href='<?php echo $this->createUrl("surveyAdministration/rendersidemenulink/subaction/publication", ['surveyid' => $oSurvey->sid]); ?>'class="btn btn-success btntooltip" >
+                <span class="fa fa-ban">
+                    &nbsp;
+                </span>
                 <?php eT("Expired"); ?>
-            </a>
+            </button>
         </span>
     <?php elseif ($notstarted) : ?>
-        <span class="btntooltip" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title='<?php eT("This survey is active but has a start date."); ?>'>
+        <span class="btntooltip" style="display: inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title='<?php eT("This survey is active but has a start date."); ?>'>
             <button type="button" class="btn btn-success btntooltip" disabled="disabled" >
-                <span class="fa fa-clock-o">&nbsp;</span>
+                <span class="fa fa-clock-o">
+                    &nbsp;
+                </span>
                 <?php eT("Activate this survey"); ?>
             </button>
         </span>
@@ -51,10 +55,13 @@
 
     <!-- Stop survey -->
     <?php if ($canactivate): ?>
-        <a class="btn btn-danger btntooltip" href="<?php echo $this->createUrl("surveyAdministration/deactivate/surveyid/$oSurvey->sid"); ?>" role="button">
+        <button
+            class="btn btn-danger btntooltip"
+            href="<?php echo $this->createUrl("surveyAdministration/deactivate/surveyid/$oSurvey->sid"); ?>"
+            type="button">
             <i class="fa fa-stop-circle" ></i>
             <?php eT("Stop this survey"); ?>
-        </a>
+        </button>
     <?php endif; ?>
 <?php endif; ?>
 
@@ -65,7 +72,12 @@
     <!-- Multinlinguage -->
     <?php if (count($oSurvey->allLanguages) > 1): ?>
         <div class="btn-group">
-          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <button
+            type="button" 
+            class="btn btn-outline-secondary dropdown-toggle" 
+            data-bs-toggle="dropdown" 
+            aria-haspopup="true" 
+            aria-expanded="false">
             <span class="icon-do" ></span>
             <?php echo $icontext; ?> <span class="caret"></span>
           </button>
@@ -82,7 +94,7 @@
 
     <!-- uniq language -->
     <?php else: ?>
-        <a class="btn btn-default  btntooltip" href="<?php echo $this->createUrl("survey/index", array('sid'=>$oSurvey->sid, 'newtest'=>"Y", 'lang'=>$oSurvey->language)); ?>" role="button"  accesskey='d' target='_blank'>
+        <a class="btn btn-outline-secondary  btntooltip" href="<?php echo $this->createUrl("survey/index", array('sid'=>$oSurvey->sid, 'newtest'=>"Y", 'lang'=>$oSurvey->language)); ?>" role="button"  accesskey='d' target='_blank'>
             <span class="icon-do" ></span>
             <?php echo $icontext; ?>
         </a>

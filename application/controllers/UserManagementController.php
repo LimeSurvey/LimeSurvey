@@ -48,13 +48,13 @@ class UserManagementController extends LSBaseController
             Yii::app()->user->setState('pageSize', Yii::app()->request->getParam('pageSize'));
         }
         App()->getClientScript()->registerPackage('usermanagement');
-        App()->getClientScript()->registerPackage('bootstrap-select2');
+        App()->getClientScript()->registerPackage('select2-bootstrap');
 
         $aData = [];
         $model = new User('search');
         $model->setAttributes(Yii::app()->getRequest()->getParam('User'), false);
         $aData['model'] = $model;
-        $aData['columnDefinition'] = $model->getManagementColums();
+       // $aData['columnDefinition'] = $model->getManagementColums();
         $aData['pageSize'] = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
         $aData['formUrl'] = $this->createUrl('userManagement/index');
 
@@ -73,7 +73,7 @@ class UserManagementController extends LSBaseController
 
         return $this->render('index', [
             'model' => $aData['model'],
-            'columnDefinition' => $aData['columnDefinition'],
+            //'columnDefinition' => $aData['columnDefinition'],
             'pageSize' => $aData['pageSize'],
             'formUrl' => $aData['formUrl'],
             'massiveAction' => $aData['massiveAction'],
@@ -106,6 +106,7 @@ class UserManagementController extends LSBaseController
                 $this->redirect(App()->request->urlReferrer);
             }
         }
+
         $randomPassword = \LimeSurvey\Models\Services\PasswordManagement::getRandomPassword();
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
         return $this->renderPartial('partial/addedituser', ['oUser' => $oUser, 'randomPassword' => $randomPassword, 'dateformatdetails' => $dateformatdetails]);
@@ -477,7 +478,7 @@ class UserManagementController extends LSBaseController
         return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
             "data" => [
                 'success' => true,
-                'html'    => $this->renderPartial('partial/permissionsuccess', ['results' => $results], true),
+                'message' => gT("Saved permissions successfully.")
             ]
         ]);
     }
@@ -537,12 +538,12 @@ class UserManagementController extends LSBaseController
         $userId = Yii::app()->request->getPost('userid');
         $aTemplatePermissions = Yii::app()->request->getPost('TemplatePermissions', []);
 
-        $results = Permission::editThemePermissionsUser($userId, $aTemplatePermissions);
+        Permission::editThemePermissionsUser($userId, $aTemplatePermissions);
 
         return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
             "data" => [
                 'success' => true,
-                'html'    => $this->renderPartial('partial/permissionsuccess', ['results' => $results], true),
+                'message' => gT("Saved template permissions successfully.")
             ]
         ]);
     }
@@ -621,7 +622,7 @@ class UserManagementController extends LSBaseController
         return $this->renderPartial('partial/json', [
             "data" => [
                 'success' => true,
-                'html'    => $this->renderPartial('partial/permissionsuccess', ['results' => $results], true),
+                'message' => 'Saved user roles successfuly',
             ]
         ]);
     }

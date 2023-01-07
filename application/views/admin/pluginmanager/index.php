@@ -16,12 +16,12 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
 ?>
 <div class='container-fluid'>
     <div class='row'>
-        <div class='pull-right'>
+        <div class='float-end'>
             <?php /* Disabled for prototype 1.
                 <a
                     href=''
-                    class='btn btn-default '
-                    data-tooltip='true'
+                    class='btn btn-outline-secondary '
+                    data-bs-toggle='tooltip'
                     title='<?php eT('Install plugins from the extension shop'); ?>'
                 >
                     <i class='fa fa-shopping-cart'></i>&nbsp;
@@ -35,10 +35,10 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
                         onclick='<?php echo $menu->getOnClick(); ?>'
                     <?php endif; ?>
                     <?php if ($menu->getTooltip()): ?>
-                        data-toggle='tooltip'
+                        data-bs-toggle='tooltip'
                         data-title='<?php echo $menu->getTooltip(); ?>'
                     <?php endif; ?>
-                    class='btn btn-default'
+                    class='btn btn-outline-secondary'
                 >
                     <?php if ($menu->getIconClass()): ?>
                         <i class='<?php echo $menu->getIconClass(); ?>'></i>&nbsp;
@@ -51,19 +51,19 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
 
     <?php
 
-    $sort = new CSort();
-    $sort->attributes = [
-        'name'        => [
-            'asc'  => 'name',
+    $sort               = new CSort();
+    $sort->attributes   = [
+        'name' => [
+            'asc' => 'name',
             'desc' => 'name desc',
         ],
         'description' => [
-            'asc'  => 'description',
+            'asc' => 'description',
             'desc' => 'description desc',
         ],
-        'status'      => [
-            'asc'     => 'active',
-            'desc'    => 'active desc',
+        'status' => [
+            'asc' => 'active',
+            'desc' => 'active desc',
             'default' => 'desc',
         ],
     ];
@@ -72,10 +72,10 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
     ];
 
     $providerOptions = [
-        'pagination'        => [
+        'pagination' => [
             'pageSize' => $pageSize,
         ],
-        'sort'              => $sort,
+        'sort' => $sort,
         'caseSensitiveSort' => false,
     ];
 
@@ -83,38 +83,36 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
 
     $gridColumns = [
         [
-            'type'   => 'raw',
+            'type' => 'raw',
             'header' => gT('Action'),
-            'name'   => 'action',
-            'value'  => '$data->getActionButtons()'
+            'name' => 'action',
+            'value' => '$data->getActionButtons()'
         ],
         [
             'header' => gT('Status'),
-            'type'   => 'html',
-            'name'   => 'status',
-            'value'  => '$data->getStatus()'
+            'type' => 'html',
+            'name' => 'status',
+            'value' => '$data->getStatus()'
         ],
         [
             'header' => gT('Plugin'),
-            'name'   => 'name',
-            'type'   => 'html',
-            'value'  => '$data->getName()'
+            'name' => 'name',
+            'type' => 'html',
+            'value' => '$data->getName()'
         ],
         [
             'header' => gT('Description'),
-            'name'   => 'description',
-            'type'   => 'html',
-            'value'  => '$data->getPossibleDescription()'
+            'name' => 'description',
+            'type' => 'html',
+            'value' => '$data->getPossibleDescription()'
         ],
     ];
 
     $this->widget(
-        'bootstrap.widgets.TbGridView',
+        'application.extensions.admin.grid.CLSGridView',
         [
             'id'                       => 'plugins-grid',
             'dataProvider'             => $dataProvider,
-            'htmlOptions'              => ['class' => 'table-responsive grid-view-ls'],
-            'template'                 => "{items}\n<div id='pluginsListPager'><div class=\"col-sm-4\" id=\"massive-action-container\"></div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
             'summaryText'              => gT('Displaying {start}-{end} of {count} result(s).') . ' '
                 . sprintf(
                     gT('%s rows per page'),
@@ -123,14 +121,14 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
                         $pageSize,
                         Yii::app()->params['pageSizeOptions'],
                         [
-                            'class' => 'changePageSize form-control',
+                            'class' => 'changePageSize form-select',
                             'style' => 'display: inline; width: auto'
                         ]
                     )
                 ),
-            'columns'                  => $gridColumns,
+            'columns' => $gridColumns,
             'rowHtmlOptionsExpression' => 'array("data-id" => $data["id"])',
-            'ajaxUpdate'               => 'plugins-grid'
+            'ajaxUpdate' => 'plugins-grid'
         ]
     );
 

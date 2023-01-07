@@ -30,11 +30,10 @@
     }
     .resize-handle {
         position: absolute;
-        right: 14px;
+        right: 0;
         top: 0;
         bottom: 0;
         height: 100%;
-        width: 4px;
         cursor: col-resize;
         button {
             outline: 0;
@@ -48,10 +47,9 @@
             height:100%;
             text-align: left;
             border-radius: 0;
-            padding: 0px 7px 0px 4px;
+            padding: 0 4px;
             i {
                 font-size: 12px;
-                width: 5px;
             }
         }
     }
@@ -60,12 +58,6 @@
         -webkit-transition: all 0.5s ease;
         -ms-transition: all 0.5s ease;
         transition: all 0.5s ease;
-    }
-    div[class^="col-"],
-    div[class*=" col-"] {
-        &.nofloat {
-            float: none;
-        }
     }
     .button-sub-bar {
         min-height: 32px;
@@ -130,6 +122,7 @@
                 .list-group-item {
                     //padding-left:15px;
                     &:last-of-type {
+                        border-bottom: 1px solid #dadada;
                         margin-bottom: 10px;
                     }
                 }
@@ -137,9 +130,16 @@
         }
     }
     .breadcrumb>li+li:before {
+        float: none;
         padding: 0 5px;
-        content: "\f061";
+        color: #ccc;
+        content: #{'/*!rtl:"\f060"*/'}"\f061";
         font: normal normal normal 18px/1 FontAwesome;
+    }
+
+    .pager li > a, .pager li > span {
+        border-radius: 4px;
+        margin: 1px;
     }
 }
 
@@ -240,6 +240,7 @@ footer.footer {
 
 ol.breadcrumb.title-bar-breadcrumb {
     margin-bottom: 0px;
+    padding: 8px 15px;
     > :first-child {
         a {
             &.animate::after {
@@ -353,14 +354,14 @@ ol.breadcrumb.title-bar-breadcrumb {
     position: fixed;
     justify-content: center;
     align-items: center;
-    
+
     .blocker-loading-container {
         display: flex;
         justify-content: center;
         align-items: center;
         height: 100%;
         width: 100%;
-        
+
         .loading-icon-fa {
             display: flex;
             z-index: 9999;
@@ -383,8 +384,20 @@ ol.breadcrumb.title-bar-breadcrumb {
         padding-right:10px;
     }
     #vue-apps-main-container,
-    footer.footer,
     .surveymanagerbar {
         margin-left:22px
     }
 }
+
+.black-caret {
+    color: black;
+}
+
+div[class^="col-"],
+div[class*=" col-"] {
+    &.nofloat {
+        float: none;
+    }
+}
+
+

@@ -11,12 +11,12 @@ echo viewHelper::getViewTestTag('exportSpss');
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <h3><?php eT("Export response data to SPSS");?></h3>
     <?php echo CHtml::form(array("admin/export/sa/exportspss/sid/{$surveyid}/"), 'post', array('id'=>'exportspss', 'class'=>''));?>
-    <div class="form-group row">
-        <label for='completionstate' class='col-sm-2  form-control-label'><?php eT("Data selection:");?></label>
-        <div class="col-sm-10">
-            <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+    <div class="mb-3 row">
+        <label for='completionstate' class='col-md-2  form-form-label'><?php eT("Data selection:");?></label>
+        <div class="col-md-10">
+            <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', array(
                 'name' => 'completionstate',
-                'value'=> 'all' ,
+                'checkedOption'=> 'all' ,
                 'selectOptions'=>array(
                     "all"=>gT("All responses",'unescaped'),
                     "complete"=>gT("Complete only",'unescaped'),
@@ -25,12 +25,12 @@ echo viewHelper::getViewTestTag('exportSpss');
             ));?>
         </div>
     </div>
-    <div class="form-group row">
-        <label for='spssver'  class='col-sm-2  form-control-label'><?php eT("SPSS version:");?></label>
-        <div class="col-sm-10">
-            <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+    <div class="mb-3 row">
+        <label for='spssver'  class='col-sm-2  form-label'><?php eT("SPSS version:");?></label>
+        <div class="col-md-10">
+            <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', array(
                 'name' => 'spssver',
-                'value'=> $spssver ,
+                'checkedOption'=> $spssver ,
                 'selectOptions'=> array(
                     "1"=>gT("Prior to 16 / PSPP",'unescaped'),
                     "2"=>gT("16 or up",'unescaped'),
@@ -42,36 +42,36 @@ echo viewHelper::getViewTestTag('exportSpss');
     <?php
     if (count($aLanguages)>1)
     { ?>
-        <div class="form-group row">
-            <label for='exportlang'  class='col-sm-2  form-control-label'><?php eT("Language:");?></label>
-            <div class="col-sm-2">
-                <?php echo CHtml::dropDownList('exportlang', $sBaseLanguage, $aLanguages, array('class'=>'form-control')); ?>
+        <div class="mb-3 row">
+            <label for='exportlang'  class='col-md-2  form-form-label'><?php eT("Language:");?></label>
+            <div class="col-md-2">
+                <?php echo CHtml::dropDownList('exportlang', $sBaseLanguage, $aLanguages, array('class'=>'form-select')); ?>
             </div>
         </div>
         <?php } else { ?>
             <?php echo CHtml::hiddenField('exportlang', $sBaseLanguage); ?>
 
         <?php } ?>
-    <div class="form-group row">
-        <label for='limit' class='col-sm-2  form-control-label'><?php eT("Limit:");?></label>
-        <div class="col-sm-1">
+    <div class="mb-3 row">
+        <label for='limit' class='col-md-2  form-form-label'><?php eT("Limit:");?></label>
+        <div class="col-md-1">
             <?php
                 echo CHtml::textField('limit',App()->getRequest()->getParam('limit'),array('class'=>'form-control'));
             ?>
         </div>
     </div>
-    <div class="form-group row">
-        <label for='offset' class='col-sm-2  form-control-label'><?php eT("Offset:");?></label>
-        <div class="col-sm-1">
+    <div class="mb-3 row">
+        <label for='offset' class='col-md-2  form-form-label'><?php eT("Offset:");?></label>
+        <div class="col-md-1">
             <?php
                 echo CHtml::textField('offset',App()->getRequest()->getParam('offset'),array('class'=>'form-control'));
             ?>
         </div>
     </div>
 
-    <div class="form-group row">
-        <label for='offset' class='col-sm-2  form-control-label'><?php eT("No answer:");?></label>
-        <div class="col-sm-1">
+    <div class="mb-3 row">
+        <label for='offset' class='col-md-2  form-form-label'><?php eT("No answer:");?></label>
+        <div class="col-md-1">
             <?php
                 echo CHtml::textField('noanswervalue',App()->getRequest()->getParam('noanswervalue'),array('class'=>'form-control'));
             ?>
@@ -79,20 +79,20 @@ echo viewHelper::getViewTestTag('exportSpss');
     </div>
 
 
-    <div class="form-group row">
+    <div class="mb-3 row">
         <?php
             echo CHtml::hiddenField('sid',$surveyid);
             echo CHtml::hiddenField('action','exportspss');
         ?>
-        <label for='dlstructure' class='col-sm-1 form-control-label'><?php eT("Step 1:");?></label>
-        <div class="col-sm-10">
-            <input class="btn btn-default" type='submit' name='dlstructure' id='dlstructure' value='<?php eT("Export syntax");?>'/>
+        <label for='dlstructure' class='col-md-1 form-form-label'><?php eT("Step 1:");?></label>
+        <div class="col-md-10">
+            <input class="btn btn-outline-secondary" type='submit' name='dlstructure' id='dlstructure' value='<?php eT("Export syntax");?>'/>
         </div>
     </div>
-    <div class="form-group row">
-        <label for='dldata' class='col-sm-1  form-control-label'><?php eT("Step 2:");?></label>
-        <div class="col-sm-10">
-            <input class="btn btn-default" type='submit' name='dldata' id='dldata' value='<?php eT("Export data");?>'/>
+    <div class="mb-3 row">
+        <label for='dldata' class='col-md-1  form-form-label'><?php eT("Step 2:");?></label>
+        <div class="col-md-10">
+            <input class="btn btn-outline-secondary" type='submit' name='dldata' id='dldata' value='<?php eT("Export data");?>'/>
         </div>
     </div>
     </form>

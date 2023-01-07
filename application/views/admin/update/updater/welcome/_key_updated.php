@@ -12,7 +12,7 @@
     <p><br><?php eT('Your key has been updated and validated! You can now use ComfortUpdate.'); ?></p>
 </div>
 
-<a class="btn btn-default" href="<?php echo $urlContinue;?>" role="button" aria-disabled="false">
+<a class="btn btn-outline-secondary" href="<?php echo $urlContinue;?>" role="button" aria-disabled="false">
 	<?php eT("Continue"); ?>
 </a>
 

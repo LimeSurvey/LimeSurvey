@@ -21,7 +21,7 @@ echo viewHelper::getViewTestTag('usersIndex');
 
 <div class="menubar surveymanagerbar">
     <div class="row container-fluid">
-        <div class="col-xs-12 col-md-12">
+        <div class="col-12">
             <div class="h2"><?php eT("User management panel")?></div>
         </div>
     </div>
@@ -32,18 +32,18 @@ echo viewHelper::getViewTestTag('usersIndex');
     <div class="container-fluid">
         <?=TbHtml::formTb(null, App()->createUrl('admin/usermanagement/sa/importfromjson'), 'post', ["id"=>"UserManagement--importjson"])?>
         <div class="row">
-            <div class="col-sm-12">
+            <div class="col-12">
                 <textarea rows="10" style="width:100%" name="jsonstring" id="jsonstring"><?=json_encode($result,JSON_PRETTY_PRINT)?></textarea>
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-12">
+            <div class="col-12">
                 <div id="jsonContent" style="max-height:25rem;overflow:scroll;white-space:pre;"><?=json_encode($result,JSON_PRETTY_PRINT)?></div>
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-12">
-                <input type="submit" class="btn btn-default" name="submit" value="Submit and save" />
+            <div class="col-12">
+                <input type="submit" class="btn btn-outline-secondary" name="submit" value="Submit and save" />
             </div>
         </div>
         </form>
@@ -61,3 +61,4 @@ echo viewHelper::getViewTestTag('usersIndex');
         $("#jsonstring").on('keyup.debounce', debouncedKeyup);
     </script>
 </div>
+

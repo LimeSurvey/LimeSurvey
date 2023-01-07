@@ -5,14 +5,14 @@ var defineActions = function (dataArray) {
     var buttonDelete = $('<button><i class="fa fa-trash text-danger"></i></button>');
     var container = $('<div><div class="icon-btn-row"></div></div>');
     buttonEdit
-        .addClass('btn btn-sm btn-default surveysettings_edit_intparameter')
+        .addClass('btn btn-sm btn-outline-secondary surveysettings_edit_intparameter')
         .data('id', dataArray.id)
         .data('sid', dataArray.sid)
         .data('qid', (dataArray.qid || null))
         .data('sqid', (dataArray.qid || null))
         .appendTo(iconRow);
     buttonDelete
-        .addClass('btn btn-sm btn-default surveysettings_delete_intparameter')
+        .addClass('btn btn-sm btn-outline-secondary surveysettings_delete_intparameter')
         .data('id', dataArray.id)
         .data('sid', dataArray.sid)
         .data('qid', (dataArray.qid || null))
@@ -49,7 +49,7 @@ function PostParameterGrid() {
 function saveParameter() {
     var sParamname = $.trim($('#paramname').val());
     if (sParamname == '' || !/^[a-zA-Z_][a-zA-Z0-9_]*$/.test(sParamname) || sParamname == 'sid' || sParamname == 'newtest' || sParamname == 'token' || sParamname == 'lang') {
-        $('#dlgEditParameter').prepend('<div class="alert alert-danger alert-dismissible fade in"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' + sEnterValidParam + '</div>');
+        $('#dlgEditParameter').prepend('<div class="alert alert-danger alert-dismissible fade in"><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' + sEnterValidParam + '</div>');
         return;
     }
     $('#dlgEditParameter').dialog('close');
@@ -158,32 +158,14 @@ function guidGenerator() {
 function validateSettingsForm($form) {
     switch ($form.attr('id')) {
         case 'publication':
-            return validateEndDateHigherThanStart(
+            return LS.validateEndDateHigherThanStart(
                 $('#startdate_datetimepicker').data('DateTimePicker'),
                 $('#expires_datetimepicker').data('DateTimePicker'),
-                expirationLowerThanStartError
+                () => {LS.LsGlobalNotifier.createFlash(expirationLowerThanStartError, 'alert-danger fade in')}
             );
         default:
             return true;
     }
-}
-
-/**
- * Validates that an end date is not lower than a start date
- */
-function validateEndDateHigherThanStart(startDatePicker, endDatePicker, errorMessage) {
-    if (!startDatePicker || !startDatePicker.date()) {
-        return true;
-    }
-    if (!endDatePicker || !endDatePicker.date()) {
-        return true;
-    }
-    const difference = endDatePicker.date().diff(startDatePicker.date());
-    if (difference >= 0) {
-        return true;
-    }
-    LS.LsGlobalNotifier.createFlash(errorMessage, 'alert-danger fade in');
-    return false;
 }
 
 $(document).on('ready  pjax:scriptcomplete', function(){
@@ -234,8 +216,8 @@ $(document).on('ready  pjax:scriptcomplete', function(){
                     paging: false,
                     dom: "<'#dt-toolbar'>f<t>i"
                 });
-                var addParamButton = $('<button class="btn btn-success" id="addParameterButton">'+i10n['Add URL parameter']+'</button>');
-                $('#dt-toolbar').addClass('pull-left clearfix').append(addParamButton)
+                var addParamButton = $('<button type="button" class="btn btn-success" id="addParameterButton">'+i10n['Add URL parameter']+'</button>');
+                $('#dt-toolbar').addClass('float-start clearfix').append(addParamButton)
                     .on('click', '#addParameterButton', function(e){
                         e.preventDefault();
                         newParameter(e);

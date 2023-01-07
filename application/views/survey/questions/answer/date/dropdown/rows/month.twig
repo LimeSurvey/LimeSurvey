@@ -8,18 +8,19 @@
 #}
 
 <!-- month -->
-<label for="month{{ monthId }}" class="sr-only control-label">
-    {{ gT('Month') }}
-</label>
-<select id="month{{ monthId }}" name="month{{ monthId }}" class="month form-control">
-    <option value="">
+<div class="col-12">
+    <label for="month{{ monthId }}" class="visually-hidden control-label">
         {{ gT('Month') }}
-    </option>
-    {% for i in 1..12 %}
-        <option value="{{ sprintf('%02d', i) }}"{% if i == intval(currentmonth) %} selected{% endif %}>
-            {{ montharray[(i-1)] }}
+    </label>
+    <select id="month{{ monthId }}" name="month{{ monthId }}" class="month form-select">
+        <option value="">
+            {{ gT('Month') }}
         </option>
-    {% endfor %}
-</select>
-
+        {% for i in 1..12 %}
+            <option value="{{ sprintf('%02d', i) }}"{% if i == intval(currentmonth) %} selected{% endif %}>
+                {{ montharray[(i-1)] }}
+            </option>
+        {% endfor %}
+    </select>
+</div>
 <!-- end of month -->

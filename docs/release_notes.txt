@@ -34,6 +34,222 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.5.0 (build 221219) to 5.5.1 (build 230103) January 3, 2023
+-Fixed issue #18564: Fixed JS part for copy functionality (#2805) (Borys)
+-Fixed issue #18503: Label sets: When adding a label set e.g. at the edit responses screen, the loaded label sets can not be searched (#2796) (Gabriel Jenik)
+-Fixed issue #18471: Data Entry: Data entry with multiple languages does not work (#2797) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by c_schmitz, samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: French (France) by aschwey, DenisChenu
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Chinese (Simplified) by duestin, FangZhijian, humandynamic, xiongrui, zengqing, zhanginshanghai, Zoctan
+
+
+Changes from 5.4.15 (build 221212) to 5.5.0 (build 221219) December 19, 2022
++New feature #8436: Enable / disable users and fields to manage users (#2636) (Gabriel Jenik)
++New feature #8239: Allow for user friendly survey URLS (#2218) (Gabriel Jenik)
++New feature #18375: [security] Some plugin settings need encryption (#2645) (Gabriel Jenik)
++New feature #18204: Extend form via plugin (Olle Haerstedt)
+-Fixed issue: Return JSON instead of string from actionCheckQuestionValidateTitle (Olle Haerstedt)
+-Fixed issue: Also allow to compare with null in list_participants (Olle Haerstedt)
+-Fixed issue [security] #18553: SQL injection on surveygroup update (#2790) (Denis Chenu)
+-Fixed issue #18449: Impossible to add participant after correcting an e-mail address error (#2748) (Gabriel Jenik)
+-Fixed issue #18415: Copy Survey: New Title shouldn't be mandatory (#2709) (Gabriel Jenik)
+-Fixed issue #18373: Saving statistics exports to excel fails (#2656) (Gabriel Jenik)
+-Fixed issue #18310: Inconsistent GUI: Sort alphabetically vs. random (#2666) (Gabriel Jenik)
+-Fixed issue #18250: admin css hide logic file part (#2761) (Gabriel Jenik)
+#Updated translation: Ukrainian by apache_borys
+#Updated translation: Slovak by jelen1
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1, slansky
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Bosnian by PawelAtroszko
+#Updated translation: Azerbaijani by PawelAtroszko
+
+
+Changes from 5.4.14 (build 221205) to 5.4.15 (build 221212) December 12, 2022
+-Fixed issue #14310: Google Analytics functionality doesn't work (#2762) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by nomoto
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 5.4.13 (build 221128) to 5.4.14 (build 221205) December 5, 2022
+-Fixed issue #18337: Placeholders VALIDFROM and VALIDUNTIL at email templates do not use localized dates (#2591) (Gabriel Jenik)
+-Fixed issue #18250: Admin CSS hide logic file part (#2657) (Gabriel Jenik)
+-Fixed issue #17897: Build of statistics fails with DivisionByZero (#2704) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by nomoto
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: French (France) by DenisChenu
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Arabic by c_schmitz, DeveloperChris, LucaAzzalini, malbariqi, MotasemHanani, Muhammad_Hosny, mviper28, samiubuntu, shidhani, yabdali, ysaad
+
+
+Changes from 5.4.12 (build 221121) to 5.4.13 (build 221128) November 28, 2022
+-Fixed issue: gid suffix was missing in aRDP_regexpStaticAttribute array (Tim Willig)
+-Fixed issue #18463: List of uploaded files should be sorted alphabetically (#2722) (Gabriel Jenik)
+-Fixed issue #18461: Survey groups at survey list screen should be listed alphabetically (#2724) (Gabriel Jenik)
+-Fixed issue #18424: Typo in debug message (#2705) (Gabriel Jenik)
+-Fixed issue #18395: Access to limereplacementfields didn't check read permission on survey (#2655) (Gabriel Jenik)
+-Fixed issue #17648: Email received by participant is empty (#2691) (Denis Chenu)
+#Updated translation: Portuguese (Brazil) by rafaelmaia
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Luxembourgish by Mazi
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: French (France) by b00z00, DenisChenu, Nickko, sim.eesp
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Chinese (Simplified) by hdaphq, humandynamic, xiongrui, zengqing, zhanginshanghai, Zoctan
+#Updated translation: Azerbaijani by Heyder
+
+
+Changes from 5.4.11 (build 221114) to 5.4.12 (build 221121) November 21, 2022
+-Fixed issue: Placeholder fields still inserting outdated INSERTANS: placeholder (Carsten Schmitz)
+-Fixed issue: ComfortUpdate should use SSL by default (Carsten Schmitz)
+-Fixed issue #18488: Conditions are not properly highlighted if they have additional spaces (#2733) (Denis Chenu)
+-Fixed issue #18422: Remove Google font usage (#2689) (Gabriel Jenik)
+#Updated translation: Valencian by joamuran, vbraque
+#Updated translation: Thai by tomzt
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Hungarian by kkd
+
+
+Changes from 5.4.10 (build 221107) to 5.4.11 (build 221114) November 14, 2022
+-Fixed issue: Survey gets into a state where it seems to be active but isn't - to fix this run integrity check (Carsten Schmitz)
+-Fixed issue: Start boxes having invalid links on small screens (Carsten Schmitz)
+-Fixed issue: Division by zero on survey preview when no answer options exist (Carsten Schmitz)
+-Fixed issue #15195: Expiration date can be set before start date (#2714) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 5.4.9 (build 221101) to 5.4.10 (build 221107) November 7, 2022
+-Fixed issue #18451: Plugin uploading omit translation files (Bartosz Marganiec)
+-Fixed issue #18338: For participants, expiration date can be set before start date (#2679) (Gabriel Jenik)
+-Fixed issue #16187: No proper error message when copying survey and ID already exists (#2663) (Gabriel Jenik)
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Japanese by nomoto
+#Updated translation: Finnish by Jmantysalo
+
+
+Changes from 5.4.8 (build 221024) to 5.4.9 (build 221101) November 1, 2022
+-Fixed issue: No proper error message in ComfortUpdate shown when files could not be deleted (Carsten Schmitz)
+-Fixed issue: If a file/directory could not be deleted during ComfortUpdate the file/dirname would not be shown (Carsten Schmitz)
+-Fixed issue: HTML tags are not allowed for admins in participant attributes (#2627) (Denis Chenu)
+-Fixed issue: Cannot import old response table (Carsten Schmitz)
+-Fixed issue #18430: Unable to ComfortUpdate from 5.4.7 (Olle Haerstedt)
+-Fixed issue #18430: Unable to ComfortUpdate from 5.4.7 (Carsten Schmitz)
+-Fixed issue #18427: LDAP plugin error when try to create new user on PHP8.1 (#2685) (Denis Chenu)
+-Fixed issue #18414: Missing translations (#2678) (Gabriel Jenik)
+-Fixed issue #18358: Statistics filter feature is not working properly (#2635) (Gabriel Jenik)
+-Fixed issue #18102: Export Duplicate entries in the Excel Form (#2673) (Denis Chenu)
+#Updated translation: Spanish (Spain) by aesteban, c_schmitz, Ignacio, ignaciogros, ireneoh, jmlopez, jparis, rodrirokr, segui, valdomir, xtingray
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian by lfanfoni, lfortunato, ritapas
+#Updated translation: Italian (Informal) by lfanfoni, mike73rn
+#Updated translation: Hungarian by kkd
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 5.4.7 (build 221019) to 5.4.8 (build 221024) October 24, 2022
+-Fixed issue: Cannot edit file in theme editor (Carsten Schmitz)
+-Fixed issue #18413: Cannot authenticate with LDAP when using PHP 8.1 (Denis Chenu)
+-Fixed issue #18403: Debug output when loading demo site (#2649) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by nomoto
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Chinese (Simplified) by duestin, FangZhijian, xiongrui, zengqing, zhanginshanghai, Zoctan
+
+
+Changes from 5.4.6 (build 221018) to 5.4.7 (build 221019) October 18, 2022
+-Fixed issue: [security] Various major & minor security issues discovered by automated security tools (Carsten Schmitz)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+
+
+Changes from 5.4.5 (build 221010) to 5.4.6 (build 221018) October 18, 2022
+-Fixed issue #18413: Cannot authenticate with LDAP when using PHP 8.1 (Dennis1993)
+-Fixed issue #18410: LDAP authentication option labelled as PluginBase (#2662) (Gabriel Jenik)
+#Updated translation: Portuguese (Portugal) by marcelovincenzi, samarta
+#Updated translation: Portuguese (Brazil) by holch, josesiqueira, samarta, tamiel
+#Updated translation: Mongolian by amidral
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: French (France) by DenisChenu
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Chinese (Taiwan) (Traditional) by CTFang, TuTu_chen, Yeeeeeet
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 5.4.4 (build 221004) to 5.4.5 (build 221010) October 10, 2022
+-Fixed issue: Add bootstrap tooltip to MenuButton view (Tim Willig)
+-Fixed issue #18373: Saving statistics exports to excel fails (#2634) (Gabriel Jenik)
+-Fixed issue #18323: When copying a question with sub-questions, the sub-questions are not copied (#2644) (Gabriel Jenik)
+-Fixed issue #18307: A comment string starting with a '<' is not saved using Multiple choice with comments (#2608) (Gabriel Jenik)
+-Fixed issue #18172: MSSQL issue when import from old responses DB (#2460) (Denis Chenu)
+-Fixed issue #17950: is_int(false) returns true (#2642) (Denis Chenu)
+-Fixed issue #17825: Strings “LimeSurvey internal database” not available for translation in GlotPress (#2637) (Gabriel Jenik)
+-Fixed issue #17654: Spurious error "Incorrect username …" in webserver Auth (#2448) (Denis Chenu)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Brazil) by samarta
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: German by vkm2020
+#Updated translation: German (Informal) by bewi, c_schmitz, richterd
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 5.4.3 (build 220926) to 5.4.4 (build 221004) October 4, 2022
 -Fixed issue: Wording "Generate tokens" is confusing (#2589) (Arjun Srivastava)
 -Fixed issue: ComfortUpdate having a problem with bigger updates (Carsten Schmitz)

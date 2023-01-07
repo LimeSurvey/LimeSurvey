@@ -155,7 +155,9 @@ class LSYii_ClientScript extends CClientScript
         if (!empty(Yii::app()->clientScript->packages[$sPackageName])) {
             if (!empty(Yii::app()->clientScript->packages[$sPackageName][$sType])) {
                 $key = array_search($sFileName, Yii::app()->clientScript->packages[$sPackageName][$sType]);
-                unset(Yii::app()->clientScript->packages[$sPackageName][$sType][$key]);
+                if ($key !== false) {
+                    unset(Yii::app()->clientScript->packages[$sPackageName][$sType][$key]);
+                }
             }
         }
     }
@@ -228,7 +230,7 @@ class LSYii_ClientScript extends CClientScript
     public function getRecursiveDependencies($sPackageName)
     {
         $aPackages = Yii::app()->clientScript->packages;
-        if (array_key_exists('depends', $aPackages[$sPackageName])) {
+        if (isset($aPackages[$sPackageName]['depends'])) {
             $aDependencies = $aPackages[$sPackageName]['depends'];
 
             foreach ($aDependencies as $sDpackageName) {

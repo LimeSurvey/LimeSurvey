@@ -381,6 +381,8 @@ class Update extends DynamicSurveyCommonAction
      */
     public function step4()
     {
+        Yii::app()->loadLibrary("admin/pclzip");
+        $event = new CExceptionEvent($this, new Exception());  // Dummy line to preload CExceptionEvent class.
         if (Permission::model()->hasGlobalPermission('superadmin')) {
             if (App()->request->getPost('destinationBuild')) {
                 $destinationBuild = App()->request->getPost('destinationBuild');
@@ -394,7 +396,7 @@ class Update extends DynamicSurveyCommonAction
 
                     $remove = $updateModel->removeDeletedFiles((array)$changedFiles);
                     if (!$remove->result) {
-                        return $this->_renderErrorString($remove->error);
+                        return $this->renderErrorString($remove->error, $remove->message);
                     };
                     $file = $updateModel->downloadUpdateFile($access_token, $destinationBuild);
                     if ($file->result) {
@@ -622,11 +624,12 @@ class Update extends DynamicSurveyCommonAction
      * @param string $error the error message
      * @return string
      */
-    private function renderErrorString($error)
+    private function renderErrorString($error, $message = null)
     {
             $errorObject = new stdClass();
             $errorObject->result = false;
             $errorObject->error = $error;
+            $errorObject->message = $message;
             return $this->renderError($errorObject);
     }
 

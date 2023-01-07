@@ -8,12 +8,12 @@
  */
 ?>
 <div class="modal-header">
-    <?=gT('Error')?>
+    <h5 class="modal-title"><?=gT('Error')?></h5>
 </div>
 <div class="modal-body">
-    <div class="container-center">
+    <div class="container">
         <div class="row selector--animated_row">
-            <div class="col-xs-12 text-center">
+            <div class="col-12 text-center">
                 <div class="cross_mark">
                     <div class="sa-icon sa-error animate">
                         <span class="sa-line sa-tip animateerrorTip"></span>
@@ -30,11 +30,12 @@
             }
             ?>
         </div>
-        <?php if(!isset($noButton)): ?>
-        <div class="row ls-space margin top-35">
-            <button id="exitForm" class="btn btn-default">
-                <?=gT('Close')?></button>
-        </div>
-        <?php endif; ?>
     </div>
+</div>
+<div class="modal-footer">
+    <?php if(!isset($noButton)): ?>
+        <button id="exitForm" class="btn btn-cancel" data-bs-dismiss="modal">
+            <?=gT('Close')?>
+        </button>
+    <?php endif; ?>
 </div>

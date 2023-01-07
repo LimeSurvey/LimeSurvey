@@ -93,6 +93,7 @@ class RegisterController extends LSYii_Controller
         } else {
             $iSurveyId = Yii::app()->request->getPost('sid');
         }
+        $iSurveyId = (int) $iSurveyId;
 
         $oSurvey = Survey::model()->find("sid=:sid", array(':sid' => $iSurveyId));
         /* Throw 404 if needed */
@@ -337,12 +338,11 @@ class RegisterController extends LSYii_Controller
         } else {
             // TODO : move xss filtering in model
             $oToken = Token::create($iSurveyId);
-            $oToken->firstname = sanitize_xss_string($aFieldValue['sFirstName']);
-            $oToken->lastname = sanitize_xss_string($aFieldValue['sLastName']);
+            $oToken->firstname = $aFieldValue['sFirstName'];
+            $oToken->lastname = $aFieldValue['sLastName'];
             $oToken->email = $aFieldValue['sEmail'];
             $oToken->emailstatus = 'OK';
             $oToken->language = $sLanguage;
-            $aFieldValue['aAttribute'] = array_map('sanitize_xss_string', $aFieldValue['aAttribute']);
             $oToken->setAttributes($aFieldValue['aAttribute']);
             if ($aSurveyInfo['startdate']) {
                 $oToken->validfrom = $aSurveyInfo['startdate'];
@@ -351,6 +351,7 @@ class RegisterController extends LSYii_Controller
                 $oToken->validuntil = $aSurveyInfo['expires'];
             }
             $oToken->generateToken();
+            $oToken->setScenario('register');
             $oToken->encryptSave(true);
             $this->sMailMessage = gT("An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed.");
             return $oToken->tid;

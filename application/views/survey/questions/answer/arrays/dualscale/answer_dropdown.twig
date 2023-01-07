@@ -62,7 +62,7 @@
 
             <td class="answer-item dropdown-item{% if ansrow.mandatoryviolation and ansrow.sActualAnswer0=='' %} has-error{% endif %}">
                 {% if leftheader != '' %}
-                    <div  class='visible-xs leftheader control-label'>{{ leftheader }}</div>
+                    <div  class='d-block d-md-none leftheader control-label'>{{ leftheader }}</div>
                 {% endif %}
                 {% if ddsuffix != '' or ddprefix != '' %}
                     <div class="ls-input-group">
@@ -73,7 +73,7 @@
                     </div>
                 {% endif %}
                 <select
-                    class='form-control'
+                    class='form-select'
                     name="{{ ansrow.myfname0 }}"
                     id="answer{{ ansrow.myfid0 }}"
                     aria-labelledby="answertext{{ ansrow.myfname }}"
@@ -120,7 +120,7 @@
 
             <td class="answer-item dropdown-item{% if ansrow.mandatoryviolation and ansrow.sActualAnswer1=='' %} has-error{% endif %}">
                 {% if rightheader != '' %}
-                    <div  class='visible-xs rightheader control-label'>{{ rightheader }}</div>
+                    <div  class='d-block d-md-none rightheader control-label'>{{ rightheader }}</div>
                 {% endif %}
                 <!-- We don't need another label : aria-labelledby for accessibility, and we have only 2 line in phone and no-more-table -->
                 {% if ddprefix != '' or ddsuffix != '' %}
@@ -129,7 +129,7 @@
                 {% if ddprefix != '' %}
                     <div class="ddprefix ls-input-group-extra">{{ processString(ddprefix) }}</div>
                 {% endif %}
-                <select class='form-control' name="{{ ansrow.myfname1 }}" id="answer{{ ansrow.myfid1 }}" aria-labelledby="label-{{ ansrow.myfname }}">
+                <select class='form-select' name="{{ ansrow.myfname1 }}" id="answer{{ ansrow.myfid1 }}" aria-labelledby="label-{{ ansrow.myfname }}">
                     <!-- Please choose... -->
                     {% if ansrow.sActualAnswer1 is empty %}
                         <option value="" selected="selected">{{ gT('Please choose...') }}</option>
