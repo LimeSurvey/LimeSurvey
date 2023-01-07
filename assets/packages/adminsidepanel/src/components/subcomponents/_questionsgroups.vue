@@ -78,7 +78,7 @@ export default {
             classes +=
                 this.$store.state.lastQuestionOpen === question.qid
                     ? "selected activated"
-                    : " ";
+                    : "selected ";
 
             if (this.draggedQuestion !== null)
                 classes +=

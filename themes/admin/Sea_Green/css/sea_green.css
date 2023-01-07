@@ -18269,6 +18269,23 @@ footer.footer {
   width: 24px;
 }
 
+.badge {
+  background-color: #F9F9FB;
+  color: #1E1E1E;
+}
+.badge.bg-primary, .badge.bg-secondary, .badge.bg-info, .badge.bg-dark {
+  color: #fff;
+}
+
+.badge.reverse-color {
+  color: #F9F9FB !important;
+  background-color: #1E1E1E !important;
+}
+
+.badge.rounded-pill {
+  padding: 4px 12px !important;
+}
+
 .select2-container--bootstrap-5 .select2-selection--multiple textarea:focus {
   box-shadow: none;
 }
