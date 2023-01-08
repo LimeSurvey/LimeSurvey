@@ -16695,72 +16695,6 @@ input[type=text], input[type=password], .ui-autocomplete-input, textarea, .unedi
   border: 1px solid #328637;
 }
 
-#sidebar .btn-primary.force.color.white.onhover:hover, #sidebar .btn-primary.force.color.white.onhover:active, #sidebar .btn-primary.force.color.white.onhover:focus {
-  color: #fff;
-}
-#sidebar .tabbutton.btn-primary {
-  outline: none;
-}
-#sidebar .tabbutton.btn-primary:hover:after, #sidebar .tabbutton.btn-primary:focus:after, #sidebar .tabbutton.btn-primary:active:after {
-  color: #163c19;
-}
-#sidebar .tabbutton.btn-primary:after {
-  color: #328637;
-}
-#sidebar .background.white {
-  background-color: #fff;
-  box-shadow: none;
-}
-#sidebar .resize-handle button:focus, #sidebar .resize-handle button:active, #sidebar .resize-handle button:hover {
-  background-color: #fff !important;
-}
-#sidebar .menu-open {
-  animation-name: animate-gradient;
-  animation-duration: 450ms;
-  background: radial-gradient(circle at center, #5cc262 0px, #5cc262 8px, #fff 9px, #fff 100%);
-}
-#sidebar .selected {
-  padding-right: 20px;
-  background: linear-gradient(to left, #49bb50 0px, #49bb50 13px, #fff 13px, #fff 100%);
-  transition-property: all;
-  transition-duration: 0.25s;
-  transition-timing-function: cubic-bezier(1, 0.5, 0.5, 1);
-}
-#sidebar .selected.activated {
-  background: linear-gradient(to left, #328637 0px, #328637 13px, #fff 13px, #fff 100%);
-}
-#sidebar .dragged {
-  background-color: #40ab46 !important;
-  opacity: 0.8;
-  padding-top: 18px;
-  padding-bottom: 18px;
-  transition-property: all;
-  transition-duration: 0.1s;
-  transition-timing-function: ease-in-out;
-}
-#sidebar .menu-selected {
-  padding-right: 10px;
-  background: linear-gradient(to left, #328637 0px, #328637 6px, #fff 6px, #fff 100%);
-}
-#sidebar .subpanel.level-0 .menu-selected {
-  background: linear-gradient(to left, #40ab46 0px, #40ab46 6px, #fff 6px, #fff 100%);
-}
-#sidebar .subpanel.level-0 .selected {
-  background: linear-gradient(to left, #40ab46 0px, #40ab46 13px, #fff 13px, #fff 100%);
-}
-#sidebar .subpanel.level-1 .menu-selected {
-  background: linear-gradient(to left, #49bb50 0px, #49bb50 6px, #fff 6px, #fff 100%);
-}
-#sidebar .subpanel.level-1 .selected {
-  background: linear-gradient(to left, #49bb50 0px, #49bb50 13px, #fff 13px, #fff 100%);
-}
-#sidebar .subpanel.level-2 .menu-selected {
-  background: linear-gradient(to left, #5cc262 0px, #5cc262 6px, #fff 6px, #fff 100%);
-}
-#sidebar .subpanel.level-2 .selected {
-  background: linear-gradient(to left, #5cc262 0px, #5cc262 13px, #fff 13px, #fff 100%);
-}
-
 @keyframes animate-gradient {
   0% {
     background: radial-gradient(circle at center, #328637 0px, #328637 1px, #fff 2px, #fff 100%);
@@ -18265,4 +18199,70 @@ footer.footer {
 
 .select2-container--bootstrap-5 .select2-selection--multiple textarea:focus {
   box-shadow: none;
+}
+
+#sidebar .btn-primary.force.color.white.onhover:hover, #sidebar .btn-primary.force.color.white.onhover:active, #sidebar .btn-primary.force.color.white.onhover:focus {
+  color: #fff;
+}
+#sidebar .tabbutton.btn-primary {
+  outline: none;
+}
+#sidebar .tabbutton.btn-primary:hover:after, #sidebar .tabbutton.btn-primary:focus:after, #sidebar .tabbutton.btn-primary:active:after {
+  color: #163c19;
+}
+#sidebar .tabbutton.btn-primary:after {
+  color: #328637;
+}
+#sidebar .background.white {
+  background-color: #fff;
+  box-shadow: none;
+}
+#sidebar .resize-handle button:focus, #sidebar .resize-handle button:active, #sidebar .resize-handle button:hover {
+  background-color: #fff !important;
+}
+#sidebar .menu-open {
+  animation-name: animate-gradient;
+  animation-duration: 450ms;
+  background: radial-gradient(circle at center, #5cc262 0px, #5cc262 8px, #fff 9px, #fff 100%);
+}
+#sidebar .selected {
+  padding-right: 20px;
+  background: linear-gradient(to left, #DDDEE8 0px, #DDDEE8 13px, #fff 13px, #fff 100%);
+  transition-property: all;
+  transition-duration: 0.25s;
+  transition-timing-function: cubic-bezier(1, 0.5, 0.5, 1);
+}
+#sidebar .selected.activated {
+  background: linear-gradient(to left, #14AE5C 0px, #14AE5C 13px, #fff 13px, #fff 100%);
+}
+#sidebar .dragged {
+  background-color: #40ab46 !important;
+  opacity: 0.8;
+  padding-top: 18px;
+  padding-bottom: 18px;
+  transition-property: all;
+  transition-duration: 0.1s;
+  transition-timing-function: ease-in-out;
+}
+#sidebar .menu-selected {
+  padding-right: 10px;
+  background: linear-gradient(to left, #328637 0px, #328637 6px, #fff 6px, #fff 100%);
+}
+#sidebar .subpanel.level-0 .menu-selected {
+  background: linear-gradient(to left, #40ab46 0px, #40ab46 6px, #fff 6px, #fff 100%);
+}
+#sidebar .subpanel.level-0 .selected {
+  background: linear-gradient(to left, #40ab46 0px, #40ab46 13px, #fff 13px, #fff 100%);
+}
+#sidebar .subpanel.level-1 .menu-selected {
+  background: linear-gradient(to left, #49bb50 0px, #49bb50 6px, #fff 6px, #fff 100%);
+}
+#sidebar .subpanel.level-1 .selected {
+  background: linear-gradient(to left, #49bb50 0px, #49bb50 13px, #fff 13px, #fff 100%);
+}
+#sidebar .subpanel.level-2 .menu-selected {
+  background: linear-gradient(to left, #5cc262 0px, #5cc262 6px, #fff 6px, #fff 100%);
+}
+#sidebar .subpanel.level-2 .selected {
+  background: linear-gradient(to left, #5cc262 0px, #5cc262 13px, #fff 13px, #fff 100%);
 }

@@ -1,0 +1,95 @@
+// Admin Sidepanel
+#sidebar {
+  .btn-primary.force.color.white.onhover {
+      &:hover,
+      &:active,
+      &:focus {
+          color: $white;
+      }
+  }
+  .tabbutton.btn-primary {
+      outline: none;
+      &:hover, &:focus, &:active {
+          &:after {
+              color: $primary-bg_hover_tabbutton;
+          }
+      }
+      &:after {
+          color: $primary;
+      }
+  }
+
+  .background.white {
+      background-color: $white;
+      box-shadow: none;
+  }
+
+  .resize-handle {
+      button {
+          &:focus, &:active, &:hover {
+              background-color: $white !important;
+          }
+          // background-color: transparent !important;
+      }
+  }
+
+
+  .menu-open {
+      animation-name: animate-gradient;
+      animation-duration: 450ms;
+      background: radial-gradient(circle at center, $primary-bg_menuopen 0px, $primary-bg_menuopen 8px, $white 9px, $white 100%);
+  }
+  .selected {
+      padding-left: 20px;
+      background: /*!rtl:linear-gradient(to left, $primary 0px, $primary 13px, $white 13px, $white 100%)*/ linear-gradient(to right, $g-300 0px, $g-300 13px, $white 13px, $white 100%);
+
+      &.activated {
+          background: /*!rtl:linear-gradient(to left, $primary 0px, $primary 13px, $white 13px, $white 100%)*/ linear-gradient(to right, $active-green 0px, $active-green 13px, $white 13px, $white 100%);
+      }
+      transition-property: all;
+      transition-duration: .25s;
+      transition-timing-function: cubic-bezier(1, 0.5, 0.5, 1);
+  }
+  .dragged {
+      background-color: adjust-color($primary, $lightness: +10%, $alpha: 0.8) !important;
+      opacity: 0.8;
+      padding-top: 18px;
+      padding-bottom: 18px;
+      transition-property: all;
+      transition-duration: .1s;
+      transition-timing-function: ease-in-out;
+  }
+
+  .menu-selected {
+      padding-left: 10px;
+      background: /*!rtl:linear-gradient(to left, $primary 0px, $primary 6px, $white 6px, $white 100%)*/ linear-gradient(to right, $primary 0px, $primary 6px, $white 6px, $white 100%);
+  }
+
+  .subpanel {
+      &.level-0 {
+          .menu-selected {
+              background: /*!rtl:linear-gradient(to left, $primary-bg_selected_subpanel 0px, $primary-bg_selected_subpanel 6px, $white 6px, $white 100%)*/ linear-gradient(to right, $primary-bg_selected_subpanel 0px, $primary-bg_selected_subpanel 6px, $white 6px, $white 100%);
+          }
+          .selected {
+              background: /*!rtl:linear-gradient(to left, $primary-bg_selected_subpanel 0px, $primary-bg_selected_subpanel 13px, $white 13px, $white 100%)*/ linear-gradient(to right, $primary-bg_selected_subpanel 0px, $primary-bg_selected_subpanel 13px, $white 13px, $white 100%);
+          }
+      }
+      &.level-1 {
+          .menu-selected {
+              background: /*!rtl:linear-gradient(to left, $primary-bg_selected 0px, $primary-bg_selected 6px, $white 6px, $white 100%)*/ linear-gradient(to right, $primary-bg_selected 0px, $primary-bg_selected 6px, $white 6px, $white 100%);
+          }
+          .selected {
+              background: /*!rtl:linear-gradient(to left, $primary-bg_selected 0px, $primary-bg_selected 13px, $white 13px, $white 100%)*/ linear-gradient(to right, $primary-bg_selected 0px, $primary-bg_selected 13px, $white 13px, $white 100%);
+          }
+      }
+      &.level-2 {
+          .menu-selected {
+              background: /*!rtl:linear-gradient(to left, $primary-bg_selected_subpanel_2 0px, $primary-bg_selected_subpanel_2 6px, $white 6px, $white 100%)*/ linear-gradient(to right, $primary-bg_selected_subpanel_2 0px, $primary-bg_selected_subpanel_2 6px, $white 6px, $white 100%);
+          }
+          .selected {
+              background: /*!rtl:linear-gradient(to left, $primary-bg_selected_subpanel_2 0px, $primary-bg_selected_subpanel_2 13px, $white 13px, $white 100%)*/ linear-gradient(to right, $primary-bg_selected_subpanel_2 0px, $primary-bg_selected_subpanel_2 13px, $white 13px, $white 100%);
+          }
+      }
+  }
+
+}

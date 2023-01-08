@@ -308,10 +308,10 @@ export default {
                     class="list-group-item ls-flex-column"
                     v-bind:class="questionGroupItemClasses(questiongroup)"
                     @dragenter="dragoverQuestiongroup($event, questiongroup)"
-                    style=" background: linear-gradient(90deg, rgba(29,181,5,1) 0%, rgba(29,181,5,1) 13px, rgba(217,217,217,1) 12px, rgba(217,217,217,1) 22px, rgba(253,253,253,1) 22px, rgba(255,255,255,1) 100%); padding: 0;"
+                    style=" background: linear-gradient(90deg, #14AE5C 0%, #14AE5C 5px, #EEEFF7 5px, #EEEFF7 100%); padding: 0;"
                 >
 
-                  <div class="d-flex nowrap ls-space padding right-5 bottom-5" style=" margin-left: 13px;
+                  <div class="d-flex nowrap ls-space padding right-5 bottom-5" style=" margin-left: 6px;
     background: white;
     padding: 10px;">
                     <div
@@ -357,6 +357,7 @@ export default {
                     <transition name="slide-fade-down">
                         <ul
                             class="list-group background-muted padding-left question-question-list"
+                            style="padding-right:15px"
                             v-if="isOpen(questiongroup.gid)"
                             @drop="dropQuestion($event, question)"
                         >
@@ -371,7 +372,7 @@ export default {
                                 :data-has-condition="questionHasCondition(question)"
                                 :title="question.question_flat"
                                 @dragenter="dragoverQuestion($event, question, questiongroup)"
-                                style="margin: 0; margin-left: 22px;"
+                                style="margin: 2px 2px 2px 12px;"
                             >
                                     <div
                                         v-if="!$store.state.surveyActiveState"
