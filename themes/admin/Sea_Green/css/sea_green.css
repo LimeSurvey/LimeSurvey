@@ -18250,13 +18250,13 @@ footer.footer {
 }
 #sidebar .selected {
   padding-left: 20px;
-  background: linear-gradient(to right, #DDDEE8 0px, #DDDEE8 13px, #fff 13px, #fff 100%);
+  background: linear-gradient(to right, #DDDEE8 0px, #DDDEE8 8px, #fff 8px, #fff 100%);
   transition-property: all;
   transition-duration: 0.25s;
   transition-timing-function: cubic-bezier(1, 0.5, 0.5, 1);
 }
 #sidebar .selected.activated {
-  background: linear-gradient(to right, #14AE5C 0px, #14AE5C 13px, #fff 13px, #fff 100%);
+  background: linear-gradient(to right, #14AE5C 0px, #14AE5C 8px, #fff 8px, #fff 100%);
 }
 #sidebar .dragged {
   background-color: #40ab46 !important;

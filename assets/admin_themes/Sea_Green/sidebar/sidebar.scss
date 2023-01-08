@@ -41,10 +41,10 @@
   }
   .selected {
       padding-left: 20px;
-      background: /*!rtl:linear-gradient(to left, $primary 0px, $primary 13px, $white 13px, $white 100%)*/ linear-gradient(to right, $g-300 0px, $g-300 13px, $white 13px, $white 100%);
+      background: /*!rtl:linear-gradient(to left, $primary 0px, $primary 13px, $white 13px, $white 100%)*/ linear-gradient(to right, $g-300 0px, $g-300 8px, $white 8px, $white 100%);
 
       &.activated {
-          background: /*!rtl:linear-gradient(to left, $primary 0px, $primary 13px, $white 13px, $white 100%)*/ linear-gradient(to right, $active-green 0px, $active-green 13px, $white 13px, $white 100%);
+          background: /*!rtl:linear-gradient(to left, $primary 0px, $primary 13px, $white 13px, $white 100%)*/ linear-gradient(to right, $active-green 0px, $active-green 8px, $white 8px, $white 100%);
       }
       transition-property: all;
       transition-duration: .25s;
