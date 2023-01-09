@@ -29,10 +29,10 @@ $alert-status : (
 }
 
 @each $state, $value in $alert-status {
-  .alert-#{$state} {
+  .alert-filled-#{$state} {
     @include alert-variant($value, "filled");
   }
-  .alert-outline-#{$state} {
+  .alert-#{$state} {
     @include alert-variant($value, "outlined");
   }
 }

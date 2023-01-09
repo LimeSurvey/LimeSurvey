@@ -22,7 +22,7 @@ class AjaxAlerts {
         customOptions = customOptions || {};
         const options = {
             useHtml : customOptions.useHtml || true,
-            timeout : customOptions.timeout || 3000,
+            timeout : customOptions.timeout,
             styles: customOptions.styles || {},
             classes: customOptions.classes || ""
         };
@@ -45,7 +45,7 @@ class AjaxAlerts {
         let icon = alertTypesAndIcons.hasOwnProperty(alertType) ? alertTypesAndIcons[alertType] : iconDefault;
         let iconElement = '<span class="' + icon + ' me-2"></span>';
         let buttonDismiss = '<button type="button" class="btn-close limebutton" data-bs-dismiss="alert" aria-label="Close"></button>';
-        const container = $('<div class="alert alert-outline-' + currentAlertType + ' ' + options.classes + ' alert-dismissible" role="alert"></div>');
+        const container = $('<div class="alert alert-' + currentAlertType + ' ' + options.classes + ' alert-dismissible" role="alert"></div>');
 
         if (options.useHtml) {
             container.html(message);
@@ -56,11 +56,7 @@ class AjaxAlerts {
         $(buttonDismiss).appendTo(container);
 
         container.css(options.styles);
-        let timeoutRef = setTimeout(() => { container.alert('close') }, options.timeout);
-
-        container.on('closed.bs.alert', () => {
-            clearTimeout(timeoutRef);
-        });
+        LS.autoCloseAlert(container, options.timeout)
 
         container.appendTo($('#notif-container'));
     }

@@ -23307,6 +23307,33 @@
   };
 
   /**
+   * Functionality to auto close alerts after some time
+   */
+  var autoClose = function autoClose() {
+    var autoCloseAlert = function autoCloseAlert(container, timeout) {
+      if (timeout === undefined) {
+        timeout = 3000;
+      }
+
+      if (container.length) {
+        var timeoutRef = setTimeout(function () {
+          container.alert('close');
+        }, timeout);
+        container.on('closed.bs.alert', function () {
+          clearTimeout(timeoutRef);
+        });
+      }
+    };
+
+    return {
+      autoCloseAlert: autoCloseAlert
+    };
+  }; //########################################################################
+
+
+  var autoCloseAlerts = new autoClose();
+
+  /**
    * This class is responsible for creating alerts after ajax requests.
    * It should use bootstrap 5 elements
    * For example: a user is added via a controller action. After the modal is
@@ -23333,7 +23360,7 @@
         customOptions = customOptions || {};
         var options = {
           useHtml: customOptions.useHtml || true,
-          timeout: customOptions.timeout || 3000,
+          timeout: customOptions.timeout,
           styles: customOptions.styles || {},
           classes: customOptions.classes || ""
         }; //bs5 alert types (e.g. alter-success)
@@ -23354,7 +23381,7 @@
         var icon = alertTypesAndIcons.hasOwnProperty(alertType) ? alertTypesAndIcons[alertType] : iconDefault;
         var iconElement = '<span class="' + icon + ' me-2"></span>';
         var buttonDismiss = '<button type="button" class="btn-close limebutton" data-bs-dismiss="alert" aria-label="Close"></button>';
-        var container = $('<div class="alert alert-outline-' + currentAlertType + ' ' + options.classes + ' alert-dismissible" role="alert"></div>');
+        var container = $('<div class="alert alert-' + currentAlertType + ' ' + options.classes + ' alert-dismissible" role="alert"></div>');
 
         if (options.useHtml) {
           container.html(message);
@@ -23365,12 +23392,7 @@
         $(iconElement).prependTo(container);
         $(buttonDismiss).appendTo(container);
         container.css(options.styles);
-        var timeoutRef = setTimeout(function () {
-          container.alert('close');
-        }, options.timeout);
-        container.on('closed.bs.alert', function () {
-          clearTimeout(timeoutRef);
-        });
+        LS.autoCloseAlert(container, options.timeout);
         container.appendTo($('#notif-container'));
       }
     }]);
@@ -35499,7 +35521,7 @@
         AjaxHelper: AjaxHelper
       }, {
         createUrl: createUrl
-      }, {
+      }, autoCloseAlerts, {
         ajaxAlerts: ajaxAlerts
       }, {
         EventBus: EventBus$1

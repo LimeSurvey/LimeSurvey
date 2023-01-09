@@ -18241,10 +18241,23 @@ footer.footer {
   padding: 4px 12px !important;
 }
 
-.alert-primary {
+.alert-filled-primary {
   border: 1.33px solid #1E1E1E;
   color: #1E1E1E;
   background-color: var(--bs-primary);
+}
+.alert-filled-primary hr {
+  border-top-color: var(--bs-primary);
+}
+.alert-filled-primary .alert-link {
+  color: #8146F6;
+}
+
+.alert-primary {
+  border: 1.33px solid #1E1E1E;
+  color: #1E1E1E;
+  background-color: #fff;
+  border-left: 8px solid var(--bs-primary);
 }
 .alert-primary hr {
   border-top-color: var(--bs-primary);
@@ -18253,23 +18266,23 @@ footer.footer {
   color: #8146F6;
 }
 
-.alert-outline-primary {
+.alert-filled-secondary {
   border: 1.33px solid #1E1E1E;
   color: #1E1E1E;
-  background-color: #fff;
-  border-left: 8px solid var(--bs-primary);
+  background-color: var(--bs-secondary);
 }
-.alert-outline-primary hr {
-  border-top-color: var(--bs-primary);
+.alert-filled-secondary hr {
+  border-top-color: var(--bs-secondary);
 }
-.alert-outline-primary .alert-link {
+.alert-filled-secondary .alert-link {
   color: #8146F6;
 }
 
 .alert-secondary {
   border: 1.33px solid #1E1E1E;
   color: #1E1E1E;
-  background-color: var(--bs-secondary);
+  background-color: #fff;
+  border-left: 8px solid var(--bs-secondary);
 }
 .alert-secondary hr {
   border-top-color: var(--bs-secondary);
@@ -18278,23 +18291,23 @@ footer.footer {
   color: #8146F6;
 }
 
-.alert-outline-secondary {
+.alert-filled-success {
   border: 1.33px solid #1E1E1E;
   color: #1E1E1E;
-  background-color: #fff;
-  border-left: 8px solid var(--bs-secondary);
+  background-color: var(--bs-success);
 }
-.alert-outline-secondary hr {
-  border-top-color: var(--bs-secondary);
+.alert-filled-success hr {
+  border-top-color: var(--bs-success);
 }
-.alert-outline-secondary .alert-link {
+.alert-filled-success .alert-link {
   color: #8146F6;
 }
 
 .alert-success {
   border: 1.33px solid #1E1E1E;
   color: #1E1E1E;
-  background-color: var(--bs-success);
+  background-color: #fff;
+  border-left: 8px solid var(--bs-success);
 }
 .alert-success hr {
   border-top-color: var(--bs-success);
@@ -18303,23 +18316,23 @@ footer.footer {
   color: #8146F6;
 }
 
-.alert-outline-success {
+.alert-filled-warning {
   border: 1.33px solid #1E1E1E;
   color: #1E1E1E;
-  background-color: #fff;
-  border-left: 8px solid var(--bs-success);
+  background-color: var(--bs-warning);
 }
-.alert-outline-success hr {
-  border-top-color: var(--bs-success);
+.alert-filled-warning hr {
+  border-top-color: var(--bs-warning);
 }
-.alert-outline-success .alert-link {
+.alert-filled-warning .alert-link {
   color: #8146F6;
 }
 
 .alert-warning {
   border: 1.33px solid #1E1E1E;
   color: #1E1E1E;
-  background-color: var(--bs-warning);
+  background-color: #fff;
+  border-left: 8px solid var(--bs-warning);
 }
 .alert-warning hr {
   border-top-color: var(--bs-warning);
@@ -18328,23 +18341,23 @@ footer.footer {
   color: #8146F6;
 }
 
-.alert-outline-warning {
+.alert-filled-danger {
   border: 1.33px solid #1E1E1E;
   color: #1E1E1E;
-  background-color: #fff;
-  border-left: 8px solid var(--bs-warning);
+  background-color: var(--bs-danger);
 }
-.alert-outline-warning hr {
-  border-top-color: var(--bs-warning);
+.alert-filled-danger hr {
+  border-top-color: var(--bs-danger);
 }
-.alert-outline-warning .alert-link {
+.alert-filled-danger .alert-link {
   color: #8146F6;
 }
 
 .alert-danger {
   border: 1.33px solid #1E1E1E;
   color: #1E1E1E;
-  background-color: var(--bs-danger);
+  background-color: #fff;
+  border-left: 8px solid var(--bs-danger);
 }
 .alert-danger hr {
   border-top-color: var(--bs-danger);
@@ -18353,23 +18366,23 @@ footer.footer {
   color: #8146F6;
 }
 
-.alert-outline-danger {
+.alert-filled-info {
   border: 1.33px solid #1E1E1E;
   color: #1E1E1E;
-  background-color: #fff;
-  border-left: 8px solid var(--bs-danger);
+  background-color: var(--bs-info);
 }
-.alert-outline-danger hr {
-  border-top-color: var(--bs-danger);
+.alert-filled-info hr {
+  border-top-color: var(--bs-info);
 }
-.alert-outline-danger .alert-link {
+.alert-filled-info .alert-link {
   color: #8146F6;
 }
 
 .alert-info {
   border: 1.33px solid #1E1E1E;
   color: #1E1E1E;
-  background-color: var(--bs-info);
+  background-color: #fff;
+  border-left: 8px solid var(--bs-info);
 }
 .alert-info hr {
   border-top-color: var(--bs-info);
@@ -18378,23 +18391,23 @@ footer.footer {
   color: #8146F6;
 }
 
-.alert-outline-info {
+.alert-filled-light {
   border: 1.33px solid #1E1E1E;
   color: #1E1E1E;
-  background-color: #fff;
-  border-left: 8px solid var(--bs-info);
+  background-color: var(--bs-light);
 }
-.alert-outline-info hr {
-  border-top-color: var(--bs-info);
+.alert-filled-light hr {
+  border-top-color: var(--bs-light);
 }
-.alert-outline-info .alert-link {
+.alert-filled-light .alert-link {
   color: #8146F6;
 }
 
 .alert-light {
   border: 1.33px solid #1E1E1E;
   color: #1E1E1E;
-  background-color: var(--bs-light);
+  background-color: #fff;
+  border-left: 8px solid var(--bs-light);
 }
 .alert-light hr {
   border-top-color: var(--bs-light);
@@ -18403,41 +18416,28 @@ footer.footer {
   color: #8146F6;
 }
 
-.alert-outline-light {
+.alert-filled-dark {
   border: 1.33px solid #1E1E1E;
   color: #1E1E1E;
-  background-color: #fff;
-  border-left: 8px solid var(--bs-light);
+  background-color: var(--bs-dark);
 }
-.alert-outline-light hr {
-  border-top-color: var(--bs-light);
+.alert-filled-dark hr {
+  border-top-color: var(--bs-dark);
 }
-.alert-outline-light .alert-link {
+.alert-filled-dark .alert-link {
   color: #8146F6;
 }
 
 .alert-dark {
   border: 1.33px solid #1E1E1E;
   color: #1E1E1E;
-  background-color: var(--bs-dark);
+  background-color: #fff;
+  border-left: 8px solid var(--bs-dark);
 }
 .alert-dark hr {
   border-top-color: var(--bs-dark);
 }
 .alert-dark .alert-link {
-  color: #8146F6;
-}
-
-.alert-outline-dark {
-  border: 1.33px solid #1E1E1E;
-  color: #1E1E1E;
-  background-color: #fff;
-  border-left: 8px solid var(--bs-dark);
-}
-.alert-outline-dark hr {
-  border-top-color: var(--bs-dark);
-}
-.alert-outline-dark .alert-link {
   color: #8146F6;
 }
 
