@@ -30,6 +30,13 @@ class GoogleOAuthSMTP extends PluginBase
             'type' => 'string',
             'label' => 'Client Secret',
         ],
+        'currentEmail' => [
+            'type' => 'string',
+            'label' => 'Saved Token Owner',
+            'htmlOptions' => [
+                'readonly' => true,
+            ],
+        ],
         'information' => [
             'type' => 'info',
             'content' => '',
@@ -54,12 +61,23 @@ class GoogleOAuthSMTP extends PluginBase
      */
     public function getPluginSettings($getValues = true)
     {
-        $this->settings['enable']['label'] = gT("Enable");
-        $this->settings['enable']['help'] = gT("Use this plugin for SMTP authentication");
-        $this->settings['clientId']['label'] = gT("Client ID");
-        $this->settings['clientSecret']['label'] = gT("Client Secret");
-        $this->settings['information']['content'] = $this->getRefreshTokenInfo();
-        return parent::getPluginSettings($getValues);
+        $settings = parent::getPluginSettings($getValues);
+        $settings['enable']['label'] = gT("Enable");
+        $settings['enable']['help'] = gT("Use this plugin for SMTP authentication");
+        $settings['clientId']['label'] = gT("Client ID");
+        $settings['clientSecret']['label'] = gT("Client Secret");
+        $settings['information']['content'] = $this->getRefreshTokenInfo();
+
+        $emailAddress = $this->get('email');
+        if (!empty($emailAddress)) {
+            $settings['currentEmail']['label'] = gT('Saved Token Owner');
+            $settings['currentEmail']['help'] = gT('This is the email address used to create the current authentication token. Please note all emails will be sent from this address.');
+            $settings['currentEmail']['current'] = $emailAddress;
+        } else {
+            unset($settings['currentEmail']);
+        }
+
+        return $settings;
     }
 
     /**
