@@ -3146,7 +3146,7 @@ class remotecontrol_handle
      * @param array $aFields (optional) Selected fields
      * @return array|string On success: Requested file as base 64-encoded string. On failure array with error information
      * */
-    public function export_responses($sSessionKey, $iSurveyID, $sDocumentType, $sLanguageCode = null, $sCompletionStatus = 'all', $sHeadingType = 'code', $sResponseType = 'short', $iFromResponseID = null, $iToResponseID = null, $aFields = null, $bconvertN = false, $sNValue = 'N', $bconvertY = false, $sYValue = 'Y')
+    public function export_responses($sSessionKey, $iSurveyID, $sDocumentType, $sLanguageCode = null, $sCompletionStatus = 'all', $sHeadingType = 'code', $sResponseType = 'short', $iFromResponseID = null, $iToResponseID = null, $aFields = null, $aAdditionalOptions = null)
     {
         $iSurveyID = (int) $iSurveyID;
         $survey = Survey::model()->findByPk($iSurveyID);
@@ -3167,6 +3167,7 @@ class remotecontrol_handle
         if (!empty($sLanguageCode) && !in_array($sLanguageCode, $survey->getAllLanguages())) {
             return array('status' => 'Language code not found for this survey.');
         }
+
         if (empty($sLanguageCode)) {
             $sLanguageCode = $survey->language;
         }
@@ -3179,6 +3180,17 @@ class remotecontrol_handle
         }
         $oFormattingOptions = new FormattingOptions();
 
+        if (is_array($aAdditionalOptions)) {
+            if (isset($aAdditionalOptions['convertY']) && $aAdditionalOptions['convertY']) {
+                $oFomattingOptions->convertY = $aAdditionalOptions['convertY'];
+                $oFomattingOptions->yValue = isset($aAdditionalOptions['yValue']) ? $aAdditionalOptions['yValue'] : 'Y';
+            }
+            if (isset($aAdditionalOptions['convertN']) && $aAdditionalOptions['convertN']) {
+                $oFomattingOptions->convertY = $aAdditionalOptions['convertN'];
+                $oFomattingOptions->yValue = isset($aAdditionalOptions['nValue']) ? $aAdditionalOptions['nValue'] : 'N';
+            }
+        } 
+
         if ($iFromResponseID != null) {
                     $oFormattingOptions->responseMinRecord = (int) $iFromResponseID;
         } else {
@@ -3190,14 +3202,7 @@ class remotecontrol_handle
         } else {
                     $oFormattingOptions->responseMaxRecord = $maxId;
         }
-        if ($bconvertN == true) {
-            $oFormattingOptions->convertN = true;
-            $oFormattingOptions->nValue = $sNValue;
-        }
-        if ($bconvertY == true) {
-            $oFormattingOptions->convertY = true;
-            $oFormattingOptions->yValue = $sYValue;
-        }
+
         $oFormattingOptions->selectedColumns = $aFields;
         $oFormattingOptions->responseCompletionState = $sCompletionStatus;
         $oFormattingOptions->headingFormat = $sHeadingType;
