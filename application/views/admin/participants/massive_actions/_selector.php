@@ -61,7 +61,7 @@ $this->widget('ext.admin.grid.MassiveActionsWidget.MassiveActionsWidget', array(
                 'type' => 'action',
                 'action' => 'export',
                 'url' => '',  // Not relevant
-                'iconClasses' => 'icon-exportcsv',
+                'iconClasses' => 'ri-download-fill',
                 'text' => gT('Export'),
                 'grid-reload' => 'no',
 

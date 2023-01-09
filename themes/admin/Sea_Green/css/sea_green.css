@@ -15657,9 +15657,6 @@ fieldset[disabled] .form-control {
 .navbar-default .navbar-toggle:focus {
   background-color: #dadada;
 }
-.navbar-default .navbar-toggle .icon-bar {
-  background-color: #878787;
-}
 .navbar-default .navbar-collapse {
   border: 1px solid #252b1c;
 }
@@ -15740,9 +15737,6 @@ fieldset[disabled] .form-control {
 .navbar-inverse .navbar-toggle:focus {
   background-color: #333333;
 }
-.navbar-inverse .navbar-toggle .icon-bar {
-  background-color: #fff;
-}
 .navbar-inverse .navbar-collapse {
   border: 1px solid #101010;
 }
@@ -15800,10 +15794,6 @@ fieldset[disabled] .form-control {
 
 .navbar-toggle {
   border: solid 1px #328637;
-}
-
-.navbar-toggle .icon-bar {
-  background-color: #328637;
 }
 
 .navbar-light .navbar-brand {
@@ -17827,7 +17817,7 @@ footer.footer {
 }
 
 [class^=ri-], [class*=" ri-"] {
-  vertical-align: middle;
+  vertical-align: -0.125em;
 }
 
 .remix-2xs {

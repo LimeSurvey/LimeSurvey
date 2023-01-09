@@ -350,7 +350,7 @@ function createNewLabelTR(alternate, first) {
     x = x + "<td style=\"text-align: center;\">&nbsp;&nbsp;&nbsp;<a href='#' class='btn btn-outline-secondary btn-sm htmleditor--openmodal' data-bs-target-field-id='title_###lang###_###next###' data-bs-toggle='tooltip' title='Open editor'><i class='fa fa-edit'></i></a>";
 
     if (first) {
-        x = x + "&nbsp<button class='btn btn-outline-secondary btn-sm btnaddanswer'><i class=\"icon-add text-success\"></i></button> <button class='btn btn-outline-secondary btn-sm btndelanswer'><i class=\" fa fa-trash  text-warning\"></i></button>";
+        x = x + "&nbsp<button class='btn btn-outline-secondary btn-sm btnaddanswer'><i class=\"ri-add-circle-fill text-success\"></i></button> <button class='btn btn-outline-secondary btn-sm btndelanswer'><i class=\" fa fa-trash  text-warning\"></i></button>";
     }
 
     x = x + "</td></tr>";
