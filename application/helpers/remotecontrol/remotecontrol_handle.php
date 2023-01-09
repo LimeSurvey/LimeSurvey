@@ -3189,7 +3189,7 @@ class remotecontrol_handle
                 $oFomattingOptions->convertY = $aAdditionalOptions['convertN'];
                 $oFomattingOptions->yValue = isset($aAdditionalOptions['nValue']) ? $aAdditionalOptions['nValue'] : 'N';
             }
-        } 
+        }
 
         if ($iFromResponseID != null) {
                     $oFormattingOptions->responseMinRecord = (int) $iFromResponseID;
