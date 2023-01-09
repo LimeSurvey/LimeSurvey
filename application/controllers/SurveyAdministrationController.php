@@ -1920,6 +1920,20 @@ class SurveyAdministrationController extends LSBaseController
         }
         $aData = $this->showReorderForm($iSurveyID);
 
+        $aData['topBar']['showSaveButton'] = true;
+        $topbarData = TopbarConfiguration::getSurveyTopbarData($iSurveyID);
+        $topbarData = array_merge($topbarData, $aData['topBar']);
+        $aData['topbar']['middleButtons'] = $this->renderPartial(
+            'partial/topbar/surveyTopbarLeft_view',
+            $topbarData,
+            true
+        );
+        $aData['topbar']['rightButtons'] = $this->renderPartial(
+            'partial/topbar/surveyTopbarRight_view',
+            $topbarData,
+            true
+        );
+
         // Display 'Reorder question/question groups' in Green Bar
         $aData['subaction'] = gT('Reorder questions/question groups');
 
