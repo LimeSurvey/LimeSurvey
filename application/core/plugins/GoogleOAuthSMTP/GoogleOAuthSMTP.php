@@ -3,8 +3,10 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 use League\OAuth2\Client\Grant\RefreshToken;
 use League\OAuth2\Client\Provider\Google;
+use League\OAuth2\Client\Provider\GoogleUser;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use PHPMailer\PHPMailer\OAuth;
+use PHPMailer\PHPMailer\PHPMailer;
 
 class GoogleOAuthSMTP extends PluginBase
 {
@@ -76,38 +78,49 @@ class GoogleOAuthSMTP extends PluginBase
             return Yii::app()->twigRenderer->renderPartial('/IncompleteSettingsMessage.twig', []);
         }
 
+        if (!$this->isActive()) {
+            return Yii::app()->twigRenderer->renderPartial('/ErrorMessage.twig', [
+                'message' => gT("The plugin must be activated before finishing the configuration.")
+            ]);
+        }
+
+        if (!(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')) {
+            return Yii::app()->twigRenderer->renderPartial('/ErrorMessage.twig', [
+                'message' => gT("Google OAuth authentication requires the application to be server over HTTPS.")
+            ]);
+        }
+
         $refreshToken = $this->get('refreshToken');
-        $googleRedirectionUrl = $this->api->createUrl('plugins/direct', ['plugin' => $this->getName()]);
-        $reloadSettingsUrl = $this->getConfigUrl();
+
+        $data = [
+            'tokenUrl' => $this->api->createUrl('plugins/direct', ['plugin' => $this->getName()]),
+            'reloadUrl' => $this->getConfigUrl(),
+            'buttonCaption' => gT("Get token"),
+        ];
 
         // If there is no refresh token stored, ask the user to get one.
         if (empty($refreshToken)) {
-            return Yii::app()->twigRenderer->renderPartial('/GetTokenMessage.twig', [
-                'class' => "warning",
-                'message' => gT("Get token for currently saved Client ID and Secret."),
-                'tokenUrl' => $googleRedirectionUrl,
-                'reloadUrl' => $reloadSettingsUrl,
-            ]);
+            $data['class'] = "warning";
+            $data['message'] = gT("Get token for currently saved Client ID and Secret.");
+            return Yii::app()->twigRenderer->renderPartial('/GetTokenMessage.twig', $data);
         }
 
         // Check if the refresh token is still valid. If it's not, ask the user to get a new one.
         if (!$this->validateRefreshToken($refreshToken, $clientId, $clientSecret)) {
-            return Yii::app()->twigRenderer->renderPartial('/GetTokenMessage.twig', [
-                'class' => "danger",
-                'message' => gT("The saved token isn't valid. You need to get a new one."),
-                'tokenUrl' => $googleRedirectionUrl,
-                'reloadUrl' => $reloadSettingsUrl,
-            ]);
+            $data['class'] = "danger";
+            $data['message'] = gT("The saved token isn't valid. You need to get a new one.");
+            return Yii::app()->twigRenderer->renderPartial('/GetTokenMessage.twig', $data);
         }
 
         // If we got here, inform the user everything is Ok.
-        return Yii::app()->twigRenderer->renderPartial('/ValidTokenMessage.twig', []);
+        $data['class'] = "success";
+        $data['message'] = gT("Configuration is complete. If 'Client ID' or 'Client Secret' is changed, you will need to re-validate the credentials.");
+        $data['buttonCaption'] = gT("Replace token");
+        return Yii::app()->twigRenderer->renderPartial('/GetTokenMessage.twig', $data);
 
         // Translations here just so the translations bot can pick them up.
         $lang = [
-            gT("Currently saved settings are incomplete. After saving both 'Client ID' and 'Client Secret' you will be able to validate the credentials."),
-            gT("Configuration is complete. If 'Client ID' or 'Client Secret' is changed, you will need to re-validate the credentials."),
-            gT("Get token")
+            gT("Currently saved settings are incomplete. After saving both 'Client ID' and 'Client Secret' you will be able to validate the credentials.")
         ];
     }
 
@@ -230,6 +243,10 @@ class GoogleOAuthSMTP extends PluginBase
             'clientId' => $clientId,
             'clientSecret' => $clientSecret,
         ]);
+        // Get owner details. We need the email address for authentication.
+        /** @var GoogleUser */
+        $owner = $provider->getResourceOwner($token);
+        $this->set('email', $owner->getEmail());
         // Renders a "success" html. It actually doesn't show any message.
         // It just closes the window after sending a message to the opener.
         $this->renderPartial('TokenSuccess', []);
@@ -309,6 +326,7 @@ class GoogleOAuthSMTP extends PluginBase
         if ($clientId != $oldClientId || $clientSecret != $oldClientSecret) {
             $this->set('refreshToken', null);
             $this->set('refreshTokenMetadata', []);
+            $this->set('email', null);
 
             // If credentials are complete, we redirect to settings page so the user can
             // retrieve the token from Google.
@@ -328,16 +346,6 @@ class GoogleOAuthSMTP extends PluginBase
             return;
         }
 
-        $emailmethod = Yii::app()->getConfig('emailmethod');
-        if ($emailmethod != "smtp") {
-            return;
-        }
-
-        $emailsmtpuser = Yii::app()->getConfig('emailsmtpuser');
-        if (empty($emailsmtpuser)) {
-            return;
-        }
-
         try {
             [$clientId, $clientSecret] = $this->getCredentials();
         } catch (Exception $ex) {
@@ -351,7 +359,22 @@ class GoogleOAuthSMTP extends PluginBase
             return;
         }
 
+        $emailAddress = $this->get("email");
+        if (empty($emailAddress)) {
+            $this->log("GoogleOAuthSMTP is enabled but there is no email address. Please generate a new token.", CLogger::LEVEL_WARNING);
+            return;
+        }
+
         $limeMailer = $this->getEvent()->get('mailer');
+        $limeMailer->IsSMTP();
+        $limeMailer->Host = 'smtp.gmail.com';
+        $limeMailer->Port = 465;
+        $limeMailer->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+        $limeMailer->SMTPAuth = true;
+        $limeMailer->Username = null;
+        $limeMailer->Password = null;
+        $limeMailer->AuthType = 'XOAUTH2';
+
         $provider = $this->getProvider($clientId, $clientSecret);
         $limeMailer->setOAuth(new OAuth(
             [
@@ -359,20 +382,18 @@ class GoogleOAuthSMTP extends PluginBase
                 'clientId' => $clientId,
                 'clientSecret' => $clientSecret,
                 'refreshToken' => $refreshToken,
-                'userName' => $emailsmtpuser,
+                'userName' => $emailAddress,
             ]
         ));
-
-        $limeMailer->Username = null;
-        $limeMailer->Password = null;
-        $limeMailer->AuthType = 'XOAUTH2';
-
-        // TODO: Override Host, Port and SMTPSecure (encryption mechanism)? Not sure if it makes sense to use the global settings. Seems more error prone.
 
         // Set "Reply To" because Gmail overrides the From/Sender with the logged user.
         $limeMailer->AddReplyTo($limeMailer->From, $limeMailer->FromName);
     }
 
+    /**
+     * @inheritdoc
+     * Block irrelevant settings on Global Settings screen.
+     */
     public function beforeControllerAction()
     {
         if (!$this->get('enable')) {
@@ -383,8 +404,24 @@ class GoogleOAuthSMTP extends PluginBase
         $action = $this->getEvent()->get('action');
 
         if ($controller == 'admin' && $action == 'globalsettings') {
-            $assetsUrl = Yii::app()->assetManager->publish(dirname(__FILE__). '/assets/js');
-            Yii::app()->clientScript->registerScriptFile($assetsUrl . '/globalSettingsOverride.js');
+            $this->registerGlobalSettingsScript();
         }
+    }
+
+    private function registerGlobalSettingsScript()
+    {
+        $jsVars = [
+            'alertText' => sprintf(gT("Some settings are disabled because '%s' plugin is enabled."), self::$name),
+            'tooltipText' => sprintf(gT("Disabled by '%s' plugin."), self::$name),
+        ];
+        Yii::app()->clientScript->registerScript(self::$name, self::$name . '='.json_encode($jsVars), CClientScript::POS_BEGIN);
+        $assetUrl = Yii::app()->assetManager->publish(dirname(__FILE__). '/assets/js/globalSettingsOverride.js', false, -1, YII_DEBUG);
+        Yii::app()->clientScript->registerScriptFile($assetUrl);
+    }
+
+    private function isActive()
+    {
+        $pluginModel = \Plugin::model()->findByPk($this->id);
+        return $pluginModel->active;
     }
 }
