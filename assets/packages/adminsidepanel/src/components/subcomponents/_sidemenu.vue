@@ -79,7 +79,7 @@ export default {
         </div>
 
         <div v-show="!loadingState"  :title="sortedMenues[1].title" :id="sortedMenues[1].id" class="ls-flex-row wrap ls-space padding all-0" v-bind:key="sortedMenues[1].id">
-            <label class="menu-label">{{sortedMenues[1].title}}</label>
+            <label class="menu-label" style="padding:0.5rem 1rem; margin-top:1rem">{{sortedMenues[1].title}}</label>
             <submenu :menu="sortedMenues[1]"></submenu>
         </div>
         <!-- <div v-show="!loadingState"  v-for="menu in sortedMenues" :title="menu.title" :id="menu.id" class="ls-flex-row wrap ls-space padding all-0" v-bind:key="menu.id">
