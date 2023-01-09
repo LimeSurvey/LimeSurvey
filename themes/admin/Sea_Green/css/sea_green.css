@@ -17866,7 +17866,7 @@ footer.footer {
 }
 
 [class^=ri-], [class*=" ri-"] {
-  vertical-align: middle;
+  vertical-align: -0.125em;
 }
 
 .remix-2xs {

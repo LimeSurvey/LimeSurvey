@@ -906,12 +906,60 @@ class LsDefaultDataSets
         App()->setLanguage('en');
         $returnArray = [];
 
-        $returnArray[] = ['position' => '1', 'url' => 'surveyAdministration/newSurvey', 'title' => gT('Create survey'), 'ico' => 'ri-add-circle-fill', 'desc' => gT('Create a new survey from scratch. Or simply copy or import an existing survey.'), 'page' => 'welcome', 'usergroup' => '-2', 'buttontext' => 'Create survey'];
-        $returnArray[] = ['position' => '2', 'url' => 'surveyAdministration/listsurveys', 'title' =>  gT('List surveys'), 'ico' => 'ri-list-unordered', 'desc' =>  gT('List available surveys'), 'page' => 'welcome', 'usergroup' => '-1', 'buttontext' => NULL];
-        $returnArray[] = ['position' => '3', 'url' => 'admin/globalsettings', 'title' =>  gT('Global settings'), 'ico' => 'ri-settings-5-line', 'desc' =>  gT('Edit global settings'), 'page' => 'welcome', 'usergroup' => '-2', 'buttontext' => 'View global settings'];
-        $returnArray[] = ['position' => '4', 'url' => 'userManagement/index', 'title' =>  gT('Manage survey administrators'), 'ico' => 'ri-user-line', 'desc' =>  gT('The user management allows you to add additional users to your survey site.'), 'page' => 'welcome', 'usergroup' => '-2', 'buttontext' => 'Manage administrators'];
-        $returnArray[] = ['position' => '5', 'url' => 'admin/labels/sa/view', 'title' =>  gT('Label sets'), 'ico' => 'ri-price-tag-3-line', 'desc' =>  gT('Label sets are templayes which can be loaded in most question types to speed up.'), 'page' => 'welcome', 'usergroup' => '-2', 'buttontext' => 'Edit label sets'];
-        $returnArray[] = ['position' => '6', 'url' => 'themeOptions', 'title' =>  gT('Themes'), 'ico' => 'ri-paint-brush-line', 'desc' =>  gT('The themes functionality allows you to edit survey-, admin- or question themes.'), 'page' => 'welcome', 'usergroup' => '-2', 'buttontext' => 'Edit themes'];
+        $returnArray[] = ['position'   => '1',
+                          'url'        => 'surveyAdministration/newSurvey',
+                          'title'      => gT('Create survey'),
+                          'ico'        => 'ri-add-circle-fill',
+                          'desc'       => gT('Create a new survey from scratch. Or simply copy or import an existing survey.'),
+                          'page'       => 'welcome',
+                          'usergroup'  => '-2',
+                          'buttontext' => 'Create survey'
+        ];
+        $returnArray[] = ['position'   => '2',
+                          'url'        => 'surveyAdministration/listsurveys',
+                          'title'      => gT('List surveys'),
+                          'ico'        => 'ri-list-unordered',
+                          'desc'       => gT('List available surveys'),
+                          'page'       => 'welcome',
+                          'usergroup'  => '-1',
+                          'buttontext' => null
+        ];
+        $returnArray[] = ['position'   => '3',
+                          'url'        => 'admin/globalsettings',
+                          'title'      => gT('Global settings'),
+                          'ico'        => 'ri-settings-5-line',
+                          'desc'       => gT('Edit global settings'),
+                          'page'       => 'welcome',
+                          'usergroup'  => '-2',
+                          'buttontext' => 'View global settings'
+        ];
+        $returnArray[] = ['position'   => '4',
+                          'url'        => 'userManagement/index',
+                          'title'      => gT('Manage survey administrators'),
+                          'ico'        => 'ri-user-line',
+                          'desc'       => gT('The user management allows you to add additional users to your survey site.'),
+                          'page'       => 'welcome',
+                          'usergroup'  => '-2',
+                          'buttontext' => 'Manage administrators'
+        ];
+        $returnArray[] = ['position'   => '5',
+                          'url'        => 'admin/labels/sa/view',
+                          'title'      => gT('Label sets'),
+                          'ico'        => 'ri-price-tag-3-line',
+                          'desc'       => gT('Label sets are templayes which can be loaded in most question types to speed up.'),
+                          'page'       => 'welcome',
+                          'usergroup'  => '-2',
+                          'buttontext' => 'Edit label sets'
+        ];
+        $returnArray[] = ['position'   => '6',
+                          'url'        => 'themeOptions',
+                          'title'      => gT('Themes'),
+                          'ico'        => 'ri-paint-brush-line',
+                          'desc'       => gT('The themes functionality allows you to edit survey-, admin- or question themes.'),
+                          'page'       => 'welcome',
+                          'usergroup'  => '-2',
+                          'buttontext' => 'Edit themes'
+        ];
 
         App()->setLanguage($sOldLanguage);
         return $returnArray;

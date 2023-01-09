@@ -138,7 +138,7 @@ App()->getClientScript()->registerScriptFile(
                    class="btn btn-outline-secondary" 
                    href="#" 
                    role="button">
-                        <span class="icon-exportcsv text-success"></span>
+                        <span class="ri-download-fill text-success"></span>
                         <?php eT("Export all participants"); ?>
                     </a>
 

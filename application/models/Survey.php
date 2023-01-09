@@ -2160,7 +2160,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 'export' => false,
                 'title' => gT("Survey"),
                 'description' => gT("Permission on survey (delete). Read permission is used to give access to this group."),
-                'img' => ' ri-list-check', /** Unused, global use icon-list */
+                'img' => ' ri-list-check',
             ),
             'surveyactivation' => array(
                 'create' => false,

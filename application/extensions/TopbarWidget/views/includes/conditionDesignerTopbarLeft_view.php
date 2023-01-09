@@ -4,7 +4,7 @@
 </a>
 
 <a role="button" class="btn btn-outline-secondary pjax <?php if(isset($currentMode) && $currentMode == 'edit'){ echo 'active'; }?>" href="<?php echo Yii::App()->createUrl("admin/conditions/sa/index/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>">
-    <span class="icon-conditions_add"></span>
+    <span class="ri-git-pull-request-line_add"></span>
     <?php eT("Add and edit conditions");?>
 </a>
 
