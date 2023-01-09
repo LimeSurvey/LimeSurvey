@@ -362,6 +362,19 @@ class QuestionGroupsAdministrationController extends LSBaseController
         $aData['sidemenu']['listquestiongroups']             = true;
         $aData['title_bar']['title']                         =
             $survey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyID . ")";
+        $aData['topbar']['middleButtons'] = $this->renderPartial(
+            'partial/topbarBtns/listquestiongroupsTopbarLeft_view',
+            [
+                'oSurvey' => $survey,
+                'hasSurveyContentCreatePermission' => Permission::model()->hasSurveyPermission(
+                    $iSurveyID,
+                    'surveycontent',
+                    'create'
+                ),
+            ],
+            true
+        );
+
         $aData['subaction']                                  = gT("Question groups in this survey");
 
         $baselang = $survey->language;

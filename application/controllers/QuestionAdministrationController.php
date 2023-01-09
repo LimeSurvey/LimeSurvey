@@ -298,7 +298,6 @@ class QuestionAdministrationController extends LSBaseController
         $aData['oSurvey']                               = $oSurvey;
         $aData['surveyid']                              = $iSurveyID;
         $aData['sid']                                   = $iSurveyID;
-       // $aData['display']['menu_bars']['listquestions'] = true;
         $aData['sidemenu']['listquestions']             = true;
         $aData['sidemenu']['landOnSideMenuTab']         = $landOnSideMenuTab;
         $aData['surveybar']['returnbutton']['url']      = "/surveyAdministration/listsurveys";
