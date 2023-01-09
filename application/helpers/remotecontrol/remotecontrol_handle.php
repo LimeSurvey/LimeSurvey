@@ -3182,12 +3182,12 @@ class remotecontrol_handle
 
         if (is_array($aAdditionalOptions)) {
             if (isset($aAdditionalOptions['convertY']) && $aAdditionalOptions['convertY']) {
-                $oFomattingOptions->convertY = $aAdditionalOptions['convertY'];
-                $oFomattingOptions->yValue = isset($aAdditionalOptions['yValue']) ? $aAdditionalOptions['yValue'] : 'Y';
+                $oFormattingOptions->convertY = $aAdditionalOptions['convertY'];
+                $oFormattingOptions->yValue = isset($aAdditionalOptions['yValue']) ? $aAdditionalOptions['yValue'] : 'Y';
             }
             if (isset($aAdditionalOptions['convertN']) && $aAdditionalOptions['convertN']) {
-                $oFomattingOptions->convertY = $aAdditionalOptions['convertN'];
-                $oFomattingOptions->yValue = isset($aAdditionalOptions['nValue']) ? $aAdditionalOptions['nValue'] : 'N';
+                $oFormattingOptions->convertN = $aAdditionalOptions['convertN'];
+                $oFormattingOptions->nValue = isset($aAdditionalOptions['nValue']) ? $aAdditionalOptions['nValue'] : 'N';
             }
         }
 
