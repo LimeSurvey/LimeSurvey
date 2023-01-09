@@ -3146,7 +3146,7 @@ class remotecontrol_handle
      * @param array $aFields (optional) Selected fields
      * @return array|string On success: Requested file as base 64-encoded string. On failure array with error information
      * */
-    public function export_responses($sSessionKey, $iSurveyID, $sDocumentType, $sLanguageCode = null, $sCompletionStatus = 'all', $sHeadingType = 'code', $sResponseType = 'short', $iFromResponseID = null, $iToResponseID = null, $aFields = null)
+    public function export_responses($sSessionKey, $iSurveyID, $sDocumentType, $sLanguageCode = null, $sCompletionStatus = 'all', $sHeadingType = 'code', $sResponseType = 'short', $iFromResponseID = null, $iToResponseID = null, $aFields = null, $bconvertN = false, $sNValue = 'N', $bconvertY = false, $sYValue = 'Y')
     {
         $iSurveyID = (int) $iSurveyID;
         $survey = Survey::model()->findByPk($iSurveyID);
@@ -3167,7 +3167,6 @@ class remotecontrol_handle
         if (!empty($sLanguageCode) && !in_array($sLanguageCode, $survey->getAllLanguages())) {
             return array('status' => 'Language code not found for this survey.');
         }
-
         if (empty($sLanguageCode)) {
             $sLanguageCode = $survey->language;
         }
@@ -3191,7 +3190,14 @@ class remotecontrol_handle
         } else {
                     $oFormattingOptions->responseMaxRecord = $maxId;
         }
-
+        if ($bconvertN == true) {
+            $oFormattingOptions->convertN = true;
+            $oFormattingOptions->nValue = $sNValue;
+        }
+        if ($bconvertY == true) {
+            $oFormattingOptions->convertY = true;
+            $oFormattingOptions->yValue = $sYValue;
+        }
         $oFormattingOptions->selectedColumns = $aFields;
         $oFormattingOptions->responseCompletionState = $sCompletionStatus;
         $oFormattingOptions->headingFormat = $sHeadingType;
