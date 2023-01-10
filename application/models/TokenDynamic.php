@@ -851,7 +851,7 @@ class TokenDynamic extends LSActiveRecord
         $baseView = Permission::model()->hasSurveyPermission(self::$sid, 'tokens', 'update');
         /* mailing mail button */
         $gridButtons['mail'] = array(
-            'label' => '<span class="visually-hidden">' . gT("Send email invitation") . '</span><span class="ri-mail-send-fill" aria-hidden="true"></span>',// fa-enveloppe-o
+            'label' => '<span class="visually-hidden">' . gT("Send email invitation") . '</span><span class="ri-mail-send-fill" aria-hidden="true"></span>',
             'imageUrl' => false,
             'url' => 'App()->createUrl("/admin/tokens/sa/email",array("surveyid"=>' . self::$sid . ',"tokenids"=>$data->tid,));',
             'options' => array(

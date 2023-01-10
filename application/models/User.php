@@ -509,7 +509,7 @@ class User extends LSActiveRecord
                 data-onclick='LS.UserManagement.triggerRunAction(\"#UserManagement--takeown-" . $this->uid . "\")' 
                 data-message='" . gT('Do you want to take ownerschip of this user?') . "'>
                 <span data-bs-toggle='tooltip' title='" . gT("Take ownership") . "'>
-                    <i class='fa fa-hand-rock-o'></i>
+                    <i class='ri-user-received-fill'></i>
                 </span>    
               </button>";
         $deleteUserButton = ""

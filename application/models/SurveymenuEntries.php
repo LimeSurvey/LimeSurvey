@@ -310,7 +310,7 @@ class SurveymenuEntries extends LSActiveRecord
         $buttons = "<div class='icon-btn-row'>";
         $raw_button_template = ""
             . "<button class='btn btn-outline-secondary btn-sm %s %s' role='button' data-bs-toggle='tooltip' title='%s' onclick='return false;'>" //extra class //title
-            . "<i class='fa fa-%s' ></i>" //icon class
+            . "<i class='ri-%s' ></i>" //icon class
             . "</button>";
 
         if (Permission::model()->hasGlobalPermission('settings', 'update')) {
@@ -318,13 +318,13 @@ class SurveymenuEntries extends LSActiveRecord
                 'action_surveymenuEntries_deleteModal',
                 'red-border',
                 gT("Delete this survey menu entry"),
-                'trash text-danger'
+                'delete-bin-fill text-danger'
             );
             $editData = array(
                 'action_surveymenuEntries_editModal',
                 'green-border',
                 gT("Edit this survey menu entry"),
-                'pencil'
+                'pencil-fill'
             );
 
 

@@ -225,7 +225,7 @@ class Quota extends LSActiveRecord
                 'quota_id' => $this->primaryKey,
             ));
             $buttons .= '<a href="' . $url . '" class="btn btn-outline-secondary" data-bs-toggle="tooltip" title="' . gT("Edit") . '">
-                        <span class="fa fa-pencil"></span>
+                        <span class="ri-pencil-fill"></span>
                         </a>';
         }
         if (Permission::model()->hasSurveyPermission($this->sid, 'quotas', 'delete')) {
@@ -241,7 +241,7 @@ class Quota extends LSActiveRecord
                 data-btntext="' . gt('Delete') . '"
                 data-message="' . gT("Are you sure you want to delete the selected quotas?", "js") . '"
         >
-            <span class="fa fa-trash text-danger"></span>
+            <span class="ri-delete-bin-fill text-danger"></span>
         </a>
     </span>';
         }
@@ -254,7 +254,7 @@ class Quota extends LSActiveRecord
           data-bs-toggle="modal"
           data-bs-target="quotaValidation"
               >
-            <i class="fa fa-tasks"></i>
+            <i class="ri-bar-chart-horizontal-fill"></i>
         </a>
     </span>';
         }

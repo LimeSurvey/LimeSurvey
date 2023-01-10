@@ -1181,7 +1181,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
         } else {
             // If it's active, and doesn't have expire date, it's running
             $running = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . gT('Active') . '"><span class="ri-play-fill"></span><span class="visually-hidden">' . gT('Active') . '"</span></a>';
-            //$running = '<div class="survey-state"><span class="fa fa-play"></span></div>';
         }
 
         return $running;
@@ -2184,7 +2183,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 'export' => false,
                 'title' => gT("Survey text elements"),
                 'description' => gT("Permission to view/update the survey text elements, e.g. survey title, survey description, welcome and end message"),
-                'img' => ' fa fa-edit',
+                'img' => ' ri-file-edit-line',
             ),
             'surveysecurity' => array(
                 'import' => false,
@@ -2204,7 +2203,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             ),
             'tokens' => array(
                 'title' => gT("Participants"), 'description' => gT("Permission to create/update/delete/import/export participants"),
-                'img' => ' fa fa-user',
+                'img' => ' ri-group-fill',
             ),
             'translations' => array(
                 'create' => false,

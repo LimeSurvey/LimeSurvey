@@ -1,3 +1,10 @@
+<?php
+
+/**
+ * TODO: this file seems to be unused
+ */
+
+?>
 <!-- Modal confirmation for <?php echo $aAction['action'];?> -->
 <div id="massive-actions-modal-<?php echo $this->gridid;?>-<?php echo $aAction['action'];?>-<?php echo $key; ?>" class="modal fade" role="dialog" data-keepopen="<?php echo $aAction['keepopen'];?>" data-show-selected="<?php if(isset($aAction['showSelected'])){echo $aAction['showSelected'];}else{ echo 'no'; }?>" data-selected-url="<?php if(isset($aAction['selectedUrl'])){ echo $aAction['selectedUrl'];}else{ echo '#'; }?>">
     <div class="modal-dialog modal-lg">
@@ -9,7 +16,7 @@
             </div>
             <div class="modal-body">
                 <div class='modal-body-text'><?php echo $aAction['htmlModalBody']; ?></div>
-                
+
                  <!-- shows list of selected items in the modal-->
                  <div class="selected-items-list"></div>
 
@@ -37,7 +44,7 @@
                     <?php endif;?>
                 </a>
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
-                    <span class='fa fa-ban'></span>
+                    <span class='ri-forbid-2-line'></span>
                     &nbsp;
                     <?php if(isset($aAction['no'])):?>
                         <?php echo $aAction['no'];?>
@@ -50,7 +57,7 @@
             <?php if($aAction['keepopen']=="yes"):?>
                 <div class="modal-footer modal-footer-close" style="display: none;">
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
-                        <span class='fa fa-ban'></span>
+                        <span class='ri-forbid-2-line'></span>
                         &nbsp;
                         <?php eT("Close"); ?>
                     </button>
