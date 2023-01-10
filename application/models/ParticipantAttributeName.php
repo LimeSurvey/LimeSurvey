@@ -107,7 +107,7 @@ class ParticipantAttributeName extends LSActiveRecord
         $buttons = "<div class='icon-btn-row'>";
         $raw_button_template = ""
             . "<button class='btn btn-outline-secondary btn-sm %s %s' role='button' data-bs-toggle='tootltip' title='%s' onclick='return false;'>" //extra class //title
-            . "<span class='fa fa-%s' ></span>" //icon class
+            . "<span class='ri-%s' ></span>" //icon class
             . "</button>";
         $buttons .= "";
 
@@ -116,7 +116,7 @@ class ParticipantAttributeName extends LSActiveRecord
             'green-border action_attributeNames_editModal',
             '',
             gT("Edit this attribute"),
-            'pencil'
+            'pencil-fill'
         );
         $buttons .= vsprintf($raw_button_template, $editData);
 
@@ -125,7 +125,7 @@ class ParticipantAttributeName extends LSActiveRecord
             'red-border action_attributeNames_deleteModal',
             '',
             gT("Delete this attribute"),
-            'trash text-danger'
+            'delete-bin-fill text-danger'
         );
         $buttons .= "<a href='#' 
         data-bs-toggle='modal' 

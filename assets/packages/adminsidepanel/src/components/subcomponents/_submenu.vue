@@ -107,20 +107,21 @@ export default {
                 
             </div>
         </a>
-        <li v-for="(submenu) in menu.submenus" class="list-group-item" v-bind:key="submenu.id" v-bind:class="checkIsOpen(submenu) ? 'menu-selected' : '' " @click.capture.stop="setActiveMenuIndex(submenu)" >
-            <a href="#" v-bind:title="reConvertHTML(submenu.description)" data-bs-toggle="tooltip" class="ls-flex-row nowrap align-item-center align-content-center" :class="checkIsOpen(submenu) ? 'ls-space margin bottom-5' : ''">
-                <div class="ls-space col-md-10 padding all-0">
-                    <menuicon icon-type="fontawesome" icon="arrow-right"></menuicon>
-                    <span v-html="submenu.title"></span>
-                </div>
-                <div class="col-md-2 text-center ls-space padding all-0"  v-bind:class="(checkIsOpen(submenu) ? 'menu-open' : '')">
-                    <i class="fa fa-level-down"></i>
-                </div>
-            </a>
-            <transition name="slide-fade-down">
-            <submenu v-if="checkIsOpen(submenu)" :menu="submenu"></submenu>
-            </transition>
-        </li>
+<!--      Todo: this part seems to be unused/probably experimental-->
+<!--        <li v-for="(submenu) in this.menu.submenus" class="list-group-item" v-bind:key="submenu.id" v-bind:class="checkIsOpen(submenu) ? 'menu-selected' : '' " @click.capture.stop="setActiveMenuIndex(submenu)" >-->
+<!--            <a href="#" v-bind:title="reConvertHTML(submenu.description)" data-bs-toggle="tooltip" class="ls-flex-row nowrap align-item-center align-content-center" :class="checkIsOpen(submenu) ? 'ls-space margin bottom-5' : ''">-->
+<!--                <div class="ls-space col-md-10 padding all-0">-->
+<!--                    <menuicon icon-type="fontawesome" icon="arrow-right"></menuicon>-->
+<!--                    <span v-html="submenu.title"></span>-->
+<!--                </div>-->
+<!--                <div class="col-md-2 text-center ls-space padding all-0"  v-bind:class="(checkIsOpen(submenu) ? 'menu-open' : '')">-->
+<!--                    <i class="fa fa-level-down"></i>-->
+<!--                </div>-->
+<!--            </a>-->
+<!--            <transition name="slide-fade-down">-->
+<!--            <submenu v-if="checkIsOpen(submenu)" :menu="submenu"></submenu>-->
+<!--            </transition>-->
+<!--        </li>-->
     </ul>
 </template>
 <style lang="scss">

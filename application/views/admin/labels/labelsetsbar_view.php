@@ -141,7 +141,7 @@ App()->getClientScript()->registerScriptFile(
                    id="save-and-close-form-button" 
                    onclick="$(this).addClass('disabled').attr('onclick', 'return false;');" 
                    data-form-id="<?php echo $labelbar['saveandclosebutton']['form']; ?>">
-                        <span class="fa fa-saved"></span>
+                        <span class="ri-checkbox-circle-fill"></span>
                         <?php eT("Save and close"); ?>
                 </a>
                 <?php endif; ?>

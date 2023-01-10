@@ -24,7 +24,7 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
                     data-bs-toggle='tooltip'
                     title='<?php eT('Install plugins from the extension shop'); ?>'
                 >
-                    <i class='fa fa-shopping-cart'></i>&nbsp;
+                    <i class='ri-shopping-cart-fill'></i>&nbsp;
                     <?php eT('Browse the shop'); ?>
                 </a>
                  */ ?>

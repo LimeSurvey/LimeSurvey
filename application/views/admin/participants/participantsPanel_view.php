@@ -27,7 +27,7 @@ App()->getClientScript()->registerScriptFile(
     var openModalParticipantPanel = "<?php echo ls\ajax\AjaxHelper::createUrl("/admin/participants/sa/openModalParticipantPanel"); ?>";
     var editValueParticipantPanel = "<?php echo Yii::app()->getController()->createUrl("/admin/participants/sa/editValueParticipantPanel"); ?>";
 
-    var translate_blacklisted = "<?php echo '<i class=\"fa fa-undo\"></i> ' . gT('Remove from blacklist?'); ?>";
+    var translate_blacklisted = "<?php echo '<i class=\"ri-arrow-go-back-line\"></i> ' . gT('Remove from blacklist?'); ?>";
     var translate_notBlacklisted = "<?php echo '<i class=\"ri-forbid-2-line\"></i> ' . gT('Add to blacklist?'); ?>";
     var datepickerConfig =     <?php
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
