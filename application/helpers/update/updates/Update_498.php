@@ -55,8 +55,7 @@ class Update_498 extends DatabaseUpdateBase
 
     public function oldIcons(): array
     {
-        return [
-            ['id' => 1, 'icon' => 'icon-active'],
+        return [['id' => 1, 'icon' => 'icon-active'],
             ['id' => 2, 'icon' => 'icon-add'],
             ['id' => 3, 'icon' => 'icon-assessments'],
             ['id' => 4, 'icon' => 'icon-browse'],
@@ -112,8 +111,7 @@ class Update_498 extends DatabaseUpdateBase
             ['id' => 42, 'icon' => 'icon-user'],
             ['id' => 43, 'icon' => 'icon-usergroup'],
             ['id' => 44, 'icon' => 'icon-viewlast'],
-            ['id' => 46, 'icon' => 'fa fa-cart-plus'],
-        ];
+            ['id' => 46, 'icon' => 'fa fa-cart-plus'],];
     }
 
     public function newIcons(): array
