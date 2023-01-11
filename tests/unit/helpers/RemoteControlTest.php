@@ -638,8 +638,10 @@ class RemoteControlTest extends TestBaseClass
         $this->assertTrue(count($responses['responses']) === 1);
         $this->assertEquals('Y', $responses['responses'][0]['Q00[SQ001]']);
         // TODO: Currently cannot test the export of "N" responses because of a bug in
-        // the LSA export/import process (empty answers end up as null).
-        //$this->assertNull('N', $responses['responses'][0]['Q00[SQ002]']);
+        // the LSA export/import process.
+        // N are saved as empty, which are exported as null, so can't be reimported as N.
+        // Hence, can't prepare the scenario for the N test case
+        // $this->assertNull('N', $responses['responses'][0]['Q00[SQ002]']);
 
         // Check export with Y/N conversion via API.
         $additionalOptions = [
@@ -653,7 +655,7 @@ class RemoteControlTest extends TestBaseClass
         $responses = json_decode(file_get_contents($result->fileName), true);
         $this->assertTrue(count($responses['responses']) === 1);
         $this->assertEquals('B', $responses['responses'][0]['Q00[SQ001]']);
-        //$this->assertEquals('A', $responses['responses'][0]['Q00[SQ002]']);
+        // $this->assertEquals('A', $responses['responses'][0]['Q00[SQ002]']);
 
         // Cleanup
         self::$testSurvey->delete();
