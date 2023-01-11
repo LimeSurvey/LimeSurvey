@@ -386,7 +386,9 @@ class LayoutHelper
             $aData['surveycontentupdate'] = Permission::model()->hasSurveyPermission($aData['surveyid'], 'surveycontent', 'update');
             $aData['sideMenuBehaviour'] = getGlobalSetting('sideMenuBehaviour');
 
-            Yii::app()->getController()->renderPartial("/layouts/sidemenu", $aData);
+            $topbarConfig = TopbarConfiguration::createFromViewData($aData);
+            $aDataDD = array_merge($topbarConfig->getData(), $aData);
+            Yii::app()->getController()->renderPartial("/layouts/sidemenu", $aDataDD);
         } else {
             Yii::app()->session['flashmessage'] = gT("Invalid survey ID");
             Yii::app()->getController()->redirect(array("admin/index"));

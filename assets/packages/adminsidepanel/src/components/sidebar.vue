@@ -9,6 +9,7 @@ import Quickmenu from "./subcomponents/_quickmenu.vue";
 export default {
     props: {
         landOnTab: String,
+        dropDownContent:String,
     },
     components: {
         questionexplorer: Questionexplorer,
@@ -497,6 +498,7 @@ export default {
                             @changeLoadingState="applyLoadingState" 
                             @openentity="openEntity" 
                             @questiongrouporder="changedQuestionGroupOrder"
+                            :dropDown = "dropDownContent"
                         />
                     </transition>
                     <div 
