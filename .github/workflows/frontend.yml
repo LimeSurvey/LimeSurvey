@@ -32,7 +32,7 @@ jobs:
 
       - name: Run yarn
         run: |
-          yarn install -vvv
+          yarn install
 
       - name: Prepare nvm with Node ${{ matrix.nodeJS-versions }}
         run: |
