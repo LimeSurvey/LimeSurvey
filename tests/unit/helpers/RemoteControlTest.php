@@ -721,5 +721,5 @@ class RemoteControlTest extends TestBaseClass
         $this->assertNotEmpty($settings);
         $this->assertArrayHasKey('sitename', $settings);
         $this->assertArrayHasKey('defaultlang', $settings);
-    }        
+    }
 }
