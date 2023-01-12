@@ -73,6 +73,8 @@ class TestBaseClass extends TestCase
         }
 
         // Reset the cache to prevent import from failing if there is a cached survey and it's active.
+        // When importing, activating, deleting and importing again (usual with automated tests), 
+        // as using the same SID, it was picking up the cached (old) version of the survey
         \Survey::model()->resetCache();
         $translateLinksFields = false;
         $newSurveyName = null;
