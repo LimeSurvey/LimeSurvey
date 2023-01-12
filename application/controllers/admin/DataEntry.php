@@ -2021,18 +2021,30 @@ class DataEntry extends SurveyCommonAction
                             $bgc = "even";
                         } //Do no alternate on explanation row
                         if ($relevance != '' && $relevance != '1') {
-                            $message .= '<strong>' . gT("Only answer this if the following conditions are met:", 'html', $sDataEntryLanguage) . "</strong><br />$explanation\n";
+                            $message .= '<strong>' . gT(
+                                    "Only answer this if the following conditions are met:",
+                                    'html',
+                                    $sDataEntryLanguage
+                                ) . "</strong><br />$explanation\n";
                         }
                         if ($validation != '') {
-                            $message .= '<strong>' . gT("The answer(s) must meet these validation criteria:", 'html', $sDataEntryLanguage) . "</strong><br />$validation\n";
+                            $message .= '<strong>' . gT(
+                                    "The answer(s) must meet these validation criteria:",
+                                    'html',
+                                    $sDataEntryLanguage
+                                ) . "</strong><br />$validation\n";
                         }
                         if ($message != '' && $arrayFilterHelp != '') {
                             $message .= '<br/>';
                         }
                         if ($arrayFilterHelp != '') {
-                            $message .= '<strong>' . gT("The answer(s) must meet these array_filter criteria:", 'html', $sDataEntryLanguage) . "</strong><br />$arrayFilterHelp\n";
+                            $message .= '<strong>' . gT(
+                                    "The answer(s) must meet these array_filter criteria:",
+                                    'html',
+                                    $sDataEntryLanguage
+                                ) . "</strong><br />$arrayFilterHelp\n";
                         }
-                        if($message != '') {
+                        if ($message != '') {
                             $alert = App()->getController()->widget('ext.AlertWidget.AlertWidget', [
                                 'text' => $message,
                                 'type' => 'warning',
@@ -2041,7 +2053,6 @@ class DataEntry extends SurveyCommonAction
                             ], true);
                             $cdata['explanation'] = "<tr class ='data-entry-explanation'><td class='data-entry-small-text' colspan='3' align='left'>$alert</td></tr>\n";
                         }
-
                     }
 
                     //END OF GETTING CONDITIONS
