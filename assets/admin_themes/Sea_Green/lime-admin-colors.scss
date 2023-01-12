@@ -14,7 +14,6 @@ $default-icon-bar: #878787;
 $label-default: #6b6b6b;
 $list-group-item: #545454;
 $disabled: #454545;
-$message-box: #2e2e2e;
 
 $danger-light: #dd8988;
 $danger-bg: #be6665;
@@ -1322,15 +1321,6 @@ fieldset[disabled] {
     }
 }
 
-// Jumbotron
-.jumbotron {
-    //background-color: $primary-bg_hover;
-    background-color: transparent;
-    text-align: center;
-    &.message-box {
-        background-color: transparent;
-    }
-}
 // Thumbnails
 .thumbnail {
     background-color: $white;
@@ -1594,18 +1584,6 @@ fieldset[disabled] {
     color: $alert;
 }
 
-// Message Box based on Jumbotron
-.message-box {
-    border: 1px solid $primary-bg-hover_2;
-    color: $message-box;
-
-}
-.message-box-error {
-    border: 1px solid $red-90;
-}
-.message-box-warning {
-    border: 1px solid $brown-10;
-}
 
 // Legend
 legend {
