@@ -18220,8 +18220,8 @@ footer.footer {
 
 .alert-filled-primary {
   border: 1.33px solid #1E1E1E;
-  color: #1E1E1E;
   background-color: var(--bs-primary);
+  color: #1E1E1E;
 }
 .alert-filled-primary hr {
   border-top-color: var(--bs-primary);
@@ -18245,8 +18245,8 @@ footer.footer {
 
 .alert-filled-secondary {
   border: 1.33px solid #1E1E1E;
-  color: #1E1E1E;
   background-color: var(--bs-secondary);
+  color: #1E1E1E;
 }
 .alert-filled-secondary hr {
   border-top-color: var(--bs-secondary);
@@ -18270,8 +18270,8 @@ footer.footer {
 
 .alert-filled-success {
   border: 1.33px solid #1E1E1E;
-  color: #1E1E1E;
   background-color: var(--bs-success);
+  color: #1E1E1E;
 }
 .alert-filled-success hr {
   border-top-color: var(--bs-success);
@@ -18295,8 +18295,8 @@ footer.footer {
 
 .alert-filled-warning {
   border: 1.33px solid #1E1E1E;
-  color: #1E1E1E;
   background-color: var(--bs-warning);
+  color: #1E1E1E;
 }
 .alert-filled-warning hr {
   border-top-color: var(--bs-warning);
@@ -18320,8 +18320,8 @@ footer.footer {
 
 .alert-filled-danger {
   border: 1.33px solid #1E1E1E;
-  color: #1E1E1E;
   background-color: var(--bs-danger);
+  color: #1E1E1E;
 }
 .alert-filled-danger hr {
   border-top-color: var(--bs-danger);
@@ -18345,8 +18345,8 @@ footer.footer {
 
 .alert-filled-info {
   border: 1.33px solid #1E1E1E;
-  color: #1E1E1E;
   background-color: var(--bs-info);
+  color: #fff;
 }
 .alert-filled-info hr {
   border-top-color: var(--bs-info);
@@ -18370,8 +18370,8 @@ footer.footer {
 
 .alert-filled-light {
   border: 1.33px solid #1E1E1E;
-  color: #1E1E1E;
   background-color: var(--bs-light);
+  color: #1E1E1E;
 }
 .alert-filled-light hr {
   border-top-color: var(--bs-light);
@@ -18395,8 +18395,8 @@ footer.footer {
 
 .alert-filled-dark {
   border: 1.33px solid #1E1E1E;
-  color: #1E1E1E;
   background-color: var(--bs-dark);
+  color: #1E1E1E;
 }
 .alert-filled-dark hr {
   border-top-color: var(--bs-dark);
@@ -18421,6 +18421,11 @@ footer.footer {
 .alert-dismissible .btn-close {
   padding: 1rem 1rem;
 }
+.alert-dismissible .btn-close:focus {
+  box-shadow: none;
+  color: #000;
+  opacity: 0.75;
+}
 
 .alert {
   font-size: 0.875rem;
@@ -18429,7 +18434,7 @@ footer.footer {
   position: relative;
   animation: slidefromtop 1s;
 }
-.alert span[class*=ri-] {
+.alert > span[class*=ri-] {
   font-size: 1rem;
 }
 

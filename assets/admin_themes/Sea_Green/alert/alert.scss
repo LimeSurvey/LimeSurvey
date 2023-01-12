@@ -11,13 +11,18 @@ $alert-status : (
 
 @mixin alert-variant($color, $status) {
   border : 1.33px solid $g-900;
-  color  : $g-900;
 
   @if ($status== "outlined") {
+    color  : $g-900;
     background-color : $white;
     border-left      : 8px solid $color;
   } @else {
     background-color : $color;
+    @if ($color== var(--bs-info)) {
+      color: $white;
+    } @else {
+      color  : $g-900;
+    }
   }
 
   hr {
@@ -38,9 +43,13 @@ $alert-status : (
 }
 
 .alert-dismissible {
-  // Adjust close link position
   .btn-close {
     padding: 1rem 1rem;
+    &:focus {
+      box-shadow: none;
+      color: $black;
+      opacity: 0.75;
+    }
   }
 }
 
@@ -51,7 +60,7 @@ $alert-status : (
   position: relative;
   animation: slidefromtop 1s;
 
-  span[class*="ri-"] {
+  & > span[class*="ri-"] {
     font-size: $font-size-base;
   }
 }

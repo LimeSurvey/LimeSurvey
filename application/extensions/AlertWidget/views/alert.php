@@ -9,7 +9,7 @@
 /** @var array $htmlOptions */
 
 $alertClass = ' alert alert-';
-$alertClass .= $isFilled ? 'filled-' . $type : $type . ' alert-dismissible';
+$alertClass .= $isFilled ? 'filled-' . $type : $type;
 if (!array_key_exists('class', $htmlOptions)) {
     $htmlOptions['class'] = $alertClass;
 } else {
@@ -38,16 +38,24 @@ if (isset($type) && array_key_exists($type, $alertTypesAndIcons)) {
     $messageType = 'success';
     $icon = 'ri-notification-2-line';
 }
-
-if($showIcon) {
-    $content = CHtml::openTag("span", array('class' => $icon . ' me-2'));
-    $content .= CHtml::closeTag("span");
+if ($showCloseButton) {
+    $htmlOptions['class'] .= ' alert-dismissible';
 }
-$content .= $text;
-if($showCloseButton) {
-    $content .= CHtml::htmlButton(
-        false,
-        array('type' => 'button', 'class' => 'btn-close', 'data-bs-dismiss' => 'alert', 'aria-label' => gT("Close"))
+echo CHtml::openTag($tag, $htmlOptions);
+if ($showIcon) {
+    echo CHtml::openTag("span", array('class' => $icon . ' me-2'));
+    echo CHtml::closeTag("span");
+}
+echo $text;
+if ($showCloseButton) {
+    echo CHtml::htmlButton(
+        '',
+        [
+            'type' => 'button',
+            'class' => 'btn-close',
+            'data-bs-dismiss' => 'alert',
+            'aria-label' => gT("Close")
+        ]
     );
 }
-echo CHtml::tag($tag, $htmlOptions, $content, true);
+echo CHtml::closeTag($tag);

@@ -45,7 +45,12 @@ function CheckForDBUpgrades($subaction = null)
             } else {
                 $msg = '';
                 foreach (yii::app()->user->getflashes() as $key => $message) {
-                    $msg .= '<div class="alert alert-danger flash-' . $key . '">' . $message . "</div>\n";
+                    $msg .= App()->getController()->widget('ext.AlertWidget.AlertWidget', [
+                            'text' => $message,
+                            'type' => 'danger',
+                            'showCloseButton' => false,
+                            'htmlOptions' => ['class' => "flash-$key"]
+                        ], true) . "\n";
                 }
                 $data = $msg . "<p><a href='" . Yii::app()->getController()->createUrl("/admin/databaseupdate/sa/db") . "'>" . gT("Please fix this error in your database and try again") . "</a></p></div> ";
             }

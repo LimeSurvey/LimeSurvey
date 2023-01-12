@@ -116,7 +116,10 @@ var UserManagement = function () {
                         return;
                     }
                     $('#UserManagement--errors').html(
-                        "<div class='alert alert-danger'>" + result.errors + "</div>"
+                        LS.LsGlobalNotifier.createAlert(
+                            result.errors,
+                            'danger'
+                        )
                     ).removeClass('d-none');
                 },
                 error: function () {

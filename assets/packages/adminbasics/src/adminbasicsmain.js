@@ -41,7 +41,7 @@ import {onExistBinding as surveyGrid} from './pages/surveyGrid';
 import confirmationModal from './parts/confirmationModal';
 import {globalStartUpMethods, globalWindowMethods} from './parts/globalMethods';
 import autoCloseAlerts from './parts/autoCloseAlerts';
-import ajaxAlerts from './parts/ajaxAlerts';
+import ajaxAlerts, {ajaxAlertMethod} from './parts/ajaxAlerts';
 import * as AjaxHelper from './parts/ajaxHelper';
 import createUrl from './parts/createUrl';
 import saveBindings from './parts/save';
@@ -149,6 +149,7 @@ const AdminCore = function(){
                 {AjaxHelper},
                 {createUrl},
                 autoCloseAlerts,
+                ajaxAlertMethod,
                 {ajaxAlerts},
                 {EventBus},
                 subquestionAndAnswersGlobalMethods,
