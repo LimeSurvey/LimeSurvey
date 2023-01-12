@@ -11278,37 +11278,6 @@ body {
   line-height: inherit;
 }
 
-.jumbotron {
-  text-align: center;
-  background-color: transparent;
-  padding: 48px 60px;
-  border-radius: 6px;
-  margin-bottom: 30px;
-  margin-top: 14px;
-}
-
-.jumbotron h1,
-.jumbotron .h1 {
-  color: inherit;
-}
-
-.jumbotron p {
-  margin-bottom: 15px;
-  font-size: 21px;
-}
-
-.container .jumbotron {
-  border-radius: 6px;
-}
-
-.jumbotron .container {
-  max-width: 100%;
-}
-
-.jumbotron.message-box {
-  margin-top: 1em;
-}
-
 html {
   font-family: Roboto;
   font-weight: 400;
@@ -11318,16 +11287,6 @@ html {
 
 .main-container {
   padding-bottom: 100px;
-}
-
-#welcome-jumbotron {
-  padding-top: 0;
-  padding-bottom: 10px;
-  background-color: transparent;
-}
-
-#welcome-jumbotron > img {
-  width: 350px;
 }
 
 .surveymanagerbar {
@@ -11485,12 +11444,6 @@ html {
   cursor: pointer;
   cursor: hand;
   border-radius: 0;
-}
-
-.message-box {
-  position: relative;
-  margin-top: 20px;
-  animation: slidefromtop 1s;
 }
 
 .welcome #lime-logo {
@@ -13089,18 +13042,6 @@ a.explorer-group:focus {
 .push-grid-pager {
   /* push the pager for massive action dropup */
   min-height: 25em;
-}
-
-.has-link {
-  cursor: pointer;
-}
-
-.has-link a:hover {
-  text-decoration: none;
-}
-
-.has-link a {
-  color: black;
 }
 
 .hoverAction .table-striped > tbody > tr:hover > td {
@@ -15170,15 +15111,6 @@ mark, .mark {
   color: #000;
 }
 
-a {
-  color: #328637;
-}
-a:hover {
-  color: #0f3e12;
-}
-a:focus {
-  color: #0f3e12;
-}
 a.badge:hover {
   color: #fff;
 }
@@ -15263,37 +15195,6 @@ a.list-group-item-danger:focus {
   color: #e8afae;
   background-color: #b65453;
 }
-a.text-primary:hover {
-  color: #246128;
-}
-a.text-success:hover {
-  color: #246128;
-}
-a.text-info:hover {
-  color: #1c575a;
-}
-a.text-warning:hover {
-  color: #f6863a;
-}
-a.text-danger:hover {
-  color: #dd8988;
-}
-a.bg-primary:hover {
-  background-color: #246128;
-}
-a.bg-success:hover {
-  background-color: #9dd39f;
-}
-a.bg-info:hover {
-  background-color: #8cb5b5;
-}
-a.bg-warning:hover {
-  background-color: #a8876a;
-}
-a.bg-danger:hover {
-  background-color: #a94847;
-}
-
 .img-thumbnail {
   background-color: #fff;
   border: 1px solid #dadada;
@@ -15301,30 +15202,6 @@ a.bg-danger:hover {
 
 hr {
   border-top: 1px solid #9cba9e;
-}
-
-.text-muted {
-  color: #858585;
-}
-
-.text-primary {
-  color: #328637;
-}
-
-.text-success {
-  color: #328637;
-}
-
-.text-info {
-  color: #39993f;
-}
-
-.text-warning {
-  color: #a15426 !important;
-}
-
-.text-danger {
-  color: #e8afae !important;
 }
 
 .bg-primary {
@@ -16048,14 +15925,6 @@ fieldset[disabled] .form-control {
   background-color: #7b2824;
 }
 
-.jumbotron {
-  background-color: transparent;
-  text-align: center;
-}
-.jumbotron.message-box {
-  background-color: transparent;
-}
-
 .thumbnail {
   background-color: #fff;
   border: 1px solid #dadada;
@@ -16306,19 +16175,6 @@ fieldset[disabled] .form-control {
   background-color: #fff;
   border: 1px solid #800052;
   color: #800052;
-}
-
-.message-box {
-  border: 1px solid #8bc68e;
-  color: #2e2e2e;
-}
-
-.message-box-error {
-  border: 1px solid #a0352f;
-}
-
-.message-box-warning {
-  border: 1px solid #a15426;
 }
 
 legend {
@@ -16996,14 +16852,23 @@ tr.info, tr.danger {
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active {
   box-shadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
   color: #fff;
-  background-color: #14AE5C;
+  background-color: var(--bs-primary);
 }
 
+.btn-info {
+  color: #fff;
+}
 .btn-info:hover, .btn-info:focus, .btn-info:active, .btn-info.active {
+  background-color: var(--bs-info);
+}
+
+.btn-dark {
+  color: #fff;
+}
+
+.btn-light:hover, .btn-light:focus, .btn-light:active, .btn-light.active {
   color: #1E1E1E;
-  background-color: #8146F6;
-  border: 1px solid #8146F6;
-  box-shadow: 0 0 0 0.25rem rgba(129, 70, 246, 0.5);
+  background-color: var(--bs-light);
 }
 
 .btn-secondary, .btn-cancel {
@@ -17012,61 +16877,135 @@ tr.info, tr.danger {
 .btn-secondary:hover, .btn-secondary:focus, .btn-secondary:active, .btn-secondary.active, .btn-cancel:hover, .btn-cancel:focus, .btn-cancel:active, .btn-cancel.active {
   box-shadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
   color: #fff;
-  background-color: #ACACAC;
-  border-color: #ACACAC;
+  background-color: var(--bs-secondary);
+  border-color: var(--bs-secondary);
 }
 .btn-secondary.dropdown-toggle.show, .btn-secondary.dropdown-toggle.show:focus, .btn-cancel.dropdown-toggle.show, .btn-cancel.dropdown-toggle.show:focus {
   box-shadow: -4px 4px 0px rgba(123, 97, 255, 0.4);
   color: #fff;
-  background-color: #ACACAC;
-  border-color: #ACACAC;
-}
-
-.btn-outline-secondary {
-  background-color: #fff;
-  border: 1px solid #1E1E1E;
-}
-.btn-outline-secondary:hover {
-  box-shadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
-  background-color: #fff;
-  border-color: #1E1E1E;
-  color: #1E1E1E;
-}
-.btn-outline-secondary:focus, .btn-outline-secondary:active, .btn-outline-secondary.active, .btn-outline-secondary.dropdown-toggle.show, .btn-outline-secondary.dropdown-toggle.show:focus, .btn-outline-secondary.show {
-  box-shadow: -4px 4px 0px rgba(123, 97, 255, 0.4);
-  background-color: #fff;
-  color: #1E1E1E;
-  border-color: #1E1E1E;
-}
-.btn-outline-secondary.disabled, .btn-outline-secondary[disabled] {
-  background-color: #fff;
-  border: 1px solid #ACACAC;
-  color: #ACACAC;
-}
-.btn-outline-secondary.disabled:hover, .btn-outline-secondary.disabled:focus, .btn-outline-secondary.disabled:active, .btn-outline-secondary.disabled.active, .btn-outline-secondary[disabled]:hover, .btn-outline-secondary[disabled]:focus, .btn-outline-secondary[disabled]:active, .btn-outline-secondary[disabled].active {
-  background-color: #fff;
-  border: 1px solid #ACACAC;
+  background-color: var(--bs-secondary);
+  border-color: var(--bs-secondary);
 }
 
 .btn-success:hover, .btn-success:focus, .btn-success:active, .btn-success.active {
   color: #1E1E1E;
   background-color: #4DD753;
   border: 1px solid #4DD753;
-  box-shadow: 0 0 0 0.25rem rgba(77, 215, 83, 0.5);
 }
 
 .btn-warning:hover, .btn-warning:focus, .btn-warning:active, .btn-warning.active {
   color: #1E1E1E;
   background-color: #FFE046;
   border: 1px solid #FFE046;
-  box-shadow: 0 0 0 0.25rem rgba(255, 224, 70, 0.5);
 }
 
 .btn-danger:hover, .btn-danger:focus, .btn-danger:active, .btn-danger.active {
   color: #1E1E1E;
   background-color: #FF515F;
   border: 1px solid #FF515F;
-  box-shadow: 0 0 0 0.25rem rgba(255, 81, 95, 0.5);
+}
+
+*[class*=btn-outline-] {
+  background-color: #fff;
+}
+*[class*=btn-outline-]:hover {
+  box-shadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
+  background-color: #fff;
+}
+*[class*=btn-outline-]:focus, *[class*=btn-outline-]:active, *[class*=btn-outline-].active, *[class*=btn-outline-].dropdown-toggle.show, *[class*=btn-outline-].dropdown-toggle.show:focus, *[class*=btn-outline-].show {
+  box-shadow: -4px 4px 0px rgba(123, 97, 255, 0.4);
+  background-color: #fff;
+}
+*[class*=btn-outline-].disabled, *[class*=btn-outline-][disabled] {
+  background-color: #fff;
+  border: 1px solid #ACACAC;
+  color: #ACACAC;
+}
+*[class*=btn-outline-].disabled:hover, *[class*=btn-outline-].disabled:focus, *[class*=btn-outline-].disabled:active, *[class*=btn-outline-].disabled.active, *[class*=btn-outline-][disabled]:hover, *[class*=btn-outline-][disabled]:focus, *[class*=btn-outline-][disabled]:active, *[class*=btn-outline-][disabled].active {
+  background-color: #fff;
+  border: 1px solid #ACACAC;
+}
+
+.btn-outline-primary {
+  color: var(--bs-primary);
+}
+.btn-outline-primary:hover {
+  color: var(--bs-primary);
+}
+.btn-outline-primary:focus, .btn-outline-primary:active, .btn-outline-primary.active, .btn-outline-primary.dropdown-toggle.show, .btn-outline-primary.dropdown-toggle.show:focus, .btn-outline-primary.show {
+  color: var(--bs-primary);
+}
+
+.btn-outline-secondary {
+  border: 1px solid #1E1E1E;
+}
+.btn-outline-secondary:hover {
+  border-color: #1E1E1E;
+  color: #1E1E1E;
+}
+.btn-outline-secondary:focus, .btn-outline-secondary:active, .btn-outline-secondary.active, .btn-outline-secondary.dropdown-toggle.show, .btn-outline-secondary.dropdown-toggle.show:focus, .btn-outline-secondary.show {
+  color: #1E1E1E;
+  border-color: #1E1E1E;
+}
+
+.btn-outline-success {
+  color: var(--bs-success);
+}
+.btn-outline-success:hover {
+  color: var(--bs-success);
+}
+.btn-outline-success:focus, .btn-outline-success:active, .btn-outline-success.active, .btn-outline-success.dropdown-toggle.show, .btn-outline-success.dropdown-toggle.show:focus, .btn-outline-success.show {
+  color: var(--bs-success);
+}
+
+.btn-outline-warning {
+  color: var(--bs-warning);
+}
+.btn-outline-warning:hover {
+  color: var(--bs-warning);
+}
+.btn-outline-warning:focus, .btn-outline-warning:active, .btn-outline-warning.active, .btn-outline-warning.dropdown-toggle.show, .btn-outline-warning.dropdown-toggle.show:focus, .btn-outline-warning.show {
+  color: var(--bs-warning);
+}
+
+.btn-outline-danger {
+  color: var(--bs-danger);
+}
+.btn-outline-danger:hover {
+  color: var(--bs-danger);
+}
+.btn-outline-danger:focus, .btn-outline-danger:active, .btn-outline-danger.active, .btn-outline-danger.dropdown-toggle.show, .btn-outline-danger.dropdown-toggle.show:focus, .btn-outline-danger.show {
+  color: var(--bs-danger);
+}
+
+.btn-outline-info {
+  color: var(--bs-info);
+}
+.btn-outline-info:hover {
+  color: var(--bs-info);
+}
+.btn-outline-info:focus, .btn-outline-info:active, .btn-outline-info.active, .btn-outline-info.dropdown-toggle.show, .btn-outline-info.dropdown-toggle.show:focus, .btn-outline-info.show {
+  color: var(--bs-info);
+}
+
+.btn-outline-light {
+  color: var(--bs-light);
+}
+.btn-outline-light:hover {
+  color: var(--bs-light);
+}
+.btn-outline-light:focus, .btn-outline-light:active, .btn-outline-light.active, .btn-outline-light.dropdown-toggle.show, .btn-outline-light.dropdown-toggle.show:focus, .btn-outline-light.show {
+  color: var(--bs-light);
+}
+
+.btn-outline-dark {
+  color: var(--bs-dark);
+}
+.btn-outline-dark:hover {
+  color: var(--bs-dark);
+}
+.btn-outline-dark:focus, .btn-outline-dark:active, .btn-outline-dark.active, .btn-outline-dark.dropdown-toggle.show, .btn-outline-dark.dropdown-toggle.show:focus, .btn-outline-dark.show {
+  color: var(--bs-dark);
 }
 
 .btn-link {
@@ -17475,6 +17414,24 @@ dl dt {
   font-weight: 600;
   font-size: 1rem;
   line-height: 24px;
+}
+
+a {
+  color: #14AE5C;
+  font-weight: 500;
+}
+
+.has-link {
+  cursor: pointer;
+}
+
+.has-link a:hover {
+  text-decoration: none;
+}
+
+.has-link a {
+  color: #1E1E1E;
+  font-weight: 400;
 }
 
 .tooltip {
@@ -18265,4 +18222,82 @@ footer.footer {
 
 .select2-container--bootstrap-5 .select2-selection--multiple textarea:focus {
   box-shadow: none;
+}
+
+.badge {
+  background-color: #F9F9FB;
+  color: #1E1E1E;
+}
+.badge.bg-primary, .badge.bg-secondary, .badge.bg-info, .badge.bg-dark {
+  color: #fff;
+}
+
+.badge.reverse-color {
+  color: #F9F9FB !important;
+  background-color: #1E1E1E !important;
+}
+
+.badge.rounded-pill {
+  padding: 4px 12px !important;
+}
+
+.jumbotron {
+  text-align: center;
+  background-color: transparent;
+  padding: 48px 60px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  margin-top: 14px;
+}
+.jumbotron.message-box {
+  background-color: transparent;
+  margin-top: 1em;
+}
+.jumbotron h2, .jumbotron .h2, .jumbotron.h2 {
+  color: #152536;
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-weight: 600;
+  font-size: 1.25rem;
+  line-height: 26px;
+}
+.jumbotron p {
+  margin-bottom: 15px;
+  font-size: 1.25rem;
+}
+.jumbotron .container {
+  max-width: 100%;
+}
+
+.container .jumbotron {
+  border-radius: 4px;
+}
+
+.message-box {
+  position: relative;
+  margin-top: 20px;
+  animation: slidefromtop 1s;
+  border: 1px solid #14AE5C;
+}
+
+.message-box-error {
+  border: 1px solid #FF515F;
+}
+
+.message-box-warning {
+  border: 1px solid #FFE046;
+}
+
+#welcome-jumbotron {
+  padding-top: 0;
+  padding-bottom: 0;
+  background-color: transparent;
+}
+#welcome-jumbotron p {
+  margin-top: 52px;
+  margin-bottom: 0px;
+  font-size: 1rem;
+}
+
+#welcome-jumbotron > img {
+  width: 294px;
 }
