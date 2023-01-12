@@ -51,3 +51,22 @@ dl {
     line-height : $line-height-24;
   }
 }
+
+// LINKS
+a {
+  color: $link-color;
+  font-weight: $font-weight-500;
+}
+
+.has-link {
+  cursor: pointer;
+}
+
+.has-link a:hover {
+  text-decoration: none;
+}
+
+.has-link a {
+  color: $g-900;
+  font-weight: $font-weight-normal;
+}

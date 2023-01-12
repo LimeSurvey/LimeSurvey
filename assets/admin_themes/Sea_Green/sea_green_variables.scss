@@ -116,9 +116,11 @@ $tooltip-arrow-color:               $tooltip-bg;
 // $tooltip-arrow-color:               null; // Deprecated in Bootstrap 5.2.0 for CSS variables
 
 // links
+$link-color-action:                       $action !default;
 $link-color:                              $active-green !default;
 $link-decoration:                         none !default;
 $link-shade-percentage:                   20% !default;
+$link-hover-color-action:                 shift-color($link-color-action, $link-shade-percentage) !default;
 $link-hover-color:                        shift-color($link-color, $link-shade-percentage) !default;
 
 // breadcrumb variables
