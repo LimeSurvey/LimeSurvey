@@ -425,11 +425,11 @@ function return_timer_script($aQuestionAttributes, $ia, $disable = null)
     $time_limit_warning_2_message = str_replace("{TIME}", $timer_html, $time_limit_warning_2_message);
     $time_limit_warning_2_display_time = trim($aQuestionAttributes['time_limit_warning_2_display_time']) != '' ? $aQuestionAttributes['time_limit_warning_2_display_time'] + 1 : 0;
     $time_limit_message_style = trim($aQuestionAttributes['time_limit_message_style']) != '' ? $aQuestionAttributes['time_limit_message_style'] : "";
-    $time_limit_message_class = "hidden ls-timer-content ls-timer-message ls-no-js-hidden";
+    $time_limit_message_class = "d-none ls-timer-content ls-timer-message ls-no-js-hidden";
     $time_limit_warning_style = trim($aQuestionAttributes['time_limit_warning_style']) != '' ? $aQuestionAttributes['time_limit_warning_style'] : "";
-    $time_limit_warning_class = "hidden ls-timer-content ls-timer-warning ls-no-js-hidden";
+    $time_limit_warning_class = "d-none ls-timer-content ls-timer-warning ls-no-js-hidden";
     $time_limit_warning_2_style = trim($aQuestionAttributes['time_limit_warning_2_style']) != '' ? $aQuestionAttributes['time_limit_warning_2_style'] : "";
-    $time_limit_warning_2_class = "hidden ls-timer-content ls-timer-warning2 ls-no-js-hidden";
+    $time_limit_warning_2_class = "d-none ls-timer-content ls-timer-warning2 ls-no-js-hidden";
     $time_limit_timer_style = trim($aQuestionAttributes['time_limit_timer_style']) != '' ? $aQuestionAttributes['time_limit_timer_style'] : "position: relative;";
     $time_limit_timer_class = "ls-timer-content ls-timer-countdown ls-no-js-hidden";
 
@@ -1355,12 +1355,12 @@ function do_ranking($ia)
     if (trim($aQuestionAttributes['choice_title'][App()->language]) != '') {
         $choice_title = htmlspecialchars(trim($aQuestionAttributes['choice_title'][App()->language]), ENT_QUOTES);
     } else {
-        $choice_title = gT("Your Choices", 'html');
+        $choice_title = gT("Available items", 'html');
     }
     if (trim($aQuestionAttributes['rank_title'][App()->language]) != '') {
         $rank_title = htmlspecialchars(trim($aQuestionAttributes['rank_title'][App()->language]), ENT_QUOTES);
     } else {
-        $rank_title = gT("Your Ranking", 'html');
+        $rank_title = gT("Your ranking", 'html');
     }
     $aDisplayAnswers = [];
     foreach ($aAnswers as $aAnswer) {
@@ -2315,7 +2315,7 @@ function do_numerical($ia)
     }
     if (trim($aQuestionAttributes['text_input_width']) != '') {
         $col         = ($aQuestionAttributes['text_input_width'] <= 12) ? $aQuestionAttributes['text_input_width'] : 12;
-        $extraclass .= " col-sm-" . trim($col);
+        $extraclass .= " col-md-" . trim($col);
         $withColumn = true;
     } else {
         $withColumn = false;
@@ -2413,7 +2413,7 @@ function do_shortfreetext($ia)
 
     if (trim($aQuestionAttributes['text_input_width']) != '' && intval(trim($aQuestionAttributes['location_mapservice'])) == 0) {
         $col         = ($aQuestionAttributes['text_input_width'] <= 12) ? $aQuestionAttributes['text_input_width'] : 12;
-        $extraclass .= " col-sm-" . trim($col);
+        $extraclass .= " col-md-" . trim($col);
         $withColumn = true;
     } else {
         $withColumn = false;
@@ -2714,7 +2714,7 @@ function do_longfreetext($ia)
     if (trim($aQuestionAttributes['text_input_width']) != '') {
         // text_input_width can not be empty, except with old survey (wher can be empty or up to 12 see bug #11743
         $col         = ($aQuestionAttributes['text_input_width'] <= 12) ? $aQuestionAttributes['text_input_width'] : 12;
-        $extraclass .= " col-sm-" . trim($col);
+        $extraclass .= " col-md-" . trim($col);
         $withColumn = true;
     } else {
         $withColumn = false;
@@ -2791,7 +2791,7 @@ function do_hugefreetext($ia)
     }
     if (trim($aQuestionAttributes['text_input_width']) != '') {
         $col = ($aQuestionAttributes['text_input_width'] <= 12) ? $aQuestionAttributes['text_input_width'] : 12;
-        $extraclass .= " col-sm-" . trim($col);
+        $extraclass .= " col-md-" . trim($col);
         $withColumn = true;
     } else {
         $withColumn = false;
@@ -2846,7 +2846,6 @@ function do_hugefreetext($ia)
  */
 function do_yesno($ia)
 {
-    $coreClass = "ls-answers answers-list";
     $yChecked = $nChecked = $naChecked = '';
     if ($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]] == 'Y') {
         $yChecked = CHECKED;
@@ -2878,10 +2877,8 @@ function do_yesno($ia)
         'displayType' => $displayType,
     );
     if ($displayType === 0) {
-        $itemDatas['coreClass'] = "{$coreClass} button-list yesno-button";
         $answer = doRender('/survey/questions/answer/yesno/buttons/item', $itemDatas, true);
     } else {
-        $itemDatas['coreClass'] = "{$coreClass} radio-list yesno-radio-list";
         $answer = doRender('/survey/questions/answer/yesno/radio/item', $itemDatas, true);
     }
 
@@ -2903,7 +2900,6 @@ function do_gender($ia)
     $naChecked              = '';
     $aQuestionAttributes    = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
     $displayType            = (int) $aQuestionAttributes['display_type'];
-    $coreClass              = "ls-answers answers-list radio-list";
     if (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) {
         $noAnswer = true;
         if ($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]] == '') {
@@ -2924,10 +2920,8 @@ function do_gender($ia)
     );
 
     if ($displayType === 0) {
-        $itemDatas['coreClass'] = "{$coreClass} button-list gender-button";
         $answer = doRender('/survey/questions/answer/gender/buttons/answer', $itemDatas, true);
     } else {
-        $itemDatas['coreClass'] = "{$coreClass} radio-list gender-radio-list";
         $answer = doRender('/survey/questions/answer/gender/radio/answer', $itemDatas, true);
     }
 
@@ -3059,7 +3053,7 @@ function do_array_5point($ia)
             ), true);
     }
 
-    foreach ($aSubquestions as $ansrow) {
+    foreach ($aSubquestions as $j => $ansrow) {
         $myfname = $ia[1] . $ansrow['title'];
         $answertext = $ansrow->questionl10ns[$sSurveyLanguage]->question;
         if (strpos($answertext, '|') !== false) {
@@ -3120,6 +3114,7 @@ function do_array_5point($ia)
 
         $sRows .= doRender('/survey/questions/answer/arrays/5point/rows/answer_row', array(
             'answer_tds'    => $answer_tds,
+            'odd'           => ($j % 2),
             'myfname'       => $myfname,
             'answertext'    => $answertext,
             'answerwidth'   => $answerwidth,
@@ -3901,7 +3896,7 @@ function do_array_texts($ia)
         $col_head    = '';
         switch ($aQuestionAttributes['show_totals']) {
             case 'R':
-                $totals_class   = $show_totals = 'row';
+                $totals_class   = $show_totals = 'rowTotals';
                 $row_total      = doRender('/survey/questions/answer/arrays/texts/rows/cells/td_total', array('empty' => false, 'inputsize' => $inputsize), true);
                 $col_head       = doRender('/survey/questions/answer/arrays/texts/rows/cells/thead', array('totalText' => gT('Total'), 'classes' => ''), true);
 
@@ -3973,7 +3968,7 @@ function do_array_texts($ia)
 
     if ($numrows = count($labelans)) {
         // There are no "No answer" column
-        if (($show_grand == true && $show_totals == 'col') || $show_totals == 'row' || $show_totals == 'both') {
+        if (($show_grand == true && $show_totals == 'col') || $show_totals == 'rowTotals' || $show_totals == 'both') {
             ++$numrows;
         }
 
@@ -4001,7 +3996,7 @@ function do_array_texts($ia)
         $anscount   = count($aQuestionsY);
         $fn         = 1;
 
-        $showGrandTotal = (($show_grand == true && $show_totals == 'col') || $show_totals == 'row' || $show_totals == 'both') ? true : false;
+        $showGrandTotal = (($show_grand == true && $show_totals == 'col') || $show_totals == 'rowTotals' || $show_totals == 'both') ? true : false;
 
         $sRows = '';
         $answertext = '';
@@ -4239,7 +4234,8 @@ function do_array_multiflexi($ia)
         $caption            .= gT("Please enter only numbers.");
     } else {
         $layout = "dropdown";
-        $answertypeclass     = " dropdown-item";
+        $answertypeclass     = " ls-dropdown-item";
+        
         $coreClass          .= " dropdown-array";
         $coreRowClass .= " dropdown-list";
         $caption            .= gT("Please select an answer for each combination.");

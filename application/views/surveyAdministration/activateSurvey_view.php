@@ -5,7 +5,7 @@
 <?php if ((isset($failedcheck) && $failedcheck) || (isset($failedgroupcheck) && $failedgroupcheck)): ?>
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="row welcome survey-action">
-        <div class="col-sm-12 content-right">
+        <div class="col-12 content-right">
             <div class="jumbotron message-box message-box-error">
                 <h2><?php eT("Activate Survey"); echo " ($surveyid)"; ?></h2>
                 <p class="lead text-warning"><strong><?php eT("Error"); ?> !</strong></p>
@@ -38,8 +38,8 @@
                 </p>
 
                 <p>
-                    <button class="btn btn-default" id="ajaxAllConsistency"><?=gT("Resolve all issues")?></button>
-                    <a class="btn btn-default" href="<?php echo $this->createUrl("surveyAdministration/view/surveyid/$surveyid"); ?>" role="button">
+                    <button class="btn btn-outline-secondary" id="ajaxAllConsistency"><?=gT("Resolve all issues")?></button>
+                    <a class="btn btn-outline-secondary" href="<?php echo $this->createUrl("surveyAdministration/view/surveyid/$surveyid"); ?>" role="button">
                         <?php eT("Return to survey"); ?>
                     </a>
                 </p>
@@ -84,21 +84,21 @@
 <?php else:?>
 
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <div class='container message-box col-sm-12'>
+    <div class='p-4 message-box col-12'>
         <div class="row">
-            <div class="col-sm-8 col-sm-offset-2">
+            <div class="col-md-8 offset-md-2">
                 <h1><?php eT("Note: Please review your survey carefully before activating"); ?></h1>
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-8 col-sm-offset-2">
+            <div class="col-md-8 offset-md-2">
                 <p>
                     <?php eT("Once a survey has been activated you can no longer <strong>add</strong> or <strong>delete</strong> questions, questions groups, or subquestions. You will be <strong>still able to edit</strong> questions, questions groups, or subquestions.", 'unescaped'); ?>
                 </p>
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-8 col-sm-offset-2">
+            <div class="col-md-8 offset-md-2">
                 <h3 class="pagetitle"><?php eT("Notification & data management");?></h3>
                 <p>
                     <?php eT("Additionally, the following settings cannot be changed once a survey has been activated.");?>
@@ -110,11 +110,11 @@
 
         <?php echo CHtml::form(array("surveyAdministration/activate/iSurveyID/{$surveyid}/"), 'post', array('class'=>'form-horizontal')); ?>
             <div class='row'>
-                <div class="col-sm-4 col-sm-offset-2">
-                    <div class='form-group'>
-                        <label for='anonymized' class='control-label col-sm-7'>
+                <div class="col-md-4 offset-md-2">
+                    <div class='mb-3'>
+                        <label for='anonymized' class='form-label col-md-7'>
                             <?php eT("Anonymized responses"); ?>
-                            <i class="fa fa-question-circle text-success" data-toggle="tooltip" title="<?= gT("If enabled, responses will be anonymized - there will be no way to connect responses and participants."); ?>"></i>
+                            <i class="fa fa-question-circle text-success" data-bs-toggle="tooltip" title="<?= gT("If enabled, responses will be anonymized - there will be no way to connect responses and participants."); ?>"></i>
                             <script type="text/javascript">
                                 <!--
                                 function alertPrivacy()
@@ -128,8 +128,8 @@
                             </script>
                         </label>
 
-                        <div class='col-sm-5'>
-                            <select id='anonymized' class='form-control' name='anonymized' onchange='alertPrivacy();'>
+                        <div class='col-md-5'>
+                            <select id='anonymized' class='form-select' name='anonymized' onchange='alertPrivacy();'>
                                 <option value='Y'
                                 <?php if ($aSurveysettings['anonymized'] == "Y") { ?>
                                     selected='selected'
@@ -145,14 +145,14 @@
                     </div>
                 </div>
 
-                <div class="col-sm-4">
-                    <div class='form-group'>
-                        <label for='datestamp' class='control-label col-sm-7'>
+                <div class="col-md-4">
+                    <div class='mb-3'>
+                        <label for='datestamp' class='form-label col-md-7'>
                             <?php eT("Date stamp"); ?>
-                            <i class="fa fa-question-circle text-success" data-toggle="tooltip" title="<?= gT("If enabled, the submission time of a response will be recorded."); ?>"></i>
+                            <i class="fa fa-question-circle text-success" data-bs-toggle="tooltip" title="<?= gT("If enabled, the submission time of a response will be recorded."); ?>"></i>
                         </label>
-                        <div class='col-sm-5'>
-                            <select id='datestamp' class='form-control' name='datestamp' onchange='alertDateStampAnonymization();'>
+                        <div class='col-md-5'>
+                            <select id='datestamp' class='form-select' name='datestamp' onchange='alertDateStampAnonymization();'>
                                 <option value='Y' <?php if ($aSurveysettings['datestamp'] == "Y"){echo 'selected="selected"';}?>>
                                     <?php eT("Yes"); ?>
                                 </option>
@@ -167,15 +167,15 @@
             </div>
 
             <div class='row'>
-                <div class="col-sm-4 col-sm-offset-2">
-                    <div class='form-group'>
-                        <label for='ipaddr' class='control-label col-sm-7'>
+                <div class="col-md-4 offset-md-2">
+                    <div class='mb-3'>
+                        <label for='ipaddr' class='form-label col-md-7'>
                             <?php eT("Save IP address"); ?>
-                            <i class="fa fa-question-circle text-success" data-toggle="tooltip" title="<?= gT("If enabled, the IP address of the survey respondent will be stored together with the response."); ?>"></i>
+                            <i class="fa fa-question-circle text-success" data-bs-toggle="tooltip" title="<?= gT("If enabled, the IP address of the survey respondent will be stored together with the response."); ?>"></i>
                         </label>
 
-                        <div class='col-sm-5'>
-                            <select name='ipaddr' id='ipaddr' class='form-control'>
+                        <div class='col-md-5'>
+                            <select name='ipaddr' id='ipaddr' class='form-select'>
                                 <option value='Y' <?php if ($aSurveysettings['ipaddr'] == "Y") {echo "selected='selected'";} ?>>
                                     <?php eT("Yes"); ?>
                                 </option>
@@ -187,15 +187,15 @@
                     </div>
                 </div>
 
-                <div class="col-sm-4 ">
-                    <div class='form-group'>
-                        <label for='ipaddr' class='control-label col-sm-7'>
+                <div class="col-md-4 ">
+                    <div class='mb-3'>
+                        <label for='ipaddr' class='form-label col-md-7'>
                             <?php eT("Anonymize IP address"); ?>
-                            <i class="fa fa-question-circle text-success" data-toggle="tooltip" title="<?= gT("If enabled, the IP address of the respondent is not recorded."); ?>"></i>
+                            <i class="fa fa-question-circle text-success" data-bs-toggle="tooltip" title="<?= gT("If enabled, the IP address of the respondent is not recorded."); ?>"></i>
                         </label>
 
-                        <div class='col-sm-5'>
-                            <select name='ipanonymize' id='ipanonymize' class='form-control'>
+                        <div class='col-md-5'>
+                            <select name='ipanonymize' id='ipanonymize' class='form-select'>
                                 <option value='Y' <?php if ($aSurveysettings['ipanonymize'] == "Y") {echo "selected='selected'";} ?>>
                                     <?php eT("Yes"); ?>
                                 </option>
@@ -209,14 +209,14 @@
             </div>
 
             <div class='row'>
-                <div class="col-sm-4 col-sm-offset-2">
-                    <div class='form-group'>
-                        <label class='control-label col-sm-7' for='savetimings'>
+                <div class="col-md-4 offset-md-2">
+                    <div class='mb-3'>
+                        <label class='form-label col-md-7' for='savetimings'>
                             <?php eT("Save timings"); ?>
-                            <i class="fa fa-question-circle text-success" data-toggle="tooltip" title="<?= gT("If enabled, the time spent on each page of the survey by each survey participant is recorded."); ?>"></i>
+                            <i class="fa fa-question-circle text-success" data-bs-toggle="tooltip" title="<?= gT("If enabled, the time spent on each page of the survey by each survey participant is recorded."); ?>"></i>
                         </label>
-                        <div class='col-sm-5'>
-                            <select class='form-control' id='savetimings' name='savetimings'>
+                        <div class='col-md-5'>
+                            <select class='form-select' id='savetimings' name='savetimings'>
                                 <option value='Y' <?php if (!isset($aSurveysettings['savetimings']) || !$aSurveysettings['savetimings'] || $aSurveysettings['savetimings'] == "Y") { ?> selected='selected' <?php } ?>>
                                     <?php eT("Yes"); ?>
                                 </option>
@@ -229,14 +229,14 @@
                     </div>
                 </div>
 
-                <div class="col-sm-4">
-                    <div class='form-group'>
-                        <label class='control-label col-sm-7' for='refurl'>
+                <div class="col-md-4">
+                    <div class='mb-3'>
+                        <label class='form-label col-md-7' for='refurl'>
                             <?php eT("Save referrer URL"); ?>
-                            <i class="fa fa-question-circle text-success" data-toggle="tooltip" title="<?= gT("If enabled, the referrer URL will be stored together with the response."); ?>"></i>
+                            <i class="fa fa-question-circle text-success" data-bs-toggle="tooltip" title="<?= gT("If enabled, the referrer URL will be stored together with the response."); ?>"></i>
                         </label>
-                        <div class='col-sm-5'>
-                            <select class='form-control' name='refurl' id='refurl'>
+                        <div class='col-md-5'>
+                            <select class='form-select' name='refurl' id='refurl'>
                                 <option value='Y' <?php if ($aSurveysettings['refurl'] == "Y"){echo "selected='selected'";} ?>>
                                     <?php eT("Yes"); ?>
                                 </option>
@@ -251,7 +251,7 @@
             
             <!-- Tip -->
             <div class='row'>
-                <div class='col-sm-8 col-sm-offset-2'>
+                <div class='col-md-8 offset-md-2'>
                     <div class="alert alert-info">
                         <?php eT("Tip: Please note that you need to <strong>deactivate</strong> a survey if you want to <strong>add</strong> or <strong>delete</strong> groups/questions or <strong>change</strong> any of the settings above. The changes will cause all collected data from respondents to be moved and archived.", 'unescaped'); ?>
                     </div>
@@ -261,24 +261,24 @@
 
             <?php if($oSurvey->getIsDateExpired()):?>
             <div class="row">
-                <div class='col-sm-8 col-sm-offset-2'>
+                <div class='col-md-8 offset-md-2'>
                     <div class="alert alert-warning"><?php eT('Note: This survey has a past expiration date configured and is currently not available to participants. Please remember to update/remove the expiration date in the survey settings after activation.')?><div>
                 </div>
             </div>
             <?php endif;?>
 
             <div class='row'>
-                <div class='col-sm-6 col-sm-offset-4'>
+                <div class='col-md-6 offset-md-4'>
                     <input type='hidden' name='ok' value='Y' />
                     <input id="activateSurvey__basicSettings--proceed" type='submit' class="btn btn-success btn-lg " value="<?php eT("Save & activate survey"); ?>" />
-                    <a class="btn btn-default btn-lg" href="<?php echo $this->createUrl("surveyAdministration/view/", ['surveyid'=> $surveyid]); ?>" role="button">
-                    <?php eT("Cancel"); ?>
+                    <a class="btn btn-cancel btn-lg" href="<?php echo $this->createUrl("surveyAdministration/view/", ['surveyid'=> $surveyid]); ?>">
+                        <?php eT("Cancel"); ?>
                     </a>
                 </div>
             </div>
 
             <div class='row'>
-                <div class='col-sm-12'>&nbsp;</div>
+                <div class='col-12'>&nbsp;</div>
             </div>
 
         </form>

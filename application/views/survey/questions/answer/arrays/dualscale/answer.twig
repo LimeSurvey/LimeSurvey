@@ -12,7 +12,7 @@
 <table class="{{ coreClass }} table table-bordered table-hover" role="group" aria-labelledby="ls-question-text-{{ basename }}">
     <col class="col-answers" style='width: {{ answerwidth }}%;' >
     {% if leftheader != '' or rightheader !='' %}
-        <col style='width: 0%;'  class="hidden"> <!-- see https://bugs.limesurvey.org/view.php?id=11863 -->
+        <col style='width: 0%;'  class="d-none"> <!-- see https://bugs.limesurvey.org/view.php?id=11863 -->
     {% endif %}
     <colgroup class="col-responses group-1">
         {% for ld in labelans0 %}
@@ -22,7 +22,7 @@
     {% if labelans1|length > 1 %}
         <col class="separator" style="width: {{ separatorwidth }}%">
         {% if leftheader != '' or rightheader !='' %}
-            <col style='width: 0%;'  class="hidden"> <!-- see https://bugs.limesurvey.org/view.php?id=11863 -->
+            <col style='width: 0%;'  class="d-none"> <!-- see https://bugs.limesurvey.org/view.php?id=11863 -->
         {% endif %}
         <colgroup class="col-responses group-2">
             {% for ld in labelans1 %}
@@ -42,13 +42,13 @@
             <tr class="ls-heading groups header_row">
                 <th class="header_answer_text"></th>
                 {% if leftheader != '' or rightheader !='' %}
-                    <td class="hidden"></td>
+                    <td class="d-none"></td>
                 {% endif %}
                 <th colspan="{{ labelans0|length }}" class="dsheader">{{ processString(leftheader) }}</th>
                 {% if labelans1|length > 0 %}
                     <td class="header_separator"></td>  <!-- // Separator -->
                     {% if leftheader != '' or rightheader !='' %}
-                        <td class="hidden"></td>
+                        <td class="d-none"></td>
                     {% endif %}
                     <th colspan="{{ labelans1|length }}" class="dsheader">{{ processString(rightheader) }}</th>
                 {% endif %}
@@ -96,7 +96,7 @@
                                 'rightexists'  : rightexists,
                                 'leftheader'   : leftheader,
                                 'rightheader'  : rightheader,
-                                'class'        : 'hidden-xs repeat headings'
+                                'class'        : ' repeat headings'
                             }),
                             true
                         )
@@ -107,7 +107,7 @@
             <tr id="javatbd{{ ansrow.myfname }}" role="group" aria-labelledby="answertext{{ ansrow.myfname }}"
                 class="answers-list radio-list {% if ansrow.odd %}ls-odd{% else %}ls-even{% endif %}{% if ansrow.showmandatoryviolation %} ls-error-mandatory has-error{% endif %}"
             >
-            <th id="answertext{{ ansrow.myfname }}" class="answertext control-label{% if answerwidth==0 %} sr-only{% endif %}">
+            <th id="answertext{{ ansrow.myfname }}" class="answertext control-label{% if answerwidth==0 %} visually-hidden{% endif %}">
                 {{ processString(ansrow.answertext) }}
                 {# Value for expression manager javascript (use id) ; no need to submit #}
                 {{ C.Html.hiddenField("java"~ansrow.myfid0,ansrow.sessionfname0,({
@@ -128,7 +128,7 @@
             <!-- First label set -->
             {% for j, ld in labelcode0 %}
                 {% if j == 0 and (leftheader != '' or rightheader !='') %}
-                    <td class='visible-xs leftheader information-item'>{{ leftheader }}</td>
+                    <td class='d-block d-md-none leftheader information-item'>{{ leftheader }}</td>
                 {% endif %}
                 <td class="answer_cell_1_{{ ld }} answer-item radio-item">
                     <input
@@ -145,7 +145,7 @@
             {% endfor %}
 
             {% if labelans1|length > 0 %}  {# if second label set is used #}
-                <td class="dual_scale_separator information-item {% if shownoanswer %}answer_cell_1_ radio-item noanswer-item {% endif %}{% if separatorwidth==0 %} sr-only{% endif %}">
+                <td class="dual_scale_separator information-item {% if shownoanswer %}answer_cell_1_ radio-item noanswer-item {% endif %}{% if separatorwidth==0 %} visually-hidden{% endif %}">
                     {% if shownoanswer %} {# No answer for accessibility and no javascript (but visible-xs-block visible-xs-block even with no js: need reworking) #}
                     <div class="ls-js-hidden">
                         <input
@@ -166,7 +166,7 @@
                 <!-- Second label set -->
                 {% for k, ld in labelcode1 %}
                     {% if k == 0 and (leftheader != '' or rightheader !='') %}
-                        <td class='visible-xs rightheader information-item'>{{ rightheader }}</td>
+                        <td class='d-block d-md-none rightheader information-item'>{{ rightheader }}</td>
                     {% endif %}
                     <td class="answer_cell_2_{{ ld }} answer-item radio-item">
                         <input

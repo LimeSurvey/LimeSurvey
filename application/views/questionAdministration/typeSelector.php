@@ -48,8 +48,8 @@ $oQuestionSelector = $this->beginWidget(
 ?>
 <?= $oQuestionSelector->getModal(); ?>
 
-<div class="form-group col-sm-12 col-lg-8 contains-question-selector">
-    <label for="questionCode"><?= gT('Switch question type'); ?></label>
+<div class="mb-3 col-12 col-xl-8 contains-question-selector">
+    <label for="questionCode"><?= gT('Question type'); ?></label>
     <div class="btn-group" style="width: 100%;">
         <?= $oQuestionSelector->getButtonOrSelect(); ?>
         <?php $this->endWidget('ext.admin.PreviewModalWidget.PreviewModalWidget'); ?>

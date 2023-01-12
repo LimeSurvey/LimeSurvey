@@ -92,8 +92,8 @@ class Assessment extends LSActiveRecord
     {
         $buttons = "<div class='icon-btn-row'>";
         $raw_button_template = ""
-            . "<button class='btn btn-default btn-sm %s %s' role='button' data-toggle='tooltip' title='%s' type='button'>" //extra class //title
-            . "<i class='fa fa-%s' aria-hidden='true' ></i><span class='sr-only'>%s</span>" //icon class
+            . "<button class='btn btn-outline-secondary btn-sm %s %s' role='button' data-bs-toggle='tooltip' title='%s' type='button'>" //extra class //title
+            . "<i class='fa fa-%s' aria-hidden='true' ></i><span class='visually-hidden'>%s</span>" //icon class
             . "</button>";
         $editData = array(
             'action_assessments_editModal',

@@ -589,7 +589,7 @@ class RemoteControlTest extends TestBaseClass
         $this->assertEquals('Pregunta de ejemplo', $result[$sgq]['question']);
     }
   
-    /*
+    /**
      * Test the get_uploaded_files API call using response ID.
      */
     public function testGetUploadedFilesByResponseId()
@@ -698,5 +698,28 @@ class RemoteControlTest extends TestBaseClass
         $this->assertTrue(file_exists($targetFile));
         // Refresh metadata to make sure the latests fields are used
         \Response::model($testSid)->refreshMetaData();
-    }
+    }        
+
+    /**
+     * Test the get_available_site_settings API call
+     */
+    public function testGetAvailableSiteSettings()
+    {
+        \Yii::import('application.helpers.remotecontrol.remotecontrol_handle', true);
+
+        // Create handler.
+        $admin   = new \AdminController('dummyid');
+        $handler = new \remotecontrol_handle($admin);
+
+        // Get session key.
+        $sessionKey = $handler->get_session_key(
+            self::$username,
+            self::$password
+        );
+
+        $settings = $handler->get_available_site_settings($sessionKey);
+        $this->assertNotEmpty($settings);
+        $this->assertArrayHasKey('sitename', $settings);
+        $this->assertArrayHasKey('defaultlang', $settings);
+    }        
 }

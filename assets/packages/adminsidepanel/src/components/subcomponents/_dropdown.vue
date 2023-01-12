@@ -11,9 +11,9 @@ export default {
 </script>
 
 <template>
-    <div class="btn-group hidden-xs">
+    <div class="btn-group d-xs-none d-md-block">
         <!-- Main dropdown -->
-        <button type="button" class="btn btn-default dropdown-toggle limebutton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button type="button" class="btn btn-outline-secondary dropdown-toggle limebutton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="icon-display_export"></span>
             Display / Export
             <span class="caret"></span>

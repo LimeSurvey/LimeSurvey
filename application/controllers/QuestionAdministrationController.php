@@ -1066,8 +1066,8 @@ class QuestionAdministrationController extends LSBaseController
      */
     public function actionImport()
     {
-        $iSurveyID = App()->request->getPost('sid', 0);
-        $gid = App()->request->getPost('gid', 0);
+        $iSurveyID = (int) App()->request->getPost('sid', 0);
+        $gid = (int) App()->request->getPost('gid', 0);
 
         $jumptoquestion = (bool)App()->request->getPost('jumptoquestion', 1);
 
@@ -2945,12 +2945,12 @@ class QuestionAdministrationController extends LSBaseController
             $questionThemeData['name'] = $questionTheme->name;
             $questionThemeData['type'] = $questionTheme->question_type;
             $questionThemeData['detailpage'] = '
-                <div class="col-sm-12 currentImageContainer">
+                <div class="col-12 currentImageContainer">
                 <img src="' . $questionTheme->image_path . '" />
                 </div>';
             if ($imageName == 'S') {
                 $questionThemeData['detailpage'] = '
-                    <div class="col-sm-12 currentImageContainer">
+                    <div class="col-12 currentImageContainer">
                     <img src="' . App()->getConfig('imageurl') . '/screenshots/' . $imageName . '.png" />
                     <img src="' . App()->getConfig('imageurl') . '/screenshots/' . $imageName . '2.png" />
                     </div>';

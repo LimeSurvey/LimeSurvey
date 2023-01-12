@@ -9,7 +9,7 @@
  */
 ?>
 <!-- _statisticsoutput_header -->
-<div class="col-lg-<?php echo $nbcols; ?> col-sm-12 statisticsbloc" >
+<div class="col-xl-<?php echo $nbcols; ?> col-md-12 statisticsbloc" >
 <table class='statisticstable table table-bordered printable' id="quid_<?php echo $outputs['parentqid'];?>">
     <thead>
         <tr class='success'>
@@ -17,7 +17,7 @@
                 <strong>
                     <?php echo sprintf(gT("Summary for %s"),$outputs['qtitle']); ?>
                 </strong>
-                <button class="pull-right action_js_export_to_pdf btn btn-default btn-sm hidden-print" type="button" data-question-id="quid_<?php echo $outputs['parentqid'];?>" data-toggle="tooltip" title="<?php eT('Export this question to PDF.'); ?>">
+                <button class="float-end action_js_export_to_pdf btn btn-outline-secondary btn-sm d-print-none" data-question-id="quid_<?php echo $outputs['parentqid'];?>" data-bs-toggle="tooltip" title="<?php eT('Export this question to PDF.'); ?>">
                     <i class="fa fa-file-pdf-o"></i>
                 </button>
             </th>

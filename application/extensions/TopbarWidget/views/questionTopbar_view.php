@@ -14,27 +14,29 @@ $rightSideContentSummary = $this->render('includes/questionSummaryTopbarRight_vi
 
 <!-- Question Top Bar -->
 <div class='menubar surveybar' id="<?= !(empty($topbarId)) ? $topbarId : 'surveybarid' ?>">
-    <?php if ($oQuestion->qid !== 0) : ?>
-        <div id="question-summary-topbar" class='row' <?= empty($tabOverviewEditor) || $tabOverviewEditor == 'editor' ? 'style="display: none;"' : "" ?>>
+    <div class="container-fluid">
+        <?php if ($oQuestion->qid !== 0) : ?>
+            <div id="question-summary-topbar" class='row' <?= empty($tabOverviewEditor) || $tabOverviewEditor == 'editor' ? 'style="display: none;"' : "" ?>>
+                <!-- Left Side -->
+                <div class="col">
+                    <?= $leftSideContentSummary ?>
+                </div>
+
+                <div class="col-md-auto float-end text-end">
+                    <?= $rightSideContentSummary ?>
+                </div>
+            </div>
+        <?php endif; ?>
+        <div id="question-create-edit-topbar" class='row' <?= !empty($tabOverviewEditor) && $tabOverviewEditor != 'editor' ? 'style="display: none;"' : "" ?>>
             <!-- Left Side -->
-            <div class="col-md-8">
-                <?= $leftSideContentSummary ?>
+            <div class="col">
+                <?= $leftSideContentEditor ?>
             </div>
 
-            <div class="col-md-4 pull-right text-right">
-                <?= $rightSideContentSummary ?>
+            <!-- Right Side -->
+            <div class="col-md-auto float-end text-end">
+                <?= $rightSideContent ?>
             </div>
-        </div>
-    <?php endif; ?>
-    <div id="question-create-edit-topbar" class='row' <?= !empty($tabOverviewEditor) && $tabOverviewEditor != 'editor' ? 'style="display: none;"' : "" ?>>
-        <!-- Left Side -->
-        <div class="<?= !empty($rightSideContent) ? 'col-md-6' : 'col-md-12' ?>">
-            <?= $leftSideContentEditor ?>
-        </div>
-
-        <!-- Right Side -->
-        <div class="<?= !empty($leftSideContentEditor) ? 'col-md-6' : 'col-md-12' ?> pull-right text-right">
-            <?= $rightSideContent ?>
         </div>
     </div>
 </div>
