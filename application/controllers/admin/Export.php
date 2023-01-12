@@ -146,13 +146,6 @@ class Export extends SurveyCommonAction
         if (!isset($iSurveyID)) {
             $iSurveyID = returnGlobal('sid');
         }
-
-        if (!isset($convertyto1)) {
-            $convertyto1 = returnGlobal('convertyto1');
-        }
-        if (!isset($convertnto2)) {
-            $convertnto2 = returnGlobal('convertnto2');
-        }
         if (!isset($convertyto)) {
             $convertyto = returnGlobal('convertyto');
         }
