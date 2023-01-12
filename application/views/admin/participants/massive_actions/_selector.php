@@ -27,7 +27,7 @@ $this->widget('ext.admin.grid.MassiveActionsWidget.MassiveActionsWidget', array(
                 'htmlModalBody' =>
                     '<p>' . gT('Please choose one option.') . '</p>' .
                     // The class 'post-value' will make widget post input/select to controller url
-                    '<select name="selectedoption" class="form-control post-value">
+                    '<select name="selectedoption" class="form-select post-value">
                     <option value="po" selected>' . gT("Delete only from the central panel") . '</option>
                     <option value="ptt">' . gT("Delete from the central panel and associated surveys") . '</option>
                     <option value="ptta">' . gT("Delete from central panel, associated surveys and all associated responses") . '</option>
@@ -35,7 +35,7 @@ $this->widget('ext.admin.grid.MassiveActionsWidget.MassiveActionsWidget', array(
                 'htmlFooterButtons' => array(
                     // The class 'btn-ok' binds to URL above
                     '<a class="btn btn-ok btn-danger"><span class="fa fa-trash"></span>&nbsp;' . gT('Delete') . '</a>',
-                    '<a class="btn btn-default" data-dismiss="modal">' . gT('Cancel') . '</a>'
+                    '<a class="btn btn-cancel" data-bs-dismiss="modal">' . gT('Cancel') . '</a>'
                 ),
                 'aCustomDatas' => array(),
             ],

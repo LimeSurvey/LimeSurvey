@@ -185,6 +185,12 @@ class SurveyAdministrationController extends LSBaseController
             $aData['display']['menu_bars']['surveysummary'] = 'viewgroup';
         }
 
+        $surveyUrls = [];
+        foreach ($survey->allLanguages as $language) {
+            $surveyUrls[$language] = $survey->getSurveyUrl($language);
+        }
+        $aData['surveyUrls'] = $surveyUrls;
+
         $this->surveysummary($aData);
 
         // Display 'Overview' in Green Bar
@@ -508,8 +514,7 @@ class SurveyAdministrationController extends LSBaseController
                 $iNewGroupID = $this->createSampleGroup($iNewSurveyid);
                 $iNewQuestionID = $this->createSampleQuestion($iNewSurveyid, $iNewGroupID);
 
-                Yii::app()->setFlashMessage(gT("Your new survey was created. 
-                We also created a first question group and an example question for you."), 'info');
+                Yii::app()->setFlashMessage(gT("Your new survey was created. We also created a first question group and an example question for you."), 'info');
                 $redirecturl = $this->getSurveyAndSidemenueDirectionURL(
                     $iNewSurveyid,
                     $iNewGroupID,
@@ -566,7 +571,7 @@ class SurveyAdministrationController extends LSBaseController
      */
     public function actionImportsurveyresources()
     {
-        $iSurveyID = Yii::app()->request->getPost('surveyid');
+        $iSurveyID = sanitize_int(Yii::app()->request->getPost('surveyid'));
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update')) {
             Yii::app()->user->setFlash('error', gT("Access denied"));
             $this->redirect(Yii::app()->request->urlReferrer);
@@ -1200,7 +1205,7 @@ class SurveyAdministrationController extends LSBaseController
         $changes = Yii::app()->request->getPost('changes', []);
         $aSuccess = [];
 
-        $oSurvey->showsurveypolicynotice = isset($changes['showsurveypolicynotice']) ? $changes['showsurveypolicynotice'] : 0;
+        $oSurvey->showsurveypolicynotice = $changes['showsurveypolicynotice'] ?? 0;
         $aSuccess[] = $oSurvey->save();
         foreach ($oSurvey->allLanguages as $sLanguage) {
             $oSurveyLanguageSetting = SurveyLanguageSetting::model()->findByPk([
@@ -1214,9 +1219,9 @@ class SurveyAdministrationController extends LSBaseController
                 $oSurveyLanguageSetting->surveyls_language = $sLanguage;
             }
 
-            $oSurveyLanguageSetting->surveyls_policy_notice = isset($changes['datasecmessage'][$sLanguage]) ? $changes['datasecmessage'][$sLanguage] : '';
-            $oSurveyLanguageSetting->surveyls_policy_error = isset($changes['datasecerror'][$sLanguage]) ? $changes['datasecerror'][$sLanguage] : '';
-            $oSurveyLanguageSetting->surveyls_policy_notice_label = isset($changes['dataseclabel'][$sLanguage]) ? $changes['dataseclabel'][$sLanguage] : '';
+            $oSurveyLanguageSetting->surveyls_policy_notice = $changes['datasecmessage'][$sLanguage] ?? '';
+            $oSurveyLanguageSetting->surveyls_policy_error = $changes['datasecerror'][$sLanguage] ?? '';
+            $oSurveyLanguageSetting->surveyls_policy_notice_label = $changes['dataseclabel'][$sLanguage] ?? '';
             $aSuccess[$sLanguage] = $oSurveyLanguageSetting->save();
             unset($oSurveyLanguageSetting);
         }
@@ -1288,7 +1293,7 @@ class SurveyAdministrationController extends LSBaseController
         $uploadValidator = new LimeSurvey\Models\Services\UploadValidator();
         $uploadValidator->renderJsonOnError('file', $debug);
 
-        $iSurveyID = Yii::app()->request->getPost('surveyid');
+        $iSurveyID = (int) Yii::app()->request->getPost('surveyid');
         $success = false;
         $debug = [];
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update')) {
@@ -1382,105 +1387,6 @@ class SurveyAdministrationController extends LSBaseController
                 'oSurvey' => $oSurvey,
                 'sid' => $sid,
                 'onlyclose' => !$oSurvey->hasTokensTable
-            ),
-            false,
-            false
-        );
-    }
-
-    /**
-     * This Method is returning the Data for Survey Top Bar Component
-     * for Vue JS as JSON.
-     *
-     * @param int $sid Given Survey ID
-     * @param bool $saveButton Renders Save Button
-     *
-     * @return string|string[]|null
-     * @throws CException
-     *
-     */
-    public function actionGetSurveyTopbar(int $sid, $saveButton = false)
-    {
-        $oSurvey = Survey::model()->findByPk($sid);
-        $hasSurveyContentPermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'update');
-        $hasSurveyActivationPermission = Permission::model()->hasSurveyPermission($sid, 'surveyactivation', 'update');
-        $hasDeletePermission = Permission::model()->hasSurveyPermission($sid, 'survey', 'delete');
-        $hasSurveyTranslatePermission = Permission::model()->hasSurveyPermission($sid, 'translations', 'read');
-        $hasSurveyReadPermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'read');
-        $hasSurveyTokensPermission = Permission::model()->hasSurveyPermission($sid, 'surveysettings', 'update')
-            || Permission::model()->hasSurveyPermission($sid, 'tokens', 'create');
-        $hasResponsesCreatePermission = Permission::model()->hasSurveyPermission($sid, 'responses', 'create');
-        $hasResponsesReadPermission = Permission::model()->hasSurveyPermission($sid, 'responses', 'read');
-        $hasResponsesStatisticsReadPermission = Permission::model()->hasSurveyPermission($sid, 'statistics', 'read');
-
-        $isActive = $oSurvey->active == 'Y';
-        $condition = array('sid' => $sid, 'parent_qid' => 0);
-        $sumcount = Question::model()->countByAttributes($condition);
-        $countLanguage = count($oSurvey->allLanguages);
-        $hasAdditionalLanguages = (count($oSurvey->additionalLanguages) > 0);
-        $canactivate = $sumcount > 0 && $hasSurveyActivationPermission;
-        $expired = $oSurvey->expires != '' && ($oSurvey->expires < dateShift(
-            date("Y-m-d H:i:s"),
-            "Y-m-d H:i",
-            Yii::app()->getConfig('timeadjust')
-        ));
-        $notstarted = ($oSurvey->startdate != '') && ($oSurvey->startdate > dateShift(
-            date("Y-m-d H:i:s"),
-            "Y-m-d H:i",
-            Yii::app()->getConfig('timeadjust')
-        ));
-
-        if (!$isActive) {
-            $context = gT("Preview survey");
-            $contextbutton = 'preview_survey';
-        } else {
-            $context = gT("Run survey");
-            $contextbutton = 'execute_survey';
-        }
-
-        $language = $oSurvey->language;
-        $conditionsCount = Condition::model()->with(array('questions' => array('condition' => 'sid =' . $sid)))->count();
-        $oneLanguage = (count($oSurvey->allLanguages) == 1);
-
-        // Put menu items in tools menu
-        $event = new PluginEvent('beforeToolsMenuRender', $this);
-        $event->set('surveyId', $oSurvey->sid);
-        App()->getPluginManager()->dispatchEvent($event);
-        $extraToolsMenuItems = $event->get('menuItems');
-
-        // Add new menus in survey bar
-        $event = new PluginEvent('beforeSurveyBarRender', $this);
-        $event->set('surveyId', $oSurvey->sid);
-        App()->getPluginManager()->dispatchEvent($event);
-        $beforeSurveyBarRender = $event->get('menus');
-
-        return $this->renderPartial(
-            'survey_topbar',
-            array(
-                'sid' => $sid,
-                'canactivate' => $canactivate,
-                'expired' => $expired,
-                'notstarted' => $notstarted,
-                'context' => $context,
-                'contextbutton' => $contextbutton,
-                'language' => $language,
-                'sumcount' => $sumcount,
-                'hasSurveyContentPermission' => $hasSurveyContentPermission,
-                'countLanguage' => $countLanguage,
-                'hasDeletePermission' => $hasDeletePermission,
-                'hasSurveyTranslatePermission' => $hasSurveyTranslatePermission,
-                'hasAdditionalLanguages' => $hasAdditionalLanguages,
-                'conditionsCount' => $conditionsCount,
-                'hasSurveyReadPermission' => $hasSurveyReadPermission,
-                'oneLanguage' => $oneLanguage,
-                'hasSurveyTokensPermission' => $hasSurveyTokensPermission,
-                'hasResponsesCreatePermission' => $hasResponsesCreatePermission,
-                'hasResponsesReadPermission' => $hasResponsesReadPermission,
-                'hasSurveyActivationPermission' => $hasSurveyActivationPermission,
-                'hasResponsesStatisticsReadPermission' => $hasResponsesStatisticsReadPermission,
-                'addSaveButton' => $saveButton,
-                'extraToolsMenuItems' => $extraToolsMenuItems ?? [],
-                'beforeSurveyBarRender' => $beforeSurveyBarRender ?? []
             ),
             false,
             false
@@ -1920,7 +1826,7 @@ class SurveyAdministrationController extends LSBaseController
             $aData['moreInfo'] = $temp;
         }
 
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'surveysettings.js');
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'surveysettings.js', LSYii_ClientScript::POS_BEGIN);
         App()->getClientScript()->registerPackage('jquery-json');
         App()->getClientScript()->registerPackage('bootstrap-switch');
 
@@ -2099,9 +2005,6 @@ class SurveyAdministrationController extends LSBaseController
             } elseif ($action == 'copysurvey') {
                 $iSurveyID = sanitize_int(Yii::app()->request->getParam('copysurveylist'));
                 $aExcludes = array();
-
-                $sNewSurveyName = Yii::app()->request->getPost('copysurveyname');
-
                 if (Yii::app()->request->getPost('copysurveyexcludequotas') == "1") {
                     $aExcludes['quotas'] = true;
                 }
@@ -2141,6 +2044,12 @@ class SurveyAdministrationController extends LSBaseController
                 } else {
                     Yii::app()->loadHelper('export');
                     $copysurveydata = surveyGetXMLData($iSurveyID, $aExcludes);
+                    if (empty(Yii::app()->request->getPost('copysurveyname'))) {
+                        $sourceSurvey = Survey::model()->findByPk($iSurveyID);
+                        $sNewSurveyName = $sourceSurvey->currentLanguageSettings->surveyls_title;
+                    } else {
+                        $sNewSurveyName = Yii::app()->request->getPost('copysurveyname');
+                    }
                 }
             }
 
@@ -2983,7 +2892,7 @@ class SurveyAdministrationController extends LSBaseController
             "window.TextEditData = {
                 connectorBaseUrl: '" . Yii::app()->getController()->createUrl('surveyAdministration/') . "',
                 isNewSurvey: " . ($survey->getIsNewRecord() ? "true" : "false") . ",
-                sid: $survey->sid, 
+                sid: $survey->sid,
                 i10N: {
                     'Survey title' : '" . gT('Survey title') . "',
                     'Date format' : '" . gT('Date format') . "',
@@ -3195,7 +3104,7 @@ class SurveyAdministrationController extends LSBaseController
         ];
         $aData['questions'] = $aQuestions;
 
-        App()->getClientScript()->registerPackage('jquery-datatable');
+        App()->getClientScript()->registerPackage('jquery-datatable-bs5');
         return $aData;
     }
 }

@@ -132,12 +132,7 @@ function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $
 
 
             if ($sLanguageCode == 'ar') {
-                if (!class_exists('I18N_Arabic_Glyphs', false)) {
-                    $Arabic = new I18N_Arabic('Glyphs');
-                } else {
-                    $Arabic = new I18N_Arabic_Glyphs();
-                }
-
+                $Arabic = new \ArPHP\I18N\Arabic('Glyphs');
                 foreach ($lbl as $kkey => $kval) {
                     if (preg_match("^[A-Za-z]^", $kkey)) {
 //auto detect if english
@@ -222,11 +217,7 @@ function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $
             $lbl = $labelTmp;
 
             if ($sLanguageCode == 'ar') {
-                if (!class_exists('I18N_Arabic_Glyphs', false)) {
-                    $Arabic = new I18N_Arabic('Glyphs');
-                } else {
-                    $Arabic = new I18N_Arabic_Glyphs();
-                }
+                $Arabic = new \ArPHP\I18N\Arabic('Glyphs');
 
                 foreach ($lbl as $kkey => $kval) {
                     if (preg_match("^[A-Za-z]^", $kkey)) {
@@ -377,12 +368,13 @@ function buildSelects($allfields, $surveyid, $language)
                     $firstletter != "Q" && $firstletter != "D" && $firstletter != "N" && $firstletter != "K" && $firstletter != "|" &&
                     $pv != "summary" && substr($pv, 0, 2) != "id" && substr($pv, 0, 9) != "datestamp"
             ) {
-//pull out just the fieldnames
+                //pull out just the fieldnames
                 //put together some SQL here
                 $thisquestion = Yii::app()->db->quoteColumnName($pv) . " IN (";
 
+                $db = Yii::app()->db;
                 foreach ($_POST[$pv] as $condition) {
-                    $thisquestion .= "'$condition', ";
+                    $thisquestion .= "{$db->quoteValue($condition)}, ";
                 }
 
                 $thisquestion = substr($thisquestion, 0, -2)
@@ -580,6 +572,9 @@ class userstatistics_helper
      */
     protected function buildOutputList($rt, $language, $surveyid, $outputType, $sql, $oLanguage, $browse = true)
     {
+        $language = sanitize_languagecode($language);
+        $surveyid = (int) $surveyid;
+
         //Set up required variables
         $survey = Survey::model()->findByPk($surveyid);
         $alist = array();
@@ -750,8 +745,7 @@ class userstatistics_helper
                     $showem[] = array(gT("Average no. of files per respondent"), $row['avg']);
                 }
 
-
-                $query = "SELECT " . $fieldname . " as json FROM {{survey_$surveyid}}";
+                $query = "SELECT " . Yii::app()->db->quoteColumnName($fieldname) . " as json FROM {{survey_$surveyid}}";
                 $result = Yii::app()->db->createCommand($query)->query();
 
                 $responsecount = 0;
@@ -811,10 +805,10 @@ class userstatistics_helper
                         $statisticsoutput .= "\n<table class='table table-striped statisticstable' >\n"
                             . "\t<thead><tr><th colspan='2' class='text-center'><strong>" . sprintf(gT("Summary for %s"), $qtitle) . ":</strong>"
                             . "</th></tr>\n"
-                            . "\t<tr><th colspan='2' class='text-left'><strong>$qquestion</strong></th></tr>\n"
-                            . "\t<tr>\n\t\t<th width='50%' class='text-right'><strong>"
+                            . "\t<tr><th colspan='2' class='text-start'><strong>$qquestion</strong></th></tr>\n"
+                            . "\t<tr>\n\t\t<th width='50%' class='text-end'><strong>"
                             . gT("Calculation") . "</strong></th>\n"
-                            . "\t\t<th width='50%' class='text-right'><strong>"
+                            . "\t\t<th width='50%' class='text-end'><strong>"
                             . gT("Result") . "</strong></th>\n"
                             . "\t</tr></thead>\n";
 
@@ -885,7 +879,7 @@ class userstatistics_helper
                             break;
                         case 'html':
                             // Multiple numerical and numerical field summary
-                            $statisticsoutput .= "\n<div class='well'><table class='table table-striped statisticstable' >\n"
+                            $statisticsoutput .= "\n<div class='card card-body bg-light mb-5'><table class='table table-striped statisticstable' >\n"
                                 . "\t<thead><tr><th colspan='2' class='text-center'><strong>" . sprintf(gT("Summary for %s"), $qtitle) . ":</strong>"
                                 . "</th></tr>\n"
                                 . "\t<tr><th colspan='2' class='text-center'><strong>$qquestion</strong></th></tr>\n"
@@ -1050,7 +1044,7 @@ class userstatistics_helper
                             if ($browse) {
                                 $statisticsoutput .= "\t<tr>\n"
                                     . "\t\t<td class='text-center' colspan='4'>
-                            <input type='button' class='btn btn-default statisticsbrowsebutton numericalbrowse' value='"
+                            <input type='button' class='btn btn-outline-secondary statisticsbrowsebutton numericalbrowse' value='"
                                     . gT("Browse") . "' id='$fieldname' /></td>\n</tr>";
                                 $statisticsoutput .= "<tr><td class='statisticsbrowsecolumn' colspan='3' style='display: none'>
                             <div class='statisticsbrowsecolumn' id='columnlist_{$fieldname}'></div></td></tr>";
@@ -1281,13 +1275,16 @@ class userstatistics_helper
                         }
                         break;
                     case Question::QT_1_ARRAY_DUAL:    // Array (dual scale)
-                        $sSubquestionQuery = "SELECT  question FROM {{questions}} q JOIN {{question_l10ns}} l ON q.qid = l.qid  WHERE q.parent_qid='$qiqid' AND q.title='$qanswer' AND l.language='{$language}' ORDER BY q.question_order";
+                        $qiqid = (int) $qiqid;
+                        $qanswerquoted = Yii::app()->db->quoteValue($qanswer);
+                        $sSubquestionQuery = "SELECT  question FROM {{questions}} q JOIN {{question_l10ns}} l ON q.qid = l.qid  WHERE q.parent_qid='$qiqid' AND q.title={$qanswerquoted} AND l.language='{$language}' ORDER BY q.question_order";
 
                         $questionDesc = Yii::app()->db->createCommand($sSubquestionQuery)->query()->read();
                         $sSubquestion = flattenText($questionDesc['question']);
 
                         //get question attributes
                         $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($qqid);
+                        $qqid = (int) $qqid;
 
                         //check last character -> label 1
                         if (substr($rt, -1, 1) == 0) {
@@ -1389,9 +1386,9 @@ class userstatistics_helper
         $sColumnName = null;
         if ($usegraph == 1) {
             //for creating graphs we need some more scripts which are included here
-            require_once(APPPATH . '/third_party/pchart/pChart.class.php');
-            require_once(APPPATH . '/third_party/pchart/pData.class.php');
-            require_once(APPPATH . '/third_party/pchart/pCache.class.php');
+            require_once(APPPATH . '/../vendor/pchart/pChart.class.php');
+            require_once(APPPATH . '/../vendor/pchart/pData.class.php');
+            require_once(APPPATH . '/../vendor/pchart/pCache.class.php');
             $MyCache = new pCache($tempdir . '/');
         }
 
@@ -1424,7 +1421,7 @@ class userstatistics_helper
                 break;
             case 'html':
                 //output
-                $statisticsoutput .= "<div class='well'><table class='table table-striped statisticstable'>\n"
+                $statisticsoutput .= "<div class='card card-body bg-light mb-5'><table class='table table-striped statisticstable'>\n"
                 . "\t<thead><tr><th colspan='4' class='text-center'><strong>"
 
                 //headline
@@ -1434,7 +1431,7 @@ class userstatistics_helper
 
                 //question title
                 . $outputs['qquestion'] . "</strong></th></tr>\n"
-                . "\t<tr>\n\t\t<th width='50%' class='text-left'>";
+                . "\t<tr>\n\t\t<th width='50%' class='text-start'>";
                 break;
             default:
                 break;
@@ -1596,7 +1593,7 @@ class userstatistics_helper
                 }
                 $fname = "$al[1]";
                 if ($browse === true) {
-                    $fname .= " <input type='button' class='btn btn-default statisticsbrowsebutton' value='"
+                    $fname .= " <input type='button' class='btn btn-outline-secondary statisticsbrowsebutton' value='"
                     . gT("Browse") . "' id='$sColumnName' />";
                 }
 
@@ -1640,7 +1637,7 @@ class userstatistics_helper
                 if ($al[0] == "Answer") {
                     $fname = "$al[1]";
                     if ($browse === true) {
-                        $fname .= " <input type='button'  class='btn btn-default statisticsbrowsebutton' value='"
+                        $fname .= " <input type='button'  class='btn btn-outline-secondary statisticsbrowsebutton' value='"
                         . gT("Browse") . "' id='$sColumnName' />";
                     }
                 } elseif ($al[0] == "NoAnswer") {
@@ -1648,9 +1645,9 @@ class userstatistics_helper
                 }
 
                 $statisticsoutput .= "</th>\n"
-                . "\t\t<th width='25%' class='text-right'>"
+                . "\t\t<th width='25%' class='text-end'>"
                 . "<strong>" . gT("Count") . "</strong></th>\n"
-                . "\t\t<th width='25%'class='text-right'>"
+                . "\t\t<th width='25%'class='text-end'>"
                 . "<strong>" . gT("Percentage") . "</strong></th>\n"
                 . "\t</tr></thead>\n";
 
@@ -1688,11 +1685,11 @@ class userstatistics_helper
                             case 'html':
                                 //four columns
                                 $statisticsoutput .= "<strong>" . gT("Answer") . "</strong></th>\n"
-                                . "\t\t<th width='15%' class='text-right'>"
+                                . "\t\t<th width='15%' class='text-end'>"
                                 . "<strong>" . gT("Count") . "</strong></th>\n"
-                                . "\t\t<th width='20%'class='text-right'>"
+                                . "\t\t<th width='20%'class='text-end'>"
                                 . "<strong>" . gT("Percentage") . "</strong></th>\n"
-                                . "\t\t<th width='15%'class='text-right'>"
+                                . "\t\t<th width='15%'class='text-end'>"
                                 . "<strong>" . gT("Sum") . "</strong></th>\n"
                                 . "\t</tr></thead>\n";
                                 break;
@@ -1718,9 +1715,9 @@ class userstatistics_helper
                             case 'html':
                                 //three columns
                                 $statisticsoutput .= "<strong>" . gT("Answer") . "</strong></td>\n"
-                                . "\t\t<th width='25%'class='text-right'>"
+                                . "\t\t<th width='25%'class='text-end'>"
                                 . "<strong>" . gT("Count") . "</strong></th>\n"
-                                . "\t\t<th width='25%'class='text-right'>"
+                                . "\t\t<th width='25%'class='text-end'>"
                                 . "<strong>" . gT("Percentage") . "</strong></th>\n"
                                 . "\t</tr></thead>\n";
                                 break;
@@ -1755,9 +1752,9 @@ class userstatistics_helper
                         case 'html':
                             //three columns
                             $statisticsoutput .= "<strong>" . gT("Answer") . "</strong></th>\n"
-                            . "\t\t<th width='25%'class='text-right'>"
+                            . "\t\t<th width='25%'class='text-end'>"
                             . "<strong>" . gT("Count") . "</strong></th>\n"
-                            . "\t\t<th width='25%'class='text-right'>"
+                            . "\t\t<th width='25%'class='text-end'>"
                             . "<strong>" . gT("Percentage") . "</strong></th>\n"
                             . "\t</tr></thead>\n";
                             break;
@@ -1950,7 +1947,7 @@ class userstatistics_helper
             * 2 (25%) = count (absolute)
             * 3 (25%) = percentage
             */
-            $statisticsoutput .= "\t<tr>\n\t\t<td class='text-left'>" . $label[$i] . "\n"
+            $statisticsoutput .= "\t<tr>\n\t\t<td class='text-start'>" . $label[$i] . "\n"
             . "\t\t</td>\n";
             /*
             * If there is a "browse" button in this label, let's make sure there's an extra row afterwards
@@ -1967,7 +1964,7 @@ class userstatistics_helper
             }
 
             //output absolute number of records
-            $statisticsoutput .= "\t\t<td class='text-right'>" . $grawdata[$i] . "\n</td>";
+            $statisticsoutput .= "\t\t<td class='text-end'>" . $grawdata[$i] . "\n</td>";
 
 
             //no data
@@ -1987,7 +1984,7 @@ class userstatistics_helper
                         break;
                     case 'html':
                         //output when having no data
-                        $statisticsoutput .= "\t\t<td  class='text-right'>";
+                        $statisticsoutput .= "\t\t<td  class='text-end'>";
 
                         //percentage = 0
                         $statisticsoutput .= sprintf("%01.2f", $gdata[$i]) . "%";
@@ -2081,10 +2078,10 @@ class userstatistics_helper
 
                         case 'html':
                             //output percentage
-                            $statisticsoutput .= "\t\t<td class='text-right'>";
+                            $statisticsoutput .= "\t\t<td class='text-end'>";
                             $statisticsoutput .= sprintf("%01.2f", $percentage) . "%</td>";
 
-                            $statisticsoutput .= "\t\t<td class='text-right'>";
+                            $statisticsoutput .= "\t\t<td class='text-end'>";
                             if ($aggregatedPercentage !== 'na') {
                                 $statisticsoutput .= sprintf("%01.2f", $aggregatedPercentage) . "%";
                             } else {
@@ -2141,17 +2138,17 @@ class userstatistics_helper
                                 break;
                             case 'html':
                                 $statisticsoutput .= "\t\t&nbsp;\n\t</tr>\n";
-                                $statisticsoutput .= "<tr><td class='text-right'><strong>" . gT("Sum") . " (" . gT("Answers") . ")</strong></td>";
-                                $statisticsoutput .= "<td class='text-right'><strong>" . $sumitems . "</strong></td>";
-                                $statisticsoutput .= "<td class='text-right'><strong>$sumpercentage%</strong></td>";
-                                $statisticsoutput .= "<td class='text-right'><strong>$sumpercentage%</strong></td>";
+                                $statisticsoutput .= "<tr><td class='text-end'><strong>" . gT("Sum") . " (" . gT("Answers") . ")</strong></td>";
+                                $statisticsoutput .= "<td class='text-end'><strong>" . $sumitems . "</strong></td>";
+                                $statisticsoutput .= "<td class='text-end'><strong>$sumpercentage%</strong></td>";
+                                $statisticsoutput .= "<td class='text-end'><strong>$sumpercentage%</strong></td>";
                                 $statisticsoutput .= "\t\t&nbsp;\n\t</tr>\n";
 
-                                $statisticsoutput .= "<tr><td class='text-right'>" . gT("Number of cases") . "</td>"; //German: "Fallzahl"
-                                $statisticsoutput .= "<td class='text-right'>" . $TotalCompleted . "</td>";
-                                $statisticsoutput .= "<td class='text-right'>$casepercentage%</td>";
+                                $statisticsoutput .= "<tr><td class='text-end'>" . gT("Number of cases") . "</td>"; //German: "Fallzahl"
+                                $statisticsoutput .= "<td class='text-end'>" . $TotalCompleted . "</td>";
+                                $statisticsoutput .= "<td class='text-end'>$casepercentage%</td>";
                                 //there has to be a whitespace within the table cell to display correctly
-                                $statisticsoutput .= "<td class='text-right'>&nbsp;</td></tr>";
+                                $statisticsoutput .= "<td class='text-end'>&nbsp;</td></tr>";
                                 break;
                             default:
                                 break;
@@ -2177,7 +2174,7 @@ class userstatistics_helper
                             break;
                         case 'html':
                             //output percentage
-                            $statisticsoutput .= "\t\t<td class='text-right'>";
+                            $statisticsoutput .= "\t\t<td class='text-end'>";
                             $statisticsoutput .= sprintf("%01.2f", $gdata[$i]) . "%";
                             $statisticsoutput .= "\t\t";
                             //end output per line. there has to be a whitespace within the table cell to display correctly
@@ -2287,10 +2284,10 @@ class userstatistics_helper
                         break;
                     case 'html':
                         //calculate standard deviation
-                        $statisticsoutput .= "<tr><td class='text-right'>" . gT("Arithmetic mean") . "</td>"; //German: "Fallzahl"
-                        $statisticsoutput .= "<td>&nbsp;</td><td class='text-right'> $am</td><td>&nbsp;</td></tr>";
-                        $statisticsoutput .= "<tr><td class='text-right'>" . gT("Standard deviation") . "</td>"; //German: "Fallzahl"
-                        $statisticsoutput .= "<td>&nbsp;</td><td class='text-right'>$stddev</td><td>&nbsp;</td></tr>";
+                        $statisticsoutput .= "<tr><td class='text-end'>" . gT("Arithmetic mean") . "</td>"; //German: "Fallzahl"
+                        $statisticsoutput .= "<td>&nbsp;</td><td class='text-end'> $am</td><td>&nbsp;</td></tr>";
+                        $statisticsoutput .= "<tr><td class='text-end'>" . gT("Standard deviation") . "</td>"; //German: "Fallzahl"
+                        $statisticsoutput .= "<td>&nbsp;</td><td class='text-end'>$stddev</td><td>&nbsp;</td></tr>";
 
                         break;
                     default:
@@ -2449,12 +2446,17 @@ class userstatistics_helper
      */
     public function generate_statistics($surveyid, $allfields, $q2show = 'all', $usegraph = 0, $outputType = 'pdf', $pdfOutput = 'I', $sLanguageCode = null, $browse = true)
     {
+        if (!isset($surveyid)) {
+            $surveyid = (int) returnGlobal('sid');
+        } else {
+            $surveyid = (int) $surveyid;
+        }
+
         $survey = Survey::model()->findByPk($surveyid);
 
         $aStatisticsData = array(); //astatdata generates data for the output page's javascript so it can rebuild graphs on the fly
         //load surveytranslator helper
         Yii::import('application.helpers.surveytranslator_helper', true);
-        Yii::import('application.third_party.ar-php.Arabic', true);
 
         $sTempDir = Yii::app()->getConfig("tempdir");
 
@@ -2474,11 +2476,6 @@ class userstatistics_helper
         /**
          * get/set Survey Details
          */
-
-        //no survey ID? -> come and get one
-        if (!isset($surveyid)) {
-            $surveyid = returnGlobal('sid');
-        }
 
         // Set language for questions and answers to base language of this survey
         $language = $sLanguageCode;
@@ -2521,8 +2518,9 @@ class userstatistics_helper
                     $myField = "D" . $myField;
                 }
                 if ($field['type'] == Question::QT_F_ARRAY || $field['type'] == Question::QT_H_ARRAY_COLUMN) {
+                    $db = Yii::app()->db;
                     //Get answers. We always use the answer code because the label might be too long elsewise
-                    $query = "SELECT code, answer FROM {{answers}} WHERE qid='" . $field['qid'] . "' AND scale_id=0 AND language='{$language}' ORDER BY sortorder, answer";
+                    $query = "SELECT code, answer FROM {{answers}} WHERE qid={$db->quoteValue($field['qid'])} AND scale_id=0 AND language={$db->quoteValue($language)} ORDER BY sortorder, answer";
                     $result = Yii::app()->db->createCommand($query)->query();
 
                     //check all the answers
@@ -2592,8 +2590,6 @@ class userstatistics_helper
             /**
              * Initiate the Spreadsheet_Excel_Writer
              */
-            require_once(APPPATH . '/third_party/pear/Spreadsheet/Excel/Writer.php');
-
             if ($pdfOutput == 'F') {
                 $sFileName = $sTempDir . '/statistic-survey' . $surveyid . '.xls';
                 $this->workbook = new Spreadsheet_Excel_Writer($sFileName);
@@ -2693,7 +2689,7 @@ class userstatistics_helper
                 break;
 
             case 'html':
-                $sOutputHTML .= "<br />\n<div class='well'><table class='table table-striped statisticssummary' >\n"
+                $sOutputHTML .= "<br />\n<div class='card card-body bg-light mb-5'><table class='table table-striped statisticssummary' >\n"
                     . "\t<thead><tr><th class='text-center' colspan='2'>" . gT("Results") . "</th></tr></thead>\n"
                     . "\t<tr><th style='text-align:left'>" . gT("Number of records in this query:") . '</th>'
                     . "<td style='text-align:right'>$results</td></tr>\n"
@@ -2836,6 +2832,7 @@ class userstatistics_helper
      */
     protected function getQuartile($quartile, $fieldname, $surveyid, $sql, $excludezeros)
     {
+        $surveyid = (int) $surveyid;
         static $sid = null;
         static $recordCount = 0;
         static $field = null;

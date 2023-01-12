@@ -14,11 +14,11 @@ echo viewHelper::getViewTestTag('statisticsIndex');
 <?php $this->renderPartial('/admin/export/statistics_subviews/_statistics_view_scripts', array('sStatisticsLanguage' => $sStatisticsLanguage, 'surveyid' => $surveyid, 'showtextinline' => $showtextinline)); ?>
 <?php echo CHtml::form(array("admin/statistics/sa/index/surveyid/{$surveyid}/"), 'post', array('name' => 'generate-statistics', 'class' => '', 'id' => 'generate-statistics')); ?>
 <div id='statisticsview' class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <div class="h1 visible-print-block text-center"><?php echo flattenText($oSurvey->defaultlanguage->surveyls_title,1); ?></div>
-    <div class="row hidden-print">
-        <div class="col-md-12">
-            <div class="col-md-3 text-left">
-                <h4 class="hidden-print">
+    <div class="h1 d-print-block d-none text-center"><?php echo flattenText($oSurvey->defaultlanguage->surveyls_title,1); ?></div>
+    <div class="row d-print-none">
+        <div class="col-12">
+            <div class="col-lg-3 text-start">
+                <h4 class="d-print-none">
                     <span class="fa fa-bar-chart"></span> &nbsp;&nbsp;&nbsp;
                     <?php eT("Statistics"); ?>
                 </h4>
@@ -28,8 +28,8 @@ echo viewHelper::getViewTestTag('statisticsIndex');
 
 
     <!-- General filters -->
-    <div class="row hidden-print">
-        <div class="col-sm-12 content-right">
+    <div class="row d-print-none">
+        <div class="col-12 content-right">
 
             <!-- Header -->
             <?php $this->renderPartial('/admin/export/statistics_subviews/_header', array()); ?>
@@ -40,7 +40,7 @@ echo viewHelper::getViewTestTag('statisticsIndex');
                                                                             } ?>>
                 <div id='statistics_general_filter'>
 
-                    <div class="col-sm-12">
+                    <div class="col-12">
                         <!-- Data Selection -->
                         <?php $this->renderPartial('/admin/export/statistics_subviews/_mainoptions', array('error' => $error, 'surveyid' => $surveyid, 'selectshow' => $selectshow, 'selecthide' => $selecthide, 'selectinc' => $selectinc, 'survlangs' => $survlangs, 'sStatisticsLanguage' => $sStatisticsLanguage)); ?>
                         <!-- Output options -->
@@ -53,16 +53,16 @@ echo viewHelper::getViewTestTag('statisticsIndex');
                 <p>
                     <input type='hidden' name='summary[]' value='idG' />
                     <input type='hidden' name='summary[]' value='idL' />
-                    <input class="hidden" type='submit' value='<?php eT("View statistics"); ?>' />
-                    <input class="hidden" type='button' value='<?php eT("Clear"); ?>' onclick="window.open('<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/index/surveyid/$surveyid"); ?>', '_top')" />
+                    <input class="d-none" type='submit' value='<?php eT("View statistics"); ?>' />
+                    <input class="d-none" type='button' value='<?php eT("Clear"); ?>' onclick="window.open('<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/index/surveyid/$surveyid"); ?>', '_top')" />
                 </p>
             </div>
         </div>
     </div>
 
     <!-- Response filter -->
-    <div class="row hidden-print">
-        <div class="col-lg-12 content-right">
+    <div class="row d-print-none">
+        <div class="col-12 content-right">
             <div style='clear: both'></div>
 
             <!-- Response filter header -->
@@ -73,8 +73,8 @@ echo viewHelper::getViewTestTag('statisticsIndex');
                 <input type='hidden' id='filterchoice_state' name='filterchoice_state' value='<?php echo $filterchoice_state; ?>' />
 
                 <?php
-                                                                                                            $dshresults = (isset($dshresults)) ? $dshresults : '';
-                                                                                                            $dshresults2 = (isset($dshresults2)) ? $dshresults2 : '';
+                                                                                                            $dshresults = $dshresults ?? '';
+                                                                                                            $dshresults2 = $dshresults2 ?? '';
                 ?>
                 <!-- Filter choice -->
                 <?php $this->renderPartial(
@@ -99,8 +99,8 @@ echo viewHelper::getViewTestTag('statisticsIndex');
             </div>
 
             <p id='vertical_slide2'>
-                <input type='submit' class="hidden" value='<?php eT("View statistics"); ?>' />
-                <input type='button' class="hidden" value='<?php eT("Clear"); ?>' onclick="window.open('<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/index/surveyid/$surveyid"); ?>', '_top')" />
+                <input type='submit' class="d-none" value='<?php eT("View statistics"); ?>' />
+                <input type='button' class="d-none" value='<?php eT("Clear"); ?>' onclick="window.open('<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/index/surveyid/$surveyid"); ?>', '_top')" />
                 <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
                 <input type='hidden' name='display' value='stats' />
             </p>
@@ -109,7 +109,7 @@ echo viewHelper::getViewTestTag('statisticsIndex');
     </form>
 
     <div class="row">
-        <div class="col-lg-12 content-right">
+        <div class="col-12 content-right">
 
             <!-- Statistics header -->
             <?php $this->renderPartial('/admin/export/statistics_subviews/_statistics_header', array()); ?>
@@ -136,9 +136,15 @@ echo viewHelper::getViewTestTag('statisticsIndex');
             </div>
         </div>
     </div>
-    <div class="row hidden-print">
-        <div class="col-lg-12 content-left">
-            <button id="statisticsExportImages" class="btn btn-info" style="margin: auto;"><?= gT('Export images') ?></button>
+    <div class="row d-print-none">
+        <div class="col-12 content-left">
+            <button 
+                type="button"
+                id="statisticsExportImages" 
+                class="btn btn-info" 
+                style="margin: auto;">
+                <?= gT('Export images'); ?>
+            </button>
             <p><?php eT('Make sure all images on this screen are loaded before clicking on the button.'); ?></p>
         </div>
     </div>

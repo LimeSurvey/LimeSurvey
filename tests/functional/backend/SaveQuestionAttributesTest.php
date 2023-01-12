@@ -108,6 +108,9 @@ class SaveQuestionAttributesTest extends TestBaseClassWeb
             $attribute1 = $web->findElement(WebDriverBy::id('advancedSettings_display_cssclass'));
             $attribute1->sendKeys('test-class<script>console.log("Test");</script>');
 
+            $web->executeScript('window.scrollTo(0,document.body.scrollHeight);');
+            sleep(1);
+
             $testCategoryTitle = $web->findElement(WebDriverBy::id('button-collapse-Test'));
             $testCategoryTitle->click();
 
@@ -172,15 +175,15 @@ class SaveQuestionAttributesTest extends TestBaseClassWeb
             $url = $urlMan->createUrl('admin/pluginmanager/sa/index');
             $web->get($url);
 
-            $button = $this->waitForElementShim($web, '[data-target="#installPluginZipModal"]');
-            $web->wait(10)->until(WebDriverExpectedCondition::elementToBeClickable(WebDriverBy::cssSelector('[data-target="#installPluginZipModal"]')));
+            $button = $this->waitForElementShim($web, '[data-bs-target="#installPluginZipModal"]');
+            $web->wait(10)->until(WebDriverExpectedCondition::elementToBeClickable(WebDriverBy::cssSelector('[data-bs-target="#installPluginZipModal"]')));
             $button->click();
 
             // Upload the file
             $web->wait(10)->until(WebDriverExpectedCondition::elementToBeClickable(WebDriverBy::cssSelector('#installPluginZipModal #the_file')));
             $fileInput = $web->findByCss('#installPluginZipModal #the_file');
             $fileInput->setFileDetector(new LocalFileDetector());
-            $file = BASEPATH . '../tests/data/file_upload/NewQuestionAttributesPlugin.zip';
+            $file = ROOT . '/tests/data/file_upload/NewQuestionAttributesPlugin.zip';
             $this->assertTrue(file_exists($file));
             $fileInput->sendKeys($file)->submit();
 

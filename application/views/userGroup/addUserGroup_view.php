@@ -1,12 +1,12 @@
-<div class="col-lg-12 list-surveys">
+<div class="col-12 list-surveys">
 
     <div class="row">
-        <div class="col-md-8 col-md-offset-2 content-right">
+        <div class="col-lg-8 offset-lg-2 content-right">
             <?php echo CHtml::form(array("userGroup/addGroup"), 'post', array('class'=>'', 'id'=>'usergroupform')); ?>
 
                 <!-- Name -->
-                <div class="form-group col-lg-12">
-                    <label for='group_name' class="control-label">
+                <div class="mb-3 col-12">
+                    <label for='group_name' class="form-label">
                         <?php eT("Name:"); ?>
                     </label>
 
@@ -16,8 +16,8 @@
                 </div>
 
                 <!-- Description -->
-                <div class="form-group col-lg-12">
-                    <label for='group_description' class="control-label">
+                <div class="mb-3 col-12">
+                    <label for='group_description' class="form-label">
                         <?php eT("Description:"); ?>
                     </label>
                     <div class="default controls">
@@ -27,7 +27,7 @@
 
                 <!-- Buttons -->
                 <p>
-                    <input type='submit' value='<?php eT("Add group"); ?>' class="hidden" />
+                    <input type='submit' value='<?php eT("Add group"); ?>' class="d-none" />
                     <input type='hidden' name='action' value='saveusergroup'  />
                 </p>
             </form>

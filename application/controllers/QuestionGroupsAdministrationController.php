@@ -144,7 +144,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
         $aData['sidemenu']['questiongroups'] = true;
         $aData['sidemenu']['group_name'] = $oQuestionGroup->questiongroupl10ns[$baselang]->group_name ?? '';
         $aData['sidemenu']['explorer']['state'] = true;
-        $aData['sidemenu']['explorer']['gid'] = (isset($gid)) ? $gid : false;
+        $aData['sidemenu']['explorer']['gid'] = $gid ?? false;
         $aData['sidemenu']['explorer']['qid'] = false;
         $aData['sidemenu']['landOnSideMenuTab'] = $landOnSideMenuTab;
 
@@ -254,7 +254,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
         $aData['sidemenu']['questiongroups'] = true;
         $aData['sidemenu']['group_name'] = $oQuestionGroup->questiongroupl10ns[$sBaseLanguage]->group_name ?? '';
         $aData['sidemenu']['explorer']['state'] = true;
-        $aData['sidemenu']['explorer']['gid'] = (isset($gid)) ? $gid : false;
+        $aData['sidemenu']['explorer']['gid'] = $gid ?? false;
         $aData['sidemenu']['explorer']['qid'] = false;
         $aData['sidemenu']['landOnSideMenuTab'] = $landOnSideMenuTab;
 
@@ -367,8 +367,8 @@ class QuestionGroupsAdministrationController extends LSBaseController
         $baselang = $survey->language;
         $model    = new QuestionGroup('search');
 
-        if (isset($_GET['QuestionGroup'])) {
-            $model->attributes = $_GET['QuestionGroup'];
+        if (isset($_GET['QuestionGroup']['group_name'])) {
+            $model->group_name = $_GET['QuestionGroup']['group_name'];
         }
 
         if (isset($_GET['pageSize'])) {
@@ -889,9 +889,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
                         $oQuestiongroups
                     );
 
-                    $aQuestiongroup['questions'] = isset($aQuestiongroup['questions'])
-                        ? $aQuestiongroup['questions']
-                        : [];
+                    $aQuestiongroup['questions'] = $aQuestiongroup['questions'] ?? [];
 
                     foreach ($aQuestiongroup['questions'] as $aQuestion) {
                         $aQuestions = Question::model()->findAll(
@@ -942,56 +940,6 @@ class QuestionGroupsAdministrationController extends LSBaseController
                     'message' => gT("You can't reorder in an active survey"),
                     'DEBUG' => ['POST' => $_POST, 'grouparray' => $grouparray]
                 ],
-            ),
-            false,
-            false
-        );
-    }
-
-    /**
-     * Ajax request to get the question group topbar as json (see view question_group_topbar)
-     *
-     * @param int $sid ID of survey
-     * @param null |int $gid ID of group
-     *
-     * @return mixed
-     * @throws CException
-     */
-    public function actionGetQuestionGroupTopBar(int $sid, $gid = null)
-    {
-        //permission ??
-        if (!Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'read')) {
-            App()->user->setFlash('error', gT("Access denied"));
-            $this->redirect(App()->request->urlReferrer);
-        }
-
-        $oSurvey = Survey::model()->findByPk($sid);
-        $oQuestionGroup = null;
-        if ($gid) {
-            $oQuestionGroup = QuestionGroup::model()->findByPk($gid);
-            $sumcount  = safecount($oQuestionGroup->questions);
-        } else {
-            $gid = 0;
-            $sumcount = 0;
-        }
-
-        $activated = $oSurvey->active;
-        $languagelist = $oSurvey->allLanguages;
-        $ownsSaveButton = true;
-        $ownsSaveAndCloseButton = true;
-
-        return $this->renderPartial(
-            'question_group_topbar',
-            array(
-                'oSurvey' => $oSurvey,
-                'oQuestionGroup' => $oQuestionGroup,
-                'sid'     => $oSurvey->sid,
-                'gid'     => $gid,
-                'sumcount4' => $sumcount,
-                'languagelist' => $languagelist,
-                'activated' => $activated,
-                'ownsSaveButton'         => $ownsSaveButton,
-                'ownsSaveAndCloseButton' => $ownsSaveAndCloseButton,
             ),
             false,
             false

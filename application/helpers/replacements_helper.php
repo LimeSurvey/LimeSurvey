@@ -90,7 +90,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $showxquestions = Yii::app()->getConfig('showxquestions');
     }
     if (!isset($s_lang)) {
-        $s_lang = (isset(Yii::app()->session['survey_' . $_surveyid]['s_lang']) ? Yii::app()->session['survey_' . $_surveyid]['s_lang'] : 'en');
+        $s_lang = (Yii::app()->session['survey_' . $_surveyid]['s_lang'] ?? 'en');
     }
     if ($_surveyid && !isset($thissurvey)) {
         $thissurvey = getSurveyInfo($_surveyid, $s_lang);
@@ -172,7 +172,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         ($showgroupinfo == 'choose' && $thissurvey['showgroupinfo'] == 'B') ||
         ($showgroupinfo == 'choose' && $thissurvey['showgroupinfo'] == 'N')
     ) {
-        $_groupname = isset($groupname) ? $groupname : '';
+        $_groupname = $groupname ?? '';
     } else {
         $_groupname = '';
     };
@@ -183,7 +183,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         ($showgroupinfo == 'choose' && $thissurvey['showgroupinfo'] == 'B') ||
         ($showgroupinfo == 'choose' && $thissurvey['showgroupinfo'] == 'D')
     ) {
-        $_groupdescription = isset($groupdescription) ? $groupdescription : '';
+        $_groupdescription = $groupdescription ?? '';
     } else {
         $_groupdescription = '';
     };
@@ -236,7 +236,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     }
 
     if (isset($surveyid) && isset($_SESSION['survey_' . $surveyid]['srid'])) {
-        $_quexmlpdf = CHtml::link(gT("Save as PDF"), array("/printanswers/view/surveyid/{$surveyid}/printableexport/quexmlpdf"), array('data-toggle' => 'tooltip', 'data-placement' => 'right', 'title' => gT("Note: Print will not include items on this page")));
+        $_quexmlpdf = CHtml::link(gT("Save as PDF"), array("/printanswers/view/surveyid/{$surveyid}/printableexport/quexmlpdf"), array('data-bs-toggle' => 'tooltip', 'data-bs-placement' => 'right', 'title' => gT("Note: Print will not include items on this page")));
     } else {
         $_quexmlpdf = "";
     }
@@ -254,34 +254,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $_restart = "";
     $_return_to_survey = "";
 
-    if (isset($thissurvey['googleanalyticsapikey']) && $thissurvey['googleanalyticsapikey'] === "9999useGlobal9999") {
-        $_googleAnalyticsAPIKey = trim(App()->getConfig('googleanalyticsapikey'));
-    } elseif (isset($thissurvey['googleanalyticsapikey']) && trim($thissurvey['googleanalyticsapikey']) != '') {
-        $_googleAnalyticsAPIKey = trim($thissurvey['googleanalyticsapikey']);
-    } else {
-        $_googleAnalyticsAPIKey = "";
-    }
-
-    $thissurvey['googleanalyticsapikey'] = $_googleAnalyticsAPIKey;
-
-    $_googleAnalyticsStyle = (isset($thissurvey['googleanalyticsstyle']) ? $thissurvey['googleanalyticsstyle'] : '1');
-
-    if ($_googleAnalyticsAPIKey != '' && $_googleAnalyticsStyle == 2) {
-        // SurveyName-[SID]/[GSEQ]-GroupName - create custom GSEQ based upon page step
-        $moveInfo = LimeExpressionManager::GetLastMoveResult();
-        if (is_null($moveInfo)) {
-            $gseq = 'welcome';
-        } elseif ($moveInfo['finished']) {
-            $gseq = 'finished';
-        } elseif (isset($moveInfo['at_start']) && $moveInfo['at_start']) {
-            $gseq = 'welcome';
-        } elseif (is_null($_groupname)) {
-            $gseq = 'printanswers';
-        } else {
-            $gseq = $moveInfo['gseq'] + 1;
-        }
-    }
-
+    $_googleAnalyticsStyle = ($thissurvey['googleanalyticsstyle'] ?? '1');
     $_endtext = '';
     if (isset($thissurvey['surveyls_endtext']) && trim($thissurvey['surveyls_endtext']) != '') {
         $_endtext = $thissurvey['surveyls_endtext'];
@@ -291,7 +264,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
 
     if (!empty($oTemplate->siteLogo)) {
         if (file_exists($oTemplate->path . $oTemplate->siteLogo)) {
-            $sitelogo = '<img class="img-responsive site-surveylist-logo custom custom-margin top-15 bottom-15" src="' . App()->getAssetManager()->publish($oTemplate->path . $oTemplate->siteLogo) . '" alt=""/>';
+            $sitelogo = '<img class="img-fluid site-surveylist-logo custom custom-margin top-15 bottom-15" src="' . App()->getAssetManager()->publish($oTemplate->path . $oTemplate->siteLogo) . '" alt=""/>';
         }
     }
 
@@ -309,44 +282,44 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $coreReplacements['CLEARALL'] = $_clearall;
     $coreReplacements['QUEXMLPDF'] = $_quexmlpdf;
     $coreReplacements['CLOSEWINDOW'] = ''; // Obsolete tag - keep this line for compatibility reaons
-    $coreReplacements['COMPLETED'] = isset($redata['completed']) ? $redata['completed'] : ''; // global
+    $coreReplacements['COMPLETED'] = $redata['completed'] ?? ''; // global
     $coreReplacements['DATESTAMP'] = $_datestamp;
     $coreReplacements['ENDTEXT'] = $_endtext;
     $coreReplacements['EXPIRY'] = $_dateoutput;
-    $coreReplacements['ADMINNAME'] = isset($thissurvey['admin']) ? $thissurvey['admin'] : '';
-    $coreReplacements['ADMINEMAIL'] = isset($thissurvey['adminemail']) ? $thissurvey['adminemail'] : '';
+    $coreReplacements['ADMINNAME'] = $thissurvey['admin'] ?? '';
+    $coreReplacements['ADMINEMAIL'] = $thissurvey['adminemail'] ?? '';
     $coreReplacements['GID'] = Yii::app()->getConfig('gid', ''); // Use the gid of the question, except if we are not in question (Randomization group name)
     $coreReplacements['GROUPDESCRIPTION'] = $_groupdescription;
     $coreReplacements['GROUPNAME'] = $_groupname;
     $coreReplacements['LANG'] = App()->language;
-    $coreReplacements['NAVIGATOR'] = isset($navigator) ? $navigator : ''; // global
-    $coreReplacements['MOVEPREVBUTTON'] = isset($moveprevbutton) ? $moveprevbutton : ''; // global
-    $coreReplacements['MOVENEXTBUTTON'] = isset($movenextbutton) ? $movenextbutton : ''; // global
+    $coreReplacements['NAVIGATOR'] = $navigator ?? ''; // global
+    $coreReplacements['MOVEPREVBUTTON'] = $moveprevbutton ?? ''; // global
+    $coreReplacements['MOVENEXTBUTTON'] = $movenextbutton ?? ''; // global
     $coreReplacements['NUMBEROFQUESTIONS'] = $_totalquestionsAsked;
     $coreReplacements['NUMBEROFGROUPS'] = $totalgroups;
-    $coreReplacements['PERCENTCOMPLETE'] = isset($percentcomplete) ? $percentcomplete : ''; // global
+    $coreReplacements['PERCENTCOMPLETE'] = $percentcomplete ?? ''; // global
     $coreReplacements['PRIVACYHEADING'] = '';
     $coreReplacements['PRIVACYMESSAGE'] = '';
     /* Another solution to remove index from global */
     //~ $coreReplacements['QUESTION_INDEX']=isset($questionindex) ? $questionindex: '';
     //~ $coreReplacements['QUESTION_INDEX_MENU']=isset($questionindexmenu) ? $questionindexmenu: '';
     /* indexItems is static but not rendering, seem better to call it here ? */
-    $coreReplacements['QUESTION_INDEX'] = isset($questionindex) ? $questionindex : '';
-    $coreReplacements['QUESTION_INDEX_MENU'] = isset($questionindexmenu) ? $questionindexmenu : '';
+    $coreReplacements['QUESTION_INDEX'] = $questionindex ?? '';
+    $coreReplacements['QUESTION_INDEX_MENU'] = $questionindexmenu ?? '';
     $coreReplacements['RESTART'] = $_restart;
     $coreReplacements['RETURNTOSURVEY'] = $_return_to_survey;
-    $coreReplacements['SAVE'] = isset($_saveall) ? $_saveall : '';
+    $coreReplacements['SAVE'] = $_saveall ?? '';
     $coreReplacements['SITELOGO'] = $sitelogo;
     $coreReplacements['SURVEYCONTACT'] = $surveycontact;
-    $coreReplacements['SURVEYDESCRIPTION'] = (isset($thissurvey['description']) ? $thissurvey['description'] : '');
-    $coreReplacements['SURVEYFORMAT'] = isset($surveyformat) ? $surveyformat : ''; // global
+    $coreReplacements['SURVEYDESCRIPTION'] = ($thissurvey['description'] ?? '');
+    $coreReplacements['SURVEYFORMAT'] = $surveyformat ?? ''; // global
     $coreReplacements['SURVEYLANGUAGE'] = $surveylanguage = App()->language;
-    $coreReplacements['SURVEYNAME'] = (isset($thissurvey['name']) ? $thissurvey['name'] : Yii::app()->getConfig('sitename'));
+    $coreReplacements['SURVEYNAME'] = ($thissurvey['name'] ?? Yii::app()->getConfig('sitename'));
     $coreReplacements['SURVEYRESOURCESURL'] = (isset($thissurvey['sid']) ? Yii::app()->getConfig("uploadurl") . '/surveys/' . $thissurvey['sid'] . '/' : '');
     $coreReplacements['TEMPLATEURL'] = $templateurl;
     $coreReplacements['THEREAREXQUESTIONS'] = $_therearexquestions;
     $coreReplacements['URL'] = $_linkreplace;
-    $coreReplacements['WELCOME'] = (isset($thissurvey['welcome']) ? $thissurvey['welcome'] : '');
+    $coreReplacements['WELCOME'] = ($thissurvey['welcome'] ?? '');
     $coreReplacements['CLOSE_TRANSLATION'] = gT('Close');
     if (!is_null($replacements) && is_array($replacements)) {
         $doTheseReplacements = array_merge($coreReplacements, $replacements); // so $replacements overrides core values
@@ -422,7 +395,7 @@ function getStandardsReplacementFields($thissurvey)
     $_assessment_current_total = '';
     if (!empty($thissurvey['assessments']) && $thissurvey['assessments'] == "Y") {
         $assessmentdata = doAssessment($surveyid);
-        $_assessment_current_total = (isset($assessmentdata['datas']['total_score'])) ? $assessmentdata['datas']['total_score'] : gT("Unkown");
+        $_assessment_current_total = $assessmentdata['datas']['total_score'] ?? gT("Unkown");
     }
 
     $oSurvey = Survey::model()->findByPk($surveyid);
@@ -435,31 +408,31 @@ function getStandardsReplacementFields($thissurvey)
     $coreReplacements['ACTIVE'] = (isset($thissurvey['active']) && !($thissurvey['active'] != "Y"));
     $coreReplacements['DATESTAMP'] = $_datestamp;
     $coreReplacements['EXPIRY'] = $_dateoutput;
-    $coreReplacements['ADMINNAME'] = isset($thissurvey['admin']) ? $thissurvey['admin'] : '';
-    $coreReplacements['ADMINEMAIL'] = isset($thissurvey['adminemail']) ? $thissurvey['adminemail'] : '';
+    $coreReplacements['ADMINNAME'] = $thissurvey['admin'] ?? '';
+    $coreReplacements['ADMINEMAIL'] = $thissurvey['adminemail'] ?? '';
     $coreReplacements['GID'] = Yii::app()->getConfig('gid', ''); // Use the gid of the question, except if we are not in question (Randomization group name)
 
     $coreReplacements['LANG'] = App()->language;
-    $coreReplacements['NAVIGATOR'] = isset($navigator) ? $navigator : ''; // global
-    $coreReplacements['MOVEPREVBUTTON'] = isset($moveprevbutton) ? $moveprevbutton : ''; // global
-    $coreReplacements['MOVENEXTBUTTON'] = isset($movenextbutton) ? $movenextbutton : ''; // global
-    $coreReplacements['PERCENTCOMPLETE'] = isset($percentcomplete) ? $percentcomplete : ''; // global
+    $coreReplacements['NAVIGATOR'] = $navigator ?? ''; // global
+    $coreReplacements['MOVEPREVBUTTON'] = $moveprevbutton ?? ''; // global
+    $coreReplacements['MOVENEXTBUTTON'] = $movenextbutton ?? ''; // global
+    $coreReplacements['PERCENTCOMPLETE'] = $percentcomplete ?? ''; // global
     $coreReplacements['PRIVACYHEADING'] = '';
     $coreReplacements['PRIVACYMESSAGE'] = '';
     /* Another solution to remove index from global */
     //~ $coreReplacements['QUESTION_INDEX']=isset($questionindex) ? $questionindex: '';
     //~ $coreReplacements['QUESTION_INDEX_MENU']=isset($questionindexmenu) ? $questionindexmenu: '';
     /* indexItems is static but not rendering, seem better to call it here ? */
-    $coreReplacements['QUESTION_INDEX'] = isset($questionindex) ? $questionindex : '';
-    $coreReplacements['QUESTION_INDEX_MENU'] = isset($questionindexmenu) ? $questionindexmenu : '';
+    $coreReplacements['QUESTION_INDEX'] = $questionindex ?? '';
+    $coreReplacements['QUESTION_INDEX_MENU'] = $questionindexmenu ?? '';
     $coreReplacements['SURVEYCONTACT'] = $surveycontact;
-    $coreReplacements['SURVEYDESCRIPTION'] = (isset($thissurvey['description']) ? $thissurvey['description'] : '');
-    $coreReplacements['SURVEYFORMAT'] = isset($surveyformat) ? $surveyformat : ''; // global
+    $coreReplacements['SURVEYDESCRIPTION'] = ($thissurvey['description'] ?? '');
+    $coreReplacements['SURVEYFORMAT'] = $surveyformat ?? ''; // global
     $coreReplacements['SURVEYLANGUAGE'] = $surveylanguage = App()->language;
-    $coreReplacements['SURVEYNAME'] = (isset($thissurvey['name']) ? $thissurvey['name'] : Yii::app()->getConfig('sitename'));
+    $coreReplacements['SURVEYNAME'] = ($thissurvey['name'] ?? Yii::app()->getConfig('sitename'));
     $coreReplacements['SURVEYRESOURCESURL'] = (isset($thissurvey['sid']) ? Yii::app()->getConfig("uploadurl") . '/surveys/' . $thissurvey['sid'] . '/' : '');
     $coreReplacements['URL'] = $_linkreplace;
-    $coreReplacements['WELCOME'] = (isset($thissurvey['welcome']) ? $thissurvey['welcome'] : '');
+    $coreReplacements['WELCOME'] = ($thissurvey['welcome'] ?? '');
     $coreReplacements['CLOSE_TRANSLATION'] = gT('Close');
     $coreReplacements['ASSESSMENT_CURRENT_TOTAL'] = $_assessment_current_total;
     $coreReplacements['TEMPLATEURL'] = Template::model()->getInstance(null, $surveyid)->templateURL;

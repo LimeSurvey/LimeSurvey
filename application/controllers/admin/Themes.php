@@ -550,15 +550,33 @@ class Themes extends SurveyCommonAction
         }
 
         /* Keep Bootstrap Package clean after loading template : because template can update boostrap */
-        $aBootstrapPackage = Yii::app()->clientScript->packages['bootstrap-admin'];
 
         $aViewUrls = $this->initialise($templatename, $screenname, $editfile, true, true);
 
         App()->getClientScript()->reset();
-        Yii::app()->clientScript->packages['bootstrap'] = $aBootstrapPackage;
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'templates.js');
+        App()->getClientScript()->registerPackage('bootstrap-admin');
+
+        $undo    = gT("Undo (ctrl + Z)", "js");
+        $redo    = gT("Redo (ctrl + Y)", "js");
+        $find    = gT("Find (ctrl + F)", "js");
+        $replace = gT("Replace (ctrl + H)", "js");
+        App()->getClientScript()->registerScript(
+            "SurveyThemeEditorLanguageData",
+            <<<JAVASCRIPT
+surveyThemeEditorLanguageData = {
+    undo: "$undo",
+    redo: "$redo",
+    find: "$find",
+    replace: "$replace"
+};
+JAVASCRIPT
+            ,
+            CClientScript::POS_BEGIN
+        );
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'templates.js', CClientScript::POS_END);
         App()->getClientScript()->registerPackage('ace');
         App()->getClientScript()->registerPackage('jsuri');
+        AdminTheme::getInstance()->registerStylesAndScripts();
 
         // Green SurveyManagerBar Page Title
         $pageTitle = gT('Theme editor:') . ' ' . $templatename;
@@ -638,8 +656,8 @@ class Themes extends SurveyCommonAction
         if (Permission::model()->hasGlobalPermission('templates', 'update')) {
             if (returnGlobal('action') == "templaterename" && returnGlobal('newname') && returnGlobal('copydir')) {
                 $sNewName = sanitize_dirname(returnGlobal('newname'));
-                $sNewDirectoryPath = Yii::app()->getConfig('userthemerootdir') . "/" . $sNewName;
-                $sOldDirectoryPath = Yii::app()->getConfig('userthemerootdir') . "/" . returnGlobal('copydir');
+                $sNewDirectoryPath = sanitize_dirname(Yii::app()->getConfig('userthemerootdir') . "/" . $sNewName);
+                $sOldDirectoryPath = sanitize_dirname(Yii::app()->getConfig('userthemerootdir') . "/" . returnGlobal('copydir'));
 
                 if (Template::isStandardTemplate(returnGlobal('newname'))) {
                     Yii::app()->user->setFlash('error', sprintf(gT("Template could not be renamed to '%s'."), $sNewName) . " " . gT("This name is reserved for standard template."));
@@ -875,7 +893,7 @@ class Themes extends SurveyCommonAction
                         in_array($relativePathEditfile, $jsfiles) === false
                     ) {
                         Yii::app()->user->setFlash('error', gT('Invalid theme name'));
-                        $this->getController()->redirect(array("admin/themes/sa/upload"));
+                         $this->getController()->redirect(array("admin/themes/sa/upload"));
                     }
 
                     //$savefilename = $oEditedTemplate
@@ -883,7 +901,7 @@ class Themes extends SurveyCommonAction
                         $oEditedTemplate->extendsFile($relativePathEditfile);
                     }
 
-                    $savefilename = $oEditedTemplate->extendsFile($relativePathEditfile);
+                    $savefilename = $oEditedTemplate->extendsFile($relativePathEditfile, $relativePathEditfile);
 
                     if (is_writable($savefilename)) {
                         if (!$handle = fopen($savefilename, 'w')) {
@@ -1188,7 +1206,6 @@ class Themes extends SurveyCommonAction
                 $groupoutput[] = templatereplace(file_get_contents("$templatedir/print_group.pstpl"), array('QUESTIONS' => implode(' ', $questionoutput)), $aData, 'Unspecified', false, null, array(), false, $oEditedTemplate);
 
                 $myoutput[] = templatereplace(file_get_contents("$templatedir/print_survey.pstpl"), array('GROUPS' => implode(' ', $groupoutput),
-                    'FAX_TO' => gT("Please fax your completed survey to:") . " 000-000-000",
                     'SUBMIT_TEXT' => gT("Submit your survey."),
                     'HEADELEMENTS' => getPrintableHeader(),
                     'SUBMIT_BY' => sprintf(gT("Please submit by %s"), date('d.m.y')),

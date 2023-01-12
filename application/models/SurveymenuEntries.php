@@ -90,8 +90,8 @@ class SurveymenuEntries extends LSActiveRecord
         $oSurveymenuEntries->menu_link = $menuEntryArray['menu_link'];
 
         //permissions [optional]
-        $oSurveymenuEntries->permission = isset($menuEntryArray['permission']) ? $menuEntryArray['permission'] : '';
-        $oSurveymenuEntries->permission_grade = isset($menuEntryArray['permission_grade']) ? $menuEntryArray['permission_grade'] : '';
+        $oSurveymenuEntries->permission = $menuEntryArray['permission'] ?? '';
+        $oSurveymenuEntries->permission_grade = $menuEntryArray['permission_grade'] ?? '';
 
 
 
@@ -108,7 +108,7 @@ class SurveymenuEntries extends LSActiveRecord
         }
 
         //pjax optional
-        $oMenuEntryData->pjaxed = isset($menuEntryArray['pjaxed']) ? $menuEntryArray['pjaxed'] : true;
+        $oMenuEntryData->pjaxed = $menuEntryArray['pjaxed'] ?? true;
         $oSurveymenuEntries->data = $oMenuEntryData->createOptionJson($menuEntryArray['addSurveyId'], $menuEntryArray['addQuestionGroupId'], $menuEntryArray['addQuestionId']);
 
         $oSurveymenuEntries->changed_at = date('Y-m-d H:i:s');
@@ -205,6 +205,7 @@ class SurveymenuEntries extends LSActiveRecord
             'created_at' => gT('Created on'),
             'created_by' => gT('Created by'),
             'buttons' => gT('Action'),
+            'showincollapse' => gT('Show in collapse'),
         );
     }
 
@@ -308,7 +309,7 @@ class SurveymenuEntries extends LSActiveRecord
     {
         $buttons = "<div class='icon-btn-row'>";
         $raw_button_template = ""
-            . "<button class='btn btn-default btn-sm %s %s' role='button' data-toggle='tooltip' title='%s' onclick='return false;'>" //extra class //title
+            . "<button class='btn btn-outline-secondary btn-sm %s %s' role='button' data-bs-toggle='tooltip' title='%s' onclick='return false;'>" //extra class //title
             . "<i class='fa fa-%s' ></i>" //icon class
             . "</button>";
 
@@ -442,7 +443,7 @@ class SurveymenuEntries extends LSActiveRecord
             array(
                 'header' => gT('Menu'),
                 'value' => ''
-                . '"<a class=\"".$data->menu_class."\" title=\"".$data->menu_description."\" data-toggle="tooltip" >'
+                . '"<a class=\"".$data->menu_class."\" title=\"".$data->menu_description."\" data-bs-toggle="tooltip" >'
                 . '".SurveymenuEntries::returnMenuIcon($data)." ".$data->menu_title."</a>"',
                 'type' => 'raw'
             ),

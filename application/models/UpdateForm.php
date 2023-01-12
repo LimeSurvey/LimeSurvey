@@ -215,7 +215,7 @@ class UpdateForm extends CFormModel
      * @param int $destinationBuild
      * @return mixed|stdClass
      */
-    public function getChangelog($destinationBuild)
+    public function getChangeLog($destinationBuild)
     {
         $getters = '/index.php?r=updates/changelog&frombuild=' . $this->build . '&tobuild=' . $destinationBuild;
         $content = $this->performRequest($getters);
@@ -273,7 +273,6 @@ class UpdateForm extends CFormModel
         if (file_exists($this->tempdir . DIRECTORY_SEPARATOR . $file_to_unzip)) {
             // To debug pcl_zip, uncomment the following line :    require_once('/var/www/limesurvey/LimeSurvey/application/libraries/admin/pclzip/pcltrace.lib.php'); require_once('/var/www/limesurvey/LimeSurvey/application/libraries/admin/pclzip/pclzip-trace.lib.php'); PclTraceOn(2);
             // To debug pcl_zip, comment the following line:
-            Yii::app()->loadLibrary("admin/pclzip");
 
             $archive = new PclZip($this->tempdir . DIRECTORY_SEPARATOR . $file_to_unzip, false);
 
@@ -300,6 +299,7 @@ class UpdateForm extends CFormModel
      */
     public function unzipUpdateUpdaterFile()
     {
+        Yii::app()->loadLibrary("admin/pclzip");
         $file_to_unzip = 'update_updater.zip';
         return $this->unzipUpdateFile($file_to_unzip);
     }
@@ -396,19 +396,6 @@ class UpdateForm extends CFormModel
         fclose($handle);
         Yii::app()->setConfig("buildnumber", $destinationBuild);
         return;
-    }
-
-    /**
-     * Destroy the global settings stored in the settings (they should not be used anymore...)
-     */
-    public function destroyGlobalSettings()
-    {
-        SettingGlobal::setSetting('updateavailable', '0');
-        SettingGlobal::setSetting('updatebuild', '');
-        SettingGlobal::setSetting('updateversions', '');
-        Yii::app()->session['security_update'] = null;
-        Yii::app()->session['update_result'] = null;
-        Yii::app()->session['next_update_check'] = null;
     }
 
     /**
@@ -513,8 +500,8 @@ class UpdateForm extends CFormModel
             $dbChecks = $this->getDbChecks($destinationBuild);
 
             // Test if user defined by himself a max size for dbBackup
-            if (Yii::app()->getConfig("maxdbsizeforbackup")) {
-                $dbChecks->dbSize = Yii::app()->getConfig("maxdbsizeforbackup");
+            if (Yii::app()->getConfig("maxdbsizeforbackup") && Yii::app()->getConfig("maxdbsizeforbackup") > 0) {
+                 $dbChecks->dbSize = Yii::app()->getConfig("maxdbsizeforbackup");
             }
 
             if ($dbChecks->result) {
@@ -926,10 +913,8 @@ class UpdateForm extends CFormModel
     private function getProtocol()
     {
         $server_ssl = Yii::app()->getConfig("comfort_update_server_ssl");
-        if ($server_ssl === 1) {
-            if (extension_loaded("openssl")) {
+        if ($server_ssl === 1 && extension_loaded("openssl")) {
                 return 'https://';
-            }
         }
         return 'http://';
     }
@@ -976,9 +961,11 @@ class UpdateForm extends CFormModel
     {
         if ((extension_loaded("curl"))) {
             if (isset($_REQUEST['access_token'])) {
-                $getters .= "&access_token=" . $_REQUEST['access_token'];
+                $getters .= "&access_token=" . urlencode($_REQUEST['access_token']);
             }
-
+            if (Yii::app()->getConfig("allow_non_public_release")) {
+                $getters .= "&debug=1";
+            }
             $ch = curl_init($this->getProtocol() . Yii::app()->getConfig("comfort_update_server_url") . $getters);
 
             if ($this->proxy_host_name != '') {

@@ -89,7 +89,7 @@ var RoleControl = function () {
 
                         if (!result.hasOwnProperty('html')){
                             triggerModalClose();
-                            window.LS.notifyFader(result.message, 'well-lg text-center ' + (result.success ? 'bg-primary' : 'bg-danger'));
+                            window.LS.ajaxAlerts(result.message, 'success');
                             return;
                         }
                         $('#exitForm').on('click.ROLECONTROLMODAL', function (e) {
@@ -101,7 +101,7 @@ var RoleControl = function () {
                     }
                     $('#RoleControl--errors').html(
                         "<div class='alert alert-danger'>" + result.errors + "</div>"
-                    ).removeClass('hidden');
+                    ).removeClass('d-none');
                 },
                 error: function () {
                     alert('An error occured while trying to save, please reload the page Code:1571314170100');

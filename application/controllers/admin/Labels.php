@@ -46,7 +46,7 @@ class Labels extends SurveyCommonAction
             Yii::app()->session['flashmessage'] = gT('Access denied!');
             $this->getController()->redirect(App()->createUrl("/admin"));
         }
-        $lid = returnGlobal('lid');
+        $lid = (int) Yii::app()->request->getParam('lid');
         if (!empty($lid)) {
             if (Yii::app()->getConfig('demoMode')) {
                 $this->getController()->error(gT("Demo mode only: Uploading files is disabled in this system."), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
@@ -572,7 +572,7 @@ class Labels extends SurveyCommonAction
                 $label->lid = $lid;
                 $label->code = $codes[$i];
                 $label->sortorder = $i;
-                $label->assessment_value = isset($assessmentValues[$i]) ? $assessmentValues[$i] : 0;
+                $label->assessment_value = $assessmentValues[$i] ?? 0;
                 if (!$label->save()) {
                     throw new Exception('Could not save label: ' . json_encode($label->getErrors()));
                 }
@@ -648,11 +648,9 @@ class Labels extends SurveyCommonAction
         foreach ($aLabelSet['labels'] as $i => $aLabel) {
             $oLabel = new Label();
             $oLabel->lid = $oLabelSet->lid;
-            $oLabel->code = isset($aLabel['code'])
-                ? $aLabel['code']
-                : $aLabel['title'];
+            $oLabel->code = $aLabel['code'] ?? $aLabel['title'];
             $oLabel->sortorder = $i;
-            $oLabel->assessment_value = isset($aLabel['assessment_value']) ? $aLabel['assessment_value'] : 0;
+            $oLabel->assessment_value = $aLabel['assessment_value'] ?? 0;
             $partResult = $oLabel->save();
             $aDebug['saveLabel_' . $i] = $partResult;
             $result = $result && $partResult;
@@ -660,9 +658,7 @@ class Labels extends SurveyCommonAction
                 $oLabelL10n = new LabelL10n();
                 $oLabelL10n->label_id = $oLabel->id;
                 $oLabelL10n->language = $language;
-                $oLabelL10n->title = isset($aLabel[$language]['question'])
-                    ? $aLabel[$language]['question']
-                    : $aLabel[$language]['answer'];
+                $oLabelL10n->title = $aLabel[$language]['question'] ?? $aLabel[$language]['answer'];
 
                 $lngResult = $oLabelL10n->save();
                 $aDebug['saveLabel_' . $i . '_' . $language] = $lngResult;

@@ -14,26 +14,24 @@
 ?>
 
 <!-- Grid -->
-<div class="row">
-    <div class="col-lg-12 content-right">
+<div class="row col-12">
         <?php
-            $surveyGrid = $this->widget('bootstrap.widgets.TbGridView', array(
+            $surveyGrid = $this->widget('application.extensions.admin.grid.CLSGridView', array(
             'dataProvider' => $this->model->search(),
-
                 // Number of row per page selection
                 'id' => 'survey-grid',
-                'emptyText'=>gT('No surveys found.'),
-                'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
+                'emptyText' => gT('No surveys found.'),
+                'summaryText' => gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
                     CHtml::dropDownList(
                         'surveygrid--pageSize',
                         $this->pageSize,
                         Yii::app()->params['pageSizeOptions'],
-                        array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))),
-                'htmlOptions' => ['class' => 'table-responsive grid-view-ls'],
-                'selectionChanged'=>"function(id){window.location='" . Yii::app()->urlManager->createUrl('surveyAdministration/view/iSurveyID' ) . '/' . "' + $.fn.yiiGridView.getSelection(id.split(',', 1));}",
+                        array('class'=>'changePageSize form-select', 'style'=>'display: inline; width: auto'))),
+                'selectionChanged' => "function(id){window.location='" . Yii::app()->urlManager->createUrl('surveyAdministration/view/iSurveyID' ) . '/' . "' + $.fn.yiiGridView.getSelection(id.split(',', 1));}",
                 'ajaxUpdate' => 'survey-grid',
                 'afterAjaxUpdate' => 'function(id, data){window.LS.doToolTip();bindListItemclick();}',
-                'template'  => $this->template,
+               // 'template'  => $this->template,
+                'massiveActionTemplate' => $this->render('massive_actions/_selector', array(), true, false),
                 'columns' => array(
 
                     array(
@@ -41,7 +39,6 @@
                         'class'=>'CCheckBoxColumn',
                         'selectableRows' => '100',
                     ),
-
                      array(
                         'header' => gT('Action'),
                         'name' => 'actions',
@@ -54,20 +51,17 @@
                         'name' => 'survey_id',
                         'type' => 'raw',
                         'value'=>'CHtml::link($data->sid, Yii::app()->createUrl("surveyAdministration/view/",array("iSurveyID"=>$data->sid)))',
-                        'headerHtmlOptions'=>array('class' => 'hidden-xs text-nowrap'),
-                        'htmlOptions' => array('class' => 'hidden-xs has-link'),
+                        'headerHtmlOptions'=>array('class' => 'd-none d-sm-table-cell text-nowrap'),
+                        'htmlOptions' => array('class' => 'd-none d-sm-table-cell has-link'),
                     ),
-
-
                     array(
                         'header' => gT('Status'),
                         'name' => 'running',
                         'value'=>'$data->running',
                         'type'=>'raw',
-                        'headerHtmlOptions'=>array('class' => 'hidden-xs text-nowrap'),
-                        'htmlOptions' => array('class' => 'hidden-xs has-link'),
+                        'headerHtmlOptions'=>array('class' => 'd-none d-sm-table-cell text-nowrap'),
+                        'htmlOptions' => array('class' => 'd-none d-sm-table-cell has-link'),
                     ),
-
                     array(
                         'header' => gT('Title'),
                         'name' => 'title',
@@ -76,7 +70,6 @@
                         'htmlOptions' => array('class' => 'has-link'),
                         'headerHtmlOptions'=>array('class' => 'text-nowrap'),
                     ),
-
                     array(
                         'header' => gT('Group'),
                         'name' => 'group',
@@ -85,23 +78,21 @@
                         'htmlOptions' => array('class' => 'has-link'),
                         'headerHtmlOptions'=>array('class' => 'text-nowrap'),
                     ),
-
                     array(
                         'header' => gT('Created'),
                         'name' => 'creation_date',
                         'type' => 'raw',
                         'value'=>'CHtml::link($data->creationdate, Yii::app()->createUrl("surveyAdministration/view/",array("surveyid"=>$data->sid)))',
-                        'headerHtmlOptions'=>array('class' => 'hidden-xs text-nowrap'),
-                        'htmlOptions' => array('class' => 'hidden-xs has-link'),
+                        'headerHtmlOptions'=>array('class' => 'd-none d-sm-table-cell text-nowrap'),
+                        'htmlOptions' => array('class' => 'd-none d-sm-table-cell has-link'),
                     ),
-
                     array(
                         'header' => gT('Owner'),
                         'name' => 'owner',
                         'type' => 'raw',
                         'value'=>'CHtml::link(CHtml::encode($data->ownerUserName), Yii::app()->createUrl("surveyAdministration/view/",array("surveyid"=>$data->sid)))',
-                        'headerHtmlOptions'=>array('class' => 'hidden-md hidden-sm hidden-xs text-nowrap'),
-                        'htmlOptions' => array('class' => 'hidden-md hidden-sm hidden-xs has-link'),
+                        'headerHtmlOptions'=>array('class' => 'd-md-none d-xl-table-cell text-nowrap'),
+                        'htmlOptions' => array('class' => 'd-md-none d-xl-table-cell has-link'),
                     ),
 
                     array(
@@ -109,8 +100,8 @@
                         'name' => 'anonymized_responses',
                         'type' => 'raw',
                         'value'=>'CHtml::link($data->anonymizedResponses, Yii::app()->createUrl("surveyAdministration/view/",array("surveyid"=>$data->sid)))',
-                        'headerHtmlOptions'=>array('class' => 'hidden-xs hidden-sm'),
-                        'htmlOptions' => array('class' => 'hidden-xs hidden-sm has-link'),
+                        'headerHtmlOptions'=>array('class' => 'd-md-none d-lg-table-cell'),
+                        'htmlOptions' => array('class' => 'd-md-none d-lg-table-cell has-link'),
                     ),
 
 
@@ -150,4 +141,3 @@
             ));
         ?>
     </div>
-</div>

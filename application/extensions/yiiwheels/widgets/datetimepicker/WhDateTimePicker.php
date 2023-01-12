@@ -10,7 +10,7 @@
  * @package YiiWheels.widgets.datetimepicker
  * @uses YiiStrap.helpers.TbArray
  */
-Yii::import('bootstrap.helpers.TbArray');
+Yii::import('yiistrap_fork.helpers.TbArray');
 
 class WhDateTimePicker extends CInputWidget
 {
@@ -119,9 +119,7 @@ class WhDateTimePicker extends CInputWidget
 		$cs->registerPackage('bootstrap-datetimepicker');
 
 		/* initialize plugin */
-		$selector = null === $this->selector
-			? '#' . TbArray::getValue('id', $this->htmlOptions, $this->getId()) . '_datetimepicker'
-			: $this->selector;
+		$selector = $this->selector ?? '#' . TbArray::getValue('id', $this->htmlOptions, $this->getId()) . '_datetimepicker';
 
 		$this->getApi()->registerPlugin('datetimepicker', $selector, $this->pluginOptions, LSYii_ClientScript::POS_POSTSCRIPT);
 

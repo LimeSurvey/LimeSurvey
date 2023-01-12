@@ -414,9 +414,9 @@ class TemplateManifest extends TemplateConfiguration
 
         $thissurvey['aAssessments']['show'] = true;
 
-
-        $thissurvey['aError']['title'] = gT("Error");
-        $thissurvey['aError']['message'] = gT("This is an error message example");
+        $thissurvey['aError']['title'] = '<p class=" text-danger inherit-sizes" role="alert">' . gT("Error-Title") . '</p>';
+        $thissurvey['aError']['message'] = '<p class="message-0">' . gT("This is an error message example") . '</p>';
+        $thissurvey['adminemail'] = 'your-email@example.net';
 
         // Datas for assessments
         $thissurvey['aAssessments']["datas"]["total"][0]["name"]       = gT("Welcome to the Assessment");
@@ -428,6 +428,9 @@ class TemplateManifest extends TemplateConfiguration
         $thissurvey['aAssessments']["datas"]["subtotal"]["datas"][2]   = 3;
         $thissurvey['aAssessments']["datas"]["subtotal_score"][1]      = 3;
         $thissurvey['aAssessments']["datas"]["total_score"]            = 3;
+
+        $thissurvey['aLoadForm']['aCaptcha']['show'] = true;
+        $thissurvey['aLoadForm']['aCaptcha']['sImageUrl'] = Yii::app()->getController()->createUrl('/verification/image', array('sid' => 1));
 
         // Those values can be overwritten by XML
         $thissurvey['name'] = gT("Template Sample");
@@ -638,7 +641,7 @@ class TemplateManifest extends TemplateConfiguration
         $sEditorLink = "<a
             id='template_editor_link_" . $this->sTemplateName . "'
             href='" . $sEditorUrl . "'
-            class='btn btn-default btn-block'>
+            class='btn btn-outline-secondary btn-block'>
                 <span class='icon-templates'></span>
                 " . gT('Theme editor') . "
             </a>";
@@ -649,7 +652,7 @@ class TemplateManifest extends TemplateConfiguration
         $sLoadLink = CHtml::form(array("themeOptions/importManifest/"), 'post', array('id' => 'frmínstalltheme','name' => 'frmínstalltheme', 'class' => 'btn-block')) .
                 "<input type='hidden' name='templatename' value='" . $this->sTemplateName . "'>
                 <button id='template_options_link_" . $this->sTemplateName . "'
-                class='btn btn-default btn-block'>
+                class='btn btn-outline-secondary btn-block'>
                     <span class='fa fa-download text-warning'></span>
                     " . gT('Install') . "
                 </button>
@@ -1240,7 +1243,7 @@ class TemplateManifest extends TemplateConfiguration
     protected function setThisTemplate()
     {
         // Mandtory setting in config XML (can be not set in inheritance tree, but must be set in mother template (void value is still a setting))
-        $this->apiVersion         = (isset($this->config->metadata->apiVersion)) ? $this->config->metadata->apiVersion : null;
+        $this->apiVersion         = $this->config->metadata->apiVersion ?? null;
 
 
         $this->viewPath           = $this->path . $this->getTemplateConfigurationForAttribute($this, '//viewdirectory')->config->engine->viewdirectory . DIRECTORY_SEPARATOR;

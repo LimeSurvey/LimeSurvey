@@ -272,7 +272,7 @@ class ThemeControllerTest extends TestBaseClassWeb
             // Test upload file.
             $fileInput = $w->findElement(WebDriverBy::id('upload_file'));
             $fileInput->setFileDetector(new LocalFileDetector());
-            $file = BASEPATH . '../tests/data/file_upload/dalahorse.jpg';
+            $file = ROOT . '/tests/data/file_upload/dalahorse.jpg';
             $this->assertTrue(file_exists($file));
             $fileInput->sendKeys($file)->submit();
 
@@ -282,6 +282,9 @@ class ThemeControllerTest extends TestBaseClassWeb
             $files = $w->findElements(WebDriverBy::className('other-files-filename'));
             $text = $files[count($files) - 1]->getText();
             $this->assertEquals($text, 'dalahorse.jpg', 'Did not find dalahorse, but ' . $text);
+
+            $w->executeScript('window.scrollTo(0,document.body.scrollHeight);');
+            sleep(1);
 
             // Delete file.
             $deleteButtons = $w->findElements(WebDriverBy::className('other-files-delete-button'));
@@ -365,7 +368,7 @@ class ThemeControllerTest extends TestBaseClassWeb
 
             sleep(1);
 
-            $this->assertTrue(file_exists(BASEPATH . '../tmp/vanilla_test_3.zip'));
+            $this->assertTrue(file_exists(ROOT . '/tmp/vanilla_test_3.zip'));
 
             $w->clickButton('button-delete');
             $w->switchTo()->alert()->accept();
@@ -391,7 +394,7 @@ class ThemeControllerTest extends TestBaseClassWeb
             // Test upload file.
             $fileInput = $w->findElement(WebDriverBy::id('the_file'));
             $fileInput->setFileDetector(new LocalFileDetector());
-            $file = BASEPATH . '../tmp/vanilla_test_3.zip';
+            $file = ROOT . '/tmp/vanilla_test_3.zip';
             $this->assertTrue(file_exists($file));
             $fileInput->sendKeys($file)->submit();
 

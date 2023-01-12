@@ -64,7 +64,7 @@ class QuestionThemeTest extends TestBaseClassWeb
         // Click "Import"
         $fileInput = $web->findByCss('#importQuestionTemplate #the_file');
         $fileInput->setFileDetector(new LocalFileDetector());
-        $file = BASEPATH . '../tests/data/file_upload/rangeslider_tpartner.zip';
+        $file = ROOT . '/tests/data/file_upload/rangeslider_tpartner.zip';
         $this->assertTrue(file_exists($file));
         $fileInput->sendKeys($file)->submit();
 
@@ -109,7 +109,7 @@ class QuestionThemeTest extends TestBaseClassWeb
         $button = $web->findById('trigger_questionTypeSelector_button');
         $button->click();
 
-        $group = $web->findByLinkText('Mask questions');
+        $group = $web->findElement(WebDriverBy::xpath("//*[contains(text(),'Mask questions')]"));
         $group->click();
 
         $question = $web->findByPartialLinkText('Range Slider');
@@ -119,12 +119,15 @@ class QuestionThemeTest extends TestBaseClassWeb
         $button->click();
         sleep(1);
 
+        self::$webDriver->executeScript('window.scrollTo(0,document.body.scrollHeight);');
+        sleep(1);
+
         $button = $web->findById('button-collapse-Custom_options');
         $button->click();
 
         // Check that all custom attributes are displayed
         $themeDir = \Yii::app()->getConfig('userquestionthemerootdir') . '/Range-Slider';
-        $file = BASEPATH . '../tests/data/file_upload/rangeslider_tpartner.zip';
+        $file = ROOT . '/tests/data/file_upload/rangeslider_tpartner.zip';
         /** @var ExtensionConfig */
         $config = ExtensionConfig::loadFromZip($file);
         $this->assertNotEmpty($config, 'Loading config.xml from range slider zip file');
@@ -185,6 +188,7 @@ class QuestionThemeTest extends TestBaseClassWeb
      */
     public function testExecuteQuestionThemeSurvey()
     {
+        $this->markTestSkipped('external theme needs to be updated');
         // Import lsa
         $surveyFile = self::$surveysFolder . '/survey_archive_222923_executeQuestionThemeSurvey.lsa';
         self::importSurvey($surveyFile);

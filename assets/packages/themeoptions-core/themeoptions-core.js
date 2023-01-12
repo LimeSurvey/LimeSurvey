@@ -47,7 +47,7 @@ var ThemeOptions = function () {
 
         if (generalInherit()) {
             $('#general_inherit_on').prop('checked', true).trigger('change').closest('label').addClass('active');
-            $('.action_hide_on_inherit').addClass('hidden');
+            $('.action_hide_on_inherit').addClass('d-none');
         } else {
             $('#general_inherit_off').prop('checked', true).trigger('change').closest('label').addClass('active');
         }
@@ -149,7 +149,7 @@ var ThemeOptions = function () {
     //Set value and propagate to bootstrapSwitch
     var setAndPropageteToSwitch = function (item) {
         $(item).prop('checked', true).trigger('change');
-        $(item).closest('label').addClass('active');
+        //$(item).closest('label').addClass('active');
     }
 
 
@@ -260,10 +260,10 @@ var ThemeOptions = function () {
         //hotswapping the general inherit
         $('#general_inherit_on').on('change', function (evt) {
             $('#TemplateConfiguration_options').val('inherit');
-            $('.action_hide_on_inherit').addClass('hidden');
+            $('.action_hide_on_inherit').addClass('d-none');
         });
         $('#general_inherit_off').on('change', function (evt) {
-            $('.action_hide_on_inherit').removeClass('hidden');
+            $('.action_hide_on_inherit').removeClass('d-none');
             updateFieldSettings();
         });
     };
@@ -454,9 +454,6 @@ var prepare = function () {
 
     var deferred = $.Deferred();
 
-    //activate the bootstrap switch for checkboxes
-    $('.action_activate_bootstrapswitch').bootstrapSwitch();
-
     var themeOptionStarter = new ThemeOptions();
     themeOptionStarter();
 
@@ -475,8 +472,8 @@ $(function () {
 
     $('.selector__open_lightbox').on('click', function (e) {
         e.preventDefault();
-        var imgSrc = $($(this).data('target')).find('option:selected').data('lightbox-src');
-        var imgTitle = $($(this).data('target')).val();
+        var imgSrc = $($(this).data('bs-target')).find('option:selected').data('lightbox-src');
+        var imgTitle = $($(this).data('bs-target')).val();
         imgTitle = imgTitle.split('/').pop();
         $('#lightbox-modal').find('.selector__title').text(imgTitle);
         $('#lightbox-modal').find('.selector__image').attr({

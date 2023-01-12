@@ -1,10 +1,10 @@
-<div class="panel panel-default">
+<div class="card m-2">
     <!-- Default panel contents -->
-    <div class="panel-heading">
+    <div class="card-header">
         <strong> {{ gT("Share survey") }} </strong>
     </div>
     <!-- List group -->
-    <ul class="list-group">
+    <ul class="list-group list-group-flush">
         <!-- Base language -->
         <li class="list-group-item" id="adminsidepanel__surveysummary--mainLanguageLink">
             <div class="ls-flex-row col-12">
@@ -13,7 +13,7 @@
                 </div>
                 <div class="col-8">
                     {% if oSurvey.sid %} {# pseudo condition due to reverse parsing problems while generating twig admin cache via console.php twig generateAdminCache #}
-                        {% set tmp_url = createAbsoluteUrl("survey/index", { "sid" : oSurvey.sid, "lang" : oSurvey.language}) %}
+                        {% set tmp_url = surveyUrls[oSurvey.language] %}
                     {% endif %}
                     <a href='{{tmp_url}}' target='_blank'> {{tmp_url}} </a>
                 </div>
@@ -28,7 +28,7 @@
                 </div>
                 <div class="col-8">
                     {% if oSurvey.sid %} {# pseudo condition due to reverse parsing problems while generating twig admin cache via console.php twig generateAdminCache #}
-                        {% set tmp_url = createAbsoluteUrl("survey/index", { "sid" : oSurvey.sid, "lang" : langname}) %}
+                        {% set tmp_url = surveyUrls[langname] %}
                     {% endif %}
                     <a href='{{tmp_url}}' target='_blank'> {{tmp_url}} </a>
                 </div>
@@ -66,7 +66,7 @@
                         {{ gT("Sharing panel:") }}
                     </div>
                     <div class="col-8">
-                        <a href="#sharingdialog" class="btn btn-default selector_openSharePanel" data-toggle="modal" id="sharePanelButton_{{oSurvey.sid}}" data-surveyid="{{oSurvey.sid}}">
+                        <a href="#sharingdialog" class="btn btn-outline-secondary selector_openSharePanel" data-bs-toggle="modal" id="sharePanelButton_{{oSurvey.sid}}" data-surveyid="{{oSurvey.sid}}">
                             {{ gT("Open sharing panel") }}
                         </a>
                     </div>
@@ -81,15 +81,17 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">{{ gT("Share survey") }}</h4>
+                    <h5 class="modal-title">{{ gT("Share survey") }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="row">
-                        <div class="panel panel-default">
-                            <div class="panel-heading"> {{ gT("Share QR-code:") }}</div>
-                            <div class="panel-body">
-                                <ul class="list-group">
+                    <div class="mb-3">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="modal-title">{{ gT("Share QR-code:") }}</h5>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-group list-group-flush">
                                     {% if oSurvey.sid %} {# pseudo condition due to reverse parsing problems while generating twig admin cache via console.php twig generateAdminCache #}
                                         {% set tmp_url = createAbsoluteUrl("survey/index", { "sid" : oSurvey.sid, "lang" : oSurvey.language}) %}
                                     {% endif %}
@@ -100,12 +102,8 @@
                                             </div>
                                             <div class="col-6">
                                                 <div class="row selector__qrcode_container">
-                                                    <div class="col-6">
-                                                        <button class="btn btn-default selector__qrcode_trigger">{{ gT("Generate QR-Code") }}</button>
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <div class="selector__qrcode" data-url="{{tmp_url}}"></div>
-                                                    </div>
+                                                    <button class="btn btn-outline-secondary selector__qrcode_trigger">{{ gT("Generate QR-Code") }}</button>
+                                                    <div class="selector__qrcode" data-url="{{tmp_url}}"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -121,12 +119,8 @@
                                                 </div>
                                                 <div class="col-6">
                                                     <div class="row selector__qrcode_container">
-                                                        <div class="col-6">
-                                                            <button class="btn btn-default selector__qrcode_trigger">{{ gT("Generate QR-Code") }}</button>
-                                                        </div>
-                                                        <div class="col-6">
-                                                            <div class="selector__qrcode" data-url="{{tmp_url}}"></div>
-                                                        </div>
+                                                        <button class="btn btn-outline-secondary selector__qrcode_trigger">{{ gT("Generate QR-Code") }}</button>
+                                                        <div class="selector__qrcode" data-url="{{tmp_url}}"></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -136,14 +130,16 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                {{ gT("Share on Facebook:") }}
-                                <button class="btn btn-xs btn-warning pull-right facebook-button" id="selector_activateFacebookSharing">{{ gT("Enable") }}</button>
+                    <div class="mb-3">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title">
+                                    {{ gT("Share on Facebook:") }}
+                                    <button class="btn btn-xs btn-warning float-end facebook-button" id="selector_activateFacebookSharing">{{ gT("Enable") }}</button>
+                                </h5>
                             </div>
-                            <div class="panel-body">
-                                <ul class="list-group">
+                            <div class="card-body">
+                                <ul class="list-group list-group-flush">
                                     {% if oSurvey.sid %} {# pseudo condition due to reverse parsing problems while generating twig admin cache via console.php twig generateAdminCache #}
                                         {% set tmp_url = createAbsoluteUrl("survey/index", { "sid" : oSurvey.sid, "lang" : oSurvey.language}) %}
                                     {% endif %}
@@ -154,7 +150,7 @@
                                             </div>
                                             <div class="col-6">
                                                 <button class="btn btn-disabled facebook-button selector_fb_share_disabled" disabled ><i class="fa fa-facebook-square"></i> {{ gT("Disabled") }}</button>
-                                                <iframe class="selector_fb_share hidden" data-src="https://www.facebook.com/plugins/share_button.php?href={{tmp_url|url_encode}}&layout=button_count&size=large&mobile_iframe=true&appId=328433594315978&width=106&height=28" width="106" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+                                                <iframe class="selector_fb_share d-none" data-src="https://www.facebook.com/plugins/share_button.php?href={{tmp_url|url_encode}}&layout=button_count&size=large&mobile_iframe=true&appId=328433594315978&width=106&height=28" width="106" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
                                             </div>
                                         </div>
                                     </li>
@@ -169,7 +165,7 @@
                                                 </div>
                                                 <div class="col-6">
                                                     <button class="btn btn-disabled facebook-button selector_fb_share_disabled" disabled ><i class="fa fa-facebook-square"></i> {{ gT("Disabled") }}</button>
-                                                    <iframe class="selector_fb_share hidden" data-src="https://www.facebook.com/plugins/share_button.php?href={{tmp_url|url_encode}}&layout=button_count&size=small&mobile_iframe=true&appId=1321262851319939&width=183&height=20" width="103" height="20" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+                                                    <iframe class="selector_fb_share d-none" data-src="https://www.facebook.com/plugins/share_button.php?href={{tmp_url|url_encode}}&layout=button_count&size=small&mobile_iframe=true&appId=1321262851319939&width=183&height=20" width="103" height="20" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
                                                 </div>
                                             </div>
                                         </li>
@@ -178,13 +174,15 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                {{ gT("Share on Twitter:") }}
+                    <div class="mb-3">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title">
+                                    {{ gT("Share on Twitter:") }}
+                                </h5>
                             </div>
-                            <div class="panel-body">
-                                <ul class="list-group">
+                            <div class="card-body">
+                                <ul class="list-group list-group-flush">
                                     {% if oSurvey.sid %} {# pseudo condition due to reverse parsing problems while generating twig admin cache via console.php twig generateAdminCache #}
                                         {% set tmp_url = createAbsoluteUrl("survey/index", { "sid" : oSurvey.sid, "lang" : oSurvey.language}) %}
                                     {% endif %}
@@ -194,7 +192,7 @@
                                                 {{ getLanguageNameFromCode(oSurvey.language, false)}}
                                             </div>
                                             <div class="col-6">
-                                                <a class="btn btn-default twitter-button" target='_blank' href="https://twitter.com/intent/tweet?text={{ gT("Thanks for taking this survey!")|url_encode}}&url={{tmp_url|url_encode}}&hashtags=limesurvey,survey">
+                                                <a class="btn btn-outline-secondary twitter-button" target='_blank' href="https://twitter.com/intent/tweet?text={{ gT("Thanks for taking this survey!")|url_encode}}&url={{tmp_url|url_encode}}&hashtags=limesurvey,survey">
                                                     <i class="fa fa-twitter"></i>{{ gT("Tweet it") }}
                                                 </a>
                                             </div>
@@ -210,7 +208,7 @@
                                                     {{ getLanguageNameFromCode(langname, false)}}
                                                 </div>
                                                 <div class="col-6">
-                                                    <a class="btn btn-default twitter-button" target='_blank' href="https://twitter.com/intent/tweet?text={{ gT("Thanks for taking this survey!")|url_encode}}&url={{tmp_url|url_encode}}&hashtags=limesurvey,survey">
+                                                    <a class="btn btn-outline-secondary twitter-button" target='_blank' href="https://twitter.com/intent/tweet?text={{ gT("Thanks for taking this survey!")|url_encode}}&url={{tmp_url|url_encode}}&hashtags=limesurvey,survey">
                                                         <i class="fa fa-twitter"></i>{{ gT("Tweet it") }}
                                                     </a>
                                                 </div>
@@ -223,7 +221,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">{{gT ("Close") }}</button>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{gT ("Close") }}</button>
                 </div>
             </div>
         </div>

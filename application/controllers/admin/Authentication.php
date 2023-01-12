@@ -382,7 +382,7 @@ class Authentication extends SurveyCommonAction
     /**
      * Redirect after login.
      * Do a db update if any exists.
-     * Clean failed_email table (delete entries older then 30days)
+     * Clean failed_emails table (delete entries older then 30days)
      *
      * @return void
      */
@@ -396,7 +396,7 @@ class Authentication extends SurveyCommonAction
     }
 
     /**
-     * Delete all entries from failed_email table which are older then 30days
+     * Delete all entries from failed_emails table which are older then 30days
      *
      * @return void
      */
@@ -417,7 +417,7 @@ class Authentication extends SurveyCommonAction
     }
 
     /**
-     * Checks failed_email table for entries for this user and creates a UniqueNotification
+     * Checks failed_emails table for entries for this user and creates a UniqueNotification
      *
      * @return void
      */
@@ -429,7 +429,7 @@ class Authentication extends SurveyCommonAction
             $uniqueNotification = new UniqueNotification(
                 array(
                     'user_id' => App()->user->id,
-                    'title' => gT('Failed e-mail notifications'),
+                    'title' => gT('Failed email notifications'),
                     'markAsNew' => false,
                     'importance' => Notification::NORMAL_IMPORTANCE,
                     'message' => Yii::app()->getController()->renderPartial('//failedEmail/notification_message/_notification_message', [

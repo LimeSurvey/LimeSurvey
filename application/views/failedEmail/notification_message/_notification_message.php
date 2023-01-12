@@ -8,21 +8,17 @@
 
 ?>
 <p>
-    <?php
-    eT('Dear survey administrator') ?>,<br>
-    <?php
-    eT("There were one or more confirmation emails that failed to be sent. Please check the 'Failed email notifications' section in the survey(s) listed below") ?>:
+    <?= nl2br(gT("Dear survey administrator, \nThere were one or more notification emails that failed to be sent. Please check the 'Failed email notifications' section in the survey(s) listed below.", 'unescaped')) ?>
 </p>
 <ul>
     <?php
     foreach ($failedEmailSurveyTitles as $surveyId => $surveyTitle) : ?>
         <li>
             <?= CHtml::link(
-                $surveyTitle,
+                sprintf(gT("%s (ID: %s)"), $surveyTitle, $surveyId),
                 Yii::app()->createUrl("failedEmail/index/", ['surveyid' => $surveyId])
             ) ?>
         </li>
     <?php
     endforeach; ?>
 </ul>
-

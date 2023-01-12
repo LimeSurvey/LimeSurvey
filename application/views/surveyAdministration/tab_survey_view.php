@@ -6,7 +6,7 @@
  * It doesn't render the tab content
  */
 
-$active = (isset($_GET['tab']))?$_GET['tab']:'create';
+$active = $_GET['tab'] ?? 'create';
 
 App()->getClientScript()->registerScript("tab-survey-view-variables", "
     var jsonUrl = '';
@@ -51,51 +51,51 @@ App()->getClientScript()->registerScript("tab-survey-view-tab-switch-conditions"
 <ul class="nav nav-tabs" id="create-import-copy-survey">
 
     <!-- Create -->
-    <li role="presentation" <?php if($active=='create'){echo 'class="active"';}?>>
-        <a role="tab" data-toggle="tab" data-button-title="<i class='fa fa-save'></i>&nbsp;<?= gT('Save'); ?>" data-form-id="addnewsurvey" href='#general'>
+    <li class="nav-item" role="presentation">
+        <a class="nav-link <?= $active === 'create' ? 'active' : ''?>" role="tab" data-bs-toggle="tab" data-button-title="<i class='fa fa-save'></i>&nbsp;<?= gT('Save'); ?>" data-form-id="addnewsurvey" href='#general'>
             <i class="fa fa-plus-circle"></i>&nbsp;
             <?php  eT("Create"); ?>
         </a>
     </li>
 
 
-    <?php if ($action == "newsurvey"): ?>
+    <?php if ($action === "newsurvey"): ?>
         <!-- Import -->
-        <li role="presentation" <?php if($active=='import'){echo 'class="active"';}?>>
-            <a role="tab" data-toggle="tab" data-button-title=" <span class='icon-import '></span>&nbsp;<?= gT('Import'); ?>" data-form-id="importsurvey" href="#import">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link <?= $active === 'import' ? 'active' : ''?>" role="tab" data-bs-toggle="tab" data-button-title=" <span class='icon-import '></span>&nbsp;<?= gT('Import'); ?>" data-form-id="importsurvey" href="#import">
             <span class="icon-import text-success"></span>&nbsp;
                 <?php  eT("Import"); ?>
             </a>
         </li>
 
         <!-- Copy -->
-        <li role="presentation" <?php if($active=='copy'){echo 'class="active"';}?>>
-            <a role="tab" data-toggle="tab" data-button-title="<i class='fa fa-copy'></i>&nbsp;<?= gT('Copy'); ?>" data-form-id="copysurveyform" href="#copy">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link <?= $active === 'copy' ? 'active' : ''?>" role="tab" data-bs-toggle="tab" data-button-title="<i class='fa fa-copy'></i>&nbsp;<?= gT('Copy'); ?>" data-form-id="copysurveyform" href="#copy">
                 <i class="fa fa-copy"></i>&nbsp;
                 <?php  eT("Copy"); ?>
             </a>
         </li>
 
-    <?php elseif($action == "editsurveysettings"): ?>
+    <?php elseif($action === "editsurveysettings"): ?>
 
         <!-- Panel integration -->
-        <li role="presentation">
-            <a role="tab" data-toggle="tab" href="#panelintegration">
+        <li class="nav-item" role="presentation">
+            <a role="tab" data-bs-toggle="tab" href="#panelintegration">
                 <?php  eT("Panel integration"); ?>
             </a>
         </li>
 
         <!-- Resources -->
-        <li role="presentation">
-            <a role="tab" data-toggle="tab" href="#resources">
+        <li class="nav-item" role="presentation">
+            <a role="tab" data-bs-toggle="tab" href="#resources">
                 <?php  eT("Resources"); ?>
             </a>
         </li>
 
         <!-- Plugins -->
         <?php if(isset($pluginSettings)): ?>
-            <li role="presentation">
-                <a role="tab" data-toggle="tab" href="#pluginsettings">
+            <li class="nav-item" role="presentation">
+                <a role="tab" data-bs-toggle="tab" href="#pluginsettings">
                     <?php  eT("Plugins"); ?>
                 </a>
             </li>

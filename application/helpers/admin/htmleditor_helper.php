@@ -178,6 +178,16 @@ function getEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $gID = 
     }
 }
 
+/**
+ * @param $fieldtype
+ * @param $fieldname
+ * @param $fieldtext
+ * @param $surveyID
+ * @param $gID
+ * @param $qID
+ * @param $action
+ * @return string
+ */
 function getPopupEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $gID = null, $qID = null, $action = null)
 {
 
@@ -199,14 +209,24 @@ function getPopupEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $g
         $class = "editorLink input-group-addon";
     }
     $htmlcode .= ""
-    . "<a href=\"javascript:start_popup_editor('" . $fieldname . "','" . addslashes(htmlspecialchars_decode($fieldtext, ENT_QUOTES)) . "','" . $surveyID . "','" . $gID . "','" . $qID . "','" . $fieldtype . "','" . $action . "')\" id='" . $fieldname . "_ctrl' class='{$class} btn btn-default btn-xs'>\n"
-    . "\t<i class='fa fa-pencil btneditanswerena' id='" . $fieldname . "_popupctrlena' data-toggle='tooltip' data-placement='bottom' title='" . gT("Start HTML editor in a popup window") . "'></i>"
+    . "<a href=\"javascript:start_popup_editor('" . $fieldname . "','" . addslashes(htmlspecialchars_decode($fieldtext, ENT_QUOTES)) . "','" . $surveyID . "','" . $gID . "','" . $qID . "','" . $fieldtype . "','" . $action . "')\" id='" . $fieldname . "_ctrl' class='{$class} btn btn-outline-secondary btn-xs'>\n"
+    . "\t<i class='fa fa-pencil btneditanswerena' id='" . $fieldname . "_popupctrlena' data-bs-toggle='tooltip' data-bs-placement='bottom' title='" . gT("Start HTML editor in a popup window") . "'></i>"
     . "\t<i class='fa fa-pencil btneditanswerdis' id='" . $fieldname . "_popupctrldis'  style='display:none'  ></i>"
     . "</a>\n";
 
     return $htmlcode;
 }
 
+/**
+ * @param $fieldtype
+ * @param $fieldname
+ * @param $fieldtext
+ * @param $surveyID
+ * @param $gID
+ * @param $qID
+ * @param $action
+ * @return string
+ */
 function getModalEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $gID = null, $qID = null, $action = null)
 {
 
@@ -214,8 +234,8 @@ function getModalEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $g
         $surveyID = 'uniq';
     }
 
-    $htmlcode = "<a href='#' class='btn btn-default btn-sm htmleditor--openmodal' data-target-field-id='$fieldname' data-modal-title='$fieldtext' data-toggle='tooltip' data-original-title='" . gT("Open editor") . "'>\n" .
-                "\t<i class='fa fa-edit' id='{$fieldname}_modal_icon'></i>\n" .
+    $htmlcode = "<a href='#' class='btn btn-sm btn-outline-secondary htmleditor--openmodal' data-target-field-id='$fieldname' data-modal-title='$fieldtext' data-bs-toggle='tooltip' data-bs-original-title='" . gT("Open editor") . "'>\n" .
+                "\t<i class='fa fa-pencil' id='{$fieldname}_modal_icon'></i>\n" .
                 "</a>\n";
 
     return $htmlcode;

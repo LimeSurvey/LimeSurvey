@@ -12,7 +12,7 @@ $systemInfos = [
     gT('PHP version') => phpversion(),
     gT('Web server name') => $_SERVER['SERVER_NAME'],
     gT('Web server software') => $_SERVER['SERVER_SOFTWARE'],
-    gT('Web server info') => isset($_SERVER['SERVER_SIGNATURE']) ? $_SERVER['SERVER_SIGNATURE'] : $_SERVER['SERVER_PROTOCOL']
+    gT('Web server info') => $_SERVER['SERVER_SIGNATURE'] ?? $_SERVER['SERVER_PROTOCOL']
 ];
 
 // MSSQL does not support some of these attributes, so much
@@ -52,27 +52,27 @@ foreach ($systemInfos as $key => $systemInfo) {
 <!-- Footer -->
 <footer class='footer'>
     <div class="container-fluid">
-        <div class="row">
+        <div class="row ps-3 pe-3">
             <!-- Link to manual -->
-            <div class="col-xs-6 col-sm-4 ">
+            <div class="col-6 col-md-4">
                 <a href='http://manual.limesurvey.org' onclick='function go(ev) { ev.preventDefault(); var win = window.open("http://manual.limesurvey.org", "_blank"); win.focus(); }; go(event);'>
                     <span class="fa fa-question-circle" id="info-footer"></span>
-            <span class="sr-only"><?php eT('Limesurvey online manual'); ?></span>
+            <span class="visually-hidden"><?php eT('Limesurvey online manual'); ?></span>
                 </a>
             </div>
 
             <!-- Support / Donate -->
-            <div  class="col-xs-6 col-sm-4 text-center" >
+            <div  class="col-6 col-md-4 text-center" >
                 <a href='https://donate.limesurvey.org' target="_blank">
                     <img alt='<?php printf(gT("Support this project - Donate to %s!"), 'LimeSurvey'); ?>' title='<?php printf(gT("Support this project - Donate to %s!"), 'LimeSurvey'); ?>' src='<?php echo Yii::app()->getConfig('adminimageurl');?>donate.png'/>
                 </a>
             </div>
 
             <!-- Lime survey website -->
-            <div class="col-xs-12 col-sm-4 text-right">
+            <div class="col-12 col-md-4 text-end">
                 <a  title='<?php eT("Visit our website!"); ?>' href='https://community.limesurvey.org' target='_blank'>LimeSurvey Community Edition</a><br />
                 <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')) { ?> 
-                    <a href="#modalSystemInformation" data-toggle="modal" title="<?=gT("Get system information")?>"> 
+                    <a href="#modalSystemInformation" data-bs-toggle="modal" title="<?=gT("Get system information")?>"> 
                 <?php } ?>
                 <?php echo $versiontitle . "  " . $versionnumber . $buildtext;?>
                 <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')) { ?>
@@ -93,8 +93,8 @@ foreach ($systemInfos as $key => $systemInfo) {
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <div class="h3 modal-title"><?php eT("System information"); ?></div>
+                <h5 class="modal-title"><?php eT("System information"); ?></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
                 <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')) { ?>
@@ -124,8 +124,8 @@ foreach ($systemInfos as $key => $systemInfo) {
     Example of use:
 
     <button
-        data-toggle='modal'
-        data-target='#confirmation-modal'
+        data-bs-toggle='modal'
+        data-bs-target='#confirmation-modal'
         data-onclick='(function() { LS.plugin.cintlink.cancelOrder("<?php echo $order->url; ?>"); })'
         class='btn btn-warning btn-sm'
     >
@@ -139,8 +139,8 @@ foreach ($systemInfos as $key => $systemInfo) {
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <div class="h4 modal-title"><?php eT("Confirm"); ?></div>
+                <h5 class="modal-title"><?php eT("Confirm"); ?></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
                 <p class='modal-body-text'><?php eT("Are you sure?"); ?></p>
@@ -159,11 +159,11 @@ foreach ($systemInfos as $key => $systemInfo) {
 
             </div>
             <div class="modal-footer modal-footer-yes-no">
-                <button type="button" class="btn btn-cancel" data-dismiss="modal"><?php eT("Cancel"); ?></button>
+                <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT("Cancel"); ?></button>
                 <a id="actionBtn" class="btn btn-ok" data-actionbtntext="<?php eT('Confirm'); ?>" ></a>
             </div>
             <div class="modal-footer-close modal-footer" style="display: none;">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
                     <?php eT("Close"); ?>
                 </button>
             </div>
@@ -176,15 +176,15 @@ foreach ($systemInfos as $key => $systemInfo) {
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content panel-danger">
-            <div class="modal-header panel-heading">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <div class="h3 modal-title"><?php eT("Error"); ?></div>
+            <div class="modal-header card-header">
+                <h5 class="modal-title"><?php eT("Error"); ?></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
                 <p class='modal-body-text'><?php eT("An error occurred."); ?></p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">&nbsp;<?php eT("Close"); ?></button>
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">&nbsp;<?php eT("Close"); ?></button>
             </div>
         </div>
     </div>
@@ -195,15 +195,15 @@ foreach ($systemInfos as $key => $systemInfo) {
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content panel-success">
-            <div class="modal-header panel-heading">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <div class="h3 modal-title"><?php eT("Success"); ?></div>
+            <div class="modal-header card-header">
+                <h5 class="modal-title"><?php eT("Success"); ?></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
                 <p class='modal-body-text'><?php /* This must be set in Javascript */ ?></p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">&nbsp;<?php eT("Close"); ?></button>
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">&nbsp;<?php eT("Close"); ?></button>
             </div>
         </div>
     </div>
@@ -214,18 +214,15 @@ foreach ($systemInfos as $key => $systemInfo) {
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">  <?php // JS add not.type as panel-type, e.g. panel-default, panel-danger ?>
-            <div class="modal-header panel-heading">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <div class="h3 modal-title">
-            <span class="sr-only"><?php eT("Notifications"); ?></span>
-        </div>
+            <div class="modal-header card-header">
+                <h5 class="modal-title"><?php eT("Notifications"); ?></h5>
                 <span class='notification-date'></span>
             </div>
             <div class="modal-body">
                 <p class='modal-body-text'></p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">&nbsp;<?php eT("Close"); ?></button>
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">&nbsp;<?php eT("Close"); ?></button>
             </div>
         </div>
     </div>

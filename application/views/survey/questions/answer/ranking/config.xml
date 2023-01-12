@@ -347,23 +347,27 @@
             <expression></expression>
         </attribute>
         <attribute>
-            <name>random_order</name>
+            <name>answer_order</name>
             <category>Display</category>
             <sortorder>100</sortorder>
             <inputtype>singleselect</inputtype>
             <options>
                 <option>
-                    <value>0</value>
-                    <text>No</text>
+                    <value>normal</value>
+                    <text>Normal</text>
                 </option>
                 <option>
-                    <value>1</value>
-                    <text>Yes</text>
+                    <value>random</value>
+                    <text>Random</text>
+                </option>
+                <option>
+                    <value>alphabetical</value>
+                    <text>Alphabetical</text>
                 </option>
             </options>
-            <default>0</default>
-            <help>Present subquestions/answer options in random order</help>
-            <caption>Random order</caption>
+            <default>normal</default>
+            <help>Present answer options in normal, random or alphabetical order</help>
+            <caption>Answer options order</caption>
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
@@ -446,7 +450,7 @@
             <expression>1</expression>
             <i18n>1</i18n>
             <default></default>
-            <help>Replace choice header (default: &amp;quot;Your choices&amp;quot;)</help>
+            <help>Replace choice header (default: &amp;quot;Available items&amp;quot;)</help>
             <caption>Choice header</caption>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>

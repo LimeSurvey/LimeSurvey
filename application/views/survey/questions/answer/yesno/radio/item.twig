@@ -7,20 +7,19 @@
  * @var $nChecked
  * @var $naChecked
  * @var $noAnswer
- * @var $checkconditionFunction         $checkconditionFunction(this.value, this.name, this.type)
  * @var $value                          $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$name]
  */
 #}
 
-<ul class="{{ coreClass }} list-unstyled form-inline" role="radiogroup" aria-labelledby="ls-question-text-{{ basename }}">
+<ul class="ls-answers answers-list yesno-button radio-list list-group list-group-horizontal" role="radiogroup" aria-labelledby="ls-question-text-{{ basename }}">
     <!-- Yes -->
-    <li id="javatbd{{ name }}Y"  class="answer-item radio-item">
+    <li id="javatbd{{ name }}Y" class="answer-item radio-item">
         <input
-            type="radio"
-            name="{{ name }}"
-            id="answer{{ name }}Y"
-            value="Y"
-            {{ yChecked }}
+                type="radio"
+                name="{{ name }}"
+                id="answer{{ name }}Y"
+                value="Y"
+                {{ yChecked }}
         />
         <label for="answer{{ name }}Y" class="control-label answer-text">
             {{ gT('Yes') }}
@@ -28,28 +27,28 @@
     </li>
 
     <!-- No -->
-    <li id="javatbd{{ name }}N"  class="answer-item radio-item">
+    <li id="javatbd{{ name }}N" class="answer-item radio-item">
         <input
-            type="radio"
-            name="{{ name }}"
-            id="answer{{ name }}N"
-            value="N"
-            {{ nChecked }}
+                type="radio"
+                name="{{ name }}"
+                id="answer{{ name }}N"
+                value="N"
+                {{ nChecked }}
         />
-        <label for="answer{{ name }}N" class="control-label answer-text" >
+        <label for="answer{{ name }}N" class="control-label answer-text">
             {{ gT('No') }}
         </label>
     </li>
 
     <!-- No answer -->
     {% if noAnswer %}
-        <li id="javatbd{{ name }}"  class="answer-item radio-item noanswer-item">
+        <li id="javatbd{{ name }}" class="answer-item radio-item noanswer-item">
             <input
-                type="radio"
-                name="{{ name }}"
-                id="answer{{ name }}"
-                value=""
-                {{ naChecked }}
+                    type="radio"
+                    name="{{ name }}"
+                    id="answer{{ name }}"
+                    value=""
+                    {{ naChecked }}
             />
             <label for="answer{{ name }}" class="control-label answer-text">
                 {{ gT('No answer') }}
@@ -61,5 +60,4 @@
 {{ C.Html.hiddenField("java"~name,value,({
     'id' : "java"~name,
     'disabled' : true,
-}))
-}}
+})) }}

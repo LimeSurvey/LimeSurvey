@@ -30,20 +30,20 @@ if( isset($serverAnswer->html) )
     $url = Yii::app()->createUrl('/admin/update/sa/submitkey');
     echo CHtml::beginForm($url, 'post', array("id"=>"submitKeyForm"));
     echo CHtml::hiddenField('destinationBuild', Yii::app()->request->getParam('destinationBuild',''));?>
-    <div class="form-group">
+    <div class="mb-3">
         <?php
-        echo CHtml::label(gT('Enter your update key:'),'inputKey', array('class'=>'col-sm-2'));
+        echo CHtml::label(gT('Enter your update key:'),'inputKey', array('class'=>'col-md-2'));
         ?>
-        <div class='col-sm-2'>
+        <div class='col-md-2'>
             <?php
             echo CHtml::textField('keyid', '', array("id"=>"inputKey",'class'=>'form-control','required' => true));
             ?>
         </div>
     </div>
     <?php
-    echo CHtml::submitButton(gT('Submit'), array("class"=>"btn btn-default", "id"=>"submitKeyButton"));
+    echo CHtml::submitButton(gT('Submit'), array("class"=>"btn btn-outline-secondary", "id"=>"submitKeyButton"));
     ?>
-    <a class="btn btn-default" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
+    <a class="btn btn-cancel" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
         <?php eT("Cancel"); ?>
     </a>
     <?php echo CHtml::endForm();?>

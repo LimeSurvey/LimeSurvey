@@ -231,7 +231,7 @@ class QuestionTheme extends LSActiveRecord
         $sLoadLink = CHtml::form(array("themeOptions/importManifest/"), 'post', array('id' => 'forminstallquestiontheme', 'name' => 'forminstallquestiontheme')) .
             "<input type='hidden' name='templatefolder' value='" . $this->xml_path . "'>
             <input type='hidden' name='theme' value='questiontheme'>
-            <button id='template_options_link_" . $this->name . "'class='btn btn-default btn-block'>
+            <button id='template_options_link_" . $this->name . "'class='btn btn-outline-secondary btn-block'>
             <span class='fa fa-download text-warning'></span>
             " . gT('Install') . "
             </button>
@@ -390,7 +390,7 @@ class QuestionTheme extends LSActiveRecord
         // read all metadata from the provided $pathToXmlFolder
         $questionMetaData = json_decode(json_encode($oQuestionConfig->metadata), true);
         if (!isset($questionMetaData['questionType'])) {
-            throw new Exception(gT('Missing questionType in metadata'));
+            throw new Exception('Missing attribute questionType in meta data');
         }
 
         $aQuestionThemes = QuestionTheme::model()->findAll(

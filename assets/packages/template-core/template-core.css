@@ -14,7 +14,7 @@ li.question-item.answer-item.text-item.form-group {
 }
 
 /* See https://github.com/h5bp/html5-boilerplate/issues/1874 and https://medium.com/@jessebeach/beware-smushed-off-screen-accessible-text-5952a4c2cbfe */
-.sr-only {
+.visually-hidden {
     white-space: nowrap;
 }
 
@@ -177,7 +177,7 @@ ls-answers > tbody > tr > td.answertextright {
 }
 
 /**
- *  awesome-bootstrap-checkbox inside table with an sr-only label
+ *  awesome-bootstrap-checkbox inside table with an visually-hidden label
  * @todo : .dir-rtl
  */
 /* reset the margin and review the padding set by bootstrap */
@@ -199,7 +199,7 @@ table.ls-answers input[type="radio"] {
     padding-left: 0;
 }
 
-/* show partially sr-only inside table */
+/* show partially visually-hidden inside table */
 .radio-item .ls-label-xs-visibility,
 .checkbox-item .ls-label-xs-visibility {
     display: inline-block;
@@ -253,7 +253,7 @@ table.ls-answers input[type="radio"] {
     text-indent: 0;
 }
 
-/* Hide the other content inside sr-only */
+/* Hide the other content inside visually-hidden */
 .radio-item label.ls-label-xs-visibility>*,
 .checkbox-item label.ls-label-xs-visibility>* {
     position: absolute;
@@ -273,7 +273,7 @@ table.ls-answers input[type="radio"] {
     left: -10000px;
 }
 
-/* Align survey policy checkbox to top */
+/* Align privacy policy checkbox to top */
 #datasecurity_accepted {
     vertical-align: top;
 }

@@ -30,8 +30,8 @@ class Index extends CAction
 
         $this->loadRequiredHelpersAndLibraries();
         $param       = $this->getParameters(func_get_args(), $_POST);
-        $surveyid    = $param['sid'];
-        $thisstep    = $param['thisstep'];
+        $surveyid    = (int) $param['sid'];
+        $thisstep    = (int) $param['thisstep'];
         $move        = getMove();
 
         /* Newtest must be done bedore all other action */
@@ -155,7 +155,7 @@ class Index extends CAction
 
         // Set the language of the survey, either from POST, GET parameter of session var
         // Keep the old value, because SetSurveyLanguage update $_SESSION
-        $sOldLang = isset($_SESSION['survey_' . $surveyid]['s_lang']) ? $_SESSION['survey_' . $surveyid]['s_lang'] : ""; // Keep the old value, because SetSurveyLanguage update $_SESSION
+        $sOldLang = $_SESSION['survey_' . $surveyid]['s_lang'] ?? ""; // Keep the old value, because SetSurveyLanguage update $_SESSION
 
         $sDisplayLanguage = Yii::app()->getConfig('defaultlang');
         if (!empty($param['lang'])) {
@@ -199,7 +199,7 @@ class Index extends CAction
 
             $this->_createNewUserSessionAndRedirect($surveyid, $redata, __LINE__, $asMessage);
         } elseif (!$clienttoken) {
-            $clienttoken = isset($_SESSION['survey_' . $surveyid]['token']) ? $_SESSION['survey_' . $surveyid]['token'] : ""; // Fix for #12003
+            $clienttoken = $_SESSION['survey_' . $surveyid]['token'] ?? ""; // Fix for #12003
         }
 
         if ($tokensexist != 1) {
@@ -471,6 +471,7 @@ class Index extends CAction
             $thissurvey['aLoadForm'] = $aLoadForm;
             //$oTemplate->registerAssets();
             $thissurvey['include_content'] = 'load';
+            $thissurvey['trackUrlPageName'] = 'load';
             Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey' => Survey::model()->findByPk($surveyid), 'aSurveyInfo' => $thissurvey), false);
         }
 

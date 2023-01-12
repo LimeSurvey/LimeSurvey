@@ -114,6 +114,7 @@ class User extends LSActiveRecord
             array('templateeditormode', 'default', 'value' => 'default'),
             array('templateeditormode', 'in', 'range' => array('default', 'full', 'none'), 'allowEmpty' => true),
             array('dateformat', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
+            array('expires', 'date','format' => ['yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m'],'allowEmpty' => true),
 
             // created as datetime default current date in create scenario ?
             // modifier as datetime default current date ?
@@ -141,6 +142,7 @@ class User extends LSActiveRecord
             'created' => gT('Created at'),
             'modified' => gT('Modified at'),
             'last_login' => gT('Last recorded login'),
+            'expires' => gT("Expiry date/time:"),
         ];
     }
 
@@ -181,9 +183,10 @@ class User extends LSActiveRecord
      * @param string $new_full_name
      * @param string $new_email
      * @param int $parent_user
+     * @param string|null $expires
      * @return integer|boolean User ID if success
      */
-    public static function insertUser($new_user, $new_pass, $new_full_name, $parent_user, $new_email)
+    public static function insertUser($new_user, $new_pass, $new_full_name, $parent_user, $new_email, $expires = null)
     {
         $oUser = new self();
         $oUser->users_name = $new_user;
@@ -194,6 +197,7 @@ class User extends LSActiveRecord
         $oUser->email = $new_email;
         $oUser->created = date('Y-m-d H:i:s');
         $oUser->modified = date('Y-m-d H:i:s');
+        $oUser->expires = $expires;
         if ($oUser->save()) {
             return $oUser->uid;
         } else {
@@ -442,110 +446,6 @@ class User extends LSActiveRecord
     /**
      * Gets the buttons for the GridView
      * @return string
-     * TODO: this seems to not be used anymore - see getManagementButtons()
-     */
-    public function getButtons()
-    {
-        $editUser = "";
-        $deleteUser = "";
-        $setPermissionsUser = "";
-        $setTemplatePermissionUser = "";
-        $changeOwnership = "";
-
-        $editUrl = Yii::app()->getController()->createUrl('admin/user/sa/modifyuser');
-        $setPermissionsUrl = Yii::app()->getController()->createUrl('admin/user/sa/setuserpermissions');
-        $setTemplatePermissionsUrl = Yii::app()->getController()->createUrl('admin/user/sa/setusertemplates');
-        $changeOwnershipUrl = Yii::app()->getController()->createUrl('admin/user/sa/setasadminchild');
-
-        $oUser = self::model()->findByPK($this->uid);
-        if ($this->uid == Yii::app()->user->getId()) {
-            // Edit self
-            $editUser = "<button
-                data-toggle='tooltip'
-                title='" . gT("Edit this user") . "'
-                data-url='" . $editUrl . "'
-                data-uid='" . $this->uid . "'
-                data-user='" . htmlspecialchars($oUser['full_name']) . "'
-                data-action='modifyuser'
-                class='btn btn-default btn-sm green-border action_usercontrol_button'>
-                    <span class='fa fa-pencil text-success'></span>
-                </button>";
-        } else {
-            if (
-                Permission::model()->hasGlobalPermission('superadmin', 'read')
-                || $this->uid == Yii::app()->session['loginID']
-                || (Permission::model()->hasGlobalPermission('users', 'update')
-                    && $this->parent_id == Yii::app()->session['loginID']
-                )
-            ) {
-                $editUser = "<button data-toggle='tooltip' data-url='" . $editUrl . "' data-user='" . htmlspecialchars($oUser['full_name']) . "' data-uid='" . $this->uid . "' data-action='modifyuser' title='" . gT("Edit this user") . "' type='submit' class='btn btn-default btn-sm green-border action_usercontrol_button'><span class='fa fa-pencil text-success'></span></button>";
-            }
-
-            if (
-                ((Permission::model()->hasGlobalPermission('superadmin', 'read') &&
-                $this->uid != Yii::app()->session['loginID']) ||
-                (Permission::model()->hasGlobalPermission('users', 'update') &&
-                $this->parent_id == Yii::app()->session['loginID'])) && !Permission::isForcedSuperAdmin($this->uid)
-            ) {
-                //'admin/user/sa/setuserpermissions'
-                    $setPermissionsUser = "<button data-toggle='tooltip' data-user='" . htmlspecialchars($this->full_name) . "' data-url='" . $setPermissionsUrl . "' data-uid='" . $this->uid . "' data-action='setuserpermissions' title='" . gT("Set global permissions for this user") . "' type='submit' class='btn btn-default btn-xs action_usercontrol_button'><span class='icon-security text-success'></span></button>";
-            }
-            if (
-                (Permission::model()->hasGlobalPermission('superadmin', 'read')
-                || Permission::model()->hasGlobalPermission('templates', 'read'))
-                && !Permission::isForcedSuperAdmin($this->uid)
-            ) {
-                //'admin/user/sa/setusertemplates')
-                    $setTemplatePermissionUser = "<button type='submit' data-user='" . htmlspecialchars($this->full_name) . "' data-url='" . $setTemplatePermissionsUrl . "' data-uid='" . $this->uid . "' data-action='setusertemplates' data-toggle='tooltip' title='" . gT("Set template permissions for this user") . "' class='btn btn-default btn-xs action_usercontrol_button'><span class='icon-templatepermissions text-success'></span></button>";
-            }
-            if (
-                (Permission::model()->hasGlobalPermission('superadmin', 'read')
-                    || (Permission::model()->hasGlobalPermission('users', 'delete')
-                    && $this->parent_id == Yii::app()->session['loginID'])) && !Permission::isForcedSuperAdmin($this->uid)
-            ) {
-                $deleteUrl = Yii::app()->getController()->createUrl('admin/user/sa/deluser', array(
-                    "action" => "deluser",
-                    "uid" => $this->uid,
-                    "user" => htmlspecialchars(Yii::app()->user->getId())
-                ));
-
-                    //'admin/user/sa/deluser'
-                $deleteUser = "<span style='margin:0;padding:0;display: inline-block;' data-toggle='tooltip' title='" . gT('Delete this user') . "'>
-                    <button
-                        id='delete_user_" . $this->uid . "'
-                        data-toggle='modal'
-                        data-target='#confirmation-modal'
-                        data-url='" . $deleteUrl . "'
-                        data-uid='" . $this->uid . "'
-                        data-user='" . htmlspecialchars($this->full_name) . "'
-                        data-action='deluser'
-                        data-onclick='triggerRunAction($(\"#delete_user_" . $this->uid . "\"))'
-                        data-message='" . gT("Do you want to delete this user?") . "'
-                        class='btn btn-default btn-sm'>
-                            <span class='fa fa-trash text-danger'></span>
-                        </button>
-                    </span>";
-            }
-            if (
-                Permission::isForcedSuperAdmin(Yii::app()->session['loginID'])
-                    && $this->parent_id != Yii::app()->session['loginID']
-            ) {
-                //'admin/user/sa/setasadminchild'
-                $changeOwnership = "<button data-toggle='tooltip' data-url='" . $changeOwnershipUrl . "' data-user='" . htmlspecialchars($oUser['full_name']) . "' data-uid='" . $this->uid . "' data-action='setasadminchild' title='" . gT("Take ownership") . "' class='btn btn-default btn-xs action_usercontrol_button' type='submit'><span class='icon-takeownership text-success'></span></button>";
-            }
-        }
-        return "<div>"
-            . $editUser
-            . $deleteUser
-            . $setPermissionsUser
-            . $setTemplatePermissionUser
-            . $changeOwnership
-            . "</div>";
-    }
-
-    /**
-     * Gets the buttons for the GridView
-     * @return string
      */
     public function getManagementButtons()
     {
@@ -562,9 +462,9 @@ class User extends LSActiveRecord
 
         $userDetail = ""
             . "<button 
-                data-toggle='tooltip' 
+                data-bs-toggle='tooltip' 
                 title='" . gT("User details") . "'    
-                class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--userdetail' 
+                class='btn btn-sm btn-outline-secondary UserManagement--action--openmodal UserManagement--action--userdetail' 
                 data-href='" . $detailUrl . "'
                 >
                 <i class='fa fa-search'></i>
@@ -572,57 +472,57 @@ class User extends LSActiveRecord
 
         $editPermissionButton = ""
             . "<button 
-                data-toggle='tooltip' 
+                data-bs-toggle='tooltip' 
                 title='" . gT("Edit permissions") . "'  
-                class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--permissions' 
+                class='btn btn-sm btn-outline-secondary UserManagement--action--openmodal UserManagement--action--permissions' 
                 data-href='" . $setPermissionsUrl . "'
                 data-modalsize='modal-lg'
                 ><i class='fa fa-lock'></i></button>";
         $addRoleButton = ""
             . "<button 
-                data-toggle='tooltip' 
+                data-bs-toggle='tooltip' 
                 title='" . gT("User role") . "'
-                class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--addrole' 
+                class='btn btn-sm btn-outline-secondary UserManagement--action--openmodal UserManagement--action--addrole' 
                 data-href='" . $setRoleUrl . "'><i class='fa fa-users'></i></button>";
         $editUserButton = ""
             . "<button 
-                data-toggle='tooltip' 
+                data-bs-toggle='tooltip' 
                 title='" . gT("Edit user") . "'
-                class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--edituser green-border' 
+                class='btn btn-sm btn-outline-secondary UserManagement--action--openmodal UserManagement--action--edituser green-border' 
                 data-href='" . $editUrl . "'><i class='fa fa-pencil'></i></button>";
         $editTemplatePermissionButton = ""
             . "<button 
-        data-toggle='tooltip' 
+        data-bs-toggle='tooltip' 
         title='" . gT("Template permissions") . "'
-        class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--templatepermissions' 
+        class='btn btn-sm btn-outline-secondary UserManagement--action--openmodal UserManagement--action--templatepermissions' 
         data-href='" . $setTemplatePermissionsUrl . "'><i class='fa fa-paint-brush'></i></button>";
         $takeOwnershipButton = ""
         . "<button 
                 id='UserManagement--takeown-" . $this->uid . "'
-                class='btn btn-sm btn-default' 
-                data-toggle='modal' 
-                data-target='#confirmation-modal' 
+                class='btn btn-sm btn-outline-secondary' 
+                data-bs-toggle='modal' 
+                data-bs-target='#confirmation-modal' 
                 data-url='" . $changeOwnershipUrl . "' 
                 data-userid='" . $this->uid . "' 
                 data-user='" . $this->full_name . "' 
                 data-action='deluser' 
                 data-onclick='LS.UserManagement.triggerRunAction(\"#UserManagement--takeown-" . $this->uid . "\")' 
                 data-message='" . gT('Do you want to take ownerschip of this user?') . "'>
-                <span data-toggle='tooltip' title='" . gT("Take ownership") . "'>
+                <span data-bs-toggle='tooltip' title='" . gT("Take ownership") . "'>
                     <i class='fa fa-hand-rock-o'></i>
                 </span>    
               </button>";
         $deleteUserButton = ""
             . "<button 
                 id='UserManagement--delete-" . $this->uid . "' 
-                class='btn btn-default btn-sm UserManagement--action--openmodal UserManagement--action--delete red-border'
-                data-toggle='tooltip' 
+                class='btn btn-outline-secondary btn-sm UserManagement--action--openmodal UserManagement--action--delete red-border'
+                data-bs-toggle='tooltip' 
                 title='" . gT("Delete User") . "' 
                 data-href='" . $deleteUrl . "'><i class='fa fa-trash text-danger'></i></button>";
 
         // Superadmins can do everything, no need to do further filtering
         if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-            //Prevent users to modify original superadmin. Original superadmin can change his password on his account setting!
+            //Prevent users from modifying the original superadmin. Original superadmin can change the password on their account setting!
             if ($this->uid == 1) {
                 $editUserButton = "";
             }
@@ -657,13 +557,7 @@ class User extends LSActiveRecord
             $buttonArray[] = $userDetail;
         }
         // Check if user is editable
-        if (
-            $this->uid == Yii::app()->user->getId()                             //One can edit onesself of course
-            || (
-                Permission::model()->hasGlobalPermission('users', 'update')     //Global permission to edit users given
-                && $this->parent_id == Yii::app()->session['loginID']           //AND User is owned by admin
-            )
-        ) {
+        if ($this->canEdit(Yii::app()->session['loginID'])) {
             $buttonArray[] = $editUserButton;
         }
 
@@ -939,6 +833,25 @@ class User extends LSActiveRecord
     }
 
     /**
+     * Returns true if the user has expired.
+     *
+     * @return boolean
+     */
+    public function isExpired()
+    {
+        $expired = false;
+        if (!empty($this->expires)) {
+            // Time adjust
+            $now = date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
+            $expirationTime = date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->expires)));
+
+            // Time comparison
+            $expired = new DateTime($expirationTime) < new DateTime($now);
+        }
+        return $expired;
+    }
+
+    /**
      * Get the decription to be used in list
      * @return $string
      */
@@ -948,5 +861,58 @@ class User extends LSActiveRecord
             return $this->users_name;
         }
         return sprintf(gt("%s (%s)"), $this->users_name, $this->full_name);
+    }
+
+    /**
+     * @param $userGroupId
+     * @return CActiveDataProvider
+     */
+    public function searchUserGroupMembers($userGroupId)
+    {
+        $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
+        $criteria = new CDbCriteria();
+        $criteria->join = 'INNER JOIN {{user_in_groups}} uig on t.uid = uig.uid';
+        $criteria->condition .= 'uig.ugid=:ugid';
+        $criteria->params = array(':ugid' => $userGroupId);
+        $criteria->compare('t.users_name', $this->users_name, true);
+        $criteria->compare('t.email', $this->email, true);
+
+
+        return new CActiveDataProvider($this, array(
+            'criteria' => $criteria,
+            'pagination' => array(
+                'pageSize' => $pageSize
+            )
+        ));
+    }
+
+    /**
+     * Returns button for gridview.
+     * @return string
+     */
+    public function getGroupMemberListButtons()
+    {
+        $userGroupId = Yii::app()->request->getQuery('ugid', 0);
+        $userGroup = UserGroup::model()->findByPk($userGroupId);
+        $currentUserId = $this->uid;
+
+        return Yii::app()->getController()->renderPartial(
+            '_deleteGroupUserButton',
+            ['userGroupId' => $userGroupId, 'userGroup' => $userGroup, 'currentUserId' => $currentUserId]
+        );
+    }
+
+    /**
+     * Returns true if logged in user with id $loginId can edit this user
+     *
+     * @param int $loginId
+     * @return bool
+     */
+    public function canEdit($loginId)
+    {
+        return
+            Permission::model()->hasGlobalPermission('superadmin', 'read')
+            || $this->uid == $loginId
+            || (Permission::model()->hasGlobalPermission('users', 'update') && $this->parent_id == $loginId);
     }
 }
