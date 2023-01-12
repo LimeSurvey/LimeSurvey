@@ -1,15 +1,14 @@
 <div role="tabpanel" class="tab-pane <?php echo Yii::app()->getConfig('debug') > 1 ? '' : 'd-none'; ?>" id="advanced">
-    <div class="alert alert-info alert-dismissible" role="alert">
-        <button href="#" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
-        <p><?php eT('All fields below (except CSS framework name) must be either a valid JSON array or the string "inherit".'); ?></p>
-    </div>
-
-    <div class="alert alert-warning alert-dismissible" role="alert">
-        <button href="#" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
-        <p><strong><?php eT('Warning!'); ?></strong> <?php eT("Don't touch the values below unless you know what you're doing."); ?></p>
-    </div>
-
     <?php
+    $this->widget('ext.AlertWidget.AlertWidget', [
+    'text' => gT('All fields below (except CSS framework name) must be either a valid JSON array or the string "inherit".'),
+    'type' => 'info',
+    ]);
+    $this->widget('ext.AlertWidget.AlertWidget', [
+        'text' => '<strong>' . gT('Warning') . '</strong> ' . gT("Don't touch the values below unless you know what you're doing."),
+        'type' => 'warning',
+    ]);
+
     $actionBaseUrl = 'themeOptions/update/';
     $actionUrlArray = ['id' => $model->id];
 

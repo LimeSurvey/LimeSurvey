@@ -91,7 +91,7 @@
         </div>
         <?php endforeach; ?>
     </div>
-    <?php if ($showScriptField): ?>
+    <?php if (true): ?>
         <!-- Script tab content -->
         <div role="tabpanel" class="tab-pane" id="script-field-tab">
             <?php foreach($oSurvey->allLanguages as $lang): ?>
@@ -115,7 +115,14 @@
                             </div>
                         </div>
                     <?php else: ?>
-                        <div class="alert alert-warning same-script-alert d-none"><?= gT('The script for this language will not be used because "Use for all languages" is set on the base language\'s script.') ?></div>
+                        <?php
+                        $this->widget('ext.AlertWidget.AlertWidget', [
+                            'text' => gT('The script for this language will not be used because "Use for all languages" is set on the base language\'s script.'),
+                            'type' => 'warning',
+                            'showCloseButton' => false,
+                            'htmlOptions' => ['class' => 'same-script-alert d-none']
+                        ]);
+                        ?>
                     <?php endif; ?>
 
                     <?= CHtml::textArea(
