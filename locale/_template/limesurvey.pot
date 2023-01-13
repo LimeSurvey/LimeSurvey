@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2023-01-12 14:28:37+00:00\n"
+"POT-Creation-Date: 2023-01-13 11:09:14+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -3047,10 +3047,6 @@ msgstr ""
 
 #: application/controllers/SurveyPermissionsController.php:154
 msgid "No users from group could be added."
-msgstr ""
-
-#: application/controllers/SurveyPermissionsController.php:157
-msgid "users from group could be added"
 msgstr ""
 
 #: application/controllers/SurveyPermissionsController.php:185
