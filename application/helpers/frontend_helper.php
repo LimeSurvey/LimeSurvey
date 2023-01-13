@@ -527,12 +527,16 @@ function sendSubmitNotifications($surveyid, array $emails = [], bool $return = f
                 $responseId = $sRecipient['responseId'];
                 $notificationRecipient = $sRecipient['recipient'];
                 $emailLanguage = $sRecipient['language'];
+                $aReplacementVars['ANSWERTABLE'] = getResponseTableReplacement($surveyid, $responseId, $emailLanguage, $bIsHTML);
+                LimeExpressionManager::updateReplacementFields($aReplacementVars);
                 $mailer->setTypeWithRaw('admin_notification', $emailLanguage);
                 $mailer->setTo($notificationRecipient);
                 $mailerSuccess = $mailer->resend(json_decode($sRecipient['resendVars'],true));
             } else {
                 $failedNotificationId = null;
                 $notificationRecipient = $sRecipient;
+                $aReplacementVars['ANSWERTABLE'] = getResponseTableReplacement($surveyid, $responseId, $emailLanguage, $bIsHTML);
+                LimeExpressionManager::updateReplacementFields($aReplacementVars);
                 $mailer->setTo($notificationRecipient);
                 $mailerSuccess = $mailer->SendMessage();
             }
