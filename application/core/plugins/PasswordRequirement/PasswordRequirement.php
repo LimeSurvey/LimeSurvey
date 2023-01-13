@@ -211,31 +211,65 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
 
     private function getRandomString($length = 8, $uppercase = false, $numeric = false, $nonAlpha = false)
     {
-        $chars = "abcdefghijklmnopqrstuvwxyz";
-        
-        if ($uppercase) {
-            $chars .= 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        }
-        if ($numeric) {
-            $chars .= '0123456789';
-        }
-        if ($nonAlpha) {
-            $chars .= '-=!@#$%&*_+,.?;:';
-        }
-
+        // Init
         $str = '';
-        $max = strlen($chars) - 1;
 
-        if (function_exists('random_int')) {
-            for ($i = 0; $i < $length; $i++) {
-                $str .= $chars[random_int(0, $max)];
-            }
-        } else {
-            for ($i = 0; $i < $length; $i++) {
-                $str .= $chars[mt_rand(0, $max)];
-            }
+        /**
+         * For each required character set:
+         * - Add one character to the output string.
+         * - Add the char set to the general char pool.
+         */
+
+        // Lowercase (always on)
+        $chars = "abcdefghijklmnopqrstuvwxyz";
+        $str .= pickRandomChar($chars);
+
+        // Uppercase if applies
+        // Add one character and also add the charset to the pool of available chars
+        if ($uppercase) {
+            $uppercase_chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            $str .= pickRandomChar($uppercase_chars);
+            $chars .= $uppercase_chars;
         }
+
+        // Numeric if applies
+        // Add one character and also add the charset to the pool of available chars
+        if ($numeric) {
+            $numeric_chars = '0123456789';
+            $str .= pickRandomChar($numeric_chars);
+            $chars .= $numeric_chars;
+        }
+
+        // NonAlpha if applies
+        // Add one character and also add the charset to the pool of available chars
+        if ($nonAlpha) {
+            $nonAlpha_chars = '-=!@#$%&*_+,.?;:';
+            $str .= pickRandomChar($nonAlpha_chars);
+            $chars .= $nonAlpha_chars;
+        }
+
+        // Trim in case length is less than the already appended characters
+        if (strlen($str) > $length) {
+            $str = substr($str, 0, $length);
+        }
+
+        /**
+         * Pick remaning characters from the general char pool
+         */
+
+        // Fill string from general char pool
+        for ($i = strlen($str); $i < $length; $i++) {
+            $str .= pickRandomChar($chars);
+        }
+
+        /**
+         * Wrap up
+         */
+        
+        // Shuffle, as to not have always to start with the loweracse, then uppercase, ...
+        $str = str_shuffle($str);
 
         return $str;
     }
+}
 }
