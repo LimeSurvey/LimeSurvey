@@ -89,7 +89,7 @@ var RoleControl = function () {
 
                         if (!result.hasOwnProperty('html')){
                             triggerModalClose();
-                            window.LS.ajaxAlerts(result.message, 'success');
+                            window.LS.ajaxAlerts(result.message, 'success', {showCloseButton: true});
                             return;
                         }
                         $('#exitForm').on('click.ROLECONTROLMODAL', function (e) {

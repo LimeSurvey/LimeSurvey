@@ -99,7 +99,7 @@ var UserManagement = function () {
                         wireExportDummyUser();
                         if (!result.hasOwnProperty('html')) {
                             triggerModalClose();
-                            window.LS.ajaxAlerts(result.message, 'success');
+                            window.LS.ajaxAlerts(result.message, 'success', {showCloseButton: true});
                             if (result.hasOwnProperty('href')) {
                                 setTimeout(function() {
                                     const modalSize = result.hasOwnProperty('modalsize') ? result.modalsize : '';
@@ -115,11 +115,7 @@ var UserManagement = function () {
                         });
                         return;
                     }
-                    $('#UserManagement--errors').html(
-                        LS.LsGlobalNotifier.createAlert(
-                            result.errors,
-                            'danger'
-                        )
+                    $('#UserManagement--errors').html(LS.LsGlobalNotifier.createAlert(result.errors, 'danger', {showCloseButton: true})
                     ).removeClass('d-none');
                 },
                 error: function () {

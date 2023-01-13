@@ -165,7 +165,7 @@ function validateSettingsForm($form) {
                     LS.createAlert(
                         expirationLowerThanStartError,
                         'danger',
-                        {'timeout': 10000}
+                        {'timeout': 10000, 'showCloseButton': true}
                     )
                 }
             );

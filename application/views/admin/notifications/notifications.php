@@ -21,6 +21,7 @@ $alertTypes = ['success', 'primary', 'secondary', 'danger', 'error', 'warning', 
                         'text' => $message['message'],
                         'type' => $alertType,
                         'isFilled' => false,
+                        'showCloseButton' => true,
                         'htmlOptions' => [
                             'class' => 'non-ajax-alert',
                         ],

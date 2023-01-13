@@ -1,4 +1,5 @@
 <?php
+
 /** @var String $tag */
 
 /** @var String $text */
@@ -6,9 +7,13 @@
 /** @var boolean $isFilled */
 /** @var boolean $showIcon */
 /** @var boolean $showCloseButton */
+/** @var array $errors */
+/** @var mixed $errorSummaryModel */
 /** @var array $htmlOptions */
+$inErrorMode = $errorSummaryModel !== null && !empty($errors);
+$notInErrorMode = $errorSummaryModel === null;
 
-$alertClass = ' alert alert-';
+$alertClass = ' d-flex whitespace-pre-wrap alert alert-';
 $alertClass .= $isFilled ? 'filled-' . $type : $type;
 if (!array_key_exists('class', $htmlOptions)) {
     $htmlOptions['class'] = $alertClass;
@@ -41,21 +46,31 @@ if (isset($type) && array_key_exists($type, $alertTypesAndIcons)) {
 if ($showCloseButton) {
     $htmlOptions['class'] .= ' alert-dismissible';
 }
-echo CHtml::openTag($tag, $htmlOptions);
-if ($showIcon) {
-    echo CHtml::openTag("span", array('class' => $icon . ' me-2'));
-    echo CHtml::closeTag("span");
+if ($notInErrorMode || $inErrorMode) {
+    echo CHtml::openTag($tag, $htmlOptions);
+    if ($showIcon) {
+        echo CHtml::openTag("span", ['class' => $icon . ' me-2']);
+        echo CHtml::closeTag("span");
+    }
+
+    if ($inErrorMode) {
+        echo CHtml::openTag('div', ['class' => 'd-flex flex-column']);
+        echo $text;
+        echo $this->render('error-summary', ['errors' => $errors]);
+        echo CHtml::closeTag('div');
+    } else {
+        echo $text;
+    }
+    if ($showCloseButton) {
+        echo CHtml::htmlButton(
+            '',
+            [
+                'type' => 'button',
+                'class' => 'btn-close',
+                'data-bs-dismiss' => 'alert',
+                'aria-label' => gT("Close")
+            ]
+        );
+    }
+    echo CHtml::closeTag($tag);
 }
-echo $text;
-if ($showCloseButton) {
-    echo CHtml::htmlButton(
-        '',
-        [
-            'type' => 'button',
-            'class' => 'btn-close',
-            'data-bs-dismiss' => 'alert',
-            'aria-label' => gT("Close")
-        ]
-    );
-}
-echo CHtml::closeTag($tag);

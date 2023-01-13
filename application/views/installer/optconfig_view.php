@@ -5,7 +5,14 @@
     <div class="col-lg-9">
     <h2><?php echo $title; ?></h2>
     <legend><?php echo $descp; ?></legend>
-    <?php if (isset($confirmation)) echo "<div class='alert alert-success'>".$confirmation."</div>"; ?>
+    <?php if (isset($confirmation)) : ?>
+        <?php
+        $this->widget('ext.AlertWidget.AlertWidget', [
+            'text' => $confirmation,
+            'type' => 'success',
+        ]);
+        ?>
+    <?php endif; ?>
     <div style="color:red; font-size:12px;">
         <?php echo CHtml::errorSummary($model, null, null, array('class' => 'alert alert-danger')); ?>
     </div>

@@ -2048,7 +2048,6 @@ class DataEntry extends SurveyCommonAction
                             $alert = App()->getController()->widget('ext.AlertWidget.AlertWidget', [
                                 'text' => $message,
                                 'type' => 'warning',
-                                'showCloseButton' => false,
                                 'htmlOptions' => ['class' => 'col-md-8 offset-md-2']
                             ], true);
                             $cdata['explanation'] = "<tr class ='data-entry-explanation'><td class='data-entry-small-text' colspan='3' align='left'>$alert</td></tr>\n";

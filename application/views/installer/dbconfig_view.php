@@ -31,9 +31,11 @@ function checkDbType(){
 
 function checkDbEngine(){
     if($('#InstallerConfigForm_dbengine').val() == '".InstallerConfigForm::ENGINE_TYPE_INNODB."') {
-        $('#InstallerConfigForm_dbengine_row .alert').show();
+        $('#innodb-warning').addClass('d-flex');
+        $('#innodb-warning').removeClass('d-none');
     } else {
-        $('#InstallerConfigForm_dbengine_row .alert').hide();
+        $('#innodb-warning').addClass('d-none');
+        $('#innodb-warning').removeClass('d-flex');
     }
 }
 
@@ -49,6 +51,13 @@ function checkDbEngine(){
         <?= CHtml::beginForm($this->createUrl('installer/database'), 'post', array('class' => '')); ?>
         <h2><?= $title; ?></h2>
         <p><?= $descp; ?></p>
+        <?php
+        $this->widget('ext.AlertWidget.AlertWidget', [
+            'text' => gT("Please fix the following input errors:"),
+            'type' => 'danger',
+            'errorSummaryModel' => $model,
+        ]);
+        ?>
         <?= CHtml::errorSummary($model, gT("Please fix the following input errors:"), null, ['class' => 'alert alert-danger errors']); ?>
         <hr/>
         <p><?php eT("Note: All fields marked with (*) are required."); ?></p>
@@ -63,7 +72,13 @@ function checkDbEngine(){
         <div id="InstallerConfigForm_dbengine_row" class="mb-3">
             <?= CHtml::activeLabelEx($model, 'dbengine'); ?>
             <?= CHtml::activeDropDownList($model, 'dbengine', $model->dbEngines, array('prompt'=>gT("Select"), 'autocomplete'=>'off', 'class' => 'form-control')); ?>
-            <div class="alert alert-warning"><?= gT('Warning! Using InnoDB instead of MyISAM will reduce the possible maximum number of questions in your surveys. Please read more about MyISAM vs InnoDB table column limitations in our manual before selecting InnoDB.'); ?></div>
+            <?php
+            $this->widget('ext.AlertWidget.AlertWidget', [
+                'text' => gT('Warning! Using InnoDB instead of MyISAM will reduce the possible maximum number of questions in your surveys. Please read more about MyISAM vs InnoDB table column limitations in our manual before selecting InnoDB.'),
+                'type' => 'warning',
+                'htmlOptions' => ['id' => 'innodb-warning'],
+            ]);
+            ?>
         </div>
 
         <div id="InstallerConfigForm_dblocation_row" class="mb-3">

@@ -1,10 +1,11 @@
 <?php
 /** @var InstallerController $this */
 /** @var InstallerConfigForm $model */
+$this->widget('ext.AlertWidget.AlertWidget', [
+    'text' => '<strong>' . gT("Database doesn't exist!") . '</strong>',
+    'type' => 'warning',
+]);
 ?>
-<div class='alert alert-warning'>
-    <strong><?php eT("Database doesn't exist!"); ?></strong>
-</div>
 <?php eT("The database you specified does not exist:"); ?>
 <br /><br />
 <strong><?= $model->dbname; ?></strong><br /><br />

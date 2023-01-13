@@ -133,14 +133,17 @@
             </form>
 
             <!-- Infos -->
-            <div class="alert alert-info" role="alert">
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                <strong><?php eT("CSV input format"); ?></strong><br/>
-                <p><?php eT("File should be a standard CSV (comma delimited) file with optional double quotes around values (default for most spreadsheet tools). The first line must contain the field names. The fields can be in any order."); ?></p>
-                <span style="font-weight:bold;"><?php eT("Mandatory fields:"); ?></span> firstname, lastname, email<br/>
-                <span style="font-weight:bold;"><?php eT('Optional fields:'); ?></span> emailstatus, token, language, validfrom, validuntil,
-                attribute_1, attribute_2, attribute_3, usesleft, ... .
-            </div>
+            <?php
+            $message = '<div><strong>' . gT("CSV input format") . '</strong><br/>' .
+                '<p>' . gT("File should be a standard CSV (comma delimited) file with optional double quotes around values (default for most spreadsheet tools). The first line must contain the field names. The fields can be in any order.") . '</p>' .
+                '<span class="fw-bold">' . gT("Mandatory fields:") . '</span> firstname, lastname, email<br/>' .
+                '<span class="fw-bold">' . gT('Optional fields:') .
+                '</span> emailstatus, token, language, validfrom, validuntil, attribute_1, attribute_2, attribute_3, usesleft, ... .</div>';
+            $this->widget('ext.AlertWidget.AlertWidget', [
+                'text' => $message,
+                'type' => 'info',
+            ]);
+            ?>
         </div>
     </div>
 </div>

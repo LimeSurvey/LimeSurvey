@@ -18468,3 +18468,7 @@ footer.footer {
   z-index: 3500;
   min-height: 0;
 }
+
+.whitespace-pre-wrap {
+  white-space: pre-wrap;
+}
