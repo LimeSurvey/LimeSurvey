@@ -11049,6 +11049,91 @@ a {
  * This file contain all the common css definitions for the different admin theme.
  * It should not contain color definition (grey, blacks, and white are acceptable)
  */
+/**
+ * Custom variables for Bootstrap 5
+ */
+:root {
+  --bs-blue: #0d6efd;
+  --bs-indigo: #6610f2;
+  --bs-purple: #6f42c1;
+  --bs-pink: #d63384;
+  --bs-red: #dc3545;
+  --bs-orange: #FFBA68;
+  --bs-yellow: #ffc107;
+  --bs-green: #198754;
+  --bs-teal: #20c997;
+  --bs-cyan: #0dcaf0;
+  --bs-white: #fff;
+  --bs-gray: #6c757d;
+  --bs-gray-dark: #343a40;
+  --bs-gray-100: #f8f9fa;
+  --bs-gray-200: #e9ecef;
+  --bs-gray-300: #dee2e6;
+  --bs-gray-400: #ced4da;
+  --bs-gray-500: #adb5bd;
+  --bs-gray-600: #6c757d;
+  --bs-gray-700: #495057;
+  --bs-gray-800: #343a40;
+  --bs-gray-900: #212529;
+  --bs-primary: #0d6efd;
+  --bs-secondary: #6C757D;
+  --bs-success: #198754;
+  --bs-info: #0DCAF0;
+  --bs-warning: #FFC107;
+  --bs-danger: #DC3545;
+  --bs-light: #f8f9fa;
+  --bs-dark: #212529;
+  --bs-cancel: #E9ECEF;
+  --bs-primary-rgb: 20, 174, 92;
+  --bs-secondary-rgb: 172, 172, 172;
+  --bs-success-rgb: 77, 215, 83;
+  --bs-danger-rgb: 255, 81, 95;
+  --bs-warning-rgb: 255, 224, 70;
+  --bs-info-rgb: 129, 70, 246;
+  --bs-light-rgb: 238, 239, 247;
+  --bs-dark-rgb: 30, 30, 30;
+  --bs-black60-rgb: 102, 102, 102;
+  --bs-cancel-rgb: 172, 172, 172;
+  --bs-white-rgb: 255, 255, 255;
+  --bs-black-rgb: 0, 0, 0;
+  --bs-body-color-rgb: 33, 37, 41;
+  --bs-body-bg-rgb: 255, 255, 255;
+  --bs-font-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
+  --bs-root-font-size: 14px;
+  --bs-body-font-family: var(--bs-font-sans-serif);
+  --bs-body-font-size: 1rem;
+  --bs-body-font-weight: 400;
+  --bs-body-line-height: 1.5;
+  --bs-body-color: #212529;
+  --bs-body-bg: #fff;
+}
+
+html {
+  font-size: 14px;
+}
+
+a {
+  text-decoration: none;
+}
+
+.table > :not(:first-child) {
+  border-top: 0;
+}
+
+.ls-text-underline-hover {
+  text-decoration: none;
+}
+
+.ls-text-underline-hover:hover {
+  text-decoration: underline;
+}
+
+.hidden {
+  display: none !important;
+}
+
 #ls-loading {
   width: 100%;
   height: 100%;
@@ -15103,8 +15188,8 @@ a.list-group-item-info.active:focus, a.list-group-item-info.active:hover, a.list
 
 a.list-group-item-warning.active:focus, a.list-group-item-warning.active:hover, a.list-group-item-warning.active {
   color: #fff;
-  background-color: #FFE046;
-  border: 1px solid #FFE046;
+  background-color: #FFC107;
+  border: 1px solid #FFC107;
 }
 
 a.list-group-item-danger.active:focus, a.list-group-item-danger.active:hover, a.list-group-item-danger.active {
@@ -15197,14 +15282,14 @@ a.list-group-item-info:focus {
   background-color: #9bbfc0;
 }
 a.list-group-item-warning {
-  color: #FFE046;
+  color: #FFC107;
 }
 a.list-group-item-warning:hover {
-  color: #FFE046;
+  color: #FFC107;
   background-color: #b2947b;
 }
 a.list-group-item-warning:focus {
-  color: #FFE046;
+  color: #FFC107;
   background-color: #b2947b;
 }
 a.list-group-item-danger {
@@ -16052,7 +16137,7 @@ fieldset[disabled] .form-control {
 }
 
 .list-group-item-warning {
-  color: #FFE046;
+  color: #FFC107;
   background-color: #bba18c;
 }
 
@@ -16235,25 +16320,25 @@ output {
 }
 
 .has-warning .help-block {
-  color: #FFE046;
+  color: #FFC107;
 }
 .has-warning .control-label {
-  color: #FFE046;
+  color: #FFC107;
 }
 .has-warning .radio {
-  color: #FFE046;
+  color: #FFC107;
 }
 .has-warning .checkbox {
-  color: #FFE046;
+  color: #FFC107;
 }
 .has-warning .radio-inline {
-  color: #FFE046;
+  color: #FFC107;
 }
 .has-warning .checkbox-inline {
-  color: #FFE046;
+  color: #FFC107;
 }
 .has-warning .form-control {
-  border: 1px solid #FFE046;
+  border: 1px solid #FFC107;
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
 }
 .has-warning .form-control:focus {
@@ -16261,12 +16346,12 @@ output {
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #fde1cf;
 }
 .has-warning .input-group-addon {
-  color: #FFE046;
-  border: 1px solid #FFE046;
+  color: #FFC107;
+  border: 1px solid #FFC107;
   background-color: #bba18c;
 }
 .has-warning .form-control-feedback {
-  color: #FFE046;
+  color: #FFC107;
 }
 
 .has-error .help-block {
@@ -16902,14 +16987,14 @@ tr.info, tr.danger {
 
 .btn-success:hover, .btn-success:focus, .btn-success:active, .btn-success.active {
   color: #1E1E1E;
-  background-color: #4DD753;
-  border: 1px solid #4DD753;
+  background-color: #198754;
+  border: 1px solid #198754;
 }
 
 .btn-warning:hover, .btn-warning:focus, .btn-warning:active, .btn-warning.active {
   color: #1E1E1E;
-  background-color: #FFE046;
-  border: 1px solid #FFE046;
+  background-color: #FFC107;
+  border: 1px solid #FFC107;
 }
 
 .btn-danger:hover, .btn-danger:focus, .btn-danger:active, .btn-danger.active {
@@ -18297,7 +18382,7 @@ footer.footer {
 }
 
 .message-box-warning {
-  border: 1px solid #FFE046;
+  border: 1px solid #FFC107;
 }
 
 #welcome-jumbotron {
