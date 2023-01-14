@@ -172,6 +172,21 @@ class TestBaseClass extends TestCase
         }
     }
 
+    /**
+     * Helper dispatch evento to specific plugin
+     * @param string $pluginName
+     * @param \PluginEvent $eventName
+     * @param array $eventValues
+     * @return void
+     */
+    public static function dispatchPluginEvent($pluginName, $eventName, $eventValues)
+    {
+        $oEvent = (new \PluginEvent($eventName))->setFromArray($eventValues);
+        \Yii::app()->getPluginManager()->dispatchEvent($oEvent, $pluginName);
+
+        return $oEvent;
+    }
+
     protected static function createUserWithPermissions(array $userData, array $permissions = [])
     {
         if ($userData['password'] != ' ') {
@@ -237,5 +252,23 @@ class TestBaseClass extends TestCase
             ];
         }
         return $results;
+    }
+
+    /**
+     * Invokes a private method from an object
+     * Expected to be used for unit testing purposes on edge cases.
+     *
+     * @param object $object
+     * @param string $methodName
+     * @param array $parameters
+     * @return mixed
+     */
+    public function invokePrivateMethod(&$object, $methodName, array $parameters = array())
+    {
+        $reflection = new \ReflectionClass(get_class($object));
+        $method = $reflection->getMethod($methodName);
+        $method->setAccessible(true);
+
+        return $method->invokeArgs($object, $parameters);
     }
 }
