@@ -272,4 +272,3 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
         return $str;
     }
 }
-}
