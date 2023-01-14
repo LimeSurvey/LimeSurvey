@@ -75,7 +75,7 @@ class PassordRequirementTest extends TestBaseClass
 
         foreach ($okVariations as $variation) {
             $msg = array_pop($variation);
-            $password = call_user_func([$this, 'createRandomPassword'], $variation);
+            $password = call_user_func_array([$this, 'createRandomPassword'], $variation);
             
             // Check password generated
             $this->assertNotEmpty($password, $msg . " Password is empty.");
@@ -129,7 +129,7 @@ class PassordRequirementTest extends TestBaseClass
 
         foreach ($okVariations as $variation) {
             $msg = array_pop($variation);
-            $errors = call_user_func([$this, 'checkPassword'], $variation);
+            $errors = call_user_func_array([$this, 'checkPassword'], $variation);
             $this->assertEmpty($errors, $msg);
         }
 
@@ -148,7 +148,7 @@ class PassordRequirementTest extends TestBaseClass
 
         foreach ($okVariations as $variation) {
             $msg = array_pop($variation);
-            $errors = call_user_func([$this, 'checkPassword'], $variation);
+            $errors = call_user_func_array([$this, 'checkPassword'], $variation);
             $this->assertNotEmpty($errors, $msg);
         }
     }
