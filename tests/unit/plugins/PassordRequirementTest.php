@@ -78,35 +78,35 @@ class PassordRequirementTest extends TestBaseClass
             $password = call_user_func([$this, 'createRandomPassword'], $variation);
             
             // Check password generated
-            $this->assertNotEmpty($password, $msg." Password is empty.");
+            $this->assertNotEmpty($password, $msg . " Password is empty.");
 
             // Check length
             $passLen = strlen($password);
             $expLen = $variation[3];
-            $this->assertTrue($passLen == $expLen, $msg." Password has wrong length. Has {$passLen}, while {$expLen} expected.");
+            $this->assertTrue($passLen == $expLen, $msg . " Password has wrong length. Has {$passLen}, while {$expLen} expected.");
     
             // Check lower characters
-            $this->assertStringContainsString($password, $chars, $msg." Password does not have lower chars.");
+            $this->assertStringContainsString($password, $chars, $msg . " Password does not have lower chars.");
             
             // Check numbers
             if ($variation[1]) {
-                $this->assertStringContainsString($password, $numeric_chars, $msg." Password does not have numbers.");
+                $this->assertStringContainsString($password, $numeric_chars, $msg . " Password does not have numbers.");
             } else {
-                $this->assertStringNotContainsString($password, $numeric_chars, $msg." Password has numbers.");
+                $this->assertStringNotContainsString($password, $numeric_chars, $msg . " Password has numbers.");
             }
 
             // Check upper chars
             if ($variation[1]) {
-                $this->assertStringContainsString($password, $uppercase_chars, $msg." Password does not have upper chars.");
+                $this->assertStringContainsString($password, $uppercase_chars, $msg . " Password does not have upper chars.");
             } else {
-                $this->assertStringNotContainsString($password, $uppercase_chars, $msg." Password has upper chars.");
+                $this->assertStringNotContainsString($password, $uppercase_chars, $msg . " Password has upper chars.");
             }
 
             // Check non-alpha
             if ($variation[2]) {
-                $this->assertStringContainsString($password, $nonAlpha_chars, $msg." Password does not have non-alpha chars.");
+                $this->assertStringContainsString($password, $nonAlpha_chars, $msg . " Password does not have non-alpha chars.");
             } else {
-                $this->assertStringNotContainsString($password, $nonAlpha_chars, $msg." Password has non-alpha chars.");
+                $this->assertStringNotContainsString($password, $nonAlpha_chars, $msg . " Password has non-alpha chars.");
             }
         }
     }
