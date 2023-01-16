@@ -969,7 +969,7 @@ class SurveyAdministrationController extends LSBaseController
                                 [ 'id' => 'copy_button',
                                   'label'=> gT("Copy"),
                                   'icon'=>'ri-file-copy-line icon',
-                                  'url' => Yii::App()->createUrl("admin/export/sa/question/surveyid/$iSurveyID/gid/$question->gid/qid/$question->qid")
+                                  'url' => Yii::App()->createUrl("questionAdministration/copyQuestion/surveyId/$iSurveyID/questionGroupId/$question->gid/questionId/$question->qid")
                                 ];
                         }
                      
