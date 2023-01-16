@@ -25,7 +25,7 @@ class PassordRequirementTest extends TestBaseClass
         parent::setUpBeforeClass();
 
         // Get a handle to the plugin being testes
-        self::$plugin = App()->getPluginManager()->loadPlugin(self::$pluginName, $plugin->id);
+        self::$plugin = App()->getPluginManager()->loadPlugin(self::$pluginName);
         
         // Activate it, if not already
         self::installAndActivatePlugin(self::$pluginName);
@@ -37,10 +37,12 @@ class PassordRequirementTest extends TestBaseClass
 
     private function createRandomPassword($needsNumber, $needsUppercase, $needsNonAlphanumeric, $length)
     {
-        $oEvent = $this->dispatchPluginEvent(self::$pluginName, 'createRandomPassword', [
+        self::$plugin->saveSettings([
             'needsNumber' => $needsNumber,
             'needsUppercase' => $needsUppercase,
             'needsNonAlphanumeric' => $needsNonAlphanumeric,
+        ]);
+        $oEvent = $this->dispatchPluginEvent(self::$pluginName, 'createRandomPassword', [
             'targetSize' => $length,
         ]);
         
@@ -49,12 +51,14 @@ class PassordRequirementTest extends TestBaseClass
 
     private function checkPassword($password, $needsNumber, $needsUppercase, $needsNonAlphanumeric, $length)
     {
-        $oEvent = $this->dispatchPluginEvent(self::$pluginName, 'checkPasswordRequirement', [
-            'password' => $password,
+        self::$plugin->saveSettings([
             'needsNumber' => $needsNumber,
             'needsUppercase' => $needsUppercase,
             'needsNonAlphanumeric' => $needsNonAlphanumeric,
             'minimumSize' => $length,
+        ]);        
+        $oEvent = $this->dispatchPluginEvent(self::$pluginName, 'checkPasswordRequirement', [
+            'password' => $password,
         ]);
 
         return $oEvent->get('passwordErrors');
@@ -68,6 +72,9 @@ class PassordRequirementTest extends TestBaseClass
      */
     protected function evalPasswordReqs($password, $variation)
     {
+        // Get msg
+        $msg = end($variation);
+
         // Check password generated
         $this->assertNotEmpty($password, $msg . " Password is empty.");
 
@@ -77,27 +84,27 @@ class PassordRequirementTest extends TestBaseClass
         $this->assertTrue($passLen == $expLen, $msg . " Password has wrong length. Has {$passLen}, while {$expLen} expected.");
 
         // Check lower characters
-        $this->assertStringContainsString($password, self::$set_chars, $msg . " Password does not have lower chars.");
+        $this->assertRegExp('/[' . self::$set_chars . ']/', $password, $msg . " Password does not have lower chars.");
         
         // Check numbers
-        if ($variation[1]) {
-            $this->assertStringContainsString($password, self::$set_numeric_chars, $msg . " Password does not have numbers.");
+        if ($variation[0]) {
+            $this->assertRegExp('/[' . self::$set_numeric_chars . ']/', $password, $msg . " Password does not have numbers.");
         } else {
-            $this->assertStringNotContainsString($password, self::$set_numeric_chars, $msg . " Password has numbers.");
+            $this->assertNotRegExp('/[' . self::$set_numeric_chars . ']/', $password, $msg . " Password has numbers.");
         }
 
         // Check upper chars
         if ($variation[1]) {
-            $this->assertStringContainsString($password, self::$set_uppercase_chars, $msg . " Password does not have upper chars.");
+            $this->assertRegExp('/[' . self::$set_uppercase_chars . ']/', $password, $msg . " Password does not have upper chars.");
         } else {
-            $this->assertStringNotContainsString($password, self::$set_uppercase_chars, $msg . " Password has upper chars.");
+            $this->assertNotRegExp('/[' . self::$set_uppercase_chars . ']/', $password, $msg . " Password has upper chars.");
         }
 
         // Check non-alpha
         if ($variation[2]) {
-            $this->assertStringContainsString($password, self::$set_nonAlpha_chars, $msg . " Password does not have non-alpha chars.");
+            $this->assertRegExp('/[' . self::$set_nonAlpha_chars . ']/', $password, $msg . " Password does not have non-alpha chars.");
         } else {
-            $this->assertStringNotContainsString($password, self::$set_nonAlpha_chars, $msg . " Password has non-alpha chars.");
+            $this->assertNotRegExp('/[' . self::$set_nonAlpha_chars . ']/', $password, $msg . " Password has non-alpha chars.");
         }
     }
 
@@ -171,7 +178,8 @@ class PassordRequirementTest extends TestBaseClass
         $okVariations = [
             // [$password, $needsNumber, $needsUppercase, $needsNonAlphanumeric, $length, $msg]
             ['123abcABC', true, true, true, 12, 'Tested password with wrong length, passed OK while it should have not'],
-            ['123ABCABC@#$', true, true, true, 12, 'Tested password with no lower, passed OK while it should have not'],
+            // The following line is not commented as lowers are not required by random. They are generated, but not required.
+            // ['123ABCABC@#$', true, true, true, 12, 'Tested password with no lower, passed OK while it should have not'],
             ['abcabcABC@#$', true, true, true, 12, 'Tested password with no number, passed OK while it should have not'],
             ['123abcabc@#$', true, true, true, 12, 'Tested password with no upper, passed OK while it should have not'],
             ['123abcABCabc', true, true, true, 12, 'Tested password with no non-alpha, passed OK while it should have not'],
