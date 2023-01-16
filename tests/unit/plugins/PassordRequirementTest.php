@@ -5,12 +5,16 @@ namespace ls\tests;
 class PassordRequirementTest extends TestBaseClass
 {
 
-    protected static $plugin;
-
-    protected static $settings = [];
-
+    private static $plugin;
     private static $pluginName = 'PasswordRequirement';
-   
+    private static $pwdGlobalMinLength = null;
+
+    // Character sets
+    private static $set_chars = "abcdefghijklmnopqrstuvwxyz";
+    private static $set_numeric_chars = '0123456789';
+    private static $set_uppercase_chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    private static $set_nonAlpha_chars = '-=!@#$%&*_+,.?;:';
+
     /**
      * @inheritdoc
      * Activate needed plugins
@@ -25,6 +29,9 @@ class PassordRequirementTest extends TestBaseClass
         
         // Activate it, if not already
         self::installAndActivatePlugin(self::$pluginName);
+
+        // Get min length
+        self::$pwdGlobalMinLength = self::$plugin->get('minimumSize', null, null, 12);
     }
 
     private function createRandomPassword($needsNumber, $needsUppercase, $needsNonAlphanumeric, $length)
@@ -52,63 +59,86 @@ class PassordRequirementTest extends TestBaseClass
         return $oEvent->get('passwordErrors');
     }
 
+    /**
+     * Evalutes if a password matches requirements
+     *
+     * @param string $password Password to be evaluated
+     * @param array $variation Requirement Details [$needsNumber, $needsUppercase, $needsNonAlphanumeric, $length, $msg]
+     */
+    protected function evalPasswordReqs($password, $variation)
+    {
+        // Check password generated
+        $this->assertNotEmpty($password, $msg . " Password is empty.");
+
+        // Check length
+        $passLen = strlen($password);
+        $expLen = $variation[3];
+        $this->assertTrue($passLen == $expLen, $msg . " Password has wrong length. Has {$passLen}, while {$expLen} expected.");
+
+        // Check lower characters
+        $this->assertStringContainsString($password, self::$set_chars, $msg . " Password does not have lower chars.");
+        
+        // Check numbers
+        if ($variation[1]) {
+            $this->assertStringContainsString($password, self::$set_numeric_chars, $msg . " Password does not have numbers.");
+        } else {
+            $this->assertStringNotContainsString($password, self::$set_numeric_chars, $msg . " Password has numbers.");
+        }
+
+        // Check upper chars
+        if ($variation[1]) {
+            $this->assertStringContainsString($password, self::$set_uppercase_chars, $msg . " Password does not have upper chars.");
+        } else {
+            $this->assertStringNotContainsString($password, self::$set_uppercase_chars, $msg . " Password has upper chars.");
+        }
+
+        // Check non-alpha
+        if ($variation[2]) {
+            $this->assertStringContainsString($password, self::$set_nonAlpha_chars, $msg . " Password does not have non-alpha chars.");
+        } else {
+            $this->assertStringNotContainsString($password, self::$set_nonAlpha_chars, $msg . " Password has non-alpha chars.");
+        }
+    }
+
     public function testGetRandomString()
     {
-        // Init character sets
-        $chars = "abcdefghijklmnopqrstuvwxyz";
-        $numeric_chars = '0123456789';
-        $uppercase_chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $nonAlpha_chars = '-=!@#$%&*_+,.?;:';
+        // Init length
+        $pwdLengthOk = self::$pwdGlobalMinLength;
 
         /**
          * No Errors Expected
          */
         $okVariations = [
             // [$needsNumber, $needsUppercase, $needsNonAlphanumeric, $length, $msg]
-            [false, false, false, 8, 'Created random password, with no requirements.'],
-            [true, false, false, 12, 'Created random password, only number required.'],
-            [false, true, false, 12, 'Created random password, only upper required.'],
-            [true, false, true, 12, 'Created random password, only non alpha-required.'],
-            [true, true, false, 12, 'Created random password, only number and upper required.'],
-            [true, true, true, 12, 'Created random password, only number, upper required and non-alpha.'],
+            [false, false, false, $pwdLengthOk, 'Created random password, with no requirements.'],
+            [false, false, false, $pwdLengthOk + 1, 'Created random password, larger chars.'],
+            [true, false, false, $pwdLengthOk, 'Created random password, only number required.'],
+            [false, true, false, $pwdLengthOk, 'Created random password, only upper required.'],
+            [true, false, true, $pwdLengthOk, 'Created random password, only non alpha-required.'],
+            [true, true, false, $pwdLengthOk, 'Created random password, only number and upper required.'],
+            [true, true, true, $pwdLengthOk, 'Created random password, only number, upper required and non-alpha.'],
         ];
 
         foreach ($okVariations as $variation) {
-            $msg = array_pop($variation);
-            $password = call_user_func_array([$this, 'createRandomPassword'], $variation);
-            
-            // Check password generated
-            $this->assertNotEmpty($password, $msg . " Password is empty.");
-
-            // Check length
-            $passLen = strlen($password);
-            $expLen = $variation[3];
-            $this->assertTrue($passLen == $expLen, $msg . " Password has wrong length. Has {$passLen}, while {$expLen} expected.");
-    
-            // Check lower characters
-            $this->assertStringContainsString($password, $chars, $msg . " Password does not have lower chars.");
-            
-            // Check numbers
-            if ($variation[1]) {
-                $this->assertStringContainsString($password, $numeric_chars, $msg . " Password does not have numbers.");
-            } else {
-                $this->assertStringNotContainsString($password, $numeric_chars, $msg . " Password has numbers.");
-            }
-
-            // Check upper chars
-            if ($variation[1]) {
-                $this->assertStringContainsString($password, $uppercase_chars, $msg . " Password does not have upper chars.");
-            } else {
-                $this->assertStringNotContainsString($password, $uppercase_chars, $msg . " Password has upper chars.");
-            }
-
-            // Check non-alpha
-            if ($variation[2]) {
-                $this->assertStringContainsString($password, $nonAlpha_chars, $msg . " Password does not have non-alpha chars.");
-            } else {
-                $this->assertStringNotContainsString($password, $nonAlpha_chars, $msg . " Password has non-alpha chars.");
-            }
+            $createVariation = array_slice($variation, -1);
+            $password = call_user_func_array([$this, 'createRandomPassword'], $createVariation);
+                        
+            $this->evalPasswordReqs($password, $variation);
         }
+
+        /**
+         * Special Cases.
+         * No errors expected
+         */
+        
+         // Asking for a pwd length shorter than global password length setting.
+         // Password shall be generated with the global min
+         $variation = [false, false, false, $pwdLengthOk - 1, 'Created random password, shorter length than global.'];
+         $createVariation = array_slice($variation, -1);
+         $password = call_user_func_array([$this, 'createRandomPassword'], $createVariation);
+         // Set expected length different than requested length
+         $variation[3] = self::$pwdGlobalMinLength;
+         $this->evalPasswordReqs($password, $variation);
     }
 
     public function testCheckValidityOfPassword()
