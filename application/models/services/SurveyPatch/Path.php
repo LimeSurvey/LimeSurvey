@@ -2,6 +2,12 @@
 
 namespace LimeSurvey\Model\Service\SurveyPatch;
 
+
+/**
+ * Survey Patch Path
+ *
+ * Represents an updatable survey patch path.
+ */
 class Path
 {
     protected $pathPattern = '';
@@ -9,42 +15,65 @@ class Path
     protected $isCollection = false;
 
     /**
+     * Survey Path Constructor
+     *
      * @param string $pathPattern
      * @param string $modelClass
      * @param boolean $isCollection
      */
-    public function __construct($pathPattern, $modelClass, $isCollection = false)
+    public function __construct($pathPattern, $modelClass = null, $isCollection = false)
     {
         $this->pathPattern = rtrim($pathPattern, '/');
         $this->modelClass = $modelClass;
         $this->isCollection = $isCollection;
     }
 
+    /**
+     * Get path pattern
+     *
+     * @return string
+     */
     public function getPathPattern()
     {
         return $this->pathPattern;
     }
 
+    /**
+     * Get model class
+     *
+     * @return string
+     */
     public function getModelClass()
     {
         return $this->modelClass;
     }
 
+    /**
+     * Is collection
+     *
+     * @return boolean
+     */
     public function isCollection()
     {
         return $this->isCollection;
     }
 
-    public function match($path)
+    /**
+     * Match path
+     *
+     * @param string $path
+     * @return boolean|Meta
+     */
+    public function match($realPath)
     {
         $patternParts = explode('/', $this->pathPattern);
-        $parts = explode('/',  rtrim($path, '/'));
+        $parts = explode('/',  rtrim($realPath, '/'));
 
         $result = null;
         $variables = [];
         if (count($patternParts) == count($parts)) {
             foreach ($patternParts as $x => $patternPart) {
-                $isVariable = is_string($patternPart) ? $patternPart[0] == '$' : false;
+                $isVariable = is_string($patternPart) && !empty($patternPart) ? $patternPart[0] == '$' : false;
                 if ($isVariable) {
                     $propName = substr($patternPart, 1);
                     $variables[$propName] = $parts[$x];
@@ -54,13 +83,18 @@ class Path
                 }
             }
             if ($result === null) {
-                $result = new Meta($path, $variables);
+                $result = new Meta($realPath, $variables);
             }
         }
 
         return $result;
     }
 
+    /**
+     * Get defaults
+     *
+     * @return array
+     */
     public static function getDefaults()
     {
         return [
