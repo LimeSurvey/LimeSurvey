@@ -422,8 +422,9 @@ export default {
                                       
                                         </li>
 
-                                        <li v-else-if="key === 'delete'" href="#">
+                                        <li v-else-if="key === 'delete'" >
                                             <a 
+                                                href="#"
                                                 onclick="return false;"
                                                 class="dropdown-item"
                                                 data-bs-toggle="modal"
