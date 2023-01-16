@@ -121,7 +121,7 @@ class PassordRequirementTest extends TestBaseClass
         ];
 
         foreach ($okVariations as $variation) {
-            $createVariation = array_slice($variation, -1);
+            $createVariation = array_slice($variation, 0, count($variation) - 1);
             $password = call_user_func_array([$this, 'createRandomPassword'], $createVariation);
                         
             $this->evalPasswordReqs($password, $variation);
@@ -135,7 +135,7 @@ class PassordRequirementTest extends TestBaseClass
          // Asking for a pwd length shorter than global password length setting.
          // Password shall be generated with the global min
          $variation = [false, false, false, $pwdLengthOk - 1, 'Created random password, shorter length than global.'];
-         $createVariation = array_slice($variation, -1);
+         $createVariation = array_slice($variation, 0, count($variation) - 1);
          $password = call_user_func_array([$this, 'createRandomPassword'], $createVariation);
          // Set expected length different than requested length
          $variation[3] = self::$pwdGlobalMinLength;
