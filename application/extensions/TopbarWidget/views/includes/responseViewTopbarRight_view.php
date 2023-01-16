@@ -17,7 +17,7 @@
     <?php if ($bHasFile): ?>
         <a class="btn btn-outline-secondary"
            href='<?php echo Yii::app()->createUrl("responses/downloadfiles", ["surveyId" => $surveyid, "responseIds" => $id]); ?>'>
-            <span class="fa  fa-download-alt text-success"></span>
+            <span class="ri-download-fill text-success"></span>
             <?php eT("Download files"); ?>
         </a>
     <?php endif; ?>

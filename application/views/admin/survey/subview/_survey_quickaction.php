@@ -25,7 +25,7 @@ $groups_count   = count($oSurvey->groups);
         <div class="row">
             <div class="col-2 col-md-1">
                 <button id="survey-action-chevron" class="btn btn-outline-secondary btn-tiny" data-active="<?= $quickactionstate ?>" data-url="<?php echo Yii::app()->urlManager->createUrl("surveyAdministration/toggleQuickAction/"); ?>">
-                    <i class="fa <?= ($quickactionstate > 0 ?  'fa-caret-up' : 'fa-caret-down') ?>"></i>
+                    <i class="<?= ($quickactionstate > 0 ?  'ri-arrow-up-s-fill' : 'ri-arrow-down-s-fill') ?>"></i>
                 </button>
             </div>
             <div class="col-10 col-md-11 h4">
@@ -57,7 +57,7 @@ $groups_count   = count($oSurvey->groups);
                             <!-- If you want a single page survey, just add a single group, and switch on "Show questions group by group -->
                             <div class="alert alert-info alert-dismissible" role="alert">
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                <span class="fa fa-info-sign"></span>&nbsp;&nbsp;&nbsp;
+                                <span class="ri-information-line"></span>&nbsp;&nbsp;&nbsp;
                                 <?php eT('Set below if your questions are shown one at a time, group by group or all on one page.'); ?>
                             </div>
                         <?php endif; ?>

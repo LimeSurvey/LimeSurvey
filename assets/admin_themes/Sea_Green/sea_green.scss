@@ -10,6 +10,7 @@
 // 3. Include remainder of required Bootstrap stylesheets
 @import "node_modules/bootstrap/scss/variables";
 @import "node_modules/bootstrap/scss/mixins";
+@import "ls-mixins.scss";
 //@import "node_modules/bootstrap/scss/maps";
 @import "node_modules/bootstrap/scss/root";
 
@@ -82,3 +83,4 @@
 @import "badge/badge.scss";
 @import "forms/forms.scss";
 @import "sidebar/sidebar.scss";
+@import "jumbotron/jumbotron.scss";

@@ -510,9 +510,7 @@ export default {
                 class="btn " 
                 @mousedown="mousedown" @click.prevent="()=>{return false;}"
             >
-                <svg width="8" height="13" viewBox="0 0 8 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd" clip-rule="evenodd" d="M0.25 0.531494H2.75V2.67798H0.25V0.531494ZM5.25 0.531494H7.75V2.67798H5.25V0.531494ZM0.25 5.36111H2.75V7.50763H0.25V5.36111ZM5.25 5.36111H7.75V7.50763H5.25V5.36111ZM0.25 10.1908H2.75V12.3373H0.25V10.1908ZM5.25 10.1908H7.75V12.3373H5.25V10.1908Z" fill="#ACACAC"/>
-                </svg>
+                <i class="ri-more-2-fill" />
             </button>
         </div>
                 </div>

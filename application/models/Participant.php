@@ -118,7 +118,7 @@ class Participant extends LSActiveRecord
         $buttons = "<div class='icon-btn-row'>";
         $raw_button_template = ""
             . "<button class='btn btn-outline-secondary btn-sm %s %s' role='button' data-bs-toggle='tooltip' title='%s' onclick='return false;'>" //extra class //title
-            . "<i class='fa fa-%s' ></i>" //icon class
+            . "<i class='ri-%s' ></i>" //icon class
             . "</button>";
 
         if ($this->userHasPermissionToEdit()) {
@@ -127,7 +127,7 @@ class Participant extends LSActiveRecord
                 'green-border action_participant_editModal',
                 '',
                 gT("Edit this participant"),
-                'pencil'
+                'pencil-fill'
             );
             $buttons .= vsprintf($raw_button_template, $editData);
 
@@ -136,7 +136,7 @@ class Participant extends LSActiveRecord
                 'action_participant_addToSurvey',
                 '',
                 gT("Add participant to survey"),
-                'user-plus'
+                'user-add-fill'
             );
 
             $buttons .= vsprintf($raw_button_template, $addParticipantData);
@@ -146,7 +146,7 @@ class Participant extends LSActiveRecord
                 'action_participant_infoModal',
                 '',
                 gT("List active surveys"),
-                'search'
+                'search-line'
             );
             $buttons .= vsprintf($raw_button_template, $listActiveSurveysData);
 
@@ -155,7 +155,7 @@ class Participant extends LSActiveRecord
                 'action_participant_shareParticipant',
                 '',
                 gT("Share this participant"),
-                'share'
+                'share-forward-fill'
             );
             $buttons .= vsprintf($raw_button_template, $shareParticipantData);
 
@@ -169,7 +169,7 @@ class Participant extends LSActiveRecord
                     'red-border action_participant_deleteModal',
                     '',
                     gT("Delete this participant"),
-                    'trash text-danger'
+                    'delete-bin-fill text-danger'
                 );
             } else {
                 // Invisible button
@@ -177,7 +177,7 @@ class Participant extends LSActiveRecord
                     'red-border action_participant_deleteModal invisible',
                     '',
                     gT("Delete this participant"),
-                    'trash text-danger'
+                    'delete-bin-fill text-danger'
                 );
             }
             $buttons .= vsprintf($raw_button_template, $deleteData);
@@ -188,7 +188,7 @@ class Participant extends LSActiveRecord
                 'action_participant_editModal invisible',
                 '',
                 gT("Edit this participant"),
-                'edit'
+                'file-edit-line'
             );
             $buttons .= vsprintf($raw_button_template, $editData);
             $deletePermission = Permission::model()->hasGlobalPermission('participantpanel', 'delete');
@@ -197,14 +197,14 @@ class Participant extends LSActiveRecord
                     'action_participant_deleteModal',
                     'text-danger',
                     gT("Delete this participant"),
-                    'trash text-danger'
+                    'delete-bin-fill text-danger'
                 );
             } else {
                 $deleteData = array(
                     'action_participant_deleteModal invisible',
                     'text-danger',
                     gT("Delete this participant"),
-                    'trash text-danger'
+                    'delete-bin-fill text-danger'
                 );
             }
 
@@ -213,7 +213,7 @@ class Participant extends LSActiveRecord
                 'action_participant_shareParticipant',
                 '',
                 gT("Share this participant"),
-                'share'
+                'share-forward-fill'
             );
             $buttons .= vsprintf($raw_button_template, $infoData);
 
@@ -222,7 +222,7 @@ class Participant extends LSActiveRecord
                 'action_participant_shareParticipant invisible',
                 '',
                 gT("Share this participant"),
-                'share'
+                'share-forward-fill'
             );
             $buttons .= vsprintf($raw_button_template, $infoData);
         }

@@ -169,7 +169,7 @@
         'type' => 'action',
         'action' => 'set-subquestions-answers-sort',
         'url' => App()->createUrl('questionAdministration/changeMultipleQuestionAttributes/'),
-        'iconClasses' => 'fa fa-sort',
+        'iconClasses' => 'ri-shuffle-line',
         'text' => gT('Present subquestions/answer options in random order'),
         'grid-reload' => 'yes',
 

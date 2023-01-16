@@ -6,6 +6,12 @@
  */
 
 // import variables and functions
+@import "../../../node_modules/bootstrap/scss/functions";
+@import "../../bootstrap_5/scss/variables.scss";
+@import "../../../node_modules/bootstrap/scss/variables";
+@import "../../../node_modules/bootstrap/scss/mixins";
+@import "../../../node_modules/bootstrap/scss/root";
+@import "../../bootstrap_5/scss/customizations";
 
 #ls-loading {
     width: 100%;
@@ -258,33 +264,6 @@ body {
     line-height: inherit;
 }
 
-.jumbotron{
-    text-align: center;
-    background-color: transparent;
-    padding: 48px 60px;
-    border-radius: 6px;
-    margin-bottom: 30px;
-    margin-top: 14px;
-
-}
-.jumbotron h1,
-.jumbotron .h1 {
-    color: inherit;
-}
-.jumbotron p {
-    margin-bottom: 15px;
-    font-size: 21px;
-}
-.container .jumbotron {
-    border-radius: 6px;
-}
-.jumbotron .container {
-    max-width: 100%;
-}
-
-.jumbotron.message-box {
-    margin-top: 1em;
-}
 
 html {
     font-family: Roboto;
@@ -297,15 +276,7 @@ html {
     padding-bottom: 100px;
 }
 
-#welcome-jumbotron {
-    padding-top: 0;
-    padding-bottom: 10px;
-    background-color: transparent;
-}
 
-#welcome-jumbotron > img {
-    width: 350px;
-}
 
 .surveymanagerbar {
     padding-top: 5px;
@@ -483,12 +454,6 @@ html {
     cursor: pointer;
     cursor: hand;
     border-radius: 0;
-}
-
-.message-box {
-    position: relative;
-    margin-top: 20px;
-    animation: slidefromtop 1s;
 }
 
 .welcome #lime-logo {
@@ -2118,18 +2083,6 @@ a.explorer-group:focus {
 .push-grid-pager {
     /* push the pager for massive action dropup */
     min-height: 25em;
-}
-
-.has-link {
-    cursor: pointer;
-}
-
-.has-link a:hover {
-    text-decoration: none;
-}
-
-.has-link a {
-    color: black;
 }
 
 .hoverAction .table-striped > tbody > tr:hover > td {

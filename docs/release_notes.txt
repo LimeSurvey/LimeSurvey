@@ -34,6 +34,31 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.5.1 (build 230103) to 5.5.2 (build 230109) January 9, 2023
+-Fixed issue CR-797: Only check versions from CU server once per day (Olle Haerstedt)
+-Fixed issue #18569: Survey editing:  typo in error message (#2822) (Gabriel Jenik)
+-Fixed issue #18546: Menu System: Setting a past survey start date leads to showing current date as end date at survey overview (#2800) (Gabriel Jenik)
+-Fixed issue #18543: Question Type "Array (texts)" crashes when in combination with "array filter", "Array filter style": disabled and "show totals" (#2793) (Gabriel Jenik)
+-Fixed issue #18542: Plugins: PasswordRequirement plugin is not working properly (#2823) (Gabriel Jenik)
+-Fixed issue #18516: Create Survey button allows multiple clicking and may create multiple copies (#2812) (Gabriel Jenik)
+-Fixed issue #18507: {ANSWERTABLE} not working in basic admin notification (#2794) (Gabriel Jenik)
+-Fixed issue #18502: STATA export of simple array question fails (#2792) (Gabriel Jenik)
+-Fixed issue #18491: Theme editor : List of fonts and colors should be sorted alphabetically (#2820) (Gabriel Jenik)
+-Fixed issue #18481: Panel Configuration : Insert new box without position (#2818) (Gabriel Jenik)
+#Updated translation: Welsh by ChrisWilliams
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Hebrew by idan1798
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 5.5.0 (build 221219) to 5.5.1 (build 230103) January 3, 2023
 -Fixed issue #18564: Fixed JS part for copy functionality (#2805) (Borys)
 -Fixed issue #18503: Label sets: When adding a label set e.g. at the edit responses screen, the loaded label sets can not be searched (#2796) (Gabriel Jenik)

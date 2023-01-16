@@ -19,7 +19,7 @@
 <!-- Download CSV -->
 <?php if (!empty($showDownloadButton)) : ?>
     <a class="btn btn-success float-end" href="#" id="save-button">
-        <span class="fa fa fa-export"></span>
+        <span class="ri-download-fill"></span>
         <?php eT("Download CSV file"); ?>
     </a>
 <?php endif; ?>

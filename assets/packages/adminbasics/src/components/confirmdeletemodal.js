@@ -16,8 +16,8 @@ const ConfirmDeleteModal = function (options) {
         keepopen = options.keepopen || $item.data('keepopen') || '',
         gridReload = options.gridReload || $item.data('grid-reload') || '',
         gridid = options.gridid || $item.data('grid-id') || '',
-        buttonNo = options.buttonNo || $item.data('button-no') || '<i class="fa fa-times"></i>',
-        buttonYes = options.buttonYes || $item.data('button-yes') || '<i class="fa fa-check"></i>',
+        buttonNo = options.buttonNo || $item.data('button-no') || '<i class="ri-close-fill"></i>',
+        buttonYes = options.buttonYes || $item.data('button-yes') || '<i class="ri-check-fill"></i>',
         buttonType = $item.data('button-type') || 'btn-primary',
         parentElement = options.parentElement || $item.data('parent-element') || 'body';
 
