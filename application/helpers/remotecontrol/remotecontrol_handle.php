@@ -3141,9 +3141,10 @@ class remotecontrol_handle
      * @param string $sCompletionStatus (optional) 'complete','incomplete' or 'all' - defaults to 'all'
      * @param string $sHeadingType (optional) 'code','full' or 'abbreviated' Optional defaults to 'code'
      * @param string $sResponseType (optional)'short' or 'long' Optional defaults to 'short'
-     * @param integer $iFromResponseID (optional)
-     * @param integer $iToResponseID (optional)
-     * @param array $aFields (optional) Selected fields
+     * @param integer $iFromResponseID (optional) Frpm response id
+     * @param integer $iToResponseID (optional) To response id
+     * @param array $aFields (optional) Name the fields to export
+     * @param array $aAdditionalOptions (optional) Addition options for export, mainly 'convertY', 'convertN', 'nValue', 'yValue',
      * @return array|string On success: Requested file as base 64-encoded string. On failure array with error information
      * */
     public function export_responses($sSessionKey, $iSurveyID, $sDocumentType, $sLanguageCode = null, $sCompletionStatus = 'all', $sHeadingType = 'code', $sResponseType = 'short', $iFromResponseID = null, $iToResponseID = null, $aFields = null, $aAdditionalOptions = null)
