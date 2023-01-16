@@ -154,7 +154,7 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
     private function checkValidityOfPassword($password, $needsNumber, $needsUppercase, $needsNonAlphanumeric, $minimumSize = 8)
     {
         $errors = [];
-        if ($needsNumber && preg_match('/\d/', $password) === 0) {
+        if ($needsNumber && ctype_alpha($password)) {
             $errors[] = gT('The password does require at least one digit');
         }
         if ($needsUppercase && strtolower($password) == $password) {
