@@ -31,7 +31,8 @@ class PassordRequirementTest extends TestBaseClass
         self::installAndActivatePlugin(self::$pluginName);
 
         // Get min length
-        self::$pwdGlobalMinLength = self::$plugin->get('minimumSize', null, null, 12);
+        $pluginsettings = self::$plugin->getPluginSettings();
+        self::$pwdGlobalMinLength = $pluginsettings['minimumSize']['current'];
     }
 
     private function createRandomPassword($needsNumber, $needsUppercase, $needsNonAlphanumeric, $length)
