@@ -940,7 +940,7 @@ class SurveyAdministrationController extends LSBaseController
                         if ($configData['hasSurveyContentUpdatePermission']) {
                             $curQuestion['dropDown']['conditionDesigner'] =
                                 [ 'id' => 'conditions_button',
-                                  'label'=> "Condition designer",
+                                  'label'=> gT("Condition designer"),
                                   'icon'=>'ri-git-branch-fill icon',
                                   'url' => Yii::App()->createUrl("admin/conditions/sa/index/subaction/editconditionsform/surveyid/$iSurveyID/gid/$question->gid/qid/$question->qid")
                                 ];
@@ -948,7 +948,7 @@ class SurveyAdministrationController extends LSBaseController
                            if ($hasdefaultvalues > 0) {
                                 $curQuestion['dropDown']['editDefault'] =
                                     [ 'id' => 'default_value_button',
-                                    'label'=> "Edit default answers",
+                                    'label'=> gT("Edit default answers"),
                                     'icon'=>'ri-grid-line',
                                     'url' => Yii::App()->createUrl("questionAdministration/editdefaultvalues/surveyid/$iSurveyID/gid/$question->gid/qid/$question->qid")
                                     ];
@@ -958,7 +958,7 @@ class SurveyAdministrationController extends LSBaseController
                         if ($configData['hasSurveyContentExportPermission']) {
                             $curQuestion['dropDown']['export'] =
                                 [ 'id' => '',
-                                  'label'=> "Export",
+                                  'label'=> gT("Export"),
                                   'icon'=>'ri-download-fill',
                                   'url' => Yii::App()->createUrl("admin/export/sa/question/surveyid/$iSurveyID/gid/$question->gid/qid/$question->qid")
                                 ];
@@ -967,7 +967,7 @@ class SurveyAdministrationController extends LSBaseController
                         if ($configData['hasSurveyContentCreatePermission'] && ($configData['oSurvey']->active!='Y')) {
                             $curQuestion['dropDown']['copy'] =
                                 [ 'id' => 'copy_button',
-                                  'label'=> "Copy",
+                                  'label'=> gT("Copy"),
                                   'icon'=>'ri-file-copy-line icon',
                                   'url' => Yii::App()->createUrl("admin/export/sa/question/surveyid/$iSurveyID/gid/$question->gid/qid/$question->qid")
                                 ];
@@ -979,7 +979,7 @@ class SurveyAdministrationController extends LSBaseController
                                 foreach ($configData['surveyLanguages'] as $languageCode => $languageName) {
                                     array_push($curQuestion['dropDown']['language'],
                                         [ 'id' => '',
-                                          'label'=> $languageName,
+                                          'label'=> gT($languageName),
                                           'icon'=>'ri-checkbox-fill',
                                           'url' => Yii::App()->createUrl("admin/expressions/sa/survey_logic_file/sid/{$iSurveyID}/gid/$question->gid/qid/$question->qid/lang/" . $languageCode)
                                         ]
@@ -988,7 +988,7 @@ class SurveyAdministrationController extends LSBaseController
                             } else {
                                 $curQuestion['dropDown']['language'] = 
                                     [ 'id' => '',
-                                      'label'=> "Check logic",
+                                      'label'=> gT("Check logic"),
                                       'icon'=>'ri-checkbox-fill',
                                       'url' => Yii::App()->createUrl("admin/expressions/sa/survey_logic_file/sid/{$iSurveyID}/gid/$question->gid/qid/$question->qid")
                                     ];
@@ -1000,12 +1000,12 @@ class SurveyAdministrationController extends LSBaseController
                             $curQuestion['dropDown']['delete'] = 
                             [ 
                                 'id' => '',
-                                'label'=> "Delete question",
+                                'label'=> gT("Delete question"),
                                 'icon'=>'ri-delete-bin-fill text-danger',
                                 'dataTitle'=> gt('Delete this question'),
                                 'dataBtnText'=> gt('Delete'),
                                 'dataOnclick'=>'(function() { '.  convertGETtoPOST(Yii::app()->createUrl("questionAdministration/delete/", ["qid" => $question->qid, "redirectTo" => "groupoverview"])).'})',
-                                'dataMessage'=> "Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?"
+                                'dataMessage'=> gT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?")
                             ];
                         }
 
