@@ -34,6 +34,57 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.5.2 (build 230109) to 5.6.0 (build 230116) January 16, 2023
++New feature #7641: Options to use Y/N conversion in RemoteControl API export (#2843) (Carsten Schmitz)
+-Fixed issue #18544: Update Theme Options: Survey Group permissions are not checked correctly (#2795) (Gabriel Jenik)
+-Fixed issue #18517: Survey editing : Survey creation date is wrong (#2821) (Gabriel Jenik)
+-Fixed issue #18498: Questions with custom themes not shown on question list (#2744) (Gabriel Jenik)
+#Updated translation: Vietnamese by c_schmitz
+#Updated translation: Ukrainian by c_schmitz
+#Updated translation: Turkish by c_schmitz
+#Updated translation: Thai by c_schmitz
+#Updated translation: Swedish by c_schmitz
+#Updated translation: Spanish (Spain) by c_schmitz
+#Updated translation: Spanish (Mexican) by c_schmitz
+#Updated translation: Spanish (Argentina) (Informal) by c_schmitz
+#Updated translation: Slovenian by c_schmitz
+#Updated translation: Slovak by jelen1
+#Updated translation: Russian by c_schmitz
+#Updated translation: Romanian by c_schmitz
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Portuguese (Brazil) by c_schmitz
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Norwegian (Nynorsk) by c_schmitz
+#Updated translation: Norwegian (Bokmål) by c_schmitz
+#Updated translation: Mongolian by c_schmitz
+#Updated translation: Lithuanian by c_schmitz
+#Updated translation: Latvian by c_schmitz
+#Updated translation: Korean by c_schmitz
+#Updated translation: Japanese by d_inoue
+#Updated translation: Italian by c_schmitz
+#Updated translation: Italian (Informal) by c_schmitz
+#Updated translation: Indonesian by c_schmitz
+#Updated translation: Hungarian by c_schmitz
+#Updated translation: Hindi by c_schmitz
+#Updated translation: Greek by c_schmitz
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: German (Easy) by c_schmitz
+#Updated translation: Estonian by c_schmitz
+#Updated translation: Dutch by c_schmitz, Han
+#Updated translation: Dutch (Informal) by c_schmitz, Han
+#Updated translation: Danish by c_schmitz
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Croatian by c_schmitz
+#Updated translation: Chinese (Simplified) by c_schmitz
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Bulgarian by c_schmitz, DCLXVI, llamaloverbg, peterx, simid, tnovakova, tsb03varna
+#Updated translation: Arabic by c_schmitz
+#Updated translation: Afrikaans by c_schmitz
+
+
 Changes from 5.5.1 (build 230103) to 5.5.2 (build 230109) January 9, 2023
 -Fixed issue CR-797: Only check versions from CU server once per day (Olle Haerstedt)
 -Fixed issue #18569: Survey editing:  typo in error message (#2822) (Gabriel Jenik)
