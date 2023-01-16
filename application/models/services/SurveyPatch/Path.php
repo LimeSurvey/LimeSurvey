@@ -62,7 +62,7 @@ class Path
      * Match path
      *
      * @param string $path
-     * @return boolean|Meta
+     * @return boolean|array
      */
     public function match($realPath)
     {
@@ -73,7 +73,9 @@ class Path
         $variables = [];
         if (count($patternParts) == count($parts)) {
             foreach ($patternParts as $x => $patternPart) {
-                $isVariable = is_string($patternPart) && !empty($patternPart) ? $patternPart[0] == '$' : false;
+                $isVariable = is_string($patternPart) && !empty($patternPart)
+                    ? $patternPart[0] == '$'
+                    : false;
                 if ($isVariable) {
                     $propName = substr($patternPart, 1);
                     $variables[$propName] = $parts[$x];
@@ -83,7 +85,7 @@ class Path
                 }
             }
             if ($result === null) {
-                $result = new Meta($realPath, $variables);
+                $result = $variables;
             }
         }
 
@@ -100,8 +102,8 @@ class Path
         return [
             new Path('/defaultlanguage/$prop', SurveyLanguageSetting::class),
             new Path('/defaultlanguage', SurveyLanguageSetting::class),
-            new Path('/languages/$x', null),
-            new Path('/languages', null),
+            new Path('/languages/$x'),
+            new Path('/languages'),
             new Path('/questionGroups/$questionGroupX/l10ns/$language/$prop', QuestionGroupL10n::class),
             new Path('/questionGroups/$questionGroupX/l10ns/$language', QuestionGroupL10n::class, true),
             new Path('/questionGroups/$questionGroupX/$prop', QuestionGroup::class),

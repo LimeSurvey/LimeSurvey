@@ -4,7 +4,6 @@ namespace ls\tests\Services\SurveyPatch;
 
 use ls\tests\TestBaseClass;
 use LimeSurvey\Model\Service\SurveyPatch\Path;
-use LimeSurvey\Model\Service\SurveyPatch\Meta;
 
 /**
  * @testdox SurveyPatch Path
@@ -12,14 +11,14 @@ use LimeSurvey\Model\Service\SurveyPatch\Meta;
 class PathTest extends TestBaseClass
 {
     /**
-     * @testdox match() returns meta on success
+     * @testdox match() returns array on success
      */
     public function testMatchReturnsMetaOnSuccess()
     {
         $path = new Path('/a/b/c');
         $meta = $path->match('/a/b/c');
 
-        $this->assertInstanceOf( Meta::class, $meta);
+        $this->assertIsArray( $meta);
     }
 
     /**
@@ -39,11 +38,11 @@ class PathTest extends TestBaseClass
     public function testMatchReturnsMetaWithVariablesOnSuccess()
     {
         $path = new Path('/a/b/$variable1/$variable2');
-        $meta = $path->match('/a/b/c/d');
+        $variables = $path->match('/a/b/c/d');
 
         $this->assertEquals(
             ['variable1' => 'c', 'variable2' => 'd'],
-            $meta->getVariables()
+            $variables
         );
     }
 }
