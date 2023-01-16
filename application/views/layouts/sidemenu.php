@@ -88,67 +88,7 @@
         <sidebar land-on-tab='<?php echo $landOnSideMenuTab ?>'
             	 is-side-menu-element-active='<?php echo $isSideMenuElementActive ?>'
                  active-side-menu-element='<?php echo $activeSideMenuElement ?>'
-                 drop-down-content='
-                 <?php if($hasSurveyContentUpdatePermission??null):?>
-                     <!-- Conditions -->
-                    <li>
-                        <a class="dropdown-item" id="conditions_button" href="<?php echo Yii::App()->createUrl("admin/conditions/sa/index/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>">
-                            <span class="ri-git-branch-fill icon"></span>
-                            <?php eT("Condition designer"); ?>
-                        </a>
-                    </li>
-                 <?php endif;?>
-                 <?php if($hasSurveyContentUpdatePermission ?? null && $hasdefaultvalues > 0):?>
-                    <!-- Default Values -->
-                    <li>
-                        <a class="dropdown-item" id="default_value_button" href="<?php echo Yii::App()->createUrl("questionAdministration/editdefaultvalues/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>">
-                            <span class="ri-grid-line"></span>
-                            <?php eT("Edit default answers"); ?>
-                        </a>
-                    </li>
-                 <?php endif;?>
-                 <?php if($hasSurveyContentExportPermission ??null ):?>
-                    <!-- Export -->
-                    <li>
-                        <a class="dropdown-item" href="<?php echo Yii::App()->createUrl("admin/export/sa/question/surveyid/$surveyid/gid/$gid/qid/{$qid}");?>">
-                            <span class="ri-download-fill"></span>
-                            <?php eT("Export"); ?>
-                        </a>
-                    </li>
-                 <?php endif; ?>
-                 <?php if($hasSurveyContentCreatePermission??null && ($oSurvey->active!='Y')):?>
-                    <!-- Copy -->
-                    <li>
-                    <a class="dropdown-item" id="copy_button"> 
-                            <span class="ri-file-copy-line icon"></span>
-                            <?php eT("Copy"); ?>
-                        </a>
-                    </li>
-                 <?php endif; ?>
-                 <?php if($hasSurveyContentReadPermission??null): ?>
-                 <?php if (count($surveyLanguages) > 1): ?>
-                    <!-- Check survey logic multilanguage -->
-                    <li role="separator" class="dropdown-divider"></li>
-                    <li class="dropdown-header"><?php eT("Survey logic file"); ?></li>
-                    <?php foreach ($surveyLanguages as $languageCode => $languageName): ?>
-                        <li>
-                            <a class="dropdown-item" href="<?php echo Yii::App()->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/qid/{$qid}/lang/" . $languageCode); ?>" >
-                                <span class="ri-checkbox-fill"></span>
-                                <?php echo $languageName; ?>
-                            </a>
-                        </li>
-                    <?php endforeach; ?>
-                    <?php else:?>
-                        <!-- Check survey logic -->
-                        <li>
-                            <a class="pjax dropdown-item" href="<?php echo Yii::App()->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/qid/{$qid}"); ?>">
-                                <span class="ri-checkbox-fill"></span>
-                                <?php eT("Check logic"); ?>
-                            </a>
-                        </li>
-                        <?php endif; ?>
-                    <?php endif; ?>
-          '/>
+                />
           <!-- sidebar is ended -->
         <?php else: ?>
         <sidebar />

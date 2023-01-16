@@ -3,9 +3,7 @@ import _ from "lodash";
 import ajaxMethods from "../../mixins/runAjax.js";
 
 export default {
-    props: {
-        dropDown:String,
-    },
+  
     mixins: [ajaxMethods],
     data(){
         return {
@@ -76,6 +74,11 @@ export default {
         questionHasCondition(question) {
             return question.relevance !== '1';
         },
+
+        itemActivated(question){
+            return  this.$store.state.lastQuestionOpen === question.qid;
+        },
+
         questionItemClasses(question) {
             let classes = "";
             classes +=
@@ -263,25 +266,25 @@ export default {
         >
             <div class="scoped-toolbuttons-left">
                 <a
-                    id="adminsidepanel__sidebar--selectorCreateQuestionGroup"
-                    v-if="( createQuestionGroupLink!=undefined && createQuestionGroupLink.length>1 )"
-                    :href="createQuestionGroupLink" class="btn btn-small btn-primary pjax"
-                >
-                    <!-- <i class="fa fa-plus"></i> -->
-                    <i class="ri-add-fill"></i>
-                    &nbsp;
-                    {{"createPage"|translate}}
-                </a>
-                <a
                     id="adminsidepanel__sidebar--selectorCreateQuestion"
                     v-if="createQuestionAllowed"
                     :href="createFullQuestionLink()"
-                    class="btn btn-small btn-outline-secondary ls-space margin right-10 pjax"
+                    class="btn btn-small btn-primary ls-space margin right-10 pjax"
                 >
                     <i class="ri-add-circle-fill"></i>
                     &nbsp;
                     {{"createQuestion"|translate}}
                 </a>
+                
+                <a
+                    id="adminsidepanel__sidebar--selectorCreateQuestionGroup"
+                    v-if="( createQuestionGroupLink!=undefined && createQuestionGroupLink.length>1 )"
+                    :href="createQuestionGroupLink" class="btn btn-small btn-outline-secondary pjax"
+                >
+                    <!-- <i class="fa fa-plus"></i> -->
+                    {{"createPage"|translate}}
+                </a>
+             
             </div>
             <div class="scoped-toolbuttons-right">
                 <button
@@ -404,13 +407,50 @@ export default {
                                         [{{question.title}}] &rsaquo; {{ question.question_flat }}
                                     </span>
                                 </a>
-                                <div class="dropdown" >
-                                    <div id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="margin-left: auto; position: relative;">
+                                <div v-if="itemActivated(question)" class="dropdown" style="position:absolute; right:10px" >
+                                    <div id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="margin-left: auto; position: relative; cursor: pointer;">
                                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M5.00049 10C3.90049 10 3.00049 10.9 3.00049 12C3.00049 13.1 3.90049 14 5.00049 14C6.10049 14 7.00049 13.1 7.00049 12C7.00049 10.9 6.10049 10 5.00049 10ZM19.0005 10C17.9005 10 17.0005 10.9 17.0005 12C17.0005 13.1 17.9005 14 19.0005 14C20.1005 14 21.0005 13.1 21.0005 12C21.0005 10.9 20.1005 10 19.0005 10ZM12.0005 10C10.9005 10 10.0005 10.9 10.0005 12C10.0005 13.1 10.9005 14 12.0005 14C13.1005 14 14.0005 13.1 14.0005 12C14.0005 10.9 13.1005 10 12.0005 10Z" fill="#7C8191"/>
+                                          <path d="M5.00049 10C3.90049 10 3.00049 10.9 3.00049 12C3.00049 13.1 3.90049 14 5.00049 14C6.10049 14 7.00049 13.1 7.00049 12C7.00049 10.9 6.10049 10 5.00049 10ZM19.0005 10C17.9005 10 17.0005 10.9 17.0005 12C17.0005 13.1 17.9005 14 19.0005 14C20.1005 14 21.0005 13.1 21.0005 12C21.0005 10.9 20.1005 10 19.0005 10ZM12.0005 10C10.9005 10 10.0005 10.9 10.0005 12C10.0005 13.1 10.9005 14 12.0005 14C13.1005 14 14.0005 13.1 14.0005 12C14.0005 10.9 13.1005 10 12.0005 10Z" fill="#7C8191"/>
                                         </svg>
                                     </div>
-                                    <ul style="right: 0; top: 14px;" class="dropdown-menu"  v-html="dropDown"></ul>
+                                    <ul style="right: 0; top: 14px;" class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                        <li  v-if="key !== 'delete' && !(key === 'language' && Array.isArray(value))"  v-for="(value, key) in question.dropDown" :key="key">
+                                            <a   class="dropdown-item" :id="value.id" :href="value.url">
+                                               <span :class="value.icon"></span>
+                                                 {{value.label}}
+                                            </a>
+                                      
+                                        </li>
+
+                                        <li v-else-if="key === 'delete'" href="#">
+                                            <a 
+                                                onclick="return false;"
+                                                class="dropdown-item"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#confirmation-modal"
+                                                data-btnclass="btn-danger"
+                                                :data-title="value.dataTitle"
+                                                :data-btntext="value.dataBtnText"
+                                                :data-onclick="value.dataOnclick"
+                                                :data-message="value.dataMessage"
+                                            >
+                                                <span :class="value.icon"></span>
+                                                {{value.label}}
+                                            </a>
+                                        </li>
+                                        <div v-else-if="key === 'language' && Array.isArray(value)">
+                                            <li role="separator" class="dropdown-divider"  ></li>
+                                            <li class="dropdown-header">Survey logic file</li>
+                                            <li v-for="language in value" >
+                                                <a class="dropdown-item" :id="language.id" :href="language.url">
+                                                  <span :class="language.icon"></span>
+                                                    {{language.label}}
+                                                </a>
+                                            </li>
+                                        </div>
+                                     
+                                    </ul>
+
                                 </div>
                             </li>
                         </ul>
