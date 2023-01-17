@@ -174,20 +174,6 @@ class PluginEvent
     }
 
     /**
-     * Set mass key/value pair to be used by plugins hanlding this event.
-     *
-     * @param array $values
-     * @return \PluginEvent Fluent interface
-     */
-    public function setFromArray($values)
-    {
-        foreach($values as $key => $value) {
-            $this->set($key, $value);
-        }
-        return $this;
-    }
-
-    /**
      * Appends a new value into the old.
      *
      * $value has to be an array in this case, since it is

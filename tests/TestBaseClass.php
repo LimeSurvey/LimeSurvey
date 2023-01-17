@@ -181,7 +181,10 @@ class TestBaseClass extends TestCase
      */
     public static function dispatchPluginEvent($pluginName, $eventName, $eventValues)
     {
-        $oEvent = (new \PluginEvent($eventName))->setFromArray($eventValues);
+        $oEvent = (new \PluginEvent($eventName));
+        foreach($eventValues as $key => $value) {
+            $oEvent->set($key, $value);
+        }
         \Yii::app()->getPluginManager()->dispatchEvent($oEvent, $pluginName);
 
         return $oEvent;
