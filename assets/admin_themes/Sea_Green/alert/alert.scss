@@ -63,6 +63,14 @@ $alert-status : (
   & > span[class*="ri-"] {
     font-size: $font-size-base;
   }
+  & > .alert-header {
+    @include h1;
+    color:inherit;
+
+    & > span[class*="ri-"] {
+      font-weight: $font-weight-normal;
+    }
+  }
 }
 
 #notif-container {
@@ -71,11 +79,10 @@ $alert-status : (
   left: 20%;
   width: 60%;
   z-index: 3500;
-  //background: rgba(255, 255, 255, 0.1);
   min-height: 0;
 }
 
-.whitespace-pre-wrap {
-  white-space: pre-wrap;
+.no-simple-graph {
+  height: 300px;
 }
 

@@ -95,11 +95,12 @@ Yii::app()->getController()->renderPartial(
 
         <div class="d-none" id="utility_change_password_container">
             <div class="mb-3">
-                <div class="alert alert-filled-warning alert-dismissible fade show" role="alert">
-                    <span class="ri-alert-fill me-2"></span>
-                    <?= gT('If you set a password here, no email will be sent to the new user.') ?>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
+                <?php
+                $this->widget('ext.AlertWidget.AlertWidget', [
+                    'text' => gT('If you set a password here, no email will be sent to the new user.'),
+                    'type' => 'warning',
+                ]);
+                ?>
                 <?php echo $form->labelEx($oUser, 'password', ['for' => 'User_Form_password']); ?>
                 <?php echo $form->passwordField(
                     $oUser,

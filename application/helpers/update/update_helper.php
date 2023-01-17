@@ -48,7 +48,6 @@ function CheckForDBUpgrades($subaction = null)
                     $msg .= App()->getController()->widget('ext.AlertWidget.AlertWidget', [
                             'text' => $message,
                             'type' => 'danger',
-                            'showCloseButton' => false,
                             'htmlOptions' => ['class' => "flash-$key"]
                         ], true) . "\n";
                 }

@@ -93,7 +93,10 @@
                     </div>
                     <div role='tabpanel' class='tab-pane ' id='SRCTOKENATTRS'>
                         <?php if($surveyIsAnonymized) {
-                            echo CHtml::tag("p",array("class"=>"alert alert-warning"),gT("This is an anonymized survey. Participant attributes can only be used in non-anonymised surveys."));
+                            $this->widget('ext.AlertWidget.AlertWidget', [
+                                'text' => gT("This is an anonymized survey. Participant attributes can only be used in non-anonymised surveys."),
+                                'type' => 'warning',
+                            ]);
                         }?>
                         <div class='mb-3 question-option'>
                             <div class=''>

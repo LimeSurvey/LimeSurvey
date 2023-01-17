@@ -12682,13 +12682,6 @@ h3 .glyphicon-chevron-left,
   padding-right: 1em;
 }
 
-#update-alert.unstable-update {
-  background-color: #fff;
-  border: 1px solid #A0352F;
-  color: #A0352F;
-  margin-top: 1em;
-}
-
 html body .nav-tabs > li.active > a,
 html body .nav-tabs > li.active > a:hover,
 html body .nav-tabs > li.active > a:focus {
@@ -18459,6 +18452,17 @@ footer.footer {
 .alert > span[class*=ri-] {
   font-size: 1rem;
 }
+.alert > .alert-header {
+  color: #152536;
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-weight: 600;
+  font-size: 1.25rem;
+  line-height: 26px;
+  color: inherit;
+}
+.alert > .alert-header > span[class*=ri-] {
+  font-weight: 400;
+}
 
 #notif-container {
   position: fixed;
@@ -18469,6 +18473,6 @@ footer.footer {
   min-height: 0;
 }
 
-.whitespace-pre-wrap {
-  white-space: pre-wrap;
+.no-simple-graph {
+  height: 300px;
 }

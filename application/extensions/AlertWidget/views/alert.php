@@ -3,6 +3,7 @@
 /** @var String $tag */
 
 /** @var String $text */
+/** @var String $header */
 /** @var String $type */
 /** @var boolean $isFilled */
 /** @var boolean $showIcon */
@@ -12,9 +13,12 @@
 /** @var array $htmlOptions */
 $inErrorMode = $errorSummaryModel !== null && !empty($errors);
 $notInErrorMode = $errorSummaryModel === null;
+$hasMessage = $notInErrorMode || $inErrorMode;
 
-$alertClass = ' d-flex whitespace-pre-wrap alert alert-';
+$alertClass = ' alert alert-';
 $alertClass .= $isFilled ? 'filled-' . $type : $type;
+$alertClass .= $showCloseButton ? ' alert-dismissible' : '';
+
 if (!array_key_exists('class', $htmlOptions)) {
     $htmlOptions['class'] = $alertClass;
 } else {
@@ -43,23 +47,27 @@ if (isset($type) && array_key_exists($type, $alertTypesAndIcons)) {
     $messageType = 'success';
     $icon = 'ri-notification-2-line';
 }
-if ($showCloseButton) {
-    $htmlOptions['class'] .= ' alert-dismissible';
-}
-if ($notInErrorMode || $inErrorMode) {
+
+if ($hasMessage) {
     echo CHtml::openTag($tag, $htmlOptions);
-    if ($showIcon) {
+    if ($showIcon && $header == '') {
         echo CHtml::openTag("span", ['class' => $icon . ' me-2']);
         echo CHtml::closeTag("span");
     }
 
+    if ($header != '') {
+        echo CHtml::openTag("span", ['class' => 'alert-header']);
+        if ($showIcon) {
+            echo CHtml::openTag("span", ['class' => $icon . ' me-2']);
+            echo CHtml::closeTag("span");
+        }
+        echo $header;
+        echo CHtml::closeTag("span");
+        echo CHtml::openTag('br');
+    }
+    echo $text;
     if ($inErrorMode) {
-        echo CHtml::openTag('div', ['class' => 'd-flex flex-column']);
-        echo $text;
         echo $this->render('error-summary', ['errors' => $errors]);
-        echo CHtml::closeTag('div');
-    } else {
-        echo $text;
     }
     if ($showCloseButton) {
         echo CHtml::htmlButton(

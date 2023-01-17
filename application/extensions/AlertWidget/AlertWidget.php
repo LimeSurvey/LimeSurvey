@@ -11,6 +11,9 @@ class AlertWidget extends CWidget
     /** @var string the text displayed in the alert */
     public $text = '';
 
+    /** @var string the header text displayed in the alert */
+    public $header = '';
+
     /** @var string the type of the alert ('success', 'primary', 'secondary', 'danger', 'warning', 'info', 'light', 'dark') */
     public $type = '';
 
@@ -39,6 +42,7 @@ class AlertWidget extends CWidget
         $this->render('alert', [
             'tag' => $this->tag,
             'text' => $this->text,
+            'header' => $this->header,
             'type' => $this->type,
             'isFilled' => $this->isFilled,
             'showIcon' => $this->showIcon,
@@ -60,13 +64,13 @@ class AlertWidget extends CWidget
     }
 
     /**
-     * if errorSummaryModel contains something the errors from the model(s)
+     * if errorSummaryModel contains something, the errors from the model(s)
      * will be extracted and returned as an array of strings
      * @return array
      */
     private function extractErrors()
     {
-        $errors = [];
+        $sumErrors = [];
         if (!empty($this->errorSummaryModel)) {
             $model = $this->errorSummaryModel;
 
@@ -86,7 +90,7 @@ class AlertWidget extends CWidget
                             if (!isset($htmlOptions['encode']) || $htmlOptions['encode']) {
                                 $error = CHtml::encode($error);
                             }
-                            $errors[] = $error;
+                            $sumErrors[] = $error;
                         }
                         if ($firstError) {
                             break;
@@ -95,6 +99,6 @@ class AlertWidget extends CWidget
                 }
             }
         }
-        return $errors;
+        return $sumErrors;
     }
 }

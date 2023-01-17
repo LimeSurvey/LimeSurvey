@@ -25,10 +25,12 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
     }
     ?>
     <div id="edittoken-error-container" class="row" style="display: none;">
-        <div class="alert alert-danger alert-dismissible" role="alert">
-            <button type="button" class="btn-close" aria-label="Close" onclick="$('#edittoken-error-container').hide();"></button>
-            <span class="alert-content"></span>
-        </div>
+        <?php
+        $this->widget('ext.AlertWidget.AlertWidget', [
+            'text' => '<span class="alert-content"></span>',
+            'type' => 'danger',
+        ]);
+        ?>
     </div>
     <div class="row">
         <div class="col-12 content-right">

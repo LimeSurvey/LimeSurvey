@@ -56,10 +56,12 @@
     <?php else: ?>
         <div class="row">
             <div class="col-md-12">
-                <div class="alert alert-warning" role="alert">
-                    <?php eT("Too many labels, can't generate chart");?>
-                </div>
-            </div>
+                <?php
+                $this->widget('ext.AlertWidget.AlertWidget', [
+                    'text' => gT("Too many labels, can't generate chart"),
+                    'type' => 'warning',
+                ]);
+                ?>
         </div>
     <?php endif;?>
 

@@ -23,14 +23,15 @@
         </div>
         <?php if (count($aFields) + 20 > (int) ini_get('max_input_vars')): ?>
           <div class="col-md-12">
-            <div class="alert alert-warning alert-dismissible" role="alert">
-                <button type="button" class="btn-close limebutton" data-bs-dismiss="alert" aria-label="Close"></button>
-                <?php
-                eT("The number of fields in your survey exceeds the maximum numbers of fields you can export."); ?>
-                <br/>
-                <?php
-                printf(gT("If data is missing in the exported file, please contact your system administrator to raise the setting max_input_vars to at least %s."), count($aFields)+20); ?>
-            </div>
+              <?php
+                $message = gT("The number of fields in your survey exceeds the maximum numbers of fields you can export.") .
+                  '<br/>' .
+                  sprintf(gT("If data is missing in the exported file, please contact your system administrator to raise the setting max_input_vars to at least %s."), count($aFields) + 20);
+                $this->widget('ext.AlertWidget.AlertWidget', [
+                    'text' => $message,
+                    'type' => 'warning',
+                ]);
+              ?>
          </div>
         <?php endif; ?>
   </div>

@@ -26,7 +26,13 @@ Yii::app()->getController()->renderPartial(
 		<div class="container-fluid">
 			<?php //Warn on edition of the main menu, though damaging it can do serious harm ?>
 			<?php if(!$model->isNewRecord && $model->id == '1'):?>
-				<div class="alert alert-danger" role="alert"><?php echo gT("You are editing the main menu!").'<br>'.gT("Please be very careful."); ?></div>
+                <?php
+                $this->widget('ext.AlertWidget.AlertWidget', [
+                    'header' => gT("You are editing the main menu!"),
+                    'text' =>  gT("Please be very careful."),
+                    'type' => 'danger',
+                ]);
+                ?>
 			<?php endif; ?>
 			
 			<p class="note"><?php printf(gT('Fields with %s are required.'), '<span class="required">*</span>'); ?></p>

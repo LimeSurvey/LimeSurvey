@@ -6087,7 +6087,6 @@ class LimeExpressionManager
         $mandatoryTip = '';
         // bypass validation if soft mandatory button was pressed
         if (($qrel && !$qhidden && ($qInfo['mandatory'] == 'Y' || $qInfo['mandatory'] == 'S')) && empty(App()->request->getPost('mandSoft'))) {
-            //$mandatoryTip = "<p class='errormandatory alert alert-danger' role='alert'><span class='fa fa-exclamation-sign'></span>&nbsp" . $LEM->gT('This question is mandatory') . "</p>";
             $mandatoryTip = App()->twigRenderer->renderPartial(
                 '/survey/questions/question_help/mandatory_tip.twig',
                 [
@@ -9510,11 +9509,19 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         }
         // Here it's added at top
         if (count($aQuestionWarnings) > 0) {
-            $out = "<p class='alert alert-warning'>" . $LEM->ngT("{n} question contains warnings that need to be verified.|{n} questions contain warnings that need to be verified.", count($aQuestionWarnings)) . "</p>\n" . $out;
+            $out = App()->getController()->widget('ext.AlertWidget.AlertWidget', [
+                    'tag' => 'p',
+                    'text' => $LEM->ngT("{n} question contains warnings that need to be verified.|{n} questions contain warnings that need to be verified.", count($aQuestionWarnings)),
+                    'type' => 'warning',
+                ], true) . $out;
         }
         if ($haveErrors) {
             if (count($allQuestionsErrors) > 0) {
-                $out = "<p class='alert alert-danger'>" . $LEM->ngT("{n} question contains errors that need to be corrected.|{n} questions contain errors that need to be corrected.", count($allQuestionsErrors)) . "</p>\n" . $out;
+                $out = App()->getController()->widget('ext.AlertWidget.AlertWidget', [
+                        'tag' => 'p',
+                        'text' => $LEM->ngT("{n} question contains errors that need to be corrected.|{n} questions contain errors that need to be corrected.", count($allQuestionsErrors)),
+                        'type' => 'danger',
+                    ], true) . $out;
             } else {
                 switch ($surveyMode) {
                     case 'survey':
@@ -9530,7 +9537,11 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                         $message = $LEM->gT('There are expressions with syntax errors.');// How can happen;
                         break;
                 }
-                $out = "<p class='alert alert-danger'>{$message}</p>\n" . $out;
+                $out = App()->getController()->widget('ext.AlertWidget.AlertWidget', [
+                        'tag' => 'p',
+                        'text' => $message,
+                        'type' => 'danger',
+                    ], true) . $out;
             }
         } else {
             switch ($surveyMode) {
@@ -9547,7 +9558,12 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     $message = '';
                     break;
             }
-            $out = "<p class='LEMheading alert alert-success'>$message</p>\n" . $out;
+            $out = App()->getController()->widget('ext.AlertWidget.AlertWidget', [
+                'tag' => 'p',
+                'text' => $message,
+                'type' => 'success',
+                'htmlOptions' => ['class' => 'LEMheading'],
+            ], true) . $out;
         }
 
         $out .= "</div>";

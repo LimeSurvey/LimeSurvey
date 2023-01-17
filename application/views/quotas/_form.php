@@ -6,8 +6,14 @@
 ?>
 <div class="container">
     <?php $form = $this->beginWidget('CActiveForm', array('id'=>'editquota',)); ?>
-    <?php echo $form->errorSummary($oQuota); ?>
-        
+    <?php
+    $this->widget('ext.AlertWidget.AlertWidget', [
+        'text' => gT("Please fix the following input errors:"),
+        'type' => 'danger',
+        'errorSummaryModel' => $oQuota,
+    ]);
+    ?>
+
         <div class="row">
             <div class="col-xl-4">
                 <?php echo $form->hiddenField($oQuota,'id'); ?>

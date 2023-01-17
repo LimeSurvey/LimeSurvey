@@ -8,11 +8,13 @@ App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl'
     <h3><?php eT('Organize question group/questions'); ?></h3>
     <div class='row'>
         <div class='col-md-8'>
-            <p class='alert alert-info'>
-                <span class='ri-information-fill'></span>&nbsp;
-                <?php eT("To reorder questions/questiongroups just drag the question/group with your mouse to the desired position."); ?>
-                <?php eT("After you are done, please click the 'Save' button to save your changes."); ?>
-            </p>
+            <?php
+            $this->widget('ext.AlertWidget.AlertWidget', [
+                'text' => gT("To reorder questions/questiongroups just drag the question/group with your mouse to the desired position.") . ' ' .
+                gT("After you are done, please click the 'Save' button to save your changes."),
+                'type' => 'info',
+            ]);
+            ?>
         </div>
         <div class='col-md-4'>
             <button id='organizer-collapse-all' class='btn btn-outline-secondary'><span class='ri-fullscreen-exit-line'></span>&nbsp;<?php eT("Collapse all"); ?></button>

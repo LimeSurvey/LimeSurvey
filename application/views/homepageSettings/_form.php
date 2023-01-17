@@ -19,9 +19,13 @@
     ); ?>
 
     <?php if ($form->errorSummary($model)): ?>
-        <div class="alert alert-danger" role="alert">
-            <?php echo $form->errorSummary($model); ?>
-        </div>
+        <?php
+        $this->widget('ext.AlertWidget.AlertWidget', [
+            'text' => gT("Please fix the following input errors:"),
+            'type' => 'danger',
+            'errorSummaryModel' => $model,
+        ]);
+        ?>
     <?php endif; ?>
 
 

@@ -58,7 +58,6 @@ function checkDbEngine(){
             'errorSummaryModel' => $model,
         ]);
         ?>
-        <?= CHtml::errorSummary($model, gT("Please fix the following input errors:"), null, ['class' => 'alert alert-danger errors']); ?>
         <hr/>
         <p><?php eT("Note: All fields marked with (*) are required."); ?></p>
         <legend><?php eT("Database configuration"); ?></legend>
