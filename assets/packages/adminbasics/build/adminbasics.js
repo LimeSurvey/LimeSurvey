@@ -23467,7 +23467,9 @@
     // Check type of response and take action accordingly
     if (response == '') {
       console.error('No response from server');
-      ajaxAlerts('No response from server', 'danger');
+      ajaxAlerts('No response from server', 'danger', {
+        showCloseButton: true
+      });
       return false;
     }
 
@@ -23481,13 +23483,17 @@
 
 
     if (!response.hasPermission) {
-      ajaxAlerts(response.noPermissionText, 'danger');
+      ajaxAlerts(response.noPermissionText, 'danger', {
+        showCloseButton: true
+      });
       return false;
     } // Error popup
 
 
     if (response.error) {
-      ajaxAlerts(response.error.message, 'danger');
+      ajaxAlerts(response.error.message, 'danger', {
+        showCloseButton: true
+      });
       return false;
     } // Put HTML into element.
 
@@ -23500,7 +23506,9 @@
 
 
     if (response.success) {
-      ajaxAlerts(response.success, 'success');
+      ajaxAlerts(response.success, 'success', {
+        showCloseButton: true
+      });
     } // Modal popup
 
 
@@ -26437,8 +26445,8 @@
         keepopen = options.keepopen || $item.data('keepopen') || '',
         gridReload = options.gridReload || $item.data('grid-reload') || '',
         gridid = options.gridid || $item.data('grid-id') || '',
-        buttonNo = options.buttonNo || $item.data('button-no') || '<i class="fa fa-times"></i>',
-        buttonYes = options.buttonYes || $item.data('button-yes') || '<i class="fa fa-check"></i>',
+        buttonNo = options.buttonNo || $item.data('button-no') || '<i class="ri-close-fill"></i>',
+        buttonYes = options.buttonYes || $item.data('button-yes') || '<i class="ri-check-fill"></i>',
         buttonType = $item.data('button-type') || 'btn-primary',
         parentElement = options.parentElement || $item.data('parent-element') || 'body';
     var closeIconHTML = '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>',
