@@ -3,9 +3,9 @@
 namespace LimeSurvey\Model\Service\SurveyPatch;
 
 /**
- * Survey Patch Path Meta
+ * Survey Patch Path Match
  */
-class PathMeta
+class PathMatch
 {
     protected $modelClass = null;
     protected $variables = [];

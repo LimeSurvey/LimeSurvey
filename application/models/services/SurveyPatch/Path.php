@@ -67,7 +67,7 @@ class Path
      * Match path
      *
      * @param string $path
-     * @return boolean|array
+     * @return boolean|PathMatch
      */
     public function match($realPath)
     {
@@ -92,7 +92,7 @@ class Path
                 }
             }
             if ($result === null) {
-                $result = new PathMeta(
+                $result = new PathMatch(
                     $this->modelClass,
                     $variables,
                     $this->type

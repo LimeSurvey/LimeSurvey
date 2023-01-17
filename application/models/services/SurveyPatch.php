@@ -28,16 +28,20 @@ class SurveyPatch
             $result['errors'] = $validationResult;
         } else {
             foreach ($patches as $patch) {
-                $meta = $this->getPatchMeta($patch['path']);
-                if (!$meta) {
+                $match = $this->getPathMatch($patch['path']);
+                if (!$match) {
                     throw new Exception('Unsupported path "' . $patch['path'] . '"');
                 }
 
-                switch ($meta->getType()) {
+                $modelClass = $match->getModelClass();
+                if ($modelClass == null) {
+                    // null model class indicates patches should be ignored
+                    continue;
+                }
+
+                switch ($match->getType()) {
                     case Path::PATH_TYPE_OBJECT:
                     case Path::PATH_TYPE_PROP:
-                        $modelClass = $meta->getModelClass();
-                        $model = new $modelClass;
                         break;
                     case Path::PATH_TYPE_COLLECTION:
                         break;
@@ -49,7 +53,7 @@ class SurveyPatch
         return  $result;
     }
 
-    protected function getPatchMeta($patch)
+    protected function getPathMatch($patch)
     {
         // The order of definition is important
         // - more specific paths should be listed first
@@ -57,8 +61,8 @@ class SurveyPatch
 
         $result = null;
         foreach ($defaults as $path) {
-            if ($meta = $path->match($patch)) {
-                $result = $meta;
+            if ($match = $path->match($patch)) {
+                $result = $match;
                 break;
             }
         }
