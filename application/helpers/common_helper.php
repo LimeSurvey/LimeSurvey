@@ -5041,27 +5041,3 @@ function standardDeviation(array $numbers): float
 
     return sqrt($variance / $numberOfElements);
 }
-
-/**
- * Returns a random number
- * @param int $max The number maximun of string
- * @param int $min The number minimum of string
- * @return int
- */
-function safeRandom($max, $min = 0)
-{
-    if (function_exists('random_int')) {
-        return random_int($min, $max);
-    }
-    return mt_rand($min, $max);
-}
-
-/**
- * Returns the character of a string
- * @param string $chars The string
- * @return string
- */
-function pickRandomChar($chars)
-{
-    return $chars[safeRandom(strlen($chars) - 1)];
-}

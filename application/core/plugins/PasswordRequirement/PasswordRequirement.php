@@ -222,13 +222,13 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
 
         // Lowercase (always on)
         $chars = "abcdefghijklmnopqrstuvwxyz";
-        $str .= pickRandomChar($chars);
+        $str .= static::pickRandomChar($chars);
 
         // Uppercase if applies
         // Add one character and also add the charset to the pool of available chars
         if ($uppercase) {
             $uppercase_chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-            $str .= pickRandomChar($uppercase_chars);
+            $str .= static::pickRandomChar($uppercase_chars);
             $chars .= $uppercase_chars;
         }
 
@@ -236,7 +236,7 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
         // Add one character and also add the charset to the pool of available chars
         if ($numeric) {
             $numeric_chars = '0123456789';
-            $str .= pickRandomChar($numeric_chars);
+            $str .= static::pickRandomChar($numeric_chars);
             $chars .= $numeric_chars;
         }
 
@@ -244,7 +244,7 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
         // Add one character and also add the charset to the pool of available chars
         if ($nonAlpha) {
             $nonAlpha_chars = '-=!@#$%&*_+,.?;:';
-            $str .= pickRandomChar($nonAlpha_chars);
+            $str .= static::pickRandomChar($nonAlpha_chars);
             $chars .= $nonAlpha_chars;
         }
 
@@ -259,7 +259,7 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
 
         // Fill string from general char pool
         for ($i = strlen($str); $i < $length; $i++) {
-            $str .= pickRandomChar($chars);
+            $str .= static::pickRandomChar($chars);
         }
 
         /**
@@ -270,5 +270,29 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
         $str = str_shuffle($str);
 
         return $str;
+    }
+
+    /**
+     * Returns a random number
+     * @param int $max The number maximun of string
+     * @param int $min The number minimum of string
+     * @return int
+     */
+    private static function safeRandom($max, $min = 0)
+    {
+        if (function_exists('random_int')) {
+            return random_int($min, $max);
+        }
+        return mt_rand($min, $max);
+    }
+
+    /**
+     * Returns a random character of a string
+     * @param string $chars The string
+     * @return string
+     */
+    private static function pickRandomChar($chars)
+    {
+        return $chars[static::safeRandom(strlen($chars) - 1)];
     }
 }
