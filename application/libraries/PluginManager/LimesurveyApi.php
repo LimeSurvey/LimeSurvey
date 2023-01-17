@@ -628,4 +628,21 @@ class LimesurveyApi
 
         return $questionAttributes;
     }
+
+    /**
+     * getDateTime by value
+     * @param string $dateValue the date value
+     * @param string $returnFormat the new format
+     * @param string|null $currentFormat the current format, defaut from App()->session['dateformat']
+     * @return string
+     */
+    public static function getFixedDateTime($dateValue, $returnFormat, $currentFormat = null)
+    {
+        if (empty($currentFormat)) {
+            $currentFormat = App()->session['dateformat'];
+        }
+        $dateformatdetails = getDateFormatData($currentFormat);
+        $datetimeobj = new \Date_Time_Converter($dateValue, $dateformatdetails['phpdate'] . " H:i");
+        return $datetimeobj->convert($returnFormat);
+    }
 }

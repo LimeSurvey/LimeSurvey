@@ -675,20 +675,6 @@ class Database extends SurveyCommonAction
             // Save plugin settings : actually leave it before saving core : we are sure core settings is saved in LS way.
             $pluginSettings = App()->request->getPost('plugin', array());
             foreach ($pluginSettings as $plugin => $settings) {
-                // Call plugin to check and fix, do not force reload
-                $oPlugin = App()->getPluginManager()->loadPlugin($plugin, null, false);
-                if ($oPlugin) {
-                    /* Fix settings for datetime **/
-                    foreach ($settings as $setting => $value) {
-                        if (is_array($value) && !empty($value['datetime']) && !empty($value['datetimesaveformat'])) {
-                            $dateValue = $value['datetime'];
-                            $dateformatdetails = getDateFormatData(App()->session['dateformat']);
-                            $saveformat = $value['datetimesaveformat'];
-                            $datetimeobj = new Date_Time_Converter($dateValue, $dateformatdetails['phpdate'] . " H:i");
-                            $settings[$setting] = $datetimeobj->convert($saveformat);
-                        }
-                    }
-                }
                 $settingsEvent = new PluginEvent('newSurveySettings');
                 $settingsEvent->set('settings', $settings);
                 $settingsEvent->set('survey', $iSurveyID);

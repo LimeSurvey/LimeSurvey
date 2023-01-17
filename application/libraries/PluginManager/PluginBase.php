@@ -295,6 +295,10 @@ abstract class PluginBase implements iPlugin
      */
     protected function set($key, $data, $model = null, $id = null)
     {
+        /* Date time settings by array */
+        if (is_array($data) && !empty($data['datetime']) && !empty($data['datetimesaveformat'])) {
+            $data = LimesurveyApi::getFixedDateTime($data['datetime'], $data['datetimesaveformat']);
+        }
         // Encrypt the attribute if needed
         // TODO: Handle encryption in storage class, as that would allow each storage to handle
         // it on it's own way. Currently there is no good way of telling the storage which

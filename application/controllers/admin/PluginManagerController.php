@@ -329,15 +329,7 @@ class PluginManagerController extends SurveyCommonAction
             $aSettings = $oPluginObject->getPluginSettings(false);
             $aSave     = array();
             foreach (array_keys($aSettings) as $name) {
-                $newValue = App()->request->getPost($name, null);
-                if (is_array($newValue) && !empty($newValue['datetime']) && !empty($newValue['datetimesaveformat'])) {
-                    $dateValue = $newValue['datetime'];
-                    $dateformatdetails = getDateFormatData(App()->session['dateformat']);
-                    $saveformat = $newValue['datetimesaveformat'];
-                    $datetimeobj = new Date_Time_Converter($dateValue, $dateformatdetails['phpdate'] . " H:i");
-                    $newValue = $datetimeobj->convert($saveformat);
-                }
-                $aSave[$name] = $newValue;
+                $aSave[$name] = App()->request->getPost($name, null);
             }
             $oPluginObject->saveSettings($aSave);
             Yii::app()->user->setFlash('success', gT('The plugin settings were saved.'));
