@@ -3,6 +3,7 @@
 namespace LimeSurvey\Model\Service;
 
 use LimeSurvey\Model\Service\SurveyPatch\Path;
+use LimeSurvey\Model\Service\SurveyPatch\Exception;
 
 class SurveyPatch
 {
@@ -11,6 +12,7 @@ class SurveyPatch
      *
      * @param int $surveyId
      * @param array $patch
+     * @throws \LimeSurvey\Model\Service\SurveyPatch\Exception
      * @return array
      */
     public function apply($surveyId, $patches)
@@ -26,10 +28,21 @@ class SurveyPatch
             $result['errors'] = $validationResult;
         } else {
             foreach ($patches as $patch) {
-                $meta = $this->getPatchMeta($patch);
+                $meta = $this->getPatchMeta($patch['path']);
                 if (!$meta) {
-                    // unsupported patch
+                    throw new Exception('Unsupported path "' . $patch['path'] . '"');
                 }
+
+                switch ($meta->getType()) {
+                    case Path::PATH_TYPE_OBJECT:
+                    case Path::PATH_TYPE_PROP:
+                        $modelClass = $meta->getModelClass();
+                        $model = new $modelClass;
+                        break;
+                    case Path::PATH_TYPE_COLLECTION:
+                        break;
+                }
+
             }
         }
 

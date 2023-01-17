@@ -10,22 +10,27 @@ namespace LimeSurvey\Model\Service\SurveyPatch;
  */
 class Path
 {
+    const PATH_TYPE_OBJECT = 'object';
+    const PATH_TYPE_PROP = 'prop';
+    const PATH_TYPE_COLLECTION = 'collection';
+
     protected $pathPattern = '';
     protected $modelClass = null;
-    protected $isCollection = false;
+    protected $type = null;
 
     /**
      * Survey Path Constructor
      *
-     * @param string $pathPattern
-     * @param string $modelClass
-     * @param boolean $isCollection
+     * @param string $pathPattern Path pattern (maybe include variable path elements my/path/$variable/$other)
+     * @param string $modelClass Model class name
+     * @param boolean $isProp Path points to an object property rather than a root
+     * @param boolean $isCollection Path points to a collection of objects
      */
-    public function __construct($pathPattern, $modelClass = null, $isCollection = false)
+    public function __construct($pathPattern, $modelClass = null, $type = null)
     {
         $this->pathPattern = rtrim($pathPattern, '/');
         $this->modelClass = $modelClass;
-        $this->isCollection = $isCollection;
+        $this->type = $type ?: self::PATH_TYPE_OBJECT;
     }
 
     /**
@@ -49,13 +54,13 @@ class Path
     }
 
     /**
-     * Is collection
+     * Get type
      *
-     * @return boolean
+     * @return string
      */
-    public function isCollection()
+    public function getType()
     {
-        return $this->isCollection;
+        return $this->type;
     }
 
     /**
@@ -71,7 +76,9 @@ class Path
 
         $result = null;
         $variables = [];
-        if (count($patternParts) == count($parts)) {
+        if (count($patternParts) != count($parts)) {
+            $result = false;
+        } else {
             foreach ($patternParts as $x => $patternPart) {
                 $isVariable = is_string($patternPart) && !empty($patternPart)
                     ? $patternPart[0] == '$'
@@ -85,7 +92,11 @@ class Path
                 }
             }
             if ($result === null) {
-                $result = $variables;
+                $result = new PathMeta(
+                    $this->modelClass,
+                    $variables,
+                    $this->type
+                );
             }
         }
 
@@ -100,14 +111,99 @@ class Path
     public static function getDefaults()
     {
         return [
-            new Path('/defaultlanguage/$prop', SurveyLanguageSetting::class),
-            new Path('/defaultlanguage', SurveyLanguageSetting::class),
             new Path('/languages/$x'),
             new Path('/languages'),
-            new Path('/questionGroups/$questionGroupX/l10ns/$language/$prop', QuestionGroupL10n::class),
-            new Path('/questionGroups/$questionGroupX/l10ns/$language', QuestionGroupL10n::class, true),
-            new Path('/questionGroups/$questionGroupX/$prop', QuestionGroup::class),
-            new Path('/questionGroups', QuestionGroup::class, true),
+            new Path(
+                '/languagesettings/$language/$prop',
+                SurveyLanguageSetting::class,
+                Path::PATH_TYPE_PROP
+            ),
+            new Path(
+                '/languagesettings/$language',
+                SurveyLanguageSetting::class,
+            ),
+            new Path(
+                '/defaultlanguage/$prop',
+                SurveyLanguageSetting::class,
+                Path::PATH_TYPE_PROP
+            ),
+            new Path('/defaultlanguage'),
+            new Path(
+                '/questionGroups/$questionGroupX/l10ns/$language/$prop',
+                QuestionGroupL10n::class,
+                Path::PATH_TYPE_PROP
+            ),
+            new Path(
+                '/questionGroups/$questionGroupX/l10ns/$language',
+                QuestionGroupL10n::class
+            ),
+            new Path(
+                '/questionGroups/$questionGroupX/questions/$questionX',
+                Question::class
+            ),
+            new Path(
+                '/questionGroups/$questionGroupX/questions/$questionX/$prop',
+                Question::class,
+                Path::PATH_TYPE_PROP
+            ),
+            new Path(
+                '/questionGroups/$questionGroupX/questions/$questionX/l10ns/$language/$prop',
+                QuestionL10n::class,
+                Path::PATH_TYPE_PROP
+            ),
+            new Path(
+                '/questionGroups/$questionGroupX/questions/$questionX/l10ns/$language',
+                QuestionL10n::class
+            ),
+            new Path(
+                '/questionGroups/$questionGroupX/questions/$questionX/attributes/$attributeCode',
+                QuestionAttribute::class
+            ),
+            new Path(
+                '/questionGroups/$questionGroupX/questions/$questionX/attributes/$attributeCode/$prop',
+                QuestionAttribute::class,
+                Path::PATH_TYPE_PROP
+            ),
+            new Path(
+                '/questionGroups/$questionGroupX/questions/$questionX/attributes',
+                QuestionAttribute::class,
+                Path::PATH_TYPE_COLLECTION
+            ),
+            new Path(
+                '/questionGroups/$questionGroupX/questions/$questionX/answers/$answerX',
+                Answer::class
+            ),
+            new Path(
+                '/questionGroups/$questionGroupX/questions/$questionX/answers/answerX/$prop',
+                Answer::class,
+                Path::PATH_TYPE_PROP
+            ),
+            new Path(
+                '/questionGroups/$questionGroupX/questions/$questionX/answers',
+                Answer::class,
+                Path::PATH_TYPE_COLLECTION
+            ),
+            new Path(
+                '/questionGroups/$questionGroupX/questions',
+                Question::class,
+                Path::PATH_TYPE_COLLECTION
+            ),
+            new Path(
+                '/questionGroups/$questionGroupX/$prop',
+                QuestionGroup::class,
+                Path::PATH_TYPE_PROP
+            ),
+            new Path(
+                '/questionGroups',
+                QuestionGroup::class,
+                Path::PATH_TYPE_COLLECTION
+            ),
+            new Path(
+                '/$prop',
+                Survey::class,
+                Path::PATH_TYPE_PROP
+            ),
+            new Path('/', Survey::class)
         ];
     }
 }
