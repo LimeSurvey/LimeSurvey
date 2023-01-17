@@ -2,7 +2,7 @@
 
 namespace ls\tests;
 
-class GetParticipantProperties extends BaseTest
+class GetParticipantPropertiesTest extends BaseTest
 {
     public static function setUpBeforeClass(): void
     {
