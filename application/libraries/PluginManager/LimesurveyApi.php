@@ -630,16 +630,17 @@ class LimesurveyApi
     }
 
     /**
-     * getDateTime by value
-     * @param string $dateValue the date value
-     * @param string $returnFormat the new format
-     * @param string|null $currentFormat the current format, defaut from App()->session['dateformat']
+     * Get a formatted date time by a string
+     * Used to return date from date input in admin
+     * @param string $dateValue the string as date value
+     * @param integer $returnFormat the final date format, @see getDateFormatData function (in surveytranslator_helper)
+     * @param string|null $currentFormat the current format of dateValue, defaut from App()->session['dateformat']
      * @return string
      */
-    public static function getFixedDateTime($dateValue, $returnFormat, $currentFormat = null)
+    public static function getFormattedDateTime($dateValue, $returnFormat, $currentFormat = null)
     {
         if (empty($currentFormat)) {
-            $currentFormat = App()->session['dateformat'];
+            $currentFormat = intval(App()->session['dateformat']);
         }
         $dateformatdetails = getDateFormatData($currentFormat);
         $datetimeobj = new \Date_Time_Converter($dateValue, $dateformatdetails['phpdate'] . " H:i");
