@@ -35,7 +35,7 @@
             'type' => 'action',
             'action' => 'batchEdit',
             'url' => App()->createUrl('/admin/menuentries/sa/batchEdit'),
-            'iconClasses' => 'fa fa-edit',
+            'iconClasses' => 'ri-file-edit-line',
             'text' => gT('Batch edit'),
             'grid-reload' => 'yes',
             //modal

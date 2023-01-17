@@ -3933,7 +3933,7 @@ EOD;
         $htmlOptions['data-target'] = $target;
         self::addCssClass('navbar-toggle', $htmlOptions);
         $content = self::tag('span', array('class' => 'sr-only'), 'Toggle navigation');
-        $content .= '<span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>';
+        $content .= '<span class="navbar-toggler-icon"></span>';
         return self::tag('button', $htmlOptions, $content);
     }
 

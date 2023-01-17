@@ -72,7 +72,7 @@ $codeids = '';
                                         data-target-field-id="title_<?php echo $lslanguage; ?>_<?php echo $row['sortorder'] ?>"
                                         data-bs-toggle="tooltip"
                                         title="Open editor">
-                                        <i class="fa fa-edit"></i>
+                                        <i class="ri-file-edit-line"></i>
                                     </a>
                                     <?php if ($first) : ?>
                                         <button class="btn btn-outline-secondary btn-sm btnaddanswer" data-bs-toggle="tooltip"

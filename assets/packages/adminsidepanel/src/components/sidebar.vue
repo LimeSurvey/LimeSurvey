@@ -521,7 +521,7 @@ export default {
                 class="btn btn-outline-secondary" 
                 @mousedown="mousedown" @click.prevent="()=>{return false;}"
             >
-                <i class="fa fa-ellipsis-v" />
+                <i class="ri-more-2-fill" />
             </button>
         </div>
         <div class="scoped-placeholder-greyed-area" 

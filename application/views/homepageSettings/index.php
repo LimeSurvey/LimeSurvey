@@ -79,7 +79,7 @@ App()->getClientScript()->registerScript(
                                 [
                                     'header' => gT('Icon'),
                                     'name' => 'icon',
-                                    'value' => '$data->spanicon',
+                                    'value' => '$data->getSpanIcon()',
                                     'type' => 'raw',
                                     'htmlOptions' => ['class' => ''],
                                 ],

@@ -10,7 +10,7 @@ $notification-pulse-1: #eeeeee;
 $notification-pulse-2: #FFAAAA;
 
 $help-block: #8a8a8a;
-$default-icon-bar: #878787;
+//$default-icon-bar: #878787;
 $label-default: #6b6b6b;
 $list-group-item: #545454;
 $disabled: #454545;
@@ -942,9 +942,9 @@ fieldset[disabled] {
         &:focus {
             background-color: $gray-08;
         }
-        .icon-bar {
-            background-color: $default-icon-bar;
-        }
+        //.icon-bar {
+        //    background-color: $default-icon-bar;
+        //}
     }
     .navbar-collapse {
         border: 1px solid $primary-border_navbar_default;
@@ -1026,9 +1026,9 @@ fieldset[disabled] {
         &:focus {
             background-color: $gray-20;
         }
-        .icon-bar {
-            background-color: $white;
-        }
+        //.icon-bar {
+        //    background-color: $white;
+        //}
     }
     .navbar-collapse {
         border: 1px solid $navbar-inverse-1;
@@ -1090,9 +1090,9 @@ fieldset[disabled] {
 .navbar-toggle {
     border: solid 1px $primary;
 }
-.navbar-toggle .icon-bar {
-    background-color: $primary;
-}
+//.navbar-toggle .icon-bar {
+//    background-color: $primary;
+//}
 
 .navbar-light {
     .navbar-brand {

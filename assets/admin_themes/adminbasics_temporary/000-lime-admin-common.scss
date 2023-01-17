@@ -6,6 +6,12 @@
  */
 
 // import variables and functions
+@import "../../../node_modules/bootstrap/scss/functions";
+@import "../../bootstrap_5/scss/variables.scss";
+@import "../../../node_modules/bootstrap/scss/variables";
+@import "../../../node_modules/bootstrap/scss/mixins";
+@import "../../../node_modules/bootstrap/scss/root";
+@import "../../bootstrap_5/scss/customizations";
 
 #ls-loading {
     width: 100%;

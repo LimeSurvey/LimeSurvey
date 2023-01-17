@@ -67,41 +67,22 @@
 
     <div class="mb-3">
         <label class='form-label '><?php echo $form->labelEx($model, 'ico'); ?></label>
-        <div class=''>
-            <div class='btn-group'>
-                            <button type='button' class='btn btn-outline-secondary dropdown-toggle limebutton form-control' data-bs-toggle='dropdown' aria-hashpopup='true' aria-expanded='false'>
-                    <?php eT('Select icon'); ?>
+        <div class='row align-items-center'>
+            <div class='btn-group col-2'>
+                <button type='button' class='btn btn-outline-secondary dropdown-toggle limebutton form-control' data-bs-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
+                    <?= gT('Select icon') ?>
                     <span class='caret'></span>
                 </button>
                 <ul class='dropdown-menu'>
                     <li>
-                        <div class='row' style='width: 400px;'>
-                            <div class=''>
-                                <ul class='list-unstyled'>
-                                    <?php for ($i = 0; $i < $icons_length / 3; $i++): ?>
-                                        <li class='icon-'><a href="#"><span data-icon='<?php echo $icons[$i]; ?>' class='option-icon <?php echo $icons[$i]; ?>'></span></a></li>
-                                    <?php endfor; ?>
-                                </ul>
-                            </div>
-                            <div class=''>
-                                <ul class='list-unstyled'>
-                                    <?php for ($i = $icons_length / 3; $i < $icons_length / 3 + $icons_length / 3; $i++): ?>
-                                        <li class='icon-'><a href="#"><span data-icon='<?php echo $icons[$i]; ?>' class='option-icon <?php echo $icons[$i]; ?>'></span></a></li>
-                                    <?php endfor; ?>
-                                </ul>
-                            </div>
-                            <div class=''>
-                                <ul class='list-unstyled'>
-                                    <?php for ($i = $icons_length / 3 + $icons_length / 3; $i < $icons_length; $i++): ?>
-                                        <li class='icon-'><a href="#"><span data-icon='<?php echo $icons[$i]; ?>' class='option-icon <?php echo $icons[$i]; ?>'></span></a></li>
-                                    <?php endfor; ?>
-                                </ul>
-                            </div>
-                        </div>
+                        <?php foreach ($icons as $icon) : ?>
+                            <a href="#">
+                                <span data-icon='<?php echo $icon['icon']; ?>' data-iconId='<?php echo $icon['id']; ?>' class='option-icon <?php echo $icon['icon']; ?>'></span>
+                            </a>
+                        <?php endforeach; ?>
                     </li>
-                </ul>
-            </div>
-            <span>&nbsp;<?php echo eT('Chosen icon:'); ?></span>&nbsp;<span id='chosen-icon'></span>
+                </ul></div>
+            <div class="col-2"><span>&nbsp;<?= gT('Chosen icon:') ?></span>&nbsp;<span id="chosen-icon" class="<?= $model->getIconName() ?> text-success"></span></div>
             <?php echo $form->textField($model, 'ico', array('size' => 60, 'maxlength' => 255, 'class' => 'form-control d-none')); ?>
         </div>
 

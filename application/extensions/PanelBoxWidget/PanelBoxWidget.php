@@ -53,7 +53,7 @@ class PanelBoxWidget extends CWidget
             }
             $this->title = $box->title;
             $this->buttontext = $box->buttontext ?? $box->title;
-            $this->ico = $box->ico;
+            $this->ico = $box->getIconName();
             $this->description = $box->desc;
             $this->usergroup = $box->usergroup;
         } else {

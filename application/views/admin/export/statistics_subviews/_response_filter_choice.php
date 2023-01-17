@@ -14,7 +14,7 @@
 
                             (<?php echo gT("Question group").$aGroup['gid']; ?>)
                         </span>
-                        <span class="fa fa-chevron-up group-question-chevron" data-grouptohide="grp_question_container_<?php echo $aGroup['gid']; ?>"></span>
+                        <span class="ri-arrow-up-s-line group-question-chevron" data-grouptohide="grp_question_container_<?php echo $aGroup['gid']; ?>"></span>
                     </div>
                 </div>
 
