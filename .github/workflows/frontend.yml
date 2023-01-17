@@ -30,6 +30,10 @@ jobs:
         run: |
           composer install -vvv
 
+      - name: Run yarn
+        run: |
+          yarn install
+
       - name: Prepare nvm with Node ${{ matrix.nodeJS-versions }}
         run: |
           # Update

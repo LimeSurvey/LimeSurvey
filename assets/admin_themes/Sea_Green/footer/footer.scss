@@ -1,10 +1,5 @@
 // Footer
 .footer {
-  background-color: $white;
-  border-top: solid 1px $gray-08;
-}
-
-.footer {
   z-index: 100;
   position: absolute;
   bottom: 0;
@@ -23,15 +18,3 @@ footer.footer {
     display: none
   }
 }
-
-@media(max-width: 768px) {
-  footer.footer {
-    margin-left: 22px;
-  }
-}
-
-#info-footer {
-  font-size: 2em;
-}
-
-

@@ -10,11 +10,10 @@ $notification-pulse-1: #eeeeee;
 $notification-pulse-2: #FFAAAA;
 
 $help-block: #8a8a8a;
-$default-icon-bar: #878787;
+//$default-icon-bar: #878787;
 $label-default: #6b6b6b;
 $list-group-item: #545454;
 $disabled: #454545;
-$message-box: #2e2e2e;
 
 $danger-light: #dd8988;
 $danger-bg: #be6665;
@@ -24,7 +23,7 @@ $danger-hr: #b04a59;
 $danger-border: #8c2e29;
 $danger-bg-label: #7b2824;
 
-$warning: #f8a46e;
+//$warning: #f8a46e;
 $warning_shadow: #ff726c;
 $warning_shadow_focus: #fde1cf;
 $warning-bg: #bba18c;
@@ -258,15 +257,8 @@ mark {
     background: $mark_bg;
     color: $black;
 }
-// LINKS
+// LINKS @Todo check what is really used, most things are sidemenu related
 a {
-    color: $primary;
-    &:hover {
-        color: $primary-hover_2;
-    }
-    &:focus {
-        color: $primary-hover_2;
-    }
     &.badge {
         &:hover {
             color: $white;
@@ -405,36 +397,36 @@ a {
             }
         }
     }
-    &.text-primary:hover {
-        color: $primary-hover;
-    }
-    &.text-success:hover {
-        color: $primary-hover;
-    }
-    &.text-info:hover {
-        color: $primary-bg_info_hover_4;
-    }
-    &.text-warning:hover {
-        color: $orange-20;
-    }
-    &.text-danger:hover {
-        color: $danger-light;
-    }
-    &.bg-primary:hover {
-        background-color: $primary-hover;
-    }
-    &.bg-success:hover {
-        background-color: $primary-bg_hover_success;
-    }
-    &.bg-info:hover {
-        background-color: $primary-bg_info_hover_3;
-    }
-    &.bg-warning:hover {
-        background-color: $brown-light-40;
-    }
-    &.bg-danger:hover {
-        background-color: $danger-bg-hover;
-    }
+    //&.text-primary:hover {
+    //    color: $primary-hover;
+    //}
+    //&.text-success:hover {
+    //    color: $primary-hover;
+    //}
+    //&.text-info:hover {
+    //    color: $primary-bg_info_hover_4;
+    //}
+    //&.text-warning:hover {
+    //    color: $orange-20;
+    //}
+    //&.text-danger:hover {
+    //    color: $danger-light;
+    //}
+    //&.bg-primary:hover {
+    //    background-color: $primary-hover;
+    //}
+    //&.bg-success:hover {
+    //    background-color: $primary-bg_hover_success;
+    //}
+    //&.bg-info:hover {
+    //    background-color: $primary-bg_info_hover_3;
+    //}
+    //&.bg-warning:hover {
+    //    background-color: $brown-light-40;
+    //}
+    //&.bg-danger:hover {
+    //    background-color: $danger-bg-hover;
+    //}
 }
 // Thumbnails
 .img-thumbnail {
@@ -445,25 +437,7 @@ a {
 hr {
     border-top: 1px solid $primary-bg_hover;
 }
-// Text
-.text-muted {
-    color: $gray-15;
-}
-.text-primary {
-    color: $primary;
-}
-.text-success {
-    color: $primary;
-}
-.text-info {
-    color: $primary-bg_info_hover;
-}
-.text-warning {
-    color: $brown-10 !important;
-}
-.text-danger {
-    color: $red-10 !important;
-}
+
 // Backgrounds
 .bg-primary {
     color: $white;
@@ -932,53 +906,7 @@ fieldset[disabled] {
     }
 }
 
-// Dropdowns
-.dropdown-menu {
-    background-color: $white;
-    //border: 1px solid $gray-09;
-    border: 1px solid $black_opac_15;
-    box-shadow: 0 6px 12px $black_opac_175;
-    .divider {
-        background-color: $gray-06;
-    }
-    > {
-        li > a {
-            color: $primary-2;
-            &:hover {
-                color: $white;
-                background-color: $primary-hover_2;
-            }
-            &:focus {
-                color: $white;
-                background-color: $primary-hover_2;
-            }
-        }
-        .active > a {
-            color: $white;
-            background-color: $primary-hover_2;
-            &:hover {
-                color: $white;
-                background-color: $primary-hover_2;
-            }
-            &:focus {
-                color: $white;
-                background-color: $primary-hover_2;
-            }
-        }
-        .disabled > a {
-            color: $gray-15;
-            &:hover {
-                color: $gray-15;
-            }
-            &:focus {
-                color: $gray-15;
-            }
-        }
-    }
-}
-.dropdown-header {
-    color: $gray-15;
-}
+
 // Input groups
 .input-group-addon {
     color: $gray-17;
@@ -986,26 +914,7 @@ fieldset[disabled] {
     border: 1px solid $gray-09;
 }
 
-.nav-tabs {
-    border-bottom: 1px solid $gray-08;
-    > li {
-        > a:hover {
-            border: 1px solid $primary-bg_hover $primary-bg_hover $primary-bg_hover;
-        }
-        &.active > a {
-            @extend %extend_7;
-            &:hover {
-                @extend %extend_7;
-            }
-            &:focus {
-                @extend %extend_7;
-            }
-        }
-    }
-    .nav-link {
-        color: $primary;
-    }
-}
+
 // Navbar
 .navbar-form {
     box-shadow: inset 0 1px 0 $white_opac_10, 0 1px 0 $white_opac_10;
@@ -1033,9 +942,9 @@ fieldset[disabled] {
         &:focus {
             background-color: $gray-08;
         }
-        .icon-bar {
-            background-color: $default-icon-bar;
-        }
+        //.icon-bar {
+        //    background-color: $default-icon-bar;
+        //}
     }
     .navbar-collapse {
         border: 1px solid $primary-border_navbar_default;
@@ -1117,9 +1026,9 @@ fieldset[disabled] {
         &:focus {
             background-color: $gray-20;
         }
-        .icon-bar {
-            background-color: $white;
-        }
+        //.icon-bar {
+        //    background-color: $white;
+        //}
     }
     .navbar-collapse {
         border: 1px solid $navbar-inverse-1;
@@ -1181,9 +1090,9 @@ fieldset[disabled] {
 .navbar-toggle {
     border: solid 1px $primary;
 }
-.navbar-toggle .icon-bar {
-    background-color: $primary;
-}
+//.navbar-toggle .icon-bar {
+//    background-color: $primary;
+//}
 
 .navbar-light {
     .navbar-brand {
@@ -1337,9 +1246,6 @@ fieldset[disabled] {
     }
 }
 // Labels
-.label {
-    color: $white;
-}
 .label[href] {
     &:hover {
         color: $white;
@@ -1414,20 +1320,7 @@ fieldset[disabled] {
         background-color: $danger-bg-label;
     }
 }
-// Badges
-.badge {
-    color: $white;
-    background-color: $gray-15;
-}
-// Jumbotron
-.jumbotron {
-    //background-color: $primary-bg_hover;
-    background-color: transparent;
-    text-align: center;
-    &.message-box {
-        background-color: transparent;
-    }
-}
+
 // Thumbnails
 .thumbnail {
     background-color: $white;
@@ -1542,127 +1435,6 @@ fieldset[disabled] {
     color: $red-10;
     background-color: $danger-bg;
 }
-// Panels
-.panel {
-    background-color: $white;
-    box-shadow: 0 1px 1px $black_opac_05;
-    > .card-body + {
-        .table {
-            border-top: 1px solid $gray-08;
-        }
-        .table-responsive {
-            border-top: 1px solid $gray-08;
-        }
-    }
-}
-.card-footer {
-    background-color: $gray-04;
-    border-top: 1px solid $gray-08;
-}
-.card-group {
-    .card-header + .panel-collapse .card-body {
-        border-top: 1px solid $gray-08;
-    }
-    .card-footer + .panel-collapse .card-body {
-        border-bottom: 1px solid $gray-08;
-    }
-}
-.panel-default {
-    border: 1px solid $gray-08;
-    > {
-        .card-header {
-            color: $primary-2;
-            background-color: $gray-04;
-            border: 1px solid $gray-08;
-            + .panel-collapse .card-body {
-                border-top-color: $gray-08;
-            }
-        }
-        .card-footer + .panel-collapse .card-body {
-            border-bottom-color: $gray-08;
-        }
-    }
-}
-.card-primary {
-    border: 1px solid $primary;
-    > {
-        .card-header {
-            color: $white;
-            background-color: $primary;
-            border: 1px solid $primary;
-            + .panel-collapse .card-body {
-                border-top-color: $primary;
-            }
-        }
-        .card-footer + .panel-collapse .card-body {
-            border-bottom-color: $primary;
-        }
-    }
-}
-.card-success {
-    border: 1px solid $primary-active;
-    > {
-        .card-header {
-            color: $primary;
-            background-color: $primary-bg-success;
-            border: 1px solid $primary-active;
-            + .panel-collapse .card-body {
-                border-top-color: $primary-active;
-            }
-        }
-        .card-footer + .panel-collapse .card-body {
-            border-bottom-color: $primary-active;
-        }
-    }
-}
-.card-info {
-    border: 1px solid $primary-bg_info_hover_2;
-    > {
-        .card-header {
-            color: $primary-bg_info_hover;
-            background-color: $primary-bg_info;
-            border: 1px solid $primary-bg_info_hover_2;
-            + .panel-collapse .card-body {
-                border-top-color: $primary-bg_info_hover_2;
-            }
-        }
-        .card-footer + .panel-collapse .card-body {
-            border-bottom-color: $primary-bg_info_hover_2;
-        }
-    }
-}
-.card-warning {
-    border: 1px solid $warning_shadow;
-    > {
-        .card-header {
-            color: $warning;
-            background-color: $warning-bg;
-            border: 1px solid $warning_shadow;
-            + .panel-collapse .card-body {
-                border-top-color: $warning_shadow;
-            }
-        }
-        .card-footer + .panel-collapse .card-body {
-            border-bottom-color: $warning_shadow;
-        }
-    }
-}
-.card-danger {
-    border: 1px solid $red-50;
-    > {
-        .card-header {
-            color: $red-10;
-            background-color: $danger-bg;
-            border: 1px solid $red-50;
-            + .panel-collapse .card-body {
-                border-top-color: $red-50;
-            }
-        }
-        .card-footer + .panel-collapse .card-body {
-            border-bottom-color: $red-50;
-        }
-    }
-}
 
 // Close
 .close {
@@ -1674,22 +1446,6 @@ fieldset[disabled] {
     &:focus {
         color: $black;
     }
-}
-// Modals
-.modal-content {
-    background-color: $white;
-    //border: 1px solid $gray-12;
-    border: 1px solid $black_opac_20;
-    box-shadow: 0 3px 9px $black_opac_50;
-}
-.modal-backdrop {
-    background-color: $black;
-}
-.modal-header {
-    border-bottom: 1px solid $gray-06;
-}
-.modal-footer {
-    border-top: 1px solid $gray-06;
 }
 
 // Popover
@@ -1828,18 +1584,6 @@ fieldset[disabled] {
     color: $alert;
 }
 
-// Message Box based on Jumbotron
-.message-box {
-    border: 1px solid $primary-bg-hover_2;
-    color: $message-box;
-
-}
-.message-box-error {
-    border: 1px solid $red-90;
-}
-.message-box-warning {
-    border: 1px solid $brown-10;
-}
 
 // Legend
 legend {

@@ -21,7 +21,7 @@
        role="button"
        id="save-and-close-button"
        onclick="$(this).addClass('disabled').attr('onclick', 'return false;');">
-        <span class="fa fa-saved"></span>
+        <span class="ri-checkbox-circle-fill"></span>
         <?php eT("Save and close"); ?>
     </a>
 <?php endif; ?>
@@ -41,7 +41,7 @@
        href="<?php echo $closeUrl; ?>"
        id="save-and-close-button"
        onclick="$(this).addClass('disabled').attr('onclick', 'return false;');">
-        <span class="fa fa-saved"></span>
+        <span class="ri-checkbox-circle-fill"></span>
         <?php eT("Save and close"); ?>
     </a>
 <?php endif; ?>
@@ -57,7 +57,7 @@
 <!-- Export -->
 <?php if (!empty($showExportButton)): ?>
     <button class="btn btn-success" type="button" name="export-button" id="export-button" data-submit-form=1>
-        <span class="fa fa-download-alt"></span>
+        <span class="ri-download-fill"></span>
         <?php eT("Export"); ?>
     </button>
 <?php endif; ?>

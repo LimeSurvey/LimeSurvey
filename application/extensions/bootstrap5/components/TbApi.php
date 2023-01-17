@@ -34,7 +34,7 @@ class TbApi extends CApplicationComponent
     public static $counter = 0;
 
     /**
-     * @var string path to Bootstrap assets (will default to vendor/twbs/bootstrap/dist).
+     * @var string path to Bootstrap assets (will default to node_modules/bootstrap/dist).
      */
     public $bootstrapPath;
 

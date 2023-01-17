@@ -38,7 +38,7 @@
                 $iconClass="ri-arrow-down-s-fill";
                 break;
             case "desc":
-                $image="fa fa-sort-asc";
+                $image="ri-sort-asc";
                 break;
         }
     }

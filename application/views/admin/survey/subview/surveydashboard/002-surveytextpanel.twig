@@ -1,8 +1,8 @@
 <!-- Survey's texts -->
-<div class="card m-2">
+<div class="card card-primary h-100">
     <!-- Default panel contents -->
     <div class="card-header">
-        <strong>{{gT("Text elements:")}}</strong>
+        <h5 class="card-title">{{gT("Text elements")}}</h5>
         <a class="float-end btn btn-outline-secondary btn-xs pjax" data-bs-toggle="tooltip" title="{{ gT("Survey text elements") }}" href="{{ createUrl('surveyAdministration/rendersidemenulink', {'subaction': 'surveytexts', 'surveyid' : surveyid}) }}">
             <i class="ri-settings-5-fill"></i>
         </a>
@@ -72,7 +72,7 @@
                             <div class="col-8">
                                 {% if surveyTextContent.surveyls_policy_error != '' %}
                                     {{getTextDisplayWidget(surveyTextContent.surveyls_policy_error, "security_error")}}
-                                {% endif %}                               
+                                {% endif %}
                             </div>
                         </div>
                     </li>
@@ -85,7 +85,7 @@
                             <div class="col-8">
                                 {% if surveyTextContent.surveyls_policy_notice_label != '' %}
                                     {{getExpressionManagerOutput(surveyTextContent.surveyls_policy_notice_label)}}
-                                {% endif %}   
+                                {% endif %}
                             </div>
                         </div>
                     </li>

@@ -2,6 +2,7 @@ $aubergine    : #25003E; // background
 $zucchini     : #003E24; // background
 $focus        : #3BFFB7; // background
 $grape        : #8146F6; // background secondary
+$grape-light  : #D3C5FA; // background secondary
 $litschi      : #FF9AA2; // background secondary
 $blueberry    : #A3C8FF; // background passive
 $orange       : #FFBA68; // tertiary
@@ -13,15 +14,21 @@ $error        : #FF515F; // danger/error
 $lime-green   : #7FF409; // links on dark
 $action       : #4200FF; // links on light
 $active-green : #14AE5C; // buttons & links
+$elevation-shadow: rgba(66, 0, 255, 0.2); // LSD/Elevation/Shadow
+$elevation-shadow-soft: rgba(0, 0, 0, 0.2); // LSD/Elevation/ShadowSoft
 
 $white        : #fff;
 $black        : #000;
+$black60      : #666666; // rgba(0, 0, 0, 0.6);
 $black75      : rgba(0, 0, 0, 0.75);
+$grape75 : rgba(123, 97, 255, 0.4);
+$heading-title-color: #152536;
 
 $g-900        : #1E1E1E;
 $g-800        : #333641;
 $g-700        : #5E6372;
-$g-600        : #7C8191;
+$g-600        : #ACACAC;
+$g-500        : #ACACAC;
 $g-400        : #C2C5D1;
 $g-300        : #DDDEE8;
 $g-200        : #EEEFF7;
@@ -36,12 +43,17 @@ $theme-colors: (
     "info":       $grape,
     "light":      $g-200,
     "dark":       $g-900,
+    "black60":    $black60,
     "cancel":     $g-600, // replace with secondary
 );
+
+$border-radius: 4px;
 
 // Buttons
 $line-height-16: 16px;
 $line-height-20: 20px;
+$line-height-28: 28px;
+$line-height-38: 38px;
 
 $btn-font-weight: 500;
 
@@ -52,6 +64,13 @@ $btn-height-xl: 52px;
 
 $btn-font-size: 14px;
 $btn-font-size-sm: 12px;
+
+$btn-hover-boxshadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
+$btn-focus-boxshadow: 4px 4px 0px rgba(123, 97, 255, 0.4);
+
+$btn-color: $g-900;
+
+$dropdown-font-size: 14px;
 
 $ibm-font-family:
 "IBMPlexSans",
@@ -77,6 +96,7 @@ $font-size-base: 1rem; // Assumes the browser default, typically `16px`
 $font-size-sm: $font-size-base * 0.875;
 $font-size-lg: $font-size-base * 1.25;
 
+$font-weight-300: 300;
 $font-weight-normal: 400;
 $font-weight-500: 500;
 $font-weight-600: 600;
@@ -92,23 +112,58 @@ $tooltip-bg:                        $g-900;
 // $tooltip-border-radius:             $border-radius;
 $tooltip-opacity:                   1;
 $tooltip-padding-y:                 $spacer * .5;
-$tooltip-padding-x:                 $spacer * 1.2;
+$tooltip-padding-x:                 $spacer * 1.25;
 
 $tooltip-arrow-color:               $tooltip-bg;
 // $tooltip-arrow-color:               null; // Deprecated in Bootstrap 5.2.0 for CSS variables
 
 // links
+$link-color-action:                       $action !default;
 $link-color:                              $active-green !default;
 $link-decoration:                         none !default;
 $link-shade-percentage:                   20% !default;
+$link-hover-color-action:                 shift-color($link-color-action, $link-shade-percentage) !default;
 $link-hover-color:                        shift-color($link-color, $link-shade-percentage) !default;
 
 // breadcrumb variables
 $breadcrumb-font-size:              14px;
-$breadcrumb-spacing:                12px;
+$breadcrumb-spacing:                6px;
 $breadcrumb-divider-color:          $g-600;
 $breadcrumb-active-color:           $g-900;
 $breadcrumb-link-color:             $link-color;
-
+// tabs
+$nav-tabs-link-active-color:        $g-900;
 // modal
 $modal-inner-padding: 1.5rem; // 24px
+
+// datepicker
+$td-light: #fff !default;
+$td-widget-background: $td-light !default;
+$td-font-color: #000 !default;
+$td-timepicker-font-size: 1.2em !default;
+$td-active-bg: var(--bs-primary) !default;
+$td-active-color: $td-light !default;
+$td-active-border-color: var(--bs-info) !default;
+$td-border-radius: 2px !default;
+$td-btn-hover-bg: $td-light !default;
+$td-disabled-color: #6c757d !default;
+$td-alternate-color: $g-400 !default;
+$td-secondary-border-color: #ccc !default;
+$td-secondary-border-color-rgba: rgba(0, 0, 0, 0.2) !default;
+$td-primary-border-color: $td-light !default;
+$td-text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25) !default;
+$td-dow-color: $td-font-color;
+
+// badge
+$badge-padding-y:                   2px;
+$badge-padding-x:                   5px;
+
+//card
+$card-header-line-height: 26px;
+
+// navbar
+$navbar-bg-color: $g-800;
+$navbar-color: $white;
+$navbar-badges-bg-color: $white;
+$navbar-badges-color: $navbar-bg-color;
+$navbar-link-hover-color: shift-color($navbar-color, $link-shade-percentage) !default;

@@ -6087,7 +6087,6 @@ class LimeExpressionManager
         $mandatoryTip = '';
         // bypass validation if soft mandatory button was pressed
         if (($qrel && !$qhidden && ($qInfo['mandatory'] == 'Y' || $qInfo['mandatory'] == 'S')) && empty(App()->request->getPost('mandSoft'))) {
-            //$mandatoryTip = "<p class='errormandatory alert alert-danger' role='alert'><span class='fa fa-exclamation-sign'></span>&nbsp" . $LEM->gT('This question is mandatory') . "</p>";
             $mandatoryTip = App()->twigRenderer->renderPartial(
                 '/survey/questions/question_help/mandatory_tip.twig',
                 [
@@ -9811,7 +9810,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             case 'K': // Multiple numerical
             case 'N': // Numerical
                 if (!preg_match("/^[-]?(\d{1,20}\.\d{0,10}|\d{1,20})$/", $value)) { // DECIMAL(30,10)
-                    $LEM->addValidityString($sgq, $value, gT("This question only accept 30 digits including 10 decimals."), $set);
+                    $LEM->addValidityString($sgq, $value, gT("This question only accepts 30 digits including 10 decimals."), $set);
                     /* Show an error but don't unset value : this can happen without hack */
                 }
                 break;

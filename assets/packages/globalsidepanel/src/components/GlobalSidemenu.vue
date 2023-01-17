@@ -130,7 +130,7 @@ export default {
         @mousedown="mousedown"
         @click.prevent="()=>{return false;}"
       >
-        <i class="fa fa-ellipsis-v"></i>
+        <i class="ri-more-2-fill"></i>
       </button>
     </div>
   </div>

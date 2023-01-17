@@ -78,7 +78,7 @@
                     type="button"
                     class="btn btn-warning"
                        id="reorderentries">
-                        <i class="fa fa-sort"></i>&nbsp;
+                        <i class="ri-order-play-fill"></i>&nbsp;
                     &nbsp;
                         <?php eT('Reorder') ?>
                     </a>
@@ -93,7 +93,7 @@
                     id="save-and-close-form-button" 
                     onclick="$(this).addClass('disabled').attr('onclick', 'return false;');" 
                     data-form-id="<?php echo $fullpagebar['saveandclosebutton']['form']; ?>">
-                        <span class="fa fa-saved"></span>
+                        <span class="ri-checkbox-circle-fill"></span>
                         <?php eT("Save and close"); ?>
                 </a>
                 <?php endif; ?>

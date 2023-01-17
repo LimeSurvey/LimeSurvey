@@ -178,7 +178,7 @@ JS
         $importance   = $foundSecurityVersion ? Notification::HIGH_IMPORTANCE : Notification::NORMAL_IMPORTANCE;
         $message = implode($messages);
         if ($errors) {
-            $message .= '<hr/><i class="fa fa-warning"></i>&nbsp;'
+            $message .= '<hr/><i class="ri-alert-fil"></i>&nbsp;'
                 . gT('Errors happened during the update check. Please notify the extension authors for support.')
                 . '<ul>'
                 . '<li>' . implode('</li><li>', $errors) . '</li>';

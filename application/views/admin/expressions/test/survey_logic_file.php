@@ -33,26 +33,3 @@ echo viewHelper::getViewTestTag('surveyLogicFile');
         </div>
     </div>
 </div>
-
-<style>
-    /**
-     * This whole style block is a workaround for https://bugs.limesurvey.org/view.php?id=18250
-     */
-    .main-content-container {
-        overflow-x: visible;
-    }
-    .table-responsive {
-        overflow-x: visible;
-    }
-
-    #vue-sidebar-container {
-        display: none;
-    }
-    #pjax-content {
-        max-width: 100%!important;
-    }
-    #vue-apps-main-container > .col-11 {
-        width: 100%;
-        max-width: 100%;
-    }
-</style>

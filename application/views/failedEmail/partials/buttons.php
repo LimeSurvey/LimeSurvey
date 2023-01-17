@@ -22,7 +22,7 @@
             class="btn btn-outline-secondary btn-sm failedemail-action-modal-open"
             data-href="<?= App()->createUrl('/failedEmail/modalcontent', ['id' => $id]) ?>"
             data-contentFile="email_error">
-        <i class="fa fa-exclamation"></i>
+        <i class="ri-alert-fill"></i>
     </button>
     <button data-bs-toggle="tooltip" title="<?= gT("Delete") ?>"
             class="btn btn-outline-secondary btn-sm <?= !$permissions['delete'] ? "" : "failedemail-action-modal-open" ?>"

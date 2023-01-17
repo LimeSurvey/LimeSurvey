@@ -139,11 +139,11 @@ echo $oQuestionSelector->getModal();
                             </div>
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <button type="button" class="btn btn-outline-secondary btn-warning " id="selector__showChangePassword" style="color: white; outline: none;">
+                                    <button type="button" class="btn btn-warning " id="selector__showChangePassword">
                                         <i class="ri-lock-fill"></i>
                                         <?= gT("Change password") ?>
                                     </button>
-                                    <button type="button" class="btn btn-outline-secondary btn-warning " id="selector__showChangeEmail" style="color: white; outline: none;">
+                                    <button type="button" class="btn btn-warning " id="selector__showChangeEmail">
                                         <i class="ri-lock-fill"></i>
                                         <?= gT("Change email address") ?>
                                     </button>

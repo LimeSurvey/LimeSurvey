@@ -34,6 +34,73 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.5.1 (build 230103) to 5.5.2 (build 230109) January 9, 2023
+-Fixed issue CR-797: Only check versions from CU server once per day (Olle Haerstedt)
+-Fixed issue #18569: Survey editing:  typo in error message (#2822) (Gabriel Jenik)
+-Fixed issue #18546: Menu System: Setting a past survey start date leads to showing current date as end date at survey overview (#2800) (Gabriel Jenik)
+-Fixed issue #18543: Question Type "Array (texts)" crashes when in combination with "array filter", "Array filter style": disabled and "show totals" (#2793) (Gabriel Jenik)
+-Fixed issue #18542: Plugins: PasswordRequirement plugin is not working properly (#2823) (Gabriel Jenik)
+-Fixed issue #18516: Create Survey button allows multiple clicking and may create multiple copies (#2812) (Gabriel Jenik)
+-Fixed issue #18507: {ANSWERTABLE} not working in basic admin notification (#2794) (Gabriel Jenik)
+-Fixed issue #18502: STATA export of simple array question fails (#2792) (Gabriel Jenik)
+-Fixed issue #18491: Theme editor : List of fonts and colors should be sorted alphabetically (#2820) (Gabriel Jenik)
+-Fixed issue #18481: Panel Configuration : Insert new box without position (#2818) (Gabriel Jenik)
+#Updated translation: Welsh by ChrisWilliams
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Hebrew by idan1798
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 5.5.0 (build 221219) to 5.5.1 (build 230103) January 3, 2023
+-Fixed issue #18564: Fixed JS part for copy functionality (#2805) (Borys)
+-Fixed issue #18503: Label sets: When adding a label set e.g. at the edit responses screen, the loaded label sets can not be searched (#2796) (Gabriel Jenik)
+-Fixed issue #18471: Data Entry: Data entry with multiple languages does not work (#2797) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by c_schmitz, samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: French (France) by aschwey, DenisChenu
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Chinese (Simplified) by duestin, FangZhijian, humandynamic, xiongrui, zengqing, zhanginshanghai, Zoctan
+
+
+Changes from 5.4.15 (build 221212) to 5.5.0 (build 221219) December 19, 2022
++New feature #8436: Enable / disable users and fields to manage users (#2636) (Gabriel Jenik)
++New feature #8239: Allow for user friendly survey URLS (#2218) (Gabriel Jenik)
++New feature #18375: [security] Some plugin settings need encryption (#2645) (Gabriel Jenik)
++New feature #18204: Extend form via plugin (Olle Haerstedt)
+-Fixed issue: Return JSON instead of string from actionCheckQuestionValidateTitle (Olle Haerstedt)
+-Fixed issue: Also allow to compare with null in list_participants (Olle Haerstedt)
+-Fixed issue [security] #18553: SQL injection on surveygroup update (#2790) (Denis Chenu)
+-Fixed issue #18449: Impossible to add participant after correcting an e-mail address error (#2748) (Gabriel Jenik)
+-Fixed issue #18415: Copy Survey: New Title shouldn't be mandatory (#2709) (Gabriel Jenik)
+-Fixed issue #18373: Saving statistics exports to excel fails (#2656) (Gabriel Jenik)
+-Fixed issue #18310: Inconsistent GUI: Sort alphabetically vs. random (#2666) (Gabriel Jenik)
+-Fixed issue #18250: admin css hide logic file part (#2761) (Gabriel Jenik)
+#Updated translation: Ukrainian by apache_borys
+#Updated translation: Slovak by jelen1
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1, slansky
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Bosnian by PawelAtroszko
+#Updated translation: Azerbaijani by PawelAtroszko
+
+
 Changes from 5.4.14 (build 221205) to 5.4.15 (build 221212) December 12, 2022
 -Fixed issue #14310: Google Analytics functionality doesn't work (#2762) (Gabriel Jenik)
 #Updated translation: Slovak by jelen1

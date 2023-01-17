@@ -14,7 +14,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <a class="navbar-brand" href="<?php echo $this->createUrl("/admin/"); ?>">
-            <img id="nav-logo" alt="logo" src="/themes/admin/Sea_Green/images/logo.png" class="d-inline-block">
+            <?php echo $sitename; ?>
         </a>
         <!-- Only on xs screens -->
         <div class="collapse navbar-collapse " id="small-screens-menus">
@@ -23,7 +23,7 @@
                 <?php if ($activesurveyscount > 0): ?>
                     <li class="nav-item">
                         <a class="nav-link" href="<?php echo $this->createUrl('surveyAdministration/listsurveys/active/Y'); ?>">
-                            <?php eT("Active surveys"); ?> <span class="badge rounded-pill"><?php echo $activesurveyscount ?></span>
+                            <?php eT("Active surveys"); ?> <span class="badge"><?php echo $activesurveyscount ?></span>
                         </a>
                     </li>
                 <?php endif; ?>
@@ -42,14 +42,14 @@
             </ul>
         </div>
 
-        <div class="collapse navbar-collapse justify-content-end">
+        <div class="collapse navbar-collapse justify-content-center">
             <ul class="nav navbar-nav">
                 <!-- Maintenance mode -->
                 <?php $sMaintenanceMode = getGlobalSetting('maintenancemode');
                 if ($sMaintenanceMode === 'hard' || $sMaintenanceMode === 'soft') { ?>
                     <li class="nav-item">
                         <a class="nav-link text-warning" href="<?php echo $this->createUrl("admin/globalsettings"); ?>" title="<?php eT("Click here to change maintenance mode setting."); ?>">
-                            <span class="fa fa-warning"></span>
+                            <span class="ri-alert-fil"></span>
                             <?php eT("Maintenance mode is active!"); ?>
                         </a>
                     </li>
@@ -85,22 +85,24 @@
                 <?php if ($activesurveyscount > 0): ?>
                     <li class="nav-item">
                         <a href="<?php echo $this->createUrl('surveyAdministration/listsurveys/active/Y'); ?>" class="nav-link">
-                            <?php eT("Active surveys"); ?> <span class="badge rounded-pill"> <?php echo $activesurveyscount ?> </span>
+                            <?php eT("Active surveys"); ?> <span class="badge"> <?php echo $activesurveyscount ?> </span>
                         </a>
                     </li>
                 <?php endif; ?>
 
                 <!-- Extra menus from plugins -->
                 <?php $this->renderPartial( "application.libraries.MenuObjects.views._extraMenu", ['extraMenus' => $extraMenus, 'prependedMenu' => false]); ?>
-
+            </ul>
+        </div>
+        <div class="collapse navbar-collapse justify-content-end">
+            <ul class="nav navbar-nav">
                 <!-- Admin notification system -->
                 <?php echo $adminNotifications; ?>
 
                 <li class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">
+                    <a href="#" class="nav-link dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" role="button" aria-expanded="false">
                     <!-- <i class="ri-user-fill"></i> <?php echo Yii::app()->session['user']; ?> <span class="caret"></span></a> -->
-<!--                         @TODO remove inline style and put it into corresponding SCSS file. This is here just for demo purpose -->
-                        <span class='badge rounded-pill' style="background-color: #3BFFB7; color: #25003E;">
+                        <span class='rounded-circle text-center d-flex align-items-center justify-content-center me-1'>
                             <?= strtoupper(substr(Yii::app()->session['user'], 0, 1)) ?>
                         </span>
                         <?= Yii::app()->session['user']; ?>
