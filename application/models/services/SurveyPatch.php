@@ -15,9 +15,9 @@ class SurveyPatch
      * @throws \LimeSurvey\Model\Service\SurveyPatch\Exception
      * @return array
      */
-    public function apply($surveyId, $patches)
+    public function apply($surveyId, $patch)
     {
-        $validationResult = $this->validatePatches($patches);
+        $validationResult = $this->validatePatch($patch);
 
         $result = [
             'updatePatch' => [],
@@ -27,10 +27,10 @@ class SurveyPatch
         if ($validationResult !== true) {
             $result['errors'] = $validationResult;
         } else {
-            foreach ($patches as $patch) {
-                $match = $this->getPathMatch($patch['path']);
+            foreach ($patch as $operation) {
+                $match = $this->getPathMatch($operation['path']);
                 if (!$match) {
-                    throw new Exception('Unsupported path "' . $patch['path'] . '"');
+                    throw new Exception('Unsupported path "' . $operation['path'] . '"');
                 }
 
                 $modelClass = $match->getModelClass();
@@ -71,18 +71,18 @@ class SurveyPatch
     }
 
     /**
-     * Validate patches
+     * Validate patch
      *
      * @param array $patch
      * @return boolean|array
      */
-    protected function validatePatches($patches)
+    protected function validatePatch($patch)
     {
         $errors = [];
-        foreach ($patches as $k => $patch) {
-            $patchErrors = $this->validatePatch($patch);
-            if ($patchErrors !== true) {
-                $errors[$k] = $patchErrors;
+        foreach ($patch as $k => $operation) {
+            $operationErrors = $this->validatePatchOperation($operation);
+            if ($operationErrors !== true) {
+                $errors[$k] = $operationErrors;
             }
         }
         return empty($errors) ?: $errors;
@@ -94,16 +94,16 @@ class SurveyPatch
      * @param array $patch
      * @return boolean|array
      */
-    protected function validatePatch($patch)
+    protected function validatePatchOperation($operation)
     {
         $errors = [];
-        if (!isset($patch['op'])) {
+        if (!isset($operation['op'])) {
             $errors[] = 'Invalid operation';
         }
-        if (!isset($patch['path'])) {
+        if (!isset($operation['path'])) {
             $errors[] = 'Invalid path';
         }
-        if (array_key_exists('value', $patch)) {
+        if (array_key_exists('value', $operation)) {
             $errors[] = 'No value set';
         }
         return empty($errors) ?: $errors;
