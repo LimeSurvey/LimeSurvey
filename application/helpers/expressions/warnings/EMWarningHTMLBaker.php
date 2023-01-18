@@ -25,17 +25,17 @@ class EMWarningHTMLBaker
      */
     public function getWarningHTML(array $warnings)
     {
-        $message = "<div class='d-flex flex-column'><strong>"
+        $message = "<strong>"
             . ngT(
                 "This question has at least {n} warning.|This question has at least {n} warnings.",
                 count($warnings),
                 'html'
             )
             . "</strong>";
-        $message .= "<ul class='list-unstyled small d-flex flex-column'>";
-        $warningsDone = array();
+        $message .= "<ul class='list-unstyled small'>";
+        $warningsDone = [];
         foreach ($warnings as $aWarning) {
-            if (!in_array($aWarning->getMessage(), $warningsDone)) {
+            if (!in_array($aWarning, $warningsDone)) {
                 $message .= "<li>";
                 if ($aWarning->hasHelpLink()) {
                     $message .= $aWarning->bakeHelpLink();
@@ -48,7 +48,6 @@ class EMWarningHTMLBaker
         }
         $message .= "</ul>";
 
-        $message .= '</div>';
         return App()->getController()->widget('ext.AlertWidget.AlertWidget', [
             'text' => $message,
             'type' => 'warning',
