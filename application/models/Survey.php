@@ -1464,23 +1464,49 @@ class Survey extends LSActiveRecord implements PermissionInterface
     /**
      * Returns buttons for gridview.
      * @return string
+     * @throws CException
      */
-    public function getbuttons()
+    public function getButtons(): string
     {
         $permissions = [
-            Permission::model()->hasSurveyPermission($this->sid, 'statistics', 'read'),
-            Permission::model()->hasSurveyPermission($this->sid, 'survey', 'update'),
-            'create'   => Permission::model()->hasSurveyPermission($this->sid, 'responses', 'create'),
-            'update' => Permission::model()->hasSurveyPermission($this->sid, 'responses', 'update'),
-            'delete' => Permission::model()->hasSurveyPermission($this->sid, 'responses', 'delete'),
-            'read'   => Permission::model()->hasSurveyPermission($this->sid, 'responses', 'read'),
+            'statistics_read'  => Permission::model()->hasSurveyPermission($this->sid, 'statistics', 'read'),
+            'survey_update'    => Permission::model()->hasSurveyPermission($this->sid, 'survey', 'update'),
+            'responses_create' => Permission::model()->hasSurveyPermission($this->sid, 'responses', 'create'),
+            'responses_update' => Permission::model()->hasSurveyPermission($this->sid, 'responses', 'update'),
+            'responses_delete' => Permission::model()->hasSurveyPermission($this->sid, 'responses', 'delete'),
+            'responses_read'   => Permission::model()->hasSurveyPermission($this->sid, 'responses', 'read'),
         ];
 
-        $buttons = App()->getController()->renderPartial('/surveyAdministration/partials/actions', [
-            'survey' => $this,
-            'permissions' => $permissions
-        ], true);
-        return $buttons;
+        $dropdownItems = [];
+        $dropdownItems[] = [
+            'title' => gT('Add new question'),
+            'url' => App()->createUrl("/questionAdministration/create/surveyid/" . $this->sid),
+            'enabledCondition' =>
+                $this->active !== "Y"
+                && $permissions['responses_create']
+                && $this->groupsCount > 0,
+        ];
+        $dropdownItems[] = [
+            'title' => gT('Add new group'),
+            'url' => App()->createUrl("/questionGroupsAdministration/add/surveyid/" . $this->sid),
+            'enabledCondition' =>
+                $this->active !== "Y"
+                && $permissions['responses_create'],
+        ];
+        $dropdownItems[] = [
+            'title' => gT('Statistics'),
+            'url' => App()->createUrl("/admin/statistics/sa/simpleStatistics/surveyid/" . $this->sid),
+            'enabledCondition' =>
+                $this->active === "Y"
+                && $permissions['statistics_read'],
+        ];
+        $dropdownItems[] = [
+            'title' => gT('General settings & texts'),
+            'url' => App()->createUrl("/surveyAdministration/rendersidemenulink/subaction/generalsettings/surveyid/" . $this->sid),
+            'enabledCondition' => $permissions['survey_update'],
+        ];
+
+        return App()->getController()->render('extensions/admin/grid/views/action_dropdown.php', ['dropdownItems' => $dropdownItems], true);
     }
 
     /**
