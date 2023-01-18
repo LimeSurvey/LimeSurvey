@@ -57,12 +57,7 @@ $oQuestionSelector = $this->beginWidget(
             'id' => 'selector__' . 'questionTypeSelector' . '--buttonText',
             'value' => gT($questionTheme->title) .  gT("Type:") . " " . $question->type,
             'isAttached' => true,
-            'attachContent' => '<button type="button" data-bs-toggle="modal"
-    aria-haspopup="true"
-    aria-expanded="false"' .
-                'data-bs-target="#selector__' . 'questionTypeSelector' . '-modal"' .
-                'class="btn position-absolute" style="top:4px; right:5px; background:#7C8191; color:#fff">
-    Select  <span class="ri-arrow-drop-down-line"/> </button>',
+            'attachContent' => $this->renderPartial('typeSelectorButton', null, true),
             'wrapperHtmlOptions' => [
                 'id' => 'trigger_' . 'questionTypeSelector' . '_button',
                 'class' => 'w-100'

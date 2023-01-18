@@ -12,15 +12,7 @@
         'id' => 'questionCode',
         'value' => !empty($newTitle) ? $newTitle : $question->title,
         'isAttached' => true,
-        'attachContent' => "<button 
-            type='button'
-            class='btn btn-success position-absolute' 
-            data-save-with-ajax='true'
-            style='top:4px; right:5px'
-            onclick='return LS.questionEditor.checkIfSaveIsValid(event, editor);'
-            >
-            Save Template
-        </button>",
+        'attachContent' => $this->renderPartial('questionCodeButton', null, true),
         'wrapperHtmlOptions' => [
             'class' => 'scoped-keep-in-line',
         ],

@@ -17848,6 +17848,14 @@ footer.footer {
   box-shadow: 4px 4px 0px rgba(66, 0, 255, 0.2);
 }
 
+.form-control.ignore-shadow {
+  border-radius: 0px !important;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.08) !important;
+}
+.form-control.ignore-shadow:focus {
+  box-shadow: 4px 4px 0px rgba(66, 0, 255, 0.2) !important;
+}
+
 .form-control.ls-important-field {
   padding: 14px 13px;
   font-weight: 400;
@@ -17868,7 +17876,7 @@ input[type=file] {
 
 input[type=file]::file-selector-button {
   background: #fff;
-  padding: 8px 12px;
+  padding: 10px 12px;
   color: #1E1E1E;
   border: 1px solid #1E1E1E !important;
   border-radius: 4px !important;
@@ -17883,6 +17891,19 @@ input[type=file]::file-selector-button {
   border: 1px solid #1E1E1E;
   font-weight: 400;
   font-size: 14px;
+  line-height: 1.5;
+}
+
+.question-code-button {
+  top: 5px;
+  right: 5px;
+}
+
+.type-selector-button {
+  top: 4px;
+  right: 5px;
+  background: #7c8191;
+  color: #fff;
 }
 
 .ls-panelboxes .ls-panelboxes-panelbox {
