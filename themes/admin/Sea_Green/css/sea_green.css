@@ -17995,6 +17995,14 @@ footer.footer {
   }
 }
 
+.topbar {
+  padding-top: 10px;
+  padding-bottom: 5px;
+  margin: 0 auto 15px;
+  z-index: 1000;
+  background-color: #EEEFF7;
+}
+
 .ls-panelboxes .ls-panelboxes-panelbox {
   height: 200px;
   margin: 10px 0;
