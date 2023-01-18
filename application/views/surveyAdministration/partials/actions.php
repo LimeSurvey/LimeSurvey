@@ -11,10 +11,10 @@ $sAddquestion = App()->createUrl("/questionAdministration/create/surveyid/" . $s
 ?>
 
 <div class="dropdown">
-    <button class="btn btn-sm btn-outline-secondary" type="button" id="action1" data-bs-toggle="dropdown" aria-expanded="false">
+    <button class="btn btn-sm btn-outline-secondary ls-dropdown-toggle" data-bs-toggle="dropdown" type="button" aria-expanded="false">
         ...
     </button>
-    <ul class="dropdown-menu" aria-labelledby="action1">
+    <ul class="dropdown-menu">
         <li>
             <a class="dropdown-item <?= $survey->active !== "Y" && $permissions['create'] && $survey->groupsCount > 0 ? "" : "disabled" ?>" href="<?= $sAddquestion ?>"
                role="button" data-bs-toggle="tooltip"
@@ -43,3 +43,14 @@ $sAddquestion = App()->createUrl("/questionAdministration/create/surveyid/" . $s
         <?php endif; ?>
     </ul>
 </div>
+<script>
+    var dropdownElementList = [].slice.call(document.querySelectorAll('.ls-dropdown-toggle'))
+    var dropdownList = dropdownElementList.map(function (dropdownToggleEl) {
+        return new bootstrap.Dropdown(dropdownToggleEl, {
+            boundary: document.querySelector('body'),
+            popperConfig: function (defaultBsPopperConfig) {
+                return {defaultBsPopperConfig, strategy: "fixed"};
+            }
+        })
+    })
+</script>
