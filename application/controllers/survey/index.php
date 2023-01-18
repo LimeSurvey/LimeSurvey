@@ -201,14 +201,12 @@ class index extends CAction
             unset($clienttoken);
         }
 
-        // No test for response update
-        if ($this->_isSurveyFinished($surveyid) && ($thissurvey['alloweditaftercompletion'] != 'Y' || $thissurvey['tokenanswerspersistence'] != 'Y')) {
+        /* Reset session if survey is set to finished in all condition issue #18585 */
+        if ($this->_isSurveyFinished($surveyid)) {
             $aReloadUrlParam = array('lang'=>App()->language, 'newtest'=>'Y');
-
             if (!empty($clienttoken)) {
                 $aReloadUrlParam['token'] = $clienttoken;
             }
-
             $aErrors  = array(gT('Previous session is set to be finished.'));
             $aMessage = array(gT('Your browser reports that it was used previously to answer this survey. We are resetting the session so that you can start from the beginning.'),);
             $aUrl     = array(
