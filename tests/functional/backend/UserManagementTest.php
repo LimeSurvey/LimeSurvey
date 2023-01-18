@@ -114,9 +114,9 @@ class UserManagementTest extends TestBaseClassWeb
             );
             $save->click();
 
-            // Wait for "Saved successfully" alert
-            $alert = $this->waitForElementShim($web, '#notif-container .alert-success');
-            $web->wait(10)->until(WebDriverExpectedCondition::visibilityOf($alert));
+            // Wait for "Edit permissions" form as proof of successful save
+            $permissionsForm = $this->waitForElementShim($web, '.selector--edit-permissions-container');
+            $web->wait(10)->until(WebDriverExpectedCondition::visibilityOf($permissionsForm));
 
             // Make sure the user was saved in database.
             $users = \User::model()->findAllByAttributes(['users_name' => $username]);
