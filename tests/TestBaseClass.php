@@ -256,22 +256,4 @@ class TestBaseClass extends TestCase
         }
         return $results;
     }
-
-    /**
-     * Invokes a private method from an object
-     * Expected to be used for unit testing purposes on edge cases.
-     *
-     * @param object $object
-     * @param string $methodName
-     * @param array $parameters
-     * @return mixed
-     */
-    public function invokePrivateMethod(&$object, $methodName, array $parameters = array())
-    {
-        $reflection = new \ReflectionClass(get_class($object));
-        $method = $reflection->getMethod($methodName);
-        $method->setAccessible(true);
-
-        return $method->invokeArgs($object, $parameters);
-    }
 }

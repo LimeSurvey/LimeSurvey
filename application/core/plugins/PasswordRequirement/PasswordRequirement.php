@@ -273,9 +273,9 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
     }
 
     /**
-     * Returns a random number
-     * @param int $max The number maximun of string
-     * @param int $min The number minimum of string
+     * Returns a random number using random_int if available or mt_rand f not.
+     * @param int $max The highest value to be returned
+     * @param int $min The lowest value to be returned
      * @return int
      */
     private static function safeRandom($max, $min = 0)
@@ -287,9 +287,9 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
     }
 
     /**
-     * Returns a random character of a string
-     * @param string $chars The string
-     * @return string
+     * Returns a random character from a string
+     * @param string $chars Pool fo character from where to pick
+     * @return string Picked character
      */
     private static function pickRandomChar($chars)
     {
