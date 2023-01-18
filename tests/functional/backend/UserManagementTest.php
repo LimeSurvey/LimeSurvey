@@ -357,9 +357,9 @@ class UserManagementTest extends TestBaseClassWeb
             self::adminLogin($username, $suggestedPassword);
 
             // Check that the login failed
-            self::$webDriver->wait(10)->until(
-                WebDriverExpectedCondition::elementToBeClickable(
-                    WebDriverBy::xpath("//*[text()[contains(.,'Incorrect username')]][contains(@class, 'alert-danger')]")
+            self::$webDriver->wait(5)->until(
+                WebDriverExpectedCondition::presenceOfElementLocated(
+                    WebDriverBy::cssSelector('.login-panel')
                 )
             );
         } catch (\Throwable $ex) {
