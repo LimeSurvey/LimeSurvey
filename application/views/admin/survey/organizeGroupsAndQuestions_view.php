@@ -10,7 +10,8 @@ App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl'
         <div class='col-md-8'>
             <?php
             $this->widget('ext.AlertWidget.AlertWidget', [
-                'text' => gT("To reorder questions/questiongroups just drag the question/group with your mouse to the desired position.") . ' ' .
+                    'header' => 'Reordering',
+                    'text' => gT("To reorder questions/questiongroups just drag the question/group with your mouse to the desired position.") . ' ' .
                 gT("After you are done, please click the 'Save' button to save your changes."),
                 'type' => 'info',
             ]);

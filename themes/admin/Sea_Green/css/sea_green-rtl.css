@@ -18433,6 +18433,7 @@ footer.footer {
 }
 
 .alert {
+  text-align: start;
   font-size: 0.875rem;
   line-height: 20px;
   padding: 0.625rem 1rem;

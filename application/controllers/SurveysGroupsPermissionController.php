@@ -214,11 +214,11 @@ class SurveysGroupsPermissionController extends LSBaseController
             'warning' => false,
             'error' => false,
         );
-        $oPermission = Permission::setMinimalEntityPermission($uid, $id, 'SurveysGroups');
+        $oPermission = Permission::setMinimalEntityPermission(null, $id, 'SurveysGroups'); // Achtung
         if (!$oPermission->hasErrors()) {
             $result['success'] = gT("User added.");
         } else {
-            $result['error'] = CHtml::errorSummary($oPermission);
+            $result['error'] = $oPermission;
         }
 
         $aData['aPermissionData']['result'] = $result;

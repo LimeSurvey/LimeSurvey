@@ -54,6 +54,7 @@ $alert-status : (
 }
 
 .alert {
+  text-align: start;
   font-size: $font-size-sm;
   line-height: $line-height-20;
   padding: 0.625rem 1rem;

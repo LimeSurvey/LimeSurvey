@@ -35,22 +35,32 @@ class AlertWidget extends CWidget
     /** @var array html options */
     public $htmlOptions = [];
 
+    /** @var string icon which is used in the alert */
+    private $icon = 'ri-notification-2-line';
+
     public function run()
     {
         $this->registerClientScript();
+        $this->setTypeAndIcon();
         $errors = $this->extractErrors();
-        $this->render('alert', [
-            'tag' => $this->tag,
-            'text' => $this->text,
-            'header' => $this->header,
-            'type' => $this->type,
-            'isFilled' => $this->isFilled,
-            'showIcon' => $this->showIcon,
-            'showCloseButton' => $this->showCloseButton,
-            'errorSummaryModel' => $this->errorSummaryModel,
-            'errors' => $errors,
-            'htmlOptions' => $this->htmlOptions
-        ]);
+        $inErrorMode = $this->errorSummaryModel !== null && !empty($errors);
+        $notInErrorMode = $this->errorSummaryModel === null;
+        $this->buildHtmlOptions();
+
+        // View is only rendered when there is a message to be shown:
+        if($notInErrorMode || $inErrorMode) {
+            $this->render('alert', [
+                'tag' => $this->tag,
+                'text' => $this->text,
+                'header' => $this->header,
+                'showIcon' => $this->showIcon,
+                'showCloseButton' => $this->showCloseButton,
+                'errors' => $errors,
+                'inErrorMode' => $inErrorMode,
+                'htmlOptions' => $this->htmlOptions,
+                'icon' => $this->icon,
+            ]);
+        }
     }
 
     /** Registers required script files */
@@ -100,5 +110,48 @@ class AlertWidget extends CWidget
             }
         }
         return $sumErrors;
+    }
+
+    /*
+     * sets icon according to given alert type,
+     * also sets default value for type, if unknown string is passed.
+     */
+    private function setTypeAndIcon()
+    {
+        $alertTypesAndIcons = [
+        'success' => 'ri-checkbox-circle-fill',
+        'primary' => 'ri-notification-2-line',
+        'secondary' => 'ri-notification-2-line',
+        'danger' => 'ri-error-warning-fill',
+        'error' => 'ri-error-warning-fill',
+        'warning' => 'ri-alert-fill',
+        'info' => 'ri-notification-2-line',
+        'light' => 'ri-notification-2-line',
+        'dark' => 'ri-notification-2-line',
+    ];
+        if (array_key_exists($this->type, $alertTypesAndIcons)) {
+            if ($this->type == 'error') {
+                $this->type = 'danger';
+            }
+            $this->icon = $alertTypesAndIcons[$this->type];
+        } else {
+            $this->type = 'success';
+        }
+    }
+
+    /*
+     * Builds htmlOptions related to BS5 alerts, especially the class
+     */
+    private function buildHtmlOptions() {
+        $alertClass = ' alert alert-';
+        $alertClass .= $this->isFilled ? 'filled-' . $this->type : $this->type;
+        $alertClass .= $this->showCloseButton ? ' alert-dismissible' : '';
+
+        if (!array_key_exists('class', $this->htmlOptions)) {
+            $this->htmlOptions['class'] = $alertClass;
+        } else {
+            $this->htmlOptions['class'] .= $alertClass;
+        }
+        $this->htmlOptions['role'] = 'alert';
     }
 }

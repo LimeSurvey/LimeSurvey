@@ -19,7 +19,8 @@
     <?php if($result['error']) : ?>
         <?php
         $this->widget('ext.AlertWidget.AlertWidget', [
-            'text' => $result['error'],
+            'text' => gT("Please fix the following input errors:"),
+            'errorSummaryModel' => $result['error'],
             'type' => 'error',
         ]);
         ?>
