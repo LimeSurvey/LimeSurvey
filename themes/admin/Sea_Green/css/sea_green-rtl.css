@@ -2060,7 +2060,7 @@ progress {
 .form-control {
   display: block;
   width: 100%;
-  padding: 10px 13px;
+  padding: 10px 12px;
   font-size: 1rem;
   font-weight: 400;
   line-height: 1;
@@ -2102,9 +2102,9 @@ progress {
   opacity: 1;
 }
 .form-control::file-selector-button {
-  padding: 10px 13px;
-  margin: -10px -13px;
-  margin-inline-end: 13px;
+  padding: 10px 12px;
+  margin: -10px -12px;
+  margin-inline-end: 12px;
   color: #1E1E1E;
   background-color: #e9ecef;
   pointer-events: none;
@@ -2124,9 +2124,9 @@ progress {
   background-color: #dde0e3;
 }
 .form-control::-webkit-file-upload-button {
-  padding: 10px 13px;
-  margin: -10px -13px;
-  margin-inline-end: 13px;
+  padding: 10px 12px;
+  margin: -10px -12px;
+  margin-inline-end: 12px;
   color: #1E1E1E;
   background-color: #e9ecef;
   pointer-events: none;
@@ -2477,7 +2477,7 @@ textarea.form-control-lg {
   top: 0;
   right: 0;
   height: 100%;
-  padding: 1rem 13px;
+  padding: 1rem 12px;
   pointer-events: none;
   border: 1px solid transparent;
   transform-origin: 100% 0;
@@ -2489,7 +2489,7 @@ textarea.form-control-lg {
   }
 }
 .form-floating > .form-control {
-  padding: 1rem 13px;
+  padding: 1rem 12px;
 }
 .form-floating > .form-control::placeholder {
   color: transparent;
@@ -2546,7 +2546,7 @@ textarea.form-control-lg {
 .input-group-text {
   display: flex;
   align-items: center;
-  padding: 10px 13px;
+  padding: 10px 12px;
   font-size: 1rem;
   font-weight: 400;
   line-height: 1;
@@ -17834,7 +17834,7 @@ footer.footer {
 }
 
 .form-control.ls-important-field {
-  padding: 14px 13px;
+  padding: 14px 12px;
   font-weight: 400;
   font-size: 14px;
   line-height: 16px;
@@ -17847,7 +17847,7 @@ footer.footer {
 
 input[type=file] {
   position: relative;
-  padding: 13px 14px;
+  padding: 12px 14px;
   box-shadow: -8px 8px 0px #eeeff7;
 }
 
