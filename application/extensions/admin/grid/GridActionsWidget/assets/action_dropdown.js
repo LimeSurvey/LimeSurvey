@@ -1,4 +1,4 @@
-(function () {
+function action_dropdown() {
     'use strict';
     let dropdownElementList = [].slice.call(document.querySelectorAll('.ls-dropdown-toggle'));
     dropdownElementList.map(function (dropdownToggleEl) {
@@ -11,4 +11,5 @@
             }
         });
     });
-})();
+}
+action_dropdown();

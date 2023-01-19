@@ -10,6 +10,12 @@ class CLSGridView extends TbGridView
     public $massiveActionTemplate = '';
 
     /**
+     * An array of Javascript functions that will be passed to afterAjaxUpdate
+     * @var array
+     */
+    public $lsAfterAjaxUpdate;
+
+    /**
      * Initializes the widget.
      * @throws CException
      */
@@ -25,7 +31,7 @@ class CLSGridView extends TbGridView
         $this->htmlOptions['class'] = '';
         $classes = array('table', 'table-hover');
         $this->template = $this->render('template', ['massiveActionTemplate' => $this->massiveActionTemplate], true);
-
+        $this->lsAfterAjaxUpdate();
         if (!empty($classes)) {
             $classes = implode(' ', $classes);
             if (isset($this->itemsCssClass)) {
@@ -47,5 +53,21 @@ class CLSGridView extends TbGridView
             }
         }
         parent::initColumns();
+    }
+
+    /**
+     * parse javascript snippets to TbGridView's afterAjaxUpdate and insert global javascript snippets for griviews
+     * @return void
+     */
+    protected function lsAfterAjaxUpdate(): void
+    {
+        if (isset($this->lsAfterAjaxUpdate)) {
+            $this->afterAjaxUpdate = 'function(id, data){';
+            foreach ($this->lsAfterAjaxUpdate as $jsCode) {
+                $this->afterAjaxUpdate .= $jsCode;
+            }
+            $this->afterAjaxUpdate .= 'action_dropdown()';
+            $this->afterAjaxUpdate .= '}';
+        }
     }
 }

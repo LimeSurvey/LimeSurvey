@@ -28,7 +28,6 @@ $g-900        : #1E1E1E;
 $g-800        : #333641;
 $g-700        : #5E6372;
 $g-600        : #ACACAC;
-$g-500        : #ACACAC;
 $g-400        : #C2C5D1;
 $g-300        : #DDDEE8;
 $g-200        : #EEEFF7;
@@ -142,6 +141,10 @@ $navbar-color: $white;
 $navbar-badges-bg-color: $white;
 $navbar-badges-color: $navbar-bg-color;
 $navbar-link-hover-color: shift-color($navbar-color, $link-shade-percentage) !default;
+
+// table
+$table-hover-bg     : $g-200;
+$table-border-color : $g-400;
 
 // pagination
 @import "tables/pagination_varriables.scss";

@@ -55,7 +55,7 @@ class ListSurveysWidget extends CWidget
 
         $this->pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
 
-        Yii::app()->getClientScript()->registerScriptFile(App()->getAssetManager()->publish(dirname(__FILE__) . '/assets/reload.js'));
+        App()->getClientScript()->registerScriptFile(App()->getAssetManager()->publish(dirname(__FILE__) . '/assets/reload.js'));
 
         $this->massiveAction = $this->render('massive_actions/_selector', array(), true, false);
 
