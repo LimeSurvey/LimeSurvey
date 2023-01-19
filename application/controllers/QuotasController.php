@@ -145,6 +145,7 @@ class QuotasController extends LSBaseController
 
         $aData['sidemenu']['state'] = false;
 
+        $aData['subaction'] = gT("Survey quotas");
         $topbarData = TopbarConfiguration::getSurveyTopbarData($oSurvey->sid);
         $aData['topbar']['middleButtons'] = $this->renderPartial(
             '/surveyAdministration/partial/topbar/surveyTopbarLeft_view',
@@ -224,7 +225,20 @@ class QuotasController extends LSBaseController
         $aData['sidemenu']['state'] = false;
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title .
             " (" . gT("ID") . ":" . $surveyid . ")";
-        $aData['topBar']['showSaveButton'] = true;
+        $aData['subaction'] = gT("Survey quotas");
+        $topbarData = TopbarConfiguration::getSurveyTopbarData($oSurvey->sid);
+        $aData['topbar']['middleButtons'] = $this->renderPartial(
+            '/surveyAdministration/partial/topbar/surveyTopbarLeft_view',
+            $topbarData,
+            true
+        );
+        $aData['topbar']['rightButtons'] = $this->renderPartial(
+            '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
+            [
+                'showSaveButton' => true
+            ],
+            true
+        );
 
         $this->aData = $aData;
         $this->render('editquota_view', [
@@ -321,6 +335,14 @@ class QuotasController extends LSBaseController
         $aData['sidemenu']['state'] = false;
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title .
             " (" . gT("ID") . ":" . $surveyid . ")";
+
+        $aData['subaction'] = gT("Survey quotas"); //title
+        $topbarData = TopbarConfiguration::getSurveyTopbarData($oSurvey->sid);
+        $aData['topbar']['middleButtons'] = $this->renderPartial(
+            '/surveyAdministration/partial/topbar/surveyTopbarLeft_view',
+            $topbarData,
+            true
+        );
 
         $this->aData = $aData;
         $this->render($renderView, $aData);
