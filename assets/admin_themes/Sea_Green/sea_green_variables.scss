@@ -68,6 +68,8 @@ $btn-font-size-sm: 12px;
 $btn-hover-boxshadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
 $btn-focus-boxshadow: 4px 4px 0px rgba(123, 97, 255, 0.4);
 
+$btn-color: $g-900;
+
 $dropdown-font-size: 14px;
 
 $ibm-font-family:
@@ -116,9 +118,11 @@ $tooltip-arrow-color:               $tooltip-bg;
 // $tooltip-arrow-color:               null; // Deprecated in Bootstrap 5.2.0 for CSS variables
 
 // links
+$link-color-action:                       $action !default;
 $link-color:                              $active-green !default;
 $link-decoration:                         none !default;
 $link-shade-percentage:                   20% !default;
+$link-hover-color-action:                 shift-color($link-color-action, $link-shade-percentage) !default;
 $link-hover-color:                        shift-color($link-color, $link-shade-percentage) !default;
 
 // breadcrumb variables

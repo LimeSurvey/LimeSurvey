@@ -10,11 +10,10 @@ $notification-pulse-1: #eeeeee;
 $notification-pulse-2: #FFAAAA;
 
 $help-block: #8a8a8a;
-$default-icon-bar: #878787;
+//$default-icon-bar: #878787;
 $label-default: #6b6b6b;
 $list-group-item: #545454;
 $disabled: #454545;
-$message-box: #2e2e2e;
 
 $danger-light: #dd8988;
 $danger-bg: #be6665;
@@ -258,15 +257,8 @@ mark {
     background: $mark_bg;
     color: $black;
 }
-// LINKS
+// LINKS @Todo check what is really used, most things are sidemenu related
 a {
-    color: $primary;
-    &:hover {
-        color: $primary-hover_2;
-    }
-    &:focus {
-        color: $primary-hover_2;
-    }
     &.badge {
         &:hover {
             color: $white;
@@ -405,36 +397,36 @@ a {
             }
         }
     }
-    &.text-primary:hover {
-        color: $primary-hover;
-    }
-    &.text-success:hover {
-        color: $primary-hover;
-    }
-    &.text-info:hover {
-        color: $primary-bg_info_hover_4;
-    }
-    &.text-warning:hover {
-        color: $orange-20;
-    }
-    &.text-danger:hover {
-        color: $danger-light;
-    }
-    &.bg-primary:hover {
-        background-color: $primary-hover;
-    }
-    &.bg-success:hover {
-        background-color: $primary-bg_hover_success;
-    }
-    &.bg-info:hover {
-        background-color: $primary-bg_info_hover_3;
-    }
-    &.bg-warning:hover {
-        background-color: $brown-light-40;
-    }
-    &.bg-danger:hover {
-        background-color: $danger-bg-hover;
-    }
+    //&.text-primary:hover {
+    //    color: $primary-hover;
+    //}
+    //&.text-success:hover {
+    //    color: $primary-hover;
+    //}
+    //&.text-info:hover {
+    //    color: $primary-bg_info_hover_4;
+    //}
+    //&.text-warning:hover {
+    //    color: $orange-20;
+    //}
+    //&.text-danger:hover {
+    //    color: $danger-light;
+    //}
+    //&.bg-primary:hover {
+    //    background-color: $primary-hover;
+    //}
+    //&.bg-success:hover {
+    //    background-color: $primary-bg_hover_success;
+    //}
+    //&.bg-info:hover {
+    //    background-color: $primary-bg_info_hover_3;
+    //}
+    //&.bg-warning:hover {
+    //    background-color: $brown-light-40;
+    //}
+    //&.bg-danger:hover {
+    //    background-color: $danger-bg-hover;
+    //}
 }
 // Thumbnails
 .img-thumbnail {
@@ -445,25 +437,7 @@ a {
 hr {
     border-top: 1px solid $primary-bg_hover;
 }
-// Text
-.text-muted {
-    color: $gray-15;
-}
-.text-primary {
-    color: $primary;
-}
-.text-success {
-    color: $primary;
-}
-.text-info {
-    color: $primary-bg_info_hover;
-}
-.text-warning {
-    color: $brown-10 !important;
-}
-.text-danger {
-    color: $red-10 !important;
-}
+
 // Backgrounds
 .bg-primary {
     color: $white;
@@ -937,9 +911,9 @@ fieldset[disabled] {
         &:focus {
             background-color: $gray-08;
         }
-        .icon-bar {
-            background-color: $default-icon-bar;
-        }
+        //.icon-bar {
+        //    background-color: $default-icon-bar;
+        //}
     }
     .navbar-collapse {
         border: 1px solid $primary-border_navbar_default;
@@ -1021,9 +995,9 @@ fieldset[disabled] {
         &:focus {
             background-color: $gray-20;
         }
-        .icon-bar {
-            background-color: $white;
-        }
+        //.icon-bar {
+        //    background-color: $white;
+        //}
     }
     .navbar-collapse {
         border: 1px solid $navbar-inverse-1;
@@ -1085,9 +1059,9 @@ fieldset[disabled] {
 .navbar-toggle {
     border: solid 1px $primary;
 }
-.navbar-toggle .icon-bar {
-    background-color: $primary;
-}
+//.navbar-toggle .icon-bar {
+//    background-color: $primary;
+//}
 
 .navbar-light {
     .navbar-brand {
@@ -1316,15 +1290,6 @@ fieldset[disabled] {
     }
 }
 
-// Jumbotron
-.jumbotron {
-    //background-color: $primary-bg_hover;
-    background-color: transparent;
-    text-align: center;
-    &.message-box {
-        background-color: transparent;
-    }
-}
 // Thumbnails
 .thumbnail {
     background-color: $white;
@@ -1588,18 +1553,6 @@ fieldset[disabled] {
     color: $alert;
 }
 
-// Message Box based on Jumbotron
-.message-box {
-    border: 1px solid $primary-bg-hover_2;
-    color: $message-box;
-
-}
-.message-box-error {
-    border: 1px solid $red-90;
-}
-.message-box-warning {
-    border: 1px solid $brown-10;
-}
 
 // Legend
 legend {

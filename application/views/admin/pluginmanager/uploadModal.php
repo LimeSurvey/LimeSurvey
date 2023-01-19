@@ -20,7 +20,7 @@
             ); ?>
             <div class="modal-body">
                 <div class='alert alert-warning'>
-                    <i class='fa fa-warning'></i>
+                    <i class='ri-alert-fil'></i>
                     <?php eT('Warning: Only install plugins from sources you trust!'); ?>
                 </div>
                 <input type='hidden' name='lid' value='$lid' />

@@ -146,18 +146,12 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     if($('.option-icon').length>1){
         $('.option-icon').on('click', function (ev, that) {
             ev.preventDefault()
-            var fullIconName = $(ev.currentTarget).attr('data-icon');
+            var icon = $(ev.currentTarget).attr('data-icon');
+            var iconId = $(ev.currentTarget).attr('data-iconId');
 
             // Set icon preview and hidden input
-            $('input[name="Box[ico]"]').val(fullIconName);
-            $('#chosen-icon').attr('class', fullIconName + ' text-success');
+            $('input[name="Box[ico]"]').val(iconId);
+            $('#chosen-icon').attr('class', icon + ' text-success');
         });
-
-        // Show current icon
-        var currentIcon = $('input[name="Box[ico]"]').val();
-        if (currentIcon !== '')
-        {
-            $('#chosen-icon').attr('class', currentIcon + ' text-success');
-        }
     }
 });

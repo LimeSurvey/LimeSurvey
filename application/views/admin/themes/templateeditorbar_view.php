@@ -250,7 +250,7 @@ App()->getClientScript()->registerScriptFile(
     <?php if (!is_template_editable($templatename)) : ?>
         <div class="alert alert-info alert-dismissible" role="alert">
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            <span class="fa fa-info-sign"></span>&nbsp;&nbsp;&nbsp;
+            <span class="ri-information-line"></span>&nbsp;&nbsp;&nbsp;
             <strong>
                 <?php eT('Note: This is a standard theme.'); ?>
             </strong>
@@ -266,7 +266,7 @@ App()->getClientScript()->registerScriptFile(
         <div class="alert alert-info alert-dismissible" role="alert">
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             <div class="h4">
-                <span class="fa fa-info-sign"></span>
+                <span class="ri-information-line"></span>
                 <?php eT('This theme is out of date.'); ?>
             </div>
             <?php

@@ -441,7 +441,7 @@ $(document).on('ready pjax:scriptcomplete', function(){
         <option value='lessthan'>"+searchtypes[5]+"</option>\n\
         </select></td>\n\<td><input class='form-control' type='text' id='conditiontext_"+conditionid+"' /></td>\n\
         <td><span data-bs-toggle='tooltip' title='" + sDelete + "' class='ui-pg-button ri-delete-bin-fill text-danger' onClick= $(this).parent().parent().remove();$('#joincondition_"+conditionid+"').remove() id='ui-icon removebutton'"+conditionid+"></span>\n\
-        <span data-bs-toggle='tooltip' title='" + sAdd + "' class='ui-pg-button addcondition-button ui-icon text-success icon-add' style='margin-bottom:4px'></span></td></tr><tr></tr>";
+        <span data-bs-toggle='tooltip' title='" + sAdd + "' class='ui-pg-button addcondition-button ui-icon text-success ri-add-circle-fill' style='margin-bottom:4px'></span></td></tr><tr></tr>";
         $('#searchtable tr:last').after(html);
         window.LS.doToolTip();
     });

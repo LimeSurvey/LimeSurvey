@@ -200,6 +200,9 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
 
         $('#addnewsurvey').on('submit',  function(event){
             event.preventDefault();
+            // Disable both buttons. Normally there's no need to re-enable them. The 'save-form-button' may already be disabled by it's onclick event.
+            $('#create-survey-submit').prop('disabled', true);
+            $('#save-form-button').addClass('disabled').attr('onclick', 'return false;');
             var form = this;
 
             updateCKfields();

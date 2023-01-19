@@ -49,7 +49,7 @@
                 if ($sMaintenanceMode === 'hard' || $sMaintenanceMode === 'soft') { ?>
                     <li class="nav-item">
                         <a class="nav-link text-warning" href="<?php echo $this->createUrl("admin/globalsettings"); ?>" title="<?php eT("Click here to change maintenance mode setting."); ?>">
-                            <span class="fa fa-warning"></span>
+                            <span class="ri-alert-fil"></span>
                             <?php eT("Maintenance mode is active!"); ?>
                         </a>
                     </li>
