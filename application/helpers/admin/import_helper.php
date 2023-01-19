@@ -1408,6 +1408,15 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             if (isset($insertdata['surveyls_email_confirm'])) {
                 $insertdata['surveyls_email_confirm'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['surveyls_email_confirm']);
             }
+            if (isset($insertdata['attachments'])) {
+                $attachments = unserialize($insertdata['attachments']);
+                foreach ($attachments as &$typeAttachments) {
+                    foreach ($typeAttachments as &$attachment) {
+                        $attachment['url'] = translateLinks('survey', $iOldSID, $iNewSID, $attachment['url'], true);
+                    }
+                }
+                $insertdata['attachments'] = serialize($attachments);
+            }
         }
 
         if (isset($insertdata['surveyls_attributecaptions']) && substr($insertdata['surveyls_attributecaptions'], 0, 1) != '{') {
