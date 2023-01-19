@@ -99,9 +99,7 @@ var RoleControl = function () {
                         });
                         return;
                     }
-                    $('#RoleControl--errors').html(
-                        "<div class='alert alert-danger'>" + result.errors + "</div>"
-                    ).removeClass('d-none');
+                    window.LS.ajaxAlerts(result.errors, 'danger', {inline: '#RoleControl--errors'});
                 },
                 error: function () {
                     window.LS.ajaxAlerts('An error occured while trying to save, please reload the page Code:1571314170100', 'danger', {showCloseButton: true});

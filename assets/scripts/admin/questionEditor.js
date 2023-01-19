@@ -731,13 +731,13 @@ $(document).on('ready pjax:scriptcomplete', function () {
    * @return {void}
    */
   function showLabelSetAlert(message /*: mixed */, type /*?: string */) /*: void */ {
-    if (typeof message !== 'string') {
+      if (typeof message !== 'string') {
         throw 'expected string';
-    }
-    const alertType = type ?? 'warning';
-    const alert = $('#labelsetalert');
-    const alertHtml = '<div class="alert alert-' + alertType + ' ls-space margin bottom-0 top-15">' + message + '</div>';
-    alert.html(alertHtml).show();
+      }
+      const alertType = type ?? 'warning';
+      const alert = $('#labelsetalert');
+      window.LS.ajaxAlerts(message, alertType, {inline: '#labelsetalert', class: 'ls-space margin bottom-0 top-15'});
+      alert.show();
   }
 
   /**
