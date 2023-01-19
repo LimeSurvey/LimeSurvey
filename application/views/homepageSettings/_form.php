@@ -18,15 +18,13 @@
         )
     ); ?>
 
-    <?php if ($form->errorSummary($model)): ?>
-        <?php
-        $this->widget('ext.AlertWidget.AlertWidget', [
-            'text' => gT("Please fix the following input errors:"),
-            'type' => 'danger',
-            'errorSummaryModel' => $model,
-        ]);
-        ?>
-    <?php endif; ?>
+    <?php
+    $this->widget('ext.AlertWidget.AlertWidget', [
+        'text' => gT("Please fix the following input errors:"),
+        'type' => 'danger',
+        'errorSummaryModel' => $model,
+    ]);
+    ?>
 
 
     <div class="mb-3">

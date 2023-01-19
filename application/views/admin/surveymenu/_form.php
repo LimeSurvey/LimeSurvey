@@ -36,7 +36,13 @@ Yii::app()->getController()->renderPartial(
 			<?php endif; ?>
 			
 			<p class="note"><?php printf(gT('Fields with %s are required.'), '<span class="required">*</span>'); ?></p>
-			<?php echo $form->errorSummary($model); ?>
+            <?php
+            $this->widget('ext.AlertWidget.AlertWidget', [
+                'text' => gT("Please fix the following input errors:"),
+                'type' => 'danger',
+                'errorSummaryModel' => $model,
+            ]);
+            ?>
 
 			<div class="mb-3">
 				<?php echo $form->labelEx($model,'parent_id'); ?>

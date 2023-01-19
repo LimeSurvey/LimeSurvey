@@ -5,7 +5,13 @@
 /* @var string $language */
 ?>
 
-<?php echo $form->errorSummary($oQuotaLanguageSetting); ?>
+<?php
+$this->widget('ext.AlertWidget.AlertWidget', [
+    'text' => gT("Please fix the following input errors:"),
+    'type' => 'danger',
+    'errorSummaryModel' => $oQuotaLanguageSetting,
+]);
+?>
 
 
 <!-- Quota message -->

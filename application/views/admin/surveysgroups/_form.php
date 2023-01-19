@@ -24,7 +24,13 @@
         <p class="note"><?php echo sprintf(gT('Fields with %s are required.'), '<span class="required">*</span>'); ?></p>
 
 
-        <?php echo $form->errorSummary($model); ?>
+        <?php
+        $this->widget('ext.AlertWidget.AlertWidget', [
+            'text' => gT("Please fix the following input errors:"),
+            'type' => 'danger',
+            'errorSummaryModel' => $model,
+        ]);
+        ?>
 
         <?php echo $form->hiddenField($model, 'owner_id'); ?>
         <?php echo $form->hiddenField($model, 'gsid'); ?>
