@@ -409,9 +409,7 @@ export default {
                                 </a>
                                 <div v-if="itemActivated(question)" class="dropdown" style="position:absolute; right:10px" >
                                     <div id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="margin-left: auto; position: relative; cursor: pointer;">
-                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                          <path d="M5.00049 10C3.90049 10 3.00049 10.9 3.00049 12C3.00049 13.1 3.90049 14 5.00049 14C6.10049 14 7.00049 13.1 7.00049 12C7.00049 10.9 6.10049 10 5.00049 10ZM19.0005 10C17.9005 10 17.0005 10.9 17.0005 12C17.0005 13.1 17.9005 14 19.0005 14C20.1005 14 21.0005 13.1 21.0005 12C21.0005 10.9 20.1005 10 19.0005 10ZM12.0005 10C10.9005 10 10.0005 10.9 10.0005 12C10.0005 13.1 10.9005 14 12.0005 14C13.1005 14 14.0005 13.1 14.0005 12C14.0005 10.9 13.1005 10 12.0005 10Z" fill="#7C8191"/>
-                                        </svg>
+                                        <i class="ri-more-fill"></i>
                                     </div>
                                     <ul style="right: 0; top: 14px;" class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                         <li  v-if="key !== 'delete' && !(key === 'language' && Array.isArray(value))"  v-for="(value, key) in question.dropDown" :key="key">
