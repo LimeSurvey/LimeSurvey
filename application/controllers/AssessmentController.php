@@ -73,7 +73,14 @@ class AssessmentController extends LSBaseController
 
         //this part is from _renderWrapptemplate in old controller
         $aData['sidemenu']['state'] = false;
-        $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyID . ")";
+       $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyID . ")";
+        $topbarData = TopbarConfiguration::getSurveyTopbarData($oSurvey->sid);
+        $aData['topbar']['middleButtons'] = $this->renderPartial(
+            '/surveyAdministration/partial/topbar/surveyTopbarLeft_view',
+            $topbarData,
+            true
+        );
+
         $aData['gid'] = null; //important for rendering the sidebar ...(why?)
         Yii::app()->getClientScript()->registerScript(
             "AssessmentsVariables",
