@@ -91,7 +91,7 @@
         </div>
         <?php endforeach; ?>
     </div>
-    <?php if (true): ?>
+    <?php if ($showScriptField): ?>
         <!-- Script tab content -->
         <div role="tabpanel" class="tab-pane" id="script-field-tab">
             <?php foreach($oSurvey->allLanguages as $lang): ?>

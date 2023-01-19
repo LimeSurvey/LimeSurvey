@@ -77,9 +77,9 @@ class AlertWidget extends CWidget
             if (!is_array($model)) {
                 $model = array($model);
             }
-            if (isset($htmlOptions['firstError'])) {
-                $firstError = $htmlOptions['firstError'];
-                unset($htmlOptions['firstError']);
+            if (isset($this->htmlOptions['firstError'])) {
+                $firstError = $this->htmlOptions['firstError'];
+                unset($this->htmlOptions['firstError']);
             } else {
                 $firstError = false;
             }
@@ -87,7 +87,7 @@ class AlertWidget extends CWidget
                 foreach ($m->getErrors() as $errors) {
                     foreach ($errors as $error) {
                         if ($error != '') {
-                            if (!isset($htmlOptions['encode']) || $htmlOptions['encode']) {
+                            if (!isset($this->htmlOptions['encode']) || $this->htmlOptions['encode']) {
                                 $error = CHtml::encode($error);
                             }
                             $sumErrors[] = $error;

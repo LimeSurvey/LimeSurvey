@@ -64,7 +64,10 @@ $alert-status : (
     font-size: $font-size-base;
   }
   & > .alert-header {
-    @include h1;
+    font-family : $ibm-font-family;
+    font-weight : $font-weight-600;
+    font-size   : $font-size-lg;
+    line-height : $line-height-26;
     color:inherit;
 
     & > span[class*="ri-"] {
