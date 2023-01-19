@@ -18,6 +18,10 @@ class GoogleOAuthSMTP extends PluginBase
     public $allowedPublicMethods = array();
 
     protected $settings = [
+        'help' => [
+            'type' => 'info',
+            'content' => '',
+        ],
         'enable' => [
             'type' => 'boolean',
             'label' => 'Enable',
@@ -62,6 +66,7 @@ class GoogleOAuthSMTP extends PluginBase
     public function getPluginSettings($getValues = true)
     {
         $settings = parent::getPluginSettings($getValues);
+        $settings['help']['content'] = $this->getHelpContent();
         $settings['enable']['label'] = gT("Enable");
         $settings['enable']['help'] = gT("Use this plugin for SMTP authentication");
         $settings['clientId']['label'] = gT("Client ID");
@@ -78,6 +83,35 @@ class GoogleOAuthSMTP extends PluginBase
         }
 
         return $settings;
+    }
+
+    private function getHelpContent()
+    {
+        $this->subscribe('getPluginTwigPath');
+        $data = [
+            'redirectUri' => $this->getRedirectUri(),
+            'isHttp' => !(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on'),
+        ];
+        return Yii::app()->twigRenderer->renderPartial('/Help.twig', $data);
+
+        // Translations here just so the translations bot can pick them up.
+        $lang = [
+            gT("Help"),
+            gT("Prerequisites:"),
+            gT("Access LimeSurvey over HTTPS."),
+            gT("Currently not served over HTTPS"),
+            gT("Instructions:"),
+            gT("Setup the OAuth 2.0 Web Application in %s."),
+            gT("Google Cloud Platform Console"),
+            gT("Redirect URI:"),
+            gT("You can find more details %s."),
+            gT("here"),
+            gT("Activate the plugin."),
+            gT("Set the 'Client ID' and 'Client Secret' below and save the settings."),
+            gT("Click the 'Get Token' button to open Google's consent screen in a new window."),
+            gT("Follow the steps in the consent screen and check the requested permissions."),
+            gT("Switch the 'Enabled' setting to 'On' and save."),
+        ];
     }
 
     /**
@@ -104,7 +138,7 @@ class GoogleOAuthSMTP extends PluginBase
 
         if (!(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')) {
             return Yii::app()->twigRenderer->renderPartial('/ErrorMessage.twig', [
-                'message' => gT("Google OAuth authentication requires the application to be server over HTTPS.")
+                'message' => gT("Google OAuth authentication requires the application to be served over HTTPS.")
             ]);
         }
 
@@ -295,6 +329,11 @@ class GoogleOAuthSMTP extends PluginBase
         );
     }
 
+    private function getRedirectUri()
+    {
+        return $this->api->createUrl('plugins/unsecure', ['plugin' => $this->getName()]);
+    }
+
     /**
      * Returns the OAuth provider object for the specified credentials
      * @param string $clientId
@@ -303,7 +342,7 @@ class GoogleOAuthSMTP extends PluginBase
      */
     private function getProvider($clientId, $clientSecret)
     {
-        $redirectUri = $this->api->createUrl('plugins/unsecure', ['plugin' => $this->getName()]);
+        $redirectUri = $this->getRedirectUri();
         $params = [
             'clientId' => $clientId,
             'clientSecret' => $clientSecret,
