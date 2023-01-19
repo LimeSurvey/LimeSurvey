@@ -17853,13 +17853,13 @@ input[type=file] {
 
 input[type=file]::file-selector-button {
   background: #fff;
-  padding: 10px 12px;
+  padding: 8px 12px;
   color: #1E1E1E;
   border: 1px solid #1E1E1E !important;
   border-radius: 4px !important;
   cursor: pointer;
   position: absolute;
-  left: -10px;
+  left: -8px;
   font-weight: 500;
   font-size: 14px;
 }
