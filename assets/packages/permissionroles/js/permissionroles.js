@@ -104,7 +104,7 @@ var RoleControl = function () {
                     ).removeClass('d-none');
                 },
                 error: function () {
-                    alert('An error occured while trying to save, please reload the page Code:1571314170100');
+                    window.LS.ajaxAlerts('An error occured while trying to save, please reload the page Code:1571314170100', 'danger', {showCloseButton: true});
                 }
             });
         });
