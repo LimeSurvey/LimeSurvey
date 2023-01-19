@@ -22,9 +22,3 @@
         <?php endforeach; ?>
     </ul>
 </div>
-<?php
-App()->getClientScript()->registerScriptFile(
-    "/application/extensions/admin/grid/assets/action_dropdown.js",
-    CClientScript::POS_END
-);
-?>

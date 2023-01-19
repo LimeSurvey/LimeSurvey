@@ -66,7 +66,7 @@
                 </select>
             </div>
             <div class="col">
-                <?= CHtml::submitButton(gT('Search', 'unescaped'), ['class' => 'btn btn-success']) ?>
+                <?= CHtml::submitButton(gT('Search', 'unescaped'), ['class' => 'btn btn-secondary']) ?>
             </div>
             <div class="col">
                 <a href="<?= Yii::app()->createUrl('surveyAdministration/listsurveys') ?>" class="btn btn-warning">

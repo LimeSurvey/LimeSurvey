@@ -1465,6 +1465,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
      * Returns buttons for gridview.
      * @return string
      * @throws CException
+     * @throws Exception
      */
     public function getButtons(): string
     {
@@ -1472,9 +1473,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
             'statistics_read'  => Permission::model()->hasSurveyPermission($this->sid, 'statistics', 'read'),
             'survey_update'    => Permission::model()->hasSurveyPermission($this->sid, 'survey', 'update'),
             'responses_create' => Permission::model()->hasSurveyPermission($this->sid, 'responses', 'create'),
-            'responses_update' => Permission::model()->hasSurveyPermission($this->sid, 'responses', 'update'),
-            'responses_delete' => Permission::model()->hasSurveyPermission($this->sid, 'responses', 'delete'),
-            'responses_read'   => Permission::model()->hasSurveyPermission($this->sid, 'responses', 'read'),
         ];
 
         $dropdownItems = [];
@@ -1506,7 +1504,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             'enabledCondition' => $permissions['survey_update'],
         ];
 
-        return App()->getController()->render('extensions/admin/grid/views/action_dropdown.php', ['dropdownItems' => $dropdownItems], true);
+        return App()->getController()->widget('ext.admin.grid.GridActionsWidget.GridActionsWidget', ['dropdownItems' => $dropdownItems], true);
     }
 
     /**
