@@ -98,7 +98,7 @@ if (empty($errorinupload)) {
 
 ?>
 <div id='attribute-map-csv-modal' class="modal fade" tabindex="-1" role="dialog">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title"><?php eT("CPDB CSV summary"); ?></h5>
