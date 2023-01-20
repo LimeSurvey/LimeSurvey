@@ -162,11 +162,7 @@ function validateSettingsForm($form) {
                 $('#startdate_datetimepicker').data('DateTimePicker'),
                 $('#expires_datetimepicker').data('DateTimePicker'),
                 () => {
-                    LS.createAlert(
-                        expirationLowerThanStartError,
-                        'danger',
-                        {'timeout': 10000, 'showCloseButton': true}
-                    )
+                    LS.createAlert(expirationLowerThanStartError, 'danger', {'showCloseButton': true})
                 }
             );
         default:

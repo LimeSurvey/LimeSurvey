@@ -11,6 +11,9 @@
  */
 class AlertWidget extends CWidget
 {
+    const DEFAULT_TIMEOUT = 3000;
+    const DEFAULT_ERROR_TIMEOUT = 6000;
+
     /** @var string the html element in which the alert should be displayed */
     public $tag = 'div';
 
@@ -41,17 +44,21 @@ class AlertWidget extends CWidget
     /** @var array html options */
     public $htmlOptions = [];
 
+    /** @var int $timeout milliseconds for how long the popu styled alerts should stay (0 = forever) */
+    public $timeout;
+
     /** @var string icon which is used in the alert */
     private $icon = 'ri-notification-2-line';
 
     public function run()
     {
-        $this->registerClientScript();
         $errors = $this->handleErrors();
         $inErrorMode = $this->errorSummaryModel !== null && !empty($errors);
         $notInErrorMode = $this->errorSummaryModel === null;
         $this->setTypeAndIcon();
+        $this->setTimeout();
         $this->buildHtmlOptions();
+        $this->registerClientScript();
 
         // View is only rendered when there is a message to be shown:
         if ($notInErrorMode || $inErrorMode) {
@@ -74,8 +81,11 @@ class AlertWidget extends CWidget
     {
         // auto close for popup alerts generated from PHP
         $script = "
-        var alertContainer = $('.non-ajax-alert');
-        LS.autoCloseAlert(alertContainer);
+        if($('.non-ajax-alert').length > 0) {
+            var alertContainer = $('.non-ajax-alert');
+            alert($this->timeout);
+            LS.autoCloseAlert(alertContainer, $this->timeout);
+        }
         ";
         Yii::app()->clientScript->registerScript('notif-autoclose', $script, CClientScript::POS_END);
     }
@@ -166,5 +176,17 @@ class AlertWidget extends CWidget
             $this->htmlOptions['class'] .= $alertClass;
         }
         $this->htmlOptions['role'] = 'alert';
+    }
+
+    /**
+     * Sets default timout value if it is not set by the widget call
+     */
+    private function setTimeout()
+    {
+        if ($this->type == 'danger') {
+            $this->timeout = $this->timeout ?? self::DEFAULT_ERROR_TIMEOUT;
+        } else {
+            $this->timeout = self::DEFAULT_TIMEOUT;
+        }
     }
 }

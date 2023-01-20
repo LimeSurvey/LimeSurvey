@@ -23315,7 +23315,7 @@
         timeout = 3000;
       }
 
-      if (container.length) {
+      if (container.length && timeout > 0) {
         var timeoutRef = setTimeout(function () {
           container.alert('close');
         }, timeout);

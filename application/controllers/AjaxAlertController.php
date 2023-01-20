@@ -29,18 +29,20 @@ class AjaxAlertController extends LSBaseController
         $translatedOptions = [];
         $translatedOptions['text'] = $request->getPost('message', 'Test');
         $translatedOptions['type'] = $request->getPost('alertType', 'success');
-        $knownOptions = ['tag', 'isFilled', 'showIcon', 'showCloseButton'];
+        $knownOptions = ['tag', 'isFilled', 'showIcon', 'showCloseButton', 'timeout'];
         foreach ($knownOptions as $knownOption) {
             if (array_key_exists($knownOption, $customOptions)) {
                 if ($knownOption == 'tag') {
                     $translatedOptions[$knownOption] = $customOptions[$knownOption];
+                } elseif ($knownOption == 'timeout') {
+                    $translatedOptions[$knownOption] = (int) $customOptions[$knownOption];
                 } else {
                     $translatedOptions[$knownOption] = $customOptions[$knownOption] !== 'false';
                 }
             }
         }
-        if (array_key_exists('htmlmOptions', $customOptions)) {
-            $translatedOptions['htmlmOptions'] = json_decode_ls($customOptions['htmlmOptions']);
+        if (array_key_exists('htmlOptions', $customOptions)) {
+            $translatedOptions['htmlOptions'] = json_decode_ls($customOptions['htmlOptions']);
         }
 
         return $translatedOptions;
