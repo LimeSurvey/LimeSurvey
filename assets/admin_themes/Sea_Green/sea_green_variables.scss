@@ -28,7 +28,6 @@ $g-900        : #1E1E1E;
 $g-800        : #333641;
 $g-700        : #5E6372;
 $g-600        : #ACACAC;
-$g-500        : #ACACAC;
 $g-400        : #C2C5D1;
 $g-300        : #DDDEE8;
 $g-200        : #EEEFF7;
@@ -92,7 +91,7 @@ $ibm-font-family:
  // Emoji fonts
  "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !default;
 
-$font-size-base: 1rem; // Assumes the browser default, typically `16px`
+$font-size-base: 1.14rem; // 16px, Browser default usually is 14px
 $font-size-sm: $font-size-base * 0.875;
 $font-size-lg: $font-size-base * 1.25;
 
@@ -104,9 +103,6 @@ $font-weight-600: 600;
 $line-height-20: 20px;
 $line-height-24: 24px;
 $line-height-26: 26px;
-
-// START spacer
-$spacer: 1rem;
 
 $tooltip-bg:                        $g-900;
 // $tooltip-border-radius:             $border-radius;
@@ -136,24 +132,6 @@ $nav-tabs-link-active-color:        $g-900;
 // modal
 $modal-inner-padding: 1.5rem; // 24px
 
-// datepicker
-$td-light: #fff !default;
-$td-widget-background: $td-light !default;
-$td-font-color: #000 !default;
-$td-timepicker-font-size: 1.2em !default;
-$td-active-bg: var(--bs-primary) !default;
-$td-active-color: $td-light !default;
-$td-active-border-color: var(--bs-info) !default;
-$td-border-radius: 2px !default;
-$td-btn-hover-bg: $td-light !default;
-$td-disabled-color: #6c757d !default;
-$td-alternate-color: $g-400 !default;
-$td-secondary-border-color: #ccc !default;
-$td-secondary-border-color-rgba: rgba(0, 0, 0, 0.2) !default;
-$td-primary-border-color: $td-light !default;
-$td-text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25) !default;
-$td-dow-color: $td-font-color;
-
 // badge
 $badge-padding-y:                   2px;
 $badge-padding-x:                   5px;
@@ -167,3 +145,10 @@ $navbar-color: $white;
 $navbar-badges-bg-color: $white;
 $navbar-badges-color: $navbar-bg-color;
 $navbar-link-hover-color: shift-color($navbar-color, $link-shade-percentage) !default;
+
+// table
+$table-hover-bg     : $g-200;
+$table-border-color : $g-400;
+
+// pagination
+@import "tables/pagination_varriables.scss";

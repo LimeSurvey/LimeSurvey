@@ -2032,11 +2032,8 @@ a.explorer-group:focus {
 .summary,
 #massive-action-container,
 #surveyListActions,
-.listActions,
-.pager-container ls-ba .pager,
-.pager-container ls-ba .pager .pagination {
-    margin: 0;
-    margin-bottom: 20px;
+.listActions {
+    margin : 0 0 20px;
 }
 
 .summary-container {
@@ -3704,16 +3701,4 @@ html[dir="rtl"] th {
 .accordion-button:not(.collapsed) {
     background-color: #fff;
     color: #000;
-}
-
-// pagination
-.pagination {
-    font-size : 1.2em;
-    .page-item {
-        .page-link {
-            margin        : 1px;
-            padding       : 5px 14px;
-            border-radius : 4px;
-        }
-    }
 }
