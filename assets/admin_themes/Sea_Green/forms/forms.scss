@@ -39,6 +39,7 @@ input[type="file"]::file-selector-button {
   border: 1px solid $g-900;
   font-weight: 400;
   font-size: 14px;
+  // if line-height is set as 16px, then the letter is cut off
   line-height: 1.5;
 }
 
