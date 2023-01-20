@@ -17886,21 +17886,22 @@ footer.footer {
 
 input[type=file] {
   position: relative;
-  padding: 12px 14px;
+  padding: 13px 14px;
   box-shadow: -8px 8px 0px #eeeff7;
 }
 
 input[type=file]::file-selector-button {
-  background: #fff;
+  position: absolute;
+  top: 50%;
+  left: 4px;
+  transform: translateY(-50%);
+  margin: 0;
   padding: 8px 12px;
+  background: #fff;
   color: #1E1E1E;
   border: 1px solid #1E1E1E !important;
-  border-radius: 4px !important;
-  cursor: pointer;
-  position: absolute;
-  left: -8px;
+  border-radius: 4px;
   font-weight: 500;
-  font-size: 14px;
 }
 
 .form-select {
