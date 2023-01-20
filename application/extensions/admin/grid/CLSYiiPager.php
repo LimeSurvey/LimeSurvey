@@ -32,6 +32,8 @@ class CLSYiiPager extends CLinkPager
         if (!isset($this->htmlOptions['class'])) {
             $this->htmlOptions['class'] = 'pagination';
         }
+        $this->maxButtonCount = 5;
+        $this->hiddenPageCssClass = 'disabled';
     }
 
     /**
