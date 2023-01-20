@@ -40,21 +40,19 @@ App()->getClientScript()->registerScriptFile(
                         <?php
                     } ?>
                     <?php if (Permission::model()->hasGlobalPermission('users', 'export')) { ?>
-                        <div class="btn-group">
                             <!-- Export -->
                         <button class="btn btn-outline-secondary" type="button" data-bs-toggle="dropdown" title="<?php eT('Export survey administrators'); ?>">
-                                <i class="ri-download-fill text-success"></i> <?php eT("Export"); ?>
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li>
-                                <?= CHtml::link(gT("CSV"), App()->createUrl("userManagement/exportUser", ["outputFormat" => "csv"]), ["class" => "dropdown-item"]); ?>
-                                </li>
-                                <li>
-                                <?= CHtml::link(gT("JSON"), App()->createUrl("userManagement/exportUser", ["outputFormat" => "json"]), ["class" => "dropdown-item"]); ?>
-                                </li>
-                            </ul>
-                        </div>
+                            <i class="ri-download-fill text-success"></i> <?php eT("Export"); ?>
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>
+                            <?= CHtml::link(gT("CSV"), App()->createUrl("userManagement/exportUser", ["outputFormat" => "csv"]), ["class" => "dropdown-item"]); ?>
+                            </li>
+                            <li>
+                            <?= CHtml::link(gT("JSON"), App()->createUrl("userManagement/exportUser", ["outputFormat" => "json"]), ["class" => "dropdown-item"]); ?>
+                            </li>
+                        </ul>
                     <?php } ?>
                 <?php } else {
                     ?>
