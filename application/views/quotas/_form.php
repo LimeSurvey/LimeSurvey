@@ -7,11 +7,7 @@
 <div class="container">
     <?php $form = $this->beginWidget('CActiveForm', array('id'=>'editquota',)); ?>
     <?php
-    $this->widget('ext.AlertWidget.AlertWidget', [
-        'text' => gT("Please fix the following input errors:"),
-        'type' => 'danger',
-        'errorSummaryModel' => $oQuota,
-    ]);
+    $this->widget('ext.AlertWidget.AlertWidget', ['errorSummaryModel' => $oQuota]);
     ?>
 
         <div class="row">

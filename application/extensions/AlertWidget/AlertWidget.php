@@ -2,6 +2,12 @@
 
 /**
  * Creates a bootstrap alert on given options to fit the admin theme design.
+ * - in general there are two different alerts:
+ *  1. popup alerts (white background with colored border on left side), which disapear after 3 seconds by default
+ *  2. inline alerts (with colored background according to the alert type and no animation on appearance)
+ *
+ * If you pass an AR model with "errorSummaryModel", this widget is able to extract the model errors
+ * and behaves like ->errorSummary function but with the styling of this widget.
  */
 class AlertWidget extends CWidget
 {
@@ -41,14 +47,14 @@ class AlertWidget extends CWidget
     public function run()
     {
         $this->registerClientScript();
-        $this->setTypeAndIcon();
-        $errors = $this->extractErrors();
+        $errors = $this->handleErrors();
         $inErrorMode = $this->errorSummaryModel !== null && !empty($errors);
         $notInErrorMode = $this->errorSummaryModel === null;
+        $this->setTypeAndIcon();
         $this->buildHtmlOptions();
 
         // View is only rendered when there is a message to be shown:
-        if($notInErrorMode || $inErrorMode) {
+        if ($notInErrorMode || $inErrorMode) {
             $this->render('alert', [
                 'tag' => $this->tag,
                 'text' => $this->text,
@@ -66,6 +72,7 @@ class AlertWidget extends CWidget
     /** Registers required script files */
     public function registerClientScript()
     {
+        // auto close for popup alerts generated from PHP
         $script = "
         var alertContainer = $('.non-ajax-alert');
         LS.autoCloseAlert(alertContainer);
@@ -75,10 +82,13 @@ class AlertWidget extends CWidget
 
     /**
      * if errorSummaryModel contains something, the errors from the model(s)
-     * will be extracted and returned as an array of strings
+     * will be extracted and returned as an array of strings,
+     * additionally type and text will be set to default behavior,
+     * if those are not passed.
+     *
      * @return array
      */
-    private function extractErrors()
+    private function handleErrors()
     {
         $sumErrors = [];
         if (!empty($this->errorSummaryModel)) {
@@ -108,6 +118,8 @@ class AlertWidget extends CWidget
                     }
                 }
             }
+            $this->text = $this->text == '' ? gT("Please fix the following input errors:") : $this->text;
+            $this->type = $this->type == '' ? 'danger' : $this->type;
         }
         return $sumErrors;
     }
@@ -128,7 +140,7 @@ class AlertWidget extends CWidget
         'info' => 'ri-notification-2-line',
         'light' => 'ri-notification-2-line',
         'dark' => 'ri-notification-2-line',
-    ];
+        ];
         if (array_key_exists($this->type, $alertTypesAndIcons)) {
             if ($this->type == 'error') {
                 $this->type = 'danger';
@@ -142,7 +154,8 @@ class AlertWidget extends CWidget
     /*
      * Builds htmlOptions related to BS5 alerts, especially the class
      */
-    private function buildHtmlOptions() {
+    private function buildHtmlOptions()
+    {
         $alertClass = ' alert alert-';
         $alertClass .= $this->isFilled ? 'filled-' . $this->type : $this->type;
         $alertClass .= $this->showCloseButton ? ' alert-dismissible' : '';

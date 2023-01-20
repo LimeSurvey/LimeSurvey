@@ -25,11 +25,7 @@
 
 
         <?php
-        $this->widget('ext.AlertWidget.AlertWidget', [
-            'text' => gT("Please fix the following input errors:"),
-            'type' => 'danger',
-            'errorSummaryModel' => $model,
-        ]);
+        $this->widget('ext.AlertWidget.AlertWidget', ['errorSummaryModel' => $model]);
         ?>
 
         <?php echo $form->hiddenField($model, 'owner_id'); ?>

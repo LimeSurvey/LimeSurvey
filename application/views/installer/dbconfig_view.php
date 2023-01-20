@@ -52,11 +52,7 @@ function checkDbEngine(){
         <h2><?= $title; ?></h2>
         <p><?= $descp; ?></p>
         <?php
-        $this->widget('ext.AlertWidget.AlertWidget', [
-            'text' => gT("Please fix the following input errors:"),
-            'type' => 'danger',
-            'errorSummaryModel' => $model,
-        ]);
+        $this->widget('ext.AlertWidget.AlertWidget', ['errorSummaryModel' => $model]);
         ?>
         <hr/>
         <p><?php eT("Note: All fields marked with (*) are required."); ?></p>

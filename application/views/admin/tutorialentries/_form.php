@@ -18,11 +18,7 @@
     <p class="note"><?php echo sprintf(gT('Fields with %s are required.'), '<span class="required">*</span>'); ?></p>
 
     <?php
-    $this->widget('ext.AlertWidget.AlertWidget', [
-        'text' => gT("Please fix the following input errors:"),
-        'type' => 'danger',
-        'errorSummaryModel' => $model,
-    ]);
+    $this->widget('ext.AlertWidget.AlertWidget', ['errorSummaryModel' => $model]);
     ?>
 
 	<div class="row">

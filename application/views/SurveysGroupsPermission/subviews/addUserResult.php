@@ -18,11 +18,7 @@
     <?php endif ?>
     <?php if($result['error']) : ?>
         <?php
-        $this->widget('ext.AlertWidget.AlertWidget', [
-            'text' => gT("Please fix the following input errors:"),
-            'errorSummaryModel' => $result['error'],
-            'type' => 'error',
-        ]);
+        $this->widget('ext.AlertWidget.AlertWidget', ['errorSummaryModel' => $result['error']]);
         ?>
     <?php endif ?>
     <p><?php

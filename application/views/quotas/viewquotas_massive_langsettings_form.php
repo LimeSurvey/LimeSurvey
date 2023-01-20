@@ -8,11 +8,7 @@
 
 <?php $form = $this->beginWidget('CActiveForm', array('id'=>'edit-quota-ls',)); ?>
 <?php
-$this->widget('ext.AlertWidget.AlertWidget', [
-    'text' => gT("Please fix the following input errors:"),
-    'type' => 'danger',
-    'errorSummaryModel' => $aQuotaLanguageSettings,
-]);
+$this->widget('ext.AlertWidget.AlertWidget', ['errorSummaryModel' => $aQuotaLanguageSettings]);
 ?>
 <?php $this->renderPartial('_form_langsettings',
     array(

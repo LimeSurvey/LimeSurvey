@@ -14,11 +14,7 @@
         ?>
     <?php endif; ?>
         <?php
-        $this->widget('ext.AlertWidget.AlertWidget', [
-            'text' => gT("Please fix the following input errors:"),
-            'type' => 'danger',
-            'errorSummaryModel' => $model,
-        ]);
+        $this->widget('ext.AlertWidget.AlertWidget', ['errorSummaryModel' => $model]);
         ?>
     <?php echo CHtml::beginForm($this->createUrl('installer/optional'), 'post', array('class' => '')); ?>
     <div class='mb-3'>

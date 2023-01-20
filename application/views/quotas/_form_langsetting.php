@@ -6,11 +6,7 @@
 ?>
 
 <?php
-$this->widget('ext.AlertWidget.AlertWidget', [
-    'text' => gT("Please fix the following input errors:"),
-    'type' => 'danger',
-    'errorSummaryModel' => $oQuotaLanguageSetting,
-]);
+$this->widget('ext.AlertWidget.AlertWidget', ['errorSummaryModel' => $oQuotaLanguageSetting]);
 ?>
 
 
