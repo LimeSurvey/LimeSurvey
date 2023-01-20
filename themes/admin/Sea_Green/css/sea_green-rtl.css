@@ -18438,7 +18438,6 @@ footer.footer {
   line-height: 20px;
   padding: 0.625rem 1rem;
   position: relative;
-  animation: slidefromtop 1s;
 }
 .alert > span[class*=ri-] {
   font-size: 1rem;
@@ -18461,6 +18460,9 @@ footer.footer {
   width: 60%;
   z-index: 3500;
   min-height: 0;
+}
+#notif-container .alert {
+  animation: slidefromtop 1s;
 }
 
 .no-simple-graph {
