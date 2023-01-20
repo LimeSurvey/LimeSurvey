@@ -2226,7 +2226,7 @@ textarea.form-control-lg {
 .form-select {
   display: block;
   width: 100%;
-  padding: 8px 12px 8px 18.46px;
+  padding: 10px 12px 10px 36px;
   -moz-padding-start: 9px;
   font-size: 1rem;
   font-weight: 400;
@@ -2578,7 +2578,7 @@ textarea.form-control-lg {
 
 .input-group-lg > .form-select,
 .input-group-sm > .form-select {
-  padding-left: 30.46px;
+  padding-left: 48px;
 }
 
 .input-group:not(.has-validation) > :not(:last-child):not(.dropdown-toggle):not(.dropdown-menu),
@@ -2648,9 +2648,9 @@ textarea.form-control-lg {
   border-color: #4DD753;
 }
 .was-validated .form-select:valid:not([multiple]):not([size]), .was-validated .form-select:valid:not([multiple])[size="1"], .form-select.is-valid:not([multiple]):not([size]), .form-select.is-valid:not([multiple])[size="1"] {
-  padding-left: 48.46px;
+  padding-left: 66px;
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e"), url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%234DD753' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
-  background-position: left 12px center, center left 18.46px;
+  background-position: left 12px center, center left 36px;
   background-size: 16px 12px, calc(0.5em + 10px) calc(0.5em + 10px);
 }
 .was-validated .form-select:valid:focus, .form-select.is-valid:focus {
@@ -2737,9 +2737,9 @@ textarea.form-control-lg {
   border-color: #DC3545;
 }
 .was-validated .form-select:invalid:not([multiple]):not([size]), .was-validated .form-select:invalid:not([multiple])[size="1"], .form-select.is-invalid:not([multiple]):not([size]), .form-select.is-invalid:not([multiple])[size="1"] {
-  padding-left: 48.46px;
+  padding-left: 66px;
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e"), url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23DC3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23DC3545' stroke='none'/%3e%3c/svg%3e");
-  background-position: left 12px center, center left 18.46px;
+  background-position: left 12px center, center left 36px;
   background-size: 16px 12px, calc(0.5em + 10px) calc(0.5em + 10px);
 }
 .was-validated .form-select:invalid:focus, .form-select.is-invalid:focus {
@@ -18156,20 +18156,7 @@ footer.footer {
 }
 
 .form-control {
-  box-shadow: -4px 4px 0px #EEEFF7;
   border: 1px solid #1E1E1E !important;
-  border-radius: 4px !important;
-}
-.form-control:focus {
-  box-shadow: -4px 4px 0px rgba(66, 0, 255, 0.2);
-}
-
-.form-control.ignore-shadow {
-  border-radius: 0px !important;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.08) !important;
-}
-.form-control.ignore-shadow:focus {
-  box-shadow: -4px 4px 0px rgba(66, 0, 255, 0.2) !important;
 }
 
 .form-control.ls-important-field {

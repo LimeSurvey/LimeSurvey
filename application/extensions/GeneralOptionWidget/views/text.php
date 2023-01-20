@@ -4,7 +4,7 @@
     </div>
     <input
         type="text"
-        class="form-control ignore-shadow"
+        class="form-control"
         name="question[<?= $this->generalOption->name; ?>]" 
         id="<?= CHtml::getIdByName($this->generalOption->name); ?>"
         value="<?= CHtml::encode($this->generalOption->formElement->value); ?>"

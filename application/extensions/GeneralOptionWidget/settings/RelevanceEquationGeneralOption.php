@@ -27,7 +27,7 @@ class RelevanceEquationGeneralOption extends GeneralOption
             $help,
             $question->relevance,
             [
-                'classes' => ['form-control ignore-shadow'],
+                'classes' => ['form-control'],
                 'attributes' => [
                     'rows' => 1,
                     'data-has-conditions' => count($question->conditions) > 0
