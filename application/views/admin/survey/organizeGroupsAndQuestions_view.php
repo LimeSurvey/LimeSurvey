@@ -24,7 +24,7 @@ App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl'
         <ol class="organizer group-list list-unstyled" data-level='group'>
             <?php
             foreach ($aGroupsAndQuestions as  $aGroupAndQuestions) { ?>
-                <li id='list_g<?php echo $aGroupAndQuestions['gid']; ?>' class='card mjs-nestedSortable-expanded' data-level='group'>
+                <li id='list_g<?php echo $aGroupAndQuestions['gid']; ?>' class='card mjs-nestedSortable-expanded mt-2' data-level='group'>
 
                     <div class="card-header">
                         <a class='btn btn-outline-secondary btn-xs ri-arrow-down-s-fill disclose'><span title="Click to show/hide children" class="caret"></span></a>
