@@ -746,37 +746,48 @@ class ThemeOptionsController extends LSBaseController
             $aData['title_bar']['title'] = gT("Survey theme options");
             $aData['subaction'] = gT("Survey theme options");
             $aData['sidemenu']['landOnSideMenuTab'] = 'settings';
-        }
-
-        // Title concatenation
-        $templateName = $model->template_name;
-        $basePageTitle = sprintf('Survey options for theme %s', $templateName);
-
-        if (!is_null($sid)) {
-            $addictionalSubtitle = gT(" for survey id: $sid");
-        } elseif (!is_null($gsid)) {
-            $addictionalSubtitle = gT(" for survey group id: $gsid");
+            //buttons in topbar
+            $aData['topBar']['showSaveButton'] = true;
+            $topbarData = TopbarConfiguration::getSurveyTopbarData($sid);
+            $topbarData = array_merge($topbarData, $aData['topBar']);
+            $aData['topbar']['middleButtons'] = $this->renderPartial(
+                '/surveyAdministration/partial/topbar/surveyTopbarLeft_view',
+                $topbarData,
+                true
+            );
+            $aData['topbar']['rightButtons'] = $this->renderPartial(
+                '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
+                $topbarData,
+                true
+            );
         } else {
-            $addictionalSubtitle = gT(" global level");
+            // Title concatenation
+            $templateName = $model->template_name;
+            $basePageTitle = sprintf('Survey options for theme %s', $templateName);
+
+            if (!is_null($sid)) {
+                $addictionalSubtitle = gT(" for survey id: $sid");
+            } elseif (!is_null($gsid)) {
+                $addictionalSubtitle = gT(" for survey group id: $gsid");
+            } else {
+                $addictionalSubtitle = gT(" global level");
+            }
+
+            $pageTitle = $basePageTitle . " (" . $addictionalSubtitle . " )";
+
+            $aData['topbar']['title'] = $pageTitle;
+            $aData['topbar']['rightButtons'] = $this->renderPartial(
+                '/layouts/partial_topbar/right_close_saveclose_save',
+                [
+                    'isCloseBtn' => true,
+                    'backUrl' => Yii::app()->createUrl('themeOptions'),
+                    'isSaveBtn' => true,
+                    'isSaveAndCloseBtn' => false,
+                    'formIdSave' => 'template-options-form'
+                ],
+                true
+            );
         }
-
-        $pageTitle = $basePageTitle . " (" . $addictionalSubtitle . " )";
-
-        $aData['topbar']['title'] = $pageTitle;
-        //buttons in topbar
-        $aData['topBar']['showSaveButton'] = true;
-        $topbarData = TopbarConfiguration::getSurveyTopbarData($sid);
-        $topbarData = array_merge($topbarData, $aData['topBar']);
-        $aData['topbar']['middleButtons'] = $this->renderPartial(
-            '/surveyAdministration/partial/topbar/surveyTopbarLeft_view',
-            $topbarData,
-            true
-        );
-        $aData['topbar']['rightButtons'] = $this->renderPartial(
-            '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
-            $topbarData,
-            true
-        );
 
         $this->aData = $aData;
         $this->render('update', $aData);

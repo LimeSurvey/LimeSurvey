@@ -225,7 +225,7 @@ class LayoutHelper
     public function renderTopbarTemplate($aData)
     {
         $titleTextBreadcrumb = null;
-        $isBreadCrumb = isset($aData['title_bar']);
+        $isBreadCrumb = isset($aData['title_bar']); //only the existence is important, indicator for breadcrumb
 
         if (isset($aData['topbar']['title'])) {
             $titleTextBreadcrumb = $aData['topbar']['title'];
