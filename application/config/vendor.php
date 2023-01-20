@@ -49,22 +49,23 @@ return array(
                 'js/bootstrap_5.min.js',
             ]
         ];
-        public function offsetExists($offset)
+        public function offsetExists($offset): bool
         {
             return isset($this->value[$offset]);
         }
         // NB: '&' is needed to unset values in $value property after getting it
         // Else, a copy of the array will be returned (so called "value semantics").
+        #[\ReturnTypeWillChange]
         public function &offsetGet($offset)
         {
             $this->setRtl();
             return $this->value[$offset];
         }
-        public function offsetSet($offset, $value)
+        public function offsetSet($offset, $value): void
         {
             $this->value[$offset] = $value;
         }
-        public function offsetUnset($offset)
+        public function offsetUnset($offset): void
         {
             unset($this->value[$offset]);
         }

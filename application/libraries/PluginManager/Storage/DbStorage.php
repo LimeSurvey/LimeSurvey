@@ -24,7 +24,7 @@ class DbStorage implements iPluginStorage
      */
     public function get(iPlugin $plugin, $key = null, $model = null, $id = null, $default = null, $language = null)
     {
-        $functionName = 'get' . ucfirst($model);
+        $functionName = 'get' . ucfirst((string)$model);
         if ($model == null || !method_exists($this, $functionName)) {
             return $this->getGeneric($plugin, $key, $model, $id, $default);
         } else {

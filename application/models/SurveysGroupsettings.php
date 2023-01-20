@@ -374,6 +374,9 @@ class SurveysGroupsettings extends LSActiveRecord
      */
     protected static function translateOptionLabels($instance, $attribute, $value)
     {
+        if (is_null($value)) {
+            return '';
+        }
         // replace option labels on forms
         if ($attribute == 'usecaptcha') {
             $usecap = $value;

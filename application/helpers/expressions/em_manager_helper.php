@@ -3405,7 +3405,7 @@ class LimeExpressionManager
             $scale_id = (isset($fielddata['scale_id'])) ? $fielddata['scale_id'] : '0';
             $preg = (isset($fielddata['preg'])) ? $fielddata['preg'] : null; // a perl regular exrpession validation function
             $defaultValue = (isset($fielddata['defaultvalue']) ? $fielddata['defaultvalue'] : null);
-            if (trim($preg) == '') {
+            if (trim((string)$preg) == '') {
                 $preg = null;
             }
             $help = (isset($fielddata['help'])) ? $fielddata['help'] : '';

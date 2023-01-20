@@ -40,8 +40,9 @@
  * To get the pure HTML, just do: {{ foo($bar) | raw }}
  */
 
+use Twig\Extension\AbstractExtension;
 
-class LS_Twig_Extension extends Twig_Extension
+class LS_Twig_Extension extends AbstractExtension
 {
     /**
      * Publish a css file from public style directory, using or not the asset manager (depending on configuration)
@@ -134,7 +135,7 @@ class LS_Twig_Extension extends Twig_Extension
      */
     public static function json_decode($json, $assoc = true)
     {
-        return (array) json_decode($json, $assoc);
+        return (array) json_decode((string)$json, $assoc);
     }
 
     /**
