@@ -34,6 +34,14 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.0 (build 230116) to 5.6.1 (build 230123) January 23, 2023
+-Fixed issue #18592: When creating a survey Default group may not be the ones preselected (#2849) (Gabriel Jenik)
+-Fixed issue #18585: Click again on link by email submit again the survey (Denis Chenu)
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+
+
 Changes from 5.5.2 (build 230109) to 5.6.0 (build 230116) January 16, 2023
 +New feature #7641: Options to use Y/N conversion in RemoteControl API export (#2843) (Carsten Schmitz)
 -Fixed issue #18544: Update Theme Options: Survey Group permissions are not checked correctly (#2795) (Gabriel Jenik)
