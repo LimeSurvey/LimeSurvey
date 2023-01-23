@@ -3,7 +3,8 @@
 /**
  * Creates a bootstrap alert on given options to fit the admin theme design.
  * - in general there are two different alerts:
- *  1. popup alerts (white background with colored border on left side), which disapear after 3 seconds by default
+ *  1. popup alerts (white background with colored border on left side), which disappear after 3 seconds by default,
+ *     unless they are danger-alerts. For danger-alerts timeout is set to 10 seconds.
  *  2. inline alerts (with colored background according to the alert type and no animation on appearance)
  *
  * If you pass an AR model with "errorSummaryModel", this widget is able to extract the model errors
@@ -134,7 +135,7 @@ class AlertWidget extends CWidget
         return $sumErrors;
     }
 
-    /*
+    /**
      * sets icon according to given alert type,
      * also sets default value for type, if unknown string is passed.
      */
@@ -161,7 +162,7 @@ class AlertWidget extends CWidget
         }
     }
 
-    /*
+    /**
      * Builds htmlOptions related to BS5 alerts, especially the class
      */
     private function buildHtmlOptions()
