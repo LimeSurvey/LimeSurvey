@@ -17069,6 +17069,7 @@ tr.info, tr.danger {
   width: 0.75em;
   height: 0.75em;
   opacity: 1;
+  font-size: 12px;
 }
 .modal-header .btn-close:focus {
   box-shadow: none;
