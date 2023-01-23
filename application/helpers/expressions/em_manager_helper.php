@@ -9085,12 +9085,15 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             <th class=\"column-3\">" . $LEM->gT('Text [Help] (Tip)') . "</th>
             </tr>\n";
 
-        $_gseq = -1;
+        // Picking up questions in the survey.
+        // To be used later while composing the logic file, for auxiliary information.
         $criteria = new CDbCriteria();
         $criteria->addCondition("sid = :sid");
         $criteria->params[':sid'] = $sid;
         $criteria->index = 'qid';
         $questions = Question::model()->with('question_theme')->findAll($criteria);
+        
+        $_gseq = -1;        
         $baseQuestionThemes = QuestionTheme::findQuestionMetaDataForAllTypes();
         foreach ($LEM->currentQset as $q) {
             $gseq = $q['info']['gseq'];
