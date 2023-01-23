@@ -9495,7 +9495,15 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     . "onclick='window.open(\"$editlink\",\"_blank\")'>"
                     . $rootVarName . "</span>";
             }
-            $questionRow .= "</b><br />[<a target='_blank' href='$editlink'>QID $qid</a>]<br/>$typedesc [$type] $themeDesc $errText $sWarningsText</td>"
+            $questionRow .= "</b>"
+                . "<br/>"
+                . "[<a target='_blank' href='$editlink'>" . sprintf(gT("QID %s"), $qid) . "</a>]"
+                . "<br/>"
+                . "<span class='question-type'>$typedesc [$type]</span> "
+                . "<span class='question-theme'>$themeDesc</span> "
+                . $errText . " "
+                . $sWarningsText
+                . "</td>"
                 . "<td>" . $relevance . $prettyValidEqn . $default . "</td>"
                 . "<td>" . $qdetails . "</td>"
                 . "</tr>\n";
