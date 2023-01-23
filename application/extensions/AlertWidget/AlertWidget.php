@@ -84,7 +84,6 @@ class AlertWidget extends CWidget
         $script = "
         if($('.non-ajax-alert').length > 0) {
             var alertContainer = $('.non-ajax-alert');
-            alert($this->timeout);
             LS.autoCloseAlert(alertContainer, $this->timeout);
         }
         ";
