@@ -19,7 +19,6 @@ $layoutHelper = new LayoutHelper();
 echo $layoutHelper->renderTopbarTemplate($aData);
 // Generated through /admin/usergroup/usergroupbar_view
 //$this->userGroupBar($aData);
-//echo '<pre>';var_dump($aData);echo '</pre>';exit;
 echo "<!-- BEGIN LAYOUT_MAIN -->";
 
 // Generated through /admin/super/surveymanagerbar.php
