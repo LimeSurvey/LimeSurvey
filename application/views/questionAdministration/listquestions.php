@@ -122,7 +122,7 @@ $baseLanguage = $oSurvey->language;
                         true,
                         false
                     );
-                    $this->widget('ext.LimeGridView.LimeGridView', array(
+                    $this->widget('ext.admin.grid.CLSGridView', array(
                         'dataProvider' => $model->search(),
                         'id' => 'question-grid',
                         'emptyText' => gT('No questions found.'),
