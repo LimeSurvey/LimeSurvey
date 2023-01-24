@@ -78,7 +78,7 @@ const ajaxAlertMethod = {
     getAlertHtml: (message, alertType, customOptions) => {
         return new Promise(function (resolve, reject) {
             $.ajax({
-                url: LS.createUrl('ajaxalert/getalertwidget'),
+                url: LS.createUrl('ajaxAlert/getAlertWidget'),
                 data: {message: message, alertType: alertType, customOptions: customOptions},
                 method: 'POST',
                 success: function (response) {
