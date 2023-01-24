@@ -168,7 +168,7 @@ class AlertWidget extends CWidget
     {
         $alertClass = ' alert alert-';
         $alertClass .= $this->isFilled ? 'filled-' . $this->type : $this->type;
-        $alertClass .= $this->showCloseButton ? ' alert-dismissible' : '';
+        $alertClass .= $this->showCloseButton ? ' alert-dismissible fade show' : '';
 
         if (!array_key_exists('class', $this->htmlOptions)) {
             $this->htmlOptions['class'] = $alertClass;
