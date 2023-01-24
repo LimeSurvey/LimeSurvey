@@ -11104,6 +11104,25 @@ a {
   display: none !important;
 }
 
+.summary-table {
+  font-size: 0.9975rem;
+  padding-left: 0.5rem;
+}
+.summary-table strong {
+  font-weight: 600;
+}
+.summary-table .em-expression {
+  background-color: #FFE872;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+.pagetitle {
+  border-bottom: solid 2px #C2C5D1;
+  position: relative;
+  margin-bottom: 1em;
+}
+
 /**
  * Lime Admin Common CSS File
  *
@@ -11344,7 +11363,6 @@ a {
 }
 
 .side-body h3, .side-body .h3,
-.pagetitle,
 .list-surveys h3,
 .list-surveys .h3 {
   position: relative;
@@ -15144,7 +15162,7 @@ a.list-group-item-danger.active:focus, a.list-group-item-danger.active:hover, a.
   filter: alpha(opacity=90);
 }
 
-.list-surveys h3, .list-surveys .h3, .pagetitle, .side-body h3, .side-body .h3 {
+.list-surveys h3, .list-surveys .h3, .side-body h3, .side-body .h3 {
   color: #333333;
   border-bottom: solid 2px #328637;
 }
@@ -16052,10 +16070,6 @@ table.cke_editor {
 
 .login-submit {
   border-top: solid 1px #dadada;
-}
-
-.h6 .small {
-  color: #858585;
 }
 
 .dropdown-item > a:hover {
@@ -17140,6 +17154,14 @@ dl dt {
   font-weight: 600;
   font-size: 1.14rem;
   line-height: 24px;
+}
+
+.fw-bold {
+  font-weight: 600 !important;
+}
+
+small, .small {
+  font-size: 0.75em;
 }
 
 a {

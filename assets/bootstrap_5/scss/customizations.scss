@@ -23,3 +23,23 @@ a {
 .hidden {
     display: none !important;
 }
+
+.summary-table {
+    font-size: $font-size-sm;
+    padding-left: 0.5rem;
+    strong {
+        font-weight: $font-weight-600;
+    }
+    .em-expression {
+        background-color: $banana;
+        padding: 2px 4px;
+        border-radius: $border-radius;
+    }
+}
+
+// Headings
+.pagetitle {
+    border-bottom: solid 2px $g-400;
+    position: relative;
+    margin-bottom: 1em;
+}

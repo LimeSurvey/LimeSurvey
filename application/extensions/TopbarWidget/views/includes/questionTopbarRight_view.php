@@ -8,8 +8,7 @@
 
 <!-- Edit button -->
 <?php if($hasSurveyContentUpdatePermission): ?>
-    <a id="questionEditorButton" class="btn btn-success pjax" href="#" role="button" onclick="LS.questionEditor.showEditor(); return false;">
-        <i class="ri-pencil-fill"></i>
+    <a id="questionEditorButton" class="btn btn-primary pjax" href="#" role="button" onclick="LS.questionEditor.showEditor(); return false;">
         <?php eT("Edit");?>
     </a>
 <?php endif; ?>

@@ -1267,14 +1267,6 @@ table.cke_editor {
     border-top: solid 1px $gray-08;
 }
 
-// Headings
-.h6 .small {
-    color: $gray-15;
-}
-.pagetitle {
-    @extend %extend_19;
-}
-
 // Dropdowns
 .open .dropdown-toggle {
     &.btn-outline-secondary {

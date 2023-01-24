@@ -52,6 +52,14 @@ dl {
   }
 }
 
+.fw-bold {
+  font-weight: 600 !important;
+}
+
+small, .small {
+  font-size: 0.75em;
+}
+
 // LINKS
 a {
   color: $link-color;
