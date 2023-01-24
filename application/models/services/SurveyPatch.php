@@ -3,61 +3,56 @@
 namespace LimeSurvey\Model\Service;
 
 use LimeSurvey\Model\Service\SurveyPatch\Path;
+use LimeSurvey\Model\Service\SurveyPatch\PathMatch;
+use LimeSurvey\Model\Service\SurveyPatch\Patch;
+use LimeSurvey\Model\Service\SurveyPatch\PatchOperation;
+use LimeSurvey\Model\Service\SurveyPatch\PatchHandlerInterface;
 use LimeSurvey\Model\Service\SurveyPatch\Exception;
 
 class SurveyPatch
 {
+    protected $operationHandlers = [];
+
     /**
      * Apply patches
      *
      * @param int $surveyId
-     * @param array $patch
+     * @param array $patchData
      * @throws \LimeSurvey\Model\Service\SurveyPatch\Exception
      * @return array
      */
-    public function apply($surveyId, $patch)
+    public function apply($surveyId, $patchData)
     {
-        $validationResult = $this->validatePatch($patch);
+        $patch = Patch::factory($patchData);
 
         $result = [
-            'updatePatch' => [],
-            'errors' => []
+            'updatePatch' => []
         ];
 
-        if ($validationResult !== true) {
-            $result['errors'] = $validationResult;
-        } else {
-            foreach ($patch as $operation) {
-                $match = $this->getPathMatch($operation['path']);
-                if (!$match) {
-                    throw new Exception('Unsupported path "' . $operation['path'] . '"');
-                }
-
-                $modelClass = $match->getModelClass();
-                if ($modelClass == null) {
-                    // null model class indicates patches should be ignored
-                    continue;
-                }
-
-                switch ($match->getType()) {
-                    case Path::PATH_TYPE_OBJECT:
-                    case Path::PATH_TYPE_PROP:
-                        break;
-                    case Path::PATH_TYPE_COLLECTION:
-                        break;
-                }
-
+        $paths = Path::getDefaults();
+        foreach ($patch as $patchOperation) {
+            $pathMatch = $this->getPathMatch($patchOperation->getPath(), $paths);
+            if (!$pathMatch) {
+                throw new Exception('Unsupported path "' . $patchOperation->getPath() . '"');
             }
+            $this->handleOperation($pathMatch, $patchOperation);
         }
 
         return  $result;
     }
 
-    protected function getPathMatch($patch)
+    /**
+     * Get path match
+     *
+     * @param Patch $patch
+     * @param array $paths
+     * @return ?PathMatch
+     */
+    protected function getPathMatch($patch, $paths = null)
     {
         // The order of definition is important
         // - more specific paths should be listed first
-        $defaults = Path::getDefaults();
+        $defaults = $paths ?: Path::getDefaults();
 
         $result = null;
         foreach ($defaults as $path) {
@@ -71,41 +66,54 @@ class SurveyPatch
     }
 
     /**
-     * Validate patch
+     * Handle operation
      *
-     * @param array $patch
-     * @return boolean|array
+     * @param PathMatch $pathMatch
+     * @param PatchOperation $patchOperation
+     * @return void
      */
-    protected function validatePatch($patch)
+    public function handleOperation(PathMatch $pathMatch, PatchOperation $patchOperation)
     {
-        $errors = [];
-        foreach ($patch as $k => $operation) {
-            $operationErrors = $this->validatePatchOperation($operation);
-            if ($operationErrors !== true) {
-                $errors[$k] = $operationErrors;
-            }
-        }
-        return empty($errors) ?: $errors;
+        $this->getOperationHandler($pathMatch, $patchOperation)
+            ->applyPatch($patchOperation, $pathMatch);
     }
 
     /**
-     * Validate patch
+     * Register operation handler
      *
-     * @param array $patch
-     * @return boolean|array
+     * @param PatchHandlerInterface $patchHandler
+     * @return void
      */
-    protected function validatePatchOperation($operation)
+    public function registerOperationHandler(PatchHandlerInterface $patchHandler)
     {
-        $errors = [];
-        if (!isset($operation['op'])) {
-            $errors[] = 'Invalid operation';
+        $handlerKey = implode('_', [
+            $patchHandler->getModelClass(),
+            $patchHandler->getPathType(),
+            $patchHandler->getOperationType()
+        ]);
+
+        $this->operationHandlers[$handlerKey] = $patchHandler;
+    }
+
+    /**
+     * Get operation handler
+     *
+     * @param PathMatch $pathMatch
+     * @param PatchOperation $patchOperation
+     * @return PatchHandler
+     */
+    public function getOperationHandler(PathMatch $pathMatch, PatchOperation $patchOperation)
+    {
+        $handlerKey = implode('_', [
+            $pathMatch->getModelClass(),
+            $pathMatch->getType(),
+            $patchOperation->getType()
+        ]);
+
+        if (!isset($this->operationHandlers[$handlerKey])) {
+            throw new Exception('Survey patch handler not found with key "' . $handlerKey . '"');
         }
-        if (!isset($operation['path'])) {
-            $errors[] = 'Invalid path';
-        }
-        if (array_key_exists('value', $operation)) {
-            $errors[] = 'No value set';
-        }
-        return empty($errors) ?: $errors;
+
+        return $this->operationHandlers[$handlerKey];
     }
 }

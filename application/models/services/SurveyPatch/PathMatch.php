@@ -3,7 +3,7 @@
 namespace LimeSurvey\Model\Service\SurveyPatch;
 
 /**
- * Survey Patch Path Match
+ * Path Match
  */
 class PathMatch
 {
