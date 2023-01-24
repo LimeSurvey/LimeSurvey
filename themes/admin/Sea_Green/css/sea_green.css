@@ -17649,6 +17649,10 @@ footer.footer {
   border: 1px solid #1e1e1e !important;
 }
 
+.cke_button_icon {
+  opacity: unset !important;
+}
+
 .cke_reset_all,
 .cke_reset_all * {
   color: #9094A7 !important;
@@ -17657,7 +17661,7 @@ footer.footer {
 .cke_contents {
   border: none !important;
   border-right: 1px solid #1E1E1E !important;
-  border-radius: 0px !important;
+  border-radius: 0 !important;
   border-left: 1px solid #1E1E1E !important;
 }
 
@@ -17677,10 +17681,10 @@ footer.footer {
 .cke_chrome {
   width: 100% !important;
   background: #dddee8 !important;
-  padding: 0px !important;
+  padding: 0 !important;
   border-bottom-left-radius: 4px !important;
   border-bottom-right-radius: 4px !important;
-  filter: drop-shadow(4px 4px 0px #EEEFF7);
+  box-shadow: 4px 4px #EEEFF7;
   border: none !important;
 }
 
@@ -17696,6 +17700,27 @@ footer.footer {
 
 .cke_button_label {
   display: none !important;
+}
+
+.cke_toolbox .cke_button {
+  margin-left: 3px;
+}
+.cke_toolbox .cke_button:hover, .cke_toolbox .cke_button:focus {
+  box-shadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
+  color: #fff;
+}
+.cke_toolbox .cke_button.cke_button_on {
+  background: #9094A7;
+  color: #fff !important;
+}
+.cke_toolbox .cke_button.cke_button_on .cke_button_icon i {
+  color: #fff !important;
+}
+.cke_toolbox .cke_button.cke_button_disabled .cke_button_icon i {
+  color: #D3D5DA !important;
+}
+.cke_toolbox .cke_toolbar_separator {
+  margin: 4px 3px;
 }
 
 .nav-tabs .nav-link {
