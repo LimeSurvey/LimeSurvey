@@ -16,7 +16,7 @@ echo viewHelper::getViewTestTag('addQuestionGroup');
 <?php echo PrepareEditorScript(false, $this);
 $active = 1; ?>
 <div id='edit-survey-text-element' class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <div class="pagetitle h3"><?php eT("Add question group"); ?></div>
+    <div class="pagetitle h1"><?php eT("Add question group"); ?></div>
     <div class="row">
         <div class="col-12">
             <!-- Tabs -->
