@@ -112,8 +112,11 @@ class EditQuestionTest extends TestBaseClassWeb
                     // Switch to question's CKEditor iframe
                     self::$webDriver->switchTo()->frame($iframe);
                     // Edit the question text
-                    $question = self::$webDriver->findElement(WebDriverBy::tagName('body'));
-                    $question->clear()->sendKeys($newText);
+                    $body = self::$webDriver->findElement(WebDriverBy::tagName('body'));
+                    $body->click();
+                    $body->clear();
+                    $body->click();
+                    $body->sendKeys($newText);
                     // Switch back to main content
                     self::$webDriver->switchTo()->defaultContent();
                     break;

@@ -34,6 +34,53 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.45 (build 230117) to 3.28.46 (build 230124) January 23, 2023
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+
+
+Changes from 3.28.44 (build 230110) to 3.28.45 (build 230117) January 16, 2023
+#Updated translation: Vietnamese by c_schmitz
+#Updated translation: Ukrainian by c_schmitz
+#Updated translation: Turkish by c_schmitz
+#Updated translation: Thai by c_schmitz
+#Updated translation: Swedish by c_schmitz
+#Updated translation: Spanish (Spain) by c_schmitz
+#Updated translation: Spanish (Mexican) by c_schmitz
+#Updated translation: Spanish (Argentina) (Informal) by c_schmitz
+#Updated translation: Slovenian by c_schmitz
+#Updated translation: Russian by c_schmitz
+#Updated translation: Romanian by c_schmitz
+#Updated translation: Portuguese (Brazil) by c_schmitz
+#Updated translation: Polish by c_schmitz, elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Norwegian (Nynorsk) by c_schmitz
+#Updated translation: Norwegian (Bokmål) by c_schmitz
+#Updated translation: Mongolian by c_schmitz
+#Updated translation: Luxembourgish by Mazi
+#Updated translation: Lithuanian by c_schmitz
+#Updated translation: Latvian by c_schmitz
+#Updated translation: Korean by c_schmitz
+#Updated translation: Indonesian by c_schmitz
+#Updated translation: Hungarian by c_schmitz
+#Updated translation: Hindi by c_schmitz
+#Updated translation: Greek by c_schmitz
+#Updated translation: Estonian by c_schmitz
+#Updated translation: Danish by c_schmitz
+#Updated translation: Croatian by c_schmitz
+#Updated translation: Chinese (Simplified) by c_schmitz
+#Updated translation: Bulgarian by c_schmitz
+#Updated translation: Arabic by c_schmitz, Shatha
+#Updated translation: Afrikaans by c_schmitz
+
+
+Changes from 3.28.43 (build 221221) to 3.28.44 (build 230110) January 9, 2023
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 3.28.42 (build 221213) to 3.28.43 (build 221221) December 21, 2022
 -Fixed issue #18086: Custom "other" label text not applied to Bootstrap button layout (#2749) (Gabriel Jenik)
 -Fixed issue #18338: For participants, expiration date can be set before start date (#2726) (Gabriel Jenik)
