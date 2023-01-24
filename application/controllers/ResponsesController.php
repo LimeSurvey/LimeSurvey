@@ -391,8 +391,12 @@ class ResponsesController extends LSBaseController
             $aData['tokeninfo'] = Token::model($surveyId)->summary();
         }
 
-        $aData['topBar']['name'] = 'baseTopbar_view';
-        $aData['topBar']['leftSideView'] = 'responsesTopbarLeft_view';
+        $topbarData = TopbarConfiguration::getResponsesTopbarData($survey->sid);
+        $aData['topbar']['middleButtons'] = $this->renderPartial(
+            'partial/topbarBtns/leftSideButtons',
+            $topbarData,
+            true
+        );
 
         $this->aData = $aData;
         $this->render('browseindex_view', [
@@ -500,12 +504,16 @@ class ResponsesController extends LSBaseController
             // Page size
             $aData['pageSize'] = App()->user->getState('pageSize', App()->params['defaultPageSize']);
 
-            $aData['topBar']['name'] = 'baseTopbar_view';
-            $aData['topBar']['leftSideView'] = 'responsesTopbarLeft_view';
+            $topbarData = TopbarConfiguration::getResponsesTopbarData($survey->sid);
+            $aData['topbar']['middleButtons'] = $this->renderPartial(
+                'partial/topbarBtns/leftSideButtons',
+                $topbarData,
+                true
+            );
 
             $this->aData = $aData;
             $this->render('listResponses_view', [
-                'surveyid' => $aData['surveyId'],
+                'surveyid' => $aData['surveyid'],
                 'dateformatdetails' => $aData['dateformatdetails'],
                 'model' => $aData['model'],
                 'bHaveToken' => $aData['bHaveToken'],

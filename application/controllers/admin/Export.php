@@ -281,6 +281,16 @@ class Export extends SurveyCommonAction
             $data['topBar']['showExportButton'] = true;
             $data['topBar']['showCloseButton'] = true;
 
+            $data['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+                '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
+                [
+                    'showExportButton' => true,
+                    'showCloseButton' => true,
+                    'closeUrl' => Yii::app()->createUrl('responses/browse', ['surveyId' => $survey->sid])
+                ],
+                true
+            );
+
             $data['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
             $data['title_bar']['title'] = gT('Browse responses') . ': ' . $survey->currentLanguageSettings->surveyls_title;
             $data['subaction'] = gT('Export results');
@@ -443,6 +453,15 @@ class Export extends SurveyCommonAction
 
             $data['topBar']['name'] = 'baseTopbar_view';
             $data['topBar']['showCloseButton'] = true;
+
+            $data['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+                '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
+                [
+                    'showCloseButton' => true,
+                    'closeUrl' => Yii::app()->createUrl('responses/browse', ['surveyId' => $iSurveyID])
+                ],
+                true
+            );
 
             $this->renderWrappedTemplate('export', 'spss_view', $data);
             return;
@@ -675,6 +694,16 @@ class Export extends SurveyCommonAction
             $aData['topBar']['name'] = 'baseTopbar_view';
             $aData['topBar']['showExportButton'] = true;
             $aData['topBar']['showCloseButton'] = true;
+
+            $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+                '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
+                [
+                    'showExportButton' => true,
+                    'showCloseButton' => true,
+                    'closeUrl' => Yii::app()->createUrl('responses/browse', ['surveyId' => $iSurveyId])
+                ],
+                true
+            );
 
             $this->renderWrappedTemplate('export', 'vv_view', $aData);
         } elseif (isset($iSurveyId) && $iSurveyId) {

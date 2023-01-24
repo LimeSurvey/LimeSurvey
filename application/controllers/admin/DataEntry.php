@@ -77,12 +77,19 @@ class DataEntry extends SurveyCommonAction
         $aData['title_bar']['title'] = gT("Data entry");
         $aData['sidemenu']['state'] = false;
 
-        $aData['topBar']['name'] = 'baseTopbar_view';
-        $aData['topBar']['showImportButton'] = true;
-        $aData['topBar']['showCloseButton'] = true;
-
         $iSurveyId = sanitize_int(Yii::app()->request->getParam('surveyid'));
         $aData['iSurveyId'] = $aData['surveyid'] = $iSurveyId;
+
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
+            [
+                'showImportButton' => true,
+                'showCloseButton' => true,
+                'closeUrl' => Yii::app()->createUrl('responses/browse', ['surveyId' => $iSurveyId])
+            ],
+            true
+        );
+
         if (Permission::model()->hasSurveyPermission($iSurveyId, 'responses', 'create')) {
             if (tableExists("{{survey_$iSurveyId}}")) {
                 // First load the database helper
@@ -297,9 +304,16 @@ class DataEntry extends SurveyCommonAction
             $aData['title_bar']['title'] = gT('Browse responses') . ': ' . $survey->currentLanguageSettings->surveyls_title;
             $aData['sidemenu']['state'] = false;
 
-            $aData['topBar']['name'] = 'baseTopbar_view';
-            $aData['topBar']['showImportButton'] = true;
-            $aData['topBar']['showCloseButton'] = true;
+            $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+                '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
+                [
+                    'showImportButton' => true,
+                    'showCloseButton' => true,
+                    'closeUrl' => Yii::app()->createUrl('responses/browse', ['surveyId' => $iSurveyId])
+                ],
+                true
+            );
+
 
             $this->renderWrappedTemplate('dataentry', 'import', $aData);
         } else {
@@ -2249,9 +2263,15 @@ class DataEntry extends SurveyCommonAction
 
             $aData['sidemenu']['state'] = false;
 
-            $aData['topBar']['name'] = 'baseTopbar_view';
-            $aData['topBar']['showSaveButton']  = true;
-            $aData['topBar']['showCloseButton'] = true;
+            $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+                '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
+                [
+                    'showSaveButton' => true,
+                    'showCloseButton' => true,
+                    'closeUrl' => Yii::app()->createUrl('responses/browse', ['surveyId' => $survey->sid])
+                ],
+                true
+            );
 
             $this->renderWrappedTemplate('dataentry', $aViewUrls, $aData);
         }
