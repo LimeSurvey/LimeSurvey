@@ -54,6 +54,4 @@ class RemoteControlGetAvailableSiteSettingsTest extends TestBaseClass
         $this->assertArrayHasKey('sitename', $settings);
         $this->assertArrayHasKey('defaultlang', $settings);
     }
-
-
 }
