@@ -2,9 +2,6 @@
 
 namespace LimeSurvey\Model\Service\SurveyPatch;
 
-
-use LimeSurvey\Model\Service\SurveyPatch\PatchOperation;
-
 /**
  * Patch
  */

@@ -5,7 +5,7 @@ namespace LimeSurvey\Model\Service\SurveyPatch;
 /**
  * Patch handler interface
  */
-interface PatchHandlerInterface
+interface PatchOperationHandlerInterface
 {
     /**
      * Get model class

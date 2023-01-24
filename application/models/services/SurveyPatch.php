@@ -6,7 +6,7 @@ use LimeSurvey\Model\Service\SurveyPatch\Path;
 use LimeSurvey\Model\Service\SurveyPatch\PathMatch;
 use LimeSurvey\Model\Service\SurveyPatch\Patch;
 use LimeSurvey\Model\Service\SurveyPatch\PatchOperation;
-use LimeSurvey\Model\Service\SurveyPatch\PatchHandlerInterface;
+use LimeSurvey\Model\Service\SurveyPatch\PatchOperationHandlerInterface;
 use LimeSurvey\Model\Service\SurveyPatch\Exception;
 
 class SurveyPatch
@@ -84,15 +84,15 @@ class SurveyPatch
      * @param PatchHandlerInterface $patchHandler
      * @return void
      */
-    public function registerOperationHandler(PatchHandlerInterface $patchHandler)
+    public function registerOperationHandler(PatchOperationHandlerInterface $operationHandler)
     {
         $handlerKey = implode('_', [
-            $patchHandler->getModelClass(),
-            $patchHandler->getPathType(),
-            $patchHandler->getOperationType()
+            $operationHandler->getModelClass(),
+            $operationHandler->getPathType(),
+            $operationHandler->getOperationType()
         ]);
 
-        $this->operationHandlers[$handlerKey] = $patchHandler;
+        $this->operationHandlers[$handlerKey] = $operationHandler;
     }
 
     /**
@@ -100,7 +100,7 @@ class SurveyPatch
      *
      * @param PathMatch $pathMatch
      * @param PatchOperation $patchOperation
-     * @return PatchHandler
+     * @return PatchOperationHandlerInterface
      */
     public function getOperationHandler(PathMatch $pathMatch, PatchOperation $patchOperation)
     {
