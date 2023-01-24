@@ -35,6 +35,10 @@ class RemoteControlGetUploadedFilesTest extends TestBaseClass
         if (!self::$password) {
             self::$password = 'password';
         }
+
+        \Yii::import('application.helpers.remotecontrol.remotecontrol_handle', true);
+        \Yii::import('application.helpers.viewHelper', true);
+        \Yii::import('application.libraries.BigData', true);
     }
 
     /**
