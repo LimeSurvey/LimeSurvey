@@ -12,7 +12,7 @@
         'id' => 'questionCode',
         'value' => !empty($newTitle) ? $newTitle : $question->title,
         'isAttached' => true,
-        'attachContent' => $this->renderPartial('questionCodeButton', null, true),
+        'attachContent' => $this->renderPartial('partials/questionCodeButton', null, true),
         'wrapperHtmlOptions' => [
             'class' => 'scoped-keep-in-line',
         ],

@@ -17911,16 +17911,10 @@ input[type=file]::file-selector-button {
   line-height: 16px;
 }
 
-.question-code-button {
-  top: 5px;
+.ls-input-button {
+  top: 50%;
   left: 5px;
-}
-
-.type-selector-button {
-  top: 4px;
-  left: 5px;
-  background: #7c8191;
-  color: #fff;
+  transform: translateY(-50%);
 }
 
 .select2-container--bootstrap-5 .select2-selection--multiple textarea:focus {

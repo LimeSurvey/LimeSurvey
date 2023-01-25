@@ -2,6 +2,7 @@
     aria-haspopup="true"
     aria-expanded="false"
     data-bs-target="#selector__questionTypeSelector-modal"
-    class="btn position-absolute type-selector-button">
+    style="background: #7c8191;"
+    class="btn position-absolute ls-input-button text-white">
     Select <span class="ri-arrow-drop-down-line" /> 
   </button>

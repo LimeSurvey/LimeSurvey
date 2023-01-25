@@ -44,15 +44,11 @@ input[type="file"]::file-selector-button {
   line-height: $line-height-16;
 }
 
-.question-code-button {
-  top: 5px;
+.ls-input-button {
+  top: 50%;
   right: 5px;
+  transform: translateY(-50%);
 }
 
-.type-selector-button {
-  top: 4px;
-  right: 5px;
-  background: #7c8191;
-  color: #fff;
-}
+
 @import "select2.scss";
