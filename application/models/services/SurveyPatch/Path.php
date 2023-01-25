@@ -1,6 +1,6 @@
 <?php
 
-namespace LimeSurvey\Model\Service\SurveyPatch;
+namespace LimeSurvey\Models\Services\SurveyPatch;
 
 
 /**
@@ -174,7 +174,7 @@ class Path
                 Answer::class
             ),
             new Path(
-                '/questionGroups/$questionGroupX/questions/$questionX/answers/answerX/$prop',
+                '/questionGroups/$questionGroupX/questions/$questionX/answers/$answerX/$prop',
                 Answer::class,
                 Path::PATH_TYPE_PROP
             ),

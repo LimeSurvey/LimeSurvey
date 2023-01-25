@@ -3,8 +3,8 @@
 namespace ls\tests\Services\SurveyPatch;
 
 use ls\tests\TestBaseClass;
-use LimeSurvey\Model\Service\SurveyPatch\Path;
-use LimeSurvey\Model\Service\SurveyPatch\PathMatch;
+use LimeSurvey\Models\Services\SurveyPatch\Path;
+use LimeSurvey\Models\Services\SurveyPatch\PathMatch;
 
 /**
  * @testdox SurveyPatch Path

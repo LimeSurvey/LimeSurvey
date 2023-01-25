@@ -1,11 +1,11 @@
 <?php
 
-namespace LimeSurvey\Model\Service\SurveyPatch;
+namespace LimeSurvey\Models\Services\SurveyPatch;
 
 /**
  * Patch handler interface
  */
-interface PatchOperationHandlerInterface
+interface OperationHandlerInterface
 {
     /**
      * Get model class
@@ -31,7 +31,10 @@ interface PatchOperationHandlerInterface
     /**
      * Apply patch
      *
-     * @return string
+     * @param Operation $operation
+     * @param PathMatch $pathMatch
+     * @param array $context
+     * @return void
      */
-    public function applyPatch(PatchOperation $operation, PathMatch $pathMatch);
+    public function applyPatch(Operation $operation, PathMatch $pathMatch, $context);
 }

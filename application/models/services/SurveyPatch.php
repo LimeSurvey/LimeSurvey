@@ -1,13 +1,13 @@
 <?php
 
-namespace LimeSurvey\Model\Service;
+namespace LimeSurvey\Models\Services;
 
-use LimeSurvey\Model\Service\SurveyPatch\Path;
-use LimeSurvey\Model\Service\SurveyPatch\PathMatch;
-use LimeSurvey\Model\Service\SurveyPatch\Patch;
-use LimeSurvey\Model\Service\SurveyPatch\PatchOperation;
-use LimeSurvey\Model\Service\SurveyPatch\PatchOperationHandlerInterface;
-use LimeSurvey\Model\Service\SurveyPatch\Exception;
+use LimeSurvey\Models\Services\SurveyPatch\Path;
+use LimeSurvey\Models\Services\SurveyPatch\PathMatch;
+use LimeSurvey\Models\Services\SurveyPatch\Patch;
+use LimeSurvey\Models\Services\SurveyPatch\Operation;
+use LimeSurvey\Models\Services\SurveyPatch\OperationHandlerInterface;
+use LimeSurvey\Models\Services\SurveyPatch\Exception;
 
 class SurveyPatch
 {
@@ -23,19 +23,24 @@ class SurveyPatch
      */
     public function apply($surveyId, $patchData)
     {
+        // Todo: optimise patch data
+        // - convert multiple operations on props of the same object to a single 'update' operation
         $patch = Patch::factory($patchData);
+        $context = [
+            'surveyId' => $surveyId
+        ];
 
         $result = [
             'updatePatch' => []
         ];
 
         $paths = Path::getDefaults();
-        foreach ($patch as $patchOperation) {
-            $pathMatch = $this->getPathMatch($patchOperation->getPath(), $paths);
+        foreach ($patch as $Operation) {
+            $pathMatch = $this->getPathMatch($Operation->getPath(), $paths);
             if (!$pathMatch) {
-                throw new Exception('Unsupported path "' . $patchOperation->getPath() . '"');
+                throw new Exception('Unsupported path "' . $Operation->getPath() . '"');
             }
-            $this->handleOperation($pathMatch, $patchOperation);
+            $this->handleOperation($pathMatch, $Operation, $context);
         }
 
         return  $result;
@@ -69,13 +74,14 @@ class SurveyPatch
      * Handle operation
      *
      * @param PathMatch $pathMatch
-     * @param PatchOperation $patchOperation
+     * @param Operation $Operation
+     * @param array $context
      * @return void
      */
-    public function handleOperation(PathMatch $pathMatch, PatchOperation $patchOperation)
+    public function handleOperation(PathMatch $pathMatch, Operation $Operation, $context)
     {
-        $this->getOperationHandler($pathMatch, $patchOperation)
-            ->applyPatch($patchOperation, $pathMatch);
+        $this->getOperationHandler($pathMatch, $Operation)
+            ->applyPatch($Operation, $pathMatch, $context);
     }
 
     /**
@@ -84,7 +90,7 @@ class SurveyPatch
      * @param PatchHandlerInterface $patchHandler
      * @return void
      */
-    public function registerOperationHandler(PatchOperationHandlerInterface $operationHandler)
+    public function registerOperationHandler(OperationHandlerInterface $operationHandler)
     {
         $handlerKey = implode('_', [
             $operationHandler->getModelClass(),
@@ -99,15 +105,15 @@ class SurveyPatch
      * Get operation handler
      *
      * @param PathMatch $pathMatch
-     * @param PatchOperation $patchOperation
-     * @return PatchOperationHandlerInterface
+     * @param Operation $Operation
+     * @return OperationHandlerInterface
      */
-    public function getOperationHandler(PathMatch $pathMatch, PatchOperation $patchOperation)
+    public function getOperationHandler(PathMatch $pathMatch, Operation $operation)
     {
         $handlerKey = implode('_', [
             $pathMatch->getModelClass(),
             $pathMatch->getType(),
-            $patchOperation->getType()
+            $operation->getType()
         ]);
 
         if (!isset($this->operationHandlers[$handlerKey])) {

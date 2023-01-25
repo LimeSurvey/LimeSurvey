@@ -1,19 +1,27 @@
 <?php
 
-namespace LimeSurvey\Model\Service\SurveyPatch;
+namespace LimeSurvey\Models\Services\SurveyPatch;
 
 /**
  * Patch operation
  */
-class PatchOperation
+class Operation
 {
+    const OPERATION_TYPE_ADD = 'add';
+    const OPERATION_TYPE_REMOVE = 'remove';
+    const OPERATION_TYPE_REPLACE = 'replace';
+    const OPERATION_TYPE_COPY = 'copy';
+    const OPERATION_TYPE_MOVE = 'move';
+    const OPERATION_TYPE_TEST = 'test';
+    const OPERATION_TYPE_UPDATE = 'update'; // custom operation for partial object replacement
+
     protected $type = null;
     protected $path = null;
     protected $value = null;
 
-    public function __construct($op, $path, $value)
+    public function __construct($type, $path, $value)
     {
-        $this->type = $op;
+        $this->type = $type;
         $this->path = $path;
         $this->value = $value;
     }
@@ -41,7 +49,7 @@ class PatchOperation
     /**
      * Get value
      *
-     * @return ?string
+     * @return ?mixed
      */
     public function getValue()
     {
