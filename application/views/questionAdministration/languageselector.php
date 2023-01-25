@@ -1,4 +1,4 @@
-<div class="mb-3 col-md-6 col-xl-7 text-end" <?= count($oSurvey->allLanguages)==1?'style="display:none"':'';?>>
+<div class="mb-3 text-end" <?= count($oSurvey->allLanguages)==1?'style="display:none"':'';?>>
     <label>&nbsp;</label>
     <div class="button-toolbar">
         <div class="btn-group" role="group" data-toggle="buttons">

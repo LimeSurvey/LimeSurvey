@@ -1,8 +1,15 @@
 <?php
 
 /** @var Survey $oSurvey */
-
 /** @var Question $oQuestion */
+/** @var array $aQuestionTypeGroups */
+/** @var array $advancedSettings */
+/** @var array $generalSettings */
+/** @var bool $showScriptField */
+/** @var string $jsVariablesHtml */
+/** @var string $modalsHtml */
+/** @var string $selectormodeclass */
+
 ?>
 
 <style>
@@ -62,41 +69,11 @@ $questionTheme = !empty($oQuestion->questionTheme) ? $oQuestion->questionTheme :
     <div id="advanced-question-editor" class="row"<?= empty($visibilityEditor) ? ' style="display:none;"' : '' ?>>
         <div class="col-xl-7">
             <div class="container scoped-new-questioneditor">
-                <div class="pagetitle h3 scoped-unset-pointer-events">
-                    <x-test id="action::addQuestion"></x-test>
-                    <?php if ($oQuestion->qid === 0): ?>
-                        <?= gT('Create question'); ?>
-                    <?php else: ?>
-                        <?= gT('Edit question'); ?>
-                    <?php endif; ?>
-                </div>
-
                 <div class="row">
-                    <!-- Question code -->
-                    <?php
-                    $this->renderPartial(
-                        "questionCode",
-                        ['question' => $oQuestion]
-                    ); ?>
                     <!-- Language selector -->
                     <?php $this->renderPartial(
                         "languageselector",
                         ['oSurvey' => $oSurvey]
-                    ); ?>
-                </div>
-
-                <!-- Question type selector -->
-                <div class="row">
-                    <?php
-                    $this->renderPartial(
-                        "typeSelector",
-                        [
-                            'oSurvey' => $oSurvey,
-                            'question' => $oQuestion,
-                            'aQuestionTypeGroups' => $aQuestionTypeGroups,
-                            'questionTheme' => $questionTheme,
-                            'selectormodeclass' => $selectormodeclass,
-                        ]
                     ); ?>
                 </div>
 
@@ -110,6 +87,7 @@ $questionTheme = !empty($oQuestion->questionTheme) ? $oQuestion->questionTheme :
                                 'question' => $oQuestion,
                                 //'aStructureArray' => $aQuestionTypeGroups,
                                 'showScriptField' => $showScriptField,
+                                'isQuestionEditor' => true,
                             ]
                         ); ?>
                     </div>
@@ -137,7 +115,18 @@ $questionTheme = !empty($oQuestion->questionTheme) ? $oQuestion->questionTheme :
                         <div class="accordion" id="accordion" role="tablist">
                             <!-- General settings -->
                             <?php
-                            $this->renderPartial("generalSettings", ['generalSettings' => $generalSettings]); ?>
+                            $this->renderPartial(
+                                "generalSettings",
+                                [
+                                    'generalSettings' => $generalSettings,
+                                    'oSurvey' => $oSurvey,
+                                    'question' => $oQuestion,
+                                    'aQuestionTypeGroups' => $aQuestionTypeGroups,
+                                    'questionTheme' => $questionTheme,
+                                    'selectormodeclass' => $selectormodeclass,
+                                ]
+                            );
+                            ?>
 
                             <!-- Advanced settings -->
                             <?php

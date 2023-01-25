@@ -1696,6 +1696,21 @@ $(document).on('ready pjax:scriptcomplete', function () {
         const [generalSettingsHtml, advancedSettingsHtml, extraOptionsHtml] = await Promise.all([generalSettingsPromise, advancedSettingsPromise, extraOptionsPromise]);
         const currentGroup = $('#gid').children("option:selected").val();
         $('#general-settings').replaceWith(generalSettingsHtml);
+
+        var wrapperEl = $('#question-type-selector-wrapper');
+        var viewType = wrapperEl.data('viewtype');
+        var debug = wrapperEl.data('debug');
+        var runner_questionTypeSelector = new PreviewModalScript("questionTypeSelector", {
+          "selectedClass": "text-short",
+          "onUpdate": ["value", "theme", "$('#question_type').val(value); $('#question_theme_name').val(theme); LS.questionEditor.updateQuestionAttributes(value, theme, '" + generalSettingsUrl + "', '" + advancedSettingsUrl + "', '" + extraOptionsUrl + "');"],
+          "value": questionType,
+          "theme": questionTheme,
+          "debugString": "Type: ",
+          "debug": debug == 1,
+          "viewType": viewType
+        });
+        runner_questionTypeSelector.bind();
+
         $('#gid').val(currentGroup);
         // TODO: Double check HTML injected here. Extra div?
         $('#advanced-options-container').replaceWith(advancedSettingsHtml);
