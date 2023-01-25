@@ -156,6 +156,7 @@ function submitEditToken(){
         success : function(result, stat) {
             if (result.success) {
                 $modal.modal('hide');
+                LS.LsGlobalNotifier.createFlash(result.success, 'alert-success fade in');
             } else {
                 var errorMsg = result.error.message ? result.error.message : result.error;
                 if (!errorMsg) errorMsg = "Unexpected error";

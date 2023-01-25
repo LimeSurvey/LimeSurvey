@@ -78,6 +78,11 @@ class Quotas extends SurveyCommonAction
         }
     }
 
+    /**
+     * Handles all Quota mass actions
+     *
+     * TODO: Refactor into separate actions
+     */
     public function massiveAction()
     {
 

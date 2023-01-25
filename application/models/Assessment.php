@@ -219,6 +219,7 @@ class Assessment extends LSActiveRecord
      * @param integer $iSurveyID
      * @param string $language
      * @param array $data
+     * @return bool True if the assessment could be updated. False if the assessment is not found of the update failed.
      */
     public static function updateAssessment($id, $iSurveyID, $language, array $data)
     {
@@ -227,8 +228,9 @@ class Assessment extends LSActiveRecord
             foreach ($data as $k => $v) {
                             $assessment->$k = $v;
             }
-            $assessment->save();
+            return $assessment->save();
         }
+        return false;
     }
 
     /**

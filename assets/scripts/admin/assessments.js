@@ -94,7 +94,14 @@ var bindAction = function(){
             url : url,
             method: 'post',
             data: params,
-            success : function(){
+            success : function(result) {
+                if (result.success) {
+                    LS.LsGlobalNotifier.createFlash(result.success, 'alert-success fade in');
+                } else {
+                    var errorMsg = result.error.message ? result.error.message : result.error;
+                    if (!errorMsg) errorMsg = "Unexpected error";
+                    LS.LsGlobalNotifier.createFlash(errorMsg, 'alert-danger fade in');
+                }
                 $('#assessmentsdeleteform').find('input[name=id]').val(' ');
                 $('#assesements-delete').modal('hide');
                 $.fn.yiiGridView.update('assessments-grid');

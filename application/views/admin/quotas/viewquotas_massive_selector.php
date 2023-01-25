@@ -24,7 +24,7 @@
             // modal
             'actionType'  => 'modal',
             'modalType'   => 'cancel-apply',
-            'keepopen'    => 'no',
+            'keepopen'    => 'yes',
             'sModalTitle'   => gT('Activate quotas'),
             'htmlModalBody' => gT('Are you sure you want to activate all selected quotas?'),
         ),
@@ -40,7 +40,7 @@
             // modal
             'actionType'  => 'modal',
             'modalType'   => 'cancel-apply',
-            'keepopen'    => 'no',
+            'keepopen'    => 'yes',
             'sModalTitle'   => gT('Deactivate quotas'),
             'htmlModalBody' => gT('Are you sure you want to deactivate all selected quotas?'),
         ),
@@ -83,7 +83,7 @@
             // modal
             'actionType'  => 'modal',
             'modalType'   => 'cancel-delete',
-            'keepopen'    => 'no',
+            'keepopen'    => 'yes',
             'sModalTitle'   => gT('Delete quotas'),
             'htmlModalBody' => gT('Are you sure you want to delete all selected quotas?'),
         ),
