@@ -162,14 +162,15 @@ class RemoteControlTest extends TestBaseClass
         // Check result via database.
         $query = sprintf('SELECT * FROM {{survey_%d}}', self::$surveyId);
         $result = $dbo->createCommand($query)->queryAll();
+        var_dump( $result );
         $this->assertCount(1, $result, 'Exactly one response');
         $this->assertEquals('One answer', $result[0][$sgqa], '"One answer" response');
 
         // Check result via API.
         $result = $handler->export_responses($sessionKey, self::$surveyId, 'json');
+        var_dump( $result );
         $this->assertNotNull($result);
         $responses = json_decode(file_get_contents($result->fileName));
-        var_dump( $responses );
         $this->assertTrue(count($responses->responses) === 1);
 
         // Cleanup
