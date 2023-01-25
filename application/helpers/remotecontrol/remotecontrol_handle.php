@@ -3235,6 +3235,8 @@ class remotecontrol_handle
 
         $oExport = new ExportSurveyResultsService();
         $sTempFile = $oExport->exportResponses($iSurveyID, $sLanguageCode, $sDocumentType, $oFormattingOptions, '');
+        var_dump( $oFormattingOptions ); 
+        echo file_get_contents( $sTempFile );
         return new BigFile($sTempFile, true, 'base64');
     }
 
