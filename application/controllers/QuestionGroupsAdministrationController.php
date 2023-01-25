@@ -127,16 +127,23 @@ class QuestionGroupsAdministrationController extends LSBaseController
         $grow = array_map('flattenText', $grow);
 
         $aData['oQuestionGroup'] = $oQuestionGroup;
-        $aData['surveyid'] = $surveyid;
-        $aData['gid'] = $gid;
         $aData['grow'] = $grow;
 
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title
             . " (" . gT("ID") . ":" . $iSurveyID . ")";
 
-        $aData['topBar']['name'] = 'baseTopbar_view';
-        $aData['topBar']['leftSideView'] = 'groupTopbarLeft_view';
-        $aData['topBar']['rightSideView'] = 'groupTopbarRight_view';
+        $topbarData = TopbarConfiguration::getGroupTopbarData($iSurveyID);
+        $topbarData = array_merge($topbarData, $aData);
+        $aData['topbar']['middleButtons'] = $this->renderPartial(
+            'partial/topbarBtns/groupTopbarLeft_view',
+            $topbarData,
+            true
+        );
+        $aData['topbar']['rightButtons'] = $this->renderPartial(
+            'partial/topbarBtns/groupTopbarRight_view',
+            $topbarData,
+            true
+        );
 
         ///////////
         // sidemenu
@@ -244,9 +251,18 @@ class QuestionGroupsAdministrationController extends LSBaseController
             ]
         );
 
-        $aData['topBar']['name'] = 'baseTopbar_view';
-        $aData['topBar']['leftSideView'] = 'editGroupTopbarLeft_view';
-        $aData['topBar']['rightSideView'] = 'editGroupTopbarRight_view';
+        $topbarData = TopbarConfiguration::getGroupTopbarData($oSurvey->sid);
+        $topbarData = array_merge($topbarData, $aData);
+        $aData['topbar']['middleButtons'] = $this->renderPartial(
+            'partial/topbarBtns/editGroupTopbarLeft_view',
+            $topbarData,
+            true
+        );
+        $aData['topbar']['rightButtons'] = $this->renderPartial(
+            'partial/topbarBtns/editGroupTopbarRight_view',
+            $topbarData,
+            true
+        );
 
         ///////////
         // sidemenu

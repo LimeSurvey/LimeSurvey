@@ -158,9 +158,6 @@ class SurveyAdministrationController extends LSBaseController
         $userId = App()->user->getId();
         SettingGlobal::setSetting('last_survey_' . $userId, $iSurveyID);
 
-        //$aData['surveybar']['buttons']['view'] = true;
-        //$aData['surveybar']['returnbutton']['url'] = $this->createUrl("surveyAdministration/listsurveys");
-        //$aData['surveybar']['returnbutton']['text'] = gT('Return to survey list');
         $aData['sidemenu']["survey_menu"] = true;
 
         // We get the last question visited by user for this survey

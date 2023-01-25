@@ -1,6 +1,6 @@
 <?php
     // Tools dropdown button
-    $toolsDropdownItems = $this->render('includes/groupToolsDropdownItems', get_defined_vars(), true);
+    $toolsDropdownItems = $this->renderPartial('partial/topbarBtns/groupToolsDropdownItems', get_defined_vars(), true);
 ?>
 <?php if (!empty(trim($toolsDropdownItems))): ?>
     <!-- Tools  groupTopbarLeft-->
@@ -25,12 +25,12 @@
 /**
  * Include the Survey Preview and Group Preview buttons
  */
-$this->render(
-    'includes/previewOrRunButton_view',
+$this->renderPartial(
+    '/surveyAdministration/partial/topbar/previewOrRunButton_view',
     [
         'survey' => $oSurvey,
         'surveyLanguages' => $surveyLanguages,
     ]
 );
-$this->render('includes/previewGroupButton_view', get_defined_vars());
+$this->renderPartial('partial/topbarBtns/previewGroupButton_view', get_defined_vars());
 ?>
