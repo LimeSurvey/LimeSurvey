@@ -169,6 +169,7 @@ class RemoteControlTest extends TestBaseClass
         $result = $handler->export_responses($sessionKey, self::$surveyId, 'json');
         $this->assertNotNull($result);
         $responses = json_decode(file_get_contents($result->fileName));
+        var_dump( $responses );
         $this->assertTrue(count($responses->responses) === 1);
 
         // Cleanup
