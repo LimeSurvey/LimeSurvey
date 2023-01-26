@@ -62,13 +62,13 @@ $questionTheme = !empty($oQuestion->questionTheme) ? $oQuestion->questionTheme :
     <input
         type='submit'
         style="display:none"
-        class="btn navbar-btn button white btn-success"
+        class="btn navbar-btn button white btn-primary"
         id='submit-create-question'
         name="savecreate"
     />
     <div id="advanced-question-editor" class="row"<?= empty($visibilityEditor) ? ' style="display:none;"' : '' ?>>
-        <div class="col-xl-7">
-            <div class="container scoped-new-questioneditor">
+        <div class="col-xl-9">
+            <div class="container ms-4 me-3">
                 <div class="row">
                     <!-- Language selector -->
                     <?php $this->renderPartial(
@@ -105,11 +105,8 @@ $questionTheme = !empty($oQuestion->questionTheme) ? $oQuestion->questionTheme :
 
             </div>
         </div>
-        <div class="col-xl-5">
-            <div class="container">
-                <div class="pagetitle h3">
-                    <?= gT('Settings'); ?>
-                </div>
+        <div class="col-xl-3">
+            <div class="container settings-accordion-container">
                 <div class="row">
                     <div class="col-12" id="accordion-container">
                         <div class="accordion" id="accordion" role="tablist">

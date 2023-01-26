@@ -7,7 +7,7 @@ $class = !$generalSettingsView ? 'mb-3 col-md-6 col-xl-5 scoped-responsive-fix-h
 ?>
 <div class="<?= $class ?>">
     <label for="questionCode"><?= gT('Code'); ?></label>
-    <i class="ri-question-fill text-info"
+    <i class="ri-information-fill"
         data-bs-toggle="tooltip"
         title="<?= gT("The question code is used for quick identification of this question and must be unique. It is especially useful if you wish to use the LimeSurvey assessments feature and/or the ExpressionScript."); ?>"
         ></i>
