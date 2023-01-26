@@ -9,6 +9,8 @@
  *
  * If you pass an AR model with "errorSummaryModel", this widget is able to extract the model errors
  * and behaves like ->errorSummary function but with the styling of this widget.
+ *
+ * @psalm-suppress PropertyNotSetInConstructor
  */
 class AlertWidget extends CWidget
 {
@@ -37,7 +39,7 @@ class AlertWidget extends CWidget
     public $showCloseButton = false;
 
     /**
-     * @var array | LSActiveRecord | CActiveRecord | CModel $model the models whose input errors are to be displayed. This can be either
+     * @var array | LSActiveRecord | CActiveRecord | CModel | null $model the models whose input errors are to be displayed. This can be either
      * a single model or an array of models
      */
     public $errorSummaryModel = null;
@@ -45,12 +47,16 @@ class AlertWidget extends CWidget
     /** @var array html options */
     public $htmlOptions = [];
 
-    /** @var int $timeout milliseconds for how long the popu styled alerts should stay (0 = forever) */
-    public $timeout;
+    /** @var int | null $timeout milliseconds for how long the popup styled alerts should stay (0 = forever) */
+    public $timeout = null;
 
     /** @var string icon which is used in the alert */
     private $icon = 'ri-notification-2-line';
 
+    /**
+     * @return void
+     * @throws CException
+     */
     public function run()
     {
         $errors = $this->handleErrors();
@@ -77,7 +83,10 @@ class AlertWidget extends CWidget
         }
     }
 
-    /** Registers required script files */
+    /**
+     * Registers required script files
+     * @return void
+     */
     public function registerClientScript()
     {
         // auto close for popup alerts generated from PHP
@@ -87,6 +96,7 @@ class AlertWidget extends CWidget
             LS.autoCloseAlert(alertContainer, $this->timeout);
         }
         ";
+        /** @psalm-suppress UndefinedMagicPropertyFetch */
         Yii::app()->clientScript->registerScript('notif-autoclose', $script, CClientScript::POS_END);
     }
 
@@ -137,6 +147,8 @@ class AlertWidget extends CWidget
     /**
      * sets icon according to given alert type,
      * also sets default value for type, if unknown string is passed.
+     *
+     * @return void
      */
     private function setTypeAndIcon()
     {
@@ -163,6 +175,7 @@ class AlertWidget extends CWidget
 
     /**
      * Builds htmlOptions related to BS5 alerts, especially the class
+     * @return void
      */
     private function buildHtmlOptions()
     {
@@ -180,6 +193,7 @@ class AlertWidget extends CWidget
 
     /**
      * Sets default timout value if it is not set by the widget call
+     * @return void
      */
     private function setTimeout()
     {
