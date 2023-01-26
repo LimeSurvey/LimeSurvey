@@ -67,6 +67,7 @@ $questionTheme = !empty($oQuestion->questionTheme) ? $oQuestion->questionTheme :
         name="savecreate"
     />
     <div id="advanced-question-editor" class="row"<?= empty($visibilityEditor) ? ' style="display:none;"' : '' ?>>
+        <x-test id="action::addQuestion"></x-test>
         <div class="col-xl-9">
             <div class="container ms-4 me-3">
                 <div class="row">
