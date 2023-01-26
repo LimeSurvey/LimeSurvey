@@ -39,7 +39,7 @@
         <div class="thumbnail" style="padding: 1em;">
             <img style="width: 50%;" src="<?php echo Yii::app()->baseUrl; ?>/installer/images/cloud-logo.svg" alt="LimeSurvey Cloud Logo">
             <div class="caption">
-                <h3><?= gT("LimeSurvey Cloud"); ?></h3>
+                <h3>LimeSurvey Cloud</h3>
                 <p>
                     <?= sprintf(gT("Subscribe to our %sLimeSurvey Cloud%s hosting and get:"), "<a target='_blank' href='https://www.limesurvey.org/'>", "</a>"); ?>
                     <ul>
