@@ -2335,8 +2335,8 @@ function do_file_upload($ia)
     var surveyid = '.Yii::app()->getConfig('surveyID').';
     $(document).on("ready pjax:scriptcomplete", function(){
     var fieldname = "'.$ia[1].'";
-    var filecount = $("#"+fieldname+"_filecount").val();
-    var json = $("#"+fieldname).val();
+    var filecount = $("#java"+fieldname+"_filecount").val();
+    var json = $("#java"+fieldname).val();
     var show_title = "'.$aQuestionAttributes["show_title"].'";
     var show_comment = "'.$aQuestionAttributes["show_comment"].'";
     displayUploadedFiles(json, filecount, fieldname, show_title, show_comment);

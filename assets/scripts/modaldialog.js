@@ -118,7 +118,7 @@ function displayUploadedFiles(jsonstring, filecount, fieldname, show_title, show
         for (i = 0; i < filecount; i++)
         {
             if (isValueInArray(image_extensions, jsonobj[i].ext))
-                display += '<tr><td class="upload image"><img src="' + uploadurl + '/filegetcontents/'+decodeURIComponent(jsonobj[i].filename)+'" class="uploaded" /></td>';
+                display += '<tr><td class="upload image"><img src="' + uploadurl + '/filegetcontents/'+decodeURIComponent(jsonobj[i].filename+'/fieldname/'+fieldname)+'" class="uploaded" /></td>';
             else
                 display += '<tr><td class="upload placeholder"><div class="upload-placeholder" /></td>';
 
