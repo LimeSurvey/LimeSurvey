@@ -37,7 +37,7 @@ $this->widget(
         'text' => gT('Save'),
         'icon' => 'fa fa-refresh',
         'htmlOptions' => [
-            'class' => 'btn btn-success',
+            'class' => 'btn btn-primary',
             'data-url' => $this->createUrl('homepageSettings/updateBoxesSettings')
         ],
     ]

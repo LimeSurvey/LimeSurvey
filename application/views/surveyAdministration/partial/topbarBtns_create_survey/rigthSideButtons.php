@@ -24,7 +24,7 @@ $this->widget(
         'text' => gT('Save'),
         'icon' => 'fa fa-check',
         'htmlOptions' => [
-            'class' => 'btn btn-success',
+            'class' => 'btn btn-primary',
             'data-form-id' => 'addnewsurvey',
             'role' => 'button',
             'onclick' => "$(this).addClass('disabled').attr('onclick', 'return false;');"

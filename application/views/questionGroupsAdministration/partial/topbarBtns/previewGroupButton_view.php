@@ -5,8 +5,8 @@
     $languagesDropDownItems = '';
     if (count($surveyLanguages) > 1) {
         $languagesDropDownItems = '<ul class="dropdown-menu" style="min-width : 252px;">';
-        $languagesDropDownItems .= $this->render(
-            'includes/languagesDropdownItems',
+        $languagesDropDownItems .= $this->renderPartial(
+            '/surveyAdministration/partial/topbar/languagesDropdownItems',
             [
                 'surveyLanguages' => $surveyLanguages,
                 'type' => 'questionGroup',

@@ -25,7 +25,7 @@ if ($addGroupSave) {
             'text' => gT('Save'),
             'icon' => 'fa fa-check',
             'htmlOptions' => [
-                'class' => 'btn btn-success',
+                'class' => 'btn btn-primary',
                 'data-form-id' => 'usergroupform',
                 'type' => 'submit',
                 'role' => 'button'

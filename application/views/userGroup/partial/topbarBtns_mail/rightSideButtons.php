@@ -39,7 +39,7 @@ $this->widget(
         'text' => gT('Send'),
         'icon' => 'fa fa-envelope',
         'htmlOptions' => [
-            'class' => 'btn btn-success',
+            'class' => 'btn btn-primary',
             'type' => 'submit',
             'data-form-id' => 'mailusergroup'
         ],
