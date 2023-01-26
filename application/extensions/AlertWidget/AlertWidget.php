@@ -37,7 +37,7 @@ class AlertWidget extends CWidget
     public $showCloseButton = false;
 
     /**
-     * @var mixed $model the models whose input errors are to be displayed. This can be either
+     * @var array | LSActiveRecord | CActiveRecord | CModel $model the models whose input errors are to be displayed. This can be either
      * a single model or an array of models
      */
     public $errorSummaryModel = null;
