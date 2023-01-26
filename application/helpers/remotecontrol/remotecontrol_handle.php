@@ -3315,11 +3315,12 @@ class remotecontrol_handle
      * @param string  $sSessionKey  Auth credentials
      * @param int     $iSurveyID    ID of the Survey
      * @param string  $sToken       Response token
+     * @param int     $responseId   Response ID
      *
      * @return array On success: array containing all uploads of the specified response
      *               On failure: array with error information
      */
-    public function get_uploaded_files($sSessionKey, $iSurveyID, $sToken)
+    public function get_uploaded_files($sSessionKey, $iSurveyID, $sToken, $responseId = null)
     {
         if (!$this->_checkSessionKey($sSessionKey)) {
             return array('status' => self::INVALID_SESSION_KEY);
@@ -3335,14 +3336,23 @@ class remotecontrol_handle
             return array('status' => 'No permission');
         }
 
-        $oResponses = Response::model($iSurveyID)->findAllByAttributes(array('token' => $sToken));
+        if (empty($responseId) and empty($sToken)) {
+            return ['status' => 'Invalid arguments: both Token and Reponse ID are empty'];
+        }
+        $criteria = new CDbCriteria();
+        if (!empty($responseId)) {
+            $criteria->compare('id', $responseId);
+        }
+        if (!empty($sToken)) {
+            $criteria->compare('token', $sToken);
+        }
+        $oResponses = Response::model($iSurveyID)->findAll($criteria);
+        if (empty($oResponses)) {
+            return ['status' => 'Could not find response for given token or response id'];
+        }
 
         $uploaded_files = array();
         foreach ($oResponses as $key => $oResponse) {
-            if (!($oResponse instanceof Response)) {
-                return array('status' => 'Could not find response for given token');
-            }
-
             foreach ($oResponse->getFiles() as $aFile) {
                 $sFileRealName = Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyID . "/files/" . $aFile['filename'];
 
