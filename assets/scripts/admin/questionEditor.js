@@ -1654,7 +1654,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
         $.ajax({
           url: generalSettingsUrl,
           method: 'GET',
-          data: { questionType, questionTheme },
+          data: { questionType, questionTheme, code },
           dataType: 'html',
           success: (data) => {
             resolve(data);
@@ -1693,10 +1693,11 @@ $(document).on('ready pjax:scriptcomplete', function () {
         });
       });
       try {
+        var code = $('#questionCode').val();
         const [generalSettingsHtml, advancedSettingsHtml, extraOptionsHtml] = await Promise.all([generalSettingsPromise, advancedSettingsPromise, extraOptionsPromise]);
         const currentGroup = $('#gid').children("option:selected").val();
         $('#general-settings').replaceWith(generalSettingsHtml);
-
+        $('#questionCode').val(code);
         var wrapperEl = $('#question-type-selector-wrapper');
         var viewType = wrapperEl.data('viewtype');
         var debug = wrapperEl.data('debug');
