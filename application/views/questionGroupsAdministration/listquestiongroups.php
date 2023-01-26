@@ -60,7 +60,7 @@
     <div class="row ls-space margin">
         <?php
         $this->widget(
-            'ext.LimeGridView.LimeGridView',
+            'ext.admin.grid.CLSGridView',
             [
                 'id'              => 'question-group-grid',
                 'dataProvider'    => $model->search(),

@@ -547,6 +547,7 @@ class Question extends LSActiveRecord
 
     /**
      * @return string
+     * NOTE: Not used anymore. Based on a deprecated method. Should be deprecated.
      */
     public function getTypedesc()
     {
@@ -1017,7 +1018,7 @@ class Question extends LSActiveRecord
                 'header' => gT('Question type'),
                 'name' => 'type',
                 'type' => 'raw',
-                'value' => '$data->typedesc',
+                'value' => '$data->question_theme->title . (YII_DEBUG ? " <em>{$data->type}</em>" : "")',
                 'htmlOptions' => array('class' => ''),
             ),
 
@@ -1100,7 +1101,7 @@ class Question extends LSActiveRecord
         $criteria->with = [
             'group' => ['alias' => 'g'],
             'questionl10ns' => ['alias' => 'ql10n', 'condition' => "language='" . $this->survey->language . "'"],
-            'question_theme' => ['alias' => 'qt', 'condition' => "extends=''"]
+            'question_theme' => ['alias' => 'qt']
         ];
 
         if (!empty($this->title)) {

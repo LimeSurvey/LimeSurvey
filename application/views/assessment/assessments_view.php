@@ -34,7 +34,7 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
             <div class="row">
                 <a href="#" id="loadEditUrl_forModalView" data-editurl="<?=$this->createUrl("assessment/edit/", ["surveyid" => $surveyid]);?>"></a>
                 <?php
-                    $this->widget('ext.LimeGridView.LimeGridView', array(
+                    $this->widget('ext.admin.grid.CLSGridView', array(
                         'dataProvider' => $model->search(),
                         'id' => 'assessments-grid',
                         'columns' => $model->getColumns(),
