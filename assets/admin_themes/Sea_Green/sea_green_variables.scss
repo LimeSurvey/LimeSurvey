@@ -27,8 +27,8 @@ $heading-title-color: #152536;
 $g-900        : #1E1E1E;
 $g-800        : #333641;
 $g-700        : #5E6372;
-$g-600        : #ACACAC;
-$g-400        : #C2C5D1;
+$g-600        : #9094A7;
+$g-400        : #D3D5DA;
 $g-300        : #DDDEE8;
 $g-200        : #EEEFF7;
 $g-100        : #F9F9FB;
@@ -48,7 +48,7 @@ $theme-colors: (
 
 $border-radius: 4px;
 
-// Buttons
+// Buttons START
 $line-height-16: 16px;
 $line-height-20: 20px;
 $line-height-28: 28px;
@@ -63,9 +63,16 @@ $btn-height-xl: 52px;
 
 $btn-font-size: 14px;
 $btn-font-size-sm: 12px;
+// Buttons END
 
-$btn-hover-boxshadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
-$btn-focus-boxshadow: 4px 4px 0px rgba(123, 97, 255, 0.4);
+// Shadows START
+$boxshadow             : 8px 8px $g-200;
+$boxshadow-hover       : 8px 8px $grape-light;
+$boxshadow-small       : 4px 4px $g-200;
+$boxshadow-small-hover : 4px 4px $grape-light;
+$btn-hover-boxshadow   : 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
+$btn-focus-boxshadow   : 4px 4px 0px rgba(123, 97, 255, 0.4);
+// Shadows END
 
 $btn-color: $g-900;
 
