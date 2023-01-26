@@ -1,6 +1,3 @@
-<?php
-$isQuestionEditor = $isQuestionEditor ?? false;
-?>
 <!-- Text element tabs -->
 <ul class="nav nav-tabs me-auto" role="tablist">
     <li class="nav-item" role="presentation">
@@ -19,15 +16,6 @@ $isQuestionEditor = $isQuestionEditor ?? false;
                 <?= gT('Script'); ?>
             </a>
         </li>
-    <?php endif; ?>
-    <?php if (!$isQuestionEditor) : ?>
-    <li class="nav-item ms-auto">
-        <?php foreach($oSurvey->allLanguages as $lang): ?>
-            <h5 class="lang-hide lang-<?= $lang; ?>" style="<?= $lang != $oSurvey->language ? 'display: none;' : '' ?>">
-                <span class="badge bg-secondary"><?= strtoupper($lang) ?></span>
-            </h5>
-        <?php endforeach; ?>
-    </li>
     <?php endif; ?>
 </ul>
 <div class="tab-content">

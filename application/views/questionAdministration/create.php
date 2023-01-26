@@ -88,7 +88,6 @@ $questionTheme = !empty($oQuestion->questionTheme) ? $oQuestion->questionTheme :
                                 'question' => $oQuestion,
                                 //'aStructureArray' => $aQuestionTypeGroups,
                                 'showScriptField' => $showScriptField,
-                                'isQuestionEditor' => true,
                             ]
                         ); ?>
                     </div>

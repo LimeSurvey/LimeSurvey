@@ -8,37 +8,44 @@
  * @var Question $oQuestion
  */
 ?>
-<div class="row">
-    <!-- Question code -->
-    <?php $this->renderPartial(
-        "questionCode",
-        [
-            'question' => $oQuestion,
-            'newTitle' => $oQuestion->title . "Copy",
-            'newQid' => true
-        ]
-    ); ?>
-    <!-- Language selector -->
-    <?php $this->renderPartial("languageselector", ['oSurvey' => $oSurvey]); ?>
-</div>
-
-<div class="row">
-    <div class="col-12">
-        <!-- Text elements -->
+<div class="container ms-4 me-3">
+    <div class="row">
+       <div class="col-6">
+        <!-- Question code -->
         <?php $this->renderPartial(
-            "textElements",
+            "questionCode",
             [
-                'oSurvey'         => $oSurvey,
-                'question'        => $oQuestion,
-                'showScriptField' => false,
+                'question' => $oQuestion,
+                'newTitle' => $oQuestion->title . "Copy",
+                'newQid' => true
             ]
         ); ?>
+       </div>
+        <div class="col-6">
+        <!-- Language selector -->
+            <label>&nbsp;</label>
+        <?php $this->renderPartial("languageselector", ['oSurvey' => $oSurvey]); ?>
+        </div>
     </div>
-</div>
 
-<div id='questionactioncopy' class='extra-action'>
-    <button role="button" type='submit' class="btn btn-primary saveandreturn d-none" name="redirection" value="edit">
-        <?php eT("Save"); ?>
-    </button>
-    <input type='submit' value='<?php eT("Save and close"); ?>'  class="btn btn-outline-secondary d-none"/>
+    <div class="row">
+        <div class="col-12">
+            <!-- Text elements -->
+            <?php $this->renderPartial(
+                "textElements",
+                [
+                    'oSurvey'         => $oSurvey,
+                    'question'        => $oQuestion,
+                    'showScriptField' => false,
+                ]
+            ); ?>
+        </div>
+    </div>
+
+    <div id='questionactioncopy' class='extra-action'>
+        <button role="button" type='submit' class="btn btn-primary saveandreturn d-none" name="redirection" value="edit">
+            <?php eT("Save"); ?>
+        </button>
+        <input type='submit' value='<?php eT("Save and close"); ?>'  class="btn btn-outline-secondary d-none"/>
+    </div>
 </div>
