@@ -484,16 +484,24 @@ class GlobalSettings extends SurveyCommonAction
 
         $sPartial = Yii::app()->request->getParam('partial', '_generaloptions_panel');
 
-        if (isset($_POST)) {
+        if (!empty($_POST)) {
             $oSurveyGroupSetting->attributes = $_POST;
             $oSurveyGroupSetting->gsid = 0;
             $oSurveyGroupSetting->usecaptcha = Survey::saveTranscribeCaptchaOptions();
 
             //todo: when changing ipanonymiez from "N" to "Y", call the function that anonymizes the ip-addresses
 
-
             if ($oSurveyGroupSetting->save()) {
                 $bRedirect = 1;
+                Yii::app()->setFlashMessage(gT("Global survey settings were saved."));
+            } else {
+                Yii::app()->setFlashMessage(
+                    CHtml::errorSummary(
+                        $oSurveyGroupSetting,
+                        CHtml::tag("p", ['class' => 'strong'], gT("Global survey settings could not be updated, please fix the following error:"))
+                    ),
+                    "error"
+                );
             }
         }
 

@@ -894,6 +894,8 @@ class Themes extends SurveyCommonAction
                         if (!fwrite($handle, $changedtext)) {
                             Yii::app()->user->setFlash('error', gT('Could not write file ') . $savefilename);
                             $this->getController()->redirect(array("admin/themes/sa/upload"));
+                        } else {
+                            Yii::app()->setFlashMessage(gT("Changes saved successfully."));
                         }
 
                         $oEditedTemplate->actualizeLastUpdate();
