@@ -1979,15 +1979,16 @@ class remotecontrol_handle
                     } elseif ($tokenCount > 1) {
                         return array('status' => 'Error: More than 1 result was found based on your attributes.');
                     }
-                    $token = Token::model($iSurveyID)->findByAttributes($aTokenQueryProperties)->decrypt();
+                    $token = Token::model($iSurveyID)->findByAttributes($aTokenQueryProperties);
                 } else {
                     // If aTokenQueryProperties is not an array, but an integer
                     $iTokenID = $aTokenQueryProperties;
-                    $token = Token::model($iSurveyID)->findByPk($iTokenID)->decrypt();
+                    $token = Token::model($iSurveyID)->findByPk($iTokenID);
                 }
                 if (!isset($token)) {
                     return array('status' => 'Error: Invalid tokenid');
                 }
+                $token->decrypt();
                 if (!empty($aTokenProperties)) {
                     $result = array_intersect_key($token->attributes, array_flip($aTokenProperties));
                 } else {
