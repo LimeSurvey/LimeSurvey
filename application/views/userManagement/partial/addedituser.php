@@ -2,6 +2,7 @@
 /** @var  User $oUser */
 
 $modalTitle = $oUser->isNewRecord ? gT('Add user') : gT('Edit user');
+$buttonTitle = $oUser->isNewRecord ? gT('Add') : gT('Save');
 Yii::app()->getController()->renderPartial(
     '/layouts/partial_modals/modal_header',
     ['modalTitle' => $modalTitle]
@@ -132,7 +133,7 @@ Yii::app()->getController()->renderPartial(
         <?= gT('Cancel') ?>
     </button>
     <button class="btn btn-success" id="submitForm">
-        <?= gT('Add') ?>
+        <?php echo $buttonTitle; ?>
     </button>
 </div>
 <?php $this->endWidget(); ?>
