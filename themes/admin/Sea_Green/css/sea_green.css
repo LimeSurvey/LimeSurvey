@@ -17934,6 +17934,11 @@ input[type=file]::file-selector-button {
   line-height: 16px;
 }
 
+.input-group-text {
+  background-color: #333641;
+  color: #fff;
+}
+
 .ls-input-button {
   top: 50%;
   right: 5px;

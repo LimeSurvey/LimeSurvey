@@ -44,6 +44,11 @@ input[type="file"]::file-selector-button {
   line-height: $line-height-16;
 }
 
+.input-group-text {
+  background-color: $g-800;
+  color: $white;
+}
+
 .ls-input-button {
   top: 50%;
   right: 5px;
