@@ -68,7 +68,7 @@ class TranslateLinksTest extends TestBaseClass
         $this->assertEquals($link, $publicUrl);
 
         //Url with dashes and or underscores
-        $linkString = 'https://lime-survey.org/upload/labels/333333/files/file.ext';
+        $linkString = 'https://lime-survey.org/lime_survey/upload/labels/333333/files/file.ext';
 
         $link = translateLinks('label', '333333', '444444', $linkString);
 
@@ -90,7 +90,7 @@ class TranslateLinksTest extends TestBaseClass
     public function testTranslateSurveyLinks(): void
     {
         //HTTP only
-        $linkString = 'http://limesurvey.org/upload/surveys/111111/files/file.ext';
+        $linkString = 'http://limesurvey.org/lime_survey/upload/surveys/111111/files/file.ext';
 
         $link = translateLinks('survey', '111111', '222222', $linkString);
 
