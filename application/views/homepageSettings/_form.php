@@ -18,11 +18,9 @@
         )
     ); ?>
 
-    <?php if ($form->errorSummary($model)): ?>
-        <div class="alert alert-danger" role="alert">
-            <?php echo $form->errorSummary($model); ?>
-        </div>
-    <?php endif; ?>
+    <?php
+    $this->widget('ext.AlertWidget.AlertWidget', ['errorSummaryModel' => $model]);
+    ?>
 
 
     <div class="mb-3">

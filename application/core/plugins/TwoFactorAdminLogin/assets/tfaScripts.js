@@ -25,13 +25,13 @@ var confirmButtonAction = function(additionalCB) {
                 data: $.merge({uid: $self.data('uid')}, LS.data.csrfTokenData),
                 method: 'post',
                 success: function(resolve){
-                    LS.ajaxAlerts(resolve.message, 'success');
+                    LS.ajaxAlerts(resolve.message, 'success', {showCloseButton: true});
                     $('#identity__bsconfirmModal').modal('hide');
                     additionalCB();
                 },
                 error: function(error) {
                     console.error(error);
-                    LS.ajaxAlerts($self.data('errortext'), 'danger');
+                    LS.ajaxAlerts($self.data('errortext'), 'danger', {showCloseButton: true});
                     $('#identity__bsconfirmModal').modal('hide');
                     additionalCB();
                 }

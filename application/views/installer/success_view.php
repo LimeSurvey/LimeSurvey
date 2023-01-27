@@ -4,7 +4,12 @@
     </div>
     <div class="col-md-6">
         <h2><?php echo $title; ?></h2>
-        <div class='alert alert-success'><?php echo $descp; ?></div>
+        <?php
+        $this->widget('ext.AlertWidget.AlertWidget', [
+            'text' => $descp,
+            'type' => 'success',
+        ]);
+        ?>
         <legend> <?php eT("Administrator credentials"); ?></legend>
         <?php eT("Username:"); ?> <?php echo $user; ?> <br />
         <?php eT("Password:"); ?> <?php echo $pwd; ?>

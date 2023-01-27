@@ -116,9 +116,13 @@ echo viewHelper::getViewTestTag('statisticsIndex');
 
             <div id='statisticsoutput' class='statisticsfilters'>
                 <?php if ($output == "") : ?>
-                    <div class="alert alert-info" role="alert" id="view-stats-alert-info">
-                        <?php eT('Please select filters and click on the "View statistics" button to generate the statistics.'); ?>
-                    </div>
+                    <?php
+                    $this->widget('ext.AlertWidget.AlertWidget', [
+                        'text' => gT('Please select filters and click on the "View statistics" button to generate the statistics.'),
+                        'type' => 'info',
+                        'htmlOptions' => ['id' => 'view-stats-alert-info']
+                    ]);
+                    ?>
                 <?php else : ?>
                     <?php echo $output; ?>
                 <?php endif; ?>

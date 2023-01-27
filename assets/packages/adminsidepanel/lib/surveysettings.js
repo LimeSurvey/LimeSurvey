@@ -108,7 +108,7 @@ function PostParameterGrid() {
 function saveParameter() {
     var sParamname = $.trim($('#paramname').val());
     if (sParamname == '' || !/^[a-zA-Z_][a-zA-Z0-9_]*$/.test(sParamname) || sParamname == 'sid' || sParamname == 'newtest' || sParamname == 'token' || sParamname == 'lang') {
-        $('#dlgEditParameter').prepend('<div class="alert alert-danger alert-dismissible fade in"><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' + sEnterValidParam + '</div>');
+        LS.ajaxAlerts(window.sEnterValidParam, 'danger', {inline: '#parameterError'});
         return;
     }
     $('#dlgEditParameter').dialog('close');

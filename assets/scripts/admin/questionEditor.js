@@ -731,13 +731,13 @@ $(document).on('ready pjax:scriptcomplete', function () {
    * @return {void}
    */
   function showLabelSetAlert(message /*: mixed */, type /*?: string */) /*: void */ {
-    if (typeof message !== 'string') {
+      if (typeof message !== 'string') {
         throw 'expected string';
-    }
-    const alertType = type ?? 'warning';
-    const alert = $('#labelsetalert');
-    const alertHtml = '<div class="alert alert-' + alertType + ' ls-space margin bottom-0 top-15">' + message + '</div>';
-    alert.html(alertHtml).show();
+      }
+      const alertType = type ?? 'warning';
+      const alert = $('#labelsetalert');
+      window.LS.ajaxAlerts(message, alertType, {inline: '#labelsetalert', class: 'ls-space margin bottom-0 top-15'});
+      alert.show();
   }
 
   /**
@@ -1433,10 +1433,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
        * @return {void}
        */
       success(successMessage) {
-        LS.LsGlobalNotifier.createAlert(
-          successMessage,
-          'success'
-        );
+        LS.LsGlobalNotifier.createAlert(successMessage, 'success', {showCloseButton: true});
       },
       /**
        * @param {any} data
@@ -1444,10 +1441,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
        */
       error(data) {
         if (data.responseJSON) {
-          LS.LsGlobalNotifier.createAlert(
-            data.responseJSON.message,
-            'danger'
-          );
+          LS.LsGlobalNotifier.createAlert(data.responseJSON.message, 'danger', {showCloseButton: true});
         } else {
           alert('Internal eror from Ajax call');
           throw 'abort';
@@ -1585,10 +1579,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
       // Check uniqueness.
       if (!checkSubquestionCodeUnique(table, msg)) {
-        LS.LsGlobalNotifier.createAlert(
-          msg,
-          'danger'
-        );
+        LS.LsGlobalNotifier.createAlert(msg, 'danger', {showCloseButton: true});
         hasError = true;
       }
 
@@ -1599,11 +1590,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
         const code = that.value;
         if (code.length > 20) {
           $(that.parentElement).addClass('has-error');
-          LS.LsGlobalNotifier.createAlert(
-            // TODO: Translation
-            'Subquestion code is too long. Maximal number of characters is: 20.',
-            'danger'
-          );
+          LS.LsGlobalNotifier.createAlert('Subquestion code is too long. Maximal number of characters is: 20.', 'danger', {showCloseButton: true});
           hasError = true;
         }
       }
@@ -1940,26 +1927,17 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
             if (textStatus === 'success') {
               // Show confirm message.
-              LS.LsGlobalNotifier.createAlert(
-                json.message,
-                'success'
-              );
+              LS.LsGlobalNotifier.createAlert(json.message, 'success', {showCloseButton: true});
             } else {
               // Show error message.
-              LS.LsGlobalNotifier.createAlert(
-                json.message,
-                'danger'
-              );
+              LS.LsGlobalNotifier.createAlert(json.message, 'danger', {showCloseButton: true});
             }
             updateQuestionSummary();
           },
           error: (data) => {
             $('#ls-loading').hide();
             if (data.responseJSON) {
-              LS.LsGlobalNotifier.createAlert(
-                data.responseJSON.message,
-                'danger'
-              );
+              LS.LsGlobalNotifier.createAlert(data.responseJSON.message, 'danger', {showCloseButton: true});
             } else {
               alert('Internal error from saveFormWithAjax: no data.responseJSON found');
               throw 'abort';

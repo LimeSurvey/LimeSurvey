@@ -218,7 +218,7 @@ class SurveysGroupsPermissionController extends LSBaseController
         if (!$oPermission->hasErrors()) {
             $result['success'] = gT("User added.");
         } else {
-            $result['error'] = CHtml::errorSummary($oPermission);
+            $result['error'] = $oPermission;
         }
 
         $aData['aPermissionData']['result'] = $result;

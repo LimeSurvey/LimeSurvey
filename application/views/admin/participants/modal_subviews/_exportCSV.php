@@ -23,9 +23,12 @@
                         </div>
                     </div>
                 <?php if (Yii::app()->getConfig('hideblacklisted') != 'N'): ?>
-                    <div class='alert alert-info'>
-                        <p><span class='ri-information-fill'></span>&nbsp;<?php eT('If you want to export blacklisted participants, set "Hide blacklisted participants" to "No" in CPDB settings.'); ?></p>
-                    </div>
+                    <?php
+                    $this->widget('ext.AlertWidget.AlertWidget', [
+                        'text' => gT('If you want to export blacklisted participants, set "Hide blacklisted participants" to "No" in CPDB settings.'),
+                        'type' => 'info',
+                    ]);
+                    ?>
                 <?php endif; ?>
                 </div>
             </div>

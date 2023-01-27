@@ -2,13 +2,13 @@
     background-color: $white;
     position: relative;
     border-radius: 4px;
-    box-shadow: 8px 8px $g-200;
+    box-shadow: $boxshadow;
     border: 1px solid $g-900;
     color: $g-900;
 
     &.card-clickable {
         &:hover {
-            box-shadow: 8px 8px $grape-light;
+            box-shadow: $boxshadow-hover;
             cursor: pointer;
             cursor: hand;
         }
@@ -89,7 +89,7 @@
 .panel {
     background-color: $white;
     //box-shadow: 0 1px 1px $black_opac_05;
-    box-shadow: 8px 8px $g-200;
+    box-shadow: $boxshadow;
     > .card-body + {
         .table {
             border-top: 1px solid $g-200;
