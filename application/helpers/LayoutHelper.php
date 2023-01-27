@@ -235,16 +235,23 @@ class LayoutHelper
         $middle = $aData['topbar']['middleButtons'] ?? '';
         $rightSide = $aData['topbar']['rightButtons'] ?? '';
         if ($titleTextBreadcrumb !== null) {
-            return Yii::app()->getController()->widget(
-                'ext.LimeTopbarWidget.TopbarWidget',
-                array(
-                    'leftSide' => $titleTextBreadcrumb,
-                    'middle' => $middle, //array of ButtonWidget
-                    'rightSide' => $rightSide, //array of ButtonWidget
-                    'isBreadCrumb' => $isBreadCrumb
-                ),
-                true
-            );
+            //special case for question administration (overview and editor)
+            if (isset($aData['topBar']['name']) && ($aData['topBar']['name'] === 'questionTopbar_view')) {
+               // Yii::app()->getController()->renderPartial();
+                //todo: implement topbar for questioneditor
+                return '';
+            } else {
+                return Yii::app()->getController()->widget(
+                    'ext.LimeTopbarWidget.TopbarWidget',
+                    array(
+                        'leftSide' => $titleTextBreadcrumb,
+                        'middle' => $middle, //array of ButtonWidget
+                        'rightSide' => $rightSide, //array of ButtonWidget
+                        'isBreadCrumb' => $isBreadCrumb
+                    ),
+                    true
+                );
+            }
         }
         return ''; //no topbar shown in this case
     }
