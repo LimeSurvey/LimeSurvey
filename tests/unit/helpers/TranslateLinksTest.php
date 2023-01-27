@@ -67,6 +67,14 @@ class TranslateLinksTest extends TestBaseClass
         $publicUrl = \Yii::app()->getConfig("publicurl") . 'upload/labels/444444/files/file.ext';
         $this->assertEquals($link, $publicUrl);
 
+        //Url with dashes and or underscores
+        $linkString = 'https://lime-survey.org/upload/labels/333333/files/file.ext';
+
+        $link = translateLinks('label', '333333', '444444', $linkString);
+
+        $publicUrl = \Yii::app()->getConfig("publicurl") . 'upload/labels/444444/files/file.ext';
+        $this->assertEquals($link, $publicUrl);
+
         //Trying to translate a local path
         $linkString = '/var/www/html/limesurvey/upload/labels/555555/files/file.ext';
 
@@ -91,6 +99,14 @@ class TranslateLinksTest extends TestBaseClass
 
         //HTTPS
         $linkString = 'https://limesurvey.org/upload/surveys/333333/files/file.ext';
+
+        $link = translateLinks('survey', '333333', '444444', $linkString);
+
+        $publicUrl = \Yii::app()->getConfig("publicurl") . 'upload/surveys/444444/files/file.ext';
+        $this->assertEquals($link, $publicUrl);
+
+        //Url with dashes and or underscores
+        $linkString = 'https://lime-survey.org/upload/surveys/333333/files/file.ext';
 
         $link = translateLinks('survey', '333333', '444444', $linkString);
 
