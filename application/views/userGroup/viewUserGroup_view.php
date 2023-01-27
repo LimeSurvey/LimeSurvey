@@ -25,16 +25,19 @@ $dataProvider = $model->searchUserGroupMembers($ugid);
 
                 <?php if (isset($headercfg)) : ?>
                     <?php if ($headercfg["type"] === "success") : ?>
-                        <div class="alert alert-success alert-dismissible" role="alert">
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            <?php echo $headercfg["message"]; ?>
-                        </div>
-
+                        <?php
+                        $this->widget('ext.AlertWidget.AlertWidget', [
+                            'text' => $headercfg["message"],
+                            'type' => 'success',
+                        ]);
+                        ?>
                     <?php else : ?>
-                        <div class="alert alert-warning alert-dismissible" role="alert">
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            <?php echo $headercfg["message"]; ?>
-                        </div>
+                        <?php
+                        $this->widget('ext.AlertWidget.AlertWidget', [
+                            'text' => $headercfg["message"],
+                            'type' => 'warning',
+                        ]);
+                        ?>
 
                     <?php endif; ?>
                 <?php endif; ?>

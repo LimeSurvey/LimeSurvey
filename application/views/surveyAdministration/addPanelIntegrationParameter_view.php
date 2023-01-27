@@ -10,6 +10,7 @@
 ?>
 
 <div id='dlgEditParameter'>
+    <div id="parameterError"></div>
     <div id='dlgForm' class='form-horizontal'>
         <div class='row'>
             <div class='mb-3'>

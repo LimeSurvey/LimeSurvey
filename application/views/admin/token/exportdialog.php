@@ -82,9 +82,12 @@
                         <div class="default controls">
                             <input type="text" class="form-control" value="" name="filteremail" id="filteremail" />
                         </div>
-                        <div class="alert alert-info controls" role="alert">
-                            <?php eT('Only export entries which contain this string in the email address.'); ?>
-                        </div>
+                        <?php
+                        $this->widget('ext.AlertWidget.AlertWidget', [
+                            'text' => gT('Only export entries which contain this string in the email address.'),
+                            'type' => 'info',
+                        ]);
+                        ?>
 
                     </div>
 
@@ -105,9 +108,12 @@
                                 ],
                             ]); ?>
                         </div>
-                        <div class="alert alert-warning controls" role="alert">
-                            <?php eT('Warning: Deleted participants entries cannot be recovered.'); ?>
-                        </div>
+                        <?php
+                        $this->widget('ext.AlertWidget.AlertWidget', [
+                            'text' => gT('Warning: Deleted participants entries cannot be recovered.'),
+                            'type' => 'warning',
+                        ]);
+                        ?>
                     </div>
                     <?php } ?>
                     <div class="mb-3 control-group " data-name="maskequations">
@@ -124,10 +130,13 @@
                                 ],
                             ]); ?>
                         </div>
-                        <div class="alert alert-warning controls" role="alert">
-                            <?php eT('Important: Quote all content that starts with an equal sign to prevent CSV injections.'); ?>
-                        </div>
-                    </div>                    
+                        <?php
+                        $this->widget('ext.AlertWidget.AlertWidget', [
+                            'text' => gT('Important: Quote all content that starts with an equal sign to prevent CSV injections.'),
+                            'type' => 'warning',
+                        ]);
+                        ?>
+                    </div>
                 </div>
                 <button role="button" class="btn btn-primary btn-block d-none" type="submit" name="submit">
                     <i class="ri-download-fill"></i>

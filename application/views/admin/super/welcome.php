@@ -100,21 +100,28 @@ echo viewHelper::getViewTestTag('index');
         //Check for IE and show a warning box
     if (preg_match('~MSIE|Internet Explorer~i', $_SERVER['HTTP_USER_AGENT']) || (strpos($_SERVER['HTTP_USER_AGENT'], 'Trident/7.0') !== false && strpos($_SERVER['HTTP_USER_AGENT'], 'rv:11.0') !== false)) {
         ?>
-    <div class="container">
-        <div class="alert alert-danger" role="alert" id="warningIE11">
-            <div class="container-fluid">
-                <div class="row">
-                    <h4 class="col-12"><?=gT("Warning!")?></h4>
+          <div class="container">
+          <?php
+          $htmlContent = "<div class='container-fluid'>
+                <div class='row'>
+                    <h4 class='col-12'><span class='ri-error-warning-fill'></span>" . gT('Warning!') . "</h4>
                 </div>
-                <div class="row">
-                    <div class="col-12">
-                    <?php eT("You are using Microsoft Internet Explorer."); ?><br/><br/>
-                    <?php eT("LimeSurvey 3.x or newer does not support Internet Explorer for the LimeSurvey administration, anymore. However most of the functionality should still work."); ?><br/>
-                    <?php eT("If you have any issues, please try using a modern browser first, before reporting it.");?>
-                    </div>
+                <div class='row'>
+                    <div class='col-12'>" .
+                    gT('You are using Microsoft Internet Explorer.') . "<br/><br/>" .
+                    gT('LimeSurvey 3.x or newer does not support Internet Explorer for the LimeSurvey administration, anymore. However most of the functionality should still work.') . "<br/>" .
+                    gT('If you have any issues, please try using a modern browser first, before reporting it.') .
+                    "</div>
                 </div>
-            </div>
-        </div>
+            </div>";
+          $this->widget('ext.AlertWidget.AlertWidget', [
+              'text' => $htmlContent,
+              'type' => 'danger',
+              'showIcon' => false,
+              'showCloseButton' => false,
+              'htmlOptions' => ['id' => 'warningIE11']
+          ]);
+          ?>
     </div>
 
     <?php

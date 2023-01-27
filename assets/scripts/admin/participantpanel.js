@@ -187,7 +187,7 @@ LS.CPDB = (function() {
                 'list_central_participants',
                 function (result) {
                     if (!result.error) {
-                        window.LS.ajaxAlerts(result.success, 'success');
+                        window.LS.ajaxAlerts(result.success, 'success', {showCloseButton: true});
                     }
                 }
             );
@@ -205,7 +205,7 @@ LS.CPDB = (function() {
                 'list_central_participants',
                 function (result) {
                     if (!result.error) {
-                        window.LS.ajaxAlerts(result.success, 'success');
+                        window.LS.ajaxAlerts(result.success, 'success', {showCloseButton: true});
                     }
                 }
                 );
@@ -237,7 +237,7 @@ LS.CPDB = (function() {
                 'list_central_participants',
                 function(result) {
                     if (!result.error) {
-                        window.LS.ajaxAlerts(result.success, 'success');
+                        window.LS.ajaxAlerts(result.success, 'success', {showCloseButton: true});
                     }
                 }
             );
@@ -258,7 +258,7 @@ LS.CPDB = (function() {
                 function(result) {
                     console.ls.log(result);
                     if(!result.error) {
-                        window.LS.ajaxAlerts(result.success, 'success');
+                        window.LS.ajaxAlerts(result.success, 'success', {showCloseButton: true});
                     }
                 }
             );
@@ -329,7 +329,7 @@ LS.CPDB = (function() {
                 function(result) {
                     console.ls.log(result);
                     if(!result.error) {
-                        window.LS.ajaxAlerts(result.success, 'success');
+                        window.LS.ajaxAlerts(result.success, 'success', {showCloseButton: true});
                     }
                 }
             );
@@ -531,7 +531,7 @@ function rejectParticipantShareAjax(participant_id){
             method: "POST",
             dataType: 'json',
             success: function(result){
-                window.LS.ajaxAlerts(result.success, 'success');
+                window.LS.ajaxAlerts(result.success, 'success', {showCloseButton: true});
                 $.fn.yiiGridView.update('share_central_participants',{});
             }
         });
@@ -550,7 +550,7 @@ function deleteAttributeAjax(attribute_id){
             method: "POST",
             dataType: 'json',
             success: function (result){
-                window.LS.ajaxAlerts(result.success, 'success');
+                window.LS.ajaxAlerts(result.success, 'success', {showCloseButton: true});
                 $.fn.yiiGridView.update('list_attributes',{});
             }
         })

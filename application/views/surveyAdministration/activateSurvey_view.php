@@ -251,9 +251,12 @@
             <!-- Tip -->
             <div class='row'>
                 <div class='col-md-8 offset-md-2'>
-                    <div class="alert alert-info">
-                        <?php eT("Tip: Please note that you need to <strong>deactivate</strong> a survey if you want to <strong>add</strong> or <strong>delete</strong> groups/questions or <strong>change</strong> any of the settings above. The changes will cause all collected data from respondents to be moved and archived.", 'unescaped'); ?>
-                    </div>
+                    <?php
+                    $this->widget('ext.AlertWidget.AlertWidget', [
+                        'text' => gT("Tip: Please note that you need to <strong>deactivate</strong> a survey if you want to <strong>add</strong> or <strong>delete</strong> groups/questions or <strong>change</strong> any of the settings above. The changes will cause all collected data from respondents to be moved and archived.", 'unescaped'),
+                        'type' => 'info',
+                    ]);
+                    ?>
                     <br><br>
                 </div>
             </div>
@@ -261,7 +264,12 @@
             <?php if($oSurvey->getIsDateExpired()):?>
             <div class="row">
                 <div class='col-md-8 offset-md-2'>
-                    <div class="alert alert-warning"><?php eT('Note: This survey has a past expiration date configured and is currently not available to participants. Please remember to update/remove the expiration date in the survey settings after activation.')?><div>
+                    <?php
+                    $this->widget('ext.AlertWidget.AlertWidget', [
+                        'text' => gT('Note: This survey has a past expiration date configured and is currently not available to participants. Please remember to update/remove the expiration date in the survey settings after activation.'),
+                        'type' => 'warning',
+                    ]);
+                    ?>
                 </div>
             </div>
             <?php endif;?>

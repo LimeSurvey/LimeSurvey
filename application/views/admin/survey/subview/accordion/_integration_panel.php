@@ -26,11 +26,14 @@ echo viewHelper::getViewTestTag('surveyPanelIntegration');
     </div>
 </div>
 
-<?php  
-    App()->getClientScript()->registerScript('IntegrationPanel-variables', " 
-    window.PanelIntegrationData = ".json_encode($jsData).";
-    ", LSYii_ClientScript::POS_BEGIN ); 
-?> 
+<?php
+App()->getClientScript()->registerScript(
+    'IntegrationPanel-variables',
+    "window.PanelIntegrationData = " . json_encode($jsData) . ";
+     window.sEnterValidParam = '" . gT('You have to enter a valid parameter name.', 'js') . "';",
+    LSYii_ClientScript::POS_BEGIN
+);
+?>
 
 <!-- Modal box to add a parameter -->
 <!--div data-copy="submitsurveybutton"></div-->
