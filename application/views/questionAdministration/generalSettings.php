@@ -10,6 +10,7 @@
 <div class="accordion-item question-option-general-container col-12" id="general-settings">
     <h2 class="accordion-header" id="general-setting-heading">
         <button
+            id="button-collapse-General"
             class="accordion-button selector--questionEdit-collapse"
             type="button"
             role="button"
