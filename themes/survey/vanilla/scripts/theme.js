@@ -269,11 +269,28 @@ var ThemeScripts = function(){
         /* Nothing to do : keep it for compatibility (pre 3.0.1) */
     };
 
+    var initResumeLater = function(){
+        // Apply on Resume Later form the same logic as in survey pages
+        $(document).on('keydown', '.save-survey-form input', function (e) {
+            var code = (e.keyCode ? e.keyCode : e.which);
+            if (code == 13) {
+                // Prevent submit on Enter key
+                e.preventDefault();
+                // If Enter is pressed together with Control, submit the form.
+                if (e.ctrlKey == true) {
+                    // Submitting by clicking the button is needed for sending the 'savesubmit' value
+                    $('#savebutton').trigger('click');
+                }
+            }
+        });
+    };
+
     return {
         init: init,
         initUserForms: initUserForms,
         initGlobal: initGlobal,
         initWelcomePage: initWelcomePage,
+        initResumeLater: initResumeLater,
         focusFirst: focusFirst,
         sliderSuffixClone : sliderSuffixClone,
         fixBodyPadding : fixBodyPadding,

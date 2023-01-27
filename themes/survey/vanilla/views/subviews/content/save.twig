@@ -230,3 +230,12 @@
     </div>
 
 </form> <!-- main form -->
+
+{{ registerScript(
+    "BasicResumeLaterThemeScripts",
+    "if (window.basicThemeScripts === undefined) {
+        window.basicThemeScripts = new ThemeScripts();
+    }
+    basicThemeScripts.initResumeLater();",
+    'POS_POSTSCRIPT'
+) }}
