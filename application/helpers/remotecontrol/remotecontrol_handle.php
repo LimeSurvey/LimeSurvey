@@ -3164,12 +3164,13 @@ class remotecontrol_handle
      * @param string $sCompletionStatus (optional) 'complete','incomplete' or 'all' - defaults to 'all'
      * @param string $sHeadingType (optional) 'code','full' or 'abbreviated' Optional defaults to 'code'
      * @param string $sResponseType (optional)'short' or 'long' Optional defaults to 'short'
-     * @param integer $iFromResponseID (optional)
-     * @param integer $iToResponseID (optional)
-     * @param array $aFields (optional) Selected fields
+     * @param integer $iFromResponseID (optional) Frpm response id
+     * @param integer $iToResponseID (optional) To response id
+     * @param array $aFields (optional) Name the fields to export
+     * @param array $aAdditionalOptions (optional) Addition options for export, mainly 'convertY', 'convertN', 'nValue', 'yValue',
      * @return array|string On success: Requested file as base 64-encoded string. On failure array with error information
      * */
-    public function export_responses($sSessionKey, $iSurveyID, $sDocumentType, $sLanguageCode = null, $sCompletionStatus = 'all', $sHeadingType = 'code', $sResponseType = 'short', $iFromResponseID = null, $iToResponseID = null, $aFields = null)
+    public function export_responses($sSessionKey, $iSurveyID, $sDocumentType, $sLanguageCode = null, $sCompletionStatus = 'all', $sHeadingType = 'code', $sResponseType = 'short', $iFromResponseID = null, $iToResponseID = null, $aFields = null, $aAdditionalOptions = null)
     {
         $iSurveyID = (int) $iSurveyID;
         $survey = Survey::model()->findByPk($iSurveyID);
@@ -3202,6 +3203,17 @@ class remotecontrol_handle
             $aFields = array_slice($aFields, 0, 255);
         }
         $oFormattingOptions = new FormattingOptions();
+
+        if (is_array($aAdditionalOptions)) {
+            if (isset($aAdditionalOptions['convertY']) && $aAdditionalOptions['convertY']) {
+                $oFormattingOptions->convertY = $aAdditionalOptions['convertY'];
+                $oFormattingOptions->yValue = isset($aAdditionalOptions['yValue']) ? $aAdditionalOptions['yValue'] : 'Y';
+            }
+            if (isset($aAdditionalOptions['convertN']) && $aAdditionalOptions['convertN']) {
+                $oFormattingOptions->convertN = $aAdditionalOptions['convertN'];
+                $oFormattingOptions->nValue = isset($aAdditionalOptions['nValue']) ? $aAdditionalOptions['nValue'] : 'N';
+            }
+        }
 
         if ($iFromResponseID != null) {
                     $oFormattingOptions->responseMinRecord = (int) $iFromResponseID;
@@ -3303,11 +3315,12 @@ class remotecontrol_handle
      * @param string  $sSessionKey  Auth credentials
      * @param int     $iSurveyID    ID of the Survey
      * @param string  $sToken       Response token
+     * @param int     $responseId   Response ID
      *
      * @return array On success: array containing all uploads of the specified response
      *               On failure: array with error information
      */
-    public function get_uploaded_files($sSessionKey, $iSurveyID, $sToken)
+    public function get_uploaded_files($sSessionKey, $iSurveyID, $sToken, $responseId = null)
     {
         if (!$this->_checkSessionKey($sSessionKey)) {
             return array('status' => self::INVALID_SESSION_KEY);
@@ -3323,14 +3336,23 @@ class remotecontrol_handle
             return array('status' => 'No permission');
         }
 
-        $oResponses = Response::model($iSurveyID)->findAllByAttributes(array('token' => $sToken));
+        if (empty($responseId) and empty($sToken)) {
+            return ['status' => 'Invalid arguments: both Token and Reponse ID are empty'];
+        }
+        $criteria = new CDbCriteria();
+        if (!empty($responseId)) {
+            $criteria->compare('id', $responseId);
+        }
+        if (!empty($sToken)) {
+            $criteria->compare('token', $sToken);
+        }
+        $oResponses = Response::model($iSurveyID)->findAll($criteria);
+        if (empty($oResponses)) {
+            return ['status' => 'Could not find response for given token or response id'];
+        }
 
         $uploaded_files = array();
         foreach ($oResponses as $key => $oResponse) {
-            if (!($oResponse instanceof Response)) {
-                return array('status' => 'Could not find response for given token');
-            }
-
             foreach ($oResponse->getFiles() as $aFile) {
                 $sFileRealName = Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyID . "/files/" . $aFile['filename'];
 

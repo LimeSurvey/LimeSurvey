@@ -776,7 +776,6 @@ $(document).on('ready pjax:scriptcomplete', function () {
     } else {
         $('#current_scale_id').val(scaleId);
     }
-
     $('#labelsets').select2({
         dropdownParent: $('#labelsetbrowserModal'),
         theme: 'bootstrap-5'
