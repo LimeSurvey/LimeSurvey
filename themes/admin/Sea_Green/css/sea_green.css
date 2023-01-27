@@ -11104,6 +11104,25 @@ a {
   display: none !important;
 }
 
+.summary-table {
+  font-size: 0.9975rem;
+  padding-left: 0.5rem;
+}
+.summary-table strong {
+  font-weight: 600;
+}
+.summary-table .em-expression {
+  background-color: #FFE872;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+.pagetitle {
+  border-bottom: solid 2px #D3D5DA;
+  position: relative;
+  margin-bottom: 1em;
+}
+
 /**
  * Lime Admin Common CSS File
  *
@@ -11334,7 +11353,6 @@ a {
 }
 
 .side-body h3, .side-body .h3,
-.pagetitle,
 .list-surveys h3,
 .list-surveys .h3 {
   position: relative;
@@ -14598,11 +14616,6 @@ html[dir=rtl] th {
   overflow-x: visible;
 }
 
-.accordion-button:not(.collapsed) {
-  background-color: #fff;
-  color: #000;
-}
-
 .jcarousel-wrapper {
   margin: 20px auto;
   position: relative;
@@ -15122,7 +15135,7 @@ a.list-group-item-danger.active:focus, a.list-group-item-danger.active:hover, a.
   filter: alpha(opacity=90);
 }
 
-.list-surveys h3, .list-surveys .h3, .pagetitle, .side-body h3, .side-body .h3 {
+.list-surveys h3, .list-surveys .h3, .side-body h3, .side-body .h3 {
   color: #333333;
   border-bottom: solid 2px #328637;
 }
@@ -15985,10 +15998,6 @@ table.cke_editor {
   border-top: solid 1px #dadada;
 }
 
-.h6 .small {
-  color: #858585;
-}
-
 .dropdown-item > a:hover {
   background-color: #0f3e12;
   color: #fff;
@@ -16836,6 +16845,9 @@ tr.info, tr.danger {
   position: absolute;
 }
 
+.btn-group .btn {
+  padding: 8px 16px;
+}
 .btn-group .btn input[type=radio],
 .btn-group .btn input[type=checkbox] {
   outline: none;
@@ -17071,6 +17083,14 @@ dl dt {
   font-weight: 600;
   font-size: 1.14rem;
   line-height: 24px;
+}
+
+.fw-bold {
+  font-weight: 600 !important;
+}
+
+small, .small {
+  font-size: 0.75em;
 }
 
 a {
@@ -17655,6 +17675,7 @@ footer.footer {
 }
 
 .nav-tabs .nav-link {
+  font-size: 0.9975rem;
   color: #1E1E1E;
   border: 0;
   border-radius: 0;
@@ -18361,4 +18382,42 @@ table .ls-sticky-column:has(.dropdown-menu.show) {
 
 .no-simple-graph {
   height: 300px;
+}
+
+.accordion {
+  background-color: #fff;
+}
+
+.accordion-button:not(.collapsed)::after {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23212529'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+}
+
+#advanced-question-editor .settings-accordion-container, #copy-question .settings-accordion-container {
+  padding: 8px 12px;
+}
+#advanced-question-editor [class^=ri-], #advanced-question-editor [class*=" ri-"], #copy-question [class^=ri-], #copy-question [class*=" ri-"] {
+  color: #9094A7;
+}
+#advanced-question-editor .accordion-button, #copy-question .accordion-button {
+  font-size: 12px;
+  font-weight: 600;
+  background-color: #fff;
+  color: #1E1E1E;
+}
+#advanced-question-editor .accordion-button:not(.collapsed), #copy-question .accordion-button:not(.collapsed) {
+  background-color: #F9F9FB;
+  box-shadow: none;
+}
+#advanced-question-editor .accordion-button:not(.collapsed)::after, #copy-question .accordion-button:not(.collapsed)::after {
+  background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23000'%3e%3cpath d='M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z'/%3e%3c/svg%3e") center/1em auto no-repeat;
+}
+#advanced-question-editor .accordion-button:focus, #copy-question .accordion-button:focus {
+  border: none;
+  box-shadow: none;
+}
+#advanced-question-editor .accordion-item, #copy-question .accordion-item {
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 1px solid #D3D5DA;
 }
