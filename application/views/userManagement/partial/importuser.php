@@ -25,9 +25,12 @@ Yii::app()->getController()->renderPartial(
 <div class="modal-body">
     <div class="container">
         <div class="row">
-            <div class="alert alert-info">
-                <?=$note?>
-            </div>
+            <?php
+            $this->widget('ext.AlertWidget.AlertWidget', [
+                'text' => $note,
+                'type' => 'info',
+            ]);
+            ?>
         </div>
         <div class="md-3" id="UserManagement--errors">
         </div>

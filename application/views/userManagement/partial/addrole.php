@@ -17,9 +17,13 @@ Yii::app()->getController()->renderPartial(
     <div class="container form">
         <input type="hidden" name="userid" value="<?=$oUser->uid?>" />
         <div class="row">
-            <div class="col-12 alert alert-info">
-                <?=gT("Note: Adding role(s) to a user will overwrite any individual user permissions!")?>
-            </div>
+            <?php
+            $this->widget('ext.AlertWidget.AlertWidget', [
+                'text' => gT("Note: Adding role(s) to a user will overwrite any individual user permissions!"),
+                'type' => 'info',
+                'htmlOptions' => ['class' => 'col-12']
+            ]);
+            ?>
         </div>
         <div class="mb-3">
             <label for="roleselector"><?=gT("Select role(s):")?></label>

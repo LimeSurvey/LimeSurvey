@@ -113,16 +113,17 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         $iBoxesByRow = $('#iBoxesByRow').val();
         $iBoxesOffset = $('#iBoxesOffset').val();
         $successMessage = $('#boxesupdatemessage').data('ajaxsuccessmessage');
+        $errorMessage = $('#boxeserrormessage').data('ajaxerrormessage');
         $.ajax({
             url : $url+'/boxesbyrow/'+$iBoxesByRow+'/boxesoffset/'+$iBoxesOffset,
             type : 'GET',
             dataType : 'html',
             // html contains the buttons
             success : function(html, statut){
-                $('#notif-container').append('<div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="btn-close limebutton" data-bs-dismiss="alert" aria-label="Close"></button>'+$successMessage+'</div>');
+                window.LS.ajaxAlerts($successMessage, 'success', {showCloseButton: true});
             },
             error :  function(html, statut){
-                alert('error');
+                window.LS.ajaxAlerts($errorMessage, 'danger', {showCloseButton: true});
             }
         });
     });

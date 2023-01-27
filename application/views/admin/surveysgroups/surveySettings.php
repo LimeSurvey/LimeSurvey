@@ -29,9 +29,13 @@ Yii::app()->getClientScript()->registerScript(
             <?php if ($model->hasPermission('surveysettings', 'update')) : ?>
                 <div class="row">
                     <div class="col-12">
-                        <div class="alert alert-info controls" role="alert">
-                            <?php eT('All changes of survey group settings will have immediate effect on all related surveys that use inherited values.'); ?>
-                        </div>
+                        <?php
+                        $this->widget('ext.AlertWidget.AlertWidget', [
+                            'text' => gT('All changes of survey group settings will have immediate effect on all related surveys that use inherited values.'),
+                            'type' => 'info',
+                            'htmlOptions' => ['class' => 'controls']
+                        ]);
+                        ?>
                     </div>
                 </div>
             <?php endif; ?>

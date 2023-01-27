@@ -248,31 +248,35 @@ App()->getClientScript()->registerScriptFile(
 <div class="col-12 templateeditor">
 
     <?php if (!is_template_editable($templatename)) : ?>
-        <div class="alert alert-info alert-dismissible" role="alert">
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            <span class="ri-information-line"></span>&nbsp;&nbsp;&nbsp;
-            <strong>
-                <?php eT('Note: This is a standard theme.'); ?>
-            </strong>
-            <?php
-            printf(gT('If you want to modify it %s you can extend it%s.'),
+        <?php
+        $message = '<strong>' .
+            gT('Note: This is a standard theme.') .
+            '</strong> ' .
+            sprintf(
+                gT('If you want to modify it %s you can extend it%s.'),
                 "<a href='#' title=\"" . gT("Extend theme") . "\""
                 . " onclick=\"javascript: copyprompt('" . gT("Please enter the name for the new theme:") . "', '" . gT("extends_") . "$templatename', '$templatename', 'copy')\">",
-                '</a>');
-            ?>
-        </div>
+                '</a>'
+            );
+        $this->widget('ext.AlertWidget.AlertWidget', [
+            'text' => $message,
+            'type' => 'info',
+        ]);
+        ?>
     <?php endif; ?>
     <?php if ((int)$templateapiversion < (int)App()->getConfig("templateapiversion")) : ?>
-        <div class="alert alert-info alert-dismissible" role="alert">
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            <div class="h4">
-                <span class="ri-information-line"></span>
-                <?php eT('This theme is out of date.'); ?>
-            </div>
-            <?php
-            printf(gT("We can not guarantee optimum operation. It would be preferable to no longer use it or to make it compatible with the version %s of the LimeSurvey API."),
-                intval(App()->getConfig("versionnumber")));
-            ?>
-        </div>
+        <?php
+        $message = sprintf(
+            gT(
+                'We can not guarantee optimum operation. It would be preferable to no longer use it or to make it compatible with the version %s of the LimeSurvey API.'
+            ),
+            intval(App()->getConfig("versionnumber"))
+        );
+        $this->widget('ext.AlertWidget.AlertWidget', [
+            'header' => gT('This theme is out of date.'),
+            'text' => $message,
+            'type' => 'info',
+        ]);
+        ?>
     <?php endif; ?>
 </div>

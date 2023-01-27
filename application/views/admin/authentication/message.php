@@ -27,10 +27,12 @@
                     ); ?>
                     <div class="row login-content login-content-form">
                         <div class="col-12">
-                            <div class="alert alert-info" role="alert">
-                                <?php
-                                echo $message; ?>
-                            </div>
+                            <?php
+                            $this->widget('ext.AlertWidget.AlertWidget', [
+                                'text' => $message,
+                                'type' => 'info',
+                            ]);
+                            ?>
                         </div>
                     </div>
 

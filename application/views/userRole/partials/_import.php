@@ -16,8 +16,6 @@ Yii::app()->getController()->renderPartial(
     <div class="container">
         <div class="mb-3" id="RoleControl--errors">
         </div>
-        <div class="mb-3" id="RoleControl--errors">
-        </div>
         <div class="mb-3">
             <label class="form-label" for="the_file"><?=gT('Select role-XML file')?></label>
             <input type="file" name="the_file" id="the_file" class="form-control"/>
