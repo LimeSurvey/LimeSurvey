@@ -1172,13 +1172,6 @@ output {
     border: 1px solid $gray-09;
 }
 
-// Side Body
-.side-body {
-    h3 {
-        @extend %extend_19;
-    }
-}
-
 // Surveybar
 .surveybar {
     border-bottom: 1px solid $gray-07;

@@ -22,11 +22,7 @@ h2,
 
 h3,
 .h3 {
-  color       : $heading-title-color;
-  font-family : $ibm-font-family;
-  font-weight : $font-weight-500;
-  font-size   : $font-size-sm;
-  line-height : $line-height-20;
+  @include h3
 }
 
 label {

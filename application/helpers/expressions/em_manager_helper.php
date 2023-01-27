@@ -8997,7 +8997,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         Yii::app()->setLanguage(Yii::app()->session["adminlang"]);
         $surveyname = viewHelper::stripTagsEM(templatereplace('{SURVEYNAME}', ['SURVEYNAME' => $aSurveyInfo['surveyls_title']]));
 
-        $out = '<div id="showlogicfilediv" class="table-responsive"><h3>' . $LEM->gT('Logic File for Survey # ') . '[' . $LEM->sid . "]: $surveyname</h3>\n";
+        $out = '<div id="showlogicfilediv" class="table-responsive"><div class="pagetitle h3">' . $LEM->gT('Logic File for Survey # ') . '[' . $LEM->sid . "]: $surveyname</div>\n";
         $out .= "<table id='logicfiletable' class='table table-bordered'>";
 
         if (is_null($gid) && is_null($qid)) {

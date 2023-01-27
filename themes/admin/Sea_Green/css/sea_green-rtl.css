@@ -11094,10 +11094,23 @@ a {
   border-radius: 4px;
 }
 
+#logicfiletable .em-expression {
+  background-color: #FFE872;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
 .pagetitle {
   border-bottom: solid 2px #D3D5DA;
   position: relative;
   margin-bottom: 1em;
+}
+.pagetitle.h3 {
+  color: #152536;
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-weight: 500;
+  font-size: 0.9975rem;
+  line-height: 20px;
 }
 
 /**
@@ -15112,7 +15125,7 @@ a.list-group-item-danger.active:focus, a.list-group-item-danger.active:hover, a.
   filter: alpha(opacity=90);
 }
 
-.list-surveys h3, .list-surveys .h3, .side-body h3, .side-body .h3 {
+.list-surveys h3, .list-surveys .h3 {
   color: #333333;
   border-bottom: solid 2px #328637;
 }

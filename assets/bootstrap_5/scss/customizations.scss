@@ -31,15 +31,21 @@ a {
         font-weight: $font-weight-600;
     }
     .em-expression {
-        background-color: $banana;
-        padding: 2px 4px;
-        border-radius: $border-radius;
+        @include expression
     }
+}
+
+#logicfiletable .em-expression {
+    @include expression
 }
 
 // Headings
 .pagetitle {
-    border-bottom: solid 2px $g-400;
-    position: relative;
-    margin-bottom: 1em;
+    border-bottom : solid 2px $g-400;
+    position      : relative;
+    margin-bottom : 1em;
+
+    &.h3 {
+        @include h3
+    }
 }
