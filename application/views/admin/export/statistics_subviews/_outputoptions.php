@@ -99,14 +99,15 @@
             </div>
         </div>
         <div class="mb-3">
-            <div class="alert alert-info alert-dismissible" role="alert">
-                <button type="button" class="btn-close limebutton" data-bs-dismiss="alert" aria-label="Close"></button>
-                <?php
-                eT("Each question has its own graph type defined in its advanced settings."); ?>
-                <br/>
-                <?php
-                eT("Using the chart type selector you can force the graph type for all selected questions."); ?>
-            </div>
+            <?php
+            $message = gT("Each question has its own graph type defined in its advanced settings.") .
+                '<br>' .
+                gT("Using the chart type selector you can force the graph type for all selected questions.");
+            $this->widget('ext.AlertWidget.AlertWidget', [
+            'text' => $message,
+            'type' => 'info',
+            ]);
+            ?>
         </div>
     </div>
 </div>

@@ -19,10 +19,12 @@
                 ]
             ); ?>
             <div class="modal-body">
-                <div class='alert alert-warning'>
-                    <i class='ri-alert-fil'></i>
-                    <?php eT('Warning: Only install plugins from sources you trust!'); ?>
-                </div>
+                <?php
+                $this->widget('ext.AlertWidget.AlertWidget', [
+                    'text' => gT('Warning: Only install plugins from sources you trust!'),
+                    'type' => 'warning',
+                ]);
+                ?>
                 <input type='hidden' name='lid' value='$lid' />
                 <input type='hidden' name='action' value='templateupload' />
                 <div  class="mb-3">

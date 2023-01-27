@@ -8,9 +8,12 @@
 <div class="modal-body selector--edit-role-container">
     <div class="container form">        
         <div class="row">
-            <div class="col-12 alert alert-info">
-                <?=gT("Careful: Applying a role to the user will overwrite any individual permissions given to the user!")?>
-            </div>
+            <?php
+            $this->widget('ext.AlertWidget.AlertWidget', [
+                'text' => gT("Careful: Applying a role to the user will overwrite any individual permissions given to the user!"),
+                'type' => 'info',
+            ]);
+            ?>
         </div>
         <div class="mb-3">
             <label for="roleselector"><?=gT("Select role to apply to users")?></label>

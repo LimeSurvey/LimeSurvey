@@ -64,10 +64,13 @@ Yii::app()->getController()->renderPartial(
 
     </table>
     <div class="row ls-space margin top-25">
-        <?php if (safecount(Permission::model()->getUserRole($oUser->uid)) > 0) : ?>
-            <div class="col-12 alert alert-warning">
-                <?= gT("Warning: The user has at least one role assigned. Setting individual user permissions will remove all roles from this user!") ?>
-            </div>
+       <?php if (safecount(Permission::model()->getUserRole($oUser->uid)) > 0 ): ?>
+            <?php
+                $this->widget('ext.AlertWidget.AlertWidget', [
+                    'text' => gT("Warning: The user has at least one role assigned. Setting individual user permissions will remove all roles from this user!"),
+                    'type' => 'warning',
+                ]);
+            ?>
         <?php endif; ?>
     </div>
 </div>

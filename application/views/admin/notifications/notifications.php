@@ -1,22 +1,34 @@
+<?php
+
+$alertTypes = ['success', 'primary', 'secondary', 'danger', 'error', 'warning', 'info', 'light', 'dark'];
+?>
+
 <div class="container-fluid">
     <div class="row">
         <div id="notif-container" class="col-12 content-right">
-            <?php foreach ($aMessage as $message): ?>
+            <?php
+            foreach ($aMessage as $message) : ?>
                 <?php
-                if (isset($message['type']) && in_array($message['type'], array('error', 'success', 'danger', 'warning', 'info'))) {
-                    $sType = $message['type'];
-                    if ($sType == 'error') {
-                        $sType = 'danger';
+                if (isset($message['type']) && in_array($message['type'], $alertTypes)) {
+                    $alertType = $message['type'];
+                    if ($alertType == 'error') {
+                        $alertType = 'danger';
                     }
                 } else {
-                    $sType = 'success';
+                    $alertType = 'success';
                 }
-                echo CHtml::openTag("div", array('class' => "alert alert-{$sType} alert-dismissible", 'role' => 'alert'));
-                echo CHtml::htmlButton("<span></span>", array('type' => 'button', 'class' => 'btn-close', 'data-bs-dismiss' => 'alert', 'aria-label' => gT("Close")));
-                echo $message['message'];
-                echo CHtml::closeTag("div");
+                $this->widget('ext.AlertWidget.AlertWidget', [
+                        'text' => $message['message'],
+                        'type' => $alertType,
+                        'isFilled' => false,
+                        'showCloseButton' => true,
+                        'htmlOptions' => [
+                            'class' => 'non-ajax-alert',
+                        ],
+                    ]);
                 ?>
-            <?php endforeach; ?>
+                <?php
+            endforeach; ?>
         </div>
     </div>
 </div>
