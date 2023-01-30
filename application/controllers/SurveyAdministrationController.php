@@ -141,11 +141,11 @@ class SurveyAdministrationController extends LSBaseController
         }
         //buttons in topbar
         $topbarData = TopbarConfiguration::getSurveyTopbarData($iSurveyID);
-       $aData['topbar']['middleButtons'] = $this->renderPartial(
-           'partial/topbar/surveyTopbarLeft_view',
-           $topbarData,
-           true
-       );
+        $aData['topbar']['middleButtons'] = $this->renderPartial(
+            'partial/topbar/surveyTopbarLeft_view',
+            $topbarData,
+            true
+        );
         $aData['topbar']['rightButtons'] = $this->renderPartial(
             'partial/topbar/surveyTopbarRight_view',
             $topbarData,
