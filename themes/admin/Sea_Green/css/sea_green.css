@@ -11136,6 +11136,10 @@ a {
   line-height: 20px;
 }
 
+.side-body h3, .side-body .h3 {
+  border-bottom: solid 2px #D3D5DA;
+}
+
 /**
  * Lime Admin Common CSS File
  *

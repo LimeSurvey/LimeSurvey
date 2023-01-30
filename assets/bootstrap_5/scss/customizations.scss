@@ -49,3 +49,8 @@ a {
         @include h3
     }
 }
+.side-body {
+    h3 {
+        border-bottom: solid 2px $g-400;
+    }
+}
