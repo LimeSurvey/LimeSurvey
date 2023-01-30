@@ -70,7 +70,7 @@ var PrepEmailTemplates = function(){
      * @param size
      * @return void
      */
-    addAttachment = function (target, url, relevance, size)
+    addAttachment = function (target, url, relevance, size, error)
     {
         if (typeof relevance == 'undefined')
         {
@@ -101,6 +101,9 @@ var PrepEmailTemplates = function(){
     
             $(newrow).find('input.relevance').val(relevance).attr('name', 'attachments' + templatetype + '[' + index + '][relevance]');
             $(newrow).find('input.filename').attr('name', 'attachments' + templatetype + '[' + index + '][url]');
+            if (error) {
+                $(newrow).find('input.filename').parent().append($("<span class='fa fa-exclamation-triangle text-danger' title='" + error + "'></span>"));
+            }
             $(newrow).appendTo($(target).find('tbody'));
             $('#kc-modal-open').modal('hide');
         }
