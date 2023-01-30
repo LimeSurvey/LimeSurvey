@@ -1,56 +1,68 @@
 // Dropdowns
 .dropdown-menu {
-  font-size: $dropdown-font-size;
-  background-color: $white;
-  border: 1.33px solid $g-900;
-  box-shadow: 4px 4px 0px $g-200;
-  border-radius: $border-radius;
-  padding: 8px 0px;
-  .divider {
-    background-color: $gray-06;
-  }
-  .larger-dropdown {
-    min-width: 240px;
-  }
-  > {
-    li > a {
-      color: $g-800;
-      &:hover {
-        color: $g-800;
-        background-color: $g-200;
-      }
-      &:focus {
-        color: $white;
-        background-color: var(--bs-primary);
-      }
+    font-size        : $dropdown-font-size;
+    background-color : $white;
+    border           : 1.33px solid $g-900;
+    box-shadow       : 4px 4px 0 $g-200;
+    border-radius    : $border-radius;
+    padding          : 8px 0;
+    line-height      : 20px;
+    .divider {
+        background-color : $gray-06;
     }
-    .active > a {
-      color: $white;
-      background-color: var(--bs-primary);
-      &:hover {
-        color: $white;
-        background-color: var(--bs-primary);
-      }
-      &:focus {
-        color: $white;
-        background-color: var(--bs-primary);
-      }
+    .larger-dropdown {
+        min-width : 240px;
     }
-    .disabled > a {
-      color: $g-600;
-      &:hover {
-        background-color: $g-200;
-        color: $g-600;
-      }
-      &:focus {
-        background-color: $g-200;
-        color: $g-600;
-      }
+    i {
+        margin-right : 4px;
     }
-  }
+    .dropdown-item {
+        padding : 8px 16px;
+    }
+    > {
+        li > a {
+            color : $g-800;
+            &:hover {
+                color            : $g-800;
+                background-color : $g-200;
+            }
+            &:focus {
+                color            : $white;
+                background-color : var(--bs-primary);
+            }
+        }
+        .active > a {
+            color            : $white;
+            background-color : var(--bs-primary);
+            &:hover {
+                color            : $white;
+                background-color : var(--bs-primary);
+            }
+            &:focus {
+                color            : $white;
+                background-color : var(--bs-primary);
+            }
+        }
+        .disabled > a {
+            color : $g-600;
+            &:hover {
+                background-color : $g-200;
+                color            : $g-600;
+            }
+            &:focus {
+                background-color : $g-200;
+                color            : $g-600;
+            }
+        }
+    }
 }
+
 .dropdown-header {
-  color: $g-600;
-  font-weight: 600;
-  font-size: $dropdown-font-size;
+    color       : $g-600;
+    font-weight : 600;
+    font-size   : $dropdown-font-size;
+}
+
+.dropdown-divider {
+    margin : 8px 0;
 }

@@ -14,12 +14,15 @@
     <input type="hidden" id="locale" name="locale" value="<?= convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']) ?>"/>
     <input type='hidden' name='rtl' value='<?php echo getLanguageRTL($_SESSION['adminlang']) ? '1' : '0'; ?>' />
     <h3><?php eT("Survey participants"); ?></h3>
-
-        <p class="alert alert-info alert-dismissible">
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            <span class="ri-information-fill"></span>
-            <?php eT("You can use operators in the search filters (eg: >, <, >=, <=, = )");?>
-        </p>
+    <?php
+    $this->widget('ext.AlertWidget.AlertWidget', [
+        'tag' => 'p',
+        'text' => gT(
+            "You can use operators in the search filters (eg: >, <, >=, <=, = )"
+        ),
+        'type' => 'info',
+    ]);
+    ?>
 
     <!-- CGridView -->
     <?php $pageSizeTokenView=Yii::app()->user->getState('pageSizeTokenView',Yii::app()->params['defaultPageSize']);?>
@@ -30,7 +33,7 @@
         <div class="row">
             <div class="content-right">
                 <?php
-                    $this->widget('ext.LimeGridView.LimeGridView', array(
+                    $this->widget('application.extensions.admin.grid.CLSGridView', array(
                         'dataProvider' => $model->search(),
                         'filter'       => $model,
                         'id'           => 'token-grid',

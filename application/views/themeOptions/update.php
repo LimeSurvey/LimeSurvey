@@ -160,12 +160,12 @@ Yii::app()->getClientScript()->registerScript(
                     success: function (data) {
                         console.log(data);
                         if(data.success === true){
-                            $(\'#notif-container\').append(\'<div class="alert alert-success" role="alert"><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>\'+data.message+\'</div>\');
+                            LS.LsGlobalNotifier.createAlert(data.message,  "success", {showCloseButton: true});
                             $progressBar.css("width", "0%");
                             $progressBar.find(\'span.visually-hidden\').text(\'0%\');
                             onSuccess();
                         } else {
-                            $(\'#notif-container\').append(\'<div class="alert alert-danger" role="alert"><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>\'+data.message+\'</div>\');
+                            LS.LsGlobalNotifier.createAlert(data.message,  "danger", {showCloseButton: true});
                             $progressBar.css("width", "0%");
                             $progressBar.find(\'span.visually-hidden\').text(\'0%\');
                         }

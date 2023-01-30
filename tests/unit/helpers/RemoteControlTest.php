@@ -589,27 +589,4 @@ class RemoteControlTest extends TestBaseClass
         $result = $handler->get_fieldmap($sessionKey, self::$surveyId, 'es');
         $this->assertEquals('Pregunta de ejemplo', $result[$sgq]['question']);
     }
-
-    /**
-     * Test the get_available_site_settings API call
-     */
-    public function testGetAvailableSiteSettings()
-    {
-        \Yii::import('application.helpers.remotecontrol.remotecontrol_handle', true);
-
-        // Create handler.
-        $admin   = new \AdminController('dummyid');
-        $handler = new \remotecontrol_handle($admin);
-
-        // Get session key.
-        $sessionKey = $handler->get_session_key(
-            self::$username,
-            self::$password
-        );
-
-        $settings = $handler->get_available_site_settings($sessionKey);
-        $this->assertNotEmpty($settings);
-        $this->assertArrayHasKey('sitename', $settings);
-        $this->assertArrayHasKey('defaultlang', $settings);
-    }
 }

@@ -7,7 +7,7 @@
 // Boxes
 .box {
   border-radius: $border-radius;
-  box-shadow: 8px 8px $g-200;
+  box-shadow: $boxshadow;
   border: 1px solid $g-900;
   color: $g-900;
   padding: 10px 25px;

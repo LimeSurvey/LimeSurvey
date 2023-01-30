@@ -5,7 +5,9 @@
 /* @var string $language */
 ?>
 
-<?php echo $form->errorSummary($oQuotaLanguageSetting); ?>
+<?php
+$this->widget('ext.AlertWidget.AlertWidget', ['errorSummaryModel' => $oQuotaLanguageSetting]);
+?>
 
 
 <!-- Quota message -->

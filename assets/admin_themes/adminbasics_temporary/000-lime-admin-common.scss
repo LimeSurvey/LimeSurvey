@@ -5,14 +5,6 @@
  * It should not contain color definition (grey, blacks, and white are acceptable)
  */
 
-// import variables and functions
-@import "../../../node_modules/bootstrap/scss/functions";
-@import "../../bootstrap_5/scss/variables.scss";
-@import "../../../node_modules/bootstrap/scss/variables";
-@import "../../../node_modules/bootstrap/scss/mixins";
-@import "../../../node_modules/bootstrap/scss/root";
-@import "../../bootstrap_5/scss/customizations";
-
 #ls-loading {
     width: 100%;
     height: 100%;
@@ -31,16 +23,6 @@
 #ls-loading-spinner {
     position: absolute;
     top: 30%;
-}
-
-#notif-container {
-    position: fixed;
-    top: 5%;
-    left: 20%;
-    width: 60%;
-    z-index: 3500;
-    background: rgba(255, 255, 255, 0.1);
-    min-height: 0;
 }
 
 .bg-white {
@@ -458,11 +440,6 @@ html {
 
 .welcome #lime-logo {
     animation: fadein 1s;
-}
-
-.alert {
-    position: relative;
-    animation: slidefromtop 1s;
 }
 
 #welcomeModal {
@@ -1736,13 +1713,6 @@ h3 .glyphicon-chevron-right {
     padding-left: 1em;
 }
 
-#update-alert.unstable-update {
-    background-color: #fff;
-    border: 1px solid #A0352F;
-    color: #A0352F;
-    margin-top: 1em;
-}
-
 html body .nav-tabs > li.active > a,
 html body .nav-tabs > li.active > a:hover,
 html body .nav-tabs > li.active > a:focus {
@@ -2062,11 +2032,8 @@ a.explorer-group:focus {
 .summary,
 #massive-action-container,
 #surveyListActions,
-.listActions,
-.pager-container ls-ba .pager,
-.pager-container ls-ba .pager .pagination {
-    margin: 0;
-    margin-bottom: 20px;
+.listActions {
+    margin : 0 0 20px;
 }
 
 .summary-container {
@@ -3734,16 +3701,4 @@ html[dir="rtl"] th {
 .accordion-button:not(.collapsed) {
     background-color: #fff;
     color: #000;
-}
-
-// pagination
-.pagination {
-    font-size : 1.2em;
-    .page-item {
-        .page-link {
-            margin        : 1px;
-            padding       : 5px 14px;
-            border-radius : 4px;
-        }
-    }
 }

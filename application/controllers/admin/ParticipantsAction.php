@@ -907,7 +907,6 @@ class ParticipantsAction extends SurveyCommonAction
         $invalidformatlist = array();
         $invalidattribute = array();
         $invalidparticipantid = array();
-        $aGlobalErrors = array();
         /* If no mapped array */
         if (!$mappedarray) {
             $mappedarray = array();
@@ -1159,7 +1158,6 @@ class ParticipantsAction extends SurveyCommonAction
         $aData['invalidparticipantid'] = $invalidparticipantid;
         $aData['overwritten'] = $overwritten;
         $aData['dupreason'] = $dupreason;
-        $aData['aGlobalErrors'] = $aGlobalErrors;
         $this->getController()->renderPartial('/admin/participants/uploadSummary_view', $aData);
     }
 

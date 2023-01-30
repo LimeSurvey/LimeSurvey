@@ -379,10 +379,11 @@ class InstallerController extends CController
             Yii::app()->session['populatedatabase'] = true;
             Yii::app()->session['databaseexist'] = true;
             unset(Yii::app()->session['databaseDontExist']);
-
-            $aData['adminoutputText'] = "<tr bgcolor='#efefef'><td colspan='2' align='center'>"
-            . "<div class='alert alert-success''><strong>\n"
-            . gT("Database has been created.") . "</strong></div>\n"
+            $successAlert = $this->widget('ext.AlertWidget.AlertWidget', [
+                'text' => '<strong>' . gT("Database has been created") . '.</strong>',
+                'type' => 'success',
+            ], true);
+            $aData['adminoutputText'] =  $successAlert . "\n"
             . gT("Please continue with populating the database.") . "<br /><br />\n";
             $aData['next'] = array(
                 'action' => 'installer/populatedb',

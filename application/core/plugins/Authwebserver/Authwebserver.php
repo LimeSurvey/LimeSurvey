@@ -159,7 +159,13 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
 
         if (!empty($settings['serverkey']) && !empty($settings['serverkey']['current'])) {
             if (!isset($_SERVER[$settings['serverkey']['current']])) {
-                $settings['serverkey']['help'] = "<p class='alert alert-danger'>" . gT("The server key is not currently set. If you set this plugin as default you will not be able to log in again.") . "<p>";
+                $settings['serverkey']['help'] = App()->getController()->widget('ext.AlertWidget.AlertWidget', [
+                    'tag' => 'p',
+                    'text' => gT(
+                        "The server key is not currently set. If you set this plugin as default you will not be able to log in again."
+                    ),
+                    'type' => 'info',
+                ], true);
             }
         }
 

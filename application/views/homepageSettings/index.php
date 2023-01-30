@@ -206,6 +206,7 @@ App()->getClientScript()->registerScript(
                         </div>
                         <div class="col-md-3">
                             <input type="hidden" id="boxesupdatemessage" data-ajaxsuccessmessage="<?php eT('Box settings updated!'); ?>"/>
+                            <input type="hidden" id="boxeserrormessage" data-ajaxerrormessage="<?php eT('Error while updating box settings!'); ?>"/>
                         </div>
                         <br/><br/><br/><br/>
                     </div>

@@ -26,12 +26,19 @@ Yii::app()->getController()->renderPartial(
 
 		<?php //Warn on edition of the main menu, though damaging it can do serious harm?>
 		<?php if (!$model->isNewRecord && $model->menu_id == '1'):?>
-			<div class="alert alert-danger" role="alert"><?php echo gT("You are editing an entry of the main menu!").' '.gT("Please be very careful."); ?></div>
+            <?php
+            $this->widget('ext.AlertWidget.AlertWidget', [
+                'text' => gT("You are editing an entry of the main menu!") . ' ' . gT("Please be very careful."),
+                'type' => 'danger',
+            ]);
+            ?>
 		<?php endif; ?>
 
 		<p class="note"><?php echo sprintf(gT('Fields with %s are required.'), '<span class="required">*</span>'); ?></p>
 
-		<?php echo $form->errorSummary($model); ?>
+        <?php
+        $this->widget('ext.AlertWidget.AlertWidget', ['errorSummaryModel' => $model]);
+        ?>
 
 		<div class="ex-form-group mb-3">
 			<?php echo $form->labelEx($model, 'title'); ?>
@@ -54,14 +61,26 @@ Yii::app()->getController()->renderPartial(
 
 		<div class="ex-form-group mb-3">
 			<?php echo $form->labelEx($model, 'menu_description'); ?>
-			<p class="selector_infoBox alert alert-info d-none"><?=gT('This will be shown when hovering over the menu.')?></p>
+            <?php
+            $this->widget('ext.AlertWidget.AlertWidget', [
+                'text' => gT('This will be shown when hovering over the menu.'),
+                'type' => 'info',
+                'htmlOptions' => ['class' => 'selector_infoBox d-none']
+            ]);
+            ?>
 			<?php echo $form->textArea($model, 'menu_description', array('class' => 'selector__hasInfoBox', 'rows'=>6, 'cols'=>50)); ?>
 			<?php echo $form->error($model, 'menu_description'); ?>
 		</div>
 
 		<div class="ex-form-group mb-3">
 			<?php echo $form->labelEx($model, 'menu_icon'); ?>
-			<p class="selector_infoBox alert alert-info d-none"><?=gT('Use a fontawesome classname, or a link to the image.')?></p>
+            <?php
+            $this->widget('ext.AlertWidget.AlertWidget', [
+                'text' => gT('Use a remix icon classname, or a link to the image.'),
+                'type' => 'info',
+                'htmlOptions' => ['class' => 'selector_infoBox d-none']
+            ]);
+            ?>
 			<?php echo $form->textField($model, 'menu_icon', array('class' => 'selector__hasInfoBox', 'size'=>60,'maxlength'=>255)); ?>
 			<?php echo $form->error($model, 'menu_icon'); ?>
 		</div>
@@ -74,7 +93,13 @@ Yii::app()->getController()->renderPartial(
 
 		<div class="ex-form-group mb-3">
 			<?php echo $form->labelEx($model, 'menu_link'); ?>
-			<p class="selector_infoBox alert alert-warning d-none"><?=gT('If the external-option is not set, this will be appended to the current admin url.')?></p>
+            <?php
+            $this->widget('ext.AlertWidget.AlertWidget', [
+                'text' => gT('If the external-option is not set, this will be appended to the current admin url.'),
+                'type' => 'warning',
+                'htmlOptions' => ['class' => 'selector_infoBox d-none']
+            ]);
+            ?>
 			<?php echo $form->textField($model, 'menu_link', array('class' => 'selector__hasInfoBox', 'size'=>60,'maxlength'=>255)); ?>
 			<?php echo $form->error($model, 'menu_link'); ?>
 		</div>
@@ -151,27 +176,39 @@ Yii::app()->getController()->renderPartial(
 
 			<div class="ex-form-group mb-3">
 				<?php echo $form->labelEx($model, 'name'); ?>
-				<p class="selector_infoBox alert alert-info d-none">
-					<?=gT('The name must be unique for all menu entries throughout the software.')?>
-				</p>
+                    <?php
+                    $this->widget('ext.AlertWidget.AlertWidget', [
+                        'text' => gT('The name must be unique for all menu entries throughout the software.'),
+                        'type' => 'warning',
+                        'htmlOptions' => ['class' => 'selector_infoBox d-none']
+                    ]);
+                    ?>
 				<?php echo $form->textField($model, 'name', array('class' => 'selector__hasInfoBox', 'size'=>60,'maxlength'=>255)); ?>
 				<?php echo $form->error($model, 'name'); ?>
 			</div>
 			
 			<div class="ex-form-group mb-3">
 				<?php echo $form->labelEx($model, 'menu_title'); ?>
-				<p class="selector_infoBox alert alert-info d-none">
-					<?=gT('This is the content of the menu link - leave blank to use the title.')?>
-				</p>
+                <?php
+                $this->widget('ext.AlertWidget.AlertWidget', [
+                    'text' => gT('This is the content of the menu link - leave blank to use the title.'),
+                    'type' => 'info',
+                    'htmlOptions' => ['class' => 'selector_infoBox d-none']
+                ]);
+                ?>
 				<?php echo $form->textField($model, 'menu_title', array('class' => 'selector__hasInfoBox', 'size'=>60,'maxlength'=>255)); ?>
 				<?php echo $form->error($model, 'menu_title'); ?>
 			</div>
 
 			<div class="ex-form-group mb-3">
 				<?php echo $form->labelEx($model, 'menu_class'); ?>
-				<p class="selector_infoBox alert alert-warning d-none">
-					<?=gT('If the link should have any extra classes, please insert them here.')?>
-				</p>
+                <?php
+                $this->widget('ext.AlertWidget.AlertWidget', [
+                    'text' => gT('If the link should have any extra classes, please insert them here.'),
+                    'type' => 'warning',
+                    'htmlOptions' => ['class' => 'selector_infoBox d-none']
+                ]);
+                ?>
 				<?php echo $form->textField($model, 'menu_class', array('class' => 'selector__hasInfoBox', 'size'=>60,'maxlength'=>255)); ?>
 				<?php echo $form->error($model, 'menu_class'); ?>
 			</div>
