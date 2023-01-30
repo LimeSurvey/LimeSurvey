@@ -77,7 +77,7 @@ class QuotasController extends LSBaseController
             true
         );
         $aData['topbar']['rightButtons'] = $this->renderPartial(
-            '/surveyAdministration/partial/topbar_quotas/rigthSideButtons',
+            '/surveyAdministration/partial/topbar_quotas/rightSideButtons',
             [
                 'surveyid' => $oSurvey->sid
             ],

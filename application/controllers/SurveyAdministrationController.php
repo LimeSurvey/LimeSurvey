@@ -227,7 +227,7 @@ class SurveyAdministrationController extends LSBaseController
         $aData['groupModel'] = new SurveysGroups('search');
 
         $aData['topbar']['title'] = gT('Survey list');
-        $aData['topbar']['rightButtons'] = $this->renderPartial('partial/topbarBtns/rigthSideButtons', [], true);
+        $aData['topbar']['rightButtons'] = $this->renderPartial('partial/topbarBtns/rightSideButtons', [], true);
         $aData['topbar']['middleButtons'] = $this->renderPartial('partial/topbarBtns/leftSideButtons', [], true);
 
         $this->aData = $aData;
@@ -412,7 +412,7 @@ class SurveyAdministrationController extends LSBaseController
         // topbar
         $aData['topbar']['title'] = gT('Create, import, or copy survey');
         $aData['topbar']['rightButtons'] = $this->renderPartial(
-            'partial/topbarBtns_create_survey/rigthSideButtons',
+            'partial/topbarBtns_create_survey/rightSideButtons',
             [],
             true
         );

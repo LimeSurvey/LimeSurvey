@@ -59,7 +59,7 @@ class HomepageSettingsController extends LSBaseController
         $dataProviderBox = new CActiveDataProvider('Box');
 
         $aData['topbar']['title'] = gT('Dashboard');
-        $aData['topbar']['rightButtons'] = $this->renderPartial('partial/topbarBtns/rigthSideButtons', [], true);
+        $aData['topbar']['rightButtons'] = $this->renderPartial('partial/topbarBtns/rightSideButtons', [], true);
         $aData['topbar']['middleButtons'] = $this->renderPartial('partial/topbarBtns/leftSideButtons', [], true);
         $this->aData = $aData;
 
