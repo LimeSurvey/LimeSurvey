@@ -1,5 +1,5 @@
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <h3>
+    <div class="pagetitle h1 pt-2 pb-2">
         <?php eT("Conditions designer"); ?>
 
         <?php if ($scenariocount > 0): ?>
@@ -35,7 +35,7 @@
                 <?php eT("Renumber scenarios");?>
             </button>
         <?php endif; ?>
-    </h3>
+    </div>
      <div class="row">
         <div class="col-12 content-right">
 
