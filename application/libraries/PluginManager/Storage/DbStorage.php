@@ -75,7 +75,7 @@ class DbStorage implements iPluginStorage
      */
     public function set(iPlugin $plugin, $key, $data, $model = null, $id = null, $language = null)
     {
-        $functionName = 'set' . ucfirst($model);
+        $functionName = 'set' . ucfirst((string)$model);
         if ($model == null || !method_exists($this, $functionName)) {
             return $this->setGeneric($plugin, $key, $data, $model, $id, $language);
         } else {
