@@ -1,9 +1,35 @@
 
 <?php
-$script = array();
+    $script = [];
+    $hideAttacehemtTable = true;
+    $attachmentsHaveErrors = false;
+    if (isset($esrow->attachments[$tab])) {
+        foreach ($esrow->attachments[$tab] as $attachment) {
+            $script[] = sprintf(
+                "prepEmailTemplates.addAttachment($('#attachments-%s-%s'), %s, %s, %s, %s);",
+                $grouplang,
+                $tab,
+                json_encode($attachment['url']),
+                json_encode($attachment['relevance']),
+                json_encode($attachment['size']),
+                json_encode($attachment['error'] ?? '')
+            );
+            if (!empty($attachment['error'])) {
+                $attachmentsHaveErrors = true;
+            }
+        }
+        $hideAttacehemtTable = false;
+    }
 ?>
 
 <div id='<?php echo "tab-".CHtml::encode($grouplang)."-".CHtml::encode($tab); ?>' class="tab-pane fade in <?=CHtml::encode($active); ?>">
+    <?php if ($attachmentsHaveErrors): ?>
+        <div class="row">
+            <div class='col-sm-12'>
+                <div class="alert alert-danger"><?= gT("There are errors with this template's attachments. Please check them below.") ?></div>
+            </div>
+        </div>
+    <?php endif; ?>
     <div class="row">
         <div class='form-group col-sm-12'>
             <label class=' control-label' for='email_<?php echo $tab; ?>_subj_<?php echo $grouplang; ?>'><?php echo $details['subject'] ?></label>
@@ -59,16 +85,6 @@ $script = array();
 
 
     <?php } ?>
-
-    <?php
-    $hideAttacehemtTable = true;
-    if (isset($esrow->attachments[$tab])) {
-        foreach ($esrow->attachments[$tab] as $attachment) {
-            $script[] = sprintf("prepEmailTemplates.addAttachment($('#attachments-%s-%s'), %s, %s, %s );", $grouplang, $tab, json_encode($attachment['url']), json_encode($attachment['relevance']), json_encode($attachment['size']));
-        }
-        $hideAttacehemtTable = false;
-    }
-    ?>
 
     <div class="row selector__table-container <?=($hideAttacehemtTable===true ? 'hidden' : '')?>">
         <div class='form-group col-sm-12'>
