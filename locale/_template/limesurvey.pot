@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2023-01-25 13:09:45+00:00\n"
+"POT-Creation-Date: 2023-01-30 12:44:59+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -3049,6 +3049,10 @@ msgstr ""
 msgid "No users from group could be added."
 msgstr ""
 
+#: application/controllers/SurveyPermissionsController.php:157
+msgid "%s users from group were added."
+msgstr ""
+
 #: application/controllers/SurveyPermissionsController.php:185
 msgid "Unknown action."
 msgstr ""
@@ -3325,7 +3329,7 @@ msgstr ""
 
 #: application/controllers/UploaderController.php:250
 #: application/controllers/UploaderController.php:278
-#: application/helpers/remotecontrol/remotecontrol_handle.php:3129
+#: application/helpers/remotecontrol/remotecontrol_handle.php:3132
 msgid "The file has been successfully uploaded."
 msgstr ""
 
