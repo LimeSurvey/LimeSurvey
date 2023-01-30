@@ -651,7 +651,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
           const $liTemplate = $('<li class="nav-item" role="presentation"></li>');
           const $aTemplate = $('<button type="button" role="tab" class="nav-link" data-bs-toggle="tab" data-bs-target=""></button>');
           const $tabTodyTemplate = $('<div></div>');
-          const $listTemplate = $('<div class="list-group selector_label-list"></div>');
+          const $listTemplate = $('<div class="list-group selector_label-list container-fluid"></div>');
           const $listItemTemplate = $('<div class="row mb-3 selector_label-list-row"></div>');
           const $tabindex = $('<ul class="nav nav-tabs" role="tablist"></ul>');
           const $tabbody = $('<div class="tab-content" id="label-set-tab-content" style="max-height: 50vh; overflow:auto;"></div>');
@@ -686,10 +686,10 @@ $(document).on('ready pjax:scriptcomplete', function () {
               isEmpty = false;
               labelSet.labels.forEach((label) => {
                 // Label title is not concatenated directly because it may have non-encoded HTML
-                const $labelTitleDiv = $('<div class="col-lg-7"></div>');
+                const $labelTitleDiv = $('<div class="col-lg-9"></div>');
                 $labelTitleDiv.text(label.title);
                 const $listItem = $listItemTemplate.clone();
-                $listItem.append(`<div class="col-lg-5 text-end" style="border-right: 4px solid #cdcdcd">${label.code}</div>`);
+                $listItem.append(`<div class="col-lg-3 text-end" style="border-right: 4px solid #cdcdcd">${label.code}</div>`);
                 $listItem.append($labelTitleDiv);
                 $listItem.attr('data-label', JSON.stringify(label));
                 $itemList.append($listItem);
@@ -700,7 +700,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
               });
             }
 
-            $bodyItem.append(`<h4>${labelSet.label_name}</h4>`);  // jshint ignore: line
+            $bodyItem.append(`<h2>${labelSet.label_name}</h2>`);  // jshint ignore: line
             $itemList.appendTo($bodyItem);
           });
           
