@@ -10,9 +10,9 @@
 
 ?>
     <div id='edit-question-body' class='side-body <?php echo getSideBodyClass(false); ?>'>
-        <h3>
+        <div class="pagetitle h1">
             <?php eT('Edit default answer values') ?>
-        </h3>
+        </div>
         <div class="row">
             <div class="col-xl-8 content-right">
                 <?php echo CHtml::form(["admin/database/index"], 'post', ['class' => '', 'id' => 'frmdefaultvalues', 'name' => 'frmdefaultvalues']); ?>
@@ -25,7 +25,7 @@
                 </ul>
                 <div class="tab-content">
                     <?php foreach ($oSurvey->allLanguages as $i => $language) : ?>
-                        <div id='df_<?php echo $language ?>' class="tab-pane fade <?php echo $i == 0 ? 'show active' : '' ?>">
+                        <div id='df_<?php echo $language ?>' class="tab-pane fade <?php echo $i == 0 ? 'show active' : '' ?> ps-3">
                             <?php if ((int)$questionMetaData->answerscales > 0) : ?>
                                 <?php for ($scale_id = 0; $scale_id < (int)$questionMetaData->answerscales; $scale_id++) : ?>
                                     <?php $opts = $langopts[$language][$questionrow['type']][$scale_id]; ?>
@@ -116,7 +116,7 @@
                                                     <?php echo "{$aSubquestion['title']}: " . flattenText($aSubquestion['question']) ?>
                                                 </label>
                                                 <div class="col-12">
-                                                        <textarea cols='50' name='defaultanswerscale_<?php echo "{$scale_id}_{$language}_{$aSubquestion['qid']}" ?>'
+                                                        <textarea class="form-control" cols='50' name='defaultanswerscale_<?php echo "{$scale_id}_{$language}_{$aSubquestion['qid']}" ?>'
                                                                   id='defaultanswerscale_<?php echo "{$scale_id}_{$language}_{$aSubquestion['qid']}" ?>'><?php echo $aSubquestion['defaultvalue'] ?></textarea>
                                                 </div>
                                             </div>
@@ -165,6 +165,7 @@
                                         ?>
                                         <div class="col-12">
                                             <textarea <?php echo $hasUpdatePermission; ?>
+                                                class="form-control"
                                                 cols='50'
                                                 name='defaultanswerscale_<?php echo "0_{$language}_0" ?>'
                                                 id='defaultanswerscale_<?php echo "0_{$language}_0" ?>'><?php echo $defaultValueLanguageText;?></textarea>
