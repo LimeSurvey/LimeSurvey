@@ -7,7 +7,7 @@ $this->widget(
         'name' => 'back-button',
         'id' => 'back-button',
         'text' => gT('Close'),
-        'icon' => 'fa fa-close',
+        'icon' => 'ri-close-fill',
         'link' => $this->createUrl("admin/labels/sa/view"),
         'htmlOptions' => [
             'class' => 'btn btn-outline-secondary',
@@ -23,7 +23,7 @@ $this->widget(
         'name' => 'save-form-button',
         'id' => 'save-form-button',
         'text' => gT('Export'),
-        'icon' => 'fa fa-check',
+        'icon' => 'ri-check-fill',
         'htmlOptions' => [
             'class' => 'btn btn-primary',
             'role' => 'button',

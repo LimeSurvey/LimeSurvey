@@ -3,7 +3,7 @@
 <!-- Save and new group -->
 <?php if(!empty($showSaveAndNewGroupButton)): ?>
     <a class="btn btn-outline-secondary" id='save-and-new-button' role="button">
-        <span class="fa fa-plus-square"></span>
+        <span class="ri-add-box-fill"></span>
         <?php eT("Save and new group"); ?>
     </a>
 <?php endif; ?>
@@ -11,7 +11,7 @@
 <!-- Save and add question -->
 <?php if(!empty($showSaveAndNewQuestionButton)): ?>
     <a class="btn btn-outline-secondary" id='save-and-new-question-button' role="button">
-        <span class="fa fa-plus"></span>
+        <span class="ri-add-line"></span>
         <?php eT("Save and add question"); ?>
     </a>
 <?php endif; ?>

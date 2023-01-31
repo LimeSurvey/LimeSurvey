@@ -7,7 +7,7 @@ $this->widget(
         'name' => 'back-button',
         'id' => 'back-button',
         'text' => gT('Close'),
-        'icon' => 'fa fa-close',
+        'icon' => 'ri-close-fill',
         'link' => $this->createUrl("admin/index"),
         'htmlOptions' => [
             'class' => 'btn btn-outline-secondary',

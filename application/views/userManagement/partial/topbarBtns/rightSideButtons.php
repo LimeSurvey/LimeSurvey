@@ -5,7 +5,7 @@ $this->widget(
         'name' => 'ls-question-tools-button',
         'id' => 'ls-question-tools-button',
         'text' => gT('Back'),
-        'icon' => 'fa fa-backward"',
+        'icon' => 'ri-rewind-fill"',
         'link' => $this->createUrl('admin/index'),
         'htmlOptions' => [
             'class' => 'btn btn-outline-secondary',

@@ -7,7 +7,7 @@ if (Permission::model()->hasGlobalPermission('users', 'create')) {
             'name' => 'ls-question-tools-button',
             'id' => 'ls-question-tools-button',
             'text' => gT('Add user'),
-            'icon' => 'fa fa-plus-circle',
+            'icon' => 'ri-add-circle-fill',
             'htmlOptions' => [
                 'class' => 'btn btn-outline-secondary UserManagement--action--openmodal',
                 'data-bs-toggle' => 'modal',
@@ -22,7 +22,7 @@ if (Permission::model()->hasGlobalPermission('users', 'create')) {
             'name' => 'ls-question-tools-button',
             'id' => 'ls-question-tools-button',
             'text' => gT('Add dummy user'),
-            'icon' => 'fa fa-plus-square text-success',
+            'icon' => 'ri-add-box-fill',
             'htmlOptions' => [
                 'class' => 'btn btn-outline-secondary UserManagement--action--openmodal',
                 'data-bs-toggle' => 'modal',
@@ -59,7 +59,7 @@ if (Permission::model()->hasGlobalPermission('users', 'create')) {
         'name' => 'ls-create-token-button',
         'id' => 'ls-create-token-button',
         'text' => gT('Export'),
-        'icon' => 'fa fa-upload',
+        'icon' => 'ri-upload-fill',
         'isDropDown' => true,
         'dropDownContent' => $dropdownItems,
         'htmlOptions' => [

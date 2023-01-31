@@ -12,7 +12,7 @@ if ($hasUpdatePermission) {
             'name' => 'create-import-button',
             'id' => 'edit-button',
             'text' => gT('Edit label set'),
-            'icon' => 'fa fa-pencil  text-success',
+            'icon' => 'ri-pencil-fill text-primary',
             'link' => $this->createUrl("admin/labels/sa/editlabelset/lid/" . $lid),
             'htmlOptions' => [
                 'class' => 'btn btn-outline-secondary',
@@ -47,7 +47,7 @@ if ($hasDeletePermission) {
             'name' => 'delete-button',
             'id' => 'create-import-button',
             'text' => gT('Delete'),
-            'icon' => 'fa fa-trash text-danger',
+            'icon' => 'ri-delete-bin-fill text-danger',
             'htmlOptions' => [
                 'class' => 'btn btn-danger',
                 'data-bs-toggle' => 'modal',

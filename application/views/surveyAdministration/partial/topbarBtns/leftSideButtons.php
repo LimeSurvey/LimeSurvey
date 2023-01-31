@@ -7,7 +7,7 @@ if (Permission::model()->hasGlobalPermission('surveys', 'create')) {
             'name' => 'ls-question-tools-button',
             'id' => 'ls-question-tools-button',
             'text' => gT('Create survey'),
-            'icon' => 'fa fa-plus-circle',
+            'icon' => 'ri-add-circle-fill',
             'link' => $this->createUrl("surveyAdministration/newSurvey"),
             'htmlOptions' => [
                 'class' => 'btn btn-primary tab-dependent-button',
@@ -24,7 +24,7 @@ if (Permission::model()->hasGlobalPermission('surveysgroups', 'create')) {
             'name' => 'ls-question-tools-button',
             'id' => 'ls-question-tools-button',
             'text' => gT('Create survey group'),
-            'icon' => 'fa fa-plus-circle',
+            'icon' => 'ri-add-circle-fill',
             'link' => $this->createUrl("admin/surveysgroups/sa/create"),
             'htmlOptions' => [
                 'class' => 'btn btn-primary tab-dependent-button d-none',

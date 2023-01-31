@@ -5,7 +5,7 @@ $this->widget(
         'name' => 'ls-question-tools-button',
         'id' => 'ls-question-tools-button',
         'text' => gT('Back'),
-        'icon' => 'fa fa-backward"',
+        'icon' => 'ri-rewind-fill"',
         'link' => $this->createUrl('admin/index'),
         'htmlOptions' => [
             'class' => 'btn btn-outline-secondary',
@@ -19,7 +19,7 @@ $this->widget(
         'name' => 'reset-button',
         'id' => 'reset-button',
         'text' => gT('Reset'),
-        'icon' => 'fa fa-refresh',
+        'icon' => 'ri-refresh-line',
         'link' => $this->createUrl('homepageSettings/resetAllBoxes/'),
         'htmlOptions' => [
             'class' => 'btn btn-warning',
@@ -35,7 +35,7 @@ $this->widget(
         'name' => 'save_boxes_setting',
         'id' => 'save_boxes_setting',
         'text' => gT('Save'),
-        'icon' => 'fa fa-refresh',
+        'icon' => 'ri-refresh-line',
         'htmlOptions' => [
             'class' => 'btn btn-primary',
             'data-url' => $this->createUrl('homepageSettings/updateBoxesSettings')

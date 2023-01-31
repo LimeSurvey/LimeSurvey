@@ -6,7 +6,7 @@ $this->widget(
         'name' => 'boxes-close-button',
         'id' => 'boxes-close-button',
         'text' => gT('Back'),
-        'icon' => 'fa fa-backward',
+        'icon' => 'ri-rewind-fill',
         'link' => $backUrl ?? Yii::app()->createUrl('userGroup/index'),
         'htmlOptions' => [
             'class' => 'btn btn-outline-secondary',

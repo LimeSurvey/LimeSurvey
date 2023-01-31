@@ -7,7 +7,7 @@ $this->widget(
         'name' => 'back-button',
         'id' => 'back-button',
         'text' => gT('Back'),
-        'icon' => 'fa fa-backward',
+        'icon' => 'ri-rewind-fill',
         'link' => $this->createUrl("themeOptions/index"),
         'htmlOptions' => [
             'class' => 'btn btn-outline-secondary',

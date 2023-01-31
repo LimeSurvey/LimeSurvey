@@ -9,7 +9,7 @@
         <li>
             <a class="dropdown-item"
                href="<?php echo App()->createUrl("surveyAdministration/delete/", ['iSurveyID' => $sid]); ?>">
-                <span class="fa fa-trash text-danger"></span>
+                <span class="ri-delete-bin-fill text-danger"></span>
                 <?php eT("Delete survey"); ?>
             </a>
         </li>
@@ -24,7 +24,7 @@
             <li>
                 <a class="dropdown-item"
                    href="<?= App()->createUrl("quickTranslation/index/surveyid/{$oSurvey->sid}"); ?>">
-                    <span class="fa fa-language"></span>
+                    <span class="ri-global-line"></span>
                     <?php eT("Quick-translation"); ?>
                 </a>
             </li>
@@ -36,7 +36,7 @@
                 <a class="dropdown-item" href="#" class="btntooltip disabled" data-bs-toggle="tooltip"
                    data-bs-placement="bottom"
                    title="<?php eT('Currently there are no additional languages configured for this survey.'); ?>">
-                    <span class="fa fa-language"></span>
+                    <span class="ri-global-line"></span>
                     <?php eT("Quick-translation"); ?>
                 </a>
             </li>

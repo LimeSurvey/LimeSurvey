@@ -7,7 +7,7 @@ $this->widget(
         'name' => 'boxes-close-button',
         'id' => 'boxes-close-button',
         'text' => gT('Back'),
-        'icon' => 'fa fa-backward',
+        'icon' => 'ri-rewind-fill',
         'link' => $backUrl ?? Yii::app()->createUrl('userGroup/index'),
         'htmlOptions' => [
             'class' => 'btn btn-outline-secondary',
@@ -21,7 +21,7 @@ $this->widget(
         'name' => 'reset-form-button',
         'id' => 'reset-form-button',
         'text' => gT('Reset'),
-        'icon' => 'fa fa-refresh',
+        'icon' => 'ri-refresh-line',
         'htmlOptions' => [
             'class' => 'btn btn-warning',
             'role' => 'button',
@@ -37,7 +37,7 @@ $this->widget(
         'name' => 'reset-form-button',
         'id' => 'save-form-button',
         'text' => gT('Send'),
-        'icon' => 'fa fa-envelope',
+        'icon' => 'ri-mail-fill',
         'htmlOptions' => [
             'class' => 'btn btn-primary',
             'type' => 'submit',

@@ -11,7 +11,7 @@ if ($isCloseBtn) {
             'name' => 'close-button',
             'id' => 'close-button',
             'text' => gT('Close'),
-            'icon' => 'fa fa-close',
+            'icon' => 'ri-close-fill',
             'link' => $backUrl ?? Yii::app()->createUrl('admin/index'),
             'htmlOptions' => [
                 'class' => 'btn btn-outline-secondary',
@@ -45,7 +45,7 @@ if ($isSaveBtn) {
             'name' => 'save-form-button',
             'id' => 'save-form-button',
             'text' => gT('Save'),
-            'icon' => 'fa fa-check',
+            'icon' => 'ri-check-fill',
             'htmlOptions' => [
                 'class' => 'btn btn-primary',
                 'data-form-id' => $formIdSave ?? '',

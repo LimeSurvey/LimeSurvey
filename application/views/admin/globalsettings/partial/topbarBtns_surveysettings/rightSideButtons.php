@@ -8,7 +8,7 @@ $this->widget(
         'name' => 'boxes-close-button',
         'id' => 'boxes-close-button',
         'text' => gT('Close'),
-        'icon' => 'fa fa-close',
+        'icon' => 'ri-close-fill',
         'link' => Yii::app()->createUrl('admin/index'),
         'htmlOptions' => [
             'class' => 'btn btn-outline-secondary',
@@ -23,7 +23,7 @@ $this->widget(
         'name' => 'save-and-close-form-button',
         'id' => 'save-and-close-form-button',
         'text' => gT('Save and close'),
-        'icon' => 'fa fa-saved',
+        'icon' => 'ri-checkbox-circle-fill',
         'htmlOptions' => [
             'class' => 'btn btn-outline-secondary',
             'onclick' => "$(this).addClass('disabled').attr('onclick', 'return false;');",
@@ -39,7 +39,7 @@ $this->widget(
         'name' => 'save-form-button',
         'id' => 'save-form-button',
         'text' => gT('Save'),
-        'icon' => 'fa fa-check',
+        'icon' => 'ri-check-fill',
         'htmlOptions' => [
             'class' => 'btn btn-primary',
             'onclick' => "$(this).addClass('disabled').attr('onclick', 'return false;');",

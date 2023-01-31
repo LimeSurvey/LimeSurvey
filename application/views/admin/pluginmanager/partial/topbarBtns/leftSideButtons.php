@@ -28,7 +28,7 @@ if ($scanFilesUrl !== null) {
             'name' => 'plugin-scanfiles-button',
             'id' => 'plugin-scanfiles-button',
             'text' => gT('Scan files'),
-            'icon' => 'fa fa-search',
+            'icon' => 'ri-search-line',
             'link' => $scanFilesUrl,
             'htmlOptions' => [
                 'class' => 'btn btn-outline-secondary',

@@ -25,7 +25,7 @@
             'name' => 'ls-group-preview-button',
             'id' => 'ls-group-preview-button',
             'text' => gT('Preview question group'),
-            'icon' => 'fa fa-eye',
+            'icon' => 'ri-eye-fill',
             'isDropDown' => count($surveyLanguages) > 1,
             'dropDownContent' => $languagesDropDownItems,
             'link' => Yii::App()->createUrl("survey/index/action/previewgroup/sid/$surveyid/gid/$gid/"),

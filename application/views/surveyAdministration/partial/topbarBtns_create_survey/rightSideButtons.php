@@ -7,7 +7,7 @@ $this->widget(
         'name' => 'close-button',
         'id' => 'close-button',
         'text' => gT('Close'),
-        'icon' => 'fa fa-close',
+        'icon' => 'ri-close-fill',
         'link' => $this->createUrl('admin/index'),
         'htmlOptions' => [
             'class' => 'btn btn-outline-secondary',
@@ -22,7 +22,7 @@ $this->widget(
         'name' => 'save-form-button',
         'id' => 'save-form-button', //this one is important to trigger the click for submit button
         'text' => gT('Save'),
-        'icon' => 'fa fa-check',
+        'icon' => 'ri-check-fill',
         'htmlOptions' => [
             'class' => 'btn btn-primary',
             'data-form-id' => 'addnewsurvey',

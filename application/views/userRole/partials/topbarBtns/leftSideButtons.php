@@ -6,7 +6,7 @@ $this->widget(
         'name' => 'save-form-button',
         'id' => 'save-form-button',
         'text' => gT('Add user role'),
-        'icon' => 'fa fa-plus-circle',
+        'icon' => 'ri-add-circle-fill',
         'htmlOptions' => [
             'class' => 'btn btn-outline-secondary RoleControl--action--openmodal',
             'data-href' => App()->createUrl("userRole/editRoleModal"),
@@ -22,7 +22,7 @@ $this->widget(
         'name' => 'save-form-button',
         'id' => 'save-form-button',
         'text' => gT('Import (XML)'),
-        'icon' => 'fa fa-upload',
+        'icon' => 'ri-upload-fill',
         'htmlOptions' => [
             'class' => 'btn btn-outline-secondary RoleControl--action--openmodal',
             'data-href' => App()->createUrl("userRole/showImportXML"),

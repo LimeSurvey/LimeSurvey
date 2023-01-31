@@ -55,7 +55,7 @@ if (is_template_editable($templatename)) {
                 'name' => 'button-rename-theme',
                 'id' => 'button-rename-theme',
                 'text' => gT('Rename'),
-                'icon' => 'fa fa-pencil  text-success',
+                'icon' => 'ri-pencil-fill text-primary',
                 'link' => '',
                 'htmlOptions' => [
                     'class' => 'btn btn-outline-secondary',
@@ -75,7 +75,7 @@ if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
             'name' => 'button-delete',
             'id' => 'button-delete',
             'text' => gT('Delete'),
-            'icon' => 'fa fa-trash text-success',
+            'icon' => 'ri-delete-bin-fill text-primary',
             'link' => Yii::app()->getController()->createUrl('admin/themes/sa/delete/'),
             'htmlOptions' => [
                 'class' => 'btn btn-danger selector--ConfirmModal',

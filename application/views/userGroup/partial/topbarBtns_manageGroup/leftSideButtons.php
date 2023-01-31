@@ -42,7 +42,7 @@ if ($hasPermission) {
             'name' => 'group-mail-button',
             'id' => 'group-mail-button',
             'text' => gT('Delete current user group'),
-            'icon' => 'fa fa-trash',
+            'icon' => 'ri-delete-bin-fill',
             'htmlOptions' => [
                 'class' => 'btn btn-danger action_delete-group',
                 'data-bs-toggle' => 'modal',
