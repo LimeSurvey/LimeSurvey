@@ -17515,7 +17515,7 @@ footer.footer {
 
 .cke_top {
   background: #fff !important;
-  border: 1px solid #1e1e1e !important;
+  border: 1px solid #1E1E1E !important;
 }
 
 .cke_button_icon {
@@ -17524,7 +17524,7 @@ footer.footer {
 
 .cke_reset_all,
 .cke_reset_all * {
-  color: #9094A7 !important;
+  color: #1E1E1E !important;
 }
 
 .cke_contents {
