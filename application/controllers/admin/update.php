@@ -195,13 +195,6 @@ class Update extends DynamicSurveyCommonAction
             }
         }
     }
-    /** Alias function for ComfortUpdate backward compatibility to version 3
-     * Do not delete this function
-     */
-    public function delete_key()
-    {
-        $this->deleteKey();
-    }
 
     public function deleteKey()
     {
