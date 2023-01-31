@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2023-01-30 12:44:59+00:00\n"
+"POT-Creation-Date: 2023-01-31 12:09:15+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -6981,39 +6981,39 @@ msgstr ""
 msgid "ComfortUpdate"
 msgstr ""
 
-#: application/controllers/admin/Update.php:166
+#: application/controllers/admin/Update.php:164
 #: application/views/admin/update/updater/welcome/_key_updated.php:12
 msgid "Your key has been updated and validated! You can now use ComfortUpdate."
 msgstr ""
 
-#: application/controllers/admin/Update.php:172
+#: application/controllers/admin/Update.php:170
 #: application/views/admin/update/updater/_error.php:43
 msgid "Your update key has exceeded the maximum number of updates!"
 msgstr ""
 
-#: application/controllers/admin/Update.php:173
-#: application/controllers/admin/Update.php:178
+#: application/controllers/admin/Update.php:171
+#: application/controllers/admin/Update.php:176
 #: application/views/admin/update/updater/_error.php:44
 #: application/views/admin/update/updater/_error.php:50
 msgid "Please buy/enter a new one!"
 msgstr ""
 
-#: application/controllers/admin/Update.php:177
+#: application/controllers/admin/Update.php:175
 #: application/views/admin/update/updater/_error.php:49
 msgid "Your update key has expired!"
 msgstr ""
 
-#: application/controllers/admin/Update.php:182
+#: application/controllers/admin/Update.php:180
 #: application/views/admin/update/updater/_error.php:55
 msgid "Unknown update key!"
 msgstr ""
 
-#: application/controllers/admin/Update.php:183
+#: application/controllers/admin/Update.php:181
 #: application/views/admin/update/updater/_error.php:56
 msgid "Your key is unknown to the update server."
 msgstr ""
 
-#: application/controllers/admin/Update.php:187
+#: application/controllers/admin/Update.php:185
 #: application/views/admin/update/updater/_error.php:61
 msgid "Key can't be empty!"
 msgstr ""
