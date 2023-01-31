@@ -15,7 +15,7 @@
 
     // THIS FILE SHOULD NOT BE CHANGED MANUALLY !
 
-$config['updaterversion'] = 18;
+$config['updaterversion'] = 19;
 $config['comfort_update_server_url'] = 'comfortupdate.limesurvey.org/';
 $config['comfort_update_server_ssl'] = 1;
 return $config;
