@@ -1616,16 +1616,13 @@ class QuestionAdministrationController extends LSBaseController
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title
             . " (" . gT("ID") . ":" . $surveyId . ")";
 
-        $aData['topBar']['name'] = 'baseTopbar_view';
-        $aData['topBar']['rightSideView'] = 'copyQuestionTopbarRight_view';
-        $aData['closeUrl'] = Yii::app()->createUrl(
-            'questionAdministration/view/',
+
+        $aData['topbar']['rightButtons'] = $this->renderPartial(
+            'partial/topbarBtns/copyQuestionTopbarRight_view',
             [
-                'surveyid' => $oQuestion->sid,
-                'gid' => $oQuestion->gid,
-                'qid' => $oQuestion->qid,
-                'landOnSideMenuTab' => 'structure'
-            ]
+                'closeUrl' => $aData['closeUrl']
+            ],
+            true
         );
 
         $aData['oSurvey'] = $oSurvey;

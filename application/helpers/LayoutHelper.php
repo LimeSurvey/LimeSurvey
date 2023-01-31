@@ -237,9 +237,14 @@ class LayoutHelper
         if ($titleTextBreadcrumb !== null) {
             //special case for question administration (overview and editor)
             if (isset($aData['topBar']['name']) && ($aData['topBar']['name'] === 'questionTopbar_view')) {
-               // Yii::app()->getController()->renderPartial();
-                //todo: implement topbar for questioneditor
-                return '';
+                $topbarQuestionEditorData = TopbarConfiguration::getQuestionTopbarData($aData['surveyid']);
+                $topbarQuestionEditorData['breadcrumb'] = $titleTextBreadcrumb;
+                $topbarQuestionEditorData = array_merge($topbarQuestionEditorData, $aData);
+                return Yii::app()->getController()->renderPartial(
+                    '/questionAdministration/partial/topbarBtns/questionTopbar_view',
+                    $topbarQuestionEditorData,
+                    true
+                );
             } else {
                 return Yii::app()->getController()->widget(
                     'ext.LimeTopbarWidget.TopbarWidget',

@@ -1,8 +1,11 @@
 <?php
     // Tools dropdown button
-    $toolsDropdownItems = $this->render('includes/questionToolsDropdownItems', get_defined_vars(), true);
-?>
-<?php if (!empty(trim($toolsDropdownItems))): ?>
+    $toolsDropdownItems = $this->renderPartial(
+        '/questionAdministration/partial/topbarBtns/questionToolsDropdownItems',
+        get_defined_vars(),
+        true
+    );
+ if (!empty(trim($toolsDropdownItems))): ?>
     <!-- Tools  -->
     <div class="d-inline-flex ">
         <!-- Main button dropdown -->
@@ -24,14 +27,14 @@
 /**
  * Include the Survey Preview and Group Preview buttons
  */
-$this->render(
-    'includes/previewOrRunButton_view',
+$this->renderPartial(
+    '/surveyAdministration/partial/topbar/previewOrRunButton_view',
     [
         'survey' => $oSurvey,
         'surveyLanguages' => $surveyLanguages,
     ]
 );
-$this->render('includes/previewGroupButton_view', get_defined_vars());
-$this->render('includes/previewQuestionButton_view', get_defined_vars());
+$this->renderPartial('/questionGroupsAdministration/partial/topbarBtns/previewGroupButton_view', get_defined_vars());
+$this->renderPartial('partial/topbarBtns/previewQuestionButton_view', get_defined_vars());
 ?>
 

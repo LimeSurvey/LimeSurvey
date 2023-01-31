@@ -2,19 +2,19 @@
 <?php ?>
     <!-- test/execute survey -->
     <?php
-    $this->render(
-    'includes/previewOrRunButton_view',
-    [
-    'survey' => $oSurvey,
-    'surveyLanguages' => $surveyLanguages,
-    ]
+    $this->renderPartial(
+        '/surveyAdministration/partial/topbar/previewOrRunButton_view',
+        [
+            'survey' => $oSurvey,
+            'surveyLanguages' => $surveyLanguages,
+        ]
     );
     ?>
 
     <?php if($hasSurveyContentUpdatePermission): ?>
         <?php
-        $this->render('includes/previewGroupButton_view', get_defined_vars());
-        $this->render('includes/previewQuestionButton_view', get_defined_vars());
+        $this->renderPartial('/questionGroupsAdministration/partial/topbarBtns/previewGroupButton_view', get_defined_vars());
+        $this->renderPartial('partial/topbarBtns/previewQuestionButton_view', get_defined_vars());
         ?>
     <?php endif; ?>
 <?php else: ?>
