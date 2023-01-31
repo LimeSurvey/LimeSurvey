@@ -20,9 +20,12 @@
 <?php if(isset($updateInfos->alert)): // First we check if the server provided a specific alert message ?>
     <?php if($updateInfos->alert != ""):?>
         <!-- Alert from server -->
-        <div class="alert alert-warning" role="alert">
-            <?php echo $updateInfos->alert; ?>
-        </div>
+        <?php
+        $this->widget('ext.AlertWidget.AlertWidget', [
+            'text' => $updateInfos->alert,
+            'type' => 'warning',
+        ]);
+        ?>
     <?php endif; ?>
 <?php endif; ?>
 

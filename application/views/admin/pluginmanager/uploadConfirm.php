@@ -18,15 +18,19 @@
 
         <div class="mb-3">
             <?php if ($isUpdate) : ?>
-                <div class='alert alert-info'>
-                    <i class='ri-information-line'></i>&nbsp;
-                    <?php eT('The following plugin will be updated. Please click "Update" to update the plugin, or "Abort" to abort.'); ?>
-                </div>
+                <?php
+                $this->widget('ext.AlertWidget.AlertWidget', [
+                    'text' => gT('The following plugin will be updated. Please click "Update" to update the plugin, or "Abort" to abort.'),
+                    'type' => 'info',
+                ]);
+                ?>
             <?php else : ?>
-                <div class='alert alert-info'>
-                    <i class='ri-information-line'></i>&nbsp;
-                    <?php eT('The following plugin will be installed. Please click "Install" to install the plugin, or "Abort" to abort. Aborting will remove the files from the file system.'); ?>
-                </div>
+                <?php
+                $this->widget('ext.AlertWidget.AlertWidget', [
+                    'text' => gT('The following plugin will be installed. Please click "Install" to install the plugin, or "Abort" to abort. Aborting will remove the files from the file system.'),
+                    'type' => 'info',
+                ]);
+                ?>
             <?php endif; ?>
         </div>
 
@@ -78,9 +82,11 @@
         </form>
 
     <?php else : ?>
-        <div class='alert alert-warning'>
-            <i class='ri-alert-fil'></i>&nbsp;
-            <?php eT('Error: Found no configuration for plugin. Please contact the plugin author.'); ?>
-        </div>
+        <?php
+        $this->widget('ext.AlertWidget.AlertWidget', [
+            'text' => gT('Error: Found no configuration for plugin. Please contact the plugin author.'),
+            'type' => 'warning',
+        ]);
+        ?>
     <?php endif; ?>
 </div>

@@ -1,5 +1,5 @@
 <?php
-
+// TODO Check: this view seems to be never used, as well as $sShowError
 /* @var $this AdminController */
 /* @var Survey $oSurvey */
 /* @var CActiveDataProvider $oDataProvider Containing Quota objects*/
@@ -11,7 +11,6 @@
 /* @var integer $iGridPageSize */
 /* @var Quota $oQuota The last Quota as base for Massive edits */
 /* @var QuotaLanguageSetting[] $aQuotaLanguageSettings The last Quota LanguageSettings */
-
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('surveyQuotas');
 
@@ -25,10 +24,13 @@ echo viewHelper::getViewTestTag('surveyQuotas');
             </h3>
 
             <?php if (isset($sShowError)) :?>
-                <div class="alert alert-warning alert-dismissible" role="alert">
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    <strong><?php eT("Quota could not be added!", 'js'); ?></strong><br/> <?php eT("Missing a quota message for the following languages:", 'js'); ?><br/><?php echo $sShowError; ?>
-                </div>
+                <?php
+                $this->widget('ext.AlertWidget.AlertWidget', [
+                    'header' => gT("Quota could not be added!", 'js'),
+                    'text' => gT("Missing a quota message for the following languages:", 'js') . '<br/>' . $sShowError,
+                    'type' => 'warning',
+                ]);
+                ?>
             <?php endif; ?>
 
             <?php

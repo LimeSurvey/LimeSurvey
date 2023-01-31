@@ -9,11 +9,12 @@
     </div>
   </div>
   <div class="card-body">
-    <div class="alert alert-info alert-dismissible" role="alert">
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      <?php eT('Your survey can export associated participant data with each response. Select any additional fields you would like to export.'); ?>
-    </div>
-
+      <?php
+      $this->widget('ext.AlertWidget.AlertWidget', [
+          'text' => gT('Your survey can export associated participant data with each response. Select any additional fields you would like to export.'),
+          'type' => 'info',
+      ]);
+      ?>
     <label for='attribute_select' class="col-md-4 form-label">
       <?php eT("Choose participant fields:");?>
     </label>
