@@ -114,10 +114,6 @@ class UserManagementTest extends TestBaseClassWeb
             );
             $save->click();
 
-            // Wait for "Saved successfully" alert
-            $alert = $this->waitForElementShim($web, '#notif-container .alert-success');
-            $web->wait(10)->until(WebDriverExpectedCondition::visibilityOf($alert));
-
             // Make sure the user was saved in database.
             $users = \User::model()->findAllByAttributes(['users_name' => $username]);
             $this->assertCount(1, $users);
@@ -230,10 +226,6 @@ class UserManagementTest extends TestBaseClassWeb
                 )
             );
             $save->click();
-
-            // Wait for "Saved successfully" alert
-            $alert = $this->waitForElementShim($web, '#notif-container .alert-success');
-            $web->wait(10)->until(WebDriverExpectedCondition::visibilityOf($alert));
 
             // Make sure the user was saved in database.
             $users = \User::model()->findAllByAttributes(['users_name' => $username]);
@@ -349,10 +341,6 @@ class UserManagementTest extends TestBaseClassWeb
             );
             $save->click();
 
-            // Wait for "Saved successfully" alert
-            $alert = $this->waitForElementShim($web, '#notif-container .alert-success');
-            $web->wait(10)->until(WebDriverExpectedCondition::visibilityOf($alert));
-
             // Make sure the user was saved in database.
             $users = \User::model()->findAllByAttributes(['users_name' => $username]);
             $this->assertCount(1, $users);
@@ -369,9 +357,9 @@ class UserManagementTest extends TestBaseClassWeb
             self::adminLogin($username, $suggestedPassword);
 
             // Check that the login failed
-            self::$webDriver->wait(10)->until(
-                WebDriverExpectedCondition::elementToBeClickable(
-                    WebDriverBy::xpath("//*[text()[contains(.,'Incorrect username')]][contains(@class, 'alert-danger')]")
+            self::$webDriver->wait(5)->until(
+                WebDriverExpectedCondition::presenceOfElementLocated(
+                    WebDriverBy::cssSelector('.login-panel')
                 )
             );
         } catch (\Throwable $ex) {

@@ -39,14 +39,6 @@ $respstatsread  = Permission::model()->hasSurveyPermission($iSurveyID, 'response
         </div>
     </div>
 </div>
-<?php /*
-/// Survey quick actions have been removed -> deprecated
-<div class="row">
-    <div class="col-12">
-        <?php echo $this->renderPartial('/admin/survey/subview/_survey_quickaction', $subviewData); ?>
-    </div>
-</div>
-*/ ?>
 <div class="row survey-summary">
     <?php
     $possiblePanelFolder = realpath(Yii::app()->getConfig('rootdir') . '/application/views/admin/survey/subview/surveydashboard/');

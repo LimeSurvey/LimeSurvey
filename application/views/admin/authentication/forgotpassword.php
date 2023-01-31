@@ -36,12 +36,12 @@
                         ); ?>
                         <div class="row login-content login-content-form">
                             <div class="col-12">
-                                <div class="alert alert-info" role="alert">
-                                    <?php
-                                    eT(
-                                        'To receive a new password by email you have to enter your user name and original email address.'
-                                    ); ?>
-                                </div>
+                                <?php
+                                $this->widget('ext.AlertWidget.AlertWidget', [
+                                    'text' =>  gT('To receive a new password by email you have to enter your user name and original email address.'),
+                                    'type' => 'info',
+                                ]);
+                                ?>
                                 <span>
                                 <label for="user"><?php
                                     eT('Username'); ?></label>

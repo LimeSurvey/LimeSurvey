@@ -6,8 +6,10 @@
 ?>
 <div class="container">
     <?php $form = $this->beginWidget('CActiveForm', array('id'=>'editquota',)); ?>
-    <?php echo $form->errorSummary($oQuota); ?>
-        
+    <?php
+    $this->widget('ext.AlertWidget.AlertWidget', ['errorSummaryModel' => $oQuota]);
+    ?>
+
         <div class="row">
             <div class="col-xl-4">
                 <?php echo $form->hiddenField($oQuota,'id'); ?>

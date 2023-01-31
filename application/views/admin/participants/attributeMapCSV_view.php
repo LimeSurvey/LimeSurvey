@@ -80,8 +80,6 @@
         <input class='btn btn-outline-secondary' type="button" name="attreset" id="attreset" value="<?php eT("Reset") ?>" onClick="window.location.reload();" />
         <input class='btn btn-outline-secondary' type="button" name="attmap" id="attmap" value="<?php eT("Continue"); ?>" />
     </div>
-    <div id="processing" title="<?php eT("Processing...") ?>" style="display:none">
-        <img src="<?php echo Yii::app()->getConfig('adminimageurl') . '/ajax-loader.gif'; ?>" alt="<?php eT('Loading...'); ?>" title="<?php eT('Loading...'); ?>" />
-    </div>
+    <div id="processing" title="<?php eT("Processing...") ?>"></div>
 </div>
 </div>

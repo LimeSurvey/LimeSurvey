@@ -361,18 +361,22 @@ class UserRoleController extends LSBaseController
         }
         $sPtids = Yii::app()->request->getPost('sItems', []);
         $aPtids = json_decode($sPtids, true);
-        $success = [];
+        $aResults = [];
         foreach ($aPtids as $ptid) {
-            $success[$ptid] = $this->loadModel($ptid)->delete();
+            $model = $this->loadModel($ptid);
+            $aResults[$ptid]['title'] = $model->name;
+            $aResults[$ptid]['result'] = $model->delete();
         }
 
-        $this->renderPartial(
-            '/userManagement/partial/success',
-            [
-                'sMessage' => gT('Roles successfully deleted'),
-                'sDebug' => json_encode($success, JSON_PRETTY_PRINT),
-                'noButton' => true
-            ]
+        $tableLabels = array(gT('Role ID'), gT('Name'), gT('Status'));
+
+        Yii::app()->getController()->renderPartial(
+            'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results',
+            array(
+                'aResults'     => $aResults,
+                'successLabel' => gT('Deleted'),
+                'tableLabels' =>  $tableLabels
+            )
         );
     }
 

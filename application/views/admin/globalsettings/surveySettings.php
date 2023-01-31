@@ -23,9 +23,13 @@ $optionsOnOff = array(
         <div id="pjax-content" class="tab-content col-lg-10 flex-lg-shrink-1 ps-3">
             <div class="row">
                 <div class="col-12">
-                    <div class="alert alert-info controls" role="alert">
-                        <?php eT('All changes of global survey settings will immediately affect all related survey groups and surveys that use inherited values.'); ?>
-                    </div>
+                    <?php
+                    $this->widget('ext.AlertWidget.AlertWidget', [
+                        'text' => gT('All changes of global survey settings will immediately affect all related survey groups and surveys that use inherited values.'),
+                        'type' => 'info',
+                        'htmlOptions' => ['class' => 'controls']
+                    ]);
+                    ?>
                 </div>
             </div>
             <?php if ($partial === '_generaloptions_panel') { ?>
