@@ -12,7 +12,8 @@ class LocalizeDateTest extends TestBaseClass
     {
         parent::setupBeforeClass();
         \Yii::import('application.core.plugins.dateFunctions.EMFunctions', true);
-        self::importSurvey(\Yii::app()->getConfig('rootdir') . '/tests/unit/plugins/surveys/limesurvey_survey_854771.lss');
+        self::importSurvey(self::$surveysFolder . '/limesurvey_survey_854771.lss');
+        \Yii::app()->session['LEMsid'] = self::$surveyId;
     }
 
     /**
