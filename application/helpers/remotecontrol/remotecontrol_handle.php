@@ -1979,15 +1979,16 @@ class remotecontrol_handle
                     } elseif ($tokenCount > 1) {
                         return array('status' => 'Error: More than 1 result was found based on your attributes.');
                     }
-                    $token = Token::model($iSurveyID)->findByAttributes($aTokenQueryProperties)->decrypt();
+                    $token = Token::model($iSurveyID)->findByAttributes($aTokenQueryProperties);
                 } else {
                     // If aTokenQueryProperties is not an array, but an integer
                     $iTokenID = $aTokenQueryProperties;
-                    $token = Token::model($iSurveyID)->findByPk($iTokenID)->decrypt();
+                    $token = Token::model($iSurveyID)->findByPk($iTokenID);
                 }
                 if (!isset($token)) {
                     return array('status' => 'Error: Invalid tokenid');
                 }
+                $token->decrypt();
                 if (!empty($aTokenProperties)) {
                     $result = array_intersect_key($token->attributes, array_flip($aTokenProperties));
                 } else {
@@ -2686,9 +2687,10 @@ class remotecontrol_handle
      * @param int $iSurveyID ID of the survey that participants belong
      * @param array $aTokenIds Ids of the participant to invite
      * @param bool $bEmail Send only pending invites (TRUE) or resend invites only (FALSE)
+     * @param bool $continueOnError Don't stop on first invalid participant
      * @return array Result of the action
      */
-    public function invite_participants($sSessionKey, $iSurveyID, $aTokenIds = null, $bEmail = true)
+    public function invite_participants($sSessionKey, $iSurveyID, $aTokenIds = null, $bEmail = true, $continueOnError = false)
     {
         Yii::app()->loadHelper('admin/token');
         if (!$this->_checkSessionKey($sSessionKey)) {
@@ -2736,7 +2738,7 @@ class remotecontrol_handle
             if (empty($aResultTokens)) {
                 return array('status' => 'Error: No candidate tokens');
             }
-            $aResult = emailTokens($iSurveyID, $aResultTokens, 'invite');
+            $aResult = emailTokens($iSurveyID, $aResultTokens, 'invite', $continueOnError);
             $iLeft = $iAllTokensCount - count($aResultTokens);
             $aResult['status'] = $iLeft . " left to send";
 
@@ -2758,9 +2760,10 @@ class remotecontrol_handle
      * @param int $iMinDaysBetween (optional) parameter days from last reminder
      * @param int $iMaxReminders (optional) parameter Maximum reminders count
      * @param array $aTokenIds Ids of the participant to remind (optional filter)
+     * @param bool $continueOnError Don't stop on first invalid participant
      * @return array in case of success array of result of each email send action and count of invitations left to send in status key
      */
-    public function remind_participants($sSessionKey, $iSurveyID, $iMinDaysBetween = null, $iMaxReminders = null, $aTokenIds = false)
+    public function remind_participants($sSessionKey, $iSurveyID, $iMinDaysBetween = null, $iMaxReminders = null, $aTokenIds = false, $continueOnError = false)
     {
         Yii::app()->loadHelper('admin/token');
         if (!$this->_checkSessionKey($sSessionKey)) {
@@ -2806,7 +2809,7 @@ class remotecontrol_handle
                             return array('status' => 'Error: No candidate tokens');
             }
 
-            $aResult = emailTokens($iSurveyID, $aResultTokens, 'remind');
+            $aResult = emailTokens($iSurveyID, $aResultTokens, 'remind', $continueOnError);
 
             $iLeft = $iAllTokensCount - count($aResultTokens);
             $aResult['status'] = $iLeft . " left to send";
