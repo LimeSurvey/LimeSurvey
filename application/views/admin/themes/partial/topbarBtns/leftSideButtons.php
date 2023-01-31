@@ -13,7 +13,7 @@ if ($isExport) {
             'name' => 'button-export',
             'id' => 'button-export',
             'text' => gT('Export'),
-            'icon' => 'icon-export text-success',
+            'icon' => 'icon-export',
             'link' => $this->createUrl('admin/themes/sa/templatezip/templatename/' . $templatename),
             'htmlOptions' => [
                 'class' => 'btn btn-outline-secondary',
@@ -34,7 +34,7 @@ if ($isExtend) {
                 'name' => 'button-export',
                 'id' => 'button-extend-' . $templatename,
                 'text' => gT('Extend'),
-                'icon' => 'icon-copy text-success',
+                'icon' => 'icon-copy',
                 'link' => '',
                 'htmlOptions' => [
                     'class' => 'btn btn-outline-secondary',
@@ -55,7 +55,7 @@ if (is_template_editable($templatename)) {
                 'name' => 'button-rename-theme',
                 'id' => 'button-rename-theme',
                 'text' => gT('Rename'),
-                'icon' => 'ri-pencil-fill text-primary',
+                'icon' => 'ri-pencil-fill',
                 'link' => '',
                 'htmlOptions' => [
                     'class' => 'btn btn-outline-secondary',
@@ -75,7 +75,7 @@ if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
             'name' => 'button-delete',
             'id' => 'button-delete',
             'text' => gT('Delete'),
-            'icon' => 'ri-delete-bin-fill text-primary',
+            'icon' => 'ri-delete-bin-fill',
             'link' => Yii::app()->getController()->createUrl('admin/themes/sa/delete/'),
             'htmlOptions' => [
                 'class' => 'btn btn-danger selector--ConfirmModal',

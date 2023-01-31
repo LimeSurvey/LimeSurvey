@@ -9,7 +9,7 @@ if ($hasPermissionExport) {
             'name' => 'exportButton',
             'id' => 'exportButton',
             'text' => gT('Export multiple label sets'),
-            'icon' => 'icon-export text-success',
+            'icon' => 'icon-export',
             'link' => $this->createUrl("admin/labels/sa/exportmulti"),
             'htmlOptions' => [
                 'class' => 'btn btn-outline-secondary',

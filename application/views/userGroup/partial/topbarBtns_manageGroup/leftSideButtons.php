@@ -10,7 +10,7 @@ $this->widget(
         'name' => 'group-mail-button',
         'id' => 'group-mail-button',
         'text' => gT('Mail to all Members'),
-        'icon' => 'icon-invite text-success',
+        'icon' => 'icon-invite',
         'link' => $this->createUrl("userGroup/mailToAllUsersInGroup/ugid/" . $userGroupId),
         'htmlOptions' => [
             'class' => 'btn btn-outline-secondary',
@@ -25,7 +25,7 @@ if ($hasPermission) {
             'name' => 'group-mail-button',
             'id' => 'group-mail-button',
             'text' => gT('Edit current user group'),
-            'icon' => 'icon-invite text-success',
+            'icon' => 'icon-invite',
             'link' => $this->createUrl("userGroup/edit/ugid/" . $userGroupId),
             'htmlOptions' => [
                 'class' => 'btn btn-outline-secondary',

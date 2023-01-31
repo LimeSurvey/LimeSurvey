@@ -6,7 +6,7 @@ $this->widget(
         'name' => 'createnewmenu',
         'id' => 'createnewmenu',
         'text' => gT('New menu'),
-        'icon' => 'icon-add text-success',
+        'icon' => 'icon-add',
         'htmlOptions' => [
             'class' => 'btn btn-outline-secondary tab-dependent-button',
             'title' => gT('Add new menu'),
@@ -21,7 +21,7 @@ $this->widget(
         'name' => 'createnewmenuentry',
         'id' => 'createnewmenuentry',
         'text' => gT('New menu entry'),
-        'icon' => 'icon-add text-success',
+        'icon' => 'icon-add',
         'htmlOptions' => [
             'class' => 'btn btn-outline-secondary tab-dependent-button',
             'title' => gT('Add new menu entry'),

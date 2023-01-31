@@ -104,7 +104,7 @@ if ($hasResponsesExportPermission) {
             'datatoggle' => 'dropdown',
             'ariahaspopup' => true,
             'ariaexpanded' => false,
-            'icon' => 'ri-upload-fill text-success',
+            'icon' => 'ri-upload-fill',
             'iconclass' => 'caret',
             'id' => 'export-button',
             'class' => 'dropdown-toggle',
@@ -138,7 +138,7 @@ if ($hasResponsesCreatePermission) {
             'ariahaspopup' => true,
             'ariaexpanded' => false,
             'class' => 'btn-outline-secondary',
-            'icon' => 'ri-upload-fill text-success',
+            'icon' => 'ri-upload-fill',
             'iconclass' => 'caret'
         ],
         'dropdown' => [
@@ -156,7 +156,7 @@ if ($hasResponsesReadPermission) {
         'class' => 'btn-outline-secondary',
         'name'  => gT('View Saved but not submitted Responses'),
         'url'   => $this->createUrl("admin/saved/sa/view/surveyid/$survey->sid"),
-        'icon'  => 'ri-save-line text-success',
+        'icon'  => 'ri-save-line',
     ];
 
     array_push($topBar['alignment']['left']['buttons'], $buttons['view_saved_but_not_submitted_responses']);

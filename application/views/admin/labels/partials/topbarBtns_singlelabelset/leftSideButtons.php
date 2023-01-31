@@ -12,7 +12,7 @@ if ($hasUpdatePermission) {
             'name' => 'create-import-button',
             'id' => 'edit-button',
             'text' => gT('Edit label set'),
-            'icon' => 'ri-pencil-fill text-primary',
+            'icon' => 'ri-pencil-fill',
             'link' => $this->createUrl("admin/labels/sa/editlabelset/lid/" . $lid),
             'htmlOptions' => [
                 'class' => 'btn btn-outline-secondary',
@@ -29,7 +29,7 @@ $this->widget(
         'name' => 'export-button',
         'id' => 'export-button',
         'text' => gT('Export this label set'),
-        'icon' => 'icon-export text-success',
+        'icon' => 'icon-export',
         'link' => $this->createUrl("admin/export/sa/dumplabel/lid/$lid"),
         'htmlOptions' => [
             'class' => 'btn btn-outline-secondary',
