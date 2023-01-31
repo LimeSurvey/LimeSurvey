@@ -18,15 +18,6 @@ $layoutHelper->showadminmenu($aData);
 
 echo "<!-- BEGIN LAYOUT MAIN (refactored controllers-->";
 
-// Green Bar with Page Header
-//$layoutHelper->surveyManagerBar($aData);
-
-// White Bar with Action Buttons like (Back)
-//$layoutHelper->fullpagebar($aData);   //this seems to be not in use anymore...
-
-// Generated through /admin/usergroup/usergroupbar_view
-//$layoutHelper->renderMenuBar($aData);
-
 echo $layoutHelper->renderTopbarTemplate($aData);
 
 $layoutHelper->updatenotification();

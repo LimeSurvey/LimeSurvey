@@ -21,12 +21,6 @@ echo $layoutHelper->renderTopbarTemplate($aData);
 //$this->userGroupBar($aData);
 echo "<!-- BEGIN LAYOUT_MAIN -->";
 
-// Generated through /admin/super/surveymanagerbar.php
-//$this->surveyManagerBar($aData);
-
-// Generated through /admin/super/fullpagebar_view
-//$this->fullpagebar($aData);
-
 $this->updatenotification();
 $this->notifications();
     

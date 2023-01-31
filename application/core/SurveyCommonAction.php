@@ -698,6 +698,7 @@ class SurveyCommonAction extends CAction
      * @param array $aData
      * @throws CException
      */
+    /*
     public function fullpagebar(array $aData)
     {
         if ((isset($aData['fullpagebar']))) {
@@ -711,7 +712,7 @@ class SurveyCommonAction extends CAction
             );
             $this->getController()->renderPartial("/admin/super/fullpagebar_view", $aData);
         }
-    }
+    }*/
 
     /**
      * Renders the green bar with page title

@@ -207,6 +207,7 @@ class LayoutHelper
      *
      * @param array $aData
      */
+    /*
     public function fullpagebar(array $aData)
     {
         if ((isset($aData['fullpagebar']))) {
@@ -220,7 +221,7 @@ class LayoutHelper
             );
             Yii::app()->getController()->renderPartial("/layouts/fullpagebar_view", $aData);
         }
-    }
+    }*/
 
     public function renderTopbarTemplate($aData)
     {
