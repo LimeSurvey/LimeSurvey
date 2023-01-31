@@ -51,7 +51,7 @@
 <?php if(!empty($showSaveButton)): ?>
     <button
         id="save-button-create-question"
-        class="btn btn-success"
+        class="btn btn-primary"
         type="button"
         <?php if ($oQuestion->qid !== 0): // Only enable Ajax save for edit question, not create question. ?>
             data-save-with-ajax="true"

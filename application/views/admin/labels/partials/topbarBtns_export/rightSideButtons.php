@@ -25,7 +25,7 @@ $this->widget(
         'text' => gT('Export'),
         'icon' => 'fa fa-check',
         'htmlOptions' => [
-            'class' => 'btn btn-success',
+            'class' => 'btn btn-primary',
             'role' => 'button',
             'data-form-id' => 'exportlabelset'
         ],

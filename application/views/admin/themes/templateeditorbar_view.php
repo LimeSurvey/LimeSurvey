@@ -101,7 +101,7 @@ $importModal = false;
                 </div>
 
         <?php if (isset($fullpagebar['savebutton']['form'])) : ?>
-            <a class="btn btn-success" href="#" role="button" id="save-form-button"
+            <a class="btn btn-primary" href="#" role="button" id="save-form-button"
                data-form-id="<?php echo $fullpagebar['savebutton']['form']; ?>">
                 <span class="fa fa-floppy-o"></span>
                 <?php eT("Save"); ?>

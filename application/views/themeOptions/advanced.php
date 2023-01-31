@@ -146,7 +146,7 @@
                     </div>
                 </div>
                 <div class="row buttons d-none">
-                    <?php echo TbHtml::submitButton($model->isNewRecord ? gT('Create') : gT('Save'), ['class' => 'btn-success']); ?>
+                    <?php echo TbHtml::submitButton($model->isNewRecord ? gT('Create') : gT('Save'), ['class' => 'btn-primary']); ?>
                 </div>
 
                 <?php $this->endWidget(); ?>

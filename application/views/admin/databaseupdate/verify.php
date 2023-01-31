@@ -30,7 +30,7 @@
     else
     { ?>
         <p>
-            <a class="btn btn-lg btn-success" href="<?php echo Yii::app()->getController()->createUrl("admin/databaseupdate/sa/db/continue/yes"); ?>" role="button">
+            <a class="btn btn-lg btn-primary" href="<?php echo Yii::app()->getController()->createUrl("admin/databaseupdate/sa/db/continue/yes"); ?>" role="button">
                 <?php eT('Start database upgrade'); ?>
             </a>
         </p>

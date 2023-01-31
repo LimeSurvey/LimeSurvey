@@ -40,7 +40,7 @@ $this->widget(
         'text' => gT('Save'),
         'icon' => 'fa fa-check',
         'htmlOptions' => [
-            'class' => 'btn btn-success',
+            'class' => 'btn btn-primary',
             'onclick' => "$(this).addClass('disabled').attr('onclick', 'return false;');",
             'data-form-id' => 'frmglobalsettings'
         ],

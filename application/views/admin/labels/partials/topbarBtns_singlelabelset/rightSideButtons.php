@@ -42,7 +42,7 @@ $this->widget(
         'text' => gT('Save'),
         'icon' => 'fa fa-check',
         'htmlOptions' => [
-            'class' => 'btn btn-success',
+            'class' => 'btn btn-primary',
             'role' => 'button',
             'data-form-id' => 'mainform'
         ],

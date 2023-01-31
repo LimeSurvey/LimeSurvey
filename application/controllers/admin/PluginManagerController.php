@@ -368,7 +368,7 @@ class PluginManagerController extends SurveyCommonAction
                 ),
                 'save' => array(
                     'label' => '<span class="ri-check-fill"></span> ' . gT('Save'),
-                    'class' => array('btn btn-success'),
+                    'class' => array('btn btn-primary'),
                     'type'  => 'submit'
                 ),
             );

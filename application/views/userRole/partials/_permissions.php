@@ -123,7 +123,7 @@ Yii::app()->getController()->renderPartial(
     <button class="btn btn-cancel selector--exitForm" id="exitForm" data-bs-dismiss="modal">
         <?= gT('Cancel') ?>
     </button>
-    <button class="btn btn-success selector--submitForm" id="submitForm">
+    <button class="btn btn-primary selector--submitForm" id="submitForm">
         <?= gT('Save') ?>
     </button>
 </div>

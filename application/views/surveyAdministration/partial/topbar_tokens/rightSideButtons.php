@@ -26,7 +26,7 @@ if (!empty($showDownloadButton)) {
             'text' => gT('Download CSV file'),
             'icon' => 'ri-download-fill',
             'htmlOptions' => [
-                'class' => 'btn btn-success',
+                'class' => 'btn btn-primary',
                 'role' => 'button'
             ],
         ]
@@ -42,7 +42,7 @@ if (!empty($showSendInvitationButton)) {
             'text' => gT('Send invitations'),
             'icon' => 'ri-mail-send-fill',
             'htmlOptions' => [
-                'class' => 'btn btn-success',
+                'class' => 'btn btn-primary',
                 'role' => 'button'
             ],
         ]
@@ -58,7 +58,7 @@ if (!empty($showSendReminderButton)) {
             'text' => gT('Send reminders'),
             'icon' => 'ri-mail-send-fill',
             'htmlOptions' => [
-                'class' => 'btn btn-success',
+                'class' => 'btn btn-primary',
                 'role' => 'button'
             ],
         ]

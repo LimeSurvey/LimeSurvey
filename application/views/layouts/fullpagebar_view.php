@@ -71,7 +71,7 @@
 
                 <!-- Save -->
             <?php if (isset($fullpagebar['savebutton']['form'])) : ?>
-                <a class="btn btn-success"
+                <a class="btn btn-primary"
                    href="#"
                    role="button"
                    id="save-form-button"

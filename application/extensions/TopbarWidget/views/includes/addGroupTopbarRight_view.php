@@ -6,7 +6,7 @@
 ?>
 
 <!-- Save -->
-<button id="save-button" class="btn btn-success float-end" type="button">
+<button id="save-button" class="btn btn-primary float-end" type="button">
     <i class="ri-check-fill"></i>
     <?php eT('Save'); ?>
 </button>

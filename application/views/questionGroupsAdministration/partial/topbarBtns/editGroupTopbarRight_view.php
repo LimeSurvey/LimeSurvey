@@ -21,7 +21,7 @@
 </a>
 
 <!-- Save -->
-<a id="save-button" class="btn btn-success" role="button">
+<a id="save-button" class="btn btn-primary" role="button">
     <i class="ri-check-fill"></i>
     <?php eT("Save");?>
 </a>

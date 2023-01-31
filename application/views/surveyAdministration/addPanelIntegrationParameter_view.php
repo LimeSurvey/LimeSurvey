@@ -37,7 +37,7 @@
             </div>
             <div class='mb-3'>
                 <div class='col-12 text-center'>
-                    <button class='btn btn-success' id='btnSaveParams' type="button">
+                    <button class='btn btn-primary' id='btnSaveParams' type="button">
                         <span class="ri-save-3-fill icon"></span>
                         <?php eT('Save'); ?>
                     </button>
