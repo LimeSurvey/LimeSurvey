@@ -2,7 +2,7 @@
 // include !important tag
 .cke_top {
     background : $white !important;
-    border     : 1px solid #1e1e1e !important;
+    border     : 1px solid $g-900 !important;
 }
 
 .cke_button_icon {
@@ -11,7 +11,7 @@
 
 .cke_reset_all,
 .cke_reset_all * {
-    color : $g-600 !important;
+    color : $g-900 !important;
 }
 
 .cke_contents {
