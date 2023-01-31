@@ -7,73 +7,161 @@
 ?>
 
 <!-- White Close button -->
-<?php if (!empty($showWhiteCloseButton)) : ?>
-    <a class="btn btn-outline-secondary" href="<?php echo $closeUrl ?>" role="button">
-        <span class="ri-close-fill"></span>
-        <?php eT("Close"); ?>
-    </a>
-<?php endif; ?>
+<?php
+if (!empty($showWhiteCloseButton)) {
+    $this->widget(
+        'ext.ButtonWidget.ButtonWidget',
+        [
+            'name' => 'close_button',
+            'text' => gT('Close'),
+            'icon' => 'ri-close-fill',
+            'link' => $closeUrl,
+            'htmlOptions' => [
+                'class' => 'btn btn-outline-secondary',
+                'role' => 'button'
+            ],
+        ]
+    );
+}
+?>
 
 <!-- Save and Close -->
-<?php if (!empty($showSaveAndCloseButton)): ?>
-    <a class="btn btn-outline-secondary"
-       href="<?php echo $closeUrl; ?>"
-       role="button"
-       id="save-and-close-button"
-       onclick="$(this).addClass('disabled').attr('onclick', 'return false;');">
-        <span class="ri-checkbox-circle-fill"></span>
-        <?php eT("Save and close"); ?>
-    </a>
-<?php endif; ?>
+<?php
+if (!empty($showSaveAndCloseButton)) {
+    $this->widget(
+        'ext.ButtonWidget.ButtonWidget',
+        [
+            'name' => 'save-and-close-button',
+            'id' => 'save-and-close-button',
+            'text' => gT('Save and close'),
+            'icon' => 'ri-checkbox-circle-fill',
+            'link' => $closeUrl,
+            'htmlOptions' => [
+                'class' => 'btn btn-outline-secondary',
+                'role' => 'button',
+                'onclick' => "$(this).addClass('disabled').attr('onclick', 'return false;');",
+            ],
+        ]
+    );
+}
+?>
+
 
 <!-- Return -->
-<?php if (!empty($showBackButton)): ?>
-    <a class="btn btn-outline-secondary" href="<?php echo $returnUrl; ?>" role="button">
-        <span class="ri-rewind-fill"></span>
-        &nbsp;&nbsp;
-        <?php eT('Back') ?>
-    </a>
-<?php endif; ?>
+<?php
+if (!empty($showBackButton)) {
+    $this->widget(
+        'ext.ButtonWidget.ButtonWidget',
+        [
+            'name' => '',
+            'text' => gT('Back'),
+            'icon' => 'ri-rewind-fill',
+            'link' => $returnUrl,
+            'htmlOptions' => [
+                'class' => 'btn btn-outline-secondary',
+                'role' => 'button',
+            ],
+        ]
+    );
+}
+?>
 
 <!-- Green Save and Close -->
-<?php if (!empty($showGreenSaveAndCloseButton)): ?>
-    <a class="btn btn-success"
-       href="<?php echo $closeUrl; ?>"
-       id="save-and-close-button"
-       onclick="$(this).addClass('disabled').attr('onclick', 'return false;');">
-        <span class="ri-checkbox-circle-fill"></span>
-        <?php eT("Save and close"); ?>
-    </a>
-<?php endif; ?>
+<?php
+if (!empty($showGreenSaveAndCloseButton)) {
+    $this->widget(
+        'ext.ButtonWidget.ButtonWidget',
+        [
+            'name' => 'save-and-close-button',
+            'id' => 'save-and-close-button',
+            'text' => gT('Save and close'),
+            'icon' => 'ri-checkbox-circle-fill',
+            'link' => $closeUrl,
+            'htmlOptions' => [
+                'class' => 'btn btn-primary',
+                'role' => 'button',
+                'onclick' => "$(this).addClass('disabled').attr('onclick', 'return false;');",
+            ],
+        ]
+    );
+}
+?>
 
 <!-- Save -->
-<?php if (!empty($showSaveButton)): ?>
-    <a id="save-button" class="btn btn-primary float-end">
-        <i class="ri-check-fill"></i>
-        <?php eT("Save"); ?>
-    </a>
-<?php endif; ?>
+<?php
+if (!empty($showSaveButton)) {
+    $this->widget(
+        'ext.ButtonWidget.ButtonWidget',
+        [
+            'name' => 'save-button',
+            'id' => 'save-button',
+            'text' => gT('Save'),
+            'icon' => 'ri-check-fill',
+            'htmlOptions' => [
+                'class' => 'btn btn-primary float-end',
+                'role' => 'button'
+            ],
+        ]
+    );
+}
+?>
 
 <!-- Export -->
-<?php if (!empty($showExportButton)): ?>
-    <button class="btn btn-success" type="button" name="export-button" id="export-button" data-submit-form=1>
-        <span class="ri-download-fill"></span>
-        <?php eT("Export"); ?>
-    </button>
-<?php endif; ?>
+<?php
+if (!empty($showExportButton)) {
+    $this->widget(
+        'ext.ButtonWidget.ButtonWidget',
+        [
+            'name' => 'export-button',
+            'id' => 'export-button',
+            'text' => gT('Export'),
+            'icon' => 'ri-download-fill',
+            'htmlOptions' => [
+                'class' => 'btn btn-primary',
+                'role' => 'button',
+                'data-submit-form' => 1,
+            ],
+        ]
+    );
+}
+?>
 
 <!-- Import -->
-<?php if (!empty($showImportButton)): ?>
-    <button class="btn btn-success" type="button" name="import-button" id="import-button" data-submit-form=1>
-        <span class="ri-upload-fill"></span>
-        <?php eT("Import"); ?>
-    </button>
-<?php endif; ?>
+<?php
+if (!empty($showImportButton)) {
+    $this->widget(
+        'ext.ButtonWidget.ButtonWidget',
+        [
+            'name' => 'import-button',
+            'id' => 'import-button',
+            'text' => gT('Import'),
+            'icon' => 'ri-upload-fill',
+            'htmlOptions' => [
+                'class' => 'btn btn-primary',
+                'role' => 'button',
+                'data-submit-form' => 1,
+            ],
+        ]
+    );
+}
+?>
+
 
 <!-- Close -->
-<?php if (!empty($showCloseButton)): ?>
-    <a class="btn btn-danger" href="<?php echo $closeUrl; ?>" type="button">
-        <span class="ri-close-fill"></span>
-        <?php eT("Close"); ?>
-    </a>
-<?php endif; ?>
+<?php
+if (!empty($showCloseButton)) {
+    $this->widget(
+        'ext.ButtonWidget.ButtonWidget',
+        [
+            'name' => '',
+            'text' => gT('Close'),
+            'icon' => 'ri-close-fill',
+            'link' => $closeUrl,
+            'htmlOptions' => [
+                'class' => 'btn btn-danger',
+                'role' => 'button',
+            ],
+        ]
+    );
+}
+?>

@@ -115,22 +115,6 @@ class ConditionsAction extends SurveyCommonAction
         $aData['title_bar']['title'] = gT("Conditions designer");
 
         $aData['subaction'] = gT("Conditions designer");
-
-        // Top Bar
-        $aData['topBar']['name'] = 'baseTopbar_view';
-        $aData['topBar']['leftSideView']  = 'conditionDesignerTopbarLeft_view';
-        $aData['topBar']['rightSideView'] = 'conditionDesignerTopbarRight_view';
-
-        $returnUrl = Yii::app()->createUrl('questionAdministration/view/surveyid/' . $iSurveyID . '/gid/' . $gid . '/qid/' . $qid);
-
-        // Green Save and Close Button
-        $aData['showGreenSaveAndCloseButton'] = false;
-        $aData['closeUrl'] = $returnUrl;
-
-        // White Close Button
-        $aData['showWhiteCloseButton'] = true;
-        $aData['returnUrl'] = $returnUrl;
-
         $aData['currentMode'] = ($subaction == 'conditions' || $subaction == 'copyconditionsform') ? $subaction : 'edit';
 
         $postSubaction = $request->getPost('subaction');
@@ -309,9 +293,8 @@ class ConditionsAction extends SurveyCommonAction
 
         // Back Button
         $aData['showBackButton'] = true;
-
-        // White Close Button
-        $aData['showWhiteCloseButton'] = false;
+        // Save button
+        $aData['showSaveButton'] = false;
 
         $scenarios = $this->getAllScenarios($qid);
 
@@ -350,9 +333,7 @@ class ConditionsAction extends SurveyCommonAction
             $subaction == "updatescenario" ||
             $subaction == 'copyconditionsform' || $subaction == 'copyconditions' || $subaction == 'conditions'
         ) {
-            // Show Save Button instead of green Save and Close Button
             $aData['showSaveButton'] = true;
-            $aData['showGreenSaveAndCloseButton'] = false;
 
             //3: Get other conditions currently set for this question
             $s = 0;
@@ -627,6 +608,19 @@ class ConditionsAction extends SurveyCommonAction
             $aViewUrls['output'] .= $this->getEditConditionForm($args);
         }
 
+        $returnUrl = Yii::app()->createUrl('questionAdministration/view/surveyid/' . $iSurveyID . '/gid/' . $gid . '/qid/' . $qid);
+        $aData['returnUrl'] = $returnUrl;
+        // Top Bar
+        $aData['topbar']['middleButtons'] = Yii::app()->getController()->renderPartial(
+            '/admin/conditions/partial/topbarBtns/leftSideButtons',
+            ['aData' => $aData],
+            true
+        );
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/admin/conditions/partial/topbarBtns/rightSideButtons',
+            ['aData' => $aData],
+            true
+        );
         $aData['conditionsoutput'] = $aViewUrls['output'];
         $this->renderWrappedTemplate('conditions', $aViewUrls, $aData);
 
