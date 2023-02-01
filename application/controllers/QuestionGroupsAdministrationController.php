@@ -319,16 +319,25 @@ class QuestionGroupsAdministrationController extends LSBaseController
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title
             . " (" . gT("ID") . ":" . $surveyid . ")";
 
-        $aData['topBar']['name'] = 'baseTopbar_view';
-        $aData['topBar']['leftSideView'] = 'addGroupTopbarLeft_view';
-        $aData['topBar']['rightSideView'] = 'addGroupTopbarRight_view';
         $aData['backUrl'] = $this->createUrl(
             'questionGroupsAdministration/listquestiongroups',
             [
                 'surveyid' => $surveyid
             ]
         );
-        ;
+        $topbarData = TopbarConfiguration::getSurveyTopbarData($surveyid);
+        $topbarData = array_merge($topbarData, $aData);
+        $aData['topbar']['middleButtons'] = $this->renderPartial(
+            'partial/topbarBtns/addGroupTopbarLeft_view',
+            $topbarData,
+            true
+        );
+        $aData['topbar']['rightButtons'] = $this->renderPartial(
+            'partial/topbarBtns/addGroupTopbarRight_view',
+            $topbarData,
+            true
+        );
+
         ///////////
         // sidemenu
         $aData['sidemenu']['state'] = false;
@@ -532,16 +541,12 @@ class QuestionGroupsAdministrationController extends LSBaseController
             $aData['sidemenu']['questiongroups'] = true;
             $aData['sidemenu']['landOnSideMenuTab'] = $landOnSideMenuTab;
 
-            /*$aData['surveybar']['closebutton']['url'] = 'questionGroupsAdministration/listquestiongroups/surveyid/'.$surveyid; // Close button
-            $aData['surveybar']['savebutton']['form'] = true;
-            $aData['surveybar']['savebutton']['text'] = gT('Import');*/
             $aData['surveyid'] = $surveyid;
-            /*$aData['sid'] = $surveyid;
-            $aData['topBar']['sid'] = $iSurveyID;
-            $aData['topBar']['showSaveButton'] = true;*/
-            $aData['topBar']['name'] = 'baseTopbar_view';
-            $aData['topBar']['rightSideView'] = 'importGroupTopbarRight_view';
-
+            $aData['topbar']['rightButtons'] = $this->renderPartial(
+                'partial/topbarBtns/importGroupTopbarRight_view',
+                [],
+                true
+            );
 
             $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title
                 . " (" . gT("ID") . ":" . $iSurveyID . ")";
