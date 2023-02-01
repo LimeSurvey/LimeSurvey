@@ -23,34 +23,3 @@ a {
 .hidden {
     display: none !important;
 }
-
-.summary-table {
-    font-size: $font-size-sm;
-    padding-left: 0.5rem;
-    strong {
-        font-weight: $font-weight-600;
-    }
-    .em-expression {
-        @include expression
-    }
-}
-
-#logicfiletable .em-expression {
-    @include expression
-}
-
-// Headings
-.pagetitle {
-    border-bottom : solid 2px $g-400;
-    position      : relative;
-    margin-bottom : 1em;
-
-    &.h3 {
-        @include h3
-    }
-}
-.side-body {
-    h3 {
-        border-bottom: solid 2px $g-400;
-    }
-}
