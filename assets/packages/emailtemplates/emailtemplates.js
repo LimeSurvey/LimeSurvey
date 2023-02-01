@@ -1,5 +1,9 @@
 // $Id: saved.js 9330 2010-10-24 22:23:56Z c_schmitz $
 
+/**
+ * NOTE: After updating this file, generate the "minified" version with:
+ * uglifyjs -c -- emailtemplates.js > emailtemplates.min.js
+ */
 
 // Namespace
 var LS = LS || {  onDocumentReady: {} };
