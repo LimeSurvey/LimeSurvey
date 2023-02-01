@@ -17,6 +17,14 @@
             </a>
         </li>
     <?php endif; ?>
+    <li class="nav-item ms-auto">
+        <!-- Language selector -->
+        <?php
+        $this->renderPartial(
+            "languageselector",
+            ['oSurvey' => $oSurvey]
+        ); ?>
+    </li>
 </ul>
 <div class="tab-content">
     <!-- Question text tab content -->

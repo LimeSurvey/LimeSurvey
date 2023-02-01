@@ -70,15 +70,6 @@ $questionTheme = !empty($oQuestion->questionTheme) ? $oQuestion->questionTheme :
         <x-test id="action::addQuestion"></x-test>
         <div class="col-xl-8 ps-4 pe-3">
             <div class="row">
-                <!-- Language selector -->
-                <?php
-                $this->renderPartial(
-                    "languageselector",
-                    ['oSurvey' => $oSurvey]
-                ); ?>
-            </div>
-
-            <div class="row">
                 <div class="col-12">
                     <!-- Text elements -->
                     <?php

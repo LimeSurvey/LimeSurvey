@@ -1,4 +1,4 @@
-<div class="mb-3 text-end" <?= count($oSurvey->allLanguages)==1?'style="display:none"':'';?>>
+<div <?= count($oSurvey->allLanguages)==1?'style="display:none"':'';?>>
     <div class="button-toolbar">
         <div class="btn-group" role="group" data-toggle="buttons">
             <button id="language-dropdown" type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

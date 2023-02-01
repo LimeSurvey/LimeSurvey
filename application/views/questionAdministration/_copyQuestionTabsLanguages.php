@@ -20,11 +20,6 @@
         ]
     ); ?>
    </div>
-    <div class="col-6">
-    <!-- Language selector -->
-        <label>&nbsp;</label>
-    <?php $this->renderPartial("languageselector", ['oSurvey' => $oSurvey]); ?>
-    </div>
 </div>
 
 <div class="row">
