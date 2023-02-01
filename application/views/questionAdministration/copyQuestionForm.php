@@ -35,7 +35,7 @@
         />
         <!-- The tabs & tab-fanes -->
         <div class="row">
-            <div class="col-12 col-xl-9">
+            <div class="col-xl-8 ps-4 pe-3">
                 <?php
                 //rendering the language tabs (questioncode, questiontext, questionhelp)
                 $this->renderPartial(
@@ -50,99 +50,97 @@
             </div>
 
             <!-- The Accordion -->
-            <div class="col-12 col-xl-3" id="accordion-container">
+            <div class="col-xl-4 settings-accordion-container" id="accordion-container">
                 <?php // TODO : find why the $groups can't be generated from controller?>
-                <div class="container settings-accordion-container" id='questionbottom'>
-                    <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
-                        <!-- Copy options -->
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" role="tab" id="heading-copy">
-                                <button
-                                    class="accordion-button selector--questionEdit-collapse"
-                                    type="button"
-                                    role="button"
-                                    data-bs-toggle="collapse"
-                                    data-bs-target="#collapse-copy"
-                                    aria-expanded="false"
-                                    aria-controls="collapse-copy"
-                                >
-                                    <?php eT("Copy options"); ?>
-                                </button>
-                            </h2>
-                            <div id="collapse-copy" class="accordion-collapse collapse show" role="tabpanel" aria-labelledby="heading-copy">
-                                <div class="accordion-body">
-                                    <div class="mb-3">
-                                        <label class=" form-label" for='copysubquestions'><?php eT("Copy subquestions?"); ?></label>
-                                        <div>
-                                            <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
-                                                'name'          => 'copysubquestions',
-                                                'checkedOption' => '1',
-                                                'selectOptions' => [
-                                                    '1' => gT('Yes'),
-                                                    '0' => gT('No'),
-                                                ],
-                                            ]); ?>
-                                        </div>
+                <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
+                    <!-- Copy options -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" role="tab" id="heading-copy">
+                            <button
+                                class="accordion-button selector--questionEdit-collapse"
+                                type="button"
+                                role="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapse-copy"
+                                aria-expanded="false"
+                                aria-controls="collapse-copy"
+                            >
+                                <?php eT("Copy options"); ?>
+                            </button>
+                        </h2>
+                        <div id="collapse-copy" class="accordion-collapse collapse show" role="tabpanel" aria-labelledby="heading-copy">
+                            <div class="accordion-body">
+                                <div class="mb-3">
+                                    <label class=" form-label" for='copysubquestions'><?php eT("Copy subquestions?"); ?></label>
+                                    <div>
+                                        <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                            'name'          => 'copysubquestions',
+                                            'checkedOption' => '1',
+                                            'selectOptions' => [
+                                                '1' => gT('Yes'),
+                                                '0' => gT('No'),
+                                            ],
+                                        ]); ?>
                                     </div>
-                                    <div class="mb-3">
-                                        <label class=" form-label" for='copyanswers'><?php eT("Copy answer options?"); ?></label>
-                                        <div>
-                                            <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
-                                                'name'          => 'copyanswers',
-                                                'checkedOption' => '1',
-                                                'selectOptions' => [
-                                                    '1' => gT('Yes'),
-                                                    '0' => gT('No'),
-                                                ],
-                                            ]); ?>
-                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class=" form-label" for='copydefaultanswers'><?php eT("Copy default answers?"); ?></label>
-                                        <div>
-                                            <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
-                                                'name'          => 'copydefaultanswers',
-                                                'checkedOption' => '1',
-                                                'selectOptions' => [
-                                                    '1' => gT('Yes'),
-                                                    '0' => gT('No'),
-                                                ],
-                                            ]); ?>
-                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label" for='copyattributes'>
-                                            <?php eT("Copy question settings?"); ?>
-                                        </label>
-                                        <div class="">
-                                            <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
-                                                'name'          => 'copyattributes',
-                                                'checkedOption' => 'Y',
-                                                'selectOptions' => [
-                                                    '1' => gT('Yes'),
-                                                    '0' => gT('No'),
-                                                ],
-                                            ]); ?>
-                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class=" form-label" for='gid'><?php eT("Question group:"); ?></label>
-                                        <div class="">
-                                            <select name='gid' id='gid' class="form-select" >
-                                                <?php echo getGroupList3($oQuestion->gid, $oQuestion->sid); ?>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <!-- Rendering position widget -->
-                                    <?php $this->widget('ext.admin.survey.question.PositionWidget.PositionWidget',
-                                        array(
-                                            'display' => 'ajax_form_group',
-                                            'oQuestionGroup' => $oQuestionGroup,
-                                        ));
-                                    ?>
-
                                 </div>
+                                <div class="mb-3">
+                                    <label class=" form-label" for='copyanswers'><?php eT("Copy answer options?"); ?></label>
+                                    <div>
+                                        <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                            'name'          => 'copyanswers',
+                                            'checkedOption' => '1',
+                                            'selectOptions' => [
+                                                '1' => gT('Yes'),
+                                                '0' => gT('No'),
+                                            ],
+                                        ]); ?>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class=" form-label" for='copydefaultanswers'><?php eT("Copy default answers?"); ?></label>
+                                    <div>
+                                        <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                            'name'          => 'copydefaultanswers',
+                                            'checkedOption' => '1',
+                                            'selectOptions' => [
+                                                '1' => gT('Yes'),
+                                                '0' => gT('No'),
+                                            ],
+                                        ]); ?>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for='copyattributes'>
+                                        <?php eT("Copy question settings?"); ?>
+                                    </label>
+                                    <div class="">
+                                        <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                            'name'          => 'copyattributes',
+                                            'checkedOption' => 'Y',
+                                            'selectOptions' => [
+                                                '1' => gT('Yes'),
+                                                '0' => gT('No'),
+                                            ],
+                                        ]); ?>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class=" form-label" for='gid'><?php eT("Question group:"); ?></label>
+                                    <div class="">
+                                        <select name='gid' id='gid' class="form-select" >
+                                            <?php echo getGroupList3($oQuestion->gid, $oQuestion->sid); ?>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Rendering position widget -->
+                                <?php $this->widget('ext.admin.survey.question.PositionWidget.PositionWidget',
+                                    array(
+                                        'display' => 'ajax_form_group',
+                                        'oQuestionGroup' => $oQuestionGroup,
+                                    ));
+                                ?>
+
                             </div>
                         </div>
                     </div>

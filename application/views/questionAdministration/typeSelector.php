@@ -51,12 +51,10 @@ $oQuestionSelector = $this->beginWidget(
 ?>
 <?= $oQuestionSelector->getModal(); ?>
 
-<div id="question-type-selector-wrapper" class="mb-3 col-12 col-xl-8 contains-question-selector" data-viewtype="<?= $viewType ?>" data-debug="<?= YII_DEBUG ?>">
+<div id="question-type-selector-wrapper" class="mb-3 contains-question-selector" data-viewtype="<?= $viewType ?>" data-debug="<?= YII_DEBUG ?>">
     <label for="questionCode"><?= gT('Question type'); ?></label>
-    <div class="btn-group" style="width: 100%;">
-        <?= $oQuestionSelector->getButtonOrSelect(); ?>
-        <?php $this->endWidget('ext.admin.PreviewModalWidget.PreviewModalWidget'); ?>
-    </div>
+    <?= $oQuestionSelector->getButtonOrSelect(); ?>
+    <?php $this->endWidget('ext.admin.PreviewModalWidget.PreviewModalWidget'); ?>
     <input type="hidden" id="questionTypeVisual" name="questionTypeVisual" />
     <input type="hidden" id="question_type" name="question[type]" value="<?= $question->type; ?>" />
     <input type="hidden" id="question_theme_name" name="question[question_theme_name]" value="<?= $questionTheme->name; ?>" />

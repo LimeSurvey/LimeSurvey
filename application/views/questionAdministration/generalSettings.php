@@ -7,7 +7,7 @@
 /** @var string $selectormodeclass */
 
 ?>
-<div class="accordion-item question-option-general-container col-12" id="general-settings">
+<div class="accordion-item question-option-general-container" id="general-settings">
     <h2 class="accordion-header" id="general-setting-heading">
         <button
             id="button-collapse-General"

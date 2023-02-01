@@ -9,7 +9,19 @@
 // Question editor settings accordion
 #advanced-question-editor, #copy-question {
   .settings-accordion-container {
-    padding: 8px 12px;
+    #accordion {
+      padding: 8px 12px;
+    }
+
+    .accordion-body {
+      padding: 0;
+    }
+
+    #trigger_questionTypeSelector_button {
+      .btn {
+        width: 100%;
+      }
+    }
   }
 
   [class^=ri-], [class*=" ri-"] {

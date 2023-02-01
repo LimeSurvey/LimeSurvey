@@ -17420,16 +17420,6 @@ footer.footer {
   border-top: 1px solid #EEEFF7;
 }
 
-#accordion-container .card-header > a {
-  width: 100%;
-  display: block;
-}
-
-#accordion_questionTypeSelector .card-title > a, #accordion_questionTypeSelector .ls-panelboxes .ls-panelboxes-panelbox .card .card-header > a, .ls-panelboxes .ls-panelboxes-panelbox .card #accordion_questionTypeSelector .card-header > a, #accordion_questionTypeSelector .card.card-primary .card-header > a, .card.card-primary #accordion_questionTypeSelector .card-header > a {
-  width: 100%;
-  display: block;
-}
-
 #statisticsview .box {
   text-align: left;
   margin-bottom: 1em;
@@ -18386,8 +18376,14 @@ table .ls-sticky-column:has(.dropdown-menu.show) {
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23212529'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
 }
 
-#advanced-question-editor .settings-accordion-container, #copy-question .settings-accordion-container {
+#advanced-question-editor .settings-accordion-container #accordion, #copy-question .settings-accordion-container #accordion {
   padding: 8px 12px;
+}
+#advanced-question-editor .settings-accordion-container .accordion-body, #copy-question .settings-accordion-container .accordion-body {
+  padding: 0;
+}
+#advanced-question-editor .settings-accordion-container #trigger_questionTypeSelector_button .btn, #copy-question .settings-accordion-container #trigger_questionTypeSelector_button .btn {
+  width: 100%;
 }
 #advanced-question-editor [class^=ri-], #advanced-question-editor [class*=" ri-"], #copy-question [class^=ri-], #copy-question [class*=" ri-"] {
   color: #9094A7;
