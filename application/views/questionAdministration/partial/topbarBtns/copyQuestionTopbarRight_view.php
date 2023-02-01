@@ -1,14 +1,34 @@
 <!-- Close -->
-<a class="btn btn-outline-secondary" href="<?php echo $closeUrl; ?>">
-    <i class="ri-close-fill"></i>
-    <?php eT("Close");?>
-</a>
+<?php
+$this->widget(
+    'ext.ButtonWidget.ButtonWidget',
+    [
+        'name' => 'close-button',
+        'text' => gT('Close'),
+        'icon' => 'ri-close-fill',
+        'link' => $closeUrl,
+        'htmlOptions' => [
+            'class' => 'btn btn-outline-secondary',
+        ],
+    ]
+);
+?>
 
 <!-- Save and close -->
-<a id="save-and-close-button-copy-question" class="btn btn-primary">
-    <i class="ri-check-fill"></i>
-    <?php eT("Save and close");?>
-</a>
+<?php
+$this->widget(
+    'ext.ButtonWidget.ButtonWidget',
+    [
+        'id' => 'save-and-close-button-copy-question',
+        'name' => 'save-and-close-button-copy-question',
+        'text' => gT('Save and close'),
+        'icon' => 'ri-check-fill',
+        'htmlOptions' => [
+            'class' => 'btn btn-primary',
+        ],
+    ]
+);
+?>
 
 <script type="text/javascript">
     $(document).ready(function() {

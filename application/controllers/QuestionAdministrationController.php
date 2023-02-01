@@ -1615,7 +1615,15 @@ class QuestionAdministrationController extends LSBaseController
         $aData['sidemenu']['landOnSideMenuTab'] = 'structure';
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title
             . " (" . gT("ID") . ":" . $surveyId . ")";
-
+        $aData['closeUrl'] = Yii::app()->createUrl(
+            'questionAdministration/view/',
+            [
+                'surveyid' => $oQuestion->sid,
+                'gid' => $oQuestion->gid,
+                'qid' => $oQuestion->qid,
+                'landOnSideMenuTab' => 'structure'
+            ]
+        );
 
         $aData['topbar']['rightButtons'] = $this->renderPartial(
             'partial/topbarBtns/copyQuestionTopbarRight_view',

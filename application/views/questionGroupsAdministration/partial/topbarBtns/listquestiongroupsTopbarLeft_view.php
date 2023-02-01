@@ -3,29 +3,65 @@
 /** @var $oSurvey Survey */
 /** @var $hasSurveyContentCreatePermission */
 
-if ($oSurvey->isActive) { ?>
-    <span class="btntooltip" data-bs-toggle="tooltip" data-bs-placement="bottom"
-          title="<?php eT("This survey is currently active."); ?>" style="display: inline-block">
-        <button type="button" class="btn btn-outline-secondary btntooltip" disabled="disabled">
-            <i class="ri-add-circle-fill"></i>
-            <?php eT("Add new group"); ?>
-        </button>
-        <button type="button" class="btn btn-outline-secondary btntooltip" disabled="disabled">
-            <span class="ri-upload-fill"></span>
-            <?php eT("Import group"); ?>
-        </button>
+if ($oSurvey->isActive) : ?>
+    <span class="btntooltip d-inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom"
+          title="<?php eT("This survey is currently active."); ?>">
+        <?php
+        $this->widget(
+            'ext.ButtonWidget.ButtonWidget',
+            [
+                'name' => 'add-new-group-button',
+                'text' => gT('Add new group'),
+                'icon' => 'ri-add-circle-fill',
+                'htmlOptions' => [
+                    'class' => 'btn btn-outline-secondary btntooltip',
+                    'disabled' => 'disabled',
+                ],
+            ]
+        );
+        $this->widget(
+            'ext.ButtonWidget.ButtonWidget',
+            [
+                'name' => 'import-group-button',
+                'text' => gT('Import group'),
+                'icon' => 'ri-upload-fill',
+                'htmlOptions' => [
+                    'class' => 'btn btn-outline-secondary btntooltip',
+                    'disabled' => 'disabled',
+                ],
+            ]
+        );
+        ?>
     </span>
-<?php } elseif ($hasSurveyContentCreatePermission) { ?>
+<?php elseif ($hasSurveyContentCreatePermission) : ?>
     <!-- Add group -->
-    <a class="btn btn-outline-secondary"
-       href="<?php echo Yii::App()->createUrl("questionGroupsAdministration/add/surveyid/" . $oSurvey->sid); ?>">
-        <i class="ri-add-circle-fill"></i>
-        <?php eT('Add new group'); ?>
-    </a>
+    <?php
+    $this->widget(
+        'ext.ButtonWidget.ButtonWidget',
+        [
+            'name' => 'add-new-group-button',
+            'text' => gT('Add new group'),
+            'icon' => 'ri-add-circle-fill',
+            'link' => Yii::App()->createUrl("questionGroupsAdministration/add/surveyid/" . $oSurvey->sid),
+            'htmlOptions' => [
+                'class' => 'btn btn-outline-secondary',
+            ],
+        ]
+    );
+    ?>
     <!-- Import -->
-    <a class="btn btn-outline-secondary"
-       href="<?php echo Yii::App()->createUrl("questionGroupsAdministration/importview/surveyid/" . $oSurvey->sid); ?>">
-        <span class="ri-upload-fill"></span>
-        <?php eT('Import group'); ?>
-    </a>
-<?php } ?>
+    <?php
+    $this->widget(
+        'ext.ButtonWidget.ButtonWidget',
+        [
+            'name' => 'import-group-button',
+            'text' => gT('Import group'),
+            'icon' => 'ri-upload-fill',
+            'link' => Yii::App()->createUrl("questionGroupsAdministration/importview/surveyid/" . $oSurvey->sid),
+            'htmlOptions' => [
+                'class' => 'btn btn-outline-secondary',
+            ],
+        ]
+    );
+    ?>
+<?php endif; ?>

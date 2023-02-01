@@ -20,45 +20,79 @@
 <!-- Close -->
 <?php if(!empty($showCloseButton)): ?>
     <?php if (!empty($oQuestion->qid)): ?>
-        <a class="btn btn-outline-secondary" href="#" role="button" onclick="LS.questionEditor.showOverview(); return false;">
-            <span class="ri-close-fill"></span>
-            <?php eT("Close");?>
-        </a>
+        <?php
+        $this->widget(
+            'ext.ButtonWidget.ButtonWidget',
+            [
+                'name' => 'close-button',
+                'text' => gT("Close"),
+                'icon' => 'ri-close-fill',
+                'link' => '#',
+                'htmlOptions' => [
+                    'class' => 'btn btn-outline-secondary',
+                    'role' => 'button',
+                    'onclick' => "LS.questionEditor.showOverview(); return false;",
+                ],
+            ]
+        );
+        ?>
     <?php else: ?>
-        <a class="btn btn-outline-secondary" href="<?= $closeUrl ?>" role="button">
-            <span class="ri-close-fill"></span>
-            <?php eT("Close");?>
-        </a>
+        <?php
+        $this->widget(
+            'ext.ButtonWidget.ButtonWidget',
+            [
+                'name' => 'close-button',
+                'text' => gT("Close"),
+                'icon' => 'ri-close-fill',
+                'link' => $closeUrl,
+                'htmlOptions' => [
+                    'class' => 'btn btn-outline-secondary',
+                    'role' => 'button',
+                ],
+            ]
+        );
+        ?>
     <?php endif; ?>
 <?php endif;?>
 
 <!-- Save and close -->
 <?php if(!empty($showSaveAndCloseButton)): ?>
-    <button
-        type="button"
-        role="button"
-        id="save-and-close-button-create-question"
-        class="btn btn-outline-secondary"
-        type="button"
-        onclick="return LS.questionEditor.checkIfSaveIsValid(event, 'overview');"
-    >
-        <i class="ri-checkbox-fill"></i>
-        <?php eT("Save and close");?>
-    </button>
+    <?php
+    $this->widget(
+        'ext.ButtonWidget.ButtonWidget',
+        [
+            'id' => 'save-and-close-button-create-question',
+            'name' => 'save-and-close-button-create-question',
+            'text' => gT('Save and close'),
+            'icon' => 'ri-checkbox-fill',
+            'htmlOptions' => [
+                'class' => 'btn btn-outline-secondary',
+                'onclick' => "return LS.questionEditor.checkIfSaveIsValid(event, 'overview');"
+            ],
+        ]
+    );
+    ?>
 <?php endif; ?>
 
 <!-- Save -->
 <?php if(!empty($showSaveButton)): ?>
-    <button
-        id="save-button-create-question"
-        class="btn btn-primary"
-        type="button"
-        <?php if ($oQuestion->qid !== 0): // Only enable Ajax save for edit question, not create question. ?>
-            data-save-with-ajax="true"
-        <?php endif; ?>
-        onclick="return LS.questionEditor.checkIfSaveIsValid(event, 'editor');"
-    >
-        <i class="ri-check-fill"></i>
-        <?php eT("Save");?>
-    </button>
+    <?php
+    $htmlOptions = [
+        'class' => 'btn btn-primary',
+        'onclick' => "return LS.questionEditor.checkIfSaveIsValid(event, 'editor');"
+    ];
+    if ($oQuestion->qid !== 0) {
+        $htmlOptions['data-save-with-ajax'] = "true";
+    }
+    $this->widget(
+        'ext.ButtonWidget.ButtonWidget',
+        [
+            'id' => 'save-button-create-question',
+            'name' => 'save-button-create-question',
+            'text' => gT('Save'),
+            'icon' => 'ri-check-fill',
+            'htmlOptions' => $htmlOptions,
+        ]
+    );
+    ?>
 <?php endif; ?>

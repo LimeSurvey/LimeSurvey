@@ -1,5 +1,15 @@
 <!-- Import -->
-<a id="save-button" class="btn btn-primary">
-    <i class="ri-save-3-fill"></i>
-    <?php eT("Import");?>
-</a>
+<?php
+$this->widget(
+    'ext.ButtonWidget.ButtonWidget',
+    [
+        'id' => 'save-button',
+        'name' => 'save-button',
+        'text' => gT('Import'),
+        'icon' => 'ri-save-3-fill',
+        'htmlOptions' => [
+                'class' => 'btn btn-primary',
+        ],
+    ]
+);
+?>

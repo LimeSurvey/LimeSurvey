@@ -1,27 +1,70 @@
-<?php if (!empty($closeBtnUrl)) : ?>
 <!-- Close -->
-<a class="btn btn-danger" href="<?php echo $closeBtnUrl; ?>">
-    <span class="ri-close-fill"></span>
-    <?php eT("Close");?>
-</a>
-<?php endif; ?>
+<?php
+if (!empty($closeBtnUrl)) {
+    $this->widget(
+        'ext.ButtonWidget.ButtonWidget',
+        [
+            'name' => 'close-button',
+            'id' => 'close-button',
+            'text' => gT('Close'),
+            'icon' => 'ri-close-fill',
+            'link' => $closeBtnUrl,
+            'htmlOptions' => [
+                'class' => 'btn btn-danger',
+            ],
+        ]
+    );
+}
+?>
 
 <!-- White Close button -->
-<?php if (!empty($showWhiteCloseButton)) : ?>
-    <a class="btn btn-outline-secondary" href="<?php echo $closeUrl ?>">
-        <span class="ri-close-fill"></span>
-        <?php eT("Close"); ?>
-    </a>
-<?php endif; ?>
+<?php
+if (!empty($showWhiteCloseButton)) {
+    $this->widget(
+        'ext.ButtonWidget.ButtonWidget',
+        [
+            'name' => 'close-button',
+            'id' => 'close-button',
+            'text' => gT('Close'),
+            'icon' => 'ri-close-fill',
+            'link' => $closeUrl,
+            'htmlOptions' => [
+                'class' => 'btn btn-outline-secondary',
+            ],
+        ]
+    );
+}
+?>
 
 <!-- Save and close -->
-<a id="save-and-close-button" class="btn btn-outline-secondary">
-    <i class="ri-checkbox-fill"></i>
-    <?php eT("Save and close");?>
-</a>
+<?php
+$this->widget(
+    'ext.ButtonWidget.ButtonWidget',
+    [
+        'name' => 'save-and-close-button',
+        'id' => 'save-and-close-button',
+        'text' => gT('Save and close'),
+        'icon' => 'ri-checkbox-fill',
+        'htmlOptions' => [
+            'class' => 'btn btn-outline-secondary',
+        ],
+    ]
+);
+?>
 
 <!-- Save -->
-<a id="save-button" class="btn btn-primary" role="button">
-    <i class="ri-check-fill"></i>
-    <?php eT("Save");?>
-</a>
+<?php
+$this->widget(
+    'ext.ButtonWidget.ButtonWidget',
+    [
+        'name' => 'save-button',
+        'id' => 'save-button',
+        'text' => gT('Save'),
+        'icon' => 'ri-check-fill',
+        'htmlOptions' => [
+            'class' => 'btn btn-primary',
+            'role' => 'button',
+        ],
+    ]
+);
+?>

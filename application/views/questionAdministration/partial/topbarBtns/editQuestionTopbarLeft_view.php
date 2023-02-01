@@ -1,6 +1,4 @@
 <?php if ($oQuestion->qid !== 0): ?>
-<?php ?>
-    <!-- test/execute survey -->
     <?php
     $this->renderPartial(
         '/surveyAdministration/partial/topbar/previewOrRunButton_view',
@@ -21,15 +19,40 @@
     <!-- Import -->
     <?php if($hasSurveyContentCreatePermission):?>
         <?php if($oSurvey->active!='Y'): ?>
-            <a class="btn btn-outline-secondary" id="import-button" href="<?php echo Yii::App()->createUrl("questionAdministration/importView", ["surveyid" => $surveyid, "groupid" => $gid]); ?>" role="button">
-                <span class="ri-upload-fill icon"></span>
-                <?php eT("Import question"); ?>
-            </a>
+            <?php
+            $this->widget(
+                'ext.ButtonWidget.ButtonWidget',
+                [
+                    'id' => 'import-button',
+                    'name' => 'import-button',
+                    'text' => gT('Import question'),
+                    'icon' => 'ri-upload-fill icon',
+                    'link' => Yii::App()->createUrl("questionAdministration/importView", ["surveyid" => $surveyid, "groupid" => $gid]),
+                    'htmlOptions' => [
+                        'class' => 'btn btn-outline-secondary',
+                        'role' => 'button',
+                    ],
+                ]
+            );
+            ?>
         <?php else: ?>
-            <a role="button" class="btn btn-outline-secondary btntooltip" disabled data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("You can not import questions because the survey is currently active."); ?>">
-                <span class="ri-upload-fill icon"></span>
-                <?php eT("Import question"); ?>
-            </a>
+        <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("You can not import questions because the survey is currently active."); ?>">
+            <?php
+            $this->widget(
+                'ext.ButtonWidget.ButtonWidget',
+                [
+                    'name' => 'import-button',
+                    'text' => gT('Import question'),
+                    'icon' => 'ri-upload-fill icon',
+                    'htmlOptions' => [
+                        'class' => 'btn btn-outline-secondary btntooltip',
+                        'role' => 'button',
+                        'disabled' => 'disabled',
+                    ],
+                ]
+            );
+            ?>
+        </span>
         <?php endif; ?>
     <?php endif;?>
 <?php endif; ?>

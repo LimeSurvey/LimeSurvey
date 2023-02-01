@@ -7,9 +7,21 @@
 ?>
 
 <!-- Edit button -->
-<?php if($hasSurveyContentUpdatePermission): ?>
-    <a id="questionEditorButton" class="btn btn-primary pjax" href="#" role="button" onclick="LS.questionEditor.showEditor(); return false;">
-        <i class="ri-pencil-fill"></i>
-        <?php eT("Edit");?>
-    </a>
-<?php endif; ?>
+<?php
+if ($hasSurveyContentUpdatePermission) {
+    $this->widget(
+        'ext.ButtonWidget.ButtonWidget',
+        [
+            'id' => 'questionEditorButton',
+            'name' => 'questionEditorButton',
+            'text' => gT('Edit'),
+            'icon' => 'ri-pencil-fill',
+            'link' => '#',
+            'htmlOptions' => [
+                'class' => 'btn btn-primary pjax',
+                'onclick' => "LS.questionEditor.showEditor(); return false;",
+                'role' => 'button',
+            ],
+        ]
+    );
+}

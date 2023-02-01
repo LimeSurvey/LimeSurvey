@@ -1,7 +1,18 @@
 <!-- Edit button -->
-<?php if($hasSurveyContentUpdatePermission): ?>
-    <a class="btn btn-primary pjax" href="<?php echo Yii::App()->createUrl("questionGroupsAdministration/edit/surveyid/{$surveyid}/gid/{$gid}/"); ?>" role="button">
-        <span class="ri-pencil-fill"></span>
-        <?php eT("Edit");?>
-    </a>
-<?php endif; ?>
+<?php
+if($hasSurveyContentUpdatePermission) {
+    $this->widget(
+        'ext.ButtonWidget.ButtonWidget',
+        [
+            'name' => 'edit-button',
+            'id' => 'edit-button',
+            'text' => gT('Edit'),
+            'icon' => 'ri-pencil-fill',
+            'link' => Yii::App()->createUrl("questionGroupsAdministration/edit/surveyid/{$surveyid}/gid/{$gid}/"),
+            'htmlOptions' => [
+                'class' => 'btn btn-primary pjax',
+            ],
+        ]
+    );
+}
+?>

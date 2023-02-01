@@ -8,7 +8,7 @@
 
 ?>
 <!-- survey activation -->
-<?php if (!$oSurvey->isActive) { ?>
+<?php if (!$oSurvey->isActive) : ?>
     <!-- activate -->
     <?php
     $htmlOptions = [
@@ -30,20 +30,24 @@
             'link' => App()->createUrl("surveyAdministration/activate/", ['iSurveyID' => $sid]),
             'htmlOptions' => $htmlOptions,
         ]); ?>
-    <?php if (!$canactivate) { ?>
+    <?php if (!$canactivate) : ?>
         </span>
-    <?php } ?>
-<?php } else { ?>
+    <?php endif; ?>
+<?php else : ?>
     <!-- Stop survey -->
-    <?php if ($canactivate) { ?>
-        <a class="btn btn-danger btntooltip"
-           href="<?php echo App()->createUrl("surveyAdministration/deactivate/", ['iSurveyID' => $sid]); ?>">
-            <i class="ri-stop-circle-fill"></i>
-            <?php eT("Stop this survey"); ?>
-        </a>
-    <?php }
-}
-?>
+    <?php if ($canactivate) : ?>
+        <?php
+        $this->widget('ext.ButtonWidget.ButtonWidget', [
+            'name' => 'stop-survey',
+            'text' => gT('Stop this survey'),
+            'icon' => 'ri-stop-circle-fill',
+            'link' => App()->createUrl("surveyAdministration/deactivate/", ['iSurveyID' => $sid]),
+            'htmlOptions' => [
+                    'class' => 'btn btn-danger btntooltip'
+            ],
+        ]); ?>
+    <?php endif; ?>
+<?php endif; ?>
 
 <!-- Preview/Run survey -->
 <?php
