@@ -58,6 +58,7 @@ class FailedEmailController extends LSBaseController
             'permissions' => $permissions
         ], true);
 
+        $aData = [];
         $topbarData = TopbarConfiguration::getSurveyTopbarData($surveyId);
         $aData['topbar']['middleButtons'] = $this->renderPartial(
             '/surveyAdministration/partial/topbar/surveyTopbarLeft_view',
