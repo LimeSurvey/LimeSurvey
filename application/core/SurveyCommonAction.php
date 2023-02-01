@@ -592,6 +592,7 @@ class SurveyCommonAction extends CAction
      * @param $aData
      * @throws CException
      */
+    /*
     public function generaltopbar($aData)
     {
         $aData['topBar'] = $aData['topBar'] ?? [];
@@ -607,7 +608,7 @@ class SurveyCommonAction extends CAction
         );
 
         $this->getController()->renderPartial("/admin/survey/topbar/topbar_view", $aData);
-    }
+    }*/
 
     /**
      * Shows admin menu for question

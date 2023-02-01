@@ -18,8 +18,6 @@ echo "<!-- BEGIN LAYOUT_INSURVEY -->";
 // See bug #11845
 LimeExpressionManager::StartProcessingPage(false, true);
 $aData['debug'] = $aData;
-//$this->_titlebar($aData);
-//$layoutHelper->rendertitlebar($aData);
 
 echo $layoutHelper->renderTopbarTemplate($aData);
 
@@ -41,8 +39,6 @@ echo '<div '
     . '>';
 
 echo '<div id="pjax-content" class="col-12">';
-
-//echo LayoutHelper::renderTopbar($aData);
 
 echo '<div id="in_survey_common" '
     . 'class="container-fluid ls-flex-column col-12"'
