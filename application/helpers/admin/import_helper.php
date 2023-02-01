@@ -1275,6 +1275,8 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
     $results['theme_options_differences'] = array();
     $sTemplateName = '';
 
+    /** @var bool Indicates if the email templates have attachments with untranslated URLs or not */
+    $hasOldAttachments = false;
 
     $aLanguagesSupported = array();
     foreach ($xml->languages->language as $language) {
@@ -1417,6 +1419,17 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 }
                 $insertdata['attachments'] = serialize($attachments);
             }
+        } else {
+            // If links are not translated and the email templates have attachments, we need to show a warning
+            if (isset($insertdata['attachments'])) {
+                $attachments = unserialize($insertdata['attachments']);
+                foreach ($attachments as $typeAttachments) {
+                    if (!empty($typeAttachments)) {
+                        $hasOldAttachments = true;
+                        break;
+                    }
+                }
+            }
         }
 
         if (isset($insertdata['surveyls_attributecaptions']) && substr($insertdata['surveyls_attributecaptions'], 0, 1) != '{') {
@@ -1436,6 +1449,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         }
     }
 
+    if ($hasOldAttachments) {
+        $results['importwarnings'][] = gT("Email templates have attachments but the resources have not been copied. Please update the attachments manually.");
+    }
 
     // Import groups table ===================================================================================
     if (isset($xml->groups->rows->row)) {
