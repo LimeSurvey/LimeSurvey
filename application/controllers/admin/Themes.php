@@ -578,7 +578,7 @@ JAVASCRIPT
         App()->getClientScript()->registerPackage('jsuri');
         AdminTheme::getInstance()->registerStylesAndScripts();
 
-        // Green SurveyManagerBar Page Title
+        // page title
         $pageTitle = gT('Theme editor:') . ' ' . $templatename;
 
         //$aData['pageTitle'] = $pageTitle;

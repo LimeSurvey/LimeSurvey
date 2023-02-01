@@ -13,7 +13,7 @@ $this->showHeaders($aData, false);
 $this->showadminmenu($aData);
 
 // Generated through /admin/usergroup/usergroupbar_view
-$this->userGroupBar($aData);
+//$this->userGroupBar($aData);
 
 echo "<!-- BEGIN LAYOUT_INSURVEY -->";
 // Needed to evaluate EM expressions in question summary

@@ -49,9 +49,6 @@ class UserRoleController extends LSBaseController
             $model->setAttributes($aPermissiontemplatesParam, false);
         }
 
-        // Green Bar (SurveyManagerBar) Page Title
-       // $aData['pageTitle'] = gT('User roles');
-
         $aData['topbar']['title'] = gT('User roles');
         $aData['topbar']['middleButtons'] = $this->renderPartial(
             'partials/topbarBtns/leftSideButtons',

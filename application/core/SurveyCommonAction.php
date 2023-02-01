@@ -312,6 +312,7 @@ class SurveyCommonAction extends CAction
      * @param array $aData
      * @return void
      */
+    /*
     public function userGroupBar(array $aData)
     {
         $ugid = $aData['ugid'] ?? 0;
@@ -338,7 +339,7 @@ class SurveyCommonAction extends CAction
 
             $this->getController()->renderPartial('/admin/usergroup/usergroupbar_view', $data);
         }
-    }
+    } */
 
     /**
      * Renders template(s) wrapped in header and footer

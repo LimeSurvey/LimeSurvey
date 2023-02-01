@@ -17,8 +17,6 @@ $this->showadminmenu($aData);
 $layoutHelper = new LayoutHelper();
 
 echo $layoutHelper->renderTopbarTemplate($aData);
-// Generated through /admin/usergroup/usergroupbar_view
-//$this->userGroupBar($aData);
 echo "<!-- BEGIN LAYOUT_MAIN -->";
 
 $this->updatenotification();
