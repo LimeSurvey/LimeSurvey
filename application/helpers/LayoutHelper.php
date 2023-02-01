@@ -263,19 +263,6 @@ class LayoutHelper
     }
 
     /**
-     * Renders the green bar.
-     *
-     * @deprecated remove this one when new TopbarWidget is done
-     * @param array $aData
-     */
-    public function surveyManagerBar(array $aData)
-    {
-        if (isset($aData['pageTitle'])) {
-            Yii::app()->getController()->renderPartial("/layouts/surveymanagerbar", $aData);
-        }
-    }
-
-    /**
      * Display the update notification
      */
     public function updatenotification()

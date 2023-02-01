@@ -694,41 +694,6 @@ class SurveyCommonAction extends CAction
     }
 
     /**
-     * Renders the fullpager bar
-     * That's the white bar with action buttons example: 'Back' Button
-     * @param array $aData
-     * @throws CException
-     */
-    /*
-    public function fullpagebar(array $aData)
-    {
-        if ((isset($aData['fullpagebar']))) {
-            if (isset($aData['fullpagebar']['closebutton']['url']) && !isset($aData['fullpagebar']['closebutton']['url_keep'])) {
-                $sAlternativeUrl = '/admin/index';
-                $aData['fullpagebar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl($sAlternativeUrl));
-            }
-            App()->getClientScript()->registerScriptFile(
-                App()->getConfig('adminscripts') . 'topbar.js',
-                CClientScript::POS_END
-            );
-            $this->getController()->renderPartial("/admin/super/fullpagebar_view", $aData);
-        }
-    }*/
-
-    /**
-     * Renders the green bar with page title
-     * Also called SurveyManagerBar
-     * @todo Needs to be removed later. Duplication in LayoutHelper.
-     * @param array $aData
-     */
-    public function surveyManagerBar(array $aData)
-    {
-        if (isset($aData['pageTitle'])) {
-            Yii::app()->getController()->renderPartial("/layouts/surveymanagerbar", $aData);
-        }
-    }
-
-    /**
      * Shows admin menu for surveys
      *
      * @param array $aData
