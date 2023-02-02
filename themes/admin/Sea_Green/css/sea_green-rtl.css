@@ -17538,6 +17538,9 @@ footer.footer {
   z-index: 1000;
   background-color: #EEEFF7;
 }
+.topbar .btn {
+  margin-bottom: 4px;
+}
 
 .ls-panelboxes .ls-panelboxes-panelbox {
   height: 200px;

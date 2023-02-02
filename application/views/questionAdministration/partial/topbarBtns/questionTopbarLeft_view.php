@@ -7,20 +7,18 @@
     );
  if (!empty(trim($toolsDropdownItems))): ?>
     <!-- Tools  -->
-    <div class="d-inline-flex ">
-        <!-- Main button dropdown -->
-        <?php
-        $this->widget('ext.ButtonWidget.ButtonWidget', [
-            'name' => 'ls-question-tools-button',
-            'id' => 'ls-question-tools-button',
-            'text' => gT('Tools'),
-            'isDropDown' => true,
-            'dropDownContent' => '<ul class="dropdown-menu">' . $toolsDropdownItems . '</ul>',
-            'htmlOptions' => [
-                'class' => 'btn btn-outline-secondary',
-            ],
-        ]); ?>
-    </div>
+    <!-- Main button dropdown -->
+    <?php
+    $this->widget('ext.ButtonWidget.ButtonWidget', [
+        'name' => 'ls-question-tools-button',
+        'id' => 'ls-question-tools-button',
+        'text' => gT('Tools'),
+        'isDropDown' => true,
+        'dropDownContent' => '<ul class="dropdown-menu">' . $toolsDropdownItems . '</ul>',
+        'htmlOptions' => [
+            'class' => 'btn btn-outline-secondary',
+        ],
+    ]); ?>
 <?php endif; ?>
 
 <?php

@@ -34,7 +34,7 @@ if (Permission::model()->hasGlobalPermission('users', 'create')) {
 //dropdown for import with two buttons (csv and json)
     $dropdownItemsImp = $this->renderPartial('/userManagement/partial/topbarBtns/dropDownItemsImport', [], true);
     ?>
-<div class="d-inline-flex">
+
     <?php
     $this->widget('ext.ButtonWidget.ButtonWidget', [
         'name' => 'ls-create-token-button',
@@ -47,13 +47,13 @@ if (Permission::model()->hasGlobalPermission('users', 'create')) {
             'class' => 'btn btn-outline-secondary',
         ],
     ]); ?>
-</div>
+
     <?php
 
     $dropdownItems = $this->renderPartial('/userManagement/partial/topbarBtns/dropDownItemsExport', [], true);
 
     ?>
-<div class="d-inline-flex">
+
     <?php
     $this->widget('ext.ButtonWidget.ButtonWidget', [
         'name' => 'ls-create-token-button',
@@ -66,6 +66,6 @@ if (Permission::model()->hasGlobalPermission('users', 'create')) {
             'class' => 'btn btn-outline-secondary',
         ],
     ]); ?>
-    </div>
+
 <?php
 }

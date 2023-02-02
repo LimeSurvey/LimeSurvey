@@ -71,20 +71,18 @@ if ($hasSurveyContentPermission) {
         true
     ); ?>
     <!-- Tools  -->
-    <div class="d-inline-flex ">
         <!-- Main button dropdown -->
-        <?php
-        $this->widget('ext.ButtonWidget.ButtonWidget', [
-            'name' => 'ls-tools-button',
-            'id' => 'ls-tools-button',
-            'text' => gT('Tools'),
-            'isDropDown' => true,
-            'dropDownContent' => $toolsDropDownItems,
-            'htmlOptions' => [
-                'class' => 'btn btn-outline-secondary',
-            ],
-        ]); ?>
-    </div>
+    <?php
+    $this->widget('ext.ButtonWidget.ButtonWidget', [
+        'name' => 'ls-tools-button',
+        'id' => 'ls-tools-button',
+        'text' => gT('Tools'),
+        'isDropDown' => true,
+        'dropDownContent' => $toolsDropDownItems,
+        'htmlOptions' => [
+            'class' => 'btn btn-outline-secondary',
+        ],
+    ]); ?>
 <?php } ?>
 
 <?php if (!empty($beforeSurveyBarRender)) { ?>

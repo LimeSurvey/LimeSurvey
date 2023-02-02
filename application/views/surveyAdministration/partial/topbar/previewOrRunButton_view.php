@@ -32,24 +32,22 @@ if (count($surveyLanguages) > 1) {
 }
 ?>
 
-<div class="d-inline-flex">
-    <?php
-    $this->widget('ext.ButtonWidget.ButtonWidget', [
-        'name' => $name,
-        'id' => $id,
-        'text' => $notActive ? gT('Preview survey') : gT('Run survey'),
-        'icon' => $notActive ? 'ri-eye-fill' : 'ri-play-fill',
-        'isDropDown' => count($surveyLanguages) > 1,
-        'dropDownContent' => $languagesDropDownItems,
-        'link' => Yii::App()->createUrl(
-            "survey/index",
-            array('sid' => $survey->sid, 'newtest' => "Y", 'lang' => $survey->language)
-        ),
-        'htmlOptions' => [
-            'class' => 'btn btn-secondary btntooltip',
-            'role' => 'button',
-            'accesskey' => 'd',
-            'target' => '_blank',
-        ],
-    ]); ?>
-</div>
+<?php
+$this->widget('ext.ButtonWidget.ButtonWidget', [
+    'name' => $name,
+    'id' => $id,
+    'text' => $notActive ? gT('Preview survey') : gT('Run survey'),
+    'icon' => $notActive ? 'ri-eye-fill' : 'ri-play-fill',
+    'isDropDown' => count($surveyLanguages) > 1,
+    'dropDownContent' => $languagesDropDownItems,
+    'link' => Yii::App()->createUrl(
+        "survey/index",
+        array('sid' => $survey->sid, 'newtest' => "Y", 'lang' => $survey->language)
+    ),
+    'htmlOptions' => [
+        'class' => 'btn btn-secondary btntooltip',
+        'role' => 'button',
+        'accesskey' => 'd',
+        'target' => '_blank',
+    ],
+]); ?>

@@ -18,21 +18,19 @@
     }
     ?>
     <!-- Preview question -->
-    <div class="d-inline-flex">
-        <?php
-        $this->widget('ext.ButtonWidget.ButtonWidget', [
-            'name' => 'ls-preview-question',
-            'id' => 'ls-preview-question',
-            'text' => gT('Preview question'),
-            'icon' => 'ri-eye-fill',
-            'isDropDown' => count($surveyLanguages) > 1,
-            'dropDownContent' => $languagesDropDownItems,
-            'link' => Yii::App()->createUrl("survey/index/action/previewquestion/sid/$surveyid/gid/$gid/qid/$qid"),
-            'htmlOptions' => [
-                'class' => 'btn btn-secondary btntooltip',
-                'role' => 'button',
-                'target' => '_blank',
-            ],
-        ]); ?>
-    </div>
+    <?php
+    $this->widget('ext.ButtonWidget.ButtonWidget', [
+        'name' => 'ls-preview-question',
+        'id' => 'ls-preview-question',
+        'text' => gT('Preview question'),
+        'icon' => 'ri-eye-fill',
+        'isDropDown' => count($surveyLanguages) > 1,
+        'dropDownContent' => $languagesDropDownItems,
+        'link' => Yii::App()->createUrl("survey/index/action/previewquestion/sid/$surveyid/gid/$gid/qid/$qid"),
+        'htmlOptions' => [
+            'class' => 'btn btn-secondary btntooltip',
+            'role' => 'button',
+            'target' => '_blank',
+        ],
+    ]); ?>
 <?php endif; ?>

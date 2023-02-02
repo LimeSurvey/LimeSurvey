@@ -86,7 +86,6 @@ if ($hasStatisticsReadPermission) {
 }
 
 if ($hasResponsesExportPermission) { ?>
-    <div class="d-inline-flex">
     <?php
     $exportDropdownItems = $this->renderPartial(
         '/responses/partial/topbarBtns/responsesExportDropdownItems',
@@ -105,11 +104,9 @@ if ($hasResponsesExportPermission) { ?>
         ],
     ]);
     ?>
-    </div>
 <?php }
 
 if ($hasResponsesCreatePermission) { ?>
-    <div class="d-inline-flex">
         <?php
         $importDropdownItems = $this->renderPartial(
             '/responses/partial/topbarBtns/responsesImportDropdownItems',
@@ -128,7 +125,6 @@ if ($hasResponsesCreatePermission) { ?>
             ],
         ]);
         ?>
-    </div>
 <?php }
 
 

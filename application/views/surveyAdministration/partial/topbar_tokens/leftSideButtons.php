@@ -25,20 +25,18 @@ if ($hasTokensCreatePermission || $hasTokensImportPermission) {
         true
     );
     ?>
-    <div class="d-inline-flex">
-        <?php $this->widget('ext.ButtonWidget.ButtonWidget', [
-            'name' => 'ls-create-token-button',
-            'id' => 'ls-create-token-button',
-            'text' => gT('Create...'),
-            'icon' => 'ri-add-circle-fill',
-            'isDropDown' => true,
-            'dropDownContent' => $createDropdownItems,
-            'htmlOptions' => [
-                'class' => 'btn btn-outline-secondary',
-            ],
-        ]);
-        ?>
-    </div>
+    <?php $this->widget('ext.ButtonWidget.ButtonWidget', [
+        'name' => 'ls-create-token-button',
+        'id' => 'ls-create-token-button',
+        'text' => gT('Create...'),
+        'icon' => 'ri-add-circle-fill',
+        'isDropDown' => true,
+        'dropDownContent' => $createDropdownItems,
+        'htmlOptions' => [
+            'class' => 'btn btn-outline-secondary',
+        ],
+    ]);
+    ?>
     <?php
 }
 
@@ -83,20 +81,18 @@ if ($hasTokensUpdatePermission) {
         true
     );
 
-    echo '<div class="d-inline-flex">';
 
-        $this->widget('ext.ButtonWidget.ButtonWidget', [
-            'name' => 'ls-inv-rem-button',
-            'id' => 'ls-inv-rem-button',
-            'text' => gT('Invitations & reminders'),
-            'icon' => 'ri-mail-settings-line',
-            'isDropDown' => true,
-            'dropDownContent' => $invRemDropDownItems,
-            'htmlOptions' => [
-                'class' => 'btn btn-outline-secondary',
-            ],
-        ]);
-    echo  '</div>';
+    $this->widget('ext.ButtonWidget.ButtonWidget', [
+        'name' => 'ls-inv-rem-button',
+        'id' => 'ls-inv-rem-button',
+        'text' => gT('Invitations & reminders'),
+        'icon' => 'ri-mail-settings-line',
+        'isDropDown' => true,
+        'dropDownContent' => $invRemDropDownItems,
+        'htmlOptions' => [
+            'class' => 'btn btn-outline-secondary',
+        ],
+    ]);
 
     $this->widget(
         'ext.ButtonWidget.ButtonWidget',
