@@ -357,8 +357,14 @@ class ResponsesController extends LSBaseController
         $aData['sidemenu']['state'] = false;
         // This resets the url on the close button to go to the upper view
         $aData['closeUrl'] = $this->createUrl("responses/browse/", ['surveyId' => $surveyId]);
-        $aData['topBar']['name'] = 'baseTopbar_view';
-        $aData['topBar']['rightSideView'] = 'responseViewTopbarRight_view';
+
+        $topbarData = TopbarConfiguration::getResponsesTopbarData($survey->sid);
+        $topbarData = array_merge($topbarData, $aData);
+        $aData['topbar']['middleButtons'] = $this->renderPartial(
+            'partial/topbarBtns/responseViewTopbarRight_view',
+            $topbarData,
+            true
+        );
 
         $this->aData = $aData;
         $this->render('browseidrow_view', [
