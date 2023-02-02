@@ -160,6 +160,9 @@ class QuestionThemeTest extends TestBaseClassWeb
         $input = $web->findByName($name);
         $input->clear()->sendKeys('10');
 
+        self::$webDriver->executeScript('window.scrollTo(0,0);');
+        sleep(1);
+
         // Save question
         $button = $web->findById('save-button-create-question');
         $button->click();
