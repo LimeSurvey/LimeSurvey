@@ -331,7 +331,6 @@ class ConditionsAction extends SurveyCommonAction
             $subaction == "updatescenario" ||
             $subaction == 'copyconditionsform' || $subaction == 'copyconditions' || $subaction == 'conditions'
         ) {
-
             //3: Get other conditions currently set for this question
             $s = 0;
 
