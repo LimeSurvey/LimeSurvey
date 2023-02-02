@@ -9497,7 +9497,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             }
             $questionRow .= "</b>"
                 . "<br/>"
-                . "[<a target='_blank' href='$editlink'>" . sprintf(gT("QID %s"), $qid) . "</a>]"
+                . "[<a target='_blank' href='$editlink'>" . sprintf(gT("Question ID %s"), $qid) . "</a>]"
                 . "<br/>"
                 . "<span class='question-type'>$typedesc [$type]</span> "
                 . "<span class='question-theme'>$themeDesc</span> "
