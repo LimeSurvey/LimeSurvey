@@ -2916,8 +2916,8 @@ class LsDefaultDataSets
             gT("Select font:"),
             gT("Select variation:"),
             gT("Fruity fonts"),
-            gT("Fruity variations")
-
+            gT("Fruity variations"),
+            gt("Check all that apply")
         ];
     }
 
@@ -2938,7 +2938,7 @@ class LsDefaultDataSets
         //don't send password anymore, just send a link for the new admin to generate their own password
         //$template .= "<p><strong>" . gt("Password") . "</strong>: {PASSWORD}</p>";
         $template .= '<p><a href="{LOGINURL}">' . gT("Click here to set your password") . '</a></p>';
-        $template .= "<p>" . gT("If you have any questions regarding this email, please do not hesitate to contact the site administrator at") . " {SITEADMINEMAIL}.</p><p> </p>";
+        $template .= "<p>" . gT("If you have any questions regarding this email, please do not hesitate to contact the site administrator at") . " {SITEADMINEMAIL}.</p><p> </p>";
         $template .= "<p>" . gT("Thank you") . "!</p>";
 
         $default['sendadmincreationemail'] = 1;

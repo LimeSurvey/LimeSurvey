@@ -34,6 +34,28 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.2 (build 230125) to 5.6.3 (build 230130) January 30, 2023
+-Fixed issue #18582: RemoteControl invite_participants unexpectedly stops after first failure (#2866) (Gabriel Jenik)
+-Fixed issue #18578: Internal server error (HTTP 500) in RemoteControl get_participant_properties for removed participant (#2827) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Malay by PawelAtroszko
+#Updated translation: Japanese by d_inoue
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: German (Easy) by c_schmitz
+#Updated translation: French (France) by b00z00, DenisChenu
+#Updated translation: French (France) by DenisChenu
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 5.6.1 (build 230123) to 5.6.2 (build 230125) January 24, 2023
+-Fixed issue: KCFinder stops working after updating with ComfortUpdate (Carsten Schmitz)
+#Updated translation: French (France) by DenisChenu
+
+
 Changes from 5.6.0 (build 230116) to 5.6.1 (build 230123) January 23, 2023
 -Fixed issue #18592: When creating a survey Default group may not be the ones preselected (#2849) (Gabriel Jenik)
 -Fixed issue #18585: Click again on link by email submit again the survey (Denis Chenu)
