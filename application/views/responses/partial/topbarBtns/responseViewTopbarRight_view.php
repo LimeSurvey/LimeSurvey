@@ -2,7 +2,7 @@
     <?php if ($hasResponsesUpdatePermission && isset($rlanguage)): ?>
         <a class="btn btn-outline-secondary"
            href='<?php echo Yii::App()->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/{$surveyid}/id/{$id}/lang/$rlanguage"); ?>'>
-            <span class="ri-pencil-fill text-success"></span>
+            <span class="ri-pencil-fill"></span>
             <?php eT("Edit this entry"); ?>
         </a>
     <?php endif; ?>
@@ -17,14 +17,14 @@
     <?php if ($bHasFile): ?>
         <a class="btn btn-outline-secondary"
            href='<?php echo Yii::app()->createUrl("responses/downloadfiles", ["surveyId" => $surveyid, "responseIds" => $id]); ?>'>
-            <span class="ri-download-fill text-success"></span>
+            <span class="ri-download-fill"></span>
             <?php eT("Download files"); ?>
         </a>
     <?php endif; ?>
 
     <a class="btn btn-outline-secondary"
        href='<?php echo Yii::App()->createUrl("admin/export/sa/exportresults/surveyid/$surveyid/id/$id"); ?>'>
-        <span class="ri-download-fill text-success downloadfile"></span>
+        <span class="ri-download-fill downloadfile"></span>
         <?php eT("Export this response"); ?>
     </a>
 <?php endif; ?>
@@ -34,7 +34,7 @@
    class="btn btn-outline-secondary <?php if (!$previous) {
        echo 'disabled';
    } ?>">
-    <span class="ri-arrow-left-circle-fill text-success" title='<?php eT("Show previous..."); ?>'></span>
+    <span class="ri-arrow-left-circle-fill" title='<?php eT("Show previous..."); ?>'></span>
     <?php eT("Show previous..."); ?>
 </a>
 <a href='<?php echo Yii::App()->createUrl("responses/view/", ['surveyId' => $surveyid, 'id' => $next]); ?>'
@@ -42,7 +42,7 @@
    class="btn btn-outline-secondary <?php if (!$next) {
        echo 'disabled';
    } ?>">
-    <span class="ri-arrow-right-circle-fill text-success" title='<?php eT("Show next..."); ?>'></span>
+    <span class="ri-arrow-right-circle-fill" title='<?php eT("Show next..."); ?>'></span>
     <?php eT("Show next..."); ?>
 </a>
 <a class="btn btn-danger" href="<?php echo $closeUrl; ?>">
