@@ -339,9 +339,6 @@ class QuestionAdministrationController extends LSBaseController
         $model->sid = $oSurvey->sid;
         $aData['model'] = $model;
 
-        //$aData['topBar']['name'] = 'baseTopbar_view';
-        //$aData['topBar']['leftSideView'] = 'listquestionsTopbarLeft_view';
-
         $this->aData = $aData;
 
         $this->render("listquestions", $aData);
