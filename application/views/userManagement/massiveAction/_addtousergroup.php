@@ -1,9 +1,9 @@
 <?php
-    $aUsergoups = UserGroup::model()->findAll();
+$aUsergoups = UserGroup::model()->findAll();
 ?>
 
-<div class="modal-body selector--edit-usergroup-container">
-    <div class="container form">
+<div class=" selector--edit-usergroup-container">
+    <div class="form">
         <?php if ($aUsergoups) : ?>
             <div class="mb-3">
                 <label for="addtousergroup"><?= gT("Select user group to add users to") ?></label>

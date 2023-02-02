@@ -33,7 +33,7 @@
                 <input type="hidden" name="user" value="<?php echo $postuser; ?>" />
             </div>
             <div class="row ls-space margin top-35">
-                <button role="button" type="button" class="btn btn-primary btn-ok col-3 col-5" id="submitForm">
+                <button role="button" type="submit" class="btn btn-primary btn-ok col-3 col-5" id="submitForm">
                     <?php eT("Delete User"); ?>
                 </button>
             </div>
