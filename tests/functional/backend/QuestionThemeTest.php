@@ -2,6 +2,7 @@
 
 namespace ls\tests\controllers;
 
+use Facebook\WebDriver\WebDriverExpectedCondition;
 use ls\tests\TestBaseClassWeb;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\Remote\LocalFileDetector;
@@ -161,10 +162,13 @@ class QuestionThemeTest extends TestBaseClassWeb
         $input->clear()->sendKeys('10');
 
         self::$webDriver->executeScript('window.scrollTo(0,0);');
-        sleep(1);
 
         // Save question
-        $button = $web->findById('save-button-create-question');
+        $button = self::$webDriver->wait(10)->until(
+            WebDriverExpectedCondition::elementToBeClickable(
+                WebDriverBy::cssSelector('#save-button-create-question')
+            )
+        );
         $button->click();
         sleep(1);
 
