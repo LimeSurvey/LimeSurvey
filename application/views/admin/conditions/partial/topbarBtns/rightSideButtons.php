@@ -1,6 +1,6 @@
 <?php
 /** @var array $aData */
-$this->render(
+Yii::app()->getController()->renderPartial(
     '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
     [
         'showBackButton' => $aData['showBackButton'],
