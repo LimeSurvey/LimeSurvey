@@ -28,7 +28,7 @@ $this->widget(
         'icon' => 'ri-git-pull-request-line_add',
         'link' => Yii::App()->createUrl("admin/conditions/sa/index/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"),
         'htmlOptions' => [
-            'class' => isset($currentMode) && $currentMode == $buttonClass . 'edit' ? 'active' : $buttonClass,
+            'class' => isset($currentMode) && $currentMode == 'edit' ? $buttonClass . 'active' : $buttonClass,
             'role' => 'button',
         ],
     ]
