@@ -293,8 +293,6 @@ class ConditionsAction extends SurveyCommonAction
 
         // Back Button
         $aData['showBackButton'] = true;
-        // Save button
-        $aData['showSaveButton'] = false;
 
         $scenarios = $this->getAllScenarios($qid);
 
@@ -333,7 +331,6 @@ class ConditionsAction extends SurveyCommonAction
             $subaction == "updatescenario" ||
             $subaction == 'copyconditionsform' || $subaction == 'copyconditions' || $subaction == 'conditions'
         ) {
-            $aData['showSaveButton'] = true;
 
             //3: Get other conditions currently set for this question
             $s = 0;
