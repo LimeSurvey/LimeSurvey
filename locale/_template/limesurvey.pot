@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2023-02-02 20:04:16+00:00\n"
+"POT-Creation-Date: 2023-02-02 20:14:15+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -750,6 +750,7 @@ msgstr ""
 #: application/controllers/LimereplacementfieldsController.php:402
 #: application/controllers/LimereplacementfieldsController.php:417
 #: application/controllers/SurveyAdministrationController.php:279
+#: application/controllers/SurveyAdministrationController.php:3184
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:53
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_export_archive_results.php:12
 #: application/models/SurveyLink.php:232
@@ -862,6 +863,7 @@ msgstr ""
 #: application/controllers/LimereplacementfieldsController.php:404
 #: application/controllers/LimereplacementfieldsController.php:419
 #: application/controllers/QuestionAdministrationController.php:1496
+#: application/controllers/SurveyAdministrationController.php:3185
 #: application/models/Question.php:996
 #: application/views/admin/survey/Question/massive_actions/_delete_results.php:10
 msgid "Question ID"
@@ -2817,14 +2819,6 @@ msgstr ""
 #: application/controllers/SurveyAdministrationController.php:3190
 #: application/views/admin/survey/subview/accordion/_integration_panel.php:21
 msgid "Target question"
-msgstr ""
-
-#: application/controllers/SurveyAdministrationController.php:3184
-msgid "Survey id"
-msgstr ""
-
-#: application/controllers/SurveyAdministrationController.php:3185
-msgid "Question id"
 msgstr ""
 
 #: application/controllers/SurveyAdministrationController.php:3186
@@ -12012,7 +12006,7 @@ msgid "This question has at least {n} error.|This question has at least {n} erro
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:9500
-msgid "QID %s"
+msgid "Question ID %s"
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:9528
