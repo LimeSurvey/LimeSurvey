@@ -4,7 +4,6 @@ Yii::app()->getController()->renderPartial(
     '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
     [
         'showBackButton' => $aData['showBackButton'],
-        'showSaveButton' => $aData['showSaveButton'],
         'returnUrl' => $aData['returnUrl']
     ]
 );
