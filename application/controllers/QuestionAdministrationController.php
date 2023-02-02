@@ -306,6 +306,7 @@ class QuestionAdministrationController extends LSBaseController
         $aData['subaction']             = gT("Questions in this survey");
         $aData['title_bar']['title']    = $oSurvey->currentLanguageSettings->surveyls_title .
             " (" . gT("ID") . ":" . $iSurveyID . ")";
+
         $aData['topbar']['middleButtons'] = $this->renderPartial(
             'partial/topbarBtns/listquestionsTopbarLeft_view',
             [
@@ -338,8 +339,8 @@ class QuestionAdministrationController extends LSBaseController
         $model->sid = $oSurvey->sid;
         $aData['model'] = $model;
 
-        $aData['topBar']['name'] = 'baseTopbar_view';
-        $aData['topBar']['leftSideView'] = 'listquestionsTopbarLeft_view';
+        //$aData['topBar']['name'] = 'baseTopbar_view';
+        //$aData['topBar']['leftSideView'] = 'listquestionsTopbarLeft_view';
 
         $this->aData = $aData;
 
@@ -1223,6 +1224,7 @@ class QuestionAdministrationController extends LSBaseController
             'questionMetaData' => $questionMetaData
             //'qtproperties' => $aQuestionTypeMetadata,
         ];
+        $aData['oSurvey'] = $oSurvey;
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyID . ")";
         $aData['questiongroupbar']['savebutton']['form'] = 'frmeditgroup';
         $this->createUrl(
@@ -1242,9 +1244,6 @@ class QuestionAdministrationController extends LSBaseController
         $aData['sidemenu']['explorer']['qid'] = $qid ?? false;
         $aData['sidemenu']['landOnSideMenuTab'] = 'structure';
 
-        $aData['topBar']['name'] = 'baseTopbar_view';
-        $aData['topBar']['leftSideView'] = 'editQuestionTopbarLeft_view';
-        $aData['topBar']['rightSideView'] = 'surveyTopbarRight_view';
         $aData['showSaveButton'] = true;
         $aData['showSaveAndCloseButton'] = true;
         $aData['showWhiteCloseButton'] = true;
@@ -1262,7 +1261,19 @@ class QuestionAdministrationController extends LSBaseController
             'surveycontent',
             'update'
         ) ? '' : 'disabled="disabled" readonly="readonly"';
-        $aData['oSurvey'] = $oSurvey;
+
+        $topbarData = TopbarConfiguration::getQuestionTopbarData($iSurveyID);
+        $topbarData = array_merge($topbarData, $aData);
+        $aData['topbar']['middleButtons'] = $this->renderPartial(
+            'partial/topbarBtns/editQuestionTopbarLeft_view',
+            $topbarData,
+            true
+        );
+        $aData['topbar']['rightButtons'] = $this->renderPartial(
+            '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
+            $topbarData,
+            true
+        );
 
         $this->aData = $aData;
         $this->render('editdefaultvalues', $aData);
