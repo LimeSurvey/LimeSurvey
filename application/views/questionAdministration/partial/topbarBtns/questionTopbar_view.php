@@ -13,7 +13,7 @@ $rightSideContentSummary = $this->renderPartial('/questionAdministration/partial
 ?>
 
 <!-- Question Top Bar -->
-<div class="topbar" id="pjax-content">
+<div class="topbar sticky-top" id="pjax-content">
     <div class="container-fluid">
             <?php if ($oQuestion->qid !== 0) : ?>
                 <div id="question-summary-topbar"
