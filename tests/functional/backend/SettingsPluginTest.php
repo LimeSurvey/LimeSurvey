@@ -38,7 +38,6 @@ class SettingsPluginTest extends TestBaseClass
 
         //Import survey
         self::importSurvey(self::$surveysFolder . '/limesurvey_survey_854771.lss');
-        \Yii::app()->session['LEMsid'] = self::$surveyId;
 
         $obj = new \stdClass();
         $obj->customProperty = 'abc';
@@ -99,7 +98,7 @@ class SettingsPluginTest extends TestBaseClass
     {
 
         foreach (self::$settings as $key => $value) {
-            self::$plugin->setSurveySetting($key, $value);
+            self::$plugin->setSurveySetting($key, $value, self::$surveyId);
 
             $setting = \PluginSetting::model()->findByAttributes([
                 'plugin_id' => self::$plugin->getId(),
@@ -115,7 +114,7 @@ class SettingsPluginTest extends TestBaseClass
                 'The setting value obtained with the PluginSetting model should be the value previously set'
             );
 
-            $settingValue = self::$plugin->getSurveySetting($key);
+            $settingValue = self::$plugin->getSurveySetting($key, self::$surveyId);
             $this->assertEquals(
                 $settingValue,
                 json_decode(json_encode($value), true),
@@ -154,7 +153,7 @@ class SettingsPluginTest extends TestBaseClass
     {
         self::$plugin->setEncriptedSettings(array_keys(self::$settings));
         foreach (self::$settings as $key => $value) {
-            self::$plugin->setSurveySetting($key, $value);
+            self::$plugin->setSurveySetting($key, $value, self::$surveyId);
 
             $setting = \PluginSetting::model()->findByAttributes([
                 'plugin_id' => self::$plugin->getId(),
@@ -178,7 +177,7 @@ class SettingsPluginTest extends TestBaseClass
                 );
             }
 
-            $settingValue = self::$plugin->getSurveySetting($key);
+            $settingValue = self::$plugin->getSurveySetting($key, self::$surveyId);
             $this->assertEquals(
                 $settingValue,
                 json_decode(json_encode($value), true),

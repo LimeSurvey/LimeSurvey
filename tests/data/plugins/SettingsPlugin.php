@@ -26,13 +26,13 @@ class SettingsPlugin extends PluginBase
         $this->encryptedSettings = $encryptedSettings;
     }
 
-    public function setSurveySetting($name, $value)
+    public function setSurveySetting($name, $value, $surveyId)
     {
-        return $this->set($name, $value, 'Survey', \Yii::app()->session['LEMsid']);
+        return $this->set($name, $value, 'Survey', $surveyId);
     }
 
-    public function getSurveySetting($name)
+    public function getSurveySetting($name, $surveyId)
     {
-        return $this->get($name, 'Survey', \Yii::app()->session['LEMsid']);
+        return $this->get($name, 'Survey', $surveyId);
     }
 }
