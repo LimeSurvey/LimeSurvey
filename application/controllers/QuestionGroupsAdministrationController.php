@@ -381,8 +381,6 @@ class QuestionGroupsAdministrationController extends LSBaseController
 
         $aData['surveyid']                                   = $iSurveyID;
         $aData['sid'] = $iSurveyID; // important for renderfunctions ...
-        //not needed anymore, was just important for function renderListQuestionGroups in Layouthelper
-       // $aData['display']['menu_bars']['listquestiongroups'] = true;
         $aData['sidemenu']['questiongroups']                 = true;
         $aData['sidemenu']['listquestiongroups']             = true;
         $aData['title_bar']['title']                         =
@@ -400,7 +398,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
             true
         );
 
-        $aData['subaction']                                  = gT("Question groups in this survey");
+        $aData['subaction'] = gT("Question groups in this survey");
 
         $baselang = $survey->language;
         $model    = new QuestionGroup('search');
@@ -415,10 +413,6 @@ class QuestionGroupsAdministrationController extends LSBaseController
 
         $model['sid']      = $iSurveyID;
         $model['language'] = $baselang;
-       // $aData['model']    = $model; --> no need here ...
-
-        $aData['topBar']['name'] = 'baseTopbar_view';
-        $aData['topBar']['leftSideView'] = 'listquestiongroupsTopbarLeft_view';
 
         $this->aData = $aData;
         $this->render('listquestiongroups', [
