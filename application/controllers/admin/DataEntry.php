@@ -1344,10 +1344,16 @@ class DataEntry extends SurveyCommonAction
 
         $aViewUrls['output'] = $aDataentryoutput;
         $aData['sidemenu']['state'] = false;
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
+            [
+                'showSaveButton' => true,
+                'showCloseButton' => true,
+                'closeUrl' => Yii::app()->createUrl('responses/browse', ['surveyId' => $surveyid])
+            ],
+            true
+        );
 
-        $aData['topBar']['name'] = 'baseTopbar_view';
-        $aData['topBar']['showSaveButton']  = true;
-        $aData['topBar']['showCloseButton'] = true;
 
         $this->renderWrappedTemplate('dataentry', $aViewUrls, $aData);
     }
