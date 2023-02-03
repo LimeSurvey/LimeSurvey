@@ -51,30 +51,6 @@ App()->getClientScript()->registerScript("tokens-panel-variables",
 <div id='tokens-panel'>
     <div class="row">
         <div class="col-12 col-lg-6">
-            <!--  Set token length to -->
-            <div class="mb-3">
-                <?php $tokenlength = $oSurvey->tokenlength; ?>
-                <div class="row">
-                    <div class="col-12 col-lg-8 content-right">
-                        <label class=" form-label"  for='tokenlength'><?php  eT("Set access code length to:"); ?></label>
-                            <input class="form-control inherit-edit <?php echo ($bShowInherited && $tokenlength == '-1' ? 'd-none' : 'd-block'); ?>" type='text' size='50' id='tokenlength' name='tokenlength' value="<?php echo htmlspecialchars($tokenlength); ?>" data-inherit-value="-1" data-saved-value="<?php echo $tokenlength; ?>"/>
-                            <input class="form-control inherit-readonly <?php echo ($bShowInherited && $tokenlength == '-1' ? 'd-block' : 'd-none'); ?>" type='text' size='50' value="<?php echo htmlspecialchars($oSurveyOptions->tokenlength); ?>" readonly />
-                    </div>
-                    <div class="col-12 col-lg-4 content-right <?php echo ($bShowInherited ? 'd-block' : 'd-none'); ?>">
-                        <label class=" form-label content-center col-12"  for='tokenlength'><?php  eT("Inherit:"); ?></label>
-                        <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
-                            'name'          => 'tokenlengthbutton',
-                            'checkedOption' => ($bShowInherited && $tokenlength == '-1' ? 'Y' : 'N'),
-                            'selectOptions' => $optionsOnOff,
-                            'htmlOptions'   => [
-                                'class' => 'text-option-inherit'
-                            ]
-                        ]); ?>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-12 col-lg-6">
             <!-- Anonymized responses -->
             <div class="mb-3">
                 <label  class=" form-label"  for='anonymized' title='<?php eT("If you set 'Yes' then no link will exist between survey participants table and survey responses table. You won't be able to identify responses by their access code."); ?>'>
@@ -94,7 +70,7 @@ App()->getClientScript()->registerScript("tokens-panel-variables",
                             'name' => 'anonymized',
                             'checkedOption' => $oSurvey->anonymized,
                             'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff,
-                                ['I' => gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->anonymized . ']']) : $optionsOnOff,
+                                ['I' =>'*' . $oSurveyOptions->anonymized ]) : $optionsOnOff,
                         ]);
                     } ?>
                 </div>
@@ -110,7 +86,7 @@ App()->getClientScript()->registerScript("tokens-panel-variables",
                         'name'          => 'tokenanswerspersistence',
                         'checkedOption' => $oSurvey->tokenanswerspersistence,
                         'selectOptions' => ($bShowInherited)
-                            ? array_merge($optionsOnOff, ['I' => gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->tokenanswerspersistence . ']'])
+                            ? array_merge($optionsOnOff, ['I' =>'*' . $oSurveyOptions->tokenanswerspersistence ])
                             : $optionsOnOff
                     ]) ?>
                 </div>
@@ -126,12 +102,40 @@ App()->getClientScript()->registerScript("tokens-panel-variables",
                         'name'          => 'alloweditaftercompletion',
                         'checkedOption' => $oSurvey->alloweditaftercompletion,
                         'selectOptions' => ($bShowInherited)
-                            ? array_merge($optionsOnOff, ['I' => gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->alloweditaftercompletion . ']'])
+                            ? array_merge($optionsOnOff, ['I' =>'*' . $oSurveyOptions->alloweditaftercompletion ])
                             : $optionsOnOff
                     ]); ?>
                 </div>
             </div>
 
+            <!--  Set token length to -->
+            <div class="mb-3">
+                <?php $tokenlength = $oSurvey->tokenlength; ?>
+                <div class="d-flex align-items-center">
+                    <div class="content-right me-4">
+                            <label class=" form-label"  for='tokenlength'><?php  eT("Set access code length to:"); ?></label>
+                            <div style='width:170px'>
+                              <input class="form-control inherit-edit <?php echo ($bShowInherited && $tokenlength == '-1' ? 'd-none' : 'd-block'); ?>" type='text' size='50' id='tokenlength' name='tokenlength' value="<?php echo htmlspecialchars($tokenlength); ?>" data-inherit-value="-1" data-saved-value="<?php echo $tokenlength; ?>"/>
+                              <input class="form-control inherit-readonly <?php echo ($bShowInherited && $tokenlength == '-1' ? 'd-block' : 'd-none'); ?>" type='text' size='50' value="<?php echo htmlspecialchars($oSurveyOptions->tokenlength); ?>" readonly />
+                            </div>
+                           
+                    </div>
+                    <div class="content-right <?php echo ($bShowInherited ? 'd-block' : 'd-none'); ?>">
+                        <label class=" form-label content-center col-12"  for='tokenlength'><?php  eT("Inherit:"); ?></label>
+                        <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                            'name'          => 'tokenlengthbutton',
+                            'checkedOption' => ($bShowInherited && $tokenlength == '-1' ? 'Y' : 'N'),
+                            'selectOptions' => $optionsOnOff,
+                            'htmlOptions'   => [
+                                'class' => 'text-option-inherit'
+                            ]
+                        ]); ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+        <div class="col-12 col-lg-6">
             <!-- Allow public registration -->
             <div class="mb-3">
                 <label class=" form-label" for='allowregister'><?php eT("Allow public registration:"); ?></label>
@@ -140,7 +144,7 @@ App()->getClientScript()->registerScript("tokens-panel-variables",
                         'name'          => 'allowregister',
                         'checkedOption' => $oSurvey->allowregister,
                         'selectOptions' => ($bShowInherited)
-                            ? array_merge($optionsOnOff, ['I' => gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->allowregister . ']'])
+                            ? array_merge($optionsOnOff, ['I' =>'*' . $oSurveyOptions->allowregister ])
                             : $optionsOnOff
                     ]); ?>
                 </div>
@@ -154,7 +158,7 @@ App()->getClientScript()->registerScript("tokens-panel-variables",
                         'name'          => 'htmlemail',
                         'checkedOption' => $oSurvey->htmlemail,
                         'selectOptions' => ($bShowInherited)
-                            ? array_merge($optionsOnOff, ['I' => gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->htmlemail . ']'])
+                            ? array_merge($optionsOnOff, ['I' =>'*' . $oSurveyOptions->htmlemail ])
                             : $optionsOnOff,
                     ]);
                     $this->widget('yiistrap_fork.widgets.TbModal', [
@@ -174,7 +178,7 @@ App()->getClientScript()->registerScript("tokens-panel-variables",
                         'name' => 'sendconfirmation',
                         'checkedOption' => $oSurvey->sendconfirmation,
                         'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff,
-                            ['I' => gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->sendconfirmation . ']']) : $optionsOnOff
+                            ['I' =>'*' . $oSurveyOptions->sendconfirmation ]) : $optionsOnOff
                     ]); ?>
                 </div>
             </div>

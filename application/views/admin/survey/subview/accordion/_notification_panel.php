@@ -51,7 +51,7 @@ $googleAnalyticsStyleOptions = array(
                             'name'          => 'datestamp',
                             'checkedOption'         => $oSurvey->datestamp,
                             'selectOptions' => ($bShowInherited)
-                                ? array_merge($optionsOnOff, ['I' => gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->datestamp . ']'])
+                                ? array_merge($optionsOnOff, ['I' => "*" .  $oSurveyOptions->datestamp ])
                                 : $optionsOnOff
                         ]);
                     } ?>
@@ -74,7 +74,7 @@ $googleAnalyticsStyleOptions = array(
                             'name'          => 'ipaddr',
                             'checkedOption' => $oSurvey->ipaddr,
                             'selectOptions' => ($bShowInherited)
-                                ? array_merge($optionsOnOff, ['I' => gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->ipaddr . ']'])
+                                ? array_merge($optionsOnOff, ['I' => "*" .  $oSurveyOptions->ipaddr ])
                                 : $optionsOnOff,
                         ]);
                     } ?>
@@ -97,7 +97,7 @@ $googleAnalyticsStyleOptions = array(
                             'name'          => 'ipanonymize',
                             'checkedOption' => $oSurvey->ipanonymize,
                             'selectOptions' => ($bShowInherited)
-                                ? array_merge($optionsOnOff, ['I' => gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->ipanonymize . ']'])
+                                ? array_merge($optionsOnOff, ['I' => "*" .  $oSurveyOptions->ipanonymize ])
                                 : $optionsOnOff,
                         ]);
                     } ?>
@@ -121,7 +121,7 @@ $googleAnalyticsStyleOptions = array(
                             'name'          => 'refurl',
                             'checkedOption' => $oSurvey->refurl,
                             'selectOptions' => ($bShowInherited)
-                                ? array_merge($optionsOnOff, ['I' => gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->refurl . ']'])
+                                ? array_merge($optionsOnOff, ['I' => "*" .  $oSurveyOptions->refurl ])
                                 : $optionsOnOff,
                         ]);
                     } ?>
@@ -145,7 +145,7 @@ $googleAnalyticsStyleOptions = array(
                             'name'          => 'savetimings',
                             'checkedOption' => $oSurvey->savetimings,
                             'selectOptions' => ($bShowInherited)
-                                ? array_merge($optionsOnOff, ['I' => gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->savetimings . ']'])
+                                ? array_merge($optionsOnOff, ['I' => "*" .  $oSurveyOptions->savetimings ])
                                 : $optionsOnOff,
                         ]); ?>
                     <?php endif; ?>
@@ -163,7 +163,7 @@ $googleAnalyticsStyleOptions = array(
                         'name'          => 'assessments',
                         'checkedOption' => $oSurvey->assessments,
                         'selectOptions' => ($bShowInherited)
-                            ? array_merge($optionsOnOff, ['I' => gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->assessments . ']'])
+                            ? array_merge($optionsOnOff, ['I' => "*" .  $oSurveyOptions->assessments ])
                             : $optionsOnOff,
                     ]); ?>
                 </div>
@@ -177,7 +177,7 @@ $googleAnalyticsStyleOptions = array(
                         'name'          => 'allowsave',
                         'checkedOption' => $oSurvey->allowsave,
                         'selectOptions' => ($bShowInherited)
-                            ? array_merge($optionsOnOff, ['I' => gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->allowsave . ']'])
+                            ? array_merge($optionsOnOff, ['I' => "*" .  $oSurveyOptions->allowsave ])
                             : $optionsOnOff,
                     ]); ?>
                 </div>

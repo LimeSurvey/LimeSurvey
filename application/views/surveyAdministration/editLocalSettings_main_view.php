@@ -30,7 +30,8 @@ if (isset($scripts)) {
 <!-- START editLocalSettings -->
 <div class="row">
     <div class="col-12">
-        <h3 class="pagetitle"><?php eT($entryData['title']); ?></h3>
+        <!-- <h3 class="pagetitle"><?php eT($entryData['title']); ?></h3> -->
+        <!-- <h1 class="mt-3 mb-2"><?php eT($entryData['title']); ?></h1> -->
         <!-- Edition container -->
         <!-- Form -->
         <?php
@@ -38,7 +39,7 @@ if (isset($scripts)) {
             echo CHtml::form(["admin/database/index/" . $entryData['action']], 'post', ['id' => $entryData['name'], 'name' => $entryData['name'], 'class' => ' form30']);
         }
         ?>
-        <div class="row">
+        <div class="row mt-4">
             <div class="<?= $entryData['classes'] ?>">
                 <?php $this->renderPartial($entryData['partial'], $templateData); ?>
             </div>

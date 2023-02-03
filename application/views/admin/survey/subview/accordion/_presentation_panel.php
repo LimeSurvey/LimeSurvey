@@ -32,7 +32,7 @@ $optionsQuestionIndex = array(
     2 => gT('Full', 'unescaped')
 );
 if ($bShowInherited) {
-    $optionsQuestionIndex['-1'] = gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->questionindex . ']';
+    $optionsQuestionIndex['-1'] = '*' .  $oSurveyOptions->questionindex;
 }
 ?>
 
@@ -100,7 +100,7 @@ if ($bShowInherited) {
                 <div class="">
                     <select id="showgroupinfo" name="showgroupinfo" class="form-select">
                         <?php if ($bShowInherited) { ?>
-                            <option value="I"<?php echo $sel_showgri['I']; ?>><?php echo eT('Inherit') . ' [' . $oSurveyOptions->showgroupinfo . ']'; ?></option>
+                            <option value="I"<?php echo $sel_showgri['I']; ?>><?php echo eT('Inherit') .  $oSurveyOptions->showgroupinfo; ?></option>
                         <?php } ?>
                         <option value="B"<?php echo $sel_showgri['B']; ?>><?php eT('Show both'); ?></option>
                         <option value="N"<?php echo $sel_showgri['N']; ?>><?php eT('Show group name only'); ?></option>
@@ -128,7 +128,7 @@ if ($bShowInherited) {
                 <div class="">
                     <select class="form-select" id="showqnumcode" name="showqnumcode">
                         <?php if ($bShowInherited) { ?>
-                            <option value="I"<?php echo $sel_showqnc['I']; ?>><?php echo eT('Inherit') . ' [' . $oSurveyOptions->showqnumcode . ']'; ?></option>
+                            <option value="I"<?php echo $sel_showqnc['I']; ?>><?php echo eT('Inherit') .  $oSurveyOptions->showqnumcode; ?></option>
                         <?php } ?>
                         <option value="B"<?php echo $sel_showqnc['B']; ?>><?php eT('Show both'); ?></option>
                         <option value="N"<?php echo $sel_showqnc['N']; ?>><?php eT('Show question number only'); ?></option>
@@ -147,7 +147,7 @@ if ($bShowInherited) {
                         array(
                             'name' => 'shownoanswer',
                             'checkedOption' => $oSurvey->shownoanswer,
-                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->shownoanswer . ']')) : $optionsOnOff
+                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => '*' .  $oSurveyOptions->shownoanswer)) : $optionsOnOff
                         )
                     );
                     ?>
@@ -165,7 +165,7 @@ if ($bShowInherited) {
                         array(
                             'name' => 'showxquestions',
                             'checkedOption' => $oSurvey->showxquestions,
-                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->showxquestions . ']')) : $optionsOnOff
+                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => '*' .  $oSurveyOptions->showxquestions)) : $optionsOnOff
                         )
                     );
                     ?>
@@ -180,7 +180,7 @@ if ($bShowInherited) {
                         array(
                             'name' => 'showwelcome',
                             'checkedOption' => $oSurvey->showwelcome,
-                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->showwelcome . ']')) : $optionsOnOff
+                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => '*' .  $oSurveyOptions->showwelcome)) : $optionsOnOff
                         )
                     );
                     ?>
@@ -195,7 +195,7 @@ if ($bShowInherited) {
                         array(
                             'name' => 'allowprev',
                             'checkedOption' => $oSurvey->allowprev,
-                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->allowprev . ']')) : $optionsOnOff
+                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => '*' .  $oSurveyOptions->allowprev)) : $optionsOnOff
                         )
                     );
                     ?>
@@ -211,7 +211,7 @@ if ($bShowInherited) {
                         array(
                             'name' => 'nokeyboard',
                             'checkedOption' => $oSurvey->nokeyboard,
-                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->nokeyboard . ']')) : $optionsOnOff
+                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => '*' .  $oSurveyOptions->nokeyboard)) : $optionsOnOff
                         )
                     );
                     ?>
@@ -226,7 +226,7 @@ if ($bShowInherited) {
                         array(
                             'name' => 'showprogress',
                             'checkedOption' => $oSurvey->showprogress,
-                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->showprogress . ']')) : $optionsOnOff
+                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => '*' .  $oSurveyOptions->showprogress)) : $optionsOnOff
                         )
                     );
                     ?>
@@ -240,7 +240,7 @@ if ($bShowInherited) {
                         array(
                             'name' => 'printanswers',
                             'checkedOption' => $oSurvey->printanswers,
-                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->printanswers . ']')) : $optionsOnOff
+                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => '*' .  $oSurveyOptions->printanswers)) : $optionsOnOff
                         )
                     );
                     ?>
@@ -255,7 +255,7 @@ if ($bShowInherited) {
                         array(
                             'name' => 'publicstatistics',
                             'checkedOption' => $oSurvey->publicstatistics,
-                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->publicstatistics . ']')) : $optionsOnOff
+                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => '*' .  $oSurveyOptions->publicstatistics)) : $optionsOnOff
                         )
                     );
                     ?>
@@ -270,7 +270,7 @@ if ($bShowInherited) {
                         array(
                             'name' => 'publicgraphs',
                             'checkedOption' => $oSurvey->publicgraphs,
-                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->publicgraphs . ']')) : $optionsOnOff
+                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => '*' .  $oSurveyOptions->publicgraphs)) : $optionsOnOff
                         )
                     );
                     ?>
@@ -285,7 +285,7 @@ if ($bShowInherited) {
                         array(
                             'name' => 'autoredirect',
                             'checkedOption' => $oSurvey->autoredirect,
-                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->autoredirect . ']')) : $optionsOnOff
+                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => '*' .  $oSurveyOptions->autoredirect)) : $optionsOnOff
                         )
                     );
                     ?>
