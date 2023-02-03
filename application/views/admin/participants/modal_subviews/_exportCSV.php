@@ -34,7 +34,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT('Cancel'); ?></button>
-                <button type="button" class="btn btn-success exportButton">
+                <button type="button" class="btn btn-primary exportButton">
                     <?php eT('Export'); ?>
                 </button>
             </div>

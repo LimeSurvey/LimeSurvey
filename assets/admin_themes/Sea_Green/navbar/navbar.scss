@@ -45,6 +45,7 @@
     font-weight : $font-weight-500;
   }
   .dropdown-menu {
+    z-index: 10000;
     box-shadow: 0px 2px 6px $elevation-shadow-soft;
     border: none;
     &[data-bs-popper] {

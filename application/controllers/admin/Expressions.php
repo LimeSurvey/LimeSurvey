@@ -131,7 +131,6 @@ class Expressions extends SurveyCommonAction
 
         $aData['title_bar']['title'] = $oSurvey->getLocalizedTitle() . " (" . gT("ID") . ":" . $sid . ")";
 
-        $aData['topBar']['name'] = 'baseTopbar_view';
         $aData['topBar']['showBackButton'] = true;
         $aData['topBar']['returnUrl'] = Yii::app()->createUrl('surveyAdministration/view/surveyid/' . $sid);
 
@@ -147,6 +146,11 @@ class Expressions extends SurveyCommonAction
             $aData['qid'] = $qid;
         }
 
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/admin/expressions/partial/topbarBtns/rightSideButtons',
+            ['aData' => $aData],
+            true
+        );
         App()->getClientScript()->registerPackage('decimal');
         App()->getClientScript()->registerScriptFile('SCRIPT_PATH', 'survey_runtime.js');
         App()->getClientScript()->registerPackage('expressions');/* Why we need it ? */

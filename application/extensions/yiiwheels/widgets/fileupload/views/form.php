@@ -4,7 +4,7 @@
 	<div class="span7">
 		<!-- TODO: What should we do with that one? -->
 		<!-- The fileinput-button span is used to style the file input field as button -->
-		<span class="btn btn-success fileinput-button">
+		<span class="btn btn-primary fileinput-button">
 			<i class="ri-add-fill icon-white"></i>
 			<span>Add files...</span>
 			<?php

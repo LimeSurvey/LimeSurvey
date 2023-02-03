@@ -1,4 +1,4 @@
-<div class="row row-cols-lg-auto g-1 align-items-center mb-3 me-3 float-end">
+<div class="row row-cols-lg-auto g-1 align-items-center mb-3 float-end">
     <div class="col-12">
         <label for='questionNav' class="text-nowrap col-form-label col-form-label-sm"><?php eT("Move to question:");?></label>
     </div>

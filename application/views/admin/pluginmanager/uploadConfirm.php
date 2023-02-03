@@ -73,9 +73,9 @@
             <div class="col-4">
                 <a href="<?php echo $abortUrl; ?>" class="btn btn-warning"><?php eT("Abort"); ?></a>
                 <?php if ($isUpdate) : ?>
-                    <input type="submit" class="btn btn-success" value="<?php eT("Update"); ?>"/>
+                    <input type="submit" class="btn btn-primary" value="<?php eT("Update"); ?>"/>
                 <?php else : ?>
-                    <input type="submit" class="btn btn-success" value="<?php eT("Install"); ?>"/>
+                    <input type="submit" class="btn btn-primary" value="<?php eT("Install"); ?>"/>
                 <?php endif; ?>
             </div>
 

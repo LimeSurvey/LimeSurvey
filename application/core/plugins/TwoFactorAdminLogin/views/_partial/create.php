@@ -31,7 +31,7 @@
     </div>
     <div class="modal-footer">
         <button class="btn btn-cancel ls-space margin left-5" id="TFA--cancelform"><?=gT('Cancel')?></button>
-        <button class="btn btn-success ls-space margin left-5" id="TFA--submitform">
+        <button class="btn btn-primary ls-space margin left-5" id="TFA--submitform">
             <?php eT('Confirm & save'); ?>
         </button>
     </div>

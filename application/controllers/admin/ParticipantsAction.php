@@ -266,6 +266,7 @@ class ParticipantsAction extends SurveyCommonAction
      */
     public function index()
     {
+        $title = gT("Central participants database summary");
         $iUserID = Yii::app()->session['loginID'];
 
         // if superadmin all the records in the cpdb will be displayed
@@ -275,6 +276,8 @@ class ParticipantsAction extends SurveyCommonAction
             // if not only the participants on which he has right on (shared and owned)
             $iTotalRecords = Participant::model()->getParticipantsOwnerCount($iUserID);
         }
+        $ownsAddParticipantsButton = Permission::model()->hasGlobalPermission('superadmin', 'read')
+            || Permission::model()->hasGlobalPermission('participantpanel', 'create');
         // gets the count of participants, their attributes and other such details
         $aData = array(
             'totalrecords' => $iTotalRecords,
@@ -283,16 +286,11 @@ class ParticipantsAction extends SurveyCommonAction
             'aAttributes' => ParticipantAttributeName::model()->getAllAttributes(),
             'attributecount' => ParticipantAttributeName::model()->count(),
             'blacklisted' => Participant::model()->count('owner_uid = ' . $iUserID . ' AND blacklisted = \'Y\''),
-            'ownsAddParticipantsButton' =>
-                Permission::model()->hasGlobalPermission('superadmin', 'read')
-                || Permission::model()->hasGlobalPermission('participantpanel', 'create'),
         );
 
         $searchstring = Yii::app()->request->getPost('searchstring');
         $aData['searchstring'] = $searchstring;
-
-        // Green Bar (SurveyManagerBar) Page Title
-        $aData['pageTitle'] = gT("Central participants database summary");
+        $aData['topbar'] = $this->getTopBarComponents($title, $ownsAddParticipantsButton, false);
 
         // loads the participant panel and summary view
         $this->renderWrappedTemplate('participants', array('participantsPanel', 'summary'), $aData);
@@ -305,6 +303,7 @@ class ParticipantsAction extends SurveyCommonAction
      */
     public function displayParticipants()
     {
+        $title = gT('Central participant management');
         //Get list of surveys.
         //Should be all surveys owned by user (or all surveys for super admin)
         $surveys = Survey::model();
@@ -402,9 +401,7 @@ class ParticipantsAction extends SurveyCommonAction
             Yii::app()->user->setState('pageSizeParticipantView', $request->getPost('pageSizeParticipantView'));
         }
 
-        // Green Bar (SurveyManagerBar) Page Title
-        $aData['pageTitle'] = gT('Central participant management');
-        $aData['ownsAddParticipantsButton'] = true;
+        $aData['topbar'] = $this->getTopBarComponents($title, true, false);
 
         // Loads the participant panel view and display participant view
         $this->renderWrappedTemplate('participants', array('participantsPanel', 'displayParticipants'), $aData);
@@ -778,11 +775,11 @@ class ParticipantsAction extends SurveyCommonAction
     public function importCSV()
     {
         $this->checkPermission('import');
-
+        $title = gT("Import CSV");
         $aData = array(
             'aAttributes' => ParticipantAttributeName::model()->getAllAttributes(),
-            'pageTitle' => gT("Import CSV"),
         );
+        $aData['topbar'] = $this->getTopBarComponents($title, false, false);
         Yii::app()->clientScript->registerPackage('bootstrap-switch');
         $this->renderWrappedTemplate('participants', array('participantsPanel', 'importCSV'), $aData);
     }
@@ -1291,6 +1288,7 @@ class ParticipantsAction extends SurveyCommonAction
      */
     public function blacklistControl()
     {
+        $title = gT("Blacklist settings");
         $aData = array(
             'blacklistallsurveys' => Yii::app()->getConfig('blacklistallsurveys'),
             'blacklistnewsurveys' => Yii::app()->getConfig('blacklistnewsurveys'),
@@ -1299,9 +1297,10 @@ class ParticipantsAction extends SurveyCommonAction
             'deleteblacklisted' => Yii::app()->getConfig('deleteblacklisted'),
             'allowunblacklist' => Yii::app()->getConfig('allowunblacklist'),
             'aAttributes' => ParticipantAttributeName::model()->getAllAttributes(),
-            'pageTitle' => gT("Blacklist settings"),
         );
+        $aData['topbar'] = $this->getTopBarComponents($title, false, false);
         Yii::app()->clientScript->registerPackage('bootstrap-switch');
+
         $this->renderWrappedTemplate('participants', array('participantsPanel', 'blacklist'), $aData);
     }
 
@@ -1361,6 +1360,7 @@ class ParticipantsAction extends SurveyCommonAction
      */
     public function attributeControl()
     {
+        $title = gT("Attribute management");
         $model = new ParticipantAttributeName();
         if (Yii::app()->request->getParam('ParticipantAttributeName')) {
             $model->attributes = Yii::app()->request->getParam('ParticipantAttributeName');
@@ -1374,8 +1374,6 @@ class ParticipantsAction extends SurveyCommonAction
             'aAttributes' => ParticipantAttributeName::model()->getAllAttributes(),
             'model' => $model,
             'debug' => Yii::app()->request->getParam('Attribute'),
-            'pageTitle' => gT("Attribute management"),
-            'ownsAddAttributeButton' => true,
         );
         // Page size
         if (Yii::app()->request->getParam('pageSizeAttributes')) {
@@ -1394,6 +1392,8 @@ class ParticipantsAction extends SurveyCommonAction
             true,
             false
         );
+        $aData['topbar'] = $this->getTopBarComponents($title, false, true);
+
         Yii::app()->clientScript->registerPackage('bootstrap-switch', LSYii_ClientScript::POS_BEGIN);
         $this->renderWrappedTemplate('participants', array('participantsPanel', 'attributeControl'), $aData);
     }
@@ -1965,6 +1965,7 @@ class ParticipantsAction extends SurveyCommonAction
      */
     public function sharePanel()
     {
+        $title = gT("Share panel");
         $model = new ParticipantShare();
         if (Yii::app()->request->getParam('ParticipantShare')) {
             $model->setAttributes(Yii::app()->request->getParam('ParticipantShare'), false);
@@ -1980,7 +1981,7 @@ class ParticipantsAction extends SurveyCommonAction
             'aAttributes' => ParticipantAttributeName::model()->getAllAttributes(),
             'model' => $model,
             'debug' => Yii::app()->request->getParam('Participant'),
-            'pageTitle' => gT("Share panel"),
+            'pageTitle' => $title,
         );
         // Page size
         if (Yii::app()->request->getParam('pageSizeShareParticipantView')) {
@@ -1994,7 +1995,7 @@ class ParticipantsAction extends SurveyCommonAction
         App()->getClientScript()->registerPackage('bootstrap-switch');
 
         $aData['massiveAction'] = App()->getController()->renderPartial('/admin/participants/massive_actions/_selector_share', array(), true, false);
-
+        $aData['topbar'] = $this->getTopBarComponents($title, false, false);
         // Loads the participant panel view and display participant view
         $this->renderWrappedTemplate('participants', array('participantsPanel', 'sharePanel'), $aData);
     }
@@ -2746,5 +2747,32 @@ class ParticipantsAction extends SurveyCommonAction
             Yii::app()->setFlashMessage(gT('No permission'), 'error');
             Yii::app()->getController()->redirect(Yii::app()->request->urlReferrer);
         }
+    }
+
+    /**
+     * Returns the topbar config which then needs to be added into $aData['topbar'] in action functions
+     *
+     * @param $title
+     * @param $ownsAddParticipantsButton
+     * @param $ownsAddAttributeButton
+     * @return array
+     */
+    private function getTopBarComponents($title, $ownsAddParticipantsButton, $ownsAddAttributeButton)
+    {
+        $topBarConf['title'] = $title;
+        $topBarConf['middleButtons'] = Yii::app()->getController()->renderPartial(
+            '/admin/participants/partial/topbarBtns/leftSideButtons',
+            [
+                'ownsAddParticipantsButton' => $ownsAddParticipantsButton
+            ],
+            true
+        );
+        $topBarConf['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/admin/participants/partial/topbarBtns/rightSideButtons',
+            ['ownsAddAttributeButton' => $ownsAddAttributeButton],
+            true
+        );
+
+        return $topBarConf;
     }
 }

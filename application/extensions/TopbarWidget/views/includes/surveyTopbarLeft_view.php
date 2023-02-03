@@ -63,20 +63,18 @@
 <?php if ($showToolsMenu) : ?>
     <?php $toolsDropDownItems = $this->render('includes/surveyToolsDropdownItems', get_defined_vars(), true); ?>
     <!-- Tools  -->
-    <div class="d-inline-flex ">
-        <!-- Main button dropdown -->
-        <?php
-        $this->widget('ext.ButtonWidget.ButtonWidget', [
-            'name' => 'ls-tools-button',
-            'id' => 'ls-tools-button',
-            'text' => gT('Tools'),
-            'isDropDown' => true,
-            'dropDownContent' => $toolsDropDownItems,
-            'htmlOptions' => [
-                'class' => 'btn btn-outline-secondary',
-            ],
-        ]); ?>
-    </div>
+    <!-- Main button dropdown -->
+    <?php
+    $this->widget('ext.ButtonWidget.ButtonWidget', [
+        'name' => 'ls-tools-button',
+        'id' => 'ls-tools-button',
+        'text' => gT('Tools'),
+        'isDropDown' => true,
+        'dropDownContent' => $toolsDropDownItems,
+        'htmlOptions' => [
+            'class' => 'btn btn-outline-secondary',
+        ],
+    ]); ?>
 <?php endif; ?>
 
 <?php if (!empty($beforeSurveyBarRender)) : ?>

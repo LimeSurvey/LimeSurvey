@@ -17,13 +17,9 @@ $iconRight = $icon && $iconPosition == 'right' ? ' <i class="' .  $icon . '" ></
 $dropDownIconHtml = $displayDropDownIcon ? '<span class="menu-button-divider"></span><i class="' . $dropDownIcon . '" ></i>' : '';
 ?>
 <?php if ($link == '' || $isDropDown || array_key_exists('disabled', $htmlOptions)) : ?>
-    <?php if ($dropDownContent != '') : ?>
-        <div class="dropdown">
-    <?php endif; ?>
         <?= CHtml::htmlButton($iconLeft . $text . $iconRight . $dropDownIconHtml, $htmlOptions) ?>
     <?php if ($dropDownContent != '') : ?>
-            <?= $dropDownContent ?>
-        </div>
+        <?= $dropDownContent ?>
     <?php endif; ?>
 <?php else : ?>
     <?= CHtml::link($iconLeft . $text . $iconRight, $link, $htmlOptions); ?>

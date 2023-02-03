@@ -71,22 +71,20 @@ class PluginManagerController extends SurveyCommonAction
             ]
         );
 
-        // Green Bar Page Title
-        $aData['pageTitle'] = gT('Plugins');
-        // White Bar
-        $aData['fullpagebar']['returnbutton']['url'] = 'index';
-        $aData['fullpagebar']['returnbutton']['text'] = gT('Back');
-
-        // Additional Buttons in white bar
-        $aData['fullpagebar']['pluginManager']['buttons'] = [
-            'installPluginZipModal' => [
-                'hasConfigDemoMode' => Yii::app()->getConfig('demoMode'),
+        $aData['topbar']['title'] = gT('Plugins');
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/admin/pluginmanager/partial/topbarBtns/rightSideButtons',
+            [],
+            true
+        );
+        $aData['topbar']['middleButtons'] = Yii::app()->getController()->renderPartial(
+            '/admin/pluginmanager/partial/topbarBtns/leftSideButtons',
+            [
+                'showUpload' => !Yii::app()->getConfig('demoMode') && !Yii::app()->getConfig('disablePluginUpload'),
+                'scanFilesUrl' => $scanFilesUrl,
             ],
-            'scanFiles' => [
-                'url' => $scanFilesUrl,
-            ],
-            'showUpload' => !Yii::app()->getConfig('demoMode') && !Yii::app()->getConfig('disablePluginUpload'),
-        ];
+            true
+        );
 
         $this->renderWrappedTemplate('pluginmanager', 'index', $aData);
     }
@@ -152,14 +150,24 @@ class PluginManagerController extends SurveyCommonAction
             ]
         );
 
-        $data['fullpagebar']['returnbutton']['url'] = 'pluginmanager';
-        $data['fullpagebar']['returnbutton']['text'] = gT('Back');
-        $data['pageTitle'] = gT('Plugins - scanned files');
-        $data['fullpagebar']['pluginManager']['buttons'] = [
-            'scanFiles' => [
-                'url' => $scanFilesUrl,
+        $data['topbar']['title'] = gT('Plugins - scanned files');
+        $data['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/admin/pluginmanager/partial/topbarBtns/rightSideButtons',
+            [
+                'backUrl' => $this->getController()->createUrl(
+                    '/admin/pluginmanager'
+                )
             ],
-        ];
+            true
+        );
+        $data['topbar']['middleButtons'] = Yii::app()->getController()->renderPartial(
+            '/admin/pluginmanager/partial/topbarBtns/leftSideButtons',
+            [
+                'showUpload' => false,
+                'scanFilesUrl' => $scanFilesUrl,
+            ],
+            true
+        );
 
         $this->renderWrappedTemplate(
             'pluginmanager',
@@ -360,7 +368,7 @@ class PluginManagerController extends SurveyCommonAction
                 ),
                 'save' => array(
                     'label' => '<span class="ri-check-fill"></span> ' . gT('Save'),
-                    'class' => array('btn btn-success'),
+                    'class' => array('btn btn-primary'),
                     'type'  => 'submit'
                 ),
             );
