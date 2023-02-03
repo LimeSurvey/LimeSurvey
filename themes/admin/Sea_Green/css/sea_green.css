@@ -17557,8 +17557,7 @@ footer.footer {
 
 .topbar {
   padding-top: 10px;
-  padding-bottom: 5px;
-  margin: 0 auto 15px;
+  padding-bottom: 10px;
   z-index: 1000;
   background-color: #EEEFF7;
 }
