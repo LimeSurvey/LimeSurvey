@@ -182,7 +182,7 @@ class QuestionGroup extends LSActiveRecord
      */
     public function getGroupDescription($iGroupId, $sLanguage)
     {
-        return $this->findByPk(array('gid' => $iGroupId, 'language' => $sLanguage))->description;
+        return $this->findByPk($iGroupId)->getGroupDescriptionI10N($sLanguage);
     }
 
     /**
