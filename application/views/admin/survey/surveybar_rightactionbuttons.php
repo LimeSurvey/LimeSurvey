@@ -12,7 +12,7 @@
     <?php if (isset($surveybar['savebutton']['form'])):?>
 
         <!-- Save -->
-        <button class="btn btn-success" href="#" type="button" id="save-button">
+        <button class="btn btn-primary" href="#" type="button" id="save-button">
             <span class="ri-save-3-fill"></span>
             <?php if (isset($surveybar['savebutton']['text']))
             {
@@ -31,12 +31,12 @@
                 $saveAndAddQuestionLink = $this->createUrl("questionAdministration/view/", $paramArray);
             ?>
 
-            <button class="btn btn-success" id='save-and-new-question-button' href="<?php echo $saveAndAddQuestionLink ?>" type="button">
+            <button class="btn btn-primary" id='save-and-new-question-button' href="<?php echo $saveAndAddQuestionLink ?>" type="button">
                 <span class="ri-save-3-fill"></span>
                 <?php eT("Save & add new question"); ?>
             </button>
 
-            <button class="btn btn-success" id='save-and-new-button' href="<?php echo $saveAndNewLink ?>" type="button">
+            <button class="btn btn-primary" id='save-and-new-button' href="<?php echo $saveAndNewLink ?>" type="button">
                 <span class="ri-save-3-fill"></span>
                 <?php eT("Save & add new group"); ?>
             </button>
@@ -54,7 +54,7 @@
                 $saveAndNewLink = $this->createUrl("questionAdministration/view/", $paramArray);
             ?>
 
-            <button class="btn btn-success" id='save-and-new-button' href="<?php echo $saveAndNewLink ?>" type="button">
+            <button class="btn btn-primary" id='save-and-new-button' href="<?php echo $saveAndNewLink ?>" type="button">
                 <span class="ri-save-3-fill"></span>
                 <?php eT("Save and new"); ?>
             </button>

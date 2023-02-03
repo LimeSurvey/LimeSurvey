@@ -55,7 +55,7 @@ $questionTheme = !empty($oQuestion->questionTheme) ? $oQuestion->questionTheme :
     <input
         type='submit'
         style="display:none"
-        class="btn navbar-btn button white btn-success"
+        class="btn navbar-btn button white btn-primary"
         id='submit-create-question'
         name="savecreate"
     />

@@ -8,7 +8,7 @@ class ButtonWidget extends CInputWidget
     /** @var string the text displayed in the button */
     public $text = '';
 
-    /** @var string name of the icon class. e.g.: fa fa-paint-brush */
+    /** @var string name of the icon class. e.g.: ri-brush-fill */
     public $icon = '';
 
     /** @var string Position of the icon either left or right */

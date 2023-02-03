@@ -38,7 +38,7 @@
             $surveyLine .= CHtml::link('<span class="ri-bar-chart-fill" aria-hidden="true"></span><span class="visually-hidden">'. gT('View statistics') .'</span>',
                 array('statistics_user/action', 'surveyid' => $survey->sid,'language' => $surveylang),
                 array(
-                    'class'=>'view-stats btn btn-success col-2 col-lg-1',
+                    'class'=>'view-stats btn btn-primary col-2 col-lg-1',
                     'title'=>gT('View statistics'),
                 )
             );

@@ -16,7 +16,7 @@ $aUsergoups = UserGroup::model()->findAll();
         <?php else : ?>
             <?php
             echo "<p>" . gT("No user groups found.") . "</p>";
-            echo CHtml::link('<i class="ri-add-circle-fill text-success"></i> ' . gT('Add new user group'), array('userGroup/addGroup'), array('class' => 'btn btn-outline-secondary'));
+            echo CHtml::link('<i class="ri-add-circle-fill"></i> ' . gT('Add new user group'), array('userGroup/addGroup'), array('class' => 'btn btn-outline-secondary'));
             ?>
         <?php endif; ?>
     </div>

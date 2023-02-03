@@ -113,9 +113,12 @@ class Update extends DynamicSurveyCommonAction
         $serverAnswer = $updateModel->getUpdateInfo($buttons);
         $aData['serverAnswer'] = $serverAnswer;
 
-        // Green Bar (SurveyManagerBar Heading)
-        $aData['pageTitle'] = gT('ComfortUpdate');
-        $aData['fullpagebar']['update'] = true;
+        $aData['topbar']['title'] = gt('ComfortUpdate');
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/admin/update/partials/topbarBtns/rightSideButtons',
+            [],
+            true
+        );
 
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'comfortupdate/comfortupdate.js');
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'comfortupdate/buildComfortButtons.js');
@@ -134,9 +137,23 @@ class Update extends DynamicSurveyCommonAction
             $aData['fullpagebar']['closebutton']['url'] = 'admin/update';
             $updateKey = $aData['updateKey'] = getGlobalSetting('update_key');
 
-            //$this->controller->renderPartial('//admin/update/updater/welcome/_subscribe', array('serverAnswer' => $serverAnswer),  false, false);
             if (!$updateKey) {
-                $aData['fullpagebar']['saveandclosebutton']['form'] = true;
+                $pageTitle = gt('Subscribe to ComfortUpdate');
+            } else {
+                $pageTitle = gt('ComfortUpdate');
+            }
+
+            $aData['topbar']['title'] = $pageTitle;
+            $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+                '/admin/update/partials/topbarBtns_subscribe/rightSideButtons',
+                [
+                    'saveAndClose' => !$updateKey
+                ],
+                true
+            );
+
+            if (!$updateKey) {
+                //$aData['fullpagebar']['saveandclosebutton']['form'] = true;
                 $this->renderWrappedTemplate('update/manage/', 'subscribe', $aData);
             } else {
                 $aData['updateKeyInfos'] = $updateModel->checkUpdateKeyonServer($updateKey);

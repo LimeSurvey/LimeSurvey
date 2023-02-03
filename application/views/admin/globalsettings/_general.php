@@ -212,7 +212,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
             </label>
             <div class="col-12">
                 <a href="<?php echo App()->createUrl('admin/globalsettings', array("sa" => "refreshAssets")); ?>" 
-                   class="btn btn-success btn-large">
+                   class="btn btn-primary btn-large">
                    	<?php eT("Clear now"); ?>
                 </a>
             </div>

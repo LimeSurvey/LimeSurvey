@@ -82,7 +82,7 @@
 
         <?php if ($updateRigth) : ?>
             <div class="d-none">
-                <?php echo TbHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => 'btn btn-success col-lg-2 col-md-4', "id" => "surveys-groups-form-submit")); ?>
+                <?php echo TbHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => 'btn btn-primary col-lg-2 col-md-4', "id" => "surveys-groups-form-submit")); ?>
             </div>
         <?php endif ?>
 

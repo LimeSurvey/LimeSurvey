@@ -28,7 +28,7 @@
         <input
                 type='submit'
                 style="display:none"
-                class="btn navbar-btn button white btn-success"
+                class="btn navbar-btn button white btn-primary"
                 id = 'submit-copy-question'
                 name="savecopy"
                 value='<?php eT("Copy question"); ?>'

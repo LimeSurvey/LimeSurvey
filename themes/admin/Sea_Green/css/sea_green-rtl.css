@@ -17207,6 +17207,7 @@ footer.footer {
   font-weight: 500;
 }
 .navbar .dropdown-menu {
+  z-index: 10000;
   box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
   border: none;
 }
@@ -17529,6 +17530,17 @@ footer.footer {
   to {
     transform: rotate(-360deg);
   }
+}
+
+.topbar {
+  padding-top: 10px;
+  padding-bottom: 5px;
+  margin: 0 auto 15px;
+  z-index: 1000;
+  background-color: #EEEFF7;
+}
+.topbar .btn {
+  margin-bottom: 4px;
 }
 
 .ls-panelboxes .ls-panelboxes-panelbox {

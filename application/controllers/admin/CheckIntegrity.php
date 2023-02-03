@@ -49,9 +49,13 @@ class CheckIntegrity extends SurveyCommonAction
     public function index()
     {
         $aData = $this->checkintegrity();
-        $aData['pageTitle'] = gT('Check data integrity');
-        $aData['fullpagebar']['returnbutton']['url'] = 'admin/index';
-        $aData['fullpagebar']['returnbutton']['text'] = gT('Back');
+
+        $aData['topbar']['title'] = gt('Check data integrity');
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/admin/checkintegrity/partials/topbarBtns/rightSideButtons',
+            [],
+            true
+        );
 
         $this->renderWrappedTemplate('checkintegrity', 'check_view', $aData);
     }

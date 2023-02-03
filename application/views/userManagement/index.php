@@ -21,8 +21,6 @@ echo viewHelper::getViewTestTag('usersIndex');
     <?php App()->end(); ?>
 <?php endif; ?>
 
-<?php $this->renderPartial('partial/_menubar'); ?>
-
 <div class="container-fluid">
     <?php
     $this->widget('application.extensions.admin.grid.CLSGridView',
