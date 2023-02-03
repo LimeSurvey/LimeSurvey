@@ -10,10 +10,15 @@ $leftSideContentSummary = $this->renderPartial('/questionAdministration/partial/
 $leftSideContentEditor = $this->renderPartial('/questionAdministration/partial/topbarBtns/editQuestionTopbarLeft_view', get_defined_vars(), true);
 $rightSideContent = $this->renderPartial('/questionAdministration/partial/topbarBtns/editQuestionTopbarRight_view', get_defined_vars(), true);
 $rightSideContentSummary = $this->renderPartial('/questionAdministration/partial/topbarBtns/questionSummaryTopbarRight_view', get_defined_vars(), true);
+
+App()->getClientScript()->registerScriptFile(
+    App()->getConfig('adminscripts') . 'topbar.js',
+    CClientScript::POS_END
+);
 ?>
 
 <!-- Question Top Bar -->
-<div class="topbar sticky-top" id="pjax-content">
+<div id="ls-topbar" class="topbar sticky-top" id="pjax-content">
     <div class="container-fluid">
             <?php if ($oQuestion->qid !== 0) : ?>
                 <div id="question-summary-topbar"

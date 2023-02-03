@@ -17566,6 +17566,10 @@ footer.footer {
   margin-bottom: 4px;
 }
 
+#ls-topbar.scroll-shadow {
+  box-shadow: 0 1px 20px 0 rgb(196, 196, 196);
+}
+
 .ls-panelboxes .ls-panelboxes-panelbox {
   height: 200px;
   margin: 10px 0;
