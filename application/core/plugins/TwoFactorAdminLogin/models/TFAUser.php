@@ -58,13 +58,14 @@ class TFAUser extends User
         if(!$this->hasAuthSet) {
             return '';
         }
+        $sssaa=json_encode(['confirm_cancel' => "Yes"]);
         $buttons = "<div class='icon-btn-row'>";
         $buttons .= '<button '
             . 'class="btn btn-icon btn-outline-secondary btn-sm TFA--management--action-deleteToken" '
             . 'title="' . gT("Delete 2FA key") . '" '
             . 'data-bs-toggle="tooltip" '
             . 'data-confirmtext="' . gT('Are you sure you want to delete this 2FA key?') . '" '
-            . 'data-buttons="{confirm_cancel: \'' . gT('No, cancel') . '\', confirm_ok: \'' . gT('Yes, I am sure') . '\'}" '
+            . 'data-buttons='. json_encode (['confirm_cancel' => gT("No"), 'confirm_ok' => gt('Yes')]) .' '
             . 'data-href="' . Yii::app()->createUrl("plugins/direct/plugin/TwoFactorAdminLogin/function/directCallDeleteKey") . '" '
             . 'data-uid="' . $this->uid . '" '
             . 'data-errortext="' . gT('An error has happened, and the key could not be deleted.') . '" '
