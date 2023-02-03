@@ -17230,6 +17230,7 @@ footer.footer {
   font-weight: 500;
 }
 .navbar .dropdown-menu {
+  z-index: 10000;
   box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
   border: none;
 }
