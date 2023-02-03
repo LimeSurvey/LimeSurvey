@@ -107,11 +107,13 @@ var TFAUserSettingsClass = function(){
                 success: function(data){
                     stopSubmit();
                     if(data.success) {
+                        $('#TFA--actionmodal').modal('hide');
                         $(formId).parent().html(data.message);
                         modalCloseTimeout = setTimeout(triggerModalClose, 2000);
                         if(data.data.reload != undefined) {
                             setTimeout(function(){window.location.reload();}, 1500);
                         }
+                        LS.ajaxAlerts(data.message, 'success', {showCloseButton: true});
                         return;
                     }
                     $(formId).find('.errorContainer').html(data.message);
@@ -120,7 +122,10 @@ var TFAUserSettingsClass = function(){
         };
 
         $(formId).on('submit',function(e) {onSubmit(e,this);});
-        //$('#TFA--submitform').on('click',function(e) {onSubmit(e,this);});
+        $('#TFA--submitform').on('click',function(e) {
+            e.preventDefault();
+            onSubmit(e,this);
+        });
 
         $('#TFA--cancelform').on('click',function(e) {
             e.preventDefault();
