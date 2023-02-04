@@ -119,6 +119,7 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
             [
                 'class'   => '',
                 'content' => '',
+                'type' => 'subquestion-header',
             ]
         );
 
@@ -127,7 +128,10 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
                 $this->getMainView() . '/rows/cells/header_answer',
                 [
                     'class'   => "answer-text",
+                    'basename' => $this->sSGQA,
                     'content' => $oAnswer->answerl10ns[$this->sLanguage]->answer,
+                    'code' => $oAnswer->code,
+                    'oAnswer' => $oAnswer
                 ]
             );
         }
@@ -138,6 +142,8 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
                 [
                     'class'   => '',
                     'content' => '',
+                    'type' => 'right-header',
+                    'role' => null
                 ]
             );
         }
@@ -148,7 +154,10 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
                 $this->getMainView() . '/rows/cells/header_answer',
                 [
                     'class'   => 'answer-text noanswer-text',
+                    'basename' => $this->sSGQA,
                     'content' => gT('No answer'),
+                    'code' => '',
+                    'oAnswer' => null
                 ]
             );
         }
@@ -260,23 +269,25 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
 
             foreach ($this->aAnswerOptions[0] as $oAnswer) {
                 $aAnswerColumns[] = array(
+                    'basename' => $this->sSGQA,
                     'myfname' => $myfname,
                     'ld' => $oAnswer->code,
+                    'code' => $oAnswer->code,
                     'label' => $oAnswer->answerl10ns[$this->sLanguage]->answer,
-                    'CHECKED' => ($this->getFromSurveySession($myfname) == $oAnswer->code) ? 'CHECKED' : '',
-                    'checkconditionFunction' => 'checkconditions',
+                    'checked' => ($this->getFromSurveySession($myfname) == $oAnswer->code) ? 'checked' : '',
                     );
             }
 
             $aNoAnswerColumn = [];
             if (($this->oQuestion->mandatory != 'Y' && SHOW_NO_ANSWER == 1)) {
-                $CHECKED = (!isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname] == '') ? 'CHECKED' : '';
+                $checked = (!isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname] == '') ? 'CHECKED' : '';
                 $aNoAnswerColumn = array(
+                    'basename' => $this->sSGQA,
                     'myfname'                => $myfname,
                     'ld'                     => '',
+                    'code' => $oAnswer->code,
                     'label'                  => gT('No answer'),
-                    'CHECKED'                => $CHECKED,
-                    'checkconditionFunction' => 'checkconditions',
+                    'checked'                => $checked,
                 );
             }
 
@@ -285,6 +296,7 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
                 "content" => array(
                     'aAnswerColumns' => $aAnswerColumns,
                     'aNoAnswerColumn' => $aNoAnswerColumn,
+                    'sSGQA'    => $this->sSGQA,
                     'myfname'    => $myfname,
                     'answertext' => $answertext,
                     'answerwidth' => $this->answerwidth,
