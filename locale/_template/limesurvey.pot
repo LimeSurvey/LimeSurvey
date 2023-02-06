@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2023-01-31 12:09:15+00:00\n"
+"POT-Creation-Date: 2023-02-02 20:14:15+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -237,7 +237,7 @@ msgstr ""
 #: application/controllers/admin/Tokens.php:1948
 #: application/controllers/admin/Tokens.php:2285
 #: application/controllers/admin/Tokens.php:2344
-#: application/controllers/admin/Tokens.php:2408
+#: application/controllers/admin/Tokens.php:2406
 #: application/controllers/admin/globalsettings.php:37
 #: application/controllers/admin/globalsettings.php:85
 msgid "You do not have permission to access this page."
@@ -289,9 +289,9 @@ msgstr ""
 #: application/controllers/admin/Tokens.php:1958
 #: application/controllers/admin/Tokens.php:2297
 #: application/controllers/admin/Tokens.php:2354
-#: application/controllers/admin/Tokens.php:2447
-#: application/controllers/admin/Tokens.php:2524
-#: application/controllers/admin/Tokens.php:2573
+#: application/controllers/admin/Tokens.php:2445
+#: application/controllers/admin/Tokens.php:2522
+#: application/controllers/admin/Tokens.php:2571
 #: application/controllers/admin/index.php:35
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_action_results.php:10
 #: application/helpers/admin/statistics_helper.php:2390
@@ -750,6 +750,7 @@ msgstr ""
 #: application/controllers/LimereplacementfieldsController.php:402
 #: application/controllers/LimereplacementfieldsController.php:417
 #: application/controllers/SurveyAdministrationController.php:279
+#: application/controllers/SurveyAdministrationController.php:3184
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:53
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_export_archive_results.php:12
 #: application/models/SurveyLink.php:232
@@ -862,6 +863,7 @@ msgstr ""
 #: application/controllers/LimereplacementfieldsController.php:404
 #: application/controllers/LimereplacementfieldsController.php:419
 #: application/controllers/QuestionAdministrationController.php:1496
+#: application/controllers/SurveyAdministrationController.php:3185
 #: application/models/Question.php:996
 #: application/views/admin/survey/Question/massive_actions/_delete_results.php:10
 msgid "Question ID"
@@ -2819,14 +2821,6 @@ msgstr ""
 msgid "Target question"
 msgstr ""
 
-#: application/controllers/SurveyAdministrationController.php:3184
-msgid "Survey id"
-msgstr ""
-
-#: application/controllers/SurveyAdministrationController.php:3185
-msgid "Question id"
-msgstr ""
-
 #: application/controllers/SurveyAdministrationController.php:3186
 msgid "Subquestion ID"
 msgstr ""
@@ -2982,7 +2976,7 @@ msgstr ""
 #: application/views/admin/surveymenu_entries/index.php:70
 #: application/views/admin/surveymenu_entries/massive_action/_selector.php:46
 #: application/views/admin/token/browse.php:94
-#: application/views/admin/token/deleteParticipantsTable.php:26
+#: application/views/admin/token/deleteParticipantsTable.php:39
 #: application/views/admin/token/tokenform.php:498
 #: application/views/admin/update/manage/subscribe.php:41
 #: application/views/admin/update/updater/_error.php:162
@@ -6858,7 +6852,7 @@ msgstr ""
 
 #: application/controllers/admin/Tokens.php:2128
 #: application/controllers/admin/Tokens.php:2143
-#: application/controllers/admin/Tokens.php:2945
+#: application/controllers/admin/Tokens.php:2943
 msgid "Line %s : %s %s (%s)"
 msgstr ""
 
@@ -6888,21 +6882,21 @@ msgstr ""
 msgid "{n} access code has been created.|{n} access codes have been created."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2439
+#: application/controllers/admin/Tokens.php:2437
 msgid "Bounce settings have been saved."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2557
+#: application/controllers/admin/Tokens.php:2555
 #: application/views/admin/token/tokenwarning.php:13
 msgid "Survey participants have not been initialised for this survey."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2563
+#: application/controllers/admin/Tokens.php:2561
 msgid "Participant table already exist for this survey."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2587
-#: application/controllers/admin/Tokens.php:2708
+#: application/controllers/admin/Tokens.php:2585
+#: application/controllers/admin/Tokens.php:2706
 #: application/core/LsDefaultDataSets.php:388
 #: application/core/LsDefaultDataSets.php:389
 #: application/views/admin/survey/breadcrumb.php:120
@@ -6911,12 +6905,12 @@ msgstr ""
 msgid "Survey participants"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2588
+#: application/controllers/admin/Tokens.php:2586
 msgid "A participant table has been created for this survey."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2590
-#: application/controllers/admin/Tokens.php:2648
+#: application/controllers/admin/Tokens.php:2588
+#: application/controllers/admin/Tokens.php:2646
 #: application/views/SurveysGroupsPermission/subviews/deleteUserResult.php:6
 #: application/views/admin/authentication/message.php:35
 #: application/views/admin/participants/attributeMapCSV_view.php:80
@@ -6943,23 +6937,23 @@ msgstr ""
 msgid "Continue"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2645
+#: application/controllers/admin/Tokens.php:2643
 msgid "Import old participant table"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2646
+#: application/controllers/admin/Tokens.php:2644
 msgid "A survey participants table has been created for this survey and the old participants were imported."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2665
+#: application/controllers/admin/Tokens.php:2663
 msgid "Import failed"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2666
+#: application/controllers/admin/Tokens.php:2664
 msgid "There are no matching settings to start the restoration of the participant table."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2940
+#: application/controllers/admin/Tokens.php:2938
 msgid "%s records with other errors"
 msgstr ""
 
@@ -11972,102 +11966,106 @@ msgstr ""
 msgid "Text [Help] (Tip)"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9124
+#: application/helpers/expressions/em_manager_helper.php:9132
 msgid "This group has at least 1 error."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9159
-#: application/helpers/expressions/em_manager_helper.php:9393
+#: application/helpers/expressions/em_manager_helper.php:9169
+#: application/helpers/expressions/em_manager_helper.php:9403
 msgid "Default:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9181
+#: application/helpers/expressions/em_manager_helper.php:9191
 #: application/views/questionAdministration/summary.php:60
 #: application/views/questionAdministration/textElements.php:84
 msgid "Help:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9183
+#: application/helpers/expressions/em_manager_helper.php:9193
 msgid "Tip:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9198
+#: application/helpers/expressions/em_manager_helper.php:9208
 msgid "Question attribute"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9198
+#: application/helpers/expressions/em_manager_helper.php:9208
 msgid "Value"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9297
+#: application/helpers/expressions/em_manager_helper.php:9307
 msgid "This variable name has already been used."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9306
+#: application/helpers/expressions/em_manager_helper.php:9316
 msgid "Starting in 2.05, variable names should only contain letters and numbers; and may not start with a number. This variable name is deprecated."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9461
+#: application/helpers/expressions/em_manager_helper.php:9471
 msgid "This question has at least {n} error.|This question has at least {n} errors."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9510
+#: application/helpers/expressions/em_manager_helper.php:9500
+msgid "Question ID %s"
+msgstr ""
+
+#: application/helpers/expressions/em_manager_helper.php:9528
 msgid "{n} question contains warnings that need to be verified.|{n} questions contain warnings that need to be verified."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9514
+#: application/helpers/expressions/em_manager_helper.php:9532
 msgid "{n} question contains errors that need to be corrected.|{n} questions contain errors that need to be corrected."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9518
+#: application/helpers/expressions/em_manager_helper.php:9536
 msgid "There are expressions with syntax errors in this survey."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9521
+#: application/helpers/expressions/em_manager_helper.php:9539
 msgid "There are expressions with syntax errors in this group."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9524
+#: application/helpers/expressions/em_manager_helper.php:9542
 msgid "There are expressions with syntax errors in this question."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9527
+#: application/helpers/expressions/em_manager_helper.php:9545
 msgid "There are expressions with syntax errors."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9535
+#: application/helpers/expressions/em_manager_helper.php:9553
 msgid "No syntax errors detected in this survey."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9538
+#: application/helpers/expressions/em_manager_helper.php:9556
 msgid "This group, by itself, does not contain any syntax errors."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9541
+#: application/helpers/expressions/em_manager_helper.php:9559
 msgid "This question, by itself, does not contain any syntax errors."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9710
-#: application/helpers/expressions/em_manager_helper.php:9719
-#: application/helpers/expressions/em_manager_helper.php:9724
-#: application/helpers/expressions/em_manager_helper.php:9733
-#: application/helpers/expressions/em_manager_helper.php:9740
-#: application/helpers/expressions/em_manager_helper.php:9746
-#: application/helpers/expressions/em_manager_helper.php:9752
+#: application/helpers/expressions/em_manager_helper.php:9728
+#: application/helpers/expressions/em_manager_helper.php:9737
+#: application/helpers/expressions/em_manager_helper.php:9742
+#: application/helpers/expressions/em_manager_helper.php:9751
 #: application/helpers/expressions/em_manager_helper.php:9758
+#: application/helpers/expressions/em_manager_helper.php:9764
 #: application/helpers/expressions/em_manager_helper.php:9770
 #: application/helpers/expressions/em_manager_helper.php:9776
-#: application/helpers/expressions/em_manager_helper.php:9783
-#: application/helpers/expressions/em_manager_helper.php:9798
-#: application/helpers/expressions/em_manager_helper.php:9804
-#: application/helpers/expressions/em_manager_helper.php:9817
-#: application/helpers/expressions/em_manager_helper.php:9826
-#: application/helpers/expressions/em_manager_helper.php:9838
+#: application/helpers/expressions/em_manager_helper.php:9788
+#: application/helpers/expressions/em_manager_helper.php:9794
+#: application/helpers/expressions/em_manager_helper.php:9801
+#: application/helpers/expressions/em_manager_helper.php:9816
+#: application/helpers/expressions/em_manager_helper.php:9822
+#: application/helpers/expressions/em_manager_helper.php:9835
 #: application/helpers/expressions/em_manager_helper.php:9844
+#: application/helpers/expressions/em_manager_helper.php:9856
+#: application/helpers/expressions/em_manager_helper.php:9862
 msgid "%s is an invalid value for this question"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9811
+#: application/helpers/expressions/em_manager_helper.php:9829
 msgid "This question only accepts 30 digits including 10 decimals."
 msgstr ""
 
@@ -21798,7 +21796,7 @@ msgid "A backup of this table has been made, which can only be accessed by your 
 msgstr ""
 
 #: application/views/admin/token/afterDeleteParticipantsTable.php:19
-#: application/views/admin/token/deleteParticipantsTable.php:20
+#: application/views/admin/token/deleteParticipantsTable.php:25
 msgid "You can switch back to closed-access mode at any time. Navigate to Settings --> Survey participants and click on the 'Switch to closed-access mode' button."
 msgstr ""
 
@@ -21929,23 +21927,23 @@ msgstr ""
 msgid "Mandatory fields:"
 msgstr ""
 
-#: application/views/admin/token/deleteParticipantsTable.php:10
+#: application/views/admin/token/deleteParticipantsTable.php:15
 msgid "Delete survey participants table"
 msgstr ""
 
-#: application/views/admin/token/deleteParticipantsTable.php:12
+#: application/views/admin/token/deleteParticipantsTable.php:17
 msgid "Deleting the participants table will switch the survey back to open-access mode."
 msgstr ""
 
-#: application/views/admin/token/deleteParticipantsTable.php:14
+#: application/views/admin/token/deleteParticipantsTable.php:19
 msgid "Access codes will no longer be required to access this survey."
 msgstr ""
 
-#: application/views/admin/token/deleteParticipantsTable.php:16
+#: application/views/admin/token/deleteParticipantsTable.php:21
 msgid "A backup of this table will be made if you proceed. Your site administrator will be able to access this table."
 msgstr ""
 
-#: application/views/admin/token/deleteParticipantsTable.php:33
+#: application/views/admin/token/deleteParticipantsTable.php:34
 msgid "Delete table"
 msgstr ""
 
