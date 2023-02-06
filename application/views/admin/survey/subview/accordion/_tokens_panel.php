@@ -184,6 +184,8 @@ App()->getClientScript()->registerScript("tokens-panel-variables",
             </div>
         </div>
     </div>
+    <?php $this->renderPartial('_sub_footer'); ?>
+
 </div>
     <?php
     $this->widget('yiistrap_fork.widgets.TbModal', array(

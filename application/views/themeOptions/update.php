@@ -214,7 +214,6 @@ Yii::app()->getClientScript()->registerScript(
         };
 
         $(document).on(\'ready pjax:scriptcomplete\', function(){
-            $("#theme-option-sidebody").height($("#advanced").height()+200);
             var uploadImageBind = new bindUpload({
                 form: \'#uploadimage\',
                 input: \'#upload_image\',

@@ -79,7 +79,7 @@
     );
 ?>
 
-<div class="simpleWrapper ls-flex" id="vue-sidebar-container"
+<div class="simpleWrapper ls-flex" id="vue-sidebar-container" style="z-index: 999;"
     v-bind:style="{'max-height': $store.state.inSurveyViewHeight, width : $store.getters.sideBarSize}"
     v-bind:data-collapsed="$store.state.isCollapsed">
     <?php if($landOnSideMenuTab !== ''): ?>
