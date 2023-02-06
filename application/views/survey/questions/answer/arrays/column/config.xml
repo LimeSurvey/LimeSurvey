@@ -21,6 +21,7 @@
         <answerscales>1</answerscales>
         <hasdefaultvalues>0</hasdefaultvalues>
         <assessable>1</assessable>
+        <hidesubquestionrelevance>1</hidesubquestionrelevance>
         <class>array-flexible-column</class>
     </metadata>
 

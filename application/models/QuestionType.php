@@ -92,7 +92,8 @@ class QuestionType extends StaticModel
     /** @var string $class the css class for question (container??)*/
     public $class;
 
-
+    /** @var boolean $hidesubquestionrelevance whether the subquestion relevance should be hidden */
+    public $hidesubquestionrelevance = false;
 
     /**
      * {@inheritdoc}
@@ -108,7 +109,8 @@ class QuestionType extends StaticModel
             'assessable',
             'hasdefaultvalues',
             'answerscales',
-            'class'
+            'class',
+            'hidesubquestionrelevance',
         ];
     }
 
@@ -253,6 +255,7 @@ class QuestionType extends StaticModel
                 'other' => false,
                 'assessable' => 1,
                 'answerscales' => 1,
+                'hidesubquestionrelevance' => true,
                 'class' => 'array-flexible-column'
             ],
             self::QT_I_LANGUAGE => [
