@@ -350,13 +350,10 @@ export default {
                         <div class="ms-auto">
                           <span
                               class="badge reverse-color ls-space margin right-5"
-                              @click.stop="openQuestionGroup(questiongroup)"
+                              @click.prevent="toggleActivation(questiongroup.gid)"
                           >
                                   {{ questiongroup.questions.length }}
                           </span>
-                          <i class="fa bigIcons"
-                             v-bind:class="isOpen(questiongroup.gid) ? 'black-caret fa-caret-up' : 'black-caret fa-caret-down'"
-                             @click.prevent="toggleActivation(questiongroup.gid)">&nbsp;</i>
                         </div>
                       </a>
 
