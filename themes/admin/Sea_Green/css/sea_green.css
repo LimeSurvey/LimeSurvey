@@ -17839,6 +17839,9 @@ footer.footer {
   box-shadow: none;
 }
 
+#sidebar svg {
+  color: #9094A7;
+}
 #sidebar .btn-primary.force.color.white.onhover:hover, #sidebar .btn-primary.force.color.white.onhover:active, #sidebar .btn-primary.force.color.white.onhover:focus {
   color: #fff;
 }
@@ -17874,13 +17877,16 @@ footer.footer {
   background: linear-gradient(to right, #14AE5C 0px, #14AE5C 8px, #fff 8px, #fff 100%);
 }
 #sidebar .dragged {
-  background-color: #40ab46 !important;
-  opacity: 0.8;
+  color: #fff;
+  background: var(--bs-primary) none !important;
   padding-top: 18px;
   padding-bottom: 18px;
   transition-property: all;
   transition-duration: 0.1s;
   transition-timing-function: ease-in-out;
+}
+#sidebar .dragged a, #sidebar .dragged svg {
+  color: #fff;
 }
 #sidebar .menu-selected {
   padding-left: 10px;

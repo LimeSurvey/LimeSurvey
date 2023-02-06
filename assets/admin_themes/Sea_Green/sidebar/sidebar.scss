@@ -1,5 +1,8 @@
 // Admin Sidepanel
 #sidebar {
+  svg {
+    color: $g-600;
+  }
   .btn-primary.force.color.white.onhover {
       &:hover,
       &:active,
@@ -50,14 +53,19 @@
       transition-duration: .25s;
       transition-timing-function: cubic-bezier(1, 0.5, 0.5, 1);
   }
+
   .dragged {
-      background-color: adjust-color($primary, $lightness: +10%, $alpha: 0.8) !important;
-      opacity: 0.8;
-      padding-top: 18px;
-      padding-bottom: 18px;
-      transition-property: all;
-      transition-duration: .1s;
-      transition-timing-function: ease-in-out;
+    color                      : $white;
+    background                 : var(--bs-primary) none !important;
+    padding-top                : 18px;
+    padding-bottom             : 18px;
+    transition-property        : all;
+    transition-duration        : .1s;
+    transition-timing-function : ease-in-out;
+
+    a, svg {
+      color                      : $white;
+    }
   }
 
   .menu-selected {
