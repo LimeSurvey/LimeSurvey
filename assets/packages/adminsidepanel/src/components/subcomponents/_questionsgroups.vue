@@ -264,12 +264,12 @@ export default {
             class="ls-flex-row wrap align-content-center align-items-center ls-space margin top-5 bottom-15 button-sub-bar"
             v-if="createAllowance != ''"
         >
-            <div class="scoped-toolbuttons-left">
+            <div class="scoped-toolbuttons-left mb-2">
                 <a
                     id="adminsidepanel__sidebar--selectorCreateQuestion"
                     v-if="createQuestionAllowed"
                     :href="createFullQuestionLink()"
-                    class="btn btn-small btn-primary ls-space margin right-10 pjax"
+                    class="btn btn-small btn-primary ls-space margin me-2 pjax"
                 >
                     <i class="ri-add-circle-fill"></i>
                     &nbsp;
@@ -286,7 +286,7 @@ export default {
                 </a>
              
             </div>
-            <div class="scoped-toolbuttons-right">
+            <div class="scoped-toolbuttons-right mb-2">
                 <button
                     class="btn btn-outline-secondary"
                     @click="toggleOrganizer"
@@ -295,11 +295,11 @@ export default {
                     <i :class="allowOrganizer ? 'ri-lock-unlock-fill' : 'ri-lock-fill'" />
                 </button>
                 <button
-                    class="btn btn-outline-secondary"
+                    class="btn btn-outline-secondary me-2"
                     @click="collapseAll"
                     :title="translate('collapseAll')"
                 >
-                    <i class="ri-fullscreen-exit-line" />
+                    <i class="ri-link-unlink" />
                 </button>
             </div>
         </div>
