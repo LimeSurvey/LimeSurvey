@@ -132,7 +132,7 @@ echo viewHelper::getViewTestTag('participantsBlacklistControl');
                                 <div class='col-md-8'>
                                 </div>
                                 <div class='col-md-3'>
-                                    <?php echo CHtml::submitButton('submit', ['value' => gT('Save'), 'class' => 'btn btn-success col-12']); ?>
+                                    <?php echo CHtml::submitButton('submit', ['value' => gT('Save'), 'class' => 'btn btn-primary col-12']); ?>
                                 </div>
                             </div>
                         </div>
