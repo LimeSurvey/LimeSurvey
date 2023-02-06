@@ -17858,8 +17858,12 @@ footer.footer {
   background-color: #fff;
   box-shadow: none;
 }
+#sidebar .resize-handle button {
+  outline: 0;
+}
 #sidebar .resize-handle button:focus, #sidebar .resize-handle button:active, #sidebar .resize-handle button:hover {
   background-color: #fff !important;
+  color: #1E1E1E;
 }
 #sidebar .menu-open {
   animation-name: animate-gradient;

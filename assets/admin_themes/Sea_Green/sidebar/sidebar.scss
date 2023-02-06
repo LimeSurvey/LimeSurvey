@@ -28,12 +28,14 @@
   }
 
   .resize-handle {
-      button {
-          &:focus, &:active, &:hover {
-              background-color: $white !important;
-          }
-          // background-color: transparent !important;
+    button {
+      outline : 0;
+
+      &:focus, &:active, &:hover {
+        background-color : $white !important;
+        color            : $g-900;
       }
+    }
   }
 
 
