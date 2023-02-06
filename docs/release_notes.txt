@@ -34,6 +34,61 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.3 (build 230130) to 5.6.4 (build 230206) February 6, 2023
+-Fixed issue: Notice when trying to submit a new key (Carsten Schmitz)
+-Fixed issue: Invalid URL in public statistics (Carsten Schmitz)
+-Fixed issue [security] #18514: No CSRF control when delete token table (#2750) (Denis Chenu)
+-Fixed issue #18594: Slider: Min and max values not checked if nothing selected (#2858) (Gabriel Jenik)
+-Fixed issue #18579: Question theme are not shown in Survey Logic file (#2863) (Gabriel Jenik)
+-Fixed issue #18572: The 'duration' type field has an invalid value for 'name' (#2859) (Gabriel Jenik)
+-Fixed issue #18555: Wrong escaping in Mandatory setting help (#2860) (Gabriel Jenik)
+-Fixed issue #17486: Current Page Values not saved if saving pressing Enter (lapiudevgit)
+#Updated translation: Welsh by c_schmitz, ChrisWilliams, NortonT
+#Updated translation: Vietnamese by c_schmitz
+#Updated translation: Urdu by PawelAtroszko
+#Updated translation: Turkish by c_schmitz
+#Updated translation: Thai by c_schmitz
+#Updated translation: Swedish by c_schmitz
+#Updated translation: Spanish (Spain) by c_schmitz
+#Updated translation: Spanish (Mexican) by c_schmitz, segui
+#Updated translation: Slovak by jelen1
+#Updated translation: Russian by c_schmitz
+#Updated translation: Romanian by c_schmitz, support_cxomni
+#Updated translation: Portuguese (Portugal) by c_schmitz
+#Updated translation: Portuguese (Brazil) by c_schmitz, rafaelmaia, samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Norwegian (Bokmål) by c_schmitz
+#Updated translation: Mongolian by c_schmitz
+#Updated translation: Maltese by c_schmitz
+#Updated translation: Korean by c_schmitz
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Italian by c_schmitz
+#Updated translation: Italian (Informal) by c_schmitz
+#Updated translation: Indonesian by c_schmitz
+#Updated translation: Hungarian by quasar_
+#Updated translation: Hungarian by c_schmitz
+#Updated translation: Hindi by c_schmitz, KapilSabarwal
+#Updated translation: Greek by baltzis, george01, lenasterg
+#Updated translation: German by vkm2020
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by zer0flash
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: French (France) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by c_schmitz, Han
+#Updated translation: Dutch by c_schmitz
+#Updated translation: Dutch (Informal) by c_schmitz, Han
+#Updated translation: Danish by c_schmitz, PawelAtroszko
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Croatian by c_schmitz
+#Updated translation: Chinese (Taiwan) (Traditional) by c_schmitz
+#Updated translation: Chinese (Simplified) by c_schmitz
+#Updated translation: Armenian by PawelAtroszko
+#Updated translation: Arabic by c_schmitz
+
+
 Changes from 5.6.2 (build 230125) to 5.6.3 (build 230130) January 30, 2023
 -Fixed issue #18582: RemoteControl invite_participants unexpectedly stops after first failure (#2866) (Gabriel Jenik)
 -Fixed issue #18578: Internal server error (HTTP 500) in RemoteControl get_participant_properties for removed participant (#2827) (Gabriel Jenik)
