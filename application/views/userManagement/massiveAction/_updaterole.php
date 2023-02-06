@@ -2,7 +2,7 @@
     $aPermissiontemplates = Permissiontemplates::model()->findAll();
 ?>
 
-<div class="modal-body selector--edit-role-container">
+<div class="selector--edit-role-container">
     <div class="form">
         <?php
         $this->widget('ext.AlertWidget.AlertWidget', [
