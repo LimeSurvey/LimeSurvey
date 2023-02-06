@@ -5,7 +5,7 @@
 
     <div class="col-lg-6 col-12 d-flex ls-footer-label">
         <i class="ri-information-line me-2"></i>
-        <p class="me-1" style="font-size:10px">I</p>
+        <p class="me-1">ᴵ</p>
     <div>
         Inherited settings come from your <a href="#">global settings </a> or
         <a href="#">survey group</a>. <br />

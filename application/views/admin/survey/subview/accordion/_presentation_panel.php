@@ -32,7 +32,7 @@ $optionsQuestionIndex = array(
     2 => gT('Full', 'unescaped')
 );
 if ($bShowInherited) {
-    $optionsQuestionIndex['-1'] = '*' .  $oSurveyOptions->questionindex;
+    $optionsQuestionIndex['-1'] = $oSurveyOptions->questionindex . " ᴵ";
 }
 ?>
 
@@ -147,7 +147,7 @@ if ($bShowInherited) {
                         array(
                             'name' => 'shownoanswer',
                             'checkedOption' => $oSurvey->shownoanswer,
-                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => '*' .  $oSurveyOptions->shownoanswer)) : $optionsOnOff
+                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => $oSurveyOptions->shownoanswer . " ᴵ" )) : $optionsOnOff
                         )
                     );
                     ?>
@@ -165,7 +165,7 @@ if ($bShowInherited) {
                         array(
                             'name' => 'showxquestions',
                             'checkedOption' => $oSurvey->showxquestions,
-                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => '*' .  $oSurveyOptions->showxquestions)) : $optionsOnOff
+                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => $oSurveyOptions->showxquestions . " ᴵ")) : $optionsOnOff
                         )
                     );
                     ?>
@@ -180,7 +180,7 @@ if ($bShowInherited) {
                         array(
                             'name' => 'showwelcome',
                             'checkedOption' => $oSurvey->showwelcome,
-                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => '*' .  $oSurveyOptions->showwelcome)) : $optionsOnOff
+                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => $oSurveyOptions->showwelcome . " ᴵ" )) : $optionsOnOff
                         )
                     );
                     ?>
@@ -195,7 +195,7 @@ if ($bShowInherited) {
                         array(
                             'name' => 'allowprev',
                             'checkedOption' => $oSurvey->allowprev,
-                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => '*' .  $oSurveyOptions->allowprev)) : $optionsOnOff
+                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => $oSurveyOptions->allowprev . " ᴵ" )) : $optionsOnOff
                         )
                     );
                     ?>
@@ -211,7 +211,7 @@ if ($bShowInherited) {
                         array(
                             'name' => 'nokeyboard',
                             'checkedOption' => $oSurvey->nokeyboard,
-                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => '*' .  $oSurveyOptions->nokeyboard)) : $optionsOnOff
+                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => $oSurveyOptions->nokeyboard . " ᴵ")) : $optionsOnOff
                         )
                     );
                     ?>
@@ -226,7 +226,7 @@ if ($bShowInherited) {
                         array(
                             'name' => 'showprogress',
                             'checkedOption' => $oSurvey->showprogress,
-                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => '*' .  $oSurveyOptions->showprogress)) : $optionsOnOff
+                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => $oSurveyOptions->showprogress . " ᴵ")) : $optionsOnOff
                         )
                     );
                     ?>
@@ -240,7 +240,7 @@ if ($bShowInherited) {
                         array(
                             'name' => 'printanswers',
                             'checkedOption' => $oSurvey->printanswers,
-                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => '*' .  $oSurveyOptions->printanswers)) : $optionsOnOff
+                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => $oSurveyOptions->printanswers . " ᴵ")) : $optionsOnOff
                         )
                     );
                     ?>
@@ -255,7 +255,7 @@ if ($bShowInherited) {
                         array(
                             'name' => 'publicstatistics',
                             'checkedOption' => $oSurvey->publicstatistics,
-                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => '*' .  $oSurveyOptions->publicstatistics)) : $optionsOnOff
+                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => $oSurveyOptions->publicstatistics . " ᴵ")) : $optionsOnOff
                         )
                     );
                     ?>
@@ -270,7 +270,7 @@ if ($bShowInherited) {
                         array(
                             'name' => 'publicgraphs',
                             'checkedOption' => $oSurvey->publicgraphs,
-                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => '*' .  $oSurveyOptions->publicgraphs)) : $optionsOnOff
+                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => $oSurveyOptions->publicgraphs . " ᴵ")) : $optionsOnOff
                         )
                     );
                     ?>
@@ -285,7 +285,7 @@ if ($bShowInherited) {
                         array(
                             'name' => 'autoredirect',
                             'checkedOption' => $oSurvey->autoredirect,
-                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => '*' .  $oSurveyOptions->autoredirect)) : $optionsOnOff
+                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => $oSurveyOptions->autoredirect . " ᴵ")) : $optionsOnOff
                         )
                     );
                     ?>

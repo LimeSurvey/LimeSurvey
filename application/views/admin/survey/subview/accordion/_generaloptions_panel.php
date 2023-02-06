@@ -33,7 +33,7 @@ $formatSelectOptions = array(
     'A' => gT('All in one', 'unescaped')
 );
 if ($bShowInherited) {
-    $formatSelectOptions['I'] = gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->format . ']';
+    $formatSelectOptions['I'] = $oSurveyOptions->format . " ᴵ";
 }
 ?>
 <?php if ($action == 'editsurveysettings'): ?>
