@@ -472,7 +472,7 @@ export default {
                 :style="{width: getSideBarWidth, height: getloaderHeight}" 
             >
                 <div class="ls-flex ls-flex-column fill align-content-center align-items-center">
-                    <i class="ri-checkbox-blank-circle-line remix-2x remix-spin"></i>
+                    <i class="ri-loader-2-fill remix-2x remix-spin"></i>
                 </div>
             </div>
             <div 
