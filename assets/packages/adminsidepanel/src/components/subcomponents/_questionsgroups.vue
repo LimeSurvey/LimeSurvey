@@ -259,9 +259,27 @@ export default {
 };
 </script>
 <template>
-    <div id="questionexplorer" class="ls-flex-column fill ls-ba menu-pane ls-space padding left-0 top-0 bottom-0 right-5 margin pt-5">
+    <div id="questionexplorer" class="ls-flex-column fill ls-ba menu-pane pt-4">
+        <div class="ls-flex-row button-sub-bar mb-2">
+          <div class="scoped-toolbuttons-right me-2">
+            <button
+                class="btn btn-sm btn-outline-secondary"
+                @click="toggleOrganizer"
+                :title="translate(allowOrganizer ? 'lockOrganizerTitle' : 'unlockOrganizerTitle')"
+            >
+              <i :class="allowOrganizer ? 'ri-lock-unlock-fill' : 'ri-lock-fill'" />
+            </button>
+            <button
+                class="btn btn-sm btn-outline-secondary me-2"
+                @click="collapseAll"
+                :title="translate('collapseAll')"
+            >
+              <i class="ri-link-unlink" />
+            </button>
+          </div>
+        </div>
         <div
-            class="ls-flex-row wrap align-content-center align-items-center ls-space margin top-5 bottom-15 button-sub-bar"
+            class="ls-flex-row wrap align-content-center align-items-center button-sub-bar"
             v-if="createAllowance != ''"
         >
             <div class="scoped-toolbuttons-left mb-2">
@@ -269,7 +287,7 @@ export default {
                     id="adminsidepanel__sidebar--selectorCreateQuestion"
                     v-if="createQuestionAllowed"
                     :href="createFullQuestionLink()"
-                    class="btn btn-small btn-primary ls-space margin me-2 pjax"
+                    class="btn btn-primary ms-2 me-2 pjax"
                 >
                     <i class="ri-add-circle-fill"></i>
                     &nbsp;
@@ -279,28 +297,12 @@ export default {
                 <a
                     id="adminsidepanel__sidebar--selectorCreateQuestionGroup"
                     v-if="( createQuestionGroupLink!=undefined && createQuestionGroupLink.length>1 )"
-                    :href="createQuestionGroupLink" class="btn btn-small btn-outline-secondary pjax"
+                    :href="createQuestionGroupLink" class="btn btn-outline-secondary pjax"
                 >
                     <!-- <i class="fa fa-plus"></i> -->
                     {{"createPage"|translate}}
                 </a>
              
-            </div>
-            <div class="scoped-toolbuttons-right mb-2">
-                <button
-                    class="btn btn-outline-secondary"
-                    @click="toggleOrganizer"
-                    :title="translate(allowOrganizer ? 'lockOrganizerTitle' : 'unlockOrganizerTitle')"
-                >
-                    <i :class="allowOrganizer ? 'ri-lock-unlock-fill' : 'ri-lock-fill'" />
-                </button>
-                <button
-                    class="btn btn-outline-secondary me-2"
-                    @click="collapseAll"
-                    :title="translate('collapseAll')"
-                >
-                    <i class="ri-link-unlink" />
-                </button>
             </div>
         </div>
         <div class="ls-flex-row ls-space padding all-0">
