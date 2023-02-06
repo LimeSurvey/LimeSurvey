@@ -17839,31 +17839,87 @@ footer.footer {
   box-shadow: none;
 }
 
+#sidebar {
+  padding-top: 15px;
+  width: 100%;
+}
+#sidebar .questiongroup-list-group > li.selected {
+  opacity: 0.9;
+}
+#sidebar .questiongroup-list-group > li.selected.activated {
+  opacity: 1;
+}
+#sidebar .button-sub-bar {
+  min-height: 32px;
+}
+#sidebar .dragPointer {
+  cursor: move;
+}
+#sidebar .dragPointer.disabled {
+  color: #999999;
+  cursor: not-allowed;
+}
+#sidebar .question-question-list .question-question-list-item {
+  padding: 0;
+}
+#sidebar .question-question-list .question-question-list-item .question-question-list-item-drag {
+  margin: 10px 15px;
+}
+#sidebar .question-question-list .question-question-list-item.selected {
+  padding-left: 20px;
+}
+#sidebar .question-question-list .question-question-list-item.selected .question-question-list-item-drag {
+  margin: 10px 10px 10px 5px;
+}
+#sidebar .question-question-list .question-question-list-item .question-question-list-item-link {
+  padding: 10px 25px 10px 10px;
+  display: inline-flex;
+  flex-wrap: wrap;
+}
+#sidebar .question_text_ellipsize {
+  display: inline-block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  padding-left: 2px;
+}
 #sidebar svg {
   color: #9094A7;
 }
 #sidebar .btn-primary.force.color.white.onhover:hover, #sidebar .btn-primary.force.color.white.onhover:active, #sidebar .btn-primary.force.color.white.onhover:focus {
   color: #fff;
 }
-#sidebar .tabbutton.btn-primary {
-  outline: none;
-}
-#sidebar .tabbutton.btn-primary:hover:after, #sidebar .tabbutton.btn-primary:focus:after, #sidebar .tabbutton.btn-primary:active:after {
-  color: #163c19;
-}
-#sidebar .tabbutton.btn-primary:after {
-  color: #328637;
-}
 #sidebar .background.white {
   background-color: #fff;
   box-shadow: none;
 }
+#sidebar .resize-handle {
+  position: absolute;
+  margin: auto;
+  right: 15px;
+  top: 0;
+  bottom: 0;
+  height: 100%;
+  max-height: 35px;
+  cursor: col-resize;
+}
 #sidebar .resize-handle button {
+  background-color: #fff;
   outline: 0;
+  cursor: col-resize;
+  width: 100%;
+  height: 100%;
+  text-align: left;
+  border-radius: 0;
+  padding: 0 4px;
 }
 #sidebar .resize-handle button:focus, #sidebar .resize-handle button:active, #sidebar .resize-handle button:hover {
+  outline: 0 !important;
   background-color: #fff !important;
   color: #1E1E1E;
+}
+#sidebar .resize-handle button i {
+  font-size: 12px;
 }
 #sidebar .menu-open {
   animation-name: animate-gradient;
