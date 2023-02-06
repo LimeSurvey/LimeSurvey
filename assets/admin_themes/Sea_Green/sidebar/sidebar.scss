@@ -24,7 +24,10 @@
 
   .question-question-list {
     .question-question-list-item {
-      padding: 0;
+      margin: 2px 2px 2px 12px;
+      display: flex;
+      align-items: center;
+      padding: 0 1rem;
       .question-question-list-item-drag {
         margin: 10px 15px;
       }
@@ -39,6 +42,9 @@
         display: inline-flex;
         flex-wrap: wrap;
       }
+    }
+    .question-question-list-item ~ .question-question-list-item {
+      margin-top: 0px;
     }
   }
 
@@ -127,6 +133,10 @@
     }
   }
 
+  a:not(.btn, .nav-tabs .nav-link) {
+    color: $g-900;
+    font-weight: $font-weight-normal;
+  }
   .menu-selected {
       padding-left: 10px;
       background: /*!rtl:linear-gradient(to left, $primary 0px, $primary 6px, $white 6px, $white 100%)*/ linear-gradient(to right, $primary 0px, $primary 6px, $white 6px, $white 100%);
@@ -158,4 +168,12 @@
           }
       }
   }
+}
+
+// Globally or only in sidemenu?
+.list-group {
+  border-radius: 0px !important;
+}
+.list-group-item {
+  border: none !important;
 }

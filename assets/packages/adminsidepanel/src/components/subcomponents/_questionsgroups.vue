@@ -297,7 +297,7 @@ export default {
                 <a
                     id="adminsidepanel__sidebar--selectorCreateQuestionGroup"
                     v-if="( createQuestionGroupLink!=undefined && createQuestionGroupLink.length>1 )"
-                    :href="createQuestionGroupLink" class="btn btn-outline-secondary pjax"
+                    :href="createQuestionGroupLink" class="btn btn-secondary pjax"
                 >
                     <!-- <i class="fa fa-plus"></i> -->
                     {{"createPage"|translate}}
@@ -380,7 +380,6 @@ export default {
                                 :data-has-condition="questionHasCondition(question)"
                                 :title="question.question_flat"
                                 @dragenter="dragoverQuestion($event, question, questiongroup)"
-                                style="margin: 2px 2px 2px 12px; display: flex; align-items: center; padding: 0 1rem;"
                             >
                                     <div
                                         v-if="!$store.state.surveyActiveState"
