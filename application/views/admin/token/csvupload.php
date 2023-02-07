@@ -17,9 +17,7 @@
             <!-- Choose the CSV file to upload -->
             <div class="mb-3">
                 <label class=" form-label" for='the_file'><?php eT("Choose the CSV file to upload:"); ?></label>
-                <div class="">
-                    <?php echo CHtml::fileField('the_file', '', ['required' => 'required', 'accept' => '.csv']); ?>
-                </div>
+                <?php echo CHtml::fileField('the_file', '', ['required' => 'required', 'accept' => '.csv', 'class' => 'form-control']); ?>
             </div>
 
             <!-- "Character set of the file -->
@@ -127,7 +125,7 @@
             <div class="mb-3">
                 <div class="">
                     <?php echo CHtml::htmlButton(gT("Upload"),
-                        ['type' => 'submit', 'name' => 'upload', 'value' => 'import', 'class' => 'btn btn-outline-secondary']); ?>
+                        ['type' => 'submit', 'name' => 'upload', 'value' => 'import', 'class' => 'btn btn-primary']); ?>
                 </div>
             </div>
             </form>
