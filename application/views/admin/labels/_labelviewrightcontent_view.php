@@ -1,10 +1,10 @@
 <div class="row">
   <div class="col-12 content-right text-center">
     <div class="panel-group" id="accordion" role="tablist" style="margin-top: 20px">
-      <div class="card card-default" id="up_resmgmt">
+      <div class="card card-primary" id="up_resmgmt">
 
         <!-- Uploaded resources management -->
-        <div class="card-header bg-default" role="tab" id="headingOne">
+        <div class="card-header" role="tab" id="headingOne">
           <div class="">
             <a role="button" data-bs-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
               <?php eT("Uploaded resources management"); ?>

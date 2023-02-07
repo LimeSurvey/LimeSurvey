@@ -184,7 +184,7 @@ foreach ($systemInfos as $key => $systemInfo) {
 <div id="error-modal" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->
-        <div class="modal-content panel-danger">
+        <div class="modal-content">
             <div class="modal-header card-header">
                 <h5 class="modal-title"><?php eT("Error"); ?></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -203,7 +203,7 @@ foreach ($systemInfos as $key => $systemInfo) {
 <div id="success-modal" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->
-        <div class="modal-content panel-success">
+        <div class="modal-content">
             <div class="modal-header card-header">
                 <h5 class="modal-title"><?php eT("Success"); ?></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>

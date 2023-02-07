@@ -1208,11 +1208,6 @@ table.cke_editor {
 #welcome-jumbotron {
     background-color: transparent;
 }
-.welcome {
-    .panel {
-        box-shadow: 0 2px 5px 0 $black_opac_16, 0 2px 10px 0 $black_opac_12;
-    }
-}
 
 // Login
 .login-title {
@@ -1283,13 +1278,6 @@ table.cke_editor {
     @extend %extend_19;
 }
 
-div.panel.disabled {
-    opacity: 0.5;
-    * {
-        opacity: 0.5;
-    }
-}
-
 // Side menu
 .absolute-wrapper {
     background-color: $white;
@@ -1349,12 +1337,6 @@ div.panel.disabled {
             .navbar-nav {
                 li {
                     border-bottom: 1px solid $gray-07;
-                    &.panel {
-                        background-color: transparent;
-                    }
-                    &.panel-default {
-                        border-bottom: 1px solid $gray-07;
-                    }
                 }
             }
             .card-body {
@@ -1455,9 +1437,7 @@ input[type="text"], input[type="password"], .ui-autocomplete-input, textarea, .u
 #carousel-example-generic .carousel-control {
     color: $primary;
 }
-#carousel-example-generic .panel-title {
-    color: $primary;
-}
+
 #carousel-example-generic .carousel-indicators .active {
     background-color: $primary;
 }
