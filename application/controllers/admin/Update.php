@@ -165,8 +165,6 @@ class Update extends DynamicSurveyCommonAction
     public function manageSubmitkey()
     {
         $updateModel = new UpdateForm();
-        $serverAnswer = $updateModel->getUpdateInfo($buttons);
-        $aData['serverAnswer'] = $serverAnswer;
         $aData['fullpagebar']['closebutton']['url'] = 'admin/update';
         $aData['updateKey'] = $updateKey = SettingGlobal::model()->findByPk('update_key');
 

@@ -6,7 +6,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="form container">
+                <div class="form">
                     <div class='mb-3 row'>
                         <label class='form-label col-md-4' for='attributes'><?php eT('Attributes to export:');?></label>
                         <div class='col-md-8'>

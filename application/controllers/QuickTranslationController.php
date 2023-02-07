@@ -100,8 +100,20 @@ class QuickTranslationController extends LSBaseController
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $surveyid . ")";
         if (Permission::model()->hasSurveyPermission($surveyid, 'translations', 'update')) {
             $aData['surveybar']['savebutton']['form'] = 'translateform';
-            $aData['surveybar']['closebutton']['url'] = 'surveyAdministration/view/surveyid/' . $surveyid; // Close button
             $aData['topBar']['showSaveButton'] = true;
+            //buttons in topbar
+            $topbarData = TopbarConfiguration::getSurveyTopbarData($oSurvey->sid);
+            $topbarData = array_merge($topbarData, $aData['topBar']);
+            $aData['topbar']['middleButtons'] = $this->renderPartial(
+                '/surveyAdministration/partial/topbar/surveyTopbarLeft_view',
+                $topbarData,
+                true
+            );
+            $aData['topbar']['rightButtons'] = $this->renderPartial(
+                '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
+                $topbarData,
+                true
+            );
         }
 
         $aData['display']['menu_bars'] = false;

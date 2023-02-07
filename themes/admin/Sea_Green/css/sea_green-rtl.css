@@ -16801,6 +16801,12 @@ tr.info, tr.danger {
 .dropdown-menu .dropdown-item {
   padding: 8px 16px;
 }
+.dropdown-menu .dropdown-item.disabled {
+  color: #9094A7;
+}
+.dropdown-menu .dropdown-item.disabled i {
+  color: #9094A7 !important;
+}
 .dropdown-menu > li > a {
   color: #333641;
 }
@@ -16825,14 +16831,6 @@ tr.info, tr.danger {
   background-color: var(--bs-primary);
 }
 .dropdown-menu > .disabled > a {
-  color: #9094A7;
-}
-.dropdown-menu > .disabled > a:hover {
-  background-color: #EEEFF7;
-  color: #9094A7;
-}
-.dropdown-menu > .disabled > a:focus {
-  background-color: #EEEFF7;
   color: #9094A7;
 }
 

@@ -126,7 +126,7 @@ if ($hasTokensUpdatePermission) {
         ]
     );
 }
-
+/* --> btn not necessary because it is already a side menu link (entry)
 $this->widget(
     'ext.ButtonWidget.ButtonWidget',
     [
@@ -141,3 +141,4 @@ $this->widget(
         ],
     ]
 );
+ */

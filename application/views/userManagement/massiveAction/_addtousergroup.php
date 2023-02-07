@@ -2,7 +2,7 @@
 $aUsergoups = UserGroup::model()->findAll();
 ?>
 
-<div class=" selector--edit-usergroup-container">
+<div class="selector--edit-usergroup-container">
     <div class="form">
         <?php if ($aUsergoups) : ?>
             <div class="mb-3">
