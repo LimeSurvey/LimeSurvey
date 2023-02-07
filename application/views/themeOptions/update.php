@@ -7,33 +7,6 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
 
 ?>
 <?php if (empty($model->sid)) : ?>
-    <!-- This is only visible when we're not in survey view. -->
-    <div class='menubar surveybar' id='theme-options-bar'>
-        <div class="container-fluid">
-            <div class='row'>
-                <div class='text-end'>
-
-                    <?php
-                    $sThemeOptionUrl = App()->createUrl("themeOptions");
-                    $sGroupEditionUrl = App()->createUrl("admin/surveysgroups/sa/update", ["id" => $gsid, "#" => 'templateSettingsFortThisGroup']);
-                    $sUrl = (is_null($gsid)) ? $sThemeOptionUrl : $sGroupEditionUrl;
-                    ?>
-
-                    <!-- Back -->
-                    <a class="btn btn-outline-secondary" href="<?php echo $sUrl; ?>">
-                        <span class="ri-rewind-fill"></span>
-                        <?php eT('Back'); ?>
-                    </a>
-
-                    <!-- Save -->
-                    <a class="btn btn-success" href="#" role="button" id="save-form-button" data-form-id="template-options-form">
-                        <span class="ri-save-3-fill"></span>
-                        <?php eT('Save'); ?>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
 <div class="container-fluid">
 <?php else : ?>
     <div class="col-12 side-body <?= getSideBodyClass(false) ?>" id="theme-option-sidebody">
@@ -67,8 +40,8 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
             </ul>
         </div>
     </div>
-    <div class="row">
-        <div class="col-12">
+    <div class="row" id="trigger-save-button">
+        <div class="col-12" >
             <form class='form action_update_options_string_form' action=''>
                 <?php echo TbHtml::submitButton($model->isNewRecord ? gT('Create') : gT('Save'), ['id' => 'theme-options--submit', 'class' => 'd-none action_update_options_string_button']); ?>
             <!-- Tab panes -->

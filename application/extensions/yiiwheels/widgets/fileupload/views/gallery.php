@@ -21,7 +21,7 @@
         </button>
 
         <button 
-            class="btn btn-success modal-play modal-slideshow" 
+            class="btn btn-primary modal-play modal-slideshow"
             type="button" 
             data-slideshow="5000">
             <i class="icon-play icon-white"></i>

@@ -52,125 +52,16 @@ App()->getClientScript()->registerScriptFile(
     App()->getConfig('adminscripts') . 'topbar.js',
     CClientScript::POS_END
 );
+
+//this line is from old part (see old_templateTopbar.php), it has always been false
+$importModal = false;
 ?>
 
-<!-- Template Editor Bar -->
-<div class='menubar surveybar' id="templateeditorbar">
-    <div class="container-fluid">
-        <div class='row row-cols-auto justify-content-between'>
-            <!-- Left Menu -->
-            <div class="col">
-                <?php $importModal = false; ?>
-                <?php if (is_writable($tempdir)) : ?>
-                    <!-- Export -->
-                    <?php if (Permission::model()->hasGlobalPermission('templates', 'export') && class_exists('ZipArchive')) : ?>
-                        <a class="btn btn-outline-secondary"
-                           id="button-export"
-                           href="<?php echo $this->createUrl('admin/themes/sa/templatezip/templatename/' . $templatename) ?>"
-                           role="button">
-                            <span class="ri-upload-fill text-success"></span>
-                            <?php eT("Export"); ?>
-                        </a>
-                    <?php endif; ?>
+<?php if ($importModal) : ?>
+    <?php $this->renderPartial('themeOptions/import_modal', ['importTemplate' => 'importtemplate', 'importModal' => 'importModal']); ?>
+<?php endif; ?>
 
-                    <!-- Copy -->
-                    <?php if (Permission::model()->hasGlobalPermission('templates', 'create')) : ?>
-                        <?php if (is_writable($userthemerootdir)) : ?>
-                            <a class="btn btn-outline-secondary"
-                               id="button-extend-<?php echo $templatename; ?>"
-                               href="#"
-                               role="button"
-                               onclick="javascript: copyprompt('<?php eT("Please enter the name for the new theme:"); ?>', '<?php echo gT("extends_") . "$templatename"; ?>', '<?php echo $templatename; ?>', 'copy')">
-                                <span class="ri-file-copy-line text-success"></span>
-                                <?php eT("Extend"); ?>
-                            </a>
-                        <?php else : ?>
-                            <span class="btntooltip" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                  title="<?php eT("The theme upload directory doesn't exist or is not writable."); ?>" style="display: inline-block"
-                                  data-bs-toggle="tooltip" data-bs-placement="bottom">
-                            <button type="button" class="btn btn-outline-secondary btntooltip" disabled="disabled">
-                                <span class="ri-file-copy-line text-success"></span>
-                                <?php eT("Copy"); ?>
-                            </button>
-                        </span>
-                        <?php endif; ?>
-                    <?php endif; ?>
-
-                <?php else : ?>
-                    <!-- All buttons disabled -->
-
-                    <!-- import disabled -->
-                    <?php
-
-                    if (!class_exists('ZipArchive')) {
-                        $sMessage = gT("You cannot upload themes because you do not have the required ZIP library installed in PHP.");
-                    } else {
-                        $sMessage = gT("Some directories are not writable. Please change the folder permissions for /tmp and /upload/themes in order to enable this option.");
-                    }
-                    if (Permission::model()->hasGlobalPermission('templates', 'import')) :?>
-                        <span class="btntooltip" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php echo $sMessage; ?>"
-                              style="display: inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php echo $sMessage; ?>">
-                        <button type="button" class="btn btn-outline-secondary btntooltip" disabled="disabled">
-                            <span class="ri-upload-fill text-muted"></span>
-                                <?php eT("Import"); ?>
-                        </button>
-                    </span>
-                    <?php endif; ?>
-
-                    <!-- export disabled -->
-                    <?php if (Permission::model()->hasGlobalPermission('templates', 'export')) : ?>
-                        <span class="btntooltip" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php echo $sMessage; ?>"
-                              style="display: inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php echo $sMessage; ?>">
-                    <button type="button" class="btn btn-outline-secondary btntooltip" disabled="disabled">
-                        <span class="ri-upload-fill text-muted"></span>
-                        <?php eT("Export"); ?>
-                    </button>
-                </span>
-                    <?php endif; ?>
-
-                    <!-- create disabled -->
-                    <?php if (Permission::model()->hasGlobalPermission('templates', 'create')) : ?>
-                        <span class="btntooltip" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php echo $sMessage; ?>"
-                              style="display: inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php echo $sMessage; ?>">
-                    <button type="button" class="btn btn-outline-secondary btntooltip" disabled="disabled">
-                        <span class="ri-file-copy-line text-muted"></span>
-                        <?php eT("Copy"); ?>
-                    </button>
-                </span>
-                    <?php endif; ?>
-
-                <?php endif; ?>
-
-
-                <?php if (is_template_editable($templatename)) : ?>
-                    <?php if (Permission::model()->hasGlobalPermission('templates', 'update')) : ?>
-                        <a class="btn btn-outline-secondary"
-                           id="button-rename-theme"
-                           href="#"
-                           role="button"
-                           onclick="javascript: copyprompt('<?php eT("Rename this theme to:"); ?>', '<?php echo $templatename; ?>', '<?php echo $templatename; ?>', 'rename');">
-                            <span class="ri-pencil-fill  text-success"></span>
-                            <?php eT("Rename"); ?>
-                        </a>
-                    <?php endif; ?>
-
-                    <?php if (Permission::model()->hasGlobalPermission('templates', 'delete')) : ?>
-                        <a
-                            id="button-delete"
-                            href="<?php echo Yii::app()->getController()->createUrl('admin/themes/sa/delete/'); ?>"
-                            data-post='{ "templatename": "<?php echo $templatename; ?>" }'
-                            data-text="<?php eT('Are you sure you want to delete this theme?'); ?>"
-                            data-button-no="<?= gT('Cancel'); ?>"
-                            data-button-yes="<?= gT('Delete'); ?>"
-                            data-button-type="btn-danger"
-                            title="<?php eT('Delete'); ?>"
-                            class="btn btn-danger selector--ConfirmModal">
-                            <span class="ri-delete-bin-fill"></span>
-                            <?php eT('Delete'); ?>
-                        </a>
-                    <?php endif; ?>
-                <?php endif; ?>
-            </div>
+<!-- theme dropdown select boxes-->
 
             <!-- Right Menu -->
             <div class="col">
@@ -209,40 +100,16 @@ App()->getClientScript()->registerScriptFile(
                         ]); ?>
                 </div>
 
-                <?php if (isset($fullpagebar['savebutton']['form'])) : ?>
-                    <a class="btn btn-success" href="#" role="button" id="save-form-button"
-                       data-form-id="<?php echo $fullpagebar['savebutton']['form']; ?>">
-                        <span class="ri-save-3-fill"></span>
-                        <?php eT("Save"); ?>
-                    </a>
-                <?php endif; ?>
+        <?php if (isset($fullpagebar['savebutton']['form'])) : ?>
+            <a class="btn btn-primary" href="#" role="button" id="save-form-button"
+               data-form-id="<?php echo $fullpagebar['savebutton']['form']; ?>">
+                <span class="ri-save-3-fill"></span>
+                <?php eT("Save"); ?>
+            </a>
+        <?php endif; ?>
 
-                <!-- Close -->
-                <?php if (isset($fullpagebar['closebutton']['url'])) : ?>
-                    <a class="btn btn-danger text-nowrap" href="<?php echo $fullpagebar['closebutton']['url']; ?>" role="button">
-                        <span class="ri-close-fill"></span>
-                        <?php eT("Close"); ?>
-                    </a>
-                <?php endif; ?>
-
-                <!-- Return to Theme List -->
-                <?php if (isset($templateEditorBar['buttons']['returnbutton'])) : ?>
-                    <a class="btn btn-outline-secondary text-nowrap" href="<?php echo $this->createUrl("themeOptions/index"); ?>" role="button">
-                        <span class="ri-rewind-fill"></span>
-                        &nbsp;&nbsp;
-                        <?php eT("Back"); ?>
-                    </a>
-                <?php endif; ?>
-                </div>
-            </div>
-            </div>
-        </div>
     </div>
 </div>
-
-<?php if ($importModal) : ?>
-    <?php $this->renderPartial('themeOptions/import_modal', ['importTemplate' => 'importtemplate', 'importModal' => 'importModal']); ?>
-<?php endif; ?>
 
 <!-- Template Editor -->
 <div class="col-12 templateeditor">

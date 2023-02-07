@@ -305,6 +305,43 @@ class SurveyCommonAction extends CAction
     }
 
     /**
+     * Load menu bar of user group controller.
+     *
+     * REFACTORED (it's in UserGroupController and uses function from Layouthelper->renderMenuBar())
+     *
+     * @param array $aData
+     * @return void
+     */
+    /*
+    public function userGroupBar(array $aData)
+    {
+        $ugid = $aData['ugid'] ?? 0;
+        if (!empty($aData['display']['menu_bars']['user_group'])) {
+            $data = $aData;
+            Yii::app()->loadHelper('database');
+
+            if (!empty($ugid)) {
+                $userGroup = UserGroup::model()->findByPk($ugid);
+                $uid = Yii::app()->session['loginID'];
+                if (($userGroup && ($userGroup->hasUser($uid)) || $userGroup->owner_id == $uid) || Permission::model()->hasGlobalPermission('superadmin')) {
+                    $data['userGroup'] = $userGroup;
+                } else {
+                    $data['userGroup'] = null;
+                }
+            }
+
+            $data['imageurl'] = Yii::app()->getConfig("adminimageurl");
+
+            if (isset($aData['usergroupbar']['closebutton']['url'])) {
+                $sAlternativeUrl = $aData['usergroupbar']['closebutton']['url'];
+                $aData['usergroupbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl($sAlternativeUrl));
+            }
+
+            $this->getController()->renderPartial('/admin/usergroup/usergroupbar_view', $data);
+        }
+    } */
+
+    /**
      * Renders template(s) wrapped in header and footer
      *
      * Addition of parameters should be avoided if they can be added to $aData
@@ -522,7 +559,7 @@ class SurveyCommonAction extends CAction
     protected function titlebar($aData)
     {
         if (isset($aData['title_bar'])) {
-            $this->getController()->renderPartial("/admin/super/title_bar", $aData);
+            $this->getController()->renderPartial("/layouts/title_bar", $aData);
         }
     }
 
@@ -555,6 +592,7 @@ class SurveyCommonAction extends CAction
      * @param $aData
      * @throws CException
      */
+    /*
     public function generaltopbar($aData)
     {
         $aData['topBar'] = $aData['topBar'] ?? [];
@@ -570,7 +608,7 @@ class SurveyCommonAction extends CAction
         );
 
         $this->getController()->renderPartial("/admin/survey/topbar/topbar_view", $aData);
-    }
+    }*/
 
     /**
      * Shows admin menu for question
@@ -653,40 +691,6 @@ class SurveyCommonAction extends CAction
                 Yii::app()->session['flashmessage'] = gT("Invalid survey ID");
                 $this->getController()->redirect(array("admin/index"));
             }
-        }
-    }
-
-    /**
-     * Renders the fullpager bar
-     * That's the white bar with action buttons example: 'Back' Button
-     * @param array $aData
-     * @throws CException
-     */
-    public function fullpagebar(array $aData)
-    {
-        if ((isset($aData['fullpagebar']))) {
-            if (isset($aData['fullpagebar']['closebutton']['url']) && !isset($aData['fullpagebar']['closebutton']['url_keep'])) {
-                $sAlternativeUrl = '/admin/index';
-                $aData['fullpagebar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl($sAlternativeUrl));
-            }
-            App()->getClientScript()->registerScriptFile(
-                App()->getConfig('adminscripts') . 'topbar.js',
-                CClientScript::POS_END
-            );
-            $this->getController()->renderPartial("/admin/super/fullpagebar_view", $aData);
-        }
-    }
-
-    /**
-     * Renders the green bar with page title
-     * Also called SurveyManagerBar
-     * @todo Needs to be removed later. Duplication in LayoutHelper.
-     * @param array $aData
-     */
-    public function surveyManagerBar(array $aData)
-    {
-        if (isset($aData['pageTitle'])) {
-            Yii::app()->getController()->renderPartial("/layouts/surveymanagerbar", $aData);
         }
     }
 
@@ -1005,42 +1009,6 @@ class SurveyCommonAction extends CAction
             $aData['model'] = $model;
 
             $this->getController()->renderPartial("/admin/survey/Question/listquestions", $aData);
-        }
-    }
-
-    /**
-     * Load menu bar of user group controller.
-     *
-     * REFACTORED (it's in UserGroupController and uses function from Layouthelper->renderMenuBar())
-     *
-     * @param array $aData
-     * @return void
-     */
-    public function userGroupBar(array $aData)
-    {
-        $ugid = $aData['ugid'] ?? 0;
-        if (!empty($aData['display']['menu_bars']['user_group'])) {
-            $data = $aData;
-            Yii::app()->loadHelper('database');
-
-            if (!empty($ugid)) {
-                $userGroup = UserGroup::model()->findByPk($ugid);
-                $uid = Yii::app()->session['loginID'];
-                if (($userGroup && ($userGroup->hasUser($uid)) || $userGroup->owner_id == $uid) || Permission::model()->hasGlobalPermission('superadmin')) {
-                    $data['userGroup'] = $userGroup;
-                } else {
-                    $data['userGroup'] = null;
-                }
-            }
-
-            $data['imageurl'] = Yii::app()->getConfig("adminimageurl");
-
-            if (isset($aData['usergroupbar']['closebutton']['url'])) {
-                $sAlternativeUrl = $aData['usergroupbar']['closebutton']['url'];
-                $aData['usergroupbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl($sAlternativeUrl));
-            }
-
-            $this->getController()->renderPartial('/admin/usergroup/usergroupbar_view', $data);
         }
     }
 

@@ -5,7 +5,7 @@
             <p><?php echo $aImportResults['fatalerror']; ?></p>
 
             <p>
-                <a class="btn btn-lg btn-success" href="<?php echo $this->createUrl("admin/labels/sa/view"); ?>" role="button">
+                <a class="btn btn-lg btn-primary" href="<?php echo $this->createUrl("admin/labels/sa/view"); ?>" role="button">
                     <?php eT("Return to label set administration"); ?>
                 </a>
             </p>
@@ -43,7 +43,7 @@
             </p>
 
             <p>
-                <a class="btn btn-lg btn-success" href="<?php echo $this->createUrl("admin/labels/sa/view"); ?>" role="button">
+                <a class="btn btn-lg btn-primary" href="<?php echo $this->createUrl("admin/labels/sa/view"); ?>" role="button">
                     <?php eT("Return to label set administration"); ?>
                 </a>
             </p>
