@@ -1,39 +1,41 @@
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <div class="pagetitle h1 pt-2 pb-2">
+    <div class="pagetitle h1 pt-3 pb-2">
         <?php eT("Conditions designer"); ?>
 
         <?php if ($scenariocount > 0): ?>
-            <button
-                type='button'
-                id='delete-all-conditions'
-                data-bs-toggle='modal'
-                data-bs-target='#confirmation-modal'
-                data-message='<?php eT('Are you sure you want to delete all conditions for this question?', 'js'); ?>'
-                data-onclick='(function() { document.getElementById("deleteallconditions").submit(); })'
-                class='btn btn-warning float-end condition-header-button'
-                onclick='return false;'
-            >
-                <span class="ri-delete-bin-fill"></span>
-                &nbsp;
-                <?php eT('Delete all conditions'); ?>
-            </button>
+            <?php
+            $this->widget('ext.ButtonWidget.ButtonWidget', [
+                'name' => 'delete-all-conditions',
+                'id' => 'delete-all-conditions',
+                'text' => gT('Delete all conditions'),
+                'icon' => 'ri-delete-bin-fill',
+                'htmlOptions' => [
+                    'class' => 'btn btn-danger float-end condition-header-button',
+                    'data-bs-toggle' => 'modal',
+                    'data-bs-target' => '#confirmation-modal',
+                    'data-message' => gT('Are you sure you want to delete all conditions for this question?', 'js'),
+                    'data-onclick' => '(function() { document.getElementById("deleteallconditions").submit(); })',
+                    'onclick' => 'return false;',
+                ],
+            ]); ?>
         <?php endif; ?>
 
         <?php if ($scenariocount > 1): ?>
-            <button
-                type='button'
-                id='renumber-scenario'
-                class="btn btn-outline-secondary float-end condition-header-button"
-                data-bs-toggle='modal'
-                data-bs-target='#confirmation-modal'
-                data-message='<?php eT('Are you sure you want to renumber the scenarios with incrementing numbers beginning from 1?', 'js'); ?>'
-                data-onclick='(function() { document.getElementById("toplevelsubaction").value="renumberscenarios"; document.getElementById("deleteallconditions").submit();})'
-                onclick='return false;'
-            >
-                <span class="ri-list-ordered"></span>
-                &nbsp;
-                <?php eT("Renumber scenarios");?>
-            </button>
+            <?php
+            $this->widget('ext.ButtonWidget.ButtonWidget', [
+                'name' => 'renumber-scenario',
+                'id' => 'renumber-scenario',
+                'text' => gT('Renumber scenarios'),
+                'icon' => 'ri-list-ordered',
+                'htmlOptions' => [
+                    'class' => 'btn btn-outline-secondary float-end condition-header-button',
+                    'data-bs-toggle' => 'modal',
+                    'data-bs-target' => '#confirmation-modal',
+                    'data-message' => gT('Are you sure you want to renumber the scenarios with incrementing numbers beginning from 1?', 'js'),
+                    'data-onclick' => '(function() { document.getElementById("toplevelsubaction").value="renumberscenarios"; document.getElementById("deleteallconditions").submit();})',
+                    'onclick' => 'return false;',
+                ],
+            ]); ?>
         <?php endif; ?>
     </div>
      <div class="row">
