@@ -2,9 +2,16 @@
     background-color: $white;
     position: relative;
     border-radius: 4px;
-    box-shadow: $boxshadow;
-    border: 1px solid $g-900;
+    box-shadow: $overview-boxShadow;
+    border-radius: 2px;
     color: $g-900;
+    padding: 28px 32px;
+    font-size: 14px;
+    font-weight: 400;
+
+    &.border-left-danger {
+        border-left: 4px solid $error;
+    }
 
     &.card-clickable {
         &:hover {
@@ -23,19 +30,33 @@
     }
 
     .card-title {
-        font-size: $font-size-lg;
+        font-size: $font-size-base;
         display: inline-block;
         color: $g-900;
-        font-weight: $font-weight-600;
+        font-weight: $font-weight-500;
         line-height: $card-header-line-height;
     }
 
+    .card-label {
+        color: $g-600;
+    }
+
+    .line-clamp-3 {
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        /* truncate to 3 lines */
+        -webkit-line-clamp: 3;
+      }
+
+
     .card-header {
         @extend .card-title;
-        padding: 1rem;
         height: unset;
         background-color: unset;
         border: none;
+        padding: 0;
+        margin: 0;
     }
 
     .card-body {

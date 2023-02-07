@@ -6,9 +6,9 @@
     <!-- List group -->
     <ul class="list-group list-group-flush">
         <!-- Base language -->
-        <li class="list-group-item" id="adminsidepanel__surveysummary--mainLanguageLink">
-            <div class="ls-flex-row col-12">
-                <div class="col-4">
+        <li class="list-group-item p-0 border-0" id="adminsidepanel__surveysummary--mainLanguageLink">
+            <div class="ls-flex-row col-12 gap-2">
+                <div class="col-4 card-label">
                     {{ getLanguageNameFromCode(oSurvey.language, false)}} ({{ gT("Base language") }}):
                 </div>
                 <div class="col-8">
@@ -21,9 +21,9 @@
         </li>
         <!-- Additional languages  -->
         {% for langname in aAdditionalLanguages %}
-        <li class="list-group-item">
-            <div class="ls-flex-row col-12">
-                <div class="col-4">
+        <li class="list-group-item p-0 border-0">
+            <div class="ls-flex-row col-12 gap-2">
+               <div class="col-4 card-label">
                     {{ getLanguageNameFromCode(langname, false) ~ ":" }}
                 </div>
                 <div class="col-8">
@@ -37,9 +37,9 @@
         {% endfor %}
 
         <!-- End URL -->
-        <li class="list-group-item">
-            <div class="ls-flex-row col-12">
-                <div class="col-4">
+        <li class="list-group-item p-0 border-0">
+            <div class="ls-flex-row col-12 gap-2">
+               <div class="col-4 card-label">
                     {{ gT("End URL:") }}
                 </div>
                 <div class="col-8">
@@ -48,9 +48,9 @@
             </div>
         </li>
         <!-- Number of questions/groups -->
-        <li class="list-group-item">
-            <div class="ls-flex-row col-12">
-                <div class="col-4">
+        <li class="list-group-item p-0 border-0">
+            <div class="ls-flex-row col-12 gap-2">
+               <div class="col-4 card-label">
                     {{ gT("Number of questions/groups:") }}
                 </div>
                 <div class="col-8">
@@ -60,9 +60,9 @@
         </li>
         <!-- Sharing panel -->
         {% if oSurvey.active == 'Y' %}
-            <li class="list-group-item">
-                <div class="ls-flex-row col-12">
-                    <div class="col-4">
+            <li class="list-group-item p-0 border-0">
+                <div class="ls-flex-row col-12 gap-2">
+                   <div class="col-4 card-label">
                         {{ gT("Sharing panel:") }}
                     </div>
                     <div class="col-8">
@@ -95,8 +95,8 @@
                                     {% if oSurvey.sid %} {# pseudo condition due to reverse parsing problems while generating twig admin cache via console.php twig generateAdminCache #}
                                         {% set tmp_url = createAbsoluteUrl("survey/index", { "sid" : oSurvey.sid, "lang" : oSurvey.language}) %}
                                     {% endif %}
-                                    <li class="list-group-item">
-                                        <div class="ls-flex-row col-12">
+                                    <li class="list-group-item p-0 border-0">
+                                        <div class="ls-flex-row col-12 gap-2">
                                             <div class="col-6">
                                                 {{ getLanguageNameFromCode(oSurvey.language, false)}}
                                             </div>
@@ -112,8 +112,8 @@
                                         {% if oSurvey.sid %} {# pseudo condition due to reverse parsing problems while generating twig admin cache via console.php twig generateAdminCache #}
                                             {% set tmp_url = createAbsoluteUrl("survey/index", { "sid" : oSurvey.sid, "lang" : langname}) %}
                                         {% endif %}
-                                        <li class="list-group-item">
-                                            <div class="ls-flex-row col-12">
+                                        <li class="list-group-item p-0 border-0">
+                                            <div class="ls-flex-row col-12 gap-2">
                                                 <div class="col-6">
                                                     {{ getLanguageNameFromCode(langname, false)}}
                                                 </div>
@@ -143,8 +143,8 @@
                                     {% if oSurvey.sid %} {# pseudo condition due to reverse parsing problems while generating twig admin cache via console.php twig generateAdminCache #}
                                         {% set tmp_url = createAbsoluteUrl("survey/index", { "sid" : oSurvey.sid, "lang" : oSurvey.language}) %}
                                     {% endif %}
-                                    <li class="list-group-item">
-                                        <div class="ls-flex-row col-12">
+                                    <li class="list-group-item p-0 border-0">
+                                        <div class="ls-flex-row col-12 gap-2">
                                             <div class="col-6">
                                                 {{ getLanguageNameFromCode(oSurvey.language, false)}}
                                             </div>
@@ -158,8 +158,8 @@
                                         {% if oSurvey.sid %} {# pseudo condition due to reverse parsing problems while generating twig admin cache via console.php twig generateAdminCache #}
                                             {% set tmp_url = createAbsoluteUrl("survey/index", { "sid" : oSurvey.sid, "lang" : langname}) %}
                                         {% endif %}
-                                        <li class="list-group-item">
-                                            <div class="ls-flex-row col-12">
+                                        <li class="list-group-item p-0 border-0">
+                                            <div class="ls-flex-row col-12 gap-2">
                                                 <div class="col-6">
                                                     {{ getLanguageNameFromCode(langname, false)}}
                                                 </div>
@@ -186,8 +186,8 @@
                                     {% if oSurvey.sid %} {# pseudo condition due to reverse parsing problems while generating twig admin cache via console.php twig generateAdminCache #}
                                         {% set tmp_url = createAbsoluteUrl("survey/index", { "sid" : oSurvey.sid, "lang" : oSurvey.language}) %}
                                     {% endif %}
-                                    <li class="list-group-item">
-                                        <div class="ls-flex-row col-12">
+                                    <li class="list-group-item p-0 border-0">
+                                        <div class="ls-flex-row col-12 gap-2">
                                             <div class="col-6">
                                                 {{ getLanguageNameFromCode(oSurvey.language, false)}}
                                             </div>
@@ -202,8 +202,8 @@
                                         {% if oSurvey.sid %} {# pseudo condition due to reverse parsing problems while generating twig admin cache via console.php twig generateAdminCache #}
                                             {% set tmp_url = createAbsoluteUrl("survey/index", { "sid" : oSurvey.sid, "lang" : langname}) %}
                                         {% endif %}
-                                        <li class="list-group-item">
-                                            <div class="ls-flex-row col-12">
+                                        <li class="list-group-item p-0 border-0">
+                                            <div class="ls-flex-row col-12 gap-2">
                                                 <div class="col-6">
                                                     {{ getLanguageNameFromCode(langname, false)}}
                                                 </div>

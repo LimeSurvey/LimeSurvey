@@ -11341,9 +11341,8 @@ a {
 
 .side-body,
 .full-page-wrapper {
-  min-height: 100%;
+  min-height: 100vh;
   position: relative;
-  margin-bottom: 65px;
 }
 
 .side-body h3, .side-body .h3,
@@ -17342,9 +17341,15 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   background-color: #fff;
   position: relative;
   border-radius: 4px;
-  box-shadow: 8px 8px #EEEFF7;
-  border: 1px solid #1E1E1E;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
   color: #1E1E1E;
+  padding: 28px 32px;
+  font-size: 14px;
+  font-weight: 400;
+}
+.card.card-primary.border-left-danger {
+  border-left: 4px solid #FF515F;
 }
 .card.card-primary.card-clickable:hover {
   box-shadow: 8px 8px #D3C5FA;
@@ -17359,17 +17364,28 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   cursor: default;
 }
 .card.card-primary .card-title, .ls-panelboxes .ls-panelboxes-panelbox .card.card-primary .card-header, .card.card-primary .card-header {
-  font-size: 1.425rem;
+  font-size: 1.14rem;
   display: inline-block;
   color: #1E1E1E;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 26px;
 }
+.card.card-primary .card-label {
+  color: #9094A7;
+}
+.card.card-primary .line-clamp-3 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  /* truncate to 3 lines */
+  -webkit-line-clamp: 3;
+}
 .card.card-primary .card-header {
-  padding: 1rem;
   height: unset;
   background-color: unset;
   border: none;
+  padding: 0;
+  margin: 0;
 }
 .card.card-primary .card-body {
   padding: 1rem;
