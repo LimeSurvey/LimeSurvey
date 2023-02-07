@@ -48,7 +48,7 @@
                     ?>
                 <?php } ?>
                 <p>
-                    <a class="btn btn-lg btn-success" href='<?php echo $this->createUrl('admin/checkintegrity');?>'><?php eT("Check again"); ?></a>
+                    <a class="btn btn-lg btn-primary" href='<?php echo $this->createUrl('admin/checkintegrity');?>'><?php eT("Check again"); ?></a>
                 </p>
         </div>
         

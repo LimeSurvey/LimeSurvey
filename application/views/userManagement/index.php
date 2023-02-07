@@ -1,9 +1,11 @@
 <?php
-/* @var $this UserManagementController */
-
-/* @var $dataProvider CActiveDataProvider */
-/* @var $model User */
-/* @var string $massiveAction */
+/**
+ * @var $this UserManagementController
+ * @var $dataProvider CActiveDataProvider
+ * @var $model User
+ * @var string $massiveAction
+ * @var string $pageSize selected pagesize
+ **/
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('usersIndex');
@@ -21,8 +23,6 @@ echo viewHelper::getViewTestTag('usersIndex');
     <?php App()->end(); ?>
 <?php endif; ?>
 
-<?php $this->renderPartial('partial/_menubar'); ?>
-
 <div class="container-fluid">
     <?php
     $this->widget('application.extensions.admin.grid.CLSGridView',
@@ -31,7 +31,7 @@ echo viewHelper::getViewTestTag('usersIndex');
             'dataProvider' => $model->search(),
             'columns' => $model->getManagementColums(),
             'massiveActionTemplate' => $massiveAction,
-            'afterAjaxUpdate' => 'LS.UserManagement.bindButtons',
+            'lsAfterAjaxUpdate' => ['LS.UserManagement.bindButtons();'],
             'filter' => $model,
             'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' '
                 . sprintf(

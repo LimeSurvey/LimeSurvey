@@ -1,4 +1,5 @@
 $(document).on('ready pjax:scriptcomplete', function () {
+    // function not used at the moment
     function makeTopbarSticky() {
         const topbar = $('.menubar:not(.surveymanagerbar)');
         if (topbar.length == 0) {

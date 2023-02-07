@@ -103,7 +103,7 @@ var LS = LS || {};  // namespace
                 <button type="button" class='btn btn-outline-secondary' data-bs-dismiss='modal'>
                     <?php eT("Close"); ?>
                 </button>
-                <button type="button" class='btn btn-success'>
+                <button type="button" class='btn btn-primary'>
                     <?php eT("Add"); ?>
                 </button>
             </div>

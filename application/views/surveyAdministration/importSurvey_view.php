@@ -10,7 +10,7 @@
 
     <div class="jumbotron message-box message-box-error">
         <h2 class="danger"><?php echo gT("Import survey data"); ?></h2>
-        <p class="lead danger">
+        <p class="lead text-danger">
             <?php eT("Error"); ?>
         </p>
         <!-- error message -->
@@ -28,7 +28,7 @@
 
     <div class="jumbotron message-box message-box-error">
         <h2 class="danger"><?php echo $sHeader;?></h2>
-        <p class="lead danger">
+        <p class="lead text-danger">
             <?php eT("Error"); ?>
         </p>
         <!-- error message -->
