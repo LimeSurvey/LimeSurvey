@@ -16,17 +16,17 @@ $.fn.extend({
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
+                            <h1 class="modal-title">${text}</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                         </div>
                         <div class="modal-body">
-                            ${text}               
                         </div>
                         <div class="modal-footer">
                             <button id="identity__bsconfirmModal_button_cancel" type="button" data-bs-dismiss="modal" class="btn btn-outline-secondary">
-                                ${i18n.confirm_cancel}
+                                ${i18n.confirm_cancel || '<i class="ri-close-fill"></i>'}
                             </button>
                             <button id="identity__bsconfirmModal_button_ok" type="button" class="btn btn-danger">
-                                ${i18n.confirm_ok}
+                                ${i18n.confirm_ok || '<i class="ri-check-fill"></i>'}
                             </button>
                         </div>
                     </div>
