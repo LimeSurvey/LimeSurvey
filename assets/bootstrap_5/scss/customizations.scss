@@ -23,3 +23,16 @@ a {
 .hidden {
     display: none !important;
 }
+
+.ls-footer-label {
+    font-style: normal;
+    font-weight: $font-weight-500;
+    font-size: 1rem;
+    line-height: $line-height-20;
+    color: $g-700; 
+}
+
+.ls-settings-wrapper {
+    position: relative;
+    min-height: 100vh;
+}

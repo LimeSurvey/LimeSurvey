@@ -70,7 +70,7 @@ App()->getClientScript()->registerScript("tokens-panel-variables",
                             'name' => 'anonymized',
                             'checkedOption' => $oSurvey->anonymized,
                             'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff,
-                                ['I' =>'*' . $oSurveyOptions->anonymized ]) : $optionsOnOff,
+                                ['I' => $oSurveyOptions->anonymized . " ᴵ" ]) : $optionsOnOff,
                         ]);
                     } ?>
                 </div>
@@ -86,7 +86,7 @@ App()->getClientScript()->registerScript("tokens-panel-variables",
                         'name'          => 'tokenanswerspersistence',
                         'checkedOption' => $oSurvey->tokenanswerspersistence,
                         'selectOptions' => ($bShowInherited)
-                            ? array_merge($optionsOnOff, ['I' =>'*' . $oSurveyOptions->tokenanswerspersistence ])
+                            ? array_merge($optionsOnOff, ['I' =>$oSurveyOptions->tokenanswerspersistence . " ᴵ" ])
                             : $optionsOnOff
                     ]) ?>
                 </div>
@@ -102,7 +102,7 @@ App()->getClientScript()->registerScript("tokens-panel-variables",
                         'name'          => 'alloweditaftercompletion',
                         'checkedOption' => $oSurvey->alloweditaftercompletion,
                         'selectOptions' => ($bShowInherited)
-                            ? array_merge($optionsOnOff, ['I' =>'*' . $oSurveyOptions->alloweditaftercompletion ])
+                            ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->alloweditaftercompletion . " ᴵ"])
                             : $optionsOnOff
                     ]); ?>
                 </div>
@@ -144,7 +144,7 @@ App()->getClientScript()->registerScript("tokens-panel-variables",
                         'name'          => 'allowregister',
                         'checkedOption' => $oSurvey->allowregister,
                         'selectOptions' => ($bShowInherited)
-                            ? array_merge($optionsOnOff, ['I' =>'*' . $oSurveyOptions->allowregister ])
+                            ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->allowregister . " ᴵ"])
                             : $optionsOnOff
                     ]); ?>
                 </div>
@@ -158,7 +158,7 @@ App()->getClientScript()->registerScript("tokens-panel-variables",
                         'name'          => 'htmlemail',
                         'checkedOption' => $oSurvey->htmlemail,
                         'selectOptions' => ($bShowInherited)
-                            ? array_merge($optionsOnOff, ['I' =>'*' . $oSurveyOptions->htmlemail ])
+                            ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->htmlemail . " ᴵ" ])
                             : $optionsOnOff,
                     ]);
                     $this->widget('yiistrap_fork.widgets.TbModal', [
@@ -178,12 +178,14 @@ App()->getClientScript()->registerScript("tokens-panel-variables",
                         'name' => 'sendconfirmation',
                         'checkedOption' => $oSurvey->sendconfirmation,
                         'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff,
-                            ['I' =>'*' . $oSurveyOptions->sendconfirmation ]) : $optionsOnOff
+                            ['I' => $oSurveyOptions->sendconfirmation . " ᴵ"]) : $optionsOnOff
                     ]); ?>
                 </div>
             </div>
         </div>
     </div>
+    <?php $this->renderPartial('_sub_footer'); ?>
+
 </div>
     <?php
     $this->widget('yiistrap_fork.widgets.TbModal', array(

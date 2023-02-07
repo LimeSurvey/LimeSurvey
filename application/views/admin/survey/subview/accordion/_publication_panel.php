@@ -74,7 +74,7 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
                         'name'          => 'listpublic',
                         'checkedOption' => $oSurvey->listpublic,
                         'selectOptions' => ($bShowInherited)
-                            ? array_merge($optionsOnOff, ['I' =>"*" .  $oSurveyOptions->listpublic ])
+                            ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->listpublic . " ᴵ" ])
                             : $optionsOnOff,
                     ]); ?>
                 </div>
@@ -87,7 +87,7 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
                         'name'          => 'usecookie',
                         'checkedOption' => $oSurvey->usecookie,
                         'selectOptions' => ($bShowInherited)
-                            ? array_merge($optionsOnOff, ['I' =>"*" .  $oSurveyOptions->usecookie ])
+                            ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->usecookie . " ᴵ" ])
                             : $optionsOnOff,
                     ]); ?>
                 </div>
@@ -113,7 +113,7 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
                             ? 'Y'
                             : ((in_array($usecap, $aCaptchaSurveyAccessInherit)) ? ('I') : ('N')),
                         'selectOptions' => ($bShowInherited)
-                            ? array_merge($optionsOnOff, ['I' =>"*" .  $oSurveyOptions->useCaptchaSurveyAccess ])
+                            ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->useCaptchaSurveyAccess . " ᴵ" ])
                             : $optionsOnOff,
                     ]); ?>
                 </div>
@@ -131,7 +131,7 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
                                 ? ('I')
                                 : ('N')),
                         'selectOptions' => ($bShowInherited)
-                            ? array_merge($optionsOnOff, ['I' =>"*" .  $oSurveyOptions->useCaptchaRegistration ])
+                            ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->useCaptchaRegistration . " ᴵ"])
                             : $optionsOnOff,
                     ]); ?>
                 </div>
@@ -147,7 +147,7 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
                             ? 'Y'
                             : ((in_array($usecap, $aCaptchaLoadSaveInherit)) ? ('I') : ('N')),
                         'selectOptions' => ($bShowInherited)
-                            ? array_merge($optionsOnOff, ['I' =>"*" .  $oSurveyOptions->useCaptchaSaveAndLoad ])
+                            ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->useCaptchaSaveAndLoad . " ᴵ" ])
                             : $optionsOnOff,
                     ]); ?>
                 </div>
@@ -162,3 +162,5 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
             <?php }?>
     </div>
 </div>
+<?php $this->renderPartial('_sub_footer'); ?>
+

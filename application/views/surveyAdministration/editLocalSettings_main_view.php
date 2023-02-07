@@ -40,7 +40,7 @@ if (isset($scripts)) {
         }
         ?>
         <div class="row mt-4">
-            <div class="<?= $entryData['classes'] ?>">
+            <div class="<?= $entryData['classes'] ?> ls-settings-wrapper">
                 <?php $this->renderPartial($entryData['partial'], $templateData); ?>
             </div>
         </div>

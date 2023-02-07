@@ -35,10 +35,10 @@ echo ' <!-- Survey page, started in SurveyCommonAction::renderWrappedTemplate() 
 $layoutHelper->renderSurveySidemenu($aData);
 
 echo '<div '
-    . 'class="ls-flex-column align-items-flex-start align-content-flex-start col-11 ls-flex-item transition-animate-width main-content-container" '
+    . 'class="pb-5 ls-flex-column align-items-flex-start align-content-flex-start col-11 ls-flex-item transition-animate-width main-content-container" '
     . '>';
 
-echo '<div id="pjax-content" class="col-12">';
+echo '<div id="pjax-content" class="col-12 mb-5">';
 
 echo '<div id="in_survey_common" '
     . 'class="container-fluid ls-flex-column col-12"'

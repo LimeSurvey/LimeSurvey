@@ -51,7 +51,7 @@ $googleAnalyticsStyleOptions = array(
                             'name'          => 'datestamp',
                             'checkedOption'         => $oSurvey->datestamp,
                             'selectOptions' => ($bShowInherited)
-                                ? array_merge($optionsOnOff, ['I' => "*" .  $oSurveyOptions->datestamp ])
+                                ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->datestamp . " ᴵ" ])
                                 : $optionsOnOff
                         ]);
                     } ?>
@@ -74,7 +74,7 @@ $googleAnalyticsStyleOptions = array(
                             'name'          => 'ipaddr',
                             'checkedOption' => $oSurvey->ipaddr,
                             'selectOptions' => ($bShowInherited)
-                                ? array_merge($optionsOnOff, ['I' => "*" .  $oSurveyOptions->ipaddr ])
+                                ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->ipaddr . " ᴵ"])
                                 : $optionsOnOff,
                         ]);
                     } ?>
@@ -97,7 +97,7 @@ $googleAnalyticsStyleOptions = array(
                             'name'          => 'ipanonymize',
                             'checkedOption' => $oSurvey->ipanonymize,
                             'selectOptions' => ($bShowInherited)
-                                ? array_merge($optionsOnOff, ['I' => "*" .  $oSurveyOptions->ipanonymize ])
+                                ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->ipanonymize . " ᴵ" ])
                                 : $optionsOnOff,
                         ]);
                     } ?>
@@ -121,7 +121,7 @@ $googleAnalyticsStyleOptions = array(
                             'name'          => 'refurl',
                             'checkedOption' => $oSurvey->refurl,
                             'selectOptions' => ($bShowInherited)
-                                ? array_merge($optionsOnOff, ['I' => "*" .  $oSurveyOptions->refurl ])
+                                ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->refurl . " ᴵ" ])
                                 : $optionsOnOff,
                         ]);
                     } ?>
@@ -145,7 +145,7 @@ $googleAnalyticsStyleOptions = array(
                             'name'          => 'savetimings',
                             'checkedOption' => $oSurvey->savetimings,
                             'selectOptions' => ($bShowInherited)
-                                ? array_merge($optionsOnOff, ['I' => "*" .  $oSurveyOptions->savetimings ])
+                                ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->savetimings . " ᴵ" ])
                                 : $optionsOnOff,
                         ]); ?>
                     <?php endif; ?>
@@ -163,7 +163,7 @@ $googleAnalyticsStyleOptions = array(
                         'name'          => 'assessments',
                         'checkedOption' => $oSurvey->assessments,
                         'selectOptions' => ($bShowInherited)
-                            ? array_merge($optionsOnOff, ['I' => "*" .  $oSurveyOptions->assessments ])
+                            ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->assessments . " ᴵ" ])
                             : $optionsOnOff,
                     ]); ?>
                 </div>
@@ -177,7 +177,7 @@ $googleAnalyticsStyleOptions = array(
                         'name'          => 'allowsave',
                         'checkedOption' => $oSurvey->allowsave,
                         'selectOptions' => ($bShowInherited)
-                            ? array_merge($optionsOnOff, ['I' => "*" .  $oSurveyOptions->allowsave ])
+                            ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->allowsave . " ᴵ" ])
                             : $optionsOnOff,
                     ]); ?>
                 </div>
@@ -272,4 +272,5 @@ $googleAnalyticsStyleOptions = array(
         </div>
     </div>
 </div>
+<?php $this->renderPartial('_sub_footer'); ?>
 <?php App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'survey_edit_notificationpanel.js', LSYii_ClientScript::POS_BEGIN); ?>

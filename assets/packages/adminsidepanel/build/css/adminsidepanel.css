@@ -84,7 +84,7 @@
 
 /* New adminsidepanel */
 #sidebar {
-  padding-top: 15px;
+  padding: 20px 0px;
   width: 100%;
 }
 #sidebar .questiongroup-list-group > li.selected {

@@ -11081,6 +11081,19 @@ a {
   display: none !important;
 }
 
+.ls-footer-label {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 20px;
+  color: #5E6372;
+}
+
+.ls-settings-wrapper {
+  position: relative;
+  min-height: 100vh;
+}
+
 /**
  * Lime Admin Common CSS File
  *
@@ -17145,12 +17158,12 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   bottom: 0;
   display: block;
   width: 100%;
-  height: 60px;
-  padding-top: 1em;
 }
 
-footer.footer {
-  position: static;
+.sub_footer {
+  position: absolute;
+  bottom: -50px;
+  width: 100%;
 }
 
 @media print {
