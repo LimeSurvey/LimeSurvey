@@ -13,7 +13,7 @@ echo viewHelper::getViewTestTag('participantsAttributeControl');
     <div class="container-fluid">
         <div class="row">
             <?php
-            $this->widget('application.extensions.admin.grid.CLSGridView', [
+            $this->widget('application.extensions.admin.grid.CLSGridView', [//done
                 'id' => 'list_attributes',
                 'dataProvider' => $model->search(),
                 'columns' => $model->columns,

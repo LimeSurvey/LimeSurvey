@@ -348,15 +348,6 @@ class Participant extends LSActiveRecord
                 'value' => '$data->createdFormatted',
                 'type'  => 'raw',
             ],
-            [
-                "name"              => 'buttons',
-                "type"              => 'raw',
-                "header"            => gT("Action"),
-                "filter"            => false,
-                'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
-                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
-                'htmlOptions'       => ['class' => 'ls-sticky-column'],
-            ],
         ];
 
         $extraAttributeParams = Yii::app()->request->getParam('extraAttribute');
@@ -392,6 +383,15 @@ class Participant extends LSActiveRecord
                 $col_array["filter"] = TbHtml::textField("extraAttribute[" . $name . "]", $extraAttributeParams[$name]);
             }
             $cols[] = $col_array;
+            $cols[] = [
+                "name"              => 'buttons',
+                "type"              => 'raw',
+                "header"            => gT("Action"),
+                "filter"            => false,
+                'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
+                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+                'htmlOptions'       => ['class' => 'ls-sticky-column'],
+            ];
         }
         return $cols;
     }

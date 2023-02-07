@@ -784,8 +784,7 @@ class TokenDynamic extends LSActiveRecord
      */
     public function getGridButtons()
     {
-        /* viewresponse button */
-        $baseView = intval(Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'read') && $this->survey->active == "Y" && $this->survey->anonymized != "Y");
+        $baseView = Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'read') && $this->survey->active === "Y" && $this->survey->anonymized !== "Y";
         $gridButtons['viewresponse'] = array(
             'label' => '<span class="visually-hidden">' . gT("View response details") . '</span><span class="ri-list-unordered" aria-hidden="true"></span>',
             'imageUrl' => false,
