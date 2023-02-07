@@ -123,10 +123,19 @@
 
             <!-- Buttons -->
             <div class="mb-3">
-                <div class="">
-                    <?php echo CHtml::htmlButton(gT("Upload"),
-                        ['type' => 'submit', 'name' => 'upload', 'value' => 'import', 'class' => 'btn btn-primary']); ?>
-                </div>
+                <?php $this->widget(
+                    'ext.ButtonWidget.ButtonWidget',
+                    [
+                        'name' => 'upload',
+                        'value' => 'import',
+                        'text' => gT('Upload'),
+                        'icon' => 'icon-import',
+                        'htmlOptions' => [
+                            'class' => 'btn btn-primary',
+                            'type' => 'submit'
+                        ]
+                    ]
+                ); ?>
             </div>
             </form>
 
