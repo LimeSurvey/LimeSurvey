@@ -4,28 +4,32 @@
     <div class="card-header">
         <h5 class="card-title">{{gT("Text elements")}}</h5>
         <a class="float-end btn btn-outline-secondary btn-xs pjax" data-bs-toggle="tooltip" title="{{ gT("Survey text elements") }}" href="{{ createUrl('surveyAdministration/rendersidemenulink', {'subaction': 'surveytexts', 'surveyid' : surveyid}) }}">
-            <i class="ri-settings-5-fill"></i>
+          <i class="ri-tools-line"></i>
         </a>
     </div>
     <!-- List group -->
     <ul class="list-group list-group-flush">
             <!-- Description -->
-        <li class="list-group-item">
-            <div class="ls-flex-row col-12">
-                <div class="col-4">
+        <li class="list-group-item p-0 border-0">
+            <div class="ls-flex-row col-12 gap-2">
+                <div class="col-4 card-label">
                     {{gT("Description:")}}
                 </div>
-                <div class="col-8">
+                <div class="col-8 ">
+                    <span id="description" class="line-clamp-3">
                         {% if surveyTextContent.surveyls_description != '' %}
                             {{getExpressionManagerOutput(surveyTextContent.surveyls_description)}}
                         {% endif %}
+                    </span>
+                    <a href="#" onclick="{document.getElementById('description').classList.remove('line-clamp-3'); this.style.display = 'none'}">...more</a>
+
                 </div>
             </div>
         </li>
         <!-- Welcome -->
-        <li class="list-group-item">
-            <div class="ls-flex-row col-12">
-                <div class="col-4">
+        <li class="list-group-item p-0 border-0">
+            <div class="ls-flex-row col-12 gap-2">
+                <div class="col-4 card-label">
                     {{gT("Welcome:")}}
                 </div>
                 <div class="col-8">
@@ -37,9 +41,9 @@
         </li>
 
         <!-- End message -->
-        <li class="list-group-item">
-            <div class="ls-flex-row col-12">
-                <div class="col-4">
+        <li class="list-group-item p-0 border-0">
+            <div class="ls-flex-row col-12 gap-2">
+                <div class="col-4 card-label">
                     {{gT("End message:")}}
                 </div>
                 <div class="col-8">
@@ -51,9 +55,9 @@
         </li>
         {% if oSurvey.showsurveypolicynotice > 0 %}
                     <!-- Data security notice -->
-                    <li class="list-group-item">
-                        <div class="ls-flex-row col-12">
-                            <div class="col-4">
+                    <li class="list-group-item p-0 border-0">
+                        <div class="ls-flex-row col-12 gap-2">
+                            <div class="col-4 card-label">
                                  {{ gT("Privacy policy text:") }}
                             </div>
                             <div class="col-8">
@@ -64,9 +68,9 @@
                         </div>
                     </li>
                     <!-- Data security notice error -->
-                    <li class="list-group-item">
-                        <div class="ls-flex-row col-12">
-                            <div class="col-4">
+                    <li class="list-group-item p-0 border-0">
+                        <div class="ls-flex-row col-12 gap-2">
+                            <div class="col-4 card-label">
                                 {{ gT("Privacy policy error text:") }}
                             </div>
                             <div class="col-8">
@@ -77,9 +81,9 @@
                         </div>
                     </li>
                     <!-- Data security notice label -->
-                    <li class="list-group-item">
-                        <div class="ls-flex-row col-12">
-                            <div class="col-4">
+                    <li class="list-group-item p-0 border-0">
+                        <div class="ls-flex-row col-12 gap-2">
+                            <div class="col-4 card-label">
                                 {{ gT("Privacy policy label text:") }}
                             </div>
                             <div class="col-8">
