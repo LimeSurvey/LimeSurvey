@@ -316,7 +316,7 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
         </div>
         <!-- Template -->
 
-        <div class="mb-3" style="height: 300px;">
+        <div class="mb-3" >
             <label class=" form-label" for='template'><?php eT("Theme:"); ?></label>
             <div class="">
                 <select id='template' class="form-select" name='template' data-updateurl='<?php echo App()->createUrl('themeOptions/getPreviewTag') ?>'
