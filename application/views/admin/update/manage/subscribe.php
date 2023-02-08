@@ -37,11 +37,11 @@
                     ?>
                 </div>
             </div>
-            <?php echo CHtml::submitButton(gT('Submit'), ["class" => "btn btn-primary", "id" => "submitKeyButton"]); ?>
-
-            <a class="btn btn-outline-secondary" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
+            <a class="btn btn-outline-secondary me-1" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
                 <?php eT("Cancel"); ?>
             </a>
+            <?php echo CHtml::submitButton(gT('Submit'), ["class" => "btn btn-primary", "id" => "submitKeyButton"]); ?>
+
             <?php echo CHtml::endForm(); ?>
 
         </div>
