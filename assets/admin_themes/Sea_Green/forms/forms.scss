@@ -2,7 +2,7 @@
 .form-control {
   border: $input-border-width solid $input-border-color !important;
   line-height: $line-height-16;
-  border-radius: 4px;
+  border-radius: $border-radius;
   &:focus {
     box-shadow: 4px 4px 0px $elevation-shadow;
   }
@@ -52,11 +52,16 @@ input[type="file"]::file-selector-button {
 // select
 .form-select {
   border: 1px solid $g-900;
-  font-weight: 400;
-  font-size: 14px;
+  font-weight: $font-weight-normal;
+  font-size: $dropdown-font-size;
   line-height: $line-height-16;
   &:focus {
     box-shadow: 4px 4px 0px $elevation-shadow;
+  }
+  &:disabled {
+    border: $input-border-width solid $input-border-color-disabled;
+    background-color: $g-400;
+    color: $g-600;
   }
 }
 

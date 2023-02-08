@@ -17894,6 +17894,11 @@ input[type=file]::file-selector-button {
 .form-select:focus {
   box-shadow: -4px 4px 0px rgba(66, 0, 255, 0.2);
 }
+.form-select:disabled {
+  border: 1px solid #9094A7;
+  background-color: #D3D5DA;
+  color: #9094A7;
+}
 
 .input-group-text {
   background-color: #333641;
@@ -17908,6 +17913,47 @@ input[type=file]::file-selector-button {
 
 .select2-container--bootstrap-5 .select2-selection--multiple textarea:focus {
   box-shadow: none;
+}
+
+.select2-container--bootstrap-5 .select2-selection {
+  border: 1px solid #1E1E1E !important;
+  font-weight: 400 !important;
+  font-size: 14px !important;
+  line-height: 16px !important;
+  color: #1E1E1E !important;
+  background-color: #fff !important;
+  border-radius: 4px !important;
+}
+
+.select2-container--bootstrap-5.select2-container--focus .select2-selection, .select2-container--bootstrap-5.select2-container--open .select2-selection {
+  border: 1px solid #1E1E1E !important;
+  box-shadow: -4px 4px 0px rgba(66, 0, 255, 0.2) !important;
+}
+
+.select2-container--disabled.select2-container--focus .select2-selection {
+  box-shadow: none !important;
+  color: #9094A7 !important;
+  border: 1px solid #9094A7 !important;
+}
+.select2-container--disabled .select2-selection__rendered {
+  color: #9094A7 !important;
+}
+.select2-container--disabled .select2-selection {
+  border: 1px solid #9094A7 !important;
+  background-color: #D3D5DA !important;
+  color: #9094A7 !important;
+}
+
+.select2-container--bootstrap-5 .select2-dropdown {
+  color: #1E1E1E !important;
+  background-color: #fff !important;
+  border-color: #EEEFF7 !important;
+  border-radius: 4px !important;
+}
+
+.select2-container--bootstrap-5 .select2-dropdown .select2-results__options .select2-results__option.select2-results__option--selected, .select2-container--bootstrap-5 .select2-dropdown .select2-results__options .select2-results__option[aria-selected=true]:not(.select2-results__option--highlighted) {
+  color: #fff !important;
+  background-color: var(--bs-primary) !important;
 }
 
 .badge {
