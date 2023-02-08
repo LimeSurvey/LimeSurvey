@@ -17860,14 +17860,10 @@ footer.footer {
 .form-control {
   border: 1px solid #1E1E1E !important;
   line-height: 16px;
-  border-radius: 4px !important;
+  border-radius: 4px;
 }
 .form-control:focus {
   box-shadow: 4px 4px 0px rgba(66, 0, 255, 0.2);
-}
-
-.form-control.ignore-border {
-  border-radius: 0px !important;
 }
 
 .form-control.ls-important-field {
