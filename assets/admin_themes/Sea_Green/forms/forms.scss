@@ -63,6 +63,17 @@ input[type="file"]::file-selector-button {
     background-color: $g-400;
     color: $g-600;
   }
+  &.ls-important-field {
+    border: 2px solid $g-900 !important;
+    box-shadow: 8px 8px 0px $g-200;
+    &:focus {
+      box-shadow: 8px 8px 0px $elevation-shadow;
+    }
+    &:disabled, &[readonly] {
+      border: 2px solid $input-border-color-disabled !important;
+      background-color: $g-400;
+    }
+  }
 }
 
 .input-group-text {
