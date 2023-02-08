@@ -16445,6 +16445,7 @@ tr.info, tr.danger {
   background-color: #D3D5DA;
   border: 1px solid #D3D5DA;
   box-shadow: none;
+  opacity: 1;
 }
 .btn.disabled:hover, .btn.disabled:focus, .btn.disabled:active, .btn.disabled.active, .btn[disabled]:hover, .btn[disabled]:focus, .btn[disabled]:active, .btn[disabled].active {
   color: #9094A7;
@@ -17865,6 +17866,11 @@ footer.footer {
 .form-control:focus {
   box-shadow: 4px 4px 0px rgba(66, 0, 255, 0.2);
 }
+.form-control:disabled, .form-control[readonly] {
+  border: 1px solid #9094A7 !important;
+  background-color: #D3D5DA;
+  color: #9094A7;
+}
 
 .form-control.ls-important-field {
   padding: 14px 12px;
@@ -17876,6 +17882,10 @@ footer.footer {
 }
 .form-control.ls-important-field:focus {
   box-shadow: 8px 8px 0px rgba(66, 0, 255, 0.2);
+}
+.form-control.ls-important-field:disabled, .form-control.ls-important-field[readonly] {
+  border: 2px solid #9094A7 !important;
+  background-color: #D3D5DA;
 }
 
 input[type=file] {
