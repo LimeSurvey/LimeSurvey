@@ -17010,6 +17010,10 @@ tr.info, tr.danger {
   padding: 1.5rem;
 }
 
+#selector__exportTypeSelector-modal .modal-dialog {
+  border: 1px solid #1E1E1E;
+}
+
 body {
   color: #1E1E1E;
   font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
