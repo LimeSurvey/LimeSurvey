@@ -229,7 +229,6 @@
 }
 
 .side-body h3,
-.pagetitle,
 .list-surveys h3 {
     position: relative;
     padding: 0.5em;
@@ -1661,56 +1660,6 @@ h3 .glyphicon-chevron-right {
 .preloader.loading .slice:nth-child(6) {
     transform: rotateZ(360deg) rotateY(90deg) rotateX(0);
     animation: 2s preload-cycle-6 linear infinite both;
-}
-
-/**
- * comfortUpdate
- */
-#ajaxContainerLoading,
-.ajaxLoading {
-    height: 130px;
-    text-align: center;
-    margin-top: 70px;
-    margin-bottom: 100px;
-    display: none;
-}
-
-#comfortUpdateIcon {
-    height: 1em;
-    margin-right: 0.5em;
-}
-
-#comfortUpdateGeneralWrap h3.maintitle {
-    background-color: transparent;
-}
-
-#comfortUpdateGeneralWrap .on {
-    font-weight: bold;
-    font-size: 1em;
-    padding-left: 0.5em;
-    padding-top: 0.5em;
-}
-
-#comfortUpdateGeneralWrap .on span {
-    display: block;
-    padding: 0.1em;
-    padding-left: 0.5em;
-    width: 40%;
-}
-
-#comfortUpdateGeneralWrap .off {
-    font-size: 0.9em;
-    padding-left: 0.5em;
-    padding-top: 0.5em;
-}
-
-#comfortUpdateGeneralWrap #welcomeMessage,
-#comfortUpdateGeneralWrap #btn-container {
-    border-right: 1px solid #EEE;
-}
-
-#comfortUpdateGeneralWrap #key-actions {
-    padding-left: 1em;
 }
 
 html body .nav-tabs > li.active > a,

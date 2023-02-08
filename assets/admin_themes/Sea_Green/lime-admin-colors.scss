@@ -369,36 +369,6 @@ a {
             }
         }
     }
-    //&.text-primary:hover {
-    //    color: $primary-hover;
-    //}
-    //&.text-success:hover {
-    //    color: $primary-hover;
-    //}
-    //&.text-info:hover {
-    //    color: $primary-bg_info_hover_4;
-    //}
-    //&.text-warning:hover {
-    //    color: $orange-20;
-    //}
-    //&.text-danger:hover {
-    //    color: $danger-light;
-    //}
-    //&.bg-primary:hover {
-    //    background-color: $primary-hover;
-    //}
-    //&.bg-success:hover {
-    //    background-color: $primary-bg_hover_success;
-    //}
-    //&.bg-info:hover {
-    //    background-color: $primary-bg_info_hover_3;
-    //}
-    //&.bg-warning:hover {
-    //    background-color: $brown-light-40;
-    //}
-    //&.bg-danger:hover {
-    //    background-color: $danger-bg-hover;
-    //}
 }
 // Thumbnails
 .img-thumbnail {
@@ -410,23 +380,6 @@ hr {
     border-top: 1px solid $primary-bg_hover;
 }
 
-// Backgrounds
-.bg-primary {
-    color: $white;
-    background-color: $primary;
-}
-.bg-success {
-    background-color: $primary-bg-success;
-}
-.bg-info {
-    background-color: $primary-bg_info;
-}
-.bg-warning {
-    background-color: $warning-bg;
-}
-.bg-danger {
-    background-color: $red-90!important;
-}
 // Page header
 .page-header {
     border-bottom: 1px solid $primary-bg_hover;
@@ -1172,13 +1125,6 @@ output {
     border: 1px solid $gray-09;
 }
 
-// Side Body
-.side-body {
-    h3 {
-        @extend %extend_19;
-    }
-}
-
 // Surveybar
 .surveybar {
     border-bottom: 1px solid $gray-07;
@@ -1225,9 +1171,6 @@ table.cke_editor {
 // Headings
 .h6 .small {
     color: $gray-15;
-}
-.pagetitle {
-    @extend %extend_19;
 }
 
 // Dropdowns
@@ -1276,11 +1219,6 @@ table.cke_editor {
     &:focus {
         border: 1px solid $gray-08;
     }
-}
-
-// Survey list
-.list-surveys h3 {
-    @extend %extend_19;
 }
 
 div.panel.disabled {
@@ -1611,19 +1549,6 @@ input[type="text"], input[type="password"], .ui-autocomplete-input, textarea, .u
         /* Safari */
         transition: width 1.6s;
     }
-}
-
-
-// ComfortUpdate
-#comfortUpdateGeneralWrap h3.maintitle {
-    background-color: transparent;
-    color: $primary;
-    border-bottom: 1px solid $primary;
-}
-#comfortUpdateGeneralWrap .on span {
-    display: block;
-    background-color: $primary;
-    color: $white;
 }
 
 .jcarousel li.active {

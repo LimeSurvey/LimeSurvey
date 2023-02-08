@@ -5,7 +5,7 @@
  */
 ?>
 
-<h2 class="maintitle"><?php eT('Update complete!'); ?></h2>
+<h3 class="maintitle"><?php eT('Update complete!'); ?></h3>
 <div class="updater-background">
     <?php
         echo sprintf(gT('Buildnumber was successfully updated to %s.'),$destinationBuild).'<br />';

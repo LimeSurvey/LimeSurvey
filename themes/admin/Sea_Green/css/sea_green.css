@@ -11104,6 +11104,91 @@ a {
   display: none !important;
 }
 
+.summary-table {
+  font-size: 0.9975rem;
+  padding-left: 0.5rem;
+}
+.summary-table strong {
+  font-weight: 600;
+}
+
+.pagetitle {
+  border-bottom: solid 2px #D3D5DA;
+  position: relative;
+  margin-bottom: 1em;
+}
+.pagetitle.h3 {
+  color: #152536;
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-weight: 500;
+  font-size: 0.9975rem;
+  line-height: 20px;
+}
+
+.side-body h3, .side-body .h3 {
+  border-bottom: solid 2px #D3D5DA;
+}
+
+/**
+ * comfortUpdate
+ */
+#ajaxContainerLoading,
+.ajaxLoading {
+  height: 130px;
+  text-align: center;
+  margin-top: 70px;
+  margin-bottom: 100px;
+  display: none;
+}
+
+#comfortUpdateIcon {
+  height: 1em;
+  margin-right: 0.5em;
+}
+
+#comfortUpdateGeneralWrap h3.maintitle, #comfortUpdateGeneralWrap .maintitle.h3 {
+  background-color: transparent;
+  color: #152536;
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-weight: 500;
+  font-size: 0.9975rem;
+  line-height: 20px;
+  border-bottom: solid 2px #D3D5DA;
+}
+
+#comfortUpdateGeneralWrap .on {
+  font-weight: bold;
+  font-size: 1em;
+  padding-left: 0.5em;
+  padding-top: 0.5em;
+}
+
+#comfortUpdateGeneralWrap .on span {
+  display: block;
+  padding: 0.1em;
+  padding-left: 0.5em;
+  width: 40%;
+  background-color: var(--bs-primary);
+  color: #fff;
+}
+
+#comfortUpdateGeneralWrap .off {
+  font-size: 0.9em;
+  padding-left: 0.5em;
+  padding-top: 0.5em;
+}
+
+#comfortUpdateGeneralWrap #welcomeMessage {
+  border-right: 2px solid #D3D5DA;
+}
+
+#comfortUpdateGeneralWrap #key-actions {
+  padding-left: 1em;
+}
+
+/**
+ * comfortUpdate END
+ */
 /**
  * Lime Admin Common CSS File
  *
@@ -11334,7 +11419,6 @@ a {
 }
 
 .side-body h3, .side-body .h3,
-.pagetitle,
 .list-surveys h3,
 .list-surveys .h3 {
   position: relative;
@@ -12714,56 +12798,6 @@ h3 .glyphicon-chevron-right,
 .preloader.loading .slice:nth-child(6) {
   transform: rotateZ(360deg) rotateY(90deg) rotateX(0);
   animation: 2s preload-cycle-6 linear infinite both;
-}
-
-/**
- * comfortUpdate
- */
-#ajaxContainerLoading,
-.ajaxLoading {
-  height: 130px;
-  text-align: center;
-  margin-top: 70px;
-  margin-bottom: 100px;
-  display: none;
-}
-
-#comfortUpdateIcon {
-  height: 1em;
-  margin-right: 0.5em;
-}
-
-#comfortUpdateGeneralWrap h3.maintitle, #comfortUpdateGeneralWrap .maintitle.h3 {
-  background-color: transparent;
-}
-
-#comfortUpdateGeneralWrap .on {
-  font-weight: bold;
-  font-size: 1em;
-  padding-left: 0.5em;
-  padding-top: 0.5em;
-}
-
-#comfortUpdateGeneralWrap .on span {
-  display: block;
-  padding: 0.1em;
-  padding-left: 0.5em;
-  width: 40%;
-}
-
-#comfortUpdateGeneralWrap .off {
-  font-size: 0.9em;
-  padding-left: 0.5em;
-  padding-top: 0.5em;
-}
-
-#comfortUpdateGeneralWrap #welcomeMessage,
-#comfortUpdateGeneralWrap #btn-container {
-  border-right: 1px solid #EEE;
-}
-
-#comfortUpdateGeneralWrap #key-actions {
-  padding-left: 1em;
 }
 
 html body .nav-tabs > li.active > a,
@@ -15122,11 +15156,6 @@ a.list-group-item-danger.active:focus, a.list-group-item-danger.active:hover, a.
   filter: alpha(opacity=90);
 }
 
-.list-surveys h3, .list-surveys .h3, .pagetitle, .side-body h3, .side-body .h3 {
-  color: #333333;
-  border-bottom: solid 2px #328637;
-}
-
 body {
   color: #35363F;
   background-color: #fff;
@@ -15228,27 +15257,6 @@ a.list-group-item-danger:focus {
 
 hr {
   border-top: 1px solid #9cba9e;
-}
-
-.bg-primary {
-  color: #fff;
-  background-color: #328637;
-}
-
-.bg-success {
-  background-color: #c0e3c2;
-}
-
-.bg-info {
-  background-color: #649b6b;
-}
-
-.bg-warning {
-  background-color: #bba18c;
-}
-
-.bg-danger {
-  background-color: #a0352f !important;
 }
 
 .page-header {
@@ -16311,18 +16319,6 @@ input[type=text], input[type=password], .ui-autocomplete-input, textarea, .unedi
   transition: width 1.6s;
 }
 
-#comfortUpdateGeneralWrap h3.maintitle, #comfortUpdateGeneralWrap .maintitle.h3 {
-  background-color: transparent;
-  color: #328637;
-  border-bottom: 1px solid #328637;
-}
-
-#comfortUpdateGeneralWrap .on span {
-  display: block;
-  background-color: #328637;
-  color: #fff;
-}
-
 .jcarousel li.active {
   border: 1px solid #328637;
 }
@@ -17069,6 +17065,14 @@ dl dt {
   font-weight: 600;
   font-size: 1.14rem;
   line-height: 24px;
+}
+
+.fw-bold {
+  font-weight: 600 !important;
+}
+
+small, .small {
+  font-size: 0.75em;
 }
 
 a {

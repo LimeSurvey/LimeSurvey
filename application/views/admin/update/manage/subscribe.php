@@ -6,7 +6,7 @@
 ?>
 <div class="container-fluid">
     <div class="col-12 list-surveys" id="comfortUpdateGeneralWrap">
-        <h3><span id="comfortUpdateIcon" class="ri-shield-check-fill text-success"></span><?php eT("Subscribe to ComfortUpdate!"); ?></h3>
+        <div class="pagetitle h3"><span id="comfortUpdateIcon" class="ri-shield-check-fill text-primary"></span><?php eT("Subscribe to ComfortUpdate!"); ?></div>
 
         <div class="container">
             <br/>
@@ -37,9 +37,9 @@
                     ?>
                 </div>
             </div>
-            <?php echo CHtml::submitButton(gT('Submit'), ["class" => "btn btn-outline-secondary", "id" => "submitKeyButton"]); ?>
+            <?php echo CHtml::submitButton(gT('Submit'), ["class" => "btn btn-primary", "id" => "submitKeyButton"]); ?>
 
-            <a class="btn btn-cancel" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
+            <a class="btn btn-outline-secondary" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
                 <?php eT("Cancel"); ?>
             </a>
             <?php echo CHtml::endForm(); ?>

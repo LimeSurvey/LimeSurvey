@@ -37,7 +37,7 @@
 <br/>
 
 
-<table class="items table">
+<table class="items table w-75 m-auto">
     <!-- header -->
     <thead>
         <tr>
@@ -76,7 +76,7 @@
 
             <!-- stable / unstable -->
             <?php if ($aUpdateVersion['branch']!='master'):?>
-                <td class="text-warning">
+                <td class="text-danger">
                     <?php  eT('unstable'); ?>
                 </td>
             <?php else: ?>
@@ -87,7 +87,7 @@
 
             <!-- security / regular -->
             <?php if($aUpdateVersion['security_update']):?>
-            <td class="text-warning">
+            <td class="text-danger">
                     <?php eT("Security update");?>
             </td>
             <?php else: ?>
@@ -103,17 +103,26 @@
                     <?php echo CHtml::hiddenField('destinationBuild' , $aUpdateVersion['build']); ?>
 
                     <!-- the button launching the update -->
-                    <button type="submit" class="btn btn-outline-secondary ajax_button launch_update">
-                        <span style="height : 1em; margin-right : 0.5em;" class="ri-shield-check-fill text-success"></span>
+                    <button type="submit" class="btn btn-sm btn-outline-secondary ajax_button launch_update">
+                        <span class="ri-shield-check-fill text-success"></span>
                         <?php eT("Use ComfortUpdate");?>
                     </button>
-
-                     <?php if ($aUpdateVersion['branch']!='master'): ?>
-                         <input type='button' class="ajax_button btn btn-outline-secondary" onclick="window.open('https://community.limesurvey.org/downloads/', '_blank')" value='<?php eT("Download"); ?>' />
-                     <?php else: ?>
-                         <input type='button' class="ajax_button btn btn-outline-secondary" onclick="window.open('https://community.limesurvey.org/downloads/', '_blank')" value='<?php eT("Download"); ?>' />
-                     <?php endif; ?>
-
+                <?php
+                $this->widget(
+                    'ext.ButtonWidget.ButtonWidget',
+                    [
+                        'name' => 'download-version',
+                        'id' => 'download-version',
+                        'text' => gT('Download'),
+                        'icon' => 'ri-download-fill',
+                        'link' => 'https://community.limesurvey.org/downloads/',
+                        'htmlOptions' => [
+                            'class' => 'ajax_button btn btn-sm btn-outline-secondary',
+                            'target' => '_blank',
+                        ],
+                    ]
+                );
+                ?>
                  <?php echo CHtml::endForm(); ?>
             </td>
         </tr>

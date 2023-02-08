@@ -37,7 +37,7 @@ foreach (array_reverse($changelogs->changelogentries) as $changelogentry) {
 
 ?>
 
-<textarea class="updater-changelog form-control" readonly="readonly" style="background-color: #FFF" rows="20">
+<textarea class="updater-changelog form-control" readonly="readonly" rows="20">
 <?php
 echo $changelog;
 ?>
@@ -46,7 +46,7 @@ echo $changelog;
     </div>
 </div>
 <div class="row">
-    <div class="col-12" style="margin-top : 1em">
+    <div class="col-12 mt-2">
 
         <?php
             $formUrl = Yii::app()->getController()->createUrl("admin/update/sa/filesystem/");
@@ -55,13 +55,13 @@ echo $changelog;
             echo CHtml::hiddenField('access_token', $access_token);
         ?>
 
-        <a class="btn btn-cancel" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
+        <a class="btn btn-cancel me-1" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
             <?php eT("Cancel"); ?>
         </a>
 
 
     <?php
-        echo CHtml::submitButton(gT('Continue', 'unescaped'), array('id' => 'step2launch', "class" => "btn btn-outline-secondary ajax_button launch_update"));
+        echo CHtml::submitButton(gT('Continue', 'unescaped'), array('id' => 'step2launch', "class" => "btn btn-primary ajax_button launch_update"));
         echo CHtml::endForm();
     ?>
 
