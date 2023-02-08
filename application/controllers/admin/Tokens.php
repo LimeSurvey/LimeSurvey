@@ -1158,8 +1158,9 @@ class Tokens extends SurveyCommonAction
             . CHtml::form(array("admin/tokens/sa/deletetokenattributes/surveyid/{$iSurveyId}"), 'post', array('id' => 'attributenumber'))
             . CHtml::hiddenField('deleteattribute', $sAttributeToDelete)
             . CHtml::hiddenField('sid', $iSurveyId)
-            . CHtml::htmlButton(gT('Delete attribute'), array('type' => 'submit', 'value' => 'confirm', 'name' => 'confirm', 'class' => 'btn btn-outline-secondary btn-lg'))
-            . CHtml::htmlButton(gT('Cancel'), array('type' => 'submit', 'value' => 'cancel', 'name' => 'cancel', 'class' => 'btn btn-cancel btn-lg'))
+            . CHtml::htmlButton(gT('Cancel'), array('type' => 'submit', 'value' => 'cancel', 'name' => 'cancel', 'class' => 'btn btn-outline-secondary'))
+            . '&nbsp;'
+            . CHtml::htmlButton(gT('Delete attribute'), array('type' => 'submit', 'value' => 'confirm', 'name' => 'confirm', 'class' => 'btn btn-danger'))
             . CHtml::endForm()
             )), $aData);
         } elseif ($sAttributeToDelete) {

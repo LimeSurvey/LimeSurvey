@@ -25,6 +25,10 @@
                     <?php eT("You can switch back to closed-access mode at any time. Navigate to Settings --> Survey participants and click on the 'Switch to closed-access mode' button."); ?>
                     <br />
                 </p>
+                <a
+                    class="btn btn-outline-secondary"
+                    href="<?php echo $this->createUrl("admin/tokens/sa/index/surveyid/{$iSurveyId}"); ?>"
+                ><?php eT('Cancel'); ?></a>
                 <button
                     class="btn btn-danger"
                     type='submit'
@@ -33,10 +37,6 @@
                 >
                     <?php eT('Delete table'); ?>
                 </button>
-                <a
-                    class="btn btn-default"
-                    href="<?php echo $this->createUrl("admin/tokens/sa/index/surveyid/{$iSurveyId}"); ?>"
-                ><?php eT('Cancel'); ?></a>
                 </form>
             </div>
         </div>
