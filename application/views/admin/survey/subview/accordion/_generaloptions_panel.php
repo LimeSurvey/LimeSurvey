@@ -342,7 +342,7 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
                     <?php } ?>
                 </select>
             </div>
-            <div class="col-md-6 template-img mt-4 mx-auto d-flex justify-content-center" style="width:450px; max-width:100%;" id="preview-image-container">
+            <div class="col-md-6 mt-4 w-100" id="preview-image-container">
                 <?php echo TemplateConfiguration::getInstanceFromTemplateName(($oSurvey->template == 'inherit') ? $oSurveyOptions->template : $oSurvey->template)->getPreview() ?>
             </div>
         </div>
