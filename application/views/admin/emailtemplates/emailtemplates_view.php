@@ -94,9 +94,9 @@ var LS = LS || {};  // namespace
             </div>
             <div class='modal-body'>
                 <div class='input-group'>
-                    <div class="input-group-addon">{</div>
+                    <div class="input-group-text">{</div>
                     <textarea class='form-control' id='attachment-relevance-condition'></textarea>
-                    <div class="input-group-addon">}</div>
+                    <div class="input-group-text">}</div>
                 </div>
             </div>
             <div class='modal-footer'>
