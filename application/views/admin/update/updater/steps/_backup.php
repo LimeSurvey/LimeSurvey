@@ -77,9 +77,9 @@ if (isset($dbBackupInfos->html)) {
     <?php endif;?>
     <div class="row">
         <div class="col-12 mt-2" >
-            <span class="mb-2">
+            <div class="mb-2">
                 <?php eT('Please check any problems above and then proceed to the final step.'); ?>
-            </span>
+            </div>
             <?php $formUrl = Yii::app()->getController()->createUrl("admin/update/sa/step4/");?>
             <?php echo CHtml::beginForm($formUrl, 'post', array('id' => 'launchStep4Form')); ?>
                 <!-- The destination build  -->
