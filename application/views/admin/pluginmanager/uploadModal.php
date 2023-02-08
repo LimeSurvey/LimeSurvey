@@ -35,18 +35,18 @@
                 </div>
             </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <?php eT("Close");?>
+                </button>
                 <?php if (!class_exists('ZipArchive')): ?>
                     <?php eT("The ZIP library is not activated in your PHP configuration thus importing ZIP files is currently disabled.", "js") ?>
                 <?php else: ?>
-                    <button type="button" class='btn btn-success' onclick='if (window.LS.validatefilename(this.form,"<?php eT('Please select a file to import!', 'js') ?>")) { this.form.submit();}'>
-                        <i class='ri-upload-fill'></i>
+                    <button type="button" class='btn btn-primary' onclick='if (window.LS.validatefilename(this.form,"<?php eT('Please select a file to import!', 'js') ?>")) { this.form.submit();}'>
+                        <i class='icon-import'></i>
                         &nbsp;
                         <?php eT("Upload") ?>
                     </button>
                 <?php endif; ?>
-                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                    <?php eT("Close");?>
-                </button>
             </div>
             </form>
         </div><!-- /.modal-content -->

@@ -53,10 +53,21 @@ class Tokens extends SurveyCommonAction
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyId . ")";
         $aData['sidemenu']["token_menu"] = true;
 
-        $aData['topBar']['name'] = 'tokensTopbar_view';
-        $aData['topBar']['leftSideView'] = 'tokensTopbarLeft_view';
-        $aData['topBar']['rightSideView'] = 'tokensTopbarRight_view';
-        $aData['showDelButton'] = true;
+        //new topbar in use here
+        $topbarData = TopbarConfiguration::getTokensTopbarData($iSurveyId);
+        $aData['topbar']['showDelButton'] = true;
+        $topbarData = array_merge($topbarData, $aData['topbar']);
+        $aData['topbar']['middleButtons'] = Yii::app()->getController()->renderPartial(
+            '/surveyAdministration/partial/topbar_tokens/leftSideButtons',
+            $topbarData,
+            true
+        );
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/surveyAdministration/partial/topbar_tokens/rightSideButtons',
+            $topbarData,
+            true
+        );
+
 
         // CHECK TO SEE IF A Survey participants table EXISTS FOR THIS SURVEY
         if (!$survey->hasTokensTable) {
@@ -296,14 +307,21 @@ class Tokens extends SurveyCommonAction
 
         /* build JS variable to hide buttons forbidden for the current user */
         $aData = [];
-        $aData['showDelButton'] = Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'delete') ? 'true' : 'false';
-        /*$aData['showInviteButton'] = Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update') ? 'true' : 'false';
-        $aData['showBounceButton'] = Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update') ? 'true' : 'false';
-        $aData['showRemindButton'] = Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update') ? 'true' : 'false';*/
 
-        $aData['topBar']['name'] = 'tokensTopbar_view';
-        $aData['topBar']['leftSideView'] = 'tokensTopbarLeft_view';
-        $aData['topBar']['rightSideView'] = 'tokensTopbarRight_view';
+        //new topbar in use here
+        $topbarData = TopbarConfiguration::getTokensTopbarData($iSurveyId);
+        $aData['topbar']['showDelButton'] = Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'delete');
+        $topbarData = array_merge($topbarData, $aData['topbar']);
+        $aData['topbar']['middleButtons'] = Yii::app()->getController()->renderPartial(
+            '/surveyAdministration/partial/topbar_tokens/leftSideButtons',
+            $topbarData,
+            true
+        );
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/surveyAdministration/partial/topbar_tokens/rightSideButtons',
+            $topbarData,
+            true
+        );
 
         // Javascript
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'tokens.js', LSYii_ClientScript::POS_BEGIN);
@@ -952,8 +970,6 @@ class Tokens extends SurveyCommonAction
             $aData['amount'] = 100;
             $aData['tokenlength'] = !empty(Token::model($iSurveyId)->survey->oOptions->tokenlength) ? Token::model($iSurveyId)->survey->oOptions->tokenlength : 15;
 
-
-
             $thissurvey = getSurveyInfo($iSurveyId);
             $aData['thissurvey'] = $thissurvey;
             $aData['surveyid'] = $iSurveyId;
@@ -961,9 +977,16 @@ class Tokens extends SurveyCommonAction
             $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat'], App()->language);
             $aData['aAttributeFields'] = getParticipantAttributes($iSurveyId);
 
-            $aData['showSaveButton'] = true;
-            $aData['topBar']['name'] = 'tokensTopbar_view';
-            $aData['topBar']['rightSideView'] = 'tokensTopbarRight_view';
+            $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+                '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
+                [
+                    'showSaveAndCloseButton' => true,
+                    'showWhiteCloseButton' => true,
+                    'showSaveButton' => true,
+                    'closeUrl' => Yii::app()->createUrl('admin/tokens/sa/browse/surveyid/' . $iSurveyId)
+                ],
+                true
+            );
 
             $this->renderWrappedTemplate('token', array('dummytokenform'), $aData);
         }
@@ -1044,10 +1067,15 @@ class Tokens extends SurveyCommonAction
         foreach (ParticipantAttributeName::model()->getCPDBAttributes() as $aCPDBAttribute) {
             $aData['aCPDBAttributes'][$aCPDBAttribute['attribute_id']] = $aCPDBAttribute['attribute_name'];
         }
-        // load sodium library
-        $aData['showBackButton'] = true;
-        $aData['topBar']['name'] = 'tokensTopbar_view';
-        $aData['topBar']['rightSideView'] = 'tokensTopbarRight_view';
+
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
+            [
+                'showCloseButton' => true,
+                'closeUrl' => Yii::app()->createUrl('admin/tokens/sa/browse/surveyid/' . $iSurveyId)
+            ],
+            true
+        );
 
         $sodium = Yii::app()->sodium;
         $aData['bEncrypted'] = $sodium->bLibraryExists;
@@ -1130,8 +1158,9 @@ class Tokens extends SurveyCommonAction
             . CHtml::form(array("admin/tokens/sa/deletetokenattributes/surveyid/{$iSurveyId}"), 'post', array('id' => 'attributenumber'))
             . CHtml::hiddenField('deleteattribute', $sAttributeToDelete)
             . CHtml::hiddenField('sid', $iSurveyId)
-            . CHtml::htmlButton(gT('Delete attribute'), array('type' => 'submit', 'value' => 'confirm', 'name' => 'confirm', 'class' => 'btn btn-outline-secondary btn-lg'))
-            . CHtml::htmlButton(gT('Cancel'), array('type' => 'submit', 'value' => 'cancel', 'name' => 'cancel', 'class' => 'btn btn-cancel btn-lg'))
+            . CHtml::htmlButton(gT('Cancel'), array('type' => 'submit', 'value' => 'cancel', 'name' => 'cancel', 'class' => 'btn btn-outline-secondary'))
+            . '&nbsp;'
+            . CHtml::htmlButton(gT('Delete attribute'), array('type' => 'submit', 'value' => 'confirm', 'name' => 'confirm', 'class' => 'btn btn-danger'))
             . CHtml::endForm()
             )), $aData);
         } elseif ($sAttributeToDelete) {
@@ -1669,11 +1698,22 @@ class Tokens extends SurveyCommonAction
             );
 
             // White Close Button
-            $aData['showWhiteCloseButton'] = true;
+            //$aData['showWhiteCloseButton'] = true;
             $aData['closeUrl'] = Yii::app()->createUrl('admin/tokens/sa/browse/surveyid/' . $iSurveyId);
 
-            $aData['topBar']['name'] = 'tokensTopbar_view';
-            $aData['topBar']['rightSideView'] = 'tokensTopbarRight_view';
+            //$aData['topBar']['name'] = 'tokensTopbar_view';
+            //$aData['topBar']['rightSideView'] = 'tokensTopbarRight_view';
+
+            $topbarData = TopbarConfiguration::getTokensTopbarData($iSurveyId);
+            $aData['topbar']['showWhiteCloseButton'] = true;
+            $aData['topbar']['showDownloadButton'] = true;
+            $aData['topbar']['closeUrl'] = Yii::app()->createUrl('admin/tokens/sa/browse/surveyid/' . $iSurveyId);
+            $topbarData = array_merge($topbarData, $aData['topbar']);
+            $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+                '/surveyAdministration/partial/topbar_tokens/rightSideButtons',
+                $topbarData,
+                true
+            );
 
             $this->renderWrappedTemplate('token', array('exportdialog'), $aData);
         }
@@ -1714,9 +1754,14 @@ class Tokens extends SurveyCommonAction
         $aData['ldap_queries'] = Yii::app()->getConfig('ldap_queries');
 
         if (!Yii::app()->request->getPost('submit')) {
-            $aData['showCloseButton'] = true;
-            $aData['closeUrl'] = Yii::app()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId);
-            $aData['topBar']['rightSideView'] = 'tokensTopbarRight_view';
+            $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+                '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
+                [
+                    'showCloseButton' => true,
+                    'closeUrl' => Yii::app()->createUrl('admin/tokens/sa/browse/surveyid/' . $iSurveyId)
+                ],
+                true
+            );
             $this->renderWrappedTemplate('token', array('ldapform'), $aData);
         } else {
             $filterduplicatetoken = (Yii::app()->request->getPost('filterduplicatetoken') && (Yii::app()->request->getPost('filterduplicatetoken') == 'on' || Yii::app()->request->getPost('filterduplicatetoken') == '1'));
@@ -2264,10 +2309,14 @@ class Tokens extends SurveyCommonAction
         }
         $aData['thischaracterset'] = $thischaracterset;
 
-        $aData['showCloseButton'] = true;
-        $aData['closeUrl'] = Yii::app()->createUrl('admin/tokens/sa/browse/surveyid/' . $iSurveyId);
-        $aData['topBar']['name'] = 'tokensTopbar_view';
-        $aData['topBar']['rightSideView'] = 'tokensTopbarRight_view';
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
+            [
+                'showCloseButton' => true,
+                'closeUrl' => Yii::app()->createUrl('admin/tokens/sa/browse/surveyid/' . $iSurveyId)
+            ],
+            true
+        );
 
         $this->renderWrappedTemplate('token', array('csvupload'), $aData);
     }
@@ -2365,34 +2414,32 @@ class Tokens extends SurveyCommonAction
 
         $aData['topBar']['hide'] = true;
 
-        if (!Yii::app()->request->getQuery('ok')) {
+        if (!Yii::app()->request->getPost('ok')) {
             $aData['sidemenu']['state'] = false;
             $aData['backupTableName']   = $newtableDisplay;
-
             $this->renderWrappedTemplate('token', 'deleteParticipantsTable', $aData);
-        } else /* The user has confirmed they want to delete the tokens table */
-        {
-            Yii::app()->db->createCommand()->renameTable("{{{$oldtable}}}", "{{{$newtable}}}");
-
-            $archivedTokenSettings = new ArchivedTableSettings();
-            $archivedTokenSettings->survey_id = $iSurveyId;
-            $archivedTokenSettings->user_id = $userID;
-            $archivedTokenSettings->tbl_name = $newtable;
-            $archivedTokenSettings->tbl_type = 'token';
-            $archivedTokenSettings->created = $DBDate;
-            $archivedTokenSettings->properties = $aData['thissurvey']['tokenencryptionoptions'];
-            $archivedTokenSettings->attributes = json_encode($aData['thissurvey']['attributedescriptions']);
-            $archivedTokenSettings->save();
-
-            //Remove any survey_links to the CPDB
-            SurveyLink::model()->deleteLinksBySurvey($iSurveyId);
-
-            $aData['sidemenu']['state'] = false;
-            $aData['backupTableName'] = $newtableDisplay;
-            $this->renderWrappedTemplate('token', 'afterDeleteParticipantsTable', $aData);
-
-            LimeExpressionManager::SetDirtyFlag(); // so that knows that survey participants tables have changed
+            return;
         }
+        /* The user has confirmed they want to delete the tokens table */
+        Yii::app()->db->createCommand()->renameTable("{{{$oldtable}}}", "{{{$newtable}}}");
+
+        $archivedTokenSettings = new ArchivedTableSettings();
+        $archivedTokenSettings->survey_id = $iSurveyId;
+        $archivedTokenSettings->user_id = $userID;
+        $archivedTokenSettings->tbl_name = $newtable;
+        $archivedTokenSettings->tbl_type = 'token';
+        $archivedTokenSettings->created = $DBDate;
+        $archivedTokenSettings->properties = $aData['thissurvey']['tokenencryptionoptions'];
+        $archivedTokenSettings->attributes = json_encode($aData['thissurvey']['attributedescriptions']);
+        $archivedTokenSettings->save();
+
+        //Remove any survey_links to the CPDB
+        SurveyLink::model()->deleteLinksBySurvey($iSurveyId);
+
+        $aData['sidemenu']['state'] = false;
+        $aData['backupTableName'] = $newtableDisplay;
+        $this->renderWrappedTemplate('token', 'afterDeleteParticipantsTable', $aData);
+        LimeExpressionManager::SetDirtyFlag(); // so that knows that survey participants tables have changed
     }
 
     /**
@@ -2446,13 +2493,16 @@ class Tokens extends SurveyCommonAction
         $aData['sidemenu']['state'] = false;
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyId . ")";
 
-        // Save Button
-        $aData['topBar']['showSaveButton'] = true;
-        // Back Button
-        $aData['topBar']['showBackButton'] = true;
-        $aData['topBar']['returnUrl'] = Yii::app()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId);
-        $aData['topBar']['name'] = 'tokensTopbar_view';
-        $aData['topBar']['rightSideView'] = 'tokensTopbarRight_view';
+        $topbarData = TopbarConfiguration::getTokensTopbarData($iSurveyId);
+        $aData['topbar']['showSaveButton'] = true;
+        $aData['topbar']['showWhiteCloseButton'] = true;
+        $aData['topbar']['closeUrl'] = Yii::app()->createUrl('admin/tokens/sa/browse/surveyid/' . $iSurveyId);
+        $topbarData = array_merge($topbarData, $aData['topbar']);
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/surveyAdministration/partial/topbar_tokens/rightSideButtons',
+            $topbarData,
+            true
+        );
 
         $this->renderWrappedTemplate('token', array('bounce'), $aData);
     }
@@ -2524,16 +2574,15 @@ class Tokens extends SurveyCommonAction
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyId . ")";
         $aData['sidemenu']["token_menu"] = true;
 
-        // Save Button
-        $aData['showSaveButton'] = false;
-        // Save and Close Button
-        $aData['showGreenSaveAndCloseButton'] = true;
-        // White Close Button
-        $aData['showWhiteCloseButton'] = true;
-        $aData['closeUrl'] = Yii::app()->createUrl('admin/tokens/sa/browse/surveyid/' . $iSurveyId);
-
-        $aData['topBar']['name'] = 'tokensTopbar_view';
-        $aData['topBar']['rightSideView'] = 'tokensTopbarRight_view';
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
+            [
+                'showGreenSaveAndCloseButton' => true,
+                'showWhiteCloseButton' => true,
+                'closeUrl' => Yii::app()->createUrl('admin/tokens/sa/browse/surveyid/' . $iSurveyId)
+            ],
+            true
+        );
 
         if ($ajax) {
             $aData['oSurvey'] = $oSurvey;
@@ -2842,19 +2891,23 @@ class Tokens extends SurveyCommonAction
             }
         }
 
-        // Back Button
-        $aData['showBackButton'] = true;
-        $aData['returnUrl'] = Yii::app()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId);
-
         if (Yii::app()->request->getParam('action') == "remind") {
             // Send Reminders Button
-            $aData['showSendReminderButton'] = true;
+            $aData['topbar']['showSendReminderButton'] = true;
         } else {
             // Send Invitation Button
-            $aData['showSendInvitationButton'] = true;
+            $aData['topbar']['showSendInvitationButton'] = true;
         }
-        $aData['topBar']['name'] = 'tokensTopbar_view';
-        $aData['topBar']['rightSideView'] = 'tokensTopbarRight_view';
+
+        $topbarData = TopbarConfiguration::getTokensTopbarData($iSurveyId);
+        $aData['topbar']['showWhiteCloseButton'] = true;
+        $aData['topbar']['closeUrl'] = Yii::app()->createUrl('admin/tokens/sa/browse/surveyid/' . $iSurveyId);
+        $topbarData = array_merge($topbarData, $aData['topbar']);
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/surveyAdministration/partial/topbar_tokens/rightSideButtons',
+            $topbarData,
+            true
+        );
 
         $this->renderWrappedTemplate('token', array($sSubAction), $aData);
     }

@@ -5586,7 +5586,7 @@ textarea.form-control-lg {
 @media (min-width: 992px) {
   .modal-lg,
   .modal-xl {
-    max-width: 800px;
+    max-width: 900px;
   }
 }
 @media (min-width: 1200px) {
@@ -16833,6 +16833,12 @@ tr.info, tr.danger {
 .dropdown-menu .dropdown-item {
   padding: 8px 16px;
 }
+.dropdown-menu .dropdown-item.disabled {
+  color: #9094A7;
+}
+.dropdown-menu .dropdown-item.disabled i {
+  color: #9094A7 !important;
+}
 .dropdown-menu > li > a {
   color: #333641;
 }
@@ -16857,14 +16863,6 @@ tr.info, tr.danger {
   background-color: var(--bs-primary);
 }
 .dropdown-menu > .disabled > a {
-  color: #9094A7;
-}
-.dropdown-menu > .disabled > a:hover {
-  background-color: #EEEFF7;
-  color: #9094A7;
-}
-.dropdown-menu > .disabled > a:focus {
-  background-color: #EEEFF7;
   color: #9094A7;
 }
 
@@ -17169,6 +17167,7 @@ footer.footer {
   font-weight: 500;
 }
 .navbar .dropdown-menu {
+  z-index: 10000;
   box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
   border: none;
 }
@@ -17491,6 +17490,17 @@ footer.footer {
   to {
     transform: rotate(-360deg);
   }
+}
+
+.topbar {
+  padding-top: 10px;
+  padding-bottom: 5px;
+  margin: 0 auto 15px;
+  z-index: 1000;
+  background-color: #EEEFF7;
+}
+.topbar .btn {
+  margin-bottom: 4px;
 }
 
 .ls-panelboxes .ls-panelboxes-panelbox {

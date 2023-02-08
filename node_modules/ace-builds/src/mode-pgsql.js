@@ -1200,7 +1200,7 @@ var PgsqlHighlightRules = function () {
         "unlogged|until|update|user|using|uuid|vacuum|valid|validate|validator|value|values|varbit|" +
         "varchar|variadic|varying|verbose|version|view|void|volatile|when|where|whitespace|window|" +
         "with|without|work|wrapper|write|xid|xml|xmlattributes|xmlconcat|xmlelement|xmlexists|" +
-        "xmlforest|xmlparse|xmlpi|xmlroot|xmlserialize|year|yes|zone");
+        "xmlforest|xmlparse|xmlpi|xmlroot|xmlserialize|year|yes|zone|ties");
     var builtinFunctions = ("RI_FKey_cascade_del|RI_FKey_cascade_upd|RI_FKey_check_ins|RI_FKey_check_upd|" +
         "RI_FKey_noaction_del|RI_FKey_noaction_upd|RI_FKey_restrict_del|RI_FKey_restrict_upd|" +
         "RI_FKey_setdefault_del|RI_FKey_setdefault_upd|RI_FKey_setnull_del|" +

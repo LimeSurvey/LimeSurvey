@@ -94,7 +94,7 @@ $optionsOnOff = array(
                 </div>
             <?php } ?>
             <div class="d-none">
-                <?php echo TbHtml::submitButton('Save', array('class' => 'btn btn-success col-md-2 col-sm-4', "id" => "survey-settings-form")); ?>
+                <?php echo TbHtml::submitButton('Save', array('class' => 'btn btn-primary col-md-2 col-sm-4', "id" => "survey-settings-form")); ?>
             </div>
         </div>
         <?php echo CHtml::endForm() ?>

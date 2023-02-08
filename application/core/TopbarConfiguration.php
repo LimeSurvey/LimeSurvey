@@ -138,7 +138,7 @@ class TopbarConfiguration
      * @throws CException
      *
      */
-    protected static function getSurveyTopbarData($sid)
+    public static function getSurveyTopbarData($sid)
     {
         if (empty($sid)) {
             return [];
