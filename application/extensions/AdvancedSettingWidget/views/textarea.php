@@ -18,7 +18,7 @@
         <?php endforeach; ?>
     <?php else: ?>
         <textarea
-            class="form-control" 
+        class="<?= isset($this->setting['aFormElementOptions']['inputGroup']['prefix']) ? 'form-control ignore-border' : 'form-control' ?>"
             name="<?= $inputBaseName ?>"
             id="<?= CHtml::getIdByName($inputBaseName); ?>"
             <?= ($this->setting['help']) ? 'aria-describedby="help-' . CHtml::getIdByName($inputBaseName) . '"' : "" ?>

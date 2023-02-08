@@ -2,6 +2,14 @@
 .form-control {
   border: $input-border-width solid $input-border-color !important;
   line-height: $line-height-16;
+  border-radius: 4px !important;
+  &:focus {
+    box-shadow: 4px 4px 0px $elevation-shadow;
+  }
+}
+
+.form-control.ignore-border {
+  border-radius: 0px !important;
 }
 
 .form-control.ls-important-field {
@@ -42,6 +50,9 @@ input[type="file"]::file-selector-button {
   font-weight: 400;
   font-size: 14px;
   line-height: $line-height-16;
+  &:focus {
+    box-shadow: 4px 4px 0px $elevation-shadow;
+  }
 }
 
 .input-group-text {
