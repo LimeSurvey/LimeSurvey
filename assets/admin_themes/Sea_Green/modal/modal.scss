@@ -29,3 +29,7 @@
   border-top: none;
   padding: $modal-inner-padding;
 }
+
+#selector__exportTypeSelector-modal .modal-dialog {
+  border : 1px solid $g-900;
+}
