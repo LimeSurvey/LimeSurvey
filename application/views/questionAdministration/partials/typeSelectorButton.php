@@ -1,4 +1,5 @@
 <button type="button" data-bs-toggle="modal"
+    id="trigger_questionTypeSelector_button_button"
     aria-haspopup="true"
     aria-expanded="false"
     data-bs-target="#selector__questionTypeSelector-modal"
