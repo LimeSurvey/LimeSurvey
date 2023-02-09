@@ -15105,8 +15105,7 @@ a.list-group-item-danger.active:focus, a.list-group-item-danger.active:hover, a.
 }
 
 body {
-  color: #35363F;
-  background-color: #fff;
+  background-color: #F9F9FB;
 }
 
 mark, .mark {
@@ -16168,75 +16167,6 @@ input[type=text], input[type=password], .ui-autocomplete-input, textarea, .unedi
 
 #carousel-example-generic .carousel-indicators li {
   border: 1px solid #328637;
-}
-
-#sidebar .btn-primary.force.color.white.onhover:hover, #sidebar .btn-primary.force.color.white.onhover:active, #sidebar .btn-primary.force.color.white.onhover:focus {
-  color: #fff;
-}
-#sidebar .tabbutton.btn-primary {
-  outline: none;
-}
-#sidebar .tabbutton.btn-primary:hover:after, #sidebar .tabbutton.btn-primary:focus:after, #sidebar .tabbutton.btn-primary:active:after {
-  color: #163c19;
-}
-#sidebar .tabbutton.btn-primary:after {
-  color: #328637;
-}
-#sidebar .background.white {
-  background-color: #fff;
-  box-shadow: none;
-}
-#sidebar .resize-handle button {
-  background: #fff;
-}
-#sidebar .resize-handle button:focus, #sidebar .resize-handle button:active, #sidebar .resize-handle button:hover {
-  background-color: #fff !important;
-}
-#sidebar .menu-open {
-  animation-name: animate-gradient;
-  animation-duration: 450ms;
-  background: radial-gradient(circle at center, #5cc262 0px, #5cc262 8px, #fff 9px, #fff 100%);
-}
-#sidebar .selected {
-  padding-right: 20px;
-  background: linear-gradient(to left, #49bb50 0px, #49bb50 13px, #fff 13px, #fff 100%);
-  transition-property: all;
-  transition-duration: 0.25s;
-  transition-timing-function: cubic-bezier(1, 0.5, 0.5, 1);
-}
-#sidebar .selected.activated {
-  background: linear-gradient(to left, #328637 0px, #328637 13px, #fff 13px, #fff 100%);
-}
-#sidebar .dragged {
-  background-color: #40ab46 !important;
-  opacity: 0.8;
-  padding-top: 18px;
-  padding-bottom: 18px;
-  transition-property: all;
-  transition-duration: 0.1s;
-  transition-timing-function: ease-in-out;
-}
-#sidebar .menu-selected {
-  padding-right: 10px;
-  background: linear-gradient(to left, #328637 0px, #328637 6px, #fff 6px, #fff 100%);
-}
-#sidebar .subpanel.level-0 .menu-selected {
-  background: linear-gradient(to left, #40ab46 0px, #40ab46 6px, #fff 6px, #fff 100%);
-}
-#sidebar .subpanel.level-0 .selected {
-  background: linear-gradient(to left, #40ab46 0px, #40ab46 13px, #fff 13px, #fff 100%);
-}
-#sidebar .subpanel.level-1 .menu-selected {
-  background: linear-gradient(to left, #49bb50 0px, #49bb50 6px, #fff 6px, #fff 100%);
-}
-#sidebar .subpanel.level-1 .selected {
-  background: linear-gradient(to left, #49bb50 0px, #49bb50 13px, #fff 13px, #fff 100%);
-}
-#sidebar .subpanel.level-2 .menu-selected {
-  background: linear-gradient(to left, #5cc262 0px, #5cc262 6px, #fff 6px, #fff 100%);
-}
-#sidebar .subpanel.level-2 .selected {
-  background: linear-gradient(to left, #5cc262 0px, #5cc262 13px, #fff 13px, #fff 100%);
 }
 
 @keyframes animate-gradient {
@@ -17878,6 +17808,159 @@ footer.footer {
 
 .select2-container--bootstrap-5 .select2-selection--multiple textarea:focus {
   box-shadow: none;
+}
+
+#sidebar {
+  padding-top: 15px;
+  width: 100%;
+}
+#sidebar .questiongroup-list-group > li.selected {
+  opacity: 0.9;
+}
+#sidebar .questiongroup-list-group > li.selected.activated {
+  opacity: 1;
+}
+#sidebar .button-sub-bar {
+  min-height: 32px;
+}
+#sidebar .dragPointer {
+  cursor: move;
+}
+#sidebar .dragPointer.disabled {
+  color: #999999;
+  cursor: not-allowed;
+}
+#sidebar .question-question-list .question-question-list-item {
+  margin: 2px 12px 2px 2px;
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+}
+#sidebar .question-question-list .question-question-list-item .question-question-list-item-drag {
+  margin: 10px 15px;
+}
+#sidebar .question-question-list .question-question-list-item.selected {
+  padding-right: 20px;
+}
+#sidebar .question-question-list .question-question-list-item.selected .question-question-list-item-drag {
+  margin: 10px 5px 10px 10px;
+}
+#sidebar .question-question-list .question-question-list-item .question-question-list-item-link {
+  padding: 10px 10px 10px 25px;
+  display: inline-flex;
+  flex-wrap: wrap;
+}
+#sidebar .question-question-list .question-question-list-item ~ .question-question-list-item {
+  margin-top: 0px;
+}
+#sidebar .question_text_ellipsize {
+  display: inline-block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  padding-right: 2px;
+}
+#sidebar svg {
+  color: #9094A7;
+}
+#sidebar .btn-primary.force.color.white.onhover:hover, #sidebar .btn-primary.force.color.white.onhover:active, #sidebar .btn-primary.force.color.white.onhover:focus {
+  color: #fff;
+}
+#sidebar .background.white {
+  background-color: #fff;
+  box-shadow: none;
+}
+#sidebar .resize-handle {
+  position: absolute;
+  margin: auto;
+  left: 15px;
+  top: 0;
+  bottom: 0;
+  height: 100%;
+  max-height: 35px;
+  cursor: col-resize;
+}
+#sidebar .resize-handle button {
+  background-color: #fff;
+  outline: 0;
+  cursor: col-resize;
+  width: 100%;
+  height: 100%;
+  text-align: right;
+  border-radius: 0;
+  padding: 0 4px;
+}
+#sidebar .resize-handle button:focus, #sidebar .resize-handle button:active, #sidebar .resize-handle button:hover {
+  outline: 0 !important;
+  background-color: #fff !important;
+  color: #1E1E1E;
+}
+#sidebar .resize-handle button i {
+  font-size: 12px;
+}
+#sidebar .menu-open {
+  animation-name: animate-gradient;
+  animation-duration: 450ms;
+  background: radial-gradient(circle at center, #5cc262 0px, #5cc262 8px, #fff 9px, #fff 100%);
+}
+#sidebar .selected {
+  padding-right: 20px;
+  background: linear-gradient(to left, #DDDEE8 0px, #DDDEE8 8px, #fff 8px, #fff 100%);
+  transition-property: all;
+  transition-duration: 0.25s;
+  transition-timing-function: cubic-bezier(1, 0.5, 0.5, 1);
+}
+#sidebar .selected.activated {
+  background: linear-gradient(to left, #14AE5C 0px, #14AE5C 8px, #fff 8px, #fff 100%);
+}
+#sidebar a:not(.btn, .nav-tabs .nav-link) {
+  color: #1E1E1E;
+  font-weight: 400;
+}
+#sidebar li.dragged {
+  color: #fff;
+  background: var(--bs-primary) none !important;
+  padding-top: 18px;
+  padding-bottom: 18px;
+  transition-property: all;
+  transition-duration: 0.1s;
+  transition-timing-function: ease-in-out;
+}
+#sidebar li.dragged .q-group {
+  background: var(--bs-primary) !important;
+}
+#sidebar li.dragged a, #sidebar li.dragged svg, #sidebar li.dragged a:not(.btn, .nav-tabs .nav-link) {
+  color: #fff;
+}
+#sidebar .menu-selected {
+  padding-right: 10px;
+  background: linear-gradient(to left, #328637 0px, #328637 6px, #fff 6px, #fff 100%);
+}
+#sidebar .subpanel.level-0 .menu-selected {
+  background: linear-gradient(to left, #40ab46 0px, #40ab46 6px, #fff 6px, #fff 100%);
+}
+#sidebar .subpanel.level-0 .selected {
+  background: linear-gradient(to left, #40ab46 0px, #40ab46 13px, #fff 13px, #fff 100%);
+}
+#sidebar .subpanel.level-1 .menu-selected {
+  background: linear-gradient(to left, #49bb50 0px, #49bb50 6px, #fff 6px, #fff 100%);
+}
+#sidebar .subpanel.level-1 .selected {
+  background: linear-gradient(to left, #49bb50 0px, #49bb50 13px, #fff 13px, #fff 100%);
+}
+#sidebar .subpanel.level-2 .menu-selected {
+  background: linear-gradient(to left, #5cc262 0px, #5cc262 6px, #fff 6px, #fff 100%);
+}
+#sidebar .subpanel.level-2 .selected {
+  background: linear-gradient(to left, #5cc262 0px, #5cc262 13px, #fff 13px, #fff 100%);
+}
+
+.list-group {
+  border-radius: 0px !important;
+}
+
+.list-group-item {
+  border: none !important;
 }
 
 .badge {

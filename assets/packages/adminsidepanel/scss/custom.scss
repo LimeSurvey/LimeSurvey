@@ -1,104 +1,20 @@
 /* New adminsidepanel */
 
 #sidebar {
-    padding-top: 15px;
-    width:100%;
 
-    .questiongroup-list-group>li.selected {
-        opacity: 0.9;
-        &.activated {
-            opacity: 1;
-        }
-    }
-
-    .tabbutton.btn-primary {
-        outline: none;
-        &:after {
-            position: absolute;
-            left: 43%;
-            bottom: -12px;
-            font: normal normal normal 14px/1 FontAwesome;
-            font-size: 28px;
-            text-rendering: auto;
-            -webkit-font-smoothing: antialiased;
-            content: "\F078";
-        }
-    }
-    .overflow-auto {
-        overflow-x: hidden;
-        overflow-y: auto;
-    }
-    .resize-handle {
-        position: absolute;
-        right: 0;
-        top: 0;
-        bottom: 0;
-        height: 100%;
-        cursor: col-resize;
-        button {
-            outline: 0;
-            &:focus,
-            &:active,
-            &:hover {
-                outline: 0 !important;
-            }
-            cursor: col-resize;
-            width:100%;
-            height:100%;
-            text-align: left;
-            border-radius: 0;
-            padding: 0 4px;
-            i {
-                font-size: 12px;
-            }
-        }
-    }
     .transition-animate-width {
         -moz-transition: all 0.5s ease;
         -webkit-transition: all 0.5s ease;
         -ms-transition: all 0.5s ease;
         transition: all 0.5s ease;
     }
-    .button-sub-bar {
-        min-height: 32px;
-    }
+
     &.fill-height,
     .fill-height {
         height: 100%
     }
-    .dragPointer {
-        cursor: move;
-        &.disabled {
-            color: #999999;
-            cursor: not-allowed;
-        }
-    }
-    .question-question-list {
-        .question-question-list-item {
-            padding: 0;
-            .question-question-list-item-drag {
-                margin: 10px 15px;
-            }
-            &.selected {
-                padding-left: 20px;
-                .question-question-list-item-drag {
-                    margin: 10px 10px 10px 5px;
-                }
-            }
-            .question-question-list-item-link {
-                padding: 10px 25px 10px 10px;
-                display: inline-flex;
-                flex-wrap: wrap;
-            }
-        }
-    }
-    .question_text_ellipsize {
-        display: inline-block;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
-        padding-left: 2px;
-    }
+
+
 }
 
 .bigIcons {
