@@ -2697,6 +2697,16 @@ class ParticipantsAction extends SurveyCommonAction
             'alreadymappedattdescription' => $alreadymappedattnames
         );
 
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
+        $aData['subaction'] = gt('Add participants to central database');
+        $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyID . ")";
+        $topbarData = TopbarConfiguration::getSurveyTopbarData($oSurvey->sid);
+        $aData['topbar']['middleButtons'] = Yii::app()->getController()->renderPartial(
+            '/surveyAdministration/partial/topbar/surveyTopbarLeft_view',
+            $topbarData,
+            true
+        );
+
         $this->renderWrappedTemplate('participants', 'attributeMapToken', $aData);
     }
 

@@ -18,6 +18,12 @@
     }
     .dropdown-item {
         padding : 8px 16px;
+        &.disabled {
+            color: $g-600;
+            i {
+                color: $g-600 !important; // important because icons usually have a helper class that sets !important
+            }
+        }
     }
     > {
         li > a {
@@ -45,14 +51,6 @@
         }
         .disabled > a {
             color : $g-600;
-            &:hover {
-                background-color : $g-200;
-                color            : $g-600;
-            }
-            &:focus {
-                background-color : $g-200;
-                color            : $g-600;
-            }
         }
     }
 }

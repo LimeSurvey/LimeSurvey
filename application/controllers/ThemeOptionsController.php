@@ -756,8 +756,14 @@ class ThemeOptionsController extends LSBaseController
                 true
             );
             $aData['topbar']['rightButtons'] = $this->renderPartial(
-                '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
-                $topbarData,
+                '/layouts/partial_topbar/right_close_saveclose_save',
+                [
+                    'isCloseBtn' => false,
+                    'backUrl' => Yii::app()->createUrl('themeOptions'),
+                    'isSaveBtn' => true,
+                    'isSaveAndCloseBtn' => false,
+                    'formIdSave' => 'template-options-form'
+                ],
                 true
             );
         } else {

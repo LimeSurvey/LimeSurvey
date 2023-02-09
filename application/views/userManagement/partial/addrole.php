@@ -14,29 +14,28 @@ Yii::app()->getController()->renderPartial(
 ));?>
 
 <div class="modal-body selector--edit-role-container">
-    <div class="container form">
-        <input type="hidden" name="userid" value="<?=$oUser->uid?>" />
-        <div class="row">
-            <?php
-            $this->widget('ext.AlertWidget.AlertWidget', [
-                'text' => gT("Note: Adding role(s) to a user will overwrite any individual user permissions!"),
-                'type' => 'info',
-                'htmlOptions' => ['class' => 'col-12']
-            ]);
-            ?>
-        </div>
+    <div class="form">
+        <input type="hidden" name="userid" value="<?= $oUser->uid ?>"/>
+        <?php
+        $this->widget('ext.AlertWidget.AlertWidget', [
+            'text'        => gT("Note: Adding role(s) to a user will overwrite any individual user permissions!"),
+            'type'        => 'info',
+            'htmlOptions' => ['class' => 'col-12']
+        ]);
+        ?>
         <div class="mb-3">
-            <label for="roleselector"><?=gT("Select role(s):")?></label>
-            <?php $this->widget('yiiwheels.widgets.select2.WhSelect2',
+            <label for="roleselector"><?= gT("Select role(s):") ?></label>
+            <?php $this->widget(
+                'yiiwheels.widgets.select2.WhSelect2',
                 [
                     'asDropDownList' => true,
-                            'htmlOptions' => array(
-                                'style' => 'width:100%;',
-                                'multiple' => true
-                            ),
-                    'data' => $aPossibleRoles,
-                    'value' => $aCurrentRoles,
-                    'name' => 'roleselector[]',
+                    'htmlOptions'    => [
+                        'style'    => 'width:100%;',
+                        'multiple' => true
+                    ],
+                    'data'           => $aPossibleRoles,
+                    'value'          => $aCurrentRoles,
+                    'name'           => 'roleselector[]',
                 ]
             ); ?>
         </div>
