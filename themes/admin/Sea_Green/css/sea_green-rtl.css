@@ -17913,7 +17913,7 @@ footer.footer {
   color: #1E1E1E;
   font-weight: 400;
 }
-#sidebar .dragged {
+#sidebar li.dragged {
   color: #fff;
   background: var(--bs-primary) none !important;
   padding-top: 18px;
@@ -17922,7 +17922,10 @@ footer.footer {
   transition-duration: 0.1s;
   transition-timing-function: ease-in-out;
 }
-#sidebar .dragged a, #sidebar .dragged svg, #sidebar .dragged a:not(.btn, .nav-tabs .nav-link) {
+#sidebar li.dragged .q-group {
+  background: var(--bs-primary) !important;
+}
+#sidebar li.dragged a, #sidebar li.dragged svg, #sidebar li.dragged a:not(.btn, .nav-tabs .nav-link) {
   color: #fff;
 }
 #sidebar .menu-selected {

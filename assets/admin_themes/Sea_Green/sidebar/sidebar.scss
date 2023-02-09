@@ -124,7 +124,7 @@
     font-weight: $font-weight-normal;
   }
 
-  .dragged {
+  li.dragged {
     color                      : $white;
     background                 : var(--bs-primary) none !important;
     padding-top                : 18px;
@@ -133,6 +133,9 @@
     transition-duration        : .1s;
     transition-timing-function : ease-in-out;
 
+    .q-group {
+      background                 : var(--bs-primary) !important;
+    }
     a, svg, a:not(.btn, .nav-tabs .nav-link) {
       color                      : $white;
     }

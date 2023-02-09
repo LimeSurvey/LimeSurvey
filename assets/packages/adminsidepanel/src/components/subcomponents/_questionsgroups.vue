@@ -319,7 +319,7 @@ export default {
                     style=" background: linear-gradient(90deg, #14AE5C 0%, #14AE5C 5px, #EEEFF7 5px, #EEEFF7 100%); padding: 0;"
                 >
 
-                  <div class="d-flex nowrap ls-space padding right-5 bottom-5" style=" margin-left: 6px;
+                  <div class="q-group d-flex nowrap ls-space padding right-5 bottom-5" style=" margin-left: 6px;
     background: white;
     padding: 10px;">
                     <div
