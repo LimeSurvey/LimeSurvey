@@ -11094,6 +11094,14 @@ a {
   min-height: 100vh;
 }
 
+.select2-selection__choice {
+  background-color: #EEEFF7;
+  color: #9094A7 !important;
+  font-weight: 500;
+  font-size: 12px !important;
+  line-height: 16px;
+}
+
 /**
  * Lime Admin Common CSS File
  *
