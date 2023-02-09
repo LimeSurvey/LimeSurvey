@@ -1152,7 +1152,7 @@ class Tokens extends SurveyCommonAction
             Yii::app()->getController()->redirect(Yii::app()->getController()->createUrl("/admin/tokens/sa/managetokenattributes/surveyid/$iSurveyId"));
         } elseif ($confirm != 'confirm' && $sAttributeToDelete) {
             $aData['sidemenu']['state'] = false;
-            $aData['title_bar']['title']= $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyId . ")";
+            $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyId . ")";
             $topbarData = TopbarConfiguration::getTokensTopbarData($iSurveyId);
             $aData['topbar']['middleButtons'] = Yii::app()->getController()->renderPartial(
                 '/surveyAdministration/partial/topbar_tokens/leftSideButtons',
