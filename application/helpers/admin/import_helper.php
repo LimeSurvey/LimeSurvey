@@ -1419,6 +1419,17 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         $surveyLanguageSetting = new SurveyLanguageSetting();
         $surveyLanguageSetting->setAttributes($insertdata, false);
         try {
+            // Clear alias if it was already in use
+            $surveyLanguageSetting->checkAliasUniqueness();
+            if ($surveyLanguageSetting->hasErrors('surveyls_alias')) {
+                $languageData = getLanguageData();
+                $results['importwarnings'][] = sprintf(
+                    gT("The survey alias for '%s' has been cleared because it was already in use by another survey."),
+                    $languageData[$insertdata['surveyls_language']]['description']
+                );
+                unset($surveyLanguageSetting->surveyls_alias);
+                $surveyLanguageSetting->clearErrors('surveyls_alias');
+            }
             if (!$surveyLanguageSetting->save()) {
                 throw new Exception(gT("Error") . ": Failed to import survey language settings - data is invalid.");
             }
