@@ -472,14 +472,14 @@ export default {
                 :style="{width: getSideBarWidth, height: getloaderHeight}" 
             >
                 <div class="ls-flex ls-flex-column fill align-content-center align-items-center">
-                    <i class="ri-checkbox-blank-circle-line remix-2x remix-spin"></i>
+                    <i class="ri-loader-2-fill remix-2x remix-spin"></i>
                 </div>
             </div>
             <div 
                 class="col-12 mainContentContainer"
                 key="mainContentContainer"
             >
-                <div class="mainMenu container-fluid col-12">
+                <div class="mainMenu container-fluid col-12" style="position: relative;">
                     <sidebar-state-toggle @collapse="toggleCollapse"/>
                     <transition name="slide-fade">
                         <sidemenu 
@@ -499,31 +499,26 @@ export default {
                             @questiongrouporder="changedQuestionGroupOrder"
                         />
                     </transition>
-                    <transition name="slide-fade">
-                        <quickmenu 
-                            v-show="$store.getters.isCollapsed" 
-                            :loading="loading" 
-                            :style="{'min-height': calculateSideBarMenuHeight}" 
-                            @changeLoadingState="applyLoadingState" 
-                        />
-                    </transition>
-                </div>
-            </div>
-        </template>
-        <div 
+                    <div 
             v-if="(useMobileView && !smallScreenHidden) || !useMobileView"
             class="resize-handle ls-flex-column" 
             key="resizeHandle"
-            :style="{'height': calculateSideBarMenuHeight, 'max-height': getWindowHeight}" 
+            :style="{'height': calculateSideBarMenuHeight}"
         >
             <button 
                 v-show="!$store.getters.isCollapsed" 
-                class="btn btn-outline-secondary" 
+                class="btn " 
                 @mousedown="mousedown" @click.prevent="()=>{return false;}"
             >
-                <i class="ri-more-2-fill" />
+              <svg width="9" height="14" viewBox="0 0 9 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M0.4646 0.125H3.24762V2.625H0.4646V0.125ZM6.03064 0.125H8.81366V2.625H6.03064V0.125ZM0.4646 5.75H3.24762V8.25H0.4646V5.75ZM6.03064 5.75H8.81366V8.25H6.03064V5.75ZM0.4646 11.375H3.24762V13.875H0.4646V11.375ZM6.03064 11.375H8.81366V13.875H6.03064V11.375Z" fill="currentColor"/>
+              </svg>
             </button>
         </div>
+                </div>
+            </div>
+        </template>
+      
         <div class="scoped-placeholder-greyed-area" 
             v-if="(useMobileView && smallScreenHidden)" 
             @click="toggleSmallScreenHide" 
