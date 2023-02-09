@@ -18,7 +18,7 @@ App()->getClientScript()->registerScriptFile(
 ?>
 
 <!-- Question Top Bar -->
-<div id="ls-topbar" class="topbar sticky-top" id="pjax-content">
+<div class="topbar sticky-top" id="pjax-content">
     <div class="container-fluid">
             <?php if ($oQuestion->qid !== 0) : ?>
                 <div id="question-summary-topbar"

@@ -5,7 +5,7 @@
 
 ?>
 
-<div id="ls-topbar" class="topbar sticky-top" id="pjax-content">
+<div class="topbar sticky-top" id="pjax-content">
     <div class="container-fluid">
         <div class="row">
             <!-- Title or breadcrumb -->

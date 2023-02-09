@@ -17436,8 +17436,7 @@ footer.footer {
 .topbar .btn {
   margin-bottom: 4px;
 }
-
-#ls-topbar.scroll-shadow {
+.topbar.scroll-shadow {
   box-shadow: 0 1px 20px 0 rgb(196, 196, 196);
 }
 
