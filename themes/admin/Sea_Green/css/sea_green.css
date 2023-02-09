@@ -17452,13 +17452,15 @@ footer.footer {
 
 .topbar {
   padding-top: 10px;
-  padding-bottom: 5px;
-  margin: 0 auto 15px;
+  padding-bottom: 10px;
   z-index: 1000;
   background-color: #EEEFF7;
 }
 .topbar .btn {
   margin-bottom: 4px;
+}
+.topbar.scroll-shadow {
+  box-shadow: 0 1px 20px 0 rgb(196, 196, 196);
 }
 
 .ls-panelboxes .ls-panelboxes-panelbox {
