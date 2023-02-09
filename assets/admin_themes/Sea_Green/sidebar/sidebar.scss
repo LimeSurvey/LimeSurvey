@@ -119,6 +119,11 @@
       transition-timing-function: cubic-bezier(1, 0.5, 0.5, 1);
   }
 
+  a:not(.btn, .nav-tabs .nav-link) {
+    color: $g-900;
+    font-weight: $font-weight-normal;
+  }
+
   .dragged {
     color                      : $white;
     background                 : var(--bs-primary) none !important;
@@ -128,15 +133,11 @@
     transition-duration        : .1s;
     transition-timing-function : ease-in-out;
 
-    a, svg {
+    a, svg, a:not(.btn, .nav-tabs .nav-link) {
       color                      : $white;
     }
   }
 
-  a:not(.btn, .nav-tabs .nav-link) {
-    color: $g-900;
-    font-weight: $font-weight-normal;
-  }
   .menu-selected {
       padding-left: 10px;
       background: /*!rtl:linear-gradient(to left, $primary 0px, $primary 6px, $white 6px, $white 100%)*/ linear-gradient(to right, $primary 0px, $primary 6px, $white 6px, $white 100%);

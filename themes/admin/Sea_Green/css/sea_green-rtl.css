@@ -17909,6 +17909,10 @@ footer.footer {
 #sidebar .selected.activated {
   background: linear-gradient(to left, #14AE5C 0px, #14AE5C 8px, #fff 8px, #fff 100%);
 }
+#sidebar a:not(.btn, .nav-tabs .nav-link) {
+  color: #1E1E1E;
+  font-weight: 400;
+}
 #sidebar .dragged {
   color: #fff;
   background: var(--bs-primary) none !important;
@@ -17918,12 +17922,8 @@ footer.footer {
   transition-duration: 0.1s;
   transition-timing-function: ease-in-out;
 }
-#sidebar .dragged a, #sidebar .dragged svg {
+#sidebar .dragged a, #sidebar .dragged svg, #sidebar .dragged a:not(.btn, .nav-tabs .nav-link) {
   color: #fff;
-}
-#sidebar a:not(.btn, .nav-tabs .nav-link) {
-  color: #1E1E1E;
-  font-weight: 400;
 }
 #sidebar .menu-selected {
   padding-right: 10px;
