@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2023-02-02 20:14:15+00:00\n"
+"POT-Creation-Date: 2023-02-09 07:36:51+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -148,12 +148,12 @@ msgstr ""
 #: application/controllers/FailedEmailController.php:214
 #: application/controllers/ResponsesController.php:103
 #: application/controllers/ResponsesController.php:130
-#: application/controllers/ResponsesController.php:519
-#: application/controllers/ResponsesController.php:570
-#: application/controllers/ResponsesController.php:629
-#: application/controllers/ResponsesController.php:708
-#: application/controllers/ResponsesController.php:757
-#: application/controllers/ResponsesController.php:776
+#: application/controllers/ResponsesController.php:524
+#: application/controllers/ResponsesController.php:575
+#: application/controllers/ResponsesController.php:634
+#: application/controllers/ResponsesController.php:713
+#: application/controllers/ResponsesController.php:762
+#: application/controllers/ResponsesController.php:781
 #: application/controllers/SurveyAdministrationController.php:313
 #: application/controllers/SurveyAdministrationController.php:1877
 #: application/controllers/SurveyAdministrationController.php:2284
@@ -258,7 +258,7 @@ msgstr ""
 #: application/controllers/QuestionGroupsAdministrationController.php:475
 #: application/controllers/QuestionGroupsAdministrationController.php:518
 #: application/controllers/QuickTranslationController.php:100
-#: application/controllers/ResponsesController.php:843
+#: application/controllers/ResponsesController.php:848
 #: application/controllers/SurveyAdministrationController.php:137
 #: application/controllers/SurveyAdministrationController.php:139
 #: application/controllers/SurveyAdministrationController.php:663
@@ -407,16 +407,16 @@ msgstr ""
 #: application/controllers/FailedEmailController.php:71
 #: application/controllers/FailedEmailController.php:151
 #: application/controllers/ResponsesController.php:122
-#: application/controllers/ResponsesController.php:382
-#: application/controllers/ResponsesController.php:416
-#: application/controllers/ResponsesController.php:533
-#: application/controllers/ResponsesController.php:567
-#: application/controllers/ResponsesController.php:623
-#: application/controllers/ResponsesController.php:657
-#: application/controllers/ResponsesController.php:724
-#: application/controllers/ResponsesController.php:773
-#: application/controllers/ResponsesController.php:1014
-#: application/controllers/ResponsesController.php:1027
+#: application/controllers/ResponsesController.php:387
+#: application/controllers/ResponsesController.php:421
+#: application/controllers/ResponsesController.php:538
+#: application/controllers/ResponsesController.php:572
+#: application/controllers/ResponsesController.php:628
+#: application/controllers/ResponsesController.php:662
+#: application/controllers/ResponsesController.php:729
+#: application/controllers/ResponsesController.php:778
+#: application/controllers/ResponsesController.php:1019
+#: application/controllers/ResponsesController.php:1032
 #: application/controllers/SurveyAdministrationController.php:2135
 #: application/controllers/admin/DataEntry.php:1423
 #: application/controllers/admin/Statistics.php:113
@@ -1194,8 +1194,8 @@ msgstr ""
 
 #: application/controllers/QuestionAdministrationController.php:1320
 #: application/controllers/QuestionGroupsAdministrationController.php:542
-#: application/controllers/ResponsesController.php:573
-#: application/controllers/ResponsesController.php:780
+#: application/controllers/ResponsesController.php:578
+#: application/controllers/ResponsesController.php:785
 #: application/controllers/SurveysGroupsPermissionController.php:187
 #: application/controllers/SurveysGroupsPermissionController.php:245
 #: application/controllers/SurveysGroupsPermissionController.php:353
@@ -1505,12 +1505,12 @@ msgid "Sorry, this response was not found."
 msgstr ""
 
 #: application/controllers/ResponsesController.php:125
-#: application/controllers/ResponsesController.php:626
-#: application/controllers/ResponsesController.php:660
+#: application/controllers/ResponsesController.php:631
+#: application/controllers/ResponsesController.php:665
 msgid "Invalid response ID"
 msgstr ""
 
-#: application/controllers/ResponsesController.php:150
+#: application/controllers/ResponsesController.php:155
 #: application/helpers/common_helper.php:1357
 #: application/helpers/common_helper.php:2887
 #: application/models/SurveyLink.php:233 application/models/Token.php:96
@@ -1519,7 +1519,7 @@ msgstr ""
 msgid "Access code"
 msgstr ""
 
-#: application/controllers/ResponsesController.php:151
+#: application/controllers/ResponsesController.php:156
 #: application/helpers/common_helper.php:2867
 #: application/models/Participant.php:249
 #: application/models/ParticipantShare.php:231 application/models/Token.php:92
@@ -1532,7 +1532,7 @@ msgstr ""
 msgid "First name"
 msgstr ""
 
-#: application/controllers/ResponsesController.php:152
+#: application/controllers/ResponsesController.php:157
 #: application/helpers/common_helper.php:2872
 #: application/models/Participant.php:250
 #: application/models/ParticipantShare.php:226 application/models/Token.php:93
@@ -1545,7 +1545,7 @@ msgstr ""
 msgid "Last name"
 msgstr ""
 
-#: application/controllers/ResponsesController.php:153
+#: application/controllers/ResponsesController.php:158
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:125
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUserKey.php:115
 #: application/models/User.php:136 application/models/User.php:772
@@ -1558,13 +1558,13 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
-#: application/controllers/ResponsesController.php:162
+#: application/controllers/ResponsesController.php:167
 #: application/views/admin/themes/templateeditor_printoutput_view.php:9
 msgid "Submission date"
 msgstr ""
 
-#: application/controllers/ResponsesController.php:162
-#: application/controllers/ResponsesController.php:164
+#: application/controllers/ResponsesController.php:167
+#: application/controllers/ResponsesController.php:169
 #: application/controllers/admin/DataEntry.php:524
 #: application/controllers/admin/Quotas.php:259
 #: application/controllers/admin/Tokens.php:1612
@@ -1576,11 +1576,11 @@ msgstr ""
 msgid "Completed"
 msgstr ""
 
-#: application/controllers/ResponsesController.php:193
+#: application/controllers/ResponsesController.php:198
 msgid "File %s"
 msgstr ""
 
-#: application/controllers/ResponsesController.php:197
+#: application/controllers/ResponsesController.php:202
 #: application/controllers/UploaderController.php:319
 #: application/controllers/admin/DataEntry.php:962
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:72
@@ -1600,7 +1600,7 @@ msgstr ""
 msgid "Title"
 msgstr ""
 
-#: application/controllers/ResponsesController.php:208
+#: application/controllers/ResponsesController.php:213
 #: application/controllers/UploaderController.php:320
 #: application/controllers/admin/DataEntry.php:965
 #: application/helpers/common_helper.php:1583
@@ -1614,7 +1614,7 @@ msgstr ""
 msgid "Comment"
 msgstr ""
 
-#: application/controllers/ResponsesController.php:218
+#: application/controllers/ResponsesController.php:223
 #: application/controllers/UploaderController.php:321
 #: application/controllers/admin/DataEntry.php:968
 #: application/views/admin/emailtemplates/email_language_template_tab.php:81
@@ -1623,77 +1623,77 @@ msgstr ""
 msgid "File name"
 msgstr ""
 
-#: application/controllers/ResponsesController.php:227
+#: application/controllers/ResponsesController.php:232
 msgid "File size"
 msgstr ""
 
-#: application/controllers/ResponsesController.php:235
+#: application/controllers/ResponsesController.php:240
 msgid "File count"
 msgstr ""
 
-#: application/controllers/ResponsesController.php:302
+#: application/controllers/ResponsesController.php:307
 msgid "%s KB"
 msgstr ""
 
-#: application/controllers/ResponsesController.php:354
+#: application/controllers/ResponsesController.php:359
 msgid "This response ID is invalid."
 msgstr ""
 
-#: application/controllers/ResponsesController.php:596
+#: application/controllers/ResponsesController.php:601
 msgid "A response was not deleted.|{n} responses were not deleted."
 msgstr ""
 
-#: application/controllers/ResponsesController.php:597
+#: application/controllers/ResponsesController.php:602
 msgid "A timing record was not deleted.|{n} timing records were not deleted."
 msgstr ""
 
-#: application/controllers/ResponsesController.php:606
-#: application/controllers/ResponsesController.php:608
+#: application/controllers/ResponsesController.php:611
+#: application/controllers/ResponsesController.php:613
 msgid "Response(s) deleted."
 msgstr ""
 
-#: application/controllers/ResponsesController.php:634
+#: application/controllers/ResponsesController.php:639
 msgid "Response could not be deleted"
 msgstr ""
 
-#: application/controllers/ResponsesController.php:639
+#: application/controllers/ResponsesController.php:644
 msgid "Response deleted."
 msgstr ""
 
-#: application/controllers/ResponsesController.php:663
+#: application/controllers/ResponsesController.php:668
 msgid "Invalid question ID"
 msgstr ""
 
-#: application/controllers/ResponsesController.php:667
-#: application/controllers/ResponsesController.php:705
-#: application/controllers/ResponsesController.php:729
+#: application/controllers/ResponsesController.php:672
+#: application/controllers/ResponsesController.php:710
+#: application/controllers/ResponsesController.php:734
 msgid "Sorry, this file was not found."
 msgstr ""
 
-#: application/controllers/ResponsesController.php:674
-#: application/controllers/ResponsesController.php:808
+#: application/controllers/ResponsesController.php:679
+#: application/controllers/ResponsesController.php:813
 msgid "Found no response with ID %d"
 msgstr ""
 
-#: application/controllers/ResponsesController.php:753
+#: application/controllers/ResponsesController.php:758
 msgid "The requested files do not exist on the server."
 msgstr ""
 
-#: application/controllers/ResponsesController.php:812
+#: application/controllers/ResponsesController.php:817
 msgid "Error: Could not delete some files: "
 msgstr ""
 
-#: application/controllers/ResponsesController.php:822
+#: application/controllers/ResponsesController.php:827
 msgid "%d file deleted.|%d files deleted."
 msgstr ""
 
-#: application/controllers/ResponsesController.php:850
-#: application/controllers/ResponsesController.php:864
+#: application/controllers/ResponsesController.php:855
+#: application/controllers/ResponsesController.php:869
 #: application/helpers/common_helper.php:1979
 msgid "Total time"
 msgstr ""
 
-#: application/controllers/ResponsesController.php:868
+#: application/controllers/ResponsesController.php:873
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:81
 #: application/helpers/admin/export/HtmlWriter.php:72
 #: application/models/Assessment.php:143 application/models/Question.php:1026
@@ -1703,11 +1703,11 @@ msgstr ""
 msgid "Group"
 msgstr ""
 
-#: application/controllers/ResponsesController.php:870
+#: application/controllers/ResponsesController.php:875
 msgid "Group: "
 msgstr ""
 
-#: application/controllers/ResponsesController.php:876
+#: application/controllers/ResponsesController.php:881
 #: application/helpers/admin/statistics_helper.php:4291
 #: application/models/Question.php:1012
 #: application/models/TemplateManifest.php:165
@@ -1720,20 +1720,20 @@ msgstr ""
 msgid "Question"
 msgstr ""
 
-#: application/controllers/ResponsesController.php:878
+#: application/controllers/ResponsesController.php:883
 msgid "Question: "
 msgstr ""
 
-#: application/controllers/ResponsesController.php:999
+#: application/controllers/ResponsesController.php:1004
 msgid "Sorry, there are no files for this response."
 msgstr ""
 
-#: application/controllers/ResponsesController.php:1030
+#: application/controllers/ResponsesController.php:1035
 #: application/controllers/admin/DataEntry.php:507
 msgid "This survey has not been activated. There are no results to browse."
 msgstr ""
 
-#: application/controllers/ResponsesController.php:1039
+#: application/controllers/ResponsesController.php:1044
 #: application/controllers/admin/DataEntry.php:513
 msgid "Invalid response id."
 msgstr ""
@@ -6610,7 +6610,7 @@ msgid "Delete participant attribute %s"
 msgstr ""
 
 #: application/controllers/admin/Tokens.php:1129
-msgid "If you remove this attribute, you will lose all information."
+msgid "If deleted, all information stored in this attribute field will be lost."
 msgstr ""
 
 #: application/controllers/admin/Tokens.php:1133
@@ -8486,7 +8486,7 @@ msgid "Fruity variations"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:2920
-msgid "Check all that apply"
+msgid "Select all that apply"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:2934
