@@ -148,8 +148,6 @@ class Update extends DynamicSurveyCommonAction
     public function manageSubmitkey()
     {
         $updateModel = new UpdateForm();
-        $serverAnswer = $updateModel->getUpdateInfo($buttons);
-        $aData['serverAnswer'] = $serverAnswer;
         $aData['fullpagebar']['closebutton']['url'] = 'admin/update';
         $aData['updateKey'] = $updateKey = SettingGlobal::model()->findByPk('update_key');
 
@@ -324,7 +322,7 @@ class Update extends DynamicSurveyCommonAction
                     $aData = $updateModel->getFileStatus($changedFiles->files);
                     App()->session['update_changed_files'] = json_decode(json_encode($changedFiles->files), true);
 
-                    $aData['html_from_server'] = (isset($changedFiles->html)) ? $changedFiles->html : '';
+                    $aData['html_from_server'] = $changedFiles->html ?? '';
                     $aData['destinationBuild'] = $tobuild;
                     $aData['updateinfo'] = $changedFiles->files;
                     $aData['access_token'] = $access_token;
@@ -381,6 +379,8 @@ class Update extends DynamicSurveyCommonAction
      */
     public function step4()
     {
+        Yii::app()->loadLibrary("admin/pclzip");
+        $event = new CExceptionEvent($this, new Exception());  // Dummy line to preload CExceptionEvent class.
         if (Permission::model()->hasGlobalPermission('superadmin')) {
             if (App()->request->getPost('destinationBuild')) {
                 $destinationBuild = App()->request->getPost('destinationBuild');

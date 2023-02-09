@@ -10,33 +10,25 @@
  * To enjoy this feature, add to your package definition a 'devBaseUrl' with the relative url to your package
  *
  */
-$debug = isset($userConfig['config']['debug']) ? $userConfig['config']['debug'] : 0;
+$debug = $userConfig['config']['debug'] ?? 0;
 /* To add more easily min version : config > 2 , seems really an core dev issue to fix bootstrap.js ;) */
 $minVersion = ($debug > 0) ? "" : ".min";
-/* needed ? @see third_party.php */
+/* needed ? @see vendor.php */
 if (isset($_GET['isAjax'])) {
     return array();
 }
+
+// When adding new fonts, please keep fonts ordered alphabetically
 $coreFonts = array(
     
     'fontawesome' => array(
         'title' => 'Font Awesome',
         'type' => 'core',
-        //'basePath' => 'third_party.bootstrap', // Need fix third_party alias
+        //'basePath' => 'vendor.bootstrap', // Need fix vendor alias
         'devBaseUrl' => 'assets/fonts/font-src/fontawesome/',
         'basePath' => 'fonts.font-src.fontawesome',
         'css'=> array(
             'css/font-awesome'.$minVersion.'.css',
-        ),
-    ),
-
-    'font-roboto' => array(
-        'title' => 'Roboto',
-        'type' => 'core',
-        'devBaseUrl' => 'assets/fonts/',
-        'basePath' => 'fonts',
-        'css' => array(
-            'roboto.css',
         ),
     ),
 
@@ -50,13 +42,13 @@ $coreFonts = array(
         ),
     ),
 
-    'font-noto' => array(
-        'title' => 'Noto',
+    'font-lato' => array(
+        'title' => 'Lato',
         'type' => 'core',
         'devBaseUrl' => 'assets/fonts/',
         'basePath' => 'fonts',
         'css' => array(
-            'noto.css',
+            'lato.css',
         ),
     ),
 
@@ -70,25 +62,26 @@ $coreFonts = array(
         ),
     ),
 
-    'font-ubuntu' => array(
-        'title' => 'Ubuntu',
+    'font-noto' => array(
+        'title' => 'Noto',
         'type' => 'core',
         'devBaseUrl' => 'assets/fonts/',
         'basePath' => 'fonts',
         'css' => array(
-            'ubuntu.css',
+            'noto.css',
         ),
     ),
 
-    'font-lato' => array(
-        'title' => 'Lato',
+    'font-roboto' => array(
+        'title' => 'Roboto',
         'type' => 'core',
         'devBaseUrl' => 'assets/fonts/',
         'basePath' => 'fonts',
         'css' => array(
-            'lato.css',
+            'roboto.css',
         ),
     ),
+
 
     // see: https://www.w3schools.com/cssref/css_websafe_fonts.asp
     'font-websafe' => array(
@@ -111,6 +104,16 @@ $coreFonts = array(
         ),
     ),
 
+    'font-source-sans-pro' => array(
+        'title' => 'Source Sans Pro',
+        'type' => 'core',
+        'devBaseUrl' => 'assets/fonts/',
+        'basePath' => 'fonts',
+        'css' => array(
+            'source-sans-pro.css',
+        ),
+    ),
+
     'font-raleway' => array(
         'title' => 'Raleway',
         'type' => 'core',
@@ -121,15 +124,17 @@ $coreFonts = array(
         ),
     ),
 
-    'font-source-sans-pro' => array(
-        'title' => 'Source Sans Pro',
+    'font-ubuntu' => array(
+        'title' => 'Ubuntu',
         'type' => 'core',
         'devBaseUrl' => 'assets/fonts/',
         'basePath' => 'fonts',
         'css' => array(
-            'source-sans-pro.css',
+            'ubuntu.css',
         ),
     ),
+
+
 );
 
 // get user fonts configuration from /upload/fonts directory

@@ -399,7 +399,7 @@ class InstallerConfigForm extends CFormModel
         try {
             $query = "SELECT " . $item . ";";
             $result = $this->db->createCommand($query)->queryRow();
-            return isset($result[$item]) ? $result[$item] : null;
+            return $result[$item] ?? null;
         } catch (\Exception $e) {
             // ignore
         }
