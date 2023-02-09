@@ -535,8 +535,9 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
             $this->Sender = $event->get('bounce', '');
         }
         $this->eventMessage = $event->get('message');
-        /* Need loose compare (default to true) */
-        if ($event->get('send', true) == false) {
+        /* Need loose compare : if null, return true (default) */
+        /* Plugin can send anything for false : don't break API by move to strict compare */
+        if (!$event->get('send', true)) {
             $this->ErrorInfo = $event->get('error');
             return $event->get('error') == null;
         }
@@ -885,7 +886,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         if (!array_key_exists($this->emailType, $this->_aAttachementByType)) {
             return;
         }
-        
+
         $attachementType = $this->_aAttachementByType[$this->emailType];
         $oSurveyLanguageSetting = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id' => $this->surveyId, 'surveyls_language' => $this->mailLanguage));
         if (!empty($oSurveyLanguageSetting->attachments)) {
