@@ -1152,14 +1152,22 @@ class Tokens extends SurveyCommonAction
             Yii::app()->getController()->redirect(Yii::app()->getController()->createUrl("/admin/tokens/sa/managetokenattributes/surveyid/$iSurveyId"));
         } elseif ($confirm != 'confirm' && $sAttributeToDelete) {
             $aData['sidemenu']['state'] = false;
+            $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyId . ")";
+            $topbarData = TopbarConfiguration::getTokensTopbarData($iSurveyId);
+            $aData['topbar']['middleButtons'] = Yii::app()->getController()->renderPartial(
+                '/surveyAdministration/partial/topbar_tokens/leftSideButtons',
+                $topbarData,
+                true
+            );
             $this->renderWrappedTemplate('token', array('message' => array(
             'title' => sprintf(gT("Delete participant attribute %s"), $sAttributeToDelete),
             'message' => "<p>" . gT("If you remove this attribute, you will lose all information.") . "</p>\n"
             . CHtml::form(array("admin/tokens/sa/deletetokenattributes/surveyid/{$iSurveyId}"), 'post', array('id' => 'attributenumber'))
             . CHtml::hiddenField('deleteattribute', $sAttributeToDelete)
             . CHtml::hiddenField('sid', $iSurveyId)
-            . CHtml::htmlButton(gT('Delete attribute'), array('type' => 'submit', 'value' => 'confirm', 'name' => 'confirm', 'class' => 'btn btn-outline-secondary btn-lg'))
-            . CHtml::htmlButton(gT('Cancel'), array('type' => 'submit', 'value' => 'cancel', 'name' => 'cancel', 'class' => 'btn btn-cancel btn-lg'))
+            . CHtml::htmlButton(gT('Cancel'), array('type' => 'submit', 'value' => 'cancel', 'name' => 'cancel', 'class' => 'btn btn-outline-secondary'))
+            . '&nbsp;'
+            . CHtml::htmlButton(gT('Delete attribute'), array('type' => 'submit', 'value' => 'confirm', 'name' => 'confirm', 'class' => 'btn btn-danger'))
             . CHtml::endForm()
             )), $aData);
         } elseif ($sAttributeToDelete) {

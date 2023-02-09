@@ -17,6 +17,9 @@ if (!empty($showDelButton) && ($hasSurveySettingsUpdatePermission || $hasTokensD
     );
 }
 
+// Include the default buttons
+$this->renderPartial('/surveyAdministration/partial/topbar/surveyTopbarRight_view', get_defined_vars());
+
 if (!empty($showDownloadButton)) {
     $this->widget(
         'ext.ButtonWidget.ButtonWidget',
@@ -65,8 +68,6 @@ if (!empty($showSendReminderButton)) {
     );
 }
 
-// Include the default buttons
-$this->renderPartial('/surveyAdministration/partial/topbar/surveyTopbarRight_view', get_defined_vars());
 ?>
 
 <div id="tokenBounceModal" class="modal fade" tabindex="-1" role="dialog">
