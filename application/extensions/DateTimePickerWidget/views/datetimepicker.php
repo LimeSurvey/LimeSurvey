@@ -21,7 +21,7 @@
         <?= CHtml::textField($name, $value, $htmlOptions) ?>
     <?php endif; ?>
     <span
-        class='input-group-addon'
+        class='input-group-text'
         data-td-target='#<?= $id ?>'
         data-td-toggle='datetimepicker'
     >

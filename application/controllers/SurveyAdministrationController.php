@@ -896,6 +896,13 @@ class SurveyAdministrationController extends LSBaseController
             array('order' => 'group_order ASC')
         );
         $aGroupViewable = array();
+
+        $aData = ['topBar' => ['name' => 'questionTopbar_view'], "sid" => $iSurveyID];
+
+        $topbarConfig = TopbarConfiguration::createFromViewData($aData);
+        $configData  = $topbarConfig->getData();
+
+
         if (count($aGroups)) {
             foreach ($aGroups as $group) {
                 $curGroup = $group->attributes;
@@ -927,12 +934,93 @@ class SurveyAdministrationController extends LSBaseController
                             : '';
                         // We have to limit the question text length here, otherwise the whole question is loaded into the navigation tree
                         $curQuestion['question_flat'] = viewHelper::flatEllipsizeText($questionText, true, 150);
+                        $hasdefaultvalues = (QuestionTheme::findQuestionMetaData($question->type)['settings'])->hasdefaultvalues;
+                        $curQuestion['dropDown'] = [];
+                        if ($configData['hasSurveyContentUpdatePermission']) {
+                            $curQuestion['dropDown']['conditionDesigner'] =
+                                [
+                                    'id' => 'conditions_button',
+                                    'label' => gT("Condition designer"),
+                                    'icon' => 'ri-git-branch-fill icon',
+                                    'url' => Yii::App()->createUrl("admin/conditions/sa/index/subaction/editconditionsform/surveyid/$iSurveyID/gid/$question->gid/qid/$question->qid")
+                                ];
+
+                            if ($hasdefaultvalues > 0) {
+                                $curQuestion['dropDown']['editDefault'] =
+                                    [
+                                        'id' => 'default_value_button',
+                                        'label' => gT("Edit default answers"),
+                                        'icon' => 'ri-grid-line',
+                                        'url' => Yii::App()->createUrl("questionAdministration/editdefaultvalues/surveyid/$iSurveyID/gid/$question->gid/qid/$question->qid")
+                                    ];
+                            }
+                        }
+
+                        if ($configData['hasSurveyContentExportPermission']) {
+                            $curQuestion['dropDown']['export'] =
+                                [
+                                    'id' => '',
+                                    'label' => gT("Export"),
+                                    'icon' => 'ri-download-fill',
+                                    'url' => Yii::App()->createUrl("admin/export/sa/question/surveyid/$iSurveyID/gid/$question->gid/qid/$question->qid")
+                                ];
+                        }
+
+                        if ($configData['hasSurveyContentCreatePermission'] && ($configData['oSurvey']->active != 'Y')) {
+                            $curQuestion['dropDown']['copy'] =
+                                [
+                                    'id' => 'copy_button',
+                                    'label' => gT("Copy"),
+                                    'icon' => 'ri-file-copy-line icon',
+                                    'url' => Yii::App()->createUrl("questionAdministration/copyQuestion/surveyId/$iSurveyID/questionGroupId/$question->gid/questionId/$question->qid")
+                                ];
+                        }
+
+                        if ($configData['hasSurveyContentReadPermission']) {
+                            if (count($configData['surveyLanguages']) > 1) {
+                                $curQuestion['dropDown']['language'] = [];
+                                foreach ($configData['surveyLanguages'] as $languageCode => $languageName) {
+                                    array_push(
+                                        $curQuestion['dropDown']['language'],
+                                        [
+                                            'id' => '',
+                                            'label' => gT($languageName),
+                                            'icon' => 'ri-checkbox-fill',
+                                            'url' => Yii::App()->createUrl("admin/expressions/sa/survey_logic_file/sid/{$iSurveyID}/gid/$question->gid/qid/$question->qid/lang/" . $languageCode)
+                                        ]
+                                    );
+                                }
+                            } else {
+                                $curQuestion['dropDown']['language'] =
+                                    [
+                                        'id' => '',
+                                        'label' => gT("Check logic"),
+                                        'icon' => 'ri-checkbox-fill',
+                                        'url' => Yii::App()->createUrl("admin/expressions/sa/survey_logic_file/sid/{$iSurveyID}/gid/$question->gid/qid/$question->qid")
+                                    ];
+                            }
+                        }
+
+                        if ($configData['oSurvey']->active !== 'Y') {
+                            $curQuestion['dropDown']['delete'] =
+                                [
+                                    'id' => '',
+                                    'label' => gT("Delete question"),
+                                    'icon' => 'ri-delete-bin-fill text-danger',
+                                    'dataTitle' => gt('Delete this question'),
+                                    'dataBtnText' => gt('Delete'),
+                                    'dataOnclick' => '(function() { ' .  convertGETtoPOST(Yii::app()->createUrl("questionAdministration/delete/", ["qid" => $question->qid, "redirectTo" => "groupoverview"])) . '})',
+                                    'dataMessage' => gT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?")
+                                ];
+                        }
+
                         $curGroup['questions'][] = $curQuestion;
                     }
                 }
                 $aGroupViewable[] = $curGroup;
             }
         }
+
 
         return $this->renderPartial(
             '/admin/super/_renderJson',
@@ -1803,7 +1891,8 @@ class SurveyAdministrationController extends LSBaseController
                 $surveyLanguageSetting = SurveyLanguageSetting::model()->findByPk(
                     array(
                         'surveyls_survey_id' => $iSurveyID,
-                        'surveyls_language' => $language)
+                        'surveyls_language' => $language
+                    )
                 )->getAttributes();
                 $aTabTitles[$language] = getLanguageNameFromCode($surveyLanguageSetting['surveyls_language'], false);
 
@@ -2305,7 +2394,7 @@ class SurveyAdministrationController extends LSBaseController
      */
     private function getSurveyIdFromGetRequest()
     {
-         $surveyId = Yii::app()->request->getParam('sid');
+        $surveyId = Yii::app()->request->getParam('sid');
         if ($surveyId === null) {
             $surveyId = Yii::app()->request->getParam('surveyid');
         }
@@ -2313,7 +2402,7 @@ class SurveyAdministrationController extends LSBaseController
             $surveyId = Yii::app()->request->getParam('iSurveyID');
         }
 
-         return (int) $surveyId;
+        return (int) $surveyId;
     }
 
     /**
@@ -2483,8 +2572,9 @@ class SurveyAdministrationController extends LSBaseController
                 }
                 Question::model()->updateAll(
                     array(
-                    'question_order' => $aQuestionOrder[$gid],
-                    'gid' => $gid),
+                        'question_order' => $aQuestionOrder[$gid],
+                        'gid' => $gid
+                    ),
                     'qid=:qid',
                     array(':qid' => $qid)
                 );
@@ -2753,12 +2843,12 @@ class SurveyAdministrationController extends LSBaseController
 
         if ($oSurvey->currentLanguageSettings->surveyls_url != "") {
             $aData['endurl'] = " <a target='_blank' href=\"" .
-                                htmlspecialchars($aSurveyInfo['surveyls_url']) .
-                                "\" title=\"" .
-                                 htmlspecialchars($aSurveyInfo['surveyls_url']) .
-                                 "\">" .
-                                flattenText($oSurvey->currentLanguageSettings->surveyls_url) .
-                                "</a>";
+                htmlspecialchars($aSurveyInfo['surveyls_url']) .
+                "\" title=\"" .
+                htmlspecialchars($aSurveyInfo['surveyls_url']) .
+                "\">" .
+                flattenText($oSurvey->currentLanguageSettings->surveyls_url) .
+                "</a>";
         } else {
             $aData['endurl'] = "-";
         }
@@ -3109,8 +3199,8 @@ class SurveyAdministrationController extends LSBaseController
                 'Action' => gT('Action'),
                 'Parameter' => gT('Parameter'),
                 'Target question' => gT('Target question'),
-                'Survey ID' => gT('Survey id'),
-                'Question ID' => gT('Question id'),
+                'Survey ID' => gT('Survey ID'),
+                'Question ID' => gT('Question ID'),
                 'Subquestion ID' => gT('Subquestion ID'),
                 'Add URL parameter' => gT('Add URL parameter'),
                 'Edit URL parameter' => gT('Edit URL parameter'),

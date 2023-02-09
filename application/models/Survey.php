@@ -1484,6 +1484,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         $dropdownItems[] = [
             'title' => gT('Add new question'),
             'url' => App()->createUrl("/questionAdministration/create/surveyid/" . $this->sid),
+            'iconClass' => 'ri-add-circle-fill',
             'enabledCondition' =>
                 $this->active !== "Y"
                 && $permissions['responses_create']
@@ -1492,6 +1493,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         $dropdownItems[] = [
             'title' => gT('Add new group'),
             'url' => App()->createUrl("/questionGroupsAdministration/add/surveyid/" . $this->sid),
+            'iconClass' => 'ri-add-circle-fill',
             'enabledCondition' =>
                 $this->active !== "Y"
                 && $permissions['responses_create'],
@@ -1499,6 +1501,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         $dropdownItems[] = [
             'title' => gT('Statistics'),
             'url' => App()->createUrl("/admin/statistics/sa/simpleStatistics/surveyid/" . $this->sid),
+            'iconClass' => 'ri-add-circle-fill',
             'enabledCondition' =>
                 $this->active === "Y"
                 && $permissions['statistics_read'],
@@ -1506,6 +1509,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         $dropdownItems[] = [
             'title' => gT('General settings & texts'),
             'url' => App()->createUrl("/surveyAdministration/rendersidemenulink/subaction/generalsettings/surveyid/" . $this->sid),
+            'iconClass' => 'ri-add-circle-fill',
             'enabledCondition' => $permissions['survey_update'],
         ];
 

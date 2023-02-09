@@ -1,7 +1,9 @@
 <?php
 /**
-* @var User $oUser
-*/
+ * TODO: unused old user editing page not inside modal, see application/views/userManagement/partial/addedituser.php
+ *
+ * @var User $oUser
+ */
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('modifyUser');
 ?>

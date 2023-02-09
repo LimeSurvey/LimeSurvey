@@ -29,14 +29,14 @@ $oQuestionSelector = $this->beginWidget(
         'debugKeyCheck' => gT("Type:") . " ",
         'previewWindowTitle' => "",
         'groupStructureArray' => $aQuestionTypeGroups,
-        'survey_active' => $question->survey->active=='Y',
+        'survey_active' => $question->survey->active == 'Y',
         'value' => $question->type,
         'theme' => $questionTheme->name,
         'debug' => YII_DEBUG,
-        'buttonClasses' => ['btn-outline-secondary'],
+        'buttonClasses' => ['btn-primary'],
         'currentSelected' => gT($questionTheme->title), //todo: use questiontheme instead ...
         'optionArray' => [
-            'selectedClass' => $questionTheme->getDecodedSettings()->class,//Question::getQuestionClass($question->type),
+            'selectedClass' => $questionTheme->getDecodedSettings()->class, //Question::getQuestionClass($question->type),
             'onUpdate' => [
                 'value',
                 'theme',
@@ -53,7 +53,18 @@ $oQuestionSelector = $this->beginWidget(
 
 <div id="question-type-selector-wrapper" class="mb-3 contains-question-selector" data-viewtype="<?= $viewType ?>" data-debug="<?= YII_DEBUG ?>">
     <label for="questionCode"><?= gT('Question type'); ?></label>
-    <?= $oQuestionSelector->getButtonOrSelect(); ?>
+    <?php $this->widget('ext.InputWidget.InputWidget', [
+        'name' => 'title',
+        'id' => 'selector__' . 'questionTypeSelector' . '--buttonText',
+        'value' => gT($questionTheme->title) .  gT("Type:") . " " . $question->type,
+        'isAttached' => true,
+        'attachContent' => $this->renderPartial('partials/typeSelectorButton', null, true),
+        'wrapperHtmlOptions' => [
+            'id' => 'trigger_' . 'questionTypeSelector' . '_button',
+            'class' => 'w-100'
+        ],
+    ]);
+    ?>
     <?php $this->endWidget('ext.admin.PreviewModalWidget.PreviewModalWidget'); ?>
     <input type="hidden" id="questionTypeVisual" name="questionTypeVisual" />
     <input type="hidden" id="question_type" name="question[type]" value="<?= $question->type; ?>" />

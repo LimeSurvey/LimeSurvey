@@ -14,7 +14,8 @@ $this->widget(
         'icon' => 'ri-information-line',
         'link' => Yii::App()->createUrl("/admin/conditions/sa/index/subaction/conditions/surveyid/$surveyid/gid/$gid/qid/$qid"),
         'htmlOptions' => [
-            'class' => isset($currentMode) && $currentMode == 'conditions' ? $buttonClass . 'active' : $buttonClass,
+            //'class' => isset($currentMode) && $currentMode == 'conditions' ? $buttonClass . 'active' : $buttonClass,
+            'class' => 'btn btn-outline-secondary',
             'role' => 'button',
         ],
     ]
@@ -28,7 +29,8 @@ $this->widget(
         'icon' => 'ri-git-pull-request-line_add',
         'link' => Yii::App()->createUrl("admin/conditions/sa/index/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"),
         'htmlOptions' => [
-            'class' => isset($currentMode) && $currentMode == 'edit' ? $buttonClass . 'active' : $buttonClass,
+            //'class' => isset($currentMode) && $currentMode == 'edit' ? $buttonClass . 'active' : $buttonClass,
+            'class' => 'btn btn-outline-secondary',
             'role' => 'button',
         ],
     ]
@@ -42,7 +44,8 @@ $this->widget(
         'icon' => 'ri-file-copy-line',
         'link' => Yii::App()->createUrl("admin/conditions/sa/index/subaction/copyconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"),
         'htmlOptions' => [
-            'class' => isset($currentMode) && $currentMode == 'copyconditionsform' ? $buttonClass . 'active' : $buttonClass,
+            'class' => 'btn btn-outline-secondary',
+            //'class' => isset($currentMode) && $currentMode == 'copyconditionsform' ? $buttonClass . 'active' : $buttonClass,
             'role' => 'button',
         ],
     ]
