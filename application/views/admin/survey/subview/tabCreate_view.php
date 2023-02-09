@@ -89,7 +89,7 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
             }
         });
     }
-    $(document).on('ready pjax:scriptcomplete', function(){
+    jQuery(document).on('ready pjax:scriptcomplete', function(){
         sessionStorage.setItem('maxtabs', 1);
 
         $('#navigation_back').on('click', function(e){
