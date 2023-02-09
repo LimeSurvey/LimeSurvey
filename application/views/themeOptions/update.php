@@ -9,7 +9,7 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
 <?php if (empty($model->sid)) : ?>
 <div class="container-fluid">
 <?php else : ?>
-    <div class="col-12 side-body <?= getSideBodyClass(false) ?>" id="theme-option-sidebody">
+    <div class="col-12 side-body ls-settings-wrapper <?= getSideBodyClass(false) ?>" id="theme-option-sidebody">
 <?php endif; ?>
 
     <!-- Using bootstrap tabs to differ between just hte options and advanced direct settings -->
@@ -20,7 +20,7 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
                 <?php if ($aOptionAttributes['optionsPage'] === 'core'): ?>
                     <?php foreach ($aOptionAttributes['categories'] as $key => $category): ?>
                         <li role="presentation" class="nav-item">
-                            <button class="nav-link <?php echo $key == 0 ? 'active' : 'action_hide_on_inherit'; ?>" data-bs-target="#category-<?php echo $key; ?>" aria-controls="category-<?php echo $key; ?>" role="tab" data-bs-toggle="tab" aria-selected="<?php echo $key == 0 ? 'true' : 'false'; ?>">
+                            <button class="nav-link <?php echo $key == 0 ? 'active' : 'tab_action_hide_on_inherit'; ?>" data-bs-target="#category-<?php echo $key; ?>" aria-controls="category-<?php echo $key; ?>" role="tab" data-bs-toggle="tab" aria-selected="<?php echo $key == 0 ? 'true' : 'false'; ?>">
                                 <?php echo $category; ?>
                             </button>
                         </li>
@@ -100,6 +100,8 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
             </form>
         </div>
     </div>
+<?php $this->renderPartial('/surveyAdministration/_sub_footer'); ?>
+
 </div>
 
 <!-- Form for image file upload -->

@@ -11090,8 +11090,8 @@ a {
 }
 
 .ls-settings-wrapper {
-  position: relative;
-  min-height: 100vh;
+  position: relative !important;
+  min-height: 100vh !important;
 }
 
 .select2-selection__choice {
@@ -11100,6 +11100,20 @@ a {
   font-weight: 500 !important;
   font-size: 12px !important;
   line-height: 16px;
+}
+
+.ls-option-disabled {
+  z-index: 9999 !important;
+  background-color: #fff;
+  opacity: 0.8;
+  position: absolute;
+  inset: 0;
+}
+
+.ls-tab-disabled {
+  opacity: 0.4;
+  pointer-events: none !important;
+  cursor: not-allowed !important;
 }
 
 /**
