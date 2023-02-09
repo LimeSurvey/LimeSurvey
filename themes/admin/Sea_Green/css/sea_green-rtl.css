@@ -11097,7 +11097,7 @@ a {
 .select2-selection__choice {
   background-color: #EEEFF7;
   color: #9094A7 !important;
-  font-weight: 500;
+  font-weight: 500 !important;
   font-size: 12px !important;
   line-height: 16px;
 }
@@ -11387,10 +11387,6 @@ html {
 
 #fullpagebar {
   z-index: 100;
-}
-
-.tab-content {
-  padding-top: 2em;
 }
 
 :focus {
