@@ -85,9 +85,9 @@ $active = 1; ?>
                                 <div class="mb-3">
                                     <label class="form-label " for='grelevance'><?php eT("Condition:"); ?></label>
                                     <div class="input-group">
-                                        <div class="input-group-addon">{</div>
+                                        <div class="input-group-text">{</div>
                                         <textarea cols='1' class="form-control" rows='1' id='grelevance' name='questionGroup[grelevance]'></textarea>
-                                        <div class="input-group-addon">}</div>
+                                        <div class="input-group-text">}</div>
                                     </div>
                                 </div>
                             <?php } ?>

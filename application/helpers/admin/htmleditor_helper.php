@@ -206,7 +206,7 @@ function getPopupEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $g
     ) {
         $class = "editorLink";
     } else {
-        $class = "editorLink input-group-addon";
+        $class = "editorLink input-group-text";
     }
     $htmlcode .= ""
     . "<a href=\"javascript:start_popup_editor('" . $fieldname . "','" . addslashes(htmlspecialchars_decode($fieldtext, ENT_QUOTES)) . "','" . $surveyID . "','" . $gID . "','" . $qID . "','" . $fieldtype . "','" . $action . "')\" id='" . $fieldname . "_ctrl' class='{$class} btn btn-outline-secondary btn-xs'>\n"

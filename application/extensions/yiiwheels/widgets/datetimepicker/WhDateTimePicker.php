@@ -95,7 +95,7 @@ class WhDateTimePicker extends CInputWidget
 			} else {
 				echo TbHtml::textField($name, $this->value, $this->htmlOptions);
 			}
-            echo TbHtml::openTag('span', array('class' => 'input-group-addon'));
+            echo TbHtml::openTag('span', array('class' => 'input-group-text'));
 			echo TbHtml::openTag('span', array('class' => 'ri-calendar-2-fill'));
 			echo TbHtml::closeTag('span');
             echo TbHtml::closeTag('span');

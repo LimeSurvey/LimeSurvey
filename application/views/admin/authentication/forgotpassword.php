@@ -45,7 +45,7 @@
                                 <span>
                                 <label for="user"><?php
                                     eT('Username'); ?></label>
-                                <input name="user" id="user" type="text" size="40" maxlength="64" class="form-control"
+                                <input name="user" id="user" type="text" size="40" maxlength="64" class="form-control ls-important-field"
                                        value=""/>
                             </span>
                                 <span>
@@ -53,7 +53,7 @@
                                     eT('Email address'); ?>
 
                                 </label><input name="email" id="email" type="email" size="40" maxlength="254"
-                                               class="form-control" value=""/>
+                                               class="form-control ls-important-field" value=""/>
                             </span>
 
                             </div>
