@@ -16,15 +16,9 @@
     .accordion-body {
       padding: 0;
     }
-
-    #trigger_questionTypeSelector_button {
-      .btn {
-        width: 100%;
-      }
-    }
   }
 
-  [class^=ri-], [class*=" ri-"] {
+  .ri-information-fill {
     color: $g-600;
   }
 

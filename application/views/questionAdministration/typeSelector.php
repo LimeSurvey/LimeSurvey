@@ -33,7 +33,7 @@ $oQuestionSelector = $this->beginWidget(
         'value' => $question->type,
         'theme' => $questionTheme->name,
         'debug' => YII_DEBUG,
-        'buttonClasses' => ['btn-primary'],
+        'buttonClasses' => ['btn-primary btn-lg'],
         'currentSelected' => gT($questionTheme->title), //todo: use questiontheme instead ...
         'optionArray' => [
             'selectedClass' => $questionTheme->getDecodedSettings()->class, //Question::getQuestionClass($question->type),
@@ -53,18 +53,7 @@ $oQuestionSelector = $this->beginWidget(
 
 <div id="question-type-selector-wrapper" class="mb-3 contains-question-selector" data-viewtype="<?= $viewType ?>" data-debug="<?= YII_DEBUG ?>">
     <label for="questionCode"><?= gT('Question type'); ?></label>
-    <?php $this->widget('ext.InputWidget.InputWidget', [
-        'name' => 'title',
-        'id' => 'selector__' . 'questionTypeSelector' . '--buttonText',
-        'value' => gT($questionTheme->title) .  gT("Type:") . " " . $question->type,
-        'isAttached' => true,
-        'attachContent' => $this->renderPartial('partials/typeSelectorButton', null, true),
-        'wrapperHtmlOptions' => [
-            'id' => 'trigger_' . 'questionTypeSelector' . '_button',
-            'class' => 'w-100'
-        ],
-    ]);
-    ?>
+    <?= $oQuestionSelector->getButtonOrSelect(); ?>
     <?php $this->endWidget('ext.admin.PreviewModalWidget.PreviewModalWidget'); ?>
     <input type="hidden" id="questionTypeVisual" name="questionTypeVisual" />
     <input type="hidden" id="question_type" name="question[type]" value="<?= $question->type; ?>" />
