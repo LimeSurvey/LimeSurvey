@@ -171,7 +171,7 @@ var UserManagement = function () {
 
         $('.specific-permission-selector').on('click', function () {
             var thisRow = $(this).closest('tr');
-            if (thisRow.find('.specific-settings-block input:checked').size() == thisRow.find('.extended input').size()) {
+            if (thisRow.find('.specific-settings-block input:checked').size() == thisRow.find('.specific-settings-block input').size()) {
                 thisRow.find('.general-row-selector').prop('checked', true);
                 thisRow.find('.general-row-selector').removeClass('incomplete-selection');
             } else if (thisRow.find('.specific-settings-block input:checked').size() == 0) {
