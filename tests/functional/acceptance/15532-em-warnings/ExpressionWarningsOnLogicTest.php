@@ -57,13 +57,7 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
             sleep(1);
 
             // Close modals ( Password and enforced SSL warnings ).
-            $modalCloseButtons = self::$webDriver->findElements(WebDriverBy::cssSelector('#admin-notification-modal .close'));
-            foreach ($modalCloseButtons as $button) {
-                if ($button->isDisplayed()) {
-                    $button->click();
-                    echo 'Modal closed!!!';
-                }
-            }
+	    self::ignoreAdminNotification();
 
             /* Did we have thew warning alert */
             $warning = self::$webDriver->findElements(WebDriverBy::cssSelector('#logicfiletable .alert-warning'));
