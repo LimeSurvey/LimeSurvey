@@ -52,30 +52,17 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
             ]
         );
 
-        // Close modals ( Password and enforced SSL warnings ).
-        $closeModals = true;
-
-        while ($closeModals) {
-            try {
-                self::$webDriver->get($url);
-                sleep(1);
-
-                if (self::$webDriver->findElement(WebDriverBy::cssSelector('#admin-notification-modal .close'))->isDisplayed()) {
-                    self::$webDriver->findElement(WebDriverBy::cssSelector('#admin-notification-modal .close'))->click();
-                    sleep(5);
-
-                    continue;
-                }
-
-                $closeModals = false;
-            } catch (Facebook\WebDriver\Exception\NoSuchElementException $ex) {
-                $closeModals = false;
-            }
-        }
-
         try {
             self::$webDriver->get($url);
             sleep(1);
+
+            // Close modals ( Password and enforced SSL warnings ).
+            $modalCloseButtons = self::$webDriver->findElements(WebDriverBy::cssSelector('#admin-notification-modal .close'));
+            foreach ($modalCloseButtons as $button) {
+                if ($button->isDisplayed()) {
+                    $button->click();
+                }
+            }
 
             /* Did we have thew warning alert */
             $this->assertTrue(self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-warning'))->isDisplayed(), "Unable to find the alert");
