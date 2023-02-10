@@ -158,7 +158,7 @@ if (!empty($showCloseButton)) {
             'icon' => 'ri-close-fill',
             'link' => $closeUrl,
             'htmlOptions' => [
-                'class' => 'btn btn-danger',
+                'class' => 'btn btn-outline-secondary',
                 'role' => 'button',
             ],
         ]

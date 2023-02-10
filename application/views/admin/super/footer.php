@@ -54,7 +54,7 @@ foreach ($systemInfos as $key => $systemInfo) {
     <div class="container-fluid">
         <div class="row p-3">
             <!-- Lime survey website -->
-            <div class="offset-lg-4 offset-xl-6 col-lg-8 col-xl-6 text-end">
+            <div class="col-12 text-end">
                 <a  data-bs-toggle="tooltip" title='<?php eT("Visit our website!"); ?>' href='https://community.limesurvey.org' target='_blank'>LimeSurvey Community Edition</a>
                 <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')) { ?> 
                     <a href="#modalSystemInformation" data-bs-toggle="modal" title="<?=gT("Get system information")?>"> 

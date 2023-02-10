@@ -26,14 +26,14 @@ $oQuestionSelector = $this->beginWidget(
         'debugKeyCheck' => gT("Type:") . " ",
         'previewWindowTitle' => "",
         'groupStructureArray' => $aQuestionTypeGroups,
-        'survey_active' => $question->survey->active=='Y',
+        'survey_active' => $question->survey->active == 'Y',
         'value' => $question->type,
         'theme' => $questionTheme->name,
         'debug' => YII_DEBUG,
         'buttonClasses' => ['btn-primary'],
         'currentSelected' => gT($questionTheme->title), //todo: use questiontheme instead ...
         'optionArray' => [
-            'selectedClass' => $questionTheme->getDecodedSettings()->class,//Question::getQuestionClass($question->type),
+            'selectedClass' => $questionTheme->getDecodedSettings()->class, //Question::getQuestionClass($question->type),
             'onUpdate' => [
                 'value',
                 'theme',
@@ -47,11 +47,23 @@ $oQuestionSelector = $this->beginWidget(
 );
 ?>
 <?= $oQuestionSelector->getModal(); ?>
-
 <div class="mb-3 col-12 col-xl-8 contains-question-selector">
     <label for="questionCode"><?= gT('Question type'); ?></label>
     <div class="btn-group" style="width: 100%;">
-        <?= $oQuestionSelector->getButtonOrSelect(); ?>
+        <!-- ?= $oQuestionSelector->getButtonOrSelect(); ?> -->
+
+        <?php $this->widget('ext.InputWidget.InputWidget', [
+            'name' => 'title',
+            'id' => 'selector__' . 'questionTypeSelector' . '--buttonText',
+            'value' => gT($questionTheme->title) .  gT("Type:") . " " . $question->type,
+            'isAttached' => true,
+            'attachContent' => $this->renderPartial('partials/typeSelectorButton', null, true),
+            'wrapperHtmlOptions' => [
+                'id' => 'trigger_' . 'questionTypeSelector' . '_button',
+                'class' => 'w-100'
+            ],
+        ]);
+        ?>
         <?php $this->endWidget('ext.admin.PreviewModalWidget.PreviewModalWidget'); ?>
     </div>
     <input type="hidden" id="questionTypeVisual" name="questionTypeVisual" />

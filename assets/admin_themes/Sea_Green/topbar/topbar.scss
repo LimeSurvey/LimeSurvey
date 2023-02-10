@@ -1,13 +1,20 @@
 .topbar {
   padding-top    : 10px;
-  padding-bottom : 5px;
-  margin: 0 auto 15px;
+  padding-bottom : 10px;
   z-index        : 1000;
   background-color: $g-200;
 
   .btn {
     margin-bottom: 4px;
   }
+
+  &.scroll-shadow {
+    box-shadow: 0 1px 20px 0 rgba(196, 196, 196, 1);
+  }
 }
+
+
+
+
 
 
