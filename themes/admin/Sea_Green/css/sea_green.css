@@ -11126,8 +11126,8 @@ a {
 }
 
 .ls-option-disabled {
-  z-index: 9999 !important;
-  background-color: #fff;
+  z-index: 999 !important;
+  background-color: #F9F9FB;
   opacity: 0.8;
   position: absolute;
   inset: 0;
