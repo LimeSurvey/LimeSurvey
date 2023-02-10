@@ -54,7 +54,7 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
 
         try {
             self::$webDriver->get($url);
-            sleep(1);
+            sleep(5);
 
             // Close modals.
 	    self::ignoreAdminNotification();
@@ -74,8 +74,6 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
                 'Url: ' . $url . PHP_EOL .
                 'Screenshot in ' .$filename . PHP_EOL . $ex->getMessage()
             );
-        }  catch (NoSuchElementException $ex) {
-            // Do nothing.
         }
     }
 
