@@ -44,8 +44,8 @@ a {
     line-height: 16px;
 }
 .ls-option-disabled {
-    z-index: 9999 !important;
-    background-color: $white;
+    z-index: 999 !important;
+    background-color: $g-100;
     opacity: 0.8;
     position: absolute;
     inset: 0;

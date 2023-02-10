@@ -34,75 +34,52 @@ $googleAnalyticsStyleOptions = array(
 <!-- Notification panel -->
 <div id='notification-panel'>
     <div class="row">
-        <div class="col-12 col-lg-6">
+        <div class="col-12 col-lg-6 position-relative">
             <!-- Date Stamp -->
             <div class="ex-form-group mb-3">
                 <label class=" form-label" for='datestamp'><?php eT("Date stamp:"); ?></label>
                 <div class="">
-                    <?php if ($oSurvey->isActive) { ?>
-                        <?php if ($oSurvey->datestamp != "Y") {
-                            eT("Responses will not be date stamped.");
-                        } else {
-                            eT("Responses will be date stamped.");
-                        } ?>
-                        <span class='annotation'> <?php eT("Cannot be changed"); ?></span>
-                        <?php echo CHtml::hiddenField('datestamp', $oSurvey->datestamp); // Maybe use a readonly dropdown? 
-                        ?>
-                    <?php } else {
-                        $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
-                            'name'          => 'datestamp',
-                            'checkedOption'         => $oSurvey->datestamp,
-                            'selectOptions' => ($bShowInherited)
-                                ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->datestamp . " ᴵ"])
-                                : $optionsOnOff
-                        ]);
-                    } ?>
+                    <?php
+                    $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'name'          => 'datestamp',
+                        'checkedOption'         => $oSurvey->datestamp,
+                        'selectOptions' => ($bShowInherited)
+                            ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->datestamp . " ᴵ"])
+                            : $optionsOnOff
+                    ]);
+                    ?>
                 </div>
             </div>
+
             <!-- Save IP Address -->
             <div class="ex-form-group mb-3">
                 <label class=" form-label" for='ipaddr'><?php eT("Save IP address:"); ?></label>
                 <div class="">
-                    <?php if ($oSurvey->isActive) {
-                        if ($oSurvey->ipaddr != "Y") {
-                            eT("Responses will not have the IP address logged.");
-                        } else {
-                            eT("Responses will have the IP address logged.");
-                        } ?>
-                        <span class='annotation'> <?php eT("Cannot be changed"); ?></span>
-                    <?php echo CHtml::hiddenField('ipaddr', $oSurvey->ipaddr);
-                    } else {
-                        $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
-                            'name'          => 'ipaddr',
-                            'checkedOption' => $oSurvey->ipaddr,
-                            'selectOptions' => ($bShowInherited)
-                                ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->ipaddr . " ᴵ"])
-                                : $optionsOnOff,
-                        ]);
-                    } ?>
+                    <?php
+                    $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'name'          => 'ipaddr',
+                        'checkedOption' => $oSurvey->ipaddr,
+                        'selectOptions' => ($bShowInherited)
+                            ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->ipaddr . " ᴵ"])
+                            : $optionsOnOff,
+                    ]);
+                    ?>
                 </div>
             </div>
+
+            <!-- Save Anonymize IP Address -->
             <div class="ex-form-group mb-3">
                 <label class=" form-label" for='ipanonymize'><?php eT("Anonymize IP address:"); ?></label>
                 <div>
-                    <?php if ($oSurvey->isActive) {
-                        if ($oSurvey->ipanonymize != "Y") {
-                            eT("Responses will not have the IP address anonymized.");
-                        } else {
-                            eT("Responses will have the IP address anonymized.");
-                        } ?>
-                        <span class='annotation'> <?php eT("Cannot be changed"); ?></span>
-                    <?php echo CHtml::hiddenField('ipanonymize', $oSurvey->ipanonymize);
-                    } else {
-                        // <!-- only visible if ipaddr is set to yes in db or switch to yes -->
-                        $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
-                            'name'          => 'ipanonymize',
-                            'checkedOption' => $oSurvey->ipanonymize,
-                            'selectOptions' => ($bShowInherited)
-                                ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->ipanonymize . " ᴵ"])
-                                : $optionsOnOff,
-                        ]);
-                    } ?>
+                    <?php
+                    $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'name'          => 'ipanonymize',
+                        'checkedOption' => $oSurvey->ipanonymize,
+                        'selectOptions' => ($bShowInherited)
+                            ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->ipanonymize . " ᴵ"])
+                            : $optionsOnOff,
+                    ]);
+                    ?>
                 </div>
             </div>
 
@@ -110,23 +87,15 @@ $googleAnalyticsStyleOptions = array(
             <div class="ex-form-group mb-3">
                 <label class=" form-label" for='refurl'><?php eT("Save referrer URL:"); ?></label>
                 <div>
-                    <?php if ($oSurvey->isActive) { ?>
-                        <?php if ($oSurvey->refurl != "Y") {
-                            eT("Responses will not have their referring URL logged.");
-                        } else {
-                            eT("Responses will have their referring URL logged.");
-                        } ?>
-                        <span class='annotation'> <?php eT("Cannot be changed"); ?></span>
-                        <?php echo CHtml::hiddenField('refurl', $oSurvey->refurl); ?>
-                    <?php } else {
-                        $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
-                            'name'          => 'refurl',
-                            'checkedOption' => $oSurvey->refurl,
-                            'selectOptions' => ($bShowInherited)
-                                ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->refurl . " ᴵ"])
-                                : $optionsOnOff,
-                        ]);
-                    } ?>
+                    <?php
+                    $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'name'          => 'refurl',
+                        'checkedOption' => $oSurvey->refurl,
+                        'selectOptions' => ($bShowInherited)
+                            ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->refurl . " ᴵ"])
+                            : $optionsOnOff,
+                    ]);
+                    ?>
                 </div>
             </div>
 
@@ -134,26 +103,17 @@ $googleAnalyticsStyleOptions = array(
             <div class="ex-form-group mb-3">
                 <label class=" form-label" for='savetimings'><?php eT("Save timings:"); ?></label>
                 <div class="">
-                    <?php if ($oSurvey->isActive) : ?>
-                        <?php if ($oSurvey->savetimings != "Y") : ?>
-                            <?php eT("Timings will not be saved."); ?>
-                        <?php else : ?>
-                            <?php eT("Timings will be saved."); ?>
-                            <span class='annotation'> <?php eT("Cannot be changed"); ?></span>
-                            <?php echo CHtml::hiddenField('savetimings', $oSurvey->savetimings);  // Maybe use a readonly dropdown? 
-                            ?>
-                        <?php endif; ?>
-                    <?php else : ?>
-                        <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
-                            'name'          => 'savetimings',
-                            'checkedOption' => $oSurvey->savetimings,
-                            'selectOptions' => ($bShowInherited)
-                                ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->savetimings . " ᴵ"])
-                                : $optionsOnOff,
-                        ]); ?>
-                    <?php endif; ?>
+                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'name'          => 'savetimings',
+                        'checkedOption' => $oSurvey->savetimings,
+                        'selectOptions' => ($bShowInherited)
+                            ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->savetimings . " ᴵ"])
+                            : $optionsOnOff,
+                    ]); ?>
                 </div>
             </div>
+
+            <div class="ls-option-disabled"></div>
         </div>
 
         <div class="col-12 col-lg-6">
