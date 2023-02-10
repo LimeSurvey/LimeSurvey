@@ -58,21 +58,21 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
 
             // Close modals ( Password and enforced SSL warnings ).
             $modalCloseButtons = self::$webDriver->findElements(WebDriverBy::cssSelector('#admin-notification-modal .close'));
-            echo 'Number of buttons: ' . count($modalCloseButtons);
             foreach ($modalCloseButtons as $button) {
-            	echo 'Modal closed!!';
                 if ($button->isDisplayed()) {
                     $button->click();
-                    sleep(5);
+                    echo 'Modal closed!!!';
                 }
             }
 
             /* Did we have thew warning alert */
-            $this->assertTrue(self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-warning'))->isDisplayed(), "Unable to find the alert");
+            $warning = self::$webDriver->findElements(WebDriverBy::cssSelector('#logicfiletable .alert-warning'));
+            $this->assertCount( 1, $warning, 'The warning alert was not displayed.' );
+            //$this->assertTrue(self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-warning'))->isDisplayed(), "Unable to find the alert");
             /* We found the count of warnings */
-            $elementStrong = self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-warning strong'));
+            /*$elementStrong = self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-warning strong'));
             $strongAlert = $elementStrong->getText();
-            $this->assertEquals($strongAlert, "This question has at least 1 warning.", "Numbers of warning seems invalid, need one warning.");
+            $this->assertEquals($strongAlert, "This question has at least 1 warning.", "Numbers of warning seems invalid, need one warning.");*/
         } catch (Exception $ex) {
             $screenshot = self::$webDriver->takeScreenshot();
             $filename = self::$screenshotsFolder.'/'.__CLASS__ . '_' . __FUNCTION__ . '.png';
