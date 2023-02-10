@@ -4483,7 +4483,7 @@ textarea.form-control-lg {
   padding: 1rem 1rem;
 }
 
-.card-title, .ls-panelboxes .ls-panelboxes-panelbox .card.card-primary .card-header, .ls-panelboxes .ls-panelboxes-panelbox .card .card-header, .card.card-primary .card-header {
+.card-title, .ls-panelboxes .card.card-primary .card-header, .ls-panelboxes .ls-panelboxes-panelbox .card .card-header, .card.card-primary .card-header {
   margin-bottom: 0.5rem;
 }
 
@@ -17277,7 +17277,7 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 .card.card-primary.disabled a {
   cursor: default;
 }
-.card.card-primary .card-title, .ls-panelboxes .ls-panelboxes-panelbox .card.card-primary .card-header, .card.card-primary .card-header {
+.card.card-primary .card-title, .ls-panelboxes .card.card-primary .card-header, .card.card-primary .card-header {
   font-size: 1.14rem;
   display: inline-block;
   color: #1E1E1E;
@@ -17519,7 +17519,7 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   width: 95%;
   height: 100%;
 }
-.ls-panelboxes .ls-panelboxes-panelbox .card .card-title, .ls-panelboxes .ls-panelboxes-panelbox .card.card-primary .card-header, .ls-panelboxes .ls-panelboxes-panelbox .card .card-header {
+.ls-panelboxes .ls-panelboxes-panelbox .card .card-title, .ls-panelboxes .ls-panelboxes-panelbox .card .card-header {
   font-size: 1.71rem;
 }
 .ls-panelboxes .ls-panelboxes-panelbox .card .card-body {
@@ -17530,7 +17530,7 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   width: fit-content;
   border-width: 1px;
 }
-.ls-panelboxes .ls-panelboxes-panelbox .card.card-primary {
+.ls-panelboxes .card.card-primary {
   background-color: #fff;
   position: relative;
   border-radius: 4px;
@@ -17539,50 +17539,50 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   color: #1E1E1E;
   padding: 0;
 }
-.ls-panelboxes .ls-panelboxes-panelbox .card.card-primary.card-clickable:hover {
+.ls-panelboxes .card.card-primary.card-clickable:hover {
   box-shadow: 8px 8px #D3C5FA;
   cursor: pointer;
   cursor: hand;
 }
-.ls-panelboxes .ls-panelboxes-panelbox .card.card-primary.disabled {
+.ls-panelboxes .card.card-primary.disabled {
   opacity: 0.5;
   border: none;
 }
-.ls-panelboxes .ls-panelboxes-panelbox .card.card-primary.disabled a {
+.ls-panelboxes .card.card-primary.disabled a {
   cursor: default;
 }
-.ls-panelboxes .ls-panelboxes-panelbox .card.card-primary .card-title, .ls-panelboxes .ls-panelboxes-panelbox .card.card-primary .card-header {
+.ls-panelboxes .card.card-primary .card-title, .ls-panelboxes .card.card-primary .card-header {
   font-size: 1.425rem;
   display: inline-block;
   color: #1E1E1E;
   font-weight: 600;
   line-height: 26px;
 }
-.ls-panelboxes .ls-panelboxes-panelbox .card.card-primary .card-header {
+.ls-panelboxes .card.card-primary .card-header {
   padding: 1rem;
   height: unset;
   background-color: unset;
   border: none;
 }
-.ls-panelboxes .ls-panelboxes-panelbox .card.card-primary .card-body {
+.ls-panelboxes .card.card-primary .card-body {
   padding: 1rem;
   height: unset;
   background-color: unset;
   border: none;
 }
-.ls-panelboxes .ls-panelboxes-panelbox .card.card-primary .card-header + .card-body {
+.ls-panelboxes .card.card-primary .card-header + .card-body {
   padding-top: 0;
   margin-top: -1rem;
 }
-.ls-panelboxes .ls-panelboxes-panelbox .card.card-primary .card-footer {
+.ls-panelboxes .card.card-primary .card-footer {
   justify-content: flex-start;
   height: unset;
   padding: 1rem;
   background-color: unset;
   border: none;
 }
-.ls-panelboxes .ls-panelboxes-panelbox .card.card-primary .card-body + .card-footer,
-.ls-panelboxes .ls-panelboxes-panelbox .card.card-primary .card-header + .card-footer {
+.ls-panelboxes .card.card-primary .card-body + .card-footer,
+.ls-panelboxes .card.card-primary .card-header + .card-footer {
   padding-top: 0;
 }
 

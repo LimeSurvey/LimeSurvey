@@ -33,6 +33,27 @@ $googleAnalyticsStyleOptions = array(
 ?>
 <!-- Notification panel -->
 <div id='notification-panel'>
+    <?php if ($oSurvey->isActive) : ?>
+        <div class="row ls-panelboxes mb-5">
+            <div class="col-12 col-lg-6 ls-flex-column">
+                <div class="card card-primary ">
+                    <div class="card-body d-flex">
+                        Please note that you need to deactivate this survey if you want to change any of the settings below.
+
+                    </div>
+                    <div class="card-footer d-flex">
+                        <a class="btn btn-danger"
+                        href="<?php echo $this->createUrl("surveyAdministration/deactivate/surveyid/$oSurvey->sid"); ?>"
+                        role="button">
+                            Stop survey
+    </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <?php endif; ?>
+
+
     <div class="row">
         <div class="col-12 col-lg-6 position-relative">
             <!-- Date Stamp -->
@@ -112,8 +133,9 @@ $googleAnalyticsStyleOptions = array(
                     ]); ?>
                 </div>
             </div>
-
-            <div class="ls-option-disabled"></div>
+            <?php if ($oSurvey->isActive) : ?>
+                <div class="ls-option-disabled"></div>
+            <?php endif; ?>
         </div>
 
         <div class="col-12 col-lg-6">
