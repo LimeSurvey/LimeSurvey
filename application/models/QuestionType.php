@@ -92,7 +92,8 @@ class QuestionType extends StaticModel
     /** @var string $class the css class for question (container??)*/
     public $class;
 
-
+    /** @var integer $hassubquestionsrelevance whether the type supports relevance on subquestions */
+    public $hassubquestionsrelevance;
 
     /**
      * {@inheritdoc}
@@ -154,6 +155,7 @@ class QuestionType extends StaticModel
                 'assessable' => 1,
                 'hasdefaultvalues' => 0,
                 'answerscales' => 2,
+                'hassubquestionsrelevance' => 1,
                 'class' => 'array-flexible-dual-scale',
             ],
             self::QT_5_POINT_CHOICE => [
@@ -176,6 +178,7 @@ class QuestionType extends StaticModel
                 'hasdefaultvalues' => 0,
                 'assessable' => 1,
                 'answerscales' => 0,
+                'hassubquestionsrelevance' => 1,
                 'class' => 'array-5-pt'
             ],
             self::QT_B_ARRAY_10_POINT => [
@@ -187,6 +190,7 @@ class QuestionType extends StaticModel
                 'hasdefaultvalues' => 0,
                 'assessable' => 1,
                 'answerscales' => 0,
+                'hassubquestionsrelevance' => 1,
                 'class' => 'array-10-pt'
             ],
             self::QT_C_ARRAY_YES_UNCERTAIN_NO => [
@@ -198,6 +202,7 @@ class QuestionType extends StaticModel
                 'hasdefaultvalues' => 0,
                 'assessable' => 1,
                 'answerscales' => 0,
+                'hassubquestionsrelevance' => 1,
                 'class' => 'array-yes-uncertain-no'
             ],
             self::QT_D_DATE => [
@@ -220,6 +225,7 @@ class QuestionType extends StaticModel
                 'hasdefaultvalues' => 0,
                 'assessable' => 1,
                 'answerscales' => 0,
+                'hassubquestionsrelevance' => 1,
                 'class' => 'array-increase-same-decrease'
             ],
             self::QT_F_ARRAY => [
@@ -231,6 +237,7 @@ class QuestionType extends StaticModel
                 'hasdefaultvalues' => 0,
                 'assessable' => 1,
                 'answerscales' => 1,
+                'hassubquestionsrelevance' => 1,
                 'class' => 'array-flexible-row'
             ],
             self::QT_G_GENDER => [
@@ -275,6 +282,7 @@ class QuestionType extends StaticModel
                 'other' => false,
                 'assessable' => 1,
                 'answerscales' => 0,
+                'hassubquestionsrelevance' => 1,
                 'class' => 'numeric-multi'
             ],
             self::QT_L_LIST => [
@@ -297,6 +305,7 @@ class QuestionType extends StaticModel
                 'hasdefaultvalues' => 1,
                 'assessable' => 1,
                 'answerscales' => 0,
+                'hassubquestionsrelevance' => 1,
                 'class' => 'multiple-opt'
             ],
             self::QT_N_NUMERICAL => [
@@ -330,6 +339,7 @@ class QuestionType extends StaticModel
                 'hasdefaultvalues' => 1,
                 'assessable' => 1,
                 'answerscales' => 0,
+                'hassubquestionsrelevance' => 1,
                 'class' => 'multiple-opt-comments'
             ],
             self::QT_Q_MULTIPLE_SHORT_TEXT => [
@@ -341,6 +351,7 @@ class QuestionType extends StaticModel
                 'hasdefaultvalues' => 1,
                 'assessable' => 0,
                 'answerscales' => 0,
+                'hassubquestionsrelevance' => 1,
                 'class' => 'multiple-short-txt'
             ],
             self::QT_R_RANKING => [
@@ -429,6 +440,7 @@ class QuestionType extends StaticModel
                 'hasdefaultvalues' => 0,
                 'assessable' => 1,
                 'answerscales' => 0,
+                'hassubquestionsrelevance' => 1,
                 'class' => 'array-multi-flexi'
             ],
             self::QT_SEMICOLON_ARRAY_TEXT => [
@@ -440,6 +452,7 @@ class QuestionType extends StaticModel
                 'hasdefaultvalues' => 0,
                 'assessable' => 0,
                 'answerscales' => 0,
+                'hassubquestionsrelevance' => 1,
                 'class' => 'array-multi-flexi-text'
             ],
             self::QT_VERTICAL_FILE_UPLOAD => [

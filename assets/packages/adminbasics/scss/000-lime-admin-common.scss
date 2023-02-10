@@ -4244,3 +4244,10 @@ label {
         }
     }
 }
+
+/** Hide Relevance Equation column for subquestions when not supported */
+.subquestions-table.hide-relevance {
+    #rel-eq-th, td.relevance-equation {
+        display: none;
+    }
+}
