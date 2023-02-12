@@ -39,7 +39,7 @@ if (isset($scripts)) {
             echo CHtml::form(["admin/database/index/" . $entryData['action']], 'post', ['id' => $entryData['name'], 'name' => $entryData['name'], 'class' => ' form30']);
         }
         ?>
-        <div class="row mt-4">
+        <div class="row">
             <div class="<?= $entryData['classes'] ?> ls-settings-wrapper">
                 <?php $this->renderPartial($entryData['partial'], $templateData); ?>
             </div>

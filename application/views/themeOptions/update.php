@@ -100,7 +100,7 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
             </form>
         </div>
     </div>
-<?php $this->renderPartial('/surveyAdministration/_sub_footer'); ?>
+<?php $this->renderPartial('/surveyAdministration/_inherit_sub_footer'); ?>
 
 </div>
 

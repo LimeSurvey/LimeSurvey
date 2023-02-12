@@ -162,5 +162,5 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
             <?php }?>
     </div>
 </div>
-<?php $this->renderPartial('_sub_footer'); ?>
+<?php $this->renderPartial('_inherit_sub_footer'); ?>
 
