@@ -18131,11 +18131,22 @@ input[type=file]::file-selector-button {
   padding-right: 10px;
   background: linear-gradient(to left, #328637 0px, #328637 6px, #fff 6px, #fff 100%);
 }
+#sidebar .subpanel .wrapper {
+  color: #5E6372;
+}
 #sidebar .subpanel.level-0 .menu-selected {
   background: linear-gradient(to left, #40ab46 0px, #40ab46 6px, #fff 6px, #fff 100%);
 }
 #sidebar .subpanel.level-0 .selected {
+  font-weight: 500 !important;
   background: linear-gradient(to left, #40ab46 0px, #40ab46 13px, #fff 13px, #fff 100%);
+}
+#sidebar .subpanel.level-0 .selected .wrapper .title {
+  color: #1E1E1E !important;
+}
+#sidebar .subpanel.level-0 .selected .wrapper .icon {
+  color: #14AE5C;
+  font-weight: 600;
 }
 #sidebar .subpanel.level-1 .menu-selected {
   background: linear-gradient(to left, #49bb50 0px, #49bb50 6px, #fff 6px, #fff 100%);
