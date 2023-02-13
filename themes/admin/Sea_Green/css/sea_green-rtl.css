@@ -11500,6 +11500,12 @@ html {
 .welcome #lime-logo {
   animation: fadein 1s;
 }
+.welcome .recent-activity {
+  margin-top: 1rem;
+  font-size: 0.95rem;
+  padding-left: 3rem;
+  opacity: 0.7;
+}
 
 #welcomeModal {
   z-index: 20000;
@@ -11519,7 +11525,7 @@ html {
 }
 
 .profile-img-card {
-  margin-top: 32px;
+  margin: 2rem;
 }
 
 #profile-img {
@@ -18129,7 +18135,7 @@ input[type=file]::file-selector-button {
   background-color: transparent;
 }
 #welcome-jumbotron p {
-  margin-top: 52px;
+  margin-top: 2rem;
   margin-bottom: 0px;
   font-size: 1.14rem;
 }

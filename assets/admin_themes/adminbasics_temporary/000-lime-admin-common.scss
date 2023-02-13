@@ -438,8 +438,17 @@ html {
     border-radius: 0;
 }
 
-.welcome #lime-logo {
-    animation: fadein 1s;
+.welcome {
+    #lime-logo {
+        animation: fadein 1s;
+    }
+
+    .recent-activity {
+        margin-top: 1rem;
+        font-size: 0.95rem;
+        padding-right: 3rem;
+        opacity: 0.7;
+    }
 }
 
 #welcomeModal {
@@ -461,7 +470,7 @@ html {
 }
 
 .profile-img-card {
-    margin-top: 32px;
+    margin: 2rem;
 }
 
 #profile-img {
