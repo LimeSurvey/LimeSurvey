@@ -104,7 +104,7 @@ class FailedLoginAttempt extends LSActiveRecord
 
         if (Yii::app()->getConfig('DBVersion') <= 480) {
             $criteria = new CDbCriteria();
-            $criteria->condition = 'number_attempts > :attempts AND ip = :ip';
+            $criteria->condition = 'number_attempts >= :attempts AND ip = :ip';
             $criteria->params = array(
                 ':attempts' => $maxLoginAttempt,
                 ':ip' => $ip,
@@ -112,7 +112,7 @@ class FailedLoginAttempt extends LSActiveRecord
             $row = $this->find($criteria);
         } else {
             $criteria = new CDbCriteria();
-            $criteria->condition = 'number_attempts > :attempts AND ip = :ip AND is_frontend = :is_frontend';
+            $criteria->condition = 'number_attempts > :attempts AND ip >= :ip AND is_frontend = :is_frontend';
             $criteria->params = array(
                 ':attempts' => $maxLoginAttempt,
                 ':ip' => $ip,
