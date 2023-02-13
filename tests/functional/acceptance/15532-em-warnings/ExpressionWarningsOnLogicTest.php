@@ -3,6 +3,7 @@
 namespace ls\tests;
 
 use Facebook\WebDriver\WebDriverBy;
+use Facebook\WebDriver\WebDriverExpectedCondition;
 
 /**
  * @since 2019-11-08
