@@ -49,8 +49,16 @@ gT('Themes');
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="welcome-modal-title"><?php echo sprintf(gT("Welcome to %s!"), 'LimeSurvey'); ?></h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" aria-hidden="true"></button>
+                        <h5
+                            class="modal-title"
+                            id="welcome-modal-title"
+                        ><?php echo sprintf(gT("Welcome to %s!"), 'LimeSurvey'); ?></h5>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                            aria-hidden="true"></button>
                     </div>
                     <div class="modal-body">
                         <div id="selector__welcome-modal--simplesteps">
@@ -60,10 +68,15 @@ gT('Themes');
                                     <li><?php echo sprintf(
                                             gT('Create a new survey by clicking on the %s icon.'),
                                             "<i class='ri-add-circle-fill text-success'></i>"
-                                        ); ?></li>
+                                    ); ?></li>
                                     <li><?php eT('Create a new question group inside your survey.'); ?></li>
                                     <li><?php eT('Create one or more questions inside the new question group.'); ?></li>
-                                    <li><?php echo sprintf(gT('Done. Test your survey using the %s icon.'), "<i class='ri-settings-5-fill text-success'></i>"); ?></li>
+                                    <li><?php
+                                        echo sprintf(
+                                            gT('Done. Test your survey using the %s icon.'),
+                                            "<i class='ri-settings-5-fill text-success'></i>"
+                                        );
+                                    ?></li>
                                 </ol>
                             </div>
                             <div>
@@ -77,7 +90,10 @@ gT('Themes');
                                 <div class="row" id="selector__welcome-modal--tutorial">
                                     <p><?php eT('Or, try out our interactive tutorial tour'); ?> </p>
                                     <p class="text-center">
-                                        <button type="button" class="btn btn-primary btn-lg" id="selector__welcome-modal--starttour">
+                                        <button
+                                            type="button"
+                                            class="btn btn-primary btn-lg"
+                                            id="selector__welcome-modal--starttour">
                                             <?php eT("Start the tour"); ?>
                                         </button>
                                     </p>
@@ -86,8 +102,13 @@ gT('Themes');
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><?php eT('Close'); ?></button>
-                        <a href="<?php echo $this->createUrl("surveyAdministration/newSurvey") ?>" class="btn btn-primary">
+                        <button
+                            type="button"
+                            class="btn btn-outline-secondary"
+                            data-bs-dismiss="modal"><?php eT('Close'); ?></button>
+                        <a
+                            href="<?php echo $this->createUrl("surveyAdministration/newSurvey") ?>"
+                            class="btn btn-primary">
                             <?php eT('Create a new survey'); ?>
                         </a>
                     </div>
@@ -134,20 +155,27 @@ gT('Themes');
     ", LSYii_ClientScript::POS_POSTSCRIPT);
     ?>
     <!-- Last visited survey/question -->
-    <?php if ($bShowLastSurveyAndQuestion && ($showLastSurvey || $showLastQuestion)) : // bShowLastSurveyAndQuestion is the homepage setting, showLastSurvey & showLastQuestion are about if infos are available
+    <?php
+        // bShowLastSurveyAndQuestion is the homepage setting,
+        // - showLastSurvey & showLastQuestion are about if infos are available
+        if ($bShowLastSurveyAndQuestion && ($showLastSurvey || $showLastQuestion)) :
     ?>
         <div class="container text-end recent-activity">
             <?php if ($showLastSurvey) : ?>
                 <span id="last_survey" class=""> <!-- to enable rotation again set class back to "rotateShown" -->
                     <?php eT("Last visited survey:"); ?>
-                    <a href="<?php echo $surveyUrl; ?>" class=""><?php echo viewHelper::flatEllipsizeText($surveyTitle, true, 60); ?></a>
+                    <a
+                        href="<?php echo $surveyUrl; ?>"
+                        class=""><?php echo viewHelper::flatEllipsizeText($surveyTitle, true, 60); ?></a>
                 </span>
             <?php endif; ?>
 
             <?php if ($showLastQuestion) : ?>
                 <span id="last_question" class=""> <!-- to enable rotation again set class back to "rotateHidden" -->
                     <?php eT("Last visited question:"); ?>
-                    <a href="<?php echo $last_question_link; ?>" class=""><?php echo viewHelper::flatEllipsizeText($last_question_name, true, 60); ?></a>
+                    <a
+                        href="<?php echo $last_question_link; ?>"
+                        class=""><?php echo viewHelper::flatEllipsizeText($last_question_name, true, 60); ?></a>
                 </span>
             <?php endif; ?>
         </div>
@@ -177,7 +205,10 @@ gT('Themes');
 
     <!-- Boxes for smartphones -->
     <div class="row d-sm-none d-md-none d-lg-none">
-        <div class="card card-clickable card-primary" id="panel-7" data-url="<?php echo $this->createUrl("surveyAdministration/listSurveys") ?>" style="opacity: 1; top: 0px;">
+        <div
+            class="card card-clickable card-primary" id="panel-7"
+            data-url="<?php echo $this->createUrl("surveyAdministration/listSurveys") ?>"
+            style="opacity: 1; top: 0px;">
             <div class="card-header ">
                 <?php eT('List surveys'); ?>
             </div>
@@ -186,11 +217,16 @@ gT('Themes');
                     <span class="ri-list-unordered" style="font-size: 4em"></span>
                     <span class="visually-hidden"><?php eT('List surveys'); ?></span>
                 </a><br><br>
-                <a href='<?php echo $this->createUrl("surveyAdministration/listsurveys") ?>'><?php eT('List surveys'); ?></a>
+                <a
+                    href='<?php echo $this->createUrl("surveyAdministration/listsurveys") ?>'
+                ><?php eT('List surveys'); ?></a>
             </div>
         </div>
 
-        <div class="card card-clickable card-primary" id="panel-8" data-url="<?php echo $this->createUrl("admin/globalsettings") ?>" style="opacity: 1; top: 0px;">
+        <div
+            class="card card-clickable card-primary" id="panel-8"
+            data-url="<?php echo $this->createUrl("admin/globalsettings") ?>"
+            style="opacity: 1; top: 0px;">
             <div class="card-header ">
                 <?php eT('Edit global settings'); ?>
             </div>
@@ -199,7 +235,9 @@ gT('Themes');
                     <span class="ri-settings-5-fill" style="font-size: 4em"></span>
                     <span class="visually-hidden"><?php eT('Edit global settings'); ?></span>
                 </a><br><br>
-                <a href='<?php echo $this->createUrl("admin/globalsettings") ?>'><?php eT('Edit global settings'); ?></a>
+                <a
+                    href='<?php echo $this->createUrl("admin/globalsettings") ?>'
+                ><?php eT('Edit global settings'); ?></a>
             </div>
         </div>
 
