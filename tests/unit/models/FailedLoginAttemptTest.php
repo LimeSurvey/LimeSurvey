@@ -45,4 +45,14 @@ class FailedLoginAttempTest extends TestBaseClass
         FailedLoginAttempt::model()->addAttempt();  
         $this->assertTrue(FailedLoginAttempt::model()->isLockedOut(FailedLoginAttempt::TYPE_LOGIN));
     }
+
+    /**
+     * @return void
+     */
+    public static function tearDownAfterClass(): void
+    {
+        FailedLoginAttempt::model()->deleteAttempts(FailedLoginAttempt::TYPE_LOGIN);
+
+        parent::tearDownAfterClass();
+    }    
 }
