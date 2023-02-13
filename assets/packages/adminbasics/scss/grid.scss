@@ -4,3 +4,11 @@
         th > .sort-link .caret{ right: -10px; }
     }
 }
+.grid-view .table td .text-content {
+    width:25em;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+    height:1.5em;
+    display:inline-block
+}
