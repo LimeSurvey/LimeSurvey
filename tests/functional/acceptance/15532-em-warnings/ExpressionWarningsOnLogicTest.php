@@ -61,7 +61,11 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
 	    self::ignoreWelcomeModal();
 
             /* Did we have thew warning alert */
-            $this->assertTrue(self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-warning'))->isDisplayed(), "Unable to find the alert");
+            self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::visibilityOfElementLocated(
+                    WebDriverBy::cssSelector('#logicfiletable .alert-warning')
+                )
+            );
             /* We found the count of warnings */
             $elementStrong = self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-warning strong'));
             $strongAlert = $elementStrong->getText();
