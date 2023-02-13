@@ -38,15 +38,13 @@ $googleAnalyticsStyleOptions = array(
             <div class="col-12 col-lg-6 ls-flex-column">
                 <div class="card card-primary ">
                     <div class="card-body d-flex">
-                        Please note that you need to deactivate this survey if you want to change any of the settings below.
-
+                        <?php eT("Please note that you need to deactivate this survey
+                         if you want to change any of the settings below."); ?>
                     </div>
                     <div class="card-footer d-flex">
-                        <a class="btn btn-danger"
-                        href="<?php echo $this->createUrl("surveyAdministration/deactivate/surveyid/$oSurvey->sid"); ?>"
-                        role="button">
+                        <a class="btn btn-danger" href="<?php echo $this->createUrl("surveyAdministration/deactivate/surveyid/$oSurvey->sid"); ?>" role="button">
                             Stop survey
-    </a>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -173,8 +171,14 @@ $googleAnalyticsStyleOptions = array(
                 <div class="row">
                     <div class="col-12 col-lg-8 content-right">
                         <label class=" form-label" for='emailnotificationto'><?php eT("Send basic admin notification email to:"); ?></label>
-                        <input class="form-control inherit-edit <?php echo ($bShowInherited && $emailnotificationto === 'inherit' ? 'd-none' : 'd-block'); ?>" type='<?php echo ($bShowInherited) ? 'text' : 'email'; ?>' size='50' id='emailnotificationto' name='emailnotificationto' value="<?php echo htmlspecialchars($emailnotificationto); ?>" data-inherit-value="inherit" data-saved-value="<?php echo $emailnotificationto; ?>" />
-                        <input class="form-control inherit-readonly <?php echo ($bShowInherited && $emailnotificationto === 'inherit' ? 'd-block' : 'd-none'); ?>" type='text' size='50' value="<?= htmlspecialchars($oSurveyOptions->emailnotificationto ?? '') ?>" readonly />
+                        <input class="form-control inherit-edit 
+                            <?php echo ($bShowInherited && $emailnotificationto === 'inherit' ? 'd-none' : 'd-block'); ?>" type='
+                            <?php echo ($bShowInherited) ? 'text' : 'email'; ?>' size='50' id='emailnotificationto' name='emailnotificationto' value="
+                            <?php echo htmlspecialchars($emailnotificationto); ?>" data-inherit-value="inherit" data-saved-value="
+                            <?php echo $emailnotificationto; ?>" />
+                        <input class="form-control inherit-readonly
+                         <?php echo ($bShowInherited && $emailnotificationto === 'inherit' ? 'd-block' : 'd-none'); ?>" type='text' size='50' value="
+                         <?= htmlspecialchars($oSurveyOptions->emailnotificationto ?? '') ?>" readonly />
                     </div>
                     <div class="col-12 col-lg-4 content-right <?php echo ($bShowInherited ? 'd-block' : 'd-none'); ?>">
                         <label class=" form-label content-center col-12" for='emailnotificationto'><?php eT("Inherit:"); ?></label>
@@ -196,8 +200,14 @@ $googleAnalyticsStyleOptions = array(
                 <div class="row">
                     <div class="col-12 col-lg-8 content-right">
                         <label class=" form-label" for='emailresponseto'><?php eT("Send detailed admin notification email to:"); ?></label>
-                        <input class="form-control inherit-edit <?php echo ($bShowInherited && $emailresponseto === 'inherit' ? 'd-none' : 'd-block'); ?>" type='<?php echo ($bShowInherited) ? 'text' : 'email'; ?>' size='50' id='emailresponseto' name='emailresponseto' value="<?php echo htmlspecialchars($emailresponseto); ?>" data-inherit-value="inherit" data-saved-value="<?php echo $emailresponseto; ?>" />
-                        <input class="form-control inherit-readonly <?php echo ($bShowInherited && $emailresponseto === 'inherit' ? 'd-block' : 'd-none'); ?>" type='text' size='50' value="<?= htmlspecialchars($oSurveyOptions->emailresponseto ?? '') ?>" readonly />
+                        <input class="form-control inherit-edit
+                            <?php echo ($bShowInherited && $emailresponseto === 'inherit' ? 'd-none' : 'd-block'); ?>" type='
+                            <?php echo ($bShowInherited) ? 'text' : 'email'; ?>' size='50' id='emailresponseto' name='emailresponseto' value="
+                            <?php echo htmlspecialchars($emailresponseto); ?>" data-inherit-value="inherit" data-saved-value="
+                            <?php echo $emailresponseto; ?>" />
+                        <input class="form-control inherit-readonly 
+                            <?php echo ($bShowInherited && $emailresponseto === 'inherit' ? 'd-block' : 'd-none'); ?>" type='text' size='50' value="
+                            <?= htmlspecialchars($oSurveyOptions->emailresponseto ?? '') ?>" readonly />
                     </div>
                     <div class="col-12 col-lg-4 content-right <?php echo ($bShowInherited ? 'd-block' : 'd-none'); ?>">
                         <label class=" form-label content-center col-12" for='emailresponseto'><?php eT("Inherit:"); ?></label>

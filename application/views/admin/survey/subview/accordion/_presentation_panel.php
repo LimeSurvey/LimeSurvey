@@ -18,7 +18,8 @@ App()->getClientScript()->registerScript(
     var sParameter = '';
     var sTargetQuestion = '';
     var sNoParametersDefined = '';
-    var sAdminEmailAddressNeeded = '" . gT("If you are using token functions or notifications emails you need to set an administrator email address.", 'js') . "'
+    var sAdminEmailAddressNeeded = '" . gT("If you are using token functions or notifications 
+                                                emails you need to set an administrator email address.", 'js') . "'
     var sURLParameters = '';
     var sAddParam = '';
 ",
@@ -52,7 +53,8 @@ if ($bShowInherited) {
                         array(
                             'name' => 'shownoanswer',
                             'checkedOption' => $oSurvey->shownoanswer,
-                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => $oSurveyOptions->shownoanswer . " ᴵ")) : $optionsOnOff
+                            'selectOptions' => ($bShowInherited) ?
+                                array_merge($optionsOnOff, array('I' => $oSurveyOptions->shownoanswer . " ᴵ")) : $optionsOnOff
                         )
                     );
                     ?>
@@ -61,14 +63,16 @@ if ($bShowInherited) {
 
             <!-- Show "There are X questions in this survey" -->
             <div class="mb-3">
-                <label class="form-label" for="showxquestions"><?php eT('... “There are X questions in this survey”'); ?></label>
+                <label class="form-label" for="showxquestions">
+                    <?php eT('... “There are X questions in this survey”'); ?></label>
                 <div class="">
                     <?php $this->widget(
                         'ext.ButtonGroupWidget.ButtonGroupWidget',
                         array(
                             'name' => 'showxquestions',
                             'checkedOption' => $oSurvey->showxquestions,
-                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => $oSurveyOptions->showxquestions . " ᴵ")) : $optionsOnOff
+                            'selectOptions' => ($bShowInherited) ?
+                                array_merge($optionsOnOff, array('I' => $oSurveyOptions->showxquestions . " ᴵ")) : $optionsOnOff
                         )
                     );
                     ?>
@@ -81,7 +85,10 @@ if ($bShowInherited) {
                 $set_showgri               = $oSurvey->showgroupinfo;
                 $sel_showgri[$set_showgri] = ' selected="selected"';
             }
-            if (empty($sel_showgri['B']) && empty($sel_showgri['D']) && empty($sel_showgri['N']) && empty($sel_showgri['X']) && empty($sel_showgri['I'])) {
+            if (
+                empty($sel_showgri['B']) && empty($sel_showgri['D']) && empty($sel_showgri['N'])
+                && empty($sel_showgri['X']) && empty($sel_showgri['I'])
+            ) {
                 $sel_showgri['B'] = ' selected="selected"';
             }
             ?>
@@ -93,7 +100,8 @@ if ($bShowInherited) {
                 <div class="col-12 col-lg-8">
                     <select id="showgroupinfo" name="showgroupinfo" class="form-select">
                         <?php if ($bShowInherited) { ?>
-                            <option value="I" <?php echo $sel_showgri['I']; ?>><?php echo eT('Inherit') .  $oSurveyOptions->showgroupinfo; ?></option>
+                            <option value="I" <?php echo $sel_showgri['I']; ?>>
+                                <?php echo eT('Inherit') .  $oSurveyOptions->showgroupinfo; ?></option>
                         <?php } ?>
                         <option value="B" <?php echo $sel_showgri['B']; ?>><?php eT('Show both'); ?></option>
                         <option value="N" <?php echo $sel_showgri['N']; ?>><?php eT('Show group name only'); ?></option>
@@ -110,7 +118,10 @@ if ($bShowInherited) {
                 $set_showqnc               = $oSurvey->showqnumcode;
                 $sel_showqnc[$set_showqnc] = ' selected="selected"';
             }
-            if (empty($sel_showqnc['B']) && empty($sel_showqnc['C']) && empty($sel_showqnc['N']) && empty($sel_showqnc['X']) && empty($sel_showqnc['I'])) {
+            if (
+                empty($sel_showqnc['B']) && empty($sel_showqnc['C']) && empty($sel_showqnc['N'])
+                && empty($sel_showqnc['X']) && empty($sel_showqnc['I'])
+            ) {
                 $sel_showqnc['X'] = ' selected="selected"';
             };
             ?>
@@ -121,7 +132,8 @@ if ($bShowInherited) {
                 <div class="col-12 col-lg-8">
                     <select class="form-select" id="showqnumcode" name="showqnumcode">
                         <?php if ($bShowInherited) { ?>
-                            <option value="I" <?php echo $sel_showqnc['I']; ?>><?php echo eT('Inherit') .  $oSurveyOptions->showqnumcode; ?></option>
+                            <option value="I" <?php echo $sel_showqnc['I']; ?>>
+                                <?php echo eT('Inherit') .  $oSurveyOptions->showqnumcode; ?></option>
                         <?php } ?>
                         <option value="B" <?php echo $sel_showqnc['B']; ?>><?php eT('Show both'); ?></option>
                         <option value="N" <?php echo $sel_showqnc['N']; ?>><?php eT('Show question number only'); ?></option>
@@ -143,7 +155,8 @@ if ($bShowInherited) {
                         array(
                             'name' => 'showwelcome',
                             'checkedOption' => $oSurvey->showwelcome,
-                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => $oSurveyOptions->showwelcome . " ᴵ")) : $optionsOnOff
+                            'selectOptions' => ($bShowInherited) ?
+                                array_merge($optionsOnOff, array('I' => $oSurveyOptions->showwelcome . " ᴵ")) : $optionsOnOff
                         )
                     );
                     ?>
@@ -159,7 +172,8 @@ if ($bShowInherited) {
                         array(
                             'name' => 'nokeyboard',
                             'checkedOption' => $oSurvey->nokeyboard,
-                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => $oSurveyOptions->nokeyboard . " ᴵ")) : $optionsOnOff
+                            'selectOptions' => ($bShowInherited) ?
+                                array_merge($optionsOnOff, array('I' => $oSurveyOptions->nokeyboard . " ᴵ")) : $optionsOnOff
                         )
                     );
                     ?>
@@ -175,7 +189,8 @@ if ($bShowInherited) {
                         array(
                             'name' => 'showprogress',
                             'checkedOption' => $oSurvey->showprogress,
-                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => $oSurveyOptions->showprogress . " ᴵ")) : $optionsOnOff
+                            'selectOptions' => ($bShowInherited) ?
+                                array_merge($optionsOnOff, array('I' => $oSurveyOptions->showprogress . " ᴵ")) : $optionsOnOff
                         )
                     );
                     ?>
@@ -227,8 +242,14 @@ if ($bShowInherited) {
                     <label class="form-label" for='navigationdelay'><?php eT("seconds"); ?></label>
                     <?php // NB: Do NOT use === when comparing navigationdelay to '-1', it won't work with Postgresql. 
                     ?>
-                    <input class="form-control inherit-edit <?php echo ($bShowInherited && $navigationdelay == '-1' ? 'd-none' : 'd-block'); ?>" type='text' size='50' id='navigationdelay' name='navigationdelay' value="<?php echo htmlspecialchars($navigationdelay); ?>" data-inherit-value="-1" data-saved-value="<?php echo $navigationdelay; ?>" />
-                    <input class="form-control inherit-readonly <?php echo ($bShowInherited && $navigationdelay == '-1' ? 'd-block' : 'd-none'); ?>" type='text' size='50' value="<?php echo htmlspecialchars($oSurveyOptions->navigationdelay); ?>" readonly />
+                    <input class="form-control inherit-edit 
+                        <?php echo ($bShowInherited && $navigationdelay == '-1' ?
+                            'd-none' : 'd-block'); ?>" type='text' size='50' id='navigationdelay' name='navigationdelay' value="
+                        <?php echo htmlspecialchars($navigationdelay); ?>" data-inherit-value="-1" data-saved-value="<?php echo $navigationdelay; ?>" />
+                    <input class="form-control inherit-readonly 
+                        <?php echo ($bShowInherited && $navigationdelay == '-1'
+                            ? 'd-block' : 'd-none'); ?>" type='text' size='50' value="
+                        <?php echo htmlspecialchars($oSurveyOptions->navigationdelay); ?>" readonly />
                 </div>
             </div>
             <!-- Automatically load URL -->
@@ -240,7 +261,8 @@ if ($bShowInherited) {
                         array(
                             'name' => 'autoredirect',
                             'checkedOption' => $oSurvey->autoredirect,
-                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => $oSurveyOptions->autoredirect . " ᴵ")) : $optionsOnOff
+                            'selectOptions' => ($bShowInherited)
+                                ? array_merge($optionsOnOff, array('I' => $oSurveyOptions->autoredirect . " ᴵ")) : $optionsOnOff
                         )
                     );
                     ?>
@@ -273,7 +295,8 @@ if ($bShowInherited) {
                         array(
                             'name' => 'printanswers',
                             'checkedOption' => $oSurvey->printanswers,
-                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => $oSurveyOptions->printanswers . " ᴵ")) : $optionsOnOff
+                            'selectOptions' => ($bShowInherited) ?
+                                array_merge($optionsOnOff, array('I' => $oSurveyOptions->printanswers . " ᴵ")) : $optionsOnOff
                         )
                     );
                     ?>
@@ -294,7 +317,8 @@ if ($bShowInherited) {
                         array(
                             'name' => 'publicstatistics',
                             'checkedOption' => $oSurvey->publicstatistics,
-                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => $oSurveyOptions->publicstatistics . " ᴵ")) : $optionsOnOff
+                            'selectOptions' => ($bShowInherited) ?
+                                array_merge($optionsOnOff, array('I' => $oSurveyOptions->publicstatistics . " ᴵ")) : $optionsOnOff
                         )
                     );
                     ?>
@@ -313,7 +337,8 @@ if ($bShowInherited) {
                     array(
                         'name' => 'publicgraphs',
                         'checkedOption' => $oSurvey->publicgraphs,
-                        'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => $oSurveyOptions->publicgraphs . " ᴵ")) : $optionsOnOff
+                        'selectOptions' => ($bShowInherited) ?
+                            array_merge($optionsOnOff, array('I' => $oSurveyOptions->publicgraphs . " ᴵ")) : $optionsOnOff
                     )
                 );
                 ?>
