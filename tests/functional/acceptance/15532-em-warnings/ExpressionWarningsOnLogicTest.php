@@ -58,7 +58,7 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
 
             // Close modals.
 	    self::ignoreAdminNotification();
-            sleep(5);
+	    self::ignoreWelcomeModal();
 
             /* Did we have thew warning alert */
             $this->assertTrue(self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-warning'))->isDisplayed(), "Unable to find the alert");
