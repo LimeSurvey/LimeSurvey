@@ -197,44 +197,58 @@ if ($bShowInherited) {
                     ?>
                 </div>
             </div>
-  
+
         </div>
     </div>
 
     <div class="row mt-5">
         <h1>Navigation </h1>
-        <div class="col-12 col-lg-6">
-            <!-- Navigation delay -->
-            <div class="mb-3">
-                <?php $navigationdelay = $oSurvey->navigationdelay; ?>
-                <div class="row">
-                    <div class="col-12 col-lg-4 content-right <?php echo ($bShowInherited ? 'd-block' : 'd-none'); ?>">
-                        <label class="form-label content-center col-12" for='navigationdelay'><?php eT("Navigation delay"); ?></label>
-                        <?php $this->widget(
-                            'ext.ButtonGroupWidget.ButtonGroupWidget',
-                            [
-                                'name' => 'navigationdelaybutton',
-                                // NB: Do NOT use === when comparing navigationdelay with '-1', it won't work with Postgresql.
-                                'checkedOption' => ($bShowInherited && $navigationdelay == '-1' ? 'Y' : 'N'),
-                                'selectOptions' => $optionsOnOff,
-                                'htmlOptions' => [
-                                    'class' => 'text-option-inherit'
-                                ]
+        <!-- Navigation delay -->
+        <div class="col-12 col-lg-6 mb-3">
+            <?php $navigationdelay = $oSurvey->navigationdelay; ?>
+            <div class="row mb-3">
+                <div class="col-12 col-lg-4 content-right <?php echo ($bShowInherited ? 'd-block' : 'd-none'); ?>">
+                    <label class="form-label content-center col-12" for='navigationdelay'><?php eT("Navigation delay"); ?></label>
+                    <?php $this->widget(
+                        'ext.ButtonGroupWidget.ButtonGroupWidget',
+                        [
+                            'name' => 'navigationdelaybutton',
+                            // NB: Do NOT use === when comparing navigationdelay with '-1', it won't work with Postgresql.
+                            'checkedOption' => ($bShowInherited && $navigationdelay == '-1' ? 'Y' : 'N'),
+                            'selectOptions' => $optionsOnOff,
+                            'htmlOptions' => [
+                                'class' => 'text-option-inherit'
                             ]
-                        ); ?>
-                    </div>
+                        ]
+                    ); ?>
+                </div>
 
-                    <div class="col-12 col-lg-4 content-right">
-                        <label class="form-label" for='navigationdelay'><?php eT("seconds"); ?></label>
-                        <?php // NB: Do NOT use === when comparing navigationdelay to '-1', it won't work with Postgresql. 
-                        ?>
-                        <input class="form-control inherit-edit <?php echo ($bShowInherited && $navigationdelay == '-1' ? 'd-none' : 'd-block'); ?>" type='text' size='50' id='navigationdelay' name='navigationdelay' value="<?php echo htmlspecialchars($navigationdelay); ?>" data-inherit-value="-1" data-saved-value="<?php echo $navigationdelay; ?>" />
-                        <input class="form-control inherit-readonly <?php echo ($bShowInherited && $navigationdelay == '-1' ? 'd-block' : 'd-none'); ?>" type='text' size='50' value="<?php echo htmlspecialchars($oSurveyOptions->navigationdelay); ?>" readonly />
-                    </div>
-
+                <div class="col-12 col-lg-4 content-right">
+                    <label class="form-label" for='navigationdelay'><?php eT("seconds"); ?></label>
+                    <?php // NB: Do NOT use === when comparing navigationdelay to '-1', it won't work with Postgresql. 
+                    ?>
+                    <input class="form-control inherit-edit <?php echo ($bShowInherited && $navigationdelay == '-1' ? 'd-none' : 'd-block'); ?>" type='text' size='50' id='navigationdelay' name='navigationdelay' value="<?php echo htmlspecialchars($navigationdelay); ?>" data-inherit-value="-1" data-saved-value="<?php echo $navigationdelay; ?>" />
+                    <input class="form-control inherit-readonly <?php echo ($bShowInherited && $navigationdelay == '-1' ? 'd-block' : 'd-none'); ?>" type='text' size='50' value="<?php echo htmlspecialchars($oSurveyOptions->navigationdelay); ?>" readonly />
                 </div>
             </div>
+            <!-- Automatically load URL -->
+            <div class="mb-3">
+                <label class=" form-label" for='autoredirect'><?php eT("Automatically load end URL when survey complete:"); ?></label>
+                <div class="">
+                    <?php $this->widget(
+                        'ext.ButtonGroupWidget.ButtonGroupWidget',
+                        array(
+                            'name' => 'autoredirect',
+                            'checkedOption' => $oSurvey->autoredirect,
+                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => $oSurveyOptions->autoredirect . " ᴵ")) : $optionsOnOff
+                        )
+                    );
+                    ?>
+                </div>
+            </div>
+        </div>
 
+        <div class="col-12 col-lg-6">
             <!-- Allow backward navigation: -->
             <div class="mb-3">
                 <label class=" form-label" for='allowprev'><?php eT("Allow backward navigation:"); ?></label>
@@ -250,7 +264,6 @@ if ($bShowInherited) {
                     ?>
                 </div>
             </div>
-
             <!-- Participants may print answers -->
             <div class="mb-3">
                 <label class=" form-label" for='printanswers'><?php eT("Participants may print answers:"); ?></label>
@@ -261,22 +274,6 @@ if ($bShowInherited) {
                             'name' => 'printanswers',
                             'checkedOption' => $oSurvey->printanswers,
                             'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => $oSurveyOptions->printanswers . " ᴵ")) : $optionsOnOff
-                        )
-                    );
-                    ?>
-                </div>
-            </div>
-
-            <!-- Automatically load URL -->
-            <div class="mb-3">
-                <label class=" form-label" for='autoredirect'><?php eT("Automatically load end URL when survey complete:"); ?></label>
-                <div class="">
-                    <?php $this->widget(
-                        'ext.ButtonGroupWidget.ButtonGroupWidget',
-                        array(
-                            'name' => 'autoredirect',
-                            'checkedOption' => $oSurvey->autoredirect,
-                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => $oSurveyOptions->autoredirect . " ᴵ")) : $optionsOnOff
                         )
                     );
                     ?>
