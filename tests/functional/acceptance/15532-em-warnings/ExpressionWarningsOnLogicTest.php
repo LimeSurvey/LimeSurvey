@@ -67,6 +67,7 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
                     WebDriverBy::cssSelector('#logicfiletable .alert-warning')
                 )
             );
+            var_dump( self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-warning')) );
             /* We found the count of warnings */
             $elementStrong = self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-warning strong'));
             $strongAlert = $elementStrong->getText();
