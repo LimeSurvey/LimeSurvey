@@ -32,29 +32,34 @@
 
     .card-header {
         @extend .card-title;
-        padding: 1rem;
+        padding: 2rem;
         height: unset;
         background-color: unset;
         border: none;
     }
 
-    .card-body {
-        padding: 1rem;
+    .card-body, .list-group {
+        padding: 2rem;
         height: unset;
         background-color: unset;
         border: none;
     }
 
     // Remove body top padding if it comes after a header
-    .card-header + .card-body {
+    .card-header + .card-body, .card-header + .list-group {
         padding-top: 0;
-        margin-top: -1rem;
+        margin-top: -2rem;
+    }
+
+    .list-group-item {
+        padding-left: 0;
+        padding-right: 0;
     }
 
     .card-footer {
         justify-content: flex-start;
         height: unset;
-        padding: 1rem;
+        padding: 2rem;
         background-color: unset;
         border: none;
     }
