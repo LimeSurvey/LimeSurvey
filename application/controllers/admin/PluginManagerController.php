@@ -376,25 +376,25 @@ class PluginManagerController extends SurveyCommonAction
         // Send to view plugin porperties: name and description
         $aPluginProp = App()->getPluginManager()->getPluginInfo($plugin->name);
 
-        // Fullpage Bar
-        $fullPageBar = [];
-        $fullPageBar['returnbutton']['url'] = 'admin/pluginmanager/sa/index';
-        $fullPageBar['returnbutton']['text'] = gT('Return to plugin list');
-
-        // Green Bar with Page Title
-        $pageTitle = gT("Plugin:") . ' ' . $plugin['name'];
+        $topbar['title'] = gT('Plugins') . ' ' . $plugin['name'];
+        $topbar['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/admin/pluginmanager/partial/topbarBtns_detail/rightSideButtons',
+            [
+                'backUrl' => $this->getController()->createUrl('/admin/pluginmanager', ['sa' => 'index'])
+            ],
+            true
+        );
 
         $this->renderWrappedTemplate(
             'pluginmanager',
             'configure',
             [
-                'pageTitle'    => $pageTitle,
                 'settings'     => $aSettings,
                 'buttons'      => $aButtons,
                 'plugin'       => $plugin,
                 'pluginObject' => $oPluginObject,
                 'properties'   => $aPluginProp,
-                'fullpagebar'  => $fullPageBar
+                'topbar' => $topbar
             ]
         );
     }

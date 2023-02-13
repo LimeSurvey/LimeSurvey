@@ -221,8 +221,7 @@ $alert-info: #40ab82;
 
 // Body
 body {
-    color: $primary-2;
-    background-color: $white;
+    background-color: $g-100;
 }
 // Mark
 mark {
@@ -421,39 +420,6 @@ pre {
     color: $primary-2;
     background-color: $gray-04;
     border: 1px solid $gray-09;
-}
-
-// Forms
-.form-control {
-    color: $gray-17;
-    background-color: $white;
-    border: 1px solid $gray-09;
-    //Instead of the line below you could use @include box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
-    box-shadow: inset 0 1px 1px $black_opac_075;
-    &:focus {
-        border: 1px solid $blue-10;
-        //Instead of the line below you could use @include box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
-        box-shadow: inset 0 1px 1px $black_opac_075, 0 0 8px $blue-opac;
-    }
-    &:-ms-input-placeholder {
-        color: $gray-15;
-    }
-}
-.form-control::-moz-placeholder {
-    color: $gray-15;
-    opacity: 1;
-}
-.form-control::-webkit-input-placeholder {
-    color: $gray-15;
-}
-.form-control[disabled] {
-    color: $gray-15;
-    background-color: $gray-04;
-    opacity: 1;
-}
-.form-control[readonly] {
-    background-color: $gray-04;
-    opacity: 1;
 }
 fieldset[disabled] {
     .form-control {
@@ -1368,10 +1334,6 @@ input[type="checkbox"]:checked:after,
     border: 1px solid $gray-09;
 }
 
-// Forms
-input[type="text"], input[type="password"], .ui-autocomplete-input, textarea, .uneditable-input {
-    color: $gray-17;
-}
 
 // Expression Manager
 .em-function {
@@ -1403,100 +1365,7 @@ input[type="text"], input[type="password"], .ui-autocomplete-input, textarea, .u
     border: 1px solid $primary;
 }
 
-// Admin Sidepanel
-#sidebar {
-    .btn-primary.force.color.white.onhover {
-        &:hover,
-        &:active,
-        &:focus {
-            color: $white;
-        }
-    }
-    .tabbutton.btn-primary {
-        outline: none;
-        &:hover, &:focus, &:active {
-            &:after {
-                color: $primary-bg_hover_tabbutton;
-            }
-        }
-        &:after {
-            color: $primary;
-        }
-    }
 
-    .background.white {
-        background-color: $white;
-        box-shadow: none;
-    }
-
-    .resize-handle {
-        button {
-            &:focus, &:active, &:hover {
-                background-color: $white !important;
-            }
-            background: $white;
-        }
-    }
-
-
-    .menu-open {
-        animation-name: animate-gradient;
-        animation-duration: 450ms;
-        background: radial-gradient(circle at center, $primary-bg_menuopen 0px, $primary-bg_menuopen 8px, $white 9px, $white 100%);
-    }
-    .selected {
-        padding-left: 20px;
-        background: /*!rtl:linear-gradient(to left, $primary-bg_selected 0px, lighten($primary, 15%) 13px, $white 13px, $white 100%)*/ linear-gradient(to right, $primary-bg_selected 0px, lighten($primary, 15%) 13px, $white 13px, $white 100%);
-        &.activated {
-            background: /*!rtl:linear-gradient(to left, $primary 0px, $primary 13px, $white 13px, $white 100%)*/ linear-gradient(to right, $primary 0px, $primary 13px, $white 13px, $white 100%);
-        }
-        transition-property: all;
-        transition-duration: .25s;
-        transition-timing-function: cubic-bezier(1, 0.5, 0.5, 1);
-    }
-    .dragged {
-        background-color: adjust-color($primary, $lightness: +10%, $alpha: 0.8) !important;
-        opacity: 0.8;
-        padding-top: 18px;
-        padding-bottom: 18px;
-        transition-property: all;
-        transition-duration: .1s;
-        transition-timing-function: ease-in-out;
-    }
-
-    .menu-selected {
-        padding-left: 10px;
-        background: /*!rtl:linear-gradient(to left, $primary 0px, $primary 6px, $white 6px, $white 100%)*/ linear-gradient(to right, $primary 0px, $primary 6px, $white 6px, $white 100%);
-    }
-
-    .subpanel {
-        &.level-0 {
-            .menu-selected {
-                background: /*!rtl:linear-gradient(to left, $primary-bg_selected_subpanel 0px, $primary-bg_selected_subpanel 6px, $white 6px, $white 100%)*/ linear-gradient(to right, $primary-bg_selected_subpanel 0px, $primary-bg_selected_subpanel 6px, $white 6px, $white 100%);
-            }
-            .selected {
-                background: /*!rtl:linear-gradient(to left, $primary-bg_selected_subpanel 0px, $primary-bg_selected_subpanel 13px, $white 13px, $white 100%)*/ linear-gradient(to right, $primary-bg_selected_subpanel 0px, $primary-bg_selected_subpanel 13px, $white 13px, $white 100%);
-            }
-        }
-        &.level-1 {
-            .menu-selected {
-                background: /*!rtl:linear-gradient(to left, $primary-bg_selected 0px, $primary-bg_selected 6px, $white 6px, $white 100%)*/ linear-gradient(to right, $primary-bg_selected 0px, $primary-bg_selected 6px, $white 6px, $white 100%);
-            }
-            .selected {
-                background: /*!rtl:linear-gradient(to left, $primary-bg_selected 0px, $primary-bg_selected 13px, $white 13px, $white 100%)*/ linear-gradient(to right, $primary-bg_selected 0px, $primary-bg_selected 13px, $white 13px, $white 100%);
-            }
-        }
-        &.level-2 {
-            .menu-selected {
-                background: /*!rtl:linear-gradient(to left, $primary-bg_selected_subpanel_2 0px, $primary-bg_selected_subpanel_2 6px, $white 6px, $white 100%)*/ linear-gradient(to right, $primary-bg_selected_subpanel_2 0px, $primary-bg_selected_subpanel_2 6px, $white 6px, $white 100%);
-            }
-            .selected {
-                background: /*!rtl:linear-gradient(to left, $primary-bg_selected_subpanel_2 0px, $primary-bg_selected_subpanel_2 13px, $white 13px, $white 100%)*/ linear-gradient(to right, $primary-bg_selected_subpanel_2 0px, $primary-bg_selected_subpanel_2 13px, $white 13px, $white 100%);
-            }
-        }
-    }
-
-}
 @keyframes animate-gradient {
     0% {
         background: radial-gradient(circle at center, adjust-color($primary, $alpha: 0.5) 0px, adjust-color($primary, $alpha: 0.5) 1px, $white 2px, $white 100%);

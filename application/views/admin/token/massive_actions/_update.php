@@ -102,7 +102,7 @@
                                                 data-locale="<?php echo $locale ?>"
                                                 data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
                                             >
-                                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                            <span class="input-group-text"><span class="glyphicon glyphicon-calendar"></span></span>
                                         </div>
                                     </div>
                                 <?php endif; ?>
@@ -223,7 +223,7 @@
                                             data-locale="<?php echo $locale ?>"
                                             data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
                                         >
-                                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                        <span class="input-group-text"><span class="glyphicon glyphicon-calendar"></span></span>
                                     </div>
                                 </div>
                             </div>
@@ -283,7 +283,7 @@
                                             data-locale="<?php echo $locale ?>"
                                             data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
                                         >
-                                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                        <span class="input-group-text"><span class="glyphicon glyphicon-calendar"></span></span>
                                     </div>
                                 </div>
                             </div>
@@ -341,7 +341,7 @@
                                 data-locale="<?php echo $locale ?>"
                                 disabled
                             >
-                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                            <span class="input-group-text"><span class="glyphicon glyphicon-calendar"></span></span>
                         </div>
                         <input id="sbmtvalid" type="hidden" name="validfrom" value="lskeep" class="custom-data selector_submitField"/>
                     </div>
@@ -367,7 +367,7 @@
                                 data-locale="<?php echo $locale ?>"
                                 disabled
                             >
-                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                            <span class="input-group-text"><span class="glyphicon glyphicon-calendar"></span></span>
                         </div>
                         <input id="sbmtvalid" type="hidden" name="validuntil" value="lskeep" class="custom-data selector_submitField"/>
                     </div>

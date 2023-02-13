@@ -59,7 +59,7 @@
             <label class='form-label col-md-3 save-survey-label label-cell' for='loadsecurity'><?php echo gT("Security question:") ?></label>
             <div class='col-md-7 save-survey-input input-cell'>
                 <div class='input-group'>
-                    <div class='input-group-addon captcha-image' >
+                    <div class='input-group-text captcha-image' >
                         <img src='<?php echo $captcha ?>' alt='' />
                     </div>
                     <input class='form-control' type='text' size='5' maxlength='3' id='loadsecurity' name='loadsecurity' value='' alt=''/>
