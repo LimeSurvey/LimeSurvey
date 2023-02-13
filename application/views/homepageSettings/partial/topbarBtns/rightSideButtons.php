@@ -35,7 +35,7 @@ $this->widget(
         'name' => 'save_boxes_setting',
         'id' => 'save_boxes_setting',
         'text' => gT('Save'),
-        'icon' => 'ri-refresh-line',
+        'icon' => 'ri-check-fill',
         'htmlOptions' => [
             'class' => 'btn btn-primary',
             'data-url' => $this->createUrl('homepageSettings/updateBoxesSettings')

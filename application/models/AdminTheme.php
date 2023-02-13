@@ -164,7 +164,7 @@ class AdminTheme extends CFormModel
             App()->getClientScript()->registerPackage('ckeditoradditions'); // CKEDITOR in a global scope
             App()->getClientScript()->registerPackage('modaleditor');
         }
-
+        App()->getClientScript()->registerPackage('select2-bootstrap');
         // Then we add the different CSS/JS files to load in arrays
         // It will check if it needs or not the RTL files
         // and it will add the directory prefix to the file name (css/ or js/ )
@@ -207,7 +207,6 @@ class AdminTheme extends CFormModel
             App()->getClientScript()->registerPackage('adminsidepanelltr');
         }
         App()->getClientScript()->registerPackage('bootstrap-js');
-        App()->getClientScript()->registerPackage('select2-bootstrap');
         App()->clientScript->registerPackage('moment'); // register moment for correct dateTime calculation
     }
 

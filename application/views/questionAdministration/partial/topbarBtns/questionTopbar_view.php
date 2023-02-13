@@ -10,6 +10,11 @@ $leftSideContentSummary = $this->renderPartial('/questionAdministration/partial/
 $leftSideContentEditor = $this->renderPartial('/questionAdministration/partial/topbarBtns/editQuestionTopbarLeft_view', get_defined_vars(), true);
 $rightSideContent = $this->renderPartial('/questionAdministration/partial/topbarBtns/editQuestionTopbarRight_view', get_defined_vars(), true);
 $rightSideContentSummary = $this->renderPartial('/questionAdministration/partial/topbarBtns/questionSummaryTopbarRight_view', get_defined_vars(), true);
+
+App()->getClientScript()->registerScriptFile(
+    App()->getConfig('adminscripts') . 'topbar.js',
+    CClientScript::POS_END
+);
 ?>
 
 <!-- Question Top Bar -->
