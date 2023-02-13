@@ -41,6 +41,7 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
      **/
     public function testCheckInvalid()
     {
+        self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__ . '_startCheckInvalid');
         $questions = $this->getQuestions();
         $urlMan = \Yii::app()->urlManager;
         $url = $urlMan->createUrl(
@@ -67,7 +68,7 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
             $strongAlert = $elementStrong->getText();
             $this->assertEquals($strongAlert, "This question has at least 1 warning.", "Numbers of warning seems invalid, need one warning.");
         } catch (\Exception $ex) {
-            self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__ . '_error');
+            self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
             $this->assertFalse(
                 true,
                 self::$testHelper->javaTrace($ex)
