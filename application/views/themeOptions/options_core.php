@@ -69,7 +69,7 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
             </div>
             <?php /* If this is a surveyspecific settings page, offer the possibility to do a full inheritance of the parent template */
             if ($bInherit) { ?>
-                <div class='row my-4' id="general_inherit_active">
+                <div class='row' id="general_inherit_active">
                     <label for='simple_edit_options_general_inherit' class='form-label'><?php echo gT("Inherit everything"); ?></label>
                     <div class='col-12'>
                         <div class="btn-group" role="group">

@@ -11139,6 +11139,10 @@ a {
   cursor: not-allowed !important;
 }
 
+.tab-content {
+  padding-top: 2rem;
+}
+
 /**
  * Lime Admin Common CSS File
  *
