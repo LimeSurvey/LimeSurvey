@@ -43,7 +43,6 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
     {
         $questions = $this->getQuestions();
         $urlMan = \Yii::app()->urlManager;
-        $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
         $url = $urlMan->createUrl(
             'admin/expressions/sa/survey_logic_file',
             [
@@ -68,13 +67,10 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
             $strongAlert = $elementStrong->getText();
             $this->assertEquals($strongAlert, "This question has at least 1 warning.", "Numbers of warning seems invalid, need one warning.");
         } catch (\Exception $ex) {
-            $screenshot = self::$webDriver->takeScreenshot();
-            $filename = self::$screenshotsFolder.'/'.__CLASS__ . '_' . __FUNCTION__ . '.png';
-            file_put_contents($filename, $screenshot);
+            self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__ . '_error');
             $this->assertFalse(
                 true,
-                'Url: ' . $url . PHP_EOL .
-                'Screenshot in ' .$filename . PHP_EOL . $ex->getMessage()
+                self::$testHelper->javaTrace($ex)
             );
         }
     }
