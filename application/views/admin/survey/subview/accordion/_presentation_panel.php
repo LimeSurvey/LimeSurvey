@@ -207,7 +207,7 @@ if ($bShowInherited) {
         <div class="col-12 col-lg-6 mb-3">
             <?php $navigationdelay = $oSurvey->navigationdelay; ?>
             <div class="row mb-3">
-                <div class="col-12 col-lg-4 content-right <?php echo ($bShowInherited ? 'd-block' : 'd-none'); ?>">
+                <div class="col-6 col-lg-3 content-right <?php echo ($bShowInherited ? 'd-block' : 'd-none'); ?>">
                     <label class="form-label content-center col-12" for='navigationdelay'><?php eT("Navigation delay"); ?></label>
                     <?php $this->widget(
                         'ext.ButtonGroupWidget.ButtonGroupWidget',
@@ -223,7 +223,7 @@ if ($bShowInherited) {
                     ); ?>
                 </div>
 
-                <div class="col-12 col-lg-4 content-right">
+                <div class="col-6 col-lg-3 content-right">
                     <label class="form-label" for='navigationdelay'><?php eT("seconds"); ?></label>
                     <?php // NB: Do NOT use === when comparing navigationdelay to '-1', it won't work with Postgresql. 
                     ?>
