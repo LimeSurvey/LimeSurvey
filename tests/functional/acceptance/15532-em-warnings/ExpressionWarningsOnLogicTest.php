@@ -58,21 +58,16 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
             sleep(5);
 
             // Close modals.
-	    self::ignoreAdminNotification();
-	    self::ignoreWelcomeModal();
+            self::ignoreAdminNotification();
+            self::ignoreWelcomeModal();
 
             /* Did we have thew warning alert */
-            self::$webDriver->wait(10)->until(
-                WebDriverExpectedCondition::visibilityOfElementLocated(
-                    WebDriverBy::cssSelector('#logicfiletable .alert-warning')
-                )
-            );
-            var_dump( self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-warning')) );
+            $this->assertTrue(self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-warning'))->isDisplayed(), "Unable to find the alert");
             /* We found the count of warnings */
             $elementStrong = self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-warning strong'));
             $strongAlert = $elementStrong->getText();
             $this->assertEquals($strongAlert, "This question has at least 1 warning.", "Numbers of warning seems invalid, need one warning.");
-        } catch (Exception $ex) {
+        } catch (\Exception $ex) {
             $screenshot = self::$webDriver->takeScreenshot();
             $filename = self::$screenshotsFolder.'/'.__CLASS__ . '_' . __FUNCTION__ . '.png';
             file_put_contents($filename, $screenshot);
