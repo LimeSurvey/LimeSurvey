@@ -1,7 +1,5 @@
 <?php
     $sResponsesId = App()->getRequest()->getParam('responseIds');
-    $aResponseIds = explode("|",$sResponsesId);
-    $sResponsesId = implode(",",$aResponseIds);
 ?>
 
 <div class="panel panel-primary" id="panel-2" <?php if ($SingleResponse) { echo 'style="display:none"';} ?> >

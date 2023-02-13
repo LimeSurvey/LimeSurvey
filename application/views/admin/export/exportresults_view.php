@@ -20,7 +20,7 @@ App()->getClientScript()->registerScript('ExportresultsVariables', $scriptBegin,
             if (isset($_POST['sql'])) {echo" - ".gT("Filtered from statistics script");}
             if ($SingleResponse)
             {
-                echo " - ".sprintf(gT("Single response: ID %s"),$SingleResponse);
+                echo " - ".sprintf(gT("Single response: ID %s"), $SingleResponse);
             }
         ?>
     </h3>

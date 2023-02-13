@@ -79,6 +79,7 @@
             'text'            =>  gT('Export'),
             'aLinkSpecificDatas'  => array(
                 'input-name'     => 'responseIds',
+                'input-separator'     => ',',
             ),
             'actionType'    => 'redirect',
         );
