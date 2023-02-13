@@ -305,7 +305,9 @@ if ($bShowInherited) {
         <div class="col-12 col-lg-4 col-xl-3 ">
             <!-- Show graphs in public statistics -->
             <div class="mb-3">
-                <label class=" form-label" for='publicgraphs'><?php eT("Show graphs in public statistics:"); ?></label>
+                <div>
+                    <label class=" form-label" for='publicgraphs'><?php eT("Show graphs in public statistics:"); ?></label>
+                </div>
                 <?php $this->widget(
                     'ext.ButtonGroupWidget.ButtonGroupWidget',
                     array(
