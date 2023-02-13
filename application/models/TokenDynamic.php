@@ -805,7 +805,7 @@ class TokenDynamic extends LSActiveRecord
         $value = CHTML::encode($data->$name);
         if (mb_strlen($value, 'UTF-8') > 50) {
             $elipsizedValue = ellipsize($value, 50);
-            $value = '<span class="text-content" data-toggle="tooltip" data-placement="left" title="'. $value .'">'.$elipsizedValue.'</span>';
+            $value = '<span class="text-content" data-toggle="tooltip" data-placement="left" title="' . $value . '">' . $elipsizedValue . '</span>';
         }
         return $value;
     }
