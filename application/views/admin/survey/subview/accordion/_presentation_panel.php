@@ -244,12 +244,12 @@ if ($bShowInherited) {
                     ?>
                     <input class="form-control inherit-edit 
                         <?php echo ($bShowInherited && $navigationdelay == '-1' ?
-                            'd-none' : 'd-block'); ?>" type='text' size='50' id='navigationdelay' name='navigationdelay' value="
-                        <?php echo htmlspecialchars($navigationdelay); ?>" data-inherit-value="-1" data-saved-value="<?php echo $navigationdelay; ?>" />
+                            'd-none' : 'd-block'); ?>" type='text' size='50' id='navigationdelay' name='navigationdelay' 
+                            value="<?php echo htmlspecialchars($navigationdelay); ?>" data-inherit-value="-1" data-saved-value="<?php echo $navigationdelay; ?>" />
                     <input class="form-control inherit-readonly 
                         <?php echo ($bShowInherited && $navigationdelay == '-1'
-                            ? 'd-block' : 'd-none'); ?>" type='text' size='50' value="
-                        <?php echo htmlspecialchars($oSurveyOptions->navigationdelay); ?>" readonly />
+                            ? 'd-block' : 'd-none'); ?>" type='text' size='50' 
+                            value="<?php echo htmlspecialchars($oSurveyOptions->navigationdelay); ?>" readonly />
                 </div>
             </div>
             <!-- Automatically load URL -->
