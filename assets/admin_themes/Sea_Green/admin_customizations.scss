@@ -78,3 +78,24 @@
 /**
  * comfortUpdate END
  */
+
+// Blockquotes
+blockquote {
+  border-left: 8px solid var(--bs-primary);
+  footer {
+    color: $g-600;
+  }
+  small {
+    color: $g-600;
+  }
+  .small {
+    color: $g-600;
+  }
+  &.float-end {
+    border-right: 8px solid var(--bs-primary);
+  }
+}
+.blockquote-reverse {
+  border-right: 8px solid var(--bs-primary);
+}
+// Blockquotes END

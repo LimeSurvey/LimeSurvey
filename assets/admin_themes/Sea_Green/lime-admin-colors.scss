@@ -387,25 +387,7 @@ hr {
 abbr[data-original-title] {
     border-bottom: 1px dotted $gray-15;
 }
-// Blockquotes
-blockquote {
-    border-left: 5px solid $primary-bg_hover;
-    footer {
-        color: $gray-15;
-    }
-    small {
-        color: $gray-15;
-    }
-    .small {
-        color: $gray-15;
-    }
-    &.float-end {
-        border-right: 5px solid $primary-bg_hover;
-    }
-}
-.blockquote-reverse {
-    border-right: 5px solid $primary-bg_hover;
-}
+
 // Code
 code {
     color: $code;

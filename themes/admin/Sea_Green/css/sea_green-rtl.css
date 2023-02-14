@@ -11166,6 +11166,26 @@ a {
 /**
  * comfortUpdate END
  */
+blockquote {
+  border-right: 8px solid var(--bs-primary);
+}
+blockquote footer {
+  color: #9094A7;
+}
+blockquote small, blockquote .small {
+  color: #9094A7;
+}
+blockquote .small {
+  color: #9094A7;
+}
+blockquote.float-end {
+  border-left: 8px solid var(--bs-primary);
+}
+
+.blockquote-reverse {
+  border-left: 8px solid var(--bs-primary);
+}
+
 /**
  * Lime Admin Common CSS File
  *
@@ -15241,26 +15261,6 @@ hr {
 
 abbr[data-original-title] {
   border-bottom: 1px dotted #858585;
-}
-
-blockquote {
-  border-right: 5px solid #9cba9e;
-}
-blockquote footer {
-  color: #858585;
-}
-blockquote small, blockquote .small {
-  color: #858585;
-}
-blockquote .small {
-  color: #858585;
-}
-blockquote.float-end {
-  border-left: 5px solid #9cba9e;
-}
-
-.blockquote-reverse {
-  border-left: 5px solid #9cba9e;
 }
 
 code {
