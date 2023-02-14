@@ -34,6 +34,34 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.4 (build 230206) to 5.6.5 (build 230214) February 14, 2023
+-Fixed issue #CT-32: Viewing a response is not possible if the original access code (token) entry doesn't exist anymore (Patrick Teichmann)
+-Fixed issue #18625: Cannot copy a survey when using a survey alias (#2894) (Gabriel Jenik)
+-Fixed issue #18599: Placeholders {GID} and {SGQ} not replaced for "script" (#2855) (Denis Chenu)
+-Fixed issue #18590: Filenames containing an apostrophe (') cause uploaded file-list to unlist upon Resume later or Next then Previous (#2862) (Gabriel Jenik)
+-Fixed issue #18587: Question type button not visible after having chosen the type (#2881) (Gabriel Jenik)
+-Fixed issue #18542: Plugins: PasswordRequirement plugin is not working properly (#2847) (Gabriel Jenik)
+-Fixed issue #18521: Checkbox issue in the permission modal (#2870) (Gabriel Jenik)
+-Fixed issue #18501: Answers with 0 as value was not saved if encrypted (#2738) (Denis Chenu)
+-Fixed issue #18428: QuestionTheme settings are shown on Core theme settings (#2869) (Gabriel Jenik)
+-Fixed issue #17486: Current Page Values not saved if saving pressing Enter (#2889) (Gabriel Jenik)
+#Updated translation: Tagalog by c_schmitz
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Malay by astrasia, c_schmitz
+#Updated translation: Japanese by d_inoue
+#Updated translation: Italian (Informal) by c_schmitz
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: French (France) by boheean
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Bengali by PawelAtroszko
+
+
 Changes from 5.6.3 (build 230130) to 5.6.4 (build 230206) February 6, 2023
 -Fixed issue: Notice when trying to submit a new key (Carsten Schmitz)
 -Fixed issue: Invalid URL in public statistics (Carsten Schmitz)

@@ -27,7 +27,7 @@
             {{ uploadButtonLabel }}
         </a>
     </div>
-    <input type='hidden' id='java{{ fileid }}' name='{{ fileid }}' value='{{ value }}' />
+    <input type='hidden' id='java{{ fileid }}' name='{{ fileid }}' value='{{ value|escape("html_attr") }}' />
     <input type='hidden' id='java{{ fileid }}_filecount' name='{{ fileid }}_filecount' value="{{ filecountvalue }}" />
     <div id='{{ fileid }}_uploadedfiles' class="d-none">
         <table width="100%" class="question uploadedfiles">
