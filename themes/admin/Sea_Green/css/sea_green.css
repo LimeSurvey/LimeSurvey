@@ -11330,7 +11330,7 @@ a {
 .full-page-wrapper {
   min-height: 100%;
   position: relative;
-  margin-bottom: 65px;
+  /*margin-bottom: 65px;*/
 }
 
 .side-body h3, .side-body .h3,
@@ -13351,8 +13351,38 @@ table#responsedetail tr td {
 
 #login-panel {
   max-width: 400px;
-  margin-left: auto;
-  margin-right: auto;
+}
+
+.container-fluid.login .main-body, .login.container-sm .main-body, .login.container-md .main-body, .login.container-lg .main-body, .login.container-xl .main-body, .login.container-xxl .main-body {
+  padding: 0;
+  min-height: 100vh;
+}
+.container-fluid.login .sidebar-l, .login.container-sm .sidebar-l, .login.container-md .sidebar-l, .login.container-lg .sidebar-l, .login.container-xl .sidebar-l, .login.container-xxl .sidebar-l {
+  background: #343541;
+  padding: 60px 0;
+  position: relative;
+  overflow: hidden;
+}
+.container-fluid.login .sidebar-l .box-left, .login.container-sm .sidebar-l .box-left, .login.container-md .sidebar-l .box-left, .login.container-lg .sidebar-l .box-left, .login.container-xl .sidebar-l .box-left, .login.container-xxl .sidebar-l .box-left {
+  overflow: hidden;
+}
+.container-fluid.login .sidebar-l .box-left .logo, .login.container-sm .sidebar-l .box-left .logo, .login.container-md .sidebar-l .box-left .logo, .login.container-lg .sidebar-l .box-left .logo, .login.container-xl .sidebar-l .box-left .logo, .login.container-xxl .sidebar-l .box-left .logo {
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+.container-fluid.login .sidebar-l .box-left .logo .img, .login.container-sm .sidebar-l .box-left .logo .img, .login.container-md .sidebar-l .box-left .logo .img, .login.container-lg .sidebar-l .box-left .logo .img, .login.container-xl .sidebar-l .box-left .logo .img, .login.container-xxl .sidebar-l .box-left .logo .img {
+  display: inline-block;
+}
+.container-fluid.login .sidebar-l .box-left .box-pattern, .login.container-sm .sidebar-l .box-left .box-pattern, .login.container-md .sidebar-l .box-left .box-pattern, .login.container-lg .sidebar-l .box-left .box-pattern, .login.container-xl .sidebar-l .box-left .box-pattern, .login.container-xxl .sidebar-l .box-left .box-pattern {
+  position: absolute;
+  right: -3px;
+  bottom: 8%;
+}
+.container-fluid.login .sidebar-l .box-left .decor-2, .login.container-sm .sidebar-l .box-left .decor-2, .login.container-md .sidebar-l .box-left .decor-2, .login.container-lg .sidebar-l .box-left .decor-2, .login.container-xl .sidebar-l .box-left .decor-2, .login.container-xxl .sidebar-l .box-left .decor-2 {
+  position: absolute;
+  bottom: 30%;
+  left: 10%;
 }
 
 /*
