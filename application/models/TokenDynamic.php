@@ -787,27 +787,12 @@ class TokenDynamic extends LSActiveRecord
             $aCustomAttributesCols[] = array(
                 'header' => $desc, // $aAttributedescriptions->$sColName->description,
                 'name' => $sColName,
-                'type' => 'raw',
-                'value'=> 'TokenDynamic::formatAttribute($data,"' . $sColName .'")',
+                'type' => 'longtext',
                 'headerHtmlOptions'=>array('class' => 'hidden-xs'),
                 'htmlOptions' => array('class' => 'hidden-xs'),
             );
         }
-
         return array_merge($this->standardColsForGrid, $aCustomAttributesCols);
-    }
-
-    public static function formatAttribute($data, $name)
-    {
-        if (empty($data->$name)) {
-            return "";
-        }
-        $value = CHTML::encode($data->$name);
-        if (mb_strlen($value, 'UTF-8') > 50) {
-            $elipsizedValue = ellipsize($value, 50);
-            $value = '<span class="text-content" data-toggle="tooltip" data-placement="left" title="' . $value . '">' . $elipsizedValue . '</span>';
-        }
-        return $value;
     }
 
     /**
