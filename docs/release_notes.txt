@@ -34,6 +34,13 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.48 (build 230207) to 3.28.49 (build 230215) February 14, 2023
+-Fixed issue: Intermittent unstyled page when creating/copying a survey (Carsten Schmitz)
+#Updated translation: Tagalog by c_schmitz
+#Updated translation: Malay by c_schmitz
+#Updated translation: Bengali by PawelAtroszko
+
+
 Changes from 3.28.47 (build 230131) to 3.28.48 (build 230207) February 6, 2023
 -Fixed issue: Unable to remove an expired ComfortUpdate key (Carsten Schmitz)
 -Fixed issue: Unable to add an new ComfortUpdate key (Carsten Schmitz)
