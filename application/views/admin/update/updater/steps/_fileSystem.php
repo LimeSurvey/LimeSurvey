@@ -35,7 +35,7 @@
                 echo CHtml::hiddenField('destinationBuild' , $destinationBuild);
                 echo CHtml::hiddenField('access_token' , $access_token);
                 echo CHtml::hiddenField('update' , 'checkFiles');
-                echo '<a class="btn btn-cancel me-1" href="'.Yii::app()->createUrl("admin/update").'" role="button" aria-disabled="false">
+                echo '<a class="btn btn-outline-secondary me-1" href="'.Yii::app()->createUrl("admin/update").'" role="button" aria-disabled="false">
                         '.gT("Cancel").'
                     </a>&nbsp;';
                 echo CHtml::submitButton(gT('Check again','unescaped'), array("class"=>"btn btn-outline-secondary"));
@@ -49,7 +49,7 @@
                 echo CHtml::beginForm($url, 'post', array("id"=>"launchBackupForm"));
                 echo CHtml::hiddenField('destinationBuild' , $destinationBuild);
                 echo CHtml::hiddenField('access_token' , $access_token);
-                echo '<a class="btn btn-cancel me-1" href="'.Yii::app()->createUrl("admin/update").'" role="button" aria-disabled="false">
+                echo '<a class="btn btn-outline-secondary me-1" href="'.Yii::app()->createUrl("admin/update").'" role="button" aria-disabled="false">
                         '.gT("Cancel").'
                     </a>';
                 echo CHtml::submitButton(sprintf(gT('Continue')), array("class" => "btn btn-primary"));

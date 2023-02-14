@@ -55,7 +55,7 @@ echo $changelog;
             echo CHtml::hiddenField('access_token', $access_token);
         ?>
 
-        <a class="btn btn-cancel me-1" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
+        <a class="btn btn-outline-secondary me-1" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
             <?php eT("Cancel"); ?>
         </a>
 

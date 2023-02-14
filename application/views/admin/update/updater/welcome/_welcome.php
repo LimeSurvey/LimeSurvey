@@ -103,7 +103,7 @@
             <?php  echo CHtml::hiddenField('destinationBuild' , $serverAnswer->destinationBuild); ?>
             <?php  echo CHtml::hiddenField('access_token' , $serverAnswer->access_token); ?>
 
-            <a class="btn btn-cancel me-1" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button">
+            <a class="btn btn-outline-secondary me-1" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button">
                 <?php eT("Cancel"); ?>
             </a>
 
