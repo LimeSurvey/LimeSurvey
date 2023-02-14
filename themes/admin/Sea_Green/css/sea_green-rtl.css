@@ -17826,6 +17826,8 @@ input[type=file]::file-selector-button {
 }
 
 .form-select {
+  height: 38px;
+  padding: 2px 12px 2px 36px;
   border: 1px solid #1E1E1E;
   font-weight: 400;
   font-size: 14px;
