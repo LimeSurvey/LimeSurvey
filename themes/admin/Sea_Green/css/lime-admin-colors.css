@@ -3,6 +3,9 @@
   --bs-info-rgb: 57, 153, 63;
 }
 
+.btn:focus {
+  color: #333333; }
+
 .open .dropdown-toggle.btn-outline-secondary, .btn-outline-secondary.active, .btn-outline-secondary:active, .btn-outline-secondary:focus, .btn-outline-secondary:hover {
   color: #333333;
   background-color: #ebebeb;
@@ -799,9 +802,7 @@ fieldset[disabled] .btn-link:focus {
 .btn:hover {
   color: #333333;
 }
-.btn:focus {
-  color: #333333;
-}
+
 .btn:active {
   box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
 }

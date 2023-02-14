@@ -2917,7 +2917,7 @@ class LsDefaultDataSets
             gT("Select variation:"),
             gT("Fruity fonts"),
             gT("Fruity variations"),
-            gt("Check all that apply")
+            gt("Select all that apply") // This string will replace 'Check any that apply' later 
         ];
     }
 
