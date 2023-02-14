@@ -58,13 +58,6 @@ App()->getClientScript()->registerScript(
                                 ),
                             'columns' => [
                                 [
-                                    'header' => gT('Action'),
-                                    'name' => 'actions',
-                                    'value' => '$data->buttons',
-                                    'type' => 'raw',
-                                    'htmlOptions' => ['class' => ''],
-                                ],
-                                [
                                     'header' => gT('Position'),
                                     'name' => 'position',
                                     'value' => '$data->position',
@@ -100,6 +93,14 @@ App()->getClientScript()->registerScript(
                                     'name' => 'url',
                                     'value' => '$data->usergroupname',
                                     'htmlOptions' => ['class' => ''],
+                                ],
+                                [
+                                    'header' => gT('Action'),
+                                    'name' => 'actions',
+                                    'value' => '$data->buttons',
+                                    'type' => 'raw',
+                                    'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+                                    'htmlOptions'       => ['class' => 'text-center button-column ls-sticky-column'],
                                 ],
                             ],
                         ]
