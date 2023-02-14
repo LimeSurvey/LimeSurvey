@@ -5,7 +5,7 @@
 .btn:focus {
   color: #333333; }
 
-.btn-default:hover, .btn-default:focus, .btn-default:active, .btn-default.active, .open .dropdown-toggle.btn-default {
+.btn-outline-secondary:hover, .btn-outline-secondary:focus, .btn-outline-secondary:active, .btn-outline-secondary.active, .open .dropdown-toggle.btn-outline-secondary {
   color: #333333;
   background-color: #ebebeb;
   border: 1px solid #adadad; }
