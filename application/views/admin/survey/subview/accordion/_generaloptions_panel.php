@@ -354,5 +354,5 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
 
     </div>
 </div>
-<?php $this->renderPartial('_inherit_sub_footer'); ?>
+<?php $this->renderPartial('/surveyAdministration/_inherit_sub_footer'); ?>
 

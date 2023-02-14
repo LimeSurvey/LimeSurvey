@@ -42,7 +42,9 @@ if ($bShowInherited) {
 <!-- Presentation panel -->
 <div id='presentation-panel'>
     <div class="row">
-        <h1>Show...</h1>
+        <h1>
+            <?php eT('Show...'); ?>
+        </h1>
         <div class="col-12 col-lg-6">
             <!-- Show "No answer" -->
             <div class="mb-3">
@@ -217,7 +219,7 @@ if ($bShowInherited) {
     </div>
 
     <div class="row mt-5">
-        <h1>Navigation </h1>
+        <h1><?php eT('Navigation') ?></h1>
         <!-- Navigation delay -->
         <div class="col-12 col-lg-6 mb-3">
             <?php $navigationdelay = $oSurvey->navigationdelay; ?>
@@ -306,7 +308,7 @@ if ($bShowInherited) {
     </div>
 
     <div class="row mt-5 mb-3">
-        <h1>Public statistics </h1>
+        <h1><?php eT('Public statistics') ?></h1>
         <div class="col-12 col-lg-4 col-xl-3">
             <!-- Public statistics -->
             <div class="mb-3">
@@ -347,4 +349,4 @@ if ($bShowInherited) {
     </div>
 
 </div>
-<?php $this->renderPartial('_inherit_sub_footer'); ?>
+<?php $this->renderPartial('/surveyAdministration/_inherit_sub_footer'); ?>

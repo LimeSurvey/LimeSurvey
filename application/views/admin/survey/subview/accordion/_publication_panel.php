@@ -24,7 +24,7 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
 <div id='publication-panel'>
     <?php if ($bShowAllOptions === true){ ?>
     <div class="row">
-            <h1>Publication date</h1>
+            <h1><?php eT("Publication date"); ?></h1>
             <!-- Start date/time -->
             <div class="col-lg-3 mb-3">
                 <label class=" form-label" for='startdate'><?php  eT("Start date/time:"); ?></label>
@@ -67,7 +67,7 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
     <div>
             <!-- List survey publicly -->
             <div class="mb-3 mt-4">
-                <h1>Access control</h1>
+                <h1><?php eT("Access control"); ?></h1>
                 <label class=" form-label" for='listpublic'><?php printf(gT("Link survey on %spublic index page%s:"), "<a href='" . Yii::app()->getConfig("publicurl") . "' target='_blank' >", "</a>");?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
@@ -104,7 +104,7 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
             
             ?>
             <div class="mb-3 mt-4">
-                <h1>CAPTCHA</h1>
+                <h1><?php eT("CAPTCHA"); ?></h1>
                 <label class=" form-label" for='usecaptcha_surveyaccess'><?php  eT("Use CAPTCHA for survey access:"); ?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
@@ -162,5 +162,6 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
             <?php }?>
     </div>
 </div>
-<?php $this->renderPartial('_inherit_sub_footer'); ?>
+<?php $this->renderPartial('/surveyAdministration/_inherit_sub_footer'); ?>
+
 

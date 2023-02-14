@@ -13,9 +13,9 @@
     <h1> <?= gT("Survey permissions") ?> </h1>
     <div class="row p-2 align-items-center">
         <div class="col-lg-3 col-12">
-            <button class="btn btn-primary">
+            <!-- <button class="btn btn-primary">
                 <i class="ri-user-add-line me-1"></i>
-                Create new user</button>
+                Create new user</button> -->
         </div>
         <div class="col-lg-9 col-12 align-items-center">
             <?php

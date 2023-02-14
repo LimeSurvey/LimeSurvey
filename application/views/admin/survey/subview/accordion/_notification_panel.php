@@ -263,5 +263,5 @@ $googleAnalyticsStyleOptions = array(
         </div>
     </div>
 </div>
-<?php $this->renderPartial('_inherit_sub_footer'); ?>
+<?php $this->renderPartial('/surveyAdministration/_inherit_sub_footer'); ?>
 <?php App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'survey_edit_notificationpanel.js', LSYii_ClientScript::POS_BEGIN); ?>

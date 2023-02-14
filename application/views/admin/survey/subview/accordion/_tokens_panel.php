@@ -184,7 +184,8 @@ App()->getClientScript()->registerScript("tokens-panel-variables",
             </div>
         </div>
     </div>
-    <?php $this->renderPartial('_inherit_sub_footer'); ?>
+    <?php $this->renderPartial('/surveyAdministration/_inherit_sub_footer'); ?>
+
 
 </div>
     <?php
