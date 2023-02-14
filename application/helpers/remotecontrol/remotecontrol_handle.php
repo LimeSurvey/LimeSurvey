@@ -2353,6 +2353,246 @@ class remotecontrol_handle
         }
     }
 
+    /* Quota specific functions */
+
+    /**
+     * Add a new quota with minimum details
+     *
+     * This just tries to create an empty quota with the minimal settings.
+     *
+     * Failure status: Invalid session key, No permission, Faulty parameters, Creation Failed result
+     *
+     * @access public
+     * @param string $sSessionKey Auth credentials
+     * @param int $iSurveyID ID the Quota will belong to
+     * @param string $sQuotaName The name of the new Quota
+     * @param int $iLimit Quota limit
+     * @param bool $bActive Whether quota is active
+     * @param string $sAction ('terminate', 'confirm_terminate')
+     * @param bool $bAutoloadURL Whether URL is automatically redirected if quota is triggered
+     * @param string $sMessage Message to be presented to the user
+     * @param string $sURL URL to be redirected to after finishing the quota
+     * @param string $sURLDescription Description of the URL
+     * @return array|int The id of the new quota - Or status
+     */
+    public function add_quota($sSessionKey, $iSurveyID, $sQuotaName, $iLimit, $bActive = true, $sAction = 'terminate', $bAutoloadURL = false, $sMessage = '', $sURL = '', $sURLDescription = '')
+    {
+        if ($this->_checkSessionKey($sSessionKey)) {
+            $iSurveyID = (int) $iSurveyID;
+            $iLimit = (int) $iLimit;
+            $bActive = (bool) $bActive;
+            $sAction = (string) $sAction;
+            $bAutoloadURL = (int) $bAutoloadURL;
+            $sMessage = (string) $sMessage;
+            $sURL = (string) $sURL;
+            $sURLDescription = (string) $sURLDescription;
+
+            if (Permission::model()->hasSurveyPermission($iSurveyID, 'quotas', 'create')) {
+                $oSurvey = Survey::model()->findByPk($iSurveyID);
+                if (!isset($oSurvey)) {
+                    return array('status' => 'Error: Invalid survey ID');
+                }
+
+                if ($iLimit < 0) {
+                    return array('status' => 'Error: Invalid limit');
+                }
+
+                switch ($sAction) {
+                    case 'terminate':
+                        $iAction = Quota::ACTION_TERMINATE;
+                        break;
+                    case 'confirm_terminate':
+                        $iAction = Quota::ACTION_CONFIRM_TERMINATE;
+                        break;
+                    default:
+                        return array('status' => 'Error: Invalid quota action');
+                }
+
+                if ($sMessage == '' && ($sURL != '' || $sURLDescription != '')) {
+                    return array('status' => 'Language-specific URL/description is set but no message is given');
+                }
+
+                $oDB = Yii::app()->db;
+                $oTransaction = $oDB->beginTransaction();
+
+                $oQuota = new Quota();
+                $oQuota->sid = $iSurveyID;
+                $oQuota->name = $sQuotaName;
+                $oQuota->qlimit = $iLimit;
+                $oQuota->action = $iAction;
+                $oQuota->active = (int) $bActive;
+                $oQuota->autoload_url = (int) $bAutoloadURL;
+
+                if (!$oQuota->save()) {
+                    return array('status' => 'Creation Failed');
+                }
+
+                if (!$sMessage == '') {
+                    $oQuotaLanguageSetting = new QuotaLanguageSetting();
+                    $oQuotaLanguageSetting->quotals_quota_id = $oQuota->id;
+                    $oQuotaLanguageSetting->quotals_language = $oSurvey->language;
+                    $oQuotaLanguageSetting->quotals_name = $sQuotaName;
+                    $oQuotaLanguageSetting->quotals_message = $sMessage;
+                    $oQuotaLanguageSetting->quotals_url = $sURL;
+                    $oQuotaLanguageSetting->quotals_urldescrip = $sURLDescription;
+
+                    if (!$oQuotaLanguageSetting->save()) {
+                        $oTransaction->rollback();
+                        return array('status' => 'Creation Failed');
+                    }
+                }
+
+                $oTransaction->commit();
+                return (int) $oQuota->id;
+
+            } else {
+                return array('status' => 'No permission');
+            }
+        } else {
+            return array('status' => 'Invalid session key');
+        }
+    }
+
+    /**
+     * List the quotas in a survey
+     *
+     * @access public
+     * @param string $sSessionKey Auth credentials
+     * @param int $iSurveyID ID of the Survey containing the quotas
+     * @return array The list of quotas
+     */
+    public function list_quotas($sSessionKey, $iSurveyID)
+    {
+        if ($this->_checkSessionKey($sSessionKey)) {
+            $iSurveyID = (int) $iSurveyID;
+            $oSurvey = Survey::model()->findByPk($iSurveyID);
+            if (!isset($oSurvey)) {
+                return array('status' => 'Error: Invalid survey ID');
+            }
+
+            if (Permission::model()->hasSurveyPermission($iSurveyID, 'quotas', 'read')) {
+                $aQuotas = Quota::model()->findAllByAttributes(array('sid' => $iSurveyID));
+                if (count($aQuotas) == 0) {
+                    return array('status' => 'No quotas found');
+                }
+
+                $aData = array();
+                foreach ($aQuotas as $oRow) {
+                    $aData[] = array(
+                        'id' => $oRow->id,
+                        'name' => $oRow->name,
+                        'action' => $oRow->action,
+                        'limit' => $oRow->qlimit,
+                        'active' => $oRow->active,
+                        'autoload_url' => $oRow->autoload_url,
+                    );
+                }
+                return $aData;
+            } else {
+                return array('status' => 'No permission');
+            }
+        } else {
+            return array('status' => 'Invalid session key');
+        }
+    }
+
+    /**
+     * Delete a quota
+     *
+     * @access public
+     * @param string $sSessionKey Auth credentials
+     * @param int $iQuotaID The ID of the quota to be deleted
+     * @return array|int The ID of the deleted quota or status
+     */
+    public function delete_quota($sSessionKey, $iQuotaID)
+    {
+        if ($this->_checkSessionKey($sSessionKey)) {
+            $iQuotaID = (int) $iQuotaID;
+            $oQuota = Quota::model()->findByPk($iQuotaID);
+            if (!isset($oQuota)) {
+                return array('status' => 'Error: Invalid quota ID');
+            }
+
+            if (Permission::model()->hasSurveyPermission($oQuota->sid, 'quotas', 'delete')) {
+                $oQuota->deleteQuota(array('id' => $iQuotaID));
+                return array('status' => 'OK');
+            } else {
+                return array('status' => 'No permission');
+            }
+        } else {
+            return array('status' => 'Invalid session key');
+        }
+    }
+
+    /**
+     * Get quota attributes (RPC function)
+     *
+     * Get properties of a quota
+     * All internal properties of a quota are available.
+     * @see \Quota for the list of available properties
+     *
+     * Failure status : Invalid quota ID, Invalid session key, No permission, No valid Data
+     *
+     * @access public
+     * @param string $sSessionKey Auth credentials
+     * @param integer $iQuotaId Quota ID
+     * @param array|null $aQuotaSettings (optional) The properties to get
+     * @param string $sLanguage Optional parameter language for multilingual quotas
+     * @return array
+     */
+    public function get_quota_properties($sSessionKey, $iQuotaId, $aQuotaSettings = null, $sLanguage = null)
+    {
+        if ($this->_checkSessionKey($sSessionKey)) {
+            $iQuotaId = (int) $iQuotaId;
+            $oQuota = Quota::model()->findByPk($iQuotaId);
+
+            if (!isset($oQuota)) {
+                return array('status' => 'Error: Invalid quota ID');
+            }
+
+            if (Permission::model()->hasSurveyPermission($oQuota->sid, 'quotas', 'read')) {
+                $iSurveyID = $oQuota->sid;
+                if (is_null($sLanguage)) {
+                    $sLanguage = Survey::model()->findByPk($iSurveyID)->language;
+                }
+
+                $aBasicDestinationFields = Quota::model()->tableSchema->columnNames;
+
+                # Quota Language settings
+                array_push($aBasicDestinationFields, 'quotals_message');
+                array_push($aBasicDestinationFields, 'quotals_url');
+                array_push($aBasicDestinationFields, 'quotals_urldescrip');
+
+                if (!empty($aQuotaSettings)) {
+                    $aQuotaSettings = array_intersect($aQuotaSettings, $aBasicDestinationFields);
+                } else {
+                    $aQuotaSettings = $aBasicDestinationFields;
+                }
+
+                if (empty($aQuotaSettings)) {
+                    return array('status' => 'No valid Data');
+                }
+
+                $aResult = array();
+                foreach ($aQuotaSettings as $sPropertyName) {
+                    if (isset($oQuota->$sPropertyName)) {
+                        $aResult[$sPropertyName] = $oQuota->$sPropertyName;
+                    } elseif (
+                        isset($oQuota->languagesettings[$sLanguage])
+                        && isset($oQuota->languagesettings[$sLanguage]->$sPropertyName)
+                    ) {
+                        $aResult[$sPropertyName] = $oQuota->languagesettings[$sLanguage]->$sPropertyName;
+                    }
+                }
+                return $aResult;
+            } else {
+                return array('status' => 'No permission');
+            }
+        } else {
+            return array('status' => self::INVALID_SESSION_KEY);
+        }
+    }
+
     /**
      * Set quota attributes (RPC function)
      *
