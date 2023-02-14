@@ -2319,6 +2319,24 @@ table#responsedetail tr td {
         min-height: 100vh;
     }
 
+    .col-right {
+        padding: 40px 109px;
+
+        h1 {
+            font-size: 3.3rem;
+            margin-bottom: 2rem;
+        }
+
+        h3 {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        input, select, button, .select2 {
+            margin-bottom: 1rem;
+        }
+    }
+
     .sidebar-l {
         background: #343541;
         padding: 60px 0;

@@ -12,27 +12,12 @@ echo viewHelper::getViewTestTag('login');
 </noscript>
 <div class="container-fluid login">
     <div class="row main-body">
-        <div class="col-12 col-xl">
+        <div class="col-12 col-xl col-right">
             <div id="login-panel">
                 <div class="login-panel" id="panel-1">
                     <div class="container-fluid">
-                        <!-- Header -->
-
-                        <div class="d-flex flex-column justify-content-center">
-                            <div>
-                                <p><?php
-                                    eT("Administration"); ?></p>
-                            </div>
-                        </div>
-
-
-                        <!-- Action Name -->
-                        <div class="row login-title login-content">
-                            <div class="col-12">
-                                <h3><?php
-                                    eT("Log in"); ?></h3>
-                            </div>
-                        </div>
+                        <h1><?php eT("Administration"); ?></h1>
+                        <h3><?php eT("Log in"); ?></h3>
 
                         <!-- Form -->
                         <?php
@@ -137,20 +122,18 @@ echo viewHelper::getViewTestTag('login');
                             <div class="col-12">
                                 <p><input type='hidden' name='action' value='login' />
                                     <input type='hidden' id='width' name='width' value='' />
-                                    <button type="submit" class="btn btn-outline-secondary" name='login_submit' value='login'><?php
-                                                                                                                                eT('Log in'); ?></button>
-                                    <br />
-                                    <br />
-                                    <?php
-                                    if (Yii::app()->getConfig("display_user_password_in_email") === true) {
-                                    ?>
-                                        <a href='<?php
-                                                    echo $this->createUrl("admin/authentication/sa/forgotpassword"); ?>'><?php
-                                                                                                                            eT("Forgot your password?"); ?></a><br />
-                                    <?php
-                                    }
-                                    ?>
+                                    <button type="submit" class="btn btn-primary" name='login_submit' value='login'><?php
+                                                                                                                    eT('Log in'); ?></button>
                                 </p>
+                                <?php
+                                if (Yii::app()->getConfig("display_user_password_in_email") === true) {
+                                ?>
+                                    <a href='<?php
+                                                echo $this->createUrl("admin/authentication/sa/forgotpassword"); ?>'><?php
+                                                                                                                            eT("Forgot your password?"); ?></a><br />
+                                <?php
+                                }
+                                ?>
                             </div>
 
                         </div>
@@ -163,21 +146,11 @@ echo viewHelper::getViewTestTag('login');
         <div class="sidebar-l col-12 col-xl-4 order-md-first">
             <div class="box-left">
                 <div class="logo">
-                    <a href="/"><img
-                        alt="LimeSurvey"
-                        src="/themes/admin/Sea_Green/images/logo-white.png"
-                        width="221"
-                        loading="lazy"></a>
+                    <a href="/"><img alt="LimeSurvey" src="/themes/admin/Sea_Green/images/logo-white.png" width="221" loading="lazy"></a>
                 </div>
                 <div class="box-pattern">
-                <div class="decor-1"><img
-                    alt="LimeSurvey"
-                    src="/themes/admin/Sea_Green/images/decor-1.png"
-                    height="514" loading="lazy">&nbsp;</div>
-                <div class="decor-2">&nbsp;<img
-                    alt="LimeSurvey"
-                    src="/themes/admin/Sea_Green/images/decor-2.png"
-                    height="148" loading="lazy"></div>
+                    <div class="decor-1"><img alt="LimeSurvey" src="/themes/admin/Sea_Green/images/decor-1.png" height="514" loading="lazy">&nbsp;</div>
+                    <div class="decor-2">&nbsp;<img alt="LimeSurvey" src="/themes/admin/Sea_Green/images/decor-2.png" height="148" loading="lazy"></div>
                 </div>
             </div>
         </div>

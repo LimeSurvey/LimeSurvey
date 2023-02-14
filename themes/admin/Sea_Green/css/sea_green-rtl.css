@@ -13334,6 +13334,20 @@ table#responsedetail tr td {
   padding: 0;
   min-height: 100vh;
 }
+.container-fluid.login .col-left, .login.container-sm .col-left, .login.container-md .col-left, .login.container-lg .col-left, .login.container-xl .col-left, .login.container-xxl .col-left {
+  padding: 40px 109px;
+}
+.container-fluid.login .col-left h1, .login.container-sm .col-left h1, .login.container-md .col-left h1, .login.container-lg .col-left h1, .login.container-xl .col-left h1, .login.container-xxl .col-left h1, .container-fluid.login .col-left .h1, .login.container-sm .col-left .h1, .login.container-md .col-left .h1, .login.container-lg .col-left .h1, .login.container-xl .col-left .h1, .login.container-xxl .col-left .h1 {
+  font-size: 3.3rem;
+  margin-bottom: 2rem;
+}
+.container-fluid.login .col-left h3, .login.container-sm .col-left h3, .login.container-md .col-left h3, .login.container-lg .col-left h3, .login.container-xl .col-left h3, .login.container-xxl .col-left h3, .container-fluid.login .col-left .h3, .login.container-sm .col-left .h3, .login.container-md .col-left .h3, .login.container-lg .col-left .h3, .login.container-xl .col-left .h3, .login.container-xxl .col-left .h3 {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+}
+.container-fluid.login .col-left input, .login.container-sm .col-left input, .login.container-md .col-left input, .login.container-lg .col-left input, .login.container-xl .col-left input, .login.container-xxl .col-left input, .container-fluid.login .col-left select, .login.container-sm .col-left select, .login.container-md .col-left select, .login.container-lg .col-left select, .login.container-xl .col-left select, .login.container-xxl .col-left select, .container-fluid.login .col-left button, .login.container-sm .col-left button, .login.container-md .col-left button, .login.container-lg .col-left button, .login.container-xl .col-left button, .login.container-xxl .col-left button, .container-fluid.login .col-left .select2, .login.container-sm .col-left .select2, .login.container-md .col-left .select2, .login.container-lg .col-left .select2, .login.container-xl .col-left .select2, .login.container-xxl .col-left .select2 {
+  margin-bottom: 1rem;
+}
 .container-fluid.login .sidebar-l, .login.container-sm .sidebar-l, .login.container-md .sidebar-l, .login.container-lg .sidebar-l, .login.container-xl .sidebar-l, .login.container-xxl .sidebar-l {
   background: #343541;
   padding: 60px 0;
@@ -15955,14 +15969,14 @@ table.cke_editor {
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
 }
 
+/*
 .login-title {
-  border-bottom: solid 1px #dadada;
+    border-bottom: solid 1px $gray-08;
 }
-
 .login-submit {
-  border-top: solid 1px #dadada;
+    border-top: solid 1px $gray-08;
 }
-
+*/
 .h6 .small {
   color: #858585;
 }
