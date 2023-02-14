@@ -217,12 +217,14 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
             <div class="row action_hide_on_inherit">
                 <div class="container-fluid ls-space margin bottom-15 top-15">
                     <div class="row ls-space margin bottom-15">
-                        <div class="col-md-6">
-                            <?php printf(gT("Upload an image (maximum size: %d MB):"), getMaximumFileUploadSize() / 1024 / 1024); ?>
+                        <div class="col-4">
+                            <label>
+                                <?php printf(gT("Upload an image (maximum size: %d MB):"), getMaximumFileUploadSize() / 1024 / 1024); ?>
+                            </label>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-8">
                                     <span id="fileselector_frontend">
-                                        <label class="btn btn-outline-secondary col-xs-8" for="upload_image_frontend">
+                                        <label class="btn btn-outline-secondary" for="upload_image_frontend">
                                             <input class="d-none" id="upload_image_frontend" name="upload_image_frontend" type="file">
                                             <i class="ri-upload-fill ls-space margin right-10"></i>
                                             <?php eT("Upload"); ?>
