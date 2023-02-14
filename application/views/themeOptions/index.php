@@ -64,8 +64,8 @@ echo viewHelper::getViewTestTag('templateOptions');
                                         <td class="col-lg-2"><?php echo $oTemplate->sTemplateName; ?></td>
                                         <td class="col-lg-3"><?php echo $oTemplate->description; ?></td>
                                         <td class="col-lg-2"><?php eT('XML themes'); ?></td>
-                                        <td class="col-lg-2"><?php echo $oTemplate->config->metadata->extends; ?></td>
-                                        <td class="col-lg-1"><?php echo $oTemplate->buttons; ?></td>
+                                        <td class="col-lg-1"><?php echo $oTemplate->config->metadata->extends; ?></td>
+                                        <td class="col-lg-2"><?php echo $oTemplate->buttons; ?></td>
                                     </tr>
                                 <?php endforeach; ?>
 
@@ -96,33 +96,34 @@ echo viewHelper::getViewTestTag('templateOptions');
                                     <?php // echo $oTemplate; ?>
                                     <tr class="odd">
                                         <td class="col-lg-1 text-danger"><?php echo $sName; ?></td>
-                                        <td class="col-lg-10 ">
+                                        <td class="col-lg-8 ">
                                             <blockquote><?php echo $oBrokenTheme->getMessage(); ?></blockquote>
                                         </td>
-                                        <td class="col-lg-1">
-                                            <!-- Export -->
-                                            <?php if (Permission::model()->hasGlobalPermission('templates', 'export') && class_exists('ZipArchive')) : ?>
-                                                <a class="btn btn-outline-secondary btn-block" id="button-export"
-                                                   href="<?php echo $this->createUrl('admin/themes/sa/brokentemplatezip/templatename/' . $sName) ?>">
-                                                    <span class="ri-upload-fill text-success"></span>
-                                                    <?php eT("Export"); ?>
-                                                </a>
-                                            <?php endif; ?>
-                                            <!-- Delete -->
-                                            <?php if (Permission::model()->hasGlobalPermission('templates', 'delete')) : ?>
-                                                <a id="button-delete"
-                                                   href="<?php echo Yii::app()->getController()->createUrl('admin/themes/sa/deleteBrokenTheme/'); ?>"
-                                                   data-post='{ "templatename": "<?php echo $sName; ?>" }'
-                                                   data-text="<?php eT('Are you sure you want to delete this theme?'); ?>"
-                                                   data-button-no="<?= gT('Cancel'); ?>"
-                                                   data-button-yes="<?= gT('Delete'); ?>"
-                                                   title="<?php eT('Delete'); ?>"
-                                                   class="btn btn-danger selector--ConfirmModal">
-                                                    <span class="ri-delete-bin-fill"></span>
-                                                    <?php eT('Delete'); ?>
-                                                </a>
-                                            <?php endif; ?>
-
+                                        <td class="col-lg-2">
+                                            <div class="d-grid gap-2">
+                                                <!-- Export -->
+                                                <?php if (Permission::model()->hasGlobalPermission('templates', 'export') && class_exists('ZipArchive')) : ?>
+                                                    <a class="btn btn-outline-secondary btn-sm" id="button-export"
+                                                       href="<?php echo $this->createUrl('admin/themes/sa/brokentemplatezip/templatename/' . $sName) ?>">
+                                                        <span class="ri-upload-fill"></span>
+                                                        <?php eT("Export"); ?>
+                                                    </a>
+                                                <?php endif; ?>
+                                                <!-- Delete -->
+                                                <?php if (Permission::model()->hasGlobalPermission('templates', 'delete')) : ?>
+                                                    <a id="button-delete"
+                                                       href="<?php echo Yii::app()->getController()->createUrl('admin/themes/sa/deleteBrokenTheme/'); ?>"
+                                                       data-post='{ "templatename": "<?php echo $sName; ?>" }'
+                                                       data-text="<?php eT('Are you sure you want to delete this theme?'); ?>"
+                                                       data-button-no="<?= gT('Cancel'); ?>"
+                                                       data-button-yes="<?= gT('Delete'); ?>"
+                                                       title="<?php eT('Delete'); ?>"
+                                                       class="btn btn-danger btn-sm selector--ConfirmModal">
+                                                        <span class="ri-delete-bin-fill"></span>
+                                                        <?php eT('Delete'); ?>
+                                                    </a>
+                                                <?php endif; ?>
+                                            </div>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
@@ -147,17 +148,19 @@ echo viewHelper::getViewTestTag('templateOptions');
                                 <tbody>
                                 <?php foreach ($aDeprecatedThemes as $aDeprecatedTheme) : ?>
                                     <tr class="odd">
-                                        <td class="col-lg-10"><?php echo $aDeprecatedTheme['name']; ?></td>
+                                        <td class="col-lg-9"><?php echo $aDeprecatedTheme['name']; ?></td>
                                         <td class="col-lg-2">
-                                            <?php if (Permission::model()->hasGlobalPermission('templates',
-                                                    'export') && class_exists('ZipArchive')) : ?>
-                                                <a class="btn btn-outline-secondary id="button-export"
-                                                   href="<?php echo $this->createUrl('admin/themes/sa/deprecatedtemplatezip/templatename/' . $aDeprecatedTheme['name']) ?>"
-                                                   role="button">
-                                                    <span class="ri-upload-fill text-success"></span>
-                                                    <?php eT("Export"); ?>
-                                                </a>
-                                            <?php endif; ?>
+                                            <div class="d-grid gap-2">
+                                                <?php if (Permission::model()->hasGlobalPermission('templates',
+                                                        'export') && class_exists('ZipArchive')) : ?>
+                                                    <a class="btn btn-outline-secondary btn-sm" id="button-export"
+                                                       href="<?php echo $this->createUrl('admin/themes/sa/deprecatedtemplatezip/templatename/' . $aDeprecatedTheme['name']) ?>"
+                                                       role="button">
+                                                        <span class="ri-upload-fill"></span>
+                                                        <?php eT("Export"); ?>
+                                                    </a>
+                                                <?php endif; ?>
+                                            </div>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
@@ -194,7 +197,7 @@ echo viewHelper::getViewTestTag('templateOptions');
                                             <h3><strong class="text-info"><?php eT("Selected") ?></strong></h3>
                                         <?php else : ?>
                                             <a href="<?php echo $this->createUrl("themeOptions/setAdminTheme/",
-                                                ['sAdminThemeName' => $oTheme->path]); ?>" class="btn btn-outline-secondary btn-lg">
+                                                ['sAdminThemeName' => $oTheme->path]); ?>" class="btn btn-outline-secondary btn-sm">
                                                 <?php eT("Select"); ?>
                                             </a>
                                         <?php endif; ?>
