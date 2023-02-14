@@ -14,7 +14,7 @@ echo viewHelper::getViewTestTag('login');
     <div class="row main-body">
         <div class="col-12 col-xl col-right">
             <div id="login-panel">
-                <div class="login-panel" id="panel-1">
+
                     <div class="container-fluid">
                         <h1><?php eT("Administration"); ?></h1>
                         <h3><?php eT("Log in"); ?></h3>
@@ -140,7 +140,6 @@ echo viewHelper::getViewTestTag('login');
                         <?php
                         echo CHtml::endForm(); ?>
                     </div>
-                </div>
             </div>
         </div>
         <div class="sidebar-l col-12 col-xl-4 order-md-first">
