@@ -12,11 +12,14 @@
   position: absolute;
   bottom: -50px;
   width: 100%;
+  .sub_footer_border {
+    border-top: 1px solid #1e1e1e;
+  }
 }
 
 
 @media print {
   footer.footer {
-    display: none
+    display: none;
   }
 }

@@ -93,10 +93,15 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
         $iMaxColumnSize = 12;
         $iTotalWidth    = 0;
         $iCount         = 0;
+        $url = 'https://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
 
         echo '<div class="position-relative">';
-        echo '<div class="action_hide_on_inherit_wrapper ls-option-disabled">';
-        echo '</div>';
+
+        if (strpos($url, 'updateSurvey') !== false) {
+            echo '<div class="action_hide_on_inherit_wrapper ls-option-disabled">';
+            echo '</div>';
+        }
+
 
         foreach ($aOptionAttributes['optionAttributes'] as $attributeKey => $attribute) {
             $sParentOption = array_key_exists($attributeKey, $oParentOptions) ? $oParentOptions[$attributeKey] : '';

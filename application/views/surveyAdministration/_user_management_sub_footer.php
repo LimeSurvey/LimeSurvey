@@ -8,7 +8,7 @@
     <p class="me-1">ᴵ</p>
     <div>
       <?= gT(" Go to") ?>
-      <a href="http://localhost/limesurvey/dev/index.php/userManagement/index" target="_blank"> 
+      <a href="<?php echo $this->createUrl('userManagement/index'); ?>" target="_blank"> 
         <?= gT(" global user management ") ?></a> <?= gT("for general user management (add/edit/delete general users).") ?>
       <?= gT("If you don't have permission please contact your administrator.") ?>
     </div>
