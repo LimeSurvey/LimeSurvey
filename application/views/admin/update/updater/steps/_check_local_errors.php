@@ -169,7 +169,7 @@
 
 <div class="row">
     <div class="col-12">
-    <a class="btn btn-outline-secondary" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
+    <a class="btn btn-cancel" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
         <?php eT("Cancel"); ?>
     </a>
     <a class="btn btn-primary" href="<?php echo $urlNew;?>" role="button" aria-disabled="false">
@@ -201,7 +201,7 @@
             echo CHtml::hiddenField('destinationBuild' , $destinationBuild);
             echo CHtml::hiddenField('access_token' , $access_token);
         ?>
-            <a class="btn btn-outline-secondary me-1" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
+            <a class="btn btn-cancel me-1" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
                 <?php eT("Cancel"); ?>
             </a>
 
