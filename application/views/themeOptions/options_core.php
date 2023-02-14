@@ -116,8 +116,7 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
                     echo '<div class="row action_hide_on_inherit">';
                 }
 
-                echo '<div class="col-12 col-md-6 col-lg-4 col-xl-' . $attribute['width'] . '">
-                            <div class="mb-3 row">
+                echo '<div class="col-' . $attribute['width'] . '">
                                 <label for="simple_edit_options_' . $attributeKey . '" class="form-label">' . gT($attribute['title']) . '</label>';
                 if ($attribute['type'] == 'buttons') {
                     $optionsValues = !empty($attribute['options']) ? explode('|', $attribute['options']) : array();
@@ -193,16 +192,17 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
                                         </div>';
                 }
 
-                echo '</div>
-                            </div>';
+                echo '</div>';
 
                 if ($category == 'Images' && $attribute['type'] == 'dropdown') {
-                    echo '<div class="col-md-4 col-lg-2">
-                                <br/>
-                                <button 
-                                	class="btn btn-outline-secondary selector__open_lightbox" 
-                                	data-bs-target="#simple_edit_options_' . $attributeKey .'"> ' . gT('Preview image') . '
-                                </button>
+                    echo '<div class="col-2">
+                                <label class="form-label">&nbsp;</label>
+                                <div class="col-12">
+                                    <button 
+                                        class="btn btn-outline-secondary selector__open_lightbox" 
+                                        data-bs-target="#simple_edit_options_' . $attributeKey .'"> ' . gT('Preview image') . '
+                                    </button>
+                                </div>
                             </div>';
                 }
 
