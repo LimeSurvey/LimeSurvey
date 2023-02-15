@@ -34,6 +34,53 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.48 (build 230207) to 3.28.49 (build 230215) February 14, 2023
+-Fixed issue: Intermittent unstyled page when creating/copying a survey (Carsten Schmitz)
+#Updated translation: Tagalog by c_schmitz
+#Updated translation: Malay by c_schmitz
+#Updated translation: Bengali by PawelAtroszko
+
+
+Changes from 3.28.47 (build 230131) to 3.28.48 (build 230207) February 6, 2023
+-Fixed issue: Unable to remove an expired ComfortUpdate key (Carsten Schmitz)
+-Fixed issue: Unable to add an new ComfortUpdate key (Carsten Schmitz)
+#Updated translation: Vietnamese by c_schmitz
+#Updated translation: Urdu by PawelAtroszko
+#Updated translation: Turkish by c_schmitz
+#Updated translation: Swedish by c_schmitz
+#Updated translation: Spanish (Mexican) by c_schmitz
+#Updated translation: Russian by c_schmitz
+#Updated translation: Romanian by c_schmitz
+#Updated translation: Portuguese (Portugal) by c_schmitz
+#Updated translation: Portuguese (Brazil) by tamiel
+#Updated translation: Portuguese (Brazil) by c_schmitz
+#Updated translation: Norwegian (Bokmål) by c_schmitz
+#Updated translation: Mongolian by c_schmitz
+#Updated translation: Maltese by PawelAtroszko
+#Updated translation: Korean by c_schmitz
+#Updated translation: Indonesian by c_schmitz
+#Updated translation: Hindi by c_schmitz
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz, eddylackmann, moeller
+#Updated translation: German (Easy) by c_schmitz
+#Updated translation: Filipino by TobyCarslake
+#Updated translation: Danish by c_schmitz
+#Updated translation: Croatian by c_schmitz
+#Updated translation: Chinese (Taiwan) (Traditional) by c_schmitz
+#Updated translation: Chinese (Simplified) by c_schmitz
+#Updated translation: Armenian by c_schmitz
+
+
+Changes from 3.28.46 (build 230124) to 3.28.47 (build 230131) January 30, 2023
+-Fixed issue #18562: Upload question type partially broken (#2811) (Gabriel Jenik)
+#Updated translation: Urdu by lucas_encuesta.biz
+#Updated translation: Malay by PawelAtroszko
+#Updated translation: Hindi by lucas_encuesta.biz, PawelAtroszko
+#Updated translation: French (France) by DenisChenu
+#Updated translation: Bulgarian by c_schmitz
+#Updated translation: Bosnian by DenisChenu
+
+
 Changes from 3.28.45 (build 230117) to 3.28.46 (build 230124) January 23, 2023
 #Updated translation: Dutch by Han
 #Updated translation: Dutch (Informal) by Han

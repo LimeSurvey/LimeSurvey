@@ -41,7 +41,7 @@ class UploaderController extends SurveyController
         $aFieldMap = createFieldMap($oSurvey, 'short', false, false, $sLanguage);
         if (!isset($aFieldMap[$sFieldName])) {
             throw new CHttpException(400); // See for debug > 1
-        }        
+        }
         $sFileName = Yii::app()->request->getParam('filename', ''); // The file to delete fu_ or fu_tmp
         $sOriginalFileName = Yii::app()->request->getParam('name', ''); // Used for javascript return only
         $sMode = Yii::app()->request->getParam('mode');
@@ -130,6 +130,7 @@ class UploaderController extends SurveyController
             //$filename = sanitize_filename($_FILES['uploadfile']['name']);// This remove all non alpha numeric characters and replaced by _ . Leave only one dot .
             $size = $_FILES['uploadfile']['size'] / 1024;
             $preview = Yii::app()->session['preview'];
+            // TODO: Remove this validation. It's already done at the start.
             $aFieldMap = createFieldMap($oSurvey, 'short', false, false, $sLanguage);
             if (!isset($aFieldMap[$sFieldName])) {
                 throw new CHttpException(400); // See for debug > 1

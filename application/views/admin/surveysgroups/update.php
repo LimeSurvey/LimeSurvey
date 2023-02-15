@@ -62,7 +62,7 @@
 
         }
     });
-    $(document).on('ready pjax:scriptcomplete', function(){
+    jQuery(document).on('ready pjax:scriptcomplete', function(){
         if(window.location.hash){
             $('#surveysystem').find('a[href='+window.location.hash+']').trigger('click');
         }

@@ -33,7 +33,7 @@
                 var saveChanges = false;
                 var sReplacementFieldTitle = '<?php eT('Placeholder fields','js');?>';
                 var sReplacementFieldButton = '<?php eT('Insert/edit placeholder field','js');?>';
-                $(document).on('ready pjax:scriptcomplete', function(){
+                jQuery(document).on('ready pjax:scriptcomplete', function(){
                     //console.log('iGroupId: '+iGroupId);
             // Better use try/catch to not crash JS completely
             /*

@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2023-01-02 09:50:15+00:00\n"
+"POT-Creation-Date: 2023-01-30 12:44:51+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -599,49 +599,49 @@ msgstr ""
 msgid "Oops, There was an error deleting the file"
 msgstr ""
 
-#: application/controllers/UploaderController.php:146
+#: application/controllers/UploaderController.php:147
 msgid "Sorry, there was an error uploading your file."
 msgstr ""
 
-#: application/controllers/UploaderController.php:150
+#: application/controllers/UploaderController.php:151
 msgid "Sorry, there was an error uploading your file, error code : %s."
 msgstr ""
 
-#: application/controllers/UploaderController.php:161
+#: application/controllers/UploaderController.php:162
 msgid "Sorry, this file is too large. Only files upto %s KB are allowed."
 msgstr ""
 
-#: application/controllers/UploaderController.php:181
+#: application/controllers/UploaderController.php:182
 msgid "Sorry, this file extension (%s) is not allowed!"
 msgstr ""
 
-#: application/controllers/UploaderController.php:209
+#: application/controllers/UploaderController.php:210
 msgid "Sorry, unable to check extension of this file type %s."
 msgstr ""
 
-#: application/controllers/UploaderController.php:219
+#: application/controllers/UploaderController.php:220
 msgid "Sorry, file type %s (extension : %s) is not allowed!"
 msgstr ""
 
-#: application/controllers/UploaderController.php:237
-#: application/controllers/UploaderController.php:265
+#: application/controllers/UploaderController.php:238
+#: application/controllers/UploaderController.php:266
 #: application/helpers/remotecontrol/remotecontrol_handle.php:2883
 msgid "The file has been successfully uploaded."
 msgstr ""
 
-#: application/controllers/UploaderController.php:252
+#: application/controllers/UploaderController.php:253
 msgid "We are sorry but there was a system error and your file was not saved. An email has been dispatched to notify the survey administrator."
 msgstr ""
 
-#: application/controllers/UploaderController.php:275
+#: application/controllers/UploaderController.php:276
 msgid "An unknown error occured"
 msgstr ""
 
-#: application/controllers/UploaderController.php:279
+#: application/controllers/UploaderController.php:280
 msgid "An unknown error happened when moving file %s to %s."
 msgstr ""
 
-#: application/controllers/UploaderController.php:311
+#: application/controllers/UploaderController.php:312
 #: application/controllers/admin/dataentry.php:936
 #: application/controllers/admin/responses.php:226
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:60
@@ -659,7 +659,7 @@ msgstr ""
 msgid "Title"
 msgstr ""
 
-#: application/controllers/UploaderController.php:312
+#: application/controllers/UploaderController.php:313
 #: application/controllers/admin/dataentry.php:939
 #: application/controllers/admin/responses.php:230
 #: application/helpers/common_helper.php:1683
@@ -670,43 +670,43 @@ msgstr ""
 msgid "Comment"
 msgstr ""
 
-#: application/controllers/UploaderController.php:313
+#: application/controllers/UploaderController.php:314
 msgid "Sorry, no more files can be uploaded!"
 msgstr ""
 
-#: application/controllers/UploaderController.php:314
+#: application/controllers/UploaderController.php:315
 msgid "Sorry, only %s files can be uploaded for this question!"
 msgstr ""
 
-#: application/controllers/UploaderController.php:315
+#: application/controllers/UploaderController.php:316
 msgid "Uploading"
 msgstr ""
 
-#: application/controllers/UploaderController.php:316
-#: application/controllers/UploaderController.php:364
+#: application/controllers/UploaderController.php:317
+#: application/controllers/UploaderController.php:365
 msgid "Select file"
 msgstr ""
 
-#: application/controllers/UploaderController.php:317
+#: application/controllers/UploaderController.php:318
 msgid "Please upload %s more file(s)."
 msgstr ""
 
-#: application/controllers/UploaderController.php:318
+#: application/controllers/UploaderController.php:319
 msgid "If you wish, you may upload %s more file(s); else you may return back to survey."
 msgstr ""
 
-#: application/controllers/UploaderController.php:319
 #: application/controllers/UploaderController.php:320
+#: application/controllers/UploaderController.php:321
 msgid "The maximum number of files has been uploaded. You may return back to survey."
 msgstr ""
 
-#: application/controllers/UploaderController.php:321
+#: application/controllers/UploaderController.php:322
 msgid ""
 "You need to upload %s more files for this question.\n"
 "Are you sure you want to exit?"
 msgstr ""
 
-#: application/controllers/UploaderController.php:322
+#: application/controllers/UploaderController.php:323
 #: application/controllers/admin/surveypermission.php:135
 #: application/controllers/admin/surveypermission.php:477
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:25
@@ -740,7 +740,7 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-#: application/controllers/UploaderController.php:323
+#: application/controllers/UploaderController.php:324
 #: application/controllers/admin/assessments.php:276
 #: application/helpers/qanda_helper.php:2310
 #: application/models/Assessment.php:93 application/models/SavedControl.php:108
@@ -750,7 +750,7 @@ msgstr ""
 msgid "Edit"
 msgstr ""
 
-#: application/controllers/UploaderController.php:367
+#: application/controllers/UploaderController.php:368
 msgid "You can upload %s under %s KB each."
 msgstr ""
 
