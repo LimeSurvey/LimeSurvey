@@ -333,50 +333,6 @@ class QuestionGroup extends LSActiveRecord
                     )) . '})'
             ]
         ];
-        $buttons = "<div class='icon-btn-row'>";
-        // Delete
-        if ($oSurvey->active != "Y" && Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'delete')) {
-            $condarray = getGroupDepsForConditions($this->sid, "all", $this->gid, "by-targgid");
-
-            if ($oSurvey->groupsCount == 1) {
-                $buttons .= '<span data-bs-toggle="tooltip" title="' . gT("Cannot delete this group because it's the only group in the survey.") . '">'
-                . '<button class="btn btn-sm btn-outline-secondary" '
-                . ' disabled '
-                . ' role="button"'
-                . ' data-bs-toggle="popover"'
-                . ' title="' . gT("Cannot delete this group because it's the only group in the survey.", "js") . '">'
-                    . '<i class="ri-delete-bin-fill text-muted "></i>'
-                    . '<span class="visually-hidden">' . gT('Deleting question group not possible') . '</span>'
-                . '</button>'
-                . '</span>';
-            } elseif (is_null($condarray)) {
-                $buttons .= '<span data-bs-toggle="tooltip" title="' . gT('Delete question group') . '">'
-                    . '<button class="btn btn-sm btn-outline-secondary" '
-                    . ' data-onclick="(function() { ' . CHtml::encode(convertGETtoPOST(Yii::app()->createUrl("questionGroupsAdministration/delete/", ["gid" => $this->gid]))) . ' })" '
-                    . ' data-bs-target="#confirmation-modal"'
-                    . ' role="button"'
-                    . ' data-bs-toggle="modal"'
-                    . ' data-message="' . gT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?", "js") . '"'
-                    . '>'
-                        . '<i class="ri-delete-bin-fill text-danger "></i>'
-                        . '<span class="visually-hidden">' . gT('Delete question group') . '</span>'
-                    . '</button>'
-                    . '</span>';
-            } else {
-                $buttons .= '<span data-bs-toggle="tooltip" title="' . gT('Group cant be deleted, because of depending conditions') . '">'
-                    . '<button class="btn btn-sm btn-outline-secondary" '
-                    . ' disabled '
-                    . ' role="button"'
-                    . ' data-bs-toggle="popover"'
-                    . ' title="' . gT("Impossible to delete this group because there is at least one question having a condition on its content", "js") . '">'
-                        . '<i class="ri-delete-bin-fill text-muted "></i>'
-                        . '<span class="visually-hidden">' . gT('Deleting question group not possible') . '</span>'
-                    . '</button>'
-                    . '</span>';
-            }
-        }
-        //$buttons .= "</div>";
-        //return $buttons;
         return App()->getController()->widget(
             'ext.admin.grid.GridActionsWidget.GridActionsWidget',
             ['dropdownItems' => $dropdownItems],
