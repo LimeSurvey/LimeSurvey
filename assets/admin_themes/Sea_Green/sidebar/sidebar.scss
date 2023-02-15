@@ -1,21 +1,70 @@
 // Admin Sidepanel
 #sidebar {
+  padding-top: 15px;
+  width:100%;
+
+  .questiongroup-list-group>li.selected {
+    opacity: 0.9;
+    &.activated {
+      opacity: 1;
+    }
+  }
+
+  .button-sub-bar {
+    min-height: 32px;
+  }
+
+  .dragPointer {
+    cursor: move;
+    &.disabled {
+      color: #999999;
+      cursor: not-allowed;
+    }
+  }
+
+  .question-question-list {
+    .question-question-list-item {
+      margin: 2px 2px 2px 12px;
+      display: flex;
+      align-items: center;
+      padding: 0 1rem;
+      .question-question-list-item-drag {
+        margin: 10px 15px;
+      }
+      &.selected {
+        padding-left: 20px;
+        .question-question-list-item-drag {
+          margin: 10px 10px 10px 5px;
+        }
+      }
+      .question-question-list-item-link {
+        padding: 10px 25px 10px 10px;
+        display: inline-flex;
+        flex-wrap: wrap;
+      }
+    }
+    .question-question-list-item ~ .question-question-list-item {
+      margin-top: 0px;
+    }
+  }
+
+  .question_text_ellipsize {
+    display: inline-block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    padding-left: 2px;
+  }
+
+  svg {
+    color: $g-600;
+  }
+
   .btn-primary.force.color.white.onhover {
       &:hover,
       &:active,
       &:focus {
           color: $white;
-      }
-  }
-  .tabbutton.btn-primary {
-      outline: none;
-      &:hover, &:focus, &:active {
-          &:after {
-              color: $primary-bg_hover_tabbutton;
-          }
-      }
-      &:after {
-          color: $primary;
       }
   }
 
@@ -25,14 +74,33 @@
   }
 
   .resize-handle {
-      button {
-          &:focus, &:active, &:hover {
-              background-color: $white !important;
-          }
-          // background-color: transparent !important;
+    position: absolute;
+    margin: auto;
+    right: 15px;
+    top: 0;
+    bottom: 0;
+    height: 100%;
+    max-height: 35px;
+    cursor: col-resize;
+    button {
+      background-color : $white;
+      outline: 0;
+      &:focus, &:active, &:hover {
+        outline: 0 !important;
+        background-color : $white !important;
+        color            : $g-900;
       }
+      cursor: col-resize;
+      width:100%;
+      height:100%;
+      text-align: left;
+      border-radius: 0;
+      padding: 0 4px;
+      i {
+        font-size: 12px;
+      }
+    }
   }
-
 
   .menu-open {
       animation-name: animate-gradient;
@@ -50,14 +118,27 @@
       transition-duration: .25s;
       transition-timing-function: cubic-bezier(1, 0.5, 0.5, 1);
   }
-  .dragged {
-      background-color: adjust-color($primary, $lightness: +10%, $alpha: 0.8) !important;
-      opacity: 0.8;
-      padding-top: 18px;
-      padding-bottom: 18px;
-      transition-property: all;
-      transition-duration: .1s;
-      transition-timing-function: ease-in-out;
+
+  a:not(.btn, .nav-tabs .nav-link) {
+    color: $g-900;
+    font-weight: $font-weight-normal;
+  }
+
+  li.dragged {
+    color                      : $white;
+    background                 : var(--bs-primary) none !important;
+    padding-top                : 18px;
+    padding-bottom             : 18px;
+    transition-property        : all;
+    transition-duration        : .1s;
+    transition-timing-function : ease-in-out;
+
+    .q-group {
+      background                 : var(--bs-primary) !important;
+    }
+    a, svg, a:not(.btn, .nav-tabs .nav-link) {
+      color                      : $white;
+    }
   }
 
   .menu-selected {
@@ -91,5 +172,12 @@
           }
       }
   }
+}
 
+// Globally or only in sidemenu?
+.list-group {
+  border-radius: 0px !important;
+}
+.list-group-item {
+  border: none !important;
 }

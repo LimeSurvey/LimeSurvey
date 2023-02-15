@@ -1,9 +1,9 @@
 <?php
-    $aUsergoups = UserGroup::model()->findAll();
+$aUsergoups = UserGroup::model()->findAll();
 ?>
 
-<div class="modal-body selector--edit-usergroup-container">
-    <div class="container form">
+<div class="selector--edit-usergroup-container">
+    <div class="form">
         <?php if ($aUsergoups) : ?>
             <div class="mb-3">
                 <label for="addtousergroup"><?= gT("Select user group to add users to") ?></label>
@@ -16,7 +16,7 @@
         <?php else : ?>
             <?php
             echo "<p>" . gT("No user groups found.") . "</p>";
-            echo CHtml::link('<i class="ri-add-circle-fill text-success"></i> ' . gT('Add new user group'), array('userGroup/addGroup'), array('class' => 'btn btn-outline-secondary'));
+            echo CHtml::link('<i class="ri-add-circle-fill"></i> ' . gT('Add new user group'), array('userGroup/addGroup'), array('class' => 'btn btn-outline-secondary'));
             ?>
         <?php endif; ?>
     </div>

@@ -34,7 +34,7 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
 <!-- Form submitted by save button menu bar -->
 <?php echo CHtml::form(array('surveyAdministration/insert'), 'post', array('id'=>'addnewsurvey', 'name'=>'addnewsurvey', 'class'=>'')); ?>
     <!-- Submit button, needs to be the first item for the script to take it -->
-    <button role="button" class="btn btn-primary btn-success d-none" type="submit" name="save" id="create_survey_save_and_send" value='insertsurvey'>
+    <button role="button" class="btn btn-primary btn-primary d-none" type="submit" name="save" id="create_survey_save_and_send" value='insertsurvey'>
         <?php eT("Finish & save"); ?>
     </button>
 

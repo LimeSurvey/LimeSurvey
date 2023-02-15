@@ -298,7 +298,6 @@ class QuestionAdministrationController extends LSBaseController
         $aData['oSurvey']                               = $oSurvey;
         $aData['surveyid']                              = $iSurveyID;
         $aData['sid']                                   = $iSurveyID;
-        $aData['display']['menu_bars']['listquestions'] = true;
         $aData['sidemenu']['listquestions']             = true;
         $aData['sidemenu']['landOnSideMenuTab']         = $landOnSideMenuTab;
         $aData['surveybar']['returnbutton']['url']      = "/surveyAdministration/listsurveys";
@@ -307,6 +306,19 @@ class QuestionAdministrationController extends LSBaseController
         $aData['subaction']             = gT("Questions in this survey");
         $aData['title_bar']['title']    = $oSurvey->currentLanguageSettings->surveyls_title .
             " (" . gT("ID") . ":" . $iSurveyID . ")";
+
+        $aData['topbar']['middleButtons'] = $this->renderPartial(
+            'partial/topbarBtns/listquestionsTopbarLeft_view',
+            [
+                'oSurvey' => $oSurvey,
+                'hasSurveyContentCreatePermission' => Permission::model()->hasSurveyPermission(
+                    $iSurveyID,
+                    'surveycontent',
+                    'create'
+                ),
+            ],
+            true
+        );
 
         // The DataProvider will be build from the Question model, search method
         $model = new Question('search');
@@ -326,9 +338,6 @@ class QuestionAdministrationController extends LSBaseController
         // We filter the current survey id
         $model->sid = $oSurvey->sid;
         $aData['model'] = $model;
-
-        $aData['topBar']['name'] = 'baseTopbar_view';
-        $aData['topBar']['leftSideView'] = 'listquestionsTopbarLeft_view';
 
         $this->aData = $aData;
 
@@ -1041,15 +1050,16 @@ class QuestionAdministrationController extends LSBaseController
         $aData = [];
         $aData['sidemenu']['state'] = false;
         $aData['sidemenu']['questiongroups'] = true;
-        $aData['surveybar']['closebutton']['url'] = '/questionGroupsAdministration/listquestiongroups/surveyid/' . $iSurveyID; // Close button
-        $aData['surveybar']['savebutton']['form'] = true;
-        $aData['surveybar']['savebutton']['text'] = gT('Import');
+
         $aData['sid'] = $iSurveyID;
         $aData['surveyid'] = $iSurveyID; // todo duplication needed for survey_common_action
         $aData['gid'] = $groupid;
-        $aData['topBar']['name'] = 'baseTopbar_view';
-        $aData['topBar']['rightSideView'] = 'importQuestionTopbarRight_view';
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyID . ")";
+        $aData['topbar']['rightButtons'] = $this->renderPartial(
+            'partial/topbarBtns/importQuestionTopbarRight_view',
+            [],
+            true
+        );
 
         $this->aData = $aData;
         $this->render(
@@ -1211,6 +1221,7 @@ class QuestionAdministrationController extends LSBaseController
             'questionMetaData' => $questionMetaData
             //'qtproperties' => $aQuestionTypeMetadata,
         ];
+        $aData['oSurvey'] = $oSurvey;
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyID . ")";
         $aData['questiongroupbar']['savebutton']['form'] = 'frmeditgroup';
         $this->createUrl(
@@ -1230,9 +1241,6 @@ class QuestionAdministrationController extends LSBaseController
         $aData['sidemenu']['explorer']['qid'] = $qid ?? false;
         $aData['sidemenu']['landOnSideMenuTab'] = 'structure';
 
-        $aData['topBar']['name'] = 'baseTopbar_view';
-        $aData['topBar']['leftSideView'] = 'editQuestionTopbarLeft_view';
-        $aData['topBar']['rightSideView'] = 'surveyTopbarRight_view';
         $aData['showSaveButton'] = true;
         $aData['showSaveAndCloseButton'] = true;
         $aData['showWhiteCloseButton'] = true;
@@ -1250,7 +1258,19 @@ class QuestionAdministrationController extends LSBaseController
             'surveycontent',
             'update'
         ) ? '' : 'disabled="disabled" readonly="readonly"';
-        $aData['oSurvey'] = $oSurvey;
+
+        $topbarData = TopbarConfiguration::getQuestionTopbarData($iSurveyID);
+        $topbarData = array_merge($topbarData, $aData);
+        $aData['topbar']['middleButtons'] = $this->renderPartial(
+            'partial/topbarBtns/editQuestionTopbarLeft_view',
+            $topbarData,
+            true
+        );
+        $aData['topbar']['rightButtons'] = $this->renderPartial(
+            '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
+            $topbarData,
+            true
+        );
 
         $this->aData = $aData;
         $this->render('editdefaultvalues', $aData);
@@ -1603,9 +1623,6 @@ class QuestionAdministrationController extends LSBaseController
         $aData['sidemenu']['landOnSideMenuTab'] = 'structure';
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title
             . " (" . gT("ID") . ":" . $surveyId . ")";
-
-        $aData['topBar']['name'] = 'baseTopbar_view';
-        $aData['topBar']['rightSideView'] = 'copyQuestionTopbarRight_view';
         $aData['closeUrl'] = Yii::app()->createUrl(
             'questionAdministration/view/',
             [
@@ -1614,6 +1631,14 @@ class QuestionAdministrationController extends LSBaseController
                 'qid' => $oQuestion->qid,
                 'landOnSideMenuTab' => 'structure'
             ]
+        );
+
+        $aData['topbar']['rightButtons'] = $this->renderPartial(
+            'partial/topbarBtns/copyQuestionTopbarRight_view',
+            [
+                'closeUrl' => $aData['closeUrl']
+            ],
+            true
         );
 
         $aData['oSurvey'] = $oSurvey;
@@ -2144,7 +2169,7 @@ class QuestionAdministrationController extends LSBaseController
 
                     $options = [];
                     if ($aQuestionAttributes['type'] == Question::QT_M_MULTIPLE_CHOICE || $aQuestionAttributes['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
-                        $options = ['' => gT('<No default value>'), 'Y' => gT('Checked')];
+                        $options = ['' => gT('(No default value)'), 'Y' => gT('Checked')];
                     }
 
                     foreach ($sqresult as $aSubquestion) {

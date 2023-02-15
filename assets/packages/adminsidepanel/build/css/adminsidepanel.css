@@ -87,98 +87,13 @@
 }
 
 /* New adminsidepanel */
-#sidebar {
-  padding-top: 15px;
-  width: 100%;
-}
-#sidebar .questiongroup-list-group > li.selected {
-  opacity: 0.9;
-}
-#sidebar .questiongroup-list-group > li.selected.activated {
-  opacity: 1;
-}
-#sidebar .tabbutton.btn-primary {
-  outline: none;
-}
-#sidebar .tabbutton.btn-primary:after {
-  position: absolute;
-  left: 43%;
-  bottom: -12px;
-  font: normal normal normal 14px/1 FontAwesome;
-  font-size: 28px;
-  text-rendering: auto;
-  -webkit-font-smoothing: antialiased;
-  content: "\F078";
-}
-#sidebar .overflow-auto {
-  overflow-x: hidden;
-  overflow-y: auto;
-}
-#sidebar .resize-handle {
-  position: absolute;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  height: 100%;
-  cursor: col-resize;
-}
-#sidebar .resize-handle button {
-  outline: 0;
-  cursor: col-resize;
-  width: 100%;
-  height: 100%;
-  text-align: left;
-  border-radius: 0;
-  padding: 0 4px;
-}
-#sidebar .resize-handle button:focus, #sidebar .resize-handle button:active, #sidebar .resize-handle button:hover {
-  outline: 0 !important;
-}
-#sidebar .resize-handle button i {
-  font-size: 12px;
-}
 #sidebar .transition-animate-width {
   -webkit-transition: all 0.5s ease;
   transition: all 0.5s ease;
 }
-#sidebar .button-sub-bar {
-  min-height: 32px;
-}
 #sidebar.fill-height,
 #sidebar .fill-height {
   height: 100%;
-}
-#sidebar .dragPointer {
-  cursor: move;
-}
-#sidebar .dragPointer.disabled {
-  color: #999999;
-  cursor: not-allowed;
-}
-#sidebar .question-question-list .question-question-list-item {
-  padding: 0;
-}
-#sidebar .question-question-list .question-question-list-item .question-question-list-item-drag {
-  margin: 10px 15px;
-}
-#sidebar .question-question-list .question-question-list-item.selected {
-  padding-left: 20px;
-}
-#sidebar .question-question-list .question-question-list-item.selected .question-question-list-item-drag {
-  margin: 10px 10px 10px 5px;
-}
-#sidebar .question-question-list .question-question-list-item .question-question-list-item-link {
-  padding: 10px 25px 10px 10px;
-  display: -webkit-inline-box;
-  display: inline-flex;
-  flex-wrap: wrap;
-}
-#sidebar .question_text_ellipsize {
-  display: inline-block;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  padding-left: 2px;
 }
 
 .bigIcons {

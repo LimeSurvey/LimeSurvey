@@ -381,6 +381,20 @@ class SurveymenuController extends SurveyCommonAction
         }
         $aData['pageSize'] = Yii::app()->user->getState('pageSize', (int) Yii::app()->params['defaultPageSize']);
 
+
+        $aData['topbar']['title'] = gT('Survey menus');
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/admin/surveymenu/partial/topbarBtns/rightSideButtons',
+            [
+                'resetPermission' => Permission::model()->hasGlobalPermission('superadmin', 'read')
+            ],
+            true
+        );
+        $aData['topbar']['middleButtons'] = Yii::app()->getController()->renderPartial(
+            '/admin/surveymenu/partial/topbarBtns/leftSideButtons',
+            [],
+            true
+        );
         // Page Title Green Bar
         $aData['pageTitle'] = gT('Survey menus');
 

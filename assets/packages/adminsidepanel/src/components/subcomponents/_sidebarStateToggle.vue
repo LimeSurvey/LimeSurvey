@@ -1,12 +1,12 @@
 <template>
     <div class="ls-space col-12"  :key="currentKey">
-        <div class="ls-flex-row align-content-space-between align-items-flex-end ls-space padding left-0 right-10 bottom-0 top-0">
+        <div class="ls-flex-row align-content-space-between align-items-flex-end ls-space padding left-0 bottom-0 top-0">
           
             <transition name="fade">
                 <div class="ls-flex-item grow-10 col-12" v-if="!$store.getters.isCollapsed">
                     <ul class="nav nav-tabs" id="surveysystem" role="tablist">
-                     <li class="nav-item"><a :class="currentTab == 'settings' ? 'nav-link active' : 'nav-link'" href="#settings" aria-controls="settings" role="tab" data-bs-toggle="tab"  @click="currentTab='settings'"> {{"settings"|translate}} </a></li>
-                     <li class="nav-item"><a :class="currentTab == 'questiontree' ? 'nav-link active' : 'nav-link'" href="#structure" aria-controls="structure" role="tab" data-bs-toggle="tab"   @click="currentTab='questiontree'"> {{"structure"|translate}} </a></li>
+                     <li class="nav-item"><a id="adminsidepanel__sidebar--selectorSettingsButton" :class="currentTab == 'settings' ? 'nav-link active' : 'nav-link'" href="#settings" aria-controls="settings" role="tab" data-bs-toggle="tab"  @click="currentTab='settings'"> {{"settings"|translate}} </a></li>
+                     <li class="nav-item"><a id="adminsidepanel__sidebar--selectorStructureButton" :class="currentTab == 'questiontree' ? 'nav-link active' : 'nav-link'" href="#structure" aria-controls="structure" role="tab" data-bs-toggle="tab"   @click="currentTab='questiontree'"> {{"structure"|translate}} </a></li>
                     </ul>
                 </div>
             </transition>

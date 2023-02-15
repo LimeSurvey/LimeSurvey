@@ -468,39 +468,6 @@ pre {
     background-color: $gray-04;
     border: 1px solid $gray-09;
 }
-
-// Forms
-.form-control {
-    color: $gray-17;
-    background-color: $white;
-    border: 1px solid $gray-09;
-    //Instead of the line below you could use @include box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
-    box-shadow: inset 0 1px 1px $black_opac_075;
-    &:focus {
-        border: 1px solid $blue-10;
-        //Instead of the line below you could use @include box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
-        box-shadow: inset 0 1px 1px $black_opac_075, 0 0 8px $blue-opac;
-    }
-    &:-ms-input-placeholder {
-        color: $gray-15;
-    }
-}
-.form-control::-moz-placeholder {
-    color: $gray-15;
-    opacity: 1;
-}
-.form-control::-webkit-input-placeholder {
-    color: $gray-15;
-}
-.form-control[disabled] {
-    color: $gray-15;
-    background-color: $gray-04;
-    opacity: 1;
-}
-.form-control[readonly] {
-    background-color: $gray-04;
-    opacity: 1;
-}
 fieldset[disabled] {
     .form-control {
         background-color: $gray-04;
@@ -1429,10 +1396,6 @@ input[type="checkbox"]:checked:after,
     border: 1px solid $gray-09;
 }
 
-// Forms
-input[type="text"], input[type="password"], .ui-autocomplete-input, textarea, .uneditable-input {
-    color: $gray-17;
-}
 
 // Expression Manager
 .em-function {

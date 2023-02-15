@@ -283,7 +283,7 @@ class ThemeControllerTest extends TestBaseClassWeb
             $text = $files[count($files) - 1]->getText();
             $this->assertEquals($text, 'dalahorse.jpg', 'Did not find dalahorse, but ' . $text);
 
-            $w->executeScript('window.scrollTo(0,document.body.scrollHeight);');
+            $w->executeScript('window.scrollTo(0,document.body.scrollHeight / 2);');
             sleep(1);
 
             // Delete file.

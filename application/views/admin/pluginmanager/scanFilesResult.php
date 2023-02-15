@@ -19,7 +19,7 @@
                     <?php elseif ($scannedPlugin['isCompatible']) : ?>
                         <?php echo CHtml::beginForm($installUrl, 'post', ['style' => 'display: inline-block;']); ?>
                         <input type='hidden' name='pluginName' value='<?php echo $name; ?>'/>
-                        <button href='' class='btn btn-success' data-bs-toggle='tooltip' title='<?php eT('Install this plugin'); ?>'>
+                        <button href='' class='btn btn-primary' data-bs-toggle='tooltip' title='<?php eT('Install this plugin'); ?>'>
                             <i class='ri-download-fill'></i>
                             &nbsp;
                             <?php eT('Install'); ?>

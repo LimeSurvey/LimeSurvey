@@ -44,7 +44,7 @@ var PrepEmailTemplates = function(){
                 keyboard: false
             });
     
-            $('#attachment-relevance-editor .btn-success').one('click', function (event) {
+            $('#attachment-relevance-editor .btn-primary').one('click', function (event) {
                 var newRelevanceEquation = $('#attachment-relevance-editor textarea').val();
                 $(target).val(newRelevanceEquation);
     

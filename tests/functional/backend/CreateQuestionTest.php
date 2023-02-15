@@ -114,7 +114,7 @@ class CreateQuestionTest extends TestBaseClassWeb
                  "Title validation in question-title-warning are not empty on success, get “".$checkValidateText."”"
             );
 
-            $questionTypeSelector = $web->findById('trigger_questionTypeSelector_button');
+            $questionTypeSelector = $web->findById('trigger_questionTypeSelector_button_button');
             $questionTypeSelector->click();
             sleep(1);
 

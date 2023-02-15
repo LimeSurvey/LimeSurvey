@@ -93,7 +93,7 @@ $baseLanguage = $oSurvey->language;
                             <?php
                             echo CHtml::submitButton(
                                 gT('Search', 'unescaped'),
-                                ['class' => 'btn btn-success']
+                                ['class' => 'btn btn-primary']
                             ); ?>
                             <a href="<?php
                             echo App()->createUrl(

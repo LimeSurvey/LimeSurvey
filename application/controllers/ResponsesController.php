@@ -139,7 +139,12 @@ class ResponsesController extends LSBaseController
 
 
         $fieldmap = createFieldMap($survey, 'full', false, false, $aData['language']);
-        $bHaveToken = $survey->anonymized == "N" && tableExists('tokens_' . $surveyId); // Boolean : show (or not) the token
+        // just used to check if the token exists for the given response id before we create the real query
+        $response = SurveyDynamic::model($surveyId)->find('id=:id', [':id' => $id]);
+        // Boolean : show (or not) the token
+        $bHaveToken = $survey->anonymized == "N"
+            && tableExists('tokens_' . $surveyId)
+            && isset($response->tokens);
         if (!Permission::model()->hasSurveyPermission($surveyId, 'tokens', 'read')) {
             // If not allowed to read: remove it
             unset($fieldmap['token']);
@@ -357,8 +362,14 @@ class ResponsesController extends LSBaseController
         $aData['sidemenu']['state'] = false;
         // This resets the url on the close button to go to the upper view
         $aData['closeUrl'] = $this->createUrl("responses/browse/", ['surveyId' => $surveyId]);
-        $aData['topBar']['name'] = 'baseTopbar_view';
-        $aData['topBar']['rightSideView'] = 'responseViewTopbarRight_view';
+
+        $topbarData = TopbarConfiguration::getResponsesTopbarData($survey->sid);
+        $topbarData = array_merge($topbarData, $aData);
+        $aData['topbar']['middleButtons'] = $this->renderPartial(
+            'partial/topbarBtns/responseViewTopbarRight_view',
+            $topbarData,
+            true
+        );
 
         $this->aData = $aData;
         $this->render('browseidrow_view', [
@@ -391,8 +402,12 @@ class ResponsesController extends LSBaseController
             $aData['tokeninfo'] = Token::model($surveyId)->summary();
         }
 
-        $aData['topBar']['name'] = 'baseTopbar_view';
-        $aData['topBar']['leftSideView'] = 'responsesTopbarLeft_view';
+        $topbarData = TopbarConfiguration::getResponsesTopbarData($survey->sid);
+        $aData['topbar']['middleButtons'] = $this->renderPartial(
+            'partial/topbarBtns/leftSideButtons',
+            $topbarData,
+            true
+        );
 
         $this->aData = $aData;
         $this->render('browseindex_view', [
@@ -500,12 +515,16 @@ class ResponsesController extends LSBaseController
             // Page size
             $aData['pageSize'] = App()->user->getState('pageSize', App()->params['defaultPageSize']);
 
-            $aData['topBar']['name'] = 'baseTopbar_view';
-            $aData['topBar']['leftSideView'] = 'responsesTopbarLeft_view';
+            $topbarData = TopbarConfiguration::getResponsesTopbarData($survey->sid);
+            $aData['topbar']['middleButtons'] = $this->renderPartial(
+                'partial/topbarBtns/leftSideButtons',
+                $topbarData,
+                true
+            );
 
             $this->aData = $aData;
             $this->render('listResponses_view', [
-                'surveyid' => $aData['surveyId'],
+                'surveyid' => $aData['surveyid'],
                 'dateformatdetails' => $aData['dateformatdetails'],
                 'model' => $aData['model'],
                 'bHaveToken' => $aData['bHaveToken'],

@@ -11,7 +11,7 @@ $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPa
 echo viewHelper::getViewTestTag('roles');
 
 ?>
-<?php $this->renderPartial('partials/_menubar', []); ?>
+<?php //$this->renderPartial('partials/_menubar', []); ?>
 <div class="container-fluid">
     <div class="col-12">
         <div class="row">

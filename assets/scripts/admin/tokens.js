@@ -499,7 +499,7 @@ var startEditToken = function(event, that){
 
             initValidFromValidUntilPickers();
 
-            $('.date .input-group-addon').on('click', function(){
+            $('.date .input-group-text').on('click', function(){
                 $prev = $(this).siblings();
                 // $prev.data("DateTimePicker").show();
             });

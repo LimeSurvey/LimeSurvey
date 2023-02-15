@@ -259,17 +259,35 @@ export default {
 };
 </script>
 <template>
-    <div id="questionexplorer" class="ls-flex-column fill ls-ba menu-pane ls-space padding left-0 top-0 bottom-0 right-5 margin pt-5">
+    <div id="questionexplorer" class="ls-flex-column fill ls-ba menu-pane pt-4">
+        <div class="ls-flex-row button-sub-bar mb-2">
+          <div class="scoped-toolbuttons-right me-2">
+            <button
+                class="btn btn-sm btn-outline-secondary"
+                @click="toggleOrganizer"
+                :title="translate(allowOrganizer ? 'lockOrganizerTitle' : 'unlockOrganizerTitle')"
+            >
+              <i :class="allowOrganizer ? 'ri-lock-unlock-fill' : 'ri-lock-fill'" />
+            </button>
+            <button
+                class="btn btn-sm btn-outline-secondary me-2"
+                @click="collapseAll"
+                :title="translate('collapseAll')"
+            >
+              <i class="ri-link-unlink" />
+            </button>
+          </div>
+        </div>
         <div
-            class="ls-flex-row wrap align-content-center align-items-center ls-space margin top-5 bottom-15 button-sub-bar"
+            class="ls-flex-row wrap align-content-center align-items-center button-sub-bar"
             v-if="createAllowance != ''"
         >
-            <div class="scoped-toolbuttons-left">
+            <div class="scoped-toolbuttons-left mb-2">
                 <a
                     id="adminsidepanel__sidebar--selectorCreateQuestion"
                     v-if="createQuestionAllowed"
                     :href="createFullQuestionLink()"
-                    class="btn btn-small btn-primary ls-space margin right-10 pjax"
+                    class="btn btn-primary ms-2 me-2 pjax"
                 >
                     <i class="ri-add-circle-fill"></i>
                     &nbsp;
@@ -279,28 +297,12 @@ export default {
                 <a
                     id="adminsidepanel__sidebar--selectorCreateQuestionGroup"
                     v-if="( createQuestionGroupLink!=undefined && createQuestionGroupLink.length>1 )"
-                    :href="createQuestionGroupLink" class="btn btn-small btn-outline-secondary pjax"
+                    :href="createQuestionGroupLink" class="btn btn-secondary pjax"
                 >
                     <!-- <i class="fa fa-plus"></i> -->
                     {{"createPage"|translate}}
                 </a>
              
-            </div>
-            <div class="scoped-toolbuttons-right">
-                <button
-                    class="btn btn-outline-secondary"
-                    @click="toggleOrganizer"
-                    :title="translate(allowOrganizer ? 'lockOrganizerTitle' : 'unlockOrganizerTitle')"
-                >
-                    <i :class="allowOrganizer ? 'ri-lock-unlock-fill' : 'ri-lock-fill'" />
-                </button>
-                <button
-                    class="btn btn-outline-secondary"
-                    @click="collapseAll"
-                    :title="translate('collapseAll')"
-                >
-                    <i class="ri-fullscreen-exit-line" />
-                </button>
             </div>
         </div>
         <div class="ls-flex-row ls-space padding all-0">
@@ -317,7 +319,7 @@ export default {
                     style=" background: linear-gradient(90deg, #14AE5C 0%, #14AE5C 5px, #EEEFF7 5px, #EEEFF7 100%); padding: 0;"
                 >
 
-                  <div class="d-flex nowrap ls-space padding right-5 bottom-5" style=" margin-left: 6px;
+                  <div class="q-group d-flex nowrap ls-space padding right-5 bottom-5" style=" margin-left: 6px;
     background: white;
     padding: 10px;">
                     <div
@@ -330,7 +332,7 @@ export default {
                         @click.stop.prevent="()=>false"
                     >
                       <svg width="9" height="14" viewBox="0 0 9 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" clip-rule="evenodd" d="M0.4646 0.125H3.24762V2.625H0.4646V0.125ZM6.03064 0.125H8.81366V2.625H6.03064V0.125ZM0.4646 5.75H3.24762V8.25H0.4646V5.75ZM6.03064 5.75H8.81366V8.25H6.03064V5.75ZM0.4646 11.375H3.24762V13.875H0.4646V11.375ZM6.03064 11.375H8.81366V13.875H6.03064V11.375Z" fill="#ACACAC"/>
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M0.4646 0.125H3.24762V2.625H0.4646V0.125ZM6.03064 0.125H8.81366V2.625H6.03064V0.125ZM0.4646 5.75H3.24762V8.25H0.4646V5.75ZM6.03064 5.75H8.81366V8.25H6.03064V5.75ZM0.4646 11.375H3.24762V13.875H0.4646V11.375ZM6.03064 11.375H8.81366V13.875H6.03064V11.375Z" fill="currentColor"/>
                       </svg>
                     </div>
                     <div class="w-100">
@@ -348,13 +350,10 @@ export default {
                         <div class="ms-auto">
                           <span
                               class="badge reverse-color ls-space margin right-5"
-                              @click.stop="openQuestionGroup(questiongroup)"
+                              @click.prevent="toggleActivation(questiongroup.gid)"
                           >
                                   {{ questiongroup.questions.length }}
                           </span>
-                          <i class="fa bigIcons"
-                             v-bind:class="isOpen(questiongroup.gid) ? 'black-caret fa-caret-up' : 'black-caret fa-caret-down'"
-                             @click.prevent="toggleActivation(questiongroup.gid)">&nbsp;</i>
                         </div>
                       </a>
 
@@ -378,7 +377,6 @@ export default {
                                 :data-has-condition="questionHasCondition(question)"
                                 :title="question.question_flat"
                                 @dragenter="dragoverQuestion($event, question, questiongroup)"
-                                style="margin: 2px 2px 2px 12px; display: flex; align-items: center; padding: 0 1rem;"
                             >
                                     <div
                                         v-if="!$store.state.surveyActiveState"
@@ -390,7 +388,7 @@ export default {
                                         @click.stop.prevent="()=>false"
                                     >
                                         <svg width="9" height="14" viewBox="0 0 9 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M0.4646 0.125H3.24762V2.625H0.4646V0.125ZM6.03064 0.125H8.81366V2.625H6.03064V0.125ZM0.4646 5.75H3.24762V8.25H0.4646V5.75ZM6.03064 5.75H8.81366V8.25H6.03064V5.75ZM0.4646 11.375H3.24762V13.875H0.4646V11.375ZM6.03064 11.375H8.81366V13.875H6.03064V11.375Z" fill="#ACACAC"/>
+                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M0.4646 0.125H3.24762V2.625H0.4646V0.125ZM6.03064 0.125H8.81366V2.625H6.03064V0.125ZM0.4646 5.75H3.24762V8.25H0.4646V5.75ZM6.03064 5.75H8.81366V8.25H6.03064V5.75ZM0.4646 11.375H3.24762V13.875H0.4646V11.375ZM6.03064 11.375H8.81366V13.875H6.03064V11.375Z" fill="currentColor"/>
                                         </svg>
 
                                     </div>

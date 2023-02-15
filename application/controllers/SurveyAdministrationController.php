@@ -132,25 +132,32 @@ class SurveyAdministrationController extends LSBaseController
         LimeExpressionManager::SetSurveyId($iSurveyID);
         LimeExpressionManager::StartProcessingPage(false, true);
 
+        //breadcrumb
         if (isset($survey->currentLanguageSettings) && isset($survey->currentLanguageSettings->surveyls_title)) {
             $aData['title_bar']['title'] =
                 $survey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyID . ")";
         } else {
             $aData['title_bar']['title'] = 'Unknown_language_title' . " (" . gT("ID") . ":" . $iSurveyID . ")";
         }
+        //buttons in topbar
+        $topbarData = TopbarConfiguration::getSurveyTopbarData($iSurveyID);
+        $aData['topbar']['middleButtons'] = $this->renderPartial(
+            'partial/topbar/surveyTopbarLeft_view',
+            $topbarData,
+            true
+        );
+        $aData['topbar']['rightButtons'] = $this->renderPartial(
+            'partial/topbar/surveyTopbarRight_view',
+            $topbarData,
+            true
+        );
         $aData['surveyid'] = $iSurveyID;
         $aData['sid'] = $iSurveyID; //frontend need this to render topbar for the view
-
-        //NOTE this is set because ONLY this leads to render the view surveySummary_view, no need to use in anymore
-        // $aData['display']['surveysummary'] = true;
 
         // Last survey visited
         $userId = App()->user->getId();
         SettingGlobal::setSetting('last_survey_' . $userId, $iSurveyID);
 
-        $aData['surveybar']['buttons']['view'] = true;
-        $aData['surveybar']['returnbutton']['url'] = $this->createUrl("surveyAdministration/listsurveys");
-        $aData['surveybar']['returnbutton']['text'] = gT('Return to survey list');
         $aData['sidemenu']["survey_menu"] = true;
 
         // We get the last question visited by user for this survey
@@ -181,9 +188,9 @@ class SurveyAdministrationController extends LSBaseController
         $user = User::model()->findByPk(App()->session['loginID']);
         $aData['owner'] = $user->attributes;
 
-        if ((empty($aData['display']['menu_bars']['surveysummary']) || !is_string($aData['display']['menu_bars']['surveysummary'])) && !empty($aData['gid'])) {
-            $aData['display']['menu_bars']['surveysummary'] = 'viewgroup';
-        }
+      //  if ((empty($aData['display']['menu_bars']['surveysummary']) || !is_string($aData['display']['menu_bars']['surveysummary'])) && !empty($aData['gid'])) {
+        //    $aData['display']['menu_bars']['surveysummary'] = 'viewgroup';
+       // }
 
         $surveyUrls = [];
         foreach ($survey->allLanguages as $language) {
@@ -194,7 +201,7 @@ class SurveyAdministrationController extends LSBaseController
         $this->surveysummary($aData);
 
         // Display 'Overview' in Green Bar
-        $aData['subaction'] = gT('Overview');
+     //   $aData['subaction'] = gT('Overview');
 
         $this->aData = $aData;
         $this->render('sidebody', [
@@ -219,19 +226,9 @@ class SurveyAdministrationController extends LSBaseController
         $aData['model'] = new Survey('search');
         $aData['groupModel'] = new SurveysGroups('search');
 
-        // Green Bar Page Title
-        $aData['pageTitle'] = gT('Survey list');
-
-        // Create Survey Button Url
-        $aData['fullpagebar']['listSurveys']['buttons']['createSurvey']['url'] = $this->createUrl("surveyAdministration/newSurvey");
-        $aData['fullpagebar']['listSurveys']['buttons']['createSurveyGroup']['url'] = $this->createUrl("admin/surveysgroups/sa/create");
-
-        // Create Survey Groups Button
-        $aData['fullpagebar']['listSurveys']['buttons']['createSurveyGroups'] = true;
-
-        // Return Button
-        $aData['fullpagebar']['returnbutton']['url'] = 'admin/index';
-        $aData['fullpagebar']['returnbutton']['text'] = gT('Back');
+        $aData['topbar']['title'] = gT('Survey list');
+        $aData['topbar']['rightButtons'] = $this->renderPartial('partial/topbarBtns/rightSideButtons', [], true);
+        $aData['topbar']['middleButtons'] = $this->renderPartial('partial/topbarBtns/leftSideButtons', [], true);
 
         $this->aData = $aData;
         $this->render('listSurveys_view', $aData);
@@ -412,11 +409,13 @@ class SurveyAdministrationController extends LSBaseController
         $arrayed_data['data'] = $aData;
         $arrayed_data['title_bar']['title'] = gT('New survey');
 
-        // Green Bar Page Title
-        $aData['pageTitle'] = gT("Create, import, or copy survey");
-
-        $aData['fullpagebar']['savebutton']['form'] = 'addnewsurvey';
-        $aData['fullpagebar']['white_closebutton']['url'] = Yii::app()->createUrl('admin/index'); // Close button
+        // topbar
+        $aData['topbar']['title'] = gT('Create, import, or copy survey');
+        $aData['topbar']['rightButtons'] = $this->renderPartial(
+            'partial/topbarBtns_create_survey/rightSideButtons',
+            [],
+            true
+        );
 
         $this->aData = $aData;
 
@@ -1938,17 +1937,27 @@ class SurveyAdministrationController extends LSBaseController
         $aData['subaction'] = $menuEntry->title;
         $aData['display']['menu_bars']['surveysummary'] = $menuEntry->title;
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyID . ")";
-        $aData['surveybar']['buttons']['view'] = true;
-        $aData['surveybar']['savebutton']['form'] = 'globalsetting';
-        $aData['surveybar']['savebutton']['useformid'] = 'true';
-        $aData['surveybar']['saveandclosebutton']['form'] = true;
-        $aData['topBar']['closeUrl'] = $this->createUrl("surveyAdministration/view/", ['surveyid' => $iSurveyID]); // Close button
+
 
         if ($subaction === 'resources') {
             $aData['topBar']['showSaveButton'] = false;
         } else {
             $aData['topBar']['showSaveButton'] = true;
         }
+        $topbarData = TopbarConfiguration::getSurveyTopbarData($iSurveyID);
+        $topbarData = array_merge($topbarData, $aData['topBar']);
+        $aData['topbar']['middleButtons'] = $this->renderPartial(
+            'partial/topbar/surveyTopbarLeft_view',
+            $topbarData,
+            true
+        );
+        $aData['topbar']['rightButtons'] = $this->renderPartial(
+            'partial/topbar/surveyTopbarRight_view',
+            $topbarData,
+            true
+        );
+
+        $aData['topBar']['closeUrl'] = $this->createUrl("surveyAdministration/view/", ['surveyid' => $iSurveyID]); // Close button
 
         $aData['optionsOnOff'] = array(
             'Y' => gT('On', 'unescaped'),
@@ -1975,7 +1984,11 @@ class SurveyAdministrationController extends LSBaseController
 
         $iSurveyID = sanitize_int($iSurveyID);
         $thereIsPostData = $request->getPost('orgdata') !== null;
-        $userHasPermissionToUpdate = Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update');
+        $userHasPermissionToUpdate = Permission::model()->hasSurveyPermission(
+            $iSurveyID,
+            'surveycontent',
+            'update'
+        );
 
         if (!$userHasPermissionToUpdate) {
             Yii::app()->user->setFlash('error', gT("Access denied"));
@@ -1992,6 +2005,20 @@ class SurveyAdministrationController extends LSBaseController
             }
         }
         $aData = $this->showReorderForm($iSurveyID);
+
+        $aData['topBar']['showSaveButton'] = true;
+        $topbarData = TopbarConfiguration::getSurveyTopbarData($iSurveyID);
+        $topbarData = array_merge($topbarData, $aData['topBar']);
+        $aData['topbar']['middleButtons'] = $this->renderPartial(
+            'partial/topbar/surveyTopbarLeft_view',
+            $topbarData,
+            true
+        );
+        $aData['topbar']['rightButtons'] = $this->renderPartial(
+            'partial/topbar/surveyTopbarRight_view',
+            $topbarData,
+            true
+        );
 
         // Display 'Reorder question/question groups' in Green Bar
         $aData['subaction'] = gT('Reorder questions/question groups');
@@ -3172,8 +3199,8 @@ class SurveyAdministrationController extends LSBaseController
                 'Action' => gT('Action'),
                 'Parameter' => gT('Parameter'),
                 'Target question' => gT('Target question'),
-                'Survey ID' => gT('Survey id'),
-                'Question ID' => gT('Question id'),
+                'Survey ID' => gT('Survey ID'),
+                'Question ID' => gT('Question ID'),
                 'Subquestion ID' => gT('Subquestion ID'),
                 'Add URL parameter' => gT('Add URL parameter'),
                 'Edit URL parameter' => gT('Edit URL parameter'),
