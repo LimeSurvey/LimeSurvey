@@ -31,13 +31,13 @@
 
 
 <div>
-    <strong><?php echo gT('The following LimeSurvey updates are available:');?></strong>
+    <strong id="ls-updates"><?php echo gT('The following LimeSurvey updates are available:');?></strong>
 </div>
 <br/>
 <br/>
 
 
-<table class="items table w-75 m-auto">
+<table aria-describedby="ls-updates" class="items table w-75 m-auto">
     <!-- header -->
     <thead>
         <tr>

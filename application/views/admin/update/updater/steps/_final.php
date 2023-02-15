@@ -14,8 +14,8 @@
                 gT("If necessary the database will be updated in a final step.") . '</br>' .
                 gT('However it is very important that you clear your browser cache now. After that please click the button below.');
             $this->widget('ext.AlertWidget.AlertWidget', [
-                'header' => sprintf(gT('Buildnumber was successfully updated to %s.'),$destinationBuild),
-                    'text' => $message,
+                'header' => sprintf(gT('Buildnumber was successfully updated to %s.'), $destinationBuild),
+                'text' => $message,
                 'type' => 'success',
             ]);
             ?>
@@ -23,7 +23,11 @@
     </div>
     <div class="row">
         <div class="col-12 mt-2">
-          <a id="backToMainMenu" class="btn btn-primary" href="<?php echo Yii::app()->createUrl("admin/authentication/sa/logout"); ?>" role="button" aria-disabled="false">
+          <a id="backToMainMenu"
+             class="btn btn-primary"
+             href="<?= Yii::app()->createUrl("admin/authentication/sa/logout"); ?>"
+             role="button"
+             aria-disabled="false">
               <?php eT('Finish'); ?>
           </a>
         </div>

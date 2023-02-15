@@ -30,16 +30,17 @@
             <br />
         <div class="col-12 mt-2">
             <?php
-                $url = Yii::app()->createUrl('/admin/update');
-                echo CHtml::beginForm($url, 'post');
-                echo CHtml::hiddenField('destinationBuild' , $destinationBuild);
-                echo CHtml::hiddenField('access_token' , $access_token);
-                echo CHtml::hiddenField('update' , 'checkFiles');
-                echo '<a class="btn btn-cancel me-1" href="'.Yii::app()->createUrl("admin/update").'" role="button" aria-disabled="false">
-                        '.gT("Cancel").'
-                    </a>&nbsp;';
-                echo CHtml::submitButton(gT('Check again','unescaped'), array("class"=>"btn btn-outline-secondary"));
-                echo CHtml::endForm();
+            $url = Yii::app()->createUrl('/admin/update');
+            echo CHtml::beginForm($url, 'post');
+            echo CHtml::hiddenField('destinationBuild', $destinationBuild);
+            echo CHtml::hiddenField('access_token', $access_token);
+            echo CHtml::hiddenField('update', 'checkFiles');
+            echo '<a class="btn btn-cancel me-1" href="' . Yii::app()->createUrl("admin/update") .
+                '" role="button" aria-disabled="false">' .
+                gT("Cancel") .
+                '</a>&nbsp;';
+            echo CHtml::submitButton(gT('Check again', 'unescaped'), array("class" => "btn btn-outline-secondary"));
+            echo CHtml::endForm();
             ?>
         </div>>
     <?php else : ?>

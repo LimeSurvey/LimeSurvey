@@ -4,12 +4,17 @@
             <span id="comfortUpdateIcon" class="ri-shield-check-fill text-success"></span>
             <?php eT('ComfortUpdate'); ?>
             <?php if (YII_DEBUG): ?>
-                <small>Server:<em class="text-primary"> <?php echo Yii::app()->getConfig("comfort_update_server_url"); ?></em></small>
+                <small>
+                    Server:
+                    <em class="text-primary">
+                        <?= Yii::app()->getConfig("comfort_update_server_url"); ?>
+                    </em>
+                </small>
             <?php endif; ?>
         </div>
 
         <?php if ($updateKey): ?>
-        <table class="items table w-75 m-auto">
+        <table aria-label="<?= gT('Your update key:') ?>" class="items table w-75 m-auto">
             <!-- header -->
             <thead>
             <tr>
@@ -28,40 +33,44 @@
             </thead>
 
             <tbody>
-            <tr>
-                <td>
-                    <?php if (!App()->getConfig('hide_update_key')): ?>
-                        <?php echo $updateKey; ?>
-                    <?php else: ?>
-                        <em>XXXXXXXXXXX</em>
-                    <?php endif; ?>
-                </td>
-                <td>
+                <tr>
+                    <td>
+                        <?php if (!App()->getConfig('hide_update_key')): ?>
+                            <?php echo $updateKey; ?>
+                        <?php else: ?>
+                            <em>XXXXXXXXXXX</em>
+                        <?php endif; ?>
+                    </td>
+                    <td>
+                        <?php
+                        if ($updateKeyInfos->result === false) {
+                            eT($updateKeyInfos->error);
+                        } else {
+                            echo convertToGlobalSettingFormat($updateKeyInfos->validuntil);
+                        }
+                        ?>
+                    </td>
+                    <td>
                     <?php
                     if ($updateKeyInfos->result === false) {
-                        eT($updateKeyInfos->error);
+                        echo '-';
                     } else {
-                        echo convertToGlobalSettingFormat($updateKeyInfos->validuntil);
-                    }
+                        echo $updateKeyInfos->remaining_updates;
+                    };
                     ?>
-                </td>
-                <td>
-                <?php
-                if ($updateKeyInfos->result === false) {
-                    echo '-';
-                } else {
-                    echo $updateKeyInfos->remaining_updates;
-                };
-                ?>
-                </td>
-                <td>
-                    <span data-bs-toggle="tooltip" title="<?php eT("Delete");?>" >
-                        <a data-post-url="<?php echo App()->createUrl('/admin/update/sa/deleteKey');?>" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#confirmation-modal">
-                            <span class="ri-delete-bin-fill text-danger"></span>
-                        </a>
-                    </span>
-                </td>
-            </tr>
+                    </td>
+                    <td>
+                        <span data-bs-toggle="tooltip" title="<?php eT("Delete");?>" >
+                            <a
+                                    data-post-url="<?= App()->createUrl('/admin/update/sa/deleteKey');?>"
+                                    class="btn btn-sm btn-outline-secondary"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#confirmation-modal">
+                                <span class="ri-delete-bin-fill text-danger"></span>
+                            </a>
+                        </span>
+                    </td>
+                </tr>
             </tbody>
         </table>
         <?php else: ?>
@@ -70,10 +79,10 @@
             $aClose = '</a>';
             $aSignUpOpen = '<a class="fw-bolder" href="https://account.limesurvey.org/sign-up">';
             $message = sprintf(
-                    gT("You can get a free trial update key from %syour account on the limesurvey.org website%s."),
-                    $aAccountOpen,
-                    $aClose
-                ) .
+                gT("You can get a free trial update key from %syour account on the limesurvey.org website%s."),
+                $aAccountOpen,
+                $aClose
+            ) .
                 '<br>' . sprintf(
                     gT("If you don't have an account on limesurvey.org, please %sregister first%s."),
                     $aSignUpOpen,

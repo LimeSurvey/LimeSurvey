@@ -179,7 +179,10 @@
     <?php if($ignore  && ! $cant_ignore): ?>
 
         <?php
-            echo CHtml::submitButton(gT('Ignore','unescaped'), array('id'=>'Ignorestep1launch', "class"=>"btn btn-primary"));
+            echo CHtml::submitButton(
+                gT('Ignore', 'unescaped'),
+                array('id' => 'Ignorestep1launch', "class" => "btn btn-primary")
+            );
         ?>
     <?php endif;?>
     </div>
@@ -201,12 +204,18 @@
             echo CHtml::hiddenField('destinationBuild' , $destinationBuild);
             echo CHtml::hiddenField('access_token' , $access_token);
         ?>
-            <a class="btn btn-cancel me-1" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
+            <a class="btn btn-cancel me-1"
+               href="<?= Yii::app()->createUrl("admin/update"); ?>"
+               role="button"
+               aria-disabled="false">
                 <?php eT("Cancel"); ?>
             </a>
 
         <?php
-            echo CHtml::submitButton(gT('Continue','unescaped'), array('id'=>'step1launch', "class"=>"btn btn-primary"));
+        echo CHtml::submitButton(
+            gT('Continue', 'unescaped'),
+            array('id' => 'step1launch', "class" => "btn btn-primary")
+        );
             echo CHtml::endForm();
         ?>
     </div>

@@ -6,7 +6,7 @@
  * @var string $basefilename the base file name of the backup file
  * @var string $tempdir the temp dir where the backup file is saved
  */
-
+$downloadString = gT('Download this file');
 ?>
 
 <h3 class="maintitle"><?php eT('Creating file backup')?></h3>
@@ -22,9 +22,11 @@ if (isset($dbBackupInfos->html)) {
         <div class="col-12">
             <strong><?php echo sprintf(gT("File backup created: %s"), ''); ?></strong>
             <br/>
-            <?php echo $tempdir.DIRECTORY_SEPARATOR.'LimeSurvey_files_backup_'.$basefilename.'.zip'; ?><br/>
-            <a class="btn btn-primary mt-2" href="<?php echo Yii::app()->getBaseUrl(true);?>/tmp/LimeSurvey_files_backup_<?php echo $basefilename;?>.zip" title="<?php eT('Download this file');?>">
-                <?php eT('Download this file');?>
+            <?php echo $tempdir . DIRECTORY_SEPARATOR . 'LimeSurvey_files_backup_' . $basefilename . '.zip'; ?><br/>
+            <a class="btn btn-primary mt-2"
+               href="<?php echo Yii::app()->getBaseUrl(true);?>/tmp/LimeSurvey_files_backup_<?= $basefilename;?>.zip"
+               title="<?= $downloadString ?>">
+                <?= $downloadString ?>
             </a>
         </div>
     </div>
@@ -36,7 +38,11 @@ if (isset($dbBackupInfos->html)) {
                 <br/>
                 <?php echo $dbBackupInfos->message; ?>
                 <br/>
-                <a class="btn btn-primary mt-2" href="<?php echo $dbBackupInfos->fileurl;?>" title="<?php eT('Download this file');?>"><?php eT('Download this file');?></a>
+                <a class="btn btn-primary mt-2"
+                   href="<?= $dbBackupInfos->fileurl;?>"
+                   title="<?= $downloadString ?>">
+                    <?= $downloadString ?>
+                </a>
             </div>
         </div>
     <?php else :?>
@@ -86,7 +92,10 @@ if (isset($dbBackupInfos->html)) {
                 <?php echo CHtml::hiddenField('destinationBuild', $destinationBuild); ?>
                 <?php echo CHtml::hiddenField('access_token', $access_token); ?>
 
-                <a class="btn btn-cancel me-1" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
+                <a class="btn btn-cancel me-1"
+                   href="<?= Yii::app()->createUrl("admin/update"); ?>"
+                   role="button"
+                   aria-disabled="false">
                     <?php eT("Cancel"); ?>
                 </a>
 

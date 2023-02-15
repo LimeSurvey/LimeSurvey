@@ -351,7 +351,10 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                     } ?>
                 </ul>
                  <input type='hidden' name='ok' value='Y' />
-                <button  id='delete-checked-items-button' type='submit' name='ok' value='Y' class="btn btn-danger mb-2"><?php eT("Delete checked items!"); ?></button>
+                <button id='delete-checked-items-button' type='submit' name='ok' value='Y'
+                        class="btn btn-danger mb-2"><?php
+                        eT("Delete checked items!"); ?>
+                </button>
                 <?php
                 $this->widget('ext.AlertWidget.AlertWidget', [
                     'text' => gT("Note that you cannot undo a delete if you proceed. The data will be gone."),

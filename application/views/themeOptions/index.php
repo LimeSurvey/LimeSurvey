@@ -196,9 +196,14 @@ echo viewHelper::getViewTestTag('templateOptions');
                                         <?php if ($oTheme->path == getGlobalSetting('admintheme')) : ?>
                                             <h3><strong class="text-info"><?php eT("Selected") ?></strong></h3>
                                         <?php else : ?>
-                                            <a href="<?php echo $this->createUrl("themeOptions/setAdminTheme/",
-                                                ['sAdminThemeName' => $oTheme->path]); ?>" class="btn btn-outline-secondary btn-sm">
-                                                <?php eT("Select"); ?>
+                                            <a href="
+                                            <?= $this->createUrl(
+                                                "themeOptions/setAdminTheme/",
+                                                ['sAdminThemeName' => $oTheme->path]
+                                            ); ?>"
+                                               class="btn btn-outline-secondary btn-sm">
+                                                <?php
+                                                eT("Select"); ?>
                                             </a>
                                         <?php endif; ?>
                                     </td>

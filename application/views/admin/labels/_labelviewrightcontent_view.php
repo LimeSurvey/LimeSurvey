@@ -72,7 +72,9 @@
                     </div>
                     <div class="row">
                         <!-- Select ZIP file -->
-                        <div class="col-8 offset-2 mb-3"><input id='the_file' name="the_file" class="form-control" type="file"/></div>
+                        <div class="col-8 offset-2 mb-3">
+                            <input id='the_file' name="the_file" class="form-control" type="file"/>
+                        </div>
                     </div>
                     <div class="row">
                         <!-- Import resources ZIP archive -->

@@ -22,8 +22,13 @@ $this->renderPartial("./update/_ajaxVariables");
     <div class="col-12 list-surveys" id="comfortUpdateGeneralWrap">
         <div class="pagetitle h3">
             <span id="comfortUpdateIcon" class="ri-shield-check-fill text-success"></span>
-            <?php if (YII_DEBUG): ?>
-                <small>Server:<em class="text-primary"> <?php echo Yii::app()->getConfig("comfort_update_server_url"); ?></em></small>
+            <?php if (YII_DEBUG) : ?>
+                <small>
+                    Server:
+                    <em class="text-primary">
+                        <?= Yii::app()->getConfig("comfort_update_server_url"); ?>
+                    </em>
+                </small>
             <?php endif; ?>
         </div>
 
