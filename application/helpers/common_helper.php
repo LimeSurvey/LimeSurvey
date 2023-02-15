@@ -112,7 +112,6 @@ function getSurveyList($bReturnArray = false)
     if (is_null($cached)) {
         $surveyidresult = Survey::model()
             ->permission(Yii::app()->user->getId())
-            ->with('languagesettings')
             ->findAll();
         foreach ($surveyidresult as $result) {
             if (isset($result->languagesettings[$result->language])) {
@@ -826,7 +825,7 @@ function getSurveyInfo($surveyid, $languagecode = '', $force = false)
             } else {
                 $thissurvey['owner_username'] = '';
             }
-            
+
 
             $staticSurveyInfo[$surveyid][$languagecode] = $thissurvey;
         }
@@ -3641,8 +3640,8 @@ function cleanLanguagesFromSurvey($iSurveyID, $availlangs)
     }
 
     // Remove From Answer Table
-    $sQuery = "SELECT ls.id from {{answer_l10ns}} ls 
-            JOIN {{answers}} a on ls.aid=a.aid 
+    $sQuery = "SELECT ls.id from {{answer_l10ns}} ls
+            JOIN {{answers}} a on ls.aid=a.aid
             JOIN {{questions}} q on a.qid=q.qid
             WHERE sid={$iSurveyID} AND {$sqllang}";
     $result = Yii::app()->db->createCommand($sQuery)->queryAll();
@@ -3650,7 +3649,7 @@ function cleanLanguagesFromSurvey($iSurveyID, $availlangs)
         Yii::app()->db->createCommand('delete from {{answer_l10ns}} where id =' . $row['id'])->execute();
     }
     // Remove From Questions Table
-    $sQuery = "SELECT ls.id from {{question_l10ns}} ls 
+    $sQuery = "SELECT ls.id from {{question_l10ns}} ls
             JOIN {{questions}} q on ls.qid=q.qid
             WHERE sid={$iSurveyID} AND {$sqllang}";
     $result = Yii::app()->db->createCommand($sQuery)->queryAll();
@@ -3660,7 +3659,7 @@ function cleanLanguagesFromSurvey($iSurveyID, $availlangs)
 
     // Remove From Questions Table
     $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
-    $sQuery = "SELECT ls.id from {{group_l10ns}} ls 
+    $sQuery = "SELECT ls.id from {{group_l10ns}} ls
             JOIN $quotedGroups g on ls.gid=g.gid
             WHERE sid={$iSurveyID} AND {$sqllang}";
     $result = Yii::app()->db->createCommand($sQuery)->queryAll();
@@ -3735,9 +3734,9 @@ function fixLanguageConsistency($sid, $availlangs = '', $baselang = '')
         }
     }
 
-    $query = "SELECT * FROM {{answers}} a 
-    JOIN {{answer_l10ns}} ls ON ls.aid=a.aid 
-    JOIN  {{questions}} q on a.qid=q.qid 
+    $query = "SELECT * FROM {{answers}} a
+    JOIN {{answer_l10ns}} ls ON ls.aid=a.aid
+    JOIN  {{questions}} q on a.qid=q.qid
     WHERE language='{$baselang}' and q.sid={$sid}";
     $result = Yii::app()->db->createCommand($query)->query();
     foreach ($result->readAll() as $answer) {
