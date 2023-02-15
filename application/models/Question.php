@@ -716,10 +716,12 @@ class Question extends LSActiveRecord
             ]
         ];
 
+        $oSurvey = Survey::model()->findByPk($this->sid);
+        $surveyIsNotActive = $oSurvey->active !== 'Y';
         $dropdownItems[] = [
             'title'            => gT('Delete question'),
             'iconClass'        => 'ri-delete-bin-fill text-danger',
-            'enabledCondition' => $permission_delete_question,
+            'enabledCondition' => $surveyIsNotActive && $permission_delete_question,
             'linkAttributes'   => [
                 'data-bs-toggle' => 'tooltip',
                 'onclick' => '$.fn.bsconfirm("'
