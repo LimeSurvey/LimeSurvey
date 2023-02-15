@@ -4043,10 +4043,6 @@ textarea.form-control.input-text {
   display: none;
 }
 
-#cpdbatt {
-  min-height: 100px;
-}
-
 .draggable-container {
   min-height: 300px;
 }
@@ -4154,6 +4150,10 @@ div.mappable-attribute-wrapper.paired.ui-state-disabled {
   min-height: 100px;
 }
 
+#cpdbatt {
+  min-height: 100px;
+}
+
 #selectable .ui-selecting {
   background: #8CCE00;
 }
@@ -4218,16 +4218,6 @@ div.mappable-attribute-wrapper.paired.ui-state-disabled {
   margin: 8px;
 }
 
-.translate > table {
-  table-layout: fixed;
-}
-
-.translate td._from_ > .question-text-from {
-  width: 100%;
-  overflow: auto;
-  word-wrap: break-word;
-}
-
 #responses-column-filter-modal .checkbox label {
   vertical-align: text-bottom;
   white-space: nowrap;
@@ -4244,6 +4234,16 @@ div.mappable-attribute-wrapper.paired.ui-state-disabled {
   padding-bottom: 15px;
 }
 
+.translate > table {
+  table-layout: fixed;
+}
+
+.translate td._from_ > .question-text-from {
+  width: 100%;
+  overflow: auto;
+  word-wrap: break-word;
+}
+
 .grid-view .table td.button-column, .grid-view .table th.button-column {
   white-space: nowrap;
   text-align: initial;
@@ -4253,8 +4253,9 @@ div.mappable-attribute-wrapper.paired.ui-state-disabled {
   left: -10px;
 }
 
-.grid-view .table td .text-content {
-  width: 25em;
+.grid-view .table td .longtext-content {
+  min-width: 8em;
+  max-width: 16em;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
