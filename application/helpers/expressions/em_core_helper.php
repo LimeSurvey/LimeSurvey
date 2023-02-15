@@ -1248,6 +1248,9 @@ class ExpressionManager
             return '';
         }
         $tokens = $this->RDP_tokens;
+        /* @var string|null used for ASSIGN expression */
+        $idToSet = null;
+        $debug = false;
         $stringParts = array();
         $numTokens = count($tokens);
 
@@ -1306,12 +1309,15 @@ class ExpressionManager
                             }
                         } elseif ($i + 1 < $numTokens && $tokens[$i + 1][2] == 'ASSIGN') {
                             $jsName = $this->GetVarAttribute($token[0], 'jsName', '');
-                            $stringParts[] = "document.getElementById('" . $jsName . "').value";
-                            if ($tokens[$i + 1][0] == '+=') {
-                                // Javascript does concatenation unless both left and right side are numbers, so refactor the equation
-                                $varName = $this->GetVarAttribute($token[0], 'varName', $token[0]);
-                                $stringParts[] = " = LEMval('" . $varName . "') + ";
-                                ++$i;
+                            /* Value is in the page : can not set */
+                            if (!empty($jsName)) {
+                                $idToSet = $jsName;
+                                if ($tokens[$i + 1][0] == '+=') {
+                                    // Javascript does concatenation unless both left and right side are numbers, so refactor the equation
+                                    $varName = $this->GetVarAttribute($token[0], 'varName', $token[0]);
+                                    $stringParts[] = " = LEMval('" . $varName . "') + ";
+                                    ++$i;
+                                }
                             }
                         } else {
                             if (preg_match("/\.(" . $this->getRegexpStaticValidAttributes() . ")$/", $token[0])) {
@@ -1343,6 +1349,8 @@ class ExpressionManager
                     default:
                         // don't need to check type of $token[2] here since already handling SQ_STRING and DQ_STRING above
                         switch (strtolower($token[0])) {
+                            case '=': /* ASSIGN : usage jquery, */;
+                                break;
                             case 'and':
                                 $stringParts[] = ' && ';
                                 break;
@@ -1392,6 +1400,10 @@ class ExpressionManager
             }
         }
         $mainClause = implode('', $stringParts);
+        if ($idToSet) {
+            /* This set value to the hidden part only */
+            $mainClause = "$('#{$idToSet}').val({$mainClause})";
+        }
         $varsUsed = implode("', '", $nonNAvarsUsed);
         if ($varsUsed != '') {
             $this->jsExpression = "LEMif(LEManyNA('" . $varsUsed . "'),'',(" . $mainClause . "))";
