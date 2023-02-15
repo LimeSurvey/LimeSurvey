@@ -2023,29 +2023,13 @@ $(document).on('ready pjax:scriptcomplete', function () {
   }
 
   /**
-   * Updates the answer/subquestion codes on secondary languages
+   * Updates the answer/subquestion code on secondary languages
    */
-  function syncAnswerSubquestionCodes() {
-    const languages = languageJson.langs.split(';');
-    if (languages.length == 0) {
-      return;
-    }
-    const secondaryLanguages = languages.slice(1);
+  function syncAnswerSubquestionCode() {
+    const itemCode = $(this).val();
+    const commonId = $(this).closest('tr').data('common-id');
 
-    const currentTable = $(this).closest('table');
-    const tableType = currentTable.attr('id').split("_")[0];
-    const scaleId = currentTable.data('scaleid');
-    const baselangRows = currentTable.find('tbody tr');
-    baselangRows.each((idx1, baserow) => {
-      const id = $(baserow).data('common-id');
-      const code = $(baserow).find('td.code-title input.code').val();
-      secondaryLanguages.forEach((language) => {
-        const targetRow = $(`#${tableType}_${language}_${scaleId} tr[data-common-id="${id}"]`);
-        if (targetRow.length) {
-          targetRow.find('td.code-title').text(code);
-        }
-      });
-    });
+    $(this).closest('.tab-pane').find(".extra-lang tr[data-common-id='" + commonId + "'] td.code-title").text(itemCode);
   }
 
   // Below, things run on pjax:scriptcomplete.
@@ -2164,6 +2148,6 @@ $(document).on('ready pjax:scriptcomplete', function () {
     
     $('#relevance').on('keyup', showConditionsWarning);
 
-    $(document).on('focusout', '#subquestions table.subquestions-table:first-of-type td.code-title input.code', syncAnswerSubquestionCodes);
-    $(document).on('focusout', '#answeroptions table.answeroptions-table:first-of-type td.code-title input.code', syncAnswerSubquestionCodes);
+    $(document).on('focusout', '#subquestions table.subquestions-table:first-of-type td.code-title input.code', syncAnswerSubquestionCode);
+    $(document).on('focusout', '#answeroptions table.answeroptions-table:first-of-type td.code-title input.code', syncAnswerSubquestionCode);
 });
