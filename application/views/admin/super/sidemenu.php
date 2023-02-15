@@ -10,7 +10,7 @@
 ?>
 <?php
     // todo $showSideMenu is not used by vue sidebar.vue? normally set by $aData['sidemenu']['state']
-    $sidemenu['state'] = isset($sidemenu['state']) ? $sidemenu['state'] : true;
+    $sidemenu['state'] = $sidemenu['state'] ?? true;
     if (
         $sideMenuBehaviour == 'alwaysClosed'
         || ($sideMenuBehaviour == 'adaptive'
@@ -33,9 +33,9 @@
         $createQuestionGroupLink = "";
         $createQuestionLink = "";
     }
-    
-    $landOnSideMenuTab = (isset($sidemenu['landOnSideMenuTab']) ? $sidemenu['landOnSideMenuTab'] : 'structure');
-    
+
+    $landOnSideMenuTab = ($sidemenu['landOnSideMenuTab'] ?? 'structure');
+
     $menuObjectArray =  [
         "side" => [],
         "collapsed" => [],
@@ -45,7 +45,7 @@
     foreach ($menuObjectArray as $position => $arr) {
         $menuObjectArray[$position] = Survey::model()->findByPk($surveyid)->getSurveyMenus($position);
     }
-    
+
 
     Yii::app()->getClientScript()->registerScript('SideBarGlobalObject', '
         window.SideMenuData = {
@@ -53,7 +53,7 @@
             getMenuUrl: "'.$getMenuUrl.'",
             createQuestionGroupLink: "'.$createQuestionGroupLink.'",
             createQuestionLink: "'.$createQuestionLink.'",
-            gid: '.(isset($gid) ? $gid : 'null').',
+            gid: '.($gid ?? 'null').',
             options: [],
             surveyid: '.$surveyid.',
             isActive: '.(Survey::model()->findByPk($surveyid)->isActive ? "true" : "false").',

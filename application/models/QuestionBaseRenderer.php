@@ -61,8 +61,23 @@ abstract class QuestionBaseRenderer extends StaticModel
 
         $questionScript = $this->getQuestionScript();
         if (!empty($questionScript)) {
-            $sScriptRendered = LimeExpressionManager::ProcessString($questionScript, $this->oQuestion->qid, ['QID' => $this->oQuestion->qid]);
+            /* Replace Expression Manager */
+            $sScriptRendered = LimeExpressionManager::ProcessString(
+                $questionScript,
+                $this->oQuestion->qid,
+                [
+                    'QID' => $this->oQuestion->qid,
+                    'GID' => $this->oQuestion->gid,
+                    'SGQ' => $this->oQuestion->sid . "X" . $this->oQuestion->gid . "X" . $this->oQuestion->qid,
+                ]
+            );
             $this->addScript('QuestionStoredScript-' . $this->oQuestion->qid, $sScriptRendered, LSYii_ClientScript::POS_POSTSCRIPT);
+            /* Reset needed replacement */
+            LimeExpressionManager::updateReplacementFields(array(
+                'QID' => null,
+                'GID' => null,
+                'SGQ' => null,
+            ));
         }
     }
 
@@ -231,9 +246,9 @@ abstract class QuestionBaseRenderer extends StaticModel
 
     protected function getQuestionAttribute($key1, $key2 = null)
     {
-        $result =  isset($this->aQuestionAttributes[$key1]) ? $this->aQuestionAttributes[$key1] : null;
+        $result =  $this->aQuestionAttributes[$key1] ?? null;
         if ($key2 !== null && $result !== null) {
-            $result =  isset($result[$key2]) ? $result[$key2] : null;
+            $result =  $result[$key2] ?? null;
         }
         return $result;
     }
@@ -261,9 +276,7 @@ abstract class QuestionBaseRenderer extends StaticModel
 
     protected function getFromSurveySession($sIndex, $default = "")
     {
-        return isset($_SESSION['survey_' . $this->oQuestion->sid][$sIndex])
-            ? $_SESSION['survey_' . $this->oQuestion->sid][$sIndex]
-            : $default;
+        return $_SESSION['survey_' . $this->oQuestion->sid][$sIndex] ?? $default;
     }
 
     protected function applyPackages()
@@ -408,13 +421,13 @@ abstract class QuestionBaseRenderer extends StaticModel
     */
     public function includeKeypad()
     {
-        Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('third_party') . "jquery-keypad/jquery.keypad.alt.css");
+        Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('vendor') . "jquery-keypad/jquery.keypad.alt.css");
 
-        $this->aScriptFiles[] = ['path' => Yii::app()->getConfig('third_party') . 'jquery-keypad/jquery.plugin.min.js', 'position' => LSYii_ClientScript::POS_BEGIN];
-        $this->aScriptFiles[] = ['path' => Yii::app()->getConfig('third_party') . 'jquery-keypad/jquery.keypad.min.js', 'position' => LSYii_ClientScript::POS_BEGIN];
-        $localefile = Yii::app()->getConfig('rootdir') . '/third_party/jquery-keypad/jquery.keypad-' . App()->language . '.js';
+        $this->aScriptFiles[] = ['path' => Yii::app()->getConfig('vendor') . 'jquery-keypad/jquery.plugin.min.js', 'position' => LSYii_ClientScript::POS_BEGIN];
+        $this->aScriptFiles[] = ['path' => Yii::app()->getConfig('vendor') . 'jquery-keypad/jquery.keypad.min.js', 'position' => LSYii_ClientScript::POS_BEGIN];
+        $localefile = Yii::app()->getConfig('vendor') . 'jquery-keypad/jquery.keypad-' . App()->language . '.js';
         if (App()->language != 'en' && file_exists($localefile)) {
-            $this->aScriptFiles[] = ['path' => Yii::app()->getConfig('third_party') . 'jquery-keypad/jquery.keypad-' . App()->language . '.js', 'position' => LSYii_ClientScript::POS_BEGIN];
+            $this->aScriptFiles[] = ['path' => Yii::app()->getConfig('vendor') . 'jquery-keypad/jquery.keypad-' . App()->language . '.js', 'position' => LSYii_ClientScript::POS_BEGIN];
         }
     }
 

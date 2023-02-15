@@ -56,8 +56,7 @@ class DataEntry extends SurveyCommonAction
 {
     /**
      * Dataentry Constructor
-     * @param Controller $controller Given Controller
-     * @param int        $id         Given ID
+     * @inherit
      */
     public function __construct($controller, $id)
     {
@@ -168,8 +167,8 @@ class DataEntry extends SurveyCommonAction
             $aData['class'] = "message-box-error";
         }
 
-        $aData['aResult']['errors'] = (isset($aResult['errors'])) ? $aResult['errors'] : false;
-        $aData['aResult']['warnings'] = (isset($aResult['warnings'])) ? $aResult['warnings'] : false;
+        $aData['aResult']['errors'] = $aResult['errors'] ?? false;
+        $aData['aResult']['warnings'] = $aResult['warnings'] ?? false;
 
         $this->renderWrappedTemplate('dataentry', 'vvimport_result', $aData);
     }
@@ -178,7 +177,7 @@ class DataEntry extends SurveyCommonAction
      * Move uploaded files Method.
      *
      * @param array $aData Given Data
-     * @return void
+     * @return void|string
      */
     private function moveUploadedFile($aData)
     {
@@ -208,7 +207,7 @@ class DataEntry extends SurveyCommonAction
 
     /**
      * Show upload form Method.
-     * @param string $aEncodings Given Encoding
+     * @param string[] $aEncodings Given Encoding
      * @param int    $surveyid   Given Survey ID
      * @param array  $aData      Given Data
      * @return void
@@ -1785,7 +1784,7 @@ class DataEntry extends SurveyCommonAction
                     $arSaveControl->email = $saver['email'];
                     $arSaveControl->ip = !empty($aUserData['ip_address']) ? $aUserData['ip_address'] : "";
                     $arSaveControl->refurl = (string) getenv("HTTP_REFERER");
-                    $arSaveControl->saved_thisstep = 0;
+                    $arSaveControl->saved_thisstep = '0';
                     $arSaveControl->status = 'S';
                     $arSaveControl->saved_date = dateShift((string) date("Y-m-d H:i:s"), "Y-m-d H:i", "'" . Yii::app()->getConfig('timeadjust'));
                     $arSaveControl->save();
@@ -1802,7 +1801,7 @@ class DataEntry extends SurveyCommonAction
                             "sent" => date("Y-m-d H:i:s"),
                             "completed" => "N");
 
-                            $aToken = new Token($surveyid);
+                            $aToken = new TokenDynamic($surveyid);
                             $aToken->setAttributes($tokendata, false);
                             $aToken->encryptSave(true);
                             $aDataentrymsgs[] = CHtml::tag('font', array('class' => 'successtitle'), gT("A survey participant entry for the saved survey has been created, too."));
@@ -1958,7 +1957,7 @@ class DataEntry extends SurveyCommonAction
     {
         $surveyid = sanitize_int($surveyid);
         $survey = Survey::model()->findByPk($surveyid);
-        $lang = isset($_GET['lang']) ? $_GET['lang'] : null;
+        $lang = $_GET['lang'] ?? null;
         if (isset($lang)) {
             $lang = sanitize_languagecode($lang);
         }
@@ -2156,7 +2155,6 @@ class DataEntry extends SurveyCommonAction
                             App()->getClientScript()->registerPackage('jquery-actual');
                             App()->getClientScript()->registerScriptFile(App()->getConfig('generalscripts') . 'ranking.js');
                             App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'ranking.css');
-                            unset($answers);
                             break;
                         case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox (Quite tricky really!)
                             if (trim($qidattributes['display_columns']) != '') {
@@ -2218,13 +2216,13 @@ class DataEntry extends SurveyCommonAction
 
                             $cdata['lresult'] = $arQuestion->findAllByAttributes(['parent_qid' => $arQuestion['qid'], 'scale_id' => 1]);
                             if (empty($cdata['lresult'])) {
-                                $eMessage = "Couldn't get labels, Type \":\"<br />$lquery<br />";
+                                $eMessage = "Couldn't get labels";
                                 Yii::app()->setFlashMessage($eMessage);
                                 $this->getController()->redirect($this->getController()->createUrl("/admin/"));
                             }
                             $cdata['mearesult'] = $arQuestion->findAllByAttributes(['parent_qid' => $arQuestion['qid'], 'scale_id' => 0]);
                             if (empty($cdata['mearesult'])) {
-                                $eMessage = "Couldn't get answers, Type \":\"<br />$meaquery<br />";
+                                $eMessage = "Couldn't get answers";
                                 Yii::app()->setFlashMessage($eMessage);
                                 $this->getController()->redirect($this->getController()->createUrl("/admin/"));
                             }
@@ -2323,7 +2321,7 @@ class DataEntry extends SurveyCommonAction
      * @param string       $sAction     Current action, the folder to fetch views from
      * @param string|array $aViewUrls   View url(s)
      * @param array        $aData       Data to be passed on. Optional.
-     * @param bool         $sRenderFile Boolean value if file will be rendered.
+     * @param bool|string  $sRenderFile Boolean value if file will be rendered.
      * @return void
      */
     protected function renderWrappedTemplate($sAction = 'dataentry', $aViewUrls = array(), $aData = array(), $sRenderFile = false)

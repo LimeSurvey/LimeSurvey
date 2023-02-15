@@ -528,7 +528,7 @@
     return EXISTS$1 ? document$3.createElement(it) : {};
   };
 
-  // Thanks to IE8 for your funny defineProperty
+  // Thanks to IE8 for its funny defineProperty
   var ie8DomDefine = !descriptors && !fails(function () {
     // eslint-disable-next-line es/no-object-defineproperty -- required for testing
     return Object.defineProperty(documentCreateElement('div'), 'a', {
@@ -29781,6 +29781,34 @@
         if (e.target != this) return;
         $('#accordion').find('.panel-collapse.collapse').not('#' + $(this).attr('id')).collapse('hide');
       });
+    },
+
+    /**
+     * Validates that an end date is not lower than a start date
+     * @param {Object} startDatePicker Start datepicker object
+     * @param {Object} endDatePicker End datepicker object
+     * @param {?function} errorCallback Optional function to call in case of error
+     */
+    validateEndDateHigherThanStart: function validateEndDateHigherThanStart(startDatePicker, endDatePicker, errorCallback) {
+      if (!startDatePicker || !startDatePicker.date()) {
+        return true;
+      }
+
+      if (!endDatePicker || !endDatePicker.date()) {
+        return true;
+      }
+
+      var difference = endDatePicker.date().diff(startDatePicker.date());
+
+      if (difference >= 0) {
+        return true;
+      }
+
+      if (typeof errorCallback === 'function') {
+        errorCallback();
+      }
+
+      return false;
     }
   };
   var globalStartUpMethods = {

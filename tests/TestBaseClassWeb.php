@@ -247,4 +247,24 @@ class TestBaseClassWeb extends TestBaseClass
             // Do nothing.
         }
     }
+
+    /**
+     * Closes the welcome modal if present
+     * @return void
+     */
+    protected static function ignoreWelcomeModal()
+    {
+        try {
+            $button = self::$webDriver->wait(1)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::cssSelector('#welcomeModal button.btn-default')
+                )
+            );
+            $button->click();
+        } catch (NoSuchElementException $ex) {
+            // Do nothing.
+        } catch (TimeOutException $ex) {
+            // Do nothing.
+        }
+    }
 }

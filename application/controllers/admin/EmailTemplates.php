@@ -294,7 +294,7 @@ class EmailTemplates extends SurveyCommonAction
 
     public function getTemplateOfType($type, $language = null, $survey = 0)
     {
-        $language = $language === null ? App()->getLanguage() : $language;
+        $language = $language ?? App()->getLanguage();
         $oSurvey = Survey::model()->findByPk($survey);
         $aDefaultTexts = LsDefaultDataSets::getTemplateDefaultTexts('unescaped', $language);
 

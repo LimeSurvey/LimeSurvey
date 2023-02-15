@@ -1,0 +1,38 @@
+body {
+    background: #f2f2f2;
+    margin: 10;
+    padding: 0;
+    text-align: center;
+    line-height: 1.5;
+}
+
+.Paragraph {
+    text-align: right;
+    background: #fff;
+    border: 1px solid #ccc;
+    clear: both;
+    padding: .5em 1em;
+}
+
+.Logo {
+    float: left; 
+    margin: 0 15px 0 0;
+}
+
+h2 {
+    border-bottom: 2px solid #69c;
+    color: #333;
+    margin: 20px 5px 20px 128px;
+}
+
+h3 {
+    padding: 0px;
+    margin: 0px;
+}
+
+input, textarea {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    margin: 2px 0px;
+}

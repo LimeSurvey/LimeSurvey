@@ -25,7 +25,7 @@
  *
  * @property Survey $survey
  * @property Question[] $questions Questions without subquestions
- * @property QuestionGroupL10n[] $questionGroupL10ns
+ * @property QuestionGroupL10n[] $questiongroupl10ns
  */
 class QuestionGroup extends LSActiveRecord
 {
@@ -63,7 +63,7 @@ class QuestionGroup extends LSActiveRecord
     {
         return [
             ['group_order', 'numerical', 'integerOnly' => true, 'allowEmpty' => true],
-            ['grelevance', 'safe'],
+            ['grelevance', 'filter', 'filter' => 'trim'],
             ['randomization_group', 'safe']
         ];
     }
