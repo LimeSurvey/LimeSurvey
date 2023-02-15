@@ -17,7 +17,7 @@ echo viewHelper::getViewTestTag('login');
 
                     <div class="container-fluid">
                         <h1><?php eT("Administration"); ?></h1>
-                        <h3><?php eT("Log in"); ?></h3>
+                        <p><?php eT("Log in"); ?></p>
 
                         <!-- Form -->
                         <?php

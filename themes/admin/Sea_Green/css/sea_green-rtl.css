@@ -13327,7 +13327,7 @@ table#responsedetail tr td {
 }
 
 #login-panel {
-  max-width: 400px;
+  max-width: 460px;
 }
 
 .container-fluid.login .main-body, .login.container-sm .main-body, .login.container-md .main-body, .login.container-lg .main-body, .login.container-xl .main-body, .login.container-xxl .main-body {
@@ -13339,11 +13339,7 @@ table#responsedetail tr td {
 }
 .container-fluid.login .col-left h1, .login.container-sm .col-left h1, .login.container-md .col-left h1, .login.container-lg .col-left h1, .login.container-xl .col-left h1, .login.container-xxl .col-left h1, .container-fluid.login .col-left .h1, .login.container-sm .col-left .h1, .login.container-md .col-left .h1, .login.container-lg .col-left .h1, .login.container-xl .col-left .h1, .login.container-xxl .col-left .h1 {
   font-size: 3.3rem;
-  margin-bottom: 2rem;
-}
-.container-fluid.login .col-left h3, .login.container-sm .col-left h3, .login.container-md .col-left h3, .login.container-lg .col-left h3, .login.container-xl .col-left h3, .login.container-xxl .col-left h3, .container-fluid.login .col-left .h3, .login.container-sm .col-left .h3, .login.container-md .col-left .h3, .login.container-lg .col-left .h3, .login.container-xl .col-left .h3, .login.container-xxl .col-left .h3 {
-  font-size: 1.2rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1.7rem;
 }
 .container-fluid.login .col-left input, .login.container-sm .col-left input, .login.container-md .col-left input, .login.container-lg .col-left input, .login.container-xl .col-left input, .login.container-xxl .col-left input, .container-fluid.login .col-left select, .login.container-sm .col-left select, .login.container-md .col-left select, .login.container-lg .col-left select, .login.container-xl .col-left select, .login.container-xxl .col-left select, .container-fluid.login .col-left button, .login.container-sm .col-left button, .login.container-md .col-left button, .login.container-lg .col-left button, .login.container-xl .col-left button, .login.container-xxl .col-left button, .container-fluid.login .col-left .select2, .login.container-sm .col-left .select2, .login.container-md .col-left .select2, .login.container-lg .col-left .select2, .login.container-xl .col-left .select2, .login.container-xxl .col-left .select2 {
   margin-bottom: 1rem;
@@ -15969,14 +15965,6 @@ table.cke_editor {
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
 }
 
-/*
-.login-title {
-    border-bottom: solid 1px $gray-08;
-}
-.login-submit {
-    border-top: solid 1px $gray-08;
-}
-*/
 .h6 .small {
   color: #858585;
 }

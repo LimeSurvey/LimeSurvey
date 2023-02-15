@@ -15,7 +15,7 @@
 
                 <div class="container-fluid">
                     <h1><?php eT("Administration"); ?></h1>
-                    <h3><?php eT("Recover your password"); ?></h3>
+                    <p><?php eT("Recover your password"); ?></p>
 
                     <!-- Form -->
                     <?php
