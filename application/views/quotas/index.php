@@ -62,12 +62,6 @@ echo viewHelper::getViewTestTag('surveyQuotas');
                                 'htmlOptions'    => array('style' => 'vertical-align:top'),
                             ),
                             array(
-                                'header'            => gT("Action"),
-                                'name'        => 'actions',
-                                'type'        => 'raw',
-                                'value'       => '$data->buttons',
-                            ),
-                            array(
                                 'name'        => gT('Quota members'),
                                 'type'        => 'raw',
                                 'htmlOptions' => array('style' => 'vertical-align:top'),
@@ -97,6 +91,14 @@ echo viewHelper::getViewTestTag('surveyQuotas');
                                 'header'      => gT('Limit'),
                                 'htmlOptions' => array('style' => 'vertical-align:top'),
                                 'footer'      => $totalquotas,
+                            ),
+                            array(
+                                'header'            => gT("Action"),
+                                'name'        => 'actions',
+                                'type'        => 'raw',
+                                'value'       => '$data->buttons',
+                                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+                                'htmlOptions'       => ['class' => 'text-center button-column ls-sticky-column'],
                             ),
 
                         ),
