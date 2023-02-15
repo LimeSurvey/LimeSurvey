@@ -16,7 +16,6 @@ class QuestionGroupTest extends TestBaseClass
         // Import survey.
         $surveyFile = self::$surveysFolder . '/limesurvey_survey_594264_getGroupDescription.lss';
         self::importSurvey($surveyFile);
-        \Yii::app()->session['LEMsid'] = self::$surveyId;
     }
 
     /**
@@ -26,15 +25,15 @@ class QuestionGroupTest extends TestBaseClass
     public function testInvalidGroupId(): void
     {
 
-        $questionGroup = new QuestionGroup();
+        $questionGroup = QuestionGroup::model()->findAllByAttributes(array('sid' => self::$surveyId))[0];
 
         // Invalid group id.
         $this->expectException(\Error::class);
-        $esDescription1 = $questionGroup->getGroupDescription(0, 'en');
+        $enDescription1 = $questionGroup->getGroupDescription(0, 'en');
 
         // Group does not exist.
         $this->expectException(\Error::class);
-        $esDescription1 = $questionGroup->getGroupDescription(3790, 'en');
+        $enDescription1 = $questionGroup->getGroupDescription(3790, 'en');
     }
 
     /**
@@ -45,12 +44,9 @@ class QuestionGroupTest extends TestBaseClass
     public function testLanguageNotSetInSurvey(): void
     {
 
-        $questionGroup = new QuestionGroup();
+        $questionGroup = QuestionGroup::model()->findAllByAttributes(array('sid' => self::$surveyId))[0];
 
-        $groups = $questionGroup->getAllGroups('');
-        $aGroups = $groups->readAll();
-
-        $itDescription = $questionGroup->getGroupDescription($aGroups[0]['gid'], 'it');
+        $itDescription = $questionGroup->getGroupDescription($questionGroup->gid, 'it');
 
         $this->assertEmpty($itDescription, 'No description in Italian was defined, the function should return an empty string.');
     }
@@ -64,15 +60,12 @@ class QuestionGroupTest extends TestBaseClass
     public function testLanguageSetInSurveyButNotInGroup(): void
     {
 
-        $questionGroup = new QuestionGroup();
+        $questionGroup = QuestionGroup::model()->findAllByAttributes(array('sid' => self::$surveyId))[1];
 
-        $groups = $questionGroup->getAllGroups('');
-        $aGroups = $groups->readAll();
-
-        $frDescription = $questionGroup->getGroupDescription($aGroups[1]['gid'], 'fr');
+        $frDescription = $questionGroup->getGroupDescription($questionGroup->gid, 'fr');
 
         // English was set as the language by default.
-        $defaultDescription = $questionGroup->getGroupDescription($aGroups[1]['gid'], 'en');
+        $defaultDescription = $questionGroup->getGroupDescription($questionGroup->gid, 'en');
 
         $this->assertSame($defaultDescription, $frDescription, 'No description in French was defined, the function should return the description in English.');
     }
@@ -83,10 +76,10 @@ class QuestionGroupTest extends TestBaseClass
     public function testDescriptionsSet(): void
     {
 
-        $questionGroup = new QuestionGroup();
+        $questionGroups = QuestionGroup::model()->findAllByAttributes(array('sid' => self::$surveyId));
 
-        $groups = $questionGroup->getAllGroups('');
-        $aGroups = $groups->readAll();
+        $questionGroupOne = $questionGroups[0];
+        $questionGroupTwo = $questionGroups[1];
 
         $enDescriptionGroupOne = 'This is the description for the first test question group.';
         $esDescriptionGroupOne = 'Esta es la descripción para el primer grupo de preguntas de prueba.';
@@ -94,11 +87,11 @@ class QuestionGroupTest extends TestBaseClass
         $enDescriptionGroupTwo = 'This is the description for the second question group.';
         $esDescriptionGroupTwo = 'Esta es la descripción para el segundo grupo de preguntas de prueba.';
 
-        $enSetDescriptionGroupOne = $questionGroup->getGroupDescription($aGroups[0]['gid'], 'en');
-        $esSetDescriptionGroupOne = $questionGroup->getGroupDescription($aGroups[0]['gid'], 'es');
+        $enSetDescriptionGroupOne = $questionGroupOne->getGroupDescription($questionGroupOne->gid, 'en');
+        $esSetDescriptionGroupOne = $questionGroupOne->getGroupDescription($questionGroupOne->gid, 'es');
 
-        $enSetDescriptionGroupTwo = $questionGroup->getGroupDescription($aGroups[1]['gid'], 'en');
-        $esSetDescriptionGroupTwo = $questionGroup->getGroupDescription($aGroups[1]['gid'], 'es');
+        $enSetDescriptionGroupTwo = $questionGroupTwo->getGroupDescription($questionGroupTwo->gid, 'en');
+        $esSetDescriptionGroupTwo = $questionGroupTwo->getGroupDescription($questionGroupTwo->gid, 'es');
 
         $this->assertSame($enDescriptionGroupOne, $enSetDescriptionGroupOne, 'The English description for group one is not correct.');
         $this->assertSame($esDescriptionGroupOne, $esSetDescriptionGroupOne, 'The Spanish description for group one is not correct.');
