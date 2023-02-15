@@ -16,6 +16,7 @@ class QuestionGroupTest extends TestBaseClass
         // Import survey.
         $surveyFile = self::$surveysFolder . '/limesurvey_survey_594264_getGroupDescription.lss';
         self::importSurvey($surveyFile);
+        \Yii::app()->session['LEMsid'] = self::$surveyId;
     }
 
     /**
@@ -99,7 +100,7 @@ class QuestionGroupTest extends TestBaseClass
         $enSetDescriptionGroupTwo = $questionGroup->getGroupDescription($aGroups[1]['gid'], 'en');
         $esSetDescriptionGroupTwo = $questionGroup->getGroupDescription($aGroups[1]['gid'], 'es');
 
-        //$this->assertSame($enDescriptionGroupOne, $enSetDescriptionGroupOne, 'The English description for group one is not correct.');
+        $this->assertSame($enDescriptionGroupOne, $enSetDescriptionGroupOne, 'The English description for group one is not correct.');
         $this->assertSame($esDescriptionGroupOne, $esSetDescriptionGroupOne, 'The Spanish description for group one is not correct.');
         $this->assertSame($enDescriptionGroupTwo, $enSetDescriptionGroupTwo, 'The English description for group two is not correct.');
         $this->assertSame($enDescriptionGroupTwo, $enSetDescriptionGroupTwo, 'The Spanish description for group two is not correct.');
