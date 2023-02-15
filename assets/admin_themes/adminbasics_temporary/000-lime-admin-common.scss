@@ -2320,6 +2320,9 @@ table#responsedetail tr td {
     }
 
     .col-right {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
         padding: 40px 109px;
 
         h1 {

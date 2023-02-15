@@ -13358,6 +13358,9 @@ table#responsedetail tr td {
   min-height: 100vh;
 }
 .container-fluid.login .col-right, .login.container-sm .col-right, .login.container-md .col-right, .login.container-lg .col-right, .login.container-xl .col-right, .login.container-xxl .col-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   padding: 40px 109px;
 }
 .container-fluid.login .col-right h1, .login.container-sm .col-right h1, .login.container-md .col-right h1, .login.container-lg .col-right h1, .login.container-xl .col-right h1, .login.container-xxl .col-right h1, .container-fluid.login .col-right .h1, .login.container-sm .col-right .h1, .login.container-md .col-right .h1, .login.container-lg .col-right .h1, .login.container-xl .col-right .h1, .login.container-xxl .col-right .h1 {
