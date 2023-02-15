@@ -32,11 +32,11 @@ class CustomFormatter extends CFormatter {
         if (empty($value)) {
             return $value;
         }
-        $value = CHTML::encode($value);
+        $originalvalue = $value = CHTML::encode($value);
         if (mb_strlen($value, 'UTF-8') > $this->longTextMaxLength) {
             $value = ellipsize($value, $this->longTextMaxLength);
         }
-        $value = '<span class="longtext-content" data-toggle="tooltip" data-placement="left" title="' . $value . '">' . $value . '</span>';
+        $value = '<span class="longtext-content" data-toggle="tooltip" data-placement="left" title="' . $originalvalue . '">' . $value . '</span>';
         return $value;
     }
 }
