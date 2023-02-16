@@ -154,7 +154,7 @@ if (!empty($showImportButton)) {
             'name' => 'import-button',
             'id' => 'import-button',
             'text' => gT('Import'),
-            'icon' => 'ri-upload-fill',
+            'icon' => 'ri-download-2-fill',
             'htmlOptions' => [
                 'class' => 'btn btn-primary',
                 'role' => 'button',
