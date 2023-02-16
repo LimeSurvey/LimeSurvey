@@ -155,15 +155,17 @@ class SurveysGroupsPermissionController extends LSBaseController
             'model' => $model,
         );
 
-        // Green Bar Page Title
-        $aData['pageTitle'] = gT('Permission for group: ') . $model->title;
-
-        // White Top Bar
-        $aData['fullpagebar'] = array(
-            'returnbutton' => array(
-                'text' => gT('Back'),
-                'url'  => 'surveyAdministration/listsurveys#surveygroups',
-            ),
+        $aData['topbar']['title'] = gT('Permission for group: ') . $model->title;
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/layouts/partial_topbar/right_close_saveclose_save',
+            [
+                'isReturnBtn' => true,
+                'returnUrl' => Yii::app()->createUrl("surveyAdministration/listsurveys#surveygroups"),
+                'isCloseBtn' => false,
+                'isSaveBtn' => false,
+                'isSaveAndCloseBtn' => false,
+            ],
+            true
         );
         $this->aData = $aData;
 
