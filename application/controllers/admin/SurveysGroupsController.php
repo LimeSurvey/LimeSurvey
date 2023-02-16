@@ -331,29 +331,23 @@ class SurveysGroupsController extends SurveyCommonAction
             ]
         ];
 
-        $buttons = [];
-
-        // White Close Button
-        $buttons['white_closebutton'] = array(
-                'url' => App()->createUrl('surveyAdministration/listsurveys', array('#' => 'surveygroups')),
-        );
-        if ($model->hasPermission('surveysettings', 'update')) {
-            // Save Button
-            $buttons['savebutton'] = [
-                'form' => 'survey-settings-options-form'
-            ];
-
-            // Save and Close butotn
-            $buttons['saveandclosebutton'] = array(
-                'form' => 'survey-settings-options-form'
-            );
-        }
         $aData['partial'] = $sPartial;
 
-        // Page Title
-        $aData['pageTitle'] = gT('Survey settings for group: ') . $model->title;
-
-        $aData['fullpagebar'] = $buttons;
+        $surveySettingsPermission = $model->hasPermission('surveysettings', 'update');
+        $aData['topbar']['title'] = gT('Survey settings for group: ') . $model->title;
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/layouts/partial_topbar/right_close_saveclose_save',
+            [
+                'isReturnBtn' => false,
+                'isCloseBtn' => true,
+                'backUrl' => Yii::app()->createUrl("surveyAdministration/listsurveys#surveygroups"),
+                'isSaveBtn' => $surveySettingsPermission,
+                'formIdSave' => 'survey-settings-options-form',
+                'isSaveAndCloseBtn' => $surveySettingsPermission,
+                'formIdSaveClose' => 'survey-settings-options-form',
+            ],
+            true
+        );
         $this->renderWrappedTemplate('surveysgroups', 'surveySettings', $aData);
     }
 

@@ -3,7 +3,7 @@
 /** @var bool $isCloseBtn */
 /** @var bool $isSaveAndCloseBtn */
 /** @var bool $isSaveBtn */
-$isReturnBtn ?? false;
+$isReturnBtn = $isReturnBtn ?? false;
 
 if ($isReturnBtn) {
     $this->widget(
