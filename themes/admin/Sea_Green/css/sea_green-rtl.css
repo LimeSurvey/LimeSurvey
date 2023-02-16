@@ -13326,24 +13326,6 @@ table#responsedetail tr td {
   padding-top: 0;
 }
 
-.logo-alt-1 {
-  background: url(/assets/images/logo-white.png) no-repeat center;
-  width: 300px;
-  height: 82px;
-}
-
-.decor-1 {
-  background: url(/assets/images/decor-1.png) no-repeat center;
-  width: 414px;
-  height: 514px;
-}
-
-.decor-2 {
-  background: url(/assets/images/decor-2.png) no-repeat center;
-  width: 148px;
-  height: 148px;
-}
-
 /*
  * Row with equal height columns
  * --------------------------------------------------
@@ -16336,6 +16318,24 @@ tr.info, tr.danger {
 
 .question-filter-container label {
   font-weight: normal;
+}
+
+.logo-alt-1 {
+  background: url(/assets/images/logo-white.png) no-repeat center;
+  width: 300px;
+  height: 82px;
+}
+
+.decor-1 {
+  background: url(/assets/images/decor-1.png) no-repeat center;
+  width: 414px;
+  height: 514px;
+}
+
+.decor-2 {
+  background: url(/assets/images/decor-2.png) no-repeat center;
+  width: 148px;
+  height: 148px;
 }
 
 .container-fluid.login .main-body, .login.container-sm .main-body, .login.container-md .main-body, .login.container-lg .main-body, .login.container-xl .main-body, .login.container-xxl .main-body {
