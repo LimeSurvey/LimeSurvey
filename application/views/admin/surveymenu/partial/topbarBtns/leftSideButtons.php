@@ -26,7 +26,7 @@ $this->widget(
             'class' => 'btn btn-outline-secondary tab-dependent-button',
             'title' => gT('Add new menu entry'),
             'data-tab' => '#surveymenuentries',
-            'style' => 'dislpay:none;'
+            'style' => 'display:none;'
         ],
     ]
 );
