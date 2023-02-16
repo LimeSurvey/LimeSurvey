@@ -74,24 +74,26 @@ class SurveysGroupsController extends SurveyCommonAction
         $aData = array(
             'model' => $model,
             'action' => App()->createUrl("admin/surveysgroups/sa/create", array('#' => 'settingsForThisGroup')),
-            'pageTitle' => gT('Create survey group'),
         );
         $aData['aRigths'] = array(
             'update' => true,
             'delete' => false,
             'owner_id' => true,
         );
-        $aData['fullpagebar'] = array(
-            'savebutton' => array(
-                'form' => 'surveys-groups-form'
-            ),
-            'saveandclosebutton' => [
-                'form' => 'surveys-groups-form',
+        $aData['topbar']['title'] = gT('Create survey group');
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/layouts/partial_topbar/right_close_saveclose_save',
+            [
+                'backUrl' => Yii::app()->createUrl("surveyAdministration/listsurveys#surveygroups"),
+                'isCloseBtn' => true,
+                'isSaveBtn' => true,
+                'isSaveAndCloseBtn' => true,
+                'formIdSave' => 'surveys-groups-form',
+                'formIdSaveClose' => 'surveys-groups-form',
             ],
-            'white_closebutton' => array(
-                'url' => App()->createUrl('surveyAdministration/listsurveys', ['#' => 'surveygroups']),
-            ),
+            true
         );
+
         /* User for dropdown */
         $aUserIds = getUserList('onlyuidarray');
         $userCriteria = new CDbCriteria();
