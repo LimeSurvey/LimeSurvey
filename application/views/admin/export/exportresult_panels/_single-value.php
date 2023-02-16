@@ -16,10 +16,17 @@
         </label>
 
         <div class="col-sm-6">
-          <input type="text" readonly value="<?php echo Chtml::encode($sResponsesId); ?>" class="form-control" name="responses_id" id="responses_id" />
+          <input
+             name="responses_id" id="responses_id"
+            type="text" readonly class="form-control"
+            value="<?= Chtml::encode($sResponsesId); ?>"
+          />
         </div>
         <div class="col-sm-2">
-          <a class="btn btn-default" href="<?php echo Yii::app()->getController()->createUrl("admin/export/sa/exportresults", array('surveyid'=>$surveyid)); ?>" role="button">
+          <a
+            href="<?php echo Yii::app()->getController()->createUrl("admin/export/sa/exportresults", array('surveyid'=>$surveyid)); ?>"
+            class="btn btn-default"  role="button"
+          >
             <?php eT("Reset");?>
           </a>
         </div>
