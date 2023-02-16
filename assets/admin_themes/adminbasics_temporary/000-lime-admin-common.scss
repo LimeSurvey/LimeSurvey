@@ -225,7 +225,7 @@
 .full-page-wrapper {
     min-height: 100%;
     position: relative;
-    margin-bottom: 65px;
+    /*margin-bottom: 65px;*/
 }
 
 .side-body h3,
@@ -2307,12 +2307,6 @@ table#responsedetail tr td {
 #editconditions .tab-content,
 #quick-add-conditions-form .tab-content {
     padding-top: 0;
-}
-
-#login-panel {
-    max-width: 400px;
-    margin-left: auto;
-    margin-right: auto
 }
 
 /*
