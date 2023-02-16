@@ -22,7 +22,7 @@ App()->getClientScript()->registerScript('ExportresultsVariables', $scriptBegin,
                 <h4>
                     <?php eT("Export results"); ?>
                     <?php
-                    if (isset($_POST['sql'])) {
+                    if (App()->getRequest()->getPost('sql')) {
                         echo " - " . gT("Filtered from statistics script");
                     }
                     if ($SingleResponse) {
@@ -42,7 +42,7 @@ App()->getClientScript()->registerScript('ExportresultsVariables', $scriptBegin,
                     <?php $this->renderPartial('/admin/export/exportresult_panels/_format', ['exports' => $exports, 'defaultexport' => $defaultexport, 'aCsvFieldSeparator' => $aCsvFieldSeparator]); ?>
                     <?php $this->renderPartial('/admin/export/exportresult_panels/_general', ['selecthide'  => $selecthide, 'selectshow'  => $selectshow, 'selectinc'  => $selectinc, 'aLanguages'  => $aLanguages]); ?>
 
-                    <?php if (empty(Yii::app()->session['responsesid'])) : // If called from massive action, it will be filled the selected answers 
+                    <?php if (empty(App()->getRequest()->getParam('responseIds'))) : // If called from massive action, it will be filled the selected answers 
                         ?>
                         <?php $this->renderPartial('/admin/export/exportresult_panels/_range', ['SingleResponse' => $SingleResponse, 'min_datasets' => $min_datasets, 'max_datasets' => $max_datasets]); ?>
                     <?php else : ?>
