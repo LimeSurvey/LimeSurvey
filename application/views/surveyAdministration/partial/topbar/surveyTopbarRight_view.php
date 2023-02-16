@@ -106,6 +106,25 @@ if (!empty($showSaveButton)) {
 }
 ?>
 
+<!-- Close -->
+<?php
+if (!empty($showCloseButton)) {
+    $this->widget(
+        'ext.ButtonWidget.ButtonWidget',
+        [
+            'name' => '',
+            'text' => gT('Close'),
+            'icon' => 'ri-close-fill',
+            'link' => $closeUrl,
+            'htmlOptions' => [
+                'class' => 'btn btn-outline-secondary',
+                'role' => 'button',
+            ],
+        ]
+    );
+}
+?>
+
 <!-- Export -->
 <?php
 if (!empty($showExportButton)) {
@@ -115,7 +134,7 @@ if (!empty($showExportButton)) {
             'name' => 'export-button',
             'id' => 'export-button',
             'text' => gT('Export'),
-            'icon' => 'ri-download-fill',
+            'icon' => 'ri-upload-2-fill',
             'htmlOptions' => [
                 'class' => 'btn btn-primary',
                 'role' => 'button',
@@ -146,22 +165,3 @@ if (!empty($showImportButton)) {
 }
 ?>
 
-
-<!-- Close -->
-<?php
-if (!empty($showCloseButton)) {
-    $this->widget(
-        'ext.ButtonWidget.ButtonWidget',
-        [
-            'name' => '',
-            'text' => gT('Close'),
-            'icon' => 'ri-close-fill',
-            'link' => $closeUrl,
-            'htmlOptions' => [
-                'class' => 'btn btn-outline-secondary',
-                'role' => 'button',
-            ],
-        ]
-    );
-}
-?>
