@@ -10,7 +10,7 @@ if ($showUpload) {
             'name' => 'plugin-install-button',
             'id' => 'plugin-install-button',
             'text' => gT('Upload & install'),
-            'icon' => 'icon-import',
+            'icon' => 'ri-download-2-fill',
             'htmlOptions' => [
                 'class' => 'btn btn-outline-secondary',
                 'data-bs-toggle' => "modal",
