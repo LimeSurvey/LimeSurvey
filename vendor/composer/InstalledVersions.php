@@ -27,12 +27,12 @@ class InstalledVersions
 private static $installed = array (
   'root' => 
   array (
-    'pretty_version' => 'dev-develop',
-    'version' => 'dev-develop',
+    'pretty_version' => 'dev-master',
+    'version' => 'dev-master',
     'aliases' => 
     array (
     ),
-    'reference' => '0b5acab20cb24b7e31d185dfd04cbedbcac803ff',
+    'reference' => '2fdc33e7dfebedd506379ddbe06cdc3ef4d6ed7b',
     'name' => 'limesurvey/limesurvey',
   ),
   'versions' => 
@@ -48,21 +48,21 @@ private static $installed = array (
     ),
     'khaled.alshamaa/ar-php' => 
     array (
-      'pretty_version' => 'v6.3.0',
-      'version' => '6.3.0.0',
+      'pretty_version' => 'v6.3.2',
+      'version' => '6.3.2.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'a35d61400a646a0c685a98d3fc7eea8721bc404e',
+      'reference' => '590da34e9897ef8b9fedb678647c436253e91da0',
     ),
     'limesurvey/limesurvey' => 
     array (
-      'pretty_version' => 'dev-develop',
-      'version' => 'dev-develop',
+      'pretty_version' => 'dev-master',
+      'version' => 'dev-master',
       'aliases' => 
       array (
       ),
-      'reference' => '0b5acab20cb24b7e31d185dfd04cbedbcac803ff',
+      'reference' => '2fdc33e7dfebedd506379ddbe06cdc3ef4d6ed7b',
     ),
     'mk-j/php_xlsxwriter' => 
     array (
@@ -147,12 +147,12 @@ private static $installed = array (
     ),
     'phpmailer/phpmailer' => 
     array (
-      'pretty_version' => 'v6.6.5',
-      'version' => '6.6.5.0',
+      'pretty_version' => 'v6.7.1',
+      'version' => '6.7.1.0',
       'aliases' => 
       array (
       ),
-      'reference' => '8b6386d7417526d1ea4da9edb70b8352f7543627',
+      'reference' => '49cd7ea3d2563f028d7811f06864a53b1f15ff55',
     ),
     'phpseclib/bcmath_compat' => 
     array (
@@ -165,12 +165,12 @@ private static $installed = array (
     ),
     'phpseclib/phpseclib' => 
     array (
-      'pretty_version' => '3.0.17',
-      'version' => '3.0.17.0',
+      'pretty_version' => '3.0.18',
+      'version' => '3.0.18.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'dbc2307d5c69aeb22db136c52e91130d7f2ca761',
+      'reference' => 'f28693d38ba21bb0d9f0c411ee5dae2b178201da',
     ),
     'rsky/pear-core-min' => 
     array (
@@ -199,12 +199,12 @@ private static $installed = array (
     ),
     'tecnickcom/tcpdf' => 
     array (
-      'pretty_version' => '6.5.0',
-      'version' => '6.5.0.0',
+      'pretty_version' => '6.6.2',
+      'version' => '6.6.2.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'cc54c1503685e618b23922f53635f46e87653662',
+      'reference' => 'e3cffc9bcbc76e89e167e9eb0bbda0cab7518459',
     ),
     'tiamo/spss' => 
     array (
@@ -236,12 +236,12 @@ private static $installed = array (
     ),
     'yiisoft/yii' => 
     array (
-      'pretty_version' => '1.1.26',
-      'version' => '1.1.26.0',
+      'pretty_version' => '1.1.27',
+      'version' => '1.1.27.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'bda32f68713d4501d3fe9571e09e4b2fa06c53b7',
+      'reference' => '8f9404aee8ffe8c869caad733a1ce1170cdc6ad4',
     ),
   ),
 );
