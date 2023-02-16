@@ -21,7 +21,7 @@
         <div class="row">
             <div class="col-12">
                 <?php
-                $this->widget('application.extensions.admin.grid.CLSGridView',
+                $this->widget('application.extensions.admin.grid.CLSGridView', //done
                     [
                         'id' => 'usergroups-grid-mine',
                         'dataProvider' => $model->searchMine(true),
@@ -57,7 +57,7 @@
             <div class="col-12">
                 <?php
                 if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-                    $this->widget('application.extensions.admin.grid.CLSGridView',
+                    $this->widget('application.extensions.admin.grid.CLSGridView', //done
                         [
                             'dataProvider' => $model->searchMine(false),
                             'id' => 'usergroups-grid-belong-to',
@@ -86,43 +86,6 @@
         </div>
 
     </div>
-
-    <div class="modal fade" tabindex="-1" id="delete-modal">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <?php
-                Yii::app()->getController()->renderPartial(
-                    '/layouts/partial_modals/modal_header',
-                    ['modalTitle' => gT('Delete this user group')]
-                );
-                ?>
-                <div class="modal-body">
-                    <?= CHtml::form(
-                        ["userGroup/deleteGroup"],
-                        'post',
-                        ['class' => '', 'id' => 'delete-modal-form', 'name' => 'delete-modal-form']
-                    ) ?>
-                    <p><?= gT('Are you sure you want to delete this user group?') ?></p>
-                    <input type="hidden" name="ugid" id="delete-ugid" value=""/>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button
-                    	type="button" 
-                    	class="btn btn-cancel" 
-                    	data-bs-dismiss="modal">
-                    	<?= gT('Cancel') ?>
-                    </button>
-                    <button 
-                    	type="button" 
-                    	class="btn btn-danger" 
-                    	id="confirm-deletion">
-                    	<?= gT('Delete') ?>
-                    	</button>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 
 <script type="text/javascript">
@@ -131,20 +94,6 @@
         $(document).on("change", '#pageSize', function () {
             $.fn.yiiGridView.update('usergroups-grid-mine', {data: {pageSize: $(this).val()}});
             $.fn.yiiGridView.update('usergroups-grid-belong-to', {data: {pageSize: $(this).val()}});
-        });
-        //Delete button
-        $(document).ready(function () {
-            $('.action__delete-group').on('click', function (event) {
-                event.stopPropagation();
-                event.preventDefault();
-                $('#delete-modal').modal('show');
-
-                $('#delete-ugid').val($(this).data('ugid'));
-
-                $('#confirm-deletion').on('click', function () {
-                    $('#delete-modal-form').submit();
-                });
-            });
         });
     });
 </script>
