@@ -16382,7 +16382,7 @@ tr.info, tr.danger {
   margin-bottom: 1rem;
 }
 .container-fluid.login .sidebar-l, .login.container-sm .sidebar-l, .login.container-md .sidebar-l, .login.container-lg .sidebar-l, .login.container-xl .sidebar-l, .login.container-xxl .sidebar-l {
-  background: #343541;
+  background: #333641;
   padding: 60px 0;
   position: relative;
   overflow: hidden;
