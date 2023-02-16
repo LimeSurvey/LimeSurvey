@@ -3034,6 +3034,8 @@ function do_array_5point($ia)
         $sHeaders .= doRender('/survey/questions/answer/arrays/5point/rows/cells/header_answer', array(
             'class' => 'answer-text',
             'content' => " " . $xc,
+            'basename' => $ia[1],
+            'code' => $xc,
             ), true);
     }
 
@@ -3050,6 +3052,8 @@ function do_array_5point($ia)
         $sHeaders .= doRender('/survey/questions/answer/arrays/5point/rows/cells/header_answer', array(
             'class' => 'answer-text noanswer-text',
             'content' => gT('No answer'),
+            'basename' => $ia[1],
+            'code' => '',
             ), true);
     }
 
@@ -3075,6 +3079,8 @@ function do_array_5point($ia)
                 'i' => $i,
                 'labelText' => (string) $i,
                 'myfname' => $myfname,
+                'basename' => $ia[1],
+                'code' => $i,
                 'CHECKED' => $CHECKED,
                 'checkconditionFunction' => $checkconditionFunction,
                 'value' => $i,
@@ -3106,6 +3112,8 @@ function do_array_5point($ia)
                 'i' => "",
                 'labelText' => gT('No answer'),
                 'myfname' => $myfname,
+                'basename' => $ia[1],
+                'code' => '',
                 'CHECKED' => $CHECKED,
                 'checkconditionFunction' => $checkconditionFunction,
                 'value' => '',
