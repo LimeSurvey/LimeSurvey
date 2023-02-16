@@ -1,9 +1,25 @@
 <?php
-
+/** @var bool $isReturnBtn */
 /** @var bool $isCloseBtn */
 /** @var bool $isSaveAndCloseBtn */
 /** @var bool $isSaveBtn */
+$isReturnBtn ?? false;
 
+if ($isReturnBtn) {
+    $this->widget(
+        'ext.ButtonWidget.ButtonWidget',
+        [
+            'name' => '',
+            'text' => gT('Back'),
+            'icon' => 'ri-rewind-fill',
+            'link' => $returnUrl ?? Yii::app()->createUrl('admin/index'),
+            'htmlOptions' => [
+                'class' => 'btn btn-outline-secondary',
+                'role' => 'button',
+            ],
+        ]
+    );
+}
 if ($isCloseBtn) {
     $this->widget(
         'ext.ButtonWidget.ButtonWidget',

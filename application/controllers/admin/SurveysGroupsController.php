@@ -173,18 +173,19 @@ class SurveysGroupsController extends SurveyCommonAction
 
         $updateRightsForm = $aData['aRigths']['update'] ? 'surveys-groups-form' : null;
 
-        $aData['fullpagebar'] = [
-            'returnbutton' => [
-                'url' => 'surveyAdministration/listsurveys#surveygroups',
-                'text' => gT('Back'),
+        $aData['topbar']['title'] = $aData['pageTitle'];
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/layouts/partial_topbar/right_close_saveclose_save',
+            [
+                'isReturnBtn' => true,
+                'returnUrl' => Yii::app()->createUrl("surveyAdministration/listsurveys#surveygroups"),
+                'isCloseBtn' => false,
+                'isSaveBtn' => true,
+                'isSaveAndCloseBtn' => false,
+                'formIdSave' => $updateRightsForm,
             ],
-            'savebutton' => [
-                'form' => $updateRightsForm,
-            ],
-            'saveandclosebutton' => [
-                '$updateRightsForm',
-            ],
-        ];
+            true
+        );
 
         /* User for dropdown */
         $aUserIds = getUserList('onlyuidarray');
