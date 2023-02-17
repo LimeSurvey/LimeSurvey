@@ -148,6 +148,7 @@ class Permissiontemplates extends CActiveRecord
     }
     /**
      * Gets the buttons for the GridView
+     *
      * @return string
      */
     public function getButtons(): string
@@ -161,48 +162,46 @@ class Permissiontemplates extends CActiveRecord
         );
         $deleteUrl         = Yii::app()->getController()->createUrl('userRole/delete');
 
-        // Role Detail
-        $roleDetail = ""
-            . "<button 
-                class='btn btn-sm btn-outline-secondary RoleControl--action--openmodal RoleControl--action--userdetail' 
-                data-bs-toggle='tooltip'
-                data-bs-placement='top'
-                title='" . gT('View role details') . "'
-                data-href='" . $detailUrl . "'><i class='ri-search-line'></i></button>";
+        $permissionSuperAdminRead = Permission::model()->hasGlobalPermission('superadmin', 'read');
 
-        // Edit Permission
-        $editPermissionButton = ""
-            . "<button 
-                class='btn btn-sm btn-outline-secondary RoleControl--action--openmodal RoleControl--action--permissions'
-                data-bs-toggle='tooltip' 
-                data-bs-placement='top'
-                title='" . gT('Edit permission') . "'
-                data-href='" . $setPermissionsUrl . "'
-                data-modalsize='modal-lg'>
-                    <i class='ri-lock-fill'></i>
-                </button>";
+        $dropdownItems = [];
 
-        // Edit Role
-        $editRoleButton = ""
-            . "<button 
-                class='btn btn-sm btn-outline-secondary green-border RoleControl--action--openmodal RoleControl--action--edituser' 
-                data-bs-toggle='tooltip'
-                data-bs-placement='top'
-                title='" . gT('Edit role') . "'
-                data-href='" . $editUrl . "'>
-                    <i class='ri-pencil-fill'></i>
-                </button>";
+        $dropdownItems[] = [
+            'title'            => gT('Edit role'),
+            'iconClass'        => 'ri-pencil-fill',
+            'enabledCondition' => $permissionSuperAdminRead,
+            'linkClass'        => 'RoleControl--action--openmodal RoleControl--action--edituser',
+            'linkAttributes'   => [
+                'data-href' => $editUrl
+            ]
+        ];
+        $dropdownItems[] = [
+            'title'            => gT('View role details'),
+            'iconClass'        => 'ri-search-line',
+            'enabledCondition' => $permissionSuperAdminRead,
+            'linkClass'        => 'RoleControl--action--openmodal RoleControl--action--userdetail',
+            'linkAttributes'   => [
+                'data-href' => $detailUrl
+            ]
+        ];
 
-        // Export Role
-        $exportRoleButton = ""
-            . "<a class='btn btn-sm btn-outline-secondary RoleControl--action--link'
-                data-bs-toggle='tooltip'
-                data-bs-placement='top'
-                 title='" . gT('Export role') . "'
-                href='" . $exportRoleUrl . "'
-                role='button'>
-                    <i class='ri-download-fill'></i>
-                </a>";
+        $dropdownItems[] = [
+            'title'            => gT('Edit permission'),
+            'iconClass'        => 'ri-lock-fill',
+            'enabledCondition' => $permissionSuperAdminRead,
+            'linkClass'        => 'RoleControl--action--openmodal RoleControl--action--permissions',
+            'linkAttributes'   => [
+                'data-href' => $setPermissionsUrl
+            ]
+        ];
+
+        $dropdownItems[] = [
+            'title'            => gT('Export role'),
+            'iconClass'        => 'ri-download-fill',
+            'enabledCondition' => $permissionSuperAdminRead,
+            'linkClass'        => 'RoleControl--action--link',
+            'url'              => $exportRoleUrl,
+        ];
 
         // Delete Role
         //$deleteUrl .= '/ptid/' . $this->ptid;  NO GET-request here!!!
@@ -226,14 +225,17 @@ class Permissiontemplates extends CActiveRecord
 
         $buttons = "<div class='icon-btn-row'>";
         $buttons .= implode("\n", [
-            $editRoleButton,
-            $editPermissionButton,
-            $roleDetail,
-            $exportRoleButton,
+           // $editRoleButton,
+           // $editPermissionButton,
+           // $roleDetail,
+           // $exportRoleButton,
             $deleteRoleButton
         ]);
-        $buttons .= "</div>";
-        return $buttons;
+        return App()->getController()->widget(
+            'ext.admin.grid.GridActionsWidget.GridActionsWidget',
+            ['dropdownItems' => $dropdownItems],
+            true
+        );
     }
 
     /**
@@ -248,12 +250,6 @@ class Permissiontemplates extends CActiveRecord
                 'value' => "\"<input type='checkbox' class='RoleControl--selector-roleCheckbox' name='selectedRole[]' value='\".\$data->ptid.\"' />\"",
                 'type' => 'raw',
                 'header' => "<input type='checkbox' id='RoleControl--action-toggleAllRoles' />",
-                'filter' => false
-            ),
-            array(
-                "name" => 'buttons',
-                "type" => 'raw',
-                "header" => gT("Action"),
                 'filter' => false
             ),
             array(
@@ -277,7 +273,15 @@ class Permissiontemplates extends CActiveRecord
                 "header" => gT("Created"),
                 "value" => '$data->formattedDateCreated',
 
-            )
+            ),
+            array(
+                "name" => 'buttons',
+                "type" => 'raw',
+                "header" => gT("Action"),
+                'filter' => false,
+                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+                'htmlOptions'       => ['class' => 'text-center button-column ls-sticky-column'],
+            ),
         );
 
         return $cols;
