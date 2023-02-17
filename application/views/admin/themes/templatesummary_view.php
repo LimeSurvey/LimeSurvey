@@ -100,7 +100,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                                             <?= CHtml::endForm() ?>
                                         <?php } ?>
                                     <?php } else { ?>
-                                        <span class="badge bg-danger w-100"> <?php eT("Inherited"); ?> </span>
+                                        <span class="badge bg-danger w-100 text-white"> <?php eT("Inherited"); ?> </span>
                                     <?php } ?>
                                 </div>
                             </div>
@@ -138,7 +138,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                                             <?= CHtml::endForm() ?>
                                         <?php } ?>
                                     <?php } else { ?>
-                                        <span class="badge bg-danger w-100"><?php eT("Inherited"); ?></span>
+                                        <span class="badge bg-danger w-100 text-white"><?php eT("Inherited"); ?></span>
                                     <?php } ?>
                                 </div>
                             </div>
@@ -177,7 +177,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                                             <?= CHtml::endForm() ?>
                                         <?php } ?>
                                     <?php } else { ?>
-                                        <span class="badge bg-danger w-100"><?php eT("Inherited"); ?></span>
+                                        <span class="badge bg-danger w-100 text-white"><?php eT("Inherited"); ?></span>
                                     <?php } ?>
                                 </div>
                             </div>
@@ -214,7 +214,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                                                 <?= CHtml::endForm() ?>
                                             <?php } ?>
                                         <?php } else { ?>
-                                            <span class="badge bg-danger w-100"><?php eT("Inherited"); ?></span>
+                                            <span class="badge bg-danger w-100 text-white"><?php eT("Inherited"); ?></span>
                                         <?php } ?>
                                     </div>
                                 </div>
