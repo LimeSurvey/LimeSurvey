@@ -162,6 +162,7 @@ class Permissiontemplates extends CActiveRecord
         );
         $deleteUrl         = Yii::app()->getController()->createUrl('userRole/delete');
 
+        //currently there are no special permissions for user role (see controller actions...)
         $permissionSuperAdminRead = Permission::model()->hasGlobalPermission('superadmin', 'read');
 
         $dropdownItems = [];
@@ -203,34 +204,23 @@ class Permissiontemplates extends CActiveRecord
             'url'              => $exportRoleUrl,
         ];
 
-        // Delete Role
-        //$deleteUrl .= '/ptid/' . $this->ptid;  NO GET-request here!!!
-        $deleteRoleButton = '<span data-bs-toggle="tooltip" title="' . gT('Delete user role') . '">'
-            . "<button 
-                id='RoleControl--delete-" . $this->ptid . "' 
-                class='btn btn-sm btn-outline-secondary' 
-                data-bs-toggle='modal' 
-                data-title='" . gt('Delete user role') . "'
-                data-bs-target='#confirmation-modal'
-                data-btnClass='btn-danger'
-                data-url ='" . $deleteUrl . "' 
-                data-ptid='" . $this->ptid . "'
-                data-action='delrole'         
-                data-onclick='LS.RoleControl.triggerRunAction(\"#RoleControl--delete-" . $this->ptid . "\")'
-                data-btntext='" . gt('Delete') . "' 
-                data-message='" . gT('Do you want to delete this role?') . "'>
-                    <i class='ri-delete-bin-fill text-danger'></i>
-              </button>"
-            . '</span>';
+        $deletePostData = json_encode(['ptid' => $this->ptid]);
+        $dropdownItems[] = [
+            'title'            => gT('Delete user role'),
+            'iconClass'        => 'ri-delete-bin-fill text-danger',
+            'enabledCondition' => $permissionSuperAdminRead,
+            'linkAttributes'   => [
+                'data-bs-toggle' => "modal",
+                'data-post-url'  => $deleteUrl,
+                'data-post-datas' => $deletePostData,
+                'data-message'   => sprintf(gt("Are you sure you want to delete user role '%s'?"), $this->name),
+                'data-bs-target' => "#confirmation-modal",
+                'data-btnclass'  => 'btn-danger',
+                'data-btntext'   => gt('Delete'),
+                'data-title'     => gt('Delete user role')
+            ]
+        ];
 
-        $buttons = "<div class='icon-btn-row'>";
-        $buttons .= implode("\n", [
-           // $editRoleButton,
-           // $editPermissionButton,
-           // $roleDetail,
-           // $exportRoleButton,
-            $deleteRoleButton
-        ]);
         return App()->getController()->widget(
             'ext.admin.grid.GridActionsWidget.GridActionsWidget',
             ['dropdownItems' => $dropdownItems],
