@@ -18096,6 +18096,9 @@ input[type=file]::file-selector-button {
 }
 
 .badge {
+  padding: 4px 8px;
+  font-weight: 500;
+  border-radius: 2px;
   background-color: #F9F9FB;
   color: #1E1E1E;
 }
