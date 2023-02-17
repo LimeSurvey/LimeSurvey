@@ -44,34 +44,12 @@ $dataProvider = $model->searchUserGroupMembers($ugid);
 
                 <br/><br/>
                 <?php
-                $this->widget('application.extensions.admin.grid.CLSGridView',
+                $this->widget('application.extensions.admin.grid.CLSGridView', //done
                     [
                         'id' => 'usergroup-members-grid',
                         'dataProvider' => $dataProvider,
                         'filter' => $model,
                         'ajaxType'        => 'POST',
-                        'columns' => [
-                            array(
-                                'header'      => gT('Actions'),
-                                'name'        => 'buttons',
-                                'type'        => 'raw',
-                                'filter'      => false,
-                                'value'       => '$data->GroupMemberListButtons',
-                                'htmlOptions' => array('class' => 'text-start'),
-                            ),
-                            array(
-                                'header'      => gT('Username'),
-                                'name'        => 'users_name',
-                                'value'       => '$data->users_name',
-                                'htmlOptions' => array('class' => ''),
-                            ),
-                            array(
-                                'header'      => gT('Email'),
-                                'name'        => 'email',
-                                'value'       => '$data->email',
-                                'htmlOptions' => array('class' => ''),
-                            ),
-                        ],
                         'emptyText' => gT('No user group members found.'),
                         'ajaxUpdate' => 'usergroup-members-grid',
                         'massiveActionTemplate' => $this->renderPartial('_addUserDropdown', [
@@ -91,6 +69,29 @@ $dataProvider = $model->searchUserGroupMembers($ugid);
                                     ]
                                 )
                             ),
+                        'columns' => [
+                            array(
+                                'header'      => gT('Username'),
+                                'name'        => 'users_name',
+                                'value'       => '$data->users_name',
+                                'htmlOptions' => array('class' => ''),
+                            ),
+                            array(
+                                'header'      => gT('Email'),
+                                'name'        => 'email',
+                                'value'       => '$data->email',
+                                'htmlOptions' => array('class' => ''),
+                            ),
+                            array(
+                                'header'      => gT('Actions'),
+                                'name'        => 'buttons',
+                                'type'        => 'raw',
+                                'filter'      => false,
+                                'value'       => '$data->GroupMemberListButtons',
+                                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+                                'htmlOptions'       => ['class' => 'text-center button-column ls-sticky-column'],
+                            ),
+                        ],
                     ]
                 );
                 ?>

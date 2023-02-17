@@ -18,7 +18,7 @@ echo viewHelper::getViewTestTag('roles');
             <div class="col-12">
                 <?php
                 $this->widget(
-                    'application.extensions.admin.grid.CLSGridView',
+                    'application.extensions.admin.grid.CLSGridView', //done
                     [
                         'id' => 'RoleControl--identity-gridPanel',
                         'htmlOptions' => ['class' => 'table-responsive grid-view-ls'],

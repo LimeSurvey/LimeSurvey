@@ -11077,6 +11077,14 @@ a {
   text-decoration: underline;
 }
 
+.list-group {
+  border-radius: 0px !important;
+}
+
+.list-group-item {
+  border: none !important;
+}
+
 .hidden {
   display: none !important;
 }
@@ -18208,7 +18216,7 @@ table .ls-sticky-column:last-child {
   box-shadow: inset -15px 0 15px -15px rgba(0, 0, 0, 0.05);
 }
 table .ls-sticky-column:has(.dropdown-menu.show) {
-  z-index: 1;
+  z-index: 1020;
 }
 
 .table > thead > tr.active > td, .table > thead > tr.active > th,

@@ -64,7 +64,7 @@ echo viewHelper::getViewTestTag('displayParticipants');
             <?php
             echo "<input type='hidden' id='searchcondition' name='searchcondition[]' value='" . join("||", $searchcondition) . "' />";
 
-                $this->widget('application.extensions.admin.grid.CLSGridView', [
+                $this->widget('application.extensions.admin.grid.CLSGridView', [//done
                     'id' => 'list_central_participants',
                     'dataProvider' => $model->search(),
                     'columns' => $model->columns,

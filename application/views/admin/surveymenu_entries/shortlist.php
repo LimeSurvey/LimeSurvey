@@ -1,6 +1,9 @@
 <?php
-    // TODO: is this whole file still used? can't find a reference (p_teichmann)
-    $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
+
+/**
+ * @var $model SurveymenuEntries
+ */
+$pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
 ?>
 <div class="ls-flex-column">
     <div class="col-12 h1"><?php eT('Menu entries') ?></div>
@@ -8,7 +11,7 @@
         <div class="col-12 ls-flex-item">
             <?php
             $this->widget(
-                'application.extensions.admin.grid.CLSGridView',
+                'application.extensions.admin.grid.CLSGridView',//done
                 [
                     'dataProvider' => $model->search(),
                     'id'           => 'surveymenu-entries-shortlist-grid',
