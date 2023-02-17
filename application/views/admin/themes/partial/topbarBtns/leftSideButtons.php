@@ -13,7 +13,7 @@ if ($isExport) {
             'name' => 'button-export',
             'id' => 'button-export',
             'text' => gT('Export'),
-            'icon' => 'icon-export',
+            'icon' => 'ri-upload-2-fill',
             'link' => $this->createUrl('admin/themes/sa/templatezip/templatename/' . $templatename),
             'htmlOptions' => [
                 'class' => 'btn btn-outline-secondary',
