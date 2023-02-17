@@ -11094,6 +11094,7 @@ body {
 }
 
 .pagetitle {
+  padding-bottom: 4px;
   border-bottom: solid 2px #D3D5DA;
   position: relative;
   margin-bottom: 1em;
@@ -18548,6 +18549,9 @@ table .ls-sticky-column:has(.dropdown-menu.show) {
 }
 #advanced-question-editor .settings-accordion-container .accordion-body, #copy-question .settings-accordion-container .accordion-body {
   padding: 0;
+}
+#advanced-question-editor .settings-accordion-container .accordion-body label, #copy-question .settings-accordion-container .accordion-body label {
+  padding-bottom: 8px;
 }
 #advanced-question-editor .ri-information-fill, #copy-question .ri-information-fill {
   color: #9094A7;
