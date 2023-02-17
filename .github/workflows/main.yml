@@ -154,3 +154,11 @@ jobs:
         env:
             DOMAIN: localhost
         run: php vendor/bin/phpunit --testdox --stop-on-failure tests/functional
+
+      - name: Upload Screenshots
+        uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: screenshots
+          path: tests/tmp/screenshots/
+          retention-days: 5
