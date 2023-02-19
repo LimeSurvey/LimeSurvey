@@ -271,7 +271,7 @@ class QuestionAdministrationController extends LSBaseController
      * Load list questions view for a specified survey by $surveyid
      *
      * @param int $surveyid Goven Survey ID
-     * @param string  $landOnSideMenuTab Name of the side menu tab. Default behavior is to land on settings tab.
+     * @param string  $landOnSideMenuTab Name of the side menu tab (settings or structure). Default behavior is to land on settings tab.
      *
      * @return string
      * @access public
@@ -283,6 +283,9 @@ class QuestionAdministrationController extends LSBaseController
             throw new CHttpException(403, gT("No permission"));
         }
         $iSurveyID = sanitize_int($surveyid);
+        if (!in_array($landOnSideMenuTab, ['settings', 'structure', ''])) {
+            $landOnSideMenuTab = 'settings';
+        }
         // Reinit LEMlang and LEMsid: ensure LEMlang are set to default lang, surveyid are set to this survey id
         // Ensure Last GetLastPrettyPrintExpression get info from this sid and default lang
         LimeExpressionManager::SetEMLanguage(Survey::model()->findByPk($iSurveyID)->language);
