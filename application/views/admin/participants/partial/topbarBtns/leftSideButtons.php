@@ -51,7 +51,7 @@ if (Permission::model()->hasGlobalPermission('participantpanel', 'import')) {
         [
             'name' => '',
             'text' => gT("Import"),
-            'icon' => 'ri-upload-fill',
+            'icon' => 'ri-download-2-fill',
             'link' => $this->createUrl("admin/participants/sa/importCSV"),
             'htmlOptions' => [
                 'class' => 'btn btn-outline-secondary',
@@ -108,7 +108,7 @@ if (Permission::model()->hasGlobalPermission('participantpanel', 'export')) {
             'name' => 'export',
             'id' => 'export',
             'text' => gT("Export all participants"),
-            'icon' => 'ri-download-fill',
+            'icon' => 'ri-upload-2-fill',
             'htmlOptions' => [
                 'class' => 'btn btn-outline-secondary',
             ],

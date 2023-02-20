@@ -40,7 +40,7 @@ if (Permission::model()->hasGlobalPermission('users', 'create')) {
         'name' => 'ls-create-token-button',
         'id' => 'ls-create-token-button',
         'text' => gT('Import'),
-        'icon' => 'icon-import',
+        'icon' => 'ri-download-2-fill',
         'isDropDown' => true,
         'dropDownContent' => $dropdownItemsImp,
         'htmlOptions' => [
@@ -59,7 +59,7 @@ if (Permission::model()->hasGlobalPermission('users', 'create')) {
         'name' => 'ls-create-token-button',
         'id' => 'ls-create-token-button',
         'text' => gT('Export'),
-        'icon' => 'ri-download-fill',
+        'icon' => 'ri-upload-2-fill',
         'isDropDown' => true,
         'dropDownContent' => $dropdownItems,
         'htmlOptions' => [

@@ -1161,7 +1161,7 @@ class Tokens extends SurveyCommonAction
             );
             $this->renderWrappedTemplate('token', array('message' => array(
             'title' => sprintf(gT("Delete participant attribute %s"), $sAttributeToDelete),
-            'message' => "<p>" . gT("If you remove this attribute, you will lose all information.") . "</p>\n"
+            'message' => "<p>" . gT("If deleted, all information stored in this attribute field will be lost.") . "</p>\n"
             . CHtml::form(array("admin/tokens/sa/deletetokenattributes/surveyid/{$iSurveyId}"), 'post', array('id' => 'attributenumber'))
             . CHtml::hiddenField('deleteattribute', $sAttributeToDelete)
             . CHtml::hiddenField('sid', $iSurveyId)

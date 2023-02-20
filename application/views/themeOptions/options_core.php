@@ -130,7 +130,12 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
                     $optionLabels  = !empty($attribute['optionlabels']) ? explode('|', $attribute['optionlabels']) : array();
                     $options       = array_combine($optionsValues, $optionLabels);
                     if ($bInherit && isset($sParentOption)) {
-                        $options['inherit'] = $sParentOption . " ᴵ";
+                        if (is_numeric($sParentOption) && array_key_exists($sParentOption, $options)) {
+                            $sParentLabelOption = $options[$sParentOption];
+                            $options['inherit'] = gT("Inherit") . ' [' . gT($sParentLabelOption) . ']';
+                        } else {
+                            $options['inherit'] = gT("Inherit") . ' [' . gT($sParentOption) . ']';
+                        }
                     }
 
                     echo '<div class="col-12">
@@ -205,8 +210,8 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
                 if ($category == 'Images' && $attribute['type'] == 'dropdown') {
                     echo '<div class="col-md-4 col-lg-2">
                                 <br/>
-                                <button 
-                                	class="btn btn-outline-secondary selector__open_lightbox" 
+                                <button
+                                	class="btn btn-outline-secondary selector__open_lightbox"
                                 	data-bs-target="#simple_edit_options_' . $attributeKey . '"> ' . gT('Preview image') . '
                                 </button>
                             </div>';
