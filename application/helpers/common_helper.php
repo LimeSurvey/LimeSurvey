@@ -255,7 +255,7 @@ function getGidNext($surveyid, $gid)
  */
 function convertGETtoPOST($url)
 {
-    $url = preg_replace('/&amp;/i', '&', $url);
+    $url = preg_replace('/&amp;/i', '&', (string) $url);
     $stack = explode('?', $url);
     $calledscript = array_shift($stack);
     $query = array_shift($stack);
@@ -2955,7 +2955,7 @@ function getTokenFieldsAndNames($surveyid, $bOnlyAttributes = false)
 */
 function stripJavaScript($sContent)
 {
-    $text = preg_replace('@<script[^>]*?>.*?</script>@si', '', $sContent);
+    $text = preg_replace('@<script[^>]*?>.*?</script>@si', '', (string) $sContent);
     // TODO : Adding the onload/onhover etc ... or remove this false security function
     return $text;
 }
