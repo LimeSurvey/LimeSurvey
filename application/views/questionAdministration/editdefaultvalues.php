@@ -39,7 +39,7 @@
                                             <select class='form-select' name='defaultanswerscale_<?php echo "{$scale_id}_{$language}" ?>'
                                                     id='defaultanswerscale_<?php echo "{$scale_id}_{$language}" ?>'>
                                                 <option value=''<?php echo is_null($opts['defaultvalue']) ? ' selected="selected"' : '' ?>>
-                                                    <?php eT('<No default value>') ?>
+                                                    <?php eT('(No default value)') ?>
                                                 </option>
                                                 <?php foreach ($opts['answers'] as $answer) {
                                                     $sAnswer          = $answer->answerl10ns[$language]->answer;

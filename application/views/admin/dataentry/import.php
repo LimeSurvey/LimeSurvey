@@ -40,11 +40,11 @@
                 gT("Question is removed from target (result is ignored)."),
                 gT("Question is added to target (result is set to database default value).")
             );
-            CHtml::openTag('ul');
+            echo CHtml::openTag('ul');
             foreach ($list as $item) {
                 echo CHtml::tag('li', array(), $item);
             }
-            CHtml::closeTag('ul');
+            echo CHtml::closeTag('ul');
 
             echo CHtml::closeTag('div');
             ?>

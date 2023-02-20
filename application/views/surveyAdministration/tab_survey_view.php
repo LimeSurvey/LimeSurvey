@@ -54,7 +54,7 @@ App()->getClientScript()->registerScript("tab-survey-view-tab-switch-conditions"
 
     <!-- Create -->
     <li class="nav-item" role="presentation">
-        <a class="nav-link <?= $active === 'create' ? 'active' : ''?>" role="tab" data-bs-toggle="tab" data-button-title="<i class='ri-save-line'></i>&nbsp;<?= gT('Save'); ?>" data-form-id="addnewsurvey" href='#general'>
+        <a class="nav-link <?= $active === 'create' ? 'active' : ''?>" role="tab" data-bs-toggle="tab" data-button-title="<i class='ri-check-fill'></i>&nbsp;<?= gT('Save'); ?>" data-form-id="addnewsurvey" href='#general'>
             <!-- <i class="ri-add-circle-fill"></i> -->
             <i class="ri-add-circle-fill" ></i>&nbsp;
             
@@ -66,9 +66,9 @@ App()->getClientScript()->registerScript("tab-survey-view-tab-switch-conditions"
     <?php if ($action === "newsurvey"): ?>
         <!-- Import -->
         <li class="nav-item" role="presentation">
-            <a class="nav-link <?= $active === 'import' ? 'active' : ''?>" role="tab" data-bs-toggle="tab" data-button-title=" <span class='ri-upload-fill '></span>&nbsp;<?= gT('Import'); ?>" data-form-id="importsurvey" href="#import">
+            <a class="nav-link <?= $active === 'import' ? 'active' : ''?>" role="tab" data-bs-toggle="tab" data-button-title=" <span class='ri-download-2-fill '></span>&nbsp;<?= gT('Import'); ?>" data-form-id="importsurvey" href="#import">
             <!-- <span class="ri-upload-fill text-success"></span> -->
-            <i class="ri-upload-fill"></i>
+            <i class="ri-download-2-fill"></i>
             &nbsp;
                 <?php  eT("Import"); ?>
             </a>

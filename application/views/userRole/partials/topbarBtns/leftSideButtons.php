@@ -22,7 +22,7 @@ $this->widget(
         'name' => 'save-form-button',
         'id' => 'save-form-button',
         'text' => gT('Import (XML)'),
-        'icon' => 'ri-upload-fill',
+        'icon' => 'ri-download-2-fill',
         'htmlOptions' => [
             'class' => 'btn btn-outline-secondary RoleControl--action--openmodal',
             'data-href' => App()->createUrl("userRole/showImportXML"),

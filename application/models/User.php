@@ -908,11 +908,36 @@ class User extends LSActiveRecord
     {
         $userGroupId = Yii::app()->request->getQuery('ugid', 0);
         $userGroup = UserGroup::model()->findByPk($userGroupId);
-        $currentUserId = $this->uid;
 
-        return Yii::app()->getController()->renderPartial(
-            '_deleteGroupUserButton',
-            ['userGroupId' => $userGroupId, 'userGroup' => $userGroup, 'currentUserId' => $currentUserId]
+        $currentUserId = $this->uid;
+        $canDelete = Permission::model()->hasGlobalPermission('usergroups', 'update')
+            && $userGroup && $userGroup->owner_id == Yii::app()->session['loginID'];
+        $isDeletable = $userGroup
+            && ($canDelete || Permission::model()->hasGlobalPermission('superadmin'))
+            && $currentUserId != '1';
+
+        $dropdownItems[] = [
+            'title'            => gT('Delete'),
+            'iconClass'        => 'ri-delete-bin-fill text-danger',
+            'enabledCondition' => $isDeletable,
+            'linkAttributes'   => [
+                'data-bs-toggle' => "modal",
+                'data-btnclass'  => 'btn-danger',
+                'data-btntext'   => gt('Delete'),
+                'data-post-url'  => App()->createUrl("userGroup/deleteUserFromGroup"),
+                'data-post-datas' => json_encode(['ugid' => $userGroupId, 'uid' => $currentUserId]),
+                'data-message'   => sprintf(
+                    gT("Are you sure you want to delete user '%s' from usergroup '%s'?"),
+                    $this->users_name,
+                    $userGroup->name
+                ),
+                'data-bs-target' => "#confirmation-modal"
+            ]
+        ];
+        return App()->getController()->widget(
+            'ext.admin.grid.GridActionsWidget.GridActionsWidget',
+            ['dropdownItems' => $dropdownItems],
+            true
         );
     }
 

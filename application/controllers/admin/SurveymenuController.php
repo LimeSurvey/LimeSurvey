@@ -395,24 +395,6 @@ class SurveymenuController extends SurveyCommonAction
             [],
             true
         );
-        // Page Title Green Bar
-        $aData['pageTitle'] = gT('Survey menus');
-
-        // White Bar
-        $aData['fullpagebar'] = [
-            'menus' => [
-                'buttons' => [
-                    'addMenu' => true,
-                    'addMenuEntry' => true,
-                    'reset' => Permission::model()->hasGlobalPermission('superadmin', 'read'),
-                    'reorder' => true,
-                ],
-            ],
-            'returnbutton' => [
-                'text' => gT('Back'),
-                'url' => 'admin/index',
-            ],
-        ];
 
         App()->getClientScript()->registerPackage('surveymenufunctions');
         $this->renderWrappedTemplate(null, array('surveymenu/index'), $aData);

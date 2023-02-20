@@ -316,7 +316,7 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
         </div>
         <!-- Template -->
 
-        <div class="mb-3">
+        <div class="mb-3" >
             <label class=" form-label" for='template'><?php eT("Theme:"); ?></label>
             <div class="">
                 <select id='template' class="form-select" name='template' data-updateurl='<?php echo App()->createUrl('themeOptions/getPreviewTag') ?>'
@@ -342,7 +342,7 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
                     <?php } ?>
                 </select>
             </div>
-            <div class="col-md-6 offset-lg-3 template-img" style="margin-top: 13px;" id="preview-image-container">
+            <div class="col-md-6 mt-4 w-100" id="preview-image-container">
                 <?php echo TemplateConfiguration::getInstanceFromTemplateName(($oSurvey->template == 'inherit') ? $oSurveyOptions->template : $oSurvey->template)->getPreview() ?>
             </div>
         </div>

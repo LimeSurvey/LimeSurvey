@@ -324,28 +324,51 @@ class UserGroup extends LSActiveRecord
      */
     public function getButtons()
     {
-        $button = "<div class='icon-btn-row'>";
-        // Edit user group
-        if (Permission::model()->hasGlobalPermission('usergroups', 'update')) {
-            $url = Yii::app()->createUrl("userGroup/edit/ugid/$this->ugid");
-            $button .= ' <a class="btn btn-outline-secondary btn-sm green-border" data-bs-toggle="tooltip" data-bs-placement="top" title="' . gT('Edit user group') . '" href="' . $url . '" role="button"><span class="ri-pencil-fill" ></span></a>';
-        }
+        $permissionUsergroupsEdit = Permission::model()->hasGlobalPermission('usergroups', 'update');
+        $permissionUsergroupsDelete = Permission::model()->hasGlobalPermission('usergroups', 'delete');
 
-        // View users
-        $url = Yii::app()->createUrl("userGroup/viewGroup/ugid/$this->ugid");
-        $button .= '<a class="btn btn-outline-secondary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="' . gT('View users') . '" href="' . $url . '" role="button"><span class="ri-list-unordered" ></span></a>';
+        $dropdownItems = [];
+        $dropdownItems[] = [
+            'title'            => gT('Edit user group'),
+            'iconClass'        => 'ri-pencil-fill',
+            'url'              => Yii::app()->createUrl("userGroup/edit/ugid/$this->ugid"),
+            'enabledCondition' => $permissionUsergroupsEdit
+        ];
 
-        // Mail to user group
-        // Which permission should be checked for this button to be available?
-        $url = Yii::app()->createUrl("userGroup/mailToAllUsersInGroup/ugid/$this->ugid");
-        $button .= ' <a class="btn btn-outline-secondary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="' . gT('Email user group') . '" href="' . $url . '" role="button"><span class="ri-mail-send-fill" ></span></a>';
+        $dropdownItems[] = [
+            'title'            => gT('View users'),
+            'iconClass'        => 'ri-list-unordered',
+            'url'              => Yii::app()->createUrl("userGroup/viewGroup/ugid/$this->ugid"),
+        ];
+        $dropdownItems[] = [
+            'title'            => gT('Email user group'),
+            'iconClass'        => 'ri-mail-send-fill',
+            'url'              => Yii::app()->createUrl("userGroup/mailToAllUsersInGroup/ugid/$this->ugid"),
+            'enabledCondition' => $permissionUsergroupsEdit
+        ];
 
-        // Delete user group
-        if (Permission::model()->hasGlobalPermission('usergroups', 'delete')) {
-            $button .= '<button class="btn btn-outline-secondary btn-sm red-border action__delete-group" data-bs-toggle="tooltip" data-bs-placement="top" title="' . gT('Delete user group') . '" href="#delete-modal" data-toggle="modal" data-ugid="' . $this->ugid . '" role="button"><span class="ri-delete-bin-fill text-danger"></span></button>';
-        }
-        $button .= "</div>";
-        return $button;
+        $deletePostData = json_encode(['ugid' => $this->ugid]);
+        $dropdownItems[] = [
+            'title'            => gT('Delete user group'),
+            'iconClass'        => 'ri-delete-bin-fill text-danger',
+            'enabledCondition' => $permissionUsergroupsDelete,
+            'linkAttributes'   => [
+                'data-bs-toggle' => "modal",
+                'data-post-url'  => App()->createUrl("userGroup/deleteGroup"),
+                'data-post-datas' => $deletePostData,
+                'data-message'   => sprintf(gt("Are you sure you want to delete user group '%s'?"), $this->name),
+                'data-bs-target' => "#confirmation-modal",
+                'data-btnclass'  => 'btn-danger',
+                'data-btntext'   => gt('Delete'),
+                'data-title'     => gt('Delete user group')
+            ]
+        ];
+
+        return App()->getController()->widget(
+            'ext.admin.grid.GridActionsWidget.GridActionsWidget',
+            ['dropdownItems' => $dropdownItems],
+            true
+        );
     }
 
     /**
@@ -356,19 +379,11 @@ class UserGroup extends LSActiveRecord
     {
         return [
             array(
-                'header'      => gT('Actions'),
-                'name'        => 'buttons',
-                'type'        => 'raw',
-                'value'       => '$data->buttons',
-                'htmlOptions' => array('class' => 'text-start'),
-            ),
-            array(
                 'header'      => gT('User group ID'),
                 'name'        => 'usergroup_id',
                 'value'       => '$data->ugid',
                 'htmlOptions' => array('class' => ''),
             ),
-
 
             array(
                 'header'      => gT('Name'),
@@ -396,6 +411,14 @@ class UserGroup extends LSActiveRecord
                 'name'        => 'members',
                 'value'       => '$data->countUsers',
                 'htmlOptions' => array('class' => ''),
+            ),
+            array(
+                'header'      => gT('Actions'),
+                'name'        => 'buttons',
+                'type'        => 'raw',
+                'value'       => '$data->buttons',
+                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+                'htmlOptions'       => ['class' => 'text-center button-column ls-sticky-column'],
             ),
         ];
     }

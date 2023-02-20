@@ -432,11 +432,11 @@ class UserGroupController extends LSBaseController
     /**
      * Deletes a user from group
      *
-     * @param $ugid
      * @throws CDbException
      */
-    public function actionDeleteUserFromGroup($ugid)
+    public function actionDeleteUserFromGroup()
     {
+        $ugid = (int) Yii::app()->request->getPost('ugid');
         $uid = (int) Yii::app()->request->getPost('uid');
         $checkOK = $this->checkBeforeAddDeleteUser($uid, (int)$ugid);
         if (count($checkOK) > 0) {

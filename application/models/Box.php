@@ -138,34 +138,43 @@ class Box extends CActiveRecord
      */
     public function getbuttons()
     {
-        $url = Yii::app()->createUrl("/homepageSettings/updateBox/id/");
-        $url .= '/' . $this->id;
-        $button = "<div class='icon-btn-row'>";
-        $button .= '<a class="btn btn-sm btn-outline-secondary green-border" data-bs-toggle="tooltip" data-bs-target="top" '
-         . 'title="' . gT('Edit') . '"'
-         . 'href="'
-         . $url
-         . '" role="button"><span class="ri-pencil-fill" ></span></a>';
+        $permission_box_edit = Permission::model()->hasGlobalPermission('settings', 'update');
+        $permission_box_delete = Permission::model()->hasGlobalPermission('settings', 'delete');
+        $dropdownItems = [];
+        $dropdownItems[] = [
+            'title'            => gT('Edit'),
+            'iconClass'        => 'ri-pencil-fill',
+            'url'              => Yii::app()->createUrl("/homepageSettings/updateBox/id/$this->id"),
+            'enabledCondition' => $permission_box_edit
+        ];
 
-        $url = Yii::app()->createUrl("/homepageSettings/deleteBox");
-        $button .= '<a class="btn btn-sm btn-outline-secondary selector--ConfirmModal"'
-        . ' data-button-no="' . gT('Cancel') . '"'
-        . ' data-button-yes="' . gT('Delete') . '"'
-        . ' data-button-type="btn-danger"'
-        . ' href="' . $url . '"'
-        . ' data-bs-toggle="tooltip"'
-        . ' data-bs-target="top"'
-        . ' title="' . gT('Delete the box') . '"'
-        . ' role="button" data-post=\'' . json_encode(['id' => $this->id]) . '\''
-        . ' data-text="' . gT('Are you sure you want to delete this box ?') . '"'
-        . '><span class="ri-delete-bin-fill text-danger" ></span></a>';
-        $button .= "</div>";
-        return $button;
+        $dropdownItems[] = [
+            'title'            => gT('Delete box'),
+            'iconClass'        => 'ri-delete-bin-fill text-danger',
+            'enabledCondition' => $permission_box_delete,
+            'url' => Yii::app()->createUrl("/homepageSettings/deleteBox"),
+            'linkClass' => 'selector--ConfirmModal',
+            'linkAttributes'   => [
+                'data-bs-toggle' => "tooltip",
+                'data-bs-target' => 'top',
+                'data-button-no' => gT('Cancel'),
+                'data-button-yes' => gT('Delete'),
+                'data-button-type' => 'btn-danger',
+                'data-post'  => json_encode(['id' => $this->id]),
+                'data-text'   => gT("Are you sure you want to delete this box?"),
+            ]
+        ];
+        return App()->getController()->widget(
+            'ext.admin.grid.GridActionsWidget.GridActionsWidget',
+            ['dropdownItems' => $dropdownItems],
+            true
+        );
     }
 
     /**
      * List of all icons available for user [['id' => 1, 'icon' => 'name'],...]
-     * Command to generate this list: grep -oh "icon-[a-z]*" styles/Sea_Green/css/fonts.css | sort -u > ~/my_icon_list.txt
+     * Command to generate this list: grep -oh "icon-[a-z]*"
+     * styles/Sea_Green/css/fonts.css | sort -u > ~/my_icon_list.txt
      * @return array
      */
     public function getIcons()

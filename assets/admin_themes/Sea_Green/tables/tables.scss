@@ -13,7 +13,7 @@ table {
             box-shadow       : inset 15px 0 15px -15px rgba(0, 0, 0, 0.05);
         }
         &:has(.dropdown-menu.show) {
-            z-index : 1;
+            z-index : $zindex-sticky;
         }
     }
 }

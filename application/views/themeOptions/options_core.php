@@ -123,8 +123,13 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
                     $optionsValues = !empty($attribute['options']) ? explode('|', $attribute['options']) : array();
                     $optionLabels  = !empty($attribute['optionlabels']) ? explode('|', $attribute['optionlabels']) : array();
                     $options       = array_combine($optionsValues, $optionLabels);
-                    if ($bInherit && isset($sParentOption)) {
-                        $options['inherit'] = gT("Inherit") . ' [' . $sParentOption . ']';
+                                if ($bInherit && isset($sParentOption)) {
+                                    if(is_numeric($sParentOption) && array_key_exists($sParentOption, $options)) {
+                                        $sParentLabelOption = $options[$sParentOption];
+                                        $options['inherit'] = gT("Inherit") . ' [' . gT($sParentLabelOption) . ']';
+                                    } else {
+                                        $options['inherit'] = gT("Inherit") . ' [' . gT($sParentOption) . ']';
+                                    }
                     }
 
                     echo '<div class="col-12">
