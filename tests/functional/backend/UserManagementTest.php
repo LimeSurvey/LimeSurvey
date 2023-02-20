@@ -4,6 +4,7 @@ namespace ls\tests;
 
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverExpectedCondition;
+use Facebook\WebDriver\WebDriverKeys;
 
 /**
  * Manage users.
@@ -397,15 +398,7 @@ class UserManagementTest extends TestBaseClassWeb
             )
         );
         $input->click();
-        // Give time for the datepicker to open and click again before clearing
-        $wrapperId = $input->findElement(WebDriverBy::xpath("parent::*"))->getAttribute('id');
-        $clearButton = self::$webDriver->wait($timeout)->until(
-            WebDriverExpectedCondition::elementToBeClickable(
-                WebDriverBy::cssSelector('#' . $wrapperId . ' .picker-switch a[data-action="clear"]')
-            )
-        );
-        $clearButton->click();
-        $input->click();
+        $input->sendKeys(WebDriverKeys::DELETE);
         $input->clear()->sendKeys($value);
     }
 
