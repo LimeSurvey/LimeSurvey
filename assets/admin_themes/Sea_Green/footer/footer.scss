@@ -1,20 +1,22 @@
 // Footer
 .footer {
   z-index: 100;
-  position: absolute;
+  position: absolute !important;
   bottom: 0;
   display: block;
   width: 100%;
-  height: 60px;
-  padding-top: 1em;
+  // height: 60px;
+  // padding-top: 1em;
 }
-
-footer.footer {
-  position: static;
+.sub_footer {
+  width: 100%;
+  .sub_footer_border {
+    border-top: 1px solid $g-900;
+  }
 }
 
 @media print {
   footer.footer {
-    display: none
+    display: none;
   }
 }

@@ -31,14 +31,14 @@ $respstatsread  = Permission::model()->hasSurveyPermission($iSurveyID, 'response
 
 ?>
 <!-- START surveySummary -->
-<div class="row">
+<!-- <div class="row">
     <div class="col-12">
         <div class="h3 pagetitle">
             <?php eT('Survey summary'); ?> :
             <?php echo flattenText($oSurvey->currentLanguageSettings->surveyls_title) . " (" . gT("ID") . " " . $oSurvey->sid . ")"; ?>
         </div>
     </div>
-</div>
+</div> -->
 <div class="row survey-summary">
     <?php
     $possiblePanelFolder = realpath(Yii::app()->getConfig('rootdir') . '/application/views/admin/survey/subview/surveydashboard/');

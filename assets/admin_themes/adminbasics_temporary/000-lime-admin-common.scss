@@ -223,7 +223,7 @@
 
 .side-body,
 .full-page-wrapper {
-    min-height: 100%;
+    min-height: 100vh;
     position: relative;
     /*margin-bottom: 65px;*/
 }
@@ -288,9 +288,6 @@ html {
     z-index: 100;
 }
 
-.tab-content {
-    padding-top: 2em;
-}
 
 :focus {
     outline: none;

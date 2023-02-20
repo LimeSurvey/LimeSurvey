@@ -3,8 +3,9 @@
 $bInherit = (!empty($aTemplateConfiguration['sid']) || !empty($aTemplateConfiguration['gsid']));
 
 
-$dropdown_options['font'] = ($bInherit ? '<option value="inherit">' . gT("Inherit") . ' [' . gT("inherited value:"
-    ) . ' ' . (isset($oParentOptions['font']) ? $oParentOptions['font'] : '') . ']</option>' : '');
+$dropdown_options['font'] = ($bInherit ? '<option value="inherit">' . gT("Inherit") . ' [' . gT(
+    "inherited value:"
+) . ' ' . (isset($oParentOptions['font']) ? $oParentOptions['font'] : '') . ']</option>' : '');
 
 
 // background file
@@ -69,25 +70,20 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
             <?php /* If this is a surveyspecific settings page, offer the possibility to do a full inheritance of the parent template */
             if ($bInherit) { ?>
                 <div class='row' id="general_inherit_active">
-                    <div class='mb-3 row'>
-                        <label for='simple_edit_options_general_inherit' class='form-label'><?php echo gT("Inherit everything"); ?></label>
-                        <div class='col-12'>
-                            <div class="btn-group" role="group">
-                                <input id="general_inherit_on" name='general_inherit' type='radio' value='on' class='btn-check selector_option_general_inherit '
-                                       data-id='simple_edit_options_general_inherit'/>
-                                <label for="general_inherit_on" class="btn btn-outline-secondary">
-                                    <?php echo gT("Yes"); ?>
-                                </label>
-                                <input id="general_inherit_off" name='general_inherit' type='radio' value='off' class='btn-check selector_option_general_inherit '
-                                       data-id='simple_edit_options_general_inherit'/>
-                                <label for="general_inherit_off" class="btn btn-outline-secondary">
-                                    <?php echo gT("No"); ?>
-                                </label>
-                            </div>
+                    <label for='simple_edit_options_general_inherit' class='form-label'><?php echo gT("Inherit everything"); ?></label>
+                    <div class='col-12'>
+                        <div class="btn-group" role="group">
+                            <input id="general_inherit_on" name='general_inherit' type='radio' value='on' class='btn-check selector_option_general_inherit ' data-id='simple_edit_options_general_inherit' />
+                            <label for="general_inherit_on" class="btn btn-outline-secondary">
+                                <?php echo gT("Inherited"); ?>
+                            </label>
+                            <input id="general_inherit_off" name='general_inherit' type='radio' value='off' class='btn-check selector_option_general_inherit ' data-id='simple_edit_options_general_inherit' />
+                            <label for="general_inherit_off" class="btn btn-outline-secondary">
+                                <?php echo gT("Customize theme"); ?>
+                            </label>
                         </div>
                     </div>
                 </div>
-                <hr>
             <?php } ?>
 
         <?php } ?>
@@ -97,6 +93,15 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
         $iMaxColumnSize = 12;
         $iTotalWidth    = 0;
         $iCount         = 0;
+
+        echo '<div class="position-relative">';
+
+        if (strpos($_SERVER['REQUEST_URI'], 'updateSurvey') !== false) {
+            echo '<div class="action_hide_on_inherit_wrapper ls-option-disabled">';
+            echo '</div>';
+        }
+
+
         foreach ($aOptionAttributes['optionAttributes'] as $attributeKey => $attribute) {
             $sParentOption = array_key_exists($attributeKey, $oParentOptions) ? $oParentOptions[$attributeKey] : '';
             if ($attributeKey === 'ajaxmode') {
@@ -122,13 +127,17 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
                     $optionsValues = !empty($attribute['options']) ? explode('|', $attribute['options']) : array();
                     $optionLabels  = !empty($attribute['optionlabels']) ? explode('|', $attribute['optionlabels']) : array();
                     $options       = array_combine($optionsValues, $optionLabels);
-                                if ($bInherit && isset($sParentOption)) {
-                                    if(is_numeric($sParentOption) && array_key_exists($sParentOption, $options)) {
-                                        $sParentLabelOption = $options[$sParentOption];
-                                        $options['inherit'] = gT("Inherit") . ' [' . gT($sParentLabelOption) . ']';
-                                    } else {
-                                        $options['inherit'] = gT("Inherit") . ' [' . gT($sParentOption) . ']';
-                                    }
+                    if ($bInherit && isset($sParentOption)) {
+                        $options['inherit'] = $sParentOption . " ᴵ";
+                    }
+                    if ($bInherit && isset($sParentOption)) {
+                        if (is_numeric($sParentOption) && array_key_exists($sParentOption, $options)) {
+                            $sParentLabelOption = $options[$sParentOption];
+                            $options['inherit'] = gT($sParentLabelOption) . " ᴵ";
+                        } else {
+                            $sParentOption = $sParentOption !== '' ? gT($sParentOption) : $sParentOption;
+                            $options['inherit'] = $sParentOption . " ᴵ";
+                        }
                     }
 
                     echo '<div class="col-12">
@@ -193,7 +202,7 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
                 } elseif ($attribute['type'] == 'input') {
                 } elseif ($attribute['type'] == 'duration') {
                     echo '<div class="col-12">
-                               <input type="text" class="form-control selector-numerical-input selector_option_value_field selector_radio_childfield" data-parent="' . $attribute['parent'] . '" id="simple_edit_options_' . $attributeKey . '" name="' . $attributeKey .'" title="' . gT("inherited value:") . ' ' . $sParentOption . '" />
+                               <input type="text" class="form-control selector-numerical-input selector_option_value_field selector_radio_childfield" data-parent="' . $attribute['parent'] . '" id="simple_edit_options_' . $attributeKey . '" name="' . $attributeKey . '" title="' . gT("inherited value:") . ' ' . $sParentOption . '" />
                                         </div>';
                 }
 
@@ -216,9 +225,10 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
             }
         }
         echo '</div>';
+        echo '</div>';
 
         if ($category == 'Images') {
-            ?>
+        ?>
             <div class="row action_hide_on_inherit">
                 <div class="container-fluid ls-space margin bottom-15 top-15">
                     <div class="row ls-space margin bottom-15">
@@ -264,7 +274,7 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-12">
-                            <img class="selector__image img-fluid" src="" alt="title"/>
+                            <img class="selector__image img-fluid" src="" alt="title" />
                         </div>
                     </div>
                 </div>

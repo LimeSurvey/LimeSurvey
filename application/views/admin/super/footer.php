@@ -52,7 +52,7 @@ foreach ($systemInfos as $key => $systemInfo) {
 <!-- Footer -->
 <footer class='footer'>
     <div class="container-fluid">
-        <div class="row ps-3 pe-3 pb-3">
+        <div class="row p-3">
             <!-- Lime survey website -->
             <div class="col-12 text-end">
                 <a  data-bs-toggle="tooltip" title='<?php eT("Visit our website!"); ?>' href='https://community.limesurvey.org' target='_blank'>LimeSurvey Community Edition</a>
