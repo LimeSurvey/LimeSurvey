@@ -48,19 +48,19 @@ class SurveyPermissions
     {
         $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
         $userPermissionCriteria = $this->getUserPermissionCriteria();
-        $sort = new CSort();
-        $sort->attributes = array(
-            'users_name' => array(
-                'asc' => 'users_name asc',
-                'desc' => 'users_name desc',
-            ),
-            'full_name' => array(
-                'asc'  => 'u.full_name asc',
-                'desc' => 'u.full_name desc',
-            ),
+        // $sort = new CSort();
+        // $sort->attributes = array(
+        //     'users_name' => array(
+        //         'asc' => 'users_name asc',
+        //         'desc' => 'users_name desc',
+        //     ),
+        //     'full_name' => array(
+        //         'asc'  => 'u.full_name asc',
+        //         'desc' => 'u.full_name desc',
+        //     ),
 
-        );
-        $sort->defaultOrder = array('creation_date' => CSort::SORT_DESC);
+        // );
+        // $sort->defaultOrder = array('creation_date' => CSort::SORT_DESC);
 
         $dataProvider = new CActiveDataProvider('Permission', [
             // 'sort' => $sort,

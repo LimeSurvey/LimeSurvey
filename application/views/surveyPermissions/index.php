@@ -102,7 +102,7 @@
                             return CHtml::tag('div', ['class' => 'text-center'], '&#8211');
                         },
                         'headerHtmlOptions' => ['class' => 'd-none d-sm-table-cell text-nowrap'],
-                        'htmlOptions'       => ['class' => 'd-none d-sm-table-cell has-link'],
+                        'htmlOptions'       => ['class' => 'd-none d-sm-table-cell '],
                     ],
                 );
             }
