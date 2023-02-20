@@ -18,11 +18,12 @@
         </li>
     <?php endif; ?>
     <li class="nav-item ms-auto">
-        <?php foreach($oSurvey->allLanguages as $lang): ?>
-            <h5 class="lang-hide lang-<?= $lang; ?>" style="<?= $lang != $oSurvey->language ? 'display: none;' : '' ?>">
-                <span class="badge bg-secondary"><?= strtoupper($lang) ?></span>
-            </h5>
-        <?php endforeach; ?>
+        <!-- Language selector -->
+        <?php
+        $this->renderPartial(
+            "languageselector",
+            ['oSurvey' => $oSurvey]
+        ); ?>
     </li>
 </ul>
 <div class="tab-content">

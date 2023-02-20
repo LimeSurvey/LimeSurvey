@@ -20,6 +20,12 @@ a {
     text-decoration: underline;
 }
 
+.list-group {
+    border-radius: 0px !important;
+}
+.list-group-item {
+    border: none !important;
+}
 .hidden {
     display: none !important;
 }
@@ -29,7 +35,7 @@ a {
     font-weight: $font-weight-500;
     font-size: 1rem;
     line-height: $line-height-20;
-    color: $g-700; 
+    color: $g-700;
 }
 
 .ls-settings-wrapper {

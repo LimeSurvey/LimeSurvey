@@ -93,6 +93,7 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
         $iMaxColumnSize = 12;
         $iTotalWidth    = 0;
         $iCount         = 0;
+        // @TODO full $url not needed
         $url = 'https://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
 
         echo '<div class="position-relative">';
@@ -119,7 +120,7 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
                     if ($iCount > 0) {
                         echo '</div>';
                     }
-                    echo '<div class="row p-1 action_hide_on_inherit">';
+                    echo '<div class="row action_hide_on_inherit">';
                 }
 
                 echo '<div class="col-12 col-md-6 col-lg-4 col-xl-' . $attribute['width'] . '">

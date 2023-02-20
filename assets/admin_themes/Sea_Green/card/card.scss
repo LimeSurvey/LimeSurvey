@@ -51,30 +51,36 @@
 
     .card-header {
         @extend .card-title;
+        padding: 1.72rem;
         height: unset;
         background-color: unset;
         border: none;
-        padding: 0;
+        //padding: 0;
         margin: 0;
     }
 
-    .card-body {
-        padding: 1rem;
+    .card-body, .list-group {
+        padding: 1.72rem;
         height: unset;
         background-color: unset;
         border: none;
     }
 
     // Remove body top padding if it comes after a header
-    .card-header + .card-body {
+    .card-header + .card-body, .card-header + .list-group {
         padding-top: 0;
-        margin-top: -1rem;
+        margin-top: -1.72rem;
+    }
+
+    .list-group-item {
+        padding-left: 0;
+        padding-right: 0;
     }
 
     .card-footer {
         justify-content: flex-start;
         height: unset;
-        padding: 1rem;
+        padding: 1.72rem;
         background-color: unset;
         border: none;
     }
@@ -241,13 +247,3 @@
 //#dropdown .card-body .navbar-nav {
 //    margin: 0;
 //}
-
-#accordion-container .card-header > a {
-    width: 100%;
-    display: block;
-}
-
-#accordion_questionTypeSelector .card-title > a {
-    width: 100%;
-    display: block;
-}

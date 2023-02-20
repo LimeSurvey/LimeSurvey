@@ -100,45 +100,32 @@ class ParticipantAttributeName extends LSActiveRecord
      */
     public function getButtons()
     {
-        // don't show action buttons for core attributes
-        if ($this->core_attribute == 'Y') {
-            return '';
-        }
-        $buttons = "<div class='icon-btn-row'>";
-        $raw_button_template = ""
-            . "<button class='btn btn-outline-secondary btn-sm %s %s' role='button' data-bs-toggle='tootltip' title='%s' onclick='return false;'>" //extra class //title
-            . "<span class='ri-%s' ></span>" //icon class
-            . "</button>";
-        $buttons .= "";
+        $isNotCoreAttribute = $this->core_attribute !== 'Y';
 
-        //Edit-button
-        $editData = array(
-            'green-border action_attributeNames_editModal',
-            '',
-            gT("Edit this attribute"),
-            'pencil-fill'
-        );
-        $buttons .= vsprintf($raw_button_template, $editData);
+        $dropdownItems = [];
+        $dropdownItems[] = [
+            'title'            => gT('Edit this attribute'),
+            'linkClass'        => 'action_attributeNames_editModal',
+            'iconClass'        => 'ri-pencil-fill',
+            'enabledCondition' => $isNotCoreAttribute
+        ];
+        $dropdownItems[] = [
+            'title'            => gT('Delete this attribute'),
+            'linkClass'        => 'action_attributeNames_deleteModal',
+            'iconClass'        => 'ri-delete-bin-fill text-danger',
+            'enabledCondition' => $isNotCoreAttribute,
+            'linkAttributes'   => [
+                'data-bs-toggle' => "modal",
+                'data-bs-target' => "#confirmation-modal",
+                'data-title'     => gT("Delete this attribute"),
+                'data-btnclass'  => "btn-danger",
+                'data-btntext'   => gt("Delete"),
+                'data-message'   => gt('Do you really want to delete this attribute') . "?",
+                'data-onclick'   => 'deleteAttributeAjax(' . $this->attribute_id . ")",
+            ]
+        ];
 
-        //delete-button
-        $deleteData = array(
-            'red-border action_attributeNames_deleteModal',
-            '',
-            gT("Delete this attribute"),
-            'delete-bin-fill text-danger'
-        );
-        $buttons .= "<a href='#' 
-        data-bs-toggle='modal' 
-        data-bs-target='#confirmation-modal' 
-        data-title='" . gT("Delete this attribute") . "'
-        data-btnclass='btn-danger'
-        data-btntext='" . gt("Delete") . "'
-        data-message=' " . gt("Do you really want to delete this attribute") . "?'
-        data-onclick='deleteAttributeAjax(" . $this->attribute_id . ")'>";
-        $buttons .= vsprintf($raw_button_template, $deleteData) . "</a>";
-        $buttons .= "</div>";
-
-        return $buttons;
+        return App()->getController()->widget('ext.admin.grid.GridActionsWidget.GridActionsWidget', ['dropdownItems' => $dropdownItems], true);
     }
 
     /**
@@ -250,49 +237,55 @@ class ParticipantAttributeName extends LSActiveRecord
         // load sodium library
         $sodium = Yii::app()->sodium;
         $bEncrypted = $sodium->bLibraryExists;
-        $cols = array(
-            array(
-                "name" => 'massiveActionCheckbox',
-                "type" => 'raw',
-                "header" => "<input type='checkbox' id='action_toggleAllAttributeNames' />",
-                "filter" => false
-            ),
-            array(
-                "name" => 'buttons',
-                "type" => 'raw',
-                "header" => gT("Action"),
-                "filter" => false
-            ),
-            array(
-                "name" => 'defaultname',
-                "value" => '$data->getNamePlusLanguageName()',
+        $cols = [
+            [
+                "name"              => 'massiveActionCheckbox',
+                "type"              => 'raw',
+                "header"            => "<input type='checkbox' id='action_toggleAllAttributeNames' />",
+                "filter"            => false,
+                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+                'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
+                'htmlOptions'       => ['class' => 'ls-sticky-column']
+            ],
+            [
+                "name"   => 'defaultname',
+                "value"  => '$data->getNamePlusLanguageName()',
                 "header" => gT("Name")
-            ),
-            array(
-                "name" => 'attribute_type',
-                "value" => '$data->getAttributeTypeNice()',
+            ],
+            [
+                "name"   => 'attribute_type',
+                "value"  => '$data->getAttributeTypeNice()',
                 "filter" => $this->attributeTypeDropdownArray
-            ),
-            array(
-                "name" => 'visible',
-                "value" => '$data->getVisibleSwitch()',
-                "type" => "raw",
-                "filter" => array("TRUE" => gT("Yes"), "FALSE" => gT("No"))
-            ),
-            array(
-                "name" => 'encrypted',
-                "value" => '$data->getEncryptedSwitch()',
-                "type" => "raw",
-                "filter" => array("Y" => gT("Yes"), "N" => gT("No")),
-                "header" => '<span ' . ($bEncrypted === true ? '' :  'title="' . gT("Encryption is disabled because Sodium library isn't installed") . '"') . '>' . gT("Encrypted") . '</span>',
-            ),
-            array(
-                "name" => 'core_attribute',
-                "value" => '$data->getCoreAttributeSwitch()',
-                "type" => "raw",
-                "filter" => array("Y" => gT("Yes"), "N" => gT("No")),
-            )
-        );
+            ],
+            [
+                "name"   => 'visible',
+                "value"  => '$data->getVisibleSwitch()',
+                "type"   => "raw",
+                "filter" => ["TRUE" => gT("Yes"), "FALSE" => gT("No")]
+            ],
+            [
+                "name"   => 'encrypted',
+                "value"  => '$data->getEncryptedSwitch()',
+                "type"   => "raw",
+                "filter" => ["Y" => gT("Yes"), "N" => gT("No")],
+                "header" => '<span ' . ($bEncrypted === true ? '' : 'title="' . gT("Encryption is disabled because Sodium library isn't installed") . '"') . '>' . gT("Encrypted") . '</span>',
+            ],
+            [
+                "name"   => 'core_attribute',
+                "value"  => '$data->getCoreAttributeSwitch()',
+                "type"   => "raw",
+                "filter" => ["Y" => gT("Yes"), "N" => gT("No")],
+            ],
+            [
+                "name"              => 'buttons',
+                "type"              => 'raw',
+                "header"            => gT("Action"),
+                "filter"            => false,
+                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+                'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
+                'htmlOptions'       => ['class' => 'ls-sticky-column']
+            ],
+        ];
         return $cols;
     }
 

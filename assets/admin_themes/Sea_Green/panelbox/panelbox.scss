@@ -1,14 +1,14 @@
 $panelbox-title-font-size: $font-size-lg * 1.2;
 
 .ls-panelboxes {
-  .ls-panelboxes-panelbox {
-    height: 200px;
-    margin: 10px 0;
-    position: relative;
+    .ls-panelboxes-panelbox {
+        min-height: 220px;
+        margin: 24px 0;
+        position: relative;
 
-    .card {
-      width: 95%;
-      height: 100%;
+        .card {
+            width: 92%;
+            height: 100%;
 
       .card-title {
         font-size: $panelbox-title-font-size;

@@ -225,10 +225,10 @@
 .full-page-wrapper {
     min-height: 100vh;
     position: relative;
+    /*margin-bottom: 65px;*/
 }
 
 .side-body h3,
-.pagetitle,
 .list-surveys h3 {
     position: relative;
     padding: 0.5em;
@@ -434,8 +434,17 @@ html {
     border-radius: 0;
 }
 
-.welcome #lime-logo {
-    animation: fadein 1s;
+.welcome {
+    #lime-logo {
+        animation: fadein 1s;
+    }
+
+    .recent-activity {
+        margin-top: 1.72rem;
+        font-size: 0.95rem;
+        padding-right: 3rem;
+        opacity: 0.7;
+    }
 }
 
 #welcomeModal {
@@ -457,7 +466,7 @@ html {
 }
 
 .profile-img-card {
-    margin-top: 32px;
+    margin: 1.7rem 1rem 0 1rem;
 }
 
 #profile-img {
@@ -1463,10 +1472,6 @@ textarea:focus {
     content: "\f00d";
 }
 
-.em-expression {
-    font-weight: bold;
-}
-
 .data-entry-tbl tr.odd td,
 .data-entry-tbl tr.even td {
     padding: 20px 0 20px 0;
@@ -2294,12 +2299,6 @@ table#responsedetail tr td {
 #editconditions .tab-content,
 #quick-add-conditions-form .tab-content {
     padding-top: 0;
-}
-
-#login-panel {
-    max-width: 400px;
-    margin-left: auto;
-    margin-right: auto
 }
 
 /*
@@ -3693,8 +3692,3 @@ html[dir="rtl"] th {
     overflow-x: visible;
 }
 
-// TODO: Should be set by scss variables for each admin theme.
-.accordion-button:not(.collapsed) {
-    background-color: #fff;
-    color: #000;
-}

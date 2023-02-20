@@ -219,10 +219,6 @@ $alert-info: #40ab82;
     background-color: $gray-03;
 }
 
-// Body
-body {
-    background-color: $g-100;
-}
 // Mark
 mark {
     background: $mark_bg;
@@ -1138,13 +1134,6 @@ output {
     border: 1px solid $gray-09;
 }
 
-// Side Body
-.side-body {
-    h3 {
-        @extend %extend_19;
-    }
-}
-
 // Surveybar
 .surveybar {
     border-bottom: 1px solid $gray-07;
@@ -1178,22 +1167,6 @@ table.cke_editor {
     .panel {
         box-shadow: 0 2px 5px 0 $black_opac_16, 0 2px 10px 0 $black_opac_12;
     }
-}
-
-// Login
-.login-title {
-    border-bottom: solid 1px $gray-08;
-}
-.login-submit {
-    border-top: solid 1px $gray-08;
-}
-
-// Headings
-.h6 .small {
-    color: $gray-15;
-}
-.pagetitle {
-    @extend %extend_19;
 }
 
 // Dropdowns
@@ -1396,14 +1369,6 @@ input[type="checkbox"]:checked:after,
     border: 1px solid $gray-09;
 }
 
-
-// Expression Manager
-.em-function {
-    color: $primary;
-}
-.em-var-string {
-    color: $primary-2;
-}
 
 // Data Entry
 .data-entry-explanation + tr {

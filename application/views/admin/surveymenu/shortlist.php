@@ -1,4 +1,8 @@
 <?php
+
+/**
+ * @var $model Surveymenu
+ */
 $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
 ?>
 
@@ -8,7 +12,7 @@ $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPa
         <div class="col-12 ls-flex-item">
             <?php
             $this->widget(
-                'application.extensions.admin.grid.CLSGridView',
+                'application.extensions.admin.grid.CLSGridView', //done
                 [
                     'dataProvider'  => $model->search(),
                     'id'            => 'surveymenu-shortlist-grid',
