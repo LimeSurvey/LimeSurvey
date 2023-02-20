@@ -11152,6 +11152,9 @@ a {
 }
 
 body {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
   background-color: #F9F9FB;
 }
 
@@ -11485,7 +11488,6 @@ blockquote.float-end {
 
 .side-body,
 .full-page-wrapper {
-  min-height: 100vh;
   position: relative;
   /*margin-bottom: 65px;*/
 }
@@ -17126,11 +17128,6 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 }
 
 .footer {
-  z-index: 100;
-  position: absolute !important;
-  margin-top: 65px;
-  bottom: 0;
-  display: block;
   width: 100%;
 }
 
