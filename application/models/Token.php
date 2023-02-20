@@ -424,7 +424,7 @@ abstract class Token extends Dynamic
             array('completed', 'length', 'min' => 0, 'max' => 17),
             array('remindersent', 'filter', 'filter' => array(self::class, 'sanitizeAttribute')),
             array('remindercount', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
-            array('email', 'filter', 'filter' => 'trim'),
+            array('email', 'LSYii_FilterValidator', 'filter' => 'trim', 'skipOnEmpty' => true),
             array('email', 'LSYii_EmailIDNAValidator', 'allowEmpty' => true, 'allowMultiple' => true, 'except' => 'allowinvalidemail'),
             array('emailstatus', 'default', 'value' => 'OK'),
             array('emailstatus', 'filter', 'filter' => array(self::class, 'sanitizeAttribute')),

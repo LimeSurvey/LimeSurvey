@@ -58,7 +58,7 @@ class ParticipantAttributeName extends LSActiveRecord
     {
         // NOTE: you should only define rules for those attributes that will receive user inputs.
         return array(
-            array('defaultname', 'filter', 'filter' => 'strip_tags'),
+            array('defaultname', 'LSYii_FilterValidator', 'filter' => 'strip_tags', 'skipOnEmpty' => true),
             array('attribute_type, visible, encrypted, core_attribute', 'required'),
             array('attribute_type', 'length', 'max' => 4),
             array('visible, encrypted, core_attribute', 'length', 'max' => 5),

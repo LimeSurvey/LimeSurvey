@@ -63,7 +63,7 @@ class QuestionGroup extends LSActiveRecord
     {
         return [
             ['group_order', 'numerical', 'integerOnly' => true, 'allowEmpty' => true],
-            ['grelevance', 'filter', 'filter' => 'trim'],
+            ['grelevance', 'LSYii_FilterValidator', 'filter' => 'trim', 'skipOnEmpty' => true],
             ['randomization_group', 'safe']
         ];
     }
