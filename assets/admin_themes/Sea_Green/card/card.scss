@@ -15,7 +15,6 @@
     &.card-clickable {
         &:hover {
             box-shadow: $boxshadow-hover;
-            cursor: pointer;
             cursor: hand;
         }
     }
@@ -51,10 +50,7 @@
 
     .card-header {
         @extend .card-title;
-<<<<<<<<< Temporary merge branch 1
-=========
-        padding: 1.72rem;
->>>>>>>>> Temporary merge branch 2
+        //padding: 1.72rem;
         height: unset;
         background-color: unset;
         border: none;
