@@ -51,36 +51,34 @@
 
     .card-header {
         @extend .card-title;
+<<<<<<<<< Temporary merge branch 1
+=========
         padding: 1.72rem;
+>>>>>>>>> Temporary merge branch 2
         height: unset;
         background-color: unset;
         border: none;
-        //padding: 0;
+        padding: 0;
         margin: 0;
     }
 
-    .card-body, .list-group {
-        padding: 1.72rem;
+    .card-body {
+        padding: 1rem;
         height: unset;
         background-color: unset;
         border: none;
     }
 
     // Remove body top padding if it comes after a header
-    .card-header + .card-body, .card-header + .list-group {
+    .card-header + .card-body {
         padding-top: 0;
-        margin-top: -1.72rem;
-    }
-
-    .list-group-item {
-        padding-left: 0;
-        padding-right: 0;
+        margin-top: -1rem;
     }
 
     .card-footer {
         justify-content: flex-start;
         height: unset;
-        padding: 1.72rem;
+        padding: 1rem;
         background-color: unset;
         border: none;
     }

@@ -215,8 +215,8 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
                 if ($category == 'Images' && $attribute['type'] == 'dropdown') {
                     echo '<div class="col-md-4 col-lg-2">
                                 <br/>
-                                <button 
-                                	class="btn btn-outline-secondary selector__open_lightbox" 
+                                <button
+                                	class="btn btn-outline-secondary selector__open_lightbox"
                                 	data-bs-target="#simple_edit_options_' . $attributeKey . '"> ' . gT('Preview image') . '
                                 </button>
                             </div>';
