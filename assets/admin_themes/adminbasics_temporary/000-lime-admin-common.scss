@@ -229,7 +229,6 @@
 }
 
 .side-body h3,
-.pagetitle,
 .list-surveys h3 {
     position: relative;
     padding: 0.5em;
@@ -1474,10 +1473,6 @@ textarea:focus {
 
 .ui-dialog-titlebar-close:before {
     content: "\f00d";
-}
-
-.em-expression {
-    font-weight: bold;
 }
 
 .data-entry-tbl tr.odd td,
@@ -3700,8 +3695,3 @@ html[dir="rtl"] th {
     overflow-x: visible;
 }
 
-// TODO: Should be set by scss variables for each admin theme.
-.accordion-button:not(.collapsed) {
-    background-color: #fff;
-    color: #000;
-}
