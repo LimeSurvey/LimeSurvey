@@ -2,6 +2,9 @@
   background-color: #ffffff;
   border: 1px solid #cccccc; }
 
+.btn:focus {
+  color: #333333; }
+
 .btn-outline-secondary:hover, .btn-outline-secondary:focus, .btn-outline-secondary:active, .btn-outline-secondary.active, .open .dropdown-toggle.btn-outline-secondary {
   color: #333333;
   background-color: #ebebeb;
@@ -699,9 +702,6 @@ fieldset[disabled] .btn-link:focus {
   color: #909898; }
 
 .btn:hover {
-  color: #333333; }
-
-.btn:focus {
   color: #333333; }
 
 .btn:active {

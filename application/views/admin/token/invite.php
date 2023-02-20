@@ -142,7 +142,18 @@
                         <div class='mb-3'>
                             <div class=''></div>
                             <div class=''>
-                                <?php echo CHtml::submitButton(gT("Send Invitations",'unescaped'), array('class'=>'btn btn-outline-secondary')); ?>
+                                <?php $this->widget(
+                                    'ext.ButtonWidget.ButtonWidget',
+                                    [
+                                        'name' => 'send-invitations-button',
+                                        'text' => gT('Send invitations', 'unescaped'),
+                                        'icon' => 'ri-mail-send-fill',
+                                        'htmlOptions' => [
+                                            'class' => 'btn btn-primary',
+                                            'type' => 'submit',
+                                        ],
+                                    ]
+                                ); ?>
                             </div>
 
                             <?php

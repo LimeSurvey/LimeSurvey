@@ -303,8 +303,6 @@ $(document).on('ready pjax:scriptcomplete', function(){
         })
     });
 
-    $(document).off('click.edittoken', '.edit-token').on('click.edittoken', '.edit-token', startEditToken);
-
     $(document).off('submit.edittoken', '#edittoken').on('submit.edittoken', '#edittoken', function(event, params){
         var eventParams = params || {};
         // When saving from the Edit Participant modal, handle the event in submitEditToken().
@@ -457,11 +455,11 @@ $(document).on('ready pjax:scriptcomplete', function(){
 /**
  * Token edit
  */
-var startEditToken = function(){
-    var $that       = $(this),
-        $sid        = $that.data('sid'),
-        $tid        = $that.data('tid'),
-        $actionUrl  = $that.data('url') || $that.attr("href"),
+var startEditToken = function(event, that){
+        event.preventDefault()
+        $sid        = $(that).data('sid'),
+        $tid        = $(that).data('tid'),
+        $actionUrl  = $(that).data('url') || $(that).attr("href"),
         $modal      = $('#editTokenModal'),
         $modalBody  = $modal.find('.modal-body'),
         $ajaxLoader = $('#ajaxContainerLoading2'),
@@ -501,7 +499,7 @@ var startEditToken = function(){
 
             initValidFromValidUntilPickers();
 
-            $('.date .input-group-addon').on('click', function(){
+            $('.date .input-group-text').on('click', function(){
                 $prev = $(this).siblings();
                 // $prev.data("DateTimePicker").show();
             });
@@ -567,7 +565,6 @@ function centerInfoDialog() {
 
 function onUpdateTokenGrid(){
     reinstallParticipantsFilterDatePicker();
-    $('.edit-token').off('click.edittoken').on('click.edittoken', startEditToken);
 }
 
 /**

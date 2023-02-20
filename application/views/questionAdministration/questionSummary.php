@@ -1,6 +1,7 @@
 <?php
 
 /** @var Survey $survey */
+
 /** @var Question $question */
 /** @var QuestionTheme $questionTheme */
 /** @var boolean $visibilityOverview */
@@ -8,52 +9,30 @@
 ?>
 
 <div id="question-overview"<?= empty($visibilityOverview) ? ' style="display:none;"' : '' ?>>
-    <?php if ($question->qid !== 0): ?>
-        <form>
-        <!-- Question summary -->
-        <div class="scoped-new-questioneditor">
-            <div class="pagetitle h3">
-                <?php eT('Question summary'); ?>&nbsp;
-                <small>
-                    <em><?= $question->title; ?></em>&nbsp;
-                    (ID: <?php echo (int) $question->qid;?>)
-                </small>
-            </div>
-            <div class="row">
-                <?php $this->renderPartial(
+    <?php
+    if ($question->qid !== 0): ?>
+            <!-- Question summary -->
+            <div class="container-fluid">
+                <div class="pagetitle">
+                    <span class="h1"><?php
+                        eT('Question summary'); ?>&nbsp;</span>
+                    <small>
+                        <em>
+                            <?= $question->title; ?> (ID: <?= (int)$question->qid; ?>)
+                        </em>&nbsp;
+                    </small>
+                </div>
+                <?php
+                $this->renderPartial(
                     "summary",
                     [
-                        'question'         => $question,
-                        'questionTheme'    => $questionTheme,
-                        'answersCount'      => count($question->answers),
+                        'question' => $question,
+                        'questionTheme' => $questionTheme,
+                        'answersCount' => count($question->answers),
                         'subquestionsCount' => count($question->subquestions),
-                        'advancedSettings'  => $advancedSettings
+                        'advancedSettings' => $advancedSettings
                     ]
                 ); ?>
             </div>
-            <?php if (Permission::model()->hasSurveyPermission($survey->sid, 'surveycontent', 'update')): ?>
-                <div id="survey-action-title" class="pagetitle h3"><?php eT('Question quick actions'); ?></div>
-                <div class="row welcome survey-action">
-                    <div class="col-12 content-right">
-
-                        <!-- create question in this group -->
-                        <div class="col-xl-3">
-                            <div class="card card-primary text-center <?php if ($survey->isActive) { echo 'disabled'; } else { echo 'card-clickable'; } ?>" id="panel-1" data-url="<?php echo $this->createUrl('questionAdministration/create/surveyid/'.$survey->sid.'/gid/'.$question->gid); ?>">
-                                <div class="card-header ">
-                                    <div class=""><?php eT("Add new question to group");?></div>
-                                </div>
-                                <div class="card-body">
-                                    <span class="ri-add-circle-fill text-success"  style="font-size: 3em;"></span>
-                                    <p class='btn-link'>
-                                            <?php eT("Add new question to group");?>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            <?php endif; ?>
-        </div>
-        </form>
     <?php endif; ?>
 </div>

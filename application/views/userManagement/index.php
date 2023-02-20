@@ -25,7 +25,7 @@ echo viewHelper::getViewTestTag('usersIndex');
 
 <div class="container-fluid">
     <?php
-    $this->widget('application.extensions.admin.grid.CLSGridView',
+    $this->widget('application.extensions.admin.grid.CLSGridView', //done
         [
             'id' => 'usermanagement--identity-gridPanel',
             'dataProvider' => $model->search(),

@@ -29,7 +29,7 @@ $this->widget(
         'name' => 'export-button',
         'id' => 'export-button',
         'text' => gT('Export this label set'),
-        'icon' => 'icon-export',
+        'icon' => 'ri-upload-2-fill',
         'link' => $this->createUrl("admin/export/sa/dumplabel/lid/$lid"),
         'htmlOptions' => [
             'class' => 'btn btn-outline-secondary',
@@ -47,7 +47,7 @@ if ($hasDeletePermission) {
             'name' => 'delete-button',
             'id' => 'create-import-button',
             'text' => gT('Delete'),
-            'icon' => 'ri-delete-bin-fill text-danger',
+            'icon' => 'ri-delete-bin-fill',
             'htmlOptions' => [
                 'class' => 'btn btn-danger',
                 'data-bs-toggle' => 'modal',

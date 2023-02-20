@@ -159,13 +159,18 @@ class UserAction extends SurveyCommonAction
         $aData['sEmailAdress'] = $oUser->email;
         $aData['passwordHelpText'] = $oUser->getPasswordHelpText();
 
-        // Fullpager Bar
-        $aData['fullpagebar']['savebutton']['form'] = 'personalsettings';
-        $aData['fullpagebar']['saveandclosebutton']['form'] = 'personalsettings';
-        $aData['fullpagebar']['white_closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl("admin"));
-
-        // Green Bar Page Title
-        $aData['pageTitle'] = gT('Account');
+        $aData['topbar']['title'] = gT('Account');
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/layouts/partial_topbar/right_close_saveclose_save',
+            [
+                'isCloseBtn' => true,
+                'isSaveBtn' => true,
+                'isSaveAndCloseBtn' => true,
+                'formIdSave' => 'personalsettings',
+                'formIdSaveClose' => 'personalsettings'
+            ],
+            true
+        );
 
         //Get data for personal menues
         $oSurveymenu = Surveymenu::model();

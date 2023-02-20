@@ -134,7 +134,6 @@ class Update extends DynamicSurveyCommonAction
             $updateModel = new UpdateForm();
             $serverAnswer = $updateModel->getUpdateInfo($buttons);
             $aData['serverAnswer'] = $serverAnswer;
-            $aData['fullpagebar']['closebutton']['url'] = 'admin/update';
             $updateKey = $aData['updateKey'] = getGlobalSetting('update_key');
 
             if (!$updateKey) {
@@ -153,7 +152,6 @@ class Update extends DynamicSurveyCommonAction
             );
 
             if (!$updateKey) {
-                //$aData['fullpagebar']['saveandclosebutton']['form'] = true;
                 $this->renderWrappedTemplate('update/manage/', 'subscribe', $aData);
             } else {
                 $aData['updateKeyInfos'] = $updateModel->checkUpdateKeyonServer($updateKey);
@@ -165,7 +163,6 @@ class Update extends DynamicSurveyCommonAction
     public function manageSubmitkey()
     {
         $updateModel = new UpdateForm();
-        $aData['fullpagebar']['closebutton']['url'] = 'admin/update';
         $aData['updateKey'] = $updateKey = SettingGlobal::model()->findByPk('update_key');
 
         if (Permission::model()->hasGlobalPermission('superadmin')) {

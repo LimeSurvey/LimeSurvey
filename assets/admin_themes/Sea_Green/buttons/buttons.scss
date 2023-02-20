@@ -29,6 +29,7 @@
     background-color : $g-400;
     border           : 1px solid $g-400;
     box-shadow       : none;
+    opacity          : 1;
 
     &:hover, &:focus, &:active, &.active {
       // default_disabled

@@ -31,6 +31,7 @@ class TopbarWidget extends CWidget
     {
         parent::init();
 
+        $this->registerClientScript();
         // Render the topbar
         $this->renderTopbar();
     }
@@ -48,6 +49,18 @@ class TopbarWidget extends CWidget
                 'rightSide' => $this->rightSide,
                 'isBreadCrumb' => $this->isBreadCrumb
             ]
+        );
+    }
+
+    /**
+     * Registers required script files
+     * @return void
+     */
+    public function registerClientScript()
+    {
+        App()->getClientScript()->registerScriptFile(
+            App()->getConfig('adminscripts') . 'topbar.js',
+            CClientScript::POS_END
         );
     }
 }

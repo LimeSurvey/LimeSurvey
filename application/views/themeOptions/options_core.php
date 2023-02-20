@@ -123,8 +123,13 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
                     $optionsValues = !empty($attribute['options']) ? explode('|', $attribute['options']) : array();
                     $optionLabels  = !empty($attribute['optionlabels']) ? explode('|', $attribute['optionlabels']) : array();
                     $options       = array_combine($optionsValues, $optionLabels);
-                    if ($bInherit && isset($sParentOption)) {
-                        $options['inherit'] = gT("Inherit") . ' [' . $sParentOption . ']';
+                                if ($bInherit && isset($sParentOption)) {
+                                    if(is_numeric($sParentOption) && array_key_exists($sParentOption, $options)) {
+                                        $sParentLabelOption = $options[$sParentOption];
+                                        $options['inherit'] = gT("Inherit") . ' [' . gT($sParentLabelOption) . ']';
+                                    } else {
+                                        $options['inherit'] = gT("Inherit") . ' [' . gT($sParentOption) . ']';
+                                    }
                     }
 
                     echo '<div class="col-12">
@@ -140,12 +145,12 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
                                 </div>';
                 } elseif ($attribute['type'] == 'colorpicker') {
                     echo '<div class="input-group">
-                                    <div class="input-group-addon style__colorpicker">
+                                    <div class="input-group-text style__colorpicker">
                                         <input type="color" name="' . $attributeKey . '_picker" data-value="' . $sParentOption . '" class="selector__colorpicker-inherit-value"/>
                                     </div>
                                     <input type="text" name="' . $attributeKey . '" data-inheritvalue="' . $sParentOption . '" value="inherit" class="selector_option_value_field selector__color-picker form-control simple_edit_options_' . $attributeKey . '" id="' . $attributeKey . '" />';
                     if ($bInherit && isset($sParentOption)) {
-                        echo '<div class="input-group-addon">
+                        echo '<div class="input-group-text">
                                             <button class="btn btn-outline-secondary btn-xs selector__reset-colorfield-to-inherit"><i class="ri-refresh-line"></i></button>
                                         </div>';
                     }
@@ -180,7 +185,7 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
                     // dropdown options from config.xml file
                     echo $aOptionAttributes['optionAttributes'][$attributeKey]['dropdownoptions'];
                     echo '</select>
-                                        <div class="input-group-addon selector__' . $attributeKey . '-preview">
+                                        <div class="input-group-text selector__' . $attributeKey . '-preview">
                                         ( <i class="fa" data-inheritvalue="' . $sParentOption . '" style=" background-color: #328637; color: white; width: 16px; height: 16px;  padding: 3px; font-size: 11px; ">
                                             &#x' . $sParentOption . ';
                                         </i> )

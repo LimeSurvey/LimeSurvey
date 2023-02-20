@@ -631,6 +631,7 @@ class TemplateManifest extends TemplateConfiguration
     }
 
 
+    // TODO: please write documentation here, seems to be no entrypoints for this
     public function getButtons()
     {
         $sEditorUrl  = Yii::app()->getController()->createUrl('admin/themes/sa/view', array("templatename" => $this->sTemplateName));
