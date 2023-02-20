@@ -17105,7 +17105,7 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 .footer {
   z-index: 100;
   position: absolute !important;
-  bottom: 0;
+  bottom: -70px;
   display: block;
   width: 100%;
 }
