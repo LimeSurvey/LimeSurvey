@@ -29,7 +29,7 @@ class SaveQuestionAttributesTest extends TestBaseClassWeb
                 "users_name" => "surveyadmin",
                 "full_name" => "surveyadmin",
                 "email" => "surveyadmin@example.com",
-                "lang" => "auto",
+                "lang" => "en",
                 "password" => "surveyadmin"
             ],
             [
@@ -87,15 +87,18 @@ class SaveQuestionAttributesTest extends TestBaseClassWeb
             $web->get($url);
 
             sleep(2);
-            
+
             $web->dismissModal();
             $web->dismissModal();
-            
+
             sleep(5);
             $oElementQuestionEditorButton = $this->waitForElementShim($web, '#questionEditorButton');
             $web->wait(10)->until(WebDriverExpectedCondition::elementToBeClickable(WebDriverBy::cssSelector('#questionEditorButton')));
             $oElementQuestionEditorButton->click();
             sleep(1);
+
+            $displayGeneralSettingsTitle = $web->findElement(WebDriverBy::id('button-collapse-General'));
+            $displayGeneralSettingsTitle->click();
 
             $oElementAdvancedOptionsPanel = $this->waitForElementShim($web, '#advanced-options-container');
             $web->wait(10)->until(WebDriverExpectedCondition::visibilityOf($oElementAdvancedOptionsPanel));

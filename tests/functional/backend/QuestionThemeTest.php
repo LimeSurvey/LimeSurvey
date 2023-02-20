@@ -107,7 +107,7 @@ class QuestionThemeTest extends TestBaseClassWeb
         $button->click();
 
         // Select question theme
-        $button = $web->findById('trigger_questionTypeSelector_button_button');
+        $button = $web->findById('trigger_questionTypeSelector_button');
         $button->click();
 
         $group = $web->findElement(WebDriverBy::xpath("//*[contains(text(),'Mask questions')]"));

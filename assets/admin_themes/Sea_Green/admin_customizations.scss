@@ -1,3 +1,7 @@
+// Body
+body {
+  background-color: $g-100;
+}
 
 .summary-table {
   font-size: $font-size-sm;
@@ -9,6 +13,7 @@
 
 // Headings
 .pagetitle {
+  padding-bottom: 4px;
   border-bottom : solid 2px $g-400;
   position      : relative;
   margin-bottom : 1em;

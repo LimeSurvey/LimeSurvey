@@ -39,7 +39,7 @@ App()->getClientScript()->registerScript(
                 <!-- Boxes -->
                 <div id="boxes" class="tab-pane fade show active">
                     <?php $this->widget(
-                        'application.extensions.admin.grid.CLSGridView',
+                        'application.extensions.admin.grid.CLSGridView', //done
                         [
                             'id' => 'boxes-grid',
                             'dataProvider' => $dataProviderBox->search(),
@@ -57,13 +57,6 @@ App()->getClientScript()->registerScript(
                                     )
                                 ),
                             'columns' => [
-                                [
-                                    'header' => gT('Action'),
-                                    'name' => 'actions',
-                                    'value' => '$data->buttons',
-                                    'type' => 'raw',
-                                    'htmlOptions' => ['class' => ''],
-                                ],
                                 [
                                     'header' => gT('Position'),
                                     'name' => 'position',
@@ -100,6 +93,14 @@ App()->getClientScript()->registerScript(
                                     'name' => 'url',
                                     'value' => '$data->usergroupname',
                                     'htmlOptions' => ['class' => ''],
+                                ],
+                                [
+                                    'header' => gT('Action'),
+                                    'name' => 'actions',
+                                    'value' => '$data->buttons',
+                                    'type' => 'raw',
+                                    'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+                                    'htmlOptions'       => ['class' => 'text-center button-column ls-sticky-column'],
                                 ],
                             ],
                         ]

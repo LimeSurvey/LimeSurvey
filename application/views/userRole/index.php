@@ -18,7 +18,7 @@ echo viewHelper::getViewTestTag('roles');
             <div class="col-12">
                 <?php
                 $this->widget(
-                    'application.extensions.admin.grid.CLSGridView',
+                    'application.extensions.admin.grid.CLSGridView', //done
                     [
                         'id' => 'RoleControl--identity-gridPanel',
                         'htmlOptions' => ['class' => 'table-responsive grid-view-ls'],
@@ -48,7 +48,7 @@ echo viewHelper::getViewTestTag('roles');
             </div>
         </div>
         <div id='RoleControl-action-modal' class="modal fade RoleControl--selector--modal" tabindex="-1" role="dialog">
-            <div id="userrole-modal-dialog" class="modal-dialog" role="document">
+            <div id="userrole-modal-dialog" class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                 </div>
             </div>

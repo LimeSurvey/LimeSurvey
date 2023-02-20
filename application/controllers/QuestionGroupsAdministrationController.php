@@ -507,10 +507,10 @@ class QuestionGroupsAdministrationController extends LSBaseController
                 . " (" . gT("ID") . ":" . $iSurveyID . ")";
 
             $this->aData = $aData;
-            $this->render('import_view', [
+            $this->render('/questionAdministration/import', [
                 'aImportResults' => $this->aData['aImportResults'],
                 'sExtension' => $this->aData['sExtension'],
-                'surveyid' => $this->aData['surveyid']
+                'sid' => $this->aData['surveyid']
             ]);
         }
     }

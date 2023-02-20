@@ -15,7 +15,7 @@ echo viewHelper::getViewTestTag('participantsSharePanel');
         <div class="col-12 list-surveys">
             <div class="row">
                 <?php
-                    $this->widget('application.extensions.admin.grid.CLSGridView', [
+                    $this->widget('application.extensions.admin.grid.CLSGridView', [//done
                         'id' => 'share_central_participants',
                         'dataProvider' => $model->search(),
                         'columns' => $model->columns,

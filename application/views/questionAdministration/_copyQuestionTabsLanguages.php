@@ -9,6 +9,7 @@
  */
 ?>
 <div class="row">
+   <div class="col-6">
     <!-- Question code -->
     <?php $this->renderPartial(
         "questionCode",
@@ -18,8 +19,7 @@
             'newQid' => true
         ]
     ); ?>
-    <!-- Language selector -->
-    <?php $this->renderPartial("languageselector", ['oSurvey' => $oSurvey]); ?>
+   </div>
 </div>
 
 <div class="row">

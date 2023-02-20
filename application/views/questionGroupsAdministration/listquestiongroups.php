@@ -60,7 +60,7 @@
     <div class="row ls-space margin">
         <?php
         $this->widget(
-            'ext.admin.grid.CLSGridView',
+            'ext.admin.grid.CLSGridView', //done
             [
                 'id'              => 'question-group-grid',
                 'dataProvider'    => $model->search(),
@@ -80,15 +80,6 @@
 
                 // Columns to dispplay
                 'columns'         => [
-
-                    // Action buttons (defined in model)
-                    [
-                        'header'      => gT('Action'),
-                        'name'        => 'actions',
-                        'type'        => 'raw',
-                        'value'       => '$data->buttons',
-                        'htmlOptions' => ['class' => ''],
-                    ],
                     // Group Id
                     [
                         'header' => gT('Group ID'),
@@ -119,7 +110,15 @@
                         'value'       => 'viewHelper::flatEllipsizeText($data->primaryDescription, true, 0)',
                         'htmlOptions' => ['class' => ''],
                     ],
-
+                    // Action buttons (defined in model)
+                    [
+                        'header'      => gT('Action'),
+                        'name'        => 'actions',
+                        'type'        => 'raw',
+                        'value'       => '$data->buttons',
+                        'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+                        'htmlOptions'       => ['class' => 'text-center button-column ls-sticky-column'],
+                    ],
 
                 ],
                 'ajaxUpdate'      => 'question-group-grid',

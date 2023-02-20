@@ -219,10 +219,6 @@ $alert-info: #40ab82;
     background-color: $gray-03;
 }
 
-// Body
-body {
-    background-color: $g-100;
-}
 // Mark
 mark {
     background: $mark_bg;
@@ -1102,24 +1098,6 @@ table.cke_editor {
 #welcome-jumbotron {
     background-color: transparent;
 }
-.welcome {
-    .panel {
-        box-shadow: 0 2px 5px 0 $black_opac_16, 0 2px 10px 0 $black_opac_12;
-    }
-}
-
-// Login
-.login-title {
-    border-bottom: solid 1px $gray-08;
-}
-.login-submit {
-    border-top: solid 1px $gray-08;
-}
-
-// Headings
-.h6 .small {
-    color: $gray-15;
-}
 
 // Dropdowns
 .open .dropdown-toggle {
@@ -1166,13 +1144,6 @@ table.cke_editor {
     }
     &:focus {
         border: 1px solid $gray-08;
-    }
-}
-
-div.panel.disabled {
-    opacity: 0.5;
-    * {
-        opacity: 0.5;
     }
 }
 
@@ -1235,12 +1206,6 @@ div.panel.disabled {
             .navbar-nav {
                 li {
                     border-bottom: 1px solid $gray-07;
-                    &.panel {
-                        background-color: transparent;
-                    }
-                    &.panel-default {
-                        border-bottom: 1px solid $gray-07;
-                    }
                 }
             }
             .card-body {
@@ -1317,14 +1282,6 @@ input[type="checkbox"]:checked:after,
 }
 
 
-// Expression Manager
-.em-function {
-    color: $primary;
-}
-.em-var-string {
-    color: $primary-2;
-}
-
 // Data Entry
 .data-entry-explanation + tr {
     background-color: $gray-06;
@@ -1337,9 +1294,7 @@ input[type="checkbox"]:checked:after,
 #carousel-example-generic .carousel-control {
     color: $primary;
 }
-#carousel-example-generic .panel-title {
-    color: $primary;
-}
+
 #carousel-example-generic .carousel-indicators .active {
     background-color: $primary;
 }

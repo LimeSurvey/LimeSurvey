@@ -225,7 +225,7 @@
 .full-page-wrapper {
     min-height: 100%;
     position: relative;
-    margin-bottom: 65px;
+    /*margin-bottom: 65px;*/
 }
 
 .side-body h3,
@@ -1475,10 +1475,6 @@ textarea:focus {
     content: "\f00d";
 }
 
-.em-expression {
-    font-weight: bold;
-}
-
 .data-entry-tbl tr.odd td,
 .data-entry-tbl tr.even td {
     padding: 20px 0 20px 0;
@@ -2256,12 +2252,6 @@ table#responsedetail tr td {
 #editconditions .tab-content,
 #quick-add-conditions-form .tab-content {
     padding-top: 0;
-}
-
-#login-panel {
-    max-width: 400px;
-    margin-left: auto;
-    margin-right: auto
 }
 
 /*
@@ -3655,8 +3645,3 @@ html[dir="rtl"] th {
     overflow-x: visible;
 }
 
-// TODO: Should be set by scss variables for each admin theme.
-.accordion-button:not(.collapsed) {
-    background-color: #fff;
-    color: #000;
-}
