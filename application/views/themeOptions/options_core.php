@@ -93,12 +93,10 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
         $iMaxColumnSize = 12;
         $iTotalWidth    = 0;
         $iCount         = 0;
-        // @TODO full $url not needed
-        $url = 'https://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
 
         echo '<div class="position-relative">';
 
-        if (strpos($url, 'updateSurvey') !== false) {
+        if (strpos($_SERVER['REQUEST_URI'], 'updateSurvey') !== false) {
             echo '<div class="action_hide_on_inherit_wrapper ls-option-disabled">';
             echo '</div>';
         }
