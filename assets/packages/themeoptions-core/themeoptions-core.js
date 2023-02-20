@@ -52,6 +52,8 @@ var ThemeOptions = function () {
 
         } else {
             $('#general_inherit_off').prop('checked', true).trigger('change').closest('label').addClass('active');
+            $('.action_hide_on_inherit_wrapper').addClass('d-none');
+            $('.tab_action_hide_on_inherit').removeClass('ls-tab-disabled');
         }
     };
 

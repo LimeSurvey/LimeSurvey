@@ -133,6 +133,15 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
                     if ($bInherit && isset($sParentOption)) {
                         $options['inherit'] = $sParentOption . " ᴵ";
                     }
+                    if ($bInherit && isset($sParentOption)) {
+                        if (is_numeric($sParentOption) && array_key_exists($sParentOption, $options)) {
+                            $sParentLabelOption = $options[$sParentOption];
+                            $options['inherit'] = gT($sParentLabelOption) . " ᴵ";
+                        } else {
+                            $sParentOption = $sParentOption !== '' ? gT($sParentOption) : $sParentOption;
+                            $options['inherit'] = $sParentOption . " ᴵ";
+                        }
+                    }
 
                     echo '<div class="col-12">
                                         <div class="btn-group">';

@@ -4483,7 +4483,7 @@ textarea.form-control-lg {
   padding: 1rem 1rem;
 }
 
-.card-title, .ls-panelboxes .ls-panelboxes-panelbox .card .card-header, .card.card-primary .card-header {
+.card-title, .ls-panelboxes .card.card-primary .card-header, .ls-panelboxes .ls-panelboxes-panelbox .card .card-header, .card.card-primary .card-header {
   margin-bottom: 0.5rem;
 }
 
@@ -11112,6 +11112,45 @@ a {
   display: none !important;
 }
 
+.ls-footer-label {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 20px;
+  color: #5E6372;
+}
+
+.ls-settings-wrapper {
+  position: relative !important;
+  min-height: 100vh !important;
+}
+
+.select2-selection__choice {
+  background-color: #EEEFF7;
+  color: #9094A7 !important;
+  font-weight: 500 !important;
+  font-size: 12px !important;
+  line-height: 16px;
+}
+
+.ls-option-disabled {
+  z-index: 999 !important;
+  background-color: #F9F9FB;
+  opacity: 0.8;
+  position: absolute;
+  inset: 0;
+}
+
+.ls-tab-disabled {
+  opacity: 0.4;
+  pointer-events: none !important;
+  cursor: not-allowed !important;
+}
+
+.tab-content {
+  padding-top: 1rem;
+}
+
 body {
   background-color: #F9F9FB;
 }
@@ -11366,7 +11405,7 @@ body {
 
 .side-body,
 .full-page-wrapper {
-  min-height: 100%;
+  min-height: 100vh;
   position: relative;
   /*margin-bottom: 65px;*/
 }
@@ -11427,10 +11466,6 @@ html {
 
 #fullpagebar {
   z-index: 100;
-}
-
-.tab-content {
-  padding-top: 2em;
 }
 
 :focus {
@@ -17141,16 +17176,17 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 
 .footer {
   z-index: 100;
-  position: absolute;
+  position: absolute !important;
   bottom: 0;
   display: block;
   width: 100%;
-  height: 60px;
-  padding-top: 1em;
 }
 
-footer.footer {
-  position: static;
+.sub_footer {
+  width: 100%;
+}
+.sub_footer .sub_footer_border {
+  border-top: 1px solid #1E1E1E;
 }
 
 @media print {
@@ -17304,10 +17340,15 @@ footer.footer {
 .card.card-primary {
   background-color: #fff;
   position: relative;
-  border-radius: 4px;
-  box-shadow: 8px 8px #EEEFF7;
-  border: 1px solid #1E1E1E;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
   color: #1E1E1E;
+  padding: 28px 32px;
+  font-size: 14px;
+  font-weight: 400;
+}
+.card.card-primary.border-left-danger {
+  border-left: 4px solid #FF515F;
 }
 .card.card-primary.card-clickable:hover {
   box-shadow: 8px 8px #D3C5FA;
@@ -17321,18 +17362,29 @@ footer.footer {
 .card.card-primary.disabled a {
   cursor: default;
 }
-.card.card-primary .card-title, .ls-panelboxes .ls-panelboxes-panelbox .card.card-primary .card-header, .card.card-primary .card-header {
-  font-size: 1.425rem;
+.card.card-primary .card-title, .ls-panelboxes .card.card-primary .card-header, .card.card-primary .card-header {
+  font-size: 1.14rem;
   display: inline-block;
   color: #1E1E1E;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 26px;
+}
+.card.card-primary .card-label {
+  color: #9094A7;
+}
+.card.card-primary .line-clamp-3 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  /* truncate to 3 lines */
+  -webkit-line-clamp: 3;
 }
 .card.card-primary .card-header {
   padding: 1.72rem;
   height: unset;
   background-color: unset;
   border: none;
+  margin: 0;
 }
 .card.card-primary .card-body, .card.card-primary .list-group {
   padding: 1.72rem;
@@ -17556,6 +17608,61 @@ footer.footer {
 .ls-panelboxes .ls-panelboxes-panelbox .card .btn {
   width: fit-content;
   border-width: 1px;
+}
+.ls-panelboxes .card.card-primary {
+  background-color: #fff;
+  position: relative;
+  border-radius: 4px;
+  box-shadow: 8px 8px #EEEFF7;
+  border: 1px solid #1E1E1E;
+  color: #1E1E1E;
+  padding: 0;
+}
+.ls-panelboxes .card.card-primary.card-clickable:hover {
+  box-shadow: 8px 8px #D3C5FA;
+  cursor: pointer;
+  cursor: hand;
+}
+.ls-panelboxes .card.card-primary.disabled {
+  opacity: 0.5;
+  border: none;
+}
+.ls-panelboxes .card.card-primary.disabled a {
+  cursor: default;
+}
+.ls-panelboxes .card.card-primary .card-title, .ls-panelboxes .card.card-primary .card-header {
+  font-size: 1.425rem;
+  display: inline-block;
+  color: #1E1E1E;
+  font-weight: 600;
+  line-height: 26px;
+}
+.ls-panelboxes .card.card-primary .card-header {
+  padding: 1rem;
+  height: unset;
+  background-color: unset;
+  border: none;
+}
+.ls-panelboxes .card.card-primary .card-body {
+  padding: 1rem;
+  height: unset;
+  background-color: unset;
+  border: none;
+}
+.ls-panelboxes .card.card-primary .card-header + .card-body {
+  padding-top: 0;
+  margin-top: -1rem;
+}
+.ls-panelboxes .card.card-primary .card-footer {
+  justify-content: flex-start;
+  height: unset;
+  padding: 1rem;
+  background-color: unset;
+  border: none;
+}
+.ls-panelboxes .card.card-primary .card-body + .card-footer,
+.ls-panelboxes .card.card-primary .card-header + .card-footer {
+  padding-top: 0;
 }
 
 .cke_top {
@@ -18127,11 +18234,34 @@ input[type=file]::file-selector-button {
   padding-left: 10px;
   background: linear-gradient(to right, #328637 0px, #328637 6px, #fff 6px, #fff 100%);
 }
+#sidebar .menu-label {
+  color: #1E1E1E;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+}
+#sidebar .subpanel {
+  font-size: 14px;
+}
+#sidebar .subpanel .wrapper .title {
+  color: #5E6372;
+}
+#sidebar .subpanel .wrapper .icon {
+  color: #5E6372;
+}
 #sidebar .subpanel.level-0 .menu-selected {
   background: linear-gradient(to right, #40ab46 0px, #40ab46 6px, #fff 6px, #fff 100%);
 }
 #sidebar .subpanel.level-0 .selected {
+  font-weight: 500;
   background: linear-gradient(to right, #40ab46 0px, #40ab46 13px, #fff 13px, #fff 100%);
+}
+#sidebar .subpanel.level-0 .selected .wrapper .title {
+  color: #1E1E1E;
+}
+#sidebar .subpanel.level-0 .selected .wrapper .icon {
+  color: #14AE5C;
+  font-weight: 600;
 }
 #sidebar .subpanel.level-1 .menu-selected {
   background: linear-gradient(to right, #49bb50 0px, #49bb50 6px, #fff 6px, #fff 100%);
