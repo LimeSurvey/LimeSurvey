@@ -1,8 +1,14 @@
+# 3.5.1 (2023-02-08)
+
+ * Arrow functions passed to the "reduce" filter now accept the current key as a third argument
+ * Restores the leniency of the matches twig comparison
+ * Fix error messages in sandboxed mode for "has some" and "has every"
+
 # 3.5.0 (2022-12-27)
 
- * Make Twig\ExpressionParser non internal
- * Add "some" and "every" filters
- * Add Compile::reset(
+ * Make Twig\ExpressionParser non-internal
+ * Add "has some" and "has every" operators
+ * Add Compile::reset()
  * Throw a better runtime error when the "matches" regexp is not valid
  * Add "twig *_names" intl functions
  * Fix optimizing closures callbacks
