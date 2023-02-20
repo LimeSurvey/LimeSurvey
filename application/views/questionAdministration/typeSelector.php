@@ -15,11 +15,14 @@ $extraOptionsUrl = $this->createUrl(
     'questionAdministration/getExtraOptionsHTML',
     ['surveyId' => $question->sid, 'questionId' => $question->qid]
 );
+$renderType = isset($selectormodeclass) && $selectormodeclass == "none" ? "group-simple" : "group-modal";
+$viewType = $renderType == 'group-modal' ? 'grouped_select_modal' : 'simple_grouped_select';
+
 $oQuestionSelector = $this->beginWidget(
     'ext.admin.PreviewModalWidget.PreviewModalWidget',
     [
         'widgetsJsName' => "questionTypeSelector",
-        'renderType'    => isset($selectormodeclass) && $selectormodeclass == "none" ? "group-simple" : "group-modal",
+        'renderType'    => $renderType,
         'modalTitle'    => gT("Select question type"),
         'groupTitleKey' => "questionGroupName",
         'groupItemsKey' => "questionTypes",
@@ -30,7 +33,7 @@ $oQuestionSelector = $this->beginWidget(
         'value' => $question->type,
         'theme' => $questionTheme->name,
         'debug' => YII_DEBUG,
-        'buttonClasses' => ['btn-primary'],
+        'buttonClasses' => ['btn-primary btn-lg'],
         'currentSelected' => gT($questionTheme->title), //todo: use questiontheme instead ...
         'optionArray' => [
             'selectedClass' => $questionTheme->getDecodedSettings()->class, //Question::getQuestionClass($question->type),
@@ -47,25 +50,11 @@ $oQuestionSelector = $this->beginWidget(
 );
 ?>
 <?= $oQuestionSelector->getModal(); ?>
-<div class="mb-3 col-12 col-xl-8 contains-question-selector">
-    <label for="questionCode"><?= gT('Question type'); ?></label>
-    <div class="btn-group" style="width: 100%;">
-        <!-- ?= $oQuestionSelector->getButtonOrSelect(); ?> -->
 
-        <?php $this->widget('ext.InputWidget.InputWidget', [
-            'name' => 'title',
-            'id' => 'selector__' . 'questionTypeSelector' . '--buttonText',
-            'value' => gT($questionTheme->title) .  gT("Type:") . " " . $question->type,
-            'isAttached' => true,
-            'attachContent' => $this->renderPartial('partials/typeSelectorButton', null, true),
-            'wrapperHtmlOptions' => [
-                'id' => 'trigger_' . 'questionTypeSelector' . '_button',
-                'class' => 'w-100'
-            ],
-        ]);
-        ?>
-        <?php $this->endWidget('ext.admin.PreviewModalWidget.PreviewModalWidget'); ?>
-    </div>
+<div id="question-type-selector-wrapper" class="mb-3 contains-question-selector" data-viewtype="<?= $viewType ?>" data-debug="<?= YII_DEBUG ?>">
+    <label for="questionCode"><?= gT('Question type'); ?></label>
+    <?= $oQuestionSelector->getButtonOrSelect(); ?>
+    <?php $this->endWidget('ext.admin.PreviewModalWidget.PreviewModalWidget'); ?>
     <input type="hidden" id="questionTypeVisual" name="questionTypeVisual" />
     <input type="hidden" id="question_type" name="question[type]" value="<?= $question->type; ?>" />
     <input type="hidden" id="question_theme_name" name="question[question_theme_name]" value="<?= $questionTheme->name; ?>" />

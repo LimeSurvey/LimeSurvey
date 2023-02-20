@@ -238,11 +238,7 @@ class QuestionAdministrationController extends LSBaseController
             $question->question_theme_name
         );
 
-        if (App()->session['questionselectormode'] !== 'default') {
-            $selectormodeclass = App()->session['questionselectormode'];
-        } else {
-            $selectormodeclass = App()->getConfig('defaultquestionselectormode');
-        }
+        $selectormodeclass = $this->getSelectorModeClass();
 
         $viewData = [
             'oSurvey'                => $question->survey,
@@ -1579,7 +1575,16 @@ class QuestionAdministrationController extends LSBaseController
             $question->gid,
             $questionTheme
         );
-        $this->renderPartial("generalSettings", ['generalSettings'  => $generalSettings]);
+
+        $questionThemeObject = QuestionTheme::model()->find('name=:name', array(':name' => $questionTheme));
+        $this->renderPartial("generalSettings", [
+            'generalSettings' => $generalSettings,
+            'oSurvey' => Survey::model()->findByPk($surveyId),
+            'question' => $question,
+            'aQuestionTypeGroups' => $this->getQuestionTypeGroups(QuestionTheme::findAllQuestionMetaDataForSelector()),
+            'questionTheme' => $questionThemeObject,
+            'selectormodeclass' => $this->getSelectorModeClass(),
+        ]);
     }
 
     /**
@@ -3102,5 +3107,20 @@ class QuestionAdministrationController extends LSBaseController
                 'overviewVisibility' => false,  // Hidden by default
             ]
         );
+    }
+
+    /**
+     * Returns the selector mode class as string
+     * @return string
+     */
+    private function getSelectorModeClass()
+    {
+        if (App()->session['questionselectormode'] !== 'default') {
+            $selectorModeClass = App()->session['questionselectormode'];
+        } else {
+            $selectorModeClass = App()->getConfig('defaultquestionselectormode');
+        }
+
+        return $selectorModeClass;
     }
 }
