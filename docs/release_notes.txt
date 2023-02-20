@@ -34,6 +34,10 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.49 (build 230215) to 3.28.50 (build 230221) February 20, 2023
+-Fixed issue #18492: [security] Updates for several JS libraries (Carsten Schmitz)
+
+
 Changes from 3.28.48 (build 230207) to 3.28.49 (build 230215) February 14, 2023
 -Fixed issue: Intermittent unstyled page when creating/copying a survey (Carsten Schmitz)
 #Updated translation: Tagalog by c_schmitz
