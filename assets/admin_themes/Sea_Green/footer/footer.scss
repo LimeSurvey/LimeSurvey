@@ -2,11 +2,10 @@
 .footer {
   z-index: 100;
   position: absolute !important;
-  bottom: -70px;
+  margin-top: 65px;
+  bottom: 0;
   display: block;
   width: 100%;
-  // height: 60px;
-  // padding-top: 1em;
 }
 .sub_footer {
   width: 100%;
