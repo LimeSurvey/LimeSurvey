@@ -34,6 +34,10 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.6 (build 230220) to 5.6.7 (build 230222) February 20, 2023
+-Fixed issue for #18438: Prevent translation of empty string (Tim Willig)
+
+
 Changes from 5.6.5 (build 230214) to 5.6.6 (build 230220) February 20, 2023
 -Fixed issue: [security] Minor XSS vulnerability when editing a question group (Carsten Schmitz)
 -Fixed issue: [security] Minor XSS vulnerability when editing a question (Carsten Schmitz)
