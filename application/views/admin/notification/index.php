@@ -7,7 +7,7 @@
     <div class="pagetitle h3"><?php eT('Notifications'); ?></div>
     <?php
 
-$surveyGrid = $this->widget('yiistrap_fork.widgets.TbGridView', array(
+$surveyGrid = $this->widget('application.extensions.admin.grid.CLSGridView', array(
     'dataProvider' => $model->search(),
     'id'           => 'notification-grid',
     'emptyText'    => gT('No notifications found'),
