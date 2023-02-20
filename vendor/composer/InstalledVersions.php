@@ -32,7 +32,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '2fdc33e7dfebedd506379ddbe06cdc3ef4d6ed7b',
+    'reference' => 'c1b544a03d05ba7302a3457c518c4722600c3c59',
     'name' => 'limesurvey/limesurvey',
   ),
   'versions' => 
@@ -62,7 +62,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '2fdc33e7dfebedd506379ddbe06cdc3ef4d6ed7b',
+      'reference' => 'c1b544a03d05ba7302a3457c518c4722600c3c59',
     ),
     'mk-j/php_xlsxwriter' => 
     array (
