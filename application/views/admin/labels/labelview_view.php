@@ -16,7 +16,7 @@
             <?php endif; ?>
         </div>
 
-        <!-- Left content -->
+        <!-- Main content -->
         <div class="col-12 content-right text-center">
 
             <!-- tabs -->
@@ -40,11 +40,9 @@
             <?php echo CHtml::endForm() ?>
         </div>
 
-        <!-- Right content -->
-        <div class="col-md-4">
-            <?php if (Permission::model()->hasGlobalPermission('labelsets', 'update')) { ?>
-                <?php $this->renderPartial("./labels/_labelviewrightcontent_view", ['lid' => $lid]); ?>
-            <?php }; ?>
-        </div>
+        <!-- Bottom content -->
+        <?php if (Permission::model()->hasGlobalPermission('labelsets', 'update')) { ?>
+            <?php $this->renderPartial("./labels/_labelviewrightcontent_view", ['lid' => $lid]); ?>
+        <?php }; ?>
     </div>
 </div>

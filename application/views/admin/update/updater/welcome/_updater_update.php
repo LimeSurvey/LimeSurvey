@@ -3,7 +3,7 @@
  * This file display the Updater Update Message
  */
 ?>
-<h2 class="maintitle"><?php eT("ComfortUpdate needs to be updated");?></h2>
+<h3 class="maintitle"><?php eT("ComfortUpdate needs to be updated");?></h3>
 
 <?php
     if( isset($serverAnswer->html) )

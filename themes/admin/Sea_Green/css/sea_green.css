@@ -11143,6 +11143,86 @@ body {
 }
 
 /**
+ * comfortUpdate
+ */
+#ajaxContainerLoading,
+.ajaxLoading {
+  height: 130px;
+  text-align: center;
+  margin-top: 70px;
+  margin-bottom: 100px;
+  display: none;
+}
+
+#comfortUpdateIcon {
+  height: 1em;
+  margin-right: 0.5em;
+}
+
+#comfortUpdateGeneralWrap h3.maintitle, #comfortUpdateGeneralWrap .maintitle.h3 {
+  background-color: transparent;
+  color: #152536;
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-weight: 500;
+  font-size: 0.9975rem;
+  line-height: 20px;
+  border-bottom: solid 2px #D3D5DA;
+}
+
+#comfortUpdateGeneralWrap .on {
+  font-weight: bold;
+  font-size: 1em;
+  padding-left: 0.5em;
+  padding-top: 0.5em;
+}
+
+#comfortUpdateGeneralWrap .on span {
+  display: block;
+  padding: 0.1em;
+  padding-left: 0.5em;
+  width: 40%;
+  background-color: var(--bs-primary);
+  color: #fff;
+}
+
+#comfortUpdateGeneralWrap .off {
+  font-size: 0.9em;
+  padding-left: 0.5em;
+  padding-top: 0.5em;
+}
+
+#comfortUpdateGeneralWrap #welcomeMessage {
+  border-right: 2px solid #D3D5DA;
+}
+
+#comfortUpdateGeneralWrap #key-actions {
+  padding-left: 1em;
+}
+
+/**
+ * comfortUpdate END
+ */
+blockquote {
+  border-left: 8px solid var(--bs-primary);
+}
+blockquote footer {
+  color: #9094A7;
+}
+blockquote small, blockquote .small {
+  color: #9094A7;
+}
+blockquote .small {
+  color: #9094A7;
+}
+blockquote.float-end {
+  border-right: 8px solid var(--bs-primary);
+}
+
+.blockquote-reverse {
+  border-right: 8px solid var(--bs-primary);
+}
+
+/**
  * Lime Admin Common CSS File
  *
  * This file contain all the common css definitions for the different admin theme.
@@ -12753,56 +12833,6 @@ h3 .glyphicon-chevron-right,
 .preloader.loading .slice:nth-child(6) {
   transform: rotateZ(360deg) rotateY(90deg) rotateX(0);
   animation: 2s preload-cycle-6 linear infinite both;
-}
-
-/**
- * comfortUpdate
- */
-#ajaxContainerLoading,
-.ajaxLoading {
-  height: 130px;
-  text-align: center;
-  margin-top: 70px;
-  margin-bottom: 100px;
-  display: none;
-}
-
-#comfortUpdateIcon {
-  height: 1em;
-  margin-right: 0.5em;
-}
-
-#comfortUpdateGeneralWrap h3.maintitle, #comfortUpdateGeneralWrap .maintitle.h3 {
-  background-color: transparent;
-}
-
-#comfortUpdateGeneralWrap .on {
-  font-weight: bold;
-  font-size: 1em;
-  padding-left: 0.5em;
-  padding-top: 0.5em;
-}
-
-#comfortUpdateGeneralWrap .on span {
-  display: block;
-  padding: 0.1em;
-  padding-left: 0.5em;
-  width: 40%;
-}
-
-#comfortUpdateGeneralWrap .off {
-  font-size: 0.9em;
-  padding-left: 0.5em;
-  padding-top: 0.5em;
-}
-
-#comfortUpdateGeneralWrap #welcomeMessage,
-#comfortUpdateGeneralWrap #btn-container {
-  border-right: 1px solid #EEE;
-}
-
-#comfortUpdateGeneralWrap #key-actions {
-  padding-left: 1em;
 }
 
 html body .nav-tabs > li.active > a,
@@ -15150,11 +15180,6 @@ a.list-group-item-danger.active:focus, a.list-group-item-danger.active:hover, a.
   filter: alpha(opacity=90);
 }
 
-.list-surveys h3, .list-surveys .h3 {
-  color: #333333;
-  border-bottom: solid 2px #328637;
-}
-
 mark, .mark {
   background: #ff6cb6;
   color: #000;
@@ -15253,53 +15278,12 @@ hr {
   border-top: 1px solid #9cba9e;
 }
 
-.bg-primary {
-  color: #fff;
-  background-color: #328637;
-}
-
-.bg-success {
-  background-color: #c0e3c2;
-}
-
-.bg-info {
-  background-color: #649b6b;
-}
-
-.bg-warning {
-  background-color: #bba18c;
-}
-
-.bg-danger {
-  background-color: #a0352f !important;
-}
-
 .page-header {
   border-bottom: 1px solid #9cba9e;
 }
 
 abbr[data-original-title] {
   border-bottom: 1px dotted #858585;
-}
-
-blockquote {
-  border-left: 5px solid #9cba9e;
-}
-blockquote footer {
-  color: #858585;
-}
-blockquote small, blockquote .small {
-  color: #858585;
-}
-blockquote .small {
-  color: #858585;
-}
-blockquote.float-end {
-  border-right: 5px solid #9cba9e;
-}
-
-.blockquote-reverse {
-  border-right: 5px solid #9cba9e;
 }
 
 code {
@@ -16184,18 +16168,6 @@ input[type=checkbox]:checked:after,
   -webkit-transition: width 1.6s;
   /* Safari */
   transition: width 1.6s;
-}
-
-#comfortUpdateGeneralWrap h3.maintitle, #comfortUpdateGeneralWrap .maintitle.h3 {
-  background-color: transparent;
-  color: #328637;
-  border-bottom: 1px solid #328637;
-}
-
-#comfortUpdateGeneralWrap .on span {
-  display: block;
-  background-color: #328637;
-  color: #fff;
 }
 
 .jcarousel li.active {
@@ -17899,6 +17871,8 @@ input[type=file]::file-selector-button {
 }
 
 .form-select {
+  height: 38px;
+  padding: 0px 36px 2px 12px;
   border: 1px solid #1E1E1E;
   font-weight: 400;
   font-size: 0.9975rem;
@@ -18134,6 +18108,9 @@ input[type=file]::file-selector-button {
 }
 
 .badge {
+  padding: 4px 8px;
+  font-weight: 500;
+  border-radius: 2px;
   background-color: #F9F9FB;
   color: #1E1E1E;
 }

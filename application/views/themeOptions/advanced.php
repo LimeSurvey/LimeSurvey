@@ -31,14 +31,16 @@
     <div class="container-fluid">
         <div class="row ls-space margin bottom-15">
             <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-6 h4">
-                        <?php printf(gT("Upload an image (maximum size: %d MB):"), getMaximumFileUploadSize() / 1024 / 1024); ?>
+                <div class="row mb-3">
+                    <div class="col-4">
+                        <label>
+                            <?php printf(gT("Upload an image (maximum size: %d MB):"), getMaximumFileUploadSize() / 1024 / 1024); ?>
+                        </label>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-8">
                         <?php echo TbHtml::form(['admin/themes/sa/upload'], 'post', ['id' => 'uploadimage', 'name' => 'uploadimage', 'enctype' => 'multipart/form-data']); ?>
                         <span id="fileselector">
-                            <label class="btn btn-outline-secondary col-8" for="upload_image">
+                            <label class="btn btn-outline-secondary" for="upload_image">
                                 <input class="d-none" id="upload_image" name="upload_image" type="file">
                                 <i class="ri-upload-fill ls-space margin right-10"></i><?php eT("Upload"); ?>
                             </label>
