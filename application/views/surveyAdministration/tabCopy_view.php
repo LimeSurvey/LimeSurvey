@@ -14,14 +14,14 @@
                     <?php echo getSurveyList(false); ?>
                 </select>
                 <p class="form-control-static">
-                    <span class='annotation text-warning'><?php echo  gT("Required"); ?> </span>
+                    <span class='annotation text-danger'><?php echo  gT("Required"); ?> </span>
                 </p>
 
                 <!-- New survey title -->
                 <label for='copysurveyname' class=" form-label"><?php echo  eT("New survey title:"); ?> </label>
                 <input type='text' id='copysurveyname' size='82' maxlength='200' name='copysurveyname' value='' required="required" class="form-control" />
                 <p class="form-control-static">
-                    <span class='annotation text-warning'><?php echo  gT("Required"); ?> </span>
+                    <span class='annotation text-danger'><?php echo  gT("Required"); ?> </span>
                 </p>
 
                 <!-- New survey id -->
