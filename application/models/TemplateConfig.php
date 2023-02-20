@@ -344,7 +344,7 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['body']  = $this->getTemplateAndMotherNames();
 
         if (!empty($this->aCssFrameworkReplacement)) {
-            $aVariationFile = explode('/', $this->aCssFrameworkReplacement[0]);
+            $aVariationFile = explode('/', (string) $this->aCssFrameworkReplacement[0]);
             $aVariationFile = explode('.', end($aVariationFile));
             $sVariationName = $aVariationFile[0];
             $aClassAndAttributes['class']['body']  .= ' ' . $sVariationName;

@@ -72,7 +72,7 @@
                     $uploadSummary .="<div class='badtokenlist' id='invalidattributelist' ><ul>";
                     foreach ($aInvalidFormatlist as $data)
                     {
-                        $uploadSummary.= "<li>" .  vsprintf(gT('Line %s: Fields found: %s Expected: %s'),explode(',',$data)) . "</li>";
+                        $uploadSummary.= "<li>" .  vsprintf(gT('Line %s: Fields found: %s Expected: %s'),explode(',',(string) $data)) . "</li>";
                     }
                     $uploadSummary .= "</ul></div></li>";
                 }

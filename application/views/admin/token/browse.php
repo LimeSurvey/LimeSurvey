@@ -3,7 +3,7 @@
     $aLanguageNames=array();
     foreach ($aLanguages as $sCode => $sName)
     {
-        $aLanguageNames[] = $sCode . ":" . str_replace(";", " -", $sName);
+        $aLanguageNames[] = $sCode . ":" . str_replace(";", " -", (string) $sName);
     }
     $aLanguageNames = implode(";", $aLanguageNames);
 

@@ -45,7 +45,7 @@
                             <select name='ldapQueries' class="form-select">
                                 <?php 
                                 uasort ( $ldap_queries , function ($a, $b) {
-                                    return strnatcmp($a['name'],$b['name']); // or other function/code
+                                    return strnatcmp((string) $a['name'],(string) $b['name']); // or other function/code
                                     }
                                 );                                      
                                 foreach ($ldap_queries as $q_number => $q): ?>

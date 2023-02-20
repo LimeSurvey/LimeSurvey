@@ -326,7 +326,7 @@ class LimesurveyApi
         $base = App()->getDb()->tablePrefix . 'old_survey_' . $surveyId;
         $timingbase = App()->getDb()->tablePrefix . 'old_survey_' . $surveyId . '_timings_';
         foreach (App()->getDb()->getSchema()->getTableNames() as $table) {
-            if (strpos($table, $base) === 0 && strpos($table, $timingbase) === false) {
+            if (strpos((string) $table, $base) === 0 && strpos((string) $table, $timingbase) === false) {
                 $tables[] = $table;
             }
         }

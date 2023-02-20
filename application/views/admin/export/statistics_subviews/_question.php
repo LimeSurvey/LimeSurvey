@@ -417,7 +417,7 @@
                     if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {echo " checked='checked'";}
 
                     echo " />&nbsp;"
-                    .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", $row[15])." - # ".$flt[3])
+                    .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", (string) $row[15])." - # ".$flt[3])
                     ."</div>\n"
                     ."\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple' class='form-select'>\n";
 
@@ -458,7 +458,7 @@
                     if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {echo " checked='checked'";}
 
                     echo " />&nbsp;"
-                    .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", $row['question'])." - # ".$flt[3])
+                    .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", (string) $row['question'])." - # ".$flt[3])
                     ."</div>\n"
                     ."\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row['title']}[]' multiple='multiple' class='form-select'>\n";
 
@@ -497,7 +497,7 @@
                     {echo " checked='checked'";}
 
                     echo " />&nbsp;"
-                    .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", $row[15])." - # ".$flt[3])
+                    .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", (string) $row[15])." - # ".$flt[3])
                     ."\n"
                     ."</div>\n"
                     ."\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple' class='form-select'>\n"
@@ -544,7 +544,7 @@
                     if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {echo " checked='checked'";}
 
                     echo " />&nbsp;"
-                    .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", $row[15])." - # ".$flt[3])
+                    .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", (string) $row[15])." - # ".$flt[3])
                     ."\n"
                     ."</div>\n"
                     ."\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple'  class='form-select'>\n"
@@ -598,26 +598,26 @@
                 //Get qidattributes for this question
                 echo '<h4 class="question-selector-title">'.$oStatisticsHelper::_showSpeaker($niceqtext).'</h4><br/>';
                 $qidattributes=QuestionAttribute::model()->getQuestionAttributes($flt[0]);
-                if (trim($qidattributes['multiflexible_max'])!='' && trim($qidattributes['multiflexible_min']) ==''){
+                if (trim((string) $qidattributes['multiflexible_max'])!='' && trim((string) $qidattributes['multiflexible_min']) ==''){
                     $maxvalue=$qidattributes['multiflexible_max'];
                     $minvalue=1;
                 }
-                if (trim($qidattributes['multiflexible_min'])!='' && trim($qidattributes['multiflexible_max']) ==''){
+                if (trim((string) $qidattributes['multiflexible_min'])!='' && trim((string) $qidattributes['multiflexible_max']) ==''){
                     $minvalue=$qidattributes['multiflexible_min'];
                     $maxvalue=$qidattributes['multiflexible_min'] + 10;
                 }
-                if (trim($qidattributes['multiflexible_min'])=='' && trim($qidattributes['multiflexible_max']) ==''){
+                if (trim((string) $qidattributes['multiflexible_min'])=='' && trim((string) $qidattributes['multiflexible_max']) ==''){
                     $minvalue=1;
                     $maxvalue=10;
                 }
-                if (trim($qidattributes['multiflexible_min']) !='' && trim($qidattributes['multiflexible_max']) !=''){
+                if (trim((string) $qidattributes['multiflexible_min']) !='' && trim((string) $qidattributes['multiflexible_max']) !=''){
                     if($qidattributes['multiflexible_min'] < $qidattributes['multiflexible_max']){
                         $minvalue=$qidattributes['multiflexible_min'];
                         $maxvalue=$qidattributes['multiflexible_max'];
                     }
                 }
 
-                if (trim($qidattributes['multiflexible_step'])!='') {
+                if (trim((string) $qidattributes['multiflexible_step'])!='') {
                     $stepvalue=$qidattributes['multiflexible_step'];
                 } else {
                     $stepvalue=1;
@@ -684,7 +684,7 @@
                     if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {echo " checked='checked'";}
 
                     echo " />&nbsp;"
-                    .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", $row['question'])." - # ".$flt[3])
+                    .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", (string) $row['question'])." - # ".$flt[3])
                     ."</div>\n";
 
                     /*
@@ -759,7 +759,7 @@
                     if (isset($summary) && array_search($myfield2, $summary) !== FALSE) {echo " checked='checked'";}
 
                     echo " />&nbsp;"
-                    .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", $row->answerl10ns[$language]->answer)." - # ".$flt[3])
+                    .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", (string) $row->answerl10ns[$language]->answer)." - # ".$flt[3])
                     ."</div>\n"
                     ."\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$i}[]' multiple='multiple' class='form-select'>\n";
 
@@ -836,7 +836,7 @@
                     }
 
                     echo " />&nbsp;"
-                    .$oStatisticsHelper::_showSpeaker($niceqtext." [".str_replace("'", "`", $row[15])."] - ".gT("Label").": ".$labeltitle)
+                    .$oStatisticsHelper::_showSpeaker($niceqtext." [".str_replace("'", "`", (string) $row[15])."] - ".gT("Label").": ".$labeltitle)
                     ."</div>\n";
 
                     /* get labels
@@ -906,7 +906,7 @@
                     }
 
                     echo " />&nbsp;"
-                    .$oStatisticsHelper::_showSpeaker($niceqtext." [".str_replace("'", "`", $row[15])."] - ".gT("Label").": ".$labeltitle2)
+                    .$oStatisticsHelper::_showSpeaker($niceqtext." [".str_replace("'", "`", (string) $row[15])."] - ".gT("Label").": ".$labeltitle2)
                     ."</div>\n";
                     $fresult = Answer::model()->getQuestionsForStatistics('*', "qid='$flt[0]' AND language = '$language' AND scale_id = 1", 'sortorder, code');
 

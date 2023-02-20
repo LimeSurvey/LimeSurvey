@@ -94,7 +94,7 @@ echo viewHelper::getViewTestTag('login');
                                 $languageData['default'] = gT('Default');
                             } else {
                                 $languageData[$reqLang] = html_entity_decode(
-                                        $aLangList[$reqLang]['nativedescription'],
+                                        (string) $aLangList[$reqLang]['nativedescription'],
                                         ENT_NOQUOTES,
                                         'UTF-8'
                                     ) . " - " . $aLangList[$reqLang]['description'];
@@ -104,7 +104,7 @@ echo viewHelper::getViewTestTag('login');
 
                             foreach ($aLangList as $sLangKey => $aLanguage) {
                                 $languageData[$sLangKey] = html_entity_decode(
-                                        $aLanguage['nativedescription'],
+                                        (string) $aLanguage['nativedescription'],
                                         ENT_NOQUOTES,
                                         'UTF-8'
                                     ) . " - " . $aLanguage['description'];

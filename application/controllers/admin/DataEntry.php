@@ -309,13 +309,13 @@ class DataEntry extends SurveyCommonAction
             $sourceSchema = $sourceTable->getTableSchema();
             $encryptedAttributes = Response::getEncryptedAttributes($iSurveyId);
             $tbl_name = $sourceSchema->name;
-            if (strpos($sourceSchema->name, Yii::app()->db->tablePrefix) === 0) {
-                $tbl_name = substr($sourceSchema->name, strlen(Yii::app()->db->tablePrefix));
+            if (strpos((string) $sourceSchema->name, (string) Yii::app()->db->tablePrefix) === 0) {
+                $tbl_name = substr((string) $sourceSchema->name, strlen((string) Yii::app()->db->tablePrefix));
             }
             $archivedTableSettings = ArchivedTableSettings::model()->findByAttributes(['tbl_name' => $tbl_name]);
             $archivedEncryptedAttributes = [];
             if ($archivedTableSettings) {
-                $archivedEncryptedAttributes = json_decode($archivedTableSettings->properties);
+                $archivedEncryptedAttributes = json_decode((string) $archivedTableSettings->properties);
             }
 
             $fieldMap = [];
@@ -330,7 +330,7 @@ class DataEntry extends SurveyCommonAction
                 // Exact match.
                 if ($targetSchema->getColumn($name)) {
                     $fieldMap[$name] = $name;
-                } elseif (preg_match($pattern, $name, $matches)) {
+                } elseif (preg_match($pattern, (string) $name, $matches)) {
                     // Column name is SIDXGIDXQID
                     $qid = $matches[3];
                     $targetColumn = $this->getQidColumn($targetSchema, $qid);
@@ -387,7 +387,7 @@ class DataEntry extends SurveyCommonAction
             }
 
             Yii::app()->session['flashmessage'] = sprintf(gT("%s old response(s) were successfully imported."), $imported);
-            $sOldTimingsTable = (string) substr(substr($sourceTable->tableName(), 0, (string) strrpos($sourceTable->tableName(), '_')) . '_timings' . (string) substr($sourceTable->tableName(), (string) strrpos($sourceTable->tableName(), '_')), strlen(Yii::app()->db->tablePrefix));
+            $sOldTimingsTable = (string) substr(substr((string) $sourceTable->tableName(), 0, (string) strrpos((string) $sourceTable->tableName(), '_')) . '_timings' . (string) substr((string) $sourceTable->tableName(), (string) strrpos((string) $sourceTable->tableName(), '_')), strlen((string) Yii::app()->db->tablePrefix));
             $sNewTimingsTable = "survey_{$surveyid}_timings";
 
             if (isset($_POST['timings']) && $_POST['timings'] == 1 && tableExists($sOldTimingsTable) && tableExists($sNewTimingsTable)) {
@@ -430,7 +430,7 @@ class DataEntry extends SurveyCommonAction
 
         foreach ($tables as $table) {
             $count = PluginDynamic::model($table)->count();
-            $timestamp = date_format(new DateTime((string) substr($table, -14)), 'Y-m-d H:i:s');
+            $timestamp = date_format(new DateTime((string) substr((string) $table, -14)), 'Y-m-d H:i:s');
             $list[$table] = "$timestamp ($count responses)";
         }
         return $list;
@@ -447,7 +447,7 @@ class DataEntry extends SurveyCommonAction
         foreach ($schema->columns as $name => $column) {
             $pattern = '/([\d]+)X([\d]+)X([\d]+.*)/';
             $matches = array();
-            if (preg_match($pattern, $name, $matches)) {
+            if (preg_match($pattern, (string) $name, $matches)) {
                 if ($matches[3] == $qid) {
                     return $column;
                 }
@@ -471,7 +471,7 @@ class DataEntry extends SurveyCommonAction
                 continue;
             }
             $matches = array();
-            if (preg_match($pattern, $name, $matches)) {
+            if (preg_match($pattern, (string) $name, $matches)) {
                 $qid = $matches[3];
                 $baseColumn = $this->getQidColumn($base, $qid);
                 if ($baseColumn) {
@@ -538,7 +538,7 @@ class DataEntry extends SurveyCommonAction
             $results[] = $idresult->attributes;
         } elseif ($subaction == "editsaved") {
             if (isset($_GET['public']) && $_GET['public'] == "true") {
-                $password = hash('sha256', Yii::app()->request->getParam('accesscode'));
+                $password = hash('sha256', (string) Yii::app()->request->getParam('accesscode'));
             } else {
                 $password = Yii::app()->request->getParam('accesscode');
             }
@@ -647,8 +647,8 @@ class DataEntry extends SurveyCommonAction
                         $aDataentryoutput .= $fname['subquestion'] . '&nbsp;';
                         /* Fix DB DECIMAL type */
                         $value = $idrow[$fname['fieldname']];
-                        if (strpos($value, ".")) {
-                            $value = rtrim(rtrim($value, "0"), ".");
+                        if (strpos((string) $value, ".")) {
+                            $value = rtrim(rtrim((string) $value, "0"), ".");
                         }
                         $aDataentryoutput .= CHtml::textField($fname['fieldname'], $value, array('pattern' => "[-]?([0-9]{0,20}([\.][0-9]{0,10})?)?",'title' => gT("Only numbers may be entered in this field.")));
                         break;
@@ -685,7 +685,7 @@ class DataEntry extends SurveyCommonAction
                             if ($datetimeobj) {
                                 $thisdate = $datetimeobj->format($dateformatdetails['phpdate']);
                             }
-                            $goodchars = str_replace(array("m", "d", "y", "H", "M"), "", $dateformatdetails['dateformat']);
+                            $goodchars = str_replace(array("m", "d", "y", "H", "M"), "", (string) $dateformatdetails['dateformat']);
                             $goodchars = "0123456789" . $goodchars[0];
                             $aDataentryoutput .= CHtml::textField(
                                 $fname['fieldname'],
@@ -719,15 +719,15 @@ class DataEntry extends SurveyCommonAction
                     case Question::QT_L_LIST: //LIST drop-down
                     case Question::QT_EXCLAMATION_LIST_DROPDOWN: //List (Radio)
                         $qidattributes = QuestionAttribute::model()->getQuestionAttributes($fname['qid']);
-                        if (isset($qidattributes['category_separator']) && trim($qidattributes['category_separator']) != '') {
+                        if (isset($qidattributes['category_separator']) && trim((string) $qidattributes['category_separator']) != '') {
                             $optCategorySeparator = $qidattributes['category_separator'];
                         } else {
                             unset($optCategorySeparator);
                         }
 
-                        if (substr($fname['fieldname'], -5) == "other") {
+                        if (substr((string) $fname['fieldname'], -5) == "other") {
                             $aDataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='"
-                            . htmlspecialchars($idrow[$fname['fieldname']], ENT_QUOTES) . "' />\n";
+                            . htmlspecialchars((string) $idrow[$fname['fieldname']], ENT_QUOTES) . "' />\n";
                         } else {
                             $lresult = Answer::model()->with('answerl10ns')->findAll(array('condition' => 'qid =:qid AND language = :language', 'params' => array('qid' => $fname['qid'], 'language' => $sDataEntryLanguage)));
                                 $aDataentryoutput .= "\t<select name='{$fname['fieldname']}' class='form-select'>\n" . "<option value=''";
@@ -748,7 +748,7 @@ class DataEntry extends SurveyCommonAction
                                 $defaultopts = array();
                                 $optgroups = array();
                                 foreach ($lresult as $llrow) {
-                                    list ($categorytext, $answertext) = explode($optCategorySeparator, $llrow->answerl10ns[$sDataEntryLanguage]->answer);
+                                    list ($categorytext, $answertext) = explode($optCategorySeparator, (string) $llrow->answerl10ns[$sDataEntryLanguage]->answer);
                                     if ($categorytext == '') {
                                         $defaultopts[] = array('code' => $llrow['code'], 'answer' => $answertext);
                                     } else {
@@ -880,9 +880,9 @@ class DataEntry extends SurveyCommonAction
                     case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
                         $thisqid = $fname['qid'];
                         while ($fname['qid'] == $thisqid) {
-                            if (substr($fname['fieldname'], -5) == "other") {
+                            if (substr((string) $fname['fieldname'], -5) == "other") {
                                 $aDataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='"
-                                . htmlspecialchars($idrow[$fname['fieldname']], ENT_QUOTES) . "' />\n";
+                                . htmlspecialchars((string) $idrow[$fname['fieldname']], ENT_QUOTES) . "' />\n";
                             } else {
                                 $aDataentryoutput .= "<div class='checkbox'>\t<input type='checkbox' class='checkboxbtn' name='{$fname['fieldname']}' id='{$fname['fieldname']}' value='Y'";
                                 if ($idrow[$fname['fieldname']] == "Y") {
@@ -922,12 +922,12 @@ class DataEntry extends SurveyCommonAction
                         $aDataentryoutput .= "<table class='table'>\n";
                         while (isset($fname) && $fname['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
                             $thefieldname = $fname['fieldname'];
-                            if (substr($thefieldname, -7) == "comment") {
+                            if (substr((string) $thefieldname, -7) == "comment") {
                                 $aDataentryoutput .= "<td>";
                                 $aDataentryoutput .= CHtml::textField($fname['fieldname'], $idrow[$fname['fieldname']], array('size' => 50));
                                 $aDataentryoutput .= "</td>\n"
                                 . "\t</tr>\n";
-                            } elseif (substr($fname['fieldname'], -5) == "other") {
+                            } elseif (substr((string) $fname['fieldname'], -5) == "other") {
                                 $aDataentryoutput .= "\t<tr>\n"
                                 . "<td>\n"
                                 . CHtml::textField($fname['fieldname'], $idrow[$fname['fieldname']], array('size' => 30))
@@ -954,22 +954,22 @@ class DataEntry extends SurveyCommonAction
                         $aDataentryoutput .= "<table class='table'>\n";
                         if ($fname['aid'] !== 'filecount' && isset($idrow[$fname['fieldname'] . '_filecount']) && ($idrow[$fname['fieldname'] . '_filecount'] > 0)) {
                             //file metadata
-                            $metadata = json_decode($idrow[$fname['fieldname']], true);
+                            $metadata = json_decode((string) $idrow[$fname['fieldname']], true);
                             $qAttributes = QuestionAttribute::model()->getQuestionAttributes($fname['qid']);
                             for ($i = 0; ($i < $qAttributes['max_num_of_files']) && isset($metadata[$i]); $i++) {
                                 if ($qAttributes['show_title']) {
-                                    $aDataentryoutput .= '<tr><td>' . gT("Title") . '</td><td><input type="text" class="' . $fname['fieldname'] . '" id="' . $fname['fieldname'] . '_title_' . $i . '" name="title"    size=50 value="' . htmlspecialchars($metadata[$i]["title"]) . '" /></td></tr>';
+                                    $aDataentryoutput .= '<tr><td>' . gT("Title") . '</td><td><input type="text" class="' . $fname['fieldname'] . '" id="' . $fname['fieldname'] . '_title_' . $i . '" name="title"    size=50 value="' . htmlspecialchars((string) $metadata[$i]["title"]) . '" /></td></tr>';
                                 }
                                 if ($qAttributes['show_comment']) {
-                                    $aDataentryoutput .= '<tr><td >' . gT("Comment") . '</td><td><input type="text" class="' . $fname['fieldname'] . '" id="' . $fname['fieldname'] . '_comment_' . $i . '" name="comment"  size=50 value="' . htmlspecialchars($metadata[$i]["comment"]) . '" /></td></tr>';
+                                    $aDataentryoutput .= '<tr><td >' . gT("Comment") . '</td><td><input type="text" class="' . $fname['fieldname'] . '" id="' . $fname['fieldname'] . '_comment_' . $i . '" name="comment"  size=50 value="' . htmlspecialchars((string) $metadata[$i]["comment"]) . '" /></td></tr>';
                                 }
 
-                                $aDataentryoutput .= '<tr><td>' . gT("File name") . '</td><td><input   class="' . $fname['fieldname'] . '" id="' . $fname['fieldname'] . '_name_' . $i . '" name="name" size=50 value="' . htmlspecialchars(rawurldecode($metadata[$i]["name"])) . '" /></td></tr>'
-                                . '<tr><td></td><td><input type="hidden" class="' . $fname['fieldname'] . '" id="' . $fname['fieldname'] . '_size_' . $i . '" name="size" size=50 value="' . htmlspecialchars($metadata[$i]["size"]) . '" /></td></tr>'
-                                . '<tr><td></td><td><input type="hidden" class="' . $fname['fieldname'] . '" id="' . $fname['fieldname'] . '_ext_' . $i . '" name="ext" size=50 value="' . htmlspecialchars($metadata[$i]["ext"]) . '" /></td></tr>'
-                                . '<tr><td></td><td><input type="hidden"  class="' . $fname['fieldname'] . '" id="' . $fname['fieldname'] . '_filename_' . $i . '" name="filename" size=50 value="' . htmlspecialchars(rawurldecode($metadata[$i]["filename"])) . '" /></td></tr>';
+                                $aDataentryoutput .= '<tr><td>' . gT("File name") . '</td><td><input   class="' . $fname['fieldname'] . '" id="' . $fname['fieldname'] . '_name_' . $i . '" name="name" size=50 value="' . htmlspecialchars(rawurldecode((string) $metadata[$i]["name"])) . '" /></td></tr>'
+                                . '<tr><td></td><td><input type="hidden" class="' . $fname['fieldname'] . '" id="' . $fname['fieldname'] . '_size_' . $i . '" name="size" size=50 value="' . htmlspecialchars((string) $metadata[$i]["size"]) . '" /></td></tr>'
+                                . '<tr><td></td><td><input type="hidden" class="' . $fname['fieldname'] . '" id="' . $fname['fieldname'] . '_ext_' . $i . '" name="ext" size=50 value="' . htmlspecialchars((string) $metadata[$i]["ext"]) . '" /></td></tr>'
+                                . '<tr><td></td><td><input type="hidden"  class="' . $fname['fieldname'] . '" id="' . $fname['fieldname'] . '_filename_' . $i . '" name="filename" size=50 value="' . htmlspecialchars(rawurldecode((string) $metadata[$i]["filename"])) . '" /></td></tr>';
                             }
-                            $aDataentryoutput .= '<tr><td></td><td><input type="hidden" id="' . $fname['fieldname'] . '" name="' . $fname['fieldname'] . '" size=50 value="' . htmlspecialchars($idrow[$fname['fieldname']]) . '" /></td></tr>';
+                            $aDataentryoutput .= '<tr><td></td><td><input type="hidden" id="' . $fname['fieldname'] . '" name="' . $fname['fieldname'] . '" size=50 value="' . htmlspecialchars((string) $idrow[$fname['fieldname']]) . '" /></td></tr>';
                             $aDataentryoutput .= '</table>';
                             $aDataentryoutput .= '<script type="text/javascript">
                             $(function() {
@@ -996,14 +996,14 @@ class DataEntry extends SurveyCommonAction
                             </script>';
                         } else {
                             //file count
-                            $aDataentryoutput .= '<input readonly id="' . $fname['fieldname'] . '" name="' . $fname['fieldname'] . '" value ="' . htmlspecialchars($idrow[$fname['fieldname']]) . '" /></td></table>';
+                            $aDataentryoutput .= '<input readonly id="' . $fname['fieldname'] . '" name="' . $fname['fieldname'] . '" value ="' . htmlspecialchars((string) $idrow[$fname['fieldname']]) . '" /></td></table>';
                         }
                         break;
                     case Question::QT_N_NUMERICAL: //NUMERICAL TEXT
                         /* Fix DB DECIMAL type */
                         $value = $idrow[$fname['fieldname']];
-                        if (strpos($value, ".")) {
-                            $value = rtrim(rtrim($value, "0"), ".");
+                        if (strpos((string) $value, ".")) {
+                            $value = rtrim(rtrim((string) $value, "0"), ".");
                         }
                         /* no number fix with return window.LS.goodchars … */
                         $aDataentryoutput .= CHtml::textField($fname['fieldname'], $value, array('pattern' => "[-]?([0-9]{0,20}([\.][0-9]{0,10})?)?",'title' => gT("Only numbers may be entered in this field.")));
@@ -1183,22 +1183,22 @@ class DataEntry extends SurveyCommonAction
                         $qidattributes = QuestionAttribute::model()->getQuestionAttributes($fname['qid']);
                         $minvalue = 1;
                         $maxvalue = 10;
-                        if (trim($qidattributes['multiflexible_max']) != '' && trim($qidattributes['multiflexible_min']) == '') {
+                        if (trim((string) $qidattributes['multiflexible_max']) != '' && trim((string) $qidattributes['multiflexible_min']) == '') {
                             $maxvalue = $qidattributes['multiflexible_max'];
                             $minvalue = 1;
                         }
-                        if (trim($qidattributes['multiflexible_min']) != '' && trim($qidattributes['multiflexible_max']) == '') {
+                        if (trim((string) $qidattributes['multiflexible_min']) != '' && trim((string) $qidattributes['multiflexible_max']) == '') {
                             $minvalue = $qidattributes['multiflexible_min'];
                             $maxvalue = $qidattributes['multiflexible_min'] + 10;
                         }
-                        if (trim($qidattributes['multiflexible_min']) != '' && trim($qidattributes['multiflexible_max']) != '') {
+                        if (trim((string) $qidattributes['multiflexible_min']) != '' && trim((string) $qidattributes['multiflexible_max']) != '') {
                             if ($qidattributes['multiflexible_min'] < $qidattributes['multiflexible_max']) {
                                 $minvalue = $qidattributes['multiflexible_min'];
                                 $maxvalue = $qidattributes['multiflexible_max'];
                             }
                         }
 
-                        if (trim($qidattributes['multiflexible_step']) != '') {
+                        if (trim((string) $qidattributes['multiflexible_step']) != '') {
                             $stepvalue = $qidattributes['multiflexible_step'];
                         } else {
                             $stepvalue = 1;
@@ -1451,7 +1451,7 @@ class DataEntry extends SurveyCommonAction
                     if ($datetimeobj) {
                         $oResponse->$fieldname = $datetimeobj->format('Y-m-d H:i');
                     } else {
-                        Yii::app()->setFlashMessage(sprintf(gT("Invalid datetime %s value for %s"), htmlentities($thisvalue), $fieldname), 'warning');
+                        Yii::app()->setFlashMessage(sprintf(gT("Invalid datetime %s value for %s"), htmlentities((string) $thisvalue), $fieldname), 'warning');
                         $oResponse->$fieldname = null;
                     }
                     break;
@@ -1461,7 +1461,7 @@ class DataEntry extends SurveyCommonAction
                         $oResponse->$fieldname = null;
                         break;
                     }
-                    if (!preg_match("/^[-]?(\d{1,20}\.\d{0,10}|\d{1,20})$/", $thisvalue)) {
+                    if (!preg_match("/^[-]?(\d{1,20}\.\d{0,10}|\d{1,20})$/", (string) $thisvalue)) {
                         Yii::app()->setFlashMessage(sprintf(gT("Invalid numeric value for %s"), $fieldname), 'warning');
                         $oResponse->$fieldname = null;
                         break;
@@ -1469,7 +1469,7 @@ class DataEntry extends SurveyCommonAction
                     $oResponse->$fieldname = $thisvalue;
                     break;
                 case Question::QT_VERTICAL_FILE_UPLOAD:
-                    if (strpos($irow['fieldname'], '_filecount')) {
+                    if (strpos((string) $irow['fieldname'], '_filecount')) {
                         if (empty($thisvalue)) {
                             $oResponse->$fieldname = null;
                             break;
@@ -1514,7 +1514,7 @@ class DataEntry extends SurveyCommonAction
                     if ($datetimeobj) {
                         $oResponse->$fieldname = $datetimeobj->format('Y-m-d H:i');
                     } else {
-                        Yii::app()->setFlashMessage(sprintf(gT("Invalid datetime %s value for %s"), htmlentities($thisvalue), $fieldname), 'warning');
+                        Yii::app()->setFlashMessage(sprintf(gT("Invalid datetime %s value for %s"), htmlentities((string) $thisvalue), $fieldname), 'warning');
                         /* We get here : we need a valid value : NOT NULL in db or completed != "N" */
                         $oResponse->$fieldname = dateShift(date("Y-m-d H:i"), "Y-m-d\TH:i", Yii::app()->getConfig('timeadjust'));
                     }
@@ -1614,7 +1614,7 @@ class DataEntry extends SurveyCommonAction
                     $saver['passwordconfirm'] = $_POST['save_confirmpassword'];
                     $saver['email'] = $_POST['save_email'];
                     if (!returnGlobal('redo')) {
-                        $password = md5($saver['password']);
+                        $password = md5((string) $saver['password']);
                     } else {
                         $password = $saver['password'];
                     }
@@ -1663,9 +1663,9 @@ class DataEntry extends SurveyCommonAction
                             // can't add '' in Date column
                             // Do nothing
                         } elseif ($irow['type'] == Question::QT_VERTICAL_FILE_UPLOAD) {
-                            if (!strpos($irow['fieldname'], "_filecount")) {
+                            if (!strpos((string) $irow['fieldname'], "_filecount")) {
                                 $json = $_POST[$fieldname];
-                                $phparray = json_decode(stripslashes($json));
+                                $phparray = json_decode(stripslashes((string) $json));
                                 $filecount = 0;
                                 if (is_array($phparray)) {
                                     $iArrayCount = count($phparray);
@@ -1673,13 +1673,13 @@ class DataEntry extends SurveyCommonAction
                                         if ($_FILES[$fieldname . "_file_" . $i]['error'] != 4) {
                                             $target = Yii::app()->getConfig('uploaddir') . "/surveys/" . $thissurvey['sid'] . "/files/" . randomChars(20);
                                             $size = 0.001 * $_FILES[$fieldname . "_file_" . $i]['size'];
-                                            $name = rawurlencode($_FILES[$fieldname . "_file_" . $i]['name']);
+                                            $name = rawurlencode((string) $_FILES[$fieldname . "_file_" . $i]['name']);
 
                                             if (move_uploaded_file($_FILES[$fieldname . "_file_" . $i]['tmp_name'], $target)) {
                                                 $phparray[$filecount]->filename = basename($target);
                                                 $phparray[$filecount]->name = $name;
                                                 $phparray[$filecount]->size = $size;
-                                                $pathinfo = pathinfo($_FILES[$fieldname . "_file_" . $i]['name']);
+                                                $pathinfo = pathinfo((string) $_FILES[$fieldname . "_file_" . $i]['name']);
                                                 $phparray[$filecount]->ext = $pathinfo['extension'];
                                                 $filecount++;
                                             }
@@ -2006,9 +2006,9 @@ class DataEntry extends SurveyCommonAction
                     $cdata['qidattributes'] = $qidattributes;
 
                     $qinfo = LimeExpressionManager::GetQuestionStatus($arQuestion['qid']);
-                    $relevance = trim($qinfo['info']['relevance']);
-                    $explanation = trim($qinfo['relEqn']);
-                    $validation = trim($qinfo['prettyValidTip']);
+                    $relevance = trim((string) $qinfo['info']['relevance']);
+                    $explanation = trim((string) $qinfo['relEqn']);
+                    $validation = trim((string) $qinfo['prettyValidTip']);
                     $qidattributes = QuestionAttribute::model()->getQuestionAttributes($arQuestion['qid']);
                     $arrayFilterHelp = flattenText($this->arrayFilterHelp($qidattributes, $sDataEntryLanguage, $surveyid));
 
@@ -2056,7 +2056,7 @@ class DataEntry extends SurveyCommonAction
 
                     $cdata['thissurvey'] = $thissurvey;
                     if (!empty($arQuestion->questionl10ns[$sDataEntryLanguage]->help)) {
-                        $hh = addcslashes($arQuestion->questionl10ns[$sDataEntryLanguage]->help, "\0..\37'\""); //Escape ASCII decimal 0-32 plus single and double quotes to make JavaScript happy.
+                        $hh = addcslashes((string) $arQuestion->questionl10ns[$sDataEntryLanguage]->help, "\0..\37'\""); //Escape ASCII decimal 0-32 plus single and double quotes to make JavaScript happy.
                         $hh = htmlspecialchars($hh, ENT_QUOTES); //Change & " ' < > to HTML entities to make HTML happy.
                         $cdata['hh'] = $hh;
                     }
@@ -2074,7 +2074,7 @@ class DataEntry extends SurveyCommonAction
 
                         case Question::QT_L_LIST: //LIST drop-down/radio-button list
                         case Question::QT_EXCLAMATION_LIST_DROPDOWN:
-                            if ($arQuestion['type'] == '!' && trim($qidattributes['category_separator']) != '') {
+                            if ($arQuestion['type'] == '!' && trim((string) $qidattributes['category_separator']) != '') {
                                 $optCategorySeparator = $qidattributes['category_separator'];
                             } else {
                                 unset($optCategorySeparator);
@@ -2092,7 +2092,7 @@ class DataEntry extends SurveyCommonAction
                                 $optgroups = array();
 
                                 foreach ($arAnswers as $aAnswer) {
-                                    list ($categorytext, $answertext) = explode($optCategorySeparator, $aAnswer->answerl10ns[$sDataEntryLanguage]->answer);
+                                    list ($categorytext, $answertext) = explode($optCategorySeparator, (string) $aAnswer->answerl10ns[$sDataEntryLanguage]->answer);
                                     if ($categorytext == '') {
                                         $defaultopts[] = array('code' => $aAnswer['code'], 'answer' => $answertext, 'default_value' => $aAnswer['assessment_value']);
                                     } else {
@@ -2142,7 +2142,7 @@ class DataEntry extends SurveyCommonAction
                             App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'ranking.css');
                             break;
                         case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox (Quite tricky really!)
-                            if (trim($qidattributes['display_columns']) != '') {
+                            if (trim((string) $qidattributes['display_columns']) != '') {
                                 $dcols = $qidattributes['display_columns'];
                             } else {
                                 $dcols = 1;
@@ -2170,22 +2170,22 @@ class DataEntry extends SurveyCommonAction
                         case Question::QT_COLON_ARRAY_NUMBERS: // Array
                             $minvalue = 1;
                             $maxvalue = 10;
-                            if (trim($qidattributes['multiflexible_max']) != '' && trim($qidattributes['multiflexible_min']) == '') {
+                            if (trim((string) $qidattributes['multiflexible_max']) != '' && trim((string) $qidattributes['multiflexible_min']) == '') {
                                 $maxvalue = $qidattributes['multiflexible_max'];
                                 $minvalue = 1;
                             }
-                            if (trim($qidattributes['multiflexible_min']) != '' && trim($qidattributes['multiflexible_max']) == '') {
+                            if (trim((string) $qidattributes['multiflexible_min']) != '' && trim((string) $qidattributes['multiflexible_max']) == '') {
                                 $minvalue = $qidattributes['multiflexible_min'];
                                 $maxvalue = $qidattributes['multiflexible_min'] + 10;
                             }
-                            if (trim($qidattributes['multiflexible_min']) != '' && trim($qidattributes['multiflexible_max']) != '') {
+                            if (trim((string) $qidattributes['multiflexible_min']) != '' && trim((string) $qidattributes['multiflexible_max']) != '') {
                                 if ($qidattributes['multiflexible_min'] < $qidattributes['multiflexible_max']) {
                                     $minvalue = $qidattributes['multiflexible_min'];
                                     $maxvalue = $qidattributes['multiflexible_max'];
                                 }
                             }
 
-                            if (trim($qidattributes['multiflexible_step']) != '') {
+                            if (trim((string) $qidattributes['multiflexible_step']) != '') {
                                 $stepvalue = $qidattributes['multiflexible_step'];
                             } else {
                                 $stepvalue = 1;

@@ -55,7 +55,7 @@ $respstatsread  = Permission::model()->hasSurveyPermission($iSurveyID, 'response
 
     as $i => $panel) {
     // If it's no twig file => ignore
-    if (!preg_match('/^.*\.twig$/', $panel)) {
+    if (!preg_match('/^.*\.twig$/', (string) $panel)) {
         continue;
     }
     //every two entries close it up

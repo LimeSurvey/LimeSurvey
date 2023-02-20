@@ -198,7 +198,7 @@ class LS_Twig_Extension extends AbstractExtension
 
         $lemQuestionInfo = LimeExpressionManager::GetQuestionStatus($iQid);
         $sType           = $lemQuestionInfo['info']['type'];
-        $aSGQA           = explode('X', $lemQuestionInfo['sgqa']);
+        $aSGQA           = explode('X', (string) $lemQuestionInfo['sgqa']);
         $iSurveyId       = $aSGQA[0];
 
         $aQuestionClass  = Question::getQuestionClass($sType);
@@ -220,7 +220,7 @@ class LS_Twig_Extension extends AbstractExtension
         //add additional classes
         if (isset($aQuestionAttributes['cssclass']) && $aQuestionAttributes['cssclass'] != "") {
             /* Got to use static expression */
-            $emCssClass = trim(LimeExpressionManager::ProcessString($aQuestionAttributes['cssclass'], null, array(), 1, 1, false, false, true)); /* static var is the lmast one ...*/
+            $emCssClass = trim((string) LimeExpressionManager::ProcessString($aQuestionAttributes['cssclass'], null, array(), 1, 1, false, false, true)); /* static var is the lmast one ...*/
             if ($emCssClass != "") {
                 $aQuestionClass .= " " . CHtml::encode($emCssClass);
             }
@@ -289,7 +289,7 @@ class LS_Twig_Extension extends AbstractExtension
     public static function imageSrc($sImagePath, $default = false)
     {
         // If $sImagePath is a 'virtual' path, we must get the real path.
-        if (preg_match('/(image::\w+::)/', $sImagePath, $m)) {
+        if (preg_match('/(image::\w+::)/', (string) $sImagePath, $m)) {
             $oTemplate =  Template::getLastInstance();
             Yii::import('application.helpers.SurveyThemeHelper');
             $sFullPath = SurveyThemeHelper::getRealThemeFilePath($sImagePath, $oTemplate->template_name, $oTemplate->sid);
@@ -330,8 +330,8 @@ class LS_Twig_Extension extends AbstractExtension
     public static function templateResourceUrl($resourcePath, $default = false)
     {
         /* get extension of file in allowedthemeuploads */
-        $aAllowExtensions = explode(',', Yii::app()->getConfig('allowedthemeuploads'));
-        $info = pathinfo($resourcePath);
+        $aAllowExtensions = explode(',', (string) Yii::app()->getConfig('allowedthemeuploads'));
+        $info = pathinfo((string) $resourcePath);
         if (!isset($info['extension']) || !in_array(strtolower($info['extension']), $aAllowExtensions)) {
             if ($default) {
                 return self::templateResourceUrl($default);
@@ -539,7 +539,7 @@ class LS_Twig_Extension extends AbstractExtension
     public static function flatString($string, $encode = false)
     {
         // Remove script before removing tag, no tag : no other script (onload, on error etc …
-        $string = strip_tags(stripJavaScript($string));
+        $string = strip_tags((string) stripJavaScript($string));
         // Remove new lines
         if (version_compare(substr(PCRE_VERSION, 0, strpos(PCRE_VERSION, ' ')), '7.0') > -1) {
             $string = preg_replace(array('~\R~u'), array(' '), $string);
@@ -595,7 +595,7 @@ class LS_Twig_Extension extends AbstractExtension
     public static function darkencss($cssColor, $grade = 10, $alpha = 1)
     {
 
-        $aColors = str_split(substr($cssColor, 1), 2);
+        $aColors = str_split(substr((string) $cssColor, 1), 2);
         $return = [];
         foreach ($aColors as $color) {
             $decColor = hexdec($color);
@@ -633,7 +633,7 @@ class LS_Twig_Extension extends AbstractExtension
 
     public static function lightencss($cssColor, $grade = 10, $alpha = 1)
     {
-        $aColors = str_split(substr($cssColor, 1), 2);
+        $aColors = str_split(substr((string) $cssColor, 1), 2);
         $return = [];
         foreach ($aColors as $color) {
             $decColor = hexdec($color);

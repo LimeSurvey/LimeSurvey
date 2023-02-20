@@ -28,7 +28,7 @@
                       data-key="<?=$sItemKey?>"
                       data-item-value='<?=json_encode([
                             "key" => $sItemKey,
-                            "title" => htmlentities($aItemContent['title']),
+                            "title" => htmlentities((string) $aItemContent['title']),
                             "itemArray" => $aItemContent
                         ]); ?>' 
                       <?=@$aItemContent['extraAttributes']?>

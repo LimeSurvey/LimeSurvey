@@ -156,7 +156,7 @@ class Update extends DynamicSurveyCommonAction
         if (Permission::model()->hasGlobalPermission('superadmin')) {
             if (App()->request->getPost('keyid')) {
                 // We trim it, just in case user added a space...
-                $submittedUpdateKey = trim(App()->request->getPost('keyid'));
+                $submittedUpdateKey = trim((string) App()->request->getPost('keyid'));
 
                 $updateModel = new UpdateForm();
                 $check = $updateModel->checkUpdateKeyonServer($submittedUpdateKey);
@@ -500,7 +500,7 @@ class Update extends DynamicSurveyCommonAction
         if (Permission::model()->hasGlobalPermission('superadmin')) {
             if (App()->request->getPost('keyid')) {
                 // We trim it, just in case user added a space...
-                $submittedUpdateKey = trim(App()->request->getPost('keyid'));
+                $submittedUpdateKey = trim((string) App()->request->getPost('keyid'));
 
                 $updateModel = new UpdateForm();
                 $check = $updateModel->checkUpdateKeyonServer($submittedUpdateKey);

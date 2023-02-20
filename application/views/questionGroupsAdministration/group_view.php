@@ -23,13 +23,13 @@
                             <?php eT("Description:"); ?></strong>&nbsp;&nbsp;&nbsp;
                     </td>
                     <td>
-                        <?php if (trim($grow['description']) != '') {
+                        <?php if (trim((string) $grow['description']) != '') {
                             templatereplace($grow['description']);
                             echo LimeExpressionManager::GetLastPrettyPrintExpression();
                         } ?>
                     </td>
                 </tr>
-                <?php if (trim($grow['grelevance']) != '') { ?>
+                <?php if (trim((string) $grow['grelevance']) != '') { ?>
                     <tr>
                         <td><strong>
                                 <?php eT("Condition:"); ?></strong>
@@ -43,7 +43,7 @@
                     </tr>
                 <?php } ?>
                 <?php
-                if (trim($grow['randomization_group']) != '') {
+                if (trim((string) $grow['randomization_group']) != '') {
                     ?>
                     <tr>
                         <td><?php eT("Randomization group:"); ?></td>

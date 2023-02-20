@@ -233,7 +233,7 @@ class QuestionAttributeHelper
         $orderA = $categoryOrders[$a['category']] ?? PHP_INT_MAX;
         $orderB = $categoryOrders[$b['category']] ?? PHP_INT_MAX;
         if ($orderA == $orderB) {
-            $result = strnatcasecmp($a['category'], $b['category']);
+            $result = strnatcasecmp((string) $a['category'], (string) $b['category']);
             if ($result == 0) {
                 $result = $a['sortorder'] - $b['sortorder'];
             }
@@ -288,7 +288,7 @@ class QuestionAttributeHelper
         $defaultValues = [];
         $userDefaultQuestionAttributes = \SettingsUser::getUserSettingValue('question_default_values_' . $questionType);
         if ($userDefaultQuestionAttributes !== null) {
-            $defaultValuesByCategory = json_decode($userDefaultQuestionAttributes, true);
+            $defaultValuesByCategory = json_decode((string) $userDefaultQuestionAttributes, true);
             foreach ($defaultValuesByCategory as $attributes) {
                 foreach ($attributes as $attribute => $value) {
                     if (!is_array($value)) {

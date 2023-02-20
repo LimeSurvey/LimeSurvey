@@ -1288,8 +1288,8 @@ function getLanguageDataRestricted($bOrderByNative = false, $sDetail = 'full')
 {
     $aLanguageData = getLanguageData($bOrderByNative);
 
-    if (trim(Yii::app()->getConfig('restrictToLanguages')) != '') {
-        foreach (explode(' ', trim(Yii::app()->getConfig('restrictToLanguages'))) as $key) {
+    if (trim((string) Yii::app()->getConfig('restrictToLanguages')) != '') {
+        foreach (explode(' ', trim((string) Yii::app()->getConfig('restrictToLanguages'))) as $key) {
             $aResult[$key] = $aLanguageData[$key];
         }
     } else {

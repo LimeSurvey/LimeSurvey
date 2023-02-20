@@ -54,10 +54,10 @@ class DbStorage implements iPluginStorage
         $records = \PluginSetting::model()->findAllByAttributes($attributes);
         if (count($records) > 1) {
             foreach ($records as $record) {
-                $result[] = json_decode($record->value, true);
+                $result[] = json_decode((string) $record->value, true);
             }
         } elseif (count($records) == 1) {
-            $result = json_decode($records[0]->value, true);
+            $result = json_decode((string) $records[0]->value, true);
         } else {
             $result = $default;
         }

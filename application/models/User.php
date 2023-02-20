@@ -276,11 +276,11 @@ class User extends LSActiveRecord
     public function checkPasswordStrength($password)
     {
         $settings = Yii::app()->getConfig("passwordValidationRules");
-        $length = strlen($password);
-        $lowercase = preg_match_all('@[a-z]@', $password);
-        $uppercase = preg_match_all('@[A-Z]@', $password);
-        $number    = preg_match_all('@[0-9]@', $password);
-        $specialChars = preg_match_all('@[^\w]@', $password);
+        $length = strlen((string) $password);
+        $lowercase = preg_match_all('@[a-z]@', (string) $password);
+        $uppercase = preg_match_all('@[A-Z]@', (string) $password);
+        $number    = preg_match_all('@[0-9]@', (string) $password);
+        $specialChars = preg_match_all('@[^\w]@', (string) $password);
 
         $error = "";
         if ((int) $settings['min'] > 0) {
@@ -342,14 +342,14 @@ class User extends LSActiveRecord
             if (!$this->checkPassword($oldPassword)) {
                 // Always check password
                 $errorMsg = gT("Your new password was not saved because the old password was wrong.");
-            } elseif (trim($oldPassword) === trim($newPassword)) {
+            } elseif (trim((string) $oldPassword) === trim((string) $newPassword)) {
                 //First test if old and new password are identical => no need to save it (or ?)
                 $errorMsg = gT("Your new password was not saved because it matches the old password.");
-            } elseif (trim($newPassword) !== trim($repeatPassword)) {
+            } elseif (trim((string) $newPassword) !== trim((string) $repeatPassword)) {
                 //Then test the new password and the repeat password for identity
                 $errorMsg = gT("Your new password was not saved because the passwords did not match.");
                 //Now check if the old password matches the old password saved
-            } elseif (empty(trim($newPassword))) {
+            } elseif (empty(trim((string) $newPassword))) {
                 $errorMsg = gT("The new password can not be empty.");
             }
         }
@@ -842,8 +842,8 @@ class User extends LSActiveRecord
         $expired = false;
         if (!empty($this->expires)) {
             // Time adjust
-            $now = date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
-            $expirationTime = date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->expires)));
+            $now = date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
+            $expirationTime = date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime((string) $this->expires)));
 
             // Time comparison
             $expired = new DateTime($expirationTime) < new DateTime($now);

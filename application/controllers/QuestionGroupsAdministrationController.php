@@ -413,7 +413,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
             $importgroup .= "\n";
 
             $sFullFilepath = App()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(20);
-            $aPathInfo = pathinfo($_FILES['the_file']['name']);
+            $aPathInfo = pathinfo((string) $_FILES['the_file']['name']);
             $sExtension = $aPathInfo['extension'];
 
             if ($_FILES['the_file']['error'] == 1 || $_FILES['the_file']['error'] == 2) {

@@ -7,7 +7,7 @@ class CustomFormatter extends CFormatter {
 
 	public function formatLanguageList($value) {
 
-		$langArr = explode(' ', trim($value));
+		$langArr = explode(' ', trim((string) $value));
 		$expandedArr = array();
 
 		foreach($langArr as $lang) {
@@ -27,8 +27,8 @@ class CustomFormatter extends CFormatter {
 	 */
 	public function formatLongText($value) {
 		$value = CHtml::encode($value);
-		if(strlen($value) > $this->maxLength) {
-			$truncated = substr($value, 0, $this->maxLength-3);
+		if(strlen((string) $value) > $this->maxLength) {
+			$truncated = substr((string) $value, 0, $this->maxLength-3);
 			return trim($truncated)."...";
 		}
 		return $value;

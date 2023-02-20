@@ -21,7 +21,7 @@ if ($oQuota->action == Quota::ACTION_TERMINATE){
         <div class="float-end small">
             <span><span class="fa <?php echo $icon?>"></span> <?php echo $tooltip;?></span>
             <?php if($oQuota->autoload_url == 1):?>
-                <span><span class="fa fa-external-link"></span> <?php echo gT('Autoload URL:').' '.htmlentities($oQuota->mainLanguagesetting->quotals_url);?></span>
+                <span><span class="fa fa-external-link"></span> <?php echo gT('Autoload URL:').' '.htmlentities((string) $oQuota->mainLanguagesetting->quotals_url);?></span>
             <?php endif;?>
         </div>
         <?php echo CHtml::encode($oQuota->name) ;?>

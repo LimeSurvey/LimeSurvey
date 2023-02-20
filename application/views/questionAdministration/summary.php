@@ -63,7 +63,7 @@
             <td>
 
                 <?php
-                    if (trim($question->questionl10ns[$question->survey->language]->help) != '')
+                    if (trim((string) $question->questionl10ns[$question->survey->language]->help) != '')
                     {
                         templatereplace(
                             $question->questionl10ns[$question->survey->language]->help,
@@ -88,7 +88,7 @@
                     </strong>
                 </td>
                 <td>
-                    <?php echo htmlspecialchars($question->preg); ?>
+                    <?php echo htmlspecialchars((string) $question->preg); ?>
                 </td>
             </tr>
         <?php endif; ?>
@@ -195,7 +195,7 @@
         <?php endif; ?>
 
         <!-- Condition for this question -->
-        <?php if (trim($question->relevance) != '') : ?>
+        <?php if (trim((string) $question->relevance) != '') : ?>
             <tr>
                 <td>
                     <strong>
@@ -205,7 +205,7 @@
                 <td>
                     <?php
                     LimeExpressionManager::ProcessString(
-                        "{" . trim($question->relevance) . "}",
+                        "{" . trim((string) $question->relevance) . "}",
                         $question->qid
                     );
                     echo viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
@@ -215,13 +215,13 @@
         <?php endif; ?>
 
         <!-- Group Relevance equation -->
-        <?php if (trim($question->group->grelevance) != '') : ?>
+        <?php if (trim((string) $question->group->grelevance) != '') : ?>
             <tr>
                 <td><strong><?php eT("Group relevance:"); ?></strong></td>
                 <td>
                     <?php
                     LimeExpressionManager::ProcessString(
-                        "{" . trim($question->group->grelevance) . "}",
+                        "{" . trim((string) $question->group->grelevance) . "}",
                         $question->qid
                     );
                     echo viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
@@ -255,7 +255,7 @@
                                 }
                                 echo viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
                             } else {
-                                echo htmlspecialchars($value);
+                                echo htmlspecialchars((string) $value);
                             }
                         ?>
                     </td>

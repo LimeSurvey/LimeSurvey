@@ -134,7 +134,7 @@ class Labels extends SurveyCommonAction
             Yii::app()->loadHelper('admin/import');
 
             $sFullFilepath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(20);
-            $aPathInfo = pathinfo($_FILES['the_file']['name']);
+            $aPathInfo = pathinfo((string) $_FILES['the_file']['name']);
             $sExtension = !empty($aPathInfo['extension']) ? $aPathInfo['extension'] : ''; // TODO: $sExtension is not used. Remove it.
 
             if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath)) {
@@ -193,7 +193,7 @@ class Labels extends SurveyCommonAction
                 $pageTitle = gT('Edit label set');
             }
 
-            $langidsarray = explode(" ", trim($langids)); // Make an array of it
+            $langidsarray = explode(" ", trim((string) $langids)); // Make an array of it
 
             if (isset($row['lid'])) {
                 $panecookie = $row['lid'];
@@ -260,7 +260,7 @@ class Labels extends SurveyCommonAction
             $aData['row'] = $model->attributes;
 
             // Make languages array from the current row
-            $lslanguages = explode(" ", trim($model->languages));
+            $lslanguages = explode(" ", trim((string) $model->languages));
 
             Yii::app()->loadHelper("admin.htmleditor");
 

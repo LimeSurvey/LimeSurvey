@@ -1,4 +1,3 @@
-
 <?php /* Ported from previous versions: Pending to adapt to screen own JS for saving (and validations) 
 <!-- Save and new group -->
 <?php if(!empty($showSaveAndNewGroupButton)): ?>

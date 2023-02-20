@@ -122,7 +122,7 @@
                                     else
                                     {
                                         echo "
-                                        <td>", htmlspecialchars($tokenvalues['description'], ENT_QUOTES, 'UTF-8'), "</td>
+                                        <td>", htmlspecialchars((string) $tokenvalues['description'], ENT_QUOTES, 'UTF-8'), "</td>
                                         <td>", $tokenvalues['mandatory'] == 'Y' ? eT('Yes') : eT('No'), "</td>
                                         <td>", $tokenvalues['encrypted'] == 'Y' ? eT('Yes') : eT('No'), "</td>
                                         <td>", $tokenvalues['show_register'] == 'Y' ? eT('Yes') : eT('No'), "</td>";

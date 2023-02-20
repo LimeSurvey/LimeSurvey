@@ -67,7 +67,7 @@ if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
 
                                     <!-- checkbox -->
                                     <input type="checkbox"  class="specific-permission-selector custom-data" name='Permission[<?php echo $sPermissionKey.']['.$sCRUDKey;?>]' id='perm_<?php echo $sPermissionKey.'_'.$sCRUDKey;?>'
-                                        <?php if(substr($sPermissionKey,0,5) === 'auth_' && $sCRUDKey === 'read'): ?>
+                                        <?php if(substr((string) $sPermissionKey,0,5) === 'auth_' && $sCRUDKey === 'read'): ?>
                                             style="visibility:hidden"
                                         <?php endif; ?>/>
                                     <?php endif; ?>

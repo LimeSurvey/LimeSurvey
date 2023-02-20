@@ -374,8 +374,8 @@ class ParticipantShare extends LSActiveRecord
      */
     public function updateShare($data)
     {
-        if (strpos($data['participant_id'], '--') !== false) {
-            list($participantId, $shareuid) = explode("--", $data['participant_id']);
+        if (strpos((string) $data['participant_id'], '--') !== false) {
+            list($participantId, $shareuid) = explode("--", (string) $data['participant_id']);
             $data = array("participant_id" => $participantId, "share_uid" => $shareuid, "can_edit" => $data['can_edit']);
         }
         $criteria = new CDbCriteria();

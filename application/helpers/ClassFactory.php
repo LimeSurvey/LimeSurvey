@@ -9,7 +9,7 @@ class ClassFactory
     public static function autoload($className)
     {
         foreach (self::$map as $prefix => $baseClass) {
-            if (strpos($className, $prefix) === 0) {
+            if (strpos((string) $className, (string) $prefix) === 0) {
                 self::createClass($baseClass, $className);
                 return true;
             }

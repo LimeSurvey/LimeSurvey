@@ -708,7 +708,7 @@ class Permission extends LSActiveRecord
      */
     private static function comparePermissionTitle($aApermission, $aBpermission)
     {
-        return strcmp($aApermission['title'], $aBpermission['title']);
+        return strcmp((string) $aApermission['title'], (string) $aBpermission['title']);
     }
 
     /**

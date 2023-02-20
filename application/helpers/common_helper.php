@@ -124,7 +124,7 @@ function getSurveyList($bReturnArray = false)
         }
 
         usort($surveynames, function ($a, $b) {
-                return strcmp($a['surveyls_title'], $b['surveyls_title']);
+                return strcmp((string) $a['surveyls_title'], (string) $b['surveyls_title']);
         });
         $cached = $surveynames;
     } else {
@@ -586,8 +586,8 @@ function alternation($alternate = '', $type = 'col')
 */
 function longestString($new_string, $longest_length)
 {
-    if ($longest_length < strlen(trim(strip_tags($new_string)))) {
-        $longest_length = strlen(trim(strip_tags($new_string)));
+    if ($longest_length < strlen(trim(strip_tags((string) $new_string)))) {
+        $longest_length = strlen(trim(strip_tags((string) $new_string)));
     };
     return $longest_length;
 };
@@ -610,7 +610,7 @@ function getGroupList3($gid, $surveyid)
         if ($gv->gid == $gid) {
             $groupselecter .= " selected='selected'";
         }
-        $groupselecter .= " value='" . $gv->gid . "'>" . htmlspecialchars($gv->questiongroupl10ns[$sBaseLanguage]->group_name) . " (ID:" . $gv->gid . ")</option>\n";
+        $groupselecter .= " value='" . $gv->gid . "'>" . htmlspecialchars((string) $gv->questiongroupl10ns[$sBaseLanguage]->group_name) . " (ID:" . $gv->gid . ")</option>\n";
     }
     return $groupselecter;
 }
@@ -641,7 +641,7 @@ function getGroupListLang($gid, $language, $surveyid)
         }
         $link = Yii::app()->getController()->createUrl("/questionGroupsAdministration/view/surveyid/" . $surveyid . "/gid/" . $aAttributes['gid']);
         $groupselecter .= " value='{$link}'>";
-        $groupselecter .= htmlspecialchars(strip_tags($oGroup->questiongroupl10ns[$language]->group_name));
+        $groupselecter .= htmlspecialchars(strip_tags((string) $oGroup->questiongroupl10ns[$language]->group_name));
         $groupselecter .= "</option>\n";
     }
     if ($groupselecter) {
@@ -869,12 +869,12 @@ function templateDefaultTexts($sLanguage, $mode = 'html', $sNewlines = 'text')
 function groupOrderThenQuestionOrder($a, $b)
 {
     if (isset($a->group['group_order']) && isset($b->group['group_order'])) {
-        $GroupResult = strnatcasecmp($a->group['group_order'], $b->group['group_order']);
+        $GroupResult = strnatcasecmp((string) $a->group['group_order'], (string) $b->group['group_order']);
     } else {
         $GroupResult = "";
     }
     if ($GroupResult == 0) {
-        $TitleResult = strnatcasecmp($a["question_order"], $b["question_order"]);
+        $TitleResult = strnatcasecmp((string) $a["question_order"], (string) $b["question_order"]);
         return $TitleResult;
     }
     return $GroupResult;
@@ -1116,11 +1116,11 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
                             if (!isset($file['comment'])) {
                                 $file['comment'] = '';
                             }
-                            $sValue .= rawurldecode($file['name']) .
+                            $sValue .= rawurldecode((string) $file['name']) .
                             ' (' . round($file['size']) . 'KB) ' .
-                            strip_tags($file['title']);
-                            if (trim(strip_tags($file['comment'])) != "") {
-                                $sValue .= ' - ' . strip_tags($file['comment']);
+                            strip_tags((string) $file['title']);
+                            if (trim(strip_tags((string) $file['comment'])) != "") {
+                                $sValue .= ' - ' . strip_tags((string) $file['comment']);
                             }
                         }
                     }
@@ -1187,7 +1187,7 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
         Yii::app()->loadHelper("surveytranslator");
         $myfield = "{$iSurveyID}X{$flt['gid']}X{$flt['qid']}";
         $oSurvey = Survey::model()->findByPk($iSurveyID);
-        $aAdditionalLanguages = array_filter(explode(" ", $oSurvey->additional_languages));
+        $aAdditionalLanguages = array_filter(explode(" ", (string) $oSurvey->additional_languages));
         if (is_null($sLanguage) || !in_array($sLanguage, $aAdditionalLanguages)) {
             $sLanguage = $oSurvey->language;
         }
@@ -2068,7 +2068,7 @@ function getQuestionAttributeValue($questionAttributeArray, $attributeName, $lan
 
 function questionTitleSort($a, $b)
 {
-    $result = strnatcasecmp($a['title'], $b['title']);
+    $result = strnatcasecmp((string) $a['title'], (string) $b['title']);
     return $result;
 }
 
@@ -2083,7 +2083,7 @@ function HTMLEscape($str)
     return str_replace(
         array("\x0A", "\x0D"),
         array("&#10;", "&#13;"),
-        htmlspecialchars($str, ENT_QUOTES)
+        htmlspecialchars((string) $str, ENT_QUOTES)
     );
 }
 
@@ -2107,15 +2107,15 @@ function javascriptEscape($str, $strip_tags = false, $htmldecode = false)
 {
 
     if ($htmldecode == true) {
-        $str = html_entity_decode($str, ENT_QUOTES, 'UTF-8');
+        $str = html_entity_decode((string) $str, ENT_QUOTES, 'UTF-8');
     }
     if ($strip_tags == true) {
-        $str = strip_tags($str);
+        $str = strip_tags((string) $str);
     }
     return str_replace(
         array('\'', '"', "\n", "\r"),
         array("\\'", '\u0022', "\\n", '\r'),
-        $str
+        (string) $str
     );
 }
 // make a string safe to include in a json String parameter.
@@ -2123,12 +2123,12 @@ function jsonEscape($str, $strip_tags = false, $htmldecode = false)
 {
 
     if ($htmldecode == true) {
-        $str = html_entity_decode($str, ENT_QUOTES, 'UTF-8');
+        $str = html_entity_decode((string) $str, ENT_QUOTES, 'UTF-8');
     }
     if ($strip_tags == true) {
-        $str = strip_tags($str);
+        $str = strip_tags((string) $str);
     }
-    return str_replace(array('"','\''), array("&apos;","&apos;"), $str);
+    return str_replace(array('"','\''), array("&apos;","&apos;"), (string) $str);
 }
 
 /**
@@ -2163,9 +2163,9 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml = fals
 
     $fromname = '';
     $fromemail = $from;
-    if (strpos($from, '<')) {
-        $fromemail = substr($from, strpos($from, '<') + 1, strpos($from, '>') - 1 - strpos($from, '<'));
-        $fromname = trim(substr($from, 0, strpos($from, '<') - 1));
+    if (strpos((string) $from, '<')) {
+        $fromemail = substr((string) $from, strpos((string) $from, '<') + 1, strpos((string) $from, '>') - 1 - strpos((string) $from, '<'));
+        $fromname = trim(substr((string) $from, 0, strpos((string) $from, '<') - 1));
     }
     if (is_null($bouncemail)) {
         $senderemail = $fromemail;
@@ -2438,7 +2438,7 @@ function rmdirr($dirname)
 function CSVUnquote($field)
 {
     //print $field.":";
-    $field = preg_replace("/^\040*\"/", "", $field);
+    $field = preg_replace("/^\040*\"/", "", (string) $field);
     $field = preg_replace("/\"\040*$/", "", $field);
     $field = str_replace('""', '"', $field);
     //print $field."\n";
@@ -2576,7 +2576,7 @@ function isTokenCompletedDatestamped($thesurvey)
 */
 function dateShift($date, $dformat, $shift)
 {
-    return date($dformat, strtotime($shift, strtotime($date)));
+    return date($dformat, strtotime((string) $shift, strtotime($date)));
 }
 
 
@@ -2635,11 +2635,11 @@ function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString)
     if ($sType == 'survey') {
         $sPattern = '(http(s)?:\/\/)?(([a-z0-9\/\.])*(?=(\/upload))\/upload\/surveys\/' . $iOldSurveyID . '\/)';
         $sReplace = Yii::app()->getConfig("publicurl") . "upload/surveys/{$iNewSurveyID}/";
-        return preg_replace('/' . $sPattern . '/u', $sReplace, $sString);
+        return preg_replace('/' . $sPattern . '/u', $sReplace, (string) $sString);
     } elseif ($sType == 'label') {
         $sPattern = '(http(s)?:\/\/)?(([a-z0-9\/\.])*(?=(\/upload))\/upload\/labels\/' . $iOldSurveyID . '\/)';
         $sReplace = Yii::app()->getConfig("publicurl") . "upload/labels/{$iNewSurveyID}/";
-        return preg_replace("/" . $sPattern . "/u", $sReplace, $sString);
+        return preg_replace("/" . $sPattern . "/u", $sReplace, (string) $sString);
     } else // unknown type
     {
         return $sString;
@@ -2749,9 +2749,9 @@ function conditionalNewlineToBreak($mytext, $ishtml, $encoded = '')
         // $mytext has been processed by gT with html mode
         // and thus \n has already been translated to &#10;
         if ($encoded == '') {
-            $mytext = str_replace('&#10;', '<br />', $mytext);
+            $mytext = str_replace('&#10;', '<br />', (string) $mytext);
         }
-        return str_replace("\n", '<br />', $mytext);
+        return str_replace("\n", '<br />', (string) $mytext);
     } else {
         return $mytext;
     }
@@ -2760,7 +2760,7 @@ function conditionalNewlineToBreak($mytext, $ishtml, $encoded = '')
 
 function breakToNewline($data)
 {
-    return preg_replace('!<br.*>!iU', "\n", $data);
+    return preg_replace('!<br.*>!iU', "\n", (string) $data);
 }
 
 /**
@@ -2773,7 +2773,7 @@ function breakToNewline($data)
 function safeDie($sText)
 {
     //Only allowed tag: <br />
-    $textarray = explode('<br />', $sText);
+    $textarray = explode('<br />', (string) $sText);
     $textarray = array_map('htmlspecialchars', $textarray);
     die(implode('<br />', $textarray));
 }
@@ -2810,7 +2810,7 @@ function fixCKeditorText($str)
  */
 function filterForAttributes($fieldname)
 {
-    if (strpos($fieldname, 'attribute_') === false) {
+    if (strpos((string) $fieldname, 'attribute_') === false) {
         return false;
     } else {
         return true;
@@ -3174,7 +3174,7 @@ function enforceSSLMode()
     (isset($_SERVER['HTTP_FORWARDED_PROTO']) && $_SERVER['HTTP_FORWARDED_PROTO'] == "https") ||
     (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == "https"));
     if (Yii::app()->getConfig('ssl_emergency_override') !== true) {
-        $bForceSSL = strtolower(getGlobalSetting('force_ssl'));
+        $bForceSSL = strtolower((string) getGlobalSetting('force_ssl'));
     }
     if ($bForceSSL == 'on' && !$bSSLActive) {
         SSLRedirect('s');
@@ -3300,7 +3300,7 @@ function short_implode($sDelimeter, $sHyphen, $aArray)
             if ($iIndexA == 0) {
                 $sResult = $aArray[$iIndexA];
             } else {
-                if (strlen($sResult) > Yii::app()->getConfig('maxstringlengthshortimplode') - strlen($sDelimeter) - 3) {
+                if (strlen((string) $sResult) > Yii::app()->getConfig('maxstringlengthshortimplode') - strlen($sDelimeter) - 3) {
                     return $sResult . $sDelimeter . '...';
                 } else {
                     $sResult = $sResult . $sDelimeter . $aArray[$iIndexA];
@@ -3363,13 +3363,13 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
         foreach ($fieldnames as $sOldFieldname => $sNewFieldname) {
             $pattern = $sOldFieldname;
             $replacement = $sNewFieldname;
-            $urldescription = preg_replace('/' . $pattern . '/', $replacement, $urldescription);
-            $endurl = preg_replace('/' . $pattern . '/', $replacement, $endurl);
+            $urldescription = preg_replace('/' . $pattern . '/', (string) $replacement, (string) $urldescription);
+            $endurl = preg_replace('/' . $pattern . '/', (string) $replacement, (string) $endurl);
         }
 
         if (
-            strcmp($urldescription, $qentry['surveyls_urldescription']) != 0 ||
-            (strcmp($endurl, $qentry['surveyls_url']) != 0)
+            strcmp((string) $urldescription, (string) $qentry['surveyls_urldescription']) != 0 ||
+            (strcmp((string) $endurl, (string) $qentry['surveyls_url']) != 0)
         ) {
             // Update Field
 
@@ -3396,11 +3396,11 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
         foreach ($fieldnames as $sOldFieldname => $sNewFieldname) {
             $pattern = $sOldFieldname;
             $replacement = $sNewFieldname;
-            $urldescription = preg_replace('/' . $pattern . '/', $replacement, $urldescription);
-            $endurl = preg_replace('/' . $pattern . '/', $replacement, $endurl);
+            $urldescription = preg_replace('/' . $pattern . '/', (string) $replacement, (string) $urldescription);
+            $endurl = preg_replace('/' . $pattern . '/', (string) $replacement, (string) $endurl);
         }
 
-        if (strcmp($urldescription, $qentry['quotals_urldescrip']) != 0 || (strcmp($endurl, $qentry['quotals_url']) != 0)) {
+        if (strcmp((string) $urldescription, (string) $qentry['quotals_urldescrip']) != 0 || (strcmp((string) $endurl, (string) $qentry['quotals_url']) != 0)) {
             // Update Field
             $qentry->quotals_urldescrip = $urldescription;
             $qentry->quotals_url = $endurl;
@@ -3425,11 +3425,11 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
         foreach ($fieldnames as $sOldFieldname => $sNewFieldname) {
             $pattern = $sOldFieldname;
             $replacement = $sNewFieldname;
-            $gpname = preg_replace('/' . $pattern . '/', $replacement, $gpname);
-            $description = preg_replace('/' . $pattern . '/', $replacement, $description);
+            $gpname = preg_replace('/' . $pattern . '/', (string) $replacement, (string) $gpname);
+            $description = preg_replace('/' . $pattern . '/', (string) $replacement, (string) $description);
         }
 
-        if (strcmp($description, $qentry['description']) != 0 || strcmp($gpname, $qentry['group_name']) != 0) {
+        if (strcmp((string) $description, (string) $qentry['description']) != 0 || strcmp((string) $gpname, (string) $qentry['group_name']) != 0) {
             // Update Fields
             $where = array(
             'gid' => $gid,
@@ -3455,13 +3455,13 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
         foreach ($fieldnames as $sOldFieldname => $sNewFieldname) {
             $pattern = $sOldFieldname;
             $replacement = $sNewFieldname;
-            $question = preg_replace('/' . $pattern . '/', $replacement, $question);
-            $help = preg_replace('/' . $pattern . '/', $replacement, $help);
+            $question = preg_replace('/' . $pattern . '/', (string) $replacement, (string) $question);
+            $help = preg_replace('/' . $pattern . '/', (string) $replacement, (string) $help);
         }
 
         if (
-            strcmp($question, $qentry['question']) != 0 ||
-            strcmp($help, $qentry['help']) != 0
+            strcmp((string) $question, (string) $qentry['question']) != 0 ||
+            strcmp((string) $help, (string) $qentry['help']) != 0
         ) {
             // Update Field
 
@@ -3487,10 +3487,10 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
         foreach ($fieldnames as $sOldFieldname => $sNewFieldname) {
             $pattern = $sOldFieldname;
             $replacement = $sNewFieldname;
-            $answer = preg_replace('/' . $pattern . '/', $replacement, $answer);
+            $answer = preg_replace('/' . $pattern . '/', (string) $replacement, (string) $answer);
         }
 
-        if (strcmp($answer, $qentry['answer']) != 0) {
+        if (strcmp((string) $answer, (string) $qentry['answer']) != 0) {
             // Update Field
 
             $data = array(
@@ -3521,9 +3521,9 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
         $bModified = false;
         foreach ($aCodeMap as $sOldCode => $sNewCode) {
             // Don't search/replace old codes that are too short or were numeric (because they would not have been usable in EM expressions anyway)
-            if (strlen($sOldCode) > 1 && !is_numeric($sOldCode)) {
-                $sOldCode = preg_quote($sOldCode, '~');
-                $arQuestion->relevance = preg_replace("~\b{$sOldCode}~", $sNewCode, $arQuestion->relevance, -1, $iCount);
+            if (strlen((string) $sOldCode) > 1 && !is_numeric($sOldCode)) {
+                $sOldCode = preg_quote((string) $sOldCode, '~');
+                $arQuestion->relevance = preg_replace("~\b{$sOldCode}~", (string) $sNewCode, (string) $arQuestion->relevance, -1, $iCount);
                 $bModified = $bModified || $iCount;
             }
         }
@@ -3534,8 +3534,8 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
             $bModified = false;
             foreach ($aCodeMap as $sOldCode => $sNewCode) {
                 // Don't search/replace old codes that are too short or were numeric (because they would not have been usable in EM expressions anyway)
-                if (strlen($sOldCode) > 1 && !is_numeric($sOldCode[0])) {
-                    $sOldCode = preg_quote($sOldCode, '~');
+                if (strlen((string) $sOldCode) > 1 && !is_numeric($sOldCode[0])) {
+                    $sOldCode = preg_quote((string) $sOldCode, '~');
                     // The following regex only matches the last occurrence of the old code within each pair of brackets, so we apply the replace recursively
                     // to catch all occurrences.
                     $arQuestionLS->question = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arQuestionLS->question, -1, $iCount);
@@ -3558,10 +3558,10 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
             foreach ($defaultValue->defaultvaluel10ns as $defaultValueL10n) {
                 $bModified = false;
                 foreach ($aCodeMap as $sOldCode => $sNewCode) {
-                    if (strlen($sOldCode) <= 1 || is_numeric($sOldCode)) {
+                    if (strlen((string) $sOldCode) <= 1 || is_numeric($sOldCode)) {
                         continue;
                     }
-                    $sOldCode = preg_quote($sOldCode, '~');
+                    $sOldCode = preg_quote((string) $sOldCode, '~');
                     $defaultValueL10n->defaultvalue = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $defaultValueL10n->defaultvalue, -1, $iCount);
                     $bModified = $bModified || $iCount;
                 }
@@ -3575,8 +3575,8 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
     foreach ($arGroups as $arGroup) {
         $bModified = false;
         foreach ($aCodeMap as $sOldCode => $sNewCode) {
-            $sOldCode = preg_quote($sOldCode, '~');
-            $arGroup->grelevance = preg_replace("~\b{$sOldCode}~", $sNewCode, $arGroup->grelevance, -1, $iCount);
+            $sOldCode = preg_quote((string) $sOldCode, '~');
+            $arGroup->grelevance = preg_replace("~\b{$sOldCode}~", (string) $sNewCode, (string) $arGroup->grelevance, -1, $iCount);
             $bModified = $bModified || $iCount;
         }
         if ($bModified) {
@@ -3584,7 +3584,7 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
         }
         foreach ($arGroup->questiongroupl10ns as $arQuestionGroupLS) {
             foreach ($aCodeMap as $sOldCode => $sNewCode) {
-                $sOldCode = preg_quote($sOldCode, '~');
+                $sOldCode = preg_quote((string) $sOldCode, '~');
                 $arQuestionGroupLS->description = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arQuestionGroupLS->description, -1, $iCount);
                 $bModified = $bModified || $iCount;
             }
@@ -3598,10 +3598,10 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
     foreach ($surveyLanguageSettings as $surveyLanguageSetting) {
         $bModified = false;
         foreach ($aCodeMap as $sOldCode => $sNewCode) {
-            if (strlen($sOldCode) <= 1 || is_numeric($sOldCode)) {
+            if (strlen((string) $sOldCode) <= 1 || is_numeric($sOldCode)) {
                 continue;
             }
-            $sOldCode = preg_quote($sOldCode, '~');
+            $sOldCode = preg_quote((string) $sOldCode, '~');
             $surveyLanguageSetting->surveyls_endtext = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $surveyLanguageSetting->surveyls_endtext, -1, $iCount);
             $bModified = $bModified || $iCount;
         }
@@ -3626,7 +3626,7 @@ function cleanLanguagesFromSurvey($iSurveyID, $availlangs)
     $aLanguages = [];
     if (!empty($availlangs) && $availlangs != " ") {
         $availlangs = sanitize_languagecodeS($availlangs);
-        $aLanguages = explode(" ", $availlangs);
+        $aLanguages = explode(" ", (string) $availlangs);
         if ($aLanguages[count($aLanguages) - 1] == "") {
             array_pop($aLanguages);
         }
@@ -3681,7 +3681,7 @@ function fixLanguageConsistency($sid, $availlangs = '', $baselang = '')
     $sid = (int) $sid;
     if (trim($availlangs) != '') {
         $availlangs = sanitize_languagecodeS($availlangs);
-        $langs = explode(" ", $availlangs);
+        $langs = explode(" ", (string) $availlangs);
         if ($langs[count($langs) - 1] == "") {
             array_pop($langs);
         }
@@ -4243,7 +4243,7 @@ function modifyDatabase($sqlfile = '', $sqlstring = '')
     $command = '';
 
     foreach ($lines as $line) {
-        $line = rtrim($line);
+        $line = rtrim((string) $line);
         $length = strlen($line);
 
         if ($length and $line[0] <> '#' and substr($line, 0, 2) <> '--') {
@@ -4252,7 +4252,7 @@ function modifyDatabase($sqlfile = '', $sqlstring = '')
                 $command .= $line;
                 $command = str_replace('prefix_', Yii::app()->db->tablePrefix, $command); // Table prefixes
                 $command = str_replace('$defaultuser', Yii::app()->getConfig('defaultuser'), $command);
-                $command = str_replace('$defaultpass', hash('sha256', Yii::app()->getConfig('defaultpass')), $command);
+                $command = str_replace('$defaultpass', hash('sha256', (string) Yii::app()->getConfig('defaultpass')), $command);
                 $command = str_replace('$siteadminname', $siteadminname, $command);
                 $command = str_replace('$siteadminemail', $siteadminemail, $command);
                 $command = str_replace('$defaultlang', Yii::app()->getConfig('defaultlang'), $command);
@@ -4289,7 +4289,7 @@ function getLabelSets($languages = null)
     $aLanguages = array();
     if (!empty($languages)) {
         $languages = sanitize_languagecodeS($languages);
-        $aLanguages = explode(' ', trim($languages));
+        $aLanguages = explode(' ', trim((string) $languages));
     }
 
     $criteria = new CDbCriteria();
@@ -4563,7 +4563,7 @@ function getIPAddress()
         $sIPAddress = $_SERVER['HTTP_CLIENT_IP'];
     } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
         //Check IP Address passed from proxy
-        $vComma = strpos($_SERVER['HTTP_X_FORWARDED_FOR'], ',');
+        $vComma = strpos((string) $_SERVER['HTTP_X_FORWARDED_FOR'], ',');
         if (false === $vComma && filter_var($_SERVER['HTTP_X_FORWARDED_FOR'], FILTER_VALIDATE_IP) !== false) {
             // Single forward
             $sIPAddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
@@ -4571,7 +4571,7 @@ function getIPAddress()
         // Multitple forward
         // see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For
         // TODO: RFC7239 full implementation (https://datatracker.ietf.org/doc/html/rfc7239#section-5.2)
-            $aForwarded = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+            $aForwarded = explode(',', (string) $_SERVER['HTTP_X_FORWARDED_FOR']);
             if (false !== filter_var($aForwarded[0], FILTER_VALIDATE_IP)) {
                 $sIPAddress = $aForwarded[0];
             }
@@ -4595,7 +4595,7 @@ function getBrowserLanguage()
     Yii::app()->loadHelper("surveytranslator");
     $aLanguages = getLanguageData();
     if (!isset($aLanguages[$sLanguage])) {
-        $sLanguage = str_replace('_', '-', $sLanguage);
+        $sLanguage = str_replace('_', '-', (string) $sLanguage);
         if (strpos($sLanguage, '-') !== false) {
             $aLanguage = explode('-', $sLanguage);
             $aLanguage[1] = strtoupper($aLanguage[1]);
@@ -4837,7 +4837,7 @@ function createRandomTempDir($dir = null, $prefix = '', $mode = 0700)
 {
     $sDir = (empty($dir)) ? Yii::app()->getConfig('tempdir') : get_absolute_path($dir);
 
-    if (substr($sDir, -1) != DIRECTORY_SEPARATOR) {
+    if (substr((string) $sDir, -1) != DIRECTORY_SEPARATOR) {
         $sDir .= DIRECTORY_SEPARATOR;
     }
 
@@ -4989,7 +4989,7 @@ function switchMSSQLIdentityInsert($table, $state)
 function resourceExtractFilter($p_event, &$p_header)
 {
     $aAllowExtensions = Yii::app()->getConfig('allowedfileuploads');
-    $info = pathinfo($p_header['filename']);
+    $info = pathinfo((string) $p_header['filename']);
     if ($p_header['folder'] || !isset($info['extension']) || in_array($info['extension'], $aAllowExtensions)) {
         return 1;
     } else {

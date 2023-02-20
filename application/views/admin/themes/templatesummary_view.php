@@ -76,9 +76,9 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                                     <a href="<?php echo $this->createUrl('admin/themes',
                                         ['sa' => 'view', 'screenname' => $screenname, 'templatename' => $templatename, 'editfile' => $file]); ?>"
                                        class="<?= $file == $relativePathEditfile ? 'text-danger' : 'text-success' ?>">
-                                        <?= (empty(substr(strrchr($file, DIRECTORY_SEPARATOR), 1)))
+                                        <?= (empty(substr(strrchr((string) $file, DIRECTORY_SEPARATOR), 1)))
                                             ? $file
-                                            : substr(strrchr($file, DIRECTORY_SEPARATOR), 1) ?>
+                                            : substr(strrchr((string) $file, DIRECTORY_SEPARATOR), 1) ?>
                                     </a>
                                 </div>
                                 <div class="col-md-3">
@@ -114,9 +114,9 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                                     <a href="<?php echo $this->createUrl('admin/themes',
                                         ['sa' => 'view', 'screenname' => $screenname, 'templatename' => $templatename, 'editfile' => $file]); ?>"
                                        class="<?= $file == $relativePathEditfile ? 'text-danger' : 'text-success' ?>">
-                                        <?= (empty(substr(strrchr($file, DIRECTORY_SEPARATOR), 1)))
+                                        <?= (empty(substr(strrchr((string) $file, DIRECTORY_SEPARATOR), 1)))
                                             ? $file
-                                            : substr(strrchr($file, DIRECTORY_SEPARATOR), 1); ?>
+                                            : substr(strrchr((string) $file, DIRECTORY_SEPARATOR), 1); ?>
                                     </a>
                                 </div>
                                 <div class="col-md-3">
@@ -153,9 +153,9 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                                     <a href="<?php echo $this->createUrl('admin/themes',
                                         ['sa' => 'view', 'screenname' => $screenname, 'templatename' => $templatename, 'editfile' => $file]); ?>"
                                        class="<?= $file === $relativePathEditfile ? 'text-danger' : 'text-success'?>">
-                                        <?= (empty(substr(strrchr($file, DIRECTORY_SEPARATOR), 1)))
+                                        <?= (empty(substr(strrchr((string) $file, DIRECTORY_SEPARATOR), 1)))
                                             ? $file
-                                            : substr(strrchr($file, DIRECTORY_SEPARATOR), 1); ?>
+                                            : substr(strrchr((string) $file, DIRECTORY_SEPARATOR), 1); ?>
                                     </a>
                                 </div>
                                 <div class="col-md-3">
@@ -234,7 +234,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                                     </label>
                                     <div class="col-8">
                                         <input name='upload_file' id="upload_file" type="file" class="form-control" required="required"/>
-                                        <input type='hidden' name='editfile' value='<?php echo htmlspecialchars($relativePathEditfile); ?>'/>
+                                        <input type='hidden' name='editfile' value='<?php echo htmlspecialchars((string) $relativePathEditfile); ?>'/>
                                         <input type='hidden' name='screenname' value='<?php echo HTMLEscape($screenname); ?>'/>
                                         <input type='hidden' name='templatename' value='<?php echo $templatename; ?>'/>
                                         <input type='hidden' name='action' value='templateuploadfile'/>

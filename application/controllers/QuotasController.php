@@ -189,7 +189,7 @@ class QuotasController extends LSBaseController
         $aQuotaLanguageSettings = [];
         foreach ($oQuota->languagesettings as $languagesetting) {
             /* url is decoded before usage @see https://github.com/LimeSurvey/LimeSurvey/blob/8d8420a4efcf8e71c4fccbb6708648ace263ca80/application/views/admin/survey/editLocalSettings_view.php#L60 */
-            $languagesetting['quotals_url'] = htmlspecialchars_decode($languagesetting['quotals_url']);
+            $languagesetting['quotals_url'] = htmlspecialchars_decode((string) $languagesetting['quotals_url']);
             $aQuotaLanguageSettings[$languagesetting->quotals_language] = $languagesetting;
         }
 
@@ -372,7 +372,7 @@ class QuotasController extends LSBaseController
 
         if ($quotaService->checkActionPermissions($action)) {
             $sItems = Yii::app()->request->getPost('sItems');
-            $aQuotaIds = json_decode($sItems);
+            $aQuotaIds = json_decode((string) $sItems);
             if (isset($_POST['QuotaLanguageSetting'])) {
                 $errors = $quotaService->multipleItemsAction($aQuotaIds, $action, $_POST['QuotaLanguageSetting']);
                 if (empty($errors)) {

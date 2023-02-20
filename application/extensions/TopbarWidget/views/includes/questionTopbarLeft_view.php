@@ -2,7 +2,7 @@
     // Tools dropdown button
     $toolsDropdownItems = $this->render('includes/questionToolsDropdownItems', get_defined_vars(), true);
 ?>
-<?php if (!empty(trim($toolsDropdownItems))): ?>
+<?php if (!empty(trim((string) $toolsDropdownItems))): ?>
     <!-- Tools  -->
     <div class="btn-group ">
 

@@ -45,7 +45,7 @@ class LimeGridView extends CLSGridView
             $options['url'] = CHtml::normalizeUrl($this->ajaxUrl);
         }
         if ($this->ajaxType !== null) {
-            $options['ajaxType'] = strtoupper($this->ajaxType);
+            $options['ajaxType'] = strtoupper((string) $this->ajaxType);
             $request = Yii::app()->getRequest();
             if ($options['ajaxType'] == 'POST' && $request->enableCsrfValidation) {
                 $options['csrfTokenName'] = $request->csrfTokenName;

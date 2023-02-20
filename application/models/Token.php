@@ -292,7 +292,7 @@ abstract class Token extends Dynamic
         if ($token === false) {
             throw new CHttpException(500, gT('Failed to generate random string for token. Please check your configuration and ensure that the openssl or mcrypt extension is enabled.'));
         }
-        $token = str_replace(array('~', '_'), array('a', 'z'), $token);
+        $token = str_replace(array('~', '_'), array('a', 'z'), (string) $token);
         $event = new PluginEvent('afterGenerateToken');
         $event->set('surveyId', $this->getSurveyId());
         $event->set('iTokenLength', $iTokenLength);

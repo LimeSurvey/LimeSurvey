@@ -102,7 +102,7 @@ function nice_addslashes($string)
     if (MAGIC_QUOTES) {
         return $string;
     } else {
-        return addslashes($string);
+        return addslashes((string) $string);
     }
 }
 
@@ -126,7 +126,7 @@ function sanitize_filename($filename, $force_lowercase = true, $alphanumeric = f
         [#\[\]@!$&\'()+,;=]|
         [{}^\~`]',
         '-',
-        $filename
+        (string) $filename
     );
     // Removes smart quotes
     $filename = str_replace(array("\xe2\x80\x98", "\xe2\x80\x99", "\xe2\x80\x9c", "\xe2\x80\x9d", "\xe2\x80\x93", "\xe2\x80\x94", "\xe2\x80\xa6"), array('','', '', '', '-', '--','...'), $filename);
@@ -137,8 +137,8 @@ function sanitize_filename($filename, $force_lowercase = true, $alphanumeric = f
         $filename = beautify_filename($filename);
     }
     // maximise filename length to 255 bytes http://serverfault.com/a/9548/44086
-    $ext = pathinfo($filename, PATHINFO_EXTENSION);
-    $filename = mb_strcut(pathinfo($filename, PATHINFO_FILENAME), 0, 255 - ($ext ? strlen($ext) + 1 : 0), mb_detect_encoding($filename)) . ($ext ? '.' . $ext : '');
+    $ext = pathinfo((string) $filename, PATHINFO_EXTENSION);
+    $filename = mb_strcut(pathinfo((string) $filename, PATHINFO_FILENAME), 0, 255 - ($ext ? strlen($ext) + 1 : 0), mb_detect_encoding((string) $filename)) . ($ext ? '.' . $ext : '');
     $filename = ($alphanumeric) ? mb_ereg_replace("[^a-zA-Z0-9]", "", $filename) : $filename;
 
     if ($force_lowercase) {
@@ -188,7 +188,7 @@ function beautify_filename($filename)
 
 function sanitize_dirname($string, $force_lowercase = false, $alphanumeric = false)
 {
-    $string = str_replace(".", "", $string);
+    $string = str_replace(".", "", (string) $string);
     return sanitize_filename($string, $force_lowercase, $alphanumeric, false);
 }
 
@@ -197,7 +197,7 @@ function sanitize_dirname($string, $force_lowercase = false, $alphanumeric = fal
 function sanitize_paranoid_string($string, $min = '', $max = '')
 {
     if (isset($string)) {
-        $string = preg_replace("/[^_.a-zA-Z0-9]/", "", $string);
+        $string = preg_replace("/[^_.a-zA-Z0-9]/", "", (string) $string);
         $len = strlen($string);
         if ((($min != '') && ($len < $min)) || (($max != '') && ($len > $max))) {
                 return false;
@@ -209,7 +209,7 @@ function sanitize_paranoid_string($string, $min = '', $max = '')
 function sanitize_cquestions($string, $min = '', $max = '')
 {
     if (isset($string)) {
-        $string = preg_replace("/[^_.a-zA-Z0-9+#]/", "", $string);
+        $string = preg_replace("/[^_.a-zA-Z0-9+#]/", "", (string) $string);
         $len = strlen($string);
         if ((($min != '') && ($len < $min)) || (($max != '') && ($len > $max))) {
                 return false;
@@ -226,7 +226,7 @@ function sanitize_system_string($string, $min = '', $max = '')
         // separate commands, nested execution, file redirection,
         // background processing, special commands (backspace, etc.), quotes
         // newlines, or some other special characters
-        $string = preg_replace($pattern, '', $string);
+        $string = preg_replace($pattern, '', (string) $string);
         $string = '"' . preg_replace('/\$/', '\\\$', $string) . '"'; //make sure this is only interpretted as ONE argument
         $len = strlen($string);
         if ((($min != '') && ($len < $min)) || (($max != '') && ($len > $max))) {
@@ -240,7 +240,7 @@ function sanitize_xss_string($string)
 {
     if (isset($string)) {
         $bad = array('*', '^', '&', ';', '\"', '(', ')', '%', '$', '?');
-        return str_replace($bad, '', $string);
+        return str_replace($bad, '', (string) $string);
     }
 }
 
@@ -250,18 +250,18 @@ function sanitize_xss_string($string)
 function sanitize_sql_db_tablename($string)
 {
     $bad = array('*', '^', '&', '\'', '-', ';', '\"', '(', ')', '%', '$', '?');
-    return str_replace($bad, "", $string);
+    return str_replace($bad, "", (string) $string);
 }
 
 // sanitize a string for SQL input (simple slash out quotes and slashes)
 function sanitize_ldap_string($string, $min = '', $max = '')
 {
     $pattern = '/(\)|\(|\||&)/';
-    $len = strlen($string);
+    $len = strlen((string) $string);
     if ((($min != '') && ($len < $min)) || (($max != '') && ($len > $max))) {
         return false;
     }
-    return preg_replace($pattern, '', $string);
+    return preg_replace($pattern, '', (string) $string);
 }
 
 
@@ -290,13 +290,13 @@ function sanitize_html_string($string)
     $replacement[8] = '&#41;';
     $replacement[9] = '&#43;';
     $replacement[10] = '&#45;';
-    return preg_replace($pattern, $replacement, $string);
+    return preg_replace($pattern, $replacement, (string) $string);
 }
 
 // make int int!
 function sanitize_int($integer, $min = '', $max = '')
 {
-    $int = preg_replace("#[^0-9]#", "", $integer);
+    $int = preg_replace("#[^0-9]#", "", (string) $integer);
     if ((($min != '') && ($int < $min)) || (($max != '') && ($int > $max))) {
         return false;
     }
@@ -325,21 +325,21 @@ function sanitize_user($string)
 function sanitize_userfullname($string)
 {
     $username_length = 50;
-    $string = mb_substr($string, 0, $username_length);
+    $string = mb_substr((string) $string, 0, $username_length);
     return $string;
 }
 
 function sanitize_labelname($string)
 {
     $labelname_length = 100;
-    $string = mb_substr($string, 0, $labelname_length);
+    $string = mb_substr((string) $string, 0, $labelname_length);
     return $string;
 }
 
 // make float float!
 function sanitize_float($float, $min = '', $max = '')
 {
-    $float = str_replace(',', '.', $float);
+    $float = str_replace(',', '.', (string) $float);
     // GMP library allows for high precision and high value numbers
     if (function_exists('gmp_init') && defined('GMP_VERSION') && version_compare(GMP_VERSION, '4.3.2') == 1) {
         $gNumber = gmp_init($float);
@@ -474,7 +474,7 @@ function check($input, $flags, $min = '', $max = '')
 
 function sanitize_languagecode($codetosanitize)
 {
-    return preg_replace('/[^a-z0-9-]/i', '', $codetosanitize);
+    return preg_replace('/[^a-z0-9-]/i', '', (string) $codetosanitize);
 }
 
 /**

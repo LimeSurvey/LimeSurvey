@@ -469,7 +469,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                     id='<?php echo $attr_name; ?>'
                                     name='<?php echo $attr_name; ?>'
                                     value='<?php if (isset($$attr_name)) {
-                                        echo htmlspecialchars($$attr_name, ENT_QUOTES, 'utf-8');
+                                        echo htmlspecialchars((string) $$attr_name, ENT_QUOTES, 'utf-8');
                                     } ?>'
                                 />
                             </div>

@@ -262,7 +262,7 @@ class LimeReplacementFieldsController extends LSBaseController
             $attributes = getTokenFieldsAndNames($surveyid, true);
 
             foreach ($attributes as $attributefield => $attributedescription) {
-                $replFields['TOKEN:' . strtoupper($attributefield)] = sprintf(gT("Participant attribute: %s"), $attributedescription['description']);
+                $replFields['TOKEN:' . strtoupper((string) $attributefield)] = sprintf(gT("Participant attribute: %s"), $attributedescription['description']);
             }
 
             $replFields['EXPIRY'] = gT("Survey expiration date");
@@ -285,7 +285,7 @@ class LimeReplacementFieldsController extends LSBaseController
             $attributes = getTokenFieldsAndNames($surveyid, true);
 
             foreach ($attributes as $attributefield => $attributedescription) {
-                $replFields[strtoupper($attributefield)] = sprintf(gT("Participant attribute: %s"), $attributedescription['description']);
+                $replFields[strtoupper((string) $attributefield)] = sprintf(gT("Participant attribute: %s"), $attributedescription['description']);
             }
 
             $replFields['ADMINNAME'] = gT("Name of the survey administrator");
@@ -305,7 +305,7 @@ class LimeReplacementFieldsController extends LSBaseController
             $attributes = getTokenFieldsAndNames($surveyid, true);
 
             foreach ($attributes as $attributefield => $attributedescription) {
-                $replFields[strtoupper($attributefield)] = sprintf(gT("Participant attribute: %s"), $attributedescription['description']);
+                $replFields[strtoupper((string) $attributefield)] = sprintf(gT("Participant attribute: %s"), $attributedescription['description']);
             }
 
             $replFields['ADMINNAME'] = gT("Name of the survey administrator");
@@ -331,7 +331,7 @@ class LimeReplacementFieldsController extends LSBaseController
             $attributes = getTokenFieldsAndNames($surveyid, true);
 
             foreach ($attributes as $attributefield => $attributedescription) {
-                $replFields[strtoupper($attributefield)] = sprintf(gT("Participant attribute: %s"), $attributedescription['description']);
+                $replFields[strtoupper((string) $attributefield)] = sprintf(gT("Participant attribute: %s"), $attributedescription['description']);
             }
 
             $replFields['ADMINNAME'] = gT("Survey administrator - Name");
@@ -351,7 +351,7 @@ class LimeReplacementFieldsController extends LSBaseController
             $attributes = getTokenFieldsAndNames($surveyid, true);
 
             foreach ($attributes as $attributefield => $attributedescription) {
-                $replFields[strtoupper($attributefield)] = sprintf(gT("Participant attribute: %s"), $attributedescription['description']);
+                $replFields[strtoupper((string) $attributefield)] = sprintf(gT("Participant attribute: %s"), $attributedescription['description']);
             }
 
             $replFields['ADMINNAME'] = gT("Survey administrator - Name");
@@ -371,7 +371,7 @@ class LimeReplacementFieldsController extends LSBaseController
             $attributes = getTokenFieldsAndNames($surveyid, true);
 
             foreach ($attributes as $attributefield => $attributedescription) {
-                $replFields[strtoupper($attributefield)] = sprintf(gT("Participant attribute: %s"), $attributedescription['description']);
+                $replFields[strtoupper((string) $attributefield)] = sprintf(gT("Participant attribute: %s"), $attributedescription['description']);
             }
 
             $replFields['ADMINNAME'] = gT("Survey administrator - Name");
@@ -405,7 +405,7 @@ class LimeReplacementFieldsController extends LSBaseController
             $attributes = getTokenFieldsAndNames($surveyid, true);
 
             foreach ($attributes as $attributefield => $attributedescription) {
-                $replFields['TOKEN:' . strtoupper($attributefield)] = sprintf(gT("Participant attribute: %s"), $attributedescription['description']);
+                $replFields['TOKEN:' . strtoupper((string) $attributefield)] = sprintf(gT("Participant attribute: %s"), $attributedescription['description']);
             }
 
             $replFields['EXPIRY'] = gT("Survey expiration date");
@@ -420,7 +420,7 @@ class LimeReplacementFieldsController extends LSBaseController
             $attributes = getTokenFieldsAndNames($surveyid, true);
 
             foreach ($attributes as $attributefield => $attributedescription) {
-                $replFields['TOKEN:' . strtoupper($attributefield)] = sprintf(gT("Participant attribute: %s"), $attributedescription['description']);
+                $replFields['TOKEN:' . strtoupper((string) $attributefield)] = sprintf(gT("Participant attribute: %s"), $attributedescription['description']);
             }
 
             $replFields['EXPIRY'] = gT("Survey expiration date");

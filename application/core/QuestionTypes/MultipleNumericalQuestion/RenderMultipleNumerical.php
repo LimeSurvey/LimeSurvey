@@ -54,12 +54,12 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
 
         if (intval($this->setDefaultIfEmpty($this->getQuestionAttribute('maximum_chars'), 0)) > 0) {
             // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
-            $this->maxlength = intval(trim($this->getQuestionAttribute('maximum_chars')));
+            $this->maxlength = intval(trim((string) $this->getQuestionAttribute('maximum_chars')));
             $this->extraclass .= " ls-input-maxchars";
         }
 
-        if (ctype_digit(trim($this->getQuestionAttribute('input_size')))) {
-            $this->inputsize = trim($this->getQuestionAttribute('input_size'));
+        if (ctype_digit(trim((string) $this->getQuestionAttribute('input_size')))) {
+            $this->inputsize = trim((string) $this->getQuestionAttribute('input_size'));
             $this->extraclass .= " ls-input-sized";
         }
 
@@ -67,12 +67,12 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
             $this->sCoreClasses  .= " slider-list";
             $this->extraclass   .= " withslider";
             $this->sliderOptionsArray = [
-                'slider_step'          => trim(LimeExpressionManager::ProcessString("{{$this->getQuestionAttribute('slider_accuracy')}}", $this->oQuestion->qid, [], 1, 1, false, false, true)),
-                'slider_min'           => trim(LimeExpressionManager::ProcessString("{{$this->getQuestionAttribute('slider_min')}}", $this->oQuestion->qid, [], 1, 1, false, false, true)),
-                'slider_max'           => trim(LimeExpressionManager::ProcessString("{{$this->getQuestionAttribute('slider_max')}}", $this->oQuestion->qid, [], 1, 1, false, false, true)),
-                'slider_default'       => trim(LimeExpressionManager::ProcessString("{{$this->getQuestionAttribute('slider_default')}}", $this->oQuestion->qid, [], 1, 1, false, false, true)),
-                'slider_orientation'   => (trim($this->getQuestionAttribute('slider_orientation')) == 0) ? 'horizontal' : 'vertical',
-                'slider_custom_handle' => (trim($this->getQuestionAttribute('slider_custom_handle'))),
+                'slider_step'          => trim((string) LimeExpressionManager::ProcessString("{{$this->getQuestionAttribute('slider_accuracy')}}", $this->oQuestion->qid, [], 1, 1, false, false, true)),
+                'slider_min'           => trim((string) LimeExpressionManager::ProcessString("{{$this->getQuestionAttribute('slider_min')}}", $this->oQuestion->qid, [], 1, 1, false, false, true)),
+                'slider_max'           => trim((string) LimeExpressionManager::ProcessString("{{$this->getQuestionAttribute('slider_max')}}", $this->oQuestion->qid, [], 1, 1, false, false, true)),
+                'slider_default'       => trim((string) LimeExpressionManager::ProcessString("{{$this->getQuestionAttribute('slider_default')}}", $this->oQuestion->qid, [], 1, 1, false, false, true)),
+                'slider_orientation'   => (trim((string) $this->getQuestionAttribute('slider_orientation')) == 0) ? 'horizontal' : 'vertical',
+                'slider_custom_handle' => (trim((string) $this->getQuestionAttribute('slider_custom_handle'))),
             ];
             
             $this->sliderOptionsArray['slider_min'] = (is_numeric($this->sliderOptionsArray['slider_min'])) ? $this->sliderOptionsArray['slider_min'] : 0;
@@ -87,7 +87,7 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
 
             $this->sliderOptionsArray['slider_step']    = (is_numeric($this->sliderOptionsArray['slider_step'])) ? $this->sliderOptionsArray['slider_step'] : 1;
             $this->sliderOptionsArray['slider_default'] = (is_numeric($this->sliderOptionsArray['slider_default'])) ? $this->sliderOptionsArray['slider_default'] : "";
-            $this->sliderOptionsArray['slider_handle']  = $this->handleOptions[(trim($this->getQuestionAttribute('slider_handle')))];
+            $this->sliderOptionsArray['slider_handle']  = $this->handleOptions[(trim((string) $this->getQuestionAttribute('slider_handle')))];
             $this->sliderOptionsArray['slider_default_set'] = (bool) ($this->getQuestionAttribute('slider_default_set') && $this->sliderOptionsArray['slider_default'] !== '');
 
             // Put the slider init to initial state (when no click is set or when 'reset')
@@ -180,7 +180,7 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
                 }
             }
             $sUnformatedValue = $dispVal; // Send the real value for slider
-            $dispVal = str_replace('.', $this->sSeparator, $dispVal);
+            $dispVal = str_replace('.', $this->sSeparator, (string) $dispVal);
 
             if (!$this->useSliderLayout) {
                 $aRows[] = array(
@@ -207,7 +207,7 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
                 $sliderWidth = 12;
 
                 if ($this->sliderOptionsArray['slider_separator'] != '') {
-                    $aAnswer     = explode($this->sliderOptionsArray['slider_separator'], $sSubquestionText);
+                    $aAnswer     = explode($this->sliderOptionsArray['slider_separator'], (string) $sSubquestionText);
                     $theanswer   = $aAnswer[0] ?? "";
                     $labelText   = $theanswer;
                     $sliderleft  = $aAnswer[1] ?? null;
@@ -320,16 +320,16 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
 
         $displaytotal     = false;
         $equals_num_value = false;
-        if (trim($this->getQuestionAttribute('equals_num_value')) != ''
-        || trim($this->getQuestionAttribute('min_num_value')) != ''
-        || trim($this->getQuestionAttribute('max_num_value')) != ''
+        if (trim((string) $this->getQuestionAttribute('equals_num_value')) != ''
+        || trim((string) $this->getQuestionAttribute('min_num_value')) != ''
+        || trim((string) $this->getQuestionAttribute('max_num_value')) != ''
         ) {
             $qinfo = LimeExpressionManager::GetQuestionStatus($this->oQuestion->qid);
 
             $sumRemainingEqn = LimeExpressionManager::ProcessString('{'.$qinfo['sumRemainingEqn'].'}', $this->oQuestion->qid);
             $sumEqn = LimeExpressionManager::ProcessString('{'.$qinfo['sumEqn'].'}', $this->oQuestion->qid);
 
-            if (trim($this->getQuestionAttribute('equals_num_value')) != '') {
+            if (trim((string) $this->getQuestionAttribute('equals_num_value')) != '') {
                 $equals_num_value = true;
             }
             $displaytotal = true;

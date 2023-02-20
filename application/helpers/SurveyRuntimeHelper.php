@@ -438,7 +438,7 @@ class SurveyRuntimeHelper
             $showgroupdesc_ = $showgroupinfo_ == 'B' /* both */ || $showgroupinfo_ == 'D'; /* (group-) description */
 
             $aGroup['showgroupinfo'] = $showgroupinfo_;
-            $aGroup['showdescription']  = (!$this->previewquestion && trim($gl['description']) != "" && $showgroupdesc_);
+            $aGroup['showdescription']  = (!$this->previewquestion && trim((string) $gl['description']) != "" && $showgroupdesc_);
             $aGroup['description']      = $gl['description'];
 
             // one entry per QID
@@ -447,7 +447,7 @@ class SurveyRuntimeHelper
                     $qid             = $qa[4];
                     $qinfo           = LimeExpressionManager::GetQuestionStatus($qid);
                     $lemQuestionInfo = LimeExpressionManager::GetQuestionStatus($qid);
-                    $lastgrouparray  = explode("X", $qa[7]);
+                    $lastgrouparray  = explode("X", (string) $qa[7]);
                     $lastgroup       = $lastgrouparray[0] . "X" . $lastgrouparray[1]; // id of the last group, derived from question id
                     $lastanswer      = $qa[7];
 
@@ -1213,15 +1213,15 @@ class SurveyRuntimeHelper
 
         if (!$this->aMoveResult['finished']) {
             $unansweredSQList = $this->aMoveResult['unansweredSQs']; // A list of the unanswered responses created via the global variable $notanswered. Should be $oResponse->unanswereds
-            if (strlen($unansweredSQList) > 0) {
-                $this->notanswered = explode('|', $unansweredSQList);
+            if (strlen((string) $unansweredSQList) > 0) {
+                $this->notanswered = explode('|', (string) $unansweredSQList);
             } else {
                 $this->notanswered = array();
             }
             //CHECK INPUT
             $invalidSQList = $this->aMoveResult['invalidSQs']; // Invalid answered, fed from $moveResult(LEM). Its logic should be in Response model.
-            if (strlen($invalidSQList) > 0) {
-                $this->notvalidated = explode('|', $invalidSQList);
+            if (strlen((string) $invalidSQList) > 0) {
+                $this->notvalidated = explode('|', (string) $invalidSQList);
             } else {
                 $this->notvalidated = array();
             }
@@ -1244,7 +1244,7 @@ class SurveyRuntimeHelper
                 $this->aSurveyInfo['aAssessments'] = doAssessment($this->iSurveyid, false);
             }
             // End text
-            if (trim(str_replace(array('<p>', '</p>'), '', $this->aSurveyInfo['surveyls_endtext'])) == '') {
+            if (trim(str_replace(array('<p>', '</p>'), '', (string) $this->aSurveyInfo['surveyls_endtext'])) == '') {
                 $this->aSurveyInfo['aCompleted']['showDefault'] = true;
             } else {
                 $this->aSurveyInfo['aCompleted']['showDefault'] = false;

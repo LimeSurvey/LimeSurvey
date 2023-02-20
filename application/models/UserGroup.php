@@ -538,7 +538,7 @@ class UserGroup extends LSActiveRecord
             $usersInGroup[] = $oAuxUserInGroup;
         }
         $mailer->Subject = $subject;
-        $body = str_replace("\n.", "\n..", $body);
+        $body = str_replace("\n.", "\n..", (string) $body);
         $body = wordwrap($body, 70);
         $mailer->Body = $body;
         $cnt = 0;

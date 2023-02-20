@@ -28,7 +28,7 @@ function CheckForDBUpgrades($subaction = null)
         Yii::app()->loadHelper('update/updatedb');
         if (isset($subaction) && $subaction == "yes") {
             $header = Yii::app()->getController()->getAdminHeader(false, true);
-            $header = preg_replace('/<###begin###>/', '', $header);
+            $header = preg_replace('/<###begin###>/', '', (string) $header);
             echo $header;
             $result = db_upgrade_all(intval($currentDBVersion));
             if ($result) {
@@ -80,7 +80,7 @@ function ShowDBUpgradeNotice()
 function getDBConnectionStringProperty($sProperty)
 {
     // Yii doesn't give us a good way to get the database name
-    preg_match('/' . $sProperty . '=([^;]*)/', Yii::app()->db->getSchema()->getDbConnection()->connectionString, $aMatches);
+    preg_match('/' . $sProperty . '=([^;]*)/', (string) Yii::app()->db->getSchema()->getDbConnection()->connectionString, $aMatches);
     if (count($aMatches) === 0) {
         return null;
     }

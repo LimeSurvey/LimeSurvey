@@ -263,11 +263,11 @@ class QuickTranslationController extends LSBaseController
                 $aResultTo = array_merge($aResultTo, $oResultTo->getAttributes());
                 $aResultTo2 = array_merge($aResultTo2, $oResultTo2->getAttributes());
 
-                $textfrom = htmlspecialchars_decode($aRowfrom[$amTypeOptions["dbColumn"]]);
+                $textfrom = htmlspecialchars_decode((string) $aRowfrom[$amTypeOptions["dbColumn"]]);
 
                 $textto = $aResultTo[$amTypeOptions["dbColumn"]];
                 if ($associated) {
-                    $textfrom2 = htmlspecialchars_decode($aResultBase2[$amTypeOptions2["dbColumn"]]);
+                    $textfrom2 = htmlspecialchars_decode((string) $aResultBase2[$amTypeOptions2["dbColumn"]]);
                     $textto2 = $aResultTo2[$amTypeOptions2["dbColumn"]];
                 }
 
@@ -275,7 +275,7 @@ class QuickTranslationController extends LSBaseController
                 $qid = ($amTypeOptions["qid"] == true) ? $aRowfrom['qid'] : null;
 
                 $textform_length = strlen(trim($textfrom));
-                $textfrom2_length = $associated ? strlen(trim($textfrom2)) : 0;
+                $textfrom2_length = $associated ? strlen(trim((string) $textfrom2)) : 0;
 
                 $singleTabFieldsData['all_fields_empty'] = ($textform_length == 0) && ($textfrom2_length == 0);
 
@@ -308,7 +308,7 @@ class QuickTranslationController extends LSBaseController
                     'rowfrom'      => $aRowfrom,
                     'nrows' => max($this->calcNRows($textfrom), $this->calcNRows($textto))
                 ];
-                if ($associated && strlen(trim($textfrom2)) > 0) {
+                if ($associated && strlen(trim((string) $textfrom2)) > 0) {
                     $singleTabFieldsData['translateFields'][] = [
                         'surveyId' => $survey->sid,
                         'gid'      => $gid,
@@ -362,14 +362,14 @@ class QuickTranslationController extends LSBaseController
     protected function loadEditor($htmleditor, $aData)
     {
         $editor_function = "";
-        $displayType = strtolower($htmleditor["HTMLeditorDisplay"]);
+        $displayType = strtolower((string) $htmleditor["HTMLeditorDisplay"]);
         $displayTypeIsEmpty = empty($displayType);
 
         if ($displayType == "inline" || $displayTypeIsEmpty) {
             $editor_function = "getEditor";
         } elseif ($displayType == "popup") {
             $editor_function = "getPopupEditor";
-            $aData[2] = urlencode($htmleditor['description']);
+            $aData[2] = urlencode((string) $htmleditor['description']);
         } elseif ($displayType == "modal") {
             $editor_function = "getModalEditor";
             $aData[2] = $htmleditor['description'];
@@ -429,8 +429,8 @@ class QuickTranslationController extends LSBaseController
 
         $aSearch     = array('zh-Hans', 'zh-Hant-HK', 'zh-Hant-TW', 'nl-informal', 'de-informal', 'de-easy', 'it-formal', 'pt-BR', 'es-MX', 'nb', 'nn');
         $aReplace    = array('zh-CN', 'zh-TW', 'zh-TW', 'nl', 'de', 'de', 'it', 'pt', 'es', 'no', 'no');
-        $sBaselang = str_replace($aSearch, $aReplace, $sBaselang);
-        $sTolang = str_replace($aSearch, $aReplace, $sTolang);
+        $sBaselang = str_replace($aSearch, $aReplace, (string) $sBaselang);
+        $sTolang = str_replace($aSearch, $aReplace, (string) $sTolang);
 
         $error = false;
 
@@ -450,7 +450,7 @@ class QuickTranslationController extends LSBaseController
                     $sparts[] = $part[0];
                 } else {
                     $convertedPart = $objGt->$sProcedure($part[0]);
-                    $convertedPart  = str_replace("<br>", "\r\n", $convertedPart);
+                    $convertedPart  = str_replace("<br>", "\r\n", (string) $convertedPart);
                     $convertedPart  = html_entity_decode(stripcslashes($convertedPart));
                     $sparts[] = $convertedPart;
                 }

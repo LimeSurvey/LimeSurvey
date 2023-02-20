@@ -34,6 +34,6 @@
             onclick="window.open(
                 '<?php echo $this->createUrl("admin/tokens/sa/kill/surveyid/{$iSurveyId}/ok/Y"); ?>',
                 '_top')" />
-        
+
         </div>
 </div>

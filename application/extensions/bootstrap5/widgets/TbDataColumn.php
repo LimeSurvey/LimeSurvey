@@ -70,7 +70,7 @@ class TbDataColumn extends CDataColumn
             echo $this->filter;
         } else {
             if ($this->filter !== false && $this->grid->filter !== null && $this->name !== null && strpos(
-                    $this->name,
+                    (string) $this->name,
                     '.'
                 ) === false
             ) {

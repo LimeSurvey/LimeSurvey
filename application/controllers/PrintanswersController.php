@@ -163,7 +163,7 @@ class PrintanswersController extends LSYii_Controller
 
             $html = Yii::app()->twigRenderer->renderTemplateFromFile('layout_printanswers.twig', $aData, true);
             //filter all scripts
-            $html = preg_replace("/<script>[^<]*<\/script>/", '', $html);
+            $html = preg_replace("/<script>[^<]*<\/script>/", '', (string) $html);
             //replace fontawesome icons
             $html = preg_replace('/(<i class="fa fa-check-square-o"><\/i>|<i class="fa fa-close"><\/i>)/', '[X]', $html);
             $html = preg_replace('/<i class="fa fa-minus-square-o">\<\/i>/', '[-]', $html);

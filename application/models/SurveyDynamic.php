@@ -116,7 +116,7 @@ class SurveyDynamic extends LSActiveRecord
         foreach ($data as $k => $v) {
             $search = array('`', "'");
             $k = str_replace($search, '', $k);
-            $v = $v == null ? null : str_replace($search, '', $v);
+            $v = $v == null ? null : str_replace($search, '', (string) $v);
             $record->$k = $v;
         }
 
@@ -389,7 +389,7 @@ class SurveyDynamic extends LSActiveRecord
         $value     = $this->$colName;
 
         $sFullValue = viewHelper::flatten(getExtendedAnswer(self::$sid, $oFieldMap->fieldname, $value, $sLanguage));
-        if (strlen($sFullValue) > 50) {
+        if (strlen((string) $sFullValue) > 50) {
             $sElipsizedValue = ellipsize($sFullValue, $this->ellipsize_question_value);
             $sValue          = '<span data-bs-toggle="tooltip" data-bs-placement="left" title="' . quoteText($sFullValue) . '">' . $sElipsizedValue . '</span>';
         } else {
@@ -397,27 +397,27 @@ class SurveyDynamic extends LSActiveRecord
         }
 
         // Upload question
-        if ($oFieldMap->type == Question::QT_VERTICAL_FILE_UPLOAD && strpos($oFieldMap->fieldname, 'filecount') === false) {
+        if ($oFieldMap->type == Question::QT_VERTICAL_FILE_UPLOAD && strpos((string) $oFieldMap->fieldname, 'filecount') === false) {
             $sSurveyEntry = "<table class='table table-condensed upload-question'>";
             $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($oFieldMap->qid);
             $aFilesInfo = json_decode_ls($this->$colName);
             for ($iFileIndex = 0; $iFileIndex < $aQuestionAttributes['max_num_of_files']; $iFileIndex++) {
                 $sSurveyEntry .= '<tr>';
                 if (isset($aFilesInfo[$iFileIndex])) {
-                    $sSurveyEntry .= '<td>' . CHtml::link(CHtml::encode(rawurldecode($aFilesInfo[$iFileIndex]['name'])), App()->createUrl("responses/downloadfile", ["surveyId" => self::$sid, "responseId" => $this->id, "qid" => $oFieldMap->qid, "index" => $iFileIndex])) . '</td>';
+                    $sSurveyEntry .= '<td>' . CHtml::link(CHtml::encode(rawurldecode((string) $aFilesInfo[$iFileIndex]['name'])), App()->createUrl("responses/downloadfile", ["surveyId" => self::$sid, "responseId" => $this->id, "qid" => $oFieldMap->qid, "index" => $iFileIndex])) . '</td>';
                     $sSurveyEntry .= '<td>' . sprintf('%s Mb', round($aFilesInfo[$iFileIndex]['size'] / 1000, 2)) . '</td>';
 
                     if ($aQuestionAttributes['show_title']) {
                         if (!isset($aFilesInfo[$iFileIndex]['title'])) {
                             $aFilesInfo[$iFileIndex]['title'] = '';
                         }
-                        $sSurveyEntry .= '<td>' . htmlspecialchars($aFilesInfo[$iFileIndex]['title'], ENT_QUOTES, 'UTF-8') . '</td>';
+                        $sSurveyEntry .= '<td>' . htmlspecialchars((string) $aFilesInfo[$iFileIndex]['title'], ENT_QUOTES, 'UTF-8') . '</td>';
                     }
                     if ($aQuestionAttributes['show_comment']) {
                         if (!isset($aFilesInfo[$iFileIndex]['comment'])) {
                             $aFilesInfo[$iFileIndex]['comment'] = '';
                         }
-                        $sSurveyEntry .= '<td>' . htmlspecialchars($aFilesInfo[$iFileIndex]['comment'], ENT_QUOTES, 'UTF-8') . '</td>';
+                        $sSurveyEntry .= '<td>' . htmlspecialchars((string) $aFilesInfo[$iFileIndex]['comment'], ENT_QUOTES, 'UTF-8') . '</td>';
                     }
                 }
                 $sSurveyEntry .= '</tr>';
@@ -555,7 +555,7 @@ class SurveyDynamic extends LSActiveRecord
 
             $aRes = array();
             foreach ($oResult as $sResult) {
-                $aRes[] = date($dFormat, strtotime($sResult['submitdate']));
+                $aRes[] = date($dFormat, strtotime((string) $sResult['submitdate']));
             }
 
             return array_count_values($aRes);
@@ -752,8 +752,8 @@ class SurveyDynamic extends LSActiveRecord
                 $c1 = (string) $column->name;
                 $columnHasValue = !empty($this->$c1);
                 if ($columnHasValue) {
-                    $isDatetime = strpos($column->dbType, 'timestamp') !== false || strpos($column->dbType, 'datetime') !== false;
-                    if ($column->dbType == 'decimal' || substr($column->dbType, 0, 7) == 'numeric') {
+                    $isDatetime = strpos((string) $column->dbType, 'timestamp') !== false || strpos((string) $column->dbType, 'datetime') !== false;
+                    if ($column->dbType == 'decimal' || substr((string) $column->dbType, 0, 7) == 'numeric') {
                         $this->$c1 = (float) $this->$c1;
                         $criteria->compare(Yii::app()->db->quoteColumnName($c1), $this->$c1, false);
                     } elseif ($isDatetime) {
@@ -922,7 +922,7 @@ class SurveyDynamic extends LSActiveRecord
         }
 
         if ($aQuestionAttributes['questionclass'] === 'upload-files') {
-            $aQuestionAttributes['fileinfo'] = json_decode($aQuestionAttributes['answervalue'], true);
+            $aQuestionAttributes['fileinfo'] = json_decode((string) $aQuestionAttributes['answervalue'], true);
         }
 
         if ($oQuestion->parent_qid != 0 && $oQuestion->parent['type'] === "1") {
@@ -994,8 +994,8 @@ class SurveyDynamic extends LSActiveRecord
         }
 
         if ($oQuestion->type == 'N' || ($oQuestion->parent_qid != 0 && $oQuestion->parent['type'] === "K")) {
-            if (strpos($aQuestionAttributes['answervalue'], ".") !== false) { // Remove last 0 and last . ALWAYS (see \SurveyObj\getShortAnswer)
-                $aQuestionAttributes['answervalue'] = rtrim(rtrim($aQuestionAttributes['answervalue'], "0"), ".");
+            if (strpos((string) $aQuestionAttributes['answervalue'], ".") !== false) { // Remove last 0 and last . ALWAYS (see \SurveyObj\getShortAnswer)
+                $aQuestionAttributes['answervalue'] = rtrim(rtrim((string) $aQuestionAttributes['answervalue'], "0"), ".");
             }
         }
 

@@ -101,7 +101,7 @@ Yii::app()->getController()->renderPartial(
                                         <?php
                                         endif; ?>
                                         <?php
-                                        if (substr($sPermissionKey, 0, 5) === 'auth_' && $sCRUDKey === 'read'): ?>
+                                        if (substr((string) $sPermissionKey, 0, 5) === 'auth_' && $sCRUDKey === 'read'): ?>
                                             style="visibility:hidden"
                                         <?php
                                         endif; ?>/>
