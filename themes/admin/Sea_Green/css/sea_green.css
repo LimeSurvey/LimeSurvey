@@ -16653,6 +16653,9 @@ tr.info, tr.danger {
   border-radius: 4px;
   font-weight: 500;
 }
+.btn [class^=ri-], .btn [class*=" ri-"] {
+  font-size: 1.425rem;
+}
 
 .btn-sm, .btn-group-sm > .btn {
   min-height: 24px;
@@ -16660,6 +16663,9 @@ tr.info, tr.danger {
   font-size: 0.855rem;
   line-height: 16px;
   border-radius: 3px;
+}
+.btn-sm [class^=ri-], .btn-group-sm > .btn [class^=ri-], .btn-sm [class*=" ri-"], .btn-group-sm > .btn [class*=" ri-"] {
+  font-size: 1.14rem;
 }
 
 .btn-lg, .btn-group-lg > .btn {
@@ -16680,6 +16686,9 @@ tr.info, tr.danger {
 
 .btn-xs {
   min-height: auto;
+}
+.btn-xs [class^=ri-], .btn-xs [class*=" ri-"] {
+  font-size: 1.14rem;
 }
 
 .menu-button-divider {
@@ -17430,7 +17439,7 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 }
 
 [class^=ri-], [class*=" ri-"] {
-  vertical-align: -0.125em;
+  vertical-align: -0.25em;
 }
 
 .remix-2xs {

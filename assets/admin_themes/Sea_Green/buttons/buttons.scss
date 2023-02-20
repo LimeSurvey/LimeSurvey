@@ -288,6 +288,9 @@
   line-height   : $line-height-20;
   border-radius : $border-radius;
   font-weight   : $btn-font-weight;
+  & [class^="ri-"], & [class*=" ri-"]  {
+    font-size: $font-size-lg;
+  }
 }
 
 .btn-sm {
@@ -296,6 +299,9 @@
   font-size     : $btn-font-size-sm;
   line-height   : $line-height-16;
   border-radius : 3px;
+  & [class^="ri-"], & [class*=" ri-"]  {
+    font-size: $font-size-base;
+  }
 }
 
 .btn-lg {
@@ -316,6 +322,9 @@
 
 .btn-xs {
   min-height : auto;
+  & [class^="ri-"], & [class*=" ri-"]  {
+    font-size: $font-size-base;
+  }
 }
 
 //Dropdown divider
