@@ -1,3 +1,6 @@
+<?php
+// TODO: file seems to be unused
+?>
 <!-- List all notifications -->
 
 <div class="container-fluid welcome full-page-wrapper">
