@@ -1163,11 +1163,6 @@ table.cke_editor {
 #welcome-jumbotron {
     background-color: transparent;
 }
-.welcome {
-    .panel {
-        box-shadow: 0 2px 5px 0 $black_opac_16, 0 2px 10px 0 $black_opac_12;
-    }
-}
 
 // Dropdowns
 .open .dropdown-toggle {
@@ -1220,13 +1215,6 @@ table.cke_editor {
 // Survey list
 .list-surveys h3 {
     @extend %extend_19;
-}
-
-div.panel.disabled {
-    opacity: 0.5;
-    * {
-        opacity: 0.5;
-    }
 }
 
 // Side menu
@@ -1288,12 +1276,6 @@ div.panel.disabled {
             .navbar-nav {
                 li {
                     border-bottom: 1px solid $gray-07;
-                    &.panel {
-                        background-color: transparent;
-                    }
-                    &.panel-default {
-                        border-bottom: 1px solid $gray-07;
-                    }
                 }
             }
             .card-body {
@@ -1382,9 +1364,7 @@ input[type="checkbox"]:checked:after,
 #carousel-example-generic .carousel-control {
     color: $primary;
 }
-#carousel-example-generic .panel-title {
-    color: $primary;
-}
+
 #carousel-example-generic .carousel-indicators .active {
     background-color: $primary;
 }

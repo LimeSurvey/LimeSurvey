@@ -15939,10 +15939,6 @@ table.cke_editor {
   background-color: transparent;
 }
 
-.welcome .panel {
-  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
-}
-
 .dropdown-item > a:hover {
   background-color: #0f3e12;
   color: #fff;
@@ -15965,13 +15961,6 @@ table.cke_editor {
 }
 .nav-tabs-justified > .active > a:focus {
   border: 1px solid #dadada;
-}
-
-div.panel.disabled {
-  opacity: 0.5;
-}
-div.panel.disabled * {
-  opacity: 0.5;
 }
 
 .absolute-wrapper {
@@ -16027,12 +16016,6 @@ div.panel.disabled * {
   background-color: #fafafa;
 }
 .side-menu #dropdown .card-body .navbar-nav li {
-  border-bottom: 1px solid #e3e3e3;
-}
-.side-menu #dropdown .card-body .navbar-nav li.panel {
-  background-color: transparent;
-}
-.side-menu #dropdown .card-body .navbar-nav li.panel-default {
   border-bottom: 1px solid #e3e3e3;
 }
 .side-menu #dropdown .card-body .card-body li:last-child {
@@ -16120,10 +16103,6 @@ input[type=checkbox]:checked:after,
 }
 
 #carousel-example-generic .carousel-control {
-  color: #328637;
-}
-
-#carousel-example-generic .panel-title {
   color: #328637;
 }
 
