@@ -2,6 +2,10 @@
 
 namespace LimeSurvey\Models\Services;
 
+use CActiveDataProvider;
+use CSort;
+use Yii;
+
 /**
  * This class is responsible for the relationship between permissions, users and surveys.
  * It could be handled as a specific permissions system for surveys.
@@ -38,6 +42,34 @@ class SurveyPermissions
     {
         $userPermissionCriteria = $this->getUserPermissionCriteria();
         return \Permission::model()->findAll($userPermissionCriteria);
+    }
+
+    public function getUsersSurveyPermissionsDataProvider()
+    {
+        $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
+        $userPermissionCriteria = $this->getUserPermissionCriteria();
+        $sort = new CSort();
+        $sort->attributes = array(
+            'users_name' => array(
+                'asc' => 'users_name asc',
+                'desc' => 'users_name desc',
+            ),
+            'full_name' => array(
+                'asc'  => 'u.full_name asc',
+                'desc' => 'u.full_name desc',
+            ),
+
+        );
+        $sort->defaultOrder = array('creation_date' => CSort::SORT_DESC);
+
+        $dataProvider = new CActiveDataProvider('Permission', [
+            // 'sort' => $sort,
+            'criteria' => $userPermissionCriteria,
+            'pagination' => array(
+                'pageSize' => $pageSize,
+            ),
+        ]);
+        return $dataProvider;
     }
 
     /**

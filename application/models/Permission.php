@@ -646,6 +646,39 @@ class Permission extends LSActiveRecord
     {
         return $this->hasPermission(0, 'global', $sPermission, $sCRUD, $iUserID);
     }
+    public function getButtons(): string
+    {
+        $dropdownItems = [];
+        $dropdownItems[] = [
+            'title' => gT('Edit Permissioin'),
+            'url' =>  App()->createUrl("surveyPermissions/settingsPermissions/", [
+                'surveyid' =>  $this->entity_id,
+                'action' => 'user',
+                'id' => $this->uid
+            ]),
+            'iconClass' => 'ri-pencil-fill',
+            'enabledCondition' => true
+        ];
+        if (Permission::model()->hasSurveyPermission($this->entity_id, 'surveysecurity', 'delete')) {
+            $dropdownItems[] = [
+                'title' => gT('Delete'),
+                'url' =>  App()->createUrl("surveyPermissions/deleteUserPermissions/"),
+                'linkAttributes'   => [
+                    'data-bs-toggle' => 'modal',
+                    'data-bs-target' => '#confirmation-modal',
+                    'data-btntext' => "Delete",
+                    'data-title' => gt('Delete user survey permissions'),
+                    'data-post-url' =>  App()->createUrl("surveyPermissions/deleteUserPermissions/"),
+                    'data-post-datas' =>   json_encode(['surveyid' => $this->entity_id, 'userid' => $this->uid]),
+                    'data-message'   => gt('Delete user survey permissions'),
+                    'type'           => 'submit'
+                ],
+                'iconClass' => 'ri-delete-bin-fill text-danger',
+                'enabledCondition' => true
+            ];
+        }
+        return App()->getController()->widget('ext.admin.grid.GridActionsWidget.GridActionsWidget', ['dropdownItems' => $dropdownItems], true);
+    }
 
     /**
      * Checks if a user has a certain permission in the given survey
