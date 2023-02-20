@@ -34,7 +34,7 @@ echo viewHelper::getViewTestTag('surveyQuotas');
             <!-- Grid -->
             <div class="row">
                 <div class="col-12 content-right">
-                    <?php $this->widget('application.extensions.admin.grid.CLSGridView', array(
+                    <?php $this->widget('application.extensions.admin.grid.CLSGridView', array( //done
                         'dataProvider'  => $oDataProvider,
                         'id'            => 'quota-grid',
                         'ajaxUpdate'    => 'quota-grid',
@@ -60,12 +60,6 @@ echo viewHelper::getViewTestTag('surveyQuotas');
                                 'class'          => 'CCheckBoxColumn',
                                 'selectableRows' => '100',
                                 'htmlOptions'    => array('style' => 'vertical-align:top'),
-                            ),
-                            array(
-                                'header'            => gT("Action"),
-                                'name'        => 'actions',
-                                'type'        => 'raw',
-                                'value'       => '$data->buttons',
                             ),
                             array(
                                 'name'        => gT('Quota members'),
@@ -97,6 +91,14 @@ echo viewHelper::getViewTestTag('surveyQuotas');
                                 'header'      => gT('Limit'),
                                 'htmlOptions' => array('style' => 'vertical-align:top'),
                                 'footer'      => $totalquotas,
+                            ),
+                            array(
+                                'header'            => gT("Action"),
+                                'name'        => 'actions',
+                                'type'        => 'raw',
+                                'value'       => '$data->buttons',
+                                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+                                'htmlOptions'       => ['class' => 'text-center button-column ls-sticky-column'],
                             ),
 
                         ),

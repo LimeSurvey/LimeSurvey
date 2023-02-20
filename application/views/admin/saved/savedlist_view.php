@@ -16,7 +16,7 @@
     <div class="row">
         <div class="col-12 content-right">
             <?php
-            $this->widget('application.extensions.admin.grid.CLSGridView', array(
+            $this->widget('application.extensions.admin.grid.CLSGridView', array(//done
                     'id'           => 'saved-grid',
                     'ajaxUpdate'   => 'saved-grid',
                     'dataProvider' => $model->search(),

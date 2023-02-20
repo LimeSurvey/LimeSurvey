@@ -217,47 +217,59 @@ class Quota extends LSActiveRecord
 
     public function getButtons()
     {
-        $buttons = "<div class='icon-btn-row'>";
-
-        //edit
-        if (Permission::model()->hasSurveyPermission($this->sid, 'quotas', 'update')) {
-            $url = App()->createUrl("quotas/editQuota/surveyid/" . $this->survey->sid, array(
-                'quota_id' => $this->primaryKey,
-            ));
-            $buttons .= '<a href="' . $url . '" class="btn btn-outline-secondary" data-bs-toggle="tooltip" title="' . gT("Edit") . '">
-                        <span class="ri-pencil-fill"></span>
-                        </a>';
-        }
-        if (Permission::model()->hasSurveyPermission($this->sid, 'quotas', 'delete')) {
-            $url = App()->createUrl("quotas/deleteQuota/") ;
-            $buttons .= '<span data-bs-toggle="tooltip" title="' . gT("Delete") . '">
-        <a
-                data-post-url="' . $url . '"
-                data-post-datas=' . json_encode(['surveyid' => $this->sid, 'quota_id' => $this->primaryKey])  . '
-                class="btn btn-outline-secondary"
-                data-bs-toggle="modal"
-                data-bs-target="#confirmation-modal"
-                data-btnclass="btn-danger"
-                data-btntext="' . gt('Delete') . '"
-                data-message="' . gT("Are you sure you want to delete the selected quotas?", "js") . '"
-        >
-            <span class="ri-delete-bin-fill text-danger"></span>
-        </a>
-    </span>';
-        }
-        if (Permission::model()->hasSurveyPermission($this->sid, 'quotas', 'update')) {
-            $buttons .= '<span data-bs-toggle="tooltip" title="' . sprintf(gT("Validation of quota %s"), htmlentities($this->name)) . '">
-        <a
-          href="#"
-          data-remote-link="' . App()->createUrl('admin/validate/', ["sa" => 'quota', 'sid' => $this->sid, 'quota' => $this->id]) . '"
-          class="btn btn-outline-secondary selector__quota_open_validation"
-          data-bs-toggle="modal"
-          data-bs-target="quotaValidation"
-              >
-            <i class="ri-bar-chart-horizontal-fill"></i>
-        </a>
-    </span>';
-        }
-        return $buttons;
+        $permissionQuotaEdit = Permission::model()->hasSurveyPermission($this->sid, 'quotas', 'update');
+        $permissionQuotaDelete = Permission::model()->hasSurveyPermission($this->sid, 'quotas', 'delete');
+        $dropdownItems = [];
+        $dropdownItems[] = [
+            'title'            => gT('Edit quota'),
+            'iconClass'        => 'ri-pencil-fill',
+            'url'              => App()->createUrl(
+                "quotas/editQuota/surveyid/" . $this->survey->sid,
+                array(
+                    'quota_id' => $this->primaryKey,
+                    )
+            ),
+            'enabledCondition' => $permissionQuotaEdit
+        ];
+        $deletePostData = json_encode(['surveyid' => $this->sid, 'quota_id' => $this->primaryKey]);
+        $dropdownItems[] = [
+            'title'            => gT('Delete'),
+            'tooltip'          => gT('Delete quotas'),
+            'iconClass'        => 'ri-delete-bin-fill text-danger',
+            'enabledCondition' => $permissionQuotaDelete,
+            'linkAttributes'   => [
+                'data-bs-toggle' => "modal",
+                'data-post-url'  => App()->createUrl("quotas/deleteQuota/"),
+                'data-message'   => gT("Are you sure you want to delete the selected quotas?"),
+                'data-bs-target' => "#confirmation-modal",
+                'data-btnclass'  => 'btn-danger',
+                'data-btntext'   => gt('Delete'),
+                'data-post-datas' => $deletePostData
+            ]
+        ];
+        $dropdownItems[] = [
+            'title'            => gT('Validation'),
+            'tooltip'          => sprintf(gT("Validation of quota %s"), htmlentities($this->name)),
+            'iconClass'        => 'ri-bar-chart-horizontal-fill',
+            'enabledCondition' => $permissionQuotaEdit,
+            'linkClass'             => 'selector__quota_open_validation',
+            'linkAttributes'   => [
+                'data-bs-toggle' => "modal",
+                'data-message'   => gT("Are you sure you want to delete the selected quotas?"),
+                'data-bs-target' => "quotaValidation",
+                'data-remote-link' => App()->createUrl(
+                    'admin/validate/',
+                    [
+                        "sa" => 'quota',
+                        'sid' => $this->sid,'quota' => $this->id
+                    ]
+                )
+            ]
+        ];
+        return App()->getController()->widget(
+            'ext.admin.grid.GridActionsWidget.GridActionsWidget',
+            ['dropdownItems' => $dropdownItems],
+            true
+        );
     }
 }

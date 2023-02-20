@@ -29,7 +29,7 @@ $this->widget(
         'name' => 'export-button',
         'id' => 'export-button',
         'text' => gT('Export this label set'),
-        'icon' => 'icon-export',
+        'icon' => 'ri-upload-2-fill',
         'link' => $this->createUrl("admin/export/sa/dumplabel/lid/$lid"),
         'htmlOptions' => [
             'class' => 'btn btn-outline-secondary',

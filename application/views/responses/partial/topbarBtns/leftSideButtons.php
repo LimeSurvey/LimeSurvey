@@ -96,7 +96,7 @@ if ($hasResponsesExportPermission) { ?>
         'name' => 'ls-tools-button',
         'id' => 'ls-tools-button',
         'text' => gT('Export'),
-        'icon' => 'ri-download-fill',
+        'icon' => 'ri-upload-2-fill',
         'isDropDown' => true,
         'dropDownContent' => $exportDropdownItems,
         'htmlOptions' => [
@@ -117,7 +117,7 @@ if ($hasResponsesCreatePermission) { ?>
             'name' => 'ls-tools-button',
             'id' => 'ls-tools-button',
             'text' => gT('Import'),
-            'icon' => 'ri-upload-fill',
+            'icon' => 'ri-download-2-fill',
             'isDropDown' => true,
             'dropDownContent' => $importDropdownItems,
             'htmlOptions' => [

@@ -11,10 +11,11 @@
     </button>
     <ul class="dropdown-menu">
         <?php foreach ($dropdownItems as $dropdownItem) : ?>
+            <?php $enabledCondition = $dropdownItem['enabledCondition'] ?? true ?>
             <li>
                 <div data-bs-toggle="tooltip" title="<?= $dropdownItem['tooltip'] ?? '' ?>">
                     <a id="<?= $dropdownItem['linkId'] ?? '' ?>"
-                       class="dropdown-item <?= $dropdownItem['enabledCondition'] ? "" : "disabled" ?> <?= $dropdownItem['linkClass'] ?? '' ?>"
+                       class="dropdown-item <?= $enabledCondition ? "" : "disabled" ?> <?= $dropdownItem['linkClass'] ?? '' ?>"
                        href="<?= $dropdownItem['url'] ?? '#' ?>"
                        role="button"
                         <?php if (isset($dropdownItem['linkAttributes']) && is_array($dropdownItem['linkAttributes'])) : ?>
