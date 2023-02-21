@@ -15,7 +15,7 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
 
 ?>
 <div class="container-fluid">
-    <div class="row pb-3">
+    <div class="row mb-3">
         <div class="float-end">
             <?php /* Disabled for prototype 1.
                 <a
