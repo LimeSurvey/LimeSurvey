@@ -30,11 +30,11 @@
               },
               success: (data) => {
                 if (data.hasOwnProperty('message') && data.message === null) {
-                    $("#submit-copy-question").click();
-                } else {
-                    $('#question-title-warning').text(data.hasOwnProperty('message') ? data.message : data);
-                    $('#question-title-warning').removeClass('d-none');
-                }
+                      $("#submit-copy-question").click();
+                  } else {
+                      $('#question-title-warning').text(data.hasOwnProperty('message') ? data.message : data);
+                      $('#question-title-warning').removeClass('d-none');
+                  }
               },
               error: (data) => {
                 alert('Internal error: ' + data);

@@ -123,8 +123,14 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
                     $optionsValues = !empty($attribute['options']) ? explode('|', $attribute['options']) : array();
                     $optionLabels  = !empty($attribute['optionlabels']) ? explode('|', $attribute['optionlabels']) : array();
                     $options       = array_combine($optionsValues, $optionLabels);
-                    if ($bInherit && isset($sParentOption)) {
-                        $options['inherit'] = gT("Inherit") . ' [' . $sParentOption . ']';
+                                if ($bInherit && isset($sParentOption)) {
+                                    if(is_numeric($sParentOption) && array_key_exists($sParentOption, $options)) {
+                                        $sParentLabelOption = $options[$sParentOption];
+                                        $options['inherit'] = gT("Inherit") . ' [' . gT($sParentLabelOption) . ']';
+                                    } else {
+                                        $sParentOption = $sParentOption !== '' ? gT($sParentOption) : $sParentOption;
+                                        $options['inherit'] = gT("Inherit") . ' [' . $sParentOption . ']';
+                                    }
                     }
 
                     echo '<div class="col-12">
@@ -189,8 +195,7 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
                 } elseif ($attribute['type'] == 'input') {
                 } elseif ($attribute['type'] == 'duration') {
                     echo '<div class="col-12">
-                                            <input type="text" class="form-control selector-numerical-input selector_option_value_field selector_radio_childfield" data-parent="' . $attribute['parent'] . '" id="simple_edit_options_' . $attributeKey . '" name="' . $optionKey . '" title="' . gT("inherited value:"
-                        ) . ' ' . $sParentOption . '" />
+                               <input type="text" class="form-control selector-numerical-input selector_option_value_field selector_radio_childfield" data-parent="' . $attribute['parent'] . '" id="simple_edit_options_' . $attributeKey . '" name="' . $attributeKey .'" title="' . gT("inherited value:") . ' ' . $sParentOption . '" />
                                         </div>';
                 }
 

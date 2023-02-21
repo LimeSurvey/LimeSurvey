@@ -1126,7 +1126,7 @@ class Tokens extends SurveyCommonAction
             $aData['sidemenu']['state'] = false;
             $this->renderWrappedTemplate('token', array('message' => array(
             'title' => sprintf(gT("Delete participant attribute %s"), $sAttributeToDelete),
-            'message' => "<p>" . gT("If you remove this attribute, you will lose all information.") . "</p>\n"
+            'message' => "<p>" . gT("If deleted, all information stored in this attribute field will be lost.") . "</p>\n"
             . CHtml::form(array("admin/tokens/sa/deletetokenattributes/surveyid/{$iSurveyId}"), 'post', array('id' => 'attributenumber'))
             . CHtml::hiddenField('deleteattribute', $sAttributeToDelete)
             . CHtml::hiddenField('sid', $iSurveyId)
@@ -2365,34 +2365,32 @@ class Tokens extends SurveyCommonAction
 
         $aData['topBar']['hide'] = true;
 
-        if (!Yii::app()->request->getQuery('ok')) {
+        if (!Yii::app()->request->getPost('ok')) {
             $aData['sidemenu']['state'] = false;
             $aData['backupTableName']   = $newtableDisplay;
-
             $this->renderWrappedTemplate('token', 'deleteParticipantsTable', $aData);
-        } else /* The user has confirmed they want to delete the tokens table */
-        {
-            Yii::app()->db->createCommand()->renameTable("{{{$oldtable}}}", "{{{$newtable}}}");
-
-            $archivedTokenSettings = new ArchivedTableSettings();
-            $archivedTokenSettings->survey_id = $iSurveyId;
-            $archivedTokenSettings->user_id = $userID;
-            $archivedTokenSettings->tbl_name = $newtable;
-            $archivedTokenSettings->tbl_type = 'token';
-            $archivedTokenSettings->created = $DBDate;
-            $archivedTokenSettings->properties = $aData['thissurvey']['tokenencryptionoptions'];
-            $archivedTokenSettings->attributes = json_encode($aData['thissurvey']['attributedescriptions']);
-            $archivedTokenSettings->save();
-
-            //Remove any survey_links to the CPDB
-            SurveyLink::model()->deleteLinksBySurvey($iSurveyId);
-
-            $aData['sidemenu']['state'] = false;
-            $aData['backupTableName'] = $newtableDisplay;
-            $this->renderWrappedTemplate('token', 'afterDeleteParticipantsTable', $aData);
-
-            LimeExpressionManager::SetDirtyFlag(); // so that knows that survey participants tables have changed
+            return;
         }
+        /* The user has confirmed they want to delete the tokens table */
+        Yii::app()->db->createCommand()->renameTable("{{{$oldtable}}}", "{{{$newtable}}}");
+
+        $archivedTokenSettings = new ArchivedTableSettings();
+        $archivedTokenSettings->survey_id = $iSurveyId;
+        $archivedTokenSettings->user_id = $userID;
+        $archivedTokenSettings->tbl_name = $newtable;
+        $archivedTokenSettings->tbl_type = 'token';
+        $archivedTokenSettings->created = $DBDate;
+        $archivedTokenSettings->properties = $aData['thissurvey']['tokenencryptionoptions'];
+        $archivedTokenSettings->attributes = json_encode($aData['thissurvey']['attributedescriptions']);
+        $archivedTokenSettings->save();
+
+        //Remove any survey_links to the CPDB
+        SurveyLink::model()->deleteLinksBySurvey($iSurveyId);
+
+        $aData['sidemenu']['state'] = false;
+        $aData['backupTableName'] = $newtableDisplay;
+        $this->renderWrappedTemplate('token', 'afterDeleteParticipantsTable', $aData);
+        LimeExpressionManager::SetDirtyFlag(); // so that knows that survey participants tables have changed
     }
 
     /**

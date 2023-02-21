@@ -4,6 +4,7 @@ namespace ls\tests;
 
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverExpectedCondition;
+use Facebook\WebDriver\WebDriverKeys;
 
 /**
  * Manage users.
@@ -400,15 +401,8 @@ class UserManagementTest extends TestBaseClassWeb
             )
         );
         $input->click();
-        // Give time for the datepicker to open and click again before clearing
-        $clearButton = self::$webDriver->wait($timeout)->until(
-            WebDriverExpectedCondition::elementToBeClickable(
-                WebDriverBy::cssSelector('.tempus-dominus-widget.show div[data-action="clear"]')
-            )
-        );
+        $input->sendKeys(WebDriverKeys::DELETE);
         $otherInput = self::$webDriver->findElement(WebDriverBy::id('User_Form_full_name'));
-        $clearButton->click();
-        $input->click();
         $input->clear()->sendKeys($value);
         // click on other input field to close the datepicker
         $otherInput->click();

@@ -267,7 +267,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                             'id'                    => 'responses-grid',
                             'ajaxUpdate'            => 'responses-grid',
                             'ajaxType'              => 'POST',
-                            'afterAjaxUpdate'       => 'js:function(id, data){ afterAjaxResponsesReload(); onUpdateTokenGrid(); $(".grid-view [data-bs-toggle=\'popover\']").popover(); }',
+                            'afterAjaxUpdate'       => 'js:function(id, data){ afterAjaxResponsesReload(); onUpdateTokenGrid(); $("#responses-grid [data-bs-toggle=\'popover\']").popover(); }',
                             'massiveActionTemplate' => $massiveAction . $filterColumns,
                             'summaryText'           => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
                                 gT('%s rows per page'),
@@ -291,7 +291,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                     ';
                 $script = '
                     var postUrl = "' . Yii::app()->getController()->createUrl("responses/setSession") . '"; // For massive export
-                    $(".grid-view [data-bs-toggle=\'popover\']").popover();
+                    $("#responses-grid [data-bs-toggle=\'popover\']").popover();
                     ';
                 App()->getClientScript()->registerScript('listresponses', $scriptVars, LSYii_ClientScript::POS_BEGIN);
                 App()->getClientScript()->registerScript('listresponses', $script, LSYii_ClientScript::POS_POSTSCRIPT);
