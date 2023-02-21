@@ -4,7 +4,7 @@
 </div>
 <div class="modal-body">
     <p><?php printf(gT("Test email will be sent to: %s"), "<strong>" . $testEmail . "</strong>"); ?></p>
-    <div class="alert alert-filled-danger" role="alert">
+    <div id="settingschangedwarning" class="alert alert-filled-danger" role="alert" style="display: none;">
         <?= gT("There seems to be some changes in the settings which were not saved yet. These changes will be disregarded by the test procedure."); ?>
     </div>
 </div>
