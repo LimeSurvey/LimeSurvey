@@ -17285,8 +17285,20 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   font-size: 14px;
   font-weight: 400;
 }
+.card.card-primary.inactive {
+  color: #9094A7;
+}
+.card.card-primary.inactive .card-title, .card.card-primary.inactive .card-header {
+  color: #9094A7;
+}
 .card.card-primary.border-left-danger {
   border-right: 4px solid #FF515F;
+}
+.card.card-primary.border-left-warning {
+  border-right: 4px solid #FFE046;
+}
+.card.card-primary.border-left-success {
+  border-right: 4px solid #4DD753;
 }
 .card.card-primary.card-clickable:hover {
   box-shadow: -8px 8px #D3C5FA;
@@ -17343,6 +17355,18 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 .card.card-primary .card-body + .card-footer,
 .card.card-primary .card-header + .card-footer {
   padding-top: 0;
+}
+.card.card-primary.inactive {
+  color: #9094A7;
+}
+.card.card-primary.inactive .card-title, .card.card-primary.inactive .card-header {
+  color: #9094A7;
+}
+.card.card-primary.inactive table {
+  color: #9094A7;
+}
+.card.card-primary.inactive table td {
+  color: #9094A7;
 }
 
 .card.card-primary.login-panel {
