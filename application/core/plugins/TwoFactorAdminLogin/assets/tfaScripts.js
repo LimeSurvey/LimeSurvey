@@ -19,20 +19,19 @@ var confirmButtonAction = function(additionalCB) {
     return function(e){
         e.preventDefault();
         var $self = $(this);
-        $.bsconfirm($self.data('confirmtext'), $self.data('buttons'), function(){
+        $.fn.bsconfirm($self.data('confirmtext'), $self.data('buttons'), function(){
             $.ajax({
                 url: $self.data('href'),
                 data: $.merge({uid: $self.data('uid')}, LS.data.csrfTokenData),
                 method: 'post',
                 success: function(resolve){
-                    var classes = resolve.success ? 'well-lg bg-primary text-center' : 'well-lg bg-danger text-center';
-                    LS.notifyFader(resolve.message, classes);
+                    LS.ajaxAlerts(resolve.message, 'success');
                     $('#identity__bsconfirmModal').modal('hide');
                     additionalCB();
                 },
                 error: function(error) {
                     console.error(error);
-                    LS.notifyFader($self.data('errortext'), 'well-lg bg-primary text-center');
+                    LS.ajaxAlerts($self.data('errortext'), 'danger');
                     $('#identity__bsconfirmModal').modal('hide');
                     additionalCB();
                 }
@@ -80,7 +79,7 @@ var TFAUserSettingsClass = function(){
 
     var startSubmit = function(){
         $(formId).before(
-            '<div class="col-sm-12 text-center"><i class="fa fa-spinner fa-pulse fa-4x TFA--usereditspinner"></i></div>'
+            '<div class="col-12 text-center"><i class="fa fa-spinner fa-pulse fa-4x TFA--usereditspinner"></i></div>'
         ).find('button').prop('disabled',true);
     };
     var stopSubmit = function(){

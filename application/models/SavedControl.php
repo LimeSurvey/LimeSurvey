@@ -116,36 +116,36 @@ class SavedControl extends LSActiveRecord
     {
         $gridButtons = array();
         $gridButtons['editresponse'] = array(
-            'label' => '<span class="sr-only">' . gT("Edit") . '</span><span class="fa fa-pencil" aria-hidden="true"></span>',
+            'label' => '<span class="visually-hidden">' . gT("Edit") . '</span><span class="fa fa-pencil" aria-hidden="true"></span>',
             'imageUrl' => false,
             'url' => 'App()->createUrl("admin/dataentry/sa/editdata/subaction/edit",array("surveyid"=>$data->sid,"id"=>$data->srid));',
             'options' => array(
-                'class' => "btn btn-default btn-sm btn-edit",
-                'data-toggle' => "tooltip",
+                'class' => "btn btn-outline-secondary btn-sm btn-edit",
+                'data-bs-toggle' => "tooltip",
                 'title' => gT("Edit response"),
             ),
             'visible' => 'boolval(' . Permission::model()->hasSurveyPermission($this->sid, 'responses', 'update') . ')',
         );
         $gridButtons['resend_accesscode'] = array(
-            'label' => '<span class="sr-only">' . gT("Edit") . '</span><span class="fa fa-refresh" aria-hidden="true"></span>',
+            'label' => '<span class="visually-hidden">' . gT("Edit") . '</span><span class="fa fa-refresh" aria-hidden="true"></span>',
             'imageUrl' => false,
             'url' => 'App()->createUrl("admin/saved/sa/resend_accesscode",array("surveyid"=>$data->sid,"id"=>$data->srid));',
             'options' => array(
-                'class' => "btn btn-default btn-sm btn-edit",
-                'data-toggle' => "tooltip",
+                'class' => "btn btn-outline-secondary btn-sm btn-edit",
+                'data-bs-toggle' => "tooltip",
                 'title' => gT("Resend access code"),
             ),
             // 'visible'=> 'boolval('.Permission::model()->hasSurveyPermission($surveyid, 'responses', 'update').')',
             'visible' => false,
         );
         $gridButtons['delete'] = array(
-            'label' => '<span class="sr-only">' . gT("Delete") . '</span><span class="fa fa-trash text-danger" aria-hidden="true"></span>',
+            'label' => '<span class="visually-hidden">' . gT("Delete") . '</span><span class="fa fa-trash text-danger" aria-hidden="true"></span>',
             'imageUrl' => false,
             'icon' => false,
             'url' => 'App()->createUrl("admin/saved/sa/actionDelete",array("surveyid"=>$data->sid,"scid"=>$data->scid,"srid"=>$data->srid));',
             'options' => array(
-                'class' => "btn btn-default btn-sm btn-delete",
-                'data-toggle' => "tooltip",
+                'class' => "btn btn-outline-secondary btn-sm btn-delete",
+                'data-bs-toggle' => "tooltip",
                 'title' => gT("Delete this entry and related response"),
             ),
             'visible' => 'boolval(' . Permission::model()->hasSurveyPermission($this->sid, 'responses', 'delete') . ')',
@@ -159,7 +159,7 @@ class SavedControl extends LSActiveRecord
         return array(
             array(
                 'header' => gT('Action'),
-                'class' => 'bootstrap.widgets.TbButtonColumn',
+                'class' => 'yiistrap_fork.widgets.TbButtonColumn',
                 'template' => '{editresponse}{delete}',
                 'htmlOptions' => array('class' => 'icon-btn-row'),
                 'buttons' => $this->gridButtons,

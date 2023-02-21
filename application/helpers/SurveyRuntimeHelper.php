@@ -1127,6 +1127,13 @@ class SurveyRuntimeHelper
             $this->aMoveResult = LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['step'], false); // by jumping to current step, saves data so far
 
             if (!isset($_SESSION[$this->LEMsessid]['scid']) && (!$bTokenAnswerPersitance || $bAnonymized)) {
+                if (!isset($this->aSurveyInfo['EM']['ScriptsAndHiddenInputs'])) {
+                    $this->aSurveyInfo['EM']['ScriptsAndHiddenInputs'] = "<!-- emScriptsAndHiddenInputs -->";
+                }
+                // There is a submit button at the beginning of the form (see start_form.twig) setting 'move' to 'default'.
+                // If the form is submitted without clicking a different button, the 'move' attribute is sent in the POST
+                // and causes the processing to fail. So we need to add a hidden field to override that.
+                $this->aSurveyInfo['EM']['ScriptsAndHiddenInputs'] .= CHtml::hiddenField('move', '');
                 Yii::import("application.libraries.Save");
                 $cSave = new Save();
                 // $cSave->showsaveform($this->aSurveyInfo['sid']); // generates a form and exits, awaiting input
@@ -1293,17 +1300,15 @@ class SurveyRuntimeHelper
             $redata['completed'] = $this->completed;
             // event afterSurveyComplete
             $blocks = array();
-            if ($surveyActive) { // @todo : enable event even when survey is not active, but broke API
-                $event = new PluginEvent('afterSurveyComplete');
-                if ($surveyActive && isset($_SESSION[$this->LEMsessid]['srid'])) {
-                    $event->set('responseId', $_SESSION[$this->LEMsessid]['srid']);
-                }
-                $event->set('surveyId', $this->iSurveyid);
-                App()->getPluginManager()->dispatchEvent($event);
-                foreach ($event->getAllContent() as $blockData) {
-                    /* @var $blockData PluginEventContent */
-                    $blocks[] = CHtml::tag('div', array('id' => $blockData->getCssId(), 'class' => $blockData->getCssClass()), $blockData->getContent());
-                }
+            $event = new PluginEvent('afterSurveyComplete');
+            if ($surveyActive && isset($_SESSION[$this->LEMsessid]['srid'])) {
+                $event->set('responseId', $_SESSION[$this->LEMsessid]['srid']);
+            }
+            $event->set('surveyId', $this->iSurveyid);
+            App()->getPluginManager()->dispatchEvent($event);
+            foreach ($event->getAllContent() as $blockData) {
+                /* @var $blockData PluginEventContent */
+                $blocks[] = CHtml::tag('div', array('id' => $blockData->getCssId(), 'class' => $blockData->getCssClass()), $blockData->getContent());
             }
 
             $this->aSurveyInfo['aCompleted']['sPluginHTML']  = implode("\n", $blocks) . "\n";

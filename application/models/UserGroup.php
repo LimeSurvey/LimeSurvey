@@ -208,7 +208,7 @@ class UserGroup extends LSActiveRecord
     {
         $sQuery = "SELECT a.ugid, a.name, a.owner_id, a.description, b.uid FROM {{user_groups}} AS a LEFT JOIN {{user_in_groups}} AS b ON a.ugid = b.ugid WHERE a.ugid = :ugid";
         if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-            $sQuery .= "  AND uid = :userid ";
+            $sQuery .= "  AND (owner_id = :userid OR uid = :userid) ";
         }
         $sQuery .= " ORDER BY name";
         $command = Yii::app()->db->createCommand($sQuery)->bindParam(":ugid", $ugId, PDO::PARAM_INT);
@@ -273,7 +273,7 @@ class UserGroup extends LSActiveRecord
                 'header' => gT('User group ID'),
                 'name' => 'usergroup_id',
                 'value' => '$data->ugid',
-                'htmlOptions' => array('class' => 'col-md-1'),
+                'htmlOptions' => array('class' => 'col-lg-1'),
             ),
 
             array(
@@ -287,21 +287,21 @@ class UserGroup extends LSActiveRecord
                 'header' => gT('Description'),
                 'name' => 'description',
                 'value' => '$data->description',
-                'htmlOptions' => array('class' => 'col-md-5'),
+                'htmlOptions' => array('class' => 'col-lg-5'),
             ),
 
             array(
                 'header' => gT('Owner'),
                 'name' => 'owner',
                 'value' => '$data->owner->users_name',
-                'htmlOptions' => array('class' => 'col-md-1'),
+                'htmlOptions' => array('class' => 'col-lg-1'),
             ),
 
             array(
                 'header' => gT('Members'),
                 'name' => 'members',
                 'value' => '$data->countUsers',
-                'htmlOptions' => array('class' => 'col-md-1'),
+                'htmlOptions' => array('class' => 'col-lg-1'),
             ),
 
             array(
@@ -317,6 +317,9 @@ class UserGroup extends LSActiveRecord
 
     /**
      * Returns the buttons for grid view
+     *
+     * @todo where is this used??
+     *
      * @return string
      */
     public function getButtons()
@@ -325,24 +328,76 @@ class UserGroup extends LSActiveRecord
         // Edit user group
         if (Permission::model()->hasGlobalPermission('usergroups', 'update')) {
             $url = Yii::app()->createUrl("userGroup/edit/ugid/$this->ugid");
-            $button .= ' <a class="btn btn-default btn-sm green-border" data-toggle="tooltip" data-placement="top" title="' . gT('Edit user group') . '" href="' . $url . '" role="button"><span class="fa fa-pencil" ></span></a>';
+            $button .= ' <a class="btn btn-outline-secondary btn-sm green-border" data-bs-toggle="tooltip" data-bs-placement="top" title="' . gT('Edit user group') . '" href="' . $url . '" role="button"><span class="fa fa-pencil" ></span></a>';
         }
 
         // View users
         $url = Yii::app()->createUrl("userGroup/viewGroup/ugid/$this->ugid");
-        $button .= '<a class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="' . gT('View users') . '" href="' . $url . '" role="button"><span class="fa fa-list-alt" ></span></a>';
+        $button .= '<a class="btn btn-outline-secondary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="' . gT('View users') . '" href="' . $url . '" role="button"><span class="fa fa-list-alt" ></span></a>';
 
         // Mail to user group
         // Which permission should be checked for this button to be available?
         $url = Yii::app()->createUrl("userGroup/mailToAllUsersInGroup/ugid/$this->ugid");
-        $button .= ' <a class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="' . gT('Email user group') . '" href="' . $url . '" role="button"><span class="icon-invite" ></span></a>';
+        $button .= ' <a class="btn btn-outline-secondary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="' . gT('Email user group') . '" href="' . $url . '" role="button"><span class="icon-invite" ></span></a>';
 
         // Delete user group
         if (Permission::model()->hasGlobalPermission('usergroups', 'delete')) {
-            $button .= '<button class="btn btn-default btn-sm red-border action__delete-group" data-toggle="tooltip" data-placement="top" title="' . gT('Delete user group') . '" href="#delete-modal" data-toggle="modal" data-ugid="' . $this->ugid . '" role="button"><span class="fa fa-trash text-danger"></span></button>';
+            $button .= '<button class="btn btn-outline-secondary btn-sm red-border action__delete-group" data-bs-toggle="tooltip" data-bs-placement="top" title="' . gT('Delete user group') . '" href="#delete-modal" data-toggle="modal" data-ugid="' . $this->ugid . '" role="button"><span class="fa fa-trash text-danger"></span></button>';
         }
         $button .= "</div>";
         return $button;
+    }
+
+    /**
+     * Returns the buttons for grid view
+     * @return array
+     */
+    public function getManagementButtons(): array
+    {
+        return [
+            array(
+                'header'      => gT('Actions'),
+                'name'        => 'buttons',
+                'type'        => 'raw',
+                'value'       => '$data->buttons',
+                'htmlOptions' => array('class' => 'text-start'),
+            ),
+            array(
+                'header'      => gT('User group ID'),
+                'name'        => 'usergroup_id',
+                'value'       => '$data->ugid',
+                'htmlOptions' => array('class' => ''),
+            ),
+
+
+            array(
+                'header'      => gT('Name'),
+                'name'        => 'name',
+                'value'       => '$data->name',
+                'htmlOptions' => array('class' => ''),
+            ),
+
+            array(
+                'header'      => gT('Description'),
+                'name'        => 'description',
+                'value'       => '$data->description',
+                'htmlOptions' => array('class' => ''),
+            ),
+
+            array(
+                'header'      => gT('Owner'),
+                'name'        => 'owner',
+                'value'       => '$data->owner->users_name',
+                'htmlOptions' => array('class' => ''),
+            ),
+
+            array(
+                'header'      => gT('Members'),
+                'name'        => 'members',
+                'value'       => '$data->countUsers',
+                'htmlOptions' => array('class' => ''),
+            ),
+        ];
     }
 
 

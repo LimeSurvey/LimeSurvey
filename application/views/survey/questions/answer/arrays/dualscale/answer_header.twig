@@ -13,7 +13,7 @@
 <tr class="ls-heading {{ class }}" aria-hidden="true">
     <td></td>
     {% if leftheader != '' or rightheader !='' %}
-        <td class="hidden"></td>
+        <td class="d-none"></td>
     {% endif %}
     {% for ld in labelans0 %}
         <th class='answer-text'>{{ processString(ld) }}</th>
@@ -24,7 +24,7 @@
                 <div class="ls-js-hidden">{{ gT('No answer') }}</div>
             {% endif %}</td>  <!-- Separator : and No answer for accessibility for first colgroup -->
         {% if leftheader != '' or rightheader !='' %}
-            <td class="hidden"></td>
+            <td class="d-none"></td>
         {% endif %}
         {% for ld in labelans1 %}
             <th class='answer-text'>{{ processString(ld) }}</th>

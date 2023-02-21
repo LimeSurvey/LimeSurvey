@@ -231,7 +231,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
             'label' => gT('2FA settings'),
             'href' => '#',
             'menuItems' => $aMenuItems,
-            'iconClass' => 'fa fa-lock fa-lg',
+            'iconClass' => 'fa fa-lock',
         ];
         $oNewMenu = new TFAMenuClass($aNewMenuOptions);
 

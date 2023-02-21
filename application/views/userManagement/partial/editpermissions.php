@@ -7,7 +7,7 @@ Yii::app()->getController()->renderPartial(
 
 <?=TbHtml::formTb(null, App()->createUrl('userManagement/saveUserPermissions'), 'post', ["id"=>"UserManagement--modalform"])?>
 <div class="modal-body selector--edit-permissions-container">
-    <div class="container-center">
+    <div class="container">
             <input type='hidden' name='userid' value='<?php echo (isset($oUser) ? $oUser->uid : '');?>' />
             <table id='UserManagement--userpermissions-table' class='activecell table table-striped'>
                 <thead>
@@ -70,7 +70,7 @@ Yii::app()->getController()->renderPartial(
                 </table>
             <div class="row ls-space margin top-25">
                 <?php if (safecount(Permission::model()->getUserRole($oUser->uid)) > 0 ): ?>
-                    <div class="col-xs-12 alert alert-warning">
+                    <div class="col-12 alert alert-warning">
                         <?= gT("Warning: The user has at least one role assigned. Setting individual user permissions will remove all roles from this user!") ?>
                     </div>
                 <?php endif; ?>
@@ -78,8 +78,12 @@ Yii::app()->getController()->renderPartial(
     </div>
 </div>
 
-<div class="modal-footer modal-footer-buttons">
-    <button class="btn btn-cancel  selector--exitForm" id="permission-modal-exitForm"><?=gT('Cancel')?></button>
-    <button class="btn btn-success selector--submitForm" id="permission-modal-submitForm"><?=gT('Save')?></button>
+<div class="modal-footer">
+    <button class="btn btn-cancel selector--exitForm" id="permission-modal-exitForm" data-bs-dismiss="modal">
+        <?=gT('Cancel')?>
+    </button>
+    <button class="btn btn-success selector--submitForm" id="permission-modal-submitForm">
+        <?=gT('Save')?>
+    </button>
 </div>
 </form>

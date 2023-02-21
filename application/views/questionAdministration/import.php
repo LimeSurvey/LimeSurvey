@@ -11,7 +11,7 @@
 
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="row">
-        <div class="col-lg-12 content-right">
+        <div class="col-12 content-right">
             <div class="jumbotron message-box">
                 <h2 class="text-success"><?php eT("Import question") ?></h2>
                 <p class="lead text-success"><?php eT("Success") ?></p>
@@ -38,7 +38,7 @@
                 <?php endif; ?>
                 <p class="text-info"><?php eT("Question import is complete.") ?></p>
                 <p>
-                    <a href="<?php echo $this->createUrl('questionAdministration/view/surveyid/' . $sid . '/gid/' . $gid . '/qid/' . $aImportResults['newqid']) ?>" class="btn btn-default btn-lg"><?php eT("Go to question") ?></a>
+                    <a href="<?php echo $this->createUrl('questionAdministration/view/surveyid/' . $sid . '/gid/' . $gid . '/qid/' . $aImportResults['newqid']) ?>" class="btn btn-outline-secondary btn-lg"><?php eT("Go to question") ?></a>
                 </p>
             </div>
         </div>

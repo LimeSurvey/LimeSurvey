@@ -29117,6 +29117,39 @@
     }
   });
 
+  $.fn.extend({
+    bsconfirm: function bsconfirm(text, i18n, cbok, cbcancel) {
+      cbok = cbok || function () {
+        $('#identity__bsconfirmModal').modal('hide');
+      };
+
+      cbcancel = cbcancel || function () {
+        $('#identity__bsconfirmModal').modal('hide');
+      };
+
+      i18n = i18n || {};
+      var modalHtml = $("\n            <div id=\"identity__bsconfirmModal\" class=\"modal fade\">\n                <div class=\"modal-dialog\">\n                    <div class=\"modal-content\">\n                        <div class=\"modal-header\">\n                            <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\"></button>\n                        </div>\n                        <div class=\"modal-body\">\n                            ".concat(text, "               \n                        </div>\n                        <div class=\"modal-footer\">\n                            <button id=\"identity__bsconfirmModal_button_cancel\" type=\"button\" data-bs-dismiss=\"modal\" class=\"btn btn-outline-secondary\">\n                                ").concat(i18n.confirm_cancel, "\n                            </button>\n                            <button id=\"identity__bsconfirmModal_button_ok\" type=\"button\" class=\"btn btn-danger\">\n                                ").concat(i18n.confirm_ok, "\n                            </button>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        "));
+
+      if ($('body').find('#identity__bsconfirmModal').length == 0) {
+        $('body').append(modalHtml);
+      } else {
+        $('body').find('#identity__bsconfirmModal').remove();
+        $('body').append(modalHtml);
+      }
+
+      var modal = new bootstrap.Modal(document.getElementById('identity__bsconfirmModal'));
+      modal.show();
+      var modalElement = document.getElementById('identity__bsconfirmModal');
+      modalElement.addEventListener('hidden.bs.modal', function () {
+        modal.dispose();
+      });
+      modalElement.addEventListener('shown.bs.modal', function () {
+        $('#identity__bsconfirmModal_button_ok').on('click', cbok);
+        $('#identity__bsconfirmModal_button_cancel').on('click', cbcancel);
+      });
+    }
+  });
+
   String.prototype.splitCSV = function (sep) {
     for (var foo = this.split(sep = sep || ","), x = foo.length - 1, tl; x >= 0; x--) {
       if (foo[x].replace(/"\s+$/, '"').charAt(foo[x].length - 1) == '"') {
@@ -29156,16 +29189,16 @@
       blocking: presetOptions.blocking || false
     };
     ({
-      closeIcon: templateOptions.closeIcon || '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>',
-      closeButton: templateOptions.closeButton || '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>',
+      closeIcon: templateOptions.closeIcon || '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>',
+      closeButton: templateOptions.closeButton || '<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>',
       saveButton: templateOptions.saveButton || '<button type="button" class="btn btn-primary">Save changes</button>'
     }); //Define all the blocks and combine them by jquery methods
 
-    var outerBlock = $('<div class="modal fade" tabindex="-1" role="dialog"></div>'),
+    var outerBlock = $('<div id="bootstrap-remote-modal" class="modal fade" tabindex="-1" role="dialog"></div>'),
         innerBlock = $('<div class="modal-dialog" role="document"></div>'),
         contentBlock = $('<div class="modal-content"></div>'),
         headerBlock = $('<div class="modal-header"></div>'),
-        headlineBlock = $('<h4 class="modal-title"></h4>'),
+        headlineBlock = $('<h5 class="modal-title"></h5>'),
         bodyBlock = $('<div class="modal-body"></div>'),
         footerBlock = $('<div class="modal-footer"></div>'),
         closeIcon = $(templateOptions.closeIcon),
@@ -29221,8 +29254,8 @@
       if (options.header === true) {
         var thisHeader = headerBlock.clone();
         headlineBlock.text(options.modalTitle);
-        thisHeader.append(closeIcon.clone());
         thisHeader.append(headlineBlock);
+        thisHeader.append(closeIcon.clone());
         thisContent.prepend(thisHeader);
       }
 
@@ -29706,21 +29739,16 @@
       return true;
     },
     doToolTip: function doToolTip() {
+      // Destroy all tooltips
       try {
-        $(".btntooltip").tooltip("destroy");
-      } catch (e) {}
+        $('.tooltip').tooltip('dispose');
+      } catch (e) {} // Reinit all tooltips
 
-      try {
-        $('[data-tooltip="true"]').tooltip("destroy");
-      } catch (e) {}
 
-      try {
-        $('[data-tooltip="true"]').tooltip("destroy");
-      } catch (e) {}
-
-      $(".btntooltip").tooltip();
-      $('[data-tooltip="true"]').tooltip();
-      $('[data-toggle="tooltip"]').tooltip();
+      var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+      tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+      });
     },
     // finds any duplicate array elements using the fewest possible comparison
     arrHasDupes: function arrHasDupes(arrayToCheck) {
@@ -29813,8 +29841,8 @@
   };
   var globalStartUpMethods = {
     bootstrapping: function bootstrapping() {
-      $('button,input[type=submit],input[type=button],input[type=reset],.button').button();
-      $('button,input[type=submit],input[type=button],input[type=reset],.button').addClass("limebutton");
+      // $('button,input[type=submit],input[type=button],input[type=reset],.button').button();
+      // $('button,input[type=submit],input[type=button],input[type=reset],.button').addClass("limebutton");
       $(".progressbar").each(function () {
         var pValue = parseInt($(this).attr('name'));
         $(this).progressbar({
@@ -29834,147 +29862,67 @@
   };
 
   /**
-   * A method to use the implemented notifier, via ajax or javascript
+   * This class is responsible for creating alerts after ajax requests.
+   * It should use bootstrap 5 elements
+   * For example: a user is added via a controller action. After the modal is
+   * closed (by clicking button "Add") a success alert should be shown.
    *
-   * @param text string  | The text to be displayed
-   * @param classes string | The classes that will be put onto the inner container
-   * @param styles object | An object of css-attributes that will be put onto the inner container
+   * @param message string  | The text to be displayed
+   * @param alertType string | bs5 alert types ['success','primary','secondary','danger','warning','info','light','dark',]
    * @param customOptions | possible options are:
-   *                         useHtml (boolean) -> use the @text as html
+   *                         useHtml (boolean) -> use the @message as html
    *                         timeout (int) -> the timeout in milliseconds until the notifier will fade/slide out
-   *                         inAnimation (string) -> The jQuery animation to call for the notifier [fadeIn||slideDown]
-   *                         outAnimation (string) -> The jQuery animation to remove the notifier [fadeOut||slideUp]
-   *                         animationTime (int) -> The time in milliseconds the animation will last
+   *                         styles (object) -> An object of css-attributes that will be put onto the inner container
+   *                         classes (string) -> The classes that will be put onto the inner container
    */
   window.LS = window.LS || {};
 
-  var NotifyFader = /*#__PURE__*/function () {
-    function NotifyFader() {
-      _classCallCheck(this, NotifyFader);
-
-      this.count = 0;
+  var AjaxAlerts = /*#__PURE__*/function () {
+    function AjaxAlerts() {
+      _classCallCheck(this, AjaxAlerts);
     }
 
-    _createClass(NotifyFader, [{
-      key: "increment",
-      value: function increment() {
-        this.count = this.count + 1;
-      }
-    }, {
-      key: "decrement",
-      value: function decrement() {
-        this.count = this.count - 1;
-      }
-    }, {
-      key: "getCount",
-      value: function getCount() {
-        return this.count;
-      }
-    }, {
-      key: "create",
-      value: function create(text, classes, styles, customOptions) {
-        var _this = this;
-
-        this.increment();
-        customOptions = customOptions || {};
-        styles = styles || {}; // NB: Class "well" will overide any background set, like bg-danger. Only use well-lg.
-
-        classes = classes || "well-lg";
-        var options = {
-          useHtml: customOptions.useHtml || true,
-          timeout: customOptions.timeout || 3500,
-          inAnimation: customOptions.inAnimation || "slideDown",
-          outAnimation: customOptions.outAnimation || "slideUp",
-          animationTime: customOptions.animationTime || 450
-        };
-        var container = $("<div> </div>");
-        var newID = "notif-container_" + this.getCount();
-        container.addClass(classes);
-        container.css(styles);
-
-        if (options.useHtml) {
-          container.html(text);
-        } else {
-          container.text(text);
-        }
-
-        $('#notif-container').clone().attr('id', newID).css({
-          display: 'none',
-          top: 8 * this.getCount() + "%",
-          position: 'fixed',
-          left: "15%",
-          width: "70%",
-          'z-index': 3500
-        }).appendTo($('#notif-container').parent()).html(container); // using the option inAnimation as funtion of jquery
-
-        $('#' + newID)[options.inAnimation](options.animationTime, function () {
-          var remove = function remove() {
-            $('#' + newID)[options.outAnimation](options.animationTime, function () {
-              $('#' + newID).remove();
-
-              _this.decrement();
-            });
-          };
-
-          $(_this).on('click', remove);
-
-          if (options.timeout) {
-            setTimeout(remove, options.timeout);
-          }
-        });
-      }
-    }, {
-      key: "createFlash",
-      value: function createFlash(text, classes, styles, customOptions) {
+    _createClass(AjaxAlerts, [{
+      key: "createAlert",
+      value: function createAlert(message, alertType, customOptions) {
         customOptions = customOptions || {};
         var options = {
           useHtml: customOptions.useHtml || true,
           timeout: customOptions.timeout || 3500,
-          dismissable: customOptions.dismissable || true
-        };
-        styles = styles || {};
-        classes = classes || "alert-success";
+          styles: customOptions.styles || {},
+          classes: customOptions.classes || ""
+        }; //bs5 alert types (e.g. alter-success)
 
-        if (options.dismissable) {
-          classes = "alert " + classes;
-        }
-
-        var container = $("<div></div>");
-        container.addClass(classes);
-        container.css(styles);
+        var alertTypes = ['success', 'primary', 'secondary', 'danger', 'warning', 'info', 'light', 'dark'];
+        var alertDefault = 'success';
+        var currentAlertType = alertTypes.includes(alertType) ? alertType : alertDefault;
+        var buttonDismiss = '<button type="button" class="btn-close limebutton" data-bs-dismiss="alert" aria-label="Close"></button>';
+        var container = $('<div class="alert alert-' + currentAlertType + ' ' + options.classes + ' alert-dismissible" role="alert"></div>');
 
         if (options.useHtml) {
-          container.html(text);
+          container.html(message);
         } else {
-          container.text(text);
+          container.text(message);
         }
 
-        if (options.dismissable) {
-          $('<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span>×</span></button>').appendTo(container);
-        }
-
-        var timeoutRef;
-
-        if (options.timeout) {
-          timeoutRef = setTimeout(function () {
-            container.alert('close');
-          }, options.timeout);
-        }
-
+        $(buttonDismiss).appendTo(container);
+        container.css(options.styles);
+        var timeoutRef = setTimeout(function () {
+          container.alert('close');
+        }, options.timeout);
         container.on('closed.bs.alert', function () {
-          if (options.timeout) {
-            clearTimeout(timeoutRef);
-          }
+          clearTimeout(timeoutRef);
         });
         container.appendTo($('#notif-container'));
       }
     }]);
 
-    return NotifyFader;
+    return AjaxAlerts;
   }();
-  window.LS.LsGlobalNotifier = window.LS.LsGlobalNotifier || new NotifyFader();
-  function notifyFader (text, classes, styles, customOptions) {
-    window.LS.LsGlobalNotifier.create(text, classes, styles, customOptions);
+
+  window.LS.LsGlobalNotifier = window.LS.LsGlobalNotifier || new AjaxAlerts();
+  function ajaxAlerts (message, alertType) {
+    window.LS.LsGlobalNotifier.createAlert(message, alertType);
   }
 
   /**
@@ -29985,7 +29933,7 @@
     // Check type of response and take action accordingly
     if (response == '') {
       console.error('No response from server');
-      notifyFader.create('No response from server', 'alert-danger');
+      ajaxAlerts('No response from server', 'danger');
       return false;
     }
 
@@ -29999,13 +29947,13 @@
 
 
     if (!response.hasPermission) {
-      notifyFader(response.noPermissionText, 'well-lg bg-danger text-center');
+      ajaxAlerts(response.noPermissionText, 'danger');
       return false;
     } // Error popup
 
 
     if (response.error) {
-      notifyFader(response.error.message, 'well-lg bg-danger text-center');
+      ajaxAlerts(response.error.message, 'danger');
       return false;
     } // Put HTML into element.
 
@@ -30018,7 +29966,7 @@
 
 
     if (response.success) {
-      notifyFader(response.success, 'well-lg bg-primary text-center');
+      ajaxAlerts(response.success, 'success');
     } // Modal popup
 
 
@@ -32938,15 +32886,15 @@
         buttonYes = options.buttonYes || $item.data('button-yes') || '<i class="fa fa-check"></i>',
         buttonType = $item.data('button-type') || 'btn-primary',
         parentElement = options.parentElement || $item.data('parent-element') || 'body';
-    var closeIconHTML = '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>',
-        closeButtonHTML = '<button type="button" class="btn btn-cancel" data-dismiss="modal">' + buttonNo + '</button>',
+    var closeIconHTML = '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>',
+        closeButtonHTML = '<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">' + buttonNo + '</button>',
         confirmButtonHTML = '<button type="button" class="btn ' + buttonType + ' selector--button-confirm">' + buttonYes + '</button>'; //Define all the blocks and combine them by jquery methods
 
-    var outerBlock = $('<div class="modal fade" tabindex="-1" role="dialog"></div>'),
+    var outerBlock = $('<div id="confirm-delete-modal" class="modal fade" tabindex="-1" role="dialog"></div>'),
         innerBlock = $('<div class="modal-dialog" role="document"></div>'),
         contentBlock = $('<div class="modal-content"></div>'),
         headerBlock = $('<div class="modal-header"></div>'),
-        headlineBlock = $('<h4 class="modal-title"></h4>'),
+        headlineBlock = $('<h5 class="modal-title"></h5>'),
         bodyBlock = $('<div class="modal-body"></div>'),
         footerBlock = $('<div class="modal-footer"></div>'),
         closeIcon = $(closeIconHTML),
@@ -32961,8 +32909,8 @@
       if (confirmTitle !== '') {
         var thisHeader = headerBlock.clone();
         headlineBlock.text(confirmTitle);
-        thisHeader.append(closeIcon.clone());
         thisHeader.append(headlineBlock);
+        thisHeader.append(closeIcon.clone());
         thisContent.prepend(thisHeader);
       }
 
@@ -33113,7 +33061,7 @@
    * Like in front page, or quick actions
    */
   function panelClickable() {
-    $(".panel-clickable").on('click', function (e) {
+    $(".card-clickable").on('click', function (e) {
       var self = $(this);
 
       if (self.data('url') != '') {
@@ -33127,20 +33075,26 @@
   }
 
   /**
-   * Welcome page panels animations
+   * Welcome page card animations
+   * NB: Bootstrap 5 replaced panels with cards
    */
   function panelsAnimation() {
     setTimeout(function () {
-      adminCoreLSConsole.log('Triggering panel animation');
+      adminCoreLSConsole.log('Triggering card animation');
       /**
-       * Panel shown one by one
+       * Card shown one by one
        */
 
-      $('.panel').each(function (i) {
-        $(this).delay(i++ * 200).animate({
-          opacity: 1,
-          top: '0px'
-        }, 200);
+      document.querySelectorAll(".card").forEach(function (e, i) {
+        setTimeout(function () {
+          e.animate({
+            top: '0px',
+            opacity: 1
+          }, {
+            duration: 200,
+            fill: 'forwards'
+          });
+        }, i * 200);
       });
       /**
        * Rotate last survey/question
@@ -33231,15 +33185,16 @@
         var not = response.result;
         $('#admin-notification-modal .modal-title').html(not.title);
         $('#admin-notification-modal .modal-body-text').html(not.message);
-        $('#admin-notification-modal .modal-content').addClass('panel-' + not.display_class);
+        $('#admin-notification-modal .modal-content').addClass('card-' + not.display_class);
         $('#admin-notification-modal .notification-date').html(not.created.substr(0, 16));
-        $('#admin-notification-modal').modal(); // TODO: Will this work in message includes a link that is clicked?
+        var modal = new bootstrap.Modal(document.getElementById('admin-notification-modal'));
+        modal.show(); // TODO: Will this work in message includes a link that is clicked?
 
         $('#admin-notification-modal').off('hidden.bs.modal');
         $('#admin-notification-modal').on('hidden.bs.modal', function (e) {
           __notificationIsRead(that);
 
-          $('#admin-notification-modal .modal-content').removeClass('panel-' + not.display_class);
+          $('#admin-notification-modal .modal-content').removeClass('card-' + not.display_class);
         });
       });
     },
@@ -33282,9 +33237,9 @@
     updateNotificationWidget = function updateNotificationWidget(url, openAfter) {
       // Make sure menu is open after load
       __updateNotificationWidget(url).then(function () {
-        if (openAfter !== false) {
-          $('#notification-li').addClass('open');
-        }
+        var dropdownToggleEl = document.querySelector('#notification-li .dropdown-toggle');
+        var dropdownList = new bootstrap.Dropdown(dropdownToggleEl);
+        dropdownList.show();
       }); // Only update once
 
 
@@ -41966,6 +41921,7 @@
       appendToLoad(bindAdvancedAttribute);
       appendToLoad(confirmDeletemodal);
       appendToLoad(panelClickable);
+      appendToLoad(window.LS.doToolTip);
       appendToLoad(panelsAnimation, null, null, 200);
       appendToLoad(notificationSystem.initNotification);
       appendToLoad(activateSubSubMenues);
@@ -42052,9 +42008,9 @@
       var LsNameSpace = lodash.merge(BaseNameSpace, globalWindowMethods, parameterGlobals, {
         AjaxHelper: AjaxHelper
       }, {
-        notifyFader: notifyFader
-      }, {
         createUrl: createUrl
+      }, {
+        ajaxAlerts: ajaxAlerts
       }, {
         EventBus: EventBus$1
       }, subquestionAndAnswersGlobalMethods, notificationSystem, gridAction);

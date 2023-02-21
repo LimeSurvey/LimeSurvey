@@ -1,6 +1,6 @@
 <?php /** @var QuestionTheme $questionTheme */ ?>
 
-<div class="col-lg-12 content-right">
+<div class="col-12 content-right">
 
     <!-- Summary Table -->
     <table  id='questiondetails'>

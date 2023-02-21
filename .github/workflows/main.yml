@@ -17,8 +17,7 @@ jobs:
     strategy:
       matrix:
         # Specify what versions of php you want to test
-        #php-versions: ['7.2', '8.0']
-        php-versions: ['8.0']
+        php-versions: ['7.2', '8.0']
     # Env vars for this job
     env:
       DBENGINE: INNODB
@@ -87,10 +86,11 @@ jobs:
 
           sudo systemctl start mysql
           sudo service mysql status
-          mysql -uroot -proot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH caching_sha2_password BY 'root';" || true
+          mysql -uroot -proot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';" || true
           mysql -uroot -proot -e "Show  variables like '%large%';"
           mysql -uroot -proot -e "Show  variables like '%innodb_file%';"
           mysql -uroot -proot -e "Show  variables like '%innodb_default%';"
+          mysql -uroot -proot -e "CREATE DATABASE limesurvey;"
 
       - name: Load custom console and start the Application
         run: |
@@ -148,8 +148,17 @@ jobs:
           export MOZ_HEADLESS_WIDTH=1280
           export MOZ_HEADLESS_HEIGHT=1024
           java -jar selenium-server-standalone-3.7.1.jar -enablePassThrough false > /dev/null 2> /dev/null &
+          sleep 1
 
       - name: Run functional tests
         env:
             DOMAIN: localhost
         run: php vendor/bin/phpunit --testdox --stop-on-failure tests/functional
+
+      - name: Upload Screenshots
+        uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: screenshots
+          path: tests/tmp/screenshots/
+          retention-days: 5

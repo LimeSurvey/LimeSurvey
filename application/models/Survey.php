@@ -88,8 +88,6 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property Question[] $baseQuestions Survey questions NOT including subquestions
  * @property Question[] $quotableQuestions
  *
- * @property array $fullAnswers
- * @property array $partialAnswers
  * @property integer $countFullAnswers Full-answers count
  * @property integer $countPartialAnswers Full-answers count
  * @property integer $countTotalAnswers Total-answers count
@@ -185,7 +183,11 @@ class Survey extends LSActiveRecord implements PermissionInterface
     public function init()
     {
         /** @inheritdoc */
-
+        /* Do not set any default when search, reset gsid */
+        if ($this->scenario == 'search') {
+            $this->gsid = null;
+            return;
+        }
         // Set the default values
         $this->htmlemail = 'Y';
         $this->format = 'G';
@@ -489,7 +491,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             array('sid', 'numerical', 'integerOnly' => true,'min' => 1), // max ?
             array('sid', 'unique'),// Not in pk
             array('gsid', 'numerical', 'integerOnly' => true),
-            array('datecreated', 'default', 'value' => date("Y-m-d H:m:s")),
+            array('datecreated', 'default', 'value' => date("Y-m-d H:i:s")),
             array('startdate', 'default', 'value' => null),
             array('expires', 'default', 'value' => null),
             array('admin', 'LSYii_Validators'),
@@ -1145,12 +1147,12 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
         // If the survey is not active, no date test is needed
         if ($this->active == 'N') {
-            $running = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-toggle="tooltip" title="' . gT('Inactive') . '"><span class="fa fa-stop text-warning"></span><span class="sr-only">' . gT('Inactive') . '"</span></a>';
+            $running = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . gT('Inactive') . '"><span class="fa fa-stop text-warning"></span><span class="visually-hidden">' . gT('Inactive') . '"</span></a>';
         } elseif ($this->expires != '' || $this->startdate != '') {
             // If it's active, then we check if not expired
             // Time adjust
             $sNow    = date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
-            $sStop   = ($this->expires != '') ? date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->expires))) : $sNow;
+            $sStop   = ($this->expires != '') ? date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->expires))) : null;
             $sStart  = ($this->startdate != '') ? date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->startdate))) : $sNow;
 
             // Time comparaison
@@ -1161,50 +1163,33 @@ class Survey extends LSActiveRecord implements PermissionInterface
             $bExpired = ($oStop < $oNow);
             $bWillRun = ($oStart > $oNow);
 
-            $sStop = convertToGlobalSettingFormat($sStop);
+            $sStop = $sStop != null ? convertToGlobalSettingFormat($sStop) : null;
             $sStart = convertToGlobalSettingFormat($sStart);
 
             // Icon generaton (for CGridView)
+            $sIconRunNoEx = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-toggle="tooltip" title="' . gT('End: Never') . '"><span class="fa  fa-play text-success"></span><span class="sr-only">SS' . gT('End: Never') . '</span></a>';
             $sIconRunning = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-toggle="tooltip" title="' . sprintf(gT('End: %s'), $sStop) . '"><span class="fa  fa-play text-success"></span><span class="sr-only">' . sprintf(gT('End: %s'), $sStop) . '</span></a>';
-            $sIconExpired = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-toggle="tooltip" title="' . sprintf(gT('Expired: %s'), $sStop) . '"><span class="fa fa fa-step-forward text-warning"></span><span class="sr-only">' . sprintf(gT('Expired: %s'), $sStop) . '</span></a>';
-            $sIconFuture  = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-toggle="tooltip" title="' . sprintf(gT('Start: %s'), $sStart) . '"><span class="fa  fa-clock-o text-warning"></span><span class="sr-only">' . sprintf(gT('Start: %s'), $sStart) . '</span></a>';
+            $sIconExpired = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . sprintf(gT('Expired: %s'), $sStop) . '"><span class="fa fa fa-step-forward text-warning"></span><span class="visually-hidden">' . sprintf(gT('Expired: %s'), $sStop) . '</span></a>';
+            $sIconFuture  = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . sprintf(gT('Start: %s'), $sStart) . '"><span class="fa  fa-clock-o text-warning"></span><span class="visually-hidden">' . sprintf(gT('Start: %s'), $sStart) . '</span></a>';
 
             // Icon parsing
             if ($bExpired || $bWillRun) {
                 // Expire prior to will start
                 $running = ($bExpired) ? $sIconExpired : $sIconFuture;
             } else {
-                $running = $sIconRunning;
+                if ($sStop == null) {
+                    $running = $sIconRunNoEx;
+                } else {
+                    $running = $sIconRunning;
+                }
             }
         } else {
             // If it's active, and doesn't have expire date, it's running
-            $running = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-toggle="tooltip" title="' . gT('Active') . '"><span class="fa fa-play text-success"></span><span class="sr-only">' . gT('Active') . '"</span></a>';
+            $running = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . gT('Active') . '"><span class="fa fa-play text-success"></span><span class="visually-hidden">' . gT('Active') . '"</span></a>';
             //$running = '<div class="survey-state"><span class="fa fa-play text-success"></span></div>';
         }
 
         return $running;
-    }
-
-    /**
-     * @return array|null
-     */
-    public function getPartialAnswers()
-    {
-        $table = $this->responsesTableName;
-        if (method_exists(Yii::app()->cache, 'flush')) {
-            Yii::app()->cache->flush();
-        }
-        if (!Yii::app()->db->schema->getTable($table)) {
-            return null;
-        } else {
-            $answers = Yii::app()->db->createCommand()
-                ->select('*')
-                ->from($table)
-                ->where('submitdate IS NULL')
-                ->queryAll();
-
-            return $answers;
-        }
     }
 
     /**
@@ -1420,28 +1405,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * @return array|null
-     */
-    public function getFullAnswers()
-    {
-        $table = $this->responsesTableName;
-        if (method_exists(Yii::app()->cache, 'flush')) {
-            Yii::app()->cache->flush();
-        }
-        if (!Yii::app()->db->schema->getTable($table)) {
-            return null;
-        } else {
-            $answers = Yii::app()->db->createCommand()
-                ->select('*')
-                ->from($table)
-                ->where('submitdate IS NOT NULL')
-                ->queryAll();
-
-            return $answers;
-        }
-    }
-
-    /**
      * @return int|string
      */
     public function getCountFullAnswers()
@@ -1520,18 +1483,18 @@ class Survey extends LSActiveRecord implements PermissionInterface
             if ($this->active != 'Y') {
                 $groupCount = QuestionGroup::model()->countByAttributes(array('sid' => $this->sid));
                 if ($groupCount > 0) {
-                    $button .= '<a class="btn btn-sm btn-default" href="' . $sAddquestion . '" role="button" data-toggle="tooltip" title="' . gT('Add new question') . '"><span class="icon-add text-success" ></span><span class="sr-only">' . gT('Add new question') . '</span></a>';
+                    $button .= '<a class="btn btn-sm btn-outline-secondary" href="' . $sAddquestion . '" role="button" data-bs-toggle="tooltip" title="' . gT('Add new question') . '"><span class="icon-add text-success" ></span><span class="visually-hidden">' . gT('Add new question') . '</span></a>';
                 } else {
-                    $button .= '<a class="btn btn-sm btn-default" href="' . $sAddGroup . '" role="button" data-toggle="tooltip" title="' . gT('Add new group') . '"><span class="icon-add text-success" ></span><span class="sr-only">' . gT('Add new group') . '</span></a>';
+                    $button .= '<a class="btn btn-sm btn-outline-secondary" href="' . $sAddGroup . '" role="button" data-bs-toggle="tooltip" title="' . gT('Add new group') . '"><span class="icon-add text-success" ></span><span class="visually-hidden">' . gT('Add new group') . '</span></a>';
                 }
             }
         }
 
         if (Permission::model()->hasSurveyPermission($this->sid, 'statistics', 'read') && $this->active == 'Y') {
-            $button .= '<a class="btn btn-sm btn-default" href="' . $sStatUrl . '" role="button" data-toggle="tooltip" title="' . gT('Statistics') . '"><span class="fa fa-bar-chart text-success" ></span><span class="sr-only">' . gT('Statistics') . '</span></a>';
+            $button .= '<a class="btn btn-sm btn-outline-secondary" href="' . $sStatUrl . '" role="button" data-bs-toggle="tooltip" title="' . gT('Statistics') . '"><span class="fa fa-bar-chart text-success" ></span><span class="visually-hidden">' . gT('Statistics') . '</span></a>';
         }
         if (Permission::model()->hasSurveyPermission($this->sid, 'survey', 'update')) {
-            $button .= '<a class="btn btn-sm btn-default" href="' . $sEditUrl . '" role="button" data-toggle="tooltip" title="' . gT('General settings & texts') . '"><span class="fa fa-cog" ></span><span class="sr-only">' . gT('General settings & texts') . '</span></a>';
+            $button .= '<a class="btn btn-sm btn-outline-secondary" href="' . $sEditUrl . '" role="button" data-bs-toggle="tooltip" title="' . gT('General settings & texts') . '"><span class="fa fa-cog" ></span><span class="visually-hidden">' . gT('General settings & texts') . '</span></a>';
         }
 
         $button .= "</div>";
@@ -1606,11 +1569,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
             $criteria->compare("t.gsid", $this->gsid, false);
         }
 
-        // show only surveys belonging to selected survey group
-        if (!empty(Yii::app()->request->getParam('id'))) {
-            $criteria->addCondition("t.gsid = " . sanitize_int(Yii::app()->request->getParam('id')), 'AND');
-        }
-
         // Active filter
         if (isset($this->active)) {
             if ($this->active == 'N' || $this->active == "Y") {
@@ -1631,13 +1589,11 @@ class Survey extends LSActiveRecord implements PermissionInterface
                     $criteria->compare("t.active", 'Y');
                     $subCriteria1 = new CDbCriteria();
                     $subCriteria2 = new CDbCriteria();
-                    $subCriteria1->addCondition("'{$sNow}' > t.startdate", 'OR');
+                    $subCriteria1->addCondition("'{$sNow}' > t.startdate", 'AND');
+                    $subCriteria1->addCondition("t.startdate IS NULL", 'OR');
+                    $subCriteria2->addCondition("t.expires IS NULL", 'AND');
                     $subCriteria2->addCondition("'{$sNow}' < t.expires", 'OR');
-                    $subCriteria1->addCondition('t.expires IS NULL', "OR");
-                    $subCriteria1->addCondition("'{$sNow}' < t.expires", 'OR');
-                    $subCriteria2->addCondition('t.startdate IS NULL', "OR");
                     $criteria->mergeWith($subCriteria1);
-                    $criteria->mergeWith($subCriteria2);
                 }
             }
         }

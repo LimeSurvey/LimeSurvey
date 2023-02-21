@@ -3234,8 +3234,7 @@ class LimeExpressionManager
      * @param array $afelist - the list of array_filter_exclude $qroot codes
      * @return array
      */
-    private function _recursivelyFindAntecdentArrayFilters($qroot, $aflist, $afelist)
-    {
+    private function _recursivelyFindAntecdentArrayFilters($qroot, $aflist, $afelist) {
         if (isset($this->qrootVarName2arrayFilter[$qroot])) {
             if (isset($this->qrootVarName2arrayFilter[$qroot]['array_filter'])) {
                 $_afs = explode(';', $this->qrootVarName2arrayFilter[$qroot]['array_filter']);
@@ -7294,7 +7293,7 @@ class LimeExpressionManager
 
                 if ($arg['hidden']) {
                     $relParts[] = "  // This question should always be hidden : not relevance, hidden question\n";
-                    $relParts[] = "  $('#question" . $arg['qid'] . "').addClass('hidden');\n";
+                    $relParts[] = "  $('#question" . $arg['qid'] . "').addClass('d-none');\n";
                 } else {
                     if (!($relevance == '' || $relevance == '1' || ($arg['result'] == true && $arg['numJsVars'] == 0))) {
                         // In such cases, PHP will make the question visible by default.  By not forcing a re-show(), template.js can hide questions with impunity
@@ -7865,6 +7864,7 @@ var job='{TOKEN:ATTRIBUTE_1}';
             }
         }
 
+        print "<div class='container-fluid'>";
         print "<h3>Note, if the <i>Vars Used</i> column is red, then at least one error was found in the <b>Source</b>. In such cases, the <i>Vars Used</i> list may be missing names of variables from sub-expressions containing errors</h3>";
         print '<table class="table" border="1"><tr><th>Source</th><th>Pretty Print</th><th>Result</th><th>Vars Used</th></tr>';
         $iTestCount = count($alltests);
@@ -7892,6 +7892,7 @@ var job='{TOKEN:ATTRIBUTE_1}';
             print "</tr>\n";
         }
         print '</table>';
+        print '</div>';
         LimeExpressionManager::FinishProcessingGroup();
         LimeExpressionManager::FinishProcessingPage();
     }
@@ -8026,6 +8027,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         print LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
 
         // Print Table of questions
+        print "<div class='container-fluid'>";
         print "<div class='h3'>This is a test of dynamic relevance.</div>";
         print "Enter your name and age, and try all the permutations of answers to whether you have or want children.<br />\n";
         print "Note how the text and sum of ages changes dynamically; that prior answers are remembered; and that irrelevant values are not included in the sum of ages.<br />";
@@ -8054,6 +8056,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             print "</div>\n";
         }
         print "</table>";
+        print "</div>";
         LimeExpressionManager::SetDirtyFlag();  // so subsequent tests don't try to access these variables
     }
 
@@ -9085,7 +9088,15 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             <th class=\"column-3\">" . $LEM->gT('Text [Help] (Tip)') . "</th>
             </tr>\n";
 
-        $_gseq = -1;
+        // Picking up questions in the survey.
+        // To be used later while composing the logic file, for auxiliary information.
+        $criteria = new CDbCriteria();
+        $criteria->addCondition("sid = :sid");
+        $criteria->params[':sid'] = $sid;
+        $criteria->index = 'qid';
+        $questions = Question::model()->with('question_theme')->findAll($criteria);
+        
+        $_gseq = -1;        
         $baseQuestionThemes = QuestionTheme::findQuestionMetaDataForAllTypes();
         foreach ($LEM->currentQset as $q) {
             $gseq = $q['info']['gseq'];
@@ -9121,7 +9132,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 if ($bGroupHaveError) {
                     $haveErrors = true;
                     $errClass = 'danger';
-                    $errText = "<br><em class='label label-danger'>" . $LEM->gT("This group has at least 1 error.") . "</em>";
+                    $errText = "<br><em class='badge bg-danger'>" . $LEM->gT("This group has at least 1 error.") . "</em>";
                 }
                 $groupRow = "<tr class='LEMgroup'>"
                     . "<td class='$errClass'>G-$gseq</td>"
@@ -9139,6 +9150,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             $mandatory = (($q['info']['mandatory'] == 'Y' || $q['info']['mandatory'] == 'S') ? "<span class='mandatory'>*</span>" : '');
             $type = $q['info']['type'];
             $typedesc = $baseQuestionThemes[$type]->title;
+            $questionTheme = $questions[$q['info']['qid']]->question_theme;
+            $themeDesc = !empty($questionTheme->extends) ? "({$questionTheme->title})" : "";
             $sgqas = explode('|', $q['sgqa']);
             $qReplacement = array_merge(
                 $standardsReplacementFields,
@@ -9458,7 +9471,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             // FINALLY, SHOW THE QUESTION ROW(S), COLOR-CODING QUESTIONS THAT CONTAIN ERRORS
             //////
             $errclass = ($errorCount > 0) ? 'danger' : '';
-            $errText = ($errorCount > 0) ? "<br><em class='label label-danger'>" . $LEM->ngT("This question has at least {n} error.|This question has at least {n} errors.", $errorCount) . "</em>" : "";
+            $errText = ($errorCount > 0) ? "<br><em class='badge bg-danger'>" . $LEM->ngT("This question has at least {n} error.|This question has at least {n} errors.", $errorCount) . "</em>" : "";
             /* Construct the warnings */
             $sWarningsText = "";
             if (count($aWarnings) > 0) {
@@ -9485,7 +9498,15 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     . "onclick='window.open(\"$editlink\",\"_blank\")'>"
                     . $rootVarName . "</span>";
             }
-            $questionRow .= "</b><br />[<a target='_blank' href='$editlink'>QID $qid</a>]<br/>$typedesc [$type] $errText $sWarningsText</td>"
+            $questionRow .= "</b>"
+                . "<br/>"
+                . "[<a target='_blank' href='$editlink'>" . sprintf(gT("Question ID %s"), $qid) . "</a>]"
+                . "<br/>"
+                . "<span class='question-type'>$typedesc [$type]</span> "
+                . "<span class='question-theme'>$themeDesc</span> "
+                . $errText . " "
+                . $sWarningsText
+                . "</td>"
                 . "<td>" . $relevance . $prettyValidEqn . $default . "</td>"
                 . "<td>" . $qdetails . "</td>"
                 . "</tr>\n";
@@ -9808,7 +9829,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             case 'K': // Multiple numerical
             case 'N': // Numerical
                 if (!preg_match("/^[-]?(\d{1,20}\.\d{0,10}|\d{1,20})$/", $value)) { // DECIMAL(30,10)
-                    $LEM->addValidityString($sgq, $value, gT("This question only accept 30 digits including 10 decimals."), $set);
+                    $LEM->addValidityString($sgq, $value, gT("This question only accepts 30 digits including 10 decimals."), $set);
                     /* Show an error but don't unset value : this can happen without hack */
                 }
                 break;

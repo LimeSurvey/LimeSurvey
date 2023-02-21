@@ -41,12 +41,12 @@ foreach ($aQuestionTypeList as $questionTheme) {
     $questionTypeData['name'] = $questionTheme->name;
     $questionTypeData['title'] = $questionTheme->title;
     $questionTypeData['detailpage'] = '
-        <div class="col-sm-12 currentImageContainer">
+        <div class="col-12 currentImageContainer">
             <img src="' . $questionTheme->image_path . '" />
         </div>';
     if ($imageName == 'S') {
         $questionTypeData['detailpage'] = '
-            <div class="col-sm-12 currentImageContainer">
+            <div class="col-12 currentImageContainer">
                 <img src="' . App()->getConfig('imageurl') . '/screenshots/' . $imageName . '.png" />
                 <img src="' . App()->getConfig('imageurl') . '/screenshots/' . $imageName . '2.png" />
             </div>';
@@ -87,23 +87,23 @@ echo $oQuestionSelector->getModal();
     <div class="container">
         <?php echo TbHtml::form($this->createUrl("/admin/user/sa/personalsettings"), 'post', ['class' => 'form44 ', 'id' => 'personalsettings', 'autocomplete' => "off"]); ?>
         <div class="row">
-            <div class="col-xs-12">
+            <div class="col-12">
                 <ul class="nav nav-tabs" role="tablist">
-                    <li role="presentation" class="active"><a href="#your-profile" role="tab" data-toggle="tab"><?php eT("My profile"); ?></a></li>
-                    <li role="presentation"><a href="#your-personal-settings" role="tab" data-toggle="tab"><?php eT("My personal settings"); ?></a></li>
-                    <li role="presentation"><a href="#your-personal-menues" role="tab" data-toggle="tab"><?php eT("My personal menus"); ?></a></li>
-                    <li role="presentation"><a href="#your-personal-menueentries" role="tab" data-toggle="tab"><?php eT("My personal menu entries"); ?></a></li>
+                    <li role="presentation" class="nav-item"><a class="nav-link active" href="#your-profile" role="tab" data-bs-toggle="tab"><?php eT("Profile"); ?></a></li>
+                    <li role="presentation" class="nav-item"><a class="nav-link" href="#your-personal-settings" role="tab" data-bs-toggle="tab"><?php eT("Personal settings"); ?></a></li>
+                    <li role="presentation" class="nav-item"><a class="nav-link" href="#your-personal-menues" role="tab" data-bs-toggle="tab"><?php eT("Personalized menus"); ?></a></li>
+                    <li role="presentation" class="nav-item"><a class="nav-link" href="#your-personal-menueentries" role="tab" data-bs-toggle="tab"><?php eT("Personalized menu entries"); ?></a></li>
                 </ul>
                 <div class="tab-content">
 
                     <!-- TAB: My profile settings -->
-                    <div role="tabpanel" class="tab-pane fade in active" id="your-profile">
-                        <div class="pagetitle h3"><?php eT("My profile"); ?></div>
+                    <div role="tabpanel" class="tab-pane fade show active" id="your-profile">
+                        <div class="pagetitle h3"><?php eT("Profile"); ?></div>
                         <div class="container-fluid">
                             <div class="row">
-                                <div class="col-sm-12 col-md-12">
-                                    <div class="form-group">
-                                        <?php echo TbHtml::label(gT("User name:"), 'lang', ['class' => " control-label"]); ?>
+                                <div class="col-12">
+                                    <div class="mb-3">
+                                        <?php echo TbHtml::label(gT("User name:"), 'lang', ['class' => " form-label"]); ?>
                                         <div class="">
                                             <?php echo TbHtml::textField('username', $sUsername, ['class' => 'form-control', 'readonly' => 'readonly']); ?>
                                         </div>
@@ -117,17 +117,17 @@ echo $oQuestionSelector->getModal();
                                 <hr/>
                             </div>
                             <div class="row">
-                                <div class="col-sm-12 col-md-6">
-                                    <div class="form-group">
-                                        <?php echo TbHtml::label(gT("Full name:"), 'lang', ['class' => " control-label"]); ?>
+                                <div class="col-12 col-lg-6">
+                                    <div class="mb-3">
+                                        <?php echo TbHtml::label(gT("Full name:"), 'lang', ['class' => " form-label"]); ?>
                                         <div class="">
                                             <?php echo TbHtml::textField('fullname', $sFullname, ['class' => 'form-control', 'maxlength' => 50]); ?>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-12 col-md-6">
-                                    <div class="form-group">
-                                        <?php echo TbHtml::label(gT("Email address:"), 'lang', ['class' => " control-label"]); ?>
+                                <div class="col-12 col-lg-6">
+                                    <div class="mb-3">
+                                        <?php echo TbHtml::label(gT("Email address:"), 'lang', ['class' => " form-label"]); ?>
                                         <div class="">
                                             <?php echo TbHtml::emailField('email', $sEmailAdress, ['readonly' => true, 'class' => 'form-control', 'maxlength' => 254]); ?>
                                         </div>
@@ -138,22 +138,22 @@ echo $oQuestionSelector->getModal();
                                 <hr/>
                             </div>
                             <div class="row">
-                                <div class="col-md-6">
-                                    <button type="button" class="btn btn-default btn-warning " id="selector__showChangePassword" style="color: white; outline: none;">
+                                <div class="col-lg-6">
+                                    <button type="button" class="btn btn-outline-secondary btn-warning " id="selector__showChangePassword" style="color: white; outline: none;">
                                         <i class="fa fa-lock"></i>
                                         <?= gT("Change password") ?>
                                     </button>
-                                    <button type="button" class="btn btn-default btn-warning " id="selector__showChangeEmail" style="color: white; outline: none;">
+                                    <button type="button" class="btn btn-outline-secondary btn-warning " id="selector__showChangeEmail" style="color: white; outline: none;">
                                         <i class="fa fa-lock"></i>
                                         <?= gT("Change email address") ?>
                                     </button>
                                     <br/>
                                 </div>
                             </div>
-                            <div class="row selector__oldpassword-row hidden">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="oldpassword" class="control-label">
+                            <div class="row selector__oldpassword-row d-none">
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                        <label for="oldpassword" class="form-label">
                                             <?php echo gT("Current password:"); ?>
                                             <span class="required">*</span>
                                         </label>
@@ -163,11 +163,11 @@ echo $oQuestionSelector->getModal();
                                     </div>
                                 </div>
                             </div>
-                            <div class="row selector__password-row hidden">
+                            <div class="row selector__password-row d-none">
                                 <input type="hidden" id="newpasswordshown" name="newpasswordshown" value="0"/>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <?php echo TbHtml::label(gT("New password:"), 'lang', ['class' => " control-label"]); ?>
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                        <?php echo TbHtml::label(gT("New password:"), 'lang', ['class' => " form-label"]); ?>
                                         <div class="">
                                             <?php echo TbHtml::passwordField('password', '', ['disabled' => true, 'class' => 'form-control', 'autocomplete' => "off", 'placeholder' => html_entity_decode(str_repeat("&#9679;", 10), ENT_COMPAT, 'utf-8')]); ?>
                                         </div>
@@ -176,20 +176,20 @@ echo $oQuestionSelector->getModal();
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <?php echo TbHtml::label(gT("Repeat new password:"), 'lang', ['class' => " control-label"]); ?>
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                        <?php echo TbHtml::label(gT("Repeat new password:"), 'lang', ['class' => " form-label"]); ?>
                                         <div class="">
                                             <?php echo TbHtml::passwordField('repeatpassword', '', ['disabled' => true, 'class' => 'form-control', 'autocomplete' => "off", 'placeholder' => html_entity_decode(str_repeat("&#9679;", 10), ENT_COMPAT, 'utf-8')]); ?>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="row selector__email-row hidden">
+                            <div class="row selector__email-row d-none">
                                 <input type="hidden" id="newemailshown" name="newemailshown" value="0"/>
-                                <div class="col-sm-12 col-md-6">
-                                    <div class="form-group">
-                                        <?php echo TbHtml::label(gT("New email address:"), 'lang', ['class' => " control-label"]); ?>
+                                <div class="col-12 col-lg-6">
+                                    <div class="mb-3">
+                                        <?php echo TbHtml::label(gT("New email address:"), 'lang', ['class' => " form-label"]); ?>
                                         <div class="">
                                             <?php echo TbHtml::emailField('newemail', $sEmailAdress, ['class' => 'form-control', 'maxlength' => 254]); ?>
                                         </div>
@@ -204,10 +204,10 @@ echo $oQuestionSelector->getModal();
                         <div class="pagetitle h3"><?php eT("My personal settings"); ?></div>
                         <div class="container-fluid">
                             <div class="row">
-                                <div class="col-sm-12 col-md-6">
+                                <div class="col-12 col-lg-6">
                                     <!-- Interface language -->
-                                    <div class="form-group">
-                                        <?php echo TbHtml::label(gT("Interface language:"), 'lang', ['class' => " control-label"]); ?>
+                                    <div class="mb-3">
+                                        <?php echo TbHtml::label(gT("Interface language:"), 'lang', ['class' => " form-label"]); ?>
                                         <div class="selector_contain_select2">
                                             <?php $this->widget(
                                                 'yiiwheels.widgets.select2.WhSelect2',
@@ -233,10 +233,10 @@ echo $oQuestionSelector->getModal();
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-12 col-md-6">
+                                <div class="col-12 col-lg-6">
                                     <!-- HTML editor mode -->
-                                    <div class="form-group">
-                                        <?php echo TbHtml::label(gT("HTML editor mode:"), 'htmleditormode', ['class' => " control-label"]); ?>
+                                    <div class="mb-3">
+                                        <?php echo TbHtml::label(gT("HTML editor mode:"), 'htmleditormode', ['class' => " form-label"]); ?>
                                         <div class="">
                                             <?php echo TbHtml::dropDownList(
                                                 'htmleditormode',
@@ -254,10 +254,10 @@ echo $oQuestionSelector->getModal();
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-sm-12 col-md-6">
+                                <div class="col-12 col-lg-6">
                                     <!-- Question type selector -->
-                                    <div class="form-group">
-                                        <?php echo TbHtml::label(gT("Question type selector:"), 'questionselectormode', ['class' => " control-label"]); ?>
+                                    <div class="mb-3">
+                                        <?php echo TbHtml::label(gT("Question type selector:"), 'questionselectormode', ['class' => " form-label"]); ?>
                                         <div class="">
                                             <?php echo TbHtml::dropDownList(
                                                 'questionselectormode',
@@ -272,19 +272,19 @@ echo $oQuestionSelector->getModal();
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-12 col-md-6">
+                                <div class="col-12 col-lg-6">
                                     <!-- Question type preselect -->
-                                    <div class="form-group">
-                                        <?php echo TbHtml::label(gT("Preselected question type:"), 'preselectquestiontype', ['class' => " control-label"]); ?>
+                                    <div class="mb-3">
+                                        <?php echo TbHtml::label(gT("Preselected question type:"), 'preselectquestiontype', ['class' => " form-label"]); ?>
                                         <?= $oQuestionSelector->getButtonOrSelect(true) ?>
                                         <?php $this->endWidget('ext.admin.PreviewModalWidget.PreviewModalWidget'); ?>
                                         <?php echo TbHtml::hiddenField('preselectquestiontheme', $currentPreselectedQuestionTheme); ?>
                                     </div>
                                 </div>
-                                <div class="col-sm-12 col-md-6">
+                                <div class="col-12 col-lg-6">
                                     <!-- Template editor mode -->
-                                    <div class="form-group">
-                                        <?php echo TbHtml::label(gT("Template editor mode:"), 'templateeditormode', ['class' => " control-label"]); ?>
+                                    <div class="mb-3">
+                                        <?php echo TbHtml::label(gT("Template editor mode:"), 'templateeditormode', ['class' => " form-label"]); ?>
                                         <div class="">
                                             <?php echo TbHtml::dropDownList(
                                                 'templateeditormode',
@@ -299,12 +299,12 @@ echo $oQuestionSelector->getModal();
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-12 col-md-6">
+                                <div class="col-12 col-lg-6">
                                     <!-- Date format -->
-                                    <div class="form-group">
-                                        <?php echo TbHtml::label(gT("Date format:"), 'dateformat', ['class' => " control-label"]); ?>
+                                    <div class="mb-3">
+                                        <?php echo TbHtml::label(gT("Date format:"), 'dateformat', ['class' => " form-label"]); ?>
                                         <div class="">
-                                            <select name='dateformat' id='dateformat' class="form-control">
+                                            <select name='dateformat' id='dateformat' class="form-select">
                                                 <?php foreach (getDateFormatData(0, App()->session['adminlang']) as $index => $dateformatdata) {
                                                     echo "<option value='{$index}'";
                                                     if ($index == App()->session['dateformat']) {
@@ -318,9 +318,9 @@ echo $oQuestionSelector->getModal();
                                     </div>
                                 </div>
                                 <!-- Show script field in question editor -->
-                                <div class="col-sm-12 col-md-6">
-                                    <div class="form-group">
-                                        <?php echo TbHtml::label(gT("Show script field:"), 'showScriptEdit', ['class' => " control-label"]); ?>
+                                <div class="col-12 col-lg-6">
+                                    <div class="mb-3">
+                                        <?php echo TbHtml::label(gT("Show script field:"), 'showScriptEdit', ['class' => " form-label"]); ?>
                                         <?php echo TbHtml::dropDownList(
                                             'showScriptEdit',
                                             ($aUserSettings['showScriptEdit'] ?? '1'),
@@ -333,9 +333,9 @@ echo $oQuestionSelector->getModal();
                                     </div>
                                 </div>
                                 <!-- Directly show edit mode -->
-                                <div class="col-sm-12 col-md-6">
-                                    <div class="form-group">
-                                        <?php echo TbHtml::label(gT("Directly show edit mode:"), 'noViewMode', ['class' => " control-label"]); ?>
+                                <div class="col-12 col-lg-6">
+                                    <div class="mb-3">
+                                        <?php echo TbHtml::label(gT("Directly show edit mode:"), 'noViewMode', ['class' => " form-label"]); ?>
                                         <?php echo TbHtml::dropDownList(
                                             'noViewMode',
                                             ($aUserSettings['noViewMode'] ?? '0'),
@@ -348,9 +348,9 @@ echo $oQuestionSelector->getModal();
                                     </div>
                                 </div>
                                 <!-- Basic non numerical part of answer options -->
-                                <div class="col-sm-12 col-md-6">
-                                    <div class="form-group">
-                                        <?php echo TbHtml::label(gT("Non-Numerical answer option prefix:"), 'answeroptionprefix', ['class' => " control-label"]); ?>
+                                <div class="col-12 col-lg-6">
+                                    <div class="mb-3">
+                                        <?php echo TbHtml::label(gT("Non-Numerical answer option prefix:"), 'answeroptionprefix', ['class' => " form-label"]); ?>
                                         <?php echo TbHtml::textField(
                                             'answeroptionprefix',
                                             ($aUserSettings['answeroptionprefix'] ?? 'AO'),
@@ -362,9 +362,9 @@ echo $oQuestionSelector->getModal();
                                     </div>
                                 </div>
                                 <!-- Basic non numerical part of subquestions -->
-                                <div class="col-sm-12 col-md-6">
-                                    <div class="form-group">
-                                        <?php echo TbHtml::label(gT("Non-Numerical subquestions prefix:"), 'subquestionprefix', ['class' => " control-label"]); ?>
+                                <div class="col-12 col-lg-6">
+                                    <div class="mb-3">
+                                        <?php echo TbHtml::label(gT("Non-Numerical subquestions prefix:"), 'subquestionprefix', ['class' => " form-label"]); ?>
                                         <?php echo TbHtml::textField(
                                             'subquestionprefix',
                                             ($aUserSettings['subquestionprefix'] ?? 'SQ'),
@@ -377,9 +377,9 @@ echo $oQuestionSelector->getModal();
                                     </div>
                                 </div>
                                 <!-- Lock questionorganizer in sidebar -->
-                                <div class="col-sm-12 col-md-6">
-                                    <div class="form-group">
-                                        <?php echo TbHtml::label(gT("Lock question organizer in sidebar by default:"), 'lock_organizer', ['class' => " control-label"]); ?>
+                                <div class="col-12 col-lg-6">
+                                    <div class="mb-3">
+                                        <?php echo TbHtml::label(gT("Lock question organizer in sidebar by default:"), 'lock_organizer', ['class' => " form-label"]); ?>
                                         <?php echo TbHtml::dropDownList(
                                             'lock_organizer',
                                             ($aUserSettings['lock_organizer'] ?? '0'),
@@ -392,9 +392,9 @@ echo $oQuestionSelector->getModal();
                                     </div>
                                 </div>
                                 <!-- Create example question group and question -->
-                                <div class="col-sm-12 col-md-6">
-                                    <div class="form-group">
-                                        <?php echo TbHtml::label(gT("Create example question group and question:"), 'createsample', ['class' => " control-label"]); ?>
+                                <div class="col-12 col-lg-6">
+                                    <div class="mb-3">
+                                        <?php echo TbHtml::label(gT("Create example question group and question:"), 'createsample', ['class' => " form-label"]); ?>
                                         <?php echo TbHtml::dropDownList(
                                             'createsample',
                                             ($aUserSettings['createsample'] ?? 'default'),
@@ -423,7 +423,7 @@ echo $oQuestionSelector->getModal();
         <!-- Buttons -->
         <p>
             <?php echo TbHtml::hiddenField('action', 'savepersonalsettings'); ?>
-            <?php echo TbHtml::submitButton(gT("Save settings", 'unescaped'), ['class' => 'hidden']); ?>
+            <?php echo TbHtml::submitButton(gT("Save settings", 'unescaped'), ['class' => 'd-none']); ?>
         </p>
         <?php echo TbHtml::endForm(); ?>
 

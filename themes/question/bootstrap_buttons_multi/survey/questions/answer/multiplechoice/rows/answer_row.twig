@@ -20,24 +20,25 @@
 #}
 
 <!-- answer_row -->
-<div id='javatbd{{ myfname }}' class="bootstrap-buttons-div col-xs-12 {{ max_buttons_row }}">
-    <div class="button-item btn btn-primary {{ button_size_class }} {% if checkedState!='' %} active {% endif %} col-xs-12 col-sm-12">
-        <input
-            type="checkbox"
-            name="{{ myfname }}"
-            data-name="{{myfname}}"
-            class="bootstrap-checkbox sr-only"
-            id="answer{{ myfname }}"
-            {{ checkedState }}
-            value="Y"
-        />
-        <label for="answer{{ myfname }}" class="checkbox-label control-label">{{ question }}</label>
-        <input
-            type="hidden"
-            name="java{{ myfname }}"
-            id="java{{ myfname }}"
-            value="{{ C.Html.encode( sValue ) }}"
-        />
+<div id='javatbd{{ myfname }}' class="bootstrap-buttons-div col-12 {{ max_buttons_row }} mb-1">
+    <div class="form-check col-12 {% if checkedState!='' %} active {% endif %}">
+    <input
+        type="checkbox"
+        name="{{ myfname }}"
+        data-name="{{ myfname }}"
+        class="btn-check button-item"
+        id="answer{{ myfname }}"
+        {{ checkedState }}
+        value="Y"
+    />
+    <label for="answer{{ myfname }}"
+           class="col-12 btn btn-primary {{ button_size_class }}">{{ question }}</label>
+    <input
+        type="hidden"
+        name="java{{ myfname }}"
+        id="java{{ myfname }}"
+        value="{{ C.Html.encode( sValue ) }}"
+    />
     </div>
 </div>
 <!-- end of answer_row -->

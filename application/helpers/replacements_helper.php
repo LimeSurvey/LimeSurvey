@@ -236,7 +236,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     }
 
     if (isset($surveyid) && isset($_SESSION['survey_' . $surveyid]['srid'])) {
-        $_quexmlpdf = CHtml::link(gT("Save as PDF"), array("/printanswers/view/surveyid/{$surveyid}/printableexport/quexmlpdf"), array('data-toggle' => 'tooltip', 'data-placement' => 'right', 'title' => gT("Note: Print will not include items on this page")));
+        $_quexmlpdf = CHtml::link(gT("Save as PDF"), array("/printanswers/view/surveyid/{$surveyid}/printableexport/quexmlpdf"), array('data-bs-toggle' => 'tooltip', 'data-bs-placement' => 'right', 'title' => gT("Note: Print will not include items on this page")));
     } else {
         $_quexmlpdf = "";
     }
@@ -264,7 +264,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
 
     if (!empty($oTemplate->siteLogo)) {
         if (file_exists($oTemplate->path . $oTemplate->siteLogo)) {
-            $sitelogo = '<img class="img-responsive site-surveylist-logo custom custom-margin top-15 bottom-15" src="' . App()->getAssetManager()->publish($oTemplate->path . $oTemplate->siteLogo) . '" alt=""/>';
+            $sitelogo = '<img class="img-fluid site-surveylist-logo custom custom-margin top-15 bottom-15" src="' . App()->getAssetManager()->publish($oTemplate->path . $oTemplate->siteLogo) . '" alt=""/>';
         }
     }
 

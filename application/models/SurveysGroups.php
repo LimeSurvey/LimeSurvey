@@ -124,16 +124,16 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
                     'name' => 'sortorder',
                     'type' => 'raw',
                     'value' => '$data->buttons',
-                    'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                    'htmlOptions' => array('class' => 'hidden-xs button-column'),   // Cells that include buttons need the 'button-column' class to avoid triggering the 'selectionChanged' event
+                    'headerHtmlOptions' => array('class' => ''),
+                    'htmlOptions' => array('class' => ' button-column'),   // Cells that include buttons need the 'button-column' class to avoid triggering the 'selectionChanged' event
                 ),
                 array(
                     'header' => gT('Survey group ID'),
                     'name' => 'gsid',
                     'value' => '$data->hasViewSurveyGroupRight ? CHtml::link($data->gsid, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid))) : $data->gsid',
                     'type' => 'raw',
-                    'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                    'htmlOptions' => array('class' => 'hidden-xs'),
+                    'headerHtmlOptions' => array('class' => ''),
+                    'htmlOptions' => array('class' => ''),
                 ),
 
 
@@ -142,54 +142,54 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
                     'name' => 'name',
                     'value' => '$data->hasViewSurveyGroupRight ? CHtml::link($data->name, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid))) : $data->name',
                     'type' => 'raw',
-                    'headerHtmlOptions' => array('class' => 'hidden-xs'),
+                    'headerHtmlOptions' => array('class' => ''),
                 ),
 
                 array(
                     'header' => gT('Title'),
                     'name' => 'title',
                     'value' => '$data->title',
-                    'headerHtmlOptions' => array('class' => 'hidden-xs'),
+                    'headerHtmlOptions' => array('class' => ''),
                 ),
 
                 array(
                     'header' => gT('Description'),
                     'name' => 'description',
                     'value' => '$data->description',
-                    'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                    'htmlOptions' => array('class' => 'hidden-xs'),
+                    'headerHtmlOptions' => array('class' => ''),
+                    'htmlOptions' => array('class' => ''),
                 ),
 
                 array(
                     'header' => gT('Parent group'),
                     'name' => 'parent',
                     'value' => '$data->parentTitle',
-                    'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                    'htmlOptions' => array('class' => 'hidden-xs'),
+                    'headerHtmlOptions' => array('class' => ''),
+                    'htmlOptions' => array('class' => ''),
                 ),
 
                 array(
                     'header' => gT('Available'),
                     'name' => 'alwaysavailable',
                     'value' => '$data->alwaysavailable',
-                    'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                    'htmlOptions' => array('class' => 'hidden-xs'),
+                    'headerHtmlOptions' => array('class' => ''),
+                    'htmlOptions' => array('class' => ''),
                 ),
 
                 array(
                     'header' => gT('Owner'),
                     'name' => 'owner',
                     'value' => '!empty($data->owner) ? $data->owner->users_name : ""',
-                    'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                    'htmlOptions' => array('class' => 'hidden-xs'),
+                    'headerHtmlOptions' => array('class' => ''),
+                    'htmlOptions' => array('class' => ''),
                 ),
 
                 array(
                     'header' => gT('Order'),
                     'name' => 'sortorder',
                     'value' => '$data->sortorder',
-                    'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                    'htmlOptions' => array('class' => 'hidden-xs'),
+                    'headerHtmlOptions' => array('class' => ''),
+                    'htmlOptions' => array('class' => ''),
                 ),
             );
     }
@@ -305,17 +305,17 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
         $sPermissionUrl = App()->createUrl("surveysGroupsPermission/index", array("id" => $this->gsid));
         $button = "<div class='icon-btn-row'>";
         if ($this->hasPermission('group', 'read')) {
-            $button .= '<a class="btn btn-sm btn-default" href="' . $sEditUrl . '" role="button" data-toggle="tooltip" title="' . gT('Edit survey group') . '"><i class="fa fa-pencil" aria-hidden="true"></i><span class="sr-only">' . gT('Edit survey group') . '</span></a>';
+            $button .= '<a class="btn btn-sm btn-outline-secondary" href="' . $sEditUrl . '" role="button" data-bs-toggle="tooltip" title="' . gT('Edit survey group') . '"><i class="fa fa-pencil" aria-hidden="true"></i><span class="visually-hidden">' . gT('Edit survey group') . '</span></a>';
         }
         if ($this->hasPermission('permission', 'read')) {
-            $button .= '<a class="btn btn-sm btn-default" href="' . $sPermissionUrl . '" role="button" data-toggle="tooltip" title="' . gT('Permission') . '"><i class="fa fa-lock" aria-hidden="true"></i><span class="sr-only">' . gT('Permission') . '</span></a>';
+            $button .= '<a class="btn btn-sm btn-outline-secondary" href="' . $sPermissionUrl . '" role="button" data-bs-toggle="tooltip" title="' . gT('Permission') . '"><i class="fa fa-lock" aria-hidden="true"></i><span class="visually-hidden">' . gT('Permission') . '</span></a>';
         }
         if ($this->hasPermission('surveysettings', 'read')) {
-            $button .= '<a class="btn btn-sm btn-default" href="' . $sSurveySettingsUrl . '" role="button" data-toggle="tooltip" title="' . gT('Survey settings') . '"><i class="fa fa-cog" aria-hidden="true"></i><span class="sr-only">' . gT('Survey settings') . '</span></a>';
+            $button .= '<a class="btn btn-sm btn-outline-secondary" href="' . $sSurveySettingsUrl . '" role="button" data-bs-toggle="tooltip" title="' . gT('Survey settings') . '"><i class="fa fa-cog" aria-hidden="true"></i><span class="visually-hidden">' . gT('Survey settings') . '</span></a>';
         }
         /* Can not delete group #1 + with survey (or move it to hasPermission function ?) */
         if ($this->gsid != 1 && !$this->hasSurveys && $this->hasPermission('group', 'delete')) {
-            $button .= '<span data-toggle="tooltip" title="' . gT('Delete survey group') . '"><a class="btn btn-sm btn-default" href="#" data-post-url="' . $sDeleteUrl . '" data-target="#confirmation-modal" role="button" data-toggle="modal" data-message="' . gT('Do you want to continue?') . '"><i class="fa fa-trash text-danger " aria-hidden="true"></i></a></span>';
+            $button .= '<span data-bs-toggle="tooltip" title="' . gT('Delete survey group') . '"><a class="btn btn-sm btn-outline-secondary" href="#" data-post-url="' . $sDeleteUrl . '" data-bs-target="#confirmation-modal" role="button" data-bs-toggle="modal" data-message="' . gT('Do you want to continue?') . '"><i class="fa fa-trash text-danger " aria-hidden="true"></i></a></span>';
         }
         $button .= "</div>";
         return $button;
