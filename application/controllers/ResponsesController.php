@@ -49,7 +49,6 @@ class ResponsesController extends LSBaseController
 
         $surveyId = (int)App()->request->getParam('surveyId');
         $oSurvey = Survey::model()->findByPk($surveyId);
-        $this->aData['display']['menu_bars'] = false;
         $this->aData['subaction'] = gT("Responses and statistics");
         $this->aData['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
         $this->aData['title_bar']['title'] = gT('Browse responses') . ': ' . $oSurvey->currentLanguageSettings->surveyls_title;

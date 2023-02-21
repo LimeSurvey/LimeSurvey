@@ -4804,7 +4804,7 @@ function get_absolute_path($path)
 */
 function isJson($str)
 {
-    $json = json_decode($str);
+    $json = json_decode((string) $str);
     return $json && $str != $json;
 }
 

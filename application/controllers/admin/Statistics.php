@@ -818,7 +818,6 @@ class Statistics extends SurveyCommonAction
         $aData['menu']['closeurl'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl("/surveyAdministration/view/surveyid/" . $aData['surveyid']));
 
         $aData['display'] = array();
-        $aData['display']['menu_bars'] = false;
         $aData['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
 
         $aData['topBar']['name'] = 'baseTopbar_view';
