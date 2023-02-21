@@ -657,26 +657,26 @@ class Permission extends LSActiveRecord
                 'id' => $this->uid
             ]),
             'iconClass' => 'ri-pencil-fill',
-            'enabledCondition' => true
+            'enabledCondition' => Permission::model()->hasSurveyPermission($this->entity_id, 'surveysecurity', 'update')
         ];
-        if (Permission::model()->hasSurveyPermission($this->entity_id, 'surveysecurity', 'delete')) {
-            $dropdownItems[] = [
-                'title' => gT('Delete'),
-                'url' =>  App()->createUrl("surveyPermissions/deleteUserPermissions/"),
-                'linkAttributes'   => [
-                    'data-bs-toggle' => 'modal',
-                    'data-bs-target' => '#confirmation-modal',
-                    'data-btntext' => "Delete",
-                    'data-title' => gt('Delete user survey permissions'),
-                    'data-post-url' =>  App()->createUrl("surveyPermissions/deleteUserPermissions/"),
-                    'data-post-datas' =>   json_encode(['surveyid' => $this->entity_id, 'userid' => $this->uid]),
-                    'data-message'   => gt('Delete user survey permissions'),
-                    'type'           => 'submit'
-                ],
-                'iconClass' => 'ri-delete-bin-fill text-danger',
-                'enabledCondition' => true
-            ];
-        }
+       
+        $dropdownItems[] = [
+            'title' => gT('Delete'),
+            'url' =>  App()->createUrl("surveyPermissions/deleteUserPermissions/"),
+            'linkAttributes'   => [
+                'data-bs-toggle' => 'modal',
+                'data-bs-target' => '#confirmation-modal',
+                'data-btntext' => "Delete",
+                'data-title' => gt('Delete user survey permissions'),
+                'data-post-url' =>  App()->createUrl("surveyPermissions/deleteUserPermissions/"),
+                'data-post-datas' =>   json_encode(['surveyid' => $this->entity_id, 'userid' => $this->uid]),
+                'data-message'   => gt('Delete user survey permissions'),
+                'type'           => 'submit'
+            ],
+            'iconClass' => 'ri-delete-bin-fill text-danger',
+            'enabledCondition' => Permission::model()->hasSurveyPermission($this->entity_id, 'surveysecurity', 'delete')
+        ];
+        
         return App()->getController()->widget('ext.admin.grid.GridActionsWidget.GridActionsWidget', ['dropdownItems' => $dropdownItems], true);
     }
 
