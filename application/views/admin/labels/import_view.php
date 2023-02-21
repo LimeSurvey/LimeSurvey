@@ -15,7 +15,7 @@
             <h2 class="text-success"><?php eT("Import Label Set") ?></h2>
             <p class="lead"><?php eT("File upload succeeded.") ?></p>
             <?php if (count($aImportResults['warnings']) > 0): ?>
-                <p  class="lead text-warning">
+                <p  class="lead text-danger">
                     <?php eT("Warnings") ?>
                 </p>
                 <p>

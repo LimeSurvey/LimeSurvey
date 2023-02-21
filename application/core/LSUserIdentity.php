@@ -137,7 +137,7 @@ class LSUserIdentity extends CUserIdentity
                 'user_id' => App()->user->id,
                 'importance' => Notification::HIGH_IMPORTANCE,
                 'title' => 'Password warning',
-                'message' => '<span class="ri-error-warning-fill text-warning"></span>&nbsp;' .
+                'message' => '<span class="ri-error-warning-fill"></span>&nbsp;' .
                     gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.")
             ));
             $not->save();

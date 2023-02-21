@@ -38,8 +38,13 @@
                         ]
                     ]); ?>
                 </div>
-                <div class="help-block">
-                    <span class='text-success'><?php eT("Note: XSS filtering is always disabled for the superadministrator."); ?></span>
+                <div class="help-block mt-1">
+                    <?php
+                    App()->getController()->widget('ext.AlertWidget.AlertWidget', [
+                        'text' => gT("Note: XSS filtering is always disabled for the superadministrator."),
+                        'type' => 'success',
+                    ]);
+                    ?>
                 </div>
             </div>
 
@@ -56,9 +61,13 @@
                         ]
                     ]); ?>
                 </div>
-                <div class="help-block">
-                    <span
-                        class='text-warning'><?php eT("If you disable this option : user with XSS restriction still can add script. This allows user to add cross-site scripting javascript system."); ?></span>
+                <div class="help-block mt-1">
+                    <?php
+                    App()->getController()->widget('ext.AlertWidget.AlertWidget', [
+                    'text' => gT("If you disable this option : user with XSS restriction still can add script. This allows user to add cross-site scripting javascript system."),
+                    'type' => 'warning',
+                    ]);
+                    ?>
                 </div>
             </div>
             <div class="mb-3">

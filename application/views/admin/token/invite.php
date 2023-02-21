@@ -15,8 +15,8 @@
             <div>
                 <?php if ($oSurvey->active != 'Y'): ?>
                     <div class="jumbotron message-box message-box-error">
-                        <h2 class='text-warning'><?php eT('Warning!'); ?></h2>
-                        <p class="lead text-warning">
+                        <h2 class='text-danger'><?php eT('Warning!'); ?></h2>
+                        <p class="lead text-danger">
                             <?php eT("This survey is not yet activated and so your participants won't be able to fill out the survey."); ?>
                         </p>
                     </div>
