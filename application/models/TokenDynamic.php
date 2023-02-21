@@ -883,6 +883,7 @@ class TokenDynamic extends LSActiveRecord
             'linkAttributes'    => [
                 'data-bs-toggle'  => "modal",
                 'data-bs-target'  => '#confirmation-modal',
+                'data-btnclass' => 'btn-danger',
                 'data-message'    => gt('Do you really want to delete this participant'),
                 'data-post-url'   => App()->createUrl("/admin/tokens/sa/deleteToken", [
                     "sid"   => self::$sid,
