@@ -17164,7 +17164,7 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   color: #333641;
 }
 .navbar .badge {
-  width: 20px;
+  width: auto;
   height: 20px;
   padding: 2px 5px;
   font-size: 14px;
