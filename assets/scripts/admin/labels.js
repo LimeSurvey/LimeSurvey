@@ -336,7 +336,7 @@ function createNewLabelTR(alternate, first) {
         x = x + "<td>###codeval###</td><td>###assessmentval###</td>";
     } else {
         x = x + "<td>"
-        + "<span class='fa fa-bars bigIcons text-success'></span>"
+        + "<span class='fa fa-bars bigIcons'></span>"
         + "</td><td>"
         + "<input type='hidden' class='hiddencode' value='###codeval###' />"
         + "<input type='text' class='codeval form-control  ' value='###codeval###' name='code_###next###' id='code_###next###' size='6' maxlength='5' >"
@@ -350,7 +350,7 @@ function createNewLabelTR(alternate, first) {
     x = x + "<td style=\"text-align: center;\">&nbsp;&nbsp;&nbsp;<a href='#' class='btn btn-outline-secondary btn-sm htmleditor--openmodal' data-bs-target-field-id='title_###lang###_###next###' data-bs-toggle='tooltip' title='Open editor'><i class='ri-file-edit-line'></i></a>";
 
     if (first) {
-        x = x + "&nbsp<button class='btn btn-outline-secondary btn-sm btnaddanswer'><i class=\"ri-add-circle-fill text-success\"></i></button> <button class='btn btn-outline-secondary btn-sm btndelanswer'><i class=\" fa fa-trash  text-danger\"></i></button>";
+        x = x + "&nbsp<button class='btn btn-outline-secondary btn-sm btnaddanswer'><i class=\"ri-add-circle-fill\"></i></button> <button class='btn btn-outline-secondary btn-sm btndelanswer'><i class=\" ri-delete-bin-fill text-danger\"></i></button>";
     }
 
     x = x + "</td></tr>";

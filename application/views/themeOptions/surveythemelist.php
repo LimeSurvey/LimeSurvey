@@ -71,7 +71,7 @@ $this->widget('application.extensions.admin.grid.CLSGridView',
                 'header' => gT('Extends'),
                 'name' => 'template_extends',
                 'value' => '$data->template->extends',
-                'htmlOptions' => ['class' => 'col-lg-2'],
+                'htmlOptions' => ['class' => 'col-lg-1'],
             ],
 
             [
@@ -79,7 +79,7 @@ $this->widget('application.extensions.admin.grid.CLSGridView',
                 'name' => 'actions',
                 'value' => '$data->buttons',
                 'type' => 'raw',
-                'htmlOptions' => ['class' => 'col-lg-1'],
+                'htmlOptions' => ['class' => 'col-lg-2'],
                 'filter' => false,
             ],
 

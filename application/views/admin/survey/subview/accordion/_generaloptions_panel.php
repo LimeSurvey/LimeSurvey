@@ -33,7 +33,7 @@ $formatSelectOptions = array(
     'A' => gT('All in one', 'unescaped')
 );
 if ($bShowInherited) {
-    $formatSelectOptions['I'] = gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->format . ']';
+    $formatSelectOptions['I'] = $oSurveyOptions->format . " ᴵ";
 }
 ?>
 <?php if ($action == 'editsurveysettings'): ?>
@@ -354,3 +354,5 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
 
     </div>
 </div>
+<?php $this->renderPartial('/surveyAdministration/_inherit_sub_footer'); ?>
+

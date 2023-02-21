@@ -111,7 +111,7 @@ export default {
   <div
     id="sidebar"
     class="d-flex col-lg-4 ls-ba position-relative transition-animate-width"
-    :style="{'height': '100%', 'min-width': '250px', width: sideBarWidth }"
+    :style="{'min-height':'125vh','height': '100%', 'min-width': '250px', width: sideBarWidth }"
     @mouseleave="mouseleave"
     @mouseup="mouseup"
   >

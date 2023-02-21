@@ -146,12 +146,38 @@
       background: /*!rtl:linear-gradient(to left, $primary 0px, $primary 6px, $white 6px, $white 100%)*/ linear-gradient(to right, $primary 0px, $primary 6px, $white 6px, $white 100%);
   }
 
+  .menu-label {
+    color: $g-900;
+    font-weight: $font-weight-600;
+    font-size: 14px;
+    line-height: $line-height-20;
+  }
+
   .subpanel {
+    font-size: 14px;
+    .wrapper {
+      .title {
+        color: $g-700;
+      }
+      .icon {
+        color: $g-700;
+      }
+    }
       &.level-0 {
           .menu-selected {
               background: /*!rtl:linear-gradient(to left, $primary-bg_selected_subpanel 0px, $primary-bg_selected_subpanel 6px, $white 6px, $white 100%)*/ linear-gradient(to right, $primary-bg_selected_subpanel 0px, $primary-bg_selected_subpanel 6px, $white 6px, $white 100%);
           }
           .selected {
+              .wrapper {
+                .title {
+                  color: $g-900;
+                }
+                .icon {
+                  color: $active-green;
+                  font-weight: 600;
+                }
+              }
+              font-weight: $font-weight-500;
               background: /*!rtl:linear-gradient(to left, $primary-bg_selected_subpanel 0px, $primary-bg_selected_subpanel 13px, $white 13px, $white 100%)*/ linear-gradient(to right, $primary-bg_selected_subpanel 0px, $primary-bg_selected_subpanel 13px, $white 13px, $white 100%);
           }
       }

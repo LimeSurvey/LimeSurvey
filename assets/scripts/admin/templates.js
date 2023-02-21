@@ -22,8 +22,9 @@ $(document).on('ready pjax:scriptcomplete', function(){
     }
 
     $('#iphone').click(function(){
-      $('#previewiframe').css("width", "320px");
-      $('#previewiframe').css("height", "396px");
+        // changed to screen-size of Iphone X
+      $('#previewiframe').css("width", "375px");
+      $('#previewiframe').css("height", "812px");
     });
     $('#x640').click(function(){
       $('#previewiframe').css("width", "640px");

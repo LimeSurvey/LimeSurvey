@@ -739,7 +739,7 @@ class TemplateConfiguration extends TemplateConfig
         $sEditorLink = "<a
             id='template_editor_link_" . $this->template_name . "'
             href='" . $sEditorUrl . "'
-            class='btn btn-outline-secondary'>
+            class='btn btn-outline-secondary btn-sm'>
                 <span class='ri-brush-fill'></span>
                 " . gT('Theme editor') . "
             </a>";
@@ -749,7 +749,7 @@ class TemplateConfiguration extends TemplateConfig
             $OptionLink .= "<a
                 id='template_options_link_" . $this->template_name . "'
                 href='" . $sOptionUrl . "'
-                class='btn btn-outline-secondary'>
+                class='btn btn-outline-secondary btn-sm'>
                     <span class='ri-dashboard-3-fill'></span>
                     " . gT('Theme options') . "
                 </a>";
@@ -773,7 +773,7 @@ class TemplateConfiguration extends TemplateConfig
             data-button-no="' . gt('Cancel') . '"
             data-button-yes="' . gt('Extend') . '"
             title="' . sprintf(gT('Type in the new name to extend %s'), $this->template_name) . '"
-            role="button" class="btn btn-primary selector--ConfirmModal">
+            role="button" class="btn btn-primary btn-sm selector--ConfirmModal">
                 <i class="ri-file-copy-line"></i>
                 ' . gT('Extend') . '
             </a>';
@@ -787,7 +787,7 @@ class TemplateConfiguration extends TemplateConfig
             data-button-yes="' . gt('Uninstall') . '"
             data-button-type="btn-danger"
             title="' . gT('Uninstall this theme') . '"
-            class="btn btn-danger selector--ConfirmModal">
+            class="btn btn-danger btn-sm selector--ConfirmModal">
                 <span class="ri-delete-bin-fill"></span>
                 ' . gT('Uninstall') . '
             </a>';
@@ -801,7 +801,7 @@ class TemplateConfiguration extends TemplateConfig
                 data-button-yes="' . gt('Reset') . '"
                 data-button-type="btn-warning"
                 title="' . gT('Reset this theme') . '"
-                class="btn btn-warning selector--ConfirmModal">
+                class="btn btn-warning btn-sm selector--ConfirmModal">
                     <span class="ri-refresh-line"></span>
                     ' . gT('Reset') . '
             </a>';
@@ -817,7 +817,7 @@ class TemplateConfiguration extends TemplateConfig
             } else {
                 $sButtons .= '
                     <a
-                        class="btn btn-danger disabled"
+                        class="btn btn-danger btn-sm disabled"
                         data-bs-toggle="tooltip"
                         data-bs-placement="top"
                         title="' . gT('You cannot uninstall the default template.') . '"

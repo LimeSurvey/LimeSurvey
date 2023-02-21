@@ -52,7 +52,7 @@ foreach ($systemInfos as $key => $systemInfo) {
 <!-- Footer -->
 <footer class='footer'>
     <div class="container-fluid">
-        <div class="row ps-3 pe-3 pb-3">
+        <div class="row p-3">
             <!-- Lime survey website -->
             <div class="col-12 text-end">
                 <a  data-bs-toggle="tooltip" title='<?php eT("Visit our website!"); ?>' href='https://community.limesurvey.org' target='_blank'>LimeSurvey Community Edition</a>
@@ -184,7 +184,7 @@ foreach ($systemInfos as $key => $systemInfo) {
 <div id="error-modal" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->
-        <div class="modal-content panel-danger">
+        <div class="modal-content">
             <div class="modal-header card-header">
                 <h5 class="modal-title"><?php eT("Error"); ?></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -203,7 +203,7 @@ foreach ($systemInfos as $key => $systemInfo) {
 <div id="success-modal" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->
-        <div class="modal-content panel-success">
+        <div class="modal-content">
             <div class="modal-header card-header">
                 <h5 class="modal-title"><?php eT("Success"); ?></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
