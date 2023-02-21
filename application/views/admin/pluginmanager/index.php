@@ -14,9 +14,9 @@ echo viewHelper::getViewTestTag('pluginManager');
 $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']));
 
 ?>
-<div class='container-fluid'>
-    <div class='row'>
-        <div class='float-end'>
+<div class="container-fluid">
+    <div class="row pb-3">
+        <div class="float-end">
             <?php /* Disabled for prototype 1.
                 <a
                     href=''
