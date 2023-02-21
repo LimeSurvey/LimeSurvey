@@ -330,7 +330,7 @@ class QuestionGroup extends LSActiveRecord
                 ),
                 'data-onclick'  => '(function() { ' . CHtml::encode(convertGETtoPOST(
                     Yii::app()->createUrl("questionGroupsAdministration/delete/", ["gid" => $this->gid])
-                    )) . '})'
+                )) . '})'
             ]
         ];
         return App()->getController()->widget(

@@ -74,11 +74,11 @@ if (isset($dbBackupInfos->html)) {
         <?php echo CHtml::hiddenField('destinationBuild', $destinationBuild); ?>
         <?php echo CHtml::hiddenField('access_token', $access_token); ?>
 
-        <a class="btn btn-default" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
+        <a class="btn btn-outline-secondary" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
             <?php eT("Cancel"); ?>
         </a>
 
-        <?php echo CHtml::submitButton(gT('Continue', 'unescaped'), array("class" => "btn btn-default")); ?>
+        <?php echo CHtml::submitButton(gT('Continue', 'unescaped'), array("class" => "btn btn-outline-secondary")); ?>
     <?php echo CHtml::endForm(); ?>
 </div>
 

@@ -7,7 +7,7 @@
     <div class="pagetitle h3"><?php eT('Notifications'); ?></div>
     <?php
 
-$surveyGrid = $this->widget('application.extensions.admin.grid.CLSGridView', array(
+$surveyGrid = $this->widget('application.extensions.admin.grid.CLSGridView', array( //done
     'dataProvider' => $model->search(),
     'id'           => 'notification-grid',
     'emptyText'    => gT('No notifications found'),

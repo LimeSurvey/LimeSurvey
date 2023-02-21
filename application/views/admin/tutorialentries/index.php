@@ -25,7 +25,7 @@ echo viewHelper::getViewTestTag('tutorialentries');
         </div>
 		<div class="col-12 ls-space margin top-15">
 			<div class="col-12 ls-flex-item">
-				<?php $this->widget('application.extensions.admin.grid.CLSGridView', array(
+				<?php $this->widget('application.extensions.admin.grid.CLSGridView', array( //done
 					'dataProvider' => $model->search(),
 					// Number of row per page selection
 					'id' => 'tutorial-grid',
