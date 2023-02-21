@@ -18,7 +18,7 @@ class PassordRequirementTest extends TestBaseClass
     /**
      * @inheritdoc
      * Activate needed plugins
-     * Import survey in tests/surveys/.
+     * Import survey in tests/surveys/
      */
     public static function setUpBeforeClass(): void
     {
