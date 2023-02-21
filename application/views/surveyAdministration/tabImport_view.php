@@ -31,7 +31,7 @@
             </div>
 
             <!-- Convert resource links and INSERTANS fields? -->
-            <div class='mb-3 form-check'>
+            <div class='mb-3'>
                 <input id="yttranslinksfields" name="translinksfields" type="hidden" value="0" >
                 <input id="translinksfields" name="translinksfields" type="checkbox" value="1" checked>
                 <label class='form-label ' for='translinksfields'><?php  eT("Convert resource links and expression fields?"); ?> </label>
