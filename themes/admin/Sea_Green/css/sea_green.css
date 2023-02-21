@@ -16910,6 +16910,9 @@ tr.info, tr.danger {
 .modal-header .btn-close:focus {
   box-shadow: none;
 }
+.modal-header .btn-close:hover {
+  background-color: #EEEFF7;
+}
 
 .modal-title {
   color: #1E1E1E;

@@ -18,6 +18,9 @@
     &:focus {
       box-shadow: none;
     }
+    &:hover {
+      background-color: $g-200;
+    }
   }
 }
 .modal-title {
