@@ -76,7 +76,7 @@
 
             <!-- stable / unstable -->
             <?php if ($aUpdateVersion['branch']!='master'):?>
-                <td class="text-warning">
+                <td class="text-danger">
                     <?php  eT('unstable'); ?>
                 </td>
             <?php else: ?>
@@ -87,7 +87,7 @@
 
             <!-- security / regular -->
             <?php if($aUpdateVersion['security_update']):?>
-            <td class="text-warning">
+            <td class="text-danger">
                     <?php eT("Security update");?>
             </td>
             <?php else: ?>

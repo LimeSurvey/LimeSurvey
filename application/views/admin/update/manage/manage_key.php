@@ -4,7 +4,7 @@
             <span id="comfortUpdateIcon" class="ri-shield-check-fill text-success"></span>
             <?php eT('ComfortUpdate'); ?>
             <?php if (YII_DEBUG): ?>
-                <small>Server:<em class="text-warning"> <?php echo Yii::app()->getConfig("comfort_update_server_url"); ?></em></small>
+                <small>Server:<em class="text-danger"> <?php echo Yii::app()->getConfig("comfort_update_server_url"); ?></em></small>
             <?php endif; ?>
         </h3>
 

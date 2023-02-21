@@ -343,7 +343,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                          <input type='hidden' name='ok' value='Y' />
                         <button  id='delete-checked-items-button' type='submit' name='ok' value='Y' class="btn btn-danger"><?php eT("Delete checked items!"); ?></button>
                         <br/>
-                        <span class='hint text-warning'>
+                        <span class='hint text-danger'>
                             <?php eT("Note that you cannot undo a delete if you proceed. The data will be gone."); ?>
                         </span>
                 </p>
