@@ -1219,10 +1219,14 @@ class DataEntry extends SurveyCommonAction
                                 $aDataentryoutput .= CHtml::numberField($fname['fieldname'], $idrow[$fname['fieldname']], array('step' => 'any'));
                             } else {
                                 $aDataentryoutput .= "\t<select name='{$fname['fieldname']}' class='form-control'>\n";
-                                $aDataentryoutput .= "<option value=''>...</option>\n";
+                                $aDataentryoutput .= "<option value=''";
+                                if ($idrow[$fname['fieldname']] === "") {
+                                    $aDataentryoutput .= " selected";
+                                }
+                                $aDataentryoutput .= ">...</option>\n";
                                 for ($ii = $minvalue; $ii <= $maxvalue; $ii += $stepvalue) {
                                     $aDataentryoutput .= "<option value='$ii'";
-                                    if ($idrow[$fname['fieldname']] == $ii) {
+                                    if ($idrow[$fname['fieldname']] === "$ii") {
                                         $aDataentryoutput .= " selected";
                                     }
                                     $aDataentryoutput .= ">$ii</option>\n";
