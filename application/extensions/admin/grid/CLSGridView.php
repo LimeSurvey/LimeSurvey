@@ -66,7 +66,7 @@ class CLSGridView extends TbGridView
             foreach ($this->lsAfterAjaxUpdate as $jsCode) {
                 $this->afterAjaxUpdate .= $jsCode;
             }
-            $this->afterAjaxUpdate .= 'action_dropdown()';
+            $this->afterAjaxUpdate .= 'action_dropdown();';
             $this->afterAjaxUpdate .= '}';
         }
     }

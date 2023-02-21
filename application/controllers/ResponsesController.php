@@ -899,6 +899,15 @@ class ResponsesController extends LSBaseController
                 ];
             }
         }
+        $aData['columns'][] = [
+            'name'              => 'actions',
+            'type'              => 'raw',
+            'header'            => gT("Action"),
+            'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+            'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
+            'htmlOptions'       => ['class' => 'ls-sticky-column']
+        ];
+
         // Set number of page
         if (App()->request->getParam('pageSize')) {
             App()->user->setState('pageSize', (int)App()->request->getParam('pageSize'));
