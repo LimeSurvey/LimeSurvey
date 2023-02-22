@@ -16655,6 +16655,9 @@ tr.info, tr.danger {
   border-radius: 4px;
   font-weight: 500;
 }
+.btn [class^=ri-], .btn [class*=" ri-"] {
+  font-size: 1.425rem;
+}
 
 .btn-sm, .btn-group-sm > .btn {
   min-height: 24px;
@@ -16662,6 +16665,9 @@ tr.info, tr.danger {
   font-size: 0.855rem;
   line-height: 16px;
   border-radius: 3px;
+}
+.btn-sm [class^=ri-], .btn-group-sm > .btn [class^=ri-], .btn-sm [class*=" ri-"], .btn-group-sm > .btn [class*=" ri-"] {
+  font-size: 1.14rem;
 }
 
 .btn-lg, .btn-group-lg > .btn {
@@ -16682,6 +16688,9 @@ tr.info, tr.danger {
 
 .btn-xs {
   min-height: auto;
+}
+.btn-xs [class^=ri-], .btn-xs [class*=" ri-"] {
+  font-size: 1.14rem;
 }
 
 .menu-button-divider {
@@ -17175,7 +17184,7 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   color: #333641;
 }
 .navbar .badge {
-  width: 20px;
+  width: auto;
   height: 20px;
   padding: 2px 5px;
   font-size: 14px;
@@ -17296,8 +17305,20 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   font-size: 14px;
   font-weight: 400;
 }
+.card.card-primary.inactive {
+  color: #9094A7;
+}
+.card.card-primary.inactive .card-title, .card.card-primary.inactive .card-header {
+  color: #9094A7;
+}
 .card.card-primary.border-left-danger {
   border-left: 4px solid #FF515F;
+}
+.card.card-primary.border-left-warning {
+  border-left: 4px solid #FFE046;
+}
+.card.card-primary.border-left-success {
+  border-left: 4px solid #4DD753;
 }
 .card.card-primary.card-clickable:hover {
   box-shadow: 8px 8px #D3C5FA;
@@ -17354,6 +17375,18 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 .card.card-primary .card-body + .card-footer,
 .card.card-primary .card-header + .card-footer {
   padding-top: 0;
+}
+.card.card-primary.inactive {
+  color: #9094A7;
+}
+.card.card-primary.inactive .card-title, .card.card-primary.inactive .card-header {
+  color: #9094A7;
+}
+.card.card-primary.inactive table {
+  color: #9094A7;
+}
+.card.card-primary.inactive table td {
+  color: #9094A7;
 }
 
 .card.card-primary.login-panel {
@@ -17427,7 +17460,7 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 }
 
 [class^=ri-], [class*=" ri-"] {
-  vertical-align: -0.125em;
+  vertical-align: -0.25em;
 }
 
 .remix-2xs {
@@ -17696,6 +17729,7 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   border-top: 2px solid #F9F9FB;
   border-bottom: 2px solid #D3D5DA;
   background-color: #F9F9FB;
+  padding: 6px 20px;
 }
 .nav-tabs .nav-link:hover, .nav-tabs .nav-link:focus {
   font-weight: 400 !important;

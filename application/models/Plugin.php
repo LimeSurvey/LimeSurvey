@@ -126,7 +126,7 @@ class Plugin extends LSActiveRecord
     {
         if ($this->load_error == 1) {
             return sprintf(
-                "<span data-bs-toggle='tooltip' title='%s' class='btntooltip ri-close-fill text-warning'></span>",
+                "<span data-bs-toggle='tooltip' title='%s' class='btntooltip ri-close-fill text-danger'></span>",
                 gT('Plugin load error')
             );
         } elseif ($this->active == 1) {

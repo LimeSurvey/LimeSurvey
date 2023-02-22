@@ -24,7 +24,7 @@
                 </p>
 
                 <?php if ($warning) :?>
-                    <strong class='text-warning'>
+                    <strong class='text-danger'>
                         <?php eT("The required directory for saving the uploaded files couldn't be created. Please check file premissions on the /upload/surveys directory."); ?>
                     </strong>
                 <?php endif; ?>

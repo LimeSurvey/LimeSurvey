@@ -31,6 +31,6 @@ $class = !$generalSettingsView ? 'mb-4 col-12 scoped-responsive-fix-height' : ''
         />
         -->
     </div>
-    <p id="question-title-warning" class="d-none text-warning"></p>
+    <p id="question-title-warning" class="d-none text-danger"></p>
 </div>
 

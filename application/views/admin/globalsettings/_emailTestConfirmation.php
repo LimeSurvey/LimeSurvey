@@ -5,7 +5,7 @@
 <div class="modal-body">
     <p><?php printf(gT("Test email will be sent to: %s"), "<strong>" . $testEmail . "</strong>"); ?></p>
     <div id="settingschangedwarning" class="jumbotron message-box message-box-error" style="display: none;">
-        <p class="text-warning"><?= gT("There seems to be some changes in the settings which were not saved yet. These changes will be disregarded by the test procedure."); ?></p>
+        <p class="text-danger"><?= gT("There seems to be some changes in the settings which were not saved yet. These changes will be disregarded by the test procedure."); ?></p>
     </div>
 </div>
 <div class="modal-footer">

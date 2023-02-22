@@ -37,7 +37,7 @@ echo viewHelper::getViewTestTag('login');
                     </div>
                     <?php
                     if ($errorExists) { ?>
-                        <span class="text-warning"><?= $errorMsg ?></span><br><br>
+                        <span class="text-danger"><?= $errorMsg ?></span><br><br>
                     <?php
                     } else {
                         ?>

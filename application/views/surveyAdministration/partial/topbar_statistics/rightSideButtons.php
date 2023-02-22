@@ -54,7 +54,7 @@ if (isset($expertstats) && $expertstats === true) {
             'icon' => 'ri-refresh-line',
             'link' => Yii::app()->createUrl("admin/statistics/sa/index/", array('surveyid' => $surveyid)),
             'htmlOptions' => [
-                'class' => 'btn btn-outline-secondary',
+                'class' => 'btn btn-warning',
             ],
         ]
     );
@@ -69,7 +69,7 @@ $this->widget(
         'icon' => 'ri-close-fill',
         'link' => Yii::app()->createUrl("surveyAdministration/view", ["surveyid" => $surveyid]),
         'htmlOptions' => [
-            'class' => 'btn btn-danger',
+            'class' => 'btn btn-outline-secondary',
         ],
     ]
 );
