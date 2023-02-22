@@ -42,7 +42,7 @@ Yii::app()->getController()->renderPartial(
 
 		<div class="ex-form-group mb-3">
 			<?php echo $form->labelEx($model, 'title'); ?>
-			<?php echo $form->textField($model, 'title', array('class' => 'selector__hasInfoBox', 'size'=>60,'maxlength'=>255)); ?>
+			<?php echo $form->textField($model, 'title', array('class' => 'selector__hasInfoBox', 'size'=>60, 'required'=>true, 'maxlength'=>255)); ?>
 			<?php echo $form->error($model, 'title'); ?>
 		</div>
 
@@ -81,13 +81,13 @@ Yii::app()->getController()->renderPartial(
                 'htmlOptions' => ['class' => 'selector_infoBox d-none']
             ]);
             ?>
-			<?php echo $form->textField($model, 'menu_icon', array('class' => 'selector__hasInfoBox', 'size'=>60,'maxlength'=>255)); ?>
+			<?php echo $form->textField($model, 'menu_icon', array('class' => 'selector__hasInfoBox', 'size'=>60, 'required' => true, 'maxlength'=>255)); ?>
 			<?php echo $form->error($model, 'menu_icon'); ?>
 		</div>
 
 		<div class="ex-form-group mb-3">
 			<?php echo $form->labelEx($model, 'menu_icon_type'); ?>
-			<?php echo $form->dropDownList($model, 'menu_icon_type', $model->getMenuIconTypeOptions(), ['class' => 'form-select']); ?>
+			<?php echo $form->dropDownList($model, 'menu_icon_type', $model->getMenuIconTypeOptions(), ['class' => 'form-select', 'required'=>true, ]); ?>
 			<?php echo $form->error($model, 'menu_icon_type'); ?>
 		</div>
 
