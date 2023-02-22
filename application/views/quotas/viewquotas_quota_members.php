@@ -16,7 +16,7 @@ if ($oQuota->action == Quota::ACTION_TERMINATE){
 ?>
 
 <?php /*echo "<pre>".print_r($oQuota->mainLanguagesetting->attributes,true)."</pre>";*/ ?>
-<div class="card card-<?php echo ($oQuota->active==1 ? 'primary' : 'default') ?>">
+<div class="card card-primary <?php echo ($oQuota->active==1 ? 'border-left-success' : 'inactive border-left-warning') ?>">
     <div class="card-header ">
         <div class="float-end small">
             <span><span class="<?= $icon ?>"></span> <?= $tooltip ?></span>

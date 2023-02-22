@@ -574,7 +574,7 @@ class TokenDynamic extends LSActiveRecord
     {
         if ($field != 'N' && $field != '') {
             if ($field == 'Q') {
-                $field     = '<span class="text-warning">' . gT('Quota out') . '</span>';
+                $field     = '<span class="text-danger">' . gT('Quota out') . '</span>';
             } elseif ($field != 'Y') {
                 $fieldDate = convertToGlobalSettingFormat($field);
                 $field     = '<span class="text-success">' . $fieldDate . '</span>';
@@ -582,7 +582,7 @@ class TokenDynamic extends LSActiveRecord
                 $field     = '<span class="text-success ri-check-fill"></span>';
             }
         } elseif ($field != '') {
-            $field = '<i class="ri-subtract-fill text-warning"></i>';
+            $field = '<i class="ri-subtract-fill text-danger"></i>';
         }
         return $field;
     }
@@ -593,7 +593,7 @@ class TokenDynamic extends LSActiveRecord
     public function getEmailFormated()
     {
         if (substr($this->emailstatus, 0, 7) == "bounced") {
-            return '<span class="text-warning"><strong> ' . CHtml::encode($this->email) . '</strong></span>';
+            return '<span class="text-danger"><strong> ' . CHtml::encode($this->email) . '</strong></span>';
         } else {
             return CHtml::encode($this->email);
         }
@@ -605,7 +605,7 @@ class TokenDynamic extends LSActiveRecord
     public function getEmailstatusFormated()
     {
         if (substr($this->emailstatus, 0, 7) == "bounced") {
-            return '<span class="text-warning"><strong> ' . CHtml::encode($this->emailstatus) . '</strong></span>';
+            return '<span class="text-danger"><strong> ' . CHtml::encode($this->emailstatus) . '</strong></span>';
         } else {
             return CHtml::encode($this->emailstatus);
         }
@@ -883,6 +883,7 @@ class TokenDynamic extends LSActiveRecord
             'linkAttributes'    => [
                 'data-bs-toggle'  => "modal",
                 'data-bs-target'  => '#confirmation-modal',
+                'data-btnclass' => 'btn-danger',
                 'data-message'    => gt('Do you really want to delete this participant'),
                 'data-post-url'   => App()->createUrl("/admin/tokens/sa/deleteToken", [
                     "sid"   => self::$sid,

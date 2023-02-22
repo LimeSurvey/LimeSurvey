@@ -31,7 +31,7 @@
             echo CHtml::openTag('div', array('class' => 'well'));
             echo CHtml::tag('strong', array('class' => 'text-info'), gT("Info"));
             echo CHtml::tag('p', array(), gT("Please be aware that tables including encryption should not be restored if they have been created in LimeSurvey 4 before version 4.6.1"));
-            echo CHtml::tag('strong', array('class' => 'text-warning'), gT("Warning"));
+            echo CHtml::tag('strong', array('class' => 'text-danger'), gT("Warning"));
             echo CHtml::tag('p', array(), gT("You can import all old responses that are compatible with your current survey. Compatibility is determined by comparing column types and names, the ID field is always ignored."));
             echo CHtml::tag('p', array(), gT("Using type coercion may break your data; use with care or not at all if possible."));
             echo CHtml::tag('p', array(), gT("Currently we detect and handle the following changes:"));
