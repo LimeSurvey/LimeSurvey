@@ -103,7 +103,7 @@ if ($bShowInherited) {
                     <select id="showgroupinfo" name="showgroupinfo" class="form-select">
                         <?php if ($bShowInherited) { ?>
                             <option value="I" <?php echo $sel_showgri['I']; ?>>
-                                <?php echo eT('Inherit') .  $oSurveyOptions->showgroupinfo; ?></option>
+                                <?php echo $oSurveyOptions->showgroupinfo . ' ᴵ'; ?></option>
                         <?php } ?>
                         <option value="B" <?php echo $sel_showgri['B']; ?>><?php eT('Show both'); ?></option>
                         <option value="N" <?php echo $sel_showgri['N']; ?>><?php eT('Show group name only'); ?></option>
@@ -135,7 +135,7 @@ if ($bShowInherited) {
                     <select class="form-select" id="showqnumcode" name="showqnumcode">
                         <?php if ($bShowInherited) { ?>
                             <option value="I" <?php echo $sel_showqnc['I']; ?>>
-                                <?php echo eT('Inherit') .  $oSurveyOptions->showqnumcode; ?></option>
+                                <?php echo $oSurveyOptions->showqnumcode . ' ᴵ'; ?></option>
                         <?php } ?>
                         <option value="B" <?php echo $sel_showqnc['B']; ?>><?php eT('Show both'); ?></option>
                         <option value="N" <?php echo $sel_showqnc['N']; ?>><?php eT('Show question number only'); ?></option>
