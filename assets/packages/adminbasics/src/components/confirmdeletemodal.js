@@ -19,10 +19,11 @@ const ConfirmDeleteModal = function (options) {
         buttonNo = options.buttonNo || $item.data('button-no') || '<i class="ri-close-fill"></i>',
         buttonYes = options.buttonYes || $item.data('button-yes') || '<i class="ri-check-fill"></i>',
         buttonType = $item.data('button-type') || 'btn-primary',
+        closeButtonType = $item.data('close-button-type') || 'btn-outline-secondary',
         parentElement = options.parentElement || $item.data('parent-element') || 'body';
 
     const closeIconHTML = '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>',
-        closeButtonHTML = '<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">' + buttonNo + '</button>',
+        closeButtonHTML = '<button type="button" class="btn ' + closeButtonType + '" data-bs-dismiss="modal">' + buttonNo + '</button>',
         confirmButtonHTML = '<button type="button" class="btn ' + buttonType + ' selector--button-confirm">' + buttonYes + '</button>';
 
 
@@ -83,7 +84,7 @@ const ConfirmDeleteModal = function (options) {
             modalObject.find('.modal-body').append('<p>' + confirmText + '</p>');
 
             if (showTextArea !== '') {
-                modalObject.find('form').append('<textarea id="modalTextArea" name="modalTextArea" ></textarea>');
+                modalObject.find('form').append('<textarea id="modalTextArea" name="modalTextArea" class="form-control mb-3"></textarea>');
             }
 
         },
