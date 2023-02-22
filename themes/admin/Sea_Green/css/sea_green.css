@@ -18190,6 +18190,9 @@ table .ls-sticky-column:last-child {
 table .ls-sticky-column:has(.dropdown-menu.show) {
   z-index: 1020;
 }
+table .ls-sticky-column.has-dropdown {
+  z-index: 1020;
+}
 
 .table > thead > tr.active > td, .table > thead > tr.active > th,
 .table > tbody > tr.active > td,
