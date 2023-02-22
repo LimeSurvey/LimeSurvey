@@ -51,7 +51,7 @@ Yii::app()->getController()->renderPartial(
 			<?php echo $form->dropDownList($model, 'menu_id', $model->getMenuIdOptions(), ['options' => ['2' => ['selected' => true]], 'class' => 'form-select']); ?>
 			<?php echo $form->error($model, 'menu_id'); ?>
 		</div>
-		
+
 
 		<div class="ex-form-group mb-3">
 			<?php echo $form->labelEx($model, 'ordering'); ?>
@@ -167,7 +167,7 @@ Yii::app()->getController()->renderPartial(
 		</div>
 		<!-- Start collapsed advanced options -->
 		<div class="collapse" id="collapseAdvancedOptions">
-			
+
 			<div class="ex-form-group mb-3">
 				<?php echo $form->labelEx($model, 'data'); ?>
 				<?php echo $form->textArea($model, 'data', array('rows'=>6, 'cols'=>50 )); ?>
@@ -186,7 +186,7 @@ Yii::app()->getController()->renderPartial(
 				<?php echo $form->textField($model, 'name', array('class' => 'selector__hasInfoBox', 'size'=>60,'maxlength'=>255)); ?>
 				<?php echo $form->error($model, 'name'); ?>
 			</div>
-			
+
 			<div class="ex-form-group mb-3">
 				<?php echo $form->labelEx($model, 'menu_title'); ?>
                 <?php
@@ -218,7 +218,7 @@ Yii::app()->getController()->renderPartial(
 				<?php echo $form->dropDownList($model, 'user_id', $model->getUserIdOptions(), ['class' => 'form-select']); ?>
 				<?php echo $form->error($model, 'user_id'); ?>
             </div>
-            
+
 			<div class="ex-form-group mb-3">
 				<?php echo $form->labelEx($model, 'action'); ?>
 				<?php echo $form->textField($model, 'action', array('size'=>60,'maxlength'=>255)); ?>
@@ -254,7 +254,7 @@ Yii::app()->getController()->renderPartial(
 				<?php echo $form->textField($model, 'language', array('size'=>60,'maxlength'=>255)); ?>
 				<?php echo $form->error($model, 'language'); ?>
 			</div>
-			
+
 			<div class="ex-form-group mb-3">
 				<?php echo $form->labelEx($model, 'showincollapse'); ?>
 				<?php echo $form->checkbox($model, 'showincollapse'); ?>
@@ -266,7 +266,7 @@ Yii::app()->getController()->renderPartial(
 		<?php echo $form->hiddenField($model, 'changed_at', ['value' => date('Y-m-d H:i:s')]);?>
 		<?php echo $form->hiddenField($model, 'created_by', ['value' => (empty($model->created_by) ? $user : $model->created_by)]);?>
 		<?php echo $form->hiddenField($model, 'id');?>
-		
+
 	</div>
 </div>
 	<div class="modal-footer">
@@ -276,7 +276,7 @@ Yii::app()->getController()->renderPartial(
 			data-bs-dismiss="modal">
 			<?=gT('Cancel')?>
 		</button>
-		<?php echo TbHtml::submitButton(($model->isNewRecord ? gT('Create') : gT('Save')), array('color' => TbHtml::BUTTON_COLOR_SUCCESS)); ?>
+		<?php echo TbHtml::submitButton(($model->isNewRecord ? gT('Create') : gT('Save')), array('class' => 'btn-primary')); ?>
 
 	</div>
 
