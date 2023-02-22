@@ -16,6 +16,14 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
     public $allowedPublicMethods = array();
 
     protected $settings = [
+        'adminPart' => array(
+            'content' => 'Password requirements for administration login',
+            'type' => 'info',
+            'class' => "h3",
+            'controlOptions' => array(
+                'class' => "col-md-offset-4 col-md-6"
+            ),
+        ),
         'needsNumber' => array(
             'label' => 'Require at least one digit',
             'type' => 'checkbox',
@@ -35,6 +43,15 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
             'label' => 'Minimum password length',
             'type' => 'int',
             'default' => 12,
+        ),
+        'surveyPart' => array(
+            'content' => 'Password requirements for “Save and return later” feature',
+            'type' => 'info',
+            'class' => "h3",
+            'controlOptions' => array(
+                'class' => "col-md-offset-4 col-md-6"
+            ),
+            'type' => 'info',
         ),
         'surveySaveActive' => array(
             'type' => 'boolean',
@@ -137,10 +154,10 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
     private function checkValidityOfPassword($password, $needsNumber, $needsUppercase, $needsNonAlphanumeric, $minimumSize = 8)
     {
         $errors = [];
-        if ($needsNumber && ctype_alpha($password)) {
+        if ($needsNumber && preg_match('/\d/', $password) === 0) {
             $errors[] = gT('The password does require at least one digit');
         }
-        if ($needsUppercase && ctype_lower($password)) {
+        if ($needsUppercase && strtolower($password) == $password) {
             $errors[] = gT('The password does require at least one uppercase character');
         }
         if ($needsNonAlphanumeric && ctype_alnum($password)) {
@@ -177,7 +194,18 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
      */
     public function getPluginSettings($getValues = true)
     {
-        $settings = parent::getPluginSettings();
+        $settings = parent::getPluginSettings($getValues);
+        $settings['adminPart']['content'] = $this->gT("Password requirements for administration login");
+        $settings['needsNumber']['label'] = $this->gT("Require at least one digit");
+        $settings['needsUppercase']['label'] = $this->gT("Require at least one uppercase character");
+        $settings['needsNonAlphanumeric']['label'] = $this->gT("Require at least one special character");
+        $settings['minimumSize']['label'] = $this->gT("Minimum password length");
+        $settings['surveyPart']['content'] = $this->gT("Password requirements for “Save and return later” feature");
+        $settings['surveySaveActive']['label'] = $this->gT("Check password when use “Save and return later” feature");
+        $settings['surveySaveNeedsNumber']['label'] = $this->gT("Require at least one digit");
+        $settings['surveySaveNeedsUppercase']['label'] = $this->gT("Require at least one uppercase character");
+        $settings['surveySaveNeedsNonAlphanumeric']['label'] = $this->gT("Require at least one special character");
+        $settings['surveySaveMinimumSize']['label'] = $this->gT("Minimum password length");
         return $settings;
     }
 

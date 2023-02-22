@@ -74,9 +74,29 @@ class CreateQuestionTest extends TestBaseClassWeb
             $sidemenuCreateQuestionButton->click();
             sleep(1);
 
+            $questionBadCode = rand(1, 10000) . 'question';
             $questionCode = 'question' . rand(1, 10000);
             $input = $web->findById('questionCode');
+            $input->clear()->sendKeys($questionBadCode);
+            /* blur out action : ajax call */
+            $web->findById('relevance')->click();
+            sleep(1);
+            $checkValidateText = $web->findById('question-title-warning')->getText();
+            $this->assertEquals(
+                "Question codes must start with a letter and may only contain alphanumeric characters.",
+                 $checkValidateText,
+                 "Title validation didn't update in question-title-warning, get “".$checkValidateText."”"
+            );
             $input->clear()->sendKeys($questionCode);
+            $input->click();
+            $web->findById('relevance')->click();
+            sleep(1);
+            $checkValidateText = trim($web->findById('question-title-warning')->getText());
+            $this->assertEquals(
+                "",
+                 $checkValidateText,
+                 "Title validation in question-title-warning are not empty on success, get “".$checkValidateText."”"
+            );
 
             $questionTypeSelector = $web->findById('trigger_questionTypeSelector_button');
             $questionTypeSelector->click();

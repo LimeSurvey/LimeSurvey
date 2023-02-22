@@ -184,7 +184,7 @@ class LS_Twig_Extension extends Twig_Extension
         return 0;
     }
     /**
-     * Retreive the question classes for a given question id
+     * Retrieve the question classes for a given question id
      * Use in survey template question.twig file.
      * TODO: we'd rather provide a oQuestion object to the twig view with a method getAllQuestion(). But for now, this public static function respect the old way of doing
      *
@@ -574,7 +574,7 @@ class LS_Twig_Extension extends Twig_Extension
      * @deprecated (4.0)
      * @param string $sString :the string
      * @param boolean $bFlat : flattenText or not : completely flat (not like flattenText from common_helper)
-     * @param integer $iAbbreviated : max string text (if true : allways flat), 0 or false : don't abbreviated
+     * @param integer $iAbbreviated : max string text (if true : always flat), 0 or false : don't abbreviated
      * @param string $sEllipsis if abbreviated : the char to put at end (or middle)
      * @param integer $fPosition if abbreviated position to split (in % : 0 to 1)
      * @return string
@@ -656,7 +656,7 @@ class LS_Twig_Extension extends Twig_Extension
 
 
     /**
-     * Retreive all the previous answers from a given token
+     * Retrieve all the previous answers from a given token
      * To use it:
      *  {% set aResponses = getAllTokenAnswers(aSurveyInfo.sid) %}
      *  {{ dump(aResponses) }}
@@ -691,5 +691,59 @@ class LS_Twig_Extension extends Twig_Extension
     {
         Yii::app()->loadHelper('surveytranslator');
         return getLanguageRTL($sLanguageCode);
+    }
+
+    /**
+     * Returns the "tracking url" for Google Analytics when style is "Survey-SID/GROUP"
+     * @param int $surveyId
+     * @param string $trackUrlPageName  Specific page name to include in the tracking url. If it's empty, we will try to infer it from the context.
+     * @return string The tracking URL as "<survey name>-[<survey id>]/[<page name|group seq>]-<group name>"
+     */
+    public static function getGoogleAnalyticsTrackingUrl($surveyId, $trackUrlPageName = '')
+    {
+        $survey = Survey::model()->findByPk($surveyId);
+
+        $googleAnalyticsAPIKey = $survey->getGoogleanalyticsapikey();
+        $googleAnalyticsStyle = isset($survey->googleanalyticsstyle) ? $survey->googleanalyticsstyle : '1';
+
+        // Tracking URL can only be used if there is an API key and the style is set to "Survey-SID/GROUP"
+        if ($googleAnalyticsAPIKey == '' || $googleAnalyticsStyle != 2) {
+            return '';
+        }
+
+        $surveyName = $survey->localizedTitle;
+        $groupName = '';
+
+        // If a page name is specified, use that. Otherwise, try to get it from the context.
+        if (!empty($trackUrlPageName)) {
+            $page = $trackUrlPageName;
+        } else {
+            $moveInfo = LimeExpressionManager::GetLastMoveResult();
+            if (is_null($moveInfo) || (isset($moveInfo['at_start']) && $moveInfo['at_start'])) {
+                $page = 'welcome';
+            } elseif ($moveInfo['finished']) {
+                $page = 'finished';
+            } else {
+                $showgroupinfo = Yii::app()->getConfig('showgroupinfo');
+                if ($survey->format == 'A') {
+                    $page = 1;
+                } else {
+                    if (
+                        $showgroupinfo == 'both'
+                        || $showgroupinfo == 'name'
+                        || ($showgroupinfo == 'choose' && !isset($survey->showgroupinfo))
+                        || ($showgroupinfo == 'choose' && $survey->showgroupinfo == 'B')
+                        || ($showgroupinfo == 'choose' && $survey->showgroupinfo == 'N')
+                    ) {
+                        $groupInfo = LimeExpressionManager::GetStepIndexInfo($moveInfo['seq']);
+                        $groupName = isset($groupInfo['gname']) ? $groupInfo['gname'] : '';
+                    }
+                    $page = $moveInfo['gseq']+1;
+                };
+            }
+        }
+
+        $trackURL = htmlspecialchars($surveyName . '-[' . $surveyId . ']/[' . $page . ']-' . $groupName);
+        return $trackURL;
     }
 }

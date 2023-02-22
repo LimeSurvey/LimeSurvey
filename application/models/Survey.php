@@ -26,7 +26,6 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property string $startdate Survey Start date (YYYY-MM-DD hh:mm:ss)
  * @property string $adminemail Survey administrator email address
  * @property string $anonymized Whether survey is anonymized or not (Y/N)
- * @property string $faxto
  * @property string $format A : All in one, G : Group by group, Q : question by question, I : inherit value from survey group
  * @property string $savetimings Whether survey timings are saved (Y/N)
  * @property string $template Template name
@@ -107,7 +106,7 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property string $responsesTableName Name of survey resonses table
  * @property string $timingsTableName Name of survey timings table
  * @property boolean $hasTokensTable Whether survey has a tokens table or not
- * @property boolean $hasResponsesTable Wheteher the survey reponses (data) table exists in DB
+ * @property boolean $hasResponsesTable Wheteher the survey responses (data) table exists in DB
  * @property boolean $hasTimingsTable Wheteher the survey timings table exists in DB
  * @property string $googleanalyticsapikeysetting Returns the value for the SurveyEdit GoogleAnalytics API-Key UseGlobal Setting
  * @property integer $countTotalQuestions Count of questions (in that language, without subquestions)
@@ -186,7 +185,11 @@ class Survey extends LSActiveRecord implements PermissionInterface
     public function init()
     {
         /** @inheritdoc */
-
+        /* Do not set any default when search, reset gsid */
+        if ($this->scenario == 'search') {
+            $this->gsid = null;
+            return;
+        }
         // Set the default values
         $this->htmlemail = 'Y';
         $this->format = 'G';
@@ -331,6 +334,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
             PluginSetting::model()->deleteAllByAttributes(array("model" => 'Survey', "model_id" => $this->sid));
             // Delete all uploaded files.
             rmdirr(Yii::app()->getConfig('uploaddir') . '/surveys/' . $this->sid);
+            // Delete all failed email notifications
+            FailedEmail::model()->deleteAllByAttributes(array('surveyid' => $this->sid));
         }
 
         // Remove from cache
@@ -395,14 +400,29 @@ class Survey extends LSActiveRecord implements PermissionInterface
         $dateTime = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig('timeadjust'));
         $dateTime = dateShift($dateTime, "Y-m-d H:i:s", '-1 minute');
 
-        if (!isset($surveyId)) {
-            $this->expires = $dateTime;
-            if ($this->scenario == 'update') {
-                return $this->save();
-            }
-        } else {
-            self::model()->updateByPk($surveyId, array('expires' => $dateTime));
+        $model = $this;
+
+        // Set model based on surveyId, if given
+        // If so, set scenario as to be saved later
+        if (isset($surveyId)) {
+            $model = self::model()->findByPk($surveyId);
+            $model->setScenario('update');
         }
+
+        // Avoid setting expiration date before start date
+        // If there is a future start date set, set the expiration date to the same date
+        if (!empty($model->startdate) && $dateTime < $model->startdate) {
+            $dateTime = $model->startdate;
+        }
+
+        // Set expiration date
+        $model->expires = $dateTime;
+
+        // Save if scenario is update
+        if ($model->scenario == 'update') {
+            return $model->save();
+        }
+
         return null;
     }
 
@@ -443,7 +463,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             'quotas' => array(self::HAS_MANY, 'Quota', 'sid', 'order' => 'name ASC'),
             'surveymenus' => array(self::HAS_MANY, 'Surveymenu', array('survey_id' => 'sid')),
             'surveygroup' => array(self::BELONGS_TO, 'SurveysGroups', array('gsid' => 'gsid')),
-            'surveysettings' => array(self::BELONGS_TO, 'SurveysGroupSettings', array('gsid' => 'gsid')),
+            'surveysettings' => array(self::BELONGS_TO, SurveysGroupsettings::class, array('gsid' => 'gsid')),
             'templateModel' => array(self::HAS_ONE, 'Template', array('name' => 'template')),
             'templateConfiguration' => array(self::HAS_ONE, 'TemplateConfiguration', array('sid' => 'sid'))
         );
@@ -473,12 +493,11 @@ class Survey extends LSActiveRecord implements PermissionInterface
             array('sid', 'numerical', 'integerOnly' => true,'min' => 1), // max ?
             array('sid', 'unique'),// Not in pk
             array('gsid', 'numerical', 'integerOnly' => true),
-            array('datecreated', 'default', 'value' => date("Y-m-d H:m:s")),
+            array('datecreated', 'default', 'value' => date("Y-m-d H:i:s")),
             array('startdate', 'default', 'value' => null),
             array('expires', 'default', 'value' => null),
-            array('admin,faxto', 'LSYii_Validators'),
+            array('admin', 'LSYii_Validators'),
             array('admin', 'length', 'min' => 1, 'max' => 50),
-            array('faxto', 'length', 'min' => 0, 'max' => 20),
             array('adminemail', 'filter', 'filter' => 'trim'),
             array('bounce_email', 'filter', 'filter' => 'trim'),
             //array('bounce_email', 'LSYii_EmailIDNAValidator', 'allowEmpty'=>true),
@@ -531,7 +550,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
             array('running', 'safe', 'on' => 'search'),
             array('expires', 'date','format' => ['yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m'],'allowEmpty' => true),
             array('startdate', 'date','format' => ['yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m'],'allowEmpty' => true),
-            array('datecreated', 'date','format' => ['yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m'],'allowEmpty' => true)
+            array('datecreated', 'date','format' => ['yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m'],'allowEmpty' => true),
+            array('expires', 'checkExpireAfterStart'),
         );
     }
 
@@ -765,7 +785,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * Wheteher the survey reponses (data) table exists in DB
+     * Wheteher the survey responses (data) table exists in DB
      * @return boolean
      */
     public function getHasResponsesTable()
@@ -776,7 +796,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * Wheteher the survey reponses timings exists in DB
+     * Wheteher the survey responses timings exists in DB
      * @return boolean
      */
     public function getHasTimingsTable()
@@ -824,9 +844,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
     public function getGoogleanalyticsapikey()
     {
         if ($this->googleanalyticsapikey === "9999useGlobal9999") {
-            return getGlobalSetting('googleanalyticsapikey');
+            return trim(Yii::app()->getConfig('googleanalyticsapikey'));
         } else {
-            return $this->googleanalyticsapikey;
+            return trim($this->googleanalyticsapikey);
         }
     }
 
@@ -1134,7 +1154,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             // If it's active, then we check if not expired
             // Time adjust
             $sNow    = date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
-            $sStop   = ($this->expires != '') ? date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->expires))) : $sNow;
+            $sStop   = ($this->expires != '') ? date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->expires))) : null;
             $sStart  = ($this->startdate != '') ? date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->startdate))) : $sNow;
 
             // Time comparaison
@@ -1145,10 +1165,11 @@ class Survey extends LSActiveRecord implements PermissionInterface
             $bExpired = ($oStop < $oNow);
             $bWillRun = ($oStart > $oNow);
 
-            $sStop = convertToGlobalSettingFormat($sStop);
+            $sStop = $sStop != null ? convertToGlobalSettingFormat($sStop) : null;
             $sStart = convertToGlobalSettingFormat($sStart);
 
             // Icon generaton (for CGridView)
+            $sIconRunNoEx = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-toggle="tooltip" title="' . gT('End: Never') . '"><span class="fa  fa-play text-success"></span><span class="sr-only">SS' . gT('End: Never') . '</span></a>';
             $sIconRunning = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-toggle="tooltip" title="' . sprintf(gT('End: %s'), $sStop) . '"><span class="fa  fa-play text-success"></span><span class="sr-only">' . sprintf(gT('End: %s'), $sStop) . '</span></a>';
             $sIconExpired = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-toggle="tooltip" title="' . sprintf(gT('Expired: %s'), $sStop) . '"><span class="fa fa fa-step-forward text-warning"></span><span class="sr-only">' . sprintf(gT('Expired: %s'), $sStop) . '</span></a>';
             $sIconFuture  = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-toggle="tooltip" title="' . sprintf(gT('Start: %s'), $sStart) . '"><span class="fa  fa-clock-o text-warning"></span><span class="sr-only">' . sprintf(gT('Start: %s'), $sStart) . '</span></a>';
@@ -1158,7 +1179,11 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 // Expire prior to will start
                 $running = ($bExpired) ? $sIconExpired : $sIconFuture;
             } else {
-                $running = $sIconRunning;
+                if ($sStop == null) {
+                    $running = $sIconRunNoEx;
+                } else {
+                    $running = $sIconRunning;
+                }
             }
         } else {
             // If it's active, and doesn't have expire date, it's running
@@ -1431,9 +1456,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
     public function getCountFullAnswers()
     {
         $sResponseTable = $this->responsesTableName;
-        if (method_exists(Yii::app()->cache, 'flush')) {
-            Yii::app()->cache->flush();
-        }
         if ($this->active != 'Y') {
             return 0;
         } else {
@@ -1452,9 +1474,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
     public function getCountPartialAnswers()
     {
         $table = $this->responsesTableName;
-        if (method_exists(Yii::app()->cache, 'flush')) {
-            Yii::app()->cache->flush();
-        }
         if ($this->active != 'Y') {
             return 0;
         } else {
@@ -1481,7 +1500,16 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function getCountTotalAnswers()
     {
-        return ($this->countFullAnswers + $this->countPartialAnswers);
+        $table = $this->responsesTableName;
+        if ($this->active != 'Y') {
+            return 0;
+        } else {
+            $answers = Yii::app()->db->createCommand()
+                ->select('count(*)')
+                ->from($table)
+                ->queryScalar();
+            return $answers;
+        }
     }
 
     /**
@@ -1524,6 +1552,10 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function search()
     {
+        // Flush cache to get proper counts for partial/complete/total responses
+        if (method_exists(Yii::app()->cache, 'flush')) {
+            Yii::app()->cache->flush();
+        }
         $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
 
         $sort = new CSort();
@@ -1583,11 +1615,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
             $criteria->compare("t.gsid", $this->gsid, false);
         }
 
-        // show only surveys belonging to selected survey group
-        if (!empty(Yii::app()->request->getParam('id'))) {
-            $criteria->addCondition("t.gsid = " . sanitize_int(Yii::app()->request->getParam('id')), 'AND');
-        }
-
         // Active filter
         if (isset($this->active)) {
             if ($this->active == 'N' || $this->active == "Y") {
@@ -1608,13 +1635,11 @@ class Survey extends LSActiveRecord implements PermissionInterface
                     $criteria->compare("t.active", 'Y');
                     $subCriteria1 = new CDbCriteria();
                     $subCriteria2 = new CDbCriteria();
-                    $subCriteria1->addCondition("'{$sNow}' > t.startdate", 'OR');
+                    $subCriteria1->addCondition("'{$sNow}' > t.startdate", 'AND');
+                    $subCriteria1->addCondition("t.startdate IS NULL", 'OR');
+                    $subCriteria2->addCondition("t.expires IS NULL", 'AND');
                     $subCriteria2->addCondition("'{$sNow}' < t.expires", 'OR');
-                    $subCriteria1->addCondition('t.expires IS NULL', "OR");
-                    $subCriteria1->addCondition("'{$sNow}' < t.expires", 'OR');
-                    $subCriteria2->addCondition('t.startdate IS NULL', "OR");
                     $criteria->mergeWith($subCriteria1);
-                    $criteria->mergeWith($subCriteria2);
                 }
             }
         }
@@ -1865,6 +1890,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
         Question::model()->deleteAll($criteria); // Must log count of deleted ?
     }
 
+    /**
+     * TODO: Not used anywhere. Deprecate it?
+     */
     public function getsSurveyUrl()
     {
         if ($this->sSurveyUrl == '') {
@@ -2115,7 +2143,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function getOwnerUserName()
     {
-        return isset($this->owner["users_name"]) ? $this->owner["users_name"] : "";
+        return $this->owner["users_name"] ?? "";
     }
 
     /**
@@ -2247,10 +2275,10 @@ class Survey extends LSActiveRecord implements PermissionInterface
     public function hasPermission($sPermission, $sCRUD = 'read', $iUserID = null)
     {
         $sGlobalCRUD = $sCRUD;
-        if (($sCRUD == 'create' || $sCRUD == 'import')) { // Create and import (token, reponse , question content …) need only allow update surveys
+        if (($sCRUD == 'create' || $sCRUD == 'import')) { // Create and import (token, response , question content …) need only allow update surveys
             $sGlobalCRUD = 'update';
         }
-        if (($sCRUD == 'delete' && $sPermission != 'survey')) { // Delete (token, reponse , question content …) need only allow update surveys
+        if (($sCRUD == 'delete' && $sPermission != 'survey')) { // Delete (token, response , question content …) need only allow update surveys
             $sGlobalCRUD = 'update';
         }
         /* Global */
@@ -2281,5 +2309,86 @@ class Survey extends LSActiveRecord implements PermissionInterface
             }
         );
         return $aSurveys;
+    }
+
+    /**
+     * Returns the survey URL with the specified params.
+     * If $preferShortUrl is true (default), and an alias is available, it returns the short
+     * version of the URL.
+     * @param string|null $language
+     * @param array<string,mixed> $params   Optional parameters to include in the URL.
+     * @param bool $preferShortUrl  If true, tries to return the short URL instead of the traditional one.
+     * @return string
+     */
+    public function getSurveyUrl($language = null, $params = [], $preferShortUrl = true)
+    {
+        if (empty($language)) {
+            $language = $this->language;
+        }
+        if ($preferShortUrl) {
+            $alias = $this->getAliasForLanguage($language);
+
+            if (!empty($alias)) {
+                // Check if there is other language with the same alias. If it does, we need to include the 'lang' parameter in the URL.
+                foreach ($this->languagesettings as $otherLang => $settings) {
+                    if ($otherLang == $language || empty($settings->surveyls_alias)) {
+                        continue;
+                    }
+                    if ($settings->surveyls_alias == $alias) {
+                        $params['lang'] = $language;
+                        break;
+                    }
+                }
+
+                // Create the URL according to the configured format
+                $urlManager = Yii::app()->getUrlManager();
+                $urlFormat = $urlManager->getUrlFormat();
+                if ($urlFormat == CUrlManager::GET_FORMAT) {
+                    $url = Yii::app()->getBaseUrl(true);
+                    $params = [$urlManager->routeVar => $alias] + $params;
+                } else {
+                    $url = Yii::app()->getBaseUrl(true) . '/' . $alias;
+                }
+                $query = $urlManager->createPathInfo($params, '=', '&');
+                if (!empty($query)) {
+                    $url .= "?" . $query;
+                }
+                return $url;
+            }
+        }
+
+        // If short url is not preferred or no alias is found, return a traditional URL
+        $urlParams = array_merge($params, ['sid' => $this->sid, 'lang' => $language]);
+        $url = Yii::app()->createAbsoluteUrl('survey/index', $urlParams);
+        return $url;
+    }
+
+    /**
+     * Returns the survey alias for the specified language.
+     * @param string|null $language
+     * @return string|null
+     */
+    public function getAliasForLanguage($language = null)
+    {
+        if (!empty($language) && !empty($this->languagesettings[$language]->surveyls_alias)) {
+            return $this->languagesettings[$language]->surveyls_alias;
+        }
+        if (!empty($this->languagesettings[$this->language]->surveyls_alias)) {
+            return $this->languagesettings[$this->language]->surveyls_alias;
+        }
+        return null;
+    }
+
+    /**
+     * Validates the Expiration Date is not lower than the Start Date
+     */
+    public function checkExpireAfterStart($attributes, $params)
+    {
+        if (empty($this->startdate) || empty($this->expires)) {
+            return true;
+        }
+        if ($this->expires < $this->startdate) {
+            $this->addError('expires', gT("Expiration date can't be lower than the start date", 'unescaped'));
+        }
     }
 }

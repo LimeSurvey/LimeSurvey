@@ -1,5 +1,5 @@
 ﻿/**
- * @license Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+ * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license/
  */
 
@@ -13,10 +13,10 @@
  * (1) https://ckeditor.com/cke4/builder
  *     Visit online builder to build CKEditor from scratch.
  *
- * (2) https://ckeditor.com/cke4/builder/9994d02dd1acff203e4d5aaf1334e337
+ * (2) https://ckeditor.com/cke4/builder/05cb05b7a880dbce92e85e65b18a36b5
  *     Visit online builder to build CKEditor, starting with the same setup as before.
  *
- * (3) https://ckeditor.com/cke4/builder/download/9994d02dd1acff203e4d5aaf1334e337
+ * (3) https://ckeditor.com/cke4/builder/download/05cb05b7a880dbce92e85e65b18a36b5
  *     Straight download link to the latest version of CKEditor (Optimized) with the same setup as before.
  *
  * NOTE:
@@ -69,6 +69,7 @@ var CKBUILDER_CONFIG = {
 		'dialogadvtab' : 1,
 		'div' : 1,
 		'elementspath' : 1,
+		'emoji' : 1,
 		'enterkey' : 1,
 		'entities' : 1,
 		'filebrowser' : 1,
@@ -104,7 +105,6 @@ var CKBUILDER_CONFIG = {
 		'selectall' : 1,
 		'showblocks' : 1,
 		'showborders' : 1,
-		'smiley' : 1,
 		'sourcearea' : 1,
 		'sourcedialog' : 1,
 		'specialchar' : 1,
@@ -117,7 +117,6 @@ var CKBUILDER_CONFIG = {
 		'videodetector' : 1,
 		'widget' : 1,
 		'widgetselection' : 1,
-		'wsc' : 1,
 		'wysiwygarea' : 1
 	},
 	languages : {

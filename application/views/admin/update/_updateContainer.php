@@ -14,7 +14,7 @@
 echo viewHelper::getViewTestTag('update');
 ?>
 
-<!-- this view contain the input provinding to the js the inforamtion about wich content to load : check buttons or comfortupdate -->
+<!-- this view contain the input provinding to the js the inforamtion about which content to load : check buttons or comfortupdate -->
 <?php
     $this->renderPartial("./update/_ajaxVariables");
 ?>

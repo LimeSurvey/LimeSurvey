@@ -166,7 +166,9 @@
                 <td>
                     <?php if ($question->mandatory == "Y") : ?>
                         <?php eT("Yes"); ?>
-                    <?php else:?>
+                    <?php elseif ($question->mandatory == "S") : ?>
+                        <?php eT("Soft"); ?>
+                    <?php else : ?>
                         <?php eT("No"); ?>
                     <?php endif;  ?>
                 </td>
@@ -193,7 +195,7 @@
         <?php endif; ?>
 
         <!-- Condition for this question -->
-        <?php if (trim($question->relevance) != ''): ?>
+        <?php if (trim($question->relevance) != '') : ?>
             <tr>
                 <td>
                     <strong>
@@ -202,7 +204,10 @@
                 </td>
                 <td>
                     <?php
-                    LimeExpressionManager::ProcessString("{" . $question->relevance . "}", $question->qid);    // tests Relevance equation so can pretty-print it
+                    LimeExpressionManager::ProcessString(
+                        "{" . trim($question->relevance) . "}",
+                        $question->qid
+                    );
                     echo viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
                     ?>
                 </td>
@@ -210,12 +215,15 @@
         <?php endif; ?>
 
         <!-- Group Relevance equation -->
-        <?php if (trim($question->group->grelevance)!=''): ?>
+        <?php if (trim($question->group->grelevance) != '') : ?>
             <tr>
                 <td><strong><?php eT("Group relevance:"); ?></strong></td>
                 <td>
                     <?php
-                    LimeExpressionManager::ProcessString("{" . $question->group->grelevance . "}", $question->qid);
+                    LimeExpressionManager::ProcessString(
+                        "{" . trim($question->group->grelevance) . "}",
+                        $question->qid
+                    );
                     echo viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
                     ?>
                 </td>

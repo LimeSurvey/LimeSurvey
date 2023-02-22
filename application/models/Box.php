@@ -3,7 +3,7 @@
 /**
  * This is the model class for table "{{boxes}}".
  *
- * The followings are the available columns in table '{{boxes}}':
+ * The following are the available columns in table '{{boxes}}':
  * @property integer $id Primary key
  * @property integer $position
  * @property string $url
@@ -27,7 +27,7 @@ class Box extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('url, title, ico, desc, page', 'required'),
+            array('url, title, ico, position, desc, page', 'required'),
             array('url', 'match', 'pattern' => '/(http:\/\/)?[a-zA-Z]([a-zA-Z0-9-_?&"\'=]\/?)*/'),
             array('position', 'numerical', 'integerOnly' => true),
             array('usergroup', 'numerical', 'integerOnly' => true, 'min' => -3),

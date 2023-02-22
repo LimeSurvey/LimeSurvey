@@ -190,7 +190,7 @@ class SurveymenuController extends SurveyCommonAction
                 $success[$menuid] = $model->delete();
             }
 
-            $debug = isset($userConfig['config']['debug']) ? $userConfig['config']['debug'] : 0;
+            $debug = $userConfig['config']['debug'] ?? 0;
             $returnData = array(
                 'data' => [
                     'success' => $success,
@@ -232,7 +232,7 @@ class SurveymenuController extends SurveyCommonAction
             $success = false;
             $model = $this->loadModel($menuid);
             $success = $model->delete();
-            $debug = isset($userConfig['config']['debug']) ? $userConfig['config']['debug'] : 0;
+            $debug = $userConfig['config']['debug'] ?? 0;
             $returnData = array(
                 'data' => [
                     'success' => $success,
@@ -271,7 +271,7 @@ class SurveymenuController extends SurveyCommonAction
         if (Yii::app()->request->isPostRequest) {
             //Check for permission!
             if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-                $debug = isset($userConfig['config']['debug']) ? $userConfig['config']['debug'] : 0;
+                $debug = $userConfig['config']['debug'] ?? 0;
                 $returnData = array(
                     'data' => [
                         'success' => $success,
@@ -299,7 +299,7 @@ class SurveymenuController extends SurveyCommonAction
             //get model to do the work
             $model = Surveymenu::model();
             $success = $model->restoreDefaults();
-            $debug = isset($userConfig['config']['debug']) ? $userConfig['config']['debug'] : 0;
+            $debug = $userConfig['config']['debug'] ?? 0;
             $returnData = array(
                 'data' => [
                     'success' => $success,

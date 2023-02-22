@@ -29781,6 +29781,34 @@
         if (e.target != this) return;
         $('#accordion').find('.panel-collapse.collapse').not('#' + $(this).attr('id')).collapse('hide');
       });
+    },
+
+    /**
+     * Validates that an end date is not lower than a start date
+     * @param {Object} startDatePicker Start datepicker object
+     * @param {Object} endDatePicker End datepicker object
+     * @param {?function} errorCallback Optional function to call in case of error
+     */
+    validateEndDateHigherThanStart: function validateEndDateHigherThanStart(startDatePicker, endDatePicker, errorCallback) {
+      if (!startDatePicker || !startDatePicker.date()) {
+        return true;
+      }
+
+      if (!endDatePicker || !endDatePicker.date()) {
+        return true;
+      }
+
+      var difference = endDatePicker.date().diff(startDatePicker.date());
+
+      if (difference >= 0) {
+        return true;
+      }
+
+      if (typeof errorCallback === 'function') {
+        errorCallback();
+      }
+
+      return false;
     }
   };
   var globalStartUpMethods = {
@@ -29894,6 +29922,51 @@
             setTimeout(remove, options.timeout);
           }
         });
+      }
+    }, {
+      key: "createFlash",
+      value: function createFlash(text, classes, styles, customOptions) {
+        customOptions = customOptions || {};
+        var options = {
+          useHtml: customOptions.useHtml || true,
+          timeout: customOptions.timeout || 3500,
+          dismissable: customOptions.dismissable || true
+        };
+        styles = styles || {};
+        classes = classes || "alert-success";
+
+        if (options.dismissable) {
+          classes = "alert " + classes;
+        }
+
+        var container = $("<div></div>");
+        container.addClass(classes);
+        container.css(styles);
+
+        if (options.useHtml) {
+          container.html(text);
+        } else {
+          container.text(text);
+        }
+
+        if (options.dismissable) {
+          $('<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span>×</span></button>').appendTo(container);
+        }
+
+        var timeoutRef;
+
+        if (options.timeout) {
+          timeoutRef = setTimeout(function () {
+            container.alert('close');
+          }, options.timeout);
+        }
+
+        container.on('closed.bs.alert', function () {
+          if (options.timeout) {
+            clearTimeout(timeoutRef);
+          }
+        });
+        container.appendTo($('#notif-container'));
       }
     }]);
 

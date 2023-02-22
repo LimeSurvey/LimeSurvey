@@ -575,12 +575,16 @@ class remotecontrol_handle
         $helper = new statistics_helper();
         switch ($docType) {
             case 'pdf':
-                $sTempFile = $helper->generate_statistics($iSurveyID, $aSummary, $aSummary, $graph, $docType, 'F', $sLanguage);
+                $sTempFile = sanitize_filename(
+                    $helper->generate_statistics($iSurveyID, $aSummary, $aSummary, $graph, $docType, 'F', $sLanguage)
+                );
                 $sResult = file_get_contents($sTempFile);
                 unlink($sTempFile);
                 break;
             case 'xls':
-                $sTempFile = $helper->generate_statistics($iSurveyID, $aSummary, $aSummary, '0', $docType, 'F', $sLanguage);
+                $sTempFile = sanitize_filename(
+                    $helper->generate_statistics($iSurveyID, $aSummary, $aSummary, '0', $docType, 'F', $sLanguage)
+                );
                 $sResult = file_get_contents($sTempFile);
                 unlink($sTempFile);
                 break;
@@ -1975,15 +1979,16 @@ class remotecontrol_handle
                     } elseif ($tokenCount > 1) {
                         return array('status' => 'Error: More than 1 result was found based on your attributes.');
                     }
-                    $token = Token::model($iSurveyID)->findByAttributes($aTokenQueryProperties)->decrypt();
+                    $token = Token::model($iSurveyID)->findByAttributes($aTokenQueryProperties);
                 } else {
                     // If aTokenQueryProperties is not an array, but an integer
                     $iTokenID = $aTokenQueryProperties;
-                    $token = Token::model($iSurveyID)->findByPk($iTokenID)->decrypt();
+                    $token = Token::model($iSurveyID)->findByPk($iTokenID);
                 }
                 if (!isset($token)) {
                     return array('status' => 'Error: Invalid tokenid');
                 }
+                $token->decrypt();
                 if (!empty($aTokenProperties)) {
                     $result = array_intersect_key($token->attributes, array_flip($aTokenProperties));
                 } else {
@@ -2199,7 +2204,7 @@ class remotecontrol_handle
                                 $value = $valueOrTuple[1];
                                 $oCriteria->compare($columnName, $operator . $value);
                             }
-                        } elseif (is_string($valueOrTuple)) {
+                        } elseif (is_string($valueOrTuple) || is_null($valueOrTuple)) {
                             if (array_key_exists($columnName, $aConditionFields)) {
                                 $aAttributeValues[$columnName] = $valueOrTuple;
                             }
@@ -2674,16 +2679,18 @@ class remotecontrol_handle
     /**
      * Invite participants in a survey (RPC function)
      *
-     * Returns array of results of sending
+     * Returns array of results of sending.
+     * The sending stops on the first error (ie. when a token is invalid).
      *
      * @access public
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID ID of the survey that participants belong
      * @param array $aTokenIds Ids of the participant to invite
      * @param bool $bEmail Send only pending invites (TRUE) or resend invites only (FALSE)
+     * @param bool $continueOnError Don't stop on first invalid participant
      * @return array Result of the action
      */
-    public function invite_participants($sSessionKey, $iSurveyID, $aTokenIds = null, $bEmail = true)
+    public function invite_participants($sSessionKey, $iSurveyID, $aTokenIds = null, $bEmail = true, $continueOnError = false)
     {
         Yii::app()->loadHelper('admin/token');
         if (!$this->_checkSessionKey($sSessionKey)) {
@@ -2731,7 +2738,7 @@ class remotecontrol_handle
             if (empty($aResultTokens)) {
                 return array('status' => 'Error: No candidate tokens');
             }
-            $aResult = emailTokens($iSurveyID, $aResultTokens, 'invite');
+            $aResult = emailTokens($iSurveyID, $aResultTokens, 'invite', $continueOnError);
             $iLeft = $iAllTokensCount - count($aResultTokens);
             $aResult['status'] = $iLeft . " left to send";
 
@@ -2753,9 +2760,10 @@ class remotecontrol_handle
      * @param int $iMinDaysBetween (optional) parameter days from last reminder
      * @param int $iMaxReminders (optional) parameter Maximum reminders count
      * @param array $aTokenIds Ids of the participant to remind (optional filter)
+     * @param bool $continueOnError Don't stop on first invalid participant
      * @return array in case of success array of result of each email send action and count of invitations left to send in status key
      */
-    public function remind_participants($sSessionKey, $iSurveyID, $iMinDaysBetween = null, $iMaxReminders = null, $aTokenIds = false)
+    public function remind_participants($sSessionKey, $iSurveyID, $iMinDaysBetween = null, $iMaxReminders = null, $aTokenIds = false, $continueOnError = false)
     {
         Yii::app()->loadHelper('admin/token');
         if (!$this->_checkSessionKey($sSessionKey)) {
@@ -2801,7 +2809,7 @@ class remotecontrol_handle
                             return array('status' => 'Error: No candidate tokens');
             }
 
-            $aResult = emailTokens($iSurveyID, $aResultTokens, 'remind');
+            $aResult = emailTokens($iSurveyID, $aResultTokens, 'remind', $continueOnError);
 
             $iLeft = $iAllTokensCount - count($aResultTokens);
             $aResult['status'] = $iLeft . " left to send";
@@ -2919,36 +2927,36 @@ class remotecontrol_handle
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID Id of the Survey to update response
      * @param array $aResponseData The actual response
-     * @return string|boolean TRUE(bool) on success. errormessage on error
+     * @return array|boolean TRUE(bool) on success. Array with error status on failure.
      */
     public function update_response($sSessionKey, $iSurveyID, $aResponseData)
     {
         if (!$this->_checkSessionKey($sSessionKey)) {
-            return self::INVALID_SESSION_KEY;
+            return array('status' => self::INVALID_SESSION_KEY);
         }
         $iSurveyID = (int) $iSurveyID;
         $oSurvey = Survey::model()->findByPk($iSurveyID);
         if (is_null($oSurvey)) {
-            return 'Error: Invalid survey ID';
+            return array('status' => 'Invalid survey ID');
         }
         if (!$oSurvey->isActive) {
-            return 'Error: Survey is not active.';
+            return array('status' => 'Survey is not active');
         }
 
         if (!$oSurvey->isAllowEditAfterCompletion) {
-            return 'Error: Survey does not allow edit after completion.';
+            return array('status' => 'Survey does not allow edit after completion');
         }
 
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'update')) {
             if (!Yii::app()->db->schema->getTable($oSurvey->responsesTableName)) {
-                            return 'Error: No survey response table';
+                return array('status' => 'No survey response table');
             }
 
             if (
                 !isset($aResponseData['id'])
                 && !isset($aResponseData['token'])
             ) {
-                return 'Error: Missing response identifier (id|token).';
+                return array('status' => 'Missing response identifier (id|token)');
             }
 
             SurveyDynamic::sid($iSurveyID);
@@ -2961,16 +2969,16 @@ class remotecontrol_handle
             }
 
             if (empty($aResponses)) {
-                            return 'Error: No matching Response.';
+                return array('status' => 'No matching Response');
             }
             if (count($aResponses) > 1) {
-                            return 'Error: More then one matching response, updateing multiple responses at once is not supported.';
+                return array('status' => 'More then one matching response, updateing multiple responses at once is not supported');
             }
 
             $aBasicDestinationFields = $oSurveyDynamic->tableSchema->columnNames;
             $aInvalidFields = array_diff_key($aResponseData, array_flip($aBasicDestinationFields));
             if (count($aInvalidFields) > 0) {
-                            return 'Error: Invalid Column names supplied: ' . implode(', ', array_keys($aInvalidFields));
+                return array('status' => 'Invalid Column names supplied: ' . implode(', ', array_keys($aInvalidFields)));
             }
 
             unset($aResponseData['token']);
@@ -2984,10 +2992,10 @@ class remotecontrol_handle
             if ($bResult) {
                 return $bResult;
             } else {
-                return 'Unable to edit response';
+                return array('status' => 'Unable to edit response');
             }
         } else {
-            return 'No permission';
+            return array('status' => 'No permission');
         }
     }
 
@@ -3136,12 +3144,13 @@ class remotecontrol_handle
      * @param string $sCompletionStatus (optional) 'complete','incomplete' or 'all' - defaults to 'all'
      * @param string $sHeadingType (optional) 'code','full' or 'abbreviated' Optional defaults to 'code'
      * @param string $sResponseType (optional)'short' or 'long' Optional defaults to 'short'
-     * @param integer $iFromResponseID (optional)
-     * @param integer $iToResponseID (optional)
-     * @param array $aFields (optional) Selected fields
+     * @param integer $iFromResponseID (optional) Frpm response id
+     * @param integer $iToResponseID (optional) To response id
+     * @param array $aFields (optional) Name the fields to export
+     * @param array $aAdditionalOptions (optional) Addition options for export, mainly 'convertY', 'convertN', 'nValue', 'yValue',
      * @return array|string On success: Requested file as base 64-encoded string. On failure array with error information
      * */
-    public function export_responses($sSessionKey, $iSurveyID, $sDocumentType, $sLanguageCode = null, $sCompletionStatus = 'all', $sHeadingType = 'code', $sResponseType = 'short', $iFromResponseID = null, $iToResponseID = null, $aFields = null)
+    public function export_responses($sSessionKey, $iSurveyID, $sDocumentType, $sLanguageCode = null, $sCompletionStatus = 'all', $sHeadingType = 'code', $sResponseType = 'short', $iFromResponseID = null, $iToResponseID = null, $aFields = null, $aAdditionalOptions = null)
     {
         $iSurveyID = (int) $iSurveyID;
         $survey = Survey::model()->findByPk($iSurveyID);
@@ -3174,6 +3183,17 @@ class remotecontrol_handle
             $aFields = array_slice($aFields, 0, 255);
         }
         $oFormattingOptions = new FormattingOptions();
+
+        if (is_array($aAdditionalOptions)) {
+            if (isset($aAdditionalOptions['convertY']) && $aAdditionalOptions['convertY']) {
+                $oFormattingOptions->convertY = $aAdditionalOptions['convertY'];
+                $oFormattingOptions->yValue = isset($aAdditionalOptions['yValue']) ? $aAdditionalOptions['yValue'] : 'Y';
+            }
+            if (isset($aAdditionalOptions['convertN']) && $aAdditionalOptions['convertN']) {
+                $oFormattingOptions->convertN = $aAdditionalOptions['convertN'];
+                $oFormattingOptions->nValue = isset($aAdditionalOptions['nValue']) ? $aAdditionalOptions['nValue'] : 'N';
+            }
+        }
 
         if ($iFromResponseID != null) {
                     $oFormattingOptions->responseMinRecord = (int) $iFromResponseID;
@@ -3320,6 +3340,40 @@ class remotecontrol_handle
         return $uploaded_files;
     }
 
+    /**
+     * Get survey fieldmap (RPC function)
+     *
+     * Returns the requested survey's fieldmap in an array
+     *
+     * @access public
+     * @param string $sessionKey Auth credentials
+     * @param int $surveyId ID of the Survey
+     * @param string $language (optional) language of the survey to use (default from Survey)
+     * @return array
+     */
+    public function get_fieldmap($sessionKey, $surveyId, $language = null)
+    {
+        if (!$this->_checkSessionKey($sessionKey)) {
+            return ['status' => self::INVALID_SESSION_KEY];
+        }
+        $surveyId = (int) $surveyId;
+        $survey = Survey::model()->findByPk($surveyId);
+        if (!isset($survey)) {
+            return ['status' => 'Error: Invalid survey ID'];
+        }
+        if (!Permission::model()->hasSurveyPermission($surveyId, 'surveycontent', 'read')) {
+            return ['status' => 'No permission'];
+        }
+        if (empty($language) || !in_array($language, $survey->allLanguages)) {
+            $language = $survey->language;
+        }
+        // Get the fieldmap
+        $fieldmap = createFieldMap($survey, 'full', false, false, $language);
+        if (empty($fieldmap)) {
+            return ['status' => 'Can not obtain field map'];
+        }
+        return $fieldmap;
+    }
 
     /**
      * Login with username and password
@@ -3470,7 +3524,7 @@ class remotecontrol_handle
             $model->firstname   = $participant['firstname'];
             $model->lastname    = $participant['lastname'];
             $model->email       = $participant['email'];
-            $model->language    = isset($participant['language']) ? $participant['language'] : 'en';
+            $model->language    = $participant['language'] ?? 'en';
             $model->owner_uid   = Yii::app()->session['loginID'];
             $model->blacklisted = (isset($participant['blacklisted']) && $participant['blacklisted'] === 'Y') ? 'Y' : 'N';
 

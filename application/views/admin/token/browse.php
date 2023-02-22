@@ -59,9 +59,6 @@
         App()->getClientScript()->registerScript("Tokens:updateRowsPerPage", "
             if($('#token-grid').length > 0){
                 reinstallParticipantsFilterDatePicker();
-                jQuery(document).on('change', '#pageSizeTokenView', function(){
-                    $.fn.yiiGridView.update('token-grid',{ data:{ pageSizeTokenView: $(this).val() }});
-                });
             }
             ", LSYii_ClientScript::POS_POSTSCRIPT); 
         ?>
