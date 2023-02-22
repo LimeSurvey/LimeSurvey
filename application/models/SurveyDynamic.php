@@ -269,6 +269,7 @@ class SurveyDynamic extends LSActiveRecord
 
     /**
      * Return the buttons columns
+     * This is the button column for response table
      * @see https://www.yiiframework.com/doc/api/1.1/CButtonColumn
      * @see https://bugs.limesurvey.org/view.php?id=14219
      * @see https://bugs.limesurvey.org/view.php?id=14222: When deleting a single response : all page is reloaded (not only grid)
@@ -277,92 +278,84 @@ class SurveyDynamic extends LSActiveRecord
     public function getGridButtons()
     {
         $sBrowseLanguage = sanitize_languagecode(Yii::app()->request->getParam('browseLang', ''));
-        $buttons = '';
 
-        /* detail button */
-        $buttons .= "<a
-        href='" . App()->createUrl("responses/view", ["surveyId" => self::$sid, "id" => $this->id, "browseLang" => $sBrowseLanguage]) . "'
-        class='btn btn-outline-secondary btn-sm'
-        target='_blank'
-        data-bs-toggle='tooltip'
-        title='" . gt("View response details") . "'>
-            <i class='ri-eye-fill'></i>
-        </a>";
+        $permissionReponseUpdate = Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'update');
+        $permissionReponseDelete = Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'delete');
 
-        /* quexmlpdf button */
-        $buttons .= "<a
-        href='" . App()->createUrl("responses/viewquexmlpdf", ["surveyId" => self::$sid, "id" => $this->id, "browseLang" => $sBrowseLanguage]) . "'
-        class='btn btn-outline-secondary btn-sm'
-        target='_blank'
-        data-bs-toggle='tooltip'
-        title='" . gt("View response details as queXML PDF") . "'>
-            <i class='ri-file-3-line'></i>
-        </a>";
+        $dropdownItems = [];
+        $dropdownItems[] = [
+            'title'            => gT('View response details'),
+            'iconClass'        => 'ri-eye-fill',
+            'url'              => App()->createUrl(
+                "responses/view",
+                [
+                    "surveyId" => self::$sid,
+                    "id" => $this->id,
+                    "browseLang" => $sBrowseLanguage
+                ]
+            ),
+        ];
+        $dropdownItems[] = [
+            'title'            => gT('Edit this response'),
+            'iconClass'        => 'ri-pencil-fill text-success',
+            'url'              => App()->createUrl(
+                "admin/dataentry/sa/editdata/subaction/edit",
+                [
+                    "surveyId" => self::$sid,
+                    "id" => $this->id,
+                    "browseLang" => $sBrowseLanguage
+                ]
+            ),
+            'enabledCondition' => $permissionReponseUpdate,
+        ];
+        $fileExists = Response::model(self::$sid)->findByPk($this->id)->someFileExists();
+        $dropdownItems[] = [
+            'title'            => gT('Download all response files'),
+            'iconClass'        => 'ri-download-fill text-success',
+            'url'              => App()->createUrl(
+                "responses/downloadfiles",
+                ["surveyId" => self::$sid, "responseIds" => $this->id]
+            ),
+            'enabledCondition' => $permissionReponseUpdate && hasFileUploadQuestion(self::$sid) && $fileExists,
+        ];
+        $dropdownItems[] = [
+            'title'            => gT('Delete all response files'),
+            'iconClass'        => 'ri-attachment-2 text-danger',
+            'enabledCondition' => $permissionReponseUpdate && hasFileUploadQuestion(self::$sid) && $fileExists,
+            'linkAttributes'   => [
+                'data-bs-toggle' => "modal",
+                'data-bs-target' => "#confirmation-modal",
+                'data-btnclass'  => 'btn-danger',
+                'data-title'     => gt('Delete all response files'),
+                'data-btntext'   => gt('Delete'),
+                'data-post-url'  => App()->createUrl("responses/deleteAttachments"),
+                'data-post-datas' => json_encode(['surveyId' => self::$sid, 'responseId' => $this->id]),
+                'data-message'   => gt("Do you want to delete all files of this response?"),
+            ]
+        ];
 
-        /* edit button */
-        if (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'update')) {
-            $buttons .= "<a
-            href='" . App()->createUrl("admin/dataentry/sa/editdata/subaction/edit", ["surveyId" => self::$sid, "id" => $this->id, "browseLang" => $sBrowseLanguage]) . "'
-            class='btn btn-outline-secondary btn-sm'
-            target='_blank'
-            data-bs-toggle='tooltip'
-            title='" . gt("Edit this response") . "'>
-                <i class='ri-pencil-fill text-success'></i>
-            </a>";
-        }
+        $dropdownItems[] = [
+            'title'            => gT('Delete this response'),
+            'iconClass'        => 'ri-delete-bin-fill text-danger',
+            'enabledCondition' => $permissionReponseDelete,
+            'linkAttributes'   => [
+                'data-bs-toggle' => "modal",
+                'data-bs-target' => "#confirmation-modal",
+                'data-btnclass'  => 'btn-danger',
+                'data-title'     => gt('Delete this response'),
+                'data-btntext'   => gt('Delete'),
+                'data-post-url'  => App()->createUrl("responses/deleteSingle"),
+                'data-post-datas' => json_encode(['surveyId' => self::$sid, 'responseId' => $this->id]),
+                'data-message'   => gt("Do you want to delete this response?") . '<br/>' .
+                    gT("Please note that if you delete an incomplete response during a running survey, the participant will not be able to complete it."),
+            ]
+        ];
 
-        /* downloadfile button */
-        if (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'update') && hasFileUploadQuestion(self::$sid) && Response::model(self::$sid)->findByPk($this->id)->someFileExists()) {
-            $buttons .= "<a
-            href='" . App()->createUrl("responses/downloadfiles", ["surveyId" => self::$sid, "responseIds" => $this->id]) . "'
-            class='btn btn-outline-secondary btn-sm'
-            target='_blank'
-            data-bs-toggle='tooltip'
-            title='" . gt("Download all files in this response as a zip file") . "'>
-                <i class='ri-download-fill text-success'></i>
-            </a>";
-        }
-
-        /* deletefiles button */
-        if (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'update') && hasFileUploadQuestion(self::$sid) && Response::model(self::$sid)->findByPk($this->id)->someFileExists()) {
-            $buttons .= "
-            <span
-            data-bs-toggle='modal'
-            data-bs-target='#confirmation-modal'
-            data-btnclass='btn-danger'
-            data-post-url='" . App()->createUrl("responses/deleteAttachments") . "'
-            data-post-datas='" . json_encode(['surveyId' => self::$sid, 'responseId' => $this->id]) . "'
-            data-btntext='" . gt("Delete") . "'
-            data-message='" . gt("Do you want to delete all files of this response?") . "'>
-            <button
-            data-bs-toggle='tooltip'
-            class='btn btn-outline-secondary btn-sm btn-deletefiles'
-            title='" . gt("Delete all files of this response") . "'>
-            <i class='ri-attachment-2 text-danger'></i>
-            </button>
-            </span>";
-        }
-
-        /* delete  button */
-        if (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'delete')) {
-            $buttons .= "
-            <span
-            data-bs-toggle='modal'
-            data-bs-target='#confirmation-modal'
-            data-btnclass='btn-danger'
-            data-post-url='" . App()->createUrl("responses/deleteSingle") . "'
-            data-post-datas='" . json_encode(['surveyId' => self::$sid, 'responseId' => $this->id]) . "'
-            data-btntext='" . gt("Delete") . "'
-            data-message='" . gt("Do you want to delete this response?") . "<br/>" . gT("Please note that if you delete an incomplete response during a running survey, the participant will not be able to complete it.") . "'>
-            <button
-            data-bs-toggle='tooltip'
-            class='btn btn-outline-secondary btn-sm btn-delete'
-            title='" . gt("Delete this response") . "'>
-            <i class='ri-delete-bin-fill text-danger'></i>
-            </button>
-            </span>";
-        }
-        return $buttons;
+        return App()->getController()->widget(
+            'ext.admin.grid.GridActionsWidget.GridActionsWidget',
+            ['dropdownItems' => $dropdownItems],
+            true
+        );
     }
 
     /**
