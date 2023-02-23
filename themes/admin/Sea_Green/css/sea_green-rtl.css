@@ -17075,6 +17075,7 @@ ol.breadcrumb.title-bar-breadcrumb {
 }
 ol.breadcrumb.title-bar-breadcrumb a {
   color: #14AE5C;
+  font-weight: 400;
 }
 ol.breadcrumb.title-bar-breadcrumb a:hover {
   color: #108b4a;
@@ -17085,6 +17086,7 @@ ol.breadcrumb.title-bar-breadcrumb li {
 }
 ol.breadcrumb.title-bar-breadcrumb li.active {
   color: #1E1E1E;
+  font-weight: 400;
 }
 
 .ls-ba li > div {
@@ -17105,6 +17107,7 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 .breadcrumb-item + .breadcrumb-item:before {
   color: #9094A7;
   padding-left: 6px;
+  font-weight: 400;
 }
 
 .breadcrumb-item + .breadcrumb-item {
