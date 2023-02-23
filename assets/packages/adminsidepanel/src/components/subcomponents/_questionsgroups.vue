@@ -313,18 +313,15 @@ export default {
                 <li
                     v-for="questiongroup in orderedQuestionGroups"
                     v-bind:key="questiongroup.gid"
-                    class="list-group-item ls-flex-column"
+                    class="list-group-item ls-flex-column ls-sidebar-item p-0"
                     v-bind:class="questionGroupItemClasses(questiongroup)"
                     @dragenter="dragoverQuestiongroup($event, questiongroup)"
-                    style=" background: linear-gradient(90deg, #14AE5C 0%, #14AE5C 5px, #EEEFF7 5px, #EEEFF7 100%); padding: 0;"
                 >
 
-                  <div class="q-group d-flex nowrap ls-space padding right-5 bottom-5" style=" margin-left: 6px;
-    background: white;
-    padding: 10px;">
+                  <div class="q-group d-flex nowrap ls-space padding right-5 bottom-5 p-3">
                     <div
                         v-if="!surveyIsActive"
-                        class="bigIcons dragPointer me-3"
+                        class="bigIcons dragPointer me-2"
                         :class=" allowOrganizer ? '' : 'disabled' "
                         :draggable="allowOrganizer"
                         @dragend="endDraggingGroup($event, questiongroup)"
@@ -361,8 +358,7 @@ export default {
                   </div>
                     <transition name="slide-fade-down">
                         <ul
-                            class="list-group background-muted padding-left question-question-list"
-                            style="padding-right:15px"
+                            class="list-group background-muted padding-left question-question-list pe-2"
                             v-if="isOpen(questiongroup.gid)"
                             @drop="dropQuestion($event, question)"
                         >
@@ -371,7 +367,7 @@ export default {
                                 v-bind:key="question.qid"
                                 v-bind:class="questionItemClasses(question)"
                                 data-bs-toggle="tooltip"
-                                class="list-group-item question-question-list-item ls-flex-row align-itmes-flex-start"
+                                class="list-group-item question-question-list-item ls-flex-row align-itmes-flex-start p-3"
                                 :data-is-hidden="question.hidden"
                                 :data-questiontype="question.type"
                                 :data-has-condition="questionHasCondition(question)"
@@ -380,7 +376,7 @@ export default {
                             >
                                     <div
                                         v-if="!$store.state.surveyActiveState"
-                                        class="margin-right bigIcons dragPointer question-question-list-item-drag"
+                                        class="bigIcons dragPointer question-question-list-item-drag me-2"
                                         :class=" allowOrganizer ? '' : 'disabled' "
                                         :draggable="allowOrganizer"
                                         @dragend="endDraggingQuestion($event, question)"

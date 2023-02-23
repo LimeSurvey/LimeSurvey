@@ -11104,10 +11104,6 @@ a {
   border-radius: 0px !important;
 }
 
-.list-group-item {
-  border: none !important;
-}
-
 .hidden {
   display: none !important;
 }
@@ -18094,6 +18090,24 @@ input[type=file]::file-selector-button {
   padding-top: 15px;
   width: 100%;
 }
+#sidebar .ls-sidebar-item {
+  border-left: none !important;
+}
+#sidebar .background-muted {
+  background-color: #EEEFF7 !important;
+}
+#sidebar .questiongroup-list-group {
+  border-left: 6px solid #14AE5C;
+  padding: 0 !important;
+}
+#sidebar .question-question-list-item.selected {
+  border-left: 6px solid #DDDEE8 !important;
+  margin-top: 4px !important;
+  margin-left: 4px !important;
+}
+#sidebar .question-question-list-item.activated {
+  border-left: 6px solid #14AE5C !important;
+}
 #sidebar .questiongroup-list-group > li.selected {
   opacity: 0.9;
 }
@@ -18111,27 +18125,12 @@ input[type=file]::file-selector-button {
   cursor: not-allowed;
 }
 #sidebar .question-question-list .question-question-list-item {
-  margin: 2px 2px 2px 12px;
   display: flex;
   align-items: center;
-  padding: 0 1rem;
-}
-#sidebar .question-question-list .question-question-list-item .question-question-list-item-drag {
-  margin: 10px 15px;
-}
-#sidebar .question-question-list .question-question-list-item.selected {
-  padding-left: 20px;
-}
-#sidebar .question-question-list .question-question-list-item.selected .question-question-list-item-drag {
-  margin: 10px 10px 10px 5px;
 }
 #sidebar .question-question-list .question-question-list-item .question-question-list-item-link {
-  padding: 10px 25px 10px 10px;
   display: inline-flex;
   flex-wrap: wrap;
-}
-#sidebar .question-question-list .question-question-list-item ~ .question-question-list-item {
-  margin-top: 0px;
 }
 #sidebar .question_text_ellipsize {
   display: inline-block;
@@ -18184,14 +18183,10 @@ input[type=file]::file-selector-button {
   background: radial-gradient(circle at center, #5cc262 0px, #5cc262 8px, #fff 9px, #fff 100%);
 }
 #sidebar .selected {
-  padding-left: 20px;
-  background: linear-gradient(to right, #DDDEE8 0px, #DDDEE8 8px, #fff 8px, #fff 100%);
+  background-color: #fff !important;
   transition-property: all;
   transition-duration: 0.25s;
   transition-timing-function: cubic-bezier(1, 0.5, 0.5, 1);
-}
-#sidebar .selected.activated {
-  background: linear-gradient(to right, #14AE5C 0px, #14AE5C 8px, #fff 8px, #fff 100%);
 }
 #sidebar a:not(.btn, .nav-tabs .nav-link) {
   color: #1E1E1E;
@@ -18212,10 +18207,6 @@ input[type=file]::file-selector-button {
 #sidebar li.dragged a, #sidebar li.dragged svg, #sidebar li.dragged a:not(.btn, .nav-tabs .nav-link) {
   color: #fff;
 }
-#sidebar .menu-selected {
-  padding-left: 10px;
-  background: linear-gradient(to right, #328637 0px, #328637 6px, #fff 6px, #fff 100%);
-}
 #sidebar .menu-label {
   color: #1E1E1E;
   font-weight: 600;
@@ -18231,12 +18222,8 @@ input[type=file]::file-selector-button {
 #sidebar .subpanel .wrapper .icon {
   color: #5E6372;
 }
-#sidebar .subpanel.level-0 .menu-selected {
-  background: linear-gradient(to right, #40ab46 0px, #40ab46 6px, #fff 6px, #fff 100%);
-}
 #sidebar .subpanel.level-0 .selected {
   font-weight: 500;
-  background: linear-gradient(to right, #40ab46 0px, #40ab46 13px, #fff 13px, #fff 100%);
 }
 #sidebar .subpanel.level-0 .selected .wrapper .title {
   color: #1E1E1E;
@@ -18245,25 +18232,17 @@ input[type=file]::file-selector-button {
   color: #14AE5C;
   font-weight: 600;
 }
-#sidebar .subpanel.level-1 .menu-selected {
-  background: linear-gradient(to right, #49bb50 0px, #49bb50 6px, #fff 6px, #fff 100%);
-}
 #sidebar .subpanel.level-1 .selected {
   background: linear-gradient(to right, #49bb50 0px, #49bb50 13px, #fff 13px, #fff 100%);
 }
-#sidebar .subpanel.level-2 .menu-selected {
-  background: linear-gradient(to right, #5cc262 0px, #5cc262 6px, #fff 6px, #fff 100%);
-}
-#sidebar .subpanel.level-2 .selected {
-  background: linear-gradient(to right, #5cc262 0px, #5cc262 13px, #fff 13px, #fff 100%);
-}
-
 .list-group {
   border-radius: 0px !important;
 }
 
 .list-group-item {
   border: none !important;
+  background: none !important;
+  padding: 0.5rem 0.5rem;
 }
 
 .badge {
