@@ -114,7 +114,7 @@
       background: radial-gradient(circle at center, $primary-bg_menuopen 0px, $primary-bg_menuopen 8px, $white 9px, $white 100%);
   }
   .selected {
-     background-color: $white !important;
+    background-color: $white !important;
       transition-property: all;
       transition-duration: .25s;
       transition-timing-function: cubic-bezier(1, 0.5, 0.5, 1);
@@ -161,6 +161,9 @@
       }
     }
       &.level-0 {
+          .list-group-item {
+            border-left: 6px solid $white !important;
+          }
           .selected {
               .wrapper {
                 .title {
@@ -171,10 +174,28 @@
                   font-weight: 600;
                 }
               }
+              border-left: 6px solid $active-green !important;
               font-weight: $font-weight-500;
           }
       }
-
+      &.level-1 {
+          .list-group-item {
+            border-left: 6px solid $white !important;
+          }
+       
+          .selected {
+            border-left: 6px solid $active-green !important;
+          }
+      }
+      &.level-2 {
+        .list-group-item {
+          border-left: 6px solid $white !important;
+        }
+     
+        .selected {
+          border-left: 6px solid $active-green !important;
+        }
+      }
   }
 }
 

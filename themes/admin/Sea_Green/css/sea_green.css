@@ -18222,7 +18222,11 @@ input[type=file]::file-selector-button {
 #sidebar .subpanel .wrapper .icon {
   color: #5E6372;
 }
+#sidebar .subpanel.level-0 .list-group-item {
+  border-left: 6px solid #fff !important;
+}
 #sidebar .subpanel.level-0 .selected {
+  border-left: 6px solid #14AE5C !important;
   font-weight: 500;
 }
 #sidebar .subpanel.level-0 .selected .wrapper .title {
@@ -18232,9 +18236,19 @@ input[type=file]::file-selector-button {
   color: #14AE5C;
   font-weight: 600;
 }
-#sidebar .subpanel.level-1 .selected {
-  background: linear-gradient(to right, #49bb50 0px, #49bb50 13px, #fff 13px, #fff 100%);
+#sidebar .subpanel.level-1 .list-group-item {
+  border-left: 6px solid #fff !important;
 }
+#sidebar .subpanel.level-1 .selected {
+  border-left: 6px solid #14AE5C !important;
+}
+#sidebar .subpanel.level-2 .list-group-item {
+  border-left: 6px solid #fff !important;
+}
+#sidebar .subpanel.level-2 .selected {
+  border-left: 6px solid #14AE5C !important;
+}
+
 .list-group {
   border-radius: 0px !important;
 }
