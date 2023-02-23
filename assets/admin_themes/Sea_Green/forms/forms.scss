@@ -89,5 +89,9 @@ input[type="file"]::file-selector-button {
   transform: translateY(-50%);
 }
 
+.hint {
+  font-size: 0.8em;
+}
+
 
 @import "select2.scss";

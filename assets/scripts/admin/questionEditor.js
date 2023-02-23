@@ -2023,6 +2023,16 @@ $(document).on('ready pjax:scriptcomplete', function () {
     }
   }
 
+  /**
+   * Updates the answer/subquestion code on secondary languages
+   */
+  function syncAnswerSubquestionCode() {
+    const itemCode = $(this).val();
+    const commonId = $(this).closest('tr').data('common-id');
+
+    $(this).closest('.tab-pane').find(".extra-lang tr[data-common-id='" + commonId + "'] td.code-title").text(itemCode);
+  }
+
   // Below, things run on pjax:scriptcomplete.
 
     makeAnswersTableSortable();
@@ -2138,4 +2148,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
     });
     
     $('#relevance').on('keyup', showConditionsWarning);
+
+    $(document).on('focusout', '#subquestions table.subquestions-table:first-of-type td.code-title input.code', syncAnswerSubquestionCode);
+    $(document).on('focusout', '#answeroptions table.answeroptions-table:first-of-type td.code-title input.code', syncAnswerSubquestionCode);
 });
