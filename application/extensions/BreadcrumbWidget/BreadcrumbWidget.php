@@ -90,14 +90,14 @@ class BreadcrumbWidget extends CWidget
                     [
                         'id' => 'breadcrumb__survey--overview',
                         'href' => App()->createUrl('/surveyAdministration/view/', ['iSurveyID' => $survey->sid]),
-                        'text' => flattenText($survey->defaultlanguage->surveyls_title, 1) . ' (' . $survey->sid . ')',
+                        'text' => flattenText($survey->defaultlanguage->surveyls_title) . ' (' . $survey->sid . ')',
                     ];
             } else {
                 $breadcrumbs[] =
                     [
                         'id' => 'breadcrumb__survey--overview',
                         'href' => App()->createUrl('/surveyAdministration/view/', ['iSurveyID' => $survey->sid]),
-                        'text' => flattenText($survey->defaultlanguage->surveyls_title, 1),
+                        'text' => flattenText($survey->defaultlanguage->surveyls_title),
                     ];
             }
             if (isset($subAction) && !isset($questionGroup) && !isset($question)) {
@@ -126,12 +126,9 @@ class BreadcrumbWidget extends CWidget
             // If the questiongroup view is active right now, don't link it?
             if (!$subAction && !isset($question)) {
                 $breadcrumbs[] = [
-                    'text' => $questionGroup->isNewRecord
-                        ? gT('New question group')
-                        : viewHelper::flatEllipsizeText(
-                            $questionGroup->questiongroupl10ns[$survey->language]->group_name,
-                            1
-                        )
+                    'text' => $questionGroup->isNewRecord ? gT('New question group') : flattenText(
+                        $questionGroup->questiongroupl10ns[$survey->language]->group_name
+                    )
                 ];
             } else {
                 $breadcrumbs[] =
@@ -141,12 +138,7 @@ class BreadcrumbWidget extends CWidget
                             'questionGroupsAdministration/view/',
                             ['surveyid' => $questionGroup->sid, 'gid' => $questionGroup->gid]
                         ),
-                        'text' => viewHelper::flatEllipsizeText(
-                            $questionGroup->questiongroupl10ns[$survey->language]->group_name,
-                            1,
-                            60,
-                            '...'
-                        ),
+                        'text' => flattenText($questionGroup->questiongroupl10ns[$survey->language]->group_name),
                     ];
                 if (isset($subAction) && !isset($question)) {
                     $breadcrumbs[] =
@@ -283,7 +275,7 @@ class BreadcrumbWidget extends CWidget
     /**
      * Tries to reduce 2nd and 3rd elements string length to fit the maximum characters allowed for the whole breadcrumb
      * @param array $breadcrumbs
-     * @param array $countChars
+     * @param int $countChars number of characters of the whole breadcrumbs text
      * @return mixed
      */
     private function reduceBreadcrumbStringLength(array $breadcrumbs, int $countChars)
