@@ -4,17 +4,16 @@
 </div>
 <div class="modal-body">
     <p><?php printf(gT("Test email will be sent to: %s"), "<strong>" . $testEmail . "</strong>"); ?></p>
-    <div id="settingschangedwarning" class="jumbotron message-box message-box-error" style="display: none;">
-        <p class="text-danger"><?= gT("There seems to be some changes in the settings which were not saved yet. These changes will be disregarded by the test procedure."); ?></p>
+    <div id="settingschangedwarning" class="alert alert-filled-danger" role="alert" style="display: none;">
+        <?= gT("There seems to be some changes in the settings which were not saved yet. These changes will be disregarded by the test procedure."); ?>
     </div>
 </div>
 <div class="modal-footer">
-    <button role="button" class="btn btn-primary btn-ok" href="<?php echo \Yii::app()->createUrl('admin/globalsettings', array("sa" => "sendTestEmail"));?>">
+    <button role="button" class="btn btn-primary btn-ok" href="<?php echo \Yii::app()->createUrl('admin/globalsettings', array("sa" => "sendTestEmail")); ?>">
         <span class='ri-check-fill'></span>
         &nbsp;<?php eT("Send email"); ?>
     </button>
-        <?php eT("Close"); ?>
-    </button>
+    <button role="button" class="btn btn-outline-dark btn-ok"><?php eT("Close"); ?></button>
 </div>
 
 <script>

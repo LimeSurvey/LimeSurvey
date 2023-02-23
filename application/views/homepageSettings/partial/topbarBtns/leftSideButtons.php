@@ -8,7 +8,7 @@ $this->widget(
         'icon' => 'icon-add',
         'link' => $this->createUrl('homepageSettings/createBox/'),
         'htmlOptions' => [
-            'class' => 'btn btn-outline-secondary',
+            'class' => 'btn btn-primary',
         ],
     ]
 );
