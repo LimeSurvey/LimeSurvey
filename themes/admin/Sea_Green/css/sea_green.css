@@ -17735,7 +17735,6 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   padding: 6px 20px;
 }
 .nav-tabs .nav-link:hover, .nav-tabs .nav-link:focus {
-  font-weight: 400 !important;
   border-top: 2px solid #F9F9FB;
 }
 .nav-tabs .nav-link:hover:not(.active) {
