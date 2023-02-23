@@ -37,7 +37,7 @@ echo viewHelper::getViewTestTag('surveyPanelIntegration');
     <div class="row table-responsive">
         <?php
             $this->widget(
-                'ext.LimeGridView.LimeGridView',
+                'application.extensions.admin.grid.CLSGridView',
                 [
                     'id' => 'urlparams',
                     'dataProvider'    => $model->search(),
