@@ -103,7 +103,7 @@ class BreadcrumbWidget extends CWidget
             if (isset($subAction) && !isset($questionGroup) && !isset($question)) {
                 $breadcrumbs[] =
                     [
-                        'text' => $subAction,
+                        'text' => gt($subAction),
                     ];
             }
         }
