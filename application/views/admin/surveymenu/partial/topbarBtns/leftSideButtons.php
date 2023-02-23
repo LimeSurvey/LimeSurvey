@@ -8,7 +8,7 @@ $this->widget(
         'text' => gT('New menu'),
         'icon' => 'icon-add',
         'htmlOptions' => [
-            'class' => 'btn btn-outline-secondary tab-dependent-button',
+            'class' => 'btn btn-primary tab-dependent-button',
             'title' => gT('Add new menu'),
             'data-tab' => '#surveymenues'
         ],
@@ -23,10 +23,10 @@ $this->widget(
         'text' => gT('New menu entry'),
         'icon' => 'icon-add',
         'htmlOptions' => [
-            'class' => 'btn btn-outline-secondary tab-dependent-button',
+            'class' => 'btn btn-primary tab-dependent-button',
             'title' => gT('Add new menu entry'),
             'data-tab' => '#surveymenuentries',
-            'style' => 'dislpay:none;'
+            'style' => 'display:none;'
         ],
     ]
 );

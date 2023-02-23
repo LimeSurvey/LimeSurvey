@@ -13,11 +13,11 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
-            <div class="modal-body row">
+            <div class="modal-body">
                 <p>
-                    {{ gT('Enter one label per line. You can provide a code by separating code and label text with a semicolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semicolon or tab.') }}
+                    {{ gT('Enter one label per line. You can provide a code by separating code and label text with a semicolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semicolon or tab. Please remember to use the save button after applying the changes.') }}
                 </p>
-                <textarea id='quickaddarea' class='tipme' title='' cols='100' rows='10'></textarea>
+                <textarea id='quickaddarea' class='tipme form-control' title='' cols='100' rows='10'></textarea>
             </div>
             <div class="modal-footer">
                 <button class='btn btn-cancel' id='btnqacancel' type='button'  data-bs-dismiss="modal">{{ gT('Cancel') }}</button>

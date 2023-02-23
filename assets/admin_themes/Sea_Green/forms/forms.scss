@@ -51,6 +51,8 @@ input[type="file"]::file-selector-button {
 
 // select
 .form-select {
+  height: 38px;
+  padding: 0px 36px 2px 12px;
   border: 1px solid $g-900;
   font-weight: $font-weight-normal;
   font-size: $dropdown-font-size;
@@ -85,6 +87,10 @@ input[type="file"]::file-selector-button {
   top: 50%;
   right: 5px;
   transform: translateY(-50%);
+}
+
+.hint {
+  font-size: 0.8em;
 }
 
 

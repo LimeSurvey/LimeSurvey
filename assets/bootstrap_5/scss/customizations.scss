@@ -29,3 +29,40 @@ a {
 .hidden {
     display: none !important;
 }
+
+.ls-footer-label {
+    font-style: normal;
+    font-weight: $font-weight-500;
+    font-size: 1rem;
+    line-height: $line-height-20;
+    color: $g-700;
+}
+
+.ls-settings-wrapper {
+    position: relative !important;
+    min-height: 100vh !important;
+}
+.select2-selection__choice {
+    background-color: $g-200;
+    color: $g-600 !important;
+    font-weight: $font-weight-500 !important;
+    font-size: 12px !important;
+    line-height: 16px;
+}
+.ls-option-disabled {
+    z-index: 999 !important;
+    background-color: $g-100;
+    opacity: 0.8;
+    position: absolute;
+    inset: 0;
+}
+
+.ls-tab-disabled {
+    opacity: 0.4;
+    pointer-events: none !important;
+    cursor: not-allowed !important;
+
+}
+.tab-content {
+    padding-top: 1rem;
+}

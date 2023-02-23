@@ -479,7 +479,7 @@ export default {
                 class="col-12 mainContentContainer"
                 key="mainContentContainer"
             >
-                <div class="mainMenu container-fluid col-12" style="position: relative;">
+                <div class="mainMenu container-fluid col-12 position-relative h-100" >
                     <sidebar-state-toggle @collapse="toggleCollapse"/>
                     <transition name="slide-fade">
                         <sidemenu 

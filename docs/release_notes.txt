@@ -34,6 +34,31 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.6 (build 230220) to 5.6.7 (build 230222) February 20, 2023
+-Fixed issue for #18438: Prevent translation of empty string (Tim Willig)
+
+
+Changes from 5.6.5 (build 230214) to 5.6.6 (build 230220) February 20, 2023
+-Fixed issue: [security] Minor XSS vulnerability when editing a question group (Carsten Schmitz)
+-Fixed issue: [security] Minor XSS vulnerability when editing a question (Carsten Schmitz)
+-Fixed issue: [security] Minor XSS vulnerability in general survey settings (Carsten Schmitz)
+-Fixed issue #18577: [security] Update Moment.js (#2830) (Gabriel Jenik)
+-Fixed issue #18559: Potential 500 error with LimeMailer and PHP8 (#2799) (Denis Chenu)
+-Fixed issue #18438: Wrong text in inherit-button (#2893) (Gabriel Jenik)
+-Fixed issue #17784: [security] Update CkEditor to 4.20.2 (Carsten Schmitz)
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Hungarian by kkd
+#Updated translation: German by c_schmitz
+#Updated translation: German (Easy) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 5.6.4 (build 230206) to 5.6.5 (build 230214) February 14, 2023
 -Fixed issue #CT-32: Viewing a response is not possible if the original access code (token) entry doesn't exist anymore (Patrick Teichmann)
 -Fixed issue #18625: Cannot copy a survey when using a survey alias (#2894) (Gabriel Jenik)

@@ -32,7 +32,7 @@
             'type'        => 'action',
             'action'      => 'deactivate',
             'url'         => App()->createUrl('/quotas/massiveAction/action/deactivate', ['surveyid' => $oSurvey->sid]),
-            'iconClasses' => 'ri-pause-fill text-warning',
+            'iconClasses' => 'ri-pause-fill',
             'text'        =>  gT("Deactivate"),
             'grid-reload' => 'yes',
 

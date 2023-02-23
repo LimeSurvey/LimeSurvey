@@ -22573,7 +22573,7 @@
       };
 
       i18n = i18n || {};
-      var modalHtml = $("\n            <div id=\"identity__bsconfirmModal\" class=\"modal fade\">\n                <div class=\"modal-dialog\">\n                    <div class=\"modal-content\">\n                        <div class=\"modal-header\">\n                            <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\"></button>\n                        </div>\n                        <div class=\"modal-body\">\n                            ".concat(text, "               \n                        </div>\n                        <div class=\"modal-footer\">\n                            <button id=\"identity__bsconfirmModal_button_cancel\" type=\"button\" data-bs-dismiss=\"modal\" class=\"btn btn-outline-secondary\">\n                                ").concat(i18n.confirm_cancel, "\n                            </button>\n                            <button id=\"identity__bsconfirmModal_button_ok\" type=\"button\" class=\"btn btn-danger\">\n                                ").concat(i18n.confirm_ok, "\n                            </button>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        "));
+      var modalHtml = $("\n            <div id=\"identity__bsconfirmModal\" class=\"modal fade\">\n                <div class=\"modal-dialog\">\n                    <div class=\"modal-content\">\n                        <div class=\"modal-header\">\n                            <h1 class=\"modal-title\">".concat(text, "</h1>\n                            <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\"></button>\n                        </div>\n                        <div class=\"modal-body\">\n                        </div>\n                        <div class=\"modal-footer\">\n                            <button id=\"identity__bsconfirmModal_button_cancel\" type=\"button\" data-bs-dismiss=\"modal\" class=\"btn btn-outline-secondary\">\n                                ").concat(i18n.confirm_cancel || '<i class="ri-close-fill"></i>', "\n                            </button>\n                            <button id=\"identity__bsconfirmModal_button_ok\" type=\"button\" class=\"btn btn-danger\">\n                                ").concat(i18n.confirm_ok || '<i class="ri-check-fill"></i>', "\n                            </button>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        "));
 
       if ($('body').find('#identity__bsconfirmModal').length == 0) {
         $('body').append(modalHtml);
@@ -26452,9 +26452,10 @@
         buttonNo = options.buttonNo || $item.data('button-no') || '<i class="ri-close-fill"></i>',
         buttonYes = options.buttonYes || $item.data('button-yes') || '<i class="ri-check-fill"></i>',
         buttonType = $item.data('button-type') || 'btn-primary',
+        closeButtonType = $item.data('close-button-type') || 'btn-outline-secondary',
         parentElement = options.parentElement || $item.data('parent-element') || 'body';
     var closeIconHTML = '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>',
-        closeButtonHTML = '<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">' + buttonNo + '</button>',
+        closeButtonHTML = '<button type="button" class="btn ' + closeButtonType + '" data-bs-dismiss="modal">' + buttonNo + '</button>',
         confirmButtonHTML = '<button type="button" class="btn ' + buttonType + ' selector--button-confirm">' + buttonYes + '</button>'; //Define all the blocks and combine them by jquery methods
 
     var outerBlock = $('<div id="confirm-delete-modal" class="modal fade" tabindex="-1" role="dialog"></div>'),
@@ -26510,7 +26511,7 @@
       modalObject.find('.modal-body').append('<p>' + confirmText + '</p>');
 
       if (showTextArea !== '') {
-        modalObject.find('form').append('<textarea id="modalTextArea" name="modalTextArea" ></textarea>');
+        modalObject.find('form').append('<textarea id="modalTextArea" name="modalTextArea" class="form-control mb-3"></textarea>');
       }
     },
         runAjaxRequest = function runAjaxRequest() {
@@ -26863,7 +26864,7 @@
       var text = $(that).data('confirm-text') || $(that).attr('title') || $(that).data('original-title');
       var utf8 = $(that).data('confirm-utf8') || LS.lang.confirm;
       var gridid = $(that).data('gridid') || $(that).closest(".grid-view").attr("id");
-      $.bsconfirm(text, utf8, function onClickOK() {
+      $.fn.bsconfirm(text, utf8, function onClickOK() {
         $('#' + gridid).yiiGridView('update', {
           type: 'POST',
           url: actionUrl,

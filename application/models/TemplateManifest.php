@@ -642,7 +642,7 @@ class TemplateManifest extends TemplateConfiguration
         $sEditorLink = "<a
             id='template_editor_link_" . $this->sTemplateName . "'
             href='" . $sEditorUrl . "'
-            class='btn btn-outline-secondary btn-block'>
+            class='btn btn-outline-secondary btn-sm'>
                 <span class='ri-brush-fill'></span>
                 " . gT('Theme editor') . "
             </a>";
@@ -650,11 +650,20 @@ class TemplateManifest extends TemplateConfiguration
             //
 
         // TODO: Installs Theme (maybe rename importManifest to install ?)
-        $sLoadLink = CHtml::form(array("themeOptions/importManifest/"), 'post', array('id' => 'frmínstalltheme','name' => 'frmínstalltheme', 'class' => 'btn-block')) .
+        $sLoadLink = CHtml::form(
+            [
+                "themeOptions/importManifest/"
+            ],
+            'post',
+            [
+                'id' => 'frmínstalltheme',
+                'name' => 'frmínstalltheme'
+            ]
+        ) .
                 "<input type='hidden' name='templatename' value='" . $this->sTemplateName . "'>
                 <button id='template_options_link_" . $this->sTemplateName . "'
-                class='btn btn-outline-secondary btn-block'>
-                    <span class='ri-download-fill text-warning'></span>
+                class='btn btn-outline-secondary btn-sm w-100'>
+                    <span class='ri-download-fill'></span>
                     " . gT('Install') . "
                 </button>
                 </form>";
@@ -673,13 +682,13 @@ class TemplateManifest extends TemplateConfiguration
               data-button-yes="' . gt('Delete') . '"
               data-button-type="btn-danger"
               title="' . gT('Delete') . '"
-              class="btn btn-danger btn-block selector--ConfirmModal">
+              class="btn btn-danger btn-sm selector--ConfirmModal">
                   <span class="ri-delete-bin-fill "></span>
                   ' . gT('Delete') . '
                   </a>';
         }
 
-        return $sEditorLink . $sLoadLink . $sDeleteLink;
+        return '<div class="d-grid gap-2">' . $sEditorLink . $sLoadLink . $sDeleteLink . '</div>';
     }
 
     /**

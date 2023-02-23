@@ -117,6 +117,9 @@ class QuestionAdministrationController extends LSBaseController
     public function actionEdit(int $questionId, string $tabOverviewEditor = null)
     {
         $questionId = (int) $questionId;
+        if (!in_array($tabOverviewEditor, ['overview', 'editor'], true)) {
+            $tabOverviewEditor = null;
+        }
 
         /** @var $question Question|null */
         $question = Question::model()->findByPk($questionId);
@@ -238,11 +241,7 @@ class QuestionAdministrationController extends LSBaseController
             $question->question_theme_name
         );
 
-        if (App()->session['questionselectormode'] !== 'default') {
-            $selectormodeclass = App()->session['questionselectormode'];
-        } else {
-            $selectormodeclass = App()->getConfig('defaultquestionselectormode');
-        }
+        $selectormodeclass = $this->getSelectorModeClass();
 
         $viewData = [
             'oSurvey'                => $question->survey,
@@ -268,7 +267,7 @@ class QuestionAdministrationController extends LSBaseController
      * Load list questions view for a specified survey by $surveyid
      *
      * @param int $surveyid Goven Survey ID
-     * @param string  $landOnSideMenuTab Name of the side menu tab. Default behavior is to land on settings tab.
+     * @param string  $landOnSideMenuTab Name of the side menu tab (settings or structure). Default behavior is to land on settings tab.
      *
      * @return string
      * @access public
@@ -280,6 +279,9 @@ class QuestionAdministrationController extends LSBaseController
             throw new CHttpException(403, gT("No permission"));
         }
         $iSurveyID = sanitize_int($surveyid);
+        if (!in_array($landOnSideMenuTab, ['settings', 'structure', ''])) {
+            $landOnSideMenuTab = 'settings';
+        }
         // Reinit LEMlang and LEMsid: ensure LEMlang are set to default lang, surveyid are set to this survey id
         // Ensure Last GetLastPrettyPrintExpression get info from this sid and default lang
         LimeExpressionManager::SetEMLanguage(Survey::model()->findByPk($iSurveyID)->language);
@@ -1579,7 +1581,16 @@ class QuestionAdministrationController extends LSBaseController
             $question->gid,
             $questionTheme
         );
-        $this->renderPartial("generalSettings", ['generalSettings'  => $generalSettings]);
+
+        $questionThemeObject = QuestionTheme::model()->find('name=:name', array(':name' => $questionTheme));
+        $this->renderPartial("generalSettings", [
+            'generalSettings' => $generalSettings,
+            'oSurvey' => Survey::model()->findByPk($surveyId),
+            'question' => $question,
+            'aQuestionTypeGroups' => $this->getQuestionTypeGroups(QuestionTheme::findAllQuestionMetaDataForSelector()),
+            'questionTheme' => $questionThemeObject,
+            'selectormodeclass' => $this->getSelectorModeClass(),
+        ]);
     }
 
     /**
@@ -3102,5 +3113,20 @@ class QuestionAdministrationController extends LSBaseController
                 'overviewVisibility' => false,  // Hidden by default
             ]
         );
+    }
+
+    /**
+     * Returns the selector mode class as string
+     * @return string
+     */
+    private function getSelectorModeClass()
+    {
+        if (App()->session['questionselectormode'] !== 'default') {
+            $selectorModeClass = App()->session['questionselectormode'];
+        } else {
+            $selectorModeClass = App()->getConfig('defaultquestionselectormode');
+        }
+
+        return $selectorModeClass;
     }
 }

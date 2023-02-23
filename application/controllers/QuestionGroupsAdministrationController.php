@@ -83,6 +83,9 @@ class QuestionGroupsAdministrationController extends LSBaseController
      */
     public function actionView(int $surveyid, int $gid, $landOnSideMenuTab = 'structure', $mode = 'auto')
     {
+        if (!in_array($landOnSideMenuTab, ['settings', 'structure', ''])) {
+            $landOnSideMenuTab = 'structure';
+        }
         if ($mode != 'overview' && SettingsUser::getUserSettingValue('noViewMode', App()->user->id)) {
             $this->redirect(
                 Yii::app()->createUrl(
@@ -507,10 +510,10 @@ class QuestionGroupsAdministrationController extends LSBaseController
                 . " (" . gT("ID") . ":" . $iSurveyID . ")";
 
             $this->aData = $aData;
-            $this->render('import_view', [
+            $this->render('/questionAdministration/import', [
                 'aImportResults' => $this->aData['aImportResults'],
                 'sExtension' => $this->aData['sExtension'],
-                'surveyid' => $this->aData['surveyid']
+                'sid' => $this->aData['surveyid']
             ]);
         }
     }

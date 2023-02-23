@@ -9,7 +9,7 @@
     </script>
 <?php endif; ?>
 
-<div class='card card-primary'>
+<div class='card card-primary mb-4'>
 
     <div class='card-header '>
 

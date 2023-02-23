@@ -64,7 +64,7 @@
             <?php if ($config->isCompatible()) : ?>
                 <span class="ri-check-fill text-success"></span>
             <?php else : ?>
-                <span class="ri-close-fill text-warning"></span>
+                <span class="ri-close-fill"></span>
             <?php endif; ?>
         </div>
 

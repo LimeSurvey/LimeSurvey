@@ -48,6 +48,42 @@ $theme-colors: (
 
 $border-radius: 4px;
 
+// Typography START
+$ibm-font-family:
+        "IBMPlexSans",
+         // Cross-platform generic font family (default user interface font)
+        system-ui,
+         // Safari for macOS and iOS (San Francisco)
+        -apple-system,
+         // Windows
+        "Segoe UI",
+         // Android
+        Roboto,
+         // Basic web fallback
+        "Helvetica Neue", Arial,
+         // Linux
+        "Noto Sans",
+        "Liberation Sans",
+         // Sans serif fallback
+        sans-serif,
+         // Emoji fonts
+        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !default;
+
+$font-size-base: 1.14rem; // 16px, Browser default usually is 14px
+$font-size-xs: $font-size-base * 0.75; // 12px
+$font-size-sm: $font-size-base * 0.875; // 14px
+$font-size-lg: $font-size-base * 1.25; // 20px
+
+$font-weight-300: 300;
+$font-weight-normal: 400;
+$font-weight-500: 500;
+$font-weight-600: 600;
+
+$line-height-20: 20px;
+$line-height-24: 24px;
+$line-height-26: 26px;
+// Typography End
+
 // Buttons START
 $line-height-16: 16px;
 $line-height-20: 20px;
@@ -61,12 +97,13 @@ $btn-height: 36px;
 $btn-height-lg: 44px;
 $btn-height-xl: 52px;
 
-$btn-font-size: 14px;
-$btn-font-size-sm: 12px;
+$btn-font-size: $font-size-sm;
+$btn-font-size-sm: $font-size-xs;
 // Buttons END
 
 // Shadows START
 $boxshadow             : 8px 8px $g-200;
+$overview-boxShadow    : 0px 2px 6px rgb(0 0 0 / 20%);
 $boxshadow-hover       : 8px 8px $grape-light;
 $boxshadow-small       : 4px 4px $g-200;
 $boxshadow-small-hover : 4px 4px $grape-light;
@@ -76,40 +113,7 @@ $btn-focus-boxshadow   : 4px 4px 0px rgba(123, 97, 255, 0.4);
 
 $btn-color: $g-900;
 
-$dropdown-font-size: 14px;
-
-$ibm-font-family:
-"IBMPlexSans",
- // Cross-platform generic font family (default user interface font)
- system-ui,
- // Safari for macOS and iOS (San Francisco)
- -apple-system,
- // Windows
- "Segoe UI",
- // Android
- Roboto,
- // Basic web fallback
- "Helvetica Neue", Arial,
- // Linux
- "Noto Sans",
- "Liberation Sans",
- // Sans serif fallback
- sans-serif,
- // Emoji fonts
- "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !default;
-
-$font-size-base: 1.14rem; // 16px, Browser default usually is 14px
-$font-size-sm: $font-size-base * 0.875;
-$font-size-lg: $font-size-base * 1.25;
-
-$font-weight-300: 300;
-$font-weight-normal: 400;
-$font-weight-500: 500;
-$font-weight-600: 600;
-
-$line-height-20: 20px;
-$line-height-24: 24px;
-$line-height-26: 26px;
+$dropdown-font-size: $font-size-sm;
 
 $tooltip-bg:                        $g-900;
 // $tooltip-border-radius:             $border-radius;
@@ -129,7 +133,7 @@ $link-hover-color-action:                 shift-color($link-color-action, $link-
 $link-hover-color:                        shift-color($link-color, $link-shade-percentage) !default;
 
 // breadcrumb variables
-$breadcrumb-font-size:              14px;
+$breadcrumb-font-size:              $font-size-sm;
 $breadcrumb-spacing:                6px;
 $breadcrumb-divider-color:          $g-600;
 $breadcrumb-active-color:           $g-900;
