@@ -730,15 +730,6 @@ class TokenDynamic extends LSActiveRecord
                 'headerHtmlOptions' => ['class' => ''],
                 'htmlOptions'       => ['class' => ' name'],
             ],
-            [
-                "name"              => 'actions',
-                "type"              => 'raw',
-                "header"            => gT("Action"),
-                "filter"            => false,
-                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
-                'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
-                'htmlOptions'       => ['class' => 'ls-sticky-column']
-            ],
         ];
     }
 
@@ -763,7 +754,20 @@ class TokenDynamic extends LSActiveRecord
                 'htmlOptions' => array('class' => ''),
             );
         }
-        return array_merge($this->getStandardColsForGrid(), $aCustomAttributesCols);
+
+        $actionColumn = [
+            [
+                "name"              => 'actions',
+                "type"              => 'raw',
+                "header"            => gT("Action"),
+                "filter"            => false,
+                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+                'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
+                'htmlOptions'       => ['class' => 'ls-sticky-column']
+            ]
+        ];
+
+        return array_merge($this->getStandardColsForGrid(), $aCustomAttributesCols, $actionColumn);
     }
 
     /**
