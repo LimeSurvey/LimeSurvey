@@ -273,7 +273,7 @@ class BreadcrumbWidget extends CWidget
     }
 
     /**
-     * Tries to reduce 2nd and 3rd elements string length to fit the maximum characters allowed for the whole breadcrumb
+     * Replaces 2nd and maybe 3rd element string with ellipsis to fit the maximum characters allowed for the whole breadcrumb
      * @param array $breadcrumbs
      * @param int $countChars number of characters of the whole breadcrumbs text
      * @return mixed
@@ -286,24 +286,13 @@ class BreadcrumbWidget extends CWidget
         $charsOf3rd = array_key_exists(2, $breadcrumbs) ? strlen($breadcrumbs[2]['text']) : 0;
         $thirdIsLastElement = count($breadcrumbs) === 3;
         if ($charsOf2nd > $charsTooMuch) {
-            // Maybe partially shortening the 2nd entry only is enough
-            $breadcrumbs = $this->replaceCharsWithEllipsis($breadcrumbs, 1, $charsOf2nd - $charsTooMuch);
-        } elseif ($charsOf3rd > $charsTooMuch && !$thirdIsLastElement) {
-            // Maybe partially shortening the 3rd entry only is enough, but not if it's the last element of breadcrumb
-            $breadcrumbs = $this->replaceCharsWithEllipsis($breadcrumbs, 2, $charsOf3rd - $charsTooMuch);
-        } elseif (!$thirdIsLastElement && ($charsOf2nd + $charsOf3rd) > $charsTooMuch) {
-            // Maybe shortening both is enough,but not if it's the 3rd is last element of breadcrumb
+            // Replace whole 2nd element with ellipsis
             $breadcrumbs = $this->replaceCharsWithEllipsis($breadcrumbs, 1);
-            $newCharsTooMuch = $charsTooMuch - $charsOf2nd;
-            // Remove the remaining chars from the third element when possible
-            if ($charsOf3rd > $newCharsTooMuch) {
-                $breadcrumbs = $this->replaceCharsWithEllipsis($breadcrumbs, 2, abs($charsOf3rd - $newCharsTooMuch));
-            } else {
-                // if chars of 3rd element cannot fully compensate the overflow, replace it fully with "..."
-                $breadcrumbs = $this->replaceCharsWithEllipsis($breadcrumbs, 2);
-            }
+        } elseif ($charsOf3rd > $charsTooMuch && !$thirdIsLastElement) {
+            // Replace whole 3rd element with ellipsis
+            $breadcrumbs = $this->replaceCharsWithEllipsis($breadcrumbs, 2);
         } else {
-            // ok, then we're just replacing both with ellipsis and hope for the best
+            // Fallback: then we're just replacing those elements possible with ellipsis and hope for the best
             $breadcrumbs = $this->replaceCharsWithEllipsis($breadcrumbs, 1);
             if (!$thirdIsLastElement) {
                 $breadcrumbs = $this->replaceCharsWithEllipsis($breadcrumbs, 2);
@@ -314,6 +303,7 @@ class BreadcrumbWidget extends CWidget
 
     /**
      * Returns the breadcrumbs array after replacing the/some text of a element with ellipsis
+     * As of now the partially replacement of a string is not used.
      * @param array $breadcrumbs the full breadcrumbs array
      * @param int $index location of the element which needs to be fixed in the array
      * @param int $location number of chars after the ellipsis should replace the remaining text. 0 means fully replace
