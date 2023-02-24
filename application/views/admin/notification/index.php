@@ -1,10 +1,13 @@
+<?php
+// TODO: file seems to be unused
+?>
 <!-- List all notifications -->
 
 <div class="container-fluid welcome full-page-wrapper">
     <div class="pagetitle h3"><?php eT('Notifications'); ?></div>
     <?php
 
-$surveyGrid = $this->widget('yiistrap_fork.widgets.TbGridView', array(
+$surveyGrid = $this->widget('application.extensions.admin.grid.CLSGridView', array( //done
     'dataProvider' => $model->search(),
     'id'           => 'notification-grid',
     'emptyText'    => gT('No notifications found'),

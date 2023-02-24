@@ -12,9 +12,16 @@ table {
             right            : -1px; // Chrome(<109) bug forces us to use -1px because it would show a 1px gap
             box-shadow       : inset 15px 0 15px -15px rgba(0, 0, 0, 0.05);
         }
+        // this is new feature, and it works only in chrome but not in firefox
         &:has(.dropdown-menu.show) {
             z-index : $zindex-sticky;
         }
+        &.has-dropdown {
+            z-index : $zindex-sticky;
+        }
+    }
+    [class^="ri-"], [class*=" ri-"]  {
+        vertical-align: -0.20em;
     }
 }
 

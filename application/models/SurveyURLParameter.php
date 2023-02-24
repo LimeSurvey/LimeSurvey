@@ -162,16 +162,35 @@ class SurveyURLParameter extends LSActiveRecord
      */
     public function getButtons()
     {
-        $buttons = "<div class='icon-btn-row'>";
+        $permissionPanelEdit = Permission::model()->hasSurveyPermission(
+            $this->sid,
+            'surveysettings',
+            'update'
+        );
+        $permissionParameterDelete = Permission::model()->hasSurveyPermission(
+            $this->sid,
+            'surveysettings',
+            'update'
+        );
+        $dropdownItems = [];
+        $dropdownItems[] = [
+            'title'            => gT('Edit parameter'),
+            'iconClass'        => 'ri-pencil-fill',
+            'linkClass'        => 'surveysettings_edit_intparameter',
+            'enabledCondition' => $permissionPanelEdit
+        ];
+        $dropdownItems[] = [
+            'title'            => gT('Edit delete'),
+            'iconClass'        => 'ri-pencil-fill',
+            'linkClass'        => 'surveysettings_delete_intparameter',
+            'enabledCondition' => $permissionParameterDelete
+        ];
 
-        // Edit
-        $buttons .= '<button class="btn btn-sm btn-default surveysettings_edit_intparameter"><i class="fa fa-pencil"></i></button>';
-
-        // Delete
-        $buttons .= '<button class="btn btn-sm btn-default surveysettings_delete_intparameter"><i class="fa fa-trash text-danger"></i></button>';
-
-        $buttons .= "</div>";
-        return $buttons;
+        return App()->getController()->widget(
+            'ext.admin.grid.GridActionsWidget.GridActionsWidget',
+            ['dropdownItems' => $dropdownItems],
+            true
+        );
     }
 
     public function getQuestionTitle()

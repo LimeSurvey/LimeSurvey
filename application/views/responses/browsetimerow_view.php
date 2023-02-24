@@ -16,40 +16,23 @@
         var strDeleteAllConfirm = '<?php eT('Do you really want to delete all marked responses?', 'js'); ?>';
     </script>
     <?php
-    $this->widget(
-        'yiistrap_fork.widgets.TbGridView',
-        [
-            'dataProvider'    => $model->search($surveyId, $language),
-            'id'              => 'time-grid',
-            'emptyText'       => gT('No surveys found.'),
-            'htmlOptions'     => ['class' => 'table-responsive grid-view-ls time-statistics-table'],
-            'ajaxUpdate'      => 'time-grid',
-            'afterAjaxUpdate' => 'window.LS.doToolTip',
-            'template'        => "{items}\n<div id='timeListPager'><div class=\"col-md-4\" id=\"massive-action-container\"></div><div class=\"col-md-4 pager-container ls-ba \">{pager}</div><div class=\"col-md-4 summary-container\">{summary}</div></div>",
-            'summaryText'     => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
-                    gT('%s rows per page'),
-                    CHtml::dropDownList(
-                        'pageSize',
-                        $pageSize,
-                        Yii::app()->params['pageSizeOptions'],
-                        ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
-                    )
-                ),
-
-            'columns' => array_merge(
-                [
-                    [
-                        'header'      => '',
-                        'name'        => 'actions',
-                        'value'       => '$data->buttons',
-                        'type'        => 'raw',
-                        'htmlOptions' => ['class' => 'time-statistics-row-buttons'],
-                    ]
-                ],
-                $columns
-            )
-        ]
-    );
+    $this->widget('application.extensions.admin.grid.CLSGridView', [ //done
+            'dataProvider' => $model->search($surveyId, $language),
+            'id' => 'time-grid',
+            'emptyText' => gT('No surveys found.'),
+            'ajaxUpdate' => 'time-grid',
+            'lsAfterAjaxUpdate' => ['window.LS.doToolTip();'],
+            'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
+                gT('%s rows per page'),
+                CHtml::dropDownList(
+                    'pageSize',
+                    $pageSize,
+                    Yii::app()->params['pageSizeOptions'],
+                    ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
+                )
+            ),
+            'columns' => $columns
+        ]);
     ?>
 
     <?php if ($statistics['count']) { ?>

@@ -104,24 +104,9 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                             'selectableRows' => '100',
                         ],
                         [
-                            'name' => 'gridButtons',
-                            "type" => 'raw',
-                            'filter' => false,
-                            'header'      => gT('Action'),
-                            'htmlOptions' => ['class' => 'icon-btn-row'],
-                        ],
-//                        [
-//                            'header'      => gT('Action'),
-//                            'class'       => 'yiistrap_fork.widgets.TbButtonColumn',
-//                            'template'    => '{edit}{detail}{quexmlpdf}{downloadfiles}{deletefiles}<span data-bs-toggle="tooltip" title="' . gT("Delete this response") . '">{deleteresponse}</span>',
-//                            'htmlOptions' => ['class' => 'icon-btn-row'],
-//                            'buttons'     => $model->getGridButtons(),
-//                        ],
-                        [
                             'header' => 'id',
                             'name'   => 'id',
                         ],
-
                         [
                             'header' => 'seed',
                             'name'   => 'seed'
@@ -257,6 +242,16 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
 
                     // create a modal to filter all columns
                     $filterColumns = App()->getController()->renderPartial('/responses/modal_subviews/filterColumns', ['filterableColumns' => $filterableColumns, 'filteredColumns' => $filteredColumns, 'surveyId' => $surveyid], true);
+
+                    $aColumns[] = [
+                        'name' => 'gridButtons',
+                        "type" => 'raw',
+                        'filter' => false,
+                        'header'      => gT('Action'),
+                        'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+                        'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
+                        'htmlOptions'       => ['class' => 'text-center button-column ls-sticky-column'],
+                    ];
 
                     $this->widget(
                         'application.extensions.admin.grid.CLSGridView',

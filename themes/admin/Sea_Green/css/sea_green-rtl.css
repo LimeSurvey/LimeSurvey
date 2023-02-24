@@ -13083,12 +13083,6 @@ div#gview_displayresponses th#displayresponses_cb {
   font-weight: 300;
 }
 
-/* Make sure buttons is onw row */
-.time-statistics-row-buttons,
-.nowrap {
-  white-space: nowrap;
-}
-
 /* Proper overflow */
 .time-statistics-table {
   overflow: auto;
@@ -16917,6 +16911,9 @@ tr.info, tr.danger {
 .dropdown-menu i {
   margin-left: 4px;
 }
+.dropdown-menu [class^=ri-], .dropdown-menu [class*=" ri-"] {
+  vertical-align: -0.15em;
+}
 .dropdown-menu .dropdown-item {
   padding: 8px 16px;
 }
@@ -17248,6 +17245,9 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 }
 .navbar .nav-link:hover, .navbar .nav-link:focus {
   color: #cccccc;
+}
+.navbar .nav-link [class^=ri-], .navbar .nav-link [class*=" ri-"] {
+  vertical-align: -0.1em;
 }
 .navbar .badge, .navbar .rounded-circle {
   background-color: #fff;
@@ -18432,6 +18432,12 @@ table .ls-sticky-column:last-child {
 }
 table .ls-sticky-column:has(.dropdown-menu.show) {
   z-index: 1020;
+}
+table .ls-sticky-column.has-dropdown {
+  z-index: 1020;
+}
+table [class^=ri-], table [class*=" ri-"] {
+  vertical-align: -0.2em;
 }
 
 .table > thead > tr.active > td, .table > thead > tr.active > th,
