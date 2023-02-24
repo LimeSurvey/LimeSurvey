@@ -373,6 +373,7 @@ export default {
         if (this.$store.getters.isCollapsed) {
             this.sideBarWidth = "98";
         } else {
+          console.log('Created: ' + self.$store.state.sidebarwidth);
             this.sideBarWidth = self.$store.state.sidebarwidth;
         }
         LS.ld.each(window.SideMenuData.basemenus, this.setBaseMenuPosition)
