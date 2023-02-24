@@ -1,6 +1,7 @@
 <?php
 /**
  * @var $this AdminController
+ * @var $model SurveyURLParameter
  *
  * Right accordion, integration panel
  * Use datatables, needs surveysettings.js
@@ -59,15 +60,6 @@ echo viewHelper::getViewTestTag('surveyPanelIntegration');
 
                     // Columns to dispplay
                     'columns' => [
-
-                        // Action buttons (defined in model)
-                        [
-                            'header'      => gT('Action'),
-                            'name'        => 'actions',
-                            'type'        => 'raw',
-                            'value'       => '$data->buttons',
-                            'htmlOptions' => ['class' => ''],
-                        ],
                         // Parameter
                         [
                             'header' => gT('Parameter'),
@@ -81,7 +73,15 @@ echo viewHelper::getViewTestTag('surveyPanelIntegration');
                             'value'  => '$data->questionTitle',
                             'type'=>'raw'
                         ],
-
+                        // Action buttons (defined in model)
+                        [
+                            'header'      => gT('Action'),
+                            'name'        => 'actions',
+                            'type'        => 'raw',
+                            'value'       => '$data->buttons',
+                            'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+                            'htmlOptions'       => ['class' => 'text-center ls-sticky-column'],
+                        ],
                     ],
                     'ajaxUpdate' => 'urlparams',
                     'rowHtmlOptionsExpression' => '["data-id" => $data->id, "data-parameter" => $data->parameter, "data-qid" => $data->targetqid, "data-sqid" => $data->targetsqid]',

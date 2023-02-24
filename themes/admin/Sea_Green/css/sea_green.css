@@ -13104,12 +13104,6 @@ div#gview_displayresponses th#displayresponses_cb {
   font-weight: 300;
 }
 
-/* Make sure buttons is onw row */
-.time-statistics-row-buttons,
-.nowrap {
-  white-space: nowrap;
-}
-
 /* Proper overflow */
 .time-statistics-table {
   overflow: auto;
