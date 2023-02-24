@@ -54,7 +54,7 @@ class SettingsWidget extends CWidget
     }
 
     /**
-     * 
+     *
      */
     public function init()
     {
@@ -148,7 +148,7 @@ class SettingsWidget extends CWidget
             echo CHtml::tag(
                 'div',
                 [
-                    'class' => "clearfix offset-lg-{$this->labelWidth}"
+                    'class' => "clearfix offset-lg-{$this->labelWidth} mb-3 px-2"
                 ],
                 implode(" ", $aHtmlButtons)
             );
@@ -267,7 +267,7 @@ class SettingsWidget extends CWidget
         $metaData = array_merge($defaults, $metaData);
 
         // col-md-6/col-md-6 used in survey settings, sm-4/sm-6 in global : use sm-4/sm-6 for plugins ?
-        $metaData['labelOptions']['class'].=" col-form-label text-end col-md-{$this->labelWidth}";
+        $metaData['labelOptions']['class'].=" col-form-label text-end col-md-{$this->labelWidth} p-0";
         // Set the witdth of control-option according to existence of label
         if (!isset($metaData['label'])) {
             $metaData['controlOptions']['class'].=" col-12";

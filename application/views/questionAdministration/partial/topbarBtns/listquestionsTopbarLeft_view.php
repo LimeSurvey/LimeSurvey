@@ -18,7 +18,7 @@
             [
                 'name' => 'import-question-button',
                 'text' => gT('Import a question'),
-                'icon' => 'ri-upload-fill',
+                'icon' => 'ri-download-2-fill',
                 'htmlOptions' => [
                     'class' => 'btn btn-outline-secondary btntooltip',
                     'disabled' => 'disabled'
@@ -48,7 +48,7 @@
                 [
                     'name' => 'import-question-button',
                     'text' => gT('Import a question'),
-                    'icon' => 'ri-upload-fill',
+                    'icon' => 'ri-download-2-fill',
                     'htmlOptions' => [
                         'class' => 'btn btn-outline-secondary btntooltip',
                         'disabled' => 'disabled'
@@ -76,7 +76,7 @@
             [
                 'name' => 'import-question-button',
                 'text' => gT('Import a question'),
-                'icon' => 'ri-upload-fill',
+                'icon' => 'ri-download-2-fill',
                 'link' => Yii::App()->createUrl("questionAdministration/importView/surveyid/" . $oSurvey->sid),
                 'htmlOptions' => [
                     'class' => 'btn btn-outline-secondary btntooltip',

@@ -22,14 +22,11 @@ class CLSGridView extends TbGridView
     public function init()
     {
         parent::init();
-        App()->clientScript->registerScriptFile(
-            App()->getConfig("extensionsurl") . 'admin/grid/assets/gridScrollbar.js',
-            CClientScript::POS_BEGIN
-        );
+        $this->registerGridviewScripts();
 
         $this->pager = ['class' => 'application.extensions.admin.grid.CLSYiiPager'];
         $this->htmlOptions['class'] = '';
-        $classes = array('table', 'table-hover');
+        $classes = ['table', 'table-hover'];
         $this->template = $this->render('template', ['massiveActionTemplate' => $this->massiveActionTemplate], true);
         $this->lsAfterAjaxUpdate();
         if (!empty($classes)) {
@@ -69,5 +66,29 @@ class CLSGridView extends TbGridView
             $this->afterAjaxUpdate .= 'action_dropdown()';
             $this->afterAjaxUpdate .= '}';
         }
+    }
+
+    private function registerGridviewScripts()
+    {
+        // Scrollbar
+        App()->clientScript->registerScriptFile(
+            App()->getConfig("extensionsurl") . 'admin/grid/assets/gridScrollbar.js',
+            CClientScript::POS_BEGIN,
+            ['test321' => "something"]
+        );
+
+        // changePageSize
+        $script = '
+			jQuery(document).on("change", "#' . $this->id . ' .changePageSize", function(){
+				var pageSizeName = $(this).attr("name");
+				if (!pageSizeName) {
+					pageSizeName = "pageSize";
+				}
+				var data = $("#' . $this->id . ' .filters input, #' . $this->id . ' .filters select").serialize();
+				data += (data ? "&" : "") + pageSizeName + "=" + $(this).val();
+				$.fn.yiiGridView.update("' . $this->id . '", {data: data});
+			});
+		';
+        App()->getClientScript()->registerScript('pageChanger#' . $this->id, $script, LSYii_ClientScript::POS_POSTSCRIPT);
     }
 }

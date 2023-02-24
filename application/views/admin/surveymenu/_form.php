@@ -4,7 +4,7 @@
 /* @var $form CActiveForm */
 ?>
 
-<?php 
+<?php
 	$form=$this->beginWidget('TbActiveForm', array(
 	'id'=>'surveymenu-form',
 	// Please note: When you enable ajax validation, make sure the corresponding
@@ -34,7 +34,7 @@ Yii::app()->getController()->renderPartial(
                 ]);
                 ?>
 			<?php endif; ?>
-			
+
 			<p class="note"><?php printf(gT('Fields with %s are required.'), '<span class="required">*</span>'); ?></p>
             <?php
             $this->widget('ext.AlertWidget.AlertWidget', ['errorSummaryModel' => $model]);
@@ -51,7 +51,7 @@ Yii::app()->getController()->renderPartial(
 				<?php echo $form->dropDownList($model,'survey_id', $model->getSurveyIdOptions(), ['class' => 'form-select']); ?>
 				<?php echo $form->error($model,'survey_id'); ?>
             </div>
-            
+
 			<div class="mb-3">
 				<?php echo $form->labelEx($model,'user_id'); ?>
 				<?php echo $form->dropDownList($model,'user_id', $model->getUserIdOptions(), ['class' => 'form-select']); ?>
@@ -64,7 +64,7 @@ Yii::app()->getController()->renderPartial(
 				<?php echo $form->dropDownList($model,'ordering', $model->getOrderOptions(), ['class' => 'form-select']); ?>
 				<?php echo $form->error($model,'ordering'); ?>
 			</div>
-			
+
 			<div class="mb-3">
 				<?php echo $form->labelEx($model,'showincollapse'); ?>
 				<?php echo $form->checkbox($model,'showincollapse'); ?>
@@ -76,7 +76,7 @@ Yii::app()->getController()->renderPartial(
 				<?php echo $form->textField($model,'name',array('title'=>gT('Lowercase characters and digits, starting with a character - length from 6 to 60 characters'), 'required'=>true, 'size'=>60,'maxlength'=>255, 'pattern' => '[a-z][a-z0-9]{5,59}')); ?>
 				<?php echo $form->error($model,'name'); ?>
 			</div>
-			
+
 			<div class="mb-3">
 				<?php echo $form->labelEx($model,'title'); ?>
 				<?php echo $form->textField($model,'title',array('size'=>60,'maxlength'=>255)); ?>
@@ -103,6 +103,6 @@ Yii::app()->getController()->renderPartial(
     </div>
 	<div class="modal-footer">
         <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT('Cancel');?></button>
-		<?php echo TbHtml::submitButton((empty($model->id) ? gT('Create') : gT('Save')), array('color' => TbHtml::BUTTON_COLOR_SUCCESS)); ?>
+		<?php echo TbHtml::submitButton((empty($model->id) ? gT('Create') : gT('Save')), array('class' => 'btn-primary')); ?>
 	</div>
 <?php $this->endWidget(); ?>

@@ -20,7 +20,7 @@ $optionsOnOff = array(
         <div class="" id="global-sidebar-container">
             <global-sidemenu/>
         </div>
-        <div id="pjax-content" class="tab-content col-lg-10 flex-lg-shrink-1 ps-3">
+        <div id="pjax-content" class="tab-content col-lg-10 flex-lg-shrink-1 ps-4 pe-4">
             <div class="row">
                 <div class="col-12">
                     <?php
