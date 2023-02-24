@@ -25,7 +25,7 @@
         </a>
         <a class="btn btn-outline-secondary" href="<?php echo $this->createUrl("questionGroupsAdministration/importview/surveyid/$oSurvey->sid"); ?>" role="button">
 
-            <span class="ri-upload-fill"></span>
+            <span class="ri-download-2-fill"></span>
             <?php eT("Import a group"); ?>
         </a>
     <?php endif; ?>
@@ -55,7 +55,7 @@
                 <?php eT("Add new question"); ?>
             </a>
             <a class="btn btn-outline-secondary" href='<?php echo $this->createUrl("questionAdministration/importView/surveyid/".$oSurvey->sid); ?>' role="button">
-                <span class="ri-upload-fill"></span>
+                <span class="ri-download-2-fill"></span>
                 <?php eT("Import a question"); ?>
             </a>
         <?php endif; ?>

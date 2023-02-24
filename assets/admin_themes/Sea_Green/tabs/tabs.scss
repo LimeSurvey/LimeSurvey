@@ -1,14 +1,15 @@
 .nav-tabs {
   .nav-link {
+    font-size: $font-size-sm;
     color: $nav-tabs-link-active-color;
     border: 0;
     border-radius: 0;
     border-top: 2px solid $g-100;
     border-bottom: 2px solid $g-400 ;
     background-color: $g-100;
+    padding: 6px 20px;
     &:hover,
     &:focus {
-      font-weight: 400 !important;
       border-top: 2px solid $g-100;
     }
 

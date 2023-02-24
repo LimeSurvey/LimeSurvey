@@ -64,7 +64,7 @@ if ($hasTokensExportPermission) {
             'name' => 'tokens-export-attributes',
             'id' => 'tokens-export-attributes',
             'text' => gT('Export'),
-            'icon' => 'ri-server-fill',
+            'icon' => 'ri-upload-2-fill',
             'link' => Yii::App()->createUrl("admin/tokens/sa/exportdialog/surveyid/$oSurvey->sid"),
             'htmlOptions' => [
                 'class' => 'btn btn-outline-secondary',

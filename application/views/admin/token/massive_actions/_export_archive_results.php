@@ -27,7 +27,7 @@
                         <?php echo 'Exported' ; ?>
                     </td>
                 <?php else: ?>
-                    <td class="text-warning">
+                    <td class="text-danger">
                         <?php echo $result['error'] ; ?>
                     </td>
                 <?php endif;?>

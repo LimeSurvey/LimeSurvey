@@ -54,10 +54,7 @@ App()->getClientScript()->registerScript("tab-survey-view-tab-switch-conditions"
 
     <!-- Create -->
     <li class="nav-item" role="presentation">
-        <a class="nav-link <?= $active === 'create' ? 'active' : ''?>" role="tab" data-bs-toggle="tab" data-button-title="<i class='ri-save-line'></i>&nbsp;<?= gT('Save'); ?>" data-form-id="addnewsurvey" href='#general'>
-            <!-- <i class="ri-add-circle-fill"></i> -->
-            <i class="ri-add-circle-fill" ></i>&nbsp;
-            
+        <a class="nav-link <?= $active === 'create' ? 'active' : ''?>" role="tab" data-bs-toggle="tab" data-button-title="<i class='ri-check-fill'></i>&nbsp;<?= gT('Save'); ?>" data-form-id="addnewsurvey" href='#general'>
             <?php  eT("Create"); ?>
         </a>
     </li>
@@ -66,10 +63,7 @@ App()->getClientScript()->registerScript("tab-survey-view-tab-switch-conditions"
     <?php if ($action === "newsurvey"): ?>
         <!-- Import -->
         <li class="nav-item" role="presentation">
-            <a class="nav-link <?= $active === 'import' ? 'active' : ''?>" role="tab" data-bs-toggle="tab" data-button-title=" <span class='ri-upload-fill '></span>&nbsp;<?= gT('Import'); ?>" data-form-id="importsurvey" href="#import">
-            <!-- <span class="ri-upload-fill text-success"></span> -->
-            <i class="ri-upload-fill"></i>
-            &nbsp;
+            <a class="nav-link <?= $active === 'import' ? 'active' : ''?>" role="tab" data-bs-toggle="tab" data-button-title=" <span class='ri-download-2-fill '></span>&nbsp;<?= gT('Import'); ?>" data-form-id="importsurvey" href="#import">
                 <?php  eT("Import"); ?>
             </a>
         </li>
@@ -77,9 +71,6 @@ App()->getClientScript()->registerScript("tab-survey-view-tab-switch-conditions"
         <!-- Copy -->
         <li class="nav-item" role="presentation">
             <a class="nav-link <?= $active === 'copy' ? 'active' : ''?>" role="tab" data-bs-toggle="tab" data-button-title="<i class='ri-file-copy-line'></i>&nbsp;<?= gT('Copy'); ?>" data-form-id="copysurveyform" href="#copy">
-                <!-- <i class="ri-file-copy-line"></i> -->
-                <i class="ri-file-copy-line"></i>
-                &nbsp;
                 <?php  eT("Copy"); ?>
             </a>
         </li>

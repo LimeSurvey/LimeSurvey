@@ -7,7 +7,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
     <?php if (is_template_editable($templatename) == true) { ?>
         <div class="row">
             <div class="col-12">
-                <div class="h4">
+                <div class="h1">
                     <?php echo sprintf(gT("Viewing file '%s'"), $filedisplayname); ?>
                 </div>
 
@@ -69,12 +69,12 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
             </div>
             <!-- Right column -->
             <div class="col-3" id='templateleft'>
-                <div class="card mb-1">
+                <div class="card card-primary mb-3">
                     <div class="col-12 card-body">
                         <label class="card-title"><?php eT("Screen part files:"); ?></label>
                         <?php foreach ($files as $file) { ?>
                             <div class="row">
-                                <div class="col-md-9">
+                                <div class="col-8">
                                     <a href="<?php echo $this->createUrl('admin/themes',
                                         ['sa' => 'view', 'screenname' => $screenname, 'templatename' => $templatename, 'editfile' => $file]); ?>"
                                        class="<?= $file == $relativePathEditfile ? 'text-danger' : 'text-success' ?>">
@@ -83,7 +83,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                                             : substr(strrchr($file, DIRECTORY_SEPARATOR), 1) ?>
                                     </a>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-4">
                                     <?php if ($oEditedTemplate->getTemplateForFile($file, $oEditedTemplate, false)
                                         && $oEditedTemplate->getTemplateForFile($file,
                                             $oEditedTemplate)->sTemplateName === $oEditedTemplate->sTemplateName) { ?>
@@ -107,12 +107,12 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                         <?php } ?>
                     </div>
                 </div>
-                <div class="card mb-1">
+                <div class="card card-primary mb-3">
                     <div class="col-12 card-body">
                         <label class="card-title"><?php eT("JavaScript files:"); ?></label>
                         <?php foreach ($jsfiles as $file) { ?>
                             <div class="row">
-                                <div class="col-md-9">
+                                <div class="col-8">
                                     <a href="<?php echo $this->createUrl('admin/themes',
                                         ['sa' => 'view', 'screenname' => $screenname, 'templatename' => $templatename, 'editfile' => $file]); ?>"
                                        class="<?= $file == $relativePathEditfile ? 'text-danger' : 'text-success' ?>">
@@ -121,7 +121,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                                             : substr(strrchr($file, DIRECTORY_SEPARATOR), 1); ?>
                                     </a>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-4">
                                     <?php if ($oEditedTemplate->getTemplateForFile($file,
                                             $oEditedTemplate)->sTemplateName === $oEditedTemplate->sTemplateName) { ?>
                                         <?php if (Permission::model()->hasGlobalPermission('templates', 'delete')) { ?>
@@ -146,12 +146,12 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                     </div>
                 </div>
 
-                <div class="card mb-1">
+                <div class="card card-primary mb-3">
                     <div class="col-12 card-body">
                         <label class="card-title"><?php eT("CSS files:"); ?></label>
                         <?php foreach ($cssfiles as $file) { ?>
                             <div class="row">
-                                <div class="col-md-9">
+                                <div class="col-8">
                                     <a href="<?php echo $this->createUrl('admin/themes',
                                         ['sa' => 'view', 'screenname' => $screenname, 'templatename' => $templatename, 'editfile' => $file]); ?>"
                                        class="<?= $file === $relativePathEditfile ? 'text-danger' : 'text-success'?>">
@@ -160,7 +160,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                                             : substr(strrchr($file, DIRECTORY_SEPARATOR), 1); ?>
                                     </a>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-4">
                                     <?php if ($oEditedTemplate->getTemplateForFile($file,
                                             $oEditedTemplate)->sTemplateName == $oEditedTemplate->sTemplateName) { ?>
                                         <?php if (Permission::model()->hasGlobalPermission('templates', 'delete')) { ?>
@@ -184,16 +184,16 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                         <?php } ?>
                     </div>
                 </div>
-                <div class="card mb-1">
+                <div class="card card-primary mb-3">
                     <div class="col-12 card-body" style="">
                         <label class="card-title"><?php eT("Other files:"); ?></label>
                         <div class="col-12 mb-3 other-files-list">
                             <?php foreach ($otherfiles as $fileName => $file) { ?>
                                 <div class="row other-files-row">
-                                    <div class="col-md-9 other-files-filename">
+                                    <div class="col-8 other-files-filename">
                                         <?php echo CHtml::encode($fileName); ?>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-4">
                                         <?php //TODO: make it ajax and less messy ?>
                                         <?php if ($oEditedTemplate->getTemplateForFile($fileName,
                                                 $oEditedTemplate)->sTemplateName == $oEditedTemplate->sTemplateName) {
@@ -227,26 +227,31 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                                         'post',
                                         [
                                             'id'      => 'importtemplatefile',
-                                            'class'   => 'row',
                                             'name'    => 'importtemplatefile',
                                             'enctype' => 'multipart/form-data'
                                         ]); ?>
-                                    <label class="form-label col-12">
-                                        <?php printf(gT("Upload a file (maximum size: %d MB):"), getMaximumFileUploadSize() / 1024 / 1024); ?>
-                                    </label>
-                                    <div class="col-8">
-                                        <input name='upload_file' id="upload_file" type="file" class="form-control" required="required"/>
-                                        <input type='hidden' name='editfile' value='<?php echo htmlspecialchars($relativePathEditfile); ?>'/>
-                                        <input type='hidden' name='screenname' value='<?php echo HTMLEscape($screenname); ?>'/>
-                                        <input type='hidden' name='templatename' value='<?php echo $templatename; ?>'/>
-                                        <input type='hidden' name='action' value='templateuploadfile'/>
+                                    <div class="row">
+                                        <label class="form-label col-12">
+                                            <?php printf(gT("Upload a file (maximum size: %d MB):"), getMaximumFileUploadSize() / 1024 / 1024); ?>
+                                        </label>
                                     </div>
-                                    <div class="col-4">
-                                        <button type='submit'
-                                                class='btn btn-outline-secondary text-nowrap' <?= (!is_template_editable($templatename) ? "disabled='disabled'" : '') ?>>
-                                            <i class="ri-upload-fill"></i>
-                                            <?= gT("Upload"); ?>
-                                        </button>
+                                    <div class="row">
+                                        <div class="col-12 mb-3">
+                                            <input name='upload_file' id="upload_file" type="file" class="form-control" required="required"/>
+                                            <input type='hidden' name='editfile' value='<?php echo htmlspecialchars($relativePathEditfile); ?>'/>
+                                            <input type='hidden' name='screenname' value='<?php echo HTMLEscape($screenname); ?>'/>
+                                            <input type='hidden' name='templatename' value='<?php echo $templatename; ?>'/>
+                                            <input type='hidden' name='action' value='templateuploadfile'/>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 text-end">
+                                            <button type='submit'
+                                                    class='btn btn-outline-secondary text-nowrap' <?= (!is_template_editable($templatename) ? "disabled='disabled'" : '') ?>>
+                                                <i class="ri-upload-fill"></i>
+                                                <?= gT("Upload"); ?>
+                                            </button>
+                                        </div>
                                     </div>
                                     <?= CHtml::endForm() ?>
                                 </div>

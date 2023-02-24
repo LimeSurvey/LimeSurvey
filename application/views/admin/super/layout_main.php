@@ -21,18 +21,18 @@ echo "<!-- BEGIN LAYOUT_MAIN -->";
 
 $this->updatenotification();
 $this->notifications();
-    
+
 //The load indicator for pjax
 echo ' <div id="pjax-file-load-container" class="ls-flex-row col-12"><div style="height:2px;width:0px;"></div></div>';
 
 echo '<!-- Full page, started in SurveyCommonAction::renderWrappedTemplate() -->
-<div class="full-page-wrapper" id="in_survey_common_action">';
+<div id="in_survey_common_action">';
 
 echo $content;
 
 echo '</div>';
 echo "<!-- END LAYOUT_MAIN -->";
-    
+
 // Footer
 if (!isset($aData['display']['endscripts']) || $aData['display']['endscripts'] !== false) {
     Yii::app()->getController()->loadEndScripts();

@@ -1,5 +1,5 @@
 <!-- The button -->
-<div id="trigger_<?=$this->widgetsJsName?>_button">
+<div id="trigger_<?=$this->widgetsJsName?>_button" class="d-grid gap-2">
     <button
         type="button"
         class="btn btn-block <?= implode(" ", $this->buttonClasses) ?>"

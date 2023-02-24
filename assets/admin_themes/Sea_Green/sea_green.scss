@@ -54,6 +54,7 @@
 
 // 6. Add additional custom code here
 @import "assets/bootstrap_5/scss/customizations";
+@import "admin_customizations";
 
 // old adminbasics definitions
 @import "assets/admin_themes/adminbasics_temporary/loadSass.scss";
@@ -62,6 +63,7 @@
 @import "lime-admin-colors";
 @import "statistics";
 
+@import "authentication/authentication.scss";
 @import "buttons/buttons.scss";
 @import "buttons/btn-group.scss";
 @import "buttons/dropdown.scss";
@@ -88,3 +90,5 @@
 @import "tables/tables.scss";
 @import "tables/pagination.scss";
 @import "alert/alert.scss";
+@import "accordion/accordion.scss";
+@import "expressionscript/expressions.scss";

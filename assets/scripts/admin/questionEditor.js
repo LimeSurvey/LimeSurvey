@@ -651,7 +651,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
           const $liTemplate = $('<li class="nav-item" role="presentation"></li>');
           const $aTemplate = $('<button type="button" role="tab" class="nav-link" data-bs-toggle="tab" data-bs-target=""></button>');
           const $tabTodyTemplate = $('<div></div>');
-          const $listTemplate = $('<div class="list-group selector_label-list"></div>');
+          const $listTemplate = $('<div class="list-group selector_label-list container-fluid"></div>');
           const $listItemTemplate = $('<div class="row mb-3 selector_label-list-row"></div>');
           const $tabindex = $('<ul class="nav nav-tabs" role="tablist"></ul>');
           const $tabbody = $('<div class="tab-content" id="label-set-tab-content" style="max-height: 50vh; overflow:auto;"></div>');
@@ -686,10 +686,10 @@ $(document).on('ready pjax:scriptcomplete', function () {
               isEmpty = false;
               labelSet.labels.forEach((label) => {
                 // Label title is not concatenated directly because it may have non-encoded HTML
-                const $labelTitleDiv = $('<div class="col-lg-7"></div>');
+                const $labelTitleDiv = $('<div class="col-lg-9"></div>');
                 $labelTitleDiv.text(label.title);
                 const $listItem = $listItemTemplate.clone();
-                $listItem.append(`<div class="col-lg-5 text-end" style="border-right: 4px solid #cdcdcd">${label.code}</div>`);
+                $listItem.append(`<div class="col-lg-3 text-end" style="border-right: 4px solid #cdcdcd">${label.code}</div>`);
                 $listItem.append($labelTitleDiv);
                 $listItem.attr('data-label', JSON.stringify(label));
                 $itemList.append($listItem);
@@ -700,7 +700,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
               });
             }
 
-            $bodyItem.append(`<h4>${labelSet.label_name}</h4>`);  // jshint ignore: line
+            $bodyItem.append(`<h2>${labelSet.label_name}</h2>`);  // jshint ignore: line
             $itemList.appendTo($bodyItem);
           });
           
@@ -1641,7 +1641,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
         $.ajax({
           url: generalSettingsUrl,
           method: 'GET',
-          data: { questionType, questionTheme },
+          data: { questionType, questionTheme, code },
           dataType: 'html',
           success: (data) => {
             resolve(data);
@@ -1680,9 +1680,25 @@ $(document).on('ready pjax:scriptcomplete', function () {
         });
       });
       try {
+        var code = $('#questionCode').val();
         const [generalSettingsHtml, advancedSettingsHtml, extraOptionsHtml] = await Promise.all([generalSettingsPromise, advancedSettingsPromise, extraOptionsPromise]);
         const currentGroup = $('#gid').children("option:selected").val();
         $('#general-settings').replaceWith(generalSettingsHtml);
+        $('#questionCode').val(code);
+        var wrapperEl = $('#question-type-selector-wrapper');
+        var viewType = wrapperEl.data('viewtype');
+        var debug = wrapperEl.data('debug');
+        var runner_questionTypeSelector = new PreviewModalScript("questionTypeSelector", {
+          "selectedClass": "text-short",
+          "onUpdate": ["value", "theme", "$('#question_type').val(value); $('#question_theme_name').val(theme); LS.questionEditor.updateQuestionAttributes(value, theme, '" + generalSettingsUrl + "', '" + advancedSettingsUrl + "', '" + extraOptionsUrl + "');"],
+          "value": questionType,
+          "theme": questionTheme,
+          "debugString": "Type: ",
+          "debug": debug == 1,
+          "viewType": viewType
+        });
+        runner_questionTypeSelector.bind();
+
         $('#gid').val(currentGroup);
         // TODO: Double check HTML injected here. Extra div?
         $('#advanced-options-container').replaceWith(advancedSettingsHtml);
@@ -2007,6 +2023,16 @@ $(document).on('ready pjax:scriptcomplete', function () {
     }
   }
 
+  /**
+   * Updates the answer/subquestion code on secondary languages
+   */
+  function syncAnswerSubquestionCode() {
+    const itemCode = $(this).val();
+    const commonId = $(this).closest('tr').data('common-id');
+
+    $(this).closest('.tab-pane').find(".extra-lang tr[data-common-id='" + commonId + "'] td.code-title").text(itemCode);
+  }
+
   // Below, things run on pjax:scriptcomplete.
 
     makeAnswersTableSortable();
@@ -2122,4 +2148,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
     });
     
     $('#relevance').on('keyup', showConditionsWarning);
+
+    $(document).on('focusout', '#subquestions table.subquestions-table:first-of-type td.code-title input.code', syncAnswerSubquestionCode);
+    $(document).on('focusout', '#answeroptions table.answeroptions-table:first-of-type td.code-title input.code', syncAnswerSubquestionCode);
 });

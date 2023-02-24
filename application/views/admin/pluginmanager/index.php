@@ -14,9 +14,9 @@ echo viewHelper::getViewTestTag('pluginManager');
 $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']));
 
 ?>
-<div class='container-fluid'>
-    <div class='row'>
-        <div class='float-end'>
+<div class="container-fluid">
+    <div class="row mb-3 mt-1">
+        <div class="float-end">
             <?php /* Disabled for prototype 1.
                 <a
                     href=''
@@ -28,19 +28,9 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
                     <?php eT('Browse the shop'); ?>
                 </a>
                  */ ?>
-            <?php foreach ($extraMenus as $menu): ?>
-                <a
-                    href='<?php echo $menu->getHref(); ?>'
-                    <?php if ($menu->getOnClick()): ?>
-                        onclick='<?php echo $menu->getOnClick(); ?>'
-                    <?php endif; ?>
-                    <?php if ($menu->getTooltip()): ?>
-                        data-bs-toggle='tooltip'
-                        data-title='<?php echo $menu->getTooltip(); ?>'
-                    <?php endif; ?>
-                    class='btn btn-outline-secondary'
-                >
-                    <?php if ($menu->getIconClass()): ?>
+            <?php foreach ($extraMenus as $menu) : ?>
+                <a href='<?php echo $menu->getHref(); ?>' <?php if ($menu->getOnClick()) : ?> onclick='<?php echo $menu->getOnClick(); ?>' <?php endif; ?> <?php if ($menu->getTooltip()) : ?> data-bs-toggle='tooltip' data-title='<?php echo $menu->getTooltip(); ?>' <?php endif; ?> class='btn btn-outline-secondary'>
+                    <?php if ($menu->getIconClass()) : ?>
                         <i class='<?php echo $menu->getIconClass(); ?>'></i>&nbsp;
                     <?php endif; ?>
                     <?php echo $menu->getLabel(); ?>
@@ -109,7 +99,7 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
     ];
 
     $this->widget(
-        'application.extensions.admin.grid.CLSGridView',//done
+        'application.extensions.admin.grid.CLSGridView', //done
         [
             'id'                       => 'plugins-grid',
             'dataProvider'             => $dataProvider,
@@ -137,10 +127,14 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
 </div>
 
 <script type="text/javascript">
-    jQuery(function ($) {
+    jQuery(function($) {
         // To update rows per page via ajax
-        $(document).on("change", '#pageSize', function () {
-            $.fn.yiiGridView.update('plugins-grid', {data: {pageSize: $(this).val()}});
+        $(document).on("change", '#pageSize', function() {
+            $.fn.yiiGridView.update('plugins-grid', {
+                data: {
+                    pageSize: $(this).val()
+                }
+            });
         });
     });
 </script>

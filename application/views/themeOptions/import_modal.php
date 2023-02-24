@@ -37,7 +37,7 @@
                             <?php eT("Select theme ZIP file:") ?>
                         </label>
                         <input id='the_file' class="form-control" name='the_file' type="file" accept='.zip' />
-                        <div class="form-text">
+                        <div class="form-text mt-2">
                             <?php printf(gT('(Maximum file size: %01.2f MB)'),getMaximumFileUploadSize()/1024/1024); ?>
                         </div>
                     </div>
