@@ -20,6 +20,9 @@ table {
             z-index : $zindex-sticky;
         }
     }
+    [class^="ri-"], [class*=" ri-"]  {
+        vertical-align: -0.20em;
+    }
 }
 
 .table {
