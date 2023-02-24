@@ -17788,6 +17788,9 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   margin: 4px 3px;
 }
 
+.nav-tabs {
+  border: none;
+}
 .nav-tabs .nav-link {
   font-size: 0.9975rem;
   color: #1E1E1E;
