@@ -110,8 +110,8 @@ export default {
 <template>
   <div
     id="sidebar"
-    class="d-flex col-lg-4 ls-ba position-relative transition-animate-width"
-    :style="{'min-height':'125vh','height': '100%', 'min-width': '250px', width: sideBarWidth }"
+    class="d-flex col-lg-4 ls-ba position-relative transition-animate-width bg-white py-4 h-100"
+    :style="{'min-width': '250px', width: sideBarWidth }"
     @mouseleave="mouseleave"
     @mouseup="mouseup"
   >

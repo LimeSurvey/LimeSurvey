@@ -18182,7 +18182,6 @@ input[type=file]::file-selector-button {
 }
 
 #sidebar {
-  padding-top: 15px;
   width: 100%;
 }
 #sidebar .questiongroup-list-group > li.selected {
