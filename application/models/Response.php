@@ -267,11 +267,11 @@ abstract class Response extends Dynamic
             return;
         }
         $attributes = array_flip($safeOnly ? $this->getSafeAttributeNames() : $this->attributeNames());
-        foreach($values as $name => $value) {
+        foreach ($values as $name => $value) {
             if (isset($attributes[$name])) {
-                $this->$name=$value;
-            } elseif($safeOnly) {
-                $this->onUnsafeAttribute($name,$value);
+                $this->$name = $value;
+            } elseif ($safeOnly) {
+                $this->onUnsafeAttribute($name, $value);
             } else {
                 throw new Exception(sprintf("Attribute '%s' not found in the model.", $name));
             }

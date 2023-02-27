@@ -5167,9 +5167,7 @@ class LimeExpressionManager
                         if (YII_DEBUG) {
                             throw $ex;
                         }
-                        $message = $this->gT('The data could not be saved because the database doesn\'t match the survey structure.');
-                        LimeExpressionManager::addFrontendFlashMessage('error', $message, $this->sid);
-                        return;
+                        $this->throwFatalError();
                     }
                     $oResponse->decrypt();
                     if (!$oResponse->encryptSave()) {
@@ -9962,6 +9960,35 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
     public function getUpdatedValues(): array
     {
         return $this->updatedValues;
+    }
+
+    /**
+     * Kills the survey session and throws an exception with the specified message.
+     * @param string $message If empty, a default message is used.
+     * @throws Exception
+     */
+    private function throwFatalError($message = null)
+    {
+        if (empty($message)) {
+            $surveyInfo = getSurveyInfo($this->sid, $_SESSION['LEMlang']);
+            if (!empty($surveyInfo['admin'])) {
+                $message = sprintf(
+                    $this->gT("Due to a technical problem, your response could not be saved. Please contact the survey administrator %s (%s) about this problem. You will not be able to proceed with this survey."),
+                    $surveyInfo['admin'],
+                    $surveyInfo['adminemail']
+                );
+            } elseif (!empty(Yii::app()->getConfig("siteadminname"))) {
+                $message = sprintf(
+                    $this->gT("Due to a technical problem, your response could not be saved. Please contact the survey administrator %s (%s) about this problem. You will not be able to proceed with this survey."),
+                    Yii::app()->getConfig("siteadminname"),
+                    Yii::app()->getConfig("siteadminemail")
+                );
+            } else {
+                $message = $this->gT("Due to a technical problem, your response could not be saved. You will not be able to proceed with this survey.");
+            }
+        }
+        killSurveySession($this->sid);
+        throw new Exception($message);
     }
 }
 
