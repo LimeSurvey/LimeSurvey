@@ -5159,7 +5159,18 @@ class LimeExpressionManager
                     return;
                 }
                 if ($oResponse->submitdate == null || Survey::model()->findByPk($this->sid)->alloweditaftercompletion == 'Y') {
-                    $oResponse->setAttributes($aResponseAttributes, false);
+                    try {
+                        $oResponse->setAttributes($aResponseAttributes, false);
+                    } catch (Exception $ex) {
+                        // This can happen if the table is missing fields. It should never happen, but somehow it does.
+                        submitfailed($ex->getMessage());
+                        if (YII_DEBUG) {
+                            throw $ex;
+                        }
+                        $message = $this->gT('The data could not be saved because the database doesn\'t match the survey structure.');
+                        LimeExpressionManager::addFrontendFlashMessage('error', $message, $this->sid);
+                        return;
+                    }
                     $oResponse->decrypt();
                     if (!$oResponse->encryptSave()) {
                         $message = submitfailed('', print_r($oResponse->getErrors(), true)); // $response->getErrors() is array[string[]], then can not join
