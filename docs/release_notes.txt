@@ -34,6 +34,13 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.50 (build 230221) to 3.28.51 (build 230228) February 27, 2023
+-Fixed issue #18532: Data entry screen incorrectly assigns 0 value to empty multiflex array checkbox values (Adam Zammit)
+-Fixed issue #18407: On-page conditions not working when pre-filling question with equation on the same page (#2676) (Denis Chenu)
+#Updated translation: Ukrainian by c_schmitz
+#Updated translation: Bosnian by amer.kurta
+
+
 Changes from 3.28.49 (build 230215) to 3.28.50 (build 230221) February 20, 2023
 -Fixed issue #18492: [security] Updates for several JS libraries (Carsten Schmitz)
 
