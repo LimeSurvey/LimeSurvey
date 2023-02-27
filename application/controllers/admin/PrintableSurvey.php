@@ -57,7 +57,6 @@ class PrintableSurvey extends SurveyCommonAction
             $surveydesc = $aSurveyInfo['surveyls_description'];
             $surveytable = $oSurvey->responsesTableName;
             $surveyexpirydate = $aSurveyInfo['expires'];
-            $surveyfaxto = $aSurveyInfo['faxto'];
             $dateformattype = $aSurveyInfo['surveyls_dateformat'];
 
             Yii::app()->loadHelper('surveytranslator');
@@ -108,9 +107,6 @@ class PrintableSurvey extends SurveyCommonAction
             // }
 
             $arGroups = $oSurvey->groups;
-            if (!isset($surveyfaxto) || !$surveyfaxto and isset($surveyfaxnumber)) {
-                $surveyfaxto = $surveyfaxnumber; //Use system fax number if none is set in survey.
-            }
 
             //if $showsgqacode is enabled at config.php show table name for reference
             $showsgqacode = Yii::app()->getConfig("showsgqacode");
@@ -134,13 +130,6 @@ class PrintableSurvey extends SurveyCommonAction
                 'privacy' => '',
                 'groups' => array(),
             );
-
-            $printarray['fax_to'] = '';
-            if (!empty($surveyfaxto) && $surveyfaxto != '000-00000000') {
-                //If no fax number exists, don't display faxing information!
-                $printarray['fax_to'] = gT("Please fax your completed survey to:") . " $surveyfaxto";
-            }
-
 
             $total_questions = 0;
             $mapquestionsNumbers = array();

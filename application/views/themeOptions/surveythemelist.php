@@ -1,7 +1,7 @@
 
 <div class="row">
     <div class="col-sm-12 content-right">
-        
+
         <?php
         $massiveAction = App()->getController()->renderPartial(
             '/themeOptions/_selector',
@@ -14,7 +14,7 @@
             true,
             false);
         $this->widget('bootstrap.widgets.TbGridView', array(
-            'dataProvider' => $oSurveyTheme->searchGrid(),
+            'dataProvider' => $oSurveyTheme->searchGrid($SurveysGroup->gsid ?? null),
             'filter'       => $oSurveyTheme,
             'id'           => 'themeoptions-grid',
             'htmlOptions'  => ['class' => 'table-responsive grid-view-ls'],
@@ -82,10 +82,10 @@
                     'filter' => false,
                 ),
 
-            ), 
+            ),
             'ajaxUpdate'    => true,
             'ajaxType'      => 'POST',
-            'afterAjaxUpdate' => 'function(id, data){window.LS.doToolTip();bindListItemclick();}', 
+            'afterAjaxUpdate' => 'function(id, data){window.LS.doToolTip();bindListItemclick();}',
         ));
         ?>
 

@@ -6,7 +6,7 @@
 
 <!-- Loop all language, and then hide all but the current selected one with JS. -->
 {% for lang in allLanguages %}
-    <div class="lang-hide lang-{{ lang }}">
+    <div class="lang-hide lang-{{ lang }} {{ first ? 'base-lang' : 'extra-lang' }}">
         {% for scale_id in range(0, scalecount - 1) %}
             {% set anscount = subquestions|length %}
             {# TODO : check the rendering of XSCALES / Y SCALES #}
