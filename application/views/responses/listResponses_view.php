@@ -102,6 +102,8 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                             'id'             => 'id',
                             'class'          => 'CCheckBoxColumn',
                             'selectableRows' => '100',
+                            'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+                            'htmlOptions'       => ['class' => 'ls-sticky-column']
                         ],
                         [
                             'header' => 'id',
@@ -250,7 +252,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                         'header'      => gT('Action'),
                         'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
                         'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
-                        'htmlOptions'       => ['class' => 'text-center button-column ls-sticky-column'],
+                        'htmlOptions'       => ['class' => 'text-center ls-sticky-column'],
                     ];
 
                     $this->widget(
