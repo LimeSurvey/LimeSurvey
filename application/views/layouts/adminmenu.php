@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This view render the main menu bar, with configuration menu
  * @var $sitename
@@ -20,7 +21,7 @@
         <div class="collapse navbar-collapse " id="small-screens-menus">
             <ul class="nav navbar-nav">
                 <!-- active surveys -->
-                <?php if ($activesurveyscount > 0): ?>
+                <?php if ($activesurveyscount > 0) : ?>
                     <li class="nav-item">
                         <a class="nav-link" href="<?php echo $this->createUrl('surveyAdministration/listsurveys/active/Y'); ?>">
                             <?php eT("Active surveys"); ?> <span class="badge"><?php echo $activesurveyscount ?></span>
@@ -56,7 +57,7 @@
                 <?php } ?>
 
                 <!-- Prepended extra menus from plugins -->
-                <?php $this->renderPartial( "application.libraries.MenuObjects.views._extraMenu", ['extraMenus' => $extraMenus, 'prependedMenu' => true]); ?>
+                <?php $this->renderPartial("application.libraries.MenuObjects.views._extraMenu", ['extraMenus' => $extraMenus, 'prependedMenu' => true]); ?>
 
                 <!-- create survey -->
                 <li class="nav-item">
@@ -67,10 +68,21 @@
                 </li>
                 <!-- Surveys menus -->
                 <li class="dropdown-split-left nav-item">
+
+
+                <li class="nav-item d-flex">
                     <a href="<?php echo $this->createUrl("surveyAdministration/listsurveys"); ?>" class="nav-link">
                         <!-- <i class="ri-list-check"></i> -->
                         <?php eT("Surveys"); ?>
                     </a>
+                    <?php if ($activesurveyscount > 0) : ?>
+                        <a href="<?php echo $this->createUrl('surveyAdministration/listsurveys/active/Y'); ?>" class="nav-link ps-0">
+                            <span class="badge"> <?php echo $activesurveyscount ?> </span>
+                        </a>
+                    <?php endif; ?>
+                </li>
+
+
                 </li>
 
                 <!-- Help menu -->
@@ -80,18 +92,8 @@
                 <?php $this->renderPartial("/admin/super/_configuration_menu", $dataForConfigMenu); ?>
 
 
-                <!-- user menu -->
-                <!-- active surveys -->
-                <?php if ($activesurveyscount > 0): ?>
-                    <li class="nav-item">
-                        <a href="<?php echo $this->createUrl('surveyAdministration/listsurveys/active/Y'); ?>" class="nav-link">
-                            <?php eT("Active surveys"); ?> <span class="badge"> <?php echo $activesurveyscount ?> </span>
-                        </a>
-                    </li>
-                <?php endif; ?>
-
                 <!-- Extra menus from plugins -->
-                <?php $this->renderPartial( "application.libraries.MenuObjects.views._extraMenu", ['extraMenus' => $extraMenus, 'prependedMenu' => false]); ?>
+                <?php $this->renderPartial("application.libraries.MenuObjects.views._extraMenu", ['extraMenus' => $extraMenus, 'prependedMenu' => false]); ?>
             </ul>
         </div>
         <div class="collapse navbar-collapse justify-content-end">
@@ -101,7 +103,7 @@
 
                 <li class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" role="button" aria-expanded="false">
-                    <!-- <i class="ri-user-fill"></i> <?php echo Yii::app()->session['user']; ?> <span class="caret"></span></a> -->
+                        <!-- <i class="ri-user-fill"></i> <?php echo Yii::app()->session['user']; ?> <span class="caret"></span></a> -->
                         <span class='rounded-circle text-center d-flex align-items-center justify-content-center me-1'>
                             <?= strtoupper(substr(Yii::app()->session['user'], 0, 1)) ?>
                         </span>
@@ -133,11 +135,11 @@
 <script type="text/javascript">
     //show tooltips
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+    var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl);
     })
 
-    $( document ).ajaxComplete(function(handler) {
+    $(document).ajaxComplete(function(handler) {
         window.LS.doToolTip();
     });
 </script>
