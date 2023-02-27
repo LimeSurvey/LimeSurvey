@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2023-01-30 12:44:51+00:00\n"
+"POT-Creation-Date: 2023-02-27 10:30:58+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -19,12 +19,12 @@ msgstr ""
 
 #: application/controllers/AdminController.php:68
 #: application/controllers/admin/dataentry.php:178
-#: application/controllers/admin/dataentry.php:1562
-#: application/controllers/admin/dataentry.php:1565
-#: application/controllers/admin/dataentry.php:1568
-#: application/controllers/admin/dataentry.php:1596
-#: application/controllers/admin/dataentry.php:1597
+#: application/controllers/admin/dataentry.php:1564
+#: application/controllers/admin/dataentry.php:1567
+#: application/controllers/admin/dataentry.php:1570
 #: application/controllers/admin/dataentry.php:1598
+#: application/controllers/admin/dataentry.php:1599
+#: application/controllers/admin/dataentry.php:1600
 #: application/controllers/admin/questions.php:190
 #: application/controllers/admin/questions.php:220
 #: application/controllers/admin/questions.php:243
@@ -2349,9 +2349,9 @@ msgstr ""
 #: application/controllers/admin/dataentry.php:77
 #: application/controllers/admin/dataentry.php:78
 #: application/controllers/admin/dataentry.php:453
-#: application/controllers/admin/dataentry.php:1522
-#: application/controllers/admin/dataentry.php:2273
-#: application/controllers/admin/dataentry.php:2276
+#: application/controllers/admin/dataentry.php:1524
+#: application/controllers/admin/dataentry.php:2275
+#: application/controllers/admin/dataentry.php:2278
 #: application/views/admin/dataentry/caption_view.php:5
 #: application/views/admin/dataentry/dataentry_header_view.php:3
 #: application/views/admin/responses/browsemenubar_view.php:47
@@ -2542,7 +2542,7 @@ msgstr ""
 msgid "File name"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1240
+#: application/controllers/admin/dataentry.php:1242
 #: application/extensions/SettingsWidget/SettingsWidget.php:565
 #: application/helpers/qanda_helper.php:1097
 #: application/views/admin/dataentry/content_view.php:75
@@ -2561,7 +2561,7 @@ msgstr ""
 msgid "Clear selection"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1241
+#: application/controllers/admin/dataentry.php:1243
 #: application/extensions/SettingsWidget/SettingsWidget.php:566
 #: application/helpers/qanda_helper.php:1098
 #: application/views/admin/dataentry/content_view.php:76
@@ -2579,7 +2579,7 @@ msgstr ""
 msgid "Previous month"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1242
+#: application/controllers/admin/dataentry.php:1244
 #: application/extensions/SettingsWidget/SettingsWidget.php:567
 #: application/helpers/qanda_helper.php:1099
 #: application/views/admin/dataentry/content_view.php:77
@@ -2597,7 +2597,7 @@ msgstr ""
 msgid "Next month"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1243
+#: application/controllers/admin/dataentry.php:1245
 #: application/extensions/SettingsWidget/SettingsWidget.php:568
 #: application/helpers/qanda_helper.php:1100
 #: application/views/admin/dataentry/content_view.php:78
@@ -2615,7 +2615,7 @@ msgstr ""
 msgid "Select year"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1244
+#: application/controllers/admin/dataentry.php:1246
 #: application/extensions/SettingsWidget/SettingsWidget.php:569
 #: application/helpers/qanda_helper.php:1101
 #: application/views/admin/dataentry/content_view.php:79
@@ -2633,7 +2633,7 @@ msgstr ""
 msgid "Previous year"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1245
+#: application/controllers/admin/dataentry.php:1247
 #: application/extensions/SettingsWidget/SettingsWidget.php:570
 #: application/helpers/qanda_helper.php:1102
 #: application/views/admin/dataentry/content_view.php:80
@@ -2651,7 +2651,7 @@ msgstr ""
 msgid "Next year"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1246
+#: application/controllers/admin/dataentry.php:1248
 #: application/extensions/SettingsWidget/SettingsWidget.php:571
 #: application/helpers/qanda_helper.php:1103
 #: application/views/admin/dataentry/content_view.php:81
@@ -2669,7 +2669,7 @@ msgstr ""
 msgid "Select decade"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1247
+#: application/controllers/admin/dataentry.php:1249
 #: application/extensions/SettingsWidget/SettingsWidget.php:572
 #: application/helpers/qanda_helper.php:1104
 #: application/views/admin/dataentry/content_view.php:82
@@ -2687,7 +2687,7 @@ msgstr ""
 msgid "Previous decade"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1248
+#: application/controllers/admin/dataentry.php:1250
 #: application/extensions/SettingsWidget/SettingsWidget.php:573
 #: application/helpers/qanda_helper.php:1105
 #: application/views/admin/dataentry/content_view.php:83
@@ -2705,7 +2705,7 @@ msgstr ""
 msgid "Next decade"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1249
+#: application/controllers/admin/dataentry.php:1251
 #: application/extensions/SettingsWidget/SettingsWidget.php:574
 #: application/helpers/qanda_helper.php:1106
 #: application/views/admin/dataentry/content_view.php:84
@@ -2723,7 +2723,7 @@ msgstr ""
 msgid "Previous century"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1250
+#: application/controllers/admin/dataentry.php:1252
 #: application/extensions/SettingsWidget/SettingsWidget.php:575
 #: application/helpers/qanda_helper.php:1107
 #: application/views/admin/dataentry/content_view.php:85
@@ -2741,7 +2741,7 @@ msgstr ""
 msgid "Next century"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1251
+#: application/controllers/admin/dataentry.php:1253
 #: application/extensions/SettingsWidget/SettingsWidget.php:576
 #: application/helpers/qanda_helper.php:1108
 #: application/views/admin/dataentry/content_view.php:86
@@ -2758,7 +2758,7 @@ msgstr ""
 msgid "Select time"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1280
+#: application/controllers/admin/dataentry.php:1282
 #: application/controllers/admin/labels.php:220
 #: application/controllers/admin/surveyadmin.php:1944
 #: application/controllers/admin/usergroups.php:178
@@ -2806,7 +2806,7 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1365
+#: application/controllers/admin/dataentry.php:1367
 #: application/controllers/admin/questions.php:60
 #: application/controllers/admin/responses.php:67
 #: application/controllers/admin/statistics.php:117
@@ -2817,83 +2817,83 @@ msgstr ""
 msgid "Invalid survey ID"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1370
+#: application/controllers/admin/dataentry.php:1372
 msgid "Invalid ID"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1412
-#: application/controllers/admin/dataentry.php:1473
+#: application/controllers/admin/dataentry.php:1414
+#: application/controllers/admin/dataentry.php:1475
 msgid "Invalid datetime %s value for %s"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1423
-#: application/controllers/admin/dataentry.php:1443
+#: application/controllers/admin/dataentry.php:1425
+#: application/controllers/admin/dataentry.php:1445
 msgid "Invalid numeric value for %s"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1489
+#: application/controllers/admin/dataentry.php:1491
 msgid "The response record %s was updated."
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1563
+#: application/controllers/admin/dataentry.php:1565
 msgid "This is a closed-access survey, so you must supply a valid token.  Please contact the administrator for assistance."
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1566
+#: application/controllers/admin/dataentry.php:1568
 msgid "The token you have provided is not valid or has already been used."
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1569
+#: application/controllers/admin/dataentry.php:1571
 msgid "There is already a recorded answer for this token"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1572
+#: application/controllers/admin/dataentry.php:1574
 msgid "Follow the following link to update it"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1575
+#: application/controllers/admin/dataentry.php:1577
 #: application/views/admin/responses/browsemenubar_view.php:223
 msgid "Edit this entry"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1578
+#: application/controllers/admin/dataentry.php:1580
 msgid "This surveys uses anonymized responses, so you can't update your response."
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1596
+#: application/controllers/admin/dataentry.php:1598
 #: application/libraries/Save.php:188
 msgid "You must supply a name for this saved session."
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1597
+#: application/controllers/admin/dataentry.php:1599
 #: application/libraries/Save.php:191
 msgid "You must supply a password for this saved session."
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1598
+#: application/controllers/admin/dataentry.php:1600
 #: application/libraries/Save.php:194
 msgid "Your passwords do not match."
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1753
+#: application/controllers/admin/dataentry.php:1755
 msgid "Your survey responses have been saved successfully.  You will be sent a confirmation e-mail. Please make sure to save your password, since we will not be able to retrieve it for you."
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1767
+#: application/controllers/admin/dataentry.php:1769
 msgid "A survey participant entry for the saved survey has been created too."
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1772
+#: application/controllers/admin/dataentry.php:1774
 #: application/libraries/Save.php:275
 msgid "Saved Survey Details"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1773
+#: application/controllers/admin/dataentry.php:1775
 #: application/libraries/Save.php:276
 msgid "Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you."
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1775
+#: application/controllers/admin/dataentry.php:1777
 #: application/libraries/Save.php:278 application/models/Assessment.php:73
 #: application/models/ParticipantAttributeName.php:202
 #: application/models/Surveymenu.php:188
@@ -2909,7 +2909,7 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1776
+#: application/controllers/admin/dataentry.php:1778
 #: application/controllers/admin/useraction.php:139
 #: application/controllers/admin/useraction.php:141
 #: application/controllers/admin/useraction.php:389
@@ -2921,33 +2921,33 @@ msgstr ""
 msgid "Password"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1777
+#: application/controllers/admin/dataentry.php:1779
 #: application/libraries/Save.php:280
 msgid "Reload your survey by clicking on the following link (or pasting it into your browser):"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1783
+#: application/controllers/admin/dataentry.php:1785
 msgid "An email has been sent with details about your saved survey"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1892
+#: application/controllers/admin/dataentry.php:1894
 msgid "Only answer this if the following conditions are met:"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1895
+#: application/controllers/admin/dataentry.php:1897
 msgid "The answer(s) must meet these validation criteria:"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1901
+#: application/controllers/admin/dataentry.php:1903
 msgid "The answer(s) must meet these array_filter criteria:"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2238
+#: application/controllers/admin/dataentry.php:2240
 #: application/controllers/admin/printablesurvey.php:1479
 msgid "Only answer this question for the items you selected in question %s ('%s')"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2247
+#: application/controllers/admin/dataentry.php:2249
 #: application/controllers/admin/printablesurvey.php:1492
 msgid "Only answer this question for the items you did not select in question %s ('%s')"
 msgstr ""
@@ -9310,7 +9310,7 @@ msgid "Poorly terminated expression - expected a constant or variable"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:648
-#: application/helpers/expressions/em_core_helper.php:1678
+#: application/helpers/expressions/em_core_helper.php:1690
 msgid "Undefined variable"
 msgstr ""
 
@@ -9331,7 +9331,7 @@ msgid "Extra token found after expressions"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:794
-#: application/helpers/expressions/em_core_helper.php:1674
+#: application/helpers/expressions/em_core_helper.php:1686
 msgid "Undefined function"
 msgstr ""
 
@@ -9347,35 +9347,35 @@ msgstr ""
 msgid "Expected right parentheses"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:1667
+#: application/helpers/expressions/em_core_helper.php:1679
 msgid "Extra right parentheses detected"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:1683
+#: application/helpers/expressions/em_core_helper.php:1695
 msgid "Unsupported syntax"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:1690
+#: application/helpers/expressions/em_core_helper.php:1702
 msgid "Missing %s closing right parentheses"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2083
+#: application/helpers/expressions/em_core_helper.php:2095
 msgid "Unsupported number of arguments: %s"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2088
+#: application/helpers/expressions/em_core_helper.php:2100
 msgid "Function does not support %s arguments"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2089
+#: application/helpers/expressions/em_core_helper.php:2101
 msgid "Function supports this many arguments, where -1=unlimited: %s"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2300
+#: application/helpers/expressions/em_core_helper.php:2312
 msgid "Tried to pop value off of empty stack"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:3002
+#: application/helpers/expressions/em_core_helper.php:3014
 msgid "Invalid PERL Regular Expression: %s"
 msgstr ""
 
