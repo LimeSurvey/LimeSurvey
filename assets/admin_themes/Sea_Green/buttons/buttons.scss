@@ -3,8 +3,7 @@
 }
 
 .btn {
-    color  : $g-900;
-    border : none;
+    color : $g-900;
     &:hover {
         //default hover
         box-shadow : $btn-hover-boxshadow;
@@ -34,113 +33,121 @@
 //Buttons
 .btn-primary {
     color : $white;
-    &:hover {
+    &:hover, &:focus, &:active, &.active, &:active:focus {
         color            : $white;
         background-color : var(--bs-primary);
-        box-shadow       : $btn-hover-boxshadow;
+        border-color     : var(--bs-primary);
+    }
+    &:hover {
+        box-shadow : $btn-hover-boxshadow;
     }
     &:focus, &:active, &.active, &:active:focus {
-        color            : $white;
-        background-color : var(--bs-primary);
-        box-shadow       : $btn-focus-boxshadow;
+        box-shadow : $btn-focus-boxshadow;
     }
 }
 
 .btn-secondary, .btn-cancel {
     color : $white;
-    &:hover {
+    &:hover, &:focus, &:active, &.active, &:active:focus {
         color            : $white;
         background-color : var(--bs-secondary);
-        box-shadow       : $btn-hover-boxshadow;
+        border-color     : var(--bs-secondary);
+    }
+    &:hover {
+        box-shadow : $btn-hover-boxshadow;
     }
     &:focus, &:active, &.active, &:active:focus, &.dropdown-toggle.show, &.dropdown-toggle.show:focus {
-        color            : $white;
-        background-color : var(--bs-secondary);
-        box-shadow       : $btn-focus-boxshadow;
+        box-shadow : $btn-focus-boxshadow;
     }
 }
 
 .btn-success {
     color : $g-900;
-    &:hover {
+    &:hover, &:focus, &:active, &.active, &:active:focus {
         color            : $g-900;
         background-color : $success;
-        border           : $btn-hover-boxshadow;
+        border-color     : $success;
+    }
+    &:hover {
+        border : $btn-hover-boxshadow;
     }
     &:focus, &:active, &.active, &:active:focus {
-        color            : $g-900;
-        background-color : $success;
-        box-shadow       : $btn-focus-boxshadow;
+        box-shadow : $btn-focus-boxshadow;
     }
 }
 
 .btn-danger {
     color : $g-900;
-    &:hover {
+    &:hover, &:focus, &:active, &.active, &:active:focus {
         color            : $g-900;
         background-color : $error;
-        box-shadow       : $btn-hover-boxshadow;
+        border-color     : $error;
+    }
+    &:hover {
+        box-shadow : $btn-hover-boxshadow;
     }
     &:focus, &:active, &.active, &:active:focus {
-        color            : $g-900;
-        background-color : $error;
-        box-shadow       : $btn-focus-boxshadow;
+        box-shadow : $btn-focus-boxshadow;
     }
 }
 
 .btn-warning {
     color : $g-900;
-    &:hover {
+    &:hover, &:focus, &:active, &.active, &:active:focus {
         color            : $g-900;
         background-color : $warning;
-        box-shadow       : $btn-hover-boxshadow;
+        border-color     : $warning;
+    }
+    &:hover {
+        box-shadow : $btn-hover-boxshadow;
     }
     &:focus, &:active, &.active, &:active:focus {
-        color            : $g-900;
-        background-color : $warning;
-        box-shadow       : $btn-focus-boxshadow;
+        box-shadow : $btn-focus-boxshadow;
     }
 }
 
 .btn-info {
     color : $white;
-    &:hover {
+    &:hover, &:focus, &:active, &.active, &:active:focus {
         color            : $white;
         background-color : var(--bs-info);
-        box-shadow       : $btn-hover-boxshadow;
+        border-color     : var(--bs-info);
+    }
+    &:hover {
+        box-shadow : $btn-hover-boxshadow;
     }
     &:focus, &:active, &.active, &:active:focus {
-        color            : $white;
-        background-color : var(--bs-info);
-        box-shadow       : $btn-focus-boxshadow;
+        box-shadow : $btn-focus-boxshadow;
     }
 }
 
 .btn-light {
     color : $g-900;
-    &:hover {
+    &:hover, &:focus, &:active, &.active, &:active:focus {
         color            : $g-900;
         background-color : var(--bs-light);
-        box-shadow       : $btn-hover-boxshadow;
+        border-color     : var(--bs-light);
+    }
+    &:hover {
+        box-shadow : $btn-hover-boxshadow;
     }
     &:focus, &:active, &.active, &:active:focus {
-        color            : $g-900;
-        background-color : var(--bs-light);
-        box-shadow       : $btn-focus-boxshadow;
+        box-shadow : $btn-focus-boxshadow;
     }
 }
 
 .btn-dark {
     color : $white;
-    &:hover {
+    &:hover, &:focus, &:active, &.active, &:active:focus {
         color            : $white;
         background-color : $g-900;
-        box-shadow       : $btn-hover-boxshadow;
+        border-color     : $g-900;
+    }
+    &:hover {
+        box-shadow : $btn-hover-boxshadow;
     }
     &:focus, &:active, &.active, &:active:focus {
-        color            : $white;
-        background-color : $g-900;
-        box-shadow       : $btn-focus-boxshadow;
+        box-shadow : $btn-focus-boxshadow;
     }
 }
 
