@@ -10,7 +10,7 @@ class SurveyTest extends BaseModelTestCase
     {
         parent::setupBeforeClass();
 
-        \SettingGlobal::setSetting('timeadjust', '+0 hours');
+        \SettingGlobal::setSetting('timeadjust', '+420 minutes');
     }
 
     public function testInactiveSurve(): void
