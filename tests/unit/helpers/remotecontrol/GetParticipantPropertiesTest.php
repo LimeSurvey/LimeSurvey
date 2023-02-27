@@ -36,4 +36,24 @@ class GetParticipantPropertiesTest extends BaseTest
         $result = $this->handler->get_participant_properties($sessionKey, self::$surveyId, 3);
         $this->assertArrayHasKey('status', $result);
     }
+
+    public function testGetCommonParticipantProperties(): void
+    {
+        $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
+        $participant_1 = $this->handler->get_participant_properties($sessionKey, self::$surveyId, 1);
+        $participant_2 = $this->handler->get_participant_properties($sessionKey, self::$surveyId, 2);
+
+        $this->assertSame($participant_1['attribute_1'], 'Test attribute for Participant 1', 'The user attributes do not match.');
+        $this->assertSame($participant_2['attribute_1'], 'Test attribute for Participant 2', 'The user attributes do not match.');
+    }
+
+    public function testGetEncryptedParticipantProperties(): void
+    {
+        $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
+        $participant_1 = $this->handler->get_participant_properties($sessionKey, self::$surveyId, 1);
+        $participant_2 = $this->handler->get_participant_properties($sessionKey, self::$surveyId, 2);
+
+        $this->assertSame($participant_1['attribute_2'], 'Encrypted attribute for Participant 1', 'The encrypted user attributes do not match.');
+        $this->assertSame($participant_2['attribute_2'], 'Encrypted attribute for Participant 2', 'The encrypted user attributes do not match.');
+    }
 }
