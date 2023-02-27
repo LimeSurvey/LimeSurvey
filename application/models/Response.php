@@ -255,4 +255,26 @@ abstract class Response extends Dynamic
         }
         return $aAttributes;
     }
+
+    /**
+     * Override to throw Exception when attribute is missing, as we need to avoid
+     * data loss in case of mismatch between survey structure and table schema.
+     * @inheritdoc
+     */
+    public function setAttributes($values, $safeOnly = true)
+    {
+        if (!is_array($values)) {
+            return;
+        }
+        $attributes = array_flip($safeOnly ? $this->getSafeAttributeNames() : $this->attributeNames());
+        foreach ($values as $name => $value) {
+            if (isset($attributes[$name])) {
+                $this->$name = $value;
+            } elseif ($safeOnly) {
+                $this->onUnsafeAttribute($name, $value);
+            } else {
+                throw new Exception(sprintf("Attribute '%s' not found in the model.", $name));
+            }
+        }
+    }
 }
