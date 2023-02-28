@@ -5,6 +5,10 @@
   border-bottom: none;
   border-radius: 0;
   padding: 0;
+  .nav-item {
+    display: flex;
+    align-items: center;
+  }
   .navbar-brand {
     font-style: normal;
     font-weight: 700;
@@ -54,6 +58,11 @@
     & > li > a {
       font-weight : $font-weight-500;
     }
+  }
+  .btn-create {
+    height: 36px;
+    width: 36px;
+    padding: 0px;
   }
 }
 

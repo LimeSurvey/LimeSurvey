@@ -62,28 +62,25 @@
                 <!-- create survey -->
                 <li class="nav-item">
                     <a href="<?php echo $this->createUrl("surveyAdministration/newSurvey"); ?>" class="nav-link">
-                        <!-- <i class="ri-add-circle-fill"></i> -->
-                        <?php eT("Create survey"); ?>
+                        <button type="button" class="btn btn-primary-3 btn-create">
+                            <i class="ri-add-line"></i>
+                        </button>
                     </a>
                 </li>
                 <!-- Surveys menus -->
-                <li class="dropdown-split-left nav-item">
 
-
-                <li class="nav-item d-flex">
-                    <a href="<?php echo $this->createUrl("surveyAdministration/listsurveys"); ?>" class="nav-link">
-                        <!-- <i class="ri-list-check"></i> -->
-                        <?php eT("Surveys"); ?>
-                    </a>
+                <li
+                    class="nav-item d-flex"><a
+                        href="<?php echo $this->createUrl("surveyAdministration/listsurveys"); ?>"
+                        class="nav-link ps-0"><?php eT("Surveys"); ?></a>
                     <?php if ($activesurveyscount > 0) : ?>
-                        <a class="nav-link ps-0 active-surveys" href="<?php echo $this->createUrl('surveyAdministration/listsurveys/active/Y'); ?>">
-                            <span class="badge"> <?php echo $activesurveyscount ?> </span>
-                        </a>
+                        <a
+                            class="nav-link ps-0 active-surveys"
+                            href="<?php echo $this->createUrl('surveyAdministration/listsurveys/active/Y'); ?>"
+                        ><span class="badge"> <?php echo $activesurveyscount ?> </span></a>
                     <?php endif; ?>
                 </li>
 
-
-                </li>
 
                 <!-- Help menu -->
                 <?php $this->renderPartial("/admin/super/_help_menu", []); ?>
