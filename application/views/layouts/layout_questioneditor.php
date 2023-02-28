@@ -35,7 +35,7 @@ echo ' <!-- Survey page, started in SurveyCommonAction::renderWrappedTemplate() 
 $layoutHelper->renderSurveySidemenu($aData);
 
 echo '<div '
-    . 'class="pb-5 ls-flex-column align-items-flex-start align-content-flex-start col-11 ls-flex-item transition-animate-width main-content-container" '
+    . 'class="ls-flex-column align-items-flex-start align-content-flex-start col-11 ls-flex-item transition-animate-width main-content-container" '
     . '>';
 
 echo '<div id="pjax-content" class="col-12 mb-5 mt-6 pt-2">';
@@ -50,7 +50,6 @@ $layoutHelper->notifications();
 
 echo $content;
 
-echo "</div>\n";
 echo "</div>\n";
 echo "</div>\n";
 echo "</div>\n";
