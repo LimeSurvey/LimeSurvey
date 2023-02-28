@@ -4,6 +4,7 @@ Yii::import('application.helpers.common_helper', true);
 Yii::import('application.helpers.globalsettings_helper', true);
 
 $aData = App()->getController()->aData;
+// print_r(App()->getController())
 
 $layoutHelper = new LayoutHelper();
 
@@ -52,7 +53,6 @@ echo $content;
 
 echo "</div>\n";
 echo "</div>\n";
-echo "</div>\n";
 echo "<!-- END LAYOUT_INSURVEY -->";
 
 // Footer
@@ -65,6 +65,8 @@ if (!Yii::app()->user->isGuest) {
     if (!isset($aData['display']['footer']) || $aData['display']['footer'] !== false) {
         //Yii::app()->getController()->_getAdminFooter('http://manual.limesurvey.org', gT('LimeSurvey online manual'));
         $layoutHelper->getAdminFooter('http://manual.limesurvey.org');
+        echo "</div>\n";
+        echo "</div>\n";
     }
 } else {
     echo '</body>
