@@ -162,16 +162,17 @@ class SettingsWidget extends CWidget
      * @param boolean $return
      * @param string $wrapper
      * @return string|void
+     * @throws CHttpException
      */
     public function renderSetting($name, $metaData, $form = null, $return = false, $wrapper = 'div')
     {
-        // TODO: Weird hack that fixes some rendering issues after moving to Bootstrap2
-        echo "&nbsp;";
-
         // No type : invalid setting
         if (!isset($metaData['type'])) {
-            // TODO: assert or throw exception
-            return "";
+            throw new CHttpException(405, 'invalid settings type');
+        }
+        $wrapperCss = '';
+        if ($metaData['type'] === 'radio' || 'checkbox') {
+            $wrapperCss = "align-items-center";
         }
 
         // Fix $metaData
@@ -200,7 +201,7 @@ class SettingsWidget extends CWidget
         $result=CHtml::tag(
             $wrapper,
             [
-                'class'     => "mb-3 row setting setting-{$metaData['type']}",
+                'class'     => "mb-3 row setting setting-{$metaData['type']} $wrapperCss",
                 'data-name' => $name
             ],
             $content
@@ -267,7 +268,7 @@ class SettingsWidget extends CWidget
         $metaData = array_merge($defaults, $metaData);
 
         // col-md-6/col-md-6 used in survey settings, sm-4/sm-6 in global : use sm-4/sm-6 for plugins ?
-        $metaData['labelOptions']['class'].=" col-form-label text-end col-md-{$this->labelWidth} p-0";
+        $metaData['labelOptions']['class'].=" col-form-label text-end col-md-{$this->labelWidth}";
         // Set the witdth of control-option according to existence of label
         if (!isset($metaData['label'])) {
             $metaData['controlOptions']['class'].=" col-12";
