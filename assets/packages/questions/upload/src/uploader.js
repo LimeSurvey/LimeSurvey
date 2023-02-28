@@ -25,7 +25,7 @@ var uploadHandler = function (qid, options) {
             previewContainer.append('<div class="upload-placeholder"></div>');
         }
 
-        previewContainer.append('<span class="file-name">' + escapeHtml(decodeURIComponent(item.name)) + '</span>');
+        previewContainer.append('<span class="file-name">' + escapeHtml(item.name) + '</span>');
 
         if ($('#' + fieldname + '_show_title').val() == 1 || $('#' + fieldname + '_show_comment').val() == 1) {
 
