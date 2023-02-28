@@ -4,6 +4,7 @@ Yii::import('application.helpers.common_helper', true);
 Yii::import('application.helpers.globalsettings_helper', true);
 
 $aData = App()->getController()->aData;
+// print_r(App()->getController())
 
 $layoutHelper = new LayoutHelper();
 
@@ -35,7 +36,7 @@ echo ' <!-- Survey page, started in SurveyCommonAction::renderWrappedTemplate() 
 $layoutHelper->renderSurveySidemenu($aData);
 
 echo '<div '
-    . 'class="pb-5 ls-flex-column align-items-flex-start align-content-flex-start col-11 ls-flex-item transition-animate-width main-content-container" '
+    . 'class="ls-flex-column align-items-flex-start align-content-flex-start col-11 ls-flex-item transition-animate-width main-content-container" '
     . '>';
 
 echo '<div id="pjax-content" class="col-12 mb-5 mt-6 pt-2">';
@@ -52,8 +53,6 @@ echo $content;
 
 echo "</div>\n";
 echo "</div>\n";
-echo "</div>\n";
-echo "</div>\n";
 echo "<!-- END LAYOUT_INSURVEY -->";
 
 // Footer
@@ -66,6 +65,8 @@ if (!Yii::app()->user->isGuest) {
     if (!isset($aData['display']['footer']) || $aData['display']['footer'] !== false) {
         //Yii::app()->getController()->_getAdminFooter('http://manual.limesurvey.org', gT('LimeSurvey online manual'));
         $layoutHelper->getAdminFooter('http://manual.limesurvey.org');
+        echo "</div>\n";
+        echo "</div>\n";
     }
 } else {
     echo '</body>
