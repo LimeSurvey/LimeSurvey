@@ -64,41 +64,41 @@ $importModal = false;
 <!-- theme dropdown select boxes-->
 
             <!-- Right Menu -->
-            <div class="col">
-            <div class="row row-cols-lg-auto gx-1 gy-0 text-end">
-                <!-- Theme Select Box -->
-                <label class="col col-form-label text-nowrap" for='templatedir'><?php eT("Theme:"); ?></label>
-                <div class="col">
-                    <select class="col listboxtemplates form-select" id='templatedir' name='templatedir'
-                            onchange="javascript: var uri = new Uri('<?php
-                            // Don't put 'sa' into the URL dirctly because Yii will then try to use filenames directly in the path because of the route
-                            echo $this->createUrl("admin/themes",
-                                [
-                                    'sa'         => 'view',
-                                    'editfile'   => $relativePathEditfile,
-                                    'screenname' => $screenname
-                                ]); ?>'); uri.addQueryParam('templatename',this.value); window.open(uri.toString(), '_top')">
-                        <?php echo themeoptions($templates, $templatename); ?>
-                    </select>
-                </div>
-
-                <!-- Screen Select Box -->
-                <label class="col col-form-label text-nowrap" for='listboxtemplates'><?php eT("Screen:"); ?></label>
-                <div>
-                    <?php echo CHtml::dropDownList('screenname',
-                        $screenname,
-                        $screens,
+<div class="container-fluid mt-3 mb-3">
+    <div class="row row-cols-auto align-items-center justify-content-end gx-2">
+        <!-- Theme Select Box -->
+        <label class="col col-form-label text-nowrap" for='templatedir'><?php eT("Theme:"); ?></label>
+        <div class="col">
+            <select class="col listboxtemplates form-select" id='templatedir' name='templatedir'
+                    onchange="javascript: var uri = new Uri('<?php
+                    // Don't put 'sa' into the URL dirctly because Yii will then try to use filenames directly in the path because of the route
+                    echo $this->createUrl("admin/themes",
                         [
-                            'id'       => 'listboxtemplates',
-                            'class'    => "col listboxtemplates form-select",
-                            'onchange' => "javascript:  var uri = new Uri('" . $this->createUrl("admin/themes",
-                                    [
-                                        'sa'           => 'view',
-                                        'editfile'     => $relativePathEditfile,
-                                        'templatename' => $templatename
-                                    ]) . "'); uri.addQueryParam('screenname',this.value); window.open(uri.toString(), '_top')"
-                        ]); ?>
-                </div>
+                            'sa'         => 'view',
+                            'editfile'   => $relativePathEditfile,
+                            'screenname' => $screenname
+                        ]); ?>'); uri.addQueryParam('templatename',this.value); window.open(uri.toString(), '_top')">
+                <?php echo themeoptions($templates, $templatename); ?>
+            </select>
+        </div>
+
+        <!-- Screen Select Box -->
+        <label class="col col-form-label text-nowrap" for='listboxtemplates'><?php eT("Screen:"); ?></label>
+        <div>
+            <?php echo CHtml::dropDownList('screenname',
+                $screenname,
+                $screens,
+                [
+                    'id'       => 'listboxtemplates',
+                    'class'    => "col listboxtemplates form-select",
+                    'onchange' => "javascript:  var uri = new Uri('" . $this->createUrl("admin/themes",
+                            [
+                                'sa'           => 'view',
+                                'editfile'     => $relativePathEditfile,
+                                'templatename' => $templatename
+                            ]) . "'); uri.addQueryParam('screenname',this.value); window.open(uri.toString(), '_top')"
+                ]); ?>
+        </div>
 
         <?php if (isset($fullpagebar['savebutton']['form'])) : ?>
             <a class="btn btn-primary" href="#" role="button" id="save-form-button"
@@ -109,41 +109,41 @@ $importModal = false;
         <?php endif; ?>
 
     </div>
-</div>
 
-<!-- Template Editor -->
-<div class="col-12 templateeditor">
+    <!-- Template Editor -->
+    <div class="col-12 templateeditor">
 
-    <?php if (!is_template_editable($templatename)) : ?>
-        <?php
-        $message = '<strong>' .
-            gT('Note: This is a standard theme.') .
-            '</strong> ' .
-            sprintf(
-                gT('If you want to modify it %s you can extend it%s.'),
-                "<a href='#' title=\"" . gT("Extend theme") . "\""
-                . " onclick=\"javascript: copyprompt('" . gT("Please enter the name for the new theme:") . "', '" . gT("extends_") . "$templatename', '$templatename', 'copy')\">",
-                '</a>'
+        <?php if (!is_template_editable($templatename)) : ?>
+            <?php
+            $message = '<strong>' .
+                gT('Note: This is a standard theme.') .
+                '</strong> ' .
+                sprintf(
+                    gT('If you want to modify it %s you can extend it%s.'),
+                    "<a href='#' title=\"" . gT("Extend theme") . "\""
+                    . " onclick=\"javascript: copyprompt('" . gT("Please enter the name for the new theme:") . "', '" . gT("extends_") . "$templatename', '$templatename', 'copy')\">",
+                    '</a>'
+                );
+            $this->widget('ext.AlertWidget.AlertWidget', [
+                'text' => $message,
+                'type' => 'info',
+            ]);
+            ?>
+        <?php endif; ?>
+        <?php if ((int)$templateapiversion < (int)App()->getConfig("templateapiversion")) : ?>
+            <?php
+            $message = sprintf(
+                gT(
+                    'We can not guarantee optimum operation. It would be preferable to no longer use it or to make it compatible with the version %s of the LimeSurvey API.'
+                ),
+                intval(App()->getConfig("versionnumber"))
             );
-        $this->widget('ext.AlertWidget.AlertWidget', [
-            'text' => $message,
-            'type' => 'info',
-        ]);
-        ?>
-    <?php endif; ?>
-    <?php if ((int)$templateapiversion < (int)App()->getConfig("templateapiversion")) : ?>
-        <?php
-        $message = sprintf(
-            gT(
-                'We can not guarantee optimum operation. It would be preferable to no longer use it or to make it compatible with the version %s of the LimeSurvey API.'
-            ),
-            intval(App()->getConfig("versionnumber"))
-        );
-        $this->widget('ext.AlertWidget.AlertWidget', [
-            'header' => gT('This theme is out of date.'),
-            'text' => $message,
-            'type' => 'info',
-        ]);
-        ?>
-    <?php endif; ?>
+            $this->widget('ext.AlertWidget.AlertWidget', [
+                'header' => gT('This theme is out of date.'),
+                'text' => $message,
+                'type' => 'info',
+            ]);
+            ?>
+        <?php endif; ?>
+    </div>
 </div>

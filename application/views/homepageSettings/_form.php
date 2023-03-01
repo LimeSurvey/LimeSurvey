@@ -70,7 +70,7 @@
                 <ul class='dropdown-menu'>
                     <li>
                         <?php foreach ($icons as $icon) : ?>
-                            <a href="#">
+                            <a href="#" class="m-2">
                                 <span data-icon='<?php echo $icon['icon']; ?>' data-iconId='<?php echo $icon['id']; ?>' class='option-icon <?php echo $icon['icon']; ?>'></span>
                             </a>
                         <?php endforeach; ?>

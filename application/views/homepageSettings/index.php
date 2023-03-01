@@ -110,7 +110,7 @@ App()->getClientScript()->registerScript(
                 <div id="boxsettings" class="tab-pane fade">
 
                     <div class="row">
-                        <label class="col-md-2 form-label"><?php eT("Display logo:"); ?> </label>
+                        <label class="col-md-2 col-form-label"><?php eT("Display logo:"); ?> </label>
                         <div class="col-md-2">
                             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                 'name'          => 'show_logo',
@@ -118,12 +118,12 @@ App()->getClientScript()->registerScript(
                                 'selectOptions' => [
                                     '1' => gT('On'),
                                     '0' => gT('Off'),
-                                ],
+                                ]
                             ]); ?>
                             <input type="hidden" id="show_logo-url" data-url="<?php echo App()->createUrl('homepageSettings/toggleShowLogoStatus'); ?>"/>
                         </div>
 
-                        <label class="col-md-2 form-label"><?php eT("Show last visited survey and question:"); ?> </label>
+                        <label class="col-md-2 col-form-label"><?php eT("Show last visited survey and question:"); ?> </label>
                         <div class="col-md-2">
                             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                 'name'          => 'show_last_survey_and_question',
@@ -140,7 +140,7 @@ App()->getClientScript()->registerScript(
                     </div>
 
                     <div class="row">
-                        <label class="col-md-2 form-label"><?php eT("Show survey list:"); ?> </label>
+                        <label class="col-md-2 col-form-label"><?php eT("Show survey list:"); ?> </label>
                         <div class="col-md-2">
                             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                 'name'          => 'show_survey_list',
@@ -153,7 +153,7 @@ App()->getClientScript()->registerScript(
                             <input type="hidden" id="show_survey_list-url" data-url="<?php echo App()->createUrl('homepageSettings/toggleShowSurveyList'); ?>"/>
                         </div>
 
-                        <label class="col-md-2 form-label"><?php eT("Show search box on survey list:"); ?> </label>
+                        <label class="col-md-2 col-form-label"><?php eT("Show search box on survey list:"); ?> </label>
                         <div class="col-md-2">
                             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                 'name'          => 'show_survey_list_search',
@@ -170,7 +170,7 @@ App()->getClientScript()->registerScript(
                     </div>
 
                     <div class="row">
-                        <label class="col-md-2 form-label"><?php eT("Wrap container around boxes"); ?> </label>
+                        <label class="col-md-2 col-form-label"><?php eT("Wrap container around boxes"); ?> </label>
                         <div class="col-md-2">
                             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                 'name'          => 'boxes_in_container',
@@ -187,11 +187,11 @@ App()->getClientScript()->registerScript(
                     </div>
 
                     <div class="row">
-                        <label class="col-md-2 form-label"><?php eT("Boxes by row:"); ?></label>
+                        <label class="col-md-2 col-form-label"><?php eT("Boxes by row:"); ?></label>
                         <div class="col-md-1">
                             <input class="form-control" type="number" id="iBoxesByRow" value="<?php echo $iBoxesByRow; ?>" max="6" min="0" name="boxes_by_row"/>
                         </div>
-                        <label class="col-md-2 offset-md-1 form-label"><?php eT("Box orientation:"); ?></label>
+                        <label class="col-md-2 offset-md-1 col-form-label"><?php eT("Box orientation:"); ?></label>
                         <div class="col-md-1">
                             <select class="form-select" id="iBoxesOffset" name="boxes_offset">
                                 <option value="1" <?php if ($iBoxesOffset == '1') {

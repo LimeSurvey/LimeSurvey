@@ -57,7 +57,7 @@
 
     <!-- Warnings -->
     <?php if (count($aImportResults['importwarnings'])>0):?>
-        <h2 class='text-warning'><?php eT("Warnings"); ?>:</h2>
+        <h2 class='text-danger'><?php eT("Warnings"); ?>:</h2>
         <p>
                 <ul style="text-align:left;">
                 <?php foreach ($aImportResults['importwarnings'] as $warning)

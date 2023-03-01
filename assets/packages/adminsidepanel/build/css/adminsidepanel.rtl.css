@@ -264,6 +264,10 @@
   font-size: 13rem;
 }
 
+.simpleWrapper {
+  z-index: 999;
+}
+
 @media (max-width: 768px) {
   .navbar-header {
     background: white;

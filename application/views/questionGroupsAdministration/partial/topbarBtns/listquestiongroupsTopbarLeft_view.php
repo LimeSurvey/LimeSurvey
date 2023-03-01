@@ -24,7 +24,7 @@ if ($oSurvey->isActive) : ?>
             [
                 'name' => 'import-group-button',
                 'text' => gT('Import group'),
-                'icon' => 'ri-upload-fill',
+                'icon' => 'ri-download-2-fill',
                 'htmlOptions' => [
                     'class' => 'btn btn-outline-secondary btntooltip',
                     'disabled' => 'disabled',
@@ -56,7 +56,7 @@ if ($oSurvey->isActive) : ?>
         [
             'name' => 'import-group-button',
             'text' => gT('Import group'),
-            'icon' => 'ri-upload-fill',
+            'icon' => 'ri-download-2-fill',
             'link' => Yii::App()->createUrl("questionGroupsAdministration/importview/surveyid/" . $oSurvey->sid),
             'htmlOptions' => [
                 'class' => 'btn btn-outline-secondary',

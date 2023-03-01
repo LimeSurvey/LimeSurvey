@@ -373,6 +373,7 @@ export default {
         if (this.$store.getters.isCollapsed) {
             this.sideBarWidth = "98";
         } else {
+          console.log('Created: ' + self.$store.state.sidebarwidth);
             this.sideBarWidth = self.$store.state.sidebarwidth;
         }
         LS.ld.each(window.SideMenuData.basemenus, this.setBaseMenuPosition)
@@ -479,7 +480,7 @@ export default {
                 class="col-12 mainContentContainer"
                 key="mainContentContainer"
             >
-                <div class="mainMenu container-fluid col-12" style="position: relative;">
+                <div class="mainMenu container-fluid col-12 position-relative h-100" >
                     <sidebar-state-toggle @collapse="toggleCollapse"/>
                     <transition name="slide-fade">
                         <sidemenu 

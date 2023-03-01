@@ -1,8 +1,15 @@
 <?php
 
 /** @var Survey $oSurvey */
-
 /** @var Question $oQuestion */
+/** @var array $aQuestionTypeGroups */
+/** @var array $advancedSettings */
+/** @var array $generalSettings */
+/** @var bool $showScriptField */
+/** @var string $jsVariablesHtml */
+/** @var string $modalsHtml */
+/** @var string $selectormodeclass */
+
 ?>
 
 <style>
@@ -60,97 +67,62 @@ $questionTheme = !empty($oQuestion->questionTheme) ? $oQuestion->questionTheme :
         name="savecreate"
     />
     <div id="advanced-question-editor" class="row"<?= empty($visibilityEditor) ? ' style="display:none;"' : '' ?>>
-        <div class="col-xl-7">
-            <div class="scoped-new-questioneditor">
-                <div class="pagetitle h3 scoped-unset-pointer-events">
-                    <x-test id="action::addQuestion"></x-test>
-                    <?php if ($oQuestion->qid === 0): ?>
-                        <?= gT('Create question'); ?>
-                    <?php else: ?>
-                        <?= gT('Edit question'); ?>
-                    <?php endif; ?>
-                </div>
-
-                <div class="row">
-                    <!-- Question code -->
+        <x-test id="action::addQuestion"></x-test>
+        <div class="col-xl-8 ps-4 pe-3">
+            <div class="row">
+                <div class="col-12">
+                    <!-- Text elements -->
                     <?php
                     $this->renderPartial(
-                        "questionCode",
-                        ['question' => $oQuestion]
-                    ); ?>
-                    <!-- Language selector -->
-                    <?php $this->renderPartial(
-                        "languageselector",
-                        ['oSurvey' => $oSurvey]
-                    ); ?>
-                </div>
-
-                <!-- Question type selector -->
-                <div class="row">
-                    <?php
-                    $this->renderPartial(
-                        "typeSelector",
+                        "textElements",
                         [
                             'oSurvey' => $oSurvey,
                             'question' => $oQuestion,
-                            'aQuestionTypeGroups' => $aQuestionTypeGroups,
-                            'questionTheme' => $questionTheme,
-                            'selectormodeclass' => $selectormodeclass,
+                            //'aStructureArray' => $aQuestionTypeGroups,
+                            'showScriptField' => $showScriptField,
                         ]
                     ); ?>
                 </div>
-
-                <div class="row">
-                    <div class="col-12">
-                        <!-- Text elements -->
-                        <?php $this->renderPartial(
-                            "textElements",
-                            [
-                                'oSurvey' => $oSurvey,
-                                'question' => $oQuestion,
-                                //'aStructureArray' => $aQuestionTypeGroups,
-                                'showScriptField' => $showScriptField,
-                            ]
-                        ); ?>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <?php $this->renderPartial(
-                        "extraOptions",
-                        [
-                            'question' => $oQuestion,
-                            'survey' => $oSurvey,
-                        ]
-                    ); ?>
-                </div>
-
             </div>
-        </div>
-        <div class="col-xl-5">
-            <div class="container">
-                <div class="pagetitle h3">
-                    <?= gT('Settings'); ?>
-                </div>
-                <div class="row">
-                    <div class="col-12" id="accordion-container">
-                        <div class="accordion" id="accordion" role="tablist">
-                            <!-- General settings -->
-                            <?php
-                            $this->renderPartial("generalSettings", ['generalSettings' => $generalSettings]); ?>
 
-                            <!-- Advanced settings -->
-                            <?php
-                            $this->renderPartial(
-                                "advancedSettings",
-                                [
-                                    'oSurvey' => $oSurvey,
-                                    'advancedSettings' => $advancedSettings,
-                                ]
-                            ); ?>
-                        </div>
-                    </div>
-                </div>
+            <div class="row">
+                <?php
+                $this->renderPartial(
+                    "extraOptions",
+                    [
+                        'question' => $oQuestion,
+                        'survey' => $oSurvey,
+                    ]
+                ); ?>
+            </div>
+
+        </div>
+        <div class="col-xl-4 settings-accordion-container">
+            <div class="accordion" id="accordion" role="tablist">
+                <!-- General settings -->
+                <?php
+                $this->renderPartial(
+                    "generalSettings",
+                    [
+                        'generalSettings' => $generalSettings,
+                        'oSurvey' => $oSurvey,
+                        'question' => $oQuestion,
+                        'aQuestionTypeGroups' => $aQuestionTypeGroups,
+                        'questionTheme' => $questionTheme,
+                        'selectormodeclass' => $selectormodeclass,
+                    ]
+                );
+                ?>
+
+                <!-- Advanced settings -->
+                <?php
+                $this->renderPartial(
+                    "advancedSettings",
+                    [
+                        'oSurvey' => $oSurvey,
+                        'advancedSettings' => $advancedSettings,
+                    ]
+                ); ?>
             </div>
         </div>
     </div>

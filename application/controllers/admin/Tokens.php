@@ -1448,7 +1448,7 @@ class Tokens extends SurveyCommonAction
                         $mailLanguage = $sBaseLanguage;
                         $tokenoutput .= CHtml::tag(
                             "div",
-                            array('class' => 'text-warning'),
+                            array('class' => 'text-danger'),
                             sprintf(gT("Invalid language %s for token ID: %s."), $emrow['language'], $emrow['tid'])
                         );
                     }
@@ -1515,7 +1515,7 @@ class Tokens extends SurveyCommonAction
                             // Add the error when try to save token
                             $tokenSaveError = CHtml::errorSummary(
                                 $oToken,
-                                CHtml::tag("div", array('class' => 'text-warning'), sprintf(gT("An error occurred when saving the sent date for this participant (ID: %s)."), $emrow['tid']))
+                                CHtml::tag("div", array('class' => 'text-danger'), sprintf(gT("An error occurred when saving the sent date for this participant (ID: %s)."), $emrow['tid']))
                             );
                         }
                         // Mark token email as send this session.
@@ -1537,7 +1537,7 @@ class Tokens extends SurveyCommonAction
                         }
                         $tokenoutput .= $tokenSaveError;
                     } else {
-                        $tokenoutput .= $stringInfo . CHtml::tag("span", array('class' => "text-warning"), sprintf(gT("Error message: %s"), $mail->getError())) . "<br>\n";
+                        $tokenoutput .= $stringInfo . CHtml::tag("span", array('class' => "text-danger"), sprintf(gT("Error message: %s"), $mail->getError())) . "<br>\n";
                         if (Yii::app()->getConfig("emailsmtpdebug") > 0) {
                             $tokenoutput .= $mail->getDebug('html');
                         }
@@ -1567,7 +1567,7 @@ class Tokens extends SurveyCommonAction
                     if (!$bInvalidDate && !$bSendError) {
                         $aData['tokenoutput'] .= "<strong class='result success text-success'>" . gT("All emails were sent.") . "<strong>";
                     } else {
-                        $aData['tokenoutput'] .= "<strong class='result warning text-warning'>" . gT("Not all emails were sent:") . "<strong><ul class='list-unstyled'>";
+                        $aData['tokenoutput'] .= "<strong class='result warning text-danger'>" . gT("Not all emails were sent:") . "<strong><ul class='list-unstyled'>";
                         if ($bInvalidDate) {
                             $aData['tokenoutput'] .= "<li>" . gT("Some entries had a validity date set which was not yet valid or not valid anymore.") . "</li>";
                         }

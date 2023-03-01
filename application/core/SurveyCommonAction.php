@@ -499,7 +499,7 @@ class SurveyCommonAction extends CAction
                     'user_id' => App()->user->id,
                     'importance' => Notification::HIGH_IMPORTANCE,
                     'title' => gT('Password warning'),
-                    'message' => '<span class="ri-error-warning-fill text-warning"></span>&nbsp;' .
+                    'message' => '<span class="ri-error-warning-fill"></span>&nbsp;' .
                         gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.")
                 ));
                 $not->save();
@@ -509,7 +509,7 @@ class SurveyCommonAction extends CAction
                     'user_id' => App()->user->id,
                     'importance' => Notification::HIGH_IMPORTANCE,
                     'title' => gT('SSL not enforced'),
-                    'message' => '<span class="ri-error-warning-fill text-warning"></span>&nbsp;' .
+                    'message' => '<span class="ri-error-warning-fill"></span>&nbsp;' .
                         gT("Warning: Please enforce SSL encrpytion in Global settings/Security after SSL is properly configured for your webserver.")
                 ));
                 $not->save();

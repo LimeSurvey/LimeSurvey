@@ -29,7 +29,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
     <td valign='top' align='right' width='30%'>
         <!-- mandatory -->
         <?php if ($deqrow['mandatory']=="Y"):?>
-            <span class="text-warning">*</span>
+            <span class="text-danger">*</span>
         <?php endif; ?>
 
         <!-- question text -->

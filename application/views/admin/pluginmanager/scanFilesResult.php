@@ -14,8 +14,8 @@
                         <?php echo $name; ?>
                     </label>
                     <?php if ($scannedPlugin['load_error'] == 0 && $scannedPlugin['extensionConfig'] == null) : ?>
-                        <i class='ri-forbid-2-line text-warning'></i>&nbsp;
-                        <span class='text-warning'><?php eT('Missing configuration file.'); ?></span>
+                        <i class='ri-forbid-2-line'></i>&nbsp;
+                        <span class='text-danger'><?php eT('Missing configuration file.'); ?></span>
                     <?php elseif ($scannedPlugin['isCompatible']) : ?>
                         <?php echo CHtml::beginForm($installUrl, 'post', ['style' => 'display: inline-block;']); ?>
                         <input type='hidden' name='pluginName' value='<?php echo $name; ?>'/>
@@ -30,11 +30,11 @@
                         && $scannedPlugin['extensionConfig'] != null
                         && !$scannedPlugin['isCompatible']
                     ) : ?>
-                        <i class='ri-forbid-2-line text-warning'></i>&nbsp;
-                        <span class='text-warning'><?php eT('Plugin is not compatible with your LimeSurvey version.'); ?></span>
+                        <i class='ri-forbid-2-line'></i>&nbsp;
+                        <span class='text-danger'><?php eT('Plugin is not compatible with your LimeSurvey version.'); ?></span>
                     <?php else : ?>
-                        <i class='fri-error-warning-fill text-warning'></i>&nbsp;
-                        <span class='text-warning'><?php eT('Load error. Please contact the plugin author.'); ?></span>
+                        <i class='fri-error-warning-fill'></i>&nbsp;
+                        <span class='text-danger'><?php eT('Load error. Please contact the plugin author.'); ?></span>
                     <?php endif; ?>
 
                     <?php if (isset($scannedPlugin['deleteUrl'])) : ?>

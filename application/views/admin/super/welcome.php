@@ -246,3 +246,4 @@ gT('Themes');
 
     <!-- Notification setting -->
     <input type="hidden" id="absolute_notification" />
+</div>

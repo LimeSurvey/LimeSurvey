@@ -94,15 +94,10 @@ export default {
             <div class="d-flex" :class="menuItem.menu_class"
             v-bind:title="reConvertHTML(menuItem.menu_description)"  
             data-bs-toggle="tooltip" >
-                <div class="ls-space padding all-0 me-auto">
-                    <menuicon :icon-type="menuItem.menu_icon_type" :icon="menuItem.menu_icon"></menuicon>
-                    <span v-html="menuItem.menu_title"></span>
+                <div class="ls-space padding all-0 me-auto wrapper">
+                    <menuicon class="icon" :icon-type="menuItem.menu_icon_type" :icon="menuItem.menu_icon"></menuicon>
+                    <span v-html="menuItem.menu_title" class="title"></span>
                     <i class=" ri-external-link-fill" v-if="menuItem.link_external == true">&nbsp;</i>
-                </div>
-                <div class="text-center ls-space padding right-15 background white" v-show="$store.state.lastMenuItemOpen == menuItem.id">
-                    <i
-                        :class="$store.getters.isRTL ? 'fa fa-chevron-left' : 'fa fa-chevron-right'"
-                    >&nbsp;</i>
                 </div>
                 
             </div>

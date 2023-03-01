@@ -157,4 +157,19 @@
 
         </div>
     </div>
+<!-- TODO: duplicate, move grid into partial or other way around -->
+    <div class="row">
+        <div class="col-lg-12 content-right">
+            <?php
+            $this->renderPartial('_overview_table', [
+                'basePermissions' => $basePermissions,
+                'tableContent' => $tableContent,
+                'surveyid' => $surveyid,
+                'oSurveyPermissions' => $oSurveyPermissions
+            ]);
+            ?>
+        </div>
+    </div>
+    <?php $this->renderPartial('/surveyAdministration/_user_management_sub_footer'); ?>
+
 </div>

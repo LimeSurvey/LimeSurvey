@@ -1,4 +1,4 @@
-<div class="btn-group col-12" role="group" data-toggle="buttons"
+<div class="btn-group" role="group" data-toggle="buttons"
     aria-labelledby="label-<?= CHtml::getIdByName($this->generalOption->name); ?>"
     <?= ($this->generalOption->formElement->help) ? 'aria-describedby="help-' . CHtml::getIdByName($this->generalOption->name) . '"' : "" ?>
     >

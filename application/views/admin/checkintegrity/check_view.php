@@ -1,7 +1,6 @@
 <?php
 /* @var $this AdminController */
 /* @var $dataProvider CActiveDataProvider */
-/* @var array $fullpagebar */
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('checkIntegrity');
@@ -278,7 +277,12 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                 </ul>
 
                 <?php if ($integrityok) { ?>
-                    <br/> <?php eT("No database action required!"); ?>
+                    <?php
+                    $this->widget('ext.AlertWidget.AlertWidget', [
+                        'text' => gT("No database action required!"),
+                        'type' => 'success',
+                    ]);
+                    ?>
                 <?php } else { ?>
                     <br/><?php eT("Should we proceed with the delete?"); ?> <br/>
                     <?php echo CHtml::form(["admin/checkintegrity", "sa" => 'fixintegrity'], 'post'); ?>
@@ -302,7 +306,12 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                 </p>
                 <p>
                     <?php if ($redundancyok) { ?>
-                        <br/> <?php eT("No database action required!"); ?>
+                        <?php
+                        $this->widget('ext.AlertWidget.AlertWidget', [
+                            'text' => gT("No database action required!"),
+                            'type' => 'success',
+                        ]);
+                        ?>
                     <?php } else { ?>
                     <?php echo CHtml::form(["admin/checkintegrity", 'sa' => 'fixredundancy'], 'post'); ?>
                 <ul id="data-redundancy-list" class='data-redundancy-list list-unstyled'>
@@ -340,14 +349,17 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                         <?php
                     } ?>
                 </ul>
-                <p>
-                         <input type='hidden' name='ok' value='Y' />
-                        <button  id='delete-checked-items-button' type='submit' name='ok' value='Y' class="btn btn-danger"><?php eT("Delete checked items!"); ?></button>
-                        <br/>
-                        <span class='hint text-warning'>
-                            <?php eT("Note that you cannot undo a delete if you proceed. The data will be gone."); ?>
-                        </span>
-                </p>
+                 <input type='hidden' name='ok' value='Y' />
+                <button id='delete-checked-items-button' type='submit' name='ok' value='Y'
+                        class="btn btn-danger mb-2"><?php
+                        eT("Delete checked items!"); ?>
+                </button>
+                <?php
+                $this->widget('ext.AlertWidget.AlertWidget', [
+                    'text' => gT("Note that you cannot undo a delete if you proceed. The data will be gone."),
+                    'type' => 'warning',
+                ]);
+                ?>
                 </form><?php
                 } ?>
             </div>

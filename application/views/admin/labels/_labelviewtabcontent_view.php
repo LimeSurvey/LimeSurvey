@@ -40,7 +40,7 @@ $codeids = '';
                             <td><?php echo $row['assessment_value'] ?></td>
                         <?php else : ?>
                             <td>
-                                <span class="ri-menu-fill bigIcons text-success"></span>
+                                <span class="ri-menu-fill bigIcons"></span>
                             </td>
 
                             <td>
@@ -77,7 +77,7 @@ $codeids = '';
                                     <?php if ($first) : ?>
                                         <button class="btn btn-outline-secondary btn-sm btnaddanswer" data-bs-toggle="tooltip"
                                                 title="<?php eT("Add label"); ?>">
-                                            <i class="ri-add-circle-fill text-success"></i>
+                                            <i class="ri-add-circle-fill"></i>
                                         </button> <?php // eT("Insert a new label after this one") ?>
                                         <button class="btn btn-outline-secondary btn-sm btndelanswer" data-bs-toggle="tooltip"
                                                 title="<?php eT("Delete label"); ?>">

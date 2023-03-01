@@ -8,8 +8,8 @@
         <div class="col-12 content-right">
             <div class="jumbotron message-box message-box-error">
                 <h2><?php eT("Activate Survey"); echo " ($surveyid)"; ?></h2>
-                <p class="lead text-warning"><strong><?php eT("Error"); ?> !</strong></p>
-                <p class="lead text-warning"><strong><?php eT("Survey does not pass consistency check"); ?></strong></p>
+                <p class="lead text-danger"><strong><?php eT("Error"); ?> !</strong></p>
+                <p class="lead text-danger"><strong><?php eT("Survey does not pass consistency check"); ?></strong></p>
                 <p>
                     <?php eT("The following problems have been found:"); ?>
                 </p>
