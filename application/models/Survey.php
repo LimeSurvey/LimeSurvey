@@ -1141,20 +1141,28 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
 
     /**
-     * @todo Document code, please.
+     * Returns an html link to the survey in the list.
+     * The link will have an icon depending on the state of the survey.
      * @return string
      */
     public function getRunning()
     {
 
-        // If the survey is not active, no date test is needed
+        //The survey is not active.
         if ($this->active == 'N') {
-            $running = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-toggle="tooltip" title="' . gT('Inactive') . '"><span class="fa fa-stop text-warning"></span><span class="sr-only">' . gT('Inactive') . '"</span></a>';
-        } elseif ($this->expires != '' || $this->startdate != '') {
-            // If it's active, then we check if not expired
+            $aLinkData = array(
+                'text' => gT('Inactive'),
+                'iconClass' => 'fa fa-stop text-warning'
+            );
+
+            return $this->getRunningLink($aLinkData);
+        }
+
+        // If it's active, then we check if not expired
+        if ($this->expires != '' || $this->startdate != '') {
             // Time adjust
             $sNow    = date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
-            $sStop   = ($this->expires != '') ? date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->expires))) : null;
+            $sStop   = ($this->expires != '') ? date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->expires))) : $sNow;
             $sStart  = ($this->startdate != '') ? date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->startdate))) : $sNow;
 
             // Time comparaison
@@ -1168,30 +1176,65 @@ class Survey extends LSActiveRecord implements PermissionInterface
             $sStop = $sStop != null ? convertToGlobalSettingFormat($sStop) : null;
             $sStart = convertToGlobalSettingFormat($sStart);
 
-            // Icon generaton (for CGridView)
-            $sIconRunNoEx = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-toggle="tooltip" title="' . gT('End: Never') . '"><span class="fa  fa-play text-success"></span><span class="sr-only">SS' . gT('End: Never') . '</span></a>';
-            $sIconRunning = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-toggle="tooltip" title="' . sprintf(gT('End: %s'), $sStop) . '"><span class="fa  fa-play text-success"></span><span class="sr-only">' . sprintf(gT('End: %s'), $sStop) . '</span></a>';
-            $sIconExpired = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-toggle="tooltip" title="' . sprintf(gT('Expired: %s'), $sStop) . '"><span class="fa fa fa-step-forward text-warning"></span><span class="sr-only">' . sprintf(gT('Expired: %s'), $sStop) . '</span></a>';
-            $sIconFuture  = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-toggle="tooltip" title="' . sprintf(gT('Start: %s'), $sStart) . '"><span class="fa  fa-clock-o text-warning"></span><span class="sr-only">' . sprintf(gT('Start: %s'), $sStart) . '</span></a>';
+            if ($bExpired) {
+                $aLinkData = array(
+                    'text' => sprintf(gT('Expired: %s'), $sStop),
+                    'iconClass' => 'fa fa fa-step-forward text-warning'
+                );
 
-            // Icon parsing
-            if ($bExpired || $bWillRun) {
-                // Expire prior to will start
-                $running = ($bExpired) ? $sIconExpired : $sIconFuture;
-            } else {
-                if ($sStop == null) {
-                    $running = $sIconRunNoEx;
-                } else {
-                    $running = $sIconRunning;
-                }
+                return $this->getRunningLink($aLinkData);
             }
-        } else {
-            // If it's active, and doesn't have expire date, it's running
-            $running = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-toggle="tooltip" title="' . gT('Active') . '"><span class="fa fa-play text-success"></span><span class="sr-only">' . gT('Active') . '"</span></a>';
-            //$running = '<div class="survey-state"><span class="fa fa-play text-success"></span></div>';
+
+            if ($bWillRun) {
+                $aLinkData = array(
+                    'text' => sprintf(gT('Start: %s'), $sStart),
+                    'iconClass' => 'fa fa-clock-o text-warning'
+                );
+
+                return $this->getRunningLink($aLinkData);
+            }
+
+            /*
+            * If it's not expired and it will not run in the future,
+            * then it's active.
+            */
+            if ($this->expires == '') {
+                $aLinkData = array(
+                    'text' => gT('End: Never'),
+                    'iconClass' => 'fa fa-play text-success'
+                );
+
+                return $this->getRunningLink($aLinkData);
+            }
+
+            $aLinkData = array(
+                'text' => sprintf(gT('End: %s'), $sStop),
+                'iconClass' => 'fa fa-play text-success'
+            );
+
+            return $this->getRunningLink($aLinkData);
         }
 
-        return $running;
+        $aLinkData = array(
+            'text' => gT('Active'),
+            'iconClass' => 'fa fa-play text-success'
+        );
+
+        return $this->getRunningLink($aLinkData);
+    }
+
+    /**
+     * Returns the html link with the specified data.
+     *
+     * @param array $alinkData contains data to attach to the link.
+     * @return string
+     */
+    private function getRunningLink($aLinkData)
+    {
+        $url = App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid);
+        $htmlLInk = '<a href="' . $url . '" class="survey-state" data-toggle="tooltip" title="' . $aLinkData['text'] . '"><span class="' . $aLinkData['iconClass'] . '"></span><span class="sr-only">' . $aLinkData['text'] . '</span></a>';
+
+        return $htmlLInk;
     }
 
     /**
