@@ -16,7 +16,7 @@
         var strDeleteAllConfirm = '<?php eT('Do you really want to delete all marked responses?', 'js'); ?>';
     </script>
     <?php
-    $this->widget('application.extensions.admin.grid.CLSGridView', [ //done
+    $this->widget('application.extensions.admin.grid.CLSGridView', [
             'dataProvider' => $model->search($surveyId, $language),
             'id' => 'time-grid',
             'emptyText' => gT('No surveys found.'),

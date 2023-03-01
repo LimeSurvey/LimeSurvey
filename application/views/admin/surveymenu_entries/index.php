@@ -15,7 +15,7 @@ echo viewHelper::getViewTestTag('surveyMenuEntries');
 <div class="ls-flex-row">
     <div class="col-12 ls-flex-item">
         <?php
-        $this->widget('application.extensions.admin.grid.CLSGridView', [//done
+        $this->widget('application.extensions.admin.grid.CLSGridView', [
             'dataProvider' => $model->search(),
             'id' => 'surveymenu-entries-grid',
             'columns' => $model->getColumns(),

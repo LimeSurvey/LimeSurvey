@@ -31,29 +31,29 @@ echo viewHelper::getViewTestTag('2faUsersIndex');
         <div class="row" style="margin-bottom: 100px">
             <div class="container-fluid">
                 <?php
-                    $this->widget('application.extensions.admin.grid.CLSGridView', array( //done
-                        'id' => 'tfa-usermanagement-gridPanel',
-                        'itemsCssClass' => 'table table-striped items',
-                        'dataProvider' => $model->search(),
-                        'columns' => $model->getColumns(),
-                        'filter' => $model,
-                        'afterAjaxUpdate' => 'window.TFA.bind',
-                        'summaryText'   => "<div class='row'>"
-                        ."<div class='col-6'></div>"
-                        ."<div class='col-6'>"
-                        .gT('Displaying {start}-{end} of {count} result(s).').' '
-                            . sprintf(gT('%s rows per page'),
-                                CHtml::dropDownList(
-                                    'pageSize',
-                                    $pageSize,
-                                    Yii::app()->params['pageSizeOptions'],
-                                    array('class'=>'changePageSize form-select', 'style'=>'display: inline; width: auto'))
-                            )
-                        ."</div></div>",
-                        ));
+                $this->widget('application.extensions.admin.grid.CLSGridView', [
+                    'id'              => 'tfa-usermanagement-gridPanel',
+                    'itemsCssClass'   => 'table table-striped items',
+                    'dataProvider'    => $model->search(),
+                    'columns'         => $model->getColumns(),
+                    'filter'          => $model,
+                    'afterAjaxUpdate' => 'window.TFA.bind',
+                    'summaryText'     => "<div class='row'>"
+                        . "<div class='col-6'></div>"
+                        . "<div class='col-6'>"
+                        . gT('Displaying {start}-{end} of {count} result(s).') . ' '
+                        . sprintf(gT('%s rows per page'),
+                            CHtml::dropDownList(
+                                'pageSize',
+                                $pageSize,
+                                Yii::app()->params['pageSizeOptions'],
+                                ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto'])
+                        )
+                        . "</div></div>",
+                ]);
 
-                    ?>
-                </div>
+                ?>
+            </div>
                 <!-- To update rows per page via ajax -->
                 <script type="text/javascript">
                     window.TFA.bind();

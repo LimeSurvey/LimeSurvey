@@ -25,29 +25,29 @@ echo viewHelper::getViewTestTag('tutorialentries');
         </div>
 		<div class="col-12 ls-space margin top-15">
 			<div class="col-12 ls-flex-item">
-				<?php $this->widget('application.extensions.admin.grid.CLSGridView', array( //done
-					'dataProvider' => $model->search(),
-					// Number of row per page selection
-					'id' => 'tutorial-grid',
-					'columns' => $model->getColumns(),
-					'filter' => $model,
-					'emptyText'=>gT('No customizable entries found.'),
-					'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
-						CHtml::dropDownList(
-							'pageSize',
-							$pageSize,
-							Yii::app()->params['pageSizeOptions'],
-							array('class'=>'changePageSize form-select', 'style'=>'display: inline; width: auto')
-						)
-					),
-					'rowHtmlOptionsExpression' => '["data-tutorialentry-id" => $data->teid]',
+                <?php $this->widget('application.extensions.admin.grid.CLSGridView', [
+                    'dataProvider'             => $model->search(),
+                    // Number of row per page selection
+                    'id'                       => 'tutorial-grid',
+                    'columns'                  => $model->getColumns(),
+                    'filter'                   => $model,
+                    'emptyText'                => gT('No customizable entries found.'),
+                    'summaryText'              => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(gT('%s rows per page'),
+                            CHtml::dropDownList(
+                                'pageSize',
+                                $pageSize,
+                                Yii::app()->params['pageSizeOptions'],
+                                ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
+                            )
+                        ),
+                    'rowHtmlOptionsExpression' => '["data-tutorialentry-id" => $data->teid]',
                     'htmlOptions'              => ['class' => 'table-responsive grid-view-ls'],
                     'ajaxType'                 => 'POST',
                     'ajaxUpdate'               => 'tutorial-grid',
-                    'lsAfterAjaxUpdate'          => ['bindAction()'],
-				));
-				?>
-			</div>
+                    'lsAfterAjaxUpdate'        => ['bindAction()'],
+                ]);
+                ?>
+            </div>
 		</div>
 	</div>
 </div>

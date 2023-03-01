@@ -6,33 +6,32 @@
 <div class="container-fluid welcome full-page-wrapper">
     <div class="pagetitle h3"><?php eT('Notifications'); ?></div>
     <?php
-
-$surveyGrid = $this->widget('application.extensions.admin.grid.CLSGridView', array( //done
-    'dataProvider' => $model->search(),
-    'id'           => 'notification-grid',
-    'emptyText'    => gT('No notifications found'),
-    'htmlOptions'  => ['class' => 'table-responsive grid-view-ls'],
-    'ajaxUpdate'   => 'notification-grid',
-    'columns'      => array(
-        /*
-        array(
-            'id' => 'id'
-        ),
-         */
-        array(
-            'header' => 'ID',
-            'name' => 'id'
-        ),
-        array(
-            'header' => gT('Title'),
-            'name' => 'title'
-        ),
-        array(
-            'header' => gT('Message'),
-            'name' => 'message'
-        )
-    )
-));
+    $surveyGrid = $this->widget('application.extensions.admin.grid.CLSGridView', [
+        'dataProvider' => $model->search(),
+        'id'           => 'notification-grid',
+        'emptyText'    => gT('No notifications found'),
+        'htmlOptions'  => ['class' => 'table-responsive grid-view-ls'],
+        'ajaxUpdate'   => 'notification-grid',
+        'columns'      => [
+            /*
+            array(
+                'id' => 'id'
+            ),
+             */
+            [
+                'header' => 'ID',
+                'name'   => 'id'
+            ],
+            [
+                'header' => gT('Title'),
+                'name'   => 'title'
+            ],
+            [
+                'header' => gT('Message'),
+                'name'   => 'message'
+            ]
+        ]
+    ]);
 
     ?>
 </div>
