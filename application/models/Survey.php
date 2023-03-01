@@ -1148,79 +1148,63 @@ class Survey extends LSActiveRecord implements PermissionInterface
     public function getRunning()
     {
 
-        //The survey is not active.
-        if ($this->active == 'N') {
-            $aLinkData = array(
-                'text' => gT('Inactive'),
-                'iconClass' => 'fa fa-stop text-warning'
-            );
+        $sState = $this->getState();
+        $sLink  = '';
 
-            return $this->getRunningLink($aLinkData);
-        }
+        $sStop  = $this->expires != '' ? convertToGlobalSettingFormat($this->expires) : '';
+        $sStart = $this->startdate != '' ? convertToGlobalSettingFormat($this->startdate) : '';
 
-        // If it's active, then we check if not expired
-        if ($this->expires != '' || $this->startdate != '') {
-            // Time adjust
-            $sNow    = date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
-            $sStop   = ($this->expires != '') ? date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->expires))) : $sNow;
-            $sStart  = ($this->startdate != '') ? date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->startdate))) : $sNow;
+        switch ($sState) {
+            case 'inactive':
+                $aLinkData = array(
+                    'text' => gT('Inactive'),
+                    'iconClass' => 'fa fa-stop text-warning'
+                );
 
-            // Time comparaison
-            $oNow   = new DateTime($sNow);
-            $oStop  = new DateTime($sStop);
-            $oStart = new DateTime($sStart);
+                $sLink = $this->getRunningLink($aLinkData);
+                break;
 
-            $bExpired = ($oStop < $oNow);
-            $bWillRun = ($oStart > $oNow);
-
-            $sStop = $sStop != null ? convertToGlobalSettingFormat($sStop) : null;
-            $sStart = convertToGlobalSettingFormat($sStart);
-
-            if ($bExpired) {
+            case 'expired':
                 $aLinkData = array(
                     'text' => sprintf(gT('Expired: %s'), $sStop),
                     'iconClass' => 'fa fa fa-step-forward text-warning'
                 );
 
-                return $this->getRunningLink($aLinkData);
-            }
+                $sLink = $this->getRunningLink($aLinkData);
+                break;
 
-            if ($bWillRun) {
+            case 'willRun':
                 $aLinkData = array(
                     'text' => sprintf(gT('Start: %s'), $sStart),
                     'iconClass' => 'fa fa-clock-o text-warning'
                 );
 
-                return $this->getRunningLink($aLinkData);
-            }
+                $sLink = $this->getRunningLink($aLinkData);
+                break;
 
-            /*
-            * If it's not expired and it will not run in the future,
-            * then it's active.
-            */
-            if ($this->expires == '') {
+            case 'willExpire':
+                //The survey is active and it has an expire date.
                 $aLinkData = array(
-                    'text' => gT('End: Never'),
+                    'text' => sprintf(gT('End: %s'), $sStop),
                     'iconClass' => 'fa fa-play text-success'
                 );
 
-                return $this->getRunningLink($aLinkData);
-            }
+                $sLink = $this->getRunningLink($aLinkData);
+                break;
 
-            $aLinkData = array(
-                'text' => sprintf(gT('End: %s'), $sStop),
-                'iconClass' => 'fa fa-play text-success'
-            );
+            case 'running':
+                //The survey is active but it does not have an expire date.
+                $aLinkData = array(
+                    'iconClass' => 'fa fa-play text-success'
+                );
 
-            return $this->getRunningLink($aLinkData);
+                $aLinkData['text'] = $sStart == '' ? gT('Active') : gT('End: Never');
+
+                $sLink = $this->getRunningLink($aLinkData);
+                break;
         }
 
-        $aLinkData = array(
-            'text' => gT('Active'),
-            'iconClass' => 'fa fa-play text-success'
-        );
-
-        return $this->getRunningLink($aLinkData);
+        return $sLink;
     }
 
     /**

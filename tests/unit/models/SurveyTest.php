@@ -33,9 +33,101 @@ class SurveyTest extends BaseModelTestCase
     }
 
     /**
+     * Survey state: inactive.
+     */
+    public function testInactiveSurveyState(): void
+    {
+        $survey = new \Survey();
+        $survey->active = 'N';
+
+        $state = $survey->getState();
+
+        $this->assertSame('inactive', $state, 'Survey active property is ' . $survey->active);
+    }
+
+    /**
+     * Survey state: expired.
+     */
+    public function testExpiredSurveyState(): void
+    {
+        $survey = new \Survey();
+        $survey->active = 'Y';
+
+        $twoDaysAgo = date_create()->sub(self::$intervals['twoDays'])->format('Y-m-d H:i:s');
+        $survey->expires = $twoDaysAgo;
+
+        $state = $survey->getState();
+
+        $this->assertSame('expired', $state, 'Survey expires property is ' . $survey->expires);
+
+        //Test with time adjust.
+        \SettingGlobal::setSetting('timeadjust', '+420 minutes');
+
+        $state = $survey->getState();
+
+        $this->assertSame('expired', $state, 'Survey expires property is ' . $survey->expires . ' (time adjust test)');
+    }
+
+    /**
+     * Survey state: willRun.
+     */
+    public function testWillRunSurveyState(): void
+    {
+        $survey = new \Survey();
+        $survey->active = 'Y';
+
+        $inFourDays = date_create()->add(self::$intervals['fourDays'])->format('Y-m-d H:i:s');
+        $survey->startdate = $inFourDays;
+
+        $state = $survey->getState();
+
+        $this->assertSame('willRun', $state, 'Survey startdate property is ' . $survey->startdate);
+    }
+
+    /**
+     * Survey state: willExpire (the survey is active and it has an expiredate).
+     */
+    public function testWillExpireSurveyState(): void
+    {
+        $survey = new \Survey();
+        $survey->active = 'Y';
+
+        $inFiveDays = date_create()->add(self::$intervals['fiveDays'])->format('Y-m-d H:i:s');
+        $survey->expires = $inFiveDays;
+
+        $state = $survey->getState();
+
+        $this->assertSame('willExpire', $state, 'Survey expires property is ' . $survey->expires);
+
+        // Testing for both start and expire date.
+        $inSevenDays = date_create()->add(self::$intervals['sevenDays'])->format('Y-m-d H:i:s');
+        $oneDayAgo = date_create()->sub(self::$intervals['oneDay'])->format('Y-m-d H:i:s');
+
+        $survey->startdate = $oneDayAgo;
+        $survey->expires = $inSevenDays;
+
+        $state = $survey->getState();
+
+        $this->assertSame('willExpire', $state, 'Survey expires property is ' . $survey->expires . '. Survey startdate property is ' . $survey->startdate);
+    }
+
+    /**
+     * Survey state: running (the survey is active but it does not have an expire date).
+     */
+    public function testRunningSurveyState(): void
+    {
+        $survey = new \Survey();
+        $survey->active = 'Y';
+
+        $state = $survey->getState();
+
+        $this->assertSame('running', $state, 'Survey active property is ' . $survey->active . ', no dates set.');
+    }
+
+    /**
      * The survey is not active.
      */
-    public function testInactiveSurvey(): void
+    public function testInactiveSurveyIcon(): void
     {
         $survey = new \Survey();
         $survey->active = 'N';
@@ -52,7 +144,7 @@ class SurveyTest extends BaseModelTestCase
     /**
      * The survey is active but it has no start or expire dates set.
      */
-    public function testActiveSurveyNoDates(): void
+    public function testActiveSurveyIconNoDates(): void
     {
         $survey = new \Survey();
         $survey->active = 'Y';
@@ -69,7 +161,7 @@ class SurveyTest extends BaseModelTestCase
     /**
      * The survey is active, it has a start date in the past but no expire date.
      */
-    public function testActiveSurveyNoExpireDate(): void
+    public function testActiveSurveyIconNoExpireDate(): void
     {
         $survey = new \Survey();
         $survey->active = 'Y';
@@ -102,7 +194,7 @@ class SurveyTest extends BaseModelTestCase
     /**
      * The survey is active, it has an expire date in the future but no start date.
      */
-    public function testActiveSurveyNoStartDate(): void
+    public function testActiveSurveyIconNoStartDate(): void
     {
         $survey = new \Survey();
         $survey->active = 'Y';
@@ -137,7 +229,7 @@ class SurveyTest extends BaseModelTestCase
     /**
      * The survey is active, it has an expire date in the future and a start date in the past.
      */
-    public function testActiveSurveyExpireDateInTheFutureStartDateInThePast(): void
+    public function testActiveSurveyIconExpireDateInTheFutureStartDateInThePast(): void
     {
 
         $survey = new \Survey();
@@ -175,7 +267,7 @@ class SurveyTest extends BaseModelTestCase
     /**
      * The survey has a start date in the future and no expire date.
      */
-    public function testSurveyWillStartNoExpireDate(): void
+    public function testSurveyIconWillStartNoExpireDate(): void
     {
 
         $survey = new \Survey();
@@ -210,7 +302,7 @@ class SurveyTest extends BaseModelTestCase
     /**
      * The survey has a start date in the future and an expire date in the future.
      */
-    public function testSurveyWillStart(): void
+    public function testSurveyIconWillStart(): void
     {
 
         $survey = new \Survey();
@@ -247,7 +339,7 @@ class SurveyTest extends BaseModelTestCase
     /**
      * The survey has an expire date in the past and no start date.
      */
-    public function testSurveyExpiredNoStartdate(): void
+    public function testSurveyIconExpiredNoStartdate(): void
     {
 
         $survey = new \Survey();
@@ -282,7 +374,7 @@ class SurveyTest extends BaseModelTestCase
     /**
      * The survey has an expire date in the past and a start date in the past.
      */
-    public function testSurveyExpired(): void
+    public function testSurveyIconExpired(): void
     {
         $survey = new \Survey();
         $survey->active = 'Y';
