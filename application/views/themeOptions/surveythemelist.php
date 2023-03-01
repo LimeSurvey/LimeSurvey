@@ -11,7 +11,7 @@ $massiveAction = App()->getController()->renderPartial(
     true,
     false
 );
-$this->widget('application.extensions.admin.grid.CLSGridView',
+$this->widget('application.extensions.admin.grid.CLSGridView', //done
     [
         'dataProvider' => $oSurveyTheme->searchGrid(),
         'filter' => $oSurveyTheme,
@@ -47,7 +47,7 @@ $this->widget('application.extensions.admin.grid.CLSGridView',
                 'header' => gT('Name'),
                 'name' => 'template_name',
                 'value' => '$data->template_name',
-                'htmlOptions' => ['class' => 'col-lg-2'],
+                'htmlOptions' => ['class' => 'col-lg-2 text-center'],
             ],
 
             [
@@ -63,7 +63,7 @@ $this->widget('application.extensions.admin.grid.CLSGridView',
                 'name' => 'template_type',
                 'value' => '$data->typeIcon',
                 'type' => 'raw',
-                'htmlOptions' => ['class' => 'col-lg-2'],
+                'htmlOptions' => ['class' => 'col-lg-2 text-center'],
                 'filter' => ['core' => 'Core theme', 'user' => 'User theme'],
             ],
 
@@ -71,7 +71,7 @@ $this->widget('application.extensions.admin.grid.CLSGridView',
                 'header' => gT('Extends'),
                 'name' => 'template_extends',
                 'value' => '$data->template->extends',
-                'htmlOptions' => ['class' => 'col-lg-1'],
+                'htmlOptions' => ['class' => 'col-lg-2 text-center'],
             ],
 
             [
@@ -79,7 +79,7 @@ $this->widget('application.extensions.admin.grid.CLSGridView',
                 'name' => 'actions',
                 'value' => '$data->buttons',
                 'type' => 'raw',
-                'htmlOptions' => ['class' => 'col-lg-2'],
+                'htmlOptions' => ['class' => 'col-lg-1  text-center'],
                 'filter' => false,
             ],
 

@@ -26,7 +26,7 @@
                     'id' => 'import-button',
                     'name' => 'import-button',
                     'text' => gT('Import question'),
-                    'icon' => 'ri-upload-fill icon',
+                    'icon' => 'ri-download-2-fill icon',
                     'link' => Yii::App()->createUrl("questionAdministration/importView", ["surveyid" => $surveyid, "groupid" => $gid]),
                     'htmlOptions' => [
                         'class' => 'btn btn-outline-secondary',
@@ -43,7 +43,7 @@
                 [
                     'name' => 'import-button',
                     'text' => gT('Import question'),
-                    'icon' => 'ri-upload-fill icon',
+                    'icon' => 'ri-download-2-fill icon',
                     'htmlOptions' => [
                         'class' => 'btn btn-outline-secondary btntooltip',
                         'role' => 'button',

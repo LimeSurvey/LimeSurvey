@@ -1,37 +1,9 @@
-// Breadcrumbs (from lime-admin-colors.scss)
-//.breadcrumb {
-//  background-color: $gray-04;
-//  > {
-//    .active {
-//      color: $gray-15;
-//    }
-//    li + li:before {
-//      color: $gray-09;
-//    }
-//  }
-//}
-//
-//.ls-ba {
-//  .list-group {
-//    > .list-group-item {
-//      .list-group {
-//        .list-group-item {
-//          &:last-of-type {
-//            border-bottom: 1px solid $primary-2;
-//          }
-//        }
-//      }
-//    }
-//  }
-//  .breadcrumb > li + li:before {
-//    color: $white;
-//  }
-//}
 ol.breadcrumb.title-bar-breadcrumb {
   background: transparent;
   color: $breadcrumb-active-color;
   a {
     color: $breadcrumb-link-color;
+    font-weight: $font-weight-normal;
 
     &:hover {
       color: $link-hover-color
@@ -42,73 +14,19 @@ ol.breadcrumb.title-bar-breadcrumb {
     color: $breadcrumb-active-color;
     &.active {
       color: $breadcrumb-active-color;
+      font-weight: $font-weight-base;
     }
   }
 }
 //
 //// from custom.scss
 .ls-ba {
-//  .breadcrumb>li+li:before {
-//    float: none;
-//    padding: 0 5px;
-//    color: #ccc;
-//    content: #{'/*!rtl:"\f060"*/'}"\f061";
-//    font: normal normal normal 18px/1 FontAwesome;
-//  }
-//}
-//
-//ol.breadcrumb.title-bar-breadcrumb {
-//  margin-bottom: 0px;
-//  padding: 8px 15px;
-//  > :first-child {
-//    a {
-//      &.animate::after {
-//        margin-left: 0px;
-//      }
-//    }
-//  }
-//  a {
-//    text-decoration: none;
-//    line-height: 24px;
-//    font-size: 18px;
-//    &.animate::after {
-//      text-align: right;
-//      content: '';
-//      display: block;
-//      width: 0;
-//      height: 2px;
-//    }
-//    &.animate:hover::after {
-//      width: 100%;
-//    }
-//    &.animate.home-icon:hover::after {
-//      margin-left: 0;
-//      width: 100% !important;
-//    }
-//  }
   li {
-    //line-height: 20px;
-    //font-size: 14px;
-    //&.active {
-    //  font-style: italic
-    //}
     >div {
       display: inline-block;
     }
   }
-//  .menu-label {
-//    width: 100%;
-//    display: block;
-//    font-size: 85%;
-//    font-style: normal;
-//  }
 }
-//
-//.breadcrumb-title {
-//  line-height: 24px;
-//  font-size: 18px;
-//  padding: 8px 15px;
-//}
 
 // from lime-admin-colors:
 .surveymanagerbar {
@@ -127,6 +45,7 @@ ol.breadcrumb.title-bar-breadcrumb {
 .breadcrumb-item+.breadcrumb-item:before {
   color: $breadcrumb-divider-color;
   padding-right: $breadcrumb-spacing;
+  font-weight: $font-weight-base;
 }
 
 .breadcrumb-item+.breadcrumb-item {
