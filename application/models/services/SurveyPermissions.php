@@ -44,9 +44,12 @@ class SurveyPermissions
         return \Permission::model()->findAll($userPermissionCriteria);
     }
 
-    public function getUsersSurveyPermissionsDataProvider()
+    /**
+     * @return CActiveDataProvider
+     */
+    public function getUsersSurveyPermissionsDataProvider(): CActiveDataProvider
     {
-        $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
+        $pageSize = App()->user->getState('pageSize', App()->params['defaultPageSize']);
         $userPermissionCriteria = $this->getUserPermissionCriteria();
         // $sort = new CSort();
         // $sort->attributes = array(
