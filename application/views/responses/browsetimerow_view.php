@@ -17,7 +17,7 @@
     </script>
     <?php
     $this->widget(
-        'yiistrap_fork.widgets.TbGridView',
+        'application.extensions.admin.grid.CLSGridView',
         [
             'dataProvider'    => $model->search($surveyId, $language),
             'id'              => 'time-grid',
@@ -35,18 +35,19 @@
                         ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
                     )
                 ),
-
             'columns' => array_merge(
+                $columns,
                 [
                     [
-                        'header'      => '',
+                        'header'      => gT("Action"),
                         'name'        => 'actions',
                         'value'       => '$data->buttons',
                         'type'        => 'raw',
-                        'htmlOptions' => ['class' => 'time-statistics-row-buttons'],
+                        'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+                        'htmlOptions'       => ['class' => 'text-center button-column ls-sticky-column'],
+                        'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
                     ]
                 ],
-                $columns
             )
         ]
     );
