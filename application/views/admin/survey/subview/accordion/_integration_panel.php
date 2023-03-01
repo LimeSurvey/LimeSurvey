@@ -84,6 +84,7 @@ echo viewHelper::getViewTestTag('surveyPanelIntegration');
                         ],
                     ],
                     'ajaxUpdate' => 'urlparams',
+                    'lsAfterAjaxUpdate' => [],
                     'rowHtmlOptionsExpression' => '["data-id" => $data->id, "data-parameter" => $data->parameter, "data-qid" => $data->targetqid, "data-sqid" => $data->targetsqid]',
                 ]
             );

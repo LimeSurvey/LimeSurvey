@@ -103,6 +103,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                             'class'          => 'CCheckBoxColumn',
                             'selectableRows' => '100',
                             'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+                            'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
                             'htmlOptions'       => ['class' => 'ls-sticky-column']
                         ],
                         [
