@@ -82,8 +82,8 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
         $this->numrows = 0;
         foreach ($this->aAnswerOptions as $iScaleId => $aScale) {
             foreach ($aScale as $oAnswerOption) {
-                $aData['labelans' . $iScaleId][] = $oAnswerOption->answerl10ns[$this->sLanguage]->answer;
-                $aData['labelcode' . $iScaleId][] = $oAnswerOption->code;
+                $aData['labelans' . $iScaleId][$oAnswerOption->code] = $oAnswerOption->answerl10ns[$this->sLanguage]->answer;
+                $aData['labelcode' . $iScaleId][$oAnswerOption->code] = $oAnswerOption->code;
             }
             
             $this->numrows = $this->numrows + count($aData['labelans' . $iScaleId]);

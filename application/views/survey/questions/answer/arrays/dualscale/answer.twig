@@ -65,6 +65,7 @@
             <!-- Render header -->
             {{ doRender('/survey/questions/answer/arrays/dualscale/answer_header',
                     ({
+                        'basename'     : basename,
                         'labelans0'    : labelans0,
                         'labelans1'    : labelans1,
                         'shownoanswer' : shownoanswer,
@@ -86,6 +87,7 @@
                         <!-- Render repeated header -->
                         {{ doRender('/survey/questions/answer/arrays/dualscale/repeat_header',
                                 ({
+                                    'basename'     : basename,
                                     'labelans0'    : labelans0,
                                     'labelans1'    : labelans1,
                                     'shownoanswer' : shownoanswer,
@@ -131,9 +133,10 @@
                             name="{{ ansrow.myfname0 }}"
                             value="{{ ld }}"
                             id="answer{{ ansrow.myfid0 }}-{{ ld }}"
+                            labelledby="answer{{ basename }}_0-{{ ld }}"
                             {{ labelcode0_checked[ansrow.title][ld] }}
                         />
-                        <label for="answer{{ ansrow.myfid0 }}-{{ ld }}" class="ls-label-xs-visibility">
+                        <label for="answer{{ ansrow.myfid0 }}-{{ ld }}" class="ls-label-xs-visibility" aria-hidden="true">
                             {{ processString(labelans0[j]) }}
                         </label>
                     </td>
@@ -148,6 +151,7 @@
                                 name='{{ ansrow.myfname0 }}'
                                 value=''
                                 id='answer{{ ansrow.myfid0 }}-'
+                                labelledby="answer{{ basename }}-"
                                 {{ ansrow.myfname0_notset }}
                             />
                             <label for='answer{{ ansrow.myfid0 }}-' class='ls-label-xs-visibility'>
@@ -169,6 +173,7 @@
                                 name="{{ ansrow.myfname1 }}"
                                 value="{{ ld }}"
                                 id="answer{{ ansrow.myfid1 }}-{{ ld }}"
+                                labelledby="answer{{ basename }}_1-{{ ld }}"
                                 {{ labelcode1_checked[ansrow.title][ld] }}
                             />
                             <label for="answer{{ ansrow.myfid1 }}-{{ ld }}" class="ls-label-xs-visibility">
@@ -192,6 +197,7 @@
                                     name='{{ ansrow.myfname1 }}'
                                     value=''
                                     id='answer{{ ansrow.myfid1 }}-'
+                                    labelledby="answer{{ basename }}-"
                                     {{ ansrow.myfname1_notset }}
                                 />
                             <label for='answer{{ ansrow.myfid1 }}-' class="ls-label-xs-visibility">
@@ -203,6 +209,7 @@
                                     name='{{ ansrow.myfname0 }}'
                                     value=''
                                     id='answer{{ ansrow.myfid0 }}-'
+                                    labelledby="answer{{ basename }}-"
                                     {{ ansrow.myfname0_notset }}
                                 />
                             <label for='answer{{ ansrow.myfid0 }}-' class="ls-label-xs-visibility">
