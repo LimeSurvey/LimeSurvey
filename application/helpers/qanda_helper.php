@@ -3202,23 +3202,41 @@ function do_array_10point($ia)
     }
 
     $sHeaders = '';
-    $sHeaders .= doRender('/survey/questions/answer/arrays/10point/rows/cells/header_information', array(
-        'class' => '',
-        'content' => '',
-        ), true);
+    $sHeaders .= doRender(
+        '/survey/questions/answer/arrays/10point/rows/cells/header_information',
+        array(
+            'class' => '',
+            'content' => '',
+            'basename' => $ia[1],
+            'code' => '',
+        ),
+        true
+    );
     for ($xc = 1; $xc <= 10; $xc++) {
-        $sHeaders .= doRender('/survey/questions/answer/arrays/10point/rows/cells/header_answer', array(
-            'class' => 'answer-text',
-            'content' => " " . $xc,
-            ), true);
+        $sHeaders .= doRender(
+            '/survey/questions/answer/arrays/10point/rows/cells/header_answer',
+            array(
+                'class' => 'answer-text',
+                'content' => " " . $xc,
+                'basename' => $ia[1],
+                'code' => $xc,
+            ),
+            true
+        );
     }
 
     if (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) {
         //Question is not mandatory
-        $sHeaders .= doRender('/survey/questions/answer/arrays/10point/rows/cells/header_answer', array(
-            'class' => 'answer-text noanswer-text',
-            'content' => gT('No answer'),
-            ), true);
+        $sHeaders .= doRender(
+            '/survey/questions/answer/arrays/10point/rows/cells/header_answer',
+            array(
+                'class' => 'answer-text noanswer-text',
+                'content' => gT('No answer'),
+                'basename' => $ia[1],
+                'code' => '',
+            ),
+            true
+        );
     }
 
     $trbc = '';
@@ -3244,38 +3262,52 @@ function do_array_10point($ia)
         for ($i = 1; $i <= 10; $i++) {
             $CHECKED = (isset($_SESSION['survey_' . $iSurveyId][$myfname]) && $_SESSION['survey_' . $iSurveyId][$myfname] == $i) ? 'CHECKED' : '';
 
-            $answer_tds .= doRender('/survey/questions/answer/arrays/10point/rows/cells/answer_td_input', array(
-                'i' => $i,
-                'labelText' => (string) $i,
-                'myfname' => $myfname,
-                'CHECKED' => $CHECKED,
-                'checkconditionFunction' => $checkconditionFunction,
-                'value' => $i,
-                ), true);
+            $answer_tds .= doRender(
+                '/survey/questions/answer/arrays/10point/rows/cells/answer_td_input',
+                array(
+                    'i' => $i,
+                    'labelText' => (string) $i,
+                    'myfname' => $myfname,
+                    'basename' => $ia[1],
+                    'code' => $i,
+                    'CHECKED' => $CHECKED,
+                    'value' => $i,
+                ),
+                true
+            );
         }
 
         if ($ia[6] != "Y" && SHOW_NO_ANSWER == 1) {
             $CHECKED = (!isset($_SESSION['survey_' . $iSurveyId][$myfname]) || $_SESSION['survey_' . $iSurveyId][$myfname] == '') ? 'CHECKED' : '';
-            $answer_tds .= doRender('/survey/questions/answer/arrays/10point/rows/cells/answer_td_input', array(
-                'i' => '',
-                'labelText' => gT('No answer'),
-                'myfname' => $myfname,
-                'CHECKED' => $CHECKED,
-                'checkconditionFunction' => $checkconditionFunction,
-                'value' => '',
-                ), true);
+            $answer_tds .= doRender(
+                '/survey/questions/answer/arrays/10point/rows/cells/answer_td_input',
+                array(
+                    'i' => '',
+                    'labelText' => gT('No answer'),
+                    'myfname' => $myfname,
+                    'basename' => $ia[1],
+                    'code' => '',
+                    'CHECKED' => $CHECKED,
+                    'value' => '',
+                ),
+                true
+            );
         }
 
-        $sRows .= doRender('/survey/questions/answer/arrays/10point/rows/answer_row', array(
-            'myfname'       => $myfname,
-            'answerwidth'   => $answerwidth,
-            'answertext'    => $answertext,
-            'value'         => $value,
-            'error'         => $error,
-            'sDisplayStyle' => $sDisplayStyle,
-            'odd'           => ($j % 2),
-            'answer_tds'    => $answer_tds,
-            ), true);
+        $sRows .= doRender(
+            '/survey/questions/answer/arrays/10point/rows/answer_row',
+            array(
+                'myfname'       => $myfname,
+                'answerwidth'   => $answerwidth,
+                'answertext'    => $answertext,
+                'value'         => $value,
+                'error'         => $error,
+                'sDisplayStyle' => $sDisplayStyle,
+                'odd'           => ($j % 2),
+                'answer_tds'    => $answer_tds,
+            ),
+            true
+        );
 
         $inputnames[] = $myfname;
         $fn++;
@@ -3284,12 +3316,12 @@ function do_array_10point($ia)
     $answer = doRender(
         '/survey/questions/answer/arrays/10point/answer',
         array(
-        'coreClass'     => $coreClass,
-        'answerwidth'   => $answerwidth,
-        'sColumns'      => $sColumns,
-        'sHeaders'      => $sHeaders,
-        'sRows'         => $sRows,
-        'basename' => $ia[1],
+            'coreClass'     => $coreClass,
+            'answerwidth'   => $answerwidth,
+            'sColumns'      => $sColumns,
+            'sHeaders'      => $sHeaders,
+            'sRows'         => $sRows,
+            'basename' => $ia[1],
         ),
         true
     );
