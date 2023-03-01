@@ -255,4 +255,24 @@ abstract class Response extends Dynamic
         }
         return $aAttributes;
     }
+
+    /**
+     * Set all the specified attributes.
+     * If any attribute doesn't exist in the DB, an Exception is thrown.
+     * @inhe
+     */
+    public function setAllAttributes($values)
+    {
+        if (!is_array($values)) {
+            return;
+        }
+        $attributes = array_flip($this->attributeNames());
+        foreach ($values as $name => $value) {
+            if (isset($attributes[$name])) {
+                $this->$name = $value;
+            } else {
+                throw new Exception(sprintf("Attribute '%s' not found in the model.", $name));
+            }
+        }
+    }
 }
