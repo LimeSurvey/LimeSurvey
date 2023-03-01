@@ -25,8 +25,9 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
     private $columnswidth;
     private $answerwidth;
     private $cellwidth;
-    private $sHeaders;
-    
+    private $sHeaders = '';
+    private $sRepeatHeaders = '';
+
     private $rightExists;
     private $bUseDropdownLayout = false;
 
@@ -96,7 +97,10 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
         if ($this->getQuestionCount() > 0 && $this->getAnswerCount() > 0) {
             $this->cellwidth = round(($this->columnswidth / $this->getAnswerCount()), 1);
         }
+        /* set the default header */
         $this->setHeaders();
+        /* set the repeat header */
+        $this->setHeaders(true);
     }
 
     public function getMainView($forTwig = false)
@@ -106,7 +110,12 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
             : '/survey/questions/answer/arrays/array/no_dropdown';
     }
 
-    public function setHeaders()
+    /**
+     * set the header
+     * @var null|boolean isrepeat
+     * @return void
+     */
+    public function setHeaders($isrepeat = false)
     {
         $sHeader = '';
         if ($this->bUseDropdownLayout) {
@@ -120,6 +129,7 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
                 'class'   => '',
                 'content' => '',
                 'type' => 'subquestion-header',
+                'isrepeat' => $isrepeat,
             ]
         );
 
@@ -131,6 +141,7 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
                     'basename' => $this->sSGQA,
                     'content' => $oAnswer->answerl10ns[$this->sLanguage]->answer,
                     'code' => $oAnswer->code,
+                    'isrepeat' => $isrepeat,
                     'oAnswer' => $oAnswer
                 ]
             );
@@ -143,6 +154,7 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
                     'class'   => '',
                     'content' => '',
                     'type' => 'right-header',
+                    'isrepeat' => $isrepeat,
                     'role' => null
                 ]
             );
@@ -156,13 +168,17 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
                     'class'   => 'answer-text noanswer-text',
                     'basename' => $this->sSGQA,
                     'content' => gT('No answer'),
+                    'isrepeat' => $isrepeat,
                     'code' => '',
                     'oAnswer' => null
                 ]
             );
         }
-
-        $this->sHeaders =  $sHeader;
+        if ($isrepeat) {
+            $this->sRepeatHeaders =  $sHeader;
+        } else {
+            $this->sHeaders =  $sHeader;
+        }
     }
 
     public function getDropdownRows()
@@ -247,7 +263,7 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
                     $aRows[] = [
                         'template' => '/survey/questions/answer/arrays/array/no_dropdown/rows/repeat_header.twig',
                         'content' => array(
-                            'sHeaders' => $this->sHeaders
+                            'sHeaders' => $this->sRepeatHeaders
                         )
                     ];
                 }
@@ -360,7 +376,6 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
         //return @do_array($this->aFieldArray);
        
         $answer = '';
-
         $answer .=  Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/answer', array(
             'anscount'   => $this->getQuestionCount(),
             'aRows'      => $this->getRows(),

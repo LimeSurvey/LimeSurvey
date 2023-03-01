@@ -3,11 +3,12 @@
  * Array header : answer or sub question
  * @var $class
  * @var $content
- * @var $id
- * @var $role
+ * @var $basename
+ * @var $code
+ * @var $isrepeat
  * @var $oAnswer
  */
 #}
-<th class="{{ class }}" id="answer{{ basename }}-{{ code }}" role="columnheader">
+<th class="{{ class }}" {% if not isrepeat %} id="answer{{ basename }}-{{ code }}" role="columnheader" {% endif %}>
     {{ processString(content) }}
 </th>
