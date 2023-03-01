@@ -64,9 +64,8 @@ class TFAUser extends User
             'enabledCondition' => $hasAuthSet,
             'linkAttributes'   => [
                 'data-bs-toggle'   => "modal",
-                'data-bs-target'   => "#confirmation-modal",
                 'data-confirmtext' => gT("Are you sure you want to delete this 2FA key?"),
-                'data-buttons'     => gT('Are you sure you want to delete this 2FA key?'),
+                'data-buttons'     => json_encode (['confirm_cancel' => gT("Cancel"), 'confirm_ok' => gt('Delete')]),
                 'data-href'        => App()->createUrl("plugins/direct/plugin/TwoFactorAdminLogin/function/directCallDeleteKey"),
                 'data-uid'         => $this->uid,
                 'data-errortext'   => gT('An error has happened, and the key could not be deleted.'),

@@ -19,22 +19,25 @@
             <div class="content-right">
                 <?php
                 $this->widget('application.extensions.admin.grid.CLSGridView', [
-                    'dataProvider'    => $failedEmailModel->search(),
-                    'filter'          => $failedEmailModel,
-                    'id'              => 'failedemail-grid',
-                    'emptyText'       => gT('No failed email notifications found'),
+                    'dataProvider' => $failedEmailModel->search(),
+                    'filter' => $failedEmailModel,
+                    'id' => 'failedemail-grid',
+                    'emptyText' => gT('No failed email notifications found'),
                     'massiveActionTemplate' => $massiveAction,
-                    'summaryText'     => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(gT('%s rows per page'),
-                            CHtml::dropDownList(
-                                'pageSize',
-                                $pageSize,
-                                App()->params['pageSizeOptionsTokens'],
-                                ['class' => 'changePageSize form-control', 'style' => 'display: inline; width: auto'])),
-                    'htmlOptions'     => ['class' => 'table-responsive grid-view-ls'],
-                    'columns'         => $failedEmailModel->getColumns(),
-                    'ajaxUpdate'      => 'failedemail-grid',
-                    'ajaxType'        => 'POST',
-                    'afterAjaxUpdate' => 'js:function(id, data){ bindListItemclick(); LS.FailedEmail.bindButtons();}'
+                    'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
+                        gT('%s rows per page'),
+                        CHtml::dropDownList(
+                            'pageSize',
+                            $pageSize,
+                            App()->params['pageSizeOptionsTokens'],
+                            ['class' => 'changePageSize form-control', 'style' => 'display: inline; width: auto']
+                        )
+                    ),
+                    'htmlOptions' => ['class' => 'table-responsive grid-view-ls'],
+                    'columns' => $failedEmailModel->getColumns(),
+                    'ajaxUpdate' => 'failedemail-grid',
+                    'ajaxType' => 'POST',
+                    'lsAfterAjaxUpdate' => ['bindListItemclick();', 'LS.FailedEmail.bindButtons();']
                 ]);
                 ?>
             </div>

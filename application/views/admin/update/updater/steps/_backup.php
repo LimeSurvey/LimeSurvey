@@ -104,6 +104,7 @@ if (isset($dbBackupInfos->html)) {
         </div>
     </div>
 </div>
+
 <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/assets/scripts/admin/comfortupdate/comfortUpdateNextStep.js"></script>
 <script>
     $('#launchStep4Form').comfortUpdateNextStep({'step': 4});

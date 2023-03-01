@@ -6,6 +6,7 @@
 class NotificationController extends SurveyCommonAction
 {
     /**
+     * TODO: function seems to be unused, Notification are only displayed by getNotificationAsJSON and getMenuWidget
      * List all notifications for a user
      */
     public function index()
