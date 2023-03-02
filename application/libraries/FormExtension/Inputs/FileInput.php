@@ -21,7 +21,7 @@ class FileInput extends BaseInput
         return $this->accept;
     }
 
-    public function getAcceptHtml()
+    public function getAcceptHtml(): string
     {
         return !empty($this->accept)
             ? 'accept="' . implode(',', $this->accept) . '"'
