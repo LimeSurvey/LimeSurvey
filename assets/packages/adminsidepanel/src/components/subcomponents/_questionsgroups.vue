@@ -252,7 +252,6 @@ export default {
         },
         onMouseOverQuestionGroup($event, group){
             this.hoveredQuestionGroup = group;
-            console.log('hoveredQuestionGroup: ', this.hoveredQuestionGroup);
         },
 
         onMouseOverQuestion($event, question){
@@ -440,7 +439,7 @@ export default {
                                         <i class="ri-more-fill"></i>
                                     </div>
                                     <ul style="right: 0; top: 14px;" class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                        <li  v-if="key !== 'delete' && !(key === 'language' && Array.isArray(value))"  v-for="(value, key) in question.dropDown" :key="key">
+                                        <li  v-if="key !== 'delete' && !(key === 'language' && Array.isArray(value))"  v-for="(value, key) in question.questionDropown" :key="key">
                                             <a   class="dropdown-item" :id="value.id" :href="value.url">
                                                <span :class="value.icon"></span>
                                                  {{value.label}}

@@ -935,9 +935,9 @@ class SurveyAdministrationController extends LSBaseController
                         // We have to limit the question text length here, otherwise the whole question is loaded into the navigation tree
                         $curQuestion['question_flat'] = viewHelper::flatEllipsizeText($questionText, true, 150);
                         $hasdefaultvalues = (QuestionTheme::findQuestionMetaData($question->type)['settings'])->hasdefaultvalues;
-                        $curQuestion['dropDown'] = [];
+                        $curQuestion['questionDropown'] = [];
                         if ($configData['hasSurveyContentUpdatePermission']) {
-                            $curQuestion['dropDown']['conditionDesigner'] =
+                            $curQuestion['questionDropown']['conditionDesigner'] =
                                 [
                                     'id' => 'conditions_button',
                                     'label' => gT("Condition designer"),
@@ -946,7 +946,7 @@ class SurveyAdministrationController extends LSBaseController
                                 ];
 
                             if ($hasdefaultvalues > 0) {
-                                $curQuestion['dropDown']['editDefault'] =
+                                $curQuestion['questionDropown']['editDefault'] =
                                     [
                                         'id' => 'default_value_button',
                                         'label' => gT("Edit default answers"),
@@ -957,7 +957,7 @@ class SurveyAdministrationController extends LSBaseController
                         }
 
                         if ($configData['hasSurveyContentExportPermission']) {
-                            $curQuestion['dropDown']['export'] =
+                            $curQuestion['questionDropown']['export'] =
                                 [
                                     'id' => '',
                                     'label' => gT("Export"),
@@ -967,7 +967,7 @@ class SurveyAdministrationController extends LSBaseController
                         }
 
                         if ($configData['hasSurveyContentCreatePermission'] && ($configData['oSurvey']->active != 'Y')) {
-                            $curQuestion['dropDown']['copy'] =
+                            $curQuestion['questionDropown']['copy'] =
                                 [
                                     'id' => 'copy_button',
                                     'label' => gT("Copy"),
@@ -978,10 +978,10 @@ class SurveyAdministrationController extends LSBaseController
 
                         if ($configData['hasSurveyContentReadPermission']) {
                             if (count($configData['surveyLanguages']) > 1) {
-                                $curQuestion['dropDown']['language'] = [];
+                                $curQuestion['questionDropown']['language'] = [];
                                 foreach ($configData['surveyLanguages'] as $languageCode => $languageName) {
                                     array_push(
-                                        $curQuestion['dropDown']['language'],
+                                        $curQuestion['questionDropown']['language'],
                                         [
                                             'id' => '',
                                             'label' => gT($languageName),
@@ -991,7 +991,7 @@ class SurveyAdministrationController extends LSBaseController
                                     );
                                 }
                             } else {
-                                $curQuestion['dropDown']['language'] =
+                                $curQuestion['questionDropown']['language'] =
                                     [
                                         'id' => '',
                                         'label' => gT("Check logic"),
@@ -1002,7 +1002,7 @@ class SurveyAdministrationController extends LSBaseController
                         }
 
                         if ($configData['oSurvey']->active !== 'Y') {
-                            $curQuestion['dropDown']['delete'] =
+                            $curQuestion['questionDropown']['delete'] =
                                 [
                                     'id' => '',
                                     'label' => gT("Delete question"),
