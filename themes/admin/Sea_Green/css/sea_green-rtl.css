@@ -11128,6 +11128,10 @@ a {
   padding-top: 1rem;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
 body {
   display: flex;
   flex-direction: column;
