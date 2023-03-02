@@ -199,9 +199,16 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                         'maxlength' => $iTokenLength
                                     ]
                                 ); ?>
-                                <?php if ($token_subaction == "addnew"): ?>
-                                    <span id="helpBlock" class="help-block"><?php eT("You can leave this blank, and automatically generate access codes using 'Generate access codes'"
-                                        ); ?></span>
+                                <?php if ($token_subaction == "addnew") : ?>
+                                    <?php
+                                    $this->widget('ext.AlertWidget.AlertWidget', [
+                                        'text'        => gT(
+                                            "You can leave this blank, and automatically generate access codes using 'Generate access codes'"
+                                        ),
+                                        'type'        => 'info',
+                                        'htmlOptions' => ['class' => 'mt-1'],
+                                    ]);
+                                    ?>
                                 <?php endif; ?>
                             </div>
                         </div>
