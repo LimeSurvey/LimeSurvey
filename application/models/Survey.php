@@ -1148,8 +1148,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
     public function getRunning()
     {
 
-        $sState = $this->getState();
-        $sLink  = '';
+        $sState    = $this->getState();
+        $aLinkData = array();
 
         $sStop  = $this->expires != '' ? convertToGlobalSettingFormat($this->expires) : '';
         $sStart = $this->startdate != '' ? convertToGlobalSettingFormat($this->startdate) : '';
@@ -1160,8 +1160,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
                     'text' => gT('Inactive'),
                     'iconClass' => 'fa fa-stop text-warning'
                 );
-
-                $sLink = $this->getRunningLink($aLinkData);
                 break;
 
             case 'expired':
@@ -1169,8 +1167,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
                     'text' => sprintf(gT('Expired: %s'), $sStop),
                     'iconClass' => 'fa fa fa-step-forward text-warning'
                 );
-
-                $sLink = $this->getRunningLink($aLinkData);
                 break;
 
             case 'willRun':
@@ -1178,8 +1174,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
                     'text' => sprintf(gT('Start: %s'), $sStart),
                     'iconClass' => 'fa fa-clock-o text-warning'
                 );
-
-                $sLink = $this->getRunningLink($aLinkData);
                 break;
 
             case 'willExpire':
@@ -1188,8 +1182,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
                     'text' => sprintf(gT('End: %s'), $sStop),
                     'iconClass' => 'fa fa-play text-success'
                 );
-
-                $sLink = $this->getRunningLink($aLinkData);
                 break;
 
             case 'running':
@@ -1200,11 +1192,10 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
                 $aLinkData['text'] = $sStart == '' ? gT('Active') : gT('End: Never');
 
-                $sLink = $this->getRunningLink($aLinkData);
                 break;
         }
 
-        return $sLink;
+        return $this->getRunningLink($aLinkData);
     }
 
     /**

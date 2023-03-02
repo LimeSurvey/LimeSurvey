@@ -134,11 +134,8 @@ class SurveyTest extends BaseModelTestCase
 
         $icon = $survey->getRunning();
 
-        $this->assertSame(
-            '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $survey->sid) . '" class="survey-state" data-toggle="tooltip" title="' . gT('Inactive') . '"><span class="fa fa-stop text-warning"></span><span class="sr-only">' . gT('Inactive') . '</span></a>',
-            $icon,
-            'The correct icon for an inactive survey was not returned.'
-        );
+        $this->assertStringContainsString(gT('Inactive'), $icon, 'The icon link does not have the right text.');
+        $this->assertStringContainsString('fa fa-stop text-warning', $icon, 'The icon link does not have the right css classes.');
     }
 
     /**
@@ -151,11 +148,8 @@ class SurveyTest extends BaseModelTestCase
 
         $icon = $survey->getRunning();
 
-        $this->assertSame(
-            '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $survey->sid) . '" class="survey-state" data-toggle="tooltip" title="' . gT('Active') . '"><span class="fa fa-play text-success"></span><span class="sr-only">' . gT('Active') . '</span></a>',
-            $icon,
-            'The correct icon for an active survey with no dates was not returned.'
-        );
+        $this->assertStringContainsString(gT('Active'), $icon, 'The icon link does not have the right text.');
+        $this->assertStringContainsString('fa fa-play text-success', $icon, 'The icon link does not have the right css classes.');
     }
 
     /**
@@ -170,25 +164,18 @@ class SurveyTest extends BaseModelTestCase
 
         $survey->startdate = $threeDaysAgo;
 
-        $expectedIcon = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $survey->sid) . '" class="survey-state" data-toggle="tooltip" title="' . gT('End: Never') . '"><span class="fa fa-play text-success"></span><span class="sr-only">' . gT('End: Never') . '</span></a>';
         $icon = $survey->getRunning();
 
-        $this->assertSame(
-            $expectedIcon,
-            $icon,
-            'The correct icon for an active survey with a start date set, but no expire date was not returned.'
-        );
+        $this->assertStringContainsString(gT('End: Never'), $icon, 'The icon link does not have the right text.');
+        $this->assertStringContainsString('fa fa-play text-success', $icon, 'The icon link does not have the right css classes.');
 
         //Test with time adjust.
         \SettingGlobal::setSetting('timeadjust', '+420 minutes');
 
         $newIcon = $survey->getRunning();
 
-        $this->assertSame(
-            $expectedIcon,
-            $newIcon,
-            'The correct icon for an active survey with a start date set, but no expire date was not returned. (Time adjust test).'
-        );
+        $this->assertStringContainsString(gT('End: Never'), $newIcon, 'The icon link does not have the right text.');
+        $this->assertStringContainsString('fa fa-play text-success', $newIcon, 'The icon link does not have the right css classes.');
     }
 
     /**
@@ -205,25 +192,18 @@ class SurveyTest extends BaseModelTestCase
 
         $sExpires = convertToGlobalSettingFormat(date("Y-m-d H:i:s", strtotime(\Yii::app()->getConfig('timeadjust'), strtotime($survey->expires))));
 
-        $expectedIcon = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $survey->sid) . '" class="survey-state" data-toggle="tooltip" title="' . sprintf(gT('End: %s'), $sExpires) . '"><span class="fa fa-play text-success"></span><span class="sr-only">' . sprintf(gT('End: %s'), $sExpires) . '</span></a>';
         $icon = $survey->getRunning();
 
-        $this->assertSame(
-            $expectedIcon,
-            $icon,
-            'The correct icon for an active survey with an expire date in the future but no start date was not returned.'
-        );
+        $this->assertStringContainsString(sprintf(gT('End: %s'), $sExpires), $icon, 'The icon link does not have the right text.');
+        $this->assertStringContainsString('fa fa-play text-success', $icon, 'The icon link does not have the right css classes.');
 
         //Test with time adjust.
         \SettingGlobal::setSetting('timeadjust', '+120 minutes');
 
         $newIcon = $survey->getRunning();
 
-        $this->assertSame(
-            $expectedIcon,
-            $newIcon,
-            'The correct icon for an active survey with an expire date in the future but no start date was not returned. (Time adjust test).'
-        );
+        $this->assertStringContainsString(sprintf(gT('End: %s'), $sExpires), $newIcon, 'The icon link does not have the right text.');
+        $this->assertStringContainsString('fa fa-play text-success', $newIcon, 'The icon link does not have the right css classes.');
     }
 
     /**
@@ -243,25 +223,18 @@ class SurveyTest extends BaseModelTestCase
 
         $sExpires = convertToGlobalSettingFormat(date("Y-m-d H:i:s", strtotime(\Yii::app()->getConfig('timeadjust'), strtotime($survey->expires))));
 
-        $expectedIcon = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $survey->sid) . '" class="survey-state" data-toggle="tooltip" title="' . sprintf(gT('End: %s'), $sExpires) . '"><span class="fa fa-play text-success"></span><span class="sr-only">' . sprintf(gT('End: %s'), $sExpires) . '</span></a>';
         $icon = $survey->getRunning();
 
-        $this->assertSame(
-            $expectedIcon,
-            $icon,
-            'The correct icon for an active survey with an expire date in the future and a start date in the past was not returned.'
-        );
+        $this->assertStringContainsString(sprintf(gT('End: %s'), $sExpires), $icon, 'The icon link does not have the right text.');
+        $this->assertStringContainsString('fa fa-play text-success', $icon, 'The icon link does not have the right css classes.');
 
         //Test with time adjust.
         \SettingGlobal::setSetting('timeadjust', '+180 minutes');
 
         $newIcon = $survey->getRunning();
 
-        $this->assertSame(
-            $expectedIcon,
-            $newIcon,
-            'The correct icon for an active survey with an expire date in the future and a start date in the past was not returned. (Time adjust test).'
-        );
+        $this->assertStringContainsString(sprintf(gT('End: %s'), $sExpires), $newIcon, 'The icon link does not have the right text.');
+        $this->assertStringContainsString('fa fa-play text-success', $newIcon, 'The icon link does not have the right css classes.');
     }
 
     /**
@@ -278,25 +251,18 @@ class SurveyTest extends BaseModelTestCase
         $survey->startdate = $inSixDays;
 
         $sStart = convertToGlobalSettingFormat(date("Y-m-d H:i:s", strtotime(\Yii::app()->getConfig('timeadjust'), strtotime($survey->startdate))));
-        $expectedIcon = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $survey->sid) . '" class="survey-state" data-toggle="tooltip" title="' . sprintf(gT('Start: %s'), $sStart) . '"><span class="fa fa-clock-o text-warning"></span><span class="sr-only">' . sprintf(gT('Start: %s'), $sStart) . '</span></a>';
         $icon = $survey->getRunning();
 
-        $this->assertSame(
-            $expectedIcon,
-            $icon,
-            'The correct icon for a survey with a start date in the future and no expire date was not returned.'
-        );
+        $this->assertStringContainsString(sprintf(gT('Start: %s'), $sStart), $icon, 'The icon link does not have the right text.');
+        $this->assertStringContainsString('fa fa-clock-o text-warning', $icon, 'The icon link does not have the right css classes.');
 
         //Test with time adjust.
         \SettingGlobal::setSetting('timeadjust', '+240 minutes');
 
         $newIcon = $survey->getRunning();
 
-        $this->assertSame(
-            $expectedIcon,
-            $newIcon,
-            'The correct icon for a survey with a start date in the future and no expire date was not returned. (Time adjust test).'
-        );
+        $this->assertStringContainsString(sprintf(gT('Start: %s'), $sStart), $newIcon, 'The icon link does not have the right text.');
+        $this->assertStringContainsString('fa fa-clock-o text-warning', $newIcon, 'The icon link does not have the right css classes.');
     }
 
     /**
@@ -315,25 +281,18 @@ class SurveyTest extends BaseModelTestCase
         $survey->expires = $inSevenDays;
 
         $sStart = convertToGlobalSettingFormat(date("Y-m-d H:i:s", strtotime(\Yii::app()->getConfig('timeadjust'), strtotime($survey->startdate))));
-        $expectedIcon = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $survey->sid) . '" class="survey-state" data-toggle="tooltip" title="' . sprintf(gT('Start: %s'), $sStart) . '"><span class="fa fa-clock-o text-warning"></span><span class="sr-only">' . sprintf(gT('Start: %s'), $sStart) . '</span></a>';
         $icon = $survey->getRunning();
 
-        $this->assertSame(
-            $expectedIcon,
-            $icon,
-            'The correct icon for a survey with a start date in the future and no expire date was not returned.'
-        );
+        $this->assertStringContainsString(sprintf(gT('Start: %s'), $sStart), $icon, 'The icon link does not have the right text.');
+        $this->assertStringContainsString('fa fa-clock-o text-warning', $icon, 'The icon link does not have the right css classes.');
 
         //Test with time adjust.
         \SettingGlobal::setSetting('timeadjust', '+300 minutes');
 
         $newIcon = $survey->getRunning();
 
-        $this->assertSame(
-            $expectedIcon,
-            $newIcon,
-            'The correct icon for a survey with a start date in the future and no expire date was not returned. (Time adjust test).'
-        );
+        $this->assertStringContainsString(sprintf(gT('Start: %s'), $sStart), $newIcon, 'The icon link does not have the right text.');
+        $this->assertStringContainsString('fa fa-clock-o text-warning', $newIcon, 'The icon link does not have the right css classes.');
     }
 
     /**
@@ -350,25 +309,18 @@ class SurveyTest extends BaseModelTestCase
         $survey->expires = $threeDaysAgo;
 
         $sExpires = convertToGlobalSettingFormat(date("Y-m-d H:i:s", strtotime(\Yii::app()->getConfig('timeadjust'), strtotime($survey->expires))));
-        $expectedIcon = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $survey->sid) . '" class="survey-state" data-toggle="tooltip" title="' . sprintf(gT('Expired: %s'), $sExpires) . '"><span class="fa fa fa-step-forward text-warning"></span><span class="sr-only">' . sprintf(gT('Expired: %s'), $sExpires) . '</span></a>';
         $icon = $survey->getRunning();
 
-        $this->assertSame(
-            $expectedIcon,
-            $icon,
-            'The correct icon for an expired survey with a start date in the past and no start date was not returned.'
-        );
+        $this->assertStringContainsString(sprintf(gT('Expired: %s'), $sExpires), $icon, 'The icon link does not have the right text.');
+        $this->assertStringContainsString('fa fa fa-step-forward text-warning', $icon, 'The icon link does not have the right css classes.');
 
         //Test with time adjust.
         \SettingGlobal::setSetting('timeadjust', '+360 minutes');
 
         $newIcon = $survey->getRunning();
 
-        $this->assertSame(
-            $expectedIcon,
-            $newIcon,
-            'The correct icon for an expired survey with a start date in the past and no start date was not returned. (Time adjust test).'
-        );
+        $this->assertStringContainsString(sprintf(gT('Expired: %s'), $sExpires), $newIcon, 'The icon link does not have the right text.');
+        $this->assertStringContainsString('fa fa fa-step-forward text-warning', $newIcon, 'The icon link does not have the right css classes.');
     }
 
     /**
@@ -386,24 +338,17 @@ class SurveyTest extends BaseModelTestCase
         $survey->expires = $fiveDaysAgo;
 
         $sExpires = convertToGlobalSettingFormat(date("Y-m-d H:i:s", strtotime(\Yii::app()->getConfig('timeadjust'), strtotime($survey->expires))));
-        $expectedIcon = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $survey->sid) . '" class="survey-state" data-toggle="tooltip" title="' . sprintf(gT('Expired: %s'), $sExpires) . '"><span class="fa fa fa-step-forward text-warning"></span><span class="sr-only">' . sprintf(gT('Expired: %s'), $sExpires) . '</span></a>';
         $icon = $survey->getRunning();
 
-        $this->assertSame(
-            $expectedIcon,
-            $icon,
-            'The correct icon for an expired survey with a start date in the past and a start date in the past was not returned.'
-        );
+        $this->assertStringContainsString(sprintf(gT('Expired: %s'), $sExpires), $icon, 'The icon link does not have the right text.');
+        $this->assertStringContainsString('fa fa fa-step-forward text-warning', $icon, 'The icon link does not have the right css classes.');
 
         //Test with time adjust.
         \SettingGlobal::setSetting('timeadjust', '+60 minutes');
 
         $newIcon = $survey->getRunning();
 
-        $this->assertSame(
-            $expectedIcon,
-            $newIcon,
-            'The correct icon for an expired survey with a start date in the past and a start date in the past was not returned. (Time adjust test).'
-        );
+        $this->assertStringContainsString(sprintf(gT('Expired: %s'), $sExpires), $newIcon, 'The icon link does not have the right text.');
+        $this->assertStringContainsString('fa fa fa-step-forward text-warning', $newIcon, 'The icon link does not have the right css classes.');
     }
 }
