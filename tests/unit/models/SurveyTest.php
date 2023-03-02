@@ -199,6 +199,8 @@ class SurveyTest extends BaseModelTestCase
 
         //Test with time adjust.
         \SettingGlobal::setSetting('timeadjust', '+120 minutes');
+        
+        $sExpires = convertToGlobalSettingFormat(date("Y-m-d H:i:s", strtotime(\Yii::app()->getConfig('timeadjust'), strtotime($survey->expires))));
 
         $newIcon = $survey->getRunning();
 
@@ -230,6 +232,8 @@ class SurveyTest extends BaseModelTestCase
 
         //Test with time adjust.
         \SettingGlobal::setSetting('timeadjust', '+180 minutes');
+        
+        $sExpires = convertToGlobalSettingFormat(date("Y-m-d H:i:s", strtotime(\Yii::app()->getConfig('timeadjust'), strtotime($survey->expires))));
 
         $newIcon = $survey->getRunning();
 
@@ -258,6 +262,8 @@ class SurveyTest extends BaseModelTestCase
 
         //Test with time adjust.
         \SettingGlobal::setSetting('timeadjust', '+240 minutes');
+        
+        $sStart = convertToGlobalSettingFormat(date("Y-m-d H:i:s", strtotime(\Yii::app()->getConfig('timeadjust'), strtotime($survey->startdate))));
 
         $newIcon = $survey->getRunning();
 
@@ -288,6 +294,8 @@ class SurveyTest extends BaseModelTestCase
 
         //Test with time adjust.
         \SettingGlobal::setSetting('timeadjust', '+300 minutes');
+        
+        $sStart = convertToGlobalSettingFormat(date("Y-m-d H:i:s", strtotime(\Yii::app()->getConfig('timeadjust'), strtotime($survey->startdate))));
 
         $newIcon = $survey->getRunning();
 
@@ -316,6 +324,8 @@ class SurveyTest extends BaseModelTestCase
 
         //Test with time adjust.
         \SettingGlobal::setSetting('timeadjust', '+360 minutes');
+        
+        $sExpires = convertToGlobalSettingFormat(date("Y-m-d H:i:s", strtotime(\Yii::app()->getConfig('timeadjust'), strtotime($survey->expires))));
 
         $newIcon = $survey->getRunning();
 
@@ -345,6 +355,8 @@ class SurveyTest extends BaseModelTestCase
 
         //Test with time adjust.
         \SettingGlobal::setSetting('timeadjust', '+60 minutes');
+        
+        $sExpires = convertToGlobalSettingFormat(date("Y-m-d H:i:s", strtotime(\Yii::app()->getConfig('timeadjust'), strtotime($survey->expires))));
 
         $newIcon = $survey->getRunning();
 
