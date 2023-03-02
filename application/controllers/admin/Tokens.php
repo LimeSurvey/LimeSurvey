@@ -1575,7 +1575,7 @@ class Tokens extends SurveyCommonAction
                             $aData['tokenoutput'] .= "<li>" . gT("Some emails were not sent because the server did not accept the email(s) or some other error occurred.") . "</li>";
                         }
                         $aData['tokenoutput'] .= '</ul>';
-                        $aData['tokenoutput'] .= '<p><a href="' . App()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId) . '" title="" class="btn btn-outline-secondary btn-lg">' . gT("Ok") . '</a></p>';
+                        $aData['tokenoutput'] .= '<p><a href="' . App()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId) . '" title="" class="btn btn-outline-secondary">' . gT("Ok") . '</a></p>';
                     }
                 }
                 $aViewUrls[] = 'emailpost';
