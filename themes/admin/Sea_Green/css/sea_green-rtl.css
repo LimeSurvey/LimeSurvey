@@ -18239,6 +18239,7 @@ input[type=file]::file-selector-button {
 #sidebar .resize-handle button {
   background-color: #fff;
   outline: 0;
+  border: none;
   cursor: col-resize;
   width: 100%;
   height: 100%;

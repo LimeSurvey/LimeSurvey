@@ -84,6 +84,7 @@
     button {
       background-color : $white;
       outline: 0;
+      border: none;
       &:focus, &:active, &:hover {
         outline: 0 !important;
         background-color : $white !important;
