@@ -12,9 +12,6 @@ class GlobalSettingsRenderer extends DefaultBaseRenderer
         switch (true) {
             case $input instanceof FileInput:
                 $id = $input->getId() ? 'id="' . $input->getId() . '"' : '';
-                $accept = !empty($input->getAccept())
-                    ? 'accept="' . implode(',', $input->getAccept()) . '"'
-                    : '';
                 $disabled = $input->isDisabled() ? "disabled" : '';
                 [$tooltipText, $tooltipTrigger] = $this->bakeTooltip($input->getTooltip());
                 $helpDiv = $this->bakeHelpDiv($input->getHelp());
@@ -25,7 +22,7 @@ class GlobalSettingsRenderer extends DefaultBaseRenderer
         <div class="col-sm-12">
             <input
                 class="form-control"
-                {$id} {$accept} {$disabled} {$tooltipTrigger} {$tooltipText}
+                {$id} {$input->getAcceptHtml()} {$disabled} {$tooltipTrigger} {$tooltipText}
                 name="{$input->getName()}"
                 type="file"
             />
