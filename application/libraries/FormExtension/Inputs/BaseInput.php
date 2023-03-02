@@ -17,7 +17,7 @@ class BaseInput implements InputInterface
     /** @var ?callable */
     private $conditionFunction;
 
-    /** @var string */
+    /** @var ?string */
     private $id;
 
     /** @var string */
