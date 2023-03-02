@@ -2311,8 +2311,8 @@ function tokensExport($iSurveyID)
     $oRecordSet->order("lt.tid");
     $bresult = $oRecordSet->query();
     // fetching all records into array, values need to be decrypted
-    $bresultAll = $bresult->readAll();
-    foreach ($bresultAll as $tokenKey => $tokenValue) {
+    foreach ($bresult as $tokenValue) {
+        $tokenKey = $token['tid'];
         // creating TokenDynamic object to be able to decrypt easier
         $token = TokenDynamic::model($iSurveyID);
         $attributes = array_keys($token->getAttributes());
@@ -2392,7 +2392,9 @@ function tokensExport($iSurveyID)
         echo $tokenoutput;
         $tokenoutput = '';
 
-        $aExportedTokens[] = $brow['tid'];
+        if (Yii::app()->request->getPost('tokendeleteexported')) {
+            $aExportedTokens[] = $brow['tid'];
+        }
     }
 
     if (Yii::app()->request->getPost('tokendeleteexported') && Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'delete') && !empty($aExportedTokens)) {

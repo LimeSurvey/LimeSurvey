@@ -86,7 +86,7 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
                                     'asDropDownList' => true,
                                     'htmlOptions'=>array('style'=>"width: 100%"),
                                     'data' => isset($aSurveyGroupList) ?  $aSurveyGroupList : [],
-                                    'value' => $oSurvey->gsid,
+                                    'value' => $oSurvey->gsid ?? 1,
                                     'name' => 'gsid',
                                     'pluginOptions' => array()
                                 ));?>

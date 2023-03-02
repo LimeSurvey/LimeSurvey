@@ -61,8 +61,23 @@ abstract class QuestionBaseRenderer extends StaticModel
 
         $questionScript = $this->getQuestionScript();
         if (!empty($questionScript)) {
-            $sScriptRendered = LimeExpressionManager::ProcessString($questionScript, $this->oQuestion->qid, ['QID' => $this->oQuestion->qid]);
+            /* Replace Expression Manager */
+            $sScriptRendered = LimeExpressionManager::ProcessString(
+                $questionScript,
+                $this->oQuestion->qid,
+                [
+                    'QID' => $this->oQuestion->qid,
+                    'GID' => $this->oQuestion->gid,
+                    'SGQ' => $this->oQuestion->sid . "X" . $this->oQuestion->gid . "X" . $this->oQuestion->qid,
+                ]
+            );
             $this->addScript('QuestionStoredScript-' . $this->oQuestion->qid, $sScriptRendered, LSYii_ClientScript::POS_POSTSCRIPT);
+            /* Reset needed replacement */
+            LimeExpressionManager::updateReplacementFields(array(
+                'QID' => null,
+                'GID' => null,
+                'SGQ' => null,
+            ));
         }
     }
 
