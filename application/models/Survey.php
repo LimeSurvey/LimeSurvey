@@ -1143,6 +1143,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     /**
      * Returns an html link to the survey in the list.
      * The link will have an icon depending on the state of the survey.
+     * Icon generaton (for CGridView)
      * @return string
      */
     public function getRunning()
@@ -1190,6 +1191,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
                     'iconClass' => 'fa fa-play text-success'
                 );
 
+                // Note: We check start date as to know which label to show. 
+                // This is ported from prior implementations.
+                // Could be enhanced.
                 $aLinkData['text'] = $sStart == '' ? gT('Active') : gT('End: Never');
 
                 break;
@@ -1200,6 +1204,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
     /**
      * Returns the html link with the specified data.
+     * Icon generaton (for CGridView)
      *
      * @param array $alinkData contains data to attach to the link.
      * @return string
