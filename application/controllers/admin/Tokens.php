@@ -1759,16 +1759,16 @@ class Tokens extends SurveyCommonAction
         $aData['thissurvey'] = getSurveyInfo($iSurveyId);
         $aData['iSurveyId'] = $aData['surveyid'] = $iSurveyId;
         $aData['ldap_queries'] = Yii::app()->getConfig('ldap_queries');
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
+            [
+                'showCloseButton' => true,
+                'closeUrl' => Yii::app()->createUrl('admin/tokens/sa/browse/surveyid/' . $iSurveyId)
+            ],
+            true
+        );
 
         if (!Yii::app()->request->getPost('submit')) {
-            $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
-                '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
-                [
-                    'showCloseButton' => true,
-                    'closeUrl' => Yii::app()->createUrl('admin/tokens/sa/browse/surveyid/' . $iSurveyId)
-                ],
-                true
-            );
             $this->renderWrappedTemplate('token', array('ldapform'), $aData);
         } else {
             $filterduplicatetoken = (Yii::app()->request->getPost('filterduplicatetoken') && (Yii::app()->request->getPost('filterduplicatetoken') == 'on' || Yii::app()->request->getPost('filterduplicatetoken') == '1'));
@@ -2009,6 +2009,14 @@ class Tokens extends SurveyCommonAction
         $aData['sidemenu']['state'] = false;
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyId . ")";
         $aData['sidemenu']["token_menu"] = true;
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
+            [
+                'showCloseButton' => true,
+                'closeUrl' => Yii::app()->createUrl('admin/tokens/sa/browse/surveyid/' . $iSurveyId)
+            ],
+            true
+        );
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'tokensimport.js');
         $aEncodings = aEncodingsArray();
 
@@ -2315,15 +2323,6 @@ class Tokens extends SurveyCommonAction
             $thischaracterset = "auto";
         }
         $aData['thischaracterset'] = $thischaracterset;
-
-        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
-            '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
-            [
-                'showCloseButton' => true,
-                'closeUrl' => Yii::app()->createUrl('admin/tokens/sa/browse/surveyid/' . $iSurveyId)
-            ],
-            true
-        );
 
         $this->renderWrappedTemplate('token', array('csvupload'), $aData);
     }
