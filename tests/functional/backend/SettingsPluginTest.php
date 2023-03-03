@@ -9,11 +9,11 @@ use LSActiveRecord;
  */
 class SettingsPluginTest extends TestBaseClass
 {
-
     protected static $plugin;
 
     protected static $settings = [];
-   
+    protected static $dateTimeSettings = [];
+
     /**
      * @inheritdoc
      * Activate needed plugins
@@ -23,8 +23,8 @@ class SettingsPluginTest extends TestBaseClass
     {
         parent::setUpBeforeClass();
 
-        require_once __DIR__."/../../data/plugins/SettingsPlugin.php";
-        $plugin = \Plugin::model()->findByAttributes(array('name'=>'SettingsPlugin'));
+        require_once __DIR__ . '/../../data/plugins/SettingsPlugin.php';
+        $plugin = \Plugin::model()->findByAttributes(array('name' => 'SettingsPlugin'));
         if (!$plugin) {
             $plugin = new \Plugin();
             $plugin->name = 'SettingsPlugin';
@@ -39,7 +39,7 @@ class SettingsPluginTest extends TestBaseClass
 
         $obj = new \stdClass();
         $obj->customProperty = 'abc';
-       
+
         self::$settings = [
             'empty_1' => 0,
             'empty_2' => null,
@@ -48,8 +48,8 @@ class SettingsPluginTest extends TestBaseClass
             'empty_5' => [],
             'empty_6' => (object) [],
             'empty_7' => new \stdClass(),
-            'number' => rand(100,999),
-            'decimal' => rand(100,999) * 0.5,
+            'number' => rand(100, 999),
+            'decimal' => rand(100, 999) * 0.5,
             'string' => 'abc',
             'string_2' => 'ABC',
             'especial_character_1' => 'ñ',
@@ -69,49 +69,83 @@ class SettingsPluginTest extends TestBaseClass
             'object_1' => (object) ['property' => 'Here we go'],
             'object_2' => $obj,
         ];
+
+        self::$dateTimeSettings = array(
+            'date_time_1' => [
+                'datetime' => date_create()->format('Y-m-d H:i:s'),
+            ],
+            'date_time_2' => [
+                'datetime' => date_create()->format('Y-m-d H:i:s'),
+                'datetimesaveformat' => 'd/m/Y'
+            ],
+        );
     }
 
     public function testGetAndSetSetting()
     {
         foreach (self::$settings as $key => $value) {
             self::$plugin->setSetting($key, $value);
-        
+
             $setting = \PluginSetting::model()->findByAttributes([
                 'plugin_id' => self::$plugin->getId(),
                 'key' => $key
             ]);
-            
+
             $this->assertNotEmpty($setting->id);
-            $this->assertEquals($setting->value, json_encode($value) );
+            $this->assertEquals($setting->value, json_encode($value));
 
             $settingValue = self::$plugin->getSetting($key);
             $this->assertEquals($settingValue, json_decode(json_encode($value), true));
         }
     }
 
-    public function testGetAndSetSettingEncripted()
+    public function testGetAndSetSettingEncrypted()
     {
-        self::$plugin->setEncriptedSettings(array_keys(self::$settings));
+        self::$plugin->setEncryptedSettings(array_keys(self::$settings));
         foreach (self::$settings as $key => $value) {
             self::$plugin->setSetting($key, $value);
-        
+
             $setting = \PluginSetting::model()->findByAttributes([
                 'plugin_id' => self::$plugin->getId(),
                 'key' => $key
             ]);
-            
+
             $this->assertNotEmpty($setting->id);
             if (empty($value)) {
-                $this->assertEquals($setting->value, json_encode($value) );
+                $this->assertEquals($setting->value, json_encode($value));
             } else {
-                $this->assertEquals($setting->value, 
+                $this->assertEquals(
+                    $setting->value,
                     json_encode(LSActiveRecord::encryptSingle(json_encode($value)))
                 );
             }
 
             $settingValue = self::$plugin->getSetting($key);
-            $this->assertEquals($settingValue, json_decode(json_encode($value), true) );
+            $this->assertEquals($settingValue, json_decode(json_encode($value), true));
         }
     }
 
+    public function testGetAndSetDateTimeSettings(): void
+    {
+
+        foreach (self::$dateTimeSettings as $key => $value) {
+            self::$plugin->setSetting($key, $value);
+
+            $setting = \PluginSetting::model()->findByAttributes([
+                'plugin_id' => self::$plugin->getId(),
+                'key' => $key
+            ]);
+
+            $settingValue = self::$plugin->getSetting($key);
+
+            if (is_array($settingValue) && isset($settingValue['datetime'])) {
+                //Default date time format.
+                $this->assertSame($settingValue['datetime'], $value['datetime']);
+            } else {
+                //Custom date time format.
+                $date = \LimeSurvey\PluginManager\LimesurveyApi::getFormattedDateTime($value['datetime'], $value['datetimesaveformat']);
+                $this->assertSame($date, $settingValue);
+            }
+        }
+    }
 }
