@@ -56,12 +56,12 @@
                             </div>
 
                             <!-- Server name port -->
-                            <div class=" mb-3 setting control-group setting-string">
+                            <div class=" mb-3 setting control-group setting-string col-3">
                                 <label class="default form-label" for="bounceaccounthost">
                                     <?php eT('Server name & port:'); ?>
                                 </label>
                                 <div class="default controls">
-                                    <input size="50" type="text" value="<?php echo $settings['bounceaccounthost']; ?>" name="bounceaccounthost" id="bounceaccounthost" />
+                                    <input class="form-control" size="50" type="text" value="<?php echo $settings['bounceaccounthost']; ?>" name="bounceaccounthost" id="bounceaccounthost" />
                                 </div>
                             </div>
 
@@ -69,23 +69,23 @@
 
 
                             <!-- User name -->
-                            <div class=" mb-3 setting control-group setting-string">
+                            <div class=" mb-3 setting control-group setting-string col-3">
                                 <label class="default form-label" for="bounceaccountuser">
                                     <?php eT('User name:'); ?>
                                 </label>
                                 <div class="default controls">
-                                    <input size="50" type="text" value="<?php echo $settings['bounceaccountuser'];?>" name="bounceaccountuser" id="bounceaccountuser" />
+                                    <input class="form-control" size="50" type="text" value="<?php echo $settings['bounceaccountuser'];?>" name="bounceaccountuser" id="bounceaccountuser" />
                                 </div>
                             </div>
 
                             <!-- Password -->
-                            <div class=" mb-3 setting control-group setting-password">
+                            <div class=" mb-3 setting control-group setting-password col-3">
                                 <label class="default form-label" for="bounceaccountpass">
                                     <?php eT('Password:'); ?>
                                 </label>
 
                                 <div class="default controls">
-                                    <input autocomplete="off" size="50" type="password" value="somepassword" name="bounceaccountpass" id="bounceaccountpass" />
+                                    <input class="form-control" autocomplete="off" size="50" type="password" value="somepassword" name="bounceaccountpass" id="bounceaccountpass" />
                                 </div>
                             </div>
 
