@@ -1,10 +1,10 @@
-<?php
-    // Tools dropdown button
-    $toolsDropdownItems = $this->renderPartial('partial/topbarBtns/groupToolsDropdownItems', get_defined_vars(), true);
-?>
-<?php if (!empty(trim($toolsDropdownItems))): ?>
-    <!-- Tools  groupTopbarLeft-->
-
+<?php if ($showToolsMenu) {
+    $toolsDropDownItems = $this->renderPartial(
+        '/surveyAdministration/partial/topbar/surveyToolsDropdownItems',
+        get_defined_vars(),
+        true
+    ); ?>
+    <!-- Tools  -->
     <!-- Main button dropdown -->
     <?php
     $this->widget('ext.ButtonWidget.ButtonWidget', [
@@ -12,12 +12,12 @@
         'id' => 'ls-tools-button',
         'text' => gT('Tools'),
         'isDropDown' => true,
-        'dropDownContent' => '<ul class="dropdown-menu">' . $toolsDropdownItems . '</ul>',
+        'dropDownContent' => $toolsDropDownItems,
         'htmlOptions' => [
             'class' => 'btn btn-outline-secondary',
         ],
     ]); ?>
-<?php endif; ?>
+<?php } ?>
 
 <?php
 /**

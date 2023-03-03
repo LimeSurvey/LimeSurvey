@@ -202,9 +202,13 @@ class LayoutHelper
         if ($titleTextBreadcrumb !== null) {
             //special case for question administration (overview and editor)
             if (isset($aData['topBar']['name']) && ($aData['topBar']['name'] === 'questionTopbar_view')) {
+                $topbarData = TopbarConfiguration::getSurveyTopbarData($aData['surveyid']);
+
                 $topbarQuestionEditorData = TopbarConfiguration::getQuestionTopbarData($aData['surveyid']);
                 $topbarQuestionEditorData['breadcrumb'] = $titleTextBreadcrumb;
                 $topbarQuestionEditorData = array_merge($topbarQuestionEditorData, $aData);
+                $topbarQuestionEditorData = array_merge($topbarQuestionEditorData, $topbarData);
+                
                 return Yii::app()->getController()->renderPartial(
                     '/questionAdministration/partial/topbarBtns/questionTopbar_view',
                     $topbarQuestionEditorData,
