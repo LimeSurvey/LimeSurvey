@@ -506,20 +506,6 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
             </p>
             <?php echo CHtml::endForm() ?>
         </div>
-
-
-        <div style="display: none;">
-            <?php
-            Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker',
-                array(
-                    'name' => "no",
-                    'id' => "no",
-                    'value' => '',
-
-                )
-            );
-            ?>
-        </div>
     </div>
 </div>
 <?php

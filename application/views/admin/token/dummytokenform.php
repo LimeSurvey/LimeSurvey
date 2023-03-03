@@ -90,62 +90,46 @@
                 <div class="mb-3">
                     <label  class=" form-label" for='validfrom'><?php eT("Valid from"); ?>:</label>
                     <div class=" has-feedback">
-                        <?php Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
+                        <?php Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', [
                                 'name' => "validfrom",
                                 'value' => $validfrom ?? '',
-                                'pluginOptions' => array(
+                                'pluginOptions' => [
                                     'format' => $dateformatdetails['jsdate'] . " HH:mm",
-                                    'allowInputToggle' =>true,
+                                    'allowInputToggle' => true,
                                     'showClear' => true,
-                                    'tooltips' => array(
-                                        'clear'=> gT('Clear selection'),
-                                        'prevMonth'=> gT('Previous month'),
-                                        'nextMonth'=> gT('Next month'),
-                                        'selectYear'=> gT('Select year'),
-                                        'prevYear'=> gT('Previous year'),
-                                        'nextYear'=> gT('Next year'),
-                                        'selectDecade'=> gT('Select decade'),
-                                        'prevDecade'=> gT('Previous decade'),
-                                        'nextDecade'=> gT('Next decade'),
-                                        'prevCentury'=> gT('Previous century'),
-                                        'nextCentury'=> gT('Next century'),
-                                        'selectTime'=> gT('Select time')
-                                    ),
                                     'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
-                                )
-                            ));
+                                ]
+                            ]);
                         ?>
-                        <span class="help-block"><?php printf(gT('Format: %s'), $dateformatdetails['jsdate'] . ' ' . gT('hh:mm')); ?></span>
+                        <?php
+                        $this->widget('ext.AlertWidget.AlertWidget', [
+                            'text'        => sprintf(gT('Format: %s'), $dateformatdetails['jsdate'] . ' ' . gT('hh:mm')),
+                            'type'        => 'info',
+                            'htmlOptions' => ['class' => 'mt-1'],
+                        ]);
+                        ?>
                     </div>
 
                     <label  class=" form-label" for='validuntil'><?php eT('Until:'); ?></label>
                     <div class=" has-feedback">
-                        <?php Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
+                        <?php Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', array(
                                 'name' => "validuntil",
                                 'value' => $validuntil ?? '',
                                 'pluginOptions' => array(
                                     'format' => $dateformatdetails['jsdate'] . " HH:mm",
-                                    'allowInputToggle' =>true,
+                                    'allowInputToggle' => true,
                                     'showClear' => true,
-                                    'tooltips' => array(
-                                        'clear'=> gT('Clear selection'),
-                                        'prevMonth'=> gT('Previous month'),
-                                        'nextMonth'=> gT('Next month'),
-                                        'selectYear'=> gT('Select year'),
-                                        'prevYear'=> gT('Previous year'),
-                                        'nextYear'=> gT('Next year'),
-                                        'selectDecade'=> gT('Select decade'),
-                                        'prevDecade'=> gT('Previous decade'),
-                                        'nextDecade'=> gT('Next decade'),
-                                        'prevCentury'=> gT('Previous century'),
-                                        'nextCentury'=> gT('Next century'),
-                                'selectTime'=> gT('Select time')
-                                    ),
                                     'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                                 )
                             ));
                         ?>
-                        <span class="help-block"><?php printf(gT('Format: %s'), $dateformatdetails['jsdate'] . ' ' . gT('hh:mm')); ?></span>
+                        <?php
+                        $this->widget('ext.AlertWidget.AlertWidget', [
+                            'text'        => sprintf(gT('Format: %s'), $dateformatdetails['jsdate'] . ' ' . gT('hh:mm')),
+                            'type'        => 'info',
+                            'htmlOptions' => ['class' => 'mt-1'],
+                        ]);
+                        ?>
                     </div>
                 </div>
 
