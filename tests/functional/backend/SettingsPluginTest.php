@@ -139,10 +139,10 @@ class SettingsPluginTest extends TestBaseClass
             $settingValue = self::$plugin->getSetting($key);
 
             if (is_array($settingValue) && isset($settingValue['datetime'])) {
-                //Default date time format.
+                //Default date time format
                 $this->assertSame($settingValue['datetime'], $value['datetime']);
             } else {
-                //Custom date time format.
+                //Custom date time format
                 $date = \LimeSurvey\PluginManager\LimesurveyApi::getFormattedDateTime($value['datetime'], $value['datetimesaveformat']);
                 $this->assertSame($date, $settingValue);
             }

@@ -23,6 +23,7 @@ class SettingsPlugin extends PluginBase
 
     public function setEncryptedSettings($encryptedSettings)
     {
+
         $this->encryptedSettings = $encryptedSettings;
     }
 }
