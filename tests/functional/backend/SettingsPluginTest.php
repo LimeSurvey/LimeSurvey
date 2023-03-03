@@ -73,10 +73,19 @@ class SettingsPluginTest extends TestBaseClass
         self::$dateTimeSettings = array(
             'date_time_1' => [
                 'datetime' => date_create()->format('Y-m-d H:i:s'),
+                'datetimesaveformat' => 'd.m.Y'
             ],
             'date_time_2' => [
                 'datetime' => date_create()->format('Y-m-d H:i:s'),
                 'datetimesaveformat' => 'd/m/Y'
+            ],
+            'date_time_3' => [
+                'datetime' => date_create()->format('Y-m-d H:i:s'),
+                'datetimesaveformat' => 'H:i'
+            ],
+            //No format specified, save using the session date format.
+            'date_time_4' => [
+                'datetime' => date_create()->format('Y-m-d H:i:s'),
             ],
         );
     }
@@ -125,8 +134,15 @@ class SettingsPluginTest extends TestBaseClass
         }
     }
 
+    /**
+     * Test that date time settings are saved using a
+     * format specified in datetimesaveformat or if
+     * not set, they are saved using
+     * the session date format.
+     */
     public function testGetAndSetDateTimeSettings(): void
     {
+        \Yii::app()->session['dateformat'] = 6;
 
         foreach (self::$dateTimeSettings as $key => $value) {
             self::$plugin->setSetting($key, $value);
@@ -136,16 +152,14 @@ class SettingsPluginTest extends TestBaseClass
                 'key' => $key
             ]);
 
-            $settingValue = self::$plugin->getSetting($key);
+            $format = isset($value['datetimesaveformat']) ? $value['datetimesaveformat'] : getDateFormatData(App()->session['dateformat'])['phpdate'] . ' H:i';
+            $date = \LimeSurvey\PluginManager\LimesurveyApi::getFormattedDateTime($value['datetime'], $format);
 
-            if (is_array($settingValue) && isset($settingValue['datetime'])) {
-                //Default date time format
-                $this->assertSame($settingValue['datetime'], $value['datetime']);
-            } else {
-                //Custom date time format
-                $date = \LimeSurvey\PluginManager\LimesurveyApi::getFormattedDateTime($value['datetime'], $value['datetimesaveformat']);
-                $this->assertSame($date, $settingValue);
-            }
+            $this->assertNotEmpty($setting->id, 'The setting id is empty, there must be a problem while saving ' . $value['datetime']);
+            $this->assertEquals($setting->value, json_encode($date), 'The value returned in the PluginSetting object after saving is not correct.');
+
+            $settingValue = self::$plugin->getSetting($key);
+            $this->assertEquals($settingValue, $date, 'The value returned by the get function is not correct.');
         }
     }
 }
