@@ -1575,7 +1575,7 @@ class Tokens extends SurveyCommonAction
                             $aData['tokenoutput'] .= "<li>" . gT("Some emails were not sent because the server did not accept the email(s) or some other error occurred.") . "</li>";
                         }
                         $aData['tokenoutput'] .= '</ul>';
-                        $aData['tokenoutput'] .= '<p><a href="' . App()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId) . '" title="" class="btn btn-outline-secondary">' . gT("Ok") . '</a></p>';
+                        $aData['tokenoutput'] .= '<p class="mt-3"><a href="' . App()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId) . '" title="" class="btn btn-outline-secondary">' . gT("Ok") . '</a></p>';
                     }
                 }
                 $aViewUrls[] = 'emailpost';
@@ -1594,7 +1594,7 @@ class Tokens extends SurveyCommonAction
                             . "<li>" . gT("not having already completed the survey") . "</li>"
                             . "<li>" . gT("having an access code") . "</li></ul>"
                             . "<li>" . gT("having at least one use left") . "</li></ul>"
-                            . '<p><a href="' . App()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId) . '" title="" class="btn btn-cancel btn-lg">' . gT("Cancel") . '</a></p>'
+                            . '<p class="mt-3"><a href="' . App()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId) . '" title="" class="btn btn-cancel ">' . gT("Cancel") . '</a></p>'
                         )
                     ),
                     $aData
@@ -2358,9 +2358,9 @@ class Tokens extends SurveyCommonAction
             $this->renderWrappedTemplate('token', array('message' => array(
             'title' => gT("Create access codes"),
             'message' => gT("Clicking 'Yes' will generate access codes for all those in this participant list that have not been issued one. Continue?") . "<br /><br />\n"
-            . "<button class='btn btn-outline-secondary btn-lg' type='submit' value='"
+            . "<button class='btn btn-outline-secondary' type='submit' value='"
             . gT("Yes") . "' onclick='" . convertGETtoPOST($this->getController()->createUrl("admin/tokens/sa/tokenify/surveyid/$iSurveyId", array('ok' => 'Y'))) . "' >" . gT("Yes") . "</button>\n"
-            . "<input class='btn btn-outline-secondary  btn-lg' type='submit' value='"
+            . "<input class='btn btn-outline-secondary' type='submit' value='"
             . gT("No") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/sa/index/surveyid/$iSurveyId") . "', '_top')\" />\n"
             . "<br />\n"
             )), $aData);
@@ -2373,11 +2373,11 @@ class Tokens extends SurveyCommonAction
                 $aData['success'] = false;
                 $message = ngT('Only {n} access code has been created.|Only {n} access codes have been created.', $newtokencount)
                             . ngT('Need {n} access code.|Need {n} access codes.', $neededtokencount);
-                $message .= '<p><a href="' . App()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId) . '" title="" class="btn btn-outline-secondary btn-lg">' . gT("Ok") . '</a></p>';
+                $message .= '<p class="mt-3"><a href="' . App()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId) . '" title="" class="btn btn-outline-secondary ">' . gT("Ok") . '</a></p>';
             } else {
                 $aData['success'] = true;
                 $message = ngT('{n} access code has been created.|{n} access codes have been created.', $newtokencount);
-                $message .= '<p><a href="' . App()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId) . '" title="" class="btn btn-outline-secondary btn-lg">' . gT("Ok") . '</a></p>';
+                $message .= '<p class="mt-3"><a href="' . App()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId) . '" title="" class="btn btn-outline-secondary ">' . gT("Ok") . '</a></p>';
             }
             $this->renderWrappedTemplate('token', array('message' => array(
             'title' => gT("Create access codes"),
