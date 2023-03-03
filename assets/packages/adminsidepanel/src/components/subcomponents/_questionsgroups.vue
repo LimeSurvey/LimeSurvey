@@ -328,6 +328,7 @@ export default {
                     v-for="questiongroup in orderedQuestionGroups"
                     v-bind:key="questiongroup.gid"
                     class="list-group-item ls-flex-column"
+
                     v-bind:class="questionGroupItemClasses(questiongroup)"
                     @dragenter="dragoverQuestiongroup($event, questiongroup)"
                     style=" background: linear-gradient(90deg, #14AE5C 0%, #14AE5C 5px, #EEEFF7 5px, #EEEFF7 100%); padding: 0;"
@@ -378,6 +379,48 @@ export default {
                         aria-expanded="false">
                              <i class="ri-more-fill"></i>
                         </div>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li  v-if="key !== 'delete'"  v-for="(value, key) in questiongroup.groupDropdown" :key="key">
+                                <a   class="dropdown-item" :id="value.id" :href="value.url">
+                                    <span :class="value.icon"></span>
+                                    {{value.label}}
+                                </a>
+
+                            </li>
+
+                            <li v-else-if="key === 'delete'" :class=" value.disabled ? 'disabled' : '' ">
+                                <a 
+                                    v-if="!value.disabled"
+                                    href="#"
+                                    onclick="return false;"
+                                    class="dropdown-item"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#confirmation-modal"
+                                    data-btnclass="btn-danger"
+                                    :data-title="value.dataTitle"
+                                    :data-btntext="value.dataBtnText"
+                                    :data-onclick="value.dataOnclick"
+                                    :data-message="value.dataMessage"
+                                >
+                                    <span :class="value.icon"></span>
+                                    {{value.label}}
+                                </a>
+                                <a 
+                                    v-else-if="value.disabled"
+                                    href="#"
+                                    onclick="return false;"
+                                    class="dropdown-item"
+                                    data-btnclass="btn-danger"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="bottom"
+                                    :title="value.title"
+                                >
+                                    <span :class="value.icon"></span>
+                                    {{value.label}}
+                                </a>
+
+                            </li>
+                        </ul>
                     </div>
                                 
 
@@ -438,8 +481,8 @@ export default {
                                      aria-expanded="false">
                                         <i class="ri-more-fill"></i>
                                     </div>
-                                    <ul style="right: 0; top: 14px;" class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                        <li  v-if="key !== 'delete' && !(key === 'language' && Array.isArray(value))"  v-for="(value, key) in question.questionDropown" :key="key">
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                        <li  v-if="key !== 'delete' && !(key === 'language' && Array.isArray(value))"  v-for="(value, key) in question.questionDropdown" :key="key">
                                             <a   class="dropdown-item" :id="value.id" :href="value.url">
                                                <span :class="value.icon"></span>
                                                  {{value.label}}
@@ -447,8 +490,9 @@ export default {
                                       
                                         </li>
 
-                                        <li v-else-if="key === 'delete'" >
+                                        <li v-else-if="key === 'delete'"  :class=" value.disabled ? 'disabled' : '' ">
                                             <a 
+                                               v-if="!value.disabled"
                                                 href="#"
                                                 onclick="return false;"
                                                 class="dropdown-item"
@@ -463,6 +507,21 @@ export default {
                                                 <span :class="value.icon"></span>
                                                 {{value.label}}
                                             </a>
+                                            <a 
+                                               v-else-if="value.disabled"
+                                                href="#"
+                                                onclick="return false;"
+                                                class="dropdown-item"
+                                                data-btnclass="btn-danger"
+                                                data-bs-toggle="tooltip"
+                                                data-bs-placement="bottom"
+                                                :title="value.title"
+
+                                            >
+                                                <span :class="value.icon"></span>
+                                                {{value.label}}
+                                            </a>
+
                                         </li>
                                         <div v-else-if="key === 'language' && Array.isArray(value)">
                                             <li role="separator" class="dropdown-divider"  ></li>

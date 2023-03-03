@@ -907,6 +907,9 @@ class SurveyAdministrationController extends LSBaseController
             foreach ($aGroups as $group) {
                 $curGroup = $group->attributes;
                 $curGroup['group_name'] = viewHelper::flatEllipsizeText($group->questiongroupl10ns[$baselang]->group_name, true, 150);
+                $curGroup['groupDropdown'] = [];
+                $condarray = getGroupDepsForConditions($surveyid, "all", $group->gid, "by-targgid");
+
                 $curGroup['link'] = $this->createUrl(
                     "questionGroupsAdministration/view",
                     ['surveyid' => $surveyid, 'gid' => $group->gid]
@@ -919,6 +922,73 @@ class SurveyAdministrationController extends LSBaseController
                     ),
                     array('order' => 'question_order ASC')
                 );
+
+                if ($configData['hasSurveyContentReadPermission']) {
+                    $curGroup['groupDropdown']['language'] =
+                    [
+                        'id' => '',
+                        'label' => gT("Check logic"),
+                        'icon' => 'ri-checkbox-fill',
+                        'url' => Yii::App()->createUrl("admin/expressions/sa/survey_logic_file/sid/{$iSurveyID}/gid/$group->gid")
+                    ];
+                }
+                if ($configData['hasSurveyContentExportPermission']) {
+                    $curGroup['groupDropdown']['export'] =
+                    [
+                        'id' => '',
+                        'label' => gT("Export"),
+                        'icon' => 'ri-download-fill',
+                        'url' => Yii::App()->createUrl("admin/export/sa/group/surveyid/$iSurveyID/gid/$group->gid")
+                    ];
+                }
+
+                if ($configData['hasSurveyContentDeletePermission']) {
+
+                    if ($configData['oSurvey']->active !== 'Y') {
+                        if(is_null($condarray)) {
+
+                            $curGroup['groupDropdown']['delete'] =
+                            [
+                                'id' => '',
+                                'label' => gT("Delete group"),
+                                'icon' => 'ri-delete-bin-fill text-danger',
+                                'dataTitle' => gt('Delete group'),
+                                'dataBtnText' => gt('Delete'),
+                                'dataOnclick' => '(function() { ' .  convertGETtoPOST(
+                                    Yii::app()->createUrl("questionGroupsAdministration/delete/",
+                                     [  "asJson" => true, 
+                                        "surveyid" => $iSurveyID,
+                                        "gid" => $group->gid,
+                                        "landOnSideMenuTab" => "structure",
+                                     ])) . '})',
+                                'dataMessage' => gT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?","js")
+                            ];
+                        } else {
+                            $curGroup['groupDropdown']['delete'] =
+                            [
+                                'id' => '',
+                                'label' => gT("Delete group"),
+                                'icon' => 'ri-delete-bin-fill text-danger',
+                                'dataTitle' => gt('Delete group'),
+                                'disabled' => true,
+                                'title' => gt("Impossible to delete this group because there is at least one question having a condition on its content")
+                            ];
+                        }
+                    } else {
+                        $curGroup['groupDropdown']['delete'] =
+                        [
+                            'id' => '',
+                            'label' => gT("Delete group"),
+                            'icon' => 'ri-delete-bin-fill text-danger',
+                            'dataTitle' => gt('Delete group'),
+                            'disabled' => true,
+                            'title' => gt("It is not possible to add/delete groups if the survey is active.")
+                        ];
+                    }
+                }
+
+
+
                 $curGroup['questions'] = array();
                 foreach ($group->aQuestions as $question) {
                     if (is_object($question)) {
@@ -935,9 +1005,9 @@ class SurveyAdministrationController extends LSBaseController
                         // We have to limit the question text length here, otherwise the whole question is loaded into the navigation tree
                         $curQuestion['question_flat'] = viewHelper::flatEllipsizeText($questionText, true, 150);
                         $hasdefaultvalues = (QuestionTheme::findQuestionMetaData($question->type)['settings'])->hasdefaultvalues;
-                        $curQuestion['questionDropown'] = [];
+                        $curQuestion['questionDropdown'] = [];
                         if ($configData['hasSurveyContentUpdatePermission']) {
-                            $curQuestion['questionDropown']['conditionDesigner'] =
+                            $curQuestion['questionDropdown']['conditionDesigner'] =
                                 [
                                     'id' => 'conditions_button',
                                     'label' => gT("Condition designer"),
@@ -946,7 +1016,7 @@ class SurveyAdministrationController extends LSBaseController
                                 ];
 
                             if ($hasdefaultvalues > 0) {
-                                $curQuestion['questionDropown']['editDefault'] =
+                                $curQuestion['questionDropdown']['editDefault'] =
                                     [
                                         'id' => 'default_value_button',
                                         'label' => gT("Edit default answers"),
@@ -957,17 +1027,18 @@ class SurveyAdministrationController extends LSBaseController
                         }
 
                         if ($configData['hasSurveyContentExportPermission']) {
-                            $curQuestion['questionDropown']['export'] =
+                            $curQuestion['questionDropdown']['export'] =
                                 [
                                     'id' => '',
                                     'label' => gT("Export"),
                                     'icon' => 'ri-download-fill',
                                     'url' => Yii::App()->createUrl("admin/export/sa/question/surveyid/$iSurveyID/gid/$question->gid/qid/$question->qid")
                                 ];
+                                
                         }
 
                         if ($configData['hasSurveyContentCreatePermission'] && ($configData['oSurvey']->active != 'Y')) {
-                            $curQuestion['questionDropown']['copy'] =
+                            $curQuestion['questionDropdown']['copy'] =
                                 [
                                     'id' => 'copy_button',
                                     'label' => gT("Copy"),
@@ -978,10 +1049,10 @@ class SurveyAdministrationController extends LSBaseController
 
                         if ($configData['hasSurveyContentReadPermission']) {
                             if (count($configData['surveyLanguages']) > 1) {
-                                $curQuestion['questionDropown']['language'] = [];
+                                $curQuestion['questionDropdown']['language'] = [];
                                 foreach ($configData['surveyLanguages'] as $languageCode => $languageName) {
                                     array_push(
-                                        $curQuestion['questionDropown']['language'],
+                                        $curQuestion['questionDropdown']['language'],
                                         [
                                             'id' => '',
                                             'label' => gT($languageName),
@@ -991,7 +1062,7 @@ class SurveyAdministrationController extends LSBaseController
                                     );
                                 }
                             } else {
-                                $curQuestion['questionDropown']['language'] =
+                                $curQuestion['questionDropdown']['language'] =
                                     [
                                         'id' => '',
                                         'label' => gT("Check logic"),
@@ -1002,7 +1073,7 @@ class SurveyAdministrationController extends LSBaseController
                         }
 
                         if ($configData['oSurvey']->active !== 'Y') {
-                            $curQuestion['questionDropown']['delete'] =
+                            $curQuestion['questionDropdown']['delete'] =
                                 [
                                     'id' => '',
                                     'label' => gT("Delete question"),
@@ -1012,6 +1083,16 @@ class SurveyAdministrationController extends LSBaseController
                                     'dataOnclick' => '(function() { ' .  convertGETtoPOST(Yii::app()->createUrl("questionAdministration/delete/", ["qid" => $question->qid, "redirectTo" => "groupoverview"])) . '})',
                                     'dataMessage' => gT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?")
                                 ];
+                        } else {
+                            $curQuestion['questionDropdown']['delete'] =
+                            [
+                                'id' => '',
+                                'label' => gT("Delete question"),
+                                'icon' => 'ri-delete-bin-fill text-danger',
+                                'dataTitle' => gt('Delete this question'),
+                                'disabled' => true,
+                                'title' => gt("You can not delete a question if the survey is active."),
+                            ];
                         }
 
                         $curGroup['questions'][] = $curQuestion;

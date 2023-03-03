@@ -18199,12 +18199,6 @@ input[type=file]::file-selector-button {
   padding-top: 15px;
   width: 100%;
 }
-#sidebar .questiongroup-list-group > li.selected {
-  opacity: 0.9;
-}
-#sidebar .questiongroup-list-group > li.selected.activated {
-  opacity: 1;
-}
 #sidebar .button-sub-bar {
   min-height: 32px;
 }
