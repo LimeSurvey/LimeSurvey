@@ -639,6 +639,9 @@ class LimesurveyApi
      */
     public static function getFormattedDateTime($dateValue, $returnFormat, $currentFormat = null)
     {
+        if (empty($dateValue)) {
+            return "";
+        }
         if (empty($currentFormat)) {
             $currentFormat = intval(App()->session['dateformat']);
         }

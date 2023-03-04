@@ -618,7 +618,6 @@ class SettingsWidget extends CWidget
          * By defalt : save as sent by input (admin lanuage dependent
          **/
         if (!empty($metaData['saveformat'])) {
-            $inputName = $name . '[datetime]';
             if (is_string($value) && $value !== "") {
                 $datetimeobj = new Date_Time_Converter($value, $metaData['saveformat']);
                 $value = $datetimeobj->convert($dateformatdetails['phpdate'] . "H:i");
@@ -656,9 +655,6 @@ class SettingsWidget extends CWidget
                 )
             ), true
         );
-        if (!empty($metaData['saveformat'])) {
-            $out .= CHtml::hiddenField($name . '[datetimesaveformat]', $metaData['saveformat']);
-        }
         return $out;
     }
 

@@ -295,9 +295,9 @@ abstract class PluginBase implements iPlugin
      */
     protected function set($key, $data, $model = null, $id = null)
     {
-        /* Date time settings by array */
-        if (is_array($data) && !empty($data['datetime']) && !empty($data['datetimesaveformat'])) {
-            $data = LimesurveyApi::getFormattedDateTime($data['datetime'], $data['datetimesaveformat']);
+        /* Date time settings format */
+        if ($this->settings[$key]['type'] == 'date' && !empty($this->settings[$key]['saveformat'])) {
+            $data = LimesurveyApi::getFormattedDateTime($data, $this->settings[$key]['saveformat']);
         }
         // Encrypt the attribute if needed
         // TODO: Handle encryption in storage class, as that would allow each storage to handle
