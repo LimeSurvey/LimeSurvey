@@ -72,20 +72,24 @@ class SettingsPluginTest extends TestBaseClass
 
         self::$dateTimeSettings = array(
             'date_time_1' => [
-                'datetime' => date_create()->format('Y-m-d H:i:s'),
-                'datetimesaveformat' => 'd.m.Y'
+                'type' => 'date',
+                'saveformat' => 'd.m.Y',
+                'value' => date_create()->format('Y-m-d H:i:s'),
             ],
             'date_time_2' => [
-                'datetime' => date_create()->format('Y-m-d H:i:s'),
-                'datetimesaveformat' => 'd/m/Y'
+                'type' => 'date',
+                'saveformat' => 'd/m/Y',
+                'value' => date_create()->format('Y-m-d H:i:s'),
             ],
             'date_time_3' => [
-                'datetime' => date_create()->format('Y-m-d H:i:s'),
-                'datetimesaveformat' => 'H:i'
+                'type' => 'date',
+                'saveformat' => 'H:i',
+                'value' => date_create()->format('Y-m-d H:i:s'),
             ],
             //No format specified, save using the session date format.
             'date_time_4' => [
-                'datetime' => date_create()->format('Y-m-d H:i:s'),
+                'type' => 'date',
+                'value' => date_create()->format('Y-m-d H:i:s'),
             ],
         );
     }
@@ -144,18 +148,18 @@ class SettingsPluginTest extends TestBaseClass
     {
         \Yii::app()->session['dateformat'] = 6;
 
-        foreach (self::$dateTimeSettings as $key => $value) {
-            self::$plugin->setSetting($key, $value);
+        foreach (self::$dateTimeSettings as $key => $data) {
+            self::$plugin->setSetting($key, $data['value']);
 
             $setting = \PluginSetting::model()->findByAttributes([
                 'plugin_id' => self::$plugin->getId(),
                 'key' => $key
             ]);
 
-            $format = isset($value['datetimesaveformat']) ? $value['datetimesaveformat'] : getDateFormatData(App()->session['dateformat'])['phpdate'] . ' H:i';
-            $date = \LimeSurvey\PluginManager\LimesurveyApi::getFormattedDateTime($value['datetime'], $format);
+            $format = isset($data['saveformat']) ? $data['saveformat'] : getDateFormatData(App()->session['dateformat'])['phpdate'] . ' H:i';
+            $date = \LimeSurvey\PluginManager\LimesurveyApi::getFormattedDateTime($data['value'], $format);
 
-            $this->assertNotEmpty($setting->id, 'The setting id is empty, there must be a problem while saving ' . $value['datetime']);
+            $this->assertNotEmpty($setting->id, 'The setting id is empty, there must be a problem while saving ' . $data['value']);
             $this->assertEquals($setting->value, json_encode($date), 'The value returned in the PluginSetting object after saving is not correct.');
 
             $settingValue = self::$plugin->getSetting($key);
