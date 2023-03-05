@@ -6,6 +6,8 @@ class SettingsPlugin extends PluginBase
     protected static $name = 'SettingsPlugin';
     protected $storage = 'DbStorage';
     protected $encryptedSettings = [];
+    /* @inheritdoc */
+    protected $settings = [];
 
     public function init()
     {
@@ -23,7 +25,6 @@ class SettingsPlugin extends PluginBase
 
     public function setEncryptedSettings($encryptedSettings)
     {
-
         $this->encryptedSettings = $encryptedSettings;
     }
 }

@@ -9,9 +9,12 @@ use LSActiveRecord;
  */
 class SettingsPluginTest extends TestBaseClass
 {
+    /* @var LimeSurvey\PluginManager\iPlugin */
     protected static $plugin;
 
-    protected static $settings = [];
+    /* @var array : settings with value to set */
+    protected static $encryptedSettings = [];
+    /* @var array : settings with value to set (datetime) */
     protected static $dateTimeSettings = [];
 
     /**
@@ -40,7 +43,7 @@ class SettingsPluginTest extends TestBaseClass
         $obj = new \stdClass();
         $obj->customProperty = 'abc';
 
-        self::$settings = [
+        self::$encryptedSettings = [
             'empty_1' => 0,
             'empty_2' => null,
             'empty_3' => false,
@@ -70,33 +73,37 @@ class SettingsPluginTest extends TestBaseClass
             'object_2' => $obj,
         ];
 
-        self::$dateTimeSettings = array(
+        self::$dateTimePluginSettings = array(
+            'date_time_1' => date_create()->format('Y-m-d H:i:s'),
+            'date_time_2' => date_create()->format('Y-m-d H:i:s'),
+            'date_time_3' => date_create()->format('Y-m-d H:i:s'),
+            //No format specified, save using the session date format.
+            'date_time_4' => date_create()->format('Y-m-d H:i:s'),
+        );
+        /* Set the plugin->settings to needed settings */
+        self::$plugin->settings = array(
             'date_time_1' => [
                 'type' => 'date',
                 'saveformat' => 'd.m.Y',
-                'value' => date_create()->format('Y-m-d H:i:s'),
             ],
             'date_time_2' => [
                 'type' => 'date',
                 'saveformat' => 'd/m/Y',
-                'value' => date_create()->format('Y-m-d H:i:s'),
             ],
             'date_time_3' => [
                 'type' => 'date',
                 'saveformat' => 'H:i',
-                'value' => date_create()->format('Y-m-d H:i:s'),
             ],
             //No format specified, save using the session date format.
             'date_time_4' => [
                 'type' => 'date',
-                'value' => date_create()->format('Y-m-d H:i:s'),
             ],
         );
     }
 
     public function testGetAndSetSetting()
     {
-        foreach (self::$settings as $key => $value) {
+        foreach (self::$encryptedSettings as $key => $value) {
             self::$plugin->setSetting($key, $value);
 
             $setting = \PluginSetting::model()->findByAttributes([
@@ -114,8 +121,8 @@ class SettingsPluginTest extends TestBaseClass
 
     public function testGetAndSetSettingEncrypted()
     {
-        self::$plugin->setEncryptedSettings(array_keys(self::$settings));
-        foreach (self::$settings as $key => $value) {
+        self::$plugin->setEncryptedSettings(array_keys(self::$encryptedSettings));
+        foreach (self::$encryptedSettings as $key => $value) {
             self::$plugin->setSetting($key, $value);
 
             $setting = \PluginSetting::model()->findByAttributes([
@@ -147,7 +154,6 @@ class SettingsPluginTest extends TestBaseClass
     public function testGetAndSetDateTimeSettings(): void
     {
         \Yii::app()->session['dateformat'] = 6;
-
         foreach (self::$dateTimeSettings as $key => $data) {
             self::$plugin->setSetting($key, $data['value']);
 
