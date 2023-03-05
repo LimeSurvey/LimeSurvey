@@ -13,17 +13,14 @@
     <h1> <?= gT("Survey permissions") ?> </h1>
     <div class="row p-2 align-items-center">
         <div class="col-lg-3 col-12">
-            <!-- <button class="btn btn-primary">
-                <i class="ri-user-add-line me-1"></i>
-                Create new user</button> -->
         </div>
         <div class="col-lg-9 col-12 align-items-center">
             <?php
             if ($userCreatePermission) {
                 echo CHtml::form(
-                    array("surveyPermissions/adduser/surveyid/{$surveyid}"),
+                    ["surveyPermissions/adduser/surveyid/{$surveyid}"],
                     'post',
-                    array('class' => "form44")
+                    ['class' => "form44"]
                 ); ?>
 
                 <div class="row justify-content-md-end mb-2">
@@ -46,16 +43,16 @@
                             ?>
                         </select>
                     </div>
-                    <input style='width: 15em;' class='btn btn-outline-secondary' type='submit' value='<?= gT("Add user") ?>' />
-                    <input type='hidden' name='action' value='addsurveysecurity' />
+                    <input style='width: 15em;' class='btn btn-outline-secondary' type='submit' value='<?= gT("Add user") ?>'/>
+                    <input type='hidden' name='action' value='addsurveysecurity'/>
                 </div>
-                </form>
+                <?= CHtml::endForm() ?>
 
                 <?php
                 echo CHtml::form(
-                    array("surveyPermissions/addusergroup/surveyid/{$surveyid}"),
+                    ["surveyPermissions/addusergroup/surveyid/{$surveyid}"],
                     'post',
-                    array('class' => "form44")
+                    ['class' => "form44"]
                 ); ?>
                 <div class="row justify-content-md-end">
                     <label class='col-sm-2 col-md-offset-2  text-end control-label' for='ugidselect'>
@@ -75,24 +72,90 @@
                             ?>
                         </select>
                     </div>
-                    <input style='width: 15em;' class='btn btn-outline-secondary' type='submit' value='<?= gT("Add group users") ?>' />
-                    <input type='hidden' name='action' value='addusergroupsurveysecurity' />
+                    <input style='width: 15em;' class='btn btn-outline-secondary' type='submit' value='<?= gT("Add group users") ?>'/>
+                    <input type='hidden' name='action' value='addusergroupsurveysecurity'/>
                 </div>
-                </form>
+                <?= CHtml::endForm() ?>
             <?php }
             ?>
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-12 content-right">
+        <div class="container-fluid">
             <?php
-            $this->renderPartial('_overview_table', [
-                'basePermissions' => $basePermissions,
-                'tableContent' => $tableContent,
-                'surveyid' => $surveyid,
-                'oSurveyPermissions' => $oSurveyPermissions
+            $baseColumns = [];
+            foreach ($basePermissions as $sPermission => $aSubPermissions) {
+                array_push(
+                    $baseColumns,
+                    [
+                        'header'            => $aSubPermissions['title'],
+                        'type'              => 'raw',
+                        'value'             => function ($data) use ($oSurveyPermissions, $sPermission, $aSubPermissions) {
+                            $result = $oSurveyPermissions->getTooltipAllPermissions($data->uid, $sPermission, $aSubPermissions);
+                            if ($result['hasPermissions']) {
+                                return CHtml::tag('div', [
+                                    "data-bs-toggle" => "tooltip",
+                                    'title'          => ucfirst(implode(', ', $result['permissionCrudArray'])),
+                                    'class'          => $result['allPermissionsSet'] ? 'text-center' : 'text-center mixed'
+                                ], '<i class="ri-check-fill"></i>');
+                            }
+                            return CHtml::tag('div', ['class' => 'text-center'], '&#8211');
+                        },
+                        'headerHtmlOptions' => ['class' => 'd-none d-sm-table-cell text-nowrap'],
+                        'htmlOptions'       => ['class' => 'd-none d-sm-table-cell '],
+                    ]
+                );
+            }
+            array_push($baseColumns, [
+                'header'            => gT('Action'),
+                'name'              => 'actions',
+                'value'             => '$data->buttons',
+                'type'              => 'raw',
+                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+                'htmlOptions'       => ['class' => 'text-center ls-sticky-column'],
             ]);
+
+            $this->widget(
+                'application.extensions.admin.grid.CLSGridView',
+                [
+                    'id'           => 'gridPanel',
+                    'dataProvider' => $dataProvider,
+                    'columns'      => array_merge([
+                        [
+                            'header'            => gT('Username'),
+                            'name'              => 'users_name',
+                            'type'              => 'raw',
+                            'value'             => '$data->user->users_name',
+                            'headerHtmlOptions' => ['class' => 'd-none d-sm-table-cell text-nowrap'],
+                            'htmlOptions'       => ['class' => 'd-none d-sm-table-cell'],
+                        ],
+                        [
+                            'header' => gT('User Group'),
+                            'type'   => 'raw',
+                            'value'  => function ($data) use ($oSurveyPermissions) {
+                                $groupsStr = $oSurveyPermissions->getUserGroupNames($data->uid,
+                                    App()->getConfig('usercontrolSameGroupPolicy'));
+                                return implode(", ", $groupsStr);
+                            },
+
+                            'headerHtmlOptions' => ['class' => 'd-none d-sm-table-cell text-nowrap'],
+                            'htmlOptions'       => ['class' => 'd-none d-sm-table-cell '],
+                        ],
+                        [
+                            'header'            => gT('Full Name'),
+                            'name'              => 'full_name',
+                            'type'              => 'raw',
+                            'value'             => '$data->user->full_name',
+                            'headerHtmlOptions' => ['class' => 'd-none d-sm-table-cell text-nowrap'],
+                            'htmlOptions'       => ['class' => 'd-none d-sm-table-cell'],
+                        ]
+
+                    ], $baseColumns),
+
+                ]
+            );
             ?>
+
         </div>
     </div>
     <?php $this->renderPartial('/surveyAdministration/_user_management_sub_footer'); ?>

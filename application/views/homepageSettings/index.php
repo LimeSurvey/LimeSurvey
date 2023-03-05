@@ -39,7 +39,7 @@ App()->getClientScript()->registerScript(
                 <!-- Boxes -->
                 <div id="boxes" class="tab-pane fade show active">
                     <?php $this->widget(
-                        'application.extensions.admin.grid.CLSGridView', //done
+                        'application.extensions.admin.grid.CLSGridView',
                         [
                             'id' => 'boxes-grid',
                             'dataProvider' => $dataProviderBox->search(),
