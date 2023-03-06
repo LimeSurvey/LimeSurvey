@@ -27,4 +27,14 @@ class SettingsPlugin extends PluginBase
     {
         $this->encryptedSettings = $encryptedSettings;
     }
+
+    /**
+     * Set the settings, used to test some settings
+     * @param array[]
+     * @return void
+     */
+    public function setSettings($settings)
+    {
+        $this->settings = $settings;
+    }
 }

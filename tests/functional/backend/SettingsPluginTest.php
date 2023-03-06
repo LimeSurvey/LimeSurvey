@@ -15,7 +15,30 @@ class SettingsPluginTest extends TestBaseClass
     /* @var array : settings with value to set */
     protected static $encryptedSettings = [];
     /* @var array : settings with value to set (datetime) */
-    protected static $dateTimeSettings = [];
+    protected static $dateTimeSettingsValue = [];
+    /* @var array[] : date time settings of plugin  */
+    protected $dateTimePluginSettings = [
+        'date_time_1' => [
+            'type' => 'date',
+            'saveformat' => 'd.m.Y',
+        ],
+        'date_time_2' => [
+            'type' => 'date',
+            'saveformat' => 'd/m/Y',
+        ],
+        'date_time_3' => [
+            'type' => 'date',
+            'saveformat' => 'H:i',
+        ],
+        'date_time_4' => [
+            'type' => 'date',
+            'saveformat' => false, // session date format.
+        ],
+        //No format specified, save using the session date format.
+        'date_time_5' => [
+            'type' => 'date',
+        ],
+    ];
 
     /**
      * @inheritdoc
@@ -73,35 +96,12 @@ class SettingsPluginTest extends TestBaseClass
             'object_2' => $obj,
         ];
 
-        self::$dateTimeSettings = array(
+        self::$dateTimeSettingsValue = array(
             'date_time_1' => date_create()->format('Y-m-d H:i:s'),
             'date_time_2' => date_create()->format('Y-m-d H:i:s'),
             'date_time_3' => date_create()->format('Y-m-d H:i:s'),
             'date_time_4' => date_create()->format('Y-m-d H:i:s'),
             'date_time_5' => date_create()->format('Y-m-d H:i:s'),
-        );
-        /* Set the plugin->settings to needed settings */
-        self::$plugin->settings = array(
-            'date_time_1' => [
-                'type' => 'date',
-                'saveformat' => 'd.m.Y',
-            ],
-            'date_time_2' => [
-                'type' => 'date',
-                'saveformat' => 'd/m/Y',
-            ],
-            'date_time_3' => [
-                'type' => 'date',
-                'saveformat' => 'H:i',
-            ],
-            'date_time_4' => [
-                'type' => 'date',
-                'saveformat' => false, // session date format.
-            ],
-            //No format specified, save using the session date format.
-            'date_time_5' => [
-                'type' => 'date',
-            ],
         );
     }
 
@@ -158,18 +158,21 @@ class SettingsPluginTest extends TestBaseClass
     public function testGetAndSetDateTimeSettings(): void
     {
         \Yii::app()->session['dateformat'] = 6;
-        foreach (self::$dateTimeSettings as $key => $data) {
-            self::$plugin->setSetting($key, $data['value']);
+        self::$plugin->setSetting(self::$dateTimePluginSettings);
+
+        /* Check with values */
+        foreach (self::$dateTimeSettingsValue as $key => $value) {
+            self::$plugin->setSetting($key, $value);
 
             $setting = \PluginSetting::model()->findByAttributes([
                 'plugin_id' => self::$plugin->getId(),
                 'key' => $key
             ]);
 
-            $format = (isset($data['saveformat']) && $data['saveformat']) ? $data['saveformat'] : getDateFormatData(App()->session['dateformat'])['phpdate'] . ' H:i';
-            $date = \LimeSurvey\PluginManager\LimesurveyApi::getFormattedDateTime($data['value'], $format);
+            $format = !empty(self::$dateTimePluginSettings[$key]['saveformat']) ? self::$dateTimePluginSettings[$key]['saveformat'] : getDateFormatData(App()->session['dateformat'])['phpdate'] . ' H:i';
+            $date = \LimeSurvey\PluginManager\LimesurveyApi::getFormattedDateTime($value, $format);
 
-            $this->assertNotEmpty($setting->id, 'The setting id is empty, there must be a problem while saving ' . $data['value']);
+            $this->assertNotEmpty($setting->id, 'The setting id is empty, there must be a problem while saving ' . $value);
             $this->assertEquals($setting->value, json_encode($date), 'The value returned in the PluginSetting object after saving is not correct.');
 
             $settingValue = self::$plugin->getSetting($key);
