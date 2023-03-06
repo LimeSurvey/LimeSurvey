@@ -13,7 +13,7 @@ class SettingsPluginTest extends TestBaseClass
     protected static $plugin;
 
     /* @var array : settings with value to set */
-    protected static $encryptedSettings = [];
+    protected static $settings = [];
     /* @var array[] : date time settings of plugin  */
     protected static $dateTimePluginSettings = [
         'date_time_1' => [
@@ -64,7 +64,7 @@ class SettingsPluginTest extends TestBaseClass
         $obj = new \stdClass();
         $obj->customProperty = 'abc';
 
-        self::$encryptedSettings = [
+        self::$settings = [
             'empty_1' => 0,
             'empty_2' => null,
             'empty_3' => false,
@@ -97,7 +97,7 @@ class SettingsPluginTest extends TestBaseClass
 
     public function testGetAndSetSetting()
     {
-        foreach (self::$encryptedSettings as $key => $value) {
+        foreach (self::$settings as $key => $value) {
             self::$plugin->setSetting($key, $value);
 
             $setting = \PluginSetting::model()->findByAttributes([
@@ -115,8 +115,8 @@ class SettingsPluginTest extends TestBaseClass
 
     public function testGetAndSetSettingEncrypted()
     {
-        self::$plugin->setEncryptedSettings(array_keys(self::$encryptedSettings));
-        foreach (self::$encryptedSettings as $key => $value) {
+        self::$plugin->setEncryptedSettings(array_keys(self::$settings));
+        foreach (self::$settings as $key => $value) {
             self::$plugin->setSetting($key, $value);
 
             $setting = \PluginSetting::model()->findByAttributes([
@@ -158,7 +158,7 @@ class SettingsPluginTest extends TestBaseClass
             $value = date_create()->format($sendformat);
             self::$plugin->setSetting($setting, $value);
 
-            $setting = \PluginSetting::model()->findByAttributes([
+            $DBsetting = \PluginSetting::model()->findByAttributes([
                 'plugin_id' => self::$plugin->getId(),
                 'key' => $setting
             ]);
@@ -166,8 +166,8 @@ class SettingsPluginTest extends TestBaseClass
             $format = !empty($settingDatas['saveformat']) ? $settingDatas['saveformat'] : $sessionFormatDate['phpdate'] . ' H:i';
             $date = \LimeSurvey\PluginManager\LimesurveyApi::getFormattedDateTime($value, $format);
 
-            $this->assertNotEmpty($setting->id, 'The setting id is empty, there must be a problem while saving ' . $value);
-            $this->assertEquals($setting->value, json_encode($date), 'The value returned in the PluginSetting object after saving is not correct for ' . $setting . '.');
+            $this->assertNotEmpty($DBsetting->id, 'The setting id is empty, there must be a problem while saving ' . $value);
+            $this->assertEquals($DBsetting->value, json_encode($date), 'The value returned in the PluginSetting object after saving is not correct for ' . $setting . '.');
 
             $settingValue = self::$plugin->getSetting($setting);
             $this->assertEquals($settingValue, $date, 'The value returned by the get function is not correct ' . $setting . '.');
