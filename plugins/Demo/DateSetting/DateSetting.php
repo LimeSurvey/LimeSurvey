@@ -7,10 +7,10 @@
  * @version:; 0.1.0
  * @licence MIT Licence
  */
-class TestDateSetting extends PluginBase
+class DateSetting extends PluginBase
 {
     /** @inheritdoc **/
-    protected static $name = 'TestDateSetting';
+    protected static $name = 'DateSetting';
     /** @inheritdoc **/
     protected static $description = 'Pluginto test HTML DB setting.';
     /** @inheritdoc **/
