@@ -18,7 +18,13 @@ echo viewHelper::getViewTestTag('surveyPanelIntegration');
         <div class="row">
             <div class="col-lg-12 ls-flex ls-flex-row">
                 <div class="ls-flex-item text-start">
-                    <button class="btn btn-success" id="addParameterButton"><?= gT('Add URL parameter') ?></button>
+                    <button
+                            class="btn btn-primary"
+                            id="addParameterButton"
+                            data-bs-toggle="modal"
+                            data-bs-target="#dlgEditParameter">
+                        <?= gT('Add URL parameter') ?>
+                    </button>
                 </div>
                 <div class="ls-flex-item justify-content-end row row-cols-lg-auto g-1 align-items-center mb-3">
                     <!-- Search Box -->
@@ -29,7 +35,7 @@ echo viewHelper::getViewTestTag('surveyPanelIntegration');
                         <input class="form-control" name="search_query" id="search_query" type="text">
                     </div>
                     <div class="col-12">
-                        <button class="btn btn-success" type="button" id="searchParameterButton"><?= gT('Search', 'unescaped') ?></button>
+                        <button class="btn btn-primary" type="button" id="searchParameterButton"><?= gT('Search', 'unescaped') ?></button>
                         <a href="<?= $updateUrl ?>" class="btn btn-warning"><?= gT('Reset') ?></a>
                     </div>
                 </div>
@@ -83,8 +89,7 @@ echo viewHelper::getViewTestTag('surveyPanelIntegration');
                             'htmlOptions'       => ['class' => 'text-center ls-sticky-column'],
                         ],
                     ],
-                    'ajaxUpdate' => 'urlparams',
-                    'lsAfterAjaxUpdate' => [],
+                    'lsAfterAjaxUpdate' => ['urlparams'],
                     'rowHtmlOptionsExpression' => '["data-id" => $data->id, "data-parameter" => $data->parameter, "data-qid" => $data->targetqid, "data-sqid" => $data->targetsqid]',
                 ]
             );
@@ -103,4 +108,4 @@ App()->getClientScript()->registerScript(
 
 <!-- Modal box to add a parameter -->
 <!--div data-copy="submitsurveybutton"></div-->
-<?php $this->renderPartial('addPanelIntegrationParameter_view', ['questions' => $questions]); ?>
+<?php  $this->renderPartial('addPanelIntegrationParameter_view', ['questions' => $questions]); ?>
