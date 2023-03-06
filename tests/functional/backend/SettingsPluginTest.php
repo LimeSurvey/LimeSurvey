@@ -17,7 +17,7 @@ class SettingsPluginTest extends TestBaseClass
     /* @var array : settings with value to set (datetime) */
     protected static $dateTimeSettingsValue = [];
     /* @var array[] : date time settings of plugin  */
-    protected $dateTimePluginSettings = [
+    protected static $dateTimePluginSettings = [
         'date_time_1' => [
             'type' => 'date',
             'saveformat' => 'd.m.Y',
