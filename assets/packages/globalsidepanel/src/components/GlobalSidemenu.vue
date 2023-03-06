@@ -133,5 +133,7 @@ export default {
         <i class="ri-more-2-fill"></i>
       </button>
     </div>
+    <!-- this is used for fixing resize handler bug -->
+    <div v-if="isMouseDown" class="mouseup-support" style="position:fixed; inset: 0;" />
   </div>
 </template>
