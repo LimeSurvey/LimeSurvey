@@ -259,7 +259,6 @@ abstract class Response extends Dynamic
     /**
      * Set all the specified attributes.
      * If any attribute doesn't exist in the DB, an Exception is thrown.
-     * @inhe
      */
     public function setAllAttributes($values)
     {
