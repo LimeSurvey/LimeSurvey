@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2023-03-01 13:50:55+00:00\n"
+"POT-Creation-Date: 2023-03-06 08:50:33+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -3971,74 +3971,74 @@ msgstr ""
 msgid "Deleting conditions: %u conditions deleted"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:758
+#: application/controllers/admin/CheckIntegrity.php:760
 msgid "No matching CQID"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:768
+#: application/controllers/admin/CheckIntegrity.php:770
 msgid "No matching QID"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:783
+#: application/controllers/admin/CheckIntegrity.php:785
 msgid "No matching CFIELDNAME group!"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:790
+#: application/controllers/admin/CheckIntegrity.php:792
 msgid "No CFIELDNAME field set!"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:850
+#: application/controllers/admin/CheckIntegrity.php:851
 msgid "No matching survey"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:860
-#: application/controllers/admin/CheckIntegrity.php:936
+#: application/controllers/admin/CheckIntegrity.php:861
+#: application/controllers/admin/CheckIntegrity.php:939
 msgid "No matching group"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:873
-#: application/controllers/admin/CheckIntegrity.php:948
+#: application/controllers/admin/CheckIntegrity.php:874
+#: application/controllers/admin/CheckIntegrity.php:951
 msgid "No parent question"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:884
+#: application/controllers/admin/CheckIntegrity.php:885
 msgid "No parent answer"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:924
+#: application/controllers/admin/CheckIntegrity.php:927
 msgid "The related survey is missing."
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:961
+#: application/controllers/admin/CheckIntegrity.php:964
 msgid "There is no matching survey."
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:974
+#: application/controllers/admin/CheckIntegrity.php:977
 #: application/models/SurveysGroups.php:365
 msgid "No parent group"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:986
+#: application/controllers/admin/CheckIntegrity.php:989
 msgid "There is no matching user %s in group %s."
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:1025
+#: application/controllers/admin/CheckIntegrity.php:1028
 msgid "responses"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:1030
+#: application/controllers/admin/CheckIntegrity.php:1033
 msgid "timings"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:1051
+#: application/controllers/admin/CheckIntegrity.php:1054
 msgid "Survey ID %d saved at %s containing %d record(s) (%s)"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:1102
+#: application/controllers/admin/CheckIntegrity.php:1105
 msgid "Survey ID %d saved at %s containing %d record(s)"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:1167
+#: application/controllers/admin/CheckIntegrity.php:1170
 msgid "Some automatic fixes were already applied."
 msgstr ""
 
