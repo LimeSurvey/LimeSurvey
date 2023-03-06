@@ -158,7 +158,7 @@ class SettingsPluginTest extends TestBaseClass
     public function testGetAndSetDateTimeSettings(): void
     {
         \Yii::app()->session['dateformat'] = 6;
-        self::$plugin->setSetting(self::$dateTimePluginSettings);
+        self::$plugin->setSettings(self::$dateTimePluginSettings);
 
         /* Check with values */
         foreach (self::$dateTimeSettingsValue as $key => $value) {
