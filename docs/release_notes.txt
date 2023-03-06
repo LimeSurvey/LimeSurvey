@@ -34,6 +34,26 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.8 (build 230227) to 5.6.9 (build 230306) March 6, 2023
+-Fixed issue: Unable to run integrity check on databases with a big number of surveys (Carsten Schmitz)
+-Fixed issue: High memory usage when exporting participants (Carsten Schmitz)
+-Fixed issue: Error when calculating quartiles on encrypted question (Carsten Schmitz)
+-Fixed issue #CT-44: Exporting survey participants exceeds PHP memory limit (Patrick Teichmann)
+-Fixed issue #18662: Update DB from 491 break on home page (#2953) (Denis Chenu)
+-Fixed issue #18658: Upload file question type not accepting certain file names (#2952) (Gabriel Jenik)
+-Fixed issue #18655: Unnoticed data loss if field in response table it missing (#2946) (Gabriel Jenik)
+-Fixed issue #18407: On-page conditions not working when pre-filling question with equation on the same page (#2921) (Denis Chenu)
+#Updated translation: Valencian by vbraque
+#Updated translation: Russian by vipgroup
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Japanese by d_inoue
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: German (Easy) by p_teichmann
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Basque by c_schmitz
+
+
 Changes from 5.6.7 (build 230222) to 5.6.8 (build 230227) February 27, 2023
 -Fixed issue #18628: Answer code updates on base language are not reflected on secondary languages (#2906) (Gabriel Jenik)
 -Fixed issue #18625: Cannot copy a survey when using a survey alias (#2927) (Gabriel Jenik)
