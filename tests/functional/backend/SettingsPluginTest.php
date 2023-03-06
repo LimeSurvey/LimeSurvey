@@ -73,12 +73,12 @@ class SettingsPluginTest extends TestBaseClass
             'object_2' => $obj,
         ];
 
-        self::$dateTimePluginSettings = array(
+        self::$dateTimeSettings = array(
             'date_time_1' => date_create()->format('Y-m-d H:i:s'),
             'date_time_2' => date_create()->format('Y-m-d H:i:s'),
             'date_time_3' => date_create()->format('Y-m-d H:i:s'),
-            //No format specified, save using the session date format.
             'date_time_4' => date_create()->format('Y-m-d H:i:s'),
+            'date_time_5' => date_create()->format('Y-m-d H:i:s'),
         );
         /* Set the plugin->settings to needed settings */
         self::$plugin->settings = array(
@@ -94,8 +94,12 @@ class SettingsPluginTest extends TestBaseClass
                 'type' => 'date',
                 'saveformat' => 'H:i',
             ],
-            //No format specified, save using the session date format.
             'date_time_4' => [
+                'type' => 'date',
+                'saveformat' => false, // session date format.
+            ],
+            //No format specified, save using the session date format.
+            'date_time_5' => [
                 'type' => 'date',
             ],
         );
@@ -162,7 +166,7 @@ class SettingsPluginTest extends TestBaseClass
                 'key' => $key
             ]);
 
-            $format = isset($data['saveformat']) ? $data['saveformat'] : getDateFormatData(App()->session['dateformat'])['phpdate'] . ' H:i';
+            $format = (isset($data['saveformat']) && $data['saveformat']) ? $data['saveformat'] : getDateFormatData(App()->session['dateformat'])['phpdate'] . ' H:i';
             $date = \LimeSurvey\PluginManager\LimesurveyApi::getFormattedDateTime($data['value'], $format);
 
             $this->assertNotEmpty($setting->id, 'The setting id is empty, there must be a problem while saving ' . $data['value']);
