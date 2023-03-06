@@ -97,11 +97,11 @@ class SettingsPluginTest extends TestBaseClass
         ];
 
         self::$dateTimeSettingsValue = array(
-            'date_time_1' => date_create()->format('Y-m-d H:i:s'),
-            'date_time_2' => date_create()->format('Y-m-d H:i:s'),
-            'date_time_3' => date_create()->format('Y-m-d H:i:s'),
-            'date_time_4' => date_create()->format('Y-m-d H:i:s'),
-            'date_time_5' => date_create()->format('Y-m-d H:i:s'),
+            'date_time_1' => date_create()->format('Y-m-d H:i'),
+            'date_time_2' => date_create()->format('Y-m-d H:i'),
+            'date_time_3' => date_create()->format('Y-m-d H:i'),
+            'date_time_4' => date_create()->format('Y-m-d H:i'),
+            'date_time_5' => date_create()->format('Y-m-d H:i'),
         );
     }
 
@@ -162,6 +162,8 @@ class SettingsPluginTest extends TestBaseClass
 
         /* Check with values */
         foreach (self::$dateTimeSettingsValue as $key => $value) {
+            /* Set the value to jsdate */
+            $value = getDateFormatData(App()->session['dateformat'])['jsdate'] . ' H:i';
             self::$plugin->setSetting($key, $value);
 
             $setting = \PluginSetting::model()->findByAttributes([
@@ -173,10 +175,10 @@ class SettingsPluginTest extends TestBaseClass
             $date = \LimeSurvey\PluginManager\LimesurveyApi::getFormattedDateTime($value, $format);
 
             $this->assertNotEmpty($setting->id, 'The setting id is empty, there must be a problem while saving ' . $value);
-            $this->assertEquals($setting->value, json_encode($date), 'The value returned in the PluginSetting object after saving is not correct.');
+            $this->assertEquals($setting->value, json_encode($date), 'The value returned in the PluginSetting object after saving is not correct for ' . $key . '.');
 
             $settingValue = self::$plugin->getSetting($key);
-            $this->assertEquals($settingValue, $date, 'The value returned by the get function is not correct.');
+            $this->assertEquals($settingValue, $date, 'The value returned by the get function is not correct ' . $key . '.');
         }
     }
 }
