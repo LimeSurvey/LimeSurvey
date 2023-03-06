@@ -56,14 +56,14 @@
                         </select>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button class='btn btn-primary' id='btnSaveParams' type="button">
-                        <?php eT('Save'); ?>
-                    </button>
-                    <button type="button" class='btn btn-cancel' id='btnCancelParams' data-bs-dismiss="modal">
-                        <?php eT('Cancel'); ?>
-                    </button>
-                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class='btn btn-cancel' id='btnCancelParams' data-bs-dismiss="modal">
+                    <?php eT('Cancel'); ?>
+                </button>
+                <button class='btn btn-primary' id='btnSaveParams' type="button">
+                    <?php eT('Save'); ?>
+                </button>
             </div>
         </div>
     </div>
