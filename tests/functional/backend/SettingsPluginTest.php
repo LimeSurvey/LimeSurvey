@@ -13,7 +13,7 @@ class SettingsPluginTest extends TestBaseClass
     protected static $plugin;
 
     /* @var array : settings with value to set */
-    protected static $settings = [];
+    protected static $settingsValue = [];
     /* @var array[] : date time settings of plugin  */
     protected static $dateTimePluginSettings = [
         'date_time_1' => [
@@ -64,7 +64,7 @@ class SettingsPluginTest extends TestBaseClass
         $obj = new \stdClass();
         $obj->customProperty = 'abc';
 
-        self::$settings = [
+        self::$settingsValue = [
             'empty_1' => 0,
             'empty_2' => null,
             'empty_3' => false,
@@ -97,7 +97,7 @@ class SettingsPluginTest extends TestBaseClass
 
     public function testGetAndSetSetting()
     {
-        foreach (self::$settings as $key => $value) {
+        foreach (self::$settingsValue as $key => $value) {
             self::$plugin->setSetting($key, $value);
 
             $setting = \PluginSetting::model()->findByAttributes([
@@ -115,8 +115,8 @@ class SettingsPluginTest extends TestBaseClass
 
     public function testGetAndSetSettingEncrypted()
     {
-        self::$plugin->setEncryptedSettings(array_keys(self::$settings));
-        foreach (self::$settings as $key => $value) {
+        self::$plugin->setEncryptedSettings(array_keys(self::$settingsValue));
+        foreach (self::$settingsValue as $key => $value) {
             self::$plugin->setSetting($key, $value);
 
             $setting = \PluginSetting::model()->findByAttributes([
