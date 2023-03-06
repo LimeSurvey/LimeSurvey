@@ -34,6 +34,13 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.51 (build 230228) to 3.28.52 (build 230307) March 6, 2023
+-Fixed issue: Unable to run integrity check on databases with a big number of surveys (Carsten Schmitz)
+#Updated translation: Valencian by vbraque
+#Updated translation: Russian by vipgroup
+#Updated translation: Basque by admin67
+
+
 Changes from 3.28.50 (build 230221) to 3.28.51 (build 230228) February 27, 2023
 -Fixed issue #18532: Data entry screen incorrectly assigns 0 value to empty multiflex array checkbox values (Adam Zammit)
 -Fixed issue #18407: On-page conditions not working when pre-filling question with equation on the same page (#2676) (Denis Chenu)
