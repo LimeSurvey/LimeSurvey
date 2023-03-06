@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2023-02-27 10:30:58+00:00\n"
+"POT-Creation-Date: 2023-03-06 08:50:23+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1475,15 +1475,15 @@ msgstr ""
 msgid "Deleting conditions: %u conditions deleted"
 msgstr ""
 
-#: application/controllers/admin/checkintegrity.php:657
+#: application/controllers/admin/checkintegrity.php:658
 msgid "No matching CQID"
 msgstr ""
 
-#: application/controllers/admin/checkintegrity.php:672
+#: application/controllers/admin/checkintegrity.php:673
 msgid "No matching CFIELDNAME group!"
 msgstr ""
 
-#: application/controllers/admin/checkintegrity.php:676
+#: application/controllers/admin/checkintegrity.php:677
 msgid "No CFIELDNAME field set!"
 msgstr ""
 
@@ -1492,7 +1492,7 @@ msgid "No matching survey"
 msgstr ""
 
 #: application/controllers/admin/checkintegrity.php:745
-#: application/controllers/admin/checkintegrity.php:810
+#: application/controllers/admin/checkintegrity.php:812
 msgid "No matching group"
 msgstr ""
 
@@ -1500,35 +1500,35 @@ msgstr ""
 msgid "No matching question"
 msgstr ""
 
-#: application/controllers/admin/checkintegrity.php:798
+#: application/controllers/admin/checkintegrity.php:800
 msgid "The related survey is missing."
 msgstr ""
 
-#: application/controllers/admin/checkintegrity.php:822
+#: application/controllers/admin/checkintegrity.php:824
 msgid "There is no matching survey."
 msgstr ""
 
-#: application/controllers/admin/checkintegrity.php:834
+#: application/controllers/admin/checkintegrity.php:836
 msgid "There is no matching user %s in group %s."
 msgstr ""
 
-#: application/controllers/admin/checkintegrity.php:877
+#: application/controllers/admin/checkintegrity.php:879
 msgid "responses"
 msgstr ""
 
-#: application/controllers/admin/checkintegrity.php:882
+#: application/controllers/admin/checkintegrity.php:884
 msgid "timings"
 msgstr ""
 
-#: application/controllers/admin/checkintegrity.php:903
+#: application/controllers/admin/checkintegrity.php:905
 msgid "Survey ID %d saved at %s containing %d record(s) (%s)"
 msgstr ""
 
-#: application/controllers/admin/checkintegrity.php:956
+#: application/controllers/admin/checkintegrity.php:958
 msgid "Survey ID %d saved at %s containing %d record(s)"
 msgstr ""
 
-#: application/controllers/admin/checkintegrity.php:1012
+#: application/controllers/admin/checkintegrity.php:1014
 msgid "Some automatic fixes were already applied."
 msgstr ""
 
