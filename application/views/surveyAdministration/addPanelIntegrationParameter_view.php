@@ -1,7 +1,7 @@
 <?php
 /** @var array $questions */
 ?>
-<div id="dlgEditParameter" title="urlparam" role="dialog" tabindex="-1" class="modal fade"
+<div id="dlgEditParameter" role="dialog" tabindex="-1" class="modal fade"
      data-save-url='<?= Yii::app()->createUrl("surveyAdministration/saveUrlParam") ?>'
 >
 
