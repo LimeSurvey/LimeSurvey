@@ -70,6 +70,12 @@ class RemoteControlImportQuestionTest extends TestBaseClass
 
         $question = base64_encode(file_get_contents($questionFile));
 
+        ini_set('display_errors', 1);
+        ini_set('display_startup_errors', 1);
+        error_reporting(E_ALL);
+
+        var_dump("Attempting to import question");
+        
         try {
             $result = $handler->import_question($sessionKey, self::$surveyId, $testGroupId, $question, 'lsq');
         } catch (\Throwable $th) {
