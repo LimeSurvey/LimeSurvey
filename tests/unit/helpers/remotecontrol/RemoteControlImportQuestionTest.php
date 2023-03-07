@@ -24,6 +24,8 @@ class RemoteControlImportQuestionTest extends TestBaseClass
      */
     public static function setupBeforeClass(): void
     {
+        \Yii::import('application.helpers.remotecontrol.remotecontrol_handle', true);
+
         parent::setupBeforeClass();
 
         self::$username = getenv('ADMINUSERNAME');
@@ -47,12 +49,10 @@ class RemoteControlImportQuestionTest extends TestBaseClass
     }
 
     /**
-     * Importing a question with a question code that does not exist.
+     * Importing a question with a question code that does not previously exist.
      */
-    public function testImportQuestionWithDifferentQuestionCode()
+    public function testImportQuestionWithUniqueQuestionCode()
     {
-        \Yii::import('application.helpers.remotecontrol.remotecontrol_handle', true);
-
         // Create handler.
         $admin   = new \AdminController('dummyid');
         $handler = new \remotecontrol_handle($admin);
@@ -63,26 +63,16 @@ class RemoteControlImportQuestionTest extends TestBaseClass
             self::$password
         );
 
-        $questionFile = self::$surveysFolder . '/limesurvey_question_import_question_test_II.lsq';
-
-        // There is only one group.
+        // Pickup group id of imported survey.
+        // There is only one group
         $testGroupId = self::$testSurvey->groups[0]->gid;
 
+        // Attempt Improting Question
+        $questionFile = self::$surveysFolder . '/limesurvey_question_import_question_test_II.lsq';
         $question = base64_encode(file_get_contents($questionFile));
+        $result = $handler->import_question($sessionKey, self::$surveyId, $testGroupId, $question, 'lsq');
 
-        ini_set('display_errors', 1);
-        ini_set('display_startup_errors', 1);
-        error_reporting(E_ALL);
-
-        var_dump("Attempting to import question");
-        
-        try {
-            $result = $handler->import_question($sessionKey, self::$surveyId, $testGroupId, $question, 'lsq');
-        } catch (\Throwable $th) {
-            $this->assertTrue(false, sprintf('Failed to import question file %s -- $s', $questionFile, $th->getMessage()));
-        }
-
-        $this->assertIsInt($result, 'There was an error importing a question with a code that already exists.');
+        $this->assertIsInt($result, 'There was an error importing a question with a code that did not already exists.');
     }
 
     /**
@@ -90,8 +80,6 @@ class RemoteControlImportQuestionTest extends TestBaseClass
      */
     public function testImportQuestionWithRepeatedQuestionCode()
     {
-        \Yii::import('application.helpers.remotecontrol.remotecontrol_handle', true);
-
         // Create handler.
         $admin   = new \AdminController('dummyid');
         $handler = new \remotecontrol_handle($admin);
@@ -102,19 +90,15 @@ class RemoteControlImportQuestionTest extends TestBaseClass
             self::$password
         );
 
-        $questionFile = self::$surveysFolder . '/limesurvey_question_import_question_test.lsq';
-
-        // There is only one group.
+        // Pickup group id of imported survey.
+        // There is only one group
         $testGroupId = self::$testSurvey->groups[0]->gid;
 
+        // Attempt Improting Question
+        $questionFile = self::$surveysFolder . '/limesurvey_question_import_question_test.lsq';
         $question = base64_encode(file_get_contents($questionFile));
-
-        try {
-            $result = $handler->import_question($sessionKey, self::$surveyId, $testGroupId, $question, 'lsq');
-        } catch (\Throwable $th) {
-            $this->assertTrue(false, sprintf('Failed to import question file %s -- $s', $questionFile, $th->getMessage()));
-        }
-
+        $result = $handler->import_question($sessionKey, self::$surveyId, $testGroupId, $question, 'lsq');
+        
         $this->assertIsInt($result, 'There was an error importing a question with a code that already exists.');
     }
 }
