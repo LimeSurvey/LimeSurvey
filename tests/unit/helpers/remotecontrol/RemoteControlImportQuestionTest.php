@@ -24,7 +24,6 @@ class RemoteControlImportQuestionTest extends TestBaseClass
      */
     public static function setupBeforeClass(): void
     {
-
         \Yii::import('application.helpers.remotecontrol.remotecontrol_handle', true);
 
         parent::setupBeforeClass();
@@ -52,7 +51,7 @@ class RemoteControlImportQuestionTest extends TestBaseClass
     /**
      * Importing a question with a question code that does not exist.
      */
-    public function testImportQuestionWithDifferentQuestionCode(): void
+    public function testImportQuestionWithDifferentQuestionCode()
     {
         // Create handler.
         $admin   = new \AdminController('dummyid');
@@ -79,7 +78,7 @@ class RemoteControlImportQuestionTest extends TestBaseClass
     /**
      * Importing a question with a question code that already exists.
      */
-    public function testImportQuestionWithRepeatedQuestionCode(): void
+    public function testImportQuestionWithRepeatedQuestionCode()
     {
         // Create handler.
         $admin   = new \AdminController('dummyid');
