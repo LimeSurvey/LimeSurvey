@@ -442,6 +442,8 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
 */
 function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options = array('autorename'=>false))
 {
+    $newgid = (int) $newgid;
+    $iNewSID = (int) $iNewSID;
     $sBaseLanguage = Survey::model()->findByPk($iNewSID)->language;
     $sXMLdata = file_get_contents($sFullFilePath);
     $xml = simplexml_load_string($sXMLdata, 'SimpleXMLElement', LIBXML_NONET);
@@ -1011,6 +1013,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         if ($newSurvey->sid) {
             $iNewSID = $results['newsid'] = $newSurvey->sid;
             $results['surveys']++;
+            if (!empty($iDesiredSurveyId) && $iNewSID != $iDesiredSurveyId) {
+                $results['importwarnings'][] = gT("The desired survey ID was already in use, therefore a random one was assigned.");
+            }
         } else {
             $results['error'] = CHtml::errorSummary($newSurvey, gT("Unable to import survey."));
             return $results;
@@ -1878,6 +1883,7 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
 
 /**
 * This function imports a CSV file into the response table
+* csv file is deleted during process
 *
 * @param string $sFullFilePath
 * @param integer $iSurveyId
@@ -2780,6 +2786,7 @@ function createXMLfromData($aData = array()){
 
 /**
  * Read a csv file and resturn a tmp ressources to same file in utf8
+ * csv file is deleted during process
  * @param string $fullfilepath
  * @param string $encoding from
  * @return resource

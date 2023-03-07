@@ -197,7 +197,7 @@ class SurveysGroups extends LSActiveRecord
             'criteria'=>$criteria,
         ));
 
-        $dataProvider->setTotalItemCount(count($dataProvider->getData()));
+        $dataProvider->setTotalItemCount($this->count($criteria));
 
         return $dataProvider;
     }
@@ -276,7 +276,7 @@ class SurveysGroups extends LSActiveRecord
         $criteria = new CDbCriteria;
         $criteriaPerm = self::getPermissionCriteria();
         $criteria->mergeWith($criteriaPerm, 'AND');
-
+        $criteria->order = 'title ASC';
         $oSurveyGroups = self::model()->findAll($criteria);
 
         foreach ($oSurveyGroups as $oSurveyGroup) {

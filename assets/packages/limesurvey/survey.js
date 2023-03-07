@@ -212,48 +212,75 @@ function activateLanguageChanger(){
             $(this).closest('.ls-language-changer-item').find(":submit").click();
         }
     });
+
     /* Language changer dropdown */
-    $('.form-change-lang [name="lang"] option:not(selected)').on('click', function(event) {
+    /* Don't activate change when using key up / key down, for accessibility */
+    $('.form-change-lang [name="lang"]').on('keypress keydown keyup', function(event) {
+        var code = event.keyCode || event.which;
+        /* packaje name : limesurvey */
+        $(this).data("limesurvey-lastkey",code);
+    });
+    $('.form-change-lang [name="lang"]').on('click', function(event) {
+        /* didn't work with chrome , chrom bug : onclick are an intrinsic event see https://www.w3.org/TR/html401/interact/forms.html#h-17.6 */
+        /* Happen rarely (keyboard + mouse + still have the button */
+        $(this).data("limesurvey-lastkey",null);
+    });
+
+    $('.form-change-lang button').on('click', onLanguageChanged);
+
+    $('.form-change-lang [name="lang"]').on('change', function(event) {
+        if( $(this).data("limesurvey-lastkey") == 38 || $(this).data("limesurvey-lastkey") == 40) {
+            /* Last key is up or down : disable auto submit mantis #16024 */
+            return;
+        }
+
+        onLanguageChanged(true);
+    });
+
+    function onLanguageChanged(doSubmit) {
+        var newLang = $('.form-change-lang [name="lang"]').val();
+
         var closestForm = $(this).closest('form');
-        var newLang = $(this).val();
         if (!closestForm.length) {
             /* we are not in a forum, can not submit directly */
+            // Remind user can put language changer everywhere, not only in home page, but for example in clear all page etc
             if (limesurveyForm.length == 1) {
                 /* The limesurvey form exist in document, move select and button inside and click */
                 applyChangeAndSubmit(newLang);
-                // TODO: Check all code below. When does it happen?
-                // Answer : remind user can put language changer everywhere, not only in home page, but for example in clear all page etc …
             } else {
                 // If there are no form : we can't use it */
-                if($(this).parent().data('targeturl')){
+                if ($('.form-change-lang [name="lang"]').data('targeturl')) {
                     /* If we have a target url : just move location to this url with lang set */
-                    var target=$(this).parent().data('targeturl');
+                    var target=$('.form-change-lang [name="lang"]').data('targeturl');
                     /* adding lang in get param manually */
-                    if(target.indexOf("?") >=0){
-                        target+="&lang="+$(this).val();
-                    }else{
-                        target+="?lang="+$(this).val();
+                    if (target.indexOf("?") >=0){
+                        target+="&lang="+newLang;
+                    } else {
+                        target+="?lang="+newLang;
                     }
                     /* directly move to location */
                     location.href = target;
                     return false;
-                }else{
+                } else {
                     /* No form, not targeturl : just see what happen */
+                    /* This must not happen : issue in theme */
                     $("<form>", {
                         "class":'ls-js-hidden',
                         "html": '<input type="hidden" name="lang" value="' + newLang + '" />',
-                        "action": target,
+                        "action": location.href,
                         "method": 'get'
                     }).appendTo(document.body).submit();
                 }
-
             }
-        }else{
+        } else {
             /* we are inside a form : just submit : but remove other lang input if exist : be sure it's this one send */
-            $(this).closest('form').find("[name='lang']").not($(this).parent()).remove();
-            $(this).closest('.form-change-lang').find(':submit').click();
+            if (doSubmit === true) {  /* Avoid infinite recursion if we come from the language change button being pressed */
+                var thisSelect = $('.form-change-lang [name="lang"]');
+                thisSelect.closest('form').find("[name='lang']").not(thisSelect).remove();
+                thisSelect.closest('.form-change-lang').find(':submit').click();
+            }
         }
-    });
+    }
 }
 
 /**
@@ -417,8 +444,8 @@ function resetQuestionTimers(sid) {
         return;
     }
     // We only care about the final submit, not normal forward/backward navigation.
-    var submitter = $(e.originalEvent.submitter);
-    if (submitter.attr('value') != 'movesubmit') {
+    var submitter = e.originalEvent ? $(e.originalEvent.submitter) : null;
+    if (!submitter || submitter.attr('value') != 'movesubmit') {
         return;
     }
     // Still, we disable all submit buttons to make sure the "back" button is not

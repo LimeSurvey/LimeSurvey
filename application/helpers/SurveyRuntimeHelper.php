@@ -1022,6 +1022,7 @@ class SurveyRuntimeHelper
                 $this->aSurveyInfo['aSaveForm'] = $cSave->getSaveFormDatas($this->aSurveyInfo['sid']);
 
                 $this->aSurveyInfo['include_content'] = 'save';
+                $this->aSurveyInfo['trackUrlPageName'] = 'save';
                 Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey'=> Survey::model()->findByPk($this->iSurveyid), 'aSurveyInfo'=>$this->aSurveyInfo), false);
             } else {
                 // Intentional retest of all conditions to be true, to make sure we do have tokens and surveyid
@@ -1697,8 +1698,6 @@ class SurveyRuntimeHelper
                 $this->gid              = $this->aStepInfo['gid'];
                 $this->groupname        = $this->aStepInfo['gname'];
                 $this->groupdescription = $this->aStepInfo['gtext'];
-                $this->groupname        = $this->groupname;
-                $this->groupdescription = $this->groupdescription;
             }
         }
     }

@@ -36,7 +36,8 @@ foreach ($tokendata as $Key => $Value) {
         'id' => 'edittoken',
         'class' => '',
         'data-trigger-validation' => true,
-        'data-validation-error' => gT("Some mandatory additional attributes were left blank. Please review them.")
+        'data-additional-attributes-validation-error' => gT("Some mandatory additional attributes were left blank. Please review them."),
+        'data-expiration-validation-error' => gT('Participant expiration date can\'t be lower than the "Valid from" date'),
     )); ?>
       <!-- Tabs -->
       <?php if( count($attrfieldnames) > 0 ):?>

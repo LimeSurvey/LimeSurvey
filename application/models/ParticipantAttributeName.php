@@ -523,6 +523,7 @@ class ParticipantAttributeName extends LSActiveRecord
      */
     public function delAttribute($attid)
     {
+        $attid = (int) $attid;
         Yii::app()->db->createCommand()->delete('{{participant_attribute_names_lang}}', 'attribute_id = '.$attid);
         Yii::app()->db->createCommand()->delete('{{participant_attribute_names}}', 'attribute_id = '.$attid);
         Yii::app()->db->createCommand()->delete('{{participant_attribute_values}}', 'attribute_id = '.$attid);
@@ -535,6 +536,8 @@ class ParticipantAttributeName extends LSActiveRecord
      */
     public function delAttributeValues($attid, $valid)
     {
+        $attid = (int) $attid;
+        $valid = (int) $valid;
         Yii::app()->db
             ->createCommand()
             ->delete('{{participant_attribute_values}}', 'attribute_id = '.$attid.' AND value_id = '.$valid);
@@ -579,6 +582,7 @@ class ParticipantAttributeName extends LSActiveRecord
      */
     public function getAttribute($attribute_id)
     {
+        $attribute_id = (int) $attribute_id;
         $data = Yii::app()->db->createCommand()
             ->select('*')
             ->from('{{participant_attribute_names}}')

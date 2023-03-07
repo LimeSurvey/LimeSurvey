@@ -487,7 +487,6 @@ class CheckIntegrity extends Survey_Common_Action
         Yii::app()->setConfig('Updating', true);
 
         foreach ($oSurveys as $oSurvey) {
-
             if ($oSurvey->isActive && !$oSurvey->hasResponsesTable) {
                 Survey::model()->updateByPk($oSurvey->sid, array('active'=>'N'));
                 $bDirectlyFixed = true;
@@ -529,20 +528,19 @@ class CheckIntegrity extends Survey_Common_Action
                                 // It was just the QID....
                                 $sQID      =  $sDirtyQid;
                             }
-                            if ((string) intval($sQID) !== $sQID) {
-                                throw new \Exception('sQID is not an integer: ' . $sQID);
-                            }
 
                             // Here, we get the question as defined in backend
-                            $oQuestion = Question::model()->findByAttributes([ 'qid' => $sQID , 'language' => $oSurvey->language, 'sid' => $oSurvey->sid ]);
+                            try {
+                                $oQuestion = Question::model()->findByAttributes([ 'qid' => $sQID , 'language' => $oSurvey->language, 'sid' => $oSurvey->sid ]);
+                            } catch (Exception $e) {
+                                // QID potentially invalid , see #17458, reset $oQuestion
+                                $oQuestion = null;
+                            }
                             if (is_a($oQuestion, 'Question')){
-
                                 // We check if its GID is the same as the one defined in the column name
                                 if ($oQuestion->gid != $sGid){
-
                                     // If not, we change the column name
                                     $sNvColName = $oSurvey->sid . 'X'. $oQuestion->groups->gid . 'X' . $sDirtyQid;
-
                                     if ( array_key_exists( $sNvColName, $aColumns ) ){
                                         // This case will not happen often, only when QID + Subquestion ID == QID of a question in the target group
                                         // So we'll change the group of the question question group table (so in admin interface, not in frontend)
@@ -553,14 +551,14 @@ class CheckIntegrity extends Survey_Common_Action
                                         $oDB->createCommand()->renameColumn($model->tableName(), $oColumn->name , $sNvColName);
                                         $oTransaction->commit();
                                     }
-
-
                                 }
                             } else {
                                 // QID not found: The function to split the fieldname into the SGQA data is not 100% reliable
                                 // So for certain question types (for example Text Array) the field name cannot be properly derived
+                                // This happen if subquestions code are number only for example
                                 // In this case just ignore the field - see also https://bugs.limesurvey.org/view.php?id=15642
                                 // There is still a extremely  low chance that an unwanted rename happens if a collision like this happens in the same survey
+                                \Yii::log(sprintf("Invalid question id %s when checkintegrity in survey %s", $sQID, $oSurvey->sid), \CLogger::LEVEL_INFO, 'application.controller.admin.checkintegrity');
                             }
                         }
                     }

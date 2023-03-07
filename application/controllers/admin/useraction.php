@@ -302,7 +302,7 @@ class UserAction extends Survey_Common_Action
             die();
         }
 
-        $extra = "<br />".sprintf(gT("User '%s' was successfully deleted."), Chtml::encode($fields['full_name']))."<br /><br />\n";
+        $extra = "<br />".sprintf(gT("User '%s' was successfully deleted."), CHtml::encode($fields['full_name']))."<br /><br />\n";
         if ($transfer_surveys_to > 0 && $iSurveysTransferred > 0) {
             $user = User::model()->findByPk($transfer_surveys_to);
             $sTransferred_to = $user->users_name;

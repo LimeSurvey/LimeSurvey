@@ -1994,9 +1994,10 @@ function checkCompletedQuota($surveyid, $return = false)
 
     if ($closeSurvey) {
         killSurveySession($surveyid);
-
         if ($sAutoloadUrl == 1 && $sUrl != "") {
-            header("Location: ".$sUrl);
+            /* Same than end url of survey */
+            $headToSurveyUrl = htmlspecialchars_decode($sUrl);
+            header("Location: " . $headToSurveyUrl);
         }
     }
     $thissurvey['include_content'] = 'quotas';

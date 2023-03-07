@@ -2021,7 +2021,7 @@ class Participant extends LSActiveRecord
                         foreach ($aAutoMapped as $cpdbatt => $tatt) {
                             Participant::model()->updateAttributeValueToken($surveyid, $existing->participant_id, $cpdbatt, $tatt);
                         }
-                    }                    
+                    }
                 }
                 /* If there isn't an existing entry, create one! */
                 else {
@@ -2083,7 +2083,7 @@ class Participant extends LSActiveRecord
                 }
                 Yii::app()->db
                 ->createCommand()
-                ->update('{{surveys}}', array("attributedescriptions" => json_encode($aAttributes)), 'sid = '.$surveyid);
+                ->update('{{surveys}}', array("attributedescriptions" => json_encode($aAttributes)), 'sid = :sid', array(':sid' => $surveyid));
             }
             if (!empty($aMapped)) {
                 foreach ($aMapped as $cpdbatt => $tatt) {
@@ -2092,7 +2092,7 @@ class Participant extends LSActiveRecord
                 }
                 Yii::app()->db
                 ->createCommand()
-                ->update('{{surveys}}', array("attributedescriptions" => json_encode($aAttributes)), 'sid = '.$surveyid);
+                ->update('{{surveys}}', array("attributedescriptions" => json_encode($aAttributes)), 'sid = :sid', array(':sid' => $surveyid));
             }
         }
         $returndata = array('success' => $sucessfull, 'duplicate' => $duplicate, 'overwriteauto'=>$overwriteauto, 'overwriteman'=>$overwriteman);

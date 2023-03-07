@@ -128,6 +128,15 @@ class responses extends Survey_Common_Action
 
             $quexmlpdf = new quexmlpdf();
 
+            //apply settings stored at last output
+            foreach ($quexmlpdf->_quexmlsettings() as $s) {
+                $setting = getGlobalSetting($s);
+                if ($setting !== null && trim($setting) !== '') {
+                    $method = str_replace("queXML", "set", $s);
+                    $quexmlpdf->$method($setting);
+                }
+            }
+
             // Setting the selected language for printout
             App()->setLanguage($sBrowseLanguage);
 
@@ -636,7 +645,7 @@ class responses extends Survey_Common_Action
             if (isset($aQuestionFiles[$iIndex])) {
                 $aFile = $aQuestionFiles[$iIndex];
                 // Real path check from here: https://stackoverflow.com/questions/4205141/preventing-directory-traversal-in-php-but-allowing-paths
-                $sDir = realpath(Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyId . "/files/") . '/';
+                $sDir = realpath(Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyId . "/files/") . DIRECTORY_SEPARATOR;
                 $sFileRealName = $sDir . $aFile['filename'];
                 $sRealUserPath = realpath($sFileRealName);
                 if ($sRealUserPath === false || strpos($sRealUserPath, $sDir) !== 0) {
@@ -697,12 +706,16 @@ class responses extends Survey_Common_Action
             if (!empty($aResponseId)) {
                 // Now, zip all the files in the filelist
                 if (count($aResponseId) == 1) {
-                                    $zipfilename = "Files_for_survey_{$iSurveyId}_response_{$aResponseId[0]}.zip";
+                    $zipfilename = "Files_for_survey_{$iSurveyId}_response_{$aResponseId[0]}.zip";
                 } else {
-                                    $zipfilename = "Files_for_survey_{$iSurveyId}.zip";
+                    $zipfilename = "Files_for_survey_{$iSurveyId}.zip";
                 }
 
-                $this->_zipFiles($iSurveyId, $aResponseId, $zipfilename);
+                $this->_zipFiles(
+                    $iSurveyId,
+                    $aResponseId,
+                    sanitize_filename($zipfilename, false, false, false)
+                );
             } else {
                 // No response : redirect to browse with a alert
                 Yii::app()->setFlashMessage(gT("The requested files do not exist on the server."), 'error');

@@ -1325,7 +1325,7 @@ class remotecontrol_handle
             $iQuestionID = (int) $iQuestionID;
             $oQuestion = Question::model()->findByAttributes(array('qid' => $iQuestionID));
             if (!isset($oQuestion)) {
-                            return array('status' => 'Error: Invalid question ID');
+                return array('status' => 'Error: Invalid question ID');
             }
 
             $iSurveyID = $oQuestion['sid'];
@@ -1334,13 +1334,13 @@ class remotecontrol_handle
                 $oSurvey = Survey::model()->findByPk($iSurveyID);
 
                 if ($oSurvey['active'] == 'Y') {
-                                    return array('status' => 'Survey is active and not editable');
+                    return array('status' => 'Survey is active and not editable');
                 }
                 $iGroupID = $oQuestion['gid'];
 
                 $oCondition = Condition::model()->findAllByAttributes(array('cqid' => $iQuestionID));
                 if (count($oCondition) > 0) {
-                                return array('status' => 'Cannot delete Question. Others rely on this question');
+                    return array('status' => 'Cannot delete Question. Others rely on this question');
                 }
 
                 LimeExpressionManager::RevertUpgradeConditionsToRelevance(null, $iQuestionID);
@@ -1357,7 +1357,7 @@ class remotecontrol_handle
 
                     DefaultValue::model()->deleteAllByAttributes(array('qid' => $iQuestionID));
                     QuotaMember::model()->deleteAllByAttributes(array('qid' => $iQuestionID));
-                    Question::updateQuestionOrder($iGroupID);
+                    Question::updateSortOrder($iGroupID, $iSurveyID);
 
                     return (int) $iQuestionID;
                 } catch (Exception $e) {
@@ -1365,10 +1365,10 @@ class remotecontrol_handle
                 }
 
             } else {
-                            return array('status' => 'No permission');
+                return array('status' => 'No permission');
             }
         } else {
-                    return array('status' => 'Invalid session key');
+            return array('status' => 'Invalid session key');
         }
     }
 
@@ -3094,6 +3094,40 @@ class remotecontrol_handle
         return $uploaded_files;
     }
 
+    /**
+     * Get survey fieldmap (RPC function)
+     *
+     * Returns the requested survey's fieldmap in an array
+     *
+     * @access public
+     * @param string $sessionKey Auth credentials
+     * @param int $surveyId ID of the Survey
+     * @param string $language (optional) language of the survey to use (default from Survey)
+     * @return array
+     */
+    public function get_fieldmap($sessionKey, $surveyId, $language = null)
+    {
+        if (!$this->_checkSessionKey($sessionKey)) {
+            return ['status' => 'Invalid session key'];
+        }
+        $surveyId = (int) $surveyId;
+        $survey = Survey::model()->findByPk($surveyId);
+        if (!isset($survey)) {
+            return ['status' => 'Error: Invalid survey ID'];
+        }
+        if (!Permission::model()->hasSurveyPermission($surveyId, 'surveycontent', 'read')) {
+            return ['status' => 'No permission'];
+        }
+        if (empty($language) || !in_array($language, $survey->allLanguages)) {
+            $language = $survey->language;
+        }
+        // Get the fieldmap
+        $fieldmap = createFieldMap($survey, 'full', true, false, $language);
+        if (empty($fieldmap)) {
+            return ['status' => 'Can not obtain field map'];
+        }
+        return $fieldmap;
+    }
 
     /**
      * Login with username and password

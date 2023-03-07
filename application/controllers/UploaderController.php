@@ -38,6 +38,10 @@ class UploaderController extends SurveyController
         $sFileGetContent = Yii::app()->request->getParam('filegetcontents', ''); // The file to view fu_ or fu_tmp
         $bDelete = Yii::app()->request->getParam('delete');
         $sFieldName = Yii::app()->request->getParam('fieldname');
+        $aFieldMap = createFieldMap($oSurvey, 'short', false, false, $sLanguage);
+        if (!isset($aFieldMap[$sFieldName])) {
+            throw new CHttpException(400); // See for debug > 1
+        }        
         $sFileName = Yii::app()->request->getParam('filename', ''); // The file to delete fu_ or fu_tmp
         $sOriginalFileName = Yii::app()->request->getParam('name', ''); // Used for javascript return only
         $sMode = Yii::app()->request->getParam('mode');
@@ -52,23 +56,23 @@ class UploaderController extends SurveyController
             // If one seems to be a hack: Bad request
             throw new CHttpException(400); // See for debug > 1
         }
-        if ($sFileGetContent) {
-            if (substr($sFileGetContent, 0, 6) == 'futmp_') {
+        if ($sFileGetContentFiltered) {
+            if (substr($sFileGetContentFiltered, 0, 6) == 'futmp_') {
                 $sFileDir = $tempdir.'/upload/';
-            } elseif (substr($sFileGetContent, 0, 3) == 'fu_') {
+            } elseif (substr($sFileGetContentFiltered, 0, 3) == 'fu_') {
                 // Need to validate $_SESSION['srid'], and this file is from this srid !
                 $sFileDir = "{$uploaddir}/surveys/{$surveyid}/files/";
             } else {
                 throw new CHttpException(400); // See for debug > 1
             }
-            if (is_file($sFileDir.$sFileGetContent)) {
+            if (is_file($sFileDir.$sFileGetContentFiltered)) {
                 // Validate file before else 500 error by getMimeType
-                $mimeType = LSFileHelper::getMimeType($sFileDir.$sFileGetContent, null, false);
+                $mimeType = LSFileHelper::getMimeType($sFileDir.$sFileGetContentFiltered, null, false);
                 if (is_null($mimeType)) {
                     $mimeType = "application/octet-stream"; // Can not really get content if not image
                 }
                 header('Content-Type: '.$mimeType);
-                readfile($sFileDir.$sFileGetContent);
+                readfile($sFileDir.$sFileGetContentFiltered);
                 Yii::app()->end();
             } else {
                 Yii::app()->end();
@@ -105,8 +109,8 @@ class UploaderController extends SurveyController
             }
             //var_dump($sFileDir.$sFilename);
             // Return some json to do a beautiful text
-            if (@unlink($sFileDir.$sFileName)) {
-                echo sprintf(gT('File %s deleted'), $sOriginalFileName);
+            if (@unlink($sFileDir . $sFileNameFiltered)) {
+                echo sprintf(gT('File %s deleted'), CHtml::encode($sOriginalFileName));
             } else {
                 echo gT('Oops, There was an error deleting the file');
             }
@@ -344,7 +348,7 @@ class UploaderController extends SurveyController
         $body = '</head><body class="uploader">
             <div class="model-container clearfix">
                 <div id="notice" class="text-center"></div>
-                <input type="hidden" id="ia"                value="'.$fn.'" />
+                <input type="hidden" id="ia"                value="' . CHtml::encode($fn) . '" />
                 <input type="hidden" id="'.$fn.'_minfiles"          value="'.$minfiles.'" />
                 <input type="hidden" id="'.$fn.'_maxfiles"          value="'.$maxfiles.'" />
                 <input type="hidden" id="'.$fn.'_maxfilesize"       value="'.$maxfilesize.'" />

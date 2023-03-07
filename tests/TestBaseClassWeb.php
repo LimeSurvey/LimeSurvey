@@ -137,12 +137,13 @@ class TestBaseClassWeb extends TestBaseClass
         $url = self::getUrl(['login', 'route'=>'authentication/sa/login']);
         self::openView($url);
         try {
-            self::$webDriver->wait(5)->until(
+            self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::presenceOfAllElementsLocatedBy(
                     WebDriverBy::id('user')
                 )
             );
         } catch (TimeOutException $ex) {
+            self::$webDriver->dumpBody();
             //$name =__DIR__ . '/_output/loginfailed.png';
             $screenshot = self::$webDriver->takeScreenshot();
             $filename = self::$screenshotsFolder .'/FailedLogin.png';
@@ -156,6 +157,7 @@ class TestBaseClassWeb extends TestBaseClass
                 )
             );
         }
+
         $userNameField = self::$webDriver->findElement(WebDriverBy::id("user"));
         $userNameField->clear()->sendKeys($userName);
         $passWordField = self::$webDriver->findElement(WebDriverBy::id("password"));

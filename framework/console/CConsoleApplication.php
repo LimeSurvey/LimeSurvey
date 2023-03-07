@@ -3,9 +3,9 @@
  * CConsoleApplication class file.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright 2008-2013 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 /**
@@ -117,9 +117,9 @@ class CConsoleApplication extends CApplication
 		echo "PHP Error[$code]: $message\n";
 		echo "    in file $file at line $line\n";
 		$trace=debug_backtrace();
-		// skip the first 4 stacks as they do not tell the error position
-		if(count($trace)>4)
-			$trace=array_slice($trace,4);
+		// skip the first 2 stacks as they are always irrelevant
+		if(count($trace)>2)
+			$trace=array_slice($trace,2);
 		foreach($trace as $i=>$t)
 		{
 			if(!isset($t['file']))

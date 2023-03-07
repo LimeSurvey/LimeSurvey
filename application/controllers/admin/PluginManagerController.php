@@ -49,7 +49,7 @@ class PluginManagerController extends Survey_Common_Action
         foreach ($aoPlugins as $oPlugin) {
             /* @var $plugin Plugin */
             if (array_key_exists($oPlugin->name, $aDiscoveredPlugins)) {
-                $plugin = App()->getPluginManager()->loadPlugin($oPlugin->name, $oPlugin->id);
+                $plugin = App()->getPluginManager()->loadPlugin($oPlugin->name, $oPlugin->id, false);
                 if ($plugin) {
                     $aPluginSettings = $plugin->getPluginSettings(false);
                     $data[]          = array(
@@ -113,8 +113,8 @@ class PluginManagerController extends Survey_Common_Action
         if (!is_null($oPlugin)) {
             $iStatus = $oPlugin->active;
             if ($iStatus == 0) {
-                // Load the plugin:
-                App()->getPluginManager()->loadPlugin($oPlugin->name, $id);
+                // Load the plugin (and init)
+                App()->getPluginManager()->loadPlugin($oPlugin->name, $id, true); 
                 $result = App()->getPluginManager()->dispatchEvent(new PluginEvent('beforeActivate', $this), $oPlugin->name);
                 if ($result->get('success', true)) {
                     $iStatus = 1;
@@ -184,7 +184,7 @@ class PluginManagerController extends Survey_Common_Action
         }
 
         $arPlugin      = Plugin::model()->findByPk($id)->attributes;
-        $oPluginObject = App()->getPluginManager()->loadPlugin($arPlugin['name'], $arPlugin['id']);
+        $oPluginObject = App()->getPluginManager()->loadPlugin($arPlugin['name'], $arPlugin['id'], false);
 
         if ($arPlugin === null) {
             Yii::app()->user->setFlash('error', gT('The plugin was not found.'));

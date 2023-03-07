@@ -59,6 +59,7 @@ class SurveyAdmin extends Survey_Common_Action
         $aSurveys = json_decode(Yii::app()->request->getPost('sItems'));
         $aResults = array();
         foreach ($aSurveys as $iSurveyID) {
+            $iSurveyID = (int) $iSurveyID;
             $oSurvey                        = Survey::model()->findByPk($iSurveyID);
             $aResults[$iSurveyID]['title']  = $oSurvey->correct_relation_defaultlanguage->surveyls_title;
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'delete')) {
@@ -293,7 +294,7 @@ class SurveyAdmin extends Survey_Common_Action
      */
     public function importsurveyresources()
     {
-        $iSurveyID = Yii::app()->request->getPost('surveyid');
+        $iSurveyID = (int) Yii::app()->request->getPost('surveyid');
 
         if (!empty($iSurveyID)) {
 
@@ -2096,6 +2097,7 @@ class SurveyAdmin extends Survey_Common_Action
      */
     private function _registerScriptFiles()
     {
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'surveysettings.js', LSYii_ClientScript::POS_BEGIN);
         App()->getClientScript()->registerPackage('jquery-json');
         App()->getClientScript()->registerPackage('bootstrap-switch');
 
@@ -2395,7 +2397,7 @@ class SurveyAdmin extends Survey_Common_Action
         // there is no Survey ID to check for permissions, so the error could be misleading.
         LSUploadHelper::checkUploadedFileSizeAndRenderJson('file', $debug);
 
-        $iSurveyID = Yii::app()->request->getPost('surveyid');
+        $iSurveyID =  (int) Yii::app()->request->getPost('surveyid');
         $success = false;
         if(!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update')) {
             return Yii::app()->getController()->renderPartial(

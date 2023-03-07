@@ -20,7 +20,7 @@
             // This is not a JSON-RPC request
             return false;
         }
-        
+
         // reads the input data
         $request = json_decode(file_get_contents('php://input'), true);
         // executes the task on local object
@@ -33,7 +33,7 @@
                                 );
         } else {
             try {
-                $result = @call_user_func_array(array($object, $request['method']), $request['params']);
+                $result = @call_user_func_array(array($object, sanitize_alphanumeric($request['method'])), $request['params']);
                 if ($result !== false) {
                     $response = array(
                                         'id' => $request['id'],

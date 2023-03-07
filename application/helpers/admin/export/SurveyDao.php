@@ -63,7 +63,7 @@ class SurveyDao
         //$survey->answers = Yii::app()->db->createCommand($sQuery)->queryAll();
         $aAnswers = Yii::app()->db->createCommand($sQuery)->queryAll();
         foreach ($aAnswers as $aAnswer) {
-            if(!empty($oOptions->stripHtmlCode) && $oOptions->stripHtmlCode == 1  && Yii::app()->controller->action->id !='remotecontrol'){
+            if(!empty($oOptions->stripHtmlCode) && $oOptions->stripHtmlCode == 1){
                 $aAnswer['answer']=stripTagsFull($aAnswer['answer']);
             }
             $survey->answers[$aAnswer['qid']][$aAnswer['scale_id']][$aAnswer['code']] = $aAnswer;

@@ -163,4 +163,58 @@ class RemoteControlTest extends TestBaseClass
         self::$testSurvey = null;
     }
     '*/
+
+    /**
+     * Test the get_fieldmap API call
+     */
+    public function testGetFieldmap()
+    {
+        \Yii::import('application.helpers.remotecontrol.remotecontrol_handle', true);
+        \Yii::import('application.helpers.viewHelper', true);
+        \Yii::import('application.libraries.BigData', true);
+        $dbo = \Yii::app()->getDb();
+
+        // Make sure the Authdb is in database (might not be the case if no browser login attempt has been made).
+        $plugin = \Plugin::model()->findByAttributes(array('name'=>'Authdb'));
+        if (!$plugin) {
+            $plugin = new \Plugin();
+            $plugin->name = 'Authdb';
+            $plugin->active = 1;
+            $plugin->save();
+        } else {
+            $plugin->active = 1;
+            $plugin->save();
+        }
+        App()->getPluginManager()->loadPlugin('Authdb', $plugin->id);
+        // Clear login attempts.
+        $query = sprintf('DELETE FROM {{failed_login_attempts}}');
+        $dbo->createCommand($query)->execute();
+
+
+        $filename = self::$surveysFolder . '/limesurvey_survey_remote_api_get_fieldmap.lss';
+        self::importSurvey($filename);
+
+        // Create handler.
+        $admin   = new \AdminController('dummyid');
+        $handler = new \remotecontrol_handle($admin);
+
+        // Get session key.
+        $sessionKey = $handler->get_session_key(
+            self::$username,
+            self::$password
+        );
+        $this->assertNotEquals(['status' => 'Invalid user name or password'], $sessionKey);
+
+        $survey = \Survey::model()->findByPk(self::$surveyId);
+        $group = $survey->groups[0];
+        $question = $group->questions[0];
+        $sgq = self::$surveyId . "X" . $group->gid . "X" . $question->qid;
+
+        // Check base language fieldmap
+        $result = $handler->get_fieldmap($sessionKey, self::$surveyId);
+        $this->assertEquals('Example question', $result[$sgq]['question']);
+
+        $result = $handler->get_fieldmap($sessionKey, self::$surveyId, 'es');
+        $this->assertEquals('Pregunta de ejemplo', $result[$sgq]['question']);
+    }
 }

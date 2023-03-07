@@ -3,9 +3,9 @@
  * CApplication class file.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright 2008-2013 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 /**
@@ -348,7 +348,7 @@ abstract class CApplication extends CModule
 	 * Returns the time zone used by this application.
 	 * This is a simple wrapper of PHP function date_default_timezone_get().
 	 * @return string the time zone used by this application.
-	 * @see http://php.net/manual/en/function.date-default-timezone-get.php
+	 * @see https://php.net/manual/en/function.date-default-timezone-get.php
 	 */
 	public function getTimeZone()
 	{
@@ -359,7 +359,7 @@ abstract class CApplication extends CModule
 	 * Sets the time zone used by this application.
 	 * This is a simple wrapper of PHP function date_default_timezone_set().
 	 * @param string $value the time zone used by this application.
-	 * @see http://php.net/manual/en/function.date-default-timezone-set.php
+	 * @see https://php.net/manual/en/function.date-default-timezone-set.php
 	 */
 	public function setTimeZone($value)
 	{
@@ -802,9 +802,7 @@ abstract class CApplication extends CModule
 
 			$log="$message ($file:$line)\nStack trace:\n";
 			$trace=debug_backtrace();
-			// skip the first 3 stacks as they do not tell the error position
-			if(count($trace)>3)
-				$trace=array_slice($trace,3);
+			array_shift($trace);
 			foreach($trace as $i=>$t)
 			{
 				if(!isset($t['file']))
@@ -907,9 +905,9 @@ abstract class CApplication extends CModule
 			echo '<pre>';
 
 			$trace=debug_backtrace();
-			// skip the first 3 stacks as they do not tell the error position
-			if(count($trace)>3)
-				$trace=array_slice($trace,3);
+			// skip the first 2 stacks as they are always irrelevant
+			if(count($trace)>2)
+				$trace=array_slice($trace,2);
 			foreach($trace as $i=>$t)
 			{
 				if(!isset($t['file']))
