@@ -96,6 +96,15 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
             'type' => 'html',
             'value' => '$data->getPossibleDescription()'
         ],
+        [
+            'header'            => gT('Action'),
+            'name'              => 'actions',
+            'value'             => '$data->buttons',
+            'type'              => 'raw',
+            'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+            'htmlOptions'       => ['class' => 'text-center ls-sticky-column'],
+        ]
+
     ];
 
     $this->widget(

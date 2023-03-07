@@ -224,6 +224,37 @@ class Plugin extends LSActiveRecord
     /**
      * @return string HTML
      */
+    public function getButtons(): string
+    {
+        $uninstallUrl = App()->getController()->createUrl(
+            '/admin/pluginmanager',
+            [
+                'sa' => 'uninstallPlugin'
+            ]
+        );
+        $dropdownItems = [];
+    
+        $dropdownItems[] = [
+            'title'            => gT('Uninstall plugin'),
+            'url'              => $uninstallUrl,
+            'iconClass'        => 'ri-delete-bin-fill text-danger',
+            'enabledCondition' => $this->active == 0,
+            'linkAttributes'   => [
+                'data-bs-toggle'  => 'modal',
+                'data-bs-target'  => '#confirmation-modal',
+                'data-btnclass'   => 'btn-danger',
+                'type'            => 'submit',
+                'data-btntext'    => gt("Uninstall"),
+                'data-title'      => gt('Uninstall plugin'),
+                'data-message'    => gT("Are you sure you want to uninstall this plugin?"),
+                'data-post-url'   => $uninstallUrl,
+                'data-post-datas' => json_encode(['pluginId' => $this->id]),
+            ],
+        ];
+
+        return App()->getController()->widget('ext.admin.grid.GridActionsWidget.GridActionsWidget', ['dropdownItems' => $dropdownItems], true);
+    }
+
     public function getActivateButton()
     {
         $activateUrl = App()->getController()->createUrl(
