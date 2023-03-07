@@ -612,7 +612,6 @@ class SettingsWidget extends CWidget
     {
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
         $value = $metaData['current'] ?? '';
-        $inputName = $name;
         /**
          * Fix the value according to saveformat only if isset and not empty
          * By defalt : save as sent by input (admin lanuage dependent
@@ -629,8 +628,8 @@ class SettingsWidget extends CWidget
         $htmlOptions = $this->htmlOptions($metaData, $form);
 
         return Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
-                'name' => $inputName,
-                'id' => \CHtml::getIdByName($inputName),
+                'name' => $name,
+                'id' => \CHtml::getIdByName($name),
                 'value' => $value,
                 'htmlOptions' => $htmlOptions,
                 'pluginOptions' => array(
