@@ -24,8 +24,6 @@ class RemoteControlImportQuestionTest extends TestBaseClass
      */
     public static function setupBeforeClass(): void
     {
-        \Yii::import('application.helpers.remotecontrol.remotecontrol_handle', true);
-
         parent::setupBeforeClass();
 
         self::$username = getenv('ADMINUSERNAME');
@@ -53,6 +51,8 @@ class RemoteControlImportQuestionTest extends TestBaseClass
      */
     public function testImportQuestionWithDifferentQuestionCode()
     {
+        \Yii::import('application.helpers.remotecontrol.remotecontrol_handle', true);
+
         // Create handler.
         $admin   = new \AdminController('dummyid');
         $handler = new \remotecontrol_handle($admin);
@@ -70,6 +70,7 @@ class RemoteControlImportQuestionTest extends TestBaseClass
 
         $question = base64_encode(file_get_contents($questionFile));
 
+        var_dump("Attempting to import file");
         $result = $handler->import_question($sessionKey, self::$surveyId, $testGroupId, $question, 'lsq');
 
         $this->assertIsInt($result, 'There was an error importing a question with a code that already exists.');
@@ -80,6 +81,8 @@ class RemoteControlImportQuestionTest extends TestBaseClass
      */
     public function testImportQuestionWithRepeatedQuestionCode()
     {
+        \Yii::import('application.helpers.remotecontrol.remotecontrol_handle', true);
+
         // Create handler.
         $admin   = new \AdminController('dummyid');
         $handler = new \remotecontrol_handle($admin);
