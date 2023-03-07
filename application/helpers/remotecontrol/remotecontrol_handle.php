@@ -1437,7 +1437,7 @@ class remotecontrol_handle
 
         /* OK : let's go */
         libxml_use_internal_errors(true);
-        Yii::app()->loadHelper('admin/import');
+        Yii::app()->loadHelper('admin.import');
         // First save the data to a temporary file
         $sFullFilePath = Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR.randomChars(40).'.'.$sImportDataType;
         file_put_contents($sFullFilePath, base64_decode(chunk_split($sImportData)));
