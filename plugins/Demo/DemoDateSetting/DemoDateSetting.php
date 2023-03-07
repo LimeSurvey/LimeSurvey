@@ -4,7 +4,7 @@
  * DemoDateSetting Plugin for LimeSurvey
  * @author : Denis Chenu
  * @copyright: LimeSurvey <https://community.limesurvey.org/>
- * @version:; 0.1.0
+ * @version:; 0.2.0
  * @licence MIT Licence
  */
 class DemoDateSetting extends PluginBase
@@ -20,23 +20,24 @@ class DemoDateSetting extends PluginBase
         'checkDateDate' => array(
             'type' => 'date',
             'label' => 'A date only saved',
-            'help' => 'Save format is set as Y-m-d, you have only the date when get the settings (2023-03-06 for example)',
+            'help' => 'Save format is set as Y-m-d, you have only the date when get the settings.',
             'saveformat' => "Y-m-d",
         ),
         'checkDateYear' => array(
             'type' => 'date',
             'label' => 'A year only saved',
+            'help' => 'Save format is set as Y, you have only the year when get the settings.',
             'saveformat' => "Y",
         ),
         'checkDateDefault' => array(
             'type' => 'date',
-            'help' => 'Save format is set as Y, you have only the year when get the settings (2023 for example)',
             'label' => 'Another date no format set',
+            'help' => 'Save format is not set, you save the settings like it shown to the user.',
         ),
         'checkDateFalse' => array(
             'type' => 'date',
             'label' => 'A date saved as shown',
-            'help' => 'Save format is set to false, you save the settings like it shown to the user. This happen too when you don\'t set format.',
+            'help' => 'Save format is set to false, you save the settings like it shown to the user.',
             'saveformat' => false,
         ),
     ];
@@ -48,9 +49,7 @@ class DemoDateSetting extends PluginBase
         $this->subscribe('newSurveySettings');
     }
 
-    /**
-     * Register the settings
-     */
+    /** Event to register the survey settings */
     public function beforeSurveySettings()
     {
         $oEvent = $this->event;
@@ -63,27 +62,39 @@ class DemoDateSetting extends PluginBase
                     'checkSurveyDateDate' => array(
                         'type' => 'date',
                         'label' => $this->gT('A date only saved'),
-                        'help' => $this->gT('Save format is set as Y-m-d, you have only the date when get the settings (2023-03-06 for example)'),
+                        'help' => sprintf(
+                            $this->gT('Save format is set as Y-m-d, you have only the date when get the settings (“%s“ currently)'),
+                            "<code>" . $this->get('checkSurveyDateDate', 'Survey', $surveyId, '') . "</code>"
+                        ),
                         'saveformat' => "Y-m-d",
                         'current' => $this->get('checkSurveyDateDate', 'Survey', $surveyId, ''),
                     ),
                     'checkSurveyDateYear' => array(
                         'type' => 'date',
                         'label' => 'A year only saved',
-                        'help' => $this->gT('Save format is set as Y, you have only the year when get the settings (2023 for example)'),
+                        'help' => sprintf(
+                            $this->gT('Save format is set as Y, you have only the year when get the settings (“%s“ currently)'),
+                            "<code>" . $this->get('checkSurveyDateYear', 'Survey', $surveyId, '') . "</code>"
+                        ),
                         'saveformat' => "Y",
                         'current' => $this->get('checkSurveyDateYear', 'Survey', $surveyId, ''),
                     ),
                     'checkSurveyDateDefault' => array(
                         'type' => 'date',
-                        'label' => $this->gT('Another date no format set'),
-                        'help' => $this->gT('Save format is not set, you have the settings like it shown to the user when get it.'),
+                        'label' => $this->gT('Date no format set'),
+                        'help' =>  sprintf(
+                            $this->gT('Save format is not set, you have the settings like it shown to the user when get it (“%s“ currently).'),
+                            "<code>" . $this->get('checkSurveyDateDefault', 'Survey', $surveyId, '') . "</code>"
+                        ),
                         'current' => $this->get('checkSurveyDateDefault', 'Survey', $surveyId, ''),
                     ),
                     'checkSurveyDateFalse' => array(
                         'type' => 'date',
                         'label' => $this->gT('A date saved as shown'),
-                        'help' => $this->gT('Save format is set to false, you have the settings like it shown to the user when get it.'),
+                        'help' => sprintf(
+                            $this->gT('Save format is set to false, you have the settings like it shown to the user when get it (“%s“ currently).'),
+                            "<code>" . $this->get('checkSurveyDateFalse', 'Survey', $surveyId, '') . "</code>"
+                        ),
                         'saveformat' => false,
                         'current' => $this->get('checkSurveyDateFalse', 'Survey', $surveyId, ''),
                     ),
@@ -92,7 +103,7 @@ class DemoDateSetting extends PluginBase
         );
     }
 
-    /** @inheritdoc **/
+    /** Event to save the survey settings  **/
     public function newSurveySettings()
     {
         $event = $this->event;
@@ -111,11 +122,47 @@ class DemoDateSetting extends PluginBase
             ),
             'checkSurveyDateFalse' => array(
                 'type' => 'date',
+            ),
+            'checkSurveyDateFalse' => array(
+                'type' => 'date',
                 'saveformat' => false,
             ),
         ];
         foreach ($event->get('settings') as $name => $value) {
             $this->set($name, $value, 'Survey', $event->get('survey'));
         }
+    }
+
+    /**
+     * @inheritdoc
+     * Update language strings and help
+     **/
+    public function getPluginSettings($getValues = true)
+    {
+        $pluginSettings = parent::getPluginSettings($getValues);
+        if (!$getValues) {
+            return $pluginSettings;
+        }
+        $pluginSettings['checkDateDate']['label'] = $this->gT("A date only saved");
+        $pluginSettings['checkDateDate']['help'] = sprintf(
+            $this->gT("Save format is set as Y-m-d, you have only the date when get the settings (“%s” currently)."),
+            '<code>' . strval($pluginSettings['checkDateDate']['current']) . "</code>"
+        );
+        $pluginSettings['checkDateYear']['label'] = $this->gT("A date only saved");
+        $pluginSettings['checkDateYear']['help'] = sprintf(
+            $this->gT("Save format is set as Y, you have only the year when get the settings (“%s” currently)."),
+            '<code>' . strval($pluginSettings['checkDateYear']['current']) . "</code>"
+        );
+        $pluginSettings['checkDateDefault']['label'] = $this->gT("A date only saved");
+        $pluginSettings['checkDateDefault']['help'] = sprintf(
+            $this->gT("Save format is not set, you save the settings like it shown to the user (“%s” currently)."),
+            '<code>' . strval($pluginSettings['checkDateDefault']['current']) . "</code>"
+        );
+        $pluginSettings['checkDateFalse']['label'] = $this->gT("A date only saved");
+        $pluginSettings['checkDateFalse']['help'] = sprintf(
+            $this->gT("Save format is set to false, you save the settings like it shown to the user (“%s” currently)."),
+            '<code>' . strval($pluginSettings['checkDateFalse']['current']) . "</code>"
+        );
+        return $pluginSettings;
     }
 }
