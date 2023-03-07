@@ -22,8 +22,12 @@ class RemoteControlImportQuestionTest extends TestBaseClass
      *
      * @return void
      */
-    public static function setupBeforeClass(): void
+    public static function setupBeforeClass()
     {
+        ini_set('display_errors', 1);
+        ini_set('display_startup_errors', 1);
+        error_reporting(E_ALL);
+
         \Yii::import('application.helpers.remotecontrol.remotecontrol_handle', true);
 
         parent::setupBeforeClass();
