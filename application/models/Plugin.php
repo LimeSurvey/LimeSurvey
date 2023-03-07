@@ -206,16 +206,22 @@ class Plugin extends LSActiveRecord
                     ]
                 );
                 $output .= "<a href='" . $reloadUrl . "' data-bs-toggle='tooltip' title='" . gT('Attempt plugin reload') . "' class='btn btn-outline-secondary btn-sm btntooltip'><span class='ri-refresh-line'></span></a>";
-            } elseif ($this->active == 0) {
-                $output .= $this->getActivateButton();
             } else {
-                $output .= $this->getDeactivateButton();
-            }
+                $output = App()->getController()->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'name'          => 'plugin_' . $this->id,
+                    'checkedOption' =>  $this->active,
+                    'selectOptions' => [
+                        1 => gT('On'),
+                        0 => gT('Off'),
+                    ],
+                    'htmlOptions'   => [
+                        // 'data-pluginId' => $this->id,
+                        'class' => 'action_changePluginStatus'
+                    ]
+                ], true);
 
-            if ($this->active == 0) {
-                $output .= $this->getUninstallButton();
+                $output .= "</div>";
             }
-            $output .= "</div>";
         }
 
         return $output;
@@ -233,7 +239,7 @@ class Plugin extends LSActiveRecord
             ]
         );
         $dropdownItems = [];
-    
+
         $dropdownItems[] = [
             'title'            => gT('Uninstall plugin'),
             'url'              => $uninstallUrl,
