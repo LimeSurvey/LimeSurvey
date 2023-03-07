@@ -70,8 +70,11 @@ class RemoteControlImportQuestionTest extends TestBaseClass
 
         $question = base64_encode(file_get_contents($questionFile));
 
-        var_dump("Attempting to import file");
-        $result = $handler->import_question($sessionKey, self::$surveyId, $testGroupId, $question, 'lsq');
+        try {
+            $result = $handler->import_question($sessionKey, self::$surveyId, $testGroupId, $question, 'lsq');
+        } catch (\Throwable $th) {
+            $this->assertTrue(false, sprintf('Failed to import question file %s -- $s', $questionFile, $th->getMessage()));
+        }
 
         $this->assertIsInt($result, 'There was an error importing a question with a code that already exists.');
     }
@@ -100,7 +103,11 @@ class RemoteControlImportQuestionTest extends TestBaseClass
 
         $question = base64_encode(file_get_contents($questionFile));
 
-        $result = $handler->import_question($sessionKey, self::$surveyId, $testGroupId, $question, 'lsq');
+        try {
+            $result = $handler->import_question($sessionKey, self::$surveyId, $testGroupId, $question, 'lsq');
+        } catch (\Throwable $th) {
+            $this->assertTrue(false, sprintf('Failed to import question file %s -- $s', $questionFile, $th->getMessage()));
+        }
 
         $this->assertIsInt($result, 'There was an error importing a question with a code that already exists.');
     }
