@@ -67,7 +67,7 @@ class RemoteControlImportQuestionTest extends TestBaseClass
         // There is only one group
         $testGroupId = self::$testSurvey->groups[0]->gid;
 
-        // Attempt Improting Question
+        // Attempt Importing Question
         $questionFile = self::$surveysFolder . '/limesurvey_question_import_question_test_II.lsq';
         $question = base64_encode(file_get_contents($questionFile));
         $result = $handler->import_question($sessionKey, self::$surveyId, $testGroupId, $question, 'lsq');
@@ -94,11 +94,11 @@ class RemoteControlImportQuestionTest extends TestBaseClass
         // There is only one group
         $testGroupId = self::$testSurvey->groups[0]->gid;
 
-        // Attempt Improting Question
+        // Attempt Importing Question
         $questionFile = self::$surveysFolder . '/limesurvey_question_import_question_test.lsq';
         $question = base64_encode(file_get_contents($questionFile));
         $result = $handler->import_question($sessionKey, self::$surveyId, $testGroupId, $question, 'lsq');
-        
-        $this->assertInternalType('int', $result, 'There was an error importing a question with a code that already exists.');
+
+        $this->assertIsArray($result, 'There was an error importing a question with a code that already exists.');
     }
 }

@@ -1416,8 +1416,7 @@ class remotecontrol_handle
         if ($sGroupSurveyID != $iSurveyID) {
             return array('status' => 'Error: Missmatch in surveyid and groupid');
         }
-        /* Check unicity of title, and set autorename to true if it's set */
-        $importOptions = ['autorename' => false];
+        /* Check unicity of title if it's set */
         if (!empty($sNewQuestionTitle)) {
             $countQuestionTitle = intval(Question::model()->count(
                 "sid = :sid and parent_qid = 0 and title = :title",
@@ -1429,7 +1428,6 @@ class remotecontrol_handle
             if ($countQuestionTitle > 0) {
                 return array('status' => 'Error: Question title already exist in this survey.');
             }
-            $importOptions = ['autorename' => true];
         }
         if (!strtolower($sImportDataType) == 'lsq') {
             return array('status' => 'Invalid extension');
@@ -1491,10 +1489,7 @@ class remotecontrol_handle
             $oQuestion->setAttribute('mandatory', $sMandatory);
             
             if (!$oQuestion->save()) {
-                $errors = array_merge(
-                    $errors,
-                    $oQuestion->getErrors()
-                );
+                $errors = $oQuestion->getErrors();
             }
         }
         if (!empty($errors)) {
