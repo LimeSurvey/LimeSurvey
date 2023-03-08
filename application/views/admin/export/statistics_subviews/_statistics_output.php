@@ -7,7 +7,9 @@
     ]);
     ?>
 <?php else : ?>
-    <?php echo $output; ?>
+    <div class="row">
+        <?php echo $output; ?>
+    </div>
 <?php endif; ?>
 <div id="statsContainerLoading">
     <p><?php eT('Please wait, loading data...'); ?></p>
