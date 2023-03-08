@@ -84,7 +84,7 @@ $oQuestionSelector = $this->beginWidget(
 echo $oQuestionSelector->getModal();
 ?>
 
-    <div class="container">
+    <div class="container-fluid">
         <?php echo TbHtml::form($this->createUrl("/admin/user/sa/personalsettings"), 'post', ['class' => 'form44 ', 'id' => 'personalsettings', 'autocomplete' => "off"]); ?>
         <div class="row">
             <div class="col-12">

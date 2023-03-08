@@ -107,3 +107,36 @@ blockquote {
   border-right: 8px solid var(--bs-primary);
 }
 // Blockquotes END
+
+// Main Design (to achieve 20px padding left an right for the main container) START
+.container-fluid {
+  padding-left: $left-main-padding;
+  padding-right: $right-main-padding;
+
+  .container-fluid {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+#vue-apps-main-container {
+    padding-left: $left-main-padding;
+    padding-right: $right-main-padding;
+  #in_survey_common.container-fluid {
+    padding-right: 0;
+  }
+  .container-fluid {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+.container-fluid.login {
+  padding-left: 0;
+  padding-right: 0;
+}
+.main-content-container {
+  padding-left: $left-main-padding;
+}
+.topbar .container-fluid .row {
+  --bs-gutter-x: 0;
+}
+// Main Design END

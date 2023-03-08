@@ -9,7 +9,7 @@
     <div class="container-fluid">
         <div class="row">
             <!-- Title or breadcrumb -->
-            <div class="col-xl-4 col-xxl-3 text-start h1">
+            <div class="col-xl-4 col-xxl-3 text-start h1 ls-breadcrumbs">
                 <h1><?= $leftSide ?></h1>
             </div>
 

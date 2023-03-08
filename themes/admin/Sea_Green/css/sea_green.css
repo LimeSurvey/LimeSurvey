@@ -11264,6 +11264,40 @@ blockquote.float-end {
   border-right: 8px solid var(--bs-primary);
 }
 
+.container-fluid, .container-sm, .container-md, .container-lg, .container-xl, .container-xxl {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.container-fluid .container-fluid, .container-sm .container-fluid, .container-md .container-fluid, .container-lg .container-fluid, .container-xl .container-fluid, .container-xxl .container-fluid, .container-fluid .container-sm, .container-sm .container-sm, .container-md .container-sm, .container-lg .container-sm, .container-xl .container-sm, .container-xxl .container-sm, .container-fluid .container-md, .container-sm .container-md, .container-md .container-md, .container-lg .container-md, .container-xl .container-md, .container-xxl .container-md, .container-fluid .container-lg, .container-sm .container-lg, .container-md .container-lg, .container-lg .container-lg, .container-xl .container-lg, .container-xxl .container-lg, .container-fluid .container-xl, .container-sm .container-xl, .container-md .container-xl, .container-lg .container-xl, .container-xl .container-xl, .container-xxl .container-xl, .container-fluid .container-xxl, .container-sm .container-xxl, .container-md .container-xxl, .container-lg .container-xxl, .container-xl .container-xxl, .container-xxl .container-xxl {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+#vue-apps-main-container {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+#vue-apps-main-container #in_survey_common.container-fluid, #vue-apps-main-container #in_survey_common.container-sm, #vue-apps-main-container #in_survey_common.container-md, #vue-apps-main-container #in_survey_common.container-lg, #vue-apps-main-container #in_survey_common.container-xl, #vue-apps-main-container #in_survey_common.container-xxl {
+  padding-right: 0;
+}
+#vue-apps-main-container .container-fluid, #vue-apps-main-container .container-sm, #vue-apps-main-container .container-md, #vue-apps-main-container .container-lg, #vue-apps-main-container .container-xl, #vue-apps-main-container .container-xxl {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.container-fluid.login, .login.container-sm, .login.container-md, .login.container-lg, .login.container-xl, .login.container-xxl {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.main-content-container {
+  padding-left: 20px;
+}
+
+.topbar .container-fluid .row, .topbar .container-sm .row, .topbar .container-md .row, .topbar .container-lg .row, .topbar .container-xl .row, .topbar .container-xxl .row {
+  --bs-gutter-x: 0;
+}
+
 /**
  * Lime Admin Common CSS File
  *
@@ -17220,7 +17254,7 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 .breadcrumb {
   font-size: 0.9975rem;
   line-height: 20px;
-  padding: 1rem 20px 0;
+  padding: 1rem 0 0 0;
 }
 
 .breadcrumb-item + .breadcrumb-item:before {
@@ -17263,7 +17297,6 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   color: #fff;
   height: 30px;
   width: auto;
-  margin-left: 8px;
 }
 .navbar .navbar-toggler {
   margin: 8px;
@@ -17664,6 +17697,9 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 }
 .topbar.scroll-shadow {
   box-shadow: 0 1px 20px 0 rgb(196, 196, 196);
+}
+.topbar .ls-breadcrumbs {
+  padding-left: 0;
 }
 
 .ls-panelboxes .ls-panelboxes-panelbox {
