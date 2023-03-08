@@ -15,3 +15,4 @@
             <?php eT("Click") ?> <a href="https://manual.limesurvey.org/Survey_settings_inheritance"  target="_blank" > <?php eT("here") ?></a> <?php eT("for more information about inherited settings.") ?>
         </div>
     </div>
+</div>
