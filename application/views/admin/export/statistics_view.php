@@ -47,7 +47,8 @@ echo viewHelper::getViewTestTag('statisticsIndex');
                         'survlangs' => $survlangs,
                         'sStatisticsLanguage' => $sStatisticsLanguage,
                         'datestamp' => $datestamp,
-                        'dateformatdetails' => $dateformatdetails
+                        'dateformatdetails' => $dateformatdetails,
+                        'submitted' => $submitted
                     ),
                     true
                 )
@@ -55,7 +56,6 @@ echo viewHelper::getViewTestTag('statisticsIndex');
             [
                 'id' => 'response-filters-item',
                 'title' => 'Response filters',
-                'style' => $submitted ? 'display:none' : '',
                 'content' => $this->renderPartial(
                     '/admin/export/statistics_subviews/_response_filters',
                     array(
@@ -71,6 +71,7 @@ echo viewHelper::getViewTestTag('statisticsIndex');
                         'language' => $language,
                         'dshresults' => $dshresults,
                         'dshresults2' => $dshresults2,
+                        'submitted' => $submitted
                     ),
                     true
                 )
@@ -78,7 +79,6 @@ echo viewHelper::getViewTestTag('statisticsIndex');
             [
                 'id' => 'statisticsoutput-item',
                 'title' => 'Statistics',
-                'style' => $submitted == false ? 'display:none' : '',
                 'content' => $this->renderPartial(
                     '/admin/export/statistics_subviews/_statistics_output',
                     array(
