@@ -5,7 +5,9 @@ namespace ls\tests;
 use LSYii_Application;
 use LSHttpRequest;
 use LSWebUser;
+use CDbCriteria;
 use PermissionInterface;
+use PermissionTrait;
 use LimeSurvey\Models\Services\PermissionManager;
 use PHPUnit\Framework\TestCase;
 
@@ -25,7 +27,10 @@ class PermissionManagerTest extends TestCase
 
         // NB: Can't mock App.
         $app = new class extends LSYii_Application {
-            public function __construct() {}
+            public function __construct()
+            {
+                // Nothing to do
+            }
         };
 
         $manager = new PermissionManager(
@@ -44,23 +49,17 @@ class PermissionManagerTest extends TestCase
     public function getModel()
     {
         return new class implements PermissionInterface {
-            public function getOwnerId() {
-                return 0;
-            }
-            public static function getPermissionData() {
+            use PermissionTrait;
+
+            public static function getPermissionData()
+            {
                 // TODO: Return something meaningful.
                 return [];
             }
-            public static function getMinimalPermissionRead() {
-                return null;
-            }
-            public function hasPermission($sPermission, $sCRUD = 'read', $iUserID = null) {
-                return false;
-            }
-            public function getPrimaryKey() {
+            public function getPrimaryKey()
+            {
                 return 'id';
             }
         };
-
     }
 }

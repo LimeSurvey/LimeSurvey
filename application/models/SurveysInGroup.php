@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Class SurveysGroups
  * @inheritdoc
- * Used for Permission on survey inside group :
- *
+ * Class used only for Permission on survey inside group : extending SurveysGroup
+ * with a different Permission system and interface
  */
+
 class SurveysInGroup extends SurveysGroups implements PermissionInterface
 {
     use PermissionTrait;
@@ -73,21 +73,16 @@ class SurveysInGroup extends SurveysGroups implements PermissionInterface
      */
     public function hasPermission($sPermission, $sCRUD = 'read', $iUserID = null)
     {
-        /* If have global for surveys : return true */
-        $sGlobalCRUD = $sCRUD;
-        if (($sCRUD == 'create' || $sCRUD == 'import')) { // Create and import (token, response , question content …) need only allow update surveys
-            $sGlobalCRUD = 'update';
-        }
-        if (($sCRUD == 'delete' && $sPermission != 'survey')) { // Delete (token, response , question content …) need only allow update surveys
-            $sGlobalCRUD = 'update';
-        }
-        /* Have surveys permission */
-        if (Permission::model()->hasPermission(0, 'global', 'surveys', $sGlobalCRUD, $iUserID)) {
+        /* Have surveys permission : always set to true */
+        if (Permission::model()->hasPermission(0, 'global', 'surveys', $sCRUD, $iUserID)) {
             return true;
         }
-        /* Specific need gsid */
-        if (!$this->gsid) {
-            return false;
+        /* Create and import need only minimal access to SurveysGroup */
+        if (
+            ($sCRUD == 'create' || $sCRUD == 'import')
+            || SurveysGroups::model()->withListRight()->findByPk($this->gsid)
+        ) {
+            return true;
         }
         /* Finally : return specific one */
         return Permission::model()->hasPermission($this->gsid, 'surveysingroup', $sPermission, $sCRUD, $iUserID);

@@ -609,6 +609,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     /**
      * permission scope for this model
      * Actually only test if user have minimal access to survey (read)
+     * @deprecated by usage of self::withListRight directly
      * @see issue https://bugs.limesurvey.org/view.php?id=16799
      * @access public
      * @param int $loginID
@@ -617,9 +618,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     public function permission($loginID)
     {
         $loginID = (int) $loginID;
-        $criteria = $this->getDBCriteria();
-        $criteriaPerm = self::getPermissionCriteria($loginID);
-        $criteria->mergeWith($criteriaPerm, 'AND');
+        $this->withListRight($loginID);
         return $this;
     }
 
@@ -1621,11 +1620,10 @@ class Survey extends LSActiveRecord implements PermissionInterface
     /**
      * Get criteria from Permission
      * @param $userid for thius user id , if not set : get current one
-     * @todo : move to PermissionInterface
      * @todo : create an event
      * @return CDbCriteria
      */
-    protected static function getPermissionCriteria($userid = null)
+    public static function getPermissionCriteria($userid = null)
     {
         if (!$userid) {
             $userid = Yii::app()->user->id;
