@@ -364,13 +364,12 @@ export default {
                         >
                         {{ questiongroup.group_name }}
                         </span>
-                        <div v-if="!(hoveredQuestionGroup && hoveredQuestionGroup.gid === questiongroup.gid)" class="ms-auto">
-                          <span
-                              class="badge reverse-color ls-space margin right-5"
-                              @click.prevent="toggleActivation(questiongroup.gid)"
-                          >
-                                  {{ questiongroup.questions.length }}
-                          </span>
+                        <!-- :class="(hoveredQuestionGroup && hoveredQuestionGroup.gid === questiongroup.gid) ? 'ms-auto mr-4' : 'ms-auto'" -->
+                        <div class="ms-auto me-5">
+                            <span class="badge reverse-color ls-space margin right-5"
+                                @click.prevent="toggleActivation(questiongroup.gid)">
+                                {{ questiongroup.questions.length }}
+                            </span>
                         </div>
                       </a>
 
