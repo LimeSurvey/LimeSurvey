@@ -99,7 +99,7 @@ class RemoteControlImportQuestionTest extends TestBaseClass
         $question = base64_encode(file_get_contents($questionFile));
         $result = $handler->import_question($sessionKey, self::$surveyId, $testGroupId, $question, 'lsq');
 
-        $this->assertIsArray($result, 'There was an error importing a question with a code that already exists.');
+        $this->assertInternalType('array', $result, 'There was an error importing a question with a code that already exists.');
     }
 
     /**
@@ -127,6 +127,6 @@ class RemoteControlImportQuestionTest extends TestBaseClass
         $question = base64_encode(file_get_contents($questionFile));
         $result = $handler->import_question($sessionKey, self::$surveyId, $testGroupId, $question, 'lsq', 'N', 'QNewTitle');
 
-        $this->assertIsInt($result, 'There was an error importing a question with a code that already exists and new title is set.');
+        $this->assertInternalType('int', $result, 'There was an error importing a question with a code that already exists and new title is set.');
     }
 }
