@@ -11238,6 +11238,34 @@ blockquote.float-end {
   border-left: 8px solid var(--bs-primary);
 }
 
+/* Scrollable subquestion/answer tables*/
+.subquestions-table-wrapper,
+.answeroptions-table-wrapper {
+  display: block;
+  overflow: auto;
+  margin-bottom: 20px;
+}
+
+.subquestions-table,
+.answeroptions-table {
+  margin-bottom: 0px;
+}
+
+.subquestions-table input.code,
+.answeroptions-table input.code {
+  min-width: 70px;
+}
+
+.subquestions-table > tbody > tr > td:first-of-type,
+.answeroptions-table > tbody > tr > td:first-of-type {
+  padding-right: 0;
+}
+
+.subquestions-table > tbody > tr > td:last-of-type,
+.answeroptions-table > tbody > tr > td:last-of-type {
+  padding-left: 0;
+}
+
 /**
  * Lime Admin Common CSS File
  *
@@ -14600,34 +14628,6 @@ table.dataTable thead .sorting_desc:after {
 }
 
 /* Reduce margins for question editor */
-/* Scrollable subquestion/answer tables*/
-.subquestions-table-wrapper,
-.answeroptions-table-wrapper {
-  display: block;
-  overflow: auto;
-  margin-bottom: 20px;
-}
-
-.subquestions-table,
-.answeroptions-table {
-  margin-bottom: 0px;
-}
-
-.subquestions-table input.code,
-.answeroptions-table input.code {
-  min-width: 70px;
-}
-
-.subquestions-table > tbody > tr > td:first-of-type,
-.answeroptions-table > tbody > tr > td:first-of-type {
-  padding-right: 0;
-}
-
-.subquestions-table > tbody > tr > td:last-of-type,
-.answeroptions-table > tbody > tr > td:last-of-type {
-  padding-left: 0;
-}
-
 /** Surveys Grid View **/
 #survey-grid {
   overflow-x: visible;
