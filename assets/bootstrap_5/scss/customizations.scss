@@ -66,3 +66,9 @@ a {
 .tab-content {
     padding-top: 1rem;
 }
+.list-group-item.disabled {
+    color: #777;
+    cursor: not-allowed;
+    background-color: #eee;
+    pointer-events: auto !important;
+}
