@@ -101,4 +101,32 @@ class RemoteControlImportQuestionTest extends TestBaseClass
 
         $this->assertIsArray($result, 'There was an error importing a question with a code that already exists.');
     }
+
+    /**
+     * Importing a question with a question code that already exists.
+     * But set a new title
+     */
+    public function testImportQuestionWithRepeatedQuestionCodeSetNew()
+    {
+        // Create handler.
+        $admin   = new \AdminController('dummyid');
+        $handler = new \remotecontrol_handle($admin);
+
+        // Get session key.
+        $sessionKey = $handler->get_session_key(
+            self::$username,
+            self::$password
+        );
+
+        // Pickup group id of imported survey.
+        // There is only one group
+        $testGroupId = self::$testSurvey->groups[0]->gid;
+
+        // Attempt Importing Question
+        $questionFile = self::$surveysFolder . '/limesurvey_question_import_question_test.lsq';
+        $question = base64_encode(file_get_contents($questionFile));
+        $result = $handler->import_question($sessionKey, self::$surveyId, $testGroupId, $question, 'lsq', 'N', 'QNewTitle');
+
+        $this->assertIsInt($result, 'There was an error importing a question with a code that already exists and new title is set.');
+    }
 }
