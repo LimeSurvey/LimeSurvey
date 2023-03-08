@@ -109,7 +109,7 @@ blockquote {
 // Blockquotes END
 
 // Main Design (to achieve 20px padding left an right for the main container) START
-.container-fluid {
+.ls-container {
   padding-left: $left-main-padding;
   padding-right: $right-main-padding;
 
@@ -129,7 +129,7 @@ blockquote {
     padding-right: 0;
   }
 }
-.container-fluid.login {
+.ls-container.login {
   padding-left: 0;
   padding-right: 0;
 }

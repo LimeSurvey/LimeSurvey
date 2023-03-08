@@ -6,7 +6,7 @@
 ?>
 
 <div class="topbar sticky-top" id="pjax-content">
-    <div class="container-fluid">
+    <div class="container-fluid ls-container">
         <div class="row">
             <!-- Title or breadcrumb -->
             <div class="col-xl-4 col-xxl-3 text-start h1 ls-breadcrumbs">
