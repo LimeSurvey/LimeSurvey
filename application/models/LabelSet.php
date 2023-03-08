@@ -197,7 +197,7 @@ class LabelSet extends LSActiveRecord
     {
         // delete old labels and translations before inserting the new values
         foreach ($this->labels as $oLabel) {
-            LabelL10n::model()->deleteAllByAttributes([], 'id = :id', [':id' => $oLabel->id]);
+            LabelL10n::model()->deleteAllByAttributes([], 'label_id = :id', [':id' => $oLabel->id]);
             $oLabel->delete();
         }
         rmdirr(App()->getConfig('uploaddir') . '/labels/' . $this->lid);

@@ -285,7 +285,8 @@ class Labels extends SurveyCommonAction
                 'lid' => $lid,
                 'maxsortorder' => $maxSortOrder,
                 'action' => $action,
-                'model' => $model
+                'model' => $model,
+                'addRowUrl' => \Yii::app()->createUrl("/admin/labels/sa/getLabelRowForAllLanguages"),
             );
         } else {
             //show listing
@@ -736,5 +737,65 @@ class Labels extends SurveyCommonAction
         $aData['display']['menu_bars'] = false;
 
         parent::renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
+    }
+
+    /**
+     * Outputs json with the html for a new label row, for each language.
+     * Eg: {"en":"<tr>...</tr>", "es":"<tr>...</tr>"}
+     * Called by ajax from the label set editor.
+     * @param int $lid
+     * @param string $newId
+     * @param string $code
+     * @param int $assessmentValue
+     * @param string $title
+     */
+    public function getLabelRowForAllLanguages($lid, $newId, $code, $assessmentValue = 0, $title = '')
+    {
+        if (!Permission::model()->hasGlobalPermission('labelsets', 'read')) {
+            throw new CHttpException(403, gT("No permission"));
+        }
+        $labelSet = LabelSet::model()->findByPk($lid);
+        if (empty($labelSet)) {
+            throw new CHttpException(404, gT("Invalid label set."));
+        }
+        $languages = explode(" ", $labelSet->languages);
+        $rowsHtml = [];
+        $first = true;
+        foreach ($languages as $language) {
+            $rowsHtml[$language] = $this->getLabelRow($language, $first, $newId, $code, $assessmentValue, $title);
+            $first = false;
+        }
+        header('Content-Type: application/json');
+        echo json_encode($rowsHtml);
+    }
+
+    /**
+     * Returns the html for a label row.
+     * Used when user clicks "Add" in label set editor.
+     * @param string $language
+     * @param bool $first   Indicates whether the row belongs to the first language or not.
+     * @param string $newId
+     * @param string $code
+     * @param int $assessmentValue
+     * @param string $title
+     * @return string   The html of the row
+     */
+    private function getLabelRow($language, $first, $newId, $code, $assessmentValue, $title)
+    {
+        $view = 'labelRow.twig';
+        $aData = array(
+            'language' => $language,
+            'first' => $first,
+            'rowId' => $newId,
+            'code' => $code,
+            'assessmentValue' => $assessmentValue,
+            'title' => $title,
+            'hasLabelSetUpdatePermission' => Permission::model()->hasGlobalPermission('labelsets', 'update')
+        );
+
+        $html = '<!-- Inserted Row -->';
+        $html .= App()->twigRenderer->renderPartial('/admin/labels/' . $view, $aData);
+        $html .= '<!-- end of Inserted Row -->';
+        return $html;
     }
 }
