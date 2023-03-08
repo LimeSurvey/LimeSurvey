@@ -392,7 +392,7 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * get criteria from Permission
+     * Returns the criteria for assesing user permission over the group.
      * @return CDbCriteria
      */
     protected static function getPermissionCriteria()

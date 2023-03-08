@@ -1127,7 +1127,7 @@ function XMLImportLabelsets($sFullFilePath, $options)
  * @param string $sNewSurveyName
  * @param integer $DestSurveyID
  */
-function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyName = null, $DestSurveyID = null)
+function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyName = null, $DestSurveyID = null, $targetSurveyGroup = null)
 {
     $aPathInfo = pathinfo($sFullFilePath);
     if (isset($aPathInfo['extension'])) {
@@ -1137,7 +1137,7 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
     }
     switch ($sExtension) {
         case 'lss':
-            $aImportResults = XMLImportSurvey($sFullFilePath, null, $sNewSurveyName, $DestSurveyID, $bTranslateLinksFields);
+            $aImportResults = XMLImportSurvey($sFullFilePath, null, $sNewSurveyName, $DestSurveyID, $bTranslateLinksFields, true, $targetSurveyGroup);
             if (!empty($aImportResults['newsid'])) {
                 $SurveyIntegrity = new LimeSurvey\Models\Services\SurveyIntegrity(Survey::model()->findByPk($aImportResults['newsid']));
                 $SurveyIntegrity->fixSurveyIntegrity();
@@ -1165,7 +1165,7 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
             foreach ($aFiles as $aFile) {
                 if (pathinfo($aFile['filename'], PATHINFO_EXTENSION) == 'lss') {
                     //Import the LSS file
-                    $aImportResults = XMLImportSurvey(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $aFile['filename'], null, $sNewSurveyName, null, true, false);
+                    $aImportResults = XMLImportSurvey(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $aFile['filename'], null, $sNewSurveyName, null, true, false, $targetSurveyGroup);
                     if ($aImportResults && $aImportResults['newsid']) {
                         $SurveyIntegrity = new LimeSurvey\Models\Services\SurveyIntegrity(Survey::model()->findByPk($aImportResults['newsid']));
                         $SurveyIntegrity->fixSurveyIntegrity();
@@ -1235,7 +1235,7 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
 * @param string $sXMLdata
 * @todo Use transactions to prevent orphaned data and clean rollback on errors
 */
-function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = null, $iDesiredSurveyId = null, $bTranslateInsertansTags = true, $bConvertInvalidQuestionCodes = true)
+function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = null, $iDesiredSurveyId = null, $bTranslateInsertansTags = true, $bConvertInvalidQuestionCodes = true, $targetSurveyGroup = null)
 {
     $isCopying = ($sNewSurveyName != null);
     Yii::app()->loadHelper('database');
@@ -1289,10 +1289,6 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         $insertdata = array();
 
         foreach ($row as $key => $value) {
-            // Set survey group id to default if not a copy
-            if ($key == 'gsid' & !$isCopying) {
-                $value = 1;
-            }
             if ($key == 'template') {
                 $sTemplateName = (string)$value;
             }
@@ -1344,6 +1340,30 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         if (isset($insertdata['tokenlength']) && $insertdata['tokenlength'] > 35) {
             $insertdata['tokenlength'] = 35;
         }
+
+        // Fix survey group when not copying
+        if (!$isCopying) {
+            // Set to 1 by default
+            $insertdata['gsid'] = 1;
+            // If $targetSurveyGroup is set to 'from_survey' and the xml includes survey group details, try to find the group by name.
+            if ($targetSurveyGroup == 'from_survey' && !empty($xml->surveys_groups->rows->row[0]->name)) {
+                $surveyGroupName = (string) $xml->surveys_groups->rows->row[0]->name;
+                $surveyGroup = SurveysGroups::model()->findByAttributes(["name" => $surveyGroupName]);
+                if (!empty($surveyGroup)) {
+                    $surveysInGroup = SurveysInGroup::model()->findByPK($surveyGroup->gsid);
+                    if (!empty($surveysInGroup) && $surveysInGroup->hasPermission('surveys', 'import')) {
+                        // If a survey group is found with the specified name, and the user has import permission on it, assign it to the survey.
+                        $insertdata['gsid'] = $surveyGroup->gsid;
+                        $results['importwarnings'][] = sprintf(gT("The survey was assigned to the '%s' group."), $surveyGroup->title);
+                    } else {
+                        $results['importwarnings'][] = gT("The original survey group couldn't be found. The survey was assigned to the default group.");
+                    }
+                } else {
+                    $results['importwarnings'][] = gT("The original survey group couldn't be found. The survey was assigned to the default group.");
+                }
+            }
+        }
+
         /* Remove unknow column */
         $aSurveyModelsColumns = Survey::model()->attributes;
         $aSurveyModelsColumns['wishSID'] = null; // Can not be imported
