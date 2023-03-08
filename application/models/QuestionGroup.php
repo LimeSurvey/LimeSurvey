@@ -328,7 +328,9 @@ class QuestionGroup extends LSActiveRecord
                     "Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?",
                     "js"
                 ),
-                'data-onclick'  => '(function() { ' . CHtml::encode(convertGETtoPOST(Yii::app()->createUrl("questionGroupsAdministration/delete/", ["gid" => $this->gid]))) . '})'
+                'data-onclick'  => '(function() { ' . CHtml::encode(convertGETtoPOST(
+                    Yii::app()->createUrl("questionGroupsAdministration/delete/", ["gid" => $this->gid])
+                )) . '})'
             ]
         ];
         return App()->getController()->widget(
