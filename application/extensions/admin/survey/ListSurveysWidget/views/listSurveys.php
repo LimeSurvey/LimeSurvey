@@ -18,7 +18,7 @@
 <div class="row">
     <div class="col-12">
         <?php
-        $surveyGrid = $this->widget('application.extensions.admin.grid.CLSGridView', [//done
+        $surveyGrid = $this->widget('application.extensions.admin.grid.CLSGridView', [
             'dataProvider'          => $this->model->search(),
             // Number of row per page selection
             'id'                    => 'survey-grid',
