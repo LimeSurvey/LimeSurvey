@@ -22,7 +22,7 @@ $.fn.extend({
                         <div class="modal-body">
                         </div>
                         <div class="modal-footer">
-                            <button id="identity__bsconfirmModal_button_cancel" type="button" data-bs-dismiss="modal" class="btn btn-outline-secondary">
+                            <button id="identity__bsconfirmModal_button_cancel" type="button" data-bs-dismiss="modal" class="btn btn-cancel">
                                 ${i18n.confirm_cancel || '<i class="ri-close-fill"></i>'}
                             </button>
                             <button id="identity__bsconfirmModal_button_ok" type="button" class="btn btn-danger">
