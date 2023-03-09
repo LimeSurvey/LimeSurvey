@@ -17489,10 +17489,13 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   }
 }
 
+.sticky-top {
+  z-index: 1500;
+}
+
 .topbar {
   padding-top: 10px;
   padding-bottom: 10px;
-  z-index: 1000;
   background-color: #F9F9FB;
 }
 .topbar .btn {
