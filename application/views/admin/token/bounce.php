@@ -8,7 +8,7 @@
                         <div class="settings-list">
 
                             <!-- Survey bounce email -->
-                            <div class="mb-3 setting control-group setting-email">
+                            <div class="mb-3 setting control-group setting-email col-3">
                                 <label class="default form-label" for="bounce_email">
                                     <?php eT('Survey bounce email address:'); ?>
                                 </label>
