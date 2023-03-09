@@ -16696,6 +16696,10 @@ tr.info, tr.danger {
   pointer-events: none;
 }
 
+.chart-type-control {
+  margin-bottom: 4px;
+}
+
 /*
  * btn-xs was removed from Bootstrap 4.
  * @see https://stackoverflow.com/questions/33911049/btn-xs-no-longer-a-valid-option-in-bootstrap-4
