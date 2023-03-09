@@ -11159,6 +11159,10 @@ a {
   padding-left: 30px !important;
 }
 
+.ls-survey-menu-item.menu-label {
+  padding-left: 33px !important;
+}
+
 body {
   background-color: #F9F9FB;
 }
