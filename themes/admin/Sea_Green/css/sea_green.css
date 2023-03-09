@@ -15207,9 +15207,6 @@ fieldset[disabled] .form-control {
 .navbar-default .navbar-toggle:focus {
   background-color: #dadada;
 }
-.navbar-default .navbar-collapse {
-  border: 1px solid #252b1c;
-}
 .navbar-default .navbar-form {
   border: 1px solid #252b1c;
 }
@@ -15286,9 +15283,6 @@ fieldset[disabled] .form-control {
 }
 .navbar-inverse .navbar-toggle:focus {
   background-color: #333333;
-}
-.navbar-inverse .navbar-collapse {
-  border: 1px solid #101010;
 }
 .navbar-inverse .navbar-form {
   border: 1px solid #101010;
@@ -17095,6 +17089,10 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   border-radius: 0;
   padding: 0;
 }
+.navbar .nav-item {
+  display: flex;
+  align-items: center;
+}
 .navbar .navbar-brand {
   font-style: normal;
   font-weight: 700;
@@ -17148,6 +17146,11 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 .navbar .dropdown-menu > li > a {
   font-weight: 500;
 }
+.navbar .btn-create {
+  height: 36px;
+  width: 36px;
+  padding: 0px;
+}
 
 @media screen and (min-width: 768px) {
   .navbar .navbar-nav .nav-link {
@@ -17157,8 +17160,8 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
     display: none !important;
   }
 }
-.navbar-collapse {
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+.active-surveys {
+  margin-left: -6px;
 }
 
 .mega-dropdown {
