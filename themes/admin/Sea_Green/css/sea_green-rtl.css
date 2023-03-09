@@ -4481,7 +4481,7 @@ textarea.form-control-lg {
   padding: 1rem 1rem;
 }
 
-.card-title, .ls-panelboxes .card.card-primary .card-header, .ls-panelboxes .ls-panelboxes-panelbox .card .card-header, .card.card-primary .card-header {
+.card-title, .ls-panelboxes .card.card-primary .card-header, .ls-panelboxes .ls-panelboxes-panelbox .card .card-header, .card.card-primary .card-header, .card .card-header {
   margin-bottom: 0.5rem;
 }
 
@@ -17209,6 +17209,10 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   text-decoration: none;
   color: #fff;
   background-color: var(--bs-primary);
+}
+
+.card .card-header {
+  background-color: unset;
 }
 
 .card.card-primary {

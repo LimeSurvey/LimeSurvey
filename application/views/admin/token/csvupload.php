@@ -104,7 +104,13 @@
                         ]
                     ]); ?>
                 </div>
-                <div class="help-block"><?php eT("The access code field is always checked for duplicates."); ?></div>
+                <?php
+                $this->widget('ext.AlertWidget.AlertWidget', [
+                    'text' => gT("The access code field is always checked for duplicates."),
+                    'type' => 'info',
+                    'htmlOptions' => ['class' => 'mt-1'],
+                ]);
+                ?>
             </div>
 
             <!-- Duplicates are determined by -->
