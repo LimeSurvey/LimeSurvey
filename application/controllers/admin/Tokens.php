@@ -1592,7 +1592,7 @@ class Tokens extends SurveyCommonAction
                             . "<br/>&nbsp;<ul class='list-unstyled'><li>" . gT("having a valid email address") . "</li>"
                             . "<li>" . gT("not having been sent an invitation already") . "</li>"
                             . "<li>" . gT("not having already completed the survey") . "</li>"
-                            . "<li>" . gT("having an access code") . "</li></ul>"
+                            . "<li>" . gT("having an access code") . "</li>"
                             . "<li>" . gT("having at least one use left") . "</li></ul>"
                             . '<p class="mt-3"><a href="' . App()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId) . '" title="" class="btn btn-cancel ">' . gT("Cancel") . '</a></p>'
                         )
