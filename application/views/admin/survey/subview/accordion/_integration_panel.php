@@ -89,7 +89,8 @@ echo viewHelper::getViewTestTag('surveyPanelIntegration');
                             'htmlOptions'       => ['class' => 'text-center ls-sticky-column'],
                         ],
                     ],
-                    'lsAfterAjaxUpdate' => ['urlparams'],
+                    'ajaxUpdate' => 'urlparams',
+                    'lsAfterAjaxUpdate' => [],
                     'rowHtmlOptionsExpression' => '["data-id" => $data->id, "data-parameter" => $data->parameter, "data-qid" => $data->targetqid, "data-sqid" => $data->targetsqid]',
                 ]
             );
