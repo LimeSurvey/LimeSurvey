@@ -17470,10 +17470,13 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   }
 }
 
+.sticky-top {
+  z-index: 1500;
+}
+
 .topbar {
   padding-top: 10px;
   padding-bottom: 10px;
-  z-index: 1000;
   background-color: #F9F9FB;
 }
 .topbar .btn {
@@ -18022,7 +18025,6 @@ input[type=number] {
 }
 
 #sidebar {
-  padding-top: 15px;
   width: 100%;
 }
 #sidebar .questiongroup-list-group > li.selected {
@@ -18094,6 +18096,7 @@ input[type=number] {
 #sidebar .resize-handle button {
   background-color: #fff;
   outline: 0;
+  border: none;
   cursor: col-resize;
   width: 100%;
   height: 100%;
