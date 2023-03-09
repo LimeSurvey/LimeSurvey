@@ -16696,6 +16696,10 @@ tr.info, tr.danger {
   pointer-events: none;
 }
 
+.chart-type-control {
+  margin-bottom: 4px;
+}
+
 /*
  * btn-xs was removed from Bootstrap 4.
  * @see https://stackoverflow.com/questions/33911049/btn-xs-no-longer-a-valid-option-in-bootstrap-4
@@ -18703,40 +18707,74 @@ table [class^=ri-], table [class*=" ri-"] {
   background-color: #fff;
 }
 
-.accordion-button:not(.collapsed)::after {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23212529'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
-}
-
-#advanced-question-editor .settings-accordion-container #accordion, #copy-question .settings-accordion-container #accordion {
-  padding: 8px 12px;
-}
-#advanced-question-editor .settings-accordion-container .accordion-body, #copy-question .settings-accordion-container .accordion-body {
-  padding: 0;
-}
-#advanced-question-editor .settings-accordion-container .accordion-body label, #copy-question .settings-accordion-container .accordion-body label {
-  padding-bottom: 8px;
-}
-#advanced-question-editor .ri-information-fill, #copy-question .ri-information-fill {
-  color: #9094A7;
-}
-#advanced-question-editor .accordion-button, #copy-question .accordion-button {
+.accordion-button {
   font-size: 0.855rem;
   font-weight: 600;
   background-color: #fff;
   color: #1E1E1E;
 }
-#advanced-question-editor .accordion-button:not(.collapsed), #copy-question .accordion-button:not(.collapsed) {
+.accordion-button:not(.collapsed) {
   background-color: #F9F9FB;
   box-shadow: none;
 }
-#advanced-question-editor .accordion-button:not(.collapsed)::after, #copy-question .accordion-button:not(.collapsed)::after {
+.accordion-button:not(.collapsed)::after {
   background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23000'%3e%3cpath d='M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z'/%3e%3c/svg%3e") center/1em auto no-repeat;
 }
-#advanced-question-editor .accordion-button:focus, #copy-question .accordion-button:focus {
+.accordion-button:focus {
   border: none;
   box-shadow: none;
 }
-#advanced-question-editor .accordion-item, #copy-question .accordion-item {
+
+.accordion-item {
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 1px solid #D3D5DA;
+}
+
+.accordion-button:not(.collapsed)::after {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23212529'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+}
+
+#advanced-question-editor .settings-accordion-container #accordion,
+#copy-question .settings-accordion-container #accordion {
+  padding: 8px 12px;
+}
+#advanced-question-editor .settings-accordion-container .accordion-body,
+#copy-question .settings-accordion-container .accordion-body {
+  padding: 0;
+}
+#advanced-question-editor .settings-accordion-container .accordion-body label,
+#copy-question .settings-accordion-container .accordion-body label {
+  padding-bottom: 8px;
+}
+#advanced-question-editor .ri-information-fill,
+#copy-question .ri-information-fill {
+  color: #9094A7;
+}
+#advanced-question-editor .accordion-button,
+#copy-question .accordion-button {
+  font-size: 0.855rem;
+  font-weight: 600;
+  background-color: #fff;
+  color: #1E1E1E;
+}
+#advanced-question-editor .accordion-button:not(.collapsed),
+#copy-question .accordion-button:not(.collapsed) {
+  background-color: #F9F9FB;
+  box-shadow: none;
+}
+#advanced-question-editor .accordion-button:not(.collapsed)::after,
+#copy-question .accordion-button:not(.collapsed)::after {
+  background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23000'%3e%3cpath d='M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z'/%3e%3c/svg%3e") center/1em auto no-repeat;
+}
+#advanced-question-editor .accordion-button:focus,
+#copy-question .accordion-button:focus {
+  border: none;
+  box-shadow: none;
+}
+#advanced-question-editor .accordion-item,
+#copy-question .accordion-item {
   border-top: none;
   border-left: none;
   border-right: none;
