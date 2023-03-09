@@ -22,7 +22,7 @@
                     'action'         => 'edit',
                     'disabled'       => !Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'update'),
                     'url'            => App()->createUrl('/admin/tokens/sa/editMultiple/'),
-                    'iconClasses'    => 'ri-pencil-fill text-success',
+                    'iconClasses'    => 'ri-pencil-fill',
                     'text'           => gT('Batch-edit participants'),
                     'grid-reload'    => 'yes',
                     // modal
@@ -85,7 +85,7 @@
                     'action'          => 'invite',
                     'disabled'         => !Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'update'),
                     'url'             =>  App()->createUrl('/admin/tokens/sa/email/surveyid/'.$surveyid),
-                    'iconClasses'     => 'ri-mail-send-fill text-success',
+                    'iconClasses'     => 'ri-mail-send-fill',
                     'text'            =>  gT('Send email invitations'),
 
                     'aLinkSpecificDatas'  => array(
@@ -103,7 +103,7 @@
                     'action'          => 'remind',
                     'disabled'         => !Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'update'),
                     'url'             =>  App()->createUrl('/admin/tokens/sa/email/action/remind/surveyid/'.$surveyid),
-                    'iconClasses'     => 'ri-mail-volume-fill text-success',
+                    'iconClasses'     => 'ri-mail-volume-fill',
                     'text'            =>  gT('Send email reminder'),
 
                     'aLinkSpecificDatas'  => array(
