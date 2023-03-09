@@ -14,7 +14,8 @@ class AccordionWidget extends CWidget
     {
         $this->render('accordion', [
             'id' => $this->id ?? 'accordion_' . bin2hex(random_bytes(2)),
-            'items' => $this->normaliseItems($this->items)
+            'items' => $this->normaliseItems($this->items),
+            'class' => $this->class
         ]);
     }
 

@@ -69,8 +69,6 @@ echo viewHelper::getViewTestTag('statisticsIndex');
                         'dateformatdetails' => $dateformatdetails,
                         'oStatisticsHelper' => $oStatisticsHelper,
                         'language' => $language,
-                        'dshresults' => $dshresults,
-                        'dshresults2' => $dshresults2,
                         'submitted' => $submitted
                     ),
                     true
