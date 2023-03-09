@@ -1,3 +1,10 @@
+.card {
+    .card-header {
+        @extend .card-title;
+        background-color : unset;
+    }
+}
+
 .card.card-primary {
     background-color : $white;
     position         : relative;
@@ -7,6 +14,7 @@
     padding          : 28px 32px;
     font-size        : 14px;
     font-weight      : 400;
+    margin-bottom    : 24px;
 
     &.inactive {
         color : $g-600;

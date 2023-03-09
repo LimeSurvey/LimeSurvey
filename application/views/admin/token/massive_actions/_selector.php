@@ -14,23 +14,31 @@
             'dropupId'    => 'tokenListActions',
             'dropUpText'  => gT('Selected participant(s)...'),
 
-            'aActions'    => array(
+            'aActions' => array(
                 // Massive update
                 array(
                     // li element
-                    'type'        => 'action',
-                    'action'      => 'edit',
-                    'disabled'     => !Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'update'),
-                    'url'         => App()->createUrl('/admin/tokens/sa/editMultiple/'),
-                    'iconClasses' => 'ri-pencil-fill text-success',
-                    'text'        => gT('Batch-edit participants'),
-                    'grid-reload' => 'yes',
+                    'type'           => 'action',
+                    'action'         => 'edit',
+                    'disabled'       => !Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'update'),
+                    'url'            => App()->createUrl('/admin/tokens/sa/editMultiple/'),
+                    'iconClasses'    => 'ri-pencil-fill',
+                    'text'           => gT('Batch-edit participants'),
+                    'grid-reload'    => 'yes',
                     // modal
-                    'actionType'    => 'modal',
-                    'modalType'     => 'cancel-save',
-                    'keepopen'      => 'yes',
-                    'sModalTitle'   => gT('Batch-edit participants'),
-                    'htmlModalBody' => $this->renderPartial('./token/massive_actions/_update', array('dateformatdetails' => getDateFormatData(Yii::app()->session['dateformat']), 'aLanguages' => $aLanguages), true),
+                    'actionType'     => 'modal',
+                    'largeModalView' => true,
+                    'modalType'      => 'cancel-save',
+                    'keepopen'       => 'yes',
+                    'sModalTitle'    => gT('Batch-edit participants'),
+                    'htmlModalBody'  => $this->renderPartial(
+                        './token/massive_actions/_update',
+                        array(
+                            'dateformatdetails' => getDateFormatData(Yii::app()->session['dateformat']),
+                            'aLanguages'        => $aLanguages
+                        ),
+                        true
+                    ),
                 ),
 
                 // Delete
@@ -77,7 +85,7 @@
                     'action'          => 'invite',
                     'disabled'         => !Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'update'),
                     'url'             =>  App()->createUrl('/admin/tokens/sa/email/surveyid/'.$surveyid),
-                    'iconClasses'     => 'ri-mail-send-fill text-success',
+                    'iconClasses'     => 'ri-mail-send-fill',
                     'text'            =>  gT('Send email invitations'),
 
                     'aLinkSpecificDatas'  => array(
@@ -95,7 +103,7 @@
                     'action'          => 'remind',
                     'disabled'         => !Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'update'),
                     'url'             =>  App()->createUrl('/admin/tokens/sa/email/action/remind/surveyid/'.$surveyid),
-                    'iconClasses'     => 'ri-mail-volume-fill text-success',
+                    'iconClasses'     => 'ri-mail-volume-fill',
                     'text'            =>  gT('Send email reminder'),
 
                     'aLinkSpecificDatas'  => array(

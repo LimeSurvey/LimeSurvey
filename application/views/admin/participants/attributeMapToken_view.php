@@ -10,14 +10,14 @@
 
 </script>
 
-<div class='header ui-widget-header'>
+<div class='header'>
     <h3 class='pagetitle'><?php eT("Map your survey participant attributes to an existing participant attribute or create a new one"); ?></h3>
 </div>
 
 <div class="draggable-container">
     <div class='row'>
         <div class='col-md-4'>
-            <div id="tokenattribute" class="card attribute-column card-primary">
+            <div id="tokenattribute" class="card attribute-column">
                 <div class="card-header "><?php eT("Unmapped survey participant attributes") ?></div>
                 <div id="tokenatt" class="tokenatt droppable">
                     <?php

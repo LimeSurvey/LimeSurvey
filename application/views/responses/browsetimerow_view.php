@@ -37,7 +37,7 @@
 
     <?php if ($statistics['count']) { ?>
         <div class="header ui-widget-header"><?php eT('Interview time'); ?></div>
-        <table class="statisticssummary">
+        <table class="ls-statisticssummary">
             <tr>
                 <th><?php eT('Average interview time:'); ?></th>
                 <td title=""><?php printf(gT("%s min. %s sec."), $statistics['avgmin'], $statistics['avgsec']) ?></td>

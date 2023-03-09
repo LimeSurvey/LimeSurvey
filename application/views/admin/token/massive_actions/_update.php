@@ -23,8 +23,8 @@
                 </li>
 
                 <!-- Custom attibutes -->
-                <li role="presentation" class="">
-                    <a data-bs-toggle="tab" href="#massive-custom" aria-expanded="false">
+                <li role="presentation" class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tab" href="#massive-custom" aria-expanded="false">
                         <?php eT('Additional attributes'); ?>
                     </a>
                 </li>
@@ -89,7 +89,7 @@
 
                             <?php endif; ?>
 
-                            <div class="col-md-7 offset-md-1">
+                            <div class="col-md-8">
                                 <?php if ($oSurvey->anonymized != 'Y'): ?>
                                     <div id="massedit_completed-date-container" class="date-container selector_datechange d-none">
                                         <div id="massedit_completed-date_datetimepicker" class="input-group date">
@@ -102,7 +102,7 @@
                                                 data-locale="<?php echo $locale ?>"
                                                 data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
                                             >
-                                            <span class="input-group-text"><span class="glyphicon glyphicon-calendar"></span></span>
+                                            <span class="input-group-text"><span class="ri-calendar-2-fill"></span></span>
                                         </div>
                                     </div>
                                 <?php endif; ?>
@@ -152,8 +152,8 @@
                 </div>
 
                 <!-- Email -->
-                <div class="ex-form-group mb-3 row">
-                    <div class="row">
+                <div class="ex-form-group mb-3">
+                    <div class="row mb-2">
                         <div class="col-md-1">
                             <label class="">
                                 <input type="checkbox" class="action_check_to_keep_old_value"></input>
@@ -223,7 +223,7 @@
                                             data-locale="<?php echo $locale ?>"
                                             data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
                                         >
-                                        <span class="input-group-text"><span class="glyphicon glyphicon-calendar"></span></span>
+                                        <span class="input-group-text"><span class="ri-calendar-2-fill"></span></span>
                                     </div>
                                 </div>
                             </div>
@@ -283,7 +283,7 @@
                                             data-locale="<?php echo $locale ?>"
                                             data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
                                         >
-                                        <span class="input-group-text"><span class="glyphicon glyphicon-calendar"></span></span>
+                                        <span class="input-group-text"><span class="ri-calendar-2-fill"></span></span>
                                     </div>
                                 </div>
                             </div>
@@ -341,7 +341,7 @@
                                 data-locale="<?php echo $locale ?>"
                                 disabled
                             >
-                            <span class="input-group-text"><span class="glyphicon glyphicon-calendar"></span></span>
+                            <span class="input-group-text"><span class="ri-calendar-2-fill"></span></span>
                         </div>
                         <input id="sbmtvalid" type="hidden" name="validfrom" value="lskeep" class="custom-data selector_submitField"/>
                     </div>
@@ -367,7 +367,7 @@
                                 data-locale="<?php echo $locale ?>"
                                 disabled
                             >
-                            <span class="input-group-text"><span class="glyphicon glyphicon-calendar"></span></span>
+                            <span class="input-group-text"><span class="ri-calendar-2-fill"></span></span>
                         </div>
                         <input id="sbmtvalid" type="hidden" name="validuntil" value="lskeep" class="custom-data selector_submitField"/>
                     </div>
