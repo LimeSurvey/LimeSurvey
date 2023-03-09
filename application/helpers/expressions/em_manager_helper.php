@@ -7863,7 +7863,6 @@ var job='{TOKEN:ATTRIBUTE_1}';
             }
         }
 
-        print "<div class='container-fluid'>";
         print "<h3>Note, if the <i>Vars Used</i> column is red, then at least one error was found in the <b>Source</b>. In such cases, the <i>Vars Used</i> list may be missing names of variables from sub-expressions containing errors</h3>";
         print '<table class="table" border="1"><tr><th>Source</th><th>Pretty Print</th><th>Result</th><th>Vars Used</th></tr>';
         $iTestCount = count($alltests);
@@ -7891,7 +7890,6 @@ var job='{TOKEN:ATTRIBUTE_1}';
             print "</tr>\n";
         }
         print '</table>';
-        print '</div>';
         LimeExpressionManager::FinishProcessingGroup();
         LimeExpressionManager::FinishProcessingPage();
     }
@@ -8026,7 +8024,6 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         print LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
 
         // Print Table of questions
-        print "<div class='container-fluid'>";
         print "<div class='h3'>This is a test of dynamic relevance.</div>";
         print "Enter your name and age, and try all the permutations of answers to whether you have or want children.<br />\n";
         print "Note how the text and sum of ages changes dynamically; that prior answers are remembered; and that irrelevant values are not included in the sum of ages.<br />";
@@ -8055,7 +8052,6 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             print "</div>\n";
         }
         print "</table>";
-        print "</div>";
         LimeExpressionManager::SetDirtyFlag();  // so subsequent tests don't try to access these variables
     }
 

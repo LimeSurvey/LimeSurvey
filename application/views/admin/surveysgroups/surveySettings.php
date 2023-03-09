@@ -20,12 +20,12 @@ Yii::app()->getClientScript()->registerScript(
 );
 
 ?>
-<div class="container-fluid position-relative">
+<div class="position-relative">
     <div class="d-flex flex-wrap flex-lg-nowrap" id="surveySettingsForThisGroup">
         <div id="global-sidebar-container">
             <global-sidemenu/>
         </div>
-        <div id="pjax-content" class="tab-content col-lg-10 flex-lg-shrink-1 ps-3">
+        <div id="pjax-content" class="tab-content col-lg-10 flex-lg-shrink-1 ps-4">
             <?php if ($model->hasPermission('surveysettings', 'update')) : ?>
                 <div class="row">
                     <div class="col-12">

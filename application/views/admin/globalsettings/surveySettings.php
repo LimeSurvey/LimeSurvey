@@ -14,13 +14,13 @@ $optionsOnOff = array(
 );
 
 ?>
-<div class="container-fluid position-relative">
+<div class="position-relative">
     <?php echo CHtml::form(array("admin/globalsettings/sa/surveysettings"), 'post', array('id' => 'survey-settings-form')); ?>
     <div class="d-flex flex-wrap flex-lg-nowrap" id="surveySettingsForThisGroup">
         <div class="" id="global-sidebar-container">
             <global-sidemenu/>
         </div>
-        <div id="pjax-content" class="tab-content col-lg-10 flex-lg-shrink-1 ps-4 pe-4">
+        <div id="pjax-content" class="tab-content col-lg-10 flex-lg-shrink-1 ps-4">
             <div class="row">
                 <div class="col-12">
                     <?php

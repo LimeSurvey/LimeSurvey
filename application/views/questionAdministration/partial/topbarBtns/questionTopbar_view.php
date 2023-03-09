@@ -19,7 +19,7 @@ App()->getClientScript()->registerScriptFile(
 
 <!-- Question Top Bar -->
 <div class="topbar sticky-top" id="pjax-content">
-    <div class="container-fluid ls-container">
+    <div class="container-fluid">
             <?php if ($oQuestion->qid !== 0) : ?>
                 <div id="question-summary-topbar"
                      class='row' <?= empty($tabOverviewEditor) || $tabOverviewEditor == 'editor' ? 'style="display: none;"' : "" ?>>

@@ -7,7 +7,7 @@
 
 ?>
 
-<div class="container-fluid">
+<div class="container">
     <div class="ls-flex-column ls-space padding left-5 right-35 col-12">
         <div id='global-settings-storage' class="mb-3">
             <label class="form-label"  for='global-settings-calculate-storage'><?=gT("Recalculates the storage used by all your files in the upload folders")?></label>

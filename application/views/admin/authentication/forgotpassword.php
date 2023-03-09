@@ -8,7 +8,7 @@
 <noscript>If you see this you have probably JavaScript deactivated. LimeSurvey does not work without Javascript being
     activated in the browser!
 </noscript>
-<div class="container-fluid login">
+<div class="login">
     <div class="row main-body">
         <div class="col-12 col-xl col-right">
             <div class="login-panel">

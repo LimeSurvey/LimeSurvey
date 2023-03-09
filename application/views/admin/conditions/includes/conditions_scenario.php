@@ -13,7 +13,7 @@
 
     <div class='card-header '>
 
-        <div class='row'>
+        <div class='row mb-4'>
             <div class='col-md-4'>
             <!-- Scenario header -->
             <?php if ($showScenarioText == 'normal'): ?>
@@ -26,7 +26,7 @@
             </div>
 
             <div class='col-md-8'>
-                <div class="container-fluid">
+                <div class="text-end">
                 <!-- Small form to change scenario number -->
                 <?php echo CHtml::form(array("/admin/conditions/sa/index/subaction/updatescenario/surveyid/{$surveyid}/gid/{$gid}/qid/{$qid}/"), 'post', array('style'=>'display: none','id'=>'editscenario'.$scenarionr['scenario']));?>
                     <label>
@@ -45,37 +45,38 @@
                 <?php echo CHtml::form(array("/admin/conditions/sa/index/subaction/deletescenario/surveyid/{$surveyid}/gid/{$gid}/qid/{$qid}/"), 'post', array('style'=>'margin-bottom:0;', 'class' => 'delete-scenario-form', 'id'=>'deletescenario'.$scenarionr['scenario'],'name'=>'deletescenario'.$scenarionr['scenario']));?>
 
                     <?php if ($showScenarioButtons): ?>
-                        <span data-bs-toggle="tooltip" title='<?php eT('Delete all conditions in this scenario'); ?>'>
+                        <div class="mt-1">
+                            <span data-bs-toggle="tooltip" title='<?php eT('Delete all conditions in this scenario'); ?>'>
+                                <button
+                                    class='btn btn-outline-secondary btn-xs'
+                                    data-bs-toggle='modal'
+                                    data-bs-target='#confirmation-modal'
+                                    data-message='<?php eT('Are you sure you want to delete all conditions set in this scenario?', 'js'); ?>'
+                                    data-onclick='(function() { document.getElementById("deletescenario<?php echo $scenarionr["scenario"]; ?>").submit(); })'
+                                    onclick='return false;'
+                                >
+                                    <span class="ri-delete-bin-fill text-danger"></span>
+                                </button>
+                            </span>
                             <button
                                 class='btn btn-outline-secondary btn-xs'
-                                data-bs-toggle='modal'
-                                data-bs-target='#confirmation-modal'
-                                data-message='<?php eT('Are you sure you want to delete all conditions set in this scenario?', 'js'); ?>'
-                                data-onclick='(function() { document.getElementById("deletescenario<?php echo $scenarionr["scenario"]; ?>").submit(); })'
-                                onclick='return false;'
+                                data-bs-toggle='tooltip'
+                                title='<?php eT('Change scenario number'); ?>'
+                                id='editscenariobtn<?php echo $scenarionr['scenario']; ?>'
+                                onclick="$('#editscenario<?php echo $scenarionr['scenario']; ?>').toggle('slow'); return false"
                             >
-                                <span class="ri-delete-bin-fill text-danger"></span>
+                                <span class="ri-pencil-fill"></span>
                             </button>
-                        </span>
-                        <button
-                            class='btn btn-outline-secondary btn-xs'
-                            data-bs-toggle='tooltip'
-                            title='<?php eT('Change scenario number'); ?>'
-                            id='editscenariobtn<?php echo $scenarionr['scenario']; ?>'
-                            onclick="$('#editscenario<?php echo $scenarionr['scenario']; ?>').toggle('slow'); return false"
-                        >
-                            <span class="ri-pencil-fill"></span>
-                        </button>
 
-                        <button
-                            class='btn btn-outline-secondary btn-xs'
-                            data-bs-toggle='tooltip'
-                            title='<?php eT('Add condition to this scenario'); ?>'
-                            onclick='addConditionToScenario("<?php echo $addConditionToScenarioURL; ?>"); return false'
-                        >
-                            <span class='ri-add-circle-fill'></span>
-                        </button>
-
+                            <button
+                                class='btn btn-outline-secondary btn-xs'
+                                data-bs-toggle='tooltip'
+                                title='<?php eT('Add condition to this scenario'); ?>'
+                                onclick='addConditionToScenario("<?php echo $addConditionToScenarioURL; ?>"); return false'
+                            >
+                                <span class='ri-add-circle-fill'></span>
+                            </button>
+                        </div>
 
                     <?php endif; ?>
 

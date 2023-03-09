@@ -11,11 +11,10 @@ echo viewHelper::getViewTestTag('displayParticipants');
 
 ?>
 <div id="pjax-content">
-    <div class="container-fluid">
         <?php
         $hiddenFilterValues = "";
         if ($searchcondition) {
-            echo "<div class='container-fluid' id='ParticipantFilters'>"
+            echo "<div class='' id='ParticipantFilters'>"
                 . "<div class='row'>"
                 . "<div class='col-12'>"
                 . gT("Active filters:")
@@ -87,7 +86,6 @@ echo viewHelper::getViewTestTag('displayParticipants');
                 ]);
 
             ?>
-        </div>
     </div>
     <span id="locator" data-location="participants">&nbsp;</span>
 </div>
