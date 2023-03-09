@@ -7,7 +7,7 @@
 <?php //The hidden input ?>
 <input id="<?= $this->widgetsJsName ?>" name="<?= $this->widgetsJsName ?>" value="<?= $this->value ?>" type="hidden"/>
 <?php //The modal ?>
-<div class="modal fade previewModalWidget" data-bs-backdrop="false" tabindex="-1" id="selector__<?= $this->widgetsJsName ?>-modal">
+<div class="modal fade previewModalWidget" data-bs-backdrop="true" tabindex="-1" id="selector__<?= $this->widgetsJsName ?>-modal">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
