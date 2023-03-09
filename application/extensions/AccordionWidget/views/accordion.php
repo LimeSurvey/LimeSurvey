@@ -9,7 +9,7 @@
                 data-bs-target="#<?=$item['id']?>-body"
                 aria-expanded="true"
                 aria-controls="<?=$item['id']?>">
-                <?=eT($item['title'])?>
+                <?=gT($item['title'])?>
             </button>
         </h2>
         <div

@@ -21,14 +21,14 @@ class AccordionWidget extends CWidget
 
     public function normaliseItems($items)
     {
-        return array_map(function($item){
+        return array_map(function ($item) {
             return [
                 'id' => $item['id'] ?? $this->id . '_item_' . bin2hex(random_bytes(2)),
                 'title' => $item['title'] ?? null,
                 'content' => $item['content'] ?? null,
                 'open' => $item['open'] ?? false,
-                'style' => $item['style'] ?? '',
+                'style' => $item['style'] ?? ''
             ];
-        },  $items);
+        }, $items);
     }
 }
