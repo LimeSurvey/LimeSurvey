@@ -373,7 +373,7 @@ export default {
                         </div>
                       </a>
 
-                    <div  v-if="hoveredQuestionGroup && hoveredQuestionGroup.gid === questiongroup.gid" class="dropdown position-absolute top-0" style="right:10px" >
+                    <div  v-if="hoveredQuestionGroup && hoveredQuestionGroup.gid === questiongroup.gid" class="dropdown position-absolute top-0" style="right:5px" >
                         <div class="ms-auto position-relative cursor-pointer" id="dropdownMenuButton1" data-bs-toggle="dropdown"
                         aria-expanded="false">
                              <i class="ri-more-fill"></i>

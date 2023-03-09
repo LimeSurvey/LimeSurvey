@@ -51,6 +51,7 @@ export default {
             let classes = "nowrap ";
             classes += (menuItem.pjax ? 'pjax ' : ' ');
             classes += (this.$store.state.lastMenuItemOpen==menuItem.id ? 'selected ' : ' ' );
+            classes += menuItem.menu_icon ? "" : 'ls-survey-menu-item' ;
             return classes;
         },
         reConvertHTML(string) {

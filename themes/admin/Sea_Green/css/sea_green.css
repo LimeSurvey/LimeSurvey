@@ -11155,6 +11155,10 @@ a {
   cursor: pointer;
 }
 
+.ls-survey-menu-item {
+  padding-left: 30px !important;
+}
+
 body {
   background-color: #F9F9FB;
 }
