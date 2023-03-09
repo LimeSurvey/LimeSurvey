@@ -44,7 +44,7 @@ $dataProvider = $model->searchUserGroupMembers($ugid);
 
                 <br/><br/>
                 <?php
-                $this->widget('application.extensions.admin.grid.CLSGridView', //done
+                $this->widget('application.extensions.admin.grid.CLSGridView',
                     [
                         'id' => 'usergroup-members-grid',
                         'dataProvider' => $dataProvider,

@@ -41,7 +41,7 @@ $aLanguageNames = implode(";", $aLanguageNames);
     <div class="row">
         <div class="content-right">
             <?php
-            $this->widget('application.extensions.admin.grid.CLSGridView', [ //done
+            $this->widget('application.extensions.admin.grid.CLSGridView', [
                 'dataProvider'          => $model->search(),
                 'filter'                => $model,
                 'id'                    => 'token-grid',
