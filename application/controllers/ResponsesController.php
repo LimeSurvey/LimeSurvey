@@ -921,8 +921,15 @@ class ResponsesController extends LSBaseController
         $aData['num_total_answers'] = SurveyDynamic::model($surveyId)->count();
         $aData['num_completed_answers'] = SurveyDynamic::model($surveyId)->count('submitdate IS NOT NULL');
 
-        $aData['topBar']['name'] = 'baseTopbar_view';
-        $aData['topBar']['leftSideView'] = 'responsesTopbarLeft_view';
+        //$aData['topBar']['name'] = 'baseTopbar_view';
+        //$aData['topBar']['leftSideView'] = 'responsesTopbarLeft_view';
+
+        $topbarData = TopbarConfiguration::getResponsesTopbarData($surveyId);
+        $aData['topbar']['middleButtons'] = $this->renderPartial(
+            'partial/topbarBtns/leftSideButtons',
+            $topbarData,
+            true
+        );
 
         $this->aData = $aData;
         $this->render('browsetimerow_view', [
