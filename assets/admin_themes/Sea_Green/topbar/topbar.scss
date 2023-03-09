@@ -1,10 +1,7 @@
-.sticky-top{
-  z-index        : 1500;
-}
-
 .topbar {
   padding-top    : 10px;
   padding-bottom : 10px;
+  z-index        : 1000;
   background-color: $g-100;
 
   .btn {
