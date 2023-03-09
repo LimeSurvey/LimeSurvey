@@ -26,7 +26,7 @@
         ); ?>
     </li>
 </ul>
-<div class="tab-content">
+<div class="tab-content bg-white ps-2 pe-2">
     <!-- Question text tab content -->
     <div role="tabpanel" class="tab-pane show active" id="question-tab">
         <?php foreach($oSurvey->allLanguages as $lang): ?>
