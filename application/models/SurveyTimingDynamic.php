@@ -190,30 +190,45 @@ class SurveyTimingDynamic extends LSActiveRecord
     }
 
     /**
-     * Buttons for actions in the grid view
+     * Generates the possible Actions for each row
      *
      * @return string HTML
+     * @throws Exception
      */
-    public function getButtons()
+    public function getActions()
     {
-        $buttons = "<div class='icon-btn-row'>";
+        $permission_responses_read = Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'read');
+        $permission_responses_update = Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'update');
+        $permission_responses_delete = Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'delete');
+
+        $dropdownItems = [];
         // Edit
-        if (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'update')) {
-            $editUrl = App()->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/" . self::$sid . "/id/" . $this->id);
-            $buttons .= '<a class="btn btn-sm btn-outline-secondary" href="' . $editUrl . '" role="button" data-bs-toggle="tooltip" title="' . gT('Edit this response') . '"><span class="ri-pencil-fill" ></span></a>';
-        }
+        $dropdownItems[] = [
+            'title'            => gT('Edit this response'),
+            'url'              => App()->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/" . self::$sid . "/id/" . $this->id),
+            'iconClass'        => 'ri-pencil-fill',
+            'enabledCondition' => $permission_responses_update
+        ];
         // View details
-        $viewUrl = App()->createUrl("responses/view/", ['surveyId' => self::$sid, 'id' => $this->id]);
-        $buttons .= '<a class="btn btn-sm btn-outline-secondary" href="' . $viewUrl . '" role="button" data-bs-toggle="tooltip" title="' . gT('View response details') . '"><span class="ri-list-unordered" ></span></a>';
-
-
+        $dropdownItems[] = [
+            'title'            => gT('View response details'),
+            'url'              => App()->createUrl("responses/view/", ['surveyId' => self::$sid, 'id' => $this->id]),
+            'iconClass'        => 'ri-list-unordered',
+            'enabledCondition' => $permission_responses_read
+        ];
         // Delete
-        if (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'delete')) {
-            $deleteUrl = App()->createUrl("admin/dataentry/sa/delete/subaction/edit/surveyid/" . self::$sid . "/id/" . $this->id);
-            $buttons .= '<span data-bs-toggle="tooltip" title="' . gT('Delete this response') . '"><a class="btn btn-sm btn-outline-secondary" data-bs-target="#confirmation-modal" data-post-url="' . $deleteUrl . '" role="button" data-bs-toggle="modal"><span class="ri-delete-bin-fill text-danger" ></span></a></span>';
-        }
-        $buttons .= '</div>';
-        return $buttons;
+        $dropdownItems[] = [
+            'title'            => gT('Delete this response'),
+            'iconClass'        => 'ri-delete-bin-fill text-danger',
+            'linkAttributes'   => [
+                'data-bs-toggle' => "modal",
+                'data-bs-target' => '#confirmation-modal',
+                'data-post-url'  => App()->createUrl("admin/dataentry/sa/delete/subaction/edit/surveyid/" . self::$sid . "/id/" . $this->id),
+                'data-message'   => gt("Do you want to delete this response?"),
+            ],
+            'enabledCondition' => $permission_responses_delete
+        ];
+        return App()->getController()->widget('ext.admin.grid.GridActionsWidget.GridActionsWidget', ['dropdownItems' => $dropdownItems], true);
     }
 
     /**
