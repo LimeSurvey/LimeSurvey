@@ -104,3 +104,33 @@ blockquote {
   border-right: 8px solid var(--bs-primary);
 }
 // Blockquotes END
+
+// Question editor START
+/* Scrollable subquestion/answer tables*/
+.subquestions-table-wrapper,
+.answeroptions-table-wrapper {
+  display: block;
+  overflow: auto;
+  margin-bottom: 20px;
+}
+
+.subquestions-table,
+.answeroptions-table {
+  margin-bottom: 0px;
+}
+
+.subquestions-table input.code,
+.answeroptions-table input.code {
+  min-width: 70px;
+}
+
+.subquestions-table > tbody > tr > td:first-of-type,
+.answeroptions-table > tbody > tr > td:first-of-type {
+  padding-left: 0;
+}
+
+.subquestions-table > tbody > tr > td:last-of-type,
+.answeroptions-table > tbody > tr > td:last-of-type {
+  padding-right: 0;
+}
+// Question editor END

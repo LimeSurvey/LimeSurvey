@@ -1,5 +1,5 @@
 <!-- Heading -->
-<div class="card" id="panel-4">
+<div class="card mb-4" id="panel-4">
   <div class="card-header ">
       <?php eT("Headings");?>
   </div>
