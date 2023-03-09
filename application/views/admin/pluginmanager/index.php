@@ -99,7 +99,7 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
     ];
 
     $this->widget(
-        'application.extensions.admin.grid.CLSGridView', //done
+        'application.extensions.admin.grid.CLSGridView',
         [
             'id'                       => 'plugins-grid',
             'dataProvider'             => $dataProvider,

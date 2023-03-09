@@ -38,7 +38,7 @@ echo viewHelper::getViewTestTag('surveyMenus');
                         <div class="col-12 ls-flex-item">
                             <?php
                             $this->widget(
-                                'application.extensions.admin.grid.CLSGridView',//done
+                                'application.extensions.admin.grid.CLSGridView',
                                 [
                                     'dataProvider' => $model->search(),
                                     'id' => 'surveymenu-grid',

@@ -41,7 +41,7 @@ $aLanguageNames = implode(";", $aLanguageNames);
     <div class="row">
         <div class="content-right">
             <?php
-            $this->widget('application.extensions.admin.grid.CLSGridView', [ //done
+            $this->widget('application.extensions.admin.grid.CLSGridView', [
                 'dataProvider'          => $model->search(),
                 'filter'                => $model,
                 'id'                    => 'token-grid',
@@ -112,13 +112,3 @@ $aLanguageNames = implode(";", $aLanguageNames);
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-<div style="display: none;">
-    <?php
-    Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', [
-        'name'  => "no",
-        'id'    => "no",
-        'value' => '',
-
-    ]);
-    ?>
-</div>

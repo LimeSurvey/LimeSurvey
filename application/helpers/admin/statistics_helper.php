@@ -835,7 +835,7 @@ class statistics_helper
 
                 case 'html':
                     $statisticsoutput .= "\n<table class='statisticstable table table-bordered >\n"
-                    . "\t<thead><tr class='success'><th style='text-align: center; '><strong>" . sprintf(gT("Summary for %s"), $qtitle) . ":</strong>"
+                    . "\t<thead><tr><th style='text-align: center; '><strong>" . sprintf(gT("Summary for %s"), $qtitle) . ":</strong>"
                     . "</th></tr>\n"
                     . "\t<tr><th colspan='2' align='right'><strong>$qquestion</strong></th></tr>\n"
                     . "\t<tr>\n\t\t<th width='50%' align='right' ><strong>"
@@ -912,7 +912,7 @@ class statistics_helper
                         break;
                     case 'html':
                         $statisticsoutput .= "\n<table class='statisticstable table table-bordered' >\n"
-                        . "\t<thead><tr  class='success'><th colspan='2' align='right'  class='success'><strong>" . sprintf(gT("Summary for %s"), $qtitle) . ":</strong>"
+                        . "\t<thead><tr><th colspan='2' align='right'><strong>" . sprintf(gT("Summary for %s"), $qtitle) . ":</strong>"
                         . "</th></tr>\n"
                         . "\t<tr><th colspan='2' align='right'><strong>$qquestion</strong></th></tr>\n"
                         . "\t<tr>\n\t\t<th width='50%' align='right' ><strong>"
@@ -4281,7 +4281,7 @@ class statistics_helper
             $shortstring = htmlspecialchars(mb_strcut(html_entity_decode($shortstring, ENT_QUOTES, 'UTF-8'), 0, $maxchars, 'UTF-8'));
             $sTextToShow = gT("Question", "js") . ': ' . $jshinttext;
             $reshtml = '<span>' . $shortstring . '...</span>';
-            $reshtml .= '<span  class="show_speaker ri-chat-3-line text-success" style="cursor: pointer" title="' . $sTextToShow . '"  data-bs-toggle="tooltip" data-bs-placement="bottom"  >';
+            $reshtml .= '<span  class="show_speaker ri-chat-3-line" style="cursor: pointer" title="' . $sTextToShow . '"  data-bs-toggle="tooltip" data-bs-placement="bottom"  >';
             $reshtml .= '</span>';
         } else {
             $reshtml = "<span style='cursor: pointer' title='" . $htmlhinttext . "'> \"$htmlhinttext\"</span>";
