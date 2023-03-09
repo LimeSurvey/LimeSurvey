@@ -15357,9 +15357,6 @@ fieldset[disabled] .form-control {
 .navbar-default .navbar-toggle:focus {
   background-color: #dadada;
 }
-.navbar-default .navbar-collapse {
-  border: 1px solid #252b1c;
-}
 .navbar-default .navbar-form {
   border: 1px solid #252b1c;
 }
@@ -15436,9 +15433,6 @@ fieldset[disabled] .form-control {
 }
 .navbar-inverse .navbar-toggle:focus {
   background-color: #333333;
-}
-.navbar-inverse .navbar-collapse {
-  border: 1px solid #101010;
 }
 .navbar-inverse .navbar-form {
   border: 1px solid #101010;
@@ -17303,10 +17297,6 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 }
 .active-surveys {
   margin-right: -6px;
-}
-
-.navbar-collapse {
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .mega-dropdown {
