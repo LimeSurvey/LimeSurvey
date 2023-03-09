@@ -18021,7 +18021,6 @@ input[type=number] {
 }
 
 #sidebar {
-  padding-top: 15px;
   width: 100%;
 }
 #sidebar .questiongroup-list-group > li.selected {
@@ -18093,6 +18092,7 @@ input[type=number] {
 #sidebar .resize-handle button {
   background-color: #fff;
   outline: 0;
+  border: none;
   cursor: col-resize;
   width: 100%;
   height: 100%;
