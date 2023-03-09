@@ -179,7 +179,7 @@ class Surveymenu extends LSActiveRecord
                         $aEntry['disabled'] = true;
                         if($aEntry['name']==='responses') {
 
-                            $aEntry['disabled_tooltip'] = sprintf(gT("This survey is not active and has no %s."), gT($aEntry['name']));
+                            $aEntry['disabled_tooltip'] = sprintf(gT("This survey is not active and has no responses."));
 
                         } elseif($aEntry['name'] === 'statistics') {
 
