@@ -3319,20 +3319,27 @@ class SurveyAdministrationController extends LSBaseController
      */
     public function actionDeleteUrlParam()
     {
+        $surveyId = sanitize_int(Yii::app()->request->getPost('surveyId'));
+        $redirectUrl = ['surveyAdministration/rendersidemenulink/', 'surveyid' => $surveyId, 'subaction' => 'panelintegration'];
         $paramId = Yii::app()->request->getPost('urlParamId');
         if (empty($paramId)) {
             Yii::app()->user->setFlash('error', gT("Invalid request"));
+
+            $this->redirect($redirectUrl);
         }
 
-        $surveyId = sanitize_int(Yii::app()->request->getPost('surveyId'));
         if (!Permission::model()->hasSurveyPermission($surveyId, 'surveysettings', 'update')) {
             Yii::app()->user->setFlash('error', gT("Access denied!"));
+
+            $this->redirect(['admin/']);
         }
 
         $paramId = sanitize_int($paramId);
         $URLParam = SurveyURLParameter::model()->findByPk($paramId);
         if (empty($URLParam)) {
             Yii::app()->user->setFlash('error', gT("URL parameter not found"));
+
+            $this->redirect($redirectUrl);
         }
 
         // Delete the record
@@ -3341,6 +3348,6 @@ class SurveyAdministrationController extends LSBaseController
         } else {
             Yii::app()->user->setFlash('error', gT("Could not delete URL parameter"));
         }
-        $this->redirect(array('surveyAdministration/rendersidemenulink/', 'surveyid' => $surveyId, 'subaction' => 'panelintegration'));
+        $this->redirect($redirectUrl);
     }
 }
