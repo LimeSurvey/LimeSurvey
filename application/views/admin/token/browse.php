@@ -112,13 +112,3 @@ $aLanguageNames = implode(";", $aLanguageNames);
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-<div style="display: none;">
-    <?php
-    Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', [
-        'name'  => "no",
-        'id'    => "no",
-        'value' => '',
-
-    ]);
-    ?>
-</div>

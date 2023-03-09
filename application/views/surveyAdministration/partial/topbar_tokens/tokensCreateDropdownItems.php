@@ -29,7 +29,7 @@
         <!-- from CSV file -->
         <li>
             <a class="pjax dropdown-item"  href="<?php echo Yii::App()->createUrl("admin/tokens/sa/import/surveyid/$oSurvey->sid") ?>" >
-                <span class="ri-upload-fill"></span>
+                <span class="ri-download-2-fill"></span>
                 <?php eT("CSV file"); ?>
             </a>
         </li>
@@ -37,7 +37,7 @@
         <!-- from LDAP query -->
         <li>
             <a class="pjax dropdown-item"  href="<?php echo Yii::App()->createUrl("admin/tokens/sa/importldap/surveyid/$oSurvey->sid") ?>" >
-                <span class="ri-upload-fill"></span>
+                <span class="ri-download-2-fill"></span>
                 <?php eT("LDAP query"); ?>
             </a>
         </li>
