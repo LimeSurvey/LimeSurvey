@@ -29,7 +29,7 @@ echo viewHelper::getViewTestTag('statisticsIndex');
 
 <?php
     $submitted = ($filterchoice_state != '' || !empty($summary));
-    $this->widget('ext.AccordianWidget.AccordianWidget', [
+    $this->widget('ext.AccordionWidget.AccordionWidget', [
         'id' => 'filters',
         'class' => '',
         'items' => [

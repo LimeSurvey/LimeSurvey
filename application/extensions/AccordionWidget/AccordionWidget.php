@@ -1,6 +1,6 @@
 <?php
 
-class AccordianWidget extends CWidget
+class AccordionWidget extends CWidget
 {
     public $id = null;
     public $items = [];
@@ -12,8 +12,8 @@ class AccordianWidget extends CWidget
      */
     public function run()
     {
-        $this->render('accordian', [
-            'id' => $this->id ?? 'accordian_' . bin2hex(random_bytes(2)),
+        $this->render('accordion', [
+            'id' => $this->id ?? 'accordion_' . bin2hex(random_bytes(2)),
             'items' => $this->normaliseItems($this->items)
         ]);
     }
