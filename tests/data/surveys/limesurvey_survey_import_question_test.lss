@@ -3,6 +3,7 @@
  <LimeSurveyDocType>Survey</LimeSurveyDocType>
  <DBVersion>495</DBVersion>
  <languages>
+  <language>es</language>
   <language>en</language>
  </languages>
  <groups>
@@ -15,7 +16,7 @@
   </fields>
   <rows>
    <row>
-    <gid><![CDATA[2]]></gid>
+    <gid><![CDATA[3]]></gid>
     <sid><![CDATA[124268]]></sid>
     <group_order><![CDATA[1]]></group_order>
     <randomization_group/>
@@ -37,11 +38,22 @@
   </fields>
   <rows>
    <row>
-    <id><![CDATA[2]]></id>
-    <gid><![CDATA[2]]></gid>
+    <id><![CDATA[4]]></id>
+    <gid><![CDATA[3]]></gid>
     <group_name><![CDATA[Test group]]></group_name>
     <description><![CDATA[This is a test group.]]></description>
     <language><![CDATA[en]]></language>
+    <sid><![CDATA[124268]]></sid>
+    <group_order><![CDATA[1]]></group_order>
+    <randomization_group/>
+    <grelevance><![CDATA[1]]></grelevance>
+   </row>
+   <row>
+    <id><![CDATA[5]]></id>
+    <gid><![CDATA[3]]></gid>
+    <group_name><![CDATA[Test group]]></group_name>
+    <description><![CDATA[This is a test group.]]></description>
+    <language><![CDATA[es]]></language>
     <sid><![CDATA[124268]]></sid>
     <group_order><![CDATA[1]]></group_order>
     <randomization_group/>
@@ -71,10 +83,10 @@
   </fields>
   <rows>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[4]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[124268]]></sid>
-    <gid><![CDATA[2]]></gid>
+    <gid><![CDATA[3]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[Q00]]></title>
     <preg/>
@@ -101,12 +113,19 @@
   </fields>
   <rows>
    <row>
-    <id><![CDATA[2]]></id>
-    <qid><![CDATA[2]]></qid>
+    <id><![CDATA[6]]></id>
+    <qid><![CDATA[4]]></qid>
     <question><![CDATA[Test question. Please answer this question:]]></question>
     <help><![CDATA[This is a question help text.]]></help>
     <script/>
     <language><![CDATA[en]]></language>
+   </row>
+   <row>
+    <id><![CDATA[7]]></id>
+    <qid><![CDATA[4]]></qid>
+    <question><![CDATA[Test question. Please answer this question:]]></question>
+    <help><![CDATA[This is a question help text.]]></help>
+    <language><![CDATA[es]]></language>
    </row>
   </rows>
  </question_l10ns>
@@ -119,187 +138,187 @@
   </fields>
   <rows>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[4]]></qid>
     <attribute><![CDATA[cssclass]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[4]]></qid>
     <attribute><![CDATA[display_rows]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[4]]></qid>
     <attribute><![CDATA[em_validation_q]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[4]]></qid>
     <attribute><![CDATA[em_validation_q_tip]]></attribute>
     <value/>
     <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[4]]></qid>
     <attribute><![CDATA[hidden]]></attribute>
     <value><![CDATA[0]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[4]]></qid>
     <attribute><![CDATA[hide_tip]]></attribute>
     <value><![CDATA[0]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[4]]></qid>
     <attribute><![CDATA[input_size]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[4]]></qid>
     <attribute><![CDATA[maximum_chars]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[4]]></qid>
     <attribute><![CDATA[page_break]]></attribute>
     <value><![CDATA[0]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[4]]></qid>
     <attribute><![CDATA[random_group]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[4]]></qid>
     <attribute><![CDATA[save_as_default]]></attribute>
     <value><![CDATA[N]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[4]]></qid>
     <attribute><![CDATA[statistics_graphtype]]></attribute>
     <value><![CDATA[0]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[4]]></qid>
     <attribute><![CDATA[statistics_showgraph]]></attribute>
     <value><![CDATA[1]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[4]]></qid>
     <attribute><![CDATA[text_input_width]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[4]]></qid>
     <attribute><![CDATA[time_limit]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[4]]></qid>
     <attribute><![CDATA[time_limit_action]]></attribute>
     <value><![CDATA[1]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[4]]></qid>
     <attribute><![CDATA[time_limit_countdown_message]]></attribute>
     <value/>
     <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[4]]></qid>
     <attribute><![CDATA[time_limit_disable_next]]></attribute>
     <value><![CDATA[0]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[4]]></qid>
     <attribute><![CDATA[time_limit_disable_prev]]></attribute>
     <value><![CDATA[0]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[4]]></qid>
     <attribute><![CDATA[time_limit_message]]></attribute>
     <value/>
     <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[4]]></qid>
     <attribute><![CDATA[time_limit_message_delay]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[4]]></qid>
     <attribute><![CDATA[time_limit_message_style]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[4]]></qid>
     <attribute><![CDATA[time_limit_timer_style]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[4]]></qid>
     <attribute><![CDATA[time_limit_warning]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[4]]></qid>
     <attribute><![CDATA[time_limit_warning_2]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[4]]></qid>
     <attribute><![CDATA[time_limit_warning_2_display_time]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[4]]></qid>
     <attribute><![CDATA[time_limit_warning_2_message]]></attribute>
     <value/>
     <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[4]]></qid>
     <attribute><![CDATA[time_limit_warning_2_style]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[4]]></qid>
     <attribute><![CDATA[time_limit_warning_display_time]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[4]]></qid>
     <attribute><![CDATA[time_limit_warning_message]]></attribute>
     <value/>
     <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[4]]></qid>
     <attribute><![CDATA[time_limit_warning_style]]></attribute>
     <value/>
     <language/>
@@ -378,7 +397,7 @@
     <savetimings><![CDATA[I]]></savetimings>
     <template><![CDATA[inherit]]></template>
     <language><![CDATA[en]]></language>
-    <additional_languages/>
+    <additional_languages><![CDATA[es]]></additional_languages>
     <datestamp><![CDATA[I]]></datestamp>
     <usecookie><![CDATA[I]]></usecookie>
     <allowregister><![CDATA[I]]></allowregister>
@@ -561,6 +580,113 @@ View statistics by clicking here:<br />
 <br />
 <br />
 The following answers were given by the participant:<br />
+{ANSWERTABLE}]]></email_admin_responses>
+    <surveyls_numberformat><![CDATA[0]]></surveyls_numberformat>
+   </row>
+   <row>
+    <surveyls_survey_id><![CDATA[124268]]></surveyls_survey_id>
+    <surveyls_language><![CDATA[es]]></surveyls_language>
+    <surveyls_title/>
+    <surveyls_url/>
+    <surveyls_email_invite_subj><![CDATA[Invitación para participar en una encuesta]]></surveyls_email_invite_subj>
+    <surveyls_email_invite><![CDATA[Estimado/a {FIRSTNAME} {LASTNAME}:↵<br />
+↵<br />
+Ha sido invitado a participar en una encuesta:↵<br />
+↵<br />
+«{SURVEYNAME}»↵<br />
+↵<br />
+«{SURVEYDESCRIPTION}»↵<br />
+↵<br />
+Para participar, por favor pulse en el siguiente enlace:↵<br />
+↵<br />
+{SURVEYURL}↵<br />
+↵<br />
+Atentamente,↵<br />
+↵<br />
+{ADMINNAME} ({ADMINEMAIL})↵<br />
+↵<br />
+<br />
+Si no desea participar en esta encuesta y tampoco desea recibir más invitaciones a la misma, por favor, pulse en el siguiente enlace:<br />
+{OPTOUTURL}<br />
+<br />
+Si usted se encuentra en la lista negra de usuarios, pero quiere participar en esta encuesta y quiere recibir invitaciones, por favor haga click en el siguiente enlace:<br />
+{OPTINURL}]]></surveyls_email_invite>
+    <surveyls_email_remind_subj><![CDATA[Recordatorio para participar en una encuesta]]></surveyls_email_remind_subj>
+    <surveyls_email_remind><![CDATA[Estimado/a {FIRSTNAME} {LASTNAME}:<br />
+<br />
+Recientemente se le invitó a participar en la encuesta de título<br />
+<br />
+«{SURVEYNAME}»<br />
+<br />
+«{SURVEYDESCRIPTION}»<br />
+<br />
+Advertimos que aún no la ha completado, y de la forma más atenta queríamos recordarle que todavía se encuentra disponible si desea participar.<br />
+<br />
+Para hacerlo, por favor pulse en el siguiente enlace:<br />
+<br />
+{SURVEYURL}<br />
+<br />
+Nuevamente le agradecemos su interés y colaboración.<br />
+Atentamente,<br />
+<br />
+{ADMINNAME} ({ADMINEMAIL})<br />
+<br />
+Si no desea participar en esta encuesta y tampoco desea recibir más invitaciones a la misma, por favor, pulse en el siguiente enlace:<br />
+{OPTOUTURL}]]></surveyls_email_remind>
+    <surveyls_email_register_subj><![CDATA[Confirmación de registro en la encuesta]]></surveyls_email_register_subj>
+    <surveyls_email_register><![CDATA[Estimado/a {FIRSTNAME} {LASTNAME}:<br />
+<br />
+Usted, o alguien utilizando su dirección de correo electrónico, se ha registrado para participar en una encuesta en línea titulada <br />
+<br />
+«{SURVEYNAME}»<br />
+<br />
+«{SURVEYDESCRIPTION}»<br />
+<br />
+Para completarla, pulse en la siguiente dirección:<br />
+<br />
+{SURVEYURL}<br />
+<br />
+Si tiene cualquier duda con respecto a la encuesta, o si no se registró para participar y cree que este correo es un error, por favor, póngase en contacto con {ADMINNAME} en {ADMINEMAIL}.]]></surveyls_email_register>
+    <surveyls_email_confirm_subj><![CDATA[Confirmación de su participación en nuestra encuesta]]></surveyls_email_confirm_subj>
+    <surveyls_email_confirm><![CDATA[Estimado/a {FIRSTNAME} {LASTNAME}:↵<br />
+↵<br />
+Este correo es para confirmarle que ha completado la encuesta titulada "{SURVEYNAME}" y sus respuestas han quedado correctamente guardadas. Gracias por participar.↵<br />
+↵<br />
+Si tiene alguna duda o consulta adicional, por favor póngase en contacto con {ADMINNAME} en {ADMINEMAIL}.↵<br />
+↵<br />
+Atentamente,↵<br />
+↵<br />
+{ADMINNAME}]]></surveyls_email_confirm>
+    <surveyls_dateformat><![CDATA[5]]></surveyls_dateformat>
+    <email_admin_notification_subj><![CDATA[Envío de respuestas de la encuesta {SURVEYNAME}]]></email_admin_notification_subj>
+    <email_admin_notification><![CDATA[Hola!<br />
+<br />
+Una nueva respuesta ha sido concluida en su encuesta '{SURVEYNAME}'.<br />
+<br />
+Pulse el siguiente enlace para ver la respuesta individual:<br />
+{VIEWRESPONSEURL}<br />
+<br />
+Pulse el siguiente enlace para editar la respuesta individual:<br />
+{EDITRESPONSEURL}<br />
+<br />
+Ver estadísticas pulsando el siguiente enlace:<br />
+{STATISTICSURL}]]></email_admin_notification>
+    <email_admin_responses_subj><![CDATA[Enviar los resultados de las respuestas en la encuesta {SURVEYNAME}]]></email_admin_responses_subj>
+    <email_admin_responses><![CDATA[Hola:<br />
+<br />
+Una nueva respuesta ha sido concluida en su encuesta '{SURVEYNAME}'.<br />
+<br />
+Pulse el siguiente enlace para ver la respuesta individual:<br />
+{VIEWRESPONSEURL}<br />
+<br />
+Pulse el siguiente enlace para editar la respuesta individual:<br />
+{EDITRESPONSEURL}<br />
+<br />
+Ver estadísticas pulsando el siguiente enlace:<br />
+{STATISTICSURL}<br />
+<br />
+<br />
+Estas son las respuestas dadas por el/la encuestado/a:<br />
 {ANSWERTABLE}]]></email_admin_responses>
     <surveyls_numberformat><![CDATA[0]]></surveyls_numberformat>
    </row>

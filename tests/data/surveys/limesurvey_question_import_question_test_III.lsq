@@ -3,6 +3,7 @@
  <LimeSurveyDocType>Question</LimeSurveyDocType>
  <DBVersion>495</DBVersion>
  <languages>
+  <language>es</language>
   <language>en</language>
  </languages>
  <questions>
@@ -27,12 +28,12 @@
   </fields>
   <rows>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[5]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
-    <sid><![CDATA[498159]]></sid>
-    <gid><![CDATA[2]]></gid>
+    <sid><![CDATA[124268]]></sid>
+    <gid><![CDATA[3]]></gid>
     <type><![CDATA[T]]></type>
-    <title><![CDATA[G01Q01]]></title>
+    <title><![CDATA[G01Q02]]></title>
     <preg/>
     <other><![CDATA[N]]></other>
     <mandatory><![CDATA[N]]></mandatory>
@@ -58,12 +59,20 @@
   </fields>
   <rows>
    <row>
-    <id><![CDATA[3]]></id>
-    <qid><![CDATA[3]]></qid>
-    <question><![CDATA[Answer this second test question.]]></question>
+    <id><![CDATA[8]]></id>
+    <qid><![CDATA[5]]></qid>
+    <question><![CDATA[Is this a question in English?]]></question>
     <help/>
     <script/>
     <language><![CDATA[en]]></language>
+   </row>
+   <row>
+    <id><![CDATA[9]]></id>
+    <qid><![CDATA[5]]></qid>
+    <question><![CDATA[¿Esta es una pregunta en Español?]]></question>
+    <help/>
+    <script/>
+    <language><![CDATA[es]]></language>
    </row>
   </rows>
  </question_l10ns>
@@ -76,187 +85,217 @@
   </fields>
   <rows>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[5]]></qid>
     <attribute><![CDATA[cssclass]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[5]]></qid>
     <attribute><![CDATA[display_rows]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[5]]></qid>
     <attribute><![CDATA[em_validation_q]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[5]]></qid>
     <attribute><![CDATA[em_validation_q_tip]]></attribute>
     <value/>
     <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[5]]></qid>
+    <attribute><![CDATA[em_validation_q_tip]]></attribute>
+    <value/>
+    <language><![CDATA[es]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[5]]></qid>
     <attribute><![CDATA[hidden]]></attribute>
     <value><![CDATA[0]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[5]]></qid>
     <attribute><![CDATA[hide_tip]]></attribute>
     <value><![CDATA[0]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[5]]></qid>
     <attribute><![CDATA[input_size]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[5]]></qid>
     <attribute><![CDATA[maximum_chars]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[5]]></qid>
     <attribute><![CDATA[page_break]]></attribute>
     <value><![CDATA[0]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[5]]></qid>
     <attribute><![CDATA[random_group]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[5]]></qid>
     <attribute><![CDATA[save_as_default]]></attribute>
     <value><![CDATA[N]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[5]]></qid>
     <attribute><![CDATA[statistics_graphtype]]></attribute>
     <value><![CDATA[0]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[5]]></qid>
     <attribute><![CDATA[statistics_showgraph]]></attribute>
     <value><![CDATA[1]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[5]]></qid>
     <attribute><![CDATA[text_input_width]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[5]]></qid>
     <attribute><![CDATA[time_limit]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[5]]></qid>
     <attribute><![CDATA[time_limit_action]]></attribute>
     <value><![CDATA[1]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[5]]></qid>
     <attribute><![CDATA[time_limit_countdown_message]]></attribute>
     <value/>
     <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[5]]></qid>
+    <attribute><![CDATA[time_limit_countdown_message]]></attribute>
+    <value/>
+    <language><![CDATA[es]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[5]]></qid>
     <attribute><![CDATA[time_limit_disable_next]]></attribute>
     <value><![CDATA[0]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[5]]></qid>
     <attribute><![CDATA[time_limit_disable_prev]]></attribute>
     <value><![CDATA[0]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[5]]></qid>
     <attribute><![CDATA[time_limit_message]]></attribute>
     <value/>
     <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[5]]></qid>
+    <attribute><![CDATA[time_limit_message]]></attribute>
+    <value/>
+    <language><![CDATA[es]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[5]]></qid>
     <attribute><![CDATA[time_limit_message_delay]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[5]]></qid>
     <attribute><![CDATA[time_limit_message_style]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[5]]></qid>
     <attribute><![CDATA[time_limit_timer_style]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[5]]></qid>
     <attribute><![CDATA[time_limit_warning]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[5]]></qid>
     <attribute><![CDATA[time_limit_warning_2]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[5]]></qid>
     <attribute><![CDATA[time_limit_warning_2_display_time]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[5]]></qid>
     <attribute><![CDATA[time_limit_warning_2_message]]></attribute>
     <value/>
     <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[5]]></qid>
+    <attribute><![CDATA[time_limit_warning_2_message]]></attribute>
+    <value/>
+    <language><![CDATA[es]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[5]]></qid>
     <attribute><![CDATA[time_limit_warning_2_style]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[5]]></qid>
     <attribute><![CDATA[time_limit_warning_display_time]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[5]]></qid>
     <attribute><![CDATA[time_limit_warning_message]]></attribute>
     <value/>
     <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[5]]></qid>
+    <attribute><![CDATA[time_limit_warning_message]]></attribute>
+    <value/>
+    <language><![CDATA[es]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[5]]></qid>
     <attribute><![CDATA[time_limit_warning_style]]></attribute>
     <value/>
     <language/>
