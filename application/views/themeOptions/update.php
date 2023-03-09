@@ -45,7 +45,7 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
             <form class='form action_update_options_string_form' action=''>
                 <?php echo TbHtml::submitButton($model->isNewRecord ? gT('Create') : gT('Save'), ['id' => 'theme-options--submit', 'class' => 'd-none action_update_options_string_button']); ?>
             <!-- Tab panes -->
-                <div class="tab-content bg-white p-2">
+                <div class="tab-content">
             <?php /* Begin theme option form */ ?>
                     <?php
                     /*
