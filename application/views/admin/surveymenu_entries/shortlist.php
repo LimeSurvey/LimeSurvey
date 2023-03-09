@@ -11,7 +11,7 @@ $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPa
         <div class="col-12 ls-flex-item">
             <?php
             $this->widget(
-                'application.extensions.admin.grid.CLSGridView',//done
+                'application.extensions.admin.grid.CLSGridView',
                 [
                     'dataProvider' => $model->search(),
                     'id'           => 'surveymenu-entries-shortlist-grid',

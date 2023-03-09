@@ -24,6 +24,9 @@
     &:hover, &:focus {
       color: $navbar-link-hover-color;
     }
+    [class^="ri-"], [class*=" ri-"]  {
+      vertical-align: -0.1em;
+    }
   }
   .badge, .rounded-circle {
     background-color: $navbar-badges-bg-color;

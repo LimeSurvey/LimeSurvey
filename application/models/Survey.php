@@ -1501,7 +1501,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         $dropdownItems[] = [
             'title' => gT('Statistics'),
             'url' => App()->createUrl("/admin/statistics/sa/simpleStatistics/surveyid/" . $this->sid),
-            'iconClass' => 'ri-add-circle-fill',
+            'iconClass' => 'ri-line-chart-line',
             'enabledCondition' =>
                 $this->active === "Y"
                 && $permissions['statistics_read'],
@@ -1509,7 +1509,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         $dropdownItems[] = [
             'title' => gT('General settings & texts'),
             'url' => App()->createUrl("/surveyAdministration/rendersidemenulink/subaction/generalsettings/surveyid/" . $this->sid),
-            'iconClass' => 'ri-add-circle-fill',
+            'iconClass' => 'ri-settings-5-line',
             'enabledCondition' => $permissions['survey_update'],
         ];
 

@@ -23,7 +23,7 @@ $aFunctions = array_map(
     <div class="row">
         <div class="col-12">
             <?php $this->widget(
-                'application.extensions.admin.grid.CLSGridView',//done
+                'application.extensions.admin.grid.CLSGridView',
                 [
                     /*
                     'dataProvider' => new class ($aFunctions) extends CDataProvider {
