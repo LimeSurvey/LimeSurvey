@@ -17,7 +17,7 @@ echo viewHelper::getViewTestTag('participantsSummary');
         <div class="col-12 list-surveys">
             <div class="row">
                 <div class="col-12 content-right table-responsive">
-                    <table class='statisticssummary table table-hover'>
+                    <table class='ls-statisticssummary table table-hover'>
                         <tr>
                             <th>
                                 <?php eT("Total participants in central table"); ?>

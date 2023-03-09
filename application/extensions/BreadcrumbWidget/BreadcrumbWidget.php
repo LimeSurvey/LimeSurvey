@@ -284,10 +284,16 @@ class BreadcrumbWidget extends CWidget
         $charsTooMuch = $countChars - self::THRESHOLD;
         $charsOf2nd = array_key_exists(1, $breadcrumbs) ? strlen($breadcrumbs[1]['text']) : 0;
         $charsOf3rd = array_key_exists(2, $breadcrumbs) ? strlen($breadcrumbs[2]['text']) : 0;
+        $secondIsLastElement = count($breadcrumbs) === 2;
         $thirdIsLastElement = count($breadcrumbs) === 3;
         if ($charsOf2nd > $charsTooMuch) {
             // Replace whole 2nd element with ellipsis
-            $breadcrumbs = $this->replaceCharsWithEllipsis($breadcrumbs, 1);
+            if ($secondIsLastElement) {
+                // if it's the löast element, only cut it
+                $breadcrumbs = $this->replaceCharsWithEllipsis($breadcrumbs, 1, $charsOf2nd - $charsTooMuch - 3);
+            } else {
+                $breadcrumbs = $this->replaceCharsWithEllipsis($breadcrumbs, 1);
+            }
         } elseif ($charsOf3rd > $charsTooMuch && !$thirdIsLastElement) {
             // Replace whole 3rd element with ellipsis
             $breadcrumbs = $this->replaceCharsWithEllipsis($breadcrumbs, 2);

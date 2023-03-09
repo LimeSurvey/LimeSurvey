@@ -13,3 +13,4 @@
       <?= gT("If you don't have permission please contact your administrator.") ?>
     </div>
   </div>
+</div>
