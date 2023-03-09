@@ -590,6 +590,7 @@ class UserGroup extends LSActiveRecord
             if ($emaiLResult['success']) {
                 $msgToUser .= gT('Sending successful') . "<br>";
             } else {
+                throw new Exception("Failed to send mail");
                 $msgToUser .= gT('Error: ') . $emaiLResult['msg'] . "<br>";
             }
         }
