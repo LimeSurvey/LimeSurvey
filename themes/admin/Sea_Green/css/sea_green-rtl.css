@@ -16426,15 +16426,6 @@ tr.info, tr.danger {
 .btn-primary:focus, .btn-primary:active, .btn-primary.active, .btn-primary:active:focus {
   box-shadow: -4px 4px 0px rgba(123, 97, 255, 0.4);
 }
-.btn-primary-3 {
-  color: #fff;
-  background-color: #8146F6;
-  border-color: #8146F6;
-}
-.btn-primary-3:hover, .btn-primary-3:focus, .btn-primary-3:active, .btn-primary-3.active, .btn-primary-3:active:focus {
-  background-color: #8146F6;
-  border-color: #8146F6;
-}
 
 .btn-secondary, .btn-cancel {
   color: #fff;

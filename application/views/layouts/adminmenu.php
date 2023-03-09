@@ -62,7 +62,7 @@
                 <!-- create survey -->
                 <li class="nav-item">
                     <a href="<?php echo $this->createUrl("surveyAdministration/newSurvey"); ?>" class="nav-link">
-                        <button type="button" class="btn btn-primary-3 btn-create">
+                        <button type="button" class="btn btn-info btn-create">
                             <i class="ri-add-line"></i>
                         </button>
                     </a>

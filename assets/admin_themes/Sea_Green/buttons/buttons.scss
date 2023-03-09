@@ -44,19 +44,7 @@
     &:focus, &:active, &.active, &:active:focus {
         box-shadow : $btn-focus-boxshadow;
     }
-
-    &-3 {
-        color: $white;
-        background-color : $primary-3;
-        border-color     : $primary-3;
-
-        &:hover, &:focus, &:active, &.active, &:active:focus {
-            background-color : $primary-3;
-            border-color     : $primary-3;
-        }
-    }
 }
-
 
 .btn-secondary, .btn-cancel {
     color : $white;
