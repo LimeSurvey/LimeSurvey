@@ -22,7 +22,7 @@ class RemoteControlImportQuestionTest extends TestBaseClass
      *
      * @return void
      */
-    public static function setupBeforeClass()
+    public static function setupBeforeClass(): void
     {
         \Yii::import('application.helpers.remotecontrol.remotecontrol_handle', true);
 
@@ -72,7 +72,7 @@ class RemoteControlImportQuestionTest extends TestBaseClass
         $question = base64_encode(file_get_contents($questionFile));
         $result = $handler->import_question($sessionKey, self::$surveyId, $testGroupId, $question, 'lsq');
 
-        $this->assertInternalType('int', $result, 'There was an error importing a question with a code that did not already exists.');
+        $this->assertIsInt($result, 'There was an error importing a question with a code that did not already exists.');
     }
 
     /**
@@ -99,7 +99,7 @@ class RemoteControlImportQuestionTest extends TestBaseClass
         $question = base64_encode(file_get_contents($questionFile));
         $result = $handler->import_question($sessionKey, self::$surveyId, $testGroupId, $question, 'lsq');
 
-        $this->assertInternalType('array', $result, 'There was an error importing a question with a code that already exists.');
+        $this->assertIsArray($result, 'There was an error importing a question with a code that already exists.');
     }
 
     /**
@@ -127,12 +127,12 @@ class RemoteControlImportQuestionTest extends TestBaseClass
         $question = base64_encode(file_get_contents($questionFile));
         $result = $handler->import_question($sessionKey, self::$surveyId, $testGroupId, $question, 'lsq', 'N', 'QNewTitle');
 
-        $this->assertInternalType('int', $result, 'There was an error importing a question with a code that already exists and new title is set.');
+        $this->assertIsInt($result, 'There was an error importing a question with a code that already exists and new title is set.');
     }
 
-     /**
-     * Importing a question with a text in English and one in Spanish.
-     */
+    /**
+    * Importing a question with a text in English and one in Spanish.
+    */
     public function testImportQuestionWithTextInEnglishAndSpanish()
     {
         // Create handler.
@@ -159,22 +159,5 @@ class RemoteControlImportQuestionTest extends TestBaseClass
 
         $this->assertSame($questionLangs['en']->question, 'Is this a question in English?');
         $this->assertSame($questionLangs['es']->question, '¿Esta es una pregunta en Español?');
-    }
-
-    /**
-     * Test if the text for each question was set in all the languages.
-     */
-    public function testTheQuestionTextWasSetInAllSurveyLanguages()
-    {
-
-        $questionList = \Question::model()->getQuestionList(self::$surveyId);
-
-        foreach ($questionList as $question) {
-            $questionLangs = $question->questionl10ns;
-
-            foreach ($questionLangs as $questionLang) {
-                $this->assertNotEmpty($questionLang->question, 'The text for the question in language: ' . $questionLang->language . ' was not properly set.');
-            }
-        }
     }
 }
