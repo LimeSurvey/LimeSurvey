@@ -180,9 +180,17 @@ class SurveyURLParameter extends LSActiveRecord
             'enabledCondition' => $permissionPanelEdit
         ];
         $dropdownItems[] = [
-            'title'            => gT('Edit delete'),
-            'iconClass'        => 'ri-pencil-fill',
-            'linkClass'        => 'surveysettings_delete_intparameter',
+            'title'            => gT('Delete parameter'),
+            'iconClass'        => 'ri-delete-bin-fill text-danger',
+            'linkClass'        => 'surveysettings_delete_intparameter selector--ConfirmModal',
+            'url'             => Yii::app()->createUrl("surveyAdministration/deleteUrlParam"),
+            'linkAttributes'   => [
+                'data-button-no'   => gT('Cancel'),
+                'data-button-yes'  => gT('Delete'),
+                'data-button-type' => 'btn-danger',
+                'data-post'        => json_encode(['surveyId' => $this->sid, 'urlParamId' => $this->id]),
+                'data-text'        => gT("Are you sure you want to delete this URL parameter?"),
+            ],
             'enabledCondition' => $permissionParameterDelete
         ];
 
