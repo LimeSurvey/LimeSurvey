@@ -4483,7 +4483,7 @@ textarea.form-control-lg {
   padding: 1rem 1rem;
 }
 
-.card-title, .ls-panelboxes .card.card-primary .card-header, .ls-panelboxes .ls-panelboxes-panelbox .card .card-header, .card.card-primary .card-header {
+.card-title, .ls-panelboxes .card.card-primary .card-header, .ls-panelboxes .ls-panelboxes-panelbox .card .card-header, .card.card-primary .card-header, .card .card-header {
   margin-bottom: 0.5rem;
 }
 
@@ -15203,9 +15203,6 @@ fieldset[disabled] .form-control {
 .navbar-default .navbar-toggle:focus {
   background-color: #dadada;
 }
-.navbar-default .navbar-collapse {
-  border: 1px solid #252b1c;
-}
 .navbar-default .navbar-form {
   border: 1px solid #252b1c;
 }
@@ -15282,9 +15279,6 @@ fieldset[disabled] .form-control {
 }
 .navbar-inverse .navbar-toggle:focus {
   background-color: #333333;
-}
-.navbar-inverse .navbar-collapse {
-  border: 1px solid #101010;
 }
 .navbar-inverse .navbar-form {
   border: 1px solid #101010;
@@ -16692,6 +16686,10 @@ tr.info, tr.danger {
   pointer-events: none;
 }
 
+.chart-type-control {
+  margin-bottom: 4px;
+}
+
 /*
  * btn-xs was removed from Bootstrap 4.
  * @see https://stackoverflow.com/questions/33911049/btn-xs-no-longer-a-valid-option-in-bootstrap-4
@@ -17087,6 +17085,10 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   border-radius: 0;
   padding: 0;
 }
+.navbar .nav-item {
+  display: flex;
+  align-items: center;
+}
 .navbar .navbar-brand {
   font-style: normal;
   font-weight: 700;
@@ -17140,6 +17142,11 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 .navbar .dropdown-menu > li > a {
   font-weight: 500;
 }
+.navbar .btn-create {
+  height: 36px;
+  width: 36px;
+  padding: 0px;
+}
 
 @media screen and (min-width: 768px) {
   .navbar .navbar-nav .nav-link {
@@ -17149,8 +17156,8 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
     display: none !important;
   }
 }
-.navbar-collapse {
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+.active-surveys {
+  margin-left: -6px;
 }
 
 .mega-dropdown {
@@ -17224,6 +17231,10 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   text-decoration: none;
   color: #fff;
   background-color: var(--bs-primary);
+}
+
+.card .card-header {
+  background-color: unset;
 }
 
 .card.card-primary {
@@ -18042,7 +18053,6 @@ input[type=number] {
 }
 
 #sidebar {
-  padding-top: 15px;
   width: 100%;
 }
 #sidebar .questiongroup-list-group > li.selected {
@@ -18114,6 +18124,7 @@ input[type=number] {
 #sidebar .resize-handle button {
   background-color: #fff;
   outline: 0;
+  border: none;
   cursor: col-resize;
   width: 100%;
   height: 100%;
@@ -18704,40 +18715,74 @@ table [class^=ri-], table [class*=" ri-"] {
   background-color: #fff;
 }
 
-.accordion-button:not(.collapsed)::after {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23212529'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
-}
-
-#advanced-question-editor .settings-accordion-container #accordion, #copy-question .settings-accordion-container #accordion {
-  padding: 8px 12px;
-}
-#advanced-question-editor .settings-accordion-container .accordion-body, #copy-question .settings-accordion-container .accordion-body {
-  padding: 0;
-}
-#advanced-question-editor .settings-accordion-container .accordion-body label, #copy-question .settings-accordion-container .accordion-body label {
-  padding-bottom: 8px;
-}
-#advanced-question-editor .ri-information-fill, #copy-question .ri-information-fill {
-  color: #9094A7;
-}
-#advanced-question-editor .accordion-button, #copy-question .accordion-button {
+.accordion-button {
   font-size: 0.855rem;
   font-weight: 600;
   background-color: #fff;
   color: #1E1E1E;
 }
-#advanced-question-editor .accordion-button:not(.collapsed), #copy-question .accordion-button:not(.collapsed) {
+.accordion-button:not(.collapsed) {
   background-color: #F9F9FB;
   box-shadow: none;
 }
-#advanced-question-editor .accordion-button:not(.collapsed)::after, #copy-question .accordion-button:not(.collapsed)::after {
+.accordion-button:not(.collapsed)::after {
   background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23000'%3e%3cpath d='M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z'/%3e%3c/svg%3e") center/1em auto no-repeat;
 }
-#advanced-question-editor .accordion-button:focus, #copy-question .accordion-button:focus {
+.accordion-button:focus {
   border: none;
   box-shadow: none;
 }
-#advanced-question-editor .accordion-item, #copy-question .accordion-item {
+
+.accordion-item {
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 1px solid #D3D5DA;
+}
+
+.accordion-button:not(.collapsed)::after {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23212529'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+}
+
+#advanced-question-editor .settings-accordion-container #accordion,
+#copy-question .settings-accordion-container #accordion {
+  padding: 8px 12px;
+}
+#advanced-question-editor .settings-accordion-container .accordion-body,
+#copy-question .settings-accordion-container .accordion-body {
+  padding: 0;
+}
+#advanced-question-editor .settings-accordion-container .accordion-body label,
+#copy-question .settings-accordion-container .accordion-body label {
+  padding-bottom: 8px;
+}
+#advanced-question-editor .ri-information-fill,
+#copy-question .ri-information-fill {
+  color: #9094A7;
+}
+#advanced-question-editor .accordion-button,
+#copy-question .accordion-button {
+  font-size: 0.855rem;
+  font-weight: 600;
+  background-color: #fff;
+  color: #1E1E1E;
+}
+#advanced-question-editor .accordion-button:not(.collapsed),
+#copy-question .accordion-button:not(.collapsed) {
+  background-color: #F9F9FB;
+  box-shadow: none;
+}
+#advanced-question-editor .accordion-button:not(.collapsed)::after,
+#copy-question .accordion-button:not(.collapsed)::after {
+  background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23000'%3e%3cpath d='M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z'/%3e%3c/svg%3e") center/1em auto no-repeat;
+}
+#advanced-question-editor .accordion-button:focus,
+#copy-question .accordion-button:focus {
+  border: none;
+  box-shadow: none;
+}
+#advanced-question-editor .accordion-item,
+#copy-question .accordion-item {
   border-top: none;
   border-left: none;
   border-right: none;

@@ -12,7 +12,7 @@ echo viewHelper::getViewTestTag('importQuestionGroup');
 <div id='edit-survey-text-element' class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="pagetitle h1"><?php eT("Import question group"); ?></div>
     <div class="row">
-        <div class="col-12">
+        <div class="col-6">
             <!-- form -->
             <?php echo CHtml::form(array("questionGroupsAdministration/import"), 'post', array(
                 'id'=>'importgroup',
@@ -28,14 +28,14 @@ echo viewHelper::getViewTestTag('importQuestionGroup');
                     echo '<br>'.sprintf(gT("(Maximum file size: %01.2f MB)"),getMaximumFileUploadSize()/1024/1024);
                     ?></label>
                         <div class="">
-                           <input id='the_file' name="the_file" type="file" accept='.lsg' />
+                           <input id='the_file' class="form-control" name="the_file" type="file" accept='.lsg' />
                         </div>
                 </div>
 
                 <!-- Convert resource links -->
                 <div class="mb-3">
-                    <label for='translinksfields' class="form-label col-md-2"><?php eT("Convert resource links?"); ?></label>
-                    <div class="col-md-10">
+                    <label for='translinksfields' class="form-label"><?php eT("Convert resource links?"); ?></label>
+                    <div>
                         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                             'name'          => 'translinksfields',
                             'checkedOption' => 1,

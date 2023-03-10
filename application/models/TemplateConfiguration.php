@@ -735,7 +735,7 @@ class TemplateConfiguration extends TemplateConfig
 
         $sUninstallUrl = Yii::app()->getController()->createUrl('themeOptions/uninstall/');
         $sResetUrl     = Yii::app()->getController()->createUrl('themeOptions/reset/', array("gsid" => (int) $gsid));
-    
+
         $dropdownItems = [];
         $dropdownItems[] = [
             'title'            => gT('Theme editor'),
@@ -756,7 +756,7 @@ class TemplateConfiguration extends TemplateConfig
             'enabledCondition' => $this->getHasOptionPage(),
         ];
 
-    
+
         $dropdownItems[] = [
             'title'            => gT('Extend'),
             'url'              => $sExtendUrl,
@@ -798,7 +798,7 @@ class TemplateConfiguration extends TemplateConfig
                 'data-button-type' => "btn-danger"
             ]
         ];
- 
+
         $dropdownItems[] = [
             'title'            => gT('Reset'),
             'url'              => $sResetUrl,
