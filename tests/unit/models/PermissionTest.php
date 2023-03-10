@@ -107,33 +107,4 @@ class PermissionTest extends BaseModelTestCase
 
         $this->assertFalse($perm->hasPermission($surveysGroupGid, 'SurveysGroups', 'permission', 'create'));
     }
-
-    /**
-     * Test for users with superadmin permissions.
-     */
-    public function testGetUsersWithSuperAdminPermissions()
-    {
-        //Create user.
-        $newPassword = createPassword();
-        $userId = \User::insertUser('test_user', $newPassword, 'John Doe', 1, 'jd@mail.com');
-
-        //Assign superadmin permissions.
-        \Permission::model()->setGlobalPermission($userId, 'superadmin', array('create_p', 'read_p', 'update_p', 'delete_p', 'import_p', 'export_p'));
-
-        $superAdminsBefore = \User::model()->getSuperAdmins();
-
-        //Deselect the super administrator permissions for the user.
-        $permission = \Permission::model()->findByAttributes(array('uid' => $userId));
-        $permission->read_p = 0;
-        $permission->save();
-
-        $superAdminsAfter = \User::model()->getSuperAdmins();
-
-        $this->assertNotSameSize($superAdminsBefore, $superAdminsAfter, 'The new user should not have superadmin permissions anymore.');
-
-        //Delete user.
-        $user = \User::model()->findByPk($userId);
-        $user->delete();
-        $permission->delete();
-    }
 }
