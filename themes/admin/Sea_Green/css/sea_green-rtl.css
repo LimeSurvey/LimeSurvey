@@ -11112,7 +11112,7 @@ a {
 
 .ls-option-disabled {
   z-index: 999 !important;
-  background-color: #F9F9FB;
+  background-color: #fff;
   opacity: 0.8;
   position: absolute;
   inset: 0;
