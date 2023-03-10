@@ -11147,10 +11147,6 @@ a {
   cursor: not-allowed !important;
 }
 
-.tab-content {
-  padding-top: 1rem;
-}
-
 body {
   background-color: #F9F9FB;
 }
@@ -17696,6 +17692,11 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   color: #1E1E1E;
   background-color: #fff;
   border-top: 2px solid #14AE5C;
+}
+
+.tab-content {
+  padding: 1rem;
+  background-color: #fff;
 }
 
 .tempus-dominus-widget {
