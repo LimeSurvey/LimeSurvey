@@ -147,18 +147,6 @@ $alert-info: #40ab82;
 }
 
 //original selectors
-//.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus
-%extend_7 {
-    color: $gray-17;
-    background-color: $white;
-    border: 1px solid $gray-08;
-}
-
-
-
-
-
-//original selectors
 //a.list-group-item.active, a.list-group-item.active:hover, a.list-group-item.active:focus
 %extend_12 {
     color: $white;
@@ -446,9 +434,6 @@ fieldset[disabled] {
         //    background-color: $default-icon-bar;
         //}
     }
-    .navbar-collapse {
-        border: 1px solid $primary-border_navbar_default;
-    }
     .navbar-form {
         border: 1px solid $primary-border_navbar_default;
     }
@@ -529,9 +514,6 @@ fieldset[disabled] {
         //.icon-bar {
         //    background-color: $white;
         //}
-    }
-    .navbar-collapse {
-        border: 1px solid $navbar-inverse-1;
     }
     .navbar-form {
         border: 1px solid $navbar-inverse-1;

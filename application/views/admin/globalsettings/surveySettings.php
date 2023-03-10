@@ -18,7 +18,12 @@ $optionsOnOff = array(
     <?php echo CHtml::form(array("admin/globalsettings/sa/surveysettings"), 'post', array('id' => 'survey-settings-form')); ?>
     <div class="d-flex flex-wrap flex-lg-nowrap" id="surveySettingsForThisGroup">
         <div class="" id="global-sidebar-container">
-            <global-sidemenu/>
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item"><a class="nav-link active" href="#sidebar" aria-controls="sidebar" role="tab" data-bs-toggle="tab" aria-selected="true"><?php eT("Settings") ?></a></li>
+            </ul>
+            <div class="tab-content pt-0 h-100">
+                <global-sidemenu/>
+             </div>
         </div>
         <div id="pjax-content" class="tab-content col-lg-10 flex-lg-shrink-1 ps-4">
             <div class="row">

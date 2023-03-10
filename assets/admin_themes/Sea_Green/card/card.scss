@@ -1,3 +1,10 @@
+.card {
+    .card-header {
+        @extend .card-title;
+        background-color : unset;
+    }
+}
+
 .card.card-primary {
     background-color : $white;
     position         : relative;
