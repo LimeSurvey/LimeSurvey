@@ -92,7 +92,9 @@ class SurveyPermissionsController extends LSBaseController
             'userList' => $oSurveyPermissions->getSurveyUserList(),
             'userGroupList' => $oSurveyPermissions->getSurveyUserGroupList(),
             'tableContent' => $oSurveyPermissions->getUsersSurveyPermissions(),
-            'oSurveyPermissions' => $oSurveyPermissions
+            'oSurveyPermissions' => $oSurveyPermissions,
+            // newly added property
+            'dataProvider' => $oSurveyPermissions->getUsersSurveyPermissionsDataProvider(),
         ]);
     }
 

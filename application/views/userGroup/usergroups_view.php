@@ -21,7 +21,7 @@
         <div class="row">
             <div class="col-12">
                 <?php
-                $this->widget('application.extensions.admin.grid.CLSGridView', //done
+                $this->widget('application.extensions.admin.grid.CLSGridView',
                     [
                         'id' => 'usergroups-grid-mine',
                         'dataProvider' => $model->searchMine(true),
@@ -57,7 +57,7 @@
             <div class="col-12">
                 <?php
                 if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-                    $this->widget('application.extensions.admin.grid.CLSGridView', //done
+                    $this->widget('application.extensions.admin.grid.CLSGridView',
                         [
                             'dataProvider' => $model->searchMine(false),
                             'id' => 'usergroups-grid-belong-to',

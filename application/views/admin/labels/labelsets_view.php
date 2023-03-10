@@ -16,7 +16,7 @@ echo viewHelper::getViewTestTag('viewLabelSets');
         <div class="col-12 content-right">
             <?php
             $this->widget(
-                'application.extensions.admin.grid.CLSGridView',//done
+                'application.extensions.admin.grid.CLSGridView',
                 [
                     'dataProvider' => $model->search(),
                     // Number of row per page selection

@@ -1448,7 +1448,7 @@ class QuestionAdministrationController extends LSBaseController
     {
         $aQids = json_decode(Yii::app()->request->getPost('sItems')); // List of question ids to update
         $iSid = (int)Yii::app()->request->getPost('sid');
-        $sOther = (Yii::app()->request->getPost('other') === 'true') ? 'Y' : 'N';
+        $sOther = (Yii::app()->request->getPost('other') === '1') ? 'Y' : 'N';
 
         if (Permission::model()->hasSurveyPermission($iSid, 'surveycontent', 'update')) {
             self::setMultipleQuestionOtherState($aQids, $sOther, $iSid);

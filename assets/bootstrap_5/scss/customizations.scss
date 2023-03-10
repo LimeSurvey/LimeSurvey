@@ -51,7 +51,7 @@ a {
 }
 .ls-option-disabled {
     z-index: 999 !important;
-    background-color: $g-100;
+    background-color: $white;
     opacity: 0.8;
     position: absolute;
     inset: 0;
@@ -62,7 +62,4 @@ a {
     pointer-events: none !important;
     cursor: not-allowed !important;
 
-}
-.tab-content {
-    padding-top: 1rem;
 }

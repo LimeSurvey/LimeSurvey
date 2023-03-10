@@ -15,30 +15,27 @@ echo viewHelper::getViewTestTag('surveyMenuEntries');
 <div class="ls-flex-row">
     <div class="col-12 ls-flex-item">
         <?php
-        $this->widget(
-            'application.extensions.admin.grid.CLSGridView',
-            [
-                'dataProvider' => $model->search(),
-                'id' => 'surveymenu-entries-grid',
-                'columns' => $model->getColumns(),
-                'filter' => $model,
-                'emptyText' => gT('No customizable entries found.'),
-                'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
-                        gT('%s rows per page'),
-                        CHtml::dropDownList(
-                            'surveymenuentriesPageSize',
-                            $pageSize,
-                            Yii::app()->params['pageSizeOptions'],
-                            ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
-                        )
-                    ),
-                'rowHtmlOptionsExpression' => '["data-surveymenu-entry-id" => $data->id]',
-                'ajaxType' => 'POST',
-                'ajaxUpdate' => 'surveymenu-entries-grid',
-                'massiveActionTemplate' => $massiveAction,
-                'afterAjaxUpdate' => 'surveyMenuEntryFunctions',
-            ]
-        );
+        $this->widget('application.extensions.admin.grid.CLSGridView', [
+            'dataProvider' => $model->search(),
+            'id' => 'surveymenu-entries-grid',
+            'columns' => $model->getColumns(),
+            'filter' => $model,
+            'emptyText' => gT('No customizable entries found.'),
+            'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
+                gT('%s rows per page'),
+                CHtml::dropDownList(
+                    'surveymenuentriesPageSize',
+                    $pageSize,
+                    Yii::app()->params['pageSizeOptions'],
+                    ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
+                )
+            ),
+            'rowHtmlOptionsExpression' => '["data-surveymenu-entry-id" => $data->id]',
+            'ajaxType' => 'POST',
+            'ajaxUpdate' => 'surveymenu-entries-grid',
+            'massiveActionTemplate' => $massiveAction,
+            'afterAjaxUpdate' => 'surveyMenuEntryFunctions',
+        ]);
         ?>
     </div>
 </div>
