@@ -91,6 +91,9 @@ class QuestionL10n extends LSActiveRecord
                 ),
             ),
         );
+        if (!Yii::app()->user->isScriptUpdateAllowed()) {
+            $rules[] = array('script', 'LSYii_NoUpdateValidator');
+        }
         return $rules;
     }
 }
