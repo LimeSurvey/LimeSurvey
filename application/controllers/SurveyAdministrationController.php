@@ -3315,7 +3315,9 @@ class SurveyAdministrationController extends LSBaseController
     /**
      * Method to delete URL Params (Panel Integration)
      *
-     * @throws CException
+     * @return void
+     * @throws CDbException
+     * @throws CHttpException
      */
     public function actionDeleteUrlParam()
     {
@@ -3323,23 +3325,17 @@ class SurveyAdministrationController extends LSBaseController
         $redirectUrl = ['surveyAdministration/rendersidemenulink/', 'surveyid' => $surveyId, 'subaction' => 'panelintegration'];
         $paramId = Yii::app()->request->getPost('urlParamId');
         if (empty($paramId)) {
-            Yii::app()->user->setFlash('error', gT("Invalid request"));
-
-            $this->redirect($redirectUrl);
+            throw new CHttpException(400, gt('Invalid request'));
         }
 
         if (!Permission::model()->hasSurveyPermission($surveyId, 'surveysettings', 'update')) {
-            Yii::app()->user->setFlash('error', gT("Access denied!"));
-
-            $this->redirect(['admin/']);
+            throw new CHttpException(403, gT("Access denied!"));
         }
 
         $paramId = sanitize_int($paramId);
         $URLParam = SurveyURLParameter::model()->findByPk($paramId);
         if (empty($URLParam)) {
-            Yii::app()->user->setFlash('error', gT("URL parameter not found"));
-
-            $this->redirect($redirectUrl);
+            throw new CHttpException(400, gT("URL parameter not found"));
         }
 
         // Delete the record
