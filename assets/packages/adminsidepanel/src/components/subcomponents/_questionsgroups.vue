@@ -57,7 +57,7 @@ export default {
             return createGroupAllowed + createQuestionAllowed;
         },
         itemWidth() {
-            return parseInt(this.$store.state.sidebarwidth) - 95 + "px";
+            return parseInt(this.$store.state.sidebarwidth) - 120 + "px";
         }
     },
     methods: {
@@ -364,17 +364,19 @@ export default {
                         >
                         {{ questiongroup.group_name }}
                         </span>
-                        <!-- :class="(hoveredQuestionGroup && hoveredQuestionGroup.gid === questiongroup.gid) ? 'ms-auto mr-4' : 'ms-auto'" -->
-                        <div class="ms-auto me-5">
+                    
+                      </a>
+
+                    <div  class="dropdown position-absolute top-0 d-flex" style="right:5px" >
+
+                        <div class="">
                             <span class="badge reverse-color ls-space margin right-5"
                                 @click.prevent="toggleActivation(questiongroup.gid)">
                                 {{ questiongroup.questions.length }}
                             </span>
                         </div>
-                      </a>
 
-                    <div  v-if="hoveredQuestionGroup && hoveredQuestionGroup.gid === questiongroup.gid" class="dropdown position-absolute top-0" style="right:5px" >
-                        <div class="ms-auto position-relative cursor-pointer" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                        <div class="cursor-pointer" id="dropdownMenuButton1" data-bs-toggle="dropdown"
                         aria-expanded="false">
                              <i class="ri-more-fill"></i>
                         </div>
