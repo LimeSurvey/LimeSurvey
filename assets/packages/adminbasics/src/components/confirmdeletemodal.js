@@ -143,7 +143,7 @@ const ConfirmDeleteModal = function (options) {
 
                     if (!useAjax) {
                         modalObject.find('form').trigger('submit');
-                        modalObject.modal('close');
+                        modalObject.modal('hide');
                     } else {
                         // Ajax request
                         runAjaxRequest();

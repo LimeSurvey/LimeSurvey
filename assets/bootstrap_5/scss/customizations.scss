@@ -51,7 +51,7 @@ a {
 }
 .ls-option-disabled {
     z-index: 999 !important;
-    background-color: $g-100;
+    background-color: $white;
     opacity: 0.8;
     position: absolute;
     inset: 0;
@@ -63,6 +63,7 @@ a {
     cursor: not-allowed !important;
 
 }
+
 .tab-content {
     padding-top: 1rem;
 }
@@ -70,10 +71,18 @@ a {
 .cursor-pointer {
     cursor: pointer;
 }
+
 .ls-survey-menu-item {
     padding-left: 30px !important;
 }
 
 .ls-survey-menu-item.menu-label{
     padding-left: 33px !important;
+}
+
+.list-group-item.disabled {
+    color: #777;
+    cursor: not-allowed;
+    background-color: #eee;
+    pointer-events: auto !important;
 }
