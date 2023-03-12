@@ -83,6 +83,6 @@ a {
 .list-group-item.disabled {
     color: #777;
     cursor: not-allowed;
-    background-color: #eee;
+    background-color: $white !important;
     pointer-events: auto !important;
 }

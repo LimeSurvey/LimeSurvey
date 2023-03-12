@@ -11151,7 +11151,6 @@ a {
   padding-top: 1rem;
 }
 
-<<<<<<< HEAD
 .cursor-pointer {
   cursor: pointer;
 }
@@ -11162,13 +11161,13 @@ a {
 
 .ls-survey-menu-item.menu-label {
   padding-left: 33px !important;
-=======
+}
+
 .list-group-item.disabled {
   color: #777;
   cursor: not-allowed;
-  background-color: #eee;
+  background-color: #fff !important;
   pointer-events: auto !important;
->>>>>>> 11e3a15971f6dbd7813971af4c9709b597bc914b
 }
 
 body {
