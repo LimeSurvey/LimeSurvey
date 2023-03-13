@@ -34,6 +34,11 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.52 (build 230307) to 3.28.53 (build 230314) March 13, 2023
+#Updated translation: Polish by elissa
+#Updated translation: Japanese by d_inoue
+
+
 Changes from 3.28.51 (build 230228) to 3.28.52 (build 230307) March 6, 2023
 -Fixed issue: Unable to run integrity check on databases with a big number of surveys (Carsten Schmitz)
 #Updated translation: Valencian by vbraque
