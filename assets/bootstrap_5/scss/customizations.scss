@@ -63,12 +63,26 @@ a {
     cursor: not-allowed !important;
 
 }
+
 .tab-content {
     padding-top: 1rem;
 }
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.ls-survey-menu-item {
+    padding-left: 30px !important;
+}
+
+.ls-survey-menu-item.menu-label{
+    padding-left: 33px !important;
+}
+
 .list-group-item.disabled {
     color: #777;
     cursor: not-allowed;
-    background-color: #eee;
+    background-color: $white !important;
     pointer-events: auto !important;
 }

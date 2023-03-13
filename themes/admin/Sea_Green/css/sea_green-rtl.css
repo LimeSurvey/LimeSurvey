@@ -11128,10 +11128,22 @@ a {
   padding-top: 1rem;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.ls-survey-menu-item {
+  padding-right: 30px !important;
+}
+
+.ls-survey-menu-item.menu-label {
+  padding-right: 33px !important;
+}
+
 .list-group-item.disabled {
   color: #777;
   cursor: not-allowed;
-  background-color: #eee;
+  background-color: #fff !important;
   pointer-events: auto !important;
 }
 
@@ -18045,12 +18057,6 @@ input[type=number] {
 
 #sidebar {
   width: 100%;
-}
-#sidebar .questiongroup-list-group > li.selected {
-  opacity: 0.9;
-}
-#sidebar .questiongroup-list-group > li.selected.activated {
-  opacity: 1;
 }
 #sidebar .button-sub-bar {
   min-height: 32px;
