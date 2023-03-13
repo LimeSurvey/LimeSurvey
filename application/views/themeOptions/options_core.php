@@ -248,9 +248,11 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="progress">
-                            <div id="upload_progress_frontend" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
-                                <span class="visually-hidden">0%</span>
+                        <div class="col-12">
+                            <div class="progress">
+                                <div id="upload_progress_frontend" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+                                    <span class="visually-hidden">0%</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -271,11 +273,9 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-12">
-                            <img class="selector__image img-fluid" src="" alt="title" />
-                        </div>
+                <div class="row">
+                    <div class="col-12">
+                        <img class="selector__image img-fluid" src="" alt="title" />
                     </div>
                 </div>
             </div>

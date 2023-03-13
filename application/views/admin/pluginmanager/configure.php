@@ -7,7 +7,7 @@
 echo viewHelper::getViewTestTag('configurePlugin');
 ?>
 
-<div class="container-fluid plugin--configure">
+<div class="plugin--configure">
     <div class="row">
         <div class="col-12">
             <ul class="nav nav-tabs" id="settingTabs">
