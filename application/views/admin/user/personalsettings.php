@@ -247,7 +247,7 @@ echo $oQuestionSelector->getModal();
                                                     'popup'   => gT("Popup HTML editor", 'unescaped'),
                                                     'none'    => gT("Sourcecode editor", 'unescaped'),
                                                 ],
-                                                ['class' => "form-control"]
+                                                ['class' => "form-select"]
                                             ); ?>
                                         </div>
                                     </div>
@@ -267,7 +267,7 @@ echo $oQuestionSelector->getModal();
                                                     'full'    => gT("Full selector", 'unescaped'),
                                                     'none'    => gT("Simple selector", 'unescaped')
                                                 ],
-                                                ['class' => "form-control"]
+                                                ['class' => "form-select"]
                                             ); ?>
                                         </div>
                                     </div>
@@ -294,7 +294,7 @@ echo $oQuestionSelector->getModal();
                                                     'full'    => gT("Full template editor"),
                                                     'none'    => gT("Simple template editor")
                                                 ],
-                                                ['class' => "form-control"]
+                                                ['class' => "form-select"]
                                             ); ?>
                                         </div>
                                     </div>
@@ -328,7 +328,7 @@ echo $oQuestionSelector->getModal();
                                                 '0' => gT("No", 'unescaped'),
                                                 '1' => gT("Yes", 'unescaped'),
                                             ],
-                                            ['class' => "form-control"]
+                                            ['class' => "form-select"]
                                         ); ?>
                                     </div>
                                 </div>
@@ -343,7 +343,7 @@ echo $oQuestionSelector->getModal();
                                                 '0' => gT("No", 'unescaped'),
                                                 '1' => gT("Yes", 'unescaped'),
                                             ],
-                                            ['class' => "form-control"]
+                                            ['class' => "form-select"]
                                         ); ?>
                                     </div>
                                 </div>
@@ -387,7 +387,7 @@ echo $oQuestionSelector->getModal();
                                                                       '0' => gT("No", 'unescaped'),
                                                                       '1' => gT("Yes", 'unescaped'),
                                                                   ],
-                                            ['class' => "form-control"]
+                                            ['class' => "form-select"]
                                         ); ?>
                                     </div>
                                 </div>
@@ -403,7 +403,7 @@ echo $oQuestionSelector->getModal();
                                                 '0'       => gT("No", 'unescaped'),
                                                 '1'       => gT("Yes", 'unescaped'),
                                             ],
-                                            ['class' => "form-control"]
+                                            ['class' => "form-select"]
                                         ); ?>
                                     </div>
                                 </div>

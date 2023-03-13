@@ -12,7 +12,10 @@ export default {
             draggedQuestionGroup: null,
             questionDragging: false,
             draggedQuestion: null,
-            draggedQuestionsGroup: null
+            draggedQuestionsGroup: null,
+            hoveredQuestion : null,
+            hoveredQuestionGroup : null,
+
         };
     },
     computed: {
@@ -54,7 +57,7 @@ export default {
             return createGroupAllowed + createQuestionAllowed;
         },
         itemWidth() {
-            return parseInt(this.$store.state.sidebarwidth) - 95 + "px";
+            return parseInt(this.$store.state.sidebarwidth) - 120 + "px";
         }
     },
     methods: {
@@ -246,6 +249,17 @@ export default {
                 questionObject.question_order = this.draggedQuestion.question_order;
                 this.draggedQuestion.question_order = orderSwap;
             }
+        },
+        onMouseOverQuestionGroup($event, group){
+            this.hoveredQuestionGroup = group;
+        },
+
+        onMouseOverQuestion($event, question){
+            this.hoveredQuestion = question;
+        },
+        onMouseLeave(){
+            this.hoveredQuestion = null;
+            this.hoveredQuestionGroup = null;
         }
     },
     mounted() {
@@ -259,7 +273,7 @@ export default {
 };
 </script>
 <template>
-    <div id="questionexplorer" class="ls-flex-column fill ls-ba menu-pane h-100 pt-4">
+    <div id="questionexplorer" class="ls-flex-column fill ls-ba menu-pane h-100 pt-2">
         <div class="ls-flex-row button-sub-bar mb-2">
           <div class="scoped-toolbuttons-right me-2">
             <button
@@ -314,14 +328,17 @@ export default {
                     v-for="questiongroup in orderedQuestionGroups"
                     v-bind:key="questiongroup.gid"
                     class="list-group-item ls-flex-column"
+
                     v-bind:class="questionGroupItemClasses(questiongroup)"
                     @dragenter="dragoverQuestiongroup($event, questiongroup)"
                     style=" background: linear-gradient(90deg, #14AE5C 0%, #14AE5C 5px, #EEEFF7 5px, #EEEFF7 100%); padding: 0;"
                 >
 
-                  <div class="q-group d-flex nowrap ls-space padding right-5 bottom-5" style=" margin-left: 6px;
-    background: white;
-    padding: 10px;">
+                  <div class="q-group d-flex nowrap ls-space padding right-5 bottom-5 bg-white ms-2 p-2"
+                       v-on:mouseover="onMouseOverQuestionGroup($event, questiongroup)"
+                       v-on:mouseleave ="onMouseLeave" 
+                  
+                  >
                     <div
                         v-if="!surveyIsActive"
                         class="bigIcons dragPointer me-3"
@@ -335,7 +352,7 @@ export default {
                         <path fill-rule="evenodd" clip-rule="evenodd" d="M0.4646 0.125H3.24762V2.625H0.4646V0.125ZM6.03064 0.125H8.81366V2.625H6.03064V0.125ZM0.4646 5.75H3.24762V8.25H0.4646V5.75ZM6.03064 5.75H8.81366V8.25H6.03064V5.75ZM0.4646 11.375H3.24762V13.875H0.4646V11.375ZM6.03064 11.375H8.81366V13.875H6.03064V11.375Z" fill="currentColor"/>
                       </svg>
                     </div>
-                    <div class="w-100">
+                    <div class="w-100 position-relative">
                       <a
                           class="d-flex pjax"
                           :href="questiongroup.link"
@@ -347,15 +364,66 @@ export default {
                         >
                         {{ questiongroup.group_name }}
                         </span>
-                        <div class="ms-auto">
-                          <span
-                              class="badge reverse-color ls-space margin right-5"
-                              @click.prevent="toggleActivation(questiongroup.gid)"
-                          >
-                                  {{ questiongroup.questions.length }}
-                          </span>
-                        </div>
+                    
                       </a>
+
+                    <div  class="dropdown position-absolute top-0 d-flex" style="right:5px" >
+
+                        <div class="">
+                            <span class="badge reverse-color ls-space margin right-5"
+                                @click.prevent="toggleActivation(questiongroup.gid)">
+                                {{ questiongroup.questions.length }}
+                            </span>
+                        </div>
+
+                        <div class="cursor-pointer" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                             <i class="ri-more-fill"></i>
+                        </div>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li  v-if="key !== 'delete'"  v-for="(value, key) in questiongroup.groupDropdown" :key="key">
+                                <a   class="dropdown-item" :id="value.id" :href="value.url">
+                                    <span :class="value.icon"></span>
+                                    {{value.label}}
+                                </a>
+
+                            </li>
+
+                            <li v-else-if="key === 'delete'" :class=" value.disabled ? 'disabled' : '' ">
+                                <a 
+                                    v-if="!value.disabled"
+                                    href="#"
+                                    onclick="return false;"
+                                    class="dropdown-item"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#confirmation-modal"
+                                    data-btnclass="btn-danger"
+                                    :data-title="value.dataTitle"
+                                    :data-btntext="value.dataBtnText"
+                                    :data-onclick="value.dataOnclick"
+                                    :data-message="value.dataMessage"
+                                >
+                                    <span :class="value.icon"></span>
+                                    {{value.label}}
+                                </a>
+                                <a 
+                                    v-else-if="value.disabled"
+                                    href="#"
+                                    onclick="return false;"
+                                    class="dropdown-item"
+                                    data-btnclass="btn-danger"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="bottom"
+                                    :title="value.title"
+                                >
+                                    <span :class="value.icon"></span>
+                                    {{value.label}}
+                                </a>
+
+                            </li>
+                        </ul>
+                    </div>
+                                
 
                     </div>
                   </div>
@@ -371,6 +439,10 @@ export default {
                                 v-bind:key="question.qid"
                                 v-bind:class="questionItemClasses(question)"
                                 data-bs-toggle="tooltip"
+                                v-on:mouseover="onMouseOverQuestion($event, question)"
+                                v-on:mouseleave ="onMouseLeave" 
+
+                                
                                 class="list-group-item question-question-list-item ls-flex-row align-itmes-flex-start"
                                 :data-is-hidden="question.hidden"
                                 :data-questiontype="question.type"
@@ -405,12 +477,13 @@ export default {
                                         [{{question.title}}] &rsaquo; {{ question.question_flat }}
                                     </span>
                                 </a>
-                                <div v-if="itemActivated(question)" class="dropdown" style="position:absolute; right:10px" >
-                                    <div id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="margin-left: auto; position: relative; cursor: pointer;">
+                                <div v-if="itemActivated(question)||(hoveredQuestion && hoveredQuestion.qid === question.qid)" class="dropdown position-absolute" style="right:10px" >
+                                    <div class="ms-auto position-relative cursor-pointer" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                                     aria-expanded="false">
                                         <i class="ri-more-fill"></i>
                                     </div>
-                                    <ul style="right: 0; top: 14px;" class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                        <li  v-if="key !== 'delete' && !(key === 'language' && Array.isArray(value))"  v-for="(value, key) in question.dropDown" :key="key">
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                        <li  v-if="key !== 'delete' && !(key === 'language' && Array.isArray(value))"  v-for="(value, key) in question.questionDropdown" :key="key">
                                             <a   class="dropdown-item" :id="value.id" :href="value.url">
                                                <span :class="value.icon"></span>
                                                  {{value.label}}
@@ -418,8 +491,9 @@ export default {
                                       
                                         </li>
 
-                                        <li v-else-if="key === 'delete'" >
+                                        <li v-else-if="key === 'delete'"  :class=" value.disabled ? 'disabled' : '' ">
                                             <a 
+                                               v-if="!value.disabled"
                                                 href="#"
                                                 onclick="return false;"
                                                 class="dropdown-item"
@@ -434,6 +508,21 @@ export default {
                                                 <span :class="value.icon"></span>
                                                 {{value.label}}
                                             </a>
+                                            <a 
+                                               v-else-if="value.disabled"
+                                                href="#"
+                                                onclick="return false;"
+                                                class="dropdown-item"
+                                                data-btnclass="btn-danger"
+                                                data-bs-toggle="tooltip"
+                                                data-bs-placement="bottom"
+                                                :title="value.title"
+
+                                            >
+                                                <span :class="value.icon"></span>
+                                                {{value.label}}
+                                            </a>
+
                                         </li>
                                         <div v-else-if="key === 'language' && Array.isArray(value)">
                                             <li role="separator" class="dropdown-divider"  ></li>
