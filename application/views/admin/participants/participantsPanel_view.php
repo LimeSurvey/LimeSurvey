@@ -26,6 +26,7 @@ App()->getClientScript()->registerScriptFile(
     var exportToCSVURL = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/exporttocsv"); ?>";
     var openModalParticipantPanel = "<?php echo ls\ajax\AjaxHelper::createUrl("/admin/participants/sa/openModalParticipantPanel"); ?>";
     var editValueParticipantPanel = "<?php echo Yii::app()->getController()->createUrl("/admin/participants/sa/editValueParticipantPanel"); ?>";
+    var deleteLanguageFromAttributeUrl = "<?php echo Yii::app()->getController()->createUrl("/admin/participants/sa/deleteLanguageFromAttribute"); ?>";
 
     var translate_blacklisted = "<?php echo '<i class=\"fa fa-undo\"></i> ' . gT('Remove from blacklist?'); ?>";
     var translate_notBlacklisted = "<?php echo '<i class=\"fa fa-ban\"></i> ' . gT('Add to blacklist?'); ?>";
