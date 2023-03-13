@@ -30,7 +30,7 @@ LS.renderBootstrapSwitch();
 <script type="text/javascript">
     var msgCantRemoveDefaultLanguage = '<?php eT("You can't remove the default language.", 'js'); ?>';
 </script>
-<div class="welcome full-page-wrapper">
+<div class="welcome container-fluid full-page-wrapper">
     <ul class="nav nav-tabs" id="settingTabs">
         <li role="presentation" class="nav-item"><a role="tab" class="nav-link active" data-bs-toggle="tab" href='#overview'><?php eT("Overview"); ?></a></li>
         <li role="presentation" class="nav-item"><a role="tab" class="nav-link" data-bs-toggle="tab" href='#general'><?php eT("General"); ?></a></li>
