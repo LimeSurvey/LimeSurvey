@@ -335,4 +335,3 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-</div>
