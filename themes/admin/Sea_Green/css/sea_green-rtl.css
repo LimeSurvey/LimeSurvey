@@ -17066,8 +17066,6 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 
 .sub_footer {
   width: 100%;
-  position: absolute;
-  bottom: 0;
 }
 .sub_footer .sub_footer_border {
   border-top: 1px solid #1E1E1E;
