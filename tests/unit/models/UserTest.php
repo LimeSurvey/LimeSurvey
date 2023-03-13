@@ -39,15 +39,8 @@ class UserTest extends BaseModelTestCase
      * Test get users that will always be super admins, no matter their permissions.
      * See config-defaluts.php.
      */
-    public function testGetUsersWithForcedSuperAdminPermissions()
+    public function testGetUsersWithForcedSuperAdminPermissionsByDefault()
     {
-        //Create user.
-        $newPassword = createPassword();
-        $userId = \User::insertUser('test_user', $newPassword, 'John Doe', 1, 'jd@mail.com');
-
-        //Assign superadmin permissions.
-        \Permission::model()->setGlobalPermission($userId, 'superadmin', array('read_p'));
-
         $superAdminsBefore = \User::model()->getSuperAdmins();
 
         //Get forced super admin array. By default user id 1 is a forcedsuperadmin.
@@ -65,13 +58,39 @@ class UserTest extends BaseModelTestCase
         $this->assertTrue($isForced, 'The forced super admin user should still be a super admin.');
         $this->assertSameSize($superAdminsBefore, $superAdminsAfter, 'The forced super admin user should still be a super admin.');
 
-        //Delete user.
-        $user = \User::model()->findByPk($userId);
-        $user->delete();
-        $permission->delete();
-
         //Restore forcedsuperadmin read_p status.
         $permission->read_p = $temp_read_p;
         $permission->save();
+    }
+
+    /**
+     * Make a new user forcedsuperadmin.
+     */
+    public function testGetUsersWithForcedSuperAdminPermissionsOnNewUser()
+    {
+        $superAdminsBefore = \User::model()->getSuperAdmins();
+
+        //Create user.
+        $newPassword = createPassword();
+        $userId = \User::insertUser('test_user', $newPassword, 'John Doe', 1, 'jd@mail.com');
+
+        //Add new user id to forcedsuperadmin array.
+        $tempForcedSuperAdmins = App()->getConfig('forcedsuperadmin');
+        $newForcedSuperAdmins = array_merge($tempForcedSuperAdmins, array( (int)$userId ));
+        App()->setConfig('forcedsuperadmin', $newForcedSuperAdmins);
+        $forcedSuperAdmins = App()->getConfig('forcedsuperadmin');
+
+        $superAdminsAfter = \User::model()->getSuperAdmins();
+        $isForced = \Permission::isForcedSuperAdmin($userId);
+
+        $this->assertTrue($isForced, 'The forced super admin user should still be a super admin.');
+        $this->assertNotSameSize($superAdminsBefore, $superAdminsAfter, 'The new user have superadmin permissions.');
+
+        //Delete user.
+        $user = \User::model()->findByPk($userId);
+        $user->delete();
+
+        //Restore forcedsuperadmin original array.
+        App()->setConfig('forcedsuperadmin', $tempForcedSuperAdmins);
     }
 }
