@@ -123,9 +123,9 @@ class SettingsPluginTest extends TestBaseClass
         }
     }
 
-    public function testGetAndSetSettingEncripted()
+    public function testGetAndSetSettingEncrypted()
     {
-        self::$plugin->setEncriptedSettings(array_keys(self::$settings));
+        self::$plugin->setEncryptedSettings(array_keys(self::$settings));
         foreach (self::$settings as $key => $value) {
             self::$plugin->setSetting($key, $value);
 
@@ -149,9 +149,9 @@ class SettingsPluginTest extends TestBaseClass
     /**
      * Testing for encrypted settings at a survey level
      */
-    public function testGetAndSetSurveySettingEncripted()
+    public function testGetAndSetSurveySettingEncrypted()
     {
-        self::$plugin->setEncriptedSettings(array_keys(self::$settings));
+        self::$plugin->setEncryptedSettings(array_keys(self::$settings));
         foreach (self::$settings as $key => $value) {
             self::$plugin->setSurveySetting($key, $value, self::$surveyId);
 
@@ -173,7 +173,7 @@ class SettingsPluginTest extends TestBaseClass
                 $this->assertEquals(
                     $setting->value,
                     json_encode(LSActiveRecord::encryptSingle(json_encode($value))),
-                    'The setting value obtained with the PluginSetting model should be the encripted value previously set'
+                    'The setting value obtained with the PluginSetting model should be the Encrypted value previously set'
                 );
             }
 
