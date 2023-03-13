@@ -22573,7 +22573,7 @@
       };
 
       i18n = i18n || {};
-      var modalHtml = $("\n            <div id=\"identity__bsconfirmModal\" class=\"modal fade\">\n                <div class=\"modal-dialog\">\n                    <div class=\"modal-content\">\n                        <div class=\"modal-header\">\n                            <h1 class=\"modal-title\">".concat(text, "</h1>\n                            <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\"></button>\n                        </div>\n                        <div class=\"modal-body\">\n                        </div>\n                        <div class=\"modal-footer\">\n                            <button id=\"identity__bsconfirmModal_button_cancel\" type=\"button\" data-bs-dismiss=\"modal\" class=\"btn btn-outline-secondary\">\n                                ").concat(i18n.confirm_cancel || '<i class="ri-close-fill"></i>', "\n                            </button>\n                            <button id=\"identity__bsconfirmModal_button_ok\" type=\"button\" class=\"btn btn-danger\">\n                                ").concat(i18n.confirm_ok || '<i class="ri-check-fill"></i>', "\n                            </button>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        "));
+      var modalHtml = $("\n            <div id=\"identity__bsconfirmModal\" class=\"modal fade\">\n                <div class=\"modal-dialog\">\n                    <div class=\"modal-content\">\n                        <div class=\"modal-header\">\n                            <h1 class=\"modal-title\">".concat(text, "</h1>\n                            <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\"></button>\n                        </div>\n                        <div class=\"modal-body\">\n                        </div>\n                        <div class=\"modal-footer\">\n                            <button id=\"identity__bsconfirmModal_button_cancel\" type=\"button\" data-bs-dismiss=\"modal\" class=\"btn btn-cancel\">\n                                ").concat(i18n.confirm_cancel || '<i class="ri-close-fill"></i>', "\n                            </button>\n                            <button id=\"identity__bsconfirmModal_button_ok\" type=\"button\" class=\"btn btn-danger\">\n                                ").concat(i18n.confirm_ok || '<i class="ri-check-fill"></i>', "\n                            </button>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        "));
 
       if ($('body').find('#identity__bsconfirmModal').length == 0) {
         $('body').append(modalHtml);
@@ -26567,7 +26567,7 @@
 
           if (!useAjax) {
             modalObject.find('form').trigger('submit');
-            modalObject.modal('close');
+            modalObject.modal('hide');
           } else {
             // Ajax request
             runAjaxRequest();

@@ -259,7 +259,7 @@ export default {
 };
 </script>
 <template>
-    <div id="questionexplorer" class="ls-flex-column fill ls-ba menu-pane pt-4">
+    <div id="questionexplorer" class="ls-flex-column fill ls-ba menu-pane h-100 pt-2">
         <div class="ls-flex-row button-sub-bar mb-2">
           <div class="scoped-toolbuttons-right me-2">
             <button

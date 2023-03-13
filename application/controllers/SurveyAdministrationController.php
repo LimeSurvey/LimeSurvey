@@ -3315,47 +3315,35 @@ class SurveyAdministrationController extends LSBaseController
     /**
      * Method to delete URL Params (Panel Integration)
      *
-     * @throws CException
+     * @return void
+     * @throws CDbException
+     * @throws CHttpException
      */
     public function actionDeleteUrlParam()
     {
-        $URLParam = Yii::app()->request->getPost('URLParam');
-        if (empty($URLParam) || empty($URLParam['id'])) {
-            return $this->renderPartial(
-                '/admin/super/_renderJson',
-                ['data' => ['success' => false, 'message' => gT("Invalid request")]]
-            );
-        }
-
         $surveyId = sanitize_int(Yii::app()->request->getPost('surveyId'));
-        if (!Permission::model()->hasSurveyPermission($surveyId, 'surveysettings', 'update')) {
-            return $this->renderPartial(
-                '/admin/super/_renderJson',
-                ['data' => ['success' => false, 'message' => gT("Access denied!")]]
-            );
+        $redirectUrl = ['surveyAdministration/rendersidemenulink/', 'surveyid' => $surveyId, 'subaction' => 'panelintegration'];
+        $paramId = Yii::app()->request->getPost('urlParamId');
+        if (empty($paramId)) {
+            throw new CHttpException(400, gt('Invalid request'));
         }
 
-        $paramId = sanitize_int($URLParam['id']);
+        if (!Permission::model()->hasSurveyPermission($surveyId, 'surveysettings', 'update')) {
+            throw new CHttpException(403, gT("Access denied!"));
+        }
 
+        $paramId = sanitize_int($paramId);
         $URLParam = SurveyURLParameter::model()->findByPk($paramId);
         if (empty($URLParam)) {
-            return $this->renderPartial(
-                '/admin/super/_renderJson',
-                ['data' => ['success' => false, 'message' => gT("URL parameter not found")]]
-            );
+            throw new CHttpException(400, gT("URL parameter not found"));
         }
 
         // Delete the record
         if ($URLParam->delete()) {
-            return $this->renderPartial(
-                '/admin/super/_renderJson',
-                ['data' => ['success' => true, 'message' => gT("URL parameter deleted")]]
-            );
+            Yii::app()->user->setFlash('success', gT("URL parameter deleted"));
         } else {
-            return $this->renderPartial(
-                '/admin/super/_renderJson',
-                ['data' => ['success' => false, 'message' => gT("Could not delete URL parameter")]]
-            );
+            Yii::app()->user->setFlash('error', gT("Could not delete URL parameter"));
         }
+        $this->redirect($redirectUrl);
     }
 }

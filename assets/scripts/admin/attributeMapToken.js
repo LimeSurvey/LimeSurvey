@@ -12,7 +12,7 @@ var onDocumentReadyAttributeMapToken = function(){
             headingHeight = $(this).height();
         }
     });
-    $('.attribute-column .card-header').height(headingHeight);
+    $('.attribute-column .card-header').css({'min-height': headingHeight});
     
     function adjustHeights() {
         $('.attribute-column, .droppable').css({ 'height': 'auto' });

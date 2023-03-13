@@ -51,6 +51,9 @@ export default {
             let classes = "nowrap ";
             classes += (menuItem.pjax ? 'pjax ' : ' ');
             classes += (this.$store.state.lastMenuItemOpen==menuItem.id ? 'selected ' : ' ' );
+            if( menuItem.disabled ){
+                classes += 'disabled'
+            }
             return classes;
         },
         reConvertHTML(string) {
@@ -85,14 +88,13 @@ export default {
         <a  v-for="(menuItem) in sortedMenuEntries" 
             v-bind:key="menuItem.id" 
             v-on:click.stop="setActiveMenuItemIndex(menuItem)"  
-            :href="menuItem.link" 
+            :href="menuItem.disabled ? '#' : menuItem.link" 
             :target="menuItem.link_external == true ? '_blank' : ''"
-            :id="'sidemenu_'+menuItem.name" 
+            :id="'sidemenu_' + menuItem.name" 
             class="list-group-item w-100"
             :class="getLinkClass(menuItem)" >
-
             <div class="d-flex" :class="menuItem.menu_class"
-            v-bind:title="reConvertHTML(menuItem.menu_description)"  
+            v-bind:title="menuItem.disabled ? menuItem.disabled_tooltip : reConvertHTML(menuItem.menu_description)"  
             data-bs-toggle="tooltip" >
                 <div class="ls-space padding all-0 me-auto wrapper">
                     <menuicon class="icon" :icon-type="menuItem.menu_icon_type" :icon="menuItem.menu_icon"></menuicon>

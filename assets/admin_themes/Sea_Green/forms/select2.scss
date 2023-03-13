@@ -1,7 +1,13 @@
 .select2-container--bootstrap-5 {
     .select2-selection--multiple {
         textarea:focus {
-            box-shadow: none;
+            box-shadow : none;
+        }
+    }
+    .select2-selection--single {
+        height : auto;
+        .select2-selection__rendered {
+            line-height : $line-height-16;
         }
     }
 }
@@ -14,6 +20,7 @@
     color: $g-900;
     background-color: $white;
     border-radius: $border-radius;
+    padding: 10px 36px 10px 12px;
 }
 
 .select2-container--bootstrap-5.select2-container--focus .select2-selection, .select2-container--bootstrap-5.select2-container--open .select2-selection {
