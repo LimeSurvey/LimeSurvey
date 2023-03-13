@@ -98,7 +98,7 @@ class PanelBoxWidget extends CWidget
         $bIsRowOpened = false;
                 $this->render('row_header', array(
                     'orientation' => $this->getOrientationClass(),
-                    'containerclass' => ($this->boxesincontainer ? 'container' : 'container-fluid')
+                    'containerclass' => ($this->boxesincontainer ? 'container' : '')
                 ));
         foreach ($boxes as $box) {
 
