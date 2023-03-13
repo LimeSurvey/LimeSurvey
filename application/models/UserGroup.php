@@ -66,7 +66,8 @@ class UserGroup extends LSActiveRecord
                 'min' => 1,
                 'max' => 20,
                 'tooShort' => gT("Name can not be empty."),
-                'tooLong' => gT('Failed to add group! Group name length more than 20 characters.')),
+                'tooLong' => gT('Failed to add group! Group name length more than 20 characters.')
+            ),
         );
     }
 
@@ -138,18 +139,18 @@ class UserGroup extends LSActiveRecord
         $iLoginID = intval(Yii::app()->session['loginID']);
         $iquery = "INSERT INTO {{user_groups}} (name, description, owner_id) VALUES(:group_name, :group_desc, :loginID)";
         $command = Yii::app()->db->createCommand($iquery)->bindParam(":group_name", $group_name, PDO::PARAM_STR)
-                                                            ->bindParam(":group_desc", $group_description, PDO::PARAM_STR)
-                                                            ->bindParam(":loginID", $iLoginID, PDO::PARAM_INT);
+            ->bindParam(":group_desc", $group_description, PDO::PARAM_STR)
+            ->bindParam(":loginID", $iLoginID, PDO::PARAM_INT);
         $result = $command->query();
         if ($result) {
-//Checked
+            //Checked
             $id = (int) getLastInsertID($this->tableName());
             if ($id > 0) {
-                    $user_in_groups_query = 'INSERT INTO {{user_in_groups}} (ugid, uid) VALUES (:ugid, :uid)';
-                    Yii::app()->db->createCommand($user_in_groups_query)
-                        ->bindParam(":ugid", $id, PDO::PARAM_INT)
-                        ->bindParam(":uid", $iLoginID, PDO::PARAM_INT)
-                        ->query();
+                $user_in_groups_query = 'INSERT INTO {{user_in_groups}} (ugid, uid) VALUES (:ugid, :uid)';
+                Yii::app()->db->createCommand($user_in_groups_query)
+                    ->bindParam(":ugid", $id, PDO::PARAM_INT)
+                    ->bindParam(":uid", $iLoginID, PDO::PARAM_INT)
+                    ->query();
             }
             return $id;
         } else {
@@ -171,9 +172,9 @@ class UserGroup extends LSActiveRecord
         $group->description = $description;
         $group->save();
         if ($group->getErrors()) {
-                    return false;
+            return false;
         } else {
-                    return true;
+            return true;
         }
     }
 
@@ -441,24 +442,24 @@ class UserGroup extends LSActiveRecord
         $sort = new CSort();
         $sort->attributes = array(
             'usergroup_id' => array(
-            'asc' => 'ugid',
-            'desc' => 'ugid desc',
+                'asc' => 'ugid',
+                'desc' => 'ugid desc',
             ),
             'name' => array(
-            'asc' => 'name',
-            'desc' => 'name desc',
+                'asc' => 'name',
+                'desc' => 'name desc',
             ),
             'description' => array(
-            'asc' => 'description',
-            'desc' => 'description desc',
+                'asc' => 'description',
+                'desc' => 'description desc',
             ),
             'owner' => array(
-            'asc' => 'users.users_name',
-            'desc' => 'users.users_name desc',
+                'asc' => 'users.users_name',
+                'desc' => 'users.users_name desc',
             ),
             'members' => array(
-            'asc' => 'member_count',
-            'desc' => 'member_count desc',
+                'asc' => 'member_count',
+                'desc' => 'member_count desc',
             ),
         );
 
@@ -590,7 +591,7 @@ class UserGroup extends LSActiveRecord
             if ($emaiLResult['success']) {
                 $msgToUser .= gT('Sending successful') . "<br>";
             } else {
-                $msgToUser .= gT('Error: ') . $emaiLResult['msg'] . "<br>";
+                throw new Exception("Failed to send mail");
             }
         }
 

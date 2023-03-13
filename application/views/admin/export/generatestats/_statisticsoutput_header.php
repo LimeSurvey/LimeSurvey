@@ -9,10 +9,10 @@
  */
 ?>
 <!-- _statisticsoutput_header -->
-<div class="col-xl-<?php echo $nbcols; ?> col-md-12 statisticsbloc" >
-<table class='statisticstable table table-bordered printable' id="quid_<?php echo $outputs['parentqid'];?>">
+<div class="col-xl-<?php echo $nbcols; ?> col-md-12 ps-0 pe-3" >
+<table class='table table-bordered printable' id="quid_<?php echo $outputs['parentqid'];?>">
     <thead>
-        <tr class='success'>
+        <tr class="active">
             <th colspan='4' align='center' style='text-align: center; '>
                 <strong>
                     <?php echo sprintf(gT("Summary for %s"),$outputs['qtitle']); ?>
@@ -23,11 +23,9 @@
             </th>
         </tr>
         <tr>
-            <th colspan='4' align='center' style='text-align: center; '>
+            <td colspan='4' align='center' style='text-align: center; '>
                 <!-- question title -->
-                <strong>
-                    <?php echo $outputs['qquestion'];?>
-                </strong>
+                <?php echo $outputs['qquestion'];?>
             </th>
         </tr>
         <!-- width depend on how much items... -->

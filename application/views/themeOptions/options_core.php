@@ -118,7 +118,7 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
                     if ($iCount > 0) {
                         echo '</div>';
                     }
-                    echo '<div class="row action_hide_on_inherit">';
+                    echo '<div class="row action_hide_on_inherit p-1">';
                 }
 
                 echo '<div class="col-' . $attribute['width'] . '">

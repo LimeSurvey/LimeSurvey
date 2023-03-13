@@ -86,6 +86,7 @@
                         $this->widget('ext.AlertWidget.AlertWidget', [
                             'text' => gT('Only export entries which contain this string in the email address.'),
                             'type' => 'info',
+                            'htmlOptions' => ['class' => 'mt-1'],
                         ]);
                         ?>
 
@@ -112,6 +113,7 @@
                         $this->widget('ext.AlertWidget.AlertWidget', [
                             'text' => gT('Warning: Deleted participants entries cannot be recovered.'),
                             'type' => 'warning',
+                            'htmlOptions' => ['class' => 'mt-1'],
                         ]);
                         ?>
                     </div>
@@ -134,6 +136,7 @@
                         $this->widget('ext.AlertWidget.AlertWidget', [
                             'text' => gT('Important: Quote all content that starts with an equal sign to prevent CSV injections.'),
                             'type' => 'warning',
+                            'htmlOptions' => ['class' => 'mt-1'],
                         ]);
                         ?>
                     </div>
