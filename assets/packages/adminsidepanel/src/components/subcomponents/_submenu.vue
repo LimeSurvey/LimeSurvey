@@ -51,8 +51,9 @@ export default {
             let classes = "nowrap ";
             classes += (menuItem.pjax ? 'pjax ' : ' ');
             classes += (this.$store.state.lastMenuItemOpen==menuItem.id ? 'selected ' : ' ' );
+            classes += menuItem.menu_icon ? "" : 'ls-survey-menu-item' ;
             if( menuItem.disabled ){
-                classes += 'disabled'
+                classes += ' disabled'
             }
             return classes;
         },
