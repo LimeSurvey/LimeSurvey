@@ -10,7 +10,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     /**
      * Toggle show logo value
      */
-    $('#show_logo').on('switchChange.bootstrapSwitch', function(event, state) {
+    $('#show_logo input').on('change', function(event, state) {
         $url = $('#show_logo-url').attr('data-url');
         $.ajax({
             url : $url,
@@ -29,7 +29,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     /**
      * Toggle show last_survey_and_question value
      */
-    $('#show_last_survey_and_question').on('switchChange.bootstrapSwitch', function(event, state) {
+    $('#show_last_survey_and_question input').on('change', function(event, state) {
         $url = $('#show_last_survey_and_question-url').attr('data-url');
         $.ajax({
             url : $url,
@@ -48,7 +48,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     /**
      * Toggle show survey list value
      */
-    $('#show_survey_list').on('switchChange.bootstrapSwitch', function(event, state) {
+    $('#show_survey_list input').on('change', function(event, state) {
         $url = $('#show_survey_list-url').attr('data-url');
         console.ls.log($url);
         $.ajax({
@@ -68,7 +68,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     /**
      * Toggle show survey list search value
      */
-    $('#show_survey_list_search').on('switchChange.bootstrapSwitch', function(event, state) {
+    $('#show_survey_list_search input').on('change', function(event, state) {
         $url = $('#show_survey_list_search-url').attr('data-url');
         console.ls.log($url);
         $.ajax({
@@ -88,7 +88,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     /**
      * Toggle wrap boxes in container value
      */
-    $('#boxes_in_container').on('switchChange.bootstrapSwitch', function(event, state) {
+    $('#boxes_in_container input').on('change', function(event, state) {
         $url = $('#boxes_in_container-url').attr('data-url');
         console.ls.log($url);
         $.ajax({

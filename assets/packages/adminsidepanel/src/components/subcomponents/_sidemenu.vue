@@ -73,13 +73,13 @@ export default {
 }
 </script>
 <template>
-    <div class="ls-flex-column menu-pane overflow-enabled ls-space all-0 py-4 bg-white" >
+    <div class="ls-flex-column menu-pane overflow-enabled ls-space all-0 py-4 bg-white h-100" >
         <div v-show="!loadingState"  :title="sortedMenues[0].title" :id="sortedMenues[0].id" class="ls-flex-row wrap ls-space padding all-0" v-bind:key="sortedMenues[0].id">
             <submenu :menu="sortedMenues[0]"></submenu>
         </div>
 
         <div v-show="!loadingState"  :title="sortedMenues[1].title" :id="sortedMenues[1].id" class="ls-flex-row wrap ls-space padding all-0" v-bind:key="sortedMenues[1].id">
-            <label class="menu-label" style="padding:0.5rem 1rem; margin-top:1rem">{{sortedMenues[1].title}}</label>
+            <label class="menu-label mt-3 p-2 ls-survey-menu-item">{{sortedMenues[1].title}}</label>
             <submenu :menu="sortedMenues[1]"></submenu>
         </div>
         <!-- <div v-show="!loadingState"  v-for="menu in sortedMenues" :title="menu.title" :id="menu.id" class="ls-flex-row wrap ls-space padding all-0" v-bind:key="menu.id">

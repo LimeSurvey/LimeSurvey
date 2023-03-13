@@ -11147,6 +11147,29 @@ a {
   cursor: not-allowed !important;
 }
 
+.tab-content {
+  padding-top: 1rem;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.ls-survey-menu-item {
+  padding-left: 30px !important;
+}
+
+.ls-survey-menu-item.menu-label {
+  padding-left: 33px !important;
+}
+
+.list-group-item.disabled {
+  color: #777;
+  cursor: not-allowed;
+  background-color: #fff !important;
+  pointer-events: auto !important;
+}
+
 body {
   background-color: #F9F9FB;
 }
@@ -17071,8 +17094,6 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 
 .sub_footer {
   width: 100%;
-  position: absolute;
-  bottom: 0;
 }
 .sub_footer .sub_footer_border {
   border-top: 1px solid #1E1E1E;
@@ -18062,12 +18083,6 @@ input[type=number] {
 #sidebar {
   width: 100%;
 }
-#sidebar .questiongroup-list-group > li.selected {
-  opacity: 0.9;
-}
-#sidebar .questiongroup-list-group > li.selected.activated {
-  opacity: 1;
-}
 #sidebar .button-sub-bar {
   min-height: 32px;
 }
@@ -18162,6 +18177,9 @@ input[type=number] {
 #sidebar .selected.activated {
   background: linear-gradient(to right, #14AE5C 0px, #14AE5C 8px, #fff 8px, #fff 100%);
 }
+#sidebar .selected.disabled {
+  background: linear-gradient(to right, #D3D5DA 0px, #D3D5DA 8px, #fff 8px, #fff 100%) !important;
+}
 #sidebar a:not(.btn, .nav-tabs .nav-link) {
   color: #1E1E1E;
   font-weight: 400;
@@ -18205,7 +18223,7 @@ input[type=number] {
 }
 #sidebar .subpanel.level-0 .selected {
   font-weight: 500;
-  background: linear-gradient(to right, #40ab46 0px, #40ab46 13px, #fff 13px, #fff 100%);
+  background: linear-gradient(to right, #40ab46 0px, #40ab46 8px, #fff 8px, #fff 100%);
 }
 #sidebar .subpanel.level-0 .selected .wrapper .title {
   color: #1E1E1E;
@@ -18218,13 +18236,13 @@ input[type=number] {
   background: linear-gradient(to right, #49bb50 0px, #49bb50 6px, #fff 6px, #fff 100%);
 }
 #sidebar .subpanel.level-1 .selected {
-  background: linear-gradient(to right, #49bb50 0px, #49bb50 13px, #fff 13px, #fff 100%);
+  background: linear-gradient(to right, #49bb50 0px, #49bb50 8px, #fff 8px, #fff 100%);
 }
 #sidebar .subpanel.level-2 .menu-selected {
   background: linear-gradient(to right, #5cc262 0px, #5cc262 6px, #fff 6px, #fff 100%);
 }
 #sidebar .subpanel.level-2 .selected {
-  background: linear-gradient(to right, #5cc262 0px, #5cc262 13px, #fff 13px, #fff 100%);
+  background: linear-gradient(to right, #5cc262 0px, #5cc262 8px, #fff 8px, #fff 100%);
 }
 
 .list-group {

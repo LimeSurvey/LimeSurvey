@@ -32,7 +32,7 @@
                 </p>
                             <?= gT("If the new survey ID is already used, a random one will be assigned."); ?> </span>
                 <!-- Submit -->
-                <div class="text-center">
+                <div class="mt-3">
                     <input type='submit' class='btn btn-primary col-4' value='<?php eT("Copy survey"); ?>' />
                     <?php if (isset($surveyid)) echo '<input type="hidden" name="sid" value="' . $surveyid . '" />'; ?>
                     <input type='hidden' name='action' value='copysurvey' />

@@ -525,8 +525,11 @@ export default {
             @click="toggleSmallScreenHide" 
             v-html="' '"
         />
+        <!-- this is used for fixing resize handler bug -->
+        <div v-if="isMouseDown" style="position:fixed; inset: 0;" />
     </div>
     
+
 </template>
 <style lang="scss" scoped>
     .sidebar_loader {

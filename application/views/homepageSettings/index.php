@@ -8,7 +8,6 @@ echo viewHelper::getViewTestTag('homepageSettings');
 
 App()->getClientScript()->registerScript(
     'HomepageSettingsBSSwitcher',
-    "LS.renderBootstrapSwitch();",
     LSYii_ClientScript::POS_POSTSCRIPT
 );
 
