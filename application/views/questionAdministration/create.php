@@ -68,7 +68,7 @@ $questionTheme = !empty($oQuestion->questionTheme) ? $oQuestion->questionTheme :
     />
     <div id="advanced-question-editor" class="row"<?= empty($visibilityEditor) ? ' style="display:none;"' : '' ?>>
         <x-test id="action::addQuestion"></x-test>
-        <div class="col-xl-8 ps-4 pe-3">
+        <div class="col-xl-8 pe-1">
             <div class="row">
                 <div class="col-12">
                     <!-- Text elements -->

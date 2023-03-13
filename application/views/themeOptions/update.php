@@ -7,7 +7,7 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
 
 ?>
 <?php if (empty($model->sid)) : ?>
-<div class="container-fluid">
+<div class="">
 <?php else : ?>
     <div class="col-12 side-body ls-settings-wrapper <?= getSideBodyClass(false) ?>" id="theme-option-sidebody">
 <?php endif; ?>

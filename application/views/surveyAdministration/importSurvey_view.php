@@ -49,97 +49,95 @@
         <p class="lead"><?php echo $sSummaryHeader; ?></p>
 
         <!-- Import result messages -->
-        <div class="container-fluid">
-            <div class="row justify-content-center">
-                <div class="col-lg-2">
-                    <table class="table table-striped table-condensed ">
+        <div class="row justify-content-center">
+            <div class="col-lg-2">
+                <table class="table table-striped table-condensed ">
+                    <tr>
+                        <td><?php eT("Surveys"); ?>:</td>
+                        <td><?php echo $aImportResults['surveys']; ?></td>
+                    </tr>
+                    <tr>
+                        <td><?php eT("Languages"); ?>:</td>
+                        <td><?php echo $aImportResults['languages']; ?></td>
+                    </tr>
+                    <tr>
+                        <td><?php eT("Question groups"); ?>:</td>
+                        <td><?php echo $aImportResults['groups']; ?></td>
+                    </tr>
+                    <tr>
+                        <td><?php eT("Questions"); ?>:</td>
+                        <td><?php echo $aImportResults['questions']; ?></td>
+                    </tr>
+                    <tr>
+                        <td><?php eT("Question attributes"); ?>:</td>
+                        <td><?php echo $aImportResults['question_attributes']; ?></td>
+                    </tr>
+                    <tr>
+                        <td><?php eT("Answers"); ?>:</td>
+                        <td><?php echo $aImportResults['answers']; ?></td>
+                    </tr>
+                    <?php if (isset($aImportResults['subquestions'])) {
+                        ?>
                         <tr>
-                            <td><?php eT("Surveys"); ?>:</td>
-                            <td><?php echo $aImportResults['surveys']; ?></td>
+                            <td><?php eT("Subquestions"); ?>:</td>
+                            <td><?php echo $aImportResults['subquestions']; ?></td>
                         </tr>
+                    <?php }
+                    if (isset($aImportResults['defaultvalues'])) {
+                        ?>
                         <tr>
-                            <td><?php eT("Languages"); ?>:</td>
-                            <td><?php echo $aImportResults['languages']; ?></td>
+                            <td><?php eT("Default answers"); ?>:</td>
+                            <td><?php echo $aImportResults['defaultvalues']; ?></td>
                         </tr>
+                    <?php }
+                    if (isset($aImportResults['conditions'])) {
+                        ?>
                         <tr>
-                            <td><?php eT("Question groups"); ?>:</td>
-                            <td><?php echo $aImportResults['groups']; ?></td>
+                            <td><?php eT("Condition"); ?>:</td>
+                            <td><?php echo $aImportResults['conditions']; ?></td>
                         </tr>
+                    <?php }
+                    if (isset($aImportResults['labelsets'])) {
+                        ?>
                         <tr>
-                            <td><?php eT("Questions"); ?>:</td>
-                            <td><?php echo $aImportResults['questions']; ?></td>
+                            <td><?php eT("Label sets"); ?>:</td>
+                            <td><?php echo $aImportResults['labelsets']; ?></td>
                         </tr>
+                    <?php }
+                    if (isset($aImportResults['deniedcountls']) && $aImportResults['deniedcountls'] > 0) {
+                        ?>
                         <tr>
-                            <td><?php eT("Question attributes"); ?>:</td>
-                            <td><?php echo $aImportResults['question_attributes']; ?></td>
+                            <td><?php eT("Not imported label sets"); ?>:</td>
+                            <td><?php echo $aImportResults['deniedcountls']; ?><?php eT("(Label sets were not imported since you do not have the permission to create label sets.)"); ?> </td>
                         </tr>
+                    <?php } ?>
+                    <tr>
+                        <td><?php eT("Assessments"); ?>:</td>
+                        <td><?php echo $aImportResults['assessments']; ?></td>
+                    </tr>
+                    <tr>
+                        <td><?php eT("Quotas"); ?>:</td>
+                        <td><?php echo $aImportResults['quota']; ?></td>
+                    </tr>
+                    <tr>
+                        <td><?php eT("Quota members:"); ?></td>
+                        <td><?php echo $aImportResults['quotamembers']; ?></td>
+                    </tr>
+                    <tr>
+                        <td><?php eT("Quota language settings:"); ?></td>
+                        <td><?php echo $aImportResults['quotals']; ?></td>
+                    </tr>
+                    <?php if (!empty($aImportResults['plugin_settings'])) { ?>
                         <tr>
-                            <td><?php eT("Answers"); ?>:</td>
-                            <td><?php echo $aImportResults['answers']; ?></td>
+                            <td><?php eT("Plugin settings:"); ?></td>
+                            <td><?php echo $aImportResults['plugin_settings']; ?></td>
                         </tr>
-                        <?php if (isset($aImportResults['subquestions'])) {
-                            ?>
-                            <tr>
-                                <td><?php eT("Subquestions"); ?>:</td>
-                                <td><?php echo $aImportResults['subquestions']; ?></td>
-                            </tr>
-                        <?php }
-                        if (isset($aImportResults['defaultvalues'])) {
-                            ?>
-                            <tr>
-                                <td><?php eT("Default answers"); ?>:</td>
-                                <td><?php echo $aImportResults['defaultvalues']; ?></td>
-                            </tr>
-                        <?php }
-                        if (isset($aImportResults['conditions'])) {
-                            ?>
-                            <tr>
-                                <td><?php eT("Condition"); ?>:</td>
-                                <td><?php echo $aImportResults['conditions']; ?></td>
-                            </tr>
-                        <?php }
-                        if (isset($aImportResults['labelsets'])) {
-                            ?>
-                            <tr>
-                                <td><?php eT("Label sets"); ?>:</td>
-                                <td><?php echo $aImportResults['labelsets']; ?></td>
-                            </tr>
-                        <?php }
-                        if (isset($aImportResults['deniedcountls']) && $aImportResults['deniedcountls'] > 0) {
-                            ?>
-                            <tr>
-                                <td><?php eT("Not imported label sets"); ?>:</td>
-                                <td><?php echo $aImportResults['deniedcountls']; ?><?php eT("(Label sets were not imported since you do not have the permission to create label sets.)"); ?> </td>
-                            </tr>
-                        <?php } ?>
-                        <tr>
-                            <td><?php eT("Assessments"); ?>:</td>
-                            <td><?php echo $aImportResults['assessments']; ?></td>
-                        </tr>
-                        <tr>
-                            <td><?php eT("Quotas"); ?>:</td>
-                            <td><?php echo $aImportResults['quota']; ?></td>
-                        </tr>
-                        <tr>
-                            <td><?php eT("Quota members:"); ?></td>
-                            <td><?php echo $aImportResults['quotamembers']; ?></td>
-                        </tr>
-                        <tr>
-                            <td><?php eT("Quota language settings:"); ?></td>
-                            <td><?php echo $aImportResults['quotals']; ?></td>
-                        </tr>
-                        <?php if (!empty($aImportResults['plugin_settings'])) { ?>
-                            <tr>
-                                <td><?php eT("Plugin settings:"); ?></td>
-                                <td><?php echo $aImportResults['plugin_settings']; ?></td>
-                            </tr>
-                        <?php } ?>
-                        <tr>
-                            <td><?php eT("Themes:"); ?></td>
-                            <td><?php echo $aImportResults['themes']; ?></td>
-                        </tr>
-                    </table>
-                </div>
+                    <?php } ?>
+                    <tr>
+                        <td><?php eT("Themes:"); ?></td>
+                        <td><?php echo $aImportResults['themes']; ?></td>
+                    </tr>
+                </table>
             </div>
         </div>
 
@@ -186,7 +184,6 @@
             <p class="lead"><?php echo eT('Warning: There are some differences between current theme options and original theme options!'); ?></p>
             <p class="lead"><?php echo eT('Current theme options are applied for this survey.'); ?></p>
             <h2 class="warning"><?php eT("Theme options differences"); ?>:</h2>
-            <div class="container-fluid">
                 <div class="row justify-content-center">
                     <div class="col-lg-4">
                         <table class="table table-striped table-condensed ">
@@ -207,7 +204,6 @@
                         </table>
                     </div>
                 </div>
-            </div>
 
             <?php echo CHtml::form([$sLinkApplyThemeOptions], 'post', []); ?>
             <label><?php echo eT('If you want to apply original theme options, click here: '); ?></label>

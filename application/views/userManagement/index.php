@@ -13,17 +13,14 @@ echo viewHelper::getViewTestTag('usersIndex');
 ?>
 
 <?php if (!Permission::model()->hasGlobalPermission('users', 'read')) : ?>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-12">
-                <h2><?= gT("We are sorry but you don't have permissions to do this.") ?></h2>
-            </div>
+    <div class="row">
+        <div class="col-12">
+            <h2><?= gT("We are sorry but you don't have permissions to do this.") ?></h2>
         </div>
     </div>
     <?php App()->end(); ?>
 <?php endif; ?>
 
-<div class="container-fluid">
     <?php
     $this->widget('application.extensions.admin.grid.CLSGridView',
         [
@@ -46,7 +43,6 @@ echo viewHelper::getViewTestTag('usersIndex');
         ]
     );
     ?>
-</div>
 
 <!-- To update rows per page via ajax -->
 <script type="text/javascript">

@@ -230,7 +230,7 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
         if ($category == 'Images') {
         ?>
             <div class="row action_hide_on_inherit">
-                <div class="container-fluid ls-space margin bottom-15 top-15">
+                <div class="ls-space margin bottom-15 top-15">
                     <div class="row ls-space margin bottom-15">
                         <div class="col-4">
                             <label>

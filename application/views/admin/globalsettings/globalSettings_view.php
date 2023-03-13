@@ -24,7 +24,7 @@ App()->getClientScript()->registerScript('GlobalSettingsBSSwitcher', "LS.renderB
 <script type="text/javascript">
     var msgCantRemoveDefaultLanguage = '<?php eT("You can't remove the default language.", 'js'); ?>';
 </script>
-<div class="container-fluid welcome full-page-wrapper ls-space margin left-15 right-15">
+<div class="welcome full-page-wrapper ls-space margin left-15 right-15">
     <ul class="nav nav-tabs" id="settingTabs">
         <li role="presentation" class="nav-item"><a class="nav-link active" role="tab" data-bs-toggle="tab" href='#overview'><?php eT("Overview"); ?></a></li>
         <li role="presentation" class="nav-item"><a class="nav-link" role="tab" data-bs-toggle="tab" href='#general'><?php eT("General"); ?></a></li>

@@ -35,7 +35,7 @@
         />
         <!-- The tabs & tab-fanes -->
         <div class="row">
-            <div class="col-xl-8 ps-4 pe-3">
+            <div class="col-xl-8 pe-1">
                 <?php
                 //rendering the language tabs (questioncode, questiontext, questionhelp)
                 $this->renderPartial(

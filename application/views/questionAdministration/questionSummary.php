@@ -12,27 +12,25 @@
     <?php
     if ($question->qid !== 0): ?>
             <!-- Question summary -->
-            <div class="container-fluid">
-                <div class="pagetitle">
-                    <span class="h1"><?php
-                        eT('Question summary'); ?>&nbsp;</span>
-                    <small>
-                        <em>
-                            <?= $question->title; ?> (ID: <?= (int)$question->qid; ?>)
-                        </em>&nbsp;
-                    </small>
-                </div>
-                <?php
-                $this->renderPartial(
-                    "summary",
-                    [
-                        'question' => $question,
-                        'questionTheme' => $questionTheme,
-                        'answersCount' => count($question->answers),
-                        'subquestionsCount' => count($question->subquestions),
-                        'advancedSettings' => $advancedSettings
-                    ]
-                ); ?>
+            <div class="pagetitle">
+                <span class="h1"><?php
+                    eT('Question summary'); ?>&nbsp;</span>
+                <small>
+                    <em>
+                        <?= $question->title; ?> (ID: <?= (int)$question->qid; ?>)
+                    </em>&nbsp;
+                </small>
             </div>
+            <?php
+            $this->renderPartial(
+                "summary",
+                [
+                    'question' => $question,
+                    'questionTheme' => $questionTheme,
+                    'answersCount' => count($question->answers),
+                    'subquestionsCount' => count($question->subquestions),
+                    'advancedSettings' => $advancedSettings
+                ]
+            ); ?>
     <?php endif; ?>
 </div>

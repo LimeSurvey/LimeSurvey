@@ -37,7 +37,6 @@
     $columnstyle = "attrcol_".$columncount;
 ?>
 
-<div class="container-fluid">
 <div class='row'>
     <div class='col-4'>
         <div id="centralattribute" class="card card-primary <?php echo $columnstyle ?> h-100">
@@ -214,4 +213,3 @@ $ajaxloader = array(
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-</div>
