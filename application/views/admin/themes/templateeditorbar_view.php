@@ -64,7 +64,7 @@ $importModal = false;
 <!-- theme dropdown select boxes-->
 
             <!-- Right Menu -->
-<div class="container-fluid mt-3 mb-3">
+<div class="mt-3 mb-3">
     <div class="row row-cols-auto align-items-center justify-content-end gx-2">
         <!-- Theme Select Box -->
         <label class="col col-form-label text-nowrap" for='templatedir'><?php eT("Theme:"); ?></label>
@@ -127,6 +127,7 @@ $importModal = false;
             $this->widget('ext.AlertWidget.AlertWidget', [
                 'text' => $message,
                 'type' => 'info',
+                'htmlOptions' => ['class' => 'mt-1'],
             ]);
             ?>
         <?php endif; ?>

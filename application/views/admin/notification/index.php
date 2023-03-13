@@ -3,7 +3,7 @@
 ?>
 <!-- List all notifications -->
 
-<div class="container-fluid welcome full-page-wrapper">
+<div class="welcome full-page-wrapper">
     <div class="pagetitle h3"><?php eT('Notifications'); ?></div>
     <?php
     $surveyGrid = $this->widget('application.extensions.admin.grid.CLSGridView', [

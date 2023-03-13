@@ -134,3 +134,14 @@ blockquote {
   padding-right: 0;
 }
 // Question editor END
+
+// Main Design (to achieve 20px padding left an right for the main container) START
+.container-fluid {
+  padding-left: $left-main-padding;
+  padding-right: $right-main-padding;
+}
+
+//.main-content-container {
+//  padding-left: 8px;
+//}
+// Main Design END

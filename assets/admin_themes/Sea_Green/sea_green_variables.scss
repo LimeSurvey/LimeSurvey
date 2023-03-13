@@ -150,7 +150,6 @@ $input-border-color-disabled:       $g-600;
 $input-focus-color:                 $g-900;
 $input-focus-border-color:           $g-900;
 
-
 // tabs
 $nav-tabs-link-active-color:        $g-900;
 // modal
@@ -174,6 +173,10 @@ $navbar-link-hover-color: shift-color($navbar-color, $link-shade-percentage) !de
 // table
 $table-hover-bg     : $g-200;
 $table-border-color : $g-400;
+
+// Main spacing
+$left-main-padding: 20px;
+$right-main-padding: 20px;
 
 // pagination
 @import "tables/pagination_varriables.scss";

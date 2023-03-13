@@ -1,3 +1,4 @@
+<!--@TODO is this view even used?-->
 <div class="container-fluid welcome">
     <div class="row text-center">
         <div class="col-xxl-3 offset-xl-4 col-md-6 offset-md-3">

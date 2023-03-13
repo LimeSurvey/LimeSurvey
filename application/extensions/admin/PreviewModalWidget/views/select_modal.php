@@ -15,42 +15,40 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-4 ls-ba">
-                            <div class="ls-space padding all-0">
-                                <div class="list-group ls-space margin all-0">
-                                    <?php foreach ($this->itemsArray as $sItemKey => $aItemContent) { ?>
-                                        <a href="#"
-                                           class="list-group-item selector__Item--select-<?= $this->widgetsJsName ?> <?= @$aItemContent['htmlclasses'] ?>"
-                                           data-selector="<?= !empty($aItemContent['class']) ? $aItemContent['class'] : $sItemKey ?>"
-                                           data-key="<?= $sItemKey ?>"
-                                           data-item-value='<?= json_encode([
-                                               "key"       => $sItemKey,
-                                               "title"     => htmlentities($aItemContent['title']),
-                                               "itemArray" => $aItemContent
-                                           ]); ?>'
-                                            <?= @$aItemContent['extraAttributes'] ?>
-                                        >
-                                            <?= $aItemContent['title'] ?>
-                                            <?php if (YII_DEBUG) : ?>
-                                                <em class="small"><?= gT($this->debugKeyCheck) ?> <?= $sItemKey ?></em>
-                                            <?php endif; ?>
-                                        </a>
-                                    <?php } ?>
-                                </div>
+                <div class="row">
+                    <div class="col-4 ls-ba">
+                        <div class="ls-space padding all-0">
+                            <div class="list-group ls-space margin all-0">
+                                <?php foreach ($this->itemsArray as $sItemKey => $aItemContent) { ?>
+                                    <a href="#"
+                                       class="list-group-item selector__Item--select-<?= $this->widgetsJsName ?> <?= @$aItemContent['htmlclasses'] ?>"
+                                       data-selector="<?= !empty($aItemContent['class']) ? $aItemContent['class'] : $sItemKey ?>"
+                                       data-key="<?= $sItemKey ?>"
+                                       data-item-value='<?= json_encode([
+                                           "key"       => $sItemKey,
+                                           "title"     => htmlentities($aItemContent['title']),
+                                           "itemArray" => $aItemContent
+                                       ]); ?>'
+                                        <?= @$aItemContent['extraAttributes'] ?>
+                                    >
+                                        <?= $aItemContent['title'] ?>
+                                        <?php if (YII_DEBUG) : ?>
+                                            <em class="small"><?= gT($this->debugKeyCheck) ?> <?= $sItemKey ?></em>
+                                        <?php endif; ?>
+                                    </a>
+                                <?php } ?>
                             </div>
                         </div>
-                        <div class="col-8">
-                            <div class="row">
-                                <div class="col-12">
-                                    <h3>
-                                        <p id="selector__<?= $this->widgetsJsName ?>-currentSelected"><?= $this->currentSelected ?></p>
-                                    </h3>
-                                </div>
+                    </div>
+                    <div class="col-8">
+                        <div class="row">
+                            <div class="col-12">
+                                <h3>
+                                    <p id="selector__<?= $this->widgetsJsName ?>-currentSelected"><?= $this->currentSelected ?></p>
+                                </h3>
                             </div>
-                            <div class="row" id="selector__<?= $this->widgetsJsName ?>-detailPage">
-                            </div>
+                        </div>
+                        <div class="row" id="selector__<?= $this->widgetsJsName ?>-detailPage">
                         </div>
                     </div>
                 </div>

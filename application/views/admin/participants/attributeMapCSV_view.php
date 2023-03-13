@@ -1,8 +1,7 @@
-<div class='header ui-widget-header'>
+<div class='header'>
     <h3 class='pagetitle'><?php neT("Select which fields to import as attributes with your {n} participant.|Select which fields to import as attributes with your {n} participants.", $linecount); ?></h3>
 </div>
 
-<div class="container-fluid">
 <div class="row justify-content-start">
     <div class='col-4'>
         <div id="csvattribute" class="card card-primary h-100">
@@ -81,5 +80,4 @@
         <input class='btn btn-outline-secondary' type="button" name="attmap" id="attmap" value="<?php eT("Continue"); ?>" />
     </div>
     <div id="processing" title="<?php eT("Processing...") ?>"></div>
-</div>
 </div>

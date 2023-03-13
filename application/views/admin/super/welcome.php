@@ -124,7 +124,7 @@ gT('Themes');
     ?>
         <div class="container">
             <?php
-            $htmlContent = "<div class='container-fluid'>
+            $htmlContent = "
                 <div class='row'>
                     <h4 class='col-12'><span class='ri-error-warning-fill'></span>" . gT('Warning!') . "</h4>
                 </div>
@@ -134,8 +134,7 @@ gT('Themes');
                 gT('LimeSurvey 3.x or newer does not support Internet Explorer for the LimeSurvey administration, anymore. However most of the functionality should still work.') . "<br/>" .
                 gT('If you have any issues, please try using a modern browser first, before reporting it.') .
                 "</div>
-                </div>
-            </div>";
+                </div>";
             $this->widget('ext.AlertWidget.AlertWidget', [
                 'text' => $htmlContent,
                 'type' => 'danger',
