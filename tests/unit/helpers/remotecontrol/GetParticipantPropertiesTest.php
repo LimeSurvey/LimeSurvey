@@ -102,4 +102,51 @@ class GetParticipantPropertiesTest extends BaseTest
 
         $this->assertSame($participant_4['lastname'], $dataToChange['lastname'], 'The data retrieved does not correspond with the data set.');
     }
+
+    public function testTryToSetInexistentParticipantProperties()
+    {
+        $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
+
+        $dataToChange = array(
+            'email' => 'new_mail@mail.com'
+        );
+
+        $response = $this->handler->set_participant_properties($sessionKey, self::$surveyId, 999999, $dataToChange);
+
+        $this->assertIsArray($response, 'The error response should be an array.');
+        $this->assertArrayHasKey('status', $response, 'The error response array does not contain a status key.');
+        $this->assertSame($response['status'], 'Error: Invalid tokenid', 'An invalid token id error was expected.');
+    }
+
+    public function testSetAndGetTokenAttribute()
+    {
+        $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
+
+        $tokenAttributeToSet = array(
+            'attribute_1' => 'Test attribute'
+        );
+
+        //Get a previously created participant.
+        $participant_3 = $this->handler->get_participant_properties($sessionKey, self::$surveyId, 3);
+        $this->handler->set_participant_properties($sessionKey, self::$surveyId, 3, $tokenAttributeToSet);
+
+        $participant_3 = $this->handler->get_participant_properties($sessionKey, self::$surveyId, $participant_3['tid']);
+        $this->assertSame($participant_3['attribute_1'], $tokenAttributeToSet['attribute_1'], 'The data retrieved does not correspond with the data set.');
+    }
+
+    public function testSetAndGetEncryptedTokenAttribute()
+    {
+        $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
+
+        $tokenAttributeToSet = array(
+            'attribute_2' => 'Test attribute'
+        );
+
+        //Get a previously created participant.
+        $participant_3 = $this->handler->get_participant_properties($sessionKey, self::$surveyId, 3);
+        $this->handler->set_participant_properties($sessionKey, self::$surveyId, 3, $tokenAttributeToSet);
+
+        $participant_3 = $this->handler->get_participant_properties($sessionKey, self::$surveyId, $participant_3['tid']);
+        $this->assertSame($participant_3['attribute_2'], $tokenAttributeToSet['attribute_2'], 'The data retrieved does not correspond with the data set.');
+    }
 }
