@@ -34,6 +34,19 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.9 (build 230306) to 5.6.10 (build 230313) March 13, 2023
+-Fixed issue #18644: YII_DEBUG was not used inside KCFinder (#2934) (Gabriel Jenik)
+-Fixed issue #18631: Order of answer options done on the base language are not reflected on secondary languages. (#2926) (Gabriel Jenik)
+-Fixed issue #18476: CPDB - Add attribute modal - delete language does not work (#2941) (Gabriel Jenik)
+-Fixed issue #18336: Placeholder fields VALIDFROM and VALIDUNTIL not listed at email templates (#2813) (Gabriel Jenik)
+#Updated translation: Polish by 2BITS_PL
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Italian by c_schmitz, lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+
+
 Changes from 5.6.8 (build 230227) to 5.6.9 (build 230306) March 6, 2023
 -Fixed issue: Unable to run integrity check on databases with a big number of surveys (Carsten Schmitz)
 -Fixed issue: High memory usage when exporting participants (Carsten Schmitz)
