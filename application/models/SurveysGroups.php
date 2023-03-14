@@ -118,22 +118,13 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
                     'class' => 'CCheckBoxColumn',
                     'selectableRows' => '100',
                 ),
-
-                array(
-                    'header' => gT('Action'),
-                    'name' => 'sortorder',
-                    'type' => 'raw',
-                    'value' => '$data->buttons',
-                    'headerHtmlOptions' => array('class' => ''),
-                    'htmlOptions' => array('class' => ' button-column'),   // Cells that include buttons need the 'button-column' class to avoid triggering the 'selectionChanged' event
-                ),
                 array(
                     'header' => gT('Survey group ID'),
                     'name' => 'gsid',
                     'value' => '$data->hasViewSurveyGroupRight ? CHtml::link($data->gsid, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid))) : $data->gsid',
                     'type' => 'raw',
                     'headerHtmlOptions' => array('class' => ''),
-                    'htmlOptions' => array('class' => ''),
+                    'htmlOptions' => ['class' => 'has-link'],
                 ),
 
 
@@ -142,54 +133,68 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
                     'name' => 'name',
                     'value' => '$data->hasViewSurveyGroupRight ? CHtml::link($data->name, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid))) : $data->name',
                     'type' => 'raw',
-                    'headerHtmlOptions' => array('class' => ''),
+                    'htmlOptions' => ['class' => 'has-link'],
                 ),
 
                 array(
                     'header' => gT('Title'),
                     'name' => 'title',
-                    'value' => '$data->title',
-                    'headerHtmlOptions' => array('class' => ''),
+                    'value' => '$data->hasViewSurveyGroupRight ? CHtml::link($data->title, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid))) : $data->title',
+                    'type'              => 'raw',
+                    'htmlOptions' => ['class' => 'has-link'],
                 ),
 
                 array(
                     'header' => gT('Description'),
                     'name' => 'description',
-                    'value' => '$data->description',
+                    'value' => '$data->hasViewSurveyGroupRight ? CHtml::link($data->description, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid))) : $data->description',
+                    'type'              => 'raw',
                     'headerHtmlOptions' => array('class' => ''),
-                    'htmlOptions' => array('class' => ''),
+                    'htmlOptions' => ['class' => 'has-link'],
                 ),
 
                 array(
                     'header' => gT('Parent group'),
                     'name' => 'parent',
-                    'value' => '$data->parentTitle',
+                    'value' => '$data->hasViewSurveyGroupRight ? CHtml::link($data->parentTitle, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid))) : $data->parentTitle',
+                    'type'              => 'raw',
                     'headerHtmlOptions' => array('class' => ''),
-                    'htmlOptions' => array('class' => ''),
+                    'htmlOptions' => ['class' => 'has-link'],
                 ),
 
                 array(
                     'header' => gT('Available'),
                     'name' => 'alwaysavailable',
-                    'value' => '$data->alwaysavailable',
+                    'value' => '$data->hasViewSurveyGroupRight ? CHtml::link($data->alwaysavailable, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid))) : $data->alwaysavailable',
+                    'type'              => 'raw',
                     'headerHtmlOptions' => array('class' => ''),
-                    'htmlOptions' => array('class' => ''),
+                    'htmlOptions' => ['class' => 'has-link'],
                 ),
 
                 array(
                     'header' => gT('Owner'),
                     'name' => 'owner',
-                    'value' => '!empty($data->owner) ? $data->owner->users_name : ""',
+                    'value' => '$data->hasViewSurveyGroupRight && !empty($data->owner) ? CHtml::link($data->owner->users_name, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid))) : ""',
+                    'type'              => 'raw',
                     'headerHtmlOptions' => array('class' => ''),
-                    'htmlOptions' => array('class' => ''),
+                    'htmlOptions' => ['class' => 'has-link'],
                 ),
 
                 array(
                     'header' => gT('Order'),
                     'name' => 'sortorder',
-                    'value' => '$data->sortorder',
+                    'value' => '$data->hasViewSurveyGroupRight ? CHtml::link($data->sortorder, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid))) : $data->sortorder',
+                    'type'              => 'raw',
                     'headerHtmlOptions' => array('class' => ''),
-                    'htmlOptions' => array('class' => ''),
+                    'htmlOptions' => ['class' => 'has-link'],
+                ),
+                array(
+                    'header' => gT('Action'),
+                    'name' => 'actions',
+                    'type' => 'raw',
+                    'value' => '$data->buttons',
+                    'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+                    'htmlOptions'       => ['class' => 'text-center ls-sticky-column'],
                 ),
             );
     }
@@ -294,31 +299,58 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * Returns the buttons for gridview
+     * Returns the actions for gridview
      * @return string
      */
     public function getButtons()
     {
-        $sDeleteUrl = App()->createUrl("admin/surveysgroups/sa/delete", array("id" => $this->gsid));
-        $sEditUrl = App()->createUrl("admin/surveysgroups/sa/update", array("id" => $this->gsid));
-        $sSurveySettingsUrl = App()->createUrl("admin/surveysgroups/sa/surveysettings", array("id" => $this->gsid));
-        $sPermissionUrl = App()->createUrl("surveysGroupsPermission/index", array("id" => $this->gsid));
-        $button = "<div class='icon-btn-row'>";
-        if ($this->hasPermission('group', 'read')) {
-            $button .= '<a class="btn btn-sm btn-outline-secondary" href="' . $sEditUrl . '" role="button" data-bs-toggle="tooltip" title="' . gT('Edit survey group') . '"><i class="ri-pencil-fill" aria-hidden="true"></i><span class="visually-hidden">' . gT('Edit survey group') . '</span></a>';
-        }
-        if ($this->hasPermission('permission', 'read')) {
-            $button .= '<a class="btn btn-sm btn-outline-secondary" href="' . $sPermissionUrl . '" role="button" data-bs-toggle="tooltip" title="' . gT('Permission') . '"><i class="ri-lock-fill" aria-hidden="true"></i><span class="visually-hidden">' . gT('Permission') . '</span></a>';
-        }
-        if ($this->hasPermission('surveysettings', 'read')) {
-            $button .= '<a class="btn btn-sm btn-outline-secondary" href="' . $sSurveySettingsUrl . '" role="button" data-bs-toggle="tooltip" title="' . gT('Survey settings') . '"><i class="ri-settings-5-fill" aria-hidden="true"></i><span class="visually-hidden">' . gT('Survey settings') . '</span></a>';
-        }
-        /* Can not delete group #1 + with survey (or move it to hasPermission function ?) */
-        if ($this->gsid != 1 && !$this->hasSurveys && $this->hasPermission('group', 'delete')) {
-            $button .= '<span data-bs-toggle="tooltip" title="' . gT('Delete survey group') . '"><a class="btn btn-sm btn-outline-secondary" href="#" data-post-url="' . $sDeleteUrl . '" data-bs-target="#confirmation-modal" role="button" data-bs-toggle="modal" data-message="' . gT('Do you want to continue?') . '"><i class="ri-delete-bin-fill text-danger " aria-hidden="true"></i></a></span>';
-        }
-        $button .= "</div>";
-        return $button;
+        $deleteUrl = App()->createUrl("admin/surveysgroups/sa/delete", array("id" => $this->gsid));
+        $editUrl = App()->createUrl("admin/surveysgroups/sa/update", array("id" => $this->gsid));
+        $surveySettingsUrl = App()->createUrl("admin/surveysgroups/sa/surveysettings", array("id" => $this->gsid));
+        $permissionUrl = App()->createUrl("surveysGroupsPermission/index", array("id" => $this->gsid));
+        $permissions = [
+            'group_read'          => $this->hasPermission('group', 'read'),
+            'permission_read'     => $this->hasPermission('permission', 'read'),
+            'surveysettings_read' => $this->hasPermission('surveysettings', 'read'),
+            'group_delete'        => $this->gsid != 1 && !$this->hasSurveys && $this->hasPermission('group', 'delete')
+        ];
+        $dropdownItems = [];
+        $dropdownItems[] = [
+            'title'            => gT('Edit survey group'),
+            'url'              => $editUrl,
+            'iconClass'        => 'ri-pencil-fill',
+            'enabledCondition' =>
+                $permissions['group_read'],
+        ];
+        $dropdownItems[] = [
+            'title'            => gT('Permission'),
+            'url'              => $permissionUrl,
+            'iconClass'        => 'ri-lock-fill',
+            'enabledCondition' =>
+                $permissions['permission_read'],
+        ];
+        $dropdownItems[] = [
+            'title'            => gT('Survey settings'),
+            'url'              => $surveySettingsUrl,
+            'iconClass'        => 'ri-settings-5-fill',
+            'enabledCondition' =>
+                $permissions['surveysettings_read'],
+        ];
+        $dropdownItems[] = [
+            'title'            => gT('Delete survey group'),
+            'url'              => $deleteUrl,
+            'iconClass'        => 'ri-delete-bin-fill text-danger',
+            'enabledCondition' =>
+                $permissions['group_delete'],
+            'linkAttributes'   => [
+                'data-bs-toggle' => "modal",
+                'data-post-url'  => $deleteUrl,
+                'data-message'   => gT('Do you want to continue?'),
+                'data-bs-target' => "#confirmation-modal"
+            ]
+        ];
+
+        return App()->getController()->widget('ext.admin.grid.GridActionsWidget.GridActionsWidget', ['dropdownItems' => $dropdownItems], true);
     }
 
     /**
