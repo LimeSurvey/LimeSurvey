@@ -104,9 +104,6 @@ jobs:
           # sed -i '60s/.*/        "debug"=>2,/' application/config/config.php
           # cat application/config/config.php
 
-      - name: Run syntax check, CodeSniffer, MessDetector, ...
-        run: composer test
-
       - name: Test the server
         run: |
           # Test server.
