@@ -16,7 +16,7 @@ class EncryptedCoreParticipantPropertiesTest extends BaseTest
     /**
      * Get properties from a previously added participant.
      */
-    public function testGetParticipantPropertiesByTokenId()
+    public function testGetEncryptedParticipantPropertiesByTokenId()
     {
         $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
 
@@ -32,7 +32,7 @@ class EncryptedCoreParticipantPropertiesTest extends BaseTest
         $this->assertNotEquals($participant->email, $result['email'], 'The returned email should not match the encrypted user email.');
 
         //Asserting it's a valid email.
-        $this->assertRegExp('/[a-z,0-9,-_]+@[a-z,0-9,-,_]+.[a-z]+.[a-z]+/', $result['email'], 'Not a valid email address.');
+        $this->assertEquals('p1@mail.com', $result['email'], 'Not the email address set.');
     }
 
     /**
@@ -50,11 +50,17 @@ class EncryptedCoreParticipantPropertiesTest extends BaseTest
             'email' => 'mj@mail.com'
         );
 
-        $this->handler->set_participant_properties($sessionKey, self::$surveyId, $tid, $dataToChange);
+        $savedProperties = $this->handler->set_participant_properties($sessionKey, self::$surveyId, $tid, $dataToChange);
         $participantNewData = $this->handler->get_participant_properties($sessionKey, self::$surveyId, $tid);
 
+        $encryptedMail = \LSActiveRecord::encryptSingle($dataToChange['email']);
+
+        //Asserting the mail in database was changed.
+        $this->assertNotEquals($participant->email, $savedProperties['email'], 'Apparently the mail was not correctly encrypted and saved.');
+        $this->assertEquals($savedProperties['email'], $encryptedMail, 'Apparently the mail was not correctly encrypted and saved.');
+
         //Not equals since the email property is encrypted in the database.
-        $this->assertNotEquals($participant->email, $participantNewData['email'], 'The returned email should not match the encrypted user email.');
+        $this->assertNotEquals($savedProperties['email'], $participantNewData['email'], 'The returned email should not match the encrypted user email.');
 
         //Email was set correctly.
         $this->assertEquals($participantNewData['email'], $dataToChange['email'], 'The data retrieved does not correspond with the data set.');
@@ -91,6 +97,6 @@ class EncryptedCoreParticipantPropertiesTest extends BaseTest
         $this->assertEquals($participant['email'], $dataToChange['email'], 'The data retrieved does not correspond with the data set.');
 
         //Assert saved mail is encrypted.
-        $this->assertNotEquals($savedProperties->email, $dataToChange['email'], 'The returned email should not match the encrypted user email.');
+        $this->assertNotEquals($savedProperties['email'], $dataToChange['email'], 'The returned email should not match the encrypted user email.');
     }
 }
