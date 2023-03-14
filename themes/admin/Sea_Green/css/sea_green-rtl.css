@@ -11290,6 +11290,15 @@ blockquote.float-end {
   padding-left: 20px;
 }
 
+.full-page-wrapper {
+  position: relative;
+  padding-bottom: 65px;
+}
+
+#surveySettingsForThisGroup {
+  column-gap: 20px;
+}
+
 /**
  * Lime Admin Common CSS File
  *
@@ -11512,8 +11521,7 @@ blockquote.float-end {
   border-right-width: 1px;
 }
 
-.side-body,
-.full-page-wrapper {
+.side-body {
   position: relative;
   /*margin-bottom: 65px;*/
 }
@@ -16840,6 +16848,14 @@ tr.info, tr.danger {
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
+#help-button-dropup {
+  position: fixed;
+  bottom: 16px;
+  left: 20px;
+}
+#help-button-dropup.question-editor-positioning {
+  bottom: 52px;
+}
 #help-button-dropup > .dropdown-menu {
   min-width: 167px;
   color: #fff;
@@ -17066,7 +17082,10 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 }
 
 .footer {
-  width: 100%;
+  z-index: 100;
+  position: absolute !important;
+  bottom: 0;
+  width: 98%;
 }
 
 .sub_footer {

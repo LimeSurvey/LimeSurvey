@@ -307,10 +307,12 @@ class LayoutHelper
      * @access protected
      * @param string $url
      * @param bool $return
+     * @param bool $questionEditor if footer is on question editor layout page
      * @return string|null
      */
-    public function getAdminFooter(string $url, bool $return = false): ?string
+    public function getAdminFooter(string $url, bool $return = false, bool $questionEditor = false): ?string
     {
+        $aData['questionEditor'] = $questionEditor;
         $aData['versionnumber'] = Yii::app()->getConfig("versionnumber");
 
         $aData['buildtext'] = "";

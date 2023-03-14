@@ -48,9 +48,10 @@ foreach ($systemInfos as $key => $systemInfo) {
         $systemInfos[$key] = json_encode($systemInfo, JSON_PRETTY_PRINT);
     }
 }
+$questionEditor = $questionEditor ?? false;
 ?>
 <!-- Footer -->
-<footer class="container-fluid footer d-flex flex-grow-1 flex-column justify-content-end text-end py-3 mt-5">
+<footer class="footer d-flex flex-grow-1 flex-column justify-content-end text-end pt-3 pb-4 mt-5 pe-6">
     <div>
         <a data-bs-toggle="tooltip" title='<?php eT("Visit our website!"); ?>' href='https://community.limesurvey.org' target='_blank'>LimeSurvey Community Edition</a>
         <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')) { ?>
@@ -78,14 +79,11 @@ foreach ($systemInfos as $key => $systemInfo) {
                 'target' => '_blank'
             ],
         ]); ?>
-
-        <!-- Help button -->
-        <div class="d-inline-block ms-5 mt-3 mt-sm-0">
-            <?php
-            $this->renderPartial('/admin/super/help_button_dropup', []);
-            ?>
-        </div>
     </div>
+    <!-- Help button -->
+    <?php
+    $this->renderPartial('/admin/super/help_button_dropup', ['questionEditor' => $questionEditor]);
+    ?>
 </footer>
 <div id="bottomScripts">
     <###end###>

@@ -53,6 +53,8 @@ echo $content;
 
 echo "</div>\n";
 echo "</div>\n";
+echo "</div>\n";
+echo "</div>\n";
 echo "<!-- END LAYOUT_INSURVEY -->";
 
 // Footer
@@ -64,9 +66,7 @@ if (!isset($aData['display']['endscripts']) || $aData['display']['endscripts'] !
 if (!Yii::app()->user->isGuest) {
     if (!isset($aData['display']['footer']) || $aData['display']['footer'] !== false) {
         //Yii::app()->getController()->_getAdminFooter('http://manual.limesurvey.org', gT('LimeSurvey online manual'));
-        $layoutHelper->getAdminFooter('http://manual.limesurvey.org');
-        echo "</div>\n";
-        echo "</div>\n";
+        $layoutHelper->getAdminFooter('http://manual.limesurvey.org', false, true);
     }
 } else {
     echo '</body>

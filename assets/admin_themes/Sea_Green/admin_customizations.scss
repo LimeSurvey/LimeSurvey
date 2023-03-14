@@ -141,7 +141,12 @@ blockquote {
   padding-right: $right-main-padding;
 }
 
-//.main-content-container {
-//  padding-left: 8px;
-//}
+.full-page-wrapper {
+  position: relative;
+  padding-bottom: 65px;
+}
 // Main Design END
+
+#surveySettingsForThisGroup {
+  column-gap: 20px;
+}
