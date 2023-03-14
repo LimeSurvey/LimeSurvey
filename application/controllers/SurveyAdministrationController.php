@@ -943,10 +943,8 @@ class SurveyAdministrationController extends LSBaseController
                 }
 
                 if ($configData['hasSurveyContentDeletePermission']) {
-
                     if ($configData['oSurvey']->active !== 'Y') {
-                        if(is_null($condarray)) {
-
+                        if (is_null($condarray)) {
                             $curGroup['groupDropdown']['delete'] =
                             [
                                 'id' => '',
@@ -955,13 +953,16 @@ class SurveyAdministrationController extends LSBaseController
                                 'dataTitle' => gt('Delete group'),
                                 'dataBtnText' => gt('Delete'),
                                 'dataOnclick' => '(function() { ' .  convertGETtoPOST(
-                                    Yii::app()->createUrl("questionGroupsAdministration/delete/",
-                                     [  "asJson" => true, 
+                                    Yii::app()->createUrl(
+                                        "questionGroupsAdministration/delete/",
+                                        [  "asJson" => true,
                                         "surveyid" => $iSurveyID,
                                         "gid" => $group->gid,
                                         "landOnSideMenuTab" => "structure",
-                                     ])) . '})',
-                                'dataMessage' => gT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?","js")
+                                        ]
+                                    )
+                                ) . '})',
+                                'dataMessage' => gT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?", "js")
                             ];
                         } else {
                             $curGroup['groupDropdown']['delete'] =
@@ -1034,7 +1035,6 @@ class SurveyAdministrationController extends LSBaseController
                                     'icon' => 'ri-download-fill',
                                     'url' => Yii::App()->createUrl("admin/export/sa/question/surveyid/$iSurveyID/gid/$question->gid/qid/$question->qid")
                                 ];
-                                
                         }
 
                         if ($configData['hasSurveyContentCreatePermission'] && ($configData['oSurvey']->active != 'Y')) {
