@@ -1,4 +1,4 @@
-name: LimeSurvey - CI pipeline
+name: LimeSurvey - Unit Test - CI pipeline
 # Triggers the workflow on push or pull request events on all branches
 on:
   pull_request:

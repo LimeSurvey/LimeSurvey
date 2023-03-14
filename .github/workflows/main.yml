@@ -104,6 +104,9 @@ jobs:
           # sed -i '60s/.*/        "debug"=>2,/' application/config/config.php
           # cat application/config/config.php
 
+      - name: Run syntax check, CodeSniffer, MessDetector, ...
+        run: composer test
+
       - name: Test the server
         run: |
           # Test server.
@@ -124,6 +127,9 @@ jobs:
         # Note: Keep getting timeout problems on Travis with chromedriver.
         # wget https://chromedriver.storage.googleapis.com/2.33/chromedriver_linux64.zip
         # unzip chromedriver_linux64.zip
+
+      - name: Check test coverage if cov.xml exists (won't work on PHP 8 with current phpunit version)
+        run: php tests/bin/check_coverage.php cov.xml 37
 
       - name: Set up Selenium with firefox (needed for integrity tests)
         run: |
