@@ -1,3 +1,4 @@
+# This worklow will run init tests and check the coverage
 name: LimeSurvey - Unit Test - CI pipeline
 # Triggers the workflow on push or pull request events on all branches
 on:

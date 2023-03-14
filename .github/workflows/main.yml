@@ -1,3 +1,4 @@
+# This workflow will run functional tests
 name: LimeSurvey - CI pipeline
 # Triggers the workflow on push or pull request events on all branches
 on:

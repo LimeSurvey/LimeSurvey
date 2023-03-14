@@ -1,5 +1,4 @@
 # This workflow will prepare and test the frontend
-
 name: LimeSurvey - Frontend - CI pipeline
 
 # Triggers the workflow on push or pull request events on all branches
