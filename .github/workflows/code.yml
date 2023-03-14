@@ -1,0 +1,74 @@
+name: LimeSurvey - Code Review - CI pipeline
+# Triggers the workflow on push or pull request events on all branches
+on:
+  pull_request:
+  push:
+    branches:
+      - '*'
+      - '**'
+      - 'dev/**'
+      - 'bug/**'
+      - 'feature/**'
+      - 'zoho/**'
+
+jobs:
+  CI-pipeline:
+    runs-on: ubuntu-20.04    # ubuntu runner hosted by Github
+    strategy:
+      matrix:
+        # Specify what versions of php you want to test
+        php-versions: ['7.2', '8.0']
+    # Env vars for this job
+    env:
+      DBENGINE: INNODB
+
+    name: PHP ${{ matrix.php-versions }} # Check each version of php specified in matrix
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      # This will change the php version for every version specified in matrix https://github.com/marketplace/actions/setup-php-action
+      - name: Install specified PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+
+      - name: Initilize and check all dependencies
+        run: |
+          # Before running composer install, check that the autoloader is up-to-date and all classes can be loaded.
+          php tests/check_autoloader.php
+
+          # Test
+          echo $archive_url
+          php -r 'var_dump(PHP_INT_SIZE);'
+          # Install LimeSurvey.
+          php -m  # Spit out all loaded PHP modules
+          mysql --version
+          touch enabletests
+          # NB: PHPUnit 6.5.* is installed with composer.
+          composer install -vvv
+          ./vendor/bin/phpunit --version
+
+      - name: Set up PHP
+        run: |
+          # Set up the PHP. No Apache, nor Mysql needed.
+          sudo apt-get update > /dev/null
+          sudo apt install php -y
+
+          # Give permision to access files
+          # NB: not sure if needed
+          setfacl -dR -m u:www-data:rwX -m u:$(whoami):rwx ./tmp
+          setfacl -dR -m u:www-data:rwX -m u:$(whoami):rwx ./upload
+          setfacl -dR -m u:www-data:rwX -m u:$(whoami):rwx ./themes
+          setfacl -dR -m u:www-data:rwX -m u:$(whoami):rwx ./tests/tmp
+          setfacl -dR -m u:www-data:rwX -m u:$(whoami):rwx ./application/config
+
+          chmod -R 777 ./tmp
+          sudo chown -R www-data:docker ./tmp
+          chmod -R 777 ./upload
+          chmod -R 777 ./themes  # Need 777 so both console and web server can cd into the folder.
+          chmod -R 777 ./tests/tmp
+          chmod -R 777 ./application/config
+          chmod +x ./tests/bin/lint-*
+
+      - name: Run syntax check, CodeSniffer, MessDetector, ...
+        run: composer test
