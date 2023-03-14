@@ -139,7 +139,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
 
         $surveyTopbarData = TopbarConfiguration::getSurveyTopbarData($iSurveyID);
         $topbarData = array_merge($topbarData, $surveyTopbarData);
-        
+
         $topbarData = array_merge($topbarData, $aData);
         $aData['topbar']['middleButtons'] = $this->renderPartial(
             'partial/topbarBtns/groupTopbarLeft_view',

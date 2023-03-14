@@ -7,9 +7,9 @@ if (Permission::model()->hasGlobalPermission('users', 'create')) {
             'name' => 'ls-question-tools-button',
             'id' => 'ls-question-tools-button',
             'text' => gT('Add user'),
-            'icon' => 'ri-add-circle-fill',
+            'icon' => 'ri-user-add-line',
             'htmlOptions' => [
-                'class' => 'btn btn-outline-secondary UserManagement--action--openmodal',
+                'class' => 'btn btn-primary UserManagement--action--openmodal',
                 'data-bs-toggle' => 'modal',
                 'data-href' => $this->createUrl("userManagement/addEditUser")
             ],
@@ -22,9 +22,9 @@ if (Permission::model()->hasGlobalPermission('users', 'create')) {
             'name' => 'ls-question-tools-button',
             'id' => 'ls-question-tools-button',
             'text' => gT('Add dummy user'),
-            'icon' => 'ri-add-box-fill',
+            'icon' => 'ri-user-add-line',
             'htmlOptions' => [
-                'class' => 'btn btn-outline-secondary UserManagement--action--openmodal',
+                'class' => 'btn btn-secondary UserManagement--action--openmodal',
                 'data-bs-toggle' => 'modal',
                 'data-href' => $this->createUrl("userManagement/addDummyUser")
             ],

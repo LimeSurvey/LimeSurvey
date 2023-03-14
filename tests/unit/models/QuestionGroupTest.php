@@ -75,8 +75,8 @@ class QuestionGroupTest extends TestBaseClass
      */
     public function testDescriptionsSet(): void
     {
-
-        $questionGroups = QuestionGroup::model()->findAllByAttributes(array('sid' => self::$surveyId));
+        $criteria = new \CDbCriteria(['order' => 'gid ASC']);
+        $questionGroups = QuestionGroup::model()->findAllByAttributes(array('sid' => self::$surveyId), $criteria);
 
         $questionGroupOne = $questionGroups[0];
         $questionGroupTwo = $questionGroups[1];
