@@ -6,9 +6,9 @@ $this->widget(
         'name' => 'save-form-button',
         'id' => 'save-form-button',
         'text' => gT('Add user role'),
-        'icon' => 'ri-add-circle-fill',
+        'icon' => 'ri-user-add-line',
         'htmlOptions' => [
-            'class' => 'btn btn-outline-secondary RoleControl--action--openmodal',
+            'class' => 'btn btn-primary RoleControl--action--openmodal',
             'data-href' => App()->createUrl("userRole/editRoleModal"),
             'data-bs-toggle' => 'modal',
             'title' => gT('Add a new permission role')
