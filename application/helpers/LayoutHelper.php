@@ -195,7 +195,7 @@ class LayoutHelper
         if (isset($aData['topbar']['title'])) {
             $titleTextBreadcrumb = $aData['topbar']['title'];
         } elseif ($isBreadCrumb) {
-            $titleTextBreadcrumb = Yii::app()->getController()->renderPartial("/layouts/title_bar", $aData, true);
+            $titleTextBreadcrumb = App()->getController()->renderPartial("/layouts/title_bar", $aData, true);
         }
         $middle = $aData['topbar']['middleButtons'] ?? '';
         $rightSide = $aData['topbar']['rightButtons'] ?? '';
@@ -203,29 +203,28 @@ class LayoutHelper
             //special case for question administration (overview and editor)
             if (isset($aData['topBar']['name']) && ($aData['topBar']['name'] === 'questionTopbar_view')) {
                 $topbarData = TopbarConfiguration::getSurveyTopbarData($aData['surveyid']);
-
                 $topbarQuestionEditorData = TopbarConfiguration::getQuestionTopbarData($aData['surveyid']);
                 $topbarQuestionEditorData['breadcrumb'] = $titleTextBreadcrumb;
                 $topbarQuestionEditorData = array_merge($topbarQuestionEditorData, $aData);
                 $topbarQuestionEditorData = array_merge($topbarQuestionEditorData, $topbarData);
-                
-                return Yii::app()->getController()->renderPartial(
+
+                return App()->getController()->renderPartial(
                     '/questionAdministration/partial/topbarBtns/questionTopbar_view',
                     $topbarQuestionEditorData,
                     true
                 );
-            } else {
-                return Yii::app()->getController()->widget(
-                    'ext.LimeTopbarWidget.TopbarWidget',
-                    array(
-                        'leftSide' => $titleTextBreadcrumb,
-                        'middle' => $middle, //array of ButtonWidget
-                        'rightSide' => $rightSide, //array of ButtonWidget
-                        'isBreadCrumb' => $isBreadCrumb
-                    ),
-                    true
-                );
             }
+
+            return App()->getController()->widget(
+                'ext.LimeTopbarWidget.TopbarWidget',
+                [
+                    'leftSide'     => $titleTextBreadcrumb,
+                    'middle'       => $middle, //array of ButtonWidget
+                    'rightSide'    => $rightSide, //array of ButtonWidget
+                    'isBreadCrumb' => $isBreadCrumb
+                ],
+                true
+            );
         }
         return ''; //no topbar shown in this case
     }

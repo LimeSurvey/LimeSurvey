@@ -16990,10 +16990,6 @@ dl dt {
   font-weight: 600 !important;
 }
 
-small, .small {
-  font-size: 0.75em;
-}
-
 a {
   color: #14AE5C;
   font-weight: 500;
@@ -17075,7 +17071,7 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 .breadcrumb {
   font-size: 0.9975rem;
   line-height: 20px;
-  padding: 1rem 0 0 0;
+  margin-bottom: 0;
 }
 
 .breadcrumb-item + .breadcrumb-item:before {
@@ -17086,6 +17082,10 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 
 .breadcrumb-item + .breadcrumb-item {
   padding-left: 6px;
+}
+
+.ls-breadcrumb h1, .ls-breadcrumb .h1 {
+  margin: 0;
 }
 
 .footer {
@@ -17527,11 +17527,17 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   z-index: 1000;
   background-color: #F9F9FB;
 }
+.topbar .ls-topbar-buttons {
+  margin-bottom: -4px;
+}
 .topbar .btn {
   margin-bottom: 4px;
 }
 .topbar.scroll-shadow {
   box-shadow: 0 1px 20px 0 rgb(196, 196, 196);
+}
+.topbar .ls-breadcrumb {
+  align-self: center;
 }
 
 .ls-panelboxes .ls-panelboxes-panelbox {
