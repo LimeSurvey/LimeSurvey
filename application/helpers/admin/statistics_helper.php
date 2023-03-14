@@ -4205,8 +4205,8 @@ class statistics_helper
         } else {
             $diff = ($q1 - (int)$q1);
             if ($fielddata['encrypted'] === "Y") {
-                $firstRowFieldvalue = LSActiveRecord::decryptSingle($allRows[$row][$fielddata['fieldname']]);
-                $nextRowFieldvalue = LSActiveRecord::decryptSingle($allRows[$row + 1][$fielddata['fieldname']]);
+                $firstRowFieldvalue = (float) LSActiveRecord::decryptSingle($allRows[$row][$fielddata['fieldname']]);
+                $nextRowFieldvalue = (float) LSActiveRecord::decryptSingle($allRows[$row + 1][$fielddata['fieldname']]);
             } else {
                 $firstRowFieldvalue = $allRows[$row][$fielddata['fieldname']];
                 $nextRowFieldvalue = $allRows[$row + 1][$fielddata['fieldname']];
