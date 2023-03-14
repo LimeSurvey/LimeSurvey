@@ -17,7 +17,7 @@
         <td>{{ assessmentValue }}</td>
     {% else %}
         <td>
-            <span class="fa fa-bars bigIcons text-success"></span>
+            <span class="ri-menu-fill bigIcons text-success"></span>
         </td>
 
         <td>
@@ -42,14 +42,14 @@
                     data-target-field-id="title_{{ language }}_{{ rowId }}"
                     data-bs-toggle="tooltip"
                     title="{{ gT("Open editor") }}">
-                    <i class="fa fa-edit"></i>
+                    <i class="ri-file-edit-line"></i>
                 </a>
                 {% if first %}
                     <button class="btn btn-outline-secondary btn-sm btnaddanswer" type="button" data-bs-toggle="tooltip" title="{{ gT("Add label") }}">
-                        <i class="icon-add text-success"></i>
+                        <i class="ri-add-circle-fill text-success"></i>
                     </button>
                     <button class="btn btn-outline-secondary btn-sm btndelanswer" type="button" data-bs-toggle="tooltip" title="{{ gT("Delete label") }}">
-                        <i class="fa fa-minus-circle text-danger "></i>
+                        <i class="ri-indeterminate-circle-fill text-danger"></i>
                     </button>
                 {% endif %}
             {% endif %}
