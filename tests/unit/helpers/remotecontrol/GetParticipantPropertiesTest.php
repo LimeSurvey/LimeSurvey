@@ -37,7 +37,7 @@ class GetParticipantPropertiesTest extends BaseTest
         $this->assertArrayHasKey('status', $result);
     }
 
-    public function testGetCommonParticipantProperties(): void
+    public function testGetCommonParticipantProperties()
     {
         $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
         $participant_1 = $this->handler->get_participant_properties($sessionKey, self::$surveyId, 1);
@@ -47,7 +47,7 @@ class GetParticipantPropertiesTest extends BaseTest
         $this->assertSame($participant_2['attribute_1'], 'Test attribute for Participant 2', 'The user attributes do not match.');
     }
 
-    public function testGetEncryptedParticipantProperties(): void
+    public function testGetEncryptedParticipantProperties()
     {
         $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
         $participant_1 = $this->handler->get_participant_properties($sessionKey, self::$surveyId, 1);
@@ -57,7 +57,7 @@ class GetParticipantPropertiesTest extends BaseTest
         $this->assertSame($participant_2['attribute_2'], 'Encrypted attribute for Participant 2', 'The encrypted user attributes do not match.');
     }
 
-    public function testSetByTokenIdAndGetParticipantProperties(): void
+    public function testSetByTokenIdAndGetParticipantProperties()
     {
         $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
         $newParticipants = array(
@@ -68,18 +68,19 @@ class GetParticipantPropertiesTest extends BaseTest
         );
 
         $participantsData = $this->handler->add_participants($sessionKey, self::$surveyId, $newParticipants);
+        $tid = (int)$participantsData[0]['tid'];
 
         $dataToChange = array(
             'lastname' => 'Lennon'
         );
 
-        $this->handler->set_participant_properties($sessionKey, self::$surveyId, $participantsData[0]['tid'], $dataToChange);
-        $participant_3 = $this->handler->get_participant_properties($sessionKey, self::$surveyId, 3);
+        $this->handler->set_participant_properties($sessionKey, self::$surveyId, $tid, $dataToChange);
+        $participant = $this->handler->get_participant_properties($sessionKey, self::$surveyId, $tid);
 
-        $this->assertSame($participant_3['lastname'], $dataToChange['lastname'], 'The data retrieved does not correspond with the data set.');
+        $this->assertSame($participant['lastname'], $dataToChange['lastname'], 'The data retrieved does not correspond with the data set.');
     }
 
-    public function testSetByQueryAttributesAndGetParticipantProperties(): void
+    public function testSetByQueryAttributesAndGetParticipantProperties()
     {
         $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
         $newParticipants = array(
@@ -90,6 +91,7 @@ class GetParticipantPropertiesTest extends BaseTest
         );
 
         $participantsData = $this->handler->add_participants($sessionKey, self::$surveyId, $newParticipants);
+        $tid = (int)$participantsData[0]['tid'];
 
         $queryAttributes = ['email' => 'gh@mail.com'];
 
@@ -98,9 +100,9 @@ class GetParticipantPropertiesTest extends BaseTest
         );
 
         $this->handler->set_participant_properties($sessionKey, self::$surveyId, $queryAttributes, $dataToChange);
-        $participant_4 = $this->handler->get_participant_properties($sessionKey, self::$surveyId, 4);
+        $participant = $this->handler->get_participant_properties($sessionKey, self::$surveyId, $tid);
 
-        $this->assertSame($participant_4['lastname'], $dataToChange['lastname'], 'The data retrieved does not correspond with the data set.');
+        $this->assertSame($participant['lastname'], $dataToChange['lastname'], 'The data retrieved does not correspond with the data set.');
     }
 
     public function testTryToSetInexistentParticipantProperties()
@@ -127,11 +129,13 @@ class GetParticipantPropertiesTest extends BaseTest
         );
 
         //Get a previously created participant.
-        $participant_3 = $this->handler->get_participant_properties($sessionKey, self::$surveyId, 3);
-        $this->handler->set_participant_properties($sessionKey, self::$surveyId, 3, $tokenAttributeToSet);
+        $oldParticipant = \Token::model(self::$surveyId)->findByAttributes(array('firstname' => 'John', 'lastname' => 'Lennon'));
+        $tid = (int)$oldParticipant->tid;
 
-        $participant_3 = $this->handler->get_participant_properties($sessionKey, self::$surveyId, $participant_3['tid']);
-        $this->assertSame($participant_3['attribute_1'], $tokenAttributeToSet['attribute_1'], 'The data retrieved does not correspond with the data set.');
+        $this->handler->set_participant_properties($sessionKey, self::$surveyId, $tid, $tokenAttributeToSet);
+
+        $participant = $this->handler->get_participant_properties($sessionKey, self::$surveyId, $tid);
+        $this->assertSame($participant['attribute_1'], $tokenAttributeToSet['attribute_1'], 'The data retrieved does not correspond with the data set.');
     }
 
     public function testSetAndGetEncryptedTokenAttribute()
@@ -143,10 +147,15 @@ class GetParticipantPropertiesTest extends BaseTest
         );
 
         //Get a previously created participant.
-        $participant_3 = $this->handler->get_participant_properties($sessionKey, self::$surveyId, 3);
-        $this->handler->set_participant_properties($sessionKey, self::$surveyId, 3, $tokenAttributeToSet);
+        $oldParticipant = \Token::model(self::$surveyId)->findByAttributes(array('firstname' => 'George', 'lastname' => 'Harrison'));
+        $tid = (int)$oldParticipant->tid;
 
-        $participant_3 = $this->handler->get_participant_properties($sessionKey, self::$surveyId, $participant_3['tid']);
-        $this->assertSame($participant_3['attribute_2'], $tokenAttributeToSet['attribute_2'], 'The data retrieved does not correspond with the data set.');
+        $savedProperties = $this->handler->set_participant_properties($sessionKey, self::$surveyId, $tid, $tokenAttributeToSet);
+
+        $participant = $this->handler->get_participant_properties($sessionKey, self::$surveyId, $tid);
+        $this->assertSame($participant['attribute_2'], $tokenAttributeToSet['attribute_2'], 'The data retrieved does not correspond with the data set.');
+
+        //Asserting the saved attribute was encrypted.
+        $this->assertNotSame($savedProperties['attribute_2'], $participant['attribute_2'], 'The attribute should be encrypted.');
     }
 }
