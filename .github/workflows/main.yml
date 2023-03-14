@@ -128,9 +128,6 @@ jobs:
         # wget https://chromedriver.storage.googleapis.com/2.33/chromedriver_linux64.zip
         # unzip chromedriver_linux64.zip
 
-      - name: Check test coverage if cov.xml exists (won't work on PHP 8 with current phpunit version)
-        run: php tests/bin/check_coverage.php cov.xml 37
-
       - name: Set up Selenium with firefox (needed for integrity tests)
         run: |
           echo `which firefox`
