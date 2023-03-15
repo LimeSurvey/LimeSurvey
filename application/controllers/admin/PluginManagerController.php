@@ -71,7 +71,7 @@ class PluginManagerController extends SurveyCommonAction
             ]
         );
 
-        $aData['topbar']['title'] = '<a class="h1" href="'.$this->createUrl('admin/index').'">
+        $aData['topbar']['title'] = '<a class="h1" href="'.Yii::app() -> createUrl('admin/index').'">
         <i class="ri-arrow-left-s-line"></i></a>'.gT('Plugins');
 
         $aData['topbar']['middleButtons'] = Yii::app()->getController()->renderPartial(
