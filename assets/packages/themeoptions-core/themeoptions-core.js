@@ -47,9 +47,13 @@ var ThemeOptions = function () {
 
         if (generalInherit()) {
             $('#general_inherit_on').prop('checked', true).trigger('change').closest('label').addClass('active');
-            $('.action_hide_on_inherit').addClass('d-none');
+            // $('.action_hide_on_inherit').addClass('d-none');
+            $('.tab_action_hide_on_inherit').addClass('ls-tab-disabled');
+
         } else {
             $('#general_inherit_off').prop('checked', true).trigger('change').closest('label').addClass('active');
+            $('.action_hide_on_inherit_wrapper').addClass('d-none');
+            $('.tab_action_hide_on_inherit').removeClass('ls-tab-disabled');
         }
     };
 
@@ -260,10 +264,15 @@ var ThemeOptions = function () {
         //hotswapping the general inherit
         $('#general_inherit_on').on('change', function (evt) {
             $('#TemplateConfiguration_options').val('inherit');
-            $('.action_hide_on_inherit').addClass('d-none');
+            $('.action_hide_on_inherit_wrapper').removeClass('d-none');
+            $('.tab_action_hide_on_inherit').addClass('ls-tab-disabled');
+
+
         });
         $('#general_inherit_off').on('change', function (evt) {
-            $('.action_hide_on_inherit').removeClass('d-none');
+            $('.action_hide_on_inherit_wrapper').addClass('d-none');
+            $('.tab_action_hide_on_inherit').removeClass('ls-tab-disabled');
+
             updateFieldSettings();
         });
     };

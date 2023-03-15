@@ -13,38 +13,6 @@
 
             <!-- Left actions -->
             <div class="col text-start">
-                <!-- Plugin Manager -->
-                <?php if (isset($fullpagebar['pluginManager'])) : ?>
-                    <!-- Install Plugin Zip -->
-                    <?php if (!empty($fullpagebar['pluginManager']['buttons']['showUpload'])) : ?>
-                        <span data-bs-toggle="tooltip" title='<?php eT('Install plugin by ZIP archive'); ?>'>
-                            <a
-                                href=''
-                                class='btn btn-outline-secondary'
-                                data-bs-toggle='modal'
-                                data-bs-target='#installPluginZipModal'>
-                                <i class='icon-import'></i>&nbsp;
-                                <?php
-                                eT('Upload & install'); ?>
-                            </a>
-                        </span>
-                    <?php endif; ?>
-
-                    <!-- Scan Files -->
-                    <?php if (isset($fullpagebar['pluginManager']['buttons']['scanFiles'])) : ?>
-                        <a
-                            href='<?php echo $fullpagebar["pluginManager"]["buttons"]["scanFiles"]["url"]; ?>'
-                        class='btn btn-outline-secondary'
-                        data-bs-toggle='tooltip'
-                            title='<?php eT('Scan files for available plugins'); ?>'
-                        >
-                            <i class='fa fa-file '></i>
-                            <i class='fa fa-search '></i>&nbsp;
-                            <?php eT('Scan files'); ?>
-                        </a>
-                    <?php endif; ?>
-                <?php endif; ?>
-
                 <!-- Add new Menu -->
                 <?php if (isset($fullpagebar['menus'])): ?>
                     <?php if (isset($fullpagebar['menus']['buttons']['addMenu']) && $fullpagebar['menus']['buttons']['addMenu']): ?>
@@ -53,7 +21,7 @@
                            data-tab="#surveymenues"
                            title="<?php eT('Add new menu'); ?>"
                         >
-                            <i class="icon-add text-success"></i>&nbsp;<?php eT('New menu') ?>
+                            <i class="ri-add-circle-fill text-success"></i>&nbsp;<?php eT('New menu') ?>
                         </a>
                     <?php endif; ?>
                 <?php endif; ?>
@@ -67,7 +35,7 @@
                            style="display:none;"
                            title="<?php eT('Add new menu entry'); ?>"
                         >
-                            <i class="icon-add text-success"></i>&nbsp;<?php eT('New menu entry') ?>
+                            <i class="ri-add-circle-fill text-success"></i>&nbsp;<?php eT('New menu entry') ?>
                         </a>
                     <?php endif; ?>
                 <?php endif; ?>
@@ -79,7 +47,7 @@
                 <!-- White Close button -->
                 <?php if (isset($fullpagebar['white_closebutton']['url'])) : ?>
                 <a class="btn btn-outline-secondary" href="<?php echo $fullpagebar['white_closebutton']['url']; ?>" role="button">
-                        <span class="fa fa-close"></span>
+                        <span class="ri-close-fill"></span>
                         <?php eT("Close"); ?>
                     </a>
                 <?php endif; ?>
@@ -87,7 +55,7 @@
                 <!-- Return -->
                 <?php if (isset($fullpagebar['returnbutton']['url'])) : ?>
                 <a class="btn btn-outline-secondary" href="<?php echo $this->createUrl($fullpagebar['returnbutton']['url']); ?>" role="button">
-                        <span class="fa fa-backward"></span>
+                        <span class="ri-rewind-fill"></span>
                         &nbsp;&nbsp;
                         <?php echo $fullpagebar['returnbutton']['text']; ?>
                     </a>
@@ -99,7 +67,7 @@
                        id="restoreBtn"
                        href="#"
                     >
-                        <i class="fa fa-refresh"></i>&nbsp;
+                        <i class="ri-refresh-line"></i>&nbsp;
                         <?php eT('Reset') ?>
                     </a>
                 <?php endif; ?>
@@ -110,7 +78,7 @@
                     type="button"
                     class="btn btn-warning"
                        id="reorderentries">
-                        <i class="fa fa-sort"></i>&nbsp;
+                        <i class="ri-order-play-fill"></i>&nbsp;
                     &nbsp;
                         <?php eT('Reorder') ?>
                     </a>
@@ -125,7 +93,7 @@
                     id="save-and-close-form-button" 
                     onclick="$(this).addClass('disabled').attr('onclick', 'return false;');" 
                     data-form-id="<?php echo $fullpagebar['saveandclosebutton']['form']; ?>">
-                        <span class="fa fa-saved"></span>
+                        <span class="ri-checkbox-circle-fill"></span>
                         <?php eT("Save and close"); ?>
                 </a>
                 <?php endif; ?>
@@ -133,13 +101,13 @@
                 <!-- Save -->
                 <?php if (isset($fullpagebar['savebutton']['form'])) : ?>
                 <a 
-                    class="btn btn-success"
+                    class="btn btn-primary"
                     href="#"
                     type="button"
                     id="save-form-button" 
                     onclick="$(this).addClass('disabled').attr('onclick', 'return false;');" 
                     data-form-id="<?php echo $fullpagebar['savebutton']['form']; ?>">
-                        <span class="fa fa-check"></span>
+                        <span class="ri-check-fill"></span>
                         <?php eT("Save"); ?>
                 </a>
                 <?php endif; ?>
@@ -151,7 +119,7 @@
                     href="<?php echo $fullpagebar['closebutton']['url']; ?>"
                     type="button" 
                     style="box-shadow: 3px 3px 3px;">
-                        <span class="fa fa-close"></span>
+                        <span class="ri-close-fill"></span>
                         <?php eT("Close"); ?>
                     </a>
                 <?php endif; ?>
@@ -162,7 +130,7 @@
                     href="<?php echo $this->createUrl('admin/update/sa/managekey/');?>" 
                     class="btn btn-outline-secondary" 
                 >
-                        <span class="fa fa-key text-success"></span>
+                        <span class="ri-key-2-fill text-success"></span>
                         <?php eT("Manage your key"); ?>
                     </a>
                 <?php endif; ?>

@@ -7,10 +7,8 @@
 echo viewHelper::getViewTestTag('createSurveyGroups');
 
 ?>
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-12 list-surveys">
-            <?php $this->renderPartial('./surveysgroups/_form', $_data_); ?>
-        </div>
+<div class="row">
+    <div class="col-12 list-surveys">
+        <?php $this->renderPartial('./surveysgroups/_form', $_data_); ?>
     </div>
 </div>

@@ -93,14 +93,14 @@ $baseLanguage = $oSurvey->language;
                             <?php
                             echo CHtml::submitButton(
                                 gT('Search', 'unescaped'),
-                                ['class' => 'btn btn-success']
+                                ['class' => 'btn btn-primary']
                             ); ?>
                             <a href="<?php
                             echo App()->createUrl(
                                 'questionAdministration/listquestions',
                                 ['surveyid' => $oSurvey->primaryKey]
                             ); ?>" class="btn btn-warning">
-                                <span class="fa fa-refresh"></span>
+                                <span class="ri-refresh-line"></span>
                                 <?php
                                 eT('Reset'); ?>
                             </a>
@@ -122,7 +122,7 @@ $baseLanguage = $oSurvey->language;
                         true,
                         false
                     );
-                    $this->widget('ext.LimeGridView.LimeGridView', array(
+                    $this->widget('ext.admin.grid.CLSGridView', array( //done
                         'dataProvider' => $model->search(),
                         'id' => 'question-grid',
                         'emptyText' => gT('No questions found.'),

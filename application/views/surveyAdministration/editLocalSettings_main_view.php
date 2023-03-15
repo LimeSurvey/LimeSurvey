@@ -30,7 +30,8 @@ if (isset($scripts)) {
 <!-- START editLocalSettings -->
 <div class="row">
     <div class="col-12">
-        <h3 class="pagetitle"><?php eT($entryData['title']); ?></h3>
+        <!-- <h3 class="pagetitle"><?php eT($entryData['title']); ?></h3> -->
+        <!-- <h1 class="mt-3 mb-2"><?php eT($entryData['title']); ?></h1> -->
         <!-- Edition container -->
         <!-- Form -->
         <?php
@@ -39,7 +40,7 @@ if (isset($scripts)) {
         }
         ?>
         <div class="row">
-            <div class="<?= $entryData['classes'] ?>">
+            <div class="<?= $entryData['classes'] ?> ls-settings-wrapper">
                 <?php $this->renderPartial($entryData['partial'], $templateData); ?>
             </div>
         </div>

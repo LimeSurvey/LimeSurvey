@@ -8,20 +8,20 @@ $tooltip = null;
 $icon = null;
 if ($oQuota->action == Quota::ACTION_TERMINATE){
     $tooltip = gT("Terminate survey");
-    $icon = 'fa-exclamation-circle';
+    $icon = 'ri-error-warning-fill';
 } elseif ($oQuota->action == Quota::ACTION_CONFIRM_TERMINATE){
     $tooltip = gT("Allow user to modify their last answers before terminating the survey.");
-    $icon = 'fa-exclamation-triangle';
+    $icon = 'ri-alert-fill';
 }
 ?>
 
 <?php /*echo "<pre>".print_r($oQuota->mainLanguagesetting->attributes,true)."</pre>";*/ ?>
-<div class="panel panel-<?php echo ($oQuota->active==1 ? 'primary' : 'default') ?>">
+<div class="card card-primary <?php echo ($oQuota->active==1 ? 'border-left-success' : 'inactive border-left-warning') ?>">
     <div class="card-header ">
         <div class="float-end small">
-            <span><span class="fa <?php echo $icon?>"></span> <?php echo $tooltip;?></span>
+            <span><span class="<?= $icon ?>"></span> <?= $tooltip ?></span>
             <?php if($oQuota->autoload_url == 1):?>
-                <span><span class="fa fa-external-link"></span> <?php echo gT('Autoload URL:').' '.htmlentities($oQuota->mainLanguagesetting->quotals_url);?></span>
+                <span><span class=" ri-external-link-fill"></span> <?php echo gT('Autoload URL:').' '.htmlentities($oQuota->mainLanguagesetting->quotals_url);?></span>
             <?php endif;?>
         </div>
         <?php echo CHtml::encode($oQuota->name) ;?>

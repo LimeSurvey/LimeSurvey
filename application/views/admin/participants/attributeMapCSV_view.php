@@ -1,15 +1,14 @@
-<div class='header ui-widget-header'>
+<div class='header'>
     <h3 class='pagetitle'><?php neT("Select which fields to import as attributes with your {n} participant.|Select which fields to import as attributes with your {n} participants.", $linecount); ?></h3>
 </div>
 
-<div class="container-fluid">
 <div class="row justify-content-start">
     <div class='col-4'>
         <div id="csvattribute" class="card card-primary h-100">
             <div class="card-header ">
                 <?php eT("CSV field names "); ?>
                 <div class='float-end'>
-                    <span id='move-all' class='btn fa fa-arrow-right no-padding' data-bs-toggle='tooltip' data-title='<?php eT('Move all fields to create column'); ?>'></span>
+                    <span id='move-all' class='btn ri-arrow-right-fill no-padding' data-bs-toggle='tooltip' data-title='<?php eT('Move all fields to create column'); ?>'></span>
                 </div>
             </div>
             <div class='card-body'>
@@ -80,8 +79,5 @@
         <input class='btn btn-outline-secondary' type="button" name="attreset" id="attreset" value="<?php eT("Reset") ?>" onClick="window.location.reload();" />
         <input class='btn btn-outline-secondary' type="button" name="attmap" id="attmap" value="<?php eT("Continue"); ?>" />
     </div>
-    <div id="processing" title="<?php eT("Processing...") ?>" style="display:none">
-        <img src="<?php echo Yii::app()->getConfig('adminimageurl') . '/ajax-loader.gif'; ?>" alt="<?php eT('Loading...'); ?>" title="<?php eT('Loading...'); ?>" />
-    </div>
-</div>
+    <div id="processing" title="<?php eT("Processing...") ?>"></div>
 </div>

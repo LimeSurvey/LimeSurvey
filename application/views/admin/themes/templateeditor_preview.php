@@ -12,7 +12,7 @@
     <br>
     <br>
 
-    <div style='width:90%; margin:0 auto;'>
+    <div class="overflow-auto" style='width:90%; margin:0 auto;'>
         <?php if (isset($filenotwritten) && $filenotwritten == true) { ?>
             <p>
                 <span

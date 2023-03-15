@@ -73,7 +73,7 @@ class TestBaseClass extends TestCase
         }
 
         // Reset the cache to prevent import from failing if there is a cached survey and it's active.
-        // When importing, activating, deleting and importing again (usual with automated tests), 
+        // When importing, activating, deleting and importing again (usual with automated tests),
         // as using the same SID, it was picking up the cached (old) version of the survey
         \Survey::model()->resetCache();
         $translateLinksFields = false;
@@ -174,6 +174,24 @@ class TestBaseClass extends TestCase
             $plugin->active = 0;
             $plugin->save();
         }
+    }
+
+    /**
+     * Helper dispatch evento to specific plugin
+     * @param string $pluginName
+     * @param \PluginEvent $eventName
+     * @param array $eventValues
+     * @return void
+     */
+    public static function dispatchPluginEvent($pluginName, $eventName, $eventValues)
+    {
+        $oEvent = (new \PluginEvent($eventName));
+        foreach($eventValues as $key => $value) {
+            $oEvent->set($key, $value);
+        }
+        \Yii::app()->getPluginManager()->dispatchEvent($oEvent, $pluginName);
+
+        return $oEvent;
     }
 
     protected static function createUserWithPermissions(array $userData, array $permissions = [])

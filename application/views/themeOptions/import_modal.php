@@ -37,7 +37,7 @@
                             <?php eT("Select theme ZIP file:") ?>
                         </label>
                         <input id='the_file' class="form-control" name='the_file' type="file" accept='.zip' />
-                        <div class="form-text">
+                        <div class="form-text mt-2">
                             <?php printf(gT('(Maximum file size: %01.2f MB)'),getMaximumFileUploadSize()/1024/1024); ?>
                         </div>
                     </div>
@@ -49,7 +49,7 @@
                     <?php if (!class_exists('ZipArchive')) {?>
                         <?php eT("The ZIP library is not activated in your PHP configuration thus importing ZIP files is currently disabled.", "js") ?>
                     <?php } else {?>
-                        <input class="btn btn-success" type='button' value='<?php eT("Install") ?>' onclick='if (window.LS.validatefilename(this.form,"<?php eT('Please select a file to import!', 'js ') ?>")) { this.form.submit();}' />
+                        <input class="btn btn-primary" type='button' value='<?php eT("Install") ?>' onclick='if (window.LS.validatefilename(this.form,"<?php eT('Please select a file to import!', 'js ') ?>")) { this.form.submit();}' />
                     <?php }?>
                 </div>
             </form>

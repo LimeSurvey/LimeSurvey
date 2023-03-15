@@ -264,11 +264,12 @@ class SurveyDynamic extends LSActiveRecord
      */
     public function getCompleted()
     {
-        return ($this->submitdate != '') ? '<span class="text-success fa fa-check"></span>' : '<span class="text-warning fa fa-times"></span>';
+        return ($this->submitdate != '') ? '<span class="text-success ri-check-fill"></span>' : '<span class="text-danger ri-close-fill"></span>';
     }
 
     /**
      * Return the buttons columns
+     * This is the button column for response table
      * @see https://www.yiiframework.com/doc/api/1.1/CButtonColumn
      * @see https://bugs.limesurvey.org/view.php?id=14219
      * @see https://bugs.limesurvey.org/view.php?id=14222: When deleting a single response : all page is reloaded (not only grid)
@@ -277,92 +278,84 @@ class SurveyDynamic extends LSActiveRecord
     public function getGridButtons()
     {
         $sBrowseLanguage = sanitize_languagecode(Yii::app()->request->getParam('browseLang', ''));
-        $buttons = '';
 
-        /* detail button */
-        $buttons .= "<a
-        href='" . App()->createUrl("responses/view", ["surveyId" => self::$sid, "id" => $this->id, "browseLang" => $sBrowseLanguage]) . "'
-        class='btn btn-outline-secondary btn-sm'
-        target='_blank'
-        data-bs-toggle='tooltip'
-        title='" . gt("View response details") . "'>
-            <i class='fa fa-eye'></i>
-        </a>";
+        $permissionReponseUpdate = Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'update');
+        $permissionReponseDelete = Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'delete');
 
-        /* quexmlpdf button */
-        $buttons .= "<a
-        href='" . App()->createUrl("responses/viewquexmlpdf", ["surveyId" => self::$sid, "id" => $this->id, "browseLang" => $sBrowseLanguage]) . "'
-        class='btn btn-outline-secondary btn-sm'
-        target='_blank'
-        data-bs-toggle='tooltip'
-        title='" . gt("View response details as queXML PDF") . "'>
-            <i class='fa fa-file-o'></i>
-        </a>";
+        $dropdownItems = [];
+        $dropdownItems[] = [
+            'title'            => gT('View response details'),
+            'iconClass'        => 'ri-eye-fill',
+            'url'              => App()->createUrl(
+                "responses/view",
+                [
+                    "surveyId" => self::$sid,
+                    "id" => $this->id,
+                    "browseLang" => $sBrowseLanguage
+                ]
+            ),
+        ];
+        $dropdownItems[] = [
+            'title'            => gT('Edit this response'),
+            'iconClass'        => 'ri-pencil-fill text-success',
+            'url'              => App()->createUrl(
+                "admin/dataentry/sa/editdata/subaction/edit",
+                [
+                    "surveyId" => self::$sid,
+                    "id" => $this->id,
+                    "browseLang" => $sBrowseLanguage
+                ]
+            ),
+            'enabledCondition' => $permissionReponseUpdate,
+        ];
+        $fileExists = Response::model(self::$sid)->findByPk($this->id)->someFileExists();
+        $dropdownItems[] = [
+            'title'            => gT('Download all response files'),
+            'iconClass'        => 'ri-download-fill text-success',
+            'url'              => App()->createUrl(
+                "responses/downloadfiles",
+                ["surveyId" => self::$sid, "responseIds" => $this->id]
+            ),
+            'enabledCondition' => $permissionReponseUpdate && hasFileUploadQuestion(self::$sid) && $fileExists,
+        ];
+        $dropdownItems[] = [
+            'title'            => gT('Delete all response files'),
+            'iconClass'        => 'ri-attachment-2 text-danger',
+            'enabledCondition' => $permissionReponseUpdate && hasFileUploadQuestion(self::$sid) && $fileExists,
+            'linkAttributes'   => [
+                'data-bs-toggle' => "modal",
+                'data-bs-target' => "#confirmation-modal",
+                'data-btnclass'  => 'btn-danger',
+                'data-title'     => gt('Delete all response files'),
+                'data-btntext'   => gt('Delete'),
+                'data-post-url'  => App()->createUrl("responses/deleteAttachments"),
+                'data-post-datas' => json_encode(['surveyId' => self::$sid, 'responseId' => $this->id]),
+                'data-message'   => gt("Do you want to delete all files of this response?"),
+            ]
+        ];
 
-        /* edit button */
-        if (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'update')) {
-            $buttons .= "<a
-            href='" . App()->createUrl("admin/dataentry/sa/editdata/subaction/edit", ["surveyId" => self::$sid, "id" => $this->id, "browseLang" => $sBrowseLanguage]) . "'
-            class='btn btn-outline-secondary btn-sm'
-            target='_blank'
-            data-bs-toggle='tooltip'
-            title='" . gt("Edit this response") . "'>
-                <i class='fa fa-pencil text-success'></i>
-            </a>";
-        }
+        $dropdownItems[] = [
+            'title'            => gT('Delete this response'),
+            'iconClass'        => 'ri-delete-bin-fill text-danger',
+            'enabledCondition' => $permissionReponseDelete,
+            'linkAttributes'   => [
+                'data-bs-toggle' => "modal",
+                'data-bs-target' => "#confirmation-modal",
+                'data-btnclass'  => 'btn-danger',
+                'data-title'     => gt('Delete this response'),
+                'data-btntext'   => gt('Delete'),
+                'data-post-url'  => App()->createUrl("responses/deleteSingle"),
+                'data-post-datas' => json_encode(['surveyId' => self::$sid, 'responseId' => $this->id]),
+                'data-message'   => gt("Do you want to delete this response?") . '<br/>' .
+                    gT("Please note that if you delete an incomplete response during a running survey, the participant will not be able to complete it."),
+            ]
+        ];
 
-        /* downloadfile button */
-        if (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'update') && hasFileUploadQuestion(self::$sid) && Response::model(self::$sid)->findByPk($this->id)->someFileExists()) {
-            $buttons .= "<a
-            href='" . App()->createUrl("responses/downloadfiles", ["surveyId" => self::$sid, "responseIds" => $this->id]) . "'
-            class='btn btn-outline-secondary btn-sm'
-            target='_blank'
-            data-bs-toggle='tooltip'
-            title='" . gt("Download all files in this response as a zip file") . "'>
-                <i class='fa fa-download text-success'></i>
-            </a>";
-        }
-
-        /* deletefiles button */
-        if (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'update') && hasFileUploadQuestion(self::$sid) && Response::model(self::$sid)->findByPk($this->id)->someFileExists()) {
-            $buttons .= "
-            <span
-            data-bs-toggle='modal'
-            data-bs-target='#confirmation-modal'
-            data-btnclass='btn-danger'
-            data-post-url='" . App()->createUrl("responses/deleteAttachments") . "'
-            data-post-datas='" . json_encode(['surveyId' => self::$sid, 'responseId' => $this->id]) . "'
-            data-btntext='" . gt("Delete") . "'
-            data-message='" . gt("Do you want to delete all files of this response?") . "'>
-            <button
-            data-bs-toggle='tooltip'
-            class='btn btn-outline-secondary btn-sm btn-deletefiles'
-            title='" . gt("Delete all files of this response") . "'>
-            <i class='fa fa-paperclip text-danger'></i>
-            </button>
-            </span>";
-        }
-
-        /* delete  button */
-        if (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'delete')) {
-            $buttons .= "
-            <span
-            data-bs-toggle='modal'
-            data-bs-target='#confirmation-modal'
-            data-btnclass='btn-danger'
-            data-post-url='" . App()->createUrl("responses/deleteSingle") . "'
-            data-post-datas='" . json_encode(['surveyId' => self::$sid, 'responseId' => $this->id]) . "'
-            data-btntext='" . gt("Delete") . "'
-            data-message='" . gt("Do you want to delete this response?") . "<br/>" . gT("Please note that if you delete an incomplete response during a running survey, the participant will not be able to complete it.") . "'>
-            <button
-            data-bs-toggle='tooltip'
-            class='btn btn-outline-secondary btn-sm btn-delete'
-            title='" . gt("Delete this response") . "'>
-            <i class='fa fa-trash text-danger'></i>
-            </button>
-            </span>";
-        }
-        return $buttons;
+        return App()->getController()->widget(
+            'ext.admin.grid.GridActionsWidget.GridActionsWidget',
+            ['dropdownItems' => $dropdownItems],
+            true
+        );
     }
 
     /**
@@ -607,7 +600,7 @@ class SurveyDynamic extends LSActiveRecord
     public function getTokenForGrid()
     {
         if (is_object($this->tokens) && !is_null($this->tokens->tid)) {
-            $sToken = "<a class='btn btn-outline-secondary btn-xs edit-token' href='#' data-sid='" . self::$sid . "' data-tid='" . $this->tokens->tid . "'  data-url='" . App()->createUrl("admin/tokens", array("sa" => "edit", "iSurveyId" => self::$sid, "iTokenId" => $this->tokens->tid, 'ajax' => 'true')) . "' data-bs-toggle='tooltip' title='" . gT("Edit this survey participant") . "'>" . CHtml::encode($this->token) . "&nbsp;&nbsp;&nbsp;<span class='fa fa-pencil'></span></a>";
+            $sToken = "<a class='btn btn-outline-secondary btn-xs edit-token' href='#' data-sid='" . self::$sid . "' data-tid='" . $this->tokens->tid . "'  data-url='" . App()->createUrl("admin/tokens", array("sa" => "edit", "iSurveyId" => self::$sid, "iTokenId" => $this->tokens->tid, 'ajax' => 'true')) . "' data-bs-toggle='tooltip' title='" . gT("Edit this survey participant") . "'>" . CHtml::encode($this->token) . "&nbsp;&nbsp;&nbsp;<span class='ri-pencil-fill'></span></a>";
         } else {
             $sToken = '<span class="badge rounded-pill">' . CHtml::encode($this->token) . '</span>';
         }

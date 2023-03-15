@@ -37,7 +37,6 @@
     $columnstyle = "attrcol_".$columncount;
 ?>
 
-<div class="container-fluid">
 <div class='row'>
     <div class='col-4'>
         <div id="centralattribute" class="card card-primary <?php echo $columnstyle ?> h-100">
@@ -81,7 +80,7 @@
                                             <div class='card ui-state-disabled token-attribute' id='t_<?php echo $id; ?>'>
                                                 <div class='card-body'>
                                                     <?php echo CHtml::encode($name); ?>
-                                                    <span class='fa fa-arrows-h tokenatt-arrow'></span>
+                                                    <span class='ri-arrow-left-right-fill tokenatt-arrow'></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -160,7 +159,7 @@
                                 <div class='card ui-state-disabled token-attribute' id='t_token'>
                                     <div class='card-body'>
                                         <?php eT("Participant") ?>
-                                        <span class='fa fa-arrows-h tokenatt-arrow'></span>
+                                        <span class='ri-arrow-left-right-fill tokenatt-arrow'></span>
                                     </div>
                                 </div>
                             </div>
@@ -214,4 +213,3 @@ $ajaxloader = array(
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-</div>

@@ -1,3 +1,4 @@
+<!--@TODO is this view even used?-->
 <div class="container-fluid welcome">
     <div class="row text-center">
         <div class="col-xxl-3 offset-xl-4 col-md-6 offset-md-3">
@@ -27,10 +28,12 @@
                     ); ?>
                     <div class="row login-content login-content-form">
                         <div class="col-12">
-                            <div class="alert alert-info" role="alert">
-                                <?php
-                                echo $message; ?>
-                            </div>
+                            <?php
+                            $this->widget('ext.AlertWidget.AlertWidget', [
+                                'text' => $message,
+                                'type' => 'info',
+                            ]);
+                            ?>
                         </div>
                     </div>
 

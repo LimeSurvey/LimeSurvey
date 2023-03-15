@@ -20,18 +20,22 @@ Yii::app()->getClientScript()->registerScript(
 );
 
 ?>
-<div class="container-fluid position-relative">
+<div class="position-relative">
     <div class="d-flex flex-wrap flex-lg-nowrap" id="surveySettingsForThisGroup">
         <div id="global-sidebar-container">
             <global-sidemenu/>
         </div>
-        <div id="pjax-content" class="tab-content col-lg-10 flex-lg-shrink-1 ps-3">
+        <div id="pjax-content" class="tab-content col-lg-10 flex-lg-shrink-1 ps-4">
             <?php if ($model->hasPermission('surveysettings', 'update')) : ?>
                 <div class="row">
                     <div class="col-12">
-                        <div class="alert alert-info controls" role="alert">
-                            <?php eT('All changes of survey group settings will have immediate effect on all related surveys that use inherited values.'); ?>
-                        </div>
+                        <?php
+                        $this->widget('ext.AlertWidget.AlertWidget', [
+                            'text' => gT('All changes of survey group settings will have immediate effect on all related surveys that use inherited values.'),
+                            'type' => 'info',
+                            'htmlOptions' => ['class' => 'controls']
+                        ]);
+                        ?>
                     </div>
                 </div>
             <?php endif; ?>
@@ -105,7 +109,7 @@ Yii::app()->getClientScript()->registerScript(
                 <?php } ?>
 
                 <div class="d-none">
-                    <?php echo TbHtml::submitButton('Save', ['class' => 'btn btn-success col-lg-2 col-md-4', "id" => "survey-settings-options-form"]); ?>
+                    <?php echo TbHtml::submitButton('Save', ['class' => 'btn btn-primary col-lg-2 col-md-4', "id" => "survey-settings-options-form"]); ?>
                 </div>
             </div>
             <?php echo CHtml::endForm() ?>
@@ -125,7 +129,7 @@ Yii::app()->getClientScript()->registerScript(
             $(this).tab('show');       
         });
     
-        $('.text-option-inherit input').on('change', function(e){
+        $('.text-option-inherit').on('change', function(e){
             var newValue = $(this).find('.btn-check:checked').val();
             var parent = $(this).parent().parent();
             var inheritValue = parent.find('.inherit-edit').data('inherit-value');

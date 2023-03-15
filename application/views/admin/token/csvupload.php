@@ -17,9 +17,7 @@
             <!-- Choose the CSV file to upload -->
             <div class="mb-3">
                 <label class=" form-label" for='the_file'><?php eT("Choose the CSV file to upload:"); ?></label>
-                <div class="">
-                    <?php echo CHtml::fileField('the_file', '', ['required' => 'required', 'accept' => '.csv']); ?>
-                </div>
+                <?php echo CHtml::fileField('the_file', '', ['required' => 'required', 'accept' => '.csv', 'class' => 'form-control']); ?>
             </div>
 
             <!-- "Character set of the file -->
@@ -106,7 +104,13 @@
                         ]
                     ]); ?>
                 </div>
-                <div class="help-block"><?php eT("The access code field is always checked for duplicates."); ?></div>
+                <?php
+                $this->widget('ext.AlertWidget.AlertWidget', [
+                    'text' => gT("The access code field is always checked for duplicates."),
+                    'type' => 'info',
+                    'htmlOptions' => ['class' => 'mt-1'],
+                ]);
+                ?>
             </div>
 
             <!-- Duplicates are determined by -->
@@ -125,22 +129,34 @@
 
             <!-- Buttons -->
             <div class="mb-3">
-                <div class="">
-                    <?php echo CHtml::htmlButton(gT("Upload"),
-                        ['type' => 'submit', 'name' => 'upload', 'value' => 'import', 'class' => 'btn btn-outline-secondary']); ?>
-                </div>
+                <?php $this->widget(
+                    'ext.ButtonWidget.ButtonWidget',
+                    [
+                        'name' => 'upload',
+                        'value' => 'import',
+                        'text' => gT('Upload'),
+                        'icon' => 'icon-import',
+                        'htmlOptions' => [
+                            'class' => 'btn btn-primary',
+                            'type' => 'submit'
+                        ]
+                    ]
+                ); ?>
             </div>
             </form>
 
             <!-- Infos -->
-            <div class="alert alert-info" role="alert">
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                <strong><?php eT("CSV input format"); ?></strong><br/>
-                <p><?php eT("File should be a standard CSV (comma delimited) file with optional double quotes around values (default for most spreadsheet tools). The first line must contain the field names. The fields can be in any order."); ?></p>
-                <span style="font-weight:bold;"><?php eT("Mandatory fields:"); ?></span> firstname, lastname, email<br/>
-                <span style="font-weight:bold;"><?php eT('Optional fields:'); ?></span> emailstatus, token, language, validfrom, validuntil,
-                attribute_1, attribute_2, attribute_3, usesleft, ... .
-            </div>
+            <?php
+            $message = '<div><strong>' . gT("CSV input format") . '</strong><br/>' .
+                '<p>' . gT("File should be a standard CSV (comma delimited) file with optional double quotes around values (default for most spreadsheet tools). The first line must contain the field names. The fields can be in any order.") . '</p>' .
+                '<span class="fw-bold">' . gT("Mandatory fields:") . '</span> firstname, lastname, email<br/>' .
+                '<span class="fw-bold">' . gT('Optional fields:') .
+                '</span> emailstatus, token, language, validfrom, validuntil, attribute_1, attribute_2, attribute_3, usesleft, ... .</div>';
+            $this->widget('ext.AlertWidget.AlertWidget', [
+                'text' => $message,
+                'type' => 'info',
+            ]);
+            ?>
         </div>
     </div>
 </div>
