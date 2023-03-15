@@ -10,7 +10,7 @@
         <div class="row">
             <!-- Title or breadcrumb -->
             <div class="ls-breadcrumb col-xl-4 col-xxl-3">
-                <h1><?= $leftSide ?></h1>
+                <h1 class="align-items-center d-flex"><?= $leftSide ?></h1>
             </div>
 
             <!-- middle part with buttons -->

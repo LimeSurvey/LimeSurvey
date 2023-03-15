@@ -2769,7 +2769,8 @@ class ParticipantsAction extends SurveyCommonAction
      */
     private function getTopBarComponents($title, $ownsAddParticipantsButton, $ownsAddAttributeButton)
     {
-        $topBarConf['title'] = $title;
+        $topBarConf['title'] = '<a class="h1" href="'.Yii::app()->createUrl('admin/index').'">
+        <i class="ri-arrow-left-s-line"></i></a>'. $title;
         $topBarConf['middleButtons'] = Yii::app()->getController()->renderPartial(
             '/admin/participants/partial/topbarBtns/leftSideButtons',
             [

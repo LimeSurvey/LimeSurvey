@@ -382,7 +382,9 @@ class SurveymenuController extends SurveyCommonAction
         $aData['pageSize'] = Yii::app()->user->getState('pageSize', (int) Yii::app()->params['defaultPageSize']);
 
 
-        $aData['topbar']['title'] = gT('Survey menus');
+        $aData['topbar']['title'] = '<a class="h1" href="'.Yii::app()->createUrl('admin/index').'">
+        <i class="ri-arrow-left-s-line"></i></a>'.gT('Survey menus');
+
         $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
             '/admin/surveymenu/partial/topbarBtns/rightSideButtons',
             [

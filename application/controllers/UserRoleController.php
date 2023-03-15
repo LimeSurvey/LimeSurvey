@@ -49,17 +49,15 @@ class UserRoleController extends LSBaseController
             $model->setAttributes($aPermissiontemplatesParam, false);
         }
 
-        $aData['topbar']['title'] = gT('User roles');
+        $aData['topbar']['title'] = '<a class="h1" href="'.$this->createUrl('admin/index').'">
+        <i class="ri-arrow-left-s-line"></i></a>'.gT('User roles');
+
         $aData['topbar']['middleButtons'] = $this->renderPartial(
             'partials/topbarBtns/leftSideButtons',
             [],
             true
         );
-        $aData['topbar']['rightButtons'] = $this->renderPartial(
-            'partials/topbarBtns/rightSideButtons',
-            [],
-            true
-        );
+  
 
         //this is really important, so we have the aData also before rendering the content
         $this->aData = $aData;

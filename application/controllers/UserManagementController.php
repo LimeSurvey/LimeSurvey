@@ -66,10 +66,9 @@ class UserManagementController extends LSBaseController
         );
 
 
-        $aData['topbar']['title'] = gT('User management');
-
+        $aData['topbar']['title'] = '<a class="h1" href="'.$this->createUrl('admin/index').'">
+        <i class="ri-arrow-left-s-line"></i></a>'.gT('User management');
         $aData['topbar']['middleButtons'] = $this->renderPartial('partial/topbarBtns/leftSideButtons', [], true);
-        $aData['topbar']['rightButtons'] = $this->renderPartial('partial/topbarBtns/rightSideButtons', [], true);
 
         //this is really important, so we have the aData also before rendering the content
         $this->aData = $aData;
