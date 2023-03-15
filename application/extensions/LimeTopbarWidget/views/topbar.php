@@ -9,12 +9,12 @@
     <div class="container-fluid">
         <div class="row">
             <!-- Title or breadcrumb -->
-            <div class="col-xl-4 col-xxl-3 text-start h1 ls-breadcrumbs">
+            <div class="ls-breadcrumb col-xl-4 col-xxl-3">
                 <h1><?= $leftSide ?></h1>
             </div>
 
             <!-- middle part with buttons -->
-            <div class="pjax col">
+            <div class="ls-topbar-buttons pjax col">
                 <?php
                 if ($middle !== null) {
                     echo $middle;
@@ -23,7 +23,7 @@
             </div>
 
             <!-- left part with buttons -->
-            <div class="pjax col-md-auto text-end">
+            <div class="ls-topbar-buttons pjax col-md-auto text-end">
                 <?php
                 if ($rightSide !== null) {
                     echo $rightSide;

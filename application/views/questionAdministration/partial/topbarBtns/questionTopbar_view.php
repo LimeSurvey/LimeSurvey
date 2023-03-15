@@ -22,34 +22,34 @@ App()->getClientScript()->registerScriptFile(
     <div class="container-fluid">
             <?php if ($oQuestion->qid !== 0) : ?>
                 <div id="question-summary-topbar"
-                     class='row' <?= empty($tabOverviewEditor) || $tabOverviewEditor == 'editor' ? 'style="display: none;"' : "" ?>>
+                     class='row' <?= empty($tabOverviewEditor) || $tabOverviewEditor === 'editor' ? 'style="display: none;"' : "" ?>>
                     <!-- Title or breadcrumb -->
-                    <div class="col-xl-4 col-xxl-3 text-start h1 ls-breadcrumbs">
+                    <div class="ls-breadcrumb col-xl-4 col-xxl-3">
                         <h1><?= $breadcrumb ?></h1>
                     </div>
                     <!-- Left Side -->
-                    <div class="col">
+                    <div class="ls-topbar-buttons col">
                         <?= $leftSideContentSummary ?>
                     </div>
 
-                    <div class="col-md-auto float-end text-end">
+                    <div class="ls-topbar-buttons col-md-auto float-end text-end">
                         <?= $rightSideContentSummary ?>
                     </div>
                 </div>
             <?php endif; ?>
             <div id="question-create-edit-topbar"
-                 class='row' <?= !empty($tabOverviewEditor) && $tabOverviewEditor != 'editor' ? 'style="display: none;"' : "" ?>>
+                 class='row' <?= !empty($tabOverviewEditor) && $tabOverviewEditor !== 'editor' ? 'style="display: none;"' : "" ?>>
                 <!-- Title or breadcrumb -->
-                <div class="col-xl-4 col-xxl-3 text-start h1">
+                <div class="ls-breadcrumb col-xl-4 col-xxl-3">
                     <h1><?= $breadcrumb ?></h1>
                 </div>
                 <!-- Left Side -->
-                <div class="col">
+                <div class="ls-topbar-buttons col">
                     <?= $leftSideContentEditor ?>
                 </div>
 
                 <!-- Right Side -->
-                <div class="col-md-auto float-end text-end">
+                <div class="ls-topbar-buttons col-md-auto float-end text-end">
                     <?= $rightSideContent ?>
                 </div>
             </div>
