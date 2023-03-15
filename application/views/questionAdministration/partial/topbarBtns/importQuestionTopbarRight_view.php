@@ -6,7 +6,7 @@ $this->widget(
         'id' => 'save-button',
         'name' => 'save-button',
         'text' => gT('Import'),
-        'icon' => 'ri-save-3-fill',
+        'icon' => 'ri-download-fill',
         'htmlOptions' => [
                 'class' => 'btn btn-primary',
         ],

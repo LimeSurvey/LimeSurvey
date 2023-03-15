@@ -99,11 +99,11 @@ $importModal = false;
                             ]) . "'); uri.addQueryParam('screenname',this.value); window.open(uri.toString(), '_top')"
                 ]); ?>
         </div>
-
+<!--        @TODO unused button???-->
         <?php if (isset($fullpagebar['savebutton']['form'])) : ?>
             <a class="btn btn-primary" href="#" role="button" id="save-form-button"
                data-form-id="<?php echo $fullpagebar['savebutton']['form']; ?>">
-                <span class="ri-save-3-fill"></span>
+                <span class="ri-check-fill"></span>
                 <?php eT("Save"); ?>
             </a>
         <?php endif; ?>
