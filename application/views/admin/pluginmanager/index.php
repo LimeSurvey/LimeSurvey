@@ -72,18 +72,6 @@ $dataProvider = new CArrayDataProvider($plugins, $providerOptions);
 
 $gridColumns = [
     [
-        'type' => 'raw',
-        'header' => gT('Action'),
-        'name' => 'action',
-        'value' => '$data->getActionButtons()'
-    ],
-    [
-        'header' => gT('Status'),
-        'type' => 'html',
-        'name' => 'status',
-        'value' => '$data->getStatus()'
-    ],
-    [
         'header' => gT('Plugin'),
         'name' => 'name',
         'type' => 'html',
@@ -95,6 +83,20 @@ $gridColumns = [
         'type' => 'html',
         'value' => '$data->getPossibleDescription()'
     ],
+    [
+        'header' => gT('Status'),
+        'type' => 'html',
+        'name' => 'status',
+        'value' => '$data->getStatus()'
+    ],
+    [
+        'header'            => gT('Action'),
+        'name'              => 'actions',
+        'value'             => '$data->buttons',
+        'type'              => 'raw',
+        'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+        'htmlOptions'       => ['class' => 'text-center ls-sticky-column'],
+    ]
 ];
 
 $this->widget(

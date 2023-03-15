@@ -1589,11 +1589,6 @@ $color_norway_approx: adjust-color($base-color, $hue: 0deg, $saturation: -28%, $
     padding-right: 4px;
 }
 
-/** For survey participants table */
-.scrolling-wrapper {
-    overflow-x: scroll;
-    overflow-y: hidden;
-}
 
 /** Search criteria pop-up for survey participants table */
 #search {

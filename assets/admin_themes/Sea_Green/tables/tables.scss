@@ -150,3 +150,12 @@ table {
         }
     }
 }
+
+/** For all grid view table */
+.scrolling-wrapper {
+    overflow-x: scroll;
+    overflow-y: hidden;
+
+    // if go to last page of table, the action dropdown is hidden.
+    min-height: 300px;
+}

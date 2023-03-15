@@ -249,6 +249,7 @@ class Plugin extends LSActiveRecord
         return $output;
     }
 
+
     /**
      * @return string HTML
      */
@@ -304,6 +305,87 @@ class Plugin extends LSActiveRecord
             </form>
         ";
         return $output;
+    }
+
+    public function getButtons(): string
+    {
+        $activateUrl = App()->getController()->createUrl(
+            '/admin/pluginmanager',
+            [
+                'sa' => 'activate'
+            ]
+        );
+        $deactivateUrl = App()->getController()->createUrl(
+            '/admin/pluginmanager',
+            [
+                'sa' => 'deactivate'
+            ]
+        );
+        $uninstallUrl = App()->getController()->createUrl(
+            '/admin/pluginmanager',
+            [
+                'sa' => 'uninstallPlugin'
+            ]
+        );
+        $dropdownItems = [];
+
+        $dropdownItems[] = [
+            'title'            => gT('Activate'),
+            'url'              => $activateUrl,
+            'iconClass'        => "ri-play-fill text-success",
+            'enabledCondition' => $this->active == 0,
+            'linkAttributes'   => [
+                'data-bs-toggle'  => 'modal',
+                'data-bs-target'  => '#confirmation-modal',
+                'data-btnclass'   => 'btn-success',
+                'type'            => 'submit',
+                'data-btntext'    => gt("Activate"),
+                'data-title'      => gt('Activate plugin'),
+                'data-message'    => gT("Are you sure you want to activate this plugin?"),
+                'type'            => 'submit',
+                'data-post-url'   => $activateUrl,
+                'data-post-datas' => json_encode(['pluginId' => $this->id]),
+            ],
+
+        ];
+        $dropdownItems[] = [
+            'title'            => gT('Deactivate'),
+            'url'              => $deactivateUrl,
+            'iconClass'        => 'ri-stop-fill text-danger',
+            'enabledCondition' => $this->active == 1,
+            'linkAttributes'   => [
+                'data-bs-toggle'  => 'modal',
+                'data-bs-target'  => '#confirmation-modal',
+                'data-btnclass'   => 'btn-danger',
+                'type'            => 'submit',
+                'data-btntext'    => gt("Deactivate"),
+                'data-title'      => gt('Deactivate plugin'),
+                'data-message'    => gT("Are you sure you want to deactivate this plugin?"),
+                'type'            => 'submit',
+                'data-post-url'   => $deactivateUrl,
+                'data-post-datas' => json_encode(['pluginId' => $this->id]),
+            ],
+
+        ];
+        $dropdownItems[] = [
+            'title'            => gT('Uninstall'),
+            'url'              => $uninstallUrl,
+            'iconClass'        => 'ri-delete-bin-fill text-danger',
+            'enabledCondition' => $this->active == 0,
+            'linkAttributes'   => [
+                'data-bs-toggle'  => 'modal',
+                'data-bs-target'  => '#confirmation-modal',
+                'data-btnclass'   => 'btn-danger',
+                'type'            => 'submit',
+                'data-btntext'    => gt("Uninstall"),
+                'data-title'      => gt('Uninstall plugin'),
+                'data-message'    => gT("Are you sure you want to uninstall this plugin?"),
+                'data-post-url'   => $uninstallUrl,
+                'data-post-datas' => json_encode(['pluginId' => $this->id]),
+            ],
+        ];
+
+        return App()->getController()->widget('ext.admin.grid.GridActionsWidget.GridActionsWidget', ['dropdownItems' => $dropdownItems], true);
     }
 
     /**
