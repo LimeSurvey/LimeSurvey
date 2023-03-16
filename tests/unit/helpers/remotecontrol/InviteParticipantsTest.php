@@ -83,6 +83,25 @@ class InviteParticipantsTest extends BaseTest
         $this->assertNotSame('N', $participant_5->sent, 'Sent field in database should be a date, not ' . $participant_5->sent);
     }
 
+    public function testAddNewParticipantWithoutALanguageAndInviteIt()
+    {
+        $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
+
+        $newParticpants = array(
+            array(
+                'firstname' => 'Participant 6',
+                'email' => 'participant6@example.com',
+            )
+        );
+
+        $participantsData = $this->handler->add_participants($sessionKey, self::$surveyId, $newParticpants);
+        $tid = (int)$participantsData[0]['tid'];
+
+        $result = $this->handler->invite_participants($sessionKey, self::$surveyId, null, true, true);
+
+        $this->assertParticipantResultIsOk($result, $tid);
+    }
+
     /**
      * Assert the results for a participant are OK.
      * @param array<mixed> $results The raw results from invite_participants or remind_participants
