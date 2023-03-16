@@ -11,11 +11,13 @@
   }
   .navbar-brand {
     font-style: normal;
-    font-weight: 700;
+    font-weight: 400;
     font-size: 16px;
     color: $navbar-color;
-    height: 30px;
     width: auto;
+    &.text {
+      margin-top: 12px;
+    }
   }
   .navbar-toggler {
     margin: map-get($spacers, 2);
@@ -48,7 +50,7 @@
     height: 25px;
   }
   a {
-    font-weight : $font-weight-500;
+    font-weight : $font-weight-normal;
   }
   .dropdown-menu {
     z-index: 10000;

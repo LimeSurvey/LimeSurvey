@@ -17111,11 +17111,13 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 }
 .navbar .navbar-brand {
   font-style: normal;
-  font-weight: 700;
+  font-weight: 400;
   font-size: 16px;
   color: #fff;
-  height: 30px;
   width: auto;
+}
+.navbar .navbar-brand.text {
+  margin-top: 12px;
 }
 .navbar .navbar-toggler {
   margin: 8px;
@@ -17148,7 +17150,7 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   height: 25px;
 }
 .navbar a {
-  font-weight: 500;
+  font-weight: 400;
 }
 .navbar .dropdown-menu {
   z-index: 10000;
