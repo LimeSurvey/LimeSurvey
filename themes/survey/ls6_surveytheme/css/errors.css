@@ -1,0 +1,26 @@
+/*
+    LimeSurvey
+
+    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    All rights reserved.
+
+    License: GNU/GPL License v2 or later, see LICENSE.php
+    LimeSurvey is free software. This version may have been modified pursuant
+    to the GNU General Public License, and as distributed it includes or
+    is derivative of works licensed under the GNU General Public License or
+    other free or open source software licenses.
+    See COPYRIGHT.php for copyright notices and details.
+
+    (¯`·._.·(¯`·._.·  Specific CSS for error page   ·._.·´¯)·._.·´¯)
+
+    This will style the error page. It is loaded in layout_errors.twig
+    To see it: just try to preview a survey with an empty group.
+
+*/
+
+body {
+    margin: 0;
+    padding: 0;
+    background: #e7ecf0;
+    font-family: Arial, Helvetica, sans-serif;
+}

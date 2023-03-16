@@ -1,0 +1,52 @@
+{#
+    LimeSurvey
+    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    All rights reserved.
+    License: GNU/GPL License v2 or later, see LICENSE.php
+    LimeSurvey is free software. This version may have been modified pursuant
+    to the GNU General Public License, and as distributed it includes or
+    is derivative of works licensed under the GNU General Public License or
+    other free or open source software licenses.
+    See COPYRIGHT.php for copyright notices and details.
+
+    (¯`·._.·(¯`·._.· Header  ·._.·´¯)·._.·´¯)
+
+    This file generates the headers.
+    Most of the time, it is not the right place to add your own JS/CSS - instead, use the config.xml file for that.
+#}
+
+{% if(aSurveyInfo.jYesNo) %}
+    {{ registerScript('activateConfirmLanguage',"$.extend(LSvar.lang," ~ aSurveyInfo.jYesNo ~ ")", "POS_BEGIN") }}
+{% endif %}
+{{ registerScript('activateActionLink',"activateActionLink();", "POS_POSTSCRIPT") }}
+{{ registerScript('activateConfirmButton',"activateConfirmButton();", "POS_POSTSCRIPT") }}
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content="LimeSurvey http://www.limesurvey.org" />
+
+    {{ aSurveyInfo.metas }}
+
+    <title>
+        {{ processString(aSurveyInfo.surveyls_title,1) }}
+    </title>
+    {% if(imageSrc('./files/favicon.ico')) %}
+        <link rel="shortcut icon" href="{{ imageSrc('./files/favicon.ico') }}" />
+    {% endif %}
+    <script type="text/javascript">
+        if(window.basicThemeScripts === undefined){ 
+            window.basicThemeScripts = new ThemeScripts(); 
+        } 
+    </script>
+    {# LSvar update with  #}
+    {{ registerScript("LSvarTemplateInit","LSvar= LSvar || {};","POS_HEAD") }}
+    {% if(aSurveyInfo.options.fixnumauto and aSurveyInfo.options.fixnumauto != "off") %}
+        {{ registerScript("LSvarTemplateRealFixNumAuto","LSvar.bFixNumAuto = "~(aSurveyInfo.options.fixnumauto == "enable" ? 1 : 0)~";","POS_HEAD") }}
+        {{ registerScript("LSvarTemplateRealNumRealValue","LSvar.bNumRealValue = "~(aSurveyInfo.options.fixnumauto == "disable" ? 1 : 0)~";","POS_HEAD") }}
+    {% endif %}
+    {{ include('./subviews/header/custom_header.twig') }}
+
+    {{ include('./subviews/header/google_analytics.twig') }}
+</head>

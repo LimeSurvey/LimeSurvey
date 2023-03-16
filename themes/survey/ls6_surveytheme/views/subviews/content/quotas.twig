@@ -1,0 +1,108 @@
+{#
+    LimeSurvey
+    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    All rights reserved.
+    License: GNU/GPL License v2 or later, see LICENSE.php
+    LimeSurvey is free software. This version may have been modified pursuant
+    to the GNU General Public License, and as distributed it includes or
+    is derivative of works licensed under the GNU General Public License or
+    other free or open source software licenses.
+    See COPYRIGHT.php for copyright notices and details.
+
+    (¯`·._.·(¯`·._.· Quotas Content  ·._.·´¯)·._.·´¯)
+
+    This file displays the page shown to user when a quota limit is reached.
+    Depending on survey config, a navigator allowing the respondent to change their responses can be shown, and an end url.
+
+    Quotas data are in: aSurveyInfo.aQuotas
+    To show this data, turn debug mode on and copy the following line to the end of the <body> element in this file:
+    {{ dump(aSurveyInfo.aQuotas ) }} )
+
+    NOTE: This content is included inside mainrow.twig
+    NOTE: see layout_global.twig for more infos
+#}
+
+
+    {# Include the form opening tag #}
+    {{ include('./subviews/header/start_form.twig') }} <!-- main form -->
+
+        {# This will display the script and the hidden inputs needed for ExpressionScript Engine #}
+        {{ aSurveyInfo.EM.ScriptsAndHiddenInputs  }}
+
+
+        {# completed#}
+        <div class="{{ aSurveyInfo.class.completedwrapper }}" {{ aSurveyInfo.attr.completedwrapper }}>
+
+            {# LS 2.50 Plugins HTML NOTE: plugins should now use the event defined in LSETwigViewRenderer::renderTemplateFromString() #}
+            {{ aSurveyInfo.aQuotas.sPluginBlocks }}
+
+            <div class='{{ aSurveyInfo.class.completedtext }}' {{ aSurveyInfo.attr.completedtext }}>
+                <div class='{{ aSurveyInfo.class.quotamessage }}' {{ aSurveyInfo.attr.quotamessage }}>
+                    {{ aSurveyInfo.aQuotas.sMessage  }}
+                </div>
+
+                {# Navigator for quota page is pretty different from the classical navigator. So we can't include the navigator.twig #}
+                {% if (aSurveyInfo.aQuotas.bShowNavigator) %}
+
+                        {#
+                            array of attributes of the form tag.
+                            To add a new attribute, just add an entry:
+                            'attribute' : 'value',
+                        #}
+                        {% set htmlOptions = {
+                                'id'          : 'limesurvey',
+                                'name'        : 'limesurvey',
+                                'autocomplete': 'off',
+                                'class'       : 'survey-form-container QuotaMessage',
+                            }
+                        %}
+
+                        {#
+                            It generates the opening form tag and the CRSF token
+                            It uses the Yii fuction CHtml::form
+                            @see: http://www.yiiframework.com/doc/api/1.1/CHtml#form-detail
+                        #}
+                        <!-- Quota form for navigator -->
+                        {{
+                            C.Html.form(
+                                ( aSurveyInfo.surveyUrl ),
+                                'post',
+                                (htmlOptions)
+                                )
+                        }}
+
+                            <div class="{{ aSurveyInfo.class.navigator }} row" id="{{ aSurveyInfo.id.navigator }}" {{ aSurveyInfo.attr.navigator }}>
+
+                                <!-- Previous button container -->
+                                <div class="{{ aSurveyInfo.class.navigatorcoll }} col-6 text-start" {{ aSurveyInfo.attr.navigatorcoll }}>
+                                    <!-- Button previous -->
+                                    <button {{ aSurveyInfo.attr.navigatorcollbutton }} value="{{ aSurveyInfo.aQuotas.sQuotaStep }}" class=" {{ aSurveyInfo.class.navigatorcollbutton }}  btn btn-lg btn-outline-secondary " accesskey="p">
+                                        {{ gT("Previous") }}
+                                    </button>
+                                </div>
+
+                                <div class=" {{ aSurveyInfo.class.navigatorcolr }} col-6 text-end " {{ aSurveyInfo.attr.navigatorcolr }}>
+                                    <!-- Button submit -->
+                                    {# submit button is disabled to behave the same as in LS2: no "Submit" button if quota exceeded
+                                    <button  {{ aSurveyInfo.attr.navigatorcolrbutton}} class=" {{ aSurveyInfo.class.navigatorcolrbutton}}  btn btn-lg btn-primary " accesskey="n">
+                                        {{ gT("Submit") }}
+                                    </button>
+                                    #}
+                                </div>
+                            </div>
+
+                            {{ aSurveyInfo.aQuotas.hiddeninputs }}
+
+                        </form>
+                {% endif %}
+
+                {% if(aSurveyInfo.aQuotas.sUrl != '') %}
+                    <div class="{{ aSurveyInfo.class.completedquotaurl }}" {{ aSurveyInfo.attr.completedquotaurl }}>
+                        <a href="{{ aSurveyInfo.aQuotas.sUrl }}" class="{{ aSurveyInfo.class.completedquotaurla }}" {{ aSurveyInfo.attr.completedquotaurla }}>
+                            {{ aSurveyInfo.aQuotas.sUrlDescription }}
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </form> <!-- main form -->

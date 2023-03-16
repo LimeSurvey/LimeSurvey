@@ -1,0 +1,29 @@
+
+{#
+    LimeSurvey
+    Copyright (C) 2007-2020 The LimeSurvey Project Team / Louis Gac
+    All rights reserved.
+    License: GNU/GPL License v2 or later, see LICENSE.php
+    LimeSurvey is free software. This version may have been modified pursuant
+    to the GNU General Public License, and as distributed it includes or
+    is derivative of works licensed under the GNU General Public License or
+    other free or open source software licenses.
+    See COPYRIGHT.php for copyright notices and details.
+
+    (¯`·._.·(¯`·._.· Public Statistics Header ._.·´¯)·._.·´¯)
+
+    This is the head for the public statistics page.
+
+#}
+
+<div class="container public-stats">
+    <div class="row">
+        <div class="col-12">
+            <div id='statsContainer'>
+                <div id='statsHeader'>
+                    <h2 class='statsSurveyTitle public-stats__title'>{{ aSurveyInfo.surveyls_title }}</h2>
+                    <div class='statsNumRecords public-stats__num-records'>{{ gT("Total records in survey") }} : {{ totalrecords }}</div>
+                </div>
+
+
+

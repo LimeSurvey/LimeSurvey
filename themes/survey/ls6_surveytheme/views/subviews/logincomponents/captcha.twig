@@ -1,0 +1,78 @@
+<div class="{{ aSurveyInfo.class.maincoldivdiva }} h3" {{ aSurveyInfo.attr.maincoldivdiva }}>
+    {% block formheading %}
+        {{ gT("Before you start, please prove you are human.") }}
+    {% endblock %}
+</div>
+<div class="{{ aSurveyInfo.class.maincoldivdivb }} card card-body bg-light container-fluid mb-3" {{ aSurveyInfo.attr.maincoldivdivb }}>
+
+    {% block description %}
+        
+    {% endblock %}
+
+    {% if  not empty(aSurveyInfo.aForm.aEnterErrors) %}
+        <ul class='{{ aSurveyInfo.class.maincoldivdivbul }} alert alert-danger list-unstyled' {{ aSurveyInfo.attr.maincoldivdivbul }}>
+            {% for  key, error in aSurveyInfo.aForm.aEnterErrors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <div class="form-{{ aSurveyInfo.aForm.sType }} {{ aSurveyInfo.class.maincoldivdivbdiv }}" {{ aSurveyInfo.attr.maincoldivdivbdiv }} >
+        {#
+            array of attributes of the form tag.
+            To add a new attribute, just add an entry:
+            'attribute' : 'value',
+        #}
+        {%
+            set htmlOptions = {
+                'id'          : 'form-' ~ aSurveyInfo.aForm.sType ,
+                'name'        : 'limesurvey',
+                'class'       : 'ls-form form form-horizontal',
+            }
+        %}
+
+        {#  TOKEN FORM #}
+        <!-- Start of the main Form-->
+        {{
+            C.Html.form(
+                ( aSurveyInfo.surveyUrl ),
+                    'post',
+                    (htmlOptions)
+                )
+        }}
+
+        {% block formcontent  %}
+
+            <div class='{{ aSurveyInfo.class.maincolformdivb }}  mb-3 ' {{ aSurveyInfo.attr.maincolformdivb }}>
+
+                <!-- Doesn't seems aria capable -->
+                <label class='{{ aSurveyInfo.class.maincolformdivblabel }} control-label col-md-4' {{ aSurveyInfo.attr.maincolformdivblabel }} >
+                    {{ gT("Please solve the following equation:") }}
+                    <small class="{{ aSurveyInfo.class.maincolformdivblabelsmall }} text-danger asterisk fa fa-asterisk float-start small"  {{ aSurveyInfo.attr.maincolformdivblabelsmall }} ></small>
+                    <span  class="{{ aSurveyInfo.class.maincolformdivblabelspan }} visually-hidden text-danger asterisk" {{ aSurveyInfo.attr.maincolformdivblabelspan }}>
+                        ( {{ gT("Mandatory") }} )
+                    <span>
+                </label>
+                <div class="col-md-2">
+                    <div class='{{ aSurveyInfo.class.maincolformdivbdivdivdiv }}' {{ aSurveyInfo.attr.maincolformdivbdivdivdiv }} >
+                        {# see: LS_Twig_Extension::renderCaptcha() in application/core/LS_Twig_Extension.php #}
+                        {{ renderCaptcha().renderOut() }}
+                        <a href="#" class="btn btn-sm btn-outline-secondary" id="reloadCaptcha" title="{{ gT("Reload captcha") }}" data-toggle="captcha"><i class="fa fa-refresh"></i></a>
+                    </div>
+                </div>
+                <div class='{{ aSurveyInfo.class.maincolformdivbdiv }} col-md-6' {{ aSurveyInfo.attr.maincolformdivbdiv }}>
+                    <input class='form-control {{ aSurveyInfo.class.maincolformdivbdivdivinput }}' {{ aSurveyInfo.attr.maincolformdivbdivdivinput }} >
+                </div>
+            </div>
+
+            <div class='{{ aSurveyInfo.class.maincolformdivc }} mb-3 ' {{ aSurveyInfo.attr.maincolformdivc }}>
+                <div class='{{ aSurveyInfo.class.maincolformdivcdiv }} col-md-7 offset-lg-3 ' {{ aSurveyInfo.attr.maincolformdivcdiv }}>
+                    <button class='{{ aSurveyInfo.class.maincolformdivcdivbutton }} btn btn-outline-secondary' {{ aSurveyInfo.attr.maincolformdivcdivbutton }}>
+                        {{ gT("Continue") }}
+                    </button>
+                </div>
+            </div>
+        {% endblock %}
+        </form>
+    </div>
+</div>

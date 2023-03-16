@@ -1,0 +1,90 @@
+
+{#
+    LimeSurvey
+    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    All rights reserved.
+    License: GNU/GPL License v2 or later, see LICENSE.php
+    LimeSurvey is free software. This version may have been modified pursuant
+    to the GNU General Public License, and as distributed it includes or
+    is derivative of works licensed under the GNU General Public License or
+    other free or open source software licenses.
+    See COPYRIGHT.php for copyright notices and details.
+
+
+
+    (¯`·._.·(¯`·._.·  Assessments ·._.·´¯)·._.·´¯)
+
+    This file renders the results of Assessments.
+    The data are inside aSurveyInfo.aAssessments.datas
+#}
+
+{% set aAssessments = aSurveyInfo.aAssessments.datas %}
+<!-- Assessments -->
+<table class="{{ aSurveyInfo.class.assessmenttable }} table" {{ aSurveyInfo.attr.assessmenttable }}>
+
+    <!-- Heading -->
+    <tr>
+        <td class="{{ aSurveyInfo.class.assessmentheading }} border-bottom-0 border-top" {{ aSurveyInfo.attr.assessmentheading }}>
+            {{ gT("Your assessment") }}
+        </td>
+    </tr>
+
+    <!-- Results -->
+    <tr>
+        <td class="{{ aSurveyInfo.class.assessmentscontainer }} border-bottom-0 border-top" {{ aSurveyInfo.attr.assessmentscontainer }} >
+            {% if aAssessments.subtotal.show %}
+            <!-- "Group" assessments -->
+                {% for key,val in aAssessments.subtotal.datas %}
+                    {% if aAssessments.group %}
+                        {% if key in aAssessments.group | keys %}
+                            {% for assessed in aAssessments.group[key] %}
+                                {% if ( val >= assessed.min and val <= assessed.max ) %}
+                                {% set assesmentReplacement = { PERC: val, TOTAL: aAssessments.total_score, ASSESSMENT_CURRENT_TOTAL: aAssessments.total_score } %}
+                                <table class='{{ aSurveyInfo.class.assessmentstable }} table' {{ aSurveyInfo.attr.assessmentstable }}>
+                                    <tr {{ aSurveyInfo.attr.assessmentstabletr }} >
+                                        <th {{ aSurveyInfo.attr.assessmentstableth }} class="border-top">
+                                            {{ processString(assessed.name,true,3,assesmentReplacement) }}
+                                        </th>
+                                    </tr>
+
+                                    <tr  {{ aSurveyInfo.attr.assessmentstabletr }} >
+                                        <td {{ aSurveyInfo.attr.assessmentstabletd }} class="border-bottom-0 border-top">
+                                            {{ processString(assessed.message,true,3,assesmentReplacement) }}
+                                        </td>
+                                    </tr>
+                                </table>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    {% endif %}
+
+                {% endfor %}
+            {% endif %}
+
+            {% set val = aAssessments.subtotal.datas | last  %}
+
+            {% if aAssessments.total.show %}
+                <!-- "Total" assessments -->
+                {% for assessed in aAssessments.total %}
+                    {% if ( assessed is iterable and  aAssessments.total_score  >= assessed.min and aAssessments.total_score <= assessed.max ) %}
+                    {# val ({PERC}): It displays the score of a question group, it don't exist for global … take the last one (must remove it for 4.X: show an error) #}
+                    {% set assesmentReplacement = { PERC: val, TOTAL: aAssessments.total_score, ASSESSMENT_CURRENT_TOTAL: aAssessments.total_score } %}
+                        <table class='{{ aSurveyInfo.class.assessmentstablet }} table' {{ aSurveyInfo.attr.assessmentstablet }} >
+                            <tr {{ aSurveyInfo.attr.assessmentstablettr }}>
+                                <th {{ aSurveyInfo.attr.assessmentstabletth }} class="border-top">
+                                    {{ processString(assessed.name,true,3,assesmentReplacement) }}
+                                </th>
+                            </tr>
+                            <tr {{ aSurveyInfo.attr.assessmentstablettr }}>
+                                <td {{ aSurveyInfo.attr.assessmentstablettd }} class="border-bottom-0 border-top">
+                                    {{ processString(assessed.message,true,3,assesmentReplacement) }}
+                                </td>
+                            </tr>
+                        </table>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+
+        </td>
+    </tr>
+</table>

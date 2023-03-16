@@ -1211,7 +1211,7 @@ class TemplateConfiguration extends TemplateConfig
             ),
             'error'
         );
-        App()->getController()->redirect(array("admin/themeoptions"));
+        App()->getController()->redirect(array("themeOptions/index", "#" => "surveythemes"));
         App()->end();
     }
 

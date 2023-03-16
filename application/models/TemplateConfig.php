@@ -910,7 +910,6 @@ class TemplateConfig extends CActiveRecord
         if ($oNewTemplate->save()) {
             $oNewTemplateConfiguration                  = new TemplateConfiguration();
             $oNewTemplateConfiguration->template_name   = $sTemplateName;
-            $oNewTemplateConfiguration->template_name   = $sTemplateName;
 
             // Those ones are only filled when importing manifest from upload directory
 

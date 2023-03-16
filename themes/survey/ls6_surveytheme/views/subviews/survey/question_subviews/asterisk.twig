@@ -1,0 +1,10 @@
+{#
+/**
+ * This file render the asterisk for mandatory questions
+ */
+#}
+<!-- Add a visual information + just Mandatory string for aria : can be improved -->
+<div class="asterisk float-start">
+  <sup class="text-danger fa fa-asterisk small" aria-hidden='true'></sup>
+  <span class="visually-hidden text-danger">{{ gT("(This question is mandatory)") }}</span>
+</div>

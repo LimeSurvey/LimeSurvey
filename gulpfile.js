@@ -4,6 +4,8 @@
 // gulp build_theme / gulp watch_theme
 // for survey_theme_fruity:
 // gulp build_survey_theme_fruity / gulp watch_survey_theme_fruity
+// for survey_theme_ls6:
+// gulp build_survey_theme_ls6 / gulp watch_survey_theme_ls6
 
 const {watch, series, parallel} = require('gulp');
 const {src, dest} = require('gulp');
@@ -143,4 +145,34 @@ exports.build_survey_theme_fruity = parallel(
 
 exports.watch_survey_theme_fruity = function () {
     watch('assets/survey_themes/fruity/src/**/*.scss', survey_theme_fruity);
+};
+
+function survey_theme_ls6() {
+    let variations = [
+        ["dark_mode", "#AA4340"],
+        ["light_mode", "#AA4340"],
+    ];
+    let plugins = [
+        autoprefixer(),
+        cssnano()
+    ];
+    let variationsFiles = variations.map(variation => {
+        let variationName = variation[0];
+        let variationColor = variation[1];
+        return src(['assets/survey_themes/ls6_surveytheme/ls6ThemeTemplate.scss'])
+            .pipe(replace('$base-color: #ffffff;', '$base-color: ' + variationColor + ';'))
+            .pipe(sass())
+            .pipe(gulppostcss(plugins))
+            .pipe(rename(variationName + '.css'))
+            .pipe(dest('themes/survey/ls6_surveytheme/css/variations'));
+    });
+    return merge(variationsFiles);
+}
+
+exports.build_survey_theme_ls6 = parallel(
+    survey_theme_ls6
+);
+
+exports.watch_survey_theme_ls6 = function () {
+    watch('assets/survey_themes/ls6_surveytheme/src/**/*.scss', survey_theme_ls6);
 };
