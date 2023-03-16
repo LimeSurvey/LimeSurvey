@@ -4377,7 +4377,9 @@ function do_array_multiflexi($ia)
             if (isset($repeatheadings) && $repeatheadings > 0 && ($fn - 1) > 0 && ($fn - 1) % $repeatheadings == 0) {
                 if (($anscount - $fn + 1) >= $minrepeatheadings) {
                     $sAnswerRows .= doRender('/survey/questions/answer/arrays/multiflexi/rows/repeat_header', array(
+                        'basename'      => $ia[1],
                         'labelans'      =>  $labelans,
+                        'labelcode'     =>  $labelcode,
                         'right_exists'  =>  $right_exists,
                         'cellwidth'     =>  $cellwidth,
                         'answerwidth'   =>  $answerwidth,
@@ -4445,7 +4447,9 @@ function do_array_multiflexi($ia)
 
                 if ($checkboxlayout === false) {
                     $answer_tds .= doRender('/survey/questions/answer/arrays/multiflexi/rows/cells/answer_td', array(
+                        'basename'                  => $ia[1],
                         'dataTitle'                 => $labelans[$i],
+                        'dataCode'                  => $labelcode[$i],
                         'ld'                        => $ld,
                         'answertypeclass'           => $answertypeclass,
                         'answertext'                => $answertext,
@@ -4479,7 +4483,9 @@ function do_array_multiflexi($ia)
                     }
 
                     $answer_tds .= doRender('/survey/questions/answer/arrays/multiflexi/rows/cells/answer_td_checkboxes', array(
+                        'basename'                  => $ia[1],
                         'dataTitle'                 => $labelans[$i],
+                        'dataCode'                  => $labelcode[$i],
                         'ld'                        => $ld,
                         'answertypeclass'           => $answertypeclass,
                         'value'                     => $myvalue,
@@ -4504,6 +4510,7 @@ function do_array_multiflexi($ia)
             }
 
             $sAnswerRows .= doRender('/survey/questions/answer/arrays/multiflexi/rows/answer_row', array(
+                'basename'          => $ia[1],
                 'sDisplayStyle'     => $sDisplayStyle,
                 'coreRowClass'      => $coreRowClass,
                 'answerwidth'       => $answerwidth,
@@ -4523,10 +4530,11 @@ function do_array_multiflexi($ia)
         $answer = doRender('/survey/questions/answer/arrays/multiflexi/answer', array(
             'answertypeclass'   => $answertypeclass,
             'coreClass'         => $coreClass,
-            'basename' => $ia[1],
+            'basename'          => $ia[1],
             'extraclass'        => $extraclass,
             'answerwidth'       => $answerwidth,
             'labelans'          => $labelans,
+            'labelcode'         => $labelcode,
             'cellwidth'         => $cellwidth,
             'right_exists'      => $right_exists,
             'sAnswerRows'       => $sAnswerRows,
