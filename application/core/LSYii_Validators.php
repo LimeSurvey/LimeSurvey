@@ -55,7 +55,10 @@ class LSYii_Validators extends CValidator
             $this->xssfilter && // this
             (
                 (defined('PHP_ENV') && PHP_ENV == 'test') || // phpunit test : don't check controller
-                (($controller = Yii::app()->getController()) !== null && (get_class($controller) !== 'ConsoleApplication' )) // check controller
+                (
+                    ($controller = Yii::app()->getController()) !== null && // no controller
+                    (get_class($controller) !== 'ConsoleApplication') // ConsoleApplication
+                )
             ) &&
             Yii::app()->user->isXssFiltered() // user
         );
