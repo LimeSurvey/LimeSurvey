@@ -5,8 +5,8 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
     <meta name="author" content=""/>
 
-    <link rel="shortcut icon" href="<?php echo Yii::app()->getConfig('styleurl'); ?>favicon.ico" type="image/x-icon"/>
-    <link rel="icon" href="<?php echo Yii::app()->getConfig('styleurl'); ?>favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="<?php echo Yii::app()->getConfig('styleurl'); ?>logo_favicon.png" type="image/x-icon"/>
+    <link rel="icon" href="<?php echo Yii::app()->getConfig('styleurl'); ?>logo_favicon.png" type="image/x-icon"/>
     <?php
     $script = "$(function() {
         $('.on').animate({
