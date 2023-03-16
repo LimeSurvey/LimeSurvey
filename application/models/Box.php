@@ -227,6 +227,9 @@ class Box extends CActiveRecord
             ['id' => 46, 'icon' => 'ri-shopping-cart-fill'],
             ['id' => 47, 'icon' => 'ri-user-line'],
             ['id' => 48, 'icon' => 'ri-settings-5-line'],
+            ['id' => 49, 'icon' => 'ri-paint-brush-line'],
+            ['id' => 50, 'icon' => 'ri-add-line'],
+
         ];
     }
 
@@ -238,7 +241,7 @@ class Box extends CActiveRecord
     public function getIconName()
     {
         $icons = $this->getIcons();
-        $iconArrayKey = array_search($this->ico, array_column($icons, 'id'), false);
+        $iconArrayKey = array_search($this->ico, array_column($icons, 'icon'), false);
         $iconName = $icons[$iconArrayKey]['icon'] ?: '';
         return $iconName;
     }

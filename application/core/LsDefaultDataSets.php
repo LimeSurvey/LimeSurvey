@@ -909,7 +909,7 @@ class LsDefaultDataSets
         $returnArray[] = ['position'   => '1',
                           'url'        => 'surveyAdministration/newSurvey',
                           'title'      => gT('Create survey'),
-                          'ico'        => 'ri-add-circle-fill',
+                          'ico'        => 'ri-add-line',
                           'desc'       => gT('Create a new survey from scratch. Or simply copy or import an existing survey.'),
                           'page'       => 'welcome',
                           'usergroup'  => '-2',
