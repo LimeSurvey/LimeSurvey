@@ -10,12 +10,21 @@ App()->getClientScript()->registerScript('GlobalSettingsBSSwitcher', "LS.renderB
 
 ?>
 <?php if (YII_DEBUG): ?>
-    <p class="alert alert-info "> this view is rendered from global setting module. This message is shown only when debug mode is on </p>
+    <?php
+    $this->widget('ext.AlertWidget.AlertWidget', [
+        'tag' => 'p',
+        'text' => gT(
+            'this view is rendered from global setting module. This message is shown only when debug mode is on'
+        ),
+        'type' => 'info',
+        'showCloseButton' => false,
+    ]);
+    ?>
 <?php endif; ?>
 <script type="text/javascript">
     var msgCantRemoveDefaultLanguage = '<?php eT("You can't remove the default language.", 'js'); ?>';
 </script>
-<div class="container-fluid welcome full-page-wrapper ls-space margin left-15 right-15">
+<div class="welcome full-page-wrapper ls-space margin left-15 right-15">
     <ul class="nav nav-tabs" id="settingTabs">
         <li role="presentation" class="nav-item"><a class="nav-link active" role="tab" data-bs-toggle="tab" href='#overview'><?php eT("Overview"); ?></a></li>
         <li role="presentation" class="nav-item"><a class="nav-link" role="tab" data-bs-toggle="tab" href='#general'><?php eT("General"); ?></a></li>

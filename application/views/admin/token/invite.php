@@ -15,8 +15,8 @@
             <div>
                 <?php if ($oSurvey->active != 'Y'): ?>
                     <div class="jumbotron message-box message-box-error">
-                        <h2 class='text-warning'><?php eT('Warning!'); ?></h2>
-                        <p class="lead text-warning">
+                        <h2 class='text-danger'><?php eT('Warning!'); ?></h2>
+                        <p class="lead text-danger">
                             <?php eT("This survey is not yet activated and so your participants won't be able to fill out the survey."); ?>
                         </p>
                     </div>
@@ -142,7 +142,18 @@
                         <div class='mb-3'>
                             <div class=''></div>
                             <div class=''>
-                                <?php echo CHtml::submitButton(gT("Send Invitations",'unescaped'), array('class'=>'btn btn-outline-secondary')); ?>
+                                <?php $this->widget(
+                                    'ext.ButtonWidget.ButtonWidget',
+                                    [
+                                        'name' => 'send-invitations-button',
+                                        'text' => gT('Send invitations', 'unescaped'),
+                                        'icon' => 'ri-mail-send-fill',
+                                        'htmlOptions' => [
+                                            'class' => 'btn btn-primary',
+                                            'type' => 'submit',
+                                        ],
+                                    ]
+                                ); ?>
                             </div>
 
                             <?php

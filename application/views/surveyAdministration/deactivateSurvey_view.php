@@ -6,7 +6,7 @@
                     <h2>
                         <?php eT("Stop this survey");  echo "<em>($surveyid)</em>" ; ?>
                     </h2>
-                    <p class="lead text-warning">
+                    <p class="lead text-danger">
                         <?php eT("Attention: Please read the following carefully before stopping your survey."); ?>
                     </p>
                     <p>
@@ -101,7 +101,7 @@
                             <?php eT("The survey was deactivated."); ?>
                         </strong>
                     </p>
-                    <p class="text-warning">
+                    <p class="text-danger">
                         <?php eT("The responses to this survey are no longer available using LimeSurvey."); ?>
                     </p>
                     <p>
@@ -132,5 +132,4 @@
         </div>
     </div>
 <?php endif; ?>
-</div>
-</div>
+

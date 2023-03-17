@@ -44,7 +44,7 @@ if (!count($aErrorFilesInfo) && count($aImportedFilesInfo)) : ?>
             <div class="col-12 content-right">
                 <div class="jumbotron message-box message-box-warning">
                     <h2><?php eT("Import survey resources"); ?></h2>
-                    <p class="lead text-warning">
+                    <p class="lead text-danger">
                         <?php eT("Partial"); ?>
                     </p>
                     <p>
@@ -67,7 +67,7 @@ if (!count($aErrorFilesInfo) && count($aImportedFilesInfo)) : ?>
                     </ul>
                     </p>
                     <p>
-                        <strong class="text-warning"><?php eT("Error Files List"); ?>:</strong>
+                        <strong class="text-danger"><?php eT("Error Files List"); ?>:</strong>
                     </p>
                     <p>
                         <ul>
@@ -103,7 +103,7 @@ if (!count($aErrorFilesInfo) && count($aImportedFilesInfo)) : ?>
                         <?php eT("Total Errors"); ?>: <?php echo count($aErrorFilesInfo); ?><br/>
                     </p>
                     <p>
-                        <strong class="text-warning"><?php eT("Error Files List"); ?>:</strong>
+                        <strong class="text-danger"><?php eT("Error Files List"); ?>:</strong>
                     </p>
                     <p>
                         <ul>

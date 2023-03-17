@@ -54,7 +54,7 @@ class SettingsWidget extends CWidget
     }
 
     /**
-     * 
+     *
      */
     public function init()
     {
@@ -148,7 +148,7 @@ class SettingsWidget extends CWidget
             echo CHtml::tag(
                 'div',
                 [
-                    'class' => "clearfix offset-lg-{$this->labelWidth}"
+                    'class' => "clearfix offset-lg-{$this->labelWidth} mb-3 px-2"
                 ],
                 implode(" ", $aHtmlButtons)
             );
@@ -162,16 +162,17 @@ class SettingsWidget extends CWidget
      * @param boolean $return
      * @param string $wrapper
      * @return string|void
+     * @throws CHttpException
      */
     public function renderSetting($name, $metaData, $form = null, $return = false, $wrapper = 'div')
     {
-        // TODO: Weird hack that fixes some rendering issues after moving to Bootstrap2
-        echo "&nbsp;";
-
         // No type : invalid setting
         if (!isset($metaData['type'])) {
-            // TODO: assert or throw exception
-            return "";
+            throw new CHttpException(405, 'invalid settings type');
+        }
+        $wrapperCss = '';
+        if ($metaData['type'] === 'radio' || 'checkbox') {
+            $wrapperCss = "align-items-center";
         }
 
         // Fix $metaData
@@ -200,7 +201,7 @@ class SettingsWidget extends CWidget
         $result=CHtml::tag(
             $wrapper,
             [
-                'class'     => "mb-3 row setting setting-{$metaData['type']}",
+                'class'     => "mb-3 row setting setting-{$metaData['type']} $wrapperCss",
                 'data-name' => $name
             ],
             $content
@@ -586,8 +587,8 @@ class SettingsWidget extends CWidget
                 [
                     'type' => 'link',
                     'buttons' => array(
-                        ['icon' => 'icon-minus', 'htmlOptions' => ['class' => 'remove']],
-                        ['icon' => 'icon-plus', 'htmlOptions' => ['class' => 'add']]
+                        ['icon' => 'ri-subtract-fill', 'htmlOptions' => ['class' => 'remove']],
+                        ['icon' => 'ri-add-fill', 'htmlOptions' => ['class' => 'add']]
                     )
                 ],
                 true

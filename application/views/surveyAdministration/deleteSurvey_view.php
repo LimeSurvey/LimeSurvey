@@ -21,12 +21,12 @@
                     <?php eT("We recommend that before you delete this survey you export the entire survey from the main administration screen."); ?>
 
                     <?php if($survey->hasTokensTable):?>
-                        <span class="text-warning"><?php eT("This survey is active and a responses table exists. If you delete this survey, these responses (and files) will be deleted. We recommend that you export the responses before deleting this survey."); ?></span><br /><br />
+                        <span class="text-danger"><?php eT("This survey is active and a responses table exists. If you delete this survey, these responses (and files) will be deleted. We recommend that you export the responses before deleting this survey."); ?></span><br /><br />
                     <?php endif; ?>
 
 
                     <?php if ($survey->hasTokensTable): ?>
-                        <span class="text-warning"><?php eT("This survey has an associated participant table. If you delete this survey this participant table will be deleted. We recommend that you export or backup these participants before deleting this survey."); ?><br /><br />
+                        <span class="text-danger"><?php eT("This survey has an associated participant table. If you delete this survey this participant table will be deleted. We recommend that you export or backup these participants before deleting this survey."); ?><br /><br />
                     <?php endif; ?>
 
                 </p>

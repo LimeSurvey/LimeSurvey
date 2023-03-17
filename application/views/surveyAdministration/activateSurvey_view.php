@@ -8,8 +8,8 @@
         <div class="col-12 content-right">
             <div class="jumbotron message-box message-box-error">
                 <h2><?php eT("Activate Survey"); echo " ($surveyid)"; ?></h2>
-                <p class="lead text-warning"><strong><?php eT("Error"); ?> !</strong></p>
-                <p class="lead text-warning"><strong><?php eT("Survey does not pass consistency check"); ?></strong></p>
+                <p class="lead text-danger"><strong><?php eT("Error"); ?> !</strong></p>
+                <p class="lead text-danger"><strong><?php eT("Survey does not pass consistency check"); ?></strong></p>
                 <p>
                     <?php eT("The following problems have been found:"); ?>
                 </p>
@@ -54,7 +54,7 @@
                     return $.ajax({
                         url: $(item).attr('href'),
                         beforeSend: function(){
-                            $(item).prop('disabled',true).append('<i class=\"fa fa-spinner fa-pulse\"></i>');
+                            $(item).prop('disabled',true).append('<i class=\"ri-loader-2-fill remix-pulse\"></i>');
                         },
                         complete: function(jqXHR, status){
                             if(status == 'success')
@@ -114,9 +114,8 @@
                     <div class='mb-3'>
                         <label for='anonymized' class='form-label col-md-7'>
                             <?php eT("Anonymized responses"); ?>
-                            <i class="fa fa-question-circle text-success" data-bs-toggle="tooltip" title="<?= gT("If enabled, responses will be anonymized - there will be no way to connect responses and participants."); ?>"></i>
+                            <i class="ri-question-fill text-success" data-bs-toggle="tooltip" title="<?= gT("If enabled, responses will be anonymized - there will be no way to connect responses and participants."); ?>"></i>
                             <script type="text/javascript">
-                                <!--
                                 function alertPrivacy()
                                 {
                                     if (document.getElementById('anonymized').value == 'Y')
@@ -149,7 +148,7 @@
                     <div class='mb-3'>
                         <label for='datestamp' class='form-label col-md-7'>
                             <?php eT("Date stamp"); ?>
-                            <i class="fa fa-question-circle text-success" data-bs-toggle="tooltip" title="<?= gT("If enabled, the submission time of a response will be recorded."); ?>"></i>
+                            <i class="ri-question-fill text-success" data-bs-toggle="tooltip" title="<?= gT("If enabled, the submission time of a response will be recorded."); ?>"></i>
                         </label>
                         <div class='col-md-5'>
                             <select id='datestamp' class='form-select' name='datestamp' onchange='alertDateStampAnonymization();'>
@@ -171,7 +170,7 @@
                     <div class='mb-3'>
                         <label for='ipaddr' class='form-label col-md-7'>
                             <?php eT("Save IP address"); ?>
-                            <i class="fa fa-question-circle text-success" data-bs-toggle="tooltip" title="<?= gT("If enabled, the IP address of the survey respondent will be stored together with the response."); ?>"></i>
+                            <i class="ri-question-fill text-success" data-bs-toggle="tooltip" title="<?= gT("If enabled, the IP address of the survey respondent will be stored together with the response."); ?>"></i>
                         </label>
 
                         <div class='col-md-5'>
@@ -191,7 +190,7 @@
                     <div class='mb-3'>
                         <label for='ipaddr' class='form-label col-md-7'>
                             <?php eT("Anonymize IP address"); ?>
-                            <i class="fa fa-question-circle text-success" data-bs-toggle="tooltip" title="<?= gT("If enabled, the IP address of the respondent is not recorded."); ?>"></i>
+                            <i class="ri-question-fill text-success" data-bs-toggle="tooltip" title="<?= gT("If enabled, the IP address of the respondent is not recorded."); ?>"></i>
                         </label>
 
                         <div class='col-md-5'>
@@ -213,7 +212,7 @@
                     <div class='mb-3'>
                         <label class='form-label col-md-7' for='savetimings'>
                             <?php eT("Save timings"); ?>
-                            <i class="fa fa-question-circle text-success" data-bs-toggle="tooltip" title="<?= gT("If enabled, the time spent on each page of the survey by each survey participant is recorded."); ?>"></i>
+                            <i class="ri-question-fill text-success" data-bs-toggle="tooltip" title="<?= gT("If enabled, the time spent on each page of the survey by each survey participant is recorded."); ?>"></i>
                         </label>
                         <div class='col-md-5'>
                             <select class='form-select' id='savetimings' name='savetimings'>
@@ -233,7 +232,7 @@
                     <div class='mb-3'>
                         <label class='form-label col-md-7' for='refurl'>
                             <?php eT("Save referrer URL"); ?>
-                            <i class="fa fa-question-circle text-success" data-bs-toggle="tooltip" title="<?= gT("If enabled, the referrer URL will be stored together with the response."); ?>"></i>
+                            <i class="ri-question-fill text-success" data-bs-toggle="tooltip" title="<?= gT("If enabled, the referrer URL will be stored together with the response."); ?>"></i>
                         </label>
                         <div class='col-md-5'>
                             <select class='form-select' name='refurl' id='refurl'>
@@ -252,9 +251,12 @@
             <!-- Tip -->
             <div class='row'>
                 <div class='col-md-8 offset-md-2'>
-                    <div class="alert alert-info">
-                        <?php eT("Tip: Please note that you need to <strong>deactivate</strong> a survey if you want to <strong>add</strong> or <strong>delete</strong> groups/questions or <strong>change</strong> any of the settings above. The changes will cause all collected data from respondents to be moved and archived.", 'unescaped'); ?>
-                    </div>
+                    <?php
+                    $this->widget('ext.AlertWidget.AlertWidget', [
+                        'text' => gT("Tip: Please note that you need to <strong>deactivate</strong> a survey if you want to <strong>add</strong> or <strong>delete</strong> groups/questions or <strong>change</strong> any of the settings above. The changes will cause all collected data from respondents to be moved and archived.", 'unescaped'),
+                        'type' => 'info',
+                    ]);
+                    ?>
                     <br><br>
                 </div>
             </div>
@@ -262,7 +264,12 @@
             <?php if($oSurvey->getIsDateExpired()):?>
             <div class="row">
                 <div class='col-md-8 offset-md-2'>
-                    <div class="alert alert-warning"><?php eT('Note: This survey has a past expiration date configured and is currently not available to participants. Please remember to update/remove the expiration date in the survey settings after activation.')?><div>
+                    <?php
+                    $this->widget('ext.AlertWidget.AlertWidget', [
+                        'text' => gT('Note: This survey has a past expiration date configured and is currently not available to participants. Please remember to update/remove the expiration date in the survey settings after activation.'),
+                        'type' => 'warning',
+                    ]);
+                    ?>
                 </div>
             </div>
             <?php endif;?>
@@ -270,7 +277,7 @@
             <div class='row'>
                 <div class='col-md-6 offset-md-4'>
                     <input type='hidden' name='ok' value='Y' />
-                    <input id="activateSurvey__basicSettings--proceed" type='submit' class="btn btn-success btn-lg " value="<?php eT("Save & activate survey"); ?>" />
+                    <input id="activateSurvey__basicSettings--proceed" type='submit' class="btn btn-primary btn-lg " value="<?php eT("Save & activate survey"); ?>" />
                     <a class="btn btn-cancel btn-lg" href="<?php echo $this->createUrl("surveyAdministration/view/", ['surveyid'=> $surveyid]); ?>">
                         <?php eT("Cancel"); ?>
                     </a>

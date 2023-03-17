@@ -8,7 +8,7 @@
 
 <!-- Button trigger modal -->
 <button role="button" type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#responses-column-filter-modal" id="responses-column-filter-button">
-    <span class="fa fa-columns"></span>
+    <span class="ri-layout-column-fill"></span>
 </button>
 
 <!-- Modal -->
@@ -25,12 +25,12 @@
                 <div class="modal-body">
                     <div class="responses-column-filter-modal-checkbox-buttons">
                         <button role="button" type="button" id="responses-column-filter-modal-selectall" class="btn btn-outline-secondary">
-                            <span class="fa fa-check"></span>
+                            <span class="ri-check-fill"></span>
                             &nbsp;
                             <?php eT("Select all"); ?>
                         </button>
                         <button role="button" type="button" id="responses-column-filter-modal-clear" class="btn btn-outline-secondary">
-                            <span class="fa fa-trash text-danger"></span>
+                            <span class="ri-delete-bin-fill text-danger"></span>
                             &nbsp;
                             <?php eT("Clear selection"); ?>
                         </button>

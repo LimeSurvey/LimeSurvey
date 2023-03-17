@@ -3,8 +3,9 @@
 $bInherit = (!empty($aTemplateConfiguration['sid']) || !empty($aTemplateConfiguration['gsid']));
 
 
-$dropdown_options['font'] = ($bInherit ? '<option value="inherit">' . gT("Inherit") . ' [' . gT("inherited value:"
-    ) . ' ' . (isset($oParentOptions['font']) ? $oParentOptions['font'] : '') . ']</option>' : '');
+$dropdown_options['font'] = ($bInherit ? '<option value="inherit">' . gT("Inherit") . ' [' . gT(
+    "inherited value:"
+) . ' ' . (isset($oParentOptions['font']) ? $oParentOptions['font'] : '') . ']</option>' : '');
 
 
 // background file
@@ -63,31 +64,26 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
             <?php /* Small loading animation to give the scripts time to parse and render the correct values */ ?>
             <div class="" style="display:none;height:100%;width:100%;position:absolute;left:0;top:0;background:rgb(255,255,255);background:rgba(235,235,235,0.8);z-index:2000;">
                 <div style="position:absolute; left:49%;top:35%;" class="text-center">
-                    <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+                    <i class="ri-loader-2-fill remix-pulse remix-3x fa-fw"></i>
                 </div>
             </div>
             <?php /* If this is a surveyspecific settings page, offer the possibility to do a full inheritance of the parent template */
             if ($bInherit) { ?>
                 <div class='row' id="general_inherit_active">
-                    <div class='mb-3 row'>
-                        <label for='simple_edit_options_general_inherit' class='form-label'><?php echo gT("Inherit everything"); ?></label>
-                        <div class='col-12'>
-                            <div class="btn-group" role="group">
-                                <input id="general_inherit_on" name='general_inherit' type='radio' value='on' class='btn-check selector_option_general_inherit '
-                                       data-id='simple_edit_options_general_inherit'/>
-                                <label for="general_inherit_on" class="btn btn-outline-secondary">
-                                    <?php echo gT("Yes"); ?>
-                                </label>
-                                <input id="general_inherit_off" name='general_inherit' type='radio' value='off' class='btn-check selector_option_general_inherit '
-                                       data-id='simple_edit_options_general_inherit'/>
-                                <label for="general_inherit_off" class="btn btn-outline-secondary">
-                                    <?php echo gT("No"); ?>
-                                </label>
-                            </div>
+                    <label for='simple_edit_options_general_inherit' class='form-label'><?php echo gT("Inherit everything"); ?></label>
+                    <div class='col-12'>
+                        <div class="btn-group" role="group">
+                            <input id="general_inherit_on" name='general_inherit' type='radio' value='on' class='btn-check selector_option_general_inherit ' data-id='simple_edit_options_general_inherit' />
+                            <label for="general_inherit_on" class="btn btn-outline-secondary">
+                                <?php echo gT("Inherited"); ?>
+                            </label>
+                            <input id="general_inherit_off" name='general_inherit' type='radio' value='off' class='btn-check selector_option_general_inherit ' data-id='simple_edit_options_general_inherit' />
+                            <label for="general_inherit_off" class="btn btn-outline-secondary">
+                                <?php echo gT("Customize theme"); ?>
+                            </label>
                         </div>
                     </div>
                 </div>
-                <hr>
             <?php } ?>
 
         <?php } ?>
@@ -97,6 +93,15 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
         $iMaxColumnSize = 12;
         $iTotalWidth    = 0;
         $iCount         = 0;
+
+        echo '<div class="position-relative">';
+
+        if (strpos($_SERVER['REQUEST_URI'], 'updateSurvey') !== false) {
+            echo '<div class="action_hide_on_inherit_wrapper ls-option-disabled">';
+            echo '</div>';
+        }
+
+
         foreach ($aOptionAttributes['optionAttributes'] as $attributeKey => $attribute) {
             $sParentOption = array_key_exists($attributeKey, $oParentOptions) ? $oParentOptions[$attributeKey] : '';
             if ($attributeKey === 'ajaxmode') {
@@ -113,18 +118,26 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
                     if ($iCount > 0) {
                         echo '</div>';
                     }
-                    echo '<div class="row action_hide_on_inherit">';
+                    echo '<div class="row action_hide_on_inherit p-1">';
                 }
 
-                echo '<div class="col-12 col-md-6 col-lg-4 col-xl-' . $attribute['width'] . '">
-                            <div class="mb-3 row">
+                echo '<div class="col-' . $attribute['width'] . '">
                                 <label for="simple_edit_options_' . $attributeKey . '" class="form-label">' . gT($attribute['title']) . '</label>';
                 if ($attribute['type'] == 'buttons') {
                     $optionsValues = !empty($attribute['options']) ? explode('|', $attribute['options']) : array();
                     $optionLabels  = !empty($attribute['optionlabels']) ? explode('|', $attribute['optionlabels']) : array();
                     $options       = array_combine($optionsValues, $optionLabels);
                     if ($bInherit && isset($sParentOption)) {
-                        $options['inherit'] = gT("Inherit") . ' [' . $sParentOption . ']';
+                        $options['inherit'] = $sParentOption . " ᴵ";
+                    }
+                    if ($bInherit && isset($sParentOption)) {
+                        if (is_numeric($sParentOption) && array_key_exists($sParentOption, $options)) {
+                            $sParentLabelOption = $options[$sParentOption];
+                            $options['inherit'] = gT($sParentLabelOption) . " ᴵ";
+                        } else {
+                            $sParentOption = $sParentOption !== '' ? gT($sParentOption) : $sParentOption;
+                            $options['inherit'] = $sParentOption . " ᴵ";
+                        }
                     }
 
                     echo '<div class="col-12">
@@ -140,13 +153,13 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
                                 </div>';
                 } elseif ($attribute['type'] == 'colorpicker') {
                     echo '<div class="input-group">
-                                    <div class="input-group-addon style__colorpicker">
+                                    <div class="input-group-text style__colorpicker">
                                         <input type="color" name="' . $attributeKey . '_picker" data-value="' . $sParentOption . '" class="selector__colorpicker-inherit-value"/>
                                     </div>
                                     <input type="text" name="' . $attributeKey . '" data-inheritvalue="' . $sParentOption . '" value="inherit" class="selector_option_value_field selector__color-picker form-control simple_edit_options_' . $attributeKey . '" id="' . $attributeKey . '" />';
                     if ($bInherit && isset($sParentOption)) {
-                        echo '<div class="input-group-addon">
-                                            <button class="btn btn-outline-secondary btn-xs selector__reset-colorfield-to-inherit"><i class="fa fa-refresh"></i></button>
+                        echo '<div class="input-group-text">
+                                            <button class="btn btn-outline-secondary btn-xs selector__reset-colorfield-to-inherit"><i class="ri-refresh-line"></i></button>
                                         </div>';
                     }
                     echo '</div>';
@@ -180,7 +193,7 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
                     // dropdown options from config.xml file
                     echo $aOptionAttributes['optionAttributes'][$attributeKey]['dropdownoptions'];
                     echo '</select>
-                                        <div class="input-group-addon selector__' . $attributeKey . '-preview">
+                                        <div class="input-group-text selector__' . $attributeKey . '-preview">
                                         ( <i class="fa" data-inheritvalue="' . $sParentOption . '" style=" background-color: #328637; color: white; width: 16px; height: 16px;  padding: 3px; font-size: 11px; ">
                                             &#x' . $sParentOption . ';
                                         </i> )
@@ -189,20 +202,21 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
                 } elseif ($attribute['type'] == 'input') {
                 } elseif ($attribute['type'] == 'duration') {
                     echo '<div class="col-12">
-                               <input type="text" class="form-control selector-numerical-input selector_option_value_field selector_radio_childfield" data-parent="' . $attribute['parent'] . '" id="simple_edit_options_' . $attributeKey . '" name="' . $attributeKey .'" title="' . gT("inherited value:") . ' ' . $sParentOption . '" />
+                               <input type="text" class="form-control selector-numerical-input selector_option_value_field selector_radio_childfield" data-parent="' . $attribute['parent'] . '" id="simple_edit_options_' . $attributeKey . '" name="' . $attributeKey . '" title="' . gT("inherited value:") . ' ' . $sParentOption . '" />
                                         </div>';
                 }
 
-                echo '</div>
-                            </div>';
+                echo '</div>';
 
                 if ($category == 'Images' && $attribute['type'] == 'dropdown') {
-                    echo '<div class="col-md-4 col-lg-2">
-                                <br/>
-                                <button 
-                                	class="btn btn-outline-secondary selector__open_lightbox" 
-                                	data-bs-target="#simple_edit_options_' . $attributeKey .'"> ' . gT('Preview image') . '
-                                </button>
+                    echo '<div class="col-2">
+                                <label class="form-label">&nbsp;</label>
+                                <div class="col-12">
+                                    <button 
+                                        class="btn btn-outline-secondary selector__open_lightbox" 
+                                        data-bs-target="#simple_edit_options_' . $attributeKey .'"> ' . gT('Preview image') . '
+                                    </button>
+                                </div>
                             </div>';
                 }
 
@@ -211,29 +225,34 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
             }
         }
         echo '</div>';
+        echo '</div>';
 
         if ($category == 'Images') {
-            ?>
+        ?>
             <div class="row action_hide_on_inherit">
-                <div class="container-fluid ls-space margin bottom-15 top-15">
+                <div class="ls-space margin bottom-15 top-15">
                     <div class="row ls-space margin bottom-15">
-                        <div class="col-md-6">
-                            <?php printf(gT("Upload an image (maximum size: %d MB):"), getMaximumFileUploadSize() / 1024 / 1024); ?>
+                        <div class="col-4">
+                            <label>
+                                <?php printf(gT("Upload an image (maximum size: %d MB):"), getMaximumFileUploadSize() / 1024 / 1024); ?>
+                            </label>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-8">
                                     <span id="fileselector_frontend">
-                                        <label class="btn btn-outline-secondary col-xs-8" for="upload_image_frontend">
+                                        <label class="btn btn-outline-secondary" for="upload_image_frontend">
                                             <input class="d-none" id="upload_image_frontend" name="upload_image_frontend" type="file">
-                                            <i class="fa fa-upload ls-space margin right-10"></i>
+                                            <i class="ri-upload-fill ls-space margin right-10"></i>
                                             <?php eT("Upload"); ?>
                                         </label>
                                     </span>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="progress">
-                            <div id="upload_progress_frontend" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
-                                <span class="visually-hidden">0%</span>
+                        <div class="col-12">
+                            <div class="progress">
+                                <div id="upload_progress_frontend" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+                                    <span class="visually-hidden">0%</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -254,11 +273,9 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-12">
-                            <img class="selector__image img-fluid" src="" alt="title"/>
-                        </div>
+                <div class="row">
+                    <div class="col-12">
+                        <img class="selector__image img-fluid" src="" alt="title" />
                     </div>
                 </div>
             </div>

@@ -9,6 +9,7 @@ class PanelBoxWidget extends CWidget
     public $title;
     public $ico;
     public $description;
+    public $buttontext;
     public $usergroup;
     public $offset = 3;
     public $display = 'singlebox';
@@ -51,13 +52,15 @@ class PanelBoxWidget extends CWidget
                 $this->external = true;
             }
             $this->title = $box->title;
-            $this->ico = $box->ico;
+            $this->buttontext = $box->buttontext ?? $box->title;
+            $this->ico = $box->getIconName();
             $this->description = $box->desc;
             $this->usergroup = $box->usergroup;
         } else {
             $this->position = '1';
             $this->url = '';
             $this->title = gT('Error');
+            $this->buttontext = gT('Error');
             $this->description = gT('Unknown box ID!');
         }
     }
@@ -77,8 +80,9 @@ class PanelBoxWidget extends CWidget
                 'title' => $this->title,
                 'ico' => $this->ico,
                 'description' => $this->description,
+                'buttontext' => $this->buttontext,
                 'external' => $this->external,
-                'sizeClass' => "col-lg-".(12/$this->boxesbyrow)." col-md-".(floor(24/$this->boxesbyrow))
+                'sizeClass' => "col-lg-".(12/$this->boxesbyrow)." col-md-".(floor(24/$this->boxesbyrow)) . " col-xs-12"
             ));
         }
     }
@@ -94,7 +98,7 @@ class PanelBoxWidget extends CWidget
         $bIsRowOpened = false;
                 $this->render('row_header', array(
                     'orientation' => $this->getOrientationClass(),
-                    'containerclass' => ($this->boxesincontainer ? 'container' : 'container-fluid')
+                    'containerclass' => ($this->boxesincontainer ? 'container' : '')
                 ));
         foreach ($boxes as $box) {
 
@@ -146,8 +150,8 @@ class PanelBoxWidget extends CWidget
 
     private function getOrientationClass(){
         switch($this->offset){
-            case 1: return 'align-content-flex-start'; break; 
-            case 2: return 'align-content-flex-end'; break; 
+            case 1: return 'align-content-flex-start'; break;
+            case 2: return 'align-content-flex-end'; break;
             case 3: //fallthrough
            default: return 'align-content-space-around'; break;
         }

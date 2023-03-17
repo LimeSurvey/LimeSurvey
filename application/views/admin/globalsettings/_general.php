@@ -185,7 +185,7 @@ $dateformatdata                  = getDateFormatData(Yii::app()->session['datefo
 
         <!-- Maintenance mode -->
         <div class="mb-3">
-            <label class="col-12 form-label" for="maintenancemode" title="<?php echo gT('Maintenance modes: 
+            <label class="col-12 form-label" for="maintenancemode" title="<?php echo gT('Maintenance modes:
 Off
 Soft lock - participants are able to finish started surveys, no new participants are allowed
 Full lock - none of participants are allowed to take survey, even if they already started to take it'
@@ -211,8 +211,8 @@ Full lock - none of participants are allowed to take survey, even if they alread
                 <?php eT("Clear assets cache:"); ?> <small>(<?php echo getGlobalSetting('customassetversionnumber'); ?>)</small>
             </label>
             <div class="col-12">
-                <a href="<?php echo App()->createUrl('admin/globalsettings', array("sa" => "refreshAssets")); ?>" 
-                   class="btn btn-success btn-large">
+                <a href="<?php echo App()->createUrl('admin/globalsettings', array("sa" => "refreshAssets")); ?>"
+                   class="btn btn-outline-dark btn-large">
                    	<?php eT("Clear now"); ?>
                 </a>
             </div>
@@ -360,7 +360,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
             new GlobalSettingsRenderer()
         ); ?>
     </div>
-    
+
 </div>
 </div>
 

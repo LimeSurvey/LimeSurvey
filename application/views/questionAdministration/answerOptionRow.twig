@@ -134,7 +134,7 @@
         {% if first %}
             <button type="button" class="btn btn-outline-secondary btn-sm btnaddanswer">
                 <i
-                    class="icon-add text-success"
+                    class="ri-add-circle-fill text-primary"
                     data-assessmentvisible='{{ assessmentvisible }}'
                     data-position="{{ position }}"
                     data-code="{{ answerOption.code }}"
@@ -145,7 +145,7 @@
                 ></i>
             </button>
             <button type="button" class="btn btn-outline-secondary btn-sm btndelanswer">
-                <i class="fa fa-minus-circle text-danger " data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ gT("Delete this entry") }}"></i>
+                <i class="ri-indeterminate-circle-fill text-danger " data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ gT("Delete this entry") }}"></i>
             </button>
         {% endif %}
     </td>

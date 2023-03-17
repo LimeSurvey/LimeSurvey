@@ -115,120 +115,51 @@ class Participant extends LSActiveRecord
      */
     public function getButtons()
     {
-        $buttons = "<div class='icon-btn-row'>";
-        $raw_button_template = ""
-            . "<button class='btn btn-outline-secondary btn-sm %s %s' role='button' data-bs-toggle='tooltip' title='%s' onclick='return false;'>" //extra class //title
-            . "<i class='fa fa-%s' ></i>" //icon class
-            . "</button>";
-
-        if ($this->userHasPermissionToEdit()) {
-            // Edit button
-            $editData = array(
-                'green-border action_participant_editModal',
-                '',
-                gT("Edit this participant"),
-                'pencil'
-            );
-            $buttons .= vsprintf($raw_button_template, $editData);
-
-            // Add participant to survey
-            $addParticipantData = array(
-                'action_participant_addToSurvey',
-                '',
-                gT("Add participant to survey"),
-                'user-plus'
-            );
-
-            $buttons .= vsprintf($raw_button_template, $addParticipantData);
-
-            // Survey information
-            $listActiveSurveysData = array(
-                'action_participant_infoModal',
-                '',
-                gT("List active surveys"),
-                'search'
-            );
-            $buttons .= vsprintf($raw_button_template, $listActiveSurveysData);
-
-            // Share this participant
-            $shareParticipantData = array(
-                'action_participant_shareParticipant',
-                '',
-                gT("Share this participant"),
-                'share'
-            );
-            $buttons .= vsprintf($raw_button_template, $shareParticipantData);
-
-            // Only owner or superadmin can delete
-            $userId = Yii::app()->user->id;
-            $isSuperAdmin = Permission::model()->hasGlobalPermission('superadmin', 'read');
-            $deletePermission = Permission::model()->hasGlobalPermission('participantpanel', 'delete');
-            if ($this->owner_uid == $userId || $isSuperAdmin || $deletePermission) {
-                // Delete button
-                $deleteData = array(
-                    'red-border action_participant_deleteModal',
-                    '',
-                    gT("Delete this participant"),
-                    'trash text-danger'
-                );
-            } else {
-                // Invisible button
-                $deleteData = array(
-                    'red-border action_participant_deleteModal invisible',
-                    '',
-                    gT("Delete this participant"),
-                    'trash text-danger'
-                );
-            }
-            $buttons .= vsprintf($raw_button_template, $deleteData);
-        } else {
-            // Three empty buttons for correct alignment
-            // TODO: For some reason, the delete button is smaller than the others
-            $editData = array(
-                'action_participant_editModal invisible',
-                '',
-                gT("Edit this participant"),
-                'edit'
-            );
-            $buttons .= vsprintf($raw_button_template, $editData);
-            $deletePermission = Permission::model()->hasGlobalPermission('participantpanel', 'delete');
-            if ($deletePermission) {
-                $deleteData = array(
-                    'action_participant_deleteModal',
-                    'text-danger',
-                    gT("Delete this participant"),
-                    'trash text-danger'
-                );
-            } else {
-                $deleteData = array(
-                    'action_participant_deleteModal invisible',
-                    'text-danger',
-                    gT("Delete this participant"),
-                    'trash text-danger'
-                );
-            }
-
-            // Share this participant
-            $infoData = array(
-                'action_participant_shareParticipant',
-                '',
-                gT("Share this participant"),
-                'share'
-            );
-            $buttons .= vsprintf($raw_button_template, $infoData);
+        $permission_superadmin_read = Permission::model()->hasGlobalPermission('superadmin', 'read');
+        $permission_participantpanel_delete = Permission::model()->hasGlobalPermission('participantpanel', 'delete');
+        $userId = App()->user->id;
 
 
-            $infoData = array(
-                'action_participant_shareParticipant invisible',
-                '',
-                gT("Share this participant"),
-                'share'
-            );
-            $buttons .= vsprintf($raw_button_template, $infoData);
-        }
+        $dropdownItems = [];
+        $dropdownItems[] = [
+            'title'            => gT('Edit this participant'),
+            'linkClass'        => 'action_participant_editModal',
+            'iconClass'        => 'ri-pencil-fill',
+            'enabledCondition' => $this->userHasPermissionToEdit()
+        ];
+        $dropdownItems[] = [
+            'title'            => gT('Add participant to survey'),
+            'linkClass'        => 'action_participant_addToSurvey',
+            'iconClass'        => 'ri-user-add-fill',
+            'enabledCondition' => $this->userHasPermissionToEdit()
+        ];
+        $dropdownItems[] = [
+            'title'            => gT('List active surveys'),
+            'linkClass'        => 'action_participant_infoModal',
+            'iconClass'        => 'ri-search-line',
+            'enabledCondition' => $this->userHasPermissionToEdit()
+        ];
+        $dropdownItems[] = [
+            'title'            => gT('Share this participant'),
+            'linkClass'        => 'action_participant_shareParticipant',
+            'iconClass'        => 'ri-share-forward-fill',
+            'enabledCondition' => $this->userHasPermissionToEdit()
+        ];
+        $dropdownItems[] = [
+            'title'            => gT('Delete this participant'),
+            'linkClass'        => 'action_participant_deleteModal',
+            'iconClass'        => 'ri-delete-bin-fill text-danger',
+            'enabledCondition' =>
+                ($this->userHasPermissionToEdit()
+                    && ($this->owner_uid == $userId
+                        || $permission_superadmin_read
+                        || $permission_participantpanel_delete
+                    )
+                )
+                || $permission_participantpanel_delete
+        ];
 
-        $buttons .= "</div>";
-        return $buttons;
+        return App()->getController()->widget('ext.admin.grid.GridActionsWidget.GridActionsWidget', ['dropdownItems' => $dropdownItems], true);
     }
 
     /**
@@ -372,16 +303,13 @@ class Participant extends LSActiveRecord
     {
         $cols = [
             [
-                "name"   => 'checkbox',
-                "type"   => 'raw',
-                "header" => "<input type='checkbox' id='action_toggleAllParticipant' />",
-                "filter" => false
-            ],
-            [
-                "name"   => 'buttons',
-                "type"   => 'raw',
-                "header" => gT("Action"),
-                "filter" => false
+                "name"              => 'checkbox',
+                "type"              => 'raw',
+                "header"            => "<input type='checkbox' id='action_toggleAllParticipant' />",
+                "filter"            => false,
+                'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
+                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+                'htmlOptions'       => ['class' => 'ls-sticky-column'],
             ],
             [
                 "name" => 'lastname'
@@ -419,7 +347,7 @@ class Participant extends LSActiveRecord
                 'name'  => 'created',
                 'value' => '$data->createdFormatted',
                 'type'  => 'raw',
-            ]
+            ],
         ];
 
         $extraAttributeParams = Yii::app()->request->getParam('extraAttribute');
@@ -455,6 +383,15 @@ class Participant extends LSActiveRecord
                 $col_array["filter"] = TbHtml::textField("extraAttribute[" . $name . "]", $extraAttributeParams[$name]);
             }
             $cols[] = $col_array;
+            $cols[] = [
+                "name"              => 'buttons',
+                "type"              => 'raw',
+                "header"            => gT("Action"),
+                "filter"            => false,
+                'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
+                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+                'htmlOptions'       => ['class' => 'ls-sticky-column'],
+            ];
         }
         return $cols;
     }

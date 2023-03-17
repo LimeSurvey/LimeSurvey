@@ -47,7 +47,7 @@
     <div class='row' aria-hidden='true'>
         <div class="col-md-7 offset-lg-5">
             <?php
-                printf(gT('Fields marked with an asterisk (%s) are mandatory.'),'<small class="text-danger asterisk fa fa-asterisk small"></small>'); ?>
+                printf(gT('Fields marked with an asterisk (%s) are mandatory.'),'<small class="text-danger asterisk ri-star-fill small"></small>'); ?>
         </div>
     </div>
 

@@ -1,18 +1,18 @@
+<?php
+$labelAttr = in_array($this->setting['inputtype'], AdvancedSettingWidget::SINGLEINPUTTYPE) && !$this->setting['i18n'] ? 'for="' : 'id="label-';
+$labelAttr .= CHtml::getIdByName($inputBaseName) . '"';
+?>
+
 <div class="mb-3 <?= $this->setting['hidden'] ? 'd-none' : '' ?>">
     <div class="question-option-general-setting-block">
-        <?php if (in_array($this->setting['inputtype'], AdvancedSettingWidget::SINGLEINPUTTYPE) && !$this->setting['i18n']): ?>
-            <label class="form-label" for="<?= CHtml::getIdByName($inputBaseName); ?>">
+        <div class="col-12">
+            <label <?= $labelAttr ?>>
                 <?= gT($this->setting['caption']) ?>
             </label>
-        <?php else: ?>
-            <strong class="form-label" id="label-<?= CHtml::getIdByName($inputBaseName); ?>">
-                <?= gT($this->setting['caption']) ?>
-            </strong>
-        <?php endif; ?>
         <!-- TODO: Object method $setting->isLocalized(). -->
         <?php if ($this->setting['i18n']): ?>
             <i
-                class="fa fa-globe"
+                class="ri-earth-fil"
                 data-bs-toggle="tooltip"
                 title="<?= gT("This setting is localized") ?>"
             ></i>
@@ -23,12 +23,13 @@
                 data-toggle="collapse"
                 href="#help-<?= CHtml::getIdByName($inputBaseName); ?>"
             ><i
-                class="fa fa-question-circle text-info"
+                class="ri-information-fill"
                 data-bs-toggle="tooltip"
                 title="<?= CHtml::encode(strip_tags($this->setting['help'])) ?>"
             > </i><span class="visually-hidden"><?= gT("Show help"); ?></span> </a>
             <div class="help-block collapse" id="help-<?= CHtml::getIdByName($inputBaseName); ?>" aria-expanded="false"><?= $this->setting['help']; ?></div>
         <?php endif; ?>
+        </div>
         <?= $content ?>
     </div>
 </div>

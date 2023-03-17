@@ -8,7 +8,7 @@
     <div class="row welcome survey-action">
         <div class="col-12 content-right">
             <div class="jumbotron message-box message-box-error">
-                <p class="lead text-warning">
+                <p class="lead text-danger">
                     <strong>
                         <?php eT("Survey participants have not been initialised for this survey."); ?>
                     </strong>

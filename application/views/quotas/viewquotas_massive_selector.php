@@ -16,7 +16,7 @@
             'type'        => 'action',
             'action'      => 'activate',
             'url'         => App()->createUrl('/quotas/massiveAction/action/activate', ['surveyid' => $oSurvey->sid]),
-            'iconClasses' => 'fa fa-play text-success',
+            'iconClasses' => 'ri-play-fill text-success',
             'text'        =>  gT("Activate"),
             'grid-reload' => 'yes',
 
@@ -32,7 +32,7 @@
             'type'        => 'action',
             'action'      => 'deactivate',
             'url'         => App()->createUrl('/quotas/massiveAction/action/deactivate', ['surveyid' => $oSurvey->sid]),
-            'iconClasses' => 'fa fa-pause text-warning',
+            'iconClasses' => 'ri-pause-fill',
             'text'        =>  gT("Deactivate"),
             'grid-reload' => 'yes',
 
@@ -51,7 +51,7 @@
                 '/quotas/massiveAction/action/changeLanguageSettings',
                 ['surveyid' => $oSurvey->sid]
             ),
-            'iconClasses' => 'fa fa-external-link text-success',
+            'iconClasses' => 'ri-external-link-fill text-success',
             'text'        =>  gT("Change texts"),
             'grid-reload' => 'yes',
 
@@ -81,7 +81,7 @@
             'type'        => 'action',
             'action'      => 'delete',
             'url'         => App()->createUrl('/quotas/massiveAction/action/delete', ['surveyid' => $oSurvey->sid]),
-            'iconClasses' => 'fa fa-trash text-danger',
+            'iconClasses' => 'ri-delete-bin-fill text-danger',
             'text'        =>  gT("Delete"),
             'grid-reload' => 'yes',
 

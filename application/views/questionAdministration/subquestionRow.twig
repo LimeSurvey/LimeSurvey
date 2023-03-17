@@ -158,7 +158,7 @@
         {% if activated != 'Y' and first %}
             <button class="btn btn-outline-secondary btn-sm btnaddsubquestion">
                 <i
-                    class="icon-add text-success"
+                    class="ri-add-circle-fill text-primary"
                     data-code="{{ subquestion.title|escape('html_attr') }}"
                     data-bs-toggle="tooltip"
                     data-scale-id="{{ scale_id }}"
@@ -168,7 +168,7 @@
             </button>
             <button class="btn btn-outline-secondary btn-sm btndelsubquestion">
                 <i
-                    class="fa fa-minus-circle text-danger"
+                    class="ri-indeterminate-circle-fill text-danger"
                     data-bs-toggle="tooltip"
                     data-bs-placement="bottom"
                     title="{{ gT("Delete this subquestion") }}"

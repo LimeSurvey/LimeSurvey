@@ -11,68 +11,61 @@ echo viewHelper::getViewTestTag('viewLabelSets');
 
 ?>
 <?php $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']); ?>
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-12 content-right">
-            <?php
-            $this->widget(
-                'application.extensions.admin.grid.CLSGridView',
-                [
-                    'dataProvider' => $model->search(),
-                    // Number of row per page selection
-                    'id' => 'labelsets-grid',
-                    'emptyText' => gT('No label sets found.'),
-                    'selectionChanged' => "function(id){window.location='" . Yii::app()->urlManager->createUrl(
-                            'admin/labels/sa/view/lid'
-                        ) . '/' . "' + $.fn.yiiGridView.getSelection(id.split(',', 1));}",
-                    'ajaxUpdate' => 'labelsets-grid',
-                    'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
-                            gT('%s rows per page'),
-                            CHtml::dropDownList(
-                                'pageSize',
-                                $pageSize,
-                                Yii::app()->params['pageSizeOptions'],
-                                ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
-                            )
-                        ),
-                    'columns' => [
-
-                        [
-                            'header' => gT('Action'),
-                            'name' => 'actions',
-                            'type' => 'raw',
-                            'value' => '$data->buttons',
-                            'htmlOptions' => ['class' => 'text-center button-column'],
-                        ],
-
-                        [
-                            'header' => gT('Label set ID'),
-                            'name' => 'labelset_id',
-                            'value' => '$data->lid',
-                            'htmlOptions' => ['class' => ''],
-                        ],
-
-                        [
-                            'header' => gT('Name'),
-                            'name' => 'name',
-                            'value' => '$data->label_name',
-                            'htmlOptions' => ['class' => ''],
-                        ],
-
-                        [
-                            'header' => gT('Languages'),
-                            'name' => 'languages',
-                            'value' => '$data->languages',
-                            'type' => 'LanguageList',
-                            'htmlOptions' => ['class' => ''],
-                        ],
-
+<div class="row">
+    <div class="col-12 content-right">
+        <?php
+        $this->widget(
+            'application.extensions.admin.grid.CLSGridView',
+            [
+                'dataProvider' => $model->search(),
+                // Number of row per page selection
+                'id' => 'labelsets-grid',
+                'emptyText' => gT('No label sets found.'),
+                'ajaxUpdate' => 'labelsets-grid',
+                'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
+                        gT('%s rows per page'),
+                        CHtml::dropDownList(
+                            'pageSize',
+                            $pageSize,
+                            Yii::app()->params['pageSizeOptions'],
+                            ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
+                        )
+                    ),
+                'columns' => [
+                    [
+                        'header' => gT('Label set ID'),
+                        'name' => 'labelset_id',
+                        'value' => '$data->lid',
+                        'htmlOptions' => ['class' => ''],
+                    ],
+                    [
+                        'header' => gT('Name'),
+                        'name' => 'name',
+                        'value' => '$data->label_name',
+                        'htmlOptions' => ['class' => ''],
+                    ],
+                    [
+                        'header' => gT('Languages'),
+                        'name' => 'languages',
+                        'value' => '$data->languages',
+                        'type' => 'LanguageList',
+                        'htmlOptions' => ['class' => ''],
+                    ],
+                    [
+                        'header'            => gT('Action'),
+                        'name'              => 'actions',
+                        'type'              => 'raw',
+                        'value'             => '$data->buttons',
+                        'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+                        'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
+                        'htmlOptions'       => ['class' => 'text-center button-column ls-sticky-column'],
                     ],
 
-                ]
-            );
-            ?>
-        </div>
+                ],
+
+            ]
+        );
+        ?>
     </div>
 </div>
 

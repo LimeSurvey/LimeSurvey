@@ -6,16 +6,6 @@ a {
     text-decoration: none;
 }
 
-/*
- * btn-xs was removed from Bootstrap 4.
- * @see https://stackoverflow.com/questions/33911049/btn-xs-no-longer-a-valid-option-in-bootstrap-4
- */
-.btn-group-xs > .btn, .btn-xs {
-    padding: 1px 5px;
-    font-size: 12px;
-    line-height: 1.5;
-    border-radius: 3px;
-}
 
 // Disable border color between thead, tbody.
 .table > :not(:first-child) {
@@ -30,6 +20,69 @@ a {
     text-decoration: underline;
 }
 
+.list-group {
+    border-radius: 0px !important;
+}
+.list-group-item {
+    border: none !important;
+}
 .hidden {
     display: none !important;
+}
+
+.ls-footer-label {
+    font-style: normal;
+    font-weight: $font-weight-500;
+    font-size: 1rem;
+    line-height: $line-height-20;
+    color: $g-700;
+}
+
+.ls-settings-wrapper {
+    position: relative !important;
+    min-height: 100vh !important;
+}
+.select2-selection__choice {
+    background-color: $g-200;
+    color: $g-600 !important;
+    font-weight: $font-weight-500 !important;
+    font-size: 12px !important;
+    line-height: 16px;
+}
+.ls-option-disabled {
+    z-index: 999 !important;
+    background-color: $white;
+    opacity: 0.8;
+    position: absolute;
+    inset: 0;
+}
+
+.ls-tab-disabled {
+    opacity: 0.4;
+    pointer-events: none !important;
+    cursor: not-allowed !important;
+
+}
+
+.tab-content {
+    padding-top: 1rem;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.ls-survey-menu-item {
+    padding-left: 30px !important;
+}
+
+.ls-survey-menu-item.menu-label{
+    padding-left: 33px !important;
+}
+
+.list-group-item.disabled {
+    color: #777;
+    cursor: not-allowed;
+    background-color: $white !important;
+    pointer-events: auto !important;
 }

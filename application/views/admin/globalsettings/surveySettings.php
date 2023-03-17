@@ -14,22 +14,31 @@ $optionsOnOff = array(
 );
 
 ?>
-<div class="container-fluid position-relative">
+<div class="position-relative">
     <?php echo CHtml::form(array("admin/globalsettings/sa/surveysettings"), 'post', array('id' => 'survey-settings-form')); ?>
     <div class="d-flex flex-wrap flex-lg-nowrap" id="surveySettingsForThisGroup">
         <div class="" id="global-sidebar-container">
-            <global-sidemenu/>
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item"><a class="nav-link active" href="#sidebar" aria-controls="sidebar" role="tab" data-bs-toggle="tab" aria-selected="true"><?php eT("Settings") ?></a></li>
+            </ul>
+            <div class="tab-content pt-0 h-100">
+                <global-sidemenu/>
+             </div>
         </div>
-        <div id="pjax-content" class="tab-content col-lg-10 flex-lg-shrink-1 ps-3">
+        <div id="pjax-content" class="tab-content col-lg-10 flex-lg-shrink-1 ps-4">
             <div class="row">
                 <div class="col-12">
-                    <div class="alert alert-info controls" role="alert">
-                        <?php eT('All changes of global survey settings will immediately affect all related survey groups and surveys that use inherited values.'); ?>
-                    </div>
+                    <?php
+                    $this->widget('ext.AlertWidget.AlertWidget', [
+                        'text' => gT('All changes of global survey settings will immediately affect all related survey groups and surveys that use inherited values.'),
+                        'type' => 'info',
+                        'htmlOptions' => ['class' => 'controls']
+                    ]);
+                    ?>
                 </div>
             </div>
             <?php if ($partial === '_generaloptions_panel') { ?>
-                <div id="surveySettingsGeneral" class="row">
+                <div id="surveySettingsGeneral" class="row ls-settings-wrapper">
                     <?php $this->renderPartial('survey/subview/accordion/_generaloptions_panel',
                         array(
                             'oSurvey' => $oSurvey,
@@ -42,7 +51,7 @@ $optionsOnOff = array(
                     ); ?>
                 </div>
             <?php } elseif ($partial === '_presentation_panel') { ?>
-                <div id="surveySettingsPresentation">
+                <div class="ls-settings-wrapper" id="surveySettingsPresentation">
                     <?php $this->renderPartial('survey/subview/accordion/_presentation_panel',
                         array(
                             'oSurvey' => $oSurvey,
@@ -53,7 +62,7 @@ $optionsOnOff = array(
                     ); ?>
                 </div>
             <?php } elseif ($partial === '_tokens_panel') { ?>
-                <div id="surveySettingsParticipants">
+                <div class="ls-settings-wrapper" id="surveySettingsParticipants">
                     <?php $this->renderPartial('survey/subview/accordion/_tokens_panel',
                         array(
                             'oSurvey' => $oSurvey,
@@ -64,7 +73,7 @@ $optionsOnOff = array(
                     ); ?>
                 </div>
             <?php } elseif ($partial === '_notification_panel') { ?>
-                <div id="surveySettingsNotification">
+                <div  class="ls-settings-wrapper" id="surveySettingsNotification">
                     <?php $this->renderPartial('survey/subview/accordion/_notification_panel',
                         array(
                             'oSurvey' => $oSurvey,
@@ -76,7 +85,7 @@ $optionsOnOff = array(
                     ); ?>
                 </div>
             <?php } elseif ($partial === '_publication_panel') { ?>
-                <div id="surveySettingsPublication">
+                <div class="ls-settings-wrapper" id="surveySettingsPublication">
                     <?php $this->renderPartial('survey/subview/accordion/_publication_panel',
                         array(
                             'oSurvey' => $oSurvey,
@@ -90,7 +99,7 @@ $optionsOnOff = array(
                 </div>
             <?php } ?>
             <div class="d-none">
-                <?php echo TbHtml::submitButton('Save', array('class' => 'btn btn-success col-md-2 col-sm-4', "id" => "survey-settings-form")); ?>
+                <?php echo TbHtml::submitButton('Save', array('class' => 'btn btn-primary col-md-2 col-sm-4', "id" => "survey-settings-form")); ?>
             </div>
         </div>
         <?php echo CHtml::endForm() ?>

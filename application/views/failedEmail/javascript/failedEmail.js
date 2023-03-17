@@ -45,7 +45,7 @@ var FailedEmail = function () {
 
     var startSubmit = function () {
         $('#submitForm').append(
-            '<i class="fa fa-spinner fa-pulse failedemail-action-modal--spinner"></i>'
+            '<i class="ri-loader-2-fill remix-pulse failedemail-action-modal--spinner"></i>'
         ).prop('disabled', true);
     };
     var stopSubmit = function () {

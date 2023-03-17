@@ -34,7 +34,7 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
             <div class="row">
                 <a href="#" id="loadEditUrl_forModalView" data-editurl="<?=$this->createUrl("assessment/edit/", ["surveyid" => $surveyid]);?>"></a>
                 <?php
-                    $this->widget('ext.LimeGridView.LimeGridView', array(
+                    $this->widget('ext.admin.grid.CLSGridView', array(//done
                         'dataProvider' => $model->search(),
                         'id' => 'assessments-grid',
                         'columns' => $model->getColumns(),
@@ -59,7 +59,7 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
             <?php if ( Permission::model()->hasSurveyPermission($surveyid, 'assessments', 'create') ) { ?>
               <div class="row">
                 <div class="col-12">
-                  <button class="btn btn-success" type="button" id="selector__assessment-add-new">
+                  <button class="btn btn-primary" type="button" id="selector__assessment-add-new">
                     <?=eT("Add new assessment rule")?>
                   </button>
                 </div>
