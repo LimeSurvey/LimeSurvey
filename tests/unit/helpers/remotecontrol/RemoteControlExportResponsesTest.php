@@ -83,8 +83,8 @@ class RemoteControlExportResponsesTest extends BaseTest
 
         // Get session key.
         $sessionKey = $handler->get_session_key(
-            self::$username,
-            self::$password
+            $this->getUsername(),
+            $this->getPassword()
         );
         $this->assertNotEquals(['status' => 'Invalid user name or password'], $sessionKey);
 
