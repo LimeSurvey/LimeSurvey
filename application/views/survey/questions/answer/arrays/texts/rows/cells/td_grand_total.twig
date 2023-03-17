@@ -13,7 +13,7 @@
 
 {% else %}
     <td class="total grand information-item">
-        <label for="totals{{ basename }}total_total" class="ls-label-xs-visibility">{{ gT("Grand total") }}</label>
+        <label for="totals{{ basename }}total_total" class="ls-label-xs-visibility" aria-hidden="true">{{ gT("Grand total") }}</label>
         <input
             type="text"
             id="totals{{ basename }}total_total"

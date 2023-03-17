@@ -14,7 +14,7 @@
     {% if empty %}
         &nbsp;
     {% else %}
-        <label for="totals{{ basename }}[[ROW_CODE]]_total" class="ls-label-xs-visibility">{{ gT("Total") }}</label>
+        <label for="totals{{ basename }}[[ROW_CODE]]_total" class="ls-label-xs-visibility" aria-hidden="true">{{ gT("Total") }}</label>
         <input
             type="text"
             id="totals{{ basename }}[[ROW_CODE]]_total"
