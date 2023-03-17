@@ -3477,7 +3477,14 @@ function do_array_increasesamedecrease($ia)
 
     $no_answer = (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) ? true : false; //Question is not mandatory
 
-    $sHeaders = doRender('/survey/questions/answer/arrays/increasesamedecrease/rows/cells/thead', array('no_answer' => $no_answer), true);
+    $sHeaders = doRender(
+        '/survey/questions/answer/arrays/increasesamedecrease/rows/cells/thead',
+        array(
+            'basename' => $ia[1],
+            'no_answer' => $no_answer
+        ),
+        true
+    );
 
 
     // rows
@@ -3494,6 +3501,7 @@ function do_array_increasesamedecrease($ia)
         $no_answer      = (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) ? true : false;
 
         $sRows .= doRender('/survey/questions/answer/arrays/increasesamedecrease/rows/answer_row', array(
+            'basename' => $ia[1],
             'myfname' => $myfname,
             'answertext' => $answertext,
             'answerwidth' => $answerwidth,
