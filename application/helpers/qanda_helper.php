@@ -3937,44 +3937,106 @@ function do_array_texts($ia)
         switch ($aQuestionAttributes['show_totals']) {
             case 'R':
                 $totals_class   = $show_totals = 'rowTotals';
-                $row_total      = doRender('/survey/questions/answer/arrays/texts/rows/cells/td_total', array('empty' => false, 'inputsize' => $inputsize), true);
-                $col_head       = doRender('/survey/questions/answer/arrays/texts/rows/cells/thead', array('totalText' => gT('Total'), 'classes' => ''), true);
+                $row_total      = doRender(
+                    '/survey/questions/answer/arrays/texts/rows/cells/td_total',
+                    array('empty' => false, 'inputsize' => $inputsize, 'basename' => $ia[1]),
+                    true
+                );
+                $col_head       = doRender(
+                    '/survey/questions/answer/arrays/texts/rows/cells/thead',
+                    array('totalText' => gT('Total'), 'classes' => '', 'basename' => $ia[1]),
+                    true
+                );
 
                 if ($show_grand == true) {
-                    $row_head    = doRender('/survey/questions/answer/arrays/texts/rows/cells/thead', array('totalText' => gT('Grand total'), 'classes' => 'answertext'), true);
-                    $col_total   = doRender('/survey/questions/answer/arrays/texts/columns/col_total', array('empty' => true, 'inputsize' => $inputsize), true);
-                    $grand_total = doRender('/survey/questions/answer/arrays/texts/rows/cells/td_grand_total', array('empty' => false, 'inputsize' => $inputsize), true);
+                    $row_head    = doRender(
+                        '/survey/questions/answer/arrays/texts/rows/cells/thead',
+                        array('totalText' => gT('Grand total'), 'classes' => 'answertext', 'basename' => $ia[1]),
+                        true
+                    );
+                    $col_total   = doRender(
+                        '/survey/questions/answer/arrays/texts/columns/col_total',
+                        array('empty' => true, 'inputsize' => $inputsize, 'basename' => $ia[1]),
+                        true
+                    );
+                    $grand_total = doRender(
+                        '/survey/questions/answer/arrays/texts/rows/cells/td_grand_total',
+                        array('empty' => false, 'inputsize' => $inputsize, 'basename' => $ia[1]),
+                        true
+                    );
                 };
-
                 $caption .= gT("The last row shows the total for the column.");
                 break;
 
             case 'C':
                 $totals_class = $show_totals = 'col';
-                $col_total    = doRender('/survey/questions/answer/arrays/texts/columns/col_total', array('empty' => false, 'inputsize' => $inputsize, 'label' => true), true);
-                $row_head     = doRender('/survey/questions/answer/arrays/texts/rows/cells/thead', array('totalText' => gT('Total'), 'classes' => 'answertext'), true);
+                $col_total    = doRender(
+                    '/survey/questions/answer/arrays/texts/columns/col_total',
+                    array('empty' => false, 'inputsize' => $inputsize, 'label' => true, 'basename' => $ia[1]),
+                    true
+                );
+                $row_head     = doRender(
+                    '/survey/questions/answer/arrays/texts/rows/cells/thead',
+                    array('totalText' => gT('Total'), 'classes' => 'answertext', 'basename' => $ia[1]),
+                    true
+                );
 
                 if ($show_grand == true) {
-                    $row_total   = doRender('/survey/questions/answer/arrays/texts/rows/cells/td_total', array('empty' => true, 'inputsize' => $inputsize), true);
-                    $col_head    = doRender('/survey/questions/answer/arrays/texts/rows/cells/thead', array('totalText' => gT('Grand total'), 'classes' => ''), true);
-                    $grand_total = doRender('/survey/questions/answer/arrays/texts/rows/cells/td_grand_total', array('empty' => false, 'inputsize' => $inputsize), true);
+                    $row_total   = doRender(
+                        '/survey/questions/answer/arrays/texts/rows/cells/td_total',
+                        array('empty' => true, 'inputsize' => $inputsize, 'basename' => $ia[1]),
+                        true
+                    );
+                    $col_head    = doRender(
+                        '/survey/questions/answer/arrays/texts/rows/cells/thead',
+                        array('totalText' => gT('Grand total'), 'classes' => '', 'basename' => $ia[1]),
+                        true
+                    );
+                    $grand_total = doRender(
+                        '/survey/questions/answer/arrays/texts/rows/cells/td_grand_total',
+                        array('empty' => false, 'inputsize' => $inputsize, 'basename' => $ia[1]),
+                        true
+                    );
                 };
                 $caption .= gT("The last column shows the total for the row.");
                 break;
 
             case 'B':
                 $totals_class = $show_totals = 'both';
-                $row_total    = doRender('/survey/questions/answer/arrays/texts/rows/cells/td_total', array('empty' => false, 'inputsize' => $inputsize), true);
-                $col_total    = doRender('/survey/questions/answer/arrays/texts/columns/col_total', array('empty' => false, 'inputsize' => $inputsize, 'label' => false), true);
-                $col_head     = doRender('/survey/questions/answer/arrays/texts/rows/cells/thead', array('totalText' => gT('Total'), 'classes' => ''), true);
-                $row_head     = doRender('/survey/questions/answer/arrays/texts/rows/cells/thead', array('totalText' => gT('Total'), 'classes' => 'answertext'), true);
+                $row_total    = doRender(
+                    '/survey/questions/answer/arrays/texts/rows/cells/td_total',
+                    array('empty' => false, 'inputsize' => $inputsize, 'basename' => $ia[1]),
+                    true
+                );
+                $col_total    = doRender(
+                    '/survey/questions/answer/arrays/texts/columns/col_total',
+                    array('empty' => false, 'inputsize' => $inputsize, 'label' => false, 'basename' => $ia[1]),
+                    true
+                );
+                $col_head     = doRender(
+                    '/survey/questions/answer/arrays/texts/rows/cells/thead',
+                    array('totalText' => gT('Total'), 'classes' => '', 'basename' => $ia[1]),
+                    true
+                );
+                $row_head     = doRender(
+                    '/survey/questions/answer/arrays/texts/rows/cells/thead',
+                    array('totalText' => gT('Total'), 'classes' => 'answertext', 'basename' => $ia[1]),
+                    true
+                );
 
                 if ($show_grand == true) {
-                    $grand_total = doRender('/survey/questions/answer/arrays/texts/rows/cells/td_grand_total', array('empty' => false, 'inputsize' => $inputsize), true);
+                    $grand_total = doRender(
+                        '/survey/questions/answer/arrays/texts/rows/cells/td_grand_total',
+                        array('empty' => false, 'inputsize' => $inputsize, 'basename' => $ia[1]),
+                        true
+                    );
                 } else {
-                    $grand_total = doRender('/survey/questions/answer/arrays/texts/rows/cells/td_grand_total', array('empty' => true, 'inputsize' => $inputsize), true);
+                    $grand_total = doRender(
+                        '/survey/questions/answer/arrays/texts/rows/cells/td_grand_total',
+                        array('empty' => true, 'inputsize' => $inputsize, 'basename' => $ia[1]),
+                        true
+                    );
                 };
-
                 $caption .= gT("The last row shows the total for the column and the last column shows the total for the row.");
                 break;
         };
@@ -4045,6 +4107,7 @@ function do_array_texts($ia)
                 if (($anscount - $fn + 1) >= $minrepeatheadings) {
                     // Close actual body and open another one
                     $sRows .= doRender('/survey/questions/answer/arrays/texts/rows/repeat_header', array(
+                        'basename'     => $ia[1],
                         'answerwidth'  => $answerwidth,
                         'labelans'     => $labelans,
                         'right_exists' => $right_exists,
@@ -4092,6 +4155,7 @@ function do_array_texts($ia)
                 $value        = str_replace('"', "'", str_replace('\\', '', $myfname2value));
                 $answer_tds  .= doRender('/survey/questions/answer/arrays/texts/rows/cells/answer_td', array(
                     'ld'         => $title,
+                    'basename'   => $ia[1],
                     'myfname2'   => $myfname2,
                     'labelText'  => $labelans[$title],
                     'kpclass'    => $kpclass,
@@ -4115,19 +4179,24 @@ function do_array_texts($ia)
                 $rightTd      = true;
                 $rightTdEmpty = true;
             }
-            $formatedRowTotal = str_replace(array('[[ROW_NAME]]', '[[INPUT_WIDTH]]'), array(strip_tags($answertext), $inputsize), $row_total);
+            $formatedRowTotal = str_replace(
+                array('[[ROW_CODE]]', '[[ROW_NAME]]'),
+                array($title, LimeExpressionManager::ProcessString($answertext, $ia[0])),
+                $row_total
+            );
             $sRows .= doRender('/survey/questions/answer/arrays/texts/rows/answer_row', array(
                 'myfname'           =>  $myfname,
+                'basename'          => $ia[1],
                 'coreRowClass'      => $coreRowClass,
-                'answertext'        =>  $answertext,
-                'error'             =>  $error,
-                'value'             =>  $value,
-                'placeholder'       =>  $placeholder,
-                'answer_tds'        =>  $answer_tds,
-                'rightTd'           =>  $rightTd,
-                'rightTdEmpty'      =>  $rightTdEmpty,
-                'answerwidth'       =>  $answerwidth,
-                'formatedRowTotal'  =>  $formatedRowTotal,
+                'answertext'        => $answertext,
+                'error'             => $error,
+                'value'             => $value,
+                'placeholder'       => $placeholder,
+                'answer_tds'        => $answer_tds,
+                'rightTd'           => $rightTd,
+                'rightTdEmpty'      => $rightTdEmpty,
+                'answerwidth'       => $answerwidth,
+                'formatedRowTotal'  => $formatedRowTotal,
                 'odd'               => ($j % 2),
                 ), true);
 
@@ -4139,12 +4208,15 @@ function do_array_texts($ia)
 
         if ($show_totals == 'col' || $show_totals == 'both' || $grand_total !== '') {
             $showtotals = true;
-
             $iLabelCodeCount = count($labelans);
-            for ($a = 0; $a < $iLabelCodeCount; ++$a) {
-                $total .= str_replace(array('[[ROW_NAME]]', '[[INPUT_WIDTH]]'), array(strip_tags($answertext), $inputsize), $col_total);
-            };
-            $total .= str_replace(array('[[ROW_NAME]]', '[[INPUT_WIDTH]]'), array(strip_tags($answertext), $inputsize), $grand_total);
+            foreach ($labelans as $title => $label) {
+                $total .= str_replace(
+                    array('[[COL_CODE]]', '[[COL_NAME]]'),
+                    array($title, LimeExpressionManager::ProcessString($label, $ia[0])),
+                    $col_total
+                );
+            }
+            $total .= $grand_total;
         }
 
         $radix = '';
@@ -4158,6 +4230,7 @@ function do_array_texts($ia)
         }
 
         $answer = doRender('/survey/questions/answer/arrays/texts/answer', array(
+            'basename'                  => $ia[1],
             'answerwidth'               => $answerwidth,
             'col_head'                  => $col_head,
             'cellwidth'                 => $cellwidth,
@@ -4166,7 +4239,6 @@ function do_array_texts($ia)
             'showGrandTotal'            => $showGrandTotal,
             'q_table_id_HTML'           => $q_table_id_HTML,
             'coreClass'                 => $coreClass,
-            'basename' => $ia[1],
             'extraclass'                => $extraclass,
             'totals_class'              => $totals_class,
             'showtotals'                => $showtotals,

@@ -21,7 +21,7 @@
         id="answertext{{ myfname }}"
         class="answertext control-label{% if error and layout!="checkbox" %} text-danger" {% endif %}{% if answerwidth==0 %} visually-hidden{% endif %}",
         role="rowheader"
-        >
+    >
         {{ processString(answertext) }}
         {# Value for expression manager javascript ? Used ? #}
         {{ C.Html.hiddenField("java"~myfname,row_value,({

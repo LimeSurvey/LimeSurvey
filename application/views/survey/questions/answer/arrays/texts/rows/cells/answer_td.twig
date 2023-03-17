@@ -19,6 +19,7 @@
     {# Value for expression manager javascript (use id) ; no need to submit #}
     {{ C.Html.textField(myfname2,value,({
         'id' : "answer"~myfname2,
+        'aria-labelledby' : "answertext" ~ basename ~ "_" ~ ld,
         'class' : "form-control "~kpclass,
         'size' : (inputsize ? inputsize : null),
         'maxlength' : (maxlength ? maxlength : null),
