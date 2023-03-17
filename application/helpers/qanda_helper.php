@@ -3375,7 +3375,11 @@ function do_array_yesnouncertain($ia)
     }
 
     $no_answer = (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) ? true : false;
-    $sHeaders  = doRender('/survey/questions/answer/arrays/yesnouncertain/rows/cells/thead', array('no_answer' => $no_answer, 'anscount' => $anscount), true);
+    $sHeaders  = doRender(
+        '/survey/questions/answer/arrays/yesnouncertain/rows/cells/thead',
+        array('basename' => $ia[1], 'no_answer' => $no_answer, 'anscount' => $anscount),
+        true
+    );
 
     $inputnames = [];
     $sSurveyLanguage = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang'];
@@ -3398,9 +3402,10 @@ function do_array_yesnouncertain($ia)
             $NAchecked = (!isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname] == '') ? 'CHECKED' : '';
 
             $sRows .= doRender('/survey/questions/answer/arrays/yesnouncertain/rows/answer_row', array(
+                'basename'               => $ia[1],
                 'myfname'                => $myfname,
                 'answertext'             => $answertext,
-                'answerwidth' => $answerwidth,
+                'answerwidth'            => $answerwidth,
                 'Ychecked'               => $Ychecked,
                 'Uchecked'               => $Uchecked,
                 'Nchecked'               => $Nchecked,
