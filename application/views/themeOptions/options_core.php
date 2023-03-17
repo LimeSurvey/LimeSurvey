@@ -126,7 +126,7 @@ $bInherit = (!empty($aTemplateConfiguration['sid']) || !empty($aTemplateConfigur
                                         $sParentLabelOption = $options[$sParentOption];
                                         $options['inherit'] = gT("Inherit") . ' [' . gT($sParentLabelOption) . ']';
                                     } else {
-                                        $sParentOption = $sParentOption !== '' ? gT($sParentOption) : $sParentOption;
+                                        $sParentOption = $sParentOption !== '' ? gT($options[$sParentOption]) : $sParentOption;
                                         $options['inherit'] = gT("Inherit") . ' [' . $sParentOption . ']';
                                     }
                                 }
