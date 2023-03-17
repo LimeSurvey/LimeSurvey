@@ -108,6 +108,9 @@ function checkLSSession()
     {
         define("BASEPATH", realpath($sLimesurveyFolder . "/../vendor/yiisoft/yii/framework") . "/");
     }
+
+    include APPPATH . '../setdebug.php';
+
     require_once APPPATH . '../vendor/autoload.php';
     require_once BASEPATH . 'yii.php';
     require_once APPPATH . 'core/LSYii_Application.php';

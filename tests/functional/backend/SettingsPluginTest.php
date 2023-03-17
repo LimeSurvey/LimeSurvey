@@ -50,8 +50,7 @@ class SettingsPluginTest extends TestBaseClass
     public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
-
-        require_once __DIR__ . '/../../data/plugins/SettingsPlugin.php';
+        require_once __DIR__ . "/../../data/plugins/SettingsPlugin.php";
         $plugin = \Plugin::model()->findByAttributes(array('name' => 'SettingsPlugin'));
         if (!$plugin) {
             $plugin = new \Plugin();
@@ -64,6 +63,9 @@ class SettingsPluginTest extends TestBaseClass
         }
 
         self::$plugin = App()->getPluginManager()->loadPlugin('SettingsPlugin', $plugin->id);
+
+        //Import survey
+        self::importSurvey(self::$surveysFolder . '/limesurvey_survey_854771.lss');
 
         $obj = new \stdClass();
         $obj->customProperty = 'abc';
@@ -114,6 +116,37 @@ class SettingsPluginTest extends TestBaseClass
 
             $settingValue = self::$plugin->getSetting($key);
             $this->assertEquals($settingValue, json_decode(json_encode($value), true));
+        }
+    }
+
+    /**
+     * Testing for settings at a suvey level.
+     */
+    public function testGetAndSetSurveySetting()
+    {
+        foreach (self::$settingsValue as $key => $value) {
+            self::$plugin->setSurveySetting($key, $value, self::$surveyId);
+
+            $setting = \PluginSetting::model()->findByAttributes([
+                'plugin_id' => self::$plugin->getId(),
+                'model' => 'Survey',
+                'model_id' => self::$surveyId,
+                'key' => $key
+            ]);
+
+            $this->assertNotEmpty($setting->id, 'Setting id should not be empty.');
+            $this->assertEquals(
+                $setting->value,
+                json_encode($value),
+                'The setting value obtained with the PluginSetting model should be the value previously set'
+            );
+
+            $settingValue = self::$plugin->getSurveySetting($key, self::$surveyId);
+            $this->assertEquals(
+                $settingValue,
+                json_decode(json_encode($value), true),
+                'The setting value obtained with the get function should be the value previously set'
+            );
         }
     }
 
@@ -185,6 +218,46 @@ class SettingsPluginTest extends TestBaseClass
                 $settingValue,
                 $date,
                 'The value returned by the get function is not correct for ' . $pluginSetting . '.'
+            );
+        }
+    }
+
+     /**
+     * Testing for encrypted settings at a survey level
+     */
+    public function testGetAndSetSurveySettingEncrypted()
+    {
+        self::$plugin->setEncryptedSettings(array_keys(self::$settingsValue));
+        foreach (self::$settingsValue as $key => $value) {
+            self::$plugin->setSurveySetting($key, $value, self::$surveyId);
+
+            $setting = \PluginSetting::model()->findByAttributes([
+                'plugin_id' => self::$plugin->getId(),
+                'model' => 'Survey',
+                'model_id' => self::$surveyId,
+                'key' => $key
+            ]);
+
+            $this->assertNotEmpty($setting->id, 'Setting id should not be empty.');
+            if (empty($value)) {
+                $this->assertEquals(
+                    $setting->value,
+                    json_encode($value),
+                    'The setting value obtained with the PluginSetting model should be the empty value previously set'
+                );
+            } else {
+                $this->assertEquals(
+                    $setting->value,
+                    json_encode(LSActiveRecord::encryptSingle(json_encode($value))),
+                    'The setting value obtained with the PluginSetting model should be the Encrypted value previously set'
+                );
+            }
+
+            $settingValue = self::$plugin->getSurveySetting($key, self::$surveyId);
+            $this->assertEquals(
+                $settingValue,
+                json_decode(json_encode($value), true),
+                'The setting value obtained with the get function should be the value previously set'
             );
         }
     }

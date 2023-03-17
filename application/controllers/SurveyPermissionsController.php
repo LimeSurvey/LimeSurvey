@@ -154,7 +154,7 @@ class SurveyPermissionsController extends LSBaseController
             Yii::app()->user->setFlash('error', gT("No users from group could be added."));
             $this->redirect(['surveyPermissions/index', 'surveyid' => $surveyid]);
         } else {
-            Yii::app()->user->setFlash('success', sprintf("%s users from group were added.", $amountUsersAdded));
+            Yii::app()->user->setFlash('success', sprintf(gT("%s users from group were added."), $amountUsersAdded));
             $this->redirect(array(
                 'surveyPermissions/settingsPermissions',
                 'surveyid' => $surveyid,

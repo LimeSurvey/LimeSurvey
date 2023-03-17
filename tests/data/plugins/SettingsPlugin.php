@@ -9,6 +9,16 @@ class SettingsPlugin extends PluginBase
     /* @inheritdoc */
     protected $settings = [];
 
+    /**
+     * Set the settings, used to test some settings
+     * @param array[]
+     * @return void
+     */
+    public function setSettings($settings)
+    {
+        $this->settings = $settings;
+    }
+
     public function init()
     {
     }
@@ -28,13 +38,13 @@ class SettingsPlugin extends PluginBase
         $this->encryptedSettings = $encryptedSettings;
     }
 
-    /**
-     * Set the settings, used to test some settings
-     * @param array[]
-     * @return void
-     */
-    public function setSettings($settings)
+    public function setSurveySetting($name, $value, $surveyId)
     {
-        $this->settings = $settings;
+        return $this->set($name, $value, 'Survey', $surveyId);
+    }
+
+    public function getSurveySetting($name, $surveyId)
+    {
+        return $this->get($name, 'Survey', $surveyId);
     }
 }
