@@ -80,6 +80,7 @@
         <fixnumauto type="buttons" category="Simple options" width="4" title="Fix automatically numeric value" options="enable|partial|disable" optionlabels="Yes|For expression|No">off</fixnumauto>
         <questionborder type="buttons" category="Simple options" width="4" title="Question borders" options="on|off" optionlabels="Yes|No">on</questionborder>
         <questioncontainershadow type="buttons" category="Simple options" width="4" title="Question shadow" options="on|off" optionlabels="Yes|No">on</questioncontainershadow>
+        <darkmode type="buttons" category="Simple options" width="4" title="Dark mode" options="on|off" optionlabels="Yes|No">off</darkmode>
         <!-- colors -->
         <bodybackgroundcolor type="colorpicker" category="Colors" width="4" title="Background color" options="on|off" optionlabels="Yes|No">#ffffff</bodybackgroundcolor>
         <fontcolor type="colorpicker" category="Colors" width="4" title="Font color" options="on|off" optionlabels="Yes|No">#444444</fontcolor>
