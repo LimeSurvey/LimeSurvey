@@ -147,19 +147,20 @@ exports.watch_survey_theme_fruity = function () {
     watch('assets/survey_themes/fruity/src/**/*.scss', survey_theme_fruity);
 };
 
-function survey_theme_ls6() {
+function survey_theme_variations_ls6() {
     let variations = [
-        ["dark_mode", "#AA4340"],
-        ["light_mode", "#AA4340"],
+        ["green", "#14AE5C"],
+        ["red", "#FF515F"],
     ];
     let plugins = [
         autoprefixer(),
         cssnano()
     ];
+
     let variationsFiles = variations.map(variation => {
         let variationName = variation[0];
         let variationColor = variation[1];
-        return src(['assets/survey_themes/ls6_surveytheme/ls6ThemeTemplate.scss'])
+        return src(['assets/survey_themes/ls6_surveytheme/ls6ColorTemplate.scss'])
             .pipe(replace('$base-color: #ffffff;', '$base-color: ' + variationColor + ';'))
             .pipe(sass())
             .pipe(gulppostcss(plugins))
@@ -169,7 +170,22 @@ function survey_theme_ls6() {
     return merge(variationsFiles);
 }
 
+function survey_theme_ls6() {
+    let plugins = [
+        autoprefixer(),
+        // cssnano()
+    ];
+    return src(['assets/survey_themes/ls6_surveytheme/ls6ThemeTemplate.scss'])
+        .pipe(sass())
+        .pipe(dest('themes/admin/Sea_Green/css'))
+        .pipe(gulppostcss(plugins))
+        .pipe(rename('theme.css'))
+        .pipe(dest('themes/survey/ls6_surveytheme/css'));
+}
+
+
 exports.build_survey_theme_ls6 = parallel(
+    survey_theme_variations_ls6,
     survey_theme_ls6
 );
 

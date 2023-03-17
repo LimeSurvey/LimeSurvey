@@ -46,7 +46,7 @@
     -->
     <files>
         <css>
-            <add>css/variations/light_mode.css</add>
+            <add>css/variations/green.css</add>
             <add>css/base.css</add>
             <add>css/theme.css</add>
             <add>css/noTablesOnMobile.css</add>
@@ -678,8 +678,8 @@
         </font>
         <cssframework type="dropdown" category="Simple options" width="12" title="Variations" parent="cssframework">
             <dropdownoptions>
-                <option value="css/variations/dark_mode.css">Dark Mode</option>
-                <option value="css/variations/light_mode.css">Light Mode</option>
+                <option value="css/variations/green.css">Green</option>
+                <option value="css/variations/red.css">Red</option>
             </dropdownoptions>
         </cssframework>
     </options>

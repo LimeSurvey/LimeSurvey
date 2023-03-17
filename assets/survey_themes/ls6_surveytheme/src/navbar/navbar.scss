@@ -1,0 +1,59 @@
+.navbar-default .navbar-nav > li > a:hover {
+    text-decoration: underline;
+}
+
+.navbar-action-link{
+    padding-right:1em; /* really close to window without */
+}
+
+html body .navbar.navbar-default.navbar-fixed-top {
+    z-index: 2000;
+}
+
+/* Title of survey can be big, allow multiline, but leave the minimum */
+.navbar-brand {
+    height: auto;
+    min-height:60px;
+}
+
+
+/**********************************
+Responsive navbar-brand image CSS
+- Remove navbar-brand padding for firefox bug workaround
+- add 100% height and width auto ... similar to how bootstrap img-responsive class works
+***********************************/
+
+.logo-container {
+    padding: 0px;
+    float: left;
+
+    font-size: 18px;
+    line-height: 20px;
+}
+
+.logo-container>img {
+    max-height: 90px;
+    padding: 15px;
+    width: auto;
+}
+
+.brand-logo  .top-container .top-content{
+    padding-top: 2em;
+}
+
+body .navbar-default .navbar-brand:hover {
+}
+
+/* text overflows, ellipsis and hyphens */
+.navbar-brand {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#navbar {
+    background: none; border: none;
+}
+
+.navbar-default .navbar-brand, .navbar-default  {
+    border: none;
+}

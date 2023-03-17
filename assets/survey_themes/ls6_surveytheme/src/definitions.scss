@@ -9,7 +9,7 @@ body {
     background-color: $white;
 }
 
-.fruity {
+.ls6_surveytheme {
     mark {
         background: $yellow;
         color:      $black;
@@ -1388,12 +1388,7 @@ body {
             }
         }
     }
-    .navbar-collapse {
-        box-shadow: inset 0 1px 0 $white_10;
-    }
-    .navbar-form {
-        box-shadow: inset 0 1px 0 $white_10, 0 1px 0 $white_10;
-    }
+
     .label {
         color: $white;
     }
@@ -1904,56 +1899,7 @@ body {
     .pagetitle {
         @extend %extend_19;
     }
-    .navbar {
-        background-color: $white !important;
-        box-shadow:       0 3px 3px $color_gunsmoke_10_approx;
-        border-radius:    0 !important;
-        a {
-            text-decoration: none;
-            line-height:     1.8rem;
-            font-size:       1.2rem;
-        }
-        @media(min-width: 769px) {
-            .navbar-nav .nav-item .nav-link:hover {
-                text-decoration: none;
-            }
-            .navbar-nav .nav-item .nav-link:active {
-                text-decoration: none;
-            }
-            .navbar-nav .nav-item .nav-link:focus {
-                text-decoration: none;
-            }
-            .navbar-nav .nav-item .nav-link {
-                padding-bottom: 0;
-                padding-left: 0;
-            }
-            .navbar-nav .nav-item {
-                position: relative;
-            }
 
-            .navbar-nav .nav-item::after {
-                text-align:       right;
-                content:          '';
-                display:          block;
-                width:            0;
-                height:           2px;
-                background-color: $base-color;
-                transition: width 0.3s;
-            }
-            .navbar-nav .nav-item:hover::after {
-                width: 100%;
-            }
-        }
-        @media(max-width: 768px) {
-            padding-top:    15px;
-            padding-bottom: 15px;
-            box-shadow:     1px 2px 3px $color_gunsmoke_10_approx;
-        }
-
-        .nav-icon-btn.nav-icon-btn-danger .label {
-            background: $color_danger;
-        }
-    }
     .mega-dropdown-menu {
         .dropdown-header {
             color: $color_parsley_approx;
@@ -2206,214 +2152,206 @@ body {
 
     // For side menu
 
-    .absolute-wrapper {
-        background-color: $white;
-        border-right:     1px solid $color_mercury_approx;
-        box-shadow:       3px 0px 3px $color_gunsmoke_10_approx;
-    }
-    .side-menu {
-        background-color: $white;
-        border-right:     1px solid $color_mercury_approx;
-        background-color: $white;
-        .navbar {
-            background-color: $white;
-        }
-        .navbar-header {
-            border-bottom: 1px solid $color_mercury_approx;
-        }
-        .navbar-nav {
-            li {
-                border-bottom: 1px solid $color_mercury_approx;
-                a {
-                    &.question-link:hover {
-                        box-shadow: 0 1px 1px 1px $black_16 inset,
-                                    0 2px 1px 1px $black_12 inset;
-                    }
-                }
-            }
-            .active {
-                background-color: $color_parsley_approx;
-                box-shadow:       0 1px 1px 1px $black_16 inset, 0 2px 1px 1px $black_12 inset;
-            }
-            .active a {
-                color: $white;
-            }
-
-            .question-link.active {
-                background-color: transparent;
-            }
-        }
-        #dropdown {
-            background-color: transparent;
-            box-shadow:       none;
-            li {
-                &:hover {
-                    color:            $white;
-                    background-color: $color_de_york_approx;
-                }
-                &.active:hover {
-                    background-color: transparent;
-                    color:            $color_parsley_approx;
-                    border-right:     5px solid $color_mercury_approx;
-                }
-                &.disabled:hover {
-                    color:            $white;
-                    background-color: transparent;
-                }
-            }
-            .card-body {
-                background-color: $alabaster;
-                .navbar-nav {
-                    li {
-                        border-bottom: 1px solid $color_mercury_approx;
-                        &.card {
-                            background-color: transparent;
-                        }
-                        &.card-default {
-                            border-bottom: 1px solid $color_mercury_approx;
-                        }
-                    }
-                }
-                .card-body {
-                    li:last-child {
-                        border-bottom: 1px solid $color_mercury_approx;
-                    }
-                }
-            }
-            > a {
-                border-bottom: 1px solid $color_mercury_approx;
-            }
-        }
-        .hide-button {
-            background-color: $alabaster;
-        }
-
-        #search {
-            .card-body {
-                .navbar-form {
-                    border-top: 1px solid $color_mercury_approx;
-                    .btn {
-                        background-color: $alabaster;
-                    }
-                }
-            }
-        }
-    }
-    #explorer {
-        .questiongroupdropdown li a {
-            color: $black;
-        }
-    }
-    .dropdownstyle {
-        background-color: transparent;
-    }
-
-    #sideMenu {
-        a[aria-expanded="true"] {
-            color:            $white;
-            background-color: $color_parsley_approx;
-        }
-        a[aria-expanded="false"] {
-            color: $color_deep_fir_approx;
-        }
-        #dropdown {
-            li {
-                &:hover {
-                    background-color: $color_hippie_green_approx;
-                }
-                &:hover > a {
-                    background-color: $color_hippie_green_approx;
-                }
-                a[aria-expanded="true"] {
-                    background-color: $color_hippie_green_approx;
-                }
-                .active a:hover {
-                    background-color: $color_hippie_green_approx;
-                }
-                > a:hover {
-                    background-color: $color_hippie_green_approx;
-                }
-            }
-            #explorer {
-                li {
-                    &:hover {
-                        background-color: $color_aqua_forest_approx;
-                    }
-                    &:hover > a {
-                        background-color: $color_aqua_forest_approx;
-                    }
-                    a[aria-expanded="true"] {
-                        background-color: $color_aqua_forest_approx;
-                    }
-                    .active a:hover {
-                        background-color: $color_aqua_forest_approx;
-                    }
-                    > a:hover {
-                        background-color: $color_aqua_forest_approx;
-                    }
-                }
-                .questiongroupdropdown li {
-                    &:hover {
-                        background-color: $color_spring_rain_approx;
-                    }
-                    &:hover > a {
-                        background-color: $color_spring_rain_approx;
-                    }
-                    a[aria-expanded="true"] {
-                        background-color: $color_spring_rain_approx;
-                    }
-                    .active a:hover {
-                        background-color: $color_spring_rain_approx;
-                    }
-                    > a:hover {
-                        background-color: $color_spring_rain_approx;
-                    }
-                }
-            }
-        }
-        .navbar-default .navbar-nav > .active > a {
-            background-color: transparent;
-        }
-        .side-menu .dropdownlvl1 > a:hover {
-            color:            $white;
-            background-color: $color_parsley_approx;
-        }
-        .sidemenuscontainer li {
-            &:hover {
-                color:            $white;
-                background-color: $color_parsley_approx;
-            }
-            &:hover > a {
-                color:            $white;
-                background-color: $color_parsley_approx;
-            }
-        }
-    }
-    @media (max-width: 768px) {
-        .side-menu {
-            border-bottom: 1px solid $color_mercury_approx;
-        }
-        .navbar-toggle {
-            background-color: $alabaster;
-        }
-        .side-menu-container > .navbar-nav {
-            border-right:     1px solid $color_mercury_approx;
-            background-color: $color_desert_storm_approx;
-        }
-    }
+    //.absolute-wrapper {
+    //    background-color: $white;
+    //    border-right:     1px solid $color_mercury_approx;
+    //    box-shadow:       3px 0px 3px $color_gunsmoke_10_approx;
+    //}
+    //.side-menu {
+    //    background-color: $white;
+    //    border-right:     1px solid $color_mercury_approx;
+    //    background-color: $white;
+    //    .navbar {
+    //        background-color: $white;
+    //    }
+    //    .navbar-header {
+    //        border-bottom: 1px solid $color_mercury_approx;
+    //    }
+    //    .navbar-nav {
+    //        li {
+    //            border-bottom: 1px solid $color_mercury_approx;
+    //            a {
+    //                &.question-link:hover {
+    //                    box-shadow: 0 1px 1px 1px $black_16 inset,
+    //                                0 2px 1px 1px $black_12 inset;
+    //                }
+    //            }
+    //        }
+    //        .active {
+    //            background-color: $color_parsley_approx;
+    //            box-shadow:       0 1px 1px 1px $black_16 inset, 0 2px 1px 1px $black_12 inset;
+    //        }
+    //        .active a {
+    //            color: $white;
+    //        }
+    //
+    //        .question-link.active {
+    //            background-color: transparent;
+    //        }
+    //    }
+    //    #dropdown {
+    //        background-color: transparent;
+    //        box-shadow:       none;
+    //        li {
+    //            &:hover {
+    //                color:            $white;
+    //                background-color: $color_de_york_approx;
+    //            }
+    //            &.active:hover {
+    //                background-color: transparent;
+    //                color:            $color_parsley_approx;
+    //                border-right:     5px solid $color_mercury_approx;
+    //            }
+    //            &.disabled:hover {
+    //                color:            $white;
+    //                background-color: transparent;
+    //            }
+    //        }
+    //        .card-body {
+    //            background-color: $alabaster;
+    //            .navbar-nav {
+    //                li {
+    //                    border-bottom: 1px solid $color_mercury_approx;
+    //                    &.card {
+    //                        background-color: transparent;
+    //                    }
+    //                    &.card-default {
+    //                        border-bottom: 1px solid $color_mercury_approx;
+    //                    }
+    //                }
+    //            }
+    //            .card-body {
+    //                li:last-child {
+    //                    border-bottom: 1px solid $color_mercury_approx;
+    //                }
+    //            }
+    //        }
+    //        > a {
+    //            border-bottom: 1px solid $color_mercury_approx;
+    //        }
+    //    }
+    //    .hide-button {
+    //        background-color: $alabaster;
+    //    }
+    //
+    //    #search {
+    //        .card-body {
+    //            .navbar-form {
+    //                border-top: 1px solid $color_mercury_approx;
+    //                .btn {
+    //                    background-color: $alabaster;
+    //                }
+    //            }
+    //        }
+    //    }
+    //}
+    //#explorer {
+    //    .questiongroupdropdown li a {
+    //        color: $black;
+    //    }
+    //}
+    //.dropdownstyle {
+    //    background-color: transparent;
+    //}
+    //
+    //#sideMenu {
+    //    a[aria-expanded="true"] {
+    //        color:            $white;
+    //        background-color: $color_parsley_approx;
+    //    }
+    //    a[aria-expanded="false"] {
+    //        color: $color_deep_fir_approx;
+    //    }
+    //    #dropdown {
+    //        li {
+    //            &:hover {
+    //                background-color: $color_hippie_green_approx;
+    //            }
+    //            &:hover > a {
+    //                background-color: $color_hippie_green_approx;
+    //            }
+    //            a[aria-expanded="true"] {
+    //                background-color: $color_hippie_green_approx;
+    //            }
+    //            .active a:hover {
+    //                background-color: $color_hippie_green_approx;
+    //            }
+    //            > a:hover {
+    //                background-color: $color_hippie_green_approx;
+    //            }
+    //        }
+    //        #explorer {
+    //            li {
+    //                &:hover {
+    //                    background-color: $color_aqua_forest_approx;
+    //                }
+    //                &:hover > a {
+    //                    background-color: $color_aqua_forest_approx;
+    //                }
+    //                a[aria-expanded="true"] {
+    //                    background-color: $color_aqua_forest_approx;
+    //                }
+    //                .active a:hover {
+    //                    background-color: $color_aqua_forest_approx;
+    //                }
+    //                > a:hover {
+    //                    background-color: $color_aqua_forest_approx;
+    //                }
+    //            }
+    //            .questiongroupdropdown li {
+    //                &:hover {
+    //                    background-color: $color_spring_rain_approx;
+    //                }
+    //                &:hover > a {
+    //                    background-color: $color_spring_rain_approx;
+    //                }
+    //                a[aria-expanded="true"] {
+    //                    background-color: $color_spring_rain_approx;
+    //                }
+    //                .active a:hover {
+    //                    background-color: $color_spring_rain_approx;
+    //                }
+    //                > a:hover {
+    //                    background-color: $color_spring_rain_approx;
+    //                }
+    //            }
+    //        }
+    //    }
+    //    .navbar-default .navbar-nav > .active > a {
+    //        background-color: transparent;
+    //    }
+    //    .side-menu .dropdownlvl1 > a:hover {
+    //        color:            $white;
+    //        background-color: $color_parsley_approx;
+    //    }
+    //    .sidemenuscontainer li {
+    //        &:hover {
+    //            color:            $white;
+    //            background-color: $color_parsley_approx;
+    //        }
+    //        &:hover > a {
+    //            color:            $white;
+    //            background-color: $color_parsley_approx;
+    //        }
+    //    }
+    //}
+    //@media (max-width: 768px) {
+    //    .side-menu {
+    //        border-bottom: 1px solid $color_mercury_approx;
+    //    }
+    //    .navbar-toggle {
+    //        background-color: $alabaster;
+    //    }
+    //    .side-menu-container > .navbar-nav {
+    //        border-right:     1px solid $color_mercury_approx;
+    //        background-color: $color_desert_storm_approx;
+    //    }
+    //}
     .toWhite a:hover {
         color:            $white;
         background-color: $color_de_york_approx;
     }
 
-    // Collapsed button for menu
-    .navbar-toggle {
-        border: solid 1px $base-color;
-    }
-
-    .navbar-toggle .icon-bar {
-        background-color: $base-color;
-    }
 
     %extend_6 {
         color:            $white;

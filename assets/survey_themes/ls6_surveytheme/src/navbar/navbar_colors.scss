@@ -1,0 +1,67 @@
+.ls6_surveytheme {
+    .navbar-collapse {
+        box-shadow: inset 0 1px 0 $white_10;
+    }
+    .navbar-form {
+        box-shadow: inset 0 1px 0 $white_10, 0 1px 0 $white_10;
+    }
+    .navbar {
+        background-color: $white !important;
+        box-shadow:       0 3px 3px $color_gunsmoke_10_approx;
+        border-radius:    0 !important;
+        a {
+            text-decoration: none;
+            line-height:     1.8rem;
+            font-size:       1.2rem;
+        }
+        @media(min-width: 769px) {
+            .navbar-nav .nav-item .nav-link:hover {
+                text-decoration: none;
+            }
+            .navbar-nav .nav-item .nav-link:active {
+                text-decoration: none;
+            }
+            .navbar-nav .nav-item .nav-link:focus {
+                text-decoration: none;
+            }
+            .navbar-nav .nav-item .nav-link {
+                padding-bottom: 0;
+                padding-left: 0;
+            }
+            .navbar-nav .nav-item {
+                position: relative;
+            }
+
+            .navbar-nav .nav-item::after {
+                text-align:       right;
+                content:          '';
+                display:          block;
+                width:            0;
+                height:           2px;
+                background-color: $base-color;
+                transition: width 0.3s;
+            }
+            .navbar-nav .nav-item:hover::after {
+                width: 100%;
+            }
+        }
+        @media(max-width: 768px) {
+            padding-top:    15px;
+            padding-bottom: 15px;
+            box-shadow:     1px 2px 3px $color_gunsmoke_10_approx;
+        }
+
+        .nav-icon-btn.nav-icon-btn-danger .label {
+            background: $color_danger;
+        }
+    }
+
+    // Collapsed button for menu
+    .navbar-toggle {
+        border: solid 1px $base-color;
+    }
+
+    .navbar-toggle .icon-bar {
+        background-color: $base-color;
+    }
+}

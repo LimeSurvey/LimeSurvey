@@ -1,9 +1,6 @@
-// do not modify or remove this line, it will be read for theme generation
-$base-color: #ffffff;
-
-@import "src/colors.scss";
-@import "src/extensions.scss";
-@import "src/definitions.scss";
 @import "src/specials.scss";
 @import "old_fruity.scss";
-@import "old_vanilla.scss";
+//@import "old_vanilla.scss";
+
+// Components
+@import "src/navbar/navbar.scss";

@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /*
     LimeSurvey
 
@@ -28,21 +29,8 @@
 
 */
 body {
-     padding-bottom: 10px;
-     padding-top: 90px;/* now is redefine in JS to fit any title length */
-}
-
-
-
-element.style {
-}
-
-.navbar-default .navbar-nav > li > a:hover {
-    text-decoration: underline;
-}
-
-.navbar-action-link{
-    padding-right:1em; /* really close to window without */
+  padding-bottom: 10px;
+  padding-top: 90px; /* now is redefine in JS to fit any title length */
 }
 
 /* specific for survey listing */
@@ -51,142 +39,177 @@ element.style {
     width: 49%;
   }
 }
-
 .space-col {
-    margin-top: 1em;
-    margin-bottom: 2em;
+  margin-top: 1em;
+  margin-bottom: 2em;
 }
 
-.group-outer-container{
-    display: flex;
+.group-outer-container {
+  display: flex;
 }
-.group-container{
-    width:100%;
+
+.group-container {
+  width: 100%;
 }
 
 .group-title-container {
   padding: 1em;
-  background:transparent;
+  background: transparent;
 }
 
 .top-container {
-    width: 100%;
-    padding: 0;
-    border-bottom: none;
-    color: inherit;
+  width: 100%;
+  padding: 0;
+  border-bottom: none;
+  color: inherit;
 }
 
-.top-container .top-content{
-    padding-top:1em;
-    padding-bottom:1em;
-    margin-bottom:2em;
+.top-container .top-content {
+  padding-top: 1em;
+  padding-bottom: 1em;
+  margin-bottom: 2em;
 }
 
-.top-content .form-change-lang{float:right}
-.dir-rtl .top-content .form-change-lang{float:left}
-.no-js .top-content .form-change-lang{display:none}
+.top-content .form-change-lang {
+  float: right;
+}
 
-.top-container .top-content:empty{display:none}
-.group-description:empty{display:none}
-.group-title:empty{display:none}
+.dir-rtl .top-content .form-change-lang {
+  float: left;
+}
+
+.no-js .top-content .form-change-lang {
+  display: none;
+}
+
+.top-container .top-content:empty {
+  display: none;
+}
+
+.group-description:empty {
+  display: none;
+}
+
+.group-title:empty {
+  display: none;
+}
+
 .top-container .progress {
-    height: 21px;
-    margin-bottom: 0;
+  height: 21px;
+  margin-bottom: 0;
 }
+
 .top-container .progress {
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) inset; /* flatly remove box-shadow : readd one */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) inset; /* flatly remove box-shadow : readd one */
 }
+
 .progress .progress-bar {
-    line-height:19px;
+  line-height: 19px;
 }
-.top-container .form-change-lang {text-align:center}
+
+.top-container .form-change-lang {
+  text-align: center;
+}
 
 /**
  * Navigator
  */
+#navigator-container {
+  padding-bottom: 1em;
+}
 
- #navigator-container {
-     padding-bottom: 1em;
- }
- #navigator-container > hr
- {
-    margin-top: 0px;
-    margin-bottom: 0px;
- }
+#navigator-container > hr {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
 
 /**
  * Question part
  */
 /** Question Design **/
-
 .question-container {
   margin-bottom: 2em;
 }
 
-
-
 .question-container-printanswers {
-  margin-top: 2em ;
-  margin-bottom: 2em ;
-  padding-bottom: 2em ;
+  margin-top: 2em;
+  margin-bottom: 2em;
+  padding-bottom: 2em;
   border-bottom: 1px solid rgba(225, 225, 255, 0.6);
 }
 
 .question-title-container {
   padding-top: 1em;
-  padding-bottom:1em;
+  padding-bottom: 1em;
 }
-.question-number,.question-code{float:left;margin:0 0.3em}
-.question-number:empty,.question-code:empty{display:none}
+
+.question-number, .question-code {
+  float: left;
+  margin: 0 0.3em;
+}
+
+.question-number:empty, .question-code:empty {
+  display: none;
+}
 
 .question-valid-container {
   position: relative;
 }
 
 .ls-question-help,
-.ls-questionhelp{
-  margin-bottom:5px;
+.ls-questionhelp {
+  margin-bottom: 5px;
 }
 
-.question-valid-container .text-danger{
+.question-valid-container .text-danger {
   font-weight: bold;
 }
 
-.question-valid-container .text-info{
+.question-valid-container .text-info {
   font-weight: bold;
 }
+
 .answer-container, .question-help-container {
-    border-color: #dbdbdb;
+  border-color: #dbdbdb;
 }
+
 .answer-container {
   border-width: 0px 1px 0px 1px;
   border-style: solid;
   padding-top: 0.5em;
-  padding-bottom:0.5em;
+  padding-bottom: 0.5em;
 }
 
-.ls-answers{
-  padding-top:15px;
-  padding-bottom:15px;
-  margin-bottom:0;
+.ls-answers {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  margin-bottom: 0;
 }
 
-.question-help-container {
-
-}
 /* little icon near the question-help */
-.ls-questionhelp{position: relative;}
-.dir-ltr .ls-questionhelp{margin-left:1.2em;}
-.dir-rtl .ls-questionhelp{margin-right:1.2em;}
+.ls-questionhelp {
+  position: relative;
+}
 
-.ls-questionhelp:before{content:"\f059"}
+.dir-ltr .ls-questionhelp {
+  margin-left: 1.2em;
+}
+
+.dir-rtl .ls-questionhelp {
+  margin-right: 1.2em;
+}
+
 .ls-questionhelp:before {
-    display: block;
-    position:absolute;
-    font-family: FontAwesome;
-    font-size: inherit;
-    line-height: inherit;
-    height:100%;
+  content: "\f059";
+}
+
+.ls-questionhelp:before {
+  display: block;
+  position: absolute;
+  font-family: FontAwesome;
+  font-size: inherit;
+  line-height: inherit;
+  height: 100%;
 }
 
 /* If you want to center the icon */
@@ -197,300 +220,256 @@ element.style {
 }
 */
 .dir-ltr .ls-questionhelp:before {
-    left:-1.1em;
+  left: -1.1em;
 }
+
 .dir-rtl .ls-questionhelp:before {
-    right:-1.1em;
+  right: -1.1em;
 }
 
 /**
  * Unsure part
  */
-
- #main-col {
-     margin-top: 1em;
- }
-
- .col-centered{
-     float: none;
-     margin: 0 auto;
- }
-
-.radio-list li
-{
-    display: block;
-    clear: both;
-    margin-right: 3rem;
+#main-col {
+  margin-top: 1em;
 }
-.question-item .other-label
-{
-    margin: 0px;
-    padding: 0px;
+
+.col-centered {
+  float: none;
+  margin: 0 auto;
+}
+
+.radio-list li {
+  display: block;
+  clear: both;
+  margin-right: 3rem;
+}
+
+.question-item .other-label {
+  margin: 0px;
+  padding: 0px;
 }
 
 /**
  * For em-type
  */
- .hide-tip
- {
-     display: none;
- }
+.hide-tip {
+  display: none;
+}
 
 /**
  * Surveys list
  */
 .surveys-list {
-    margin-top: 1em;
-    list-style: none;
+  margin-top: 1em;
+  list-style: none;
 }
+
 .surveys-list li {
-    padding: 0.5em;
+  padding: 0.5em;
 }
+
 .surveys-list li a {
-    margin-left: 0.5em;
+  margin-left: 0.5em;
 }
 
 #surveys-list-jumbotron {
-    text-align: center;
+  text-align: center;
 }
 
 #surveys-list-jumbotron img.site-surveylist-logo {
-    max-width: 35%;
-    display: block;
-    margin: 15px auto;
+  max-width: 35%;
+  display: block;
+  margin: 15px auto;
 }
 
 /*#outerframeContainer {
     height: 100%;
 }*/
-
 #surveyListFooter {
-    width: 100%;
-    text-align: center;
-    margin-bottom: 0;
-    padding-bottom: 80px;
-    padding-top: 10px;
-    margin-top: 10px;
-
-    bottom: 0px;
-    height: 60px;
-    background-color: rgba(236, 240, 241, 0.2);
+  width: 100%;
+  text-align: center;
+  margin-bottom: 0;
+  padding-bottom: 80px;
+  padding-top: 10px;
+  margin-top: 10px;
+  bottom: 0px;
+  height: 60px;
+  background-color: rgba(236, 240, 241, 0.2);
 }
 
 @media (max-width: 768px) {
-    #surveyListFooter {
-        padding-bottom: 40px;
-        padding-top: 5px;
-        margin-top: 5px;
-        height: 40px;
-    }
+  #surveyListFooter {
+    padding-bottom: 40px;
+    padding-top: 5px;
+    margin-top: 5px;
+    height: 40px;
+  }
 }
-
 /**
  * Specific question part
  */
-.radio-item label,.checkbox-item label {
-    cursor: pointer;
+.radio-item label, .checkbox-item label {
+  cursor: pointer;
 }
-.radio-item [type='radio'],.checkbox-item [type='checkbox'] { /* Why we must positionning at same place */
-    cursor: pointer;
+
+.radio-item [type=radio], .checkbox-item [type=checkbox] { /* Why we must positionning at same place */
+  cursor: pointer;
 }
-.js td.radio-item,.js td.checkbox-item{
-    cursor: pointer;
+
+.js td.radio-item, .js td.checkbox-item {
+  cursor: pointer;
 }
 
 .slider-item {
-    min-height: 50px;
+  min-height: 50px;
 }
 
 .slider-container {
-    min-height: 15px;
+  min-height: 15px;
 }
 
 /* Show more the heading in table */
-.ls-answers .ls-heading th{font-weight:700}
+.ls-answers .ls-heading th {
+  font-weight: 700;
+}
+
 /* Max width for some answer part */
 @media (min-width: 768px) {
-  .yesno-button,.gender-button {
+  .yesno-button, .gender-button {
     width: 50%;
   }
-  .yesno-button,.gender-button {
+  .yesno-button, .gender-button {
     float: left;
   }
-  .dir-rtl .yesno-button,.dir-rtl .gender-button {
+  .dir-rtl .yesno-button, .dir-rtl .gender-button {
     float: right;
   }
 }
 /* table color */
-.ls-even{
-background-color:#f9f9f9;
+.ls-even {
+  background-color: #f9f9f9;
 }
+
 /* dynamic group (multiple-numeric) .form-control-static same padding and border width than form-control for better alignment */
-.ls-group-dynamic .form-control-static{border: 2px solid transparent;padding-left:15px;padding-right:15px;}
-/* array by column hover column */
-.table-col-hover col:hover, /* This, maybe, work in CSS4 :) */
-.table-col-hover col.hover /* Actual solution : js only*/
-{
-    background-color: #ecf0f1;
+.ls-group-dynamic .form-control-static {
+  border: 2px solid transparent;
+  padding-left: 15px;
+  padding-right: 15px;
 }
-@media
-only screen and (max-width: 760px),
-(min-device-width: 768px) and (max-device-width: 1024px)  {
-    .ls-answers > tbody > tr.ls-even:hover {
-        background-color:#f9f9f9;
-    }
+
+/* array by column hover column */
+.table-col-hover col:hover,
+.table-col-hover col.hover {
+  background-color: #ecf0f1;
+}
+
+@media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
+  .ls-answers > tbody > tr.ls-even:hover {
+    background-color: #f9f9f9;
+  }
 }
 /**
  * Gender buttons
  */
-
 /* General */
 .button-item .ls-icon, .ls-button-label .ls-icon {
-    display: block;
+  display: block;
 }
 
 .button-item .ls-icon, .ls-button-label .ls-icon {
-    font-size: 1.4em;
-    line-height: 1.4em;
+  font-size: 1.4em;
+  line-height: 1.4em;
 }
 
-html body .navbar.navbar-default.navbar-fixed-top {
-    z-index: 2000;
+.file-upload-modal, .modal {
+  z-index: 2001;
 }
-.file-upload-modal,.modal{
-    z-index: 2001;
-}
-
-/* Title of survey can be big, allow multiline, but leave the minimum */
-.navbar-brand {
-    height: auto;
-    min-height:60px;
-}
-
-
-/**********************************
-Responsive navbar-brand image CSS
-- Remove navbar-brand padding for firefox bug workaround
-- add 100% height and width auto ... similar to how bootstrap img-responsive class works
-***********************************/
-
-.logo-container {
-  padding: 0px;
-  float: left;
-
-  font-size: 18px;
-  line-height: 20px;
-}
-
-.logo-container>img {
-  max-height: 90px;
-  padding: 15px;
-  width: auto;
-}
-
-.brand-logo  .top-container .top-content{
-    padding-top: 2em;
-}
-
-
 
 /* Wrap text in e.g. gender button "No answer */
 .wrap-normal {
-    white-space: normal;
+  white-space: normal;
 }
 
 /* Center modal vertically, used by file-upload modal */
 .modal {
-    text-align: center;
-    padding: 0!important;
+  text-align: center;
+  padding: 0 !important;
 }
+
 .modal:before {
-    content: '';
-    display: inline-block;
-    height: 100%;
-    vertical-align: middle;
-    margin-right: -4px;
+  content: "";
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+  margin-right: -4px;
 }
+
 .modal-dialog {
-    display: inline-block;
-     text-align: left;
-     vertical-align: middle;
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
 }
 
 #yii-flash-message {
-    margin-top: 3em;
+  margin-top: 3em;
 }
 
 .prefix-text-right {
-    text-align: right;
+  text-align: right;
 }
 
 .align-middle {
-    vertical-align: middle !important;
+  vertical-align: middle !important;
 }
-
 
 /* Used for date-picker icon within input */
 .form-control-feedback {
-    right: 1em;
-    left: auto;
-}
-
-body .navbar-default .navbar-brand:hover {
+  right: 1em;
+  left: auto;
 }
 
 /* Only use <label> to get vertical align easy. Don't want boldness. */
 .no-label {
-    font-weight: normal;
+  font-weight: normal;
 }
 
 table > tbody > tr > td.ddprefix {
-    padding-right: 1em;
-    vertical-align: middle;
+  padding-right: 1em;
+  vertical-align: middle;
 }
-
 
 /**
  * On big screen only, iPad and up
  */
 @media only screen and (min-width: 761px) {
-
-    .table-dual-scale .separator {
-        width: 6%;
-    }
-
-    table > tbody > tr > td.ddsuffix {
-        padding-left: 1em;
-        vertical-align: middle;
-    }
-
+  .table-dual-scale .separator {
+    width: 6%;
+  }
+  table > tbody > tr > td.ddsuffix {
+    padding-left: 1em;
+    vertical-align: middle;
+  }
 }
-
 /**
  * Display adjust, question type by question type
  */
-
-
-.table > tbody > tr > th
-{
-    vertical-align: middle;
+.table > tbody > tr > th {
+  vertical-align: middle;
 }
 
 .othertext-label-checkox-container {
-    padding-top: 5px;
-    margin-right: 5px;
+  padding-top: 5px;
+  margin-right: 5px;
 }
 
 .geoname_search {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
-
-
-
 
 /* Give help text some space */
 .questionhelp {
-  padding-bottom:0.5em;
+  padding-bottom: 0.5em;
 }
 
 /* Arrow */
@@ -509,223 +488,245 @@ table > tbody > tr > td.ddprefix {
     margin-left: -0.9em;
 }
 */
-
 /* Asterix */
 .input-error .asterisk {
-    font-size: 1.2em;
-    margin-top:-0.2em;
+  font-size: 1.2em;
+  margin-top: -0.2em;
 }
 
-#surveys-list-container
-{
-    margin-top: 50px;
-}
-
-/* text overflows, ellipsis and hyphens */
-.navbar-brand {
-    overflow: hidden;
-    text-overflow: ellipsis;
+#surveys-list-container {
+  margin-top: 50px;
 }
 
 #outerframeContainer {
-    min-height: 100%;
-    word-wrap: break-word;
-    -webkit-hyphens: auto;
-    -moz-hyphens: auto;
-    -ms-hyphens: auto;
-    -o-hyphens: auto;
-    hyphens: auto;
+  min-height: 100%;
+  word-wrap: break-word;
+  -webkit-hyphens: auto;
+  -o-hyphens: auto;
+  hyphens: auto;
 }
 
 .xdebug-var-dump {
-    z-index: 10000;
-    position: relative;
-    top: 10px;
+  z-index: 10000;
+  position: relative;
+  top: 10px;
 }
-
 
 div.yes-no .btn-group label {
-  white-space:normal;
+  white-space: normal;
 }
 
-.privacy-header{
-    font-weight: bold;
-    font-style: italic;
+.privacy-header {
+  font-weight: bold;
+  font-style: italic;
 }
 
 /*** Divider for Bootstrap ***/
-
-.horizontal-divider.top{
+.horizontal-divider.top {
   border-top: 3px solid #323232;
 }
-.horizontal-divider.bottom{
+
+.horizontal-divider.bottom {
   border-bottom: 3px solid #323232;
 }
 
 .vertical-divider.left {
   border-left: 3px solid #323232;
 }
+
 .vertical-divider.right {
   border-right: 3px solid #323232;
 }
-@media (max-width: 800px){
-    .vertical-divider.left {
+
+@media (max-width: 800px) {
+  .vertical-divider.left {
     border: none;
-    }
-    .vertical-divider.right {
+  }
+  .vertical-divider.right {
     border: none;
-    }
+  }
 }
-
-@media only screen and (max-device-width: 760px){
-
-  h1, .h3{
-    font-size:18px;
+@media only screen and (max-device-width: 760px) {
+  h1, .h3 {
+    font-size: 18px;
   }
-
-  .h4{
-    font-size:16px;
+  .h4 {
+    font-size: 16px;
   }
-
-  .question-container{
-    margin-bottom:1em;
+  .question-container {
+    margin-bottom: 1em;
   }
-
-  .question-title-container{
-    padding-top:5px;
+  .question-title-container {
+    padding-top: 5px;
     padding-bottom: 5px;
   }
-
-  .answer-container{
-    //padding-top:0.5em;
-    //padding-bottom:0.5em;
-  }
-
   .ls-question-help,
-  .ls-questionhelp{
-    font-size:14px;
+  .ls-questionhelp {
+    font-size: 14px;
   }
-
-  .table-bordered{
-    border:none;
+  .table-bordered {
+    border: none;
   }
-
-  .ls-answers tbody:last-child tr:last-child{
-    margin-bottom:0;
+  .ls-answers tbody:last-child tr:last-child {
+    margin-bottom: 0;
   }
-
-  .ls-answers{
-    padding-top:0;
-    padding-bottom:0;
+  .ls-answers {
+    padding-top: 0;
+    padding-bottom: 0;
   }
-
-  .ls-answers > tbody > tr > td.radio-item ,
-  .ls-answers > tbody > tr > td.checkbox-item{
-    min-height:44px; /*minimal height for touching with finger */
-    padding-top:10px;
-    padding-left:28px;
+  .ls-answers > tbody > tr > td.radio-item,
+  .ls-answers > tbody > tr > td.checkbox-item {
+    min-height: 44px; /*minimal height for touching with finger */
+    padding-top: 10px;
+    padding-left: 28px;
   }
-
   .ls-answers.table > tbody + tbody {
     border-top: none; /*overriding Bootstrap */
   }
-
-  .help-block:last-child{
-    margin-bottom:0;
+  .help-block:last-child {
+    margin-bottom: 0;
   }
-
   .ls-questionhelp,
-  .help-block{
-    font-size:90%;
+  .help-block {
+    font-size: 90%;
   }
 }
-
-p.return-to-survey{
-    clear:left;
+p.return-to-survey {
+  clear: left;
 }
 
 /* Make sure question index menu is not too long. */
 #index-menu ul.dropdown-menu {
-    max-height: 50vh;
-    overflow-y: scroll;
+  max-height: 50vh;
+  overflow-y: scroll;
 }
 
-.text-break-pre{
-    white-space: pre-line;
+.text-break-pre {
+  white-space: pre-line;
 }
 
-.child-row-spacing>.row{
-    padding-bottom: 8px;
+.child-row-spacing > .row {
+  padding-bottom: 8px;
 }
-.child-row-border-bottom>.row:last-child{
-    padding-bottom: 0;
+
+.child-row-border-bottom > .row:last-child {
+  padding-bottom: 0;
 }
 
 .superset {
-    font-size: 50%;
-    vertical-align: top;
+  font-size: 50%;
+  vertical-align: top;
 }
 
 /* Remove question container*/
-#navbar {
-    background: none; border: none;
-}
-.question-title-container, .question-valid-container{
-    background: none; border: none;
-}
-.answer-container, .question-container{
-    border: none;
+.question-title-container, .question-valid-container {
+  background: none;
+  border: none;
 }
 
-
-.navbar-default .navbar-brand, .navbar-default  {
-    border: none;
+.answer-container, .question-container {
+  border: none;
 }
 
 .alert {
-    background: none;
+  background: none;
 }
 
 .question-item {
-    border: none;
+  border: none;
 }
 
 body .checkbox-item label::after {
-    background-color: transparent;
+  background-color: transparent;
 }
 
 /* aligns navigator buttons with question borders */
 #navigator-container > div {
-    padding: 0px;
+  padding: 0px;
 }
 
 .btn:focus, .btn:hover {
-    color: #fff;
+  color: #fff;
 }
 
 /* Remove borders when checkbox is checked */
-.checkbox-item input[type="checkbox"]:checked + label::before{
-    border: none;
-    background-color: transparent;
-    outline: none;
+.checkbox-item input[type=checkbox]:checked + label::before {
+  border: none;
+  background-color: transparent;
+  outline: none;
 }
 
-.radio-item input[type="radio"]:focus + label::before, input[type="radio"]:focus, input[type="checkbox"]:focus, .btn-primary:focus, .btn:focus, .btn:active:focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn.active.focus{
-    outline: none;
+.radio-item input[type=radio]:focus + label::before, input[type=radio]:focus, input[type=checkbox]:focus, .btn-primary:focus, .btn:focus, .btn:active:focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn.active.focus {
+  outline: none;
 }
 
 .limit-text-window {
-    max-height: 40rem;
-    max-height: 33vh;
-    padding: 15px 5px;
-    overflow: auto;
-    border-top: 1px solid #dedede;
-    border-bottom: 1px solid #dedede;
-    border-left: none;
-    border-right: none;
-    outline: none;
+  max-height: 40rem;
+  max-height: 33vh;
+  padding: 15px 5px;
+  overflow: auto;
+  border-top: 1px solid #dedede;
+  border-bottom: 1px solid #dedede;
+  border-left: none;
+  border-right: none;
+  outline: none;
 }
 
 label {
-    font-weight: bold;
+  font-weight: bold;
+}
+
+.navbar-default .navbar-nav > li > a:hover {
+  text-decoration: underline;
+}
+
+.navbar-action-link {
+  padding-right: 1em; /* really close to window without */
+}
+
+html body .navbar.navbar-default.navbar-fixed-top {
+  z-index: 2000;
+}
+
+/* Title of survey can be big, allow multiline, but leave the minimum */
+.navbar-brand {
+  height: auto;
+  min-height: 60px;
+}
+
+/**********************************
+Responsive navbar-brand image CSS
+- Remove navbar-brand padding for firefox bug workaround
+- add 100% height and width auto ... similar to how bootstrap img-responsive class works
+***********************************/
+.logo-container {
+  padding: 0px;
+  float: left;
+  font-size: 18px;
+  line-height: 20px;
+}
+
+.logo-container > img {
+  max-height: 90px;
+  padding: 15px;
+  width: auto;
+}
+
+.brand-logo .top-container .top-content {
+  padding-top: 2em;
+}
+
+/* text overflows, ellipsis and hyphens */
+.navbar-brand {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#navbar {
+  background: none;
+  border: none;
+}
+
+.navbar-default .navbar-brand, .navbar-default {
+  border: none;
 }
