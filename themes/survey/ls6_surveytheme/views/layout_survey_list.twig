@@ -92,7 +92,7 @@ NOTE: Feel free to ask for functions, variables, etc, that you feel are missing 
 {{ include('./subviews/header/head.twig') }}
 
 <body
-    class=" {{ aSurveyInfo.class.body }} font-{{ aSurveyInfo.options.font }} lang-{{ aSurveyInfo.languagecode }} {{ aSurveyInfo.surveyformat }} {% if( aSurveyInfo.options.brandlogo == "on") %}brand-logo{% endif %}" {{ aSurveyInfo.attr.body }} >
+    class=" {{ aSurveyInfo.class.body }} darkmode-{{aSurveyInfo.options.darkmode }} font-{{ aSurveyInfo.options.font }} lang-{{ aSurveyInfo.languagecode }} {{ aSurveyInfo.surveyformat }} {% if( aSurveyInfo.options.brandlogo == "on") %}brand-logo{% endif %}" {{ aSurveyInfo.attr.body }} >
 
 {# This used for the pjax system #}
 <div id="beginScripts">

@@ -38,7 +38,7 @@
         <link rel="shortcut icon" href="favicon.ico" />
     </head>
 
-    <body class=" {{ aSurveyInfo.class.body }} font-{{  aSurveyInfo.options.font }} lang-{{aSurveyInfo.languagecode}} {{aSurveyInfo.surveyformat}} {% if( aSurveyInfo.options.brandlogo == "on") %}brand-logo{%endif%}" {{ aSurveyInfo.attr.body }} >
+    <body class=" {{ aSurveyInfo.class.body }} darkmode-{{aSurveyInfo.options.darkmode }} font-{{  aSurveyInfo.options.font }} lang-{{aSurveyInfo.languagecode}} {{aSurveyInfo.surveyformat}} {% if( aSurveyInfo.options.brandlogo == "on") %}brand-logo{%endif%}" {{ aSurveyInfo.attr.body }} >
         {% block nav_bar %}
             {{ include('./subviews/header/nav_bar.twig') }}
         {% endblock %}
