@@ -44,7 +44,7 @@ echo viewHelper::getViewTestTag('listSurveys');
                                     ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
                                 )
                             ),
-                        'selectionChanged' => "function(id){window.location='" . Yii::app()->urlManager->createUrl("admin/surveysgroups/sa/update/id") . '/' . "' + $.fn.yiiGridView.getSelection(id.split(',', 1));}",
+                        // 'selectionChanged' => "function(id){window.location='" . Yii::app()->urlManager->createUrl("admin/surveysgroups/sa/update/id") . '/' . "' + $.fn.yiiGridView.getSelection(id.split(',', 1));}",
 
                     ]);
                     ?>
