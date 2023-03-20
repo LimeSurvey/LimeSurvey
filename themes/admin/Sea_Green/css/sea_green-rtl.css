@@ -17088,13 +17088,10 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 }
 .navbar .navbar-brand {
   font-style: normal;
-  font-weight: 400;
-  font-size: 16px;
+  font-weight: 800;
+  font-size: 18px;
   color: #fff;
   width: auto;
-}
-.navbar .navbar-brand.text {
-  margin-top: 12px;
 }
 .navbar .navbar-toggler {
   margin: 8px;

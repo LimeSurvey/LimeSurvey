@@ -11,13 +11,10 @@
   }
   .navbar-brand {
     font-style: normal;
-    font-weight: 400;
-    font-size: 16px;
+    font-weight: 800;
+    font-size: 18px;
     color: $navbar-color;
     width: auto;
-    &.text {
-      margin-top: 12px;
-    }
   }
   .navbar-toggler {
     margin: map-get($spacers, 2);

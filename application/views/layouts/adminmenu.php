@@ -15,13 +15,9 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <a class="navbar-brand" href="<?php echo $this->createUrl("/admin/"); ?>">
-            <img src="/assets/images/logo-white.png" height="34" class="d-inline-block align-bottom" alt="">
-        </a>
-        <?php if (strtolower(str_replace(' ', '', $sitename)) !== 'limesurvey'): ?>
-        <a class="navbar-brand text" href="<?php echo $this->createUrl("/admin/"); ?>">
+            <img src="/assets/images/logo-icon-white.png" height="34" class="d-inline-block align-bottom" alt="">
             <?= $sitename ?>
         </a>
-        <?php endif; ?>
         <!-- Only on xs screens -->
         <div class="collapse navbar-collapse " id="small-screens-menus">
             <ul class="nav navbar-nav">
