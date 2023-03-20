@@ -22,6 +22,13 @@ class Index extends CAction
         $this->action();
     }
 
+    /**
+     *
+     * todo: this function is toooo long, to many things happening here. Should be refactored asap!
+     * @return void
+     * @throws CException
+     * @throws CHttpException
+     */
     public function action()
     {
         global $surveyid;
@@ -211,22 +218,32 @@ class Index extends CAction
         }
 
         // No test for response update
-        if ($this->isSurveyFinished($surveyid) && ($thissurvey['alloweditaftercompletion'] != 'Y' || $thissurvey['tokenanswerspersistence'] != 'Y')) {
+        if ($this->isSurveyFinished($surveyid)) {
+            killSurveySession($surveyid);
             $aReloadUrlParam = array('lang' => App()->language, 'newtest' => 'Y');
-
             if (!empty($clienttoken)) {
                 $aReloadUrlParam['token'] = $clienttoken;
             }
-
-            $aErrors  = array(gT('Previous session is set to be finished.'));
-            $aMessage = array(gT('Your browser reports that it was used previously to answer this survey. We are resetting the session so that you can start from the beginning.'),);
+            //todo: this url is never shown to the participant in case of renderExitMessage (see below)
+            $restartUrl = $this->getController()->createUrl("/survey/index/sid/{$surveyid}", $aReloadUrlParam);
             $aUrl     = array(
-                            'url' => $this->getController()->createUrl("/survey/index/sid/{$surveyid}", $aReloadUrlParam),
+                            'url' => $restartUrl,
                             'type' => 'restart-survey',
                             'description' => gT("Click here to start the survey.")
                         );
 
-            killSurveySession($surveyid);
+            //Use case: if participant has possibility to run survey again
+            //instead of showing an error message, redirect participant to restart survey
+            //check if inherit value is set to 'Y'
+            $alloweditaftercompletion = ($thissurvey['alloweditaftercompletion'] == 'Y') ||
+                $oSurvey->getIsAllowEditAfterCompletion();
+            if ($alloweditaftercompletion) {
+                $this->getController()->redirect($restartUrl);
+            }
+
+            $aErrors  = array(gT('Previous session is set to be finished.'));
+            $aMessage = array(gT('Your browser reports that it was used previously to answer this survey.
+            We are resetting the session so that you can start from the beginning.'),);
             App()->getController()->renderExitMessage(
                 $surveyid,
                 'restart-survey',
