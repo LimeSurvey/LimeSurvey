@@ -112,10 +112,19 @@ class GlobalSettings extends SurveyCommonAction
             $data['excludedLanguages'] = array_diff(array_keys($data['allLanguages']), $data['restrictToLanguages']);
         }
 
-        // Fullpage Bar
-        $data['fullpagebar']['savebutton']['form'] = 'frmglobalsettings';
-        $data['fullpagebar']['saveandclosebutton']['form'] = 'frmglobalsettings';
-        $data['fullpagebar']['white_closebutton']['url'] = Yii::app()->createUrl('admin/'); // Close button
+        $data['topbar']['title'] = gT('Global settings');
+        $data['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/layouts/partial_topbar/right_close_saveclose_save',
+            [
+                'isCloseBtn' => true,
+                'isSaveAndCloseBtn' => true,
+                'isSaveBtn' => true,
+                'backUrl' => Yii::app()->createUrl('admin/index'),
+                'formIdSaveClose' => 'frmglobalsettings',
+                'formIdSave' => 'frmglobalsettings'
+            ],
+            true
+        );
 
         // List of available encodings
         $data['aEncodings'] = aEncodingsArray();
@@ -133,9 +142,6 @@ class GlobalSettings extends SurveyCommonAction
         $data['thischaracterset'] = getGlobalSetting('characterset');
         $data['sideMenuBehaviour'] = getGlobalSetting('sideMenuBehaviour');
         $data['aListOfThemeObjects'] = AdminTheme::getAdminThemeList();
-
-        // Green Bar Title
-        $data['pageTitle'] = gT("Global settings");
 
         $this->renderWrappedTemplate('globalsettings', 'globalSettings_view', $data);
     }
@@ -524,21 +530,19 @@ class GlobalSettings extends SurveyCommonAction
         ];
         $aData['partial'] = $sPartial;
 
-        // Green Bar (SurveyManagerBar) Page Title
-        $aData['pageTitle'] = gT('Global survey settings');
-
-        // White Top Bar
-        $aData['fullpagebar'] = [
-            'savebutton' => [
-                'form' => 'survey-settings-form',
+        $aData['topbar']['title'] = gT('Global survey settings');
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/layouts/partial_topbar/right_close_saveclose_save',
+            [
+                'isCloseBtn' => true,
+                'isSaveAndCloseBtn' => true,
+                'isSaveBtn' => true,
+                'backUrl' => Yii::app()->createUrl('admin/index'),
+                'formIdSaveClose' => 'frmglobalsettings',
+                'formIdSave' => 'frmglobalsettings'
             ],
-            'saveandclosebutton' => [
-                'form' => 'survey-settings-form',
-            ],
-            'white_closebutton' => [
-                'url' => $this->getController()->createUrl('admin/index'),
-            ],
-        ];
+            true
+        );
 
         $this->renderWrappedTemplate('globalsettings', 'surveySettings', $aData);
     }

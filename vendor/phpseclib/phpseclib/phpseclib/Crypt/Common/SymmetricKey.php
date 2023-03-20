@@ -3383,4 +3383,14 @@ abstract class SymmetricKey
     {
         return array_flip(self::MODE_MAP)[$this->mode];
     }
+
+    /**
+     * Is the continuous buffer enabled?
+     *
+     * @return boolean
+     */
+    public function continuousBufferEnabled()
+    {
+        return $this->continuousBuffer;
+    }
 }

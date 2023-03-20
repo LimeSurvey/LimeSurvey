@@ -132,25 +132,32 @@ class SurveyAdministrationController extends LSBaseController
         LimeExpressionManager::SetSurveyId($iSurveyID);
         LimeExpressionManager::StartProcessingPage(false, true);
 
+        //breadcrumb
         if (isset($survey->currentLanguageSettings) && isset($survey->currentLanguageSettings->surveyls_title)) {
             $aData['title_bar']['title'] =
                 $survey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyID . ")";
         } else {
             $aData['title_bar']['title'] = 'Unknown_language_title' . " (" . gT("ID") . ":" . $iSurveyID . ")";
         }
+        //buttons in topbar
+        $topbarData = TopbarConfiguration::getSurveyTopbarData($iSurveyID);
+        $aData['topbar']['middleButtons'] = $this->renderPartial(
+            'partial/topbar/surveyTopbarLeft_view',
+            $topbarData,
+            true
+        );
+        $aData['topbar']['rightButtons'] = $this->renderPartial(
+            'partial/topbar/surveyTopbarRight_view',
+            $topbarData,
+            true
+        );
         $aData['surveyid'] = $iSurveyID;
         $aData['sid'] = $iSurveyID; //frontend need this to render topbar for the view
-
-        //NOTE this is set because ONLY this leads to render the view surveySummary_view, no need to use in anymore
-        // $aData['display']['surveysummary'] = true;
 
         // Last survey visited
         $userId = App()->user->getId();
         SettingGlobal::setSetting('last_survey_' . $userId, $iSurveyID);
 
-        $aData['surveybar']['buttons']['view'] = true;
-        $aData['surveybar']['returnbutton']['url'] = $this->createUrl("surveyAdministration/listsurveys");
-        $aData['surveybar']['returnbutton']['text'] = gT('Return to survey list');
         $aData['sidemenu']["survey_menu"] = true;
 
         // We get the last question visited by user for this survey
@@ -181,9 +188,9 @@ class SurveyAdministrationController extends LSBaseController
         $user = User::model()->findByPk(App()->session['loginID']);
         $aData['owner'] = $user->attributes;
 
-        if ((empty($aData['display']['menu_bars']['surveysummary']) || !is_string($aData['display']['menu_bars']['surveysummary'])) && !empty($aData['gid'])) {
-            $aData['display']['menu_bars']['surveysummary'] = 'viewgroup';
-        }
+      //  if ((empty($aData['display']['menu_bars']['surveysummary']) || !is_string($aData['display']['menu_bars']['surveysummary'])) && !empty($aData['gid'])) {
+        //    $aData['display']['menu_bars']['surveysummary'] = 'viewgroup';
+       // }
 
         $surveyUrls = [];
         foreach ($survey->allLanguages as $language) {
@@ -194,7 +201,7 @@ class SurveyAdministrationController extends LSBaseController
         $this->surveysummary($aData);
 
         // Display 'Overview' in Green Bar
-        $aData['subaction'] = gT('Overview');
+     //   $aData['subaction'] = gT('Overview');
 
         $this->aData = $aData;
         $this->render('sidebody', [
@@ -219,19 +226,9 @@ class SurveyAdministrationController extends LSBaseController
         $aData['model'] = new Survey('search');
         $aData['groupModel'] = new SurveysGroups('search');
 
-        // Green Bar Page Title
-        $aData['pageTitle'] = gT('Survey list');
-
-        // Create Survey Button Url
-        $aData['fullpagebar']['listSurveys']['buttons']['createSurvey']['url'] = $this->createUrl("surveyAdministration/newSurvey");
-        $aData['fullpagebar']['listSurveys']['buttons']['createSurveyGroup']['url'] = $this->createUrl("admin/surveysgroups/sa/create");
-
-        // Create Survey Groups Button
-        $aData['fullpagebar']['listSurveys']['buttons']['createSurveyGroups'] = true;
-
-        // Return Button
-        $aData['fullpagebar']['returnbutton']['url'] = 'admin/index';
-        $aData['fullpagebar']['returnbutton']['text'] = gT('Back');
+        $aData['topbar']['title'] = gT('Survey list');
+        $aData['topbar']['rightButtons'] = $this->renderPartial('partial/topbarBtns/rightSideButtons', [], true);
+        $aData['topbar']['middleButtons'] = $this->renderPartial('partial/topbarBtns/leftSideButtons', [], true);
 
         $this->aData = $aData;
         $this->render('listSurveys_view', $aData);
@@ -412,11 +409,13 @@ class SurveyAdministrationController extends LSBaseController
         $arrayed_data['data'] = $aData;
         $arrayed_data['title_bar']['title'] = gT('New survey');
 
-        // Green Bar Page Title
-        $aData['pageTitle'] = gT("Create, import, or copy survey");
-
-        $aData['fullpagebar']['savebutton']['form'] = 'addnewsurvey';
-        $aData['fullpagebar']['white_closebutton']['url'] = Yii::app()->createUrl('admin/index'); // Close button
+        // topbar
+        $aData['topbar']['title'] = gT('Create, import, or copy survey');
+        $aData['topbar']['rightButtons'] = $this->renderPartial(
+            'partial/topbarBtns_create_survey/rightSideButtons',
+            [],
+            true
+        );
 
         $this->aData = $aData;
 
@@ -897,10 +896,20 @@ class SurveyAdministrationController extends LSBaseController
             array('order' => 'group_order ASC')
         );
         $aGroupViewable = array();
+
+        $aData = ['topBar' => ['name' => 'questionTopbar_view'], "sid" => $iSurveyID];
+
+        $topbarConfig = TopbarConfiguration::createFromViewData($aData);
+        $configData  = $topbarConfig->getData();
+
+
         if (count($aGroups)) {
             foreach ($aGroups as $group) {
                 $curGroup = $group->attributes;
                 $curGroup['group_name'] = viewHelper::flatEllipsizeText($group->questiongroupl10ns[$baselang]->group_name, true, 150);
+                $curGroup['groupDropdown'] = [];
+                $condarray = getGroupDepsForConditions($surveyid, "all", $group->gid, "by-targgid");
+
                 $curGroup['link'] = $this->createUrl(
                     "questionGroupsAdministration/view",
                     ['surveyid' => $surveyid, 'gid' => $group->gid]
@@ -913,6 +922,74 @@ class SurveyAdministrationController extends LSBaseController
                     ),
                     array('order' => 'question_order ASC')
                 );
+
+                if ($configData['hasSurveyContentReadPermission']) {
+                    $curGroup['groupDropdown']['language'] =
+                    [
+                        'id' => '',
+                        'label' => gT("Check logic"),
+                        'icon' => 'ri-checkbox-fill',
+                        'url' => Yii::App()->createUrl("admin/expressions/sa/survey_logic_file/sid/{$iSurveyID}/gid/$group->gid")
+                    ];
+                }
+                if ($configData['hasSurveyContentExportPermission']) {
+                    $curGroup['groupDropdown']['export'] =
+                    [
+                        'id' => '',
+                        'label' => gT("Export"),
+                        'icon' => 'ri-download-fill',
+                        'url' => Yii::App()->createUrl("admin/export/sa/group/surveyid/$iSurveyID/gid/$group->gid")
+                    ];
+                }
+
+                if ($configData['hasSurveyContentDeletePermission']) {
+                    if ($configData['oSurvey']->active !== 'Y') {
+                        if (is_null($condarray)) {
+                            $curGroup['groupDropdown']['delete'] =
+                            [
+                                'id' => '',
+                                'label' => gT("Delete group"),
+                                'icon' => 'ri-delete-bin-fill text-danger',
+                                'dataTitle' => gt('Delete group'),
+                                'dataBtnText' => gt('Delete'),
+                                'dataOnclick' => '(function() { ' .  convertGETtoPOST(
+                                    Yii::app()->createUrl(
+                                        "questionGroupsAdministration/delete/",
+                                        [  "asJson" => true,
+                                        "surveyid" => $iSurveyID,
+                                        "gid" => $group->gid,
+                                        "landOnSideMenuTab" => "structure",
+                                        ]
+                                    )
+                                ) . '})',
+                                'dataMessage' => gT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?", "js")
+                            ];
+                        } else {
+                            $curGroup['groupDropdown']['delete'] =
+                            [
+                                'id' => '',
+                                'label' => gT("Delete group"),
+                                'icon' => 'ri-delete-bin-fill text-danger',
+                                'dataTitle' => gt('Delete group'),
+                                'disabled' => true,
+                                'title' => gt("Impossible to delete this group because there is at least one question having a condition on its content")
+                            ];
+                        }
+                    } else {
+                        $curGroup['groupDropdown']['delete'] =
+                        [
+                            'id' => '',
+                            'label' => gT("Delete group"),
+                            'icon' => 'ri-delete-bin-fill text-danger',
+                            'dataTitle' => gt('Delete group'),
+                            'disabled' => true,
+                            'title' => gt("It is not possible to add/delete groups if the survey is active.")
+                        ];
+                    }
+                }
+
+
+
                 $curGroup['questions'] = array();
                 foreach ($group->aQuestions as $question) {
                     if (is_object($question)) {
@@ -928,12 +1005,103 @@ class SurveyAdministrationController extends LSBaseController
                             : '';
                         // We have to limit the question text length here, otherwise the whole question is loaded into the navigation tree
                         $curQuestion['question_flat'] = viewHelper::flatEllipsizeText($questionText, true, 150);
+                        $hasdefaultvalues = (QuestionTheme::findQuestionMetaData($question->type)['settings'])->hasdefaultvalues;
+                        $curQuestion['questionDropdown'] = [];
+                        if ($configData['hasSurveyContentUpdatePermission']) {
+                            $curQuestion['questionDropdown']['conditionDesigner'] =
+                                [
+                                    'id' => 'conditions_button',
+                                    'label' => gT("Condition designer"),
+                                    'icon' => 'ri-git-branch-fill icon',
+                                    'url' => Yii::App()->createUrl("admin/conditions/sa/index/subaction/editconditionsform/surveyid/$iSurveyID/gid/$question->gid/qid/$question->qid")
+                                ];
+
+                            if ($hasdefaultvalues > 0) {
+                                $curQuestion['questionDropdown']['editDefault'] =
+                                    [
+                                        'id' => 'default_value_button',
+                                        'label' => gT("Edit default answers"),
+                                        'icon' => 'ri-grid-line',
+                                        'url' => Yii::App()->createUrl("questionAdministration/editdefaultvalues/surveyid/$iSurveyID/gid/$question->gid/qid/$question->qid")
+                                    ];
+                            }
+                        }
+
+                        if ($configData['hasSurveyContentExportPermission']) {
+                            $curQuestion['questionDropdown']['export'] =
+                                [
+                                    'id' => '',
+                                    'label' => gT("Export"),
+                                    'icon' => 'ri-download-fill',
+                                    'url' => Yii::App()->createUrl("admin/export/sa/question/surveyid/$iSurveyID/gid/$question->gid/qid/$question->qid")
+                                ];
+                        }
+
+                        if ($configData['hasSurveyContentCreatePermission'] && ($configData['oSurvey']->active != 'Y')) {
+                            $curQuestion['questionDropdown']['copy'] =
+                                [
+                                    'id' => 'copy_button',
+                                    'label' => gT("Copy"),
+                                    'icon' => 'ri-file-copy-line icon',
+                                    'url' => Yii::App()->createUrl("questionAdministration/copyQuestion/surveyId/$iSurveyID/questionGroupId/$question->gid/questionId/$question->qid")
+                                ];
+                        }
+
+                        if ($configData['hasSurveyContentReadPermission']) {
+                            if (count($configData['surveyLanguages']) > 1) {
+                                $curQuestion['questionDropdown']['language'] = [];
+                                foreach ($configData['surveyLanguages'] as $languageCode => $languageName) {
+                                    array_push(
+                                        $curQuestion['questionDropdown']['language'],
+                                        [
+                                            'id' => '',
+                                            'label' => gT($languageName),
+                                            'icon' => 'ri-checkbox-fill',
+                                            'url' => Yii::App()->createUrl("admin/expressions/sa/survey_logic_file/sid/{$iSurveyID}/gid/$question->gid/qid/$question->qid/lang/" . $languageCode)
+                                        ]
+                                    );
+                                }
+                            } else {
+                                $curQuestion['questionDropdown']['language'] =
+                                    [
+                                        'id' => '',
+                                        'label' => gT("Check logic"),
+                                        'icon' => 'ri-checkbox-fill',
+                                        'url' => Yii::App()->createUrl("admin/expressions/sa/survey_logic_file/sid/{$iSurveyID}/gid/$question->gid/qid/$question->qid")
+                                    ];
+                            }
+                        }
+
+                        if ($configData['oSurvey']->active !== 'Y') {
+                            $curQuestion['questionDropdown']['delete'] =
+                                [
+                                    'id' => '',
+                                    'label' => gT("Delete question"),
+                                    'icon' => 'ri-delete-bin-fill text-danger',
+                                    'dataTitle' => gt('Delete this question'),
+                                    'dataBtnText' => gt('Delete'),
+                                    'dataOnclick' => '(function() { ' .  convertGETtoPOST(Yii::app()->createUrl("questionAdministration/delete/", ["qid" => $question->qid, "redirectTo" => "groupoverview"])) . '})',
+                                    'dataMessage' => gT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?")
+                                ];
+                        } else {
+                            $curQuestion['questionDropdown']['delete'] =
+                            [
+                                'id' => '',
+                                'label' => gT("Delete question"),
+                                'icon' => 'ri-delete-bin-fill text-danger',
+                                'dataTitle' => gt('Delete this question'),
+                                'disabled' => true,
+                                'title' => gt("You can not delete a question if the survey is active."),
+                            ];
+                        }
+
                         $curGroup['questions'][] = $curQuestion;
                     }
                 }
                 $aGroupViewable[] = $curGroup;
             }
         }
+
 
         return $this->renderPartial(
             '/admin/super/_renderJson',
@@ -1804,7 +1972,8 @@ class SurveyAdministrationController extends LSBaseController
                 $surveyLanguageSetting = SurveyLanguageSetting::model()->findByPk(
                     array(
                         'surveyls_survey_id' => $iSurveyID,
-                        'surveyls_language' => $language)
+                        'surveyls_language' => $language
+                    )
                 )->getAttributes();
                 $aTabTitles[$language] = getLanguageNameFromCode($surveyLanguageSetting['surveyls_language'], false);
 
@@ -1849,17 +2018,27 @@ class SurveyAdministrationController extends LSBaseController
         $aData['subaction'] = $menuEntry->title;
         $aData['display']['menu_bars']['surveysummary'] = $menuEntry->title;
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyID . ")";
-        $aData['surveybar']['buttons']['view'] = true;
-        $aData['surveybar']['savebutton']['form'] = 'globalsetting';
-        $aData['surveybar']['savebutton']['useformid'] = 'true';
-        $aData['surveybar']['saveandclosebutton']['form'] = true;
-        $aData['topBar']['closeUrl'] = $this->createUrl("surveyAdministration/view/", ['surveyid' => $iSurveyID]); // Close button
 
-        if ($subaction === 'resources') {
+
+        if ($subaction === 'resources' || $subaction === 'panelintegration') {
             $aData['topBar']['showSaveButton'] = false;
         } else {
             $aData['topBar']['showSaveButton'] = true;
         }
+        $topbarData = TopbarConfiguration::getSurveyTopbarData($iSurveyID);
+        $topbarData = array_merge($topbarData, $aData['topBar']);
+        $aData['topbar']['middleButtons'] = $this->renderPartial(
+            'partial/topbar/surveyTopbarLeft_view',
+            $topbarData,
+            true
+        );
+        $aData['topbar']['rightButtons'] = $this->renderPartial(
+            'partial/topbar/surveyTopbarRight_view',
+            $topbarData,
+            true
+        );
+
+        $aData['topBar']['closeUrl'] = $this->createUrl("surveyAdministration/view/", ['surveyid' => $iSurveyID]); // Close button
 
         $aData['optionsOnOff'] = array(
             'Y' => gT('On', 'unescaped'),
@@ -1886,7 +2065,11 @@ class SurveyAdministrationController extends LSBaseController
 
         $iSurveyID = sanitize_int($iSurveyID);
         $thereIsPostData = $request->getPost('orgdata') !== null;
-        $userHasPermissionToUpdate = Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update');
+        $userHasPermissionToUpdate = Permission::model()->hasSurveyPermission(
+            $iSurveyID,
+            'surveycontent',
+            'update'
+        );
 
         if (!$userHasPermissionToUpdate) {
             Yii::app()->user->setFlash('error', gT("Access denied"));
@@ -1903,6 +2086,20 @@ class SurveyAdministrationController extends LSBaseController
             }
         }
         $aData = $this->showReorderForm($iSurveyID);
+
+        $aData['topBar']['showSaveButton'] = true;
+        $topbarData = TopbarConfiguration::getSurveyTopbarData($iSurveyID);
+        $topbarData = array_merge($topbarData, $aData['topBar']);
+        $aData['topbar']['middleButtons'] = $this->renderPartial(
+            'partial/topbar/surveyTopbarLeft_view',
+            $topbarData,
+            true
+        );
+        $aData['topbar']['rightButtons'] = $this->renderPartial(
+            'partial/topbar/surveyTopbarRight_view',
+            $topbarData,
+            true
+        );
 
         // Display 'Reorder question/question groups' in Green Bar
         $aData['subaction'] = gT('Reorder questions/question groups');
@@ -2278,7 +2475,7 @@ class SurveyAdministrationController extends LSBaseController
      */
     private function getSurveyIdFromGetRequest()
     {
-         $surveyId = Yii::app()->request->getParam('sid');
+        $surveyId = Yii::app()->request->getParam('sid');
         if ($surveyId === null) {
             $surveyId = Yii::app()->request->getParam('surveyid');
         }
@@ -2286,7 +2483,7 @@ class SurveyAdministrationController extends LSBaseController
             $surveyId = Yii::app()->request->getParam('iSurveyID');
         }
 
-         return (int) $surveyId;
+        return (int) $surveyId;
     }
 
     /**
@@ -2456,8 +2653,9 @@ class SurveyAdministrationController extends LSBaseController
                 }
                 Question::model()->updateAll(
                     array(
-                    'question_order' => $aQuestionOrder[$gid],
-                    'gid' => $gid),
+                        'question_order' => $aQuestionOrder[$gid],
+                        'gid' => $gid
+                    ),
                     'qid=:qid',
                     array(':qid' => $qid)
                 );
@@ -2726,12 +2924,12 @@ class SurveyAdministrationController extends LSBaseController
 
         if ($oSurvey->currentLanguageSettings->surveyls_url != "") {
             $aData['endurl'] = " <a target='_blank' href=\"" .
-                                htmlspecialchars((string) $aSurveyInfo['surveyls_url']) .
-                                "\" title=\"" .
-                                 htmlspecialchars((string) $aSurveyInfo['surveyls_url']) .
-                                 "\">" .
-                                flattenText($oSurvey->currentLanguageSettings->surveyls_url) .
-                                "</a>";
+                htmlspecialchars($aSurveyInfo['surveyls_url']) .
+                "\" title=\"" .
+                htmlspecialchars($aSurveyInfo['surveyls_url']) .
+                "\">" .
+                flattenText($oSurvey->currentLanguageSettings->surveyls_url) .
+                "</a>";
         } else {
             $aData['endurl'] = "-";
         }
@@ -3082,8 +3280,8 @@ class SurveyAdministrationController extends LSBaseController
                 'Action' => gT('Action'),
                 'Parameter' => gT('Parameter'),
                 'Target question' => gT('Target question'),
-                'Survey ID' => gT('Survey id'),
-                'Question ID' => gT('Question id'),
+                'Survey ID' => gT('Survey ID'),
+                'Question ID' => gT('Question ID'),
                 'Subquestion ID' => gT('Subquestion ID'),
                 'Add URL parameter' => gT('Add URL parameter'),
                 'Edit URL parameter' => gT('Edit URL parameter'),
@@ -3104,7 +3302,129 @@ class SurveyAdministrationController extends LSBaseController
         ];
         $aData['questions'] = $aQuestions;
 
+        $model = new SurveyURLParameter('search');
+        $model->sid = $survey->sid;
+        $model->searched_value = Yii::app()->request->getParam('search_query');
+
+        $aData['updateUrl'] = Yii::app()->createUrl('surveyAdministration/rendersidemenulink', ['surveyid' => $survey->sid, 'subaction' => 'panelintegration']);
+
+        if (isset($_GET['pageSize'])) {
+            Yii::app()->user->setState('pageSize', (int) $_GET['pageSize']);
+        }
+
+        $aData['model'] = $model;
+
         App()->getClientScript()->registerPackage('jquery-datatable-bs5');
         return $aData;
+    }
+
+    /**
+     * Method to save URL Params (Panel Integration)
+     *
+     * @throws CException
+     */
+    public function actionSaveUrlParam()
+    {
+        $paramData = Yii::app()->request->getPost('URLParam');
+        if (empty($paramData)) {
+            return $this->renderPartial(
+                '/admin/super/_renderJson',
+                ['data' => ['success' => false, 'message' => gT("Invalid request")]]
+            );
+        }
+
+        $surveyId = sanitize_int(Yii::app()->request->getPost('surveyId'));
+        if (!Permission::model()->hasSurveyPermission($surveyId, 'surveysettings', 'update')) {
+            return $this->renderPartial(
+                '/admin/super/_renderJson',
+                ['data' => ['success' => false, 'message' => gT("Access denied!")]]
+            );
+        }
+
+        // Based on Database::actionUpdateSurveyLocaleSettings()
+        $paramData['parameter'] = trim($paramData['parameter'] ?? '');
+        if (
+            $paramData['parameter'] == ''
+            || !preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $paramData['parameter'])
+            || $paramData['parameter'] == 'sid'
+            || $paramData['parameter'] == 'newtest'
+            || $paramData['parameter'] == 'token'
+            || $paramData['parameter'] == 'lang'
+        ) {
+            return $this->renderPartial(
+                '/admin/super/_renderJson',
+                ['data' => ['success' => false, 'message' => gT("Invalid URL parameter")]]
+            );
+        }
+
+        if ($paramData['targetqid'] == '') {
+            $paramData['targetqid'] = null;
+        }
+        if ($paramData['targetsqid'] == '') {
+            $paramData['targetsqid'] = null;
+        }
+
+        $paramId = !empty($paramData['id']) ? sanitize_int($paramData['id']) : null;
+        if (empty($paramId)) {
+            $URLParam = new SurveyURLParameter();
+            $paramData['sid'] = $surveyId;
+        } else {
+            $URLParam = SurveyURLParameter::model()->findByPk($paramId);
+            if (empty($URLParam || $URLParam->sid != $surveyId)) {
+                return $this->renderPartial(
+                    '/admin/super/_renderJson',
+                    ['data' => ['success' => false, 'message' => gT("URL parameter not found")]]
+                );
+            }
+            unset($paramData['id']);
+        }
+
+        $URLParam->setAttributes($paramData);
+        if ($URLParam->save()) {
+            return $this->renderPartial(
+                '/admin/super/_renderJson',
+                ['data' => ['success' => true, 'message' => gT("URL parameter saved")]]
+            );
+        } else {
+            return $this->renderPartial(
+                '/admin/super/_renderJson',
+                ['data' => ['success' => false, 'message' => gT("Could not save URL parameter"), 'errors' => $URLParam->getErrors()]]
+            );
+        }
+    }
+
+    /**
+     * Method to delete URL Params (Panel Integration)
+     *
+     * @return void
+     * @throws CDbException
+     * @throws CHttpException
+     */
+    public function actionDeleteUrlParam()
+    {
+        $surveyId = sanitize_int(Yii::app()->request->getPost('surveyId'));
+        $redirectUrl = ['surveyAdministration/rendersidemenulink/', 'surveyid' => $surveyId, 'subaction' => 'panelintegration'];
+        $paramId = Yii::app()->request->getPost('urlParamId');
+        if (empty($paramId)) {
+            throw new CHttpException(400, gt('Invalid request'));
+        }
+
+        if (!Permission::model()->hasSurveyPermission($surveyId, 'surveysettings', 'update')) {
+            throw new CHttpException(403, gT("Access denied!"));
+        }
+
+        $paramId = sanitize_int($paramId);
+        $URLParam = SurveyURLParameter::model()->findByPk($paramId);
+        if (empty($URLParam)) {
+            throw new CHttpException(400, gT("URL parameter not found"));
+        }
+
+        // Delete the record
+        if ($URLParam->delete()) {
+            Yii::app()->user->setFlash('success', gT("URL parameter deleted"));
+        } else {
+            Yii::app()->user->setFlash('error', gT("Could not delete URL parameter"));
+        }
+        $this->redirect($redirectUrl);
     }
 }

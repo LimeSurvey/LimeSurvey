@@ -40,7 +40,7 @@ $active = 1; ?>
             ); ?>
             <input type="hidden" name="questionGroup[sid]" id="questionGroup[sid]" value="<?= $surveyid ?>">
             <!-- tab content -->
-            <div class="tab-content">
+            <div class="tab-content bg-white ps-2 pe-2 pb-1">
                 <?php $active = 1;
                 foreach ($grplangs as $grouplang): ?>
                     <!-- Lang Content -->
@@ -85,9 +85,9 @@ $active = 1; ?>
                                 <div class="mb-3">
                                     <label class="form-label " for='grelevance'><?php eT("Condition:"); ?></label>
                                     <div class="input-group">
-                                        <div class="input-group-addon">{</div>
+                                        <div class="input-group-text">{</div>
                                         <textarea cols='1' class="form-control" rows='1' id='grelevance' name='questionGroup[grelevance]'></textarea>
-                                        <div class="input-group-addon">}</div>
+                                        <div class="input-group-text">}</div>
                                     </div>
                                 </div>
                             <?php } ?>

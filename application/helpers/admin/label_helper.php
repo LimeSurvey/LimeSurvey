@@ -144,8 +144,7 @@ function modlabelsetanswers($lid)
             $assessmentvalue = (int) ($oLabelData['assessmentvalue']);
             $sortorder = $index;
 
-            $oLabel = Label::model()->findByPk($lid);
-            $oLabel = $oLabel == null ? (new Label()) : $oLabel;
+            $oLabel = new Label();
             $oLabel->lid = $lid;
             $oLabel->code = $actualcode;
             $oLabel->sortorder = $sortorder;

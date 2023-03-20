@@ -58,16 +58,10 @@ class HomepageSettingsController extends LSBaseController
 
         $dataProviderBox = new CActiveDataProvider('Box');
 
-        $this->aData = [
-            'fullpagebar' => [
-                'boxbuttons' => true,
-                'returnbutton' => [
-                    'url' => 'admin/index',
-                    'text' => gT('Back'),
-                ],
-            ],
-            'pageTitle' => gT('Dashboard'),
-        ];
+        $aData['topbar']['title'] = gT('Dashboard');
+        $aData['topbar']['rightButtons'] = $this->renderPartial('partial/topbarBtns/rightSideButtons', [], true);
+        $aData['topbar']['middleButtons'] = $this->renderPartial('partial/topbarBtns/leftSideButtons', [], true);
+        $this->aData = $aData;
 
         $this->render('index', [
             'dataProviderBox' => $dataProviderBox->model,
@@ -112,21 +106,22 @@ class HomepageSettingsController extends LSBaseController
             }
         }
 
-        $this->aData = [
-            'pageTitle' => gT('New box'),
-            'fullpagebar' => [
-                'savebutton' => [
-                    'form' => 'boxes-form',
-                ],
-                'saveandclosebutton' => [
-                    'form' => 'boxes-form'
-                ],
-                'white_closebutton' => [
-                    'url' => Yii::app()->createUrl('homepageSettings/index'),
-                ],
+        $aData['topbar']['title'] = gT('New box');
+        $aData['topbar']['rightButtons'] = $this->renderPartial(
+            '/layouts/partial_topbar/right_close_saveclose_save',
+            [
+                'isCloseBtn' => true,
+                'isSaveAndCloseBtn' => true,
+                'isSaveBtn' => true,
+                'backUrl' => $this->createUrl("/homepageSettings/index"),
+                'formIdSaveClose' => 'boxes-form',
+                'formIdSave' => 'boxes-form'
             ],
-            'model' => $model,
-        ];
+            true
+        );
+
+        $aData['model'] = $model;
+        $this->aData = $aData;
 
         $this->render(
             'create',
@@ -169,22 +164,22 @@ class HomepageSettingsController extends LSBaseController
                 Yii::app()->user->setFlash('error', gT('Could not update box'));
             }
         }
-        $this->aData = [
-            'pageTitle' => gT('Update box ') . $model->title,
-            'fullpagebar' => [
-                'savebutton' => [
-                    'form' => 'boxes-form',
-                ],
-                'saveandclosebutton' => [
-                    'form' => 'boxes-form'
-                ],
-                'white_closebutton' => [
-                    'url' => Yii::app()->createUrl('homepageSettings/index'),
-                ],
-             ],
-            'model' => $model,
-        ];
+        $aData['topbar']['title'] = gT('Update box');
+        $aData['topbar']['rightButtons'] = $this->renderPartial(
+            '/layouts/partial_topbar/right_close_saveclose_save',
+            [
+                'isCloseBtn' => true,
+                'isSaveAndCloseBtn' => true,
+                'isSaveBtn' => true,
+                'backUrl' => $this->createUrl("/homepageSettings/index"),
+                'formIdSaveClose' => 'boxes-form',
+                'formIdSave' => 'boxes-form'
+            ],
+            true
+        );
 
+        $aData['model'] = $model;
+        $this->aData = $aData;
         $this->render('update', $this->aData);
     }
 

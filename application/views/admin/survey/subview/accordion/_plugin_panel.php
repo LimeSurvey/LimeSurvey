@@ -27,7 +27,7 @@ if (!empty($plugin['settings'])): ?>
     <div class="card card-primary">
         <div class="card-header " role="tab" id="heading-plugin<?php echo $id; ?>">
             <a class="btn btn-outline-secondary btn-xs">
-                <span class="fa fa-chevron-left"></span>
+                <span class="ri-arrow-left-s-line"></span>
                 <span class="visually-hidden"><?php eT("Expand/Collapse"); ?></span>
             </a>
             <a id="button-plugin<?php echo $id; ?>" class="collapsed " data-bs-parent="#accordion" role="button" data-bs-toggle="collapse" href="#plugin<?php echo $id; ?>" aria-expanded="false" aria-controls="plugin<?php echo $id; ?>">

@@ -12,7 +12,7 @@
             </div>
             <div class="modal-footer modal-footer-buttons">
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
-                    <span class='fa fa-ban'></span>
+                    <span class='ri-forbid-2-line'></span>
                     &nbsp;
                     <?php eT("Close"); ?>
                 </button>

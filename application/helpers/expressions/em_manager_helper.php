@@ -6087,7 +6087,6 @@ class LimeExpressionManager
         $mandatoryTip = '';
         // bypass validation if soft mandatory button was pressed
         if (($qrel && !$qhidden && ($qInfo['mandatory'] == 'Y' || $qInfo['mandatory'] == 'S')) && empty(App()->request->getPost('mandSoft'))) {
-            //$mandatoryTip = "<p class='errormandatory alert alert-danger' role='alert'><span class='fa fa-exclamation-sign'></span>&nbsp" . $LEM->gT('This question is mandatory') . "</p>";
             $mandatoryTip = App()->twigRenderer->renderPartial(
                 '/survey/questions/question_help/mandatory_tip.twig',
                 [
@@ -7864,7 +7863,6 @@ var job='{TOKEN:ATTRIBUTE_1}';
             }
         }
 
-        print "<div class='container-fluid'>";
         print "<h3>Note, if the <i>Vars Used</i> column is red, then at least one error was found in the <b>Source</b>. In such cases, the <i>Vars Used</i> list may be missing names of variables from sub-expressions containing errors</h3>";
         print '<table class="table" border="1"><tr><th>Source</th><th>Pretty Print</th><th>Result</th><th>Vars Used</th></tr>';
         $iTestCount = count($alltests);
@@ -7892,7 +7890,6 @@ var job='{TOKEN:ATTRIBUTE_1}';
             print "</tr>\n";
         }
         print '</table>';
-        print '</div>';
         LimeExpressionManager::FinishProcessingGroup();
         LimeExpressionManager::FinishProcessingPage();
     }
@@ -8027,7 +8024,6 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         print LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
 
         // Print Table of questions
-        print "<div class='container-fluid'>";
         print "<div class='h3'>This is a test of dynamic relevance.</div>";
         print "Enter your name and age, and try all the permutations of answers to whether you have or want children.<br />\n";
         print "Note how the text and sum of ages changes dynamically; that prior answers are remembered; and that irrelevant values are not included in the sum of ages.<br />";
@@ -8056,7 +8052,6 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             print "</div>\n";
         }
         print "</table>";
-        print "</div>";
         LimeExpressionManager::SetDirtyFlag();  // so subsequent tests don't try to access these variables
     }
 
@@ -8998,7 +8993,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         Yii::app()->setLanguage(Yii::app()->session["adminlang"]);
         $surveyname = viewHelper::stripTagsEM(templatereplace('{SURVEYNAME}', ['SURVEYNAME' => $aSurveyInfo['surveyls_title']]));
 
-        $out = '<div id="showlogicfilediv" class="table-responsive"><h3>' . $LEM->gT('Logic File for Survey # ') . '[' . $LEM->sid . "]: $surveyname</h3>\n";
+        $out = '<div id="showlogicfilediv" class="table-responsive"><div class="pagetitle h3">' . $LEM->gT('Logic File for Survey # ') . '[' . $LEM->sid . "]: $surveyname</div>\n";
         $out .= "<table id='logicfiletable' class='table table-bordered'>";
 
         if (is_null($gid) && is_null($qid)) {
@@ -9088,7 +9083,15 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             <th class=\"column-3\">" . $LEM->gT('Text [Help] (Tip)') . "</th>
             </tr>\n";
 
-        $_gseq = -1;
+        // Picking up questions in the survey.
+        // To be used later while composing the logic file, for auxiliary information.
+        $criteria = new CDbCriteria();
+        $criteria->addCondition("sid = :sid");
+        $criteria->params[':sid'] = $sid;
+        $criteria->index = 'qid';
+        $questions = Question::model()->with('question_theme')->findAll($criteria);
+        
+        $_gseq = -1;        
         $baseQuestionThemes = QuestionTheme::findQuestionMetaDataForAllTypes();
         foreach ($LEM->currentQset as $q) {
             $gseq = $q['info']['gseq'];
@@ -9142,6 +9145,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             $mandatory = (($q['info']['mandatory'] == 'Y' || $q['info']['mandatory'] == 'S') ? "<span class='mandatory'>*</span>" : '');
             $type = $q['info']['type'];
             $typedesc = $baseQuestionThemes[$type]->title;
+            $questionTheme = $questions[$q['info']['qid']]->question_theme;
+            $themeDesc = !empty($questionTheme->extends) ? "({$questionTheme->title})" : "";
             $sgqas = explode('|', (string) $q['sgqa']);
             $qReplacement = array_merge(
                 $standardsReplacementFields,
@@ -9488,7 +9493,15 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     . "onclick='window.open(\"$editlink\",\"_blank\")'>"
                     . $rootVarName . "</span>";
             }
-            $questionRow .= "</b><br />[<a target='_blank' href='$editlink'>QID $qid</a>]<br/>$typedesc [$type] $errText $sWarningsText</td>"
+            $questionRow .= "</b>"
+                . "<br/>"
+                . "[<a target='_blank' href='$editlink'>" . sprintf(gT("Question ID %s"), $qid) . "</a>]"
+                . "<br/>"
+                . "<span class='question-type'>$typedesc [$type]</span> "
+                . "<span class='question-theme'>$themeDesc</span> "
+                . $errText . " "
+                . $sWarningsText
+                . "</td>"
                 . "<td>" . $relevance . $prettyValidEqn . $default . "</td>"
                 . "<td>" . $qdetails . "</td>"
                 . "</tr>\n";
@@ -9510,11 +9523,19 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         }
         // Here it's added at top
         if (count($aQuestionWarnings) > 0) {
-            $out = "<p class='alert alert-warning'>" . $LEM->ngT("{n} question contains warnings that need to be verified.|{n} questions contain warnings that need to be verified.", count($aQuestionWarnings)) . "</p>\n" . $out;
+            $out = App()->getController()->widget('ext.AlertWidget.AlertWidget', [
+                    'tag' => 'p',
+                    'text' => $LEM->ngT("{n} question contains warnings that need to be verified.|{n} questions contain warnings that need to be verified.", count($aQuestionWarnings)),
+                    'type' => 'warning',
+                ], true) . $out;
         }
         if ($haveErrors) {
             if (count($allQuestionsErrors) > 0) {
-                $out = "<p class='alert alert-danger'>" . $LEM->ngT("{n} question contains errors that need to be corrected.|{n} questions contain errors that need to be corrected.", count($allQuestionsErrors)) . "</p>\n" . $out;
+                $out = App()->getController()->widget('ext.AlertWidget.AlertWidget', [
+                        'tag' => 'p',
+                        'text' => $LEM->ngT("{n} question contains errors that need to be corrected.|{n} questions contain errors that need to be corrected.", count($allQuestionsErrors)),
+                        'type' => 'danger',
+                    ], true) . $out;
             } else {
                 switch ($surveyMode) {
                     case 'survey':
@@ -9530,7 +9551,11 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                         $message = $LEM->gT('There are expressions with syntax errors.');// How can happen;
                         break;
                 }
-                $out = "<p class='alert alert-danger'>{$message}</p>\n" . $out;
+                $out = App()->getController()->widget('ext.AlertWidget.AlertWidget', [
+                        'tag' => 'p',
+                        'text' => $message,
+                        'type' => 'danger',
+                    ], true) . $out;
             }
         } else {
             switch ($surveyMode) {
@@ -9547,7 +9572,12 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     $message = '';
                     break;
             }
-            $out = "<p class='LEMheading alert alert-success'>$message</p>\n" . $out;
+            $out = App()->getController()->widget('ext.AlertWidget.AlertWidget', [
+                'tag' => 'p',
+                'text' => $message,
+                'type' => 'success',
+                'htmlOptions' => ['class' => 'LEMheading'],
+            ], true) . $out;
         }
 
         $out .= "</div>";

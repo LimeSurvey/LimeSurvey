@@ -33,7 +33,7 @@ $formatSelectOptions = array(
     'A' => gT('All in one', 'unescaped')
 );
 if ($bShowInherited) {
-    $formatSelectOptions['I'] = gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->format . ']';
+    $formatSelectOptions['I'] = $oSurveyOptions->format . " ᴵ";
 }
 ?>
 <?php if ($action == 'editsurveysettings'): ?>
@@ -153,7 +153,7 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
                 <div class="col-12 col-lg-8 content-right">
                     <label class=" form-label" for='admin'><?php eT("Administrator:"); ?></label>
                     <input class="form-control inherit-edit <?php echo($bShowInherited && $admin === 'inherit' ? 'd-none' : 'd-block'); ?>" type='text' size='50' id='admin' name='admin'
-                           value="<?php echo htmlspecialchars((string) $admin); ?>" data-inherit-value="inherit" data-saved-value="<?php echo $admin; ?>"/>
+                           value="<?php echo htmlspecialchars((string) $admin); ?>" data-inherit-value="inherit" data-saved-value="<?php echo htmlspecialchars((string) $admin); ?>"/>
                     <input class="form-control inherit-readonly <?php echo($bShowInherited && $admin === 'inherit' ? 'd-block' : 'd-none'); ?>" type='text' size='50'
                            value="<?php echo htmlspecialchars((string) $oSurveyOptions->admin); ?>" readonly/>
                 </div>
@@ -179,7 +179,7 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
                 <div class="col-12 col-lg-8 content-right">
                     <label class=" form-label" for='adminemail'><?php eT("Administrator email address:"); ?></label>
                     <input class="form-control inherit-edit <?php echo($bShowInherited && $adminemail === 'inherit' ? 'd-none' : 'd-block'); ?>" type='<?php echo ($bShowInherited) ? 'text' : 'email'; ?>'
-                           size='50' id='adminemail' name='adminemail' value="<?php echo htmlspecialchars((string) $adminemail); ?>" data-inherit-value="inherit" data-saved-value="<?php echo $adminemail; ?>"/>
+                           size='50' id='adminemail' name='adminemail' value="<?php echo htmlspecialchars((string) $adminemail); ?>" data-inherit-value="inherit" data-saved-value="<?php echo htmlspecialchars((string) $adminemail); ?>"/>
                     <input class="form-control inherit-readonly <?php echo($bShowInherited && $adminemail === 'inherit' ? 'd-block' : 'd-none'); ?>" type='text' size='50'
                            value="<?php echo htmlspecialchars((string) $oSurveyOptions->adminemail); ?>" readonly/>
                 </div>
@@ -206,7 +206,7 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
                     <label class=" form-label" for='bounce_email'><?php eT("Bounce email address:"); ?></label>
                     <input class="form-control inherit-edit <?php echo($bShowInherited && $bounce_email === 'inherit' ? 'd-none' : 'd-block'); ?>"
                            type='<?php echo ($bShowInherited) ? 'text' : 'email'; ?>' size='50' id='bounce_email' name='bounce_email' value="<?php echo htmlspecialchars((string) $bounce_email); ?>"
-                           data-inherit-value="inherit" data-saved-value="<?php echo $bounce_email; ?>"/>
+                           data-inherit-value="inherit" data-saved-value="<?php echo htmlspecialchars((string) $bounce_email); ?>"/>
                     <input class="form-control inherit-readonly <?php echo($bShowInherited && $bounce_email === 'inherit' ? 'd-block' : 'd-none'); ?>" type='text' size='50'
                            value="<?php echo htmlspecialchars((string) $oSurveyOptions->bounce_email); ?>" readonly/>
                 </div>
@@ -316,7 +316,7 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
         </div>
         <!-- Template -->
 
-        <div class="mb-3">
+        <div class="mb-3" >
             <label class=" form-label" for='template'><?php eT("Theme:"); ?></label>
             <div class="">
                 <select id='template' class="form-select" name='template' data-updateurl='<?php echo App()->createUrl('themeOptions/getPreviewTag') ?>'
@@ -342,7 +342,7 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
                     <?php } ?>
                 </select>
             </div>
-            <div class="col-md-6 offset-lg-3 template-img" style="margin-top: 13px;" id="preview-image-container">
+            <div class="col-md-6 mt-4 w-100" id="preview-image-container">
                 <?php echo TemplateConfiguration::getInstanceFromTemplateName(($oSurvey->template == 'inherit') ? $oSurveyOptions->template : $oSurvey->template)->getPreview() ?>
             </div>
         </div>
@@ -354,3 +354,5 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
 
     </div>
 </div>
+<?php $this->renderPartial('/surveyAdministration/_inherit_sub_footer'); ?>
+

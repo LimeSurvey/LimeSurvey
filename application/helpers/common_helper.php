@@ -2354,7 +2354,7 @@ function languageDropdown($surveyid, $selected)
     $slangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
     $baselang = Survey::model()->findByPk($surveyid)->language;
     array_unshift($slangs, $baselang);
-    $html = "<select class='listboxquestions' name='langselect' onchange=\"window.open(this.options[this.selectedIndex].value, '_top')\">\n";
+    $html = "<select class='listboxquestions form-select' name='langselect' onchange=\"window.open(this.options[this.selectedIndex].value, '_top')\">\n";
     foreach ($slangs as $lang) {
         $link = Yii::app()->createUrl("admin/dataentry/sa/view/surveyid/". $surveyid . "/lang/" . $lang);
         if ($lang == $selected) {

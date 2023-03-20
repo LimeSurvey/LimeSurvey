@@ -17,16 +17,20 @@
     </div>
 
     <?php if ((int)GetGlobalSetting('DBVersion')<132) { ?>
-            <div class="alert alert-danger" role="alert">
-                <strong><?php echo eT("Error:"); ?></strong> <?php eT("You will not be able to update because your previous LimeSurvey version is too old.");?>
-                <br>
-                <?php eT("Please first update to Version 2.6.4 or any later 2.x version before you update to Version 3.x."); ?>
-            </div>
-    <?php } 
+        <?php
+        $message = '<strong>' . gT("Error:") . '</strong>' . gT("You will not be able to update because your previous LimeSurvey version is too old.") .
+                '<br>' .
+                 gT("Please first update to Version 2.6.4 or any later 2.x version before you update to Version 3.x.");
+        App()->getController()->widget('ext.AlertWidget.AlertWidget', [
+            'text' => $message,
+            'type' => 'danger',
+        ])
+        ?>
+    <?php }
     else
     { ?>
         <p>
-            <a class="btn btn-lg btn-success" href="<?php echo Yii::app()->getController()->createUrl("admin/databaseupdate/sa/db/continue/yes"); ?>" role="button">
+            <a class="btn btn-lg btn-primary" href="<?php echo Yii::app()->getController()->createUrl("admin/databaseupdate/sa/db/continue/yes"); ?>" role="button">
                 <?php eT('Start database upgrade'); ?>
             </a>
         </p>

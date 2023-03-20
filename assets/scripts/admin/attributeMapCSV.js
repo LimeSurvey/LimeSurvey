@@ -206,26 +206,6 @@ $(document).on('ready pjax:scriptcomplete', function() {
             }
         });
 
-        var dialog_buttons={};
-
-        dialog_buttons[okBtn]=function(){
-            $(location).attr('href',displayParticipants);
-        };
-
-        $("#processing").dialog({
-            height: 550,
-            width: 700,
-            modal: true,
-            buttons: dialog_buttons,
-            open: function(event, ui) {
-                $('#processing').parent().find("button").each(function() {
-                    if ($(this).text() == okBtn) {
-                        $(this).attr('disabled', true);
-                    }
-                });
-            }
-        });
-
         $("#processing").load(copyUrl, {
             characterset: characterset,
             separatorused : separator,
@@ -235,11 +215,9 @@ $(document).on('ready pjax:scriptcomplete', function() {
             overwrite : attoverwrite,
             filterbea : filterblankemails
         }, function(msg){
-            $('#processing').parent().find("button").each(function() {
-                if ($(this).text() == okBtn) {
-                    $(this).attr('disabled', false);
-                }
-            });
+            var options = {};
+            var uploadSummaryModal = new bootstrap.Modal(document.getElementById('attribute-map-csv-modal'), options);
+            uploadSummaryModal.show();
         });
     });
 });

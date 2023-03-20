@@ -209,17 +209,16 @@ class Labels extends SurveyCommonAction
             $aViewUrls['editlabel_view'][] = $aData;
         }
 
-        // Label Bar
-        $aData['labelbar']['buttons']['delete'] = ($sa != "newlabelset") ? true : false;
-        // Save button
-        $aData['labelbar']['buttons']['edition'] = true;
-        // Return button
-        $aData['labelbar']['buttons']['return'] = true;
-        $aData['labelbar']['savebutton']['form'] = 'labelsetform';
-        $aData['labelbar']['savebutton']['text'] = gT("Save");
-
-        // Green SurveyManagerBar
-        $aData['pageTitle'] = $pageTitle;
+        if ($sa == "newlabelset" || $sa == "editlabelset") {
+            $aData['topbar']['title'] = $pageTitle;
+            $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+                '/admin/labels/partials/topbarBtns_newimport/rightSideButtons',
+                [
+                    'hasPermissionExport' => Permission::model()->hasGlobalPermission('labelsets', 'export')
+                ],
+                true
+            );
+        }
 
         $this->renderWrappedTemplate('labels', $aViewUrls, $aData);
     }
@@ -285,7 +284,8 @@ class Labels extends SurveyCommonAction
                 'lid' => $lid,
                 'maxsortorder' => $maxSortOrder,
                 'action' => $action,
-                'model' => $model
+                'model' => $model,
+                'addRowUrl' => \Yii::app()->createUrl("/admin/labels/sa/getLabelRowForAllLanguages"),
             );
         } else {
             //show listing
@@ -295,38 +295,44 @@ class Labels extends SurveyCommonAction
 
         $aData['model'] = $model;
 
-        if ($lid == 0) {
-            $aData['labelbar']['buttons']['view'] = true;
-        } else {
-            $aData['labelbar']['buttons']['delete'] = true;
-
-            // Save Button
-            $aData['labelbar']['savebutton']['form'] = 'mainform';
-            $aData['labelbar']['savebutton']['text'] = gT("Save");
-
-            // Save and Close Button
-            $aData['labelbar']['saveandclosebutton']['form'] = 'mainform';
-            $aData['labelbar']['saveandclosebutton']['text'] = gT('Save & close');
-
-            // White Close Button
-            $aData['labelbar']['white_closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl('admin/labels/sa/view'));
-            ;
-            $aData['labelbar']['white_closebutton']['text'] = gT('Close');
-
-            $aData['labelbar']['buttons']['edition'] = true;
-
-            $aData['labelbar']['buttons']['edit'] = true;
-            if (!Permission::model()->hasGlobalPermission('labelsets', 'update')) {
-                unset($aData['labelbar']['buttons']['edition']);
-            }
-        }
-
         if (isset($_GET['pageSize'])) {
             Yii::app()->user->setState('pageSize', (int) $_GET['pageSize']);
         }
 
-        // Green SurveyManagerBar Page Title
-        $aData['pageTitle'] = gT('Label sets list');
+        if ($lid == 0) {
+            $aData['topbar']['title'] = gT('Label sets list');
+            $aData['topbar']['middleButtons'] = Yii::app()->getController()->renderPartial(
+                '/admin/labels/partials/topbarBtns/leftSideButtons',
+                [
+                    'hasPermissionCreate' => Permission::model()->hasGlobalPermission('labelsets', 'create')
+                        || Permission::model()->hasGlobalPermission('labelsets', 'import')
+                ],
+                true
+            );
+            $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+                '/admin/labels/partials/topbarBtns/rightSideButtons',
+                [
+                    'hasPermissionExport' => Permission::model()->hasGlobalPermission('labelsets', 'export')
+                ],
+                true
+            );
+        } else {
+            $aData['topbar']['title'] = gT('Label sets list');
+            $aData['topbar']['middleButtons'] = Yii::app()->getController()->renderPartial(
+                '/admin/labels/partials/topbarBtns_singlelabelset/leftSideButtons',
+                [
+                    'hasUpdatePermission' => Permission::model()->hasGlobalPermission('labelsets', 'update'),
+                    'hasDeletePermission' => Permission::model()->hasGlobalPermission('labelsets', 'delete'),
+                    'lid' => $lid
+                ],
+                true
+            );
+            $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+                '/admin/labels/partials/topbarBtns_singlelabelset/rightSideButtons',
+                [],
+                true
+            );
+        }
 
         $this->renderWrappedTemplate('labels', $aViewUrls, $aData);
     }
@@ -432,18 +438,12 @@ class Labels extends SurveyCommonAction
         if (Permission::model()->hasGlobalPermission('labelsets', 'export')) {
             $aData = [];
 
-            // Save Button
-            $aData['labelbar']['buttons']['edition'] = true;
-            $aData['labelbar']['savebutton']['form'] = 'exportlabelset';
-
-            $aData['labelbar']['savebutton']['text'] = gT("Export");
-
-            // White Close Button
-            $aData['labelbar']['white_closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl('admin/labels/sa/view'));
-            $aData['labelbar']['white_closebutton']['text'] = gT('Close');
-
-            // Green Page Title
-            $aData['pageTitle'] = gT('Export multiple label sets');
+            $aData['topbar']['title'] = gt('Export multiple label sets');
+            $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+                '/admin/labels/partials/topbarBtns_export/rightSideButtons',
+                [],
+                true
+            );
 
             $this->renderWrappedTemplate('labels', 'exportmulti_view', $aData);
         }
@@ -729,12 +729,70 @@ class Labels extends SurveyCommonAction
                 $aData['lid'] = 0;
             }
             $aViewUrls = (array) $aViewUrls;
-
-            array_unshift($aViewUrls, 'labelsetsbar_view');
         }
 
         $aData['display']['menu_bars'] = false;
 
         parent::renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
+    }
+
+    /**
+     * Outputs json with the html for a new label row, for each language.
+     * Eg: {"en":"<tr>...</tr>", "es":"<tr>...</tr>"}
+     * Called by ajax from the label set editor.
+     * @param int $lid
+     * @param string $newId
+     * @param string $code
+     * @param int $assessmentValue
+     * @param string $title
+     */
+    public function getLabelRowForAllLanguages($lid, $newId, $code, $assessmentValue = 0, $title = '')
+    {
+        if (!Permission::model()->hasGlobalPermission('labelsets', 'read')) {
+            throw new CHttpException(403, gT("No permission"));
+        }
+        $labelSet = LabelSet::model()->findByPk($lid);
+        if (empty($labelSet)) {
+            throw new CHttpException(404, gT("Invalid label set."));
+        }
+        $languages = explode(" ", $labelSet->languages);
+        $rowsHtml = [];
+        $first = true;
+        foreach ($languages as $language) {
+            $rowsHtml[$language] = $this->getLabelRow($language, $first, $newId, $code, $assessmentValue, $title);
+            $first = false;
+        }
+        header('Content-Type: application/json');
+        echo json_encode($rowsHtml);
+    }
+
+    /**
+     * Returns the html for a label row.
+     * Used when user clicks "Add" in label set editor.
+     * @param string $language
+     * @param bool $first   Indicates whether the row belongs to the first language or not.
+     * @param string $newId
+     * @param string $code
+     * @param int $assessmentValue
+     * @param string $title
+     * @return string   The html of the row
+     */
+    private function getLabelRow($language, $first, $newId, $code, $assessmentValue, $title)
+    {
+        $view = 'labelRow.twig';
+        $aData = array(
+            'language' => $language,
+            'first' => $first,
+            'rowId' => $newId,
+            'code' => $code,
+            'assessmentValue' => $assessmentValue,
+            'title' => $title,
+            'hasLabelSetUpdatePermission' => Permission::model()->hasGlobalPermission('labelsets', 'update')
+        );
+
+        $html = '<!-- Inserted Row -->';
+        $html .= App()->twigRenderer->renderPartial('/admin/labels/' . $view, $aData);
+        $html .= '<!-- end of Inserted Row -->';
+        return $html;
     }
 }

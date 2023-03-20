@@ -2689,7 +2689,7 @@ class userstatistics_helper
                 break;
 
             case 'html':
-                $sOutputHTML .= "<br />\n<div class='card card-body bg-light mb-5'><table class='table table-striped statisticssummary' >\n"
+                $sOutputHTML .= "<br />\n<div class='card card-body bg-light mb-5'><table class='table table-striped ls-statisticssummary' >\n"
                     . "\t<thead><tr><th class='text-center' colspan='2'>" . gT("Results") . "</th></tr></thead>\n"
                     . "\t<tr><th style='text-align:left'>" . gT("Number of records in this query:") . '</th>'
                     . "<td style='text-align:right'>$results</td></tr>\n"

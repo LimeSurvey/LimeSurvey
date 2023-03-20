@@ -3,6 +3,6 @@
 ?>
 
 <div class="modal-header">
-    <h5 class="modal-title"><?php echo $modalTitle; ?></h5>
+    <h1 class="modal-title"><?php echo $modalTitle; ?></h1>
     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 </div>

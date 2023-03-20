@@ -554,7 +554,7 @@ class Themes extends SurveyCommonAction
         $aViewUrls = $this->initialise($templatename, $screenname, $editfile, true, true);
 
         App()->getClientScript()->reset();
-        App()->getClientScript()->registerPackage('bootstrap-admin');
+        App()->getClientScript()->registerPackage('bootstrap-themeeditor');
 
         $undo    = gT("Undo (ctrl + Z)", "js");
         $redo    = gT("Redo (ctrl + Y)", "js");
@@ -578,9 +578,27 @@ JAVASCRIPT
         App()->getClientScript()->registerPackage('jsuri');
         AdminTheme::getInstance()->registerStylesAndScripts();
 
-        // Green SurveyManagerBar Page Title
+        // page title
         $pageTitle = gT('Theme editor:') . ' ' . $templatename;
-        $aData['pageTitle'] = $pageTitle;
+
+        //$aData['pageTitle'] = $pageTitle;
+        $aData['topbar']['title'] = $pageTitle;
+
+        $aData['topbar']['middleButtons'] = Yii::app()->getController()->renderPartial(
+            '/admin/themes/partial/topbarBtns/leftSideButtons',
+            [
+                'isExport' => (Permission::model()->hasGlobalPermission('templates', 'export') && class_exists('ZipArchive')),
+                'templatename' => $templatename,
+                'isExtend' => true,
+            ],
+            true
+        );
+
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/admin/themes/partial/topbarBtns/rightSideButtons',
+            [],
+            true
+        );
 
         // White Bar
         $aData['templateEditorBar']['buttons']['returnbutton'] = true;

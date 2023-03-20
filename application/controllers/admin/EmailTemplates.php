@@ -88,10 +88,13 @@ class EmailTemplates extends SurveyCommonAction
         $aData['ishtml'] = $ishtml;
         $aData['grplangs'] = $grplangs;
 
-        $aData['topBar']['name'] = 'baseTopbar_view';
-
-        // Save Button
-        $aData['topBar']['showSaveButton'] = Permission::model()->hasSurveyPermission($iSurveyId, 'surveylocale', 'update');
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
+            [
+                'showSaveButton' => true
+            ],
+            true
+        );
 
         App()->getClientScript()->registerPackage('expressionscript');
 

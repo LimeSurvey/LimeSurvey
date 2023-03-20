@@ -515,25 +515,29 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         $event->set('updateDisable', array());
         App()->getPluginManager()->dispatchEvent($event);
         /* Manage what can be updated */
+        /* For default (if is empty) use default from PHPMailer (avoiding set to null) */
         $updateDisable = $event->get('updateDisable');
         if (empty($updateDisable['subject'])) {
-            $this->Subject = $event->get('subject');
+            $this->Subject = $event->get('subject', '');
         }
         if (empty($updateDisable['body'])) {
-            $this->Body = $event->get('body');
+            $this->Body = $event->get('body', '');
         }
         if (empty($updateDisable['from'])) {
-            $this->setFrom($event->get('from'));
+            $this->setFrom($event->get('from', ''));
         }
         if (empty($updateDisable['to'])) {
             /* Warning : pre 4 version send array of string, here we send array of array (email+name) */
-            $this->to = $event->get('to');
+            /* Set default as array to avoid the to to null and broke on PHP8 */
+            $this->to = $event->get('to', array());
         }
         if (empty($updateDisable['bounce'])) {
-            $this->Sender = $event->get('bounce');
+            $this->Sender = $event->get('bounce', '');
         }
         $this->eventMessage = $event->get('message');
-        if ($event->get('send', true) == false) {
+        /* Need loose compare : if null, return true (default) */
+        /* Plugin can send anything for false : don't break API by move to strict compare */
+        if (!$event->get('send', true)) {
             $this->ErrorInfo = $event->get('error');
             return $event->get('error') == null;
         }
@@ -882,7 +886,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         if (!array_key_exists($this->emailType, $this->_aAttachementByType)) {
             return;
         }
-        
+
         $attachementType = $this->_aAttachementByType[$this->emailType];
         $oSurveyLanguageSetting = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id' => $this->surveyId, 'surveyls_language' => $this->mailLanguage));
         if (!empty($oSurveyLanguageSetting->attachments)) {

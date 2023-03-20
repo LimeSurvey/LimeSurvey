@@ -22,12 +22,11 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
 ?>
 <!-- Publication panel -->
 <div id='publication-panel'>
-    <div class="row">
     <?php if ($bShowAllOptions === true){ ?>
-        <div class="col-12 col-lg-6">
-
+    <div class="row">
+            <h1><?php eT("Publication date"); ?></h1>
             <!-- Start date/time -->
-            <div class="mb-3">
+            <div class="col-lg-3 mb-3">
                 <label class=" form-label" for='startdate'><?php  eT("Start date/time:"); ?></label>
                 <div class=" has-feedback">
                     <?php Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', array(
@@ -46,7 +45,7 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
             </div>
 
             <!-- Expiry date/time -->
-            <div class="mb-3">
+            <div class="col-lg-3 mb-3">
                 <label class=" form-label" for='expires'><?php  eT("Expiry date/time:"); ?></label>
                 <div class=" has-feedback">
                     <?php Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', array(
@@ -63,18 +62,19 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
                     ?>
                 </div>
             </div>
-        </div>
-        <?php } ?>
-        <div class="col-12 col-lg-6">
+    </div>
+    <?php } ?>
+    <div>
             <!-- List survey publicly -->
-            <div class="mb-3">
+            <div class="mb-3 mt-4">
+                <h1><?php eT("Access control"); ?></h1>
                 <label class=" form-label" for='listpublic'><?php printf(gT("Link survey on %spublic index page%s:"), "<a href='" . Yii::app()->getConfig("publicurl") . "' target='_blank' >", "</a>");?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'listpublic',
                         'checkedOption' => $oSurvey->listpublic,
                         'selectOptions' => ($bShowInherited)
-                            ? array_merge($optionsOnOff, ['I' => gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->listpublic . ']'])
+                            ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->listpublic . " ᴵ" ])
                             : $optionsOnOff,
                     ]); ?>
                 </div>
@@ -87,7 +87,7 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
                         'name'          => 'usecookie',
                         'checkedOption' => $oSurvey->usecookie,
                         'selectOptions' => ($bShowInherited)
-                            ? array_merge($optionsOnOff, ['I' => gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->usecookie . ']'])
+                            ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->usecookie . " ᴵ" ])
                             : $optionsOnOff,
                     ]); ?>
                 </div>
@@ -103,7 +103,8 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
             $aCaptchaLoadSaveInherit        = array('E', 'F', 'I', 'K', 'T', 'U', '2', '3', '5');
             
             ?>
-            <div class="mb-3">
+            <div class="mb-3 mt-4">
+                <h1><?php eT("CAPTCHA"); ?></h1>
                 <label class=" form-label" for='usecaptcha_surveyaccess'><?php  eT("Use CAPTCHA for survey access:"); ?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
@@ -112,7 +113,7 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
                             ? 'Y'
                             : ((in_array($usecap, $aCaptchaSurveyAccessInherit)) ? ('I') : ('N')),
                         'selectOptions' => ($bShowInherited)
-                            ? array_merge($optionsOnOff, ['I' => gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->useCaptchaSurveyAccess . ']'])
+                            ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->useCaptchaSurveyAccess . " ᴵ" ])
                             : $optionsOnOff,
                     ]); ?>
                 </div>
@@ -130,7 +131,7 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
                                 ? ('I')
                                 : ('N')),
                         'selectOptions' => ($bShowInherited)
-                            ? array_merge($optionsOnOff, ['I' => gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->useCaptchaRegistration . ']'])
+                            ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->useCaptchaRegistration . " ᴵ"])
                             : $optionsOnOff,
                     ]); ?>
                 </div>
@@ -146,16 +147,21 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
                             ? 'Y'
                             : ((in_array($usecap, $aCaptchaLoadSaveInherit)) ? ('I') : ('N')),
                         'selectOptions' => ($bShowInherited)
-                            ? array_merge($optionsOnOff, ['I' => gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->useCaptchaSaveAndLoad . ']'])
+                            ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->useCaptchaSaveAndLoad . " ᴵ" ])
                             : $optionsOnOff,
                     ]); ?>
                 </div>
             </div>
-            <?php if(!extension_loaded('gd')) { ?>
-                <div class="alert alert-warning " role="alert">
-                    <p><strong><?php eT('Warning!'); ?></strong> <?php eT("The CAPTCHA settings won't have any effect because you don't have the required GD library activated in your PHP configuration."); ?></p>
-                </div>
+            <?php if (!extension_loaded('gd')) { ?>
+                <?php
+                $this->widget('ext.AlertWidget.AlertWidget', [
+                    'text' => '<strong>' . gT('Warning!') . '</strong> ' . gT("The CAPTCHA settings won't have any effect because you don't have the required GD library activated in your PHP configuration."),
+                    'type' => 'warning',
+                ]);
+                ?>
             <?php }?>
-        </div>
     </div>
 </div>
+<?php $this->renderPartial('/surveyAdministration/_inherit_sub_footer'); ?>
+
+

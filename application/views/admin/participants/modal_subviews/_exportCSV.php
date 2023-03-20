@@ -6,7 +6,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="form container">
+                <div class="form">
                     <div class='mb-3 row'>
                         <label class='form-label col-md-4' for='attributes'><?php eT('Attributes to export:');?></label>
                         <div class='col-md-8'>
@@ -23,15 +23,18 @@
                         </div>
                     </div>
                 <?php if (Yii::app()->getConfig('hideblacklisted') != 'N'): ?>
-                    <div class='alert alert-info'>
-                        <p><span class='fa fa-info-circle'></span>&nbsp;<?php eT('If you want to export blacklisted participants, set "Hide blacklisted participants" to "No" in CPDB settings.'); ?></p>
-                    </div>
+                    <?php
+                    $this->widget('ext.AlertWidget.AlertWidget', [
+                        'text' => gT('If you want to export blacklisted participants, set "Hide blacklisted participants" to "No" in CPDB settings.'),
+                        'type' => 'info',
+                    ]);
+                    ?>
                 <?php endif; ?>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT('Cancel'); ?></button>
-                <button type="button" class="btn btn-success exportButton">
+                <button type="button" class="btn btn-primary exportButton">
                     <?php eT('Export'); ?>
                 </button>
             </div>

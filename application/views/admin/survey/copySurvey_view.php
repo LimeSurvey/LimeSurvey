@@ -9,7 +9,7 @@
 <?php if (isset($aImportResults['error']) && $aImportResults['error']!=false): ?>
     <div class="jumbotron message-box message-box-error">
         <h2 ><?php eT("Copy survey"); ?></h2>
-        <p class="lead danger"><?php eT("Error"); ?></p>
+        <p class="lead text-danger"><?php eT("Error"); ?></p>
         <p><?php echo $aImportResults['error']; ?></p>
         <p>
         <input type='submit' class="btn btn-outline-secondary btn-large" value='<?php eT("Main Admin Screen"); ?>' onclick="window.open('<?php echo $this->createUrl('admin'); ?>', '_top')" />
@@ -57,7 +57,7 @@
 
     <!-- Warnings -->
     <?php if (count($aImportResults['importwarnings'])>0):?>
-        <h2 class='text-warning'><?php eT("Warnings"); ?>:</h2>
+        <h2 class='text-danger'><?php eT("Warnings"); ?>:</h2>
         <p>
                 <ul style="text-align:left;">
                 <?php foreach ($aImportResults['importwarnings'] as $warning)

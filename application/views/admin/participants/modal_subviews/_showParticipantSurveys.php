@@ -15,12 +15,12 @@
     <input type="hidden" name="Participant[participant_id]" value="<?php echo $model->participant_id; ?>"/>
     <div class="container-fluid">
         <?php
-        $this->widget('yiistrap_fork.widgets.TbGridView', [
+        $this->widget('application.extensions.admin.grid.CLSGridView', [
             'id'              => 'list_participant_surveys',
             'dataProvider'    => $surveymodel->search(),
             'columns'         => $surveymodel->columns,
             'htmlOptions'     => ['class' => 'table-responsive grid-view-ls'],
-            'afterAjaxUpdate' => 'bindButtonsInsideSurveys',
+            'lsAfterAjaxUpdate' => ['bindButtonsInsideSurveys()'],
             'ajaxType'        => 'POST',
             'summaryText'     => gT('Displaying {count} survey(s).'),
             'emptyText'       => gT("This participant is not active in any survey")

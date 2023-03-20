@@ -15,7 +15,7 @@
             <?php if ($isAllAnswersSelected){ ?>
                     <h2><?php eT("All answers are already selected in this quota.");?></h2>
                     <p>
-                        <input class="btn btn-lg btn-success" type="submit" onclick="window.open('<?php echo $this->createUrl("quotas/index/surveyid/{$oQuota->sid}");?>', '_top')" value="<?php eT("Continue");?>"/>
+                        <input class="btn btn-lg btn-primary" type="submit" onclick="window.open('<?php echo $this->createUrl("quotas/index/surveyid/{$oQuota->sid}");?>', '_top')" value="<?php eT("Continue");?>"/>
                     </p>
             <?php } else {
                 echo CHtml::form(
@@ -47,7 +47,7 @@
 
                     <div class='mb-3'>
                         <div class='col-md-5 offset-md-4'>
-                            <button class="btn btn btn-success" name="submit"  class="submit btn btn-outline-secondary">
+                            <button class="btn btn btn-primary" name="submit"  class="submit btn btn-outline-secondary">
                                 <?php eT("Next");?>
                             </button>
                         </div>

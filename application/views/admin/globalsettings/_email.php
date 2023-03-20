@@ -106,7 +106,7 @@
             </label>
             <div class="">
                 <!-- TODO: is this needed? It looks like commented out? -->
-                <!--a href="<?php echo \Yii::app()->createUrl('admin/globalsettings', array("sa" => "sendTestEmail")); ?>" class="btn btn-success btn-large"><?php eT("Send email"); ?></a-->
+                <!--a href="<?php echo \Yii::app()->createUrl('admin/globalsettings', array("sa" => "sendTestEmail")); ?>" class="btn btn-primary btn-large"><?php eT("Send email"); ?></a-->
                 <button
                     id="sendtestemailbutton"
                     class='btn btn-large btn-primary'

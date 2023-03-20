@@ -77,12 +77,19 @@ class DataEntry extends SurveyCommonAction
         $aData['title_bar']['title'] = gT("Data entry");
         $aData['sidemenu']['state'] = false;
 
-        $aData['topBar']['name'] = 'baseTopbar_view';
-        $aData['topBar']['showImportButton'] = true;
-        $aData['topBar']['showCloseButton'] = true;
-
         $iSurveyId = sanitize_int(Yii::app()->request->getParam('surveyid'));
         $aData['iSurveyId'] = $aData['surveyid'] = $iSurveyId;
+
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
+            [
+                'showImportButton' => true,
+                'showCloseButton' => true,
+                'closeUrl' => Yii::app()->createUrl('responses/browse', ['surveyId' => $iSurveyId])
+            ],
+            true
+        );
+
         if (Permission::model()->hasSurveyPermission($iSurveyId, 'responses', 'create')) {
             if (tableExists("{{survey_$iSurveyId}}")) {
                 // First load the database helper
@@ -297,9 +304,16 @@ class DataEntry extends SurveyCommonAction
             $aData['title_bar']['title'] = gT('Browse responses') . ': ' . $survey->currentLanguageSettings->surveyls_title;
             $aData['sidemenu']['state'] = false;
 
-            $aData['topBar']['name'] = 'baseTopbar_view';
-            $aData['topBar']['showImportButton'] = true;
-            $aData['topBar']['showCloseButton'] = true;
+            $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+                '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
+                [
+                    'showImportButton' => true,
+                    'showCloseButton' => true,
+                    'closeUrl' => Yii::app()->createUrl('responses/browse', ['surveyId' => $iSurveyId])
+                ],
+                true
+            );
+
 
             $this->renderWrappedTemplate('dataentry', 'import', $aData);
         } else {
@@ -1218,10 +1232,14 @@ class DataEntry extends SurveyCommonAction
                                 $aDataentryoutput .= CHtml::numberField($fname['fieldname'], $idrow[$fname['fieldname']], array('step' => 'any'));
                             } else {
                                 $aDataentryoutput .= "\t<select name='{$fname['fieldname']}' class='form-select'>\n";
-                                $aDataentryoutput .= "<option value=''>...</option>\n";
+                                $aDataentryoutput .= "<option value=''";
+                                if ($idrow[$fname['fieldname']] === "") {
+                                    $aDataentryoutput .= " selected";
+                                }
+                                $aDataentryoutput .= ">...</option>\n";
                                 for ($ii = $minvalue; $ii <= $maxvalue; $ii += $stepvalue) {
                                     $aDataentryoutput .= "<option value='$ii'";
-                                    if ($idrow[$fname['fieldname']] == $ii) {
+                                    if ($idrow[$fname['fieldname']] === "$ii") {
                                         $aDataentryoutput .= " selected";
                                     }
                                     $aDataentryoutput .= ">$ii</option>\n";
@@ -1330,10 +1348,16 @@ class DataEntry extends SurveyCommonAction
 
         $aViewUrls['output'] = $aDataentryoutput;
         $aData['sidemenu']['state'] = false;
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
+            [
+                'showSaveButton' => true,
+                'showCloseButton' => true,
+                'closeUrl' => Yii::app()->createUrl('responses/browse', ['surveyId' => $surveyid])
+            ],
+            true
+        );
 
-        $aData['topBar']['name'] = 'baseTopbar_view';
-        $aData['topBar']['showSaveButton']  = true;
-        $aData['topBar']['showCloseButton'] = true;
 
         $this->renderWrappedTemplate('dataentry', $aViewUrls, $aData);
     }
@@ -1431,7 +1455,7 @@ class DataEntry extends SurveyCommonAction
             if ($fieldname == 'id') {
                 continue;
             }
-            $thisvalue = Yii::app()->request->getPost($fieldname);
+            $thisvalue = Yii::app()->request->getPost($fieldname, '');
             switch ($irow['type']) {
                 case 'lastpage':
                     // Last page not updated : not in view
@@ -2012,27 +2036,46 @@ class DataEntry extends SurveyCommonAction
                     $qidattributes = QuestionAttribute::model()->getQuestionAttributes($arQuestion['qid']);
                     $arrayFilterHelp = flattenText($this->arrayFilterHelp($qidattributes, $sDataEntryLanguage, $surveyid));
 
-                    if (($relevance != '' && $relevance != '1') || ($validation != '') || ($arrayFilterHelp != '')) {
-                        $showme = '<div class="alert alert-warning col-md-8 offset-md-2" role="alert">';
+                    if (true || ($relevance != '' && $relevance != '1') || ($validation != '') || ($arrayFilterHelp != '')) {
+                        $message = '';
+                        $alert = '';
                         if ($bgc == "even") {
                             $bgc = "odd";
                         } else {
                             $bgc = "even";
                         } //Do no alternate on explanation row
                         if ($relevance != '' && $relevance != '1') {
-                            $showme = '<strong>' . gT("Only answer this if the following conditions are met:", 'html', $sDataEntryLanguage) . "</strong><br />$explanation\n";
+                            $message .= '<strong>' . gT(
+                                "Only answer this if the following conditions are met:",
+                                'html',
+                                $sDataEntryLanguage
+                            ) . "</strong><br />$explanation\n";
                         }
                         if ($validation != '') {
-                            $showme .= '<strong>' . gT("The answer(s) must meet these validation criteria:", 'html', $sDataEntryLanguage) . "</strong><br />$validation\n";
+                            $message .= '<strong>' . gT(
+                                "The answer(s) must meet these validation criteria:",
+                                'html',
+                                $sDataEntryLanguage
+                            ) . "</strong><br />$validation\n";
                         }
-                        if ($showme != '' && $arrayFilterHelp != '') {
-                            $showme .= '<br/>';
+                        if ($message != '' && $arrayFilterHelp != '') {
+                            $message .= '<br/>';
                         }
                         if ($arrayFilterHelp != '') {
-                            $showme .= '<strong>' . gT("The answer(s) must meet these array_filter criteria:", 'html', $sDataEntryLanguage) . "</strong><br />$arrayFilterHelp\n";
+                            $message .= '<strong>' . gT(
+                                "The answer(s) must meet these array_filter criteria:",
+                                'html',
+                                $sDataEntryLanguage
+                            ) . "</strong><br />$arrayFilterHelp\n";
                         }
-                        $showme .= '</div>';
-                        $cdata['explanation'] = "<tr class ='data-entry-explanation'><td class='data-entry-small-text' colspan='3' align='left'>$showme</td></tr>\n";
+                        if ($message != '') {
+                            $alert = App()->getController()->widget('ext.AlertWidget.AlertWidget', [
+                                'text' => $message,
+                                'type' => 'warning',
+                                'htmlOptions' => ['class' => 'col-md-8 offset-md-2']
+                            ], true);
+                            $cdata['explanation'] = "<tr class ='data-entry-explanation'><td class='data-entry-small-text' colspan='3' align='left'>$alert</td></tr>\n";
+                        }
                     }
 
                     //END OF GETTING CONDITIONS
@@ -2249,9 +2292,15 @@ class DataEntry extends SurveyCommonAction
 
             $aData['sidemenu']['state'] = false;
 
-            $aData['topBar']['name'] = 'baseTopbar_view';
-            $aData['topBar']['showSaveButton']  = true;
-            $aData['topBar']['showCloseButton'] = true;
+            $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+                '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
+                [
+                    'showSaveButton' => true,
+                    'showCloseButton' => true,
+                    'closeUrl' => Yii::app()->createUrl('responses/browse', ['surveyId' => $survey->sid])
+                ],
+                true
+            );
 
             $this->renderWrappedTemplate('dataentry', $aViewUrls, $aData);
         }

@@ -7,36 +7,9 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
 
 ?>
 <?php if (empty($model->sid)) : ?>
-    <!-- This is only visible when we're not in survey view. -->
-    <div class='menubar surveybar' id='theme-options-bar'>
-        <div class="container-fluid">
-            <div class='row'>
-                <div class='text-end'>
-
-                    <?php
-                    $sThemeOptionUrl = App()->createUrl("themeOptions");
-                    $sGroupEditionUrl = App()->createUrl("admin/surveysgroups/sa/update", ["id" => $gsid, "#" => 'templateSettingsFortThisGroup']);
-                    $sUrl = (is_null($gsid)) ? $sThemeOptionUrl : $sGroupEditionUrl;
-                    ?>
-
-                    <!-- Back -->
-                    <a class="btn btn-outline-secondary" href="<?php echo $sUrl; ?>">
-                        <span class="fa fa-backward"></span>
-                        <?php eT('Back'); ?>
-                    </a>
-
-                    <!-- Save -->
-                    <a class="btn btn-success" href="#" role="button" id="save-form-button" data-form-id="template-options-form">
-                        <span class="fa fa-floppy-o"></span>
-                        <?php eT('Save'); ?>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-<div class="container-fluid">
+<div class="">
 <?php else : ?>
-    <div class="col-12 side-body <?= getSideBodyClass(false) ?>" id="theme-option-sidebody">
+    <div class="col-12 side-body ls-settings-wrapper <?= getSideBodyClass(false) ?>" id="theme-option-sidebody">
 <?php endif; ?>
 
     <!-- Using bootstrap tabs to differ between just hte options and advanced direct settings -->
@@ -47,7 +20,7 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
                 <?php if ($aOptionAttributes['optionsPage'] === 'core'): ?>
                     <?php foreach ($aOptionAttributes['categories'] as $key => $category): ?>
                         <li role="presentation" class="nav-item">
-                            <button class="nav-link <?php echo $key == 0 ? 'active' : 'action_hide_on_inherit'; ?>" data-bs-target="#category-<?php echo $key; ?>" aria-controls="category-<?php echo $key; ?>" role="tab" data-bs-toggle="tab" aria-selected="<?php echo $key == 0 ? 'true' : 'false'; ?>">
+                            <button class="nav-link <?php echo $key == 0 ? 'active' : 'tab_action_hide_on_inherit'; ?>" data-bs-target="#category-<?php echo $key; ?>" aria-controls="category-<?php echo $key; ?>" role="tab" data-bs-toggle="tab" aria-selected="<?php echo $key == 0 ? 'true' : 'false'; ?>">
                                 <?php echo $category; ?>
                             </button>
                         </li>
@@ -67,8 +40,8 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
             </ul>
         </div>
     </div>
-    <div class="row">
-        <div class="col-12">
+    <div class="row" id="trigger-save-button">
+        <div class="col-12" >
             <form class='form action_update_options_string_form' action=''>
                 <?php echo TbHtml::submitButton($model->isNewRecord ? gT('Create') : gT('Save'), ['id' => 'theme-options--submit', 'class' => 'd-none action_update_options_string_button']); ?>
             <!-- Tab panes -->
@@ -127,6 +100,8 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
             </form>
         </div>
     </div>
+<?php $this->renderPartial('/surveyAdministration/_inherit_sub_footer'); ?>
+
 </div>
 
 <!-- Form for image file upload -->
@@ -187,12 +162,12 @@ Yii::app()->getClientScript()->registerScript(
                     success: function (data) {
                         console.log(data);
                         if(data.success === true){
-                            $(\'#notif-container\').append(\'<div class="alert alert-success" role="alert"><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>\'+data.message+\'</div>\');
+                            LS.LsGlobalNotifier.createAlert(data.message,  "success", {showCloseButton: true});
                             $progressBar.css("width", "0%");
                             $progressBar.find(\'span.visually-hidden\').text(\'0%\');
                             onSuccess();
                         } else {
-                            $(\'#notif-container\').append(\'<div class="alert alert-danger" role="alert"><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>\'+data.message+\'</div>\');
+                            LS.LsGlobalNotifier.createAlert(data.message,  "danger", {showCloseButton: true});
                             $progressBar.css("width", "0%");
                             $progressBar.find(\'span.visually-hidden\').text(\'0%\');
                         }
@@ -214,7 +189,6 @@ Yii::app()->getClientScript()->registerScript(
         };
 
         $(document).on(\'ready pjax:scriptcomplete\', function(){
-            $("#theme-option-sidebody").height($("#advanced").height()+200);
             var uploadImageBind = new bindUpload({
                 form: \'#uploadimage\',
                 input: \'#upload_image\',

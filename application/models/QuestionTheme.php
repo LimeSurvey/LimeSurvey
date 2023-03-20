@@ -232,7 +232,7 @@ class QuestionTheme extends LSActiveRecord
             "<input type='hidden' name='templatefolder' value='" . $this->xml_path . "'>
             <input type='hidden' name='theme' value='questiontheme'>
             <button id='template_options_link_" . $this->name . "'class='btn btn-outline-secondary btn-block'>
-            <span class='fa fa-download text-warning'></span>
+            <span class='ri-download-fill'></span>
             " . gT('Install') . "
             </button>
             </form>";

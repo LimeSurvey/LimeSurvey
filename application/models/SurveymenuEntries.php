@@ -307,35 +307,21 @@ class SurveymenuEntries extends LSActiveRecord
      **/
     public function getButtons()
     {
-        $buttons = "<div class='icon-btn-row'>";
-        $raw_button_template = ""
-            . "<button class='btn btn-outline-secondary btn-sm %s %s' role='button' data-bs-toggle='tooltip' title='%s' onclick='return false;'>" //extra class //title
-            . "<i class='fa fa-%s' ></i>" //icon class
-            . "</button>";
-
-        if (Permission::model()->hasGlobalPermission('settings', 'update')) {
-            $deleteData = array(
-                'action_surveymenuEntries_deleteModal',
-                'red-border',
-                gT("Delete this survey menu entry"),
-                'trash text-danger'
-            );
-            $editData = array(
-                'action_surveymenuEntries_editModal',
-                'green-border',
-                gT("Edit this survey menu entry"),
-                'pencil'
-            );
-
-
-
-            $buttons .= vsprintf($raw_button_template, $editData);
-            $buttons .= vsprintf($raw_button_template, $deleteData);
-        }
-
-        $buttons .= '</div>';
-
-        return $buttons;
+        $permission_settings_update = Permission::model()->hasGlobalPermission('settings', 'update');
+        $dropdownItems = [];
+        $dropdownItems[] = [
+            'title'            => gT('Edit this survey menu entry'),
+            'linkClass'        => 'action_surveymenuEntries_editModal',
+            'iconClass'        => 'ri-pencil-fill',
+            'enabledCondition' => $permission_settings_update
+        ];
+        $dropdownItems[] = [
+            'title'            => gT('Delete this survey menu entry'),
+            'linkClass'        => 'action_surveymenuEntries_deleteModal',
+            'iconClass'        => 'ri-delete-bin-fill text-danger',
+            'enabledCondition' => $permission_settings_update
+        ];
+        return App()->getController()->widget('ext.admin.grid.GridActionsWidget.GridActionsWidget', ['dropdownItems' => $dropdownItems], true);
     }
 
     /**
@@ -344,79 +330,85 @@ class SurveymenuEntries extends LSActiveRecord
      */
     public function getColumns()
     {
-        $cols = array(
-            array(
-            'value' => '\'<input type="checkbox" name="id[]" class="action_selectthisentry" value="\'.$data->id.\'" />\'',
-            'type' => 'raw',
-            'filter' => false
-            ),
-            array(
-                "name" => 'buttons',
-                "type" => 'raw',
-                "filter" => false
-            ),
-            array(
+        $cols = [
+            [
+                'value'             => '\'<input type="checkbox" name="id[]" class="action_selectthisentry" value="\'.$data->id.\'" />\'',
+                'type'              => 'raw',
+                'filter'            => false,
+                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+                'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
+                'htmlOptions'       => ['class' => 'ls-sticky-column']
+            ],
+            [
                 'name' => 'title',
                 'type' => 'text'
-            ),
-            array(
+            ],
+            [
                 'name' => 'name',
-            ),
-            array(
+            ],
+            [
                 'name' => 'ordering',
-            ),
-            array(
+            ],
+            [
                 'name' => 'menu_title',
-            ),
-            array(
+            ],
+            [
                 'name' => 'menu_description',
-            ),
-            array(
-                'name' => 'menu_icon',
-                'value' => 'SurveymenuEntries::returnMenuIcon($data)',
-                'type' => 'raw',
+            ],
+            [
+                'name'   => 'menu_icon',
+                'value'  => 'SurveymenuEntries::returnMenuIcon($data)',
+                'type'   => 'raw',
                 'filter' => false,
-            ),
-            array(
+            ],
+            [
                 'name' => 'menu_class',
-            ),
-            array(
-                'name' => 'menu_link',
+            ],
+            [
+                'name'  => 'menu_link',
                 'value' => 'SurveymenuEntries::returnCombinedMenuLink($data)',
-                'type' => 'text'
-            ),
-            array(
+                'type'  => 'text'
+            ],
+            [
                 'name' => 'language',
-            ),
-            array(
-                'name' => 'permission',
+            ],
+            [
+                'name'  => 'permission',
                 'value' => '$data->permission ? $data->permission."<br/> => ". $data->permission_grade : ""',
-                'type' => 'raw'
-            ),
-            array(
-                'name' => 'classes',
-                'htmlOptions' => array('style' => 'white-space: prewrap;'),
-                'headerHtmlOptions' => array('style' => 'white-space: prewrap;'),
-            ),
-            array(
-                'name' => 'data',
-                'value' => '$data->data ? "<i class=\'fa fa-info-circle bigIcons\' title=\'".$data->data."\'></i>"
+                'type'  => 'raw'
+            ],
+            [
+                'name'              => 'classes',
+                'htmlOptions'       => ['style' => 'white-space: prewrap;'],
+                'headerHtmlOptions' => ['style' => 'white-space: prewrap;'],
+            ],
+            [
+                'name'   => 'data',
+                'value'  => '$data->data ? "<i class=\'ri-information-fill bigIcons\' title=\'".$data->data."\'></i>"
                 : ( $data->getdatamethod ? gT("GET data method:")."<br/>".$data->getdatamethod : "")',
-                'type' => 'raw',
+                'type'   => 'raw',
                 'filter' => false,
-            ),
-            array(
-                'name' => 'menu_id',
-                'value' => '$data->menu->title." (".$data->menu_id.")"',
+            ],
+            [
+                'name'   => 'menu_id',
+                'value'  => '$data->menu->title." (".$data->menu_id.")"',
                 'filter' => $this->getMenuIdOptions()
-            ),
-            array(
-                'name' => 'user_id',
-                'value' => '$data->user_id ? $data->user->full_name : "<i class=\'fa fa-minus\'></i>"',
-                'type' => 'raw',
+            ],
+            [
+                'name'   => 'user_id',
+                'value'  => '$data->user_id ? $data->user->full_name : "<i class=\'ri-subtract-fill\'></i>"',
+                'type'   => 'raw',
                 'filter' => $this->getUserOptions()
-            )
-        );
+            ],
+            [
+                "name"              => 'buttons',
+                "type"              => 'raw',
+                "filter"            => false,
+                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+                'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
+                'htmlOptions'       => ['class' => 'ls-sticky-column']
+            ],
+        ];
 
         return $cols;
     }

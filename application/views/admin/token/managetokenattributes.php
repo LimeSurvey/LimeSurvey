@@ -162,7 +162,7 @@
                 </div>
             </div>
             <p>
-                <input type="submit" class="btn btn-success" value="<?php eT('Save'); ?>" />
+                <input type="submit" class="btn btn-primary" value="<?php eT('Save'); ?>" />
                 <input type='hidden' name='action' value='tokens' />
                 <input type='hidden' name='subaction' value='updatetokenattributedescriptions' />
             </p>

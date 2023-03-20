@@ -498,6 +498,7 @@ class Statistics extends SurveyCommonAction
         $aData['oStatisticsHelper'] = $helper;
         $aData['fresults'] = $aData['fresults'] ?? false;
         $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat']);
+        $aData['expertstats'] = false;
 
         if (!isset($aData['result'])) {
             $aData['result'] = null;
@@ -820,8 +821,11 @@ class Statistics extends SurveyCommonAction
         $aData['display'] = array();
         $aData['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
 
-        $aData['topBar']['name'] = 'baseTopbar_view';
-        $aData['topBar']['rightSideView'] = 'statisticsTopbarRight_view';
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/surveyAdministration/partial/topbar_statistics/rightSideButtons',
+            ['expertstats' => $aData['expertstats'], 'surveyid' => $aData['surveyid']],
+            true
+        );
 
         $aData['sidemenu']['state'] = false;
 

@@ -10,7 +10,7 @@ if ($result === 'success') {
 } elseif ($result === 'partial') {
     $status = gT("Partial");
     $class = 'message-box-warning';
-    $statusClass = 'text-warning';
+    $statusClass = 'text-danger';
     $okfiles = count($aImportedFilesInfo);
     $errfiles = count($aErrorFilesInfo);
 } else {

@@ -330,6 +330,8 @@ class SurveyLanguageSetting extends LSActiveRecord
     {
         parent::afterFind();
         $this->oldSurveyId = $this->surveyls_survey_id;
-        $this->oldAlias = $this->surveyls_alias;
+        if (isset($this->surveyls_alias)) {
+            $this->oldAlias = $this->surveyls_alias;
+        }
     }
 }

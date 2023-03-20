@@ -716,7 +716,7 @@ function submitfailed($errormsg = '', $query = null)
     global $thissurvey;
     global $surveyid;
 
-    $completed = "<p><span class='fa fa-exclamation-triangle'></span>&nbsp;<strong>"
+    $completed = "<p><span class='ri-error-warning-fill'></span>&nbsp;<strong>"
     . gT("Did Not Save") . "</strong></p>"
     . "<p>"
     . gT("An unexpected error has occurred and your responses cannot be saved.")

@@ -1,44 +1,46 @@
 <?php /** @var QuestionTheme $questionTheme */ ?>
 
-<div class="col-12 content-right">
+<div class="summary-table">
 
     <!-- Summary Table -->
-    <table  id='questiondetails'>
-
         <!-- Question Group -->
-        <tr>
-            <td><strong><?php eT('Question group:');?></strong>&nbsp;&nbsp;&nbsp;</td>
-            <td><em><?php echo flattenText($question->group->group_name);?></em> (ID:<?php echo $question->group->gid;?>)</td>
-        </tr>
+        <div class="row">
+            <div class="col-2">
+                <strong>
+                    <?php eT('Question group:');?>&nbsp;&nbsp;&nbsp;
+                </strong>
+            </div>
+            <div class="col-10"><em><?php echo flattenText($question->group->group_name);?></em> (ID:<?php echo $question->group->gid;?>)</div>
+        </div>
 
         <!-- Code -->
-        <tr>
-            <td>
+        <div class="row">
+            <div class="col-2">
                 <strong>
                     <?php eT("Code:"); ?>
                 </strong>
-            </td>
+            </div>
 
-            <td>
-                <?php echo $question->title; ?>
-                <?php if ($question->type != "X"): ?>
+            <div class="col-10">
+               <?= $question->title; ?>
+                <?php if ($question->type != "X") : ?>
                     <?php if ($question->mandatory == "Y") :?>
                         : (<i><?php eT("Mandatory Question"); ?></i>)
-                    <?php else: ?>
+                    <?php else : ?>
                             : (<i><?php eT("Optional Question"); ?></i>)
                     <?php endif; ?>
                 <?php endif; ?>
-            </td>
-        </tr>
+            </div>
+        </div>
 
         <!-- Question -->
-        <tr>
-            <td>
+        <div class="row">
+            <div class="col-2">
                 <strong>
                     <?php eT("Question:"); ?>
                 </strong>
-            </td>
-            <td>
+            </div>
+            <div class="col-10">
                 <?php
                     templatereplace(
                         $question->questionl10ns[$question->survey->language]->question,
@@ -50,17 +52,17 @@
                     );
                     echo viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
                 ?>
-            </td>
-        </tr>
+            </div>
+        </div>
 
         <!-- Help -->
-        <tr>
-            <td>
+        <div class="row">
+            <div class="col-2">
                 <strong>
                     <?php eT("Help:"); ?>
                 </strong>
-            </td>
-            <td>
+            </div>
+            <div class="col-10">
 
                 <?php
                     if (trim((string) $question->questionl10ns[$question->survey->language]->help) != '')
@@ -76,94 +78,91 @@
                         echo viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
                     }
                 ?>
-            </td>
-        </tr>
+            </div>
+        </div>
 
         <!-- Validation -->
         <?php if ($question->preg):?>
             <tr >
-                <td>
+                <div class="col-2">
                     <strong>
                         <?php eT("Validation:"); ?>
                     </strong>
-                </td>
-                <td>
-                    <?php echo htmlspecialchars((string) $question->preg); ?>
-                </td>
-            </tr>
+                </div>
+                <div class="col-10">
+                   <?= htmlspecialchars((string) $question->preg); ?>
+                </div>
+            </div>
         <?php endif; ?>
 
         <!-- Type -->
-        <tr>
-            <td>
+        <div class="row">
+            <div class="col-2">
                 <strong>
                     <?php eT("Type:"); ?>
                 </strong>
-            </td>
-            <td>
+            </div>
+            <div class="col-10">
                 <?php
                     echo gT($questionTheme->title) . ' (Type: ' . $questionTheme->question_type . ')';
-                //echo $questionTypes[$question->type]['description'];
                 ?>
-            </td>
-        </tr>
+            </div>
+        </div>
 
         <!-- Warning : You need to add answer -->
         <?php if ($answersCount == 0 && (int) ($questionTheme->getDecodedSettings()->answerscales) > 0):?>
-        <tr>
-            <td>
-            </td>
-            <td>
+        <div class="row">
+            <div class="col-2">
+            </div>
+            <div class="col-10">
                 <span class='statusentryhighlight'>
                     <?php eT("Warning"); ?>:
                     <?php eT("You need to add answer options to this question"); ?>
-                    <span class="icon-answers text-success" title='<?php eT("Edit answer options for this question"); ?>'></span>
                 </span>
-            </td>
-        </tr>
+            </div>
+        </div>
         <?php endif; ?>
 
         <!--  Warning : You need to add subquestions to this question -->
         <?php  if ($subquestionsCount == 0 && (int) ($questionTheme->getDecodedSettings()->subquestions) > 0): ?>
-            <tr>
-                <td></td>
-                <td>
+            <div class="row">
+                <div class="col-2"></div>
+                <div class="col-10">
                     <span class='statusentryhighlight'>
                         <?php eT("Warning"); ?>:
                         <?php eT("You need to add subquestions to this question"); ?>
-                        <span class="icon-defaultanswers text-success" title='<?php eT("Edit subquestions for this question"); ?>' ></span>
                     </span>
-                </td>
-            </tr>
+                </div>
+            </div>
         <?php endif; ?>
 
         <!-- Option 'Other' -->
         <?php if ($question->type == "M" or $question->type == "P"):?>
-            <tr>
-                <td>
+            <div class="row">
+                <div class="col-2">
                     <strong>
                         <?php eT("Option 'Other':"); ?>
                     </strong>
-                </td>
-                <td>
+                </div>
+                <div class="col-10">
                     <?php if ($question->other == "Y"):?>
                         <?php eT("Yes"); ?>
                     <?php else:?>
                         <?php eT("No"); ?>
                     <?php endif; ?>
-                </td>
-            </tr>
+                </div>
+            </div>
         <?php endif; ?>
 
         <!-- Mandatory -->
         <?php if (isset($question->mandatory) and ($question->type != "X") and ($question->type != "|")):?>
-            <tr>
-                <td>
+            <div class="row">
+                <div class="col-2">
                     <strong>
                         <?php eT("Mandatory:"); ?>
                     </strong>
-                </td>
-                <td>
+                </div>
+                <div class="col-10">
                     <?php if ($question->mandatory == "Y") : ?>
                         <?php eT("Yes"); ?>
                     <?php elseif ($question->mandatory == "S") : ?>
@@ -171,38 +170,38 @@
                     <?php else : ?>
                         <?php eT("No"); ?>
                     <?php endif;  ?>
-                </td>
-            </tr>
+                </div>
+            </div>
         <?php endif; ?>
 
 
         <!-- Encrypted -->
         <?php if (isset($question->encrypted)):?>
-            <tr>
-                <td>
+            <div class="row">
+                <div class="col-2">
                     <strong>
                         <?php eT("Encrypted:"); ?>
                     </strong>
-                </td>
-                <td>
+                </div>
+                <div class="col-10">
                     <?php if ($question->encrypted == "Y") : ?>
                         <?php eT("Yes"); ?>
                     <?php else:?>
                         <?php eT("No"); ?>
                     <?php endif;  ?>
-                </td>
-            </tr>
+                </div>
+            </div>
         <?php endif; ?>
 
         <!-- Condition for this question -->
         <?php if (trim((string) $question->relevance) != '') : ?>
-            <tr>
-                <td>
+            <div class="row">
+                <div class="col-2">
                     <strong>
                     <?php eT("Condition:"); ?>
                     </strong>
-                </td>
-                <td>
+                </div>
+                <div class="col-10">
                     <?php
                     LimeExpressionManager::ProcessString(
                         "{" . trim((string) $question->relevance) . "}",
@@ -210,15 +209,15 @@
                     );
                     echo viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
                     ?>
-                </td>
-            </tr>
+                </div>
+            </div>
         <?php endif; ?>
 
         <!-- Group Relevance equation -->
         <?php if (trim((string) $question->group->grelevance) != '') : ?>
-            <tr>
-                <td><strong><?php eT("Group relevance:"); ?></strong></td>
-                <td>
+            <div class="row">
+                <div class="col-2"><strong><?php eT("Group relevance:"); ?></strong></div>
+                <div class="col-10">
                     <?php
                     LimeExpressionManager::ProcessString(
                         "{" . trim((string) $question->group->grelevance) . "}",
@@ -226,8 +225,8 @@
                     );
                     echo viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
                     ?>
-                </td>
-            </tr>
+                </div>
+            </div>
         <?php endif; ?>
 
         <!-- Advanced Settings -->
@@ -238,13 +237,13 @@
                     $value = $setting[$question->survey->language]['value'];
                 }
                 if($setting['default'] != $value){ ?>
-                <tr>
-                    <td>
+                <div class="row">
+                    <div class="col-2">
                         <strong>
                             <?php eT($setting['caption']);?>:
                         </strong>
-                    </td>
-                    <td>
+                    </div>
+                    <div class="col-10">
                         <?php
 
                             if (isset($setting['expression']) && $setting['expression'] > 0) {
@@ -258,11 +257,10 @@
                                 echo htmlspecialchars((string) $value);
                             }
                         ?>
-                    </td>
-                </tr>
+                    </div>
+                </div>
             <?php
                 }
             }
         } ?>
-    </table>
 </div>

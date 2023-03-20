@@ -49,9 +49,13 @@ class CheckIntegrity extends SurveyCommonAction
     public function index()
     {
         $aData = $this->checkintegrity();
-        $aData['pageTitle'] = gT('Check data integrity');
-        $aData['fullpagebar']['returnbutton']['url'] = 'admin/index';
-        $aData['fullpagebar']['returnbutton']['text'] = gT('Back');
+
+        $aData['topbar']['title'] = gt('Check data integrity');
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/admin/checkintegrity/partials/topbarBtns/rightSideButtons',
+            [],
+            true
+        );
 
         $this->renderWrappedTemplate('checkintegrity', 'check_view', $aData);
     }
@@ -606,6 +610,8 @@ class CheckIntegrity extends SurveyCommonAction
 
         /** Check for active surveys if questions are in the correct group **/
         foreach ($oSurveys as $oSurvey) {
+            // This actually clears the schema cache, not just refreshes it
+            $oDB->schema->refresh();
             // We get the active surveys
             if ($oSurvey->isActive && $oSurvey->hasResponsesTable) {
                 $model    = SurveyDynamic::model($oSurvey->sid);
@@ -670,9 +676,9 @@ class CheckIntegrity extends SurveyCommonAction
             }
         }
 
+        $oDB->schema->refresh();
         $oDB->schemaCachingDuration = 3600;
         $oDB->schema->getTables();
-        $oDB->schema->refresh();
         $oDB->active = false;
         $oDB->active = true;
         User::model()->refreshMetaData();
@@ -808,8 +814,7 @@ class CheckIntegrity extends SurveyCommonAction
         $oCriteria = new CDbCriteria();
         $oCriteria->join = 'LEFT JOIN {{questions}} q ON t.qid=q.qid';
         $oCriteria->condition = 'q.qid IS NULL';
-        $aRecords = DefaultValue::model()->findAll($oCriteria);
-        $aDelete['defaultvalues'] = count($aRecords);
+        $aDelete['defaultvalues'] = DefaultValue::model()->count($oCriteria);
 
         /**********************************************************************/
         /*     Check quotas                                                   */
@@ -818,7 +823,7 @@ class CheckIntegrity extends SurveyCommonAction
         $oCriteria = new CDbCriteria();
         $oCriteria->join = 'LEFT JOIN {{surveys}} s ON t.sid=s.sid';
         $oCriteria->condition = '(s.sid IS NULL)';
-        $aDelete['quotas'] = count(Quota::model()->findAll($oCriteria));
+        $aDelete['quotas'] = Quota::model()->count($oCriteria);
 
         /**********************************************************************/
         /*     Check quota languagesettings                                   */
@@ -826,7 +831,7 @@ class CheckIntegrity extends SurveyCommonAction
         $oCriteria = new CDbCriteria();
         $oCriteria->join = 'LEFT JOIN {{quota}} s ON t.quotals_quota_id=s.id';
         $oCriteria->condition = '(s.id IS NULL)';
-        $aDelete['quotals'] = count(QuotaLanguageSetting::model()->findAll($oCriteria));
+        $aDelete['quotals'] = QuotaLanguageSetting::model()->count($oCriteria);
 
         /**********************************************************************/
         /*     Check quota members                                   */
@@ -835,7 +840,7 @@ class CheckIntegrity extends SurveyCommonAction
         $oCriteria->join = 'LEFT JOIN {{questions}} q ON t.qid=q.qid LEFT JOIN {{surveys}} s ON t.sid=s.sid';
         $oCriteria->condition = '(q.qid IS NULL) OR (s.sid IS NULL)';
 
-        $aDelete['quotamembers'] = count(QuotaMember::model()->findAll($oCriteria));
+        $aDelete['quotamembers'] = QuotaMember::model()->count($oCriteria);
 
         /**********************************************************************/
         /*     Check assessments                                              */
@@ -894,6 +899,8 @@ class CheckIntegrity extends SurveyCommonAction
             foreach ($aLanguages as $langname) {
                 if ($langname) {
                     $oLanguageSettings = SurveyLanguageSetting::model()->find('surveyls_survey_id=:surveyid AND surveyls_language=:langname', array(':surveyid' => $survey->sid, ':langname' => $langname));
+                    // A simple find starts to eat up memory, so we need to free it
+                    gc_collect_cycles();
                     if (!$oLanguageSettings) {
                         $oLanguageSettings = new SurveyLanguageSetting();
                         $languagedetails = getLanguageDetails($langname);

@@ -44,8 +44,6 @@ PrepareEditorScript(false, $this);
     <?php endforeach; ?>
 </ul>
 
-<br/>
-
 <div class="tab-content">
     <?php foreach ($aTabContents as $i => $content): ?>
         <?php echo $content; ?>

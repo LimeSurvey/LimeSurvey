@@ -37,7 +37,7 @@ class ListSurveysWidget extends CWidget
             $this->model->searched_value = $_GET['Survey']['searched_value'];
         }
 
-        $this->model->active = null;
+        $this->model->active = "";
         // Filter state
         if (isset($_GET['active']) && !empty($_GET['active'])) {
             $this->model->active = $_GET['active'];
@@ -45,7 +45,7 @@ class ListSurveysWidget extends CWidget
 
         // Filter survey group (by grid param)
         if (empty($this->model->gsid) && App()->getRequest()->getQuery('gsid')) {
-            $this->model->gsid = App()->getRequest()->getQuery('gsid');
+            $this->model->gsid = (int)App()->getRequest()->getQuery('gsid');
         }
 
         // Set number of page
@@ -55,7 +55,7 @@ class ListSurveysWidget extends CWidget
 
         $this->pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
 
-        Yii::app()->getClientScript()->registerScriptFile(App()->getAssetManager()->publish(dirname(__FILE__) . '/assets/reload.js'));
+        App()->getClientScript()->registerScriptFile(App()->getAssetManager()->publish(dirname(__FILE__) . '/assets/reload.js'));
 
         $this->massiveAction = $this->render('massive_actions/_selector', array(), true, false);
 

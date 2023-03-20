@@ -52,227 +52,99 @@ App()->getClientScript()->registerScriptFile(
     App()->getConfig('adminscripts') . 'topbar.js',
     CClientScript::POS_END
 );
+
+//this line is from old part (see old_templateTopbar.php), it has always been false
+$importModal = false;
 ?>
-
-<!-- Template Editor Bar -->
-<div class='menubar surveybar' id="templateeditorbar">
-    <div class="container-fluid">
-        <div class='row row-cols-auto justify-content-between'>
-            <!-- Left Menu -->
-            <div class="col">
-                <?php $importModal = false; ?>
-                <?php if (is_writable($tempdir)) : ?>
-                    <!-- Export -->
-                    <?php if (Permission::model()->hasGlobalPermission('templates', 'export') && class_exists('ZipArchive')) : ?>
-                        <a class="btn btn-outline-secondary"
-                           id="button-export"
-                           href="<?php echo $this->createUrl('admin/themes/sa/templatezip/templatename/' . $templatename) ?>"
-                           role="button">
-                            <span class="icon-export text-success"></span>
-                            <?php eT("Export"); ?>
-                        </a>
-                    <?php endif; ?>
-
-                    <!-- Copy -->
-                    <?php if (Permission::model()->hasGlobalPermission('templates', 'create')) : ?>
-                        <?php if (is_writable($userthemerootdir)) : ?>
-                            <a class="btn btn-outline-secondary"
-                               id="button-extend-<?php echo $templatename; ?>"
-                               href="#"
-                               role="button"
-                               onclick="javascript: copyprompt('<?php eT("Please enter the name for the new theme:"); ?>', '<?php echo gT("extends_") . "$templatename"; ?>', '<?php echo $templatename; ?>', 'copy')">
-                                <span class="icon-copy text-success"></span>
-                                <?php eT("Extend"); ?>
-                            </a>
-                        <?php else : ?>
-                            <span class="btntooltip" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                  title="<?php eT("The theme upload directory doesn't exist or is not writable."); ?>" style="display: inline-block"
-                                  data-bs-toggle="tooltip" data-bs-placement="bottom">
-                            <button type="button" class="btn btn-outline-secondary btntooltip" disabled="disabled">
-                                <span class="icon-copy text-success"></span>
-                                <?php eT("Copy"); ?>
-                            </button>
-                        </span>
-                        <?php endif; ?>
-                    <?php endif; ?>
-
-                <?php else : ?>
-                    <!-- All buttons disabled -->
-
-                    <!-- import disabled -->
-                    <?php
-
-                    if (!class_exists('ZipArchive')) {
-                        $sMessage = gT("You cannot upload themes because you do not have the required ZIP library installed in PHP.");
-                    } else {
-                        $sMessage = gT("Some directories are not writable. Please change the folder permissions for /tmp and /upload/themes in order to enable this option.");
-                    }
-                    if (Permission::model()->hasGlobalPermission('templates', 'import')) :?>
-                        <span class="btntooltip" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php echo $sMessage; ?>"
-                              style="display: inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php echo $sMessage; ?>">
-                        <button type="button" class="btn btn-outline-secondary btntooltip" disabled="disabled">
-                            <span class="icon-import text-muted"></span>
-                                <?php eT("Import"); ?>
-                        </button>
-                    </span>
-                    <?php endif; ?>
-
-                    <!-- export disabled -->
-                    <?php if (Permission::model()->hasGlobalPermission('templates', 'export')) : ?>
-                        <span class="btntooltip" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php echo $sMessage; ?>"
-                              style="display: inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php echo $sMessage; ?>">
-                    <button type="button" class="btn btn-outline-secondary btntooltip" disabled="disabled">
-                        <span class="icon-export text-muted"></span>
-                        <?php eT("Export"); ?>
-                    </button>
-                </span>
-                    <?php endif; ?>
-
-                    <!-- create disabled -->
-                    <?php if (Permission::model()->hasGlobalPermission('templates', 'create')) : ?>
-                        <span class="btntooltip" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php echo $sMessage; ?>"
-                              style="display: inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php echo $sMessage; ?>">
-                    <button type="button" class="btn btn-outline-secondary btntooltip" disabled="disabled">
-                        <span class="icon-copy text-muted"></span>
-                        <?php eT("Copy"); ?>
-                    </button>
-                </span>
-                    <?php endif; ?>
-
-                <?php endif; ?>
-
-
-                <?php if (is_template_editable($templatename)) : ?>
-                    <?php if (Permission::model()->hasGlobalPermission('templates', 'update')) : ?>
-                        <a class="btn btn-outline-secondary"
-                           id="button-rename-theme"
-                           href="#"
-                           role="button"
-                           onclick="javascript: copyprompt('<?php eT("Rename this theme to:"); ?>', '<?php echo $templatename; ?>', '<?php echo $templatename; ?>', 'rename');">
-                            <span class="fa fa-pencil  text-success"></span>
-                            <?php eT("Rename"); ?>
-                        </a>
-                    <?php endif; ?>
-
-                    <?php if (Permission::model()->hasGlobalPermission('templates', 'delete')) : ?>
-                        <a
-                            id="button-delete"
-                            href="<?php echo Yii::app()->getController()->createUrl('admin/themes/sa/delete/'); ?>"
-                            data-post='{ "templatename": "<?php echo $templatename; ?>" }'
-                            data-text="<?php eT('Are you sure you want to delete this theme?'); ?>"
-                            data-button-no="<?= gT('Cancel'); ?>"
-                            data-button-yes="<?= gT('Delete'); ?>"
-                            data-button-type="btn-danger"
-                            title="<?php eT('Delete'); ?>"
-                            class="btn btn-danger selector--ConfirmModal">
-                            <span class="fa fa-trash"></span>
-                            <?php eT('Delete'); ?>
-                        </a>
-                    <?php endif; ?>
-                <?php endif; ?>
-            </div>
-
-            <!-- Right Menu -->
-            <div class="col">
-            <div class="row row-cols-lg-auto gx-1 gy-0 text-end">
-                <!-- Theme Select Box -->
-                <label class="col col-form-label text-nowrap" for='templatedir'><?php eT("Theme:"); ?></label>
-                <div class="col">
-                    <select class="col listboxtemplates form-select" id='templatedir' name='templatedir'
-                            onchange="javascript: var uri = new Uri('<?php
-                            // Don't put 'sa' into the URL dirctly because Yii will then try to use filenames directly in the path because of the route
-                            echo $this->createUrl("admin/themes",
-                                [
-                                    'sa'         => 'view',
-                                    'editfile'   => $relativePathEditfile,
-                                    'screenname' => $screenname
-                                ]); ?>'); uri.addQueryParam('templatename',this.value); window.open(uri.toString(), '_top')">
-                        <?php echo themeoptions($templates, $templatename); ?>
-                    </select>
-                </div>
-
-                <!-- Screen Select Box -->
-                <label class="col col-form-label text-nowrap" for='listboxtemplates'><?php eT("Screen:"); ?></label>
-                <div>
-                    <?php echo CHtml::dropDownList('screenname',
-                        $screenname,
-                        $screens,
-                        [
-                            'id'       => 'listboxtemplates',
-                            'class'    => "col listboxtemplates form-select",
-                            'onchange' => "javascript:  var uri = new Uri('" . $this->createUrl("admin/themes",
-                                    [
-                                        'sa'           => 'view',
-                                        'editfile'     => $relativePathEditfile,
-                                        'templatename' => $templatename
-                                    ]) . "'); uri.addQueryParam('screenname',this.value); window.open(uri.toString(), '_top')"
-                        ]); ?>
-                </div>
-
-                <?php if (isset($fullpagebar['savebutton']['form'])) : ?>
-                    <a class="btn btn-success" href="#" role="button" id="save-form-button"
-                       data-form-id="<?php echo $fullpagebar['savebutton']['form']; ?>">
-                        <span class="fa fa-floppy-o"></span>
-                        <?php eT("Save"); ?>
-                    </a>
-                <?php endif; ?>
-
-                <!-- Close -->
-                <?php if (isset($fullpagebar['closebutton']['url'])) : ?>
-                    <a class="btn btn-danger text-nowrap" href="<?php echo $fullpagebar['closebutton']['url']; ?>" role="button">
-                        <span class="fa fa-close"></span>
-                        <?php eT("Close"); ?>
-                    </a>
-                <?php endif; ?>
-
-                <!-- Return to Theme List -->
-                <?php if (isset($templateEditorBar['buttons']['returnbutton'])) : ?>
-                    <a class="btn btn-outline-secondary text-nowrap" href="<?php echo $this->createUrl("themeOptions/index"); ?>" role="button">
-                        <span class="fa fa-backward"></span>
-                        &nbsp;&nbsp;
-                        <?php eT("Back"); ?>
-                    </a>
-                <?php endif; ?>
-                </div>
-            </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 <?php if ($importModal) : ?>
     <?php $this->renderPartial('themeOptions/import_modal', ['importTemplate' => 'importtemplate', 'importModal' => 'importModal']); ?>
 <?php endif; ?>
 
-<!-- Template Editor -->
-<div class="col-12 templateeditor">
+<!-- theme dropdown select boxes-->
 
-    <?php if (!is_template_editable($templatename)) : ?>
-        <div class="alert alert-info alert-dismissible" role="alert">
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            <span class="fa fa-info-sign"></span>&nbsp;&nbsp;&nbsp;
-            <strong>
-                <?php eT('Note: This is a standard theme.'); ?>
-            </strong>
-            <?php
-            printf(gT('If you want to modify it %s you can extend it%s.'),
-                "<a href='#' title=\"" . gT("Extend theme") . "\""
-                . " onclick=\"javascript: copyprompt('" . gT("Please enter the name for the new theme:") . "', '" . gT("extends_") . "$templatename', '$templatename', 'copy')\">",
-                '</a>');
-            ?>
+            <!-- Right Menu -->
+<div class="mt-3 mb-3">
+    <div class="row row-cols-auto align-items-center justify-content-end gx-2">
+        <!-- Theme Select Box -->
+        <label class="col col-form-label text-nowrap" for='templatedir'><?php eT("Theme:"); ?></label>
+        <div class="col">
+            <select class="col listboxtemplates form-select" id='templatedir' name='templatedir'
+                    onchange="javascript: var uri = new Uri('<?php
+                    // Don't put 'sa' into the URL dirctly because Yii will then try to use filenames directly in the path because of the route
+                    echo $this->createUrl("admin/themes",
+                        [
+                            'sa'         => 'view',
+                            'editfile'   => $relativePathEditfile,
+                            'screenname' => $screenname
+                        ]); ?>'); uri.addQueryParam('templatename',this.value); window.open(uri.toString(), '_top')">
+                <?php echo themeoptions($templates, $templatename); ?>
+            </select>
         </div>
-    <?php endif; ?>
-    <?php if ((int)$templateapiversion < (int)App()->getConfig("templateapiversion")) : ?>
-        <div class="alert alert-info alert-dismissible" role="alert">
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            <div class="h4">
-                <span class="fa fa-info-sign"></span>
-                <?php eT('This theme is out of date.'); ?>
-            </div>
-            <?php
-            printf(gT("We can not guarantee optimum operation. It would be preferable to no longer use it or to make it compatible with the version %s of the LimeSurvey API."),
-                intval(App()->getConfig("versionnumber")));
-            ?>
+
+        <!-- Screen Select Box -->
+        <label class="col col-form-label text-nowrap" for='listboxtemplates'><?php eT("Screen:"); ?></label>
+        <div>
+            <?php echo CHtml::dropDownList('screenname',
+                $screenname,
+                $screens,
+                [
+                    'id'       => 'listboxtemplates',
+                    'class'    => "col listboxtemplates form-select",
+                    'onchange' => "javascript:  var uri = new Uri('" . $this->createUrl("admin/themes",
+                            [
+                                'sa'           => 'view',
+                                'editfile'     => $relativePathEditfile,
+                                'templatename' => $templatename
+                            ]) . "'); uri.addQueryParam('screenname',this.value); window.open(uri.toString(), '_top')"
+                ]); ?>
         </div>
-    <?php endif; ?>
+<!--        @TODO unused button???-->
+        <?php if (isset($fullpagebar['savebutton']['form'])) : ?>
+            <a class="btn btn-primary" href="#" role="button" id="save-form-button"
+               data-form-id="<?php echo $fullpagebar['savebutton']['form']; ?>">
+                <span class="ri-check-fill"></span>
+                <?php eT("Save"); ?>
+            </a>
+        <?php endif; ?>
+
+    </div>
+
+    <!-- Template Editor -->
+    <div class="col-12 templateeditor">
+
+        <?php if (!is_template_editable($templatename)) : ?>
+            <?php
+            $message = '<strong>' .
+                gT('Note: This is a standard theme.') .
+                '</strong> ' .
+                sprintf(
+                    gT('If you want to modify it %s you can extend it%s.'),
+                    "<a href='#' title=\"" . gT("Extend theme") . "\""
+                    . " onclick=\"javascript: copyprompt('" . gT("Please enter the name for the new theme:") . "', '" . gT("extends_") . "$templatename', '$templatename', 'copy')\">",
+                    '</a>'
+                );
+            $this->widget('ext.AlertWidget.AlertWidget', [
+                'text' => $message,
+                'type' => 'info',
+                'htmlOptions' => ['class' => 'mt-1'],
+            ]);
+            ?>
+        <?php endif; ?>
+        <?php if ((int)$templateapiversion < (int)App()->getConfig("templateapiversion")) : ?>
+            <?php
+            $message = sprintf(
+                gT(
+                    'We can not guarantee optimum operation. It would be preferable to no longer use it or to make it compatible with the version %s of the LimeSurvey API.'
+                ),
+                intval(App()->getConfig("versionnumber"))
+            );
+            $this->widget('ext.AlertWidget.AlertWidget', [
+                'header' => gT('This theme is out of date.'),
+                'text' => $message,
+                'type' => 'info',
+            ]);
+            ?>
+        <?php endif; ?>
+    </div>
 </div>

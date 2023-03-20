@@ -26,7 +26,7 @@
                             <h3><?php echo $key;?></h3>
                             <?php if($key==$oSurvey->template):?>
                                 <button
-                                    class="selectTemplate btn btn-outline-secondary btn-success  disabled"
+                                    class="selectTemplate btn btn-outline-secondary btn-primary  disabled"
                                     data-selectedtext="<?php eT("Selected!");?>"
                                     data-unselectedtext="<?php eT('Select');?> &nbsp; <?php echo $key;?>">
                                         <?php eT('Selected!');?>
