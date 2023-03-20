@@ -2647,6 +2647,32 @@ function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString)
 }
 
 /**
+ * Returns true if there are old links in answer/question/survey/email template/label set texts.
+ *
+ * @param string $type 'survey' or 'label'
+ * @param mixed $oldSurveyId
+ * @param mixed $string
+ * @return boolean True if the provided string includes links to the old survey. If the type is not 'survey' or 'label', it returns false.
+ */
+function checkOldLinks($type, $oldSurveyId, $string)
+{
+    if (empty($string)) {
+        return false;
+    }
+    $oldSurveyId = (int) $oldSurveyId;
+    if ($type == 'survey') {
+        $pattern = '(http(s)?:\/\/)?(([a-z0-9\/\.])*(?=(\/upload))\/upload\/surveys\/' . $oldSurveyId . '\/)';
+        return preg_match('/' . $pattern . '/u', $string, $m);
+    } elseif ($type == 'label') {
+        $pattern = '(http(s)?:\/\/)?(([a-z0-9\/\.])*(?=(\/upload))\/upload\/labels\/' . $oldSurveyId . '\/)';
+        return preg_match('/' . $pattern . '/u', $string, $m);
+    } else // unknown type
+    {
+        return false;
+    }
+}
+
+/**
  * This function creates the old fieldnames for survey import
  *
  * @param mixed $iOldSID The old survey id

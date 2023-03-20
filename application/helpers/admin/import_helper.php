@@ -118,6 +118,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
             }
             unset($insertdata['id']);
             // now translate any links
+            // TODO: Should this depend on $bTranslateLinksFields?
             $insertdata['group_name'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['group_name']);
             $insertdata['description'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['description']);
             if (isset($aGIDReplacements[$insertdata['gid']])) {
@@ -211,6 +212,17 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
                 $aQIDReplacements[$iOldQID] = $oQuestion->qid;
                 $results['questions']++;
                 $importedQuestions[$aQIDReplacements[$iOldQID]] = $oQuestion;
+            }
+
+            // If translate links is disabled, check for old links.
+            // We only do it here if the XML doesn't have a question_l10ns section.
+            if (!$bTranslateLinksFields && !isset($xml->question_l10ns->rows->row)) {
+                if (checkOldLinks('survey', $iOldSID, $oQuestionL10n->question)) {
+                    $results['importwarnings'][] = sprintf(gT("Question %s has outdated links."), $oQuestion->title);
+                }
+                if (checkOldLinks('survey', $iOldSID, $oQuestionL10n->help)) {
+                    $results['importwarnings'][] = sprintf(gT("Help text for question %s has outdated links."), $oQuestion->title);
+                }
             }
 
             if (isset($oQuestionL10n)) {
@@ -312,6 +324,15 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
                 $results['questions']++;
             }
 
+            // If translate links is disabled, check for old links.
+            // We only do it here if the XML doesn't have a question_l10ns section.
+            if (!$bTranslateLinksFields && !isset($xml->question_l10ns->rows->row)) {
+                if (checkOldLinks('survey', $iOldSID, $oQuestionL10n->question)) {
+                    $parentQuestion = $importedQuestions[$insertdata['parent_qid']];
+                    $results['importwarnings'][] = sprintf(gT("Subquestion %s of question %s has outdated links."), $oQuestion->title, $parentQuestion->title);
+                }
+            }
+
             if (isset($oQuestionL10n)) {
                 $oQuestionL10n->qid = $aQIDReplacements[$iOldQID];
                 $oQuestionL10n->save();
@@ -338,6 +359,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
             }
             unset($insertdata['id']);
             // now translate any links
+            // TODO: Should this depend on $bTranslateLinksFields?
             $insertdata['question'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']);
             $insertdata['help'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
             if (isset($aQIDReplacements[$insertdata['qid']])) {
@@ -639,6 +661,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
 
         // now translate any links
         if (!isset($xml->question_l10ns->rows->row)) {
+            // TODO: Should this depend on $options['translinkfields']?
             $insertdata['question'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']);
             $insertdata['help'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
             $oQuestionL10n = new QuestionL10n();
@@ -797,6 +820,14 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
                 $results['questions']++;
             }
 
+            // If translate links is disabled, check for old links.
+            // We only do it here if the XML doesn't have a question_l10ns section.
+            if (!$options['translinkfields'] && !isset($xml->question_l10ns->rows->row)) {
+                if (checkOldLinks('survey', $iOldSID, $oQuestionL10n->question)) {
+                    $results['importwarnings'][] = sprintf(gT("Subquestion %s has outdated links."), $oQuestion->title);
+                }
+            }
+
             if (isset($oQuestionL10n)) {
                 $oQuestionL10n->qid = $aQIDReplacements[$iOldQID];
                 $oQuestionL10n->save();
@@ -822,6 +853,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
             }
             unset($insertdata['id']);
             // now translate any links
+            // TODO: Should this depend on $options['translinkfields']?
             $insertdata['question'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']);
             $insertdata['help'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
             if (isset($aQIDReplacements[$insertdata['qid']])) {
@@ -873,6 +905,15 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
             if ($oAnswer->save() && isset($xml->answer_l10ns->rows->row)) {
                 $aAIDReplacements[$iOldAID] = $oAnswer->aid;
             }
+
+            // If translate links is disabled, check for old links.
+            // We only do it here if the XML doesn't have a answer_l10ns section.
+            if (!$options['translinkfields'] && !isset($xml->answer_l10ns->rows->row)) {
+                if (checkOldLinks('survey', $iOldSID, $oAnswerL10n->answer)) {
+                    $results['importwarnings'][] = sprintf(gT("Answer option %s has outdated links."), $insertdata['code']);
+                }
+            }
+
             $results['answers']++;
             if (isset($oAnswerL10n)) {
                 $oAnswer = Answer::model()->findByAttributes(
@@ -909,6 +950,13 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
             $oAnswerL10n = new AnswerL10n();
             $oAnswerL10n->setAttributes($insertdata, false);
             $oAnswerL10n->save();
+
+            // If translate links is disabled, check for old links.
+            if (!$options['translinkfields']) {
+                if (checkOldLinks('survey', $iOldSID, $oAnswerL10n->answer)) {
+                    $results['importwarnings'][] = sprintf(gT("Answer option %s has outdated links."), $insertdata['code']);
+                }
+            }
         }
     }
 
@@ -1408,6 +1456,31 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             if (isset($insertdata['surveyls_email_confirm'])) {
                 $insertdata['surveyls_email_confirm'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['surveyls_email_confirm']);
             }
+        } else {
+            if (checkOldLinks('survey', $iOldSID, $insertdata['surveyls_title'])) {
+                $results['importwarnings'][] = gT("Survey title has outdated links.");
+            }
+            if (isset($insertdata['surveyls_description']) && checkOldLinks('survey', $iOldSID, $insertdata['surveyls_description'])) {
+                $results['importwarnings'][] = gT("Survey description has outdated links.");
+            }
+            if (isset($insertdata['surveyls_welcometext']) && checkOldLinks('survey', $iOldSID, $insertdata['surveyls_welcometext'])) {
+                $results['importwarnings'][] = gT("Welcome text has outdated links.");
+            }
+            if (isset($insertdata['surveyls_urldescription']) && checkOldLinks('survey', $iOldSID, $insertdata['surveyls_urldescription'])) {
+                $results['importwarnings'][] = gT("URL description has outdated links.");
+            }
+            if (isset($insertdata['surveyls_email_invite']) && checkOldLinks('survey', $iOldSID, $insertdata['surveyls_email_invite'])) {
+                $results['importwarnings'][] = gT("Invitation email template has outdated links.");
+            }
+            if (isset($insertdata['surveyls_email_remind']) && checkOldLinks('survey', $iOldSID, $insertdata['surveyls_email_remind'])) {
+                $results['importwarnings'][] = gT("Reminder email template has outdated links.");
+            }
+            if (isset($insertdata['surveyls_email_register']) && checkOldLinks('survey', $iOldSID, $insertdata['surveyls_email_register'])) {
+                $results['importwarnings'][] = gT("Registration email template has outdated links.");
+            }
+            if (isset($insertdata['surveyls_email_confirm']) && checkOldLinks('survey', $iOldSID, $insertdata['surveyls_email_confirm'])) {
+                $results['importwarnings'][] = gT("Confirmation email template has outdated links.");
+            }
         }
 
         if (isset($insertdata['surveyls_attributecaptions']) && substr($insertdata['surveyls_attributecaptions'], 0, 1) != '{') {
@@ -1459,6 +1532,13 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 if ($bTranslateInsertansTags) {
                     $insertdata['group_name'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['group_name']);
                     $insertdata['description'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['description']);
+                } else {
+                    if (checkOldLinks('survey', $iOldSID, $insertdata['group_name'])) {
+                        $results['importwarnings'][] = gT("Group name has outdated links.");
+                    }
+                    if (checkOldLinks('survey', $iOldSID, $insertdata['description'])) {
+                        $results['importwarnings'][] = gT("Group description has outdated links.");
+                    }
                 }
                 $aDataL10n['group_name'] = $insertdata['group_name'];
                 $aDataL10n['description'] = $insertdata['description'];
@@ -1502,6 +1582,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 continue; //Skip invalid group ID
             }
             // now translate any links
+            // TODO: Should this depend on $bTranslateLinksFields?
             $insertdata['group_name'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['group_name']);
             if (isset($insertdata['description'])) {
                 $insertdata['description'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['description']);
@@ -1609,6 +1690,17 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 $importedQuestions[$aQIDReplacements[$iOldQID]] = $oQuestion;
             }
 
+            // If translate links is disabled, check for old links.
+            // We only do it here if the XML doesn't have a question_l10ns section.
+            if (!$bTranslateInsertansTags && !isset($xml->question_l10ns->rows->row)) {
+                if (checkOldLinks('survey', $iOldSID, $oQuestionL10n->question)) {
+                    $results['importwarnings'][] = sprintf(gT("Question %s has outdated links."), $oQuestion->title);
+                }
+                if (checkOldLinks('survey', $iOldSID, $oQuestionL10n->help)) {
+                    $results['importwarnings'][] = sprintf(gT("Help text for question %s has outdated links."), $oQuestion->title);
+                }
+            }
+
             if (isset($oQuestionL10n)) {
                 $oQuestionL10n->qid = $aQIDReplacements[$iOldQID];
                 $oQuestionL10n->save();
@@ -1628,6 +1720,8 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
     }
 
     // Import subquestions -------------------------------------------------------
+    /** @var Question[] */
+    $importedSubQuestions = [];
     if (isset($xml->subquestions)) {
         foreach ($xml->subquestions->rows->row as $row) {
             $insertdata = array();
@@ -1711,8 +1805,17 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                     throw new Exception(gT("Error while saving: ") . print_r($oQuestion->errors, true));
                 }
                 $aQIDReplacements[$iOldQID] = $oQuestion->qid;
-                ;
                 $results['subquestions']++;
+                $importedSubQuestions[$aQIDReplacements[$iOldQID]] = $oQuestion;
+            }
+
+            // If translate links is disabled, check for old links.
+            // We only do it here if the XML doesn't have a question_l10ns section.
+            if (!$bTranslateInsertansTags && !isset($xml->question_l10ns->rows->row)) {
+                if (checkOldLinks('survey', $iOldSID, $oQuestionL10n->question)) {
+                    $parentQuestion = $importedQuestions[$insertdata['parent_qid']];
+                    $results['importwarnings'][] = sprintf(gT("Subquestion %s of question %s has outdated links."), $oQuestion->title, $parentQuestion->title);
+                }
             }
 
             if (isset($oQuestionL10n)) {
@@ -1755,6 +1858,30 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             $oQuestionL10n = new QuestionL10n();
             $oQuestionL10n->setAttributes($insertdata, false);
             $oQuestionL10n->save();
+
+            // If translate links is disabled, check for old links.
+            if (!$bTranslateInsertansTags) {
+                if (checkOldLinks('survey', $iOldSID, $oQuestionL10n->question)) {
+                    // The question_l10ns includes L10n data for both questions and subquestions.
+                    // If it's a normal question, it should be in $importedQuestions.
+                    if (isset($importedQuestions[$insertdata['qid']])) {
+                        $question = $importedQuestions[$insertdata['qid']];
+                        $results['importwarnings'][] = sprintf(gT("Question %s has outdated links."), $question->title);
+                    } elseif (isset($importedSubQuestions[$insertdata['qid']])) {
+                        $subquestion = $importedSubQuestions[$insertdata['qid']];
+                        $parentQuestion = $importedQuestions[$subquestion->parent_qid];
+                        $results['importwarnings'][] = sprintf(gT("Subquestion %s of question %s has outdated links."), $subquestion->title, $parentQuestion->title);
+                    }
+                }
+                if (checkOldLinks('survey', $iOldSID, $oQuestionL10n->help)) {
+                    // If it's a normal question, it should be in $importedQuestions. Subquestions are not
+                    // supposed to have a help text.
+                    if (isset($importedQuestions[$insertdata['qid']])) {
+                        $question = $importedQuestions[$insertdata['qid']];
+                        $results['importwarnings'][] = sprintf(gT("Help text for question %s has outdated links."), $question->title);
+                    }
+                }
+            }
         }
     }
 
@@ -1796,6 +1923,16 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             if ($oAnswer->save() && isset($xml->answer_l10ns->rows->row) && isset($iOldAID)) {
                 $aAIDReplacements[$iOldAID] = $oAnswer->aid;
             }
+
+            // If translate links is disabled, check for old links.
+            // We only do it here if the XML doesn't have a answer_l10ns section.
+            if (!$bTranslateInsertansTags && !isset($xml->answer_l10ns->rows->row)) {
+                if (checkOldLinks('survey', $iOldSID, $oAnswerL10n->answer)) {
+                    $question = $importedQuestions[$insertdata['qid']];
+                    $results['importwarnings'][] = sprintf(gT("Answer option %s of question %s has outdated links."), $insertdata['code'], $question->title);
+                }
+            }
+
             $results['answers']++;
             if (isset($oAnswerL10n)) {
                 $oAnswer = Answer::model()->findByAttributes(['qid' => $insertdata['qid'], 'code' => $insertdata['code'], 'scale_id' => $insertdata['scale_id']]);
@@ -1826,6 +1963,14 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             $oAnswerL10n = new AnswerL10n();
             $oAnswerL10n->setAttributes($insertdata, false);
             $oAnswerL10n->save();
+
+            // If translate links is disabled, check for old links.
+            if (!$bTranslateInsertansTags) {
+                if (checkOldLinks('survey', $iOldSID, $oAnswerL10n->answer)) {
+                    $question = $importedQuestions[$insertdata['qid']];
+                    $results['importwarnings'][] = sprintf(gT("Answer option %s of question %s has outdated links."), $insertdata['code'], $question->title);
+                }
+            }
         }
     }
 
