@@ -554,7 +554,8 @@ class Themes extends SurveyCommonAction
         $aViewUrls = $this->initialise($templatename, $screenname, $editfile, true, true);
 
         App()->getClientScript()->reset();
-        App()->getClientScript()->registerPackage('bootstrap-themeeditor');
+        // dupliace bootstrap_5.min.js import causing dropdown not clickable in the theme editor page
+        // App()->getClientScript()->registerPackage('bootstrap-themeeditor');
 
         $undo    = gT("Undo (ctrl + Z)", "js");
         $redo    = gT("Redo (ctrl + Y)", "js");
