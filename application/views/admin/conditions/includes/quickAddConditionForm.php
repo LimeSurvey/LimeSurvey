@@ -37,7 +37,7 @@
                     <div class='col-md-10'>
                         <select class='form-select' name='quick-add-cquestions' id='quick-add-cquestions' size='7'>
                             <?php foreach ($cquestions as $cqn): ?>
-                                <option value='<?php echo $cqn[3]; ?>' title="<?php echo htmlspecialchars($cqn[0]); ?>">
+                                <option value='<?php echo $cqn[3]; ?>' title="<?php echo htmlspecialchars((string) $cqn[0]); ?>">
                                     <?php echo $cqn[0]; ?>
                                 </option>
                             <?php endforeach; ?>

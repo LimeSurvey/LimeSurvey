@@ -52,7 +52,7 @@ class SimpleTester
     {
         $ci =& get_instance();
 
-        if (isset($params['runFromIPs']) && strpos($params['runFromIPs'], $ci->input->server('SERVER_ADDR') === false)) {
+        if (isset($params['runFromIPs']) && strpos((string) $params['runFromIPs'], $ci->input->server('SERVER_ADDR') === false)) {
             // Tests won't be run automatically from this IP.
             $params['noautorun'] = true;
         }

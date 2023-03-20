@@ -103,7 +103,7 @@
         </div>
         <div id='stats_<?php echo $rt;?>' class='graphdisplay' style="text-align:center">
         </div>
-    <?php else: ?>
+<?php else: ?>
         <div class="row">
             <div class="col-md-12">
                 <?php

@@ -2924,9 +2924,9 @@ class SurveyAdministrationController extends LSBaseController
 
         if ($oSurvey->currentLanguageSettings->surveyls_url != "") {
             $aData['endurl'] = " <a target='_blank' href=\"" .
-                htmlspecialchars($aSurveyInfo['surveyls_url']) .
+                htmlspecialchars((string) $aSurveyInfo['surveyls_url']) .
                 "\" title=\"" .
-                htmlspecialchars($aSurveyInfo['surveyls_url']) .
+                htmlspecialchars((string) $aSurveyInfo['surveyls_url']) .
                 "\">" .
                 flattenText($oSurvey->currentLanguageSettings->surveyls_url) .
                 "</a>";

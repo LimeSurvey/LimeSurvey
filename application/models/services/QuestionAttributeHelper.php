@@ -172,7 +172,7 @@ class QuestionAttributeHelper
      */
     public function attributeAppliesToQuestionType($attribute, $questionType)
     {
-        return isset($attribute['types']) && stripos($attribute['types'], $questionType) !== false;
+        return isset($attribute['types']) && stripos((string) $attribute['types'], $questionType) !== false;
     }
 
     /**

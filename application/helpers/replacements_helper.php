@@ -256,7 +256,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
 
     $_googleAnalyticsStyle = ($thissurvey['googleanalyticsstyle'] ?? '1');
     $_endtext = '';
-    if (isset($thissurvey['surveyls_endtext']) && trim($thissurvey['surveyls_endtext']) != '') {
+    if (isset($thissurvey['surveyls_endtext']) && trim((string) $thissurvey['surveyls_endtext']) != '') {
         $_endtext = $thissurvey['surveyls_endtext'];
     }
 

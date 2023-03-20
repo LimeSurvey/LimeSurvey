@@ -102,7 +102,7 @@
                     <a href="#" class="nav-link dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" role="button" aria-expanded="false">
                         <!-- <i class="ri-user-fill"></i> <?php echo Yii::app()->session['user']; ?> <span class="caret"></span></a> -->
                         <span class='rounded-circle text-center d-flex align-items-center justify-content-center me-1'>
-                            <?= strtoupper(substr(Yii::app()->session['user'], 0, 1)) ?>
+                            <?= strtoupper(substr((string) Yii::app()->session['user'], 0, 1)) ?>
                         </span>
                         <?= Yii::app()->session['user']; ?>
                         <span class="caret"></span></a>

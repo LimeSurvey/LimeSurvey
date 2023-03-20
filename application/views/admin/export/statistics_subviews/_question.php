@@ -407,7 +407,7 @@
                     $myfield2 = $myfield.$row[4];
                     echo "<!-- $myfield2 - ";
 
-                    if (isset($_POST[$myfield2])) {echo htmlspecialchars($_POST[$myfield2]);}
+                    if (isset($_POST[$myfield2])) {echo htmlspecialchars((string) $_POST[$myfield2]);}
 
                     echo " -->\n";
                     echo '<div class="statistics-responses-label-group ls-space padding bottom-5 top-15 ls-flex-item">';
@@ -448,7 +448,7 @@
                     $myfield2 = $myfield . $row['title'];
                     echo "<!-- $myfield2 - ";
 
-                    if (isset($_POST[$myfield2])) {echo htmlspecialchars($_POST[$myfield2]);}
+                    if (isset($_POST[$myfield2])) {echo htmlspecialchars((string) $_POST[$myfield2]);}
 
                     echo " -->\n";
                     echo '<div class="statistics-responses-label-group ls-space padding bottom-5 top-15 ls-flex-item">';
@@ -486,7 +486,7 @@
                     $myfield2 = $myfield . "$row[4]";
                     echo "<!-- $myfield2 - ";
 
-                    if (isset($_POST[$myfield2])) {echo htmlspecialchars($_POST[$myfield2]);}
+                    if (isset($_POST[$myfield2])) {echo htmlspecialchars((string) $_POST[$myfield2]);}
 
                     echo " -->\n";
                     echo '<div class="statistics-responses-label-group ls-space padding bottom-5 top-15 ls-flex-item">';
@@ -535,7 +535,7 @@
                     $myfield2 = $myfield . "$row[4]";
                     echo "<!-- $myfield2 - ";
 
-                    if (isset($_POST[$myfield2])) {echo htmlspecialchars($_POST[$myfield2]);}
+                    if (isset($_POST[$myfield2])) {echo htmlspecialchars((string) $_POST[$myfield2]);}
 
                     echo " -->\n";
                     echo '<div class="statistics-responses-label-group ls-space padding bottom-5 top-15 ls-flex-item">';
@@ -578,7 +578,7 @@
                     {
                         $myfield2 = "T".$myfield . $row['title'] . "_" . $frow['title'];
                         echo "<!-- $myfield2 - ";
-                        if (isset($_POST[$myfield2])) {echo htmlspecialchars($_POST[$myfield2]);}
+                        if (isset($_POST[$myfield2])) {echo htmlspecialchars((string) $_POST[$myfield2]);}
                         echo " -->\n";
                         echo "<input type='checkbox'  name='summary[]' value='$myfield2'";
                         if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {echo " checked='checked'";}
@@ -635,7 +635,7 @@
                     foreach ($fresult as $frow) {
                         $myfield2 = $myfield . $row['title'] . "_" . $frow['title'];
                         echo "<!-- MyField2:  $myfield2 - ";
-                        if (isset($_POST[$myfield2])) {echo htmlspecialchars($_POST[$myfield2]);}
+                        if (isset($_POST[$myfield2])) {echo htmlspecialchars((string) $_POST[$myfield2]);}
                         echo " -->\n";
                         echo '<div class="statistics-responses-label-group ls-space padding bottom-5 top-15 ls-flex-item">';
                         if ($counter2 == 4) {echo "\t</tr>\n\t<tr>\n"; $counter2=0;}
@@ -751,7 +751,7 @@
                     $myfield3 = $myfield . $i;
                     echo "<!-- $myfield2 --> ";
                     echo '<div class="statistics-responses-label-group ls-space padding bottom-5 top-15 ls-flex-item">';
-                    if (isset($_POST[$myfield2])) {echo htmlspecialchars($_POST[$myfield2]);}
+                    if (isset($_POST[$myfield2])) {echo htmlspecialchars((string) $_POST[$myfield2]);}
 
                     echo "<input type='checkbox'  name='summary[]' value='$myfield2'";
 

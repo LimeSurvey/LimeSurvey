@@ -1410,7 +1410,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
         }
 
-        if (isset($insertdata['surveyls_attributecaptions']) && substr($insertdata['surveyls_attributecaptions'], 0, 1) != '{') {
+        if (isset($insertdata['surveyls_attributecaptions']) && substr((string) $insertdata['surveyls_attributecaptions'], 0, 1) != '{') {
             unset($insertdata['surveyls_attributecaptions']);
         }
         $aColumns = SurveyLanguageSetting::model()->attributes;

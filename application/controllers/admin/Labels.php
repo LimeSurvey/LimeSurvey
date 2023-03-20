@@ -755,7 +755,7 @@ class Labels extends SurveyCommonAction
         if (empty($labelSet)) {
             throw new CHttpException(404, gT("Invalid label set."));
         }
-        $languages = explode(" ", $labelSet->languages);
+        $languages = explode(" ", (string) $labelSet->languages);
         $rowsHtml = [];
         $first = true;
         foreach ($languages as $language) {

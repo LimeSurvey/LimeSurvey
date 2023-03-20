@@ -1125,7 +1125,7 @@ class LimeExpressionManager
             // If want to filter question Q2 on Q1, where each have subquestions SQ1-SQ3, this is equivalent to relevance equations of:
             // relevance for Q2_SQ1 is Q1_SQ1!=''
             $array_filter = null;
-            if (isset($qattr['array_filter']) && trim($qattr['array_filter']) != '') {
+            if (isset($qattr['array_filter']) && trim((string) $qattr['array_filter']) != '') {
                 $array_filter = $qattr['array_filter'];
                 $this->qrootVarName2arrayFilter[$qinfo['rootVarName']]['array_filter'] = $array_filter;
             }
@@ -1134,7 +1134,7 @@ class LimeExpressionManager
             // If want to filter question Q2 on Q1, where each have subquestions SQ1-SQ3, this is equivalent to relevance equations of:
             // relevance for Q2_SQ1 is Q1_SQ1==''
             $array_filter_exclude = null;
-            if (isset($qattr['array_filter_exclude']) && trim($qattr['array_filter_exclude']) != '') {
+            if (isset($qattr['array_filter_exclude']) && trim((string) $qattr['array_filter_exclude']) != '') {
                 $array_filter_exclude = $qattr['array_filter_exclude'];
                 $this->qrootVarName2arrayFilter[$qinfo['rootVarName']]['array_filter_exclude'] = $array_filter_exclude;
             }
@@ -1463,7 +1463,7 @@ class LimeExpressionManager
 
             // commented_checkbox : only for checkbox with comment ("P")
             $commented_checkbox = '';
-            if (isset($qattr['commented_checkbox']) && trim($qattr['commented_checkbox']) != '') {
+            if (isset($qattr['commented_checkbox']) && trim((string) $qattr['commented_checkbox']) != '') {
                 switch ($type) {
                     case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
                         if ($hasSubqs) {
@@ -1556,7 +1556,7 @@ class LimeExpressionManager
             }
             // date_min
             // Maximum date allowed in date question
-            if (isset($qattr['date_min']) && trim($qattr['date_min']) != '') {
+            if (isset($qattr['date_min']) && trim((string) $qattr['date_min']) != '') {
                 $date_min = $qattr['date_min'];
                 if ($hasSubqs) {
                     $subqs = $qinfo['subqs'];
@@ -1614,7 +1614,7 @@ class LimeExpressionManager
 
             // date_max
             // Maximum date allowed in date question
-            if (isset($qattr['date_max']) && trim($qattr['date_max']) != '') {
+            if (isset($qattr['date_max']) && trim((string) $qattr['date_max']) != '') {
                 $date_max = $qattr['date_max'];
                 if ($hasSubqs) {
                     $subqs = $qinfo['subqs'];
@@ -1625,12 +1625,12 @@ class LimeExpressionManager
                         switch ($type) {
                             case Question::QT_D_DATE: //DATE QUESTION TYPE
                                 // date_max: Determine whether we have an expression, a full date (YYYY-MM-DD) or only a year(YYYY)
-                                if (trim($qattr['date_max']) != '') {
+                                if (trim((string) $qattr['date_max']) != '') {
                                     $maxdate = $qattr['date_max'];
-                                    if ((strlen($maxdate) == 4) && ($maxdate >= 1900) && ($maxdate <= 2099)) {
+                                    if ((strlen((string) $maxdate) == 4) && ($maxdate >= 1900) && ($maxdate <= 2099)) {
                                         // backward compatibility: if only a year is given, add month and day
                                         $date_max = '\'' . $maxdate . '-12-31 23:59' . '\'';
-                                    } elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/", $maxdate)) {
+                                    } elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/", (string) $maxdate)) {
                                         $date_max = '\'' . $maxdate . ' 23:59\'';
                                     } elseif (array_key_exists($date_max, $this->qcode2sgqa)) {  // refers to another question
                                         $date_max = $date_max . '.NAOK';
@@ -1672,7 +1672,7 @@ class LimeExpressionManager
 
             // equals_num_value
             // Validation:= sum(sq1,...,sqN) == value (which could be an expression).
-            if (isset($qattr['equals_num_value']) && trim($qattr['equals_num_value']) != '') {
+            if (isset($qattr['equals_num_value']) && trim((string) $qattr['equals_num_value']) != '') {
                 $equals_num_value = $qattr['equals_num_value'];
                 if ($hasSubqs) {
                     $subqs = $qinfo['subqs'];
@@ -1702,9 +1702,9 @@ class LimeExpressionManager
                         $precision = null;    // default is not to round
                         if (isset($qattr['slider_layout']) && $qattr['slider_layout'] == '1') {
                             $precision = 0;   // default is to round to whole numbers
-                            if (isset($qattr['slider_accuracy']) && trim($qattr['slider_accuracy']) != '') {
+                            if (isset($qattr['slider_accuracy']) && trim((string) $qattr['slider_accuracy']) != '') {
                                 $slider_accuracy = $qattr['slider_accuracy'];
-                                $_parts = explode('.', $slider_accuracy);
+                                $_parts = explode('.', (string) $slider_accuracy);
                                 if (isset($_parts[1])) {
                                     $precision = strlen($_parts[1]);    // number of digits after mantissa
                                 }
@@ -1742,8 +1742,8 @@ class LimeExpressionManager
 
             // exclude_all_others
             // If any excluded options are true (and relevant), then disable all other input elements for that question
-            if (isset($qattr['exclude_all_others']) && trim($qattr['exclude_all_others']) != '') {
-                $exclusive_options = explode(';', $qattr['exclude_all_others']);
+            if (isset($qattr['exclude_all_others']) && trim((string) $qattr['exclude_all_others']) != '') {
+                $exclusive_options = explode(';', (string) $qattr['exclude_all_others']);
                 if ($hasSubqs) {
                     foreach ($exclusive_options as $exclusive_option) {
                         $exclusive_option = trim($exclusive_option);
@@ -1795,10 +1795,10 @@ class LimeExpressionManager
             // if (count(this.relevanceStatus) == count(this)) { set exclusive option value to "Y" and call checkconditions() }
             // However, note that would need to blank the values, not use relevance, otherwise can't unclick the _auto option without having it re-enable itself
             if (
-                isset($qattr['exclude_all_others_auto']) && trim($qattr['exclude_all_others_auto']) == '1'
-                && isset($qattr['exclude_all_others']) && trim($qattr['exclude_all_others']) != '' && count(explode(';', trim($qattr['exclude_all_others']))) == 1
+                isset($qattr['exclude_all_others_auto']) && trim((string) $qattr['exclude_all_others_auto']) == '1'
+                && isset($qattr['exclude_all_others']) && trim((string) $qattr['exclude_all_others']) != '' && count(explode(';', trim((string) $qattr['exclude_all_others']))) == 1
             ) {
-                $exclusive_option = trim($qattr['exclude_all_others']);
+                $exclusive_option = trim((string) $qattr['exclude_all_others']);
                 if ($hasSubqs) {
                     $subqs = $qinfo['subqs'];
                     $sq_names = [];
@@ -1899,7 +1899,7 @@ class LimeExpressionManager
 
             // min_answers
             // Validation:= count(sq1,...,sqN) >= value (which could be an expression).
-            if (isset($qattr['min_answers']) && trim($qattr['min_answers']) != '' && trim($qattr['min_answers']) != '0') {
+            if (isset($qattr['min_answers']) && trim((string) $qattr['min_answers']) != '' && trim((string) $qattr['min_answers']) != '0') {
                 $min_answers = $qattr['min_answers'];
                 if ($hasSubqs) {
                     $subqs = $qinfo['subqs'];
@@ -1970,7 +1970,7 @@ class LimeExpressionManager
 
             // max_answers
             // Validation:= count(sq1,...,sqN) <= value (which could be an expression).
-            if (isset($qattr['max_answers']) && trim($qattr['max_answers']) != '') {
+            if (isset($qattr['max_answers']) && trim((string) $qattr['max_answers']) != '') {
                 $max_answers = $qattr['max_answers'];
                 if ($hasSubqs) {
                     $subqs = $qinfo['subqs'];
@@ -2051,12 +2051,12 @@ class LimeExpressionManager
                 }
             }
             // Fix min_num_value_n and max_num_value_n for multinumeric with slider: see bug #7798
-            if ($type == Question::QT_K_MULTIPLE_NUMERICAL && isset($qattr['slider_min']) && (!isset($qattr['min_num_value_n']) || trim($qattr['min_num_value_n']) == '')) {
+            if ($type == Question::QT_K_MULTIPLE_NUMERICAL && isset($qattr['slider_min']) && (!isset($qattr['min_num_value_n']) || trim((string) $qattr['min_num_value_n']) == '')) {
                 $qattr['min_num_value_n'] = $qattr['slider_min'];
             }
             // min_num_value_n
             // Validation:= N >= value (which could be an expression).
-            if (isset($qattr['min_num_value_n']) && trim($qattr['min_num_value_n']) != '') {
+            if (isset($qattr['min_num_value_n']) && trim((string) $qattr['min_num_value_n']) != '') {
                 $min_num_value_n = $qattr['min_num_value_n'];
                 if ($hasSubqs) {
                     $subqs = $qinfo['subqs'];
@@ -2111,12 +2111,12 @@ class LimeExpressionManager
             }
 
             // Fix min_num_value_n and max_num_value_n for multinumeric with slider: see bug #7798
-            if ($type == Question::QT_K_MULTIPLE_NUMERICAL && isset($qattr['slider_max']) && (!isset($qattr['max_num_value_n']) || trim($qattr['max_num_value_n']) == '')) {
+            if ($type == Question::QT_K_MULTIPLE_NUMERICAL && isset($qattr['slider_max']) && (!isset($qattr['max_num_value_n']) || trim((string) $qattr['max_num_value_n']) == '')) {
                 $qattr['max_num_value_n'] = $qattr['slider_max'];
             }
             // max_num_value_n
             // Validation:= N <= value (which could be an expression).
-            if (isset($qattr['max_num_value_n']) && trim($qattr['max_num_value_n']) != '') {
+            if (isset($qattr['max_num_value_n']) && trim((string) $qattr['max_num_value_n']) != '') {
                 $max_num_value_n = $qattr['max_num_value_n'];
                 if ($hasSubqs) {
                     $subqs = $qinfo['subqs'];
@@ -2172,7 +2172,7 @@ class LimeExpressionManager
 
             // min_num_value
             // Validation:= sum(sq1,...,sqN) >= value (which could be an expression).
-            if (isset($qattr['min_num_value']) && trim($qattr['min_num_value']) != '') {
+            if (isset($qattr['min_num_value']) && trim((string) $qattr['min_num_value']) != '') {
                 $min_num_value = $qattr['min_num_value'];
                 if ($hasSubqs) {
                     $subqs = $qinfo['subqs'];
@@ -2221,7 +2221,7 @@ class LimeExpressionManager
 
             // max_num_value
             // Validation:= sum(sq1,...,sqN) <= value (which could be an expression).
-            if (isset($qattr['max_num_value']) && trim($qattr['max_num_value']) != '') {
+            if (isset($qattr['max_num_value']) && trim((string) $qattr['max_num_value']) != '') {
                 $max_num_value = $qattr['max_num_value'];
                 if ($hasSubqs) {
                     $subqs = $qinfo['subqs'];
@@ -2271,7 +2271,7 @@ class LimeExpressionManager
 
             // multiflexible_min
             // Validation:= sqN >= value (which could be an expression).
-            if (isset($qattr['multiflexible_min']) && trim($qattr['multiflexible_min']) != '' && $input_boxes == '1') {
+            if (isset($qattr['multiflexible_min']) && trim((string) $qattr['multiflexible_min']) != '' && $input_boxes == '1') {
                 $multiflexible_min = $qattr['multiflexible_min'];
                 if ($hasSubqs) {
                     $subqs = $qinfo['subqs'];
@@ -2320,7 +2320,7 @@ class LimeExpressionManager
 
             // multiflexible_max
             // Validation:= sqN <= value (which could be an expression).
-            if (isset($qattr['multiflexible_max']) && trim($qattr['multiflexible_max']) != '' && $input_boxes == '1') {
+            if (isset($qattr['multiflexible_max']) && trim((string) $qattr['multiflexible_max']) != '' && $input_boxes == '1') {
                 $multiflexible_max = $qattr['multiflexible_max'];
                 if ($hasSubqs) {
                     $subqs = $qinfo['subqs'];
@@ -2369,7 +2369,7 @@ class LimeExpressionManager
 
             // min_num_of_files
             // Validation:= sq_filecount >= value (which could be an expression).
-            if (isset($qattr['min_num_of_files']) && trim($qattr['min_num_of_files']) != '' && trim($qattr['min_num_of_files']) != '0') {
+            if (isset($qattr['min_num_of_files']) && trim((string) $qattr['min_num_of_files']) != '' && trim((string) $qattr['min_num_of_files']) != '0') {
                 $min_num_of_files = $qattr['min_num_of_files'];
 
                 $eqn = '';
@@ -2398,7 +2398,7 @@ class LimeExpressionManager
             }
             // max_num_of_files
             // Validation:= sq_filecount <= value (which could be an expression).
-            if (isset($qattr['max_num_of_files']) && trim($qattr['max_num_of_files']) != '') {
+            if (isset($qattr['max_num_of_files']) && trim((string) $qattr['max_num_of_files']) != '') {
                 $max_num_of_files = $qattr['max_num_of_files'];
                 $eqn = '';
                 $sgqa = $qinfo['sgqa'];
@@ -2427,7 +2427,7 @@ class LimeExpressionManager
 
             // num_value_int_only
             // Validation fixnum(sqN)==int(fixnum(sqN)) : fixnum or not fix num ..... 10.00 == 10
-            if (isset($qattr['num_value_int_only']) && trim($qattr['num_value_int_only']) == "1") {
+            if (isset($qattr['num_value_int_only']) && trim((string) $qattr['num_value_int_only']) == "1") {
                 $num_value_int_only = "1";
                 if ($hasSubqs) {
                     $subqs = $qinfo['subqs'];
@@ -2474,7 +2474,7 @@ class LimeExpressionManager
 
             // num_value_int_only
             // Validation is_numeric(sqN)
-            if (isset($qattr['numbers_only']) && trim($qattr['numbers_only']) == "1") {
+            if (isset($qattr['numbers_only']) && trim((string) $qattr['numbers_only']) == "1") {
                 $numbers_only = 1;
                 switch ($type) {
                     case Question::QT_S_SHORT_FREE_TEXT: // Short text
@@ -2567,7 +2567,7 @@ class LimeExpressionManager
 
             // other_comment_mandatory
             // Validation:= sqN <= value (which could be an expression).
-            if (isset($qattr['other_comment_mandatory']) && trim($qattr['other_comment_mandatory']) == '1') {
+            if (isset($qattr['other_comment_mandatory']) && trim((string) $qattr['other_comment_mandatory']) == '1') {
                 $other_comment_mandatory = $qattr['other_comment_mandatory'];
                 $eqn = '';
                 if ($other_comment_mandatory == '1' && $this->questionSeq2relevance[$qinfo['qseq']]['other'] == 'Y') {
@@ -2602,7 +2602,7 @@ class LimeExpressionManager
 
             // other_numbers_only
             // Validation:= is_numeric(sqN).
-            if (isset($qattr['other_numbers_only']) && trim($qattr['other_numbers_only']) == '1') {
+            if (isset($qattr['other_numbers_only']) && trim((string) $qattr['other_numbers_only']) == '1') {
                 $other_numbers_only = 1;
                 $eqn = '';
                 if ($this->questionSeq2relevance[$qinfo['qseq']]['other'] == 'Y') {
@@ -2717,14 +2717,14 @@ class LimeExpressionManager
             }
 
             // em_validation_q_tip - a description of the EM validation equation that must be satisfied for the whole question.
-            if (isset($qattr['em_validation_q_tip']) && !is_null($qattr['em_validation_q_tip']) && trim($qattr['em_validation_q_tip']) != '') {
-                $em_validation_q_tip = trim($qattr['em_validation_q_tip']);
+            if (isset($qattr['em_validation_q_tip']) && !is_null($qattr['em_validation_q_tip']) && trim((string) $qattr['em_validation_q_tip']) != '') {
+                $em_validation_q_tip = trim((string) $qattr['em_validation_q_tip']);
             } else {
                 $em_validation_q_tip = '';
             }
 
             // em_validation_q - an EM validation equation that must be satisfied for the whole question.  Uses 'this' in the equation
-            if (isset($qattr['em_validation_q']) && !is_null($qattr['em_validation_q']) && trim($qattr['em_validation_q']) != '') {
+            if (isset($qattr['em_validation_q']) && !is_null($qattr['em_validation_q']) && trim((string) $qattr['em_validation_q']) != '') {
                 $em_validation_q = $qattr['em_validation_q'];
                 $sq_names = [];
                 if ($hasSubqs) {
@@ -2801,15 +2801,15 @@ class LimeExpressionManager
             }
 
             // em_validation_sq_tip - a description of the EM validation equation that must be satisfied for each subquestion.
-            if (isset($qattr['em_validation_sq_tip']) && !is_null($qattr['em_validation_sq_tip']) && trim($qattr['em_validation_sq']) != '') {
-                $em_validation_sq_tip = trim($qattr['em_validation_sq_tip']);
+            if (isset($qattr['em_validation_sq_tip']) && !is_null($qattr['em_validation_sq_tip']) && trim((string) $qattr['em_validation_sq']) != '') {
+                $em_validation_sq_tip = trim((string) $qattr['em_validation_sq_tip']);
             } else {
                 $em_validation_sq_tip = '';
             }
 
 
             // em_validation_sq - an EM validation equation that must be satisfied for each subquestion.  Uses 'this' in the equation
-            if (isset($qattr['em_validation_sq']) && !is_null($qattr['em_validation_sq']) && trim($qattr['em_validation_sq']) != '') {
+            if (isset($qattr['em_validation_sq']) && !is_null($qattr['em_validation_sq']) && trim((string) $qattr['em_validation_sq']) != '') {
                 $em_validation_sq = $qattr['em_validation_sq'];
                 if ($hasSubqs) {
                     $subqs = $qinfo['subqs'];
@@ -3088,7 +3088,7 @@ class LimeExpressionManager
 
             // other comment mandatory
             if ($other_comment_mandatory != '') {
-                if (isset($qattr['other_replace_text']) && trim($qattr['other_replace_text']) != '') {
+                if (isset($qattr['other_replace_text']) && trim((string) $qattr['other_replace_text']) != '') {
                     $othertext = trim((string) $qattr['other_replace_text']);
                 } else {
                     $othertext = $this->gT('Other:');
@@ -3098,7 +3098,7 @@ class LimeExpressionManager
 
             // other comment mandatory
             if ($other_numbers_only != '') {
-                if (isset($qattr['other_replace_text']) && trim($qattr['other_replace_text']) != '') {
+                if (isset($qattr['other_replace_text']) && trim((string) $qattr['other_replace_text']) != '') {
                     $othertext = trim((string) $qattr['other_replace_text']);
                 } else {
                     $othertext = $this->gT('Other:');
@@ -3380,13 +3380,13 @@ class LimeExpressionManager
 
         $this->multiflexiAnswers = [];
         foreach ($fieldmap as $fielddata) {
-            if (!isset($fielddata['fieldname']) || !preg_match('#^\d+X\d+X\d+#', $fielddata['fieldname'])) {
+            if (!isset($fielddata['fieldname']) || !preg_match('#^\d+X\d+X\d+#', (string) $fielddata['fieldname'])) {
                 continue;   // not an SGQA value
             }
             $sgqa = $fielddata['fieldname'];
             $type = $fielddata['type'];
             $mandatory = $fielddata['mandatory'];
-            $fieldNameParts = explode('X', $sgqa);
+            $fieldNameParts = explode('X', (string) $sgqa);
             $groupNum = $fieldNameParts[1];
             $aid = (isset($fielddata['aid']) ? $fielddata['aid'] : '');
             $sqid = (isset($fielddata['sqid']) ? $fielddata['sqid'] : '');
@@ -3398,9 +3398,9 @@ class LimeExpressionManager
             }
 
             $questionNum = $fielddata['qid'];
-            $relevance = (isset($fielddata['relevance'])) ? trim($fielddata['relevance']) : 1;
-            $SQrelevance = (isset($fielddata['SQrelevance'])) ? trim($fielddata['SQrelevance']) : 1;
-            $grelevance = (isset($fielddata['grelevance'])) ? trim($fielddata['grelevance']) : 1;
+            $relevance = (isset($fielddata['relevance'])) ? trim((string) $fielddata['relevance']) : 1;
+            $SQrelevance = (isset($fielddata['SQrelevance'])) ? trim((string) $fielddata['SQrelevance']) : 1;
+            $grelevance = (isset($fielddata['grelevance'])) ? trim((string) $fielddata['grelevance']) : 1;
             $hidden = (isset($qattr[$questionNum]['hidden'])) ? ($qattr[$questionNum]['hidden'] == '1') : false;
             $scale_id = (isset($fielddata['scale_id'])) ? $fielddata['scale_id'] : '0';
             $preg = (isset($fielddata['preg'])) ? $fielddata['preg'] : null; // a perl regular exrpession validation function
@@ -3458,12 +3458,12 @@ class LimeExpressionManager
                 case Question::QT_R_RANKING: // Ranking STYLE
                     $ansArray = (isset($this->qans[$questionNum]) ? $this->qans[$questionNum] : null);
                     if ($other == 'Y' && ($type == Question::QT_L_LIST || $type == Question::QT_EXCLAMATION_LIST_DROPDOWN)) {
-                        if (preg_match('/other$/', $sgqa)) {
+                        if (preg_match('/other$/', (string) $sgqa)) {
                             $ansArray = null;   // since the other variable doesn't need it
                         } else {
                             $_qattr = isset($qattr[$questionNum]) ? $qattr[$questionNum] : [];
-                            if (isset($_qattr['other_replace_text']) && trim($_qattr['other_replace_text']) != '') {
-                                $othertext = trim($_qattr['other_replace_text']);
+                            if (isset($_qattr['other_replace_text']) && trim((string) $_qattr['other_replace_text']) != '') {
+                                $othertext = trim((string) $_qattr['other_replace_text']);
                             } else {
                                 $othertext = $this->gT('Other:');
                             }
@@ -3555,7 +3555,7 @@ class LimeExpressionManager
                     ;
                     $question = $fielddata['subquestion'] . '[' . $fielddata['scale'] . ']';
                     //                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion'] . '[' . $fielddata['scale'] . ']';
-                    $rowdivid = substr($sgqa, 0, -2);
+                    $rowdivid = substr((string) $sgqa, 0, -2);
                     break;
                 case Question::QT_A_ARRAY_5_POINT: // Array (5 point choice) radio-buttons
                 case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: // Array (10 point choice) radio-buttons
@@ -3572,14 +3572,14 @@ class LimeExpressionManager
                     $question = $fielddata['subquestion'];
                     // In M and P , we use $question (sub question) for shown. With other : we show to the user 'other_replace_text' if it's set. see #13505
                     if ($other == "Y") {
-                        if (isset($qattr[$questionNum]['other_replace_text']) && trim($qattr[$questionNum]['other_replace_text']) != '') {
-                            $question = trim($qattr[$questionNum]['other_replace_text']);
+                        if (isset($qattr[$questionNum]['other_replace_text']) && trim((string) $qattr[$questionNum]['other_replace_text']) != '') {
+                            $question = trim((string) $qattr[$questionNum]['other_replace_text']);
                         } else {
                             $question = $this->gT('Other:');
                         }
                     }
                     //                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion'];
-                    if ($type == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS && preg_match("/comment$/", $sgqa)) {
+                    if ($type == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS && preg_match("/comment$/", (string) $sgqa)) {
                         //                            $rowdivid = substr($sgqa,0,-7);
                     } else {
                         $sqsuffix = '_' . $fielddata['aid'];
@@ -3601,7 +3601,7 @@ class LimeExpressionManager
                     $varName = $fielddata['title'] . '_' . $fielddata['aid'];
                     $question = $fielddata['subquestion1'] . '[' . $fielddata['subquestion2'] . ']';
                     //                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion1'] . '[' . $fielddata['subquestion2'] . ']';
-                    $rowdivid = substr($sgqa, 0, (int)strpos($sgqa, '_'));
+                    $rowdivid = substr((string) $sgqa, 0, (int)strpos((string) $sgqa, '_'));
                     break;
                 default:
                     // TODO: Internal error if this happens
@@ -3628,7 +3628,7 @@ class LimeExpressionManager
                 case Question::QT_L_LIST: //LIST drop-down/radio-button list
                 case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
                 case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
-                    if (isset($qattr[$questionNum]['other_numbers_only']) && $qattr[$questionNum]['other_numbers_only'] == '1' && preg_match('/other$/', $sgqa)) {
+                    if (isset($qattr[$questionNum]['other_numbers_only']) && $qattr[$questionNum]['other_numbers_only'] == '1' && preg_match('/other$/', (string) $sgqa)) {
                         $onlynum = true;
                     }
                     break;
@@ -3657,16 +3657,16 @@ class LimeExpressionManager
                     $jsVarName = 'java' . $sgqa;
                     break;
                 case Question::QT_EXCLAMATION_LIST_DROPDOWN: //List - dropdown
-                    if (preg_match("/other$/", $sgqa)) {
+                    if (preg_match("/other$/", (string) $sgqa)) {
                         $jsVarName = 'java' . $sgqa;
-                        $jsVarName_on = 'othertext' . substr($sgqa, 0, -5);
+                        $jsVarName_on = 'othertext' . substr((string) $sgqa, 0, -5);
                     } else {
                         $jsVarName = 'java' . $sgqa;
                         $jsVarName_on = $jsVarName;
                     }
                     break;
                 case Question::QT_L_LIST: //LIST drop-down/radio-button list
-                    if (preg_match("/other$/", $sgqa)) {
+                    if (preg_match("/other$/", (string) $sgqa)) {
                         $jsVarName = 'java' . $sgqa;
                         $jsVarName_on = 'answer' . $sgqa . "text";
                     } else {
@@ -3695,7 +3695,7 @@ class LimeExpressionManager
                     $jsVarName = 'java' . $sgqa;
                     break;
                 case Question::QT_1_ARRAY_DUAL: // Array dual scale
-                    $jsVarName = 'java' . str_replace('#', '_', $sgqa);
+                    $jsVarName = 'java' . str_replace('#', '_', (string) $sgqa);
                     $jsVarName_on = $jsVarName;
                     break;
                 case Question::QT_COLON_ARRAY_NUMBERS: // Array 1 to 10
@@ -3709,7 +3709,7 @@ class LimeExpressionManager
                     $jsVarName_on = $jsVarName;
                     break;
                 case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
-                    if (preg_match("/(other|comment)$/", $sgqa)) {
+                    if (preg_match("/(other|comment)$/", (string) $sgqa)) {
                         $jsVarName_on = 'answer' . $sgqa;  // is this true for survey.php and not for group.php?
                         $jsVarName = 'java' . $sgqa;
                     } else {
@@ -3762,7 +3762,7 @@ class LimeExpressionManager
                         }
                         break;
                     case Question::QT_O_LIST_WITH_COMMENT:
-                        if (strlen((string) $varName) > 8 && substr_compare($varName, '_comment', -8) === 0) {// The comment subquestion More speediest than regexp
+                        if (strlen((string) $varName) > 8 && substr_compare((string) $varName, '_comment', -8) === 0) {// The comment subquestion More speediest than regexp
                             $q2subqInfo[$questionNum]['subqs'][] = [
                                 'varName'      => $varName,
                                 'rowdivid'     => $surveyid . 'X' . $groupNum . 'X' . $questionNum . 'comment',// Not sure we need it
@@ -6117,7 +6117,7 @@ class LimeExpressionManager
                     }
                     if ($qInfo['other'] == 'Y') {
                         $qattr = isset($LEM->qattr[$qid]) ? $LEM->qattr[$qid] : [];
-                        if (isset($qattr['other_replace_text']) && trim($qattr['other_replace_text']) != '') {
+                        if (isset($qattr['other_replace_text']) && trim((string) $qattr['other_replace_text']) != '') {
                             $othertext = trim((string) $qattr['other_replace_text']);
                         } else {
                             $othertext = $LEM->gT('Other:');
@@ -6496,7 +6496,7 @@ class LimeExpressionManager
             }
         } elseif ($qInfo['type'] == Question::QT_ASTERISK_EQUATION) {
             // Process relevant equations, even if hidden, and write the result to the database
-            $textToParse = (isset($LEM->qattr[$qid]['equation']) && trim($LEM->qattr[$qid]['equation']) != "") ? $LEM->qattr[$qid]['equation'] : $qInfo['qtext'];
+            $textToParse = (isset($LEM->qattr[$qid]['equation']) && trim((string) $LEM->qattr[$qid]['equation']) != "") ? $LEM->qattr[$qid]['equation'] : $qInfo['qtext'];
             //$result = flattenText($LEM->ProcessString($textToParse, $qInfo['qid'],NULL,1,1,false,false,true));// More numRecursionLevels ?
             $sgqa = $LEM->qid2code[$qid];
             $redata = [];
@@ -7437,7 +7437,7 @@ class LimeExpressionManager
                             $jsParts[] = "  LEMrel" . $_qid . "(sgqa);\n";
                             if (
                                 isset($LEM->qattr[$_qid]['exclude_all_others_auto']) && $LEM->qattr[$_qid]['exclude_all_others_auto'] == '1'
-                                && isset($qid2exclusiveAuto['js']) && strlen($qid2exclusiveAuto['js']) > 0
+                                && isset($qid2exclusiveAuto['js']) && strlen((string) $qid2exclusiveAuto['js']) > 0
                             ) {
                                 $jsParts[] = $qid2exclusiveAuto['js'];
                                 $vars = explode('|', (string) $qid2exclusiveAuto['relevanceVars']);
@@ -7470,7 +7470,7 @@ class LimeExpressionManager
                             $jsParts[] = "  LEMrel" . $_qid . "(sgqa);\n";
                             if (
                                 isset($LEM->qattr[$_qid]['exclude_all_others_auto']) && $LEM->qattr[$_qid]['exclude_all_others_auto'] == '1'
-                                && isset($qid2exclusiveAuto['js']) && strlen($qid2exclusiveAuto['js']) > 0
+                                && isset($qid2exclusiveAuto['js']) && strlen((string) $qid2exclusiveAuto['js']) > 0
                             ) {
                                 $jsParts[] = $qid2exclusiveAuto['js'];
                                 $vars = explode('|', (string) $qid2exclusiveAuto['relevanceVars']);
@@ -8192,7 +8192,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             foreach ($qattrs as $qid => $qattr) {
                 $updates = [];
                 foreach ($attibutemap as $src => $target) {
-                    if (isset($qattr[$src]) && trim($qattr[$src]) != '') {
+                    if (isset($qattr[$src]) && trim((string) $qattr[$src]) != '') {
                         $updates[$target] = $qattr[$src];
                     }
                 }

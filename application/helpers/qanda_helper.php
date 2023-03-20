@@ -526,7 +526,7 @@ function currentRelevecanceClass($surveyId, $baseName, $name, $aQuestionAttribut
     if ($relevanceStatus) {
         return "";
     }
-    $sExcludeAllOther = isset($aQuestionAttributes['exclude_all_others']) ? trim($aQuestionAttributes['exclude_all_others']) : '';
+    $sExcludeAllOther = isset($aQuestionAttributes['exclude_all_others']) ? trim((string) $aQuestionAttributes['exclude_all_others']) : '';
     /* EM don't set difference between relevance in session, if exclude_all_others is set , just ls-disabled */
     if ($sExcludeAllOther) {
         foreach (explode(';', $sExcludeAllOther) as $sExclude) {
@@ -839,7 +839,7 @@ function do_list_dropdown($ia)
         $aData['display'] = ($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]] != '-oth-') ? 'display: none;' : '';
         $aData['label'] = $othertext;
         $thisfieldname = "$ia[1]other";
-        $aData['value'] = (isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$thisfieldname])) ? htmlspecialchars($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$thisfieldname], ENT_QUOTES) : '';
+        $aData['value'] = (isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$thisfieldname])) ? htmlspecialchars((string) $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$thisfieldname], ENT_QUOTES) : '';
 
         // ==> other
         $sOther .= doRender('/survey/questions/answer/list_dropdown/rows/othertext', $aData, true);
@@ -1472,7 +1472,7 @@ function do_multiplechoice($ia)
         $relevanceClass = currentRelevecanceClass($iSurveyId, $ia[1], $myfname, $aQuestionAttributes);
         $checkedState = '';
         // othercbox can be not display, because only input text goes to database
-        if (isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname]) && trim($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname]) != '') {
+        if (isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname]) && trim((string) $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname]) != '') {
             $checkedState = 'CHECKED';
         }
 
@@ -1480,9 +1480,9 @@ function do_multiplechoice($ia)
         if (isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname])) {
             $dispVal = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname];
             if ($aQuestionAttributes['other_numbers_only'] == 1) {
-                $dispVal = str_replace('.', $sSeparator, $dispVal);
+                $dispVal = str_replace('.', $sSeparator, (string) $dispVal);
             }
-            $sValue .= htmlspecialchars($dispVal, ENT_QUOTES);
+            $sValue .= htmlspecialchars((string) $dispVal, ENT_QUOTES);
         }
 
         // TODO : check if $sValueHidden === $sValue
@@ -1490,9 +1490,9 @@ function do_multiplechoice($ia)
         if (isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname])) {
             $dispVal = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname];
             if ($aQuestionAttributes['other_numbers_only'] == 1) {
-                $dispVal = str_replace('.', $sSeparator, $dispVal);
+                $dispVal = str_replace('.', $sSeparator, (string) $dispVal);
             }
-            $sValueHidden = htmlspecialchars($dispVal, ENT_QUOTES);
+            $sValueHidden = htmlspecialchars((string) $dispVal, ENT_QUOTES);
             ;
         }
 
