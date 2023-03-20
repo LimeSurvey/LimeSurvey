@@ -34,6 +34,11 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.53 (build 230314) to 3.28.54 (build 230321) March 20, 2023
++New feature #18197: Allow GA4 tracking (#2962)
+-Fixed issue: $aFiles can be null (Olle Haerstedt)
+
+
 Changes from 3.28.52 (build 230307) to 3.28.53 (build 230314) March 13, 2023
 #Updated translation: Polish by elissa
 #Updated translation: Japanese by d_inoue
