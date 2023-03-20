@@ -62,6 +62,8 @@ class SettingsPluginTest extends TestBaseClass
             $plugin->save();
         }
 
+        \Yii::app()->session['dateformat'] = 6;
+
         self::$plugin = App()->getPluginManager()->loadPlugin('SettingsPlugin', $plugin->id);
 
         //Import survey
@@ -99,6 +101,16 @@ class SettingsPluginTest extends TestBaseClass
             'object_1' => (object) ['property' => 'Here we go'],
             'object_2' => $obj,
         ];
+    }
+
+    public static function tearDownAfterClass(): void
+    {
+        parent::tearDownAfterClass();
+
+        //Clear up database.
+        \PluginSetting::model()->deleteAllByAttributes(
+            array('plugin_id' => self::$plugin->getId())
+        );
     }
 
     public function testGetAndSetSetting()
@@ -185,7 +197,6 @@ class SettingsPluginTest extends TestBaseClass
     public function testGetAndSetDateTimeSettings(): void
     {
         self::$plugin->setSettings(self::$dateTimePluginSettings);
-        \Yii::app()->session['dateformat'] = 6;
         $sessionFormatDate = getDateFormatData(App()->session['dateformat']);
         /* format sent by widget */
         $sendformat = $sessionFormatDate['phpdate'] . ' H:i';
@@ -220,6 +231,92 @@ class SettingsPluginTest extends TestBaseClass
                 'The value returned by the get function is not correct for ' . $pluginSetting . '.'
             );
         }
+    }
+
+    public function testSaveDateTimePluginSettingWithoutASpecificFormat()
+    {
+        $myDateSettings = array(
+            'my_default_date' => [
+                'type' => 'date',
+            ],
+            'my_default_date_also' => [
+                'type' => 'date',
+                'saveformat' => false, // session date format.
+            ]
+        );
+
+        self::$plugin->setSettings($myDateSettings);
+
+        //Set a date time value.
+        self::$plugin->setSetting('my_default_date', '2023-03-17 12:35:42');
+        self::$plugin->setSetting('my_default_date_also', '2023-03-17 13:36:45');
+
+        //Get the value previously set.
+        $savedDefaultDate = self::$plugin->getSetting('my_default_date');
+        $savedDefaultDateAlso = self::$plugin->getSetting('my_default_date_also');
+
+        //No format specified, save using the session date format.
+        $this->assertSame('2023-03-17 12:35:42', $savedDefaultDate, 'The date time setting was not properly saved.');
+        $this->assertSame('2023-03-17 13:36:45', $savedDefaultDateAlso, 'The date time setting was not properly saved.');
+    }
+
+    public function testSaveDateTimePluginSettingWithASpecificFormat()
+    {
+        $myDateSettings = array(
+            'my_year' => [
+                'type' => 'date',
+                'saveformat' => 'Y',
+            ],
+            'my_time' => [
+                'type' => 'date',
+                'saveformat' => 'H:i',
+            ],
+            'my_formatted_date' => [
+                'type' => 'date',
+                'saveformat' => 'd.m.Y',
+            ],
+        );
+
+        self::$plugin->setSettings($myDateSettings);
+
+        //Set a date time value.
+        self::$plugin->setSetting('my_formatted_date', '2023-03-17 12:35:42');
+        self::$plugin->setSetting('my_year', '2023-03-17 12:35:42');
+        self::$plugin->setSetting('my_time', '2023-03-17 12:35:42');
+
+        //Get the value previously set.
+        $savedFormattedDate = self::$plugin->getSetting('my_formatted_date');
+        $savedYear = self::$plugin->getSetting('my_year');
+        $savedTime = self::$plugin->getSetting('my_time');
+
+        $this->assertSame('17.03.2023', $savedFormattedDate, 'The date time setting was not saved in the specified format.');
+        $this->assertSame('2023', $savedYear, 'The date time setting was not saved in the specified format.');
+        $this->assertSame('12:35', $savedTime, 'The date time setting was not saved in the specified format.');
+    }
+
+    public function testExpectedDateTimeSettingSaved()
+    {
+        $myDateSettings = array(
+            'my_new_formatted_date' => [
+                'type' => 'date',
+                'saveformat' => 'd/m/Y',
+            ],
+        );
+
+        self::$plugin->setSettings($myDateSettings);
+
+        //Set a date time value.
+        self::$plugin->setSetting('my_new_formatted_date', '2023-03-20 18:42:30');
+
+        //Get setting from database.
+        $pluginSetting = \PluginSetting::model()->findByAttributes([
+            'plugin_id' => self::$plugin->getId(),
+            'key' => 'my_new_formatted_date'
+        ]);
+
+        $settingInDb = $pluginSetting->value;
+
+        $this->assertSame(json_encode('20/03/2023'), $settingInDb);
     }
 
      /**
