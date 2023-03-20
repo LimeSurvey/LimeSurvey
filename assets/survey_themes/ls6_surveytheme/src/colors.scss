@@ -33,6 +33,9 @@ $theme-colors: (
     "cancel":     $g-600, // replace with secondary
 );
 
+$btn-hover-boxshadow   : 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
+$btn-focus-boxshadow   : 4px 4px 0px rgba(123, 97, 255, 0.4);
+
 ///////////////////////////
 // Blacks, whites and greys
 $alabaster: #fafafa;

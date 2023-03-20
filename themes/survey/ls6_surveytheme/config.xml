@@ -47,6 +47,7 @@
     <files>
         <css>
             <add>css/variations/green.css</add>
+            <add>../../assets/fonts/ibm-plex-sans/ibm-sans.css</add>
             <add>css/base.css</add>
             <add>css/theme.css</add>
             <add>css/noTablesOnMobile.css</add>

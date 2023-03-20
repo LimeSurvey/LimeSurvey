@@ -1,5 +1,8 @@
 @import "old_fruity.scss";
 //@import "old_vanilla.scss";
-
+@import "ls6_surveytheme_variables.scss";
+@import "ls-mixins.scss";
 // Components
-@import "src/navbar/navbar.scss";
+@import "navbar/navbar.scss";
+@import "buttons/buttons.scss";
+@import "typography/typography.scss";

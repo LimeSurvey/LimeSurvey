@@ -383,7 +383,7 @@ var ThemeOptions = function () {
         if (action == 'replace') {
             currentValue[action].push(["css/bootstrap.css", file]);
         } else {
-            currentValue[action].push(file);
+            currentValue[action].unshift(file);
         }
         $(fieldSelector).val(JSON.stringify(currentValue));
     }

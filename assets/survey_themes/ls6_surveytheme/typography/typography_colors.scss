@@ -1,0 +1,39 @@
+body {
+  color       : $g-900;
+}
+
+h1,
+.h1 {
+  @include h1_color
+}
+
+h2,
+.h2 {
+  color       : $heading-title-color;
+}
+
+h3,
+.h3 {
+  @include h3_color
+}
+
+label {
+  color       : $heading-title-color;
+}
+
+dl {
+  color       : $g-800;
+
+  dt {
+    color       : $g-900;
+  }
+}
+
+// LINKS
+a {
+  color: $link-color;
+}
+
+.has-link a {
+  color: $g-900;
+}

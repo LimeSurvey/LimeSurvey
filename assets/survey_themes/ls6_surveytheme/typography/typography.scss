@@ -1,0 +1,88 @@
+body {
+  font-family : $ibm-font-family;
+  font-weight : $font-weight-normal;
+  font-size   : $font-size-base;
+  line-height : $line-height-24;
+}
+
+h1,
+.h1 {
+  @include h1
+}
+
+h2,
+.h2 {
+  font-family : $ibm-font-family;
+  font-weight : $font-weight-600;
+  font-size   : $font-size-base;
+  line-height : $line-height-20;
+}
+
+h3,
+.h3 {
+  @include h3
+}
+
+label {
+  font-family : $ibm-font-family;
+  font-weight : $font-weight-500;
+  font-size   : $font-size-sm;
+  line-height : $line-height-20;
+}
+
+dl {
+  font-family : $ibm-font-family;
+  font-weight : $font-weight-normal;
+  font-size   : $font-size-base;
+  line-height : $line-height-24;
+
+  dt {
+    font-weight : $font-weight-600;
+    font-size   : $font-size-base;
+    line-height : $line-height-24;
+  }
+}
+
+.fw-bold {
+  font-weight: 600 !important;
+}
+
+// LINKS
+a {
+  font-weight: $font-weight-500;
+}
+
+.has-link {
+  cursor: pointer;
+}
+
+.has-link a:hover {
+  text-decoration: none;
+}
+
+.has-link a {
+  font-weight: $font-weight-normal;
+}
+
+// old_vanilla
+.h1, .h2, .h3, h1, h2, h3 {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.h4, .h5, .h6, h4, h5, h6 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+// old_fruity
+@media only screen and (max-device-width: 760px) {
+
+  h1, .h3 {
+    font-size: 18px;
+  }
+
+  .h4 {
+    font-size: 16px;
+  }
+}

@@ -547,12 +547,6 @@ div.yes-no .btn-group label {
   }
 }
 @media only screen and (max-device-width: 760px) {
-  h1, .h3 {
-    font-size: 18px;
-  }
-  .h4 {
-    font-size: 16px;
-  }
   .question-container {
     margin-bottom: 1em;
   }
@@ -645,10 +639,6 @@ body .checkbox-item label::after {
   padding: 0px;
 }
 
-.btn:focus, .btn:hover {
-  color: #fff;
-}
-
 /* Remove borders when checkbox is checked */
 .checkbox-item input[type=checkbox]:checked + label::before {
   border: none;
@@ -656,7 +646,7 @@ body .checkbox-item label::after {
   outline: none;
 }
 
-.radio-item input[type=radio]:focus + label::before, input[type=radio]:focus, input[type=checkbox]:focus, .btn-primary:focus, .btn:focus, .btn:active:focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn.active.focus {
+.radio-item input[type=radio]:focus + label::before, input[type=radio]:focus, input[type=checkbox]:focus {
   outline: none;
 }
 
@@ -729,4 +719,159 @@ Responsive navbar-brand image CSS
 
 .navbar-default .navbar-brand, .navbar-default {
   border: none;
+}
+
+.btn-primary:focus, .btn:focus, .btn:active:focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn.active.focus {
+  outline: none;
+}
+
+[data-toggle=buttons] > .btn input[type=radio],
+[data-toggle=buttons] > .btn input[type=checkbox] {
+  position: absolute;
+  clip: rect(0, 0, 0, 0);
+  pointer-events: none;
+}
+
+.chart-type-control {
+  margin-bottom: 4px;
+}
+
+.btnaddanswer:hover,
+.btndelanswer:hover {
+  cursor: pointer;
+}
+
+.btn {
+  min-height: 36px;
+  padding: 8px 12px;
+  font-size: 0.9975rem;
+  line-height: 20px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+.btn [class^=ri-], .btn [class*=" ri-"] {
+  font-size: 1.425rem;
+}
+
+.btn-sm {
+  min-height: 24px;
+  padding: 4px 8px;
+  font-size: 0.855rem;
+  line-height: 16px;
+  border-radius: 3px;
+}
+.btn-sm [class^=ri-], .btn-sm [class*=" ri-"] {
+  font-size: 1.14rem;
+}
+
+.btn-lg {
+  min-height: 44px;
+  padding: 12px;
+  font-size: 0.9975rem;
+  line-height: 28px;
+  border-radius: 4px;
+}
+
+.btn-xl {
+  min-height: 52px;
+  padding: 12px 16px;
+  font-size: 0.9975rem;
+  line-height: 38px;
+  border-radius: 4px;
+}
+
+.btn-xs {
+  min-height: auto;
+}
+.btn-xs [class^=ri-], .btn-xs [class*=" ri-"] {
+  font-size: 1.14rem;
+}
+
+body {
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-weight: 400;
+  font-size: 1.14rem;
+  line-height: 24px;
+}
+
+h1,
+.h1 {
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-weight: 600;
+  font-size: 1.425rem;
+  line-height: 26px;
+}
+
+h2,
+.h2 {
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-weight: 600;
+  font-size: 1.14rem;
+  line-height: 20px;
+}
+
+h3,
+.h3 {
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-weight: 500;
+  font-size: 0.9975rem;
+  line-height: 20px;
+}
+
+label {
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-weight: 500;
+  font-size: 0.9975rem;
+  line-height: 20px;
+}
+
+dl {
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-weight: 400;
+  font-size: 1.14rem;
+  line-height: 24px;
+}
+dl dt {
+  font-weight: 600;
+  font-size: 1.14rem;
+  line-height: 24px;
+}
+
+.fw-bold {
+  font-weight: 600 !important;
+}
+
+a {
+  font-weight: 500;
+}
+
+.has-link {
+  cursor: pointer;
+}
+
+.has-link a:hover {
+  text-decoration: none;
+}
+
+.has-link a {
+  font-weight: 400;
+}
+
+.h1, .h2, .h3, h1, h2, h3 {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.h4, .h5, .h6, h4, h5, h6 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+@media only screen and (max-device-width: 760px) {
+  h1, .h3 {
+    font-size: 18px;
+  }
+  .h4 {
+    font-size: 16px;
+  }
 }
