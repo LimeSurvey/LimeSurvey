@@ -951,10 +951,20 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude = array())
     buildXMLFromQuery($xmlwriter, $squery, '', $excludeFromSurvey);
 
     // Survey language settings
-    $slsquery = "SELECT *
-    FROM {{surveys_languagesettings}}
-    WHERE surveyls_survey_id=$iSurveyID";
-    buildXMLFromQuery($xmlwriter, $slsquery);
+    // This includes email template attachments, which currently must be preprocessed in order to avoid
+    // exposing the full paths.
+    $surveyLanguageSettings = SurveyLanguageSetting::model()->findAllByAttributes(['surveyls_survey_id' => $iSurveyID]);
+    $surveyLanguageSettingsData = [];
+    foreach ($surveyLanguageSettings as $surveyLanguageSetting) {
+        $item = $surveyLanguageSetting->getAttributes();
+        // getAttachmentsData() returns the attachments with "safe" paths
+        $attachments = $surveyLanguageSetting->getAttachmentsData();
+        if (!empty($attachments)) {
+            $item['attachments'] = serialize($attachments);
+        }
+        $surveyLanguageSettingsData[] = $item;
+    }
+    buildXMLFromArray($xmlwriter, $surveyLanguageSettingsData, 'surveys_languagesettings');
 
     // Survey url parameters
     $slsquery = "SELECT *
@@ -3155,4 +3165,66 @@ function MaskFormula($sValue)
         $sValue = '';
     }
     return $sValue;
+}
+
+/**
+ * buildXMLFromArray() dumps an array to XML using XMLWriter, in the same format as buildXMLFromQuery()
+ *
+ * @param mixed $xmlwriter  The existing XMLWriter object
+ * @param array<array<string,mixed>> $data  The data to dump. Each element of the array must be a key-value pair.
+ * @param string $tagname  The name of the XML tag to generate
+ * @param string[] $excludes array of columnames not to include in export
+ */
+function buildXMLFromArray($xmlwriter, $data, $tagname, $excludes = [])
+{
+    if (empty($data)) {
+        return;
+    }
+
+    // Open the "main" node for this data dump
+    $xmlwriter->startElement($tagname);
+
+    // List the fields, based on the keys from the first element
+    $xmlwriter->startElement('fields');
+    $firstElement = reset($data);
+    foreach (array_keys($firstElement) as $fieldname) {
+        if (!in_array($fieldname, $excludes)) {
+            $xmlwriter->writeElement('fieldname', $fieldname);
+        }
+    }
+    $xmlwriter->endElement(); // close fields
+
+    // Dump the rows
+    $xmlwriter->startElement('rows');
+    foreach ($data as $row) {
+        $xmlwriter->startElement('row');
+        foreach ($row as $key => $value) {
+            if (in_array($key, $excludes)) {
+                continue;
+            }
+            if (is_null($value)) {
+                // If the $value is null don't output an element at all
+                continue;
+            }
+            // mask invalid element names with an underscore
+            if (is_numeric($key[0])) {
+                $key = '_' . $key;
+            }
+            $key = str_replace('#', '-', $key);
+            if (!$xmlwriter->startElement($key)) {
+                safeDie('Invalid element key: ' . $key);
+            }
+            if ($value !== '') {
+                // Remove invalid XML characters
+                $value = preg_replace('/[^\x0\x9\xA\xD\x20-\x{D7FF}\x{E000}-\x{FFFD}\x{10000}-\x{10FFFF}]/u', '', $value);
+                $value = str_replace(']]>', ']] >', $value);
+                $xmlwriter->writeCData($value);
+            }
+            $xmlwriter->endElement();
+        }
+        $xmlwriter->endElement(); // close row
+    }
+
+    $xmlwriter->endElement(); // close rows
+    $xmlwriter->endElement(); // close main node
 }

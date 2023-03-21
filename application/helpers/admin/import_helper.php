@@ -1410,6 +1410,22 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
         }
 
+        // Email attachments are exported with relative paths, but are currently expected to be saved as absolute
+        if (!empty($insertdata['attachments'])) {
+            $attachments = unserialize($insertdata['attachments']);
+            if (is_array($attachments)) {
+                $uploadDir = realpath(Yii::app()->getConfig('uploaddir'));
+                foreach ($attachments as &$template) {
+                    foreach ($template as &$attachment) {
+                        if (strpos($attachment['url'], "/") !== 0 && strpos($attachment['url'], "\\") !== 0) {
+                            $attachment['url'] = $uploadDir . DIRECTORY_SEPARATOR . $attachment['url'];
+                        }
+                    }
+                }
+            }
+            $insertdata['attachments'] = serialize($attachments);
+        }
+
         if (isset($insertdata['surveyls_attributecaptions']) && substr($insertdata['surveyls_attributecaptions'], 0, 1) != '{') {
             unset($insertdata['surveyls_attributecaptions']);
         }
