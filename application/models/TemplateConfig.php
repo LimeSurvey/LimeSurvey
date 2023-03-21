@@ -234,6 +234,7 @@ class TemplateConfig extends CActiveRecord
     /**
      * Get the depends package
      * @uses self::@package
+     * TODO: unused variable
      * @param TemplateConfiguration $oTemplate
      * @return string[]
      */
