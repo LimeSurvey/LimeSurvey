@@ -18,13 +18,10 @@
                     <br /> <br />
                     <?php eT("You can switch back to closed-access mode at any time. Navigate to Settings --> Survey participants and click on the 'Switch to closed-access mode' button."); ?>
                     <br /><br />
-                    <input
+                    <a
                         class="btn btn-default"
-                        type="submit"
-                        value="<?php eT('Main Admin Screen'); ?>"
-                        onclick="window.open(
-                            '<?php echo $this->createUrl("surveyAdministration/view/surveyid/{$iSurveyId}"); ?>',
-                            '_top'" />
+                        href="<?php echo $this->createUrl("surveyAdministration/view/surveyid/{$iSurveyId}"); ?>"
+                    ><?php eT('Main Admin Screen'); ?></a>
             </div>
         </div>
     </div>

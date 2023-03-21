@@ -83,6 +83,9 @@ class QuestionGroupsAdministrationController extends LSBaseController
      */
     public function actionView(int $surveyid, int $gid, $landOnSideMenuTab = 'structure', $mode = 'auto')
     {
+        if (!in_array($landOnSideMenuTab, ['settings', 'structure', ''])) {
+            $landOnSideMenuTab = 'structure';
+        }
         if ($mode != 'overview' && SettingsUser::getUserSettingValue('noViewMode', App()->user->id)) {
             $this->redirect(
                 Yii::app()->createUrl(
