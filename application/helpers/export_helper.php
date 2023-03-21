@@ -951,8 +951,8 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude = array())
     buildXMLFromQuery($xmlwriter, $squery, '', $excludeFromSurvey);
 
     // Survey language settings
-    // This includes email template attachments, which currently must be preprocessed in order to avoid
-    // exposing the full paths.
+    // Email template attachments must be preprocessed to avoid exposing the full paths.
+    // Transforming them from absolute paths to relative paths
     $surveyLanguageSettings = SurveyLanguageSetting::model()->findAllByAttributes(['surveyls_survey_id' => $iSurveyID]);
     $surveyLanguageSettingsData = [];
     foreach ($surveyLanguageSettings as $surveyLanguageSetting) {
