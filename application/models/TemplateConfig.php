@@ -952,6 +952,12 @@ class TemplateConfig extends CActiveRecord
      */
     public static function formatToJsonArray($oFiled, $bConvertEmptyToString = false)
     {
+        if ($bConvertEmptyToString) {
+            foreach ($oFiled as $option => $optionValue) {
+                // clean every value from newlines, tabs and blank spaces for options
+                $oFiled->$option = trim(preg_replace('/[ \t]+/', ' ', preg_replace('/\s*$^\s*/m', "", $optionValue)));
+            }
+        }
         // encode then decode will convert the SimpleXML to a normal object
         $jFiled = json_encode($oFiled);
         $oFiled = json_decode($jFiled);

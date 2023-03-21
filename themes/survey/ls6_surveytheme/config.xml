@@ -78,7 +78,7 @@
         <notables type="buttons" category="Simple options" width="4" title="Break tables" options="2|1|0" optionlabels="Always on|Small screens|Off">1</notables>
         <showclearall type="buttons" category="Simple options" width="4" title="Show Clear All button" options="on|off" optionlabels="Yes|No">off</showclearall>
         <questionhelptextposition type="buttons" category="Simple options" width="4" title="Question help text position" options="top|bottom" optionlabels="Top|Bottom">top</questionhelptextposition>
-        <fixnumauto type="buttons" category="Simple options" width="4" title="Fix automatically numeric value" options="enable|partial|disable" optionlabels="Yes|For expression|No">off</fixnumauto>
+        <fixnumauto type="buttons" category="Simple options" width="4" title="Fix automatically numeric value" options="enable|partial|disable" optionlabels="Yes|For expression|No">disable</fixnumauto>
         <questionborder type="buttons" category="Simple options" width="4" title="Question borders" options="on|off" optionlabels="Yes|No">on</questionborder>
         <questioncontainershadow type="buttons" category="Simple options" width="4" title="Question shadow" options="on|off" optionlabels="Yes|No">on</questioncontainershadow>
         <darkmode type="buttons" category="Simple options" width="4" title="Dark mode" options="on|off" optionlabels="Yes|No">off</darkmode>
@@ -661,7 +661,7 @@
         <radioanimationduration type="duration" category="Animations" width="2" title="Duration" parent="animateradio">500</radioanimationduration>
         <!-- fonts -->
         <!--  When adding new items, please keep them ordered alphabetically -->
-         <font type="dropdown" category="Fonts" width="12" title="Fonts" parent="font">noto
+         <font type="dropdown" category="Fonts" width="12" title="Fonts" parent="font">ibm-sans
             <dropdownoptions>
                 <optgroup  label="User browser">
                 <option class="font-arial           " value="arial"           data-font-package="websafe" >Arial</option>
@@ -678,10 +678,10 @@
             </optgroup>
             </dropdownoptions>
         </font>
-        <cssframework type="dropdown" category="Simple options" width="12" title="Variations" parent="cssframework">
+        <cssframework type="dropdown" category="Simple options" width="12" title="Variations" parent="cssframework">green
             <dropdownoptions>
-                <option value="css/variations/green.css">Green</option>
-                <option value="css/variations/red.css">Red</option>
+                <option data-value="css/variations/green.css" value="green">Green</option>
+                <option data-value="css/variations/red.css" value="red">Red</option>
             </dropdownoptions>
         </cssframework>
     </options>
