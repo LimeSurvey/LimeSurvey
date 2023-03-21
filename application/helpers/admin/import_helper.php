@@ -1410,7 +1410,8 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
         }
 
-        // Email attachments are exported with relative paths, but are currently expected to be saved as absolute
+        // Email attachments are with relative paths on the file, but are currently expected to be saved as absolute.
+        // Transforming them from relative paths to absolute paths.
         if (!empty($insertdata['attachments'])) {
             $attachments = unserialize($insertdata['attachments']);
             if (is_array($attachments)) {
