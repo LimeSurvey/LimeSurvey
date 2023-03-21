@@ -1,0 +1,11 @@
+$input-padding-y    : 10px;
+$input-padding-x    : 12px;
+$input-line-height  : 16px;
+$input-border-width : 2px;
+// input field
+.form-control {
+    padding      : $input-padding-y $input-padding-x;
+    border-width : $input-border-width;
+    line-height  : $input-line-height;
+}
+

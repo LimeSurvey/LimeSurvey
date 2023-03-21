@@ -160,7 +160,7 @@ function survey_theme_variations_ls6() {
     let variationsFiles = variations.map(variation => {
         let variationName = variation[0];
         let variationColor = variation[1];
-        return src(['assets/survey_themes/ls6_surveytheme/ls6ColorTemplate.scss'])
+        return src(['assets/survey_themes/ls6_surveytheme/ls6_color_template.scss'])
             .pipe(replace('$base-color: #ffffff;', '$base-color: ' + variationColor + ';'))
             .pipe(sass())
             .pipe(gulppostcss(plugins))
@@ -175,7 +175,7 @@ function survey_theme_ls6() {
         autoprefixer(),
         // cssnano()
     ];
-    return src(['assets/survey_themes/ls6_surveytheme/ls6ThemeTemplate.scss'])
+    return src(['assets/survey_themes/ls6_surveytheme/ls6_theme_template.scss'])
         .pipe(sass())
         .pipe(dest('themes/survey/ls6_surveytheme/css'))
         .pipe(gulppostcss(plugins))
@@ -190,5 +190,5 @@ exports.build_survey_theme_ls6 = parallel(
 );
 
 exports.watch_survey_theme_ls6 = function () {
-    watch('assets/survey_themes/ls6_surveytheme/src/**/*.scss', survey_theme_ls6);
+    watch('assets/survey_themes/ls6_surveytheme/**/*.scss', survey_theme_ls6);
 };

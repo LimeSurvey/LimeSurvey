@@ -1,0 +1,62 @@
+$input-color              : $g-900;
+$input-border-color       : $g-700;
+$input-box-shadow         : 4px 4px 0 $elevation-shadow;
+$input-focus-border-color : $g-900;
+// input field
+.form-control {
+    color        : $g-900;
+    border-color : $input-border-color;
+    &:focus {
+        box-shadow   : $input-box-shadow;
+        border-color : $input-focus-border-color
+    }
+    &::placeholder {
+        color   : $g-600;
+        opacity : 1;
+    }
+    &:-ms-input-placeholder {
+        color   : $g-600;
+        opacity : 1;
+    }
+}
+
+.form-control[disabled] {
+    color            : $color_mercury_approx;
+    &.total {
+        color : $color_gravel_approx;
+    }
+    background-color : $color_wild_sand_approx;
+    opacity          : 1;
+}
+
+.form-control[readonly] {
+    background-color : $color_wild_sand_approx;
+    opacity          : 1;
+}
+
+fieldset[disabled] {
+    .form-control {
+        background-color : $color_wild_sand_approx;
+        opacity          : 1;
+    }
+}
+
+input[type="checkbox"]:checked:after,
+.checkbox input[type="checkbox"]:checked:after,
+.checkbox-inline input[type="checkbox"]:checked:after {
+    background-color : $base-color;
+    border-color     : $base-color;
+}
+
+input[type="password"],
+.ui-autocomplete-input,
+textarea,
+.uneditable-input {
+    color : $color_storm_dust_approx;
+}
+
+.checkbox-item input[type="checkbox"]:checked + label::after,
+.checkbox-item input[type="radio"]:checked + label::after {
+    background-color : $base-color;
+    color            : white;
+}

@@ -875,3 +875,8 @@ a {
     font-size: 16px;
   }
 }
+.form-control {
+  padding: 10px 12px;
+  border-width: 2px;
+  line-height: 16px;
+}

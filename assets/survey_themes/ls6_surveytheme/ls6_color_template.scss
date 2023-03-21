@@ -55,8 +55,15 @@ $base-color: #ffffff;
 @import "src/definitions.scss";
 @import "src/extensions.scss";
 
+// ls6theme color variables
+@import "ls6_color_variables.scss";
+
+
 // Component colors
 @import "navbar/navbar_colors.scss";
 @import "buttons/buttons_colors.scss";
 @import "typography/typography_colors.scss";
+@import "forms/forms_colors.scss";
+
+
 @import "darkmode/darkmode_colors.scss";
