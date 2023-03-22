@@ -57,6 +57,10 @@ fieldset[disabled] {
     }
 }
 
+textarea {
+    resize: both;
+    max-width: 100%;
+}
 
 input[type="checkbox"]:checked:after,
 .checkbox input[type="checkbox"]:checked:after,
