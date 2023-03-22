@@ -5,7 +5,7 @@
  */
 
 use LimeSurvey\Libraries\FormExtension\FormExtensionWidget;
-use LimeSurvey\Libraries\FormExtension\Inputs\GlobalSettingsRenderer;
+use LimeSurvey\Libraries\FormExtension\Renderer\GlobalSettingsRenderer;
 
 ?>
 <?php

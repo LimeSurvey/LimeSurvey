@@ -1,6 +1,9 @@
 <?php
 
-namespace LimeSurvey\Libraries\FormExtension\Inputs;
+namespace LimeSurvey\Libraries\FormExtension\Input;
+
+use LimeSurvey\Libraries\FormExtension\Renderer\BaseInputRenderer;
+use LimeSurvey\Libraries\FormExtension\Renderer\RendererInterface;
 
 use CHttpRequest;
 use CDbConnection;
@@ -18,6 +21,9 @@ class BaseInput implements InputInterface
     private $conditionFunction;
 
     /** @var string */
+    private $id;
+
+    /** @var string */
     private $name;
 
     /** @var ?string */
@@ -32,20 +38,49 @@ class BaseInput implements InputInterface
     /** @var bool */
     private $disabled = false;
 
+    /** @var bool */
+    private $checked = false;
+
+    /** @var array */
+    private $attributes = [];
+
+    /** @var RendererInterface */
+    private $renderer = null;
+
     public function __construct(array $options)
     {
         if (empty($options['name'])) {
             throw new InvalidArgumentException("Input is missing mandatory name option");
         }
 
-        $this->name = $options['name'];
+        $this->id = $options['id'] ?? null;
+        $this->name = $options['name'] ?? null;
         $this->label = $options['label'] ?? null;
         $this->help = $options['help'] ?? null;
         $this->tooltip = $options['tooltip'] ?? null;
         $this->disabled = $options['disabled'] ?? false;
+        $this->checked = $options['checked'] ?? false;
         $this->saveFunction = $options['save'] ?? null;
         $this->loadFunction = $options['load'] ?? null;
         $this->conditionFunction = $options['condition'] ?? null;
+
+        $attributesDefault = [
+            'id' => $options['id'] ?? '',
+            'name' => $options['name'] ?? '',
+            'disabled' => !empty($options['disabled']),
+            'title' => $options['tooltip'] ?? '',
+        ];
+        $this->attributes = array_merge(
+            $attributesDefault,
+            $options['attributes'] ?? []
+        );
+
+        $this->setRenderer(new BaseInputRenderer);
+    }
+
+    public function getId(): string
+    {
+        return $this->id;
     }
 
     public function getName(): string
@@ -82,6 +117,37 @@ class BaseInput implements InputInterface
     public function isDisabled(): bool
     {
         return $this->disabled;
+    }
+
+    public function getAttributes(): array
+    {
+        if (!isset($this->attributes['value'])) {
+            $this->attributes['value'] = $this->getValue();
+        }
+        if (!isset($this->attributes['title'])) {
+            $this->attributes['data-toggle'] = 'tooltip';
+        }
+        return $this->attributes;
+    }
+
+    public function setAttributes($attributes)
+    {
+        $this->attributes = $attributes;
+    }
+
+    public function setAttribute($key, $value)
+    {
+        $this->attributes[$key] = $value;
+    }
+
+    public function setRenderer(RendererInterface $renderer)
+    {
+        return $this->renderer = $renderer;
+    }
+
+    public function render(): string
+    {
+        return $this->renderer->render($this);
     }
 
     public function save(CHttpRequest $request, CDbConnection $connection): bool

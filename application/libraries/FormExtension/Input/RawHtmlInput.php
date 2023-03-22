@@ -1,12 +1,12 @@
 <?php
 
-namespace LimeSurvey\Libraries\FormExtension\Inputs;
+namespace LimeSurvey\Libraries\FormExtension\Input;
 
-class RawHtmlInput
+class RawHtmlInput extends BaseInput
 {
     private $html;
 
-    public function __construct(string $html)
+    public function setHtml($html)
     {
         $this->html = $html;
     }
