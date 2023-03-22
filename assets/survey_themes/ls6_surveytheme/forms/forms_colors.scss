@@ -4,7 +4,7 @@ $input-box-shadow         : 4px 4px 0 $elevation-shadow;
 $input-focus-border-color : $g-900;
 // input field
 .form-control {
-    color        : $g-900;
+    color        : $input-color  ;
     border-color : $input-border-color;
     &:focus {
         box-shadow   : $input-box-shadow;
