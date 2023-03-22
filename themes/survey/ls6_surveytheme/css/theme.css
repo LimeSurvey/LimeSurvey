@@ -880,3 +880,13 @@ a {
   border-width: 2px;
   line-height: 16px;
 }
+
+.input-group-text {
+  padding: 10px 12px;
+  border-width: 2px;
+  line-height: 16px;
+}
+
+.input-group > :not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback) {
+  margin-left: -2px;
+}

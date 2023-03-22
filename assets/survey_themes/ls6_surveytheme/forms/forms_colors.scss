@@ -4,16 +4,19 @@ $input-box-shadow         : 4px 4px 0 $elevation-shadow;
 $input-focus-border-color : $g-900;
 // input field
 .form-control {
-    color        : $input-color  ;
+    color        : $input-color;
     border-color : $input-border-color;
+
     &:focus {
         box-shadow   : $input-box-shadow;
         border-color : $input-focus-border-color
     }
+
     &::placeholder {
         color   : $g-600;
         opacity : 1;
     }
+
     &:-ms-input-placeholder {
         color   : $g-600;
         opacity : 1;
@@ -22,9 +25,11 @@ $input-focus-border-color : $g-900;
 
 .form-control[disabled] {
     color            : $color_mercury_approx;
+
     &.total {
         color : $color_gravel_approx;
     }
+
     background-color : $color_wild_sand_approx;
     opacity          : 1;
 }
@@ -40,6 +45,13 @@ fieldset[disabled] {
         opacity          : 1;
     }
 }
+
+.input-group-text {
+    color            : $white;
+    background-color : $base-color;
+    border-color     : $input-border-color;
+}
+
 
 input[type="checkbox"]:checked:after,
 .checkbox input[type="checkbox"]:checked:after,

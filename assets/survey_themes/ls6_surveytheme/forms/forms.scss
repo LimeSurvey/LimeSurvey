@@ -8,4 +8,11 @@ $input-border-width : 2px;
     border-width : $input-border-width;
     line-height  : $input-line-height;
 }
-
+.input-group-text {
+    padding      : $input-padding-y $input-padding-x;
+    border-width : $input-border-width;
+    line-height  : $input-line-height;
+}
+.input-group>:not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback){
+    margin-left: -$input-border-width;
+}
