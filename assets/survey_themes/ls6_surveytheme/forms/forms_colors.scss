@@ -2,6 +2,7 @@ $input-color              : $g-900;
 $input-border-color       : $g-700;
 $input-box-shadow         : 4px 4px 0 $elevation-shadow;
 $input-focus-border-color : $g-900;
+$input-group-addon-color  : $white;
 // input field
 .form-control {
     color        : $input-color;
@@ -46,10 +47,14 @@ fieldset[disabled] {
     }
 }
 
-.input-group-text {
-    color            : $white;
+.input-group-text, label .input-group-text {
+    color            : $input-group-addon-color;
     background-color : $base-color;
     border-color     : $input-border-color;
+
+    & label {
+        color : $input-group-addon-color;
+    }
 }
 
 
