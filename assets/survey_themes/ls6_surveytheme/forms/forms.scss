@@ -16,3 +16,14 @@ $input-border-width : 2px;
 .input-group>:not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback){
     margin-left: -$input-border-width;
 }
+
+.ls-answers label {
+    font-weight: $font-weight-600;
+    font-size: $font-size-base;
+    line-height: $line-height-20
+}
+
+textarea {
+    resize: both;
+    max-width: 100%;
+}

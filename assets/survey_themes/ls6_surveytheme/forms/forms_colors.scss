@@ -47,6 +47,10 @@ fieldset[disabled] {
     }
 }
 
+ .ls-answers label {
+    color: $g-700;
+}
+
 .input-group-text, label .input-group-text {
     color            : $input-group-addon-color;
     background-color : $base-color;
@@ -55,11 +59,6 @@ fieldset[disabled] {
     & label {
         color : $input-group-addon-color;
     }
-}
-
-textarea {
-    resize: both;
-    max-width: 100%;
 }
 
 input[type="checkbox"]:checked:after,
@@ -79,5 +78,5 @@ textarea,
 .checkbox-item input[type="checkbox"]:checked + label::after,
 .checkbox-item input[type="radio"]:checked + label::after {
     background-color : $base-color;
-    color            : white;
+    color            : $white;
 }
