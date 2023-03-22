@@ -649,6 +649,10 @@ class Permission extends LSActiveRecord
 
     public function getButtons(): string
     {
+        $permission_superadmin_read = Permission::model()->hasGlobalPermission('superadmin', 'read');
+        $setPermissionsUrl = App()->getController()->createUrl('userManagement/userPermissions', ['userid' => $this->uid]);
+
+
         $dropdownItems = [];
         $dropdownItems[] = [
             'title'            => gT('Edit Permissioin'),
@@ -660,6 +664,17 @@ class Permission extends LSActiveRecord
             'iconClass'        => 'ri-pencil-fill',
             'enabledCondition' => Permission::model()->hasSurveyPermission($this->entity_id, 'surveysecurity', 'update')
         ];
+
+        $dropdownItems[] = [
+            'title'            => gT('Edit permissions'),
+            'iconClass'        => "ri-lock-fill",
+            'linkClass'        => "UserManagement--action--openmodal UserManagement--action--permissions",
+            'linkAttributes'   => [
+                'data-href'      => $setPermissionsUrl,
+                'data-modalsize' => 'modal-lg',
+            ],
+        ];
+
 
         $dropdownItems[] = [
             'title'            => gT('Delete'),

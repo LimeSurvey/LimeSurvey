@@ -62,6 +62,10 @@ class SurveyPermissionsController extends LSBaseController
             $this->redirect(Yii::app()->request->urlReferrer);
         }
         App()->getClientScript()->registerPackage('jquery-tablesorter');
+        App()->getClientScript()->registerPackage('usermanagement');
+        App()->getClientScript()->registerPackage('select2-bootstrap');
+
+
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'surveypermissions.js');
         $oSurvey = Survey::model()->findByPk($surveyid);
         $aData['surveyid'] = $surveyid;
