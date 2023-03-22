@@ -844,7 +844,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         if ($this->googleanalyticsapikey === "9999useGlobal9999") {
             return trim((string) Yii::app()->getConfig('googleanalyticsapikey'));
         } else {
-            return trim($this->googleanalyticsapikey);
+            return trim((string) $this->googleanalyticsapikey);
         }
     }
 
