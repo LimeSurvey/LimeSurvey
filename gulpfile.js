@@ -190,5 +190,6 @@ exports.build_survey_theme_ls6 = parallel(
 );
 
 exports.watch_survey_theme_ls6 = function () {
+    watch('assets/survey_themes/ls6_surveytheme/**/*.scss', survey_theme_variations_ls6);
     watch('assets/survey_themes/ls6_surveytheme/**/*.scss', survey_theme_ls6);
 };
