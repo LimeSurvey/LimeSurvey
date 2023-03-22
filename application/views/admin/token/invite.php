@@ -10,7 +10,7 @@
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <h3><?php eT("Send email invitations"); ?></h3>
     <div class="row">
-        <div class="col-lg-12 content-right">
+        <div class="col-12 content-right">
             <?php echo PrepareEditorScript(true, $this); ?>
             <div>
                 <?php if ($oSurvey->active != 'Y'): ?>
@@ -25,10 +25,10 @@
                 <div>
                     <?php echo CHtml::form(array("admin/tokens/sa/email/surveyid/{$oSurvey->sid}"), 'post', array('id'=>'sendinvitation', 'name'=>'sendinvitation', 'class'=>'')); ?>
                     <div class="row">
-                        <div class="col-sm-4">
+                        <div class="col-md-4">
                             <?php if (count($tokenids)>0): ?>
-                                <div class='form-group'>
-                                    <label class='control-label '><?php eT("Send invitation email to participant ID(s):"); ?></label>
+                                <div class='mb-3'>
+                                    <label class='form-label '><?php eT("Send invitation email to participant ID(s):"); ?></label>
                                     <div class=''>
                                         <?php echo short_implode(", ", "-", (array) $tokenids); ?>
                                     </div>
@@ -37,64 +37,58 @@
                             <?php endif; ?>
                         </div>
 
-                        <div class="col-sm-4">
-                            <div class='form-group'>
+                        <div class="col-md-4">
+                            <div class='mb-3'>
 
-                                <label class='control-label ' for='bypassbademails'><?php eT("Bypass participants with failing email addresses:"); ?></label>
-                                <div class=''>
-                                    <?php
-                                    $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                                        'name' => "bypassbademails",
-                                        'id'=>"bypassbademails",
-                                        'value' => '1',
-                                        'onLabel'=>gT('On'),
-                                        'offLabel' => gT('Off')));
-                                    ?>
+                                <label class='form-label ' for='bypassbademails'><?php eT("Bypass participants with failing email addresses:"); ?></label>
+                                <div>
+                                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                        'name'          => "bypassbademails",
+                                        'checkedOption' => '1',
+                                        'selectOptions' => [
+                                            '1' => gT('On'),
+                                            '0' => gT('Off'),
+                                        ],
+                                    ]); ?>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="col-sm-4">
-                            <div class='form-group'>
+                        <div class="col-md-4">
+                            <div class='mb-3'>
                                 <?php echo CHtml::label(
                                     gT("Bypass date control before sending email:"),
                                     'bypassdatecontrol', 
                                     array(
                                         'title'=>gt("If some participants have a 'valid from' date set which is in the future, they will not be able to access the survey before that 'valid from' date."),
                                         'unescaped' => 'unescaped', 
-                                        'class' => 'control-label ')
+                                        'class' => 'form-label ')
                                     ); ?>
-                                <div class=''>
-                                <?php
-                                    $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                                        'name' => "bypassdatecontrol",
-                                        'id'=>"bypassdatecontrol",
-                                        'value' => '0',
-                                        'onLabel'=>gT('On'),
-                                        'offLabel' => gT('Off')));
-                                    ?>
+                                <div>
+                                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                        'name'          => "bypassdatecontrol",
+                                        'checkedOption' => '0',
+                                        'selectOptions' => [
+                                            '1' => gT('On'),
+                                            '0' => gT('Off'),
+                                        ],
+                                    ]); ?>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <ul class="nav nav-tabs">
-                        <?php
-                        $c = true;
-                            foreach ($oSurvey->allLanguages as $language) {
-                                echo '<li role="presentation"';
-
-                                if ($c) {
-                                    $c=false;
-                                    echo ' class="active"';
-                                }
-
-                                echo '><a  data-toggle="tab" href="#'.$language.'">' . getLanguageNameFromCode($language, false);
-                                if ($language == $oSurvey->language) {
-                                    echo " (" . gT("Base language") . ")";
-                                }
-                                echo "</a></li>";
-                            }
-                        ?>
+                        <?php $c = true ?>
+                        <?php foreach ($oSurvey->allLanguages as $language): ?>
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link <?= $c ? "active" : "" ?>" data-bs-toggle="tab" href="#<?= $language ?>">
+                                    <?php if ($c) {
+                                        $c = false;
+                                    } ?>
+                                    <?= getLanguageNameFromCode($language, false) . " " . (($language == $oSurvey->language) ? "(" . gT("Base language") . ")" : "")  ?>
+                                </a>
+                            </li>
+                        <?php endforeach; ?>
                     </ul>
 
                     <div class="tab-content">
@@ -115,25 +109,25 @@
                                     $textarea = str_replace(array('<x>', '</x>'), array(''), $textarea);
                                 }
                             ?>
-                            <div id="<?php echo $language; ?>" class="tab-pane fade in <?php if ($c){$c=false;echo ' active';}?>">
+                            <div id="<?php echo $language; ?>" class="tab-pane fade <?php if ($c){$c=false;echo 'show active';}?>">
 
-                                <div class='form-group'>
-                                    <label class='control-label ' for='from_<?php echo $language; ?>'><?php eT("From:"); ?></label>
+                                <div class='mb-3'>
+                                    <label class='form-label ' for='from_<?php echo $language; ?>'><?php eT("From:"); ?></label>
                                     <div class=''>
                                         <?php echo CHtml::textField("from_{$language}",$admin_name." <".$admin_email.">",array('class' => 'form-control')); ?>
                                     </div>
                                 </div>
 
-                                <div class='form-group'>
-                                    <label class='control-label ' for='subject_<?php echo $language; ?>'><?php eT("Subject:"); ?></label>
+                                <div class='mb-3'>
+                                    <label class='form-label ' for='subject_<?php echo $language; ?>'><?php eT("Subject:"); ?></label>
                                     <div class=''>
                                         <?php echo CHtml::textField("subject_{$language}",$subject,array('class' => 'form-control')); ?>
                                     </div>
                                 </div>
 
-                                <div class='form-group'>
+                                <div class='mb-3'>
 
-                                    <label class='control-label ' for='message_<?php echo $language; ?>'><?php eT("Message:"); ?></label>
+                                    <label class='form-label ' for='message_<?php echo $language; ?>'><?php eT("Message:"); ?></label>
                                     <div class=''>
                                         <div class="htmleditor">
                                             <?php echo CHtml::textArea("message_{$language}",$textarea,array('cols'=>80,'rows'=>20, 'class' => 'form-control')); ?>
@@ -145,10 +139,10 @@
                         <?php } ?>
                     </div>
                     <div class="row">
-                        <div class='form-group'>
+                        <div class='mb-3'>
                             <div class=''></div>
                             <div class=''>
-                                <?php echo CHtml::submitButton(gT("Send Invitations",'unescaped'), array('class'=>'btn btn-default')); ?>
+                                <?php echo CHtml::submitButton(gT("Send Invitations",'unescaped'), array('class'=>'btn btn-outline-secondary')); ?>
                             </div>
 
                             <?php

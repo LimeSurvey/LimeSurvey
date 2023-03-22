@@ -37,10 +37,9 @@
         notice: the css/js files from third party extension use the package system. It means that the asset manager will publish them on the base of the directory logic.
         So, if you update any css/js file from a third party extension, make sure that the modification date of the root directory is updated.
     -->
-
     <?php
-        $oAdminTheme = AdminTheme::getInstance();
-        $oAdminTheme->registerStylesAndScripts();
+//    $oAdminTheme = AdminTheme::getInstance();
+//    $oAdminTheme->registerStylesAndScripts();
     ?>
     <?php if(!YII_DEBUG ||  Yii::app()->getConfig('use_asset_manager')): ?>
         <!-- Debug mode is off, so the asset manager will be used-->
@@ -63,7 +62,7 @@
 <!-- Loading wrapper -->
 <div id='ls-loading'>
     <span id='ls-loading-spinner' class='fa fa-spinner fa-spin fa-4x'></span>
-    <span class='sr-only'><?php eT('Loading...'); ?></span>
+    <span class='visually-hidden'><?php eT('Loading...'); ?></span>
 </div>
 
 <?php $this->widget('ext.FlashMessage.FlashMessage'); ?>

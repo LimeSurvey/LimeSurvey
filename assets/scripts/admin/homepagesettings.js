@@ -119,7 +119,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
             dataType : 'html',
             // html contains the buttons
             success : function(html, statut){
-                $('#notif-container').append('<div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close limebutton" data-dismiss="alert" aria-label="Close"><span>×</span></button>'+$successMessage+'</div>');
+                $('#notif-container').append('<div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="btn-close limebutton" data-bs-dismiss="alert" aria-label="Close"></button>'+$successMessage+'</div>');
             },
             error :  function(html, statut){
                 alert('error');
@@ -133,11 +133,11 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     $('a[data-confirm]').click(function(ev) {
         var href = $(this).attr('href');
         if (!$('#dataConfirmModal').length) {
-            $('body').append('<div  id="dataConfirmModal" class="modal  fade" role="dialog" aria-labelledby="dataConfirmLabel">  <div class="modal-dialog">    <div class="modal-content">      <div class="modal-header">        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>        <h4 class="modal-title">'+strConfirm+'</h4>      </div>      <div class="modal-body">      </div>      <div class="modal-footer"><a class="btn btn-primary" id="dataConfirmOK">'+strOK+'</a><button  type="button" class="btn btn-default" data-dismiss="modal" >'+strCancel+'</button>      </div>    </div><!-- /.modal-content -->  </div><!-- /.modal-dialog --></div><!-- /.modal -->');
+            $('body').append('<div  id="dataConfirmModal" class="modal  fade" role="dialog" aria-labelledby="dataConfirmLabel">  <div class="modal-dialog">    <div class="modal-content">      <div class="modal-header">   <h4 class="modal-title">'+strConfirm+'</h4>     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>      </div>      <div class="modal-body">      </div>      <div class="modal-footer"><a class="btn btn-primary" id="dataConfirmOK">'+strOK+'</a><button  type="button" class="btn btn-cancel" data-bs-dismiss="modal" >'+strCancel+'</button>      </div>    </div><!-- /.modal-content -->  </div><!-- /.modal-dialog --></div><!-- /.modal -->');
         }
         $('#dataConfirmModal').find('.modal-body').text($(this).attr('data-confirm'));
         $('#dataConfirmOK').attr('href', href);
-        $('#dataConfirmModal').modal({show:true});
+        $('#dataConfirmModal').modal('show');
         return false;
     });
 

@@ -5,14 +5,14 @@ var defineActions = function (dataArray) {
     var buttonDelete = $('<button><i class="fa fa-trash text-danger"></i></button>');
     var container = $('<div><div class="icon-btn-row"></div></div>');
     buttonEdit
-        .addClass('btn btn-sm btn-default surveysettings_edit_intparameter')
+        .addClass('btn btn-sm btn-outline-secondary surveysettings_edit_intparameter')
         .data('id', dataArray.id)
         .data('sid', dataArray.sid)
         .data('qid', (dataArray.qid || null))
         .data('sqid', (dataArray.qid || null))
         .appendTo(iconRow);
     buttonDelete
-        .addClass('btn btn-sm btn-default surveysettings_delete_intparameter')
+        .addClass('btn btn-sm btn-outline-secondary surveysettings_delete_intparameter')
         .data('id', dataArray.id)
         .data('sid', dataArray.sid)
         .data('qid', (dataArray.qid || null))
@@ -26,7 +26,7 @@ var defineActions = function (dataArray) {
  * Bind to submit event
  */
 function PostParameterGrid() {
-    var rowsData = [],
+    /*var rowsData = [],
         dt = $('#urlparams').DataTable();
     dt.rows().every(
         function (rowId, tableLoop, rowLoop) {
@@ -37,7 +37,7 @@ function PostParameterGrid() {
     try {
         jsonString = JSON.stringify(rowsData);
     } catch (e) {}
-    $('#allurlparams').val(jsonString);
+    $('#allurlparams').val(jsonString);*/
 
 }
 
@@ -49,7 +49,7 @@ function PostParameterGrid() {
 function saveParameter() {
     var sParamname = $.trim($('#paramname').val());
     if (sParamname == '' || !/^[a-zA-Z_][a-zA-Z0-9_]*$/.test(sParamname) || sParamname == 'sid' || sParamname == 'newtest' || sParamname == 'token' || sParamname == 'lang') {
-        $('#dlgEditParameter').prepend('<div class="alert alert-danger alert-dismissible fade in"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' + sEnterValidParam + '</div>');
+        $('#dlgEditParameter').prepend('<div class="alert alert-danger alert-dismissible fade in"><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' + sEnterValidParam + '</div>');
         return;
     }
     $('#dlgEditParameter').dialog('close');
@@ -59,44 +59,26 @@ function saveParameter() {
         rowData = {};
     }
 
+    var URLParam = {};
+    var postUrl = $('#dlgEditParameter').data('save-url');
 
     if ($('#dlgEditParameter').data('action') == 'add') {
-        var sGUID = guidGenerator();
-        $('#urlparams').DataTable().row.add({
-            'id': sGUID,
-            'actionBtn': defineActions({
-                id: sGUID,
-                sid: window.PanelIntegrationData.surveyid,
-                qid: $('#targetquestion').val().split('-').shift() || '',
-                sqid: $('#targetquestion').val().split('-').pop() || ''
-            }),
-            'parameter': sParamname,
-            'targetQuestionText': $('#targetquestion option:selected').text() || rowData.targetQuestionText,
-            'sid': window.PanelIntegrationData.surveyid,
-            qid: $('#targetquestion').val().split('-').shift() || '',
-            sqid: $('#targetquestion').val().split('-').pop() || ''
-        });
+        URLParam.parameter = sParamname;
+        URLParam.targetqid = $('#targetquestion').val().split('-').shift() || '';
+        URLParam.targetsqid = $('#targetquestion').val().split('-').pop() || '';
     } else {
-        var rowData = {
-            'id': rowData.id,
-            'actionBtn': defineActions({
-                id: rowData.id,
-                sid: window.PanelIntegrationData.surveyid,
-                qid: rowData.qid,
-                sqid: rowData.sqid
-            }),
-            'parameter': sParamname,
-            'targetQuestionText': $('#targetquestion option:selected').text() || rowData.targetQuestionText,
-            sid: window.PanelIntegrationData.surveyid,
-            qid: $('#targetquestion').val().split('-').shift() || '',
-            sqid: $('#targetquestion').val().split('-').pop() || ''
-        };
-        $($('#urlparams').DataTable().row('#' + rowData.id).node()).data('rawdata', JSON.stringify(rowData));
-        $('#urlparams').DataTable().row('#' + rowData.id).data(rowData);
-
+        URLParam.id = rowData.id;
+        URLParam.parameter = sParamname;
+        URLParam.targetqid = $('#targetquestion').val().split('-').shift() || '';
+        URLParam.targetsqid = $('#targetquestion').val().split('-').pop();
     }
-    $('#urlparams').DataTable().draw();
-    PostParameterGrid();
+
+    var postDatas = {
+        surveyId: window.PanelIntegrationData.surveyid,
+        URLParam: URLParam
+    };
+
+    sendPostAndUpdate(postUrl, postDatas);
 }
 
 function newParameter(data) {
@@ -109,7 +91,7 @@ function newParameter(data) {
 
 function editParameter(event, aRowData) {
 
-    $('#targetquestion').val(aRowData.qid + '-' + aRowData.sqid);
+    $('#targetquestion').val((aRowData.qid || '') + '-' + (aRowData.sqid || ''));
     $('#paramname').val(aRowData.parameter);
     $('#dlgEditParameter').data('action', 'edit');
     $('#dlgEditParameter').data('rawdata', JSON.stringify(aRowData));
@@ -118,9 +100,12 @@ function editParameter(event, aRowData) {
 }
 
 function deleteParameter(event, aRowData) {
-    $('#urlparams').DataTable().row('#' + aRowData.id).remove();
-    $('#urlparams').DataTable().draw();
-    PostParameterGrid();
+    var postUrl = $('#dlgEditParameter').data('delete-url');
+    var postDatas = {
+        surveyId: window.PanelIntegrationData.surveyid,
+        URLParam: {id: aRowData.id}
+    };
+    sendPostAndUpdate(postUrl, postDatas);
 }
 
 function in_array(needle, haystack, argStrict) {
@@ -161,94 +146,101 @@ function validateSettingsForm($form) {
             return LS.validateEndDateHigherThanStart(
                 $('#startdate_datetimepicker').data('DateTimePicker'),
                 $('#expires_datetimepicker').data('DateTimePicker'),
-                () => {LS.LsGlobalNotifier.createFlash(expirationLowerThanStartError, 'alert-danger fade in')}
+                () => {LS.LsGlobalNotifier.createAlert(expirationLowerThanStartError, 'danger')}
             );
         default:
             return true;
     }
 }
 
+/**
+ * Validates that an end date is not lower than a start date
+ */
+function validateEndDateHigherThanStart(startDatePicker, endDatePicker, errorMessage) {
+    if (!startDatePicker || !startDatePicker.date()) {
+        return true;
+    }
+    if (!endDatePicker || !endDatePicker.date()) {
+        return true;
+    }
+    const difference = endDatePicker.date().diff(startDatePicker.date());
+    if (difference >= 0) {
+        return true;
+    }
+    LS.LsGlobalNotifier.createAlert(errorMessage, 'danger');
+    return false;
+}
+
+function sendPostAndUpdate(url, data) {
+    var postDatas = data || {};
+    postDatas[LS.data.csrfTokenName] = LS.data.csrfToken;
+
+    // Ajax request
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: postDatas,
+
+        success : function(result) {
+            if (!result.success) {
+                var errorMsg = result.message || '';
+                if (!errorMsg) errorMsg = "Unexpected error";
+                LS.LsGlobalNotifier.createAlert(errorMsg, 'danger');
+                return;
+            }
+
+            LS.LsGlobalNotifier.createAlert(result.message, 'success');
+
+            try {
+                $.fn.yiiGridView.update('urlparams');
+            } catch (e){
+                if (e) {
+                    console.ls.error(e);
+                }
+            }
+        },
+        error :  function(result){
+            LS.LsGlobalNotifier.createAlert(result.statusText ?? "Unexpected error", 'danger');
+        }
+    });
+}
+
+function searchParameters() {
+    var data = {
+        search_query: $('#search_query').val()
+    };
+    $.fn.yiiGridView.update('urlparams', {data: data});
+}
+
+$(document).on('click', '#addParameterButton', function(e){
+    e.preventDefault();
+    newParameter(e);
+});
+$(document).on('click', '#urlparams .surveysettings_edit_intparameter', function(e){
+    e.preventDefault();
+    editParameter(e,$(this).closest('tr').data());
+});
+$(document).on('click', '#urlparams .surveysettings_delete_intparameter', function(e){
+    e.preventDefault();
+    $(this).prop('disabled', true);
+    deleteParameter(e,$(this).closest('tr').data());
+});
+$(document).on('click', '#btnCancelParams', function(){ 
+    $("#dlgEditParameter").dialog("close"); 
+});
+$(document).on('click', '#btnSaveParams', saveParameter);
+
 $(document).on('ready  pjax:scriptcomplete', function(){
     if (window.PanelIntegrationData) {
-        var i10n = window.PanelIntegrationData.i10n;
-        $.ajax({
-            url : window.PanelIntegrationData.getParametersUrl,
-            dataType: 'json',
-            method: "GET",
-            success: function(results){
-                // console.log(results);
-                var dataSet = [];
-                $.each(results.rows, function(i,row){
-                    var rowArray = {
-                    "id"                 : row.id,
-                    "actionBtn"          : defineActions(row),
-                    "parameter"          : row.parameter,
-                    "targetQuestionText" : row.questionTitle,
-                    "sid"                : row.sid,
-                    "qid"                : row.targetqid || "",
-                    "sqid"               : row.targetsqid || ""
-                    };
-                    dataSet.push(rowArray);
-                });
-
-                $("#urlparams").DataTable({
-                    columns:[
-                        {data: 'id', visible: false},
-                        {data: 'actionBtn', label: i10n['Action'], orderable: false},
-                        {data: 'parameter', label: i10n['Parameter']},
-                        {data: 'targetQuestionText', label: i10n['Target question']},
-                        {data: 'sid', visible: false},
-                        {data: 'qid', visible: false},
-                        {data: 'sqid', visible: false}
-                    ],
-                    "language":{
-                        "emptyTable":i10n['No parameters defined'],
-                        "search":i10n['Search prompt'],
-                        "infoEmpty":'',
-                        "info":i10n['Progress']
-                    }    
-                    ,
-                    data: dataSet,
-                    createdRow: function(thisRow,data,dataIndex){
-                        $(thisRow).data('rawdata',JSON.stringify(data));
-                    },
-                    rowId: 'id',
-                    paging: false,
-                    dom: "<'#dt-toolbar'>f<t>i"
-                });
-                var addParamButton = $('<button class="btn btn-success" id="addParameterButton">'+i10n['Add URL parameter']+'</button>');
-                $('#dt-toolbar').addClass('pull-left clearfix').append(addParamButton)
-                    .on('click', '#addParameterButton', function(e){
-                        e.preventDefault();
-                        newParameter(e);
-                    });
-                $("#urlparams").css('width','100%')
-                    .on('click', '.surveysettings_edit_intparameter', function(e){
-                        e.preventDefault();
-                        // console.log(($(this).closest('tr').data('rawdata')));  
-                        editParameter(e,JSON.parse($(this).closest('tr').data('rawdata')));                  
-                    })
-                    .on('click', '.surveysettings_delete_intparameter', function(e){
-                        e.preventDefault();
-                    deleteParameter(e,JSON.parse($(this).closest('tr').data('rawdata')));
-                    });
-                    
-            },
-            error: console.log
-        }   );
-
         $("#dlgEditParameter").dialog({ 
             autoOpen: false, 
             width: 700 
-        }); 
-    
-        $('#btnCancelParams').click(function(){ 
-            $("#dlgEditParameter").dialog("close"); 
-        }); 
-    
-        $('#btnSaveParams').click(saveParameter); 
-        $('#addnewsurvey').submit(PostParameterGrid); 
-        $('#globalsetting').submit(PostParameterGrid);  // This is the name of survey settings update form
-        $('#panelintegration').submit(PostParameterGrid);
+        });
+        $("#dlgEditParameter").removeClass('hide');
     }
+});
+
+$(document).on('click', '#searchParameterButton', searchParameters);
+$(document).on('change', '#integrationPanelPager #pageSize', function(){
+    $.fn.yiiGridView.update('urlparams',{ data:{ pageSize: $(this).val() }});
 });

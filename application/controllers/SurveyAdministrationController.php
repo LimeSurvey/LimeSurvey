@@ -185,6 +185,12 @@ class SurveyAdministrationController extends LSBaseController
             $aData['display']['menu_bars']['surveysummary'] = 'viewgroup';
         }
 
+        $surveyUrls = [];
+        foreach ($survey->allLanguages as $language) {
+            $surveyUrls[$language] = $survey->getSurveyUrl($language);
+        }
+        $aData['surveyUrls'] = $surveyUrls;
+
         $this->surveysummary($aData);
 
         // Display 'Overview' in Green Bar
@@ -1388,105 +1394,6 @@ class SurveyAdministrationController extends LSBaseController
     }
 
     /**
-     * This Method is returning the Data for Survey Top Bar Component
-     * for Vue JS as JSON.
-     *
-     * @param int $sid Given Survey ID
-     * @param bool $saveButton Renders Save Button
-     *
-     * @return string|string[]|null
-     * @throws CException
-     *
-     */
-    public function actionGetSurveyTopbar(int $sid, $saveButton = false)
-    {
-        $oSurvey = Survey::model()->findByPk($sid);
-        $hasSurveyContentPermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'update');
-        $hasSurveyActivationPermission = Permission::model()->hasSurveyPermission($sid, 'surveyactivation', 'update');
-        $hasDeletePermission = Permission::model()->hasSurveyPermission($sid, 'survey', 'delete');
-        $hasSurveyTranslatePermission = Permission::model()->hasSurveyPermission($sid, 'translations', 'read');
-        $hasSurveyReadPermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'read');
-        $hasSurveyTokensPermission = Permission::model()->hasSurveyPermission($sid, 'surveysettings', 'update')
-            || Permission::model()->hasSurveyPermission($sid, 'tokens', 'create');
-        $hasResponsesCreatePermission = Permission::model()->hasSurveyPermission($sid, 'responses', 'create');
-        $hasResponsesReadPermission = Permission::model()->hasSurveyPermission($sid, 'responses', 'read');
-        $hasResponsesStatisticsReadPermission = Permission::model()->hasSurveyPermission($sid, 'statistics', 'read');
-
-        $isActive = $oSurvey->active == 'Y';
-        $condition = array('sid' => $sid, 'parent_qid' => 0);
-        $sumcount = Question::model()->countByAttributes($condition);
-        $countLanguage = count($oSurvey->allLanguages);
-        $hasAdditionalLanguages = (count($oSurvey->additionalLanguages) > 0);
-        $canactivate = $sumcount > 0 && $hasSurveyActivationPermission;
-        $expired = $oSurvey->expires != '' && ($oSurvey->expires < dateShift(
-            date("Y-m-d H:i:s"),
-            "Y-m-d H:i",
-            Yii::app()->getConfig('timeadjust')
-        ));
-        $notstarted = ($oSurvey->startdate != '') && ($oSurvey->startdate > dateShift(
-            date("Y-m-d H:i:s"),
-            "Y-m-d H:i",
-            Yii::app()->getConfig('timeadjust')
-        ));
-
-        if (!$isActive) {
-            $context = gT("Preview survey");
-            $contextbutton = 'preview_survey';
-        } else {
-            $context = gT("Run survey");
-            $contextbutton = 'execute_survey';
-        }
-
-        $language = $oSurvey->language;
-        $conditionsCount = Condition::model()->with(array('questions' => array('condition' => 'sid =' . $sid)))->count();
-        $oneLanguage = (count($oSurvey->allLanguages) == 1);
-
-        // Put menu items in tools menu
-        $event = new PluginEvent('beforeToolsMenuRender', $this);
-        $event->set('surveyId', $oSurvey->sid);
-        App()->getPluginManager()->dispatchEvent($event);
-        $extraToolsMenuItems = $event->get('menuItems');
-
-        // Add new menus in survey bar
-        $event = new PluginEvent('beforeSurveyBarRender', $this);
-        $event->set('surveyId', $oSurvey->sid);
-        App()->getPluginManager()->dispatchEvent($event);
-        $beforeSurveyBarRender = $event->get('menus');
-
-        return $this->renderPartial(
-            'survey_topbar',
-            array(
-                'sid' => $sid,
-                'canactivate' => $canactivate,
-                'expired' => $expired,
-                'notstarted' => $notstarted,
-                'context' => $context,
-                'contextbutton' => $contextbutton,
-                'language' => $language,
-                'sumcount' => $sumcount,
-                'hasSurveyContentPermission' => $hasSurveyContentPermission,
-                'countLanguage' => $countLanguage,
-                'hasDeletePermission' => $hasDeletePermission,
-                'hasSurveyTranslatePermission' => $hasSurveyTranslatePermission,
-                'hasAdditionalLanguages' => $hasAdditionalLanguages,
-                'conditionsCount' => $conditionsCount,
-                'hasSurveyReadPermission' => $hasSurveyReadPermission,
-                'oneLanguage' => $oneLanguage,
-                'hasSurveyTokensPermission' => $hasSurveyTokensPermission,
-                'hasResponsesCreatePermission' => $hasResponsesCreatePermission,
-                'hasResponsesReadPermission' => $hasResponsesReadPermission,
-                'hasSurveyActivationPermission' => $hasSurveyActivationPermission,
-                'hasResponsesStatisticsReadPermission' => $hasResponsesStatisticsReadPermission,
-                'addSaveButton' => $saveButton,
-                'extraToolsMenuItems' => $extraToolsMenuItems ?? [],
-                'beforeSurveyBarRender' => $beforeSurveyBarRender ?? []
-            ),
-            false,
-            false
-        );
-    }
-
-    /**
      * Function responsible to deactivate a survey.
      *
      * @return void
@@ -1948,7 +1855,7 @@ class SurveyAdministrationController extends LSBaseController
         $aData['surveybar']['saveandclosebutton']['form'] = true;
         $aData['topBar']['closeUrl'] = $this->createUrl("surveyAdministration/view/", ['surveyid' => $iSurveyID]); // Close button
 
-        if ($subaction === 'resources') {
+        if ($subaction === 'resources' || $subaction === 'panelintegration') {
             $aData['topBar']['showSaveButton'] = false;
         } else {
             $aData['topBar']['showSaveButton'] = true;
@@ -2098,9 +2005,6 @@ class SurveyAdministrationController extends LSBaseController
             } elseif ($action == 'copysurvey') {
                 $iSurveyID = sanitize_int(Yii::app()->request->getParam('copysurveylist'));
                 $aExcludes = array();
-
-                $sNewSurveyName = Yii::app()->request->getPost('copysurveyname');
-
                 if (Yii::app()->request->getPost('copysurveyexcludequotas') == "1") {
                     $aExcludes['quotas'] = true;
                 }
@@ -2140,6 +2044,12 @@ class SurveyAdministrationController extends LSBaseController
                 } else {
                     Yii::app()->loadHelper('export');
                     $copysurveydata = surveyGetXMLData($iSurveyID, $aExcludes);
+                    if (empty(Yii::app()->request->getPost('copysurveyname'))) {
+                        $sourceSurvey = Survey::model()->findByPk($iSurveyID);
+                        $sNewSurveyName = $sourceSurvey->currentLanguageSettings->surveyls_title;
+                    } else {
+                        $sNewSurveyName = Yii::app()->request->getPost('copysurveyname');
+                    }
                 }
             }
 
@@ -3172,8 +3082,8 @@ class SurveyAdministrationController extends LSBaseController
                 'Action' => gT('Action'),
                 'Parameter' => gT('Parameter'),
                 'Target question' => gT('Target question'),
-                'Survey ID' => gT('Survey id'),
-                'Question ID' => gT('Question id'),
+                'Survey ID' => gT('Survey ID'),
+                'Question ID' => gT('Question ID'),
                 'Subquestion ID' => gT('Subquestion ID'),
                 'Add URL parameter' => gT('Add URL parameter'),
                 'Edit URL parameter' => gT('Edit URL parameter'),
@@ -3194,7 +3104,141 @@ class SurveyAdministrationController extends LSBaseController
         ];
         $aData['questions'] = $aQuestions;
 
-        App()->getClientScript()->registerPackage('jquery-datatable');
+        $model = new SurveyURLParameter('search');
+        $model->sid = $survey->sid;
+        $model->searched_value = Yii::app()->request->getParam('search_query');
+
+        $aData['updateUrl'] = Yii::app()->createUrl('surveyAdministration/rendersidemenulink', ['surveyid' => $survey->sid, 'subaction' => 'panelintegration']);
+
+        if (isset($_GET['pageSize'])) {
+            Yii::app()->user->setState('pageSize', (int) $_GET['pageSize']);
+        }
+
+        $aData['model'] = $model;
+
+        App()->getClientScript()->registerPackage('jquery-datatable-bs5');
         return $aData;
+    }
+
+    /**
+     * Method to save URL Params (Panel Integration)
+     *
+     * @throws CException
+     */
+    public function actionSaveUrlParam()
+    {
+        $paramData = Yii::app()->request->getPost('URLParam');
+        if (empty($paramData)) {
+            return $this->renderPartial(
+                '/admin/super/_renderJson',
+                ['data' => ['success' => false, 'message' => gT("Invalid request")]]
+            );
+        }
+
+        $surveyId = sanitize_int(Yii::app()->request->getPost('surveyId'));
+        if (!Permission::model()->hasSurveyPermission($surveyId, 'surveysettings', 'update')) {
+            return $this->renderPartial(
+                '/admin/super/_renderJson',
+                ['data' => ['success' => false, 'message' => gT("Access denied!")]]
+            );
+        }
+
+        // Based on Database::actionUpdateSurveyLocaleSettings()
+        $paramData['parameter'] = trim($paramData['parameter'] ?? '');
+        if (
+            $paramData['parameter'] == ''
+            || !preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $paramData['parameter'])
+            || $paramData['parameter'] == 'sid'
+            || $paramData['parameter'] == 'newtest'
+            || $paramData['parameter'] == 'token'
+            || $paramData['parameter'] == 'lang'
+        ) {
+            return $this->renderPartial(
+                '/admin/super/_renderJson',
+                ['data' => ['success' => false, 'message' => gT("Invalid URL parameter")]]
+            );
+        }
+
+        if ($paramData['targetqid'] == '') {
+            $paramData['targetqid'] = null;
+        }
+        if ($paramData['targetsqid'] == '') {
+            $paramData['targetsqid'] = null;
+        }
+
+        $paramId = !empty($paramData['id']) ? sanitize_int($paramData['id']) : null;
+        if (empty($paramId)) {
+            $URLParam = new SurveyURLParameter();
+            $paramData['sid'] = $surveyId;
+        } else {
+            $URLParam = SurveyURLParameter::model()->findByPk($paramId);
+            if (empty($URLParam || $URLParam->sid != $surveyId)) {
+                return $this->renderPartial(
+                    '/admin/super/_renderJson',
+                    ['data' => ['success' => false, 'message' => gT("URL parameter not found")]]
+                );
+            }
+            unset($paramData['id']);
+        }
+
+        $URLParam->setAttributes($paramData);
+        if ($URLParam->save()) {
+            return $this->renderPartial(
+                '/admin/super/_renderJson',
+                ['data' => ['success' => true, 'message' => gT("URL parameter saved")]]
+            );
+        } else {
+            return $this->renderPartial(
+                '/admin/super/_renderJson',
+                ['data' => ['success' => false, 'message' => gT("Could not save URL parameter"), 'errors' => $URLParam->getErrors()]]
+            );
+        }
+    }
+
+    /**
+     * Method to delete URL Params (Panel Integration)
+     *
+     * @throws CException
+     */
+    public function actionDeleteUrlParam()
+    {
+        $URLParam = Yii::app()->request->getPost('URLParam');
+        if (empty($URLParam) || empty($URLParam['id'])) {
+            return $this->renderPartial(
+                '/admin/super/_renderJson',
+                ['data' => ['success' => false, 'message' => gT("Invalid request")]]
+            );
+        }
+
+        $surveyId = sanitize_int(Yii::app()->request->getPost('surveyId'));
+        if (!Permission::model()->hasSurveyPermission($surveyId, 'surveysettings', 'update')) {
+            return $this->renderPartial(
+                '/admin/super/_renderJson',
+                ['data' => ['success' => false, 'message' => gT("Access denied!")]]
+            );
+        }
+
+        $paramId = sanitize_int($URLParam['id']);
+
+        $URLParam = SurveyURLParameter::model()->findByPk($paramId);
+        if (empty($URLParam)) {
+            return $this->renderPartial(
+                '/admin/super/_renderJson',
+                ['data' => ['success' => false, 'message' => gT("URL parameter not found")]]
+            );
+        }
+
+        // Delete the record
+        if ($URLParam->delete()) {
+            return $this->renderPartial(
+                '/admin/super/_renderJson',
+                ['data' => ['success' => true, 'message' => gT("URL parameter deleted")]]
+            );
+        } else {
+            return $this->renderPartial(
+                '/admin/super/_renderJson',
+                ['data' => ['success' => false, 'message' => gT("Could not delete URL parameter")]]
+            );
+        }
     }
 }

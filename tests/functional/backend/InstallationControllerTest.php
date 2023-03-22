@@ -64,6 +64,11 @@ class InstallationControllerTest extends TestBaseClassWeb
             $dbpwd = 'root'; // See https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu1804-README.md#mysql
             echo 'Default to database password "root". Use DBPASSWORD=... from command-line to override this.' . PHP_EOL;
         }
+        $dbLocation = getenv('DBLOCATION');
+        if (!$dbLocation) {
+            $dbLocation = 'localhost';
+            echo 'Default to database location "localhost". Use DBLOCATION=... from command-line to override this.' . PHP_EOL;
+        }
 
         if (file_exists($configFile)) {
             // Delete possible previous database.
@@ -106,6 +111,9 @@ class InstallationControllerTest extends TestBaseClassWeb
             $accept = self::$webDriver->findElement(WebDriverBy::id('ls-accept-license'));
             $accept->click();
 
+            self::$webDriver->executeScript('window.scrollTo(0,document.body.scrollHeight);');
+            sleep(1);
+
             // Click next at pre-check.
             $next = self::$webDriver->findElement(WebDriverBy::id('ls-next'));
             $next->click();
@@ -115,14 +123,18 @@ class InstallationControllerTest extends TestBaseClassWeb
             $dbuserInput = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[dbuser]"]'));
             $dbpwdInput  = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[dbpwd]"]'));
             $dbnameInput = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[dbname]"]'));
+            $dbLocationInput = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[dblocation]"]'));
             $dbEngine = self::$webDriver->findElement(WebDriverBy::cssSelector('select[name="InstallerConfigForm[dbengine]"] option[value="'.$installerForm->dbengine.'"]'));
 
             $dbuserDbType->click();
             $dbEngine->click();
             $dbuserInput->clear()->sendKeys($dbuser);
             $dbpwdInput->clear()->sendKeys($dbpwd);
+            $dbLocationInput->clear()->sendKeys($dbLocation);
             $dbnameInput->sendKeys($databaseName);
 
+            self::$webDriver->executeScript('window.scrollTo(0,document.body.scrollHeight);');
+            sleep(1);
 
             // Click next.
             $next = self::$webDriver->findElement(WebDriverBy::id('ls-next'));
@@ -131,6 +143,9 @@ class InstallationControllerTest extends TestBaseClassWeb
             // Click "Create database".
             $button = self::$webDriver->findElement(WebDriverBy::cssSelector('input[type="submit"]'));
             $button->click();
+
+            self::$webDriver->executeScript('window.scrollTo(0,document.body.scrollHeight);');
+            sleep(1);
 
             // Click "Populate".
             $button = self::$webDriver->findElement(WebDriverBy::cssSelector('input[type="submit"]'));
@@ -143,6 +158,9 @@ class InstallationControllerTest extends TestBaseClassWeb
             $adminLoginName->clear()->sendKeys($username);
             $adminLoginPwd->clear()->sendKeys($password);
             $confirmPwd->clear()->sendKeys($password);
+
+            self::$webDriver->executeScript('window.scrollTo(0,document.body.scrollHeight);');
+            sleep(1);
 
             // Confirm optional settings (admin password etc).
             $button = self::$webDriver->findElement(WebDriverBy::cssSelector('input[type="submit"]'));

@@ -10,14 +10,15 @@
 
 <!-- Delete tokens table -->
 <?php if (!empty($showDelButton) && ($hasSurveySettingsUpdatePermission || $hasTokensDeletePermission)) : ?>
-    <a class="btn btn-danger" href="<?php echo Yii::App()->createUrl("admin/tokens/sa/kill/surveyid/$oSurvey->sid"); ?>" role="button">
+    <a class="btn btn-danger"
+       href="<?php echo Yii::App()->createUrl("admin/tokens/sa/kill/surveyid/$oSurvey->sid"); ?>">
         <?php eT("Delete participants table"); ?>
     </a>
 <?php endif; ?>
 
 <!-- Download CSV -->
 <?php if (!empty($showDownloadButton)) : ?>
-    <a class="btn btn-success pull-right" href="#" role="button" id="save-button">
+    <a class="btn btn-success float-end" href="#" id="save-button">
         <span class="fa fa fa-export"></span>
         <?php eT("Download CSV file"); ?>
     </a>
@@ -25,7 +26,7 @@
 
 <!-- Send invitations buttons -->
 <?php if (!empty($showSendInvitationButton)) : ?>
-    <a class="btn btn-success pull-right" href="#" role="button" id="send-invitation-button">
+    <a class="btn btn-success float-end" href="#" id="send-invitation-button">
         <span class="icon-invite"></span>
         <?php eT("Send invitations"); ?>
     </a>
@@ -33,7 +34,7 @@
 
 <!-- Send reminder buttons -->
 <?php if (!empty($showSendReminderButton)) : ?>
-    <a class="btn btn-success pull-right" href="#" role="button" id="send-reminders-button">
+    <a class="btn btn-success float-end" href="#" id="send-reminders-button">
         <span class="icon-invite"></span>
         <?php eT("Send reminders"); ?>
     </a>

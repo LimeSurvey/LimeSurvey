@@ -9,12 +9,13 @@ var PrepEmailTemplates = function(){
 
     var KCFinder_callback = function (url)
     {
-        if($(currentTarget).closest('.selector__table-container').hasClass('hidden')){
-            $(currentTarget).closest('.selector__table-container').removeClass('hidden');
+        if($(currentTarget).closest('.selector__table-container').hasClass('d-none')){
+            $(currentTarget).closest('.selector__table-container').removeClass('d-none');
         }
         addAttachment(currentTarget, url);
         window.KCFinder = null;
-        $('#kc-modal-open').modal('hide');
+        const modal = new bootstrap.Modal(document.getElementById('kc-modal-open'));
+        modal.hide();
     },
     
     /**
@@ -102,7 +103,8 @@ var PrepEmailTemplates = function(){
             $(newrow).find('input.relevance').val(relevance).attr('name', 'attachments' + templatetype + '[' + index + '][relevance]');
             $(newrow).find('input.filename').attr('name', 'attachments' + templatetype + '[' + index + '][url]');
             $(newrow).appendTo($(target).find('tbody'));
-            $('#kc-modal-open').modal('hide');
+            const modal = new bootstrap.Modal(document.getElementById('kc-modal-open'));
+            modal.hide();
         }
         else
         {
@@ -149,12 +151,13 @@ var PrepEmailTemplates = function(){
         window.KCFinder.target = target;
         window.KCFinder.callBack = KCFinder_callback;
         $('#kc-modal-open').find('iframe').attr('src', uri);
-        $('#kc-modal-open').modal('show');
+        const modal = new bootstrap.Modal(document.getElementById('kc-modal-open'));
+        modal.show();
     },
     bindActions = function(elements, translate, resetUrl){
         $(elements.validate).remoteModal({}, {
-            closeIcon : '<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label="'+translate.close+'"><span aria-hidden=\"true\">&times;</span></button>',
-            closeButton : '<button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">'+translate.close+'</button>',
+            closeIcon : '<button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label="'+translate.close+'"></button>',
+            closeButton : '<button type=\"button\" class=\"btn btn-outline-secondary\" data-bs-dismiss=\"modal\">'+translate.close+'</button>',
             saveButton : '<button type=\"button\" class=\"btn btn-primary\">'+translate.save+'</button>'
         });
         $(elements.reset).on('click', function(){
@@ -205,8 +208,8 @@ var PrepEmailTemplates = function(){
             openKCFinder_singleFile(target, uri);
 
         });
-        $('#kc-modal-open').modal({'backdrop' : false, show: false});
-        $('#kc-modal-open').on('hidden.bs.modal', function(){
+        const modal = document.getElementById('kc-modal-open');
+        modal.addEventListener('hidden.bs.modal', function() {
             $(this).find('iframe').attr('src', 'about:blank');
         });
     };

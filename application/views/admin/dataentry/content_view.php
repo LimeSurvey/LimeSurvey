@@ -46,8 +46,8 @@ echo viewHelper::getViewTestTag('dataEntryView');
 
             //5 POINT CHOICE radio-buttons
             case Question::QT_5_POINT_CHOICE: ?>
-            <div class="col-sm-10">
-                <select name='<?php echo $fieldname; ?>' class='form-control'>
+            <div class="col-md-10">
+                <select name='<?php echo $fieldname; ?>' class='form-select'>
                     <option value=''><?php eT("No answer",'html',$sDataEntryLanguage); ?></option>
                     <?php for ($x=1; $x<=5; $x++)
                     { ?>
@@ -62,28 +62,15 @@ echo viewHelper::getViewTestTag('dataEntryView');
             case Question::QT_D_DATE:
                 $dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
                 ?>
-            <div class="col-sm-10 has-feedback">
+            <div class="col-md-10 has-feedback">
                 <?php if(canShowDatePicker($dateformatdetails)): ?>
-                    <?php Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
+                    <?php Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', array(
                         'name' => $fieldname,
+                        'id' => 'q_date_' . $fieldname,
                         'pluginOptions' => array(
                             'format' => $dateformatdetails['jsdate'] . " HH:mm",
                             'allowInputToggle' =>true,
                             'showClear' => true,
-                            'tooltips' => array(
-                                'clear'=> gT('Clear selection'),
-                                'prevMonth'=> gT('Previous month'),
-                                'nextMonth'=> gT('Next month'),
-                                'selectYear'=> gT('Select year'),
-                                'prevYear'=> gT('Previous year'),
-                                'nextYear'=> gT('Next year'),
-                                'selectDecade'=> gT('Select decade'),
-                                'prevDecade'=> gT('Previous decade'),
-                                'nextDecade'=> gT('Next decade'),
-                                'prevCentury'=> gT('Previous century'),
-                                'nextCentury'=> gT('Next century'),
-                                'selectTime'=> gT('Select time')
-                            ),
                             'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                         )
                     )); ?>
@@ -97,8 +84,8 @@ echo viewHelper::getViewTestTag('dataEntryView');
 
             //GENDER drop-down list
             case Question::QT_G_GENDER: ?>
-            <div class="col-sm-10">
-                <select name='<?php echo $fieldname; ?>'  class='form-control'>
+            <div class="col-md-10">
+                <select name='<?php echo $fieldname; ?>'  class='form-select'>
                     <option selected='selected' value=''><?php eT("Please choose",'html',$sDataEntryLanguage); ?>..</option>
                     <option value='F'><?php eT("Female",'html',$sDataEntryLanguage); ?></option>
                     <option value='M'><?php eT("Male",'html',$sDataEntryLanguage); ?></option>
@@ -110,7 +97,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
             //Multiple short text
             case Question::QT_Q_MULTIPLE_SHORT_TEXT:
             case Question::QT_K_MULTIPLE_NUMERICAL: ?>
-            <div class="col-sm-10">
+            <div class="col-md-10">
                 <table>
                     <?php foreach ($dearesult as $dearow):?>
                         <tr>
@@ -129,7 +116,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
 
             // Dual scale
             case Question::QT_1_ARRAY_DUAL: ?>
-            <div class="col-sm-10">
+            <div class="col-md-10">
                 <table>
                     <tr>
                         <th></th>
@@ -146,8 +133,8 @@ echo viewHelper::getViewTestTag('dataEntryView');
                         <tr>
                             <td><?php echo $dearow->questionl10ns[$sDataEntryLanguage]->question; ?></td>
                             <td>
-                                <div class="col-sm-10">
-                                    <select name='<?php echo $fieldname.$dearow['title']; ?>#0'  class='form-control'>
+                                <div class="col-md-10">
+                                    <select name='<?php echo $fieldname.$dearow['title']; ?>#0'  class='form-select'>
                                         <option selected='selected' value=''><?php eT("Please choose..."); ?></option>
                                         <?php foreach ($delresult as $delrow): ?>
                                             <option value='<?php echo $delrow['code']; ?>'><?php echo $delrow->answerl10ns[$sDataEntryLanguage]->answer; ?></option>
@@ -157,8 +144,8 @@ echo viewHelper::getViewTestTag('dataEntryView');
                             </td>
                             <?php $delresult = Answer::model()->findAll("qid={$deqrow['qid']} and scale_id=1"); ?>
                             <td>
-                                <div class="col-sm-10">
-                                    <select name='<?php echo $fieldname.$dearow['title']; ?>#1'  class='form-control'>
+                                <div class="col-md-10">
+                                    <select name='<?php echo $fieldname.$dearow['title']; ?>#1'  class='form-select'>
                                         <option selected='selected' value=''><?php eT("Please choose..."); ?></option>
                                         <?php foreach ($delresult as $delrow)
                                         { ?>
@@ -188,8 +175,8 @@ echo viewHelper::getViewTestTag('dataEntryView');
         //LIST drop-down/radio-button list
         case Question::QT_L_LIST:
         case Question::QT_EXCLAMATION_LIST_DROPDOWN: ?>
-        <div class="col-sm-10">
-            <select name='<?php echo $fieldname; ?>'  class='form-control'>
+        <div class="col-md-10">
+            <select name='<?php echo $fieldname; ?>'  class='form-select'>
                 <?php if ($defexists=="") { ?>
                     <option selected='selected' value=''><?php eT("Please choose",'html',$sDataEntryLanguage); ?>..</option><?php echo $datatemp; }
                     else  { echo $datatemp;} ?>
@@ -202,7 +189,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
         </div>
         <?php if ($fother == "Y")
             { ?>
-            <div class="col-sm-10">
+            <div class="col-md-10">
             <?php eT("Other",'html',$sDataEntryLanguage); ?>:
             <input type='text' name='<?php echo $fieldname; ?>other' value='' />
             </div>
@@ -212,14 +199,14 @@ echo viewHelper::getViewTestTag('dataEntryView');
 
         //LIST WITH COMMENT drop-down/radio-button list + textarea
         case Question::QT_O_LIST_WITH_COMMENT:  ?>
-        <div class="col-sm-10">
-            <select name='<?php echo $fieldname; ?>'  class='form-control'>
+        <div class="col-md-10">
+            <select name='<?php echo $fieldname; ?>'  class='form-select'>
                 <?php if ($defexists=="") { ?>
                     <option selected='selected' value=''><?php eT("Please choose",'html',$sDataEntryLanguage); ?>..</option><?php echo $datatemp; }
                     else  { echo $datatemp;} ?>
             </select>
         </div>
-        <div class="col-sm-10">
+        <div class="col-md-10">
             <?php eT("Comment"); ?>:<br />
             <textarea cols='40' rows='5' name='<?php echo $fieldname; ?>comment'></textarea>
         </div>
@@ -232,7 +219,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
 
         // Ranking TYPE QUESTION
         case Question::QT_R_RANKING: ?>
-        <div class="col-sm-10">
+        <div class="col-md-10">
         <div id="question<?php echo $thisqid ?>" class="ranking-answers">
             <ul class="answers-list list-unstyled">
                 <?php for ($i=1; $i<=$anscount; $i++)
@@ -246,7 +233,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
                     eT('Next choice','html',$sDataEntryLanguage);
                 }
             ?>
-            <select name="<?php echo $fieldname.$i ?>"  class='form-control' id="answer<?php echo $fieldname.$i ?>">";
+            <select name="<?php echo $fieldname.$i ?>"  class='form-select' id="answer<?php echo $fieldname.$i ?>">";
                 <option value=""><?php eT('None','html',$sDataEntryLanguage) ?></option>
                 <?php
                     foreach ($answers as $ansrow)
@@ -273,7 +260,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
         <script type='text/javascript'>
             <!--
             var aRankingTranslations = {
-                choicetitle: '<?php echo gT("Your choices",'js') ?>',
+                choicetitle: '<?php echo gT("Available items",'js') ?>',
                 ranktitle: '<?php echo gT("Your ranking",'js') ?>'
             };
             function checkconditions(){
@@ -291,7 +278,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
 
         //Multiple choice checkbox (Quite tricky really!)
         case Question::QT_M_MULTIPLE_CHOICE: ?>
-        <div class="col-sm-10">
+        <div class="col-md-10">
             <?php
             if ($deqrow['other'] == "Y") {$meacount++;}
 
@@ -335,8 +322,8 @@ echo viewHelper::getViewTestTag('dataEntryView');
 
         //Language Switch
         case Question::QT_I_LANGUAGE:  ?>
-        <div class="col-sm-10">
-            <select name='<?php echo $fieldname; ?>'  class='form-control'>
+        <div class="col-md-10">
+            <select name='<?php echo $fieldname; ?>'  class='form-select'>
                 <option value='' selected='selected'><?php eT("Please choose",'html',$sDataEntryLanguage); ?>..</option>
 
                 <?php foreach ($slangs as $lang)
@@ -350,7 +337,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
 
         //Multiple choice with comments checkbox + text
         case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:  ?>
-        <div class="col-lg-10">
+        <div class="col-xl-10">
             <table border='0'>
                 <?php foreach ($mearesult as $mearow)
                     { ?>
@@ -381,7 +368,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
         <?php break;
         case Question::QT_VERTICAL_FILE_UPLOAD: ?>
 
-        <div class="col-sm-10">
+        <div class="col-md-10">
         <script type='text/javascript'>
 
             function updateJSON<?php echo $fieldname; ?>() {
@@ -453,7 +440,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
 
         //NUMERICAL TEXT
         case Question::QT_N_NUMERICAL: ?>
-            <div class="col-sm-10">
+            <div class="col-md-10">
             <?php
             if (isset($qidattributes['prefix']) && trim($qidattributes['prefix'][$sDataEntryLanguage]) != '') {
                 $prefix = $qidattributes['prefix'][$sDataEntryLanguage];
@@ -494,7 +481,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
 
         case Question::QT_S_SHORT_FREE_TEXT: //Short free text
             ?>
-            <div class="col-sm-10">
+            <div class="col-md-10">
             <?php
             if (isset($qidattributes['prefix']) && trim($qidattributes['prefix'][$sDataEntryLanguage]) != '') {
                 $prefix = $qidattributes['prefix'][$sDataEntryLanguage];
@@ -555,7 +542,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
         //LONG FREE TEXT
         case Question::QT_T_LONG_FREE_TEXT:
         ?>
-        <div class="col-sm-10">
+        <div class="col-md-10">
         <?php
             if (trim($qidattributes['display_rows'])!='')
             {
@@ -617,8 +604,8 @@ echo viewHelper::getViewTestTag('dataEntryView');
 
         case Question::QT_Y_YES_NO_RADIO: //YES/NO radio-buttons
         ?>
-        <div class="col-sm-10">
-            <select name='<?php echo $fieldname; ?>'  class='form-control'>
+        <div class="col-md-10">
+            <select name='<?php echo $fieldname; ?>'  class='form-select'>
                 <option selected='selected' value=''><?php eT("Please choose",'html',$sDataEntryLanguage); ?>..</option>
                 <option value='Y'><?php eT("Yes",'html',$sDataEntryLanguage); ?></option>
                 <option value='N'><?php eT("No",'html',$sDataEntryLanguage); ?></option>
@@ -630,14 +617,14 @@ echo viewHelper::getViewTestTag('dataEntryView');
         // Array (5 point choice) radio-buttons
         case Question::QT_A_ARRAY_5_POINT: ?>
 
-        <div class="col-sm-10">
+        <div class="col-md-10">
             <table>
                 <?php foreach ($mearesult as $mearow)
                     { ?>
                         <tr>
                             <td align='right'><?php echo $mearow->questionl10ns[$sDataEntryLanguage]->question; ?></td>
                             <td>
-                                <select name='<?php echo $fieldname.$mearow['title']; ?>' class='form-control'>
+                                <select name='<?php echo $fieldname.$mearow['title']; ?>' class='form-select'>
                                     <option value=''><?php eT("Please choose",'html',$sDataEntryLanguage); ?>..</option>
                                     <?php for ($i=1; $i<=5; $i++)
                                     { ?>
@@ -654,14 +641,14 @@ echo viewHelper::getViewTestTag('dataEntryView');
 
         // Array (10 point choice) radio-buttons
         case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS:  ?>
-        <div class="col-sm-10">
+        <div class="col-md-10">
         <table>
             <?php foreach ($mearesult as $mearow)
                 { ?>
                 <tr>
                     <td align='right'><?php echo $mearow->questionl10ns[$sDataEntryLanguage]->question; ?></td>
                     <td>
-                        <select name='<?php echo $fieldname.$mearow['title']; ?>'  class='form-control'>
+                        <select name='<?php echo $fieldname.$mearow['title']; ?>'  class='form-select'>
                             <option value=''><?php eT("Please choose",'html',$sDataEntryLanguage); ?>..</option>
                             <?php for ($i=1; $i<=10; $i++)
                                 { ?>
@@ -679,14 +666,14 @@ echo viewHelper::getViewTestTag('dataEntryView');
         // Array (Yes/Uncertain/No)
         case Question::QT_C_ARRAY_YES_UNCERTAIN_NO:
         ?>
-        <div class="col-sm-10">
+        <div class="col-md-10">
         <table>
             <?php foreach ($mearesult as $mearow)
                 { ?>
                 <tr>
                     <td align='right'><?php echo $mearow->questionl10ns[$sDataEntryLanguage]->question; ?></td>
                     <td>
-                        <select name='<?php echo $fieldname.$mearow['title']; ?>'  class='form-control'>
+                        <select name='<?php echo $fieldname.$mearow['title']; ?>'  class='form-select'>
                             <option value=''><?php eT("Please choose",'html',$sDataEntryLanguage); ?>..</option>
                             <option value='Y'><?php eT("Yes",'html',$sDataEntryLanguage); ?></option>
                             <option value='U'><?php eT("Uncertain",'html',$sDataEntryLanguage); ?></option>
@@ -704,14 +691,14 @@ echo viewHelper::getViewTestTag('dataEntryView');
         break;
         case Question::QT_E_ARRAY_INC_SAME_DEC:
         ?>
-        <div class="col-sm-10">
+        <div class="col-md-10">
             <table>
             <?php foreach ($mearesult as $mearow)
                 { ?>
                 <tr>
                     <td align='right'><?php echo $mearow->questionl10ns[$sDataEntryLanguage]->question; ?></td>
                     <td>
-                        <select name='<?php echo $fieldname.$mearow['title']; ?>'  class='form-control'>
+                        <select name='<?php echo $fieldname.$mearow['title']; ?>'  class='form-select'>
                             <option value=''><?php eT("Please choose",'html',$sDataEntryLanguage); ?>..</option>
                             <option value='I'><?php eT("Increase",'html',$sDataEntryLanguage); ?></option>
                             <option value='S'><?php eT("Same",'html',$sDataEntryLanguage); ?></option>
@@ -729,7 +716,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
         case Question::QT_COLON_ARRAY_NUMBERS:
             $labelcodes=array();
         ?>
-        <div class="col-sm-10">
+        <div class="col-md-10">
         <table>
             <tr><td></td>
                 <?php foreach($lresult as $data)
@@ -762,7 +749,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
                             <?php if ($qidattributes['input_boxes']!=0) { ?>
                                 <input type='text' name='<?php echo $fieldname.$mearow['title']."_".$ld;?>' size=4 />
                                 <?php } else { ?>
-                                <select name='<?php echo $fieldname.$mearow['title']."_$ld"; ?>'  class='form-control'>
+                                <select name='<?php echo $fieldname.$mearow['title']."_$ld"; ?>'  class='form-select'>
                                     <option value=''>...</option>
                                     <?php for($ii=$minvalue;$ii<=$maxvalue;$ii+=$stepvalue)
                                         { ?>
@@ -783,7 +770,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
 
         // Array
         case Question::QT_SEMICOLON_ARRAY_TEXT: ?>
-        <div class="col-sm-10">
+        <div class="col-md-10">
         <table>
             <tr><td></td>
                 <?php $labelcodes=array();
@@ -829,7 +816,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
         // Array (Flexible Labels)
         case Question::QT_F_ARRAY:
         case Question::QT_H_ARRAY_COLUMN: ?>
-        <div class="col-sm-10">
+        <div class="col-md-10">
         <table>
             <?php  foreach ( $mearesult as $mearow)
                 {
@@ -849,7 +836,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
                 <tr>
                     <td align='right'><?php echo $answerleft; ?></td>
                     <td>
-                        <select name='<?php echo $fieldname.$mearow['title']; ?>'  class='form-control'>
+                        <select name='<?php echo $fieldname.$mearow['title']; ?>'  class='form-select'>
                             <option value=''><?php eT("Please choose",'html',$sDataEntryLanguage); ?>..</option>
 
                             <?php foreach ($fresult as $frow)
@@ -867,8 +854,8 @@ echo viewHelper::getViewTestTag('dataEntryView');
 } ?>
 
 <?php if (!empty($deqrow->questionl10ns[$sDataEntryLanguage]->help)): ?>
-    <div class="col-sm-1">
-        <a href="#" onclick="javascript:alert('Question <?php echo $deqrow['title']; ?> Help: <?php echo $hh; ?>')" title="<?php eT('Help about this question','html',$sDataEntryLanguage); ?>" data-toggle="tooltip" data-placement="top">
+    <div class="col-md-1">
+        <a href="#" onclick="javascript:alert('Question <?php echo $deqrow['title']; ?> Help: <?php echo $hh; ?>')" title="<?php eT('Help about this question','html',$sDataEntryLanguage); ?>" data-bs-toggle="tooltip" data-bs-placement="top">
             <span class="fa fa-question-circle"></span>
         </a>
     </div>

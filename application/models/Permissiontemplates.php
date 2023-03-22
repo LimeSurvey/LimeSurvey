@@ -164,18 +164,18 @@ class Permissiontemplates extends CActiveRecord
         // Role Detail
         $roleDetail = ""
             . "<button 
-                class='btn btn-sm btn-default RoleControl--action--openmodal RoleControl--action--userdetail' 
-                data-toggle='tooltip'
-                data-placement='top'
+                class='btn btn-sm btn-outline-secondary RoleControl--action--openmodal RoleControl--action--userdetail' 
+                data-bs-toggle='tooltip'
+                data-bs-placement='top'
                 title='" . gT('View role details') . "'
                 data-href='" . $detailUrl . "'><i class='fa fa-search'></i></button>";
 
         // Edit Permission
         $editPermissionButton = ""
             . "<button 
-                class='btn btn-sm btn-default RoleControl--action--openmodal RoleControl--action--permissions'
-                data-toggle='tooltip' 
-                data-placement='top'
+                class='btn btn-sm btn-outline-secondary RoleControl--action--openmodal RoleControl--action--permissions'
+                data-bs-toggle='tooltip' 
+                data-bs-placement='top'
                 title='" . gT('Edit permission') . "'
                 data-href='" . $setPermissionsUrl . "'
                 data-modalsize='modal-lg'>
@@ -185,9 +185,9 @@ class Permissiontemplates extends CActiveRecord
         // Edit Role
         $editRoleButton = ""
             . "<button 
-                class='btn btn-sm btn-default green-border RoleControl--action--openmodal RoleControl--action--edituser' 
-                data-toggle='tooltip'
-                data-placement='top'
+                class='btn btn-sm btn-outline-secondary green-border RoleControl--action--openmodal RoleControl--action--edituser' 
+                data-bs-toggle='tooltip'
+                data-bs-placement='top'
                 title='" . gT('Edit role') . "'
                 data-href='" . $editUrl . "'>
                     <i class='fa fa-pencil'></i>
@@ -195,9 +195,9 @@ class Permissiontemplates extends CActiveRecord
 
         // Export Role
         $exportRoleButton = ""
-            . "<a class='btn btn-sm btn-default RoleControl--action--link'
-                data-toggle='tooltip'
-                data-placement='top'
+            . "<a class='btn btn-sm btn-outline-secondary RoleControl--action--link'
+                data-bs-toggle='tooltip'
+                data-bs-placement='top'
                  title='" . gT('Export role') . "'
                 href='" . $exportRoleUrl . "'
                 role='button'>
@@ -206,13 +206,14 @@ class Permissiontemplates extends CActiveRecord
 
         // Delete Role
         //$deleteUrl .= '/ptid/' . $this->ptid;  NO GET-request here!!!
-        $deleteRoleButton = '<span data-toggle="tooltip" title="' . gT('Delete user role') . '">'
+        $deleteRoleButton = '<span data-bs-toggle="tooltip" title="' . gT('Delete user role') . '">'
             . "<button 
                 id='RoleControl--delete-" . $this->ptid . "' 
-                class='btn btn-sm btn-default' 
-                data-toggle='modal' 
+                class='btn btn-sm btn-outline-secondary' 
+                data-bs-toggle='modal' 
                 data-title='" . gt('Delete user role') . "'
-                data-target='#confirmation-modal'
+                data-bs-target='#confirmation-modal'
+                data-btnClass='btn-danger'
                 data-url ='" . $deleteUrl . "' 
                 data-ptid='" . $this->ptid . "'
                 data-action='delrole'         

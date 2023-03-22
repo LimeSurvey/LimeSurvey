@@ -808,6 +808,7 @@ function getSurveyInfo($surveyid, $languagecode = '', $force = false)
             $thissurvey['email_register'] = $thissurvey['surveyls_email_register'];
             $thissurvey['attributedescriptions'] = $result->survey->tokenAttributes;
             $thissurvey['attributecaptions'] = $result->attributeCaptions;
+            $thissurvey['googleanalyticsapikey'] = $oSurvey->getGoogleanalyticsapikey();
             if (!isset($thissurvey['adminname'])) {
                 $thissurvey['adminname'] = Yii::app()->getConfig('siteadminemail');
             }
@@ -825,6 +826,7 @@ function getSurveyInfo($surveyid, $languagecode = '', $force = false)
             } else {
                 $thissurvey['owner_username'] = '';
             }
+            
 
             $staticSurveyInfo[$surveyid][$languagecode] = $thissurvey;
         }
@@ -2335,9 +2337,8 @@ function languageDropdown($surveyid, $selected)
     $baselang = Survey::model()->findByPk($surveyid)->language;
     array_unshift($slangs, $baselang);
     $html = "<select class='listboxquestions' name='langselect' onchange=\"window.open(this.options[this.selectedIndex].value, '_top')\">\n";
-
     foreach ($slangs as $lang) {
-        $link = Yii::app()->homeUrl . ("/admin/dataentry/sa/view/surveyid/" . $surveyid . "/lang/" . $lang);
+        $link = Yii::app()->createUrl("admin/dataentry/sa/view/surveyid/". $surveyid . "/lang/" . $lang);
         if ($lang == $selected) {
             $html .= "\t<option value='{$link}' selected='selected'>" . getLanguageNameFromCode($lang, false) . "</option>\n";
         }
@@ -2362,7 +2363,7 @@ function languageDropdownClean($surveyid, $selected)
     $slangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
     $baselang = Survey::model()->findByPk($surveyid)->language;
     array_unshift($slangs, $baselang);
-    $html = "<select class='form-control listboxquestions' id='language' name='language'>\n";
+    $html = "<select class='form-select listboxquestions' id='language' name='language'>\n";
     foreach ($slangs as $lang) {
         if ($lang == $selected) {
             $html .= "\t<option value='$lang' selected='selected'>" . getLanguageNameFromCode($lang, false) . "</option>\n";

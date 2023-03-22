@@ -11,7 +11,7 @@
 <!-- answer -->
 <div class="container-center" id="selector--inputondemand-{{ basename }}">
     <div class="row">
-        <div class="col-xs-12">
+        <div class="col-12">
             <ul class="{{ coreClass }} list-unstyled form-horizontal selector--inputondemand-list" role="group" aria-labelledby="ls-question-text-{{ basename }}">
                 {% if aRows is empty %}
                     {% include 'survey/questions/answer/multipleshorttext/empty.twig' %}
@@ -23,8 +23,8 @@
                 {% endif %}
             </ul>
         </div>
-        <div class="col-xs-12 text-right">
-            <button class="btn btn-default selector--inputondemand-addlinebutton">
+        <div class="col-12 text-end">
+            <button class="btn btn-outline-secondary selector--inputondemand-addlinebutton">
                 <i class="fa fa-{{question_template_attribute.addlineicon}}"></i>
                 &nbsp;{{gT("Add line")}}
             </button>

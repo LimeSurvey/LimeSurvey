@@ -273,7 +273,6 @@ class UpdateForm extends CFormModel
         if (file_exists($this->tempdir . DIRECTORY_SEPARATOR . $file_to_unzip)) {
             // To debug pcl_zip, uncomment the following line :    require_once('/var/www/limesurvey/LimeSurvey/application/libraries/admin/pclzip/pcltrace.lib.php'); require_once('/var/www/limesurvey/LimeSurvey/application/libraries/admin/pclzip/pclzip-trace.lib.php'); PclTraceOn(2);
             // To debug pcl_zip, comment the following line:
-            Yii::app()->loadLibrary("admin/pclzip");
 
             $archive = new PclZip($this->tempdir . DIRECTORY_SEPARATOR . $file_to_unzip, false);
 
@@ -300,6 +299,7 @@ class UpdateForm extends CFormModel
      */
     public function unzipUpdateUpdaterFile()
     {
+        Yii::app()->loadLibrary("admin/pclzip");
         $file_to_unzip = 'update_updater.zip';
         return $this->unzipUpdateFile($file_to_unzip);
     }
@@ -913,10 +913,8 @@ class UpdateForm extends CFormModel
     private function getProtocol()
     {
         $server_ssl = Yii::app()->getConfig("comfort_update_server_ssl");
-        if ($server_ssl === 1) {
-            if (extension_loaded("openssl")) {
+        if ($server_ssl === 1 && extension_loaded("openssl")) {
                 return 'https://';
-            }
         }
         return 'http://';
     }
@@ -965,7 +963,9 @@ class UpdateForm extends CFormModel
             if (isset($_REQUEST['access_token'])) {
                 $getters .= "&access_token=" . urlencode($_REQUEST['access_token']);
             }
-
+            if (Yii::app()->getConfig("allow_non_public_release")) {
+                $getters .= "&debug=1";
+            }
             $ch = curl_init($this->getProtocol() . Yii::app()->getConfig("comfort_update_server_url") . $getters);
 
             if ($this->proxy_host_name != '') {

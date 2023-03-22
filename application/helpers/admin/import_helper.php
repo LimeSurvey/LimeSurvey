@@ -136,7 +136,8 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
     // We have to run the question table data two times - first to find all main questions
     // then for subquestions (because we need to determine the new qids for the main questions first)
 
-
+    /** @var Question[] */
+    $importedQuestions = [];
     $results['questions'] = 0;
     if (isset($xml->questions)) {
         foreach ($xml->questions->rows->row as $row) {
@@ -209,6 +210,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
                 }
                 $aQIDReplacements[$iOldQID] = $oQuestion->qid;
                 $results['questions']++;
+                $importedQuestions[$aQIDReplacements[$iOldQID]] = $oQuestion;
             }
 
             if (isset($oQuestionL10n)) {
@@ -415,6 +417,8 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
     if (isset($xml->question_attributes)) {
         $aAllAttributes = questionHelper::getAttributesDefinitions();
 
+        /** @var array<integer,array<string,mixed>> List of "answer order" related attributes, grouped by qid */
+        $answerOrderAttributes = [];
         foreach ($xml->question_attributes->rows->row as $row) {
             $insertdata = array();
             foreach ($row as $key => $value) {
@@ -440,6 +444,18 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
                 continue;
             }
 
+            // Keep "answer order" related attributes in an array to process later (because we need to combine two attributes)
+            if (
+                $insertdata['attribute'] == 'alphasort'
+                || (
+                    $insertdata['attribute'] == 'random_order'
+                    && in_array($importedQuestions[$insertdata['qid']]->type, ['!', 'L', 'O', 'R'])
+                )
+            ) {
+                $answerOrderAttributes[$insertdata['qid']][$insertdata['attribute']] = $insertdata['value'];
+                continue;
+            }
+
             if (
                 $iDBVersion < 156 && isset($aAllAttributes[$insertdata['attribute']]['i18n']) &&
                 $aAllAttributes[$insertdata['attribute']]['i18n']
@@ -452,6 +468,29 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
                 App()->db->createCommand()->insert('{{question_attributes}}', $insertdata);
             }
             $results['question_attributes']++;
+        }
+
+        // Process "answer order" attributes
+        foreach ($answerOrderAttributes as $importedQid => $questionAttributes) {
+            if (!empty($questionAttributes['random_order'])) {
+                $insertdata = [
+                    'qid' => $importedQid,
+                    'attribute' => 'answer_order',
+                    'value' => 'random',
+                ];
+                App()->db->createCommand()->insert('{{question_attributes}}', $insertdata);
+                $results['question_attributes']++;
+                continue;
+            }
+            if (!empty($questionAttributes['alphasort'])) {
+                $insertdata = [
+                    'qid' => $importedQid,
+                    'attribute' => 'answer_order',
+                    'value' => 'alphabetical',
+                ];
+                App()->db->createCommand()->insert('{{question_attributes}}', $insertdata);
+                $results['question_attributes']++;
+            }
         }
     }
 
@@ -876,6 +915,8 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
     // Import questionattributes --------------------------------------------------------------
     if (isset($xml->question_attributes)) {
         $aAllAttributes = questionHelper::getAttributesDefinitions();
+        /** @var array<string,mixed> List of "answer order" related attributes */
+        $answerOrderAttributes = [];
         foreach ($xml->question_attributes->rows->row as $row) {
             $insertdata = array();
             foreach ($row as $key => $value) {
@@ -896,6 +937,18 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
                     $oQuestion->question_theme_name = $insertdata['value'];
                     $oQuestion->save();
                 }
+                continue;
+            }
+
+            // Keep "answer order" related attributes in an array to process later (because we need to combine two attributes)
+            if (
+                $insertdata['attribute'] == 'alphasort'
+                || (
+                    $insertdata['attribute'] == 'random_order'
+                    && in_array($oQuestion->type, ['!', 'L', 'O', 'R'])
+                )
+            ) {
+                $answerOrderAttributes[$insertdata['attribute']] = $insertdata['value'];
                 continue;
             }
 
@@ -924,6 +977,25 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
             checkWrongQuestionAttributes($insertdata['qid']);
             $results['question_attributes']++;
         }
+    }
+
+    // Process "answer order" attributes
+    if (!empty($answerOrderAttributes['random_order'])) {
+        $insertdata = [
+            'qid' => $newqid,
+            'attribute' => 'answer_order',
+            'value' => 'random',
+        ];
+        App()->db->createCommand()->insert('{{question_attributes}}', $insertdata);
+        $results['question_attributes']++;
+    } elseif (!empty($answerOrderAttributes['alphasort'])) {
+        $insertdata = [
+            'qid' => $newqid,
+            'attribute' => 'answer_order',
+            'value' => 'alphabetical',
+        ];
+        App()->db->createCommand()->insert('{{question_attributes}}', $insertdata);
+        $results['question_attributes']++;
     }
 
     // Import defaultvalues ------------------------------------------------------
@@ -1347,6 +1419,17 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         $surveyLanguageSetting = new SurveyLanguageSetting();
         $surveyLanguageSetting->setAttributes($insertdata, false);
         try {
+            // Clear alias if it was already in use
+            $surveyLanguageSetting->checkAliasUniqueness();
+            if ($surveyLanguageSetting->hasErrors('surveyls_alias')) {
+                $languageData = getLanguageData();
+                $results['importwarnings'][] = sprintf(
+                    gT("The survey alias for '%s' has been cleared because it was already in use by another survey."),
+                    $languageData[$insertdata['surveyls_language']]['description']
+                );
+                unset($surveyLanguageSetting->surveyls_alias);
+                $surveyLanguageSetting->clearErrors('surveyls_alias');
+            }
             if (!$surveyLanguageSetting->save()) {
                 throw new Exception(gT("Error") . ": Failed to import survey language settings - data is invalid.");
             }
@@ -1441,6 +1524,8 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
     // We have to run the question table data two times - first to find all main questions
     // then for subquestions (because we need to determine the new qids for the main questions first)
     $aQuestionsMapping = array(); // collect all old and new question codes for replacement
+    /** @var Question[] */
+    $importedQuestions = [];
     if (isset($xml->questions)) {
         // There could be surveys without a any questions.
         foreach ($xml->questions->rows->row as $row) {
@@ -1520,8 +1605,8 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                     throw new Exception(gT("Error while saving: ") . print_r($oQuestion->errors, true));
                 }
                 $aQIDReplacements[$iOldQID] = $oQuestion->qid;
-                ;
                 $results['questions']++;
+                $importedQuestions[$aQIDReplacements[$iOldQID]] = $oQuestion;
             }
 
             if (isset($oQuestionL10n)) {
@@ -1747,6 +1832,8 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
     // Import questionattributes -------------------------------------------------
     if (isset($xml->question_attributes)) {
         $aAllAttributes = questionHelper::getAttributesDefinitions();
+        /** @var array<integer,array<string,mixed>> List of "answer order" related attributes, grouped by qid */
+        $answerOrderAttributes = [];
         foreach ($xml->question_attributes->rows->row as $row) {
             $insertdata = array();
             foreach ($row as $key => $value) {
@@ -1786,6 +1873,18 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 continue;
             }
 
+            // Keep "answer order" related attributes in an array to process later (because we need to combine two attributes)
+            if (
+                $insertdata['attribute'] == 'alphasort'
+                || (
+                    $insertdata['attribute'] == 'random_order'
+                    && in_array($importedQuestions[$insertdata['qid']]->type, ['!', 'L', 'O', 'R'])
+                )
+            ) {
+                $answerOrderAttributes[$insertdata['qid']][$insertdata['attribute']] = $insertdata['value'];
+                continue;
+            }
+
             if ($iDBVersion < 156 && isset($aAllAttributes[$insertdata['attribute']]['i18n']) && $aAllAttributes[$insertdata['attribute']]['i18n']) {
                 foreach ($aLanguagesSupported as $sLanguage) {
                     $insertdata['language'] = $sLanguage;
@@ -1805,6 +1904,29 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
             checkWrongQuestionAttributes($insertdata['qid']);
             $results['question_attributes']++;
+        }
+
+        // Process "answer order" attributes
+        foreach ($answerOrderAttributes as $importedQid => $questionAttributes) {
+            if (!empty($questionAttributes['random_order'])) {
+                $insertdata = [
+                    'qid' => $importedQid,
+                    'attribute' => 'answer_order',
+                    'value' => 'random',
+                ];
+                App()->db->createCommand()->insert('{{question_attributes}}', $insertdata);
+                $results['question_attributes']++;
+                continue;
+            }
+            if (!empty($questionAttributes['alphasort'])) {
+                $insertdata = [
+                    'qid' => $importedQid,
+                    'attribute' => 'answer_order',
+                    'value' => 'alphabetical',
+                ];
+                App()->db->createCommand()->insert('{{question_attributes}}', $insertdata);
+                $results['question_attributes']++;
+            }
         }
     }
 

@@ -136,13 +136,21 @@ class ParticipantShare extends LSActiveRecord
     {
         $loggedInUser = yii::app()->user->getId();
         if ($this->participant->owner_uid == $loggedInUser) {
-            $inputHtml = "<input type='checkbox' data-size='small' data-off-color='warning' data-on-color='primary' data-off-text='" . gT('No') . "' data-on-text='" . gT('Yes') . "' class='action_changeEditableStatus' "
-            . ($this->can_edit ? "checked" : "")
-            . "/>";
-            return  $inputHtml;
-        } else {
-            return ($this->can_edit ? gT("Yes") : gT('No'));
+            $inputHtml = App()->getController()->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                'name'          => 'canedithtml_' . $this->participant_id . "_" . $this->share_uid,
+                'checkedOption' => $this->can_edit ? "1" : "0",
+                'selectOptions' => [
+                    '1' => gT('Yes'),
+                    '0' => gT('No'),
+                ],
+                'htmlOptions'   => [
+                    'class' => 'action_changeEditableStatus'
+                ]
+            ], true);
+            return $inputHtml;
         }
+
+        return ($this->can_edit ? gT("Yes") : gT('No'));
     }
 
     /**
@@ -163,10 +171,10 @@ class ParticipantShare extends LSActiveRecord
                     'shareUid'      => $this->share_uid
                 ]
             );
-            $buttons .= "<span data-toggle='tooltip' title='" . gT("Delete sharing") . "'><a href='#'
-            class='btn btn-sm btn-default action_delete_shareParticipant'
-            data-toggle='modal' 
-            data-target='#confirmation-modal'
+            $buttons .= "<span data-bs-toggle='tooltip' title='" . gT("Delete sharing") . "'><a href='#'
+            class='btn btn-sm btn-outline-secondary action_delete_shareParticipant'
+            data-bs-toggle='modal' 
+            data-bs-target='#confirmation-modal'
             data-title='" . gt('Unshare this participant') . "'
             data-btntext='" . gt('Unshare') . "'
             data-message='" . gT('Do you really want to unshare this participant?') . "' 

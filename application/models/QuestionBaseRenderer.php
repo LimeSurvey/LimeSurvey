@@ -61,8 +61,23 @@ abstract class QuestionBaseRenderer extends StaticModel
 
         $questionScript = $this->getQuestionScript();
         if (!empty($questionScript)) {
-            $sScriptRendered = LimeExpressionManager::ProcessString($questionScript, $this->oQuestion->qid, ['QID' => $this->oQuestion->qid]);
+            /* Replace Expression Manager */
+            $sScriptRendered = LimeExpressionManager::ProcessString(
+                $questionScript,
+                $this->oQuestion->qid,
+                [
+                    'QID' => $this->oQuestion->qid,
+                    'GID' => $this->oQuestion->gid,
+                    'SGQ' => $this->oQuestion->sid . "X" . $this->oQuestion->gid . "X" . $this->oQuestion->qid,
+                ]
+            );
             $this->addScript('QuestionStoredScript-' . $this->oQuestion->qid, $sScriptRendered, LSYii_ClientScript::POS_POSTSCRIPT);
+            /* Reset needed replacement */
+            LimeExpressionManager::updateReplacementFields(array(
+                'QID' => null,
+                'GID' => null,
+                'SGQ' => null,
+            ));
         }
     }
 
@@ -119,11 +134,11 @@ abstract class QuestionBaseRenderer extends StaticModel
         $time_limit_message_delay = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_message_delay']['value'], 1000);
         $time_limit_warning_2_display_time = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_2_display_time']['value'], 0);
         $time_limit_message_style = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_message_style']['value'], '');
-        $time_limit_message_class = "hidden ls-timer-content ls-timer-message ls-no-js-hidden";
+        $time_limit_message_class = "d-none ls-timer-content ls-timer-message ls-no-js-hidden";
         $time_limit_warning_style = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_style']['value'], '');
-        $time_limit_warning_class = "hidden ls-timer-content ls-timer-warning ls-no-js-hidden";
+        $time_limit_warning_class = "d-none ls-timer-content ls-timer-warning ls-no-js-hidden";
         $time_limit_warning_2_style = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_2_style']['value'], '');
-        $time_limit_warning_2_class = "hidden ls-timer-content ls-timer-warning2 ls-no-js-hidden";
+        $time_limit_warning_2_class = "d-none ls-timer-content ls-timer-warning2 ls-no-js-hidden";
         $time_limit_timer_style = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_timer_style']['value'], '');
         $time_limit_timer_class = "ls-timer-content ls-timer-countdown ls-no-js-hidden";
 

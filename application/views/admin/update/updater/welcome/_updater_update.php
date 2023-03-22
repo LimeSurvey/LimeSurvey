@@ -21,10 +21,10 @@
 <!-- The form launching the update of the updater. -->
 <?php echo CHtml::beginForm(Yii::app()->getController()->createUrl('admin/update/sa/updateUpdater'), 'post', array('id'=>'launchUpdateUpdaterForm')); ?>
     <?php  echo CHtml::hiddenField('destinationBuild' , $serverAnswer->destinationBuild); ?>
-    <a class="btn btn-default" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
+    <a class="btn btn-cancel" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
         <?php eT("Cancel"); ?>
     </a>
-    <?php echo CHtml::submitButton(gT("Continue",'unescaped'), array('class'=>"ajax_button btn btn-default",)); ?>
+    <?php echo CHtml::submitButton(gT("Continue",'unescaped'), array('class'=>"ajax_button btn btn-outline-secondary",)); ?>
 <?php echo CHtml::endForm(); ?>
 
 <!-- this javascript code manage the step changing. It will catch the form submission, then load the comfortupdate for the required build -->

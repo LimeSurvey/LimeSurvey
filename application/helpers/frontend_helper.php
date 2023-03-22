@@ -437,6 +437,10 @@ function submittokens($quotaexit = false)
 }
 
 /**
+                $aReplacementVars['ANSWERTABLE'] = getResponseTableReplacement($surveyid, $responseId, $emailLanguage, $bIsHTML);
+                LimeExpressionManager::updateReplacementFields($aReplacementVars);
+                $aReplacementVars['ANSWERTABLE'] = getResponseTableReplacement($surveyid, $responseId, $emailLanguage, $bIsHTML);
+                LimeExpressionManager::updateReplacementFields($aReplacementVars);
  * submitfailed : used in em_manager_helper.php
  *
  * "Unexpected error"

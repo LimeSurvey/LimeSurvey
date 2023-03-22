@@ -9,10 +9,10 @@ $iconFail = "<span class='fa fa-exclamation-triangle text-danger'></span>";
 
 ?>
 <div class="row">
-    <div class="col-md-3">
+    <div class="col-lg-3">
         <?php $this->renderPartial('/installer/sidebar_view', compact('progressValue', 'classesForStep')); ?>
     </div>
-    <div class="col-md-9">
+    <div class="col-lg-9">
         <h2><?php echo $title; ?></h2>
         <p><?php echo $descp; ?></p>
         <legend><?php eT("Minimum requirements"); ?></legend>
@@ -150,16 +150,16 @@ $iconFail = "<span class='fa fa-exclamation-triangle text-danger'></span>";
 
         </table>
         <div class="row navigator">
-            <div class="col-md-4" >
-                <input id="ls-previous" class="btn btn-default" type="button" value="<?php eT('Previous'); ?>" onclick="window.open('<?php echo $this->createUrl("installer/license"); ?>', '_top')" />
+            <div class="col-lg-4" >
+                <input id="ls-previous" class="btn btn-outline-secondary" type="button" value="<?php eT('Previous'); ?>" onclick="window.open('<?php echo $this->createUrl("installer/license"); ?>', '_top')" />
             </div>
-            <div class="col-md-4">
-                <input id="ls-check-again" class="btn btn-default" type="button" value="<?php eT('Check again'); ?>" onclick="window.open('<?php echo $this->createUrl("installer/precheck"); ?>', '_top')" />
+            <div class="col-lg-4">
+                <input id="ls-check-again" class="btn btn-outline-secondary" type="button" value="<?php eT('Check again'); ?>" onclick="window.open('<?php echo $this->createUrl("installer/precheck"); ?>', '_top')" />
             </div>
-            <div class="col-md-4">
+            <div class="col-lg-4">
 
                 <?php if (isset($next) && $next == true):?>
-                    <input id="ls-next" class="btn btn-default" type="button" value="<?php eT('Next'); ?>" onclick="window.open('<?php echo $this->createUrl("installer/database"); ?>', '_top')" />
+                    <input id="ls-next" class="btn btn-outline-secondary" type="button" value="<?php eT('Next'); ?>" onclick="window.open('<?php echo $this->createUrl("installer/database"); ?>', '_top')" />
                 <?php endif; ?>
             </div>
         </div>

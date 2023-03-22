@@ -236,7 +236,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     }
 
     if (isset($surveyid) && isset($_SESSION['survey_' . $surveyid]['srid'])) {
-        $_quexmlpdf = CHtml::link(gT("Save as PDF"), array("/printanswers/view/surveyid/{$surveyid}/printableexport/quexmlpdf"), array('data-toggle' => 'tooltip', 'data-placement' => 'right', 'title' => gT("Note: Print will not include items on this page")));
+        $_quexmlpdf = CHtml::link(gT("Save as PDF"), array("/printanswers/view/surveyid/{$surveyid}/printableexport/quexmlpdf"), array('data-bs-toggle' => 'tooltip', 'data-bs-placement' => 'right', 'title' => gT("Note: Print will not include items on this page")));
     } else {
         $_quexmlpdf = "";
     }
@@ -254,34 +254,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $_restart = "";
     $_return_to_survey = "";
 
-    if (isset($thissurvey['googleanalyticsapikey']) && $thissurvey['googleanalyticsapikey'] === "9999useGlobal9999") {
-        $_googleAnalyticsAPIKey = trim(App()->getConfig('googleanalyticsapikey'));
-    } elseif (isset($thissurvey['googleanalyticsapikey']) && trim($thissurvey['googleanalyticsapikey']) != '') {
-        $_googleAnalyticsAPIKey = trim($thissurvey['googleanalyticsapikey']);
-    } else {
-        $_googleAnalyticsAPIKey = "";
-    }
-
-    $thissurvey['googleanalyticsapikey'] = $_googleAnalyticsAPIKey;
-
     $_googleAnalyticsStyle = ($thissurvey['googleanalyticsstyle'] ?? '1');
-
-    if ($_googleAnalyticsAPIKey != '' && $_googleAnalyticsStyle == 2) {
-        // SurveyName-[SID]/[GSEQ]-GroupName - create custom GSEQ based upon page step
-        $moveInfo = LimeExpressionManager::GetLastMoveResult();
-        if (is_null($moveInfo)) {
-            $gseq = 'welcome';
-        } elseif ($moveInfo['finished']) {
-            $gseq = 'finished';
-        } elseif (isset($moveInfo['at_start']) && $moveInfo['at_start']) {
-            $gseq = 'welcome';
-        } elseif (is_null($_groupname)) {
-            $gseq = 'printanswers';
-        } else {
-            $gseq = $moveInfo['gseq'] + 1;
-        }
-    }
-
     $_endtext = '';
     if (isset($thissurvey['surveyls_endtext']) && trim($thissurvey['surveyls_endtext']) != '') {
         $_endtext = $thissurvey['surveyls_endtext'];
@@ -291,7 +264,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
 
     if (!empty($oTemplate->siteLogo)) {
         if (file_exists($oTemplate->path . $oTemplate->siteLogo)) {
-            $sitelogo = '<img class="img-responsive site-surveylist-logo custom custom-margin top-15 bottom-15" src="' . App()->getAssetManager()->publish($oTemplate->path . $oTemplate->siteLogo) . '" alt=""/>';
+            $sitelogo = '<img class="img-fluid site-surveylist-logo custom custom-margin top-15 bottom-15" src="' . App()->getAssetManager()->publish($oTemplate->path . $oTemplate->siteLogo) . '" alt=""/>';
         }
     }
 

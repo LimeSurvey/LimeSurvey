@@ -139,7 +139,12 @@ class ResponsesController extends LSBaseController
 
 
         $fieldmap = createFieldMap($survey, 'full', false, false, $aData['language']);
-        $bHaveToken = $survey->anonymized == "N" && tableExists('tokens_' . $surveyId); // Boolean : show (or not) the token
+        // just used to check if the token exists for the given response id before we create the real query
+        $response = SurveyDynamic::model($surveyId)->find('id=:id', [':id' => $id]);
+        // Boolean : show (or not) the token
+        $bHaveToken = $survey->anonymized == "N"
+            && tableExists('tokens_' . $surveyId)
+            && isset($response->tokens);
         if (!Permission::model()->hasSurveyPermission($surveyId, 'tokens', 'read')) {
             // If not allowed to read: remove it
             unset($fieldmap['token']);
@@ -843,8 +848,8 @@ class ResponsesController extends LSBaseController
                 'header'            => gT('ID'),
                 'name'              => 'id',
                 'value'             => '$data->id',
-                'headerHtmlOptions' => ['class' => 'hidden-xs'],
-                'htmlOptions'       => ['class' => 'hidden-xs']
+                'headerHtmlOptions' => ['class' => ''],
+                'htmlOptions'       => ['class' => '']
             ],
             [
                 'header' => gT('Total time'),

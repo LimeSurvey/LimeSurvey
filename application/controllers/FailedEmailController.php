@@ -45,6 +45,12 @@ class FailedEmailController extends LSBaseController
             $this->redirect(['surveyAdministration/view', 'surveyid' => $surveyId]);
         }
 
+        // Set number of page, else pagination won't work
+        $pageSize = App()->request->getParam('pageSize', null);
+        if ($pageSize != null) {
+            App()->user->setState('pageSize', (int) $pageSize);
+        }
+
         App()->getClientScript()->registerScriptFile('/application/views/failedEmail/javascript/failedEmail.js', LSYii_ClientScript::POS_BEGIN);
         $failedEmailModel = FailedEmail::model();
         $failedEmailModel->setAttributes(App()->getRequest()->getParam('FailedEmail'), false);
