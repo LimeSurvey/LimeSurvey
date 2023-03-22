@@ -324,21 +324,12 @@ body {
     cursor: pointer;
 }
 
-.js td.radio-item, .js td.checkbox-item {
-    cursor: pointer;
-}
-
 .slider-item {
     min-height: 50px;
 }
 
 .slider-container {
     min-height: 15px;
-}
-
-/* Show more the heading in table */
-.ls-answers .ls-heading th {
-    font-weight: 700
 }
 
 /* Max width for some answer part */
@@ -356,26 +347,10 @@ body {
     }
 }
 
-/* table color */
-.ls-even {
-}
-
 /* dynamic group (multiple-numeric) .form-control-static same padding and border width than form-control for better alignment */
 .ls-group-dynamic .form-control-static {
     padding-left: 15px;
     padding-right: 15px;
-}
-
-/* array by column hover column */
-.table-col-hover col:hover, /* This, maybe, work in CSS4 :) */
-.table-col-hover col.hover /* Actual solution : js only*/
-{
-}
-
-@media only screen and (max-width: 760px),
-(min-device-width: 768px) and (max-device-width: 1024px) {
-    .ls-answers > tbody > tr.ls-even:hover {
-    }
 }
 
 /**
@@ -485,27 +460,6 @@ body .navbar-default .navbar-brand:hover {
     font-weight: normal;
 }
 
-table > tbody > tr > td.ddprefix {
-    padding-right: 1em;
-    vertical-align: middle;
-}
-
-
-/**
- * On big screen only, iPad and up
- */
-@media only screen and (min-width: 761px) {
-
-    .table-dual-scale .separator {
-        width: 6%;
-    }
-
-    table > tbody > tr > td.ddsuffix {
-        padding-left: 1em;
-        vertical-align: middle;
-    }
-
-}
 
 /**
  * No more tables
@@ -517,37 +471,9 @@ table > tbody > tr > td.ddprefix {
  */
 @media only screen and (max-width: 760px),
 (min-device-width: 768px) and (max-device-width: 1024px) {
-    table.ls-answers tbody {
-        padding: 0 1em 0 1em;
-    }
-
-    table.ls-answers tr {
-        padding: 1em;
-    }
-
-    table.ls-answers tr th {
-        font-size: 1.1em;
-        text-align: center;
-    }
-
     /* Add some margin for Multiple short text */
     .form-group.row {
         margin-bottom: 15px;
-    }
-
-    table.ls-answers tbody {
-        padding: 0;
-    }
-
-    table.ls-answers tr {
-        padding: 0;
-        margin-bottom: 1em;
-    }
-
-    /* Line header ; color is h4 color */
-    table.ls-answers tr th {
-        font-size: 1.1em;
-        text-align: left;
     }
 
     .array-by-columns .answertext {
@@ -559,21 +485,6 @@ table > tbody > tr > td.ddprefix {
 
     .array-by-columns .radio-item {
         padding-bottom: 8px;
-    }
-
-    table.ls-answers td {
-        /* Behave  like a "row" */
-        min-height: 2em;
-        position: relative;
-        /*padding-left: 95%;*/
-        padding-bottom: 1em;
-        white-space: normal;
-        text-align: left;
-    }
-
-    /* Hide the first column in array-by-column */
-    .array-by-columns-table tr > *:nth-child(1) {
-        display: none;
     }
 
     /* Need some more space on phone */
@@ -615,17 +526,6 @@ table > tbody > tr > td.ddprefix {
         margin: 1em;
     }
 
-    /*
-    .col-12.answer {
-        padding-left: 0;
-        padding-right: 0;
-    }
-    */
-    .no-more-tables tbody {
-        padding-left: 0;
-        padding-right: 0;
-    }
-
     /* For yes-no question, shrink the buttons a bit on phone screens */
     .btn-lg, .btn-group-lg label {
         padding: 10px 15px;
@@ -662,11 +562,6 @@ table > tbody > tr > td.ddprefix {
 /**
  * Display adjust, question type by question type
  */
-
-
-.table > tbody > tr > th {
-    vertical-align: middle;
-}
 
 .othertext-label-checkox-container {
     padding-top: 5px;
@@ -748,22 +643,10 @@ div.yes-no .btn-group label {
         font-size: 14px;
     }
 
-    .ls-answers tbody:last-child tr:last-child {
-        margin-bottom: 0;
-    }
-
     .ls-answers {
         padding-top: 0;
         padding-bottom: 0;
     }
-
-    .ls-answers > tbody > tr > td.radio-item,
-    .ls-answers > tbody > tr > td.checkbox-item {
-        min-height: 44px; /*minimal height for touching with finger */
-        padding-top: 10px;
-        padding-left: 28px;
-    }
-
 
     .help-block:last-child {
         margin-bottom: 0;
@@ -851,11 +734,4 @@ label {
     border-radius: 4px;
     -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
-}
-
-
-
-tbody, td, tfoot, th, thead, tr {
-    border: 1px solid;
-    border-color: inherit;
 }
