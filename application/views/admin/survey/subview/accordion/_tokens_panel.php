@@ -47,7 +47,7 @@ App()->getClientScript()->registerScript("tokens-panel-variables", "
             let anonymizedOption = $(this).val();
             let persistenceOption = $('input[name=\"tokenanswerspersistence\"]:checked').val();
     
-            changeLabel(anonymizedOption, persistenceOption);
+            changeAllowEditLabel(anonymizedOption, persistenceOption);
     
         });
 
@@ -56,11 +56,11 @@ App()->getClientScript()->registerScript("tokens-panel-variables", "
             let persistenceOption = $(this).val();
             let anonymizedOption = $('input[name=\"anonymized\"]:checked').val();
     
-            changeLabel(anonymizedOption, persistenceOption);
+            changeAllowEditLabel(anonymizedOption, persistenceOption);
     
         });
 
-        function changeLabel( anonymizedOption, persistenceOption )
+        function changeAllowEditLabel( anonymizedOption, persistenceOption )
         {
             if( showInherited === 1 && anonymizedOption === 'I' ) {
                 anonymizedOption = inheritedAnonymizedOption;
