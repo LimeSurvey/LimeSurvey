@@ -21,9 +21,6 @@ class BaseInput implements InputInterface
     private $conditionFunction;
 
     /** @var string */
-    private $id;
-
-    /** @var string */
     private $name;
 
     /** @var ?string */
@@ -34,12 +31,6 @@ class BaseInput implements InputInterface
 
     /** @var ?string */
     private $tooltip;
-
-    /** @var bool */
-    private $disabled = false;
-
-    /** @var bool */
-    private $checked = false;
 
     /** @var array */
     private $attributes = [];
@@ -53,13 +44,10 @@ class BaseInput implements InputInterface
             throw new InvalidArgumentException("Input is missing mandatory name option");
         }
 
-        $this->id = $options['id'] ?? null;
-        $this->name = $options['name'] ?? null;
-        $this->label = $options['label'] ?? null;
-        $this->help = $options['help'] ?? null;
-        $this->tooltip = $options['tooltip'] ?? null;
-        $this->disabled = $options['disabled'] ?? false;
-        $this->checked = $options['checked'] ?? false;
+        $this->name = $options['name'] ?? '';
+        $this->label = $options['label'] ?? '';
+        $this->help = $options['help'] ?? '';
+        $this->tooltip = $options['tooltip'] ?? '';
         $this->saveFunction = $options['save'] ?? null;
         $this->loadFunction = $options['load'] ?? null;
         $this->conditionFunction = $options['condition'] ?? null;
@@ -76,11 +64,6 @@ class BaseInput implements InputInterface
         );
 
         $this->setRenderer(new BaseInputRenderer);
-    }
-
-    public function getId(): string
-    {
-        return $this->id;
     }
 
     public function getName(): string
@@ -112,11 +95,6 @@ class BaseInput implements InputInterface
     public function getTooltip()
     {
         return $this->tooltip;
-    }
-
-    public function isDisabled(): bool
-    {
-        return $this->disabled;
     }
 
     public function getAttributes(): array

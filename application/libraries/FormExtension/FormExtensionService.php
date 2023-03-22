@@ -2,6 +2,8 @@
 
 namespace LimeSurvey\Libraries\FormExtension;
 
+use LimeSurvey\Libraries\FormExtension\Input\InputInterface;
+
 use Exception;
 use InvalidArgumentException;
 use CHttpRequest;
@@ -9,7 +11,7 @@ use Yii;
 
 class FormExtensionService
 {
-    /** @var array<string, array<Inputs\RawHtmlInput|Inputs\BaseInput>> List of inputs, mapped by formname.tabname => input list */
+    /** @var array<string, array<InputInterface> List of inputs, mapped by formname.tabname => input list */
     private $inputs = [];
 
     // Required by Yii
@@ -19,7 +21,7 @@ class FormExtensionService
 
     /**
      * @param string $position The form position, e.g. "globalsettings" or "globalsettings.email_settings"
-     * @param Inputs\RawHtmlInput|Inputs\BaseInput $input
+     * @param InputInterface $input
      * @return void
      */
     public function add(string $position, $input): void
@@ -46,7 +48,7 @@ class FormExtensionService
         $success = true;
         foreach ($inputs as $input) {
             try {
-                if ($input instanceof Inputs\BaseInput) {
+                if ($input instanceof Input\BaseInput) {
                     $input->save($request, $db);
                 }
             } catch (SaveFailedException $ex) {
@@ -80,7 +82,7 @@ class FormExtensionService
     /**
      * Get all tabs for a position
      *
-     * @return array<Inputs\BaseInput|Inputs\RawHtmlInput>
+     * @return array<InputInterface>
      */
     private function getAllForPosition(string $position): array
     {

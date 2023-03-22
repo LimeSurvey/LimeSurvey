@@ -3,14 +3,17 @@
 namespace LimeSurvey\Libraries\FormExtension\Input;
 
 /**
- * Basic text input. No customized behaviour compared to base class.
  */
-class TextInput extends BaseInput
+class FileInput extends BaseInput
 {
+    /** @var array */
+    private $accept = [];
+
     public function __construct(array $options)
     {
+        $this->accept = $options['accept'] ?? [];
         $options['attributes'] = array_merge(
-            ['type' => 'text'],
+            ['type' => 'file', 'accept' => $this->accept],
             $options['attributes'] ?? []
         );
         parent::__construct($options);

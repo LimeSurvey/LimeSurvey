@@ -16,14 +16,22 @@ class BaseInputRenderer implements RendererInterface
 
     public function renderAttributes(InputInterface $input)
     {
+        $attributes = $input->getAttributes();
         $flags = ['disabled', 'checked'];
 
-        $attributeParts = array_map(function ($key, $value) use ($flags) {
+        $attributeParts = array_map(function ($key) use ($attributes, $flags) {
+            $value = $attributes[$key];
+            if (empty($value)) {
+                return null;
+            }
+            if (is_array($value)) {
+                $value = implode(',', $value);
+            }
             return in_array($key, $flags)
-                ? htmlspecialchars($key) . '="' . htmlspecialchars($value) . '"'
-                : htmlspecialchars($key)
+                ? htmlspecialchars($key)
+                : htmlspecialchars($key) . '="' . htmlspecialchars($value) . '"'
                 ;
-        }, $input->getAttributes());
+        }, array_keys($attributes ));
 
         return implode(' ', $attributeParts);
     }

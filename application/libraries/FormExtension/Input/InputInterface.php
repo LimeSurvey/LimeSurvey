@@ -6,7 +6,6 @@ use LimeSurvey\Libraries\FormExtension\Renderer\RendererInterface;
 
 interface InputInterface
 {
-    public function getId();
     public function getName();
     public function getValue();
     public function getHelp();
@@ -14,7 +13,6 @@ interface InputInterface
     public function setAttributes($attributes);
     public function setAttribute($key, $value);
     public function getAttributes();
-    public function isDisabled();
     public function setRenderer(RendererInterface $renderer);
     public function render(): string;
 }

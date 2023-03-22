@@ -9,7 +9,10 @@ class CheckboxInput extends BaseInput
 {
     public function __construct(array $options)
     {
-        $options['attributes'] = array(['type' => 'checkbox'], $options['attributes'] ?? []);
+        $options['attributes'] = array_merge(
+            ['type' => 'checkbox'],
+            $options['attributes'] ?? []
+        );
         parent::__construct($options);
     }
 }
