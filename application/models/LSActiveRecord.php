@@ -131,15 +131,18 @@ class LSActiveRecord extends CActiveRecord
                 throw new Exception(sprintf('Table %s has a composite primary key, please explicitly state what field you need the max value for.', $this->tableName()));
             }
         }
-
-        if ($forceRefresh || !array_key_exists($field, self::$maxIds)) {
+        $dynamicId = 0;
+        if (is_subclass_of($this, 'Dynamic')) {
+            $dynamicId = $this->getDynamicId();
+        }
+        if ($forceRefresh || !array_key_exists($field, self::$maxIds[$dynamicId])) {
             $maxId = $this->dbConnection->createCommand()
                 ->select('MAX(' . $this->dbConnection->quoteColumnName($field) . ')')
                 ->from($this->tableName())
                 ->queryScalar();
-            self::$maxIds[$field] = $maxId;
+            self::$maxIds[$dynamicId][$field] = $maxId;
         }
-        return self::$maxIds[$field];
+        return self::$maxIds[$dynamicId][$field];
     }
 
     /**
