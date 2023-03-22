@@ -24,6 +24,9 @@ class LSActiveRecord extends CActiveRecord
 
     public $bEncryption = false;
 
+    /** @var integer[] to keep during same process**/
+    public static $maxIds = [];
+
     /**
      * Lists the behaviors of this model
      *
@@ -119,8 +122,6 @@ class LSActiveRecord extends CActiveRecord
      */
     public function getMaxId($field = null, $forceRefresh = false)
     {
-        static $maxIds = [];
-
         if (is_null($field)) {
             $primaryKey = $this->getMetaData()->tableSchema->primaryKey;
             if (is_string($primaryKey)) {
@@ -131,17 +132,14 @@ class LSActiveRecord extends CActiveRecord
             }
         }
 
-        if ($forceRefresh || !array_key_exists($field, $maxIds)) {
+        if ($forceRefresh || !array_key_exists($field, self::$maxIds)) {
             $maxId = $this->dbConnection->createCommand()
                 ->select('MAX(' . $this->dbConnection->quoteColumnName($field) . ')')
                 ->from($this->tableName())
                 ->queryScalar();
-
-            // Save so we can reuse in the same request
-            $maxIds[$field] = $maxId;
+            self::$maxIds[$field] = $maxId;
         }
-
-        return $maxIds[$field];
+        return self::$maxIds[$field];
     }
 
     /**
