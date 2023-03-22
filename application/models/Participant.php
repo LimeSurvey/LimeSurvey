@@ -1967,9 +1967,10 @@ class Participant extends LSActiveRecord
                 ];
                 $oParticipantAttributeNames = new ParticipantAttributeName();
                 $oParticipantAttributeNames->setAttributes($insertnames, false);
-                $oParticipantAttributeNames->save(false);
+                if (!$oParticipantAttributeNames->save()) {
+                    throw new CHttpException(500, CHtml::errorSummary($oParticipantAttributeNames));
+                }
                 $attid[$key] = $oParticipantAttributeNames->getPrimaryKey();
-
                 $insertnameslang = [
                     'attribute_id'   => $attid[$key],
                     'attribute_name' => urldecode($value),
