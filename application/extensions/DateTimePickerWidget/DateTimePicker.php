@@ -136,7 +136,7 @@ class DateTimePicker extends CInputWidget
     {
         $allowInputToggle = $this->getValue('data-allowInputToggle', $this->htmlOptions, false);
         $config = $this->getTempusConfigString();
-        $script = "const picker_$id = new tempusDominus.TempusDominus(document.getElementById('$this->mainId'), $config);
+        $script = "var picker_$id = new tempusDominus.TempusDominus(document.getElementById('$this->mainId'), $config);
         ";
         $script .= $this->getMomentJsOverrideString();
 

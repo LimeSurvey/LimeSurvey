@@ -90,7 +90,7 @@
 .mega-dropdown-menu {
   margin-left: auto;
   margin-right: auto;
-  padding: $grid-gutter-width var(--bs-gutter-x, .75rem);
+  padding: $grid-gutter-width $container-padding;
   width: 100%;
   .dropdown-header {
     color: $g-600;

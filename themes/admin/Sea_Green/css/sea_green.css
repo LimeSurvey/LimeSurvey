@@ -17185,7 +17185,7 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 .mega-dropdown-menu {
   margin-left: auto;
   margin-right: auto;
-  padding: 24px var(--bs-gutter-x, 0.75rem);
+  padding: 24px 20px;
   width: 100%;
 }
 .mega-dropdown-menu .dropdown-header {
