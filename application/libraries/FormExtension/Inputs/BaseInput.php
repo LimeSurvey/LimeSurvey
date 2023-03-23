@@ -57,6 +57,7 @@ class BaseInput implements InputInterface
         return $this->name;
     }
 
+    /** @return ?string */
     public function getId()
     {
         return $this->id;
