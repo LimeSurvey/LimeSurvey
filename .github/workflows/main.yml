@@ -57,7 +57,7 @@ jobs:
         run: |
           # Set up the Apache and PHP
           sudo apt-get update > /dev/null
-          sudo apt install php php-mysql php8.0-mysql php7.2-mysql libapache2-mod-php8.0 -y
+          sudo apt install php php-mysql php8.0-mysql php8.0-ldap php8.0-imap php7.2-mysql libapache2-mod-php8.0 -y
 
           sudo cp -f ./tests/CI-pipeline/github-actions-apache /etc/apache2/sites-available/000-default.conf
           sudo sed -e "s?%CI_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/000-default.conf
@@ -105,7 +105,9 @@ jobs:
           # cat application/config/config.php
 
       - name: Run syntax check, CodeSniffer, MessDetector, ...
-        run: composer test
+        run:
+          ./vendor/bin/psalm -c psalm-all.xml
+          composer test
 
       - name: Test the server
         run: |
