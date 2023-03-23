@@ -81,13 +81,26 @@ textarea,
     color            : $white;
 }
 
+// style .radio-item as .radio-primary from awesome-bootstrap-checkbox to have colored outline
+.radio-item input[type="radio"] + label::after {
+    background-color: $base-color;
+}
+.radio-item input[type="radio"]:checked + label::before {
+    border-color: $base-color;
+}
+.radio-item input[type="radio"]:checked + label::after {
+    background-color: $base-color;
+}
+
 // input error
 .input-error input {
-    border: 1px solid $warning;
-    color:  $warning;
+    border : 1px solid $warning;
+    color  : $warning;
 
     &:focus {
-        border: 1px solid $error;
-        color:  $error;
+        border : 1px solid $error;
+        color  : $error;
     }
 }
+
+
