@@ -15,7 +15,8 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <a class="navbar-brand" href="<?php echo $this->createUrl("/admin/"); ?>">
-            <?php echo $sitename; ?>
+            <img src="/assets/images/logo-icon-white.png" height="34" class="d-inline-block align-bottom" alt="">
+            <?= $sitename ?>
         </a>
         <!-- Only on xs screens -->
         <div class="collapse navbar-collapse " id="small-screens-menus">
