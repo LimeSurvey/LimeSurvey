@@ -17111,10 +17111,9 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 }
 .navbar .navbar-brand {
   font-style: normal;
-  font-weight: 700;
-  font-size: 16px;
+  font-weight: 800;
+  font-size: 18px;
   color: #fff;
-  height: 30px;
   width: auto;
 }
 .navbar .navbar-toggler {
@@ -17148,7 +17147,7 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   height: 25px;
 }
 .navbar a {
-  font-weight: 500;
+  font-weight: 400;
 }
 .navbar .dropdown-menu {
   z-index: 10000;
@@ -17322,10 +17321,6 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   height: unset;
   background-color: unset;
   border: none;
-}
-.card.card-primary .card-header + .card-body {
-  padding-top: 0;
-  margin-top: -1rem;
 }
 .card.card-primary .card-footer {
   justify-content: flex-start;
