@@ -80,3 +80,14 @@ textarea,
     background-color : $base-color;
     color            : $white;
 }
+
+// input error
+.input-error input {
+    border: 1px solid $warning;
+    color:  $warning;
+
+    &:focus {
+        border: 1px solid $error;
+        color:  $error;
+    }
+}

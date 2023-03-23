@@ -2181,16 +2181,6 @@ body {
 
     /* INput errors*/
 
-    .input-error input {
-        border: 1px solid $color_warning;
-        color:  $color_warning;
-
-        &:focus {
-            border: 1px solid $color_danger;
-            color:  $color_danger;
-        }
-    }
-
     .question-container.input-error {
         box-shadow: 0 10px 20px rgba($color_danger, 0.9);
     }
