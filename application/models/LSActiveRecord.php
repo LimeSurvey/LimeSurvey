@@ -130,6 +130,9 @@ class LSActiveRecord extends CActiveRecord
             /* \SurveyDynamic and \TokenDynamic */
             $dynamicId = self::$sid;
         }
+        if (!isset(self::$maxIds[$dynamicId])) {
+            self::$maxIds[$dynamicId] = [];
+        }
         if (is_null($field)) {
             $primaryKey = $this->getMetaData()->tableSchema->primaryKey;
             if (is_string($primaryKey)) {
