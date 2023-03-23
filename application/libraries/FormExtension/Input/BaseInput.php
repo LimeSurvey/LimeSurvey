@@ -102,7 +102,7 @@ class BaseInput implements InputInterface
         if (!isset($this->attributes['value'])) {
             $this->attributes['value'] = $this->getValue();
         }
-        if (!isset($this->attributes['title'])) {
+        if (!empty($this->attributes['title'])) {
             $this->attributes['data-toggle'] = 'tooltip';
         }
         return $this->attributes;
