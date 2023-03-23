@@ -45,6 +45,7 @@ Yii::import('application.helpers.expressions.em_manager_helper', true);
 Yii::import('application.helpers.replacements_helper', true);
 Yii::import('application.helpers.ldap_helper', true);
 Yii::import('application.helpers.export_helper', true);
+Yii::import('application.helpers.remotecontrol.*');
 Yii::import('application.helpers.admin.import_helper', true);
 Yii::import('application.helpers.admin.exportresults_helper', true);
 Yii::import('application.helpers.admin.export.*');
@@ -54,10 +55,11 @@ Yii::import('application.helpers.admin.label_helper', true);
 Yii::import('application.helpers.admin.backupdb_helper', true);
 Yii::import('application.helpers.admin.activate_helper', true);
 Yii::import('application.helpers.admin.htmleditor_helper', true);
+Yii::import('application.helpers.admin.permission_helper', true);
 Yii::import('application.libraries.PluginManager.PluginManager', true);
 Yii::import('application.libraries.MenuObjects.*', true);
-Yii::import('application.libraries.admin.quexmlpdf', true);
-          //'application/libraries/admin/quexmlpdf.php'
+Yii::import('application.libraries.jsonRPCClient', true);
+Yii::import('application.libraries.admin.quexmlpdf', true);  // Problem with AdminTheme, constants and session
 Yii::import('application.helpers.update.update_helper', true);
 Yii::import('application.helpers.update.updatedb_helper', true);
 Yii::import('application.helpers.admin.ajax_helper', true);
