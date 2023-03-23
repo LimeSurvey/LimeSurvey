@@ -10,11 +10,12 @@
     autoloader="tests/phpstan/phpstan_bootstrap.php"
 >
     <projectFiles>
-        <directory name="application" />
+        <directory name="application/" />
         <ignoreFiles>
             <directory name="vendor" />
             <directory name="application/views" />
             <directory name="application/tests" />
+            <directory name="application/helpers/Zend" />
             <file name="application/libraries/simpletester.php" />
         </ignoreFiles>
     </projectFiles>

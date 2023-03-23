@@ -69,6 +69,7 @@ Yii::app()->loadLibrary('admin.pclzip');
 // TODO: Replace with autoload
 LoadQuestionTypes::loadAll();
 
+// TODO: PATH_SEPARATOR for Windows
 set_include_path(get_include_path() . ':' . APPPATH . 'helpers');
 require_once(APPPATH . '/helpers/Zend/XmlRpc/Client.php');
 require_once(APPPATH . '/helpers/Zend/XmlRpc/Server.php');
@@ -85,3 +86,5 @@ define("LOGO_URL", "ANYTHING");
 // Needed for LOGO_URL constant. TODO: Why is this defined in a class...? Should be Yii config?
 //$adminTheme = new AdminTheme();
 //$adminTheme->setAdminTheme();
+
+echo "Done with bootstrap" . PHP_EOL;
