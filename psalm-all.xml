@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<psalm
+    errorLevel="8"
+    resolveFromConfigFile="true"
+    reportMixedIssues="false"
+    useDocblockTypes="false"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="https://getpsalm.org/schema/config"
+    xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+    autoloader="tests/phpstan/phpstan_bootstrap.php"
+>
+    <projectFiles>
+        <directory name="application" />
+        <ignoreFiles>
+            <directory name="vendor" />
+            <directory name="application/views" />
+            <directory name="application/tests" />
+            <file name="application/libraries/simpletester.php" />
+        </ignoreFiles>
+    </projectFiles>
+</psalm>
