@@ -122,6 +122,14 @@ class LSActiveRecord extends CActiveRecord
      */
     public function getMaxId($field = null, $forceRefresh = false)
     {
+        $dynamicId = 0;
+        if (is_subclass_of($this, 'Dynamic')) {
+            /* \Response and \Token */
+            $dynamicId = $this->getDynamicId();
+        } elseif(!empty(self::$sid)) {
+            /* \SurveyDynamic and \TokenDynamic */
+            $dynamicId = self::$sid;
+        }
         if (is_null($field)) {
             $primaryKey = $this->getMetaData()->tableSchema->primaryKey;
             if (is_string($primaryKey)) {
