@@ -847,6 +847,13 @@ textarea {
   max-width: 100%;
 }
 
+.form-select {
+  font-weight: 400;
+  font-size: 0.9975rem;
+  line-height: 16px;
+  border-width: 2px;
+}
+
 .table > tbody > tr > th {
   vertical-align: middle;
 }

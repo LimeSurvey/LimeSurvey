@@ -2,6 +2,7 @@ $input-padding-y    : 10px;
 $input-padding-x    : 12px;
 $input-line-height  : 16px;
 $input-border-width : 2px;
+$dropdown-font-size: $font-size-sm;
 // input field
 .form-control {
     padding      : $input-padding-y $input-padding-x;
@@ -26,4 +27,12 @@ $input-border-width : 2px;
 textarea {
     resize: both;
     max-width: 100%;
+}
+
+// select
+.form-select {
+    font-weight  : $font-weight-normal;
+    font-size    : $dropdown-font-size;
+    line-height  : $line-height-16;
+    border-width : $input-border-width;
 }

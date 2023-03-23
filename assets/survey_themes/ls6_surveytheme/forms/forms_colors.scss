@@ -1,8 +1,9 @@
-$input-color              : $g-900;
-$input-border-color       : $g-700;
-$input-box-shadow         : 4px 4px 0 $elevation-shadow;
-$input-focus-border-color : $g-900;
-$input-group-addon-color  : $white;
+$input-color                 : $g-900;
+$input-border-color          : $g-700;
+$input-border-color-disabled : $g-600;
+$input-box-shadow            : 4px 4px 0 $elevation-shadow;
+$input-focus-border-color    : $g-900;
+$input-group-addon-color     : $white;
 // input field
 .form-control {
     color        : $input-color;
@@ -103,4 +104,33 @@ textarea,
     }
 }
 
+// select
+.form-select {
+    border-color : $input-border-color;
+
+    &:focus {
+        box-shadow : 4px 4px 0px $elevation-shadow;
+        border-color: $input-border-color;
+    }
+
+    &:disabled {
+        border-color     : $input-border-color-disabled;
+        background-color : $g-400;
+        color            : $g-600;
+    }
+
+    &.ls-important-field {
+        border     : 2px solid $input-focus-border-color !important;
+        box-shadow : 8px 8px 0px $g-200;
+
+        &:focus {
+            box-shadow : 8px 8px 0px $elevation-shadow;
+        }
+
+        &:disabled, &[readonly] {
+            border           : 2px solid $input-border-color-disabled !important;
+            background-color : $g-400;
+        }
+    }
+}
 
