@@ -16816,6 +16816,14 @@ tr.info, tr.danger {
   margin: 8px 0;
 }
 
+.ls-action_dropdown > .btn {
+  line-height: 24px;
+}
+.ls-action_dropdown > .btn .ri-more-fill {
+  font-size: 24px;
+  vertical-align: bottom;
+}
+
 .btn-circle {
   width: 44px;
   height: 44px;
@@ -18215,6 +18223,9 @@ input[type=number] {
 }
 #sidebar .subpanel.level-2 .selected {
   background: linear-gradient(to left, #5cc262 0px, #5cc262 8px, #fff 8px, #fff 100%);
+}
+#sidebar .ls-questiongroup-tools i, #sidebar .ls-question-tools i {
+  font-size: 24px;
 }
 
 .list-group {
