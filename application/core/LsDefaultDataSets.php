@@ -954,7 +954,7 @@ class LsDefaultDataSets
         $returnArray[] = ['position'   => '6',
                           'url'        => 'themeOptions',
                           'title'      => gT('Themes'),
-                          'ico'        => 'ri-paint-brush-line',
+                          'ico'        => 'ri-brush-line',
                           'desc'       => gT('The themes functionality allows you to edit survey-, admin- or question themes.'),
                           'page'       => 'welcome',
                           'usergroup'  => '-2',

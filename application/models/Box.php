@@ -227,7 +227,7 @@ class Box extends CActiveRecord
             ['id' => 46, 'icon' => 'ri-shopping-cart-fill'],
             ['id' => 47, 'icon' => 'ri-user-line'],
             ['id' => 48, 'icon' => 'ri-settings-5-line'],
-            ['id' => 49, 'icon' => 'ri-paint-brush-line'],
+            ['id' => 49, 'icon' => 'ri-brush-line'],
             ['id' => 50, 'icon' => 'ri-add-line'],
 
         ];
