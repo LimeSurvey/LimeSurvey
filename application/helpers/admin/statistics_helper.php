@@ -2639,7 +2639,11 @@ class statistics_helper
                         // or at least I don't know how !!! (lemeur)
                     } else {
                         //we want to have some "real" data here
-                        if ($gdata[$i] != "N/A") {
+                        if (
+                            $gdata[$i] != "N/A"
+                            && $gdata[$i] !== 0         // To keep it working like it did before PHP 8
+                            && $TotalCompleted != 0     // Just to be sure we avoid a division by zero
+                        ) {
                             //calculate percentage
                             $gdata[$i] = ($grawdata[$i] / $TotalCompleted) * 100;
                         }
