@@ -323,14 +323,14 @@ class QuestionAdministrationController extends LSBaseController
         );
 
         // The DataProvider will be build from the Question model, search method
-        $model = new Question('search');
+        $questionModel = new Question('search');
         // Global filter
         if (isset($_GET['Question'])) {
-            $model->setAttributes($_GET['Question'], false);
+            $questionModel->setAttributes($_GET['Question'], false);
         }
         // Filter group
         if (isset($_GET['gid'])) {
-            $model->gid = $_GET['gid'];
+            $questionModel->gid = $_GET['gid'];
         }
         // Set number of page
         if (isset($_GET['pageSize'])) {
@@ -338,8 +338,34 @@ class QuestionAdministrationController extends LSBaseController
         }
         $aData['pageSize'] = App()->user->getState('pageSize', App()->params['defaultPageSize']);
         // We filter the current survey id
-        $model->sid = $oSurvey->sid;
-        $aData['model'] = $model;
+        $questionModel->sid = $oSurvey->sid;
+        $aData['questionModel'] = $questionModel;
+
+
+        // =========================   group data =============================
+      
+        // *  group model  *
+        $groupModel    = new QuestionGroup('search');
+
+        if (isset($_GET['QuestionGroup']['group_name'])) {
+            $groupModel->group_name = $_GET['QuestionGroup']['group_name'];
+        }
+
+        if (isset($_GET['pageSize'])) {
+            Yii::app()->user->setState('pageSize', (int) $_GET['pageSize']);
+        }
+
+        $baselang = $oSurvey->language;
+        $groupModel['sid'] = $iSurveyID;
+        $groupModel['language'] = $baselang;
+        // ====================== *
+
+
+        $aData['groupModel'] = $groupModel;
+        $aData['surveyid'] = $iSurveyID;
+        $aData['surveybar'] = [];
+
+        // =========================================================================
 
         $this->aData = $aData;
 

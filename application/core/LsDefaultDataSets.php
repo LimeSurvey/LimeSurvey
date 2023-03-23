@@ -14,7 +14,34 @@ class LsDefaultDataSets
         $sOldLanguage = App()->language;
         App()->setLanguage('en');
 
-        $headerArray = ['menu_id','user_id','ordering','name','title','menu_title','menu_description','menu_icon','menu_icon_type','menu_class','menu_link','action','template','partial','classes','permission','permission_grade','data','getdatamethod','language','active','changed_at','changed_by','created_at','created_by', 'showincollapse'];
+        $headerArray = [
+            'menu_id',
+            'user_id',
+            'ordering',
+            'name',
+            'title',
+            'menu_title',
+            'menu_description',
+            'menu_icon',
+            'menu_icon_type',
+            'menu_class',
+            'menu_link',
+            'action',
+            'template',
+            'partial',
+            'classes',
+            'permission',
+            'permission_grade',
+            'data',
+            'getdatamethod',
+            'language',
+            'active',
+            'changed_at',
+            'changed_by',
+            'created_at',
+            'created_by', 
+            'showincollapse'
+        ];
         $basicMenues = [
             [
                 1,
@@ -301,9 +328,9 @@ class LsDefaultDataSets
                 null,
                 1,
                 'listQuestions',
-                gT('Question list', 'unescaped'),
-                gT('Question list', 'unescaped'),
-                gT('List questions', 'unescaped'),
+                gT('Overview question & groups', 'unescaped'),
+                gT('Overview question & groups', 'unescaped'),
+                gT('Overview question & groups', 'unescaped'),
                 '',
                 'remix',
                 '',
@@ -324,34 +351,7 @@ class LsDefaultDataSets
                 0,
                 1
             ],
-            [
-                2,
-                null,
-                2,
-                'listQuestionGroups',
-                gT('Group list', 'unescaped'),
-                gT('Group list', 'unescaped'),
-                gT('List question groups', 'unescaped'),
-                '',
-                'remix',
-                '',
-                'questionGroupsAdministration/listquestiongroups',
-                '',
-                '',
-                '',
-                '',
-                'surveycontent',
-                'read',
-                '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}',
-                '',
-                'en-GB',
-                1,
-                date('Y-m-d H:i:s'),
-                0,
-                date('Y-m-d H:i:s'),
-                0,
-                1
-            ],
+           
             [
                 2,
                 null,
