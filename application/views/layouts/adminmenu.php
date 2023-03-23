@@ -63,7 +63,8 @@
                 <!-- create survey -->
                 <li class="nav-item">
                     <a href="<?php echo $this->createUrl("surveyAdministration/newSurvey"); ?>" class="nav-link">
-                        <button type="button" class="btn btn-info btn-create">
+                        <button type="button" class="btn btn-info btn-create" data-bs-toggle="tooltip"
+                                data-bs-placement="bottom" title="<?= gT('Create survey') ?>">
                             <i class="ri-add-line"></i>
                         </button>
                     </a>
