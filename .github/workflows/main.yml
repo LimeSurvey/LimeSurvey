@@ -105,7 +105,7 @@ jobs:
           # cat application/config/config.php
 
       - name: Run syntax check, CodeSniffer, MessDetector, ...
-        run:
+        run: |
           ./vendor/bin/psalm -c psalm-all.xml
           composer test
 
