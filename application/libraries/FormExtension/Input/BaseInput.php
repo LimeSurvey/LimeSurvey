@@ -21,6 +21,12 @@ class BaseInput implements InputInterface
     private $conditionFunction;
 
     /** @var string */
+    private $htmlTag;
+
+    /** @var ?string */
+    private $content;
+
+    /** @var string */
     private $name;
 
     /** @var ?string */
@@ -44,6 +50,8 @@ class BaseInput implements InputInterface
             throw new InvalidArgumentException("Input is missing mandatory name option");
         }
 
+        $this->htmlTag = $options['html_tag'] ?? 'input';
+        $this->content = $options['content'] ?? null;
         $this->name = $options['name'] ?? '';
         $this->label = $options['label'] ?? '';
         $this->help = $options['help'] ?? '';
@@ -64,6 +72,16 @@ class BaseInput implements InputInterface
         );
 
         $this->setRenderer(new BaseInputRenderer);
+    }
+
+    public function getHtmlTag(): string
+    {
+        return $this->htmlTag;
+    }
+
+    public function getContent()
+    {
+        return $this->content;
     }
 
     public function getName(): string

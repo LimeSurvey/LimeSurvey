@@ -11,10 +11,16 @@ class BaseInputRenderer implements RendererInterface
      */
     public function render(InputInterface $input): string
     {
-        return '<input ' . $this->renderAttributes($input) . ' />';
+        $output = '<' . $input->getHtmlTag() . ' ' . $this->renderAttributes($input);
+        if ($input->getContent()) {
+            $output .= '>' . $input->getContent() . '</' . $input->getHtmlTag() . '>';
+        } else {
+            $output .= '/>';
+        }
+        return $output;
     }
 
-    public function renderAttributes(InputInterface $input)
+    protected function renderAttributes(InputInterface $input)
     {
         $attributes = $input->getAttributes();
         $flags = ['disabled', 'checked'];

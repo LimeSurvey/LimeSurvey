@@ -6,6 +6,8 @@ use LimeSurvey\Libraries\FormExtension\Renderer\RendererInterface;
 
 interface InputInterface
 {
+    public function getHtmlTag();
+    public function getContent();
     public function getName();
     public function getValue();
     public function getHelp();
