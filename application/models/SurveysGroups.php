@@ -117,6 +117,7 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
                     'id' => 'gsid',
                     'class' => 'CCheckBoxColumn',
                     'selectableRows' => '100',
+                    'htmlOptions' => ['class' => 'ls-sticky-column'],
                 ),
                 array(
                     'header' => gT('Survey group ID'),
