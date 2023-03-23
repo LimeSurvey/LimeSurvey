@@ -69,6 +69,12 @@ Yii::app()->loadLibrary('admin.pclzip');
 // TODO: Replace with autoload
 LoadQuestionTypes::loadAll();
 
+set_include_path(get_include_path() . ':' . APPPATH . 'helpers');
+require_once(APPPATH . '/helpers/Zend/XmlRpc/Client.php');
+require_once(APPPATH . '/helpers/Zend/XmlRpc/Server.php');
+Yii::import('application.libraries.LSZend_XmlRpc_Response_Http', true);
+Yii::import('application.libraries.LSjsonRPCServer', true);
+
 /** @var PluginManager */
 $pluginManager = Yii::app()->getComponent('pluginManager');
 $pluginManager->scanPlugins(true);
