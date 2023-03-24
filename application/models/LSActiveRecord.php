@@ -26,6 +26,8 @@ class LSActiveRecord extends CActiveRecord
 
     /** @var integer[] to keep during same process**/
     public static $maxIds = [];
+    /** @var integer[] to keep during same process**/
+    public static $minIds = [];
 
     /**
      * Lists the behaviors of this model
@@ -165,8 +167,17 @@ class LSActiveRecord extends CActiveRecord
      */
     public function getMinId($field = null, $forceRefresh = false)
     {
-        static $minIds = [];
-
+        $dynamicId = 0;
+        if (is_subclass_of($this, 'Dynamic')) {
+            /* \Response and \Token */
+            $dynamicId = $this->getDynamicId();
+        } elseif (!empty(self::$sid)) {
+            /* \SurveyDynamic and \TokenDynamic */
+            $dynamicId = self::$sid;
+        }
+        if (!isset(self::$minIds[$dynamicId])) {
+            self::$minIds[$dynamicId] = [];
+        }
         if (is_null($field)) {
             $primaryKey = $this->getMetaData()->tableSchema->primaryKey;
             if (is_string($primaryKey)) {
@@ -177,17 +188,17 @@ class LSActiveRecord extends CActiveRecord
             }
         }
 
-        if ($forceRefresh || !array_key_exists($field, $minIds)) {
+        if ($forceRefresh || !array_key_exists($field, self::$minIds[$dynamicId])) {
             $minId = $this->dbConnection->createCommand()
                 ->select('MIN(' . $this->dbConnection->quoteColumnName($field) . ')')
                 ->from($this->tableName())
                 ->queryScalar();
 
             // Save so we can reuse in the same request
-            $minIds[$field] = $minId;
+            self::$minIds[$dynamicId][$field] = $minId;
         }
 
-        return $minIds[$field];
+        return self::$minIds[$dynamicId][$field];
     }
 
     /**
