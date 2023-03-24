@@ -126,7 +126,7 @@ class LSActiveRecord extends CActiveRecord
         if (is_subclass_of($this, 'Dynamic')) {
             /* \Response and \Token */
             $dynamicId = $this->getDynamicId();
-        } elseif(!empty(self::$sid)) {
+        } elseif (!empty(self::$sid)) {
             /* \SurveyDynamic and \TokenDynamic */
             $dynamicId = self::$sid;
         }
