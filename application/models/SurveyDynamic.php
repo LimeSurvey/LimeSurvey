@@ -49,16 +49,13 @@ class SurveyDynamic extends LSActiveRecord
             self::$survey = $survey;
             $refresh = true;
         }
-
         /** @var self $model */
         $model = parent::model(__CLASS__);
 
         //We need to refresh if we changed sid
         if ($refresh === true) {
             $model->refreshMetaData();
-            $model::$maxIds = [];
         }
-
         return $model;
     }
 
@@ -74,6 +71,7 @@ class SurveyDynamic extends LSActiveRecord
     {
         self::$sid = (int) $sid;
     }
+
 
     /** @inheritdoc */
     public function tableName()
@@ -1053,5 +1051,14 @@ class SurveyDynamic extends LSActiveRecord
     public function getSurveyId()
     {
         return self::$sid;
+    }
+
+    /**
+     * @inheritdoc
+     * here return sid
+     */
+    public function getDynamicId()
+    {
+        return $this->getSurveyId();
     }
 }

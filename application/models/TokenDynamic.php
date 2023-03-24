@@ -1105,4 +1105,13 @@ class TokenDynamic extends LSActiveRecord
     {
         return self::$sid;
     }
+
+    /**
+     * @inheritdoc
+     * here return sid
+     */
+    public function getDynamicId()
+    {
+        return $this->getSurveyId();
+    }
 }

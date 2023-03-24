@@ -124,14 +124,7 @@ class LSActiveRecord extends CActiveRecord
      */
     public function getMaxId($field = null, $forceRefresh = false)
     {
-        $dynamicId = 0;
-        if (is_subclass_of($this, 'Dynamic')) {
-            /* \Response and \Token */
-            $dynamicId = $this->getDynamicId();
-        } elseif (!empty(self::$sid)) {
-            /* \SurveyDynamic and \TokenDynamic */
-            $dynamicId = self::$sid;
-        }
+        $dynamicId = $this->getDynamicId();
         if (!isset(self::$maxIds[$dynamicId])) {
             self::$maxIds[$dynamicId] = [];
         }
@@ -167,14 +160,7 @@ class LSActiveRecord extends CActiveRecord
      */
     public function getMinId($field = null, $forceRefresh = false)
     {
-        $dynamicId = 0;
-        if (is_subclass_of($this, 'Dynamic')) {
-            /* \Response and \Token */
-            $dynamicId = $this->getDynamicId();
-        } elseif (!empty(self::$sid)) {
-            /* \SurveyDynamic and \TokenDynamic */
-            $dynamicId = self::$sid;
-        }
+        $dynamicId = $this->getDynamicId();
         if (!isset(self::$minIds[$dynamicId])) {
             self::$minIds[$dynamicId] = [];
         }
@@ -526,5 +512,14 @@ class LSActiveRecord extends CActiveRecord
                 return ' <span  data-toggle="tooltip" title="' . $encryptionNotice . '" class="fa fa-key text-success"></span>';
             }
         }
+    }
+
+    /**
+     * Return the related dynamic id if exist
+     * @return integer
+     */
+    public function getDynamicId()
+    {
+        return 0;
     }
 }
