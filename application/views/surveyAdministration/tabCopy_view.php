@@ -14,7 +14,7 @@
                     <div class="form-group">
                         <label for='copysurveylist' class=" control-label"><?php  eT("Select survey to copy:"); ?> </label>
                         <div class="">
-                            <select id='copysurveylist' name='copysurveylist' required="required" class="form-control">
+                            <select id='copysurveylist' name='copysurveylist' required="required" class="form-control activate-search">
                                 <?php echo getSurveyList(false); ?>
                             </select>
                         </div>
