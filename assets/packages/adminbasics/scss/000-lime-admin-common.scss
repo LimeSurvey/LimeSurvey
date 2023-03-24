@@ -4357,3 +4357,13 @@ html[dir="rtl"] th {
         display: none;
     }
 }
+
+/** Fix checkboxes in Data Entry screen */
+#responsedetail .checkbox {
+    input[type="checkbox"] {
+        margin-left: 0;
+    }
+    label {
+        padding-left: 0px;
+    }
+}

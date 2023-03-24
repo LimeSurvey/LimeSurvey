@@ -614,12 +614,25 @@ class DataEntry extends SurveyCommonAction
                 }
 
                 $highlight = !$highlight;
-                $aDataentryoutput .= ">\n"
-                . "<td>"
-                . "\n";
+                $aDataentryoutput .= ">\n";
+                // First column (Question)
+                $aDataentryoutput .= "<td>";
                 $aDataentryoutput .= stripJavaScript($question);
-                $aDataentryoutput .= "</td>\n"
-                . "<td>\n";
+                $aDataentryoutput .= "</td>\n";
+                // Second column (Unseen)
+                $aDataentryoutput .= "<td style='width: 120px;'>\n";
+                // Only show the "Unseen" checkbox for questions.
+                if (!empty($fname['title'])) {
+                    $aDataentryoutput .= "<div class='checkbox'>\t"
+                        . "<input type='checkbox' name='{$fname['fieldname']}_unseen' id='{$fname['fieldname']}_unseen'"
+                        . (is_null($idrow[$fname['fieldname']]) ? " checked" : "")
+                        . ">"
+                        . "<label for='{$fname['fieldname']}_unseen'>" . gT("Unseen") . "</label>"
+                        . "</div>\n";
+                }
+                $aDataentryoutput .= "</td>\n";
+                // Third column (Answer)
+                $aDataentryoutput .= "<td>\n";
                 //$aDataentryoutput .= "\t-={$fname[3]}=-"; //Debugging info
                 $qidattributes = [];
                 if (isset($fname['qid']) && isset($fname['type'])) {
@@ -1448,6 +1461,11 @@ class DataEntry extends SurveyCommonAction
         foreach ($fieldmap as $irow) {
             $fieldname = $irow['fieldname'];
             if ($fieldname == 'id') {
+                continue;
+            }
+            // For questions, if the "Unseen" checkbox is checked, we must set the field to null
+            if (!empty($irow['title']) && Yii::app()->request->getPost($fieldname . "_unseen", false)) {
+                $oResponse->$fieldname = null;
                 continue;
             }
             $thisvalue = Yii::app()->request->getPost($fieldname, '');
