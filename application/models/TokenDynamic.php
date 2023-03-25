@@ -69,7 +69,6 @@ class TokenDynamic extends LSActiveRecord
         //We need to refresh if we changed sid
         if ($refresh === true) {
             $model->refreshMetaData();
-            $model::$maxIds = [];
         }
         return $model;
     }
