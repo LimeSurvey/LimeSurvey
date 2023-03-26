@@ -1,8 +1,20 @@
 <?php $pageSize = App()->user->getState('pageSize', App()->params['defaultPageSize']); ?>
 
+
+
 <div class="col-12 content-right">
+    <?php echo $this->renderPartial(
+                'partial/topbarBtns/listquestionsTopbarLeft_view',
+                [
+                    'oSurvey' => $oSurvey,
+                    'hasSurveyContentCreatePermission' => $hasSurveyContentCreatePermission
+                ],
+                true
+            );
+         ?>
+
     <!-- Search Box -->
-    <div class="row">
+    <div class="row mt-4">
         <div class="col-12 ls-flex ls-flex-row">
             <div class="ls-flex-item text-start">
                 <?php App()->getController()->renderPartial(

@@ -351,35 +351,7 @@ class LsDefaultDataSets
                 0,
                 1
             ],
-           
-            [
-                2,
-                null,
-                3,
-                'reorder',
-                gT('Reorder questions & groups', 'unescaped'),
-                gT('Reorder questions & groups', 'unescaped'),
-                gT('Reorder questions & groups', 'unescaped'),
-                '',
-                'remix',
-                '',
-                'surveyAdministration/organize/',
-                '',
-                '',
-                '',
-                '',
-                'surveycontent',
-                'update',
-                '{"render": {"isActive": false, "link": {"data": {"surveyid": ["survey", "sid"]}}}}',
-                '',
-                'en-GB',
-                1,
-                date('Y-m-d H:i:s'),
-                0,
-                date('Y-m-d H:i:s'),
-                0,
-                1
-            ],
+         
             [
                 2,
                 null,

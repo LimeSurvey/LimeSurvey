@@ -2082,7 +2082,8 @@ class SurveyAdministrationController extends LSBaseController
 
             $closeAfterSave = $request->getPost('close-after-save') === 'true';
             if ($closeAfterSave) {
-                $this->redirect(array('surveyAdministration/view/surveyid/' . $iSurveyID));
+                // save reordering redirect to listquestion page as this part is moved there
+                $this->redirect(array('questionAdministration/listQuestions?surveyid=' . $iSurveyID));
             }
         }
         $aData = $this->showReorderForm($iSurveyID);

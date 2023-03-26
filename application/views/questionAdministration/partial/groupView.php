@@ -14,8 +14,20 @@
 
 <div class='side-body <?php echo getSideBodyClass(true); ?>'>
     <div class="row">
+
+
         <div class="">
-            <div class="">
+            <?php echo $this->renderPartial(
+                    'partial/topbarBtns/listquestiongroupsTopbarLeft_view',
+                    [
+                        'oSurvey' => $oSurvey,
+                        'hasSurveyContentCreatePermission' => $hasSurveyContentCreatePermission
+                    ],
+                    true
+                );
+            ?>
+
+            <div class="mt-4">
                 <?php App()->getController()->renderPartial(
                     '/admin/survey/surveybar_addgroupquestion', //todo this view must be moved to correct position
                     [
@@ -28,7 +40,11 @@
 
                 <!-- Search Box -->
             <?php $form = $this->beginWidget('TbActiveForm', array(
-                'action' => Yii::app()->createUrl('questionGroupsAdministration/listquestiongroups/surveyid/' . $surveyid),
+                // 'action' => Yii::app()->createUrl('questionGroupsAdministration/listquestiongroups/surveyid/' . $surveyid),
+                'action' => App()->createUrl(
+                    'questionAdministration/listquestions',
+                    ['surveyid' => $oSurvey->primaryKey]
+                ),
                 'method' => 'get',
                 'htmlOptions' => array(
                     'class' => '',
@@ -45,7 +61,7 @@
 
                     <div class="col-12">
                         <?php echo CHtml::submitButton(gT('Search', 'unescaped'), array('class' => 'btn btn-primary')); ?>
-                        <a href="<?php echo Yii::app()->createUrl('questionGroupsAdministration/listquestiongroups/surveyid/' . $surveyid);?>"
+                        <a href="<?php echo Yii::app()->createUrl('questionAdministration/listquestions/surveyid/' . $surveyid);?>"
                            class="btn btn-warning">
                             <span class="ri-refresh-line"></span>
                             <?php eT('Reset');?>
