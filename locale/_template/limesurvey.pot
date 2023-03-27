@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2023-03-06 08:50:23+00:00\n"
+"POT-Creation-Date: 2023-03-27 08:55:37+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -625,7 +625,7 @@ msgstr ""
 
 #: application/controllers/UploaderController.php:238
 #: application/controllers/UploaderController.php:266
-#: application/helpers/remotecontrol/remotecontrol_handle.php:2883
+#: application/helpers/remotecontrol/remotecontrol_handle.php:2895
 msgid "The file has been successfully uploaded."
 msgstr ""
 
@@ -1659,8 +1659,8 @@ msgstr ""
 #: application/helpers/admin/statistics_helper.php:1494
 #: application/helpers/admin/statistics_helper.php:1615
 #: application/helpers/admin/statistics_helper.php:2416
-#: application/helpers/admin/statistics_helper.php:3359
-#: application/helpers/admin/statistics_helper.php:3366
+#: application/helpers/admin/statistics_helper.php:3360
+#: application/helpers/admin/statistics_helper.php:3367
 #: application/helpers/common_helper.php:1168
 #: application/helpers/common_helper.php:1175
 #: application/helpers/qanda_helper.php:814
@@ -2421,7 +2421,7 @@ msgstr ""
 
 #: application/controllers/admin/dataentry.php:274
 #: application/controllers/admin/statistics.php:135
-#: application/helpers/admin/statistics_helper.php:3993
+#: application/helpers/admin/statistics_helper.php:3994
 #: application/helpers/userstatistics_helper.php:2687
 msgid "Quick statistics"
 msgstr ""
@@ -4170,7 +4170,7 @@ msgid "Group: "
 msgstr ""
 
 #: application/controllers/admin/responses.php:870
-#: application/helpers/admin/statistics_helper.php:4382
+#: application/helpers/admin/statistics_helper.php:4383
 #: application/models/TemplateManifest.php:171
 #: application/views/admin/conditions/includes/form_editconditions_header.php:67
 #: application/views/admin/conditions/includes/quickAddConditionForm.php:22
@@ -4231,7 +4231,7 @@ msgstr ""
 
 #: application/controllers/admin/statistics.php:861
 #: application/core/LsDefaultDataSets.php:28
-#: application/helpers/admin/statistics_helper.php:3969
+#: application/helpers/admin/statistics_helper.php:3970
 #: application/helpers/questionHelper.php:411
 #: application/helpers/questionHelper.php:422
 #: application/helpers/questionHelper.php:433
@@ -8518,7 +8518,7 @@ msgstr ""
 #: application/helpers/admin/statistics_helper.php:1656
 #: application/helpers/admin/statistics_helper.php:2433
 #: application/helpers/admin/statistics_helper.php:2475
-#: application/helpers/admin/statistics_helper.php:4133
+#: application/helpers/admin/statistics_helper.php:4134
 #: application/helpers/userstatistics_helper.php:1071
 #: application/helpers/userstatistics_helper.php:1674
 #: application/helpers/userstatistics_helper.php:1721
@@ -8562,7 +8562,7 @@ msgstr ""
 #: application/helpers/admin/statistics_helper.php:2723
 #: application/helpers/admin/statistics_helper.php:2750
 #: application/helpers/admin/statistics_helper.php:2802
-#: application/helpers/admin/statistics_helper.php:3484
+#: application/helpers/admin/statistics_helper.php:3485
 #: application/helpers/userstatistics_helper.php:1940
 #: application/helpers/userstatistics_helper.php:1967
 #: application/helpers/userstatistics_helper.php:2001
@@ -8622,19 +8622,19 @@ msgstr ""
 msgid "Arithmetic mean"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3967
+#: application/helpers/admin/statistics_helper.php:3968
 #: application/helpers/userstatistics_helper.php:2674
 msgid "Statistics survey %s"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3969
+#: application/helpers/admin/statistics_helper.php:3970
 #: application/helpers/userstatistics_helper.php:2676
 msgid "Survey %s"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3993
-#: application/helpers/admin/statistics_helper.php:4095
-#: application/helpers/admin/statistics_helper.php:4202
+#: application/helpers/admin/statistics_helper.php:3994
+#: application/helpers/admin/statistics_helper.php:4096
+#: application/helpers/admin/statistics_helper.php:4203
 #: application/helpers/userstatistics_helper.php:2687
 #: application/helpers/userstatistics_helper.php:2790
 #: application/helpers/userstatistics_helper.php:2895
@@ -8645,9 +8645,9 @@ msgstr ""
 msgid "Survey"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:4070
-#: application/helpers/admin/statistics_helper.php:4087
-#: application/helpers/admin/statistics_helper.php:4103
+#: application/helpers/admin/statistics_helper.php:4071
+#: application/helpers/admin/statistics_helper.php:4088
+#: application/helpers/admin/statistics_helper.php:4104
 #: application/helpers/userstatistics_helper.php:2765
 #: application/helpers/userstatistics_helper.php:2782
 #: application/helpers/userstatistics_helper.php:2798
@@ -8655,9 +8655,9 @@ msgstr ""
 msgid "Number of records in this query:"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:4073
-#: application/helpers/admin/statistics_helper.php:4088
-#: application/helpers/admin/statistics_helper.php:4104
+#: application/helpers/admin/statistics_helper.php:4074
+#: application/helpers/admin/statistics_helper.php:4089
+#: application/helpers/admin/statistics_helper.php:4105
 #: application/helpers/userstatistics_helper.php:2768
 #: application/helpers/userstatistics_helper.php:2783
 #: application/helpers/userstatistics_helper.php:2800
@@ -8665,9 +8665,9 @@ msgstr ""
 msgid "Total records in survey:"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:4078
-#: application/helpers/admin/statistics_helper.php:4091
-#: application/helpers/admin/statistics_helper.php:4108
+#: application/helpers/admin/statistics_helper.php:4079
+#: application/helpers/admin/statistics_helper.php:4092
+#: application/helpers/admin/statistics_helper.php:4109
 #: application/helpers/userstatistics_helper.php:2773
 #: application/helpers/userstatistics_helper.php:2786
 #: application/helpers/userstatistics_helper.php:2806
@@ -8675,9 +8675,9 @@ msgstr ""
 msgid "Percentage of total:"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:4094
 #: application/helpers/admin/statistics_helper.php:4095
-#: application/helpers/admin/statistics_helper.php:4102
+#: application/helpers/admin/statistics_helper.php:4096
+#: application/helpers/admin/statistics_helper.php:4103
 #: application/helpers/userstatistics_helper.php:2789
 #: application/helpers/userstatistics_helper.php:2790
 #: application/helpers/userstatistics_helper.php:2797
