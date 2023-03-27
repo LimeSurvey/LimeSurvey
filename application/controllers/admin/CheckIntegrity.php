@@ -50,8 +50,8 @@ class CheckIntegrity extends SurveyCommonAction
     {
         $aData = $this->checkintegrity();
 
-        $aData['topbar']['title'] = '<a class="h1" href="'.Yii::app() -> createUrl('admin/index').'">
-        <i class="ri-arrow-left-s-line"></i></a>'. gt('Check data integrity');
+        $aData['topbar']['title'] = gT('Check data integrity');
+        $aData['topbar']['backLink'] = $this->createUrl('admin/index');
 
         $this->renderWrappedTemplate('checkintegrity', 'check_view', $aData);
     }

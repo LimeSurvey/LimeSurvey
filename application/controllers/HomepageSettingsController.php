@@ -58,8 +58,10 @@ class HomepageSettingsController extends LSBaseController
 
         $dataProviderBox = new CActiveDataProvider('Box');
 
-        $aData['topbar']['title'] = '<a class="h1" href="'.$this->createUrl('admin/index').'">
-        <i class="ri-arrow-left-s-line"></i></a>'.gT('Dashboard');
+        $aData['groupModel'] = new SurveysGroups('search');
+        $aData['topbar']['title'] = gT('Dashboard');
+        $aData['topbar']['backLink'] = $this->createUrl('admin/index');
+
         $aData['topbar']['rightButtons'] = $this->renderPartial('partial/topbarBtns/rightSideButtons', [], true);
         $aData['topbar']['middleButtons'] = $this->renderPartial('partial/topbarBtns/leftSideButtons', [], true);
         $this->aData = $aData;

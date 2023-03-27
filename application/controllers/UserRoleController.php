@@ -49,8 +49,8 @@ class UserRoleController extends LSBaseController
             $model->setAttributes($aPermissiontemplatesParam, false);
         }
 
-        $aData['topbar']['title'] = '<a class="h1" href="'.$this->createUrl('admin/index').'">
-        <i class="ri-arrow-left-s-line"></i></a>'.gT('User roles');
+        $aData['topbar']['title'] = gT('User roles');
+        $aData['topbar']['backLink'] = $this->createUrl('admin/index');
 
         $aData['topbar']['middleButtons'] = $this->renderPartial(
             'partials/topbarBtns/leftSideButtons',

@@ -581,9 +581,8 @@ JAVASCRIPT
         // page title
         $pageTitle = gT('Theme editor:') . ' ' . $templatename;
 
-        //$aData['pageTitle'] = $pageTitle;
-        $aData['topbar']['title'] = '<a class="h1" href="'.Yii::app() -> createUrl('themeOptions/index').'">
-        <i class="ri-arrow-left-s-line"></i></a>'.$pageTitle;
+        $aData['topbar']['title'] = $pageTitle;
+        $aData['topbar']['backLink'] = $this->createUrl('themeOptions/index');
 
 
         $aData['topbar']['middleButtons'] = Yii::app()->getController()->renderPartial(

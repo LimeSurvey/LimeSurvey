@@ -225,8 +225,9 @@ class SurveyAdministrationController extends LSBaseController
         }
         $aData['model'] = new Survey('search');
         $aData['groupModel'] = new SurveysGroups('search');
-        $aData['topbar']['title'] = '<a class="h1" href="'.$this->createUrl('admin/index').'">
-        <i class="ri-arrow-left-s-line"></i></a>'.gT('Survey list');
+        $aData['topbar']['title'] = gT('Survey list');
+        $aData['topbar']['backLink'] = $this->createUrl('admin/index');
+
         $aData['topbar']['middleButtons'] = $this->renderPartial('partial/topbarBtns/leftSideButtons', [], true);
 
         $this->aData = $aData;

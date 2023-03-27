@@ -69,8 +69,10 @@ class UserGroupController extends LSBaseController
         $aData = [];
 
         $model = UserGroup::model();
-        $aData['topbar']['title'] = '<a class="h1" href="'.$this->createUrl('admin/index').'">
-        <i class="ri-arrow-left-s-line"></i></a>'.gT('User group list');
+   
+        $aData['topbar']['title'] = gT('User group list');
+        $aData['topbar']['backLink'] = $this->createUrl('admin/index');
+
         $aData['topbar']['middleButtons'] = $this->renderPartial('partial/topbarBtns/leftSideButtons', [], true);
         $aData['topbar']['rightButtons'] = $this->renderPartial('partial/topbarBtns/rightSideButtons', [
             'addGroupSave' => false
@@ -166,8 +168,9 @@ class UserGroupController extends LSBaseController
             }
         }
 
-        $aData['topbar']['title'] ='<a class="h1" href="'.$this->createUrl('userGroup/index').'">
-        <i class="ri-arrow-left-s-line"></i></a>'.  gT('User group') . ': ' . $userGroup->name;
+        $aData['topbar']['title'] = gT('User group');
+        $aData['topbar']['backLink'] = $this->createUrl('userGroup/index');
+        
         $aData['topbar']['middleButtons'] = $this->renderPartial(
             'partial/topbarBtns_manageGroup/leftSideButtons',
             [
