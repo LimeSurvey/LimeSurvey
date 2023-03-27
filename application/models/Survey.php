@@ -1161,8 +1161,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
             $oStop  = new DateTime($sStop);
             $oStart = new DateTime($sStart);
 
-            $bExpired = ($oStop < $oNow);
-            $bWillRun = ($oStart > $oNow);
+            $bExpired = (!is_null($sStop) && $oStop < $oNow);
+            $bWillRun = (!is_null($sStart) && $oStart > $oNow);
 
             $sStop = $sStop != null ? convertToGlobalSettingFormat($sStop) : null;
             $sStart = convertToGlobalSettingFormat($sStart);
@@ -1178,7 +1178,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 // Expire prior to will start
                 $running = ($bExpired) ? $sIconExpired : $sIconFuture;
             } else {
-                if ($sStop == null) {
+                if (is_null($sStop)) {
                     $running = $sIconRunNoEx;
                 } else {
                     $running = $sIconRunning;

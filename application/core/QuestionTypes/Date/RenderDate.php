@@ -118,6 +118,10 @@ class RenderDate extends QuestionBaseRenderer
         } else {
             $this->maxDate = '2187-12-31'; // Why 2187 ?
         }
+
+        if (!empty($this->maxDate)) {
+            $this->maxDate .= " 23:59:59.999";
+        }
     }
 
     private function getDaySelect($iCurrent)

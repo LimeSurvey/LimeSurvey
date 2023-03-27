@@ -9,11 +9,10 @@ use LSActiveRecord;
  */
 class SettingsPluginTest extends TestBaseClass
 {
-
     protected static $plugin;
 
     protected static $settings = [];
-   
+
     /**
      * @inheritdoc
      * Activate needed plugins
@@ -23,8 +22,8 @@ class SettingsPluginTest extends TestBaseClass
     {
         parent::setUpBeforeClass();
 
-        require_once __DIR__."/../../data/plugins/SettingsPlugin.php";
-        $plugin = \Plugin::model()->findByAttributes(array('name'=>'SettingsPlugin'));
+        require_once __DIR__ . "/../../data/plugins/SettingsPlugin.php";
+        $plugin = \Plugin::model()->findByAttributes(array('name' => 'SettingsPlugin'));
         if (!$plugin) {
             $plugin = new \Plugin();
             $plugin->name = 'SettingsPlugin';
@@ -37,9 +36,12 @@ class SettingsPluginTest extends TestBaseClass
 
         self::$plugin = App()->getPluginManager()->loadPlugin('SettingsPlugin', $plugin->id);
 
+        //Import survey
+        self::importSurvey(self::$surveysFolder . '/limesurvey_survey_854771.lss');
+
         $obj = new \stdClass();
         $obj->customProperty = 'abc';
-       
+
         self::$settings = [
             'empty_1' => 0,
             'empty_2' => null,
@@ -48,8 +50,8 @@ class SettingsPluginTest extends TestBaseClass
             'empty_5' => [],
             'empty_6' => (object) [],
             'empty_7' => new \stdClass(),
-            'number' => rand(100,999),
-            'decimal' => rand(100,999) * 0.5,
+            'number' => rand(100, 999),
+            'decimal' => rand(100, 999) * 0.5,
             'string' => 'abc',
             'string_2' => 'ABC',
             'especial_character_1' => 'ñ',
@@ -75,43 +77,112 @@ class SettingsPluginTest extends TestBaseClass
     {
         foreach (self::$settings as $key => $value) {
             self::$plugin->setSetting($key, $value);
-        
+
             $setting = \PluginSetting::model()->findByAttributes([
                 'plugin_id' => self::$plugin->getId(),
                 'key' => $key
             ]);
-            
+
             $this->assertNotEmpty($setting->id);
-            $this->assertEquals($setting->value, json_encode($value) );
+            $this->assertEquals($setting->value, json_encode($value));
 
             $settingValue = self::$plugin->getSetting($key);
             $this->assertEquals($settingValue, json_decode(json_encode($value), true));
         }
     }
 
-    public function testGetAndSetSettingEncripted()
+    /**
+     * Testing for settings at a suvey level.
+     */
+    public function testGetAndSetSurveySetting()
     {
-        self::$plugin->setEncriptedSettings(array_keys(self::$settings));
+
+        foreach (self::$settings as $key => $value) {
+            self::$plugin->setSurveySetting($key, $value, self::$surveyId);
+
+            $setting = \PluginSetting::model()->findByAttributes([
+                'plugin_id' => self::$plugin->getId(),
+                'model' => 'Survey',
+                'model_id' => self::$surveyId,
+                'key' => $key
+            ]);
+
+            $this->assertNotEmpty($setting->id, 'Setting id should not be empty.');
+            $this->assertEquals(
+                $setting->value,
+                json_encode($value),
+                'The setting value obtained with the PluginSetting model should be the value previously set'
+            );
+
+            $settingValue = self::$plugin->getSurveySetting($key, self::$surveyId);
+            $this->assertEquals(
+                $settingValue,
+                json_decode(json_encode($value), true),
+                'The setting value obtained with the get function should be the value previously set'
+            );
+        }
+    }
+
+    public function testGetAndSetSettingEncrypted()
+    {
+        self::$plugin->setEncryptedSettings(array_keys(self::$settings));
         foreach (self::$settings as $key => $value) {
             self::$plugin->setSetting($key, $value);
-        
+
             $setting = \PluginSetting::model()->findByAttributes([
                 'plugin_id' => self::$plugin->getId(),
                 'key' => $key
             ]);
-            
+
             $this->assertNotEmpty($setting->id);
             if (empty($value)) {
-                $this->assertEquals($setting->value, json_encode($value) );
+                $this->assertEquals($setting->value, json_encode($value));
             } else {
-                $this->assertEquals($setting->value, 
-                    json_encode(LSActiveRecord::encryptSingle(json_encode($value)))
-                );
+                $this->assertEquals($setting->value, json_encode(LSActiveRecord::encryptSingle(json_encode($value))));
             }
 
             $settingValue = self::$plugin->getSetting($key);
-            $this->assertEquals($settingValue, json_decode(json_encode($value), true) );
+            $this->assertEquals($settingValue, json_decode(json_encode($value), true));
         }
     }
 
+    /**
+     * Testing for encrypted settings at a survey level
+     */
+    public function testGetAndSetSurveySettingEncrypted()
+    {
+        self::$plugin->setEncryptedSettings(array_keys(self::$settings));
+        foreach (self::$settings as $key => $value) {
+            self::$plugin->setSurveySetting($key, $value, self::$surveyId);
+
+            $setting = \PluginSetting::model()->findByAttributes([
+                'plugin_id' => self::$plugin->getId(),
+                'model' => 'Survey',
+                'model_id' => self::$surveyId,
+                'key' => $key
+            ]);
+
+            $this->assertNotEmpty($setting->id, 'Setting id should not be empty.');
+            if (empty($value)) {
+                $this->assertEquals(
+                    $setting->value,
+                    json_encode($value),
+                    'The setting value obtained with the PluginSetting model should be the empty value previously set'
+                );
+            } else {
+                $this->assertEquals(
+                    $setting->value,
+                    json_encode(LSActiveRecord::encryptSingle(json_encode($value))),
+                    'The setting value obtained with the PluginSetting model should be the Encrypted value previously set'
+                );
+            }
+
+            $settingValue = self::$plugin->getSurveySetting($key, self::$surveyId);
+            $this->assertEquals(
+                $settingValue,
+                json_decode(json_encode($value), true),
+                'The setting value obtained with the get function should be the value previously set'
+            );
+        }
+    }
 }
