@@ -34,6 +34,9 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.12 (build 230327) to 5.6.13 (build 230327) March 27, 2023
+
+
 Changes from 5.6.11 (build 230320) to 5.6.12 (build 230327) March 27, 2023
 -Fixed issue: [security] XSS issue in notification email address (Carsten Schmitz)
 -Fixed issue: [security] Issue in CSV user export (Carsten Schmitz)
