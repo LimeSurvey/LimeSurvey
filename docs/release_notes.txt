@@ -34,6 +34,11 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.54 (build 230321) to 3.28.55 (build 230328) March 27, 2023
+-Fixed issue: Division by Zero error when running statistics (Carsten Schmitz)
+-Fixed issue #18071: Importing Qaestion through Remote Control may fail if the imported question already exists (#2972) (Denis Chenu)
+
+
 Changes from 3.28.53 (build 230314) to 3.28.54 (build 230321) March 20, 2023
 +New feature #18197: Allow GA4 tracking (#2962)
 -Fixed issue: $aFiles can be null (Olle Haerstedt)
