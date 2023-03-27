@@ -33,6 +33,10 @@ if (!defined('BASEPATH')) {
 class LSYii_ClientScript extends CClientScript
 {
 
+    /**
+     * The script is rendered at the end of the body section.
+     * only for scripts not script files
+     */
     const POS_POSTSCRIPT = 5;
     const POS_PREBEGIN = 6;
     /**

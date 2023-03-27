@@ -69,7 +69,7 @@
 
 <?php App()->getClientScript()->registerScript("HeaderVariables",
 'var frameSrc = "/login";
-'.(isset($formatdata) ? 
+'.(isset($formatdata) ?
     ' var userdateformat="'.$formatdata['jsdate'].'";'
    .'var userlanguage="'.$adminlang.'";'
    : '' ), LSYii_ClientScript::POS_HEAD); ?>
