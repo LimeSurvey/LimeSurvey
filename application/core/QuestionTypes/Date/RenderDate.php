@@ -55,7 +55,7 @@ class RenderDate extends QuestionBaseRenderer
     public function getTranslatorData()
     {
         $data = [];
-        switch ((int) trim($this->getQuestionAttribute('dropdown_dates_month_style'))) {
+        switch ((int) trim((string) $this->getQuestionAttribute('dropdown_dates_month_style'))) {
             case 0:
                 $data['montharray'] = array(
                     gT('Jan'), gT('Feb'), gT('Mar'), gT('Apr'), gT('May'), gT('Jun'),
@@ -79,9 +79,9 @@ class RenderDate extends QuestionBaseRenderer
     public function setMinDate()
     {
         // date_min: Determine whether we have an expression, a full date (YYYY-MM-DD) or only a year(YYYY)
-        if (trim($this->getQuestionAttribute('date_min')) != '') {
-            $date_min      = trim($this->getQuestionAttribute('date_min'));
-            $date_time_em  = strtotime(LimeExpressionManager::ProcessString("{" . $date_min . "}", $this->oQuestion->qid));
+        if (trim((string) $this->getQuestionAttribute('date_min')) != '') {
+            $date_min      = trim((string) $this->getQuestionAttribute('date_min'));
+            $date_time_em  = strtotime((string) LimeExpressionManager::ProcessString("{" . $date_min . "}", $this->oQuestion->qid));
         
             if (ctype_digit($date_min) && (strlen($date_min) == 4) && ($date_min >= 1900) && ($date_min <= 2099)) {
                 $this->minDate = $date_min . '-01-01'; // backward compatibility: if only a year is given, add month and day
@@ -101,9 +101,9 @@ class RenderDate extends QuestionBaseRenderer
     public function setMaxDate()
     {
         // date_max: Determine whether we have an expression, a full date (YYYY-MM-DD) or only a year(YYYY)
-        if (trim($this->getQuestionAttribute('date_max')) != '') {
-            $date_max     = trim($this->getQuestionAttribute('date_max'));
-            $date_time_em = strtotime(LimeExpressionManager::ProcessString("{" . $date_max . "}", $this->oQuestion->qid));
+        if (trim((string) $this->getQuestionAttribute('date_max')) != '') {
+            $date_max     = trim((string) $this->getQuestionAttribute('date_max'));
+            $date_time_em = strtotime((string) LimeExpressionManager::ProcessString("{" . $date_max . "}", $this->oQuestion->qid));
         
             if (ctype_digit($date_max) && (strlen($date_max) == 4) && ($date_max >= 1900) && ($date_max <= 2099)) {
                 $this->maxDate = $date_max . '-12-31'; // backward compatibility: if only a year is given, add month and day
@@ -147,12 +147,12 @@ class RenderDate extends QuestionBaseRenderer
         * if full dates (format: YYYY-MM-DD) are given, only the year is used
         * expressions are not supported because contents of dropbox cannot be easily updated dynamically
         */
-        $yearmin = (int) substr($this->minDate, 0, 4);
+        $yearmin = (int) substr((string) $this->minDate, 0, 4);
         if (!isset($yearmin) || $yearmin < 1900 || $yearmin > 2187) {
             $yearmin = 1900;
         }
 
-        $yearmax = (int) substr($this->maxDate, 0, 4);
+        $yearmax = (int) substr((string) $this->maxDate, 0, 4);
         if (!isset($yearmax) || $yearmax < 1900 || $yearmax > 2187) {
             $yearmax = 2187;
         }
@@ -232,7 +232,7 @@ class RenderDate extends QuestionBaseRenderer
             'dateformatdetails'      => $this->aDateformatDetails['dateformat'],
             'dateformatdetailsjs'    => $this->aDateformatDetails['jsdate'],
             'dateformatdetailsphp'   => $this->aDateformatDetails['phpdate'],
-            'hidetip'                => trim($this->getQuestionAttribute('hide_tip')) == 0,
+            'hidetip'                => trim((string) $this->getQuestionAttribute('hide_tip')) == 0,
             'dateoutput'             => $dateoutput,
             'dateTimeWidget'         => App()->getController()->widget(
                 'ext.DateTimePickerWidget.DateTimePicker',
@@ -277,7 +277,7 @@ class RenderDate extends QuestionBaseRenderer
             $currenthour   = App()->request->getPost("hour{$this->sSGQA}", '');
             $currentminute = App()->request->getPost("minute{$this->sSGQA}", '');
         }
-        $dateorder = preg_split('/([-\.\/ :])/', $this->aDateformatDetails['phpdate'], -1, PREG_SPLIT_DELIM_CAPTURE);
+        $dateorder = preg_split('/([-\.\/ :])/', (string) $this->aDateformatDetails['phpdate'], -1, PREG_SPLIT_DELIM_CAPTURE);
     
         $sRows = '';
         foreach ($dateorder as $datepart) {
@@ -331,7 +331,7 @@ class RenderDate extends QuestionBaseRenderer
             'coreClass'              => $coreClass,
             'name'                   => $this->sSGQA,
             'basename'               => $this->sSGQA,
-            'dateoutput'             => htmlspecialchars($dateoutput, ENT_QUOTES, 'utf-8'),
+            'dateoutput'             => htmlspecialchars((string) $dateoutput, ENT_QUOTES, 'utf-8'),
             'checkconditionFunction' => $this->checkconditionFunction . '(this.value, this.name, this.type)',
             'dateformatdetails'      => $this->aDateformatDetails['jsdate'],
             'dateformat'             => $this->aDateformatDetails['jsdate'],
@@ -352,7 +352,7 @@ class RenderDate extends QuestionBaseRenderer
         $this->setMinDate();
         $this->setMaxDate();
         // Format the date  for output
-        $dateoutput = trim($this->mSessionValue);
+        $dateoutput = trim((string) $this->mSessionValue);
         if ($dateoutput != '' && $dateoutput != 'INVALID') {
             $datetimeobj = DateTime::createFromFormat('!Y-m-d H:i', fillDate(trim($dateoutput)));
             if ($datetimeobj) {
@@ -363,7 +363,7 @@ class RenderDate extends QuestionBaseRenderer
         }
         
         //throw new Error("<pre>HALT!".print_r($this->oQuestion,true)."</pre>");
-        if (trim($this->getQuestionAttribute('dropdown_dates')) == 1) {
+        if (trim((string) $this->getQuestionAttribute('dropdown_dates')) == 1) {
             $answer = $this->renderDropdownDates($dateoutput, $coreClass);
         } else {
             $answer = $this->renderDatepicker($dateoutput, $coreClass);

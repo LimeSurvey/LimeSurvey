@@ -21,7 +21,7 @@ class SurveymenuEntryData extends CFormModel
         $this->surveyid = $surveyid;
         $this->menuEntry = $menuEntry;
 
-        $oData = json_decode(stripcslashes($this->menuEntry->data));
+        $oData = json_decode(stripcslashes((string)$this->menuEntry->data));
         $jsonError = json_last_error();
         if ($jsonError) {
             $this->rawData = [];

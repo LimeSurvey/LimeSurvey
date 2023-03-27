@@ -32,7 +32,7 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
                     <?php Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', array(
                             'name' => "startdate",
                             'id' => 'startdate',
-                            'value' => ($oSurvey->startdate ? date($dateformatdetails['phpdate']." H:i",strtotime($oSurvey->startdate)) : ''),
+                            'value' => ($oSurvey->startdate ? date($dateformatdetails['phpdate']." H:i",strtotime((string) $oSurvey->startdate)) : ''),
                             'pluginOptions' => array(
                                 'format' => $dateformatdetails['jsdate'] . " HH:mm",
                                 'allowInputToggle' =>true,
@@ -51,7 +51,7 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
                     <?php Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', array(
                             'name' => "expires",
                             'id' => 'expires',
-                            'value' => ($oSurvey->expires ? date($dateformatdetails['phpdate']." H:i",strtotime($oSurvey->expires)) : ''),
+                            'value' => ($oSurvey->expires ? date($dateformatdetails['phpdate']." H:i",strtotime((string) $oSurvey->expires)) : ''),
                             'pluginOptions' => array(
                                 'format' => $dateformatdetails['jsdate'] . " HH:mm",
                                 'allowInputToggle' =>true,

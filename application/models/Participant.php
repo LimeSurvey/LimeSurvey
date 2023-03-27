@@ -781,7 +781,7 @@ class Participant extends LSActiveRecord
 
         $aAllAttributes = ParticipantAttributeName::model()->getAllAttributes();
         foreach ($aAllAttributes as $aAttribute) {
-            if (!is_null($search) && strpos($search->condition, 'attribute' . $aAttribute['attribute_id']) !== false) {
+            if (!is_null($search) && strpos((string) $search->condition, 'attribute' . $aAttribute['attribute_id']) !== false) {
                 $attid[$aAttribute['attribute_id']] = $aAttribute;
             }
         }
@@ -1175,7 +1175,7 @@ class Participant extends LSActiveRecord
                     $condition[$i + 3] = intval($condition[$i + 3]);
                 }
                 //Force the type of numeric values to be numeric
-                $booloperator = strtoupper($condition[$i]);
+                $booloperator = strtoupper((string) $condition[$i]);
                 $condition1name = ":condition_" . ($i + 1);
                 $condition2name = ":condition_" . ($i + 3);
                 switch ($condition[$i + 2]) {
@@ -1316,7 +1316,7 @@ class Participant extends LSActiveRecord
                     break;
             }
             if (isset($condition[(($i - 1) * 4) + 3])) {
-                $booloperator = strtoupper($condition[(($i - 1) * 4) + 3]);
+                $booloperator = strtoupper((string) $condition[(($i - 1) * 4) + 3]);
             } else {
                 $booloperator = 'AND';
             }
@@ -1484,8 +1484,8 @@ class Participant extends LSActiveRecord
             ->getTable("{{tokens_$surveyId}}");
 
         foreach ($tokenTableSchema->columns as $columnName => $columnObject) {
-            if (strpos($columnName, 'attribute_') !== false) {
-                $id = substr($columnName, 10);
+            if (strpos((string) $columnName, 'attribute_') !== false) {
+                $id = substr((string) $columnName, 10);
                 if (in_array($id, $newAttributes)) {
                     $name = ParticipantAttributeName::model()->getAttributeName($id, $_SESSION['adminlang']);
                     if (empty($name)) {
@@ -1708,8 +1708,8 @@ class Participant extends LSActiveRecord
                     try {
                         // $value can be 'attribute_<number>' here
                         // TODO: Weird...
-                        if (strpos($value, 'attribute_') !== false) {
-                            $value = substr($value, 10);
+                        if (strpos((string) $value, 'attribute_') !== false) {
+                            $value = substr((string) $value, 10);
                         }
 
                         Participant::model()->updateTokenAttributeValue($surveyId, $oParticipant->participant_id, $value, $key);
@@ -1889,7 +1889,7 @@ class Participant extends LSActiveRecord
     {
         $survey = Survey::model()->findByPk($surveyid);
         $tokenid_string = Yii::app()->session['participantid']; //List of token_id's to add to participants table
-        $tokenids = json_decode($tokenid_string, true);
+        $tokenids = json_decode((string) $tokenid_string, true);
         $duplicate = 0;
         $sucessfull = 0;
         $attid = []; //Will store the CPDB attribute_id of new or existing attributes keyed by CPDB at
@@ -1917,7 +1917,7 @@ class Participant extends LSActiveRecord
 
                 $insertnameslang = [
                     'attribute_id'   => $attid[$key],
-                    'attribute_name' => urldecode($value),
+                    'attribute_name' => urldecode((string) $value),
                     'lang'           => Yii::app()->session['adminlang']
                 ];
                 $oParticipantAttributeNamesLang = new ParticipantAttributeNameLang();
@@ -2156,7 +2156,7 @@ class Participant extends LSActiveRecord
                 return $lngArr['description'];
             }, $allLanguages);
         }
-        $usedLanguages = explode(' ', $restrictToLanguages);
+        $usedLanguages = explode(' ', (string) $restrictToLanguages);
         $returner = [];
         array_walk($usedLanguages, function ($lngKey) use (&$returner, $allLanguages) {
             $returner[$lngKey] = $allLanguages[$lngKey]['description'];

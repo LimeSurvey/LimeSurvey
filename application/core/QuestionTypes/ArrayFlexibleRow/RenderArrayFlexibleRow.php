@@ -39,12 +39,12 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
         parent::__construct($aFieldArray, $bRenderDirect);
 
         $aLastMoveResult         = LimeExpressionManager::GetLastMoveResult();
-        $this->aMandatoryViolationSubQ = ($aLastMoveResult['mandViolation'] && $this->oQuestion->mandatory == 'Y') ? explode("|", $aLastMoveResult['unansweredSQs']) : [];
+        $this->aMandatoryViolationSubQ = ($aLastMoveResult['mandViolation'] && $this->oQuestion->mandatory == 'Y') ? explode("|", (string) $aLastMoveResult['unansweredSQs']) : [];
         
         $this->repeatheadings    = Yii::app()->getConfig("repeatheadings");
         $this->minrepeatheadings = Yii::app()->getConfig("minrepeatheadings");
 
-        if (ctype_digit($this->repeatheadings) && !empty($this->repeatheadings)) {
+        if (ctype_digit((string) $this->repeatheadings) && !empty($this->repeatheadings)) {
             $this->repeatheadings    = intval($this->getQuestionAttribute('repeat_headings'));
             $this->minrepeatheadings = 0;
         }
@@ -66,7 +66,7 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
         $this->setAnsweroptions();
 
         $iCount = array_reduce($this->aSubQuestions[0], function ($combined, $oSubQuestions) {
-            if (preg_match("/^[^|]+\|[^|]+$/", $oSubQuestions->questionl10ns[$this->sLanguage]->question)) {
+            if (preg_match("/^[^|]+\|[^|]+$/", (string) $oSubQuestions->questionl10ns[$this->sLanguage]->question)) {
                 $combined++;
             }
             return $combined;
@@ -75,8 +75,8 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
         // If there arent we can leave out the right td column
         $this->rightExists = ($iCount > 0);
 
-        if (ctype_digit(trim($this->getQuestionAttribute('answer_width')))) {
-            $this->answerwidth  = trim($this->getQuestionAttribute('answer_width'));
+        if (ctype_digit(trim((string) $this->getQuestionAttribute('answer_width')))) {
+            $this->answerwidth  = trim((string) $this->getQuestionAttribute('answer_width'));
             $this->defaultWidth = false;
         } else {
             $this->answerwidth = 33;
@@ -173,8 +173,8 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
             $error = (in_array($myfname, $this->aMandatoryViolationSubQ));
             $value = $this->getFromSurveySession($myfname);
 
-            if ($this->rightExists && (strpos($oQuestion->questionl10ns[$this->sLanguage]['question'], '|') !== false)) {
-                $aAnswertextArray = explode('|', $oQuestion->questionl10ns[$this->sLanguage]['question']);
+            if ($this->rightExists && (strpos((string) $oQuestion->questionl10ns[$this->sLanguage]['question'], '|') !== false)) {
+                $aAnswertextArray = explode('|', (string) $oQuestion->questionl10ns[$this->sLanguage]['question']);
                 $answertextright = $aAnswertextArray[1];
                 $answertext = $aAnswertextArray[0];
             } else {
@@ -246,10 +246,10 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
 
             $myfname        = $this->sSGQA . $oQuestion->title;
             $answertext     = $oQuestion->questionl10ns[$this->sLanguage]->question;
-            $answertext     = (strpos($answertext, '|') !== false) ? substr($answertext, 0, strpos($answertext, '|')) : $answertext;
+            $answertext     = (strpos((string) $answertext, '|') !== false) ? substr((string) $answertext, 0, strpos((string) $answertext, '|')) : $answertext;
 
-            if ($this->rightExists && strpos($oQuestion->questionl10ns[$this->sLanguage]->question, '|') !== false) {
-                $answertextright = substr($oQuestion->questionl10ns[$this->sLanguage]->question, strpos($oQuestion->questionl10ns[$this->sLanguage]->question, '|') + 1);
+            if ($this->rightExists && strpos((string) $oQuestion->questionl10ns[$this->sLanguage]->question, '|') !== false) {
+                $answertextright = substr((string) $oQuestion->questionl10ns[$this->sLanguage]->question, strpos((string) $oQuestion->questionl10ns[$this->sLanguage]->question, '|') + 1);
             } else {
                 $answertextright = '';
             }

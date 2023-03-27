@@ -21,7 +21,7 @@
         {% for aRow in aRows %}
             {% set aRow = aRow|merge({'button_size_class': button_size_class})|merge({'max_buttons_row': max_buttons_row}) %}
             {% set rowTemplate = aRow.other ? './survey/questions/answer/multiplechoice/rows/answer_row_other.twig' : './survey/questions/answer/multiplechoice/rows/answer_row.twig' %}
-            {% include rowTemplate with aRow only %}
+            {% include rowTemplate with aRow %}
         {% endfor %}
     </div>
     <!-- other -->

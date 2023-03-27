@@ -181,7 +181,7 @@ class ExpressionValidate extends SurveyCommonAction
         $aReplacement["TOKEN:TOKEN"] = gT("Participant - Access code");
         $aReplacement["TOKEN:LANGUAGE"] = gT("Participant - Language");
         foreach ($aAttributes as $sAttribute => $aAttribute) {
-            $aReplacement['TOKEN:' . strtoupper($sAttribute) . ''] = sprintf(gT("Participant attribute: %s"), $aAttribute['description']);
+            $aReplacement['TOKEN:' . strtoupper((string) $sAttribute) . ''] = sprintf(gT("Participant attribute: %s"), $aAttribute['description']);
         }
 
         switch ($sType) {
@@ -200,7 +200,7 @@ class ExpressionValidate extends SurveyCommonAction
                 $aReplacement["SURVEYURL"] = gT("Survey URL");
                 $aReplacement['SURVEYIDURL'] = gT("Survey URL based on survey ID");
                 foreach ($aAttributes as $sAttribute => $aAttribute) {
-                    $aReplacement['' . strtoupper($sAttribute) . ''] = sprintf(gT("Participant - Attribute: %s"), $aAttribute['description']);
+                    $aReplacement['' . strtoupper((string) $sAttribute) . ''] = sprintf(gT("Participant - Attribute: %s"), $aAttribute['description']);
                 }
                 break;
             case 'confirmation':
@@ -210,7 +210,7 @@ class ExpressionValidate extends SurveyCommonAction
                 $aReplacement["SURVEYURL"] = gT("Survey URL");
                 $aReplacement['SURVEYIDURL'] = gT("Survey URL without alias");
                 foreach ($aAttributes as $sAttribute => $aAttribute) {
-                    $aReplacement['' . strtoupper($sAttribute) . ''] = sprintf(gT("Participant - Attribute: %s"), $aAttribute['description']);
+                    $aReplacement['' . strtoupper((string) $sAttribute) . ''] = sprintf(gT("Participant - Attribute: %s"), $aAttribute['description']);
                 }
                 // $moveResult = LimeExpressionManager::NavigateForwards(); // Seems OK without, nut need $LEM::StartSurvey
                 break;

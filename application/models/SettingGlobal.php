@@ -134,10 +134,10 @@ class SettingGlobal extends LSActiveRecord
         $iAssetNumber = self::generateAssetVersionNumber(Yii::app()->getConfig("assetsversionnumber"));
 
         foreach ($versionlines as $line) {
-            if (strpos($line, 'assetsversionnumber') !== false) {
+            if (strpos((string) $line, 'assetsversionnumber') !== false) {
                 $line = '$config[\'assetsversionnumber\'] = \'' . $iAssetNumber . '\';' . "\r\n";
             }
-            fwrite($handle, $line);
+            fwrite($handle, (string) $line);
         }
         fclose($handle);
         Yii::app()->setConfig("assetsversionnumber", $iAssetNumber);

@@ -6,7 +6,6 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Twig_' => array($vendorDir . '/twig/twig/lib'),
     'Spreadsheet' => array($vendorDir . '/pear/spreadsheet_excel_writer'),
     'OLE' => array($vendorDir . '/pear/ole'),
     'Console' => array($vendorDir . '/pear/console_getopt'),

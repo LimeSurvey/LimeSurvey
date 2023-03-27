@@ -229,9 +229,9 @@ if ($bShowInherited) {
                     <?php // NB: Do NOT use === when comparing navigationdelay to '-1', it won't work with Postgresql.?>
                     <input class="form-control inherit-edit <?= ($bShowInherited && $navigationdelay == '-1' ? 'd-none' : 'd-block') ?>"
                            type='text' size='10' id='navigationdelay' name='navigationdelay'
-                           value="<?= htmlspecialchars($navigationdelay) ?>" data-inherit-value="-1" data-saved-value="<?= $navigationdelay ?>"/>
+                           value="<?= htmlspecialchars($navigationdelay ?? "") ?>" data-inherit-value="-1" data-saved-value="<?= $navigationdelay ?>"/>
                     <input class="form-control inherit-readonly <?php echo($bShowInherited && $navigationdelay == '-1' ? 'd-block' : 'd-none'); ?>"
-                           type='text' size='10' value="<?php echo htmlspecialchars($oSurveyOptions->navigationdelay); ?>" readonly/>
+                           type='text' size='10' value="<?php echo htmlspecialchars($oSurveyOptions->navigationdelay ?? ""); ?>" readonly/>
                 </div>
                 <div class="col-12 col-lg-4 <?php echo($bShowInherited ? 'd-block' : 'd-none'); ?>">
                     <label class="form-label col-12" for='navigationdelay'><?php eT("Inherit"); ?></label>
