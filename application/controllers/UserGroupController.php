@@ -168,7 +168,7 @@ class UserGroupController extends LSBaseController
             }
         }
 
-        $aData['topbar']['title'] = gT('User group');
+        $aData['topbar']['title'] = gT('User group') . ': ' . $userGroup->name;
         $aData['topbar']['backLink'] = $this->createUrl('userGroup/index');
         
         $aData['topbar']['middleButtons'] = $this->renderPartial(
@@ -498,8 +498,8 @@ class UserGroupController extends LSBaseController
             $aData['ugid'] = $ugid;
         }
 
-        $aData['topbar']['title'] =  '<a class="h1" href="'.$this->createUrl('userGroup/index').'">
-        <i class="ri-arrow-left-s-line"></i></a>' . gT('Mail to all Members');
+        $aData['topbar']['title'] = gT('Mail to all Members');
+        $aData['topbar']['backLink'] = $this->createUrl('userGroup/index');
         $aData['topbar']['rightButtons'] = $this->renderPartial(
             'partial/topbarBtns_mail/rightSideButtons',
             [],
