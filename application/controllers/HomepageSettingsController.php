@@ -58,7 +58,6 @@ class HomepageSettingsController extends LSBaseController
 
         $dataProviderBox = new CActiveDataProvider('Box');
 
-        $aData['groupModel'] = new SurveysGroups('search');
         $aData['topbar']['title'] = gT('Dashboard');
         $aData['topbar']['backLink'] = $this->createUrl('admin/index');
 
