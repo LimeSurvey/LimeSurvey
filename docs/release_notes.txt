@@ -34,6 +34,21 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.11 (build 230320) to 5.6.12 (build 230327) March 27, 2023
+-Fixed issue: [security] XSS issue in notification email address (Carsten Schmitz)
+-Fixed issue: [security] Issue in CSV user export (Carsten Schmitz)
+-Fixed issue #18674: Simple user can update javascript when scripts are disabled (Denis Chenu)
+-Fixed issue #18663: SQL error when adding survey participants along w… (#2959) (Denis Chenu)
+-Fixed issue #18657: Encrypted token attributes are shown encrypted when piped into a question body (#2948) (Gabriel Jenik)
+-Fixed issue #18655: Data loss if field in response table it missing. (#2998) (Gabriel Jenik)
+-Fixed issue #18655: Data loss if field in response table it missing (#2956) (Gabriel Jenik)
+-Fixed issue #18653: getSuperAdmin return simple user (#2968) (Denis Chenu)
+-Fixed issue #18630: Survey list showing wrong icon for surveys. (#2960) (Gabriel Jenik)
+-Fixed issue #18504: Date Calendar Selection Question (#2899) (Gabriel Jenik)
+-Fixed issue #18318: Empty line at the end of csv export (#2942) (Gabriel Jenik)
+#Updated translation: Spanish (Spain) by ireneoh
+
+
 Changes from 5.6.10 (build 230313) to 5.6.11 (build 230320) March 20, 2023
 -Fixed issue #18620: Column relevance disabling not working as expected (#2905) (Gabriel Jenik)
 #Updated translation: Slovak by jelen1
