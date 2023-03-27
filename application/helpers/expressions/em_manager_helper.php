@@ -2376,7 +2376,7 @@ class LimeExpressionManager
                 $sgqa = $qinfo['sgqa'];
                 switch ($type) {
                     case Question::QT_VERTICAL_FILE_UPLOAD: //List - dropdown
-                        $eqn = "(" . $sgqa . "_filecount >= (" . $min_num_of_files . "))";
+                        $eqn = "(" . $sgqa . "_filecount.NAOK >= (" . $min_num_of_files . "))";
                         break;
                     default:
                         break;
@@ -2404,7 +2404,7 @@ class LimeExpressionManager
                 $sgqa = $qinfo['sgqa'];
                 switch ($type) {
                     case Question::QT_VERTICAL_FILE_UPLOAD: //List - dropdown
-                        $eqn = "(" . $sgqa . "_filecount <= (" . $max_num_of_files . "))";
+                        $eqn = "(is_empty(" . $sgqa . "_filecount.NAOK) || " . $sgqa . "_filecount.NAOK <= (" . $max_num_of_files . "))";
                         break;
                     default:
                         break;
