@@ -476,7 +476,7 @@ class ThemeOptionsController extends LSBaseController
         $aData['pageSize'] = App()->user->getState('pageSizeTemplateView', App()->params['defaultPageSize']); // Page size
 
         $aData['topbar']['title'] = gT('Themes');
-        $aData['topbar']['backLink'] = $this->createUrl('admin/index');
+        $aData['topbar']['backLink'] = App()->createUrl('admin/index');
 
         if (Permission::model()->hasGlobalPermission('templates', 'import')) {
             //only show upload&install button if user has the permission ...

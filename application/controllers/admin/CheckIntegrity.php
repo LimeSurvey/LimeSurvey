@@ -51,7 +51,7 @@ class CheckIntegrity extends SurveyCommonAction
         $aData = $this->checkintegrity();
 
         $aData['topbar']['title'] = gT('Check data integrity');
-        $aData['topbar']['backLink'] = $this->createUrl('admin/index');
+        $aData['topbar']['backLink'] = App()->createUrl('admin/index');
 
         $this->renderWrappedTemplate('checkintegrity', 'check_view', $aData);
     }

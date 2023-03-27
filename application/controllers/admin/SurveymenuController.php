@@ -383,7 +383,7 @@ class SurveymenuController extends SurveyCommonAction
 
 
         $aData['topbar']['title'] = gT('Survey menus');
-        $aData['topbar']['backLink'] = $this->createUrl('admin/index');
+        $aData['topbar']['backLink'] = App()->createUrl('admin/index');
 
         $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
             '/admin/surveymenu/partial/topbarBtns/rightSideButtons',

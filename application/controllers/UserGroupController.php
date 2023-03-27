@@ -71,7 +71,7 @@ class UserGroupController extends LSBaseController
         $model = UserGroup::model();
    
         $aData['topbar']['title'] = gT('User group list');
-        $aData['topbar']['backLink'] = $this->createUrl('admin/index');
+        $aData['topbar']['backLink'] = App()->createUrl('admin/index');
 
         $aData['topbar']['middleButtons'] = $this->renderPartial('partial/topbarBtns/leftSideButtons', [], true);
         $aData['topbar']['rightButtons'] = $this->renderPartial('partial/topbarBtns/rightSideButtons', [
@@ -169,7 +169,7 @@ class UserGroupController extends LSBaseController
         }
 
         $aData['topbar']['title'] = gT('User group') . ': ' . $userGroup->name;
-        $aData['topbar']['backLink'] = $this->createUrl('userGroup/index');
+        $aData['topbar']['backLink'] = App()->createUrl('userGroup/index');
         
         $aData['topbar']['middleButtons'] = $this->renderPartial(
             'partial/topbarBtns_manageGroup/leftSideButtons',
@@ -499,7 +499,7 @@ class UserGroupController extends LSBaseController
         }
 
         $aData['topbar']['title'] = gT('Mail to all Members');
-        $aData['topbar']['backLink'] = $this->createUrl('userGroup/index');
+        $aData['topbar']['backLink'] = App()->createUrl('userGroup/index');
         $aData['topbar']['rightButtons'] = $this->renderPartial(
             'partial/topbarBtns_mail/rightSideButtons',
             [],

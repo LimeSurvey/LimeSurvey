@@ -582,7 +582,7 @@ JAVASCRIPT
         $pageTitle = gT('Theme editor:') . ' ' . $templatename;
 
         $aData['topbar']['title'] = $pageTitle;
-        $aData['topbar']['backLink'] = $this->createUrl('themeOptions/index');
+        $aData['topbar']['backLink'] = App()->createUrl('themeOptions/index');
 
 
         $aData['topbar']['middleButtons'] = Yii::app()->getController()->renderPartial(

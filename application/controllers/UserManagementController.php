@@ -67,7 +67,7 @@ class UserManagementController extends LSBaseController
 
 
         $aData['topbar']['title'] = gT('User management');
-        $aData['topbar']['backLink'] = $this->createUrl('admin/index');
+        $aData['topbar']['backLink'] = App()->createUrl('admin/index');
         $aData['topbar']['middleButtons'] = $this->renderPartial('partial/topbarBtns/leftSideButtons', [], true);
 
         //this is really important, so we have the aData also before rendering the content
