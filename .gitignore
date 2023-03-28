@@ -194,7 +194,6 @@ vendor/webmozart/
 vendor/misantron/
 upload/templates/
 assets/packages/ckeditor/samples
-vendor
 
 ## ignore Vagrantfile and Adminer
 adminer.php

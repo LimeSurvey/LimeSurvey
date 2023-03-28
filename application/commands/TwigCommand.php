@@ -283,7 +283,7 @@ class TwigCommand extends CConsoleCommand
         $iterator = new RecursiveIteratorIterator($directory);
         foreach ($iterator as $info) {
             if ($info->getFileName() == 'config.xml') {
-                $questionDirectoriesAndPaths[] = dirname($info->getPathname());
+                $questionDirectoriesAndPaths[] = dirname((string) $info->getPathname());
             }
         }
 

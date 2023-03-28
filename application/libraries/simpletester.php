@@ -34,7 +34,7 @@ require_once($libraryDir . '/reporter.php');
 * See the included tests/TEMPLATE_*.php files for an introduction to SimpleTest.
 *
 * @access public
-* @author Andreas Söderlund, ciscoheat CARE OF gmail DOT com
+* @author Andreas SÃ¶derlund, ciscoheat CARE OF gmail DOT com
 */
 class SimpleTester
 {
@@ -52,7 +52,7 @@ class SimpleTester
     {
         $ci =& get_instance();
 
-        if (isset($params['runFromIPs']) && strpos($params['runFromIPs'], $ci->input->server('SERVER_ADDR') === false)) {
+        if (isset($params['runFromIPs']) && strpos((string) $params['runFromIPs'], $ci->input->server('SERVER_ADDR') === false)) {
             // Tests won't be run automatically from this IP.
             $params['noautorun'] = true;
         }
@@ -64,7 +64,7 @@ class SimpleTester
             // @todo Content types could be placed in config.
             $ajaxContentTypes = array('application/x-www-form-urlencoded', 'multipart/form-data');
             foreach ($ajaxContentTypes as $ajaxContentType) {
-                if (false !== stripos($_SERVER[$header], $ajaxContentType)) {
+                if (false !== stripos((string) $_SERVER[$header], $ajaxContentType)) {
                     $params['noautorun'] = true;
                     break;
                 }
@@ -106,7 +106,7 @@ class SimpleTester
             if ($dh = opendir($this->testDir)) {
                 while (($file = readdir($dh)) !== false) {
                     // Test if file ends with php, then include it.
-                    if (substr($file, -(strlen($this->fileExtension) + 1)) == '.' . $this->fileExtension) {
+                    if (substr($file, -(strlen((string) $this->fileExtension) + 1)) == '.' . $this->fileExtension) {
                         $group_test->addFile($this->testDir . "/$file");
                     }
                 }

@@ -66,7 +66,7 @@ function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $
     if (count($lbl) > 72) {
         $DataSet = array(1 => array(1 => 1));
         if ($cache->IsInCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet) && Yii::app()->getConfig('debug') < 2) {
-            $cachefilename = basename($cache->GetFileFromCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet));
+            $cachefilename = basename((string) $cache->GetFileFromCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet));
         } else {
             $graph = new pChart(690, 200);
             $graph->loadColorPalette(Yii::app()->getConfig('styledir') . DIRECTORY_SEPARATOR . $admintheme . DIRECTORY_SEPARATOR . 'images/limesurvey.pal');
@@ -74,7 +74,7 @@ function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $
             $graph->setFontProperties($rootdir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . $chartfontfile, $chartfontsize);
             $graph->drawTitle(0, 0, gT('Sorry, but this question has too many answer options to be shown properly in a graph.', 'unescaped'), 30, 30, 30, 690, 200);
             $cache->WriteToCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet, $graph);
-            $cachefilename = basename($cache->GetFileFromCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet));
+            $cachefilename = basename((string) $cache->GetFileFromCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet));
             unset($graph);
         }
         return  $cachefilename;
@@ -82,7 +82,7 @@ function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $
     if (array_sum($gdata) == 0) {
         $DataSet = array(1 => array(1 => 1));
         if ($cache->IsInCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet) && Yii::app()->getConfig('debug') < 2) {
-            $cachefilename = basename($cache->GetFileFromCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet));
+            $cachefilename = basename((string) $cache->GetFileFromCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet));
         } else {
             $graph = new pChart(690, 200);
             $graph->loadColorPalette(Yii::app()->getConfig('styledir') . DIRECTORY_SEPARATOR . $admintheme . DIRECTORY_SEPARATOR . 'images/limesurvey.pal');
@@ -90,7 +90,7 @@ function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $
             $graph->setFontProperties($rootdir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . $chartfontfile, $chartfontsize);
             $graph->drawTitle(0, 0, gT('Sorry, but this question has no responses yet so a graph cannot be shown.', 'unescaped'), 30, 30, 30, 690, 200);
             $cache->WriteToCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet, $graph);
-            $cachefilename = basename($cache->GetFileFromCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet));
+            $cachefilename = basename((string) $cache->GetFileFromCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet));
             unset($graph);
         }
         return  $cachefilename;
@@ -158,7 +158,7 @@ function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $
             }
 
             if ($cache->IsInCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet->GetData()) && Yii::app()->getConfig('debug') < 2) {
-                $cachefilename = basename($cache->GetFileFromCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet->GetData()));
+                $cachefilename = basename((string) $cache->GetFileFromCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet->GetData()));
             } else {
                 $graph = new pChart(1, 1);
                 $graph->setFontProperties($rootdir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . $chartfontfile, $chartfontsize);
@@ -192,7 +192,7 @@ function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $
                 $graph->drawLegend(510, 30, $DataSet->GetDataDescription(), 250, 250, 250);
 
                 $cache->WriteToCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet->GetData(), $graph);
-                $cachefilename = basename($cache->GetFileFromCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet->GetData()));
+                $cachefilename = basename((string) $cache->GetFileFromCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet->GetData()));
                 unset($graph);
             }
         }    //end if (bar chart)
@@ -246,7 +246,7 @@ function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $
             $DataSet->SetAbsciseLabelSerie("Serie2");
 
             if ($cache->IsInCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet->GetData()) && Yii::app()->getConfig('debug') < 2) {
-                $cachefilename = basename($cache->GetFileFromCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet->GetData()));
+                $cachefilename = basename((string) $cache->GetFileFromCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet->GetData()));
             } else {
                 $gheight = ceil($gheight);
                 $graph = new pChart(690, $gheight);
@@ -261,7 +261,7 @@ function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $
                 $graph->setFontProperties($rootdir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . $chartfontfile, $chartfontsize);
                 $graph->drawPieLegend(430, 12, $DataSet->GetData(), $DataSet->GetDataDescription(), 250, 250, 250);
                 $cache->WriteToCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet->GetData(), $graph);
-                $cachefilename = basename($cache->GetFileFromCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet->GetData()));
+                $cachefilename = basename((string) $cache->GetFileFromCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet->GetData()));
                 unset($graph);
             }
         }    //end else -> pie charts
@@ -286,7 +286,7 @@ function getQuestionMapData($sField, $qsid)
 
     //loop through question data
     foreach ($aresult as $arow) {
-        $alocation = explode(";", $arow->$sField);
+        $alocation = explode(";", (string) $arow->$sField);
         if (count($alocation) >= 2) {
             $d[] = "{$alocation[0]} {$alocation[1]}";
         }
@@ -448,7 +448,7 @@ function buildSelects($allfields, $surveyid, $language)
             elseif (($firstletter == "T" || $firstletter == "Q") && $_POST[$pv] != "") {
                 $selectSubs = array();
                 //We intepret and * and % as wildcard matches, and use ' OR ' and , as the separators
-                $pvParts = explode(",", str_replace('*', '%', str_replace(' OR ', ',', $_POST[$pv])));
+                $pvParts = explode(",", str_replace('*', '%', str_replace(' OR ', ',', (string) $_POST[$pv])));
                 if (is_array($pvParts) and count($pvParts)) {
                     foreach ($pvParts as $pvPart) {
                         $selectSubs[] = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv))) . " LIKE " . App()->db->quoteValue($pvPart);
@@ -754,7 +754,7 @@ class userstatistics_helper
 
                 foreach ($result->readAll() as $row) {
                     $json = $row['json'];
-                    $phparray = json_decode($json);
+                    $phparray = json_decode((string) $json);
 
                     foreach ($phparray as $metadata) {
                         $size += (int)$metadata->size;
@@ -782,7 +782,7 @@ class userstatistics_helper
                 //outputting
                 switch ($outputType) {
                     case 'xls':
-                        $xlsTitle = sprintf(gT("Summary for %s"), html_entity_decode($qtitle, ENT_QUOTES, 'UTF-8'));
+                        $xlsTitle = sprintf(gT("Summary for %s"), html_entity_decode((string) $qtitle, ENT_QUOTES, 'UTF-8'));
                         $xlsDesc = html_entity_decode($qquestion, ENT_QUOTES, 'UTF-8');
                         $this->xlsRow++;
                         $this->xlsRow++;
@@ -853,7 +853,7 @@ class userstatistics_helper
                     switch ($outputType) {
                         case 'xls':
                             $xlsTitle = sprintf(gT("Summary for %s"), html_entity_decode($qtitle, ENT_QUOTES, 'UTF-8'));
-                            $xlsDesc = html_entity_decode($qquestion, ENT_QUOTES, 'UTF-8');
+                            $xlsDesc = html_entity_decode((string) $qquestion, ENT_QUOTES, 'UTF-8');
                             $this->xlsRow++;
                             $this->xlsRow++;
 
@@ -872,7 +872,7 @@ class userstatistics_helper
                             $footPDF = array();
 
                             $pdfTitle = sprintf(gT("Summary for %s"), html_entity_decode($qtitle, ENT_QUOTES, 'UTF-8'));
-                            $titleDesc = html_entity_decode($qquestion, ENT_QUOTES, 'UTF-8');
+                            $titleDesc = html_entity_decode((string) $qquestion, ENT_QUOTES, 'UTF-8');
 
                             $headPDF[] = array(gT("Calculation"), gT("Result"));
 
@@ -996,10 +996,10 @@ class userstatistics_helper
                             case 'xls':
                                 $this->xlsRow++;
                                 $this->sheet->write($this->xlsRow, 0, html_entity_decode($shw[0], ENT_QUOTES, 'UTF-8'));
-                                $this->sheet->write($this->xlsRow, 1, html_entity_decode($shw[1], ENT_QUOTES, 'UTF-8'));
+                                $this->sheet->write($this->xlsRow, 1, html_entity_decode((string) $shw[1], ENT_QUOTES, 'UTF-8'));
                                 break;
                             case 'pdf':
-                                $tablePDF[] = array(html_entity_decode($shw[0], ENT_QUOTES, 'UTF-8'), html_entity_decode($shw[1], ENT_QUOTES, 'UTF-8'));
+                                $tablePDF[] = array(html_entity_decode($shw[0], ENT_QUOTES, 'UTF-8'), html_entity_decode((string) $shw[1], ENT_QUOTES, 'UTF-8'));
                                 break;
                             case 'html':
                                 $statisticsoutput .= "\t<tr>\n"
@@ -1185,7 +1185,7 @@ class userstatistics_helper
                         $qtitle .= "($qanswer)" . "[" . $atext . "]";
                         break;
                     case Question::QT_SEMICOLON_ARRAY_TEXT: // Array (Multi Flexi) (Text)
-                        list($qacode, $licode) = explode("_", $qanswer);
+                        list($qacode, $licode) = explode("_", (string) $qanswer);
 
                         $qresult = Question::model()->findAll(array('condition' => 'parent_qid=:parent_qid AND title=:title', 'params' => array(":parent_qid" => $qiqid, ':title' => $qanswer)));
                         foreach ($qresult as $qrow) {
@@ -1203,19 +1203,19 @@ class userstatistics_helper
 
                     case Question::QT_COLON_ARRAY_NUMBERS: // Array (Multiple Flexi) (Numbers)
                         $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($qiqid);
-                        if (trim($aQuestionAttributes['multiflexible_max']) != '') {
+                        if (trim((string) $aQuestionAttributes['multiflexible_max']) != '') {
                             $maxvalue = $aQuestionAttributes['multiflexible_max'];
                         } else {
                             $maxvalue = 10;
                         }
 
-                        if (trim($aQuestionAttributes['multiflexible_min']) != '') {
+                        if (trim((string) $aQuestionAttributes['multiflexible_min']) != '') {
                             $minvalue = $aQuestionAttributes['multiflexible_min'];
                         } else {
                             $minvalue = 1;
                         }
 
-                        if (trim($aQuestionAttributes['multiflexible_step']) != '') {
+                        if (trim((string) $aQuestionAttributes['multiflexible_step']) != '') {
                             $stepvalue = $aQuestionAttributes['multiflexible_step'];
                         } else {
                             $stepvalue = 1;
@@ -1232,7 +1232,7 @@ class userstatistics_helper
                         }
 
                         $qquestion .= $linefeed . "[" . $fielddata['subquestion1'] . "] [" . $fielddata['subquestion2'] . "]";
-                        list($myans, $mylabel) = explode("_", $qanswer);
+                        list($myans, $mylabel) = explode("_", (string) $qanswer);
                         $qtitle .= "[$myans][$mylabel]";
                         break;
 
@@ -1292,7 +1292,7 @@ class userstatistics_helper
                             $fquery = "SELECT * FROM {{answers}} a JOIN {{answer_l10ns}} l ON a.aid = l.aid  WHERE a.qid='{$qqid}' AND a.scale_id=0 AND l.language='{$language}' ORDER BY a.sortorder, a.code";
 
                             //header available?
-                            if (trim($aQuestionAttributes['dualscale_headerA'][$language]) != '') {
+                            if (trim((string) $aQuestionAttributes['dualscale_headerA'][$language]) != '') {
                                 //output
                                 $labelheader = "[" . $aQuestionAttributes['dualscale_headerA'][$language] . "]";
                             } //no header
@@ -1308,7 +1308,7 @@ class userstatistics_helper
                             $fquery = "SELECT * FROM {{answers}} a JOIN {{answer_l10ns}} l ON a.aid = l.aid  WHERE a.qid='{$qqid}' AND a.scale_id=1 AND l.language='{$language}' ORDER BY a.sortorder, a.code";
 
                             //header available?
-                            if (trim($aQuestionAttributes['dualscale_headerB'][$language]) != '') {
+                            if (trim((string) $aQuestionAttributes['dualscale_headerB'][$language]) != '') {
                                 //output
                                 $labelheader = "[" . $aQuestionAttributes['dualscale_headerB'][$language] . "]";
                             } //no header
@@ -1394,8 +1394,8 @@ class userstatistics_helper
 
         switch ($outputType) {
             case 'xls':
-                $xlsTitle = sprintf(gT("Summary for %s"), html_entity_decode($outputs['qtitle'], ENT_QUOTES, 'UTF-8'));
-                $xlsDesc = html_entity_decode($outputs['qquestion'], ENT_QUOTES, 'UTF-8');
+                $xlsTitle = sprintf(gT("Summary for %s"), html_entity_decode((string) $outputs['qtitle'], ENT_QUOTES, 'UTF-8'));
+                $xlsDesc = html_entity_decode((string) $outputs['qquestion'], ENT_QUOTES, 'UTF-8');
 
                 $this->xlsRow++;
                 $this->xlsRow++;
@@ -1409,7 +1409,7 @@ class userstatistics_helper
                 break;
             case 'pdf':
                 $sPDFQuestion = flattenText($outputs['qquestion'], false, true);
-                $pdfTitle = $this->pdf->delete_html(sprintf(gT("Summary for %s"), html_entity_decode($outputs['qtitle'], ENT_QUOTES, 'UTF-8')));
+                $pdfTitle = $this->pdf->delete_html(sprintf(gT("Summary for %s"), html_entity_decode((string) $outputs['qtitle'], ENT_QUOTES, 'UTF-8')));
                 $titleDesc = $sPDFQuestion;
 
                 $this->pdf->AddPage('P', 'A4');
@@ -1470,7 +1470,7 @@ class userstatistics_helper
                         /* This query selects a count of responses where "other" has been selected */
                         foreach ($oResponses as $oResponse) {
                             $sResponseColumn = $al[2];
-                            $column = substr($sResponseColumn, 0, strlen($sResponseColumn) - 5);
+                            $column = substr((string) $sResponseColumn, 0, strlen((string) $sResponseColumn) - 5);
                             if ($column == '-oth-' && !empty($oResponse->$sResponseColumn)) {
                                 $row += 1;
                             }
@@ -1526,7 +1526,7 @@ class userstatistics_helper
                 } else {
                     foreach ($oResponses as $oResponse) {
                         $sResponseColumn = $al[2];
-                        if (substr($rt, 0, 1) == "R") {
+                        if (substr((string) $rt, 0, 1) == "R") {
                             $sSubquestionCode = $al[0];
                             if ($oResponse->$sResponseColumn == $sSubquestionCode) {
                                 $row += 1;
@@ -2336,7 +2336,7 @@ class userstatistics_helper
 
 
         //-------------------------- PCHART OUTPUT ----------------------------
-        list($qsid, $qgid, $qqid) = explode("X", $rt, 3);
+        list($qsid, $qgid, $qqid) = explode("X", (string) $rt, 3);
         $qsid = $surveyid;
         $aattr = QuestionAttribute::model()->getQuestionAttributes($outputs['parentqid']);
 
@@ -2396,7 +2396,7 @@ class userstatistics_helper
                                 $statisticsoutput .= "<div id=\"statisticsmap_$rt\" class=\"statisticsmap\"></div>";
 
                                 $agmapdata[$rt] = array(
-                                    "coord" => getQuestionMapData(substr($rt, 1), $qsid),
+                                    "coord" => getQuestionMapData(substr((string) $rt, 1), $qsid),
                                     "zoom" => $aattr['location_mapzoom'],
                                     "width" => $aattr['location_mapwidth'],
                                     "height" => $aattr['location_mapheight']
@@ -2547,7 +2547,7 @@ class userstatistics_helper
             //print_r($_POST);
             //if $summary isn't an array we create one
             if (isset($summary) && !is_array($summary)) {
-                $summary = explode("+", $summary);
+                $summary = explode("+", (string) $summary);
             }
         }
 
@@ -2790,7 +2790,7 @@ class userstatistics_helper
 
                 break;
             case 'html':
-                $sGoogleMapsAPIKey = trim(Yii::app()->getConfig("googleMapsAPIKey"));
+                $sGoogleMapsAPIKey = trim((string) Yii::app()->getConfig("googleMapsAPIKey"));
                 if (!empty($sGoogleMapsAPIKey)) {
                     $sOutputHTML .= "<script type=\"text/javascript\" src=\"//maps.googleapis.com/maps/api/js?sensor=false&key={$sGoogleMapsAPIKey}\"></script>\n";
                 }

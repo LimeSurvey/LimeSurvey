@@ -161,7 +161,7 @@ class SPSSWriter extends Writer
             $aFieldmap['questions'][$sSGQAkey]['varlabel'] = $aQuestion['varlabel'];
 
             //create value labels for question types with "fixed" answers (YES/NO etc.)
-            if ((isset($aQuestion['other']) && $aQuestion['other'] == 'Y') || substr($aQuestion['fieldname'], -7) == 'comment') {
+            if ((isset($aQuestion['other']) && $aQuestion['other'] == 'Y') || substr((string) $aQuestion['fieldname'], -7) == 'comment') {
                 $aFieldmap['questions'][$sSGQAkey]['commentother'] = true; //comment/other fields: create flag, so value labels are not attached (in close())
             } else {
                 $aFieldmap['questions'][$sSGQAkey]['commentother'] = false;
@@ -246,7 +246,7 @@ class SPSSWriter extends Writer
      */
     protected function SPSSvarname($sVarname)
     {
-        if (!preg_match("/^([a-z]|[A-Z])+.*$/", $sVarname)) {
+        if (!preg_match("/^([a-z]|[A-Z])+.*$/", (string) $sVarname)) {
 //var starting with a number?
             $sVarname = "v".$sVarname; //add a leading 'v'
         }
@@ -266,7 +266,7 @@ class SPSSWriter extends Writer
             "_",
             "",
             "_"
-        ), $sVarname);
+        ), (string) $sVarname);
         return $sVarname;
     }
 
@@ -279,7 +279,7 @@ class SPSSWriter extends Writer
         function clean(&$item)
         {
             if (is_string($item)){
-            $item = trim((htmlspecialchars_decode(stripTagsFull($item))));
+            $item = trim((htmlspecialchars_decode((string) stripTagsFull($item))));
             }
 
         }
@@ -317,7 +317,7 @@ class SPSSWriter extends Writer
 
             //relevant types for SPSS are numeric (need to know largest number and number of decimal places), date and string
             foreach ($aResponses as $iVarid => &$response) {
-                $response = trim($response);
+                $response = trim((string) $response);
                 $iDatatype = 5;
                 $iStringlength = 1;
                 if ($response != '') {

@@ -686,7 +686,7 @@ class InstallerConfigForm extends CFormModel
         } catch (Exception $e) {
             return array($e->getMessage());
         }
-        $fileName = dirname(APPPATH) . '/installer/create-database.php';
+        $fileName = dirname((string) APPPATH) . '/installer/create-database.php';
         require_once($fileName);
         try {
             populateDatabase($this->db);
@@ -702,7 +702,7 @@ class InstallerConfigForm extends CFormModel
     public function getDataBaseName()
     {
         if ($this->db) {
-            preg_match("/dbname=([^;]*)/", $this->db->connectionString, $matches);
+            preg_match("/dbname=([^;]*)/", (string) $this->db->connectionString, $matches);
             $databaseName = $matches[1];
             return $databaseName;
         }

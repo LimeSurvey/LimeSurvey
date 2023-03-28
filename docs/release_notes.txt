@@ -34,6 +34,55 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.12 (build 230327) to 5.6.13 (build 230327) March 27, 2023
+
+
+Changes from 5.6.11 (build 230320) to 5.6.12 (build 230327) March 27, 2023
+-Fixed issue: [security] XSS issue in notification email address (Carsten Schmitz)
+-Fixed issue: [security] Issue in CSV user export (Carsten Schmitz)
+-Fixed issue #18674: Simple user can update javascript when scripts are disabled (Denis Chenu)
+-Fixed issue #18663: SQL error when adding survey participants along w… (#2959) (Denis Chenu)
+-Fixed issue #18657: Encrypted token attributes are shown encrypted when piped into a question body (#2948) (Gabriel Jenik)
+-Fixed issue #18655: Data loss if field in response table it missing. (#2998) (Gabriel Jenik)
+-Fixed issue #18655: Data loss if field in response table it missing (#2956) (Gabriel Jenik)
+-Fixed issue #18653: getSuperAdmin return simple user (#2968) (Denis Chenu)
+-Fixed issue #18630: Survey list showing wrong icon for surveys. (#2960) (Gabriel Jenik)
+-Fixed issue #18504: Date Calendar Selection Question (#2899) (Gabriel Jenik)
+-Fixed issue #18318: Empty line at the end of csv export (#2942) (Gabriel Jenik)
+#Updated translation: Spanish (Spain) by ireneoh
+
+
+Changes from 5.6.10 (build 230313) to 5.6.11 (build 230320) March 20, 2023
+-Fixed issue #18620: Column relevance disabling not working as expected (#2905) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Japanese by nomoto
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by c_schmitz, lfanfoni
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 5.6.9 (build 230306) to 5.6.10 (build 230313) March 13, 2023
+-Fixed issue #18644: YII_DEBUG was not used inside KCFinder (#2934) (Gabriel Jenik)
+-Fixed issue #18631: Order of answer options done on the base language are not reflected on secondary languages. (#2926) (Gabriel Jenik)
+-Fixed issue #18476: CPDB - Add attribute modal - delete language does not work (#2941) (Gabriel Jenik)
+-Fixed issue #18336: Placeholder fields VALIDFROM and VALIDUNTIL not listed at email templates (#2813) (Gabriel Jenik)
+#Updated translation: Polish by 2BITS_PL
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Italian by c_schmitz, lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+
+
 Changes from 5.6.8 (build 230227) to 5.6.9 (build 230306) March 6, 2023
 -Fixed issue: Unable to run integrity check on databases with a big number of surveys (Carsten Schmitz)
 -Fixed issue: High memory usage when exporting participants (Carsten Schmitz)
