@@ -362,5 +362,33 @@ $(document).off('pjax:scriptcomplete.listActions').on('pjax:scriptcomplete.listA
 });
 
 $(document).off('bindscroll.listActions').on('bindscroll.listActions, ready ', function () {
+    // Select the element with the class name "ls-sticky-column"
+    var stickyColumn = $('.ls-sticky-column');
+
+    // Find the checkbox element inside the stickyColumn element
+    var checkboxes = stickyColumn.find('input[type="checkbox"]');
+    var actionButton = $('.massiveAction');
+    // Attach an onchange event handler to all checkboxes
+    checkboxes.on('change', function() {
+      if (isAnyCheckboxChecked()) {
+        actionButton.removeClass('disabled');
+      } else {
+        actionButton.addClass('disabled');
+      }
+    });
+  
+    // Function to check if at least one checkbox is checked
+    function isAnyCheckboxChecked() {
+      var isChecked = false;
+      checkboxes.each(function() {
+        if ($(this).is(':checked')) {
+          isChecked = true;
+          return false; // Break out of the loop
+        }
+      });
+      return isChecked;
+    }
+    
+
     bindListItemclick();
 });
