@@ -28,7 +28,7 @@ function stripTagsFull($string, $removeOther = true)
     }
     //The backslashes must be escaped twice, once for php, and again for the regexp
     $string = str_replace("'|\\\\'", "&apos;", $string);
-    return $string;
+    return (string) $string;
 }
 
 /**

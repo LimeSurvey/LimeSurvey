@@ -539,7 +539,7 @@ class LS_Twig_Extension extends AbstractExtension
     public static function flatString($string, $encode = false)
     {
         // Remove script before removing tag, no tag : no other script (onload, on error etc …
-        $string = strip_tags((string) stripJavaScript($string));
+        $string = strip_tags(stripJavaScript($string));
         // Remove new lines
         if (version_compare(substr(PCRE_VERSION, 0, strpos(PCRE_VERSION, ' ')), '7.0') > -1) {
             $string = preg_replace(array('~\R~u'), array(' '), $string);

@@ -126,7 +126,7 @@ class RSyntaxWriter extends Writer
                 . addslashes(
                     htmlspecialchars_decode(
                         mb_substr(
-                            (string) stripTagsFull(
+                            stripTagsFull(
                                 $field['VariableLabel']
                             ),
                             0,

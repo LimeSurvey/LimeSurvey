@@ -124,8 +124,8 @@ function modlabelsetanswers($lid)
         $_POST['method'] = gT("Save");
     }
 
-    $sPostData = Yii::app()->getRequest()->getPost('dataToSend');
-    $sPostData = str_replace("\t", '', (string) $sPostData);
+    $sPostData = Yii::app()->getRequest()->getPost('dataToSend', '');
+    $sPostData = str_replace("\t", '', $sPostData);
     $data = json_decode($sPostData, true);
 
     if ($ajax) {
