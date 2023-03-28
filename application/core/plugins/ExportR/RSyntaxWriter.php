@@ -66,7 +66,7 @@ class RSyntaxWriter extends Writer
             }
             $field = $this->customFieldmap[$title];
             if (!isset($field['answers'])) {
-                $strTmp = mb_substr(stripTagsFull($values[$id]), 0, $this->maxLength);
+                $strTmp = mb_substr((string) stripTagsFull($values[$id]), 0, $this->maxLength);
 
                 $len = mb_strlen($strTmp);
 
@@ -171,11 +171,11 @@ class RSyntaxWriter extends Writer
             //Rename the Variables (in case somethings goes wrong, we still have the OLD values
             if (isset($field['sql_name'])) {
                 $ftitle = $field['title'];
-                if (!preg_match("/^([a-z]|[A-Z])+.*$/", $ftitle)) {
+                if (!preg_match("/^([a-z]|[A-Z])+.*$/", (string) $ftitle)) {
                     $ftitle = "q_" . $ftitle;
                 }
 
-                $ftitle = str_replace(array("-", ":", ";", "!"), array("_hyph_", "_dd_", "_dc_", "_excl_"), $ftitle);
+                $ftitle = str_replace(array("-", ":", ";", "!"), array("_hyph_", "_dd_", "_dc_", "_excl_"), (string) $ftitle);
 
                 if ($ftitle != $field['title']) {
                     $errors .= "# Variable name was incorrect and was changed from {$field['title']} to $ftitle .\n";

@@ -10,7 +10,6 @@
  */
 #}
 <!-- Array -->
-
 <!-- answer -->
 <div class="ls-table-wrapper" role="group" aria-labelledby="ls-question-text-{{ basename }}">
     <table class="{{ coreClass }} table table-bordered table-hover table-array-dropdown">
@@ -25,7 +24,7 @@
                 {# rows/answer_row.php #}
                 {{ sRows }}
                 {% for aRow in aRows %}
-                    {% include 'survey/questions/answer/arrays/array/dropdown/rows/answer_row.twig' with aRow only %}
+                    {% include 'survey/questions/answer/arrays/array/dropdown/rows/answer_row.twig' with aRow %}
                 {% endfor %}
         </tbody>
     </table>

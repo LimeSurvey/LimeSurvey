@@ -15,7 +15,8 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <a class="navbar-brand" href="<?php echo $this->createUrl("/admin/"); ?>">
-            <?php echo $sitename; ?>
+            <img src="/assets/images/logo-icon-white.png" height="34" class="d-inline-block align-bottom" alt="">
+            <?= $sitename ?>
         </a>
         <!-- Only on xs screens -->
         <div class="collapse navbar-collapse " id="small-screens-menus">
@@ -62,7 +63,8 @@
                 <!-- create survey -->
                 <li class="nav-item">
                     <a href="<?php echo $this->createUrl("surveyAdministration/newSurvey"); ?>" class="nav-link">
-                        <button type="button" class="btn btn-info btn-create">
+                        <button type="button" class="btn btn-info btn-create" data-bs-toggle="tooltip"
+                                data-bs-placement="bottom" title="<?= gT('Create survey') ?>">
                             <i class="ri-add-line"></i>
                         </button>
                     </a>
@@ -102,7 +104,7 @@
                     <a href="#" class="nav-link dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" role="button" aria-expanded="false">
                         <!-- <i class="ri-user-fill"></i> <?php echo Yii::app()->session['user']; ?> <span class="caret"></span></a> -->
                         <span class='rounded-circle text-center d-flex align-items-center justify-content-center me-1'>
-                            <?= strtoupper(substr(Yii::app()->session['user'], 0, 1)) ?>
+                            <?= strtoupper(substr((string) Yii::app()->session['user'], 0, 1)) ?>
                         </span>
                         <?= Yii::app()->session['user']; ?>
                         <span class="caret"></span></a>

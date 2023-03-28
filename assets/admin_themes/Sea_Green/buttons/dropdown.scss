@@ -67,3 +67,13 @@
 .dropdown-divider {
     margin : 8px 0;
 }
+
+// GridActionsWidget
+.ls-action_dropdown {
+    > .btn {
+        line-height : 16px;
+        .ri-more-fill {
+            vertical-align : bottom;
+        }
+    }
+}

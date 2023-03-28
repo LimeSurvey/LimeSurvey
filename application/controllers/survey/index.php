@@ -41,7 +41,7 @@ class Index extends CAction
         }
 
         /* Get client token by POST or GET value */
-        $clienttoken = trim($param['token']);
+        $clienttoken = trim((string)$param['token']);
         /* If not set : get by SESSION to avoid multiple submit of same token in different navigator */
         if (empty($clienttoken) && !empty($_SESSION['survey_' . $surveyid]['token'])) {
             $clienttoken = $_SESSION['survey_' . $surveyid]['token'];
@@ -491,9 +491,9 @@ class Index extends CAction
                     $sError = gT("This invitation has already been used.");
                 } elseif ($oToken->usesleft < 1) {
                     $sError = gT("This invitation has no uses left.");
-                } elseif (strtotime($now) < strtotime($oToken->validfrom)) {
+                } elseif (strtotime((string) $now) < strtotime((string) $oToken->validfrom)) {
                     $sError = gT("This invitation is not valid yet.");
-                } elseif (strtotime($now) > strtotime($oToken->validuntil)) {
+                } elseif (strtotime((string) $now) > strtotime((string) $oToken->validuntil)) {
                     $sError = gT("This invitation is not valid anymore.");
                 } else {
                     // This can not happen

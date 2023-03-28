@@ -17,7 +17,7 @@ jobs:
     strategy:
       matrix:
         # Specify what versions of php you want to test
-        php-versions: ['7.2', '8.0']
+        php-versions: ['7.2', '8.1']
     # Env vars for this job
     env:
       DBENGINE: INNODB
@@ -104,9 +104,6 @@ jobs:
           # sed -i '60s/.*/        "debug"=>2,/' application/config/config.php
           # cat application/config/config.php
 
-      - name: Run syntax check, CodeSniffer, MessDetector, ...
-        run: composer test
-
       - name: Test the server
         run: |
           # Test server.
@@ -162,3 +159,7 @@ jobs:
           name: screenshots
           path: tests/tmp/screenshots/
           retention-days: 5
+          
+      - name: Run syntax check, CodeSniffer, MessDetector, ...
+        run: composer test
+

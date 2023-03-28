@@ -496,8 +496,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
             array('expires', 'default', 'value' => null),
             array('admin', 'LSYii_Validators'),
             array('admin', 'length', 'min' => 1, 'max' => 50),
-            array('adminemail', 'filter', 'filter' => 'trim'),
-            array('bounce_email', 'filter', 'filter' => 'trim'),
+            array('adminemail', 'LSYii_FilterValidator', 'filter' => 'trim', 'skipOnEmpty' => true),
+            array('bounce_email', 'LSYii_FilterValidator', 'filter' => 'trim', 'skipOnEmpty' => true),
             //array('bounce_email', 'LSYii_EmailIDNAValidator', 'allowEmpty'=>true),
             array('active', 'in', 'range' => array('Y', 'N'), 'allowEmpty' => true),
             array('gsid', 'numerical', 'min' => '0', 'allowEmpty' => true),
@@ -542,8 +542,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
             array('template', 'filter', 'filter' => array($this, 'filterTemplateSave')),
             array('language', 'LSYii_Validators', 'isLanguage' => true),
             array('language', 'required', 'on' => 'insert'),
-            array('language', 'filter', 'filter' => 'trim'),
-            array('additional_languages', 'filter', 'filter' => 'trim'),
+            array('language', 'LSYii_FilterValidator', 'filter' => 'trim', 'skipOnEmpty' => true),
+            array('additional_languages', 'LSYii_FilterValidator', 'filter' => 'trim', 'skipOnEmpty' => true),
             array('additional_languages', 'LSYii_Validators', 'isLanguageMulti' => true),
             array('running', 'safe', 'on' => 'search'),
             array('expires', 'date','format' => ['yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m'],'allowEmpty' => true),
@@ -664,7 +664,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         $attdescriptiondata = decodeTokenAttributes($this->attributedescriptions);
 
         // Catches malformed data
-        if ($attdescriptiondata && strpos(key(reset($attdescriptiondata)), 'attribute_') === false) {
+        if ($attdescriptiondata && strpos((string) key(reset($attdescriptiondata)), 'attribute_') === false) {
             // don't know why yet but this breaks normal tokenAttributes functionning
             //$attdescriptiondata=array_flip(GetAttributeFieldNames($this->sid));
         } elseif (is_null($attdescriptiondata)) {
@@ -707,7 +707,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         }
         $aCompleteData = array();
         foreach ($allKnowAttributes as $sKey => $aValues) {
-            if (preg_match("/^attribute_[0-9]{1,}$/", $sKey)) { // Select only extra attributes here
+            if (preg_match("/^attribute_[0-9]{1,}$/", (string) $sKey)) { // Select only extra attributes here
                 if (!is_array($aValues)) {
                     $aValues = array();
                 }
@@ -842,9 +842,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
     public function getGoogleanalyticsapikey()
     {
         if ($this->googleanalyticsapikey === "9999useGlobal9999") {
-            return trim(Yii::app()->getConfig('googleanalyticsapikey'));
+            return trim((string) Yii::app()->getConfig('googleanalyticsapikey'));
         } else {
-            return trim($this->googleanalyticsapikey);
+            return trim((string) $this->googleanalyticsapikey);
         }
     }
 
@@ -1093,9 +1093,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
         }
         if ($this->expires != '' || $this->startdate != '') {
             // Time adjust
-            $sNow    = date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
-            $sStop   = ($this->expires != '') ? date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->expires))) : null;
-            $sStart  = ($this->startdate != '') ? date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->startdate))) : null;
+            $sNow    = date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
+            $sStop   = ($this->expires != '') ? date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime($this->expires))) : null;
+            $sStart  = ($this->startdate != '') ? date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime($this->startdate))) : null;
 
             // Time comparison
             $oNow   = new DateTime($sNow);
@@ -1127,8 +1127,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
     public function getIsDateExpired()
     {
         if (!empty($this->expires)) {
-            $sNow = date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
-            $sStop = ($this->expires != '') ? date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->expires))) : $sNow;
+            $sNow = date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
+            $sStop = ($this->expires != '') ? date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime($this->expires))) : $sNow;
 
             $oNow = new DateTime($sNow);
             $oStop = new DateTime($sStop);
@@ -1152,17 +1152,17 @@ class Survey extends LSActiveRecord implements PermissionInterface
         } elseif ($this->expires != '' || $this->startdate != '') {
             // If it's active, then we check if not expired
             // Time adjust
-            $sNow    = date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
-            $sStop   = ($this->expires != '') ? date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->expires))) : null;
-            $sStart  = ($this->startdate != '') ? date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->startdate))) : $sNow;
+            $sNow    = date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
+            $sStop   = ($this->expires != '') ? date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime($this->expires))) : '';
+            $sStart  = ($this->startdate != '') ? date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime($this->startdate))) : $sNow;
 
             // Time comparaison
             $oNow   = new DateTime($sNow);
             $oStop  = new DateTime($sStop);
             $oStart = new DateTime($sStart);
 
-            $bExpired = ($oStop < $oNow);
-            $bWillRun = ($oStart > $oNow);
+            $bExpired = (!is_null($sStop) && $oStop < $oNow);
+            $bWillRun = (!is_null($sStart) && $oStart > $oNow);
 
             $sStop = $sStop != null ? convertToGlobalSettingFormat($sStop) : null;
             $sStart = convertToGlobalSettingFormat($sStart);
@@ -1178,7 +1178,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 // Expire prior to will start
                 $running = ($bExpired) ? $sIconExpired : $sIconFuture;
             } else {
-                if ($sStop == null) {
+                if (is_null($sStop)) {
                     $running = $sIconRunNoEx;
                 } else {
                     $running = $sIconRunning;
@@ -1590,7 +1590,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 $criteria->compare("t.active", $this->active, false);
             } else {
                 // Time adjust
-                $sNow = date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
+                $sNow = date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
 
                 if ($this->active == "E") {
                     $criteria->compare("t.active", 'Y');

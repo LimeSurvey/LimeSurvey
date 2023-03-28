@@ -37,7 +37,7 @@
                 </tr>
              {% endif %}
                 {% for aRow in aRows %}
-                    {% include aRow.template with aRow.content only %}
+                    {% include aRow.template with aRow.content %}
                 {% endfor %}
         </tbody>
     </table>

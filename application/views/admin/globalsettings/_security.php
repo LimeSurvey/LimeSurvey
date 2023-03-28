@@ -146,7 +146,7 @@
                     <label class="form-label" for='loginIpWhitelist'>
                         <?php eT("IP whitelist:"); ?>
                     </label>
-                    <textarea class="form-control" id='loginIpWhitelist' name='loginIpWhitelist'><?php echo htmlspecialchars(Yii::app()->getConfig('loginIpWhitelist')); ?></textarea>
+                    <textarea class="form-control" id='loginIpWhitelist' name='loginIpWhitelist'><?php echo htmlspecialchars((string) Yii::app()->getConfig('loginIpWhitelist')); ?></textarea>
                     <span class='hint'><?php eT("List of IP addresses to exclude from the maximum login attempts check. Separate each IP address with a comma or a new line."); ?></span>
                 </div>
 
@@ -177,7 +177,7 @@
                 <label class="form-label" for='tokenIpWhitelist'>
                     <?php eT("IP whitelist:"); ?>
                 </label>
-                <textarea class="form-control" id='tokenIpWhitelist' name='tokenIpWhitelist'><?php echo htmlspecialchars(Yii::app()->getConfig('tokenIpWhitelist')); ?></textarea>
+                <textarea class="form-control" id='tokenIpWhitelist' name='tokenIpWhitelist'><?php echo htmlspecialchars((string) Yii::app()->getConfig('tokenIpWhitelist')); ?></textarea>
                 <span class='hint'>
                     <?php eT("List of IP addresses to exclude from the maximum token validation attempts check. Separate each IP address with a comma or a new line."); ?>
                 </span>
