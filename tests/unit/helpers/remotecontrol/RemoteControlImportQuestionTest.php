@@ -26,7 +26,6 @@ class RemoteControlImportQuestionTest extends BaseTest
      */
     public function testImportQuestionWithUniqueQuestionCode()
     {
-        $handler = $this->handler;
         $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
 
         /** @var integer the only group id */
@@ -44,7 +43,6 @@ class RemoteControlImportQuestionTest extends BaseTest
      */
     public function testImportQuestionWithRepeatedQuestionCode()
     {
-        $handler = $this->handler;
         $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
 
         /** @var integer the only group id */
@@ -64,7 +62,6 @@ class RemoteControlImportQuestionTest extends BaseTest
      */
     public function testImportQuestionWithRepeatedQuestionCodeSetNew()
     {
-        $handler = $this->handler;
         $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
 
         /** @var integer the only group id */
@@ -72,7 +69,15 @@ class RemoteControlImportQuestionTest extends BaseTest
         $questionFile = self::$surveysFolder . '/limesurvey_question_import_question_test.lsq';
         $question = base64_encode(file_get_contents($questionFile));
         /* must return integer */
-        $result = $this->handler->import_question($sessionKey, self::$surveyId, $testGroupId, $question, 'lsq', 'N', 'QNewTitle');
+        $result = $this->handler->import_question(
+            $sessionKey,
+            self::$surveyId,
+            $testGroupId,
+            $question,
+            'lsq',
+            'N',
+            'QNewTitle'
+        );
         $this->assertIsInt($result, 'There was an error importing a question with a code that already exists and new title is set.');
         /* Validate is set */
         $oQuestion = \Question::model()->find(
@@ -82,7 +87,15 @@ class RemoteControlImportQuestionTest extends BaseTest
         $this->assertNotEmpty($oQuestion);
         $this->assertEquals('QNewTitle', $oQuestion->title);
         /* must return array */
-        $result = $this->handler->import_question($sessionKey, self::$surveyId, $testGroupId, $question, 'lsq', 'N', 'QNewTitle');
+        $result = $this->handler->import_question(
+            $sessionKey,
+            self::$surveyId,
+            $testGroupId,
+            $question,
+            'lsq',
+            'N',
+            'QNewTitle'
+        );
         $this->assertIsArray($result, 'There was an error importing a question set a code that already exists.');
     }
 
@@ -92,14 +105,23 @@ class RemoteControlImportQuestionTest extends BaseTest
      */
     public function testImportQuestionWithSetTextAndHelp()
     {
-        $handler = $this->handler;
         $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
 
         /** @var integer the only group id */
         $testGroupId = self::$testSurvey->groups[0]->gid;
         $questionFile = self::$surveysFolder . '/limesurvey_question_import_question_test.lsq';
         $question = base64_encode(file_get_contents($questionFile));
-        $result = $this->handler->import_question($sessionKey, self::$surveyId, $testGroupId, $question, 'lsq', 'N', 'QNewTitle2', 'QNewText', 'QNewHelp');
+        $result = $this->handler->import_question(
+            $sessionKey,
+            self::$surveyId,
+            $testGroupId,
+            $question,
+            'lsq',
+            'N',
+            'QNewTitle2', // new code
+            'QNewText', // new quetsion text (all i10n)
+            'QNewHelp' // new quetsion help (all i10n)
+        );
 
         $this->assertIsInt($result, 'There was an error importing a question with a code that already exists and new title is set when set text and help.');
         $oQuestionL10n = \QuestionL10n::model()->find(
