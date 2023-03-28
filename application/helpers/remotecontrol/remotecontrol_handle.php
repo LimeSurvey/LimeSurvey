@@ -1471,7 +1471,7 @@ class remotecontrol_handle
     public function import_question($sSessionKey, $iSurveyID, $iGroupID, $sImportData, $sImportDataType, $sMandatory = 'N', $sNewQuestionTitle = null, $sNewqQuestion = null, $sNewQuestionHelp = null)
     {
         $bOldEntityLoaderState = null;
-        if ($this->_checkSessionKey($sSessionKey)) {
+        if (!$this->_checkSessionKey($sSessionKey)) {
             return array('status' => self::INVALID_SESSION_KEY);
         }
         $iSurveyID = (int) $iSurveyID;
@@ -1515,10 +1515,12 @@ class remotecontrol_handle
         if (!strtolower($sImportDataType) == 'lsq') {
             return array('status' => 'Invalid extension');
         }
+
         libxml_use_internal_errors(true);
-        Yii::app()->loadHelper('admin/import');
+        Yii::app()->loadHelper('admin.import');
+
         // First save the data to a temporary file
-        $sFullFilePath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(40) . '.' . $sImportDataType;
+        $sFullFilePath = App()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(40) . '.' . $sImportDataType;
         file_put_contents($sFullFilePath, base64_decode(chunk_split($sImportData)));
 
         if (strtolower($sImportDataType) == 'lsq') {
@@ -1541,9 +1543,8 @@ class remotecontrol_handle
             }
             return array('status' => 'Really Invalid extension'); //just for symmetry!
         }
-
         unlink($sFullFilePath);
-
+        $iNewqid = 0;
         if (isset($aImportResults['fatalerror'])) {
             if (\PHP_VERSION_ID < 80000) {
                 libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
@@ -1554,6 +1555,7 @@ class remotecontrol_handle
                 libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
             }
             fixLanguageConsistency($iSurveyID);
+
             $iNewqid = $aImportResults['newqid'];
             /* @var array[] validation errors */
             $errors = [];
@@ -1593,7 +1595,7 @@ class remotecontrol_handle
                     'errors' => $errors
                 );
             }
-            return (int) $aImportResults['newqid'];
+            return intval($iNewqid);
         }
     }
 
