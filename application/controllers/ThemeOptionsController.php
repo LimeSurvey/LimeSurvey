@@ -170,7 +170,7 @@ class ThemeOptionsController extends LSBaseController
      */
     public function actionUninstallMultiple()
     {
-        $aTemplates = json_decode((string) App()->request->getPost('sItems')); //array of ids
+        $aTemplates = json_decode(App()->request->getPost('sItems', '')); //array of ids
 
         //can be 'themeoptions-grid' (for survey themes) or 'questionthemes-grid'
         $gridid = App()->request->getPost('grididvalue');
@@ -231,7 +231,7 @@ class ThemeOptionsController extends LSBaseController
      */
     public function actionSelectedItems()
     {
-        $aTemplates = json_decode((string) App()->request->getPost('$oCheckedItems'));
+        $aTemplates = json_decode(App()->request->getPost('$oCheckedItems', ''));
         $aResults = [];
         $gridid = App()->request->getParam('$grididvalue');
 
@@ -304,8 +304,8 @@ class ThemeOptionsController extends LSBaseController
         $attributes = $templateConfiguration->getAttributes();
         $hasOptions = isset($attributes['options']);
         if ($hasOptions) {
-            $options = $attributes['options'];
-            $optionsJSON = json_decode((string) $options, true);
+            $options = $attributes['options'] ?? '';
+            $optionsJSON = json_decode($options, true);
 
             if ($options !== 'inherit' && $optionsJSON !== null) {
                 $ajaxModeOn  = (!empty($optionsJSON['ajaxmode']) && $optionsJSON['ajaxmode'] == 'on');

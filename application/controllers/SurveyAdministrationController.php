@@ -242,7 +242,7 @@ class SurveyAdministrationController extends LSBaseController
      */
     public function actionDeleteMultiple()
     {
-        $aSurveys = json_decode((string) Yii::app()->request->getPost('sItems'));
+        $aSurveys = json_decode(Yii::app()->request->getPost('sItems', ''));
         $aResults = array();
         foreach ($aSurveys as $iSurveyID) {
             $iSurveyID = sanitize_int($iSurveyID);
@@ -271,7 +271,7 @@ class SurveyAdministrationController extends LSBaseController
      */
     public function actionRenderItemsSelected()
     {
-        $aSurveys = json_decode((string) Yii::app()->request->getPost('$oCheckedItems'));
+        $aSurveys = json_decode(Yii::app()->request->getPost('$oCheckedItems', ''));
         $aResults = [];
         $tableLabels = array(gT('Survey ID'), gT('Survey title'), gT('Status'));
         foreach ($aSurveys as $iSurveyID) {
@@ -777,8 +777,8 @@ class SurveyAdministrationController extends LSBaseController
      */
     public function actionChangeMultipleTheme()
     {
-        $sSurveys = $_POST['sItems'];
-        $aSIDs = json_decode((string) $sSurveys);
+        $sSurveys = $_POST['sItems'] ?? '';
+        $aSIDs = json_decode($sSurveys);
         $aResults = array();
 
         $sTemplate = App()->request->getPost('theme');
@@ -802,8 +802,8 @@ class SurveyAdministrationController extends LSBaseController
      */
     public function actionChangeMultipleSurveyGroup()
     {
-        $sSurveys = $_POST['sItems'];
-        $aSIDs = json_decode((string) $sSurveys);
+        $sSurveys = $_POST['sItems'] ?? '';
+        $aSIDs = json_decode($sSurveys);
         $aResults = array();
 
         $iSurveyGroupId = sanitize_int(App()->request->getPost('surveygroupid'));
@@ -1428,7 +1428,7 @@ class SurveyAdministrationController extends LSBaseController
         if ((int)$iSurveyID > 0 && Yii::app()->request->isPostRequest) {
             $oSurvey = Survey::model()->findByPk($iSurveyID);
             $sTemplateName = $oSurvey->template;
-            $aThemeOptions = json_decode((string) App()->request->getPost('themeoptions', ''));
+            $aThemeOptions = json_decode(App()->request->getPost('themeoptions', ''));
 
             if (!empty($aThemeOptions)) {
                 $oSurveyConfig = TemplateConfiguration::getInstance($sTemplateName, null, $iSurveyID);
@@ -2416,8 +2416,8 @@ class SurveyAdministrationController extends LSBaseController
      */
     public function actionExpireMultipleSurveys()
     {
-        $sSurveys = $_POST['sItems'];
-        $aSIDs = json_decode((string) $sSurveys);
+        $sSurveys = $_POST['sItems'] ?? '';
+        $aSIDs = json_decode($sSurveys);
         $aResults = array();
         $expires = App()->request->getPost('expires');
         $formatdata = getDateFormatData(Yii::app()->session['dateformat']);
@@ -2604,8 +2604,8 @@ class SurveyAdministrationController extends LSBaseController
     private function getOrgdata()
     {
         $request = Yii::app()->request;
-        $orgdata = $request->getPost('orgdata');
-        $ex = explode('&', (string) $orgdata);
+        $orgdata = $request->getPost('orgdata', '');
+        $ex = explode('&', $orgdata);
         $vars = array();
         foreach ($ex as $str) {
             list($list, $target) = explode('=', $str);

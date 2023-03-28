@@ -435,14 +435,14 @@ class QuickTranslationController extends LSBaseController
      */
     private function translateGoogleApi()
     {
-        $sBaselang   = Yii::app()->getRequest()->getPost('baselang');
-        $sTolang     = Yii::app()->getRequest()->getPost('tolang');
-        $sToconvert  = Yii::app()->getRequest()->getPost('text');
+        $sBaselang   = Yii::app()->getRequest()->getPost('baselang', '');
+        $sTolang     = Yii::app()->getRequest()->getPost('tolang', '');
+        $sToconvert  = Yii::app()->getRequest()->getPost('text', '');
 
         $aSearch     = array('zh-Hans', 'zh-Hant-HK', 'zh-Hant-TW', 'nl-informal', 'de-informal', 'de-easy', 'it-formal', 'pt-BR', 'es-MX', 'nb', 'nn');
         $aReplace    = array('zh-CN', 'zh-TW', 'zh-TW', 'nl', 'de', 'de', 'it', 'pt', 'es', 'no', 'no');
-        $sBaselang = str_replace($aSearch, $aReplace, (string) $sBaselang);
-        $sTolang = str_replace($aSearch, $aReplace, (string) $sTolang);
+        $sBaselang = str_replace($aSearch, $aReplace, $sBaselang);
+        $sTolang = str_replace($aSearch, $aReplace, $sTolang);
 
         $error = false;
 
@@ -461,8 +461,8 @@ class QuickTranslationController extends LSBaseController
                 if ($part[2] == 'EXPRESSION') {
                     $sparts[] = $part[0];
                 } else {
-                    $convertedPart = $objGt->$sProcedure($part[0]);
-                    $convertedPart  = str_replace("<br>", "\r\n", (string) $convertedPart);
+                    $convertedPart = (string) $objGt->$sProcedure($part[0]);
+                    $convertedPart  = str_replace("<br>", "\r\n", $convertedPart);
                     $convertedPart  = html_entity_decode(stripcslashes($convertedPart));
                     $sparts[] = $convertedPart;
                 }

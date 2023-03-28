@@ -2957,7 +2957,7 @@ function stripJavaScript($sContent)
 {
     $text = preg_replace('@<script[^>]*?>.*?</script>@si', '', (string) $sContent);
     // TODO : Adding the onload/onhover etc ... or remove this false security function
-    return $text;
+    return (string) $text;
 }
 
 /**

@@ -324,7 +324,7 @@ class ResponsesController extends LSBaseController
                             default:
                                 $answervalue = htmlspecialchars(
                                     strip_tags(
-                                        (string) stripJavaScript($phparray[$index][$metadata])
+                                        stripJavaScript($phparray[$index][$metadata])
                                     )
                                 );
                         }
@@ -334,7 +334,7 @@ class ResponsesController extends LSBaseController
                     }
                 } else {
                     $answervalue = htmlspecialchars(
-                        (string) viewHelper::flatten(
+                        viewHelper::flatten(
                             stripJavaScript(
                                 getExtendedAnswer(
                                     $surveyId,
@@ -592,9 +592,9 @@ class ResponsesController extends LSBaseController
         }
         Yii::import('application.helpers.admin.ajax_helper', true);
 
-        $ResponseId = (App()->request->getPost('sItems') != '') ? json_decode((string) App()->request->getPost('sItems')) : json_decode((string) App()->request->getParam('sResponseId'), true);
+        $ResponseId = (App()->request->getPost('sItems') != '') ? json_decode(App()->request->getPost('sItems', '')) : json_decode(App()->request->getParam('sResponseId', ''), true);
         if (App()->request->getPost('modalTextArea') != '') {
-            $ResponseId = explode(',', (string) App()->request->getPost('modalTextArea'));
+            $ResponseId = explode(',', App()->request->getPost('modalTextArea', ''));
             foreach ($ResponseId as $key => $sResponseId) {
                 $ResponseId[$key] = str_replace(' ', '', $sResponseId);
             }
@@ -798,7 +798,7 @@ class ResponsesController extends LSBaseController
             throw new CHttpException(405, gT("Invalid action"));
         }
 
-        $stringItems = json_decode((string) $request->getPost('sItems'));
+        $stringItems = json_decode($request->getPost('sItems', ''));
         // Cast all ids to int.
         $items = array_map(
             function ($id) {

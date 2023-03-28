@@ -420,8 +420,8 @@ class QuotasController extends LSBaseController
         $quotaService = new \LimeSurvey\Models\Services\Quotas($oSurvey);
 
         if ($quotaService->checkActionPermissions($action)) {
-            $sItems = Yii::app()->request->getPost('sItems');
-            $aQuotaIds = json_decode((string) $sItems);
+            $sItems = Yii::app()->request->getPost('sItems', '');
+            $aQuotaIds = json_decode($sItems);
             if (isset($_POST['QuotaLanguageSetting'])) {
                 $errors = $quotaService->multipleItemsAction($aQuotaIds, $action, $_POST['QuotaLanguageSetting']);
                 if (empty($errors)) {
