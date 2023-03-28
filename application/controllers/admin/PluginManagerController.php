@@ -805,7 +805,7 @@ function pluginExtractFilter($p_event, &$p_header)
 {
     $aAllowExtensions = explode(
         ',',
-        (string) Yii::app()->getConfig('allowedpluginuploads')
+        Yii::app()->getConfig('allowedpluginuploads', '')
     );
     $info = pathinfo((string) $p_header['filename']);
 

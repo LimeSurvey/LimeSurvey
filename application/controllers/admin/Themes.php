@@ -772,7 +772,7 @@ JAVASCRIPT
      */
     public function delete()
     {
-        $templatename = trim((string) Yii::app()->request->getPost('templatename'));
+        $templatename = trim(Yii::app()->request->getPost('templatename', ''));
         if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
             Yii::app()->loadHelper("admin/template");
 
@@ -819,7 +819,7 @@ JAVASCRIPT
 
     public function deleteBrokenTheme()
     {
-        $templatename = trim((string) Yii::app()->request->getPost('templatename'));
+        $templatename = trim(Yii::app()->request->getPost('templatename', ''));
 
         if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
             // First we check that the theme is really broken
@@ -840,7 +840,7 @@ JAVASCRIPT
 
     public function deleteAvailableTheme()
     {
-        $templatename = trim((string) Yii::app()->request->getPost('templatename'));
+        $templatename = trim(Yii::app()->request->getPost('templatename', ''));
 
         if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
             $completeFileName = realpath(Yii::app()->getConfig('userthemerootdir') . "/" . $templatename);
