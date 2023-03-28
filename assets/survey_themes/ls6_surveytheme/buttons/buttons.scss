@@ -87,3 +87,18 @@ $btn-font-size-sm: $font-size-xs;
         font-size : $font-size-base;
     }
 }
+
+// btn-check START
+.yesno-button, .gender-button {
+    &.btn-group {
+        > .btn {
+            border-radius : 4px;
+            margin-right  : 0;
+            &:not(:last-child) {
+                border-radius : 4px;
+                margin-right  : 20px;
+            }
+        }
+    }
+}
+// btn-check END

@@ -732,6 +732,15 @@ Responsive navbar-brand image CSS
   font-size: 1.14rem;
 }
 
+.yesno-button.btn-group > .btn, .gender-button.btn-group > .btn {
+  border-radius: 4px;
+  margin-right: 0;
+}
+.yesno-button.btn-group > .btn:not(:last-child), .gender-button.btn-group > .btn:not(:last-child) {
+  border-radius: 4px;
+  margin-right: 20px;
+}
+
 body {
   font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-weight: 400;
