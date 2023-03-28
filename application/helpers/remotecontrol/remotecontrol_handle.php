@@ -1568,16 +1568,19 @@ class remotecontrol_handle
             if (!empty($sNewQuestionTitle)) {
                 $oQuestion->setAttribute('title', $sNewQuestionTitle);
             }
+
             if (!$oQuestion->save()) {
                 return array(
                     'status' => 'Error when update question',
                     'errors' => $oQuestion->getErrors()
                 );
             }
-            $oQuestionL10ns = Question::model()->findAll(
+
+            $oQuestionL10ns = QuestionL10n::model()->findAll(
                 "qid = :qid",
                 array(':qid' => $iNewqid)
             );
+
             foreach ($oQuestionL10ns as $oQuestionL10n) {
                 if (!empty($sNewqQuestion)) {
                     $oQuestionL10n->setAttribute('question', $sNewqQuestion);
@@ -1589,12 +1592,14 @@ class remotecontrol_handle
                     $errors[] = $oQuestionL10n->getErrors();
                 }
             }
+
             if (!empty($errors)) {
                 return array(
                     'status' => 'Error when update question',
                     'errors' => $errors
                 );
             }
+
             return intval($iNewqid);
         }
     }
