@@ -4714,25 +4714,25 @@ function getMaximumFileUploadSize()
 /**
  * Decodes token attribute data because due to bugs in the past it can be written in JSON or be serialized - future format should be JSON as serialized data can be exploited
  *
- * @param string $oTokenAttributeData The original token attributes as stored in the database
+ * @param string $tokenAttributeData The original token attributes as stored in the database
  * @return array|mixed
  */
-function decodeTokenAttributes($oTokenAttributeData)
+function decodeTokenAttributes(string $tokenAttributeData)
 {
-    if (trim((string)$oTokenAttributeData) == '') {
+    if (trim($tokenAttributeData) == '') {
         return array();
     }
-    if (substr($oTokenAttributeData, 0, 1) != '{' && substr($oTokenAttributeData, 0, 1) != '[') {
-        $sSerialType = getSerialClass($oTokenAttributeData);
+    if (substr($tokenAttributeData, 0, 1) != '{' && substr($tokenAttributeData, 0, 1) != '[') {
+        $sSerialType = getSerialClass($tokenAttributeData);
         if ($sSerialType == 'array') {
 // Safe to decode
-            $aReturnData = @unserialize($oTokenAttributeData);
+            $aReturnData = unserialize($tokenAttributeData) ?? [];
         } else {
 // Something else, might be unsafe
             return array();
         }
     } else {
-            $aReturnData = @json_decode($oTokenAttributeData, true);
+            $aReturnData = json_decode($tokenAttributeData, true) ?? [];
     }
     if ($aReturnData === false || $aReturnData === null) {
         return array();
