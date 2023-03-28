@@ -1288,7 +1288,7 @@ class QuestionAdministrationController extends LSBaseController
      */
     public function actionDeleteMultiple()
     {
-        $aQids = json_decode((string) Yii::app()->request->getPost('sItems'));
+        $aQids = json_decode(Yii::app()->request->getPost('sItems', ''));
         $aResults = [];
 
         foreach ($aQids as $iQid) {
@@ -1407,7 +1407,7 @@ class QuestionAdministrationController extends LSBaseController
      */
     public function actionSetMultipleQuestionGroup()
     {
-        $aQids = json_decode((string) Yii::app()->request->getPost('sItems')); // List of question ids to update
+        $aQids = json_decode(Yii::app()->request->getPost('sItems', '')); // List of question ids to update
         // New Group ID  (can be same group for a simple position change)
         $iGid = Yii::app()->request->getPost('group_gid');
         $iQuestionOrder = Yii::app()->request->getPost('questionposition'); // Wanted position
@@ -1432,7 +1432,7 @@ class QuestionAdministrationController extends LSBaseController
      */
     public function actionChangeMultipleQuestionMandatoryState()
     {
-        $aQids = json_decode((string) Yii::app()->request->getPost('sItems')); // List of question ids to update
+        $aQids = json_decode(Yii::app()->request->getPost('sItems', '')); // List of question ids to update
         $iSid = (int)Yii::app()->request->getPost('sid');
         $sMandatory = Yii::app()->request->getPost('mandatory', 'N');
 
@@ -1446,7 +1446,7 @@ class QuestionAdministrationController extends LSBaseController
      */
     public function actionChangeMultipleQuestionOtherState()
     {
-        $aQids = json_decode((string) Yii::app()->request->getPost('sItems')); // List of question ids to update
+        $aQids = json_decode(Yii::app()->request->getPost('sItems', '')); // List of question ids to update
         $iSid = (int)Yii::app()->request->getPost('sid');
         $sOther = (Yii::app()->request->getPost('other') === '1') ? 'Y' : 'N';
 
@@ -1513,7 +1513,7 @@ class QuestionAdministrationController extends LSBaseController
 
     public function actionRenderItemsSelected()
     {
-        $aQids = json_decode((string) Yii::app()->request->getPost('$oCheckedItems'));
+        $aQids = json_decode(Yii::app()->request->getPost('$oCheckedItems', ''));
         $aResults     = [];
         $tableLabels  = [gT('Question ID'),gT('Question title') ,gT('Status')];
 
@@ -1525,7 +1525,7 @@ class QuestionAdministrationController extends LSBaseController
 
             if (is_object($oQuestion)) {
                 $aResults[$iQid]['title'] = substr(
-                    (string) viewHelper::flatEllipsizeText(
+                    viewHelper::flatEllipsizeText(
                         $oQuestion->questionl10ns[$sBaseLanguage]->question,
                         true,
                         0
