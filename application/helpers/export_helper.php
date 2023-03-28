@@ -37,7 +37,7 @@ function stripTagsFull($string, $removeOther = true)
 * @param $value
 * @return bool
 */
-function isNumericExtended($value)
+function isNumericExtended(string $value)
 {
     if (empty($value)) {
         return true;
@@ -48,7 +48,7 @@ function isNumericExtended($value)
         '((([0-9]+)|([0-9]{1,4}(\\.[0-9]{3,4})+)))?(,[0-9])?([0-9]*))' . // world
         '(e[0-9]+)?' . // exponent
         '$/', // end marker
-        (string) $value
+        $value
     ) == 1;
     return ($eng_or_world);
 }
@@ -1043,10 +1043,10 @@ function getXMLDataSingleTable($iSurveyID, $sTableName, $sDocType, $sXMLTableTag
 /**
 * from export_structure_quexml.php
 */
-function QueXMLCleanup($string, $allow = '<p><b><u><i><em>')
+function QueXMLCleanup(string $string, string $allow = '<p><b><u><i><em>')
 {
-    $sAllowedTags = str_replace(">", "", str_replace("<", "", str_replace("><", ",", (string) $allow)));
-    $sResult = str_ireplace("<br />", "\n", (string) $string);
+    $sAllowedTags = str_replace(">", "", str_replace("<", "", str_replace("><", ",", $allow)));
+    $sResult = str_ireplace("<br />", "\n", $string);
     $oPurifier = new CHtmlPurifier();
     $oPurifier->options = array(
         'HTML.Allowed' => $sAllowedTags,
@@ -2230,7 +2230,7 @@ function questionGetXMLStructure($xml, $gid, $qid)
  */
 function tokensExport($iSurveyID)
 {
-    $sEmailFiter = trim((string) App()->request->getPost('filteremail'));
+    $sEmailFiter = trim(App()->request->getPost('filteremail', ''));
     $iTokenStatus = App()->request->getPost('tokenstatus');
     $iInvitationStatus = App()->request->getPost('invitationstatus');
     $iReminderStatus = App()->request->getPost('reminderstatus');
@@ -2435,10 +2435,10 @@ function CPDBExport($data, $filename)
  * @param string sColumn column
  * @return integer
  **/
-function stringSize($sColumn)
+function stringSize(string $sColumn)
 {
     // Find the sid
-    $iSurveyId = substr((string) $sColumn, 0, strpos((string) $sColumn, 'X'));
+    $iSurveyId = substr($sColumn, 0, strpos($sColumn, 'X'));
     switch (Yii::app()->db->driverName) {
         case 'sqlsrv':
         case 'dblib':
@@ -2463,11 +2463,11 @@ function stringSize($sColumn)
  * @param boolean $decimal db type as decimal(30,10)
  * @return string integersize.decimalsize
  **/
-function numericSize($sColumn, $decimal = false)
+function numericSize(string $sColumn, $decimal = false)
 {
     $sColumn = sanitize_paranoid_string($sColumn);
     // Find the sid
-    $iSurveyId = substr((string) $sColumn, 0, strpos((string) $sColumn, 'X'));
+    $iSurveyId = substr($sColumn, 0, strpos($sColumn, 'X'));
     $sColumn = Yii::app()->db->quoteColumnName($sColumn);
     /* Find the max len of integer part for positive value*/
     $maxInteger = Yii::app()->db
