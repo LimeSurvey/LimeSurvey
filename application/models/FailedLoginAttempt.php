@@ -63,7 +63,7 @@ class FailedLoginAttempt extends LSActiveRecord
      */
     public function deleteAttempts(string $attemptType = 'login')
     {
-        $ip = substr((string) getIPAddress(), 0, 40);
+        $ip = substr(getIPAddress(), 0, 40);
 
         if (Yii::app()->getConfig('DBVersion') <= 480) {
             $this->deleteAllByAttributes(array('ip' => $ip));
@@ -82,7 +82,7 @@ class FailedLoginAttempt extends LSActiveRecord
     public function isLockedOut(string $attemptType): bool
     {
         $isLockedOut = false;
-        $ip = substr((string) getIPAddress(), 0, 40);
+        $ip = substr(getIPAddress(), 0, 40);
 
         // Return false if IP is whitelisted
         if ($this->isWhitelisted($ip, $attemptType)) {
@@ -144,7 +144,7 @@ class FailedLoginAttempt extends LSActiveRecord
     {
         if (!$this->isLockedOut($attemptType)) {
             $timestamp = date("Y-m-d H:i:s");
-            $ip = substr((string) getIPAddress(), 0, 40);
+            $ip = substr(getIPAddress(), 0, 40);
 
             if (Yii::app()->getConfig('DBVersion') <= 480) {
                 $row = $this->findByAttributes(array('ip' => $ip));
