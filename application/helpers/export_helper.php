@@ -1042,9 +1042,16 @@ function getXMLDataSingleTable($iSurveyID, $sTableName, $sDocType, $sXMLTableTag
 
 /**
 * from export_structure_quexml.php
+*
+* @param ?string $string
+* @param ?string $allow
+* @return string
 */
-function QueXMLCleanup(string $string, string $allow = '<p><b><u><i><em>')
+function QueXMLCleanup($string, $allow = '<p><b><u><i><em>')
 {
+    $string = (string) $string;
+    $allow = (string) $allow;
+
     $sAllowedTags = str_replace(">", "", str_replace("<", "", str_replace("><", ",", $allow)));
     $sResult = str_ireplace("<br />", "\n", $string);
     $oPurifier = new CHtmlPurifier();
