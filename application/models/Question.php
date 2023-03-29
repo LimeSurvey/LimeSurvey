@@ -1700,4 +1700,25 @@ class Question extends LSActiveRecord
     {
         return $this->getRelated("question_theme", $this->isNewRecord);
     }
+
+    /**
+     * Is it a dual scale type.
+     */
+    public function getIsDualScale()
+    {
+        $dualScaleTypes = $this->getDualScaleTypes();
+        return in_array($this->type, $dualScaleTypes);
+    }
+
+    /**
+     * Returns the question types that are dual scale.
+     */
+    public function getDualScaleTypes()
+    {
+        $dualScaleTypes = array(
+            Question::QT_1_ARRAY_DUAL
+        );
+
+        return $dualScaleTypes;
+    }
 }
