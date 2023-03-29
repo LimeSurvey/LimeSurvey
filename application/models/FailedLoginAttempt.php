@@ -197,7 +197,7 @@ class FailedLoginAttempt extends LSActiveRecord
         }
 
         // Validating
-        $whiteListEntries = preg_split('/\n|,/', (string) $whiteList);
+        $whiteListEntries = preg_split('/\n|,/', $whiteList);
         foreach ($whiteListEntries as $whiteListEntry) {
             if (empty($whiteListEntry)) {
                 continue;

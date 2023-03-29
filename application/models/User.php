@@ -273,14 +273,14 @@ class User extends LSActiveRecord
     /**
      * @todo document me
      */
-    public function checkPasswordStrength($password)
+    public function checkPasswordStrength(string $password)
     {
         $settings = Yii::app()->getConfig("passwordValidationRules");
-        $length = strlen((string) $password);
-        $lowercase = preg_match_all('@[a-z]@', (string) $password);
-        $uppercase = preg_match_all('@[A-Z]@', (string) $password);
-        $number    = preg_match_all('@[0-9]@', (string) $password);
-        $specialChars = preg_match_all('@[^\w]@', (string) $password);
+        $length = strlen($password);
+        $lowercase = preg_match_all('@[a-z]@', $password);
+        $uppercase = preg_match_all('@[A-Z]@', $password);
+        $number    = preg_match_all('@[0-9]@', $password);
+        $specialChars = preg_match_all('@[^\w]@', $password);
 
         $error = "";
         if ((int) $settings['min'] > 0) {
@@ -325,12 +325,12 @@ class User extends LSActiveRecord
      *  -- newpassword and repeatpassword are identical
      *  -- newpassword is not empty
      *
-     * @param $newPassword
-     * @param $oldPassword
-     * @param $repeatPassword
+     * @param string $newPassword
+     * @param string $oldPassword
+     * @param string $repeatPassword
      * @return string empty string means everything is ok, otherwise error message is returned
      */
-    public function validateNewPassword($newPassword, $oldPassword, $repeatPassword)
+    public function validateNewPassword(string $newPassword, string $oldPassword, string $repeatPassword)
     {
         $errorMsg = '';
 
@@ -342,14 +342,14 @@ class User extends LSActiveRecord
             if (!$this->checkPassword($oldPassword)) {
                 // Always check password
                 $errorMsg = gT("Your new password was not saved because the old password was wrong.");
-            } elseif (trim((string) $oldPassword) === trim((string) $newPassword)) {
+            } elseif (trim($oldPassword) === trim($newPassword)) {
                 //First test if old and new password are identical => no need to save it (or ?)
                 $errorMsg = gT("Your new password was not saved because it matches the old password.");
-            } elseif (trim((string) $newPassword) !== trim((string) $repeatPassword)) {
+            } elseif (trim($newPassword) !== trim($repeatPassword)) {
                 //Then test the new password and the repeat password for identity
                 $errorMsg = gT("Your new password was not saved because the passwords did not match.");
                 //Now check if the old password matches the old password saved
-            } elseif (empty(trim((string) $newPassword))) {
+            } elseif (empty(trim($newPassword))) {
                 $errorMsg = gT("The new password can not be empty.");
             }
         }
