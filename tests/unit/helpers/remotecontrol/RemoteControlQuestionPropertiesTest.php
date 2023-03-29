@@ -32,47 +32,59 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
         //Options by scale id.
         $answerOptionsByScaleId = array(
             0 => array(
-                1 => array(
-                    'code' => '1',
-                    'answer' => 'Good',
+                'AO01' => array(
+                    'code' => 'AO01',
+                    'answer' => 'Option 1, scale 1',
                     'assessment_value' => '0',
                     'scale_id' => '0',
                     'order' => '0'
                 ),
-                2 => array(
-                    'code' => '2',
-                    'answer' => 'Important',
+                'AO02' => array(
+                    'code' => 'AO02',
+                    'answer' => 'Option 2, scale 1',
                     'assessment_value' => '0',
                     'scale_id' => '0',
                     'order' => '1'
+                ),
+                'AO03' => array(
+                    'code' => 'AO03',
+                    'answer' => 'Option 3, scale 1',
+                    'assessment_value' => '0',
+                    'scale_id' => '0',
+                    'order' => '2'
                 )
             ),
             1 => array(
-                1 => array(
-                    'code' => '1',
-                    'answer' => 'Bad',
-                    'assessment_value' => '0',
-                    'scale_id' => '1',
-                    'order' => '2'
-                ),
-                2 => array(
-                    'code' => '2',
-                    'answer' => 'Not important',
+                'AO01' => array(
+                    'code' => 'AO01',
+                    'answer' => 'Option 1, scale 2',
                     'assessment_value' => '0',
                     'scale_id' => '1',
                     'order' => '3'
+                ),
+                'AO02' => array(
+                    'code' => 'AO02',
+                    'answer' => 'Option 2, scale 2',
+                    'assessment_value' => '0',
+                    'scale_id' => '1',
+                    'order' => '4'
+                ),
+                'AO03' => array(
+                    'code' => 'AO03',
+                    'answer' => 'Option 3, scale 2',
+                    'assessment_value' => '0',
+                    'scale_id' => '1',
+                    'order' => '5'
                 )
             ),
         );
 
         $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
 
-        $question = \Question::model()->findByAttributes(array('title' => 'Q00'));
+        $question = \Question::model()->findByAttributes(array('title' => 'G01Q02'));
         $qid = $question->qid;
 
         $result = $this->handler->get_question_properties($sessionKey, $qid);
-        echo PHP_EOL . 'The options are: ';
-        var_dump($result['answeroptions']);
-        $this->assertSame($answerOptionsByScaleId, $result['answeroptions_multiscale'], 'The options were not returned correctly.');
+        $this->assertSame($answerOptionsByScaleId, $result['answeroptions'], 'The options were not returned correctly.');
     }
 }
