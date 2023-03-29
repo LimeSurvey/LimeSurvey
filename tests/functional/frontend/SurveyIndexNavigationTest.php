@@ -38,7 +38,7 @@ class SurveyIndexNavigationTest extends TestBaseClassWeb
 
             // Move from Welcome to first group
             // Click next.
-            $web->clickButton('ls-button-submit');
+            $web->findElement(WebDriverBy::cssSelector('button[type="submit"][name="move"][value="movenext"]'))->click();
 
             // Wait max 10 second to find the first group title
             $groupTitleDiv = self::$webDriver->wait(10)->until(
@@ -51,11 +51,10 @@ class SurveyIndexNavigationTest extends TestBaseClassWeb
 
             // Move from first group to second group
             //Click on index menu
-            $web->findElement(WebDriverBy::cssSelector('li.ls-index-menu'))->click();
+            $web->findElement(WebDriverBy::cssSelector('#navbar a[data-toggle="dropdown"]'))->click();
 
             //Click on menu option
-            $menuItems = $web->findElements(WebDriverBy::cssSelector('li.ls-index-menu ul.dropdown-menu li.index-item'));
-            $menuItems[1]->click();
+            $web->findElement(WebDriverBy::cssSelector('a[href$="move=2"]'))->click();
 
             // Wait max 10 second to find the second group title
             $groupTitleDiv = self::$webDriver->wait(10)->until(
@@ -68,11 +67,10 @@ class SurveyIndexNavigationTest extends TestBaseClassWeb
 
             // Move from second group back to first group
             //Click on index menu
-            $web->findElement(WebDriverBy::cssSelector('li.ls-index-menu'))->click();
+            $web->findElement(WebDriverBy::cssSelector('#navbar a[data-toggle="dropdown"]'))->click();
 
             //Click on menu option
-            $menuItems = $web->findElements(WebDriverBy::cssSelector('li.ls-index-menu ul.dropdown-menu li.index-item'));
-            $menuItems[0]->click();
+            $web->findElement(WebDriverBy::cssSelector('a[href$="move=1"]'))->click();
 
             // Wait max 10 second to find the second group title
             $groupTitleDiv = self::$webDriver->wait(10)->until(
