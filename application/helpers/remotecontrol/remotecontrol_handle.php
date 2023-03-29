@@ -3165,7 +3165,7 @@ class remotecontrol_handle
         if (!tableExists($survey->responsesTableName)) {
             return array('status' => 'No Data, survey table does not exist.');
         }
-        if (!($maxId = SurveyDynamic::model($iSurveyID)->getMaxId())) {
+        if (!($maxId = SurveyDynamic::model($iSurveyID)->getMaxId(null, true))) {
             return array('status' => 'No Data, could not get max id.');
         }
         if (!empty($sLanguageCode) && !in_array($sLanguageCode, $survey->getAllLanguages())) {
