@@ -407,7 +407,7 @@ function SPSSGetValues($field, $qidattributes, $language)
             if ($len > $size) {
                 $size = $len;
             }
-            if ($spsstype == 'F' && (isNumericExtended($answer['code']) === false || $size > 16)) {
+            if ($spsstype == 'F' && (isNumericExtended($answer['code'] ?? '') === false || $size > 16)) {
                 $spsstype = 'A';
             }
         }
