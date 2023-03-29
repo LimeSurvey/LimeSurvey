@@ -620,14 +620,14 @@ class DataEntry extends SurveyCommonAction
                 $aDataentryoutput .= stripJavaScript($question);
                 $aDataentryoutput .= "</td>\n";
                 // Second column (Unseen)
-                $aDataentryoutput .= "<td style='width: 120px;'>\n";
+                $aDataentryoutput .= "<td style='width: 8em;'>\n";
                 // Only show the "Unseen" checkbox for questions.
                 if (!empty($fname['title'])) {
                     $aDataentryoutput .= "<div class='checkbox'>\t"
-                        . "<input type='checkbox' name='{$fname['fieldname']}_unseen' id='{$fname['fieldname']}_unseen'"
+                        . "<input type='checkbox' name='unseen_{$fname['fieldname']}' id='unseen_{$fname['fieldname']}'"
                         . (is_null($idrow[$fname['fieldname']]) ? " checked" : "")
                         . ">"
-                        . "<label for='{$fname['fieldname']}_unseen'>" . gT("Unseen") . "</label>"
+                        . "<label for='unseen_{$fname['fieldname']}'>" . gT("Unseen") . "</label>"
                         . "</div>\n";
                 }
                 $aDataentryoutput .= "</td>\n";
@@ -1464,7 +1464,7 @@ class DataEntry extends SurveyCommonAction
                 continue;
             }
             // For questions, if the "Unseen" checkbox is checked, we must set the field to null
-            if (!empty($irow['title']) && Yii::app()->request->getPost($fieldname . "_unseen", false)) {
+            if (!empty($irow['title']) && Yii::app()->request->getPost("unseen_" . $fieldname, false)) {
                 $oResponse->$fieldname = null;
                 continue;
             }
