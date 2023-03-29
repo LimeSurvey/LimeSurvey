@@ -236,7 +236,7 @@ class Index extends CAction
             //instead of showing an error message, redirect participant to restart survey
             //check if inherit value is set to 'Y'
             $alloweditaftercompletion = ($thissurvey['alloweditaftercompletion'] == 'Y') ||
-                $oSurvey->getIsAllowEditAfterCompletion();
+                $oSurvey->getIsAllowEditAfterCompletion() || $thissurvey['tokenanswerspersistence'] == 'Y';
             if ($alloweditaftercompletion) {
                 $this->getController()->redirect($restartUrl);
             }
