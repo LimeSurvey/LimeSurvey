@@ -53,12 +53,12 @@ class FilterImportedResources
         }
         while ($direntry = readdir($directory)) {
             if ($direntry !== "." && $direntry !== "..") {
-                if (is_file($extractdir . "/" . $direntry)) {
+                if (is_file($extractdir . DIRECTORY_SEPARATOR . $direntry)) {
                     // is  a file
                     $extfile = (string)substr(strrchr($direntry, '.'), 1);
                     if (!(stripos(',' . \Yii::app()->getConfig('allowedresourcesuploads') . ',', ',' . $extfile . ',') === false)) {
                         // Extension allowed
-                        if (!copy($extractdir . "/" . $direntry, $destdir . "/" . $direntry)) {
+                        if (!copy($extractdir . DIRECTORY_SEPARATOR . $direntry, $destdir . DIRECTORY_SEPARATOR . $direntry)) {
                             $aErrorFilesInfo[] = [
                                 "filename" => $direntry,
                                 "status"   => gT("Copy failed")
@@ -76,12 +76,12 @@ class FilterImportedResources
                             "status"   => gT("Forbidden Extension")
                         ];
                     }
-                    unlink($extractdir . "/" . $direntry);
+                    unlink($extractdir . DIRECTORY_SEPARATOR . $direntry);
                 }
-                if (is_dir($extractdir . "/" . $direntry)) {
-                    $subDirectory = opendir($extractdir . "/" . $direntry);
-                    $subExtractdir = $extractdir . "/" . $direntry;
-                    $subDestdir = $destdir . "/" . $direntry;
+                if (is_dir($extractdir . DIRECTORY_SEPARATOR . $direntry)) {
+                    $subDirectory = opendir($extractdir . DIRECTORY_SEPARATOR . $direntry);
+                    $subExtractdir = $extractdir . DIRECTORY_SEPARATOR . $direntry;
+                    $subDestdir = $destdir . DIRECTORY_SEPARATOR . $direntry;
                     list($aSubImportedFilesInfo, $aSubErrorFilesInfo) = $this->copyDirectory($subDirectory, $subExtractdir, $subDestdir);
                     $aImportedFilesInfo = array_merge($aImportedFilesInfo, $aSubImportedFilesInfo);
                     $aErrorFilesInfo = array_merge($aErrorFilesInfo, $aSubErrorFilesInfo);
