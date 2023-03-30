@@ -1450,7 +1450,7 @@ class DataEntry extends SurveyCommonAction
             if ($fieldname == 'id') {
                 continue;
             }
-            $thisvalue = Yii::app()->request->getPost($fieldname);
+            $thisvalue = Yii::app()->request->getPost($fieldname, '');
             switch ($irow['type']) {
                 case 'lastpage':
                     // Last page not updated : not in view

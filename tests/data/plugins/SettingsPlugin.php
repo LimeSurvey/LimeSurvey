@@ -21,8 +21,18 @@ class SettingsPlugin extends PluginBase
         return $this->get($name);
     }
 
-    public function setEncriptedSettings($encryptedSettings)
+    public function setEncryptedSettings($encryptedSettings)
     {
         $this->encryptedSettings = $encryptedSettings;
+    }
+
+    public function setSurveySetting($name, $value, $surveyId)
+    {
+        return $this->set($name, $value, 'Survey', $surveyId);
+    }
+
+    public function getSurveySetting($name, $surveyId)
+    {
+        return $this->get($name, 'Survey', $surveyId);
     }
 }

@@ -1486,18 +1486,14 @@ $(document).on('ready pjax:scriptcomplete', function () {
     const $that = ui.item;
     const newindex = Number($that.parent().children().index($that) + 1);
     const oldindex = $that.data('oldindex');
-    const languages = languageJson.langs.split(';');
+    const scaleId = $that.closest('table').data('scaleid');
 
-    languages.forEach((curLanguage, x) => {
-      if (x > 0) {
-        const tablebody = $(`#tabpage_${languages[x]}`).find('tbody');
-        // 
-        if (newindex < oldindex) {
-          $(`#tabpage_${languages[x]} tbody tr:nth-child(${newindex})`).before($(`#tabpage_${languages[x]} tbody tr:nth-child(${oldindex})`));
-        } else {
-          $(`#tabpage_${languages[x]} tbody tr:nth-child(${newindex})`).after($(`#tabpage_${languages[x]} tbody tr:nth-child(${oldindex})`));
-          tablebody.find('.row_'+newindex).after(tablebody.find('.row_'+oldindex));
-        }
+    // Process the corresponding scale id table for each extra language
+    $that.closest('.tab-pane').find(".extra-lang  table[data-scaleid='" + scaleId + "']").each((idx, table) => {
+      if (newindex < oldindex) {
+        $(table).find(`tbody tr:nth-child(${newindex})`).before($(table).find(`tbody tr:nth-child(${oldindex})`));
+      } else {
+        $(table).find(`tbody tr:nth-child(${newindex})`).after($(table).find(`tbody tr:nth-child(${oldindex})`));
       }
     });
   }

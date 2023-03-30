@@ -436,8 +436,12 @@ class User extends LSActiveRecord
     {
         // TODO should be static
         $criteria = new CDbCriteria();
-        $criteria->join = ' JOIN {{permissions}} AS p ON p.uid = t.uid';
-        $criteria->addCondition('p.permission = \'superadmin\'');
+        /* have read superadmin permissions */
+        $criteria->with = array('permissions');
+        $criteria->compare('permissions.permission', 'superadmin');
+        $criteria->compare('permissions.read_p', '1');
+        /* OR are inside forcedsuperadmin config */
+        $criteria->addInCondition('t.uid', App()->getConfig('forcedsuperadmin'), 'OR');
         /** @var User[] $users */
         $users = $this->findAll($criteria);
         return $users;
