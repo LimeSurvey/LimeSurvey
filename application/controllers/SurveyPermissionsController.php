@@ -126,19 +126,12 @@ class SurveyPermissionsController extends LSBaseController
         $userAdded = $surveyPermissions->addUserToSurveyPermission($userId);
         if ($userAdded) {
             Yii::app()->user->setFlash('success', gT("User added."));
-            if (Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'update')) {
-                $this->redirect(array(
-                    'surveyPermissions/settingsPermissions',
-                    'surveyid' => $surveyid,
-                    'action' => 'user',
-                    'id' => $userId
-                ));
-            } else {
-                $this->redirect(['surveyPermissions/index', 'surveyid' => $surveyid]);
-            }
+            $this->redirect(['surveyPermissions/index', 'surveyid' => $surveyid]);
+
         } else {
             Yii::app()->user->setFlash('error', gT("User could not be added to survey permissions."));
             $this->redirect(['surveyPermissions/index', 'surveyid' => $surveyid]);
+
         }
     }
 
@@ -228,21 +221,9 @@ class SurveyPermissionsController extends LSBaseController
         //$aData['topBar']['showSaveButton'] = true;
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $surveyid . ")";
 
-        $topbarData = TopbarConfiguration::getSurveyTopbarData($surveyid);
-        $aData['topbar']['middleButtons'] = $this->renderPartial(
-            '/surveyAdministration/partial/topbar/surveyTopbarLeft_view',
-            $topbarData,
-            true
-        );
-        $aData['topbar']['rightButtons'] = $this->renderPartial(
-            '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
-            ['showSaveButton' => true],
-            true
-        );
-
         $this->aData = $aData;
-        return $this->render(
-            'settingsPermission',
+        return $this->renderPartial(
+            'partial/editpermission',
             [
                 'surveyid' => $surveyid,
                 'aPermissions' => $aPermissions,
