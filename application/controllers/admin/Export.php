@@ -1185,34 +1185,6 @@ class Export extends SurveyCommonAction
     }
 
     /**
-     * Return a list of queXML settings
-     *
-     * @return string[] queXML settings
-     */
-    private function quexmlsettings(): array
-    {
-        return array(
-            'queXMLBackgroundColourQuestion',
-            'queXMLPageFormat',
-            'queXMLPageOrientation',
-            'queXMLEdgeDetectionFormat',
-            'queXMLBackgroundColourSection',
-            'queXMLSectionHeight',
-            'queXMLResponseLabelFontSize',
-            'queXMLResponseLabelFontSizeSmall',
-            'queXMLResponseTextFontSize',
-            'queXMLQuestionnaireInfoMargin',
-            'queXMLSingleResponseHorizontalHeight',
-            'queXMLSingleResponseAreaHeight',
-            'queXMLStyle',
-            'queXMLAllowSplittingVas',
-            'queXMLAllowSplittingMatrixText',
-            'queXMLAllowSplittingSingleChoiceVertical',
-            'queXMLAllowSplittingSingleChoiceHorizontal'
-        );
-    }
-
-    /**
      * Clear queXML settings from settings table
      *
      * @param int $iSurveyID
@@ -1220,7 +1192,10 @@ class Export extends SurveyCommonAction
      */
     public function quexmlclear(int $iSurveyID)
     {
-        $queXMLSettings = $this->quexmlsettings();
+        Yii::import("application.libraries.admin.quexmlpdf", true);
+        $defaultquexmlpdf = new quexmlpdf();
+
+        $queXMLSettings = $defaultquexmlpdf->_quexmlsettings();
         foreach ($queXMLSettings as $s) {
             SettingGlobal::setSetting($s, '');
         }
@@ -1238,7 +1213,6 @@ class Export extends SurveyCommonAction
         $iSurveyID = (int) $iSurveyID;
         $survey = Survey::model()->findByPk($iSurveyID);
 
-        $queXMLSettings = $this->quexmlsettings();
         $aData = array();
         $aData['surveyid'] = $iSurveyID;
         $aData['slangs'] = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
@@ -1252,7 +1226,8 @@ class Export extends SurveyCommonAction
         array_unshift($aData['slangs'], $aData['baselang']);
 
         Yii::import("application.libraries.admin.quexmlpdf", true);
-        $defaultquexmlpdf = new quexmlpdf($this->getController());
+        $defaultquexmlpdf = new quexmlpdf();
+        $queXMLSettings = $defaultquexmlpdf->_quexmlsettings();
 
         foreach ($queXMLSettings as $s) {
             $aData[$s] = getGlobalSetting($s);
@@ -1266,14 +1241,11 @@ class Export extends SurveyCommonAction
         if (empty($_POST['ok'])) {
             $this->renderWrappedTemplate('survey', 'queXMLSurvey_view', $aData);
         } else {
-            $quexmlpdf = new quexmlpdf($this->getController());
+            $quexmlpdf = new quexmlpdf();
 
             //Save settings globally and generate queXML document
             foreach ($queXMLSettings as $s) {
-                if ($s !== 'queXMLStyle') {
-                    SettingGlobal::setSetting($s, Yii::app()->request->getPost($s));
-                }
-
+                SettingGlobal::setSetting($s, Yii::app()->request->getPost($s));
                 $method = str_replace("queXML", "set", $s);
                 $quexmlpdf->$method(Yii::app()->request->getPost($s));
             }

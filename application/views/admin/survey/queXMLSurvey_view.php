@@ -52,7 +52,7 @@
                         <input class="col-sm-12 form-control" type='text' size='10' id='queXMLResponseTextFontSize' name='queXMLResponseTextFontSize' value="<?php echo $queXMLResponseTextFontSize; ?>" />
                     </div>
 
-                    <div class="form-group row">                
+                    <div class="form-group row">
                         <label class=" control-label" for='queXMLResponseLabelFontSize'><?php eT("Answer label font size (normal)"); ?></label>
                         <input class="col-sm-12 form-control" type='text' size='10' id='queXMLResponseLabelFontSize' name='queXMLResponseLabelFontSize' value="<?php echo $queXMLResponseLabelFontSize; ?>" />
                     </div>
@@ -176,36 +176,29 @@
                                 ));?>
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label class=" control-label"><?php eT("Reset to default settings:"); ?></label>
-                        <div>
-                            <?php echo CHtml::htmlButton(gT('Reset now'), array(
-                                'class' => 'btn btn-danger col-sm-6 col-xs-12',
-                                'data-submit-form' => 1,
-                                'data-use-form-id' => 1,
-                                'data-form-to-save' => 'quexmlclearform',
-                                ));?>
-                        </div>
-                    </div>
-                </div>
+               </div>
             </div>
             <div class="row">
                 <div class="col-sm-12 ">
                     <input type='hidden' name='ok' value='Y' />
                 </div>
             </div>
-            
         </div>
     </form>
-    <?php 
-        // Form for "Reset" action. Submitted when clicking the "Reset now" button (inside the main form)
-        echo CHtml::form(array("admin/export/sa/quexmlclear/surveyid/{$surveyid}/"), 'post', array('id'=>'quexmlclearform'));
-        echo CHtml::htmlButton(gT('Reset now'), array(
-            'type' => 'submit',
-            'class' => 'btn btn-danger col-sm-6 col-xs-12 hidden',
-            ));
-    ?>
-    </form>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="form-group row">
+                <label class=" control-label"><?php eT("Reset to default settings:"); ?></label>
+                <div>
+                         <?php echo CHtml::form(array("admin/export/sa/quexmlclear/surveyid/{$surveyid}/"), 'post', array('id'=>'quexmlclearform'));
+                         echo CHtml::htmlButton(gT('Reset now'), array(
+                         'type' => 'submit',
+                         'class' => 'btn btn-danger col-sm-6 col-xs-12',));?>
+                         </form>
+                </div>
+            </div>
+         </div>
+     </div>
 </div>
 <?php
 App()->getClientScript()->registerScript('QueXMLExportBSSwitcher', "

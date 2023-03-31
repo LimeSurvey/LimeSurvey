@@ -2261,6 +2261,33 @@ class quexmlpdf extends pdf
     }
 
     /**
+     * Return a list of queXML settings
+     *
+     * @access public
+     * @return string[] queXML settings
+     */
+    public function _quexmlsettings()
+    {
+        return array('queXMLBackgroundColourQuestion',
+            'queXMLPageFormat',
+            'queXMLPageOrientation',
+            'queXMLEdgeDetectionFormat',
+            'queXMLBackgroundColourSection',
+            'queXMLSectionHeight',
+            'queXMLResponseLabelFontSize',
+            'queXMLResponseLabelFontSizeSmall',
+            'queXMLResponseTextFontSize',
+            'queXMLQuestionnaireInfoMargin',
+            'queXMLSingleResponseHorizontalHeight',
+            'queXMLSingleResponseAreaHeight',
+            'queXMLStyle',
+            'queXMLAllowSplittingVas',
+            'queXMLAllowSplittingMatrixText',
+            'queXMLAllowSplittingSingleChoiceVertical',
+            'queXMLAllowSplittingSingleChoiceHorizontal');
+    }
+
+    /**
      * Import the settings/styles set from XML
      *
      * @author Adam Zammit <adam.zammit@acspri.org.au>
