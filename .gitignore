@@ -70,6 +70,7 @@
 # if you want to add a new distributed plugin : add the directory here
 /plugins/*
 !/plugins/index.html
+!/plugins/Demo/
 
 #ignore old styles
 /styles/

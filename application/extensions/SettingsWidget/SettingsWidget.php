@@ -612,33 +612,48 @@ class SettingsWidget extends CWidget
     {
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
         $value = $metaData['current'] ?? '';
-        $html = Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
+        /**
+         * Fix the value according to saveformat only if isset and not empty
+         * By defalt : save as sent by input (admin lanuage dependent
+         **/
+        if (!empty($metaData['saveformat'])) {
+            if (is_string($value) && $value !== "") {
+                $datetimeobj = new Date_Time_Converter($value, $metaData['saveformat']);
+                $value = $datetimeobj->convert($dateformatdetails['phpdate'] . "H:i");
+            } else {
+                $value = "";
+            }
+        }
+        $metaData['class'][] = 'form-control';
+        $htmlOptions = $this->htmlOptions($metaData, $form);
+
+        return Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
                 'name' => $name,
                 'id' => \CHtml::getIdByName($name),
                 'value' => $value,
+                'htmlOptions' => $htmlOptions,
                 'pluginOptions' => array(
                     'format' => $dateformatdetails['jsdate'] . " HH:mm",
                     'allowInputToggle' =>true,
                     'showClear' => true,
                     'tooltips' => array(
-                        'clear'=> gT('Clear selection'),
-                        'prevMonth'=> gT('Previous month'),
-                        'nextMonth'=> gT('Next month'),
-                        'selectYear'=> gT('Select year'),
-                        'prevYear'=> gT('Previous year'),
-                        'nextYear'=> gT('Next year'),
-                        'selectDecade'=> gT('Select decade'),
-                        'prevDecade'=> gT('Previous decade'),
-                        'nextDecade'=> gT('Next decade'),
-                        'prevCentury'=> gT('Previous century'),
-                        'nextCentury'=> gT('Next century'),
-                        'selectTime'=> gT('Select time')
+                        'clear' => gT('Clear selection'),
+                        'prevMonth' => gT('Previous month'),
+                        'nextMonth' => gT('Next month'),
+                        'selectYear' => gT('Select year'),
+                        'prevYear' => gT('Previous year'),
+                        'nextYear' => gT('Next year'),
+                        'selectDecade' => gT('Select decade'),
+                        'prevDecade' => gT('Previous decade'),
+                        'nextDecade' => gT('Next decade'),
+                        'prevCentury' => gT('Previous century'),
+                        'nextCentury' => gT('Next century'),
+                        'selectTime' => gT('Select time')
                     ),
                     'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                 )
             ), true
         );
-        return $html;
     }
 
     /* Return htmlOptions for an input od seting
