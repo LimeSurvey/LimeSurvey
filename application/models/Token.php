@@ -104,7 +104,7 @@ abstract class Token extends Dynamic
             'validfrom' => gT('Valid from'),
             'validuntil' => gT('Valid until'),
         );
-        foreach (decodeTokenAttributes($this->survey->attributedescriptions) as $key => $info) {
+        foreach (decodeTokenAttributes($this->survey->attributedescriptions ?? '') as $key => $info) {
             $labels[$key] = !empty($info['description']) ? $info['description'] : '';
         }
         return $labels;
@@ -435,7 +435,7 @@ abstract class Token extends Dynamic
             array('validfrom', 'date','format' => ['yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m','yyyy-M-d'],'allowEmpty' => true),
             array('validuntil','date','format' => ['yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m','yyyy-M-d'],'allowEmpty' => true),
         );
-        foreach (decodeTokenAttributes($this->survey->attributedescriptions) as $key => $info) {
+        foreach (decodeTokenAttributes($this->survey->attributedescriptions ?? '') as $key => $info) {
             $aRules[] = array(
                 $key, 'filter',
                 'filter' => array(self::class, 'sanitizeAttribute'),

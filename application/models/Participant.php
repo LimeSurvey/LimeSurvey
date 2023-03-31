@@ -1567,7 +1567,7 @@ class Participant extends LSActiveRecord
             ->from('{{surveys}}')
             ->bindParam(":sid", $surveyId, PDO::PARAM_INT);
         $aTokenAttributes = $previousatt->queryRow();
-        $aTokenAttributes = decodeTokenAttributes($aTokenAttributes['attributedescriptions']);
+        $aTokenAttributes = decodeTokenAttributes($aTokenAttributes['attributedescriptions'] ?? '');
 
         foreach ($fieldcontents as $key => $iIDAttributeCPDB) {
             $aTokenAttributes[$key] = $iIDAttributeCPDB;
@@ -1894,7 +1894,7 @@ class Participant extends LSActiveRecord
         $sucessfull = 0;
         $attid = []; //Will store the CPDB attribute_id of new or existing attributes keyed by CPDB at
 
-        $aTokenAttributes = decodeTokenAttributes($survey->attributedescriptions);
+        $aTokenAttributes = decodeTokenAttributes($survey->attributedescriptions ?? '');
         $aAutoMapped = $survey->getCPDBMappings();
 
         /* Create CPDB attributes */

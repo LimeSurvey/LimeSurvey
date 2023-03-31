@@ -2194,7 +2194,7 @@ function upgradeSurveys177()
     $oSurveyResult = $oDB->createCommand($sSurveyQuery)->queryAll();
     $sSurveyLSUpdateQuery = "update {{surveys_languagesettings}} set surveyls_attributecaptions=:attributecaptions where surveyls_survey_id=:surveyid and surveyls_language=:language";
     foreach ($oSurveyResult as $aSurveyRow) {
-        $aAttributeDescriptions = decodeTokenAttributes($aSurveyRow['surveyls_attributecaptions']);
+        $aAttributeDescriptions = decodeTokenAttributes($aSurveyRow['surveyls_attributecaptions'] ?? '');
         if (!$aAttributeDescriptions) {
             $aAttributeDescriptions = array();
         }
@@ -2208,7 +2208,7 @@ function upgradeSurveys177()
     $oSurveyResult = $oDB->createCommand($sSurveyQuery)->queryAll();
     $sSurveyUpdateQuery = "update {{surveys}} set attributedescriptions=:attributedescriptions where sid=:surveyid";
     foreach ($oSurveyResult as $aSurveyRow) {
-        $aAttributeDescriptions = decodeTokenAttributes($aSurveyRow['attributedescriptions']);
+        $aAttributeDescriptions = decodeTokenAttributes($aSurveyRow['attributedescriptions'] ?? '');
         if (!$aAttributeDescriptions) {
             $aAttributeDescriptions = array();
         }
