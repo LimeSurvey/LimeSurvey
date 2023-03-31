@@ -2043,15 +2043,15 @@ class remotecontrol_handle
                         return array('status' => 'Error: More than 1 result was found based on your attributes.');
                     }
                     $oToken = $oTokens[0];
-                    $oToken->decrypt();
                 } else {
                     // If aTokenQueryProperties is not an array but an integer
                     $iTokenID = $aTokenQueryProperties;
-                    $oToken = Token::model($iSurveyID)->findByPk($iTokenID)->decrypt();
+                    $oToken = Token::model($iSurveyID)->findByPk($iTokenID);
                 }
                 if (!isset($oToken)) {
                     return array('status' => 'Error: Invalid tokenid');
                 }
+                $oToken->decrypt();
 
                 // Remove fields that may not be modified
                 unset($aTokenData['tid']);
