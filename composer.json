@@ -45,7 +45,7 @@
 		"symfony/polyfill-mbstring": "^1.26",
 		"yiisoft/yii": "^1.1.26",
 		"phpmailer/phpmailer": "^6.6",
-		"khaled.alshamaa/ar-php": "^6.3",
+		"khaled.alshamaa/ar-php": "^6.3.3",
 		"tecnickcom/tcpdf": "^6.5",
 		"mk-j/php_xlsxwriter": "^0.38.0",
 		"html2text/html2text": "^4.3",
