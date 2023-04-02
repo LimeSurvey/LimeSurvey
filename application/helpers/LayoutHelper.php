@@ -152,7 +152,7 @@ class LayoutHelper
             // Fetch extra menus from plugins, e.g. last visited surveys
             $aData['extraMenus'] = $this->fetchExtraMenus($aData);
 
-           // $aData['extraMenus'] = ''; //todo extraMenu should work
+            // $aData['extraMenus'] = ''; //todo extraMenu should work
 
             // Get notification menu
             $surveyId = $aData['surveyid'] ?? null;
@@ -190,6 +190,7 @@ class LayoutHelper
     public function renderTopbarTemplate($aData)
     {
         $titleTextBreadcrumb = null;
+        $titleBackLink = null;
         $isBreadCrumb = isset($aData['title_bar']); //only the existence is important, indicator for breadcrumb
 
         if (isset($aData['topbar']['title'])) {
@@ -197,6 +198,10 @@ class LayoutHelper
         } elseif ($isBreadCrumb) {
             $titleTextBreadcrumb = App()->getController()->renderPartial("/layouts/title_bar", $aData, true);
         }
+        if (isset($aData['topbar']['backLink'])) {
+            $titleBackLink = $aData['topbar']['backLink'];
+        }
+
         $middle = $aData['topbar']['middleButtons'] ?? '';
         $rightSide = $aData['topbar']['rightButtons'] ?? '';
         if ($titleTextBreadcrumb !== null) {
@@ -221,7 +226,8 @@ class LayoutHelper
                     'leftSide'     => $titleTextBreadcrumb,
                     'middle'       => $middle, //array of ButtonWidget
                     'rightSide'    => $rightSide, //array of ButtonWidget
-                    'isBreadCrumb' => $isBreadCrumb
+                    'isBreadCrumb' => $isBreadCrumb,
+                    'titleBackLink' => $titleBackLink
                 ],
                 true
             );

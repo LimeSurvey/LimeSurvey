@@ -9,6 +9,8 @@ class TopbarWidget extends CWidget
      */
     public $leftSide = null;
 
+    public $titleBackLink = null;
+
     /**
      * @var bool true if leftSide is a breadcrumb, defaults to false
      */
@@ -47,7 +49,8 @@ class TopbarWidget extends CWidget
                 'leftSide' => $this->leftSide,
                 'middle' => $this->middle,
                 'rightSide' => $this->rightSide,
-                'isBreadCrumb' => $this->isBreadCrumb
+                'isBreadCrumb' => $this->isBreadCrumb,
+                'titleBackLink' => $this->titleBackLink,
             ]
         );
     }
