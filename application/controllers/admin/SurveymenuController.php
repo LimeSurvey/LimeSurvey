@@ -124,7 +124,7 @@ class SurveymenuController extends SurveyCommonAction
             $this->getController()->redirect(Yii::app()->createUrl('/admin'));
         }
 
-        $aSurveyMenuIds = json_decode(Yii::app()->request->getPost('sItems'));
+        $aSurveyMenuIds = json_decode(Yii::app()->request->getPost('sItems', '')) ?? [];
         $aResults = array();
         $oBaseModel = Surveymenu::model();
         if (Permission::model()->hasGlobalPermission('settings', 'update')) {
@@ -183,7 +183,7 @@ class SurveymenuController extends SurveyCommonAction
         }
 
         if (Yii::app()->request->isPostRequest) {
-            $aSurveyMenuIds = json_decode(Yii::app()->request->getPost('sItems'));
+            $aSurveyMenuIds = json_decode(Yii::app()->request->getPost('sItems', '')) ?? [];
             $success = [];
             foreach ($aSurveyMenuIds as $menuid) {
                 $model = $this->loadModel($menuid);

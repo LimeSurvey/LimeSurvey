@@ -8,7 +8,7 @@
 // Build the options for additional languages
 $aLanguageNames = [];
 foreach ($aLanguages as $sCode => $sName) {
-    $aLanguageNames[] = $sCode . ":" . str_replace(";", " -", $sName);
+    $aLanguageNames[] = $sCode . ":" . str_replace(";", " -", (string) $sName);
 }
 $aLanguageNames = implode(";", $aLanguageNames);
 

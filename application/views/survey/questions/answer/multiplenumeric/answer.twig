@@ -22,7 +22,7 @@
             {% include '/survey/questions/answer/multiplenumeric/empty.twig' %}
         {% else %}
             {% for aRow in aRows %}
-                {% include rowTemplate with aRow only %}
+                {% include rowTemplate with aRow %}
             {% endfor %}
         {% endif %}
     {% endblock %}

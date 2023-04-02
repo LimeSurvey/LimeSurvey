@@ -11,7 +11,9 @@
 
 namespace Twig\Extension;
 
-use Twig\Environment;
+use Twig\ExpressionParser;
+use Twig\Node\Expression\Binary\AbstractBinary;
+use Twig\Node\Expression\Unary\AbstractUnary;
 use Twig\NodeVisitor\NodeVisitorInterface;
 use Twig\TokenParser\TokenParserInterface;
 use Twig\TwigFilter;
@@ -25,15 +27,6 @@ use Twig\TwigTest;
  */
 interface ExtensionInterface
 {
-    /**
-     * Initializes the runtime environment.
-     *
-     * This is where you can load some file that contains filter functions for instance.
-     *
-     * @deprecated since 1.23 (to be removed in 2.0), implement \Twig_Extension_InitRuntimeInterface instead
-     */
-    public function initRuntime(Environment $environment);
-
     /**
      * Returns the token parser instances to add to the existing list.
      *
@@ -73,29 +66,11 @@ interface ExtensionInterface
      * Returns a list of operators to add to the existing list.
      *
      * @return array<array> First array of unary operators, second array of binary operators
+     *
+     * @psalm-return array{
+     *     array<string, array{precedence: int, class: class-string<AbstractUnary>}>,
+     *     array<string, array{precedence: int, class: class-string<AbstractBinary>, associativity: ExpressionParser::OPERATOR_*}>
+     * }
      */
     public function getOperators();
-
-    /**
-     * Returns a list of global variables to add to the existing list.
-     *
-     * @return array An array of global variables
-     *
-     * @deprecated since 1.23 (to be removed in 2.0), implement \Twig_Extension_GlobalsInterface instead
-     */
-    public function getGlobals();
-
-    /**
-     * Returns the name of the extension.
-     *
-     * @return string The extension name
-     *
-     * @deprecated since 1.26 (to be removed in 2.0), not used anymore internally
-     */
-    public function getName();
 }
-
-class_alias('Twig\Extension\ExtensionInterface', 'Twig_ExtensionInterface');
-
-// Ensure that the aliased name is loaded to keep BC for classes implementing the typehint with the old aliased name.
-class_exists('Twig\Environment');

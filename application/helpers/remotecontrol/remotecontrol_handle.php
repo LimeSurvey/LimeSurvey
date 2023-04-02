@@ -547,7 +547,7 @@ class remotecontrol_handle
                     return array('status' => 'Error: No Permission');
         }
 
-        $aAdditionalLanguages = array_filter(explode(" ", $oSurvey->additional_languages));
+        $aAdditionalLanguages = array_filter(explode(" ", (string) $oSurvey->additional_languages));
 
         if (is_null($sLanguage) || !in_array($sLanguage, $aAdditionalLanguages)) {
                     $sLanguage = $oSurvey->language;
@@ -616,7 +616,7 @@ class remotecontrol_handle
                 break;
         }
 
-        return base64_encode($sResult);
+        return base64_encode((string) $sResult);
     }
 
     /**
@@ -2883,7 +2883,7 @@ class remotecontrol_handle
                     $command->addCondition($condition);
                 }
             } else {
-                $sNow = date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
+                $sNow = date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
                 $command->addCondition('usesleft > 0');
                 $command->addCondition("sent = 'N'");
                 $command->addCondition("remindersent = 'N'");
@@ -2912,11 +2912,11 @@ class remotecontrol_handle
                 $pattern = '/^(?!(?:(?:\\x22?\\x5C[\\x00-\\x7E]\\x22?)|(?:\\x22?[^\\x5C\\x22]\\x22?)){255,})(?!(?:(?:\\x22?\\x5C[\\x00-\\x7E]\\x22?)|(?:\\x22?[^\\x5C\\x22]\\x22?)){65,}@)(?:(?:[\\x21\\x23-\\x27\\x2A\\x2B\\x2D\\x2F-\\x39\\x3D\\x3F\\x5E-\\x7E]+)|(?:\\x22(?:[\\x01-\\x08\\x0B\\x0C\\x0E-\\x1F\\x21\\x23-\\x5B\\x5D-\\x7F]|(?:\\x5C[\\x00-\\x7F]))*\\x22))(?:\\.(?:(?:[\\x21\\x23-\\x27\\x2A\\x2B\\x2D\\x2F-\\x39\\x3D\\x3F\\x5E-\\x7E]+)|(?:\\x22(?:[\\x01-\\x08\\x0B\\x0C\\x0E-\\x1F\\x21\\x23-\\x5B\\x5D-\\x7F]|(?:\\x5C[\\x00-\\x7F]))*\\x22)))*@(?:(?:(?!.*[^.]{64,})(?:(?:(?:xn--)?[a-z0-9]+(?:-+[a-z0-9]+)*\\.){1,126}){1,}(?:(?:[a-z][a-z0-9]*)|(?:(?:xn--)[a-z0-9]+))(?:-+[a-z0-9]+)*)|(?:\\[(?:(?:IPv6:(?:(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){7})|(?:(?!(?:.*[a-f0-9][:\\]]){7,})(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,5})?::(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,5})?)))|(?:(?:IPv6:(?:(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){5}:)|(?:(?!(?:.*[a-f0-9]:){5,})(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,3})?::(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,3}:)?)))?(?:(?:25[0-5])|(?:2[0-4][0-9])|(?:1[0-9]{2})|(?:[1-9]?[0-9]))(?:\\.(?:(?:25[0-5])|(?:2[0-4][0-9])|(?:1[0-9]{2})|(?:[1-9]?[0-9]))){3}))\\]))$/iD';
 
                 //pattern to split in case of multiple emails for a participant
-                $emailsToCheck = preg_split("/(,|;)/", $oToken['email']);
+                $emailsToCheck = preg_split("/(,|;)/", (string) $oToken['email']);
 
                 //Loop through each email and validate it
                 foreach ($emailsToCheck as $emailToCheck) {
-                    if (preg_match($pattern, $emailToCheck) !== 1) {
+                    if (preg_match($pattern, (string) $emailToCheck) !== 1) {
                         unset($aResultTokens[$key]);
                         //subtract from 'left to send'
                         $iAllTokensCount--;
@@ -2987,11 +2987,11 @@ class remotecontrol_handle
                 $pattern = '/^(?!(?:(?:\\x22?\\x5C[\\x00-\\x7E]\\x22?)|(?:\\x22?[^\\x5C\\x22]\\x22?)){255,})(?!(?:(?:\\x22?\\x5C[\\x00-\\x7E]\\x22?)|(?:\\x22?[^\\x5C\\x22]\\x22?)){65,}@)(?:(?:[\\x21\\x23-\\x27\\x2A\\x2B\\x2D\\x2F-\\x39\\x3D\\x3F\\x5E-\\x7E]+)|(?:\\x22(?:[\\x01-\\x08\\x0B\\x0C\\x0E-\\x1F\\x21\\x23-\\x5B\\x5D-\\x7F]|(?:\\x5C[\\x00-\\x7F]))*\\x22))(?:\\.(?:(?:[\\x21\\x23-\\x27\\x2A\\x2B\\x2D\\x2F-\\x39\\x3D\\x3F\\x5E-\\x7E]+)|(?:\\x22(?:[\\x01-\\x08\\x0B\\x0C\\x0E-\\x1F\\x21\\x23-\\x5B\\x5D-\\x7F]|(?:\\x5C[\\x00-\\x7F]))*\\x22)))*@(?:(?:(?!.*[^.]{64,})(?:(?:(?:xn--)?[a-z0-9]+(?:-+[a-z0-9]+)*\\.){1,126}){1,}(?:(?:[a-z][a-z0-9]*)|(?:(?:xn--)[a-z0-9]+))(?:-+[a-z0-9]+)*)|(?:\\[(?:(?:IPv6:(?:(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){7})|(?:(?!(?:.*[a-f0-9][:\\]]){7,})(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,5})?::(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,5})?)))|(?:(?:IPv6:(?:(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){5}:)|(?:(?!(?:.*[a-f0-9]:){5,})(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,3})?::(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,3}:)?)))?(?:(?:25[0-5])|(?:2[0-4][0-9])|(?:1[0-9]{2})|(?:[1-9]?[0-9]))(?:\\.(?:(?:25[0-5])|(?:2[0-4][0-9])|(?:1[0-9]{2})|(?:[1-9]?[0-9]))){3}))\\]))$/iD';
 
                 //pattern to split in case of multiple emails for a participant
-                $emailsToCheck = preg_split("/(,|;)/", $oToken['email']);
+                $emailsToCheck = preg_split("/(,|;)/", (string) $oToken['email']);
 
                 //Loop through each email and validate it
                 foreach ($emailsToCheck as $emailToCheck) {
-                    if (preg_match($pattern, $emailToCheck) !== 1) {
+                    if (preg_match($pattern, (string) $emailToCheck) !== 1) {
                         unset($aResultTokens[$key]);
                         break;
                     }
@@ -3356,7 +3356,7 @@ class remotecontrol_handle
 
         $maxfilesize = (int) $aAttributes['max_filesize'];
         $allowed_filetypes = $aAttributes['allowed_filetypes'];
-        $valid_extensions_array = explode(",", $allowed_filetypes);
+        $valid_extensions_array = explode(",", (string) $allowed_filetypes);
         $valid_extensions_array = array_map('trim', $valid_extensions_array);
 
         $pathinfo = pathinfo($sFileName);
@@ -3428,7 +3428,7 @@ class remotecontrol_handle
         if (!tableExists($survey->responsesTableName)) {
             return array('status' => 'No Data, survey table does not exist.');
         }
-        if (!($maxId = SurveyDynamic::model($iSurveyID)->getMaxId())) {
+        if (!($maxId = SurveyDynamic::model($iSurveyID)->getMaxId(null, true))) {
             return array('status' => 'No Data, could not get max id.');
         }
         if (!empty($sLanguageCode) && !in_array($sLanguageCode, $survey->getAllLanguages())) {
@@ -3848,7 +3848,7 @@ class remotecontrol_handle
     protected function _checkEmailFormat($sEmail)
     {
         if ($sEmail != '') {
-            $aEmailAddresses = explode(';', $sEmail);
+            $aEmailAddresses = explode(';', (string) $sEmail);
             // Ignore additional email addresses
             $sEmailaddress = $aEmailAddresses[0];
             if (!validateEmailAddress($sEmailaddress)) {

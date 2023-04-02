@@ -134,7 +134,7 @@
                         $subject = Replacefields($thissurvey[$language]['email_remind_subj'], $fieldsarray, false);
                         $textarea = Replacefields($thissurvey[$language]['email_remind'], $fieldsarray, false);
                         if ($ishtml !== true) {
-                            $textarea = str_replace(array('<x>', '</x>'), array(''), $textarea); // ?????
+                            $textarea = str_replace(array('<x>', '</x>'), array(''), (string) $textarea); // ?????
                         }
                         ?>
 

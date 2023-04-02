@@ -306,17 +306,14 @@ window.addEventListener('message', function(event) {
 
             // check if this method is called from theme editor
             if (empty($aData['bIsThemeEditor'])) {
-                    // Add 'question_template_attribute' globally so it's available on includes.
-                    $this->_twig->addGlobal("question_template_attribute", $oQuestionTemplate->getCustomAttributes());
+                    $aData['question_template_attribute'] = $oQuestionTemplate->getCustomAttributes();
                     $sBaseLanguage = Survey::model()->findByPk($_SESSION['LEMsid'])->language;
                     $aData['surveyInfo'] = getSurveyInfo($_SESSION['LEMsid'], $sBaseLanguage);
                     $aData['this'] = App()->getController();
             } else {
-                $this->_twig->addGlobal("question_template_attribute", null);
+                $aData['question_template_attribute'] = null;
             }
-            $template = $this->_twig->loadTemplate($sView . '.twig')->render($aData);
-            // Clear 'question_template_attribute' just in case.
-            $this->_twig->addGlobal("question_template_attribute", null);
+            $template = $this->_twig->render($sView . '.twig', $aData);
             return $template;
         } else {
             return App()->getController()->renderPartial($sView, $aData, true);
@@ -378,7 +375,7 @@ window.addEventListener('message', function(event) {
 
             $aData['question_template_attribute'] = null;
 
-            $template = $this->_twig->loadTemplate($sView . '.twig')->render($aData);
+            $template = $this->_twig->render($sView . '.twig', $aData);
             return $template;
         } else {
             return App()->getController()->renderPartial($sView, $aData, true);
@@ -718,7 +715,7 @@ window.addEventListener('message', function(event) {
             // Add the global theme options
             $oTemplateConfigurationCurrent = Template::getInstance($oTemplate->sTemplateName);
             $aData["aSurveyInfo"]["options"] = isJson($oTemplateConfigurationCurrent['options'])
-                ? (array) json_decode($oTemplateConfigurationCurrent['options'])
+                ? (array) json_decode((string) $oTemplateConfigurationCurrent['options'])
                 : $oTemplateConfigurationCurrent['options'];
         }
 
@@ -765,15 +762,15 @@ window.addEventListener('message', function(event) {
     {
         $this->_twig = parent::getTwig();
         foreach ($extensions as $extName) {
-            if ($extName == "Twig_Extension_Sandbox") {
+            if ($extName == "\Twig\Extension\SandboxExtension") {
                 // Process to load the sandBox
                 $tags       = $this->sandboxConfig['tags'] ?? array();
                 $filters    = $this->sandboxConfig['filters'] ?? array();
                 $methods    = $this->sandboxConfig['methods'] ?? array();
                 $properties = $this->sandboxConfig['properties'] ?? array();
                 $functions  = $this->sandboxConfig['functions'] ?? array();
-                $policy     = new Twig_Sandbox_SecurityPolicy($tags, $filters, $methods, $properties, $functions);
-                $sandbox    = new Twig_Extension_Sandbox($policy, true);
+                $policy     = new \Twig\Sandbox\SecurityPolicy($tags, $filters, $methods, $properties, $functions);
+                $sandbox    = new \Twig\Extension\SandboxExtension($policy, true);
 
                 $this->_twig->addExtension($sandbox);
             } else {
@@ -796,7 +793,7 @@ window.addEventListener('message', function(event) {
         $oTemplate = Template::getLastInstance();
         $aData = $this->getAdditionalInfos($aData, $oTemplate);
         $this->addRecursiveTemplatesPath($oTemplate);
-        return $this->_twig->loadTemplate($twigView)->render($aData);
+        return $this->_twig->render($twigView, $aData);
     }
 
     /**

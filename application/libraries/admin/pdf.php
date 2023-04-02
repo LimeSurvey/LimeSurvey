@@ -513,7 +513,7 @@ class pdf extends TCPDF
         for ($i = 0; $i < $arraySize; $i++) {
             for ($j = 0; $j < sizeof($array[$i]); $j++) {
                 $stringWidth = 0;
-                $chars = str_split($this->delete_html($array[$i][$j]), 1);
+                $chars = str_split((string) $this->delete_html($array[$i][$j]), 1);
                 foreach ($chars as $char) {
                     $stringWidth = $stringWidth + $this->GetCharWidth($char);
 
@@ -535,11 +535,11 @@ class pdf extends TCPDF
         for ($i = 0; $i < $arraySize; $i++) {
             for ($j = 0; $j < sizeof($array[$i]); $j++) {
                 if (($i - 1) >= 0) {
-                    if (strlen($this->delete_html($array[($i - 1)][$j])) < strlen($this->delete_html($array[$i][$j]))) {
-                        $width[$j] = strlen($this->delete_html($array[$i][$j]));
+                    if (strlen((string) $this->delete_html($array[($i - 1)][$j])) < strlen((string) $this->delete_html($array[$i][$j]))) {
+                        $width[$j] = strlen((string) $this->delete_html($array[$i][$j]));
                     }
                 } else {
-                    $width[$j] = strlen($this->delete_html($array[$i][$j]));
+                    $width[$j] = strlen((string) $this->delete_html($array[$i][$j]));
                 }
             }
         }
@@ -604,7 +604,7 @@ class pdf extends TCPDF
 
     public function delete_html($text)
     {
-        $text = html_entity_decode($text, null, 'UTF-8');
+        $text = html_entity_decode((string) $text, null, 'UTF-8');
         $text = str_replace("\t", ' ', $text);
         return strip_tags($text);
     }
@@ -656,12 +656,12 @@ class pdf extends TCPDF
                 $this->ln(1);
                 $this->SetFontSize($this->_ibaseAnswerFontSize + 6);
                 $oPurifier = new CHtmlPurifier();
-                $sTitleHTML = html_entity_decode(stripJavaScript($oPurifier->purify($sTitle)), ENT_COMPAT);
+                $sTitleHTML = html_entity_decode((string) stripJavaScript($oPurifier->purify($sTitle)), ENT_COMPAT);
                 $this->WriteHTMLCell(0, $this->_iCellHeight, $this->getX(), $this->getY(), $sTitleHTML, 0, 1, false, true, 'C');
                 if (!empty($sSubtitle)) {
                     $this->ln(1);
                     $this->SetFontSize($this->_ibaseAnswerFontSize + 2);
-                    $sSubtitleHTML = html_entity_decode(stripJavaScript($oPurifier->purify($sSubtitle)), ENT_COMPAT);
+                    $sSubtitleHTML = html_entity_decode((string) stripJavaScript($oPurifier->purify($sSubtitle)), ENT_COMPAT);
                     $this->WriteHTMLCell(0, $this->_iCellHeight, $this->getX(), $this->getY(), $sSubtitleHTML, 0, 1, false, true, 'C');
                 }
                 $this->ln(6);
@@ -788,8 +788,8 @@ class pdf extends TCPDF
     public function addGidAnswer($sGroupName, $sGroupDescription, $bAllowBreakPage = false)
     {
         $oPurifier = new CHtmlPurifier();
-        $sGroupName = html_entity_decode(stripJavaScript($oPurifier->purify($sGroupName)), ENT_COMPAT);
-        $sGroupDescription = html_entity_decode(stripJavaScript($oPurifier->purify($sGroupDescription)), ENT_COMPAT);
+        $sGroupName = html_entity_decode((string) stripJavaScript($oPurifier->purify($sGroupName)), ENT_COMPAT);
+        $sGroupDescription = html_entity_decode((string) stripJavaScript($oPurifier->purify($sGroupDescription)), ENT_COMPAT);
         $sData['thissurvey'] = $this->_aSurveyInfo;
         $sGroupName = templatereplace($sGroupName, array(), $sData, '', $this->_aSurveyInfo['anonymized'] == "Y", null, array(), true);
         $sGroupDescription = templatereplace($sGroupDescription, array(), $sData, '', $this->_aSurveyInfo['anonymized'] == "Y", null, array(), true);
@@ -846,7 +846,7 @@ class pdf extends TCPDF
 
         $oPurifier = new CHtmlPurifier();
         $sQuestionHTML = str_replace('-oth-', '', $sQuestion); // Copied from Writer::stripTagsFull. Really necessary?
-        $sQuestionHTML = html_entity_decode(stripJavaScript($oPurifier->purify($sQuestionHTML)), ENT_COMPAT);
+        $sQuestionHTML = html_entity_decode((string) stripJavaScript($oPurifier->purify($sQuestionHTML)), ENT_COMPAT);
         if ($bReplaceExpressions) {
             $sData = array();
             $sData['thissurvey'] = $this->_aSurveyInfo;

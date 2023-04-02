@@ -242,7 +242,7 @@ class UserRoleController extends LSBaseController
     {
         $oModel = $this->loadModel($ptid);
         $oXML = $oModel->compileExportXML();
-        $filename = preg_replace("/[^a-zA-Z0-9-_]*/", '', $oModel->name);
+        $filename = preg_replace("/[^a-zA-Z0-9-_]*/", '', (string) $oModel->name);
 
         header('Content-type: application/xml');
         header('Content-Disposition: attachment; filename="' . $filename . '.xml"');
@@ -304,7 +304,7 @@ class UserRoleController extends LSBaseController
     {
         $sRandomFileName = randomChars(20);
         $sFilePath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $sRandomFileName;
-        $aPathinfo = pathinfo($_FILES['the_file']['name']);
+        $aPathinfo = pathinfo((string) $_FILES['the_file']['name']);
         $sExtension = $aPathinfo['extension'];
         $bMoveFileResult = false;
 
@@ -367,7 +367,7 @@ class UserRoleController extends LSBaseController
             $this->redirect(array('/admin'));
         }
         $sPtids = Yii::app()->request->getPost('sItems', []);
-        $aPtids = json_decode($sPtids, true);
+        $aPtids = json_decode((string) $sPtids, true);
         $aResults = [];
         foreach ($aPtids as $ptid) {
             $model = $this->loadModel($ptid);
@@ -400,7 +400,7 @@ class UserRoleController extends LSBaseController
             $this->redirect(array('/admin'));
         }
         $sPtids = Yii::app()->request->getParam('sItems', '');
-        $aPtids = explode(',', $sPtids);
+        $aPtids = explode(',', (string) $sPtids);
         $sRandomFolderName = randomChars(20);
         $sRandomFileName = "RoleExport-" . randomChars(5) . '-' . time();
 
@@ -417,7 +417,7 @@ class UserRoleController extends LSBaseController
         foreach ($aPtids as $iPtid) {
             $oModel = $this->loadModel($iPtid);
             $oXML = $oModel->compileExportXML();
-            $filename = preg_replace("/[^a-zA-Z0-9-_]*/", '', $oModel->name) . '.xml';
+            $filename = preg_replace("/[^a-zA-Z0-9-_]*/", '', (string) $oModel->name) . '.xml';
 
             file_put_contents($sFilePath . DIRECTORY_SEPARATOR . $filename, $oXML->asXML());
             $filesInArchive[] = $sFilePath . DIRECTORY_SEPARATOR . $filename;

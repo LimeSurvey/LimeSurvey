@@ -108,20 +108,20 @@ class Tokens extends SurveyCommonAction
             $bouncetotal = 0;
             $checktotal = 0;
             if ($thissurvey['bounceprocessing'] == 'G') {
-                $accounttype    = strtoupper(getGlobalSetting('bounceaccounttype'));
+                $accounttype    = strtoupper((string) getGlobalSetting('bounceaccounttype'));
                 $hostname       = getGlobalSetting('bounceaccounthost');
                 $username       = getGlobalSetting('bounceaccountuser');
                 $pass           = LSActiveRecord::decryptSingle(getGlobalSetting('bounceaccountpass'));
-                $hostencryption = strtolower(getGlobalSetting('bounceencryption'));
+                $hostencryption = strtolower((string) getGlobalSetting('bounceencryption'));
             } else {
-                $accounttype    = strtoupper($thissurvey['bounceaccounttype']);
+                $accounttype    = strtoupper((string) $thissurvey['bounceaccounttype']);
                 $hostname       = $thissurvey['bounceaccounthost'];
                 $username       = $thissurvey['bounceaccountuser'];
                 $pass           = LSActiveRecord::decryptSingle($thissurvey['bounceaccountpass']);
-                $hostencryption = strtolower($thissurvey['bounceaccountencryption']);
+                $hostencryption = strtolower((string) $thissurvey['bounceaccountencryption']);
             }
 
-            @list($hostname, $port) = explode(':', $hostname);
+            @list($hostname, $port) = explode(':', (string) $hostname);
 
             if (empty($port)) {
                 if ($accounttype == "IMAP") {
@@ -248,7 +248,7 @@ class Tokens extends SurveyCommonAction
      */
     public function deleteMultiple()
     {
-        $aTokenIds = json_decode(Yii::app()->getRequest()->getPost('sItems'));
+        $aTokenIds = json_decode(Yii::app()->getRequest()->getPost('sItems', '')) ?? [];
         $iSid = Yii::app()->getRequest()->getPost('sid');
         if (!Permission::model()->hasSurveyPermission($iSid, 'tokens', 'delete')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
@@ -351,7 +351,7 @@ class Tokens extends SurveyCommonAction
             $end = 0;
         }
         $order = Yii::app()->request->getPost('order', 'tid');
-        $order = preg_replace('/[^_ a-z0-9-]/i', '', $order);
+        $order = preg_replace('/[^_ a-z0-9-]/i', '', (string) $order);
 
         $aData['next'] = $next;
         $aData['last'] = $last;
@@ -404,7 +404,7 @@ class Tokens extends SurveyCommonAction
      */
     public function editMultiple()
     {
-        $aTokenIds = json_decode(Yii::app()->request->getPost('sItems'));
+        $aTokenIds = json_decode(Yii::app()->request->getPost('sItems', '')) ?? [];
         $iSurveyId = Yii::app()->request->getPost('sid');
         $aResults = array();
 
@@ -419,24 +419,24 @@ class Tokens extends SurveyCommonAction
                     if (trim(Yii::app()->request->getPost('validfrom', 'lskeep')) == '') {
                         $aData['validfrom'] = null;
                     } else {
-                        $aData['validfrom'] = date('Y-m-d H:i:s', strtotime(trim($_POST['validfrom'])));
+                        $aData['validfrom'] = date('Y-m-d H:i:s', strtotime(trim((string) $_POST['validfrom'])));
                     }
                 }
 
                 // Valid until
                 if (trim(Yii::app()->request->getPost('validuntil', 'lskeep')) != 'lskeep') {
-                    if (trim(Yii::app()->request->getPost('validuntil')) == '') {
+                    if (trim(Yii::app()->request->getPost('validuntil', '')) == '') {
                         $aData['validuntil'] = null;
                     } else {
-                        $aData['validuntil'] = date('Y-m-d H:i:s', strtotime(trim($_POST['validuntil'])));
+                        $aData['validuntil'] = date('Y-m-d H:i:s', strtotime(trim((string) $_POST['validuntil'])));
                     }
                 }
 
                 // Email
                 if (trim(Yii::app()->request->getPost('email', 'lskeep')) != 'lskeep') {
-                    $isValid = preg_match('/^([a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+))(,([a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)))*$/', Yii::app()->request->getPost('email'));
+                    $isValid = preg_match('/^([a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+))(,([a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)))*$/', Yii::app()->request->getPost('email', ''));
                     if ($isValid) {
-                        $aData['email'] = Yii::app()->request->getPost('email');
+                        $aData['email'] = Yii::app()->request->getPost('email', '');
                     } else {
                         $aData['email'] = 'lskeep';
                     }
@@ -458,7 +458,7 @@ class Tokens extends SurveyCommonAction
                 $attrfieldnames = GetParticipantAttributes($iSurveyId);
                 foreach ($attrfieldnames as $attr_name => $desc) {
                     if (trim(Yii::app()->request->getPost($attr_name, 'lskeep')) != 'lskeep') {
-                        $value = App()->request->getPost($attr_name);
+                        $value = App()->request->getPost($attr_name, '');
                         if ($desc['mandatory'] == 'Y' && trim($value) == '') {
                             Yii::app()->setFlashMessage(sprintf(gT('%s cannot be left empty'), $desc['description']), 'error');
                             $this->getController()->refresh();
@@ -547,21 +547,21 @@ class Tokens extends SurveyCommonAction
             Yii::import('application.libraries.Date_Time_Converter');
 
             // Fix up dates and match to database format
-            if (trim($request->getPost('validfrom')) == '') {
+            if (trim($request->getPost('validfrom', '')) == '') {
                 $validfrom = null;
             } else {
                 $datetimeobj = new Date_Time_Converter(
-                    trim($request->getPost('validfrom')),
+                    trim($request->getPost('validfrom', '')),
                     $dateformatdetails['phpdate'] . ' H:i'
                 );
                 $validfrom = $datetimeobj->convert('Y-m-d H:i:s');
             }
 
-            if (trim(App()->request->getPost('validuntil')) == '') {
+            if (trim(App()->request->getPost('validuntil', '')) == '') {
                 $validuntil = null;
             } else {
                 $datetimeobj = new Date_Time_Converter(
-                    trim($request->getPost('validuntil')),
+                    trim($request->getPost('validuntil', '')),
                     $dateformatdetails['phpdate'] . ' H:i'
                 );
                 $validuntil = $datetimeobj->convert('Y-m-d H:i:s');
@@ -591,7 +591,7 @@ class Tokens extends SurveyCommonAction
                 if (!in_array($attr_name, $aTokenFieldNames)) {
                     continue;
                 }
-                $value = App()->getRequest()->getPost($attr_name);
+                $value = App()->getRequest()->getPost($attr_name, '');
                 if ($desc['mandatory'] == 'Y' && trim($value) == '') {
                     App()->setFlashMessage(sprintf(gT('%s cannot be left empty'), $desc['description']), 'error');
                     $this->getController()->refresh();
@@ -682,44 +682,44 @@ class Tokens extends SurveyCommonAction
             $aTokenData = [];
 
             // validfrom
-            if (trim($request->getPost('validfrom')) == '') {
+            if (trim($request->getPost('validfrom', '')) == '') {
                 $_POST['validfrom'] = null;
             } else {
-                $datetimeobj = new Date_Time_Converter(trim($request->getPost('validfrom')), $dateformatdetails['phpdate'] . ' H:i');
+                $datetimeobj = new Date_Time_Converter(trim($request->getPost('validfrom', '')), $dateformatdetails['phpdate'] . ' H:i');
                 $_POST['validfrom'] = $datetimeobj->convert('Y-m-d H:i:s');
             }
 
             // validuntil
-            if (trim($request->getPost('validuntil')) == '') {
+            if (trim($request->getPost('validuntil', '')) == '') {
                 $_POST['validuntil'] = null;
             } else {
-                $datetimeobj = new Date_Time_Converter(trim($request->getPost('validuntil')), $dateformatdetails['phpdate'] . ' H:i');
+                $datetimeobj = new Date_Time_Converter(trim($request->getPost('validuntil', '')), $dateformatdetails['phpdate'] . ' H:i');
                 $_POST['validuntil'] = $datetimeobj->convert('Y-m-d H:i:s');
             }
 
             // completed
-            if (trim($request->getPost('completed')) == 'N' || trim($request->getPost('completed')) == '') {
+            if (trim($request->getPost('completed', '')) == 'N' || trim($request->getPost('completed', '')) == '') {
                 $_POST['completed'] = 'N';
-            } elseif (trim($request->getPost('completed')) == 'Y') {
+            } elseif (trim($request->getPost('completed', '')) == 'Y') {
                 $_POST['completed'] = 'Y';
             } else {
-                $datetimeobj = new Date_Time_Converter(trim($request->getPost('completed')), $dateformatdetails['phpdate'] . ' H:i');
+                $datetimeobj = new Date_Time_Converter(trim($request->getPost('completed', '')), $dateformatdetails['phpdate'] . ' H:i');
                 $_POST['completed'] = $datetimeobj->convert('Y-m-d H:i');
             }
 
             //sent
-            if (trim($request->getPost('sent')) == 'N') {
+            if (trim($request->getPost('sent', '')) == 'N') {
                 $_POST['sent'] = 'N';
             } else {
-                $datetimeobj = new Date_Time_Converter(trim($request->getPost('sent')), $dateformatdetails['phpdate'] . ' H:i');
+                $datetimeobj = new Date_Time_Converter(trim($request->getPost('sent', '')), $dateformatdetails['phpdate'] . ' H:i');
                 $_POST['sent'] = $datetimeobj->convert('Y-m-d H:i');
             }
 
             // remindersent
-            if (trim($request->getPost('remindersent')) == 'N') {
+            if (trim($request->getPost('remindersent', '')) == 'N') {
                 $_POST['remindersent'] = 'N';
             } else {
-                $datetimeobj = new Date_Time_Converter(trim($request->getPost('remindersent')), $dateformatdetails['phpdate'] . ' H:i');
+                $datetimeobj = new Date_Time_Converter(trim($request->getPost('remindersent', '')), $dateformatdetails['phpdate'] . ' H:i');
                 $_POST['remindersent'] = $datetimeobj->convert('Y-m-d H:i');
             }
 
@@ -744,7 +744,7 @@ class Tokens extends SurveyCommonAction
                 $thissurvey = getSurveyInfo($iSurveyId);
                 $aAdditionalAttributeFields = $thissurvey['attributedescriptions'];
                 foreach ($aAdditionalAttributeFields as $attr_name => $desc) {
-                    $value = $request->getPost($attr_name);
+                    $value = $request->getPost($attr_name, '');
                     if ($desc['mandatory'] == 'Y' && trim($value) == '') {
                         $sOutput .= sprintf(gT("Notice: Field '%s' was left empty, even though it is a mandatory attribute."), $desc['description']) . '<br>';
                     }
@@ -787,7 +787,7 @@ class Tokens extends SurveyCommonAction
     {
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'tokens.js', LSYii_ClientScript::POS_BEGIN);
         $iSurveyID = (int) $iSurveyID;
-        $sTokenIDs = Yii::app()->request->getPost('tid');
+        $sTokenIDs = Yii::app()->request->getPost('tid', '');
         $survey = Survey::model()->findByPk($iSurveyID);
         /* Check permissions */
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'update')) {
@@ -857,16 +857,16 @@ class Tokens extends SurveyCommonAction
             $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
 
             //Fix up dates and match to database format
-            if (trim(Yii::app()->request->getPost('validfrom')) == '') {
+            if (trim(Yii::app()->request->getPost('validfrom', '')) == '') {
                 $aData['validfrom'] = null;
             } else {
-                $datetimeobj = new Date_Time_Converter(trim(Yii::app()->request->getPost('validfrom')), $dateformatdetails['phpdate'] . ' H:i');
+                $datetimeobj = new Date_Time_Converter(trim(Yii::app()->request->getPost('validfrom', '')), $dateformatdetails['phpdate'] . ' H:i');
                 $aData['validfrom'] = $datetimeobj->convert('Y-m-d H:i:s');
             }
-            if (trim(Yii::app()->request->getPost('validuntil')) == '') {
+            if (trim(Yii::app()->request->getPost('validuntil', '')) == '') {
                 $aData['validuntil'] = null;
             } else {
-                $datetimeobj = new Date_Time_Converter(trim(Yii::app()->request->getPost('validuntil')), $dateformatdetails['phpdate'] . ' H:i');
+                $datetimeobj = new Date_Time_Converter(trim(Yii::app()->request->getPost('validuntil', '')), $dateformatdetails['phpdate'] . ' H:i');
                 $aData['validuntil'] = $datetimeobj->convert('Y-m-d H:i:s');
             }
 
@@ -886,7 +886,7 @@ class Tokens extends SurveyCommonAction
             $cntAttributeErrors = 0;
             $attrfieldnames = getTokenFieldsAndNames($iSurveyId, true);
             foreach ($attrfieldnames as $attr_name => $desc) {
-                $value = App()->request->getPost($attr_name);
+                $value = App()->request->getPost($attr_name, '');
                 if ($desc['mandatory'] == 'Y' && trim($value) == '') {
                     Yii::app()->setFlashMessage(sprintf(gT('%s cannot be left empty'), $desc['description']), 'error');
                     $cntAttributeErrors += 1;
@@ -916,9 +916,9 @@ class Tokens extends SurveyCommonAction
                 $token = Token::create($iSurveyId);
                 $token->setAttributes($aData, false);
 
-                $token->firstname = str_replace('{TOKEN_COUNTER}', $newDummyToken, $token->firstname);
-                $token->lastname = str_replace('{TOKEN_COUNTER}', $newDummyToken, $token->lastname);
-                $token->email = str_replace('{TOKEN_COUNTER}', $newDummyToken, $token->email);
+                $token->firstname = str_replace('{TOKEN_COUNTER}', $newDummyToken, (string) $token->firstname);
+                $token->lastname = str_replace('{TOKEN_COUNTER}', $newDummyToken, (string) $token->lastname);
+                $token->email = str_replace('{TOKEN_COUNTER}', $newDummyToken, (string) $token->email);
 
                 $token->generateToken($aData['tokenlength']);
 
@@ -1047,7 +1047,7 @@ class Tokens extends SurveyCommonAction
             } else {
                 $description = "";
             }
-            $description = sprintf(gT("Attribute %s (%s)"), str_replace("attribute_", "", $tokenfield), $description);
+            $description = sprintf(gT("Attribute %s (%s)"), str_replace("attribute_", "", (string) $tokenfield), $description);
             if (!in_array($tokenfield, $aMandatoryList)) {
                 $tokenfieldlist[] = array("id" => $tokenfield, "description" => $description);
             }
@@ -1225,13 +1225,13 @@ class Tokens extends SurveyCommonAction
         $tokenattributefieldnames = getAttributeFieldNames($iSurveyId);
         // custom attributes
         foreach ($tokenattributefieldnames as $fieldname) {
-            if (isset(json_decode($oSurvey->attributedescriptions)->$fieldname->encrypted)) {
-                $aOptionsBeforeChange[$fieldname]['encrypted'] = json_decode($oSurvey->attributedescriptions)->$fieldname->encrypted;
+            if (isset(json_decode((string) $oSurvey->attributedescriptions)->$fieldname->encrypted)) {
+                $aOptionsBeforeChange[$fieldname]['encrypted'] = json_decode((string) $oSurvey->attributedescriptions)->$fieldname->encrypted;
             } else {
                 $aOptionsBeforeChange[$fieldname]['encrypted'] = 'N';
             }
             $fieldcontents[$fieldname] = [
-                'description'   => strip_tags(Yii::app()->request->getPost('description_' . $fieldname)),
+                'description'   => strip_tags(Yii::app()->request->getPost('description_' . $fieldname, '')),
                 'mandatory'     => Yii::app()->request->getPost('mandatory_' . $fieldname) == '1' ? 'Y' : 'N',
                 'encrypted'     => Yii::app()->request->getPost('encrypted_' . $fieldname) == '1' ? 'Y' : 'N',
                 'show_register' => Yii::app()->request->getPost('show_register_' . $fieldname) == '1' ? 'Y' : 'N',
@@ -1427,7 +1427,7 @@ class Tokens extends SurveyCommonAction
                 $sSubject[$language] = Yii::app()->request->getPost('subject_' . $language, '');
                 $sMessage[$language] = Yii::app()->request->getPost('message_' . $language, '');
                 if ($bHtml) {
-                    $sMessage[$language] = html_entity_decode($sMessage[$language], ENT_QUOTES, Yii::app()->getConfig("emailcharset"));
+                    $sMessage[$language] = html_entity_decode((string) $sMessage[$language], ENT_QUOTES, Yii::app()->getConfig("emailcharset"));
                 }
             }
 
@@ -1476,12 +1476,12 @@ class Tokens extends SurveyCommonAction
                             '{LASTNAME}' => $emrow['lastname'],
                             '{EMAIL}' => $emrow['email'],
                         ];
-                        if (trim($emrow['validfrom']) != '' && strtotime($emrow['validfrom']) > strtotime($now)) {
-                            $tokenoutput .= $emrow['tid'] . " " . htmlspecialchars(ReplaceFields(gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) delayed: Access code is not yet valid.", 'unescaped'), $fieldsarray)) . "<br />";
+                        if (trim((string) $emrow['validfrom']) != '' && strtotime((string) $emrow['validfrom']) > strtotime((string) $now)) {
+                            $tokenoutput .= $emrow['tid'] . " " . htmlspecialchars((string) ReplaceFields(gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) delayed: Access code is not yet valid.", 'unescaped'), $fieldsarray)) . "<br />";
                             $bInvalidDate = true;
                             continue;
-                        } elseif (trim($emrow['validuntil']) != '' && strtotime($emrow['validuntil']) < strtotime($now)) {
-                            $tokenoutput .= $emrow['tid'] . " " . htmlspecialchars(ReplaceFields(gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) skipped: Access code is not valid anymore.", 'unescaped'), $fieldsarray)) . "<br />";
+                        } elseif (trim((string) $emrow['validuntil']) != '' && strtotime((string) $emrow['validuntil']) < strtotime((string) $now)) {
+                            $tokenoutput .= $emrow['tid'] . " " . htmlspecialchars((string) ReplaceFields(gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) skipped: Access code is not valid anymore.", 'unescaped'), $fieldsarray)) . "<br />";
                             $bInvalidDate = true;
                             continue;
                         }
@@ -1801,7 +1801,7 @@ class Tokens extends SurveyCommonAction
 
             $aTokenAttr = getAttributeFieldNames($iSurveyId);
             foreach ($aTokenAttr as $thisattrfieldname) {
-                $attridx = substr($thisattrfieldname, 10); // the 'attribute_' prefix is 10 chars long
+                $attridx = substr((string) $thisattrfieldname, 10); // the 'attribute_' prefix is 10 chars long
                 $attrparams[] = "attr" . $attridx;
             }
 
@@ -1873,7 +1873,7 @@ class Tokens extends SurveyCommonAction
                                 }
 
                                 foreach ($aTokenAttr as $thisattrfieldname) {
-                                    $attridx = substr($thisattrfieldname, 10); // the 'attribute_' prefix is 10 chars long
+                                    $attridx = substr((string) $thisattrfieldname, 10); // the 'attribute_' prefix is 10 chars long
                                     if (
                                         isset($ldap_queries[$ldapq]['attr' . $attridx]) &&
                                         isset($responseGroup[$j][$ldap_queries[$ldapq]['attr' . $attridx]])
@@ -1889,11 +1889,11 @@ class Tokens extends SurveyCommonAction
                                 // In case LDAP Server encoding isn't UTF-8, let's translate
                                 // the strings to UTF-8
                                 if ($ldapencoding != '') {
-                                    $myfirstname = @mb_convert_encoding($myfirstname, "UTF-8", $ldapencoding);
-                                    $mylastname = @mb_convert_encoding($mylastname, "UTF-8", $ldapencoding);
+                                    $myfirstname = @mb_convert_encoding((string) $myfirstname, "UTF-8", $ldapencoding);
+                                    $mylastname = @mb_convert_encoding((string) $mylastname, "UTF-8", $ldapencoding);
                                     foreach ($aTokenAttr as $thisattrfieldname) {
-                                        $attridx = substr($thisattrfieldname, 10); // the 'attribute_' prefix is 10 chars long
-                                        @mb_convert_encoding($myattrArray[$attridx], "UTF-8", $ldapencoding);
+                                        $attridx = substr((string) $thisattrfieldname, 10); // the 'attribute_' prefix is 10 chars long
+                                        @mb_convert_encoding((string) $myattrArray[$attridx], "UTF-8", $ldapencoding);
                                     }
                                 }
 
@@ -1927,7 +1927,7 @@ class Tokens extends SurveyCommonAction
                                     . "(firstname, lastname, email, emailstatus, token, language";
 
                                     foreach ($aTokenAttr as $thisattrfieldname) {
-                                        $attridx = substr($thisattrfieldname, 10); // the 'attribute_' prefix is 10 chars long
+                                        $attridx = substr((string) $thisattrfieldname, 10); // the 'attribute_' prefix is 10 chars long
                                         if (!empty($myattrArray[$attridx])) {
                                             $iq .= ", " . Yii::app()->db->quoteColumnName($thisattrfieldname);
                                         }
@@ -1936,7 +1936,7 @@ class Tokens extends SurveyCommonAction
                                     . "VALUES (" . Yii::app()->db->quoteValue($myfirstname) . ", " . Yii::app()->db->quoteValue($mylastname) . ", " . Yii::app()->db->quoteValue($myemail) . ", 'OK', " . Yii::app()->db->quoteValue($mytoken) . ", " . Yii::app()->db->quoteValue($mylanguage) . "";
 
                                     foreach ($aTokenAttr as $thisattrfieldname) {
-                                        $attridx = substr($thisattrfieldname, 10); // the 'attribute_' prefix is 10 chars long
+                                        $attridx = substr((string) $thisattrfieldname, 10); // the 'attribute_' prefix is 10 chars long
                                         if (!empty($myattrArray[$attridx])) {
                                             $iq .= ", " . Yii::app()->db->quoteValue($myattrArray[$attridx]) . "";
                                         }// dbquote_all encloses str with quotes
@@ -2046,7 +2046,7 @@ class Tokens extends SurveyCommonAction
             $oFile = CUploadedFile::getInstanceByName("the_file");
             $sPath = Yii::app()->getConfig('tempdir');
             $sFileName = $sPath . '/' . randomChars(20);
-            if (strtolower($oFile->getExtensionName()) != 'csv') {
+            if (strtolower((string) $oFile->getExtensionName()) != 'csv') {
                 Yii::app()->setFlashMessage(gT("Only CSV files are allowed."), 'error');
             } elseif (!@$oFile->saveAs($sFileName)) {
                 Yii::app()->setFlashMessage(sprintf(gT("Upload file not found. Check your permissions and path (%s) for the upload directory"), $sPath), 'error');
@@ -2068,7 +2068,7 @@ class Tokens extends SurveyCommonAction
                 $sSeparator = Yii::app()->request->getPost('separator');
                 $aMissingAttrFieldName = $aInvalideAttrFieldName = array();
                 foreach ($aTokenListArray as $buffer) {
-                    $buffer = @mb_convert_encoding($buffer, "UTF-8", $sUploadCharset);
+                    $buffer = @mb_convert_encoding((string) $buffer, "UTF-8", $sUploadCharset);
                     if ($iRecordCount == 0) {
                         // Parse first line (header) from CSV
                         $buffer = removeBOM($buffer);
@@ -2090,15 +2090,15 @@ class Tokens extends SurveyCommonAction
                                 $sSeparator = ';';
                                 break;
                             default:
-                                $comma = substr_count($buffer, ',');
-                                $semicolon = substr_count($buffer, ';');
+                                $comma = substr_count((string) $buffer, ',');
+                                $semicolon = substr_count((string) $buffer, ';');
                                 if ($semicolon > $comma) {
                                                                     $sSeparator = ';';
                                 } else {
                                                                         $sSeparator = ',';
                                 }
                         }
-                        $aFirstLine = str_getcsv($buffer, $sSeparator, '"');
+                        $aFirstLine = str_getcsv((string) $buffer, $sSeparator, '"');
                         $aFirstLine = array_map('trim', $aFirstLine);
                         $aIgnoredColumns = array();
                         // Now check the first line for invalid fields
@@ -2125,14 +2125,14 @@ class Tokens extends SurveyCommonAction
                             if (!empty($aAttrFieldNames)) {
                                 if (!empty($aMissingAttrFieldName)) {
                                     foreach ($aMissingAttrFieldName as $index => $AttrFieldName) {
-                                        if (isset($allAttrFieldNames[$AttrFieldName]) and strtolower($allAttrFieldNames[$AttrFieldName]["mandatory"]) != "y") {
+                                        if (isset($allAttrFieldNames[$AttrFieldName]) and strtolower((string) $allAttrFieldNames[$AttrFieldName]["mandatory"]) != "y") {
                                             unset($aMissingAttrFieldName[$index]);
                                         }
                                     }
                                 }
                                 if (isset($aInvalideAttrFieldName) and !empty($aInvalideAttrFieldName)) {
                                     foreach ($aInvalideAttrFieldName as $index => $AttrFieldName) {
-                                        if (isset($allAttrFieldNames[$AttrFieldName]) and strtolower($allAttrFieldNames[$AttrFieldName]["mandatory"]) != "y") {
+                                        if (isset($allAttrFieldNames[$AttrFieldName]) and strtolower((string) $allAttrFieldNames[$AttrFieldName]["mandatory"]) != "y") {
                                             unset($aInvalideAttrFieldName[$index]);
                                         }
                                     }
@@ -2206,8 +2206,8 @@ class Tokens extends SurveyCommonAction
                             }
                         }
 
-                        if (!$bDuplicateFound && !$bInvalidEmail && isset($aWriteArray['token']) && trim($aWriteArray['token']) != '') {
-                            if (trim($aWriteArray['token']) != Token::sanitizeToken($aWriteArray['token'])) {
+                        if (!$bDuplicateFound && !$bInvalidEmail && isset($aWriteArray['token']) && trim((string) $aWriteArray['token']) != '') {
+                            if (trim((string) $aWriteArray['token']) != Token::sanitizeToken($aWriteArray['token'])) {
                                 $aInvalidTokenList[] = sprintf(gT("Line %s : %s %s (%s) - token : %s"), $iRecordCount, CHtml::encode($aWriteArray['firstname']), CHtml::encode($aWriteArray['lastname']), CHtml::encode($aWriteArray['email']), CHtml::encode($aWriteArray['token']));
                                 $bInvalidToken = true;
                             }
@@ -2247,9 +2247,9 @@ class Tokens extends SurveyCommonAction
                                 if ($aWriteArray[$key] == "") {
                                                                     unset($aWriteArray[$key]);
                                 }
-                                if (substr($value, 0, 1) == '"' && substr($value, -1) == '"') {
+                                if (substr((string) $value, 0, 1) == '"' && substr((string) $value, -1) == '"') {
                                     // Fix CSV quote
-                                    $aWriteArray[$key] = substr($value, 1, -1);
+                                    $aWriteArray[$key] = substr((string) $value, 1, -1);
                                 }
                             }
                             // Some default value : to be moved to Token model rules in future release ?
@@ -2653,7 +2653,7 @@ class Tokens extends SurveyCommonAction
             if (isset($archivedTableSettings)) {
                 $tokenencryptionoptions = $archivedTableSettings->properties;
                 $tokenencryptionoptionsOld = $aTokenencryptionoptions;
-                $tokenencryptionoptionsArray = json_decode($tokenencryptionoptions, true);
+                $tokenencryptionoptionsArray = json_decode((string) $tokenencryptionoptions, true);
                 foreach ($tokenencryptionoptionsArray as $tokenencryptionoption) {
                     // if the encryption status is unknown
                     if ($tokenencryptionoption === 'unknown') {
@@ -2664,7 +2664,7 @@ class Tokens extends SurveyCommonAction
                 }
                 $attributedescriptions = $archivedTableSettings->attributes;
                 $attributedescriptionsOld = $aSurveyInfo['attributedescriptions'];
-                $attributedescriptionsArray = json_decode($attributedescriptions, true);
+                $attributedescriptionsArray = json_decode((string) $attributedescriptions, true);
                 foreach ($attributedescriptionsArray as $attributedescription) {
                     // if the encryption status is unknown
                     if ($attributedescription === 'unknown') {
@@ -2731,7 +2731,7 @@ class Tokens extends SurveyCommonAction
             $tcount = count($result);
             if ($tcount > 0) {
                 foreach ($result as $rows) {
-                    $oldlist[] = substr(reset($rows), strlen(Yii::app()->db->tablePrefix), (strlen(reset($rows)) - strlen(Yii::app()->db->tablePrefix)));
+                    $oldlist[] = substr((string) reset($rows), strlen((string) Yii::app()->db->tablePrefix), (strlen((string) reset($rows)) - strlen((string) Yii::app()->db->tablePrefix)));
                 }
                 $aData['oldlist'] = $oldlist;
             }
@@ -2841,7 +2841,7 @@ class Tokens extends SurveyCommonAction
         $aTokenIds = $aTokenIds === false ? Yii::app()->request->getQuery('tokenids', false) : $aTokenIds;
 
         if (!empty($aTokenIds)) {
-            $aTokenIds = explode('|', $aTokenIds);
+            $aTokenIds = explode('|', (string) $aTokenIds);
             $aTokenIds = array_filter($aTokenIds);
             $aTokenIds = array_map('sanitize_int', $aTokenIds);
         }

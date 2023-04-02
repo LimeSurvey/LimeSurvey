@@ -11,22 +11,17 @@
             <p><?php echo flattenText($thissurvey['description'],true); ?></p>
             </div>
         <?php echo CHtml::form(array("admin/dataentry/sa/insert"), 'post', array('name'=>'addsurvey', 'id'=>'addsurvey', 'enctype'=>'multipart/form-data'));?>
+            <?php if (count(Survey::model()->findByPk($surveyid)->additionalLanguages)>0):?>
+                <div class="col-3">
+                    <?php echo $langlistbox; ?>
+                </div>
+            <?php endif; ?>
+
             <table class='data-entry-tbl table'>
 
                 <tr class='data-entry-separator'>
                     <td colspan='3'></td>
                 </tr>
-
-                <?php if (count(Survey::model()->findByPk($surveyid)->additionalLanguages)>0):?>
-                    <tr>
-                        <td colspan='3' class="langlistbox">
-                            <?php echo $langlistbox; ?>
-                        </td>
-                    </tr>
-                    <tr class='data-entry-separator'>
-                        <td colspan='3'></td>
-                    </tr>
-                <?php endif; ?>
 
             <?php if ($oSurvey->hasTokensTable) //Give entry field for token id
             { ?>

@@ -8,7 +8,7 @@ $this->widget(
         'name' => 'import-group',
         'id' => 'import-group',
         'text' => gT("Import group"),
-        'icon' => 'ri-upload-fill',
+        'icon' => 'ri-download-fill',
         'link' => Yii::App()->createUrl("questionGroupsAdministration/importview/surveyid/" . $surveyid),
         'htmlOptions' => [
             'class' => 'btn btn-outline-secondary',

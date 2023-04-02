@@ -25,7 +25,7 @@
             {# rows/answer_row.php #}
             {{ sRows }}
             {% for aRow in aRows %}
-                {% include 'survey/questions/answer/arrays/array/dropdown/rows/answer_row.twig' with aRow only %}
+                {% include 'survey/questions/answer/arrays/array/dropdown/rows/answer_row.twig' with aRow %}
             {% endfor %}
         
     </tbody>
