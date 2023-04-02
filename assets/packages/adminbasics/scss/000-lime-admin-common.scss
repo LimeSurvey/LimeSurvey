@@ -4350,3 +4350,10 @@ html[dir="rtl"] th {
 #question-grid {
     overflow-x: visible;
 }
+
+/** Hide Relevance Equation column for subquestions when not supported */
+.subquestions-table.hide-relevance {
+    #rel-eq-th, td.relevance-equation {
+        display: none;
+    }
+}

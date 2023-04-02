@@ -45,7 +45,7 @@ function sumTable(element) {
             sum = sum.plus(value);
         });
         //set the value of currents rows sum to the total-combat element in the current row
-        $(this).find('input:disabled').val(formatValue(sum)).trigger('change').trigger('keyup').trigger('keydown');
+        $(this).find('td.total input:disabled').val(formatValue(sum)).trigger('change').trigger('keyup').trigger('keydown');
         iGrandTotal = iGrandTotal.plus(sum);
     });
     
@@ -64,7 +64,7 @@ function sumTable(element) {
             //sum the values
             sum = sum.plus(val);
         });
-        $($iRow.last().find('td').get((i - 1))).find('input:disabled').val(formatValue(sum)).trigger('change').trigger('keyup').trigger('keydown');
+        $($iRow.last().find('td.total').get((i - 1))).find('input:disabled').val(formatValue(sum)).trigger('change').trigger('keyup').trigger('keydown');
     }
 
     // Grand total

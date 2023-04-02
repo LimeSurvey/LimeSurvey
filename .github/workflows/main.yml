@@ -104,9 +104,6 @@ jobs:
           # sed -i '60s/.*/        "debug"=>2,/' application/config/config.php
           # cat application/config/config.php
 
-      - name: Run syntax check, CodeSniffer, MessDetector, ...
-        run: composer test
-
       - name: Test the server
         run: |
           # Test server.
@@ -153,3 +150,15 @@ jobs:
         env:
             DOMAIN: localhost
         run: php vendor/bin/phpunit --testdox --stop-on-failure tests/functional
+
+      - name: Upload Screenshots
+        uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: screenshots
+          path: tests/tmp/screenshots/
+          retention-days: 5
+          
+      - name: Run syntax check, CodeSniffer, MessDetector, ...
+        run: composer test
+

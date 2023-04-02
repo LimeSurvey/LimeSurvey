@@ -17,6 +17,8 @@ $minVersion = ($debug > 0) ? "" : ".min";
 if (isset($_GET['isAjax'])) {
     return array();
 }
+
+// When adding new fonts, please keep fonts ordered alphabetically
 $coreFonts = array(
     
     'fontawesome' => array(
@@ -30,16 +32,6 @@ $coreFonts = array(
         ),
     ),
 
-    'font-roboto' => array(
-        'title' => 'Roboto',
-        'type' => 'core',
-        'devBaseUrl' => 'assets/fonts/',
-        'basePath' => 'fonts',
-        'css' => array(
-            'roboto.css',
-        ),
-    ),
-
     'font-icomoon' => array(
         'title' => 'IcoMoon',
         'type' => 'core',
@@ -50,13 +42,13 @@ $coreFonts = array(
         ),
     ),
 
-    'font-noto' => array(
-        'title' => 'Noto',
+    'font-lato' => array(
+        'title' => 'Lato',
         'type' => 'core',
         'devBaseUrl' => 'assets/fonts/',
         'basePath' => 'fonts',
         'css' => array(
-            'noto.css',
+            'lato.css',
         ),
     ),
 
@@ -70,25 +62,26 @@ $coreFonts = array(
         ),
     ),
 
-    'font-ubuntu' => array(
-        'title' => 'Ubuntu',
+    'font-noto' => array(
+        'title' => 'Noto',
         'type' => 'core',
         'devBaseUrl' => 'assets/fonts/',
         'basePath' => 'fonts',
         'css' => array(
-            'ubuntu.css',
+            'noto.css',
         ),
     ),
 
-    'font-lato' => array(
-        'title' => 'Lato',
+    'font-roboto' => array(
+        'title' => 'Roboto',
         'type' => 'core',
         'devBaseUrl' => 'assets/fonts/',
         'basePath' => 'fonts',
         'css' => array(
-            'lato.css',
+            'roboto.css',
         ),
     ),
+
 
     // see: https://www.w3schools.com/cssref/css_websafe_fonts.asp
     'font-websafe' => array(
@@ -111,6 +104,16 @@ $coreFonts = array(
         ),
     ),
 
+    'font-source-sans-pro' => array(
+        'title' => 'Source Sans Pro',
+        'type' => 'core',
+        'devBaseUrl' => 'assets/fonts/',
+        'basePath' => 'fonts',
+        'css' => array(
+            'source-sans-pro.css',
+        ),
+    ),
+
     'font-raleway' => array(
         'title' => 'Raleway',
         'type' => 'core',
@@ -121,15 +124,17 @@ $coreFonts = array(
         ),
     ),
 
-    'font-source-sans-pro' => array(
-        'title' => 'Source Sans Pro',
+    'font-ubuntu' => array(
+        'title' => 'Ubuntu',
         'type' => 'core',
         'devBaseUrl' => 'assets/fonts/',
         'basePath' => 'fonts',
         'css' => array(
-            'source-sans-pro.css',
+            'ubuntu.css',
         ),
     ),
+
+
 );
 
 // get user fonts configuration from /upload/fonts directory

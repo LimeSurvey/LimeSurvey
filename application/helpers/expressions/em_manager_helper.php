@@ -3942,14 +3942,8 @@ class LimeExpressionManager
 
             $token = Token::model($surveyid)->findByToken($_SESSION[$this->sessid]['token']);
             if ($token) {
-                $tokenEncryptionOptions = $survey->getTokenEncryptionOptions();
+                $token->decrypt();
                 foreach ($token as $key => $val) {
-                    // Decrypt encrypted token attributes
-                    if (isset($tokenEncryptionOptions['columns'][$key]) && $tokenEncryptionOptions['columns'][$key] === 'Y') {
-                        if (!empty($val)) {
-                            $val = $token->decrypt($val);
-                        }
-                    }
                     $this->knownVars["TOKEN:" . strtoupper($key)] = [
                         'code'      => $anonymized ? '' : $val,
                         'jsName_on' => '',
@@ -5159,7 +5153,16 @@ class LimeExpressionManager
                     return;
                 }
                 if ($oResponse->submitdate == null || Survey::model()->findByPk($this->sid)->alloweditaftercompletion == 'Y') {
-                    $oResponse->setAttributes($aResponseAttributes, false);
+                    try {
+                        $oResponse->setAllAttributes($aResponseAttributes, false);
+                    } catch (Exception $ex) {
+                        // This can happen if the table is missing fields. It should never happen, but somehow it does.
+                        submitfailed($ex->getMessage());
+                        if (YII_DEBUG) {
+                            throw $ex;
+                        }
+                        $this->throwFatalError();
+                    }
                     $oResponse->decrypt();
                     if (!$oResponse->encryptSave()) {
                         $message = submitfailed('', print_r($oResponse->getErrors(), true)); // $response->getErrors() is array[string[]], then can not join
@@ -9096,7 +9099,15 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             <th class=\"column-3\">" . $LEM->gT('Text [Help] (Tip)') . "</th>
             </tr>\n";
 
-        $_gseq = -1;
+        // Picking up questions in the survey.
+        // To be used later while composing the logic file, for auxiliary information.
+        $criteria = new CDbCriteria();
+        $criteria->addCondition("sid = :sid");
+        $criteria->params[':sid'] = $sid;
+        $criteria->index = 'qid';
+        $questions = Question::model()->with('question_theme')->findAll($criteria);
+        
+        $_gseq = -1;        
         $baseQuestionThemes = QuestionTheme::findQuestionMetaDataForAllTypes();
         foreach ($LEM->currentQset as $q) {
             $gseq = $q['info']['gseq'];
@@ -9150,6 +9161,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             $mandatory = (($q['info']['mandatory'] == 'Y' || $q['info']['mandatory'] == 'S') ? "<span class='mandatory'>*</span>" : '');
             $type = $q['info']['type'];
             $typedesc = $baseQuestionThemes[$type]->title;
+            $questionTheme = $questions[$q['info']['qid']]->question_theme;
+            $themeDesc = !empty($questionTheme->extends) ? "({$questionTheme->title})" : "";
             $sgqas = explode('|', $q['sgqa']);
             $qReplacement = array_merge(
                 $standardsReplacementFields,
@@ -9496,7 +9509,15 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     . "onclick='window.open(\"$editlink\",\"_blank\")'>"
                     . $rootVarName . "</span>";
             }
-            $questionRow .= "</b><br />[<a target='_blank' href='$editlink'>QID $qid</a>]<br/>$typedesc [$type] $errText $sWarningsText</td>"
+            $questionRow .= "</b>"
+                . "<br/>"
+                . "[<a target='_blank' href='$editlink'>" . sprintf(gT("Question ID %s"), $qid) . "</a>]"
+                . "<br/>"
+                . "<span class='question-type'>$typedesc [$type]</span> "
+                . "<span class='question-theme'>$themeDesc</span> "
+                . $errText . " "
+                . $sWarningsText
+                . "</td>"
                 . "<td>" . $relevance . $prettyValidEqn . $default . "</td>"
                 . "<td>" . $qdetails . "</td>"
                 . "</tr>\n";
@@ -9819,7 +9840,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             case 'K': // Multiple numerical
             case 'N': // Numerical
                 if (!preg_match("/^[-]?(\d{1,20}\.\d{0,10}|\d{1,20})$/", $value)) { // DECIMAL(30,10)
-                    $LEM->addValidityString($sgq, $value, gT("This question only accept 30 digits including 10 decimals."), $set);
+                    $LEM->addValidityString($sgq, $value, gT("This question only accepts 30 digits including 10 decimals."), $set);
                     /* Show an error but don't unset value : this can happen without hack */
                 }
                 break;
@@ -9944,6 +9965,35 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
     public function getUpdatedValues(): array
     {
         return $this->updatedValues;
+    }
+
+    /**
+     * Kills the survey session and throws an exception with the specified message.
+     * @param string $message If empty, a default message is used.
+     * @throws Exception
+     */
+    private function throwFatalError($message = null)
+    {
+        if (empty($message)) {
+            $surveyInfo = getSurveyInfo($this->sid, $_SESSION['LEMlang']);
+            if (!empty($surveyInfo['admin'])) {
+                $message = sprintf(
+                    $this->gT("Due to a technical problem, your response could not be saved. Please contact the survey administrator %s (%s) about this problem. You will not be able to proceed with this survey."),
+                    $surveyInfo['admin'],
+                    $surveyInfo['adminemail']
+                );
+            } elseif (!empty(Yii::app()->getConfig("siteadminname"))) {
+                $message = sprintf(
+                    $this->gT("Due to a technical problem, your response could not be saved. Please contact the survey administrator %s (%s) about this problem. You will not be able to proceed with this survey."),
+                    Yii::app()->getConfig("siteadminname"),
+                    Yii::app()->getConfig("siteadminemail")
+                );
+            } else {
+                $message = $this->gT("Due to a technical problem, your response could not be saved. You will not be able to proceed with this survey.");
+            }
+        }
+        killSurveySession($this->sid);
+        throw new Exception($message);
     }
 }
 
