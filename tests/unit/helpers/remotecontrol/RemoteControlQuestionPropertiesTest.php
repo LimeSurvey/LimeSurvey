@@ -85,6 +85,6 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
         $qid = $question->qid;
 
         $result = $this->handler->get_question_properties($sessionKey, $qid);
-        $this->assertSame($answerOptionsByScaleId, $result['answeroptions'], 'The options were not returned correctly.');
+        $this->assertEquals($answerOptionsByScaleId, $result['answeroptions'], 'The options were not returned correctly.');
     }
 }
