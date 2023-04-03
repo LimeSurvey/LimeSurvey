@@ -10,7 +10,10 @@
  */
 
 #}
-<tr class="ls-heading ls-header" >
+<!-- repeat_header -->
+</tbody>
+<tbody>
+<tr class="ls-heading ls-heading-repeat " aria-hidden="true">
     {{ doRender(
         '/survey/questions/answer/arrays/dualscale/content_header',
         ({
@@ -21,7 +24,8 @@
             'rightexists'  : rightexists,
             'leftheader'   : leftheader,
             'rightheader'  : rightheader,
-            'repeat'       : false
+            'repeat'       : true
         })
     ) }}
 </tr>
+<!-- end of repeat_header -->

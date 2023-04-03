@@ -25,8 +25,9 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
     private $columnswidth;
     private $answerwidth;
     private $cellwidth;
-    private $sHeaders;
-    
+    private $sHeaders = '';
+    private $sRepeatHeaders = '';
+
     private $rightExists;
     private $bUseDropdownLayout = false;
 
@@ -96,7 +97,10 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
         if ($this->getQuestionCount() > 0 && $this->getAnswerCount() > 0) {
             $this->cellwidth = round(($this->columnswidth / $this->getAnswerCount()), 1);
         }
+        /* set the default header */
         $this->setHeaders();
+        /* set the repeat header */
+        $this->setHeaders(true);
     }
 
     public function getMainView($forTwig = false)
@@ -106,7 +110,12 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
             : '/survey/questions/answer/arrays/array/no_dropdown';
     }
 
-    public function setHeaders()
+    /**
+     * set the header
+     * @var null|boolean isrepeat
+     * @return void
+     */
+    public function setHeaders($isrepeat = false)
     {
         $sHeader = '';
         if ($this->bUseDropdownLayout) {
@@ -119,6 +128,8 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
             [
                 'class'   => '',
                 'content' => '',
+                'type' => 'subquestion-header',
+                'isrepeat' => $isrepeat,
             ]
         );
 
@@ -127,7 +138,11 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
                 $this->getMainView() . '/rows/cells/header_answer',
                 [
                     'class'   => "answer-text",
+                    'basename' => $this->sSGQA,
                     'content' => $oAnswer->answerl10ns[$this->sLanguage]->answer,
+                    'code' => $oAnswer->code,
+                    'isrepeat' => $isrepeat,
+                    'oAnswer' => $oAnswer
                 ]
             );
         }
@@ -138,6 +153,9 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
                 [
                     'class'   => '',
                     'content' => '',
+                    'type' => 'right-header',
+                    'isrepeat' => $isrepeat,
+                    'role' => null
                 ]
             );
         }
@@ -148,12 +166,19 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
                 $this->getMainView() . '/rows/cells/header_answer',
                 [
                     'class'   => 'answer-text noanswer-text',
+                    'basename' => $this->sSGQA,
                     'content' => gT('No answer'),
+                    'isrepeat' => $isrepeat,
+                    'code' => '',
+                    'oAnswer' => null
                 ]
             );
         }
-
-        $this->sHeaders =  $sHeader;
+        if ($isrepeat) {
+            $this->sRepeatHeaders =  $sHeader;
+        } else {
+            $this->sHeaders =  $sHeader;
+        }
     }
 
     public function getDropdownRows()
@@ -238,7 +263,7 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
                     $aRows[] = [
                         'template' => '/survey/questions/answer/arrays/array/no_dropdown/rows/repeat_header.twig',
                         'content' => array(
-                            'sHeaders' => $this->sHeaders
+                            'sHeaders' => $this->sRepeatHeaders
                         )
                     ];
                 }
@@ -260,23 +285,25 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
 
             foreach ($this->aAnswerOptions[0] as $oAnswer) {
                 $aAnswerColumns[] = array(
+                    'basename' => $this->sSGQA,
                     'myfname' => $myfname,
                     'ld' => $oAnswer->code,
+                    'code' => $oAnswer->code,
                     'label' => $oAnswer->answerl10ns[$this->sLanguage]->answer,
-                    'CHECKED' => ($this->getFromSurveySession($myfname) == $oAnswer->code) ? 'CHECKED' : '',
-                    'checkconditionFunction' => 'checkconditions',
+                    'checked' => ($this->getFromSurveySession($myfname) == $oAnswer->code) ? 'checked' : '',
                     );
             }
 
             $aNoAnswerColumn = [];
             if (($this->oQuestion->mandatory != 'Y' && SHOW_NO_ANSWER == 1)) {
-                $CHECKED = (!isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname] == '') ? 'CHECKED' : '';
+                $checked = (!isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname] == '') ? 'CHECKED' : '';
                 $aNoAnswerColumn = array(
+                    'basename' => $this->sSGQA,
                     'myfname'                => $myfname,
                     'ld'                     => '',
+                    'code' => $oAnswer->code,
                     'label'                  => gT('No answer'),
-                    'CHECKED'                => $CHECKED,
-                    'checkconditionFunction' => 'checkconditions',
+                    'checked'                => $checked,
                 );
             }
 
@@ -285,6 +312,7 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
                 "content" => array(
                     'aAnswerColumns' => $aAnswerColumns,
                     'aNoAnswerColumn' => $aNoAnswerColumn,
+                    'sSGQA'    => $this->sSGQA,
                     'myfname'    => $myfname,
                     'answertext' => $answertext,
                     'answerwidth' => $this->answerwidth,
@@ -348,7 +376,6 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
         //return @do_array($this->aFieldArray);
        
         $answer = '';
-
         $answer .=  Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/answer', array(
             'anscount'   => $this->getQuestionCount(),
             'aRows'      => $this->getRows(),
