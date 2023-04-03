@@ -10,6 +10,9 @@
             <a class="dropdown-item" href="https://help.limesurvey.org/portal/en/home" target="_blank"><?php eT("Help center") ?></a>
         </li>
         <li>
+            <a class="dropdown-item" href="https://translate.limesurvey.org/projects/" target="_blank"><?php eT("Help translating") ?></a>
+        </li>
+        <li>
             <a class="dropdown-item" href="https://forums.limesurvey.org" target="_blank"><?php eT("Support forum") ?></a>
         </li>
         <li>
