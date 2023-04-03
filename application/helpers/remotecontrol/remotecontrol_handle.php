@@ -1471,102 +1471,136 @@ class remotecontrol_handle
     public function import_question($sSessionKey, $iSurveyID, $iGroupID, $sImportData, $sImportDataType, $sMandatory = 'N', $sNewQuestionTitle = null, $sNewqQuestion = null, $sNewQuestionHelp = null)
     {
         $bOldEntityLoaderState = null;
-        if ($this->_checkSessionKey($sSessionKey)) {
-            $iSurveyID = (int) $iSurveyID;
-            $iGroupID = (int) $iGroupID;
-            $oSurvey = Survey::model()->findByPk($iSurveyID);
-            if (!isset($oSurvey)) {
-                            return array('status' => 'Error: Invalid survey ID');
+        if (!$this->_checkSessionKey($sSessionKey)) {
+            return array('status' => self::INVALID_SESSION_KEY);
+        }
+        $iSurveyID = (int) $iSurveyID;
+        $iGroupID = (int) $iGroupID;
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
+        if (!isset($oSurvey)) {
+            return array('status' => 'Error: Invalid survey ID');
+        }
+        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update') && !Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'import')) {
+            return array('status' => 'No permission');
+        }
+        if ($oSurvey->isActive) {
+            return array('status' => 'Error:Survey is Active and not editable');
+        }
+
+        $oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID));
+        if (!isset($oGroup)) {
+            return array('status' => 'Error: Invalid group ID');
+        }
+
+        $sGroupSurveyID = $oGroup['sid'];
+        if ($sGroupSurveyID != $iSurveyID) {
+            return array('status' => 'Error: Missmatch in surveyid and groupid');
+        }
+        /* Check unicity of title, and set autorename to true if it's set */
+        $importOptions = ['autorename' => false];
+        if (!empty($sNewQuestionTitle)) {
+            $countQuestionTitle = intval(Question::model()->count(
+                "sid = :sid and parent_qid = 0 and title = :title",
+                array(
+                    ":sid" => $iSurveyID,
+                    ":title" => $sNewQuestionTitle
+                )
+            ));
+            if ($countQuestionTitle > 0) {
+                return array('status' => 'Error: Question title already exist in this survey.');
             }
+            /* This allow import with existing title */
+            $importOptions = ['autorename' => true];
+        }
+        if (!strtolower($sImportDataType) == 'lsq') {
+            return array('status' => 'Invalid extension');
+        }
 
-            if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'update')) {
-                if ($oSurvey->isActive) {
-                    return array('status' => 'Error:Survey is Active and not editable');
-                }
+        libxml_use_internal_errors(true);
+        Yii::app()->loadHelper('admin.import');
 
-                $oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID));
-                if (!isset($oGroup)) {
-                                    return array('status' => 'Error: Invalid group ID');
-                }
+        // First save the data to a temporary file
+        $sFullFilePath = App()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(40) . '.' . $sImportDataType;
+        file_put_contents($sFullFilePath, base64_decode(chunk_split($sImportData)));
 
-                $sGroupSurveyID = $oGroup['sid'];
-                if ($sGroupSurveyID != $iSurveyID) {
-                    return array('status' => 'Error: Missmatch in surveyid and groupid');
-                }
-
-                if (!strtolower($sImportDataType) == 'lsq') {
-                    return array('status' => 'Invalid extension');
-                }
-                libxml_use_internal_errors(true);
-                Yii::app()->loadHelper('admin/import');
-                // First save the data to a temporary file
-                $sFullFilePath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(40) . '.' . $sImportDataType;
-                file_put_contents($sFullFilePath, base64_decode(chunk_split($sImportData)));
-
-                if (strtolower($sImportDataType) == 'lsq') {
-                    if (\PHP_VERSION_ID < 80000) {
-                        $bOldEntityLoaderState = libxml_disable_entity_loader(true); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
-                    }
-                    $sXMLdata = file_get_contents($sFullFilePath);
-                    $xml = @simplexml_load_string($sXMLdata, 'SimpleXMLElement', LIBXML_NONET);
-                    if (!$xml) {
-                        unlink($sFullFilePath);
-                        if (\PHP_VERSION_ID < 80000) {
-                            libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
-                        }
-                        return array('status' => 'Error: Invalid LimeSurvey question structure XML ');
-                    }
-                    $aImportResults = XMLImportQuestion($sFullFilePath, $iSurveyID, $iGroupID);
-                } else {
-                    if (\PHP_VERSION_ID < 80000) {
-                        libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
-                    }
-                    return array('status' => 'Really Invalid extension'); //just for symmetry!
-                }
-
+        if (strtolower($sImportDataType) == 'lsq') {
+            if (\PHP_VERSION_ID < 80000) {
+                $bOldEntityLoaderState = libxml_disable_entity_loader(true); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
+            }
+            $sXMLdata = file_get_contents($sFullFilePath);
+            $xml = @simplexml_load_string($sXMLdata, 'SimpleXMLElement', LIBXML_NONET);
+            if (!$xml) {
                 unlink($sFullFilePath);
-
-                if (isset($aImportResults['fatalerror'])) {
-                    if (\PHP_VERSION_ID < 80000) {
-                        libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
-                    }
-                    return array('status' => 'Error: ' . $aImportResults['fatalerror']);
-                } else {
-                    fixLanguageConsistency($iSurveyID);
-                    $iNewqid = $aImportResults['newqid'];
-
-                    $oQuestion = Question::model()->findByAttributes(array('sid' => $iSurveyID, 'gid' => $iGroupID, 'qid' => $iNewqid));
-                    if ($sNewQuestionTitle != null) {
-                                            $oQuestion->setAttribute('title', $sNewQuestionTitle);
-                    }
-                    if ($sNewqQuestion != '') {
-                                            $oQuestion->setAttribute('question', $sNewqQuestion);
-                    }
-                    if ($sNewQuestionHelp != '') {
-                                            $oQuestion->setAttribute('help', $sNewQuestionHelp);
-                    }
-                    if (in_array($sMandatory, array('Y', 'S', 'N'))) {
-                                            $oQuestion->setAttribute('mandatory', $sMandatory);
-                    } else {
-                                        $oQuestion->setAttribute('mandatory', 'N');
-                    }
-
-                    if (\PHP_VERSION_ID < 80000) {
-                        libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
-                    }
-
-                    try {
-                        $oQuestion->save();
-                    } catch (Exception $e) {
-                        // no need to throw exception
-                    }
-                    return (int) $aImportResults['newqid'];
+                if (\PHP_VERSION_ID < 80000) {
+                    libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
                 }
-            } else {
-                            return array('status' => 'No permission');
+                return array('status' => 'Error: Invalid LimeSurvey question structure XML ');
             }
+            $aImportResults = XMLImportQuestion($sFullFilePath, $iSurveyID, $iGroupID, $importOptions);
         } else {
-                    return array('status' => self::INVALID_SESSION_KEY);
+            if (\PHP_VERSION_ID < 80000) {
+                libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
+            }
+            return array('status' => 'Really Invalid extension'); //just for symmetry!
+        }
+        unlink($sFullFilePath);
+        $iNewqid = 0;
+        if (isset($aImportResults['fatalerror'])) {
+            if (\PHP_VERSION_ID < 80000) {
+                libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
+            }
+            return array('status' => 'Error: ' . $aImportResults['fatalerror']);
+        } else {
+            if (\PHP_VERSION_ID < 80000) {
+                libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
+            }
+            fixLanguageConsistency($iSurveyID);
+
+            $iNewqid = $aImportResults['newqid'];
+            /* @var array[] validation errors */
+            $errors = [];
+            $oQuestion = Question::model()->findByAttributes(array('sid' => $iSurveyID, 'gid' => $iGroupID, 'qid' => $iNewqid));
+            if (in_array($sMandatory, array('Y', 'S', 'N'))) {
+                $oQuestion->setAttribute('mandatory', $sMandatory);
+            } else {
+                $oQuestion->setAttribute('mandatory', 'N');
+            }
+            if (!empty($sNewQuestionTitle)) {
+                $oQuestion->setAttribute('title', $sNewQuestionTitle);
+            }
+
+            if (!$oQuestion->save()) {
+                return array(
+                    'status' => 'Error when update question',
+                    'errors' => $oQuestion->getErrors()
+                );
+            }
+
+            $oQuestionL10ns = QuestionL10n::model()->findAll(
+                "qid = :qid",
+                array(':qid' => $iNewqid)
+            );
+
+            foreach ($oQuestionL10ns as $oQuestionL10n) {
+                if (!empty($sNewqQuestion)) {
+                    $oQuestionL10n->setAttribute('question', $sNewqQuestion);
+                }
+                if (!empty($sNewQuestionHelp)) {
+                    $oQuestionL10n->setAttribute('help', $sNewQuestionHelp);
+                }
+                if (!$oQuestionL10n->save()) {
+                    $errors[] = $oQuestionL10n->getErrors();
+                }
+            }
+
+            if (!empty($errors)) {
+                return array(
+                    'status' => 'Error when update question',
+                    'errors' => $errors
+                );
+            }
+
+            return intval($iNewqid);
         }
     }
 
@@ -2182,7 +2216,7 @@ class remotecontrol_handle
                 $aAttributeValues = array();
                 if (count($aConditions) > 0) {
                     $aConditionFields = array_flip(Token::model($iSurveyID)->getMetaData()->tableSchema->columnNames);
-                    // NB: $valueOrTuple is either a value or tuple like [$operator, $value].                    
+                    // NB: $valueOrTuple is either a value or tuple like [$operator, $value].                 
                     foreach ($aConditions as $columnName => $valueOrTuple) {
                         if (is_array($valueOrTuple)) {
                             /** @var string[] List of operators allowed in query. */
