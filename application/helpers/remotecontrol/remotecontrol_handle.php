@@ -3581,22 +3581,18 @@ class remotecontrol_handle
                 $model->modified = date('Y-m-d H:i:s');
             }
 
-            if ($model->save()) {
+            if ($model->encryptSave()) {
                 foreach ($participant as $sLabel => $sAttributeValue) {
                     if (!in_array($sLabel, $aDefaultFields)) {
                         foreach ($aAttributeRecords as $sKey => $arValue) {
                             $aAttributes = $arValue->getAttributes();
                             if ($aAttributes['defaultname'] == $sLabel) {
-                                $aAttributeData = array(
-                                    'participant_id' => $model->participant_id,
-                                    'attribute_id' => $aAttributes['attribute_id'],
-                                    'value' => $sAttributeValue
-                                );
-                                if ($scenario == 'insert') {
-                                    ParticipantAttributeName::model()->saveParticipantAttributeValue($aAttributeData);
-                                } else { // update
-                                    ParticipantAttribute::model()->updateParticipantAttributeValue($aAttributeData);
-                                }
+                                $attribute = ParticipantAttribute::model();
+                                $attribute->attribute_id = $aAttributes['attribute_id'];
+                                $attribute->participant_id = $model->participant_id;
+                                $attribute->value = $sAttributeValue;
+                                $attribute->encrypt();
+                                $attribute->updateParticipantAttributeValue($attribute->attributes);
                             }
                         }
                     }
