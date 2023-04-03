@@ -2439,6 +2439,7 @@ class LimeExpressionManager
                         switch ($type) {
                             case Question::QT_K_MULTIPLE_NUMERICAL: //MULTI NUMERICAL QUESTION TYPE (Need a attribute, not set in 131014)
                                 $subqValidSelector = $sq['jsVarName_on'];
+                                // no break
                             case Question::QT_N_NUMERICAL: //NUMERICAL QUESTION TYPE
                                 $sq_name = ($this->sgqaNaming) ? $sq['rowdivid'] . ".NAOK" : $sq['varName'] . ".NAOK";
                                 $sq_eqn = '( is_int(' . $sq_name . ') || is_empty(' . $sq_name . ') )';
@@ -3770,14 +3771,13 @@ class LimeExpressionManager
                                 'jsVarName_on' => $jsVarName_on,
                                 'sqsuffix'     => '_comment',
                             ];
-                        } else // The question list
-                        {
+                        } else { // The question list
                             $q2subqInfo[$questionNum]['subqs'][] = [
-                                'varName'      => $varName,
-                                'rowdivid'     => $surveyid . 'X' . $groupNum . 'X' . $questionNum,
-                                'jsVarName'    => $jsVarName,
-                                'jsVarName_on' => $jsVarName_on,
-                            ];
+                                    'varName'      => $varName,
+                                    'rowdivid'     => $surveyid . 'X' . $groupNum . 'X' . $questionNum,
+                                    'jsVarName'    => $jsVarName,
+                                    'jsVarName_on' => $jsVarName_on,
+                                ];
                         }
                         break;
                     case Question::QT_N_NUMERICAL:
@@ -4099,7 +4099,7 @@ class LimeExpressionManager
             }
             $qid = $rel['qid'];
             $gseq = $rel['gseq'];
-            if(
+            if (
                 $gseq != $this->currentGroupSeq // ONLY validate current group
                 && !$this->allOnOnePage // except if all in one page
                 && (is_null($groupSeq) || $gseq > $groupSeq)
@@ -4828,7 +4828,7 @@ class LimeExpressionManager
                     'invalidSQs'    => $result['invalidSQs'],
                 ];
                 return $LEM->lastMoveResult;
-            // NB: No break needed
+                // NB: No break needed
             case 'group':
                 // First validate the current group
                 $LEM->StartProcessingPage();
@@ -4838,7 +4838,7 @@ class LimeExpressionManager
                     $result = $LEM->_ValidateGroup($LEM->currentGroupSeq);
                     $message .= $result['message'];
                     $updatedValues = array_merge($updatedValues, $result['updatedValues']);
-                    if (!is_null($result) && ($result['mandViolation'] || !$result['valid']) && empty(App()->request->getPost('mandSoft'))) {
+                    if (!is_null($result) && ($result['mandViolation'] || !$result['valid'])) {
                         // redisplay the current group
                         $message .= $LEM->_UpdateValuesInDatabase();
                         $LEM->runtimeTimings[] = [__METHOD__, (microtime(true) - $now)];
@@ -4917,7 +4917,7 @@ class LimeExpressionManager
                     $updatedValues = array_merge($updatedValues, $result['updatedValues']);
                     $gRelInfo = $LEM->gRelInfo[$LEM->currentGroupSeq];
                     $grel = $gRelInfo['result'];
-                    if ($grel && !is_null($result) && ($result['mandViolation'] || !$result['valid']) && empty(App()->request->getPost('mandSoft'))) {
+                    if ($grel && !is_null($result) && ($result['mandViolation'] || !$result['valid'])) {
                         // redisplay the current question with all error
                         $message .= $LEM->_UpdateValuesInDatabase();
                         $LEM->runtimeTimings[] = [__METHOD__, (microtime(true) - $now)];
@@ -5315,7 +5315,7 @@ class LimeExpressionManager
                     'invalidSQs'    => $result['invalidSQs'],
                 ];
                 return $LEM->lastMoveResult;
-            // NB: No break needed
+                // NB: No break needed
             case 'group':
                 // First validate the current group
                 $LEM->StartProcessingPage();
@@ -5642,7 +5642,6 @@ class LimeExpressionManager
         /////////////////////////////////////////////////////////
         for ($i = $groupSeqInfo['qstart']; $i <= $groupSeqInfo['qend']; ++$i) {
             $qStatus = $LEM->_ValidateQuestion($i, $force);
-
             $updatedValues = array_merge($updatedValues, $qStatus['updatedValues']);
 
             if ($gRelInfo['result'] == true && $qStatus['relevant'] == true) {
@@ -5974,7 +5973,7 @@ class LimeExpressionManager
                                     $_SESSION[$LEM->sessid]['relevanceStatus'][$sq['rowdivid']] = false;
                                 }
                             }
-                        // No break : next part is for array text and array number too
+                        // no break : next part is for array text and array number too
                         case Question::QT_A_ARRAY_5_POINT: // Array (5 point choice) radio-buttons
                         case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: // Array (10 point choice) radio-buttons
                         case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: // Array (Yes/Uncertain/No)
@@ -6088,8 +6087,7 @@ class LimeExpressionManager
         //////////////////////////////////////////////
         $qmandViolation = false;    // assume there is no mandatory violation until discover otherwise
         $mandatoryTip = '';
-        // bypass validation if soft mandatory button was pressed
-        if (($qrel && !$qhidden && ($qInfo['mandatory'] == 'Y' || $qInfo['mandatory'] == 'S')) && empty(App()->request->getPost('mandSoft'))) {
+        if ($qrel && !$qhidden && ($qInfo['mandatory'] == 'Y' || $qInfo['mandatory'] == 'S')) {
             $mandatoryTip = App()->twigRenderer->renderPartial(
                 '/survey/questions/question_help/mandatory_tip.twig',
                 [
@@ -6251,6 +6249,15 @@ class LimeExpressionManager
                     }
                     break;
             }
+        }
+        /* Set qmandViolation to false if mandSoft and POST is set */
+        if (
+            $qmandViolation
+            && $qInfo['mandatory'] == 'S'
+            && App()->request->getPost('mandSoft')
+        ) {
+            $qmandViolation = false;
+            $mandatoryTip = '';
         }
 
         /////////////////////////////////////////////////////////////
@@ -6718,20 +6725,20 @@ class LimeExpressionManager
         switch ($LEM->surveyMode) {
             case 'survey':
                 return $LEM->lastMoveResult;
-            // NB: No break needed
+                // NB: No break needed
             case 'group':
                 // #14595
                 if (is_null($step) || !array_key_exists($step, $LEM->indexGseq)) {
                     return $LEM->indexGseq;
                 }
                 return $LEM->indexGseq[$step];
-            // NB: No break needed
+                // NB: No break needed
             case 'question':
                 if (is_null($step)) {
                     return $LEM->indexQseq;
                 }
                 return $LEM->indexQseq[$step];
-            // NB: No break needed
+                // NB: No break needed
         }
     }
 
@@ -8614,7 +8621,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         switch ($attr) {
             case 'varName':
                 return $name;
-            // NB: No break needed
+                // NB: No break needed
             case 'code':
             case 'NAOK':
                 if (isset($var['code'])) {
@@ -8640,6 +8647,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                 } else {
                                     return $_SESSION[$this->sessid][$sgqa];
                                 }
+                                // no break
                             default:
                                 return $_SESSION[$this->sessid][$sgqa];
                         }
@@ -8648,7 +8656,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     }
                     return $default;
                 }
-            // NB: No break needed
+                // NB: No break needed
+                // no break
             case 'value':
             case 'valueNAOK':
                 $type = $var['type'];
@@ -8687,7 +8696,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                         break;
                 }
                 return $value;
-            // NB: No break needed
+                // NB: No break needed
             case 'jsName':
                 if (
                     $this->surveyMode == 'survey'
@@ -8699,7 +8708,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 } else {
                     return (isset($var['jsName']) ? $var['jsName'] : $default);
                 }
-            // NB: No break needed
+                // NB: No break needed
+                // no break
             case 'shown':
                 if (isset($var['shown'])) {
                     return $var['shown'];    // for static values like TOKEN
@@ -8793,6 +8803,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     return $shown;
                 }
                 // NB: No break needed
+                // no break
             case 'relevanceStatus':
                 $gseq = (isset($var['gseq'])) ? $var['gseq'] : -1;
                 $qid = (isset($var['qid'])) ? $var['qid'] : -1;
@@ -8804,15 +8815,15 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     return 1;
                 }
                 $grel = 1; // Group relevance true by default
-                if(isset($_SESSION[$this->sessid]['relevanceStatus']['G' . $gseq])) {
+                if (isset($_SESSION[$this->sessid]['relevanceStatus']['G' . $gseq])) {
                     $grel =  $_SESSION[$this->sessid]['relevanceStatus']['G' . $gseq];
                 }
                 $qrel = 0; // Question relevance false by default since EM creation. Update it must create a major API update
-                if(isset($_SESSION[$this->sessid]['relevanceStatus'][$qid])) {
+                if (isset($_SESSION[$this->sessid]['relevanceStatus'][$qid])) {
                     $qrel =  $_SESSION[$this->sessid]['relevanceStatus'][$qid];
                 }
                 $sqrel = 1; // true by default - only want false if a subquestion is really irrelevant
-                if(isset($_SESSION[$this->sessid]['relevanceStatus'][$rowdivid])) {
+                if (isset($_SESSION[$this->sessid]['relevanceStatus'][$rowdivid])) {
                     $sqrel =  $_SESSION[$this->sessid]['relevanceStatus'][$rowdivid];
                 }
                 return ($grel && $qrel && $sqrel);
@@ -8822,7 +8833,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     return 1;
                 }
                 return (isset($var[$attr])) ? $var[$attr] : $default;
-            // NB: No break needed
+                // NB: No break needed
             case 'sgqa':
             case 'mandatory':
             case 'qid':

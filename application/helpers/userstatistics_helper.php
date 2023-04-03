@@ -627,10 +627,10 @@ class userstatistics_helper
             $fielddata = $fieldmap[$fld];
 
             //get question data
-            $nresult = Question::model()->find('language=:language AND parent_qid=0 AND qid=:qid', array(':language' => $language, ':qid' => $fielddata['qid']));
+            $nresult = Question::model()->with('questionl10ns')->find('language=:language AND parent_qid=0 AND t.qid=:qid', array(':language' => $language, ':qid' => $fielddata['qid']));
             $qtitle = $nresult->title;
             $qtype = $nresult->type;
-            $qquestion = flattenText($nresult->question);
+            $qquestion = flattenText($nresult->questionl10ns[$language]->question);
             $mfield = substr($rt, 1, strlen($rt));
 
             //Text questions either have an answer, or they don't. There's no other way of quantising the results.
@@ -2342,7 +2342,7 @@ class userstatistics_helper
 
         //PCHART has to be enabled and we need some data
         if ($usegraph == 1) {
-            $bShowGraph = $aattr["statistics_showgraph"] == "1";
+            $bShowGraph = is_array($aattr) && array_key_exists("statistics_showgraph", $aattr) && $aattr["statistics_showgraph"] == "1";
             $bAllowPieChart = ($outputs['qtype'] != Question::QT_M_MULTIPLE_CHOICE && $outputs['qtype'] != Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS);
             $bAllowMap = (isset($aattr["location_mapservice"]) && $aattr["location_mapservice"] == "1");
             $bShowMap = ($bAllowMap && $aattr["statistics_showmap"] == "1");
