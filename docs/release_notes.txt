@@ -34,6 +34,34 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.13 (build 230327) to 5.6.14 (build 230403) April 3, 2023
++New feature #18197: Allow Google Analytics 4 tracking (#2907) (Gabriel Jenik)
+-Fixed issue: Prevent "Division by zero" in statistics (Tim Willig)
+-Fixed issue: [security] Removed vulnerable example files (Carsten Schmitz)
+-Fixed issue: PCLZip error on last step of ComfortUpdate when trying to update from version 3 to latest version (Carsten Schmitz)
+-Fixed issue CT-55: Multiple responses participants (Previous session is set to be finished) (#3024) (Tim Willig)
+-Fixed issue CT-53: Graphs not displayed in public statistics (#3023) (Tim Willig)
+-Fixed issue #18698: Vulnerable javascript dependency used in adminsidepanel.js in limesurvey/limesurvey (#3017) (Gabriel Jenik)
+-Fixed issue #18679 API Access to Question Type Array Dual Scale merge scales if answer code is not unique. (#3025) (Gabriel Jenik)
+-Fixed issue #18381: PluginSetting type date must be saved as a common datetime string (#2753) (Denis Chenu)
+-Fixed issue #18324: mandSoft POST parameter may be passed to bypass mandatory questions (#2825) (Denis Chenu)
+-Fixed issue #18184: cpd_importParticipants with encryption turned on, fails to save the participant encrypted in CPDB, causing 500 error to CPDB (#2464) (Gabriel Jenik)
+-Fixed issue #18180: Calling set_participant_properties with an invalid token id throws an internal server error (#2465) (Gabriel Jenik)
+-Fixed issue #18071: Importing Question through Remote Control may fail if the imported question already exists (#3016) (Denis Chenu)
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 5.6.12 (build 230327) to 5.6.13 (build 230327) March 27, 2023
 
 
