@@ -1653,7 +1653,13 @@ class remotecontrol_handle
                 array_push($aBasicDestinationFields, 'subquestions');
                 array_push($aBasicDestinationFields, 'attributes');
                 array_push($aBasicDestinationFields, 'attributes_lang');
-                array_push($aBasicDestinationFields, 'answeroptions');
+
+                if ($oQuestion->getIsDualScale()) {
+                    array_push($aBasicDestinationFields, 'answeroptions_multiscale');
+                } else {
+                    array_push($aBasicDestinationFields, 'answeroptions');
+                }
+
                 array_push($aBasicDestinationFields, 'defaultvalue');
                 if (!empty($aQuestionSettings)) {
                     $aQuestionSettings = array_intersect($aQuestionSettings, $aBasicDestinationFields);
@@ -1741,12 +1747,18 @@ class remotecontrol_handle
                             $aResult['answeroptions'] = 'No available answer options';
                         }
                     } elseif ($sPropertyName == 'answeroptions_multiscale') {
-                        $oAttributes = Answer::model()->findAllByAttributes(array('qid' => $iQuestionID, 'language' => $sLanguage), array('order' => 'sortorder'));
+                        $oAttributes = \Answer::model()->with('answerl10ns')
+                        ->findAll(
+                            't.qid = :qid and answerl10ns.language = :language',
+                            array(':qid' => $iQuestionID, ':language' => $sLanguage),
+                            array('order' => 'sortorder')
+                        );
+
                         if (count($oAttributes) > 0) {
                             $aData = array();
                             foreach ($oAttributes as $oAttribute) {
                                 $aData[$oAttribute['scale_id']][$oAttribute['code']]['code'] = $oAttribute['code'];
-                                $aData[$oAttribute['scale_id']][$oAttribute['code']]['answer'] = $oAttribute['answer'];
+                                $aData[$oAttribute['scale_id']][$oAttribute['code']]['answer'] = array_key_exists($sLanguage, $oAttribute->answerl10ns) ? $oAttribute->answerl10ns[$sLanguage]->answer : '';
                                 $aData[$oAttribute['scale_id']][$oAttribute['code']]['assessment_value'] = $oAttribute['assessment_value'];
                                 $aData[$oAttribute['scale_id']][$oAttribute['code']]['scale_id'] = $oAttribute['scale_id'];
                                 $aData[$oAttribute['scale_id']][$oAttribute['code']]['order'] = $oAttribute['sortorder'];
