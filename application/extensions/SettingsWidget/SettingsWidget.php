@@ -634,7 +634,7 @@ class SettingsWidget extends CWidget
         $metaData['class'][] = 'form-control';
         $htmlOptions = $this->htmlOptions($metaData, $form);
 
-        return Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
+        return Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', array(
                 'name' => $name,
                 'id' => \CHtml::getIdByName($name),
                 'value' => $value,
