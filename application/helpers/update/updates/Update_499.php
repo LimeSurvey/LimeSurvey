@@ -2,8 +2,6 @@
 
 namespace LimeSurvey\Helpers\Update;
 
-use CException;
-
 class Update_499 extends DatabaseUpdateBase
 {
     /**
