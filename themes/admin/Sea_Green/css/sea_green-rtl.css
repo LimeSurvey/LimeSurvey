@@ -14520,6 +14520,11 @@ html[dir=ltr] th {
   overflow-x: visible;
 }
 
+/** Hide Relevance Equation column for subquestions when not supported */
+.subquestions-table.hide-relevance #rel-eq-th, .subquestions-table.hide-relevance td.relevance-equation {
+  display: none;
+}
+
 .jcarousel-wrapper {
   margin: 20px auto;
   position: relative;
@@ -18316,6 +18321,10 @@ input[type=number] {
   width: 294px;
 }
 
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
 table .ls-sticky-column:first-child {
   position: sticky;
   background-color: #fff;
