@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v5.x!
+Welcome to LimeSurvey v6.x!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied,
 including, but not limited to, the implied warranties of merchantability and fitness for a particular
@@ -34,6 +34,16 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.14 (build 230403) to 6.0.0 (build 230405) April 4, 2023
++New feature: Converted the application to the Bootstrap 5 framework
++New feature: Implemented a new administration theme
++New feature: Upgraded Twig from 1.0 to 3.0
++New feature #18453: PHP 8.1 compatibility (#2878) (Gabriel Jenik)
++New feature: Add get_available_site_settings RPC method (#2579) (Edgar R. M)
++New feature #18382: Fire afterSurveyCompleted event in preview mode (Olle Haerstedt)
++New feature #16619: Allow calling get_uploaded_files() remote control function by response ID (#2363) (Gabriel Jenik)
++New feature #18178: Add Quota CRUD RPC methods (#2458) (Edgar R. M)
+
 Changes from 5.6.13 (build 230327) to 5.6.14 (build 230403) April 3, 2023
 +New feature #18197: Allow Google Analytics 4 tracking (#2907) (Gabriel Jenik)
 -Fixed issue: Prevent "Division by zero" in statistics (Tim Willig)
