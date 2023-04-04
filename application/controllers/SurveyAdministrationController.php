@@ -1945,7 +1945,7 @@ class SurveyAdministrationController extends LSBaseController
         $aData['action'] = $menuEntry->action;
         $aData['entryData'] = $menuEntry->attributes;
         $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat']);
-        $aData['subaction'] = $menuEntry->title;
+        $aData['subaction'] = gT($menuEntry->title);
         $aData['display']['menu_bars']['surveysummary'] = $menuEntry->title;
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyID . ")";
         $aData['surveybar']['buttons']['view'] = true;
