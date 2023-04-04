@@ -183,13 +183,20 @@ function survey_theme_ls6() {
         .pipe(dest('themes/survey/ls6_surveytheme/css'));
 }
 
+function survey_theme_ls6_js() {
+    return src(['assets/survey_themes/ls6_surveytheme/ls6_javascript_template_esm.js'])
+        .pipe(dest('themes/survey/ls6_surveytheme/scripts/'))
+}
+
 
 exports.build_survey_theme_ls6 = parallel(
     survey_theme_variations_ls6,
-    survey_theme_ls6
+    survey_theme_ls6,
+    survey_theme_ls6_js
 );
 
 exports.watch_survey_theme_ls6 = function () {
     watch('assets/survey_themes/ls6_surveytheme/**/*.scss', survey_theme_variations_ls6);
     watch('assets/survey_themes/ls6_surveytheme/**/*.scss', survey_theme_ls6);
+    watch('assets/survey_themes/ls6_surveytheme/**/*.js', survey_theme_ls6_js);
 };

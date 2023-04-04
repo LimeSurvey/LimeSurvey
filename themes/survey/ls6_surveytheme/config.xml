@@ -52,10 +52,16 @@
             <add>css/theme.css</add>
             <add>css/noTablesOnMobile.css</add>
             <add>css/custom.css</add>
+            <remove>survey.css</remove>
+            <remove>template-core.css</remove>
+            <remove>awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css</remove>
+            <remove>awesome-bootstrap-checkbox/awesome-bootstrap-checkbox-rtl.css</remove>
         </css>
         <js>
             <add>scripts/theme.js</add>
             <add>scripts/custom.js</add>
+            <remove>survey.js</remove>
+            <remove>template-core.js</remove>
         </js>
         <print_css>
             <add>css/print_theme.css</add>
