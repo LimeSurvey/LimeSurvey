@@ -16,13 +16,13 @@
 #}
 
 <!-- answer_row_other -->
-<div class="bootstrap-buttons-div col-xs-12 {{ max_buttons_row }}">
-    <div id='javatbd{{ myfname }}' class="button-item btn btn-primary {{ button_size_class }} {% if checkedState!='' %} active {% endif %} col-xs-12 col-sm-12">
+<div class="bootstrap-buttons-div col-12 {{ max_buttons_row }}">
+    <div id='javatbd{{ myfname }}' class="form-check col-12 {% if checkedState!='' %} active {% endif %}">
 
         <!-- Checkbox + label -->
             <!-- checkbox -->
             <input
-                class="other-checkbox bootstrap-checkbox-other sr-only"
+                class="other-checkbox bootstrap-checkbox-other btn-check button-item"
                 type="checkbox"
                 name="{{myfname}}cbox"
                 id="answer{{myfname}}cbox"
@@ -30,7 +30,7 @@
                 {{checkedState}}
                 aria-hidden="true"
             />
-            <label for="answer{{myfname}}cbox" class="checkbox-label control-label" id="label-{{myfname}}-other">{{othertext}}</label>
+            <label for="answer{{myfname}}cbox" class="col-12 btn btn-primary {{ button_size_class }}" id="label-{{myfname}}-other">{{othertext}}</label>
 
         <!-- hidden input -->
         <input

@@ -296,7 +296,7 @@ var TimerConstructor = function () {
                 this.timerLogger.log('Warning called!');
                 var timeObject = this._parseTimeToObject(this.option.warning, true);
                 this.$warningTimeDisplayElement.html(timeObject.hours + ':' + timeObject.minutes + ':' + timeObject.seconds);
-                this.$warningDisplayElement.removeClass('hidden').css({
+                this.$warningDisplayElement.removeClass('d-none').css({
                     opacity: 0
                 }).animate({
                     'opacity': 1
@@ -306,7 +306,7 @@ var TimerConstructor = function () {
                     _this2.$warningDisplayElement.animate({
                         opacity: 0
                     }, 200, function () {
-                        _this2.$warningDisplayElement.addClass('hidden');
+                        _this2.$warningDisplayElement.addClass('d-none');
                     });
                 }, 1000 * this.option.warninghide);
             }
@@ -325,7 +325,7 @@ var TimerConstructor = function () {
                 this.timerLogger.log('Warning2 called!');
                 var timeObject = this._parseTimeToObject(this.option.warning, true);
                 this.$warning2TimeDisplayElement.html(timeObject.hours + ':' + timeObject.minutes + ':' + timeObject.seconds);
-                this.$warning2DisplayElement.removeClass('hidden').css({
+                this.$warning2DisplayElement.removeClass('d-none').css({
                     opacity: 0
                 }).animate({
                     'opacity': 1
@@ -335,7 +335,7 @@ var TimerConstructor = function () {
                     _this3.$warning2DisplayElement.animate({
                         opacity: 0
                     }, 200, function () {
-                        _this3.$warning2DisplayElement.addClass('hidden');
+                        _this3.$warning2DisplayElement.addClass('d-none');
                     });
                 }, 1000 * this.option.warning2hide);
             }
@@ -446,7 +446,7 @@ var TimerConstructor = function () {
     }, {
         key: '_showExpiredNotice',
         value: function _showExpiredNotice() {
-            this.$timerExpiredElement.removeClass('hidden');
+            this.$timerExpiredElement.removeClass('d-none');
         }
 
         /**

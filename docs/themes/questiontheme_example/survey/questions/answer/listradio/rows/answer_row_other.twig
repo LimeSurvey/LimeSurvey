@@ -16,32 +16,34 @@
 #}
 
 <!-- answer_row_other -->
-<li id='javatbd{{ myfname }}' class='answer-item radio-text-item form-inline' role='group' {{ sDisplayStyle }} >
-    <!-- Checkbox + label -->
-    <div class="form-group othertext-label-checkox-container radio-item">
-        <input
-        type="radio"
-        value="-oth-"
-        name="{{ name }}"
-        id="SOTH{{ name }}"
-        {{ checkedState }}
-        />
-
-        <label for="SOTH{{ name }}" class="control-label label-radio" id="label-id-{{ name }}">{{ processString(othertext) }}</label>
-    </div>
-
-    <!-- comment -->
-    <div class="form-group text-item other-text-item">
-        <input
-        type="text"
-        class="form-control {{ kpclass }} input-sm"
-        id="answer{{ name }}othertext"
-        name="{{ name }}other"
-        title="{{ flatString(processString(othertext,1),1) }}"
-        {{ answer_other }}
-        aria-labelledby="label-id-{{ name }}"
-        {% if numbers_only %} data-number="1" {% endif %}
-        />
+<li id='javatbd{{ myfname }}' class='answer-item radio-text-item' role='group' {{ sDisplayStyle }} >
+    <div class="row row-cols-lg-auto g-1 align-items-center mb-3">
+        <!-- Checkbox + label -->
+        <div class="othertext-label-checkox-container radio-item">
+            <input
+            type="radio"
+            value="-oth-"
+            name="{{ name }}"
+            id="SOTH{{ name }}"
+            {{ checkedState }}
+            />
+    
+            <label for="SOTH{{ name }}" class="control-label label-radio" id="label-id-{{ name }}">{{ processString(othertext) }}</label>
+        </div>
+    
+        <!-- comment -->
+        <div class="text-item other-text-item">
+            <input
+            type="text"
+            class="form-control {{ kpclass }} input-sm"
+            id="answer{{ name }}othertext"
+            name="{{ name }}other"
+            title="{{ flatString(processString(othertext,1),1) }}"
+            {{ answer_other }}
+            aria-labelledby="label-id-{{ name }}"
+            {% if numbers_only %} data-number="1" {% endif %}
+            />
+        </div>
     </div>
     <script>
         $("#answer{{ name }}othertext").on("keyup",function(){

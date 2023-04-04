@@ -18,7 +18,7 @@ class UserParser
     {
         $sRandomFileName = randomChars(20);
         $sFilePath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $sRandomFileName;
-        $aPathinfo = pathinfo($FILES['the_file']['name']);
+        $aPathinfo = pathinfo((string) $FILES['the_file']['name']);
         $sExtension = $aPathinfo['extension'];
         $bMoveFileResult = false;
 
@@ -57,8 +57,8 @@ class UserParser
             for ($i = 0; $i < $iHeaderCount; ++$i) {
                 $val = ($row[$i] ?? '');
                 // if Excel was used, it surrounds strings with quotes and doubles internal double quotes.  Fix that.
-                if (preg_match('/^".*"$/', $val)) {
-                    $val = trim(str_replace('""', '"', substr($val, 1, -1)), "\xC2\xA0\n");
+                if (preg_match('/^".*"$/', (string) $val)) {
+                    $val = trim(str_replace('""', '"', substr((string) $val, 1, -1)), "\xC2\xA0\n");
                 }
                 $rowarray[$aFirstLine[$i]] = $val;
             }

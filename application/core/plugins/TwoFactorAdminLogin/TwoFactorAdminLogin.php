@@ -210,7 +210,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
             'isSmallText' => false,
             'label' => gT('General'),
             'href' => $this->api->createUrl('admin/pluginhelper/sa/fullpagewrapper/plugin/TwoFactorAdminLogin/method/userindex', []),
-            'iconClass' => 'fa fa-user-secret',
+            'iconClass' => 'ri-spy-fill',
         ];
 
         $aMenuItems[] = (new \LimeSurvey\Menu\MenuItem($aMenuItemUserOptions));
@@ -221,7 +221,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
                 'isSmallText' => false,
                 'label' => gT('Administration'),
                 'href' => $this->api->createUrl('admin/pluginhelper/sa/fullpagewrapper/plugin/TwoFactorAdminLogin/method/index', []),
-                'iconClass' => 'fa fa-users',
+                'iconClass' => 'ri-group-fill',
             ];
             $aMenuItems[] = (new \LimeSurvey\Menu\MenuItem($aMenuItemAdminOptions));
         }
@@ -231,7 +231,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
             'label' => gT('2FA settings'),
             'href' => '#',
             'menuItems' => $aMenuItems,
-            'iconClass' => 'fa fa-lock fa-lg',
+            'iconClass' => 'ri-lock-fill',
         ];
         $oNewMenu = new TFAMenuClass($aNewMenuOptions);
 

@@ -34,6 +34,6 @@ class GoogleQRCodeProvider extends BaseHTTPQRCodeProvider
         return 'https://chart.googleapis.com/chart?cht=qr'
             . '&chs=' . $size . 'x' . $size
             . '&chld=' . $this->errorcorrectionlevel . '|' . $this->margin
-            . '&chl=' . rawurlencode($qrtext);
+            . '&chl=' . rawurlencode((string) $qrtext);
     }
 }

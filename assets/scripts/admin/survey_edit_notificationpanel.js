@@ -11,10 +11,10 @@ function updateParameters()
 {
 if ($('#googleanalyticsapikeysetting input:radio:checked').val()=='Y'){
         $("#googleanalyticsstyle").find('label').removeClass('disabled');
-        $("#googleanalyticsstyle").closest('div.form-group').slideDown(400);
+        $("#googleanalyticsstyle").closest('div.ex-form-group').slideDown(400);
 
         $("#googleanalyticsapikey").prop('disabled',false);
-        $("#googleanalyticsapikey").closest('div.form-group').slideDown(400);
+        $("#googleanalyticsapikey").closest('div.ex-form-group').slideDown(400);
         if($("#googleanalyticsapikey").val() == "9999useGlobal9999"){
             $("#googleanalyticsapikey").val("");
         }
@@ -23,18 +23,18 @@ if ($('#googleanalyticsapikeysetting input:radio:checked').val()=='Y'){
     {
         $("#googleanalyticsstyle").val(0);
         $("#googleanalyticsstyle").find('label').addClass('disabled');
-        $("#googleanalyticsstyle").closest('div.form-group').slideUp(400);
+        $("#googleanalyticsstyle").closest('div.ex-form-group').slideUp(400);
 
         $("#googleanalyticsapikey").prop('disabled',true);
-        $("#googleanalyticsapikey").closest('div.form-group').slideUp(400);
+        $("#googleanalyticsapikey").closest('div.ex-form-group').slideUp(400);
     }
     else if($('#googleanalyticsapikeysetting input:radio:checked').val()=='G') 
     {
         $("#googleanalyticsstyle").find('label').removeClass('disabled');
-        $("#googleanalyticsstyle").closest('div.form-group').slideDown(400);
+        $("#googleanalyticsstyle").closest('div.ex-form-group').slideDown(400);
 
         $("#googleanalyticsapikey").prop('disabled',true);
-        $("#googleanalyticsapikey").closest('div.form-group').slideUp(400);
+        $("#googleanalyticsapikey").closest('div.ex-form-group').slideUp(400);
     }
 }
 
