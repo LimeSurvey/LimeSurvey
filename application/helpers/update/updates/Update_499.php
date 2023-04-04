@@ -14,9 +14,6 @@ class Update_499 extends DatabaseUpdateBase
         $this->changeAdminTheme();
     }
 
-    /**
-     * @throws CException
-     */
     public function changeAdminTheme()
     {
         $this->db->createCommand()
