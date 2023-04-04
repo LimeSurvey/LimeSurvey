@@ -37,25 +37,18 @@ class ComposerAutoloaderInitddb1a145e450f862353420acc5153e40
 
         $loader->register(true);
 
-        $includeFiles = \Composer\Autoload\ComposerStaticInitddb1a145e450f862353420acc5153e40::$files;
-        foreach ($includeFiles as $fileIdentifier => $file) {
-            composerRequireddb1a145e450f862353420acc5153e40($fileIdentifier, $file);
+        $filesToLoad = \Composer\Autoload\ComposerStaticInitddb1a145e450f862353420acc5153e40::$files;
+        $requireFile = \Closure::bind(static function ($fileIdentifier, $file) {
+            if (empty($GLOBALS['__composer_autoload_files'][$fileIdentifier])) {
+                $GLOBALS['__composer_autoload_files'][$fileIdentifier] = true;
+
+                require $file;
+            }
+        }, null, null);
+        foreach ($filesToLoad as $fileIdentifier => $file) {
+            $requireFile($fileIdentifier, $file);
         }
 
         return $loader;
-    }
-}
-
-/**
- * @param string $fileIdentifier
- * @param string $file
- * @return void
- */
-function composerRequireddb1a145e450f862353420acc5153e40($fileIdentifier, $file)
-{
-    if (empty($GLOBALS['__composer_autoload_files'][$fileIdentifier])) {
-        $GLOBALS['__composer_autoload_files'][$fileIdentifier] = true;
-
-        require $file;
     }
 }

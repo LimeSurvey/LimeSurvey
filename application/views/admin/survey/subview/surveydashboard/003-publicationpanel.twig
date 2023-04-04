@@ -1,15 +1,15 @@
-<div class="card m-2">
+<div class="card card-primary h-100">
     <div class="card-header">
-        <strong>{{gT("Publication and access settings")}}:</strong>
+        <h5 class="card-title">{{gT("Publication and access settings")}}</h5>
         <a class="float-end btn btn-outline-secondary btn-xs pjax" data-bs-toggle="tooltip" title="{{gT('Edit publication and access settings')}}" href="{{createUrl('surveyAdministration/rendersidemenulink', {'subaction':'publication', 'surveyid':surveyid})}}">
-            <i class="fa fa-cogs"></i>
+           <i class="ri-key-line"></i>
         </a>
     </div>
     <ul class="list-group list-group-flush">
         <!-- Start date/time -->
-        <li class="list-group-item">
-            <div class="ls-flex-row col-12">
-                <div class="col-4">
+        <li class="list-group-item p-0 border-0">
+            <div class="ls-flex-row col-12 gap-2">
+               <div class="col-4 card-label">
                     {{gT("Start date/time:")}}
                 </div>
                 <div class="col-8">
@@ -18,9 +18,9 @@
             </div>
         </li>
         <!-- Expiration date/time -->
-        <li class="list-group-item">
-            <div class="ls-flex-row col-12">
-                <div class="col-4">
+        <li class="list-group-item p-0 border-0">
+            <div class="ls-flex-row col-12 gap-2">
+               <div class="col-4 card-label">
                     {{gT("Expiration date/time:")}}
                 </div>
                 <div class="col-8">
@@ -29,9 +29,9 @@
             </div>
         </li>
         <!-- Publicly available -->
-        <li class="list-group-item">
-            <div class="ls-flex-row col-12">
-                <div class="col-4">
+        <li class="list-group-item p-0 border-0">
+            <div class="ls-flex-row col-12 gap-2">
+               <div class="col-4 card-label">
                     {{gT("Listed publicly:")}}
                 </div>
                 <div class="col-8">

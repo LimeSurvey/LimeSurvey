@@ -10,7 +10,7 @@
 echo viewHelper::getViewTestTag('listSurveys');
 
 ?>
-<div class="container-fluid ls-space list-surveys">
+<div class="ls-space list-surveys">
     <ul class="nav nav-tabs" id="surveysystem" role="tablist">
         <li class="nav-item"><a class="nav-link active" href="#surveys" aria-controls="surveys" role="tab" data-bs-toggle="tab"><?php eT('Survey list'); ?></a></li>
         <li class="nav-item"><a class="nav-link" href="#surveygroups" aria-controls="surveygroups" role="tab" data-bs-toggle="tab"><?php eT('Survey groups'); ?></a></li>
@@ -30,23 +30,22 @@ echo viewHelper::getViewTestTag('listSurveys');
             <div class="row">
                 <div class="col-12 content-right">
                     <?php
-                    $this->widget('application.extensions.admin.grid.CLSGridView', array(
-                        'id'           => 'surveygroups--gridview',
-                        'dataProvider' => $groupModel->search(),
-                        'columns'      => $groupModel->columns,
-                        'summaryText'  => gT('Displaying {start}-{end} of {count} result(s).') . ' '
+                    $this->widget('application.extensions.admin.grid.CLSGridView', [
+                        'id'               => 'surveygroups--gridview',
+                        'dataProvider'     => $groupModel->search(),
+                        'lsAfterAjaxUpdate'          => [],
+                        'columns'          => $groupModel->columns,
+                        'summaryText'      => gT('Displaying {start}-{end} of {count} result(s).') . ' '
                             . sprintf(
                                 gT('%s rows per page'),
                                 CHtml::dropDownList(
                                     'surveygroups--pageSize',
                                     Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']),
                                     App()->params['pageSizeOptions'],
-                                    array('class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto')
+                                    ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
                                 )
                             ),
-                        'selectionChanged' => "function(id){window.location='" . Yii::app()->urlManager->createUrl("admin/surveysgroups/sa/update/id") . '/' . "' + $.fn.yiiGridView.getSelection(id.split(',', 1));}",
-
-                    ));
+                    ]);
                     ?>
                 </div>
             </div>

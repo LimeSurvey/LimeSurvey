@@ -303,8 +303,6 @@ $(document).on('ready pjax:scriptcomplete', function(){
         })
     });
 
-    $(document).off('click.edittoken', '.edit-token').on('click.edittoken', '.edit-token', startEditToken);
-
     $(document).off('submit.edittoken', '#edittoken').on('submit.edittoken', '#edittoken', function(event, params){
         var eventParams = params || {};
         // When saving from the Edit Participant modal, handle the event in submitEditToken().
@@ -440,8 +438,8 @@ $(document).on('ready pjax:scriptcomplete', function(){
         <option value='greaterthan'>"+searchtypes[4]+"</option>\n\
         <option value='lessthan'>"+searchtypes[5]+"</option>\n\
         </select></td>\n\<td><input class='form-control' type='text' id='conditiontext_"+conditionid+"' /></td>\n\
-        <td><span data-bs-toggle='tooltip' title='" + sDelete + "' class='ui-pg-button fa fa-trash text-danger' onClick= $(this).parent().parent().remove();$('#joincondition_"+conditionid+"').remove() id='ui-icon removebutton'"+conditionid+"></span>\n\
-        <span data-bs-toggle='tooltip' title='" + sAdd + "' class='ui-pg-button addcondition-button ui-icon text-success icon-add' style='margin-bottom:4px'></span></td></tr><tr></tr>";
+        <td><span data-bs-toggle='tooltip' title='" + sDelete + "' class='ui-pg-button ri-delete-bin-fill text-danger' onClick= $(this).parent().parent().remove();$('#joincondition_"+conditionid+"').remove() id='ui-icon removebutton'"+conditionid+"></span>\n\
+        <span data-bs-toggle='tooltip' title='" + sAdd + "' class='ui-pg-button addcondition-button ui-icon text-success ri-add-circle-fill' style='margin-bottom:4px'></span></td></tr><tr></tr>";
         $('#searchtable tr:last').after(html);
         window.LS.doToolTip();
     });
@@ -457,11 +455,11 @@ $(document).on('ready pjax:scriptcomplete', function(){
 /**
  * Token edit
  */
-var startEditToken = function(){
-    var $that       = $(this),
-        $sid        = $that.data('sid'),
-        $tid        = $that.data('tid'),
-        $actionUrl  = $that.data('url') || $that.attr("href"),
+var startEditToken = function(event, that){
+        event.preventDefault()
+        $sid        = $(that).data('sid'),
+        $tid        = $(that).data('tid'),
+        $actionUrl  = $(that).data('url') || $(that).attr("href"),
         $modal      = $('#editTokenModal'),
         $modalBody  = $modal.find('.modal-body'),
         $ajaxLoader = $('#ajaxContainerLoading2'),
@@ -501,7 +499,7 @@ var startEditToken = function(){
 
             initValidFromValidUntilPickers();
 
-            $('.date .input-group-addon').on('click', function(){
+            $('.date .input-group-text').on('click', function(){
                 $prev = $(this).siblings();
                 // $prev.data("DateTimePicker").show();
             });
@@ -567,7 +565,6 @@ function centerInfoDialog() {
 
 function onUpdateTokenGrid(){
     reinstallParticipantsFilterDatePicker();
-    $('.edit-token').off('click.edittoken').on('click.edittoken', startEditToken);
 }
 
 /**

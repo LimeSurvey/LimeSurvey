@@ -3,6 +3,7 @@ import _ from "lodash";
 import ajaxMethods from "../../mixins/runAjax.js";
 
 export default {
+  
     mixins: [ajaxMethods],
     data(){
         return {
@@ -11,17 +12,20 @@ export default {
             draggedQuestionGroup: null,
             questionDragging: false,
             draggedQuestion: null,
-            draggedQuestionsGroup: null
+            draggedQuestionsGroup: null,
+            hoveredQuestion : null,
+            hoveredQuestionGroup : null,
+
         };
     },
     computed: {
         allowOrganizer() {return this.$store.state.allowOrganizer===1},
         surveyIsActive() {return window.SideMenuData.isActive; },
-        createQuestionGroupLink() { 
+        createQuestionGroupLink() {
             return window.SideMenuData.createQuestionGroupLink
         },
-        createQuestionLink() { 
-            return window.SideMenuData.createQuestionLink 
+        createQuestionLink() {
+            return window.SideMenuData.createQuestionLink
         },
         calculatedHeight() {
             let containerHeight = this.$store.state.maxHeight;
@@ -53,7 +57,7 @@ export default {
             return createGroupAllowed + createQuestionAllowed;
         },
         itemWidth() {
-            return parseInt(this.$store.state.sidebarwidth) - 95 + "px";
+            return parseInt(this.$store.state.sidebarwidth) - 120 + "px";
         }
     },
     methods: {
@@ -63,7 +67,7 @@ export default {
         collapseAll() {
             this.active = [];
         },
-        createFullQuestionLink() { 
+        createFullQuestionLink() {
             if (LS.reparsedParameters().combined.gid) {
                 return this.createQuestionLink + '&gid=' + LS.reparsedParameters().combined.gid;
             } else {
@@ -73,12 +77,17 @@ export default {
         questionHasCondition(question) {
             return question.relevance !== '1';
         },
+
+        itemActivated(question){
+            return  this.$store.state.lastQuestionOpen === question.qid;
+        },
+
         questionItemClasses(question) {
             let classes = "";
             classes +=
                 this.$store.state.lastQuestionOpen === question.qid
                     ? "selected activated"
-                    : " ";
+                    : "selected ";
 
             if (this.draggedQuestion !== null)
                 classes +=
@@ -164,20 +173,20 @@ export default {
         dragoverQuestiongroup($event, questiongroupObject) {
             if(this.draggedQuestion == undefined || this.draggedQuestion == null) {
                 this.$log.log({
-                    this: this, 
+                    this: this,
                     questiongroupObject: questiongroupObject,
                     draggedQuestion: this.draggedQuestion
                     });
             }
-                
+
             if (this.questiongroupDragging) {
                 const targetPosition = parseInt(questiongroupObject.group_order);
                 const currentPosition = parseInt(this.draggedQuestionGroup.group_order);
                 if(Math.abs(parseInt(targetPosition)-parseInt(currentPosition)) == 1){
                     questiongroupObject.group_order = currentPosition;
                     this.draggedQuestionGroup.group_order = targetPosition
-                } 
-                
+                }
+
             } else {
                 if(window.SideMenuData.isActive) {return;}
                 this.addActive(questiongroupObject.gid);
@@ -240,6 +249,17 @@ export default {
                 questionObject.question_order = this.draggedQuestion.question_order;
                 this.draggedQuestion.question_order = orderSwap;
             }
+        },
+        onMouseOverQuestionGroup($event, group){
+            this.hoveredQuestionGroup = group;
+        },
+
+        onMouseOverQuestion($event, question){
+            this.hoveredQuestion = question;
+        },
+        onMouseLeave(){
+            this.hoveredQuestion = null;
+            this.hoveredQuestionGroup = null;
         }
     },
     mounted() {
@@ -253,45 +273,50 @@ export default {
 };
 </script>
 <template>
-    <div id="questionexplorer" class="ls-flex-column fill ls-ba menu-pane ls-space padding left-0 top-0 bottom-0 right-5 margin top-5">
-        <div 
-            class="ls-flex-row wrap align-content-center align-items-center ls-space margin top-5 bottom-15 button-sub-bar" 
+    <div id="questionexplorer" class="ls-flex-column fill ls-ba menu-pane h-100 pt-2">
+        <div class="ls-flex-row button-sub-bar mb-2">
+          <div class="scoped-toolbuttons-right me-2">
+            <button
+                class="btn btn-sm btn-outline-secondary"
+                @click="toggleOrganizer"
+                :title="translate(allowOrganizer ? 'lockOrganizerTitle' : 'unlockOrganizerTitle')"
+            >
+              <i :class="allowOrganizer ? 'ri-lock-unlock-fill' : 'ri-lock-fill'" />
+            </button>
+            <button
+                class="btn btn-sm btn-outline-secondary me-2"
+                @click="collapseAll"
+                :title="translate('collapseAll')"
+            >
+              <i class="ri-link-unlink" />
+            </button>
+          </div>
+        </div>
+        <div
+            class="ls-flex-row wrap align-content-center align-items-center button-sub-bar"
             v-if="createAllowance != ''"
         >
-            <div class="scoped-toolbuttons-left">
-                <a 
-                    id="adminsidepanel__sidebar--selectorCreateQuestionGroup" 
-                    v-if="( createQuestionGroupLink!=undefined && createQuestionGroupLink.length>1 )" 
-                    :href="createQuestionGroupLink" class="btn btn-small btn-primary pjax"
+            <div class="scoped-toolbuttons-left mb-2">
+                <a
+                    id="adminsidepanel__sidebar--selectorCreateQuestion"
+                    v-if="createQuestionAllowed"
+                    :href="createFullQuestionLink()"
+                    class="btn btn-primary ms-2 me-2 pjax"
                 >
-                    <i class="fa fa-plus"></i>&nbsp;
-                    {{"createPage"|translate}}
-                </a>
-                <a 
-                    id="adminsidepanel__sidebar--selectorCreateQuestion" 
-                    v-if="createQuestionAllowed" 
-                    :href="createFullQuestionLink()" 
-                    class="btn btn-small btn-outline-secondary ls-space margin right-10 pjax"
-                >
-                    <i class="fa fa-plus-circle"></i>&nbsp;
+                    <i class="ri-add-circle-fill"></i>
+                    &nbsp;
                     {{"createQuestion"|translate}}
                 </a>
-            </div>
-            <div class="scoped-toolbuttons-right">
-                <button
-                    class="btn btn-outline-secondary"
-                    @click="toggleOrganizer"
-                    :title="translate(allowOrganizer ? 'lockOrganizerTitle' : 'unlockOrganizerTitle')"
+                
+                <a
+                    id="adminsidepanel__sidebar--selectorCreateQuestionGroup"
+                    v-if="( createQuestionGroupLink!=undefined && createQuestionGroupLink.length>1 )"
+                    :href="createQuestionGroupLink" class="btn btn-secondary pjax"
                 >
-                    <i :class="allowOrganizer ? 'fa fa-unlock' : 'fa fa-lock'" />
-                </button>
-                <button
-                    class="btn btn-outline-secondary"
-                    @click="collapseAll"
-                    :title="translate('collapseAll')"
-                >
-                    <i class="fa fa-compress" />
-                </button>
+                    <!-- <i class="fa fa-plus"></i> -->
+                    {{"createPage"|translate}}
+                </a>
+             
             </div>
         </div>
         <div class="ls-flex-row ls-space padding all-0">
@@ -303,23 +328,31 @@ export default {
                     v-for="questiongroup in orderedQuestionGroups"
                     v-bind:key="questiongroup.gid"
                     class="list-group-item ls-flex-column"
+
                     v-bind:class="questionGroupItemClasses(questiongroup)"
                     @dragenter="dragoverQuestiongroup($event, questiongroup)"
+                    style=" background: linear-gradient(90deg, #14AE5C 0%, #14AE5C 5px, #EEEFF7 5px, #EEEFF7 100%); padding: 0;"
                 >
 
-                  <div class="d-flex nowrap ls-space padding right-5 bottom-5">
-                    <i
+                  <div class="q-group d-flex nowrap ls-space padding right-5 bottom-5 bg-white ms-2 p-2"
+                       v-on:mouseover="onMouseOverQuestionGroup($event, questiongroup)"
+                       v-on:mouseleave ="onMouseLeave" 
+                  
+                  >
+                    <div
                         v-if="!surveyIsActive"
-                        class="fa fa-bars bigIcons dragPointer"
+                        class="bigIcons dragPointer me-3"
                         :class=" allowOrganizer ? '' : 'disabled' "
                         :draggable="allowOrganizer"
                         @dragend="endDraggingGroup($event, questiongroup)"
                         @dragstart="startDraggingGroup($event, questiongroup)"
                         @click.stop.prevent="()=>false"
                     >
-                      &nbsp;
-                    </i>
-                    <div class="w-100">
+                      <svg width="9" height="14" viewBox="0 0 9 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M0.4646 0.125H3.24762V2.625H0.4646V0.125ZM6.03064 0.125H8.81366V2.625H6.03064V0.125ZM0.4646 5.75H3.24762V8.25H0.4646V5.75ZM6.03064 5.75H8.81366V8.25H6.03064V5.75ZM0.4646 11.375H3.24762V13.875H0.4646V11.375ZM6.03064 11.375H8.81366V13.875H6.03064V11.375Z" fill="currentColor"/>
+                      </svg>
+                    </div>
+                    <div class="w-100 position-relative">
                       <a
                           class="d-flex pjax"
                           :href="questiongroup.link"
@@ -331,24 +364,73 @@ export default {
                         >
                         {{ questiongroup.group_name }}
                         </span>
-                        <div class="ms-auto">
-                          <span
-                              class="badge rounded-pill ls-space margin right-5"
-                              @click.stop="openQuestionGroup(questiongroup)"
-                          >
-                                  {{ questiongroup.questions.length }}
-                          </span>
-                          <i class="fa bigIcons"
-                             v-bind:class="isOpen(questiongroup.gid) ? 'black-caret fa-caret-up' : 'black-caret fa-caret-down'"
-                             @click.prevent="toggleActivation(questiongroup.gid)">&nbsp;</i>
-                        </div>
+                    
                       </a>
+
+                    <div  class="dropdown position-absolute top-0 d-flex" style="right:5px" >
+
+                        <div class="">
+                            <span class="badge reverse-color ls-space margin right-5"
+                                @click.prevent="toggleActivation(questiongroup.gid)">
+                                {{ questiongroup.questions.length }}
+                            </span>
+                        </div>
+
+                        <div class="ls-questiongroup-tools cursor-pointer" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                             <i class="ri-more-fill"></i>
+                        </div>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li  v-if="key !== 'delete'"  v-for="(value, key) in questiongroup.groupDropdown" :key="key">
+                                <a   class="dropdown-item" :id="value.id" :href="value.url">
+                                    <span :class="value.icon"></span>
+                                    {{value.label}}
+                                </a>
+
+                            </li>
+
+                            <li v-else-if="key === 'delete'" :class=" value.disabled ? 'disabled' : '' ">
+                                <a 
+                                    v-if="!value.disabled"
+                                    href="#"
+                                    onclick="return false;"
+                                    class="dropdown-item"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#confirmation-modal"
+                                    data-btnclass="btn-danger"
+                                    :data-title="value.dataTitle"
+                                    :data-btntext="value.dataBtnText"
+                                    :data-onclick="value.dataOnclick"
+                                    :data-message="value.dataMessage"
+                                >
+                                    <span :class="value.icon"></span>
+                                    {{value.label}}
+                                </a>
+                                <a 
+                                    v-else-if="value.disabled"
+                                    href="#"
+                                    onclick="return false;"
+                                    class="dropdown-item"
+                                    data-btnclass="btn-danger"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="bottom"
+                                    :title="value.title"
+                                >
+                                    <span :class="value.icon"></span>
+                                    {{value.label}}
+                                </a>
+
+                            </li>
+                        </ul>
+                    </div>
+                                
 
                     </div>
                   </div>
                     <transition name="slide-fade-down">
                         <ul
                             class="list-group background-muted padding-left question-question-list"
+                            style="padding-right:15px"
                             v-if="isOpen(questiongroup.gid)"
                             @drop="dropQuestion($event, question)"
                         >
@@ -357,6 +439,10 @@ export default {
                                 v-bind:key="question.qid"
                                 v-bind:class="questionItemClasses(question)"
                                 data-bs-toggle="tooltip"
+                                v-on:mouseover="onMouseOverQuestion($event, question)"
+                                v-on:mouseleave ="onMouseLeave" 
+
+                                
                                 class="list-group-item question-question-list-item ls-flex-row align-itmes-flex-start"
                                 :data-is-hidden="question.hidden"
                                 :data-questiontype="question.type"
@@ -364,17 +450,20 @@ export default {
                                 :title="question.question_flat"
                                 @dragenter="dragoverQuestion($event, question, questiongroup)"
                             >
-                                    <i
+                                    <div
                                         v-if="!$store.state.surveyActiveState"
-                                        class="fa fa-bars margin-right bigIcons dragPointer question-question-list-item-drag"
+                                        class="margin-right bigIcons dragPointer question-question-list-item-drag"
                                         :class=" allowOrganizer ? '' : 'disabled' "
                                         :draggable="allowOrganizer"
                                         @dragend="endDraggingQuestion($event, question)"
                                         @dragstart="startDraggingQuestion($event, question, questiongroup)"
                                         @click.stop.prevent="()=>false"
                                     >
-                                        &nbsp;
-                                    </i>
+                                        <svg width="9" height="14" viewBox="0 0 9 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M0.4646 0.125H3.24762V2.625H0.4646V0.125ZM6.03064 0.125H8.81366V2.625H6.03064V0.125ZM0.4646 5.75H3.24762V8.25H0.4646V5.75ZM6.03064 5.75H8.81366V8.25H6.03064V5.75ZM0.4646 11.375H3.24762V13.875H0.4646V11.375ZM6.03064 11.375H8.81366V13.875H6.03064V11.375Z" fill="currentColor"/>
+                                        </svg>
+
+                                    </div>
                                 <a
                                     :href="question.link"
                                     class="col-9 pjax question-question-list-item-link display-as-container ls-text-underline-hover"
@@ -388,6 +477,67 @@ export default {
                                         [{{question.title}}] &rsaquo; {{ question.question_flat }}
                                     </span>
                                 </a>
+                                <div v-if="itemActivated(question)||(hoveredQuestion && hoveredQuestion.qid === question.qid)" class="dropdown position-absolute" style="right:10px" >
+                                    <div class="ls-question-tools ms-auto position-relative cursor-pointer" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                                     aria-expanded="false">
+                                        <i class="ri-more-fill"></i>
+                                    </div>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                        <li  v-if="key !== 'delete' && !(key === 'language' && Array.isArray(value))"  v-for="(value, key) in question.questionDropdown" :key="key">
+                                            <a   class="dropdown-item" :id="value.id" :href="value.url">
+                                               <span :class="value.icon"></span>
+                                                 {{value.label}}
+                                            </a>
+                                      
+                                        </li>
+
+                                        <li v-else-if="key === 'delete'"  :class=" value.disabled ? 'disabled' : '' ">
+                                            <a 
+                                               v-if="!value.disabled"
+                                                href="#"
+                                                onclick="return false;"
+                                                class="dropdown-item"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#confirmation-modal"
+                                                data-btnclass="btn-danger"
+                                                :data-title="value.dataTitle"
+                                                :data-btntext="value.dataBtnText"
+                                                :data-onclick="value.dataOnclick"
+                                                :data-message="value.dataMessage"
+                                            >
+                                                <span :class="value.icon"></span>
+                                                {{value.label}}
+                                            </a>
+                                            <a 
+                                               v-else-if="value.disabled"
+                                                href="#"
+                                                onclick="return false;"
+                                                class="dropdown-item"
+                                                data-btnclass="btn-danger"
+                                                data-bs-toggle="tooltip"
+                                                data-bs-placement="bottom"
+                                                :title="value.title"
+
+                                            >
+                                                <span :class="value.icon"></span>
+                                                {{value.label}}
+                                            </a>
+
+                                        </li>
+                                        <div v-else-if="key === 'language' && Array.isArray(value)">
+                                            <li role="separator" class="dropdown-divider"  ></li>
+                                            <li class="dropdown-header">Survey logic file</li>
+                                            <li v-for="language in value" >
+                                                <a class="dropdown-item" :id="language.id" :href="language.url">
+                                                  <span :class="language.icon"></span>
+                                                    {{language.label}}
+                                                </a>
+                                            </li>
+                                        </div>
+                                     
+                                    </ul>
+
+                                </div>
                             </li>
                         </ul>
                     </transition>
@@ -424,6 +574,10 @@ export default {
 }
 #questionexplorer {
     overflow: auto;
+    background-color: #fff;
+    /* position: relative; */
+    /* z-index: 2; */
+    min-height: 100vh;
 }
 
 </style>

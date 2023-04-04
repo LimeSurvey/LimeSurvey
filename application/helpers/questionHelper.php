@@ -1308,6 +1308,7 @@ class questionHelper
             'category' => gT('Timer'),
             'sortorder' => 100,
             "inputtype" => "textarea",
+            'expression' => 1,
             "help" => gT("CSS Style for the message that displays in the countdown timer during the countdown"),
             "caption" => gT("Time limit timer CSS style")
         );

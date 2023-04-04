@@ -1,4 +1,4 @@
-<?php echo CHtml::beginForm($action, 'post', array('class'=>'form-horizontal container-fluid')) ?>
+<?php echo CHtml::beginForm($action, 'post', array('class'=>'form-horizontal')) ?>
 <div class="row">
     <label class='col-md-2 offset-lg-2 text-end form-label' for='uid'>
         <?php eT("User"); ?>

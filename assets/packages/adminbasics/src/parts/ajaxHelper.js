@@ -9,7 +9,7 @@ const onSuccess = (response) => {
     // Check type of response and take action accordingly
     if (response == '') {
         console.error('No response from server');
-        ajaxAlerts('No response from server', 'danger');
+        ajaxAlerts('No response from server', 'danger', {showCloseButton: true});
         return false;
     }
 
@@ -23,13 +23,13 @@ const onSuccess = (response) => {
 
     // No permission
     if (!response.hasPermission) {
-        ajaxAlerts(response.noPermissionText, 'danger');
+        ajaxAlerts(response.noPermissionText, 'danger', {showCloseButton: true});
         return false;
     }
 
     // Error popup
     if (response.error) {
-        ajaxAlerts(response.error.message, 'danger');
+        ajaxAlerts(response.error.message, 'danger', {showCloseButton: true});
         return false;
     }
 
@@ -42,7 +42,7 @@ const onSuccess = (response) => {
 
     // Success popup
     if (response.success) {
-        ajaxAlerts(response.success, 'success');
+        ajaxAlerts(response.success, 'success', {showCloseButton: true});
     }
 
     // Modal popup

@@ -21,7 +21,7 @@ const replace = require('gulp-replace');
 const merge = require('merge-stream');
 
 function js_minify() {
-    return src(['vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js', 'assets/bootstrap_5/js/bootstrap_5.js'])
+    return src(['node_modules/bootstrap/dist/js/bootstrap.bundle.min.js', 'assets/bootstrap_5/js/bootstrap_5.js'])
         .pipe(concat('bootstrap_5.js'))
         .pipe(dest('assets/bootstrap_5/build/js/'))
         .pipe(uglify())
@@ -76,7 +76,7 @@ function theme() {
         autoprefixer(),
         cssnano()
     ];
-    return src(['assets/admin_themes/Sea_Green/lime-admin-colors.scss', 'assets/admin_themes/Sea_Green/statistics.scss', 'assets/admin_themes/Sea_Green/lime-admin-common.scss'])
+    return src(['assets/admin_themes/Sea_Green/sea_green.scss'])
         .pipe(sass())
         .pipe(dest('themes/admin/Sea_Green/css'))
         .pipe(gulppostcss(plugins))
@@ -89,7 +89,7 @@ function theme_rtl() {
         autoprefixer(),
         cssnano()
     ];
-    return src(['assets/admin_themes/Sea_Green/statistics.scss', 'assets/admin_themes/Sea_Green/lime-admin-common.scss', 'assets/admin_themes/Sea_Green/lime-admin-colors.scss'])
+    return src(['assets/admin_themes/Sea_Green/sea_green.scss'])
         .pipe(sass())
         .pipe(rtlcss())
         .pipe(rename({suffix: '-rtl'}))

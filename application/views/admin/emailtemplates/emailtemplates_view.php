@@ -94,16 +94,16 @@ var LS = LS || {};  // namespace
             </div>
             <div class='modal-body'>
                 <div class='input-group'>
-                    <div class="input-group-addon">{</div>
+                    <div class="input-group-text">{</div>
                     <textarea class='form-control' id='attachment-relevance-condition'></textarea>
-                    <div class="input-group-addon">}</div>
+                    <div class="input-group-text">}</div>
                 </div>
             </div>
             <div class='modal-footer'>
                 <button type="button" class='btn btn-outline-secondary' data-bs-dismiss='modal'>
                     <?php eT("Close"); ?>
                 </button>
-                <button type="button" class='btn btn-success'>
+                <button type="button" class='btn btn-primary'>
                     <?php eT("Add"); ?>
                 </button>
             </div>

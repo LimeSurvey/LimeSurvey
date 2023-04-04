@@ -35,7 +35,7 @@
                                'action' => 'user',
                                'id' => $content->uid
                            ]); ?>" data-bs-toggle='tooltip' title="<?= gT("Edit permissions") ?>">
-                            <span class='fa fa-pencil text-success'></span>
+                            <span class='ri-pencil-fill text-success'></span>
                         </a>
                     <?php } ?>
                     <?php if (Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'delete')) {
@@ -53,7 +53,7 @@
                         data-post-datas='<?php echo json_encode(['surveyid' => $surveyid, 'userid' => $content->uid]); ?>'
                         type='submit'
                         class='btn btn-outline-secondary btn-sm'>
-                        <span class='fa fa-trash text-danger'></span>
+                        <span class='ri-delete-bin-fill text-danger'></span>
                     </a>
                 </span>
                     <?php } ?>
@@ -73,23 +73,15 @@
                 $userPerm = $oSurveyPermissions->getUsersSurveyPermissionEntity($content->uid, $sPermission);
                 ?>
                 <td class='text-center'>
-                    <?php
-                    $result = [];
-                    $result = $oSurveyPermissions->getTooltipAllPermissions($content->uid, $sPermission, $aSubPermissions);
-                    if ($result['hasPermissions']) {
-                        if ($result['allPermissionsSet']) {
-                            $appendClass = 'class="fa fa-check ">&nbsp;</div>';
-                        } else {
-                            $appendClass = 'class="fa fa-check mixed">&nbsp;</div>';
-                        }
-                        $titleOutput = implode(', ', $result['permissionCrudArray']);
-                        $titleOutput = ucfirst($titleOutput);
-                        echo "<div data-bs-toggle='tooltip' title='" . $titleOutput . "'" . $appendClass;
-                    } else {
-                        echo '<div>&#8211;</div>';
-                    }
-                    ?>
-
+                    <?php $result = $oSurveyPermissions->getTooltipAllPermissions($content->uid, $sPermission, $aSubPermissions); ?>
+                    <?php if ($result['hasPermissions']) : ?>
+                        <div data-bs-toggle="tooltip" title="<?= ucfirst(implode(', ', $result['permissionCrudArray'])) ?>"
+                             class="ri-check-fill <?= $result['allPermissionsSet'] ? '' : 'mixed' ?>">
+                            &nbsp;
+                        </div>
+                    <?php else : ?>
+                        <div>&#8211;</div>
+                    <?php endif; ?>
                 </td>
             <?php } ?>
         </tr>

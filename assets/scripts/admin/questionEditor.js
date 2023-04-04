@@ -651,7 +651,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
           const $liTemplate = $('<li class="nav-item" role="presentation"></li>');
           const $aTemplate = $('<button type="button" role="tab" class="nav-link" data-bs-toggle="tab" data-bs-target=""></button>');
           const $tabTodyTemplate = $('<div></div>');
-          const $listTemplate = $('<div class="list-group selector_label-list"></div>');
+          const $listTemplate = $('<div class="list-group selector_label-list container-fluid"></div>');
           const $listItemTemplate = $('<div class="row mb-3 selector_label-list-row"></div>');
           const $tabindex = $('<ul class="nav nav-tabs" role="tablist"></ul>');
           const $tabbody = $('<div class="tab-content" id="label-set-tab-content" style="max-height: 50vh; overflow:auto;"></div>');
@@ -686,10 +686,10 @@ $(document).on('ready pjax:scriptcomplete', function () {
               isEmpty = false;
               labelSet.labels.forEach((label) => {
                 // Label title is not concatenated directly because it may have non-encoded HTML
-                const $labelTitleDiv = $('<div class="col-lg-7"></div>');
+                const $labelTitleDiv = $('<div class="col-lg-9"></div>');
                 $labelTitleDiv.text(label.title);
                 const $listItem = $listItemTemplate.clone();
-                $listItem.append(`<div class="col-lg-5 text-end" style="border-right: 4px solid #cdcdcd">${label.code}</div>`);
+                $listItem.append(`<div class="col-lg-3 text-end" style="border-right: 4px solid #cdcdcd">${label.code}</div>`);
                 $listItem.append($labelTitleDiv);
                 $listItem.attr('data-label', JSON.stringify(label));
                 $itemList.append($listItem);
@@ -700,7 +700,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
               });
             }
 
-            $bodyItem.append(`<h4>${labelSet.label_name}</h4>`);  // jshint ignore: line
+            $bodyItem.append(`<h2>${labelSet.label_name}</h2>`);  // jshint ignore: line
             $itemList.appendTo($bodyItem);
           });
           
@@ -731,13 +731,13 @@ $(document).on('ready pjax:scriptcomplete', function () {
    * @return {void}
    */
   function showLabelSetAlert(message /*: mixed */, type /*?: string */) /*: void */ {
-    if (typeof message !== 'string') {
+      if (typeof message !== 'string') {
         throw 'expected string';
-    }
-    const alertType = type ?? 'warning';
-    const alert = $('#labelsetalert');
-    const alertHtml = '<div class="alert alert-' + alertType + ' ls-space margin bottom-0 top-15">' + message + '</div>';
-    alert.html(alertHtml).show();
+      }
+      const alertType = type ?? 'warning';
+      const alert = $('#labelsetalert');
+      window.LS.ajaxAlerts(message, alertType, {inline: '#labelsetalert', class: 'ls-space margin bottom-0 top-15'});
+      alert.show();
   }
 
   /**
@@ -776,7 +776,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
     } else {
         $('#current_scale_id').val(scaleId);
     }
-    $('#labelsets').select2({dropdownParent: $("#labelsetbrowserModal")});
+    $('#labelsets').select2({
         dropdownParent: $('#labelsetbrowserModal'),
         theme: 'bootstrap-5'
     });
@@ -1433,10 +1433,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
        * @return {void}
        */
       success(successMessage) {
-        LS.LsGlobalNotifier.createAlert(
-          successMessage,
-          'success'
-        );
+        LS.LsGlobalNotifier.createAlert(successMessage, 'success', {showCloseButton: true});
       },
       /**
        * @param {any} data
@@ -1444,10 +1441,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
        */
       error(data) {
         if (data.responseJSON) {
-          LS.LsGlobalNotifier.createAlert(
-            data.responseJSON.message,
-            'danger'
-          );
+          LS.LsGlobalNotifier.createAlert(data.responseJSON.message, 'danger', {showCloseButton: true});
         } else {
           alert('Internal eror from Ajax call');
           throw 'abort';
@@ -1491,18 +1485,14 @@ $(document).on('ready pjax:scriptcomplete', function () {
     const $that = ui.item;
     const newindex = Number($that.parent().children().index($that) + 1);
     const oldindex = $that.data('oldindex');
-    const languages = languageJson.langs.split(';');
+    const scaleId = $that.closest('table').data('scaleid');
 
-    languages.forEach((curLanguage, x) => {
-      if (x > 0) {
-        const tablebody = $(`#tabpage_${languages[x]}`).find('tbody');
-        // 
-        if (newindex < oldindex) {
-          $(`#tabpage_${languages[x]} tbody tr:nth-child(${newindex})`).before($(`#tabpage_${languages[x]} tbody tr:nth-child(${oldindex})`));
-        } else {
-          $(`#tabpage_${languages[x]} tbody tr:nth-child(${newindex})`).after($(`#tabpage_${languages[x]} tbody tr:nth-child(${oldindex})`));
-          tablebody.find('.row_'+newindex).after(tablebody.find('.row_'+oldindex));
-        }
+    // Process the corresponding scale id table for each extra language
+    $that.closest('.tab-pane').find(".extra-lang  table[data-scaleid='" + scaleId + "']").each((idx, table) => {
+      if (newindex < oldindex) {
+        $(table).find(`tbody tr:nth-child(${newindex})`).before($(table).find(`tbody tr:nth-child(${oldindex})`));
+      } else {
+        $(table).find(`tbody tr:nth-child(${newindex})`).after($(table).find(`tbody tr:nth-child(${oldindex})`));
       }
     });
   }
@@ -1585,10 +1575,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
       // Check uniqueness.
       if (!checkSubquestionCodeUnique(table, msg)) {
-        LS.LsGlobalNotifier.createAlert(
-          msg,
-          'danger'
-        );
+        LS.LsGlobalNotifier.createAlert(msg, 'danger', {showCloseButton: true});
         hasError = true;
       }
 
@@ -1599,11 +1586,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
         const code = that.value;
         if (code.length > 20) {
           $(that.parentElement).addClass('has-error');
-          LS.LsGlobalNotifier.createAlert(
-            // TODO: Translation
-            'Subquestion code is too long. Maximal number of characters is: 20.',
-            'danger'
-          );
+          LS.LsGlobalNotifier.createAlert('Subquestion code is too long. Maximal number of characters is: 20.', 'danger', {showCloseButton: true});
           hasError = true;
         }
       }
@@ -1654,7 +1637,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
         $.ajax({
           url: generalSettingsUrl,
           method: 'GET',
-          data: { questionType, questionTheme },
+          data: { questionType, questionTheme, code },
           dataType: 'html',
           success: (data) => {
             resolve(data);
@@ -1693,9 +1676,25 @@ $(document).on('ready pjax:scriptcomplete', function () {
         });
       });
       try {
+        var code = $('#questionCode').val();
         const [generalSettingsHtml, advancedSettingsHtml, extraOptionsHtml] = await Promise.all([generalSettingsPromise, advancedSettingsPromise, extraOptionsPromise]);
         const currentGroup = $('#gid').children("option:selected").val();
         $('#general-settings').replaceWith(generalSettingsHtml);
+        $('#questionCode').val(code);
+        var wrapperEl = $('#question-type-selector-wrapper');
+        var viewType = wrapperEl.data('viewtype');
+        var debug = wrapperEl.data('debug');
+        var runner_questionTypeSelector = new PreviewModalScript("questionTypeSelector", {
+          "selectedClass": "text-short",
+          "onUpdate": ["value", "theme", "$('#question_type').val(value); $('#question_theme_name').val(theme); LS.questionEditor.updateQuestionAttributes(value, theme, '" + generalSettingsUrl + "', '" + advancedSettingsUrl + "', '" + extraOptionsUrl + "');"],
+          "value": questionType,
+          "theme": questionTheme,
+          "debugString": "Type: ",
+          "debug": debug == 1,
+          "viewType": viewType
+        });
+        runner_questionTypeSelector.bind();
+
         $('#gid').val(currentGroup);
         // TODO: Double check HTML injected here. Extra div?
         $('#advanced-options-container').replaceWith(advancedSettingsHtml);
@@ -1924,26 +1923,17 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
             if (textStatus === 'success') {
               // Show confirm message.
-              LS.LsGlobalNotifier.createAlert(
-                json.message,
-                'success'
-              );
+              LS.LsGlobalNotifier.createAlert(json.message, 'success', {showCloseButton: true});
             } else {
               // Show error message.
-              LS.LsGlobalNotifier.createAlert(
-                json.message,
-                'danger'
-              );
+              LS.LsGlobalNotifier.createAlert(json.message, 'danger', {showCloseButton: true});
             }
             updateQuestionSummary();
           },
           error: (data) => {
             $('#ls-loading').hide();
             if (data.responseJSON) {
-              LS.LsGlobalNotifier.createAlert(
-                data.responseJSON.message,
-                'danger'
-              );
+              LS.LsGlobalNotifier.createAlert(data.responseJSON.message, 'danger', {showCloseButton: true});
             } else {
               alert('Internal error from saveFormWithAjax: no data.responseJSON found');
               throw 'abort';
@@ -2027,6 +2017,16 @@ $(document).on('ready pjax:scriptcomplete', function () {
     } else {
       $('.same-script-alert').addClass("d-none");
     }
+  }
+
+  /**
+   * Updates the answer/subquestion code on secondary languages
+   */
+  function syncAnswerSubquestionCode() {
+    const itemCode = $(this).val();
+    const commonId = $(this).closest('tr').data('common-id');
+
+    $(this).closest('.tab-pane').find(".extra-lang tr[data-common-id='" + commonId + "'] td.code-title").text(itemCode);
   }
 
   // Below, things run on pjax:scriptcomplete.
@@ -2144,4 +2144,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
     });
     
     $('#relevance').on('keyup', showConditionsWarning);
+
+    $(document).on('focusout', '#subquestions table.subquestions-table:first-of-type td.code-title input.code', syncAnswerSubquestionCode);
+    $(document).on('focusout', '#answeroptions table.answeroptions-table:first-of-type td.code-title input.code', syncAnswerSubquestionCode);
 });

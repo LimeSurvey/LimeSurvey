@@ -5,7 +5,7 @@
         <span id="tokenSendNotice"><?php printf(ngT("There are more emails pending than can be sent in one batch. Continue sending emails by clicking below, or wait %s{n}%s second.|There are more emails pending than can be sent in one batch. Continue sending emails by clicking below, or wait %s{n}%s seconds.", Yii::app()->getConfig('sendingrate')), '<span id="tokenSendCounter">', '</span>'); ?></span>
         <br />
         <br />
-        <?php echo str_replace("{EMAILCOUNT}", (string) $lefttosend, gT("There are {EMAILCOUNT} emails still to be sent.")); ?>
+        <?php echo str_replace("{EMAILCOUNT}", (string) $lefttosend, (string) gT("There are {EMAILCOUNT} emails still to be sent.")); ?>
         <br />
         <br />
         <input 
@@ -88,7 +88,7 @@ App()->getClientScript()->registerScript('TokenInviteLooper', "
 
     var submitInviteForm = function() {
         $('body').append('<div class=\"overlay\"></div>');
-        $('#sendTokenInvitationsNow').after('<p class=\"text-center\"><i class=\"fa fa-cog fa-spin\"></i></p>');
+        $('#sendTokenInvitationsNow').after('<p class=\"text-center\"><i class=\"ri-settings-5-fill remix-spin\"></i></p>');
         $('#cancelAutomaticSubmission').remove();
         $('#sendTokenInvitationsNow').remove();
         $('#tokenSubmitInviteForm').trigger('submit');

@@ -10,17 +10,18 @@
     <div class="row">
         <div class="col-12 content-right">
             <?php echo CHtml::form(array("admin/tokens/sa/adddummies/surveyid/{$surveyid}/subaction/add"), 'post', array('id'=>'edittoken', 'name'=>'edittoken', 'class'=>'form30 ')); ?>
-
+            <div class="row">
                 <!-- ID  -->
-                <div class="mb-3">
+                <div class="mb-3 col-12">
                     <label  class=" form-label">ID:</label>
                     <div class="">
                         <p class="form-control-static"><?php eT("Auto"); ?></p>
                     </div>
                 </div>
-
+            </div>
+            <div class="row">
                 <!-- Number of tokens  -->
-                <div class="mb-3">
+                <div class="mb-3 col-6">
                     <label  class=" form-label" for='amount'><?php eT("Number of participants:"); ?></label>
                     <div class="">
                         <input class='form-control' type='text' size='20' id='amount' name='amount' value="<?php echo $amount; ?>" />
@@ -28,15 +29,16 @@
                 </div>
 
                 <!-- Token length  -->
-                <div class="mb-3">
+                <div class="mb-3 col-6">
                     <label  class=" form-label" for='tokenlen'><?php eT("Access code length"); ?>:</label>
                     <div class="">
                         <input class='form-control' type='text' size='20' id='tokenlen' name='tokenlen' value="<?php echo $tokenlength; ?>" />
                     </div>
                 </div>
-
+            </div>
+            <div class="row">
                 <!-- First name  -->
-                <div class="mb-3">
+                <div class="mb-3 col-6">
                     <label  class=" form-label" for='firstname'><?php eT("First name"); ?>:</label>
                     <div class="">
                         <input class='form-control' type='text' size='30' id='firstname' name='firstname' value="<?php echo $firstname; ?>" />
@@ -44,15 +46,16 @@
                 </div>
 
                 <!-- Last name  -->
-                <div class="mb-3">
+                <div class="mb-3 col-6">
                     <label  class=" form-label" for='lastname'><?php eT("Last name"); ?>:</label>
                     <div class="">
                         <input class='form-control' type='text' size='30'  id='lastname' name='lastname' value="<?php echo $lastname; ?>" />
                     </div>
                 </div>
-
+            </div>
+            <div class="row">
                 <!-- Email  -->
-                <div class="mb-3">
+                <div class="mb-3 col-6">
                     <label  class=" form-label" for='email'><?php eT("Email address:"); ?></label>
                     <div class="">
                         <input class='form-control' type='email' maxlength='320' size='50' id='email' name='email' value="<?php echo $email; ?>" />
@@ -60,21 +63,22 @@
                 </div>
 
                 <!-- Language  -->
-                <div class="mb-3">
+                <div class="mb-3 col-6">
                     <label  class=" form-label" for='language'><?php eT("Language"); ?>:</label>
                     <div class="">
                         <?php echo languageDropdownClean($surveyid, $language); ?>
                     </div>
                 </div>
-
+            </div>
+            <div class="row">
                 <!-- Uses left  -->
-                <div class="mb-3">
+                <div class="mb-3 col-6">
                     <label  class=" form-label" for='usesleft'><?php eT("Uses left:"); ?></label>
                     <div class="">
                         <input class='form-control' type='text' size='20' id='usesleft' name='usesleft' value="<?php echo $usesleft; ?>" />
                     </div>
                 </div>
-
+            </div>
             <?php
                 if (isset($validfrom) && $validfrom != 'N')
                 {
@@ -86,75 +90,61 @@
                     $validuntil = convertToGlobalSettingFormat($validuntil, true);
                 }
             ?>
+            <div class="row">
                 <!--  Validity -->
-                <div class="mb-3">
+                <div class="mb-3 col-6">
                     <label  class=" form-label" for='validfrom'><?php eT("Valid from"); ?>:</label>
                     <div class=" has-feedback">
-                        <?php Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
+                        <?php Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', [
                                 'name' => "validfrom",
                                 'value' => $validfrom ?? '',
-                                'pluginOptions' => array(
+                                'pluginOptions' => [
                                     'format' => $dateformatdetails['jsdate'] . " HH:mm",
-                                    'allowInputToggle' =>true,
+                                    'allowInputToggle' => true,
                                     'showClear' => true,
-                                    'tooltips' => array(
-                                        'clear'=> gT('Clear selection'),
-                                        'prevMonth'=> gT('Previous month'),
-                                        'nextMonth'=> gT('Next month'),
-                                        'selectYear'=> gT('Select year'),
-                                        'prevYear'=> gT('Previous year'),
-                                        'nextYear'=> gT('Next year'),
-                                        'selectDecade'=> gT('Select decade'),
-                                        'prevDecade'=> gT('Previous decade'),
-                                        'nextDecade'=> gT('Next decade'),
-                                        'prevCentury'=> gT('Previous century'),
-                                        'nextCentury'=> gT('Next century'),
-                                        'selectTime'=> gT('Select time')
-                                    ),
                                     'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
-                                )
-                            ));
+                                ]
+                            ]);
                         ?>
-                        <span class="help-block"><?php printf(gT('Format: %s'), $dateformatdetails['jsdate'] . ' ' . gT('hh:mm')); ?></span>
+                        <?php
+                        $this->widget('ext.AlertWidget.AlertWidget', [
+                            'text'        => sprintf(gT('Format: %s'), $dateformatdetails['jsdate'] . ' ' . gT('hh:mm')),
+                            'type'        => 'info',
+                            'htmlOptions' => ['class' => 'mt-1'],
+                        ]);
+                        ?>
                     </div>
-
+                </div>
+                <div class="mb-3 col-6">
                     <label  class=" form-label" for='validuntil'><?php eT('Until:'); ?></label>
                     <div class=" has-feedback">
-                        <?php Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
+                        <?php Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', array(
                                 'name' => "validuntil",
                                 'value' => $validuntil ?? '',
                                 'pluginOptions' => array(
                                     'format' => $dateformatdetails['jsdate'] . " HH:mm",
-                                    'allowInputToggle' =>true,
+                                    'allowInputToggle' => true,
                                     'showClear' => true,
-                                    'tooltips' => array(
-                                        'clear'=> gT('Clear selection'),
-                                        'prevMonth'=> gT('Previous month'),
-                                        'nextMonth'=> gT('Next month'),
-                                        'selectYear'=> gT('Select year'),
-                                        'prevYear'=> gT('Previous year'),
-                                        'nextYear'=> gT('Next year'),
-                                        'selectDecade'=> gT('Select decade'),
-                                        'prevDecade'=> gT('Previous decade'),
-                                        'nextDecade'=> gT('Next decade'),
-                                        'prevCentury'=> gT('Previous century'),
-                                        'nextCentury'=> gT('Next century'),
-                                'selectTime'=> gT('Select time')
-                                    ),
                                     'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                                 )
                             ));
                         ?>
-                        <span class="help-block"><?php printf(gT('Format: %s'), $dateformatdetails['jsdate'] . ' ' . gT('hh:mm')); ?></span>
+                        <?php
+                        $this->widget('ext.AlertWidget.AlertWidget', [
+                            'text'        => sprintf(gT('Format: %s'), $dateformatdetails['jsdate'] . ' ' . gT('hh:mm')),
+                            'type'        => 'info',
+                            'htmlOptions' => ['class' => 'mt-1'],
+                        ]);
+                        ?>
                     </div>
                 </div>
-
+            </div>
                 <!-- Attribute fields  -->
                 <?php foreach ($aAttributeFields as $attr_name => $attr_description): ?>
-                    <div class="mb-3">
+                    <div class="mb-3 col-6">
                         <label  class=" form-label" for='<?php echo $attr_name; ?>'><?php echo $attr_description['description'] . ($attr_description['mandatory'] == 'Y' ? '*' : '') ?>:</label>
                         <div class="">
-                            <input class='form-control' type='text' size='55' id='<?php echo $attr_name; ?>' name='<?php echo $attr_name; ?>' value='<?php if (isset($$attr_name)){echo htmlspecialchars($$attr_name, ENT_QUOTES, 'UTF-8');}?>' />
+                            <input class='form-control' type='text' size='55' id='<?php echo $attr_name; ?>' name='<?php echo $attr_name; ?>' value='<?php if (isset($$attr_name)){echo htmlspecialchars((string) $$attr_name, ENT_QUOTES, 'UTF-8');}?>' />
                         </div>
                     </div>
                 <?php endforeach; ?>

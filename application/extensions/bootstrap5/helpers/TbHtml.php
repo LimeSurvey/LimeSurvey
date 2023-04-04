@@ -1112,7 +1112,7 @@ class TbHtml extends CHtml // required in order to access the protected methods 
 
         $id = 0;
         foreach ($data as $value => $label) {
-            $checked = !strcmp($value, $select);
+            $checked = !strcmp((string) $value, (string) $select);
             $htmlOptions['value'] = $value;
             $htmlOptions['id'] = $baseID . '_' . $id++;
             if ($inline) {
@@ -1182,7 +1182,7 @@ class TbHtml extends CHtml // required in order to access the protected methods 
         $checkAll = true;
 
         foreach ($data as $value => $label) {
-            $checked = !is_array($select) && !strcmp($value, $select) || is_array($select) && in_array($value, $select);
+            $checked = !is_array($select) && !strcmp($value, (string) $select) || is_array($select) && in_array($value, $select);
             $checkAll = $checkAll && $checked;
             $htmlOptions['value'] = $value;
             $htmlOptions['id'] = $baseID . '_' . $id++;
@@ -2720,7 +2720,7 @@ EOD;
         $addOnOptions = TbArray::popValue('addOnOptions', $htmlOptions, array());
         $normalAddOnOptions = $addOnOptions;
         $buttonAddOnOptions = $addOnOptions;
-        self::addCssClass('input-group-addon', $normalAddOnOptions);
+        self::addCssClass('input-group-text', $normalAddOnOptions);
         self::addCssClass('input-group-btn', $buttonAddOnOptions);
 
         if (!is_array($addOns)) {
@@ -2728,10 +2728,10 @@ EOD;
         }
 
         foreach ($addOns as $addOn) {
-            if (strpos($addOn, 'btn') === false) {
+            if (strpos((string) $addOn, 'btn') === false) {
                 $normal[] = $addOn;
             } else { // TbHtml::butonDropdown() requires special parsing
-                if (preg_match('/^<div.*class="(.*)".*>(.*)<\/div>$/U', $addOn, $matches) > 0
+                if (preg_match('/^<div.*class="(.*)".*>(.*)<\/div>$/U', (string) $addOn, $matches) > 0
                     && (isset($matches[1]))
                     && strpos($matches[1], 'btn-group') !== false
                 ) {
@@ -3361,7 +3361,7 @@ EOD;
             }
             $toggle = TbArray::popValue('toggle', $htmlOptions);
             $name = TbArray::popValue('name', $htmlOptions);
-            if (!empty($name) && substr($name, -2) !== '[]') {
+            if (!empty($name) && substr((string) $name, -2) !== '[]') {
                 $name .= '[]';
             }
             if (in_array($toggle, array(self::BUTTON_TOGGLE_CHECKBOX, self::BUTTON_TOGGLE_RADIO))) {
@@ -3933,7 +3933,7 @@ EOD;
         $htmlOptions['data-target'] = $target;
         self::addCssClass('navbar-toggle', $htmlOptions);
         $content = self::tag('span', array('class' => 'sr-only'), 'Toggle navigation');
-        $content .= '<span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>';
+        $content .= '<span class="navbar-toggler-icon"></span>';
         return self::tag('button', $htmlOptions, $content);
     }
 
@@ -4856,9 +4856,9 @@ EOD;
             $className = explode(' ', $className);
         }
         if (isset($htmlOptions['class'])) {
-            $classes = array_filter(explode(' ', $htmlOptions['class']));
+            $classes = array_filter(explode(' ', (string) $htmlOptions['class']));
             foreach ($className as $class) {
-                $class = trim($class);
+                $class = trim((string) $class);
                 // Don't add the class if it already exists
                 if (array_search($class, $classes) === false) {
                     $classes[] = $class;
@@ -4882,7 +4882,7 @@ EOD;
         }
         $style = rtrim($style, ';');
         $htmlOptions['style'] = isset($htmlOptions['style'])
-            ? rtrim($htmlOptions['style'], ';') . '; ' . $style
+            ? rtrim((string) $htmlOptions['style'], ';') . '; ' . $style
             : $style;
     }
 
@@ -5014,7 +5014,7 @@ EOD;
         // todo: why would you want to do this
         $colClasses = array();
         if (isset($htmlOptions['class']) && !empty($htmlOptions['class'])) {
-            $classes = explode(' ', $htmlOptions['class']);
+            $classes = explode(' ', (string) $htmlOptions['class']);
             foreach ($classes as $class) {
                 if (substr($class, 0, 4) == 'col-') {
                     $colClasses[] = $class;
@@ -5035,7 +5035,7 @@ EOD;
         $colClasses = array();
         $returnClasses = array();
         if (isset($htmlOptions['class']) && !empty($htmlOptions['class'])) {
-            $classes = explode(' ', $htmlOptions['class']);
+            $classes = explode(' ', (string) $htmlOptions['class']);
             foreach ($classes as $class) {
                 if (substr($class, 0, 4) == 'col-') {
                     $colClasses[] = $class;

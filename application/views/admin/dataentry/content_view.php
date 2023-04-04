@@ -29,7 +29,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
     <td valign='top' align='right' width='30%'>
         <!-- mandatory -->
         <?php if ($deqrow['mandatory']=="Y"):?>
-            <span class="text-warning">*</span>
+            <span class="text-danger">*</span>
         <?php endif; ?>
 
         <!-- question text -->
@@ -442,32 +442,32 @@ echo viewHelper::getViewTestTag('dataEntryView');
         case Question::QT_N_NUMERICAL: ?>
             <div class="col-md-10">
             <?php
-            if (isset($qidattributes['prefix']) && trim($qidattributes['prefix'][$sDataEntryLanguage]) != '') {
+            if (isset($qidattributes['prefix']) && trim((string) $qidattributes['prefix'][$sDataEntryLanguage]) != '') {
                 $prefix = $qidattributes['prefix'][$sDataEntryLanguage];
             } else {
                 $prefix = '';
             }
 
-            if (isset($qidattributes['suffix']) && trim($qidattributes['suffix'][$sDataEntryLanguage]) != '') {
+            if (isset($qidattributes['suffix']) && trim((string) $qidattributes['suffix'][$sDataEntryLanguage]) != '') {
                 $suffix = $qidattributes['suffix'][$sDataEntryLanguage];
             } else {
                 $suffix = '';
             }
 
-            if (intval(trim($qidattributes['maximum_chars'])) > 0 && intval(trim($qidattributes['maximum_chars'])) < 20) { // Limt to 20 chars for numeric
-                $maximum_chars = intval(trim($qidattributes['maximum_chars']));
+            if (intval(trim((string) $qidattributes['maximum_chars'])) > 0 && intval(trim((string) $qidattributes['maximum_chars'])) < 20) { // Limt to 20 chars for numeric
+                $maximum_chars = intval(trim((string) $qidattributes['maximum_chars']));
                 $maxlength = "maxlength='{$maximum_chars}' ";
             } else {
                 $maxlength = "maxlength='20' ";
             }
 
-            if (trim($qidattributes['text_input_width']) != '') {
+            if (trim((string) $qidattributes['text_input_width']) != '') {
                 $tiwidth = $qidattributes['text_input_width'];
             } else {
                 $tiwidth = 10;
             }
 
-            if (trim($qidattributes['num_value_int_only']) == 1) {
+            if (trim((string) $qidattributes['num_value_int_only']) == 1) {
                 $acomma = "";
             } else {
                 $acomma = getRadixPointData($thissurvey['surveyls_numberformat']);
@@ -483,26 +483,26 @@ echo viewHelper::getViewTestTag('dataEntryView');
             ?>
             <div class="col-md-10">
             <?php
-            if (isset($qidattributes['prefix']) && trim($qidattributes['prefix'][$sDataEntryLanguage]) != '') {
+            if (isset($qidattributes['prefix']) && trim((string) $qidattributes['prefix'][$sDataEntryLanguage]) != '') {
                 $prefix = $qidattributes['prefix'][$sDataEntryLanguage];
             } else {
                 $prefix = '';
             }
 
-            if (isset($qidattributes['suffix']) && trim($qidattributes['suffix'][$sDataEntryLanguage]) != '') {
+            if (isset($qidattributes['suffix']) && trim((string) $qidattributes['suffix'][$sDataEntryLanguage]) != '') {
                 $suffix = $qidattributes['suffix'][$sDataEntryLanguage];
             } else {
                 $suffix = '';
             }
 
-            if (intval(trim($qidattributes['maximum_chars'])) > 0 && intval(trim($qidattributes['maximum_chars'])) < 4000) { // Limit to 4000 to maintain compatibility
-                $maximum_chars = intval(trim($qidattributes['maximum_chars']));
+            if (intval(trim((string) $qidattributes['maximum_chars'])) > 0 && intval(trim((string) $qidattributes['maximum_chars'])) < 4000) { // Limit to 4000 to maintain compatibility
+                $maximum_chars = intval(trim((string) $qidattributes['maximum_chars']));
                 $maxlength = "maxlength='{$maximum_chars}' ";
             } else {
                 $maxlength = "maxlength='4000' "; // Default to 4000 chars if not set within limits
             }
 
-            if (trim($qidattributes['text_input_width']) != '') {
+            if (trim((string) $qidattributes['text_input_width']) != '') {
                 $tiwidth = $qidattributes['text_input_width'];
             } else {
                 $tiwidth = 50;
@@ -519,7 +519,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
                 $numbersonly = '';
             }
 
-            if (trim($qidattributes['display_rows'])!='')
+            if (trim((string) $qidattributes['display_rows'])!='')
             {
                 //question attribute "display_rows" is set -> we need a textarea to be able to show several rows
                 $drows=$qidattributes['display_rows'];
@@ -544,26 +544,26 @@ echo viewHelper::getViewTestTag('dataEntryView');
         ?>
         <div class="col-md-10">
         <?php
-            if (trim($qidattributes['display_rows'])!='')
+            if (trim((string) $qidattributes['display_rows'])!='')
             {
                 $drows=$qidattributes['display_rows'];
             } else {
                 $drows = 5;
             }
 
-            if (trim($qidattributes['text_input_width']) != '') {
+            if (trim((string) $qidattributes['text_input_width']) != '') {
                 $tiwidth = $qidattributes['text_input_width'];
             } else {
                 $tiwidth = 40;
             }
 
-            if (isset($qidattributes['prefix']) && trim($qidattributes['prefix'][$sDataEntryLanguage]) != '') {
+            if (isset($qidattributes['prefix']) && trim((string) $qidattributes['prefix'][$sDataEntryLanguage]) != '') {
                 $prefix = $qidattributes['prefix'][$sDataEntryLanguage];
             } else {
                 $prefix = '';
             }
 
-            if (isset($qidattributes['suffix']) && trim($qidattributes['suffix'][$sDataEntryLanguage]) != '') {
+            if (isset($qidattributes['suffix']) && trim((string) $qidattributes['suffix'][$sDataEntryLanguage]) != '') {
                 $suffix = $qidattributes['suffix'][$sDataEntryLanguage];
             } else {
                 $suffix = '';
@@ -575,26 +575,26 @@ echo viewHelper::getViewTestTag('dataEntryView');
             break;
 
         case Question::QT_U_HUGE_FREE_TEXT: //Huge free text
-            if (trim($qidattributes['display_rows'])!='')
+            if (trim((string) $qidattributes['display_rows'])!='')
             {
                 $drows=$qidattributes['display_rows'];
             } else {
                 $drows = 70;
             }
 
-            if (trim($qidattributes['text_input_width']) != '') {
+            if (trim((string) $qidattributes['text_input_width']) != '') {
                 $tiwidth = $qidattributes['text_input_width'];
             } else {
                 $tiwidth = 50;
             }
 
-            if (isset($qidattributes['prefix']) && trim($qidattributes['prefix'][$sDataEntryLanguage]) != '') {
+            if (isset($qidattributes['prefix']) && trim((string) $qidattributes['prefix'][$sDataEntryLanguage]) != '') {
                 $prefix = $qidattributes['prefix'][$sDataEntryLanguage];
             } else {
                 $prefix = '';
             }
 
-            if (isset($qidattributes['suffix']) && trim($qidattributes['suffix'][$sDataEntryLanguage]) != '') {
+            if (isset($qidattributes['suffix']) && trim((string) $qidattributes['suffix'][$sDataEntryLanguage]) != '') {
                 $suffix = $qidattributes['suffix'][$sDataEntryLanguage];
             } else {
                 $suffix = '';
@@ -730,10 +730,10 @@ echo viewHelper::getViewTestTag('dataEntryView');
                 foreach ($mearesult as $mearow)
                 {
 
-                    if (strpos($mearow->questionl10ns[$sDataEntryLanguage]->question,'|'))
+                    if (strpos((string) $mearow->questionl10ns[$sDataEntryLanguage]->question,'|'))
                     {
-                        $answerleft=substr($mearow->questionl10ns[$sDataEntryLanguage]->question,0,strpos($mearow->questionl10ns[$sDataEntryLanguage]->question,'|'));
-                        $answerright=substr($mearow->questionl10ns[$sDataEntryLanguage]->question,strpos($mearow->questionl10ns[$sDataEntryLanguage]->question,'|')+1);
+                        $answerleft=substr((string) $mearow->questionl10ns[$sDataEntryLanguage]->question,0,strpos((string) $mearow->questionl10ns[$sDataEntryLanguage]->question,'|'));
+                        $answerright=substr((string) $mearow->questionl10ns[$sDataEntryLanguage]->question,strpos((string) $mearow->questionl10ns[$sDataEntryLanguage]->question,'|')+1);
                     }
                     else
                     {
@@ -785,10 +785,10 @@ echo viewHelper::getViewTestTag('dataEntryView');
             <?php $i=0;
                 foreach ($mearesult as $mearow)
                 {
-                    if (strpos($mearow->questionl10ns[$sDataEntryLanguage]->question,'|'))
+                    if (strpos((string) $mearow->questionl10ns[$sDataEntryLanguage]->question,'|'))
                     {
-                        $answerleft=substr($mearow->questionl10ns[$sDataEntryLanguage]->question,0,strpos($mearow->questionl10ns[$sDataEntryLanguage]->question,'|'));
-                        $answerright=substr($mearow->questionl10ns[$sDataEntryLanguage]->question,strpos($mearow->questionl10ns[$sDataEntryLanguage]->question,'|')+1);
+                        $answerleft=substr((string) $mearow->questionl10ns[$sDataEntryLanguage]->question,0,strpos((string) $mearow->questionl10ns[$sDataEntryLanguage]->question,'|'));
+                        $answerright=substr((string) $mearow->questionl10ns[$sDataEntryLanguage]->question,strpos((string) $mearow->questionl10ns[$sDataEntryLanguage]->question,'|')+1);
                     }
                     else
                     {
@@ -821,10 +821,10 @@ echo viewHelper::getViewTestTag('dataEntryView');
             <?php  foreach ( $mearesult as $mearow)
                 {
 
-                    if (strpos($mearow->questionl10ns[$sDataEntryLanguage]->question,'|'))
+                    if (strpos((string) $mearow->questionl10ns[$sDataEntryLanguage]->question,'|'))
                     {
-                        $answerleft=substr($mearow->questionl10ns[$sDataEntryLanguage]->question,0,strpos($mearow->questionl10ns[$sDataEntryLanguage]->question,'|'));
-                        $answerright=substr($mearow->questionl10ns[$sDataEntryLanguage]->question,strpos($mearow->questionl10ns[$sDataEntryLanguage]->question,'|')+1);
+                        $answerleft=substr((string) $mearow->questionl10ns[$sDataEntryLanguage]->question,0,strpos((string) $mearow->questionl10ns[$sDataEntryLanguage]->question,'|'));
+                        $answerright=substr((string) $mearow->questionl10ns[$sDataEntryLanguage]->question,strpos((string) $mearow->questionl10ns[$sDataEntryLanguage]->question,'|')+1);
                     }
                     else
                     {
@@ -856,7 +856,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
 <?php if (!empty($deqrow->questionl10ns[$sDataEntryLanguage]->help)): ?>
     <div class="col-md-1">
         <a href="#" onclick="javascript:alert('Question <?php echo $deqrow['title']; ?> Help: <?php echo $hh; ?>')" title="<?php eT('Help about this question','html',$sDataEntryLanguage); ?>" data-bs-toggle="tooltip" data-bs-placement="top">
-            <span class="fa fa-question-circle"></span>
+            <i class="ri-question-fill"></i>
         </a>
     </div>
 <?php endif; ?>

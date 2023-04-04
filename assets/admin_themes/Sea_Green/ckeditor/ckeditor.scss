@@ -1,0 +1,83 @@
+// CKEDITOR overrides are loaded before original css gets dymanically inserted into the page so definitions have to
+// include !important tag
+.cke_top {
+    background : $white !important;
+    border     : 1px solid $g-900 !important;
+}
+
+.cke_button_icon {
+    opacity : unset !important;
+}
+
+.cke_reset_all,
+.cke_reset_all * {
+    color : $g-900 !important;
+}
+
+.cke_contents {
+    border        : none !important;
+    border-right  : 1px solid $g-900 !important;
+    border-radius : 0 !important;
+    border-left   : 1px solid $g-900 !important;
+}
+
+.cke_bottom {
+    background                 : white !important;
+    border-right               : 1px solid $g-900 !important;
+    border-left                : 1px solid $g-900 !important;
+    border-bottom              : 1px solid $g-900 !important;
+    border-bottom-left-radius  : 4px !important;
+    border-bottom-right-radius : 4px !important;
+}
+
+.cke_resizer {
+    margin-right : 3px !important;
+}
+
+.cke_chrome {
+    width                      : 100% !important;
+    background                 : #dddee8 !important;
+    padding                    : 0 !important;
+    border-bottom-left-radius  : 4px !important;
+    border-bottom-right-radius : 4px !important;
+    box-shadow                 : $boxshadow-small;
+    border                     : none !important;
+}
+
+.cke_toolgroup {
+    background : none !important;
+    box-shadow : none !important;
+    border     : none !important;
+}
+
+.cke_path {
+    display : none !important;
+}
+
+.cke_button_label {
+    display : none !important;
+}
+
+.cke_toolbox {
+    .cke_button {
+        margin-left : 3px;
+        &:hover, &:focus {
+            box-shadow : $btn-hover-boxshadow;
+            color      : $white;
+        }
+        &.cke_button_on {
+            background : $g-600;
+            color      : $white !important;
+            & .cke_button_icon i {
+                color : $white !important;
+            }
+        }
+        &.cke_button_disabled .cke_button_icon i {
+            color : $g-400 !important;
+        }
+    }
+    .cke_toolbar_separator {
+        margin : 4px 3px;
+    }
+}
+

@@ -227,7 +227,7 @@ $internalConfig = array(
             'class' => 'application.core.LimeMailer',
         ),
         'ETwigViewRenderer' => array(
-            'class' => 'vendor.yiiext.twig-renderer.ETwigViewRenderer',
+            'class' => 'vendor.vintagesucks.twig-renderer.ETwigViewRenderer',
             'twigPathAlias' => 'vendor.twig.twig.lib.Twig'
         ),
         'twigRenderer' => array(
@@ -241,9 +241,9 @@ $internalConfig = array(
             ),
             'extensions' => array(
                 'LS_Twig_Extension',
-                'Twig_Extension_Sandbox',
-                'Twig_Extension_StringLoader',
-                'Twig_Extension_Debug',
+                '\Twig\Extension\SandboxExtension',
+                '\Twig\Extension\StringLoaderExtension',
+                '\Twig\Extension\DebugExtension',
                 // 'Twig_Extension_Escaper' // In the future, this extenstion could be use to build a powerfull XSS filter
             ),
             'globals' => array(
@@ -322,6 +322,7 @@ $internalConfig = array(
                 'jencode' => 'CJSON::encode',
                 't'     => 'gT',
                 'gT'    => 'gT',
+                'isAbsoluteUrl' => 'check_absolute_url',
             ),
 
             'sandboxConfig' => array(
@@ -351,6 +352,7 @@ $internalConfig = array(
                     'upper',
                     'strip_tags',
                     'number_format',
+                    'isAbsoluteUrl'
                 ),
                 'methods' => array(
                     'ETwigViewRendererStaticClassProxy' =>  array("encode", "textfield", "form", "link", "emailField", "beginForm", "endForm", "dropDownList", "htmlButton", "passwordfield", "hiddenfield", "textArea", "checkBox", "tag"),

@@ -32,7 +32,13 @@ class TbDataColumn extends CDataColumn
             $label = isset($this->header) ? $this->header : $sort->resolveLabel($this->name);
 
             if ($sort->resolveAttribute($this->name) !== false) {
-                $label .= '<span class="caret"></span>';
+                $isAscending = $sort->getDirection($this->name);
+                if ($isAscending) {
+                    $label .= '<i class="ri-sort-asc ms-2"></i>';
+                }
+                if (!$isAscending) {
+                    $label .= '<i class="ri-sort-desc ms-2"></i>';
+                }
             }
 
             echo $sort->link($this->name, $label, array('class' => 'sort-link'));
@@ -70,7 +76,7 @@ class TbDataColumn extends CDataColumn
             echo $this->filter;
         } else {
             if ($this->filter !== false && $this->grid->filter !== null && $this->name !== null && strpos(
-                    $this->name,
+                    (string) $this->name,
                     '.'
                 ) === false
             ) {

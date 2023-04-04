@@ -322,8 +322,8 @@ abstract class Zend_Http_UserAgent_AbstractDevice implements Zend_Http_UserAgent
         if (isset($this->list) && empty($this->_browser)) {
             $lowerUserAgent = strtolower($this->getUserAgent());
             foreach ($this->list as $browser_signature) {
-                if (strpos($lowerUserAgent, $browser_signature) !== false) {
-                    $this->_browser = strtolower($browser_signature);
+                if (strpos($lowerUserAgent, (string) $browser_signature) !== false) {
+                    $this->_browser = strtolower((string) $browser_signature);
                     $this->setFeature('browser_name', $this->_browser, 'product_info');
                 }
             }
@@ -340,30 +340,30 @@ abstract class Zend_Http_UserAgent_AbstractDevice implements Zend_Http_UserAgent
 
         /* sets the server infos */
         if (isset($this->_server['server_software'])) {
-            if (strpos($this->_server['server_software'], 'Apache') !== false || strpos($this->_server['server_software'], 'LiteSpeed') !== false) {
+            if (strpos((string) $this->_server['server_software'], 'Apache') !== false || strpos((string) $this->_server['server_software'], 'LiteSpeed') !== false) {
                 $server['version'] = 1;
-                if (strpos($this->_server['server_software'], 'Apache/2') !== false) {
+                if (strpos((string) $this->_server['server_software'], 'Apache/2') !== false) {
                     $server['version'] = 2;
                 }
                 $server['server'] = 'apache';
             }
 
-            if (strpos($this->_server['server_software'], 'Microsoft-IIS') !== false) {
+            if (strpos((string) $this->_server['server_software'], 'Microsoft-IIS') !== false) {
                 $server['server'] = 'iis';
             }
 
-            if (strpos($this->_server['server_software'], 'Unix') !== false) {
+            if (strpos((string) $this->_server['server_software'], 'Unix') !== false) {
                 $server['os'] = 'unix';
                 if (isset($_ENV['MACHTYPE'])) {
-                    if (strpos($_ENV['MACHTYPE'], 'linux') !== false) {
+                    if (strpos((string) $_ENV['MACHTYPE'], 'linux') !== false) {
                         $server['os'] = 'linux';
                     }
                 }
-            } elseif (strpos($this->_server['server_software'], 'Win') !== false) {
+            } elseif (strpos((string) $this->_server['server_software'], 'Win') !== false) {
                 $server['os'] = 'windows';
             }
 
-            if (preg_match('/Apache\/([0-9\.]*)/', $this->_server['server_software'], $arr)) {
+            if (preg_match('/Apache\/([0-9\.]*)/', (string) $this->_server['server_software'], $arr)) {
                 if ($arr[1]) {
                     $server['version'] = $arr[1];
                     $server['server']  = 'apache';
@@ -612,8 +612,8 @@ abstract class Zend_Http_UserAgent_AbstractDevice implements Zend_Http_UserAgent
                 }
 
                 // For Safari < 2.2, AppleWebKit version gives the Safari version
-                if (strpos($result['browser_version'], '.') > 2 || (int) $result['browser_version'] > 20) {
-                    $temp = explode('.', $result['browser_version']);
+                if (strpos((string) $result['browser_version'], '.') > 2 || (int) $result['browser_version'] > 20) {
+                    $temp = explode('.', (string) $result['browser_version']);
                     $build = (int) $temp[0];
                     $awkVersion = array(
                         48  => '0.8',
@@ -987,7 +987,7 @@ abstract class Zend_Http_UserAgent_AbstractDevice implements Zend_Http_UserAgent
         $userAgent = strtolower($userAgent);
         foreach ($signatures as $signature) {
             if (!empty($signature)) {
-                if (strpos($userAgent, $signature) !== false) {
+                if (strpos($userAgent, (string) $signature) !== false) {
                     // Browser signature was found in user agent string
                     return true;
                 }

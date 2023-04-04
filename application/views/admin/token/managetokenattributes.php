@@ -122,7 +122,7 @@
                                     else
                                     {
                                         echo "
-                                        <td>", htmlspecialchars($tokenvalues['description'], ENT_QUOTES, 'UTF-8'), "</td>
+                                        <td>", htmlspecialchars((string) $tokenvalues['description'], ENT_QUOTES, 'UTF-8'), "</td>
                                         <td>", $tokenvalues['mandatory'] == 'Y' ? eT('Yes') : eT('No'), "</td>
                                         <td>", $tokenvalues['encrypted'] == 'Y' ? eT('Yes') : eT('No'), "</td>
                                         <td>", $tokenvalues['show_register'] == 'Y' ? eT('Yes') : eT('No'), "</td>";
@@ -162,7 +162,7 @@
                 </div>
             </div>
             <p>
-                <input type="submit" class="btn btn-success" value="<?php eT('Save'); ?>" />
+                <input type="submit" class="btn btn-primary" value="<?php eT('Save'); ?>" />
                 <input type='hidden' name='action' value='tokens' />
                 <input type='hidden' name='subaction' value='updatetokenattributedescriptions' />
             </p>

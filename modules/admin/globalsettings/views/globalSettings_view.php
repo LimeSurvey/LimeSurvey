@@ -15,13 +15,22 @@ LS.renderBootstrapSwitch();
 
 ?>
 <?php if (YII_DEBUG): ?>
-  <p class="alert alert-info "> this view is rendered from global setting module. This message is shown only when debug mode is on </p>
+    <?php
+    $this->widget('ext.AlertWidget.AlertWidget', [
+        'tag' => 'p',
+        'text' => gT(
+            'this view is rendered from global setting module. This message is shown only when debug mode is on'
+        ),
+        'type' => 'info',
+        'showCloseButton' => false,
+    ]);
+    ?>
     </div>
 <?php endif; ?>
 <script type="text/javascript">
     var msgCantRemoveDefaultLanguage = '<?php eT("You can't remove the default language.", 'js'); ?>';
 </script>
-<div class="container-fluid welcome full-page-wrapper">
+<div class="welcome container-fluid full-page-wrapper">
     <ul class="nav nav-tabs" id="settingTabs">
         <li role="presentation" class="nav-item"><a role="tab" class="nav-link active" data-bs-toggle="tab" href='#overview'><?php eT("Overview"); ?></a></li>
         <li role="presentation" class="nav-item"><a role="tab" class="nav-link" data-bs-toggle="tab" href='#general'><?php eT("General"); ?></a></li>

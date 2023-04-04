@@ -1,12 +1,12 @@
 <?php
     $sResponsesId = '';
-    $aResponsesId = json_decode(Yii::app()->session['responsesid']);
+    $aResponsesId = json_decode((string) Yii::app()->session['responsesid']);
     foreach($aResponsesId as $aResponseId){
         $sResponsesId .= $aResponseId.', ';
     }
 ?>
 
-<div class="card" id="panel-2" <?php if ($SingleResponse) { echo 'style="display:none"';} ?> >
+<div class="card mb-4 <?= $SingleResponse ? 'd-none' : '' ?>" id="panel-2">
   <div class="card-header ">
     <?php eT("Selection");?>
   </div>

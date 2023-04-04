@@ -17,7 +17,6 @@ if (count($_POST) == 0) {
 
     $form = <<< EOD
 $sFormTag    
-<div class="container-fluid">
 <h3>Enter the following variables to test navigation for a survey using different styles</h3>
 <table border='1'>
 <tr><th>Parameter</th><th>Value</th></tr>
@@ -44,7 +43,6 @@ Specify which debugging features to use
 </tr>
 <tr><td colspan='2'><input type='submit'/></td></tr>
 </table>
-</div>
 </form>
 EOD;
     echo $form;

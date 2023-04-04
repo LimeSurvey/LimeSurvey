@@ -6,6 +6,7 @@
 ?>
 
 <?php $RPCInterface=getGlobalSetting('RPCInterface'); ?>
+<div class="container">
 <div class="mb-3">
     <label class=" form-label"  for='RPCInterface'><?php eT("RPC interface enabled:"); ?></label>
     <div>
@@ -59,3 +60,4 @@
 <?php if (Yii::app()->getConfig("demoMode")==true):?>
     <p><?php eT("Note: Demo mode is activated. Marked (*) settings can't be changed."); ?></p>
     <?php endif; ?>
+</div>

@@ -244,13 +244,18 @@ class TemplateConfig extends CActiveRecord
         /* Core package */
         $packages[] = 'limesurvey-public';
         $packages[] = 'template-core';
-        $packages[] = ($dir == "ltr") ? 'template-core-ltr' : 'template-core-rtl'; // Awesome Bootstrap Checkboxes
+        $packages[] = ($dir === "ltr") ? 'template-core-ltr' : 'template-core-rtl'; // Awesome Bootstrap Checkboxes
 
         /* bootstrap */
         if (!empty($this->cssFramework)) {
             // Basic bootstrap package
-            if ((string) $this->cssFramework->name == "bootstrap") {
+            if ((string) $this->cssFramework->name === "bootstrap") {
                 $packages[] = 'bootstrap';
+            }
+
+            // Rtl version of bootstrap
+            if ($dir === "rtl") {
+                $packages[] = 'bootstrap-rtl';
             }
 
             // Remove unwanted bootstrap stuff
@@ -344,7 +349,7 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['body']  = $this->getTemplateAndMotherNames();
 
         if (!empty($this->aCssFrameworkReplacement)) {
-            $aVariationFile = explode('/', $this->aCssFrameworkReplacement[0]);
+            $aVariationFile = explode('/', (string) $this->aCssFrameworkReplacement[0]);
             $aVariationFile = explode('.', end($aVariationFile));
             $sVariationName = $aVariationFile[0];
             $aClassAndAttributes['class']['body']  .= ' ' . $sVariationName;

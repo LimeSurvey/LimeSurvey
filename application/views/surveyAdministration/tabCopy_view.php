@@ -14,14 +14,14 @@
                     <?php echo getSurveyList(false); ?>
                 </select>
                 <p class="form-control-static">
-                    <span class='annotation text-warning'><?php echo  gT("Required"); ?> </span>
+                    <span class='annotation text-danger'><?php echo  gT("Required"); ?> </span>
                 </p>
 
                 <!-- New survey title -->
                 <label for='copysurveyname' class=" form-label"><?php echo  eT("New survey title:"); ?> </label>
                 <input type='text' id='copysurveyname' size='82' maxlength='200' name='copysurveyname' value='' required="required" class="form-control" />
                 <p class="form-control-static">
-                    <span class='annotation text-warning'><?php echo  gT("Required"); ?> </span>
+                    <span class='annotation text-danger'><?php echo  gT("Required"); ?> </span>
                 </p>
 
                 <!-- New survey id -->
@@ -32,7 +32,7 @@
                 </p>
                             <?= gT("If the new survey ID is already used, a random one will be assigned."); ?> </span>
                 <!-- Submit -->
-                <div class="text-center">
+                <div class="mt-3">
                     <input type='submit' class='btn btn-primary col-4' value='<?php eT("Copy survey"); ?>' />
                     <?php if (isset($surveyid)) echo '<input type="hidden" name="sid" value="' . $surveyid . '" />'; ?>
                     <input type='hidden' name='action' value='copysurvey' />
@@ -91,3 +91,14 @@
         </form>
     </div>
 </div>
+
+<script>
+    $(document).on('ready pjax:scriptcomplete', function(){
+        $('#copysurveyform').on('submit',  function(event){
+            // Disable both buttons. Normally there's no need to re-enable them. The 'save-form-button' may already be disabled by it's onclick event.
+            $('#copysurveyform').find('input[type="submit"]').prop('disabled', true);
+            $('#save-form-button').addClass('disabled').attr('onclick', 'return false;');
+        });
+    });
+
+</script>
