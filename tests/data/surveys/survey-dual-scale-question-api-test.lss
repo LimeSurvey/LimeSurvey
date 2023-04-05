@@ -3,6 +3,7 @@
  <LimeSurveyDocType>Survey</LimeSurveyDocType>
  <DBVersion>495</DBVersion>
  <languages>
+  <language>es</language>
   <language>en</language>
  </languages>
  <answers>
@@ -16,80 +17,80 @@
   </fields>
   <rows>
    <row>
-    <aid><![CDATA[9]]></aid>
+    <aid><![CDATA[11]]></aid>
     <qid><![CDATA[3]]></qid>
-    <code><![CDATA[A01]]></code>
-    <sortorder><![CDATA[0]]></sortorder>
-    <assessment_value><![CDATA[0]]></assessment_value>
-    <scale_id><![CDATA[0]]></scale_id>
-   </row>
-   <row>
-    <aid><![CDATA[27]]></aid>
-    <qid><![CDATA[6]]></qid>
     <code><![CDATA[AO01]]></code>
     <sortorder><![CDATA[0]]></sortorder>
     <assessment_value><![CDATA[0]]></assessment_value>
     <scale_id><![CDATA[0]]></scale_id>
    </row>
    <row>
-    <aid><![CDATA[28]]></aid>
-    <qid><![CDATA[6]]></qid>
+    <aid><![CDATA[1]]></aid>
+    <qid><![CDATA[2]]></qid>
+    <code><![CDATA[A01]]></code>
+    <sortorder><![CDATA[0]]></sortorder>
+    <assessment_value><![CDATA[0]]></assessment_value>
+    <scale_id><![CDATA[0]]></scale_id>
+   </row>
+   <row>
+    <aid><![CDATA[12]]></aid>
+    <qid><![CDATA[3]]></qid>
     <code><![CDATA[AO02]]></code>
     <sortorder><![CDATA[1]]></sortorder>
     <assessment_value><![CDATA[0]]></assessment_value>
     <scale_id><![CDATA[0]]></scale_id>
    </row>
    <row>
-    <aid><![CDATA[10]]></aid>
-    <qid><![CDATA[3]]></qid>
+    <aid><![CDATA[4]]></aid>
+    <qid><![CDATA[2]]></qid>
     <code><![CDATA[A02]]></code>
     <sortorder><![CDATA[1]]></sortorder>
     <assessment_value><![CDATA[0]]></assessment_value>
     <scale_id><![CDATA[0]]></scale_id>
    </row>
    <row>
-    <aid><![CDATA[11]]></aid>
-    <qid><![CDATA[3]]></qid>
+    <aid><![CDATA[5]]></aid>
+    <qid><![CDATA[2]]></qid>
     <code><![CDATA[A01]]></code>
     <sortorder><![CDATA[2]]></sortorder>
     <assessment_value><![CDATA[0]]></assessment_value>
     <scale_id><![CDATA[1]]></scale_id>
    </row>
    <row>
-    <aid><![CDATA[29]]></aid>
-    <qid><![CDATA[6]]></qid>
+    <aid><![CDATA[13]]></aid>
+    <qid><![CDATA[3]]></qid>
     <code><![CDATA[AO03]]></code>
     <sortorder><![CDATA[2]]></sortorder>
     <assessment_value><![CDATA[0]]></assessment_value>
     <scale_id><![CDATA[0]]></scale_id>
    </row>
    <row>
-    <aid><![CDATA[30]]></aid>
-    <qid><![CDATA[6]]></qid>
-    <code><![CDATA[AO01]]></code>
-    <sortorder><![CDATA[3]]></sortorder>
-    <assessment_value><![CDATA[0]]></assessment_value>
-    <scale_id><![CDATA[1]]></scale_id>
-   </row>
-   <row>
-    <aid><![CDATA[12]]></aid>
-    <qid><![CDATA[3]]></qid>
+    <aid><![CDATA[8]]></aid>
+    <qid><![CDATA[2]]></qid>
     <code><![CDATA[A02]]></code>
     <sortorder><![CDATA[3]]></sortorder>
     <assessment_value><![CDATA[0]]></assessment_value>
     <scale_id><![CDATA[1]]></scale_id>
    </row>
    <row>
-    <aid><![CDATA[31]]></aid>
-    <qid><![CDATA[6]]></qid>
+    <aid><![CDATA[14]]></aid>
+    <qid><![CDATA[3]]></qid>
+    <code><![CDATA[AO01]]></code>
+    <sortorder><![CDATA[3]]></sortorder>
+    <assessment_value><![CDATA[0]]></assessment_value>
+    <scale_id><![CDATA[1]]></scale_id>
+   </row>
+   <row>
+    <aid><![CDATA[15]]></aid>
+    <qid><![CDATA[3]]></qid>
     <code><![CDATA[AO02]]></code>
     <sortorder><![CDATA[4]]></sortorder>
     <assessment_value><![CDATA[0]]></assessment_value>
     <scale_id><![CDATA[1]]></scale_id>
    </row>
    <row>
-    <aid><![CDATA[32]]></aid>
-    <qid><![CDATA[6]]></qid>
+    <aid><![CDATA[16]]></aid>
+    <qid><![CDATA[3]]></qid>
     <code><![CDATA[AO03]]></code>
     <sortorder><![CDATA[5]]></sortorder>
     <assessment_value><![CDATA[0]]></assessment_value>
@@ -106,64 +107,124 @@
   </fields>
   <rows>
    <row>
-    <id><![CDATA[9]]></id>
-    <aid><![CDATA[9]]></aid>
+    <id><![CDATA[1]]></id>
+    <aid><![CDATA[1]]></aid>
     <answer><![CDATA[Good]]></answer>
     <language><![CDATA[en]]></language>
    </row>
    <row>
-    <id><![CDATA[27]]></id>
-    <aid><![CDATA[27]]></aid>
+    <id><![CDATA[11]]></id>
+    <aid><![CDATA[1]]></aid>
+    <answer><![CDATA[Good]]></answer>
+    <language><![CDATA[es]]></language>
+   </row>
+   <row>
+    <id><![CDATA[21]]></id>
+    <aid><![CDATA[11]]></aid>
     <answer><![CDATA[Option 1, scale 1]]></answer>
     <language><![CDATA[en]]></language>
    </row>
    <row>
-    <id><![CDATA[10]]></id>
-    <aid><![CDATA[10]]></aid>
+    <id><![CDATA[22]]></id>
+    <aid><![CDATA[11]]></aid>
+    <answer><![CDATA[Opción 1, escala 1]]></answer>
+    <language><![CDATA[es]]></language>
+   </row>
+   <row>
+    <id><![CDATA[3]]></id>
+    <aid><![CDATA[4]]></aid>
     <answer><![CDATA[Important]]></answer>
     <language><![CDATA[en]]></language>
    </row>
    <row>
-    <id><![CDATA[28]]></id>
-    <aid><![CDATA[28]]></aid>
+    <id><![CDATA[13]]></id>
+    <aid><![CDATA[4]]></aid>
+    <answer><![CDATA[Important]]></answer>
+    <language><![CDATA[es]]></language>
+   </row>
+   <row>
+    <id><![CDATA[23]]></id>
+    <aid><![CDATA[12]]></aid>
     <answer><![CDATA[Option 2, scale 1]]></answer>
     <language><![CDATA[en]]></language>
    </row>
    <row>
-    <id><![CDATA[11]]></id>
-    <aid><![CDATA[11]]></aid>
+    <id><![CDATA[24]]></id>
+    <aid><![CDATA[12]]></aid>
+    <answer><![CDATA[Opción 2, escala 1]]></answer>
+    <language><![CDATA[es]]></language>
+   </row>
+   <row>
+    <id><![CDATA[5]]></id>
+    <aid><![CDATA[5]]></aid>
     <answer><![CDATA[Bad]]></answer>
     <language><![CDATA[en]]></language>
    </row>
    <row>
-    <id><![CDATA[29]]></id>
-    <aid><![CDATA[29]]></aid>
+    <id><![CDATA[15]]></id>
+    <aid><![CDATA[5]]></aid>
+    <answer><![CDATA[Bad]]></answer>
+    <language><![CDATA[es]]></language>
+   </row>
+   <row>
+    <id><![CDATA[25]]></id>
+    <aid><![CDATA[13]]></aid>
     <answer><![CDATA[Option 3, scale 1]]></answer>
     <language><![CDATA[en]]></language>
    </row>
    <row>
-    <id><![CDATA[12]]></id>
-    <aid><![CDATA[12]]></aid>
+    <id><![CDATA[26]]></id>
+    <aid><![CDATA[13]]></aid>
+    <answer><![CDATA[Opción 3, escala 1]]></answer>
+    <language><![CDATA[es]]></language>
+   </row>
+   <row>
+    <id><![CDATA[7]]></id>
+    <aid><![CDATA[8]]></aid>
     <answer><![CDATA[Not important]]></answer>
     <language><![CDATA[en]]></language>
    </row>
    <row>
-    <id><![CDATA[30]]></id>
-    <aid><![CDATA[30]]></aid>
+    <id><![CDATA[17]]></id>
+    <aid><![CDATA[8]]></aid>
+    <answer><![CDATA[Not important]]></answer>
+    <language><![CDATA[es]]></language>
+   </row>
+   <row>
+    <id><![CDATA[27]]></id>
+    <aid><![CDATA[14]]></aid>
     <answer><![CDATA[Option 1, scale 2]]></answer>
     <language><![CDATA[en]]></language>
    </row>
    <row>
-    <id><![CDATA[31]]></id>
-    <aid><![CDATA[31]]></aid>
+    <id><![CDATA[28]]></id>
+    <aid><![CDATA[14]]></aid>
+    <answer><![CDATA[Opción 1, escala 2]]></answer>
+    <language><![CDATA[es]]></language>
+   </row>
+   <row>
+    <id><![CDATA[29]]></id>
+    <aid><![CDATA[15]]></aid>
     <answer><![CDATA[Option 2, scale 2]]></answer>
     <language><![CDATA[en]]></language>
    </row>
    <row>
-    <id><![CDATA[32]]></id>
-    <aid><![CDATA[32]]></aid>
+    <id><![CDATA[30]]></id>
+    <aid><![CDATA[15]]></aid>
+    <answer><![CDATA[Opción 2, escala 2]]></answer>
+    <language><![CDATA[es]]></language>
+   </row>
+   <row>
+    <id><![CDATA[31]]></id>
+    <aid><![CDATA[16]]></aid>
     <answer><![CDATA[Option 3, scale 2]]></answer>
     <language><![CDATA[en]]></language>
+   </row>
+   <row>
+    <id><![CDATA[32]]></id>
+    <aid><![CDATA[16]]></aid>
+    <answer><![CDATA[Opción 3, escala 2]]></answer>
+    <language><![CDATA[es]]></language>
    </row>
   </rows>
  </answer_l10ns>
@@ -208,6 +269,16 @@
     <randomization_group/>
     <grelevance><![CDATA[1]]></grelevance>
    </row>
+   <row>
+    <id><![CDATA[3]]></id>
+    <gid><![CDATA[2]]></gid>
+    <group_name><![CDATA[My first question group]]></group_name>
+    <language><![CDATA[es]]></language>
+    <sid><![CDATA[372723]]></sid>
+    <group_order><![CDATA[1]]></group_order>
+    <randomization_group/>
+    <grelevance><![CDATA[1]]></grelevance>
+   </row>
   </rows>
  </group_l10ns>
  <questions>
@@ -232,7 +303,7 @@
   </fields>
   <rows>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[2]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[372723]]></sid>
     <gid><![CDATA[2]]></gid>
@@ -249,7 +320,7 @@
     <same_script><![CDATA[0]]></same_script>
    </row>
    <row>
-    <qid><![CDATA[6]]></qid>
+    <qid><![CDATA[3]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[372723]]></sid>
     <gid><![CDATA[2]]></gid>
@@ -290,7 +361,24 @@
   </fields>
   <rows>
    <row>
-    <qid><![CDATA[5]]></qid>
+    <qid><![CDATA[4]]></qid>
+    <parent_qid><![CDATA[2]]></parent_qid>
+    <sid><![CDATA[372723]]></sid>
+    <gid><![CDATA[2]]></gid>
+    <type><![CDATA[T]]></type>
+    <title><![CDATA[SQ001]]></title>
+    <other><![CDATA[N]]></other>
+    <mandatory><![CDATA[N]]></mandatory>
+    <encrypted><![CDATA[N]]></encrypted>
+    <question_order><![CDATA[0]]></question_order>
+    <scale_id><![CDATA[0]]></scale_id>
+    <same_default><![CDATA[0]]></same_default>
+    <relevance><![CDATA[1]]></relevance>
+    <question_theme_name><![CDATA[longfreetext]]></question_theme_name>
+    <same_script><![CDATA[0]]></same_script>
+   </row>
+   <row>
+    <qid><![CDATA[7]]></qid>
     <parent_qid><![CDATA[3]]></parent_qid>
     <sid><![CDATA[372723]]></sid>
     <gid><![CDATA[2]]></gid>
@@ -306,24 +394,8 @@
     <same_script><![CDATA[0]]></same_script>
    </row>
    <row>
-    <qid><![CDATA[11]]></qid>
-    <parent_qid><![CDATA[6]]></parent_qid>
-    <sid><![CDATA[372723]]></sid>
-    <gid><![CDATA[2]]></gid>
-    <type><![CDATA[T]]></type>
-    <title><![CDATA[SQ001]]></title>
-    <other><![CDATA[N]]></other>
-    <encrypted><![CDATA[N]]></encrypted>
-    <question_order><![CDATA[0]]></question_order>
-    <scale_id><![CDATA[0]]></scale_id>
-    <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[1]]></relevance>
-    <question_theme_name><![CDATA[longfreetext]]></question_theme_name>
-    <same_script><![CDATA[0]]></same_script>
-   </row>
-   <row>
-    <qid><![CDATA[12]]></qid>
-    <parent_qid><![CDATA[6]]></parent_qid>
+    <qid><![CDATA[8]]></qid>
+    <parent_qid><![CDATA[3]]></parent_qid>
     <sid><![CDATA[372723]]></sid>
     <gid><![CDATA[2]]></gid>
     <type><![CDATA[T]]></type>
@@ -350,38 +422,73 @@
   </fields>
   <rows>
    <row>
-    <id><![CDATA[3]]></id>
-    <qid><![CDATA[3]]></qid>
+    <id><![CDATA[2]]></id>
+    <qid><![CDATA[2]]></qid>
     <question><![CDATA[A first example question. Please answer this question:]]></question>
     <help><![CDATA[This is a question help text.]]></help>
     <script/>
     <language><![CDATA[en]]></language>
    </row>
    <row>
-    <id><![CDATA[5]]></id>
-    <qid><![CDATA[5]]></qid>
-    <question><![CDATA[Question one]]></question>
-    <language><![CDATA[en]]></language>
+    <id><![CDATA[7]]></id>
+    <qid><![CDATA[2]]></qid>
+    <question><![CDATA[A first example question. Please answer this question:]]></question>
+    <help><![CDATA[This is a question help text.]]></help>
+    <language><![CDATA[es]]></language>
    </row>
    <row>
-    <id><![CDATA[6]]></id>
-    <qid><![CDATA[6]]></qid>
+    <id><![CDATA[4]]></id>
+    <qid><![CDATA[3]]></qid>
     <question><![CDATA[Dual scale question.]]></question>
     <help/>
     <script/>
     <language><![CDATA[en]]></language>
    </row>
    <row>
-    <id><![CDATA[11]]></id>
-    <qid><![CDATA[11]]></qid>
+    <id><![CDATA[8]]></id>
+    <qid><![CDATA[3]]></qid>
+    <question><![CDATA[Pregunta de doble escala.]]></question>
+    <help/>
+    <script/>
+    <language><![CDATA[es]]></language>
+   </row>
+   <row>
+    <id><![CDATA[3]]></id>
+    <qid><![CDATA[4]]></qid>
+    <question><![CDATA[Question one]]></question>
+    <help/>
+    <language><![CDATA[en]]></language>
+   </row>
+   <row>
+    <id><![CDATA[9]]></id>
+    <qid><![CDATA[4]]></qid>
+    <question><![CDATA[Question one]]></question>
+    <help/>
+    <language><![CDATA[es]]></language>
+   </row>
+   <row>
+    <id><![CDATA[12]]></id>
+    <qid><![CDATA[7]]></qid>
     <question><![CDATA[Is this a good question?]]></question>
     <language><![CDATA[en]]></language>
    </row>
    <row>
-    <id><![CDATA[12]]></id>
-    <qid><![CDATA[12]]></qid>
+    <id><![CDATA[13]]></id>
+    <qid><![CDATA[7]]></qid>
+    <question><![CDATA[¿Buena pregunta?]]></question>
+    <language><![CDATA[es]]></language>
+   </row>
+   <row>
+    <id><![CDATA[14]]></id>
+    <qid><![CDATA[8]]></qid>
     <question><![CDATA[Is this a bad question?]]></question>
     <language><![CDATA[en]]></language>
+   </row>
+   <row>
+    <id><![CDATA[15]]></id>
+    <qid><![CDATA[8]]></qid>
+    <question><![CDATA[¿Mala pregunta?]]></question>
+    <language><![CDATA[es]]></language>
    </row>
   </rows>
  </question_l10ns>
@@ -394,289 +501,313 @@
   </fields>
   <rows>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[2]]></qid>
     <attribute><![CDATA[answer_width]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[2]]></qid>
     <attribute><![CDATA[array_filter]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[2]]></qid>
     <attribute><![CDATA[array_filter_exclude]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[2]]></qid>
     <attribute><![CDATA[array_filter_style]]></attribute>
     <value><![CDATA[0]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[2]]></qid>
     <attribute><![CDATA[cssclass]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[2]]></qid>
     <attribute><![CDATA[dropdown_prepostfix]]></attribute>
     <value/>
     <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[2]]></qid>
     <attribute><![CDATA[dropdown_separators]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[2]]></qid>
     <attribute><![CDATA[dualscale_headerA]]></attribute>
     <value/>
     <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[2]]></qid>
     <attribute><![CDATA[dualscale_headerB]]></attribute>
     <value/>
     <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[2]]></qid>
     <attribute><![CDATA[hidden]]></attribute>
     <value><![CDATA[0]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[2]]></qid>
     <attribute><![CDATA[hide_tip]]></attribute>
     <value><![CDATA[0]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[2]]></qid>
     <attribute><![CDATA[max_answers]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[2]]></qid>
     <attribute><![CDATA[min_answers]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[2]]></qid>
     <attribute><![CDATA[page_break]]></attribute>
     <value><![CDATA[0]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[2]]></qid>
     <attribute><![CDATA[printable_help]]></attribute>
     <value/>
     <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[2]]></qid>
     <attribute><![CDATA[public_statistics]]></attribute>
     <value><![CDATA[0]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[2]]></qid>
     <attribute><![CDATA[random_group]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[2]]></qid>
     <attribute><![CDATA[random_order]]></attribute>
     <value><![CDATA[0]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[2]]></qid>
     <attribute><![CDATA[repeat_headings]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[2]]></qid>
     <attribute><![CDATA[save_as_default]]></attribute>
     <value><![CDATA[N]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[2]]></qid>
     <attribute><![CDATA[scale_export]]></attribute>
     <value><![CDATA[0]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[2]]></qid>
     <attribute><![CDATA[statistics_graphtype]]></attribute>
     <value><![CDATA[0]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[2]]></qid>
     <attribute><![CDATA[statistics_showgraph]]></attribute>
     <value><![CDATA[1]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[2]]></qid>
     <attribute><![CDATA[use_dropdown]]></attribute>
     <value><![CDATA[0]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[6]]></qid>
+    <qid><![CDATA[3]]></qid>
     <attribute><![CDATA[answer_width]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[6]]></qid>
+    <qid><![CDATA[3]]></qid>
     <attribute><![CDATA[array_filter]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[6]]></qid>
+    <qid><![CDATA[3]]></qid>
     <attribute><![CDATA[array_filter_exclude]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[6]]></qid>
+    <qid><![CDATA[3]]></qid>
     <attribute><![CDATA[array_filter_style]]></attribute>
     <value><![CDATA[0]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[6]]></qid>
+    <qid><![CDATA[3]]></qid>
     <attribute><![CDATA[cssclass]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[6]]></qid>
+    <qid><![CDATA[3]]></qid>
     <attribute><![CDATA[dropdown_prepostfix]]></attribute>
     <value/>
     <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[6]]></qid>
+    <qid><![CDATA[3]]></qid>
+    <attribute><![CDATA[dropdown_prepostfix]]></attribute>
+    <value/>
+    <language><![CDATA[es]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[3]]></qid>
     <attribute><![CDATA[dropdown_separators]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[6]]></qid>
+    <qid><![CDATA[3]]></qid>
     <attribute><![CDATA[dualscale_headerA]]></attribute>
     <value/>
     <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[6]]></qid>
+    <qid><![CDATA[3]]></qid>
+    <attribute><![CDATA[dualscale_headerA]]></attribute>
+    <value/>
+    <language><![CDATA[es]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[3]]></qid>
     <attribute><![CDATA[dualscale_headerB]]></attribute>
     <value/>
     <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[6]]></qid>
+    <qid><![CDATA[3]]></qid>
+    <attribute><![CDATA[dualscale_headerB]]></attribute>
+    <value/>
+    <language><![CDATA[es]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[3]]></qid>
     <attribute><![CDATA[hidden]]></attribute>
     <value><![CDATA[0]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[6]]></qid>
+    <qid><![CDATA[3]]></qid>
     <attribute><![CDATA[hide_tip]]></attribute>
     <value><![CDATA[0]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[6]]></qid>
+    <qid><![CDATA[3]]></qid>
     <attribute><![CDATA[max_answers]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[6]]></qid>
+    <qid><![CDATA[3]]></qid>
     <attribute><![CDATA[min_answers]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[6]]></qid>
+    <qid><![CDATA[3]]></qid>
     <attribute><![CDATA[page_break]]></attribute>
     <value><![CDATA[0]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[6]]></qid>
+    <qid><![CDATA[3]]></qid>
     <attribute><![CDATA[printable_help]]></attribute>
     <value/>
     <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[6]]></qid>
+    <qid><![CDATA[3]]></qid>
+    <attribute><![CDATA[printable_help]]></attribute>
+    <value/>
+    <language><![CDATA[es]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[3]]></qid>
     <attribute><![CDATA[public_statistics]]></attribute>
     <value><![CDATA[0]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[6]]></qid>
+    <qid><![CDATA[3]]></qid>
     <attribute><![CDATA[random_group]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[6]]></qid>
+    <qid><![CDATA[3]]></qid>
     <attribute><![CDATA[random_order]]></attribute>
     <value><![CDATA[0]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[6]]></qid>
+    <qid><![CDATA[3]]></qid>
     <attribute><![CDATA[repeat_headings]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[6]]></qid>
+    <qid><![CDATA[3]]></qid>
     <attribute><![CDATA[save_as_default]]></attribute>
     <value><![CDATA[N]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[6]]></qid>
+    <qid><![CDATA[3]]></qid>
     <attribute><![CDATA[scale_export]]></attribute>
     <value><![CDATA[0]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[6]]></qid>
+    <qid><![CDATA[3]]></qid>
     <attribute><![CDATA[statistics_graphtype]]></attribute>
     <value><![CDATA[0]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[6]]></qid>
+    <qid><![CDATA[3]]></qid>
     <attribute><![CDATA[statistics_showgraph]]></attribute>
     <value><![CDATA[1]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[6]]></qid>
+    <qid><![CDATA[3]]></qid>
     <attribute><![CDATA[use_dropdown]]></attribute>
     <value><![CDATA[0]]></value>
     <language/>
@@ -755,7 +886,7 @@
     <savetimings><![CDATA[I]]></savetimings>
     <template><![CDATA[inherit]]></template>
     <language><![CDATA[en]]></language>
-    <additional_languages/>
+    <additional_languages><![CDATA[es]]></additional_languages>
     <datestamp><![CDATA[I]]></datestamp>
     <usecookie><![CDATA[I]]></usecookie>
     <allowregister><![CDATA[I]]></allowregister>
@@ -938,6 +1069,113 @@ View statistics by clicking here:<br />
 <br />
 <br />
 The following answers were given by the participant:<br />
+{ANSWERTABLE}]]></email_admin_responses>
+    <surveyls_numberformat><![CDATA[0]]></surveyls_numberformat>
+   </row>
+   <row>
+    <surveyls_survey_id><![CDATA[372723]]></surveyls_survey_id>
+    <surveyls_language><![CDATA[es]]></surveyls_language>
+    <surveyls_title/>
+    <surveyls_url/>
+    <surveyls_email_invite_subj><![CDATA[Invitación para participar en una encuesta]]></surveyls_email_invite_subj>
+    <surveyls_email_invite><![CDATA[Estimado/a {FIRSTNAME} {LASTNAME}:↵<br />
+↵<br />
+Ha sido invitado a participar en una encuesta:↵<br />
+↵<br />
+«{SURVEYNAME}»↵<br />
+↵<br />
+«{SURVEYDESCRIPTION}»↵<br />
+↵<br />
+Para participar, por favor pulse en el siguiente enlace:↵<br />
+↵<br />
+{SURVEYURL}↵<br />
+↵<br />
+Atentamente,↵<br />
+↵<br />
+{ADMINNAME} ({ADMINEMAIL})↵<br />
+↵<br />
+<br />
+Si no desea participar en esta encuesta y tampoco desea recibir más invitaciones a la misma, por favor, pulse en el siguiente enlace:<br />
+{OPTOUTURL}<br />
+<br />
+Si usted se encuentra en la lista negra de usuarios, pero quiere participar en esta encuesta y quiere recibir invitaciones, por favor haga click en el siguiente enlace:<br />
+{OPTINURL}]]></surveyls_email_invite>
+    <surveyls_email_remind_subj><![CDATA[Recordatorio para participar en una encuesta]]></surveyls_email_remind_subj>
+    <surveyls_email_remind><![CDATA[Estimado/a {FIRSTNAME} {LASTNAME}:<br />
+<br />
+Recientemente se le invitó a participar en la encuesta de título<br />
+<br />
+«{SURVEYNAME}»<br />
+<br />
+«{SURVEYDESCRIPTION}»<br />
+<br />
+Advertimos que aún no la ha completado, y de la forma más atenta queríamos recordarle que todavía se encuentra disponible si desea participar.<br />
+<br />
+Para hacerlo, por favor pulse en el siguiente enlace:<br />
+<br />
+{SURVEYURL}<br />
+<br />
+Nuevamente le agradecemos su interés y colaboración.<br />
+Atentamente,<br />
+<br />
+{ADMINNAME} ({ADMINEMAIL})<br />
+<br />
+Si no desea participar en esta encuesta y tampoco desea recibir más invitaciones a la misma, por favor, pulse en el siguiente enlace:<br />
+{OPTOUTURL}]]></surveyls_email_remind>
+    <surveyls_email_register_subj><![CDATA[Confirmación de registro en la encuesta]]></surveyls_email_register_subj>
+    <surveyls_email_register><![CDATA[Estimado/a {FIRSTNAME} {LASTNAME}:<br />
+<br />
+Usted, o alguien utilizando su dirección de correo electrónico, se ha registrado para participar en una encuesta en línea titulada <br />
+<br />
+«{SURVEYNAME}»<br />
+<br />
+«{SURVEYDESCRIPTION}»<br />
+<br />
+Para completarla, pulse en la siguiente dirección:<br />
+<br />
+{SURVEYURL}<br />
+<br />
+Si tiene cualquier duda con respecto a la encuesta, o si no se registró para participar y cree que este correo es un error, por favor, póngase en contacto con {ADMINNAME} en {ADMINEMAIL}.]]></surveyls_email_register>
+    <surveyls_email_confirm_subj><![CDATA[Confirmación de su participación en nuestra encuesta]]></surveyls_email_confirm_subj>
+    <surveyls_email_confirm><![CDATA[Estimado/a {FIRSTNAME} {LASTNAME}:↵<br />
+↵<br />
+Este correo es para confirmarle que ha completado la encuesta titulada "{SURVEYNAME}" y sus respuestas han quedado correctamente guardadas. Gracias por participar.↵<br />
+↵<br />
+Si tiene alguna duda o consulta adicional, por favor póngase en contacto con {ADMINNAME} en {ADMINEMAIL}.↵<br />
+↵<br />
+Atentamente,↵<br />
+↵<br />
+{ADMINNAME}]]></surveyls_email_confirm>
+    <surveyls_dateformat><![CDATA[5]]></surveyls_dateformat>
+    <email_admin_notification_subj><![CDATA[Envío de respuestas de la encuesta {SURVEYNAME}]]></email_admin_notification_subj>
+    <email_admin_notification><![CDATA[Hola!<br />
+<br />
+Una nueva respuesta ha sido concluida en su encuesta '{SURVEYNAME}'.<br />
+<br />
+Pulse el siguiente enlace para ver la respuesta individual:<br />
+{VIEWRESPONSEURL}<br />
+<br />
+Pulse el siguiente enlace para editar la respuesta individual:<br />
+{EDITRESPONSEURL}<br />
+<br />
+Ver estadísticas pulsando el siguiente enlace:<br />
+{STATISTICSURL}]]></email_admin_notification>
+    <email_admin_responses_subj><![CDATA[Enviar los resultados de las respuestas en la encuesta {SURVEYNAME}]]></email_admin_responses_subj>
+    <email_admin_responses><![CDATA[Hola:<br />
+<br />
+Una nueva respuesta ha sido concluida en su encuesta '{SURVEYNAME}'.<br />
+<br />
+Pulse el siguiente enlace para ver la respuesta individual:<br />
+{VIEWRESPONSEURL}<br />
+<br />
+Pulse el siguiente enlace para editar la respuesta individual:<br />
+{EDITRESPONSEURL}<br />
+<br />
+Ver estadísticas pulsando el siguiente enlace:<br />
+{STATISTICSURL}<br />
+<br />
+<br />
+Estas son las respuestas dadas por el/la encuestado/a:<br />
 {ANSWERTABLE}]]></email_admin_responses>
     <surveyls_numberformat><![CDATA[0]]></surveyls_numberformat>
    </row>

@@ -87,4 +87,68 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
         $result = $this->handler->get_question_properties($sessionKey, $qid);
         $this->assertSame($answerOptionsByScaleId, $result['answeroptions'], 'The options were not returned correctly.');
     }
+
+    public function testGetDualQuestionPropertiesSpecificLanguage()
+    {
+
+        //Options by scale id.
+        $answerOptionsByScaleId = array(
+            0 => array(
+                'AO01' => array(
+                    'code' => 'AO01',
+                    'answer' => 'Opción 1, escala 1',
+                    'assessment_value' => '0',
+                    'scale_id' => '0',
+                    'order' => '0'
+                ),
+                'AO02' => array(
+                    'code' => 'AO02',
+                    'answer' => 'Opción 2, escala 1',
+                    'assessment_value' => '0',
+                    'scale_id' => '0',
+                    'order' => '1'
+                ),
+                'AO03' => array(
+                    'code' => 'AO03',
+                    'answer' => 'Opción 3, escala 1',
+                    'assessment_value' => '0',
+                    'scale_id' => '0',
+                    'order' => '2'
+                )
+            ),
+            1 => array(
+                'AO01' => array(
+                    'code' => 'AO01',
+                    'answer' => 'Opción 1, escala 2',
+                    'assessment_value' => '0',
+                    'scale_id' => '1',
+                    'order' => '3'
+                ),
+                'AO02' => array(
+                    'code' => 'AO02',
+                    'answer' => 'Opción 2, escala 2',
+                    'assessment_value' => '0',
+                    'scale_id' => '1',
+                    'order' => '4'
+                ),
+                'AO03' => array(
+                    'code' => 'AO03',
+                    'answer' => 'Opción 3, escala 2',
+                    'assessment_value' => '0',
+                    'scale_id' => '1',
+                    'order' => '5'
+                )
+            ),
+        );
+
+        $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
+
+        $question = \Question::model()->findByAttributes(array('title' => 'G01Q02'));
+        $qid = $question->qid;
+
+        //Get properties in Spanish
+        $result = $this->handler->get_question_properties($sessionKey, $qid, null, 'es');
+
+        $this->assertSame($answerOptionsByScaleId, $result['answeroptions'], 'The options were not returned correctly.');
+    }
 }
