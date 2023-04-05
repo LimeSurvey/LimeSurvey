@@ -43,6 +43,8 @@ Changes from 5.6.14 (build 230403) to 6.0.0 (build 230405) April 4, 2023
 +New feature #18382: Fire afterSurveyCompleted event in preview mode (Olle Haerstedt)
 +New feature #16619: Allow calling get_uploaded_files() remote control function by response ID (#2363) (Gabriel Jenik)
 +New feature #18178: Add Quota CRUD RPC methods (#2458) (Edgar R. M)
+-Fixed issue #18243: ARIA Attribute role on array question not correct (#2888)
+
 
 Changes from 5.6.13 (build 230327) to 5.6.14 (build 230403) April 3, 2023
 +New feature #18197: Allow Google Analytics 4 tracking (#2907) (Gabriel Jenik)
