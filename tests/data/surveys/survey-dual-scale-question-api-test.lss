@@ -17,80 +17,128 @@
   </fields>
   <rows>
    <row>
-    <aid><![CDATA[11]]></aid>
-    <qid><![CDATA[3]]></qid>
+    <aid><![CDATA[16]]></aid>
+    <qid><![CDATA[8]]></qid>
+    <code><![CDATA[A01]]></code>
+    <sortorder><![CDATA[0]]></sortorder>
+    <assessment_value><![CDATA[0]]></assessment_value>
+    <scale_id><![CDATA[0]]></scale_id>
+   </row>
+   <row>
+    <aid><![CDATA[14]]></aid>
+    <qid><![CDATA[10]]></qid>
     <code><![CDATA[AO01]]></code>
     <sortorder><![CDATA[0]]></sortorder>
     <assessment_value><![CDATA[0]]></assessment_value>
     <scale_id><![CDATA[0]]></scale_id>
    </row>
    <row>
-    <aid><![CDATA[1]]></aid>
-    <qid><![CDATA[2]]></qid>
-    <code><![CDATA[A01]]></code>
+    <aid><![CDATA[27]]></aid>
+    <qid><![CDATA[15]]></qid>
+    <code><![CDATA[AO01]]></code>
     <sortorder><![CDATA[0]]></sortorder>
     <assessment_value><![CDATA[0]]></assessment_value>
     <scale_id><![CDATA[0]]></scale_id>
    </row>
    <row>
-    <aid><![CDATA[12]]></aid>
-    <qid><![CDATA[3]]></qid>
+    <aid><![CDATA[15]]></aid>
+    <qid><![CDATA[9]]></qid>
+    <code><![CDATA[AO01]]></code>
+    <sortorder><![CDATA[0]]></sortorder>
+    <assessment_value><![CDATA[0]]></assessment_value>
+    <scale_id><![CDATA[0]]></scale_id>
+   </row>
+   <row>
+    <aid><![CDATA[18]]></aid>
+    <qid><![CDATA[9]]></qid>
     <code><![CDATA[AO02]]></code>
     <sortorder><![CDATA[1]]></sortorder>
     <assessment_value><![CDATA[0]]></assessment_value>
     <scale_id><![CDATA[0]]></scale_id>
    </row>
    <row>
-    <aid><![CDATA[4]]></aid>
-    <qid><![CDATA[2]]></qid>
+    <aid><![CDATA[19]]></aid>
+    <qid><![CDATA[8]]></qid>
     <code><![CDATA[A02]]></code>
     <sortorder><![CDATA[1]]></sortorder>
     <assessment_value><![CDATA[0]]></assessment_value>
     <scale_id><![CDATA[0]]></scale_id>
    </row>
    <row>
-    <aid><![CDATA[5]]></aid>
-    <qid><![CDATA[2]]></qid>
-    <code><![CDATA[A01]]></code>
-    <sortorder><![CDATA[2]]></sortorder>
+    <aid><![CDATA[17]]></aid>
+    <qid><![CDATA[10]]></qid>
+    <code><![CDATA[AO02]]></code>
+    <sortorder><![CDATA[1]]></sortorder>
     <assessment_value><![CDATA[0]]></assessment_value>
-    <scale_id><![CDATA[1]]></scale_id>
+    <scale_id><![CDATA[0]]></scale_id>
    </row>
    <row>
-    <aid><![CDATA[13]]></aid>
-    <qid><![CDATA[3]]></qid>
+    <aid><![CDATA[28]]></aid>
+    <qid><![CDATA[15]]></qid>
+    <code><![CDATA[AO02]]></code>
+    <sortorder><![CDATA[1]]></sortorder>
+    <assessment_value><![CDATA[0]]></assessment_value>
+    <scale_id><![CDATA[0]]></scale_id>
+   </row>
+   <row>
+    <aid><![CDATA[29]]></aid>
+    <qid><![CDATA[15]]></qid>
     <code><![CDATA[AO03]]></code>
     <sortorder><![CDATA[2]]></sortorder>
     <assessment_value><![CDATA[0]]></assessment_value>
     <scale_id><![CDATA[0]]></scale_id>
    </row>
    <row>
-    <aid><![CDATA[8]]></aid>
-    <qid><![CDATA[2]]></qid>
-    <code><![CDATA[A02]]></code>
-    <sortorder><![CDATA[3]]></sortorder>
+    <aid><![CDATA[21]]></aid>
+    <qid><![CDATA[8]]></qid>
+    <code><![CDATA[A01]]></code>
+    <sortorder><![CDATA[2]]></sortorder>
     <assessment_value><![CDATA[0]]></assessment_value>
     <scale_id><![CDATA[1]]></scale_id>
    </row>
    <row>
-    <aid><![CDATA[14]]></aid>
-    <qid><![CDATA[3]]></qid>
+    <aid><![CDATA[22]]></aid>
+    <qid><![CDATA[9]]></qid>
+    <code><![CDATA[AO03]]></code>
+    <sortorder><![CDATA[2]]></sortorder>
+    <assessment_value><![CDATA[0]]></assessment_value>
+    <scale_id><![CDATA[0]]></scale_id>
+   </row>
+   <row>
+    <aid><![CDATA[20]]></aid>
+    <qid><![CDATA[10]]></qid>
+    <code><![CDATA[AO03]]></code>
+    <sortorder><![CDATA[2]]></sortorder>
+    <assessment_value><![CDATA[0]]></assessment_value>
+    <scale_id><![CDATA[0]]></scale_id>
+   </row>
+   <row>
+    <aid><![CDATA[23]]></aid>
+    <qid><![CDATA[9]]></qid>
     <code><![CDATA[AO01]]></code>
     <sortorder><![CDATA[3]]></sortorder>
     <assessment_value><![CDATA[0]]></assessment_value>
     <scale_id><![CDATA[1]]></scale_id>
    </row>
    <row>
-    <aid><![CDATA[15]]></aid>
-    <qid><![CDATA[3]]></qid>
+    <aid><![CDATA[24]]></aid>
+    <qid><![CDATA[8]]></qid>
+    <code><![CDATA[A02]]></code>
+    <sortorder><![CDATA[3]]></sortorder>
+    <assessment_value><![CDATA[0]]></assessment_value>
+    <scale_id><![CDATA[1]]></scale_id>
+   </row>
+   <row>
+    <aid><![CDATA[25]]></aid>
+    <qid><![CDATA[9]]></qid>
     <code><![CDATA[AO02]]></code>
     <sortorder><![CDATA[4]]></sortorder>
     <assessment_value><![CDATA[0]]></assessment_value>
     <scale_id><![CDATA[1]]></scale_id>
    </row>
    <row>
-    <aid><![CDATA[16]]></aid>
-    <qid><![CDATA[3]]></qid>
+    <aid><![CDATA[26]]></aid>
+    <qid><![CDATA[9]]></qid>
     <code><![CDATA[AO03]]></code>
     <sortorder><![CDATA[5]]></sortorder>
     <assessment_value><![CDATA[0]]></assessment_value>
@@ -107,122 +155,194 @@
   </fields>
   <rows>
    <row>
-    <id><![CDATA[1]]></id>
-    <aid><![CDATA[1]]></aid>
-    <answer><![CDATA[Good]]></answer>
-    <language><![CDATA[en]]></language>
-   </row>
-   <row>
-    <id><![CDATA[11]]></id>
-    <aid><![CDATA[1]]></aid>
-    <answer><![CDATA[Good]]></answer>
-    <language><![CDATA[es]]></language>
-   </row>
-   <row>
-    <id><![CDATA[21]]></id>
-    <aid><![CDATA[11]]></aid>
-    <answer><![CDATA[Option 1, scale 1]]></answer>
-    <language><![CDATA[en]]></language>
-   </row>
-   <row>
-    <id><![CDATA[22]]></id>
-    <aid><![CDATA[11]]></aid>
-    <answer><![CDATA[Opción 1, escala 1]]></answer>
-    <language><![CDATA[es]]></language>
-   </row>
-   <row>
-    <id><![CDATA[3]]></id>
-    <aid><![CDATA[4]]></aid>
-    <answer><![CDATA[Important]]></answer>
-    <language><![CDATA[en]]></language>
-   </row>
-   <row>
-    <id><![CDATA[13]]></id>
-    <aid><![CDATA[4]]></aid>
-    <answer><![CDATA[Important]]></answer>
-    <language><![CDATA[es]]></language>
-   </row>
-   <row>
-    <id><![CDATA[23]]></id>
-    <aid><![CDATA[12]]></aid>
-    <answer><![CDATA[Option 2, scale 1]]></answer>
-    <language><![CDATA[en]]></language>
-   </row>
-   <row>
-    <id><![CDATA[24]]></id>
-    <aid><![CDATA[12]]></aid>
-    <answer><![CDATA[Opción 2, escala 1]]></answer>
-    <language><![CDATA[es]]></language>
-   </row>
-   <row>
-    <id><![CDATA[5]]></id>
-    <aid><![CDATA[5]]></aid>
-    <answer><![CDATA[Bad]]></answer>
-    <language><![CDATA[en]]></language>
-   </row>
-   <row>
-    <id><![CDATA[15]]></id>
-    <aid><![CDATA[5]]></aid>
-    <answer><![CDATA[Bad]]></answer>
-    <language><![CDATA[es]]></language>
-   </row>
-   <row>
-    <id><![CDATA[25]]></id>
-    <aid><![CDATA[13]]></aid>
-    <answer><![CDATA[Option 3, scale 1]]></answer>
-    <language><![CDATA[en]]></language>
-   </row>
-   <row>
-    <id><![CDATA[26]]></id>
-    <aid><![CDATA[13]]></aid>
-    <answer><![CDATA[Opción 3, escala 1]]></answer>
-    <language><![CDATA[es]]></language>
-   </row>
-   <row>
-    <id><![CDATA[7]]></id>
-    <aid><![CDATA[8]]></aid>
-    <answer><![CDATA[Not important]]></answer>
-    <language><![CDATA[en]]></language>
-   </row>
-   <row>
-    <id><![CDATA[17]]></id>
-    <aid><![CDATA[8]]></aid>
-    <answer><![CDATA[Not important]]></answer>
-    <language><![CDATA[es]]></language>
-   </row>
-   <row>
-    <id><![CDATA[27]]></id>
-    <aid><![CDATA[14]]></aid>
-    <answer><![CDATA[Option 1, scale 2]]></answer>
-    <language><![CDATA[en]]></language>
-   </row>
-   <row>
-    <id><![CDATA[28]]></id>
-    <aid><![CDATA[14]]></aid>
-    <answer><![CDATA[Opción 1, escala 2]]></answer>
-    <language><![CDATA[es]]></language>
-   </row>
-   <row>
-    <id><![CDATA[29]]></id>
-    <aid><![CDATA[15]]></aid>
-    <answer><![CDATA[Option 2, scale 2]]></answer>
-    <language><![CDATA[en]]></language>
-   </row>
-   <row>
-    <id><![CDATA[30]]></id>
-    <aid><![CDATA[15]]></aid>
-    <answer><![CDATA[Opción 2, escala 2]]></answer>
-    <language><![CDATA[es]]></language>
-   </row>
-   <row>
     <id><![CDATA[31]]></id>
-    <aid><![CDATA[16]]></aid>
-    <answer><![CDATA[Option 3, scale 2]]></answer>
+    <aid><![CDATA[14]]></aid>
+    <answer><![CDATA[Option 1]]></answer>
     <language><![CDATA[en]]></language>
    </row>
    <row>
     <id><![CDATA[32]]></id>
+    <aid><![CDATA[14]]></aid>
+    <answer/>
+    <language><![CDATA[es]]></language>
+   </row>
+   <row>
+    <id><![CDATA[27]]></id>
+    <aid><![CDATA[15]]></aid>
+    <answer><![CDATA[Option 1, scale 1]]></answer>
+    <language><![CDATA[en]]></language>
+   </row>
+   <row>
+    <id><![CDATA[28]]></id>
+    <aid><![CDATA[15]]></aid>
+    <answer><![CDATA[Opción 1, escala 1]]></answer>
+    <language><![CDATA[es]]></language>
+   </row>
+   <row>
+    <id><![CDATA[29]]></id>
     <aid><![CDATA[16]]></aid>
+    <answer><![CDATA[Good]]></answer>
+    <language><![CDATA[en]]></language>
+   </row>
+   <row>
+    <id><![CDATA[30]]></id>
+    <aid><![CDATA[16]]></aid>
+    <answer><![CDATA[Good]]></answer>
+    <language><![CDATA[es]]></language>
+   </row>
+   <row>
+    <id><![CDATA[53]]></id>
+    <aid><![CDATA[27]]></aid>
+    <answer><![CDATA[Option 1]]></answer>
+    <language><![CDATA[en]]></language>
+   </row>
+   <row>
+    <id><![CDATA[54]]></id>
+    <aid><![CDATA[27]]></aid>
+    <answer/>
+    <language><![CDATA[es]]></language>
+   </row>
+   <row>
+    <id><![CDATA[37]]></id>
+    <aid><![CDATA[17]]></aid>
+    <answer><![CDATA[Option 2]]></answer>
+    <language><![CDATA[en]]></language>
+   </row>
+   <row>
+    <id><![CDATA[38]]></id>
+    <aid><![CDATA[17]]></aid>
+    <answer/>
+    <language><![CDATA[es]]></language>
+   </row>
+   <row>
+    <id><![CDATA[33]]></id>
+    <aid><![CDATA[18]]></aid>
+    <answer><![CDATA[Option 2, scale 1]]></answer>
+    <language><![CDATA[en]]></language>
+   </row>
+   <row>
+    <id><![CDATA[34]]></id>
+    <aid><![CDATA[18]]></aid>
+    <answer><![CDATA[Opción 2, escala 1]]></answer>
+    <language><![CDATA[es]]></language>
+   </row>
+   <row>
+    <id><![CDATA[35]]></id>
+    <aid><![CDATA[19]]></aid>
+    <answer><![CDATA[Important]]></answer>
+    <language><![CDATA[en]]></language>
+   </row>
+   <row>
+    <id><![CDATA[36]]></id>
+    <aid><![CDATA[19]]></aid>
+    <answer><![CDATA[Important]]></answer>
+    <language><![CDATA[es]]></language>
+   </row>
+   <row>
+    <id><![CDATA[55]]></id>
+    <aid><![CDATA[28]]></aid>
+    <answer><![CDATA[Option 2]]></answer>
+    <language><![CDATA[en]]></language>
+   </row>
+   <row>
+    <id><![CDATA[56]]></id>
+    <aid><![CDATA[28]]></aid>
+    <answer/>
+    <language><![CDATA[es]]></language>
+   </row>
+   <row>
+    <id><![CDATA[43]]></id>
+    <aid><![CDATA[20]]></aid>
+    <answer><![CDATA[Option 3]]></answer>
+    <language><![CDATA[en]]></language>
+   </row>
+   <row>
+    <id><![CDATA[44]]></id>
+    <aid><![CDATA[20]]></aid>
+    <answer/>
+    <language><![CDATA[es]]></language>
+   </row>
+   <row>
+    <id><![CDATA[39]]></id>
+    <aid><![CDATA[22]]></aid>
+    <answer><![CDATA[Option 3, scale 1]]></answer>
+    <language><![CDATA[en]]></language>
+   </row>
+   <row>
+    <id><![CDATA[40]]></id>
+    <aid><![CDATA[22]]></aid>
+    <answer><![CDATA[Opción 3, escala 1]]></answer>
+    <language><![CDATA[es]]></language>
+   </row>
+   <row>
+    <id><![CDATA[41]]></id>
+    <aid><![CDATA[21]]></aid>
+    <answer><![CDATA[Bad]]></answer>
+    <language><![CDATA[en]]></language>
+   </row>
+   <row>
+    <id><![CDATA[42]]></id>
+    <aid><![CDATA[21]]></aid>
+    <answer><![CDATA[Bad]]></answer>
+    <language><![CDATA[es]]></language>
+   </row>
+   <row>
+    <id><![CDATA[57]]></id>
+    <aid><![CDATA[29]]></aid>
+    <answer><![CDATA[Option 3]]></answer>
+    <language><![CDATA[en]]></language>
+   </row>
+   <row>
+    <id><![CDATA[58]]></id>
+    <aid><![CDATA[29]]></aid>
+    <answer/>
+    <language><![CDATA[es]]></language>
+   </row>
+   <row>
+    <id><![CDATA[45]]></id>
+    <aid><![CDATA[23]]></aid>
+    <answer><![CDATA[Option 1, scale 2]]></answer>
+    <language><![CDATA[en]]></language>
+   </row>
+   <row>
+    <id><![CDATA[46]]></id>
+    <aid><![CDATA[23]]></aid>
+    <answer><![CDATA[Opción 1, escala 2]]></answer>
+    <language><![CDATA[es]]></language>
+   </row>
+   <row>
+    <id><![CDATA[47]]></id>
+    <aid><![CDATA[24]]></aid>
+    <answer><![CDATA[Not important]]></answer>
+    <language><![CDATA[en]]></language>
+   </row>
+   <row>
+    <id><![CDATA[48]]></id>
+    <aid><![CDATA[24]]></aid>
+    <answer><![CDATA[Not important]]></answer>
+    <language><![CDATA[es]]></language>
+   </row>
+   <row>
+    <id><![CDATA[49]]></id>
+    <aid><![CDATA[25]]></aid>
+    <answer><![CDATA[Option 2, scale 2]]></answer>
+    <language><![CDATA[en]]></language>
+   </row>
+   <row>
+    <id><![CDATA[50]]></id>
+    <aid><![CDATA[25]]></aid>
+    <answer><![CDATA[Opción 2, escala 2]]></answer>
+    <language><![CDATA[es]]></language>
+   </row>
+   <row>
+    <id><![CDATA[51]]></id>
+    <aid><![CDATA[26]]></aid>
+    <answer><![CDATA[Option 3, scale 2]]></answer>
+    <language><![CDATA[en]]></language>
+   </row>
+   <row>
+    <id><![CDATA[52]]></id>
+    <aid><![CDATA[26]]></aid>
     <answer><![CDATA[Opción 3, escala 2]]></answer>
     <language><![CDATA[es]]></language>
    </row>
@@ -260,7 +380,7 @@
   </fields>
   <rows>
    <row>
-    <id><![CDATA[2]]></id>
+    <id><![CDATA[3]]></id>
     <gid><![CDATA[2]]></gid>
     <group_name><![CDATA[My first question group]]></group_name>
     <language><![CDATA[en]]></language>
@@ -270,7 +390,7 @@
     <grelevance><![CDATA[1]]></grelevance>
    </row>
    <row>
-    <id><![CDATA[3]]></id>
+    <id><![CDATA[4]]></id>
     <gid><![CDATA[2]]></gid>
     <group_name><![CDATA[My first question group]]></group_name>
     <language><![CDATA[es]]></language>
@@ -303,7 +423,7 @@
   </fields>
   <rows>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[8]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[372723]]></sid>
     <gid><![CDATA[2]]></gid>
@@ -320,7 +440,7 @@
     <same_script><![CDATA[0]]></same_script>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[9]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[372723]]></sid>
     <gid><![CDATA[2]]></gid>
@@ -334,6 +454,60 @@
     <same_default><![CDATA[0]]></same_default>
     <relevance><![CDATA[1]]></relevance>
     <question_theme_name><![CDATA[arrays/dualscale]]></question_theme_name>
+    <modulename/>
+    <same_script><![CDATA[0]]></same_script>
+   </row>
+   <row>
+    <qid><![CDATA[10]]></qid>
+    <parent_qid><![CDATA[0]]></parent_qid>
+    <sid><![CDATA[372723]]></sid>
+    <gid><![CDATA[2]]></gid>
+    <type><![CDATA[H]]></type>
+    <title><![CDATA[G01Q03]]></title>
+    <other><![CDATA[N]]></other>
+    <mandatory><![CDATA[N]]></mandatory>
+    <encrypted><![CDATA[N]]></encrypted>
+    <question_order><![CDATA[3]]></question_order>
+    <scale_id><![CDATA[0]]></scale_id>
+    <same_default><![CDATA[0]]></same_default>
+    <relevance><![CDATA[1]]></relevance>
+    <question_theme_name><![CDATA[arrays/column]]></question_theme_name>
+    <modulename/>
+    <same_script><![CDATA[0]]></same_script>
+   </row>
+   <row>
+    <qid><![CDATA[15]]></qid>
+    <parent_qid><![CDATA[0]]></parent_qid>
+    <sid><![CDATA[372723]]></sid>
+    <gid><![CDATA[2]]></gid>
+    <type><![CDATA[F]]></type>
+    <title><![CDATA[G01Q04]]></title>
+    <other><![CDATA[N]]></other>
+    <mandatory><![CDATA[N]]></mandatory>
+    <encrypted><![CDATA[N]]></encrypted>
+    <question_order><![CDATA[4]]></question_order>
+    <scale_id><![CDATA[0]]></scale_id>
+    <same_default><![CDATA[0]]></same_default>
+    <relevance><![CDATA[1]]></relevance>
+    <question_theme_name><![CDATA[arrays/array]]></question_theme_name>
+    <modulename/>
+    <same_script><![CDATA[0]]></same_script>
+   </row>
+   <row>
+    <qid><![CDATA[17]]></qid>
+    <parent_qid><![CDATA[0]]></parent_qid>
+    <sid><![CDATA[372723]]></sid>
+    <gid><![CDATA[2]]></gid>
+    <type><![CDATA[C]]></type>
+    <title><![CDATA[G01Q05]]></title>
+    <other><![CDATA[N]]></other>
+    <mandatory><![CDATA[N]]></mandatory>
+    <encrypted><![CDATA[N]]></encrypted>
+    <question_order><![CDATA[5]]></question_order>
+    <scale_id><![CDATA[0]]></scale_id>
+    <same_default><![CDATA[0]]></same_default>
+    <relevance><![CDATA[1]]></relevance>
+    <question_theme_name><![CDATA[arrays/yesnouncertain]]></question_theme_name>
     <modulename/>
     <same_script><![CDATA[0]]></same_script>
    </row>
@@ -361,8 +535,8 @@
   </fields>
   <rows>
    <row>
-    <qid><![CDATA[4]]></qid>
-    <parent_qid><![CDATA[2]]></parent_qid>
+    <qid><![CDATA[11]]></qid>
+    <parent_qid><![CDATA[8]]></parent_qid>
     <sid><![CDATA[372723]]></sid>
     <gid><![CDATA[2]]></gid>
     <type><![CDATA[T]]></type>
@@ -378,8 +552,59 @@
     <same_script><![CDATA[0]]></same_script>
    </row>
    <row>
-    <qid><![CDATA[7]]></qid>
-    <parent_qid><![CDATA[3]]></parent_qid>
+    <qid><![CDATA[12]]></qid>
+    <parent_qid><![CDATA[9]]></parent_qid>
+    <sid><![CDATA[372723]]></sid>
+    <gid><![CDATA[2]]></gid>
+    <type><![CDATA[T]]></type>
+    <title><![CDATA[SQ001]]></title>
+    <other><![CDATA[N]]></other>
+    <mandatory><![CDATA[N]]></mandatory>
+    <encrypted><![CDATA[N]]></encrypted>
+    <question_order><![CDATA[0]]></question_order>
+    <scale_id><![CDATA[0]]></scale_id>
+    <same_default><![CDATA[0]]></same_default>
+    <relevance><![CDATA[1]]></relevance>
+    <question_theme_name><![CDATA[longfreetext]]></question_theme_name>
+    <same_script><![CDATA[0]]></same_script>
+   </row>
+   <row>
+    <qid><![CDATA[13]]></qid>
+    <parent_qid><![CDATA[9]]></parent_qid>
+    <sid><![CDATA[372723]]></sid>
+    <gid><![CDATA[2]]></gid>
+    <type><![CDATA[T]]></type>
+    <title><![CDATA[SQ002]]></title>
+    <other><![CDATA[N]]></other>
+    <mandatory><![CDATA[N]]></mandatory>
+    <encrypted><![CDATA[N]]></encrypted>
+    <question_order><![CDATA[1]]></question_order>
+    <scale_id><![CDATA[0]]></scale_id>
+    <same_default><![CDATA[0]]></same_default>
+    <relevance><![CDATA[1]]></relevance>
+    <question_theme_name><![CDATA[longfreetext]]></question_theme_name>
+    <same_script><![CDATA[0]]></same_script>
+   </row>
+   <row>
+    <qid><![CDATA[14]]></qid>
+    <parent_qid><![CDATA[10]]></parent_qid>
+    <sid><![CDATA[372723]]></sid>
+    <gid><![CDATA[2]]></gid>
+    <type><![CDATA[T]]></type>
+    <title><![CDATA[SQ001]]></title>
+    <other><![CDATA[N]]></other>
+    <mandatory><![CDATA[N]]></mandatory>
+    <encrypted><![CDATA[N]]></encrypted>
+    <question_order><![CDATA[0]]></question_order>
+    <scale_id><![CDATA[0]]></scale_id>
+    <same_default><![CDATA[0]]></same_default>
+    <relevance><![CDATA[1]]></relevance>
+    <question_theme_name><![CDATA[longfreetext]]></question_theme_name>
+    <same_script><![CDATA[0]]></same_script>
+   </row>
+   <row>
+    <qid><![CDATA[16]]></qid>
+    <parent_qid><![CDATA[15]]></parent_qid>
     <sid><![CDATA[372723]]></sid>
     <gid><![CDATA[2]]></gid>
     <type><![CDATA[T]]></type>
@@ -394,15 +619,15 @@
     <same_script><![CDATA[0]]></same_script>
    </row>
    <row>
-    <qid><![CDATA[8]]></qid>
-    <parent_qid><![CDATA[3]]></parent_qid>
+    <qid><![CDATA[18]]></qid>
+    <parent_qid><![CDATA[17]]></parent_qid>
     <sid><![CDATA[372723]]></sid>
     <gid><![CDATA[2]]></gid>
     <type><![CDATA[T]]></type>
-    <title><![CDATA[SQ002]]></title>
+    <title><![CDATA[SQ001]]></title>
     <other><![CDATA[N]]></other>
     <encrypted><![CDATA[N]]></encrypted>
-    <question_order><![CDATA[1]]></question_order>
+    <question_order><![CDATA[0]]></question_order>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
     <relevance><![CDATA[1]]></relevance>
@@ -422,72 +647,162 @@
   </fields>
   <rows>
    <row>
-    <id><![CDATA[2]]></id>
-    <qid><![CDATA[2]]></qid>
+    <id><![CDATA[15]]></id>
+    <qid><![CDATA[8]]></qid>
     <question><![CDATA[A first example question. Please answer this question:]]></question>
     <help><![CDATA[This is a question help text.]]></help>
     <script/>
     <language><![CDATA[en]]></language>
    </row>
    <row>
-    <id><![CDATA[7]]></id>
-    <qid><![CDATA[2]]></qid>
+    <id><![CDATA[16]]></id>
+    <qid><![CDATA[8]]></qid>
     <question><![CDATA[A first example question. Please answer this question:]]></question>
     <help><![CDATA[This is a question help text.]]></help>
     <language><![CDATA[es]]></language>
    </row>
    <row>
-    <id><![CDATA[4]]></id>
-    <qid><![CDATA[3]]></qid>
+    <id><![CDATA[17]]></id>
+    <qid><![CDATA[9]]></qid>
     <question><![CDATA[Dual scale question.]]></question>
     <help/>
     <script/>
     <language><![CDATA[en]]></language>
    </row>
    <row>
-    <id><![CDATA[8]]></id>
-    <qid><![CDATA[3]]></qid>
+    <id><![CDATA[18]]></id>
+    <qid><![CDATA[9]]></qid>
     <question><![CDATA[Pregunta de doble escala.]]></question>
     <help/>
     <script/>
     <language><![CDATA[es]]></language>
    </row>
    <row>
-    <id><![CDATA[3]]></id>
-    <qid><![CDATA[4]]></qid>
+    <id><![CDATA[25]]></id>
+    <qid><![CDATA[10]]></qid>
+    <question><![CDATA[Array by column question]]></question>
+    <help/>
+    <script/>
+    <language><![CDATA[en]]></language>
+   </row>
+   <row>
+    <id><![CDATA[26]]></id>
+    <qid><![CDATA[10]]></qid>
+    <question/>
+    <help/>
+    <script/>
+    <language><![CDATA[es]]></language>
+   </row>
+   <row>
+    <id><![CDATA[19]]></id>
+    <qid><![CDATA[11]]></qid>
     <question><![CDATA[Question one]]></question>
     <help/>
     <language><![CDATA[en]]></language>
    </row>
    <row>
-    <id><![CDATA[9]]></id>
-    <qid><![CDATA[4]]></qid>
+    <id><![CDATA[20]]></id>
+    <qid><![CDATA[11]]></qid>
     <question><![CDATA[Question one]]></question>
     <help/>
     <language><![CDATA[es]]></language>
    </row>
    <row>
-    <id><![CDATA[12]]></id>
-    <qid><![CDATA[7]]></qid>
+    <id><![CDATA[21]]></id>
+    <qid><![CDATA[12]]></qid>
     <question><![CDATA[Is this a good question?]]></question>
+    <help/>
     <language><![CDATA[en]]></language>
    </row>
    <row>
-    <id><![CDATA[13]]></id>
-    <qid><![CDATA[7]]></qid>
+    <id><![CDATA[22]]></id>
+    <qid><![CDATA[12]]></qid>
     <question><![CDATA[¿Buena pregunta?]]></question>
+    <help/>
     <language><![CDATA[es]]></language>
    </row>
    <row>
-    <id><![CDATA[14]]></id>
-    <qid><![CDATA[8]]></qid>
+    <id><![CDATA[23]]></id>
+    <qid><![CDATA[13]]></qid>
     <question><![CDATA[Is this a bad question?]]></question>
+    <help/>
     <language><![CDATA[en]]></language>
    </row>
    <row>
-    <id><![CDATA[15]]></id>
-    <qid><![CDATA[8]]></qid>
+    <id><![CDATA[24]]></id>
+    <qid><![CDATA[13]]></qid>
     <question><![CDATA[¿Mala pregunta?]]></question>
+    <help/>
+    <language><![CDATA[es]]></language>
+   </row>
+   <row>
+    <id><![CDATA[27]]></id>
+    <qid><![CDATA[14]]></qid>
+    <question><![CDATA[Subquestion]]></question>
+    <help/>
+    <language><![CDATA[en]]></language>
+   </row>
+   <row>
+    <id><![CDATA[28]]></id>
+    <qid><![CDATA[14]]></qid>
+    <question/>
+    <help/>
+    <language><![CDATA[es]]></language>
+   </row>
+   <row>
+    <id><![CDATA[29]]></id>
+    <qid><![CDATA[15]]></qid>
+    <question><![CDATA[Array question]]></question>
+    <help/>
+    <script/>
+    <language><![CDATA[en]]></language>
+   </row>
+   <row>
+    <id><![CDATA[30]]></id>
+    <qid><![CDATA[15]]></qid>
+    <question/>
+    <help/>
+    <script/>
+    <language><![CDATA[es]]></language>
+   </row>
+   <row>
+    <id><![CDATA[31]]></id>
+    <qid><![CDATA[16]]></qid>
+    <question><![CDATA[Subquestion]]></question>
+    <language><![CDATA[en]]></language>
+   </row>
+   <row>
+    <id><![CDATA[32]]></id>
+    <qid><![CDATA[16]]></qid>
+    <question/>
+    <language><![CDATA[es]]></language>
+   </row>
+   <row>
+    <id><![CDATA[33]]></id>
+    <qid><![CDATA[17]]></qid>
+    <question><![CDATA[Array (Yes/No/Uncertain) question]]></question>
+    <help/>
+    <script/>
+    <language><![CDATA[en]]></language>
+   </row>
+   <row>
+    <id><![CDATA[34]]></id>
+    <qid><![CDATA[17]]></qid>
+    <question/>
+    <help/>
+    <script/>
+    <language><![CDATA[es]]></language>
+   </row>
+   <row>
+    <id><![CDATA[35]]></id>
+    <qid><![CDATA[18]]></qid>
+    <question><![CDATA[Subquestion]]></question>
+    <language><![CDATA[en]]></language>
+   </row>
+   <row>
+    <id><![CDATA[36]]></id>
+    <qid><![CDATA[18]]></qid>
+    <question/>
     <language><![CDATA[es]]></language>
    </row>
   </rows>
@@ -501,315 +816,705 @@
   </fields>
   <rows>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[8]]></qid>
     <attribute><![CDATA[answer_width]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[8]]></qid>
     <attribute><![CDATA[array_filter]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[8]]></qid>
     <attribute><![CDATA[array_filter_exclude]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[8]]></qid>
     <attribute><![CDATA[array_filter_style]]></attribute>
     <value><![CDATA[0]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[8]]></qid>
     <attribute><![CDATA[cssclass]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[8]]></qid>
     <attribute><![CDATA[dropdown_prepostfix]]></attribute>
     <value/>
     <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[8]]></qid>
     <attribute><![CDATA[dropdown_separators]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[8]]></qid>
     <attribute><![CDATA[dualscale_headerA]]></attribute>
     <value/>
     <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[8]]></qid>
     <attribute><![CDATA[dualscale_headerB]]></attribute>
     <value/>
     <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[8]]></qid>
     <attribute><![CDATA[hidden]]></attribute>
     <value><![CDATA[0]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[8]]></qid>
     <attribute><![CDATA[hide_tip]]></attribute>
     <value><![CDATA[0]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[8]]></qid>
     <attribute><![CDATA[max_answers]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[8]]></qid>
     <attribute><![CDATA[min_answers]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[8]]></qid>
     <attribute><![CDATA[page_break]]></attribute>
     <value><![CDATA[0]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[8]]></qid>
     <attribute><![CDATA[printable_help]]></attribute>
     <value/>
     <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[8]]></qid>
     <attribute><![CDATA[public_statistics]]></attribute>
     <value><![CDATA[0]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[8]]></qid>
     <attribute><![CDATA[random_group]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[8]]></qid>
     <attribute><![CDATA[random_order]]></attribute>
     <value><![CDATA[0]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[8]]></qid>
     <attribute><![CDATA[repeat_headings]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[8]]></qid>
     <attribute><![CDATA[save_as_default]]></attribute>
     <value><![CDATA[N]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[8]]></qid>
     <attribute><![CDATA[scale_export]]></attribute>
     <value><![CDATA[0]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[8]]></qid>
     <attribute><![CDATA[statistics_graphtype]]></attribute>
     <value><![CDATA[0]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[8]]></qid>
     <attribute><![CDATA[statistics_showgraph]]></attribute>
     <value><![CDATA[1]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[2]]></qid>
+    <qid><![CDATA[8]]></qid>
     <attribute><![CDATA[use_dropdown]]></attribute>
     <value><![CDATA[0]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[9]]></qid>
     <attribute><![CDATA[answer_width]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[9]]></qid>
     <attribute><![CDATA[array_filter]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[9]]></qid>
     <attribute><![CDATA[array_filter_exclude]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[9]]></qid>
     <attribute><![CDATA[array_filter_style]]></attribute>
     <value><![CDATA[0]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[9]]></qid>
     <attribute><![CDATA[cssclass]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[9]]></qid>
     <attribute><![CDATA[dropdown_prepostfix]]></attribute>
     <value/>
     <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[9]]></qid>
     <attribute><![CDATA[dropdown_prepostfix]]></attribute>
     <value/>
     <language><![CDATA[es]]></language>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[9]]></qid>
     <attribute><![CDATA[dropdown_separators]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[9]]></qid>
     <attribute><![CDATA[dualscale_headerA]]></attribute>
     <value/>
     <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[9]]></qid>
     <attribute><![CDATA[dualscale_headerA]]></attribute>
     <value/>
     <language><![CDATA[es]]></language>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[9]]></qid>
     <attribute><![CDATA[dualscale_headerB]]></attribute>
     <value/>
     <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[9]]></qid>
     <attribute><![CDATA[dualscale_headerB]]></attribute>
     <value/>
     <language><![CDATA[es]]></language>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[9]]></qid>
     <attribute><![CDATA[hidden]]></attribute>
     <value><![CDATA[0]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[9]]></qid>
     <attribute><![CDATA[hide_tip]]></attribute>
     <value><![CDATA[0]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[9]]></qid>
     <attribute><![CDATA[max_answers]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[9]]></qid>
     <attribute><![CDATA[min_answers]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[9]]></qid>
     <attribute><![CDATA[page_break]]></attribute>
     <value><![CDATA[0]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[9]]></qid>
     <attribute><![CDATA[printable_help]]></attribute>
     <value/>
     <language><![CDATA[en]]></language>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[9]]></qid>
     <attribute><![CDATA[printable_help]]></attribute>
     <value/>
     <language><![CDATA[es]]></language>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[9]]></qid>
     <attribute><![CDATA[public_statistics]]></attribute>
     <value><![CDATA[0]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[9]]></qid>
     <attribute><![CDATA[random_group]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[9]]></qid>
     <attribute><![CDATA[random_order]]></attribute>
     <value><![CDATA[0]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[9]]></qid>
     <attribute><![CDATA[repeat_headings]]></attribute>
     <value/>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[9]]></qid>
     <attribute><![CDATA[save_as_default]]></attribute>
     <value><![CDATA[N]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[9]]></qid>
     <attribute><![CDATA[scale_export]]></attribute>
     <value><![CDATA[0]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[9]]></qid>
     <attribute><![CDATA[statistics_graphtype]]></attribute>
     <value><![CDATA[0]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[9]]></qid>
     <attribute><![CDATA[statistics_showgraph]]></attribute>
     <value><![CDATA[1]]></value>
     <language/>
    </row>
    <row>
-    <qid><![CDATA[3]]></qid>
+    <qid><![CDATA[9]]></qid>
     <attribute><![CDATA[use_dropdown]]></attribute>
     <value><![CDATA[0]]></value>
+    <language/>
+   </row>
+   <row>
+    <qid><![CDATA[10]]></qid>
+    <attribute><![CDATA[answer_width_bycolumn]]></attribute>
+    <value/>
+    <language/>
+   </row>
+   <row>
+    <qid><![CDATA[10]]></qid>
+    <attribute><![CDATA[cssclass]]></attribute>
+    <value/>
+    <language/>
+   </row>
+   <row>
+    <qid><![CDATA[10]]></qid>
+    <attribute><![CDATA[em_validation_q]]></attribute>
+    <value/>
+    <language/>
+   </row>
+   <row>
+    <qid><![CDATA[10]]></qid>
+    <attribute><![CDATA[em_validation_q_tip]]></attribute>
+    <value/>
+    <language><![CDATA[en]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[10]]></qid>
+    <attribute><![CDATA[em_validation_q_tip]]></attribute>
+    <value/>
+    <language><![CDATA[es]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[10]]></qid>
+    <attribute><![CDATA[hidden]]></attribute>
+    <value><![CDATA[0]]></value>
+    <language/>
+   </row>
+   <row>
+    <qid><![CDATA[10]]></qid>
+    <attribute><![CDATA[hide_tip]]></attribute>
+    <value><![CDATA[0]]></value>
+    <language/>
+   </row>
+   <row>
+    <qid><![CDATA[10]]></qid>
+    <attribute><![CDATA[page_break]]></attribute>
+    <value><![CDATA[0]]></value>
+    <language/>
+   </row>
+   <row>
+    <qid><![CDATA[10]]></qid>
+    <attribute><![CDATA[printable_help]]></attribute>
+    <value/>
+    <language><![CDATA[en]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[10]]></qid>
+    <attribute><![CDATA[printable_help]]></attribute>
+    <value/>
+    <language><![CDATA[es]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[10]]></qid>
+    <attribute><![CDATA[public_statistics]]></attribute>
+    <value><![CDATA[0]]></value>
+    <language/>
+   </row>
+   <row>
+    <qid><![CDATA[10]]></qid>
+    <attribute><![CDATA[random_group]]></attribute>
+    <value/>
+    <language/>
+   </row>
+   <row>
+    <qid><![CDATA[10]]></qid>
+    <attribute><![CDATA[random_order]]></attribute>
+    <value><![CDATA[0]]></value>
+    <language/>
+   </row>
+   <row>
+    <qid><![CDATA[10]]></qid>
+    <attribute><![CDATA[save_as_default]]></attribute>
+    <value><![CDATA[N]]></value>
+    <language/>
+   </row>
+   <row>
+    <qid><![CDATA[10]]></qid>
+    <attribute><![CDATA[scale_export]]></attribute>
+    <value><![CDATA[0]]></value>
+    <language/>
+   </row>
+   <row>
+    <qid><![CDATA[10]]></qid>
+    <attribute><![CDATA[statistics_graphtype]]></attribute>
+    <value><![CDATA[0]]></value>
+    <language/>
+   </row>
+   <row>
+    <qid><![CDATA[10]]></qid>
+    <attribute><![CDATA[statistics_showgraph]]></attribute>
+    <value><![CDATA[1]]></value>
+    <language/>
+   </row>
+   <row>
+    <qid><![CDATA[15]]></qid>
+    <attribute><![CDATA[answer_width]]></attribute>
+    <value/>
+    <language/>
+   </row>
+   <row>
+    <qid><![CDATA[15]]></qid>
+    <attribute><![CDATA[array_filter]]></attribute>
+    <value/>
+    <language/>
+   </row>
+   <row>
+    <qid><![CDATA[15]]></qid>
+    <attribute><![CDATA[array_filter_exclude]]></attribute>
+    <value/>
+    <language/>
+   </row>
+   <row>
+    <qid><![CDATA[15]]></qid>
+    <attribute><![CDATA[array_filter_style]]></attribute>
+    <value><![CDATA[0]]></value>
+    <language/>
+   </row>
+   <row>
+    <qid><![CDATA[15]]></qid>
+    <attribute><![CDATA[cssclass]]></attribute>
+    <value/>
+    <language/>
+   </row>
+   <row>
+    <qid><![CDATA[15]]></qid>
+    <attribute><![CDATA[em_validation_q]]></attribute>
+    <value/>
+    <language/>
+   </row>
+   <row>
+    <qid><![CDATA[15]]></qid>
+    <attribute><![CDATA[em_validation_q_tip]]></attribute>
+    <value/>
+    <language><![CDATA[en]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[15]]></qid>
+    <attribute><![CDATA[em_validation_q_tip]]></attribute>
+    <value/>
+    <language><![CDATA[es]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[15]]></qid>
+    <attribute><![CDATA[exclude_all_others]]></attribute>
+    <value/>
+    <language/>
+   </row>
+   <row>
+    <qid><![CDATA[15]]></qid>
+    <attribute><![CDATA[hidden]]></attribute>
+    <value><![CDATA[0]]></value>
+    <language/>
+   </row>
+   <row>
+    <qid><![CDATA[15]]></qid>
+    <attribute><![CDATA[hide_tip]]></attribute>
+    <value><![CDATA[0]]></value>
+    <language/>
+   </row>
+   <row>
+    <qid><![CDATA[15]]></qid>
+    <attribute><![CDATA[max_answers]]></attribute>
+    <value/>
+    <language/>
+   </row>
+   <row>
+    <qid><![CDATA[15]]></qid>
+    <attribute><![CDATA[min_answers]]></attribute>
+    <value/>
+    <language/>
+   </row>
+   <row>
+    <qid><![CDATA[15]]></qid>
+    <attribute><![CDATA[page_break]]></attribute>
+    <value><![CDATA[0]]></value>
+    <language/>
+   </row>
+   <row>
+    <qid><![CDATA[15]]></qid>
+    <attribute><![CDATA[printable_help]]></attribute>
+    <value/>
+    <language><![CDATA[en]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[15]]></qid>
+    <attribute><![CDATA[printable_help]]></attribute>
+    <value/>
+    <language><![CDATA[es]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[15]]></qid>
+    <attribute><![CDATA[public_statistics]]></attribute>
+    <value><![CDATA[0]]></value>
+    <language/>
+   </row>
+   <row>
+    <qid><![CDATA[15]]></qid>
+    <attribute><![CDATA[random_group]]></attribute>
+    <value/>
+    <language/>
+   </row>
+   <row>
+    <qid><![CDATA[15]]></qid>
+    <attribute><![CDATA[random_order]]></attribute>
+    <value><![CDATA[0]]></value>
+    <language/>
+   </row>
+   <row>
+    <qid><![CDATA[15]]></qid>
+    <attribute><![CDATA[repeat_headings]]></attribute>
+    <value/>
+    <language/>
+   </row>
+   <row>
+    <qid><![CDATA[15]]></qid>
+    <attribute><![CDATA[save_as_default]]></attribute>
+    <value><![CDATA[N]]></value>
+    <language/>
+   </row>
+   <row>
+    <qid><![CDATA[15]]></qid>
+    <attribute><![CDATA[scale_export]]></attribute>
+    <value><![CDATA[0]]></value>
+    <language/>
+   </row>
+   <row>
+    <qid><![CDATA[15]]></qid>
+    <attribute><![CDATA[statistics_graphtype]]></attribute>
+    <value><![CDATA[0]]></value>
+    <language/>
+   </row>
+   <row>
+    <qid><![CDATA[15]]></qid>
+    <attribute><![CDATA[statistics_showgraph]]></attribute>
+    <value><![CDATA[1]]></value>
+    <language/>
+   </row>
+   <row>
+    <qid><![CDATA[15]]></qid>
+    <attribute><![CDATA[use_dropdown]]></attribute>
+    <value><![CDATA[0]]></value>
+    <language/>
+   </row>
+   <row>
+    <qid><![CDATA[17]]></qid>
+    <attribute><![CDATA[answer_width]]></attribute>
+    <value/>
+    <language/>
+   </row>
+   <row>
+    <qid><![CDATA[17]]></qid>
+    <attribute><![CDATA[array_filter]]></attribute>
+    <value/>
+    <language/>
+   </row>
+   <row>
+    <qid><![CDATA[17]]></qid>
+    <attribute><![CDATA[array_filter_exclude]]></attribute>
+    <value/>
+    <language/>
+   </row>
+   <row>
+    <qid><![CDATA[17]]></qid>
+    <attribute><![CDATA[array_filter_style]]></attribute>
+    <value><![CDATA[0]]></value>
+    <language/>
+   </row>
+   <row>
+    <qid><![CDATA[17]]></qid>
+    <attribute><![CDATA[cssclass]]></attribute>
+    <value/>
+    <language/>
+   </row>
+   <row>
+    <qid><![CDATA[17]]></qid>
+    <attribute><![CDATA[em_validation_q]]></attribute>
+    <value/>
+    <language/>
+   </row>
+   <row>
+    <qid><![CDATA[17]]></qid>
+    <attribute><![CDATA[em_validation_q_tip]]></attribute>
+    <value/>
+    <language><![CDATA[en]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[17]]></qid>
+    <attribute><![CDATA[em_validation_q_tip]]></attribute>
+    <value/>
+    <language><![CDATA[es]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[17]]></qid>
+    <attribute><![CDATA[exclude_all_others]]></attribute>
+    <value/>
+    <language/>
+   </row>
+   <row>
+    <qid><![CDATA[17]]></qid>
+    <attribute><![CDATA[hidden]]></attribute>
+    <value><![CDATA[0]]></value>
+    <language/>
+   </row>
+   <row>
+    <qid><![CDATA[17]]></qid>
+    <attribute><![CDATA[hide_tip]]></attribute>
+    <value><![CDATA[0]]></value>
+    <language/>
+   </row>
+   <row>
+    <qid><![CDATA[17]]></qid>
+    <attribute><![CDATA[max_answers]]></attribute>
+    <value/>
+    <language/>
+   </row>
+   <row>
+    <qid><![CDATA[17]]></qid>
+    <attribute><![CDATA[min_answers]]></attribute>
+    <value/>
+    <language/>
+   </row>
+   <row>
+    <qid><![CDATA[17]]></qid>
+    <attribute><![CDATA[page_break]]></attribute>
+    <value><![CDATA[0]]></value>
+    <language/>
+   </row>
+   <row>
+    <qid><![CDATA[17]]></qid>
+    <attribute><![CDATA[printable_help]]></attribute>
+    <value/>
+    <language><![CDATA[en]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[17]]></qid>
+    <attribute><![CDATA[printable_help]]></attribute>
+    <value/>
+    <language><![CDATA[es]]></language>
+   </row>
+   <row>
+    <qid><![CDATA[17]]></qid>
+    <attribute><![CDATA[public_statistics]]></attribute>
+    <value><![CDATA[0]]></value>
+    <language/>
+   </row>
+   <row>
+    <qid><![CDATA[17]]></qid>
+    <attribute><![CDATA[random_group]]></attribute>
+    <value/>
+    <language/>
+   </row>
+   <row>
+    <qid><![CDATA[17]]></qid>
+    <attribute><![CDATA[random_order]]></attribute>
+    <value><![CDATA[0]]></value>
+    <language/>
+   </row>
+   <row>
+    <qid><![CDATA[17]]></qid>
+    <attribute><![CDATA[save_as_default]]></attribute>
+    <value><![CDATA[N]]></value>
+    <language/>
+   </row>
+   <row>
+    <qid><![CDATA[17]]></qid>
+    <attribute><![CDATA[scale_export]]></attribute>
+    <value><![CDATA[0]]></value>
+    <language/>
+   </row>
+   <row>
+    <qid><![CDATA[17]]></qid>
+    <attribute><![CDATA[statistics_graphtype]]></attribute>
+    <value><![CDATA[0]]></value>
+    <language/>
+   </row>
+   <row>
+    <qid><![CDATA[17]]></qid>
+    <attribute><![CDATA[statistics_showgraph]]></attribute>
+    <value><![CDATA[1]]></value>
     <language/>
    </row>
   </rows>
@@ -1210,8 +1915,620 @@ Estas son las respuestas dadas por el/la encuestado/a:<br />
     <options>inherit</options>
    </config>
   </theme>
+  <theme>
+   <sid>372723</sid>
+   <template_name>fruity</template_name>
+   <config>
+    <options>inherit</options>
+   </config>
+  </theme>
+  <theme>
+   <sid>372723</sid>
+   <template_name>fruity</template_name>
+   <config>
+    <options>inherit</options>
+   </config>
+  </theme>
+  <theme>
+   <sid>372723</sid>
+   <template_name>fruity</template_name>
+   <config>
+    <options>inherit</options>
+   </config>
+  </theme>
+  <theme>
+   <sid>372723</sid>
+   <template_name>fruity</template_name>
+   <config>
+    <options>inherit</options>
+   </config>
+  </theme>
+  <theme>
+   <sid>372723</sid>
+   <template_name>fruity</template_name>
+   <config>
+    <options>inherit</options>
+   </config>
+  </theme>
+  <theme>
+   <sid>372723</sid>
+   <template_name>fruity</template_name>
+   <config>
+    <options>inherit</options>
+   </config>
+  </theme>
+  <theme>
+   <sid>372723</sid>
+   <template_name>fruity</template_name>
+   <config>
+    <options>inherit</options>
+   </config>
+  </theme>
+  <theme>
+   <sid>372723</sid>
+   <template_name>fruity</template_name>
+   <config>
+    <options>inherit</options>
+   </config>
+  </theme>
+  <theme>
+   <sid>372723</sid>
+   <template_name>fruity</template_name>
+   <config>
+    <options>inherit</options>
+   </config>
+  </theme>
+  <theme>
+   <sid>372723</sid>
+   <template_name>fruity</template_name>
+   <config>
+    <options>inherit</options>
+   </config>
+  </theme>
+  <theme>
+   <sid>372723</sid>
+   <template_name>fruity</template_name>
+   <config>
+    <options>inherit</options>
+   </config>
+  </theme>
+  <theme>
+   <sid>372723</sid>
+   <template_name>fruity</template_name>
+   <config>
+    <options>inherit</options>
+   </config>
+  </theme>
  </themes>
  <themes_inherited>
+  <theme>
+   <sid>372723</sid>
+   <template_name>fruity</template_name>
+   <config>
+    <options>
+     <ajaxmode>off</ajaxmode>
+     <brandlogo>on</brandlogo>
+     <brandlogofile>themes/survey/fruity/files/logo.png</brandlogofile>
+     <container>on</container>
+     <backgroundimage>off</backgroundimage>
+     <animatebody>off</animatebody>
+     <bodyanimation>fadeInRight</bodyanimation>
+     <bodyanimationduration>500</bodyanimationduration>
+     <animatequestion>off</animatequestion>
+     <questionanimation>flipInX</questionanimation>
+     <questionanimationduration>500</questionanimationduration>
+     <animatealert>off</animatealert>
+     <alertanimation>shake</alertanimation>
+     <alertanimationduration>500</alertanimationduration>
+     <font>noto</font>
+     <bodybackgroundcolor>#ffffff</bodybackgroundcolor>
+     <fontcolor>#444444</fontcolor>
+     <questionbackgroundcolor>#ffffff</questionbackgroundcolor>
+     <questionborder>on</questionborder>
+     <questioncontainershadow>on</questioncontainershadow>
+     <checkicon>f00c</checkicon>
+     <animatecheckbox>on</animatecheckbox>
+     <checkboxanimation>rubberBand</checkboxanimation>
+     <checkboxanimationduration>500</checkboxanimationduration>
+     <animateradio>on</animateradio>
+     <radioanimation>zoomIn</radioanimation>
+     <radioanimationduration>500</radioanimationduration>
+     <zebrastriping>off</zebrastriping>
+     <stickymatrixheaders>off</stickymatrixheaders>
+     <greyoutselected>off</greyoutselected>
+     <hideprivacyinfo>off</hideprivacyinfo>
+     <crosshover>off</crosshover>
+     <showpopups>1</showpopups>
+     <showclearall>off</showclearall>
+     <questionhelptextposition>top</questionhelptextposition>
+     <notables>1</notables>
+    </options>
+   </config>
+  </theme>
+  <theme>
+   <sid>372723</sid>
+   <template_name>fruity</template_name>
+   <config>
+    <options>
+     <ajaxmode>off</ajaxmode>
+     <brandlogo>on</brandlogo>
+     <brandlogofile>themes/survey/fruity/files/logo.png</brandlogofile>
+     <container>on</container>
+     <backgroundimage>off</backgroundimage>
+     <animatebody>off</animatebody>
+     <bodyanimation>fadeInRight</bodyanimation>
+     <bodyanimationduration>500</bodyanimationduration>
+     <animatequestion>off</animatequestion>
+     <questionanimation>flipInX</questionanimation>
+     <questionanimationduration>500</questionanimationduration>
+     <animatealert>off</animatealert>
+     <alertanimation>shake</alertanimation>
+     <alertanimationduration>500</alertanimationduration>
+     <font>noto</font>
+     <bodybackgroundcolor>#ffffff</bodybackgroundcolor>
+     <fontcolor>#444444</fontcolor>
+     <questionbackgroundcolor>#ffffff</questionbackgroundcolor>
+     <questionborder>on</questionborder>
+     <questioncontainershadow>on</questioncontainershadow>
+     <checkicon>f00c</checkicon>
+     <animatecheckbox>on</animatecheckbox>
+     <checkboxanimation>rubberBand</checkboxanimation>
+     <checkboxanimationduration>500</checkboxanimationduration>
+     <animateradio>on</animateradio>
+     <radioanimation>zoomIn</radioanimation>
+     <radioanimationduration>500</radioanimationduration>
+     <zebrastriping>off</zebrastriping>
+     <stickymatrixheaders>off</stickymatrixheaders>
+     <greyoutselected>off</greyoutselected>
+     <hideprivacyinfo>off</hideprivacyinfo>
+     <crosshover>off</crosshover>
+     <showpopups>1</showpopups>
+     <showclearall>off</showclearall>
+     <questionhelptextposition>top</questionhelptextposition>
+     <notables>1</notables>
+    </options>
+   </config>
+  </theme>
+  <theme>
+   <sid>372723</sid>
+   <template_name>fruity</template_name>
+   <config>
+    <options>
+     <ajaxmode>off</ajaxmode>
+     <brandlogo>on</brandlogo>
+     <brandlogofile>themes/survey/fruity/files/logo.png</brandlogofile>
+     <container>on</container>
+     <backgroundimage>off</backgroundimage>
+     <animatebody>off</animatebody>
+     <bodyanimation>fadeInRight</bodyanimation>
+     <bodyanimationduration>500</bodyanimationduration>
+     <animatequestion>off</animatequestion>
+     <questionanimation>flipInX</questionanimation>
+     <questionanimationduration>500</questionanimationduration>
+     <animatealert>off</animatealert>
+     <alertanimation>shake</alertanimation>
+     <alertanimationduration>500</alertanimationduration>
+     <font>noto</font>
+     <bodybackgroundcolor>#ffffff</bodybackgroundcolor>
+     <fontcolor>#444444</fontcolor>
+     <questionbackgroundcolor>#ffffff</questionbackgroundcolor>
+     <questionborder>on</questionborder>
+     <questioncontainershadow>on</questioncontainershadow>
+     <checkicon>f00c</checkicon>
+     <animatecheckbox>on</animatecheckbox>
+     <checkboxanimation>rubberBand</checkboxanimation>
+     <checkboxanimationduration>500</checkboxanimationduration>
+     <animateradio>on</animateradio>
+     <radioanimation>zoomIn</radioanimation>
+     <radioanimationduration>500</radioanimationduration>
+     <zebrastriping>off</zebrastriping>
+     <stickymatrixheaders>off</stickymatrixheaders>
+     <greyoutselected>off</greyoutselected>
+     <hideprivacyinfo>off</hideprivacyinfo>
+     <crosshover>off</crosshover>
+     <showpopups>1</showpopups>
+     <showclearall>off</showclearall>
+     <questionhelptextposition>top</questionhelptextposition>
+     <notables>1</notables>
+    </options>
+   </config>
+  </theme>
+  <theme>
+   <sid>372723</sid>
+   <template_name>fruity</template_name>
+   <config>
+    <options>
+     <ajaxmode>off</ajaxmode>
+     <brandlogo>on</brandlogo>
+     <brandlogofile>themes/survey/fruity/files/logo.png</brandlogofile>
+     <container>on</container>
+     <backgroundimage>off</backgroundimage>
+     <animatebody>off</animatebody>
+     <bodyanimation>fadeInRight</bodyanimation>
+     <bodyanimationduration>500</bodyanimationduration>
+     <animatequestion>off</animatequestion>
+     <questionanimation>flipInX</questionanimation>
+     <questionanimationduration>500</questionanimationduration>
+     <animatealert>off</animatealert>
+     <alertanimation>shake</alertanimation>
+     <alertanimationduration>500</alertanimationduration>
+     <font>noto</font>
+     <bodybackgroundcolor>#ffffff</bodybackgroundcolor>
+     <fontcolor>#444444</fontcolor>
+     <questionbackgroundcolor>#ffffff</questionbackgroundcolor>
+     <questionborder>on</questionborder>
+     <questioncontainershadow>on</questioncontainershadow>
+     <checkicon>f00c</checkicon>
+     <animatecheckbox>on</animatecheckbox>
+     <checkboxanimation>rubberBand</checkboxanimation>
+     <checkboxanimationduration>500</checkboxanimationduration>
+     <animateradio>on</animateradio>
+     <radioanimation>zoomIn</radioanimation>
+     <radioanimationduration>500</radioanimationduration>
+     <zebrastriping>off</zebrastriping>
+     <stickymatrixheaders>off</stickymatrixheaders>
+     <greyoutselected>off</greyoutselected>
+     <hideprivacyinfo>off</hideprivacyinfo>
+     <crosshover>off</crosshover>
+     <showpopups>1</showpopups>
+     <showclearall>off</showclearall>
+     <questionhelptextposition>top</questionhelptextposition>
+     <notables>1</notables>
+    </options>
+   </config>
+  </theme>
+  <theme>
+   <sid>372723</sid>
+   <template_name>fruity</template_name>
+   <config>
+    <options>
+     <ajaxmode>off</ajaxmode>
+     <brandlogo>on</brandlogo>
+     <brandlogofile>themes/survey/fruity/files/logo.png</brandlogofile>
+     <container>on</container>
+     <backgroundimage>off</backgroundimage>
+     <animatebody>off</animatebody>
+     <bodyanimation>fadeInRight</bodyanimation>
+     <bodyanimationduration>500</bodyanimationduration>
+     <animatequestion>off</animatequestion>
+     <questionanimation>flipInX</questionanimation>
+     <questionanimationduration>500</questionanimationduration>
+     <animatealert>off</animatealert>
+     <alertanimation>shake</alertanimation>
+     <alertanimationduration>500</alertanimationduration>
+     <font>noto</font>
+     <bodybackgroundcolor>#ffffff</bodybackgroundcolor>
+     <fontcolor>#444444</fontcolor>
+     <questionbackgroundcolor>#ffffff</questionbackgroundcolor>
+     <questionborder>on</questionborder>
+     <questioncontainershadow>on</questioncontainershadow>
+     <checkicon>f00c</checkicon>
+     <animatecheckbox>on</animatecheckbox>
+     <checkboxanimation>rubberBand</checkboxanimation>
+     <checkboxanimationduration>500</checkboxanimationduration>
+     <animateradio>on</animateradio>
+     <radioanimation>zoomIn</radioanimation>
+     <radioanimationduration>500</radioanimationduration>
+     <zebrastriping>off</zebrastriping>
+     <stickymatrixheaders>off</stickymatrixheaders>
+     <greyoutselected>off</greyoutselected>
+     <hideprivacyinfo>off</hideprivacyinfo>
+     <crosshover>off</crosshover>
+     <showpopups>1</showpopups>
+     <showclearall>off</showclearall>
+     <questionhelptextposition>top</questionhelptextposition>
+     <notables>1</notables>
+    </options>
+   </config>
+  </theme>
+  <theme>
+   <sid>372723</sid>
+   <template_name>fruity</template_name>
+   <config>
+    <options>
+     <ajaxmode>off</ajaxmode>
+     <brandlogo>on</brandlogo>
+     <brandlogofile>themes/survey/fruity/files/logo.png</brandlogofile>
+     <container>on</container>
+     <backgroundimage>off</backgroundimage>
+     <animatebody>off</animatebody>
+     <bodyanimation>fadeInRight</bodyanimation>
+     <bodyanimationduration>500</bodyanimationduration>
+     <animatequestion>off</animatequestion>
+     <questionanimation>flipInX</questionanimation>
+     <questionanimationduration>500</questionanimationduration>
+     <animatealert>off</animatealert>
+     <alertanimation>shake</alertanimation>
+     <alertanimationduration>500</alertanimationduration>
+     <font>noto</font>
+     <bodybackgroundcolor>#ffffff</bodybackgroundcolor>
+     <fontcolor>#444444</fontcolor>
+     <questionbackgroundcolor>#ffffff</questionbackgroundcolor>
+     <questionborder>on</questionborder>
+     <questioncontainershadow>on</questioncontainershadow>
+     <checkicon>f00c</checkicon>
+     <animatecheckbox>on</animatecheckbox>
+     <checkboxanimation>rubberBand</checkboxanimation>
+     <checkboxanimationduration>500</checkboxanimationduration>
+     <animateradio>on</animateradio>
+     <radioanimation>zoomIn</radioanimation>
+     <radioanimationduration>500</radioanimationduration>
+     <zebrastriping>off</zebrastriping>
+     <stickymatrixheaders>off</stickymatrixheaders>
+     <greyoutselected>off</greyoutselected>
+     <hideprivacyinfo>off</hideprivacyinfo>
+     <crosshover>off</crosshover>
+     <showpopups>1</showpopups>
+     <showclearall>off</showclearall>
+     <questionhelptextposition>top</questionhelptextposition>
+     <notables>1</notables>
+    </options>
+   </config>
+  </theme>
+  <theme>
+   <sid>372723</sid>
+   <template_name>fruity</template_name>
+   <config>
+    <options>
+     <ajaxmode>off</ajaxmode>
+     <brandlogo>on</brandlogo>
+     <brandlogofile>themes/survey/fruity/files/logo.png</brandlogofile>
+     <container>on</container>
+     <backgroundimage>off</backgroundimage>
+     <animatebody>off</animatebody>
+     <bodyanimation>fadeInRight</bodyanimation>
+     <bodyanimationduration>500</bodyanimationduration>
+     <animatequestion>off</animatequestion>
+     <questionanimation>flipInX</questionanimation>
+     <questionanimationduration>500</questionanimationduration>
+     <animatealert>off</animatealert>
+     <alertanimation>shake</alertanimation>
+     <alertanimationduration>500</alertanimationduration>
+     <font>noto</font>
+     <bodybackgroundcolor>#ffffff</bodybackgroundcolor>
+     <fontcolor>#444444</fontcolor>
+     <questionbackgroundcolor>#ffffff</questionbackgroundcolor>
+     <questionborder>on</questionborder>
+     <questioncontainershadow>on</questioncontainershadow>
+     <checkicon>f00c</checkicon>
+     <animatecheckbox>on</animatecheckbox>
+     <checkboxanimation>rubberBand</checkboxanimation>
+     <checkboxanimationduration>500</checkboxanimationduration>
+     <animateradio>on</animateradio>
+     <radioanimation>zoomIn</radioanimation>
+     <radioanimationduration>500</radioanimationduration>
+     <zebrastriping>off</zebrastriping>
+     <stickymatrixheaders>off</stickymatrixheaders>
+     <greyoutselected>off</greyoutselected>
+     <hideprivacyinfo>off</hideprivacyinfo>
+     <crosshover>off</crosshover>
+     <showpopups>1</showpopups>
+     <showclearall>off</showclearall>
+     <questionhelptextposition>top</questionhelptextposition>
+     <notables>1</notables>
+    </options>
+   </config>
+  </theme>
+  <theme>
+   <sid>372723</sid>
+   <template_name>fruity</template_name>
+   <config>
+    <options>
+     <ajaxmode>off</ajaxmode>
+     <brandlogo>on</brandlogo>
+     <brandlogofile>themes/survey/fruity/files/logo.png</brandlogofile>
+     <container>on</container>
+     <backgroundimage>off</backgroundimage>
+     <animatebody>off</animatebody>
+     <bodyanimation>fadeInRight</bodyanimation>
+     <bodyanimationduration>500</bodyanimationduration>
+     <animatequestion>off</animatequestion>
+     <questionanimation>flipInX</questionanimation>
+     <questionanimationduration>500</questionanimationduration>
+     <animatealert>off</animatealert>
+     <alertanimation>shake</alertanimation>
+     <alertanimationduration>500</alertanimationduration>
+     <font>noto</font>
+     <bodybackgroundcolor>#ffffff</bodybackgroundcolor>
+     <fontcolor>#444444</fontcolor>
+     <questionbackgroundcolor>#ffffff</questionbackgroundcolor>
+     <questionborder>on</questionborder>
+     <questioncontainershadow>on</questioncontainershadow>
+     <checkicon>f00c</checkicon>
+     <animatecheckbox>on</animatecheckbox>
+     <checkboxanimation>rubberBand</checkboxanimation>
+     <checkboxanimationduration>500</checkboxanimationduration>
+     <animateradio>on</animateradio>
+     <radioanimation>zoomIn</radioanimation>
+     <radioanimationduration>500</radioanimationduration>
+     <zebrastriping>off</zebrastriping>
+     <stickymatrixheaders>off</stickymatrixheaders>
+     <greyoutselected>off</greyoutselected>
+     <hideprivacyinfo>off</hideprivacyinfo>
+     <crosshover>off</crosshover>
+     <showpopups>1</showpopups>
+     <showclearall>off</showclearall>
+     <questionhelptextposition>top</questionhelptextposition>
+     <notables>1</notables>
+    </options>
+   </config>
+  </theme>
+  <theme>
+   <sid>372723</sid>
+   <template_name>fruity</template_name>
+   <config>
+    <options>
+     <ajaxmode>off</ajaxmode>
+     <brandlogo>on</brandlogo>
+     <brandlogofile>themes/survey/fruity/files/logo.png</brandlogofile>
+     <container>on</container>
+     <backgroundimage>off</backgroundimage>
+     <animatebody>off</animatebody>
+     <bodyanimation>fadeInRight</bodyanimation>
+     <bodyanimationduration>500</bodyanimationduration>
+     <animatequestion>off</animatequestion>
+     <questionanimation>flipInX</questionanimation>
+     <questionanimationduration>500</questionanimationduration>
+     <animatealert>off</animatealert>
+     <alertanimation>shake</alertanimation>
+     <alertanimationduration>500</alertanimationduration>
+     <font>noto</font>
+     <bodybackgroundcolor>#ffffff</bodybackgroundcolor>
+     <fontcolor>#444444</fontcolor>
+     <questionbackgroundcolor>#ffffff</questionbackgroundcolor>
+     <questionborder>on</questionborder>
+     <questioncontainershadow>on</questioncontainershadow>
+     <checkicon>f00c</checkicon>
+     <animatecheckbox>on</animatecheckbox>
+     <checkboxanimation>rubberBand</checkboxanimation>
+     <checkboxanimationduration>500</checkboxanimationduration>
+     <animateradio>on</animateradio>
+     <radioanimation>zoomIn</radioanimation>
+     <radioanimationduration>500</radioanimationduration>
+     <zebrastriping>off</zebrastriping>
+     <stickymatrixheaders>off</stickymatrixheaders>
+     <greyoutselected>off</greyoutselected>
+     <hideprivacyinfo>off</hideprivacyinfo>
+     <crosshover>off</crosshover>
+     <showpopups>1</showpopups>
+     <showclearall>off</showclearall>
+     <questionhelptextposition>top</questionhelptextposition>
+     <notables>1</notables>
+    </options>
+   </config>
+  </theme>
+  <theme>
+   <sid>372723</sid>
+   <template_name>fruity</template_name>
+   <config>
+    <options>
+     <ajaxmode>off</ajaxmode>
+     <brandlogo>on</brandlogo>
+     <brandlogofile>themes/survey/fruity/files/logo.png</brandlogofile>
+     <container>on</container>
+     <backgroundimage>off</backgroundimage>
+     <animatebody>off</animatebody>
+     <bodyanimation>fadeInRight</bodyanimation>
+     <bodyanimationduration>500</bodyanimationduration>
+     <animatequestion>off</animatequestion>
+     <questionanimation>flipInX</questionanimation>
+     <questionanimationduration>500</questionanimationduration>
+     <animatealert>off</animatealert>
+     <alertanimation>shake</alertanimation>
+     <alertanimationduration>500</alertanimationduration>
+     <font>noto</font>
+     <bodybackgroundcolor>#ffffff</bodybackgroundcolor>
+     <fontcolor>#444444</fontcolor>
+     <questionbackgroundcolor>#ffffff</questionbackgroundcolor>
+     <questionborder>on</questionborder>
+     <questioncontainershadow>on</questioncontainershadow>
+     <checkicon>f00c</checkicon>
+     <animatecheckbox>on</animatecheckbox>
+     <checkboxanimation>rubberBand</checkboxanimation>
+     <checkboxanimationduration>500</checkboxanimationduration>
+     <animateradio>on</animateradio>
+     <radioanimation>zoomIn</radioanimation>
+     <radioanimationduration>500</radioanimationduration>
+     <zebrastriping>off</zebrastriping>
+     <stickymatrixheaders>off</stickymatrixheaders>
+     <greyoutselected>off</greyoutselected>
+     <hideprivacyinfo>off</hideprivacyinfo>
+     <crosshover>off</crosshover>
+     <showpopups>1</showpopups>
+     <showclearall>off</showclearall>
+     <questionhelptextposition>top</questionhelptextposition>
+     <notables>1</notables>
+    </options>
+   </config>
+  </theme>
+  <theme>
+   <sid>372723</sid>
+   <template_name>fruity</template_name>
+   <config>
+    <options>
+     <ajaxmode>off</ajaxmode>
+     <brandlogo>on</brandlogo>
+     <brandlogofile>themes/survey/fruity/files/logo.png</brandlogofile>
+     <container>on</container>
+     <backgroundimage>off</backgroundimage>
+     <animatebody>off</animatebody>
+     <bodyanimation>fadeInRight</bodyanimation>
+     <bodyanimationduration>500</bodyanimationduration>
+     <animatequestion>off</animatequestion>
+     <questionanimation>flipInX</questionanimation>
+     <questionanimationduration>500</questionanimationduration>
+     <animatealert>off</animatealert>
+     <alertanimation>shake</alertanimation>
+     <alertanimationduration>500</alertanimationduration>
+     <font>noto</font>
+     <bodybackgroundcolor>#ffffff</bodybackgroundcolor>
+     <fontcolor>#444444</fontcolor>
+     <questionbackgroundcolor>#ffffff</questionbackgroundcolor>
+     <questionborder>on</questionborder>
+     <questioncontainershadow>on</questioncontainershadow>
+     <checkicon>f00c</checkicon>
+     <animatecheckbox>on</animatecheckbox>
+     <checkboxanimation>rubberBand</checkboxanimation>
+     <checkboxanimationduration>500</checkboxanimationduration>
+     <animateradio>on</animateradio>
+     <radioanimation>zoomIn</radioanimation>
+     <radioanimationduration>500</radioanimationduration>
+     <zebrastriping>off</zebrastriping>
+     <stickymatrixheaders>off</stickymatrixheaders>
+     <greyoutselected>off</greyoutselected>
+     <hideprivacyinfo>off</hideprivacyinfo>
+     <crosshover>off</crosshover>
+     <showpopups>1</showpopups>
+     <showclearall>off</showclearall>
+     <questionhelptextposition>top</questionhelptextposition>
+     <notables>1</notables>
+    </options>
+   </config>
+  </theme>
+  <theme>
+   <sid>372723</sid>
+   <template_name>fruity</template_name>
+   <config>
+    <options>
+     <ajaxmode>off</ajaxmode>
+     <brandlogo>on</brandlogo>
+     <brandlogofile>themes/survey/fruity/files/logo.png</brandlogofile>
+     <container>on</container>
+     <backgroundimage>off</backgroundimage>
+     <animatebody>off</animatebody>
+     <bodyanimation>fadeInRight</bodyanimation>
+     <bodyanimationduration>500</bodyanimationduration>
+     <animatequestion>off</animatequestion>
+     <questionanimation>flipInX</questionanimation>
+     <questionanimationduration>500</questionanimationduration>
+     <animatealert>off</animatealert>
+     <alertanimation>shake</alertanimation>
+     <alertanimationduration>500</alertanimationduration>
+     <font>noto</font>
+     <bodybackgroundcolor>#ffffff</bodybackgroundcolor>
+     <fontcolor>#444444</fontcolor>
+     <questionbackgroundcolor>#ffffff</questionbackgroundcolor>
+     <questionborder>on</questionborder>
+     <questioncontainershadow>on</questioncontainershadow>
+     <checkicon>f00c</checkicon>
+     <animatecheckbox>on</animatecheckbox>
+     <checkboxanimation>rubberBand</checkboxanimation>
+     <checkboxanimationduration>500</checkboxanimationduration>
+     <animateradio>on</animateradio>
+     <radioanimation>zoomIn</radioanimation>
+     <radioanimationduration>500</radioanimationduration>
+     <zebrastriping>off</zebrastriping>
+     <stickymatrixheaders>off</stickymatrixheaders>
+     <greyoutselected>off</greyoutselected>
+     <hideprivacyinfo>off</hideprivacyinfo>
+     <crosshover>off</crosshover>
+     <showpopups>1</showpopups>
+     <showclearall>off</showclearall>
+     <questionhelptextposition>top</questionhelptextposition>
+     <notables>1</notables>
+    </options>
+   </config>
+  </theme>
   <theme>
    <sid>372723</sid>
    <template_name>fruity</template_name>

@@ -151,4 +151,83 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
 
         $this->assertSame($answerOptionsByScaleId, $result['answeroptions'], 'The options were not returned correctly.');
     }
+
+    public function testGetArrayByColumnQuestionProperties()
+    {
+        $answerOptions = array(
+            'AO01' => array(
+                'answer' => 'Option 1',
+                'assessment_value' => '0',
+                'scale_id' => '0',
+                'order' => '0'
+            ),
+            'AO02' => array(
+                'answer' => 'Option 2',
+                'assessment_value' => '0',
+                'scale_id' => '0',
+                'order' => '1'
+            ),
+            'AO03' => array(
+                'answer' => 'Option 3',
+                'assessment_value' => '0',
+                'scale_id' => '0',
+                'order' => '2'
+            )
+        );
+
+        $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
+
+        $question = \Question::model()->findByAttributes(array('title' => 'G01Q03'));
+        $qid = $question->qid;
+
+        $result = $this->handler->get_question_properties($sessionKey, $qid, null);
+
+        $this->assertSame($answerOptions, $result['answeroptions'], 'The options were not returned correctly.');
+    }
+
+    public function testGetArrayQuestionProperties()
+    {
+        $answerOptions = array(
+            'AO01' => array(
+                'answer' => 'Option 1',
+                'assessment_value' => '0',
+                'scale_id' => '0',
+                'order' => '0'
+            ),
+            'AO02' => array(
+                'answer' => 'Option 2',
+                'assessment_value' => '0',
+                'scale_id' => '0',
+                'order' => '1'
+            ),
+            'AO03' => array(
+                'answer' => 'Option 3',
+                'assessment_value' => '0',
+                'scale_id' => '0',
+                'order' => '2'
+            )
+        );
+
+        $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
+
+        $question = \Question::model()->findByAttributes(array('title' => 'G01Q04'));
+        $qid = $question->qid;
+
+        $result = $this->handler->get_question_properties($sessionKey, $qid, null);
+
+        $this->assertSame($answerOptions, $result['answeroptions'], 'The options were not returned correctly.');
+    }
+
+    public function testGetArrayYesNoUncertainQuestionProperties()
+    {
+
+        $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
+
+        $question = \Question::model()->findByAttributes(array('title' => 'G01Q05'));
+        $qid = $question->qid;
+
+        $result = $this->handler->get_question_properties($sessionKey, $qid, null);
+
+        $this->assertSame('No available answer options', $result['answeroptions'], 'The options were not returned correctly.');
+    }
 }
