@@ -83,6 +83,7 @@ class SurveysController extends LSYii_Controller
         $oException = Yii::app()->errorHandler->getException();
         $request = Yii::app()->getRequest();
         if ($error && $request->isAjaxRequest) {
+            // TODO: Remove? It seems this can never happen because it's already caught by LSYii_Application::onException() (see commit c792c2e).
             $this->spitOutJsonError($error, $oException);
         } elseif ($error) {
             $this->spitOutHtmlError($error, $oException);
@@ -152,7 +153,7 @@ class SurveysController extends LSYii_Controller
         }
         $aError['type'] = $error['code'];
         $aError['error'] = $title;
-        $aError['title'] = nl2br(CHtml::encode($error['message']));
+        $aError['title'] = nl2br(CHtml::encode($error['message']) ?? '');
         $aError['message'] = $message;
         $aError['contact'] = $contact;
 
@@ -189,7 +190,7 @@ class SurveysController extends LSYii_Controller
             ]
         ];
 
-        if ($oException instanceof LSJsonException) {
+        if ($oException instanceof LSUserException) {
             if ($oException->getRedirectUrl() != null) {
                 $dataArray['data']['redirectTo'] = $oException->getRedirectUrl();
             }

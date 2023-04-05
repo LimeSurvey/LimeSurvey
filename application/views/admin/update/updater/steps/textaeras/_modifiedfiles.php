@@ -3,7 +3,7 @@
 * This view render the textaera to display the list of files modified or deleted by the updater but already modified in the local installation
 * If no modified file, display a success message
 *
-* @var array $readonlyfiles array continaing the readonly files.
+* @var array $readonlyfiles array containing the readonly files.
 * @var obj clang
 */
 ?>
@@ -19,7 +19,7 @@ if (count($modifiedfiles)>0): ?>
         sort($modifiedfiles);
         foreach ($modifiedfiles as $modifiedfile)
         {
-            echo htmlspecialchars($modifiedfile['file'])."\n";
+            echo htmlspecialchars((string) $modifiedfile['file'])."\n";
     }?></textarea>
     <?php endif;?>
 

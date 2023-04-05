@@ -53,9 +53,9 @@ class TopbarConfiguration
     public function __construct(array $config = [])
     {
         // Set defaults
-        $this->viewName = isset($config['name']) ? $config['name'] : 'surveyTopbar_view';
-        $this->id = isset($config['topbarId']) ? $config['topbarId'] : 'surveybarid';
-        $this->hide = isset($config['hide']) ? $config['hide'] : false;
+        $this->viewName = $config['name'] ?? 'surveyTopbar_view';
+        $this->id = $config['topbarId'] ?? 'surveybarid';
+        $this->hide = $config['hide'] ?? false;
 
         if (isset($config['leftSideView'])) {
             $this->leftSideView = $config['leftSideView'];
@@ -83,7 +83,7 @@ class TopbarConfiguration
      */
     public static function createFromViewData($aData)
     {
-        $config = isset($aData['topBar']) ? $aData['topBar'] : [];
+        $config = $aData['topBar'] ?? [];
 
         // If 'sid' is not specified in the topbar config, but is present in the $aData array, assign it to the config
         $sid = self::getSid($config);
@@ -138,7 +138,7 @@ class TopbarConfiguration
      * @throws CException
      *
      */
-    protected static function getSurveyTopbarData($sid)
+    public static function getSurveyTopbarData($sid)
     {
         if (empty($sid)) {
             return [];
@@ -150,11 +150,14 @@ class TopbarConfiguration
         $hasDeletePermission = Permission::model()->hasSurveyPermission($sid, 'survey', 'delete');
         $hasSurveyTranslatePermission = Permission::model()->hasSurveyPermission($sid, 'translations', 'read');
         $hasSurveyReadPermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'read');
+        $hasSurveyExportPermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'export');
         $hasSurveyTokensPermission = Permission::model()->hasSurveyPermission($sid, 'surveysettings', 'update')
             || Permission::model()->hasSurveyPermission($sid, 'tokens', 'create');
         $hasSurveyTokensReadPermission = Permission::model()->hasSurveyPermission($sid, 'tokens', 'read');
+        $hasSurveyTokensExportPermission = Permission::model()->hasSurveyPermission($sid, 'tokens', 'export');
         $hasResponsesCreatePermission = Permission::model()->hasSurveyPermission($sid, 'responses', 'create');
         $hasResponsesReadPermission = Permission::model()->hasSurveyPermission($sid, 'responses', 'read');
+        $hasResponsesExportPermission = Permission::model()->hasSurveyPermission($sid, 'responses', 'export');
         $hasResponsesStatisticsReadPermission = Permission::model()->hasSurveyPermission($sid, 'statistics', 'read');
 
         $isActive = $oSurvey->active == 'Y';
@@ -223,9 +226,13 @@ class TopbarConfiguration
             'hasResponsesReadPermission' => $hasResponsesReadPermission,
             'hasSurveyActivationPermission' => $hasSurveyActivationPermission,
             'hasResponsesStatisticsReadPermission' => $hasResponsesStatisticsReadPermission,
+            'hasSurveyExportPermission' => $hasSurveyExportPermission,
+            'hasSurveyTokensExportPermission' => $hasSurveyTokensExportPermission,
+            'hasResponsesExportPermission' => $hasResponsesExportPermission,
             'extraToolsMenuItems' => $extraToolsMenuItems ?? [],
             'beforeSurveyBarRender' => $beforeSurveyBarRender ?? [],
             'showToolsMenu' => $showToolsMenu,
+            'surveyLanguages' => self::getSurveyLanguagesArray($oSurvey),
         );
     }
 
@@ -342,11 +349,6 @@ class TopbarConfiguration
         $hasSurveyContentCreatePermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'create');
         $hasSurveyContentDeletePermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'delete');
 
-        $languages = [];
-        foreach ($survey->allLanguages as $language) {
-            $languages[$language] = getLanguageNameFromCode($language, false);
-        }
-
         return array(
             'oSurvey' => $survey,
             'hasSurveyContentUpdatePermission' => $hasSurveyContentUpdatePermission,
@@ -354,7 +356,7 @@ class TopbarConfiguration
             'hasSurveyContentExportPermission' => $hasSurveyContentExportPermission,
             'hasSurveyContentCreatePermission' => $hasSurveyContentCreatePermission,
             'hasSurveyContentDeletePermission' => $hasSurveyContentDeletePermission,
-            'surveyLanguages' => $languages,
+            'surveyLanguages' => self::getSurveyLanguagesArray($survey),
         );
     }
 
@@ -419,5 +421,20 @@ class TopbarConfiguration
     public function shouldHide()
     {
         return $this->hide;
+    }
+
+    /**
+     * returns array of language codes by language name for all languages of the given survey
+     * @param Survey $survey
+     * @return array
+     */
+    private static function getSurveyLanguagesArray(Survey $survey)
+    {
+        $languages = [];
+        foreach ($survey->allLanguages as $language) {
+            $languages[$language] = getLanguageNameFromCode($language, false);
+        }
+
+        return $languages;
     }
 }

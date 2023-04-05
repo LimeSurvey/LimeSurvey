@@ -1,5 +1,5 @@
 ﻿/**
- * @license Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+ * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license/
  */
 
@@ -13,10 +13,10 @@
  * (1) https://ckeditor.com/cke4/builder
  *     Visit online builder to build CKEditor from scratch.
  *
- * (2) https://ckeditor.com/cke4/builder/05cb05b7a880dbce92e85e65b18a36b5
+ * (2) https://ckeditor.com/cke4/builder/62b4e20f57140bceecbfd7acdb22ed18
  *     Visit online builder to build CKEditor, starting with the same setup as before.
  *
- * (3) https://ckeditor.com/cke4/builder/download/05cb05b7a880dbce92e85e65b18a36b5
+ * (3) https://ckeditor.com/cke4/builder/download/62b4e20f57140bceecbfd7acdb22ed18
  *     Straight download link to the latest version of CKEditor (Optimized) with the same setup as before.
  *
  * NOTE:
@@ -57,25 +57,34 @@ var CKBUILDER_CONFIG = {
 		'a11ychecker' : 1,
 		'a11yhelp' : 1,
 		'about' : 1,
+		'ajax' : 1,
+		'autocomplete' : 1,
+		'balloonpanel' : 1,
 		'basicstyles' : 1,
 		'bidi' : 1,
 		'blockquote' : 1,
+		'button' : 1,
 		'clipboard' : 1,
 		'codemirror' : 1,
 		'colorbutton' : 1,
 		'colordialog' : 1,
 		'contextmenu' : 1,
 		'copyformatting' : 1,
+		'dialog' : 1,
 		'dialogadvtab' : 1,
+		'dialogui' : 1,
 		'div' : 1,
+		'editorplaceholder' : 1,
 		'elementspath' : 1,
 		'emoji' : 1,
 		'enterkey' : 1,
 		'entities' : 1,
+		'fakeobjects' : 1,
 		'filebrowser' : 1,
+		'filetools' : 1,
 		'find' : 1,
-		'flash' : 1,
 		'floatingspace' : 1,
+		'floatpanel' : 1,
 		'font' : 1,
 		'format' : 1,
 		'horizontalrule' : 1,
@@ -83,6 +92,7 @@ var CKBUILDER_CONFIG = {
 		'htmlwriter' : 1,
 		'iframe' : 1,
 		'image' : 1,
+		'indent' : 1,
 		'indentblock' : 1,
 		'indentlist' : 1,
 		'justify' : 1,
@@ -90,16 +100,25 @@ var CKBUILDER_CONFIG = {
 		'lineutils' : 1,
 		'link' : 1,
 		'list' : 1,
+		'listblock' : 1,
 		'liststyle' : 1,
 		'magicline' : 1,
 		'markdown' : 1,
 		'maximize' : 1,
+		'menu' : 1,
+		'menubutton' : 1,
 		'newpage' : 1,
+		'notification' : 1,
 		'pagebreak' : 1,
+		'panel' : 1,
+		'panelbutton' : 1,
 		'pastefromword' : 1,
 		'pastetext' : 1,
+		'pastetools' : 1,
+		'popup' : 1,
 		'removeformat' : 1,
 		'resize' : 1,
+		'richcombo' : 1,
 		'save' : 1,
 		'scayt' : 1,
 		'selectall' : 1,
@@ -112,12 +131,15 @@ var CKBUILDER_CONFIG = {
 		'tab' : 1,
 		'table' : 1,
 		'tabletools' : 1,
+		'textmatch' : 1,
+		'textwatcher' : 1,
 		'toolbar' : 1,
 		'undo' : 1,
 		'videodetector' : 1,
 		'widget' : 1,
 		'widgetselection' : 1,
-		'wysiwygarea' : 1
+		'wysiwygarea' : 1,
+		'xml' : 1,
 	},
 	languages : {
 		'af' : 1,

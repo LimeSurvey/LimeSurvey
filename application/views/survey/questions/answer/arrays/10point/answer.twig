@@ -12,23 +12,24 @@
 <!-- Array 10 point choice -->
 
 <!-- answer -->
-<table class="{{ coreClass }} table table-bordered table-hover table-10-point-array" role="group" aria-labelledby="ls-question-text-{{ basename }}">
-    <!-- Columns -->
-    <colgroup class="col-responses">
-        <col class="col-answers" style='width: {{ answerwidth }}%;' />
-            {# columns/col.php #}
-            {{ sColumns }}
-    </colgroup>
-    <thead aria-hidden="true">
-        <tr class="ls-heading">
-                {# rows/cell/thead.php #}
-                {{ sHeaders }}
-        </tr>
-    </thead>
-    <tbody>
-            {# rows/answer_row.php #}
-            {{ sRows }}
-    </tbody>
-</table>
-
+<div class="ls-table-wrapper" role="group" aria-labelledby="ls-question-text-{{ basename }}">
+    <table class="{{ coreClass }} table table-bordered table-hover table-10-point-array">
+        <!-- Columns -->
+        <colgroup class="col-responses">
+            <col class="col-answers" style='width: {{ answerwidth }}%;' />
+                {# columns/col.php #}
+                {{ sColumns }}
+        </colgroup>
+        <thead>
+            <tr class="ls-heading">
+                    {# rows/cell/thead.php #}
+                    {{ sHeaders }}
+            </tr>
+        </thead>
+        <tbody>
+                {# rows/answer_row.php #}
+                {{ sRows }}
+        </tbody>
+    </table>
+</div>
 <!-- end of answer -->

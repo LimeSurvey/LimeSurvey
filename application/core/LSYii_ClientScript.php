@@ -33,6 +33,10 @@ if (!defined('BASEPATH')) {
 class LSYii_ClientScript extends CClientScript
 {
 
+    /**
+     * The script is rendered at the end of the body section.
+     * only for scripts not script files
+     */
     const POS_POSTSCRIPT = 5;
     const POS_PREBEGIN = 6;
     /**
@@ -74,8 +78,8 @@ class LSYii_ClientScript extends CClientScript
     {
         $aPackages = array();
         foreach ($this->packages as $key => $package) {
-            if (strpos($key, 'font-') === 0) {
-                $key = str_replace('font-', '', $key);
+            if (strpos((string) $key, 'font-') === 0) {
+                $key = str_replace('font-', '', (string) $key);
                 $aPackages[$package['type']][$key] = $package;
             }
         }
@@ -155,7 +159,9 @@ class LSYii_ClientScript extends CClientScript
         if (!empty(Yii::app()->clientScript->packages[$sPackageName])) {
             if (!empty(Yii::app()->clientScript->packages[$sPackageName][$sType])) {
                 $key = array_search($sFileName, Yii::app()->clientScript->packages[$sPackageName][$sType]);
-                unset(Yii::app()->clientScript->packages[$sPackageName][$sType][$key]);
+                if ($key !== false) {
+                    unset(Yii::app()->clientScript->packages[$sPackageName][$sType][$key]);
+                }
             }
         }
     }
@@ -163,7 +169,7 @@ class LSYii_ClientScript extends CClientScript
     /**
      * In LimeSurvey, if debug mode is OFF we use the asset manager (so participants never needs to update their webbrowser cache).
      * If debug mode is ON, we don't use the asset manager, so developpers just have to refresh their browser cache to reload the new scripts.
-     * To make developper life easier, if they want to register a single script file, they can use App()->getClientScript()->registerScriptFile({url to script file})
+     * To make developer life easier, if they want to register a single script file, they can use App()->getClientScript()->registerScriptFile({url to script file})
      * if the file exist in local file system and debug mode is off, it will find the path to the file, and it will publish it via the asset manager
      * @param string $url
      * @param string $position
@@ -228,7 +234,7 @@ class LSYii_ClientScript extends CClientScript
     public function getRecursiveDependencies($sPackageName)
     {
         $aPackages = Yii::app()->clientScript->packages;
-        if (array_key_exists('depends', $aPackages[$sPackageName])) {
+        if (isset($aPackages[$sPackageName]['depends'])) {
             $aDependencies = $aPackages[$sPackageName]['depends'];
 
             foreach ($aDependencies as $sDpackageName) {
@@ -253,7 +259,7 @@ class LSYii_ClientScript extends CClientScript
      */
     private function convertDevBaseUrl($package)
     {
-        // We retreive the old package
+        // We retrieve the old package
         $aOldPackageDefinition = Yii::app()->clientScript->packages[$package];
 
         // If it has an entry 'devBaseUrl', we use it to replace basePath (it will turn off asset manager for this package)
@@ -278,13 +284,13 @@ class LSYii_ClientScript extends CClientScript
 
     /**
      * This function will analyze the url of a file (css/js) to register
-     * It will check if it can be published via the asset manager and if so will retreive its path
+     * It will check if it can be published via the asset manager and if so will retrieve its path
      * @param $sUrl
      * @return array
      */
     private function analyzeUrl($sUrl)
     {
-        $sCleanUrl  = str_replace(Yii::app()->baseUrl, '', $sUrl); // we remove the base url to be sure that the first parameter is the one we want
+        $sCleanUrl  = str_replace(Yii::app()->baseUrl, '', (string) $sUrl); // we remove the base url to be sure that the first parameter is the one we want
         $aUrlParams = explode('/', $sCleanUrl);
         $sFilePath  = Yii::app()->getConfig('rootdir') . $sCleanUrl;
         $sPath = '';
@@ -548,7 +554,7 @@ class LSYii_ClientScript extends CClientScript
                 }
             }
         }
-        $scripts = isset($this->scripts[self::POS_END]) ? $this->scripts[self::POS_END] : array();
+        $scripts = $this->scripts[self::POS_END] ?? array();
 
         if (isset($this->scripts[self::POS_READY])) {
             if ($fullPage) {

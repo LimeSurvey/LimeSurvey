@@ -83,19 +83,19 @@ switch ($errorObject->error) {
 
     case 'server_error_creating_zip_update':
         $title = gT('Server error!');
-        $message = gT('An error occured while creating your update package file.') . ' ' . gT('Please contact the LimeSurvey team.');
+        $message = gT('An error occurred while creating your update package file.') . ' ' . gT('Please contact the LimeSurvey team.');
         $buttons = 0;
         break;
 
     case 'server_error_getting_checksums':
         $title = gT('Server error!');
-        $message = gT('An error occured while getting checksums.') . ' ' . gT('Please contact the LimeSurvey team.');
+        $message = gT('An error occurred while getting checksums.') . ' ' . gT('Please contact the LimeSurvey team.');
         $buttons = 0;
         break;
 
     case 'cant_get_changeset':
         $title = gT('Server error!');
-        $message = gT('An error occured while getting the changeset.') . ' ' . gT('Please contact the LimeSurvey team.');
+        $message = gT('An error occurred while getting the changeset.') . ' ' . gT('Please contact the LimeSurvey team.');
         $buttons = 0;
         break;
 
@@ -107,7 +107,7 @@ switch ($errorObject->error) {
 
     case 'zip_error':
         $title = gT('Error while creating zip file');
-        $message = gT("An error occured while creating a backup of your files. Check your local system (permission, available space, etc.)");
+        $message = gT("An error occurred while creating a backup of your files. Check your local system (permission, available space, etc.)");
         break;
 
 
@@ -135,30 +135,40 @@ switch ($errorObject->error) {
         break;
 }
 ?>
-
-
-<h2 class="maintitle" style="color: red;"><?php echo $title;?></h2>
-<div style="padding: 10px">
-    <?php echo $message; ?>
+<div class="row">
+    <div class="col-12">
+        <?php
+        $this->widget('ext.AlertWidget.AlertWidget', [
+                'header' => $title,
+            'text' => $message,
+            'type' => 'danger',
+        ]);
+        ?>
+    </div>
 </div>
 
-<div>
+<div class="row">
+    <div class="col-12 pt-2">
+    <?php if ($buttons == 1) : ?>
+            <a class="btn btn-outline-secondary" href="https://community.limesurvey.org/comfort-update-extension/"
+               role="button" aria-disabled="false" target="_blank">
+                <?php eT("Buy a new key"); ?>
+            </a>
 
-<?php if ($buttons == 1) : ?>
-        <a class="btn btn-default" href="https://community.limesurvey.org/comfort-update-extension/" role="button" aria-disabled="false" target="_blank">
-            <?php eT("Buy a new key"); ?>
+            <a class="btn btn-outline-secondary" href="<?php echo Yii::app()->createUrl("admin/update/sa/managekey"); ?>"
+               role="button" aria-disabled="false">
+                <?php eT("Enter a new key"); ?>
+            </a>
+    <?php endif; ?>
+    <?php if ($buttons == 3) : ?>
+            <a class="btn btn-outline-secondary" href="<?php echo Yii::app()->createUrl("admin/update/sa/managekey"); ?>"
+               role="button" aria-disabled="false">
+                <?php eT("Enter a new key"); ?>
+            </a>
+        <?php endif; ?>
+        <a class="btn btn-outline-secondary" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button"
+           aria-disabled="false">
+            <?php eT("Cancel"); ?>
         </a>
-
-        <a class="btn btn-default" href="<?php echo Yii::app()->createUrl("admin/update/sa/managekey");?>" role="button" aria-disabled="false">
-            <?php eT("Enter a new key"); ?>
-        </a>
-<?php endif; ?>
-<?php if ($buttons == 3) : ?>
-        <a class="btn btn-default" href="<?php echo Yii::app()->createUrl("admin/update/sa/managekey");?>" role="button" aria-disabled="false">
-            <?php eT("Enter a new key"); ?>
-        </a>
-<?php endif;?>
-<a class="btn btn-default" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
-    <?php eT("Cancel"); ?>
-</a>
+    </div>
 </div>

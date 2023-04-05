@@ -19,7 +19,7 @@ if (!defined('BASEPATH')) {
 //if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this script directly");}
 /**
  * Returns a global setting
- * @deprecated : use App()->getConfig($settingname)
+ * @deprecated : use App()->getConfig('settingname')
  * since all config are set at start of App : no need to read and test again
  *
  * @param string $settingname

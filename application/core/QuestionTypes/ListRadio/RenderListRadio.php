@@ -157,9 +157,9 @@ class RenderListRadio extends QuestionBaseRenderer
         if (isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$thisfieldname])) {
             $dispVal = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$thisfieldname];
             if ($this->getQuestionAttribute('other_numbers_only') == 1) {
-                $dispVal = str_replace('.', $sSeparator, $dispVal);
+                $dispVal = str_replace('.', $sSeparator, (string) $dispVal);
             }
-            $answer_other = ' value="' . htmlspecialchars($dispVal, ENT_QUOTES) . '"';
+            $answer_other = ' value="' . htmlspecialchars((string) $dispVal, ENT_QUOTES) . '"';
         } else {
             $answer_other = ' value=""';
         }

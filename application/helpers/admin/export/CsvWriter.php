@@ -87,8 +87,6 @@ class CsvWriter extends Writer
 
     public function close()
     {
-        // Output white line at the end, better for R import
-        echo "\r\n";
         if (!is_null($this->file)) {
             fwrite($this->file, "\r\n");
             fclose($this->file);

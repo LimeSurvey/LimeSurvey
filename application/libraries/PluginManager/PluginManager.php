@@ -542,7 +542,7 @@ class PluginManager extends \CApplicationComponent
             foreach ($event->get('questionplugins', array()) as $pluginClass => $paths) {
                 foreach ($paths as $path) {
                     Yii::import("webroot.plugins.$pluginClass.$path");
-                    $parts = explode('.', $path);
+                    $parts = explode('.', (string) $path);
 
                     // Get the class name.
                     $className = array_pop($parts);
@@ -646,9 +646,11 @@ class PluginManager extends \CApplicationComponent
     public function isWhitelisted($pluginName)
     {
         if (App()->getConfig('usePluginWhitelist')) {
+            // Get the user plugins whitelist
             $whiteList = App()->getConfig('pluginWhitelist');
-            $coreList = self::getCorePluginList();
-            $allowedPlugins =  array_merge($coreList, $whiteList);
+            // Get the list of allowed core plugins
+            $coreList = $this->getAllowedCorePluginList();
+            $allowedPlugins = array_merge($coreList, $whiteList);
             return array_search($pluginName, $allowedPlugins) !== false;
         }
         return true;
@@ -681,5 +683,18 @@ class PluginManager extends \CApplicationComponent
             'TwoFactorAdminLogin',
             'UpdateCheck'
         ];
+    }
+
+    /**
+     * Return the list of core plugins allowed to be loaded.
+     * That is, all core plugins not in the black list.
+     * @return string[]
+     */
+    private function getAllowedCorePluginList()
+    {
+        $corePlugins = self::getCorePluginList();
+        $blackList = Yii::app()->getConfig('corePluginBlacklist');
+        $allowedCorePlugins = array_diff($corePlugins, $blackList);
+        return $allowedCorePlugins;
     }
 }

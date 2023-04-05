@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -72,8 +74,11 @@ $config['repeatheadings']            = '25'; // The number of answers to show be
 $config['minrepeatheadings']         = 3; // The minimum number of remaining answers that are required before repeating the headings in array (flexible) questions.
 $config['defaultlang']               = 'en'; // The default language to use - the available languages are the directory names in the /locale dir - for example de = German
 $config['timeadjust']                = 0; // Number of hours to adjust between your webserver local time and your own local time (for datestamping responses)
-$config['allowexportalldb']          = 0; // 0 will only export prefixed tables when doing a database dump. If set to 1 ALL tables in the database will be exported
-$config['maxdumpdbrecords']          = 500; // The maximum number of records that would be ouputted in a go during a database backup. Reduce this number if you're getting errors while backing up the entire database.
+
+$config['maxdumpdbrecords']          = 500; // The maximum number of records that would be ouput in one go during a database backup. Reduce this number if you're getting errors while backing up the entire database.
+$config['maxdbsizeforbackup']        = 0; // The maximum database size in MB that is backed up up by ComfortUpdate - 0 for no limit
+$config['allowexportalldb']          = 0; // Default 0 will only export prefixed tables when doing a database dump. If set to 1 ALL tables in the database will be exported (use carefully)
+
 $config['deletenonvalues']           = 1; // By default, LimeSurvey does not save responses to conditional questions that haven't been answered/shown. To have LimeSurvey save these responses change this value to 0.
 $config['stringcomparizonoperators'] = 0; // By default, LimeSurvey assumes the numrical order for comparizon operators in conditions. If you need string comparizon operators, set this parameter to 1
 $config['shownoanswer']              = 2; // Show 'no answer' for non mandatory questions ( 0 = no , 1 = yes , 2 = overridden by survey settings )
@@ -106,7 +111,7 @@ $config['allowedfileuploads'] = [
 ];
 // NB: Allowing XML enables XSS, since XML can be an HTML page.
 $config['allowedresourcesuploads'] = '7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,ico,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip,css,js'; // File types allowed to be uploaded in the resources sections, and with the HTML Editor
-$config['allowedpluginuploads'] = 'gif,ico,jpg,png,css,js,map,json,eot,otf,ttf,woff,txt,md,xml,woff2,twig,php,html';
+$config['allowedpluginuploads'] = 'gif,ico,jpg,png,css,js,map,json,eot,otf,ttf,woff,txt,md,xml,woff2,twig,php,html,po,mo';
 
 $config['memory_limit'] = '256'; // This sets how much memory LimeSurvey can access in megabytes. 256 MB is the minimum recommended - if you are using PDF functions up to 512 MB may be needed
 
@@ -126,9 +131,9 @@ $config['sendingrate']        = 60; // Number of seconds to wait until the next 
 // filterout_incomplete_answers
 //  * default behaviour of LimeS regarding answer records with no submitdate
 //  * can be overwritten by module parameters choose one of the following://
-//		* complete: 		Show only complete answers
-//		* all: 		Show both complete and incomplete answers
-//		* incomplete: 	Show only incomplete answers
+//      * complete:         Show only complete answers
+//      * all:      Show both complete and incomplete answers
+//      * incomplete:   Show only incomplete answers
 $config['filterout_incomplete_answers'] = 'all';
 
 // strip_query_from_referer_url (default is false)
@@ -184,7 +189,7 @@ $config['default_displayed_auth_method'] = 'Authdb';
 // unless a username mapping is used see auth_webserver_user_map below
 //
 // The user still needs to be defined in the limesurvey database in order to
-// login and get his permissions (unless auth_webserver_autocreate_user is set to true)
+// login and get their permissions (unless auth_webserver_autocreate_user is set to true)
 $config['auth_webserver'] = false;
 
 // auth_webserver_user_map
@@ -204,22 +209,22 @@ $config['auth_webserver_autocreate_user'] = false;
 
 // auth_webserver_autocreate_profile
 // This is an array describing the default profile to use for auto-created users
-// This profile will be the same for all users (unless you define the optionnal
+// This profile will be the same for all users (unless you define the optional
 // 'hook_get_auth_webserver_profile' function).
 //
-$config['auth_webserver_autocreate_profile'] = Array(
+$config['auth_webserver_autocreate_profile'] = array(
     'full_name' => 'autouser',
     'email' => 'autouser@test.test',
     'lang' => 'en',
     'htmleditormode' => $config['defaulthtmleditormode']
 );
 
-$config['auth_webserver_autocreate_permissions'] = Array(
-    'surveys' => array('create'=>true, 'read'=>true, 'update'=>true, 'delete'=>true)
+$config['auth_webserver_autocreate_permissions'] = array(
+    'surveys' => array('create' => true, 'read' => true, 'update' => true, 'delete' => true)
 );
 
 // hook_get_auth_webserver_profile
-// The optionnal 'hook_get_auth_webserver_profile' function is for advanced user usage only.
+// The optional 'hook_get_auth_webserver_profile' function is for advanced user usage only.
 // It is used to customize the profile of the imported user
 // If set, the this function will overwrite the auth_webserver_autocreate_profile
 // defined above by its return value
@@ -229,11 +234,11 @@ $config['auth_webserver_autocreate_permissions'] = Array(
 //
 //function hook_get_auth_webserver_profile($user_name)
 //{
-//	return Array(
-//			'full_name' => '$user_name',
-//			'email' => "$user_name@localdomain.org",
-//			'lang' => 'en',
-//			'htmleditormode' => 'inline');
+//  return Array(
+//          'full_name' => '$user_name',
+//          'email' => "$user_name@localdomain.org",
+//          'lang' => 'en',
+//          'htmleditormode' => 'inline');
 //}
 
 
@@ -291,8 +296,7 @@ $config['demoModePrefill'] = false;
 *
 * $column_style defines how columns are rendered for survey answers.
 * There are four possible options:
-*     'css'   using one of the various CSS only methods for creating
-columns (see theme style sheet for details).
+*     'css'   using one of the various CSS only methods for creating columns (see theme style sheet for details).
 *     'ul'    using multiple floated unordered lists. (DEFAULT)
 *     'table' using conventional tables based layout.
 *     NULL    blocks the use of columns
@@ -371,36 +375,36 @@ $config['maxforgottenpasswordemaildelay'] = 1500000;
 
 $config['pdfdefaultfont'] = 'auto'; //Default font for the pdf Export
 /**
-*  $alternatepdffontfile - array of the font file name used to created pdf in statistics in specific langage - this font are included in tcpdf core
+*  $alternatepdffontfile - array of the font file name used to created pdf in statistics in specific language - this font are included in tcpdf core
 *  Only used if $pdfdefaultfont is set to auto or set to a PDF core fonts
-*  Some langage are not tested : need translation for Yes,No and Gender : ckb, swh
+*  Some language are not tested : need translation for Yes,No and Gender : ckb, swh
 */
 $config['alternatepdffontfile'] = array(
-    'ar'=>'dejavusans', // 'dejavusans' work but maybe more characters in aealarabiya or almohanad: but then need a dynamic font size too
-    'be'=>'dejavusans',
-    'bg'=>'dejavusans',
-    'zh-Hans'=>'cid0cs',
-    'zh-Hant-HK'=>'cid0ct',
-    'zh-Hant-TW'=>'cid0ct',
-    'cs'=>'dejavusans',
-    'cs-informal'=>'dejavusans', // This one not really tested: no translation for Yes/No or Gender
-    'el'=>'dejavusans',
-    'he'=>'freesans',
-    'hi'=>'dejavusans',
-    'hr'=>'dejavusans',
-    'hu'=>'dejavusans',
-    'ja'=>'cid0jp',
-    'ko'=>'cid0kr',
-    'lv'=>'dejavusans',
-    'lt'=>'dejavusans',
-    'mk'=>'dejavusans',
-    'mt'=>'dejavusans',
-    'fa'=>'dejavusans',
-    'pl'=>'dejavusans',
-    'pa'=>'freesans',
-    'ro'=>'dejavusans',
-    'ru'=>'dejavusans',
-    'sr'=>'dejavusans',
+    'ar' => 'dejavusans', // 'dejavusans' work but maybe more characters in aealarabiya or almohanad: but then need a dynamic font size too
+    'be' => 'dejavusans',
+    'bg' => 'dejavusans',
+    'zh-Hans' => 'cid0cs',
+    'zh-Hant-HK' => 'cid0ct',
+    'zh-Hant-TW' => 'cid0ct',
+    'cs' => 'dejavusans',
+    'cs-informal' => 'dejavusans', // This one not really tested: no translation for Yes/No or Gender
+    'el' => 'dejavusans',
+    'he' => 'freesans',
+    'hi' => 'dejavusans',
+    'hr' => 'dejavusans',
+    'hu' => 'dejavusans',
+    'ja' => 'cid0jp',
+    'ko' => 'cid0kr',
+    'lv' => 'dejavusans',
+    'lt' => 'dejavusans',
+    'mk' => 'dejavusans',
+    'mt' => 'dejavusans',
+    'fa' => 'dejavusans',
+    'pl' => 'dejavusans',
+    'pa' => 'freesans',
+    'ro' => 'dejavusans',
+    'ru' => 'dejavusans',
+    'sr' => 'dejavusans',
 );
 /**
 *  $notsupportlanguages - array of language where no font was found for PDF
@@ -453,18 +457,18 @@ $config['maxstringlengthshortimplode'] = 100; // short_implode: Max length of re
 */
 $config['chartfontfile'] = 'auto';
 /**
-*  $alternatechartfontfile - array of the font file name used to created the charts in statistics in specific langage - this font must reside in <limesurvey root folder>/fonts
+*  $alternatechartfontfile - array of the font file name used to created the charts in statistics in specific language - this font must reside in <limesurvey root folder>/fonts
 *  Only used if $chartfontfile is set to auto. If font file doesn't exist in <limesurvey root folder>/fonts, an alert is sent to admin
 */
 $config['alternatechartfontfile'] = array(
-    'hi'=>'FreeSans.ttf',
-    'ja'=> 'migmix-1p-regular.ttf',
-    'ko'=>'UnBatang.ttf',
-    'si'=>'FreeSans.ttf',
-    'th'=>'TlwgTypist.ttf',
-    'zh-Hans'=>'fireflysung.ttf',
-    'zh-Hant-HK'=>'fireflysung.ttf',
-    'zh-Hant-TW'=>'fireflysung.ttf',
+    'hi' => 'FreeSans.ttf',
+    'ja' => 'migmix-1p-regular.ttf',
+    'ko' => 'UnBatang.ttf',
+    'si' => 'FreeSans.ttf',
+    'th' => 'TlwgTypist.ttf',
+    'zh-Hans' => 'fireflysung.ttf',
+    'zh-Hant-HK' => 'fireflysung.ttf',
+    'zh-Hant-TW' => 'fireflysung.ttf',
 );
 
 /**
@@ -484,9 +488,9 @@ $config['updatecheckperiod'] = 7;
 /**
 * @var $showxquestions string allows you to control whether or not
 * {THEREAREXQUESTIONS} is displayed (if it is included in a theme)
-*	hide = always hide {THEREAREXQUESTIONS}
-*	show = always show {THEREAREXQUESTIONS}
-*	choose = allow survey admins to choose
+*   hide = always hide {THEREAREXQUESTIONS}
+*   show = always show {THEREAREXQUESTIONS}
+*   choose = allow survey admins to choose
 */
 $config['showxquestions'] = 'choose';
 
@@ -495,11 +499,11 @@ $config['showxquestions'] = 'choose';
 * @var $showgroupinfo string allows you to control whether or not
 * {GROUPNAME} and/or {GROUPDESCRIPTION} are displayed (if they are
 * included in a theme)
-*	none = always hide both title and description
-*	name = always {GROUPNAME} only
-*	description = always show {GROUPDESCRIPTION} only
-*	both = always show both {GROUPNAME} and {GROUPDESCRIPTION}
-*	choose = allow survey admins to choose
+*   none = always hide both title and description
+*   name = always {GROUPNAME} only
+*   description = always show {GROUPDESCRIPTION} only
+*   both = always show both {GROUPNAME} and {GROUPDESCRIPTION}
+*   choose = allow survey admins to choose
 */
 $config['showgroupinfo'] = 'choose';
 
@@ -508,26 +512,26 @@ $config['showgroupinfo'] = 'choose';
 * @var $showqnumcode string allows you to control whether or not
 * {QUESTION_NUMBER} and/or {QUESTION_CODE} are displayed (if they
 * are included in a theme)
-*	none = always hide both {QUESTION_NUMBER} and {QUESTION_CODE}
-*	code = always show {QUESTION_CODE} only
-*	number = always show {QUESTION_NUMBER} only
-*	both = always show both {QUESTION_NUMBER} and {QUESTION_CODE}
-*	choose = allow survey admins to choose
+*   none = always hide both {QUESTION_NUMBER} and {QUESTION_CODE}
+*   code = always show {QUESTION_CODE} only
+*   number = always show {QUESTION_NUMBER} only
+*   both = always show both {QUESTION_NUMBER} and {QUESTION_CODE}
+*   choose = allow survey admins to choose
 */
 $config['showqnumcode'] = 'choose';
 
 
 /**
 * @var $force_ssl string - forces LimeSurvey to run through HTTPS or to block HTTPS
-* 	'on' =	force SSL/HTTPS to be on (This will cause LimeSurvey
-*		to fail in SSL is turned off)
-*	Any other string value = do nothing (default)
+*   'on' =  force SSL/HTTPS to be on (This will cause LimeSurvey
+*       to fail in SSL is turned off)
+*   Any other string value = do nothing (default)
 *
 * DO NOT turn on secure unless you are sure SSL/HTTPS is working and
 * that you have a current, working, valid certificate. If you are
 * unsure whether your server has a valid certificate, just add 's'
 * to the http part of your normal LimeSurvey URL.
-*	e.g. https://your.domain.org/limesurvey/admin/admin.php
+*   e.g. https://your.domain.org/limesurvey/admin/admin.php
 * If LimeSurvey comes up as normal, then everything is fine. If you
 * get a page not found error or permission denied error then
 */
@@ -689,7 +693,7 @@ $config['defaultfixedtheme'] = 'vanilla';
 // It can be used to have a separation / distinction between a public URL for surveys and a private one for
 // the administration - for example for certain proxy configurations or internal/external domain separation
 if (!isset($argv[0]) && Yii::app() != null) {
-    $config['publicurl'] = Yii::app()->baseUrl.'/'; // The public website location (url) of the public survey script
+    $config['publicurl'] = Yii::app()->baseUrl . '/'; // The public website location (url) of the public survey script
 } else {
     $config['publicurl'] = '/';
 }
@@ -697,56 +701,56 @@ if (!isset($argv[0]) && Yii::app() != null) {
 $config['assets'] = 'assets/';
 
 // URL defintions
-$config['homeurl']                = $config['publicurl'].'admin'; // The website location (url) of the admin scripts
-$config['tempurl']                = $config['publicurl'].'tmp';
-$config['imageurl']               = $config['publicurl'].'assets/images'; // Location of button bar files for admin script
-$config['uploadurl']              = $config['publicurl'].'upload';
-$config['standardthemerooturl']   = $config['publicurl'].'themes/survey'; // Location of the standard themes
-$config['adminscripts']           = $config['publicurl'].'assets/scripts/admin/';
-$config['generalscripts']         = $config['publicurl'].'assets/scripts/';
-$config['packages']               = $config['publicurl'].'packages/';
-$config['third_party']            = $config['publicurl'].'third_party/';
-$config['styleurl']               = $config['publicurl'].'themes/admin/';
-$config['publicstyle']            = $config['publicurl'].$config['assets'].'styles-public/';
+$config['homeurl']                = $config['publicurl'] . 'admin'; // The website location (url) of the admin scripts
+$config['tempurl']                = $config['publicurl'] . 'tmp';
+$config['imageurl']               = $config['publicurl'] . 'assets/images'; // Location of button bar files for admin script
+$config['uploadurl']              = $config['publicurl'] . 'upload';
+$config['standardthemerooturl']   = $config['publicurl'] . 'themes/survey'; // Location of the standard themes
+$config['adminscripts']           = $config['publicurl'] . 'assets/scripts/admin/';
+$config['generalscripts']         = $config['publicurl'] . 'assets/scripts/';
+$config['packages']               = $config['publicurl'] . 'packages/';
+$config['vendor']                 = $config['publicurl'] . 'vendor/';
+$config['styleurl']               = $config['publicurl'] . 'themes/admin/';
+$config['publicstyle']            = $config['publicurl'] . $config['assets'] . 'styles-public/';
 $config['publicstyleurl']         = $config['publicstyle'];
-$config['sCKEditorURL']           = $config['third_party'].'ckeditor';
-$config['userthemerooturl']       = $config['uploadurl'].'/themes/survey'; // Location of the user themes
-$config['adminimageurl']          = $config['styleurl'].$config['admintheme'].'/images/'; // Location of button bar files for admin script
-$config['applicationurl']         = $config['publicurl'].'application/';
-$config['extensionsurl']          = $config['applicationurl'].'extensions/';
-$config['adminstyleurl']          = $config['styleurl'].$config['admintheme'].'/'; // Location of button bar files for admin script
-$config['userfontsurl']            = $config['uploadurl'].'/fonts'; // Location of user's fonts
+$config['sCKEditorURL']           = $config['assets'] . 'ckeditor';
+$config['userthemerooturl']       = $config['uploadurl'] . '/themes/survey'; // Location of the user themes
+$config['adminimageurl']          = $config['styleurl'] . $config['admintheme'] . '/images/'; // Location of button bar files for admin script
+$config['applicationurl']         = $config['publicurl'] . 'application/';
+$config['extensionsurl']          = $config['applicationurl'] . 'extensions/';
+$config['adminstyleurl']          = $config['styleurl'] . $config['admintheme'] . '/'; // Location of button bar files for admin script
+$config['userfontsurl']            = $config['uploadurl'] . '/fonts'; // Location of user's fonts
 
 // Dir
 $config['publicdir']                = $config['rootdir']; // The directory path of the public scripts
 $config['homedir']                  = $config['rootdir']; // The directory path of the admin scripts
-$config['configdir']                = $config['rootdir'].DIRECTORY_SEPARATOR.'application'.DIRECTORY_SEPARATOR.'config';
-$config['tempdir']                  = $config['rootdir'].DIRECTORY_SEPARATOR."tmp"; // The directory path where LimeSurvey can store temporary files
-$config['imagedir']                 = $config['rootdir'].DIRECTORY_SEPARATOR."assets".DIRECTORY_SEPARATOR."images"; // The directory path of the image directory
-$config['uploaddir']                = $config['rootdir'].DIRECTORY_SEPARATOR."upload";
-$config['standardthemerootdir']     = $config['rootdir'].DIRECTORY_SEPARATOR."themes".DIRECTORY_SEPARATOR."survey"; // The directory path of the standard themes
-$config['publicstylepath']          = $config['rootdir'].DIRECTORY_SEPARATOR.$config['publicstyle'];
-$config['corequestiontypedir']      = "application".DIRECTORY_SEPARATOR."views";
-$config['corequestionthemedir']     = "themes".DIRECTORY_SEPARATOR."question";
-$config['corequestionthemerootdir'] = $config['rootdir'].DIRECTORY_SEPARATOR.$config['corequestionthemedir']; // The directory containing the core's question themes.
-$config['styledir']                 = $config['rootdir'].DIRECTORY_SEPARATOR.'themes'.DIRECTORY_SEPARATOR.'admin';
-$config['questiontypedir']          = $config['rootdir'].DIRECTORY_SEPARATOR.'application'.DIRECTORY_SEPARATOR.'extensions'.DIRECTORY_SEPARATOR.'questionTypes';
-$config['userthemerootdir']         = $config['uploaddir'].DIRECTORY_SEPARATOR."themes".DIRECTORY_SEPARATOR."survey"; // The directory path of the user themes
-$config['usertwigextensionrootdir'] = $config['uploaddir'].DIRECTORY_SEPARATOR."twig".DIRECTORY_SEPARATOR."extensions"; // The directory path of the user custom twig extensions
-$config['customquestionthemedir']     = "themes".DIRECTORY_SEPARATOR."question";
-$config['userquestionthemerootdir'] = "upload".DIRECTORY_SEPARATOR.$config['customquestionthemedir']; // The directory containing the user's question themes.
-$config['userfontsrootdir']          = $config['uploaddir'].DIRECTORY_SEPARATOR.'fonts'; // The directory containing the user's fonts.
+$config['configdir']                = $config['rootdir'] . DIRECTORY_SEPARATOR . 'application' . DIRECTORY_SEPARATOR . 'config';
+$config['tempdir']                  = $config['rootdir'] . DIRECTORY_SEPARATOR . "tmp"; // The directory path where LimeSurvey can store temporary files
+$config['imagedir']                 = $config['rootdir'] . DIRECTORY_SEPARATOR . "assets" . DIRECTORY_SEPARATOR . "images"; // The directory path of the image directory
+$config['uploaddir']                = $config['rootdir'] . DIRECTORY_SEPARATOR . "upload";
+$config['standardthemerootdir']     = $config['rootdir'] . DIRECTORY_SEPARATOR . "themes" . DIRECTORY_SEPARATOR . "survey"; // The directory path of the standard themes
+$config['publicstylepath']          = $config['rootdir'] . DIRECTORY_SEPARATOR . $config['publicstyle'];
+$config['corequestiontypedir']      = "application" . DIRECTORY_SEPARATOR . "views";
+$config['corequestionthemedir']     = "themes" . DIRECTORY_SEPARATOR . "question";
+$config['corequestionthemerootdir'] = $config['rootdir'] . DIRECTORY_SEPARATOR . $config['corequestionthemedir']; // The directory containing the core's question themes.
+$config['styledir']                 = $config['rootdir'] . DIRECTORY_SEPARATOR . 'themes' . DIRECTORY_SEPARATOR . 'admin';
+$config['questiontypedir']          = $config['rootdir'] . DIRECTORY_SEPARATOR . 'application' . DIRECTORY_SEPARATOR . 'extensions' . DIRECTORY_SEPARATOR . 'questionTypes';
+$config['userthemerootdir']         = $config['uploaddir'] . DIRECTORY_SEPARATOR . "themes" . DIRECTORY_SEPARATOR . "survey"; // The directory path of the user themes
+$config['usertwigextensionrootdir'] = $config['uploaddir'] . DIRECTORY_SEPARATOR . "twig" . DIRECTORY_SEPARATOR . "extensions"; // The directory path of the user custom twig extensions
+$config['customquestionthemedir']     = "themes" . DIRECTORY_SEPARATOR . "question";
+$config['userquestionthemerootdir'] = "upload" . DIRECTORY_SEPARATOR . $config['customquestionthemedir']; // The directory containing the user's question themes.
+$config['userfontsrootdir']          = $config['uploaddir'] . DIRECTORY_SEPARATOR . 'fonts'; // The directory containing the user's fonts.
 
-$config['lsadminmodulesrootdir']    = $config['rootdir'].DIRECTORY_SEPARATOR."modules".DIRECTORY_SEPARATOR."admin";
+$config['lsadminmodulesrootdir']    = $config['rootdir'] . DIRECTORY_SEPARATOR . "modules" . DIRECTORY_SEPARATOR . "admin";
 //Overwrite files with the same name on upload?
 $config['overwritefiles'] = 'off';
 
 // Use alias notation, we should move to this format everywhere.
 $config['plugindir']               = 'webroot.plugins';
 
-// (javascript) Fix automatically the value entered in numeric question type : 1: remove all non numeric caracters; 0 : leave all caracters
+// (javascript) Fix automatically the value entered in numeric question type : 1: remove all non numeric characters; 0 : leave all characters
 $config['bFixNumAuto']             = 1;
-// (javascript) Send real value entered when using Numeric question type in ExpressionScript Engine : 0 : {NUMERIC} with bad caracters send '', 1 : {NUMERIC} send all caracters entered
+// (javascript) Send real value entered when using Numeric question type in ExpressionScript Engine : 0 : {NUMERIC} with bad characters send '', 1 : {NUMERIC} send all characters entered
 $config['bNumRealValue'] = 0;
 
 // Home page default Settings
@@ -795,12 +799,15 @@ $config['force_xmlsettings_for_survey_rendering'] = false;
 /**
  * When this setting is true, plugins that are not in the white list (see 'pluginWhitelist') cannot be installed nor loaded. This may disable
  * already installed plugins.
- * Core plugins are not affected by this setting.
+ * Core plugins are implicitly whitelisted, but can be excluded using the black list.
  */
 $config['usePluginWhitelist'] = false;
 
 // List of plugin names allowed to be installed and loaded when 'usePluginWhitelist' is true. Core plugins are implicitly whitelisted.
 $config['pluginWhitelist'] = [];
+
+// List of core plugin names forbidden when 'usePluginWhitelist' is true.
+$config['corePluginBlacklist'] = [];
 
 // When this setting is true, the "Plugin Upload" feature is disabled.
 $config['disablePluginUpload'] = false;

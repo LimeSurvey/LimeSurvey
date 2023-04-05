@@ -115,10 +115,10 @@ class Hash
             $next = array();
 
             $conditions = false;
-            $position = strpos($token, '[');
+            $position = strpos((string) $token, '[');
             if ($position !== false) {
-                $conditions = substr($token, $position);
-                $token = substr($token, 0, $position);
+                $conditions = substr((string) $token, $position);
+                $token = substr((string) $token, 0, $position);
             }
 
             foreach ($context[$_key] as $item) {
@@ -183,8 +183,8 @@ class Hash
 
         foreach ($conditions as $cond) {
             $attr = $cond['attr'];
-            $op = isset($cond['op']) ? $cond['op'] : null;
-            $val = isset($cond['val']) ? $cond['val'] : null;
+            $op = $cond['op'] ?? null;
+            $val = $cond['val'] ?? null;
 
             // Presence test.
             if (empty($op) && empty($val) && !isset($data[$attr])) {
@@ -196,11 +196,11 @@ class Hash
                 return false;
             }
 
-            $prop = isset($data[$attr]) ? $data[$attr] : null;
+            $prop = $data[$attr] ?? null;
 
             // Pattern matches and other operators.
             if ($op === '=' && $val && $val[0] === '/') {
-                if (!preg_match($val, $prop)) {
+                if (!preg_match($val, (string) $prop)) {
                     return false;
                 }
             } elseif (
@@ -354,7 +354,7 @@ class Hash
 
         $count = count($keys);
         for ($i = 0; $i < $count; $i++) {
-            $vals[$i] = isset($vals[$i]) ? $vals[$i] : null;
+            $vals[$i] = $vals[$i] ?? null;
         }
 
         if ($groupPath !== null) {
@@ -976,10 +976,10 @@ class Hash
         $return = $idMap = array();
         $ids = self::extract($data, $options['idPath']);
 
-        $idKeys = explode('.', $options['idPath']);
+        $idKeys = explode('.', (string) $options['idPath']);
         array_shift($idKeys);
 
-        $parentKeys = explode('.', $options['parentPath']);
+        $parentKeys = explode('.', (string) $options['parentPath']);
         array_shift($parentKeys);
 
         foreach ($data as $result) {

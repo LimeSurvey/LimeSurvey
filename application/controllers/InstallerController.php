@@ -47,7 +47,11 @@ class InstallerController extends CController
     {
         $this->checkInstallation();
         $this->sessioncontrol();
-        Yii::import('application.helpers.common_helper', true);
+        App()->loadHelper('common');
+        App()->loadHelper('surveytranslator');
+        AdminTheme::getInstance();
+        App()->getClientScript()->registerCssFile(App()->baseUrl . '/installer/css/main.css');
+        App()->getClientScript()->registerCssFile(App()->baseUrl . '/installer/css/fonts.css');
 
         switch ($action) {
             case 'welcome':
@@ -141,7 +145,7 @@ class InstallerController extends CController
         }
         $aLanguages = [];
         foreach (getLanguageData(true, $sCurrentLanguage) as $sKey => $aLanguageInfo) {
-            $aLanguages[htmlspecialchars($sKey)] = sprintf('%s - %s', $aLanguageInfo['nativedescription'], $aLanguageInfo['description']);
+            $aLanguages[htmlspecialchars((string) $sKey)] = sprintf('%s - %s', $aLanguageInfo['nativedescription'], $aLanguageInfo['description']);
         }
         $aData['languages'] = $aLanguages;
         $this->render('/installer/welcome_view', $aData);
@@ -159,7 +163,7 @@ class InstallerController extends CController
         $aData['classesForStep'] = array('off', 'on', 'off', 'off', 'off', 'off');
         $aData['progressValue'] = 15;
 
-        if (strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
+        if (strtolower((string) $_SERVER['REQUEST_METHOD']) == 'post') {
             $this->redirect(array('installer/precheck'));
         }
         Yii::app()->session['saveCheck'] = 'save'; // Checked in next step
@@ -375,10 +379,11 @@ class InstallerController extends CController
             Yii::app()->session['populatedatabase'] = true;
             Yii::app()->session['databaseexist'] = true;
             unset(Yii::app()->session['databaseDontExist']);
-
-            $aData['adminoutputText'] = "<tr bgcolor='#efefef'><td colspan='2' align='center'>"
-            . "<div class='alert alert-success''><strong>\n"
-            . gT("Database has been created.") . "</strong></div>\n"
+            $successAlert = $this->widget('ext.AlertWidget.AlertWidget', [
+                'text' => '<strong>' . gT("Database has been created") . '.</strong>',
+                'type' => 'success',
+            ], true);
+            $aData['adminoutputText'] =  $successAlert . "\n"
             . gT("Please continue with populating the database.") . "<br /><br />\n";
             $aData['next'] = array(
                 'action' => 'installer/populatedb',
@@ -592,9 +597,9 @@ class InstallerController extends CController
     public function chekHtmlImage($result)
     {
         if ($result) {
-            return "<span class='fa fa-check text-success' alt='right'></span>";
+            return "<span class='ri-check-fill text-success' alt='right'></span>";
         } else {
-            return "<span class='fa fa-exclamation-triangle text-danger' alt='wrong'></span>";
+            return "<span class='ri-error-warning-fill text-danger' alt='wrong'></span>";
         }
     }
 
@@ -813,7 +818,7 @@ class InstallerController extends CController
             $aLines = file($sFileName);
         }
         foreach ($aLines as $sLine) {
-            $sLine = rtrim($sLine);
+            $sLine = rtrim((string) $sLine);
             $iLineLength = strlen($sLine);
 
             if ($iLineLength && $sLine[0] != '#' && substr($sLine, 0, 2) != '--') {
@@ -859,7 +864,7 @@ class InstallerController extends CController
             //{
             $sShowScriptName = 'true';
             //}
-            if (stripos($_SERVER['SERVER_SOFTWARE'], 'apache') !== false || (ini_get('security.limit_extensions') && ini_get('security.limit_extensions') != '')) {
+            if (stripos((string) $_SERVER['SERVER_SOFTWARE'], 'apache') !== false || (ini_get('security.limit_extensions') && ini_get('security.limit_extensions') != '')) {
                 $sURLFormat = 'path';
             } else {
                 // Apache
@@ -917,8 +922,8 @@ class InstallerController extends CController
             if ($model->dbtype != InstallerConfigForm::DB_TYPE_SQLSRV && $model->dbtype != InstallerConfigForm::DB_TYPE_DBLIB) {
                 $sConfig .= "\t\t\t" . "'emulatePrepare' => true," . "\n";
             }
-            $sConfig .= "\t\t\t" . "'username' => '" . addcslashes($model->dbuser, "'") . "'," . "\n"
-            . "\t\t\t" . "'password' => '" . addcslashes($model->dbpwd, "'") . "'," . "\n"
+            $sConfig .= "\t\t\t" . "'username' => '" . addcslashes((string) $model->dbuser, "'") . "'," . "\n"
+            . "\t\t\t" . "'password' => '" . addcslashes((string) $model->dbpwd, "'") . "'," . "\n"
             . "\t\t\t" . "'charset' => '{$sCharset}'," . "\n"
             . "\t\t\t" . "'tablePrefix' => '{$model->dbprefix}'," . "\n";
 

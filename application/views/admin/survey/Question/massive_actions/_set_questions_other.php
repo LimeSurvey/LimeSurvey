@@ -7,11 +7,21 @@
 /** @var Question $model */
 
 ?>
-<form class="custom-modal-datas form-horizontal">
-    <div  class="form-group" id="OtherSelection">
-        <label class="col-sm-4 control-label"><?php eT("Option 'Other':"); ?></label>
-        <div class="col-sm-8">
-            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'other', 'value'=> '', 'htmlOptions'=>array('class'=>'custom-data  bootstrap-switch-boolean', 'data-gridid'=>'question-grid'), 'onLabel'=>gT('On'),'offLabel'=>gT('Off')));?>
+<form class="custom-modal-datas form-horizontal" data-trigger-validation="true">
+    <div  class="mb-3" id="OtherSelection">
+        <label class="col-md-4 form-label"><?php eT("Option 'Other':"); ?></label>
+        <div class="col-md-8">
+            <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                'name'          => 'other',
+                'checkedOption' => '0',
+                'selectOptions' => [
+                    '1' => gT('On'),
+                    '0' => gT('Off'),
+                ],
+                'htmlOptions'   => [
+                    'class'       => 'custom-data'
+                ],
+            ]); ?>
         </div>
         <input type="hidden" name="sid" value="<?php echo (int) Yii::app()->request->getParam('surveyid',0); ?>" class="custom-data"/>
     </div>

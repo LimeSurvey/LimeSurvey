@@ -6,17 +6,18 @@
  *
  * @var $name
  * @var $anscount
+ * @var $othertext
  */
  #}
 <!-- Multiple Choice -->
 
 <!-- answer -->
 <input type="hidden" name="MULTI{{name}}" value="{{anscount}}" />
-<ul class="list-unstyled {{coreClass}}" role="group" aria-labelledby="ls-question-text-{{basename}}"{% if iNbCols > 1 %} data-column-count={{iNbCols}}{% endif %}>
-        {% for aRow in aRows %}
-            {% set rowTemplate = aRow.other ? './survey/questions/answer/multiplechoice/rows/answer_row_other.twig' : './survey/questions/answer/multiplechoice/rows/answer_row.twig' %}
-            {% include rowTemplate with aRow only %}
+<ul class="list-unstyled {{coreClass}} col-12 {% if iNbCols > 1 %} ls-column-count-{{iNbCols}}{% endif %}"{% if iNbCols > 1 %} data-column-count={{iNbCols}}{% endif %}>
+    {% for aRow in aRows %}
+        {% set rowTemplate = aRow.other ? './survey/questions/answer/multiplechoice/rows/answer_row_other.twig' : './survey/questions/answer/multiplechoice/rows/answer_row.twig' %}
+        <!-- Row {{loop.index}} -->
+        {% include rowTemplate with aRow %}
 
-        {% endfor %}
+    {% endfor %}
 </ul>
-<!-- end of answer -->

@@ -821,7 +821,7 @@ class questionHelper
             'i18n' => true,
             'default' => "",
             "help" => gT('In the printable version the condition is being replaced with this explanation text.'),
-            "caption" => gT("Condition replacement text for printable survey")
+            "caption" => gT("Condition help for printable survey")
         );
 
         self::$attributes["public_statistics"] = array(
@@ -1229,7 +1229,7 @@ class questionHelper
             'expression' => 1,
             'i18n' => true,
             'default' => "",
-            "help" => sprintf(gT("Replace choice header (default: \"%s\")"), gT("Your choices")),
+            "help" => sprintf(gT("Replace choice header (default: \"%s\")"), gT("Available items")),
             "caption" => gT("Choice header")
         );
 
@@ -1308,6 +1308,7 @@ class questionHelper
             'category' => gT('Timer'),
             'sortorder' => 100,
             "inputtype" => "textarea",
+            'expression' => 1,
             "help" => gT("CSS Style for the message that displays in the countdown timer during the countdown"),
             "caption" => gT("Time limit timer CSS style")
         );
@@ -1432,7 +1433,7 @@ class questionHelper
             'sortorder' => 100,
             "inputtype" => "integer",
             'default' => 1,
-            "help" => gT("Visual minute step interval"),
+            "help" => gT("Minute step interval when using select boxes"),
             "caption" => gT("Minute step interval")
         );
 

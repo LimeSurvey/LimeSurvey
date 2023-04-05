@@ -146,13 +146,6 @@ class Export extends SurveyCommonAction
         if (!isset($iSurveyID)) {
             $iSurveyID = returnGlobal('sid');
         }
-
-        if (!isset($convertyto1)) {
-            $convertyto1 = returnGlobal('convertyto1');
-        }
-        if (!isset($convertnto2)) {
-            $convertnto2 = returnGlobal('convertnto2');
-        }
         if (!isset($convertyto)) {
             $convertyto = returnGlobal('convertyto');
         }
@@ -220,7 +213,7 @@ class Export extends SurveyCommonAction
             $aFieldsOptions = array();
             foreach ($aFieldMap as $sFieldName => $fieldinfo) {
                 $sCode = viewHelper::getFieldCode($fieldinfo);
-                $aFields[$sFieldName] = $sCode . ' - ' . htmlspecialchars(ellipsize(html_entity_decode(viewHelper::getFieldText($fieldinfo)), 40, .6, '...'));
+                $aFields[$sFieldName] = $sCode . ' - ' . htmlspecialchars((string) ellipsize(html_entity_decode((string) viewHelper::getFieldText($fieldinfo)), 40, .6, '...'));
                 $aFieldsOptions[$sFieldName] = array('title' => viewHelper::getFieldText($fieldinfo), 'data-fieldname' => $fieldinfo['fieldname'], 'data-emcode' => viewHelper::getFieldCode($fieldinfo, array('LEMcompat' => true))); // No need to filter title : Yii do it (remove all tag)
             }
 
@@ -287,6 +280,16 @@ class Export extends SurveyCommonAction
             $data['topBar']['name'] = 'baseTopbar_view';
             $data['topBar']['showExportButton'] = true;
             $data['topBar']['showCloseButton'] = true;
+
+            $data['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+                '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
+                [
+                    'showExportButton' => true,
+                    'showCloseButton' => true,
+                    'closeUrl' => Yii::app()->createUrl('responses/browse', ['surveyId' => $survey->sid])
+                ],
+                true
+            );
 
             $data['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
             $data['title_bar']['title'] = gT('Browse responses') . ': ' . $survey->currentLanguageSettings->surveyls_title;
@@ -387,7 +390,7 @@ class Export extends SurveyCommonAction
             // Default to 2 (16 and up)
             Yii::app()->session['spssversion'] = 2;
         }
-        $spssver = Yii::app()->request->getParam('spssver', Yii::app()->session['spssversion']);
+        $spssver = CHtml::encode(Yii::app()->request->getParam('spssver', Yii::app()->session['spssversion']));
         Yii::app()->session['spssversion'] = $spssver;
 
         $length_varlabel = '231'; // Set the max text length of Variable Labels
@@ -450,6 +453,15 @@ class Export extends SurveyCommonAction
 
             $data['topBar']['name'] = 'baseTopbar_view';
             $data['topBar']['showCloseButton'] = true;
+
+            $data['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+                '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
+                [
+                    'showCloseButton' => true,
+                    'closeUrl' => Yii::app()->createUrl('responses/browse', ['surveyId' => $iSurveyID])
+                ],
+                true
+            );
 
             $this->renderWrappedTemplate('export', 'spss_view', $data);
             return;
@@ -550,11 +562,11 @@ class Export extends SurveyCommonAction
             echo "*Define Variable Properties.\n";
             foreach ($fields as $field) {
                 if (!$field['hide']) {
-                    $label_parts = strSplitUnicode(str_replace('"', '""', stripTagsFull($field['VariableLabel'])), $length_varlabel - strlen($field['id']));
+                    $label_parts = strSplitUnicode(str_replace('"', '""', (string) stripTagsFull($field['VariableLabel'])), $length_varlabel - strlen((string) $field['id']));
                     //if replaced quotes are splitted by, we need to mve the first quote to the next row
                     foreach ($label_parts as $idx => $label_part) {
-                        if ($idx != count($label_parts) && substr($label_part, -1) == '"' && substr($label_part, -2) != '"') {
-                            $label_parts[$idx] = rtrim($label_part, '"');
+                        if ($idx != count($label_parts) && substr((string) $label_part, -1) == '"' && substr((string) $label_part, -2) != '"') {
+                            $label_parts[$idx] = rtrim((string) $label_part, '"');
                             if (array_key_exists($idx + 1, $label_parts)) {
                                 $label_parts[$idx + 1] = '"' . $label_parts[$idx + 1];
                             }
@@ -577,7 +589,7 @@ class Export extends SurveyCommonAction
                     foreach ($answers as $answer) {
                         $i++;
 
-                        if ($field['SPSStype'] == "F" && isNumericExtended($answer['code'])) {
+                        if ($field['SPSStype'] == "F" && isNumericExtended($answer['code'] ?? '')) {
                             $str = "{$answer['code']}";
                         } else {
                             $str = "\"{$answer['code']}\"";
@@ -621,11 +633,11 @@ class Export extends SurveyCommonAction
                 if (isset($field['sql_name']) && $field['hide'] === 0) {
                     $ftitle = $field['title'];
 
-                    if (!preg_match("/^([a-z]|[A-Z])+.*$/", $ftitle)) {
+                    if (!preg_match("/^([a-z]|[A-Z])+.*$/", (string) $ftitle)) {
                         $ftitle = "q_" . $ftitle;
                     }
 
-                    $ftitle = str_replace(array(" ", "-", ":", ";", "!", "/", "\\", "'"), array("_", "_hyph_", "_dd_", "_dc_", "_excl_", "_fs_", "_bs_", '_qu_'), $ftitle);
+                    $ftitle = str_replace(array(" ", "-", ":", ";", "!", "/", "\\", "'"), array("_", "_hyph_", "_dd_", "_dc_", "_excl_", "_fs_", "_bs_", '_qu_'), (string) $ftitle);
 
                     if ($ftitle != $field['title']) {
                         echo "* Variable name was incorrect and was changed from {$field['title']} to $ftitle .\n";
@@ -683,6 +695,16 @@ class Export extends SurveyCommonAction
             $aData['topBar']['showExportButton'] = true;
             $aData['topBar']['showCloseButton'] = true;
 
+            $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+                '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
+                [
+                    'showExportButton' => true,
+                    'showCloseButton' => true,
+                    'closeUrl' => Yii::app()->createUrl('responses/browse', ['surveyId' => $iSurveyId])
+                ],
+                true
+            );
+
             $this->renderWrappedTemplate('export', 'vv_view', $aData);
         } elseif (isset($iSurveyId) && $iSurveyId) {
             //Export is happening
@@ -727,7 +749,7 @@ class Export extends SurveyCommonAction
                     if ($vvVersion >= 2) {
                         $firstline[] = viewHelper::getFieldText($fielddata, array('separator' => $questionSeparator, 'abbreviated' => $questionAbbreviated,));
                     } else {
-                        $firstline[] = preg_replace('/\s+/', ' ', flattenText($fielddata['question'], false, true, 'UTF-8', true));
+                        $firstline[] = preg_replace('/\s+/', ' ', (string) flattenText($fielddata['question'], false, true, 'UTF-8', true));
                     }
                 }
                 if ($vvVersion == 2) {
@@ -759,7 +781,7 @@ class Export extends SurveyCommonAction
                     if (is_null($row[$field])) {
                         $value = '{question_not_shown}';
                     } else {
-                        $value = trim($row[$field]);
+                        $value = trim((string) $row[$field]);
                         // sunscreen for the value. necessary for the beach.
                         // careful about the order of these arrays:
                         // lbrace has to be substituted *first*
@@ -957,64 +979,71 @@ class Export extends SurveyCommonAction
             if ($iSurveyID === false) {
                 continue;
             }
-            if (Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export')) {
-                $archiveName                    = "";
-                $oSurvey                        = Survey::model()->findByPk($iSurveyID);
-                $aResults[$iSurveyID]['title']  = ellipsize($oSurvey->correct_relation_defaultlanguage->surveyls_title, 30);
-                $aResults[$iSurveyID]['result'] = false;
-
-                // Specific to each kind of export
-                switch ($sExportType) {
-                    // Export archives for active surveys
-                    case 'archive':
-                        if ($oSurvey->isActive) {
-                            $archiveName = $this->exportarchive($iSurveyID, false);
-
-                            if (is_file($archiveName)) {
-                                $aResults[$iSurveyID]['result'] = true;
-                                $aResults[$iSurveyID]['file']   = $archiveName;
-                                $bArchiveIsEmpty                = false;
-                                $archiveFile                    = $archiveName;
-                                $newArchiveFileFullName         = 'survey_archive_' . $iSurveyID . '.lsa';
-                                $this->addToZip($zip, $archiveFile, $newArchiveFileFullName);
-                                unlink($archiveFile);
-                            } else {
-                                $aResults[$iSurveyID]['error'] = gT("Unknown error");
-                            }
-                        } else {
-                            $aResults[$iSurveyID]['error'] = gT("Not active.");
-                        }
-                        break;
-                    // Export printable archives for all selected surveys
-                    case 'printable':
-                        $archiveName = $this->exportPrintableHtmls($iSurveyID, false);
-                        if (is_file($archiveName)) {
-                            $aResults[$iSurveyID]['result'] = true;
-                            $aResults[$iSurveyID]['file']   = $archiveName;
-                            $bArchiveIsEmpty                = false;
-                            $archiveFile                    = $archiveName;
-                            $newArchiveFileFullName         = 'survey_printables_' . $iSurveyID . '.zip';
-                            $this->addToZip($zip, $archiveFile, $newArchiveFileFullName);
-                            unlink($archiveFile);
-                        } else {
-                            $aResults[$iSurveyID]['error'] = gT("Unknown error");
-                        }
-                        break;
-
-                    // Export structure for survey
-                    default:
-                        $aResults[$iSurveyID]['result'] = true;
-                        $bArchiveIsEmpty                = false;
-
-                        $lssFileName = "limesurvey_survey_{$iSurveyID}.lss";
-                        $archiveFile = $sTempDir . DIRECTORY_SEPARATOR . randomChars(30);
-                        file_put_contents($archiveFile, surveyGetXMLData($iSurveyID));
-                        $this->addToZip($zip, $archiveFile, $lssFileName);
-                        unlink($archiveFile);
-                        break;
-                }
-            } else {
+            $archiveName                    = "";
+            $oSurvey                        = Survey::model()->findByPk($iSurveyID);
+            $aResults[$iSurveyID]['title']  = ellipsize($oSurvey->correct_relation_defaultlanguage->surveyls_title, 30);
+            $aResults[$iSurveyID]['result'] = false;
+            if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'export')) {
                 $aResults[$iSurveyID]['error'] = gT("We are sorry but you don't have permissions to do this.");
+                continue;
+            }
+
+            // Specific to each kind of export
+            switch ($sExportType) {
+                // Export archives for active surveys
+                case 'archive':
+                    if (
+                        ($oSurvey->hasTokensTable && !Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'export'))
+                        || !Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export')
+                    ) {
+                        $aResults[$iSurveyID]['error'] = gT("We are sorry but you don't have permissions to do this.");
+                        break;
+                    }
+                    if (!$oSurvey->isActive) {
+                        $aResults[$iSurveyID]['error'] = gT("Not active.");
+                        break;
+                    }
+                    $archiveName = $this->exportarchive($iSurveyID, false);
+
+                    if (is_file($archiveName)) {
+                        $aResults[$iSurveyID]['result'] = true;
+                        $aResults[$iSurveyID]['file']   = $archiveName;
+                        $bArchiveIsEmpty                = false;
+                        $archiveFile                    = $archiveName;
+                        $newArchiveFileFullName         = 'survey_archive_' . $iSurveyID . '.lsa';
+                        $this->addToZip($zip, $archiveFile, $newArchiveFileFullName);
+                        unlink($archiveFile);
+                    } else {
+                        $aResults[$iSurveyID]['error'] = gT("Unknown error");
+                    }
+                    break;
+                // Export printable archives for all selected surveys
+                case 'printable':
+                    $archiveName = $this->exportPrintableHtmls($iSurveyID, false);
+                    if (is_file($archiveName)) {
+                        $aResults[$iSurveyID]['result'] = true;
+                        $aResults[$iSurveyID]['file']   = $archiveName;
+                        $bArchiveIsEmpty                = false;
+                        $archiveFile                    = $archiveName;
+                        $newArchiveFileFullName         = 'survey_printables_' . $iSurveyID . '.zip';
+                        $this->addToZip($zip, $archiveFile, $newArchiveFileFullName);
+                        unlink($archiveFile);
+                    } else {
+                        $aResults[$iSurveyID]['error'] = gT("Unknown error");
+                    }
+                    break;
+
+                // Export structure for survey
+                default:
+                    $aResults[$iSurveyID]['result'] = true;
+                    $bArchiveIsEmpty                = false;
+
+                    $lssFileName = "limesurvey_survey_{$iSurveyID}.lss";
+                    $archiveFile = $sTempDir . DIRECTORY_SEPARATOR . randomChars(30);
+                    file_put_contents($archiveFile, surveyGetXMLData($iSurveyID));
+                    $this->addToZip($zip, $archiveFile, $lssFileName);
+                    unlink($archiveFile);
+                    break;
             }
         }
         return array('aResults' => $aResults, 'sZip' => $sZip, 'bArchiveIsEmpty' => $bArchiveIsEmpty);
@@ -1053,6 +1082,13 @@ class Export extends SurveyCommonAction
     private function exportarchive(int $iSurveyID, bool $bSendToBrowser = true)
     {
         $survey = Survey::model()->findByPk($iSurveyID);
+
+        if (
+            ($survey->hasTokensTable && !Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'export'))
+            || !Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export')
+        ) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
 
         $aSurveyInfo = getSurveyInfo($iSurveyID); // TODO: $aSurveyInfo is not used anymore. Remove it.
 
@@ -1250,7 +1286,7 @@ class Export extends SurveyCommonAction
         foreach ($queXMLSettings as $s) {
             $aData[$s] = getGlobalSetting($s);
 
-            if ($aData[$s] === null || trim($aData[$s]) === '') {
+            if ($aData[$s] === null || trim((string) $aData[$s]) === '') {
                 $method = str_replace("queXML", "get", $s);
                 $aData[$s] = $defaultquexmlpdf->$method();
             }
@@ -1271,7 +1307,9 @@ class Export extends SurveyCommonAction
                 $quexmlpdf->$method(Yii::app()->request->getPost($s));
             }
 
-            $lang = Yii::app()->request->getPost('save_language');
+            $lang = sanitize_languagecode(
+                Yii::app()->request->getPost('save_language')
+            );
 
             // Setting the selected language for printout
             App()->setLanguage($lang);
@@ -1337,14 +1375,14 @@ class Export extends SurveyCommonAction
     private function exportPrintableHtmls(int $iSurveyID, bool $readFile = true): string
     {
         $oSurvey = Survey::model()->findByPk($iSurveyID);
-        $assetsDir = substr(Template::getTemplateURL($oSurvey->templateEffectiveName), 1);
+        $assetsDir = substr((string) Template::getTemplateURL($oSurvey->templateEffectiveName), 1);
         $fullAssetsDir = Template::getTemplatePath($oSurvey->templateEffectiveName);
         $aLanguages = $oSurvey->getAllLanguages();
 
         Yii::import('application.helpers.common_helper', true);
         $zipdir = createRandomTempDir();
 
-        $fn = "printable_survey_" . preg_replace('([^\w\s\d\-_~,;\[\]\(\).])', '', $oSurvey->currentLanguageSettings->surveyls_title) . "_{$oSurvey->primaryKey}.zip";
+        $fn = "printable_survey_" . preg_replace('([^\w\s\d\-_~,;\[\]\(\).])', '', (string) $oSurvey->currentLanguageSettings->surveyls_title) . "_{$oSurvey->primaryKey}.zip";
 
         $tempdir = Yii::app()->getConfig("tempdir");
         $zipfile = "$tempdir/" . $fn;
@@ -1398,7 +1436,7 @@ class Export extends SurveyCommonAction
 
         // remove first slash to get local path for local storage for template assets
         $templateDir = Template::getTemplateURL($oSurvey->templateEffectiveName);
-        $response = str_replace($templateDir, substr($templateDir, 1), $response);
+        $response = str_replace($templateDir, substr((string) $templateDir, 1), (string) $response);
 
         file_put_contents($file, $response);
         return $file;

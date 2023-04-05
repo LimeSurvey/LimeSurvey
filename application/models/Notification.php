@@ -3,7 +3,7 @@
 /**
  * This is the model class for table "{{notifications}}".
  *
- * The followings are the available columns in table '{{notifications}}':
+ * The following are the available columns in table '{{notifications}}':
  * @property integer $id
  * @property string $entity survey or user
  * @property string $entity_id survey id or user id

@@ -31,7 +31,7 @@ function updateset($lid)
     $postlabel_name = Yii::app()->getRequest()->getPost('label_name');
 
     $labelset = LabelSet::model()->findByAttributes(array('lid' => $lid));
-    $oldlangidsarray = explode(' ', $labelset->languages);
+    $oldlangidsarray = explode(' ', (string) $labelset->languages);
 
     $addlangidsarray = array_diff($newlanidarray, $oldlangidsarray);
     $dellangidsarray = array_diff($oldlangidsarray, $newlanidarray);
@@ -124,7 +124,7 @@ function modlabelsetanswers($lid)
         $_POST['method'] = gT("Save");
     }
 
-    $sPostData = Yii::app()->getRequest()->getPost('dataToSend');
+    $sPostData = Yii::app()->getRequest()->getPost('dataToSend', '');
     $sPostData = str_replace("\t", '', $sPostData);
     $data = json_decode($sPostData, true);
 
@@ -144,8 +144,7 @@ function modlabelsetanswers($lid)
             $assessmentvalue = (int) ($oLabelData['assessmentvalue']);
             $sortorder = $index;
 
-            $oLabel = Label::model()->findByPk($lid);
-            $oLabel = $oLabel == null ? (new Label()) : $oLabel;
+            $oLabel = new Label();
             $oLabel->lid = $lid;
             $oLabel->code = $actualcode;
             $oLabel->sortorder = $sortorder;
@@ -179,7 +178,7 @@ function modlabelsetanswers($lid)
         if (count($aErrors)) {
             Yii::app()->session['flashmessage'] = gT("Not all labels were updated successfully.");
         } else {
-            Yii::app()->session['flashmessage'] = gT("Labels sucessfully updated");
+            Yii::app()->session['flashmessage'] = gT("Labels successfully updated");
         }
     } else {
         Yii::app()->setFlashMessage(gT("Can't update labels because you are using duplicated codes"), 'error');
@@ -203,7 +202,7 @@ function fixorder($lid)
     $qulabelset = "SELECT * FROM {{labelsets}} WHERE lid=$lid";
     $rslabelset = Yii::app()->db->createCommand($qulabelset)->query();
     $rwlabelset = $rslabelset->read();
-    $lslanguages = explode(" ", trim($rwlabelset['languages']));
+    $lslanguages = explode(" ", trim((string) $rwlabelset['languages']));
     foreach ($lslanguages as $lslanguage) {
         $query = "SELECT lid, code, title, sortorder FROM {{labels}} WHERE lid=:lid and language=:lang ORDER BY sortorder, code";
         $result = Yii::app()->createCommand($query)->query(array(':lid' => $lid, ':lang' => $lslanguage)); // or safeDie("Can't read labels table: $query // (lid=$lid, language=$lslanguage) "

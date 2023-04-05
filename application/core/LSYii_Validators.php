@@ -50,8 +50,18 @@ class LSYii_Validators extends CValidator
             // Permission::model exist only after 172 DB version
             return $this->xssfilter = ($this->xssfilter && Yii::app()->getConfig('filterxsshtml'));
         }
-        // If run from console there his no user
-        $this->xssfilter = ($this->xssfilter && (($controller = Yii::app()->getController()) !== null && (get_class($controller) !== 'ConsoleApplication' )) && Yii::app()->user->isXssFiltered());
+        // If run from console there is no user
+        $this->xssfilter = (
+            $this->xssfilter && // this
+            (
+                (defined('PHP_ENV') && PHP_ENV == 'test') || // phpunit test : don't check controller
+                (
+                    ($controller = Yii::app()->getController()) !== null && // no controller
+                    (get_class($controller) !== 'ConsoleApplication') // ConsoleApplication
+                )
+            ) &&
+            Yii::app()->user->isXssFiltered() // user
+        );
         return;
     }
 
@@ -116,7 +126,7 @@ class LSYii_Validators extends CValidator
 
         /** Start to get complete filtered value with  url decode {QCODE} (bug #09300). This allow only question number in url, seems OK with XSS protection **/
         $sFiltered = $filter->purify($value);
-        $sFiltered = preg_replace('#%7B([a-zA-Z0-9\.]*)%7D#', '{$1}', $sFiltered);
+        $sFiltered = preg_replace('#%7B([a-zA-Z0-9\.]*)%7D#', '{$1}', (string) $sFiltered);
         Yii::import('application.helpers.expressions.em_core_helper', true); // Already imported in em_manager_helper.php ?
         $oExpressionManager = new ExpressionManager();
         /**  We get 2 array : one filtered, other unfiltered **/
@@ -129,7 +139,7 @@ class LSYii_Validators extends CValidator
             if ($aValue[2] == "STRING") {
                 $sNewValue .= $bCountIsOk ? $aFilteredValues[$key][0] : $filter->purify($aValue[0]); // If EM is broken : can throw invalid $key
             } else {
-                $sExpression = trim($aValue[0], '{}');
+                $sExpression = trim((string) $aValue[0], '{}');
                 $sNewValue .= "{";
                 $aParsedExpressions = $oExpressionManager->Tokenize($sExpression, true);
                 foreach ($aParsedExpressions as $aParsedExpression) {
@@ -138,7 +148,7 @@ class LSYii_Validators extends CValidator
                     } elseif ($aParsedExpression[2] == 'SQ_STRING') {
                         $sNewValue .= "'" . (string) $filter->purify($aParsedExpression[0]) . "'";
                     } elseif ($aParsedExpression[2] == 'WORD') {
-                        $sNewValue .= str_replace("html_entity_decode", "", $aParsedExpression[0]);
+                        $sNewValue .= str_replace("html_entity_decode", "", (string) $aParsedExpression[0]);
                     } else {
                         $sNewValue .= $aParsedExpression[0];
                     }
@@ -159,7 +169,7 @@ class LSYii_Validators extends CValidator
     public function languageFilter($value)
     {
         // Maybe use the array of language ?
-        return preg_replace('/[^a-z0-9-]/i', '', $value);
+        return preg_replace('/[^a-z0-9-]/i', '', (string) $value);
     }
 
     /**
@@ -170,7 +180,7 @@ class LSYii_Validators extends CValidator
      */
     public function multiLanguageFilter($value)
     {
-        $aValue = explode(" ", trim($value));
+        $aValue = explode(" ", trim((string) $value));
         $aValue = array_map("sanitize_languagecode", $aValue);
         return implode(" ", $aValue);
     }

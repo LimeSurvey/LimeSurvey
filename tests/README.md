@@ -9,6 +9,21 @@ Functional tests are divided into back-end (survey administration) and front-end
 
 Unit tests are divided into models, helpers, controllers, etc...
 
+## Debugging
+
+Often, failures happen due to timing issue, or missing wait() or sleep().
+
+Here's one way to debug the CI:
+
+    try {
+        $web->wait(20)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#massive-actions-modal-failedemail-grid-resend-1 #preserveResend')));
+    } catch (TimeOutException $ex) {
+        $body = $web->findElement(WebDriverBy::tagName('body'));
+        var_dump($body->getText());
+        throw $ex;
+    }
+
+
 ## Future directions
 
 Something to consider for the future is the time-constraint of the CI. Integrity tests take longer to execute,

@@ -44,7 +44,6 @@ class Database extends SurveyCommonAction
     private $updateableFields = [
                 'owner_id' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
                 'admin' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
-                'faxto' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
                 'format' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
                 'expires' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
                 'startdate' => ['type' => 'default', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
@@ -578,6 +577,7 @@ class Database extends SurveyCommonAction
 
         Yii::app()->loadHelper('database');
 
+        $hasSurveyLanguageSettingError = false;
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'update')) {
             foreach ($languagelist as $langname) {
                 if ($langname) {
@@ -585,6 +585,7 @@ class Database extends SurveyCommonAction
                     $sURLDescription = Yii::app()->request->getPost('urldescrip_' . $langname, null);
                     $sURL = Yii::app()->request->getPost('url_' . $langname, null);
                     $short_title = Yii::app()->request->getPost('short_title_' . $langname, null);
+                    $alias = Yii::app()->request->getPost('alias_' . $langname, null);
                     $description = Yii::app()->request->getPost('description_' . $langname, null);
                     $welcome = Yii::app()->request->getPost('welcome_' . $langname, null);
                     $endtext = Yii::app()->request->getPost('endtext_' . $langname, null);
@@ -598,6 +599,9 @@ class Database extends SurveyCommonAction
                         // Fix bug with FCKEditor saving strange BR types
                         $short_title = $this->oFixCKeditor->fixCKeditor($short_title);
                         $data['surveyls_title'] = $short_title;
+                    }
+                    if ($alias !== null) {
+                        $data['surveyls_alias'] = $alias;
                     }
                     if ($description !== null) {
                         // Fix bug with FCKEditor saving strange BR types
@@ -643,7 +647,21 @@ class Database extends SurveyCommonAction
                     if (count($data) > 0) {
                         $oSurveyLanguageSetting = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id' => $iSurveyID, 'surveyls_language' => $langname));
                         $oSurveyLanguageSetting->setAttributes($data);
-                        $oSurveyLanguageSetting->save(); // save the change to database
+                        if (!$oSurveyLanguageSetting->save()) { // save the change to database
+                            $languageDescription = getLanguageNameFromCode($langname, false);
+                            Yii::app()->setFlashMessage(
+                                Chtml::errorSummary(
+                                    $oSurveyLanguageSetting,
+                                    Chtml::tag(
+                                        "p",
+                                        ['class' => 'strong'],
+                                        sprintf(gT("Texts for language %s could not be updated:"), $languageDescription)
+                                    )
+                                ),
+                                "error"
+                            );
+                            $hasSurveyLanguageSettingError = true;
+                        }
                     }
                 }
             }
@@ -673,7 +691,7 @@ class Database extends SurveyCommonAction
             $startdate = $this->filterEmptyFields($oSurvey, 'startdate');
             if ($unfilteredStartdate === null) {
                 // Not submitted.
-            } elseif (trim($unfilteredStartdate) == "") {
+            } elseif (trim((string) $unfilteredStartdate) == "") {
                 $oSurvey->startdate = "";
             } else {
                 Yii::app()->loadLibrary('Date_Time_Converter');
@@ -686,7 +704,7 @@ class Database extends SurveyCommonAction
             $expires = $this->filterEmptyFields($oSurvey, 'expires');
             if ($unfilteredExpires === null) {
                 // Not submitted.
-            } elseif (trim($unfilteredExpires) == "") {
+            } elseif (trim((string) $unfilteredExpires) == "") {
                 // Must not convert if empty.
                 $oSurvey->expires = "";
             } else {
@@ -766,7 +784,11 @@ class Database extends SurveyCommonAction
             $aAfterApplyAttributes = $oSurvey->attributes;
 
             if ($oSurvey->save()) {
-                Yii::app()->setFlashMessage(gT("Survey settings were successfully saved."));
+                if (!$hasSurveyLanguageSettingError) {
+                    Yii::app()->setFlashMessage(gT("Survey settings were successfully saved."));
+                } else {
+                    Yii::app()->setFlashMessage(gT("Survey settings were saved, but there where errors with some languages."), "warning");
+                }
             } else {
                 Yii::app()->setFlashMessage(CHtml::errorSummary($oSurvey, CHtml::tag("p", array('class' => 'strong'), gT("Survey could not be updated, please fix the following error:"))), "error");
             }
@@ -775,10 +797,10 @@ class Database extends SurveyCommonAction
 
         // Url params in json
         if (Yii::app()->request->getPost('allurlparams', false) !== false) {
-            $aURLParams = json_decode(Yii::app()->request->getPost('allurlparams'), true);
+            $aURLParams = json_decode(Yii::app()->request->getPost('allurlparams', ''), true) ?? [];
             SurveyURLParameter::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
             foreach ($aURLParams as $aURLParam) {
-                $aURLParam['parameter'] = trim($aURLParam['parameter']);
+                $aURLParam['parameter'] = trim((string) $aURLParam['parameter']);
                 if ($aURLParam['parameter'] == '' || !preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $aURLParam['parameter']) || $aURLParam['parameter'] == 'sid' || $aURLParam['parameter'] == 'newtest' || $aURLParam['parameter'] == 'token' || $aURLParam['parameter'] == 'lang') {
                     continue; // this parameter name seems to be invalid - just ignore it
                 }
@@ -820,9 +842,9 @@ class Database extends SurveyCommonAction
                         'updated' => $updatedFields,
                         'DEBUG' => ['POST' => $_POST,
                                     'reloaded' => $oSurvey->attributes,
-                                    'aURLParams' => isset($aURLParams) ? $aURLParams : '',
-                                    'initial' => isset($aOldAttributes) ? $aOldAttributes : '',
-                                    'afterApply' => isset($aAfterApplyAttributes) ? $aAfterApplyAttributes : '']
+                                    'aURLParams' => $aURLParams ?? '',
+                                    'initial' => $aOldAttributes ?? '',
+                                    'afterApply' => $aAfterApplyAttributes ?? '']
                     ],
                 ),
                 false,
@@ -865,7 +887,6 @@ class Database extends SurveyCommonAction
         $oSurvey->admin = $request->getPost('admin');
         $oSurvey->adminemail = $request->getPost('adminemail');
         $oSurvey->bounce_email = $request->getPost('bounce_email');
-        $oSurvey->faxto = $request->getPost('faxto');
         $oSurvey->gsid = $request->getPost('gsid');
         $oSurvey->format = $request->getPost('format');
 
@@ -960,12 +981,12 @@ class Database extends SurveyCommonAction
         }
 
         if ($newValue === null) {
-            $newValue = isset($aSurvey[$fieldArrayName]) ? $aSurvey[$fieldArrayName] : $oSurvey->{$fieldArrayName};
+            $newValue = $aSurvey[$fieldArrayName] ?? $oSurvey->{$fieldArrayName};
         } else {
             $this->updatedFields[] = $fieldArrayName;
         }
 
-        $newValue = trim($newValue);
+        $newValue = trim((string) $newValue);
 
         $options = $this->updateableFields[$fieldArrayName];
 

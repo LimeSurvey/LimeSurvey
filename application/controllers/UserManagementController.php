@@ -48,13 +48,13 @@ class UserManagementController extends LSBaseController
             Yii::app()->user->setState('pageSize', Yii::app()->request->getParam('pageSize'));
         }
         App()->getClientScript()->registerPackage('usermanagement');
-        App()->getClientScript()->registerPackage('bootstrap-select2');
+        App()->getClientScript()->registerPackage('select2-bootstrap');
 
         $aData = [];
         $model = new User('search');
         $model->setAttributes(Yii::app()->getRequest()->getParam('User'), false);
         $aData['model'] = $model;
-        $aData['columnDefinition'] = $model->getManagementColums();
+       // $aData['columnDefinition'] = $model->getManagementColums();
         $aData['pageSize'] = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
         $aData['formUrl'] = $this->createUrl('userManagement/index');
 
@@ -65,15 +65,18 @@ class UserManagementController extends LSBaseController
             false
         );
 
-        // Green Bar (SurveyManagerBar) Page Title
-        $aData['pageTitle'] = gT('User management');
+
+        $aData['topbar']['title'] = gT('User management');
+
+        $aData['topbar']['middleButtons'] = $this->renderPartial('partial/topbarBtns/leftSideButtons', [], true);
+        $aData['topbar']['rightButtons'] = $this->renderPartial('partial/topbarBtns/rightSideButtons', [], true);
 
         //this is really important, so we have the aData also before rendering the content
         $this->aData = $aData;
 
         return $this->render('index', [
             'model' => $aData['model'],
-            'columnDefinition' => $aData['columnDefinition'],
+            //'columnDefinition' => $aData['columnDefinition'],
             'pageSize' => $aData['pageSize'],
             'formUrl' => $aData['formUrl'],
             'massiveAction' => $aData['massiveAction'],
@@ -106,8 +109,10 @@ class UserManagementController extends LSBaseController
                 $this->redirect(App()->request->urlReferrer);
             }
         }
+
         $randomPassword = \LimeSurvey\Models\Services\PasswordManagement::getRandomPassword();
-        return $this->renderPartial('partial/addedituser', ['oUser' => $oUser, 'randomPassword' => $randomPassword]);
+        $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
+        return $this->renderPartial('partial/addedituser', ['oUser' => $oUser, 'randomPassword' => $randomPassword, 'dateformatdetails' => $dateformatdetails]);
     }
 
     /**
@@ -154,6 +159,15 @@ class UserManagementController extends LSBaseController
                     'errors' => gT('Passwords does not fulfill minimum requirement:') . '<br/>' . $oPasswordTestEvent->get('passwordError'),
                 ]]);
             }
+        }
+
+        $expires = Yii::app()->request->getPost('expires', null);
+        if (!empty($expires)) {
+            $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
+            $datetimeobj = new Date_Time_Converter($expires, $dateformatdetails['phpdate'] . ' H:i');
+            $aUser['expires'] = $datetimeobj->convert("Y-m-d H:i:s");
+        } else {
+            $aUser['expires'] = null;
         }
 
         if (isset($aUser['uid']) && $aUser['uid']) {
@@ -319,6 +333,13 @@ class UserManagementController extends LSBaseController
             }
         }
 
+        // Transfer any Participants owned by this user to site's admin
+        $participantsTranferred = Participant::model()->updateAll(['owner_uid' => 1], 'owner_uid = :owner_uid', [':owner_uid' => $userId]);
+        if ($participantsTranferred) {
+            $transferredToName = User::model()->findByPk(1)->users_name;
+            $message .= sprintf(gT("All participants owned by this user were transferred to %s."), $transferredToName) . " ";
+        }
+
         $oUser = User::model()->findByPk($userId);
         //todo REFACTORING user permissions should be deleted also ... (in table permissions)
         $oUser->delete();
@@ -460,7 +481,7 @@ class UserManagementController extends LSBaseController
         return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
             "data" => [
                 'success' => true,
-                'html'    => $this->renderPartial('partial/permissionsuccess', ['results' => $results], true),
+                'message' => gT("Saved permissions successfully.")
             ]
         ]);
     }
@@ -520,12 +541,12 @@ class UserManagementController extends LSBaseController
         $userId = Yii::app()->request->getPost('userid');
         $aTemplatePermissions = Yii::app()->request->getPost('TemplatePermissions', []);
 
-        $results = Permission::editThemePermissionsUser($userId, $aTemplatePermissions);
+        Permission::editThemePermissionsUser($userId, $aTemplatePermissions);
 
         return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
             "data" => [
                 'success' => true,
-                'html'    => $this->renderPartial('partial/permissionsuccess', ['results' => $results], true),
+                'message' => gT("Saved template permissions successfully.")
             ]
         ]);
     }
@@ -604,7 +625,7 @@ class UserManagementController extends LSBaseController
         return $this->renderPartial('partial/json', [
             "data" => [
                 'success' => true,
-                'html'    => $this->renderPartial('partial/permissionsuccess', ['results' => $results], true),
+                'message' => 'Saved user roles successfuly',
             ]
         ]);
     }
@@ -684,7 +705,7 @@ class UserManagementController extends LSBaseController
                     $oUser->parent_id = App()->user->id;
                     $oUser->modified = date('Y-m-d H:i:s');
                     if ($aNewUser['password'] != ' ') {
-                        $oUser->password = password_hash($aNewUser['password'], PASSWORD_DEFAULT);
+                        $oUser->password = password_hash((string) $aNewUser['password'], PASSWORD_DEFAULT);
                     }
 
                     $save = $oUser->save();
@@ -700,7 +721,7 @@ class UserManagementController extends LSBaseController
                 $password = \LimeSurvey\Models\Services\PasswordManagement::getRandomPassword();
                 $passwordText = $password;
                 if ($aNewUser['password'] != ' ') {
-                    $password = password_hash($aNewUser['password'], PASSWORD_DEFAULT);
+                    $password = password_hash((string) $aNewUser['password'], PASSWORD_DEFAULT);
                 }
 
                 $save = $this->createNewUser([
@@ -791,11 +812,11 @@ class UserManagementController extends LSBaseController
                 fprintf($fp, chr(0xEF) . chr(0xBB) . chr(0xBF));
                 $header = array('uid', 'users_name', 'full_name', 'email', 'lang', 'password');
                 //Add csv header
-                fputcsv($fp, $header, ';');
+                fputcsv($fp, $header, ';', '"');
 
                 //add csv row datas
                 foreach ($aUsers as $fields) {
-                    fputcsv($fp, $fields, ';');
+                    fputcsv($fp, $fields, ';', '"');
                 }
                 fclose($fp);
                 header('Content-Encoding: UTF-8');
@@ -826,7 +847,7 @@ class UserManagementController extends LSBaseController
             );
         }
 
-        $aUsers = json_decode(App()->request->getPost('sItems'));
+        $aUsers = json_decode(App()->request->getPost('sItems', ''));
         $aResults = [];
 
         foreach ($aUsers as $user) {
@@ -860,7 +881,7 @@ class UserManagementController extends LSBaseController
      */
     public function actionRenderSelectedItems()
     {
-        $aUsers = json_decode(App()->request->getPost('$oCheckedItems'));
+        $aUsers = json_decode(App()->request->getPost('$oCheckedItems', ''));
         $aResults = [];
         $gridid = App()->request->getParam('$grididvalue');
 
@@ -1003,7 +1024,7 @@ class UserManagementController extends LSBaseController
                 ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
             );
         }
-        $aItems = json_decode(Yii::app()->request->getPost('sItems', []));
+        $aItems = json_decode(Yii::app()->request->getPost('sItems', '')) ?? [];
         $iUserGroupId = Yii::app()->request->getPost('addtousergroup');
 
         if ($iUserGroupId) {
@@ -1057,7 +1078,7 @@ class UserManagementController extends LSBaseController
                 ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
             );
         }
-        $aItems = json_decode(Yii::app()->request->getPost('sItems', []));
+        $aItems = json_decode(Yii::app()->request->getPost('sItems', '')) ?? [];
         $aUserRoleIds = Yii::app()->request->getPost('roleselector');
         $aResults = [];
 
@@ -1179,11 +1200,17 @@ class UserManagementController extends LSBaseController
             throw new CException("This action is not allowed, and should never happen", 500);
         }
 
+        // Abort if logged in user has no access to this user.
+        // Using same logic as User::getButtons().
+        if (!$oUser->canEdit(Yii::app()->session['loginID'])) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
+
         $aUser['full_name'] = flattenText($aUser['full_name']); //to prevent xss ...
         $oUser->setAttributes($aUser);
 
         if (isset($aUser['password']) && $aUser['password']) {
-            $oUser->password = password_hash($aUser['password'], PASSWORD_DEFAULT);
+            $oUser->password = password_hash((string) $aUser['password'], PASSWORD_DEFAULT);
         }
         $oUser->modified = date('Y-m-d H:i:s');
         $oUser->save();
@@ -1387,33 +1414,75 @@ class UserManagementController extends LSBaseController
      */
     protected function applyPermissionFromArray(int $iUserId, array $aPermissionArray): array
     {
-        //Delete all current Permissions
-        $oCriteria = new CDbCriteria();
-        $oCriteria->compare('uid', $iUserId);
-        // without entity
-        $oCriteria->compare('entity_id', 0);
-        // except for template entity (no entity_id is set here)
-        $oCriteria->compare('entity', "<>template");
-        Permission::model()->deleteAll($oCriteria);
-
+        /**
+         * Get current user permission to update only this permission
+         * NEVER delete existing Permission !
+         */
+        $aGlobalPermissions = Permission::model()->getGlobalBasePermissions();
+        /* Get only permission part */
+        $aAllowedPermissions = array_map(
+            function ($aGlobalPermission) {
+                return array(
+                    'create' => $aGlobalPermission['read'],
+                    'read' => $aGlobalPermission['read'],
+                    'update' => $aGlobalPermission['read'],
+                    'delete' => $aGlobalPermission['read'],
+                    'import' => $aGlobalPermission['read'],
+                    'export' => $aGlobalPermission['read'],
+                );
+            },
+            $aGlobalPermissions
+        );
+        $aCruds = array('create', 'read', 'update', 'delete', 'import', 'export');
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+            // if not superadmin filter the available permissions as no admin may give more permissions than he owns
+            $aFilteredPermissions = array();
+            foreach ($aAllowedPermissions as $PermissionName => $aPermission) {
+                foreach ($aPermission as $sPermissionKey => &$sPermissionValue) {
+                    if (in_array($sPermissionKey, $aCruds) && !Permission::model()->hasGlobalPermission($PermissionName, $sPermissionKey)) {
+                        $sPermissionValue = false;
+                    }
+                }
+                // Only show a row for that permission if there is at least one permission he may give to other users
+                if (
+                    $aPermission['create'] || $aPermission['read'] || $aPermission['update']
+                    || $aPermission['delete'] || $aPermission['import'] || $aPermission['export']
+                ) {
+                    $aFilteredPermissions[$PermissionName] = $aPermission;
+                }
+            }
+            $aAllowedPermissions = $aFilteredPermissions;
+        }
         $results = [];
         //Apply the permission array
-        foreach ($aPermissionArray as $sPermissionKey => $aPermissionSettings) {
-            $oPermission = new Permission();
-            $oPermission->entity = 'global';
-            $oPermission->entity_id = 0;
-            $oPermission->uid = $iUserId;
-            $oPermission->permission = $sPermissionKey;
-
-            foreach ($aPermissionSettings as $sSettingKey => $sSettingValue) {
-                $oPermissionDBSettingKey = $sSettingKey . '_p';
-                $oPermission->$oPermissionDBSettingKey = $sSettingValue == 'on' ? 1 : 0;
+        foreach ($aAllowedPermissions as $permissionKey => $aAllowedPermission) {
+            /* get the current user permission or create */
+            $oPermission = Permission::model()->find(
+                "entity = :entity AND entity_id = :entity_id AND uid = :uid AND permission = :permission",
+                array(
+                    ":entity" => 'global',
+                    ":entity_id" => 0,
+                    ":uid" => $iUserId,
+                    ":permission" => $permissionKey,
+                )
+            );
+            if (empty($oPermission)) {
+                $oPermission = new Permission();
+                $oPermission->entity = 'global';
+                $oPermission->entity_id = 0;
+                $oPermission->uid = $iUserId;
+                $oPermission->permission = $permissionKey;
             }
-
-            $aPermissionData = Permission::getGlobalPermissionData($sPermissionKey);
-
-            $results[$sPermissionKey] = [
-                'descriptionData' => $aPermissionData,
+            foreach ($aAllowedPermission as $action => $havePermission) {
+                if ($havePermission) {
+                    $oPermission->setAttribute(
+                        $action . '_p',
+                        intval(!empty($aPermissionArray[$permissionKey][$action]))
+                    );
+                }
+            }
+            $results[$permissionKey] = [
+                'descriptionData' => Permission::getGlobalPermissionData($permissionKey),
                 'success' => $oPermission->save(),
                 'storedValue' => $oPermission->attributes
             ];

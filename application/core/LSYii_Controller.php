@@ -39,7 +39,7 @@ abstract class LSYii_Controller extends CController
         // Deprecated function
         $this->loadHelper('globalsettings');
         // tracevar function
-        $this->loadHelper('common');
+        //$this->loadHelper('common');
         $this->loadHelper('expressions.em_manager');
         $this->loadHelper('replacements');
         $this->customInit();
@@ -145,10 +145,10 @@ abstract class LSYii_Controller extends CController
 
         //SET LOCAL TIME
         $timeadjust = Yii::app()->getConfig("timeadjust");
-        if (substr($timeadjust, 0, 1) != '-' && substr($timeadjust, 0, 1) != '+') {
+        if (substr((string) $timeadjust, 0, 1) != '-' && substr((string) $timeadjust, 0, 1) != '+') {
             $timeadjust = '+' . $timeadjust;
         }
-        if (strpos($timeadjust, 'hours') === false && strpos($timeadjust, 'minutes') === false && strpos($timeadjust, 'days') === false) {
+        if (strpos((string) $timeadjust, 'hours') === false && strpos((string) $timeadjust, 'minutes') === false && strpos((string) $timeadjust, 'days') === false) {
             Yii::app()->setConfig("timeadjust", $timeadjust . ' hours');
         }
         /* Set the default language, other controller can update if wanted */
@@ -168,14 +168,14 @@ abstract class LSYii_Controller extends CController
         $sPublicUrl = Yii::app()->getConfig("publicurl");
         // Control if public url are really public : need scheme and host
         // If yes: use it
-        $aPublicUrl = parse_url($sPublicUrl);
+        $aPublicUrl = parse_url((string) $sPublicUrl);
         if (isset($aPublicUrl['scheme']) && isset($aPublicUrl['host'])) {
             $url = parent::createAbsoluteUrl($route, $params, $schema, $ampersand);
             $sActualBaseUrl = Yii::app()->getBaseUrl(true);
-            if (substr($url, 0, strlen($sActualBaseUrl)) == $sActualBaseUrl) {
-                $url = substr($url, strlen($sActualBaseUrl));
+            if (substr((string) $url, 0, strlen((string) $sActualBaseUrl)) == $sActualBaseUrl) {
+                $url = substr((string) $url, strlen((string) $sActualBaseUrl));
             }
-            return trim($sPublicUrl, "/") . $url;
+            return trim((string) $sPublicUrl, "/") . $url;
         } else {
                     return parent::createAbsoluteUrl($route, $params, $schema, $ampersand);
         }

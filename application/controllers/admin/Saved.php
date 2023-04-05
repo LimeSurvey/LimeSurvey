@@ -94,9 +94,9 @@ class Saved extends SurveyCommonAction
             throw new CHttpException(401, gT("Saved response not found"));
         }
         if ($oSavedControl->delete()) {
-            $oReponse = Response::model($surveyid)->findByPk($oSavedControl->srid);
-            if ($oReponse) {
-                $oReponse->delete();
+            $oResponse = Response::model($surveyid)->findByPk($oSavedControl->srid);
+            if ($oResponse) {
+                $oResponse->delete();
             }
         } else {
             if (Yii::app()->getRequest()->isAjaxRequest) {
@@ -129,8 +129,12 @@ class Saved extends SurveyCommonAction
 
         $aData['title_bar']['title'] = gT('Browse responses') . ': ' . $oSurvey->currentLanguageSettings->surveyls_title;
 
-        $aData['topBar']['name'] = 'baseTopbar_view';
-        $aData['topBar']['leftSideView'] = 'responsesTopbarLeft_view';
+        $topbarData = TopbarConfiguration::getResponsesTopbarData($aData['surveyid']);
+        $aData['topbar']['middleButtons'] = Yii::app()->getController()->renderPartial(
+            '/responses/partial/topbarBtns/leftSideButtons',
+            $topbarData,
+            true
+        );
 
         parent::renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }

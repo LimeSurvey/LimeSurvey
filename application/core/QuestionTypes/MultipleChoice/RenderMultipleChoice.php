@@ -33,6 +33,9 @@ class RenderMultipleChoice extends QuestionBaseRenderer
     /** @var string the title of the subquestion after which the 'Other' option should be placed (if $otherPosition == 3) */
     protected $subquestionBeforeOther;
 
+    /** @var string the text for the "Other" option */
+    protected $otherText;
+
     const OTHER_POS_END = 'end';
     const OTHER_POS_START = 'beginning';
     const OTHER_POS_AFTER_SUBQUESTION = 'specific';
@@ -54,6 +57,7 @@ class RenderMultipleChoice extends QuestionBaseRenderer
         if ($this->hasOther && $this->otherPosition == self::OTHER_POS_AFTER_SUBQUESTION) {
             $this->subquestionBeforeOther = $this->getQuestionAttribute('other_position_code');
         }
+        $this->otherText = $this->setDefaultIfEmpty($this->getQuestionAttribute('other_replace_text', $this->sLanguage), gT('Other:'));
     }
 
     public function getMainView()
@@ -123,9 +127,9 @@ class RenderMultipleChoice extends QuestionBaseRenderer
         if (!empty($mSessionValue)) {
             $dispVal = $mSessionValue;
             if ($this->getQuestionAttribute('other_numbers_only') == 1) {
-                $dispVal = str_replace('.', $sSeparator, $dispVal);
+                $dispVal = str_replace('.', $sSeparator, (string) $dispVal);
             }
-            $sValue .= htmlspecialchars($dispVal, ENT_QUOTES);
+            $sValue .= htmlspecialchars((string) $dispVal, ENT_QUOTES);
         }
 
         // TODO : check if $sValueHidden === $sValue
@@ -133,9 +137,9 @@ class RenderMultipleChoice extends QuestionBaseRenderer
         if (!empty($mSessionValue)) {
             $dispVal = $mSessionValue;
             if ($this->getQuestionAttribute('other_numbers_only') == 1) {
-                $dispVal = str_replace('.', $sSeparator, $dispVal);
+                $dispVal = str_replace('.', $sSeparator, (string) $dispVal);
             }
-            $sValueHidden = htmlspecialchars($dispVal, ENT_QUOTES);
+            $sValueHidden = htmlspecialchars((string) $dispVal, ENT_QUOTES);
         }
 
         ////
@@ -143,7 +147,7 @@ class RenderMultipleChoice extends QuestionBaseRenderer
         // Display the answer row
         return array(
             'myfname'                    => $myfname,
-            'othertext'                  => $this->setDefaultIfEmpty($this->getQuestionAttribute('other_replace_text', $this->sLanguage), gT('Other:')),
+            'othertext'                  => $this->otherText,
             'sValue'                     => $sValue,
             'oth_checkconditionFunction' => $oth_checkconditionFunction,
             'checkconditionFunction'     => "checkconditions",
@@ -171,6 +175,7 @@ class RenderMultipleChoice extends QuestionBaseRenderer
             'iNbCols'          => $this->iNbCols,
             'iMaxRowsByColumn' => $this->getQuestionCount() +1, // Leave it for old question theme compatibility, be sure to don't add columns
             'coreClass'        => $this->sCoreClasses,
+            'othertext'        => $this->otherText,
         ), true);
 
         $this->registerAssets();

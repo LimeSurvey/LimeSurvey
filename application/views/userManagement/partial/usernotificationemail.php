@@ -66,9 +66,7 @@
             width: 100% !important;
         }
     </style>
-    <![endif]--><!--[if !mso]><!-->
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
-    <style type="text/css">@import url(https://fonts.googleapis.com/css?family=Open+Sans);</style><!--<![endif]-->
+    <![endif]-->
     <style type="text/css">@media only screen and (min-width: 480px) {
             .mj-column-px-540 {
                 width: 540px !important;
@@ -165,7 +163,7 @@
                                                                 <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="vertical-align:top;" width="100%">
                                                                     <tr>
                                                                         <td align="center" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-                                                                            <div style="font-family:Open Sans;font-size:18px;line-height:1.8;text-align:center;color:#000000;">
+                                                                            <div style="font-family:Open Sans, Verdana, sans-serif;font-size:18px;line-height:1.8;text-align:center;color:#000000;">
                                                                                 <mj-raw> <?= $emailMessage ?> </mj-raw>
                                                                             </div>
                                                                         </td>
@@ -203,7 +201,7 @@
                                                                 <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="vertical-align:top;" width="100%">
                                                                     <tr>
                                                                         <td align="center" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-                                                                            <div style="font-family:Open Sans;font-size:18px;line-height:1.8;text-align:center;color:#000000;">
+                                                                            <div style="font-family:Open Sans, Verdana, sans-serif;font-size:18px;line-height:1.8;text-align:center;color:#000000;">
                                                                                 <mj-raw> <?= $credentialsText ?> </mj-raw>
                                                                             </div>
                                                                         </td>
@@ -241,14 +239,14 @@
                                                                 <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="vertical-align:top;" width="100%">
                                                                     <tr>
                                                                         <td align="center" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-                                                                            <div style="font-family:Open Sans;font-size:18px;line-height:1.8;text-align:center;color:#000000;">
+                                                                            <div style="font-family:Open Sans, Verdana, sans-serif;font-size:18px;line-height:1.8;text-align:center;color:#000000;">
                                                                                 <mj-raw> <?= gT("Your username:") ?> </mj-raw>
                                                                             </div>
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td align="center" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-                                                                            <div style="font-family:Open Sans;font-size:18px;font-weight:700;line-height:1.8;text-align:center;color:#000000;">
+                                                                            <div style="font-family:Open Sans, Verdana, sans-serif;font-size:18px;font-weight:700;line-height:1.8;text-align:center;color:#000000;">
                                                                                 <mj-raw> <?= $username ?> </mj-raw>
                                                                             </div>
                                                                         </td>
@@ -286,14 +284,14 @@
                                                                 <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="vertical-align:top;" width="100%">
                                                                     <tr>
                                                                         <td align="center" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-                                                                            <div style="font-family:Open Sans;font-size:18px;line-height:1.8;text-align:center;color:#000000;">
+                                                                            <div style="font-family:Open Sans, Verdana, sans-serif;font-size:18px;line-height:1.8;text-align:center;color:#000000;">
                                                                                 <mj-raw> <?= gT("Your password:") ?> </mj-raw>
                                                                             </div>
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td align="center" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-                                                                            <div style="font-family:Open Sans;font-size:18px;font-weight:700;line-height:1.8;text-align:center;color:#000000;">
+                                                                            <div style="font-family:Open Sans, Verdana, sans-serif;font-size:18px;font-weight:700;line-height:1.8;text-align:center;color:#000000;">
                                                                                 <a class="regular-text" href="<?= $password ?>">
                                                                                     <mj-raw> <?= gT('Click here to reset your password') ?> </mj-raw>
                                                                                 </a>
@@ -308,7 +306,7 @@
                                                                 <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="vertical-align:top;" width="100%">
                                                                     <tr>
                                                                         <td align="center" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-                                                                            <div style="font-family:Open Sans;font-size:18px;line-height:1.8;text-align:center;color:#000000;">
+                                                                            <div style="font-family:Open Sans, Verdana, sans-serif;font-size:18px;line-height:1.8;text-align:center;color:#000000;">
                                                                                 <mj-raw> <?= gT("Please contact your LimeSurvey administrator for your password.") ?> </mj-raw>
                                                                             </div>
                                                                         </td>
@@ -349,7 +347,7 @@
                                                                             <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:separate;width:320px;line-height:100%;">
                                                                                 <tr>
                                                                                     <td align="center" bgcolor="#169100" role="presentation" style="border:none;border-radius:3px;cursor:auto;padding:10px 25px;background:#169100;" valign="middle"><a href="<?= $linkToAdminpanel ?>"
-                                                                                                                                                                                                                                                        style="background:#169100;color:#ffffff;font-family:Open Sans;font-size:18px;font-weight:normal;line-height:1.8;Margin:0;text-decoration:none;text-transform:none;"
+                                                                                                                                                                                                                                                        style="background:#169100;color:#ffffff;font-family:Open Sans, Verdana, sans-serif;font-size:18px;font-weight:normal;line-height:1.8;Margin:0;text-decoration:none;text-transform:none;"
                                                                                                                                                                                                                                                         target="_blank">Login now</a></td>
                                                                                 </tr>
                                                                             </table>
@@ -388,7 +386,7 @@
                                                                 <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="vertical-align:top;" width="100%">
                                                                     <tr>
                                                                         <td align="center" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-                                                                            <div style="font-family:Open Sans;font-size:18px;line-height:1.8;text-align:center;color:#000000;">
+                                                                            <div style="font-family:Open Sans, Verdana, sans-serif;font-size:18px;line-height:1.8;text-align:center;color:#000000;">
                                                                                 <mj-raw> <?= sprintf(gT('If you have any questions regarding this mail please do not hesitate to contact the site administrator at %s. Thank you!'), Yii::app()->getConfig("siteadminemail")) ?> </mj-raw>
                                                                             </div>
                                                                         </td>
@@ -453,12 +451,12 @@
                                                                 <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="vertical-align:top;" width="100%">
                                                                     <tr>
                                                                         <td align="center" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-                                                                            <div style="font-family:Open Sans;font-size:18px;line-height:1.8;text-align:center;color:#000000;"><?= gT('If the button above is not working, please copy this link into the address line of your browser') ?></div>
+                                                                            <div style="font-family:Open Sans, Verdana, sans-serif;font-size:18px;line-height:1.8;text-align:center;color:#000000;"><?= gT('If the button above is not working, please copy this link into the address line of your browser') ?></div>
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td align="center" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-                                                                            <div style="font-family:Open Sans;font-size:18px;line-height:1.8;text-align:center;color:#000000;"><a class="regular-text" href="<?= $linkToAdminpanel ?>">
+                                                                            <div style="font-family:Open Sans, Verdana, sans-serif;font-size:18px;line-height:1.8;text-align:center;color:#000000;"><a class="regular-text" href="<?= $linkToAdminpanel ?>">
                                                                                     <mj-raw><?= $linkToAdminpanel ?></mj-raw>
                                                                                 </a></div>
                                                                         </td>

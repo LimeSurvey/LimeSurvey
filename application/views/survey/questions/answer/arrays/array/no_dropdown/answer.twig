@@ -14,32 +14,32 @@
 <!-- Array -->
 
 <!-- answer -->
-<table class="{{ coreClass }} table table-bordered table-hover table-array-radio" role="group" aria-labelledby="ls-question-text-{{ basename }}">
-    <colgroup class="col-responses">
-        <col class="col-answers"  style='width: {{ answerwidth }}%;' />
-        {# columns/col.php #}
-        {% for aColumn in aColumns %}
-            <col class="{{ aColumn.class }}" style='width: {{ aColumn.cellwidth }}%'/>
-        {% endfor %}
-    </colgroup>
-    <thead aria-hidden="true">
-        <tr class="ls-heading">
-            {{sHeaders}}
-        </tr>
-    </thead>
-    <tbody>
-         {% if anscount==0 %}
-            <tr>
-                <th class="answertext">
-                     {{ gT('Error: This question has no answers.') }}
-                </th>
-            </tr>
-         {% endif %}
-        
-            {% for aRow in aRows %}
-                {% include aRow.template with aRow.content only %}
+<div class="ls-table-wrapper" role="group" aria-labelledby="ls-question-text-{{ basename }}">
+    <table class="{{ coreClass }} table table-bordered table-hover table-array-radio" >
+        <colgroup class="col-responses">
+            <col class="col-answers"  style='width: {{ answerwidth }}%;' />
+            {# columns/col.php #}
+            {% for aColumn in aColumns %}
+                <col class="{{ aColumn.class }}" style='width: {{ aColumn.cellwidth }}%'/>
             {% endfor %}
-        
-    </tbody>
-</table>
+        </colgroup>
+        <thead>
+            <tr class="ls-heading ls-header">
+                {{sHeaders}}
+            </tr>
+        </thead>
+        <tbody>
+             {% if anscount==0 %}
+                <tr>
+                    <th class="answertext">
+                         {{ gT('Error: This question has no answers.') }}
+                    </th>
+                </tr>
+             {% endif %}
+                {% for aRow in aRows %}
+                    {% include aRow.template with aRow.content %}
+                {% endfor %}
+        </tbody>
+    </table>
+</div>
 <!-- end of answer -->

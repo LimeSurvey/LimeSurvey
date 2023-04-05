@@ -3,7 +3,7 @@
 /**
  * This is the model class for table "{{surveys_groupsettings}}".
  *
- * The followings are the available columns in table '{{surveys_groupsettings}}':
+ * The following are the available columns in table '{{surveys_groupsettings}}':
  * @property integer $gsid
  * @property integer $owner_id
  * @property string $admin
@@ -374,6 +374,9 @@ class SurveysGroupsettings extends LSActiveRecord
      */
     protected static function translateOptionLabels($instance, $attribute, $value)
     {
+        if (is_null($value)) {
+            return '';
+        }
         // replace option labels on forms
         if ($attribute == 'usecaptcha') {
             $usecap = $value;
@@ -401,15 +404,15 @@ class SurveysGroupsettings extends LSActiveRecord
                 $instance->oOptions->ownerLabel = $oUser->users_name . ($oUser->full_name ? " - " . $oUser->full_name : "");
             }
         } elseif ($attribute == 'format' && $value != -1) {
-            return str_replace(array('S', 'G', 'A'), array(gT("Question by question"), gT("Group by group"), gT("All in one")), $value);
+            return str_replace(array('S', 'G', 'A'), array(gT("Question by question"), gT("Group by group"), gT("All in one")), (string) $value);
         } elseif ($attribute == 'questionindex' && $value != -1) {
-            return str_replace(array('0', '1', '2'), array(gT("Disabled"), gT("Incremental"), gT("Full")), $value);
+            return str_replace(array('0', '1', '2'), array(gT("Disabled"), gT("Incremental"), gT("Full")), (string) $value);
         } elseif ($attribute == 'showgroupinfo') {
-            return str_replace(array('B', 'D', 'N', 'X'), array(gT("Show both"), gT("Show group description only"), gT("Show group name only"), gT("Hide both")), $value);
+            return str_replace(array('B', 'D', 'N', 'X'), array(gT("Show both"), gT("Show group description only"), gT("Show group name only"), gT("Hide both")), (string) $value);
         } elseif ($attribute == 'showqnumcode') {
-            return str_replace(array('B', 'C', 'N', 'X'), array(gT("Show both"), gT("Show question code only"), gT("Show question number only"), gT("Hide both")), $value);
+            return str_replace(array('B', 'C', 'N', 'X'), array(gT("Show both"), gT("Show question code only"), gT("Show question number only"), gT("Hide both")), (string) $value);
         } else {
-            return str_replace(array('Y', 'N'), array(gT("On"), gT("Off")), $value);
+            return str_replace(array('Y', 'N'), array(gT("On"), gT("Off")), (string) $value);
         }
     }
 
@@ -456,8 +459,8 @@ class SurveysGroupsettings extends LSActiveRecord
         $this->owner_id = 1;
         $this->usecaptcha = 'N';
         $this->format = 'G';
-        $this->admin = substr(App()->getConfig('siteadminname'), 0, 50);
-        $this->adminemail = substr(App()->getConfig('siteadminemail'), 0, 254);
+        $this->admin = substr((string) App()->getConfig('siteadminname'), 0, 50);
+        $this->adminemail = substr((string) App()->getConfig('siteadminemail'), 0, 254);
         $this->template = Template::templateNameFilter(App()->getConfig('defaulttheme'));
     }
 
