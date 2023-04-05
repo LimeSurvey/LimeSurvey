@@ -73,7 +73,9 @@ LS.renderBootstrapSwitch();
         </div>
 
         <div id="email" class="tab-pane col-lg-10 offset-lg-1">
-            <?php $this->renderPartial("./globalsettings/_email"); ?>
+            <?php $this->renderPartial("./globalsettings/_email", [
+                'oauthPlugins' => $oauthPlugins,
+            ]); ?>
         </div>
 
         <div id="bounce" class="tab-pane col-lg-10 offset-lg-1">

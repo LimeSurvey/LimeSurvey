@@ -27,12 +27,13 @@
             <div>
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name'          => 'emailmethod',
-                    'checkedOption' => getGlobalSetting('emailmethod'),
+                    'checkedOption' => Yii::app()->getConfig('emailmethod'),
                     'selectOptions' => [
-                        "mail"     => "PHP",
-                        "smtp"     => "SMTP",
-                        "sendmail" => "Sendmail",
-                        "qmail"    => "qmail"
+                        LimeMailer::MethodMail => "PHP",
+                        LimeMailer::MethodSmtp => "SMTP",
+                        LimeMailer::MethodSendmail => "Sendmail",
+                        LimeMailer::MethodQmail => "qmail",
+                        LimeMailer::MethodOAuth2Smtp => "OAuth 2 SMTP",
                     ]
                 ]); ?>
             </div>
@@ -85,6 +86,27 @@
                     ]
                 ]); ?>
             </div>
+        </div>
+        <!-- OAuth Plugins -->
+        <div class="mb-3">
+            <label class="col-12 form-label" for="emailoauthplugin">
+                <?php eT("OAuth 2 plugin:"); ?>
+            </label>
+            <div class="col-12">
+                <select class="form-select" name="emailoauthplugin" id="emailoauthplugin" <?= (Yii::app()->getConfig('emailmethod') == LimeMailer::MethodOAuth2Smtp) ? '' : 'disabled' ?>>
+                    <option value=''><?php eT("None"); ?></option>
+                    <?php if (!empty($oauthPlugins)): ?>
+                        <?php foreach ($oauthPlugins as $oauthPluginClass => $oauthPluginDescription): ?>
+                            <option value='<?= $oauthPluginClass ?>' <?= ($oauthPluginClass == Yii::app()->getConfig('emailoauthplugin')) ? "selected='selected'" : "" ?>>
+                                <?= $oauthPluginDescription ?>
+                            </option>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </select>
+            </div>
+            <?php
+                // TODO: Show message or link to plugin settings if plugin is selected. May need a way to get plugin settings URL from plugin.
+            ?>
         </div>
         <div class="mb-3">
             <label class="  form-label" for='maxemails'><?php eT("Email batch size:"); ?></label>

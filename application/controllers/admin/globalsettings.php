@@ -143,6 +143,12 @@ class GlobalSettings extends SurveyCommonAction
         $data['sideMenuBehaviour'] = getGlobalSetting('sideMenuBehaviour');
         $data['aListOfThemeObjects'] = AdminTheme::getAdminThemeList();
 
+        // List of available OAuth plugins
+        $event = new PluginEvent('listSMTPOauthPlugins', $this);
+        Yii::app()->getPluginManager()->dispatchEvent($event);
+        $oauthPlugins = $event->get('oauthplugins');
+        $data['oauthPlugins'] = $oauthPlugins;
+
         $this->renderWrappedTemplate('globalsettings', 'globalSettings_view', $data);
     }
 
@@ -327,7 +333,8 @@ class GlobalSettings extends SurveyCommonAction
         $sAdmintheme = sanitize_paranoid_string(Yii::app()->getRequest()->getPost('admintheme'));
         SettingGlobal::setSetting('admintheme', $sAdmintheme);
 
-        SettingGlobal::setSetting('emailmethod', strip_tags(Yii::app()->getRequest()->getPost('emailmethod', '')));
+        $emailMethod = strip_tags(Yii::app()->getRequest()->getPost('emailmethod', ''));
+        SettingGlobal::setSetting('emailmethod', $emailMethod);
         SettingGlobal::setSetting('emailsmtphost', strip_tags((string) returnGlobal('emailsmtphost')));
         if (returnGlobal('emailsmtppassword') != 'somepassword') {
             SettingGlobal::setSetting('emailsmtppassword', LSActiveRecord::encryptSingle(returnGlobal('emailsmtppassword')));
@@ -346,6 +353,16 @@ class GlobalSettings extends SurveyCommonAction
         SettingGlobal::setSetting('emailsmtpuser', strip_tags((string) returnGlobal('emailsmtpuser')));
         SettingGlobal::setSetting('filterxsshtml', strip_tags(Yii::app()->getRequest()->getPost('filterxsshtml', '')));
         SettingGlobal::setSetting('disablescriptwithxss', strip_tags(Yii::app()->getRequest()->getPost('disablescriptwithxss', '')));
+
+        $oldOauth2Plugin = Yii::app()->getConfig('emailoauthplugin');
+        $oauth2Plugin = strip_tags(Yii::app()->getRequest()->getPost('emailoauthplugin', ''));
+        SettingGlobal::setSetting('emailoauthplugin', $oauth2Plugin);
+        // If the OAuth2 plugin has changed, dispatch an event to allow the new plugin to do any necessary setup.
+        if ($emailMethod == LimeMailer::MethodOAuth2Smtp && $oldOauth2Plugin != $oauth2Plugin) {
+            $event = new PluginEvent('afterSelectSMTPOAuthPlugin', $this);
+            Yii::app()->getPluginManager()->dispatchEvent($event, $oauth2Plugin);
+        }
+
         // make sure emails are valid before saving them
         if (
             Yii::app()->request->getPost('siteadminbounce', '') == ''

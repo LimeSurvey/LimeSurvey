@@ -1,9 +1,13 @@
 <?php
+
+use PHPMailer\PHPMailer\OAuth;
+use PHPMailer\PHPMailer\PHPMailer;
+
 /**
  * WIP
  * A SubClass of phpMailer adapted for LimeSurvey
  */
-class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
+class LimeMailer extends PHPMailer
 {
     /**
      * Singleton
@@ -20,6 +24,20 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
     const ResetBase = 1;
     /* Complete reset : all except survey part , remind : you always can get a new one */
     const ResetComplete = 2;
+
+    /**
+     * Email methods
+     */
+    /* PHP mail() */
+    const MethodMail = 'mail';
+    /* Sendmail */
+    const MethodSendmail = 'sendmail';
+    /* Qmail */
+    const MethodQmail = 'qmail';
+    /* SMTP */
+    const MethodSmtp = 'smtp';
+    /* OAuth SMTP */
+    const MethodOAuth2Smtp = 'oauth2-smtp';
 
     /* @var null|integer $surveyId Current survey id */
     public $surveyId;
@@ -154,10 +172,10 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         $this->SMTPAutoTLS = false;
 
         switch ($emailmethod) {
-            case "qmail":
+            case self::MethodQmail:
                 $this->IsQmail();
                 break;
-            case "smtp":
+            case self::MethodSmtp:
                 $this->IsSMTP();
                 if ($emailsmtpdebug > 0) {
                     $this->SMTPDebug = $emailsmtpdebug;
@@ -179,8 +197,16 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
                     $this->SMTPAuth = true;
                 }
                 break;
-            case "sendmail":
+            case self::MethodSendmail:
                 $this->IsSendmail();
+                break;
+            case self::MethodOAuth2Smtp:
+                $this->IsSMTP();
+                $this->SMTPAuth = true;
+                $this->Username = null;
+                $this->Password = null;
+                $this->AuthType = 'XOAUTH2';
+                $this->setupOAuth2SmtpConfiguration();
                 break;
             default:
                 $this->IsMail();
@@ -987,5 +1013,18 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
             }
         }
         return $aOutList;
+    }
+
+    protected function setupOAuth2SmtpConfiguration()
+    {
+        $oauth2Plugin = Yii::app()->getConfig('emailoauthplugin');
+        $event = new PluginEvent('newSMTPOAuthConfiguration', $this);
+        $event->set('mailer', $this);
+        Yii::app()->getPluginManager()->dispatchEvent($event, $oauth2Plugin);
+        $config = $event->get('oauthconfig');
+        if (is_null($config)) {
+            throw new \Exception(gT("Could not retrieve a valid OAuth2 configuration."));
+        }
+        $this->setOAuth(new OAuth($config));
     }
 }

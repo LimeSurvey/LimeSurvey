@@ -1,14 +1,10 @@
 <?php
-require_once __DIR__ . '/vendor/autoload.php';
 
-use League\OAuth2\Client\Grant\RefreshToken;
 use League\OAuth2\Client\Provider\Google;
-use League\OAuth2\Client\Provider\GoogleUser;
-use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
-use PHPMailer\PHPMailer\OAuth;
+use LimeSurvey\PluginManager\SmtpOauthPluginBase;
 use PHPMailer\PHPMailer\PHPMailer;
 
-class GoogleOAuthSMTP extends PluginBase
+class GoogleOAuthSMTP extends SmtpOauthPluginBase
 {
     protected $storage = 'DbStorage';
     protected static $description = 'Core: Adds Google OAuth support for email sending';
@@ -21,10 +17,6 @@ class GoogleOAuthSMTP extends PluginBase
         'help' => [
             'type' => 'info',
             'content' => '',
-        ],
-        'enable' => [
-            'type' => 'boolean',
-            'label' => 'Enable',
         ],
         'clientId' => [
             'type' => 'string',
@@ -52,11 +44,13 @@ class GoogleOAuthSMTP extends PluginBase
         $this->subscribe('newUnsecureRequest', 'receiveGoogleResponse');
         $this->subscribe('newDirectRequest', 'redirectToGoogle');
 
+        $this->subscribe('listSMTPOauthPlugins');
+        //$this->subscribe('afterSelectSMTPOAuthPlugin');
+        $this->subscribe('newSMTPOAuthConfiguration');
+
         $this->subscribe('beforeEmail', 'beforeEmail');
         $this->subscribe('beforeSurveyEmail', 'beforeEmail');
         $this->subscribe('beforeTokenEmail', 'beforeEmail');
-
-        $this->subscribe('beforeControllerAction');
     }
 
     /**
@@ -67,8 +61,6 @@ class GoogleOAuthSMTP extends PluginBase
     {
         $settings = parent::getPluginSettings($getValues);
         $settings['help']['content'] = $this->getHelpContent();
-        $settings['enable']['label'] = gT("Enable");
-        $settings['enable']['help'] = gT("Use this plugin for SMTP authentication");
         $settings['clientId']['label'] = gT("Client ID");
         $settings['clientSecret']['label'] = gT("Client Secret");
         $settings['information']['content'] = $this->getRefreshTokenInfo();
@@ -166,7 +158,7 @@ class GoogleOAuthSMTP extends PluginBase
 
         // If we got here, inform the user everything is Ok.
         $data['class'] = "success";
-        $data['message'] = gT("Configuration is complete. If 'Client ID' or 'Client Secret' is changed, you will need to re-validate the credentials.");
+        $data['message'] = gT("Configuration is complete. If settings are changed, you will need to re-validate the credentials.");
         $data['buttonCaption'] = gT("Replace token");
         return Yii::app()->twigRenderer->renderPartial('/GetTokenMessage.twig', $data);
 
@@ -177,53 +169,6 @@ class GoogleOAuthSMTP extends PluginBase
     }
 
     /**
-     * Returns true if the specified refresh token is valid
-     * @param string $refreshToken
-     * @param string $clientId
-     * @param string $clientSecret
-     * @return bool
-     */
-    private function validateRefreshToken($refreshToken, $clientId, $clientSecret)
-    {
-        $refreshTokenMetadata = $this->get('refreshTokenMetadata') ?? [];
-        if (
-            empty($refreshTokenMetadata['clientId'])
-            || empty($refreshTokenMetadata['clientSecret'])
-            || $refreshTokenMetadata['clientId'] != $clientId
-            || $refreshTokenMetadata['clientSecret'] != $clientSecret
-        ) {
-            return false;
-        }
-
-        $provider = $this->getProvider($clientId, $clientSecret);
-        try {
-            $token = $provider->getAccessToken(
-                new RefreshToken(),
-                ['refresh_token' => $refreshToken]
-            );
-            // TODO: Handle token with invalid scope (missing https://mail.google.com/)
-        } catch (IdentityProviderException $ex) {
-            // Don't do anything. Just leave $token unset.
-        }
-        return !empty($token);
-    }
-
-    /**
-     * Returns the Client ID and Client Secret settings
-     * @return string[] The credentials in the form [clientId, clientSecret]
-     * @throws Exception if credentials are incomplete.
-     */
-    private function getCredentials()
-    {
-        $clientId = $this->get('clientId');
-        $clientSecret = $this->get('clientSecret');
-        if (empty($clientId) || empty($clientSecret)) {
-            throw new Exception("Invalid Google OAuth settings");
-        }
-        return [$clientId, $clientSecret];
-    }
-
-    /**
      * Redirects to the Google's authorization page
      */
     public function redirectToGoogle()
@@ -231,20 +176,7 @@ class GoogleOAuthSMTP extends PluginBase
         $oEvent = $this->event;
         if ($oEvent->get('target') != $this->getName()) return;
 
-        [$clientId, $clientSecret] = $this->getCredentials();
-
-        $provider = $this->getProvider($clientId, $clientSecret);
-        $options = [
-            'scope' => [
-                'https://mail.google.com/'
-            ]
-        ];
-        $authUrl = $provider->getAuthorizationUrl($options);
-
-        // Keep the 'state' in the session so we can later use it for validation.
-        Yii::app()->session['googleOAuth-state'] = $provider->getState();
-        header('Location: ' . $authUrl);
-        exit;
+        $this->redirectToAuthPage();
     }
 
     /**
@@ -252,95 +184,16 @@ class GoogleOAuthSMTP extends PluginBase
      */
     public function receiveGoogleResponse()
     {
-        $oEvent = $this->event;
-        if ($oEvent->get('target') != $this->getName()) return;
+        $event = $this->event;
+        if ($event->get('target') != $this->getName()) return;
 
-        /** @var LSHttpRequest */
-        $request = Yii::app()->getRequest();
-
-        $code = $request->getParam("code");
-        if (empty($code)) {
-            throw new Exception("Invalid request");
-        }
-
-        $oauth2state = Yii::app()->session['googleOAuth-state'];
-        if (empty($oauth2state)) {
-            throw new Exception("Invalid state");
-        }
-
-        $state = $request->getParam("state");
-        if ($state != $oauth2state) {
-            unset(Yii::app()->session['googleOAuth-state']);
-            throw new Exception("Invalid state");
-        }
-
-        [$clientId, $clientSecret] = $this->getCredentials();
-
-        // If all checks are Ok, try to retrieve the refresh token
-        $this->retrieveRefreshToken($code, $clientId, $clientSecret);
+        $this->receiveOAuthResponse();
     }
 
     /**
-     * Retrieve and store the refresh token from google
+     * @inheritdoc
      */
-    private function retrieveRefreshToken($code, $clientId, $clientSecret)
-    {
-        $provider = $this->getProvider($clientId, $clientSecret);
-        // Get an access token (using the authorization code grant)
-        $token = $provider->getAccessToken('authorization_code', ['code' => $code]);
-        $refreshToken = $token->getRefreshToken();
-        // Store the token and related credentials (so we can later check if the token belongs to the saved settings)
-        $this->set('refreshToken', $refreshToken);
-        $this->set('refreshTokenMetadata', [
-            'clientId' => $clientId,
-            'clientSecret' => $clientSecret,
-        ]);
-        // Get owner details. We need the email address for authentication.
-        /** @var GoogleUser */
-        $owner = $provider->getResourceOwner($token);
-        $this->set('email', $owner->getEmail());
-        // Renders a "success" html. It actually doesn't show any message.
-        // It just closes the window after sending a message to the opener.
-        $this->renderPartial('TokenSuccess', []);
-    }
-
-    /**
-     * Redirects the browser to the plugin settings
-     */
-    private function redirectToConfig()
-    {
-        $url = $this->getConfigUrl();
-        Yii::app()->getController()->redirect($url);
-    }
-
-    /**
-     * Returns the URL for plugin settings
-     * @return string
-     */
-    private function getConfigUrl()
-    {
-        return $this->api->createUrl(
-            '/admin/pluginmanager',
-            [
-                'sa' => 'configure',
-                'id' => $this->id,
-                'tab' => 'settings' // Used in JS to switch tabs
-            ]
-        );
-    }
-
-    private function getRedirectUri()
-    {
-        return $this->api->createUrl('plugins/unsecure', ['plugin' => $this->getName()]);
-    }
-
-    /**
-     * Returns the OAuth provider object for the specified credentials
-     * @param string $clientId
-     * @param string $clientSecret
-     * @return League\OAuth2\Client\Provider\Google
-     */
-    private function getProvider($clientId, $clientSecret)
+    protected function getProvider($clientId, $clientSecret)
     {
         $redirectUri = $this->getRedirectUri();
         $params = [
@@ -363,46 +216,27 @@ class GoogleOAuthSMTP extends PluginBase
     }
 
     /**
-     * @inheritdoc
-     * Handle changes in credentials
+     * Adds the plugin to the list of SMTP OAuth plugins
      */
-    public function saveSettings($settings)
+    public function listSMTPOauthPlugins()
     {
-        // Get the current credentials (before saving new settings)
-        $oldClientId = $this->get('clientId');
-        $oldClientSecret = $this->get('clientSecret');
-
-        // Save settings
-        parent::saveSettings($settings);
-
-        // Get new credentials
-        $clientId = $this->get('clientId');
-        $clientSecret = $this->get('clientSecret');
-
-        // If credentials changed, we need to clear the stored refresh token
-        if ($clientId != $oldClientId || $clientSecret != $oldClientSecret) {
-            $this->set('refreshToken', null);
-            $this->set('refreshTokenMetadata', []);
-            $this->set('email', null);
-
-            // If credentials are complete, we redirect to settings page so the user can
-            // retrieve the token from Google.
-            if (!empty($clientId) && !empty($clientSecret)) {
-                Yii::app()->user->setFlash('success', gT('The plugin settings were saved.'));
-                $this->redirectToConfig();
-            }
-        }
+        $event = $this->getEvent();
+        $event->append('oauthplugins', [
+            get_class($this) => gT("Google")
+        ]);
     }
 
     /**
-     * Override mailer
+     * Handles the afterSelectSMTPOAuthPlugin event, triggered when the plugin
+     * is selected as the SMTP OAuth plugin in Global Settings
      */
-    public function beforeEmail()
-    {
-        if (!$this->get('enable')) {
-            return;
-        }
+    //public function afterSelectSMTPOAuthPlugin()
+    //{
+    //    
+    //}
 
+    public function newSMTPOAuthConfiguration()
+    {
         try {
             [$clientId, $clientSecret] = $this->getCredentials();
         } catch (Exception $ex) {
@@ -422,63 +256,44 @@ class GoogleOAuthSMTP extends PluginBase
             return;
         }
 
-        $limeMailer = $this->getEvent()->get('mailer');
-        $limeMailer->IsSMTP();
+        $event = $this->getEvent();
+
+        $provider = $this->getProvider($clientId, $clientSecret);
+        $config = [
+            'provider' => $provider,
+            'clientId' => $clientId,
+            'clientSecret' => $clientSecret,
+            'refreshToken' => $refreshToken,
+            'userName' => $emailAddress,
+        ];
+
+        $event->set('oauthconfig', $config);
+
+        $limeMailer = $event->get('mailer');
         $limeMailer->Host = 'smtp.gmail.com';
         $limeMailer->Port = 465;
         $limeMailer->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-        $limeMailer->SMTPAuth = true;
-        $limeMailer->Username = null;
-        $limeMailer->Password = null;
-        $limeMailer->AuthType = 'XOAUTH2';
-
-        $provider = $this->getProvider($clientId, $clientSecret);
-        $limeMailer->setOAuth(new OAuth(
-            [
-                'provider' => $provider,
-                'clientId' => $clientId,
-                'clientSecret' => $clientSecret,
-                'refreshToken' => $refreshToken,
-                'userName' => $emailAddress,
-            ]
-        ));
-
-        // Set "Reply To" because Gmail overrides the From/Sender with the logged user.
-        $limeMailer->AddReplyTo($limeMailer->From, $limeMailer->FromName);
     }
 
     /**
      * @inheritdoc
-     * Block irrelevant settings on Global Settings screen.
      */
-    public function beforeControllerAction()
+    protected function getAuthorizationOptions()
     {
-        if (!$this->get('enable')) {
-            return;
-        }
-
-        $controller = $this->getEvent()->get('controller');
-        $action = $this->getEvent()->get('action');
-
-        if ($controller == 'admin' && $action == 'globalsettings') {
-            $this->registerGlobalSettingsScript();
-        }
-    }
-
-    private function registerGlobalSettingsScript()
-    {
-        $jsVars = [
-            'alertText' => sprintf(gT("Some settings are disabled because '%s' plugin is enabled."), self::$name),
-            'tooltipText' => sprintf(gT("Disabled by '%s' plugin."), self::$name),
+        return [
+            'scope' => [
+                'https://mail.google.com/'
+            ]
         ];
-        Yii::app()->clientScript->registerScript(self::$name, self::$name . '='.json_encode($jsVars), CClientScript::POS_BEGIN);
-        $assetUrl = Yii::app()->assetManager->publish(dirname(__FILE__). '/assets/js/globalSettingsOverride.js', false, -1, YII_DEBUG);
-        Yii::app()->clientScript->registerScriptFile($assetUrl);
     }
 
-    private function isActive()
+    /**
+     * @inheritdoc
+     */
+    public function beforeEmail()
     {
-        $pluginModel = \Plugin::model()->findByPk($this->id);
-        return $pluginModel->active;
+        $limeMailer = $this->getEvent()->get('mailer');
+        // Set "Reply To" because Gmail overrides the From/Sender with the logged user.
+        $limeMailer->AddReplyTo($limeMailer->From, $limeMailer->FromName);
     }
 }

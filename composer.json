@@ -50,7 +50,9 @@
 		"html2text/html2text": "^4.3",
 		"pear/ole": "1.*@dev",
 		"pear/spreadsheet_excel_writer": "^0.9.7",
-		"vintagesucks/twig-renderer": "^3.0"
+		"vintagesucks/twig-renderer": "^3.0",
+		"league/oauth2-client": "^2.0",
+		"league/oauth2-google": "^3.0"
 	},
     "config": {
         "vendor-dir": "vendor",
