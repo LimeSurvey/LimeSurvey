@@ -2645,7 +2645,7 @@ class statistics_helper
                         //we want to have some "real" data here
                         if ($gdata[$i] != "N/A") {
                             //calculate percentage
-                            $gdata[$i] = ($grawdata[$i] / $TotalCompleted) * 100;
+                            $gdata[$i] = $TotalCompleted !== 0 ? ($grawdata[$i] / $TotalCompleted) * 100 : 0;
                         }
                     }
 

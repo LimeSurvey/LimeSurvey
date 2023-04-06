@@ -18356,6 +18356,10 @@ input[type=number] {
   width: 294px;
 }
 
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
 table .ls-sticky-column:first-child {
   position: sticky;
   background-color: #fff;
