@@ -11149,6 +11149,15 @@ a {
 
 body {
   background-color: #F9F9FB;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.full-page-wrapper {
+  padding-bottom: 70px;
 }
 
 .summary-table {
@@ -14520,6 +14529,11 @@ html[dir=ltr] th {
   overflow-x: visible;
 }
 
+/** Hide Relevance Equation column for subquestions when not supported */
+.subquestions-table.hide-relevance #rel-eq-th, .subquestions-table.hide-relevance td.relevance-equation {
+  display: none;
+}
+
 .jcarousel-wrapper {
   margin: 20px auto;
   position: relative;
@@ -17067,6 +17081,9 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 }
 
 .footer {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
   width: 100%;
 }
 
