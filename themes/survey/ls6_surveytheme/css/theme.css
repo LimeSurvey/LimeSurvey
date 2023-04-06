@@ -850,6 +850,9 @@ a {
   font-size: 1.14rem;
   line-height: 20px;
 }
+.ls-answers .radio-label {
+  padding-left: 12px;
+}
 
 textarea {
   resize: both;
