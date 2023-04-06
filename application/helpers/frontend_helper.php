@@ -1869,7 +1869,11 @@ function checkCompletedQuota($surveyid, $return = false)
             // Answers are the same in quota + an answer is submitted at this time (bPostedField)
             //  OR all questions is hidden (bAllHidden)
             $bAllHidden = QuestionAttribute::model()
-                ->countByAttributes(array('qid' => $aQuotaQid), 'attribute=:attribute AND value=:value', array(':attribute' => 'hidden',':value' => 1)) == count($aQuotaQid);
+                ->countByAttributes(array(
+                    'qid' => $aQuotaQid,
+                    'attribute' => 'hidden',
+                    'value' => '1',
+            )) == count($aQuotaQid);
 
             if ($iMatchedAnswers == count($aQuotaFields) && ($bPostedField || $bAllHidden)) {
                 if ($oQuota->qlimit == 0) {
