@@ -7,7 +7,7 @@
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="row welcome survey-action">
         <div class="col-12 content-right">
-            <div class="jumbotron message-box message-box-error">
+            <div class="card card-primary h-100">
                 <p class="lead text-danger">
                     <strong>
                         <?php eT("Survey participants have not been initialised for this survey."); ?>

@@ -1748,6 +1748,19 @@ class SurveyAdministrationController extends LSBaseController
         $aData['sid'] = $iSurveyID;
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyID . ")";
         $aData['topBar']['hide'] = true;
+
+        //topbar
+        $topbarData = TopbarConfiguration::getSurveyTopbarData($iSurveyID);
+        $aData['topbar']['middleButtons'] = $this->renderPartial(
+            'partial/topbar/surveyTopbarLeft_view',
+            $topbarData,
+            true
+        );
+        $aData['topbar']['rightButtons'] = $this->renderPartial(
+            'partial/topbar/surveyTopbarRight_view',
+            $topbarData,
+            true
+        );
         // Redirect if this is not possible
         if (!isset($aData['aSurveysettings']['active']) || $aData['aSurveysettings']['active'] == 'Y') {
             Yii::app()->setFlashMessage(gT("This survey is already active."), 'error');
@@ -1755,7 +1768,7 @@ class SurveyAdministrationController extends LSBaseController
         }
         Yii::app()->loadHelper("admin/activate");
 
-        if (Yii::app()->request->getPost('ok') == '') {
+        if (Yii::app()->request->getPost('ok') === null) { //go to activate survey options page
             if (isset($_GET['fixnumbering']) && $_GET['fixnumbering']) {
                 fixNumbering($_GET['fixnumbering'], $iSurveyID);
             }
@@ -1769,7 +1782,7 @@ class SurveyAdministrationController extends LSBaseController
             $aData['aSurveysettings'] = getSurveyInfo($iSurveyID);
 
             $this->aData = $aData;
-            $this->render('activateSurvey_view', $aData);
+            $this->render('activateSurvey', $aData);
         } else {
             if (!is_null($survey)) {
                 $survey->anonymized = Yii::app()->request->getPost('anonymized');
