@@ -2948,12 +2948,12 @@ function getTokenFieldsAndNames($surveyid, $bOnlyAttributes = false)
 /**
 * This function strips any content between and including <javascript> tags
 *
-* @param string $sContent String to clean
+* @param ?string $sContent String to clean
 * @return string  Cleaned string
 */
-function stripJavaScript(string $sContent)
+function stripJavaScript($sContent)
 {
-    $text = preg_replace('@<script[^>]*?>.*?</script>@si', '', $sContent);
+    $text = preg_replace('@<script[^>]*?>.*?</script>@si', '', (string) $sContent);
     // TODO : Adding the onload/onhover etc ... or remove this false security function
     return (string) $text;
 }
