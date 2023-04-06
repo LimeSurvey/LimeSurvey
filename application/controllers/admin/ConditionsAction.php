@@ -161,7 +161,7 @@ class ConditionsAction extends SurveyCommonAction
             if (!in_array($request->getPost('method'), array_keys($method))) {
                 $p_method = "==";
             } else {
-                $p_method = trim((string) $request->getPost('method'));
+                $p_method = trim($request->getPost('method', ''));
             }
         } else {
             $p_method = null;
@@ -927,8 +927,8 @@ class ConditionsAction extends SurveyCommonAction
             'tokenAttr'
         );
         foreach ($keys as $key) {
-            $value = $request->getPost('quick-add-' . $key);
-            $value = str_replace('QUICKADD-', '', (string) $value); // Remove QUICKADD- from editSourceTab/editTargetTab
+            $value = $request->getPost('quick-add-' . $key, '');
+            $value = str_replace('QUICKADD-', '', $value); // Remove QUICKADD- from editSourceTab/editTargetTab
             $result[$key] = $value;
         }
 

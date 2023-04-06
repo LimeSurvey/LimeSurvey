@@ -424,7 +424,7 @@ class ParticipantsAction extends SurveyCommonAction
 
         // First for delete one, second for massive action
         $participantId = Yii::app()->request->getPost('participant_id');
-        $participantIds = json_decode((string) Yii::app()->request->getPost('sItems'), true);
+        $participantIds = json_decode(Yii::app()->request->getPost('sItems', ''), true);
 
         if (empty($participantIds)) {
             $participantIds = $participantId;
@@ -629,7 +629,7 @@ class ParticipantsAction extends SurveyCommonAction
             return;
         }
 
-        $aParticipantIds = json_decode((string) Yii::app()->request->getPost('sItems'));
+        $aParticipantIds = json_decode(Yii::app()->request->getPost('sItems', '')) ?? [];
         $aResults = array();
         $oBaseModel = Surveymenu::model();
         // First we create the array of fields to update
@@ -639,7 +639,7 @@ class ParticipantsAction extends SurveyCommonAction
         // Core Fields
         $aCoreTokenFields = array('language', 'owner_uid', 'blacklisted');
         foreach ($aCoreTokenFields as $sCoreTokenField) {
-            if (trim((string) Yii::app()->request->getPost($sCoreTokenField, 'lskeep')) != 'lskeep') {
+            if (trim(Yii::app()->request->getPost($sCoreTokenField, 'lskeep')) != 'lskeep') {
                 $aData[$sCoreTokenField] = flattenText(Yii::app()->request->getPost($sCoreTokenField));
             }
         }
@@ -893,7 +893,7 @@ class ParticipantsAction extends SurveyCommonAction
         $mappedarray = Yii::app()->request->getPost('mappedarray', false);
         $filterblankemails = Yii::app()->request->getPost('filterbea');
         $overwrite = Yii::app()->request->getPost('overwrite');
-        $sFilePath = Yii::app()->getConfig('tempdir') . '/' . basename((string) Yii::app()->request->getPost('fullfilepath'));
+        $sFilePath = Yii::app()->getConfig('tempdir') . '/' . basename(Yii::app()->request->getPost('fullfilepath', ''));
         $errorinupload = "";
         $recordcount = 0;
         $mandatory = 0;
@@ -1169,7 +1169,7 @@ class ParticipantsAction extends SurveyCommonAction
     {
         $this->checkPermission('import');
 
-        unlink(Yii::app()->getConfig('tempdir') . '/' . basename((string) Yii::app()->request->getPost('fullfilepath')));
+        unlink(Yii::app()->getConfig('tempdir') . '/' . basename(Yii::app()->request->getPost('fullfilepath', '')));
     }
 
     /**********************************************EXPORT PARTICIPANTS***********************************************/
@@ -1184,7 +1184,7 @@ class ParticipantsAction extends SurveyCommonAction
 
         if (Yii::app()->request->getPost('searchcondition', '') !== '') {
             // if there is a search condition then only the participants that match the search criteria are counted
-            $condition = explode("%7C%7C", (string) Yii::app()->request->getPost('searchcondition', ''));
+            $condition = explode("%7C%7C", Yii::app()->request->getPost('searchcondition', ''));
             $search = Participant::model()->getParticipantsSearchMultipleCondition($condition);
         } else {
             $search = null;
@@ -1205,7 +1205,7 @@ class ParticipantsAction extends SurveyCommonAction
             $search = $searchSelected;
         }
 
-        $aAttributes = explode('+', (string) Yii::app()->request->getPost('attributes', ''));
+        $aAttributes = explode('+', Yii::app()->request->getPost('attributes', ''));
         $this->csvExport($search, array_filter($aAttributes)); // Array filter gets rid of empty entries
     }
 
@@ -1709,7 +1709,7 @@ class ParticipantsAction extends SurveyCommonAction
         }
 
         $request = Yii::app()->request;
-        $attributeIds = json_decode((string) $request->getPost('sItems'));
+        $attributeIds = json_decode($request->getPost('sItems', '')) ?? [];
         $attributeIds = array_map('sanitize_int', $attributeIds);
 
         $deletedAttributes = 0;
@@ -1745,7 +1745,7 @@ class ParticipantsAction extends SurveyCommonAction
         $operation = Yii::app()->request->getPost('oper');
 
         if ($operation == 'del' && Yii::app()->request->getPost('id')) {
-            $aAttributeIds = (array) explode(',', (string) Yii::app()->request->getPost('id'));
+            $aAttributeIds = (array) explode(',', Yii::app()->request->getPost('id', ''));
             $aAttributeIds = array_map('trim', $aAttributeIds);
             $aAttributeIds = array_map('intval', $aAttributeIds);
 
@@ -1778,7 +1778,7 @@ class ParticipantsAction extends SurveyCommonAction
      */
     public function getAttributeJson()
     {
-        $iParticipantId = strip_tags((string) Yii::app()->request->getQuery('pid'));
+        $iParticipantId = strip_tags(Yii::app()->request->getQuery('pid', ''));
         $records = ParticipantAttributeName::model()->getParticipantVisibleAttribute($iParticipantId);
         $records = subval_sort($records, "attribute_name", "asc");
 
@@ -1948,7 +1948,7 @@ class ParticipantsAction extends SurveyCommonAction
     public function editAttributevalue()
     {
         if (Yii::app()->request->getPost('oper') == "edit" && isset($_POST['attvalue'])) {
-            $pid = explode('_', (string) Yii::app()->request->getPost('participant_id'));
+            $pid = explode('_', Yii::app()->request->getPost('participant_id', ''));
             $iAttributeId = Yii::app()->request->getPost('attid');
             if (Permission::model()->hasGlobalPermission('participantpanel', 'update') && Participant::model()->isOwner($pid[0])) {
                 $aData = array('participant_id' => $pid[0], 'attribute_id' => $iAttributeId, 'value' => Yii::app()->request->getPost('attvalue'));
@@ -2126,7 +2126,7 @@ class ParticipantsAction extends SurveyCommonAction
     public function getSearchIDs()
     {
         $searchcondition = Yii::app()->request->getPost('searchcondition'); // get the search condition from the URL
-        $sSearchURL = basename((string) Yii::app()->request->getPost('searchURL')); // get the search condition from the URL
+        $sSearchURL = basename(Yii::app()->request->getPost('searchURL', '')); // get the search condition from the URL
         /* a search contains posted data inside $_POST['searchcondition'].
          * Each separate query is made up of 3 fields, separated by double-pipes ("|")
          * EG: fname||eq||jason||lname||ct||c
@@ -2410,7 +2410,7 @@ class ParticipantsAction extends SurveyCommonAction
         $isSuperAdmin = Permission::model()->hasGlobalPermission('superadmin');
 
         // Array of strings with both participant id and share uid separated by comma
-        $participantIdAndShareUids = json_decode((string) $request->getPost('sItems'), true);
+        $participantIdAndShareUids = json_decode($request->getPost('sItems', ''), true) ?? [];
 
         $sharesDeleted = 0;
         foreach ($participantIdAndShareUids as $participantIdAndShareUid) {
@@ -2770,6 +2770,8 @@ class ParticipantsAction extends SurveyCommonAction
     private function getTopBarComponents($title, $ownsAddParticipantsButton, $ownsAddAttributeButton)
     {
         $topBarConf['title'] = $title;
+        $topBarConf['backLink'] = App()->createUrl('admin/index');
+
         $topBarConf['middleButtons'] = Yii::app()->getController()->renderPartial(
             '/admin/participants/partial/topbarBtns/leftSideButtons',
             [

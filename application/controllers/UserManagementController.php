@@ -67,9 +67,8 @@ class UserManagementController extends LSBaseController
 
 
         $aData['topbar']['title'] = gT('User management');
-
+        $aData['topbar']['backLink'] = App()->createUrl('admin/index');
         $aData['topbar']['middleButtons'] = $this->renderPartial('partial/topbarBtns/leftSideButtons', [], true);
-        $aData['topbar']['rightButtons'] = $this->renderPartial('partial/topbarBtns/rightSideButtons', [], true);
 
         //this is really important, so we have the aData also before rendering the content
         $this->aData = $aData;
@@ -847,7 +846,7 @@ class UserManagementController extends LSBaseController
             );
         }
 
-        $aUsers = json_decode((string) App()->request->getPost('sItems'));
+        $aUsers = json_decode(App()->request->getPost('sItems', ''));
         $aResults = [];
 
         foreach ($aUsers as $user) {
@@ -881,7 +880,7 @@ class UserManagementController extends LSBaseController
      */
     public function actionRenderSelectedItems()
     {
-        $aUsers = json_decode((string) App()->request->getPost('$oCheckedItems'));
+        $aUsers = json_decode(App()->request->getPost('$oCheckedItems', ''));
         $aResults = [];
         $gridid = App()->request->getParam('$grididvalue');
 
@@ -924,7 +923,7 @@ class UserManagementController extends LSBaseController
             );
         }
 
-        $aUsers = json_decode((string) App()->request->getPost('sItems', "[]"));
+        $aUsers = json_decode(App()->request->getPost('sItems', "[]"));
 
         $aResults = [];
         foreach ($aUsers as $user) {
@@ -977,7 +976,7 @@ class UserManagementController extends LSBaseController
             );
         }
 
-        $userIds = json_decode((string) Yii::app()->request->getPost('sItems', "[]"));
+        $userIds = json_decode(Yii::app()->request->getPost('sItems', "[]"));
         $aPermissions = Yii::app()->request->getPost('Permission', []);
         $results = [];
         foreach ($userIds as $iUserId) {
@@ -1024,7 +1023,7 @@ class UserManagementController extends LSBaseController
                 ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
             );
         }
-        $aItems = json_decode((string) Yii::app()->request->getPost('sItems', []));
+        $aItems = json_decode(Yii::app()->request->getPost('sItems', '')) ?? [];
         $iUserGroupId = Yii::app()->request->getPost('addtousergroup');
 
         if ($iUserGroupId) {
@@ -1078,7 +1077,7 @@ class UserManagementController extends LSBaseController
                 ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
             );
         }
-        $aItems = json_decode((string) Yii::app()->request->getPost('sItems', []));
+        $aItems = json_decode(Yii::app()->request->getPost('sItems', '')) ?? [];
         $aUserRoleIds = Yii::app()->request->getPost('roleselector');
         $aResults = [];
 

@@ -124,7 +124,7 @@ class SurveymenuController extends SurveyCommonAction
             $this->getController()->redirect(Yii::app()->createUrl('/admin'));
         }
 
-        $aSurveyMenuIds = json_decode((string) Yii::app()->request->getPost('sItems'));
+        $aSurveyMenuIds = json_decode(Yii::app()->request->getPost('sItems', '')) ?? [];
         $aResults = array();
         $oBaseModel = Surveymenu::model();
         if (Permission::model()->hasGlobalPermission('settings', 'update')) {
@@ -136,7 +136,7 @@ class SurveymenuController extends SurveyCommonAction
             $aCoreTokenFields = array('position', 'parent', 'survey', 'user');
 
             foreach ($aCoreTokenFields as $sCoreTokenField) {
-                if (trim((string) Yii::app()->request->getPost($sCoreTokenField, 'lskeep')) != 'lskeep') {
+                if (trim(Yii::app()->request->getPost($sCoreTokenField, 'lskeep')) != 'lskeep') {
                     $aData[$sCoreTokenField] = flattenText(Yii::app()->request->getPost($sCoreTokenField));
                 }
             }
@@ -183,7 +183,7 @@ class SurveymenuController extends SurveyCommonAction
         }
 
         if (Yii::app()->request->isPostRequest) {
-            $aSurveyMenuIds = json_decode((string) Yii::app()->request->getPost('sItems'));
+            $aSurveyMenuIds = json_decode(Yii::app()->request->getPost('sItems', '')) ?? [];
             $success = [];
             foreach ($aSurveyMenuIds as $menuid) {
                 $model = $this->loadModel($menuid);
@@ -383,6 +383,8 @@ class SurveymenuController extends SurveyCommonAction
 
 
         $aData['topbar']['title'] = gT('Survey menus');
+        $aData['topbar']['backLink'] = App()->createUrl('admin/index');
+
         $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
             '/admin/surveymenu/partial/topbarBtns/rightSideButtons',
             [

@@ -66,10 +66,6 @@ class SurveymenuEntryController extends SurveyCommonAction
                     'reorder'      => true,
                 ],
             ],
-            'returnbutton' => [
-                'url'  => 'admin/index',
-                'text' => gT('Back'),
-            ],
         ];
         App()->getClientScript()->registerPackage('surveymenufunctions');
         $this->renderWrappedTemplate(null, array('surveymenu_entries/index'), $data);
@@ -170,7 +166,7 @@ class SurveymenuEntryController extends SurveyCommonAction
 
     public function batchEdit()
     {
-        $aSurveyMenuEntryIds = json_decode((string) Yii::app()->request->getPost('sItems'));
+        $aSurveyMenuEntryIds = json_decode(Yii::app()->request->getPost('sItems', '')) ?? [];
         $aResults = array();
         $oBaseModel = SurveymenuEntries::model();
         if (Permission::model()->hasGlobalPermission('settings', 'update')) {
@@ -277,7 +273,7 @@ class SurveymenuEntryController extends SurveyCommonAction
         }
 
         if (Yii::app()->request->isPostRequest) {
-            $aSurveyMenuEntryIds = json_decode((string) Yii::app()->request->getPost('sItems'));
+            $aSurveyMenuEntryIds = json_decode(Yii::app()->request->getPost('sItems', '')) ?? [];
             $success = [];
             foreach ($aSurveyMenuEntryIds as $menuEntryid) {
                 $model = $this->loadModel($menuEntryid);

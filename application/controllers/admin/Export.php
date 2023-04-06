@@ -589,7 +589,7 @@ class Export extends SurveyCommonAction
                     foreach ($answers as $answer) {
                         $i++;
 
-                        if ($field['SPSStype'] == "F" && isNumericExtended($answer['code'])) {
+                        if ($field['SPSStype'] == "F" && isNumericExtended($answer['code'] ?? '')) {
                             $str = "{$answer['code']}";
                         } else {
                             $str = "\"{$answer['code']}\"";

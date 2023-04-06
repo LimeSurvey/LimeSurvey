@@ -248,7 +248,7 @@ class Tokens extends SurveyCommonAction
      */
     public function deleteMultiple()
     {
-        $aTokenIds = json_decode((string) Yii::app()->getRequest()->getPost('sItems'));
+        $aTokenIds = json_decode(Yii::app()->getRequest()->getPost('sItems', '')) ?? [];
         $iSid = Yii::app()->getRequest()->getPost('sid');
         if (!Permission::model()->hasSurveyPermission($iSid, 'tokens', 'delete')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
@@ -404,7 +404,7 @@ class Tokens extends SurveyCommonAction
      */
     public function editMultiple()
     {
-        $aTokenIds = json_decode((string) Yii::app()->request->getPost('sItems'));
+        $aTokenIds = json_decode(Yii::app()->request->getPost('sItems', '')) ?? [];
         $iSurveyId = Yii::app()->request->getPost('sid');
         $aResults = array();
 
@@ -415,8 +415,8 @@ class Tokens extends SurveyCommonAction
                 $aData = array();
                 $aResults['global']['result'] = true;
                 // Valid from
-                if (trim((string) Yii::app()->request->getPost('validfrom', 'lskeep')) != 'lskeep') {
-                    if (trim((string) Yii::app()->request->getPost('validfrom', 'lskeep')) == '') {
+                if (trim(Yii::app()->request->getPost('validfrom', 'lskeep')) != 'lskeep') {
+                    if (trim(Yii::app()->request->getPost('validfrom', 'lskeep')) == '') {
                         $aData['validfrom'] = null;
                     } else {
                         $aData['validfrom'] = date('Y-m-d H:i:s', strtotime(trim((string) $_POST['validfrom'])));
@@ -424,8 +424,8 @@ class Tokens extends SurveyCommonAction
                 }
 
                 // Valid until
-                if (trim((string) Yii::app()->request->getPost('validuntil', 'lskeep')) != 'lskeep') {
-                    if (trim((string) Yii::app()->request->getPost('validuntil')) == '') {
+                if (trim(Yii::app()->request->getPost('validuntil', 'lskeep')) != 'lskeep') {
+                    if (trim(Yii::app()->request->getPost('validuntil', '')) == '') {
                         $aData['validuntil'] = null;
                     } else {
                         $aData['validuntil'] = date('Y-m-d H:i:s', strtotime(trim((string) $_POST['validuntil'])));
@@ -433,10 +433,10 @@ class Tokens extends SurveyCommonAction
                 }
 
                 // Email
-                if (trim((string) Yii::app()->request->getPost('email', 'lskeep')) != 'lskeep') {
-                    $isValid = preg_match('/^([a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+))(,([a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)))*$/', (string) Yii::app()->request->getPost('email'));
+                if (trim(Yii::app()->request->getPost('email', 'lskeep')) != 'lskeep') {
+                    $isValid = preg_match('/^([a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+))(,([a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)))*$/', Yii::app()->request->getPost('email', ''));
                     if ($isValid) {
-                        $aData['email'] = Yii::app()->request->getPost('email');
+                        $aData['email'] = Yii::app()->request->getPost('email', '');
                     } else {
                         $aData['email'] = 'lskeep';
                     }
@@ -445,7 +445,7 @@ class Tokens extends SurveyCommonAction
                 // Core Fields
                 $aCoreTokenFields = array('firstname', 'lastname', 'emailstatus', 'token', 'language', 'sent', 'remindersent', 'remindercount', 'completed', 'usesleft');
                 foreach ($aCoreTokenFields as $sCoreTokenField) {
-                    if (trim((string) App()->request->getPost($sCoreTokenField, 'lskeep')) != 'lskeep') {
+                    if (trim(App()->request->getPost($sCoreTokenField, 'lskeep')) != 'lskeep') {
                         $value = App()->request->getPost($sCoreTokenField);
                         if ($sCoreTokenField == 'language' && empty($value)) {
                             continue;
@@ -457,9 +457,9 @@ class Tokens extends SurveyCommonAction
                 // Attibutes fields
                 $attrfieldnames = GetParticipantAttributes($iSurveyId);
                 foreach ($attrfieldnames as $attr_name => $desc) {
-                    if (trim((string) Yii::app()->request->getPost($attr_name, 'lskeep')) != 'lskeep') {
-                        $value = App()->request->getPost($attr_name);
-                        if ($desc['mandatory'] == 'Y' && trim((string) $value) == '') {
+                    if (trim(Yii::app()->request->getPost($attr_name, 'lskeep')) != 'lskeep') {
+                        $value = App()->request->getPost($attr_name, '');
+                        if ($desc['mandatory'] == 'Y' && trim($value) == '') {
                             Yii::app()->setFlashMessage(sprintf(gT('%s cannot be left empty'), $desc['description']), 'error');
                             $this->getController()->refresh();
                         }
@@ -547,21 +547,21 @@ class Tokens extends SurveyCommonAction
             Yii::import('application.libraries.Date_Time_Converter');
 
             // Fix up dates and match to database format
-            if (trim((string) $request->getPost('validfrom')) == '') {
+            if (trim($request->getPost('validfrom', '')) == '') {
                 $validfrom = null;
             } else {
                 $datetimeobj = new Date_Time_Converter(
-                    trim((string) $request->getPost('validfrom')),
+                    trim($request->getPost('validfrom', '')),
                     $dateformatdetails['phpdate'] . ' H:i'
                 );
                 $validfrom = $datetimeobj->convert('Y-m-d H:i:s');
             }
 
-            if (trim((string) App()->request->getPost('validuntil')) == '') {
+            if (trim(App()->request->getPost('validuntil', '')) == '') {
                 $validuntil = null;
             } else {
                 $datetimeobj = new Date_Time_Converter(
-                    trim((string) $request->getPost('validuntil')),
+                    trim($request->getPost('validuntil', '')),
                     $dateformatdetails['phpdate'] . ' H:i'
                 );
                 $validuntil = $datetimeobj->convert('Y-m-d H:i:s');
@@ -591,8 +591,8 @@ class Tokens extends SurveyCommonAction
                 if (!in_array($attr_name, $aTokenFieldNames)) {
                     continue;
                 }
-                $value = App()->getRequest()->getPost($attr_name);
-                if ($desc['mandatory'] == 'Y' && trim((string) $value) == '') {
+                $value = App()->getRequest()->getPost($attr_name, '');
+                if ($desc['mandatory'] == 'Y' && trim($value) == '') {
                     App()->setFlashMessage(sprintf(gT('%s cannot be left empty'), $desc['description']), 'error');
                     $this->getController()->refresh();
                 }
@@ -682,44 +682,44 @@ class Tokens extends SurveyCommonAction
             $aTokenData = [];
 
             // validfrom
-            if (trim((string) $request->getPost('validfrom')) == '') {
+            if (trim($request->getPost('validfrom', '')) == '') {
                 $_POST['validfrom'] = null;
             } else {
-                $datetimeobj = new Date_Time_Converter(trim((string) $request->getPost('validfrom')), $dateformatdetails['phpdate'] . ' H:i');
+                $datetimeobj = new Date_Time_Converter(trim($request->getPost('validfrom', '')), $dateformatdetails['phpdate'] . ' H:i');
                 $_POST['validfrom'] = $datetimeobj->convert('Y-m-d H:i:s');
             }
 
             // validuntil
-            if (trim((string) $request->getPost('validuntil')) == '') {
+            if (trim($request->getPost('validuntil', '')) == '') {
                 $_POST['validuntil'] = null;
             } else {
-                $datetimeobj = new Date_Time_Converter(trim((string) $request->getPost('validuntil')), $dateformatdetails['phpdate'] . ' H:i');
+                $datetimeobj = new Date_Time_Converter(trim($request->getPost('validuntil', '')), $dateformatdetails['phpdate'] . ' H:i');
                 $_POST['validuntil'] = $datetimeobj->convert('Y-m-d H:i:s');
             }
 
             // completed
-            if (trim((string) $request->getPost('completed')) == 'N' || trim((string) $request->getPost('completed')) == '') {
+            if (trim($request->getPost('completed', '')) == 'N' || trim($request->getPost('completed', '')) == '') {
                 $_POST['completed'] = 'N';
-            } elseif (trim((string) $request->getPost('completed')) == 'Y') {
+            } elseif (trim($request->getPost('completed', '')) == 'Y') {
                 $_POST['completed'] = 'Y';
             } else {
-                $datetimeobj = new Date_Time_Converter(trim((string) $request->getPost('completed')), $dateformatdetails['phpdate'] . ' H:i');
+                $datetimeobj = new Date_Time_Converter(trim($request->getPost('completed', '')), $dateformatdetails['phpdate'] . ' H:i');
                 $_POST['completed'] = $datetimeobj->convert('Y-m-d H:i');
             }
 
             //sent
-            if (trim((string) $request->getPost('sent')) == 'N') {
+            if (trim($request->getPost('sent', '')) == 'N') {
                 $_POST['sent'] = 'N';
             } else {
-                $datetimeobj = new Date_Time_Converter(trim((string) $request->getPost('sent')), $dateformatdetails['phpdate'] . ' H:i');
+                $datetimeobj = new Date_Time_Converter(trim($request->getPost('sent', '')), $dateformatdetails['phpdate'] . ' H:i');
                 $_POST['sent'] = $datetimeobj->convert('Y-m-d H:i');
             }
 
             // remindersent
-            if (trim((string) $request->getPost('remindersent')) == 'N') {
+            if (trim($request->getPost('remindersent', '')) == 'N') {
                 $_POST['remindersent'] = 'N';
             } else {
-                $datetimeobj = new Date_Time_Converter(trim((string) $request->getPost('remindersent')), $dateformatdetails['phpdate'] . ' H:i');
+                $datetimeobj = new Date_Time_Converter(trim($request->getPost('remindersent', '')), $dateformatdetails['phpdate'] . ' H:i');
                 $_POST['remindersent'] = $datetimeobj->convert('Y-m-d H:i');
             }
 
@@ -744,8 +744,8 @@ class Tokens extends SurveyCommonAction
                 $thissurvey = getSurveyInfo($iSurveyId);
                 $aAdditionalAttributeFields = $thissurvey['attributedescriptions'];
                 foreach ($aAdditionalAttributeFields as $attr_name => $desc) {
-                    $value = $request->getPost($attr_name);
-                    if ($desc['mandatory'] == 'Y' && trim((string) $value) == '') {
+                    $value = $request->getPost($attr_name, '');
+                    if ($desc['mandatory'] == 'Y' && trim($value) == '') {
                         $sOutput .= sprintf(gT("Notice: Field '%s' was left empty, even though it is a mandatory attribute."), $desc['description']) . '<br>';
                     }
                     $aTokenData[$attr_name] = $request->getPost($attr_name);
@@ -787,7 +787,7 @@ class Tokens extends SurveyCommonAction
     {
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'tokens.js', LSYii_ClientScript::POS_BEGIN);
         $iSurveyID = (int) $iSurveyID;
-        $sTokenIDs = Yii::app()->request->getPost('tid');
+        $sTokenIDs = Yii::app()->request->getPost('tid', '');
         $survey = Survey::model()->findByPk($iSurveyID);
         /* Check permissions */
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'update')) {
@@ -805,7 +805,7 @@ class Tokens extends SurveyCommonAction
         App()->getPluginManager()->dispatchEvent($beforeTokenDelete);
 
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'delete')) {
-            $aTokenIds = explode(',', (string) $sTokenIDs); //Make the tokenids string into an array
+            $aTokenIds = explode(',', $sTokenIDs); //Make the tokenids string into an array
 
             //Delete any survey_links
             SurveyLink::model()->deleteTokenLink($aTokenIds, $iSurveyID);
@@ -857,16 +857,16 @@ class Tokens extends SurveyCommonAction
             $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
 
             //Fix up dates and match to database format
-            if (trim((string) Yii::app()->request->getPost('validfrom')) == '') {
+            if (trim(Yii::app()->request->getPost('validfrom', '')) == '') {
                 $aData['validfrom'] = null;
             } else {
-                $datetimeobj = new Date_Time_Converter(trim((string) Yii::app()->request->getPost('validfrom')), $dateformatdetails['phpdate'] . ' H:i');
+                $datetimeobj = new Date_Time_Converter(trim(Yii::app()->request->getPost('validfrom', '')), $dateformatdetails['phpdate'] . ' H:i');
                 $aData['validfrom'] = $datetimeobj->convert('Y-m-d H:i:s');
             }
-            if (trim((string) Yii::app()->request->getPost('validuntil')) == '') {
+            if (trim(Yii::app()->request->getPost('validuntil', '')) == '') {
                 $aData['validuntil'] = null;
             } else {
-                $datetimeobj = new Date_Time_Converter(trim((string) Yii::app()->request->getPost('validuntil')), $dateformatdetails['phpdate'] . ' H:i');
+                $datetimeobj = new Date_Time_Converter(trim(Yii::app()->request->getPost('validuntil', '')), $dateformatdetails['phpdate'] . ' H:i');
                 $aData['validuntil'] = $datetimeobj->convert('Y-m-d H:i:s');
             }
 
@@ -886,8 +886,8 @@ class Tokens extends SurveyCommonAction
             $cntAttributeErrors = 0;
             $attrfieldnames = getTokenFieldsAndNames($iSurveyId, true);
             foreach ($attrfieldnames as $attr_name => $desc) {
-                $value = App()->request->getPost($attr_name);
-                if ($desc['mandatory'] == 'Y' && trim((string) $value) == '') {
+                $value = App()->request->getPost($attr_name, '');
+                if ($desc['mandatory'] == 'Y' && trim($value) == '') {
                     Yii::app()->setFlashMessage(sprintf(gT('%s cannot be left empty'), $desc['description']), 'error');
                     $cntAttributeErrors += 1;
                 }
@@ -1231,7 +1231,7 @@ class Tokens extends SurveyCommonAction
                 $aOptionsBeforeChange[$fieldname]['encrypted'] = 'N';
             }
             $fieldcontents[$fieldname] = [
-                'description'   => strip_tags((string) Yii::app()->request->getPost('description_' . $fieldname)),
+                'description'   => strip_tags(Yii::app()->request->getPost('description_' . $fieldname, '')),
                 'mandatory'     => Yii::app()->request->getPost('mandatory_' . $fieldname) == '1' ? 'Y' : 'N',
                 'encrypted'     => Yii::app()->request->getPost('encrypted_' . $fieldname) == '1' ? 'Y' : 'N',
                 'show_register' => Yii::app()->request->getPost('show_register_' . $fieldname) == '1' ? 'Y' : 'N',

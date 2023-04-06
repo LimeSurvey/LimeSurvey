@@ -278,7 +278,7 @@ class GlobalSettings extends SurveyCommonAction
 
         SettingGlobal::setSetting('defaultlang', $defaultlang);
         SettingGlobal::setSetting('restrictToLanguages', trim($aRestrictToLanguages));
-        SettingGlobal::setSetting('sitename', strip_tags((string) Yii::app()->getRequest()->getPost('sitename')));
+        SettingGlobal::setSetting('sitename', strip_tags(Yii::app()->getRequest()->getPost('sitename', '')));
         SettingGlobal::setSetting('defaulthtmleditormode', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('defaulthtmleditormode')));
         SettingGlobal::setSetting('defaultquestionselectormode', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('defaultquestionselectormode', 'default')));
         SettingGlobal::setSetting('defaultthemeteeditormode', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('defaultthemeteeditormode', 'default')));
@@ -327,7 +327,7 @@ class GlobalSettings extends SurveyCommonAction
         $sAdmintheme = sanitize_paranoid_string(Yii::app()->getRequest()->getPost('admintheme'));
         SettingGlobal::setSetting('admintheme', $sAdmintheme);
 
-        SettingGlobal::setSetting('emailmethod', strip_tags((string) Yii::app()->getRequest()->getPost('emailmethod')));
+        SettingGlobal::setSetting('emailmethod', strip_tags(Yii::app()->getRequest()->getPost('emailmethod', '')));
         SettingGlobal::setSetting('emailsmtphost', strip_tags((string) returnGlobal('emailsmtphost')));
         if (returnGlobal('emailsmtppassword') != 'somepassword') {
             SettingGlobal::setSetting('emailsmtppassword', LSActiveRecord::encryptSingle(returnGlobal('emailsmtppassword')));
@@ -344,14 +344,14 @@ class GlobalSettings extends SurveyCommonAction
         SettingGlobal::setSetting('emailsmtpssl', sanitize_paranoid_string(Yii::app()->request->getPost('emailsmtpssl', '')));
         SettingGlobal::setSetting('emailsmtpdebug', sanitize_int(Yii::app()->request->getPost('emailsmtpdebug', '0')));
         SettingGlobal::setSetting('emailsmtpuser', strip_tags((string) returnGlobal('emailsmtpuser')));
-        SettingGlobal::setSetting('filterxsshtml', strip_tags((string) Yii::app()->getRequest()->getPost('filterxsshtml')));
-        SettingGlobal::setSetting('disablescriptwithxss', strip_tags((string) Yii::app()->getRequest()->getPost('disablescriptwithxss')));
+        SettingGlobal::setSetting('filterxsshtml', strip_tags(Yii::app()->getRequest()->getPost('filterxsshtml', '')));
+        SettingGlobal::setSetting('disablescriptwithxss', strip_tags(Yii::app()->getRequest()->getPost('disablescriptwithxss', '')));
         // make sure emails are valid before saving them
         if (
             Yii::app()->request->getPost('siteadminbounce', '') == ''
             || validateEmailAddress(Yii::app()->request->getPost('siteadminbounce'))
         ) {
-            SettingGlobal::setSetting('siteadminbounce', strip_tags((string) Yii::app()->request->getPost('siteadminbounce')));
+            SettingGlobal::setSetting('siteadminbounce', strip_tags(Yii::app()->request->getPost('siteadminbounce', '')));
         } else {
             $warning .= gT("Warning! Admin bounce email was not saved because it was not valid.") . '<br/>';
         }
@@ -359,11 +359,11 @@ class GlobalSettings extends SurveyCommonAction
             Yii::app()->request->getPost('siteadminemail', '') == ''
             || validateEmailAddress(Yii::app()->request->getPost('siteadminemail'))
         ) {
-            SettingGlobal::setSetting('siteadminemail', strip_tags((string) Yii::app()->request->getPost('siteadminemail')));
+            SettingGlobal::setSetting('siteadminemail', strip_tags(Yii::app()->request->getPost('siteadminemail', '')));
         } else {
             $warning .= gT("Warning! Administrator email address was not saved because it was not valid.") . '<br/>';
         }
-        SettingGlobal::setSetting('siteadminname', strip_tags((string) Yii::app()->getRequest()->getPost('siteadminname')));
+        SettingGlobal::setSetting('siteadminname', strip_tags(Yii::app()->getRequest()->getPost('siteadminname', '')));
         $repeatheadingstemp = (int) (Yii::app()->getRequest()->getPost('repeatheadings'));
         if ($repeatheadingstemp == 0) {
             $repeatheadingstemp = 25;
@@ -408,7 +408,7 @@ class GlobalSettings extends SurveyCommonAction
             $savetime = '+' . $savetime;
         }
         SettingGlobal::setSetting('timeadjust', $savetime);
-        SettingGlobal::setSetting('usercontrolSameGroupPolicy', strip_tags((string) Yii::app()->getRequest()->getPost('usercontrolSameGroupPolicy')));
+        SettingGlobal::setSetting('usercontrolSameGroupPolicy', strip_tags(Yii::app()->getRequest()->getPost('usercontrolSameGroupPolicy', '')));
 
         $request = App()->request;
         Yii::app()->formExtensionService->applySave('globalsettings', $request);

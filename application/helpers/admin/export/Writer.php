@@ -341,10 +341,10 @@ abstract class Writer implements IWriter
         return $sFile;
     }
 
-    protected function stripTagsFull($string)
+    protected function stripTagsFull(string $string)
     {
-        $string = str_replace('-oth-', '', (string) $string);
-        return flattenText($string, false, true, 'UTF-8', false);
+        $string = str_replace('-oth-', '', $string);
+        return (string) flattenText($string, false, true, 'UTF-8', false);
     }
 
 

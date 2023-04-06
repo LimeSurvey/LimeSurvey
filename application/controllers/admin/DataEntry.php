@@ -552,9 +552,9 @@ class DataEntry extends SurveyCommonAction
             $results[] = $idresult->attributes;
         } elseif ($subaction == "editsaved") {
             if (isset($_GET['public']) && $_GET['public'] == "true") {
-                $password = hash('sha256', (string) Yii::app()->request->getParam('accesscode'));
+                $password = hash('sha256', Yii::app()->request->getParam('accesscode', ''));
             } else {
-                $password = Yii::app()->request->getParam('accesscode');
+                $password = Yii::app()->request->getParam('accesscode', '');
             }
 
             $svresult = SavedControl::model()->findAllByAttributes(

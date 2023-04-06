@@ -75,7 +75,7 @@ class RSyntaxWriter extends Writer
                 }
 
                 if (trim($strTmp) != '') {
-                    if ($field['SPSStype'] == 'F' && (isNumericExtended($strTmp) === false || $field['size'] > 16)) {
+                    if ($field['SPSStype'] == 'F' && (isNumericExtended($strTmp ?? '') === false || $field['size'] > 16)) {
                         $field['SPSStype'] = 'A';
                     }
                 }
@@ -126,7 +126,7 @@ class RSyntaxWriter extends Writer
                 . addslashes(
                     htmlspecialchars_decode(
                         mb_substr(
-                            (string) stripTagsFull(
+                            stripTagsFull(
                                 $field['VariableLabel']
                             ),
                             0,
@@ -143,7 +143,7 @@ class RSyntaxWriter extends Writer
                 //print out the value labels!
                 $str = 'data[, ' . $i . '] <- factor(data[, ' . $i . '], levels=c(';
                 foreach ($answers as $answer) {
-                    if ($field['SPSStype'] == "F" && isNumericExtended($answer['code'])) {
+                    if ($field['SPSStype'] == "F" && isNumericExtended($answer['code'] ?? '')) {
                         $str .= "{$answer['code']},";
                     } else {
                         $str .= "\"{$answer['code']}\",";

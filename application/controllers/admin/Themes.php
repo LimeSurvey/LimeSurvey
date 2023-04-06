@@ -554,7 +554,6 @@ class Themes extends SurveyCommonAction
         $aViewUrls = $this->initialise($templatename, $screenname, $editfile, true, true);
 
         App()->getClientScript()->reset();
-        App()->getClientScript()->registerPackage('bootstrap-themeeditor');
 
         $undo    = gT("Undo (ctrl + Z)", "js");
         $redo    = gT("Redo (ctrl + Y)", "js");
@@ -581,8 +580,9 @@ JAVASCRIPT
         // page title
         $pageTitle = gT('Theme editor:') . ' ' . $templatename;
 
-        //$aData['pageTitle'] = $pageTitle;
         $aData['topbar']['title'] = $pageTitle;
+        $aData['topbar']['backLink'] = App()->createUrl('themeOptions/index');
+
 
         $aData['topbar']['middleButtons'] = Yii::app()->getController()->renderPartial(
             '/admin/themes/partial/topbarBtns/leftSideButtons',
@@ -591,12 +591,6 @@ JAVASCRIPT
                 'templatename' => $templatename,
                 'isExtend' => true,
             ],
-            true
-        );
-
-        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
-            '/admin/themes/partial/topbarBtns/rightSideButtons',
-            [],
             true
         );
 
@@ -773,7 +767,7 @@ JAVASCRIPT
      */
     public function delete()
     {
-        $templatename = trim((string) Yii::app()->request->getPost('templatename'));
+        $templatename = trim(Yii::app()->request->getPost('templatename', ''));
         if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
             Yii::app()->loadHelper("admin/template");
 
@@ -820,7 +814,7 @@ JAVASCRIPT
 
     public function deleteBrokenTheme()
     {
-        $templatename = trim((string) Yii::app()->request->getPost('templatename'));
+        $templatename = trim(Yii::app()->request->getPost('templatename', ''));
 
         if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
             // First we check that the theme is really broken
@@ -841,7 +835,7 @@ JAVASCRIPT
 
     public function deleteAvailableTheme()
     {
-        $templatename = trim((string) Yii::app()->request->getPost('templatename'));
+        $templatename = trim(Yii::app()->request->getPost('templatename', ''));
 
         if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
             $completeFileName = realpath(Yii::app()->getConfig('userthemerootdir') . "/" . $templatename);

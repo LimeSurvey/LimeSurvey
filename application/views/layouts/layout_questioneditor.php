@@ -30,7 +30,7 @@ echo ' <div id="pjax-file-load-container" class="ls-flex-row col-12"><div style=
 //The container to hold the vuejs application
 echo ' <!-- Survey page, started in SurveyCommonAction::renderWrappedTemplate() -->
         <div id="vue-apps-main-container" '
-    . 'class="ls-flex-row align-items-flex-begin align-content-flex-end col-12 container-fluid" '
+    . 'class="ls-flex-row align-items-flex-begin align-content-flex-end col-12 container-fluid pb-6" '
     . '>';
 
 $layoutHelper->renderSurveySidemenu($aData);
@@ -51,6 +51,8 @@ $layoutHelper->notifications();
 
 echo $content;
 
+echo "</div>\n";
+echo "</div>\n";
 echo "</div>\n";
 echo "</div>\n";
 echo "<!-- END LAYOUT_INSURVEY -->";

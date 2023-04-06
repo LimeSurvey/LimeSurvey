@@ -280,7 +280,7 @@ class viewHelper
             'HTML.Allowed' => '',
             'Output.Newline' => ' '
         );
-        return $oPurifier->purify($sHtml);
+        return (string) $oPurifier->purify($sHtml);
     }
 
     /**

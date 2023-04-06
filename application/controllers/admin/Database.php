@@ -797,7 +797,7 @@ class Database extends SurveyCommonAction
 
         // Url params in json
         if (Yii::app()->request->getPost('allurlparams', false) !== false) {
-            $aURLParams = json_decode((string) Yii::app()->request->getPost('allurlparams'), true);
+            $aURLParams = json_decode(Yii::app()->request->getPost('allurlparams', ''), true) ?? [];
             SurveyURLParameter::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
             foreach ($aURLParams as $aURLParam) {
                 $aURLParam['parameter'] = trim((string) $aURLParam['parameter']);

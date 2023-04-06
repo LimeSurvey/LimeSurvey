@@ -1438,12 +1438,12 @@ class PrintableSurvey extends SurveyCommonAction
         );
     }
 
-    private function starReplace($input)
+    private function starReplace(string $input)
     {
         return preg_replace(
             '/\*(.*)\*/U',
             '<strong>\1</strong>',
-            (string) $input
+            $input
         );
     }
 

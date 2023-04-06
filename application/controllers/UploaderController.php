@@ -88,8 +88,8 @@ class UploaderController extends SurveyController
             }
             if (isset($_SESSION[$sFieldName])) {
                 // We already have $sFieldName ?
-                $sJSON = $_SESSION[$sFieldName];
-                $aFiles = json_decode(stripslashes((string) $sJSON), true);
+                $sJSON = $_SESSION[$sFieldName] ?? '';
+                $aFiles = json_decode(stripslashes($sJSON), true) ?? [];
 
                 if (substr((string) $sFileName, 0, 3) == 'fu_') {
                     $iFileIndex = 0;

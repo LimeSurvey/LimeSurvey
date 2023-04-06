@@ -2103,32 +2103,31 @@ function stripCtrlChars($sValue)
 }
 
 // make a string safe to include in a JavaScript String parameter.
-function javascriptEscape($str, $strip_tags = false, $htmldecode = false)
+function javascriptEscape(string $str, $strip_tags = false, $htmldecode = false)
 {
-
     if ($htmldecode == true) {
-        $str = html_entity_decode((string) $str, ENT_QUOTES, 'UTF-8');
+        $str = html_entity_decode($str, ENT_QUOTES, 'UTF-8');
     }
     if ($strip_tags == true) {
-        $str = strip_tags((string) $str);
+        $str = strip_tags($str);
     }
     return str_replace(
         array('\'', '"', "\n", "\r"),
         array("\\'", '\u0022', "\\n", '\r'),
-        (string) $str
+        $str
     );
 }
 // make a string safe to include in a json String parameter.
-function jsonEscape($str, $strip_tags = false, $htmldecode = false)
+function jsonEscape(string $str, $strip_tags = false, $htmldecode = false)
 {
 
     if ($htmldecode == true) {
-        $str = html_entity_decode((string) $str, ENT_QUOTES, 'UTF-8');
+        $str = html_entity_decode($str, ENT_QUOTES, 'UTF-8');
     }
     if ($strip_tags == true) {
-        $str = strip_tags((string) $str);
+        $str = strip_tags($str);
     }
-    return str_replace(array('"','\''), array("&apos;","&apos;"), (string) $str);
+    return str_replace(array('"','\''), array("&apos;","&apos;"), $str);
 }
 
 /**
@@ -2139,14 +2138,14 @@ function jsonEscape($str, $strip_tags = false, $htmldecode = false)
 * @param string $body Body text of the email in plain text or HTML
 * @param mixed $subject Email subject
 * @param mixed $to Array with several email addresses or single string with one email address
-* @param mixed $from
+* @param string $from
 * @param mixed $sitename
 * @param boolean $ishtml
 * @param mixed $bouncemail
 * @param mixed $attachments
 * @return bool If successful returns true
 */
-function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml = false, $bouncemail = null, $attachments = null, $customheaders = "")
+function SendEmailMessage($body, $subject, $to, string $from, $sitename, $ishtml = false, $bouncemail = null, $attachments = null, $customheaders = "")
 {
     global $maildebug;
 
@@ -2163,9 +2162,9 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml = fals
 
     $fromname = '';
     $fromemail = $from;
-    if (strpos((string) $from, '<')) {
-        $fromemail = substr((string) $from, strpos((string) $from, '<') + 1, strpos((string) $from, '>') - 1 - strpos((string) $from, '<'));
-        $fromname = trim(substr((string) $from, 0, strpos((string) $from, '<') - 1));
+    if (strpos($from, '<')) {
+        $fromemail = substr($from, strpos($from, '<') + 1, strpos($from, '>') - 1 - strpos($from, '<'));
+        $fromname = trim(substr($from, 0, strpos($from, '<') - 1));
     }
     if (is_null($bouncemail)) {
         $senderemail = $fromemail;
@@ -2435,10 +2434,10 @@ function rmdirr($dirname)
 * @param mixed $field
 * @return mixed
 */
-function CSVUnquote($field)
+function CSVUnquote(string $field)
 {
     //print $field.":";
-    $field = preg_replace("/^\040*\"/", "", (string) $field);
+    $field = preg_replace("/^\040*\"/", "", $field);
     $field = preg_replace("/\"\040*$/", "", $field);
     $field = str_replace('""', '"', $field);
     //print $field."\n";
@@ -2571,12 +2570,12 @@ function isTokenCompletedDatestamped($thesurvey)
 *
 * @param string $date
 * @param string $dformat
-* @param mixed $shift
+* @param string $shift
 * @return string
 */
-function dateShift($date, $dformat, $shift)
+function dateShift($date, $dformat, string $shift)
 {
-    return date($dformat, strtotime((string) $shift, strtotime($date)));
+    return date($dformat, strtotime($shift, strtotime($date)));
 }
 
 
@@ -2622,10 +2621,10 @@ function hasTemplateManageRights($userid, $sThemeFolder)
 * @param string $sType 'survey' or 'label'
 * @param mixed $iOldSurveyID
 * @param mixed $iNewSurveyID
-* @param mixed $sString
+* @param string $sString
 * @return string
 */
-function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString)
+function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, string $sString)
 {
     if ($sString == '') {
         return $sString;
@@ -2635,11 +2634,11 @@ function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString)
     if ($sType == 'survey') {
         $sPattern = '(http(s)?:\/\/)?(([a-z0-9\/\.])*(?=(\/upload))\/upload\/surveys\/' . $iOldSurveyID . '\/)';
         $sReplace = Yii::app()->getConfig("publicurl") . "upload/surveys/{$iNewSurveyID}/";
-        return preg_replace('/' . $sPattern . '/u', $sReplace, (string) $sString);
+        return preg_replace('/' . $sPattern . '/u', $sReplace, $sString);
     } elseif ($sType == 'label') {
         $sPattern = '(http(s)?:\/\/)?(([a-z0-9\/\.])*(?=(\/upload))\/upload\/labels\/' . $iOldSurveyID . '\/)';
         $sReplace = Yii::app()->getConfig("publicurl") . "upload/labels/{$iNewSurveyID}/";
-        return preg_replace("/" . $sPattern . "/u", $sReplace, (string) $sString);
+        return preg_replace("/" . $sPattern . "/u", $sReplace, $sString);
     } else // unknown type
     {
         return $sString;
@@ -2739,41 +2738,40 @@ function randomChars($length, $pattern = "23456789abcdefghijkmnpqrstuvwxyz")
 /**
 * used to translate simple text to html (replacing \n with <br />
 *
-* @param mixed $mytext
+* @param string $mytext
 * @param mixed $ishtml
 * @return mixed
 */
-function conditionalNewlineToBreak($mytext, $ishtml, $encoded = '')
+function conditionalNewlineToBreak(string $mytext, $ishtml, $encoded = '')
 {
     if ($ishtml === true) {
         // $mytext has been processed by gT with html mode
         // and thus \n has already been translated to &#10;
         if ($encoded == '') {
-            $mytext = str_replace('&#10;', '<br />', (string) $mytext);
+            $mytext = str_replace('&#10;', '<br />', $mytext);
         }
-        return str_replace("\n", '<br />', (string) $mytext);
+        return str_replace("\n", '<br />', $mytext);
     } else {
         return $mytext;
     }
 }
 
-
-function breakToNewline($data)
+function breakToNewline(string $data)
 {
-    return preg_replace('!<br.*>!iU', "\n", (string) $data);
+    return preg_replace('!<br.*>!iU', "\n", $data);
 }
 
 /**
 * Provides a safe way to end the application
 *
-* @param mixed $sText
+* @param string $sText
 * @return void
 * @todo This should probably never be used, since it returns 0 from CLI and makes PHPUnit think all is fine :(
 */
-function safeDie($sText)
+function safeDie(string $sText)
 {
     //Only allowed tag: <br />
-    $textarray = explode('<br />', (string) $sText);
+    $textarray = explode('<br />', $sText);
     $textarray = array_map('htmlspecialchars', $textarray);
     die(implode('<br />', $textarray));
 }
@@ -2805,12 +2803,12 @@ function fixCKeditorText($str)
 /**
  * This is a helper function for getAttributeFieldNames
  *
- * @param mixed $fieldname
+ * @param string $fieldname
  * @return bool
  */
-function filterForAttributes($fieldname)
+function filterForAttributes(string $fieldname)
 {
-    if (strpos((string) $fieldname, 'attribute_') === false) {
+    if (strpos($fieldname, 'attribute_') === false) {
         return false;
     } else {
         return true;
@@ -2950,14 +2948,14 @@ function getTokenFieldsAndNames($surveyid, $bOnlyAttributes = false)
 /**
 * This function strips any content between and including <javascript> tags
 *
-* @param string $sContent String to clean
+* @param ?string $sContent String to clean
 * @return string  Cleaned string
 */
 function stripJavaScript($sContent)
 {
     $text = preg_replace('@<script[^>]*?>.*?</script>@si', '', (string) $sContent);
     // TODO : Adding the onload/onhover etc ... or remove this false security function
-    return $text;
+    return (string) $text;
 }
 
 /**
@@ -4716,25 +4714,25 @@ function getMaximumFileUploadSize()
 /**
  * Decodes token attribute data because due to bugs in the past it can be written in JSON or be serialized - future format should be JSON as serialized data can be exploited
  *
- * @param string $oTokenAttributeData The original token attributes as stored in the database
+ * @param string $tokenAttributeData The original token attributes as stored in the database
  * @return array|mixed
  */
-function decodeTokenAttributes($oTokenAttributeData)
+function decodeTokenAttributes(string $tokenAttributeData)
 {
-    if (trim((string)$oTokenAttributeData) == '') {
+    if (trim($tokenAttributeData) == '') {
         return array();
     }
-    if (substr($oTokenAttributeData, 0, 1) != '{' && substr($oTokenAttributeData, 0, 1) != '[') {
-        $sSerialType = getSerialClass($oTokenAttributeData);
+    if (substr($tokenAttributeData, 0, 1) != '{' && substr($tokenAttributeData, 0, 1) != '[') {
+        $sSerialType = getSerialClass($tokenAttributeData);
         if ($sSerialType == 'array') {
 // Safe to decode
-            $aReturnData = @unserialize($oTokenAttributeData);
+            $aReturnData = unserialize($tokenAttributeData) ?? [];
         } else {
 // Something else, might be unsafe
             return array();
         }
     } else {
-            $aReturnData = @json_decode($oTokenAttributeData, true);
+            $aReturnData = json_decode($tokenAttributeData, true) ?? [];
     }
     if ($aReturnData === false || $aReturnData === null) {
         return array();
