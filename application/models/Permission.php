@@ -649,8 +649,6 @@ class Permission extends LSActiveRecord
 
     public function getButtons(): string
     {
-        $permission_superadmin_read = Permission::model()->hasGlobalPermission('superadmin', 'read');
-  
         $setPermissionsUrl = App()->getController()->createUrl('surveyPermissions/settingsPermissions', 
                                  ['id' => $this->uid, 'action' => 'user','surveyid' => $this->entity_id,]);
        
