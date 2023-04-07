@@ -1,0 +1,28 @@
+<div class="col-8 offset-2 mb-3">
+    <div class="accordion" id="accordionExample">
+        <div class="accordion-item border border-info">
+            <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                    {{ gT("Help") }}
+                </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <p>
+                        <strong>{{ gT("Prerequisites:") }}</strong>
+                        <ul>
+                            <li>{{ gT("Access LimeSurvey over HTTPS.") }} {{ isHttps ? "<span class='fa fa-check text-success'></span>" : "<span class='fa fa-exclamation-triangle text-danger' data-bs-toggle='tooltip' title='" ~ gT("Currently not served over HTTPS") ~ "'></span>" }}</li>
+                        </ul>
+                    </p>
+                    <p>
+                        <strong>{{ gT("Instructions:") }}</strong>
+                        <ol>
+                            <!-- TODO: Add instructions -->
+                            <li>...</li>
+                        </ol>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

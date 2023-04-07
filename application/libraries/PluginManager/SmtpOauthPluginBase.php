@@ -238,4 +238,12 @@ abstract class SmtpOauthPluginBase extends PluginBase
         $pluginModel = \Plugin::model()->findByPk($this->id);
         return $pluginModel->active;
     }
+
+    /**
+     * Handles the afterSelectSMTPOAuthPlugin event, triggered when the plugin
+     * is selected as the SMTP OAuth plugin in Global Settings
+     */
+    public function afterSelectSMTPOAuthPlugin()
+    {
+    }
 }

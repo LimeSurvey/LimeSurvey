@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<ruleset name="Custom Standard" namespace="MyProject\CS\Standard">
+
+  <!-- Scan all files in src and tests -->
+  <file>./src</file>
+  <file>./tests</file>
+
+  <!-- Scan all php files -->
+  <arg name="extensions" value="php" />
+
+  <!-- Setup PSR12 as default rule -->
+  <rule ref="PSR12"/>
+</ruleset>
