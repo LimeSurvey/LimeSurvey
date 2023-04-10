@@ -40,17 +40,39 @@ class XmlTranslationCommand extends CConsoleCommand
             $fileName = $fileInfo->getFileName();
             $tmpPath = dirname(__FILE__) . '/../../tmp';
             $fileHandler = fopen($tmpPath . '/' . $fileName . '-config-xml.php', 'w');
+            $date = date('F d, Y');
+
             fwrite($fileHandler, '<?php' . PHP_EOL);
             fwrite($fileHandler, '//Entries from file ' . $sFilePath . PHP_EOL);
+            fwrite($fileHandler, '//File generated on ' . $date . PHP_EOL);
             fwrite($fileHandler, PHP_EOL);
 
+            $currentAttributeCategory = '';
+
             foreach ($attributes->attribute as $attribute) {
+
+                if ($currentAttributeCategory != (string)$attribute->category) {
+
+                    $currentAttributeCategory = (string)$attribute->category;
+                    fwrite($fileHandler, PHP_EOL . '//' . $currentAttributeCategory . ' attributes.' . PHP_EOL);
+
+                }
+
                 if (! empty($attribute->help)) {
                     fwrite($fileHandler, 'gT("' . $attribute->help . '");' . PHP_EOL);
                 }
 
                 if (! empty($attribute->caption)) {
                     fwrite($fileHandler, 'gT("' . $attribute->caption . '");' . PHP_EOL);
+                }
+
+                if (! empty($attribute->options)) {
+
+                    foreach ($attribute->options->children() as $option) {
+
+                        fwrite($fileHandler, 'gT("' . $option->text . '");' . PHP_EOL);
+
+                    }
                 }
             }
 
