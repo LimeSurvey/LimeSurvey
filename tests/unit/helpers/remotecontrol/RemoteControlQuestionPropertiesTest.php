@@ -261,4 +261,66 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
         $this->assertSame('N', $result['encrypted'], 'The question should not be encrypted.');
         $this->assertSame('5', $result['question_order'], 'The question order is not correct.');
     }
+
+    public function testGetListQuestionProperties()
+    {
+        $englishAnswerOptions = array(
+            'AO01' => array(
+                'answer' => 'Option one',
+                'assessment_value' => '0',
+                'scale_id' => '0',
+                'order' => '0'
+            ),
+            'AO03' => array(
+                'answer' => 'Option two',
+                'assessment_value' => '0',
+                'scale_id' => '0',
+                'order' => '1'
+            ),
+            'AO02' => array(
+                'answer' => 'Option three',
+                'assessment_value' => '0',
+                'scale_id' => '0',
+                'order' => '2'
+            )
+        );
+
+        $spanishAnswerOptions = array(
+            'AO01' => array(
+                'answer' => 'Opción uno',
+                'assessment_value' => '0',
+                'scale_id' => '0',
+                'order' => '0'
+            ),
+            'AO03' => array(
+                'answer' => 'Opción dos',
+                'assessment_value' => '0',
+                'scale_id' => '0',
+                'order' => '1'
+            ),
+            'AO02' => array(
+                'answer' => 'Opción tres',
+                'assessment_value' => '0',
+                'scale_id' => '0',
+                'order' => '2'
+            )
+        );
+
+        $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
+
+        $question = \Question::model()->findByAttributes(array('title' => 'G01Q06'));
+        $qid = $question->qid;
+
+        $result = $this->handler->get_question_properties($sessionKey, $qid, null);
+        $spanishResult = $this->handler->get_question_properties($sessionKey, $qid, null, 'es');
+
+        //Checking options
+        $this->assertSame($englishAnswerOptions, $result['answeroptions'], 'The options were not returned correctly.');
+        $this->assertSame($spanishAnswerOptions, $spanishResult['answeroptions'], 'The options were not returned correctly.');
+        //Checking other properties
+        $this->assertSame('L', $result['type'], 'The question type is not correct.');
+        $this->assertSame('N', $result['mandatory'], 'The question should not be mandatory.');
+        $this->assertSame('N', $result['encrypted'], 'The question should not be encrypted.');
+        $this->assertSame('6', $result['question_order'], 'The question order is not correct.');
+    }
 }
