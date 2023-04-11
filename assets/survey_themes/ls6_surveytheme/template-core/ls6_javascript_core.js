@@ -34,7 +34,7 @@
  */
 // Global constructor, used in multiple twig files
 // eslint-disable-next-line no-unused-vars
-var ThemeScripts = function () {
+export default ThemeScripts = function () {
     // defining the console object once. Also filtered by the global setting
     // eslint-disable-next-line no-console
     var logObject = console.ls ? (window.debugState.frontend ? console.ls : console.ls.silent) : console;

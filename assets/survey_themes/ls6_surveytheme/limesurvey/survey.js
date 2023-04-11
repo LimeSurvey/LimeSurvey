@@ -13,13 +13,13 @@ var LSvar = LSvar || { };
 /**
  * Action to do when relevance is set to on or off
  */
-function triggerEmRelevance(){
+export function triggerEmRelevance(){
     triggerEmRelevanceQuestion();
     triggerEmRelevanceGroup();
     triggerEmRelevanceSubQuestion();
 }
 /* On question */
-function triggerEmRelevanceQuestion(){
+export function triggerEmRelevanceQuestion(){
     /* Action on this question */
     $("[id^='question']").on('relevance:on',function(event,data) {
         /* @todo : attach only to this. Use http://stackoverflow.com/a/6411507/2239406 solution for now. 
@@ -44,7 +44,7 @@ function triggerEmRelevanceQuestion(){
     });
 }
 /* On Group */
-function triggerEmRelevanceGroup(){
+export function triggerEmRelevanceGroup(){
     $("[id^='group-']").on('relevance:on',function(event,data) {
         if(event.target != this) return;
         $(this).removeClass("ls-irrelevant ls-hidden");
@@ -55,7 +55,7 @@ function triggerEmRelevanceGroup(){
     });
 }
 /* On subquestion and answers-list */
-function triggerEmRelevanceSubQuestion(){
+export function triggerEmRelevanceSubQuestion(){
     $("[id^='question']").on('relevance:on',"[id^='javatbd']",function(event,data) {
         if(event.target != this) return; // not needed now, but after (2016-11-07)
         data = $.extend({style:'hidden'}, data);
@@ -104,7 +104,7 @@ function triggerEmRelevanceSubQuestion(){
  * relevance:(on|off) event
  */
 /* Update lines class when relevance:(on|off)  */
-function updateLineClass(line){
+export function updateLineClass(line){
     if($(line).hasClass("ls-odd") || $(line).hasClass("ls-even")){
         $(line).closest(".ls-answers").find(".ls-odd:visible,.ls-even:visible").each(function(index){ // not limited to table
             $(this).removeClass('ls-odd ls-even').addClass(((index+1)%2 == 0) ? "ls-odd" : "ls-even");
@@ -112,7 +112,7 @@ function updateLineClass(line){
     }
 }
 /* Update repeat heading */
-function updateRepeatHeading(answers){
+export function updateRepeatHeading(answers){
     /* Update only (at start) when all hidden line is done : @todo : do it only once */
     $(function() {
         if($(answers).data("repeatHeading") || $(answers).find("tbody").find(".ls-heading").length){
@@ -141,7 +141,7 @@ function updateRepeatHeading(answers){
 /**
  * Manage the index
  */
-function manageIndex(){
+export function manageIndex(){
     /* only needed if it's not inside form (form#limesurvey) */
     $(".ls-index-buttons").on('click','[name="move"]',function(e){
         if(!$(this).closest('form').length && $('form#limesurvey').length==1){
@@ -154,7 +154,7 @@ function manageIndex(){
  * Reload page when participant selects a new language.
  * Sets input[name=lang] to new language and submits limesurvey form.
  */
-function activateLanguageChanger(){
+export function activateLanguageChanger(){
     var limesurveyForm = $('form#limesurvey');
     if(limesurveyForm.length == 0 && $('form[name="limesurvey"]').length == 1) { /* #form-token for example */
         limesurveyForm = $('form[name="limesurvey"]');
@@ -281,7 +281,7 @@ function activateLanguageChanger(){
 /**
  * Action link with submit object (json) : add params to form and submit
  */
-function activateActionLink(){
+export function activateActionLink(){
     /* If no limesurvey form : don't need it */
     if(!$('form#limesurvey').length){
         $('[data-limesurvey-submit]').remove();
@@ -314,7 +314,7 @@ function activateActionLink(){
  * @var string optional title
  * @var object[] submits : name.value to submit
  */
-function confirmSurveyDialog(text,title,submits){
+export function confirmSurveyDialog(text,title,submits){
     if($.bsconfirm !== undefined) {
         $.bsconfirm(text, LSvar.lang.confirm, function(){
             $.each(submits, function(name, value) {
@@ -342,7 +342,7 @@ function confirmSurveyDialog(text,title,submits){
 /**
  *  Ask confirmation on click on .needconfirm
  */
-function activateConfirmButton(){
+export function activateConfirmButton(){
     /* With ajax mode : using $(document).on attache X times the same event */
     $("button[data-confirmedby]").on('click',function(event){
         var btnConfirm=$(this);
@@ -359,7 +359,7 @@ function activateConfirmButton(){
 /**
  * Trigger tip class when classChangeGood/classChangeError happen
  */
-function triggerEmClassChange(){
+export function triggerEmClassChange(){
     /* The tips */
     $(document).on('classChangeError','.ls-em-tip', function(event){
         $(this).removeClass("ls-em-success").addClass("ls-em-error text-danger");
@@ -388,7 +388,7 @@ function triggerEmClassChange(){
  * Only add ls-error-mandatory in PHP currently, not in js : different behaviour after try next and don't try next
  * /!\ We can more easily doing without js ( usage of :empty in css with :text & select) but then no boostrap, for before submit : use only css in template
  */
-function updateMandatoryErrorClass(){
+export function updateMandatoryErrorClass(){
     $(".ls-error-mandatory .has-error,.ls-error-mandatory.has-error").on("blur",":text,textarea",function(event){
         if($(this).val()!==""){
             $(this).closest(".has-error").removeClass("has-error");
@@ -422,7 +422,7 @@ function updateMandatoryErrorClass(){
 /**
  * Soft mandatory
  */
-function activateSoftMandatory(){
+export function activateSoftMandatory(){
     $('#mandatory-soft-alert-box-modal').on('click', function (ev) {
         ev.preventDefault();
         var $form = $('#limesurvey');
@@ -432,7 +432,7 @@ function activateSoftMandatory(){
     });
 }
 
-function resetQuestionTimers(sid) {
+export function resetQuestionTimers(sid) {
     var surveyTimersItemName = 'limesurvey_timers_by_sid_' + sid;
     var timers = JSON.parse(window.localStorage.getItem(surveyTimersItemName) || "[]");
     timers.forEach(function(timersessionname, idx){
