@@ -34,6 +34,22 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.0.0 (build 230405) to 6.0.1 (build 230411) April 11, 2023
+-Fixed issue CT-74: increased timeout for autocorrect on numerical fields (Tim Willig)
+-Fixed issue #18423: SQL error when quota enabled on postgresql (#2688) (Denis Chenu)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by c_schmitz
+#Updated translation: Portuguese (Brazil) by holch, samarta
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Hungarian by kkd
+#Updated translation: German by p_teichmann
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1, slansky
+#Updated translation: Chinese (Simplified) by c_schmitz, humandynamic
+
+
 Changes from 5.6.14 (build 230403) to 6.0.0 (build 230405) April 4, 2023
 +New feature: Converted the application to the Bootstrap 5 framework
 +New feature: Implemented a new administration theme
