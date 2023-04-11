@@ -34,6 +34,11 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.14 (build 230403) to 5.6.15 (build 230412) April 11, 2023
+-Fixed issue CT-74: increased timeout for autocorrect on numerical fields (Tim Willig)
+-Fixed issue #18423: SQL error when quota enabled on postgresql (#2688) (Denis Chenu)
+
+
 Changes from 5.6.13 (build 230327) to 5.6.14 (build 230403) April 3, 2023
 +New feature #18197: Allow Google Analytics 4 tracking (#2907) (Gabriel Jenik)
 -Fixed issue: Prevent "Division by zero" in statistics (Tim Willig)
