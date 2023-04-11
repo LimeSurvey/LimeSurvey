@@ -1,57 +1,44 @@
 <?php
+
 /** @var AdminController $this */
-$dateFormatDetails=getDateFormatData(Yii::app()->session['dateformat']);
+$dateFormatDetails = getDateFormatData(Yii::app()->session['dateformat']);
 
 ?>
-<?php $form = $this->beginWidget('CActiveForm', array('id'=>'survey-expiry',)); ?>
+<?php
+$form = $this->beginWidget('CActiveForm', array('id' => 'survey-expiry',)); ?>
 
-<div id='publication' class="container-center">
+<div id='publication'>
     <div class="row">
         <!-- Expiry date/time -->
-        <div class="form-group">
-
-            <label class="col-sm-6 control-label" for='expires'><?php  eT("Expiry date/time:"); ?></label>
-            <div class='col-sm-6'>
-
-                <input class="form-control" name="datepickerInputField" id="datepickerInputField" type="text" value="">
+        <div class="mb-3">
+            <label class="col-md-6 form-label" for='expires'><?php
+                eT("Expiry date/time:"); ?></label>
+            <div class='col-md-6'>
+                <?php
+                $widget = Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', array(
+                    'name' => 'datepickerInputField',
+                    'id' => 'expiryPicker',
+                    'pluginOptions' => array(
+                        'format' => $dateFormatDetails['jsdate'],
+                        'allowInputToggle' => true,
+                        'showClear' => true,
+                        'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
+                    )
+                ));
+                ?>
                 <input class="form-control custom-data" name="expires" id="expires" type="hidden" value="">
                 <script type="text/javascript">
-                    var datepickerConfig =     <?php
-                        $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
-                        echo json_encode(
-                            [
-                                'dateformatdetails'    => $dateformatdetails['dateformat'],
-                                'dateformatdetailsjs'  => $dateformatdetails['jsdate'],
-                                "initDatePickerObject" => [
-                                    "format"   => $dateformatdetails['jsdate'],
-                                    "tooltips" => [
-                                        "today"        => gT('Go to today'),
-                                        "clear"        => gT('Clear selection'),
-                                        "close"        => gT('Close the picker'),
-                                        "selectMonth"  => gT('Select month'),
-                                        "prevMonth"    => gT('Previous month'),
-                                        "nextMonth"    => gT('Next month'),
-                                        "selectYear"   => gT('Select year'),
-                                        "prevYear"     => gT('Previous year'),
-                                        "nextYear"     => gT('Next year'),
-                                        "selectDecade" => gT('Select decade'),
-                                        "prevDecade"   => gT('Previous decade'),
-                                        "nextDecade"   => gT('Next decade'),
-                                        "prevCentury"  => gT('Previous century'),
-                                        "nextCentury"  => gT('Next century')
-                                    ]
-                                ]
-                            ]
-                        );?>;
                     $(function () {
-                        $('#datepickerInputField').datetimepicker(datepickerConfig.initDatePickerObject);
-                        $('#datepickerInputField').on("dp.change", function(e){
-                            $("#expires").val(e.date.format(datepickerConfig.dateformatdetailsjs));
-                        })
+                        // datepicker needs to be reinitialized, due to ajax reload of modal:
+                        <?= $widget->getConfigScript('expiryPicker'); ?>
+                        document.getElementById("expiryPicker").addEventListener("change.td", function(){
+                            document.getElementById("expires").value = this.value;
+                        });
                     });
                 </script>
             </div>
         </div>
     </div>
 </div>
-<?php $this->endWidget(); ?>
+<?php
+$this->endWidget(); ?>

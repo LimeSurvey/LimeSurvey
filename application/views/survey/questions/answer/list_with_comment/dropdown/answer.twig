@@ -22,10 +22,10 @@
 
 <div class="ls-answers row" role="group" aria-labelledby="ls-question-text-{{ basename }}">
 
-    <div class="answer-item dropdown-item col-sm-6 col-xs-12">
+    <div class="answer-item  col-md-6 col-12">
         <!-- This need a label :/ -->
         <select
-            class="select form-control"
+            class="form-select select form-control list-question-select"
             name="{{ name }}"
             id="{{ id }}"
         >
@@ -41,7 +41,7 @@
         <input type="hidden" name="java{{ name }}" id="java{{ name }}" value="{{ value }}" disabled />
     </div>
 
-    <div class="answer-item text-item col-sm-6 col-xs-12">
+    <div class="answer-item text-item col-md-6 col-12">
         <label for="answer{{ name  }}comment">
             {{ processString(label_text) }}:
         </label>

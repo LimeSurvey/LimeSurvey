@@ -691,7 +691,7 @@ class Database extends SurveyCommonAction
             $startdate = $this->filterEmptyFields($oSurvey, 'startdate');
             if ($unfilteredStartdate === null) {
                 // Not submitted.
-            } elseif (trim($unfilteredStartdate) == "") {
+            } elseif (trim((string) $unfilteredStartdate) == "") {
                 $oSurvey->startdate = "";
             } else {
                 Yii::app()->loadLibrary('Date_Time_Converter');
@@ -704,7 +704,7 @@ class Database extends SurveyCommonAction
             $expires = $this->filterEmptyFields($oSurvey, 'expires');
             if ($unfilteredExpires === null) {
                 // Not submitted.
-            } elseif (trim($unfilteredExpires) == "") {
+            } elseif (trim((string) $unfilteredExpires) == "") {
                 // Must not convert if empty.
                 $oSurvey->expires = "";
             } else {
@@ -797,10 +797,10 @@ class Database extends SurveyCommonAction
 
         // Url params in json
         if (Yii::app()->request->getPost('allurlparams', false) !== false) {
-            $aURLParams = json_decode(Yii::app()->request->getPost('allurlparams'), true);
+            $aURLParams = json_decode(Yii::app()->request->getPost('allurlparams', ''), true) ?? [];
             SurveyURLParameter::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
             foreach ($aURLParams as $aURLParam) {
-                $aURLParam['parameter'] = trim($aURLParam['parameter']);
+                $aURLParam['parameter'] = trim((string) $aURLParam['parameter']);
                 if ($aURLParam['parameter'] == '' || !preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $aURLParam['parameter']) || $aURLParam['parameter'] == 'sid' || $aURLParam['parameter'] == 'newtest' || $aURLParam['parameter'] == 'token' || $aURLParam['parameter'] == 'lang') {
                     continue; // this parameter name seems to be invalid - just ignore it
                 }
@@ -986,7 +986,7 @@ class Database extends SurveyCommonAction
             $this->updatedFields[] = $fieldArrayName;
         }
 
-        $newValue = trim($newValue);
+        $newValue = trim((string) $newValue);
 
         $options = $this->updateableFields[$fieldArrayName];
 

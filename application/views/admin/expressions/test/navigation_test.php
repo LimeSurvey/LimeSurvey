@@ -49,7 +49,7 @@ EOD;
 }
 else {
 
-    
+
 
     // $surveyInfo = explode('|',Yii::app()->request->getParam('sid'));
     // $surveyid = sanitize_int($surveyInfo[0]);
@@ -61,7 +61,7 @@ else {
             ((isset($_POST['LEM_DEBUG_VALIDATION_DETAIL']) && $_POST['LEM_DEBUG_VALIDATION_DETAIL'] == 'Y') ? LEM_DEBUG_VALIDATION_DETAIL : 0) +
             ((isset($_POST['LEM_PRETTY_PRINT_ALL_SYNTAX']) && $_POST['LEM_PRETTY_PRINT_ALL_SYNTAX'] == 'Y') ? LEM_PRETTY_PRINT_ALL_SYNTAX : 0)
             );
-    $deletenonvalues = ((isset($_POST['deletenonvalues']) && $_POST['deletenonvalues']=='Y') ? 1 : 0);            
+    $deletenonvalues = ((isset($_POST['deletenonvalues']) && $_POST['deletenonvalues']=='Y') ? 1 : 0);
 
     $surveyOptions = array(
         'active'=>false,
