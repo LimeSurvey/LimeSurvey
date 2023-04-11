@@ -47,6 +47,6 @@
     value='<?php echo floatval($time_limit_message_delay); ?>'
     disabled
 />
-<div id='countdown-message-<?php echo $timersessionname; ?>' class="hidden">
+<div id='countdown-message-<?php echo $timersessionname; ?>' class="d-none">
 <?php echo $time_limit_countdown_message; ?>
 </div>

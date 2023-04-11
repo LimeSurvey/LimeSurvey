@@ -821,7 +821,7 @@ class quexmlpdf extends pdf
      */
     protected function wordLength($txt)
     {
-        $words = explode(' ', $txt);
+        $words = explode(' ', (string) $txt);
         $length = 0;
         foreach ($words as $v) {
             if (strlen($v) > $length) {
@@ -2592,7 +2592,7 @@ class quexmlpdf extends pdf
                             $this->SetY($this->GetY() + $this->subQuestionLineSpacing, false);
                             break;
                         case 'vas':
-                            $this->addBoxGroup(1, $varname, $rtext, strlen($this->vasIncrements));
+                            $this->addBoxGroup(1, $varname, $rtext, strlen((string) $this->vasIncrements));
                             $this->drawVas("", $response['labelleft'], $response['labelright']);
                             break;
                         case 'i25':
@@ -2749,7 +2749,7 @@ class quexmlpdf extends pdf
         for ($i = 0; $i < $c; $i++) {
             $s = $subquestions[$i];
 
-            $this->addBoxGroup(5, $s['varname'], $s['text'], strlen($s['defaultvalue']));
+            $this->addBoxGroup(5, $s['varname'], $s['text'], strlen((string) $s['defaultvalue']));
 
             $x = $this->getColumnX();
             $y = $this->GetY();
@@ -2793,7 +2793,7 @@ class quexmlpdf extends pdf
 
         $c = count($subquestions);
 
-        $width = strlen($this->vasIncrements);
+        $width = strlen((string) $this->vasIncrements);
 
         $heading = true;
 
@@ -3172,7 +3172,7 @@ class quexmlpdf extends pdf
             if ($bgtype != 6) {
                 $string = false;
                 if (isset($s['defaultvalue'])) {
-                    $string = mb_substr($s['defaultvalue'], 0, $width, "UTF-8");
+                    $string = mb_substr((string) $s['defaultvalue'], 0, $width, "UTF-8");
                 }
 
                 //Draw the cells
@@ -3899,7 +3899,7 @@ class quexmlpdf extends pdf
                 $calc = -$cw;
             }
 
-            $barcodeValue = substr(str_pad($this->questionnaireId, $this->idLength, "0", STR_PAD_LEFT), 0, $this->idLength) . substr(str_pad($this->getPage(), $this->pageLength, "0", STR_PAD_LEFT), 0, $this->pageLength);
+            $barcodeValue = substr(str_pad((string) $this->questionnaireId, $this->idLength, "0", STR_PAD_LEFT), 0, $this->idLength) . substr(str_pad($this->getPage(), $this->pageLength, "0", STR_PAD_LEFT), 0, $this->pageLength);
 
             //Calc X position of barcode from page width
             $barcodeX = $width - ($this->barcodeMarginX + $this->barcodeW);

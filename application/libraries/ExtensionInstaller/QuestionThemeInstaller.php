@@ -128,8 +128,8 @@ class QuestionThemeInstaller extends ExtensionInstaller
         // @see https://stackoverflow.com/questions/1860393/recursive-file-search-php
         foreach (new RecursiveIteratorIterator($it) as $key => $file) {
             // @see https://stackoverflow.com/questions/619610/whats-the-most-efficient-test-of-whether-a-php-string-ends-with-another-string?lq=1
-            if (stripos(strrev($file), strrev('config.xml')) === 0) {
-                return dirname($key);
+            if (stripos(strrev((string) $file), strrev('config.xml')) === 0) {
+                return dirname((string) $key);
             }
         }
         return null;

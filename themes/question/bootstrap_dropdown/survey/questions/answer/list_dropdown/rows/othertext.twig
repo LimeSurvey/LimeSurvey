@@ -8,16 +8,17 @@
  * @var $checkconditionFunction
  */
 #}
-<label for="othertext{{ name }}" class="sr-only">
-    {{ processString(label) }}
-</label>
-<div class="form-group text-item other-text-item">
-{{ C.Html.textField(name~"other",value,({
-    'id' : "othertext"~name,
-    'class':"form-control",
-    'aria-labelledby' : "answer"~name~"-oth-",
-}))
-}}
+<div class="col-auto">
+    <label for="othertext{{ name }}" class="visually-hidden">
+        {{ processString(label) }}
+    </label>
+</div>
+<div class="text-item other-text-item col-auto">
+    {{ C.Html.textField(name~"other",value,({
+        'id' : "othertext"~name,
+        'class':"form-control",
+        'aria-labelledby' : "answer"~name~"-oth-",
+    })) }}
 </div>
 <script>
 if( $("#answer{{ name }}").val() != "-oth-" ){

@@ -22,8 +22,10 @@
                     <p class='modal-body-text'><?php eT("Do you really want to delete this asessment rule?"); ?></p>
                 </div>
                 <div class="modal-footer modal-footer-buttons">
-                    <button type="button" class="btn btn-cancel" data-dismiss="modal"><?php eT('Cancel'); ?></button>
-                    <button type="button" class="btn btn-danger" id="selector__assessements-delete-modal" ><?php eT("Delete")?></button>
+                    <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT('Cancel'); ?></button>
+                    <button type="button" class="btn btn-danger" id="selector__assessements-delete-modal">
+                        <?php eT("Delete")?>
+                    </button>
                 </div>
             </form>
         </div>

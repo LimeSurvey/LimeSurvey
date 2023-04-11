@@ -39,7 +39,7 @@ class NTPTimeProvider implements ITimeProvider
             socket_close($sock);
 
             /* Interpret response */
-            $data = unpack('N12', $recv);
+            $data = unpack('N12', (string) $recv);
             $timestamp = sprintf('%u', $data[9]);
 
             /* NTP is number of seconds since 0000 UT on 1 January 1900 Unix time is seconds since 0000 UT on 1 January 1970 */

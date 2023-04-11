@@ -73,9 +73,9 @@ class TFAUserKey extends LSActiveRecord {
     public function getButtons()
     {
         $buttons = "<div class='icon-btn-row'>";
-        $buttons .= '<button class="btn btn-icon btn-sm"><i class="fa fa-refresh"></i></button>'
-            . '<button class="btn btn-icon btn-sm"><i class="fa fa-edit"></i></button>'
-            . '<button class="btn btn-icon btn-sm"><i class="fa fa-trash text-danger"></i></button>';
+        $buttons .= '<button class="btn btn-icon btn-sm"><i class="ri-refresh-line"></i></button>'
+            . '<button class="btn btn-icon btn-sm"><i class="ri-file-edit-line"></i></button>'
+            . '<button class="btn btn-icon btn-sm"><i class="ri-delete-bin-fill text-danger"></i></button>';
         $buttons .= "</div>";
         return $buttons;
     }

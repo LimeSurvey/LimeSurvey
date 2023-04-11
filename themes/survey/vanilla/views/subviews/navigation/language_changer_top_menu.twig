@@ -1,48 +1,47 @@
 {#
-    LimeSurvey
-    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
-    All rights reserved.
-    License: GNU/GPL License v2 or later, see LICENSE.php
-    LimeSurvey is free software. This version may have been modified pursuant
-    to the GNU General Public License, and as distributed it includes or
-    is derivative of works licensed under the GNU General Public License or
-    other free or open source software licenses.
-    See COPYRIGHT.php for copyright notices and details.
+LimeSurvey
+Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+All rights reserved.
+License: GNU/GPL License v2 or later, see LICENSE.php
+LimeSurvey is free software. This version may have been modified pursuant
+to the GNU General Public License, and as distributed it includes or
+is derivative of works licensed under the GNU General Public License or
+other free or open source software licenses.
+See COPYRIGHT.php for copyright notices and details.
 
-    (¯`·._.·(¯`·._.·  Language Changer for Top Menu ·._.·´¯)·._.·´¯)
+(¯`·._.·(¯`·._.·  Language Changer for Top Menu ·._.·´¯)·._.·´¯)
 
-    Show a language changer inside the top menu
+Show a language changer inside the top menu
 
-    It's a typical bootstrap dropdown button.
-    @see: http://getbootstrap.com/components/#dropdowns
+It's a typical bootstrap dropdown button.
+@see: http://getbootstrap.com/components/#dropdowns
 
-    @var array  aSurveyInfo.alanguageChangerDatas.aListLang :  contains the list of available languages for this survey, 'language_code' => 'language name'
-    @var string aSurveyInfo.alanguageChangerDatas.sSelected :  the language code of the selected language
+@var array  aSurveyInfo.alanguageChangerDatas.aListLang :  contains the list of available languages for this survey, 'language_code' => 'language name'
+@var string aSurveyInfo.alanguageChangerDatas.sSelected :  the language code of the selected language
 
-    The language change is done via javascript
+The language change is done via javascript
 #}
 
 {# There is many condition where the language changer should not be shown. Eg: there is only one language available #}
 {% if  aSurveyInfo.alanguageChanger.show == true %}
 
-    {#  we set a shortcut for aSurveyInfo.alanguageChangerDatas #}
+    {# we set a shortcut for aSurveyInfo.alanguageChangerDatas #}
     {% set aLCD  = aSurveyInfo.alanguageChanger.datas %}
 
     <!-- Language Changer, top menu version -->
-    <li class="{{ aSurveyInfo.class.lctli }} dropdown" {{ aSurveyInfo.attr.lctli }} >
-        <a class="{{ aSurveyInfo.class.lctla }} dropdown-toggle animate" {{ aSurveyInfo.attr.lctla }} >
-
+    <li class="ls-no-js-hidden form-change-lang dropdown nav-item px-2">
+        <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"
+           data-bs-target="#language-dropdown">
             {# NOTE:  {{gT( aLCD.aListLang[aLCD.sSelected] )}}: retreives the language name of the selected language and translates it #}
             {{ gT("Language:") }} {{ aLCD.aListLang[aLCD.sSelected] }}
-            <span class="{{ aSurveyInfo.class.lctspan }} caret" {{ aSurveyInfo.attr.lctspan }} ></span>
+            <span class="caret"></span>
         </a>
-
-        <ul class="{{ aSurveyInfo.class.lctdropdown }} dropdown-menu" id="{{ aSurveyInfo.id.lctdropdown }}" {{ aSurveyInfo.attr.lctdropdown }} >
-            {# List of available languages.  #}
+        <ul class="dropdown-menu dropdown-menu-end" id="language-dropdown">
+            {# List of available languages. #}
             {% for value, lang in aLCD.aListLang %}
-                <li class="{{ aSurveyInfo.class.lctdropdownli }}" {{ aSurveyInfo.attr.lctdropdownli }}>
-                    <a href='#' data-limesurvey-lang='{{ value }}' class="{{ aSurveyInfo.class.lctdropdownlia }} animate" {{ aSurveyInfo.attr.lctdropdownlia }}>
-                        {{lang}}
+                <li class="index-item">
+                    <a href='#' data-limesurvey-lang='{{ value }}' class="dropdown-item ls-language-link">
+                        {{ lang }}
                     </a>
                 </li>
             {% endfor %}
@@ -51,5 +50,5 @@
 
 {% endif %}
 
-{{ registerScript("BasicThemeScripts-TopLanguageChanger", "basicThemeScripts.initTopMenuLanguageChanger('." ~ aSurveyInfo.class.lctdropdownlia ~ "', 'form#limesurvey'); ", "POS_POSTSCRIPT") }}
+{{ registerScript("BasicThemeScripts-TopLanguageChanger", "basicThemeScripts.initTopMenuLanguageChanger('.ls-language-link ', 'form#limesurvey'); ", "POS_POSTSCRIPT") }}
 
