@@ -191,7 +191,6 @@ function survey_theme_ls6()
     ];
     return src(['assets/survey_themes/ls6_surveytheme/ls6_theme_template.scss'])
         .pipe(sass())
-        .pipe(dest('themes/survey/ls6_surveytheme/css'))
         .pipe(gulppostcss(plugins))
         .pipe(rename('theme.css'))
         .pipe(dest('themes/survey/ls6_surveytheme/css'));
