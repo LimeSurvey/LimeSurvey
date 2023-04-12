@@ -6907,7 +6907,7 @@ class LimeExpressionManager
             try{ 
                 triggerEmClassChange(); 
             } catch(e) {
-                console.ls.warn('triggerEmClassChange could not be run. Is survey.js correctly loaded?');
+                console.ls.warn('triggerEmClassChange could not be run. Is survey.js/template_core_pre.js correctly loaded?');
             }\n",
             LSYii_ClientScript::POS_END
         );

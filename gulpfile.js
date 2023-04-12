@@ -200,7 +200,7 @@ function survey_theme_ls6()
 function survey_theme_ls6_js() {
     // browserify package handler
     return browserify({
-        entries: ['assets/survey_themes/ls6_surveytheme/ls6_javascript_template_esm.js']
+        entries: ['assets/survey_themes/ls6_surveytheme/ls6_javascript_modules.js']
     })
         // transform babelify ES6 to ES5 [@babel/preset-env]
         .transform(babelify, {
@@ -211,7 +211,7 @@ function survey_theme_ls6_js() {
         // bundle the transformed code
         .bundle()
         // sourcemap
-        .pipe(source('assets/survey_themes/ls6_surveytheme/ls6_javascript_template_esm.js'))
+        .pipe(source('assets/survey_themes/ls6_surveytheme/ls6_javascript_modules.js'))
         // rename
         .pipe(rename('theme.js'))
         // buffer

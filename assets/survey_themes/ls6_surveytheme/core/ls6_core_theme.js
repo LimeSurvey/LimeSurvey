@@ -1,13 +1,13 @@
 /*
     LimeSurvey
-    Copyright (C) 2007-2016 The LimeSurvey Project Team / Carsten Schmitz
+    Copyright (C) 2007-2023
+    The LimeSurvey Project Team / Patrick Teichmann
     All rights reserved.
     License: GNU/GPL License v3 or later, see LICENSE.php
     LimeSurvey is free software. This version may have been modified pursuant
     to the GNU General Public License, and as distributed it includes or
     is derivative of works licensed under the GNU General Public License or
     other free or open source software licenses.
-    See COPYRIGHT.php for copyright notices and details.
 
 
     (¯`·._.·(¯`·._.·  Theme main JavaScript   ·._.·´¯)·._.·´¯)
@@ -28,13 +28,15 @@
 
 */
 
+import TemplateCoreClass from './template_core_class.js';
+
 /**
  * The general Template closure.
  * This is to capsule eventual errors inside of the template function, so the general script all run as the should
  */
 // Global constructor, used in multiple twig files
 // eslint-disable-next-line no-unused-vars
-export default ThemeScripts = function () {
+export var ThemeScripts = function () {
     // defining the console object once. Also filtered by the global setting
     // eslint-disable-next-line no-console
     var logObject = console.ls ? (window.debugState.frontend ? console.ls : console.ls.silent) : console;
@@ -193,7 +195,7 @@ export default ThemeScripts = function () {
             });
 
             // Bind language changer onclick event.
-            // This function is defined in assets/packages/limesurvey/survey.js
+            // This function is defined in assets/survey_themes/ls6_surveytheme/core/template_core_pre.js
             // eslint-disable-next-line no-undef
             activateLanguageChanger();
 
@@ -280,3 +282,6 @@ export default ThemeScripts = function () {
     };
 
 };
+
+// register to global scope
+window.ThemeScripts = ThemeScripts;

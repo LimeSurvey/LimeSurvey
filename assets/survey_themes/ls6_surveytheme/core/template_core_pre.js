@@ -464,3 +464,20 @@ $(document).on('submit', function (e) {
     // in the request when the button is disabled.
     $('#limesurvey').append('<input id="onsubmitbuttoninput" name=\'' + submitter.attr('name') + '\' value=\'' + submitter.attr('value') + '\' type=\'hidden\' />');
 });
+
+// register to global scope
+window.triggerEmRelevance = triggerEmRelevance;
+window.triggerEmRelevanceQuestion = triggerEmRelevanceQuestion;
+window.triggerEmRelevanceGroup = triggerEmRelevanceGroup;
+window.triggerEmRelevanceSubQuestion = triggerEmRelevanceSubQuestion;
+window.updateLineClass = updateLineClass;
+window.updateRepeatHeading = updateRepeatHeading;
+window.manageIndex = manageIndex;
+window.activateLanguageChanger = activateLanguageChanger;
+window.activateActionLink = activateActionLink;
+window.confirmSurveyDialog = confirmSurveyDialog;
+window.activateConfirmButton = activateConfirmButton;
+window.triggerEmClassChange = triggerEmClassChange;
+window.updateMandatoryErrorClass = updateMandatoryErrorClass;
+window.activateSoftMandatory = activateSoftMandatory;
+window.resetQuestionTimers = resetQuestionTimers;

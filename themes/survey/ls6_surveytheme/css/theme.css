@@ -2,7 +2,7 @@
 /*
     LimeSurvey
 
-    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    Copyright (C) 2007-2023 The LimeSurvey Project Team / Patrick Teichmann
     All rights reserved.
 
     License: GNU/GPL License v2 or later, see LICENSE.php
@@ -10,7 +10,6 @@
     to the GNU General Public License, and as distributed it includes or
     is derivative of works licensed under the GNU General Public License or
     other free or open source software licenses.
-    See COPYRIGHT.php for copyright notices and details.
 
     (¯`·._.·(¯`·._.·  LS team custom CSS   ·._.·´¯)·._.·´¯)
 
@@ -986,10 +985,14 @@ table > tbody > tr > td.ddprefix {
  */
 .js .ls-hidden {
   display: none;
-} /* 3 class , and don't hide without javascript*/
+}
+
+/* 3 class , and don't hide without javascript*/
 .js .ls-irrelevant {
   pointer-events: none;
-} /* Without js : NEED action accepted … */
+}
+
+/* Without js : NEED action accepted … */
 .js .ls-disabled {
   opacity: 0.4;
 }
@@ -1484,7 +1487,8 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
   }
   table.ls-answers thead {
     display: none;
-  } /* We don't need it for accessibility : we already have the label */
+  }
+  /* We don't need it for accessibility : we already have the label */
   table.ls-answers tbody td {
     text-align: left;
   }

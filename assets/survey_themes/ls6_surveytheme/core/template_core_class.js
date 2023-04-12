@@ -1,10 +1,28 @@
+import {
+    triggerEmRelevance,
+    triggerEmRelevanceQuestion,
+    triggerEmRelevanceGroup,
+    triggerEmRelevanceSubQuestion,
+    updateLineClass,
+    updateRepeatHeading,
+    manageIndex,
+    activateLanguageChanger,
+    activateActionLink,
+    confirmSurveyDialog,
+    activateConfirmButton,
+    triggerEmClassChange,
+    updateMandatoryErrorClass,
+    activateSoftMandatory,
+    resetQuestionTimers
+} from './template_core_pre.js';
+
 /**
  * @file Default template functionnality
  * @copyright LimeSurvey <http://www.limesurvey.org>
  * @license magnet:?xt=urn:btih:1f739d935676111cfff4b4693e3816e664797050&dn=gpl-3.0.txt GPL-v3-or-Later
  */
 
-export default TemplateCoreClass = function () {
+export var TemplateCoreClass = function () {
     return {
         /**
          * Dialog and confirm
@@ -12,7 +30,7 @@ export default TemplateCoreClass = function () {
         /* showStartPopups : replace core function : allow HTML and use it. Unusuable with ajax */
         showStartPopups: function () {
             if (LSvar.showpopup == 1  && $.isArray(LSvar.startPopups)) {
-                startPopups = LSvar.startPopups.map( function (text) {
+                let startPopups = LSvar.startPopups.map( function (text) {
                     return "<p>"+text+"</p>";
                 });
                 window.templateCore.alertSurveyDialog(startPopups.join(""));
@@ -72,31 +90,31 @@ export default TemplateCoreClass = function () {
 
         /**
          * Update some class when em-tips is success/error
-         * @see core/package/limesurvey/survey.js:triggerEmClassChange
+         * @see assets/survey_themes/ls6_surveytheme/core/template_core_pre.js:triggerEmClassChange
          */
         triggerEmClassChangeTemplate: function () {
             $('.ls-em-tip').each(function () {
                 $(this).on('classChangeError', function () {
                     /* If user choose hide-tip : leave it */
-                    $parent = $(this).parent('div.hide-tip');
-                    if ($parent.hasClass('hide-tip')) {
-                        $parent.removeClass('hide-tip', 1);
-                        $parent.addClass('tip-was-hidden', 1);
+                    let parent = $(this).parent('div.hide-tip');
+                    if (parent.hasClass('hide-tip')) {
+                        parent.removeClass('hide-tip', 1);
+                        parent.addClass('tip-was-hidden', 1);
                     }
-                    $questionContainer = $(this).parents('div.question-container');
-                    $questionContainer.addClass('input-error'); /* No difference betwwen error after submit and error before submit : think (Shnoulle) it's better to have a difference */
+                    let questionContainer = $(this).parents('div.question-container');
+                    questionContainer.addClass('input-error'); /* No difference betwwen error after submit and error before submit : think (Shnoulle) it's better to have a difference */
                 });
 
                 $(this).on('classChangeGood', function () {
                     /* If user choose hide-tip : leave it */
-                    $parent = $(this).parents('div.hide-tip');
-                    $parent.removeClass('text-danger');
-                    $parent.addClass('text-info');
-                    if ($parent.hasClass('tip-was-hidden')) {
-                        $parent.removeClass('tip-was-hidden').addClass('hide-tip');
+                    let parent = $(this).parents('div.hide-tip');
+                    parent.removeClass('text-danger');
+                    parent.addClass('text-info');
+                    if (parent.hasClass('tip-was-hidden')) {
+                        parent.removeClass('tip-was-hidden').addClass('hide-tip');
                     }
-                    $questionContainer = $(this).parents('div.question-container');
-                    $questionContainer.removeClass('input-error'); /* Not working with mandatory question ... */
+                    let questionContainer = $(this).parents('div.question-container');
+                    questionContainer.removeClass('input-error'); /* Not working with mandatory question ... */
                 });
             });
 
@@ -104,7 +122,7 @@ export default TemplateCoreClass = function () {
         },
         /**
          * Hide/show question if all subquestions is hidden
-         * @see core/package/limesurvey/survey.js:triggerEmRelevanceSubQuestion
+         * @see assets/survey_themes/ls6_surveytheme/core/template_core_pre.js:triggerEmRelevanceSubQuestion
          * @see https://bugs.limesurvey.org/view.php?id=10055 (partial)
          * Must be before ready (event happen before ready)
          */
@@ -134,7 +152,7 @@ export default TemplateCoreClass = function () {
         },
         /**
          * Hide/show parent multiple list
-         * @see core/package/limesurvey/survey.js:triggerEmRelevanceSubQuestion
+         * @see assets/survey_themes/ls6_surveytheme/core/template_core_pre.js:triggerEmRelevanceSubQuestion
          * @see https://bugs.limesurvey.org/view.php?id=11787
          * Must be before ready (event happen before ready)
          */
@@ -162,6 +180,9 @@ export default TemplateCoreClass = function () {
         }
     }
 };
+
+// register to global scope
+window.TemplateCoreClass = TemplateCoreClass;
 
 
 if (!window.templateCore) {
