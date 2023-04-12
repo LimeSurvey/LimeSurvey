@@ -5,9 +5,11 @@
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('surveyResources');
+App()->getClientScript()->registerPackage('adminbasics');
 
 App()->getClientScript()->registerScript(
-  "resources-panel-variables", "
+    "resources-panel-variables",
+    "
 var jsonUrl = '';
 var sAction = '';
 var sParameter = '';
@@ -39,14 +41,14 @@ var sAddParam = '';
                     'images' => gT('Images', 'unescaped')
                 ),
                 array(
-                    'class'     =>'form-select',
+                    'class'     => 'form-select',
                     'data-href' => App()->request->getBaseUrl() . "/vendor/kcfinder/browse.php?language=" . sTranslateLangCode2CK(App()->language)
                 )
             );
             ?>
         </div>
         <div class="col-md-auto mb-3">
-            <a href="<?php echo $this->createUrl('admin/export/sa/resources/export/survey/surveyid/'.$surveyid); ?>" target="_blank" class="btn btn-outline-secondary">
+            <a href="<?php echo $this->createUrl('admin/export/sa/resources/export/survey/surveyid/' . $surveyid); ?>" target="_blank" class="btn btn-outline-secondary">
                 <span class="ri-upload-fill"></span>
                 <?php eT("Export resources as ZIP archive") ?>
             </a>
@@ -55,7 +57,7 @@ var sAddParam = '';
                 <?php eT("Import resources ZIP archive"); ?>
             </a>
         </div>
-        <div class="col-12">
+        <div class="col-12 file-manager">
             <iframe
                 id="browseiframe"
                 src="<?php echo App()->request->getBaseUrl(); ?>/vendor/kcfinder/browse.php?language='<?php echo sTranslateLangCode2CK(App()->language); ?>'"

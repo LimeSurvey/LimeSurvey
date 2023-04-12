@@ -334,6 +334,21 @@ var UserManagement = function () {
         });
     };
 
+    $(document).on("ready", function () {
+        $("#browseiframe").on("load", function () {
+            $("#browseiframe")
+                .contents()
+                .find("body")
+                .addClass("file-manager-body");
+
+            // load sea_green css again after iframe is fully loaded
+            const head = $("#browseiframe").contents().find("head");
+            head.append(
+                `<link rel="stylesheet" type="text/css" href='/themes/admin/Sea_Green/css/sea_green.css' />`
+            );
+        });
+    });
+
     $(document).on('ready  pjax:scriptcomplete', function () {
         bindButtons();
         bindModals();
