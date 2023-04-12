@@ -236,6 +236,17 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
 
         //Checking options
         $this->assertSame($answerOptions, $result['answeroptions'], 'The options were not returned correctly.');
+
+        //Checking subquestions
+        $subquestions = array(
+            'title' => 'SQ001',
+            'question' => 'Subquestion',
+            'scale_id' => '0'
+        );
+
+        $subquestionsRestult = array_values($result['subquestions'])[0];
+        $this->assertSame($subquestions, $subquestionsRestult, 'The returned subquestion is not correct.');
+
         //Checking other properties
         $this->assertSame('F', $result['type'], 'The question type is not correct.');
         $this->assertSame('N', $result['mandatory'], 'The question should not be mandatory.');
