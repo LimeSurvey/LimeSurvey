@@ -334,4 +334,79 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
         $this->assertSame('N', $result['encrypted'], 'The question should not be encrypted.');
         $this->assertSame('6', $result['question_order'], 'The question order is not correct.');
     }
+
+    public function testGetMultipleChoiceQuestionProperties()
+    {
+        $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
+
+        $question = \Question::model()->findByAttributes(array('title' => 'G01Q07'));
+        $qid = $question->qid;
+
+        $result = $this->handler->get_question_properties($sessionKey, $qid, null);
+
+        //Checking options
+        $this->assertSame('No available answer options', $result['answeroptions'], 'The options were not returned correctly.');
+
+        //Checking subquestions
+        $englishSubquestions = array(
+            array(
+                'title' => 'SQ001',
+                'question' => 'Option one',
+                'scale_id' => '0'
+            ),
+            array(
+                'title' => 'SQ002',
+                'question' => 'Option two',
+                'scale_id' => '0'
+            ),
+            array(
+                'title' => 'SQ003',
+                'question' => 'Option three',
+                'scale_id' => '0'
+            ),
+            array(
+                'title' => 'SQ004',
+                'question' => 'Option four',
+                'scale_id' => '0'
+            )
+        );
+
+        $englishSubquestionsRestult = array_values($result['subquestions']);
+
+        $this->assertSame($subquestions, $subquestionsRestult, 'The returned subquestions are not correct.');
+
+        $spanishSubquestions = array(
+            array(
+                'title' => 'SQ001',
+                'question' => 'Opción uno',
+                'scale_id' => '0'
+            ),
+            array(
+                'title' => 'SQ002',
+                'question' => 'Opción dos',
+                'scale_id' => '0'
+            ),
+            array(
+                'title' => 'SQ003',
+                'question' => 'Opción tres',
+                'scale_id' => '0'
+            ),
+            array(
+                'title' => 'SQ004',
+                'question' => 'Opción cuatro',
+                'scale_id' => '0'
+            )
+        );
+
+        $spanishResult = $this->handler->get_question_properties($sessionKey, $qid, null, 'es');
+        $spanishSubquestionsRestult = array_values($spanishResult['subquestions']);
+
+        $this->assertSame($spanishSubquestions, $spanishSubquestionsRestult, 'The returned subquestions (multilanguage) are not correct.');
+
+        //Checking other properties
+        $this->assertSame('M', $result['type'], 'The question type is not correct.');
+        $this->assertSame('N', $result['mandatory'], 'The question should not be mandatory.');
+        $this->assertSame('N', $result['encrypted'], 'The question should not be encrypted.');
+        $this->assertSame('7', $result['question_order'], 'The question order is not correct.');
+    }
 }
