@@ -12,7 +12,10 @@ class GoogleOAuthSMTP extends SmtpOauthPluginBase
     protected static $name = 'GoogleOAuthSMTP';
 
     /** @inheritdoc, this plugin doesn't have any public method */
-    public $allowedPublicMethods = array();
+    public $allowedPublicMethods = [];
+
+    /** @inheritdoc */
+    protected $credentialAttributes = ['clientId', 'clientSecret'];
 
     protected $settings = [
         'help' => [
@@ -108,68 +111,6 @@ class GoogleOAuthSMTP extends SmtpOauthPluginBase
     }
 
     /**
-     * Renders the contents of the "information" setting depending on
-     * settings and token validity.
-     * @return string
-     */
-    private function getRefreshTokenInfo()
-    {
-        $this->subscribe('getPluginTwigPath');
-
-        $clientId = $this->get('clientId');
-        $clientSecret = $this->get('clientSecret');
-        // If either "Client ID" or "Client Secret" is missing, show the "incomplete settings" message.
-        if (empty($clientId) || empty($clientSecret)) {
-            return Yii::app()->twigRenderer->renderPartial('/IncompleteSettingsMessage.twig', []);
-        }
-
-        if (!$this->isActive()) {
-            return Yii::app()->twigRenderer->renderPartial('/ErrorMessage.twig', [
-                'message' => gT("The plugin must be activated before finishing the configuration.")
-            ]);
-        }
-
-        if (!(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')) {
-            return Yii::app()->twigRenderer->renderPartial('/ErrorMessage.twig', [
-                'message' => gT("Google OAuth authentication requires the application to be served over HTTPS.")
-            ]);
-        }
-
-        $refreshToken = $this->get('refreshToken');
-
-        $data = [
-            'tokenUrl' => $this->api->createUrl('plugins/direct', ['plugin' => $this->getName()]),
-            'reloadUrl' => $this->getConfigUrl(),
-            'buttonCaption' => gT("Get token"),
-        ];
-
-        // If there is no refresh token stored, ask the user to get one.
-        if (empty($refreshToken)) {
-            $data['class'] = "warning";
-            $data['message'] = gT("Get token for currently saved Client ID and Secret.");
-            return Yii::app()->twigRenderer->renderPartial('/GetTokenMessage.twig', $data);
-        }
-
-        // Check if the refresh token is still valid. If it's not, ask the user to get a new one.
-        if (!$this->validateRefreshToken($refreshToken, $clientId, $clientSecret)) {
-            $data['class'] = "danger";
-            $data['message'] = gT("The saved token isn't valid. You need to get a new one.");
-            return Yii::app()->twigRenderer->renderPartial('/GetTokenMessage.twig', $data);
-        }
-
-        // If we got here, inform the user everything is Ok.
-        $data['class'] = "success";
-        $data['message'] = gT("Configuration is complete. If settings are changed, you will need to re-validate the credentials.");
-        $data['buttonCaption'] = gT("Replace token");
-        return Yii::app()->twigRenderer->renderPartial('/GetTokenMessage.twig', $data);
-
-        // Translations here just so the translations bot can pick them up.
-        $lang = [
-            gT("Currently saved settings are incomplete. After saving both 'Client ID' and 'Client Secret' you will be able to validate the credentials.")
-        ];
-    }
-
-    /**
      * Redirects to the Google's authorization page
      */
     public function redirectToGoogle()
@@ -194,12 +135,12 @@ class GoogleOAuthSMTP extends SmtpOauthPluginBase
     /**
      * @inheritdoc
      */
-    protected function getProvider($clientId, $clientSecret)
+    protected function getProvider($credentials)
     {
         $redirectUri = $this->getRedirectUri();
         $params = [
-            'clientId' => $clientId,
-            'clientSecret' => $clientSecret,
+            'clientId' => $credentials['clientId'],
+            'clientSecret' => $credentials['clientSecret'],
             'redirectUri' => $redirectUri,
             'accessType' => 'offline',
             'prompt' => 'consent',
@@ -239,7 +180,7 @@ class GoogleOAuthSMTP extends SmtpOauthPluginBase
     public function newSMTPOAuthConfiguration()
     {
         try {
-            [$clientId, $clientSecret] = $this->getCredentials();
+            $credentials = $this->getCredentials();
         } catch (Exception $ex) {
             $this->log("GoogleOAuthSMTP is enabled but credentials are incomplete.", CLogger::LEVEL_WARNING);
             return;
@@ -259,11 +200,11 @@ class GoogleOAuthSMTP extends SmtpOauthPluginBase
 
         $event = $this->getEvent();
 
-        $provider = $this->getProvider($clientId, $clientSecret);
+        $provider = $this->getProvider($credentials);
         $config = [
             'provider' => $provider,
-            'clientId' => $clientId,
-            'clientSecret' => $clientSecret,
+            'clientId' => $credentials['clientId'],
+            'clientSecret' => $credentials['clientSecret'],
             'refreshToken' => $refreshToken,
             'userName' => $emailAddress,
         ];
@@ -293,6 +234,11 @@ class GoogleOAuthSMTP extends SmtpOauthPluginBase
      */
     public function beforeEmail()
     {
+        // Don't do anything if the current plugin is not the one selected.
+        if (!$this->isCurrentSMTPOAuthHandler()) {
+            return;
+        }
+
         $limeMailer = $this->getEvent()->get('mailer');
         // Set "Reply To" because Gmail overrides the From/Sender with the logged user.
         $limeMailer->AddReplyTo($limeMailer->From, $limeMailer->FromName);

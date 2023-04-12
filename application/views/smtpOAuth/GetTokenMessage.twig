@@ -9,20 +9,13 @@
     </div>
 </div>
 <script>
-    $(document).ready(() => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const tab = urlParams.get('tab');
-        if (tab) {
-            $('[href="#' + tab + '"]').tab('show');
-        }
-    });
     $(document).on('click', '#get-token', () => {
         const width = 600;
         const height = 700;
         const left = (window.screen.width - width) / 2 + window.screen.availLeft;
         const top = (window.screen.height - height) / 2 + window.screen.availTop;
 
-        window.open('{{ tokenUrl }}', 'lime_google_oauth', 'width=' + width + ',height=' + height + ',left=' + left + ',top=' + top + 'location=0,menubar=0,status=0,toolbar=0');
+        window.open('{{ tokenUrl }}', 'lime_oauth', 'width=' + width + ',height=' + height + ',left=' + left + ',top=' + top + 'location=0,menubar=0,status=0,toolbar=0');
     });
     
     window.addEventListener('message', function(event) {

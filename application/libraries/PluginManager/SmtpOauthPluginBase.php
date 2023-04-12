@@ -4,6 +4,7 @@ namespace LimeSurvey\PluginManager;
 
 use League\OAuth2\Client\Grant\RefreshToken;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
+use LimeMailer;
 
 abstract class SmtpOauthPluginBase extends PluginBase
 {
@@ -182,33 +183,14 @@ abstract class SmtpOauthPluginBase extends PluginBase
     }
 
     /**
-     * Receives the response from OAuth provider
+     * Default handler for the afterReceiveOAuthResponse event
      */
-    protected function receiveOAuthResponse()
+    public function afterReceiveOAuthResponse()
     {
-        /** @var LSHttpRequest */
-        $request = \Yii::app()->getRequest();
-
-        $code = $request->getParam("code");
-        if (empty($code)) {
-            throw new \Exception("Invalid request");
-        }
-
-        $sessionVar = self::getName() . '-state';
-        $oauth2state = \Yii::app()->session[$sessionVar];
-        if (empty($oauth2state)) {
-            throw new \Exception("Invalid state");
-        }
-
-        $state = $request->getParam("state");
-        if ($state != $oauth2state) {
-            unset(\Yii::app()->session[$sessionVar]);
-            throw new \Exception("Invalid state");
-        }
-
+        $event = $this->getEvent();
+        $code = $event->get('code');
         $credentials = $this->getCredentials();
 
-        // If all checks are Ok, try to retrieve the refresh token
         $this->retrieveRefreshToken($code, $credentials);
     }
 
@@ -230,10 +212,6 @@ abstract class SmtpOauthPluginBase extends PluginBase
 
         // Do additional processing
         $this->afterRefreshTokenRetrieved($provider, $token);
-
-        // Renders a "success" html. It actually doesn't show any message.
-        // It just closes the window after sending a message to the opener.
-        $this->renderPartial('TokenSuccess', []);
     }
 
     /**
@@ -312,5 +290,63 @@ abstract class SmtpOauthPluginBase extends PluginBase
         }
 
         return self::SETUP_STATUS_VALID_REFRESH_TOKEN;
+    }
+
+    /**
+     * Renders the contents of the "information" setting depending on
+     * settings and token validity.
+     * @return string
+     */
+    protected function getRefreshTokenInfo()
+    {
+        if (!$this->isActive()) {
+            return \Yii::app()->twigRenderer->renderPartial('/smtpOAuth/ErrorMessage.twig', [
+                'message' => gT("The plugin must be activated before finishing the configuration.")
+            ]);
+        }
+
+        if (!(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')) {
+            return \Yii::app()->twigRenderer->renderPartial('/smtpOAuth/ErrorMessage.twig', [
+                'message' => gT("OAuth authentication requires the application to be served over HTTPS.")
+            ]);
+        }
+
+        $setupStatus = $this->getSetupStatus();
+
+        $data = [
+            'tokenUrl' => $this->api->createUrl('smtpOAuth/prepareRefreshTokenRequest', ['plugin' => get_class($this)]),
+            'reloadUrl' => $this->getConfigUrl(),
+            'buttonCaption' => gT("Get token"),
+        ];
+
+        switch ($setupStatus) {
+            case self::SETUP_STATUS_INCOMPLETE_CREDENTIALS:
+                return \Yii::app()->twigRenderer->renderPartial('/smtpOAuth/IncompleteSettingsMessage.twig', []);
+            case self::SETUP_STATUS_MISSING_REFRESH_TOKEN:
+                $data['class'] = "warning";
+                $data['message'] = gT("Get token for currently saved Client ID and Secret.");
+                return \Yii::app()->twigRenderer->renderPartial('/smtpOAuth/GetTokenMessage.twig', $data);
+            case self::SETUP_STATUS_INVALID_REFRESH_TOKEN:
+                $data['class'] = "danger";
+                $data['message'] = gT("The saved token isn't valid. You need to get a new one.");
+                return \Yii::app()->twigRenderer->renderPartial('/smtpOAuth/GetTokenMessage.twig', $data);
+            case self::SETUP_STATUS_VALID_REFRESH_TOKEN:
+                $data['class'] = "success";
+                $data['message'] = gT("Configuration is complete. If settings are changed, you will need to re-validate the credentials.");
+                $data['buttonCaption'] = gT("Replace token");
+                return \Yii::app()->twigRenderer->renderPartial('/smtpOAuth/GetTokenMessage.twig', $data);
+        }
+    }
+
+    /**
+     * Returns true if the plugin is the currently selected SMTP OAuth plugin
+     * @return bool
+     */
+    protected function isCurrentSMTPOAuthHandler()
+    {
+        if (LimeMailer::MethodOAuth2Smtp !== \Yii::app()->getConfig('emailmethod')) {
+            return false;
+        }
+        return get_class($this) == \Yii::app()->getConfig('emailoauthplugin');
     }
 }

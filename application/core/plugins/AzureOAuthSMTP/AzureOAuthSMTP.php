@@ -13,7 +13,10 @@ class AzureOAuthSMTP extends SmtpOauthPluginBase
     protected static $name = 'AzureOAuthSMTP';
 
     /** @inheritdoc, this plugin doesn't have any public method */
-    public $allowedPublicMethods = array();
+    public $allowedPublicMethods = [];
+
+    /** @inheritdoc */
+    protected $credentialAttributes = ['clientId', 'clientSecret', 'tenantId'];
 
     protected $settings = [
         'help' => [
@@ -104,68 +107,6 @@ class AzureOAuthSMTP extends SmtpOauthPluginBase
     }
 
     /**
-     * Renders the contents of the "information" setting depending on
-     * settings and token validity.
-     * @return string
-     */
-    private function getRefreshTokenInfo()
-    {
-        $this->subscribe('getPluginTwigPath');
-
-        $clientId = $this->get('clientId');
-        $clientSecret = $this->get('clientSecret');
-        // If either "Client ID" or "Client Secret" is missing, show the "incomplete settings" message.
-        if (empty($clientId) || empty($clientSecret)) {
-            return Yii::app()->twigRenderer->renderPartial('/IncompleteSettingsMessage.twig', []);
-        }
-
-        if (!$this->isActive()) {
-            return Yii::app()->twigRenderer->renderPartial('/ErrorMessage.twig', [
-                'message' => gT("The plugin must be activated before finishing the configuration.")
-            ]);
-        }
-
-        if (!(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')) {
-            return Yii::app()->twigRenderer->renderPartial('/ErrorMessage.twig', [
-                'message' => gT("Azure OAuth authentication requires the application to be served over HTTPS.")
-            ]);
-        }
-
-        $refreshToken = $this->get('refreshToken');
-
-        $data = [
-            'tokenUrl' => $this->api->createUrl('plugins/direct', ['plugin' => $this->getName()]),
-            'reloadUrl' => $this->getConfigUrl(),
-            'buttonCaption' => gT("Get token"),
-        ];
-
-        // If there is no refresh token stored, ask the user to get one.
-        if (empty($refreshToken)) {
-            $data['class'] = "warning";
-            $data['message'] = gT("Get token for currently saved Client ID and Secret.");
-            return Yii::app()->twigRenderer->renderPartial('/GetTokenMessage.twig', $data);
-        }
-
-        // Check if the refresh token is still valid. If it's not, ask the user to get a new one.
-        if (!$this->validateRefreshToken($refreshToken, $clientId, $clientSecret)) {
-            $data['class'] = "danger";
-            $data['message'] = gT("The saved token isn't valid. You need to get a new one.");
-            return Yii::app()->twigRenderer->renderPartial('/GetTokenMessage.twig', $data);
-        }
-
-        // If we got here, inform the user everything is Ok.
-        $data['class'] = "success";
-        $data['message'] = gT("Configuration is complete. If settings are changed, you will need to re-validate the credentials.");
-        $data['buttonCaption'] = gT("Replace token");
-        return Yii::app()->twigRenderer->renderPartial('/GetTokenMessage.twig', $data);
-
-        // Translations here just so the translations bot can pick them up.
-        $lang = [
-            gT("Currently saved settings are incomplete. After saving 'Client ID', 'Client Secret' and 'Tenant ID' you will be able to validate the credentials.")
-        ];
-    }
-
-    /**
      * Redirects to the Azure's authorization page
      */
     public function redirectToAzure()
@@ -190,15 +131,13 @@ class AzureOAuthSMTP extends SmtpOauthPluginBase
     /**
      * @inheritdoc
      */
-    protected function getProvider($clientId, $clientSecret)
+    protected function getProvider($credentials)
     {
-        [$clientId, $clientSecret] = $this->getCredentials();
-        $tenantId = $this->get('tenantId');
         $redirectUri = $this->getRedirectUri();
         $params = [
-            'clientId' => $clientId,
-            'clientSecret' => $clientSecret,
-            'tenantId' => $tenantId,
+            'clientId' => $credentials['clientId'],
+            'clientSecret' => $credentials['clientSecret'],
+            'tenantId' => $credentials['tenantId'],
             'redirectUri' => $redirectUri,
             'accessType' => 'offline',
             'prompt' => 'consent',
@@ -229,7 +168,9 @@ class AzureOAuthSMTP extends SmtpOauthPluginBase
     public function newSMTPOAuthConfiguration()
     {
         try {
-            [$clientId, $clientSecret] = $this->getCredentials();
+            $credentials = $this->getCredentials();
+            $clientId = $credentials['clientId'];
+            $clientSecret = $credentials['clientSecret'];
         } catch (Exception $ex) {
             $this->log("AzureOAuthSMTP is enabled but credentials are incomplete.", CLogger::LEVEL_WARNING);
             return;
@@ -249,7 +190,7 @@ class AzureOAuthSMTP extends SmtpOauthPluginBase
 
         $event = $this->getEvent();
 
-        $provider = $this->getProvider($clientId, $clientSecret);
+        $provider = $this->getProvider($credentials);
         $config = [
             'provider' => $provider,
             'clientId' => $clientId,
@@ -283,6 +224,11 @@ class AzureOAuthSMTP extends SmtpOauthPluginBase
      */
     public function beforeEmail()
     {
+        // Don't do anything if the current plugin is not the one selected.
+        if (!$this->isCurrentSMTPOAuthHandler()) {
+            return;
+        }
+
         $event = $this->getEvent();
         $limeMailer = $event->get('mailer');
         // Set "Reply To" because we need to override the From/Sender with the logged user.
