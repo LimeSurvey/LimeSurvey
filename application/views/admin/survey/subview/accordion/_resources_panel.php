@@ -5,7 +5,6 @@
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('surveyResources');
-App()->getClientScript()->registerPackage('adminbasics');
 
 App()->getClientScript()->registerScript(
     "resources-panel-variables",
