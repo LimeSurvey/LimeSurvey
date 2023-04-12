@@ -544,6 +544,10 @@ class SurveyRuntimeHelper
             if (!empty($_SESSION[$this->LEMsessid]['token']) and $this->aSurveyInfo['anonymized'] != 'Y') {
                 $this->aSurveyInfo['hiddenInputs']     .= \CHtml::hiddenField('token', $_SESSION[$this->LEMsessid]['token'], array('id' => 'token'));
             }
+            /* Set sof man to true if it's already in POST */
+            if (App()->request->getPost('mandSoft')) {
+                $this->aSurveyInfo['hiddenInputs']     .= \CHtml::hiddenField('mandSoft', App()->request->getPost('mandSoft'), array('id' => 'mandSoft'));
+            }
         }
 
         // For "clear all" buttons
