@@ -146,8 +146,8 @@ class GlobalSettings extends SurveyCommonAction
         // List of available OAuth plugins
         $event = new PluginEvent('listSMTPOAuthPlugins', $this);
         Yii::app()->getPluginManager()->dispatchEvent($event);
-        $oauthPlugins = $event->get('oauthplugins');
-        $data['oauthPlugins'] = $oauthPlugins;
+        $smtpOAuthPlugins = $event->get('oauthplugins');
+        $data['smtpOAuthPlugins'] = $smtpOAuthPlugins;
 
         $this->renderWrappedTemplate('globalsettings', 'globalSettings_view', $data);
     }

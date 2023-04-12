@@ -1,6 +1,7 @@
 <?php
 
 use League\OAuth2\Client\Provider\Google;
+use LimeSurvey\Datavalueobjects\SmtpOAuthPluginOption;
 use LimeSurvey\PluginManager\SmtpOauthPluginBase;
 use PHPMailer\PHPMailer\PHPMailer;
 
@@ -222,7 +223,7 @@ class GoogleOAuthSMTP extends SmtpOauthPluginBase
     {
         $event = $this->getEvent();
         $event->append('oauthplugins', [
-            get_class($this) => gT("Google")
+            'google' => new SmtpOAuthPluginOption($this->getId(), gT("Google"), get_class($this))
         ]);
     }
 

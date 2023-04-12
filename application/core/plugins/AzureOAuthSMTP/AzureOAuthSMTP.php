@@ -2,6 +2,7 @@
 require_once __DIR__ . '/vendor/autoload.php';
 
 use Greew\OAuth2\Client\Provider\Azure;
+use LimeSurvey\Datavalueobjects\SmtpOAuthPluginOption;
 use LimeSurvey\PluginManager\SmtpOauthPluginBase;
 use PHPMailer\PHPMailer\PHPMailer;
 
@@ -221,7 +222,7 @@ class AzureOAuthSMTP extends SmtpOauthPluginBase
     {
         $event = $this->getEvent();
         $event->append('oauthplugins', [
-            get_class($this) => gT("Azure")
+            'azure' => new SmtpOAuthPluginOption($this->getId(), gT("Azure"), get_class($this))
         ]);
     }
 

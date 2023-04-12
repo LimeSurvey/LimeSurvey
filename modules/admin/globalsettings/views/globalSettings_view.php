@@ -74,7 +74,7 @@ LS.renderBootstrapSwitch();
 
         <div id="email" class="tab-pane col-lg-10 offset-lg-1">
             <?php $this->renderPartial("./globalsettings/_email", [
-                'oauthPlugins' => $oauthPlugins,
+                'smtpOAuthPlugins' => $smtpOAuthPlugins,
             ]); ?>
         </div>
 

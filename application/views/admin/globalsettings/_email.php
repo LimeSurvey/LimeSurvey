@@ -95,10 +95,10 @@
             <div class="col-12">
                 <select class="form-select" name="emailoauthplugin" id="emailoauthplugin" <?= (Yii::app()->getConfig('emailmethod') == LimeMailer::MethodOAuth2Smtp) ? '' : 'disabled' ?>>
                     <option value=''><?php eT("None"); ?></option>
-                    <?php if (!empty($oauthPlugins)): ?>
-                        <?php foreach ($oauthPlugins as $oauthPluginClass => $oauthPluginDescription): ?>
+                    <?php if (!empty($smtpOAuthPlugins)): ?>
+                        <?php foreach ($smtpOAuthPlugins as $oauthPluginClass => $oauthPluginDetails): ?>
                             <option value='<?= $oauthPluginClass ?>' <?= ($oauthPluginClass == Yii::app()->getConfig('emailoauthplugin')) ? "selected='selected'" : "" ?>>
-                                <?= $oauthPluginDescription ?>
+                                <?= $oauthPluginDetails->name ?>
                             </option>
                         <?php endforeach; ?>
                     <?php endif; ?>
