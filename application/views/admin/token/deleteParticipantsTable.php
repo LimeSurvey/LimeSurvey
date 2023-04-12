@@ -6,7 +6,7 @@
 <div class="side-body <?php echo getSideBodyClass(false); ?>">
     <div class="row welcom survey-action">
         <div class="col-12 content-right">
-            <div class="jumbotron message-box message-box-error">
+            <div class="card card-primary border-left-danger">
                 <?php echo CHtml::form(
                     array("admin/tokens/sa/kill", 'surveyid' => $surveyid),
                     'post',
