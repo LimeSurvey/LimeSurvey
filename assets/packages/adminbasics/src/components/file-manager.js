@@ -90,4 +90,3 @@ export default function fileManagerStyle() {
         });
     }
 }
-window.addEventListener("DOMContentLoaded", function () {});

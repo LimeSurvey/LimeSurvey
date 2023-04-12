@@ -25344,7 +25344,6 @@
       });
     }
   }
-  window.addEventListener("DOMContentLoaded", function () {});
 
   /**
    * Panel Clickable
