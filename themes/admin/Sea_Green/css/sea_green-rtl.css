@@ -17800,6 +17800,7 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 }
 .file-manager-body #settings fieldset .radio,
 .file-manager-body #settings fieldset .checker {
+  background-color: #5E6372 !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -17814,6 +17815,9 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   color: #1E1E1E !important;
   text-shadow: none !important;
   border-bottom: 1px solid #1E1E1E !important;
+}
+.file-manager-body #settings label.sh-uniform {
+  color: #1E1E1E !important;
 }
 
 .nav-tabs {

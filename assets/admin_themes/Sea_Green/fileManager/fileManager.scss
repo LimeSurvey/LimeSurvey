@@ -125,6 +125,7 @@
       box-shadow: none !important;
       .radio,
       .checker {
+        background-color: $g-700 !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
@@ -143,6 +144,11 @@
       color: $g-900 !important;
       text-shadow: none !important;
       border-bottom: 1px solid $g-900 !important;
+    }
+
+    label.sh-uniform  {
+      color: $g-900 !important;
+
     }
   }
 }
