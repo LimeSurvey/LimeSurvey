@@ -319,6 +319,7 @@ return array(
         ),
         'depends' => array(
             'jquery',
+            'bootstrap-select2',
             'pjaxbackend',
             'lslog'
         )
