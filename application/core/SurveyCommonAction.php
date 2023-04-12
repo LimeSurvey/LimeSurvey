@@ -496,10 +496,6 @@ class SurveyCommonAction extends CAction
 
             $aData['sitename'] = Yii::app()->getConfig("sitename");
 
-            $updateModel = new UpdateForm();
-            $updateNotification = $updateModel->updateNotification;
-            $aData['showupdate'] = Yii::app()->getConfig('updatable') && $updateNotification->result && !$updateNotification->unstable_update;
-
             // Fetch extra menus from plugins, e.g. last visited surveys
             $aData['extraMenus'] = $this->fetchExtraMenus($aData);
 
