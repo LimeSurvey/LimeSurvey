@@ -15,6 +15,12 @@ $btn-font-size: $font-size-sm;
 $btn-font-size-sm: $font-size-xs;
 // Buttons END
 
+.ls-answers {
+    label.btn {
+        font-weight : $btn-font-weight;
+    }
+}
+
 .btn-primary:focus, .btn:focus, .btn:active:focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn.active.focus {
     outline : none;
 }
@@ -101,4 +107,22 @@ $btn-font-size-sm: $font-size-xs;
         }
     }
 }
+// Bootstrap Buttons question type
+.btn-check + .btn {
+    min-height    : $btn-height-lg;
+    padding       : 12px;
+    font-size     : $btn-font-size;
+    line-height   : $line-height-28;
+}
+
+.row > .bootstrap-buttons-div {
+    padding-left: 0;
+    padding-right: 20px;
+
+    & .form-check {
+        padding-left : 0;
+    }
+}
+
+
 // btn-check END

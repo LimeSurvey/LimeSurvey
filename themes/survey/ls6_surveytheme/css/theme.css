@@ -666,6 +666,10 @@ Responsive navbar-brand image CSS
   border: none;
 }
 
+.ls-answers label.btn {
+  font-weight: 500;
+}
+
 .btn-primary:focus, .btn:focus, .btn:active:focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn.active.focus {
   outline: none;
 }
@@ -739,6 +743,21 @@ Responsive navbar-brand image CSS
 .yesno-button.btn-group > .btn:not(:last-child), .gender-button.btn-group > .btn:not(:last-child) {
   border-radius: 4px;
   margin-right: 20px;
+}
+
+.btn-check + .btn {
+  min-height: 44px;
+  padding: 12px;
+  font-size: 0.9975rem;
+  line-height: 28px;
+}
+
+.row > .bootstrap-buttons-div {
+  padding-left: 0;
+  padding-right: 20px;
+}
+.row > .bootstrap-buttons-div .form-check {
+  padding-left: 0;
 }
 
 body {
@@ -845,7 +864,7 @@ a {
   margin-left: -2px;
 }
 
-.ls-answers label {
+.ls-answers label, .answer-item label {
   font-weight: 600;
   font-size: 1.14rem;
   line-height: 20px;

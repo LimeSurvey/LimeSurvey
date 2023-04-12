@@ -18,7 +18,7 @@ $dropdown-font-size: $font-size-sm;
     margin-left: -$input-border-width;
 }
 
-.ls-answers label {
+.ls-answers label, .answer-item label {
     font-weight: $font-weight-600;
     font-size: $font-size-base;
     line-height: $line-height-20

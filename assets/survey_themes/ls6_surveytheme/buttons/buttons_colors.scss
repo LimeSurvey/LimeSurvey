@@ -156,16 +156,16 @@ $btn-variants        : (
     border             : 1px solid #cccccc;
 }
 
-// btn-check START
+// btn-check (Bootstrap Buttons question type) START
 .btn-check + .btn {
-    color            : $g-900;
+    color            : $g-700;
     background-color : $white;
-    border           : 1px solid $g-900;
+    border           : 2px solid $g-700;
     &:hover {
-        box-shadow : $btn-hover-boxshadow;
+        box-shadow : none;
     }
     &:focus, &:active, &.active, &:active:focus {
-        box-shadow : $btn-focus-boxshadow;
+        box-shadow : none;
     }
 }
 
@@ -175,7 +175,7 @@ $btn-variants        : (
             color            : $white;
             background-color : $btn-primary-color;
             border-color     : $btn-primary-color;
-            box-shadow       : $btn-hover-boxshadow;
+            box-shadow       : none;
         }
         &:focus,
         &:active,
@@ -184,7 +184,7 @@ $btn-variants        : (
             color            : $white;
             background-color : $btn-primary-color;
             border-color     : $btn-primary-color;
-            box-shadow       : $btn-focus-boxshadow;
+            box-shadow       : none;
         }
     }
     &:focus + .btn-primary,
@@ -192,7 +192,7 @@ $btn-variants        : (
         color            : $white;
         background-color : $btn-primary-color;
         border-color     : $btn-primary-color;
-        box-shadow       : $btn-focus-boxshadow;
+        box-shadow       : none;
     }
     &:checked + .btn-primary,
     &:checked + .btn-primary:focus,
