@@ -224,8 +224,17 @@ if ($bShowInherited) {
         <div class="col-12 col-lg-6 mb-3">
             <?php $navigationdelay = $oSurvey->navigationdelay; ?>
             <div class="row mb-3">
-                <div class="col-6 col-lg-3 content-right <?php echo ($bShowInherited ? 'd-block' : 'd-none'); ?>">
-                    <label class="form-label content-center col-12" for='navigationdelay'><?php eT("Navigation delay"); ?></label>
+                <div class="col-12 col-lg-8">
+                    <label class="form-label" for='navigationdelay'><?php eT("Navigation delay (seconds):"); ?></label>
+                    <?php // NB: Do NOT use === when comparing navigationdelay to '-1', it won't work with Postgresql.?>
+                    <input class="form-control inherit-edit <?= ($bShowInherited && $navigationdelay == '-1' ? 'd-none' : 'd-block') ?>"
+                           type='text' size='10' id='navigationdelay' name='navigationdelay'
+                           value="<?= htmlspecialchars($navigationdelay ?? "") ?>" data-inherit-value="-1" data-saved-value="<?= $navigationdelay ?>"/>
+                    <input class="form-control inherit-readonly <?php echo($bShowInherited && $navigationdelay == '-1' ? 'd-block' : 'd-none'); ?>"
+                           type='text' size='10' value="<?php echo htmlspecialchars($oSurveyOptions->navigationdelay ?? ""); ?>" readonly/>
+                </div>
+                <div class="col-12 col-lg-4 <?php echo($bShowInherited ? 'd-block' : 'd-none'); ?>">
+                    <label class="form-label col-12" for='navigationdelay'><?php eT("Inherit"); ?></label>
                     <?php $this->widget(
                         'ext.ButtonGroupWidget.ButtonGroupWidget',
                         [
@@ -238,20 +247,6 @@ if ($bShowInherited) {
                             ]
                         ]
                     ); ?>
-                </div>
-
-                <div class="col-6 col-lg-3 content-right">
-                    <label class="form-label" for='navigationdelay'><?php eT("seconds"); ?></label>
-                    <?php // NB: Do NOT use === when comparing navigationdelay to '-1', it won't work with Postgresql. 
-                    ?>
-                    <input class="form-control inherit-edit 
-                        <?php echo ($bShowInherited && $navigationdelay == '-1' ?
-                            'd-none' : 'd-block'); ?>" type='text' size='50' id='navigationdelay' name='navigationdelay' 
-                            value="<?php echo htmlspecialchars($navigationdelay); ?>" data-inherit-value="-1" data-saved-value="<?php echo $navigationdelay; ?>" />
-                    <input class="form-control inherit-readonly 
-                        <?php echo ($bShowInherited && $navigationdelay == '-1'
-                            ? 'd-block' : 'd-none'); ?>" type='text' size='50' 
-                            value="<?php echo htmlspecialchars($oSurveyOptions->navigationdelay); ?>" readonly />
                 </div>
             </div>
             <!-- Automatically load URL -->

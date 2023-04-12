@@ -93,7 +93,7 @@ class Statistics extends SurveyCommonAction
 
         //if $summary isn't an array we create one
         if (isset($summary) && !is_array($summary)) {
-            $summary = explode("+", $summary);
+            $summary = explode("+", (string) $summary);
         }
 
         //no survey ID? -> come and get one
@@ -546,11 +546,11 @@ class Statistics extends SurveyCommonAction
         if (isset($_POST['cmd']) && isset($_POST['id'])) {
             $sStatisticsLanguage = sanitize_languagecode($_POST['sStatisticsLanguage']);
             $sQCode = $_POST['id'];
-            if (!is_numeric(substr($sQCode, 0, 1))) {
+            if (!is_numeric(substr((string) $sQCode, 0, 1))) {
                 // Strip first char when not numeric (probably T or D)
-                $sQCode = substr($sQCode, 1);
+                $sQCode = substr((string) $sQCode, 1);
             }
-            list($qsid, $qgid, $qqid) = explode("X", substr($sQCode, 0), 3);
+            list($qsid, $qgid, $qqid) = explode("X", substr((string) $sQCode, 0), 3);
 
             if (!Permission::model()->hasSurveyPermission($qsid, 'statistics', 'read')) {
                 throw new CHttpException(403, gT("You do not have permission to access this page."));
@@ -562,7 +562,7 @@ class Statistics extends SurveyCommonAction
             $qtype = $aFieldmap[$sQCode]['type'];
             $qqid = $aFieldmap[$sQCode]['qid'];
             $aattr = QuestionAttribute::model()->getQuestionAttributes($qqid);
-            $field = substr($_POST['id'], 1);
+            $field = substr((string) $_POST['id'], 1);
 
             switch ($_POST['cmd']) {
                 case 'showmap':
@@ -819,7 +819,6 @@ class Statistics extends SurveyCommonAction
         $aData['menu']['closeurl'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl("/surveyAdministration/view/surveyid/" . $aData['surveyid']));
 
         $aData['display'] = array();
-        $aData['display']['menu_bars'] = false;
         $aData['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
 
         $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(

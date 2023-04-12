@@ -490,7 +490,7 @@ class TemplateManifest extends TemplateConfiguration
         foreach ($filesFromXML as $file) {
             if ($file->attributes()->role == "content") {
                 // The path of the file is defined inside the theme itself.
-                $aExplodedFile = pathinfo($file);
+                $aExplodedFile = pathinfo((string) $file);
                 $sFormatedFile = $aExplodedFile['filename'];
                 return (string) $sFormatedFile;
             }
@@ -528,7 +528,7 @@ class TemplateManifest extends TemplateConfiguration
         if (!file_exists($this->path . $sFile) && !file_exists($this->viewPath . $sFile)) {
             // Copy file from mother template to local directory
             $sSourceFilePath = $this->getFilePath($sFile, $this);
-            $sDestinationFilePath = (pathinfo($sFile, PATHINFO_EXTENSION) == 'twig') ? $this->viewPath . $sFile : $this->path . $sFile;
+            $sDestinationFilePath = (pathinfo((string) $sFile, PATHINFO_EXTENSION) == 'twig') ? $this->viewPath . $sFile : $this->path . $sFile;
 
             //PHP 7 seems not to create the folder on copy automatically.
             @mkdir(dirname($sDestinationFilePath), 0775, true);
@@ -540,7 +540,7 @@ class TemplateManifest extends TemplateConfiguration
             if ($sExt == "css" || $sExt == "js") {
                 // Check if that CSS/JS file is in DB/XML
                 $aFiles = $this->getFilesForPackages($sExt, $this);
-                $sFile  = str_replace('./', '', $sFile);
+                $sFile  = str_replace('./', '', (string) $sFile);
 
                 // The CSS/JS file is a configuration one....
                 if (in_array($sFile, $aFiles)) {
@@ -940,7 +940,7 @@ class TemplateManifest extends TemplateConfiguration
         $oConfig        = $oNewManifest->getElementsByTagName('config')->item(0);
         $ometadata = $oConfig->getElementsByTagName('metadata')->item(0);
         $oOldMailNode   = $ometadata->getElementsByTagName('authorEmail')->item(0);
-        $oNvMailNode    = $oNewManifest->createElement('authorEmail', htmlspecialchars(Yii::app()->getConfig('siteadminemail')));
+        $oNvMailNode    = $oNewManifest->createElement('authorEmail', htmlspecialchars((string) Yii::app()->getConfig('siteadminemail')));
         $ometadata->replaceChild($oNvMailNode, $oOldMailNode);
     }
 

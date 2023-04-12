@@ -63,7 +63,7 @@ class QuestionGroup extends LSActiveRecord
     {
         return [
             ['group_order', 'numerical', 'integerOnly' => true, 'allowEmpty' => true],
-            ['grelevance', 'filter', 'filter' => 'trim'],
+            ['grelevance', 'LSYii_FilterValidator', 'filter' => 'trim', 'skipOnEmpty' => true],
             ['randomization_group', 'safe']
         ];
     }
@@ -109,7 +109,7 @@ class QuestionGroup extends LSActiveRecord
         $iSurveyId = (int) $surveyid;
         $oSurvey = Survey::model()->findByPk($iSurveyId);
 
-        $aSurveyLanguages = array_merge([$oSurvey->language], explode(" ", $oSurvey->additional_languages));
+        $aSurveyLanguages = array_merge([$oSurvey->language], explode(" ", (string) $oSurvey->additional_languages));
 
         foreach ($aSurveyLanguages as $sSurveyLanguage) {
             $oCriteria = new CDbCriteria();

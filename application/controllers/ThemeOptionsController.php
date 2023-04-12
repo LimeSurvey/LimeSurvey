@@ -170,7 +170,7 @@ class ThemeOptionsController extends LSBaseController
      */
     public function actionUninstallMultiple()
     {
-        $aTemplates = json_decode(App()->request->getPost('sItems')); //array of ids
+        $aTemplates = json_decode(App()->request->getPost('sItems', '')); //array of ids
 
         //can be 'themeoptions-grid' (for survey themes) or 'questionthemes-grid'
         $gridid = App()->request->getPost('grididvalue');
@@ -231,7 +231,7 @@ class ThemeOptionsController extends LSBaseController
      */
     public function actionSelectedItems()
     {
-        $aTemplates = json_decode(App()->request->getPost('$oCheckedItems'));
+        $aTemplates = json_decode(App()->request->getPost('$oCheckedItems', ''));
         $aResults = [];
         $gridid = App()->request->getParam('$grididvalue');
 
@@ -304,7 +304,7 @@ class ThemeOptionsController extends LSBaseController
         $attributes = $templateConfiguration->getAttributes();
         $hasOptions = isset($attributes['options']);
         if ($hasOptions) {
-            $options = $attributes['options'];
+            $options = $attributes['options'] ?? '';
             $optionsJSON = json_decode($options, true);
 
             if ($options !== 'inherit' && $optionsJSON !== null) {
@@ -476,7 +476,8 @@ class ThemeOptionsController extends LSBaseController
         $aData['pageSize'] = App()->user->getState('pageSizeTemplateView', App()->params['defaultPageSize']); // Page size
 
         $aData['topbar']['title'] = gT('Themes');
-        $aData['topbar']['rightButtons'] = $this->renderPartial('partial/topbarBtns/rightSideButtons', [], true);
+        $aData['topbar']['backLink'] = App()->createUrl('admin/index');
+
         if (Permission::model()->hasGlobalPermission('templates', 'import')) {
             //only show upload&install button if user has the permission ...
             $aData['topbar']['middleButtons'] = $this->renderPartial(

@@ -67,9 +67,8 @@ class UserManagementController extends LSBaseController
 
 
         $aData['topbar']['title'] = gT('User management');
-
+        $aData['topbar']['backLink'] = App()->createUrl('admin/index');
         $aData['topbar']['middleButtons'] = $this->renderPartial('partial/topbarBtns/leftSideButtons', [], true);
-        $aData['topbar']['rightButtons'] = $this->renderPartial('partial/topbarBtns/rightSideButtons', [], true);
 
         //this is really important, so we have the aData also before rendering the content
         $this->aData = $aData;
@@ -705,7 +704,7 @@ class UserManagementController extends LSBaseController
                     $oUser->parent_id = App()->user->id;
                     $oUser->modified = date('Y-m-d H:i:s');
                     if ($aNewUser['password'] != ' ') {
-                        $oUser->password = password_hash($aNewUser['password'], PASSWORD_DEFAULT);
+                        $oUser->password = password_hash((string) $aNewUser['password'], PASSWORD_DEFAULT);
                     }
 
                     $save = $oUser->save();
@@ -721,7 +720,7 @@ class UserManagementController extends LSBaseController
                 $password = \LimeSurvey\Models\Services\PasswordManagement::getRandomPassword();
                 $passwordText = $password;
                 if ($aNewUser['password'] != ' ') {
-                    $password = password_hash($aNewUser['password'], PASSWORD_DEFAULT);
+                    $password = password_hash((string) $aNewUser['password'], PASSWORD_DEFAULT);
                 }
 
                 $save = $this->createNewUser([
@@ -812,11 +811,11 @@ class UserManagementController extends LSBaseController
                 fprintf($fp, chr(0xEF) . chr(0xBB) . chr(0xBF));
                 $header = array('uid', 'users_name', 'full_name', 'email', 'lang', 'password');
                 //Add csv header
-                fputcsv($fp, $header, ';');
+                fputcsv($fp, $header, ';', '"');
 
                 //add csv row datas
                 foreach ($aUsers as $fields) {
-                    fputcsv($fp, $fields, ';');
+                    fputcsv($fp, $fields, ';', '"');
                 }
                 fclose($fp);
                 header('Content-Encoding: UTF-8');
@@ -847,7 +846,7 @@ class UserManagementController extends LSBaseController
             );
         }
 
-        $aUsers = json_decode(App()->request->getPost('sItems'));
+        $aUsers = json_decode(App()->request->getPost('sItems', ''));
         $aResults = [];
 
         foreach ($aUsers as $user) {
@@ -881,7 +880,7 @@ class UserManagementController extends LSBaseController
      */
     public function actionRenderSelectedItems()
     {
-        $aUsers = json_decode(App()->request->getPost('$oCheckedItems'));
+        $aUsers = json_decode(App()->request->getPost('$oCheckedItems', ''));
         $aResults = [];
         $gridid = App()->request->getParam('$grididvalue');
 
@@ -1024,7 +1023,7 @@ class UserManagementController extends LSBaseController
                 ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
             );
         }
-        $aItems = json_decode(Yii::app()->request->getPost('sItems', []));
+        $aItems = json_decode(Yii::app()->request->getPost('sItems', '')) ?? [];
         $iUserGroupId = Yii::app()->request->getPost('addtousergroup');
 
         if ($iUserGroupId) {
@@ -1078,7 +1077,7 @@ class UserManagementController extends LSBaseController
                 ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
             );
         }
-        $aItems = json_decode(Yii::app()->request->getPost('sItems', []));
+        $aItems = json_decode(Yii::app()->request->getPost('sItems', '')) ?? [];
         $aUserRoleIds = Yii::app()->request->getPost('roleselector');
         $aResults = [];
 
@@ -1210,7 +1209,7 @@ class UserManagementController extends LSBaseController
         $oUser->setAttributes($aUser);
 
         if (isset($aUser['password']) && $aUser['password']) {
-            $oUser->password = password_hash($aUser['password'], PASSWORD_DEFAULT);
+            $oUser->password = password_hash((string) $aUser['password'], PASSWORD_DEFAULT);
         }
         $oUser->modified = date('Y-m-d H:i:s');
         $oUser->save();

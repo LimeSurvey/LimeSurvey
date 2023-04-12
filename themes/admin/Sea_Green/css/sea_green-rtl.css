@@ -11149,6 +11149,15 @@ a {
 
 body {
   background-color: #F9F9FB;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.full-page-wrapper {
+  padding-bottom: 70px;
 }
 
 .summary-table {
@@ -14520,6 +14529,11 @@ html[dir=ltr] th {
   overflow-x: visible;
 }
 
+/** Hide Relevance Equation column for subquestions when not supported */
+.subquestions-table.hide-relevance #rel-eq-th, .subquestions-table.hide-relevance td.relevance-equation {
+  display: none;
+}
+
 .jcarousel-wrapper {
   margin: 20px auto;
   position: relative;
@@ -16816,6 +16830,13 @@ tr.info, tr.danger {
   margin: 8px 0;
 }
 
+.ls-action_dropdown > .btn {
+  line-height: 16px;
+}
+.ls-action_dropdown > .btn .ri-more-fill {
+  vertical-align: bottom;
+}
+
 .btn-circle {
   width: 44px;
   height: 44px;
@@ -17061,6 +17082,9 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 
 .footer {
   width: 100%;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
 }
 
 .sub_footer {
@@ -17088,10 +17112,9 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 }
 .navbar .navbar-brand {
   font-style: normal;
-  font-weight: 700;
-  font-size: 16px;
+  font-weight: 800;
+  font-size: 18px;
   color: #fff;
-  height: 30px;
   width: auto;
 }
 .navbar .navbar-toggler {
@@ -17125,7 +17148,7 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   height: 25px;
 }
 .navbar a {
-  font-weight: 500;
+  font-weight: 400;
 }
 .navbar .dropdown-menu {
   z-index: 10000;
@@ -17299,10 +17322,6 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   height: unset;
   background-color: unset;
   border: none;
-}
-.card.card-primary .card-header + .card-body {
-  padding-top: 0;
-  margin-top: -1rem;
 }
 .card.card-primary .card-footer {
   justify-content: flex-start;
@@ -18221,6 +18240,9 @@ input[type=number] {
 #sidebar .subpanel.level-2 .selected {
   background: linear-gradient(to left, #5cc262 0px, #5cc262 8px, #fff 8px, #fff 100%);
 }
+#sidebar .ls-questiongroup-tools i, #sidebar .ls-question-tools i {
+  font-size: 24px;
+}
 
 .list-group {
   border-radius: 0px !important;
@@ -18311,6 +18333,10 @@ input[type=number] {
   width: 294px;
 }
 
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
 table .ls-sticky-column:first-child {
   position: sticky;
   background-color: #fff;

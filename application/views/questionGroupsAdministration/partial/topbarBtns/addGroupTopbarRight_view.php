@@ -24,7 +24,7 @@ $this->widget(
         'name' => 'back-button',
         'id' => 'back-button',
         'text' => gT("Group list"),
-        'icon' => 'ri-rewind-fill',
+        'icon' => 'ri-arrow-left-s-line',
         'link' => $backUrl,
         'htmlOptions' => [
             'class' => 'btn btn-outline-secondary',

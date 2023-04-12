@@ -31,7 +31,7 @@ class LSYii_EmailIDNAValidator extends CValidator
         }
 
         if ($this->allowMultiple) {
-            $aEmailAdresses = preg_split("/(,|;)/", $object->$attribute);
+            $aEmailAdresses = preg_split("/(,|;)/", (string) $object->$attribute);
         } else {
             $aEmailAdresses = array($object->$attribute);
         }

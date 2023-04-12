@@ -74,7 +74,7 @@ abstract class Response extends Dynamic
             if ($question->encrypted === 'Y') {
                 $fieldDataJson = self::decryptSingle($fieldDataJson);
             }
-            $fieldData = json_decode(urldecode($fieldDataJson), true);
+            $fieldData = json_decode(urldecode((string) $fieldDataJson), true);
             if (is_array($fieldData)) {
                 /* adding the title and qid to fileinfo , see #14659 */
                 $index = 0;
@@ -114,7 +114,7 @@ abstract class Response extends Dynamic
             if ($question->encrypted === 'Y') {
                 $fieldDataJson = self::decryptSingle($fieldDataJson);
             }
-            $fieldData = json_decode(stripslashes($fieldDataJson), true);
+            $fieldData = json_decode(stripslashes((string) $fieldDataJson), true);
             if (is_array($fieldData)) {
                 $files[$field] = $fieldData;
             }
@@ -130,7 +130,7 @@ abstract class Response extends Dynamic
     {
         $uploaddir = Yii::app()->getConfig('uploaddir') . "/surveys/{$this->dynamicId}/files/";
         foreach ($this->getFiles() as $fileInfo) {
-            $basename = basename($fileInfo['filename']);
+            $basename = basename((string) $fileInfo['filename']);
             if (file_exists($uploaddir . $basename)) {
                 return true;
             }
@@ -147,7 +147,7 @@ abstract class Response extends Dynamic
         $errors = array();
         $uploaddir = Yii::app()->getConfig('uploaddir') . "/surveys/{$this->dynamicId}/files/";
         foreach ($this->getFiles() as $fileInfo) {
-            $basename = basename($fileInfo['filename']);
+            $basename = basename((string) $fileInfo['filename']);
             $result = @unlink($uploaddir . $basename);
             if (!$result) {
                 $errors[] = $fileInfo['filename'];
@@ -181,7 +181,7 @@ abstract class Response extends Dynamic
         $filesData = $this->getFilesAndSqga();
         foreach ($filesData as $sgqa => $fileInfos) {
             foreach ($fileInfos as $i => $fileInfo) {
-                $basename = basename($fileInfo['filename']);
+                $basename = basename((string) $fileInfo['filename']);
                 $fullFilename = $uploaddir . $basename;
 
                 if (file_exists($fullFilename)) {
@@ -254,5 +254,24 @@ abstract class Response extends Dynamic
             }
         }
         return $aAttributes;
+    }
+
+    /**
+     * Set all the specified attributes.
+     * If any attribute doesn't exist in the DB, an Exception is thrown.
+     */
+    public function setAllAttributes($values)
+    {
+        if (!is_array($values)) {
+            return;
+        }
+        $attributes = array_flip($this->attributeNames());
+        foreach ($values as $name => $value) {
+            if (isset($attributes[$name])) {
+                $this->$name = $value;
+            } else {
+                throw new Exception(sprintf("Attribute '%s' not found in the model.", $name));
+            }
+        }
     }
 }

@@ -54,7 +54,7 @@ Yii::app()->getController()->renderPartial(
                             <?php if (!($sPermissionKey == 'survey' && $sCRUDKey == 'read')) : ?>
 
                                 <!-- checkbox -->
-                                <input type="checkbox" class="specific-permission-selector" name='Permission[<?php echo $sPermissionKey . '][' . $sCRUDKey; ?>]' id='perm_<?php echo $sPermissionKey . '_' . $sCRUDKey; ?>' <?php if (Permission::model()->hasGlobalPermission($sPermissionKey, $sCRUDKey, $oUser->uid)) : ?> checked="checked" <?php endif; ?> <?php if (substr($sPermissionKey, 0, 5) === 'auth_' && $sCRUDKey === 'read') : ?> style="visibility:hidden" <?php endif; ?> />
+                                <input type="checkbox" class="specific-permission-selector" name='Permission[<?php echo $sPermissionKey . '][' . $sCRUDKey; ?>]' id='perm_<?php echo $sPermissionKey . '_' . $sCRUDKey; ?>' <?php if (Permission::model()->hasGlobalPermission($sPermissionKey, $sCRUDKey, $oUser->uid)) : ?> checked="checked" <?php endif; ?> <?php if (substr((string) $sPermissionKey, 0, 5) === 'auth_' && $sCRUDKey === 'read') : ?> style="visibility:hidden" <?php endif; ?> />
                             <?php endif; ?>
                         <?php endif; ?>
                     </td>

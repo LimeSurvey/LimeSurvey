@@ -55,7 +55,7 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
                      */
 
                     //First convert options to json and check if it is valid
-                    $oOptions = json_decode($model->options);
+                    $oOptions = json_decode((string) $model->options);
                     $jsonError = json_last_error();
                     //if it is not valid, render message
                     if ($jsonError !== JSON_ERROR_NONE && $model->options !== 'inherit') {
