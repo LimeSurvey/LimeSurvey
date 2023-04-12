@@ -144,7 +144,7 @@ class GlobalSettings extends SurveyCommonAction
         $data['aListOfThemeObjects'] = AdminTheme::getAdminThemeList();
 
         // List of available OAuth plugins
-        $event = new PluginEvent('listSMTPOauthPlugins', $this);
+        $event = new PluginEvent('listSMTPOAuthPlugins', $this);
         Yii::app()->getPluginManager()->dispatchEvent($event);
         $oauthPlugins = $event->get('oauthplugins');
         $data['oauthPlugins'] = $oauthPlugins;

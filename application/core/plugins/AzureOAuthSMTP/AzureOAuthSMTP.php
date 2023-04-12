@@ -49,7 +49,7 @@ class AzureOAuthSMTP extends SmtpOauthPluginBase
         $this->subscribe('newUnsecureRequest', 'receiveAzureResponse');
         $this->subscribe('newDirectRequest', 'redirectToAzure');
 
-        $this->subscribe('listSMTPOauthPlugins');
+        $this->subscribe('listSMTPOAuthPlugins');
         $this->subscribe('afterSelectSMTPOAuthPlugin');
         $this->subscribe('newSMTPOAuthConfiguration');
 
@@ -217,7 +217,7 @@ class AzureOAuthSMTP extends SmtpOauthPluginBase
     /**
      * Adds the plugin to the list of SMTP OAuth plugins
      */
-    public function listSMTPOauthPlugins()
+    public function listSMTPOAuthPlugins()
     {
         $event = $this->getEvent();
         $event->append('oauthplugins', [

@@ -44,7 +44,7 @@ class GoogleOAuthSMTP extends SmtpOauthPluginBase
         $this->subscribe('newUnsecureRequest', 'receiveGoogleResponse');
         $this->subscribe('newDirectRequest', 'redirectToGoogle');
 
-        $this->subscribe('listSMTPOauthPlugins');
+        $this->subscribe('listSMTPOAuthPlugins');
         //$this->subscribe('afterSelectSMTPOAuthPlugin');
         $this->subscribe('newSMTPOAuthConfiguration');
 
@@ -218,7 +218,7 @@ class GoogleOAuthSMTP extends SmtpOauthPluginBase
     /**
      * Adds the plugin to the list of SMTP OAuth plugins
      */
-    public function listSMTPOauthPlugins()
+    public function listSMTPOAuthPlugins()
     {
         $event = $this->getEvent();
         $event->append('oauthplugins', [
