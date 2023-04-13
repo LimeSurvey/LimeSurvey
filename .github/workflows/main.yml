@@ -204,14 +204,13 @@ jobs:
       - name: Run unit tests
         env:
           XDEBUG_MODE: coverage
-        run: |
-          php vendor/bin/phpunit --testdox --stop-on-failure tests/unit
+        run: php vendor/bin/phpunit --testdox --stop-on-failure tests/unit
 
       - name: Upload cov.xml
         uses: actions/upload-artifact@v3
         with:
-          name: cov-file
-          path: cov.xml
+          name: cov-file-${{ matrix.php-versions }}
+          path: cov-${{ matrix.php-versions }}.xml
 
   test-coverage:
     runs-on: ubuntu-20.04
@@ -231,10 +230,10 @@ jobs:
       - name: Download cov.xml
         uses: actions/download-artifact@v3
         with:
-          name: cov-file
+          name: cov-file-${{ matrix.php-versions }}
 
       - name: Check test coverage if cov.xml exists (won't work on PHP 8 with current phpunit version)
-        run: php tests/bin/check_coverage.php cov.xml 37
+        run: php tests/bin/check_coverage.php cov-${{ matrix.php-versions }}.xml 37
 
   code-check:
     runs-on: ubuntu-20.04
@@ -254,6 +253,8 @@ jobs:
 
       - name: Setup 
         run: |
+          php tests/check_autoloader.php
+          
           touch enabletests
           composer install -vvv
 
@@ -287,6 +288,5 @@ jobs:
           php application/commands/console.php install admin password TravisLS no@email.com verbose
           
       - name: Run syntax check, CodeSniffer, MessDetector, ...
-        run: |
-          composer test
+        run: composer test
 
