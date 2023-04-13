@@ -2263,16 +2263,15 @@ class quexmlpdf extends pdf
     /**
      * Apply global settings from LimeSurvey application
      *
-     * @access public
      */
     public function applyGlobalSettings()
     {
         foreach ($this->_quexmlsettings() as $s) {
             $setting = App()->getConfig($s);
-                if ($setting !== null && trim($setting) !== '') {
-                    $method = str_replace("queXML", "set", $s);
-                    $this->$method($setting);
-                }
+            if ($setting !== null && trim($setting) !== '') {
+                $method = str_replace("queXML", "set", $s);
+                $this->$method($setting);
+            }
         }
     }
 
