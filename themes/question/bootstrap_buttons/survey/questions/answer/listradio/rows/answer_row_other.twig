@@ -17,21 +17,21 @@
 #}
 
 {% set button_size_class = (question_template_attribute.button_size == 'default' or question_template_attribute.button_size is empty) ? '' : "btn-"~question_template_attribute.button_size %}
-{% set max_buttons_row = (question_template_attribute.max_buttons_row == 'default' or question_template_attribute.max_buttons_row is empty) ? 'col-sm-2' : question_template_attribute.max_buttons_row %}
+{% set max_buttons_row = (question_template_attribute.max_buttons_row == 'default' or question_template_attribute.max_buttons_row is empty) ? 'col-md-2' : question_template_attribute.max_buttons_row %}
 
 <!-- answer_row_other -->
 <!-- Checkbox + label -->
-<div class="bootstrap-buttons-div col-xs-12 {{ max_buttons_row }}">
-    <div id="javatbd{{ name }}other" class="button-item btn btn-primary {{ button_size_class }} {% if checkedState!='' %} active focus {% endif %} col-xs-12 col-sm-12"  {{ sDisplayStyle }}>
+<div class="bootstrap-buttons-div col-12 {{ max_buttons_row }}">
+    <div id="javatbd{{ name }}other" class="form-check bootstrap-buttons-div col-12 {% if checkedState!='' %} active focus {% endif %}"  {{ sDisplayStyle }}>
         <input
-            class="bootstrap-radio sr-only"
+            class="btn-check visually-hidden button-item"
             type="radio"
             value="-oth-"
             name="{{ name }}"
             id="answer{{ name }}othercbox"
             {{ checkedState }}
             />
-        <label for="answer{{ name }}othercbox">
+        <label class="btn btn-primary w-100 {{ button_size_class }}" for="answer{{ name }}othercbox">
             {{ othertext }}
         </label>
         <input
@@ -41,5 +41,4 @@
         >
     </div>
 </div>
-<script>doBootstrapRadio();</script>
 <!-- end of answer_row_other -->

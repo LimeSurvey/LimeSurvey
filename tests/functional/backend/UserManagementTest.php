@@ -114,9 +114,6 @@ class UserManagementTest extends TestBaseClassWeb
             );
             $save->click();
 
-            // Wait for "Saved successfully" modal
-            $this->waitForModal('Saved successfully');
-
             // Make sure the user was saved in database.
             $users = \User::model()->findAllByAttributes(['users_name' => $username]);
             $this->assertCount(1, $users);
@@ -192,7 +189,7 @@ class UserManagementTest extends TestBaseClassWeb
             $this->fillInputById("User_Form_email", $email);
 
             // Fill in the expiration date.
-            $this->fillDateById('User_Form_expires', $expiration);
+            $this->fillDateById('expires', $expiration);
 
             // Enable "Set password now" to avoid mailing errors
             $setPasswordSwitch = self::$webDriver->findElement(
@@ -229,9 +226,6 @@ class UserManagementTest extends TestBaseClassWeb
                 )
             );
             $save->click();
-
-            // Wait for "Saved successfully" modal
-            $this->waitForModal('Saved successfully');
 
             // Make sure the user was saved in database.
             $users = \User::model()->findAllByAttributes(['users_name' => $username]);
@@ -309,7 +303,7 @@ class UserManagementTest extends TestBaseClassWeb
             $this->fillInputById("User_Form_email", $email);
 
             // Fill in the expiration date.
-            $this->fillDateById('User_Form_expires', $expiration);
+            $this->fillDateById('expires', $expiration);
 
             // Enable "Set password now" to avoid mailing errors
             $setPasswordSwitch = self::$webDriver->findElement(
@@ -347,9 +341,6 @@ class UserManagementTest extends TestBaseClassWeb
             );
             $save->click();
 
-            // Wait for "Saved successfully" modal
-            $this->waitForModal('Saved successfully');
-
             // Make sure the user was saved in database.
             $users = \User::model()->findAllByAttributes(['users_name' => $username]);
             $this->assertCount(1, $users);
@@ -366,9 +357,9 @@ class UserManagementTest extends TestBaseClassWeb
             self::adminLogin($username, $suggestedPassword);
 
             // Check that the login failed
-            self::$webDriver->wait(10)->until(
-                WebDriverExpectedCondition::elementToBeClickable(
-                    WebDriverBy::xpath("//*[text()[contains(.,'Incorrect username')]][contains(@class, 'alert-danger')]")
+            self::$webDriver->wait(5)->until(
+                WebDriverExpectedCondition::presenceOfElementLocated(
+                    WebDriverBy::cssSelector('.login-panel')
                 )
             );
         } catch (\Throwable $ex) {
@@ -399,7 +390,10 @@ class UserManagementTest extends TestBaseClassWeb
         );
         $input->click();
         $input->sendKeys(WebDriverKeys::DELETE);
+        $otherInput = self::$webDriver->findElement(WebDriverBy::id('User_Form_full_name'));
         $input->clear()->sendKeys($value);
+        // click on other input field to close the datepicker
+        $otherInput->click();
     }
 
     protected function waitForModal($title, $timeout = 10)

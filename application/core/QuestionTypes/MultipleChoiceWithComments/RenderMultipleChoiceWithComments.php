@@ -52,11 +52,11 @@ class RenderMultipleChoiceWithComments extends QuestionBaseRenderer
         
         /*Find the col-sm width : if none is set : default, if one is set, set another one to be 12, if two is set : no change */
 
-        $this->attributeInputContainerWidth = intval(trim($this->getQuestionAttribute('text_input_columns')));
+        $this->attributeInputContainerWidth = intval(trim((string) $this->getQuestionAttribute('text_input_columns')));
         if ($this->attributeInputContainerWidth < 1 || $this->attributeInputContainerWidth > 12) {
             $this->attributeInputContainerWidth = null;
         }
-        $this->attributeLabelWidth = intval(trim($this->getQuestionAttribute('choice_input_columns')));
+        $this->attributeLabelWidth = intval(trim((string) $this->getQuestionAttribute('choice_input_columns')));
         if ($this->attributeLabelWidth < 1 || $this->attributeLabelWidth > 12) {
             /* old system or imported */
             $this->attributeLabelWidth = null;
@@ -116,8 +116,8 @@ class RenderMultipleChoiceWithComments extends QuestionBaseRenderer
             $mSessionValue = $this->setDefaultIfEmpty($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname], '');
             $mSessionValue2 = $this->setDefaultIfEmpty($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname2], '');
             
-            if ($this->iLabelWidth < strlen(trim(strip_tags($oQuestion->questionl10ns[$this->sLanguage]->question)))) {
-                $this->iLabelWidth = strlen(trim(strip_tags($oQuestion->questionl10ns[$this->sLanguage]->question)));
+            if ($this->iLabelWidth < strlen(trim(strip_tags((string) $oQuestion->questionl10ns[$this->sLanguage]->question)))) {
+                $this->iLabelWidth = strlen(trim(strip_tags((string) $oQuestion->questionl10ns[$this->sLanguage]->question)));
             }
 
             $this->inputnames[] = $myfname;
@@ -177,7 +177,7 @@ class RenderMultipleChoiceWithComments extends QuestionBaseRenderer
         if (!empty($mSessionValue)) {
             $dispVal = $mSessionValue;
             if ($this->getQuestionAttribute('other_numbers_only') == 1) {
-                $dispVal = str_replace('.', $sSeparator, $dispVal);
+                $dispVal = str_replace('.', $sSeparator, (string) $dispVal);
             }
             $sValue .= CHtml::encode($dispVal);
         }

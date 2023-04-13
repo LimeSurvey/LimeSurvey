@@ -51,7 +51,7 @@ class SurveyIndexNavigationTest extends TestBaseClassWeb
 
             // Move from first group to second group
             //Click on index menu
-            $web->findElement(WebDriverBy::cssSelector('#navbar a[data-toggle="dropdown"]'))->click();
+            $web->findElement(WebDriverBy::cssSelector('#navbar a[data-bs-toggle="dropdown"]'))->click();
 
             //Click on menu option
             $web->findElement(WebDriverBy::cssSelector('a[href$="move=2"]'))->click();
@@ -67,7 +67,7 @@ class SurveyIndexNavigationTest extends TestBaseClassWeb
 
             // Move from second group back to first group
             //Click on index menu
-            $web->findElement(WebDriverBy::cssSelector('#navbar a[data-toggle="dropdown"]'))->click();
+            $web->findElement(WebDriverBy::cssSelector('#navbar a[data-bs-toggle="dropdown"]'))->click();
 
             //Click on menu option
             $web->findElement(WebDriverBy::cssSelector('a[href$="move=1"]'))->click();

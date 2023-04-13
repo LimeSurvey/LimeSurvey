@@ -27,15 +27,15 @@ use Twig\Token;
  *    <title>{% block title %}{% endblock %} - My Webpage</title>
  *  {% endblock %}
  *
- * @final
+ * @internal
  */
-class BlockTokenParser extends AbstractTokenParser
+final class BlockTokenParser extends AbstractTokenParser
 {
-    public function parse(Token $token)
+    public function parse(Token $token): Node
     {
         $lineno = $token->getLine();
         $stream = $this->parser->getStream();
-        $name = $stream->expect(Token::NAME_TYPE)->getValue();
+        $name = $stream->expect(/* Token::NAME_TYPE */ 5)->getValue();
         if ($this->parser->hasBlock($name)) {
             throw new SyntaxError(sprintf("The block '%s' has already been defined line %d.", $name, $this->parser->getBlock($name)->getTemplateLine()), $stream->getCurrent()->getLine(), $stream->getSourceContext());
         }
@@ -43,9 +43,9 @@ class BlockTokenParser extends AbstractTokenParser
         $this->parser->pushLocalScope();
         $this->parser->pushBlockStack($name);
 
-        if ($stream->nextIf(Token::BLOCK_END_TYPE)) {
+        if ($stream->nextIf(/* Token::BLOCK_END_TYPE */ 3)) {
             $body = $this->parser->subparse([$this, 'decideBlockEnd'], true);
-            if ($token = $stream->nextIf(Token::NAME_TYPE)) {
+            if ($token = $stream->nextIf(/* Token::NAME_TYPE */ 5)) {
                 $value = $token->getValue();
 
                 if ($value != $name) {
@@ -57,7 +57,7 @@ class BlockTokenParser extends AbstractTokenParser
                 new PrintNode($this->parser->getExpressionParser()->parseExpression(), $lineno),
             ]);
         }
-        $stream->expect(Token::BLOCK_END_TYPE);
+        $stream->expect(/* Token::BLOCK_END_TYPE */ 3);
 
         $block->setNode('body', $body);
         $this->parser->popBlockStack();
@@ -66,15 +66,13 @@ class BlockTokenParser extends AbstractTokenParser
         return new BlockReferenceNode($name, $lineno, $this->getTag());
     }
 
-    public function decideBlockEnd(Token $token)
+    public function decideBlockEnd(Token $token): bool
     {
         return $token->test('endblock');
     }
 
-    public function getTag()
+    public function getTag(): string
     {
         return 'block';
     }
 }
-
-class_alias('Twig\TokenParser\BlockTokenParser', 'Twig_TokenParser_Block');

@@ -361,12 +361,12 @@ class Zend_Validate_EmailAddress extends Zend_Validate_Abstract
             foreach ((array)$this->_invalidIp[$octet[0]] as $subnetData) {
                 // we skip the first loop as we already know that octet matches
                 for ($i = 1; $i < 4; $i++) {
-                    if (strpos($subnetData, $octet[$i]) !== $i * 4) {
+                    if (strpos((string) $subnetData, $octet[$i]) !== $i * 4) {
                         break;
                     }
                 }
 
-                $host       = explode("/", $subnetData);
+                $host       = explode("/", (string) $subnetData);
                 $binaryHost = "";
                 $tmp        = explode(".", $host[0]);
                 for ($i = 0; $i < 4; $i++) {
@@ -433,7 +433,7 @@ class Zend_Validate_EmailAddress extends Zend_Validate_Abstract
             // Quoted-string characters are: DQUOTE *(qtext/quoted-pair) DQUOTE
             $qtext      = '\x20-\x21\x23-\x5b\x5d-\x7e'; // %d32-33 / %d35-91 / %d93-126
             $quotedPair = '\x20-\x7e'; // %d92 %d32-126
-            if (preg_match('/^"([' . $qtext . ']|\x5c[' . $quotedPair . '])*"$/', $this->localPart)) {
+            if (preg_match('/^"([' . $qtext . ']|\x5c[' . $quotedPair . '])*"$/', (string) $this->localPart)) {
                 $result = true;
             } else {
                 $this->_error(self::DOT_ATOM);

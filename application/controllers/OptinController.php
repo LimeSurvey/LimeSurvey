@@ -120,7 +120,7 @@ class OptinController extends LSYii_Controller
         if (!isset($token)) {
             $message = gT('You are not a participant of this survey.');
         } else {
-            $optedOutFromSurvey = substr($token->emailstatus, 0, strlen('OptOut')) == 'OptOut';
+            $optedOutFromSurvey = substr((string) $token->emailstatus, 0, strlen('OptOut')) == 'OptOut';
 
             $blacklistHandler = new LimeSurvey\Models\Services\ParticipantBlacklistHandler();
             $participant = $blacklistHandler->getCentralParticipantFromToken($token);

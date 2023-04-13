@@ -35,7 +35,7 @@ function outputDatabase($sDbName = '', $bEchoOutput = true, $sFileName = null)
         if ($oFile === false) {
             safeDie('Could not open output file.');
         } else {
-            fwrite($oFile, $sOutput);
+            fwrite($oFile, (string) $sOutput);
         }
     } else {
         $oFile = null;
@@ -63,7 +63,7 @@ function _outputDBData($bAllowExportAllDb, $bEchoOutput, $sFileName, $oFile)
     if ($bAllowExportAllDb) {
         $aTables = Yii::app()->db->getSchema()->getTableNames();
     } else {
-        $aTables = Yii::app()->db->createCommand(dbSelectTablesLike(addcslashes(Yii::app()->db->tablePrefix, '_') . "%"))->queryColumn();
+        $aTables = Yii::app()->db->createCommand(dbSelectTablesLike(addcslashes((string) Yii::app()->db->tablePrefix, '_') . "%"))->queryColumn();
     }
     foreach ($aTables as $sTableName) {
         $oTableData = Yii::app()->db->getSchema()->getTable($sTableName);
@@ -72,7 +72,7 @@ function _outputDBData($bAllowExportAllDb, $bEchoOutput, $sFileName, $oFile)
             echo $sOutput;
         }
         if (!is_null($sFileName)) {
-            fwrite($oFile, $sOutput);
+            fwrite($oFile, (string) $sOutput);
         }
         _outputTableData($sTableName, $oTableData, $bEchoOutput, $sFileName, $oFile);
     }
@@ -196,7 +196,7 @@ function _getMaxNbRecords()
 function _getDbName()
 {
     // Yii doesn't give us a good way to get the database name
-    preg_match('/dbname=([^;]*)/', Yii::app()->db->getSchema()->getDbConnection()->connectionString, $aMatches);
+    preg_match('/dbname=([^;]*)/', (string) Yii::app()->db->getSchema()->getDbConnection()->connectionString, $aMatches);
     $sDbName = $aMatches[1];
 
     return $sDbName;

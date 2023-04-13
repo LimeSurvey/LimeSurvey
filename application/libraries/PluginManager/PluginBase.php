@@ -150,7 +150,7 @@ abstract class PluginBase implements iPlugin
         if (!empty($data) && in_array($key, $this->encryptedSettings)) {
             try {
                 $json = LSActiveRecord::decryptSingle($data);
-                $data = !empty($json) ? json_decode($json, true) : $json;
+                $data = !empty($json) ? json_decode((string) $json, true) : $json;
             } catch (\Throwable $e) {
                 // If decryption fails, just leave the value untouched (it was probably saved as plain text)
             }
@@ -233,9 +233,9 @@ abstract class PluginBase implements iPlugin
     public function publish($fileName)
     {
         // Check if filename is relative.
-        if (strpos('//', $fileName) === false) {
+        if (strpos('//', (string) $fileName) === false) {
             // This is a limesurvey relative path.
-            if (strpos('/', $fileName) === 0) {
+            if (strpos('/', (string) $fileName) === 0) {
                 $url = \Yii::getPathOfAlias('webroot') . $fileName;
             } else {
                 // This is a plugin relative path.
@@ -515,7 +515,7 @@ abstract class PluginBase implements iPlugin
                         'user_id' => \Yii::app()->user->id,
                         'title'   => gT('Plugin error'),
                         'message' =>
-                            '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;' .
+                            '<span class="ri-error-warning-fill"></span>&nbsp;' .
                             gT('Could not activate plugin ' . $this->getName()) . '. ' .
                             gT('Reason:') . ' ' . $result->get('message'),
                         'importance' => \Notification::HIGH_IMPORTANCE
@@ -537,7 +537,7 @@ abstract class PluginBase implements iPlugin
             'user_id' => \Yii::app()->user->id,
             'title'   => gT('Plugin error'),
             'message' =>
-                '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;' .
+                '<span class="ri-error-warning-fill"></span>&nbsp;' .
                 gT('Could not read config file for plugin ' . $this->getName()) . '. ' .
                 gT('Config file is malformed or null.'),
             'importance' => \Notification::HIGH_IMPORTANCE

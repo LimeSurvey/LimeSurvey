@@ -37,6 +37,7 @@ CKEDITOR.plugins.add( 'basicstyles', {
 				// Register the button, if the button plugin is loaded.
 				if ( editor.ui.addButton ) {
 					editor.ui.addButton( buttonName, {
+						isToggle: true,
 						label: buttonLabel,
 						command: commandName,
 						toolbar: 'basicstyles,' + ( order += 10 )
@@ -100,6 +101,40 @@ CKEDITOR.plugins.add( 'basicstyles', {
 			[ CKEDITOR.CTRL + 73 /*I*/, 'italic' ],
 			[ CKEDITOR.CTRL + 85 /*U*/, 'underline' ]
 		] );
+	},
+
+	afterInit: function( editor ) {
+		// If disabled, sub and sub scripts can be applied to element simoultaneously.
+		// The rest of that code takes care of toggling both elements (#5215).
+		if ( !editor.config.coreStyles_toggleSubSup ) {
+			return;
+		}
+
+		var subscriptCommand = editor.getCommand( 'subscript' ),
+			superscriptCommand = editor.getCommand( 'superscript' );
+
+		// Both commands are required for toggle operation.
+		if ( !subscriptCommand || !superscriptCommand ) {
+			return;
+		}
+
+		editor.on( 'afterCommandExec', function( evt ) {
+			var commandName = evt.data.name;
+
+			if ( commandName !== 'subscript' && commandName !== 'superscript' ) {
+				return;
+			}
+
+			var executedCommand = commandName === 'subscript' ? subscriptCommand : superscriptCommand,
+				otherCommand = commandName === 'subscript' ? superscriptCommand : subscriptCommand;
+
+			// Disable the other command if both are enabled.
+			if ( executedCommand.state === CKEDITOR.TRISTATE_ON && otherCommand.state === CKEDITOR.TRISTATE_ON ) {
+				otherCommand.exec( editor );
+				// Merge undo images, so toggle operation is treated as a single undo step.
+				editor.fire( 'updateSnapshot' );
+			}
+		} );
 	}
 } );
 
@@ -118,7 +153,7 @@ CKEDITOR.plugins.add( 'basicstyles', {
  *			attributes: { 'class': 'Bold' }
  *		};
  *
- * @cfg
+ * @cfg {Object} [coreStyles_bold={ element: 'strong', overrides: 'b' }]
  * @member CKEDITOR.config
  */
 CKEDITOR.config.coreStyles_bold = { element: 'strong', overrides: 'b' };
@@ -136,7 +171,7 @@ CKEDITOR.config.coreStyles_bold = { element: 'strong', overrides: 'b' };
  *			attributes: { 'class': 'Italic' }
  *		};
  *
- * @cfg
+ * @cfg {Object} [coreStyles_italic={ element: 'em', overrides: 'i' }]
  * @member CKEDITOR.config
  */
 CKEDITOR.config.coreStyles_italic = { element: 'em', overrides: 'i' };
@@ -152,7 +187,7 @@ CKEDITOR.config.coreStyles_italic = { element: 'em', overrides: 'i' };
  *			attributes: { 'class': 'Underline' }
  *		};
  *
- * @cfg
+ * @cfg {Object} [coreStyles_underline={ element: 'u' }]
  * @member CKEDITOR.config
  */
 CKEDITOR.config.coreStyles_underline = { element: 'u' };
@@ -169,7 +204,7 @@ CKEDITOR.config.coreStyles_underline = { element: 'u' };
  *			overrides: 'strike'
  *		};
  *
- * @cfg
+ * @cfg {Object} [coreStyles_strike={ element: 's', overrides: 'strike' }]
  * @member CKEDITOR.config
  */
 CKEDITOR.config.coreStyles_strike = { element: 's', overrides: 'strike' };
@@ -186,7 +221,7 @@ CKEDITOR.config.coreStyles_strike = { element: 's', overrides: 'strike' };
  *			overrides: 'sub'
  *		};
  *
- * @cfg
+ * @cfg {Object} [coreStyles_subscript={ element: 'sub' }]
  * @member CKEDITOR.config
  */
 CKEDITOR.config.coreStyles_subscript = { element: 'sub' };
@@ -203,7 +238,20 @@ CKEDITOR.config.coreStyles_subscript = { element: 'sub' };
  *			overrides: 'sup'
  *		};
  *
- * @cfg
+ * @cfg {Object} [coreStyles_superscript={ element: 'sup' }]
  * @member CKEDITOR.config
  */
 CKEDITOR.config.coreStyles_superscript = { element: 'sup' };
+
+/**
+ * Disallow setting subscript and superscript simultaneously on the same element using UI buttons.
+ *
+ * By default, you can apply subscript and superscript styles to the same element. Enabling that option
+ * will remove the superscript style when the subscript button is pressed and vice versa.
+ *
+ * @cfg {Boolean} [coreStyles_toggleSubSup=false]
+ * @since 4.20.0
+ * @member CKEDITOR.config
+ */
+
+CKEDITOR.config.coreStyles_toggleSubSup = false;
