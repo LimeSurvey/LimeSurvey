@@ -185,6 +185,9 @@ jobs:
           composer install -vvv
           chmod -R 777 ./tmp
           chmod -R 777 ./upload
+          chmod -R 777 ./themes
+          chmod -R 777 ./tests/tmp
+          chmod -R 777 ./application/config
           php vendor/bin/phpunit --testdox --stop-on-failure tests/unit
 
       - name: Upload cov.xml
