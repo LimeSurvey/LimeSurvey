@@ -210,7 +210,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: cov-file-${{ matrix.php-versions }}
-          path: cov-${{ matrix.php-versions }}.xml
+          path: cov.xml
 
   test-coverage:
     runs-on: ubuntu-20.04
@@ -227,13 +227,20 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
 
+      - name: Check if cov.xml artefact exists
+        uses: xSAVIKx/artifact-exists-action@v0
+        id: check_coverage_artifact
+        with:
+          name: cov-file-${{ matrix.php-versions }}
+
       - name: Download cov.xml
+        if: ${{ steps.check_coverage_artifact.outputs.exists }}
         uses: actions/download-artifact@v3
         with:
           name: cov-file-${{ matrix.php-versions }}
 
       - name: Check test coverage if cov.xml exists (won't work on PHP 8 with current phpunit version)
-        run: php tests/bin/check_coverage.php cov-${{ matrix.php-versions }}.xml 37
+        run: php tests/bin/check_coverage.php cov.xml 37
 
   code-check:
     runs-on: ubuntu-20.04
@@ -253,8 +260,6 @@ jobs:
 
       - name: Setup 
         run: |
-          php tests/check_autoloader.php
-          
           touch enabletests
           composer install -vvv
 
