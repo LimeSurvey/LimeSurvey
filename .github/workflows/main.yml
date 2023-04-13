@@ -168,15 +168,11 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
 
-      - name: Start the MySQL service
-        run: |
-          sudo systemctl start mysql.service
-
       - name: Setup 
         run: |
           touch enabletests
           composer install -vvv
-          
+
           sudo apt-get update > /dev/null
           sudo apt --fix-broken install php php-mysql php8.0-mysql php7.2-mysql -y
 
@@ -185,6 +181,20 @@ jobs:
           chmod -R 777 ./themes
           chmod -R 777 ./tests/tmp
           chmod -R 777 ./application/config
+
+      - name: Check MySQL service
+        run: |
+          # InnoDB needs large_file_prefix & Barracuda file format
+          # https://discuss.gogs.io/t/solved-mysql-error-1064-while-running-first-install/1604
+          # InnoDB variables ARE already set to desired values in Github runner (ubuntu-18.04)
+
+          sudo systemctl start mysql
+          sudo service mysql status
+          mysql -uroot -proot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';" || true
+          mysql -uroot -proot -e "Show  variables like '%large%';"
+          mysql -uroot -proot -e "Show  variables like '%innodb_file%';"
+          mysql -uroot -proot -e "Show  variables like '%innodb_default%';"
+          mysql -uroot -proot -e "CREATE DATABASE limesurvey;"
 
       - name: Load custom console and start the Application
         run: |
@@ -242,9 +252,34 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
 
-      - name: Start the MySQL service
+      - name: Setup 
         run: |
-          sudo systemctl start mysql.service
+          touch enabletests
+          composer install -vvv
+
+          sudo apt-get update > /dev/null
+          sudo apt --fix-broken install php php-mysql php8.0-mysql php7.2-mysql -y
+
+          chmod -R 777 ./tmp
+          chmod -R 777 ./upload
+          chmod -R 777 ./themes
+          chmod -R 777 ./tests/tmp
+          chmod -R 777 ./application/config
+          chmod +x ./tests/bin/lint-*
+
+      - name: Check MySQL service
+        run: |
+          # InnoDB needs large_file_prefix & Barracuda file format
+          # https://discuss.gogs.io/t/solved-mysql-error-1064-while-running-first-install/1604
+          # InnoDB variables ARE already set to desired values in Github runner (ubuntu-18.04)
+
+          sudo systemctl start mysql
+          sudo service mysql status
+          mysql -uroot -proot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';" || true
+          mysql -uroot -proot -e "Show  variables like '%large%';"
+          mysql -uroot -proot -e "Show  variables like '%innodb_file%';"
+          mysql -uroot -proot -e "Show  variables like '%innodb_default%';"
+          mysql -uroot -proot -e "CREATE DATABASE limesurvey;"
 
       - name: Load custom console and start the Application
         run: |
@@ -253,7 +288,5 @@ jobs:
           
       - name: Run syntax check, CodeSniffer, MessDetector, ...
         run: |
-          chmod +x ./tests/bin/lint-*
-          composer install -vvv
           composer test
 
