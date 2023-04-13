@@ -183,6 +183,8 @@ jobs:
         run: |
           touch enabletests
           composer install -vvv
+          chmod -R 777 ./tmp
+          chmod -R 777 ./upload
           php vendor/bin/phpunit --testdox --stop-on-failure tests/unit
 
       - name: Upload cov.xml
