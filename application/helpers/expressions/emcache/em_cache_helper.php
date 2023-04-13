@@ -134,7 +134,7 @@ class EmCacheHelper
 
         // Check subquestions etc.
         foreach (array_keys($session) as $key) {
-            if (strpos($key, $ia[1]) !== false) {
+            if (strpos($key, (string) $ia[1]) !== false) {
                 if (!empty($session[$key])) {
                     // Found subquestion answer, do not use cache.
                     return false;

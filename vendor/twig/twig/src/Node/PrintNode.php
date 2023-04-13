@@ -22,12 +22,12 @@ use Twig\Node\Expression\AbstractExpression;
  */
 class PrintNode extends Node implements NodeOutputInterface
 {
-    public function __construct(AbstractExpression $expr, $lineno, $tag = null)
+    public function __construct(AbstractExpression $expr, int $lineno, string $tag = null)
     {
         parent::__construct(['expr' => $expr], [], $lineno, $tag);
     }
 
-    public function compile(Compiler $compiler)
+    public function compile(Compiler $compiler): void
     {
         $compiler
             ->addDebugInfo($this)
@@ -37,5 +37,3 @@ class PrintNode extends Node implements NodeOutputInterface
         ;
     }
 }
-
-class_alias('Twig\Node\PrintNode', 'Twig_Node_Print');

@@ -35,46 +35,82 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
                 'AO01' => array(
                     'code' => 'AO01',
                     'answer' => 'Option 1, scale 1',
+<<<<<<< HEAD
                     'assessment_value' => '0',
                     'scale_id' => '0',
                     'order' => '0'
+=======
+                    'assessment_value' => 0,
+                    'scale_id' => 0,
+                    'order' => 0
+>>>>>>> master
                 ),
                 'AO02' => array(
                     'code' => 'AO02',
                     'answer' => 'Option 2, scale 1',
+<<<<<<< HEAD
                     'assessment_value' => '0',
                     'scale_id' => '0',
                     'order' => '1'
+=======
+                    'assessment_value' => 0,
+                    'scale_id' => 0,
+                    'order' => 1
+>>>>>>> master
                 ),
                 'AO03' => array(
                     'code' => 'AO03',
                     'answer' => 'Option 3, scale 1',
+<<<<<<< HEAD
                     'assessment_value' => '0',
                     'scale_id' => '0',
                     'order' => '2'
+=======
+                    'assessment_value' => 0,
+                    'scale_id' => 0,
+                    'order' => 2
+>>>>>>> master
                 )
             ),
             1 => array(
                 'AO01' => array(
                     'code' => 'AO01',
                     'answer' => 'Option 1, scale 2',
+<<<<<<< HEAD
                     'assessment_value' => '0',
                     'scale_id' => '1',
                     'order' => '3'
+=======
+                    'assessment_value' => 0,
+                    'scale_id' => 1,
+                    'order' => 3
+>>>>>>> master
                 ),
                 'AO02' => array(
                     'code' => 'AO02',
                     'answer' => 'Option 2, scale 2',
+<<<<<<< HEAD
                     'assessment_value' => '0',
                     'scale_id' => '1',
                     'order' => '4'
+=======
+                    'assessment_value' => 0,
+                    'scale_id' => 1,
+                    'order' => 4
+>>>>>>> master
                 ),
                 'AO03' => array(
                     'code' => 'AO03',
                     'answer' => 'Option 3, scale 2',
+<<<<<<< HEAD
                     'assessment_value' => '0',
                     'scale_id' => '1',
                     'order' => '5'
+=======
+                    'assessment_value' => 0,
+                    'scale_id' => 1,
+                    'order' => 5
+>>>>>>> master
                 )
             ),
         );
@@ -85,6 +121,7 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
         $qid = $question->qid;
 
         $result = $this->handler->get_question_properties($sessionKey, $qid);
+<<<<<<< HEAD
 
         //Checking options
         $this->assertSame($answerOptionsByScaleId, $result['answeroptions'], 'The options were not returned correctly.');
@@ -408,5 +445,8 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
         $this->assertSame('N', $result['mandatory'], 'The question should not be mandatory.');
         $this->assertSame('N', $result['encrypted'], 'The question should not be encrypted.');
         $this->assertSame('7', $result['question_order'], 'The question order is not correct.');
+=======
+        $this->assertEquals($answerOptionsByScaleId, $result['answeroptions'], 'The options were not returned correctly.');
+>>>>>>> master
     }
 }

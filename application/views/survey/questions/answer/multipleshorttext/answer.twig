@@ -15,7 +15,7 @@
     {% else %}
         {% for aRow in aRows %}
             {% set rowTemplate = (aRow.textarea ? 'survey/questions/answer/multipleshorttext/rows/answer_row_textarea.twig' : 'survey/questions/answer/multipleshorttext/rows/answer_row_inputtext.twig') %}
-            {% include rowTemplate with aRow only %}
+            {% include rowTemplate with aRow %}
         {% endfor %}
     {% endif %}
 

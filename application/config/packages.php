@@ -30,7 +30,7 @@ return array(
             'em_javascript.js',
         ),
         'depends' => array(
-            'jquery',
+            'jquery-migrate',
             'moment', // Used by LEMval function
             'decimalcustom', // Use by fixnum_checkconditions
         )
@@ -80,7 +80,7 @@ return array(
         ],
         'depends' => [
             'jquery',
-            'bootstrap'
+//            'bootstrap'
         ]
     ],
     /* For public template extended functionnality (based on default template) */
@@ -119,16 +119,6 @@ return array(
         )
     ),
 
-    'bootstrap-rtl'=>array( /* Adding boostrap rtl package */
-        'devBaseUrl'  => 'assets/packages/bootstrap/',
-        'basePath' => 'core.bootstrap',
-        'css'=> array(
-            'bootstrap-rtl.css',
-        ),
-        'depends' => array(
-            'bootstrap',
-        )
-    ),
     'ckeditor' => array(
         'devBaseUrl'  => 'assets/packages/ckeditor',
         'basePath' => 'core.ckeditor',
@@ -258,7 +248,7 @@ return array(
             'adminbasics',
         )
     ),
-    
+
     'lstutorial' => array(
         'devBaseUrl' => 'assets/packages/lstutorial/',
         'basePath' => 'core.lstutorial',
@@ -270,7 +260,7 @@ return array(
             'build/lstutorial.css'
         ),
         'depends' => array(
-            'bootstrap',
+//            'bootstrap',
             'adminbasics',
         )
     ),
@@ -286,27 +276,7 @@ return array(
         'devBaseUrl' => 'assets/packages/panelboxes/',
         'basePath' => 'core.panelboxes',
         'css' => array(
-            'build/panelboxes'.$minVersion.'.css',
-        )
-    ),
-    'adminbasicsrtl' => array(
-        'devBaseUrl' => 'assets/packages/adminbasics/',
-        'basePath' => 'core.adminbasics',
-        'css' => array(
-            'build/adminbasics.rtl'.$minVersion.'.css'
-        ),
-        'depends' => array(
-            'adminbasics'
-        )
-    ),
-    'adminbasicsltr' => array(
-        'devBaseUrl' => 'assets/packages/adminbasics/',
-        'basePath' => 'core.adminbasics',
-        'css' => array(
-            'build/adminbasics'.$minVersion.'.css'
-        ),
-        'depends' => array(
-            'adminbasics'
+            //'build/panelboxes'.$minVersion.'.css',
         )
     ),
 
@@ -422,8 +392,8 @@ return array(
         ),
         'css' => array(
             'expressions.css'
-        )  
-    ),    
+        )
+    ),
     /* Replace bbq package from Yii core to set position */
     'bbq'=>array(
         'position' => CClientScript::POS_BEGIN,
@@ -439,10 +409,23 @@ return array(
             'popup-dialog.css'
         ),
         'js' => array(
-            'emailtemplates'.$minVersion.'.js',
+            'emailtemplates.js',
         ),
         'depends' => array(
             'adminbasics',
         )
     ),
+    // jQuery Ace
+    'jquery-ace' => array(
+        'devBaseUrl' => 'assets/packages/jquery-ace/',
+        'basePath' => 'core.jquery-ace',
+        'position' => CClientScript::POS_BEGIN,
+    'js' => array(
+        'jquery.ace.js',
+    ),
+    'depends' => array(
+        'jquery',
+    )
+    )
+
 );

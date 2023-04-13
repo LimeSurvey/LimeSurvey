@@ -134,19 +134,19 @@ abstract class QuestionBaseRenderer extends StaticModel
         $time_limit_message_delay = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_message_delay']['value'], 1000);
         $time_limit_warning_2_display_time = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_2_display_time']['value'], 0);
         $time_limit_message_style = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_message_style']['value'], '');
-        $time_limit_message_class = "hidden ls-timer-content ls-timer-message ls-no-js-hidden";
+        $time_limit_message_class = "d-none ls-timer-content ls-timer-message ls-no-js-hidden";
         $time_limit_warning_style = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_style']['value'], '');
-        $time_limit_warning_class = "hidden ls-timer-content ls-timer-warning ls-no-js-hidden";
+        $time_limit_warning_class = "d-none ls-timer-content ls-timer-warning ls-no-js-hidden";
         $time_limit_warning_2_style = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_2_style']['value'], '');
-        $time_limit_warning_2_class = "hidden ls-timer-content ls-timer-warning2 ls-no-js-hidden";
+        $time_limit_warning_2_class = "d-none ls-timer-content ls-timer-warning2 ls-no-js-hidden";
         $time_limit_timer_style = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_timer_style']['value'], '');
         $time_limit_timer_class = "ls-timer-content ls-timer-countdown ls-no-js-hidden";
 
         // Escape messages to avoid XSS attacks, based on how LS3 does this (see return_timer_script() on qanda_helper)
-        $time_limit_message = htmlspecialchars($time_limit_message, ENT_QUOTES);
-        $time_limit_countdown_message = htmlspecialchars($time_limit_countdown_message, ENT_QUOTES);
-        $time_limit_warning_message = htmlspecialchars($time_limit_warning_message, ENT_QUOTES);
-        $time_limit_warning_2_message = htmlspecialchars($time_limit_warning_2_message, ENT_QUOTES);
+        $time_limit_message = htmlspecialchars((string) $time_limit_message, ENT_QUOTES);
+        $time_limit_countdown_message = htmlspecialchars((string) $time_limit_countdown_message, ENT_QUOTES);
+        $time_limit_warning_message = htmlspecialchars((string) $time_limit_warning_message, ENT_QUOTES);
+        $time_limit_warning_2_message = htmlspecialchars((string) $time_limit_warning_2_message, ENT_QUOTES);
 
         // The {TIME} placeholder is replaced by the HTML that will contain the actual time.
         // This is done after applying 'htmlspecialchars' to avoid encoding the HTML part.
@@ -320,7 +320,7 @@ abstract class QuestionBaseRenderer extends StaticModel
         if (is_null($value)) {
             return $default;
         }
-        return trim($value) == '' ? $default : $value;
+        return trim((string) $value) == '' ? $default : $value;
     }
 
     protected function registerAssets()
@@ -347,7 +347,7 @@ abstract class QuestionBaseRenderer extends StaticModel
         $sExcludeAllOther = $this->setDefaultIfEmpty($this->getQuestionAttribute('exclude_all_others'), false);
         /* EM don't set difference between relevance in session, if exclude_all_others is set , just ls-disabled */
         if ($sExcludeAllOther !== false) {
-            foreach (explode(';', $sExcludeAllOther) as $sExclude) {
+            foreach (explode(';', (string) $sExcludeAllOther) as $sExclude) {
                 $sExclude = $this->sSGQA . $sExclude;
                 if (
                     (!isset($aSurveySessionArray['relevanceStatus'][$sExclude]) || $aSurveySessionArray['relevanceStatus'][$sExclude])
@@ -370,8 +370,8 @@ abstract class QuestionBaseRenderer extends StaticModel
     */
     public function getLabelInputWidth()
     {
-        $labelAttributeWidth = trim($this->getQuestionAttribute('label_input_columns'));
-        $inputAttributeWidth = trim($this->getQuestionAttribute('text_input_columns'));
+        $labelAttributeWidth = trim((string) $this->getQuestionAttribute('label_input_columns'));
+        $inputAttributeWidth = trim((string) $this->getQuestionAttribute('text_input_columns'));
 
         $attributeInputContainerWidth = intval($inputAttributeWidth);
         if ($attributeInputContainerWidth < 1 || $attributeInputContainerWidth > 12) {

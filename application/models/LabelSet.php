@@ -124,40 +124,46 @@ class LabelSet extends LSActiveRecord
      */
     public function getbuttons()
     {
-        $button = "<div class='icon-btn-row'>";
-        // Edit labelset
-        if (Permission::model()->hasGlobalPermission('labelsets', 'update')) {
-            $url = Yii::app()->createUrl("admin/labels/sa/editlabelset/lid/$this->lid");
-            $button .= ' <a class="btn btn-default btn-sm green-border" data-toggle="tooltip" data-placement="top" title="' . gT('Edit label set') . '" href="' . $url . '" role="button"><span class="fa fa-pencil" ></span></a>';
-        }
+        $permission_labelsets_update = Permission::model()->hasGlobalPermission('labelsets', 'update');
+        $permission_labelsets_export = Permission::model()->hasGlobalPermission('labelsets', 'export');
+        $permission_labelsets_delete = Permission::model()->hasGlobalPermission('labelsets', 'delete');
 
-        // View labelset
-        $url = Yii::app()->createUrl("admin/labels/sa/view/lid/$this->lid");
-        $button .= '<a class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="' . gT('View labels') . '" href="' . $url . '" role="button"><span class="fa fa-list-alt" ></span></a>';
+        $dropdownItems = [];
+        $dropdownItems[] = [
+            'title'            => gT('Edit label set'),
+            'iconClass'        => 'ri-pencil-fill',
+            'url'              => App()->createUrl("admin/labels/sa/editlabelset/lid/$this->lid"),
+            'enabledCondition' => $permission_labelsets_update
+        ];
+        $dropdownItems[] = [
+            'title'     => gT('View labels'),
+            'iconClass' => 'ri-list-unordered',
+            'url'       => App()->createUrl("admin/labels/sa/view/lid/$this->lid"),
+        ];
+        $dropdownItems[] = [
+            'title'            => gT('Export label set'),
+            'iconClass'        => 'ri-download-fill',
+            'url'              => App()->createUrl("admin/export/sa/dumplabel/lid/$this->lid"),
+            'enabledCondition' => $permission_labelsets_export
+        ];
+        $dropdownItems[] = [
+            'title'            => gT('Delete'),
+            'tooltip'          => gT('Delete label sets'),
+            'iconClass'        => 'ri-delete-bin-fill text-danger',
+            'enabledCondition' => $permission_labelsets_delete,
+            'linkAttributes'   => [
+                'data-bs-toggle' => "modal",
+                'data-post-url'  => App()->createUrl("admin/labels/sa/delete", ["lid" => $this->lid]),
+                'data-message'   => gT("Are you sure you want to delete this label set?"),
+                'data-bs-target' => "#confirmation-modal"
+            ]
+        ];
 
-        // Export labelset
-        if (Permission::model()->hasGlobalPermission('labelsets', 'export')) {
-            $url = Yii::app()->createUrl("admin/export/sa/dumplabel/lid/$this->lid");
-            $button .= ' <a class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="' . gT('Export label set') . '" href="' . $url . '" role="button"><span class="icon-export" ></span></a>';
-        }
-
-        // Delete labelset
-        if (Permission::model()->hasGlobalPermission('labelsets', 'delete')) {
-            $url = Yii::app()->createUrl("admin/labels/sa/delete", ["lid" => $this->lid]);
-            $message = gT("Are you sure you want to delete this label set?");
-            $button .= '<span data-toggle="tooltip" data-placement="top" title="' . gT('Delete label set') . '"><a 
-            class="btn btn-default btn-sm"  
-            data-toggle="modal"
-            data-post-url ="' . $url . '"
-            data-message="' . $message . '"
-            data-target="#confirmation-modal" 
-            title="' . gT("Delete") . '" 
-            href="#" >
-                    <i class="fa fa-trash text-danger"></i>
-                    </a></span>';
-        }
-        $button .= "</div>";
-            return $button;
+        return App()->getController()->widget(
+            'ext.admin.grid.GridActionsWidget.GridActionsWidget',
+            ['dropdownItems' => $dropdownItems],
+            true
+        );
     }
 
     public function search()
@@ -197,7 +203,7 @@ class LabelSet extends LSActiveRecord
     {
         // delete old labels and translations before inserting the new values
         foreach ($this->labels as $oLabel) {
-            LabelL10n::model()->deleteAllByAttributes([], 'id = :id', [':id' => $oLabel->id]);
+            LabelL10n::model()->deleteAllByAttributes([], 'label_id = :id', [':id' => $oLabel->id]);
             $oLabel->delete();
         }
         rmdirr(App()->getConfig('uploaddir') . '/labels/' . $this->lid);

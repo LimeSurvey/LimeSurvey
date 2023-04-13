@@ -36,8 +36,8 @@ use LimeSurvey\Helpers\questionHelper;
  * @property integer $same_script Whether the same script should be used for all languages
  *
  * @property Survey $survey
- * @property QuestionGroup $groups  //@TODO should be singular
- * @property Question $parents      //@TODO should be singular
+ * @property QuestionGroup $group
+ * @property Question $parent
  * @property Question[] $subquestions
  * @property QuestionAttribute[] $questionAttributes NB! returns all QuestionArrtibute Models fot this QID regardless of the specified language
  * @property QuestionL10n[] $questionl10ns Question Languagesettings indexd by language code
@@ -154,7 +154,7 @@ class Question extends LSActiveRecord
             array('scale_id', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
             array('same_default', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
             array('type', 'length', 'min' => 1, 'max' => 1),
-            array('relevance', 'filter', 'filter' => 'trim'),
+            array('relevance', 'LSYii_FilterValidator', 'filter' => 'trim', 'skipOnEmpty' => true),
             array('preg', 'safe'),
             array('modulename', 'length', 'max' => 255),
             array('same_script', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
@@ -682,31 +682,65 @@ class Question extends LSActiveRecord
         $previewUrl .= '/' . $this->sid . '/gid/' . $this->gid . '/qid/' . $this->qid;
         $editurl     = Yii::app()->createUrl("questionAdministration/edit/questionId/$this->qid/tabOverviewEditor/editor");
 
-        $buttons = "<div class='icon-btn-row'>";
+        $permission_edit_question = Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update');
+        $permission_summary_question = Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'read');
+        $permission_delete_question = Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'delete');
 
-        if (Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update')) {
-            $buttons .= '<a class="btn btn-sm btn-default"  data-toggle="tooltip" title="' . gT("Edit question") . '" href="' . $editurl . '" role="button"><span class="fa fa-pencil" ></span></a>';
-        }
-
-        $buttons .= '<a class="btn btn-sm btn-default open-preview"  data-toggle="tooltip" title="' . gT("Question preview") . '"  aria-data-url="' . $previewUrl . '" aria-data-sid="' . $this->sid . '" aria-data-gid="' . $this->gid . '" aria-data-qid="' . $this->qid . '" aria-data-language="' . $this->survey->language . '" href="#" role="button" ><span class="fa fa-eye"  ></span></a> ';
-
-        if (Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'read')) {
-            $buttons .= '<a class="btn btn-sm btn-default"  data-toggle="tooltip" title="' . gT("Question summary") . '" href="' . $url . '" role="button"><span class="fa fa-list-alt" ></span></a>';
-        }
+        $dropdownItems = [];
+        $dropdownItems[] = [
+            'title'            => gT('Edit question'),
+            'iconClass'        => 'ri-pencil-fill',
+            'url'              => $editurl,
+            'enabledCondition' => $permission_edit_question
+        ];
+        $dropdownItems[] = [
+            'title'            => gT('Question preview'),
+            'iconClass'        => 'ri-eye-fill',
+            'linkClass'        => 'open-preview',
+            'linkAttributes'   => [
+                'data-bs-toggle' => 'tooltip',
+                'aria-data-url' => $previewUrl,
+                'aria-data-sid' => $this->sid,
+                'aria-data-gid' => $this->gid,
+                'aria-data-qid' => $this->qid,
+                'aria-data-language' => $this->survey->language
+            ]
+        ];
+        $dropdownItems[] = [
+            'title'            => gT('Question summary'),
+            'iconClass'        => 'ri-list-unordered',
+            'url'              => $url,
+            'enabledCondition' => $permission_summary_question,
+            'linkAttributes'   => [
+                'data-bs-toggle' => 'tooltip',
+            ]
+        ];
 
         $oSurvey = Survey::model()->findByPk($this->sid);
+        $surveyIsNotActive = $oSurvey->active !== 'Y';
+        $dropdownItems[] = [
+            'title'            => gT('Delete question'),
+            'iconClass'        => 'ri-delete-bin-fill text-danger',
+            'enabledCondition' => $surveyIsNotActive && $permission_delete_question,
+            'linkAttributes'   => [
+                'data-bs-toggle' => 'tooltip',
+                'onclick' => '$.fn.bsconfirm("'
+                    . CHtml::encode(gT("Deleting  will also delete any answer options and subquestions it includes. Are you sure you want to continue?"))
+                    . '", {"confirm_ok": "'
+                    . gT("Delete")
+                    . '", "confirm_cancel": "'
+                    . gT("Cancel")
+                    . '"}, function() {'
+                    . convertGETtoPOST(Yii::app()->createUrl("questionAdministration/delete/", ["qid" => $this->qid]))
+                    . "});"
+            ]
+        ];
 
-        if ($oSurvey->active != "Y" && Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'delete')) {
-            $buttons .= '<a class="btn btn-sm btn-default"  data-toggle="tooltip" title="' . gT("Delete question") . '" href="#" role="button"'
-                . " onclick='$.bsconfirm(\"" . CHtml::encode(gT("Deleting  will also delete any answer options and subquestions it includes. Are you sure you want to continue?"))
-                            . "\", {\"confirm_ok\": \"" . gT("Yes") . "\", \"confirm_cancel\": \"" . gT("No") . "\"}, function() {"
-                            . convertGETtoPOST(Yii::app()->createUrl("questionAdministration/delete/", ["qid" => $this->qid]))
-                        . "});'>"
-                    . ' <i class="fa fa-trash text-danger"></i>
-                </a>';
-        }
-        $buttons .= "</div>";
-        return $buttons;
+        return App()->getController()->widget(
+            'ext.admin.grid.GridActionsWidget.GridActionsWidget',
+            ['dropdownItems' => $dropdownItems],
+            true
+        );
     }
 
     public function getOrderedAnswers($scale_id = null)
@@ -883,14 +917,14 @@ class Question extends LSActiveRecord
     {
         if ($this->type != Question::QT_X_TEXT_DISPLAY && $this->type != Question::QT_VERTICAL_FILE_UPLOAD) {
             if ($this->mandatory == "Y") {
-                $sIcon = '<span class="fa fa-asterisk text-danger"></span>';
+                $sIcon = '<span class="ri-star-fill text-danger"></span>';
             } elseif ($this->mandatory == "S") {
-                $sIcon = '<span class="fa fa-asterisk text-danger"> ' . gT('Soft') . '</span>';
+                $sIcon = '<span class="ri-star-fill text-danger"> ' . gT('Soft') . '</span>';
             } else {
                 $sIcon = '<span></span>';
             }
         } else {
-            $sIcon = '<span class="fa fa-ban text-danger" data-toggle="tooltip" title="' . gT('Not relevant for this question type') . '"></span>';
+            $sIcon = '<span class="ri-forbid-2-line text-danger" data-bs-toggle="tooltip" title="' . gT('Not relevant for this question type') . '"></span>';
         }
         return $sIcon;
     }
@@ -902,9 +936,9 @@ class Question extends LSActiveRecord
     public function getOtherIcon()
     {
         if ($this->getAllowOther()) {
-            $sIcon = ($this->other === "Y") ? '<span class="fa fa-dot-circle-o"></span>' : '<span></span>';
+            $sIcon = ($this->other === "Y") ? '<span class="ri-record-circle-line"></span>' : '<span></span>';
         } else {
-            $sIcon = '<span class="fa fa-ban text-danger" data-toggle="tooltip" title="' . gT('Not relevant for this question type') . '"></span>';
+            $sIcon = '<span class="ri-forbid-2-line text-danger" data-bs-toggle="tooltip" title="' . gT('Not relevant for this question type') . '"></span>';
         }
         return $sIcon;
     }
@@ -986,13 +1020,6 @@ class Question extends LSActiveRecord
                 'selectableRows' => '100',
             ),
             array(
-                'header' => gT('Action'),
-                'name' => 'actions',
-                'type' => 'raw',
-                'value' => '$data->buttons',
-                'htmlOptions' => array('class' => ''),
-            ),
-            array(
                 'header' => gT('Question ID'),
                 'name' => 'question_id',
                 'value' => '$data->qid',
@@ -1042,6 +1069,14 @@ class Question extends LSActiveRecord
                 'name' => 'other',
                 'value' => '$data->otherIcon',
                 'htmlOptions' => array('class' => 'text-center'),
+            ),
+            array(
+                'header' => gT('Action'),
+                'name' => 'actions',
+                'type' => 'raw',
+                'value' => '$data->buttons',
+                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+                'htmlOptions'       => ['class' => 'text-center button-column ls-sticky-column'],
             ),
         );
     }

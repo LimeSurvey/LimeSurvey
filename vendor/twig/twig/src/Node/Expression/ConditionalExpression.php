@@ -16,12 +16,12 @@ use Twig\Compiler;
 
 class ConditionalExpression extends AbstractExpression
 {
-    public function __construct(AbstractExpression $expr1, AbstractExpression $expr2, AbstractExpression $expr3, $lineno)
+    public function __construct(AbstractExpression $expr1, AbstractExpression $expr2, AbstractExpression $expr3, int $lineno)
     {
         parent::__construct(['expr1' => $expr1, 'expr2' => $expr2, 'expr3' => $expr3], [], $lineno);
     }
 
-    public function compile(Compiler $compiler)
+    public function compile(Compiler $compiler): void
     {
         $compiler
             ->raw('((')
@@ -34,5 +34,3 @@ class ConditionalExpression extends AbstractExpression
         ;
     }
 }
-
-class_alias('Twig\Node\Expression\ConditionalExpression', 'Twig_Node_Expression_Conditional');
