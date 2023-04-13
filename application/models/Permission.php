@@ -860,7 +860,7 @@ class Permission extends LSActiveRecord
                 'export' => false,
                 'title' => gT("Settings & Plugins"),
                 'description' => gT("Permission to view and update global settings & plugins and to delete and import plugins"),
-                'img' => 'ri-earth-fil',
+                'img' => 'ri-earth-fill',
             ),
             'participantpanel' => array(
                 'title' => gT("Central participant database"),

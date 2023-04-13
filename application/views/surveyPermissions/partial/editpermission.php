@@ -7,11 +7,12 @@ Yii::app()->getController()->renderPartial(
 
 <?php  echo CHtml::form(array("surveyPermissions/savePermissions/surveyid/{$surveyid}")); ?>
     <div class="modal-body selector--edit-permissions-container">
-        <table id='' class='activecell table table-striped'>
+        <table id='UserManagement--userpermissions-table' class='activecell table table-striped'>
             <thead>
                 <tr>
                     <th></th>
                     <th><?php eT("Permission"); ?></th>
+                    <th><?php eT("General"); ?></th>
                     <th><?php eT("Create"); ?></th>
                     <th><?php eT("View/read"); ?></th>
                     <th><?php eT("Update"); ?></th>
@@ -24,10 +25,18 @@ Yii::app()->getController()->renderPartial(
         <tbody>
             <?php foreach ($aPermissions as $sPermission => $aCurrentPermissions) : ?>
                 <tr>
-                    <td><?= $aCurrentPermissions['description'] ?></td>
+                    <td>
+                        <i class="<?php echo $aCurrentPermissions['img'] ?> text-success"></i>
+                        <?= $aCurrentPermissions['description'] ?>
+                    </td>
                     <td><?= $aCurrentPermissions['title'] ?></td>
+                    <!-- checkbox  -->
+                    <td>
+                        <input type="checkbox" class="general-row-selector" id='all_<?php echo $sPermission; ?>' name='PermissionAll[<?php echo $sPermission; ?>]' />
+                    </td>
+
                     <?php foreach ($aCurrentPermissions['current'] as $sKey => $aValues) : ?>
-                        <td class='extended'>
+                        <td class='specific-settings-block'>
                             <?php if ($aCurrentPermissions[$sKey] && !$aValues['forced']) {
                                 echo CHtml::checkBox(
                                     "set[{$aCurrentPermissions['entity']}][{$sPermission}][$sKey]",
