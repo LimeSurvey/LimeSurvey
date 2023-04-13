@@ -78,7 +78,7 @@ class ComfortUpdateChecker extends PluginBase
                     'isSmallText' => false,
                     'label' => '<strong class="text-warning">' . $NotificationText . '</strong>',
                     'href' => $this->api->createUrl('admin/update', []),
-                    'iconClass' => 'icon-shield text-warning ' . $iconClass,
+                    'iconClass' => 'ri-shield-check-fill text-warning ' . $iconClass,
                 ];
 
                 $aMenuItems[] = (new \LimeSurvey\Menu\MenuItem($aMenuItemAdminOptions));

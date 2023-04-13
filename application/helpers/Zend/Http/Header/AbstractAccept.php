@@ -63,7 +63,7 @@ abstract class AbstractAccept implements HeaderInterface
     {
         if (strpos($headerLine, ':') !== false) {
             list($name, $value) = GenericHeader::splitHeaderLine($headerLine);
-            if (strtolower($name) !== strtolower($this->getFieldName())) {
+            if (strtolower((string) $name) !== strtolower((string) $this->getFieldName())) {
                 $value = $headerLine; // This is just for preserve the BC.
             }
         } else {
@@ -111,7 +111,7 @@ abstract class AbstractAccept implements HeaderInterface
 
         $out = array();
         foreach ($values[0] as $value) {
-            $value = trim($value);
+            $value = trim((string) $value);
             $out[] = $this->parseFieldValuePart($value);
         }
 
@@ -170,7 +170,7 @@ abstract class AbstractAccept implements HeaderInterface
             }
 
             foreach ($paramsStrings as $param) {
-                $explode = explode('=', $param, 2);
+                $explode = explode('=', (string) $param, 2);
 
                 $value = trim($explode[1]);
                 if (isset($value[0]) && $value[0] == '"' && substr($value, -1) == '"') {
@@ -341,10 +341,10 @@ abstract class AbstractAccept implements HeaderInterface
     {
         foreach ($match2->params as $key => $value) {
             if (isset($match1->params[$key])) {
-                if (strpos($value, '-')) {
+                if (strpos((string) $value, '-')) {
                     preg_match(
                         '/^(?|([^"-]*)|"([^"]*)")-(?|([^"-]*)|"([^"]*)")\z/',
-                        $value,
+                        (string) $value,
                         $pieces
                     );
 
@@ -356,8 +356,8 @@ abstract class AbstractAccept implements HeaderInterface
                     ) {
                         return false;
                     }
-                } elseif (strpos($value, '|')) {
-                    $options = explode('|', $value);
+                } elseif (strpos((string) $value, '|')) {
+                    $options = explode('|', (string) $value);
                     $good = false;
                     foreach ($options as $option) {
                         if ($option == $match1->params[$key]) {
@@ -438,10 +438,10 @@ abstract class AbstractAccept implements HeaderInterface
             //@todo count number of dots in case of type==application in subtype
 
             // So far they're still the same. Longest string length may be more specific
-            if (strlen($a->raw) == strlen($b->raw)) {
+            if (strlen((string) $a->raw) == strlen((string) $b->raw)) {
                 return 0;
             }
-            return (strlen($a->raw) > strlen($b->raw)) ? -1 : 1;
+            return (strlen((string) $a->raw) > strlen((string) $b->raw)) ? -1 : 1;
         };
 
         usort($this->fieldValueParts, $sort);

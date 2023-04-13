@@ -10,30 +10,18 @@
  */
 
 #}
-<tr class="ls-heading {{ class }}" aria-hidden="true">
-    <td></td>
-    {% if leftheader != '' or rightheader !='' %}
-        <td class="hidden"></td>
-    {% endif %}
-    {% for ld in labelans0 %}
-        <th class='answer-text'>{{ processString(ld) }}</th>
-    {% endfor %}
-    {% if labelans1|length > 0 %}
-        <td class="header_separator">
-            {% if shownoanswer %}
-                <div class="ls-js-hidden">{{ gT('No answer') }}</div>
-            {% endif %}</td>  <!-- Separator : and No answer for accessibility for first colgroup -->
-        {% if leftheader != '' or rightheader !='' %}
-            <td class="hidden"></td>
-        {% endif %}
-        {% for ld in labelans1 %}
-            <th class='answer-text'>{{ processString(ld) }}</th>
-        {% endfor %}
-    {% endif %}
-    {% if shownoanswer or rightexists %}
-        <td class="header_separator rigth_separator"></td>
-    {% endif %}
-    {% if shownoanswer %}
-        <th class="answer-text noanswer-text">{{ gT('No answer') }}</th>
-    {% endif %}
+<tr class="ls-heading ls-header" >
+    {{ doRender(
+        '/survey/questions/answer/arrays/dualscale/content_header',
+        ({
+            'basename'     : basename,
+            'labelans0'    : labelans0,
+            'labelans1'    : labelans1,
+            'shownoanswer' : shownoanswer,
+            'rightexists'  : rightexists,
+            'leftheader'   : leftheader,
+            'rightheader'  : rightheader,
+            'repeat'       : false
+        })
+    ) }}
 </tr>

@@ -14,7 +14,7 @@
 <!-- answer_row -->
 <tr id="javatbd{{ myfname }}" class="answers-list radio-list {% if odd %} ls-odd{% else %} ls-even{% endif %}{%
  if error %} ls-error-mandatory has-error{% endif %}" role="radiogroup"  aria-labelledby="answertext{{ myfname }}">
-    <th id="answertext{{ myfname }}" class="answertext control-label{% if answerwidth==0 %} sr-only{% endif %}">
+    <th id="answertext{{ myfname }}" class="answertext control-label{% if answerwidth==0 %} visually-hidden{% endif %}">
         {{ processString(answertext) }}
         
         {# Value for expression manager javascript (use id) ; no need to submit #}
@@ -26,17 +26,17 @@
     </th>
 
         {% for aAnswerColumn in aAnswerColumns %}
-            {% include 'survey/questions/answer/arrays/array/no_dropdown/rows/cells/answer_td.twig' with aAnswerColumn only %}
+            {% include 'survey/questions/answer/arrays/array/no_dropdown/rows/cells/answer_td.twig' with aAnswerColumn %}
         {% endfor %}
         {# Defined in answer_td view #}
     
     {% if right_exists %}
-        <th class='answertextright information-item{% if answerwidth==0 %} sr-only{% endif %}'>{{ processString(answertextright) }}</th>
+        <th class='answertextright information-item{% if answerwidth==0 %} visually-hidden{% endif %}'>{{ processString(answertextright) }}</th>
     {% endif %}
     
         {# No answer should come after right text at bipolar question #}
         {% if aNoAnswerColumn is not empty %}
-            {% include 'survey/questions/answer/arrays/array/no_dropdown/rows/cells/answer_td.twig' with aNoAnswerColumn only %}
+            {% include 'survey/questions/answer/arrays/array/no_dropdown/rows/cells/answer_td.twig' with aNoAnswerColumn %}
         {% endif %}
     
 </tr>
