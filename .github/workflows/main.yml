@@ -172,6 +172,20 @@ jobs:
         run: |
           sudo systemctl start mysql.service
 
+      - name: Setup 
+        run: |
+          touch enabletests
+          composer install -vvv
+          
+          sudo apt-get update > /dev/null
+          sudo apt --fix-broken install php php-mysql php8.0-mysql php7.2-mysql -y
+
+          chmod -R 777 ./tmp
+          chmod -R 777 ./upload
+          chmod -R 777 ./themes
+          chmod -R 777 ./tests/tmp
+          chmod -R 777 ./application/config
+
       - name: Load custom console and start the Application
         run: |
           cp application/config/config-sample-mysql.php application/config/config.php
@@ -181,13 +195,6 @@ jobs:
         env:
           XDEBUG_MODE: coverage
         run: |
-          touch enabletests
-          composer install -vvv
-          chmod -R 777 ./tmp
-          chmod -R 777 ./upload
-          chmod -R 777 ./themes
-          chmod -R 777 ./tests/tmp
-          chmod -R 777 ./application/config
           php vendor/bin/phpunit --testdox --stop-on-failure tests/unit
 
       - name: Upload cov.xml
