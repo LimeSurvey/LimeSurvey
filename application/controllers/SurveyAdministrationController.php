@@ -1939,7 +1939,7 @@ class SurveyAdministrationController extends LSBaseController
         $baselang = $survey->language;
         array_unshift($grplangs, $baselang);
 
-        //@TODO add language checks here
+        //@TODO add language checks here.
         //Multi language can't be implemented since the name column is indexed (unique).
         $menuEntry = SurveymenuEntries::model()->find('name=:name', array(':name' => $menuaction));
 
