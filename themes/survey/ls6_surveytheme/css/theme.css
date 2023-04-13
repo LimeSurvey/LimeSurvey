@@ -1000,3 +1000,6 @@ table > tbody > tr > td.ddprefix {
     border-top: none; /*overriding Bootstrap */
   }
 }
+li.imageselect-listitem .imageselect-container .imageselect-label {
+  border-radius: 4px !important;
+}
