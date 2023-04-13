@@ -1,0 +1,7 @@
+li.imageselect-listitem .imageselect-container .imageselect-label{
+    border: 2px solid $g-700 !important;
+}
+
+li.imageselect-listitem .imageselect-container input.imageselect-checkbox:checked+label{
+    border: 2px solid $base-color !important;
+}

@@ -1,5 +1,4 @@
 body {
-  font-family : $ibm-font-family;
   font-weight : $font-weight-normal;
   font-size   : $font-size-base;
   line-height : $line-height-24;
@@ -12,7 +11,6 @@ h1,
 
 h2,
 .h2 {
-  font-family : $ibm-font-family;
   font-weight : $font-weight-600;
   font-size   : $font-size-base;
   line-height : $line-height-20;
@@ -24,14 +22,12 @@ h3,
 }
 
 label {
-  font-family : $ibm-font-family;
   font-weight : $font-weight-500;
   font-size   : $font-size-sm;
   line-height : $line-height-20;
 }
 
 dl {
-  font-family : $ibm-font-family;
   font-weight : $font-weight-normal;
   font-size   : $font-size-base;
   line-height : $line-height-24;

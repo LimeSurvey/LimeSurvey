@@ -13,20 +13,24 @@ $btn-focus-boxshadow : 4px 4px 0px rgba(123, 97, 255, 0.4);
 *[class*="btn-outline-"] {
     background-color : $white;
     border           : 1px solid $g-900;
+
     &:hover {
         // default_outline_hover
         box-shadow       : $btn-hover-boxshadow;
         background-color : $white;
     }
+
     &:focus, &:active, &.active, &.dropdown-toggle.show, &.dropdown-toggle.show:focus, &.show {
         // default_outline_focus
         box-shadow       : $btn-focus-boxshadow;
         background-color : $white;
     }
+
     &.disabled, &[disabled] {
         background-color : $white;
         border           : 1px solid $g-600;
         color            : $g-600;
+
         &:hover, &:focus, &:active, &.active {
             background-color : $white;
             border           : 1px solid $g-600;
@@ -98,6 +102,7 @@ $btn-variants        : (
             box-shadow       : none;
             border-color     : $g-400;
             opacity          : 1;
+
             &:hover, &:focus, &:active, &.active {
                 // default_disabled
                 color            : $g-600;
@@ -117,6 +122,7 @@ $btn-variants        : (
 // btn-link should be outsourced to links.scss or whatever it will be called
 .btn-link {
     color : $btn-primary-color;
+
     &:hover, &:focus {
         color : $btn-primary-color;
     }
@@ -156,16 +162,18 @@ $btn-variants        : (
     border             : 1px solid #cccccc;
 }
 
-// btn-check START
+// btn-check (Bootstrap Buttons question type) START
 .btn-check + .btn {
-    color            : $g-900;
+    color            : $g-700;
     background-color : $white;
-    border           : 1px solid $g-900;
+    border           : 2px solid $g-700;
+
     &:hover {
-        box-shadow : $btn-hover-boxshadow;
+        box-shadow : none;
     }
+
     &:focus, &:active, &.active, &:active:focus {
-        box-shadow : $btn-focus-boxshadow;
+        box-shadow : none;
     }
 }
 
@@ -175,31 +183,41 @@ $btn-variants        : (
             color            : $white;
             background-color : $btn-primary-color;
             border-color     : $btn-primary-color;
-            box-shadow       : $btn-hover-boxshadow;
+            box-shadow       : none;
         }
-        &:focus,
+
         &:active,
         &.active,
         &:active:focus {
             color            : $white;
             background-color : $btn-primary-color;
             border-color     : $btn-primary-color;
-            box-shadow       : $btn-focus-boxshadow;
+            box-shadow       : none;
         }
     }
-    &:focus + .btn-primary,
+
+    &:focus + .btn-primary {
+        color            : $g-700;
+        background-color : $white;
+        border           : 2px solid $g-700;
+        box-shadow       : none;
+    }
+
     &:active + .btn-primary {
         color            : $white;
         background-color : $btn-primary-color;
         border-color     : $btn-primary-color;
-        box-shadow       : $btn-focus-boxshadow;
+        box-shadow       : none;
     }
+
     &:checked + .btn-primary,
     &:checked + .btn-primary:focus,
     &:focus:checked + .btn-primary {
         color            : $white;
         background-color : $btn-primary-color;
         border-color     : $btn-primary-color;
+        box-shadow       : none;
     }
 }
+
 // btn-check END
