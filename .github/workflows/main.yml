@@ -125,14 +125,6 @@ jobs:
         # wget https://chromedriver.storage.googleapis.com/2.33/chromedriver_linux64.zip
         # unzip chromedriver_linux64.zip
 
-      - name: Run unit tests
-        env:
-            XDEBUG_MODE: coverage
-        run: php vendor/bin/phpunit --testdox --stop-on-failure tests/unit
-
-      - name: Check test coverage if cov.xml exists (won't work on PHP 8 with current phpunit version)
-        run: php tests/bin/check_coverage.php cov.xml 37
-
       - name: Set up Selenium with firefox (needed for integrity tests)
         run: |
           echo `which firefox`
@@ -159,7 +151,97 @@ jobs:
           name: screenshots
           path: tests/tmp/screenshots/
           retention-days: 5
+  
+  unit-tests:
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        # Specify what versions of php you want to test
+        php-versions: ['7.2', '8.1']
+    env:
+      DBENGINE: INNODB
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install specified PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+
+      - name: Start the MySQL service
+        run: |
+          sudo systemctl start mysql.service
+
+      - name: Load custom console and start the Application
+        run: |
+          cp application/config/config-sample-mysql.php application/config/config.php
+          php application/commands/console.php install admin password TravisLS no@email.com verbose
+
+      - name: Run unit tests
+        env:
+          XDEBUG_MODE: coverage
+        run: |
+          touch enabletests
+          composer install -vvv
+          php vendor/bin/phpunit --testdox --stop-on-failure tests/unit
+
+      - name: Upload cov.xml
+        uses: actions/upload-artifact@v3
+        with:
+          name: cov-file
+          path: cov.xml
+
+  test-coverage:
+    runs-on: ubuntu-20.04
+    needs: unit-tests
+    strategy:
+      matrix:
+        # Specify what versions of php you want to test
+        php-versions: ['7.2', '8.1']
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install specified PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+
+      - name: Download cov.xml
+        uses: actions/download-artifact@v3
+        with:
+          name: cov-file
+
+      - name: Check test coverage if cov.xml exists (won't work on PHP 8 with current phpunit version)
+        run: php tests/bin/check_coverage.php cov.xml 37
+
+  code-check:
+    runs-on: ubuntu-20.04
+    env:
+      DBENGINE: INNODB
+    strategy:
+      matrix:
+        # Specify what versions of php you want to test
+        php-versions: ['7.2', '8.1']
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install specified PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+
+      - name: Start the MySQL service
+        run: |
+          sudo systemctl start mysql.service
+
+      - name: Load custom console and start the Application
+        run: |
+          cp application/config/config-sample-mysql.php application/config/config.php
+          php application/commands/console.php install admin password TravisLS no@email.com verbose
           
       - name: Run syntax check, CodeSniffer, MessDetector, ...
-        run: composer test
+        run: |
+          chmod +x ./tests/bin/lint-*
+          composer install -vvv
+          composer test
 
