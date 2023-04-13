@@ -1939,9 +1939,9 @@ class SurveyAdministrationController extends LSBaseController
         $baselang = $survey->language;
         array_unshift($grplangs, $baselang);
 
-	//@TODO add language checks here
-	//Multi language can't be implemented since the name column is indexed (unique).
-	
+        //@TODO add language checks here
+        //Multi language can't be implemented since the name column is indexed (unique).
+        
         $menuEntry = SurveymenuEntries::model()->find('name=:name', array(':name' => $menuaction));
 
         if (!(Permission::model()->hasSurveyPermission($iSurveyID, $menuEntry->permission, $menuEntry->permission_grade))) {
@@ -2019,23 +2019,14 @@ class SurveyAdministrationController extends LSBaseController
         $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat']);
         $aData['display']['menu_bars']['surveysummary'] = $menuEntry->title;
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyID . ")";
-<<<<<<< HEAD
-        $aData['surveybar']['buttons']['view'] = true;
-        $aData['surveybar']['savebutton']['form'] = 'globalsetting';
-        $aData['surveybar']['savebutton']['useformid'] = 'true';
-        $aData['surveybar']['saveandclosebutton']['form'] = true;
-        $aData['topBar']['closeUrl'] = $this->createUrl("surveyAdministration/view/", ['surveyid' => $iSurveyID]); // Close button
-        
-        $adminLanguage = Yii::app()->session['adminlang'];
+
+       $adminLanguage = Yii::app()->session['adminlang'];
 
         if ($adminLanguage !== 'en-GB' && $menuEntry->language === 'en-GB') {
             $aData['subaction'] = gT($menuEntry->title);
         } else {
            $aData['subaction'] = $menuEntry->title;
         }
-=======
->>>>>>> master
-
 
         if ($subaction === 'resources' || $subaction === 'panelintegration') {
             $aData['topBar']['showSaveButton'] = false;
