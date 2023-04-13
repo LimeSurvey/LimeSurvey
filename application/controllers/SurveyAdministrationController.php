@@ -1941,7 +1941,6 @@ class SurveyAdministrationController extends LSBaseController
 
         //@TODO add language checks here
         //Multi language can't be implemented since the name column is indexed (unique).
-        
         $menuEntry = SurveymenuEntries::model()->find('name=:name', array(':name' => $menuaction));
 
         if (!(Permission::model()->hasSurveyPermission($iSurveyID, $menuEntry->permission, $menuEntry->permission_grade))) {
@@ -2020,12 +2019,12 @@ class SurveyAdministrationController extends LSBaseController
         $aData['display']['menu_bars']['surveysummary'] = $menuEntry->title;
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyID . ")";
 
-       $adminLanguage = Yii::app()->session['adminlang'];
+        $adminLanguage = Yii::app()->session['adminlang'];
 
         if ($adminLanguage !== 'en-GB' && $menuEntry->language === 'en-GB') {
             $aData['subaction'] = gT($menuEntry->title);
         } else {
-           $aData['subaction'] = $menuEntry->title;
+            $aData['subaction'] = $menuEntry->title;
         }
 
         if ($subaction === 'resources' || $subaction === 'panelintegration') {
