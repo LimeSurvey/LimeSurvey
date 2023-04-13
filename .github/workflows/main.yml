@@ -234,7 +234,7 @@ jobs:
           name: cov-file-${{ matrix.php-versions }}
 
       - name: Download cov.xml
-        if: ${{ steps.check_coverage_artifact.outputs.exists }}
+        if: steps.check_coverage_artifact.outputs.exists == 'true'
         uses: actions/download-artifact@v3
         with:
           name: cov-file-${{ matrix.php-versions }}
