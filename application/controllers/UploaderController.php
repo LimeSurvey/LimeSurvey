@@ -240,9 +240,9 @@ class UploaderController extends SurveyController
             // If this is just a preview, don't save the file
             if ($preview) {
                 if (move_uploaded_file($_FILES['uploadfile']['tmp_name'], $randfileloc)) {
+                    /** @psalm-suppress UndefinedVariable TODO: Dead code? */
                     $return = array(
                                 "success"       => true,
-                                /** @psalm-suppress UndefinedVariable TODO: Dead code? */
                                 "file_index"    => $filecount,
                                 "size"          => $size,
                                 "name"          => rawurlencode(basename((string) $filename)),
