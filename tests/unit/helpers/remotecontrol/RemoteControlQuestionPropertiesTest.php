@@ -87,7 +87,7 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
         $result = $this->handler->get_question_properties($sessionKey, $qid);
 
         //Checking options
-        $this->assertSame($answerOptionsByScaleId, $result['answeroptions'], 'The options were not returned correctly.');
+        $this->assertEquals($answerOptionsByScaleId, $result['answeroptions'], 'The options were not returned correctly.');
         //Checking other properties
         $this->assertSame('1', $result['type'], 'The question type is not correct.');
         $this->assertSame('N', $result['mandatory'], 'The question should not be mandatory.');
@@ -157,7 +157,7 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
         $result = $this->handler->get_question_properties($sessionKey, $qid, null, 'es');
 
         //Checking options
-        $this->assertSame($answerOptionsByScaleId, $result['answeroptions'], 'The options were not returned correctly.');
+        $this->assertEquals($answerOptionsByScaleId, $result['answeroptions'], 'The options were not returned correctly.');
         //Checking other properties
         $this->assertSame('1', $result['type'], 'The question type is not correct.');
         $this->assertSame('N', $result['mandatory'], 'The question should not be mandatory.');
@@ -196,7 +196,7 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
         $result = $this->handler->get_question_properties($sessionKey, $qid, null);
 
         //Checking options
-        $this->assertSame($answerOptions, $result['answeroptions'], 'The options were not returned correctly.');
+        $this->assertEquals($answerOptions, $result['answeroptions'], 'The options were not returned correctly.');
         //Checking other properties
         $this->assertSame('H', $result['type'], 'The question type is not correct.');
         $this->assertSame('N', $result['mandatory'], 'The question should not be mandatory.');
@@ -235,7 +235,7 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
         $result = $this->handler->get_question_properties($sessionKey, $qid, null);
 
         //Checking options
-        $this->assertSame($answerOptions, $result['answeroptions'], 'The options were not returned correctly.');
+        $this->assertEquals($answerOptions, $result['answeroptions'], 'The options were not returned correctly.');
 
         //Checking subquestions
         $subquestions = array(
@@ -265,7 +265,7 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
         $result = $this->handler->get_question_properties($sessionKey, $qid, null);
 
         //Checking options
-        $this->assertSame('No available answer options', $result['answeroptions'], 'The options were not returned correctly.');
+        $this->assertEquals('No available answer options', $result['answeroptions'], 'The options were not returned correctly.');
         //Checking other properties
         $this->assertSame('C', $result['type'], 'The question type is not correct.');
         $this->assertSame('N', $result['mandatory'], 'The question should not be mandatory.');
@@ -326,8 +326,8 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
         $spanishResult = $this->handler->get_question_properties($sessionKey, $qid, null, 'es');
 
         //Checking options
-        $this->assertSame($englishAnswerOptions, $result['answeroptions'], 'The options were not returned correctly.');
-        $this->assertSame($spanishAnswerOptions, $spanishResult['answeroptions'], 'The options were not returned correctly.');
+        $this->assertEquals($englishAnswerOptions, $result['answeroptions'], 'The options were not returned correctly.');
+        $this->assertEquals($spanishAnswerOptions, $spanishResult['answeroptions'], 'The options were not returned correctly.');
         //Checking other properties
         $this->assertSame('L', $result['type'], 'The question type is not correct.');
         $this->assertSame('N', $result['mandatory'], 'The question should not be mandatory.');
@@ -345,7 +345,7 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
         $result = $this->handler->get_question_properties($sessionKey, $qid, null);
 
         //Checking options
-        $this->assertSame('No available answer options', $result['answeroptions'], 'The options were not returned correctly.');
+        $this->assertEquals('No available answer options', $result['answeroptions'], 'The options were not returned correctly.');
 
         //Checking subquestions
         $englishSubquestions = array(
