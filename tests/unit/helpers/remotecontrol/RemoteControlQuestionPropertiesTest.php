@@ -245,7 +245,7 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
         );
 
         $subquestionsRestult = array_values($result['subquestions'])[0];
-        $this->assertSame($subquestions, $subquestionsRestult, 'The returned subquestion is not correct.');
+        $this->assertEquals($subquestions, $subquestionsRestult, 'The returned subquestion is not correct.');
 
         //Checking other properties
         $this->assertSame('F', $result['type'], 'The question type is not correct.');
@@ -265,7 +265,7 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
         $result = $this->handler->get_question_properties($sessionKey, $qid, null);
 
         //Checking options
-        $this->assertEquals('No available answer options', $result['answeroptions'], 'The options were not returned correctly.');
+        $this->assertSame('No available answer options', $result['answeroptions'], 'The options were not returned correctly.');
         //Checking other properties
         $this->assertSame('C', $result['type'], 'The question type is not correct.');
         $this->assertSame('N', $result['mandatory'], 'The question should not be mandatory.');
