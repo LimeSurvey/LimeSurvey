@@ -304,7 +304,7 @@ class UploaderController extends SurveyController
         $oEvent->set('surveyId', $surveyid);
         App()->getPluginManager()->dispatchEvent($oEvent);
         if (!is_null($oEvent->get('template'))) {
-            $aSurveyInfo['templatedir'] = $event->get('template');
+            $aSurveyInfo['templatedir'] = $oEvent->get('template');
         }
         $sTemplateDir = getTemplatePath($aSurveyInfo['template']);
         $sTemplateUrl = getTemplateURL($aSurveyInfo['template']) . "/";
