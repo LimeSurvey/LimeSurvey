@@ -228,6 +228,9 @@ class SurveymenuEntryController extends SurveyCommonAction
             $this->getController()->redirect(Yii::app()->createUrl('/admin'));
         }
 
+        //get model to do the work
+        $model = SurveymenuEntries::model();
+
         if (Yii::app()->request->isPostRequest) {
             //Check for permission!
             if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
@@ -246,8 +249,6 @@ class SurveymenuEntryController extends SurveyCommonAction
                     false
                 );
             }
-            //get model to do the work
-            $model = SurveymenuEntries::model();
             $success = $model->restoreDefaults();
             return Yii::app()->getController()->renderPartial(
                 '/admin/super/_renderJson',
@@ -284,7 +285,7 @@ class SurveymenuEntryController extends SurveyCommonAction
                 $success[$menuEntryid] = $model->delete();
             }
 
-            $debug = $userConfig['config']['debug'] ?? 0;
+            $debug = 0;
             $returnData = array(
                 'data' => [
                     'success' => $success,
@@ -330,7 +331,7 @@ class SurveymenuEntryController extends SurveyCommonAction
                 $this->getController()->redirect(Yii::app()->createUrl('/admin'));
             }
             $success = $model->delete();
-            $debug = $userConfig['config']['debug'] ?? 0;
+            $debug = 0;
 
             $returnData = array(
                 'data' => [
@@ -370,7 +371,7 @@ class SurveymenuEntryController extends SurveyCommonAction
         if (Yii::app()->request->isPostRequest) {
             $model = SurveymenuEntries::model();
             $success = $model->reorder();
-            $debug = $userConfig['config']['debug'] ?? 0;
+            $debug = 0;
 
             $returnData = array(
                 'data' => [
