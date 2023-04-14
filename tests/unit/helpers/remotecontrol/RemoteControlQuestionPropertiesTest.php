@@ -89,10 +89,10 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
         //Checking options
         $this->assertEquals($answerOptionsByScaleId, $result['answeroptions'], 'The options were not returned correctly.');
         //Checking other properties
-        $this->assertSame('1', $result['type'], 'The question type is not correct.');
+        $this->assertEquals('1', $result['type'], 'The question type is not correct.');
         $this->assertSame('N', $result['mandatory'], 'The question should not be mandatory.');
         $this->assertSame('N', $result['encrypted'], 'The question should not be encrypted.');
-        $this->assertSame('2', $result['question_order'], 'The question order is not correct.');
+        $this->assertEquals('2', $result['question_order'], 'The question order is not correct.');
     }
 
     public function testGetDualQuestionPropertiesSpecificLanguage()
@@ -159,10 +159,10 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
         //Checking options
         $this->assertEquals($answerOptionsByScaleId, $result['answeroptions'], 'The options were not returned correctly.');
         //Checking other properties
-        $this->assertSame('1', $result['type'], 'The question type is not correct.');
+        $this->assertEquals('1', $result['type'], 'The question type is not correct.');
         $this->assertSame('N', $result['mandatory'], 'The question should not be mandatory.');
         $this->assertSame('N', $result['encrypted'], 'The question should not be encrypted.');
-        $this->assertSame('2', $result['question_order'], 'The question order is not correct.');
+        $this->assertEquals('2', $result['question_order'], 'The question order is not correct.');
     }
 
     public function testGetArrayByColumnQuestionProperties()
@@ -201,7 +201,7 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
         $this->assertSame('H', $result['type'], 'The question type is not correct.');
         $this->assertSame('N', $result['mandatory'], 'The question should not be mandatory.');
         $this->assertSame('N', $result['encrypted'], 'The question should not be encrypted.');
-        $this->assertSame('3', $result['question_order'], 'The question order is not correct.');
+        $this->assertEquals('3', $result['question_order'], 'The question order is not correct.');
     }
 
     public function testGetArrayQuestionProperties()
@@ -251,7 +251,7 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
         $this->assertSame('F', $result['type'], 'The question type is not correct.');
         $this->assertSame('N', $result['mandatory'], 'The question should not be mandatory.');
         $this->assertSame('N', $result['encrypted'], 'The question should not be encrypted.');
-        $this->assertSame('4', $result['question_order'], 'The question order is not correct.');
+        $this->assertEquals('4', $result['question_order'], 'The question order is not correct.');
     }
 
     public function testGetArrayYesNoUncertainQuestionProperties()
@@ -270,7 +270,7 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
         $this->assertSame('C', $result['type'], 'The question type is not correct.');
         $this->assertSame('N', $result['mandatory'], 'The question should not be mandatory.');
         $this->assertSame('N', $result['encrypted'], 'The question should not be encrypted.');
-        $this->assertSame('5', $result['question_order'], 'The question order is not correct.');
+        $this->assertEquals('5', $result['question_order'], 'The question order is not correct.');
     }
 
     public function testGetListQuestionProperties()
@@ -332,7 +332,7 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
         $this->assertSame('L', $result['type'], 'The question type is not correct.');
         $this->assertSame('N', $result['mandatory'], 'The question should not be mandatory.');
         $this->assertSame('N', $result['encrypted'], 'The question should not be encrypted.');
-        $this->assertSame('6', $result['question_order'], 'The question order is not correct.');
+        $this->assertEquals('6', $result['question_order'], 'The question order is not correct.');
     }
 
     public function testGetMultipleChoiceQuestionProperties()
@@ -373,7 +373,7 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
 
         $englishSubquestionsRestult = array_values($result['subquestions']);
 
-        $this->assertSame($subquestions, $subquestionsRestult, 'The returned subquestions are not correct.');
+        $this->assertEquals($subquestions, $subquestionsRestult, 'The returned subquestions are not correct.');
 
         $spanishSubquestions = array(
             array(
@@ -401,12 +401,12 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
         $spanishResult = $this->handler->get_question_properties($sessionKey, $qid, null, 'es');
         $spanishSubquestionsRestult = array_values($spanishResult['subquestions']);
 
-        $this->assertSame($spanishSubquestions, $spanishSubquestionsRestult, 'The returned subquestions (multilanguage) are not correct.');
+        $this->assertEquals($spanishSubquestions, $spanishSubquestionsRestult, 'The returned subquestions (multilanguage) are not correct.');
 
         //Checking other properties
         $this->assertSame('M', $result['type'], 'The question type is not correct.');
         $this->assertSame('N', $result['mandatory'], 'The question should not be mandatory.');
         $this->assertSame('N', $result['encrypted'], 'The question should not be encrypted.');
-        $this->assertSame('7', $result['question_order'], 'The question order is not correct.');
+        $this->assertEquals('7', $result['question_order'], 'The question order is not correct.');
     }
 }
