@@ -5,14 +5,15 @@ namespace LimeSurvey\PluginManager;
 use League\OAuth2\Client\Grant\RefreshToken;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use LimeMailer;
-use LimeSurvey\Datavalueobjects\SmtpOAuthPluginMetadata;
+use LimeSurvey\Datavalueobjects\SmtpOAuthPluginInfo;
 
 abstract class SmtpOauthPluginBase extends PluginBase
 {
-    const SETUP_STATUS_INCOMPLETE_CREDENTIALS = 0;
-    const SETUP_STATUS_MISSING_REFRESH_TOKEN = 1;
-    const SETUP_STATUS_INVALID_REFRESH_TOKEN = 2;
-    const SETUP_STATUS_VALID_REFRESH_TOKEN = 3;
+    const SETUP_STATUS_VALID_REFRESH_TOKEN = 0;
+    const SETUP_STATUS_REQUIREMENT_UNMET = 1;
+    const SETUP_STATUS_INCOMPLETE_CREDENTIALS = 2;
+    const SETUP_STATUS_MISSING_REFRESH_TOKEN = 3;
+    const SETUP_STATUS_INVALID_REFRESH_TOKEN = 4;
 
     /** @var string[] The names of attributes that form part of the credentials set. Example: ['clientId', 'clientSecret'] */
     protected $credentialAttributes = [];
@@ -79,39 +80,7 @@ abstract class SmtpOauthPluginBase extends PluginBase
         // If credentials changed, we need to clear the stored refresh token
         if ($this->haveCredentialsChanged($oldCredentials, $newCredentials)) {
             $this->clearRefreshToken();
-
-            // If credentials are complete, we redirect to settings page so the user can
-            // retrieve a new token.
-            if ($this->validateCredentials($newCredentials)) {
-                \Yii::app()->user->setFlash('success', gT('The plugin settings were saved.'));
-                $this->redirectToConfig();
-            }
         }
-    }
-
-    /**
-     * Redirects the browser to the plugin settings
-     */
-    protected function redirectToConfig()
-    {
-        $url = $this->getConfigUrl();
-        \Yii::app()->getController()->redirect($url);
-    }
-
-    /**
-     * Returns the URL for plugin settings
-     * @return string
-     */
-    protected function getConfigUrl()
-    {
-        return $this->api->createUrl(
-            '/admin/pluginmanager',
-            [
-                'sa' => 'configure',
-                'id' => $this->id,
-                'tab' => 'settings'
-            ]
-        );
     }
 
     /**
@@ -196,7 +165,7 @@ abstract class SmtpOauthPluginBase extends PluginBase
     }
 
     /**
-     * Retrieve and store the refresh token from google
+     * Retrieve and store the refresh token
      */
     private function retrieveRefreshToken($code, $credentials)
     {
@@ -246,10 +215,7 @@ abstract class SmtpOauthPluginBase extends PluginBase
      * Returns the OAuth options for authorization (like the scope)
      * @return array<string,mixed>
      */
-    protected function getAuthorizationOptions()
-    {
-        return [];
-    }
+    abstract protected function getAuthorizationOptions();
 
     /**
      * Returns true if the plugin is active
@@ -291,45 +257,79 @@ abstract class SmtpOauthPluginBase extends PluginBase
         return self::SETUP_STATUS_VALID_REFRESH_TOKEN;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getStatusText()
+    protected function getSetupStatusDescription($setupStatus)
     {
-        if (!(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')) {
-            return $this->formatStatusText(gT("OAuth authentication requires the application to be served over HTTPS."), 'danger');
-        }
-
-        $getTokenUrl = $this->api->createUrl('smtpOAuth/prepareRefreshTokenRequest', ['plugin' => get_class($this)]);
-        $getTokenLink = ' <a href="' . $getTokenUrl . '">' . gT("Get new token") . '</a>';
-
-        $setupStatus = $this->getSetupStatus();
         switch ($setupStatus) {
             case self::SETUP_STATUS_INCOMPLETE_CREDENTIALS:
-                return $this->formatStatusText(gT("Currently saved credentials are incomplete."), 'danger');
+                return gT("Currently saved credentials are incomplete.");
             case self::SETUP_STATUS_MISSING_REFRESH_TOKEN:
-                return $this->formatStatusText(gT("No OAuth token.") . $getTokenLink, 'danger');
+                return gT("No OAuth token.");
             case self::SETUP_STATUS_INVALID_REFRESH_TOKEN:
-                return $this->formatStatusText(gT("The saved token isn't valid. You need to get a new one.") . $getTokenLink, 'danger');
+                return gT("The saved token isn't valid. You need to get a new one.");
             case self::SETUP_STATUS_VALID_REFRESH_TOKEN:
-                return $this->formatStatusText(gT("Configuration is complete.") . $getTokenLink, 'success');
+                return gT("Configuration is complete.");
+            default:
+                return '';
         }
     }
 
-    protected function formatStatusText($statusText, $class = 'success')
+    protected function getHealthStatusClass($setupStatus)
     {
-        switch ($class) {
-            case 'success':
-                $icon = '<span class="ri-check-fill text-success"></span> ';
-
-                break;
-            case 'danger':
-                $icon = '<span class="ri-close-circle-line text-danger"></span> ';
-                break;
+        switch ($setupStatus) {
+            case self::SETUP_STATUS_INCOMPLETE_CREDENTIALS:
+            case self::SETUP_STATUS_MISSING_REFRESH_TOKEN:
+            case self::SETUP_STATUS_INVALID_REFRESH_TOKEN:
+                return 'danger';
+            case self::SETUP_STATUS_VALID_REFRESH_TOKEN:
+                return 'success';
             default:
-                $icon = '';
+                return '';
         }
-        return $icon . $statusText;
+    }
+
+    protected function getHealthStatusIcon($statusClass)
+    {
+        $icon = '';
+        switch ($statusClass) {
+            case 'danger':
+                $icon = "ri-close-fill text-{$statusClass}";
+                break;
+            case 'success':
+                $icon = "ri-check-fill text-{$statusClass}";
+                break;
+            case 'warning':
+                $icon = "ri-alert-fill text-{$statusClass}";
+                break;
+        }
+
+        return !empty($icon) ? "<span class=\"{$icon}\"></span>" : '';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getHealthStatusText()
+    {
+        // Check prerequisites
+        if (!(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')) {
+            return $this->getHealthStatusIcon('danger') . " " . gT("OAuth authentication requires the application to be served over HTTPS.");
+        }
+
+        $setupStatus = $this->getSetupStatus();
+        $statusClass = $this->getHealthStatusClass($setupStatus);
+        $statusText = $this->getHealthStatusIcon($statusClass) . " " . $this->getSetupStatusDescription($setupStatus);
+
+        if (
+            $setupStatus == self::SETUP_STATUS_MISSING_REFRESH_TOKEN
+            || $setupStatus == self::SETUP_STATUS_INVALID_REFRESH_TOKEN
+            || $setupStatus == self::SETUP_STATUS_VALID_REFRESH_TOKEN
+        ) {
+            $getTokenUrl = $this->api->createUrl('smtpOAuth/prepareRefreshTokenRequest', ['plugin' => get_class($this)]);
+            $getTokenLink = ' <a href="' . $getTokenUrl . '">' . gT("Get new token") . '</a>';
+            $statusText .= $getTokenLink;
+        }
+
+        return $statusText;
     }
 
     /**
@@ -365,6 +365,39 @@ abstract class SmtpOauthPluginBase extends PluginBase
     }
 
     /**
+     * @inheritdoc
+     */
+    public function getPluginSettings($getValues = true)
+    {
+        $settings = parent::getPluginSettings($getValues);
+
+        // Add the "current email" setting if the email for the current token is set
+        $emailAddress = $this->get('email');
+        if (!empty($emailAddress)) {
+            $settings['currentEmail'] = [
+                'type' => 'string',
+                'label' => gT('Saved Token Owner'),
+                'help' => gT('This is the email address used to create the current authentication token. Please note all emails will be sent from this address.'),
+                'htmlOptions' => [
+                    'readonly' => true,
+                ],
+                'current' => $emailAddress,
+            ];
+        }
+
+        // Add the "information" setting
+        $statusAlert = $this->getSetupStatusAlert();
+        if (!empty($statusAlert)) {
+            $settings['information'] = [
+                'type' => 'info',
+                'content' => $statusAlert,
+            ];
+        }
+
+        return $settings;
+    }
+
+    /**
      * Returns the provider's name
      * @return string
      */
@@ -372,10 +405,30 @@ abstract class SmtpOauthPluginBase extends PluginBase
 
     /**
      * Returns the plugin's metadata
-     * @return SmtpOAuthPluginMetadata
+     * @return SmtpOAuthPluginInfo
      */
-    protected function getOwnMetadata()
+    protected function getSmtpOAuthPluginInfo()
     {
-        return new SmtpOAuthPluginMetadata($this->getId(), $this->getProviderName(), get_class($this));
+        return new SmtpOAuthPluginInfo($this->getId(), $this->getProviderName(), get_class($this));
+    }
+
+    /**
+     * Renders the contents of the "information" setting depending on
+     * settings and token validity.
+     * @return string
+     */
+    protected function getSetupStatusAlert()
+    {
+        $setupStatus = $this->getSetupStatus();
+
+        // Don't show alert for successful setup
+        if ($setupStatus == self::SETUP_STATUS_VALID_REFRESH_TOKEN) {
+            return '';
+        }
+
+        $statusClass = $this->getHealthStatusClass($setupStatus);
+        $statusText = $this->getHealthStatusIcon($statusClass) . " " . $this->getSetupStatusDescription($setupStatus);
+
+        return "<div class=\"alert alert-{$statusClass}\">{$statusText}</div>";
     }
 }

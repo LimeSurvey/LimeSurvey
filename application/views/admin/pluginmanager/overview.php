@@ -65,19 +65,6 @@
     <?php endif; ?>
 </div>
 
-<?php if ($plugin['active']): ?>
-    <?php
-        $pluginStatus = $pluginObject->getStatusText();
-    ?>
-    <?php if (!empty($pluginStatus)): ?>
-        <!-- Status -->
-        <div class="row">
-            <label class="col-md-4 form-label text-end"><?php eT("Status:"); ?></label>
-            <div class="col-md-8"><?= $pluginStatus ?></div>
-        </div>
-    <?php endif; ?>
-<?php endif; ?>
-
 <!-- Active -->
 <?php if ($showactive): ?>
     <div class="row">
@@ -94,4 +81,17 @@
             </div>
         <?php endif; ?>
     </div>
+<?php endif; ?>
+
+<?php if ($plugin['active']): ?>
+    <?php
+        $pluginStatus = $pluginObject->getHealthStatusText();
+    ?>
+    <?php if (!empty($pluginStatus)): ?>
+        <!-- Status -->
+        <div class="row">
+            <label class="col-md-4 form-label text-end"><?php eT("Status:"); ?></label>
+            <div class="col-md-8"><?= $pluginStatus ?></div>
+        </div>
+    <?php endif; ?>
 <?php endif; ?>

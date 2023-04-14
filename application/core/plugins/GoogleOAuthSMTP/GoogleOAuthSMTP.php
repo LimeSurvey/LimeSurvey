@@ -36,9 +36,10 @@ class GoogleOAuthSMTP extends SmtpOauthPluginBase
         //$this->subscribe('afterSelectSMTPOAuthPlugin');
         $this->subscribe('listSMTPOAuthPlugins');
         $this->subscribe('afterSelectSMTPOAuthPlugin');
-        $this->subscribe('newSMTPOAuthConfiguration');
+        $this->subscribe('newSMTPOAuthInitialization');
         $this->subscribe('beforeRedirectToAuthPage');
         $this->subscribe('beforePrepareRedirectToAuthPage');
+        $this->subscribe('afterReceiveOAuthResponse');
 
         $this->subscribe('beforeEmail');
         $this->subscribe('beforeSurveyEmail', 'beforeEmail');
@@ -69,7 +70,7 @@ class GoogleOAuthSMTP extends SmtpOauthPluginBase
         $this->subscribe('getPluginTwigPath');
         $data = [
             'redirectUri' => $this->getRedirectUri(),
-            'isHttp' => !(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on'),
+            'isHttps' => (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on'),
         ];
         return Yii::app()->twigRenderer->renderPartial('/Help.twig', $data);
 
@@ -125,11 +126,11 @@ class GoogleOAuthSMTP extends SmtpOauthPluginBase
     {
         $event = $this->getEvent();
         $event->append('oauthplugins', [
-            'google' => $this->getOwnMetadata()
+            'google' => $this->getSmtpOAuthPluginInfo()
         ]);
     }
 
-    public function newSMTPOAuthConfiguration()
+    public function newSMTPOAuthInitialization()
     {
         try {
             $credentials = $this->getCredentials();
@@ -210,5 +211,9 @@ class GoogleOAuthSMTP extends SmtpOauthPluginBase
         $event->set('width', 600);
         $event->set('height', 700);
         $event->set('providerName', $this->getProviderName());
+
+        $setupStatus = $this->getSetupStatus();
+        $description = $this->getSetupStatusDescription($setupStatus);
+        $event->setContent($this, $description);
     }
 }

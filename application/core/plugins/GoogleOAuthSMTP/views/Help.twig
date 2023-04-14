@@ -19,14 +19,13 @@
                         <ol>
                             <li>
                                 <div>{{ sprintf(gT("Setup the OAuth 2.0 Web Application in %s."), '<a href="https://console.cloud.google.com/" target="_blank">' ~ gT("Google Cloud Platform Console") ~ ' <span class="fa fa-external-link"></span></a>') }}</div>
-                                <div><strong>{{ gT("Redirect URI:") }}</strong> {{ redirectUri }}</div>
+                                <div class="text-break"><strong>{{ gT("Redirect URI:") }}</strong> {{ redirectUri }}</div>
                                 <div>{{ sprintf(gT("You can find more details %s."), '<a href="https://support.google.com/cloud/answer/6158849" target="_blank">' ~ gT("here") ~ ' <span class="fa fa-external-link"></span></a>') }}</div>
                             </li>
                             <li>{{ gT("Activate the plugin.") }}</li>
                             <li>{{ gT("Set the 'Client ID' and 'Client Secret' below and save the settings.") }}</li>
-                            <li>{{ gT("Click the 'Get Token' button to open Google's consent screen in a new window.") }}</li>
+                            <li>{{ gT("At plugin's overview page, click the 'Get new token' link to open Google's consent screen in a new window.") }}</li>
                             <li>{{ gT("Follow the steps in the consent screen and check the requested permissions.") }}</li>
-                            <li>{{ gT("Switch the 'Enabled' setting to 'On' and save.") }}</li>
                         </ol>
                     </p>
                 </div>

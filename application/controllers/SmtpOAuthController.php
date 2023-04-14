@@ -42,6 +42,12 @@ class SmtpOAuthController extends LSBaseController
             $this->redirect(Yii::app()->createUrl("/admin"));
         }
 
+        $pluginModel = Plugin::model()->findByAttributes(['name' => $plugin]);
+        if (empty($pluginModel) || !$pluginModel->active) {
+            Yii::app()->user->setFlash('error', gT("Invalid plugin"));
+            $this->redirect(Yii::app()->createUrl("/admin"));
+        }
+
         // Dispatch the plugin event to get details needed for the view,
         // like the size of the auth window.
         $event = new PluginEvent('beforePrepareRedirectToAuthPage', $this);
@@ -50,8 +56,29 @@ class SmtpOAuthController extends LSBaseController
         $data['height'] = $event->get('height');
         $data['providerName'] = $event->get('providerName', $plugin);
         $data['topbar']['title'] = gT('Get OAuth 2.0 token for SMTP authentication');
-
         $data['providerUrl'] = $this->createUrl('smtpOAuth/launchRefreshTokenRequest', ['plugin' => $plugin]);
+
+        $pluginEventContent = $event->getContent($plugin);
+        $description = null;
+        if ($pluginEventContent->hasContent()) {
+            $description = CHtml::tag(
+                'div',
+                [
+                    'id' => $pluginEventContent->getCssId(),
+                    'class' => $pluginEventContent->getCssClass()
+                ],
+                $pluginEventContent->getContent()
+            );
+        }
+        $data['description'] = $description;
+
+        $data['redirectUrl'] = $this->createUrl(
+            '/admin/pluginmanager',
+            [
+                'sa' => 'configure',
+                'id' => $pluginModel->id
+            ]
+        );
 
         $this->aData = $data;
 

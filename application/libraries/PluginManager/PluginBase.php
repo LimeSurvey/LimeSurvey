@@ -632,10 +632,11 @@ abstract class PluginBase implements iPlugin
     }
 
     /**
-     * Returns a custom status text to show in plugin overview
+     * Returns a health status text to show in plugin overview.
+     * For example, the plugin might be active but not properly configured.
      * @return string|null
      */
-    public function getStatusText()
+    public function getHealthStatusText()
     {
         return null;
     }

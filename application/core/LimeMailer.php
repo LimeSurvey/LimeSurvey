@@ -1018,7 +1018,7 @@ class LimeMailer extends PHPMailer
     protected function setupOAuth2SmtpConfiguration()
     {
         $oauth2Plugin = Yii::app()->getConfig('emailoauthplugin');
-        $event = new PluginEvent('newSMTPOAuthConfiguration', $this);
+        $event = new PluginEvent('newSMTPOAuthInitialization', $this);
         $event->set('mailer', $this);
         Yii::app()->getPluginManager()->dispatchEvent($event, $oauth2Plugin);
         $config = $event->get('oauthconfig');

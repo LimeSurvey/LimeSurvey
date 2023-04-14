@@ -40,9 +40,10 @@ class AzureOAuthSMTP extends SmtpOauthPluginBase
     {
         $this->subscribe('listSMTPOAuthPlugins');
         $this->subscribe('afterSelectSMTPOAuthPlugin');
-        $this->subscribe('newSMTPOAuthConfiguration');
+        $this->subscribe('newSMTPOAuthInitialization');
         $this->subscribe('beforeRedirectToAuthPage');
         $this->subscribe('beforePrepareRedirectToAuthPage');
+        $this->subscribe('afterReceiveOAuthResponse');
 
         $this->subscribe('beforeEmail');
         $this->subscribe('beforeSurveyEmail', 'beforeEmail');
@@ -61,11 +62,6 @@ class AzureOAuthSMTP extends SmtpOauthPluginBase
         $settings['clientSecret']['label'] = gT("Client Secret");
         $settings['tenantId']['label'] = gT("Tenant ID");
 
-        $currentEmailSetting = $this->getCurrentEmailSetting();
-        if (!empty($currentEmailSetting)) {
-            $settings['currentEmail'] = $currentEmailSetting;
-        }
-
         return $settings;
     }
 
@@ -74,7 +70,7 @@ class AzureOAuthSMTP extends SmtpOauthPluginBase
         $this->subscribe('getPluginTwigPath');
         $data = [
             'redirectUri' => $this->getRedirectUri(),
-            'isHttp' => !(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on'),
+            'isHttps' => (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on'),
         ];
         return Yii::app()->twigRenderer->renderPartial('/Help.twig', $data);
 
@@ -121,11 +117,11 @@ class AzureOAuthSMTP extends SmtpOauthPluginBase
     {
         $event = $this->getEvent();
         $event->append('oauthplugins', [
-            'azure' => $this->getOwnMetadata()
+            'azure' => $this->getSmtpOAuthPluginInfo()
         ]);
     }
 
-    public function newSMTPOAuthConfiguration()
+    public function newSMTPOAuthInitialization()
     {
         try {
             $credentials = $this->getCredentials();
@@ -206,8 +202,6 @@ class AzureOAuthSMTP extends SmtpOauthPluginBase
             throw new Exception("The token doesn't contain an id_token. This is required to get the user's email address.");
         }
         $idToken = $tokenValues['id_token'];
-        // TODO: Decode the token using the public key from the provider. Could use firebase/php-jwt.
-        // That would require getting the public key from the provider. See: https://github.com/TheNetworg/oauth2-azure/blob/dc095e5a6ae485be8a0c8b88a0d07616c18d484b/src/Provider/Azure.php#L376
         $idTokenParts = explode('.', $idToken);
         $idTokenPayload = $idTokenParts[1];
         $decodedToken = json_decode(base64_decode($idTokenPayload));
@@ -227,7 +221,23 @@ class AzureOAuthSMTP extends SmtpOauthPluginBase
     {
         $event = $this->getEvent();
         $event->set('width', 600);
-        $event->set('height', 700);
+        $event->set('height', 800);
         $event->set('providerName', $this->getProviderName());
+
+        $setupStatus = $this->getSetupStatus();
+        $description = $this->getSetupStatusDescription($setupStatus);
+        $event->setContent($this, $description);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getSetupStatusAlert()
+    {
+        if (Yii::app()->getUrlManager()->getUrlFormat() == CUrlManager::GET_FORMAT) {
+            return "<div class=\"alert alert-danger\">" . gT("Azure doesn't accept redirect URIs with query parameters when using personal accounts. This plugin will not work properly with the current URL manager configuration.") . "</div>";
+        }
+
+        return parent::getSetupStatusAlert();
     }
 }
