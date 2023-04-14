@@ -375,7 +375,7 @@ class Update extends DynamicSurveyCommonAction
                         $aData['access_token'] = $access_token;
                         return $this->controller->renderPartial('update/updater/steps/_backup', $aData, false, false);
                     } else {
-                        $error = $backup->error;
+                        $error = $backupInfos->error;
                     }
                 } else {
                     $error = "no_updates_infos";
