@@ -36,8 +36,8 @@ use LimeSurvey\Helpers\questionHelper;
  * @property integer $same_script Whether the same script should be used for all languages
  *
  * @property Survey $survey
- * @property QuestionGroup $groups  //@TODO should be singular
- * @property Question $parents      //@TODO should be singular
+ * @property QuestionGroup $group
+ * @property Question $parent
  * @property Question[] $subquestions
  * @property QuestionAttribute[] $questionAttributes NB! returns all QuestionArrtibute Models fot this QID regardless of the specified language
  * @property QuestionL10n[] $questionl10ns Question Languagesettings indexd by language code
@@ -1734,5 +1734,26 @@ class Question extends LSActiveRecord
     public function getQuestionTheme()
     {
         return $this->getRelated("question_theme", $this->isNewRecord);
+    }
+
+    /**
+     * Is it a dual scale type.
+     */
+    public function getIsDualScale()
+    {
+        $dualScaleTypes = $this->getDualScaleTypes();
+        return in_array($this->type, $dualScaleTypes);
+    }
+
+    /**
+     * Returns the question types that are dual scale.
+     */
+    public function getDualScaleTypes()
+    {
+        $dualScaleTypes = array(
+            Question::QT_1_ARRAY_DUAL
+        );
+
+        return $dualScaleTypes;
     }
 }

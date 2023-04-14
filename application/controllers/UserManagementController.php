@@ -170,6 +170,16 @@ class UserManagementController extends LSBaseController
             $aUser['expires'] = null;
         }
 
+        // A user may not edit himself using this action
+        if (isset($aUser['uid']) && $aUser['uid'] && $aUser['uid'] == Yii::app()->user->id) {
+            return App()->getController()->renderPartial('/admin/super/_renderJson', [
+                "data" => [
+                    'success' => false,
+                    'errors'  =>  gT('No permission')
+                ]
+                ]);
+        }
+
         if (isset($aUser['uid']) && $aUser['uid']) {
             $oUser = $this->updateAdminUser($aUser);
             if ($oUser->hasErrors()) {
