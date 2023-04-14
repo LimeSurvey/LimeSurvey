@@ -3285,8 +3285,6 @@ class SurveyAdministrationController extends LSBaseController
                 'Subquestion ID' => gT('Subquestion ID'),
                 'Add URL parameter' => gT('Add URL parameter'),
                 'Edit URL parameter' => gT('Edit URL parameter'),
-                'Parameter' => gT('Parameter'),
-                'Target question' => gT('Target question'),
                 'No target question' => gT('(No target question)'),
                 'Are you sure you want to delete this URL parameter?' => gT('Are you sure you want to delete this URL parameter?'),
                 'No parameters defined' => gT('No parameters defined'),

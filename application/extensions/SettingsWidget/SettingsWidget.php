@@ -253,7 +253,6 @@ class SettingsWidget extends CWidget
     {
         $defaults = array(
             'class' => array(),
-            'htmlOptions'=>array(),
             'type' => 'string',
             'htmlOptions' => array(),
             'labelOptions' => array( // html option for the form-label part (not the label, but the wrapper)

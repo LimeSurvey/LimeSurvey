@@ -1769,7 +1769,6 @@ class ConditionsAction extends SurveyCommonAction
             'p_prevquestionsgqa'  => $p_prevquestionsgqa,
             'tokenFieldsAndNames' => $this->tokenFieldsAndNames,
             'method'        => $method,
-            'subaction'     => $subaction,
             'EDITConditionConst'  => $this->getEDITConditionConst($subaction),
             'EDITConditionRegexp' => $this->getEDITConditionRegexp($subaction),
             'submitLabel'   => $submitLabel,
@@ -1826,7 +1825,6 @@ class ConditionsAction extends SurveyCommonAction
             'p_prevquestionsgqa'  => $p_prevquestionsgqa,
             'tokenFieldsAndNames' => $this->tokenFieldsAndNames,
             'method'        => $method,
-            'subaction'     => $subaction,
         );
         $html = $this->getController()->renderPartial('/admin/conditions/includes/quickAddConditionForm', $data, true);
         return $html;

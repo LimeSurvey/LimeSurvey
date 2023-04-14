@@ -4540,7 +4540,6 @@ function do_array_multiflexi($ia)
                         'stepvalue'                 => $stepvalue,
                         'extraclass'                => $extraclass,
                         'myfname2'                  => $myfname2,
-                        'error'                     => $error,
                         'inputboxlayout'            => $inputboxlayout,
                         'checkconditionFunction'    => $checkconditionFunction,
                         'minvalue'                  => $minvalue,
