@@ -143,12 +143,6 @@ class Export extends SurveyCommonAction
         if (!isset($iSurveyID)) {
             $iSurveyID = returnGlobal('sid');
         }
-        if (!isset($convertyto)) {
-            $convertyto = returnGlobal('convertyto');
-        }
-        if (!isset($convertnto)) {
-            $convertnto = returnGlobal('convertnto');
-        }
 
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export')) {
             $this->getController()->error('Access denied!');
@@ -1187,20 +1181,11 @@ class Export extends SurveyCommonAction
             echo $this->xmlToJson($surveyInXmlFormat);
             Yii::app()->end();
         } elseif ($action == "exportstructurequexml") {
-            if (isset($surveyprintlang) && !empty($surveyprintlang)) {
-                $quexmllang = $surveyprintlang;
-            } else {
-                $quexmllang = Survey::model()->findByPk($iSurveyID)->language;
-            }
-
-            if (!(isset($noheader) && $noheader == true)) {
-                $fn = "survey_{$iSurveyID}_{$quexmllang}.xml";
-
-                $this->addHeaders($fn, "text/xml", "Mon, 26 Jul 1997 05:00:00 GMT");
-
-                echo quexml_export($iSurveyID, $quexmllang);
-                Yii::app()->end();
-            }
+            $quexmllang = Survey::model()->findByPk($iSurveyID)->language;
+            $fn = "survey_{$iSurveyID}_{$quexmllang}.xml";
+            $this->addHeaders($fn, "text/xml", "Mon, 26 Jul 1997 05:00:00 GMT");
+            echo quexml_export($iSurveyID, $quexmllang);
+            Yii::app()->end();
         } elseif ($action == 'exportstructuretsv') {
             $this->exporttsv($iSurveyID);
         } elseif ($action == "exportarchive") {
