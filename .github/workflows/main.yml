@@ -104,10 +104,6 @@ jobs:
           # sed -i '60s/.*/        "debug"=>2,/' application/config/config.php
           # cat application/config/config.php
 
-      - name: Run Psalm on application/ folder with low strictness
-        run: |
-          ./vendor/bin/psalm -c psalm-all.xml
-          composer test
       - name: Test the server
         run: |
           # Test server.
@@ -299,3 +295,7 @@ jobs:
       - name: Run syntax check, CodeSniffer, MessDetector, ...
         run: composer test
 
+      - name: Run Psalm on application/ folder with low strictness
+        run: |
+          ./vendor/bin/psalm -c psalm-all.xml
+          composer test
