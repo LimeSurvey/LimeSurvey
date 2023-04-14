@@ -190,7 +190,7 @@ class SurveymenuController extends SurveyCommonAction
                 $success[$menuid] = $model->delete();
             }
 
-            $debug = $userConfig['config']['debug'] ?? 0;
+            $debug = 0;
             $returnData = array(
                 'data' => [
                     'success' => $success,
@@ -232,7 +232,7 @@ class SurveymenuController extends SurveyCommonAction
             $success = false;
             $model = $this->loadModel($menuid);
             $success = $model->delete();
-            $debug = $userConfig['config']['debug'] ?? 0;
+            $debug = 0;
             $returnData = array(
                 'data' => [
                     'success' => $success,
@@ -268,13 +268,14 @@ class SurveymenuController extends SurveyCommonAction
             $this->getController()->redirect(Yii::app()->createUrl('/admin'));
         }
 
+        $model = Surveymenu::model();
         if (Yii::app()->request->isPostRequest) {
             //Check for permission!
             if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-                $debug = $userConfig['config']['debug'] ?? 0;
+                $debug = 0;
                 $returnData = array(
                     'data' => [
-                        'success' => $success,
+                        'success' => 0,
                         'redirect' => false,
                         'settings' => array(
                             'extrasettings' => false,
@@ -297,9 +298,8 @@ class SurveymenuController extends SurveyCommonAction
                 );
             }
             //get model to do the work
-            $model = Surveymenu::model();
             $success = $model->restoreDefaults();
-            $debug = $userConfig['config']['debug'] ?? 0;
+            $debug = 0;
             $returnData = array(
                 'data' => [
                     'success' => $success,
