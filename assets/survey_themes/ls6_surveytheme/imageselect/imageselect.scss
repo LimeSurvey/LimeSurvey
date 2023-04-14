@@ -1,3 +1,60 @@
 li.imageselect-listitem .imageselect-container .imageselect-label{
     border-radius: $border-radius !important;
 }
+
+//li.imageselect-listitem .imageselect-container .imageselect-checkbox {
+//    visibility: visible !important;
+//    position: absolute !important;
+//    top: 10px !important;
+//    left: 10px !important;
+//    z-index: 2 !important;
+//    width: 20px;
+//    height: 20px;
+//    line-height: 21px;
+//    text-indent: 21px;
+//}
+
+// hidden in other themes:
+.imageselect-radiobutton.d-none {
+    display: inline-block !important;
+}
+
+.imageselect-container .imageselect-radiobutton::before {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    width: 19px;
+    height: 19px;
+    left: 0;
+    top: 0;
+    margin-left: -20px;
+    border-radius: 50%;
+    transition: border 0.15s ease-in-out;
+    z-index: 1;
+}
+
+.imageselect-container .imageselect-radiobutton::after {
+    display: inline-block;
+    position: absolute;
+    content: " ";
+    width: 9px;
+    height: 9px;
+    left: 3px;
+    top: 3px;
+    margin-left: -18px;
+    margin-top: 2px;
+    border-radius: 50%;
+    -webkit-transform: scale(0, 0);
+    -ms-transform: scale(0, 0);
+    -o-transform: scale(0, 0);
+    transform: scale(0, 0);
+    -webkit-transition: -webkit-transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
+    -moz-transition: -moz-transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
+    -o-transition: -o-transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
+    transition: transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
+    z-index: 1;
+}
+
+li.imageselect-listitem .imageselect-container input.imageselect-checkbox:checked+label+.imageselect-radiobutton:after {
+    transform: scale(1, 1);
+}

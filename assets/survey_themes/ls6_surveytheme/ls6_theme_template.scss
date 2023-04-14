@@ -3,11 +3,12 @@
 @import "ls6_theme_variables.scss";
 @import "ls-mixins.scss";
 // Components
+@import "core/template_core_class.scss";
 @import "navbar/navbar.scss";
 @import "buttons/buttons.scss";
 @import "typography/typography.scss";
 @import "forms/forms.scss";
+@import "forms/radiobuttons/radiobuttons.scss";
 @import "tables/tables.scss";
 @import "imageselect/imageselect.scss";
-@import "core/template_core_class.scss";
 @import "awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.scss";

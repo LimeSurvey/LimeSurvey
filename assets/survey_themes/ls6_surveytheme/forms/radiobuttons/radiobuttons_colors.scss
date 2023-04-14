@@ -1,0 +1,168 @@
+$input-border-color          : $g-700;
+
+.checkbox-item input[type="radio"]:indeterminate + label::after {
+    background-color: #555555;
+}
+.checkbox-item input[type="radio"]:disabled + label::before {
+    background-color: #eeeeee;
+}
+
+.checkbox-primary input[type="radio"]:checked + label::before {
+    background-color: #337ab7;
+    border-color: #337ab7;
+}
+.checkbox-primary input[type="radio"]:checked + label::after {
+    color: #fff;
+}
+
+.checkbox-danger input[type="radio"]:checked + label::before {
+    background-color: #d9534f;
+    border-color: #d9534f;
+}
+.checkbox-danger input[type="radio"]:checked + label::after {
+    color: #fff;
+}
+
+.checkbox-info input[type="radio"]:checked + label::before {
+    background-color: #5bc0de;
+    border-color: #5bc0de;
+}
+.checkbox-info input[type="radio"]:checked + label::after {
+    color: #fff;
+}
+
+.checkbox-warning input[type="radio"]:checked + label::before {
+    background-color:$warning;
+    border-color:$warning;
+}
+.checkbox-warning input[type="radio"]:checked + label::after {
+    color: #fff;
+}
+
+.checkbox-success input[type="radio"]:checked + label::before {
+    background-color: $success;
+    border-color: $success;
+}
+.checkbox-success input[type="radio"]:checked + label::after {
+    color: #fff;
+}
+
+.checkbox-primary input[type="radio"]:indeterminate + label::before {
+    background-color: #337ab7;
+    border-color: #337ab7;
+}
+
+.checkbox-primary input[type="radio"]:indeterminate + label::after {
+    background-color: #fff;
+}
+
+.checkbox-danger input[type="radio"]:indeterminate + label::before {
+    background-color: #d9534f;
+    border-color: #d9534f;
+}
+
+.checkbox-danger input[type="radio"]:indeterminate + label::after {
+    background-color: #fff;
+}
+
+.checkbox-info input[type="radio"]:indeterminate + label::before {
+    background-color: $grape;
+    border-color: $grape;
+}
+
+.checkbox-info input[type="radio"]:indeterminate + label::after {
+    background-color: #fff;
+}
+
+.checkbox-warning input[type="radio"]:indeterminate + label::before {
+    background-color:$warning;
+    border-color:$warning;
+}
+
+.checkbox-warning input[type="radio"]:indeterminate + label::after {
+    background-color: #fff;
+}
+
+.checkbox-success input[type="radio"]:indeterminate + label::before {
+    background-color: $success;
+    border-color: $success;
+}
+
+.checkbox-success input[type="radio"]:indeterminate + label::after {
+    background-color: #fff;
+}
+
+.radio-item label::before {
+    border: 2px solid $input-border-color;
+    background-color: #fff;
+}
+.radio-item label::after {
+    background-color: $base-color;
+}
+
+.radio-primary input[type="radio"] + label::after {
+    background-color: $base-color;
+}
+.radio-primary input[type="radio"]:checked + label::before {
+    border-color: $base-color;
+}
+.radio-primary input[type="radio"]:checked + label::after {
+    background-color: $base-color;
+}
+
+.radio-danger input[type="radio"] + label::after {
+    background-color: $error;
+}
+.radio-danger input[type="radio"]:checked + label::before {
+    border-color: $error;
+}
+.radio-danger input[type="radio"]:checked + label::after {
+    background-color: $error;
+}
+
+.radio-info input[type="radio"] + label::after {
+    background-color: $grape;
+}
+.radio-info input[type="radio"]:checked + label::before {
+    border-color: $grape;
+}
+.radio-info input[type="radio"]:checked + label::after {
+    background-color: $grape;
+}
+
+.radio-warning input[type="radio"] + label::after {
+    background-color:$warning;
+}
+.radio-warning input[type="radio"]:checked + label::before {
+    border-color:$warning;
+}
+.radio-warning input[type="radio"]:checked + label::after {
+    background-color:$warning;
+}
+
+.radio-success input[type="radio"] + label::after {
+    background-color: $success;
+}
+.radio-success input[type="radio"]:checked + label::before {
+    border-color: $success;
+}
+.radio-success input[type="radio"]:checked + label::after {
+    background-color: $success;
+}
+
+input[type="radio"] .styled:checked + label::before {
+    color: #fff;
+}
+input[type="radio"] .styled:checked + label::after {
+    color: #fff;
+}
+
+.radio-item input[type="radio"] + label::after {
+    background-color: $base-color;
+}
+.radio-item input[type="radio"]:checked + label::before {
+    border-color: $base-color;
+}
+.radio-item input[type="radio"]:checked + label::after {
+    background-color: $base-color;
+}

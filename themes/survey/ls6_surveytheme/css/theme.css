@@ -610,6 +610,612 @@ label {
   font-weight: bold;
 }
 
+/*!
+* Style for public survey
+* This file is part of LimeSurvey API for template
+*
+* Licensed under the GPLv3
+*
+*/
+/**
+ * Used in answers : bootsrap fix (specific single choice list)
+ */
+/**
+ * Expression manager relevance system
+ */
+.js .ls-hidden {
+  display: none;
+}
+
+/* 3 class , and don't hide without javascript*/
+.js .ls-irrelevant {
+  pointer-events: none;
+}
+
+/* Without js : NEED action accepted … */
+.js .ls-disabled {
+  opacity: 0.4;
+}
+
+/* Some tools
+ */
+.js .ls-js-hidden {
+  display: none !important;
+}
+
+.no-js .ls-no-js-hidden {
+  display: none !important;
+}
+
+/* boostrap navbar-toggle is broken without js */
+.no-js .navbar-toggle {
+  display: none;
+}
+
+/* Using http://webaim.org/techniques/css/invisiblecontent/ technique : better with less part (to be more easily updatable by template : can use initial or inherit) */
+.js .ls-js-hidden-sr {
+  position: absolute;
+  top: auto;
+  width: 1px;
+  white-space: nowrap;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+
+/** ls-label-xs-visibility : set visually-hidden by default : template can reinit it with initial */
+.ls-label-xs-visibility {
+  position: absolute;
+  top: auto;
+  width: 1px;
+  white-space: nowrap;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+
+/* size or cols => set to with initial and add a max-width .... */
+.answer-item .form-control[size], .answer-item .form-control[cols] {
+  width: initial;
+  max-width: 100%;
+}
+
+/**
+ * The answers part
+ * BS use px size, use rem to easily update body font-size : @link http://caniuse.com/rem/embed/
+ **/
+@media (max-width: 768px) {
+  .ls-answers .text-end, .ls-answers .text-start {
+    text-align: center;
+  }
+}
+/**
+ * .ls-input-group (prefix/sufix): near same behaviour than BS input-group / input-group-addon */
+/* BUT : only with big screen : see @link https://bugs.limesurvey.org/view.php?id=11882
+ * Add .suffix-prefix-force in question to force with little screen too
+ **/
+/* some can be out of media part */
+.ls-input-group {
+  border-collapse: separate;
+  position: relative;
+}
+
+/**
+ * Except for really little screen : show ls-input-group in same line
+ * ls-input-group used for suffix/preffix (a lot of time : very little and reset button
+ */
+@media (min-width: 481px) {
+  .ls-input-group {
+    display: table;
+  }
+  .ls-input-group .form-control {
+    display: table-cell;
+    margin-bottom: 0;
+    position: relative;
+    z-index: 2;
+  }
+  .dir-ltr .ls-input-group .form-control {
+    float: left;
+  }
+  .dir-rtl .ls-input-group .form-control {
+    float: right;
+  }
+  .ls-input-group-extra {
+    width: 1%;
+    white-space: nowrap;
+    vertical-align: middle;
+    display: table-cell;
+    padding: 0.6rem 1.2rem;
+    line-height: 1;
+  }
+  .ls-input-sized .ls-input-group-extra {
+    width: initial;
+  }
+  .ls-input-sized .ls-input-group {
+    width: auto;
+    max-width: 100%;
+    display: table;
+    table-layout: fixed;
+  }
+  /* in inline form : width need to be auto */
+  .form-inline .ls-input-group {
+    display: inline-table;
+    vertical-align: middle;
+    width: auto;
+  }
+  .form-inline .ls-input-group .ls-input-group-extra {
+    width: auto;
+    white-space: initial;
+  }
+  .form-inline .ls-input-group {
+    width: auto;
+    white-space: initial;
+  }
+}
+/* Specific class for forced */
+.suffix-prefix-force .ls-input-group {
+  display: table;
+}
+
+.suffix-prefix-force .ls-input-group .form-control {
+  display: table-cell;
+  margin-bottom: 0;
+  position: relative;
+  z-index: 2;
+}
+
+.dir-ltr .suffix-prefix-force .ls-input-group .form-control {
+  float: left;
+}
+
+.dir-rtl .suffix-prefix-force .ls-input-group .form-control {
+  float: right;
+}
+
+.suffix-prefix-force .ls-input-group-extra {
+  width: 1%;
+  white-space: nowrap;
+  vertical-align: middle;
+  display: table-cell;
+  padding: 0.6rem 1.2rem;
+  line-height: 1;
+}
+
+/* specific for multiple number with dynamic : @todo move this to question class */
+.ls-group-dynamic .control-label, .ls-group-dynamic .form-control-static {
+  display: inline-block;
+}
+
+/* Survey list (home page) : break line in btn for long survey title*/
+.surveytitle.btn {
+  white-space: normal;
+}
+
+/**
+ * Question index : must be move to index.css ?
+ **/
+/* button */
+.ls-index-buttons .list-group .list-group-item:first-child {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.ls-index-buttons .list-group:not(:last-child) {
+  margin-bottom: -1px;
+}
+
+.ls-index-buttons .list-group:not(:last-child) .list-group-item:last-child {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  margin-bottom: -1px;
+}
+
+/* dropdown-sub-menu  for question index : no ls specific, then no ls- template can use it easily */
+.dropdown-menu .dropdown-sub-menu {
+  display: block;
+  position: relative;
+  float: none;
+  box-shadow: 0 0 0 #fff;
+}
+
+.input-error input {
+  border: 1px solid #E75041;
+}
+
+.form-inline .checkbox-item {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/**
+ * All of this part fix already included css (bootstrap + awesome) for this template
+ */
+li.question-item.answer-item.text-item.form-group {
+  clear: both;
+}
+
+/* Minimal RWD img/video */
+.ls-answers img:not(.fixed-width),
+.ls-answers video:not(.fixed-width),
+.ls-answers svg:not(.fixed-width) {
+  max-width: 100%;
+  height: auto;
+}
+
+/* See https://github.com/h5bp/html5-boilerplate/issues/1874 and https://medium.com/@jessebeach/beware-smushed-off-screen-accessible-text-5952a4c2cbfe */
+.visually-hidden {
+  white-space: nowrap;
+}
+
+/* The sub question part must not be more visible than question */
+.ls-answers label,
+.ls-answers th {
+  font-weight: 400;
+}
+
+/* Show input number at right alignment */
+[data-number="1"] {
+  text-align: right;
+}
+
+.dir-rtl [data-number="1"] {
+  text-align: left;
+}
+
+.slider-list .ls-group-dynamic [data-number="1"] {
+  text-align: center;
+}
+
+/* no form-group on radio-item and checkbox-item */
+li.checkbox-item,
+li.radio-text-item,
+li.checkbox-text-item {
+  margin-bottom: 1em;
+}
+
+/* awesome-bootstrap-checkbox */
+li.checkbox-item,
+li.radio-text-item,
+li.checkbox-text-item {
+  display: block;
+}
+
+/* map item : .input-group-addon.checkbox-item : put awesome padding */
+.dir-ltr .input-group-addon.checkbox-item {
+  padding-left: 25px;
+}
+
+.dir-rtl .input-group-addon.checkbox-item {
+  padding-right: 25px;
+}
+
+/* Else big label break*/
+.checkbox-item label {
+  display: block;
+}
+
+.checkbox-item {
+  position: relative;
+}
+
+.checkbox-item input[type=checkbox] {
+  /*give near same position to real button (except in td : can fix but not needed )*/
+  display: inline-block;
+  height: 17px;
+  position: absolute;
+  width: 17px;
+}
+
+.dir-ltr .checkbox-item input[type=checkbox] {
+  left: 0;
+}
+
+.dir-rtl .checkbox-item input[type=checkbox] {
+  right: 0;
+}
+
+.checkbox-item input[type=checkbox] {
+  opacity: 0;
+}
+
+@media only screen and (max-width: 760px) {
+  .slider-list .slider-left {
+    text-align: left;
+  }
+  .slider-list .slider-right {
+    text-align: right;
+  }
+  .dir-rtl .slider-list .slider-left {
+    text-align: right;
+  }
+  .dir-rtl .slider-list .slider-right {
+    text-align: left;
+  }
+}
+/**
+ * Table .question feature
+ */
+/* We have some settings to set width of the table : use it */
+table.ls-answers {
+  table-layout: fixed;
+}
+
+table.ls-answers {
+  width: 100%;
+}
+
+/* Basic alignment forced vertical due to bs*/
+.ls-answers > tbody > tr > td {
+  vertical-align: middle;
+}
+
+.ls-answers > tbody > tr > th {
+  vertical-align: middle;
+}
+
+.ls-answers .ls-heading > th {
+  vertical-align: bottom;
+}
+
+/* class replace multiple tag */
+/* Basic alignment base horizontal due to no-more-table*/
+.ls-answers tbody td {
+  text-align: center;
+}
+
+.ls-answers td .form-control {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* for .form-control[size] */
+/* display:inline-block is OK too */
+.ls-answers tbody .control-label {
+  text-align: right;
+}
+
+.ls-answers .ls-heading th {
+  text-align: center;
+}
+
+.ls-answers tbody .answertext {
+  text-align: right;
+}
+
+.ls-answers .answertextright {
+  text-align: left;
+}
+
+.dir-rtl .ls-answers tbody .answertext {
+  text-align: left;
+}
+
+.dir-rtl .ls-answers .answertextright {
+  text-align: right;
+}
+
+/* ls-dynamic */
+.ls-group-dynamic {
+  text-align: center;
+}
+
+/**
+ *  awesome-bootstrap-checkbox inside table with an visually-hidden label
+ * @todo : .dir-rtl
+ */
+/* reset the margin and review the padding set by bootstrap */
+table.ls-answers input[type=checkbox],
+table.ls-answers input[type=radio] {
+  margin: 0;
+}
+
+/* We need complete width in array , but don't touch to padding-(top|bottom) */
+.dir-ltr .ls-answers td.checkbox-item {
+  padding-left: 20px;
+  padding-right: 0;
+}
+
+.dir-rtl .ls-answers td.checkbox-item {
+  padding-right: 20px;
+  padding-left: 0;
+}
+
+/* show partially visually-hidden inside table */
+.checkbox-item .ls-label-xs-visibility {
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  width: 17px;
+  height: 17px;
+  line-height: 21px;
+  text-indent: 21px;
+}
+
+.dir-ltr .checkbox-item .ls-label-xs-visibility {
+  left: auto;
+  margin-left: -20px;
+}
+
+.dir-rtl .checkbox-item .ls-label-xs-visibility {
+  right: auto;
+  margin-right: -20px;
+}
+
+/* no margin on label : no margin after and before too */
+.dir-ltr .checkbox-item label.ls-label-xs-visibility::before {
+  margin-left: 0;
+}
+
+.dir-rtl .checkbox-item label.ls-label-xs-visibility::before {
+  margin-right: 0;
+}
+
+.dir-ltr .checkbox-item label.ls-label-xs-visibility::after {
+  margin-left: 0;
+  padding-left: 0;
+}
+
+.dir-rtl .checkbox-item label.ls-label-xs-visibility::after {
+  margin-right: 0;
+  padding-right: 0;
+}
+
+.checkbox-item label.ls-label-xs-visibility::after {
+  line-height: 17px;
+  width: 17px;
+  text-align: center;
+  text-indent: 0;
+}
+
+/* Hide the other content inside visually-hidden */
+.checkbox-item label.ls-label-xs-visibility > * {
+  position: absolute;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.dir-ltr .checkbox-item label.ls-label-xs-visibility > * {
+  left: -10000px;
+}
+
+.dir-rtl .checkbox-item label.ls-label-xs-visibility > * {
+  left: -10000px;
+}
+
+/* Align privacy policy checkbox to top */
+#datasecurity_accepted {
+  vertical-align: top;
+}
+
+/*
+Max width before this PARTICULAR table gets nasty
+For iPads specifically : add this : (min-device-width: 768px) and (max-device-width: 1024px)
+*/
+@media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
+  table.ls-answers, table.ls-answers thead, table.ls-answers tbody, table.ls-answers th, table.ls-answers td, table.ls-answers tr {
+    display: block;
+  }
+  .dir-ltr table.ls-answers, .dir-ltr table.ls-answers thead, .dir-ltr table.ls-answers tbody, .dir-ltr table.ls-answers th, .dir-ltr table.ls-answers td, table.ls-answers tr {
+    text-align: left;
+  }
+  .dir-rtl table.ls-answers, .dir-rtl table.ls-answers thead, .dir-rtl table.ls-answers tbody, .dir-rtl table.ls-answers th, .dir-rtl table.ls-answers td, table.ls-answers tr {
+    text-align: right;
+  }
+  table.ls-answers thead {
+    display: none;
+  }
+  /* We don't need it for accessibility : we already have the label */
+  table.ls-answers tbody td {
+    text-align: left;
+  }
+  table.ls-answers .information-item:empty {
+    display: none;
+  }
+  .dir-rtl table.ls-answers tbody td {
+    text-align: right;
+  }
+  .ls-answers td.checkbox-item {
+    padding: 4px;
+  }
+  .dir-ltr .ls-answers td.checkbox-item {
+    padding-left: 24px;
+    padding-right: 4px;
+  }
+  .dir-rtl .ls-answers td.checkbox-item {
+    padding-right: 24px;
+    padding-left: 4px;
+  }
+  table.ls-answers tbody .control-label {
+    text-align: left;
+  }
+  .dir-rtl table.ls-answers tbody .control-label {
+    text-align: right;
+  }
+  table.ls-answers .answertextright {
+    text-align: right;
+  }
+  .dir-rtl table.ls-answers .answertextright {
+    text-align: left;
+  }
+  /* Show the label */
+  table.ls-answers .ls-label-xs-visibility {
+    display: block;
+    position: relative;
+    width: auto;
+    height: auto;
+    overflow: initial;
+    white-space: normal;
+  }
+  .dir-ltr table.ls-answers .ls-label-xs-visibility {
+    left: auto;
+  }
+  .dir-rtl table.ls-answers .ls-label-xs-visibility {
+    right: auto;
+  }
+  table.ls-answers .checkbox-item .ls-label-xs-visibility {
+    line-height: initial;
+    text-indent: initial;
+  }
+  .dir-ltr table.ls-answers .checkbox-item .ls-label-xs-visibility {
+    margin-left: 0;
+  }
+  .dir-rtl table.ls-answers .checkbox-item .ls-label-xs-visibility {
+    margin-right: 0;
+  }
+  table.ls-answers .ls-label-xs-visibility > * {
+    position: relative;
+    top: auto;
+    width: auto;
+    height: auto;
+    overflow: auto;
+  }
+  .dir-ltr table.ls-answers .ls-label-xs-visibility > * {
+    left: auto;
+  }
+  .dir-rtl table.ls-answers .ls-label-xs-visibility > * {
+    right: auto;
+  }
+  .dir-rtl table.ls-answers .answers-list p[dir=rtl] {
+    left: 0;
+    text-align: right;
+  }
+  .dir-ltr table.ls-answers .checkbox-item label.ls-label-xs-visibility::before {
+    margin-left: -20px;
+  }
+  .dir-rtl table.ls-answers .checkbox-item label.ls-label-xs-visibility::before {
+    margin-right: -20px;
+  }
+  .dir-ltr table.ls-answers .checkbox-item label.ls-label-xs-visibility::after {
+    margin-left: -20px;
+  }
+  .dir-rtl table.ls-answers .checkbox-item label.ls-label-xs-visibility::after {
+    margin-right: -20px;
+  }
+  table.ls-answers > tbody > tr:hover {
+    background-color: transparent;
+  }
+  /* bs fix */
+  table.ls-answers td.visible-xs, table.ls-answers th.visible-xs {
+    display: block !important;
+  }
+}
+/* Fix for IE11 - no array question radio buttons on small screens */
+@media all and (max-width: 760px) and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+  .dir-ltr table.ls-answers .checkbox-item label.ls-label-xs-visibility::before {
+    margin-left: 0px;
+  }
+  .dir-rtl table.ls-answers .checkbox-item label.ls-label-xs-visibility::before {
+    margin-right: 0px;
+  }
+  .dir-ltr table.ls-answers .checkbox-item label.ls-label-xs-visibility::after {
+    margin-left: 0px;
+  }
+  .dir-rtl table.ls-answers .checkbox-item label.ls-label-xs-visibility::after {
+    margin-right: 0px;
+  }
+}
 .navbar-default .navbar-nav > li > a:hover {
   text-decoration: underline;
 }
@@ -881,13 +1487,6 @@ textarea {
   text-indent: 21px;
 }
 
-.radio-item label::after {
-  width: 9px;
-  height: 9px;
-  left: 3px;
-  top: 3px;
-}
-
 .form-select {
   font-weight: 400;
   font-size: 0.9975rem;
@@ -895,6 +1494,250 @@ textarea {
   border-width: 2px;
 }
 
+.form-inline .radio-item {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* no form-group on radio-item and checkbox-item */
+li.radio-item {
+  margin-bottom: 1em;
+}
+
+/* awesome-bootstrap-checkbox */
+li.radio-item {
+  display: block;
+}
+
+/* map item : .input-group-addon.checkbox-item : put awesome padding */
+.dir-ltr .input-group-addon.radio-item {
+  padding-left: 25px;
+}
+
+.dir-rtl .input-group-addon.radio-item {
+  padding-right: 25px;
+}
+
+/* Else big label break*/
+.radio-item label {
+  display: block;
+}
+
+.radio-item {
+  position: relative;
+}
+
+.radio-item input[type=radio] {
+  /*give near same position to real button (except in td : can fix but not needed )*/
+  display: inline-block;
+  height: 17px;
+  position: absolute;
+  width: 17px;
+}
+
+.dir-ltr .radio-item input[type=radio] {
+  left: 0;
+}
+
+.dir-rtl .radio-item input[type=radio] {
+  right: 0;
+}
+
+.radio-item input[type=radio] {
+  opacity: 0;
+}
+
+/* We need complete width in array , but don't touch to padding-(top|bottom) */
+/* show partially visually-hidden inside table */
+.radio-item .ls-label-xs-visibility {
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  width: 20px;
+  height: 20px;
+  line-height: 21px;
+  text-indent: 21px;
+}
+
+.dir-ltr .radio-item .ls-label-xs-visibility {
+  left: auto;
+  margin-left: -20px;
+}
+
+.dir-rtl .radio-item .ls-label-xs-visibility {
+  right: auto;
+  margin-right: -20px;
+}
+
+/* no margin on label : no margin after and before too */
+.dir-ltr .radio-item label.ls-label-xs-visibility::before {
+  margin-left: 0;
+}
+
+.dir-rtl .radio-item label.ls-label-xs-visibility::before {
+  margin-right: 0;
+}
+
+.dir-ltr .radio-item label.ls-label-xs-visibility::after {
+  margin-left: 2px;
+  padding-left: 0;
+}
+
+.dir-rtl .radio-item label.ls-label-xs-visibility::after {
+  margin-right: 2px;
+  padding-right: 0;
+}
+
+/* Hide the other content inside visually-hidden */
+.radio-item label.ls-label-xs-visibility > * {
+  position: absolute;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.dir-ltr .radio-item label.ls-label-xs-visibility > * {
+  left: -10000px;
+}
+
+.dir-rtl .radio-item label.ls-label-xs-visibility > * {
+  left: -10000px;
+}
+
+.ls-answers td.radio-item {
+  padding: 4px;
+}
+
+.dir-ltr table.ls-answers .radio-item .ls-label-xs-visibility {
+  margin-left: 0;
+}
+
+.dir-rtl table.ls-answers .radio-item .ls-label-xs-visibility {
+  margin-right: 0;
+}
+
+/* Fix for IE11 - no array question radio buttons on small screens */
+@media all and (max-width: 760px) and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+  .dir-ltr table.ls-answers .radio-item label.ls-label-xs-visibility::before {
+    margin-left: 0px;
+  }
+  .dir-rtl table.ls-answers .radio-item label.ls-label-xs-visibility::before {
+    margin-right: 0px;
+  }
+  .dir-ltr table.ls-answers .radio-item label.ls-label-xs-visibility::after {
+    margin-left: 0px;
+  }
+  .dir-rtl table.ls-answers .radio-item label.ls-label-xs-visibility::after {
+    margin-right: 0px;
+  }
+}
+.radio-item, .radio-text-item {
+  padding-left: 20px;
+}
+
+.radio-item label {
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+  padding-left: 5px;
+}
+
+.radio-item label::before {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  width: 19px;
+  height: 19px;
+  left: 0;
+  top: 0;
+  margin-left: -20px;
+  border-radius: 50%;
+  transition: border 0.15s ease-in-out;
+}
+
+.radio-item label::after {
+  display: inline-block;
+  position: absolute;
+  content: " ";
+  width: 9px;
+  height: 9px;
+  left: 3px;
+  top: 3px;
+  margin-left: -18px;
+  margin-top: 2px;
+  border-radius: 50%;
+  transform: scale(0, 0);
+  transition: transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
+}
+
+.radio-item input[type=radio] {
+  opacity: 0;
+  z-index: 1;
+  top: 0;
+}
+
+.radio-item input[type=radio]:focus + label::before {
+  outline: thin dotted;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+
+.radio-item input[type=radio]:checked + label::after {
+  transform: scale(1, 1);
+}
+
+.radio-item input[type=radio]:disabled + label {
+  opacity: 0.65;
+}
+
+.radio-item input[type=radio]:disabled + label::before {
+  cursor: not-allowed;
+}
+
+.radio-item.radio-inline {
+  margin-top: 0;
+}
+
+/*
+Max width before this PARTICULAR table gets nasty
+For iPads specifically : add this : (min-device-width: 768px) and (max-device-width: 1024px)
+*/
+@media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
+  .ls-answers td.radio-item {
+    padding: 4px;
+  }
+  .dir-ltr .ls-answers td.radio-item {
+    padding-left: 24px;
+    padding-right: 4px;
+  }
+  .dir-rtl .ls-answers td.radio-item {
+    padding-right: 24px;
+    padding-left: 4px;
+  }
+  table.ls-answers .radio-item .ls-label-xs-visibility {
+    line-height: initial;
+    text-indent: initial;
+  }
+  .dir-ltr table.ls-answers .radio-item .ls-label-xs-visibility {
+    margin-left: 0;
+  }
+  .dir-rtl table.ls-answers .radio-item .ls-label-xs-visibility {
+    margin-right: 0;
+  }
+  .dir-ltr table.ls-answers .radio-item label.ls-label-xs-visibility::before {
+    margin-left: -20px;
+  }
+  .dir-rtl table.ls-answers .radio-item label.ls-label-xs-visibility::before {
+    margin-right: -20px;
+  }
+  .dir-ltr table.ls-answers .radio-item label.ls-label-xs-visibility::after {
+    margin-left: -18px !important;
+  }
+  .dir-rtl table.ls-answers .radio-item label.ls-label-xs-visibility::after {
+    margin-right: -18px !important;
+  }
+}
 .table > tbody > tr > th {
   vertical-align: middle;
 }
@@ -1004,657 +1847,47 @@ li.imageselect-listitem .imageselect-container .imageselect-label {
   border-radius: 4px !important;
 }
 
-/*!
-* Style for public survey
-* This file is part of LimeSurvey API for template
-*
-* Licensed under the GPLv3
-*
-*/
-/**
- * Used in answers : bootsrap fix (specific single choice list)
- */
-/**
- * Expression manager relevance system
- */
-.js .ls-hidden {
-  display: none;
+.imageselect-radiobutton.d-none {
+  display: inline-block !important;
 }
 
-/* 3 class , and don't hide without javascript*/
-.js .ls-irrelevant {
-  pointer-events: none;
-}
-
-/* Without js : NEED action accepted … */
-.js .ls-disabled {
-  opacity: 0.4;
-}
-
-/* Some tools
- */
-.js .ls-js-hidden {
-  display: none !important;
-}
-
-.no-js .ls-no-js-hidden {
-  display: none !important;
-}
-
-/* boostrap navbar-toggle is broken without js */
-.no-js .navbar-toggle {
-  display: none;
-}
-
-/* Using http://webaim.org/techniques/css/invisiblecontent/ technique : better with less part (to be more easily updatable by template : can use initial or inherit) */
-.js .ls-js-hidden-sr {
-  position: absolute;
-  top: auto;
-  width: 1px;
-  white-space: nowrap;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-}
-
-/** ls-label-xs-visibility : set visually-hidden by default : template can reinit it with initial */
-.ls-label-xs-visibility {
-  position: absolute;
-  top: auto;
-  width: 1px;
-  white-space: nowrap;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-}
-
-/* size or cols => set to with initial and add a max-width .... */
-.answer-item .form-control[size], .answer-item .form-control[cols] {
-  width: initial;
-  max-width: 100%;
-}
-
-/**
- * The answers part
- * BS use px size, use rem to easily update body font-size : @link http://caniuse.com/rem/embed/
- **/
-@media (max-width: 768px) {
-  .ls-answers .text-end, .ls-answers .text-start {
-    text-align: center;
-  }
-}
-/**
- * .ls-input-group (prefix/sufix): near same behaviour than BS input-group / input-group-addon */
-/* BUT : only with big screen : see @link https://bugs.limesurvey.org/view.php?id=11882
- * Add .suffix-prefix-force in question to force with little screen too
- **/
-/* some can be out of media part */
-.ls-input-group {
-  border-collapse: separate;
-  position: relative;
-}
-
-/**
- * Except for really little screen : show ls-input-group in same line
- * ls-input-group used for suffix/preffix (a lot of time : very little and reset button
- */
-@media (min-width: 481px) {
-  .ls-input-group {
-    display: table;
-  }
-  .ls-input-group .form-control {
-    display: table-cell;
-    margin-bottom: 0;
-    position: relative;
-    z-index: 2;
-  }
-  .dir-ltr .ls-input-group .form-control {
-    float: left;
-  }
-  .dir-rtl .ls-input-group .form-control {
-    float: right;
-  }
-  .ls-input-group-extra {
-    width: 1%;
-    white-space: nowrap;
-    vertical-align: middle;
-    display: table-cell;
-    padding: 0.6rem 1.2rem;
-    line-height: 1;
-  }
-  .ls-input-sized .ls-input-group-extra {
-    width: initial;
-  }
-  .ls-input-sized .ls-input-group {
-    width: auto;
-    max-width: 100%;
-    display: table;
-    table-layout: fixed;
-  }
-  /* in inline form : width need to be auto */
-  .form-inline .ls-input-group {
-    display: inline-table;
-    vertical-align: middle;
-    width: auto;
-  }
-  .form-inline .ls-input-group .ls-input-group-extra {
-    width: auto;
-    white-space: initial;
-  }
-  .form-inline .ls-input-group {
-    width: auto;
-    white-space: initial;
-  }
-}
-/* Specific class for forced */
-.suffix-prefix-force .ls-input-group {
-  display: table;
-}
-
-.suffix-prefix-force .ls-input-group .form-control {
-  display: table-cell;
-  margin-bottom: 0;
-  position: relative;
-  z-index: 2;
-}
-
-.dir-ltr .suffix-prefix-force .ls-input-group .form-control {
-  float: left;
-}
-
-.dir-rtl .suffix-prefix-force .ls-input-group .form-control {
-  float: right;
-}
-
-.suffix-prefix-force .ls-input-group-extra {
-  width: 1%;
-  white-space: nowrap;
-  vertical-align: middle;
-  display: table-cell;
-  padding: 0.6rem 1.2rem;
-  line-height: 1;
-}
-
-/* specific for multiple number with dynamic : @todo move this to question class */
-.ls-group-dynamic .control-label, .ls-group-dynamic .form-control-static {
+.imageselect-container .imageselect-radiobutton::before {
+  content: "";
   display: inline-block;
-}
-
-/* Survey list (home page) : break line in btn for long survey title*/
-.surveytitle.btn {
-  white-space: normal;
-}
-
-/**
- * Question index : must be move to index.css ?
- **/
-/* button */
-.ls-index-buttons .list-group .list-group-item:first-child {
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-}
-
-.ls-index-buttons .list-group:not(:last-child) {
-  margin-bottom: -1px;
-}
-
-.ls-index-buttons .list-group:not(:last-child) .list-group-item:last-child {
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-  margin-bottom: -1px;
-}
-
-/* dropdown-sub-menu  for question index : no ls specific, then no ls- template can use it easily */
-.dropdown-menu .dropdown-sub-menu {
-  display: block;
-  position: relative;
-  float: none;
-  box-shadow: 0 0 0 #fff;
-}
-
-.input-error input {
-  border: 1px solid #E75041;
-}
-
-.form-inline .radio-item, .form-inline .checkbox-item {
-  display: inline-block;
-  vertical-align: middle;
-}
-
-/**
- * All of this part fix already included css (bootstrap + awesome) for this template
- */
-li.question-item.answer-item.text-item.form-group {
-  clear: both;
-}
-
-/* Minimal RWD img/video */
-.ls-answers img:not(.fixed-width),
-.ls-answers video:not(.fixed-width),
-.ls-answers svg:not(.fixed-width) {
-  max-width: 100%;
-  height: auto;
-}
-
-/* See https://github.com/h5bp/html5-boilerplate/issues/1874 and https://medium.com/@jessebeach/beware-smushed-off-screen-accessible-text-5952a4c2cbfe */
-.visually-hidden {
-  white-space: nowrap;
-}
-
-/* The sub question part must not be more visible than question */
-.ls-answers label,
-.ls-answers th {
-  font-weight: 400;
-}
-
-/* Show input number at right alignment */
-[data-number="1"] {
-  text-align: right;
-}
-
-.dir-rtl [data-number="1"] {
-  text-align: left;
-}
-
-.slider-list .ls-group-dynamic [data-number="1"] {
-  text-align: center;
-}
-
-/* no form-group on radio-item and checkbox-item */
-li.radio-item,
-li.checkbox-item,
-li.radio-text-item,
-li.checkbox-text-item {
-  margin-bottom: 1em;
-}
-
-/* awesome-bootstrap-checkbox */
-li.radio-item,
-li.checkbox-item,
-li.radio-text-item,
-li.checkbox-text-item {
-  display: block;
-}
-
-/* map item : .input-group-addon.checkbox-item : put awesome padding */
-.dir-ltr .input-group-addon.radio-item,
-.dir-ltr .input-group-addon.checkbox-item {
-  padding-left: 25px;
-}
-
-.dir-rtl .input-group-addon.radio-item,
-.dir-rtl .input-group-addon.checkbox-item {
-  padding-right: 25px;
-}
-
-/* Else big label break*/
-.radio-item label,
-.checkbox-item label {
-  display: block;
-}
-
-.radio-item,
-.checkbox-item {
-  position: relative;
-}
-
-.radio-item input[type=radio],
-.checkbox-item input[type=checkbox] {
-  /*give near same position to real button (except in td : can fix but not needed )*/
-  display: inline-block;
-  height: 17px;
   position: absolute;
-  width: 17px;
-}
-
-.dir-ltr .radio-item input[type=radio],
-.dir-ltr .checkbox-item input[type=checkbox] {
+  width: 19px;
+  height: 19px;
   left: 0;
-}
-
-.dir-rtl .radio-item input[type=radio],
-.dir-rtl .checkbox-item input[type=checkbox] {
-  right: 0;
-}
-
-.radio-item input[type=radio],
-.checkbox-item input[type=checkbox] {
-  opacity: 0;
-}
-
-@media only screen and (max-width: 760px) {
-  .slider-list .slider-left {
-    text-align: left;
-  }
-  .slider-list .slider-right {
-    text-align: right;
-  }
-  .dir-rtl .slider-list .slider-left {
-    text-align: right;
-  }
-  .dir-rtl .slider-list .slider-right {
-    text-align: left;
-  }
-}
-/**
- * Table .question feature
- */
-/* We have some settings to set width of the table : use it */
-table.ls-answers {
-  table-layout: fixed;
-}
-
-table.ls-answers {
-  width: 100%;
-}
-
-/* Basic alignment forced vertical due to bs*/
-.ls-answers > tbody > tr > td {
-  vertical-align: middle;
-}
-
-.ls-answers > tbody > tr > th {
-  vertical-align: middle;
-}
-
-.ls-answers .ls-heading > th {
-  vertical-align: bottom;
-}
-
-/* class replace multiple tag */
-/* Basic alignment base horizontal due to no-more-table*/
-.ls-answers tbody td {
-  text-align: center;
-}
-
-.ls-answers td .form-control {
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* for .form-control[size] */
-/* display:inline-block is OK too */
-.ls-answers tbody .control-label {
-  text-align: right;
-}
-
-.ls-answers .ls-heading th {
-  text-align: center;
-}
-
-.ls-answers tbody .answertext {
-  text-align: right;
-}
-
-.ls-answers .answertextright {
-  text-align: left;
-}
-
-.dir-rtl .ls-answers tbody .answertext {
-  text-align: left;
-}
-
-.dir-rtl .ls-answers .answertextright {
-  text-align: right;
-}
-
-/* ls-dynamic */
-.ls-group-dynamic {
-  text-align: center;
-}
-
-/**
- *  awesome-bootstrap-checkbox inside table with an visually-hidden label
- * @todo : .dir-rtl
- */
-/* reset the margin and review the padding set by bootstrap */
-table.ls-answers input[type=checkbox],
-table.ls-answers input[type=radio] {
-  margin: 0;
-}
-
-/* We need complete width in array , but don't touch to padding-(top|bottom) */
-.dir-ltr .ls-answers td.radio-item,
-.dir-ltr .ls-answers td.checkbox-item {
-  padding-left: 20px;
-  padding-right: 0;
-}
-
-.dir-rtl .ls-answers td.radio-item,
-.dir-rtl .ls-answers td.checkbox-item {
-  padding-right: 20px;
-  padding-left: 0;
-}
-
-/* show partially visually-hidden inside table */
-.radio-item .ls-label-xs-visibility,
-.checkbox-item .ls-label-xs-visibility {
-  display: inline-block;
-  position: relative;
-  overflow: hidden;
-  width: 17px;
-  height: 17px;
-  line-height: 21px;
-  text-indent: 21px;
-}
-
-.dir-ltr .radio-item .ls-label-xs-visibility,
-.dir-ltr .checkbox-item .ls-label-xs-visibility {
-  left: auto;
+  top: 0;
   margin-left: -20px;
+  border-radius: 50%;
+  transition: border 0.15s ease-in-out;
+  z-index: 1;
 }
 
-.dir-rtl .radio-item .ls-label-xs-visibility,
-.dir-rtl .checkbox-item .ls-label-xs-visibility {
-  right: auto;
-  margin-right: -20px;
-}
-
-/* no margin on label : no margin after and before too */
-.dir-ltr .radio-item label.ls-label-xs-visibility::before,
-.dir-ltr .checkbox-item label.ls-label-xs-visibility::before {
-  margin-left: 0;
-}
-
-.dir-rtl .radio-item label.ls-label-xs-visibility::before,
-.dir-rtl .checkbox-item label.ls-label-xs-visibility::before {
-  margin-right: 0;
-}
-
-.dir-ltr .radio-item label.ls-label-xs-visibility::after,
-.dir-ltr .checkbox-item label.ls-label-xs-visibility::after {
-  margin-left: 0;
-  padding-left: 0;
-}
-
-.dir-rtl .radio-item label.ls-label-xs-visibility::after,
-.dir-rtl .checkbox-item label.ls-label-xs-visibility::after {
-  margin-right: 0;
-  padding-right: 0;
-}
-
-.checkbox-item label.ls-label-xs-visibility::after {
-  line-height: 17px;
-  width: 17px;
-  text-align: center;
-  text-indent: 0;
-}
-
-/* Hide the other content inside visually-hidden */
-.radio-item label.ls-label-xs-visibility > *,
-.checkbox-item label.ls-label-xs-visibility > * {
+.imageselect-container .imageselect-radiobutton::after {
+  display: inline-block;
   position: absolute;
-  top: auto;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
+  content: " ";
+  width: 9px;
+  height: 9px;
+  left: 3px;
+  top: 3px;
+  margin-left: -18px;
+  margin-top: 2px;
+  border-radius: 50%;
+  transform: scale(0, 0);
+  transition: transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
+  z-index: 1;
 }
 
-.dir-ltr .radio-item label.ls-label-xs-visibility > *,
-.dir-ltr .checkbox-item label.ls-label-xs-visibility > * {
-  left: -10000px;
+li.imageselect-listitem .imageselect-container input.imageselect-checkbox:checked + label + .imageselect-radiobutton:after {
+  transform: scale(1, 1);
 }
 
-.dir-rtl .radio-item label.ls-label-xs-visibility > *,
-.dir-rtl .checkbox-item label.ls-label-xs-visibility > * {
-  left: -10000px;
-}
-
-/* Align privacy policy checkbox to top */
-#datasecurity_accepted {
-  vertical-align: top;
-}
-
-/*
-Max width before this PARTICULAR table gets nasty
-For iPads specifically : add this : (min-device-width: 768px) and (max-device-width: 1024px)
-*/
-@media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
-  table.ls-answers, table.ls-answers thead, table.ls-answers tbody, table.ls-answers th, table.ls-answers td, table.ls-answers tr {
-    display: block;
-  }
-  .dir-ltr table.ls-answers, .dir-ltr table.ls-answers thead, .dir-ltr table.ls-answers tbody, .dir-ltr table.ls-answers th, .dir-ltr table.ls-answers td, table.ls-answers tr {
-    text-align: left;
-  }
-  .dir-rtl table.ls-answers, .dir-rtl table.ls-answers thead, .dir-rtl table.ls-answers tbody, .dir-rtl table.ls-answers th, .dir-rtl table.ls-answers td, table.ls-answers tr {
-    text-align: right;
-  }
-  table.ls-answers thead {
-    display: none;
-  }
-  /* We don't need it for accessibility : we already have the label */
-  table.ls-answers tbody td {
-    text-align: left;
-  }
-  table.ls-answers .information-item:empty {
-    display: none;
-  }
-  .dir-rtl table.ls-answers tbody td {
-    text-align: right;
-  }
-  .ls-answers td.radio-item, .ls-answers td.checkbox-item {
-    padding: 4px;
-  }
-  .dir-ltr .ls-answers td.radio-item, .dir-ltr .ls-answers td.checkbox-item {
-    padding-left: 24px;
-    padding-right: 4px;
-  }
-  .dir-rtl .ls-answers td.radio-item, .dir-rtl .ls-answers td.checkbox-item {
-    padding-right: 24px;
-    padding-left: 4px;
-  }
-  table.ls-answers tbody .control-label {
-    text-align: left;
-  }
-  .dir-rtl table.ls-answers tbody .control-label {
-    text-align: right;
-  }
-  table.ls-answers .answertextright {
-    text-align: right;
-  }
-  .dir-rtl table.ls-answers .answertextright {
-    text-align: left;
-  }
-  /* Show the label */
-  table.ls-answers .ls-label-xs-visibility {
-    display: block;
-    position: relative;
-    width: auto;
-    height: auto;
-    overflow: initial;
-    white-space: normal;
-  }
-  .dir-ltr table.ls-answers .ls-label-xs-visibility {
-    left: auto;
-  }
-  .dir-rtl table.ls-answers .ls-label-xs-visibility {
-    right: auto;
-  }
-  table.ls-answers .radio-item .ls-label-xs-visibility, table.ls-answers .checkbox-item .ls-label-xs-visibility {
-    line-height: initial;
-    text-indent: initial;
-  }
-  .dir-ltr table.ls-answers .radio-item .ls-label-xs-visibility, .dir-ltr table.ls-answers .checkbox-item .ls-label-xs-visibility {
-    margin-left: 0;
-  }
-  .dir-rtl table.ls-answers .radio-item .ls-label-xs-visibility, .dir-rtl table.ls-answers .checkbox-item .ls-label-xs-visibility {
-    margin-right: 0;
-  }
-  table.ls-answers .ls-label-xs-visibility > * {
-    position: relative;
-    top: auto;
-    width: auto;
-    height: auto;
-    overflow: auto;
-  }
-  .dir-ltr table.ls-answers .ls-label-xs-visibility > * {
-    left: auto;
-  }
-  .dir-rtl table.ls-answers .ls-label-xs-visibility > * {
-    right: auto;
-  }
-  .dir-rtl table.ls-answers .answers-list p[dir=rtl] {
-    left: 0;
-    text-align: right;
-  }
-  .dir-ltr table.ls-answers .radio-item label.ls-label-xs-visibility::before, .dir-ltr table.ls-answers .checkbox-item label.ls-label-xs-visibility::before {
-    margin-left: -20px;
-  }
-  .dir-rtl table.ls-answers .radio-item label.ls-label-xs-visibility::before, .dir-rtl table.ls-answers .checkbox-item label.ls-label-xs-visibility::before {
-    margin-right: -20px;
-  }
-  .dir-ltr table.ls-answers .radio-item label.ls-label-xs-visibility::after, .dir-ltr table.ls-answers .checkbox-item label.ls-label-xs-visibility::after {
-    margin-left: -20px;
-  }
-  .dir-rtl table.ls-answers .radio-item label.ls-label-xs-visibility::after, .dir-rtl table.ls-answers .checkbox-item label.ls-label-xs-visibility::after {
-    margin-right: -20px;
-  }
-  table.ls-answers > tbody > tr:hover {
-    background-color: transparent;
-  }
-  /* bs fix */
-  table.ls-answers td.visible-xs, table.ls-answers th.visible-xs {
-    display: block !important;
-  }
-}
-/* Fix for IE11 - no array question radio buttons on small screens */
-@media all and (max-width: 760px) and (-ms-high-contrast: none), (-ms-high-contrast: active) {
-  .dir-ltr .basicfruityextension table.ls-answers .radio-item .ls-label-xs-visibility, .dir-ltr .basicfruityextension table.ls-answers .checkbox-item .ls-label-xs-visibility {
-    margin-left: 0px;
-  }
-  .dir-rtl .basicfruityextension table.ls-answers .radio-item .ls-label-xs-visibility, .dir-rtl .basicfruityextension table.ls-answers .checkbox-item .ls-label-xs-visibility {
-    margin-right: 0px;
-  }
-  .dir-ltr .basicfruityextension table.ls-answers .radio-item label.ls-label-xs-visibility::before, .dir-ltr .basicfruityextension table.ls-answers .checkbox-item label.ls-label-xs-visibility::before {
-    margin-left: 0px;
-  }
-  .dir-rtl .basicfruityextension table.ls-answers .radio-item label.ls-label-xs-visibility::before, .dir-rtl .basicfruityextension table.ls-answers .checkbox-item label.ls-label-xs-visibility::before {
-    margin-right: 0px;
-  }
-  .dir-ltr .basicfruityextension table.ls-answers .radio-item label.ls-label-xs-visibility::after, .dir-ltr .basicfruityextension table.ls-answers .checkbox-item label.ls-label-xs-visibility::after {
-    margin-left: 0px;
-  }
-  .dir-rtl .basicfruityextension table.ls-answers .radio-item label.ls-label-xs-visibility::after, .dir-rtl .basicfruityextension table.ls-answers .checkbox-item label.ls-label-xs-visibility::after {
-    margin-right: 0px;
-  }
-  .dir-ltr table.ls-answers .radio-item label.ls-label-xs-visibility::before, .dir-ltr table.ls-answers .checkbox-item label.ls-label-xs-visibility::before {
-    margin-left: 0px;
-  }
-  .dir-rtl table.ls-answers .radio-item label.ls-label-xs-visibility::before, .dir-rtl table.ls-answers .checkbox-item label.ls-label-xs-visibility::before {
-    margin-right: 0px;
-  }
-  .dir-ltr table.ls-answers .radio-item label.ls-label-xs-visibility::after, .dir-ltr table.ls-answers .checkbox-item label.ls-label-xs-visibility::after {
-    margin-left: 0px;
-  }
-  .dir-rtl table.ls-answers .radio-item label.ls-label-xs-visibility::after, .dir-rtl table.ls-answers .checkbox-item label.ls-label-xs-visibility::after {
-    margin-right: 0px;
-  }
-}
 /**
  * Replace ".checkbox " > ".checkbox-item "
  * Replace ".checkbox." > ".checkbox-item."
- * Replace ".radio " > ".radio-item "
- * Replace ".checkradiobox." > ".radio-item."
  */
 .checkbox-item {
   padding-left: 20px;
@@ -1676,9 +1909,7 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
   left: 0;
   top: 0;
   margin-left: -20px;
-  border: 1px solid #cccccc;
   border-radius: 3px;
-  background-color: #fff;
   transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
 }
 
@@ -1698,7 +1929,6 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
   padding-left: 3px;
   padding-top: 1px;
   font-size: 11px;
-  color: #2c3e50;
   text-align: center;
 }
 
@@ -1735,7 +1965,6 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
   content: "";
   width: 10px;
   height: 3px;
-  background-color: #555555;
   border-radius: 2px;
   margin-left: -16.5px;
   margin-top: 7px;
@@ -1748,7 +1977,6 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
 
 .checkbox-item input[type=checkbox]:disabled + label::before,
 .checkbox-item input[type=radio]:disabled + label::before {
-  background-color: #eeeeee;
   cursor: not-allowed;
 }
 
@@ -1758,259 +1986,4 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
 
 .checkbox-item.checkbox-inline {
   margin-top: 0;
-}
-
-.checkbox-primary input[type=checkbox]:checked + label::before,
-.checkbox-primary input[type=radio]:checked + label::before {
-  background-color: #337ab7;
-  border-color: #337ab7;
-}
-
-.checkbox-primary input[type=checkbox]:checked + label::after,
-.checkbox-primary input[type=radio]:checked + label::after {
-  color: #fff;
-}
-
-.checkbox-danger input[type=checkbox]:checked + label::before,
-.checkbox-danger input[type=radio]:checked + label::before {
-  background-color: #d9534f;
-  border-color: #d9534f;
-}
-
-.checkbox-danger input[type=checkbox]:checked + label::after,
-.checkbox-danger input[type=radio]:checked + label::after {
-  color: #fff;
-}
-
-.checkbox-info input[type=checkbox]:checked + label::before,
-.checkbox-info input[type=radio]:checked + label::before {
-  background-color: #5bc0de;
-  border-color: #5bc0de;
-}
-
-.checkbox-info input[type=checkbox]:checked + label::after,
-.checkbox-info input[type=radio]:checked + label::after {
-  color: #fff;
-}
-
-.checkbox-warning input[type=checkbox]:checked + label::before,
-.checkbox-warning input[type=radio]:checked + label::before {
-  background-color: #f0ad4e;
-  border-color: #f0ad4e;
-}
-
-.checkbox-warning input[type=checkbox]:checked + label::after,
-.checkbox-warning input[type=radio]:checked + label::after {
-  color: #fff;
-}
-
-.checkbox-success input[type=checkbox]:checked + label::before,
-.checkbox-success input[type=radio]:checked + label::before {
-  background-color: #5cb85c;
-  border-color: #5cb85c;
-}
-
-.checkbox-success input[type=checkbox]:checked + label::after,
-.checkbox-success input[type=radio]:checked + label::after {
-  color: #fff;
-}
-
-.checkbox-primary input[type=checkbox]:indeterminate + label::before,
-.checkbox-primary input[type=radio]:indeterminate + label::before {
-  background-color: #337ab7;
-  border-color: #337ab7;
-}
-
-.checkbox-primary input[type=checkbox]:indeterminate + label::after,
-.checkbox-primary input[type=radio]:indeterminate + label::after {
-  background-color: #fff;
-}
-
-.checkbox-danger input[type=checkbox]:indeterminate + label::before,
-.checkbox-danger input[type=radio]:indeterminate + label::before {
-  background-color: #d9534f;
-  border-color: #d9534f;
-}
-
-.checkbox-danger input[type=checkbox]:indeterminate + label::after,
-.checkbox-danger input[type=radio]:indeterminate + label::after {
-  background-color: #fff;
-}
-
-.checkbox-info input[type=checkbox]:indeterminate + label::before,
-.checkbox-info input[type=radio]:indeterminate + label::before {
-  background-color: #5bc0de;
-  border-color: #5bc0de;
-}
-
-.checkbox-info input[type=checkbox]:indeterminate + label::after,
-.checkbox-info input[type=radio]:indeterminate + label::after {
-  background-color: #fff;
-}
-
-.checkbox-warning input[type=checkbox]:indeterminate + label::before,
-.checkbox-warning input[type=radio]:indeterminate + label::before {
-  background-color: #f0ad4e;
-  border-color: #f0ad4e;
-}
-
-.checkbox-warning input[type=checkbox]:indeterminate + label::after,
-.checkbox-warning input[type=radio]:indeterminate + label::after {
-  background-color: #fff;
-}
-
-.checkbox-success input[type=checkbox]:indeterminate + label::before,
-.checkbox-success input[type=radio]:indeterminate + label::before {
-  background-color: #5cb85c;
-  border-color: #5cb85c;
-}
-
-.checkbox-success input[type=checkbox]:indeterminate + label::after,
-.checkbox-success input[type=radio]:indeterminate + label::after {
-  background-color: #fff;
-}
-
-.radio-item, .radio-text-item {
-  padding-left: 20px;
-}
-
-.radio-item label {
-  display: inline-block;
-  vertical-align: middle;
-  position: relative;
-  padding-left: 5px;
-}
-
-.radio-item label::before {
-  content: "";
-  display: inline-block;
-  position: absolute;
-  width: 17px;
-  height: 17px;
-  left: 0;
-  top: 0;
-  margin-left: -20px;
-  border: 1px solid #cccccc;
-  border-radius: 50%;
-  background-color: #fff;
-  transition: border 0.15s ease-in-out;
-}
-
-.radio-item label::after {
-  display: inline-block;
-  position: absolute;
-  content: " ";
-  width: 11px;
-  height: 11px;
-  left: 3px;
-  top: 3px;
-  margin-left: -20px;
-  border-radius: 50%;
-  background-color: #2c3e50;
-  transform: scale(0, 0);
-  transition: transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
-}
-
-.radio-item input[type=radio] {
-  opacity: 0;
-  z-index: 1;
-  top: 0;
-}
-
-.radio-item input[type=radio]:focus + label::before {
-  outline: thin dotted;
-  outline: 5px auto -webkit-focus-ring-color;
-  outline-offset: -2px;
-}
-
-.radio-item input[type=radio]:checked + label::after {
-  transform: scale(1, 1);
-}
-
-.radio-item input[type=radio]:disabled + label {
-  opacity: 0.65;
-}
-
-.radio-item input[type=radio]:disabled + label::before {
-  cursor: not-allowed;
-}
-
-.radio-item.radio-inline {
-  margin-top: 0;
-}
-
-.radio-primary input[type=radio] + label::after {
-  background-color: #337ab7;
-}
-
-.radio-primary input[type=radio]:checked + label::before {
-  border-color: #337ab7;
-}
-
-.radio-primary input[type=radio]:checked + label::after {
-  background-color: #337ab7;
-}
-
-.radio-danger input[type=radio] + label::after {
-  background-color: #d9534f;
-}
-
-.radio-danger input[type=radio]:checked + label::before {
-  border-color: #d9534f;
-}
-
-.radio-danger input[type=radio]:checked + label::after {
-  background-color: #d9534f;
-}
-
-.radio-info input[type=radio] + label::after {
-  background-color: #5bc0de;
-}
-
-.radio-info input[type=radio]:checked + label::before {
-  border-color: #5bc0de;
-}
-
-.radio-info input[type=radio]:checked + label::after {
-  background-color: #5bc0de;
-}
-
-.radio-warning input[type=radio] + label::after {
-  background-color: #f0ad4e;
-}
-
-.radio-warning input[type=radio]:checked + label::before {
-  border-color: #f0ad4e;
-}
-
-.radio-warning input[type=radio]:checked + label::after {
-  background-color: #f0ad4e;
-}
-
-.radio-success input[type=radio] + label::after {
-  background-color: #5cb85c;
-}
-
-.radio-success input[type=radio]:checked + label::before {
-  border-color: #5cb85c;
-}
-
-.radio-success input[type=radio]:checked + label::after {
-  background-color: #5cb85c;
-}
-
-input[type=checkbox].styled:checked + label:after,
-input[type=radio].styled:checked + label:after {
-  font-family: "FontAwesome";
-  content: "\f00c";
-}
-
-input[type=checkbox] .styled:checked + label::before,
-input[type=radio] .styled:checked + label::before {
-  color: #fff;
-}
-
-input[type=checkbox] .styled:checked + label::after,
-input[type=radio] .styled:checked + label::after {
-  color: #fff;
 }

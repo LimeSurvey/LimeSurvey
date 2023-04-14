@@ -5,3 +5,16 @@ li.imageselect-listitem .imageselect-container .imageselect-label{
 li.imageselect-listitem .imageselect-container input.imageselect-checkbox:checked+label{
     border: 2px solid $base-color !important;
 }
+
+li.imageselect-listitem .imageselect-container input.imageselect-checkbox:checked+label+.imageselect-radiobutton:after {
+    background-color: $base-color;
+}
+
+.imageselect-container .imageselect-radiobutton:before {
+    background-color: #fff;
+    border: 2px solid $g-700;
+}
+
+li.imageselect-listitem .imageselect-container input.imageselect-checkbox:checked+label+.imageselect-radiobutton:before {
+    border-color: $base-color;
+}

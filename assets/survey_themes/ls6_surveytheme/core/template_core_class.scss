@@ -214,7 +214,7 @@
     border : 1px solid #E75041;
 }
 
-.form-inline .radio-item, .form-inline .checkbox-item {
+.form-inline .checkbox-item {
     display        : inline-block;
     vertical-align : middle;
 }
@@ -259,7 +259,6 @@ li.question-item.answer-item.text-item.form-group {
 }
 
 /* no form-group on radio-item and checkbox-item */
-li.radio-item,
 li.checkbox-item,
 li.radio-text-item,
 li.checkbox-text-item {
@@ -267,7 +266,6 @@ li.checkbox-text-item {
 }
 
 /* awesome-bootstrap-checkbox */
-li.radio-item,
 li.checkbox-item,
 li.radio-text-item,
 li.checkbox-text-item {
@@ -275,28 +273,23 @@ li.checkbox-text-item {
 }
 
 /* map item : .input-group-addon.checkbox-item : put awesome padding */
-.dir-ltr .input-group-addon.radio-item,
 .dir-ltr .input-group-addon.checkbox-item {
     padding-left : 25px;
 }
 
-.dir-rtl .input-group-addon.radio-item,
 .dir-rtl .input-group-addon.checkbox-item {
     padding-right : 25px;
 }
 
 /* Else big label break*/
-.radio-item label,
 .checkbox-item label {
     display : block
 }
 
-.radio-item,
 .checkbox-item {
     position : relative;
 }
 
-.radio-item input[type="radio"],
 .checkbox-item input[type="checkbox"] {
     /*give near same position to real button (except in td : can fix but not needed )*/
     display  : inline-block;
@@ -305,17 +298,14 @@ li.checkbox-text-item {
     width    : 17px;
 }
 
-.dir-ltr .radio-item input[type="radio"],
 .dir-ltr .checkbox-item input[type="checkbox"] {
     left : 0;
 }
 
-.dir-rtl .radio-item input[type="radio"],
 .dir-rtl .checkbox-item input[type="checkbox"] {
     right : 0;
 }
 
-.radio-item input[type="radio"],
 .checkbox-item input[type="checkbox"] {
     opacity : 0;
 }
@@ -413,20 +403,17 @@ table.ls-answers input[type="radio"] {
 }
 
 /* We need complete width in array , but don't touch to padding-(top|bottom) */
-.dir-ltr .ls-answers td.radio-item,
 .dir-ltr .ls-answers td.checkbox-item {
     padding-left  : 20px;
     padding-right : 0;
 }
 
-.dir-rtl .ls-answers td.radio-item,
 .dir-rtl .ls-answers td.checkbox-item {
     padding-right : 20px;
     padding-left  : 0;
 }
 
 /* show partially visually-hidden inside table */
-.radio-item .ls-label-xs-visibility,
 .checkbox-item .ls-label-xs-visibility {
     display     : inline-block;
     position    : relative;
@@ -437,36 +424,30 @@ table.ls-answers input[type="radio"] {
     text-indent : 21px;
 }
 
-.dir-ltr .radio-item .ls-label-xs-visibility,
 .dir-ltr .checkbox-item .ls-label-xs-visibility {
     left        : auto;
     margin-left : -20px;
 }
 
-.dir-rtl .radio-item .ls-label-xs-visibility,
 .dir-rtl .checkbox-item .ls-label-xs-visibility {
     right        : auto;
     margin-right : -20px;
 }
 
 /* no margin on label : no margin after and before too */
-.dir-ltr .radio-item label.ls-label-xs-visibility::before,
 .dir-ltr .checkbox-item label.ls-label-xs-visibility::before {
     margin-left : 0;
 }
 
-.dir-rtl .radio-item label.ls-label-xs-visibility::before,
 .dir-rtl .checkbox-item label.ls-label-xs-visibility::before {
     margin-right : 0;
 }
 
-.dir-ltr .radio-item label.ls-label-xs-visibility::after,
 .dir-ltr .checkbox-item label.ls-label-xs-visibility::after {
     margin-left  : 0;
     padding-left : 0;
 }
 
-.dir-rtl .radio-item label.ls-label-xs-visibility::after,
 .dir-rtl .checkbox-item label.ls-label-xs-visibility::after {
     margin-right  : 0;
     padding-right : 0;
@@ -480,7 +461,6 @@ table.ls-answers input[type="radio"] {
 }
 
 /* Hide the other content inside visually-hidden */
-.radio-item label.ls-label-xs-visibility > *,
 .checkbox-item label.ls-label-xs-visibility > * {
     position : absolute;
     top      : auto;
@@ -489,12 +469,10 @@ table.ls-answers input[type="radio"] {
     overflow : hidden;
 }
 
-.dir-ltr .radio-item label.ls-label-xs-visibility > *,
 .dir-ltr .checkbox-item label.ls-label-xs-visibility > * {
     left : -10000px;
 }
 
-.dir-rtl .radio-item label.ls-label-xs-visibility > *,
 .dir-rtl .checkbox-item label.ls-label-xs-visibility > * {
     left : -10000px;
 }
@@ -534,14 +512,14 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
     .dir-rtl table.ls-answers tbody td {
         text-align : right;
     }
-    .ls-answers td.radio-item, .ls-answers td.checkbox-item {
+    .ls-answers td.checkbox-item {
         padding : 4px;
     }
-    .dir-ltr .ls-answers td.radio-item, .dir-ltr .ls-answers td.checkbox-item {
+    .dir-ltr .ls-answers td.checkbox-item {
         padding-left  : 24px;
         padding-right : 4px;
     }
-    .dir-rtl .ls-answers td.radio-item, .dir-rtl .ls-answers td.checkbox-item {
+    .dir-rtl .ls-answers td.checkbox-item {
         padding-right : 24px;
         padding-left  : 4px;
     }
@@ -575,14 +553,14 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
         right : auto;
     }
 
-    table.ls-answers .radio-item .ls-label-xs-visibility, table.ls-answers .checkbox-item .ls-label-xs-visibility {
+    table.ls-answers .checkbox-item .ls-label-xs-visibility {
         line-height : initial;
         text-indent : initial;
     }
-    .dir-ltr table.ls-answers .radio-item .ls-label-xs-visibility, .dir-ltr table.ls-answers .checkbox-item .ls-label-xs-visibility {
+    .dir-ltr table.ls-answers .checkbox-item .ls-label-xs-visibility {
         margin-left : 0;
     }
-    .dir-rtl table.ls-answers .radio-item .ls-label-xs-visibility, .dir-rtl table.ls-answers .checkbox-item .ls-label-xs-visibility {
+    .dir-rtl table.ls-answers .checkbox-item .ls-label-xs-visibility {
         margin-right : 0;
     }
 
@@ -605,16 +583,16 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
         text-align : right;
     }
 
-    .dir-ltr table.ls-answers .radio-item label.ls-label-xs-visibility::before, .dir-ltr table.ls-answers .checkbox-item label.ls-label-xs-visibility::before {
+    .dir-ltr table.ls-answers .checkbox-item label.ls-label-xs-visibility::before {
         margin-left : -20px;
     }
-    .dir-rtl table.ls-answers .radio-item label.ls-label-xs-visibility::before, .dir-rtl table.ls-answers .checkbox-item label.ls-label-xs-visibility::before {
+    .dir-rtl table.ls-answers .checkbox-item label.ls-label-xs-visibility::before {
         margin-right : -20px;
     }
-    .dir-ltr table.ls-answers .radio-item label.ls-label-xs-visibility::after, .dir-ltr table.ls-answers .checkbox-item label.ls-label-xs-visibility::after {
+    .dir-ltr table.ls-answers .checkbox-item label.ls-label-xs-visibility::after {
         margin-left : -20px;
     }
-    .dir-rtl table.ls-answers .radio-item label.ls-label-xs-visibility::after, .dir-rtl table.ls-answers .checkbox-item label.ls-label-xs-visibility::after {
+    .dir-rtl table.ls-answers .checkbox-item label.ls-label-xs-visibility::after {
         margin-right : -20px;
     }
 
@@ -629,34 +607,16 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
 
 /* Fix for IE11 - no array question radio buttons on small screens */
 @media all and (max-width : 760px) and (-ms-high-contrast : none), (-ms-high-contrast : active) {
-    .dir-ltr .basicfruityextension table.ls-answers .radio-item .ls-label-xs-visibility, .dir-ltr .basicfruityextension table.ls-answers .checkbox-item .ls-label-xs-visibility {
+    .dir-ltr table.ls-answers .checkbox-item label.ls-label-xs-visibility::before {
         margin-left : 0px;
     }
-    .dir-rtl .basicfruityextension table.ls-answers .radio-item .ls-label-xs-visibility, .dir-rtl .basicfruityextension table.ls-answers .checkbox-item .ls-label-xs-visibility {
+    .dir-rtl table.ls-answers .checkbox-item label.ls-label-xs-visibility::before {
         margin-right : 0px;
     }
-    .dir-ltr .basicfruityextension table.ls-answers .radio-item label.ls-label-xs-visibility::before, .dir-ltr .basicfruityextension table.ls-answers .checkbox-item label.ls-label-xs-visibility::before {
+    .dir-ltr table.ls-answers .checkbox-item label.ls-label-xs-visibility::after {
         margin-left : 0px;
     }
-    .dir-rtl .basicfruityextension table.ls-answers .radio-item label.ls-label-xs-visibility::before, .dir-rtl .basicfruityextension table.ls-answers .checkbox-item label.ls-label-xs-visibility::before {
-        margin-right : 0px;
-    }
-    .dir-ltr .basicfruityextension table.ls-answers .radio-item label.ls-label-xs-visibility::after, .dir-ltr .basicfruityextension table.ls-answers .checkbox-item label.ls-label-xs-visibility::after {
-        margin-left : 0px;
-    }
-    .dir-rtl .basicfruityextension table.ls-answers .radio-item label.ls-label-xs-visibility::after, .dir-rtl .basicfruityextension table.ls-answers .checkbox-item label.ls-label-xs-visibility::after {
-        margin-right : 0px;
-    }
-    .dir-ltr table.ls-answers .radio-item label.ls-label-xs-visibility::before, .dir-ltr table.ls-answers .checkbox-item label.ls-label-xs-visibility::before {
-        margin-left : 0px;
-    }
-    .dir-rtl table.ls-answers .radio-item label.ls-label-xs-visibility::before, .dir-rtl table.ls-answers .checkbox-item label.ls-label-xs-visibility::before {
-        margin-right : 0px;
-    }
-    .dir-ltr table.ls-answers .radio-item label.ls-label-xs-visibility::after, .dir-ltr table.ls-answers .checkbox-item label.ls-label-xs-visibility::after {
-        margin-left : 0px;
-    }
-    .dir-rtl table.ls-answers .radio-item label.ls-label-xs-visibility::after, .dir-rtl table.ls-answers .checkbox-item label.ls-label-xs-visibility::after {
+    .dir-rtl table.ls-answers .checkbox-item label.ls-label-xs-visibility::after {
         margin-right : 0px;
     }
 }

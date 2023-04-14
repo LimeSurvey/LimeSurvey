@@ -82,23 +82,6 @@ textarea,
     color            : $white;
 }
 
-// radiobutton
-.radio-item input[type="radio"] + label::after {
-    background-color: $base-color;
-}
-.radio-item input[type="radio"]:checked + label::before {
-    border-color: $base-color;
-}
-.radio-item input[type="radio"]:checked + label::after {
-    background-color: $base-color;
-}
-
-.radio-item label::before {
-    border: 2px solid $input-border-color;
-    height: 19px;
-    width: 19px;
-}
-
 // input error
 .input-error input {
     border : 1px solid $warning;
