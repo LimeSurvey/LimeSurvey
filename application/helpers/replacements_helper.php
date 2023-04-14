@@ -15,6 +15,7 @@ if (!defined('BASEPATH')) {
 * See COPYRIGHT.php for copyright notices and details.
 *
 */
+
 /**
 * This function replaces keywords in a text and is mainly intended for templates
 * If you use this functions put your replacement strings into the $replacements variable
@@ -32,6 +33,8 @@ if (!defined('BASEPATH')) {
 * @param boolean bStaticReplacement - Default off, forces non-dynamic replacements without <SPAN> tags (e.g. for the Completed page)
 * @param object|string - the template object to be used
 * @return string Text with replaced strings
+*
+* @psalm-suppress UndefinedVariable
 */
 function templatereplace($line, $replacements = array(), &$redata = array(), $debugSrc = null, $anonymized = null, $questionNum = null, $registerdata = array(), $bStaticReplacement = false, $oTemplate = '')
 {
