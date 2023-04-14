@@ -154,7 +154,7 @@ class WipeCommand extends CConsoleCommand
 
             $surveyidresult = dbGetTablesLike("survey\_%");
             foreach ($surveyidresult as $sv) {
-                if (strpos($sv, 'survey_links') === false && strpos($sv, 'survey_url_parameters') === false) {
+                if (strpos((string) $sv, 'survey_links') === false && strpos((string) $sv, 'survey_url_parameters') === false) {
                                     Yii::app()->db->createCommand("drop table " . $sv)->execute();
                 }
             }

@@ -158,7 +158,7 @@ class WhBox extends CWidget
                 $button  = $options['class'];
                 unset($options['class']);
 
-                if (strpos($button, 'TbButton') === false) {
+                if (strpos((string) $button, 'TbButton') === false) {
                     throw new CException('message');
                 }
 

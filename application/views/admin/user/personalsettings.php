@@ -17,7 +17,7 @@ if (App()->session['questionselectormode'] !== 'default') {
     $selectormodeclass = App()->getConfig('defaultquestionselectormode');
 }
 foreach ($aQuestionTypeList as $questionTheme) {
-    $htmlReadyGroup = str_replace(' ', '_', strtolower($questionTheme->group));
+    $htmlReadyGroup = str_replace(' ', '_', strtolower((string) $questionTheme->group));
     if (!isset($aQuestionTypeGroups[$htmlReadyGroup])) {
         $aQuestionTypeGroups[$htmlReadyGroup] = [
             'questionGroupName' => $questionTheme->group

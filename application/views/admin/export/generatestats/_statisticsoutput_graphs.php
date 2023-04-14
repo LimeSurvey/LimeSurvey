@@ -13,7 +13,7 @@
  *
  */
  // TODO: move to controller
- $qqid = str_replace ( '-', '__' , $qqid );
+ $qqid = str_replace ( '-', '__' , (string) $qqid );
 ?>
 <tr>
     <td colspan='4' id='statzone_<?php echo $rt;?>'>
@@ -103,7 +103,7 @@
         </div>
         <div id='stats_<?php echo $rt;?>' class='graphdisplay' style="text-align:center">
         </div>
-    <?php else: ?>
+<?php else: ?>
         <div class="row">
             <div class="col-md-12">
                 <?php

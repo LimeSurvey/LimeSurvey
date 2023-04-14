@@ -45,7 +45,7 @@ class PanelBoxWidget extends CWidget
         ));
         if ($box) {
             $this->position = $box->position;
-            if (!preg_match("/^(http|https)/", $box->url)) {
+            if (!preg_match("/^(http|https)/", (string) $box->url)) {
                 $this->url = Yii::app()->createUrl($box->url);
             } else {
                 $this->url = $box->url;

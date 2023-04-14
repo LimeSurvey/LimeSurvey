@@ -14520,6 +14520,11 @@ html[dir=ltr] th {
   overflow-x: visible;
 }
 
+/** Hide Relevance Equation column for subquestions when not supported */
+.subquestions-table.hide-relevance #rel-eq-th, .subquestions-table.hide-relevance td.relevance-equation {
+  display: none;
+}
+
 .jcarousel-wrapper {
   margin: 20px auto;
   position: relative;
@@ -16816,6 +16821,13 @@ tr.info, tr.danger {
   margin: 8px 0;
 }
 
+.ls-action_dropdown > .btn {
+  line-height: 16px;
+}
+.ls-action_dropdown > .btn .ri-more-fill {
+  vertical-align: bottom;
+}
+
 .btn-circle {
   width: 44px;
   height: 44px;
@@ -18216,6 +18228,9 @@ input[type=number] {
 #sidebar .subpanel.level-2 .selected {
   background: linear-gradient(to left, #5cc262 0px, #5cc262 8px, #fff 8px, #fff 100%);
 }
+#sidebar .ls-questiongroup-tools i, #sidebar .ls-question-tools i {
+  font-size: 24px;
+}
 
 .list-group {
   border-radius: 0px !important;
@@ -18306,6 +18321,10 @@ input[type=number] {
   width: 294px;
 }
 
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
 table .ls-sticky-column:first-child {
   position: sticky;
   background-color: #fff;

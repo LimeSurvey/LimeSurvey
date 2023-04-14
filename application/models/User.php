@@ -273,7 +273,7 @@ class User extends LSActiveRecord
     /**
      * @todo document me
      */
-    public function checkPasswordStrength($password)
+    public function checkPasswordStrength(string $password)
     {
         $settings = Yii::app()->getConfig("passwordValidationRules");
         $length = strlen($password);
@@ -325,12 +325,12 @@ class User extends LSActiveRecord
      *  -- newpassword and repeatpassword are identical
      *  -- newpassword is not empty
      *
-     * @param $newPassword
-     * @param $oldPassword
-     * @param $repeatPassword
+     * @param string $newPassword
+     * @param string $oldPassword
+     * @param string $repeatPassword
      * @return string empty string means everything is ok, otherwise error message is returned
      */
-    public function validateNewPassword($newPassword, $oldPassword, $repeatPassword)
+    public function validateNewPassword(string $newPassword, string $oldPassword, string $repeatPassword)
     {
         $errorMsg = '';
 
@@ -436,8 +436,12 @@ class User extends LSActiveRecord
     {
         // TODO should be static
         $criteria = new CDbCriteria();
-        $criteria->join = ' JOIN {{permissions}} AS p ON p.uid = t.uid';
-        $criteria->addCondition('p.permission = \'superadmin\'');
+        /* have read superadmin permissions */
+        $criteria->with = array('permissions');
+        $criteria->compare('permissions.permission', 'superadmin');
+        $criteria->compare('permissions.read_p', '1');
+        /* OR are inside forcedsuperadmin config */
+        $criteria->addInCondition('t.uid', App()->getConfig('forcedsuperadmin'), 'OR');
         /** @var User[] $users */
         $users = $this->findAll($criteria);
         return $users;
@@ -856,8 +860,8 @@ class User extends LSActiveRecord
         $expired = false;
         if (!empty($this->expires)) {
             // Time adjust
-            $now = date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
-            $expirationTime = date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->expires)));
+            $now = date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
+            $expirationTime = date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime((string) $this->expires)));
 
             // Time comparison
             $expired = new DateTime($expirationTime) < new DateTime($now);
