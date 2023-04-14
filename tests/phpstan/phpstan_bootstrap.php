@@ -56,6 +56,7 @@ Yii::import('application.helpers.admin.backupdb_helper', true);
 Yii::import('application.helpers.admin.activate_helper', true);
 Yii::import('application.helpers.admin.htmleditor_helper', true);
 Yii::import('application.helpers.admin.permission_helper', true);
+Yii::import('application.helpers.admin.token_helper', true);
 Yii::import('application.libraries.PluginManager.PluginManager', true);
 Yii::import('application.libraries.MenuObjects.*', true);
 Yii::import('application.libraries.jsonRPCClient', true);
@@ -82,9 +83,7 @@ $pluginManager->scanPlugins(true);
 
 error_reporting(E_ALL);
 
-define("LOGO_URL", "ANYTHING");
+//define("LOGO_URL", "ANYTHING");
 // Needed for LOGO_URL constant. TODO: Why is this defined in a class...? Should be Yii config?
 //$adminTheme = new AdminTheme();
 //$adminTheme->setAdminTheme();
-
-echo "Done with bootstrap" . PHP_EOL;
