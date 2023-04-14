@@ -12,6 +12,12 @@
 >
     <issueHandlers>
         <UndefinedDocblockClass errorLevel="suppress" />
+        <EmptyArrayAccess errorLevel="suppress" />
+        <UndefinedConstant errorLevel="suppress" />
+        <ParadoxicalCondition errorLevel="suppress" />
+        <InvalidStaticInvocation errorLevel="suppress" />
+        <!-- Yii view files use "global" variables -->
+        <UndefinedGlobalVariable errorLevel="suppress" />
     </issueHandlers>
     <projectFiles>
         <directory name="application/" />
@@ -21,6 +27,20 @@
             <directory name="application/views" />
             <directory name="application/tests" />
             <directory name="application/helpers/Zend" />
+            <directory name="application/libraries/MenuObjects/views" />
+            <directory name="application/core/plugins/TwoFactorAdminLogin/views" />
+            <directory name="application/extensions/AccordionWidget/views" />
+            <directory name="application/extensions/AdminFooter/views" />
+            <directory name="application/extensions/AdvancedSettingWidget/views" />
+            <directory name="application/extensions/AlertWidget/views" />
+            <directory name="application/extensions/BreadcrumbWidget/views" />
+            <directory name="application/extensions/ButtonWidget/views" />
+            <directory name="application/extensions/DateTimePickerWidget/views" />
+            <directory name="application/extensions/FlashMessage/views" />
+            <directory name="application/extensions/GeneralOptionWidget/views" />
+            <directory name="application/extensions/InputWidget/views" />
+            <directory name="application/extensions/LimeTopbarWidget/views" />
+            <directory name="application/extensions/PanelBoxWidget/views" />
             <file name="application/libraries/simpletester.php" />
         </ignoreFiles>
     </projectFiles>
