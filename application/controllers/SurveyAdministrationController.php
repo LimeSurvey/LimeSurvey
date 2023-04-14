@@ -188,13 +188,15 @@ class SurveyAdministrationController extends LSBaseController
         $user = User::model()->findByPk(App()->session['loginID']);
         $aData['owner'] = $user->attributes;
 
-      //  if ((empty($aData['display']['menu_bars']['surveysummary']) || !is_string($aData['display']['menu_bars']['surveysummary'])) && !empty($aData['gid'])) {
-        //    $aData['display']['menu_bars']['surveysummary'] = 'viewgroup';
-       // }
-
         $surveyUrls = [];
         foreach ($survey->allLanguages as $language) {
-            $surveyUrls[$language] = $survey->getSurveyUrl($language);
+            $surveyUrlCreator = new \LimeSurvey\Models\Services\SurveyUrl(
+                $language);
+            $surveyUrls[$language] = $surveyUrlCreator->getUrl(
+                $survey->sid,
+                $survey->languagesettings,
+                $survey->getAliasForLanguage($language)
+            );
         }
         $aData['surveyUrls'] = $surveyUrls;
 
