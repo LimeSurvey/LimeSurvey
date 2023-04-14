@@ -69,7 +69,10 @@ class UserGroupController extends LSBaseController
         $aData = [];
 
         $model = UserGroup::model();
+   
         $aData['topbar']['title'] = gT('User group list');
+        $aData['topbar']['backLink'] = App()->createUrl('admin/index');
+
         $aData['topbar']['middleButtons'] = $this->renderPartial('partial/topbarBtns/leftSideButtons', [], true);
         $aData['topbar']['rightButtons'] = $this->renderPartial('partial/topbarBtns/rightSideButtons', [
             'addGroupSave' => false
@@ -166,6 +169,8 @@ class UserGroupController extends LSBaseController
         }
 
         $aData['topbar']['title'] = gT('User group') . ': ' . $userGroup->name;
+        $aData['topbar']['backLink'] = App()->createUrl('userGroup/index');
+        
         $aData['topbar']['middleButtons'] = $this->renderPartial(
             'partial/topbarBtns_manageGroup/leftSideButtons',
             [
@@ -175,11 +180,7 @@ class UserGroupController extends LSBaseController
             ],
             true
         );
-        $aData['topbar']['rightButtons'] = $this->renderPartial(
-            'partial/topbarBtns_manageGroup/rightSideButtons',
-            [],
-            true
-        );
+
 
         if (isset($_GET['pageSize'])) {
             Yii::app()->user->setState('pageSize', (int)$_GET['pageSize']);
@@ -498,6 +499,7 @@ class UserGroupController extends LSBaseController
         }
 
         $aData['topbar']['title'] = gT('Mail to all Members');
+        $aData['topbar']['backLink'] = App()->createUrl('userGroup/index');
         $aData['topbar']['rightButtons'] = $this->renderPartial(
             'partial/topbarBtns_mail/rightSideButtons',
             [],

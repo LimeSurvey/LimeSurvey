@@ -207,6 +207,9 @@ class Labels extends SurveyCommonAction
 
         if ($sa == "newlabelset" || $sa == "editlabelset") {
             $aData['topbar']['title'] = $pageTitle;
+            $aData['topbar']['backLink'] = App()->createUrl('admin/labels/sa/view');
+
+            
             $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
                 '/admin/labels/partials/topbarBtns_newimport/rightSideButtons',
                 [
