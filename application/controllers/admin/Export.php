@@ -140,9 +140,6 @@ class Export extends SurveyCommonAction
             sanitize_int(Yii::app()->request->getParam('surveyId'));
         $survey = Survey::model()->findByPk($iSurveyID);
 
-        if (!isset($imageurl)) {
-            $imageurl = "./images";
-        }
         if (!isset($iSurveyID)) {
             $iSurveyID = returnGlobal('sid');
         }
