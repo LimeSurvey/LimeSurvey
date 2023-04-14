@@ -2,7 +2,6 @@
 require_once __DIR__ . '/vendor/autoload.php';
 
 use Greew\OAuth2\Client\Provider\Azure;
-use LimeSurvey\Datavalueobjects\SmtpOAuthPluginOption;
 use LimeSurvey\PluginManager\SmtpOauthPluginBase;
 use PHPMailer\PHPMailer\PHPMailer;
 
@@ -35,29 +34,17 @@ class AzureOAuthSMTP extends SmtpOauthPluginBase
             'type' => 'string',
             'label' => 'Tenant ID',
         ],
-        'currentEmail' => [
-            'type' => 'string',
-            'label' => 'Saved Token Owner',
-            'htmlOptions' => [
-                'readonly' => true,
-            ],
-        ],
-        'information' => [
-            'type' => 'info',
-            'content' => '',
-        ],
     ];
 
     public function init()
     {
-        $this->subscribe('newUnsecureRequest', 'receiveAzureResponse');
-        $this->subscribe('newDirectRequest', 'redirectToAzure');
-
         $this->subscribe('listSMTPOAuthPlugins');
         $this->subscribe('afterSelectSMTPOAuthPlugin');
         $this->subscribe('newSMTPOAuthConfiguration');
+        $this->subscribe('beforeRedirectToAuthPage');
+        $this->subscribe('beforePrepareRedirectToAuthPage');
 
-        $this->subscribe('beforeEmail', 'beforeEmail');
+        $this->subscribe('beforeEmail');
         $this->subscribe('beforeSurveyEmail', 'beforeEmail');
         $this->subscribe('beforeTokenEmail', 'beforeEmail');
     }
@@ -73,15 +60,10 @@ class AzureOAuthSMTP extends SmtpOauthPluginBase
         $settings['clientId']['label'] = gT("Client ID");
         $settings['clientSecret']['label'] = gT("Client Secret");
         $settings['tenantId']['label'] = gT("Tenant ID");
-        $settings['information']['content'] = $this->getRefreshTokenInfo();
 
-        $emailAddress = $this->get('email');
-        if (!empty($emailAddress)) {
-            $settings['currentEmail']['label'] = gT('Saved Token Owner');
-            $settings['currentEmail']['help'] = gT('This is the email address used to create the current authentication token. Please note all emails will be sent from this address.');
-            $settings['currentEmail']['current'] = $emailAddress;
-        } else {
-            unset($settings['currentEmail']);
+        $currentEmailSetting = $this->getCurrentEmailSetting();
+        if (!empty($currentEmailSetting)) {
+            $settings['currentEmail'] = $currentEmailSetting;
         }
 
         return $settings;
@@ -104,28 +86,6 @@ class AzureOAuthSMTP extends SmtpOauthPluginBase
             gT("Currently not served over HTTPS"),
             gT("Instructions:"),
         ];
-    }
-
-    /**
-     * Redirects to the Azure's authorization page
-     */
-    public function redirectToAzure()
-    {
-        $oEvent = $this->event;
-        if ($oEvent->get('target') != $this->getName()) return;
-
-        $this->redirectToAuthPage();
-    }
-
-    /**
-     * Receives the response from Azure
-     */
-    public function receiveAzureResponse()
-    {
-        $event = $this->event;
-        if ($event->get('target') != $this->getName()) return;
-
-        $this->receiveOAuthResponse();
     }
 
     /**
@@ -161,7 +121,7 @@ class AzureOAuthSMTP extends SmtpOauthPluginBase
     {
         $event = $this->getEvent();
         $event->append('oauthplugins', [
-            'azure' => new SmtpOAuthPluginOption($this->getId(), gT("Azure"), get_class($this))
+            'azure' => $this->getOwnMetadata()
         ]);
     }
 
@@ -239,15 +199,6 @@ class AzureOAuthSMTP extends SmtpOauthPluginBase
         $event->set('from', $from);
     }
 
-    /**
-     * Override getRedirectUri to integrate parameters in the path.
-     * Azure doesn't support query parameters in the redirect URI.
-     */
-    protected function getRedirectUri()
-    {
-        return $this->api->createUrl("plugins/unsecure/plugin/{$this->getName()}", []);
-    }
-
     protected function afterRefreshTokenRetrieved($provider, $token)
     {
         $tokenValues = $token->getValues();
@@ -262,5 +213,21 @@ class AzureOAuthSMTP extends SmtpOauthPluginBase
         $decodedToken = json_decode(base64_decode($idTokenPayload));
         $email = $decodedToken->email;
         $this->set('email', $email);
+    }
+
+     /**
+     * @inheritdoc
+     */
+    protected function getProviderName()
+    {
+        return gT('Azure');
+    }
+
+    public function beforePrepareRedirectToAuthPage()
+    {
+        $event = $this->getEvent();
+        $event->set('width', 600);
+        $event->set('height', 700);
+        $event->set('providerName', $this->getProviderName());
     }
 }

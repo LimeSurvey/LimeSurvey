@@ -12,14 +12,14 @@ echo viewHelper::getViewTestTag('configurePlugin');
         <div class="col-12">
             <ul class="nav nav-tabs" id="settingTabs">
                 <li role="presentation" class="nav-item">
-                    <a class="nav-link <?= !$landOnSettings ? 'active' : '' ?>" role="tab" data-bs-toggle="tab" href='#overview'><?php eT("Overview"); ?></a>
+                    <a class="nav-link active" role="tab" data-bs-toggle="tab" href='#overview'><?php eT("Overview"); ?></a>
                 </li>
                 <li role="presentation">
-                    <a class="nav-link <?= $landOnSettings ? 'active' : '' ?>" role="tab" data-bs-toggle="tab" href='#settings'><?php eT("Settings"); ?></a>
+                    <a class="nav-link" role="tab" data-bs-toggle="tab" href='#settings'><?php eT("Settings"); ?></a>
                 </li>
             </ul>
             <div class="tab-content">
-                <div id="overview" class="tab-pane <?= !$landOnSettings ? 'show active' : '' ?>">
+                <div id="overview" class="tab-pane show active">
                     <?php $this->renderPartial(
                         './pluginmanager/overview',
                         [
@@ -32,7 +32,7 @@ echo viewHelper::getViewTestTag('configurePlugin');
                     ); ?>
                 </div>
 
-                <div id="settings" class="tab-pane <?= $landOnSettings ? 'show active' : '' ?>">
+                <div id="settings" class="tab-pane">
                     <?php if ($settings):
                         $this->widget(
                             'ext.SettingsWidget.SettingsWidget',

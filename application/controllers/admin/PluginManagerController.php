@@ -295,9 +295,8 @@ class PluginManagerController extends SurveyCommonAction
     /**
      * Configure for plugin
      * @param int $id
-     * @param string $tab Tab to show. Default is overview.
      */
-    public function configure($id, $tab = 'overview')
+    public function configure($id)
     {
         $url = $this->getController()->createUrl(
             '/admin/pluginmanager',
@@ -395,8 +394,7 @@ class PluginManagerController extends SurveyCommonAction
                 'plugin'       => $plugin,
                 'pluginObject' => $oPluginObject,
                 'properties'   => $aPluginProp,
-                'topbar' => $topbar,
-                'landOnSettings' => $tab == 'settings',
+                'topbar' => $topbar
             ]
         );
     }

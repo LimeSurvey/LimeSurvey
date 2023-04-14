@@ -1,7 +1,6 @@
 <?php
 
 use League\OAuth2\Client\Provider\Google;
-use LimeSurvey\Datavalueobjects\SmtpOAuthPluginOption;
 use LimeSurvey\PluginManager\SmtpOauthPluginBase;
 use PHPMailer\PHPMailer\PHPMailer;
 
@@ -30,29 +29,18 @@ class GoogleOAuthSMTP extends SmtpOauthPluginBase
             'type' => 'string',
             'label' => 'Client Secret',
         ],
-        'currentEmail' => [
-            'type' => 'string',
-            'label' => 'Saved Token Owner',
-            'htmlOptions' => [
-                'readonly' => true,
-            ],
-        ],
-        'information' => [
-            'type' => 'info',
-            'content' => '',
-        ],
     ];
 
     public function init()
     {
-        $this->subscribe('newUnsecureRequest', 'receiveGoogleResponse');
-        $this->subscribe('newDirectRequest', 'redirectToGoogle');
-
-        $this->subscribe('listSMTPOAuthPlugins');
         //$this->subscribe('afterSelectSMTPOAuthPlugin');
+        $this->subscribe('listSMTPOAuthPlugins');
+        $this->subscribe('afterSelectSMTPOAuthPlugin');
         $this->subscribe('newSMTPOAuthConfiguration');
+        $this->subscribe('beforeRedirectToAuthPage');
+        $this->subscribe('beforePrepareRedirectToAuthPage');
 
-        $this->subscribe('beforeEmail', 'beforeEmail');
+        $this->subscribe('beforeEmail');
         $this->subscribe('beforeSurveyEmail', 'beforeEmail');
         $this->subscribe('beforeTokenEmail', 'beforeEmail');
     }
@@ -67,15 +55,10 @@ class GoogleOAuthSMTP extends SmtpOauthPluginBase
         $settings['help']['content'] = $this->getHelpContent();
         $settings['clientId']['label'] = gT("Client ID");
         $settings['clientSecret']['label'] = gT("Client Secret");
-        $settings['information']['content'] = $this->getRefreshTokenInfo();
 
-        $emailAddress = $this->get('email');
-        if (!empty($emailAddress)) {
-            $settings['currentEmail']['label'] = gT('Saved Token Owner');
-            $settings['currentEmail']['help'] = gT('This is the email address used to create the current authentication token. Please note all emails will be sent from this address.');
-            $settings['currentEmail']['current'] = $emailAddress;
-        } else {
-            unset($settings['currentEmail']);
+        $currentEmailSetting = $this->getCurrentEmailSetting();
+        if (!empty($currentEmailSetting)) {
+            $settings['currentEmail'] = $currentEmailSetting;
         }
 
         return $settings;
@@ -111,28 +94,6 @@ class GoogleOAuthSMTP extends SmtpOauthPluginBase
     }
 
     /**
-     * Redirects to the Google's authorization page
-     */
-    public function redirectToGoogle()
-    {
-        $oEvent = $this->event;
-        if ($oEvent->get('target') != $this->getName()) return;
-
-        $this->redirectToAuthPage();
-    }
-
-    /**
-     * Receives the response from Google
-     */
-    public function receiveGoogleResponse()
-    {
-        $event = $this->event;
-        if ($event->get('target') != $this->getName()) return;
-
-        $this->receiveOAuthResponse();
-    }
-
-    /**
      * @inheritdoc
      */
     protected function getProvider($credentials)
@@ -164,18 +125,9 @@ class GoogleOAuthSMTP extends SmtpOauthPluginBase
     {
         $event = $this->getEvent();
         $event->append('oauthplugins', [
-            'google' => new SmtpOAuthPluginOption($this->getId(), gT("Google"), get_class($this))
+            'google' => $this->getOwnMetadata()
         ]);
     }
-
-    /**
-     * Handles the afterSelectSMTPOAuthPlugin event, triggered when the plugin
-     * is selected as the SMTP OAuth plugin in Global Settings
-     */
-    //public function afterSelectSMTPOAuthPlugin()
-    //{
-    //    
-    //}
 
     public function newSMTPOAuthConfiguration()
     {
@@ -242,5 +194,21 @@ class GoogleOAuthSMTP extends SmtpOauthPluginBase
         $limeMailer = $this->getEvent()->get('mailer');
         // Set "Reply To" because Gmail overrides the From/Sender with the logged user.
         $limeMailer->AddReplyTo($limeMailer->From, $limeMailer->FromName);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getProviderName()
+    {
+        return gT('Google');
+    }
+
+    public function beforePrepareRedirectToAuthPage()
+    {
+        $event = $this->getEvent();
+        $event->set('width', 600);
+        $event->set('height', 700);
+        $event->set('providerName', $this->getProviderName());
     }
 }

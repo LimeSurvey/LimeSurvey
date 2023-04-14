@@ -2,7 +2,7 @@
 
 namespace LimeSurvey\Datavalueobjects;
 
-class SmtpOAuthPluginOption
+class SmtpOAuthPluginMetadata
 {
     /** @var int */
     public $pluginId;

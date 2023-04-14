@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '7d00592f11342dabe2d781fcd7053d545cf27055',
+        'reference' => '8235147814a78ea8bea1b1ffd6a273d93fc1a263',
         'name' => '__root__',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '7d00592f11342dabe2d781fcd7053d545cf27055',
+            'reference' => '8235147814a78ea8bea1b1ffd6a273d93fc1a263',
             'dev_requirement' => false,
         ),
         'greew/oauth2-azure-provider' => array(

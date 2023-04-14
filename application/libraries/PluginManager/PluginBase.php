@@ -630,4 +630,13 @@ abstract class PluginBase implements iPlugin
         }
         \Yii::app()->getClientScript()->registerCssFile($cssToRegister);
     }
+
+    /**
+     * Returns a custom status text to show in plugin overview
+     * @return string|null
+     */
+    public function getStatusText()
+    {
+        return null;
+    }
 }

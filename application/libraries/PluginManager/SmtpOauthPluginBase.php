@@ -5,6 +5,7 @@ namespace LimeSurvey\PluginManager;
 use League\OAuth2\Client\Grant\RefreshToken;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use LimeMailer;
+use LimeSurvey\Datavalueobjects\SmtpOAuthPluginMetadata;
 
 abstract class SmtpOauthPluginBase extends PluginBase
 {
@@ -18,7 +19,7 @@ abstract class SmtpOauthPluginBase extends PluginBase
 
     protected function getRedirectUri()
     {
-        return $this->api->createUrl('plugins/unsecure', ['plugin' => $this->getName()]);
+        return $this->api->createUrl('smtpOAuth/receiveOAuthResponse', []);
     }
 
     /**
@@ -157,10 +158,10 @@ abstract class SmtpOauthPluginBase extends PluginBase
         foreach ($this->credentialAttributes as $attribute) {
             $credentials[$attribute] = $this->get($attribute);
         }
-        if (!$this->validateCredentials($credentials)) {
-            // TODO: Should we use a different exception class?
-            throw new \Exception("Incomplete OAuth settings");
-        }
+        //if (!$this->validateCredentials($credentials)) {
+        //    // TODO: Should we use a different exception class?
+        //    throw new \Exception("Incomplete OAuth settings");
+        //}
         return $credentials;
     }
 
@@ -179,7 +180,7 @@ abstract class SmtpOauthPluginBase extends PluginBase
                 break;
             }
         }
-        return $incomplete;
+        return !$incomplete;
     }
 
     /**
@@ -228,19 +229,17 @@ abstract class SmtpOauthPluginBase extends PluginBase
     }
 
     /**
-     * Redirects to the OAuth provider authorization page
+     * Default handler for beforeRedirectToAuthPage
      */
-    protected function redirectToAuthPage()
+    public function beforeRedirectToAuthPage()
     {
+        $event = $this->getEvent();
         $credentials = $this->getCredentials();
         $provider = $this->getProvider($credentials);
         $options = $this->getAuthorizationOptions();
         $authUrl = $provider->getAuthorizationUrl($options);
-
-        // Keep the 'state' in the session so we can later use it for validation.
-        \Yii::app()->session[self::getName() . '-state'] = $provider->getState();
-        header('Location: ' . $authUrl);
-        exit;
+        $event->set('authUrl', $authUrl);
+        $event->set('state', $provider->getState());
     }
 
     /**
@@ -293,49 +292,44 @@ abstract class SmtpOauthPluginBase extends PluginBase
     }
 
     /**
-     * Renders the contents of the "information" setting depending on
-     * settings and token validity.
-     * @return string
+     * @inheritdoc
      */
-    protected function getRefreshTokenInfo()
+    public function getStatusText()
     {
-        if (!$this->isActive()) {
-            return \Yii::app()->twigRenderer->renderPartial('/smtpOAuth/ErrorMessage.twig', [
-                'message' => gT("The plugin must be activated before finishing the configuration.")
-            ]);
+        if (!(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')) {
+            return $this->formatStatusText(gT("OAuth authentication requires the application to be served over HTTPS."), 'danger');
         }
 
-        if (!(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')) {
-            return \Yii::app()->twigRenderer->renderPartial('/smtpOAuth/ErrorMessage.twig', [
-                'message' => gT("OAuth authentication requires the application to be served over HTTPS.")
-            ]);
-        }
+        $getTokenUrl = $this->api->createUrl('smtpOAuth/prepareRefreshTokenRequest', ['plugin' => get_class($this)]);
+        $getTokenLink = ' <a href="' . $getTokenUrl . '">' . gT("Get new token") . '</a>';
 
         $setupStatus = $this->getSetupStatus();
-
-        $data = [
-            'tokenUrl' => $this->api->createUrl('smtpOAuth/prepareRefreshTokenRequest', ['plugin' => get_class($this)]),
-            'reloadUrl' => $this->getConfigUrl(),
-            'buttonCaption' => gT("Get token"),
-        ];
-
         switch ($setupStatus) {
             case self::SETUP_STATUS_INCOMPLETE_CREDENTIALS:
-                return \Yii::app()->twigRenderer->renderPartial('/smtpOAuth/IncompleteSettingsMessage.twig', []);
+                return $this->formatStatusText(gT("Currently saved credentials are incomplete."), 'danger');
             case self::SETUP_STATUS_MISSING_REFRESH_TOKEN:
-                $data['class'] = "warning";
-                $data['message'] = gT("Get token for currently saved Client ID and Secret.");
-                return \Yii::app()->twigRenderer->renderPartial('/smtpOAuth/GetTokenMessage.twig', $data);
+                return $this->formatStatusText(gT("No OAuth token.") . $getTokenLink, 'danger');
             case self::SETUP_STATUS_INVALID_REFRESH_TOKEN:
-                $data['class'] = "danger";
-                $data['message'] = gT("The saved token isn't valid. You need to get a new one.");
-                return \Yii::app()->twigRenderer->renderPartial('/smtpOAuth/GetTokenMessage.twig', $data);
+                return $this->formatStatusText(gT("The saved token isn't valid. You need to get a new one.") . $getTokenLink, 'danger');
             case self::SETUP_STATUS_VALID_REFRESH_TOKEN:
-                $data['class'] = "success";
-                $data['message'] = gT("Configuration is complete. If settings are changed, you will need to re-validate the credentials.");
-                $data['buttonCaption'] = gT("Replace token");
-                return \Yii::app()->twigRenderer->renderPartial('/smtpOAuth/GetTokenMessage.twig', $data);
+                return $this->formatStatusText(gT("Configuration is complete.") . $getTokenLink, 'success');
         }
+    }
+
+    protected function formatStatusText($statusText, $class = 'success')
+    {
+        switch ($class) {
+            case 'success':
+                $icon = '<span class="ri-check-fill text-success"></span> ';
+
+                break;
+            case 'danger':
+                $icon = '<span class="ri-close-circle-line text-danger"></span> ';
+                break;
+            default:
+                $icon = '';
+        }
+        return $icon . $statusText;
     }
 
     /**
@@ -348,5 +342,40 @@ abstract class SmtpOauthPluginBase extends PluginBase
             return false;
         }
         return get_class($this) == \Yii::app()->getConfig('emailoauthplugin');
+    }
+
+    /**
+     * Returns the setting definition to show the current email address
+     * @return array<string,mixed>|null
+     */
+    protected function getCurrentEmailSetting()
+    {
+        $emailAddress = $this->get('email');
+        if (!empty($emailAddress)) {
+            return [
+                'type' => 'string',
+                'label' => gT('Saved Token Owner'),
+                'help' => gT('This is the email address used to create the current authentication token. Please note all emails will be sent from this address.'),
+                'htmlOptions' => [
+                    'readonly' => true,
+                ],
+                'current' => $emailAddress,
+            ];
+        }
+    }
+
+    /**
+     * Returns the provider's name
+     * @return string
+     */
+    abstract protected function getProviderName();
+
+    /**
+     * Returns the plugin's metadata
+     * @return SmtpOAuthPluginMetadata
+     */
+    protected function getOwnMetadata()
+    {
+        return new SmtpOAuthPluginMetadata($this->getId(), $this->getProviderName(), get_class($this));
     }
 }
