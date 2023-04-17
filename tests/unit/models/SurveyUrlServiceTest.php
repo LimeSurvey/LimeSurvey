@@ -10,7 +10,7 @@ class SurveyUrlServiceTest extends \ls\tests\TestBaseClass
     {
         parent::setUpBeforeClass();
 
-        $surveyFile = self::$surveysFolder . '/limesurvey_survey_268886_testSurveyPermissions.lss';
+        $surveyFile = self::$surveysFolder . '/limesurvey_survey_931272_SurveyUrl.lss';
         self::importSurvey($surveyFile);
 
     }
@@ -20,8 +20,11 @@ class SurveyUrlServiceTest extends \ls\tests\TestBaseClass
         parent::tearDownAfterClass();
     }
 
-    public function testAliasUrl(){
-        self::assertEquals(5,5);
+    public function testSurveyUrl(){
+        $surveyURlService = new SurveyUrl('en',[],false);
+        $url = $surveyURlService->getUrl(931272, self::$testSurvey->languagesettings);
+        $sPublicUrl = \Yii::app()->getConfig("publicurl");
+        self::assertEquals('survey_url', $url);
     }
 
     /*
