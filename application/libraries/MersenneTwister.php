@@ -148,7 +148,7 @@ class MersenneTwister
     public function getNext($min = null, $max = null)
     {
         if (($min === null && $max !== null) || ($min !== null && $max === null)) {
-                    throw new Exception('Invalid arguments');
+            throw new \Exception('Invalid arguments');
         }
 
         if ($this->index === 0) {
