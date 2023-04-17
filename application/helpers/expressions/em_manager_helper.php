@@ -2901,7 +2901,7 @@ class LimeExpressionManager
                     $qtips['default'] = $this->gT('Choose one of the following answers');
                     break;
                 case Question::QT_M_MULTIPLE_CHOICE:
-                    $qtips['default'] = $this->gT('Check any that apply');
+                    $qtips['default'] = $this->gT('Select all that apply');
                     break;
                 case Question::QT_N_NUMERICAL:
                     $qtips['default'] = $this->gT("Only numbers may be entered in this field.");

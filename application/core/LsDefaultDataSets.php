@@ -1848,7 +1848,7 @@ class LsDefaultDataSets
         ];
     }
 
-    static function getBaseLabelSets($language = 'en')
+    public static function getBaseLabelSets($language = 'en')
     {
         $sOldLanguage = App()->language;
         Yii::app()->setLanguage($language);
@@ -2827,8 +2827,7 @@ class LsDefaultDataSets
             gT("Select font:"),
             gT("Select variation:"),
             gT("Fruity fonts"),
-            gT("Fruity variations"),
-            gt("Select all that apply") // This string will replace 'Check any that apply' later 
+            gT("Fruity variations")
         ];
     }
 
