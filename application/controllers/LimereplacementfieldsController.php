@@ -325,8 +325,8 @@ class LimeReplacementFieldsController extends LSBaseController
             $replFields['GLOBALOPTINURL'] = gT("Participant - Central participant DB opt-in URL");
             $replFields['FIRSTNAME'] = gT("Participant - First name");
             $replFields['LASTNAME'] = gT("Participant - Last name");
-            $replFields['VALIDFROM'] = gT("Participant - The date the token is valid from");
-            $replFields['VALIDUNTIL'] = gT("Participant - The date the token is valid until");
+            $replFields['VALIDFROM'] = gT("Participant - The date from which the token is valid");
+            $replFields['VALIDUNTIL'] = gT("Participant - The date until which the token is valid");
             $replFields['SURVEYNAME'] = gT("Survey title");
             $replFields['SID'] = gT("Survey ID");
             $replFields['SURVEYDESCRIPTION'] = gT("Survey description");
