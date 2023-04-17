@@ -301,6 +301,8 @@ function file_validation_message($ia)
 // TMSW Validation -> EM
 function mandatory_popup($ia, $notanswered = null)
 {
+    global $mandatorypopup, $popup;
+
     //This sets the mandatory popup message to show if required
     //Called from question.php, group.php or survey.php
     if ($notanswered === null) {
@@ -308,7 +310,6 @@ function mandatory_popup($ia, $notanswered = null)
     }
     if (isset($notanswered) && is_array($notanswered)) {
         //ADD WARNINGS TO QUESTIONS IF THEY WERE MANDATORY BUT NOT ANSWERED
-        global $mandatorypopup, $popup;
         //POPUP WARNING
         // If there is no "hard" mandatory violation (both current and previous violations belong to Soft Mandatory questions),
         // we show the soft mandatory message.
@@ -332,6 +333,7 @@ function mandatory_popup($ia, $notanswered = null)
 // TMSW Validation -> EM
 function validation_popup($ia, $notvalidated = null)
 {
+    global $validationpopup, $vpopup;
     //This sets the validation popup message to show if required
     //Called from question.php, group.php or survey.php
     if ($notvalidated === null) {
@@ -339,7 +341,6 @@ function validation_popup($ia, $notvalidated = null)
     }
     if (isset($notvalidated) && is_array($notvalidated)) {
         //ADD WARNINGS TO QUESTIONS IF THEY ARE NOT VALID
-        global $validationpopup, $vpopup;
         //POPUP WARNING
         if (!isset($validationpopup)) {
             $vpopup = gT("One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid.");
@@ -357,11 +358,11 @@ function validation_popup($ia, $notvalidated = null)
 */
 function file_validation_popup($ia, $filenotvalidated = null)
 {
+    global $filevalidationpopup, $fpopup;
     if ($filenotvalidated === null) {
         unset($filenotvalidated);
     }
     if (isset($filenotvalidated) && is_array($filenotvalidated)) {
-        global $filevalidationpopup, $fpopup;
 
         if (!isset($filevalidationpopup)) {
             $fpopup = gT("One or more file have either exceeded the filesize/are not in the right format or the minimum number of required files have not been uploaded. You cannot proceed until these have been completed");
@@ -380,6 +381,7 @@ function file_validation_popup($ia, $filenotvalidated = null)
 function return_timer_script($aQuestionAttributes, $ia, $disable = null)
 {
     global $thissurvey;
+    global $gid;
 
     Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts") . 'coookies.js', CClientScript::POS_BEGIN);
     Yii::app()->getClientScript()->registerPackage('timer-addition');
@@ -443,7 +445,6 @@ function return_timer_script($aQuestionAttributes, $ia, $disable = null)
     if ($thissurvey['timercount'] < 2) {
         $iAction = '';
         if (isset($thissurvey['format']) && $thissurvey['format'] == "G") {
-            global $gid;
             $qcount = 0;
             foreach ($_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['fieldarray'] as $ib) {
                 if ($ib[5] == $gid) {
