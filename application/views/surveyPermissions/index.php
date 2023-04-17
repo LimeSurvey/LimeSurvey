@@ -131,7 +131,7 @@
                         'htmlOptions'       => ['class' => 'd-none d-sm-table-cell'],
                     ],
                     [
-                        'header' => gT('User Group'),
+                        'header' => gT('User group'),
                         'type'   => 'raw',
                         'value'  => function ($data) use ($oSurveyPermissions) {
                             $groupsStr = $oSurveyPermissions->getUserGroupNames($data->uid,
@@ -143,7 +143,7 @@
                         'htmlOptions'       => ['class' => 'd-none d-sm-table-cell '],
                     ],
                     [
-                        'header'            => gT('Full Name'),
+                        'header'            => gT('Full name'),
                         'name'              => 'full_name',
                         'type'              => 'raw',
                         'value'             => '$data->user->full_name',
