@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2023-04-17 15:17:20+00:00\n"
+"POT-Creation-Date: 2023-04-17 16:03:11+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -3542,6 +3542,7 @@ msgstr ""
 #: application/views/homepageSettings/index.php:90
 #: application/views/surveyPermissions/_overview_table.php:14
 #: application/views/surveyPermissions/index.php:59
+#: application/views/surveyPermissions/index.php:134
 msgid "User group"
 msgstr ""
 
@@ -6070,19 +6071,19 @@ msgid "Theme %s does not exist."
 msgstr ""
 
 #: application/controllers/admin/Themes.php:558
-msgid "Undo (ctrl + Z)"
+msgid "Undo (Ctrl-Z)"
 msgstr ""
 
 #: application/controllers/admin/Themes.php:559
-msgid "Redo (ctrl + Y)"
+msgid "Redo (Ctrl-Y)"
 msgstr ""
 
 #: application/controllers/admin/Themes.php:560
-msgid "Find (ctrl + F)"
+msgid "Find (Ctrl-F)"
 msgstr ""
 
 #: application/controllers/admin/Themes.php:561
-msgid "Replace (ctrl + H)"
+msgid "Replace (Ctrl-H)"
 msgstr ""
 
 #: application/controllers/admin/Themes.php:581
@@ -8795,6 +8796,7 @@ msgstr ""
 #: application/views/SurveysGroupsPermission/subviews/currentUsersList.php:9
 #: application/views/admin/user/modifyuser.php:45
 #: application/views/surveyPermissions/_overview_table.php:15
+#: application/views/surveyPermissions/index.php:146
 msgid "Full name"
 msgstr ""
 
@@ -14305,8 +14307,16 @@ msgstr ""
 msgid "Use internal database authentication"
 msgstr ""
 
-#: application/models/Permission.php:654
-msgid "Edit Permissioin"
+#: application/models/Permission.php:654 application/models/User.php:495
+#: application/views/SurveysGroupsPermission/subviews/currentUsersList.php:22
+#: application/views/SurveysGroupsPermission/subviews/currentUsersList.php:23
+#: application/views/surveyPermissions/_overview_table.php:37
+#: application/views/userManagement/massiveAction/_selector.php:50
+#: application/views/userManagement/massiveAction/_selector.php:59
+#: application/views/userManagement/partial/editpermissions.php:4
+#: application/views/userRole/massiveAction/_updatepermissions.php:23
+#: application/views/userRole/partials/_permissions.php:8
+msgid "Edit permissions"
 msgstr ""
 
 #: application/models/Permission.php:675
@@ -15738,19 +15748,8 @@ msgid "At least %d special character.|At least %d special characters."
 msgstr ""
 
 #: application/models/User.php:473
+#: application/views/userManagement/partial/showuser.php:4
 msgid "User details"
-msgstr ""
-
-#: application/models/User.php:495
-#: application/views/SurveysGroupsPermission/subviews/currentUsersList.php:22
-#: application/views/SurveysGroupsPermission/subviews/currentUsersList.php:23
-#: application/views/surveyPermissions/_overview_table.php:37
-#: application/views/userManagement/massiveAction/_selector.php:50
-#: application/views/userManagement/massiveAction/_selector.php:59
-#: application/views/userManagement/partial/editpermissions.php:4
-#: application/views/userRole/massiveAction/_updatepermissions.php:23
-#: application/views/userRole/partials/_permissions.php:8
-msgid "Edit permissions"
 msgstr ""
 
 #: application/models/User.php:519
@@ -24328,14 +24327,6 @@ msgstr ""
 msgid "No file selected"
 msgstr ""
 
-#: application/views/surveyPermissions/index.php:134
-msgid "User Group"
-msgstr ""
-
-#: application/views/surveyPermissions/index.php:146
-msgid "Full Name"
-msgstr ""
-
 #: application/views/surveyPermissions/settingsPermission.php:19
 msgid "Edit survey permissions for usergroup %s"
 msgstr ""
@@ -24686,10 +24677,6 @@ msgstr ""
 
 #: application/views/userManagement/partial/importuser.php:43
 msgid "Select %s file:"
-msgstr ""
-
-#: application/views/userManagement/partial/showuser.php:4
-msgid "User detail"
 msgstr ""
 
 #: application/views/userManagement/partial/showuser.php:11
