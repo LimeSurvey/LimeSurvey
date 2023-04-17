@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2023-04-17 16:15:35+00:00\n"
+"POT-Creation-Date: 2023-04-17 16:34:45+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -879,7 +879,7 @@ msgstr ""
 #: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:211
 #: application/views/admin/dataentry/vvimport.php:28
 #: application/views/admin/export/exportresult_panels/_general.php:4
-#: application/views/admin/globalsettings/globalSettings_view.php:30
+#: application/views/admin/globalsettings/globalSettings_view.php:18
 #: application/views/admin/survey/Question/massive_actions/_selector.php:30
 #: application/views/admin/token/massive_actions/_update.php:21
 #: application/views/admin/token/tokenform.php:52
@@ -887,7 +887,7 @@ msgstr ""
 #: application/views/userManagement/partial/editpermissions.php:16
 #: application/views/userRole/massiveAction/_updatepermissions.php:31
 #: application/views/userRole/partials/_permissions.php:28
-#: modules/admin/globalsettings/views/globalSettings_view.php:36
+#: modules/admin/globalsettings/views/globalSettings_view.php:23
 msgid "General"
 msgstr ""
 
@@ -7039,9 +7039,9 @@ msgstr ""
 
 #: application/core/LsDefaultDataSets.php:25
 #: application/views/admin/globalsettings/_storage_ajax.php:10
-#: application/views/admin/globalsettings/globalSettings_view.php:29
+#: application/views/admin/globalsettings/globalSettings_view.php:17
 #: application/views/admin/pluginmanager/configure.php:15
-#: modules/admin/globalsettings/views/globalSettings_view.php:35
+#: modules/admin/globalsettings/views/globalSettings_view.php:22
 msgid "Overview"
 msgstr ""
 
@@ -7101,8 +7101,8 @@ msgid "Presentation & navigation settings"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:165
-#: application/views/admin/globalsettings/globalSettings_view.php:35
-#: modules/admin/globalsettings/views/globalSettings_view.php:41
+#: application/views/admin/globalsettings/globalSettings_view.php:23
+#: modules/admin/globalsettings/views/globalSettings_view.php:28
 msgid "Presentation"
 msgstr ""
 
@@ -7514,7 +7514,7 @@ msgid "Label sets"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:949
-msgid "Label sets are templayes which can be loaded in most question types to speed up."
+msgid "Label sets can be used as answer options or subquestions to speed up creation of similar questions."
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:958
@@ -13915,9 +13915,9 @@ msgstr ""
 #: application/models/TokenDynamic.php:673 application/models/User.php:135
 #: application/views/admin/authentication/ajaxLogin.php:80
 #: application/views/admin/authentication/login.php:95
-#: application/views/admin/globalsettings/globalSettings_view.php:36
+#: application/views/admin/globalsettings/globalSettings_view.php:24
 #: application/views/admin/token/dummytokenform.php:67
-#: modules/admin/globalsettings/views/globalSettings_view.php:42
+#: modules/admin/globalsettings/views/globalSettings_view.php:29
 msgid "Language"
 msgstr ""
 
@@ -15466,7 +15466,7 @@ msgid "Current group is disabled"
 msgstr ""
 
 #: application/models/TemplateManifest.php:417
-msgid "Error-Title"
+msgid "Error title"
 msgstr ""
 
 #: application/models/TemplateManifest.php:418
@@ -18074,45 +18074,40 @@ msgstr ""
 msgid "Admin email template:"
 msgstr ""
 
-#: application/views/admin/globalsettings/globalSettings_view.php:16
-#: modules/admin/globalsettings/views/globalSettings_view.php:21
-msgid "this view is rendered from global setting module. This message is shown only when debug mode is on"
-msgstr ""
-
-#: application/views/admin/globalsettings/globalSettings_view.php:25
-#: modules/admin/globalsettings/views/globalSettings_view.php:31
+#: application/views/admin/globalsettings/globalSettings_view.php:13
+#: modules/admin/globalsettings/views/globalSettings_view.php:18
 msgid "You can't remove the default language."
 msgstr ""
 
-#: application/views/admin/globalsettings/globalSettings_view.php:31
-#: modules/admin/globalsettings/views/globalSettings_view.php:37
+#: application/views/admin/globalsettings/globalSettings_view.php:19
+#: modules/admin/globalsettings/views/globalSettings_view.php:24
 msgid "Email settings"
 msgstr ""
 
-#: application/views/admin/globalsettings/globalSettings_view.php:32
+#: application/views/admin/globalsettings/globalSettings_view.php:20
 #: application/views/admin/token/bounce.php:2
 #: application/views/surveyAdministration/partial/topbar_tokens/tokensInvRemDropdownItems.php:65
-#: modules/admin/globalsettings/views/globalSettings_view.php:38
+#: modules/admin/globalsettings/views/globalSettings_view.php:25
 msgid "Bounce settings"
 msgstr ""
 
-#: application/views/admin/globalsettings/globalSettings_view.php:33
-#: modules/admin/globalsettings/views/globalSettings_view.php:39
+#: application/views/admin/globalsettings/globalSettings_view.php:21
+#: modules/admin/globalsettings/views/globalSettings_view.php:26
 msgid "Security"
 msgstr ""
 
-#: application/views/admin/globalsettings/globalSettings_view.php:34
-#: modules/admin/globalsettings/views/globalSettings_view.php:40
+#: application/views/admin/globalsettings/globalSettings_view.php:22
+#: modules/admin/globalsettings/views/globalSettings_view.php:27
 msgid "User administration"
 msgstr ""
 
-#: application/views/admin/globalsettings/globalSettings_view.php:37
-#: modules/admin/globalsettings/views/globalSettings_view.php:43
+#: application/views/admin/globalsettings/globalSettings_view.php:25
+#: modules/admin/globalsettings/views/globalSettings_view.php:30
 msgid "Interfaces"
 msgstr ""
 
-#: application/views/admin/globalsettings/globalSettings_view.php:38
-#: modules/admin/globalsettings/views/globalSettings_view.php:44
+#: application/views/admin/globalsettings/globalSettings_view.php:26
+#: modules/admin/globalsettings/views/globalSettings_view.php:31
 msgid "Storage"
 msgstr ""
 
