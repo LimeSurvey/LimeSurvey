@@ -946,7 +946,7 @@ class LsDefaultDataSets
                           'url'        => 'admin/labels/sa/view',
                           'title'      => gT('Label sets'),
                           'ico'        => 'ri-price-tag-3-line',
-                          'desc'       => gT('Label sets are templayes which can be loaded in most question types to speed up.'),
+                          'desc'       => gT('Label sets can be used as answer options or subquestions to speed up creation of similar questions.'),
                           'page'       => 'welcome',
                           'usergroup'  => '-2',
                           'buttontext' => 'Edit label sets'
