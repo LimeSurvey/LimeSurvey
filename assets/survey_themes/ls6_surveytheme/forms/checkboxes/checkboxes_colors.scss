@@ -1,0 +1,30 @@
+$input-border-color : $g-700;
+
+.checkbox-item input[type="checkbox"]:checked + label {
+    color: $base-color;
+}
+
+.checkbox-item label::before {
+    border           : 3px solid $input-border-color;
+    background-color : #fff;
+}
+
+.checkbox-item input[type="checkbox"]:checked + label::before {
+    border-color : $base-color;
+}
+
+.checkbox-item input[type="checkbox"]:checked + label::after {
+    background-color : transparent;
+    color            : $base-color;
+}
+
+input[type="checkbox"]:checked:after,
+.checkbox input[type="checkbox"]:checked:after,
+.checkbox-inline input[type="checkbox"]:checked:after {
+    background-color : $base-color;
+    border-color     : $base-color;
+}
+
+.checkbox-item input[type="checkbox"]:focus + label::before {
+    outline: none;
+}

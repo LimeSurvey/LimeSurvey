@@ -62,24 +62,11 @@ fieldset[disabled] {
     }
 }
 
-input[type="checkbox"]:checked:after,
-.checkbox input[type="checkbox"]:checked:after,
-.checkbox-inline input[type="checkbox"]:checked:after {
-    background-color : $base-color;
-    border-color     : $base-color;
-}
-
 input[type="password"],
 .ui-autocomplete-input,
 textarea,
 .uneditable-input {
     color : $color_storm_dust_approx;
-}
-
-.checkbox-item input[type="checkbox"]:checked + label::after,
-.checkbox-item input[type="radio"]:checked + label::after {
-    background-color : $base-color;
-    color            : $white;
 }
 
 // input error

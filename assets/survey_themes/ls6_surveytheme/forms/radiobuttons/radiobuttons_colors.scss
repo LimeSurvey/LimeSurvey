@@ -166,3 +166,6 @@ input[type="radio"] .styled:checked + label::after {
 .radio-item input[type="radio"]:checked + label::after {
     background-color: $base-color;
 }
+.checkbox-item input[type="radio"]:focus + label::before {
+    outline: none;
+}

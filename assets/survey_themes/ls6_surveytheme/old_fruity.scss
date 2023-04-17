@@ -564,26 +564,15 @@ p.return-to-survey{
     border: none;
 }
 
-body .checkbox-item label::after {
-    background-color: transparent;
-}
-
 /* aligns navigator buttons with question borders */
 #navigator-container > div {
     padding: 0px;
 }
 
 
-/* Remove borders when checkbox is checked */
-.checkbox-item input[type="checkbox"]:checked + label::before{
-    border: none;
-    background-color: transparent;
-    outline: none;
-}
-
-.radio-item input[type="radio"]:focus + label::before, input[type="radio"]:focus, input[type="checkbox"]:focus{
-    outline: none;
-}
+//.radio-item input[type="radio"]:focus + label::before, input[type="radio"]:focus, input[type="checkbox"]:focus{
+//    outline: none;
+//}
 
 .limit-text-window {
     max-height: 40rem;

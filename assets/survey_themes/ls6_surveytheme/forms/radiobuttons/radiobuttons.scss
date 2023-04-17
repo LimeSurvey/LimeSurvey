@@ -228,9 +228,7 @@ li.radio-item {
     top:0;
 }
 .radio-item input[type="radio"]:focus + label::before {
-    outline: thin dotted;
-    outline: 5px auto -webkit-focus-ring-color;
-    outline-offset: -2px;
+    outline: none;
 }
 .radio-item input[type="radio"]:checked + label::after {
     -webkit-transform: scale(1, 1);

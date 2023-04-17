@@ -49,6 +49,7 @@ return array(
             'jquery',
             'expressions',
             'fontawesome',
+            'remix',
         )
     ),
 
