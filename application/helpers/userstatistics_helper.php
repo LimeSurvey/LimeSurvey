@@ -2369,10 +2369,6 @@ class userstatistics_helper
                 $cachefilename = createChart($qqid, $qsid, $bShowPieChart, $lbl, $gdata, $grawdata, $MyCache, $sLanguage, $outputs['qtype']);
                 if ($cachefilename) {
                     // Add the image only if constructed
-                    //introduce new counter
-                    if (!isset($ci)) {
-                        $ci = 0;
-                    }
 
                     switch ($outputType) {
                         case 'xls':
@@ -2722,8 +2718,6 @@ class userstatistics_helper
         //browse these results
         if (isset($selects) && $selects) {
             $sql = implode(" AND ", $selects);
-        } elseif (!empty($newsql)) {
-            $sql = $newsql;
         }
 
         if (!isset($sql) || !$sql) {
