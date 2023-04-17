@@ -238,12 +238,6 @@ body {
   margin: 0 auto;
 }
 
-.radio-list li {
-  display: block;
-  clear: both;
-  margin-right: 3rem;
-}
-
 .question-item .other-label {
   margin: 0px;
   padding: 0px;
@@ -1619,7 +1613,7 @@ li.radio-item {
   display: inline-block;
   vertical-align: middle;
   position: relative;
-  padding-left: 16px;
+  padding-left: 8px;
 }
 
 .radio-item label::before {
@@ -1715,6 +1709,12 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
     margin-right: -18px !important;
   }
 }
+.radio-list .radio-item {
+  display: block;
+  clear: both;
+  margin-right: 3rem;
+}
+
 .table > tbody > tr > th {
   vertical-align: middle;
 }
