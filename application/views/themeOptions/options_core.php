@@ -135,7 +135,7 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
                             $sParentLabelOption = $options[$sParentOption];
                             $options['inherit'] = gT($sParentLabelOption) . " ᴵ";
                         } else {
-                            $sParentOption = $sParentOption !== '' ? gT($sParentOption) : $sParentOption;
+                            $sParentOption = ! empty($options[$sParentOption]) ? gT($options[$sParentOption]) : '';
                             $options['inherit'] = $sParentOption . " ᴵ";
                         }
                     }

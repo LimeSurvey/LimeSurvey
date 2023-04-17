@@ -119,7 +119,8 @@ $this->widget(
             ),
         'columns' => $gridColumns,
         'rowHtmlOptionsExpression' => 'array("data-id" => $data["id"])',
-        'ajaxUpdate' => 'plugins-grid'
+        'ajaxUpdate' => 'plugins-grid',
+        'lsAfterAjaxUpdate'          => []
     ]
 );
 
