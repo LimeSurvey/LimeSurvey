@@ -361,6 +361,10 @@ class GlobalSettings extends SurveyCommonAction
         if ($emailMethod == LimeMailer::MethodOAuth2Smtp && $oldOauth2Plugin != $oauth2Plugin) {
             $event = new PluginEvent('afterSelectSMTPOAuthPlugin', $this);
             Yii::app()->getPluginManager()->dispatchEvent($event, $oauth2Plugin);
+            $oauth2PluginWarning = $event->get('warning');
+            if (!empty($oauth2PluginWarning)) {
+                $warning .= $oauth2PluginWarning . '<br/>';
+            }
         }
 
         // make sure emails are valid before saving them

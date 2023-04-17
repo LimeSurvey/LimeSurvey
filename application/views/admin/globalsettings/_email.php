@@ -96,8 +96,8 @@
                 <select class="form-select" name="emailoauthplugin" id="emailoauthplugin" <?= (Yii::app()->getConfig('emailmethod') == LimeMailer::MethodOAuth2Smtp) ? '' : 'disabled' ?>>
                     <option value=''><?php eT("None"); ?></option>
                     <?php if (!empty($smtpOAuthPlugins)): ?>
-                        <?php foreach ($smtpOAuthPlugins as $oauthPluginClass => $oauthPluginDetails): ?>
-                            <option value='<?= $oauthPluginClass ?>' <?= ($oauthPluginClass == Yii::app()->getConfig('emailoauthplugin')) ? "selected='selected'" : "" ?>>
+                        <?php foreach ($smtpOAuthPlugins as $oauthPluginDetails): ?>
+                            <option value='<?= $oauthPluginDetails->class ?>' <?= ($oauthPluginDetails->class == Yii::app()->getConfig('emailoauthplugin')) ? "selected='selected'" : "" ?>>
                                 <?= $oauthPluginDetails->name ?>
                             </option>
                         <?php endforeach; ?>

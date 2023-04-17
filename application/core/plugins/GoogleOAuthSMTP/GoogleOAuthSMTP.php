@@ -33,13 +33,12 @@ class GoogleOAuthSMTP extends SmtpOauthPluginBase
 
     public function init()
     {
-        //$this->subscribe('afterSelectSMTPOAuthPlugin');
         $this->subscribe('listSMTPOAuthPlugins');
         $this->subscribe('afterSelectSMTPOAuthPlugin');
         $this->subscribe('newSMTPOAuthInitialization');
-        $this->subscribe('beforeRedirectToAuthPage');
         $this->subscribe('beforePrepareRedirectToAuthPage');
-        $this->subscribe('afterReceiveOAuthResponse');
+        $this->subscribe('beforeRedirectToAuthPage');   // Handler defined in SmtpOauthPluginBase
+        $this->subscribe('afterReceiveOAuthResponse');  // Handler defined in SmtpOauthPluginBase
 
         $this->subscribe('beforeEmail');
         $this->subscribe('beforeSurveyEmail', 'beforeEmail');
@@ -130,6 +129,9 @@ class GoogleOAuthSMTP extends SmtpOauthPluginBase
         ]);
     }
 
+    /**
+     * Handles the newSMTPOAuthInitialization event, triggered during LimeMailer initialization
+     */
     public function newSMTPOAuthInitialization()
     {
         try {
@@ -168,6 +170,19 @@ class GoogleOAuthSMTP extends SmtpOauthPluginBase
         $limeMailer->Host = 'smtp.gmail.com';
         $limeMailer->Port = 465;
         $limeMailer->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+    }
+
+    /**
+     * Handles the afterSelectSMTPOAuthPlugin event, triggered when the plugin
+     * is selected as the SMTP OAuth plugin in Global Settings
+     */
+    public function afterSelectSMTPOAuthPlugin()
+    {
+        $setupStatus = $this->getSetupStatus();
+        if ($setupStatus !== self::SETUP_STATUS_VALID_REFRESH_TOKEN) {
+            $event = $this->getEvent();
+            $event->set('warning', sprintf(gT("The %s plugin is not configured correctly. Please check the plugin settings."), self::getName()));
+        }
     }
 
     /**

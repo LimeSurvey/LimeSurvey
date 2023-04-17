@@ -9,11 +9,11 @@ use LimeSurvey\Datavalueobjects\SmtpOAuthPluginInfo;
 
 abstract class SmtpOauthPluginBase extends PluginBase
 {
-    const SETUP_STATUS_VALID_REFRESH_TOKEN = 0;
-    const SETUP_STATUS_REQUIREMENT_UNMET = 1;
-    const SETUP_STATUS_INCOMPLETE_CREDENTIALS = 2;
-    const SETUP_STATUS_MISSING_REFRESH_TOKEN = 3;
-    const SETUP_STATUS_INVALID_REFRESH_TOKEN = 4;
+    const SETUP_STATUS_VALID_REFRESH_TOKEN = 1;
+    const SETUP_STATUS_REQUIREMENT_UNMET = 2;
+    const SETUP_STATUS_INCOMPLETE_CREDENTIALS = 3;
+    const SETUP_STATUS_MISSING_REFRESH_TOKEN = 4;
+    const SETUP_STATUS_INVALID_REFRESH_TOKEN = 5;
 
     /** @var string[] The names of attributes that form part of the credentials set. Example: ['clientId', 'clientSecret'] */
     protected $credentialAttributes = [];
@@ -228,14 +228,6 @@ abstract class SmtpOauthPluginBase extends PluginBase
     }
 
     /**
-     * Handles the afterSelectSMTPOAuthPlugin event, triggered when the plugin
-     * is selected as the SMTP OAuth plugin in Global Settings
-     */
-    public function afterSelectSMTPOAuthPlugin()
-    {
-    }
-
-    /**
      * Returns the setup status of the plugin.
      */
     protected function getSetupStatus()
@@ -320,9 +312,9 @@ abstract class SmtpOauthPluginBase extends PluginBase
         $statusText = $this->getHealthStatusIcon($statusClass) . " " . $this->getSetupStatusDescription($setupStatus);
 
         if (
-            $setupStatus == self::SETUP_STATUS_MISSING_REFRESH_TOKEN
-            || $setupStatus == self::SETUP_STATUS_INVALID_REFRESH_TOKEN
-            || $setupStatus == self::SETUP_STATUS_VALID_REFRESH_TOKEN
+            $setupStatus === self::SETUP_STATUS_MISSING_REFRESH_TOKEN
+            || $setupStatus === self::SETUP_STATUS_INVALID_REFRESH_TOKEN
+            || $setupStatus === self::SETUP_STATUS_VALID_REFRESH_TOKEN
         ) {
             $getTokenUrl = $this->api->createUrl('smtpOAuth/prepareRefreshTokenRequest', ['plugin' => get_class($this)]);
             $getTokenLink = ' <a href="' . $getTokenUrl . '">' . gT("Get new token") . '</a>';
@@ -422,7 +414,7 @@ abstract class SmtpOauthPluginBase extends PluginBase
         $setupStatus = $this->getSetupStatus();
 
         // Don't show alert for successful setup
-        if ($setupStatus == self::SETUP_STATUS_VALID_REFRESH_TOKEN) {
+        if ($setupStatus === self::SETUP_STATUS_VALID_REFRESH_TOKEN) {
             return '';
         }
 
