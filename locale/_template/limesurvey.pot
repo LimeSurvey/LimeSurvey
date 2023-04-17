@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2023-04-17 16:03:11+00:00\n"
+"POT-Creation-Date: 2023-04-17 16:15:35+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -4189,7 +4189,6 @@ msgstr ""
 #: application/controllers/admin/ConditionsAction.php:428
 #: application/controllers/admin/PrintableSurvey.php:197
 #: application/controllers/admin/PrintableSurvey.php:435
-#: application/views/surveyAdministration/_inherit_sub_footer.php:13
 msgid "or"
 msgstr ""
 
@@ -23810,43 +23809,11 @@ msgid "Back to survey home"
 msgstr ""
 
 #: application/views/surveyAdministration/_inherit_sub_footer.php:11
-msgid " Inherited settings come from your"
-msgstr ""
-
-#: application/views/surveyAdministration/_inherit_sub_footer.php:13
-msgid "global settings"
-msgstr ""
-
-#: application/views/surveyAdministration/_inherit_sub_footer.php:14
-msgid "survey group"
-msgstr ""
-
-#: application/views/surveyAdministration/_inherit_sub_footer.php:15
-msgid "Click"
-msgstr ""
-
-#: application/views/surveyAdministration/_inherit_sub_footer.php:15
-msgid "here"
-msgstr ""
-
-#: application/views/surveyAdministration/_inherit_sub_footer.php:15
-msgid "for more information about inherited settings."
+msgid "Inherited settings come from your %sglobal settings%s or %ssurvey group%s. Click %shere%s for more information about inherited settings."
 msgstr ""
 
 #: application/views/surveyAdministration/_user_management_sub_footer.php:10
-msgid " Go to"
-msgstr ""
-
-#: application/views/surveyAdministration/_user_management_sub_footer.php:12
-msgid " global user management "
-msgstr ""
-
-#: application/views/surveyAdministration/_user_management_sub_footer.php:12
-msgid "for general user management (add/edit/delete general users)."
-msgstr ""
-
-#: application/views/surveyAdministration/_user_management_sub_footer.php:13
-msgid "If you don't have permission please contact your administrator."
+msgid "Go to %sglobal user management%s for general user management (add/edit/delete general users). %sIf you don't have permission please contact your administrator.%s"
 msgstr ""
 
 #: application/views/surveyAdministration/activateSurvey_view.php:12
