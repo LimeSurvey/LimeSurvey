@@ -16,7 +16,7 @@ Yii::app()->getController()->renderPartial(
             <div class="col-sm-8"><?=$oUser->parentUser['full_name']?></div>
         </div>
         <div class="row list-group-item">
-            <div class="col-sm-4"><?=gT('Survey owned')?>:</div>
+            <div class="col-sm-4"><?=gT('Surveys owned')?>:</div>
             <div class="col-sm-8"><?=$oUser->surveysCreated?></div>
         </div>
         <div class="row list-group-item">
