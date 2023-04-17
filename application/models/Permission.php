@@ -649,9 +649,11 @@ class Permission extends LSActiveRecord
 
     public function getButtons(): string
     {
-        $setPermissionsUrl = App()->getController()->createUrl('surveyPermissions/settingsPermissions', 
-                                 ['id' => $this->uid, 'action' => 'user','surveyid' => $this->entity_id,]);
-       
+        $setPermissionsUrl = App()->getController()->createUrl(
+            'surveyPermissions/settingsPermissions',
+            ['id' => $this->uid, 'action' => 'user','surveyid' => $this->entity_id,]
+        );
+
         $dropdownItems = [];
 
         $dropdownItems[] = [
