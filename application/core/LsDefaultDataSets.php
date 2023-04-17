@@ -913,7 +913,7 @@ class LsDefaultDataSets
                           'desc'       => gT('Create a new survey from scratch. Or simply copy or import an existing survey.'),
                           'page'       => 'welcome',
                           'usergroup'  => '-2',
-                          'buttontext' => 'Create survey'
+                          'buttontext' => gt('Create survey')
         ];
         $returnArray[] = ['position'   => '2',
                           'url'        => 'surveyAdministration/listsurveys',
@@ -931,7 +931,7 @@ class LsDefaultDataSets
                           'desc'       => gT('Edit global settings'),
                           'page'       => 'welcome',
                           'usergroup'  => '-2',
-                          'buttontext' => 'View global settings'
+                          'buttontext' => gt('View global settings')
         ];
         $returnArray[] = ['position'   => '4',
                           'url'        => 'userManagement/index',
@@ -940,7 +940,7 @@ class LsDefaultDataSets
                           'desc'       => gT('The user management allows you to add additional users to your survey site.'),
                           'page'       => 'welcome',
                           'usergroup'  => '-2',
-                          'buttontext' => 'Manage administrators'
+                          'buttontext' => gt('Manage administrators')
         ];
         $returnArray[] = ['position'   => '5',
                           'url'        => 'admin/labels/sa/view',
@@ -949,7 +949,7 @@ class LsDefaultDataSets
                           'desc'       => gT('Label sets can be used as answer options or subquestions to speed up creation of similar questions.'),
                           'page'       => 'welcome',
                           'usergroup'  => '-2',
-                          'buttontext' => 'Edit label sets'
+                          'buttontext' => gt('Edit label sets')
         ];
         $returnArray[] = ['position'   => '6',
                           'url'        => 'themeOptions',
@@ -958,7 +958,7 @@ class LsDefaultDataSets
                           'desc'       => gT('The themes functionality allows you to edit survey-, admin- or question themes.'),
                           'page'       => 'welcome',
                           'usergroup'  => '-2',
-                          'buttontext' => 'Edit themes'
+                          'buttontext' => gt('Edit themes')
         ];
 
         App()->setLanguage($sOldLanguage);
