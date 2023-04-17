@@ -1,7 +1,7 @@
-.radio-list {
-    .radio-item {
-        display      : block;
-        clear        : both;
-        margin-right : 3rem;
+.list-group {
+    &.list-group-horizontal {
+        .radio-item {
+            margin-right : 3rem;
+        }
     }
 }

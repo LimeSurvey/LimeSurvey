@@ -1709,9 +1709,7 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
     margin-right: -18px !important;
   }
 }
-.radio-list .radio-item {
-  display: block;
-  clear: both;
+.list-group.list-group-horizontal .radio-item {
   margin-right: 3rem;
 }
 
