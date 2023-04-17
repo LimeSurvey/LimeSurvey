@@ -309,7 +309,7 @@ class QuestionGroup extends LSActiveRecord
                     . '</button>'
                     . '</span>';
             } else {
-                $buttons .= '<span data-toggle="tooltip" title="' . gT('Group cant be deleted, because of depending conditions') . '">'
+                $buttons .= '<span data-toggle="tooltip" title="' . gT("Group can't be deleted because of depending conditions") . '">'
                     . '<button class="btn btn-sm btn-default" '
                     . ' disabled '
                     . ' role="button"'
