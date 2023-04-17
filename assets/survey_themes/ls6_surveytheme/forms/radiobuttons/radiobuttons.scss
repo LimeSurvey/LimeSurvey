@@ -23,11 +23,6 @@ li.radio-item {
     padding-right : 25px;
 }
 
-/* Else big label break*/
-.radio-item label {
-    display : block
-}
-
 .radio-item {
     position : relative;
 }
@@ -186,7 +181,7 @@ li.radio-item {
     display: inline-block;
     vertical-align: middle;
     position: relative;
-    padding-left: 5px;
+    padding-left: 16px;
 }
 .radio-item label::before {
     content: "";
