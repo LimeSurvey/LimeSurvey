@@ -58,9 +58,9 @@ function loadanswers()
     if (!empty($sLoadName) && !empty($oResponses->saved_control)) {
         $saved_control = $oResponses->saved_control;
         $access_code = $oResponses->saved_control->access_code;
-        $md5_code = md5($sLoadPass);
-        $sha256_code = hash('sha256', $sLoadPass);
-        if ($md5_code === $access_code || $sha256_code === $access_code || password_verify($sLoadPass, $access_code)) {
+        $md5_code = md5((string) $sLoadPass);
+        $sha256_code = hash('sha256', (string) $sLoadPass);
+        if ($md5_code === $access_code || $sha256_code === $access_code || password_verify((string) $sLoadPass, (string) $access_code)) {
             // If survey come from reload (GET or POST); some value need to be found on saved_control, not on survey
             if (Yii::app()->request->getParam('loadall') === "reload") {
                 // We don't need to control if we have one, because we do the test before
@@ -150,7 +150,7 @@ function getLanguageChangerDatas($sSelectedLanguage = "")
         );
 
         // retrieve the route of url in preview mode
-        if (substr($sAction, 0, 7) == 'preview') {
+        if (substr((string) $sAction, 0, 7) == 'preview') {
             $routeParams["action"] = $sAction;
             if (intval(Yii::app()->request->getParam('gid', 0))) {
                 $routeParams['gid'] = intval(Yii::app()->request->getParam('gid', 0));
@@ -173,7 +173,7 @@ function getLanguageChangerDatas($sSelectedLanguage = "")
 
         $aListLang = array();
         foreach ($aSurveyLangs as $sLangCode => $aSurveyLang) {
-            $aListLang[$sLangCode] = html_entity_decode($aSurveyLang['nativedescription'], ENT_COMPAT, 'UTF-8') . ' - ' . $aSurveyLang['description'];
+            $aListLang[$sLangCode] = html_entity_decode((string) $aSurveyLang['nativedescription'], ENT_COMPAT, 'UTF-8') . ' - ' . $aSurveyLang['description'];
         }
 
         $sSelected = ($sSelectedLanguage) ? $sSelectedLanguage : App()->language;
@@ -203,7 +203,7 @@ function getLanguageChangerDatasPublicList($sSelectedLanguage)
     if (count($aLanguages) > 1) {
         $sClass = "ls-language-changer-item";
         foreach ($aLanguages as $sLangCode => $aLanguage) {
-                    $aListLang[$sLangCode] = html_entity_decode($aLanguage['nativedescription'], ENT_COMPAT, 'UTF-8') . ' - ' . $aLanguage['description'];
+                    $aListLang[$sLangCode] = html_entity_decode((string) $aLanguage['nativedescription'], ENT_COMPAT, 'UTF-8') . ' - ' . $aLanguage['description'];
         }
         $sSelected = $sSelectedLanguage;
 
@@ -264,16 +264,16 @@ function checkUploadedFileValidity($surveyid, $move, $backok = null)
         $fieldmap = createFieldMap($survey, 'full', false, false, $_SESSION['survey_' . $surveyid]['s_lang']);
 
         if (!empty(App()->getRequest()->getPost('fieldnames'))) {
-            $fields = explode("|", $_POST['fieldnames']);
+            $fields = explode("|", (string) $_POST['fieldnames']);
 
             foreach ($fields as $field) {
-                if (array_key_exists($field, $fieldmap) && $fieldmap[$field]['type'] == Question::QT_VERTICAL_FILE_UPLOAD && !strrpos($fieldmap[$field]['fieldname'], "_filecount")) {
+                if (array_key_exists($field, $fieldmap) && $fieldmap[$field]['type'] == Question::QT_VERTICAL_FILE_UPLOAD && !strrpos((string) $fieldmap[$field]['fieldname'], "_filecount")) {
                     $validation = QuestionAttribute::model()->getQuestionAttributes($fieldmap[$field]['qid']);
 
                     $filecount = 0;
 
                     $json = App()->getRequest()->getPost($field);
-                    $phparray = json_decode(urldecode($json));
+                    $phparray = json_decode(urldecode((string) $json));
                     // if name is blank, its basic, hence check
                     // else, its ajax, don't check, bypass it.
                     if (!empty($phparray)) {
@@ -299,10 +299,10 @@ function checkUploadedFileValidity($surveyid, $move, $backok = null)
                                 }
 
                                 // File extension validation
-                                $pathinfo = pathinfo(basename($file['name']));
+                                $pathinfo = pathinfo(basename((string) $file['name']));
                                 $ext = $pathinfo['extension'];
 
-                                $validExtensions = explode(",", $validation['allowed_filetypes']);
+                                $validExtensions = explode(",", (string) $validation['allowed_filetypes']);
                                 if (!(in_array($ext, $validExtensions))) {
                                     if (isset($append) && $append) {
                                         $filenotvalidated[$field . "_file_" . $i] .= sprintf(gT("Sorry, only %s extensions are allowed!"), $validation['allowed_filetypes']);
@@ -414,7 +414,7 @@ function submittokens($quotaexit = false)
 
     if ($quotaexit == false) {
         $token->decrypt();
-        if ($token && trim(strip_tags($thissurvey['email_confirm'])) != "" && $thissurvey['sendconfirmation'] == "Y") {
+        if ($token && trim(strip_tags((string) $thissurvey['email_confirm'])) != "" && $thissurvey['sendconfirmation'] == "Y") {
             $sToAddress = validateEmailAddresses($token->email);
             if ($sToAddress) {
                 /* Force a replacement to fill coreReplacement like {SURVEYRESOURCESURL} for example */
@@ -531,7 +531,7 @@ function sendSubmitNotifications($surveyid, array $emails = [], bool $return = f
                 LimeExpressionManager::updateReplacementFields($aReplacementVars);
                 $mailer->setTypeWithRaw('admin_notification', $emailLanguage);
                 $mailer->setTo($notificationRecipient);
-                $mailerSuccess = $mailer->resend(json_decode($sRecipient['resendVars'],true));
+                $mailerSuccess = $mailer->resend(json_decode((string) $sRecipient['resendVars'],true));
             } else {
                 $failedNotificationId = null;
                 $notificationRecipient = $sRecipient;
@@ -578,7 +578,7 @@ function sendSubmitNotifications($surveyid, array $emails = [], bool $return = f
                 LimeExpressionManager::updateReplacementFields($aReplacementVars);
                 $mailer->setTypeWithRaw('admin_responses', $emailLanguage);
                 $mailer->setTo($responseRecipient);
-                $mailerSuccess = $mailer->resend(json_decode($sRecipient['resendVars'],true));
+                $mailerSuccess = $mailer->resend(json_decode((string) $sRecipient['resendVars'],true));
             } else {
                 $failedNotificationId = null;
                 $responseRecipient = $sRecipient;
@@ -716,7 +716,7 @@ function submitfailed($errormsg = '', $query = null)
     global $thissurvey;
     global $surveyid;
 
-    $completed = "<p><span class='fa fa-exclamation-triangle'></span>&nbsp;<strong>"
+    $completed = "<p><span class='ri-error-warning-fill'></span>&nbsp;<strong>"
     . gT("Did Not Save") . "</strong></p>"
     . "<p>"
     . gT("An unexpected error has occurred and your responses cannot be saved.")
@@ -1452,7 +1452,7 @@ function renderError($sTitle, $sMessage, $thissurvey, $sTemplateViewPath)
     //$oTemplate->registerAssets();
 
     $aError = array();
-    $aError['title']      = (!empty(trim($sTitle))) ? $sTitle : gT("This survey cannot be tested or completed for the following reason(s):");
+    $aError['title']      = (!empty(trim((string) $sTitle))) ? $sTitle : gT("This survey cannot be tested or completed for the following reason(s):");
     $aError['message']    = $sMessage;
     $thissurvey['aError'] = $aError;
 
@@ -1990,17 +1990,17 @@ function checkCompletedQuota($surveyid, $return = false)
 function encodeEmail($mail, $text = "", $class = "", $params = array())
 {
     $encmail = "";
-    for ($i = 0; $i < strlen($mail); $i++) {
+    for ($i = 0; $i < strlen((string) $mail); $i++) {
         $encMod = rand(0, 2);
         switch ($encMod) {
             case 0: // None
-                $encmail .= substr($mail, $i, 1);
+                $encmail .= substr((string) $mail, $i, 1);
                 break;
             case 1: // Decimal
-                $encmail .= "&#" . ord(substr($mail, $i, 1)) . ';';
+                $encmail .= "&#" . ord(substr((string) $mail, $i, 1)) . ';';
                 break;
             case 2: // Hexadecimal
-                $encmail .= "&#x" . dechex(ord(substr($mail, $i, 1))) . ';';
+                $encmail .= "&#x" . dechex(ord(substr((string) $mail, $i, 1))) . ';';
                 break;
         }
     }
@@ -2022,7 +2022,7 @@ function getReferringUrl()
         if (!Yii::app()->getConfig('strip_query_from_referer_url')) {
             return $_SERVER["HTTP_REFERER"];
         } else {
-            $aRefurl = explode("?", $_SERVER["HTTP_REFERER"]);
+            $aRefurl = explode("?", (string) $_SERVER["HTTP_REFERER"]);
             return $aRefurl[0];
         }
     } else {

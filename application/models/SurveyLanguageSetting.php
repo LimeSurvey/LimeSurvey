@@ -129,7 +129,7 @@ class SurveyLanguageSetting extends LSActiveRecord
             array('surveyls_policy_error', 'LSYii_Validators'),
             array('surveyls_policy_notice_label', 'LSYii_Validators'),
             array('surveyls_policy_notice_label', 'length', 'min' => 0, 'max' => 192),
-            array('surveyls_url', 'filter', 'filter' => 'trim'),
+            array('surveyls_url', 'LSYii_FilterValidator', 'filter' => 'trim', 'skipOnEmpty' => true),
             array('surveyls_url', 'LSYii_Validators', 'isUrl' => true),
             array('surveyls_urldescription', 'LSYii_Validators'),
             array('surveyls_urldescription', 'length', 'min' => 0, 'max' => 255),
@@ -330,6 +330,8 @@ class SurveyLanguageSetting extends LSActiveRecord
     {
         parent::afterFind();
         $this->oldSurveyId = $this->surveyls_survey_id;
-        $this->oldAlias = $this->surveyls_alias;
+        if (isset($this->surveyls_alias)) {
+            $this->oldAlias = $this->surveyls_alias;
+        }
     }
 }

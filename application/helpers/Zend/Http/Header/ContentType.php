@@ -44,14 +44,14 @@ class ContentType implements HeaderInterface
         list($name, $value) = GenericHeader::splitHeaderLine($headerLine);
 
         // check to ensure proper header type for this factory
-        if (strtolower($name) !== 'content-type') {
+        if (strtolower((string) $name) !== 'content-type') {
             throw new Exception\InvalidArgumentException(sprintf(
                 'Invalid header line for Content-Type string: "%s"',
                 $name
             ));
         }
 
-        $parts             = explode(';', $value);
+        $parts             = explode(';', (string) $value);
         $mediaType         = array_shift($parts);
         $header = new static($value, trim($mediaType));
 
@@ -95,7 +95,7 @@ class ContentType implements HeaderInterface
         $left      = $this->getMediaTypeObjectFromString($mediaType);
 
         foreach ($matchAgainst as $matchType) {
-            $matchType = strtolower($matchType);
+            $matchType = strtolower((string) $matchType);
 
             if ($mediaType == $matchType) {
                 return $matchType;
@@ -336,7 +336,7 @@ class ContentType implements HeaderInterface
         }
 
         // Is the right side a partial wildcard?
-        if ('*' == substr($right->subtype, -1)) {
+        if ('*' == substr((string) $right->subtype, -1)) {
             // validate partial-wildcard subtype
             if (!$this->validatePartialWildcard($right->subtype, $left->subtype)) {
                 return false;

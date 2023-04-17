@@ -55,9 +55,9 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
             self::$webDriver->get($url);
             sleep(1);
             /* Did we have thew warning alert */
-            $this->assertTrue(self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-warning'))->isDisplayed(), "Unable to find the alert");
+            $this->assertTrue(self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-filled-warning'))->isDisplayed(), "Unable to find the alert");
             /* We found the count of warnings */
-            $elementStrong = self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-warning strong'));
+            $elementStrong = self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-filled-warning strong'));
             $strongAlert = $elementStrong->getText();
             $this->assertEquals($strongAlert, "This question has at least 1 warning.", "Numbers of warning seems invalid, need one warning.");
         } catch (Exception $ex) {
@@ -94,9 +94,9 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
             self::$webDriver->get($url);
             sleep(1);
             /* Did we have thew warning alert */
-            $this->assertTrue(self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-warning'))->isDisplayed(), "Unable to find the alert");
+            $this->assertTrue(self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-filled-warning'))->isDisplayed(), "Unable to find the alert");
             /* We found the count of warnings */
-            $elementStrong = self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-warning strong'));
+            $elementStrong = self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-filled-warning strong'));
             $strongAlert = $elementStrong->getText();
             $this->assertEquals($strongAlert, "This question has at least 2 warnings.", "Numbers of warning seems invalid, need 2 warnings.");
         } catch (Exception $ex) {
@@ -132,9 +132,9 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
             self::$webDriver->get($url);
             sleep(1);
             /* Did we have thew warning alert */
-            $this->assertTrue(self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-warning'))->isDisplayed(), "Unable to find the alert");
+            $this->assertTrue(self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-filled-warning'))->isDisplayed(), "Unable to find the alert");
             /* We found the count of warnings */
-            $elementStrong = self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-warning strong'));
+            $elementStrong = self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-filled-warning strong'));
             $strongAlert = $elementStrong->getText();
             $this->assertEquals($strongAlert, "This question has at least 1 warning.", "Numbers of warning seems invalid, need one warning.");
         } catch (Exception $ex) {
@@ -170,9 +170,9 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
             self::$webDriver->get($url);
             sleep(1);
             /* Did we have thew warning alert */
-            $this->assertTrue(self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-warning'))->isDisplayed(), "Unable to find the alert");
+            $this->assertTrue(self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-filled-warning'))->isDisplayed(), "Unable to find the alert");
             /* We found the count of warnings */
-            $elementStrong = self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-warning strong'));
+            $elementStrong = self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-filled-warning strong'));
             $strongAlert = $elementStrong->getText();
             $this->assertEquals($strongAlert, "This question has at least 2 warnings.", "Numbers of warning seems invalid, need 2 warnings.");
         } catch (Exception $ex) {
@@ -208,9 +208,9 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
             self::$webDriver->get($url);
             sleep(1);
             /* Did we have thew warning alert */
-            $this->assertTrue(self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-warning'))->isDisplayed(), "Unable to find the alert");
+            $this->assertTrue(self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-filled-warning'))->isDisplayed(), "Unable to find the alert");
             /* We found the count of warnings */
-            $elementStrong = self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-warning strong'));
+            $elementStrong = self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-filled-warning strong'));
             $strongAlert = $elementStrong->getText();
             $this->assertEquals($strongAlert, "This question has at least 1 warning.", "Numbers of warning seems invalid, need 1 warning.");
         } catch (Exception $ex) {
@@ -246,9 +246,9 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
             self::$webDriver->get($url);
             sleep(1);
             /* Did we have thew warning alert */
-            $this->assertTrue(self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-warning'))->isDisplayed(), "Unable to find the alert");
+            $this->assertTrue(self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-filled-warning'))->isDisplayed(), "Unable to find the alert");
             /* We found the count of warnings */
-            $elementStrong = self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-warning strong'));
+            $elementStrong = self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-filled-warning strong'));
             $strongAlert = $elementStrong->getText();
             $this->assertEquals($strongAlert, "This question has at least 4 warnings.", "Numbers of warning seems invalid, need 4 warnings.");
         } catch (Exception $ex) {
@@ -284,7 +284,7 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
             self::$webDriver->get($url);
             sleep(1);
             /* Did we have a warning alert */
-            $findWarnings = self::$webDriver->findElements(WebDriverBy::cssSelector('.alert-warning'));
+            $findWarnings = self::$webDriver->findElements(WebDriverBy::cssSelector('.alert-filled-warning'));
             $this->assertCount(0, $findWarnings, 'There are a false warnings with a valid compare.');
         } catch (Exception $ex) {
             $screenshot = self::$webDriver->takeScreenshot();

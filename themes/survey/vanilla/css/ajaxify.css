@@ -1,7 +1,7 @@
 .ajax_loading_indicator {
     height: 6px;
     position: fixed;
-    display:none;
+    display: none;
     top: 1px;
     left: 0;
     width: 100%;

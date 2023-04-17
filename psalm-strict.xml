@@ -11,6 +11,9 @@
         <file name="application/models/FailedEmail.php" />
         <file name="application/controllers/FailedEmailController.php" />
         <file name="application/models/services/SurveyPermissions.php" />
+        <file name="application/extensions/AlertWidget/AlertWidget.php" />
+        <file name="application/extensions/BreadcrumbWidget/BreadcrumbWidget.php" />
+        <file name="application/controllers/AjaxAlertController.php" />
         <directory name="application/libraries/FormExtension" />
         <directory name="application/controllers/rest" />
         <ignoreFiles>

@@ -757,7 +757,7 @@
         const jsonstring = $("#java" + fieldname).val();
 
         if (jsonstring == '[]' || jsonstring == '') {
-          $('#' + this.fieldname + '_uploadedfiles').addClass('hidden');
+          $('#' + this.fieldname + '_uploadedfiles').addClass('d-none');
           $('#' + this.fieldname + '_uploadedfiles').find('table>tbody').html('');
           return;
         }
@@ -768,7 +768,7 @@
           try {
             jsonobj = JSON.parse(jsonstring);
           } catch (e) {}
-          $('#' + this.fieldname + '_uploadedfiles').removeClass('hidden');
+          $('#' + this.fieldname + '_uploadedfiles').removeClass('d-none');
           $('#' + this.fieldname + '_uploadedfiles').find('table>tbody').html('');
           const image_extensions = new Array('gif', 'jpeg', 'jpg', 'png', 'swf', 'psd', 'bmp', 'tiff', 'jp2', 'iff', 'bmp', 'xbm', 'ico');
           const templateHtml = $('#filerowtemplate_' + this.fieldname).html();
@@ -843,26 +843,26 @@
           previewContainer.append('<div class="upload-placeholder"></div>');
         }
 
-        previewContainer.append('<span class="file-name">' + escapeHtml(decodeURIComponent(item.name)) + '</span>');
+        previewContainer.append('<span class="file-name">' + escapeHtml(item.name) + '</span>');
 
         if ($('#' + fieldname + '_show_title').val() == 1 || $('#' + fieldname + '_show_comment').val() == 1) {
           var previewTitleContainer = $('');
           var previewCommentContainer = $('');
 
           if ($('#' + fieldname + '_show_title').val() == 1) {
-            var previewTitleContainer = $('<div class="form-group"></div>');
-            $('<label class="control-label col-xs-4"></label>').attr('for', fieldname + '_title_' + i).text(options.uploadLang.titleFld).appendTo(previewTitleContainer);
+            var previewTitleContainer = $('<div class="mb-3"></div>');
+            $('<label class="control-label col-5"></label>').attr('for', fieldname + '_title_' + i).text(options.uploadLang.titleFld).appendTo(previewTitleContainer);
             $('<input class="form-control" type="text"/>').attr('id', fieldname + "_title_" + i).val(item.title).wrap('<div class="input-container"></div>').appendTo(previewTitleContainer);
           }
 
           if ($('#' + fieldname + '_show_comment').val() == 1) {
-            var previewCommentContainer = $('<div class="form-group"></div>');
-            $('<label class="control-label col-xs-4"></label>').attr('for', fieldname + '_comment_' + i).text(options.uploadLang.commentFld).appendTo(previewCommentContainer);
+            var previewCommentContainer = $('<div class="mb-3"></div>');
+            $('<label class="control-label col-5"></label>').attr('for', fieldname + '_comment_' + i).text(options.uploadLang.commentFld).appendTo(previewCommentContainer);
             $('<input class="form-control" type="text"/>').attr('id', fieldname + "_comment_" + i).val(item.comment).wrap('<div class="input-container"></div>').appendTo(previewCommentContainer);
           }
         }
 
-        var previewDeleteBlock = $('<div class="form-group"></div>').append($('<a class="btn btn-danger"></a>').html('<span class="fa fa-trash"></span>&nbsp;' + options.uploadLang.deleteFile).on('click', function () {
+        var previewDeleteBlock = $('<div class="mb-3"></div>').append($('<a class="btn btn-danger"></a>').html('<span class="fa fa-trash"></span>&nbsp;' + options.uploadLang.deleteFile).on('click', function () {
           deletefile(fieldname, i);
         }).wrap('<div class="input-container text-center"></div>'));
         $('<fieldset></fieldset>').append(previewTitleContainer).append(previewCommentContainer).append(previewDeleteBlock).wrap('<div class="file-info"></div>').appendTo(previewContainer);

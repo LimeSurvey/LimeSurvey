@@ -24,7 +24,7 @@ const quickActionMethods = {
                 } else {
                     $('#survey-action-container').slideUp(500);
                 }
-                $('#survey-action-chevron').find('i').toggleClass('fa-caret-up').toggleClass('fa-caret-down');
+                $('#survey-action-chevron').find('i').toggleClass('ri-arrow-up-s-fill').toggleClass('ri-arrow-down-s-fill');
                 
             },
             error :  function(html, statut){

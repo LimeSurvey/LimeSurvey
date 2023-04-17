@@ -6,9 +6,12 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Twig_' => array($vendorDir . '/twig/twig/lib'),
     'Spreadsheet' => array($vendorDir . '/pear/spreadsheet_excel_writer'),
+    'PHPMD\\' => array($vendorDir . '/phpmd/phpmd/src/main/php'),
     'OLE' => array($vendorDir . '/pear/ole'),
+    'Mockery' => array($vendorDir . '/mockery/mockery/library'),
+    'LSS' => array($vendorDir . '/openlss/lib-array2xml'),
+    'JsonMapper' => array($vendorDir . '/netresearch/jsonmapper/src'),
     'Console' => array($vendorDir . '/pear/console_getopt'),
     '' => array($vendorDir . '/pear/pear-core-minimal/src'),
 );

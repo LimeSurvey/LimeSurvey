@@ -33,16 +33,16 @@ class MssqlSchema extends CMssqlSchema
         $sResult = $type;
         if (isset($this->columnTypes[$type])) {
             $sResult = $this->columnTypes[$type];
-        } elseif (preg_match('/^(\w+)\((.+?)\)(.*)$/', $type, $matches)) {
+        } elseif (preg_match('/^(\w+)\((.+?)\)(.*)$/', (string) $type, $matches)) {
             if (isset($this->columnTypes[$matches[1]])) {
-                $sResult = preg_replace('/\(.+\)/', '(' . $matches[2] . ')', $this->columnTypes[$matches[1]]) . $matches[3];
+                $sResult = preg_replace('/\(.+\)/', '(' . $matches[2] . ')', (string) $this->columnTypes[$matches[1]]) . $matches[3];
             }
-        } elseif (preg_match('/^(\w+)\s+/', $type, $matches)) {
+        } elseif (preg_match('/^(\w+)\s+/', (string) $type, $matches)) {
             if (isset($this->columnTypes[$matches[1]])) {
-                $sResult = preg_replace('/^\w+/', $this->columnTypes[$matches[1]], $type);
+                $sResult = preg_replace('/^\w+/', (string) $this->columnTypes[$matches[1]], (string) $type);
             }
         }
-        if (stripos($sResult, 'NULL') === false) {
+        if (stripos((string) $sResult, 'NULL') === false) {
             $sResult .= ' NULL';
         }
         return $sResult;

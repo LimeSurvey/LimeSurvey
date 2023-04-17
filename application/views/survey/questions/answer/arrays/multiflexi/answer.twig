@@ -14,37 +14,39 @@
  */
 #}
 <!-- answer -->
-<table class="{{ coreClass }} {{ extraclass }} table table-bordered table-hover" role="group" aria-labelledby="ls-question-text-{{ basename }}">
+<div  role="group" aria-labelledby="ls-question-text-{{ basename }}">
+    <table class="{{ coreClass }} {{ extraclass }} table table-bordered table-hover">
 
-    <colgroup class="col-responses">
-        <col class="answertext" style='width: {{ answerwidth }}%;'/>
+        <colgroup class="col-responses">
+            <col class="answertext" style='width: {{ answerwidth }}%;'/>
 
-        {% for i, ld in labelans %}
-            <col class="{# // TODO: array2 alternation #}" style='width: {{ cellwidth }}%;'/> 
-        {% endfor %}
-
-        {% if right_exists %}
-            <col class="answertextright {# TODO: array2 alternation #}" style='width: {{ answerwidth }}%;' />
-        {% endif %}
-    </colgroup>
-
-    <thead aria-hidden="true">
-        <tr class="ls-heading">
-            <td></td>
-
-            {% for ld in labelans %}
-                <th>{{ processString(ld) }}</th>
+            {% for i, ld in labelans %}
+                <col class="{# // TODO: array2 alternation #}" style='width: {{ cellwidth }}%;'/> 
             {% endfor %}
 
             {% if right_exists %}
-                <td></td>
+                <col class="answertextright {# TODO: array2 alternation #}" style='width: {{ answerwidth }}%;' />
             {% endif %}
-        </tr>
-    </thead>
+        </colgroup>
 
-    <tbody>
-            {# rows/answer_row.twig #}
-            {{ sAnswerRows }}
-    </tbody>
-</table>
+        <thead>
+            <tr class="ls-heading ls-header">
+                <td></td>
+
+                {% for i, label in labelans %}
+                    <th id="answertext{{ basename }}_{{ labelcode[i] }}" class="answertext control-label" role="columnheader">{{ processString(label) }}</th>
+                {% endfor %}
+
+                {% if right_exists %}
+                    <td></td>
+                {% endif %}
+            </tr>
+        </thead>
+
+        <tbody>
+                {# rows/answer_row.twig #}
+                {{ sAnswerRows }}
+        </tbody>
+    </table>
+</div>
 <!-- end of answer -->
