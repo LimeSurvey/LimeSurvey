@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2023-04-17 15:17:27+00:00\n"
+"POT-Creation-Date: 2023-04-17 16:03:19+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -25267,7 +25267,7 @@ msgid "detail"
 msgstr ""
 
 #: application/views/userManagement/partial/showuser.php:19
-msgid "Survey owned"
+msgid "Surveys owned"
 msgstr ""
 
 #: application/views/userManagement/partial/showuser.php:23
