@@ -1447,6 +1447,7 @@ class statistics_helper
      * @param integer $usegraph
      * @param boolean $browse
      * @return array
+     * @psalm-suppress UndefinedVariable
      */
     protected function displaySimpleResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $sLanguage)
     {
@@ -2158,8 +2159,7 @@ class statistics_helper
      * @param mixed $surveyid
      * @param mixed $sql
      * @param integer $usegraph
-     *
-     *
+     * @psalm-suppress UndefinedVariable
      */
     protected function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $sLanguage)
     {
@@ -3539,6 +3539,7 @@ class statistics_helper
 
     /**
      * Generates statistics with subviews
+     * @psalm-suppress UndefinedVariable
      */
     public function generate_html_chartjs_statistics($surveyid, $allfields, $q2show = 'all', $usegraph = 0, $outputType = 'pdf', $pdfOutput = 'I', $sLanguageCode = null, $browse = true)
     {
@@ -3764,6 +3765,7 @@ class statistics_helper
      * @param string $outputType Optional - Can be xls, html or pdf - Defaults to pdf
      * @param mixed $browse  Show browse buttons
      * @return string
+     * @psalm-suppress UndefinedVariable
      */
     public function generate_statistics($surveyid, $allfields, $q2show = 'all', $usegraph = 0, $outputType = 'pdf', $outputTarget = 'I', $sLanguageCode = null, $browse = true)
     {
