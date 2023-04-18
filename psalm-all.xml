@@ -39,8 +39,8 @@
             <file name="application/libraries/simpletester.php" />
             <file name="application/libraries/admin/quexmlpdf.php" />
             <file name="application/libraries/admin/pdf.php" />
-            <file name="application/core/plugins/TwoFactorAdminLogin/helper/phpqrcode.php" />
             <file name="application/libraries/jsonRPCClient.php" />
+            <file name="application/core/plugins/TwoFactorAdminLogin/helper/phpqrcode.php" />
         </ignoreFiles>
     </projectFiles>
 </psalm>
