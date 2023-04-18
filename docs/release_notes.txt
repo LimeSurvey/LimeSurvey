@@ -34,6 +34,16 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.15 (build 230412) to 5.6.16 (build 230418) April 18, 2023
+-Fixed issue: [security] Administrator can change his own password without entering the existing one (Carsten Schmitz)
+#Updated translation: Spanish (Mexican) by josanes
+#Updated translation: Russian by c_schmitz
+#Updated translation: Greek by kiolalis
+#Updated translation: German by c_schmitz
+#Updated translation: German by assistedmindfulness, holch, MERose
+#Updated translation: German (Informal) by actxcellence, assistedmindfulness, c_schmitz, holch, p_teichmann, richterd
+
+
 Changes from 5.6.14 (build 230403) to 5.6.15 (build 230412) April 11, 2023
 -Fixed issue CT-74: increased timeout for autocorrect on numerical fields (Tim Willig)
 -Fixed issue #18423: SQL error when quota enabled on postgresql (#2688) (Denis Chenu)
