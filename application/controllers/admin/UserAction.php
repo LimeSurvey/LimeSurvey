@@ -143,7 +143,6 @@ class UserAction extends SurveyCommonAction
         }
 
         // Get user lang
-        unset($oUser);
         $oUser = User::model()->findByPk(Yii::app()->session['loginID']);
 
         $aLanguageData = array('auto' => gT("(Autodetect)"));
