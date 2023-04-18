@@ -336,6 +336,9 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     return $line;
 }
 
+/**
+ * @psalm-suppress UndefinedVariable TODO
+ */
 function getStandardsReplacementFields($thissurvey)
 {
     $surveyid = $_SESSION['LEMsid'];
