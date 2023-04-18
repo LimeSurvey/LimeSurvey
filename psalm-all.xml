@@ -16,8 +16,8 @@
         <UndefinedConstant errorLevel="suppress" />
         <ParadoxicalCondition errorLevel="suppress" />
         <InvalidStaticInvocation errorLevel="suppress" />
-        <!-- Yii view files use "global" variables -->
         <UndefinedGlobalVariable errorLevel="suppress" />
+        <NoValue errorLevel="suppress" />
     </issueHandlers>
     <projectFiles>
         <directory name="application/" />
@@ -35,9 +35,12 @@
             <directory name="application/extensions/admin/grid/*/views" />
             <directory name="application/extensions/admin/survey/*/views" />
             <directory name="application/extensions/admin/survey/question/*/views" />
+            <directory name="application/extensions/*/*/*/views" />
             <file name="application/libraries/simpletester.php" />
             <file name="application/libraries/admin/quexmlpdf.php" />
             <file name="application/libraries/admin/pdf.php" />
+            <file name="application/core/plugins/TwoFactorAdminLogin/helper/phpqrcode.php" />
+            <file name="application/libraries/jsonRPCClient.php" />
         </ignoreFiles>
     </projectFiles>
 </psalm>
