@@ -1114,8 +1114,6 @@ class statistics_helper
                         default:
                             break;
                     }
-
-                    unset($showem);
                 }
             }    //end else -> check last character, greater/less/equals don't need special treatment
         }    //end else-if -> multiple numerical types
