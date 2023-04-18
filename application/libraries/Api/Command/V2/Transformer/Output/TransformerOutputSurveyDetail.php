@@ -60,6 +60,10 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
                     $questionModel->questionattributes
                 );
 
+                $question['subquestions'] = $transformerQuestion->transformAll(
+                    $questionModel->subquestions
+                );
+
                 $question['answers'] = $transformerAnswer->transformAll(
                     $questionModel->answers
                 );

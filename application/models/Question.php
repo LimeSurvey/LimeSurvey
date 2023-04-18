@@ -126,7 +126,13 @@ class Question extends LSActiveRecord
             'parent' => array(self::HAS_ONE, 'Question', array("qid" => "parent_qid")),
             'questionattributes' => array(self::HAS_MANY, 'QuestionAttribute', 'qid'),
             'questionl10ns' => array(self::HAS_MANY, 'QuestionL10n', 'qid', 'together' => true),
-            'subquestions' => array(self::HAS_MANY, 'Question', array('parent_qid' => 'qid'), 'order' => App()->getDb()->quoteColumnName('subquestions.question_order') . ' ASC'),
+            'subquestions' => array(
+                self::HAS_MANY,
+                'Question',
+                array('parent_qid' => 'qid'),
+                'order' => 'subquestions.question_order ASC',
+                'together' => false
+            ),
             'conditions' => array(self::HAS_MANY, 'Condition', 'qid'),
             'answers' => array(self::HAS_MANY, 'Answer', 'qid'),
             // This relation will fail for non saved questions, which is often the case

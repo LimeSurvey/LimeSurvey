@@ -27,7 +27,7 @@ class TransformerOutputQuestion extends TransformerOutputActiveRecord
             'modulename' => true,
             'gid' => ['type' => 'int'],
             'relevance' => true,
-            'same_script' => ['type' => $typeYnToBool],
+            'same_script' => ['type' => $typeYnToBool]
         ]);
     }
 
