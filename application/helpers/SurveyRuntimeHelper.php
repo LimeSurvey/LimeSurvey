@@ -1274,7 +1274,10 @@ class SurveyRuntimeHelper
             //Send notifications
             if ($surveyActive) {
                 $mailer = \LimeMailer::getInstance(\LimeMailer::ResetComplete);
-                $command = new SendSubmitNotificationsCommand($this->thissurvey, $mailer, new Session());
+                $session = new Session();
+                // $session->open() is not enough to set ID, since session is already started before this object is being used.
+                $session->setId('dummyid');
+                $command = new SendSubmitNotificationsCommand($this->thissurvey, $mailer, $session);
                 $command->run();
             }
             // Link to Print Answer Preview  **********
