@@ -14,6 +14,7 @@
 */
 
 use ls\ajax\AjaxHelper;
+use LimeSurvey\Exceptions\CPDBException;
 
 /**
  * @param array $a
