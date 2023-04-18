@@ -3068,8 +3068,9 @@ function tsvSurveyExport($surveyid)
 function sortArrayByColumn($array, $column_name)
 {
     $keys = array_keys($array);
+    $tmparr = array_column($array, $column_name);
     array_multisort(
-        array_column($array, $column_name),
+        $tmparr,
         SORT_ASC,
         SORT_NUMERIC,
         $array,
