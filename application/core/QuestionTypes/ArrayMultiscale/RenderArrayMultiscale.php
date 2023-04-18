@@ -135,7 +135,7 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
         }
         if ($numColExtraAnswer > 0) {
             $extraanswerwidth = $this->answerwidth / $numColExtraAnswer; /* If there are 2 separator : set to 1/2 else to same */
-            if ($defaultWidth) {
+            if ($this->defaultWidth) {
                 $columnswidth -= $this->answerwidth;
             } else {
                 $this->answerwidth  = $this->answerwidth / 2;
