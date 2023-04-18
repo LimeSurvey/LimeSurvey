@@ -57,7 +57,7 @@ class UserRoleController extends LSBaseController
             [],
             true
         );
-  
+
 
         //this is really important, so we have the aData also before rendering the content
         $this->aData = $aData;

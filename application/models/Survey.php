@@ -2167,19 +2167,19 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 'import' => false,
                 'export' => false,
                 'title' => gT("Assessments"),
-                'description' => gT("Permission to create/view/update/delete assessments rules for a survey"),
+                'description' => gT("Permission to create, view, update, delete assessments rules for a survey"),
                 'img' => ' ri-chat-3-fill',
             ),
             'quotas' => array(
                 'import' => false,
                 'export' => false,
                 'title' => gT("Quotas"),
-                'description' => gT("Permission to create/view/update/delete quota rules for a survey"),
+                'description' => gT("Permission to create, view, update, delete quota rules for a survey"),
                 'img' => 'ri-bar-chart-horizontal-fill',
             ),
             'responses' => array(
                 'title' => gT("Responses"),
-                'description' => gT("Permission to create(data entry)/view/update/delete/import/export responses"),
+                'description' => gT("Permission to create(data entry), view, update, delete, import, export responses"),
                 'img' => ' ri-window-fill',
             ),
             'statistics' => array(
@@ -2209,12 +2209,12 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 'import' => false,
                 'export' => false,
                 'title' => gT("Survey activation"),
-                'description' => gT("Permission to activate/deactivate a survey"),
+                'description' => gT("Permission to activate, deactivate a survey"),
                 'img' => ' ri-play-fill',
             ),
             'surveycontent' => array(
                 'title' => gT("Survey content"),
-                'description' => gT("Permission to create/view/update/delete/import/export the questions, groups, answers & conditions of a survey"),
+                'description' => gT("Permission to create, view, update, delete, import, export the questions, groups, answers & conditions of a survey"),
                 'img' => ' ri-file-text-line',
             ),
             'surveylocale' => array(
@@ -2223,7 +2223,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 'import' => false,
                 'export' => false,
                 'title' => gT("Survey text elements"),
-                'description' => gT("Permission to view/update the survey text elements, e.g. survey title, survey description, welcome and end message"),
+                'description' => gT("Permission to view, update the survey text elements, e.g. survey title, survey description, welcome and end message"),
                 'img' => ' ri-file-edit-line',
             ),
             'surveysecurity' => array(
@@ -2239,11 +2239,11 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 'import' => false,
                 'export' => false,
                 'title' => gT("Survey settings"),
-                'description' => gT("Permission to view/update the survey settings including survey participants table creation"),
+                'description' => gT("Permission to view, update the survey settings including survey participants table creation"),
                 'img' => ' ri-settings-5-fill',
             ),
             'tokens' => array(
-                'title' => gT("Participants"), 'description' => gT("Permission to create/update/delete/import/export participants"),
+                'title' => gT("Participants"), 'description' => gT("Permission to create, update, delete, import, export participants"),
                 'img' => ' ri-group-fill',
             ),
             'translations' => array(
