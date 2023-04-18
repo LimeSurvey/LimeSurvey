@@ -30,12 +30,15 @@ $g-400                 : #D3D5DA;
 $g-300                 : #DDDEE8;
 $g-200                 : #EEEFF7;
 $g-100                 : #F9F9FB;
+
+$primary : $base-color;
+
 .text-muted {
     color : $g-600 !important;
 }
 
 .text-primary {
-    color : $active-green !important;
+    color : $primary !important;
 }
 
 .text-success {
@@ -56,7 +59,7 @@ $g-100                 : #F9F9FB;
 
 .bg-primary {
     color            : $white !important;
-    background-color : $active-green !important;
+    background-color : $primary !important;
 }
 
 .bg-success {
