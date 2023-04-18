@@ -42,6 +42,15 @@ App()->getClientScript()->registerScript("tokens-panel-variables", "
         let multipleResponsesText = '" . gT('Allow multiple responses with the same access code') . "';
         let updateResponsesText = '" . gT('Allow to update the responses using the access code') . "';
 
+        $(document).ready(function(){
+
+            let persistenceOption = $('input[name=\"tokenanswerspersistence\"]:checked').val();
+            let anonymizedOption = $('input[name=\"anonymized\"]:checked').val();
+
+            changeAllowEditLabel(anonymizedOption, persistenceOption);
+
+        });
+
         $('input[name=\"anonymized\"]').change(function(){
 
             let anonymizedOption = $(this).val();
