@@ -70,6 +70,20 @@ class QuotasController extends LSBaseController
         $aData['topBar']['name'] = 'surveyTopbar_view';
         $aData['topBar']['leftSideView'] = 'quotasTopbarLeft_view';
 
+        $topbarData = TopbarConfiguration::getSurveyTopbarData($oSurvey->sid);
+        $aData['topbar']['middleButtons'] = $this->renderPartial(
+            '/surveyAdministration/partial/topbar/surveyTopbarLeft_view',
+            $topbarData,
+            true
+        );
+        $aData['topbar']['rightButtons'] = $this->renderPartial(
+            '/surveyAdministration/partial/topbar_quotas/rightSideButtons',
+            [
+                'surveyid' => $oSurvey->sid
+            ],
+            true
+        );
+
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title .
             " (" . gT("ID") . ":" . $surveyid . ")";
         $aData['subaction'] = gT("Survey quotas");
@@ -130,10 +144,24 @@ class QuotasController extends LSBaseController
         $aData['baselang'] = $oSurvey->language;
 
         $aData['sidemenu']['state'] = false;
-        $aData['topBar']['showSaveButton'] = true;
+
+        $aData['subaction'] = gT("Survey quotas");
+        $topbarData = TopbarConfiguration::getSurveyTopbarData($oSurvey->sid);
+        $aData['topbar']['middleButtons'] = $this->renderPartial(
+            '/surveyAdministration/partial/topbar/surveyTopbarLeft_view',
+            $topbarData,
+            true
+        );
+        $aData['topbar']['rightButtons'] = $this->renderPartial(
+            '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
+            [
+                'showSaveButton' => true
+            ],
+            true
+        );
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title .
             " (" . gT("ID") . ":" . $surveyid . ")";
-        $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
+        //$aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
 
         $oQuota = new Quota();
         $oQuota->sid = $oSurvey->primaryKey;
@@ -189,7 +217,7 @@ class QuotasController extends LSBaseController
         $aQuotaLanguageSettings = [];
         foreach ($oQuota->languagesettings as $languagesetting) {
             /* url is decoded before usage @see https://github.com/LimeSurvey/LimeSurvey/blob/8d8420a4efcf8e71c4fccbb6708648ace263ca80/application/views/admin/survey/editLocalSettings_view.php#L60 */
-            $languagesetting['quotals_url'] = htmlspecialchars_decode($languagesetting['quotals_url']);
+            $languagesetting['quotals_url'] = htmlspecialchars_decode((string) $languagesetting['quotals_url']);
             $aQuotaLanguageSettings[$languagesetting->quotals_language] = $languagesetting;
         }
 
@@ -197,7 +225,20 @@ class QuotasController extends LSBaseController
         $aData['sidemenu']['state'] = false;
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title .
             " (" . gT("ID") . ":" . $surveyid . ")";
-        $aData['topBar']['showSaveButton'] = true;
+        $aData['subaction'] = gT("Survey quotas");
+        $topbarData = TopbarConfiguration::getSurveyTopbarData($oSurvey->sid);
+        $aData['topbar']['middleButtons'] = $this->renderPartial(
+            '/surveyAdministration/partial/topbar/surveyTopbarLeft_view',
+            $topbarData,
+            true
+        );
+        $aData['topbar']['rightButtons'] = $this->renderPartial(
+            '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
+            [
+                'showSaveButton' => true
+            ],
+            true
+        );
 
         $this->aData = $aData;
         $this->render('editquota_view', [
@@ -295,6 +336,14 @@ class QuotasController extends LSBaseController
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title .
             " (" . gT("ID") . ":" . $surveyid . ")";
 
+        $aData['subaction'] = gT("Survey quotas"); //title
+        $topbarData = TopbarConfiguration::getSurveyTopbarData($oSurvey->sid);
+        $aData['topbar']['middleButtons'] = $this->renderPartial(
+            '/surveyAdministration/partial/topbar/surveyTopbarLeft_view',
+            $topbarData,
+            true
+        );
+
         $this->aData = $aData;
         $this->render($renderView, $aData);
     }
@@ -371,7 +420,7 @@ class QuotasController extends LSBaseController
         $quotaService = new \LimeSurvey\Models\Services\Quotas($oSurvey);
 
         if ($quotaService->checkActionPermissions($action)) {
-            $sItems = Yii::app()->request->getPost('sItems');
+            $sItems = Yii::app()->request->getPost('sItems', '');
             $aQuotaIds = json_decode($sItems);
             if (isset($_POST['QuotaLanguageSetting'])) {
                 $errors = $quotaService->multipleItemsAction($aQuotaIds, $action, $_POST['QuotaLanguageSetting']);

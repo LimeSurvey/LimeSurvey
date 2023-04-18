@@ -25,10 +25,12 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
     }
     ?>
     <div id="edittoken-error-container" class="row" style="display: none;">
-        <div class="alert alert-danger alert-dismissible" role="alert">
-            <button type="button" class="btn-close" aria-label="Close" onclick="$('#edittoken-error-container').hide();"></button>
-            <span class="alert-content"></span>
-        </div>
+        <?php
+        $this->widget('ext.AlertWidget.AlertWidget', [
+            'text' => '<span class="alert-content"></span>',
+            'type' => 'danger',
+        ]);
+        ?>
     </div>
     <div class="row">
         <div class="col-12 content-right">
@@ -107,7 +109,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                             <div>
                                                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                                     'name'          => "completed-switch",
-                                                    'htmlOptions'   => ['class' => "YesNoDateSwitch action_toggle_bootstrap_switch"],
+                                                    'htmlOptions'   => ['class' => "YesNoDateSwitch action_toggle_bootstrap_switch mb-1"],
                                                     'checkedOption' => $bCompletedValue,
                                                     'selectOptions' => [
                                                         '1' => gT('Yes'),
@@ -122,7 +124,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                                 $completed = (isset($completed) && $completed != 'N') ? 'Y' : 'N'; ?>
                                                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                                     'name'          => "completed-switch",
-                                                    'htmlOptions'   => ['class' => "YesNoSwitch action_toggle_bootstrap_switch"],
+                                                    'htmlOptions'   => ['class' => "YesNoSwitch action_toggle_bootstrap_switch mb-1"],
                                                     'checkedOption' => $bCompletedValue,
                                                     'selectOptions' => [
                                                         '1' => gT('Yes'),
@@ -142,7 +144,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                                                name="completed-date"
                                                                data-locale="<?php echo $locale ?>"
                                                                data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm">
-                                                        <span class="input-group-addon datepicker-icon"><span class="fa fa-calendar"></span></span>
+                                                        <span class="input-group-text datepicker-icon"><span class="ri-calendar-2-fill"></span></span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -197,9 +199,16 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                         'maxlength' => $iTokenLength
                                     ]
                                 ); ?>
-                                <?php if ($token_subaction == "addnew"): ?>
-                                    <span id="helpBlock" class="help-block"><?php eT("You can leave this blank, and automatically generate access codes using 'Generate access codes'"
-                                        ); ?></span>
+                                <?php if ($token_subaction == "addnew") : ?>
+                                    <?php
+                                    $this->widget('ext.AlertWidget.AlertWidget', [
+                                        'text'        => gT(
+                                            "You can leave this blank, and automatically generate access codes using 'Generate access codes'"
+                                        ),
+                                        'type'        => 'info',
+                                        'htmlOptions' => ['class' => 'mt-1'],
+                                    ]);
+                                    ?>
                                 <?php endif; ?>
                             </div>
                         </div>
@@ -285,7 +294,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                             } ?>
                                             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                                 'name'          => "sent-switch",
-                                                'htmlOptions'   => ['class' => "YesNoDateSwitch action_toggle_bootstrap_switch"],
+                                                'htmlOptions'   => ['class' => "YesNoDateSwitch action_toggle_bootstrap_switch mb-1"],
                                                 'checkedOption' => $bSwitchValue,
                                                 'selectOptions' => [
                                                     '1' => gT('Yes'),
@@ -301,7 +310,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                             ?>
                                             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                                 'name'          => "sent-switch",
-                                                'htmlOptions'   => ['class' => "YesNoSwitch action_toggle_bootstrap_switch"],
+                                                'htmlOptions'   => ['class' => "YesNoSwitch action_toggle_bootstrap_switch mb-1"],
                                                 'checkedOption' => $bSwitchValue,
                                                 'selectOptions' => [
                                                     '1' => gT('Yes'),
@@ -322,7 +331,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                                        name="sent-date"
                                                        data-locale="<?php echo $locale ?>"
                                                        data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm">
-                                                <span class="input-group-addon datepicker-icon"><span class="fa fa-calendar"></span></span>
+                                                <span class="input-group-text datepicker-icon"><span class="ri-calendar-2-fill"></span></span>
                                             </div>
                                         </div>
                                     </div>
@@ -344,7 +353,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                         <?php if ($oSurvey->anonymized !== 'Y'): ?>
                                             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                                 'name'          => "remind-switch",
-                                                'htmlOptions'   => ['class' => "YesNoDateSwitch action_toggle_bootstrap_switch"],
+                                                'htmlOptions'   => ['class' => "YesNoDateSwitch action_toggle_bootstrap_switch mb-1"],
                                                 'checkedOption' => $bRemindSwitchValue,
                                                 'selectOptions' => [
                                                     '1' => gT('Yes'),
@@ -354,7 +363,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                         <?php else: ?>
                                             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                                 'name'          => "remind-switch",
-                                                'htmlOptions'   => ['class' => "YesNoSwitch action_toggle_bootstrap_switch"],
+                                                'htmlOptions'   => ['class' => "YesNoSwitch action_toggle_bootstrap_switch mb-1"],
                                                 'checkedOption' => $bRemindSwitchValue,
                                                 'selectOptions' => [
                                                     '1' => gT('Yes'),
@@ -374,7 +383,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                                        name="remind-date"
                                                        data-locale="<?php echo $locale ?>"
                                                        data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm">
-                                                <span class="input-group-addon datepicker-icon"><span class="fa fa-calendar"></span></span>
+                                                <span class="input-group-text datepicker-icon"><span class="ri-calendar-2-fill"></span></span>
                                             </div>
                                         </div>
                                     </div>
@@ -429,7 +438,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                     <input class="YesNoDatePicker form-control" id="validfrom" type="text" value="<?php echo isset($validfrom) ? $validfrom : '' ?>" name="validfrom"
                                            data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
                                            data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>">
-                                    <span class="input-group-addon datepicker-icon"><span class="fa fa-calendar"></span></span>
+                                    <span class="input-group-text datepicker-icon"><span class="ri-calendar-2-fill"></span></span>
                                     </div>
                                 </div>
                             </div>
@@ -445,7 +454,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                     <input class="YesNoDatePicker form-control" id="validuntil" type="text" value="<?php echo isset($validuntil) ? $validuntil : '' ?>" name="validuntil"
                                            data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
                                            data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>">
-                                    <span class="input-group-addon datepicker-icon"><span class="fa fa-calendar"></span></span>
+                                    <span class="input-group-text datepicker-icon"><span class="ri-calendar-2-fill"></span></span>
                                     </div>
                                 </div>
                             </div>
@@ -469,7 +478,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                     id='<?php echo $attr_name; ?>'
                                     name='<?php echo $attr_name; ?>'
                                     value='<?php if (isset($$attr_name)) {
-                                        echo htmlspecialchars($$attr_name, ENT_QUOTES, 'utf-8');
+                                        echo htmlspecialchars((string) $$attr_name, ENT_QUOTES, 'utf-8');
                                     } ?>'
                                 />
                             </div>
@@ -496,20 +505,6 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                 <input type='hidden' name='sid' value='<?php echo $surveyid; ?>'/>
             </p>
             <?php echo CHtml::endForm() ?>
-        </div>
-
-
-        <div style="display: none;">
-            <?php
-            Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker',
-                array(
-                    'name' => "no",
-                    'id' => "no",
-                    'value' => '',
-
-                )
-            );
-            ?>
         </div>
     </div>
 </div>

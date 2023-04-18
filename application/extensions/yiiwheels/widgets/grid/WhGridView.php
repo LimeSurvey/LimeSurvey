@@ -381,7 +381,7 @@ class WhGridView extends TbGridView
 	public function getColumnByName($name)
 	{
 		foreach ($this->columns as $column) {
-			if (strcmp($column->name, $name) === 0) {
+			if (strcmp((string) $column->name, $name) === 0) {
 				return $column;
 			}
 		}

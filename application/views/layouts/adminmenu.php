@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This view render the main menu bar, with configuration menu
  * @var $sitename
@@ -8,22 +9,23 @@
 ?>
 
 <!-- admin menu bar -->
-<nav class="navbar navbar-light navbar-expand-md border border-white">
+<nav class="navbar navbar-expand-md">
     <div class="container-fluid">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#small-screens-menus" aria-controls="small-screens-menus" aria-expanded="false">
             <span class="navbar-toggler-icon"></span>
         </button>
         <a class="navbar-brand" href="<?php echo $this->createUrl("/admin/"); ?>">
-            <?php echo $sitename; ?>
+            <img src="/assets/images/logo-icon-white.png" height="34" class="d-inline-block align-bottom" alt="">
+            <?= $sitename ?>
         </a>
         <!-- Only on xs screens -->
         <div class="collapse navbar-collapse " id="small-screens-menus">
             <ul class="nav navbar-nav">
                 <!-- active surveys -->
-                <?php if ($activesurveyscount > 0): ?>
+                <?php if ($activesurveyscount > 0) : ?>
                     <li class="nav-item">
                         <a class="nav-link" href="<?php echo $this->createUrl('surveyAdministration/listsurveys/active/Y'); ?>">
-                            <?php eT("Active surveys"); ?> <span class="badge rounded-pill"><?php echo $activesurveyscount ?></span>
+                            <?php eT("Active surveys"); ?> <span class="badge"><?php echo $activesurveyscount ?></span>
                         </a>
                     </li>
                 <?php endif; ?>
@@ -42,36 +44,45 @@
             </ul>
         </div>
 
-        <div class="collapse navbar-collapse justify-content-end">
+        <div class="collapse navbar-collapse justify-content-center">
             <ul class="nav navbar-nav">
                 <!-- Maintenance mode -->
                 <?php $sMaintenanceMode = getGlobalSetting('maintenancemode');
                 if ($sMaintenanceMode === 'hard' || $sMaintenanceMode === 'soft') { ?>
                     <li class="nav-item">
                         <a class="nav-link text-warning" href="<?php echo $this->createUrl("admin/globalsettings"); ?>" title="<?php eT("Click here to change maintenance mode setting."); ?>">
-                            <span class="fa fa-warning"></span>
+                            <span class="ri-alert-fil"></span>
                             <?php eT("Maintenance mode is active!"); ?>
                         </a>
                     </li>
                 <?php } ?>
 
                 <!-- Prepended extra menus from plugins -->
-                <?php $this->renderPartial( "application.libraries.MenuObjects.views._extraMenu", ['extraMenus' => $extraMenus, 'prependedMenu' => true]); ?>
+                <?php $this->renderPartial("application.libraries.MenuObjects.views._extraMenu", ['extraMenus' => $extraMenus, 'prependedMenu' => true]); ?>
 
                 <!-- create survey -->
                 <li class="nav-item">
                     <a href="<?php echo $this->createUrl("surveyAdministration/newSurvey"); ?>" class="nav-link">
-                        <span class="icon-add"></span>
-                        <?php eT("Create survey"); ?>
+                        <button type="button" class="btn btn-info btn-create" data-bs-toggle="tooltip"
+                                data-bs-placement="bottom" title="<?= gT('Create survey') ?>">
+                            <i class="ri-add-line"></i>
+                        </button>
                     </a>
                 </li>
                 <!-- Surveys menus -->
-                <li class="dropdown-split-left nav-item">
-                    <a href="<?php echo $this->createUrl("surveyAdministration/listsurveys"); ?>" class="nav-link">
-                        <span class="fa fa-list"></span>
-                        <?php eT("Surveys"); ?>
-                    </a>
+
+                <li
+                    class="nav-item d-flex"><a
+                        href="<?php echo $this->createUrl("surveyAdministration/listsurveys"); ?>"
+                        class="nav-link ps-0"><?php eT("Surveys"); ?></a>
+                    <?php if ($activesurveyscount > 0) : ?>
+                        <a
+                            class="nav-link ps-0 active-surveys"
+                            href="<?php echo $this->createUrl('surveyAdministration/listsurveys/active/Y'); ?>"
+                        ><span class="badge"> <?php echo $activesurveyscount ?> </span></a>
+                    <?php endif; ?>
                 </li>
+
 
                 <!-- Help menu -->
                 <?php $this->renderPartial("/admin/super/_help_menu", []); ?>
@@ -80,24 +91,23 @@
                 <?php $this->renderPartial("/admin/super/_configuration_menu", $dataForConfigMenu); ?>
 
 
-                <!-- user menu -->
-                <!-- active surveys -->
-                <?php if ($activesurveyscount > 0): ?>
-                    <li class="nav-item">
-                        <a href="<?php echo $this->createUrl('surveyAdministration/listsurveys/active/Y'); ?>" class="nav-link">
-                            <?php eT("Active surveys"); ?> <span class="badge rounded-pill"> <?php echo $activesurveyscount ?> </span>
-                        </a>
-                    </li>
-                <?php endif; ?>
-
                 <!-- Extra menus from plugins -->
-                <?php $this->renderPartial( "application.libraries.MenuObjects.views._extraMenu", ['extraMenus' => $extraMenus, 'prependedMenu' => false]); ?>
-
+                <?php $this->renderPartial("application.libraries.MenuObjects.views._extraMenu", ['extraMenus' => $extraMenus, 'prependedMenu' => false]); ?>
+            </ul>
+        </div>
+        <div class="collapse navbar-collapse justify-content-end">
+            <ul class="nav navbar-nav">
                 <!-- Admin notification system -->
                 <?php echo $adminNotifications; ?>
 
                 <li class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false"><span class="icon-user"></span> <?php echo Yii::app()->session['user']; ?> <span class="caret"></span></a>
+                    <a href="#" class="nav-link dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" role="button" aria-expanded="false">
+                        <!-- <i class="ri-user-fill"></i> <?php echo Yii::app()->session['user']; ?> <span class="caret"></span></a> -->
+                        <span class='rounded-circle text-center d-flex align-items-center justify-content-center me-1'>
+                            <?= strtoupper(substr((string) Yii::app()->session['user'], 0, 1)) ?>
+                        </span>
+                        <?= Yii::app()->session['user']; ?>
+                        <span class="caret"></span></a>
                     <ul class="dropdown-menu dropdown-menu-end" role="menu">
                         <li>
                             <a class="dropdown-item" href="<?php echo $this->createUrl("/admin/user/sa/personalsettings"); ?>">
@@ -124,11 +134,11 @@
 <script type="text/javascript">
     //show tooltips
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+    var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl);
     })
 
-    $( document ).ajaxComplete(function(handler) {
+    $(document).ajaxComplete(function(handler) {
         window.LS.doToolTip();
     });
 </script>

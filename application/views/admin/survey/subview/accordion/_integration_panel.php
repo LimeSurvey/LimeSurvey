@@ -1,24 +1,30 @@
 <?php
 /**
  * @var $this AdminController
+ * @var $model SurveyURLParameter
  *
-* Right accordion, integration panel
-* Use datatables, needs surveysettings.js
-*/
+ * Right accordion, integration panel
+ * Use datatables, needs surveysettings.js
+ */
 $yii = Yii::app();
 $controller = $yii->getController();
 $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('surveyPanelIntegration');
 ?>
-  <!-- Datatable translation-data -->
-  <!-- Container -->
-  <div id='panelintegration' class=" tab-pane fade show active" >
-    <div class="container">
+<!-- Datatable translation-data -->
+<!-- Container -->
+<div id='panelintegration' class="tab-pane fade show active">
         <div class="row">
             <div class="col-lg-12 ls-flex ls-flex-row">
                 <div class="ls-flex-item text-start">
-                    <button class="btn btn-success" id="addParameterButton"><?= gT('Add URL parameter') ?></button>
+                    <button
+                            class="btn btn-primary"
+                            id="addParameterButton"
+                            data-bs-toggle="modal"
+                            data-bs-target="#dlgEditParameter">
+                        <?= gT('Add URL parameter') ?>
+                    </button>
                 </div>
                 <div class="ls-flex-item justify-content-end row row-cols-lg-auto g-1 align-items-center mb-3">
                     <!-- Search Box -->
@@ -29,16 +35,16 @@ echo viewHelper::getViewTestTag('surveyPanelIntegration');
                         <input class="form-control" name="search_query" id="search_query" type="text">
                     </div>
                     <div class="col-12">
-                        <button class="btn btn-success" type="button" id="searchParameterButton"><?= gT('Search', 'unescaped') ?></button>
+                        <button class="btn btn-primary" type="button" id="searchParameterButton"><?= gT('Search', 'unescaped') ?></button>
                         <a href="<?= $updateUrl ?>" class="btn btn-warning"><?= gT('Reset') ?></a>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="row table-responsive">
+    <div class="row table-responsive">
         <?php
             $this->widget(
-                'ext.LimeGridView.LimeGridView',
+                'application.extensions.admin.grid.CLSGridView',
                 [
                     'id' => 'urlparams',
                     'dataProvider'    => $model->search(),
@@ -60,15 +66,6 @@ echo viewHelper::getViewTestTag('surveyPanelIntegration');
 
                     // Columns to dispplay
                     'columns' => [
-
-                        // Action buttons (defined in model)
-                        [
-                            'header'      => gT('Action'),
-                            'name'        => 'actions',
-                            'type'        => 'raw',
-                            'value'       => '$data->buttons',
-                            'htmlOptions' => ['class' => ''],
-                        ],
                         // Parameter
                         [
                             'header' => gT('Parameter'),
@@ -82,23 +79,34 @@ echo viewHelper::getViewTestTag('surveyPanelIntegration');
                             'value'  => '$data->questionTitle',
                             'type'=>'raw'
                         ],
-
+                        // Action buttons (defined in model)
+                        [
+                            'header'      => gT('Action'),
+                            'name'        => 'actions',
+                            'type'        => 'raw',
+                            'value'       => '$data->buttons',
+                            'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+                            'htmlOptions'       => ['class' => 'text-center ls-sticky-column'],
+                        ],
                     ],
                     'ajaxUpdate' => 'urlparams',
+                    'lsAfterAjaxUpdate' => [],
                     'rowHtmlOptionsExpression' => '["data-id" => $data->id, "data-parameter" => $data->parameter, "data-qid" => $data->targetqid, "data-sqid" => $data->targetsqid]',
                 ]
             );
             ?>
-        </div>
     </div>
 </div>
 
-<?php  
-    App()->getClientScript()->registerScript('IntegrationPanel-variables', " 
-    window.PanelIntegrationData = ".json_encode($jsData).";
-    ", LSYii_ClientScript::POS_BEGIN ); 
-?> 
+<?php
+App()->getClientScript()->registerScript(
+    'IntegrationPanel-variables',
+    "window.PanelIntegrationData = " . json_encode($jsData) . ";
+     window.sEnterValidParam = '" . gT('You have to enter a valid parameter name.', 'js') . "';",
+    LSYii_ClientScript::POS_BEGIN
+);
+?>
 
 <!-- Modal box to add a parameter -->
 <!--div data-copy="submitsurveybutton"></div-->
-<?php $this->renderPartial('addPanelIntegrationParameter_view', array('questions' => $questions)); ?>
+<?php  $this->renderPartial('addPanelIntegrationParameter_view', ['questions' => $questions]); ?>

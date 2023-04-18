@@ -98,7 +98,7 @@ class InstallFromConfigCommand extends CConsoleCommand
                 $this->connection->tablePrefix . 'users',
                 array(
                     'users_name' => $this->configuration['config']['defaultuser'],
-                    'password' => password_hash($this->configuration['config']['defaultpass'], PASSWORD_DEFAULT),
+                    'password' => password_hash((string) $this->configuration['config']['defaultpass'], PASSWORD_DEFAULT),
                     'full_name' => "",
                     'parent_id' => 0,
                     'lang' => 'auto',
@@ -140,7 +140,7 @@ class InstallFromConfigCommand extends CConsoleCommand
             $connectionString = $this->dbConnectionArray['connectionString'];
         }
         // Yii doesn't give us a good way to get the database name
-        if (preg_match('/' . $sProperty . '=([^;]*)/', $connectionString, $aMatches) == 1) {
+        if (preg_match('/' . $sProperty . '=([^;]*)/', (string) $connectionString, $aMatches) == 1) {
             return $aMatches[1];
         }
         return null;
@@ -159,7 +159,7 @@ class InstallFromConfigCommand extends CConsoleCommand
 
         $connectionString = $dbConnectArray['connectionString'];
         $this->output($connectionString);
-        $dbConnectArray['connectionString'] = preg_replace('/dbname=([^;]*)/', '', $connectionString);
+        $dbConnectArray['connectionString'] = preg_replace('/dbname=([^;]*)/', '', (string) $connectionString);
         
         $this->connection = App()->getDb();
         $this->connection->connectionString = $dbConnectArray['connectionString'];

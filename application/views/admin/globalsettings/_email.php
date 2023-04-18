@@ -13,13 +13,13 @@
         <div class="mb-3">
             <label class=" form-label" for='siteadminemail'><?php eT("Default site admin email:"); ?></label>
             <div class="">
-                <input class="form-control" type='email' size='50' id='siteadminemail' name='siteadminemail' value="<?php echo htmlspecialchars(getGlobalSetting('siteadminemail')); ?>"/>
+                <input class="form-control" type='email' size='50' id='siteadminemail' name='siteadminemail' value="<?php echo htmlspecialchars((string) getGlobalSetting('siteadminemail')); ?>"/>
             </div>
         </div>
         <div class="mb-3">
             <label class="  form-label" for='siteadminname'><?php eT("Administrator name:"); ?></label>
             <div class="">
-                <input class="form-control" type='text' size='50' id='siteadminname' name='siteadminname' value="<?php echo htmlspecialchars(getGlobalSetting('siteadminname')); ?>"/>
+                <input class="form-control" type='text' size='50' id='siteadminname' name='siteadminname' value="<?php echo htmlspecialchars((string) getGlobalSetting('siteadminname')); ?>"/>
             </div>
         </div>
         <div class="mb-3">
@@ -40,14 +40,14 @@
         <div class="mb-3">
             <label class="  form-label" for="emailsmtphost"><?php eT("SMTP host:"); ?></label>
             <div class="">
-                <input class="form-control" type='text' size='50' id='emailsmtphost' name='emailsmtphost' value="<?php echo htmlspecialchars(getGlobalSetting('emailsmtphost')); ?>"/>
+                <input class="form-control" type='text' size='50' id='emailsmtphost' name='emailsmtphost' value="<?php echo htmlspecialchars((string) getGlobalSetting('emailsmtphost')); ?>"/>
                 <span class="hint"><?php printf(gT("Enter your hostname and port, e.g.: %s"), "smtp.example.org:25"); ?></span>
             </div>
         </div>
         <div class="mb-3">
             <label class="  form-label" for='emailsmtpuser'><?php eT("SMTP username:"); ?></label>
             <div class="">
-                <input class="form-control" type='text' size='50' id='emailsmtpuser' name='emailsmtpuser' value="<?php echo htmlspecialchars(getGlobalSetting('emailsmtpuser')); ?>"/>
+                <input class="form-control" type='text' size='50' id='emailsmtpuser' name='emailsmtpuser' value="<?php echo htmlspecialchars((string) getGlobalSetting('emailsmtpuser')); ?>"/>
             </div>
         </div>
         <div class="mb-3">
@@ -89,7 +89,7 @@
         <div class="mb-3">
             <label class="  form-label" for='maxemails'><?php eT("Email batch size:"); ?></label>
             <div class="">
-                <input class="form-control" type='text' size='5' id='maxemails' name='maxemails' value="<?php echo htmlspecialchars(getGlobalSetting('maxemails')); ?>"/>
+                <input class="form-control" type='text' size='5' id='maxemails' name='maxemails' value="<?php echo htmlspecialchars((string) getGlobalSetting('maxemails')); ?>"/>
             </div>
         </div>
         <div class="mb-3">
@@ -106,7 +106,7 @@
             </label>
             <div class="">
                 <!-- TODO: is this needed? It looks like commented out? -->
-                <!--a href="<?php echo \Yii::app()->createUrl('admin/globalsettings', array("sa" => "sendTestEmail")); ?>" class="btn btn-success btn-large"><?php eT("Send email"); ?></a-->
+                <!--a href="<?php echo \Yii::app()->createUrl('admin/globalsettings', array("sa" => "sendTestEmail")); ?>" class="btn btn-primary btn-large"><?php eT("Send email"); ?></a-->
                 <button
                     id="sendtestemailbutton"
                     class='btn btn-large btn-primary'

@@ -24,59 +24,57 @@ var sAddParam = '';
 // @TODO Fix rendering!
 ?>
 
-<div class="container-fluid">
-  <!-- resources panel -->
-    <div id='resources'>
-        <div class="row">
-            <!-- Export -->
-            <div class="col-md-3">
-                <?php
-                echo TbHtml::dropDownList(
-                    'fileTypeShow',
-                    'fileTypeShow',
-                    array(
-                        'files' => gT('Files', 'unescaped'),
-                        'flash' => gT('Flash', 'unescaped'),
-                        'images' => gT('Images', 'unescaped')
-                    ),
-                    array(
-                        'class'     =>'form-select',
-                        'data-href' => App()->request->getBaseUrl() . "/vendor/kcfinder/browse.php?language=" . sTranslateLangCode2CK(App()->language)
-                    )
-                );
-                ?>
-            </div>
-            <div class="col-md-auto mb-3">
-                <a href="<?php echo $this->createUrl('admin/export/sa/resources/export/survey/surveyid/'.$surveyid); ?>" target="_blank" class="btn btn-outline-secondary">
-                    <span class="fa fa-upload"></span>
-                    <?php eT("Export resources as ZIP archive") ?>
-                </a>
-                <a class="btn btn-outline-secondary" href="" target='_blank' data-bs-toggle="modal" data-bs-target="#importRessourcesModal">
-                    <span class="fa fa-download"></span>
-                    <?php eT("Import resources ZIP archive"); ?>
-                </a>
-            </div>
-            <div class="col-12">
-                <iframe
-                    id="browseiframe"
-                    src="<?php echo App()->request->getBaseUrl(); ?>/vendor/kcfinder/browse.php?language='<?php echo sTranslateLangCode2CK(App()->language); ?>'"
-                    width="100%"
-                    height="600px">
-                </iframe>
-            </div>
+<!-- resources panel -->
+<div id='resources'>
+    <div class="row">
+        <!-- Export -->
+        <div class="col-md-3">
+            <?php
+            echo TbHtml::dropDownList(
+                'fileTypeShow',
+                'fileTypeShow',
+                array(
+                    'files' => gT('Files', 'unescaped'),
+                    'flash' => gT('Flash', 'unescaped'),
+                    'images' => gT('Images', 'unescaped')
+                ),
+                array(
+                    'class'     =>'form-select',
+                    'data-href' => App()->request->getBaseUrl() . "/vendor/kcfinder/browse.php?language=" . sTranslateLangCode2CK(App()->language)
+                )
+            );
+            ?>
+        </div>
+        <div class="col-md-auto mb-3">
+            <a href="<?php echo $this->createUrl('admin/export/sa/resources/export/survey/surveyid/'.$surveyid); ?>" target="_blank" class="btn btn-outline-secondary">
+                <span class="ri-upload-fill"></span>
+                <?php eT("Export resources as ZIP archive") ?>
+            </a>
+            <a class="btn btn-outline-secondary" href="" target='_blank' data-bs-toggle="modal" data-bs-target="#importRessourcesModal">
+                <span class="ri-download-fill"></span>
+                <?php eT("Import resources ZIP archive"); ?>
+            </a>
+        </div>
+        <div class="col-12">
+            <iframe
+                id="browseiframe"
+                src="<?php echo App()->request->getBaseUrl(); ?>/vendor/kcfinder/browse.php?language='<?php echo sTranslateLangCode2CK(App()->language); ?>'"
+                width="100%"
+                height="600px">
+            </iframe>
         </div>
     </div>
-    <div>
-        <?php $this->renderPartial('/admin/survey/subview/import_ressources_modal', ['surveyid' => $surveyid, 'ZIPimportAction' => $ZIPimportAction]); ?>
-    </div>
-
-    <?php
-    App()->getClientScript()->registerScript(
-        "RessourcesPanelScripts",
-        "
-        $('#fileTypeShow').on('change', function(e){ e.preventDefault(); $('#browseiframe').attr('src', $(this).data('href')+'&type='+$(this).val()) });
-        ",
-        LSYii_ClientScript::POS_POSTSCRIPT
-    );
-    ?>
 </div>
+<div>
+    <?php $this->renderPartial('/admin/survey/subview/import_ressources_modal', ['surveyid' => $surveyid, 'ZIPimportAction' => $ZIPimportAction]); ?>
+</div>
+
+<?php
+App()->getClientScript()->registerScript(
+    "RessourcesPanelScripts",
+    "
+    $('#fileTypeShow').on('change', function(e){ e.preventDefault(); $('#browseiframe').attr('src', $(this).data('href')+'&type='+$(this).val()) });
+    ",
+    LSYii_ClientScript::POS_POSTSCRIPT
+);
+?>

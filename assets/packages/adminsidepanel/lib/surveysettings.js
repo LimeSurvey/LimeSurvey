@@ -54,7 +54,7 @@ $(document).on('ready  pjax:scriptcomplete', function () {
 
 function templatechange($element) {
     $('#preview-image-container').html(
-        '<div style="height:200px;" class="ls-flex ls-flex-column align-content-center align-items-center"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i></div>'
+        '<div style="height:200px;" class="ls-flex ls-flex-column align-content-center align-items-center"><i class="ri-loader-2-fill remix-spin remix-3x"></i></div>'
     );
     let templateName = $element.val();
     if (templateName === 'inherit')

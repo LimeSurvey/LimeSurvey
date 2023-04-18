@@ -51,8 +51,6 @@ class UserGroupController extends LSBaseController
 
         $this->aData['imageurl'] = Yii::app()->getConfig("adminimageurl");
 
-        $this->aData['menubar_pathname'] = '/userGroup/usergroupbar_view';
-
         return parent::beforeRender($view);
     }
 
@@ -72,10 +70,14 @@ class UserGroupController extends LSBaseController
 
         $model = UserGroup::model();
 
-        $aData['usergroupbar']['returnbutton']['url'] = 'admin/index';
-        $aData['usergroupbar']['returnbutton']['text'] = gT('Back');
+        $aData['topbar']['title'] = gT('User group list');
+        $aData['topbar']['backLink'] = App()->createUrl('admin/index');
 
-        $aData['pageTitle'] = gT('User group list');
+        $aData['topbar']['middleButtons'] = $this->renderPartial('partial/topbarBtns/leftSideButtons', [], true);
+        $aData['topbar']['rightButtons'] = $this->renderPartial('partial/topbarBtns/rightSideButtons', [
+            'addGroupSave' => false
+        ], true);
+
 
         if (isset($_GET['pageSize'])) {
             Yii::app()->user->setState('pageSize', (int)$_GET['pageSize']);
@@ -166,16 +168,19 @@ class UserGroupController extends LSBaseController
             }
         }
 
-        $aData['usergroupbar']['edit'] = true;
+        $aData['topbar']['title'] = gT('User group') . ': ' . $userGroup->name;
+        $aData['topbar']['backLink'] = App()->createUrl('userGroup/index');
 
-        // Return Button
-        $aData['usergroupbar']['returnbutton']['url'] = 'userGroup/index';
-        $aData['usergroupbar']['returnbutton']['text'] = gT('Back');
+        $aData['topbar']['middleButtons'] = $this->renderPartial(
+            'partial/topbarBtns_manageGroup/leftSideButtons',
+            [
+                'userGroupId' => $userGroup->ugid,
+                'hasPermission' => (Yii::app()->session['loginID'] == $userGroup->owner_id ||
+                    Permission::model()->hasGlobalPermission('superadmin', 'read'))
+            ],
+            true
+        );
 
-        // Green Bar (SurveyManagerBar) Page Title
-        $basePageTitle = gT('User group');
-        $userGroupName = $aData['groupname'];
-        $aData['pageTitle'] = $basePageTitle . ' : ' . $userGroupName;
 
         if (isset($_GET['pageSize'])) {
             Yii::app()->user->setState('pageSize', (int)$_GET['pageSize']);
@@ -240,13 +245,16 @@ class UserGroupController extends LSBaseController
             $this->redirect(App()->createUrl("/admin"));
         }
 
-        $aData['usergroupbar']['returnbutton']['url'] = 'userGroup/index';
-        $aData['usergroupbar']['returnbutton']['text'] = gT('Back');
-        $aData['usergroupbar']['savebutton']['form'] = 'usergroupform';
-        $aData['usergroupbar']['savebutton']['text'] = gT("Save");
+        $aData['topbar']['title'] = sprintf(gT("Editing user group (Owner: %s)"), Yii::app()->session['user']);
+        $aData['topbar']['rightButtons'] = $this->renderPartial(
+            'partial/topbarBtns/rightSideButtons',
+            [
+                'backUrl' => Yii::app()->createUrl('userGroup/index'),
+                'addGroupSave' => true
+            ],
+            true
+        );
 
-        // Green Bar (SurveyManagerBar) Page Title
-        $aData['pageTitle'] = sprintf(gT("Editing user group (Owner: %s)"), Yii::app()->session['user']);
         $this->aData = $aData;
 
         $this->render('editUserGroup_view', [
@@ -291,19 +299,24 @@ class UserGroupController extends LSBaseController
             $this->redirect('index');
         }
 
-        // Save Button
-        $aData['usergroupbar']['savebutton']['form'] = 'usergroupform';
-        $aData['usergroupbar']['savebutton']['text'] = gT('Save');
-
-        // Back Button
-        $aData['usergroupbar']['returnbutton']['text'] = gT('Back');
-        $aData['usergroupbar']['returnbutton']['url'] = 'userGroup/index';
-
-        // Add User Group Button
-        $aData['usergroupbar']['add'] = 'admin/usergroups';
-
-        # Green Bar (SurveyManagerBar) Page Title
-        $aData['pageTitle'] = gT('Add user group');
+        $aData['topbar']['title'] = gT('Add user group');
+        $aData['topbar']['middleButtons'] = $this->renderPartial(
+            'partial/topbarBtns/leftSideButtons',
+            [],
+            true
+        );
+        $aData['topbar']['rightButtons'] = $this->renderPartial(
+            '/layouts/partial_topbar/right_close_saveclose_save',
+            [
+                'isCloseBtn' => true,
+                'isSaveAndCloseBtn' => false,
+                'isSaveBtn' => true,
+                'backUrl' => Yii::app()->createUrl('userGroup/index'),
+                'formIdSaveClose' => '',
+                'formIdSave' => 'usergroupform'
+            ],
+            true
+        );
 
         $this->aData = $aData;
 
@@ -420,11 +433,11 @@ class UserGroupController extends LSBaseController
     /**
      * Deletes a user from group
      *
-     * @param $ugid
      * @throws CDbException
      */
-    public function actionDeleteUserFromGroup($ugid)
+    public function actionDeleteUserFromGroup()
     {
+        $ugid = (int) Yii::app()->request->getPost('ugid');
         $uid = (int) Yii::app()->request->getPost('uid');
         $checkOK = $this->checkBeforeAddDeleteUser($uid, (int)$ugid);
         if (count($checkOK) > 0) {
@@ -485,20 +498,13 @@ class UserGroupController extends LSBaseController
             $aData['ugid'] = $ugid;
         }
 
-        // Back Button
-        $aData['usergroupbar']['returnbutton']['url'] = 'userGroup/index';
-        $aData['usergroupbar']['returnbutton']['text'] = gT('Back');
-
-        // Send Button
-        $aData['usergroupbar']['savebutton']['form'] = 'mailusergroup';
-        $aData['usergroupbar']['savebutton']['text'] = gT('Send');
-
-        // Reset Button
-        $aData['usergroupbar']['resetbutton']['form'] = 'mailusergroup';
-        $aData['usergroupbar']['resetbutton']['text'] = gT('Reset');
-
-        // Green Bar (SurveyManagerBar) Page Title
-        $aData['pageTitle'] = gT("Mail to all Members");
+        $aData['topbar']['title'] = gT('Mail to all Members');
+        $aData['topbar']['backLink'] = App()->createUrl('userGroup/index');
+        $aData['topbar']['rightButtons'] = $this->renderPartial(
+            'partial/topbarBtns_mail/rightSideButtons',
+            [],
+            true
+        );
 
         $this->aData = $aData;
 

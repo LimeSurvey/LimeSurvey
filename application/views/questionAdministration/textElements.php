@@ -1,36 +1,32 @@
 <!-- Text element tabs -->
-<nav class="navbar">
-    <ul class="nav nav-tabs me-auto" role="tablist">
+<ul class="nav nav-tabs me-auto" role="tablist">
+    <li class="nav-item" role="presentation">
+        <a class="nav-link active" href="#question-tab" aria-controls="question-tab" role="tab" data-bs-toggle="tab">
+            <?= gT('Question'); ?>
+        </a>
+    </li>
+    <li class="nav-item" role="presentation">
+        <a class="nav-link" href="#question-help-tab" aria-controls="question-help-tab" role="tab" data-bs-toggle="tab">
+            <?= gT('Help'); ?>
+        </a>
+    </li>
+    <?php if ($showScriptField): ?>
         <li class="nav-item" role="presentation">
-            <a class="nav-link active" href="#question-tab" aria-controls="question-tab" role="tab" data-bs-toggle="tab">
-                <?= gT('Question'); ?>
+            <a class="nav-link" href="#script-field-tab" aria-controls="script-field-tab" role="tab" data-bs-toggle="tab">
+                <?= gT('Script'); ?>
             </a>
         </li>
-        <li class="nav-item" role="presentation">
-            <a class="nav-link" href="#question-help-tab" aria-controls="question-help-tab" role="tab" data-bs-toggle="tab">
-                <?= gT('Help'); ?>
-            </a>
-        </li>
-        <?php if ($showScriptField): ?>
-            <li class="nav-item" role="presentation">
-                <a class="nav-link" href="#script-field-tab" aria-controls="script-field-tab" role="tab" data-bs-toggle="tab">
-                    <?= gT('Script'); ?>
-                </a>
-            </li>
-        <?php endif; ?>
-    </ul>
-    <ul class="nav ms-auto" role="tablist">
-        <!-- Language label -->
-        <li class="nav-item">
-            <?php foreach($oSurvey->allLanguages as $lang): ?>
-                <h5 class="lang-hide lang-<?= $lang; ?>" style="<?= $lang != $oSurvey->language ? 'display: none;' : '' ?>">
-                    <span class="badge"><?= strtoupper($lang) ?></span>
-                </h5>
-            <?php endforeach; ?>
-        </li>
-    </ul>
-</nav>
-<div class="tab-content">
+    <?php endif; ?>
+    <li class="nav-item ms-auto">
+        <!-- Language selector -->
+        <?php
+        $this->renderPartial(
+            "languageselector",
+            ['oSurvey' => $oSurvey]
+        ); ?>
+    </li>
+</ul>
+<div class="tab-content bg-white ps-2 pe-2">
     <!-- Question text tab content -->
     <div role="tabpanel" class="tab-pane show active" id="question-tab">
         <?php foreach($oSurvey->allLanguages as $lang): ?>
@@ -120,7 +116,13 @@
                             </div>
                         </div>
                     <?php else: ?>
-                        <div class="alert alert-warning same-script-alert d-none"><?= gT('The script for this language will not be used because "Use for all languages" is set on the base language\'s script.') ?></div>
+                        <?php
+                        $this->widget('ext.AlertWidget.AlertWidget', [
+                            'text' => gT('The script for this language will not be used because "Use for all languages" is set on the base language\'s script.'),
+                            'type' => 'warning',
+                            'htmlOptions' => ['class' => 'same-script-alert d-none']
+                        ]);
+                        ?>
                     <?php endif; ?>
 
                     <?= CHtml::textArea(
@@ -133,7 +135,8 @@
                             'data-filetype' => 'javascript',
                             'class' => 'ace form-control',
                             'style' => 'width: 100%',
-                            'data-lang' => "$lang"
+                            'data-lang' => "$lang",
+                            'readonly' => !App()->user->isScriptUpdateAllowed()
                         ]
                     ); ?>
                     <p class="alert well">

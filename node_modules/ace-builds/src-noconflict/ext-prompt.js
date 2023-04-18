@@ -37,6 +37,9 @@ var Range = require("../range").Range;
 var event = require("../lib/event");
 var lang = require("../lib/lang");
 var dom = require("../lib/dom");
+var getAriaId = function (index) {
+    return "suggest-aria-id:".concat(index);
+};
 var $singleLineEditor = function (el) {
     var renderer = new Renderer(el);
     renderer.$maxLines = 4;
@@ -57,6 +60,8 @@ var AcePopup = function (parentNode) {
     el.style.display = "none";
     popup.renderer.content.style.cursor = "default";
     popup.renderer.setStyle("ace_autocomplete");
+    popup.renderer.container.setAttribute("role", "listbox");
+    popup.renderer.container.setAttribute("aria-label", "Autocomplete suggestions");
     popup.setOption("displayIndentGuides", false);
     popup.setOption("dragDelay", 150);
     var noop = function () { };
@@ -119,11 +124,21 @@ var AcePopup = function (parentNode) {
         var row = popup.getRow();
         var t = popup.renderer.$textLayer;
         var selected = t.element.childNodes[row - t.config.firstRow];
-        if (selected !== t.selectedNode && t.selectedNode)
+        var el = document.activeElement; // Active element is textarea of main editor
+        if (selected !== t.selectedNode && t.selectedNode) {
             dom.removeCssClass(t.selectedNode, "ace_selected");
+            el.removeAttribute("aria-activedescendant");
+            t.selectedNode.removeAttribute("id");
+        }
         t.selectedNode = selected;
-        if (selected)
+        if (selected) {
             dom.addCssClass(selected, "ace_selected");
+            var ariaId = getAriaId(row);
+            selected.id = ariaId;
+            popup.renderer.container.setAttribute("aria-activedescendant", ariaId);
+            el.setAttribute("aria-activedescendant", ariaId);
+            selected.setAttribute("aria-label", popup.getData(row).value);
+        }
     });
     var hideHoverMarker = function () { setHoverMarker(-1); };
     var setHoverMarker = function (row, suppressRedraw) {
@@ -289,6 +304,7 @@ var AcePopup = function (parentNode) {
 dom.importCssString("\n.ace_editor.ace_autocomplete .ace_marker-layer .ace_active-line {\n    background-color: #CAD6FA;\n    z-index: 1;\n}\n.ace_dark.ace_editor.ace_autocomplete .ace_marker-layer .ace_active-line {\n    background-color: #3a674e;\n}\n.ace_editor.ace_autocomplete .ace_line-hover {\n    border: 1px solid #abbffe;\n    margin-top: -1px;\n    background: rgba(233,233,253,0.4);\n    position: absolute;\n    z-index: 2;\n}\n.ace_dark.ace_editor.ace_autocomplete .ace_line-hover {\n    border: 1px solid rgba(109, 150, 13, 0.8);\n    background: rgba(58, 103, 78, 0.62);\n}\n.ace_completion-meta {\n    opacity: 0.5;\n    margin: 0.9em;\n}\n.ace_completion-message {\n    color: blue;\n}\n.ace_editor.ace_autocomplete .ace_completion-highlight{\n    color: #2d69c7;\n}\n.ace_dark.ace_editor.ace_autocomplete .ace_completion-highlight{\n    color: #93ca12;\n}\n.ace_editor.ace_autocomplete {\n    width: 300px;\n    z-index: 200000;\n    border: 1px lightgray solid;\n    position: fixed;\n    box-shadow: 2px 3px 5px rgba(0,0,0,.2);\n    line-height: 1.4;\n    background: #fefefe;\n    color: #111;\n}\n.ace_dark.ace_editor.ace_autocomplete {\n    border: 1px #484747 solid;\n    box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.51);\n    line-height: 1.4;\n    background: #25282c;\n    color: #c1c1c1;\n}", "autocompletion.css", false);
 exports.AcePopup = AcePopup;
 exports.$singleLineEditor = $singleLineEditor;
+exports.getAriaId = getAriaId;
 
 });
 
@@ -1296,9 +1312,10 @@ var Editor = require("./editor").Editor;
 
 });
 
-ace.define("ace/autocomplete",["require","exports","module","ace/keyboard/hash_handler","ace/autocomplete/popup","ace/autocomplete/util","ace/lib/lang","ace/lib/dom","ace/snippets","ace/config"], function(require, exports, module){"use strict";
+ace.define("ace/autocomplete",["require","exports","module","ace/keyboard/hash_handler","ace/autocomplete/popup","ace/autocomplete/popup","ace/autocomplete/util","ace/lib/lang","ace/lib/dom","ace/snippets","ace/config"], function(require, exports, module){"use strict";
 var HashHandler = require("./keyboard/hash_handler").HashHandler;
 var AcePopup = require("./autocomplete/popup").AcePopup;
+var getAriaId = require("./autocomplete/popup").getAriaId;
 var util = require("./autocomplete/util");
 var lang = require("./lib/lang");
 var dom = require("./lib/dom");
@@ -1341,6 +1358,7 @@ var Autocomplete = function () {
             this.$init();
         this.popup.autoSelect = this.autoSelect;
         this.popup.setData(this.completions.filtered, this.completions.filterText);
+        this.editor.textInput.setAriaOptions({ activeDescendant: getAriaId(this.popup.getRow()) });
         editor.keyBinding.addKeyboardHandler(this.keyboardHandler);
         var renderer = editor.renderer;
         this.popup.setRow(this.autoSelect ? 0 : -1);

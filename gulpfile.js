@@ -76,7 +76,7 @@ function theme() {
         autoprefixer(),
         cssnano()
     ];
-    return src(['assets/admin_themes/Sea_Green/lime-admin-colors.scss', 'assets/admin_themes/Sea_Green/statistics.scss', 'assets/admin_themes/Sea_Green/lime-admin-common.scss'])
+    return src(['assets/admin_themes/Sea_Green/sea_green.scss'])
         .pipe(sass())
         .pipe(dest('themes/admin/Sea_Green/css'))
         .pipe(gulppostcss(plugins))
@@ -89,7 +89,7 @@ function theme_rtl() {
         autoprefixer(),
         cssnano()
     ];
-    return src(['assets/admin_themes/Sea_Green/statistics.scss', 'assets/admin_themes/Sea_Green/lime-admin-common.scss', 'assets/admin_themes/Sea_Green/lime-admin-colors.scss'])
+    return src(['assets/admin_themes/Sea_Green/sea_green.scss'])
         .pipe(sass())
         .pipe(rtlcss())
         .pipe(rename({suffix: '-rtl'}))

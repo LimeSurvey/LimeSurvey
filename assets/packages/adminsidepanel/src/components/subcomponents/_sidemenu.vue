@@ -73,11 +73,18 @@ export default {
 }
 </script>
 <template>
-    <div class="ls-flex-column fill menu-pane overflow-enabled ls-space padding all-0 margin top-5" >
-        <div v-show="!loadingState"  v-for="menu in sortedMenues" :title="menu.title" :id="menu.id" class="ls-flex-row wrap ls-space padding all-0" v-bind:key="menu.id">
-            <label class="menu-label">{{menu.title}}</label>
-            <submenu :menu="menu"></submenu>
+    <div class="ls-flex-column menu-pane overflow-enabled ls-space all-0 py-4 bg-white" >
+        <div v-show="!loadingState"  :title="sortedMenues[0].title" :id="sortedMenues[0].id" class="ls-flex-row wrap ls-space padding all-0" v-bind:key="sortedMenues[0].id">
+            <submenu :menu="sortedMenues[0]"></submenu>
         </div>
+
+        <div v-show="!loadingState"  :title="sortedMenues[1].title" :id="sortedMenues[1].id" class="ls-flex-row wrap ls-space padding all-0" v-bind:key="sortedMenues[1].id">
+            <label class="menu-label mt-3 p-2 ls-survey-menu-item">{{sortedMenues[1].title}}</label>
+            <submenu :menu="sortedMenues[1]"></submenu>
+        </div>
+        <!-- <div v-show="!loadingState"  v-for="menu in sortedMenues" :title="menu.title" :id="menu.id" class="ls-flex-row wrap ls-space padding all-0" v-bind:key="menu.id">
+            <submenu :menu="menu"></submenu>
+        </div> -->
         <loader-widget v-if="loadingState" id="sidemenuLoaderWidget" />
     </div>
 </template>

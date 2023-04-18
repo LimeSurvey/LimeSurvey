@@ -43,15 +43,19 @@ $font-size-root: 14px;
 $spacer: 1rem;
 $spacers: (
     0: 0,
-    1: $spacer * .25,
-    2: $spacer * .5,
-    3: $spacer,
-    4: $spacer * 1.5,
-    5: $spacer * 3,
-    6: $spacer * 4.5,
-    7: $spacer * 6,
+    1: 4px,
+    2: 8px,
+    3: 12px,
+    4: 24px,
+    5: 36px,
+    6: 48px,
+    7: 96px,
 );
 // END spacer
+
+// Gutters START
+$grid-gutter-width: 24px;
+// Gutters END
 
 // START btn-variables
 $btn-hover-bg-shade-amount: 30%;

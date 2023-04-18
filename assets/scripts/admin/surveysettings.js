@@ -1,46 +1,3 @@
-
-var defineActions = function (dataArray) {
-    var iconRow = $('<div class="icon-btn-row"></div>');
-    var buttonEdit = $('<button><i class="fa fa-pencil"></i></button>');
-    var buttonDelete = $('<button><i class="fa fa-trash text-danger"></i></button>');
-    var container = $('<div><div class="icon-btn-row"></div></div>');
-    buttonEdit
-        .addClass('btn btn-sm btn-outline-secondary surveysettings_edit_intparameter')
-        .data('id', dataArray.id)
-        .data('sid', dataArray.sid)
-        .data('qid', (dataArray.qid || null))
-        .data('sqid', (dataArray.qid || null))
-        .appendTo(iconRow);
-    buttonDelete
-        .addClass('btn btn-sm btn-outline-secondary surveysettings_delete_intparameter')
-        .data('id', dataArray.id)
-        .data('sid', dataArray.sid)
-        .data('qid', (dataArray.qid || null))
-        .data('sqid', (dataArray.qid || null))
-        .appendTo(iconRow);
-    iconRow.appendTo(container);
-    return container.html();
-};
-
-/**
- * Bind to submit event
- */
-function PostParameterGrid() {
-    /*var rowsData = [],
-        dt = $('#urlparams').DataTable();
-    dt.rows().every(
-        function (rowId, tableLoop, rowLoop) {
-            rowsData.push(dt.row(rowId).data());
-        }
-    );
-    var jsonString = '{}';
-    try {
-        jsonString = JSON.stringify(rowsData);
-    } catch (e) {}
-    $('#allurlparams').val(jsonString);*/
-
-}
-
 /**
  * Save row to table
  *
@@ -49,10 +6,11 @@ function PostParameterGrid() {
 function saveParameter() {
     var sParamname = $.trim($('#paramname').val());
     if (sParamname == '' || !/^[a-zA-Z_][a-zA-Z0-9_]*$/.test(sParamname) || sParamname == 'sid' || sParamname == 'newtest' || sParamname == 'token' || sParamname == 'lang') {
-        $('#dlgEditParameter').prepend('<div class="alert alert-danger alert-dismissible fade in"><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' + sEnterValidParam + '</div>');
+        LS.ajaxAlerts(window.sEnterValidParam, 'danger', {inline: '#parameterError'});
         return;
     }
-    $('#dlgEditParameter').dialog('close');
+    var modal = bootstrap.Modal.getInstance($('#dlgEditParameter'))
+    modal.hide();
     try {
         var rowData = JSON.parse($('#dlgEditParameter').data('rawdata'));
     } catch (e) {
@@ -82,30 +40,22 @@ function saveParameter() {
 }
 
 function newParameter(data) {
+    $('#parameterError').html('');
     $('#targetquestion').val('');
     $('#paramname').val('');
     $('#dlgEditParameter').data('action', 'add');
-    $('#dlgEditParameter').dialog('option', 'title', window.PanelIntegrationData.i10n['Add URL parameter']);
-    $('#dlgEditParameter').dialog('open');
+    $('#dlgEditParameter .modal-title').text(window.PanelIntegrationData.i10n['Add URL parameter']);
 }
 
 function editParameter(event, aRowData) {
-
+    $('#parameterError').html('');
     $('#targetquestion').val((aRowData.qid || '') + '-' + (aRowData.sqid || ''));
     $('#paramname').val(aRowData.parameter);
     $('#dlgEditParameter').data('action', 'edit');
     $('#dlgEditParameter').data('rawdata', JSON.stringify(aRowData));
-    $('#dlgEditParameter').dialog('option', 'title', window.PanelIntegrationData.i10n['Edit URL parameter']);
-    $('#dlgEditParameter').dialog('open');
-}
-
-function deleteParameter(event, aRowData) {
-    var postUrl = $('#dlgEditParameter').data('delete-url');
-    var postDatas = {
-        surveyId: window.PanelIntegrationData.surveyid,
-        URLParam: {id: aRowData.id}
-    };
-    sendPostAndUpdate(postUrl, postDatas);
+    $('#dlgEditParameter .modal-title').text(window.PanelIntegrationData.i10n['Edit URL parameter']);
+    const modal = new bootstrap.Modal(document.getElementById('dlgEditParameter'));
+    modal.show();
 }
 
 function in_array(needle, haystack, argStrict) {
@@ -146,7 +96,9 @@ function validateSettingsForm($form) {
             return LS.validateEndDateHigherThanStart(
                 $('#startdate_datetimepicker').data('DateTimePicker'),
                 $('#expires_datetimepicker').data('DateTimePicker'),
-                () => {LS.LsGlobalNotifier.createAlert(expirationLowerThanStartError, 'danger')}
+                () => {
+                    LS.createAlert(expirationLowerThanStartError, 'danger', {'showCloseButton': true})
+                }
             );
         default:
             return true;
@@ -220,25 +172,8 @@ $(document).on('click', '#urlparams .surveysettings_edit_intparameter', function
     e.preventDefault();
     editParameter(e,$(this).closest('tr').data());
 });
-$(document).on('click', '#urlparams .surveysettings_delete_intparameter', function(e){
-    e.preventDefault();
-    $(this).prop('disabled', true);
-    deleteParameter(e,$(this).closest('tr').data());
-});
-$(document).on('click', '#btnCancelParams', function(){ 
-    $("#dlgEditParameter").dialog("close"); 
-});
-$(document).on('click', '#btnSaveParams', saveParameter);
 
-$(document).on('ready  pjax:scriptcomplete', function(){
-    if (window.PanelIntegrationData) {
-        $("#dlgEditParameter").dialog({ 
-            autoOpen: false, 
-            width: 700 
-        });
-        $("#dlgEditParameter").removeClass('hide');
-    }
-});
+$(document).on('click', '#btnSaveParams', saveParameter);
 
 $(document).on('click', '#searchParameterButton', searchParameters);
 $(document).on('change', '#integrationPanelPager #pageSize', function(){

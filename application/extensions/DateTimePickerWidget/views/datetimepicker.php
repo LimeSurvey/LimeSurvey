@@ -21,10 +21,10 @@
         <?= CHtml::textField($name, $value, $htmlOptions) ?>
     <?php endif; ?>
     <span
-        class='input-group-addon'
+        class='input-group-text'
         data-td-target='#<?= $id ?>'
         data-td-toggle='datetimepicker'
     >
-     <span class='fa fa-calendar'></span>
+     <span class='ri-calendar-2-fill'></span>
    </span>
 </div>

@@ -67,7 +67,7 @@ var UserManagement = function () {
 
     var startSubmit = function () {
         $('#submitForm').append(
-            '<i class="fa fa-spinner fa-pulse UserManagement-spinner"></i>'
+            '<i class="ri-loader-2-fill remix-pulse UserManagement-spinner"></i>'
         ).prop('disabled', true);
     };
     var stopSubmit = function () {
@@ -99,7 +99,7 @@ var UserManagement = function () {
                         wireExportDummyUser();
                         if (!result.hasOwnProperty('html')) {
                             triggerModalClose();
-                            window.LS.ajaxAlerts(result.message, 'success');
+                            window.LS.ajaxAlerts(result.message, 'success', {showCloseButton: true});
                             if (result.hasOwnProperty('href')) {
                                 setTimeout(function() {
                                     const modalSize = result.hasOwnProperty('modalsize') ? result.modalsize : '';
@@ -115,8 +115,7 @@ var UserManagement = function () {
                         });
                         return;
                     }
-                    $('#UserManagement--errors').html(
-                        "<div class='alert alert-danger'>" + result.errors + "</div>"
+                    $('#UserManagement--errors').html(LS.LsGlobalNotifier.createAlert(result.errors, 'danger', {showCloseButton: true})
                     ).removeClass('d-none');
                 },
                 error: function () {
@@ -305,7 +304,7 @@ var UserManagement = function () {
             var modalSize = $(this).data('modalsize');
             openModal(href, modalSize);
         });
-        bindListItemclick();
+ 
     };
 
     var bindModals = function () {

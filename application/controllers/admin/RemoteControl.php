@@ -60,7 +60,7 @@ class RemoteControl extends SurveyCommonAction
             } elseif ($RPCType == 'json') {
                 Yii::app()->loadLibrary('LSjsonRPCServer');
                 if (!isset($_SERVER['CONTENT_TYPE'])) {
-                    $serverContentType = explode(';', $_SERVER['HTTP_CONTENT_TYPE']);
+                    $serverContentType = explode(';', (string) $_SERVER['HTTP_CONTENT_TYPE']);
                     $_SERVER['CONTENT_TYPE'] = reset($serverContentType);
                 }
                 LSjsonRPCServer::handle($oHandler);
@@ -103,7 +103,7 @@ class RemoteControl extends SurveyCommonAction
         if ($enabled) {
             $RPCType = Yii::app()->getConfig("RPCInterface");
             $serverUrl = App()->createAbsoluteUrl('/admin/remotecontrol');
-            $sFileToImport = dirname(Yii::app()->basePath) . DIRECTORY_SEPARATOR . 'docs' . DIRECTORY_SEPARATOR . 'demosurveys' . DIRECTORY_SEPARATOR . 'ls205_sample_survey_english.lss';
+            $sFileToImport = dirname((string) Yii::app()->basePath) . DIRECTORY_SEPARATOR . 'docs' . DIRECTORY_SEPARATOR . 'demosurveys' . DIRECTORY_SEPARATOR . 'ls205_sample_survey_english.lss';
 
             if ($RPCType == 'xml') {
                 $cur_path = get_include_path();

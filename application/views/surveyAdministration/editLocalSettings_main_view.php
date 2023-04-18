@@ -30,7 +30,8 @@ if (isset($scripts)) {
 <!-- START editLocalSettings -->
 <div class="row">
     <div class="col-12">
-        <h3 class="pagetitle"><?php eT($entryData['title']); ?></h3>
+        <!-- <h3 class="pagetitle"><?php eT($entryData['title']); ?></h3> -->
+        <!-- <h1 class="mt-3 mb-2"><?php eT($entryData['title']); ?></h1> -->
         <!-- Edition container -->
         <!-- Form -->
         <?php
@@ -39,7 +40,7 @@ if (isset($scripts)) {
         }
         ?>
         <div class="row">
-            <div class="<?= $entryData['classes'] ?>">
+            <div class="<?= $entryData['classes'] ?> ls-settings-wrapper">
                 <?php $this->renderPartial($entryData['partial'], $templateData); ?>
             </div>
         </div>
@@ -65,7 +66,7 @@ if (isset($scripts)) {
 <!-- END editLocalSettings -->
 <?php
 
-Yii::app()->getClientScript()->registerScript("editLocalSettings_submit_" . $entryData['name'],
+App()->getClientScript()->registerScript("editLocalSettings_submit_" . $entryData['name'],
     "
 window.LS.unrenderBootstrapSwitch();
 window.LS.renderBootstrapSwitch();
@@ -98,23 +99,9 @@ $('#" . $entryData['name'] . "').on('submit.editLocalsettings', function(e){
     return false;
 });
 
-$('.text-option-inherit').on('change', function(e){
-    var newValue = $(this).find('.btn-check:checked').val();
-    var parent = $(this).parent().parent();
-    var inheritValue = parent.find('.inherit-edit').data('inherit-value');
-    var savedValue = parent.find('.inherit-edit').data('saved-value');
-
-    if (newValue == 'Y'){
-        parent.find('.inherit-edit').addClass('d-none').removeClass('show').val(inheritValue);
-        parent.find('.inherit-readonly').addClass('show').removeClass('d-none');
-    } else {
-        var inputValue = (savedValue === inheritValue) ? \"\" : savedValue;
-        parent.find('.inherit-edit').addClass('show').removeClass('d-none').val(inputValue);
-        parent.find('.inherit-readonly').addClass('d-none').removeClass('show');
-    }
-});
 ",
     LSYii_ClientScript::POS_POSTSCRIPT
 );
+App()->getClientScript()->registerScriptFile('/application/views/surveyAdministration/javascript/text-option-inherit.js', LSYii_ClientScript::POS_END)
 
 ?>

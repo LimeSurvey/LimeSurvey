@@ -129,21 +129,18 @@
         </div>
     </td>
 
-    {% set relevanceTooltip = supportsRelevance ? gT("Click to expand") : gT("Relevance is not currently supported for columns") %}
-
     <!-- Relevance equation -->
     {% if first and scale_id == 0 %}
         <td class="relevance-equation">
             <input
                 data-bs-toggle="tooltip"
-                data-title="{{ relevanceTooltip }}"
+                data-title="{{ gT("Click to expand") }}"
                 type='text'
                 class='relevance form-control input'
                 id='subquestions[{{ subquestion.qid }}][{{ scale_id }}][relevance]'
                 name='subquestions[{{ subquestion.qid }}][{{ scale_id }}][relevance]'
                 value="{{ subquestion.relevance|escape('html_attr') }}"
                 onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('save-button').click(); return false;}"
-                {{ supportsRelevance ? '' : 'readonly="readonly"' }}
             />
         </td>
     {%  else %}
@@ -158,7 +155,7 @@
         {% if activated != 'Y' and first %}
             <button class="btn btn-outline-secondary btn-sm btnaddsubquestion">
                 <i
-                    class="icon-add text-success"
+                    class="ri-add-circle-fill text-primary"
                     data-code="{{ subquestion.title|escape('html_attr') }}"
                     data-bs-toggle="tooltip"
                     data-scale-id="{{ scale_id }}"
@@ -168,7 +165,7 @@
             </button>
             <button class="btn btn-outline-secondary btn-sm btndelsubquestion">
                 <i
-                    class="fa fa-minus-circle text-danger"
+                    class="ri-indeterminate-circle-fill text-danger"
                     data-bs-toggle="tooltip"
                     data-bs-placement="bottom"
                     title="{{ gT("Delete this subquestion") }}"

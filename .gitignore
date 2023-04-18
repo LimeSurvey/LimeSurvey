@@ -68,6 +68,7 @@
 # if you want to add a new distributed plugin : add the directory here
 /plugins/*
 !/plugins/index.html
+!/plugins/Demo/
 
 #ignore old styles
 /styles/
@@ -195,7 +196,6 @@ vendor/misantron/
 upload/templates/
 assets/packages/ckeditor/samples
 
-
 ## ignore Vagrantfile and Adminer
 adminer.php
 Vagrantfile
@@ -231,3 +231,4 @@ docker-compose.yml
 docker/
 /geckodriver-v0.23.0-linux64.tar.gz
 /yarn.lock
+/geckodriver.exe

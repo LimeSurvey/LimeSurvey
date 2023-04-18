@@ -170,9 +170,9 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
                 if ($emailsmtpdebug > 0) {
                     $this->SMTPDebug = $emailsmtpdebug;
                 }
-                if (strpos($emailsmtphost, ':') > 0) {
-                    $this->Host = substr($emailsmtphost, 0, strpos($emailsmtphost, ':'));
-                    $this->Port = (int) substr($emailsmtphost, strpos($emailsmtphost, ':') + 1);
+                if (strpos((string) $emailsmtphost, ':') > 0) {
+                    $this->Host = substr((string) $emailsmtphost, 0, strpos((string) $emailsmtphost, ':'));
+                    $this->Port = (int) substr((string) $emailsmtphost, strpos((string) $emailsmtphost, ':') + 1);
                 } else {
                     $this->Host = $emailsmtphost;
                 }
@@ -183,7 +183,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
                 }
                 $this->Username = $emailsmtpuser;
                 $this->Password = $emailsmtppassword;
-                if (trim($emailsmtpuser) != "") {
+                if (trim((string) $emailsmtpuser) != "") {
                     $this->SMTPAuth = true;
                 }
                 break;
@@ -311,7 +311,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
             $this->mailLanguage = $oToken->language;
         }
         $this->eventName = 'beforeTokenEmail';
-        $aEmailaddresses = preg_split("/(,|;)/", $this->oToken->email);
+        $aEmailaddresses = preg_split("/(,|;)/", (string) $this->oToken->email);
         foreach ($aEmailaddresses as $sEmailaddress) {
             $this->addAddress($sEmailaddress, $oToken->firstname . " " . $oToken->lastname);
         }
@@ -438,7 +438,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
      */
     public function addDebug($str, $level = 0)
     {
-        $this->debug[] = rtrim($str) . "\n";
+        $this->debug[] = rtrim((string) $str) . "\n";
     }
 
     /**
@@ -650,12 +650,12 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         }
         $token = $this->oToken->token;
         if (!empty($this->oToken->language)) {
-            $language = trim($this->oToken->language);
+            $language = trim((string) $this->oToken->language);
         }
         LimeExpressionManager::singleton()->loadTokenInformation($this->surveyId, $this->oToken->token);
         if ($this->replaceTokenAttributes) {
             foreach ($this->oToken->attributes as $attribute => $value) {
-                $aTokenReplacements[strtoupper($attribute)] = $value;
+                $aTokenReplacements[strtoupper((string) $attribute)] = $value;
             }
         }
         /* Set the minimal url and add it to Placeholders */
