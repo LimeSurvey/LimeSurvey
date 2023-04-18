@@ -201,17 +201,6 @@
                     ]); ?>
                 </div>
             </div>
-            <div class="mb-3 row">
-                <label class="form-label"><?php eT("Reset to default settings:"); ?></label>
-                <div>
-                    <?php echo CHtml::htmlButton(gT('Reset now'), [
-                        'class'             => 'btn btn-danger col-12 col-md-6',
-                        'data-submit-form'  => 1,
-                        'data-use-form-id'  => 1,
-                        'data-form-to-save' => 'quexmlclearform',
-                    ]); ?>
-                </div>
-            </div>
         </div>
     </div>
     <div class="row">
@@ -219,20 +208,26 @@
             <input type='hidden' name='ok' value='Y'/>
         </div>
     </div>
-
     <?= CHtml::endForm() ?>
-    <?php // Form for "Reset" action. Submitted when clicking the "Reset now" button (inside the main form) ?>
-    <?= CHtml::form(["admin/export/sa/quexmlclear/surveyid/{$surveyid}/"], 'post', ['id' => 'quexmlclearform']); ?>
-    <?= CHtml::htmlButton(gT('Reset now'), [
-        'type'  => 'submit',
-        'class' => 'btn btn-danger col-12 col-md-6 d-none',
-    ]);
-    ?>
-    <?= CHtml::endForm() ?>
+    <div class="row">
+        <div class="col-12">
+            <div class="row">
+                <label class="form-label"><?php eT("Reset to default settings:"); ?></label>
+                <div>
+                         <?php echo CHtml::form(array("admin/export/sa/quexmlclear/surveyid/{$surveyid}/"), 'post', array('id'=>'quexmlclearform'));
+                         echo CHtml::htmlButton(gT('Reset now'), [
+                             'type' => 'submit',
+                             'class' => 'btn btn-danger',
+                         ]);
+                         ?>
+                         <?= CHtml::endForm() ?>
+                </div>
+            </div>
+         </div>
+    </div>
 </div>
 <?php
 App()->getClientScript()->registerScript('QueXMLExportBSSwitcher', "
 LS.renderBootstrapSwitch();
 ", LSYii_ClientScript::POS_POSTSCRIPT);
 ?>
-

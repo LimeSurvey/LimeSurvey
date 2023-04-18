@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2023-04-11 07:58:09+00:00\n"
+"POT-Creation-Date: 2023-04-17 16:34:45+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -18,7 +18,7 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 
 #: application/controllers/AdminController.php:98
-#: application/controllers/UserManagementController.php:996
+#: application/controllers/UserManagementController.php:1006
 #: application/controllers/admin/DataEntry.php:196
 #: application/controllers/admin/DataEntry.php:1647
 #: application/controllers/admin/DataEntry.php:1650
@@ -138,14 +138,14 @@ msgstr ""
 #: application/controllers/FailedEmailController.php:93
 #: application/controllers/FailedEmailController.php:169
 #: application/controllers/FailedEmailController.php:229
-#: application/controllers/ResponsesController.php:102
-#: application/controllers/ResponsesController.php:129
-#: application/controllers/ResponsesController.php:537
-#: application/controllers/ResponsesController.php:588
-#: application/controllers/ResponsesController.php:647
-#: application/controllers/ResponsesController.php:726
-#: application/controllers/ResponsesController.php:775
-#: application/controllers/ResponsesController.php:794
+#: application/controllers/ResponsesController.php:103
+#: application/controllers/ResponsesController.php:130
+#: application/controllers/ResponsesController.php:538
+#: application/controllers/ResponsesController.php:589
+#: application/controllers/ResponsesController.php:648
+#: application/controllers/ResponsesController.php:727
+#: application/controllers/ResponsesController.php:776
+#: application/controllers/ResponsesController.php:795
 #: application/controllers/SurveyAdministrationController.php:310
 #: application/controllers/SurveyAdministrationController.php:1946
 #: application/controllers/SurveyAdministrationController.php:2382
@@ -164,27 +164,27 @@ msgstr ""
 #: application/controllers/UserManagementController.php:44
 #: application/controllers/UserManagementController.php:100
 #: application/controllers/UserManagementController.php:130
-#: application/controllers/UserManagementController.php:234
-#: application/controllers/UserManagementController.php:285
-#: application/controllers/UserManagementController.php:366
-#: application/controllers/UserManagementController.php:390
-#: application/controllers/UserManagementController.php:413
-#: application/controllers/UserManagementController.php:467
-#: application/controllers/UserManagementController.php:500
-#: application/controllers/UserManagementController.php:537
-#: application/controllers/UserManagementController.php:569
-#: application/controllers/UserManagementController.php:608
-#: application/controllers/UserManagementController.php:645
-#: application/controllers/UserManagementController.php:676
-#: application/controllers/UserManagementController.php:765
-#: application/controllers/UserManagementController.php:846
-#: application/controllers/UserManagementController.php:923
-#: application/controllers/UserManagementController.php:976
-#: application/controllers/UserManagementController.php:1024
-#: application/controllers/UserManagementController.php:1078
-#: application/controllers/UserManagementController.php:1124
-#: application/controllers/UserManagementController.php:1146
-#: application/controllers/UserManagementController.php:1206
+#: application/controllers/UserManagementController.php:244
+#: application/controllers/UserManagementController.php:295
+#: application/controllers/UserManagementController.php:376
+#: application/controllers/UserManagementController.php:400
+#: application/controllers/UserManagementController.php:423
+#: application/controllers/UserManagementController.php:477
+#: application/controllers/UserManagementController.php:510
+#: application/controllers/UserManagementController.php:547
+#: application/controllers/UserManagementController.php:579
+#: application/controllers/UserManagementController.php:618
+#: application/controllers/UserManagementController.php:655
+#: application/controllers/UserManagementController.php:686
+#: application/controllers/UserManagementController.php:775
+#: application/controllers/UserManagementController.php:856
+#: application/controllers/UserManagementController.php:933
+#: application/controllers/UserManagementController.php:986
+#: application/controllers/UserManagementController.php:1034
+#: application/controllers/UserManagementController.php:1088
+#: application/controllers/UserManagementController.php:1134
+#: application/controllers/UserManagementController.php:1156
+#: application/controllers/UserManagementController.php:1216
 #: application/controllers/UserRoleController.php:148
 #: application/controllers/UserRoleController.php:195
 #: application/controllers/admin/CheckIntegrity.php:36
@@ -254,7 +254,7 @@ msgstr ""
 #: application/controllers/QuotasController.php:163
 #: application/controllers/QuotasController.php:227
 #: application/controllers/QuotasController.php:337
-#: application/controllers/ResponsesController.php:861
+#: application/controllers/ResponsesController.php:862
 #: application/controllers/SurveyAdministrationController.php:138
 #: application/controllers/SurveyAdministrationController.php:140
 #: application/controllers/SurveyAdministrationController.php:662
@@ -267,7 +267,7 @@ msgstr ""
 #: application/controllers/SurveyPermissionsController.php:70
 #: application/controllers/SurveyPermissionsController.php:225
 #: application/controllers/admin/EmailTemplates.php:84
-#: application/controllers/admin/Export.php:1279
+#: application/controllers/admin/Export.php:1253
 #: application/controllers/admin/Expressions.php:141
 #: application/controllers/admin/ParticipantsAction.php:2702
 #: application/controllers/admin/PluginHelper.php:31
@@ -396,17 +396,17 @@ msgstr ""
 #: application/controllers/FailedEmailController.php:38
 #: application/controllers/FailedEmailController.php:86
 #: application/controllers/FailedEmailController.php:166
-#: application/controllers/ResponsesController.php:121
-#: application/controllers/ResponsesController.php:392
-#: application/controllers/ResponsesController.php:430
-#: application/controllers/ResponsesController.php:551
-#: application/controllers/ResponsesController.php:585
-#: application/controllers/ResponsesController.php:641
-#: application/controllers/ResponsesController.php:675
-#: application/controllers/ResponsesController.php:742
-#: application/controllers/ResponsesController.php:791
-#: application/controllers/ResponsesController.php:1048
-#: application/controllers/ResponsesController.php:1061
+#: application/controllers/ResponsesController.php:122
+#: application/controllers/ResponsesController.php:393
+#: application/controllers/ResponsesController.php:431
+#: application/controllers/ResponsesController.php:552
+#: application/controllers/ResponsesController.php:586
+#: application/controllers/ResponsesController.php:642
+#: application/controllers/ResponsesController.php:676
+#: application/controllers/ResponsesController.php:743
+#: application/controllers/ResponsesController.php:792
+#: application/controllers/ResponsesController.php:1049
+#: application/controllers/ResponsesController.php:1062
 #: application/controllers/SurveyAdministrationController.php:2233
 #: application/controllers/admin/DataEntry.php:1432
 #: application/controllers/admin/Statistics.php:113
@@ -819,11 +819,11 @@ msgid "Participant - Last name"
 msgstr ""
 
 #: application/controllers/LimereplacementfieldsController.php:328
-msgid "Participant - The date the token is valid from"
+msgid "Participant - The date from which the token is valid"
 msgstr ""
 
 #: application/controllers/LimereplacementfieldsController.php:329
-msgid "Participant - The date the token is valid until"
+msgid "Participant - The date until which the token is valid"
 msgstr ""
 
 #: application/controllers/LimereplacementfieldsController.php:339
@@ -879,7 +879,7 @@ msgstr ""
 #: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:211
 #: application/views/admin/dataentry/vvimport.php:28
 #: application/views/admin/export/exportresult_panels/_general.php:4
-#: application/views/admin/globalsettings/globalSettings_view.php:30
+#: application/views/admin/globalsettings/globalSettings_view.php:18
 #: application/views/admin/survey/Question/massive_actions/_selector.php:30
 #: application/views/admin/token/massive_actions/_update.php:21
 #: application/views/admin/token/tokenform.php:52
@@ -887,7 +887,7 @@ msgstr ""
 #: application/views/userManagement/partial/editpermissions.php:16
 #: application/views/userRole/massiveAction/_updatepermissions.php:31
 #: application/views/userRole/partials/_permissions.php:28
-#: modules/admin/globalsettings/views/globalSettings_view.php:36
+#: modules/admin/globalsettings/views/globalSettings_view.php:23
 msgid "General"
 msgstr ""
 
@@ -1057,6 +1057,7 @@ msgstr ""
 #: application/controllers/SurveyAdministrationController.php:1204
 #: application/controllers/SurveyAdministrationController.php:1276
 #: application/controllers/SurveyAdministrationController.php:1363
+#: application/controllers/UserManagementController.php:178
 #: application/controllers/admin/DataEntry.php:258
 #: application/controllers/admin/Labels.php:752
 #: application/controllers/admin/ParticipantsAction.php:59
@@ -1150,7 +1151,7 @@ msgstr ""
 
 #: application/controllers/QuestionAdministrationController.php:1312
 #: application/controllers/SurveyAdministrationController.php:262
-#: application/controllers/UserManagementController.php:869
+#: application/controllers/UserManagementController.php:879
 #: application/controllers/UserRoleController.php:386
 msgid "Deleted"
 msgstr ""
@@ -1162,8 +1163,8 @@ msgstr ""
 
 #: application/controllers/QuestionAdministrationController.php:1342
 #: application/controllers/QuestionGroupsAdministrationController.php:577
-#: application/controllers/ResponsesController.php:591
-#: application/controllers/ResponsesController.php:798
+#: application/controllers/ResponsesController.php:592
+#: application/controllers/ResponsesController.php:799
 #: application/controllers/SurveysGroupsPermissionController.php:189
 #: application/controllers/SurveysGroupsPermissionController.php:249
 #: application/controllers/SurveysGroupsPermissionController.php:359
@@ -1191,12 +1192,12 @@ msgstr ""
 #: application/controllers/SurveyAdministrationController.php:276
 #: application/controllers/ThemeOptionsController.php:209
 #: application/controllers/ThemeOptionsController.php:251
-#: application/controllers/UserManagementController.php:863
-#: application/controllers/UserManagementController.php:899
-#: application/controllers/UserManagementController.php:953
-#: application/controllers/UserManagementController.php:1000
-#: application/controllers/UserManagementController.php:1055
-#: application/controllers/UserManagementController.php:1101
+#: application/controllers/UserManagementController.php:873
+#: application/controllers/UserManagementController.php:909
+#: application/controllers/UserManagementController.php:963
+#: application/controllers/UserManagementController.php:1010
+#: application/controllers/UserManagementController.php:1065
+#: application/controllers/UserManagementController.php:1111
 #: application/controllers/UserRoleController.php:380
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:58
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_action_results.php:10
@@ -1218,8 +1219,8 @@ msgstr ""
 #: application/controllers/SurveyAdministrationController.php:290
 #: application/controllers/ThemeOptionsController.php:248
 #: application/controllers/ThemeOptionsController.php:257
-#: application/controllers/UserManagementController.php:896
-#: application/controllers/UserManagementController.php:905
+#: application/controllers/UserManagementController.php:906
+#: application/controllers/UserManagementController.php:915
 #: application/extensions/admin/grid/MassiveActionsWidget/views/_selected_items.php:31
 #: application/views/themeOptions/index.php:196
 msgid "Selected"
@@ -1407,7 +1408,7 @@ msgstr ""
 #: application/controllers/QuotasController.php:358
 #: application/controllers/QuotasController.php:400
 #: application/controllers/QuotasController.php:436
-#: application/controllers/UserManagementController.php:241
+#: application/controllers/UserManagementController.php:251
 msgid "Access denied."
 msgstr ""
 
@@ -1430,8 +1431,8 @@ msgid "Limit"
 msgstr ""
 
 #: application/controllers/QuotasController.php:116
-#: application/controllers/ResponsesController.php:166
-#: application/controllers/ResponsesController.php:168
+#: application/controllers/ResponsesController.php:167
+#: application/controllers/ResponsesController.php:169
 #: application/controllers/admin/DataEntry.php:538
 #: application/controllers/admin/Tokens.php:1648
 #: application/helpers/common_helper.php:2915
@@ -1554,13 +1555,13 @@ msgstr ""
 msgid "Sorry, this response was not found."
 msgstr ""
 
-#: application/controllers/ResponsesController.php:124
-#: application/controllers/ResponsesController.php:644
-#: application/controllers/ResponsesController.php:678
+#: application/controllers/ResponsesController.php:125
+#: application/controllers/ResponsesController.php:645
+#: application/controllers/ResponsesController.php:679
 msgid "Invalid response ID"
 msgstr ""
 
-#: application/controllers/ResponsesController.php:154
+#: application/controllers/ResponsesController.php:155
 #: application/helpers/common_helper.php:1357
 #: application/helpers/common_helper.php:2885
 #: application/models/SurveyLink.php:233 application/models/Token.php:96
@@ -1569,7 +1570,7 @@ msgstr ""
 msgid "Access code"
 msgstr ""
 
-#: application/controllers/ResponsesController.php:155
+#: application/controllers/ResponsesController.php:156
 #: application/helpers/common_helper.php:2865
 #: application/models/Participant.php:180
 #: application/models/ParticipantShare.php:238 application/models/Token.php:92
@@ -1582,7 +1583,7 @@ msgstr ""
 msgid "First name"
 msgstr ""
 
-#: application/controllers/ResponsesController.php:156
+#: application/controllers/ResponsesController.php:157
 #: application/helpers/common_helper.php:2870
 #: application/models/Participant.php:181
 #: application/models/ParticipantShare.php:233 application/models/Token.php:93
@@ -1595,7 +1596,7 @@ msgstr ""
 msgid "Last name"
 msgstr ""
 
-#: application/controllers/ResponsesController.php:157
+#: application/controllers/ResponsesController.php:158
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:118
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUserKey.php:115
 #: application/models/User.php:136 application/models/User.php:680
@@ -1608,16 +1609,16 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
-#: application/controllers/ResponsesController.php:166
+#: application/controllers/ResponsesController.php:167
 #: application/views/admin/themes/templateeditor_printoutput_view.php:9
 msgid "Submission date"
 msgstr ""
 
-#: application/controllers/ResponsesController.php:197
+#: application/controllers/ResponsesController.php:198
 msgid "File %s"
 msgstr ""
 
-#: application/controllers/ResponsesController.php:201
+#: application/controllers/ResponsesController.php:202
 #: application/controllers/UploaderController.php:319
 #: application/controllers/admin/DataEntry.php:975
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:66
@@ -1637,7 +1638,7 @@ msgstr ""
 msgid "Title"
 msgstr ""
 
-#: application/controllers/ResponsesController.php:212
+#: application/controllers/ResponsesController.php:213
 #: application/controllers/UploaderController.php:320
 #: application/controllers/admin/DataEntry.php:978
 #: application/helpers/common_helper.php:1583
@@ -1651,7 +1652,7 @@ msgstr ""
 msgid "Comment"
 msgstr ""
 
-#: application/controllers/ResponsesController.php:222
+#: application/controllers/ResponsesController.php:223
 #: application/controllers/UploaderController.php:321
 #: application/controllers/admin/DataEntry.php:981
 #: application/views/admin/emailtemplates/email_language_template_tab.php:87
@@ -1660,77 +1661,77 @@ msgstr ""
 msgid "File name"
 msgstr ""
 
-#: application/controllers/ResponsesController.php:231
+#: application/controllers/ResponsesController.php:232
 msgid "File size"
 msgstr ""
 
-#: application/controllers/ResponsesController.php:239
+#: application/controllers/ResponsesController.php:240
 msgid "File count"
 msgstr ""
 
-#: application/controllers/ResponsesController.php:306
+#: application/controllers/ResponsesController.php:307
 msgid "%s KB"
 msgstr ""
 
-#: application/controllers/ResponsesController.php:358
+#: application/controllers/ResponsesController.php:359
 msgid "This response ID is invalid."
 msgstr ""
 
-#: application/controllers/ResponsesController.php:614
+#: application/controllers/ResponsesController.php:615
 msgid "A response was not deleted.|{n} responses were not deleted."
 msgstr ""
 
-#: application/controllers/ResponsesController.php:615
+#: application/controllers/ResponsesController.php:616
 msgid "A timing record was not deleted.|{n} timing records were not deleted."
 msgstr ""
 
-#: application/controllers/ResponsesController.php:624
-#: application/controllers/ResponsesController.php:626
+#: application/controllers/ResponsesController.php:625
+#: application/controllers/ResponsesController.php:627
 msgid "Response(s) deleted."
 msgstr ""
 
-#: application/controllers/ResponsesController.php:652
+#: application/controllers/ResponsesController.php:653
 msgid "Response could not be deleted"
 msgstr ""
 
-#: application/controllers/ResponsesController.php:657
+#: application/controllers/ResponsesController.php:658
 msgid "Response deleted."
 msgstr ""
 
-#: application/controllers/ResponsesController.php:681
+#: application/controllers/ResponsesController.php:682
 msgid "Invalid question ID"
 msgstr ""
 
-#: application/controllers/ResponsesController.php:685
-#: application/controllers/ResponsesController.php:723
-#: application/controllers/ResponsesController.php:747
+#: application/controllers/ResponsesController.php:686
+#: application/controllers/ResponsesController.php:724
+#: application/controllers/ResponsesController.php:748
 msgid "Sorry, this file was not found."
 msgstr ""
 
-#: application/controllers/ResponsesController.php:692
-#: application/controllers/ResponsesController.php:826
+#: application/controllers/ResponsesController.php:693
+#: application/controllers/ResponsesController.php:827
 msgid "Found no response with ID %d"
 msgstr ""
 
-#: application/controllers/ResponsesController.php:771
+#: application/controllers/ResponsesController.php:772
 msgid "The requested files do not exist on the server."
 msgstr ""
 
-#: application/controllers/ResponsesController.php:830
+#: application/controllers/ResponsesController.php:831
 msgid "Error: Could not delete some files: "
 msgstr ""
 
-#: application/controllers/ResponsesController.php:840
+#: application/controllers/ResponsesController.php:841
 msgid "%d file deleted.|%d files deleted."
 msgstr ""
 
-#: application/controllers/ResponsesController.php:868
-#: application/controllers/ResponsesController.php:882
+#: application/controllers/ResponsesController.php:869
+#: application/controllers/ResponsesController.php:883
 #: application/helpers/common_helper.php:1979
 msgid "Total time"
 msgstr ""
 
-#: application/controllers/ResponsesController.php:886
+#: application/controllers/ResponsesController.php:887
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:74
 #: application/helpers/admin/export/HtmlWriter.php:72
 #: application/models/Assessment.php:145 application/models/Question.php:1053
@@ -1740,11 +1741,11 @@ msgstr ""
 msgid "Group"
 msgstr ""
 
-#: application/controllers/ResponsesController.php:888
+#: application/controllers/ResponsesController.php:889
 msgid "Group: "
 msgstr ""
 
-#: application/controllers/ResponsesController.php:894
+#: application/controllers/ResponsesController.php:895
 #: application/helpers/admin/statistics_helper.php:4282
 #: application/models/Question.php:1039
 #: application/models/TemplateManifest.php:165
@@ -1757,11 +1758,11 @@ msgstr ""
 msgid "Question"
 msgstr ""
 
-#: application/controllers/ResponsesController.php:896
+#: application/controllers/ResponsesController.php:897
 msgid "Question: "
 msgstr ""
 
-#: application/controllers/ResponsesController.php:904
+#: application/controllers/ResponsesController.php:905
 #: application/controllers/SurveyAdministrationController.php:3280
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:138
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUserKey.php:101
@@ -1793,17 +1794,17 @@ msgstr ""
 msgid "Action"
 msgstr ""
 
-#: application/controllers/ResponsesController.php:1033
+#: application/controllers/ResponsesController.php:1034
 msgid "Sorry, there are no files for this response."
 msgstr ""
 
-#: application/controllers/ResponsesController.php:1064
+#: application/controllers/ResponsesController.php:1065
 #: application/controllers/admin/DataEntry.php:521
 #: application/models/Surveymenu.php:183
 msgid "This survey has not been activated. There are no results to browse."
 msgstr ""
 
-#: application/controllers/ResponsesController.php:1073
+#: application/controllers/ResponsesController.php:1074
 #: application/controllers/admin/DataEntry.php:527
 msgid "Invalid response id."
 msgstr ""
@@ -3541,6 +3542,7 @@ msgstr ""
 #: application/views/homepageSettings/index.php:90
 #: application/views/surveyPermissions/_overview_table.php:14
 #: application/views/surveyPermissions/index.php:59
+#: application/views/surveyPermissions/index.php:134
 msgid "User group"
 msgstr ""
 
@@ -3632,66 +3634,66 @@ msgstr ""
 msgid "Passwords does not fulfill minimum requirement:"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:186
+#: application/controllers/UserManagementController.php:196
 msgid "User successfully updated"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:293
+#: application/controllers/UserManagementController.php:303
 msgid "You cannot delete yourself."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:332
+#: application/controllers/UserManagementController.php:342
 msgid "All of the user's surveys were transferred to %s."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:340
+#: application/controllers/UserManagementController.php:350
 msgid "All participants owned by this user were transferred to %s."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:346
+#: application/controllers/UserManagementController.php:356
 msgid "User successfully deleted."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:425
+#: application/controllers/UserManagementController.php:435
 #: application/views/userManagement/massiveAction/_updatepermissions.php:6
 #: application/views/userRole/massiveAction/_updatepermissions.php:6
 msgid "Note: You can only give limited permissions to other users because your own permissions are limited, too."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:484
+#: application/controllers/UserManagementController.php:494
 msgid "Saved permissions successfully."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:549
+#: application/controllers/UserManagementController.php:559
 msgid "Saved template permissions successfully."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:649
+#: application/controllers/UserManagementController.php:659
 msgid "Please make sure that your CSV contains the fields '%s', '%s', '%s', '%s', and '%s'"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:653
+#: application/controllers/UserManagementController.php:663
 msgid "Please make sure that your JSON arrays contain the fields '%s', '%s', '%s', '%s', and '%s'"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:691
+#: application/controllers/UserManagementController.php:701
 msgid "No user definition found in file."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:746
+#: application/controllers/UserManagementController.php:756
 msgid "Users imported successfully."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:859
+#: application/controllers/UserManagementController.php:869
 msgid "You cannot delete yourself or a protected user."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:863
-#: application/controllers/UserManagementController.php:899
-#: application/controllers/UserManagementController.php:953
-#: application/controllers/UserManagementController.php:1000
-#: application/controllers/UserManagementController.php:1055
-#: application/controllers/UserManagementController.php:1101
+#: application/controllers/UserManagementController.php:873
+#: application/controllers/UserManagementController.php:909
+#: application/controllers/UserManagementController.php:963
+#: application/controllers/UserManagementController.php:1010
+#: application/controllers/UserManagementController.php:1065
+#: application/controllers/UserManagementController.php:1111
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:17
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUserKey.php:48
 #: application/models/User.php:130 application/models/User.php:672
@@ -3699,12 +3701,12 @@ msgstr ""
 msgid "User ID"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:863
-#: application/controllers/UserManagementController.php:899
-#: application/controllers/UserManagementController.php:953
-#: application/controllers/UserManagementController.php:1000
-#: application/controllers/UserManagementController.php:1055
-#: application/controllers/UserManagementController.php:1101
+#: application/controllers/UserManagementController.php:873
+#: application/controllers/UserManagementController.php:909
+#: application/controllers/UserManagementController.php:963
+#: application/controllers/UserManagementController.php:1010
+#: application/controllers/UserManagementController.php:1065
+#: application/controllers/UserManagementController.php:1111
 #: application/core/LsDefaultDataSets.php:2848
 #: application/core/plugins/AuthLDAP/AuthLDAP.php:378
 #: application/core/plugins/Authdb/Authdb.php:135
@@ -3722,70 +3724,70 @@ msgstr ""
 msgid "Username"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:936
+#: application/controllers/UserManagementController.php:946
 msgid "Error! Please change your password from your profile settings."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:940
+#: application/controllers/UserManagementController.php:950
 msgid "Error! You do not have the permission to edit this user."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:946
+#: application/controllers/UserManagementController.php:956
 msgid "Error: New password could not be sent to %s"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:959
+#: application/controllers/UserManagementController.php:969
 msgid "Email successfully sent."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1006
+#: application/controllers/UserManagementController.php:1016
 #: application/views/userManagement/partial/permissionsuccess.php:8
 #: application/views/userManagement/partial/success.php:4
 #: application/views/userRole/partials/success.php:2
 msgid "Saved successfully"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1042
+#: application/controllers/UserManagementController.php:1052
 msgid "User is already a member of the group."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1051
+#: application/controllers/UserManagementController.php:1061
 msgid "No user group selected."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1061
+#: application/controllers/UserManagementController.php:1071
 msgid "Usergroup updated"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1093
+#: application/controllers/UserManagementController.php:1103
 msgid "The superadmin role cannot be changed."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1107
+#: application/controllers/UserManagementController.php:1117
 msgid "Role updated"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1237
+#: application/controllers/UserManagementController.php:1247
 msgid "User successfully created"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1267
+#: application/controllers/UserManagementController.php:1277
 msgid "Error: User was not created"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1284
+#: application/controllers/UserManagementController.php:1294
 msgid "You do not have permission for this action."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1295
+#: application/controllers/UserManagementController.php:1305
 msgid "A username was not supplied or the username is invalid."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1304
+#: application/controllers/UserManagementController.php:1314
 msgid "A user with this username already exists."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1311
+#: application/controllers/UserManagementController.php:1321
 #: application/core/plugins/AuthLDAP/AuthLDAP.php:285
 #: application/core/plugins/AuthLDAP/AuthLDAP.php:300
 #: application/core/plugins/Authdb/Authdb.php:72
@@ -3793,7 +3795,7 @@ msgstr ""
 msgid "Failed to add user"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1312
+#: application/controllers/UserManagementController.php:1322
 msgid "Plugin is not active"
 msgstr ""
 
@@ -4187,7 +4189,6 @@ msgstr ""
 #: application/controllers/admin/ConditionsAction.php:428
 #: application/controllers/admin/PrintableSurvey.php:197
 #: application/controllers/admin/PrintableSurvey.php:435
-#: application/views/surveyAdministration/_inherit_sub_footer.php:13
 msgid "or"
 msgstr ""
 
@@ -5012,8 +5013,8 @@ msgstr ""
 msgid "Unknown error"
 msgstr ""
 
-#: application/controllers/admin/Export.php:1277
-#: application/controllers/admin/Export.php:1278
+#: application/controllers/admin/Export.php:1251
+#: application/controllers/admin/Export.php:1252
 #: application/views/admin/survey/queXMLSurvey_view.php:4
 #: application/views/admin/survey/queXMLSurvey_view.php:6
 #: application/views/admin/survey/surveybar_displayexport.php:75
@@ -5021,7 +5022,7 @@ msgstr ""
 msgid "queXML PDF export"
 msgstr ""
 
-#: application/controllers/admin/Export.php:1343
+#: application/controllers/admin/Export.php:1315
 msgid "This archive contains a PDF file of the survey, the queXML file of the survey and a queXF banding XML file which can be used with queXF: http://quexf.sourceforge.net/ for processing scanned surveys."
 msgstr ""
 
@@ -6069,19 +6070,19 @@ msgid "Theme %s does not exist."
 msgstr ""
 
 #: application/controllers/admin/Themes.php:558
-msgid "Undo (ctrl + Z)"
+msgid "Undo (Ctrl-Z)"
 msgstr ""
 
 #: application/controllers/admin/Themes.php:559
-msgid "Redo (ctrl + Y)"
+msgid "Redo (Ctrl-Y)"
 msgstr ""
 
 #: application/controllers/admin/Themes.php:560
-msgid "Find (ctrl + F)"
+msgid "Find (Ctrl-F)"
 msgstr ""
 
 #: application/controllers/admin/Themes.php:561
-msgid "Replace (ctrl + H)"
+msgid "Replace (Ctrl-H)"
 msgstr ""
 
 #: application/controllers/admin/Themes.php:581
@@ -7038,9 +7039,9 @@ msgstr ""
 
 #: application/core/LsDefaultDataSets.php:25
 #: application/views/admin/globalsettings/_storage_ajax.php:10
-#: application/views/admin/globalsettings/globalSettings_view.php:29
+#: application/views/admin/globalsettings/globalSettings_view.php:17
 #: application/views/admin/pluginmanager/configure.php:15
-#: modules/admin/globalsettings/views/globalSettings_view.php:35
+#: modules/admin/globalsettings/views/globalSettings_view.php:22
 msgid "Overview"
 msgstr ""
 
@@ -7100,8 +7101,8 @@ msgid "Presentation & navigation settings"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:165
-#: application/views/admin/globalsettings/globalSettings_view.php:35
-#: modules/admin/globalsettings/views/globalSettings_view.php:41
+#: application/views/admin/globalsettings/globalSettings_view.php:23
+#: modules/admin/globalsettings/views/globalSettings_view.php:28
 msgid "Presentation"
 msgstr ""
 
@@ -7513,7 +7514,7 @@ msgid "Label sets"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:949
-msgid "Label sets are templayes which can be loaded in most question types to speed up."
+msgid "Label sets can be used as answer options or subquestions to speed up creation of similar questions."
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:958
@@ -8794,6 +8795,7 @@ msgstr ""
 #: application/views/SurveysGroupsPermission/subviews/currentUsersList.php:9
 #: application/views/admin/user/modifyuser.php:45
 #: application/views/surveyPermissions/_overview_table.php:15
+#: application/views/surveyPermissions/index.php:146
 msgid "Full name"
 msgstr ""
 
@@ -13913,9 +13915,9 @@ msgstr ""
 #: application/models/TokenDynamic.php:673 application/models/User.php:135
 #: application/views/admin/authentication/ajaxLogin.php:80
 #: application/views/admin/authentication/login.php:95
-#: application/views/admin/globalsettings/globalSettings_view.php:36
+#: application/views/admin/globalsettings/globalSettings_view.php:24
 #: application/views/admin/token/dummytokenform.php:67
-#: modules/admin/globalsettings/views/globalSettings_view.php:42
+#: modules/admin/globalsettings/views/globalSettings_view.php:29
 msgid "Language"
 msgstr ""
 
@@ -14304,8 +14306,16 @@ msgstr ""
 msgid "Use internal database authentication"
 msgstr ""
 
-#: application/models/Permission.php:654
-msgid "Edit Permissioin"
+#: application/models/Permission.php:654 application/models/User.php:495
+#: application/views/SurveysGroupsPermission/subviews/currentUsersList.php:22
+#: application/views/SurveysGroupsPermission/subviews/currentUsersList.php:23
+#: application/views/surveyPermissions/_overview_table.php:37
+#: application/views/userManagement/massiveAction/_selector.php:50
+#: application/views/userManagement/massiveAction/_selector.php:59
+#: application/views/userManagement/partial/editpermissions.php:4
+#: application/views/userRole/massiveAction/_updatepermissions.php:23
+#: application/views/userRole/partials/_permissions.php:8
+msgid "Edit permissions"
 msgstr ""
 
 #: application/models/Permission.php:675
@@ -15456,7 +15466,7 @@ msgid "Current group is disabled"
 msgstr ""
 
 #: application/models/TemplateManifest.php:417
-msgid "Error-Title"
+msgid "Error title"
 msgstr ""
 
 #: application/models/TemplateManifest.php:418
@@ -15737,19 +15747,8 @@ msgid "At least %d special character.|At least %d special characters."
 msgstr ""
 
 #: application/models/User.php:473
+#: application/views/userManagement/partial/showuser.php:4
 msgid "User details"
-msgstr ""
-
-#: application/models/User.php:495
-#: application/views/SurveysGroupsPermission/subviews/currentUsersList.php:22
-#: application/views/SurveysGroupsPermission/subviews/currentUsersList.php:23
-#: application/views/surveyPermissions/_overview_table.php:37
-#: application/views/userManagement/massiveAction/_selector.php:50
-#: application/views/userManagement/massiveAction/_selector.php:59
-#: application/views/userManagement/partial/editpermissions.php:4
-#: application/views/userRole/massiveAction/_updatepermissions.php:23
-#: application/views/userRole/partials/_permissions.php:8
-msgid "Edit permissions"
 msgstr ""
 
 #: application/models/User.php:519
@@ -18075,45 +18074,40 @@ msgstr ""
 msgid "Admin email template:"
 msgstr ""
 
-#: application/views/admin/globalsettings/globalSettings_view.php:16
-#: modules/admin/globalsettings/views/globalSettings_view.php:21
-msgid "this view is rendered from global setting module. This message is shown only when debug mode is on"
-msgstr ""
-
-#: application/views/admin/globalsettings/globalSettings_view.php:25
-#: modules/admin/globalsettings/views/globalSettings_view.php:31
+#: application/views/admin/globalsettings/globalSettings_view.php:13
+#: modules/admin/globalsettings/views/globalSettings_view.php:18
 msgid "You can't remove the default language."
 msgstr ""
 
-#: application/views/admin/globalsettings/globalSettings_view.php:31
-#: modules/admin/globalsettings/views/globalSettings_view.php:37
+#: application/views/admin/globalsettings/globalSettings_view.php:19
+#: modules/admin/globalsettings/views/globalSettings_view.php:24
 msgid "Email settings"
 msgstr ""
 
-#: application/views/admin/globalsettings/globalSettings_view.php:32
+#: application/views/admin/globalsettings/globalSettings_view.php:20
 #: application/views/admin/token/bounce.php:2
 #: application/views/surveyAdministration/partial/topbar_tokens/tokensInvRemDropdownItems.php:65
-#: modules/admin/globalsettings/views/globalSettings_view.php:38
+#: modules/admin/globalsettings/views/globalSettings_view.php:25
 msgid "Bounce settings"
 msgstr ""
 
-#: application/views/admin/globalsettings/globalSettings_view.php:33
-#: modules/admin/globalsettings/views/globalSettings_view.php:39
+#: application/views/admin/globalsettings/globalSettings_view.php:21
+#: modules/admin/globalsettings/views/globalSettings_view.php:26
 msgid "Security"
 msgstr ""
 
-#: application/views/admin/globalsettings/globalSettings_view.php:34
-#: modules/admin/globalsettings/views/globalSettings_view.php:40
+#: application/views/admin/globalsettings/globalSettings_view.php:22
+#: modules/admin/globalsettings/views/globalSettings_view.php:27
 msgid "User administration"
 msgstr ""
 
-#: application/views/admin/globalsettings/globalSettings_view.php:37
-#: modules/admin/globalsettings/views/globalSettings_view.php:43
+#: application/views/admin/globalsettings/globalSettings_view.php:25
+#: modules/admin/globalsettings/views/globalSettings_view.php:30
 msgid "Interfaces"
 msgstr ""
 
-#: application/views/admin/globalsettings/globalSettings_view.php:38
-#: modules/admin/globalsettings/views/globalSettings_view.php:44
+#: application/views/admin/globalsettings/globalSettings_view.php:26
+#: modules/admin/globalsettings/views/globalSettings_view.php:31
 msgid "Storage"
 msgstr ""
 
@@ -19752,7 +19746,7 @@ msgstr ""
 #: application/views/admin/survey/editLocalSettings_view.php:24
 #: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:14
 #: application/views/admin/survey/subview/accordion/_notification_panel.php:18
-#: application/views/admin/survey/subview/accordion/_plugin_panel.php:16
+#: application/views/admin/survey/subview/accordion/_plugin_panel.php:15
 #: application/views/admin/survey/subview/accordion/_plugins_panel.php:18
 #: application/views/admin/survey/subview/accordion/_publication_panel.php:17
 #: application/views/admin/survey/subview/accordion/_resources_panel.php:16
@@ -19927,12 +19921,11 @@ msgstr ""
 msgid "Corner boxes"
 msgstr ""
 
-#: application/views/admin/survey/queXMLSurvey_view.php:205
+#: application/views/admin/survey/queXMLSurvey_view.php:215
 msgid "Reset to default settings:"
 msgstr ""
 
-#: application/views/admin/survey/queXMLSurvey_view.php:207
-#: application/views/admin/survey/queXMLSurvey_view.php:226
+#: application/views/admin/survey/queXMLSurvey_view.php:218
 msgid "Reset now"
 msgstr ""
 
@@ -20093,11 +20086,7 @@ msgstr ""
 msgid "Google Analytics style:"
 msgstr ""
 
-#: application/views/admin/survey/subview/accordion/_plugin_panel.php:31
-msgid "Expand/Collapse"
-msgstr ""
-
-#: application/views/admin/survey/subview/accordion/_plugin_panel.php:34
+#: application/views/admin/survey/subview/accordion/_plugin_panel.php:29
 msgid "Settings for plugin %s"
 msgstr ""
 
@@ -23815,43 +23804,11 @@ msgid "Back to survey home"
 msgstr ""
 
 #: application/views/surveyAdministration/_inherit_sub_footer.php:11
-msgid " Inherited settings come from your"
-msgstr ""
-
-#: application/views/surveyAdministration/_inherit_sub_footer.php:13
-msgid "global settings"
-msgstr ""
-
-#: application/views/surveyAdministration/_inherit_sub_footer.php:14
-msgid "survey group"
-msgstr ""
-
-#: application/views/surveyAdministration/_inherit_sub_footer.php:15
-msgid "Click"
-msgstr ""
-
-#: application/views/surveyAdministration/_inherit_sub_footer.php:15
-msgid "here"
-msgstr ""
-
-#: application/views/surveyAdministration/_inherit_sub_footer.php:15
-msgid "for more information about inherited settings."
+msgid "Inherited settings come from your %sglobal settings%s or %ssurvey group%s. Click %shere%s for more information about inherited settings."
 msgstr ""
 
 #: application/views/surveyAdministration/_user_management_sub_footer.php:10
-msgid " Go to"
-msgstr ""
-
-#: application/views/surveyAdministration/_user_management_sub_footer.php:12
-msgid " global user management "
-msgstr ""
-
-#: application/views/surveyAdministration/_user_management_sub_footer.php:12
-msgid "for general user management (add/edit/delete general users)."
-msgstr ""
-
-#: application/views/surveyAdministration/_user_management_sub_footer.php:13
-msgid "If you don't have permission please contact your administrator."
+msgid "Go to %sglobal user management%s for general user management (add/edit/delete general users). %sIf you don't have permission please contact your administrator.%s"
 msgstr ""
 
 #: application/views/surveyAdministration/activateSurvey_view.php:12
@@ -24332,14 +24289,6 @@ msgstr ""
 msgid "No file selected"
 msgstr ""
 
-#: application/views/surveyPermissions/index.php:134
-msgid "User Group"
-msgstr ""
-
-#: application/views/surveyPermissions/index.php:146
-msgid "Full Name"
-msgstr ""
-
 #: application/views/surveyPermissions/settingsPermission.php:19
 msgid "Edit survey permissions for usergroup %s"
 msgstr ""
@@ -24692,10 +24641,6 @@ msgstr ""
 msgid "Select %s file:"
 msgstr ""
 
-#: application/views/userManagement/partial/showuser.php:4
-msgid "User detail"
-msgstr ""
-
 #: application/views/userManagement/partial/showuser.php:11
 msgid "User groups:"
 msgstr ""
@@ -24705,7 +24650,7 @@ msgid "Created by:"
 msgstr ""
 
 #: application/views/userManagement/partial/showuser.php:21
-msgid "Surveys created:"
+msgid "Surveys owned:"
 msgstr ""
 
 #: application/views/userManagement/partial/showuser.php:25
@@ -24841,7 +24786,8 @@ msgid "Save date only"
 msgstr ""
 
 #: plugins/Demo/DemoDateSetting/DemoDateSetting.php:58
-msgid "Save format is set as Y-m-d, you have only the date when get the settings (“%s“ currently)"
+#: plugins/Demo/DemoDateSetting/DemoDateSetting.php:140
+msgid "Save format is set to 'Y-m-d', you'll get only the date when getting the settings (currently '%s')."
 msgstr ""
 
 #: plugins/Demo/DemoDateSetting/DemoDateSetting.php:66
@@ -24850,7 +24796,8 @@ msgid "Save year only"
 msgstr ""
 
 #: plugins/Demo/DemoDateSetting/DemoDateSetting.php:68
-msgid "Save format is set as Y, you have only the year when get the settings (“%s“ currently)"
+#: plugins/Demo/DemoDateSetting/DemoDateSetting.php:145
+msgid "Save format is set to 'Y', you'll get only the year when getting the settings (currently '%s')."
 msgstr ""
 
 #: plugins/Demo/DemoDateSetting/DemoDateSetting.php:76
@@ -24859,32 +24806,18 @@ msgid "Save as shown"
 msgstr ""
 
 #: plugins/Demo/DemoDateSetting/DemoDateSetting.php:78
-msgid "Save format is set to false, you have the settings like it shown to the user when get it (“%s“ currently)."
+#: plugins/Demo/DemoDateSetting/DemoDateSetting.php:150
+msgid "Save format is set to false, the setting is saved as shown to the user (currently '%s')."
 msgstr ""
 
 #: plugins/Demo/DemoDateSetting/DemoDateSetting.php:86
 #: plugins/Demo/DemoDateSetting/DemoDateSetting.php:153
-msgid "Default save"
+msgid "Save default format"
 msgstr ""
 
 #: plugins/Demo/DemoDateSetting/DemoDateSetting.php:88
-msgid "Save format is not set, you have the settings like it shown to the user when get it (“%s“ currently)."
-msgstr ""
-
-#: plugins/Demo/DemoDateSetting/DemoDateSetting.php:140
-msgid "Save format is set as Y-m-d, you have only the date when get the settings (“%s” currently)."
-msgstr ""
-
-#: plugins/Demo/DemoDateSetting/DemoDateSetting.php:145
-msgid "Save format is set as Y, you have only the year when get the settings (“%s” currently)."
-msgstr ""
-
-#: plugins/Demo/DemoDateSetting/DemoDateSetting.php:150
-msgid "Save format is not set, you save the settings like it shown to the user (“%s” currently)."
-msgstr ""
-
 #: plugins/Demo/DemoDateSetting/DemoDateSetting.php:155
-msgid "Save format is set to false, you save the settings like it shown to the user (“%s” currently)."
+msgid "Save format is not set, the setting is saved as shown to the user (currently '%s')."
 msgstr ""
 
 #: plugins/Demo/demoAddEmFunction/demoAddEmFunction.php:23

@@ -34,6 +34,22 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.0.1 (build 230411) to 6.0.2 (build 230417) April 17, 2023
+-Fixed issue: [security] Administrator can change his own password without entering the existing one (Carsten Schmitz)
+-Fixed issue #CR-1054: Vertical scrollbar appearing between accordion transitions in questioneditor (#3031) (jack-han-115)
+-Fixed issue #CR-1053: Accordion for survey plugins can't be opened with the icon, update to new admin theme (#3034) (jack-han-115)
+-Fixed issue #18684: Missing translation  (#3046) (Gabriel Jenik)
+-Fixed issue #18633: Inherited value doesn't match any attribute option (#3001) (Gabriel Jenik)
+-Fixed issue #17883: QueXML formatting cannot be changed (#3028) (Adam Zammit)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by c_schmitz, mauriciofurtado, samarta
+#Updated translation: Norwegian (Bokmål) by c_schmitz, pmonstad
+#Updated translation: Japanese by nomoto
+#Updated translation: Hungarian by kkd
+#Updated translation: Czech by c_schmitz, jelen1
+#Updated translation: Czech (Informal) by jelen1, slansky
+
+
 Changes from 6.0.0 (build 230405) to 6.0.1 (build 230411) April 11, 2023
 -Fixed issue CT-74: increased timeout for autocorrect on numerical fields (Tim Willig)
 -Fixed issue #18423: SQL error when quota enabled on postgresql (#2688) (Denis Chenu)
