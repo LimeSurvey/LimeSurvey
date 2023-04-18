@@ -71,6 +71,7 @@ if (class_exists('SurveyCommonAction')) {
     }
 } else {
     // try to include the old one
+    /** @psalm-suppress UndefinedClass */ 
     class DynamicSurveyCommonAction extends Survey_Common_Action
     {
     }
