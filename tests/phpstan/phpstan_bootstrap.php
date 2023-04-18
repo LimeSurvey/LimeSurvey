@@ -66,6 +66,9 @@ Yii::import('application.helpers.update.updatedb_helper', true);
 Yii::import('application.helpers.admin.ajax_helper', true);
 Yii::import('webroot.installer.create-database', true);
 Yii::import('ext.GeneralOptionWidget.settings.*');
+Yii::import('zii.widgets.grid.*');
+Yii::import('zii.widgets.*');
+Yii::import('zii.widgets.jui.*');
 Yii::app()->loadLibrary('admin.pclzip');
 // TODO: Replace with autoload
 LoadQuestionTypes::loadAll();
