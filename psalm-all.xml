@@ -27,21 +27,17 @@
             <directory name="application/views" />
             <directory name="application/tests" />
             <directory name="application/helpers/Zend" />
-            <directory name="application/libraries/MenuObjects/views" />
-            <directory name="application/core/plugins/TwoFactorAdminLogin/views" />
-            <directory name="application/extensions/AccordionWidget/views" />
-            <directory name="application/extensions/AdminFooter/views" />
-            <directory name="application/extensions/AdvancedSettingWidget/views" />
-            <directory name="application/extensions/AlertWidget/views" />
-            <directory name="application/extensions/BreadcrumbWidget/views" />
-            <directory name="application/extensions/ButtonWidget/views" />
-            <directory name="application/extensions/DateTimePickerWidget/views" />
-            <directory name="application/extensions/FlashMessage/views" />
-            <directory name="application/extensions/GeneralOptionWidget/views" />
-            <directory name="application/extensions/InputWidget/views" />
-            <directory name="application/extensions/LimeTopbarWidget/views" />
-            <directory name="application/extensions/PanelBoxWidget/views" />
+            <directory name="application/libraries/*/views" />
+            <directory name="application/core/plugins/*/views" />
+            <directory name="application/core/plugins/*/vendor" />
+            <directory name="application/extensions/*/views" />
+            <directory name="application/extensions/admin/*/views" />
+            <directory name="application/extensions/admin/grid/*/views" />
+            <directory name="application/extensions/admin/survey/*/views" />
+            <directory name="application/extensions/admin/survey/question/*/views" />
             <file name="application/libraries/simpletester.php" />
+            <file name="application/libraries/admin/quexmlpdf.php" />
+            <file name="application/libraries/admin/pdf.php" />
         </ignoreFiles>
     </projectFiles>
 </psalm>
