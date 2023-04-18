@@ -1972,3 +1972,100 @@ li.imageselect-listitem .imageselect-container input.imageselect-checkbox:checke
 .checkbox-item.checkbox-inline {
   margin-top: 0;
 }
+
+.tempus-dominus-widget {
+  padding: 0;
+  width: 20rem;
+}
+.tempus-dominus-widget .timepicker-hour,
+.tempus-dominus-widget .timepicker-minute,
+.tempus-dominus-widget .timepicker-second {
+  font-size: 1.2em;
+}
+.tempus-dominus-widget .calendar-header {
+  margin-bottom: 2px;
+  font-weight: normal;
+  padding: 8px;
+}
+.tempus-dominus-widget .calendar-header i {
+  font-size: 20px;
+}
+.tempus-dominus-widget .toolbar {
+  grid-auto-rows: 32px;
+  margin-top: 2px;
+  padding: 10px;
+}
+.tempus-dominus-widget .toolbar div {
+  border-radius: 2px;
+}
+.tempus-dominus-widget .date-container-days {
+  grid-auto-rows: 32px;
+  padding: 8px 12px;
+}
+.tempus-dominus-widget .time-container-clock {
+  grid-auto-rows: minmax(24px, auto);
+  padding: 0 32px;
+}
+.tempus-dominus-widget .time-container-clock:has([data-time-component=seconds]) {
+  padding: 0 6px;
+}
+.tempus-dominus-widget .date-container-decades div:not(.no-highlight),
+.tempus-dominus-widget .date-container-years div:not(.no-highlight),
+.tempus-dominus-widget .date-container-months div:not(.no-highlight),
+.tempus-dominus-widget .date-container-days div:not(.no-highlight),
+.tempus-dominus-widget .time-container-clock div:not(.no-highlight),
+.tempus-dominus-widget .time-container-hour div:not(.no-highlight),
+.tempus-dominus-widget .time-container-minute div:not(.no-highlight),
+.tempus-dominus-widget .time-container-second div:not(.no-highlight) {
+  height: 24px;
+  border-radius: 2px;
+  border: 2px solid transparent;
+}
+.tempus-dominus-widget .time-container {
+  margin-top: 31px;
+  margin-bottom: 31px;
+}
+.tempus-dominus-widget .toolbar i {
+  font-size: 20px;
+  padding: 2px 0;
+}
+.tempus-dominus-widget .date-container-days .dow {
+  font-weight: 400;
+}
+.tempus-dominus-widget .date-container-decades div:not(.no-highlight):hover,
+.tempus-dominus-widget .date-container-years div:not(.no-highlight):hover,
+.tempus-dominus-widget .date-container-months div:not(.no-highlight):hover,
+.tempus-dominus-widget .date-container-days div:not(.no-highlight):hover,
+.tempus-dominus-widget .time-container-clock div:not(.no-highlight):hover,
+.tempus-dominus-widget .time-container-hour div:not(.no-highlight):hover,
+.tempus-dominus-widget .time-container-minute div:not(.no-highlight):hover,
+.tempus-dominus-widget .time-container-second div:not(.no-highlight):hover {
+  border-radius: 2px;
+}
+.tempus-dominus-widget .date-container-decades div:not(.no-highlight).today:before,
+.tempus-dominus-widget .date-container-years div:not(.no-highlight).today:before,
+.tempus-dominus-widget .date-container-months div:not(.no-highlight).today:before,
+.tempus-dominus-widget .date-container-days div:not(.no-highlight).today:before,
+.tempus-dominus-widget .time-container-clock div:not(.no-highlight).today:before,
+.tempus-dominus-widget .time-container-hour div:not(.no-highlight).today:before,
+.tempus-dominus-widget .time-container-minute div:not(.no-highlight).today:before,
+.tempus-dominus-widget .time-container-second div:not(.no-highlight).today:before {
+  bottom: 0;
+  right: 0;
+}
+.tempus-dominus-widget [data-time-component=hours],
+.tempus-dominus-widget .separator,
+.tempus-dominus-widget [data-time-component=minutes],
+.tempus-dominus-widget [data-time-component=seconds] {
+  height: 75px !important;
+  font-size: 62px;
+  font-weight: 300;
+}
+.tempus-dominus-widget [data-action=incrementHours],
+.tempus-dominus-widget [data-action=incrementMinutes],
+.tempus-dominus-widget [data-action=incrementSeconds] {
+  align-self: end;
+}
+.tempus-dominus-widget .date-container-days div:not(.no-highlight) {
+  width: 24px;
+}

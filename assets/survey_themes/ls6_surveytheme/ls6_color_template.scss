@@ -2,15 +2,13 @@
 $base-color: #ffffff;
 
 @import "src/colors.scss";
-
-@import "ls-color-mixins.scss";
-
 @import "src/definitions.scss";
 @import "src/extensions.scss";
 
 // ls6theme color variables
 @import "ls6_color_variables.scss";
 
+@import "ls-color-mixins.scss";
 
 // Component colors
 @import "navbar/navbar_colors.scss";
@@ -21,5 +19,6 @@ $base-color: #ffffff;
 @import "tables/tables_colors.scss";
 @import "imageselect/imageselect_colors.scss";
 @import "forms/checkboxes/checkboxes_colors.scss";
+@import "datetimepicker/datetimepicker_colors.scss";
 
 @import "darkmode/darkmode_colors.scss";
