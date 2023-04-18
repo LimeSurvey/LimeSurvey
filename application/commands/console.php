@@ -24,8 +24,8 @@ define('BASEPATH', '.');
 // The PHP file extension
 define('EXT', '.php');
 
-require_once __DIR__ . '/../../third_party/autoload.php';
-require_once(dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR . 'third_party' . DIRECTORY_SEPARATOR . 'yiisoft' . DIRECTORY_SEPARATOR . 'yii'. DIRECTORY_SEPARATOR . 'framework' . DIRECTORY_SEPARATOR . 'yii.php');
+require_once __DIR__ . '/../../vendor/autoload.php';
+require_once(dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'yiisoft' . DIRECTORY_SEPARATOR . 'yii'. DIRECTORY_SEPARATOR . 'framework' . DIRECTORY_SEPARATOR . 'yii.php');
 
 // Load configuration.
 $sCurrentDir = dirname(__FILE__);

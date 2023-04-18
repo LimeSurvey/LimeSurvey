@@ -253,7 +253,7 @@ class Zend_Http_UserAgent implements Serializable
         // And then loop through the remaining options
         $config = array();
         foreach ($options as $key => $value) {
-            switch (strtolower($key)) {
+            switch (strtolower((string) $key)) {
                 case 'browser_type':
                     $this->setBrowserType($value);
                     break;
@@ -336,7 +336,7 @@ class Zend_Http_UserAgent implements Serializable
             } elseif (is_array($deviceConfig) && isset($deviceConfig['path'])) {
                 $loader = $this->getPluginLoader('device');
                 $path   = $deviceConfig['path'];
-                $prefix = isset($deviceConfig['prefix']) ? $deviceConfig['prefix'] : 'Zend_Http_UserAgent';
+                $prefix = $deviceConfig['prefix'] ?? 'Zend_Http_UserAgent';
                 $loader->addPrefixPath($prefix, $path);
 
                 $device = $loader->load($browserType);
@@ -814,7 +814,7 @@ class Zend_Http_UserAgent implements Serializable
         }
 
         // Get sequence against which to match
-        $sequence = explode(',', $this->_config['identification_sequence']);
+        $sequence = explode(',', (string) $this->_config['identification_sequence']);
 
         // If a browser type is already configured, push that to the front of the list
         if (null !== ($browserType = $this->getBrowserType())) {

@@ -124,7 +124,7 @@ class SurveymenuController extends SurveyCommonAction
             $this->getController()->redirect(Yii::app()->createUrl('/admin'));
         }
 
-        $aSurveyMenuIds = json_decode(Yii::app()->request->getPost('sItems'));
+        $aSurveyMenuIds = json_decode(Yii::app()->request->getPost('sItems', '')) ?? [];
         $aResults = array();
         $oBaseModel = Surveymenu::model();
         if (Permission::model()->hasGlobalPermission('settings', 'update')) {
@@ -183,14 +183,14 @@ class SurveymenuController extends SurveyCommonAction
         }
 
         if (Yii::app()->request->isPostRequest) {
-            $aSurveyMenuIds = json_decode(Yii::app()->request->getPost('sItems'));
+            $aSurveyMenuIds = json_decode(Yii::app()->request->getPost('sItems', '')) ?? [];
             $success = [];
             foreach ($aSurveyMenuIds as $menuid) {
                 $model = $this->loadModel($menuid);
                 $success[$menuid] = $model->delete();
             }
 
-            $debug = isset($userConfig['config']['debug']) ? $userConfig['config']['debug'] : 0;
+            $debug = $userConfig['config']['debug'] ?? 0;
             $returnData = array(
                 'data' => [
                     'success' => $success,
@@ -232,7 +232,7 @@ class SurveymenuController extends SurveyCommonAction
             $success = false;
             $model = $this->loadModel($menuid);
             $success = $model->delete();
-            $debug = isset($userConfig['config']['debug']) ? $userConfig['config']['debug'] : 0;
+            $debug = $userConfig['config']['debug'] ?? 0;
             $returnData = array(
                 'data' => [
                     'success' => $success,
@@ -271,7 +271,7 @@ class SurveymenuController extends SurveyCommonAction
         if (Yii::app()->request->isPostRequest) {
             //Check for permission!
             if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-                $debug = isset($userConfig['config']['debug']) ? $userConfig['config']['debug'] : 0;
+                $debug = $userConfig['config']['debug'] ?? 0;
                 $returnData = array(
                     'data' => [
                         'success' => $success,
@@ -299,7 +299,7 @@ class SurveymenuController extends SurveyCommonAction
             //get model to do the work
             $model = Surveymenu::model();
             $success = $model->restoreDefaults();
-            $debug = isset($userConfig['config']['debug']) ? $userConfig['config']['debug'] : 0;
+            $debug = $userConfig['config']['debug'] ?? 0;
             $returnData = array(
                 'data' => [
                     'success' => $success,
@@ -381,24 +381,20 @@ class SurveymenuController extends SurveyCommonAction
         }
         $aData['pageSize'] = Yii::app()->user->getState('pageSize', (int) Yii::app()->params['defaultPageSize']);
 
-        // Page Title Green Bar
-        $aData['pageTitle'] = gT('Survey menus');
 
-        // White Bar
-        $aData['fullpagebar'] = [
-            'menus' => [
-                'buttons' => [
-                    'addMenu' => true,
-                    'addMenuEntry' => true,
-                    'reset' => Permission::model()->hasGlobalPermission('superadmin', 'read'),
-                    'reorder' => true,
-                ],
+        $aData['topbar']['title'] = gT('Survey menus');
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/admin/surveymenu/partial/topbarBtns/rightSideButtons',
+            [
+                'resetPermission' => Permission::model()->hasGlobalPermission('superadmin', 'read')
             ],
-            'returnbutton' => [
-                'text' => gT('Back'),
-                'url' => 'admin/index',
-            ],
-        ];
+            true
+        );
+        $aData['topbar']['middleButtons'] = Yii::app()->getController()->renderPartial(
+            '/admin/surveymenu/partial/topbarBtns/leftSideButtons',
+            [],
+            true
+        );
 
         App()->getClientScript()->registerPackage('surveymenufunctions');
         $this->renderWrappedTemplate(null, array('surveymenu/index'), $aData);

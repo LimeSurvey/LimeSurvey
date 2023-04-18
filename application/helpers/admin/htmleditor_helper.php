@@ -21,7 +21,7 @@ function initKcfinder()
 {
     Yii::app()->session['KCFINDER'] = array();
 
-    $sAllowedExtensions = implode(' ', array_map('trim', explode(',', Yii::app()->getConfig('allowedresourcesuploads'))));
+    $sAllowedExtensions = implode(' ', array_map('trim', explode(',', (string) Yii::app()->getConfig('allowedresourcesuploads'))));
     $_SESSION['KCFINDER']['types'] = array(
         'files' => $sAllowedExtensions,
         'flash' => $sAllowedExtensions,
@@ -42,12 +42,12 @@ function initKcfinder()
         // disable upload at survey creation time
         // because we don't know the sid yet
         if (
-            preg_match('/^(create|edit):(question|group|answer)/', Yii::app()->session['FileManagerContext']) != 0 ||
-                preg_match('/^edit:survey/', Yii::app()->session['FileManagerContext']) != 0 ||
-                preg_match('/^edit:assessments/', Yii::app()->session['FileManagerContext']) != 0 ||
-                preg_match('/^edit:emailsettings/', Yii::app()->session['FileManagerContext']) != 0
+            preg_match('/^(create|edit):(question|group|answer)/', (string) Yii::app()->session['FileManagerContext']) != 0 ||
+                preg_match('/^edit:survey/', (string) Yii::app()->session['FileManagerContext']) != 0 ||
+                preg_match('/^edit:assessments/', (string) Yii::app()->session['FileManagerContext']) != 0 ||
+                preg_match('/^edit:emailsettings/', (string) Yii::app()->session['FileManagerContext']) != 0
         ) {
-            $contextarray = explode(':', Yii::app()->session['FileManagerContext'], 3);
+            $contextarray = explode(':', (string) Yii::app()->session['FileManagerContext'], 3);
             $surveyid = $contextarray[2];
 
             if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update')) {
@@ -56,29 +56,29 @@ function initKcfinder()
                 }
 
                 $_SESSION['KCFINDER']['disabled'] = false;
-                if (preg_match('/^edit:emailsettings/', $_SESSION['FileManagerContext']) != 0) {
+                if (preg_match('/^edit:emailsettings/', (string) $_SESSION['FileManagerContext']) != 0) {
                     // Uploadurl use public url or getBaseUrl(true);
                     // Maybe need external function
                     $sBaseAbsoluteUrl = Yii::app()->getBaseUrl(true);
                     $sPublicUrl = Yii::app()->getConfig("publicurl");
-                    $aPublicUrl = parse_url($sPublicUrl);
+                    $aPublicUrl = parse_url((string) $sPublicUrl);
                     if (isset($aPublicUrl['scheme']) && isset($aPublicUrl['host'])) {
                         $sBaseAbsoluteUrl = $sPublicUrl;
                     }
                     $sBaseUrl = Yii::app()->getBaseUrl();
                     $sUploadUrl = Yii::app()->getConfig('uploadurl');
-                    if (substr($sUploadUrl, 0, strlen($sBaseUrl)) == $sBaseUrl) {
-                        $sUploadUrl = substr($sUploadUrl, strlen($sBaseUrl));
+                    if (substr((string) $sUploadUrl, 0, strlen((string) $sBaseUrl)) == $sBaseUrl) {
+                        $sUploadUrl = substr((string) $sUploadUrl, strlen((string) $sBaseUrl));
                     }
-                    $_SESSION['KCFINDER']['uploadURL'] = trim($sBaseAbsoluteUrl, "/") . $sUploadUrl . "/surveys/{$surveyid}/";
+                    $_SESSION['KCFINDER']['uploadURL'] = trim((string) $sBaseAbsoluteUrl, "/") . $sUploadUrl . "/surveys/{$surveyid}/";
                 } else {
                     $_SESSION['KCFINDER']['uploadURL'] = Yii::app()->getConfig('uploadurl') . "/surveys/{$surveyid}/";
                 }
 
                 $_SESSION['KCFINDER']['uploadDir'] = realpath(Yii::app()->getConfig('uploaddir')) . DIRECTORY_SEPARATOR . 'surveys' . DIRECTORY_SEPARATOR . $surveyid . DIRECTORY_SEPARATOR;
             }
-        } elseif (preg_match('/^edit:label/', Yii::app()->session['FileManagerContext']) != 0) {
-            $contextarray = explode(':', Yii::app()->session['FileManagerContext'], 3);
+        } elseif (preg_match('/^edit:label/', (string) Yii::app()->session['FileManagerContext']) != 0) {
+            $contextarray = explode(':', (string) Yii::app()->session['FileManagerContext'], 3);
             $labelid = $contextarray[2];
             // check if the user has label management right and labelid defined
             if (Permission::model()->hasGlobalPermission('labelsets', 'update') && isset($labelid) && $labelid != '') {
@@ -110,7 +110,7 @@ function sTranslateLangCode2CK($sLanguageCode)
     if (isset($aTranslationTable[$sLanguageCode])) {
         $sResultCode = $aTranslationTable[$sLanguageCode];
     } else {
-        $sResultCode = strtolower($sLanguageCode);
+        $sResultCode = strtolower((string) $sLanguageCode);
     }
     return $sResultCode;
 }
@@ -178,6 +178,16 @@ function getEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $gID = 
     }
 }
 
+/**
+ * @param $fieldtype
+ * @param $fieldname
+ * @param $fieldtext
+ * @param $surveyID
+ * @param $gID
+ * @param $qID
+ * @param $action
+ * @return string
+ */
 function getPopupEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $gID = null, $qID = null, $action = null)
 {
 
@@ -196,17 +206,27 @@ function getPopupEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $g
     ) {
         $class = "editorLink";
     } else {
-        $class = "editorLink input-group-addon";
+        $class = "editorLink input-group-text";
     }
     $htmlcode .= ""
-    . "<a href=\"javascript:start_popup_editor('" . $fieldname . "','" . addslashes(htmlspecialchars_decode($fieldtext, ENT_QUOTES)) . "','" . $surveyID . "','" . $gID . "','" . $qID . "','" . $fieldtype . "','" . $action . "')\" id='" . $fieldname . "_ctrl' class='{$class} btn btn-default btn-xs'>\n"
-    . "\t<i class='fa fa-pencil btneditanswerena' id='" . $fieldname . "_popupctrlena' data-toggle='tooltip' data-placement='bottom' title='" . gT("Start HTML editor in a popup window") . "'></i>"
-    . "\t<i class='fa fa-pencil btneditanswerdis' id='" . $fieldname . "_popupctrldis'  style='display:none'  ></i>"
+    . "<a href=\"javascript:start_popup_editor('" . $fieldname . "','" . addslashes(htmlspecialchars_decode((string) $fieldtext, ENT_QUOTES)) . "','" . $surveyID . "','" . $gID . "','" . $qID . "','" . $fieldtype . "','" . $action . "')\" id='" . $fieldname . "_ctrl' class='{$class} btn btn-outline-secondary btn-xs'>\n"
+    . "\t<i class='ri-pencil-fill btneditanswerena' id='" . $fieldname . "_popupctrlena' data-bs-toggle='tooltip' data-bs-placement='bottom' title='" . gT("Start HTML editor in a popup window") . "'></i>"
+    . "\t<i class='ri-pencil-fill btneditanswerdis' id='" . $fieldname . "_popupctrldis'  style='display:none'  ></i>"
     . "</a>\n";
 
     return $htmlcode;
 }
 
+/**
+ * @param $fieldtype
+ * @param $fieldname
+ * @param $fieldtext
+ * @param $surveyID
+ * @param $gID
+ * @param $qID
+ * @param $action
+ * @return string
+ */
 function getModalEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $gID = null, $qID = null, $action = null)
 {
 
@@ -214,8 +234,8 @@ function getModalEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $g
         $surveyID = 'uniq';
     }
 
-    $htmlcode = "<a href='#' class='btn btn-default btn-sm htmleditor--openmodal' data-target-field-id='$fieldname' data-modal-title='$fieldtext' data-toggle='tooltip' data-original-title='" . gT("Open editor") . "'>\n" .
-                "\t<i class='fa fa-edit' id='{$fieldname}_modal_icon'></i>\n" .
+    $htmlcode = "<a href='#' class='btn btn-sm btn-outline-secondary htmleditor--openmodal' data-target-field-id='$fieldname' data-modal-title='$fieldtext' data-bs-toggle='tooltip' data-bs-original-title='" . gT("Open editor") . "'>\n" .
+                "\t<i class='ri-pencil-fill' id='{$fieldname}_modal_icon'></i>\n" .
                 "</a>\n";
 
     return $htmlcode;
@@ -242,14 +262,14 @@ function getInlineEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $
     // This was used before by this function, when in prior times, fieldname could be derived
     // from the name of a textarea, and not just the id (as now)
     // The name of a texarea can contain quare brackets. Then we needed to sanitize.
-    $oCKeditorVarName = "oCKeditor_" . preg_replace("/[-\[]/", "_", $fieldname);
+    $oCKeditorVarName = "oCKeditor_" . preg_replace("/[-\[]/", "_", (string) $fieldname);
     $oCKeditorVarName = str_replace(']', '', $oCKeditorVarName);
 
     if (
         ($fieldtype == 'editanswer' ||
         $fieldtype == 'addanswer' ||
         $fieldtype == 'editlabel' ||
-        $fieldtype == 'addlabel') && (preg_match("/^translate/", $action) == 0)
+        $fieldtype == 'addlabel') && (preg_match("/^translate/", (string) $action) == 0)
     ) {
         $toolbaroption = ",toolbarStartupExpanded:true\n"
         . ",toolbar:'popup'\n"
@@ -265,7 +285,7 @@ function getInlineEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $
     }
 
     /* fieldtype have language at end , set fullpage for email HTML edit */
-    if (substr($fieldtype, 0, 6) === 'email-') {
+    if (substr((string) $fieldtype, 0, 6) === 'email-') {
         $htmlformatoption = ",fullPage:true\n";
         //~ $htmlformatoption = ",allowedContent:true\n"; // seems uneeded
     }

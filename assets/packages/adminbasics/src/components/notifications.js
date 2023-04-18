@@ -67,15 +67,16 @@ const NotifcationSystem  = function (){
 
             $('#admin-notification-modal .modal-title').html(not.title);
             $('#admin-notification-modal .modal-body-text').html(not.message);
-            $('#admin-notification-modal .modal-content').addClass('panel-' + not.display_class);
+            $('#admin-notification-modal .modal-content').addClass('card-' + not.display_class);
             $('#admin-notification-modal .notification-date').html(not.created.substr(0, 16));
-            $('#admin-notification-modal').modal();
+            const modal = new bootstrap.Modal(document.getElementById('admin-notification-modal'));
+            modal.show();
             
             // TODO: Will this work in message includes a link that is clicked?
             $('#admin-notification-modal').off('hidden.bs.modal');
             $('#admin-notification-modal').on('hidden.bs.modal', (e) => {
                 __notificationIsRead(that);
-                $('#admin-notification-modal .modal-content').removeClass('panel-' + not.display_class);
+                $('#admin-notification-modal .modal-content').removeClass('card-' + not.display_class);
             });
         });
     },
@@ -122,10 +123,10 @@ const NotifcationSystem  = function (){
     
     updateNotificationWidget = (url, openAfter) => {
         // Make sure menu is open after load
-        __updateNotificationWidget(url).then(() =>{
-            if (openAfter !== false) {
-                $('#notification-li').addClass('open');
-            }
+        __updateNotificationWidget(url).then(() => {
+            let dropdownToggleEl = document.querySelector('#notification-li .dropdown-toggle');
+            let dropdownList = new bootstrap.Dropdown(dropdownToggleEl);
+            dropdownList.show();
         });
         // Only update once
         $('#notification-li').off('click.showNotification');

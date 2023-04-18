@@ -17,9 +17,9 @@
         }
         /* get the col class for with (src : http://encosia.com/using-btn-block-bootstrap-3-dropdown-button-groups) */
         if ($survey->isPublicStatistics){
-            $colClass="col-xs-10 col-md-11";
+            $colClass="col-10 col-lg-11";
         }else{
-            $colClass="col-xs-12";
+            $colClass="col-12";
         }
         $surveyLine = CHtml::link(
             $survey->currentLanguageSettings->surveyls_title,
@@ -35,10 +35,10 @@
             )
         );
         if ($survey->isPublicStatistics){
-            $surveyLine .= CHtml::link('<span class="fa fa-bar-chart" aria-hidden="true"></span><span class="sr-only">'. gT('View statistics') .'</span>',
+            $surveyLine .= CHtml::link('<span class="ri-bar-chart-fill" aria-hidden="true"></span><span class="visually-hidden">'. gT('View statistics') .'</span>',
                 array('statistics_user/action', 'surveyid' => $survey->sid,'language' => $surveylang),
                 array(
-                    'class'=>'view-stats btn btn-success col-xs-2 col-md-1',
+                    'class'=>'view-stats btn btn-primary col-2 col-lg-1',
                     'title'=>gT('View statistics'),
                 )
             );
@@ -73,7 +73,7 @@
                     'lang' => $surveylang,
                 ),
                 array(
-                    'class' => "surveytitle btn btn-primary col-xs-12",
+                    'class' => "surveytitle btn btn-primary col-12",
                     'title'=>gT('Start survey'),
                     // broken : jquery-ui tooltip replace bs tooltip 'data-toggle'=>'tooltip',
                     'lang'=>$surveylang // Must add dir ?
@@ -81,7 +81,7 @@
             );
             $surveyLine .=  CHtml::tag('div', array(
                 'data-regformsurvey' => $survey->sid,
-                'class' => 'col-xs-12'
+                'class' => 'col-12'
             ));
         }
         $list .= "</ul>";
@@ -93,6 +93,6 @@
                     </div>";
     if( $outputSurveys==0)
     {
-        $list=CHtml::openTag('div',array('class'=>'col-xs-12')).gT("No available surveys").CHtml::closeTag('div');
+        $list=CHtml::openTag('div',array('class'=>'col-12')).gT("No available surveys").CHtml::closeTag('div');
     }
     echo $list;

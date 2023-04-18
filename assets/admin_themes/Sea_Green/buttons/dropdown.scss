@@ -1,0 +1,79 @@
+// Dropdowns
+.dropdown-menu {
+    font-size        : $dropdown-font-size;
+    background-color : $white;
+    border           : 1.33px solid $g-900;
+    box-shadow       : 4px 4px 0 $g-200;
+    border-radius    : $border-radius;
+    padding          : 8px 0;
+    line-height      : 20px;
+    .divider {
+        background-color : $gray-06;
+    }
+    .larger-dropdown {
+        min-width : 240px;
+    }
+    i {
+        margin-right : 4px;
+    }
+    [class^="ri-"], [class*=" ri-"]  {
+        vertical-align: -0.15em;
+    }
+    .dropdown-item {
+        padding : 8px 16px;
+        &.disabled {
+            color: $g-600;
+            i {
+                color: $g-600 !important; // important because icons usually have a helper class that sets !important
+            }
+        }
+    }
+    > {
+        li > a {
+            color : $g-800;
+            &:hover {
+                color            : $g-800;
+                background-color : $g-200;
+            }
+            &:focus {
+                color            : $white;
+                background-color : var(--bs-primary);
+            }
+        }
+        .active > a {
+            color            : $white;
+            background-color : var(--bs-primary);
+            &:hover {
+                color            : $white;
+                background-color : var(--bs-primary);
+            }
+            &:focus {
+                color            : $white;
+                background-color : var(--bs-primary);
+            }
+        }
+        .disabled > a {
+            color : $g-600;
+        }
+    }
+}
+
+.dropdown-header {
+    color       : $g-600;
+    font-weight : 600;
+    font-size   : $dropdown-font-size;
+}
+
+.dropdown-divider {
+    margin : 8px 0;
+}
+
+// GridActionsWidget
+.ls-action_dropdown {
+    > .btn {
+        line-height : 16px;
+        .ri-more-fill {
+            vertical-align : bottom;
+        }
+    }
+}

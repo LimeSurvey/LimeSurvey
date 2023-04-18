@@ -113,9 +113,12 @@ class Update extends DynamicSurveyCommonAction
         $serverAnswer = $updateModel->getUpdateInfo($buttons);
         $aData['serverAnswer'] = $serverAnswer;
 
-        // Green Bar (SurveyManagerBar Heading)
-        $aData['pageTitle'] = gT('ComfortUpdate');
-        $aData['fullpagebar']['update'] = true;
+        $aData['topbar']['title'] = gt('ComfortUpdate');
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/admin/update/partials/topbarBtns/rightSideButtons',
+            [],
+            true
+        );
 
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'comfortupdate/comfortupdate.js');
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'comfortupdate/buildComfortButtons.js');
@@ -131,12 +134,24 @@ class Update extends DynamicSurveyCommonAction
             $updateModel = new UpdateForm();
             $serverAnswer = $updateModel->getUpdateInfo($buttons);
             $aData['serverAnswer'] = $serverAnswer;
-            $aData['fullpagebar']['closebutton']['url'] = 'admin/update';
             $updateKey = $aData['updateKey'] = getGlobalSetting('update_key');
 
-            //$this->controller->renderPartial('//admin/update/updater/welcome/_subscribe', array('serverAnswer' => $serverAnswer),  false, false);
             if (!$updateKey) {
-                $aData['fullpagebar']['saveandclosebutton']['form'] = true;
+                $pageTitle = gt('Subscribe to ComfortUpdate');
+            } else {
+                $pageTitle = gt('ComfortUpdate');
+            }
+
+            $aData['topbar']['title'] = $pageTitle;
+            $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+                '/admin/update/partials/topbarBtns_subscribe/rightSideButtons',
+                [
+                    'saveAndClose' => !$updateKey
+                ],
+                true
+            );
+
+            if (!$updateKey) {
                 $this->renderWrappedTemplate('update/manage/', 'subscribe', $aData);
             } else {
                 $aData['updateKeyInfos'] = $updateModel->checkUpdateKeyonServer($updateKey);
@@ -148,15 +163,12 @@ class Update extends DynamicSurveyCommonAction
     public function manageSubmitkey()
     {
         $updateModel = new UpdateForm();
-        $serverAnswer = $updateModel->getUpdateInfo($buttons);
-        $aData['serverAnswer'] = $serverAnswer;
-        $aData['fullpagebar']['closebutton']['url'] = 'admin/update';
         $aData['updateKey'] = $updateKey = SettingGlobal::model()->findByPk('update_key');
 
         if (Permission::model()->hasGlobalPermission('superadmin')) {
             if (App()->request->getPost('keyid')) {
                 // We trim it, just in case user added a space...
-                $submittedUpdateKey = trim(App()->request->getPost('keyid'));
+                $submittedUpdateKey = trim(App()->request->getPost('keyid', ''));
 
                 $updateModel = new UpdateForm();
                 $check = $updateModel->checkUpdateKeyonServer($submittedUpdateKey);
@@ -324,7 +336,7 @@ class Update extends DynamicSurveyCommonAction
                     $aData = $updateModel->getFileStatus($changedFiles->files);
                     App()->session['update_changed_files'] = json_decode(json_encode($changedFiles->files), true);
 
-                    $aData['html_from_server'] = (isset($changedFiles->html)) ? $changedFiles->html : '';
+                    $aData['html_from_server'] = $changedFiles->html ?? '';
                     $aData['destinationBuild'] = $tobuild;
                     $aData['updateinfo'] = $changedFiles->files;
                     $aData['access_token'] = $access_token;
@@ -381,6 +393,8 @@ class Update extends DynamicSurveyCommonAction
      */
     public function step4()
     {
+        Yii::app()->loadLibrary("admin/pclzip");
+        $event = new CExceptionEvent($this, new Exception());  // Dummy line to preload CExceptionEvent class.
         if (Permission::model()->hasGlobalPermission('superadmin')) {
             if (App()->request->getPost('destinationBuild')) {
                 $destinationBuild = App()->request->getPost('destinationBuild');
@@ -391,10 +405,10 @@ class Update extends DynamicSurveyCommonAction
                     // this is the last step - Download the zip file, unpack it and replace files accordingly
 
                     $updateModel = new UpdateForm();
-
+                    Yii::app()->loadLibrary("admin/pclzip"); //Preload PCLZip library in case it is moved to a different location in the update
                     $remove = $updateModel->removeDeletedFiles((array)$changedFiles);
                     if (!$remove->result) {
-                        return $this->_renderErrorString($remove->error);
+                        return $this->renderErrorString($remove->error, $remove->message);
                     };
                     $file = $updateModel->downloadUpdateFile($access_token, $destinationBuild);
                     if ($file->result) {
@@ -498,7 +512,7 @@ class Update extends DynamicSurveyCommonAction
         if (Permission::model()->hasGlobalPermission('superadmin')) {
             if (App()->request->getPost('keyid')) {
                 // We trim it, just in case user added a space...
-                $submittedUpdateKey = trim(App()->request->getPost('keyid'));
+                $submittedUpdateKey = trim(App()->request->getPost('keyid', ''));
 
                 $updateModel = new UpdateForm();
                 $check = $updateModel->checkUpdateKeyonServer($submittedUpdateKey);
@@ -622,11 +636,12 @@ class Update extends DynamicSurveyCommonAction
      * @param string $error the error message
      * @return string
      */
-    private function renderErrorString($error)
+    private function renderErrorString($error, $message = null)
     {
             $errorObject = new stdClass();
             $errorObject->result = false;
             $errorObject->error = $error;
+            $errorObject->message = $message;
             return $this->renderError($errorObject);
     }
 

@@ -25,7 +25,7 @@ var uploadHandler = function (qid, options) {
             previewContainer.append('<div class="upload-placeholder"></div>');
         }
 
-        previewContainer.append('<span class="file-name">' + escapeHtml(decodeURIComponent(item.name)) + '</span>');
+        previewContainer.append('<span class="file-name">' + escapeHtml(item.name) + '</span>');
 
         if ($('#' + fieldname + '_show_title').val() == 1 || $('#' + fieldname + '_show_comment').val() == 1) {
 
@@ -33,8 +33,8 @@ var uploadHandler = function (qid, options) {
             var previewCommentContainer = $('');
 
             if ($('#' + fieldname + '_show_title').val() == 1) {
-                var previewTitleContainer = $('<div class="form-group"></div>');
-                $('<label class="control-label col-xs-4"></label>')
+                var previewTitleContainer = $('<div class="mb-3"></div>');
+                $('<label class="control-label col-5"></label>')
                     .attr('for', fieldname + '_title_' + i)
                     .text(options.uploadLang.titleFld)
                     .appendTo(previewTitleContainer);
@@ -46,8 +46,8 @@ var uploadHandler = function (qid, options) {
             }
 
             if ($('#' + fieldname + '_show_comment').val() == 1) {
-                var previewCommentContainer = $('<div class="form-group"></div>');
-                $('<label class="control-label col-xs-4"></label>')
+                var previewCommentContainer = $('<div class="mb-3"></div>');
+                $('<label class="control-label col-5"></label>')
                     .attr('for', fieldname + '_comment_' + i)
                     .text(options.uploadLang.commentFld)
                     .appendTo(previewCommentContainer);
@@ -60,7 +60,7 @@ var uploadHandler = function (qid, options) {
 
         }
 
-        var previewDeleteBlock = $('<div class="form-group"></div>').append(
+        var previewDeleteBlock = $('<div class="mb-3"></div>').append(
             $('<a class="btn btn-danger"></a>')
                 .html('<span class="fa fa-trash"></span>&nbsp;' + options.uploadLang.deleteFile )
                 .on('click', function () {

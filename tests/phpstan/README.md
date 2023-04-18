@@ -2,7 +2,7 @@ PHPStan is a static analyzer. Details here: https://github.com/phpstan/phpstan
 
 Example run:
 
-    $ ./third_party/bin/phpstan analyse plugins/MassAction/ -c tests/phpstan/phpstan.neon -l 3 > phpstan.txt 
+    $ ./vendor/bin/phpstan analyse plugins/MassAction/ -c tests/phpstan/phpstan.neon -l 3 > phpstan.txt 
 
 PHPStan requires a fix in Yii base class: Yii::app() should @return LSYii_Application, not CApplication.
 

@@ -16,7 +16,11 @@
 
 <!-- answer_row -->
 <tr id="javatbd{{ myfname }}" class="{{ coreRowClass }} {% if odd %}ls-odd{% else %}ls-even{% endif %}{% if error %} ls-mandatory-error{% endif %}" role="group" aria-labelledby="answertext{{ myfname }}">
-    <th id="answertext{{ myfname }}" class="answertext control-label{% if error %} text-danger{% endif %}{% if answerwidth==0 %} sr-only{% endif %}">
+    <th
+        id="answertext{{ myfname }}"
+        class="answertext control-label{% if error %} text-danger{% endif %}{% if answerwidth==0 %} visually-hidden{% endif %}"
+        role="rowheader"
+    >
         {{ processString(answertext) }}
         {# Value for expression manager javascript : here ?  #}
         {{ C.Html.hiddenField("java"~myfname,value,({

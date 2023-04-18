@@ -21,7 +21,7 @@
     {% block nav_bar %}
         {{ parent() }}
     {% endblock %}
-    {{ registerScript("StatisticsUserBaseScripts", "var graphUrl = " ~ graphUrl ~ ";", "POS_BEGIN") }}
+    {{ registerScript("StatisticsUserBaseScripts", "var graphUrl = '" ~ graphUrl ~ "';", "POS_BEGIN") }}
     {% block content %}
         {% set sViewContent =  './subviews/content/' ~ aSurveyInfo.include_content ~ '.twig' %}
         {% include './subviews/content/outerframe.twig' with {'include_content': sViewContent } %}

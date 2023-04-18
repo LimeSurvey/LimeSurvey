@@ -40,7 +40,7 @@ class SurveysInGroup extends SurveysGroups implements PermissionInterface
                 'export' => true,
                 'title' => gT("Surveys in this group"),
                 'description' => gT("Permission to access surveys in this group. To see a survey in the list the read/view permission must be given."),
-                'img' => ' fa fa-edit',
+                'img' => ' ri-file-edit-line',
             ),
         );
         return $aPermission;

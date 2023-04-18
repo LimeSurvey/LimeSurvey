@@ -23,7 +23,6 @@ class ExcelWriter extends Writer
      */
     public function __construct()
     {
-        require_once(APPPATH . '/third_party/xlsx_writer/xlsxwriter.class.php');
         $this->separator = '~|';
         $this->hasOutputHeader = false;
         $this->rowCounter = 0;
@@ -36,7 +35,7 @@ class ExcelWriter extends Writer
         $this->workbook = new XLSXWriter();
         $this->workbook->setTempDir(Yii::app()->getConfig('tempdir'));
         $worksheetName = $survey->languageSettings['surveyls_title'];
-        $worksheetName = mb_substr(str_replace(array('*', ':', '/', '\\', '?', '[', ']'), array(' '), $worksheetName), 0, 31, 'utf-8'); // Remove invalid characters
+        $worksheetName = mb_substr(str_replace(array('*', ':', '/', '\\', '?', '[', ']'), array(' '), (string) $worksheetName), 0, 31, 'utf-8'); // Remove invalid characters
         if ($worksheetName == '') {
             $worksheetName = 'survey_' . $survey->id;
         }

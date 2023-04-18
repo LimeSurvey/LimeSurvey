@@ -412,7 +412,7 @@ class SurveyThemeHelper
             // and try to get a valid virtual path from that.
             if (preg_match($pattern, $value, $m)) {
                 foreach ($alternatives as $replacement) {
-                    $path = preg_replace($pattern, $replacement, $value);
+                    $path = preg_replace($pattern, (string) $replacement, $value);
                     $virtualPath = self::getVirtualThemeFilePath($path, $themeName, $sid);
                     if (!empty($virtualPath)) {
                         $value = $virtualPath;

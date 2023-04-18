@@ -1,38 +1,33 @@
 <!-- Format -->
-<div class="panel panel-primary" id="panel-export-format">
-  <div class="panel-heading">
-    <div class="panel-title h4">
-      <?php eT("Format");?>
+<div class="card mb-4" id="panel-export-format">
+    <div class="card-header">
+        <?php eT("Format"); ?>
     </div>
-  </div>
-  <div class="panel-body">
-    <div class="form-group">
-      <!-- Format -->
-      <label for='export_format' class="col-sm-6 control-label">
-        <?php eT("Export format:"); ?>
-      </label>
-      <div class="col-sm-12">
-        <div class="radio ls-flex-row wrap align-items-space-around">
-          <?php foreach ($exports as $key => $info) { ?>
-            <?php if (!empty($info['label'])) { ?>
-              <div class="ls-flex col-4 ls-space padding all-5">
-                <label>
-                  <input type="radio" name="type" id="<?php echo $key;?>" value="<?php echo $key;?>" <?php if($info['label'] == $defaultexport ){ echo 'checked';}?>>
-                  <?php echo $info['label'];?>
-                </label>
-              </div>
-              <?php } ?>
-                <?php } ?>
+    <div class="card-body">
+        <div class="mb-3">
+            <!-- Format -->
+            <label for='export_format' class="col-md-6 form-label">
+                <?php eT("Export format:"); ?>
+            </label>
+            <div class="row">
+                <?php foreach ($exports as $key => $info) : ?>
+                    <?php if (!empty($info['label'])) : ?>
+                        <div class="col-4">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="type" id="<?= $key; ?>"
+                                       value="<?= $key; ?>" <?= $info['label'] == $defaultexport ? 'checked' : '' ?>>
+                                <label class="form-check-label" for="<?= $key ?>">
+                                    <?php echo $info['label']; ?>
+                                </label>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            </div>
+            <label for="csvfieldseparator" class="form-label">
+                <?php eT("CSV field separator:"); ?>
+            </label>
+            <?php echo CHtml::dropDownList('csvfieldseparator', null, $aCsvFieldSeparator, ['class' => 'form-select w-auto']); ?>
         </div>
-      </div>
-      <div class="col-sm-3">
-      <label for="csvfieldseparator" class="control-label">
-        <?php eT("CSV field separator:");?>
-      </label>
-      <div class="">
-        <?php echo CHtml::dropDownList('csvfieldseparator', null, $aCsvFieldSeparator, array('class'=>'form-control')); ?>
-      </div>
     </div>
-    </div>
-  </div>
 </div>

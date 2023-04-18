@@ -347,7 +347,7 @@ class LimesurveyApi
         $base = App()->getDb()->tablePrefix . 'old_survey_' . $surveyId;
         $timingbase = App()->getDb()->tablePrefix . 'old_survey_' . $surveyId . '_timings_';
         foreach (App()->getDb()->getSchema()->getTableNames() as $table) {
-            if (strpos($table, $base) === 0 && strpos($table, $timingbase) === false) {
+            if (strpos((string) $table, $base) === 0 && strpos((string) $table, $timingbase) === false) {
                 $tables[] = $table;
             }
         }
@@ -547,7 +547,7 @@ class LimesurveyApi
         $db_group_name = flattenText($groupName, false, true, 'UTF-8', true);
         $db_group_description = flattenText($groupDescription);
 
-        if (isset($db_group_name) && strlen($db_group_name) > 0) {
+        if (isset($db_group_name) && strlen((string) $db_group_name) > 0) {
             $newUserGroup = new \UserGroup();
             $newUserGroup->owner_id = 1;
             $newUserGroup->name = $db_group_name;
@@ -648,5 +648,26 @@ class LimesurveyApi
         }
 
         return $questionAttributes;
+    }
+
+    /**
+     * Get a formatted date time by a string
+     * Used to return date from date input in admin
+     * @param string $dateValue the string as date value
+     * @param string $returnFormat the final date format
+     * @param integer|null $currentFormat the current format of dateValue, defaut from App()->session['dateformat'] @see getDateFormatData function (in surveytranslator_helper)
+     * @return string
+     */
+    public static function getFormattedDateTime($dateValue, $returnFormat, $currentFormat = null)
+    {
+        if (empty($dateValue)) {
+            return "";
+        }
+        if (empty($currentFormat)) {
+            $currentFormat = intval(App()->session['dateformat']);
+        }
+        $dateformatdetails = getDateFormatData($currentFormat);
+        $datetimeobj = new \Date_Time_Converter($dateValue, $dateformatdetails['phpdate'] . " H:i");
+        return $datetimeobj->convert($returnFormat);
     }
 }

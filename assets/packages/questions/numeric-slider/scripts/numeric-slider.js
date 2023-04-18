@@ -38,6 +38,11 @@ var LSSlider = function (options) {
             reversed: options.reversed || ''
         };
 
+    // Properly handle "0" position when Set Position is enabled
+    if (options.position === 0 && setPosition) {
+        position = 0;
+    }
+
     //fillable variables
     var sliderObject = null,
         sliderSettings = null;

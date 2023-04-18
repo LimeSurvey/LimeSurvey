@@ -49,9 +49,13 @@ class CheckIntegrity extends SurveyCommonAction
     public function index()
     {
         $aData = $this->checkintegrity();
-        $aData['pageTitle'] = gT('Check data integrity');
-        $aData['fullpagebar']['returnbutton']['url'] = 'admin/index';
-        $aData['fullpagebar']['returnbutton']['text'] = gT('Back');
+
+        $aData['topbar']['title'] = gt('Check data integrity');
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/admin/checkintegrity/partials/topbarBtns/rightSideButtons',
+            [],
+            true
+        );
 
         $this->renderWrappedTemplate('checkintegrity', 'check_view', $aData);
     }
@@ -606,6 +610,8 @@ class CheckIntegrity extends SurveyCommonAction
 
         /** Check for active surveys if questions are in the correct group **/
         foreach ($oSurveys as $oSurvey) {
+            // This actually clears the schema cache, not just refreshes it
+            $oDB->schema->refresh();
             // We get the active surveys
             if ($oSurvey->isActive && $oSurvey->hasResponsesTable) {
                 $model    = SurveyDynamic::model($oSurvey->sid);
@@ -615,9 +621,9 @@ class CheckIntegrity extends SurveyCommonAction
                 // We get the columns of the responses table
                 foreach ($aColumns as $oColumn) {
                     // Question columns start with the SID
-                    if (strpos($oColumn->name, (string)$oSurvey->sid) !== false) {
+                    if (strpos((string) $oColumn->name, (string)$oSurvey->sid) !== false) {
                         // Fileds are separated by X
-                        $aFields = explode('X', $oColumn->name);
+                        $aFields = explode('X', (string) $oColumn->name);
 
                         if (isset($aFields[1])) {
                             $sGid = $aFields[1];
@@ -670,9 +676,9 @@ class CheckIntegrity extends SurveyCommonAction
             }
         }
 
+        $oDB->schema->refresh();
         $oDB->schemaCachingDuration = 3600;
         $oDB->schema->getTables();
-        $oDB->schema->refresh();
         $oDB->active = false;
         $oDB->active = true;
         User::model()->refreshMetaData();
@@ -699,7 +705,7 @@ class CheckIntegrity extends SurveyCommonAction
         $aResult = Yii::app()->db->createCommand(dbSelectTablesLike('{{survey}}\_%'))->queryColumn();
         $sSurveyIDs = Yii::app()->db->createCommand('select sid from {{surveys}}')->queryColumn();
         foreach ($aResult as $aRow) {
-            $sTableName = (string) substr($aRow, strlen($sDBPrefix));
+            $sTableName = (string) substr((string) $aRow, strlen((string) $sDBPrefix));
             if ($sTableName == 'survey_links' || $sTableName == 'survey_url_parameters') {
                 continue;
             }
@@ -728,7 +734,7 @@ class CheckIntegrity extends SurveyCommonAction
         /*** Check for active survey participants tables with missing survey entry ***/
         $aResult = Yii::app()->db->createCommand(dbSelectTablesLike('{{tokens}}\_%'))->queryColumn();
         foreach ($aResult as $aRow) {
-            $sTableName = (string) substr($aRow, strlen($sDBPrefix));
+            $sTableName = (string) substr((string) $aRow, strlen((string) $sDBPrefix));
             $aTableName = explode('_', $sTableName);
             $iSurveyID  = (int) substr($sTableName, strpos($sTableName, '_') + 1);
             if (isset($aTableName[1]) && ctype_digit($aTableName[1]) && empty($aTableName[2])) { // Check if it's really a token_XXX table mantis #14938
@@ -773,8 +779,8 @@ class CheckIntegrity extends SurveyCommonAction
             //Only do this if there actually is a 'cfieldname'
             if ($condition['cfieldname']) {
                 // only if cfieldname isn't Tag such as {TOKEN:EMAIL} or any other token
-                if (preg_match('/^\+{0,1}[0-9]+X[0-9]+X*$/', $condition['cfieldname'])) {
-                    list ($surveyid, $gid, $rest) = explode('X', $condition['cfieldname']);
+                if (preg_match('/^\+{0,1}[0-9]+X[0-9]+X*$/', (string) $condition['cfieldname'])) {
+                    list ($surveyid, $gid, $rest) = explode('X', (string) $condition['cfieldname']);
 
                     $iRowCount = count(QuestionGroup::model()->findAllByAttributes(array('gid' => $gid)));
                     if (!$iRowCount) {
@@ -808,8 +814,7 @@ class CheckIntegrity extends SurveyCommonAction
         $oCriteria = new CDbCriteria();
         $oCriteria->join = 'LEFT JOIN {{questions}} q ON t.qid=q.qid';
         $oCriteria->condition = 'q.qid IS NULL';
-        $aRecords = DefaultValue::model()->findAll($oCriteria);
-        $aDelete['defaultvalues'] = count($aRecords);
+        $aDelete['defaultvalues'] = DefaultValue::model()->count($oCriteria);
 
         /**********************************************************************/
         /*     Check quotas                                                   */
@@ -818,7 +823,7 @@ class CheckIntegrity extends SurveyCommonAction
         $oCriteria = new CDbCriteria();
         $oCriteria->join = 'LEFT JOIN {{surveys}} s ON t.sid=s.sid';
         $oCriteria->condition = '(s.sid IS NULL)';
-        $aDelete['quotas'] = count(Quota::model()->findAll($oCriteria));
+        $aDelete['quotas'] = Quota::model()->count($oCriteria);
 
         /**********************************************************************/
         /*     Check quota languagesettings                                   */
@@ -826,7 +831,7 @@ class CheckIntegrity extends SurveyCommonAction
         $oCriteria = new CDbCriteria();
         $oCriteria->join = 'LEFT JOIN {{quota}} s ON t.quotals_quota_id=s.id';
         $oCriteria->condition = '(s.id IS NULL)';
-        $aDelete['quotals'] = count(QuotaLanguageSetting::model()->findAll($oCriteria));
+        $aDelete['quotals'] = QuotaLanguageSetting::model()->count($oCriteria);
 
         /**********************************************************************/
         /*     Check quota members                                   */
@@ -835,7 +840,7 @@ class CheckIntegrity extends SurveyCommonAction
         $oCriteria->join = 'LEFT JOIN {{questions}} q ON t.qid=q.qid LEFT JOIN {{surveys}} s ON t.sid=s.sid';
         $oCriteria->condition = '(q.qid IS NULL) OR (s.sid IS NULL)';
 
-        $aDelete['quotamembers'] = count(QuotaMember::model()->findAll($oCriteria));
+        $aDelete['quotamembers'] = QuotaMember::model()->count($oCriteria);
 
         /**********************************************************************/
         /*     Check assessments                                              */
@@ -894,6 +899,8 @@ class CheckIntegrity extends SurveyCommonAction
             foreach ($aLanguages as $langname) {
                 if ($langname) {
                     $oLanguageSettings = SurveyLanguageSetting::model()->find('surveyls_survey_id=:surveyid AND surveyls_language=:langname', array(':surveyid' => $survey->sid, ':langname' => $langname));
+                    // A simple find starts to eat up memory, so we need to free it
+                    gc_collect_cycles();
                     if (!$oLanguageSettings) {
                         $oLanguageSettings = new SurveyLanguageSetting();
                         $languagedetails = getLanguageDetails($langname);
@@ -998,7 +1005,7 @@ class CheckIntegrity extends SurveyCommonAction
         $aOldSIDs = array();
 
         foreach ($aTables as $sTable) {
-            list($sOldText, $SurveyText, $iSurveyID, $sDate) = explode('_', substr($sTable, strlen($sDBPrefix)));
+            list($sOldText, $SurveyText, $iSurveyID, $sDate) = explode('_', substr((string) $sTable, strlen((string) $sDBPrefix)));
             $aOldSIDs[] = $iSurveyID;
             $aFullOldSIDs[$iSurveyID][] = $sTable;
         }
@@ -1016,7 +1023,7 @@ class CheckIntegrity extends SurveyCommonAction
                 }
             } else {
                 foreach ($aFullOldSIDs[$iOldSID] as $sTableName) {
-                    $aTableParts = explode('_', substr($sTableName, strlen($sDBPrefix)));
+                    $aTableParts = explode('_', substr($sTableName, strlen((string) $sDBPrefix)));
                     $sDateTime = $sType = '';
                     $iSurveyID = $aTableParts[2];
 
@@ -1067,7 +1074,7 @@ class CheckIntegrity extends SurveyCommonAction
         $aFullOldTokenSIDs = array();
 
         foreach ($aTables as $sTable) {
-            list($sOldText, $SurveyText, $iSurveyID, $sDateTime) = explode('_', substr($sTable, strlen($sDBPrefix)));
+            list($sOldText, $SurveyText, $iSurveyID, $sDateTime) = explode('_', substr((string) $sTable, strlen((string) $sDBPrefix)));
             $aTokenSIDs[] = $iSurveyID;
             $aFullOldTokenSIDs[$iSurveyID][] = $sTable;
         }
@@ -1085,7 +1092,7 @@ class CheckIntegrity extends SurveyCommonAction
                 }
             } else {
                 foreach ($aFullOldTokenSIDs[$iOldTokenSID] as $sTableName) {
-                    list($sOldText, $sTokensText, $iSurveyID, $sDateTime) = explode('_', substr($sTableName, strlen($sDBPrefix)));
+                    list($sOldText, $sTokensText, $iSurveyID, $sDateTime) = explode('_', substr($sTableName, strlen((string) $sDBPrefix)));
                     $iYear = (int) substr($sDateTime, 0, 4);
                     $iMonth = (int) substr($sDateTime, 4, 2);
                     $iDay = (int) substr($sDateTime, 6, 2);

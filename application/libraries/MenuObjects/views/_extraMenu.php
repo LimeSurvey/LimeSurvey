@@ -10,10 +10,10 @@ foreach ($extraMenus as $menu): ?>
     <?php
     /** @var Menu $menu */
     if (($prependedMenu && $menu->isPrepended()) || (!$prependedMenu && !$menu->isPrepended())) : ?>
-        <li class="dropdown">
+        <li class="dropdown nav-item">
             <?php
             if ($menu->isDropDown()): ?>
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                <a class="dropdown-toggle nav-link" data-bs-toggle="dropdown" href="#">
                     <?= $menu->getLabel(); ?>
                     <span class="caret"></span>
                 </a>
@@ -22,14 +22,14 @@ foreach ($extraMenus as $menu): ?>
                     foreach ($menu->getMenuItems() as $menuItem): ?>
                         <?php
                         if ($menuItem->isDivider()): ?>
-                            <li class="divider"></li>
+                            <li class="dropdown-divider"></li>
                         <?php
                         elseif ($menuItem->isSmallText()): ?>
                             <li class="dropdown-header"><?= $menuItem->getLabel(); ?></li>
                         <?php
                         else: ?>
                             <li>
-                                <a href="<?= $menuItem->getHref(); ?>">
+                                <a href="<?= $menuItem->getHref(); ?>" class="dropdown-item">
                                     <!-- Spit out icon if present -->
                                     <?php
                                     if ($menuItem->getIconClass() != ''): ?>
@@ -51,17 +51,19 @@ foreach ($extraMenus as $menu): ?>
                 /** @var MenuButton $menuButton */
                 $target = $menuButton->getOpenInNewTab() ? '_blank' : '_self';
                 ?>
-                <p class="navbar-btn"><a id="<?= $menuButton->getButtonId() ?>"
-                                         href="<?= $menuButton->getHref(); ?>"
-                                         class="<?= $menuButton->getButtonClass() ?>"
-                                         title="<?= $menuButton->getTooltip() ?>"
-                                         onclick="<?= $menuButton->getOnClick() ?>"
-                                         target="<?= $target ?>">
+                <p class="btn"><a id="<?= $menuButton->getButtonId() ?>"
+                                  href="<?= $menuButton->getHref(); ?>"
+                                  class="<?= $menuButton->getButtonClass() ?>"
+                                  title="<?= $menuButton->getTooltip() ?>"
+                                         data-toggle="tooltip"
+                                         data-placement="bottom"
+                                  onclick="<?= $menuButton->getOnClick() ?>"
+                                  target="<?= $target ?>">
                         <?= $menuButton->getLabel(); ?></a>
                 </p>
             <?php
             else: ?>
-                <a href="<?= $menu->getHref(); ?>">
+                <a href="<?= $menu->getHref(); ?>" class="nav-link">
                     <?php if ($menu->getIconClass()): ?>
                         <i class="<?= $menu->getIconClass(); ?>"></i>
                     <?php endif; ?>

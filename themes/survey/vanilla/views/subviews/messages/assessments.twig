@@ -24,15 +24,16 @@
 
     <!-- Heading -->
     <tr>
-        <td class="{{ aSurveyInfo.class.assessmentheading }}" {{ aSurveyInfo.attr.assessmentheading }}>
+        <td class="{{ aSurveyInfo.class.assessmentheading }} border-bottom-0 border-top" {{ aSurveyInfo.attr.assessmentheading }}>
             {{ gT("Your assessment") }}
         </td>
     </tr>
 
     <!-- Results -->
     <tr>
-        <td class="{{ aSurveyInfo.class.assessmentscontainer }}" {{ aSurveyInfo.attr.assessmentscontainer }} >
+        <td class="{{ aSurveyInfo.class.assessmentscontainer }} border-bottom-0 border-top" {{ aSurveyInfo.attr.assessmentscontainer }} >
             {% if aAssessments.subtotal.show %}
+            <!-- "Group" assessments -->
                 {% for key,val in aAssessments.subtotal.datas %}
                     {% if aAssessments.group %}
                         {% if key in aAssessments.group | keys %}
@@ -41,13 +42,13 @@
                                 {% set assesmentReplacement = { PERC: val, TOTAL: aAssessments.total_score, ASSESSMENT_CURRENT_TOTAL: aAssessments.total_score } %}
                                 <table class='{{ aSurveyInfo.class.assessmentstable }} table' {{ aSurveyInfo.attr.assessmentstable }}>
                                     <tr {{ aSurveyInfo.attr.assessmentstabletr }} >
-                                        <th {{ aSurveyInfo.attr.assessmentstableth }} >
+                                        <th {{ aSurveyInfo.attr.assessmentstableth }} class="border-top">
                                             {{ processString(assessed.name,true,3,assesmentReplacement) }}
                                         </th>
                                     </tr>
 
                                     <tr  {{ aSurveyInfo.attr.assessmentstabletr }} >
-                                        <td {{ aSurveyInfo.attr.assessmentstabletd }} >
+                                        <td {{ aSurveyInfo.attr.assessmentstabletd }} class="border-bottom-0 border-top">
                                             {{ processString(assessed.message,true,3,assesmentReplacement) }}
                                         </td>
                                     </tr>
@@ -63,18 +64,19 @@
             {% set val = aAssessments.subtotal.datas | last  %}
 
             {% if aAssessments.total.show %}
+                <!-- "Total" assessments -->
                 {% for assessed in aAssessments.total %}
                     {% if ( assessed is iterable and  aAssessments.total_score  >= assessed.min and aAssessments.total_score <= assessed.max ) %}
                     {# val ({PERC}): It displays the score of a question group, it don't exist for global … take the last one (must remove it for 4.X: show an error) #}
                     {% set assesmentReplacement = { PERC: val, TOTAL: aAssessments.total_score, ASSESSMENT_CURRENT_TOTAL: aAssessments.total_score } %}
                         <table class='{{ aSurveyInfo.class.assessmentstablet }} table' {{ aSurveyInfo.attr.assessmentstablet }} >
                             <tr {{ aSurveyInfo.attr.assessmentstablettr }}>
-                                <th {{ aSurveyInfo.attr.assessmentstabletth }}>
+                                <th {{ aSurveyInfo.attr.assessmentstabletth }} class="border-top">
                                     {{ processString(assessed.name,true,3,assesmentReplacement) }}
                                 </th>
                             </tr>
                             <tr {{ aSurveyInfo.attr.assessmentstablettr }}>
-                                <td {{ aSurveyInfo.attr.assessmentstablettd }}>
+                                <td {{ aSurveyInfo.attr.assessmentstablettd }} class="border-bottom-0 border-top">
                                     {{ processString(assessed.message,true,3,assesmentReplacement) }}
                                 </td>
                             </tr>
