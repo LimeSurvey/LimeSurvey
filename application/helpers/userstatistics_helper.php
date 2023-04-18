@@ -562,6 +562,7 @@ class userstatistics_helper
      * @param mixed $surveyid The survey id
      * @param string $outputType
      * @param boolean $browse
+     * @psalm-suppress UndefinedVariable
      *
      * @output array $output An array containing "alist"=>A list of answers to the question in the form of an array ($alist array
      *                       contains an array for every field to be displayed - with the Actual Question Code/Title, The text (flattened)
@@ -1372,6 +1373,7 @@ class userstatistics_helper
      * @param integer $usegraph
      * @param boolean $browse
      * @return array
+     * @psalm-suppress UndefinedVariable
      */
     protected function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $sLanguage)
     {
