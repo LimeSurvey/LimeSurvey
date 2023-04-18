@@ -127,11 +127,9 @@ class SurveyPermissionsController extends LSBaseController
         if ($userAdded) {
             Yii::app()->user->setFlash('success', gT("User added."));
             $this->redirect(['surveyPermissions/index', 'surveyid' => $surveyid]);
-
         } else {
             Yii::app()->user->setFlash('error', gT("User could not be added to survey permissions."));
             $this->redirect(['surveyPermissions/index', 'surveyid' => $surveyid]);
-
         }
     }
 
