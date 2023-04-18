@@ -431,13 +431,13 @@ function check_system_string($input, $min = '', $max = '')
  * @param string $min
  * @param string $max
  * @return bool
- * @deprecated  2018-01-29 has undefined function my_utf8_decode inside !!
  */
 function check($input, $flags, $min = '', $max = '')
 {
     $oldput = $input;
     if ($flags & UTF8) {
-        $input = my_utf8_decode($input);
+        // This case used before function my_utf8_decode, which doesn't exist.
+        throw new Exception('UTF8 not supported');
     }
     if ($flags & PARANOID) {
         $input = sanitize_paranoid_string($input, $min, $max);
