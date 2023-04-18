@@ -416,15 +416,6 @@ function check_html_string($input, $min = '', $max = '')
 }
 
 
-function check_ldap_string($input, $min = '', $max = '')
-{
-    // FIXME undefined function sanitize_string
-    if ($input != sanitize_string($input, $min, $max)) {
-        return false;
-    }
-    return true;
-}
-
 function check_system_string($input, $min = '', $max = '')
 {
     if ($input != sanitize_system_string($input, $min, $max)) {
