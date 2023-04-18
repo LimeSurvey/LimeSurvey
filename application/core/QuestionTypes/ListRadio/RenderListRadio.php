@@ -44,7 +44,7 @@ class RenderListRadio extends QuestionBaseRenderer
     {
         parent::__construct($aFieldArray, $bRenderDirect);
         $this->sOthertext = $this->setDefaultIfEmpty($this->getQuestionAttribute('other_replace_text', $this->sLanguage), gT('Other:')); // text for 'other'
-        $this->iNbCols   = @$this->setDefaultIfEmpty($this->getQuestionAttribute('display_columns'), 1); // number of columns
+        $this->iNbCols   = $this->setDefaultIfEmpty($this->getQuestionAttribute('display_columns'), ""); // number of columns
         $this->hasOther = $this->oQuestion->other == 'Y';
         $this->otherPosition = $this->setDefaultIfEmpty($this->getQuestionAttribute('other_position'), self::OTHER_POS_BEFORE_NOANSWER);
         $this->answerBeforeOther = '';
@@ -53,13 +53,8 @@ class RenderListRadio extends QuestionBaseRenderer
         }
         $this->setAnsweroptions();
 
-        if ($this->iNbCols > 1) {
+        if ($this->iNbCols) {
             $this->sCoreClass .= " multiple-list nbcol-{$this->iNbCols}";
-            /* Adding but didn't work */
-            $this->aStyles[] = array(
-                'name' => 'display_columns-{$this->iNbCols}',
-                'content' => "nbcol-{$this->iNbCols} ul{column-count: {$this->iNbCols};}"
-            );
         }
     }
 
