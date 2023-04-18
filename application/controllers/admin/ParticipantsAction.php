@@ -2373,7 +2373,7 @@ class ParticipantsAction extends SurveyCommonAction
      * @param int $shareUid
      * @return void
      */
-    public function deleteSingleParticipantShare($participantId, $shareUid)
+    public function deleteSingleParticipantShare($participantId = null, $shareUid = null)
     {
         $this->requirePostRequest();
 
