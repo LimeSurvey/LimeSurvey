@@ -13,15 +13,15 @@ class TransformerOutputSurveyLanguageSettings extends TransformerOutputActiveRec
             'surveyls_language'  => 'language',
             'surveyls_title' => 'title',
             'surveyls_description' => 'description',
-            'surveyls_welcometext' => 'welcometext',
-            'surveyls_endtext' => 'endtext',
-            'surveyls_policy_notice' => 'policy_notice',
-            'surveyls_policy_error' => 'policy_error',
-            'surveyls_policy_notice_label' => 'policy_notice_label',
+            'surveyls_welcometext' => 'welcomeText',
+            'surveyls_endtext' => 'endText',
+            'surveyls_policy_notice' => 'policyNotice',
+            'surveyls_policy_error' => 'policyError',
+            'surveyls_policy_notice_label' => 'policyNoticeLabel',
             'surveyls_url' => 'url',
-            'surveyls_urldescription' => 'urldescription',
-            'surveyls_dateformat' => ['key' => 'dateformat', 'type' => 'int'],
-            'surveyls_numberformat' => ['key' => 'numberformat', 'type' => 'int'],
+            'surveyls_urldescription' => 'urlDescription',
+            'surveyls_dateformat' => ['key' => 'dateFormat', 'type' => 'int'],
+            'surveyls_numberformat' => ['key' => 'numberFormat', 'type' => 'int'],
         ]);
     }
 }

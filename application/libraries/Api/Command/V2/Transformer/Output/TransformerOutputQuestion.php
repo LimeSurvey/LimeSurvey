@@ -12,7 +12,7 @@ class TransformerOutputQuestion extends TransformerOutputActiveRecord
 
         $this->setDataMap([
             'qid' => ['type' => 'int'],
-            'parent_qid' => ['type' => 'int'],
+            'parent_qid' => ['key' => 'parentQid', 'type' => 'int'],
             'sid' => ['type' => 'int'],
             'type' => true,
             'title' => true,
@@ -20,14 +20,14 @@ class TransformerOutputQuestion extends TransformerOutputActiveRecord
             'other' => ['type' => $typeYnToBool],
             'mandatory' => ['type' => $typeYnToBool],
             'encrypted' => ['type' => $typeYnToBool],
-            'question_order' => ['type' => 'int'],
-            'scale_id' => ['type' => 'int'],
-            'same_default' => ['type' => $typeYnToBool],
-            'question_theme_name' => true,
-            'modulename' => true,
+            'question_order' => ['key' => 'questionOrder', 'type' => 'int'],
+            'scale_id' => ['key' => 'scaleId', 'type' => 'int'],
+            'same_default' => ['key' => 'sameDefault', 'type' => $typeYnToBool],
+            'question_theme_name' => 'questionThemeName',
+            'modulename' => 'moduleName',
             'gid' => ['type' => 'int'],
             'relevance' => true,
-            'same_script' => ['type' => $typeYnToBool]
+            'same_script' => ['key' => 'sameScript', 'type' => $typeYnToBool]
         ]);
     }
 
@@ -36,7 +36,7 @@ class TransformerOutputQuestion extends TransformerOutputActiveRecord
         $array = parent::transformAll($array);
 
         usort($array,function($a, $b){
-            return ((int)$a['question_order']) > ((int)$b['question_order']);
+            return ((int)$a['questionOrder']) > ((int)$b['questionOrder']);
         });
 
         return $array;

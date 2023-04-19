@@ -11,9 +11,9 @@ class TransformerOutputQuestionGroup extends TransformerOutputActiveRecord
         $this->setDataMap([
             'gid' => ['type' => 'int'],
             'sid' => ['type' => 'int'],
-            'group_order' => ['type' => 'int'],
-            'randomization_group' => true,
-            'grelevance' => true
+            'group_order' => ['key' => 'groupOrder', 'type' => 'int'],
+            'randomization_group' => 'randomizationGroup',
+            'grelevance' => 'gRelevance',
         ]);
     }
 
@@ -22,7 +22,7 @@ class TransformerOutputQuestionGroup extends TransformerOutputActiveRecord
         $array = parent::transformAll($array);
 
         usort($array, function ($a, $b) {
-            return ((int)$a['group_order']) > ((int)$b['group_order']);
+            return ((int)$a['groupOrder']) > ((int)$b['groupOrder']);
         });
 
         return $array;

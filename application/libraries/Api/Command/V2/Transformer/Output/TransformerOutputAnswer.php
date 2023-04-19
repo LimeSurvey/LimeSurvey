@@ -12,9 +12,9 @@ class TransformerOutputAnswer extends TransformerOutputActiveRecord
             'aid' => ['type' => 'int'],
             'qid' => ['type' => 'int'],
             'code' => true,
-            'sortorder' => ['type' => 'int'],
-            'assessment_value' => ['type' => 'int'],
-            'scale_id' => ['type' => 'int']
+            'sortorder' => ['key' => 'sortOrder', 'type' => 'int'],
+            'assessment_value' => ['key' => 'assessmentValue', 'type' => 'int'],
+            'scale_id' => ['key' => 'scaleId', 'type' => 'int']
         ]);
     }
 
@@ -23,7 +23,7 @@ class TransformerOutputAnswer extends TransformerOutputActiveRecord
         $array = parent::transformAll($array);
 
         usort($array,function ($a, $b){
-            return ((int)$a['sortorder']) > ((int)$b['sortorder']);
+            return ((int)$a['sortOrder']) > ((int)$b['sortOrder']);
         });
 
         return $array;
