@@ -19041,3 +19041,201 @@ table [class^=ri-], table [class*=" ri-"] {
     transform-style: preserve-3d;
   }
 }
+.file-manager #browseiframe {
+  border: 1px solid #1E1E1E !important;
+}
+
+.file-manager-body {
+  all: unset;
+  background: #fff !important;
+  color: #1E1E1E !important;
+  box-shadow: -4px 4px #EEEFF7 !important;
+}
+.file-manager-body #toolbar {
+  height: auto !important;
+  display: flex !important;
+  flex-shrink: 0 !important;
+}
+.file-manager-body #toolbar a {
+  color: #1E1E1E !important;
+  background: none !important;
+  border: 1px solid #1E1E1E !important;
+  padding: 6px 8px !important;
+  margin-left: 8px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+.file-manager-body #toolbar a:hover, .file-manager-body #toolbar a:focus, .file-manager-body #toolbar a.selected {
+  text-shadow: none !important;
+  box-shadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
+}
+.file-manager-body #toolbar a span {
+  background-image: none !important;
+  padding: 0 !important;
+  padding-right: 5px !important;
+}
+.file-manager-body #toolbar a.hover {
+  text-shadow: none !important;
+  box-shadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
+}
+.file-manager-body #folders {
+  box-shadow: none !important;
+  border: 1px solid #1E1E1E !important;
+  border-radius: 0 !important;
+  background: #fff !important;
+}
+.file-manager-body #folders a {
+  width: 65px !important;
+  margin-right: 8px !important;
+  color: #1E1E1E !important;
+  background: none !important;
+  border: 1px solid #1E1E1E !important;
+  padding: 6px 8px !important;
+  display: flex !important;
+  align-items: center !important;
+  border-radius: 4px !important;
+}
+.file-manager-body #folders a:hover, .file-manager-body #folders a:focus {
+  text-shadow: none !important;
+  box-shadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
+}
+.file-manager-body #folders a .brace {
+  display: none !important;
+}
+.file-manager-body #folders a .folder.current {
+  color: #1E1E1E !important;
+  background-color: #fff !important;
+  background-image: none !important;
+  padding: 0 !important;
+  text-shadow: none !important;
+  border: none !important;
+  margin: auto !important;
+}
+.file-manager-body #folders a.hover {
+  text-shadow: none !important;
+  box-shadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
+}
+.file-manager-body #files {
+  background: #fff !important;
+  border: 1px solid #1E1E1E !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+.file-manager-body #files .file:hover, .file-manager-body #files .file:focus {
+  border: 1px solid #1E1E1E !important;
+  border-radius: 4px !important;
+  color: #1E1E1E !important;
+  text-shadow: none !important;
+  background: none !important;
+}
+.file-manager-body #files div.selected {
+  background: none !important;
+  border: 1px solid #1E1E1E !important;
+  border-radius: 4px !important;
+  color: #1E1E1E !important;
+  text-shadow: none !important;
+}
+.file-manager-body #files div.selected:hover, .file-manager-body #files div.selected:focus {
+  box-shadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4) !important;
+}
+.file-manager-body #files .file {
+  width: auto !important;
+}
+.file-manager-body #files .name {
+  font-weight: 500 !important;
+  height: auto !important;
+  overflow: auto !important;
+  padding-bottom: 2px;
+}
+.file-manager-body #settings fieldset {
+  margin-top: 0px !important;
+  background: #fff !important;
+  border: 1px solid #1E1E1E !important;
+  border-radius: 4px !important;
+  color: #1E1E1E !important;
+  box-shadow: none !important;
+}
+.file-manager-body #settings fieldset .radio,
+.file-manager-body #settings fieldset .checker {
+  background: none !important;
+  background-color: #fff !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+.file-manager-body #settings fieldset .radio {
+  display: flex;
+  width: 17px !important;
+  height: 17px !important;
+  border: 1px solid #1E1E1E !important;
+}
+.file-manager-body #settings fieldset .radio:hover, .file-manager-body #settings fieldset .radio:focus {
+  text-shadow: none !important;
+  box-shadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4) !important;
+}
+.file-manager-body #settings fieldset .radio span.checked {
+  width: 11px;
+  height: 11px;
+  background: black;
+  border-radius: 9999px;
+  margin: auto;
+}
+.file-manager-body #settings fieldset .checker {
+  width: 17px !important;
+  height: 17px !important;
+  border: none !important;
+}
+.file-manager-body #settings fieldset .checker span {
+  width: 16px !important;
+  height: 18px !important;
+}
+.file-manager-body #settings fieldset .checker input {
+  opacity: 1 !important;
+}
+.file-manager-body #settings fieldset .checker input:hover, .file-manager-body #settings fieldset .checker input:focus {
+  text-shadow: none !important;
+  box-shadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4) !important;
+}
+.file-manager-body #settings fieldset .checker input[type=checkbox]:checked:before {
+  content: "";
+  position: absolute;
+  top: 1px;
+  right: 6px;
+  display: table;
+  width: 5px;
+  height: 11px;
+  border: 2px solid #fff;
+  border-top-width: 0;
+  border-right-width: 0;
+  -webkit-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+.file-manager-body #settings fieldset .checker input[type=checkbox]:after {
+  border: 1px solid #1E1E1E !important;
+  width: 17px !important;
+  height: 17px !important;
+  margin-top: -1px !important;
+  margin-right: -1px !important;
+}
+.file-manager-body #settings fieldset .checker input[type=checkbox]:checked:after {
+  border: none !important;
+  width: 17px !important;
+  height: 17px !important;
+  background-color: #1E1E1E !important;
+}
+.file-manager-body #settings fieldset:hover, .file-manager-body #settings fieldset:focus {
+  text-shadow: none !important;
+  box-shadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4) !important;
+}
+.file-manager-body #settings fieldset.sh-uniform legend {
+  font-weight: 500 !important;
+  font-size: 1.14rem !important;
+  color: #1E1E1E !important;
+  text-shadow: none !important;
+  border-bottom: 1px solid #1E1E1E !important;
+}
+.file-manager-body #settings label.sh-uniform {
+  color: #1E1E1E !important;
+}
