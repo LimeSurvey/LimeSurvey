@@ -16,12 +16,14 @@ $action                : #4200FF; // links on light
 $active-green          : #14AE5C; // buttons & links
 $elevation-shadow      : rgba(66, 0, 255, 0.2); // LSD/Elevation/Shadow
 $elevation-shadow-soft : rgba(0, 0, 0, 0.2); // LSD/Elevation/ShadowSoft
+
 $white                 : #fff;
 $black                 : #000;
 $black60               : #666666; // rgba(0, 0, 0, 0.6);
 $black75               : rgba(0, 0, 0, 0.75);
 $grape75               : rgba(123, 97, 255, 0.4);
 $heading-title-color   : #152536;
+
 $g-900                 : #1E1E1E;
 $g-800                 : #333641;
 $g-700                 : #6E748C;
@@ -31,49 +33,15 @@ $g-300                 : #DDDEE8;
 $g-200                 : #EEEFF7;
 $g-100                 : #F9F9FB;
 
-$primary : $base-color;
-
-.text-muted {
-    color : $g-600 !important;
-}
-
-.text-primary {
-    color : $primary !important;
-}
-
-.text-success {
-    color : $success !important;
-}
-
-.text-info {
-    color : $grape !important;
-}
-
-.text-warning {
-    color : $warning !important;
-}
-
-.text-danger {
-    color : $error !important;
-}
-
-.bg-primary {
-    color            : $white !important;
-    background-color : $primary !important;
-}
-
-.bg-success {
-    background-color : $success !important;
-}
-
-.bg-info {
-    background-color : $grape !important;
-}
-
-.bg-warning {
-    background-color : $warning !important;
-}
-
-.bg-danger {
-    background-color : $error !important;
-}
+$theme-colors: (
+        "primary":    $base-color,
+        "secondary":  $g-600,
+        "success":    $success,
+        "danger":     $error,
+        "warning":    $warning,
+        "info":       $grape,
+        "light":      $g-200,
+        "dark":       $g-900,
+        "black60":    $black60,
+        "cancel":     $g-600, // replace with secondary
+);
