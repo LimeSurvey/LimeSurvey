@@ -49,7 +49,6 @@ class SurveyDetail implements CommandInterface
                 'groups.questions.questionl10ns',
                 'groups.questions.questionattributes',
                 'groups.questions.answers',
-                // Integrity constraint violation: 1052 Column 'parent_qid' in where clause is ambiguous
                 'groups.questions.subquestions',
                 'groups.questions.subquestions.questionl10ns',
                 'groups.questions.subquestions.questionattributes',
