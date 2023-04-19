@@ -45,6 +45,61 @@ App()->getClientScript()->registerScript("tokens-panel-variables",
     
 ",
     LSYii_ClientScript::POS_BEGIN);
+
+App()->getClientScript()->registerScript("edit-after-completion-message", "
+    (function(){
+        let showInherited = " . $bShowInherited . ";
+        let inheritedAnonymizedOption = '" . $oSurvey->oOptions->anonymized . "';
+        let inheritedPersistenceOption = '" . $oSurvey->oOptions->tokenanswerspersistence . "'
+        let multipleResponsesText = '" . gT('Allow multiple responses with the same access code') . "';
+        let updateResponsesText = '" . gT('Allow to update the responses using the access code') . "';
+
+        $(document).ready(function(){
+            let persistenceOption = $('input[name=\"tokenanswerspersistence\"]:checked').val();
+            let anonymizedOption = $('input[name=\"anonymized\"]:checked').val();
+            
+            changeAllowEditLabel(anonymizedOption, persistenceOption);
+            console.log('Selected on document ready.');
+            
+            $('input[name=\"anonymized\"]').change(function(){
+
+                let anonymizedOption = $(this).val();
+                let persistenceOption = $('input[name=\"tokenanswerspersistence\"]:checked').val();
+
+                changeAllowEditLabel(anonymizedOption, persistenceOption);
+                console.log('Selected on anonymized option changed.');
+    
+            });
+
+            $('input[name=\"tokenanswerspersistence\"]').change(function(){
+                let persistenceOption = $(this).val();
+                let anonymizedOption = $('input[name=\"anonymized\"]:checked').val();
+                
+                changeAllowEditLabel(anonymizedOption, persistenceOption);
+                console.log('Selected on token persistence option changed');
+        
+            });
+        });
+
+        function changeAllowEditLabel( anonymizedOption, persistenceOption )
+        {
+            if( showInherited === 1 && anonymizedOption === 'I' ) {
+                anonymizedOption = inheritedAnonymizedOption;
+            }
+            if( showInherited === 1 && persistenceOption === 'I' ) {
+                persistenceOption = inheritedPersistenceOption;
+            }
+            if( anonymizedOption === 'Y' ) {
+                $('label[for=\"alloweditaftercompletion\"]').text(multipleResponsesText);
+            } else if( persistenceOption === 'N' ) {
+                $('label[for=\"alloweditaftercompletion\"]').text(multipleResponsesText);
+            } else if( persistenceOption === 'Y' ) {
+                $('label[for=\"alloweditaftercompletion\"]').text(updateResponsesText);
+            }
+        }
+    })();
+    
+", LSYii_ClientScript::POS_BEGIN);
 ?>
 
 <!-- tokens panel -->
