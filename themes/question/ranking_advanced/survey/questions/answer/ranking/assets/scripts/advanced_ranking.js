@@ -23,7 +23,7 @@ var AdvancedRankingQuestion = function (options) {
         rankingID = "javatbd" + rankingName;
 
     //define HTML snippets
-    var screenReader = "<div class='visually-hidden'>" + $('#question' + questionId + ' .em_default').html() + "</div><div aria-hidden='true'>" + LSvar.lang.rankhelp + "</div>"
+    var screenReader = "<div class='visually-hidden'>" + $('#question' + questionId + ' .em_default').html() + "</div><div aria-hidden='true'>" + LSvar.lang.rankadvancedhelp + "</div>"
 
     //define functions
     var createSorting = function(){
