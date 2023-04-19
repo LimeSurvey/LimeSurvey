@@ -1031,7 +1031,6 @@ class TemplateConfig extends CActiveRecord
      */
     protected function getFilesToLoad($oTemplate, $sType)
     {
-        $aFiles        = array();
         $aFiles        = $this->getFilesTo($oTemplate, $sType, 'add');
         $aReplaceFiles = $this->getFilesTo($oTemplate, $sType, 'replace');
         $aFiles        = array_merge($aFiles, $aReplaceFiles);

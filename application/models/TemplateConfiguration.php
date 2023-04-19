@@ -1322,7 +1322,7 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * @todo document me
+     * loads the main theme template from the parent theme that it is extending, as a package. Ready to be registered
      *
      * @param string[] $packages
      * @return string[]
