@@ -795,6 +795,7 @@ function buildsurveysession($surveyid, $preview = false)
     if (empty($lang)) {
         // Multi lingual support order : by REQUEST, if not by Token->language else by survey default language
 
+        /** @psalm-suppress UndefinedVariable TODO: $oTokenEntry is never defined */
         if (returnGlobal('lang', true)) {
             $language_to_set = returnGlobal('lang', true);
         } elseif (isset($oTokenEntry) && $oTokenEntry) {
