@@ -6,27 +6,43 @@ use LimeSurvey\Api\Transformer\Output\TransformerOutputActiveRecord;
 
 class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
 {
+    private $transformerSurvey = null;
+    private $transformerQuestionGroup = null;
+    private $transformerQuestionGroupL10ns = null;
+    private $transformerQuestion = null;
+    private $transformerQuestionL10ns = null;
+    private $transformerQuestionAttribute = null;
+    private $transformerAnswer = null;
+
+    public function __construct()
+    {
+        $this->transformerSurvey = new TransformerOutputSurvey();
+        $this->transformerQuestionGroup = new TransformerOutputQuestionGroup();
+        $this->transformerQuestionGroupL10ns = new TransformerOutputQuestionGroupL10ns();
+        $this->transformerQuestion = new TransformerOutputQuestion();
+        $this->transformerQuestionL10ns = new TransformerOutputQuestionL10ns();
+        $this->transformerQuestionAttribute = new TransformerOutputQuestionAttribute();
+        $this->transformerAnswer = new TransformerOutputAnswer();
+    }
+
     public function transform($surveyModel)
     {
-        $survey = (new TransformerOutputSurvey())->transform($surveyModel);
+        $survey =  $this->transformerSurvey->transform($surveyModel);
 
         $survey['languages'] = $surveyModel->allLanguages;
 
         // transformAll() can apply required entity sort so we must retain the sort order going forward
         // - We use a lookup array later to access entities without needing to know their position in the collection
-        $survey['questionGroups'] = (new TransformerOutputQuestionGroup())->transformAll(
+        $survey['questionGroups'] = $this->transformerQuestionGroup->transformAll(
             $surveyModel->groups
         );
 
         // An array of groups indexed by gid for easy look up
         // - helps use to retain sort order when looping over models
-        $groupLookup = $this->createCollectionLookup('gid', $survey['questionGroups']);
-
-        $transformerQuestionGroupL10ns = new TransformerOutputQuestionGroupL10ns();
-        $transformerQuestion = new TransformerOutputQuestion();
-        $transformerQuestionL10ns = new TransformerOutputQuestionL10ns;
-        $transformerQuestionAttribute = new TransformerOutputQuestionAttribute();
-        $transformerAnswer = new TransformerOutputAnswer();
+        $groupLookup = $this->createCollectionLookup(
+            'gid',
+            $survey['questionGroups']
+        );
 
         foreach ($surveyModel->groups as $questionGroupModel) {
             // order of groups from the model relation may be different than from the transformed data
@@ -34,43 +50,63 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
             // - know its position in the output array
             $group = &$groupLookup[$questionGroupModel->gid];
 
-            $group['l10ns'] = (new $transformerQuestionGroupL10ns)->transformAll(
+            $group['l10ns'] = $this->transformerQuestionGroupL10ns->transformAll(
                 $questionGroupModel->questiongroupl10ns
             );
 
             // transformAll() can apply required entity sort so we must retain the sort order going forward
             // - We use a lookup array later to access entities without needing to know their position in the collection
-            $group['questions'] = $transformerQuestion->transformAll(
+            $group['questions'] = $this->transformerQuestion->transformAll(
                 $questionGroupModel->questions
             );
-
-            $questionLookup = $this->createCollectionLookup('qid', $group['questions']);
-
-            foreach ($questionGroupModel->questions as $questionModel) {
-                // questions from the model relation may be different than from the transformed data
-                // - so we use the lookup to get a reference to the required entity without needing to
-                // - know its position in the output array
-                $question = &$questionLookup[$questionModel->qid];
-
-                $question['l10ns'] = $transformerQuestionL10ns->transformAll(
-                    $questionModel->questionl10ns
-                );
-
-                $question['attributes'] = $transformerQuestionAttribute->transformAll(
-                    $questionModel->questionattributes
-                );
-
-                $question['subquestions'] = $transformerQuestion->transformAll(
-                    $questionModel->subquestions
-                );
-
-                $question['answers'] = $transformerAnswer->transformAll(
-                    $questionModel->answers
-                );
-            }
+            $questionLookup = $this->createCollectionLookup(
+                'qid',
+                $group['questions']
+            );
+            $this->transformQuestions(
+                $questionLookup,
+                $questionGroupModel->questions
+            );
         }
 
         return $survey;
+    }
+
+    private function transformQuestions($questionLookup, $questions)
+    {
+        foreach ($questions as $questionModel) {
+            // questions from the model relation may be different than from the transformed data
+            // - so we use the lookup to get a reference to the required entity without needing to
+            // - know its position in the output array
+            $question = &$questionLookup[$questionModel->qid];
+
+            $question['l10ns'] = $this->transformerQuestionL10ns->transformAll(
+                $questionModel->questionl10ns
+            );
+
+            $question['attributes'] = $this->transformerQuestionAttribute->transformAll(
+                $questionModel->questionattributes
+            );
+
+            if ($questionModel->subquestions) {
+                $question['subquestions'] = $this->transformerQuestion->transformAll(
+                    $questionModel->subquestions
+                );
+
+                $subQuestionLookup = $this->createCollectionLookup(
+                    'qid',
+                    $question['subquestions']
+                );
+                $this->transformQuestions(
+                    $subQuestionLookup,
+                    $questionModel->subquestions
+                );
+            }
+
+            $question['answers'] = $this->transformerAnswer->transformAll(
+                $questionModel->answers
+            );
+        }
     }
 
     /**
