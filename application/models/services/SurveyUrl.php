@@ -8,7 +8,6 @@ namespace LimeSurvey\Models\Services;
  */
 class SurveyUrl
 {
-
     /**
      * @var string
      */
@@ -50,9 +49,9 @@ class SurveyUrl
      *
      * @return string
      */
-    public function getUrl(int $surveyId, $surveyLanguageSettings, string $alias=null)
+    public function getUrl(int $surveyId, $surveyLanguageSettings, string $alias = null)
     {
-        if ($this->preferShortUrl && $alias!==null) {
+        if ($this->preferShortUrl && $alias !== null) {
             return $this->createURLWithAlias($alias, $surveyLanguageSettings);
         }
 
