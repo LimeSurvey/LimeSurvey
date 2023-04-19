@@ -83,27 +83,42 @@ class SurveyPatch implements CommandInterface
         if ($validationResult !== true) {
             $result['errors'] = $validationResult;
         } else {
-            foreach ($patches as $patch) {
-                $meta = $this->getPatchMeta($patch);
-                if (!$meta) {
-                    // unsupported patch
+            $transaction = \Yii::app()->db->beginTransaction();
+            try {
+                foreach ($patches as $patch) {
+                    $match = $this->getPatchMatch($patch);
+                    if (!$match) {
+                        // unsupported patch
+                        continue;
+                    }
+                    [ $meta, $matches ] = $match;
+
+                    $model = ${$meta['modelClass']}::find($matches[1]);
+
+                    if (is_array($patch['value'])) {
+                        foreach ($patch['value'] as $prop => $value) {
+                            $model->{$prop} = $value;
+                        }
+                    }
+
+                    $model->save();
                 }
+                $transaction->commit();
+            } catch (\Exception $e) {
+                $transaction->rollback();
+                throw $e;
             }
         }
 
         return  $result;
     }
 
-    protected function getPatchMeta($patch)
+    protected function getPatchMatch($patch)
     {
         // The order of definition is important
         // - more specific paths should be listed first
         $pathMap = [
-            '^/defaultlanguage/[_a-zA-Z0-9]+$' => [
-                'modelClass' => Survey::class,
-                'collection' => false
-            ],
-            '^/defaultlanguage$' => [
+            '^/defaultLanguage$' => [
                 'modelClass' => SurveyLanguageSetting::class,
                 'collection' => false
             ],
@@ -115,25 +130,83 @@ class SurveyPatch implements CommandInterface
                 'modelClass' => null, // not supported
                 'collection' => false
             ],
-            '^/questionGroups/[0-9]+/l10ns/[_a-zA-Z0-9]+$' => [
+            '^/questionGroups$' => [
+                'modelClass' => QuestionGroup::class,
+                'collection' => true
+            ],
+            '^/questionGroups/[0-9]+$' => [
+                'modelClass' => QuestionGroup::class,
+                'collection' => false
+            ],
+            '^/questionGroups/[0-9]+/l10ns$' => [
                 'modelClass' => QuestionGroupL10n::class,
                 'collection' => true
             ],
-            '^/questionGroups/[0-9]+/l10ns/[_a-zA-Z0-9]+/[_a-zA-Z0-9]+$' => [
+            '^/questionGroups/[0-9]+/l10ns/[_\-a-zA-Z0-9]+$' => [
                 'modelClass' => QuestionGroupL10n::class,
                 'collection' => false
             ],
-            '^/questionGroups/[0-9]+/[_a-zA-Z0-9]+$' => [
-                'modelClass' => QuestionGroupL10n::class,
+            '^/questionGroups/[0-9]+/questions$' => [
+                'modelClass' => Question::class,
                 'collection' => true
             ],
-            '^/questionGroups' => 'question_groups_collection',
+            '^/questionGroups/[0-9]+/questions/[0-9]+$' => [
+                'modelClass' => Question::class,
+                'collection' => false
+            ],
+            '^/questionGroups/[0-9]+/questions/[0-9]+/l10ns$' => [
+                'modelClass' => QuestionL10n::class,
+                'collection' => true
+            ],
+            '^/questionGroups/[0-9]+/questions/[0-9]+/l10ns/[_\-a-zA-Z0-9]+$' => [
+                'modelClass' => QuestionL10n::class,
+                'collection' => false
+            ],
+            '^/questionGroups/[0-9]+/attributes$' => [
+                'modelClass' => QuestionAttribute::class,
+                'collection' => true
+            ],
+            '^/questionGroups/[0-9]+/attributes/[_\-a-zA-Z0-9]+$' => [
+                'modelClass' => QuestionAttribute::class,
+                'collection' => false
+            ],
+            '^/questionGroups/[0-9]+/questions/[0-9]+/subquestions$' => [
+                'modelClass' => Question::class,
+                'collection' => true
+            ],
+            '^/questionGroups/[0-9]+/questions/[0-9]+/subquestions/[0-9]+$' => [
+                'modelClass' => Question::class,
+                'collection' => false
+            ],
+            '^/questionGroups/[0-9]+/questions/[0-9]+/subquestions/[0-9+/l10ns$' => [
+                'modelClass' => QuestionL10n::class,
+                'collection' => true
+            ],
+            '^/questionGroups/[0-9]+/questions/[0-9]+/subquestions/[0-9]+/l10ns/[_\-a-zA-Z0-9]+$' => [
+                'modelClass' => QuestionL10n::class,
+                'collection' => false
+            ],
+            '^/questionGroups/[0-9]+/questions/[0-9]+/subquestions/[0-9]+/attributes$' => [
+                'modelClass' => QuestionAttribute::class,
+                'collection' => true
+            ],
+            '^/questionGroups/[0-9]+/questions/[0-9]+/subquestions/[0-9]+/attributes/[_\-a-zA-Z0-9]+$' => [
+                'modelClass' => QuestionAttribute::class,
+                'collection' => false
+            ],
         ];
 
         $result = null;
         foreach ($pathMap as $pattern => $meta) {
-            if (preg_match('#' . $pattern . '#', $patch['path']) === 1) {
-                $result = $meta;
+            $matches = [];
+            if (
+                preg_match(
+                '#' . $pattern . '#',
+                $patch['path'],
+                $matches
+                ) === 1
+            ) {
+                $result = [$meta, $matches];
                 break;
             }
         }
