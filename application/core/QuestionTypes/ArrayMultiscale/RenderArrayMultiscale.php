@@ -294,7 +294,8 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
 
                 if ($aData['shownoanswer']) {
                     // No answer for accessibility and no javascript (but hide hide even with no js: need reworking)
-                    if (empty($this->getFromSurveySession($myfname0))) {
+                    $fname0value = $this->getFromSurveySession($myfname0);
+                    if (!isset($fname0value) || $fname0value == '') {
                         //$answer .= CHECKED;
                         $aData['aSubQuestions'][$i]['myfname0_notset'] = CHECKED;
                     } else {
@@ -317,15 +318,17 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
             $aData['answertextright'] = $answertextright;
             if ($aData['shownoanswer']) {
                 if (count($aData['labelans1']) > 0) {
-                    if (empty($this->getFromSurveySession($myfname1))) {
+                    $fname1value = $this->getFromSurveySession($myfname1);
+                    if (!isset($fname1value) || $fname1value == '') {
                         #$answer .= CHECKED;
                         $aData['aSubQuestions'][$i]['myfname1_notset'] = CHECKED;
                     } else {
                         $aData['aSubQuestions'][$i]['myfname1_notset'] = "";
                     }
                 } else {
-                    if (empty($this->getFromSurveySession($myfname0))) {
-                        $answer .= CHECKED;
+                    $fname0value = $this->getFromSurveySession($myfname0);
+                    if (!isset($fname0value) || $fname0value == '') {
+                        //$answer .= CHECKED;
                         $aData['aSubQuestions'][$i]['myfname0_notset'] = CHECKED;
                     } else {
                         $aData['aSubQuestions'][$i]['myfname0_notset'] = '';
