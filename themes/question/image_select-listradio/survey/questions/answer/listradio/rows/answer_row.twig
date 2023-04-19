@@ -73,7 +73,7 @@ question_template_attribute.horizontal_scroll   : {{question_template_attribute.
 </script>
 {% else %}
 {# Standard List Radio row #}
-<li id='javatbd{{ myfname }}' class='answer-item radio-item' {{ sDisplayStyle }} >
+<li id='javatbd{{ myfname }}' class='answer-item radio-item imageselect-container' {{ sDisplayStyle }} >
     <input
         type="radio"
         value="{{ code }}"
@@ -82,7 +82,7 @@ question_template_attribute.horizontal_scroll   : {{question_template_attribute.
         {{ checkedState }}
         onclick="if (document.getElementById('answer{{ name }}othertext') != null) document.getElementById('answer{{ name }}othertext').value='';checkconditions(this.value, this.name, this.type)"
      />
-    <label for="answer{{ name }}{{ code }}" class="control-label radio-label">
+    <label for="answer{{ name }}{{ code }}" class="control-label radio-label imageselect-radiobutton">
         {{ processString(answer) }}
     </label>
 </li>

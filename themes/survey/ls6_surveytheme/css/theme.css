@@ -1818,15 +1818,15 @@ table > tbody > tr > td.ddprefix {
     border-top: none; /*overriding Bootstrap */
   }
 }
-li.imageselect-listitem .imageselect-container .imageselect-label {
-  border-radius: 4px !important;
-}
-
 .imageselect-radiobutton.d-none, .imageselect-select.d-none {
   display: inline-block !important;
   position: absolute;
   left: 45px;
   top: 8px;
+}
+
+li.imageselect-listitem .imageselect-container .imageselect-label {
+  border-radius: 4px !important;
 }
 
 .imageselect-container .imageselect-radiobutton::before,
@@ -1867,7 +1867,7 @@ li.imageselect-listitem .imageselect-container input.imageselect-checkbox:checke
   transform: scale(1, 1);
 }
 
-.imageselect-list .no-anwser-item, .imageselect-list .radio-text-item {
+.imageselect-list .no-anwser-item, .imageselect-list .radio-text-item, .imageselect-list .radio-item {
   padding-left: 55px;
 }
 
@@ -1910,7 +1910,7 @@ input.imageselect-checkbox:checked ~ .imageselect-select::after {
   margin: 6px 8px;
 }
 
-.imageselect-other .othertext-label-checkox-container {
+.imageselect-other .othertext-label-checkbox-container {
   padding-left: 48px;
 }
 

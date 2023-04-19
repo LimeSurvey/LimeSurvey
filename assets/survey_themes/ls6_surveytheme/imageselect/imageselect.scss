@@ -1,13 +1,15 @@
-li.imageselect-listitem .imageselect-container .imageselect-label {
-    border-radius : $border-radius !important;
-}
-
 // hidden in other themes:
 .imageselect-radiobutton.d-none, .imageselect-select.d-none {
     display  : inline-block !important;
     position : absolute;
     left     : 45px;
     top      : 8px;
+}
+
+// imageselect list radio
+
+li.imageselect-listitem .imageselect-container .imageselect-label {
+    border-radius : $border-radius !important;
 }
 
 .imageselect-container .imageselect-radiobutton::before,
@@ -55,7 +57,7 @@ li.imageselect-listitem .imageselect-container input.imageselect-checkbox:checke
 }
 
 // no answer, other
-.imageselect-list .no-anwser-item, .imageselect-list .radio-text-item {
+.imageselect-list .no-anwser-item, .imageselect-list .radio-text-item, .imageselect-list .radio-item {
     padding-left : 55px;
 }
 
@@ -101,6 +103,6 @@ input.imageselect-checkbox:checked ~ .imageselect-select::after {
     margin: 6px 8px;
 }
 
-.imageselect-other .othertext-label-checkox-container {
+.imageselect-other .othertext-label-checkbox-container {
     padding-left: 48px;
 }
