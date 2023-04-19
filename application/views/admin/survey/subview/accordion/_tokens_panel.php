@@ -96,7 +96,7 @@ App()->getClientScript()->registerScript("tokens-panel-variables", "
 
     })();
     
-", LSYii_ClientScript::POS_END);
+", LSYii_ClientScript::POS_BEGIN);
 ?>
 
 <!-- tokens panel -->
