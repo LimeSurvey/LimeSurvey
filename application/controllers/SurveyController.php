@@ -105,7 +105,7 @@ class SurveyController extends LSYii_Controller
     public function actions()
     {
         return array(
-            'index' => 'application.controllers.survey.index',
+            'index' => 'application.controllers.survey.SurveyIndex',
             'optin' => 'application.controllers.optin',
             'optout' => 'application.controllers.optout',
             'printanswers' => 'application.controllers.printanswers',

@@ -12,7 +12,7 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 
-class Index extends CAction
+class SurveyIndex extends CAction
 {
     public $oTemplate;
 
