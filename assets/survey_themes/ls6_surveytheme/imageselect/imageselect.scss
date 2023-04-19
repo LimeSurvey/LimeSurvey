@@ -3,7 +3,7 @@ li.imageselect-listitem .imageselect-container .imageselect-label {
 }
 
 // hidden in other themes:
-.imageselect-radiobutton.d-none {
+.imageselect-radiobutton.d-none, .imageselect-select.d-none {
     display  : inline-block !important;
     position : absolute;
     left     : 45px;
@@ -72,4 +72,35 @@ li.imageselect-listitem .imageselect-container input.imageselect-checkbox:checke
     padding-left : 10px;
     padding-top  : 2px;
     font-weight  : $font-weight-600;
+}
+
+// Multiple choice
+.imageselect-container .imageselect-select::before {
+    margin-left : -16px;
+    z-index     : 2;
+}
+
+.imageselect-select::after {
+    content : "";
+    z-index : 1;
+}
+
+input.imageselect-checkbox:checked ~ .imageselect-select::after {
+    font-family : "remixicon";
+    content     : "\eb7b";
+    padding     : 0;
+    font-size   : 20px;
+    font-weight : $font-weight-900;
+    text-align  : center;
+    margin-left: -16px;
+}
+
+//Make multi spacing like imageselect list radio
+.checkbox-item.imageselect-listitem {
+    padding: 0;
+    margin: 6px 8px;
+}
+
+.imageselect-other .othertext-label-checkox-container {
+    padding-left: 48px;
 }
