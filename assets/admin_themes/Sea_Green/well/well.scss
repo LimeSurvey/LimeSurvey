@@ -1,0 +1,18 @@
+// Wells
+.well {
+  background-color: $g-200;
+  border: none;
+  box-shadow: none;
+  min-height: 20px;
+  padding: 19px;
+  margin-bottom: 20px;
+  border-radius: $border-radius;
+  blockquote {
+    border: 1px solid $g-600;
+  }
+}
+
+.well-sm {
+  padding: 9px;
+  border-radius: 3px;
+}

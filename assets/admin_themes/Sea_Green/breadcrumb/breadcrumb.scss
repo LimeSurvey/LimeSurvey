@@ -1,0 +1,59 @@
+ol.breadcrumb.title-bar-breadcrumb {
+    background : transparent;
+    color      : $breadcrumb-active-color;
+    a {
+        color       : $breadcrumb-link-color;
+        font-weight : $font-weight-normal;
+        &:hover {
+            color : $link-hover-color
+        }
+    }
+    li {
+        background : transparent;
+        color      : $breadcrumb-active-color;
+        &.active {
+            color       : $breadcrumb-active-color;
+            font-weight : $font-weight-base;
+        }
+    }
+}
+
+//
+//// from custom.scss
+.ls-ba {
+    li {
+        > div {
+            display : inline-block;
+        }
+    }
+}
+
+// from lime-admin-colors:
+.surveymanagerbar {
+    background-color : transparent;
+    color            : $breadcrumb-active-color;
+}
+
+// new admin theme customization:
+.breadcrumb {
+    font-size     : $breadcrumb-font-size;
+    line-height   : 20px;
+    margin-bottom : 0;
+}
+
+.breadcrumb-item + .breadcrumb-item:before {
+    color         : $breadcrumb-divider-color;
+    padding-right : $breadcrumb-spacing;
+    font-weight   : $font-weight-base;
+}
+
+.breadcrumb-item + .breadcrumb-item {
+    padding-left : $breadcrumb-spacing;
+}
+
+.ls-breadcrumb {
+    h1 {
+        margin : 0;
+    }
+}
+

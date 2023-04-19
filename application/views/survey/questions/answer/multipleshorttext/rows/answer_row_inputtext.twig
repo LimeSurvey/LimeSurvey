@@ -19,38 +19,38 @@
 #}
 
 <!--answer_row_inputtext -->
-<li id="javatbd{{ myfname }}" class="question-item answer-item text-item form-group{% if alert %} ls-error-mandatory has-error{% endif %}{{ extraclass }}" {{ sDisplayStyle }} >
-    <label class="control-label col-xs-12 col-sm-{{ sLabelWidth }}{% if sLabelWidth == 0 %} hidden{% endif %}" for="answer{{ myfname }}">
+<li id="javatbd{{ myfname }}" class="row question-item answer-item text-item mb-3{% if alert %} ls-error-mandatory has-error{% endif %}{{ extraclass }}" {{ sDisplayStyle }} >
+    <label class="control-label col-12 col-md-{{ sLabelWidth }}{% if sLabelWidth == 0 %} d-none{% endif %}" for="answer{{ myfname }}">
         {{ processString(question) }}
     </label>
-    <div class="col-xs-12 col-sm-{{ sInputContainerWidth }}">
-        
+    <div class="col-12 col-md-{{ sInputContainerWidth }}">
+
         {% if prefix != '' or suffix != '' %}
-            <div class="ls-input-group">
-        {% endif %}
+        <div class="ls-input-group">
+            {% endif %}
             {% if prefix != '' %}
                 <div class="ls-input-group-extra prefix-text prefix">
                     {{ processString(prefix) }}
                 </div>
             {% endif %}
             <input
-                class="form-control {{ kpclass }}"
-                type="text"
-                name="{{ myfname }}"
-                id="answer{{ myfname }}"
-                value="{{ dispVal }}"
-                placeholder="{{ flatString(processString(placeholder,1),1) }}"
-                {% if inputsize %} size="{{ inputsize }}" {% endif %}
-                {% if maxlength %} maxlength="{{ maxlength }}" {% endif %}
-                {% if numbersonly %} data-number="{{ numbersonly }}" {% endif %}
-                />
+                    class="form-control {{ kpclass }}"
+                    type="text"
+                    name="{{ myfname }}"
+                    id="answer{{ myfname }}"
+                    value="{{ dispVal }}"
+                    placeholder="{{ flatString(processString(placeholder,1),1) }}"
+                    {% if inputsize %} size="{{ inputsize }}" {% endif %}
+                    {% if maxlength %} maxlength="{{ maxlength }}" {% endif %}
+                    {% if numbersonly %} data-number="{{ numbersonly }}" {% endif %}
+            />
             {% if suffix != '' %}
                 <div class="ls-input-group-extra suffix-text suffix">
                     {{ processString(suffix) }}
                 </div>
             {% endif %}
-        {% if prefix != '' or suffix != '' %}
-            </div>
+            {% if prefix != '' or suffix != '' %}
+        </div>
         {% endif %}
     </div>
 </li>
