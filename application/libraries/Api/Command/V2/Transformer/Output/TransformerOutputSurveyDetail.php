@@ -4,6 +4,9 @@ namespace LimeSurvey\Api\Command\V2\Transformer\Output;
 
 use LimeSurvey\Api\Transformer\Output\TransformerOutputActiveRecord;
 
+/**
+ * TransformerOutputSurveyDetail
+ */
 class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
 {
     private $transformerSurvey = null;
@@ -14,6 +17,9 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
     private $transformerQuestionAttribute = null;
     private $transformerAnswer = null;
 
+    /**
+     * TransformerOutputSurveyDetail
+     */
     public function __construct()
     {
         $this->transformerSurvey = new TransformerOutputSurvey();
@@ -25,6 +31,14 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         $this->transformerAnswer = new TransformerOutputAnswer();
     }
 
+    /**
+     * Transform
+     *
+     * Returns an array of entity references indexed by the specified key.
+     *
+     * @param Survey $surveyModel
+     * @return array
+     */
     public function transform($surveyModel)
     {
         $survey =  $this->transformerSurvey->transform($surveyModel);
@@ -38,7 +52,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         );
 
         // An array of groups indexed by gid for easy look up
-        // - helps use to retain sort order when looping over models
+        // - helps us to retain sort order when looping over models
         $groupLookup = $this->createCollectionLookup(
             'gid',
             $survey['questionGroups']
@@ -72,6 +86,15 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         return $survey;
     }
 
+    /**
+     * Transform Questions
+     *
+     * Returns an array of entity references indexed by the specified key.
+     *
+     * @param array $questionLookup
+     * @param array $questions
+     * @return array
+     */
     private function transformQuestions($questionLookup, $questions)
     {
         foreach ($questions as $questionModel) {
@@ -115,8 +138,8 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
      * Returns an array of entity references indexed by the specified key.
      *
      * @param string $key
-     * @param array $entityArray
-     * @return &array Entity reference
+     * @param array &$entityArray
+     * @return array Entity reference
      */
     private function createCollectionLookup($key, &$entityArray)
     {
