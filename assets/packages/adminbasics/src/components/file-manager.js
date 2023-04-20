@@ -1,92 +1,115 @@
+const replacingIconData = [
+    {
+        originIcon: "a[href='kcact:upload'] span",
+        newIcon: "ri-upload-fill",
+    },
+    {
+        originIcon: "a[href='kcact:refresh'] span",
+        newIcon: "ri-refresh-line",
+    },
+    {
+        originIcon: "a[href='kcact:settings'] span",
+        newIcon: "ri-settings-3-line",
+    },
+    {
+        originIcon: "a[href='kcact:maximize'] span",
+        newIcon: "ri-fullscreen-line",
+    },
+    {
+        originIcon: "a[href='kcact:about'] span",
+        newIcon: "ri-information-line",
+    },
+    {
+        originIcon: "a[href='kcdir:/files'] span.folder",
+        newIcon: "ri-folder-line",
+    },
+];
+
+const menuReplacingIconData = [
+    {
+        originIcon: "a[href='kcact:refresh'] span",
+        newIcon: "ri-refresh-line",
+    },
+    {
+        originIcon: "a[href='kcact:download'] span",
+        newIcon: "ri-download-line",
+    },
+    {
+        originIcon: "a[href='kcact:mkdir'] span",
+        newIcon: "ri-folder-add-line",
+    },
+    {
+        originIcon: "a[href='kcact:mvdir'] span",
+        newIcon: "ri-eraser-line",
+    },
+    {
+        originIcon: "a[href='kcact:rmdir'] span",
+        newIcon: "ri-delete-bin-line text-danger",
+    },
+];
+
+const handleReplaceIcons = ({ iframeSource, originIcon, newIcon }) => {
+    const replacingElement =
+        iframeSource.contentWindow.document.querySelector(originIcon);
+    if (replacingElement) {
+        replacingElement.insertAdjacentHTML(
+            "beforebegin",
+            "<i class=" + newIcon + "></i>"
+        );
+    }
+};
+
+const handleAppendCssLink = ({ header, linkUrl }) => {
+    const cssLink = document.createElement("link");
+    cssLink.rel = "stylesheet";
+    cssLink.type = "text/css";
+    cssLink.href = linkUrl;
+
+    header.appendChild(cssLink);
+};
+
 export default function fileManagerStyle() {
-  const fileManagerIframe = document.getElementById("browseiframe");
-  if (fileManagerIframe) {
-      fileManagerIframe.addEventListener("load", function () {
-          fileManagerIframe.contentWindow.document.body.classList.add(
-              "file-manager-body"
-          );
+    const fileManagerIframe = document.getElementById("browseiframe");
+    if (fileManagerIframe) {
+        fileManagerIframe.addEventListener("load", function () {
+            fileManagerIframe.contentWindow.document.body.classList.add(
+                "file-manager-body"
+            );
+            replacingIconData.map((data) =>
+                handleReplaceIcons({
+                    ...data,
+                    iframeSource: fileManagerIframe,
+                })
+            );
 
-          const uploadElement =
-              fileManagerIframe.contentWindow.document.querySelector(
-                  "a[href='kcact:upload'] span"
-              );
-          if (uploadElement) {
-              uploadElement.insertAdjacentHTML(
-                  "beforebegin",
-                  "<i class='ri-upload-fill'></i>"
-              );
-          }
+            // when right click of menu folder
+            const folderCurrentEl =
+                fileManagerIframe.contentWindow.document.getElementsByClassName(
+                    "folder current"
+                )[0];
 
-          const refreshElement =
-              fileManagerIframe.contentWindow.document.querySelector(
-                  "a[href='kcact:refresh'] span"
-              );
-          if (refreshElement) {
-              refreshElement.insertAdjacentHTML(
-                  "beforebegin",
-                  "<i class='ri-refresh-line'></i>"
-              );
-          }
+            if (folderCurrentEl) {
+                folderCurrentEl.addEventListener("contextmenu", (event) => {
+                    event.preventDefault(); // prevent the default context menu from appearing
+                    menuReplacingIconData.map((data) =>
+                        handleReplaceIcons({
+                            ...data,
+                            iframeSource: fileManagerIframe,
+                        })
+                    );
+                });
+            }
 
-          const settingsElement =
-              fileManagerIframe.contentWindow.document.querySelector(
-                  "a[href='kcact:settings'] span"
-              );
-          if (settingsElement) {
-              settingsElement.insertAdjacentHTML(
-                  "beforebegin",
-                  "<i class='ri-settings-3-line'></i>"
-              );
-          }
-
-          const maximizeElement =
-              fileManagerIframe.contentWindow.document.querySelector(
-                  "a[href='kcact:maximize'] span"
-              );
-          if (maximizeElement) {
-              maximizeElement.insertAdjacentHTML(
-                  "beforebegin",
-                  "<i class='ri-fullscreen-line'></i>"
-              );
-          }
-
-          const aboutElement =
-              fileManagerIframe.contentWindow.document.querySelector(
-                  "a[href='kcact:about'] span"
-              );
-          if (aboutElement) {
-              aboutElement.insertAdjacentHTML(
-                  "beforebegin",
-                  "<i class='ri-information-line'></i>"
-              );
-          }
-
-          const folderElement =
-              fileManagerIframe.contentWindow.document.querySelector(
-                  "a[href='kcdir:/files'] span.folder"
-              );
-          if (folderElement) {
-              folderElement.insertAdjacentHTML(
-                  "beforebegin",
-                  "<i class='ri-folder-line'></i>"
-              );
-          }
-
-          // Load sea_green css again after iframe is fully loaded
-          const head = fileManagerIframe.contentWindow.document.head;
-          const seaGreenCss = document.createElement("link");
-          seaGreenCss.rel = "stylesheet";
-          seaGreenCss.type = "text/css";
-          seaGreenCss.href = "/themes/admin/Sea_Green/css/sea_green.css";
-
-          const remixIconCss = document.createElement("link");
-          remixIconCss.rel = "stylesheet";
-          remixIconCss.type = "text/css";
-          remixIconCss.href =
-              "http://ls-ce/assets/fonts/font-src/remix/remixicon.css";
-
-          head.appendChild(seaGreenCss);
-          head.appendChild(remixIconCss);
-      });
-  }
+            // Load sea_green css again after iframe is fully loaded
+            handleAppendCssLink({
+                header: fileManagerIframe.contentWindow.document.head,
+                linkUrl: "/themes/admin/Sea_Green/css/sea_green.css",
+            });
+            handleAppendCssLink({
+                header: fileManagerIframe.contentWindow.document.head,
+                linkUrl:
+                    "http://ls-ce/assets/fonts/font-src/remix/remixicon.css",
+            });
+        });
+    }
 }

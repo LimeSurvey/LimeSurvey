@@ -10,6 +10,34 @@
   color: $g-900 !important;
   box-shadow: $boxshadow-small !important;
 
+  #menu {
+    .ui-menu {
+      box-shadow: none !important;
+      border: 1px solid $g-900 !important;
+      background: $white !important;
+
+      .ui-menu-divider {
+        border-color: $g-700 !important;
+      }
+      .ui-state-active {
+        background: $white !important;
+        text-shadow: none !important;
+        box-shadow: $btn-hover-boxshadow !important;
+        color: $g-900 !important;
+      }
+
+      a {
+        color: $g-900 !important;
+        display: flex !important;
+        align-items: center !important;
+        span {
+          background-image: none !important;
+          padding-left: 5px !important;
+        }
+      }
+    }
+  }
+
   #toolbar {
     height: auto !important;
     display: flex !important;
@@ -27,7 +55,7 @@
       &:focus,
       &.selected {
         text-shadow: none !important;
-        box-shadow: $btn-hover-boxshadow;
+        box-shadow: $btn-hover-boxshadow !important;
       }
       span {
         background-image: none !important;
@@ -37,7 +65,7 @@
     }
     a.hover {
       text-shadow: none !important;
-      box-shadow: $btn-hover-boxshadow;
+      box-shadow: $btn-hover-boxshadow !important;
     }
   }
   #folders {
@@ -76,7 +104,7 @@
     }
     a.hover {
       text-shadow: none !important;
-      box-shadow: $btn-hover-boxshadow;
+      box-shadow: $btn-hover-boxshadow !important;
     }
   }
   #files {

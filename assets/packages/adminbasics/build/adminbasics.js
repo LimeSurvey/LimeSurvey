@@ -3,6 +3,27 @@
   factory();
 })((function () { 'use strict';
 
+  function ownKeys$1(object, enumerableOnly) {
+    var keys = Object.keys(object);
+    if (Object.getOwnPropertySymbols) {
+      var symbols = Object.getOwnPropertySymbols(object);
+      enumerableOnly && (symbols = symbols.filter(function (sym) {
+        return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+      })), keys.push.apply(keys, symbols);
+    }
+    return keys;
+  }
+  function _objectSpread2(target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = null != arguments[i] ? arguments[i] : {};
+      i % 2 ? ownKeys$1(Object(source), !0).forEach(function (key) {
+        _defineProperty$1(target, key, source[key]);
+      }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$1(Object(source)).forEach(function (key) {
+        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      });
+    }
+    return target;
+  }
   function _typeof(obj) {
     "@babel/helpers - typeof";
 
@@ -33,6 +54,20 @@
       writable: false
     });
     return Constructor;
+  }
+  function _defineProperty$1(obj, key, value) {
+    key = _toPropertyKey(key);
+    if (key in obj) {
+      Object.defineProperty(obj, key, {
+        value: value,
+        enumerable: true,
+        configurable: true,
+        writable: true
+      });
+    } else {
+      obj[key] = value;
+    }
+    return obj;
   }
   function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
@@ -25299,48 +25334,92 @@
     });
   }
 
+  var replacingIconData = [{
+    originIcon: "a[href='kcact:upload'] span",
+    newIcon: "ri-upload-fill"
+  }, {
+    originIcon: "a[href='kcact:refresh'] span",
+    newIcon: "ri-refresh-line"
+  }, {
+    originIcon: "a[href='kcact:settings'] span",
+    newIcon: "ri-settings-3-line"
+  }, {
+    originIcon: "a[href='kcact:maximize'] span",
+    newIcon: "ri-fullscreen-line"
+  }, {
+    originIcon: "a[href='kcact:about'] span",
+    newIcon: "ri-information-line"
+  }, {
+    originIcon: "a[href='kcdir:/files'] span.folder",
+    newIcon: "ri-folder-line"
+  }];
+  var menuReplacingIconData = [{
+    originIcon: "a[href='kcact:refresh'] span",
+    newIcon: "ri-refresh-line"
+  }, {
+    originIcon: "a[href='kcact:download'] span",
+    newIcon: "ri-download-line"
+  }, {
+    originIcon: "a[href='kcact:mkdir'] span",
+    newIcon: "ri-folder-add-line"
+  }, {
+    originIcon: "a[href='kcact:mvdir'] span",
+    newIcon: "ri-eraser-line"
+  }, {
+    originIcon: "a[href='kcact:rmdir'] span",
+    newIcon: "ri-delete-bin-line text-danger"
+  }];
+  var handleReplaceIcons = function handleReplaceIcons(_ref) {
+    var iframeSource = _ref.iframeSource,
+      originIcon = _ref.originIcon,
+      newIcon = _ref.newIcon;
+    var replacingElement = iframeSource.contentWindow.document.querySelector(originIcon);
+    if (replacingElement) {
+      replacingElement.insertAdjacentHTML("beforebegin", "<i class=" + newIcon + "></i>");
+    }
+  };
+  var handleAppendCssLink = function handleAppendCssLink(_ref2) {
+    var header = _ref2.header,
+      linkUrl = _ref2.linkUrl;
+    var cssLink = document.createElement("link");
+    cssLink.rel = "stylesheet";
+    cssLink.type = "text/css";
+    cssLink.href = linkUrl;
+    header.appendChild(cssLink);
+  };
   function fileManagerStyle() {
     var fileManagerIframe = document.getElementById("browseiframe");
     if (fileManagerIframe) {
       fileManagerIframe.addEventListener("load", function () {
         fileManagerIframe.contentWindow.document.body.classList.add("file-manager-body");
-        var uploadElement = fileManagerIframe.contentWindow.document.querySelector("a[href='kcact:upload'] span");
-        if (uploadElement) {
-          uploadElement.insertAdjacentHTML("beforebegin", "<i class='ri-upload-fill'></i>");
-        }
-        var refreshElement = fileManagerIframe.contentWindow.document.querySelector("a[href='kcact:refresh'] span");
-        if (refreshElement) {
-          refreshElement.insertAdjacentHTML("beforebegin", "<i class='ri-refresh-line'></i>");
-        }
-        var settingsElement = fileManagerIframe.contentWindow.document.querySelector("a[href='kcact:settings'] span");
-        if (settingsElement) {
-          settingsElement.insertAdjacentHTML("beforebegin", "<i class='ri-settings-3-line'></i>");
-        }
-        var maximizeElement = fileManagerIframe.contentWindow.document.querySelector("a[href='kcact:maximize'] span");
-        if (maximizeElement) {
-          maximizeElement.insertAdjacentHTML("beforebegin", "<i class='ri-fullscreen-line'></i>");
-        }
-        var aboutElement = fileManagerIframe.contentWindow.document.querySelector("a[href='kcact:about'] span");
-        if (aboutElement) {
-          aboutElement.insertAdjacentHTML("beforebegin", "<i class='ri-information-line'></i>");
-        }
-        var folderElement = fileManagerIframe.contentWindow.document.querySelector("a[href='kcdir:/files'] span.folder");
-        if (folderElement) {
-          folderElement.insertAdjacentHTML("beforebegin", "<i class='ri-folder-line'></i>");
+        replacingIconData.map(function (data) {
+          return handleReplaceIcons(_objectSpread2(_objectSpread2({}, data), {}, {
+            iframeSource: fileManagerIframe
+          }));
+        });
+
+        // when right click of menu folder
+        var folderCurrentEl = fileManagerIframe.contentWindow.document.getElementsByClassName("folder current")[0];
+        if (folderCurrentEl) {
+          folderCurrentEl.addEventListener("contextmenu", function (event) {
+            event.preventDefault(); // prevent the default context menu from appearing
+            menuReplacingIconData.map(function (data) {
+              return handleReplaceIcons(_objectSpread2(_objectSpread2({}, data), {}, {
+                iframeSource: fileManagerIframe
+              }));
+            });
+          });
         }
 
         // Load sea_green css again after iframe is fully loaded
-        var head = fileManagerIframe.contentWindow.document.head;
-        var seaGreenCss = document.createElement("link");
-        seaGreenCss.rel = "stylesheet";
-        seaGreenCss.type = "text/css";
-        seaGreenCss.href = "/themes/admin/Sea_Green/css/sea_green.css";
-        var remixIconCss = document.createElement("link");
-        remixIconCss.rel = "stylesheet";
-        remixIconCss.type = "text/css";
-        remixIconCss.href = "http://ls-ce/assets/fonts/font-src/remix/remixicon.css";
-        head.appendChild(seaGreenCss);
-        head.appendChild(remixIconCss);
+        handleAppendCssLink({
+          header: fileManagerIframe.contentWindow.document.head,
+          linkUrl: "/themes/admin/Sea_Green/css/sea_green.css"
+        });
+        handleAppendCssLink({
+          header: fileManagerIframe.contentWindow.document.head,
+          linkUrl: "http://ls-ce/assets/fonts/font-src/remix/remixicon.css"
+        });
       });
     }
   }

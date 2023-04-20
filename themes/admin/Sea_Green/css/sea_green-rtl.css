@@ -19051,6 +19051,29 @@ table [class^=ri-], table [class*=" ri-"] {
   color: #1E1E1E !important;
   box-shadow: -4px 4px #EEEFF7 !important;
 }
+.file-manager-body #menu .ui-menu {
+  box-shadow: none !important;
+  border: 1px solid #1E1E1E !important;
+  background: #fff !important;
+}
+.file-manager-body #menu .ui-menu .ui-menu-divider {
+  border-color: #5E6372 !important;
+}
+.file-manager-body #menu .ui-menu .ui-state-active {
+  background: #fff !important;
+  text-shadow: none !important;
+  box-shadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4) !important;
+  color: #1E1E1E !important;
+}
+.file-manager-body #menu .ui-menu a {
+  color: #1E1E1E !important;
+  display: flex !important;
+  align-items: center !important;
+}
+.file-manager-body #menu .ui-menu a span {
+  background-image: none !important;
+  padding-right: 5px !important;
+}
 .file-manager-body #toolbar {
   height: auto !important;
   display: flex !important;
@@ -19067,7 +19090,7 @@ table [class^=ri-], table [class*=" ri-"] {
 }
 .file-manager-body #toolbar a:hover, .file-manager-body #toolbar a:focus, .file-manager-body #toolbar a.selected {
   text-shadow: none !important;
-  box-shadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
+  box-shadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4) !important;
 }
 .file-manager-body #toolbar a span {
   background-image: none !important;
@@ -19076,7 +19099,7 @@ table [class^=ri-], table [class*=" ri-"] {
 }
 .file-manager-body #toolbar a.hover {
   text-shadow: none !important;
-  box-shadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
+  box-shadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4) !important;
 }
 .file-manager-body #folders {
   box-shadow: none !important;
@@ -19113,7 +19136,7 @@ table [class^=ri-], table [class*=" ri-"] {
 }
 .file-manager-body #folders a.hover {
   text-shadow: none !important;
-  box-shadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
+  box-shadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4) !important;
 }
 .file-manager-body #files {
   background: #fff !important;
