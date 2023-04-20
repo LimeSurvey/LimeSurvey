@@ -143,11 +143,11 @@ class GlobalSettings extends SurveyCommonAction
         $data['sideMenuBehaviour'] = getGlobalSetting('sideMenuBehaviour');
         $data['aListOfThemeObjects'] = AdminTheme::getAdminThemeList();
 
-        // List of available OAuth plugins
-        $event = new PluginEvent('listSMTPOAuthPlugins', $this);
+        // List of available email plugins
+        $event = new PluginEvent('listEmailPlugins', $this);
         Yii::app()->getPluginManager()->dispatchEvent($event);
-        $smtpOAuthPlugins = $event->get('oauthplugins');
-        $data['smtpOAuthPlugins'] = $smtpOAuthPlugins;
+        $emailPlugins = $event->get('plugins');
+        $data['emailPlugins'] = $emailPlugins;
 
         $this->renderWrappedTemplate('globalsettings', 'globalSettings_view', $data);
     }
@@ -354,16 +354,16 @@ class GlobalSettings extends SurveyCommonAction
         SettingGlobal::setSetting('filterxsshtml', strip_tags(Yii::app()->getRequest()->getPost('filterxsshtml', '')));
         SettingGlobal::setSetting('disablescriptwithxss', strip_tags(Yii::app()->getRequest()->getPost('disablescriptwithxss', '')));
 
-        $oldOauth2Plugin = Yii::app()->getConfig('emailoauthplugin');
-        $oauth2Plugin = strip_tags(Yii::app()->getRequest()->getPost('emailoauthplugin', ''));
-        SettingGlobal::setSetting('emailoauthplugin', $oauth2Plugin);
-        // If the OAuth2 plugin has changed, dispatch an event to allow the new plugin to do any necessary setup.
-        if ($emailMethod == LimeMailer::MethodOAuth2Smtp && $oldOauth2Plugin != $oauth2Plugin) {
-            $event = new PluginEvent('afterSelectSMTPOAuthPlugin', $this);
-            Yii::app()->getPluginManager()->dispatchEvent($event, $oauth2Plugin);
-            $oauth2PluginWarning = $event->get('warning');
-            if (!empty($oauth2PluginWarning)) {
-                $warning .= $oauth2PluginWarning . '<br/>';
+        $oldEmailPlugin = Yii::app()->getConfig('emailplugin');
+        $emailPlugin = strip_tags(Yii::app()->getRequest()->getPost('emailplugin', ''));
+        SettingGlobal::setSetting('emailplugin', $emailPlugin);
+        // If the email plugin has changed, dispatch an event to allow the new plugin to do any necessary setup.
+        if ($emailMethod == LimeMailer::MethodPlugin && $oldEmailPlugin != $emailPlugin) {
+            $event = new PluginEvent('afterSelectEmailPlugin', $this);
+            Yii::app()->getPluginManager()->dispatchEvent($event, $emailPlugin);
+            $emailPluginWarning = $event->get('warning');
+            if (!empty($emailPluginWarning)) {
+                $warning .= $emailPluginWarning . '<br/>';
             }
         }
 

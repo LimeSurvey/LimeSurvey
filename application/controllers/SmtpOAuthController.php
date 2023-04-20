@@ -109,11 +109,6 @@ class SmtpOAuthController extends LSBaseController
      */
     public function actionReceiveOAuthResponse()
     {
-        // Check if the email method is set to OAuth2
-        if (LimeMailer::MethodOAuth2Smtp !== Yii::app()->getConfig('emailmethod')) {
-            throw new CHttpException(400);
-        }
-
         // Make sure the request includes the required data
         $code = Yii::app()->request->getParam('code');
         $state = Yii::app()->request->getParam('state');

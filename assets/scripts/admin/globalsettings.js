@@ -124,8 +124,8 @@ function Emailchange(ui,evt)
     $("#emailsmtpuser").prop('disabled', true);
     $("#emailsmtppassword").prop('disabled', true);
 
-    const oauth_enabled = (selectedMethod == 'oauth2-smtp');
-    $("#emailoauthplugin").prop('disabled', !oauth_enabled);
+    const plugin_enabled = (selectedMethod == 'plugin');
+    $("#emailplugin").prop('disabled', !plugin_enabled);
 }
 
 function BounceChange(ui,evt)

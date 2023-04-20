@@ -1,10 +1,10 @@
 <?php
 
 use League\OAuth2\Client\Provider\Google;
-use LimeSurvey\PluginManager\SmtpOauthPluginBase;
+use LimeSurvey\PluginManager\SmtpOAuthPluginBase;
 use PHPMailer\PHPMailer\PHPMailer;
 
-class GoogleOAuthSMTP extends SmtpOauthPluginBase
+class GoogleOAuthSMTP extends SmtpOAuthPluginBase
 {
     protected $storage = 'DbStorage';
     protected static $description = 'Core: Adds Google OAuth support for email sending';
@@ -33,12 +33,12 @@ class GoogleOAuthSMTP extends SmtpOauthPluginBase
 
     public function init()
     {
-        $this->subscribe('listSMTPOAuthPlugins');
-        $this->subscribe('afterSelectSMTPOAuthPlugin');
-        $this->subscribe('newSMTPOAuthInitialization');
+        $this->subscribe('listEmailPlugins');
+        $this->subscribe('afterSelectEmailPlugin');
+        $this->subscribe('MailerConstruct');    // Handler defined in SmtpOAuthPluginBase
         $this->subscribe('beforePrepareRedirectToAuthPage');
-        $this->subscribe('beforeRedirectToAuthPage');   // Handler defined in SmtpOauthPluginBase
-        $this->subscribe('afterReceiveOAuthResponse');  // Handler defined in SmtpOauthPluginBase
+        $this->subscribe('beforeRedirectToAuthPage');   // Handler defined in SmtpOAuthPluginBase
+        $this->subscribe('afterReceiveOAuthResponse');  // Handler defined in SmtpOAuthPluginBase
 
         $this->subscribe('beforeEmail');
         $this->subscribe('beforeSurveyEmail', 'beforeEmail');
@@ -121,18 +121,18 @@ class GoogleOAuthSMTP extends SmtpOauthPluginBase
     /**
      * Adds the plugin to the list of SMTP OAuth plugins
      */
-    public function listSMTPOAuthPlugins()
+    public function listEmailPlugins()
     {
         $event = $this->getEvent();
-        $event->append('oauthplugins', [
-            'google' => $this->getSmtpOAuthPluginInfo()
+        $event->append('plugins', [
+            'google' => $this->getEmailPluginInfo()
         ]);
     }
 
     /**
-     * Handles the newSMTPOAuthInitialization event, triggered during LimeMailer initialization
+     * @inheritdoc
      */
-    public function newSMTPOAuthInitialization()
+    public function getOAuthConfigForMailer()
     {
         try {
             $credentials = $this->getCredentials();
@@ -153,8 +153,6 @@ class GoogleOAuthSMTP extends SmtpOauthPluginBase
             return;
         }
 
-        $event = $this->getEvent();
-
         $provider = $this->getProvider($credentials);
         $config = [
             'provider' => $provider,
@@ -164,19 +162,26 @@ class GoogleOAuthSMTP extends SmtpOauthPluginBase
             'userName' => $emailAddress,
         ];
 
-        $event->set('oauthconfig', $config);
-
-        $limeMailer = $event->get('mailer');
-        $limeMailer->Host = 'smtp.gmail.com';
-        $limeMailer->Port = 465;
-        $limeMailer->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+        return $config;
     }
 
     /**
-     * Handles the afterSelectSMTPOAuthPlugin event, triggered when the plugin
+     * @inheritdoc
+     * Add Google specific settings to the mailer
+     */
+    protected function setupMailer($mailer)
+    {
+        parent::setupMailer($mailer);
+        $mailer->Host = 'smtp.gmail.com';
+        $mailer->Port = 465;
+        $mailer->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+    }
+
+    /**
+     * Handles the afterSelectEmailPlugin event, triggered when the plugin
      * is selected as the SMTP OAuth plugin in Global Settings
      */
-    public function afterSelectSMTPOAuthPlugin()
+    public function afterSelectEmailPlugin()
     {
         $setupStatus = $this->getSetupStatus();
         if ($setupStatus !== self::SETUP_STATUS_VALID_REFRESH_TOKEN) {
@@ -203,7 +208,7 @@ class GoogleOAuthSMTP extends SmtpOauthPluginBase
     public function beforeEmail()
     {
         // Don't do anything if the current plugin is not the one selected.
-        if (!$this->isCurrentSMTPOAuthHandler()) {
+        if (!$this->isCurrentEmailPlugin()) {
             return;
         }
 
@@ -215,7 +220,7 @@ class GoogleOAuthSMTP extends SmtpOauthPluginBase
     /**
      * @inheritdoc
      */
-    protected function getProviderName()
+    protected function getDisplayName()
     {
         return gT('Google');
     }
@@ -225,7 +230,7 @@ class GoogleOAuthSMTP extends SmtpOauthPluginBase
         $event = $this->getEvent();
         $event->set('width', 600);
         $event->set('height', 700);
-        $event->set('providerName', $this->getProviderName());
+        $event->set('providerName', $this->getDisplayName());
 
         $setupStatus = $this->getSetupStatus();
         $description = $this->getSetupStatusDescription($setupStatus);

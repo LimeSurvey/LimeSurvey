@@ -4,10 +4,9 @@ namespace LimeSurvey\PluginManager;
 
 use League\OAuth2\Client\Grant\RefreshToken;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
-use LimeMailer;
-use LimeSurvey\Datavalueobjects\SmtpOAuthPluginInfo;
+use PHPMailer\PHPMailer\OAuth;
 
-abstract class SmtpOauthPluginBase extends PluginBase
+abstract class SmtpOAuthPluginBase extends EmailPluginBase
 {
     const SETUP_STATUS_VALID_REFRESH_TOKEN = 1;
     const SETUP_STATUS_REQUIREMENT_UNMET = 2;
@@ -158,6 +157,9 @@ abstract class SmtpOauthPluginBase extends PluginBase
     public function afterReceiveOAuthResponse()
     {
         $event = $this->getEvent();
+        if (empty($event)) {
+            throw new \CHttpException(403);
+        }
         $code = $event->get('code');
         $credentials = $this->getCredentials();
 
@@ -203,6 +205,9 @@ abstract class SmtpOauthPluginBase extends PluginBase
     public function beforeRedirectToAuthPage()
     {
         $event = $this->getEvent();
+        if (empty($event)) {
+            throw new \CHttpException(403);
+        }
         $credentials = $this->getCredentials();
         $provider = $this->getProvider($credentials);
         $options = $this->getAuthorizationOptions();
@@ -325,18 +330,6 @@ abstract class SmtpOauthPluginBase extends PluginBase
     }
 
     /**
-     * Returns true if the plugin is the currently selected SMTP OAuth plugin
-     * @return bool
-     */
-    protected function isCurrentSMTPOAuthHandler()
-    {
-        if (LimeMailer::MethodOAuth2Smtp !== \Yii::app()->getConfig('emailmethod')) {
-            return false;
-        }
-        return get_class($this) == \Yii::app()->getConfig('emailoauthplugin');
-    }
-
-    /**
      * Returns the setting definition to show the current email address
      * @return array<string,mixed>|null
      */
@@ -390,21 +383,6 @@ abstract class SmtpOauthPluginBase extends PluginBase
     }
 
     /**
-     * Returns the provider's name
-     * @return string
-     */
-    abstract protected function getProviderName();
-
-    /**
-     * Returns the plugin's metadata
-     * @return SmtpOAuthPluginInfo
-     */
-    protected function getSmtpOAuthPluginInfo()
-    {
-        return new SmtpOAuthPluginInfo($this->getId(), $this->getProviderName(), get_class($this));
-    }
-
-    /**
      * Renders the contents of the "information" setting depending on
      * settings and token validity.
      * @return string
@@ -423,4 +401,39 @@ abstract class SmtpOauthPluginBase extends PluginBase
 
         return "<div class=\"alert alert-{$statusClass}\">{$statusText}</div>";
     }
+
+    /**
+     * Default handler for the MailerConstruct event, triggered during LimeMailer initialization.
+     * The event is expected to be dispatched specifically for the selected email plugin.
+     */
+    public function MailerConstruct()
+    {
+        $event = $this->getEvent();
+        $mailer = $event->get('mailer');
+        $this->setupMailer($mailer);
+    }
+
+    /**
+     * Applies the basic OAuth configuration to the given LimeMailer
+     * @param LimeMailer $mailer
+     */
+    protected function setupMailer($mailer)
+    {
+        $mailer->IsSMTP();
+        $mailer->SMTPAuth = true;
+        $mailer->Username = null;
+        $mailer->Password = null;
+        $mailer->AuthType = 'XOAUTH2';
+        $config = $this->getOAuthConfigForMailer();
+        if (empty($config)) {
+            throw new \Exception('Invalid OAuth configuration');
+        }
+        $mailer->setOAuth(new OAuth($config));
+    }
+
+    /**
+     * Returns the OAuth configuration for PHPMailer
+     * @return array<string,mixed>|null
+     */
+    abstract protected function getOAuthConfigForMailer();
 }

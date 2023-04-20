@@ -33,7 +33,7 @@
                         LimeMailer::MethodSmtp => "SMTP",
                         LimeMailer::MethodSendmail => "Sendmail",
                         LimeMailer::MethodQmail => "qmail",
-                        LimeMailer::MethodOAuth2Smtp => "OAuth 2 SMTP",
+                        LimeMailer::MethodPlugin => "Plugin",
                     ]
                 ]); ?>
             </div>
@@ -89,16 +89,16 @@
         </div>
         <!-- OAuth Plugins -->
         <div class="mb-3">
-            <label class="col-12 form-label" for="emailoauthplugin">
-                <?php eT("OAuth 2 plugin:"); ?>
+            <label class="col-12 form-label" for="emailplugin">
+                <?php eT("Email plugin:"); ?>
             </label>
             <div class="col-12">
-                <select class="form-select" name="emailoauthplugin" id="emailoauthplugin" <?= (Yii::app()->getConfig('emailmethod') == LimeMailer::MethodOAuth2Smtp) ? '' : 'disabled' ?>>
+                <select class="form-select" name="emailplugin" id="emailplugin" <?= (Yii::app()->getConfig('emailmethod') == LimeMailer::MethodPlugin) ? '' : 'disabled' ?>>
                     <option value=''><?php eT("None"); ?></option>
-                    <?php if (!empty($smtpOAuthPlugins)): ?>
-                        <?php foreach ($smtpOAuthPlugins as $oauthPluginDetails): ?>
-                            <option value='<?= $oauthPluginDetails->class ?>' <?= ($oauthPluginDetails->class == Yii::app()->getConfig('emailoauthplugin')) ? "selected='selected'" : "" ?>>
-                                <?= $oauthPluginDetails->name ?>
+                    <?php if (!empty($emailPlugins)): ?>
+                        <?php foreach ($emailPlugins as $emailPluginDetails): ?>
+                            <option value='<?= $emailPluginDetails->class ?>' <?= ($emailPluginDetails->class == Yii::app()->getConfig('emailplugin')) ? "selected='selected'" : "" ?>>
+                                <?= $emailPluginDetails->name ?>
                             </option>
                         <?php endforeach; ?>
                     <?php endif; ?>

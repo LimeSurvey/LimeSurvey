@@ -2,10 +2,10 @@
 require_once __DIR__ . '/vendor/autoload.php';
 
 use Greew\OAuth2\Client\Provider\Azure;
-use LimeSurvey\PluginManager\SmtpOauthPluginBase;
+use LimeSurvey\PluginManager\SmtpOAuthPluginBase;
 use PHPMailer\PHPMailer\PHPMailer;
 
-class AzureOAuthSMTP extends SmtpOauthPluginBase
+class AzureOAuthSMTP extends SmtpOAuthPluginBase
 {
     protected $storage = 'DbStorage';
     protected static $description = 'Core: Adds Azure OAuth support for email sending';
@@ -38,12 +38,12 @@ class AzureOAuthSMTP extends SmtpOauthPluginBase
 
     public function init()
     {
-        $this->subscribe('listSMTPOAuthPlugins');
-        $this->subscribe('afterSelectSMTPOAuthPlugin');
-        $this->subscribe('newSMTPOAuthInitialization');
+        $this->subscribe('listEmailPlugins');
+        $this->subscribe('afterSelectEmailPlugin');
+        $this->subscribe('MailerConstruct');    // Handler defined in SmtpOAuthPluginBase
         $this->subscribe('beforePrepareRedirectToAuthPage');
-        $this->subscribe('beforeRedirectToAuthPage');   // Handler defined in SmtpOauthPluginBase
-        $this->subscribe('afterReceiveOAuthResponse');  // Handler defined in SmtpOauthPluginBase
+        $this->subscribe('beforeRedirectToAuthPage');   // Handler defined in SmtpOAuthPluginBase
+        $this->subscribe('afterReceiveOAuthResponse');  // Handler defined in SmtpOAuthPluginBase
 
         $this->subscribe('beforeEmail');
         $this->subscribe('beforeSurveyEmail', 'beforeEmail');
@@ -111,20 +111,20 @@ class AzureOAuthSMTP extends SmtpOauthPluginBase
     }
 
     /**
-     * Adds the plugin to the list of SMTP OAuth plugins
+     * Adds the plugin to the list of email plugins
      */
-    public function listSMTPOAuthPlugins()
+    public function listEmailPlugins()
     {
         $event = $this->getEvent();
-        $event->append('oauthplugins', [
-            'azure' => $this->getSmtpOAuthPluginInfo()
+        $event->append('plugins', [
+            'azure' => $this->getEmailPluginInfo()
         ]);
     }
 
     /**
-     * Handles the newSMTPOAuthInitialization event, triggered during LimeMailer initialization
+     * @inheritdoc
      */
-    public function newSMTPOAuthInitialization()
+    public function getOAuthConfigForMailer()
     {
         try {
             $credentials = $this->getCredentials();
@@ -147,8 +147,6 @@ class AzureOAuthSMTP extends SmtpOauthPluginBase
             return;
         }
 
-        $event = $this->getEvent();
-
         $provider = $this->getProvider($credentials);
         $config = [
             'provider' => $provider,
@@ -158,19 +156,26 @@ class AzureOAuthSMTP extends SmtpOauthPluginBase
             'userName' => $emailAddress,
         ];
 
-        $event->set('oauthconfig', $config);
-
-        $limeMailer = $event->get('mailer');
-        $limeMailer->Host = 'smtp.office365.com';
-        $limeMailer->Port = 587;
-        $limeMailer->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        return $config;
     }
 
     /**
-     * Handles the afterSelectSMTPOAuthPlugin event, triggered when the plugin
-     * is selected as the SMTP OAuth plugin in Global Settings
+     * @inheritdoc
+     * Add Azure specific settings to the mailer
      */
-    public function afterSelectSMTPOAuthPlugin()
+    protected function setupMailer($mailer)
+    {
+        parent::setupMailer($mailer);
+        $mailer->Host = 'smtp.office365.com';
+        $mailer->Port = 587;
+        $mailer->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+    }
+
+    /**
+     * Handles the afterSelectEmailPlugin event, triggered when the plugin
+     * is selected as email plugin in Global Settings
+     */
+    public function afterSelectEmailPlugin()
     {
         $setupStatus = $this->getSetupStatus();
         if ($setupStatus !== self::SETUP_STATUS_VALID_REFRESH_TOKEN) {
@@ -197,7 +202,7 @@ class AzureOAuthSMTP extends SmtpOauthPluginBase
     public function beforeEmail()
     {
         // Don't do anything if the current plugin is not the one selected.
-        if (!$this->isCurrentSMTPOAuthHandler()) {
+        if (!$this->isCurrentEmailPlugin()) {
             return;
         }
 
@@ -211,6 +216,9 @@ class AzureOAuthSMTP extends SmtpOauthPluginBase
         $event->set('from', $from);
     }
 
+    /**
+     * @inheritdoc
+     */
     protected function afterRefreshTokenRetrieved($provider, $token)
     {
         $tokenValues = $token->getValues();
@@ -228,17 +236,21 @@ class AzureOAuthSMTP extends SmtpOauthPluginBase
      /**
      * @inheritdoc
      */
-    protected function getProviderName()
+    protected function getDisplayName()
     {
         return gT('Azure');
     }
 
+    /**
+     * Handles the beforePrepareRedirectToAuthPage event, triggered before the
+     * page with the "Get Token" button is rendered.
+     */
     public function beforePrepareRedirectToAuthPage()
     {
         $event = $this->getEvent();
         $event->set('width', 600);
         $event->set('height', 800);
-        $event->set('providerName', $this->getProviderName());
+        $event->set('providerName', $this->getDisplayName());
 
         $setupStatus = $this->getSetupStatus();
         $description = $this->getSetupStatusDescription($setupStatus);
