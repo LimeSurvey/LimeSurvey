@@ -33,17 +33,6 @@ textarea {
     max-width: 100%;
 }
 
-// radiobutton
-.radio-item .ls-label-xs-visibility, .checkbox-item .ls-label-xs-visibility {
-    display: inline-block;
-    position: relative;
-    overflow: hidden;
-    width: 20px;
-    height: 20px;
-    line-height: 21px;
-    text-indent: 21px;
-}
-
 // select
 .form-select {
     font-weight  : $font-weight-normal;

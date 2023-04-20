@@ -956,15 +956,7 @@ table.ls-answers {
   text-align: center;
 }
 
-.ls-answers tbody .answertext {
-  text-align: right;
-}
-
 .ls-answers .answertextright {
-  text-align: left;
-}
-
-.dir-rtl .ls-answers tbody .answertext {
   text-align: left;
 }
 
@@ -975,96 +967,6 @@ table.ls-answers {
 /* ls-dynamic */
 .ls-group-dynamic {
   text-align: center;
-}
-
-/**
- *  awesome-bootstrap-checkbox inside table with an visually-hidden label
- * @todo : .dir-rtl
- */
-/* reset the margin and review the padding set by bootstrap */
-table.ls-answers input[type=checkbox],
-table.ls-answers input[type=radio] {
-  margin: 0;
-}
-
-/* We need complete width in array , but don't touch to padding-(top|bottom) */
-.dir-ltr .ls-answers td.checkbox-item {
-  padding-left: 20px;
-  padding-right: 0;
-}
-
-.dir-rtl .ls-answers td.checkbox-item {
-  padding-right: 20px;
-  padding-left: 0;
-}
-
-/* show partially visually-hidden inside table */
-.checkbox-item .ls-label-xs-visibility {
-  display: inline-block;
-  position: relative;
-  overflow: hidden;
-  width: 17px;
-  height: 17px;
-  line-height: 21px;
-  text-indent: 21px;
-}
-
-.dir-ltr .checkbox-item .ls-label-xs-visibility {
-  left: auto;
-  margin-left: -20px;
-}
-
-.dir-rtl .checkbox-item .ls-label-xs-visibility {
-  right: auto;
-  margin-right: -20px;
-}
-
-/* no margin on label : no margin after and before too */
-.dir-ltr .checkbox-item label.ls-label-xs-visibility::before {
-  margin-left: 0;
-}
-
-.dir-rtl .checkbox-item label.ls-label-xs-visibility::before {
-  margin-right: 0;
-}
-
-.dir-ltr .checkbox-item label.ls-label-xs-visibility::after {
-  margin-left: 0;
-  padding-left: 0;
-}
-
-.dir-rtl .checkbox-item label.ls-label-xs-visibility::after {
-  margin-right: 0;
-  padding-right: 0;
-}
-
-.checkbox-item label.ls-label-xs-visibility::after {
-  line-height: 17px;
-  width: 17px;
-  text-align: center;
-  text-indent: 0;
-}
-
-/* Hide the other content inside visually-hidden */
-.checkbox-item label.ls-label-xs-visibility > * {
-  position: absolute;
-  top: auto;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-}
-
-.dir-ltr .checkbox-item label.ls-label-xs-visibility > * {
-  left: -10000px;
-}
-
-.dir-rtl .checkbox-item label.ls-label-xs-visibility > * {
-  left: -10000px;
-}
-
-/* Align privacy policy checkbox to top */
-#datasecurity_accepted {
-  vertical-align: top;
 }
 
 /*
@@ -1455,26 +1357,11 @@ textarea {
   max-width: 100%;
 }
 
-.radio-item .ls-label-xs-visibility, .checkbox-item .ls-label-xs-visibility {
-  display: inline-block;
-  position: relative;
-  overflow: hidden;
-  width: 20px;
-  height: 20px;
-  line-height: 21px;
-  text-indent: 21px;
-}
-
 .form-select {
   font-weight: 400;
   font-size: 0.9975rem;
   line-height: 16px;
   border-width: 2px;
-}
-
-.form-inline .radio-item {
-  display: inline-block;
-  vertical-align: middle;
 }
 
 /* no form-group on radio-item and checkbox-item */
@@ -1521,7 +1408,6 @@ li.radio-item {
 }
 
 /* We need complete width in array , but don't touch to padding-(top|bottom) */
-/* show partially visually-hidden inside table */
 .radio-item .ls-label-xs-visibility {
   display: inline-block;
   position: relative;
@@ -1530,16 +1416,6 @@ li.radio-item {
   height: 20px;
   line-height: 21px;
   text-indent: 21px;
-}
-
-.dir-ltr .radio-item .ls-label-xs-visibility {
-  left: auto;
-  margin-left: -20px;
-}
-
-.dir-rtl .radio-item .ls-label-xs-visibility {
-  right: auto;
-  margin-right: -20px;
 }
 
 /* no margin on label : no margin after and before too */
@@ -1709,6 +1585,27 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
     margin-right: -18px !important;
   }
 }
+.dir-rtl .radio-item label {
+  padding-left: 0px;
+  padding-right: 28px;
+}
+.dir-rtl .radio-item label::before {
+  right: 0;
+}
+.dir-rtl .radio-item label::after {
+  right: 5px;
+}
+.dir-rtl td.radio-item label {
+  padding-left: 0px;
+  padding-right: 8px;
+}
+.dir-rtl td.radio-item label::before {
+  right: 0;
+}
+.dir-rtl td.radio-item label::after {
+  right: 3px;
+}
+
 .list-group.list-group-horizontal .radio-item {
   margin-right: 3rem;
 }
@@ -1738,6 +1635,10 @@ table > tbody > tr > td.ddprefix {
 
 .ls-answers tbody .answertext {
   text-align: left;
+}
+
+.dir-rtl .ls-answers tbody .answertext {
+  text-align: right;
 }
 
 /**
@@ -1971,6 +1872,16 @@ input.imageselect-checkbox:checked ~ .imageselect-select::after {
   padding-left: 20px;
 }
 
+.checkbox-item .ls-label-xs-visibility {
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  width: 24px;
+  height: 24px;
+  line-height: 21px;
+  text-indent: 21px;
+}
+
 .checkbox-item label::before {
   content: "";
   display: inline-block;
@@ -2046,6 +1957,101 @@ input.imageselect-checkbox:checked ~ .imageselect-select::after {
 
 .checkbox-item.checkbox-inline {
   margin-top: 0;
+}
+
+/**
+ *  awesome-bootstrap-checkbox inside table with an visually-hidden label
+ * @todo : .dir-rtl
+ */
+/* reset the margin and review the padding set by bootstrap */
+table.ls-answers input[type=checkbox],
+table.ls-answers input[type=radio] {
+  margin: 0;
+}
+
+/* We need complete width in array , but don't touch to padding-(top|bottom) */
+.dir-ltr .ls-answers td.checkbox-item {
+  padding-left: 20px;
+  padding-right: 0;
+}
+
+.dir-rtl .ls-answers td.checkbox-item {
+  padding-right: 20px;
+  padding-left: 0;
+}
+
+.dir-ltr .checkbox-item .ls-label-xs-visibility {
+  left: auto;
+  margin-left: -20px;
+}
+
+.dir-rtl .checkbox-item .ls-label-xs-visibility {
+  right: auto;
+  margin-right: -20px;
+}
+
+.dir-rtl .checkbox-item label {
+  padding-right: 40px;
+  padding-left: 0;
+}
+.dir-rtl .checkbox-item label::before {
+  margin-left: 0;
+  left: auto;
+  right: 0;
+}
+.dir-rtl .checkbox-item label::after {
+  margin-left: 0;
+  left: auto;
+  right: 2px;
+}
+.dir-rtl .othertext-label-checkox-container {
+  margin-right: 0;
+}
+
+/* no margin on label : no margin after and before too */
+.dir-ltr .checkbox-item label.ls-label-xs-visibility::before {
+  margin-left: 0;
+}
+
+.dir-rtl .checkbox-item label.ls-label-xs-visibility::before {
+  margin-right: 0;
+}
+
+.dir-ltr .checkbox-item label.ls-label-xs-visibility::after {
+  margin-left: 0;
+  padding-left: 0;
+}
+
+.dir-rtl .checkbox-item label.ls-label-xs-visibility::after {
+  margin-right: 0;
+  padding-right: 0;
+}
+
+.checkbox-item label.ls-label-xs-visibility::after {
+  text-align: center;
+  text-indent: 0;
+}
+
+/* Hide the other content inside visually-hidden */
+.checkbox-item label.ls-label-xs-visibility > * {
+  position: absolute;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.dir-ltr .checkbox-item label.ls-label-xs-visibility > * {
+  left: -10000px;
+}
+
+.dir-rtl .checkbox-item label.ls-label-xs-visibility > * {
+  left: -10000px;
+}
+
+/* Align privacy policy checkbox to top */
+#datasecurity_accepted {
+  vertical-align: top;
 }
 
 .tempus-dominus-widget {

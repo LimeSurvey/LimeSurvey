@@ -1,8 +1,4 @@
 // template_core START
-.form-inline .radio-item {
-    display        : inline-block;
-    vertical-align : middle;
-}
 
 /* no form-group on radio-item and checkbox-item */
 li.radio-item {
@@ -58,7 +54,6 @@ li.radio-item {
 //    padding-left  : 0;
 //}
 
-/* show partially visually-hidden inside table */
 .radio-item .ls-label-xs-visibility {
     display     : inline-block;
     position    : relative;
@@ -67,16 +62,6 @@ li.radio-item {
     height      : 20px;
     line-height : 21px;
     text-indent : 21px;
-}
-
-.dir-ltr .radio-item .ls-label-xs-visibility {
-    left        : auto;
-    margin-left : -20px;
-}
-
-.dir-rtl .radio-item .ls-label-xs-visibility {
-    right        : auto;
-    margin-right : -20px;
 }
 
 /* no margin on label : no margin after and before too */
@@ -118,38 +103,13 @@ li.radio-item {
 .ls-answers td.radio-item {
     padding : 4px;
 }
-//.dir-ltr .ls-answers td.radio-item {
-//    padding-left  : 24px;
-//    padding-right : 4px;
-//}
-//.dir-rtl .ls-answers td.radio-item {
-//    padding-right : 24px;
-//    padding-left  : 4px;
-//}
 
-//table.ls-answers .radio-item .ls-label-xs-visibility {
-//    line-height : initial;
-//    text-indent : initial;
-//}
 .dir-ltr table.ls-answers .radio-item .ls-label-xs-visibility {
     margin-left : 0;
 }
 .dir-rtl table.ls-answers .radio-item .ls-label-xs-visibility {
     margin-right : 0;
 }
-
-//.dir-ltr table.ls-answers .radio-item label.ls-label-xs-visibility::before {
-//    margin-left : -20px;
-//}
-//.dir-rtl table.ls-answers .radio-item label.ls-label-xs-visibility::before {
-//    margin-right : -20px;
-//}
-//.dir-ltr table.ls-answers .radio-item label.ls-label-xs-visibility::after {
-//    margin-left : -20px;
-//}
-//.dir-rtl table.ls-answers .radio-item label.ls-label-xs-visibility::after {
-//    margin-right : -20px;
-//}
 
 /* Fix for IE11 - no array question radio buttons on small screens */
 @media all and (max-width : 760px) and (-ms-high-contrast : none), (-ms-high-contrast : active) {
@@ -166,11 +126,6 @@ li.radio-item {
         margin-right : 0px;
     }
 }
-
-//.dir-ltr table.ls-answers .radio-item label.ls-label-xs-visibility::after {
-//    margin-left: -20px;
-//}
-
 // template_core END
 
 // awesome-bootstrap-checkbox START
@@ -217,6 +172,7 @@ li.radio-item {
     -o-transition: -o-transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
     transition: transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
 }
+
 .radio-item input[type="radio"] {
     opacity: 0;
     z-index: 1;
@@ -293,4 +249,27 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
         margin-right: -18px !important;
     }
 
+}
+// RTL
+.dir-rtl {
+    .radio-item label {
+        padding-left: 0px;
+        padding-right: 28px;
+        &::before {
+            right: 0;
+        }
+        &::after {
+            right: 5px;
+        }
+    }
+    td.radio-item label {
+        padding-left: 0px;
+        padding-right: 8px;
+        &::before {
+            right: 0;
+        }
+        &::after {
+            right: 3px;
+        }
+    }
 }
