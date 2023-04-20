@@ -20,9 +20,7 @@ $dropdown-font-size: $font-size-sm;
 
 .ls-answers label, .answer-item label {
     label {
-        font-weight : $font-weight-600;
-        font-size   : $font-size-base;
-        line-height : $line-height-20
+        @include h2
     }
 
     .radio-label {

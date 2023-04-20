@@ -11,9 +11,7 @@ h1,
 
 h2,
 .h2 {
-  font-weight : $font-weight-600;
-  font-size   : $font-size-base;
-  line-height : $line-height-20;
+  @include h2
 }
 
 h3,
@@ -22,9 +20,7 @@ h3,
 }
 
 label {
-  font-weight : $font-weight-600;
-  font-size   : $font-size-base;
-  line-height : $line-height-20;
+  @include h2
 }
 
 dl {

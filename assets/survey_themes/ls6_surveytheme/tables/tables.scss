@@ -16,9 +16,7 @@ table > tbody > tr > td.ddprefix {
 }
 
 .ls-answers .ls-heading th, .ls-answers th {
-    font-weight: $font-weight-600;
-    font-size: $font-size-base;
-    line-height: $line-height-20
+    @include h2
 }
 
 .ls-answers tbody .answertext {

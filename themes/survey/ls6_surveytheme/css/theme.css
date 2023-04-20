@@ -1914,6 +1914,25 @@ input.imageselect-checkbox:checked ~ .imageselect-select::after {
   padding-left: 48px;
 }
 
+.select-sortable-lists:not(.ranking-advanced-style) .list-group-item {
+  border-radius: 2px;
+  margin-bottom: 10px;
+  padding: 6px 6px 6px 20px;
+  font-weight: 600;
+  font-size: 1.14rem;
+  line-height: 20px;
+}
+.select-sortable-lists:not(.ranking-advanced-style) .selector__dragHandle.d-none {
+  display: inline-block !important;
+  margin-left: 8px;
+}
+.select-sortable-lists:not(.ranking-advanced-style) .selector__dragHandle.d-none svg {
+  vertical-align: baseline;
+}
+.select-sortable-lists:not(.ranking-advanced-style) .sortable-rank-subtitle {
+  display: none;
+}
+
 .ranking-advanced-style .ranking-advanced-sorted-items {
   border-radius: 8px;
 }
