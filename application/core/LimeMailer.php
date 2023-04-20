@@ -627,6 +627,20 @@ class LimeMailer extends PHPMailer
             $this->setError(gT('Email was not sent because demo-mode is activated.'));
             return false;
         }
+
+        // If the email method is set to "Plugin", we need to dispatch an event to that specific plugin
+        // so it can perform it's logic without depending on the more generic "beforeEmail" event.
+        if (Yii::app()->getConfig('emailmethod') == self::MethodPlugin) {
+            $emailPlugin = Yii::app()->getConfig('emailplugin');
+            $event = new PluginEvent('beforeEmailDispatch', $this);
+            $event->set('mailer', $this);
+            Yii::app()->getPluginManager()->dispatchEvent($event, $emailPlugin);
+            if (!$event->get('send', true)) {
+                $this->ErrorInfo = $event->get('error');
+                return $event->get('error') == null;
+            }
+        }
+
         return parent::Send();
     }
 

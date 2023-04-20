@@ -40,9 +40,7 @@ class GoogleOAuthSMTP extends SmtpOAuthPluginBase
         $this->subscribe('beforeRedirectToAuthPage');   // Handler defined in SmtpOAuthPluginBase
         $this->subscribe('afterReceiveOAuthResponse');  // Handler defined in SmtpOAuthPluginBase
 
-        $this->subscribe('beforeEmail');
-        $this->subscribe('beforeSurveyEmail', 'beforeEmail');
-        $this->subscribe('beforeTokenEmail', 'beforeEmail');
+        $this->subscribe('beforeEmailDispatch');
     }
 
     /**
@@ -203,16 +201,21 @@ class GoogleOAuthSMTP extends SmtpOAuthPluginBase
     }
 
     /**
-     * @inheritdoc
+     * Handles the beforeEmailDispatch event, triggered right before an email is sent.
+     * This is used to set the "Reply To" header, because Google automatically overrides
+     * the sender with the logged user.
      */
-    public function beforeEmail()
+    public function beforeEmailDispatch()
     {
         // Don't do anything if the current plugin is not the one selected.
         if (!$this->isCurrentEmailPlugin()) {
             return;
         }
 
-        $limeMailer = $this->getEvent()->get('mailer');
+        $event = $this->getEvent();
+
+        /** @var LimeMailer */
+        $limeMailer = $event->get('mailer');
         // Set "Reply To" because Gmail overrides the From/Sender with the logged user.
         $limeMailer->AddReplyTo($limeMailer->From, $limeMailer->FromName);
     }

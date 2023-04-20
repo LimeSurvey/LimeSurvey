@@ -45,9 +45,7 @@ class AzureOAuthSMTP extends SmtpOAuthPluginBase
         $this->subscribe('beforeRedirectToAuthPage');   // Handler defined in SmtpOAuthPluginBase
         $this->subscribe('afterReceiveOAuthResponse');  // Handler defined in SmtpOAuthPluginBase
 
-        $this->subscribe('beforeEmail');
-        $this->subscribe('beforeSurveyEmail', 'beforeEmail');
-        $this->subscribe('beforeTokenEmail', 'beforeEmail');
+        $this->subscribe('beforeEmailDispatch');
     }
 
     /**
@@ -197,9 +195,11 @@ class AzureOAuthSMTP extends SmtpOAuthPluginBase
     }
 
     /**
-     * @inheritdoc
+     * Handles the beforeEmailDispatch event, triggered right before an email is sent.
+     * This is used to override the sender with the logged user, and to set the "Reply To" header,
+     * because Azure doesn't accept the sender to be different from the logged user.
      */
-    public function beforeEmail()
+    public function beforeEmailDispatch()
     {
         // Don't do anything if the current plugin is not the one selected.
         if (!$this->isCurrentEmailPlugin()) {
@@ -207,13 +207,15 @@ class AzureOAuthSMTP extends SmtpOAuthPluginBase
         }
 
         $event = $this->getEvent();
+
+        /** @var LimeMailer */
         $limeMailer = $event->get('mailer');
         // Set "Reply To" because we need to override the From/Sender with the logged user.
         $limeMailer->AddReplyTo($limeMailer->From, $limeMailer->FromName);
 
         // Override the sender to avoid to match OAuth credentials.
         $from = $this->get('email');
-        $event->set('from', $from);
+        $limeMailer->setFrom($from);
     }
 
     /**
