@@ -196,7 +196,7 @@ var ThemeOptions = function () {
         if ($('#TemplateConfiguration_files_css').val() !== 'inherit') {
 
             currentThemeObject = {
-                "add": ['css/animate.css', 'css/ajaxify.css', 'css/variations/light_mode.css', 'css/theme.css', 'custom.css']
+                "add": ['css/animate.css', 'css/ajaxify.css', 'css/variations/light_mode.css', 'custom.css']
             };
 
             try {

@@ -1,32 +1,4 @@
 // old theme.css
-/*
-    LimeSurvey
-
-    Copyright (C) 2007-2023 The LimeSurvey Project Team / Patrick Teichmann
-    All rights reserved.
-
-    License: GNU/GPL License v2 or later, see LICENSE.php
-    LimeSurvey is free software. This version may have been modified pursuant
-    to the GNU General Public License, and as distributed it includes or
-    is derivative of works licensed under the GNU General Public License or
-    other free or open source software licenses.
-
-    (¯`·._.·(¯`·._.·  LS team custom CSS   ·._.·´¯)·._.·´¯)
-
-    You'd rather not touch it. This file can be overwritten by an update.
-
-
-    ██████╗  ██████╗     ███╗   ██╗ ██████╗ ████████╗    ████████╗ ██████╗ ██╗   ██╗ ██████╗██╗  ██╗    ██╗
-    ██╔══██╗██╔═══██╗    ████╗  ██║██╔═══██╗╚══██╔══╝    ╚══██╔══╝██╔═══██╗██║   ██║██╔════╝██║  ██║    ██║
-    ██║  ██║██║   ██║    ██╔██╗ ██║██║   ██║   ██║          ██║   ██║   ██║██║   ██║██║     ███████║    ██║
-    ██║  ██║██║   ██║    ██║╚██╗██║██║   ██║   ██║          ██║   ██║   ██║██║   ██║██║     ██╔══██║    ╚═╝
-    ██████╔╝╚██████╔╝    ██║ ╚████║╚██████╔╝   ██║          ██║   ╚██████╔╝╚██████╔╝╚██████╗██║  ██║    ██╗
-    ╚═════╝  ╚═════╝     ╚═╝  ╚═══╝ ╚═════╝    ╚═╝          ╚═╝    ╚═════╝  ╚═════╝  ╚═════╝╚═╝  ╚═╝    ╚═╝
-
-    Please, use custom.css with "strong specificity"
-    see: https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity
-
-*/
 body {
     padding-bottom: 10px;
     padding-top: 90px;/* now is redefine in JS to fit any title length */
