@@ -27,7 +27,8 @@ const replacingIconData = [
 
 const menuReplacingIconData = [
     {
-        originIcon: "a[href='kcact:refresh'] span",
+        originIcon:
+            "a[href='kcact:refresh'][class='ui-menu-item-wrapper'] span",
         newIcon: "ri-refresh-line",
     },
     {
@@ -44,8 +45,10 @@ const menuReplacingIconData = [
     },
     {
         originIcon: "a[href='kcact:rmdir'] span",
-        newIcon: "ri-delete-bin-line text-danger",
+        newIcon: "ri-delete-bin-line",
     },
+
+    // folder regular
 ];
 
 const handleReplaceIcons = ({ iframeSource, originIcon, newIcon }) => {
@@ -54,7 +57,7 @@ const handleReplaceIcons = ({ iframeSource, originIcon, newIcon }) => {
     if (replacingElement) {
         replacingElement.insertAdjacentHTML(
             "beforebegin",
-            "<i class=" + newIcon + "></i>"
+            `<i class=${newIcon}></i>`
         );
     }
 };
@@ -66,6 +69,56 @@ const handleAppendCssLink = ({ header, linkUrl }) => {
     cssLink.href = linkUrl;
 
     header.appendChild(cssLink);
+};
+
+const handleReplaceFolderIcons = (fileManagerIframe, menuReplacingIconData) => {
+    const replacingElements =
+        fileManagerIframe.contentWindow.document.querySelectorAll(
+            "span[class='folder regular']"
+        );
+
+    replacingElements.forEach((element) => {
+        const previousSiblingIcon =
+            element.previousElementSibling?.classList.contains(
+                "ri-folder-line"
+            );
+        const nextSiblingIcon =
+            element.nextElementSibling?.classList.contains("ri-folder-line");
+        if (!previousSiblingIcon && !nextSiblingIcon) {
+            element.insertAdjacentHTML(
+                "beforebegin",
+                "<i class='ri-folder-line'></i>"
+            );
+        }
+
+        element.addEventListener("contextmenu", (event) => {
+            event.preventDefault(); // prevent the default context menu from appearing
+            menuReplacingIconData.map((data) =>
+                handleReplaceIcons({
+                    ...data,
+                    iframeSource: fileManagerIframe,
+                })
+            );
+        });
+    });
+
+    // when right click of menu folder
+    const folderCurrentEl =
+        fileManagerIframe.contentWindow.document.getElementsByClassName(
+            "folder current"
+        )[0];
+
+    if (folderCurrentEl) {
+        folderCurrentEl.addEventListener("contextmenu", (event) => {
+            event.preventDefault(); // prevent the default context menu from appearing
+            menuReplacingIconData.map((data) =>
+                handleReplaceIcons({
+                    ...data,
+                    iframeSource: fileManagerIframe,
+                })
+            );
+        });
+    }
 };
 
 export default function fileManagerStyle() {
@@ -82,23 +135,43 @@ export default function fileManagerStyle() {
                 })
             );
 
-            // when right click of menu folder
-            const folderCurrentEl =
-                fileManagerIframe.contentWindow.document.getElementsByClassName(
-                    "folder current"
-                )[0];
+            handleReplaceFolderIcons(fileManagerIframe, menuReplacingIconData);
 
-            if (folderCurrentEl) {
-                folderCurrentEl.addEventListener("contextmenu", (event) => {
-                    event.preventDefault(); // prevent the default context menu from appearing
-                    menuReplacingIconData.map((data) =>
-                        handleReplaceIcons({
-                            ...data,
-                            iframeSource: fileManagerIframe,
-                        })
-                    );
-                });
-            }
+            // Select the element to observe
+            const targetNode =
+                fileManagerIframe.contentWindow.document.getElementById(
+                    "folders"
+                );
+
+            // Create a new MutationObserver
+            const observer = new MutationObserver((mutationsList) => {
+                for (let mutation of mutationsList) {
+                    if (
+                        mutation.type === "childList" &&
+                        mutation.addedNodes.length > 0
+                    ) {
+                        for (let node of mutation.addedNodes) {
+                            if (
+                                node.nodeName === "DIV" &&
+                                node.classList.contains("folders")
+                            ) {
+                                // Do something if a matching node was added
+                                console.log(
+                                    'New span element with class "folder regular" added:',
+                                    node
+                                );
+                                handleReplaceFolderIcons(
+                                    fileManagerIframe,
+                                    menuReplacingIconData
+                                );
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Start observing the target node for mutations
+            observer.observe(targetNode, { childList: true, subtree: true });
 
             // Load sea_green css again after iframe is fully loaded
             handleAppendCssLink({

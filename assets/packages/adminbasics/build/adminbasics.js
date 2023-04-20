@@ -185,6 +185,57 @@
   function _nonIterableSpread() {
     throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
   }
+  function _createForOfIteratorHelper(o, allowArrayLike) {
+    var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"];
+    if (!it) {
+      if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") {
+        if (it) o = it;
+        var i = 0;
+        var F = function () {};
+        return {
+          s: F,
+          n: function () {
+            if (i >= o.length) return {
+              done: true
+            };
+            return {
+              done: false,
+              value: o[i++]
+            };
+          },
+          e: function (e) {
+            throw e;
+          },
+          f: F
+        };
+      }
+      throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+    }
+    var normalCompletion = true,
+      didErr = false,
+      err;
+    return {
+      s: function () {
+        it = it.call(o);
+      },
+      n: function () {
+        var step = it.next();
+        normalCompletion = step.done;
+        return step;
+      },
+      e: function (e) {
+        didErr = true;
+        err = e;
+      },
+      f: function () {
+        try {
+          if (!normalCompletion && it.return != null) it.return();
+        } finally {
+          if (didErr) throw err;
+        }
+      }
+    };
+  }
   function _toPrimitive(input, hint) {
     if (typeof input !== "object" || input === null) return input;
     var prim = input[Symbol.toPrimitive];
@@ -25354,7 +25405,7 @@
     newIcon: "ri-folder-line"
   }];
   var menuReplacingIconData = [{
-    originIcon: "a[href='kcact:refresh'] span",
+    originIcon: "a[href='kcact:refresh'][class='ui-menu-item-wrapper'] span",
     newIcon: "ri-refresh-line"
   }, {
     originIcon: "a[href='kcact:download'] span",
@@ -25367,15 +25418,19 @@
     newIcon: "ri-eraser-line"
   }, {
     originIcon: "a[href='kcact:rmdir'] span",
-    newIcon: "ri-delete-bin-line text-danger"
-  }];
+    newIcon: "ri-delete-bin-line"
+  }
+
+  // folder regular
+  ];
+
   var handleReplaceIcons = function handleReplaceIcons(_ref) {
     var iframeSource = _ref.iframeSource,
       originIcon = _ref.originIcon,
       newIcon = _ref.newIcon;
     var replacingElement = iframeSource.contentWindow.document.querySelector(originIcon);
     if (replacingElement) {
-      replacingElement.insertAdjacentHTML("beforebegin", "<i class=" + newIcon + "></i>");
+      replacingElement.insertAdjacentHTML("beforebegin", "<i class=".concat(newIcon, "></i>"));
     }
   };
   var handleAppendCssLink = function handleAppendCssLink(_ref2) {
@@ -25387,6 +25442,38 @@
     cssLink.href = linkUrl;
     header.appendChild(cssLink);
   };
+  var handleReplaceFolderIcons = function handleReplaceFolderIcons(fileManagerIframe, menuReplacingIconData) {
+    var replacingElements = fileManagerIframe.contentWindow.document.querySelectorAll("span[class='folder regular']");
+    replacingElements.forEach(function (element) {
+      var _element$previousElem, _element$nextElementS;
+      var previousSiblingIcon = (_element$previousElem = element.previousElementSibling) === null || _element$previousElem === void 0 ? void 0 : _element$previousElem.classList.contains("ri-folder-line");
+      var nextSiblingIcon = (_element$nextElementS = element.nextElementSibling) === null || _element$nextElementS === void 0 ? void 0 : _element$nextElementS.classList.contains("ri-folder-line");
+      if (!previousSiblingIcon && !nextSiblingIcon) {
+        element.insertAdjacentHTML("beforebegin", "<i class='ri-folder-line'></i>");
+      }
+      element.addEventListener("contextmenu", function (event) {
+        event.preventDefault(); // prevent the default context menu from appearing
+        menuReplacingIconData.map(function (data) {
+          return handleReplaceIcons(_objectSpread2(_objectSpread2({}, data), {}, {
+            iframeSource: fileManagerIframe
+          }));
+        });
+      });
+    });
+
+    // when right click of menu folder
+    var folderCurrentEl = fileManagerIframe.contentWindow.document.getElementsByClassName("folder current")[0];
+    if (folderCurrentEl) {
+      folderCurrentEl.addEventListener("contextmenu", function (event) {
+        event.preventDefault(); // prevent the default context menu from appearing
+        menuReplacingIconData.map(function (data) {
+          return handleReplaceIcons(_objectSpread2(_objectSpread2({}, data), {}, {
+            iframeSource: fileManagerIframe
+          }));
+        });
+      });
+    }
+  };
   function fileManagerStyle() {
     var fileManagerIframe = document.getElementById("browseiframe");
     if (fileManagerIframe) {
@@ -25397,19 +25484,49 @@
             iframeSource: fileManagerIframe
           }));
         });
+        handleReplaceFolderIcons(fileManagerIframe, menuReplacingIconData);
 
-        // when right click of menu folder
-        var folderCurrentEl = fileManagerIframe.contentWindow.document.getElementsByClassName("folder current")[0];
-        if (folderCurrentEl) {
-          folderCurrentEl.addEventListener("contextmenu", function (event) {
-            event.preventDefault(); // prevent the default context menu from appearing
-            menuReplacingIconData.map(function (data) {
-              return handleReplaceIcons(_objectSpread2(_objectSpread2({}, data), {}, {
-                iframeSource: fileManagerIframe
-              }));
-            });
-          });
-        }
+        // Select the element to observe
+        var targetNode = fileManagerIframe.contentWindow.document.getElementById("folders");
+
+        // Create a new MutationObserver
+        var observer = new MutationObserver(function (mutationsList) {
+          var _iterator = _createForOfIteratorHelper(mutationsList),
+            _step;
+          try {
+            for (_iterator.s(); !(_step = _iterator.n()).done;) {
+              var mutation = _step.value;
+              if (mutation.type === "childList" && mutation.addedNodes.length > 0) {
+                var _iterator2 = _createForOfIteratorHelper(mutation.addedNodes),
+                  _step2;
+                try {
+                  for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+                    var node = _step2.value;
+                    if (node.nodeName === "DIV" && node.classList.contains("folders")) {
+                      // Do something if a matching node was added
+                      console.log('New span element with class "folder regular" added:', node);
+                      handleReplaceFolderIcons(fileManagerIframe, menuReplacingIconData);
+                    }
+                  }
+                } catch (err) {
+                  _iterator2.e(err);
+                } finally {
+                  _iterator2.f();
+                }
+              }
+            }
+          } catch (err) {
+            _iterator.e(err);
+          } finally {
+            _iterator.f();
+          }
+        });
+
+        // Start observing the target node for mutations
+        observer.observe(targetNode, {
+          childList: true,
+          subtree: true
+        });
 
         // Load sea_green css again after iframe is fully loaded
         handleAppendCssLink({
