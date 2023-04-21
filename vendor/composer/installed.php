@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '799eca555c949d6359f2798832fc22d1c12e297a',
+        'reference' => 'c08384787d6f6c647f52aea71eee58c527f25312',
         'name' => 'limesurvey/limesurvey',
         'dev' => false,
     ),
@@ -79,7 +79,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '799eca555c949d6359f2798832fc22d1c12e297a',
+            'reference' => 'c08384787d6f6c647f52aea71eee58c527f25312',
             'dev_requirement' => false,
         ),
         'mk-j/php_xlsxwriter' => array(
