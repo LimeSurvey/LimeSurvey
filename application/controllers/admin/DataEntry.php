@@ -619,18 +619,24 @@ class DataEntry extends SurveyCommonAction
                 $aDataentryoutput .= "<td>";
                 $aDataentryoutput .= stripJavaScript($question);
                 $aDataentryoutput .= "</td>\n";
-                // Second column (Unseen)
-                $aDataentryoutput .= "<td style='width: 8em;'>\n";
-                // Only show the "Unseen" checkbox for questions.
-                if (!empty($fname['title'])) {
-                    $aDataentryoutput .= "<div class='checkbox'>\t"
-                        . "<input type='checkbox' name='unseen_{$fname['fieldname']}' id='unseen_{$fname['fieldname']}'"
-                        . (is_null($idrow[$fname['fieldname']]) ? " checked" : "")
-                        . ">"
-                        . "<label for='unseen_{$fname['fieldname']}'>" . gT("Unseen") . "</label>"
-                        . "</div>\n";
-                }
-                $aDataentryoutput .= "</td>\n";
+                //// Second column (Unseen)
+                //$aDataentryoutput .= "<td style='width: 8em;'>\n";
+                //// Only show the "Unseen" checkbox for questions.
+                //if (!empty($fname['title'])) {
+                //    // Get all fields with the same sid, gid and qid
+                //    $thisQuestionFields = array_filter($fnames, function ($field) use ($fname) {
+                //        return $field['sid'] == $fname['sid'] && $field['gid'] == $fname['gid'] && $field['qid'] == $fname['qid'];
+                //    });
+                //    foreach ($thisQuestionFields as $field) {
+                //        $aDataentryoutput .= "<div class='checkbox'>\t"
+                //            . "<input type='checkbox' name='unseen_{$field['fieldname']}' id='unseen_{$field['fieldname']}'"
+                //            . (is_null($idrow[$field['fieldname']]) ? " checked" : "")
+                //            . ">"
+                //            . "<label for='unseen_{$field['fieldname']}'>" . gT("Unseen") . "</label>"
+                //            . "</div>\n";
+                //    }
+                //}
+                //$aDataentryoutput .= "</td>\n";
                 // Third column (Answer)
                 $aDataentryoutput .= "<td>\n";
                 //$aDataentryoutput .= "\t-={$fname[3]}=-"; //Debugging info
@@ -638,6 +644,8 @@ class DataEntry extends SurveyCommonAction
                 if (isset($fname['qid']) && isset($fname['type'])) {
                     $qidattributes = QuestionAttribute::model()->getQuestionAttributes($fname['qid']);
                 }
+                $questionInputs = [];
+                $answerWrapperClass = '';
                 switch ($fname['type']) {
                     case "completed":
                         $selected = (empty($idrow['submitdate'])) ? 'N' : 'Y';
@@ -650,20 +658,29 @@ class DataEntry extends SurveyCommonAction
 
                         break;
                     case Question::QT_X_TEXT_DISPLAY: //Boilerplate question
-                        $aDataentryoutput .= "";
+                        //$aDataentryoutput .= "";
                         break;
                     case Question::QT_Q_MULTIPLE_SHORT_TEXT:
-                        $aDataentryoutput .= $fname['subquestion'] . '&nbsp;';
-                        $aDataentryoutput .= CHtml::textField($fname['fieldname'], $idrow[$fname['fieldname']]);
+                        //$aDataentryoutput .= "<div class=\"ls-flex\">";
+                        //        $aDataentryoutput .= "<div class='checkbox'>\t"
+                        //            . "<input type='checkbox' name='unseen_{$field['fieldname']}' id='unseen_{$field['fieldname']}'"
+                        //            . (is_null($idrow[$field['fieldname']]) ? " checked" : "")
+                        //            . ">"
+                        //            . "<label for='unseen_{$field['fieldname']}'>" . gT("Unseen") . "</label>"
+                        //            . "</div>\n";
+                        $questionInput = $fname['subquestion'] . '&nbsp;';
+                        $questionInput .= CHtml::textField($fname['fieldname'], $idrow[$fname['fieldname']]);
+                        $questionInputs[$fname['fieldname']] = $questionInput;
                         break;
                     case Question::QT_K_MULTIPLE_NUMERICAL:
-                        $aDataentryoutput .= $fname['subquestion'] . '&nbsp;';
+                        $questionInput = $fname['subquestion'] . '&nbsp;';
                         /* Fix DB DECIMAL type */
                         $value = $idrow[$fname['fieldname']];
                         if (strpos($value, ".")) {
                             $value = rtrim(rtrim($value, "0"), ".");
                         }
-                        $aDataentryoutput .= CHtml::textField($fname['fieldname'], $value, array('pattern' => "[-]?([0-9]{0,20}([\.][0-9]{0,10})?)?",'title' => gT("Only numbers may be entered in this field.")));
+                        $questionInput .= CHtml::textField($fname['fieldname'], $value, array('pattern' => "[-]?([0-9]{0,20}([\.][0-9]{0,10})?)?",'title' => gT("Only numbers may be entered in this field.")));
+                        $questionInputs[$fname['fieldname']] = $questionInput;
                         break;
                     case "id":
                         $aDataentryoutput .= CHtml::tag('span', array('style' => 'font-weight: bold;'), '&nbsp;' . $idrow[$fname['fieldname']]);
@@ -672,16 +689,18 @@ class DataEntry extends SurveyCommonAction
                         $aDataentryoutput .= CHtml::tag('span', array(), '&nbsp;' . $idrow[$fname['fieldname']]);
                         break;
                     case Question::QT_5_POINT_CHOICE: //5 POINT CHOICE radio-buttons
+                        $questionInput = "";
                         for ($i = 1; $i <= 5; $i++) {
                             $checked = false;
                             if ($idrow[$fname['fieldname']] == $i) {
                                 $checked = true;
                             }
-                            $aDataentryoutput .= '<span class="five-point">';
-                            $aDataentryoutput .= CHtml::radioButton($fname['fieldname'], $checked, array('class' => '', 'value' => $i, 'id' => '5-point-choice-' . $i));
-                            $aDataentryoutput .= '<label for="5-point-choice-' . $i . '">' . $i . '</label>';
-                            $aDataentryoutput .= '</span>';
+                            $questionInput .= '<span class="five-point">';
+                            $questionInput .= CHtml::radioButton($fname['fieldname'], $checked, array('class' => '', 'value' => $i, 'id' => '5-point-choice-' . $i));
+                            $questionInput .= '<label for="5-point-choice-' . $i . '">' . $i . '</label>';
+                            $questionInput .= '</span>';
                         }
+                        $questionInputs[$fname['fieldname']] = $questionInput;
                         break;
                     case Question::QT_D_DATE: //DATE
                         $dateformatdetails = getDateFormatDataForQID($qidattributes, $surveyid);
@@ -700,7 +719,7 @@ class DataEntry extends SurveyCommonAction
                             }
                             $goodchars = str_replace(array("m", "d", "y", "H", "M"), "", $dateformatdetails['dateformat']);
                             $goodchars = "0123456789" . $goodchars[0];
-                            $aDataentryoutput .= CHtml::textField(
+                            $questionInput = CHtml::textField(
                                 $fname['fieldname'],
                                 $thisdate,
                                 array(
@@ -709,16 +728,17 @@ class DataEntry extends SurveyCommonAction
                                 'onkeypress' => 'return window.LS.goodchars(event,\'' . $goodchars . '\')'
                                 )
                             );
-                            $aDataentryoutput .= CHtml::hiddenField(
+                            $questionInput .= CHtml::hiddenField(
                                 'dateformat' . $fname['fieldname'],
                                 $dateformatdetails['jsdate'],
                                 array('id' => "dateformat{$fname['fieldname']}")
                             );
+                            $questionInputs[$fname['fieldname']] = $questionInput;
                         } else {
                             if ($datetimeobj) {
                                 $thisdate = $datetimeobj->format("Y-m-d\TH:i");
                             }
-                            $aDataentryoutput .= CHtml::dateTimeLocalField($fname['fieldname'], $thisdate);
+                            $questionInputs[$fname['fieldname']] = CHtml::dateTimeLocalField($fname['fieldname'], $thisdate);
                         }
                         break;
                     case Question::QT_G_GENDER: //GENDER drop-down list
@@ -727,7 +747,7 @@ class DataEntry extends SurveyCommonAction
                         'F' => gT("Female"),
                         'M' => gT("Male")
                         );
-                        $aDataentryoutput .= CHtml::listBox($fname['fieldname'], $idrow[$fname['fieldname']], $select_options);
+                        $questionInputs[$fname['fieldname']] = CHtml::listBox($fname['fieldname'], $idrow[$fname['fieldname']], $select_options);
                         break;
                     case Question::QT_L_LIST: //LIST drop-down
                     case Question::QT_EXCLAMATION_LIST_DROPDOWN: //List (Radio)
@@ -739,24 +759,24 @@ class DataEntry extends SurveyCommonAction
                         }
 
                         if (substr($fname['fieldname'], -5) == "other") {
-                            $aDataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='"
+                            $questionInputs[$fname['fieldname']] = "\t<input type='text' name='{$fname['fieldname']}' value='"
                             . htmlspecialchars($idrow[$fname['fieldname']], ENT_QUOTES) . "' />\n";
                         } else {
                             $lresult = Answer::model()->with('answerl10ns')->findAll(array('condition' => 'qid =:qid AND language = :language', 'params' => array('qid' => $fname['qid'], 'language' => $sDataEntryLanguage)));
-                            $aDataentryoutput .= "\t<select name='{$fname['fieldname']}' class='form-control'>\n"
+                            $questionInput = "\t<select name='{$fname['fieldname']}' class='form-control'>\n"
                             . "<option value=''";
                             if ($idrow[$fname['fieldname']] == "") {
-                                $aDataentryoutput .= " selected='selected'";
+                                $questionInput .= " selected='selected'";
                             }
-                            $aDataentryoutput .= ">" . gT("Please choose") . "..</option>\n";
+                            $questionInput .= ">" . gT("Please choose") . "..</option>\n";
 
                             if (!isset($optCategorySeparator)) {
                                 foreach ($lresult as $llrow) {
-                                    $aDataentryoutput .= "<option value='{$llrow['code']}'";
+                                    $questionInput .= "<option value='{$llrow['code']}'";
                                     if ($idrow[$fname['fieldname']] == $llrow['code']) {
-                                        $aDataentryoutput .= " selected='selected'";
+                                        $questionInput .= " selected='selected'";
                                     }
-                                    $aDataentryoutput .= ">{$llrow->answerl10ns[$sDataEntryLanguage]->answer}</option>\n";
+                                    $questionInput .= ">{$llrow->answerl10ns[$sDataEntryLanguage]->answer}</option>\n";
                                 }
                             } else {
                                 $defaultopts = array();
@@ -771,59 +791,62 @@ class DataEntry extends SurveyCommonAction
                                 }
 
                                 foreach ($optgroups as $categoryname => $optionlistarray) {
-                                    $aDataentryoutput .= "<optgroup class=\"dropdowncategory\" label=\"" . $categoryname . "\">\n";
+                                    $questionInput .= "<optgroup class=\"dropdowncategory\" label=\"" . $categoryname . "\">\n";
                                     foreach ($optionlistarray as $optionarray) {
-                                        $aDataentryoutput .= "\t<option value='{$optionarray['code']}'";
+                                        $questionInput .= "\t<option value='{$optionarray['code']}'";
                                         if ($idrow[$fname['fieldname']] == $optionarray['code']) {
-                                            $aDataentryoutput .= " selected='selected'";
+                                            $questionInput .= " selected='selected'";
                                         }
-                                        $aDataentryoutput .= ">{$optionarray['answer']}</option>\n";
+                                        $questionInput .= ">{$optionarray['answer']}</option>\n";
                                     }
-                                    $aDataentryoutput .= "</optgroup>\n";
+                                    $questionInput .= "</optgroup>\n";
                                 }
                                 foreach ($defaultopts as $optionarray) {
-                                    $aDataentryoutput .= "<option value='{$optionarray['code']}'";
+                                    $questionInput .= "<option value='{$optionarray['code']}'";
                                     if ($idrow[$fname['fieldname']] == $optionarray['code']) {
-                                        $aDataentryoutput .= " selected='selected'";
+                                        $questionInput .= " selected='selected'";
                                     }
-                                    $aDataentryoutput .= ">{$optionarray['answer']}</option>\n";
+                                    $questionInput .= ">{$optionarray['answer']}</option>\n";
                                 }
                             }
                             $oresult = Question::model()->findByPk($fname['qid']);
                             if ($oresult->other == "Y") {
-                                $aDataentryoutput .= "<option value='-oth-'";
+                                $questionInput .= "<option value='-oth-'";
                                 if ($idrow[$fname['fieldname']] == "-oth-") {
-                                    $aDataentryoutput .= " selected='selected'";
+                                    $questionInput .= " selected='selected'";
                                 }
-                                $aDataentryoutput .= ">" . gT("Other") . "</option>\n";
+                                $questionInput .= ">" . gT("Other") . "</option>\n";
                             }
-                            $aDataentryoutput .= "\t</select>\n";
+                            $questionInput .= "\t</select>\n";
+                            $questionInputs[$fname['fieldname']] = $questionInput;
                         }
                         break;
                     case Question::QT_O_LIST_WITH_COMMENT: //LIST WITH COMMENT drop-down/radio-button list + textarea
                         $lresult = Answer::model()->findAll("qid={$fname['qid']}");
-                        $aDataentryoutput .= "\t<select name='{$fname['fieldname']}' class='form-control'>\n"
+                        $questionInput = "\t<select name='{$fname['fieldname']}' class='form-control'>\n"
                         . "<option value=''";
                         if ($idrow[$fname['fieldname']] == "") {
-                            $aDataentryoutput .= " selected='selected'";
+                            $questionInput .= " selected='selected'";
                         }
-                        $aDataentryoutput .= ">" . gT("Please choose") . "..</option>\n";
+                        $questionInput .= ">" . gT("Please choose") . "..</option>\n";
 
                         foreach ($lresult as $llrow) {
-                            $aDataentryoutput .= "<option value='{$llrow['code']}'";
+                            $questionInput .= "<option value='{$llrow['code']}'";
                             if ($idrow[$fname['fieldname']] == $llrow['code']) {
-                                $aDataentryoutput .= " selected='selected'";
+                                $questionInput .= " selected='selected'";
                             }
-                            $aDataentryoutput .= ">{$llrow->answerl10ns[$sDataEntryLanguage]->answer}</option>\n";
+                            $questionInput .= ">{$llrow->answerl10ns[$sDataEntryLanguage]->answer}</option>\n";
                         }
                         $fname = next($fnames);
-                        $aDataentryoutput .= "\t</select>\n"
+                        $questionInput .= "\t</select>\n"
                         . "\t<br />\n"
                         . CHtml::textArea($fname['fieldname'], $idrow[$fname['fieldname']], array('cols' => 45,'rows' => 5));
+                        $questionInputs[$fname['fieldname']] = $questionInput;
                         break;
                     case Question::QT_R_RANKING: // Ranking TYPE QUESTION
                         $thisqid = $fname['qid'];
                         $currentvalues = array();
+                        $rawvalues = [];
                         $myfname = $fname['sid'] . 'X' . $fname['gid'] . 'X' . $fname['qid'];
                         $aDataentryoutput .= '<div id="question' . $thisqid . '" class="ranking-answers"><ul class="answers-list select-list">';
                         while (isset($fname['type']) && $fname['type'] == "R" && $fname['qid'] == $thisqid) {
@@ -831,6 +854,7 @@ class DataEntry extends SurveyCommonAction
                             if ($idrow[$fname['fieldname']]) {
                                 $currentvalues[] = $idrow[$fname['fieldname']];
                             }
+                            $rawvalues[] = $idrow[$fname['fieldname']];
                             $fname = next($fnames);
                         }
                         $ansresult = Answer::model()->with('answerl10ns')->findAll(array('condition' => 'qid =:qid AND language = :language', 'params' => array('qid' => $thisqid, 'language' => $sDataEntryLanguage)));
@@ -841,6 +865,13 @@ class DataEntry extends SurveyCommonAction
                         }
                         for ($i = 1; $i <= $anscount; $i++) {
                             $aDataentryoutput .= "\n<li class=\"select-item\">";
+                            //$aDataentryoutput .= "<div class=\"answer-item\" style=\"display:flex;gap:1em;\">";
+                            //$aDataentryoutput .= "<div class=\"checkbox unseen-item\" style=\"min-width:6em;\">"
+                            //    . "<input type='checkbox' name='unseen_{$myfname}{$i}' id='unseen_{$myfname}{$i}'"
+                            //    . (is_null($rawvalues[$i - 1]) ? " checked" : "")
+                            //    . ">"
+                            //    . "<label for='unseen_{$myfname}{$i}'>" . gT("Unseen") . "</label>"
+                            //    . "</div>\n";
                             $aDataentryoutput .= "<label for=\"answer{$myfname}{$i}\">";
                             if ($i == 1) {
                                 $aDataentryoutput .= gT('First choice');
@@ -857,6 +888,7 @@ class DataEntry extends SurveyCommonAction
                                 $aDataentryoutput .= "\t<option value=\"" . $ansrow['code'] . "\" $selected>" . flattenText($ansrow->answerl10ns[$sDataEntryLanguage]->answer) . "</option>\n";
                             }
                             $aDataentryoutput .= "</select\n";
+                            //$aDataentryoutput .= "</div>";
                             $aDataentryoutput .= "</li>";
                         }
                         $aDataentryoutput .= '</ul>';
@@ -893,18 +925,18 @@ class DataEntry extends SurveyCommonAction
 
                     case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
                         $thisqid = $fname['qid'];
-                        while ($fname['qid'] == $thisqid) {
+                        while (isset($fname['qid']) && $fname['qid'] == $thisqid) {
                             if (substr($fname['fieldname'], -5) == "other") {
-                                $aDataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='"
+                                $questionInput = "\t<input type='text' name='{$fname['fieldname']}' value='"
                                 . htmlspecialchars($idrow[$fname['fieldname']], ENT_QUOTES) . "' />\n";
                             } else {
-                                $aDataentryoutput .= "<div class='checkbox'>\t<input type='checkbox' class='checkboxbtn' name='{$fname['fieldname']}' id='{$fname['fieldname']}' value='Y'";
+                                $questionInput = "<div class='checkbox'>\t<input type='checkbox' class='checkboxbtn' name='{$fname['fieldname']}' id='{$fname['fieldname']}' value='Y'";
                                 if ($idrow[$fname['fieldname']] == "Y") {
-                                    $aDataentryoutput .= " checked";
+                                    $questionInput .= " checked";
                                 }
-                                $aDataentryoutput .= " /><label for='{$fname['fieldname']}'>{$fname['subquestion']}</label></div>\n";
+                                $questionInput .= " /><label for='{$fname['fieldname']}'>{$fname['subquestion']}</label></div>\n";
                             }
-
+                            $questionInputs[$fname['fieldname']] = $questionInput;
                             $fname = next($fnames);
                         }
                         $fname = prev($fnames);
@@ -915,21 +947,22 @@ class DataEntry extends SurveyCommonAction
                         $slangs = $oSurvey->allLanguages;
                         $baselang = $oSurvey->language;
 
-                        $aDataentryoutput .= "<select name='{$fname['fieldname']}' class='form-control'>\n";
-                        $aDataentryoutput .= "<option value=''";
+                        $questionInput = "<select name='{$fname['fieldname']}' class='form-control'>\n";
+                        $questionInput .= "<option value=''";
                         if ($idrow[$fname['fieldname']] == "") {
-                            $aDataentryoutput .= " selected='selected'";
+                            $questionInput .= " selected='selected'";
                         }
-                        $aDataentryoutput .= ">" . gT("Please choose") . "..</option>\n";
+                        $questionInput .= ">" . gT("Please choose") . "..</option>\n";
 
                         foreach ($slangs as $lang) {
-                            $aDataentryoutput .= "<option value='{$lang}'";
+                            $questionInput .= "<option value='{$lang}'";
                             if ($lang == $idrow[$fname['fieldname']]) {
-                                $aDataentryoutput .= " selected='selected'";
+                                $questionInput .= " selected='selected'";
                             }
-                            $aDataentryoutput .= ">" . getLanguageNameFromCode($lang, false) . "</option>\n";
+                            $questionInput .= ">" . getLanguageNameFromCode($lang, false) . "</option>\n";
                         }
-                        $aDataentryoutput .= "</select>";
+                        $questionInput .= "</select>";
+                        $questionInputs[$fname['fieldname']] = $questionInput;
                         break;
 
                     case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
@@ -1020,35 +1053,36 @@ class DataEntry extends SurveyCommonAction
                             $value = rtrim(rtrim($value, "0"), ".");
                         }
                         /* no number fix with return window.LS.goodchars … */
-                        $aDataentryoutput .= CHtml::textField($fname['fieldname'], $value, array('pattern' => "[-]?([0-9]{0,20}([\.][0-9]{0,10})?)?",'title' => gT("Only numbers may be entered in this field.")));
+                        $questionInputs[$fname['fieldname']] = CHtml::textField($fname['fieldname'], $value, array('pattern' => "[-]?([0-9]{0,20}([\.][0-9]{0,10})?)?",'title' => gT("Only numbers may be entered in this field.")));
                         break;
                     case Question::QT_S_SHORT_FREE_TEXT: //Short free text
-                        $aDataentryoutput .= CHtml::textField($fname['fieldname'], $idrow[$fname['fieldname']]);
+                        $questionInputs[$fname['fieldname']] = CHtml::textField($fname['fieldname'], $idrow[$fname['fieldname']]);
                         break;
                     case Question::QT_T_LONG_FREE_TEXT: //LONG FREE TEXT
-                        $aDataentryoutput .= CHtml::textArea($fname['fieldname'], $idrow[$fname['fieldname']], array('cols' => 45,'rows' => 5));
+                        $questionInputs[$fname['fieldname']] = CHtml::textArea($fname['fieldname'], $idrow[$fname['fieldname']], array('cols' => 45,'rows' => 5));
                         break;
                     case Question::QT_U_HUGE_FREE_TEXT: //Huge free text
-                        $aDataentryoutput .= CHtml::textArea($fname['fieldname'], $idrow[$fname['fieldname']], array('cols' => 70,'rows' => 50));
+                        $questionInputs[$fname['fieldname']] = CHtml::textArea($fname['fieldname'], $idrow[$fname['fieldname']], array('cols' => 70,'rows' => 50));
                         break;
                     case Question::QT_Y_YES_NO_RADIO: //YES/NO radio-buttons
-                        $aDataentryoutput .= "\t<select name='{$fname['fieldname']}' class='form-control'>\n"
+                        $questionInput = "\t<select name='{$fname['fieldname']}' class='form-control'>\n"
                         . "<option value=''";
                         if ($idrow[$fname['fieldname']] == "") {
-                            $aDataentryoutput .= " selected='selected'";
+                            $questionInput .= " selected='selected'";
                         }
-                        $aDataentryoutput .= ">" . gT("Please choose") . "..</option>\n"
+                        $questionInput .= ">" . gT("Please choose") . "..</option>\n"
                         . "<option value='Y'";
                         if ($idrow[$fname['fieldname']] == "Y") {
-                            $aDataentryoutput .= " selected='selected'";
+                            $questionInput .= " selected='selected'";
                         }
-                        $aDataentryoutput .= ">" . gT("Yes") . "</option>\n"
+                        $questionInput .= ">" . gT("Yes") . "</option>\n"
                         . "<option value='N'";
                         if ($idrow[$fname['fieldname']] == "N") {
-                            $aDataentryoutput .= " selected='selected'";
+                            $questionInput .= " selected='selected'";
                         }
-                        $aDataentryoutput .= ">" . gT("No") . "</option>\n"
+                        $questionInput .= ">" . gT("No") . "</option>\n"
                         . "\t</select>\n";
+                        $questionInputs[$fname['fieldname']] = $questionInput;
                         break;
                     case Question::QT_A_ARRAY_5_POINT: // Array (5 point choice) radio-buttons
                         $aDataentryoutput .= "<table class='table'>\n";
@@ -1336,6 +1370,23 @@ class DataEntry extends SurveyCommonAction
                             array('class' => 'form-control')
                         );
                         break;
+                }
+
+                if (!empty($questionInputs)) {
+                    $aDataentryoutput .= "<div class=\"answers-list {$answerWrapperClass}\">";
+                    foreach ($questionInputs as $questionInputField => $questionInput) {
+                        $aDataentryoutput .= "<div class=\"answer-item\">";
+                        $aDataentryoutput .= "<div class=\"checkbox unseen-item\">"
+                            . "<input type='checkbox' name='unseen_{$questionInputField}' id='unseen_{$questionInputField}'"
+                            . (is_null($idrow[$questionInputField]) ? " checked" : "")
+                            . ">"
+                            . "<label for='unseen_{$questionInputField}'>" . gT("Unseen") . "</label>"
+                            . "</div>\n";
+                        $aDataentryoutput .= $questionInput;
+                        $aDataentryoutput .= "</div>";
+                        $aDataentryoutput .= "</div>";
+                    }
+                    $aDataentryoutput .= "</div>";
                 }
 
                 $aDataentryoutput .= "        </td>

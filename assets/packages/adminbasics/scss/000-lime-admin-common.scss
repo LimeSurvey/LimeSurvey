@@ -4367,3 +4367,17 @@ html[dir="rtl"] th {
         padding-left: 0px;
     }
 }
+
+#responsedetail .answer-item {
+    display:flex;
+    gap:1em;
+}
+
+.checkbox.unseen-item {
+    margin-top: 0;
+    min-width: 6em;
+}
+
+.checkbox.unseen-item + .checkbox {
+    margin-top: 10px;
+}
