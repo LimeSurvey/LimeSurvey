@@ -90,6 +90,7 @@ class ResponsesController extends LSBaseController
             $sBrowseLanguage = $aData['language'];
             Yii::import("application.libraries.admin.quexmlpdf", true);
             $quexmlpdf = new quexmlpdf();
+            $quexmlpdf->applyGlobalSettings();
             // Setting the selected language for printout
             App()->setLanguage($sBrowseLanguage);
             $quexmlpdf->setLanguage($sBrowseLanguage);

@@ -132,7 +132,6 @@
 
 .fade-enter,
 .fade-leave-to {
-  -webkit-transform: translateY(10px);
   transform: translateY(10px);
   opacity: 0;
 }
@@ -147,9 +146,7 @@
 
 .slide-fade-enter,
 .slide-fade-leave-to {
-  -webkit-transform: rotateY(-90);
   transform: rotateY(-90);
-  -webkit-transform-origin: right;
   transform-origin: right;
   opacity: 0;
 }
@@ -164,15 +161,14 @@
 
 .slide-fade-down-enter,
 .slide-fade-down-leave-to {
-  -webkit-transform: rotateY(-45);
   transform: rotateY(-45);
-  -webkit-transform-origin: right;
   transform-origin: right;
   opacity: 0;
 }
 
 #pjax-content .side-body {
   min-height: 0;
+  overflow: hidden;
 }
 
 #side-menu-container {

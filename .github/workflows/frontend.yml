@@ -16,7 +16,7 @@ on:
 
 jobs:
   job_build_packages:
-    runs-on: ubuntu-18.04 # ubuntu runner hosted by Github
+    runs-on: ubuntu-20.04 # ubuntu runner hosted by Github
     strategy:
       matrix:
         # Specify what version of nodejs you want to test
@@ -67,7 +67,7 @@ jobs:
     
   job_run_tests:
     needs: [job_build_packages]
-    runs-on: ubuntu-18.04 # ubuntu runner hosted by Github
+    runs-on: ubuntu-20.04 # ubuntu runner hosted by Github
     strategy:
       matrix:
         # Specify what version of nodejs you want to test

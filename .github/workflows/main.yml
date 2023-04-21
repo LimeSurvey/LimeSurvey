@@ -125,14 +125,6 @@ jobs:
         # wget https://chromedriver.storage.googleapis.com/2.33/chromedriver_linux64.zip
         # unzip chromedriver_linux64.zip
 
-      - name: Run unit tests
-        env:
-            XDEBUG_MODE: coverage
-        run: php vendor/bin/phpunit --testdox --stop-on-failure tests/unit
-
-      - name: Check test coverage if cov.xml exists (won't work on PHP 8 with current phpunit version)
-        run: php tests/bin/check_coverage.php cov.xml 37
-
       - name: Set up Selenium with firefox (needed for integrity tests)
         run: |
           echo `which firefox`
@@ -159,6 +151,146 @@ jobs:
           name: screenshots
           path: tests/tmp/screenshots/
           retention-days: 5
+  
+  unit-tests:
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        # Specify what versions of php you want to test
+        php-versions: ['7.2', '8.1']
+    env:
+      DBENGINE: INNODB
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install specified PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+
+      - name: Setup 
+        run: |
+          touch enabletests
+          composer install -vvv
+
+          sudo apt-get update > /dev/null
+          sudo apt --fix-broken install php php-mysql php8.0-mysql php7.2-mysql -y
+
+          chmod -R 777 ./tmp
+          chmod -R 777 ./upload
+          chmod -R 777 ./themes
+          chmod -R 777 ./tests/tmp
+          chmod -R 777 ./application/config
+
+      - name: Check MySQL service
+        run: |
+          # InnoDB needs large_file_prefix & Barracuda file format
+          # https://discuss.gogs.io/t/solved-mysql-error-1064-while-running-first-install/1604
+          # InnoDB variables ARE already set to desired values in Github runner (ubuntu-18.04)
+
+          sudo systemctl start mysql
+          sudo service mysql status
+          mysql -uroot -proot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';" || true
+          mysql -uroot -proot -e "Show  variables like '%large%';"
+          mysql -uroot -proot -e "Show  variables like '%innodb_file%';"
+          mysql -uroot -proot -e "Show  variables like '%innodb_default%';"
+          mysql -uroot -proot -e "CREATE DATABASE limesurvey;"
+
+      - name: Load custom console and start the Application
+        run: |
+          cp application/config/config-sample-mysql.php application/config/config.php
+          php application/commands/console.php install admin password TravisLS no@email.com verbose
+
+      - name: Run unit tests
+        env:
+          XDEBUG_MODE: coverage
+        run: php vendor/bin/phpunit --testdox --stop-on-failure tests/unit
+
+      - name: Upload cov.xml
+        uses: actions/upload-artifact@v3
+        with:
+          name: cov-file-${{ matrix.php-versions }}
+          path: cov.xml
+
+  test-coverage:
+    runs-on: ubuntu-20.04
+    needs: unit-tests
+    strategy:
+      matrix:
+        # Specify what versions of php you want to test
+        php-versions: ['7.2', '8.1']
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install specified PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+
+      - name: Check if cov.xml artefact exists
+        uses: xSAVIKx/artifact-exists-action@v0
+        id: check_coverage_artifact
+        with:
+          name: cov-file-${{ matrix.php-versions }}
+
+      - name: Download cov.xml
+        if: steps.check_coverage_artifact.outputs.exists == 'true'
+        uses: actions/download-artifact@v3
+        with:
+          name: cov-file-${{ matrix.php-versions }}
+
+      - name: Check test coverage if cov.xml exists (won't work on PHP 8 with current phpunit version)
+        run: php tests/bin/check_coverage.php cov.xml 37
+
+  code-check:
+    runs-on: ubuntu-20.04
+    env:
+      DBENGINE: INNODB
+    strategy:
+      matrix:
+        # Specify what versions of php you want to test
+        php-versions: ['7.2', '8.1']
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install specified PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+
+      - name: Setup 
+        run: |
+          touch enabletests
+          composer install -vvv
+
+          sudo apt-get update > /dev/null
+          sudo apt --fix-broken install php php-mysql php8.0-mysql php7.2-mysql -y
+
+          chmod -R 777 ./tmp
+          chmod -R 777 ./upload
+          chmod -R 777 ./themes
+          chmod -R 777 ./tests/tmp
+          chmod -R 777 ./application/config
+          chmod +x ./tests/bin/lint-*
+
+      - name: Check MySQL service
+        run: |
+          # InnoDB needs large_file_prefix & Barracuda file format
+          # https://discuss.gogs.io/t/solved-mysql-error-1064-while-running-first-install/1604
+          # InnoDB variables ARE already set to desired values in Github runner (ubuntu-18.04)
+
+          sudo systemctl start mysql
+          sudo service mysql status
+          mysql -uroot -proot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';" || true
+          mysql -uroot -proot -e "Show  variables like '%large%';"
+          mysql -uroot -proot -e "Show  variables like '%innodb_file%';"
+          mysql -uroot -proot -e "Show  variables like '%innodb_default%';"
+          mysql -uroot -proot -e "CREATE DATABASE limesurvey;"
+
+      - name: Load custom console and start the Application
+        run: |
+          cp application/config/config-sample-mysql.php application/config/config.php
+          php application/commands/console.php install admin password TravisLS no@email.com verbose
           
       - name: Run syntax check, CodeSniffer, MessDetector, ...
         run: composer test

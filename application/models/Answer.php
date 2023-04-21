@@ -22,8 +22,8 @@
  * @property integer $assessment_value
  * @property integer $scale_id
  *
- * @property Question $questions
- * @property Question $groups
+ * @property Question $question
+ * @property Question $group
  * @property AnswerL10n[] $answerl10ns
  */
 class Answer extends LSActiveRecord
