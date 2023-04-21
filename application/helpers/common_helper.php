@@ -5041,3 +5041,26 @@ function standardDeviation(array $numbers): float
 
     return sqrt($variance / $numberOfElements);
 }
+
+/**
+ * Checks if the specified path is absolute.
+ * It handles both Unix and Windows paths.
+ * @param string $path the path to be checked
+ * @return bool whether the path is absolute
+ */
+function isAbsolutePath($path)
+{
+    if (strlen($path) == 0) {
+        // Empty path is relative by definition
+        return false;
+    } elseif ($path[0] == '/') {
+        // Absolute path on Unix-based systems
+        return true;
+    } elseif (preg_match('/^[a-zA-Z]:\\\\/', $path)) {
+        // Absolute path on Windows systems, e.g. C:\path\to\file
+        return true;
+    } else {
+        // Relative path
+        return false;
+    }
+}

@@ -1418,7 +1418,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 $uploadDir = realpath(Yii::app()->getConfig('uploaddir'));
                 foreach ($attachments as &$template) {
                     foreach ($template as &$attachment) {
-                        if (strpos($attachment['url'], "/") !== 0 && strpos($attachment['url'], "\\") !== 0) {
+                        if (!isAbsolutePath($attachment['url'])) {
                             $attachment['url'] = $uploadDir . DIRECTORY_SEPARATOR . $attachment['url'];
                         }
                     }
