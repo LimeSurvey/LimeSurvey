@@ -319,7 +319,7 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
         <div class="mb-3" >
             <label class=" form-label" for='template'><?php eT("Theme:"); ?></label>
             <div class="">
-                <select id='template' class="form-select" name='template' data-updateurl='<?php echo App()->createUrl('themeOptions/getPreviewTag') ?>'
+                <select id='template' style="width:100%;" class="form-select activate-search" name='template' data-updateurl='<?php echo App()->createUrl('themeOptions/getPreviewTag') ?>'
                         data-inherit-template-name='<?php echo $oSurveyOptions->template ?>'>
                     <?php if ($bShowInherited) { ?>
                         <option value="inherit" <?php echo ($oSurvey->template == 'inherit') ? 'selected="selected"' : ''; ?>><?php echo eT('Inherit'
