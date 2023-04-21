@@ -40,7 +40,7 @@ class SurveyUrlServiceTest extends \ls\tests\TestBaseClass
             self::$testSurvey->languagesettings
         );
         //compare parameters at the end
-        self::assertStringContainsString('931272?lang=en', $url);
+        self::assertStringContainsString('931272&lang=en', $url);
     }
 
     /**
@@ -74,7 +74,7 @@ class SurveyUrlServiceTest extends \ls\tests\TestBaseClass
             self::$testSurvey->languagesettings
         );
         //compare parameters at the end
-        self::assertStringContainsString('931272?lang=fr', $url);
+        self::assertStringContainsString('931272&lang=fr', $url);
     }
 
     public function testMultipleLanguageAliasUrl(){
@@ -87,6 +87,6 @@ class SurveyUrlServiceTest extends \ls\tests\TestBaseClass
             self::$testSurvey->languagesettings,
             self::$testSurvey->getAliasForLanguage()
         );
-        self::assertStringContainsString('Hogwarts?lang=fr', $url);
+        self::assertStringContainsString('Hogwarts&lang=fr', $url);
     }
 }
