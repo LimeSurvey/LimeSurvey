@@ -330,26 +330,6 @@ abstract class SmtpOAuthPluginBase extends EmailPluginBase
     }
 
     /**
-     * Returns the setting definition to show the current email address
-     * @return array<string,mixed>|null
-     */
-    protected function getCurrentEmailSetting()
-    {
-        $emailAddress = $this->get('email');
-        if (!empty($emailAddress)) {
-            return [
-                'type' => 'string',
-                'label' => gT('Saved Token Owner'),
-                'help' => gT('This is the email address used to create the current authentication token. Please note all emails will be sent from this address.'),
-                'htmlOptions' => [
-                    'readonly' => true,
-                ],
-                'current' => $emailAddress,
-            ];
-        }
-    }
-
-    /**
      * @inheritdoc
      */
     public function getPluginSettings($getValues = true)
