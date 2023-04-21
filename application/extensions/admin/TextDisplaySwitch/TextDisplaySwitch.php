@@ -9,10 +9,10 @@ class TextDisplaySwitch extends CWidget {
 
     public function run() {
         //clean up the widgets name to be js friendly
-        $this->widgetsJsName = preg_replace('/[^a-zA-Z0-9_-]/','',$this->widgetsJsName);
+        $this->widgetsJsName = preg_replace('/[^a-zA-Z0-9_-]/','',(string) $this->widgetsJsName);
         
         $this->registerScripts();
-        $outView = (strlen($this->textToDisplay) > $this->abbreviationSize) ? 'default' : 'short';
+        $outView = (strlen((string) $this->textToDisplay) > $this->abbreviationSize) ? 'default' : 'short';
         
         if( $this->returnHtml ){
             return $this->render($outView, null, true);

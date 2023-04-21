@@ -213,7 +213,7 @@ class Export extends SurveyCommonAction
             $aFieldsOptions = array();
             foreach ($aFieldMap as $sFieldName => $fieldinfo) {
                 $sCode = viewHelper::getFieldCode($fieldinfo);
-                $aFields[$sFieldName] = $sCode . ' - ' . htmlspecialchars(ellipsize(html_entity_decode(viewHelper::getFieldText($fieldinfo)), 40, .6, '...'));
+                $aFields[$sFieldName] = $sCode . ' - ' . htmlspecialchars((string) ellipsize(html_entity_decode((string) viewHelper::getFieldText($fieldinfo)), 40, .6, '...'));
                 $aFieldsOptions[$sFieldName] = array('title' => viewHelper::getFieldText($fieldinfo), 'data-fieldname' => $fieldinfo['fieldname'], 'data-emcode' => viewHelper::getFieldCode($fieldinfo, array('LEMcompat' => true))); // No need to filter title : Yii do it (remove all tag)
             }
 
@@ -562,11 +562,11 @@ class Export extends SurveyCommonAction
             echo "*Define Variable Properties.\n";
             foreach ($fields as $field) {
                 if (!$field['hide']) {
-                    $label_parts = strSplitUnicode(str_replace('"', '""', stripTagsFull($field['VariableLabel'])), $length_varlabel - strlen($field['id']));
+                    $label_parts = strSplitUnicode(str_replace('"', '""', (string) stripTagsFull($field['VariableLabel'])), $length_varlabel - strlen((string) $field['id']));
                     //if replaced quotes are splitted by, we need to mve the first quote to the next row
                     foreach ($label_parts as $idx => $label_part) {
-                        if ($idx != count($label_parts) && substr($label_part, -1) == '"' && substr($label_part, -2) != '"') {
-                            $label_parts[$idx] = rtrim($label_part, '"');
+                        if ($idx != count($label_parts) && substr((string) $label_part, -1) == '"' && substr((string) $label_part, -2) != '"') {
+                            $label_parts[$idx] = rtrim((string) $label_part, '"');
                             if (array_key_exists($idx + 1, $label_parts)) {
                                 $label_parts[$idx + 1] = '"' . $label_parts[$idx + 1];
                             }
@@ -589,7 +589,7 @@ class Export extends SurveyCommonAction
                     foreach ($answers as $answer) {
                         $i++;
 
-                        if ($field['SPSStype'] == "F" && isNumericExtended($answer['code'])) {
+                        if ($field['SPSStype'] == "F" && isNumericExtended($answer['code'] ?? '')) {
                             $str = "{$answer['code']}";
                         } else {
                             $str = "\"{$answer['code']}\"";
@@ -633,11 +633,11 @@ class Export extends SurveyCommonAction
                 if (isset($field['sql_name']) && $field['hide'] === 0) {
                     $ftitle = $field['title'];
 
-                    if (!preg_match("/^([a-z]|[A-Z])+.*$/", $ftitle)) {
+                    if (!preg_match("/^([a-z]|[A-Z])+.*$/", (string) $ftitle)) {
                         $ftitle = "q_" . $ftitle;
                     }
 
-                    $ftitle = str_replace(array(" ", "-", ":", ";", "!", "/", "\\", "'"), array("_", "_hyph_", "_dd_", "_dc_", "_excl_", "_fs_", "_bs_", '_qu_'), $ftitle);
+                    $ftitle = str_replace(array(" ", "-", ":", ";", "!", "/", "\\", "'"), array("_", "_hyph_", "_dd_", "_dc_", "_excl_", "_fs_", "_bs_", '_qu_'), (string) $ftitle);
 
                     if ($ftitle != $field['title']) {
                         echo "* Variable name was incorrect and was changed from {$field['title']} to $ftitle .\n";
@@ -749,7 +749,7 @@ class Export extends SurveyCommonAction
                     if ($vvVersion >= 2) {
                         $firstline[] = viewHelper::getFieldText($fielddata, array('separator' => $questionSeparator, 'abbreviated' => $questionAbbreviated,));
                     } else {
-                        $firstline[] = preg_replace('/\s+/', ' ', flattenText($fielddata['question'], false, true, 'UTF-8', true));
+                        $firstline[] = preg_replace('/\s+/', ' ', (string) flattenText($fielddata['question'], false, true, 'UTF-8', true));
                     }
                 }
                 if ($vvVersion == 2) {
@@ -781,7 +781,7 @@ class Export extends SurveyCommonAction
                     if (is_null($row[$field])) {
                         $value = '{question_not_shown}';
                     } else {
-                        $value = trim($row[$field]);
+                        $value = trim((string) $row[$field]);
                         // sunscreen for the value. necessary for the beach.
                         // careful about the order of these arrays:
                         // lbrace has to be substituted *first*
@@ -1214,34 +1214,6 @@ class Export extends SurveyCommonAction
     }
 
     /**
-     * Return a list of queXML settings
-     *
-     * @return string[] queXML settings
-     */
-    private function quexmlsettings(): array
-    {
-        return array(
-            'queXMLBackgroundColourQuestion',
-            'queXMLPageFormat',
-            'queXMLPageOrientation',
-            'queXMLEdgeDetectionFormat',
-            'queXMLBackgroundColourSection',
-            'queXMLSectionHeight',
-            'queXMLResponseLabelFontSize',
-            'queXMLResponseLabelFontSizeSmall',
-            'queXMLResponseTextFontSize',
-            'queXMLQuestionnaireInfoMargin',
-            'queXMLSingleResponseHorizontalHeight',
-            'queXMLSingleResponseAreaHeight',
-            'queXMLStyle',
-            'queXMLAllowSplittingVas',
-            'queXMLAllowSplittingMatrixText',
-            'queXMLAllowSplittingSingleChoiceVertical',
-            'queXMLAllowSplittingSingleChoiceHorizontal'
-        );
-    }
-
-    /**
      * Clear queXML settings from settings table
      *
      * @param int $iSurveyID
@@ -1249,7 +1221,10 @@ class Export extends SurveyCommonAction
      */
     public function quexmlclear(int $iSurveyID)
     {
-        $queXMLSettings = $this->quexmlsettings();
+        Yii::import("application.libraries.admin.quexmlpdf", true);
+        $defaultquexmlpdf = new quexmlpdf();
+
+        $queXMLSettings = $defaultquexmlpdf->_quexmlsettings();
         foreach ($queXMLSettings as $s) {
             SettingGlobal::setSetting($s, '');
         }
@@ -1267,7 +1242,6 @@ class Export extends SurveyCommonAction
         $iSurveyID = (int) $iSurveyID;
         $survey = Survey::model()->findByPk($iSurveyID);
 
-        $queXMLSettings = $this->quexmlsettings();
         $aData = array();
         $aData['surveyid'] = $iSurveyID;
         $aData['slangs'] = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
@@ -1281,12 +1255,13 @@ class Export extends SurveyCommonAction
         array_unshift($aData['slangs'], $aData['baselang']);
 
         Yii::import("application.libraries.admin.quexmlpdf", true);
-        $defaultquexmlpdf = new quexmlpdf($this->getController());
+        $defaultquexmlpdf = new quexmlpdf();
+        $queXMLSettings = $defaultquexmlpdf->_quexmlsettings();
 
         foreach ($queXMLSettings as $s) {
             $aData[$s] = getGlobalSetting($s);
 
-            if ($aData[$s] === null || trim($aData[$s]) === '') {
+            if ($aData[$s] === null || trim((string) $aData[$s]) === '') {
                 $method = str_replace("queXML", "get", $s);
                 $aData[$s] = $defaultquexmlpdf->$method();
             }
@@ -1295,14 +1270,11 @@ class Export extends SurveyCommonAction
         if (empty($_POST['ok'])) {
             $this->renderWrappedTemplate('survey', 'queXMLSurvey_view', $aData);
         } else {
-            $quexmlpdf = new quexmlpdf($this->getController());
+            $quexmlpdf = new quexmlpdf();
 
             //Save settings globally and generate queXML document
             foreach ($queXMLSettings as $s) {
-                if ($s !== 'queXMLStyle') {
-                    SettingGlobal::setSetting($s, Yii::app()->request->getPost($s));
-                }
-
+                SettingGlobal::setSetting($s, Yii::app()->request->getPost($s));
                 $method = str_replace("queXML", "set", $s);
                 $quexmlpdf->$method(Yii::app()->request->getPost($s));
             }
@@ -1375,14 +1347,14 @@ class Export extends SurveyCommonAction
     private function exportPrintableHtmls(int $iSurveyID, bool $readFile = true): string
     {
         $oSurvey = Survey::model()->findByPk($iSurveyID);
-        $assetsDir = substr(Template::getTemplateURL($oSurvey->templateEffectiveName), 1);
+        $assetsDir = substr((string) Template::getTemplateURL($oSurvey->templateEffectiveName), 1);
         $fullAssetsDir = Template::getTemplatePath($oSurvey->templateEffectiveName);
         $aLanguages = $oSurvey->getAllLanguages();
 
         Yii::import('application.helpers.common_helper', true);
         $zipdir = createRandomTempDir();
 
-        $fn = "printable_survey_" . preg_replace('([^\w\s\d\-_~,;\[\]\(\).])', '', $oSurvey->currentLanguageSettings->surveyls_title) . "_{$oSurvey->primaryKey}.zip";
+        $fn = "printable_survey_" . preg_replace('([^\w\s\d\-_~,;\[\]\(\).])', '', (string) $oSurvey->currentLanguageSettings->surveyls_title) . "_{$oSurvey->primaryKey}.zip";
 
         $tempdir = Yii::app()->getConfig("tempdir");
         $zipfile = "$tempdir/" . $fn;
@@ -1436,7 +1408,7 @@ class Export extends SurveyCommonAction
 
         // remove first slash to get local path for local storage for template assets
         $templateDir = Template::getTemplateURL($oSurvey->templateEffectiveName);
-        $response = str_replace($templateDir, substr($templateDir, 1), $response);
+        $response = str_replace($templateDir, substr((string) $templateDir, 1), (string) $response);
 
         file_put_contents($file, $response);
         return $file;

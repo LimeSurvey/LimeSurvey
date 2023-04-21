@@ -44,8 +44,8 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
             $this->doDualScaleFunction = "doDualScaleRadio";
         }
 
-        if (ctype_digit(trim($this->getQuestionAttribute('answer_width')))) {
-            $this->answerwidth = trim($this->getQuestionAttribute('answer_width'));
+        if (ctype_digit(trim((string) $this->getQuestionAttribute('answer_width')))) {
+            $this->answerwidth = trim((string) $this->getQuestionAttribute('answer_width'));
             $this->defaultWidth = false;
         } else {
             $this->answerwidth = 33;
@@ -82,8 +82,8 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
         $this->numrows = 0;
         foreach ($this->aAnswerOptions as $iScaleId => $aScale) {
             foreach ($aScale as $oAnswerOption) {
-                $aData['labelans' . $iScaleId][] = $oAnswerOption->answerl10ns[$this->sLanguage]->answer;
-                $aData['labelcode' . $iScaleId][] = $oAnswerOption->code;
+                $aData['labelans' . $iScaleId][$oAnswerOption->code] = $oAnswerOption->answerl10ns[$this->sLanguage]->answer;
+                $aData['labelcode' . $iScaleId][$oAnswerOption->code] = $oAnswerOption->code;
             }
             
             $this->numrows = $this->numrows + count($aData['labelans' . $iScaleId]);
@@ -222,9 +222,9 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
 
             $answertext = $oQuestionRow->questionl10ns[$this->sLanguage]->question;
             // right and center answertext: not explode for ? Why not
-            if (strpos($answertext, '|') !== false) {
-                $answertextright = (string) substr($answertext, strpos($answertext, '|') + 1);
-                $answertext = (string) substr($answertext, 0, strpos($answertext, '|'));
+            if (strpos((string) $answertext, '|') !== false) {
+                $answertextright = (string) substr((string) $answertext, strpos((string) $answertext, '|') + 1);
+                $answertext = (string) substr((string) $answertext, 0, strpos((string) $answertext, '|'));
             } else {
                 $answertextright = "";
             }
@@ -343,8 +343,8 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
         $aData['basename'] = $this->sSGQA;
 
         // Get attributes for Headers and Prefix/Suffix
-        if (trim($this->getQuestionAttribute('dropdown_prepostfix', $this->sLanguage)) != '') {
-            list($ddprefix, $ddsuffix) = explode("|", $this->getQuestionAttribute('dropdown_prepostfix', $this->sLanguage));
+        if (trim((string) $this->getQuestionAttribute('dropdown_prepostfix', $this->sLanguage)) != '') {
+            list($ddprefix, $ddsuffix) = explode("|", (string) $this->getQuestionAttribute('dropdown_prepostfix', $this->sLanguage));
         } else {
             $ddprefix = null;
             $ddsuffix = null;
@@ -353,8 +353,8 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
         $aData['ddprefix'] = $ddprefix;
         $aData['ddsuffix'] = $ddsuffix;
         
-        if (trim($this->getQuestionAttribute('dropdown_separators')) != '') {
-            $aSeparator = explode('|', $this->getQuestionAttribute('dropdown_separators'));
+        if (trim((string) $this->getQuestionAttribute('dropdown_separators')) != '') {
+            $aSeparator = explode('|', (string) $this->getQuestionAttribute('dropdown_separators'));
             if (isset($aSeparator[1])) {
                 $interddSep = $aSeparator[1];
             } else {
@@ -418,7 +418,7 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
 
         $aLastMoveResult   = LimeExpressionManager::GetLastMoveResult();
         $this->aMandatoryViolationSubQ    = ($aLastMoveResult['mandViolation'] && ($this->oQuestion->mandatory == 'Y' || $this->oQuestion->mandatory == 'S'))
-                                        ? explode("|", $aLastMoveResult['unansweredSQs'])
+                                        ? explode("|", (string) $aLastMoveResult['unansweredSQs'])
                                         : [];
 
         if ($this->useDropdownLayout === false) {

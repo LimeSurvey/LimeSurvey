@@ -163,7 +163,7 @@ class PrintanswersController extends LSYii_Controller
 
             $html = Yii::app()->twigRenderer->renderTemplateFromFile('layout_printanswers.twig', $aData, true);
             //filter all scripts
-            $html = preg_replace("/<script>[^<]*<\/script>/", '', $html);
+            $html = preg_replace("/<script>[^<]*<\/script>/", '', (string) $html);
             //replace fontawesome icons
             $html = preg_replace('/(<i class="ri-checkbox-line"><\/i>|<i class="ri-close-fill"><\/i>)/', '[X]', $html);
             $html = preg_replace('/<i class="ri-checkbox-indeterminate-line">\<\/i>/', '[-]', $html);
@@ -184,6 +184,7 @@ class PrintanswersController extends LSYii_Controller
             Yii::import("application.libraries.admin.quexmlpdf", true);
 
             $quexmlpdf = new quexmlpdf();
+            $quexmlpdf->applyGlobalSettings();
 
             // Setting the selected language for printout
             App()->setLanguage($sLanguage);

@@ -72,11 +72,8 @@ class PluginManagerController extends SurveyCommonAction
         );
 
         $aData['topbar']['title'] = gT('Plugins');
-        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
-            '/admin/pluginmanager/partial/topbarBtns/rightSideButtons',
-            [],
-            true
-        );
+        $aData['topbar']['backLink'] = App()->createUrl('admin/index');
+
         $aData['topbar']['middleButtons'] = Yii::app()->getController()->renderPartial(
             '/admin/pluginmanager/partial/topbarBtns/leftSideButtons',
             [
@@ -805,9 +802,9 @@ function pluginExtractFilter($p_event, &$p_header)
 {
     $aAllowExtensions = explode(
         ',',
-        Yii::app()->getConfig('allowedpluginuploads')
+        Yii::app()->getConfig('allowedpluginuploads', '')
     );
-    $info = pathinfo($p_header['filename']);
+    $info = pathinfo((string) $p_header['filename']);
 
     if (
         $p_header['folder']

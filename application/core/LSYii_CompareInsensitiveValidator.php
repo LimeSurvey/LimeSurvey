@@ -48,7 +48,7 @@ class LSYii_CompareInsensitiveValidator extends CValidator
      */
     protected function validateAttribute($object, $attribute)
     {
-        $value = strtolower($object->$attribute);
+        $value = strtolower((string) $object->$attribute);
         if ($this->allowEmpty && $this->isEmpty($value)) {
                     return;
         }

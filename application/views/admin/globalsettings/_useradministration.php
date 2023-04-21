@@ -33,7 +33,7 @@
                 <label class="form-label" for='admincreationemailsubject'><?php eT("Admin creation email subject"); ?>:</label>
                 <br/>
                 <small id="template help" class="form-text text-muted"><?php eT("Available placeholders") ?>: {SITENAME}</small>
-                <input class="form-control" type='text' size='50' id='admincreationemailsubject' name='admincreationemailsubject' value="<?php echo htmlspecialchars($sAdminCreationEmailSubject); ?>" />
+                <input class="form-control" type='text' size='50' id='admincreationemailsubject' name='admincreationemailsubject' value="<?php echo htmlspecialchars((string) $sAdminCreationEmailSubject); ?>" />
             </div>
             <!-- admin default email template -->
             <div class="mb-3">

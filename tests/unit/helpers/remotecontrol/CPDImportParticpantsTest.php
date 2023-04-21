@@ -78,7 +78,6 @@ class CPDImportParticpantsTest extends BaseTest
 
         $max = \Participant::model()->findByPk('max');
         $this->assertInstanceOf('Participant', $max);
-
     }
 
     public function testImportingParticipantFailsDueToSameFirstnameLastnameEmail()
@@ -193,5 +192,94 @@ class CPDImportParticpantsTest extends BaseTest
 
         $attribute = $max->getParticipantAttribute('ea_1');
         $this->assertEquals('http://www.example.org', $attribute);
+    }
+
+    public function testOneParticipantWithEncryptedCoreAttributesImportedSuccessfully()
+    {
+        \Yii::app()->session['adminlang'] = 'de';
+        $this->assertTrue(empty(\ParticipantAttributeName::model()->findAll()));
+
+        //Setting email attribute to be encrypted.
+        $result = \ParticipantAttributeName::model()->storeAttribute(array(
+            'attribute_type' => 'TB',
+            'attribute_name' => 'email',
+            'defaultname' => 'email',
+            'visible' => 'TRUE',
+            'encrypted'      => 'Y',
+            'core_attribute' => 'Y'
+        ));
+        $this->assertTrue(intval($result) > 0);
+
+        //Setting lastname attribute to be encrypted.
+        $result = \ParticipantAttributeName::model()->storeAttribute(array(
+            'attribute_type' => 'TB',
+            'attribute_name' => 'lastname',
+            'defaultname' => 'lastname',
+            'visible' => 'TRUE',
+            'encrypted'      => 'Y',
+            'core_attribute' => 'Y'
+        ));
+        $this->assertTrue(intval($result) > 0);
+
+        $participants = array(
+            array(
+                'participant_id' => 'max',
+                'firstname' => 'Max',
+                'lastname' => 'Mustermann',
+                'email' => 'max.mustermann@example.com',
+                'language' => 'de',
+                'blacklisted' => 'Y'
+            )
+        );
+
+        $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
+        $result = $this->handler->cpd_importParticipants($sessionKey, $participants);
+        $this->assertArrayHasKey('ImportCount', $result);
+        $this->assertEquals(1, $result['ImportCount']);
+
+        $max = \Participant::model()->findByPk('max');
+        $this->assertInstanceOf(\Participant::class, $max);
+
+        //Not equal since it's encrypted.
+        $this->assertNotEquals($participants[0]['email'], $max->email);
+        $this->assertNotEquals($participants[0]['lastname'], $max->lastname);
+    }
+
+    public function testParticipantWithOneEncryptedAttributeImportedSucessfully()
+    {
+        \Yii::app()->session['adminlang'] = 'de';
+        $this->assertTrue(empty(\ParticipantAttributeName::model()->findAll()));
+        $result = \ParticipantAttributeName::model()->storeAttribute(array(
+            'attribute_type' => 'TB',
+            'defaultname' => 'passport',
+            'visible' => 'TRUE',
+            'attribute_name' => 'Passport',
+            'encrypted'      => 'Y',
+            'core_attribute' => 'N'
+        ));
+        $this->assertTrue(intval($result) > 0);
+
+        $participants = array(
+            array(
+                'participant_id' => 'max',
+                'firstname' => 'Max',
+                'lastname' => 'Mustermann',
+                'email' => 'max.mustermann@example.com',
+                'language' => 'de',
+                'blacklisted' => 'Y',
+                'passport' => '123456789',
+            )
+        );
+
+        $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
+        $result = $this->handler->cpd_importParticipants($sessionKey, $participants);
+        $this->assertArrayHasKey('ImportCount', $result);
+        $this->assertEquals(1, $result['ImportCount']);
+
+        $max = \Participant::model()->findByPk('max');
+        $this->assertInstanceOf(\Participant::class, $max);
+
+        $attribute = $max->getParticipantAttribute('ea_1');
+        $this->assertEquals('123456789', $attribute);
     }
 }

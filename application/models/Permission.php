@@ -64,7 +64,7 @@ class Permission extends LSActiveRecord
         return array(
             array('entity, entity_id, uid, permission', 'required'),
             array('entity', 'length', 'max' => 50),
-            array('entity',  'filter', 'filter' => 'strtolower'),
+            array('entity',  'LSYii_FilterValidator', 'filter' => 'strtolower', 'skipOnEmpty' => true),
             array('permission', 'length', 'max' => 100),
             array('create_p, read_p, update_p, delete_p, import_p, export_p', 'default', 'value' => 0),
             array('create_p, read_p, update_p, delete_p, import_p, export_p', 'numerical', 'integerOnly' => true),
@@ -649,16 +649,19 @@ class Permission extends LSActiveRecord
 
     public function getButtons(): string
     {
+        $setPermissionsUrl = App()->getController()->createUrl('surveyPermissions/settingsPermissions', 
+                                 ['id' => $this->uid, 'action' => 'user','surveyid' => $this->entity_id,]);
+       
         $dropdownItems = [];
+
         $dropdownItems[] = [
-            'title'            => gT('Edit Permissioin'),
-            'url'              => App()->createUrl("surveyPermissions/settingsPermissions/", [
-                'id'       => $this->uid,
-                'surveyid' => $this->entity_id,
-                'action'   => 'user',
-            ]),
-            'iconClass'        => 'ri-pencil-fill',
-            'enabledCondition' => Permission::model()->hasSurveyPermission($this->entity_id, 'surveysecurity', 'update')
+            'title'            => gT('Edit permissions'),
+            'iconClass'        => "ri-pencil-fill",
+            'linkClass'        => "UserManagement--action--openmodal UserManagement--action--permissions",
+            'linkAttributes'   => [
+                'data-href'      => $setPermissionsUrl,
+                'data-modalsize' => 'modal-lg',
+            ],
         ];
 
         $dropdownItems[] = [
@@ -747,7 +750,7 @@ class Permission extends LSActiveRecord
      */
     private static function comparePermissionTitle($aApermission, $aBpermission)
     {
-        return strcmp($aApermission['title'], $aBpermission['title']);
+        return strcmp((string) $aApermission['title'], (string) $aBpermission['title']);
     }
 
     /**
@@ -857,7 +860,7 @@ class Permission extends LSActiveRecord
                 'export' => false,
                 'title' => gT("Settings & Plugins"),
                 'description' => gT("Permission to view and update global settings & plugins and to delete and import plugins"),
-                'img' => 'ri-earth-fil',
+                'img' => 'ri-earth-fill',
             ),
             'participantpanel' => array(
                 'title' => gT("Central participant database"),

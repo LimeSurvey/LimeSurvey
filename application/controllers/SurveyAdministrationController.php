@@ -225,9 +225,9 @@ class SurveyAdministrationController extends LSBaseController
         }
         $aData['model'] = new Survey('search');
         $aData['groupModel'] = new SurveysGroups('search');
-
         $aData['topbar']['title'] = gT('Survey list');
-        $aData['topbar']['rightButtons'] = $this->renderPartial('partial/topbarBtns/rightSideButtons', [], true);
+        $aData['topbar']['backLink'] = App()->createUrl('admin/index');
+
         $aData['topbar']['middleButtons'] = $this->renderPartial('partial/topbarBtns/leftSideButtons', [], true);
 
         $this->aData = $aData;
@@ -242,7 +242,7 @@ class SurveyAdministrationController extends LSBaseController
      */
     public function actionDeleteMultiple()
     {
-        $aSurveys = json_decode(Yii::app()->request->getPost('sItems'));
+        $aSurveys = json_decode(Yii::app()->request->getPost('sItems', ''));
         $aResults = array();
         foreach ($aSurveys as $iSurveyID) {
             $iSurveyID = sanitize_int($iSurveyID);
@@ -271,7 +271,7 @@ class SurveyAdministrationController extends LSBaseController
      */
     public function actionRenderItemsSelected()
     {
-        $aSurveys = json_decode(Yii::app()->request->getPost('$oCheckedItems'));
+        $aSurveys = json_decode(Yii::app()->request->getPost('$oCheckedItems', ''));
         $aResults = [];
         $tableLabels = array(gT('Survey ID'), gT('Survey title'), gT('Status'));
         foreach ($aSurveys as $iSurveyID) {
@@ -450,7 +450,7 @@ class SurveyAdministrationController extends LSBaseController
 
             // Check if survey title was set
             $surveyTitle = Yii::app()->request->getPost('surveyls_title');
-            $surveyTitle = trim($surveyTitle);
+            $surveyTitle = trim((string) $surveyTitle);
             if ($surveyTitle == '') {
                 $alertError = gT("Survey could not be created because it did not have a title");
 
@@ -777,7 +777,7 @@ class SurveyAdministrationController extends LSBaseController
      */
     public function actionChangeMultipleTheme()
     {
-        $sSurveys = $_POST['sItems'];
+        $sSurveys = $_POST['sItems'] ?? '';
         $aSIDs = json_decode($sSurveys);
         $aResults = array();
 
@@ -802,7 +802,7 @@ class SurveyAdministrationController extends LSBaseController
      */
     public function actionChangeMultipleSurveyGroup()
     {
-        $sSurveys = $_POST['sItems'];
+        $sSurveys = $_POST['sItems'] ?? '';
         $aSIDs = json_decode($sSurveys);
         $aResults = array();
 
@@ -1620,7 +1620,7 @@ class SurveyAdministrationController extends LSBaseController
                     if (Yii::app()->db->getDriverName() == 'pgsql') {
                         // Find out the trigger name for tid column
                         $tidDefault = Yii::app()->db->createCommand("SELECT pg_get_expr(adbin, adrelid) as adsrc FROM pg_attribute JOIN pg_class ON (pg_attribute.attrelid=pg_class.oid) JOIN pg_attrdef ON(pg_attribute.attrelid=pg_attrdef.adrelid AND pg_attribute.attnum=pg_attrdef.adnum) WHERE pg_class.relname='$toldtable' and pg_attribute.attname='tid'")->queryScalar();
-                        if (preg_match("/nextval\('(tokens_\d+_tid_seq\d*)'::regclass\)/", $tidDefault, $matches)) {
+                        if (preg_match("/nextval\('(tokens_\d+_tid_seq\d*)'::regclass\)/", (string) $tidDefault, $matches)) {
                             $oldSeq = $matches[1];
                             Yii::app()->db->createCommand()->renameTable($oldSeq, $tnewtable . '_tid_seq');
                             $setsequence = "ALTER TABLE " . Yii::app()->db->quoteTableName($toldtable) . " ALTER COLUMN tid SET DEFAULT nextval('{$tnewtable}_tid_seq'::regclass);";
@@ -1664,7 +1664,7 @@ class SurveyAdministrationController extends LSBaseController
                 $survey->save();
                 if (Yii::app()->db->getDriverName() == 'pgsql') {
                     $idDefault = Yii::app()->db->createCommand("SELECT pg_get_expr(pg_attrdef.adbin, pg_attrdef.adrelid) FROM pg_attribute JOIN pg_class ON (pg_attribute.attrelid=pg_class.oid) JOIN pg_attrdef ON(pg_attribute.attrelid=pg_attrdef.adrelid AND pg_attribute.attnum=pg_attrdef.adnum) WHERE pg_class.relname='$sOldSurveyTableName' and pg_attribute.attname='id'")->queryScalar();
-                    if (preg_match("/nextval\('(survey_\d+_id_seq\d*)'::regclass\)/", $idDefault, $matches)) {
+                    if (preg_match("/nextval\('(survey_\d+_id_seq\d*)'::regclass\)/", (string) $idDefault, $matches)) {
                         $oldSeq = $matches[1];
                         Yii::app()->db->createCommand()->renameTable($oldSeq, $sNewSurveyTableName . '_id_seq');
                         $setsequence = "ALTER TABLE " . Yii::app()->db->quoteTableName($sOldSurveyTableName) . " ALTER COLUMN id SET DEFAULT nextval('{{{$sNewSurveyTableName}}}_id_seq'::regclass);";
@@ -2175,7 +2175,7 @@ class SurveyAdministrationController extends LSBaseController
             if ($action == 'importsurvey') {
                 $aData['sHeader'] = gT("Import survey data");
                 $aData['sSummaryHeader'] = gT("Survey structure import summary");
-                $aPathInfo = pathinfo($_FILES['the_file']['name']);
+                $aPathInfo = pathinfo((string) $_FILES['the_file']['name']);
 
                 if (isset($aPathInfo['extension'])) {
                     $sExtension = $aPathInfo['extension'];
@@ -2417,13 +2417,13 @@ class SurveyAdministrationController extends LSBaseController
      */
     public function actionExpireMultipleSurveys()
     {
-        $sSurveys = $_POST['sItems'];
+        $sSurveys = $_POST['sItems'] ?? '';
         $aSIDs = json_decode($sSurveys);
         $aResults = array();
         $expires = App()->request->getPost('expires');
         $formatdata = getDateFormatData(Yii::app()->session['dateformat']);
         Yii::import('application.libraries.Date_Time_Converter', true);
-        if (trim($expires) == "") {
+        if (trim((string) $expires) == "") {
             $expires = null;
         } else {
             $datetimeobj = new Date_Time_Converter($expires, $formatdata['phpdate'] . ' H:i');
@@ -2605,7 +2605,7 @@ class SurveyAdministrationController extends LSBaseController
     private function getOrgdata()
     {
         $request = Yii::app()->request;
-        $orgdata = $request->getPost('orgdata');
+        $orgdata = $request->getPost('orgdata', '');
         $ex = explode('&', $orgdata);
         $vars = array();
         foreach ($ex as $str) {
@@ -2641,7 +2641,7 @@ class SurveyAdministrationController extends LSBaseController
                 $grouporder++;
             } elseif ($ID[0] == 'q') {
                 $qid = (int) substr($ID, 1);
-                $gid = (int) substr($parent, 1);
+                $gid = (int) substr((string) $parent, 1);
                 if (!isset($aQuestionOrder[$gid])) {
                     $aQuestionOrder[$gid] = 0;
                 }
@@ -2894,14 +2894,14 @@ class SurveyAdministrationController extends LSBaseController
             $surveysummary2[] = gT("Participants can save partially finished surveys");
         }
         if ($oSurvey->emailnotificationto != '') {
-            $surveysummary2[] = gT("Basic email notification is sent to:") . ' ' . htmlspecialchars($aSurveyInfo['emailnotificationto']);
+            $surveysummary2[] = gT("Basic email notification is sent to:") . ' ' . htmlspecialchars((string)$aSurveyInfo['emailnotificationto']);
         }
         if ($oSurvey->emailresponseto != '') {
-            $surveysummary2[] = gT("Detailed email notification with response data is sent to:") . ' ' . htmlspecialchars($aSurveyInfo['emailresponseto']);
+            $surveysummary2[] = gT("Detailed email notification with response data is sent to:") . ' ' . htmlspecialchars((string)$aSurveyInfo['emailresponseto']);
         }
 
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
-        if (trim($oSurvey->startdate) != '') {
+        if (trim((string)$oSurvey->startdate) != '') {
             Yii::import('application.libraries.Date_Time_Converter');
             $datetimeobj = new Date_Time_Converter($oSurvey->startdate, 'Y-m-d H:i:s');
             $aData['startdate'] = $datetimeobj->convert($dateformatdetails['phpdate'] . ' H:i');
@@ -2909,7 +2909,7 @@ class SurveyAdministrationController extends LSBaseController
             $aData['startdate'] = "-";
         }
 
-        if (trim($oSurvey->expires) != '') {
+        if (trim((string)$oSurvey->expires) != '') {
             Yii::import('application.libraries.Date_Time_Converter');
             $datetimeobj = new Date_Time_Converter($oSurvey->expires, 'Y-m-d H:i:s');
             $aData['expdate'] = $datetimeobj->convert($dateformatdetails['phpdate'] . ' H:i');
@@ -2920,14 +2920,14 @@ class SurveyAdministrationController extends LSBaseController
         $aData['language'] = getLanguageNameFromCode($oSurvey->language, false);
 
         if ($oSurvey->currentLanguageSettings->surveyls_urldescription == "") {
-            $aSurveyInfo['surveyls_urldescription'] = htmlspecialchars($aSurveyInfo['surveyls_url']);
+            $aSurveyInfo['surveyls_urldescription'] = htmlspecialchars((string) $aSurveyInfo['surveyls_url']);
         }
 
         if ($oSurvey->currentLanguageSettings->surveyls_url != "") {
             $aData['endurl'] = " <a target='_blank' href=\"" .
-                htmlspecialchars($aSurveyInfo['surveyls_url']) .
+                htmlspecialchars((string) $aSurveyInfo['surveyls_url']) .
                 "\" title=\"" .
-                htmlspecialchars($aSurveyInfo['surveyls_url']) .
+                htmlspecialchars((string) $aSurveyInfo['surveyls_url']) .
                 "\">" .
                 flattenText($oSurvey->currentLanguageSettings->surveyls_url) .
                 "</a>";

@@ -49,7 +49,6 @@ class ResponsesController extends LSBaseController
 
         $surveyId = (int)App()->request->getParam('surveyId');
         $oSurvey = Survey::model()->findByPk($surveyId);
-        $this->aData['display']['menu_bars'] = false;
         $this->aData['subaction'] = gT("Responses and statistics");
         $this->aData['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
         $this->aData['title_bar']['title'] = gT('Browse responses') . ': ' . $oSurvey->currentLanguageSettings->surveyls_title;
@@ -91,6 +90,7 @@ class ResponsesController extends LSBaseController
             $sBrowseLanguage = $aData['language'];
             Yii::import("application.libraries.admin.quexmlpdf", true);
             $quexmlpdf = new quexmlpdf();
+            $quexmlpdf->applyGlobalSettings();
             // Setting the selected language for printout
             App()->setLanguage($sBrowseLanguage);
             $quexmlpdf->setLanguage($sBrowseLanguage);
@@ -309,7 +309,7 @@ class ResponsesController extends LSBaseController
                             case "name":
                                 $answervalue = CHtml::link(
                                     htmlspecialchars(
-                                        $oPurifier->purify(rawurldecode($phparray[$index][$metadata]))
+                                        (string) $oPurifier->purify(rawurldecode((string) $phparray[$index][$metadata]))
                                     ),
                                     $this->createUrl(
                                         "responses/downloadfile",
@@ -593,9 +593,9 @@ class ResponsesController extends LSBaseController
         }
         Yii::import('application.helpers.admin.ajax_helper', true);
 
-        $ResponseId = (App()->request->getPost('sItems') != '') ? json_decode(App()->request->getPost('sItems')) : json_decode(App()->request->getParam('sResponseId'), true);
+        $ResponseId = (App()->request->getPost('sItems') != '') ? json_decode(App()->request->getPost('sItems', '')) : json_decode(App()->request->getParam('sResponseId', ''), true);
         if (App()->request->getPost('modalTextArea') != '') {
-            $ResponseId = explode(',', App()->request->getPost('modalTextArea'));
+            $ResponseId = explode(',', App()->request->getPost('modalTextArea', ''));
             foreach ($ResponseId as $key => $sResponseId) {
                 $ResponseId[$key] = str_replace(' ', '', $sResponseId);
             }
@@ -702,7 +702,7 @@ class ResponsesController extends LSBaseController
                 $sRealUserPath = get_absolute_path($sFileRealName);
                 if ($sRealUserPath === false) {
                     throw new CHttpException(404, "File not found.");
-                } elseif (strpos($sRealUserPath, $sDir) !== 0) {
+                } elseif (strpos((string) $sRealUserPath, $sDir) !== 0) {
                         throw new CHttpException(403, "File cannot be accessed.");
                 } else {
                     $mimeType = CFileHelper::getMimeType($sFileRealName, null, false);
@@ -712,7 +712,7 @@ class ResponsesController extends LSBaseController
                     @ob_clean();
                     header('Content-Description: File Transfer');
                     header('Content-Type: ' . $mimeType);
-                    header('Content-Disposition: attachment; filename="' . sanitize_filename(rawurldecode($aFile['name'])) . '"');
+                    header('Content-Disposition: attachment; filename="' . sanitize_filename(rawurldecode((string) $aFile['name'])) . '"');
                     header('Content-Transfer-Encoding: binary');
                     header('Expires: 0');
                     header("Cache-Control: must-revalidate, no-store, no-cache");
@@ -799,7 +799,7 @@ class ResponsesController extends LSBaseController
             throw new CHttpException(405, gT("Invalid action"));
         }
 
-        $stringItems = json_decode($request->getPost('sItems'));
+        $stringItems = json_decode($request->getPost('sItems', ''));
         // Cast all ids to int.
         $items = array_map(
             function ($id) {
@@ -1000,10 +1000,10 @@ class ResponsesController extends LSBaseController
                 * unique. This way we can have 234_1_image1.gif, 234_2_image1.gif as it could be
                 * files from a different source with the same name.
                 */
-                if (file_exists($tmpdir . basename($fileInfo['filename']))) {
+                if (file_exists($tmpdir . basename((string) $fileInfo['filename']))) {
                     $filelist[] = [
-                        $tmpdir . basename($fileInfo['filename']),
-                        sprintf("%05s_%02s-%s_%02s-%s", $response->id, $filecount, $fileInfo['question']['title'], $fileInfo['index'], sanitize_filename(rawurldecode($fileInfo['name'])))
+                        $tmpdir . basename((string) $fileInfo['filename']),
+                        sprintf("%05s_%02s-%s_%02s-%s", $response->id, $filecount, $fileInfo['question']['title'], $fileInfo['index'], sanitize_filename(rawurldecode((string) $fileInfo['name'])))
                     ];
                 }
             }

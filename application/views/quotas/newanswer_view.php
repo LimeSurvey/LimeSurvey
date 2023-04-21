@@ -23,7 +23,7 @@
                                 <select class='form-select' name="quota_qid" size="15">
                                     <?php foreach ($oQuota->survey->quotableQuestions as $questionlisting) { ?>
                                         <option value="<?php echo $questionlisting['qid'];?>">
-                                            <?php echo $questionlisting['title'];?>: <?php echo strip_tags(substr($questionlisting->questionl10ns[$sBaseLang]->question,0,40));?>
+                                            <?php echo $questionlisting['title'];?>: <?php echo strip_tags(substr((string) $questionlisting->questionl10ns[$sBaseLang]->question,0,40));?>
                                         </option>
                                         <?php } ?>
                                 </select>

@@ -50,7 +50,7 @@ foreach ($systemInfos as $key => $systemInfo) {
 }
 ?>
 <!-- Footer -->
-<footer class="container-fluid footer d-flex flex-grow-1 flex-column justify-content-end text-end py-3 mt-5">
+<footer class="container-fluid footer d-flex flex-grow-1 flex-column justify-content-end text-end py-3">
     <div>
         <a data-bs-toggle="tooltip" title='<?php eT("Visit our website!"); ?>' href='https://community.limesurvey.org' target='_blank'>LimeSurvey Community Edition</a>
         <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')) { ?>
