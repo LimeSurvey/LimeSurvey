@@ -22,7 +22,7 @@ $baseLanguage = $oSurvey->language;
     </ul>
     <div class="tab-content p-4 h-100">
         <div id="questions" class="tab-pane show fade active row">
-            <?php $this->renderPartial('partial/questionView',  get_defined_vars(), ) ?>
+            <?php $this->renderPartial('partial/questionView',  get_defined_vars()) ?>
         </div>
         <div id="groups" class="tab-pane row">
             <?php $this->renderPartial('partial/groupView', get_defined_vars()) ?>
