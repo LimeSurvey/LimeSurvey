@@ -76,7 +76,7 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
 Yii::app()->getClientScript()->registerScript(
     'select2-init',
     '
-        $("select.activate-search").select2();
+        $("select.activate-search").select2({theme: "bootstrap-5", width: "100%"});
     ',
     LSYii_ClientScript::POS_END
 );
