@@ -10,7 +10,7 @@
  * @package YiiWheels.widgets.datetimepicker
  * @uses YiiStrap.helpers.TbArray
  */
-Yii::import('bootstrap.helpers.TbArray');
+Yii::import('yiistrap_fork.helpers.TbArray');
 
 class WhDateTimePicker extends CInputWidget
 {
@@ -95,8 +95,8 @@ class WhDateTimePicker extends CInputWidget
 			} else {
 				echo TbHtml::textField($name, $this->value, $this->htmlOptions);
 			}
-            echo TbHtml::openTag('span', array('class' => 'input-group-addon'));
-			echo TbHtml::openTag('span', array('class' => 'fa fa-calendar'));
+            echo TbHtml::openTag('span', array('class' => 'input-group-text'));
+			echo TbHtml::openTag('span', array('class' => 'ri-calendar-2-fill'));
 			echo TbHtml::closeTag('span');
             echo TbHtml::closeTag('span');
 			echo TbHtml::closeTag('div');
@@ -135,7 +135,7 @@ class WhDateTimePicker extends CInputWidget
      */
     protected function getEscapedId()
     {
-        $id = str_replace('[', '\\\\[',$this->getId());
+        $id = str_replace('[', '\\\\[',(string) $this->getId());
         $id = str_replace(']', '\\\\]',$id);
         return $id;
     }

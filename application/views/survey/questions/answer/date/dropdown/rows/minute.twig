@@ -9,25 +9,27 @@
 #}
 
 <!-- minute -->
-<label for="minute{{ minuteId }}" class="sr-only control-label">
-    {{  gT('Minute') }}
-</label>
-<select id="minute{{ minuteId }}" name="minute{{ minuteId }}" class="minute form-control">
-    <option value="">
+<div class="col-12">
+    <label for="minute{{ minuteId }}" class="visually-hidden control-label">
         {{ gT('Minute') }}
-    </option>
-    {% for i in 0..59 %}
-        {% if i is divisible by(dropdown_dates_minute_step)  %}
-            {# currentminute are sent as padded integer ( '00','01'), i is integer, need testing !== '' and intval #}
-            <option value="{{ i }}"{% if (currentminute is not same as('') and i == intval(currentminute)) %} selected{% endif %}>
-                {% if datepart is same as('i') %}
-                    {{ sprintf('%02d', i) }}
-                {% else %}
-                    {{ i }}
-                {% endif %}
-            </option>
-        {% endif %}
-    {% endfor %}
-</select>
-
+    </label>
+    <select id="minute{{ minuteId }}" name="minute{{ minuteId }}" class="minute form-select">
+        <option value="">
+            {{ gT('Minute') }}
+        </option>
+        {% for i in 0..59 %}
+            {% if i is divisible by(dropdown_dates_minute_step) %}
+                {# currentminute are sent as padded integer ( '00','01'), i is integer, need testing !== '' and intval #}
+                <option
+                    value="{{ i }}"{% if (currentminute is not same as('') and i == intval(currentminute)) %} selected{% endif %}>
+                    {% if datepart is same as('i') %}
+                        {{ sprintf('%02d', i) }}
+                    {% else %}
+                        {{ i }}
+                    {% endif %}
+                </option>
+            {% endif %}
+        {% endfor %}
+    </select>
+</div>
 <!-- end of minute -->

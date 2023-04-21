@@ -54,7 +54,7 @@ class SettingsWidget extends CWidget
     }
 
     /**
-     * 
+     *
      */
     public function init()
     {
@@ -79,8 +79,8 @@ class SettingsWidget extends CWidget
         // Add default form class.
         $this->formHtmlOptions['class'] =
             isset($this->formHtmlOptions['class']) ?
-            $this->formHtmlOptions['class'] . " settingswidget form-horizontal"
-            : 'settingswidget form-horizontal';
+            $this->formHtmlOptions['class'] . " settingswidget"
+            : 'settingswidget';
 
 
         // Start form
@@ -148,7 +148,7 @@ class SettingsWidget extends CWidget
             echo CHtml::tag(
                 'div',
                 [
-                    'class' => "clearfix col-md-offset-{$this->labelWidth}"
+                    'class' => "clearfix offset-lg-{$this->labelWidth} mb-3 px-2"
                 ],
                 implode(" ", $aHtmlButtons)
             );
@@ -162,16 +162,17 @@ class SettingsWidget extends CWidget
      * @param boolean $return
      * @param string $wrapper
      * @return string|void
+     * @throws CHttpException
      */
     public function renderSetting($name, $metaData, $form = null, $return = false, $wrapper = 'div')
     {
-        // TODO: Weird hack that fixes some rendering issues after moving to Bootstrap2
-        echo "&nbsp;";
-
         // No type : invalid setting
         if (!isset($metaData['type'])) {
-            // TODO: assert or throw exception
-            return "";
+            throw new CHttpException(405, 'invalid settings type');
+        }
+        $wrapperCss = '';
+        if ($metaData['type'] === 'radio' || 'checkbox') {
+            $wrapperCss = "align-items-center";
         }
 
         // Fix $metaData
@@ -200,7 +201,7 @@ class SettingsWidget extends CWidget
         $result=CHtml::tag(
             $wrapper,
             [
-                'class'     => "form-group setting setting-{$metaData['type']}",
+                'class'     => "mb-3 row setting setting-{$metaData['type']} $wrapperCss",
                 'data-name' => $name
             ],
             $content
@@ -255,7 +256,7 @@ class SettingsWidget extends CWidget
             'htmlOptions'=>array(),
             'type' => 'string',
             'htmlOptions' => array(),
-            'labelOptions' => array( // html option for the control-label part (not the label, but the wrapper)
+            'labelOptions' => array( // html option for the form-label part (not the label, but the wrapper)
                 'class' => "default"
             ),
             'help'=> null,
@@ -266,13 +267,13 @@ class SettingsWidget extends CWidget
         );
         $metaData = array_merge($defaults, $metaData);
 
-        // col-sm-6/col-sm-6 used in survey settings, sm-4/sm-6 in global : use sm-4/sm-6 for plugins ?
-        $metaData['labelOptions']['class'].=" control-label col-sm-{$this->labelWidth}";
+        // col-md-6/col-md-6 used in survey settings, sm-4/sm-6 in global : use sm-4/sm-6 for plugins ?
+        $metaData['labelOptions']['class'].=" col-form-label text-end col-md-{$this->labelWidth}";
         // Set the witdth of control-option according to existence of label
         if (!isset($metaData['label'])) {
-            $metaData['controlOptions']['class'].=" col-sm-12";
+            $metaData['controlOptions']['class'].=" col-12";
         } else {
-            $metaData['controlOptions']['class'].=" col-sm-{$this->controlWidth}";
+            $metaData['controlOptions']['class'].=" col-md-{$this->controlWidth}";
         }
         $metaData['controlOptions']['class'].=" controls";
 
@@ -333,29 +334,34 @@ class SettingsWidget extends CWidget
     /***********************************************************************
      * Settings renderers.
      **********************************************************************/
-
+    /**
+     * Render Boolean.
+     * @param string $name
+     * @param array $metaData
+     * @param mixed $form
+     *
+     * @return string
+     * @throws Exception
+     */
     public function renderBoolean($name, array $metaData, $form = null)
     {
         $htmlOptions = $this->htmlOptions($metaData, $form);
         $value = $metaData['current'] ?? '';
-        //~ return CHtml::radioButtonList($name, $value, array(
-            //~ 0 => 'False',
-            //~ 1 => 'True'
-        //~ ), $htmlOptions);
-        return CHtml::tag('div', $htmlOptions,
-            $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                'name' => $name,
-                'value' => $value,
-                'onLabel'=>gT('On'),
-                'offLabel' => gT('Off'),
-                'htmlOptions' => $htmlOptions,
-            ), true)
-        );
+        return $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+            'name' => $name,
+            'checkedOption' => $value,
+            'selectOptions' => [
+                '1' => gT('On'),
+                '0' => gT('Off'),
+            ],
+            'htmlOptions' => $htmlOptions,
+        ], true);
     }
 
     public function renderCheckbox($name, array $metaData, $form = null)
     {
         $htmlOptions = $this->htmlOptions($metaData, $form, array('uncheckValue'=>false));
+        $htmlOptions['class'] = 'form-check-input';
         $value = isset($metaData['current']) ? (bool) $metaData['current'] : false;
         return CHtml::checkBox($name, $value, $htmlOptions);
     }
@@ -482,6 +488,7 @@ class SettingsWidget extends CWidget
         $metaData['class'][] = 'form-control';
         $value = $metaData['current'] ?? $metaData['default'] ?? null;
         $htmlOptions = $this->htmlOptions($metaData, $form);
+        $htmlOptions['class'] .= 'form-select ';
         $select2Options=array_merge(
             [
                 'minimumResultsForSearch' => 8,
@@ -506,7 +513,7 @@ class SettingsWidget extends CWidget
         // Remove class 'form-control' because of double styling
         // TODO: Where is this class added in the first place??
         $html = App()->getController()->widget('yiiwheels.widgets.select2.WhSelect2', $properties, true);
-        $html = str_replace('form-control', '', $html);
+        $html = str_replace('form-control', '', (string) $html);
         return $html;
 
     }
@@ -576,12 +583,12 @@ class SettingsWidget extends CWidget
             'td',
             [],
             $this->widget(
-                'bootstrap.widgets.TbButtonGroup',
+                'yiistrap.widgets.TbButtonGroup',
                 [
                     'type' => 'link',
                     'buttons' => array(
-                        ['icon' => 'icon-minus', 'htmlOptions' => ['class' => 'remove']],
-                        ['icon' => 'icon-plus', 'htmlOptions' => ['class' => 'add']]
+                        ['icon' => 'ri-subtract-fill', 'htmlOptions' => ['class' => 'remove']],
+                        ['icon' => 'ri-add-fill', 'htmlOptions' => ['class' => 'add']]
                     )
                 ],
                 true
@@ -612,33 +619,34 @@ class SettingsWidget extends CWidget
     {
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
         $value = $metaData['current'] ?? '';
-        $html = Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
+        /**
+         * Fix the value according to saveformat only if isset and not empty
+         * By defalt : save as sent by input (admin lanuage dependent
+         **/
+        if (!empty($metaData['saveformat'])) {
+            if (is_string($value) && $value !== "") {
+                $datetimeobj = new Date_Time_Converter($value, $metaData['saveformat']);
+                $value = $datetimeobj->convert($dateformatdetails['phpdate'] . "H:i");
+            } else {
+                $value = "";
+            }
+        }
+        $metaData['class'][] = 'form-control';
+        $htmlOptions = $this->htmlOptions($metaData, $form);
+
+        return Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', array(
                 'name' => $name,
                 'id' => \CHtml::getIdByName($name),
                 'value' => $value,
+                'htmlOptions' => $htmlOptions,
                 'pluginOptions' => array(
                     'format' => $dateformatdetails['jsdate'] . " HH:mm",
-                    'allowInputToggle' =>true,
+                    'allowInputToggle' => true,
                     'showClear' => true,
-                    'tooltips' => array(
-                        'clear'=> gT('Clear selection'),
-                        'prevMonth'=> gT('Previous month'),
-                        'nextMonth'=> gT('Next month'),
-                        'selectYear'=> gT('Select year'),
-                        'prevYear'=> gT('Previous year'),
-                        'nextYear'=> gT('Next year'),
-                        'selectDecade'=> gT('Select decade'),
-                        'prevDecade'=> gT('Previous decade'),
-                        'nextDecade'=> gT('Next decade'),
-                        'prevCentury'=> gT('Previous century'),
-                        'nextCentury'=> gT('Next century'),
-                        'selectTime'=> gT('Select time')
-                    ),
                     'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                 )
             ), true
         );
-        return $html;
     }
 
     /* Return htmlOptions for an input od seting

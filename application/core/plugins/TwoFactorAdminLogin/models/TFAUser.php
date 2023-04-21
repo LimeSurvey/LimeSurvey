@@ -55,24 +55,24 @@ class TFAUser extends User
      */
     public function getButtons()
     {
-        if(!$this->hasAuthSet) {
-            return '';
-        }
-        $buttons = "<div class='icon-btn-row'>";
-        $buttons .= '<button '
-            . 'class="btn btn-icon btn-default btn-sm TFA--management--action-deleteToken" '
-            . 'title="' . gT("Delete 2FA key") . '" '
-            . 'data-toggle="tooltip" '
-            . 'data-confirmtext="' . gT('Are you sure you want to delete this 2FA key?') . '" '
-            . 'data-buttons="{confirm_cancel: \'' . gT('No, cancel') . '\', confirm_ok: \'' . gT('Yes, I am sure') . '\'}" '
-            . 'data-href="' . Yii::app()->createUrl("plugins/direct/plugin/TwoFactorAdminLogin/function/directCallDeleteKey") . '" '
-            . 'data-uid="' . $this->uid . '" '
-            . 'data-errortext="' . gT('An error has happened, and the key could not be deleted.') . '" '
-            . '>'
-            . '<i class="fa fa-trash text-danger"></i>'
-            . '</button>';
-        $buttons .= "</div>";
-        return $buttons;
+        $hasAuthSet = $this->getHasAuthSet();
+        $dropdownItems = [];
+        $dropdownItems[] = [
+            'title'            => gT('Delete 2FA key'),
+            'linkClass'        => 'TFA--management--action-deleteToken',
+            'iconClass'        => 'ri-delete-bin-fill text-danger',
+            'enabledCondition' => $hasAuthSet,
+            'linkAttributes'   => [
+                'data-bs-toggle'   => "modal",
+                'data-confirmtext' => gT("Are you sure you want to delete this 2FA key?"),
+                'data-buttons'     => json_encode (['confirm_cancel' => gT("Cancel"), 'confirm_ok' => gt('Delete')]),
+                'data-href'        => App()->createUrl("plugins/direct/plugin/TwoFactorAdminLogin/function/directCallDeleteKey"),
+                'data-uid'         => $this->uid,
+                'data-errortext'   => gT('An error has happened, and the key could not be deleted.'),
+            ]
+        ];
+
+        return App()->getController()->widget('ext.admin.grid.GridActionsWidget.GridActionsWidget', ['dropdownItems' => $dropdownItems], true);
     }
 
     /**
@@ -104,44 +104,46 @@ class TFAUser extends User
      */
     public function getColumns()
     {
-        // TODO should be static
-        $cols = array(
-             array(
-                 "name" => 'buttons',
-                 "type" => 'raw',
-                 "filter" => false,
-                 "header" => gT("Action")
-             ),
-             array(
-                 "name" => 'users_name',
-                 "header" => gT("Username"),
-             ),
-             array(
-                 "name" => 'full_name',
-                 "header" => gT("Full name"),
-             ),
-             array(
-                 "name" => 'email',
-                 "header" => gT("Email"),
-             ),
-             array(
-                 "name" => 'hasAuthSet',
-                 "header" => gT("2FA enabled"),
-                 "filter" => TbHtml::dropDownList('userkeys_secretKey', Yii::app()->request->getParam('userkeys_secretKey'), [
-                     '' => '',
-                     '1' => gT('Yes'),
-                     '0' => gT('No'),
-                    ]),
-             ),
-             array(
-                "name" => 'userkeys.authType',
+        $cols = [
+            [
+                "name"   => 'users_name',
+                "header" => gT("Username"),
+            ],
+            [
+                "name"   => 'full_name',
+                "header" => gT("Full name"),
+            ],
+            [
+                "name"   => 'email',
+                "header" => gT("Email"),
+            ],
+            [
+                "name"   => 'hasAuthSet',
+                "header" => gT("2FA enabled"),
+                "filter" => TbHtml::dropDownList('userkeys_secretKey', Yii::app()->request->getParam('userkeys_secretKey'), [
+                    ''  => '',
+                    '1' => gT('Yes'),
+                    '0' => gT('No'),
+                ]),
+            ],
+            [
+                "name"   => 'userkeys.authType',
                 "header" => gT("2FA method"),
-                "filter" => TbHtml::dropDownList('userkeys_authType', Yii::app()->request->getParam('userkeys_authType'), array_merge([''=>''], TFAUserKey::$authTypeOptions)),
-            ),
-        );
+                "filter" => TbHtml::dropDownList('userkeys_authType', Yii::app()->request->getParam('userkeys_authType'), array_merge(['' => ''], TFAUserKey::$authTypeOptions)),
+            ],
+            [
+                "name"              => 'buttons',
+                "type"              => 'raw',
+                "filter"            => false,
+                "header"            => gT("Action"),
+                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+                'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
+                'htmlOptions'       => ['class' => 'ls-sticky-column']
+            ],
+        ];
         return $cols;
     }
- 
+
     /** @inheritDoc */
     public function search()
     {

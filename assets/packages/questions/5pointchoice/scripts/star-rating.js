@@ -128,5 +128,5 @@ function doRatingStar(qID) {
         });
 
     //hide the standard-items
-    answersList.addClass("starred-list sr-only");
+    answersList.addClass("starred-list visually-hidden");
 }

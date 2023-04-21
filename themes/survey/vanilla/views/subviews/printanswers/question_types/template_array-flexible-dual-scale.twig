@@ -1,6 +1,6 @@
  {% extends "./subviews/printanswers/printanswers_question.twig" %}
  {% block question_answer %}
- <div class="col-md-8">
+ <div class="col-lg-8">
     <table class="table table-condensed table-striped">
     {% for subquestionId, subquestion in question.subquestions %}
         {% if subquestion.question_order == 1 %}

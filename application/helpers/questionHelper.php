@@ -1229,7 +1229,7 @@ class questionHelper
             'expression' => 1,
             'i18n' => true,
             'default' => "",
-            "help" => sprintf(gT("Replace choice header (default: \"%s\")"), gT("Your choices")),
+            "help" => sprintf(gT("Replace choice header (default: \"%s\")"), gT("Available items")),
             "caption" => gT("Choice header")
         );
 
@@ -1308,6 +1308,7 @@ class questionHelper
             'category' => gT('Timer'),
             'sortorder' => 100,
             "inputtype" => "textarea",
+            'expression' => 1,
             "help" => gT("CSS Style for the message that displays in the countdown timer during the countdown"),
             "caption" => gT("Time limit timer CSS style")
         );

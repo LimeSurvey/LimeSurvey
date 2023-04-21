@@ -416,7 +416,9 @@
 				CKEDITOR.tools.setTimeout( onDomReady, 0, this, win );
 			}, this );
 
-			this._.docTitle = this.getWindow().getFrame().getAttribute( 'title' );
+			// In case of lack of the title attribute, use non-breaking space.
+			// It needs to be as a raw character because HTML entity can cause issues in IE.
+			this._.docTitle = this.getWindow().getFrame().getAttribute( 'title' ) || '\xa0';
 		},
 
 		base: CKEDITOR.editable,
@@ -521,6 +523,20 @@
 							data = data.replace( /<body[^>]*>/, '$&<!-- cke-content-start -->'  );
 					}
 
+					// Add ARIA attributes (#4052).
+					data = data.replace( /<body/, '<body role="textbox" aria-multiline="true"' );
+
+					if ( editor.title ) {
+						data = data.replace( /<body/, '<body aria-label="' +
+							CKEDITOR.tools.htmlEncodeAttr( editor.title ) + '"' );
+					}
+
+					// Add [tabindex=0] for the editor (#1904).
+					// Can't do it in Firefox due to https://bugzilla.mozilla.org/show_bug.cgi?id=1483828.
+					if ( !CKEDITOR.env.gecko ) {
+						data = data.replace( '<body', '<body tabindex="0" ' );
+					}
+
 					// The script that launches the bootstrap logic on 'domReady', so the document
 					// is fully editable even before the editing iframe is fully loaded (https://dev.ckeditor.com/ticket/4455).
 					var bootstrapCode =
@@ -593,6 +609,16 @@
 					// while enterMode is ENTER_BR (https://dev.ckeditor.com/ticket/10146).
 					if ( CKEDITOR.env.gecko && config.enterMode != CKEDITOR.ENTER_BR )
 						data = data.replace( /<br>(?=\s*(:?$|<\/body>))/, '' );
+
+					// Remove ARIA attributes during getting data for full-page editing (#1904, #4052).
+					if ( fullPage ) {
+						data = data
+							.replace( /<body(.*?)role="?textbox"?/i, '<body$1' )
+							.replace( /<body(.*?)aria-multiline="?true"?/i, '<body$1' )
+							.replace( /<body(.*?)tabindex="?0"?/i, '<body$1' )
+							.replace( /<body(.*?)aria-label="(.+?)"/i, '<body$1' )
+							.replace( /<body(.*?)aria-readonly="?(?:true|false)"?/i, '<body$1' );
+					}
 
 					data = editor.dataProcessor.toDataFormat( data );
 

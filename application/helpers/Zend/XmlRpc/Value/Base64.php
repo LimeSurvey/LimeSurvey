@@ -63,6 +63,6 @@ class Zend_XmlRpc_Value_Base64 extends Zend_XmlRpc_Value_Scalar
      */
     public function getValue()
     {
-        return base64_decode($this->_value);
+        return base64_decode((string) $this->_value);
     }
 }
