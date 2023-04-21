@@ -1,12 +1,12 @@
 <?php
 
-namespace LimeSurvey\Models\Services\SurveyPatch\OperationHandler;
+namespace LimeSurvey\Models\Services\JsonPatch\OperationHandler;
 
 use Survey;
-use LimeSurvey\Models\Services\SurveyPatch\Path;
-use LimeSurvey\Models\Services\SurveyPatch\PathMatch;
-use LimeSurvey\Models\Services\SurveyPatch\Operation;
-use LimeSurvey\Models\Services\SurveyPatch\OperationHandlerInterface;
+use LimeSurvey\Models\Services\JsonPatch\Path;
+use LimeSurvey\Models\Services\JsonPatch\PathMatch;
+use LimeSurvey\Models\Services\JsonPatch\Operation;
+use LimeSurvey\Models\Services\JsonPatch\OperationHandlerInterface;
 
 
 /**

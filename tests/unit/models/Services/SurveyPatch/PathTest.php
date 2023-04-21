@@ -1,13 +1,13 @@
 <?php
 
-namespace ls\tests\Services\SurveyPatch;
+namespace ls\tests\Services\JsonPatch;
 
 use ls\tests\TestBaseClass;
-use LimeSurvey\Models\Services\SurveyPatch\Path;
-use LimeSurvey\Models\Services\SurveyPatch\PathMatch;
+use LimeSurvey\Models\Services\JsonPatch\Path;
+use LimeSurvey\Models\Services\JsonPatch\PathMatch;
 
 /**
- * @testdox SurveyPatch Path
+ * @testdox JsonPatch Path
  */
 class PathTest extends TestBaseClass
 {

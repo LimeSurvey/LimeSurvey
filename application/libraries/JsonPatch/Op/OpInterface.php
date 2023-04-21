@@ -1,6 +1,6 @@
 <?php
 
-namespace LimeSurvey\SurveyPatch\Op;
+namespace LimeSurvey\JsonPatch\Op;
 
 interface OpInterface
 {

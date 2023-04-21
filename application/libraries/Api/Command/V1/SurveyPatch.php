@@ -16,7 +16,7 @@ use QuestionAttribute;
 use QuestionL10n;
 use Survey;
 
-class SurveyPatch implements CommandInterface
+class JsonPatch implements CommandInterface
 {
     use AuthSessionTrait;
     use AuthPermissionTrait;

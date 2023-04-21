@@ -1,9 +1,9 @@
 <?php
 
-namespace LimeSurvey\SurveyPatch\OpHandler;
+namespace LimeSurvey\JsonPatch\OpHandler;
 
-use LimeSurvey\SurveyPatch\Op\OpInterface;
-use LimeSurvey\SurveyPatch\Pattern\PatternInterface;
+use LimeSurvey\JsonPatch\Op\OpInterface;
+use LimeSurvey\JsonPatch\Pattern\PatternInterface;
 
 interface OpHandlerInterface
 {

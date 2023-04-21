@@ -1,6 +1,6 @@
 <?php
 
-namespace LimeSurvey\SurveyPatch\Pattern;
+namespace LimeSurvey\JsonPatch\Pattern;
 
 class PatternSimple implements PatternInterface
 {

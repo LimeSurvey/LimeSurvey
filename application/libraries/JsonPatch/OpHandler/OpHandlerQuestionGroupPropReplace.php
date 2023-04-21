@@ -1,12 +1,12 @@
 <?php
 
-namespace LimeSurvey\SurveyPatch\OpHandler;
+namespace LimeSurvey\JsonPatch\OpHandler;
 
 use QuestionGroup;
-use LimeSurvey\SurveyPatch\Op\OpInterface;
-use LimeSurvey\SurveyPatch\Op\OpUpdate;
-use LimeSurvey\SurveyPatch\Pattern\PatternInterface;
-use LimeSurvey\SurveyPatch\Pattern\PatternSimple;
+use LimeSurvey\JsonPatch\Op\OpInterface;
+use LimeSurvey\JsonPatch\Op\OpReplace;
+use LimeSurvey\JsonPatch\Pattern\PatternInterface;
+use LimeSurvey\JsonPatch\Pattern\PatternSimple;
 
 class OpHandlerQuestionGroupProp implements OpHandlerInterface
 {
@@ -36,6 +36,6 @@ class OpHandlerQuestionGroupProp implements OpHandlerInterface
 
     public function getOp(): OpInterface
     {
-        return new OpUpdate;
+        return new OpReplace;
     }
 }

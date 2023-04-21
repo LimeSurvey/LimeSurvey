@@ -1,6 +1,6 @@
 <?php
 
-namespace LimeSurvey\Models\Services\SurveyPatch;
+namespace LimeSurvey\Models\Services\JsonPatch;
 
 /**
  * Patch

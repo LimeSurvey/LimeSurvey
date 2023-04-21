@@ -1,18 +1,18 @@
 <?php
 
-namespace LimeSurvey\SurveyPatch\Op;
+namespace LimeSurvey\JsonPatch\Op;
 
 class Op implements OpInterface
 {
-    protected $id = '';
+    private const CODE = '';
 
     public function getId()
     {
-        return $this->id;
+        return static::CODE;
     }
 
     public function __toString()
     {
-        return $this->getId();
+        return static::CODE;
     }
 }

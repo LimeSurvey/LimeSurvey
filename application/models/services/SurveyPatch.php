@@ -2,14 +2,14 @@
 
 namespace LimeSurvey\Models\Services;
 
-use LimeSurvey\Models\Services\SurveyPatch\Path;
-use LimeSurvey\Models\Services\SurveyPatch\PathMatch;
-use LimeSurvey\Models\Services\SurveyPatch\Patch;
-use LimeSurvey\Models\Services\SurveyPatch\Operation;
-use LimeSurvey\Models\Services\SurveyPatch\OperationHandlerInterface;
-use LimeSurvey\Models\Services\SurveyPatch\Exception;
+use LimeSurvey\Models\Services\JsonPatch\Path;
+use LimeSurvey\Models\Services\JsonPatch\PathMatch;
+use LimeSurvey\Models\Services\JsonPatch\Patch;
+use LimeSurvey\Models\Services\JsonPatch\Operation;
+use LimeSurvey\Models\Services\JsonPatch\OperationHandlerInterface;
+use LimeSurvey\Models\Services\JsonPatch\Exception;
 
-class SurveyPatch
+class JsonPatch
 {
     protected $operationHandlers = [];
 
@@ -18,7 +18,7 @@ class SurveyPatch
      *
      * @param int $surveyId
      * @param array $patchData
-     * @throws \LimeSurvey\Model\Service\SurveyPatch\Exception
+     * @throws \LimeSurvey\Model\Service\JsonPatch\Exception
      * @return array
      */
     public function apply($surveyId, $patchData)

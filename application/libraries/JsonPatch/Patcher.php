@@ -1,29 +1,41 @@
 <?php
 
-namespace LimeSurvey\SurveyPatch;
+namespace LimeSurvey\JsonPatch;
 
-use LimeSurvey\SurveyPatch\OpHandler\OpHandlerInterface;
+use LimeSurvey\JsonPatch\OpHandler\OpHandlerInterface;
 
 class Patcher
 {
     private $opHandlers = [];
+    private $params = [];
 
-    public function applyPatch($surveyId, $patch)
+    public function applyPatch($patch, $params = [])
     {
         if (is_array($patch) && !empty($patch)) {
+            $params = array_merge($params, $this->params);
+
             $validationResult = $this->validatePatch($patch);
             if ($validationResult !== true) {
-                throw new SurveyPatchException('Invalid patch');
+                throw new JsonPatchException('Invalid patch');
             }
 
-            $params = ['surveyId' => $surveyId];
             foreach ($patch as $patchOp) {
                 $this->applyOp($patchOp, $params);
             }
         }
     }
 
-    public function applyOp($patchOp, $params)
+    public function addOpHandler(OpHandlerInterface $opHandler)
+    {
+        $this->opHandlers[] = $opHandler;
+    }
+
+    public function setParams($params)
+    {
+        $this->params = $params;
+    }
+
+    protected function applyOp($patchOp, $params)
     {
         foreach ($this->opHandlers as $opHandler) {
             if ($opHandler->getOp()->_toString() !== $patchOp['op']) {
@@ -48,11 +60,6 @@ class Patcher
 
             $opHandler->applyOperation($params, $patchOp['value']);
         }
-    }
-
-    public function addOpHandler(OpHandlerInterface $opHandler)
-    {
-        $this->opHandlers[] = $opHandler;
     }
 
     /**
