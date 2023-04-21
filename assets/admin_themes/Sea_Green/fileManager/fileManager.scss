@@ -12,6 +12,59 @@
   .ri-delete-bin-line {
     color: $error !important;
   }
+
+  .ui-dialog {
+    border: 1px solid $g-900 !important;
+    box-shadow: none !important;
+    .ui-dialog-titlebar {
+      box-shadow: none;
+      border: 1px solid $g-900;
+      background: none;
+      color: $g-900;
+      text-shadow: none;
+      border-radius: 0;
+    }
+    .ui-dialog-content {
+      box-shadow: none;
+      .uniform-input {
+        background: none;
+        border: 1px solid $g-900;
+        box-shadow: none;
+        &:focus {
+          box-shadow: 4px 4px 0px $elevation-shadow !important;
+        }
+      }
+    }
+
+    .ui-dialog-buttonpane {
+      box-shadow: none;
+      button {
+        background: none;
+        box-shadow: none;
+        border: 1px solid $g-900;
+        padding: 4px 10px;
+        &:hover {
+          text-shadow: none !important;
+          box-shadow: $btn-hover-boxshadow !important;
+        }
+        .ui-button-icon {
+          margin: auto;
+        }
+      }
+    }
+    .box {
+      box-shadow: none;
+      border-radius: 0;
+    }
+
+    .ui-dialog-titlebar-close {
+      display: none;
+    }
+    .about div.head a {
+      background: none;
+    }
+  }
+
   #menu {
     .ui-menu {
       box-shadow: none !important;
@@ -26,6 +79,7 @@
         text-shadow: none !important;
         box-shadow: $btn-hover-boxshadow !important;
         color: $g-900 !important;
+        border-radius: 0 !important;
       }
 
       a {
@@ -39,7 +93,6 @@
       }
     }
   }
-
   #toolbar {
     height: auto !important;
     display: flex !important;
@@ -147,7 +200,7 @@
   }
   #settings {
     fieldset {
-      margin-top: 0px !important;
+      margin-top: 5px !important;
       background: $white !important;
       border: 1px solid $g-900 !important;
       border-radius: 4px !important;
@@ -241,7 +294,7 @@
 
     fieldset.sh-uniform legend {
       font-weight: $font-weight-500 !important;
-      font-size: $font-size-base !important;
+      font-size: $font-size-sm !important;
       color: $g-900 !important;
       text-shadow: none !important;
       border-bottom: 1px solid $g-900 !important;
@@ -249,6 +302,8 @@
 
     label.sh-uniform {
       color: $g-900 !important;
+      font-size: $font-size-xs !important;
+
     }
   }
 }

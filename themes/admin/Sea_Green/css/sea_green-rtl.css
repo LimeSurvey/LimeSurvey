@@ -19054,6 +19054,55 @@ table [class^=ri-], table [class*=" ri-"] {
 .file-manager-body .ri-delete-bin-line {
   color: #FF515F !important;
 }
+.file-manager-body .ui-dialog {
+  border: 1px solid #1E1E1E !important;
+  box-shadow: none !important;
+}
+.file-manager-body .ui-dialog .ui-dialog-titlebar {
+  box-shadow: none;
+  border: 1px solid #1E1E1E;
+  background: none;
+  color: #1E1E1E;
+  text-shadow: none;
+  border-radius: 0;
+}
+.file-manager-body .ui-dialog .ui-dialog-content {
+  box-shadow: none;
+}
+.file-manager-body .ui-dialog .ui-dialog-content .uniform-input {
+  background: none;
+  border: 1px solid #1E1E1E;
+  box-shadow: none;
+}
+.file-manager-body .ui-dialog .ui-dialog-content .uniform-input:focus {
+  box-shadow: -4px 4px 0px rgba(66, 0, 255, 0.2) !important;
+}
+.file-manager-body .ui-dialog .ui-dialog-buttonpane {
+  box-shadow: none;
+}
+.file-manager-body .ui-dialog .ui-dialog-buttonpane button {
+  background: none;
+  box-shadow: none;
+  border: 1px solid #1E1E1E;
+  padding: 4px 10px;
+}
+.file-manager-body .ui-dialog .ui-dialog-buttonpane button:hover {
+  text-shadow: none !important;
+  box-shadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4) !important;
+}
+.file-manager-body .ui-dialog .ui-dialog-buttonpane button .ui-button-icon {
+  margin: auto;
+}
+.file-manager-body .ui-dialog .box {
+  box-shadow: none;
+  border-radius: 0;
+}
+.file-manager-body .ui-dialog .ui-dialog-titlebar-close {
+  display: none;
+}
+.file-manager-body .ui-dialog .about div.head a {
+  background: none;
+}
 .file-manager-body #menu .ui-menu {
   box-shadow: none !important;
   border: 1px solid #1E1E1E !important;
@@ -19067,6 +19116,7 @@ table [class^=ri-], table [class*=" ri-"] {
   text-shadow: none !important;
   box-shadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4) !important;
   color: #1E1E1E !important;
+  border-radius: 0 !important;
 }
 .file-manager-body #menu .ui-menu a {
   color: #1E1E1E !important;
@@ -19172,7 +19222,7 @@ table [class^=ri-], table [class*=" ri-"] {
   padding-bottom: 2px;
 }
 .file-manager-body #settings fieldset {
-  margin-top: 0px !important;
+  margin-top: 5px !important;
   background: #fff !important;
   border: 1px solid #1E1E1E !important;
   border-radius: 4px !important;
@@ -19255,11 +19305,12 @@ table [class^=ri-], table [class*=" ri-"] {
 }
 .file-manager-body #settings fieldset.sh-uniform legend {
   font-weight: 500 !important;
-  font-size: 1.14rem !important;
+  font-size: 0.9975rem !important;
   color: #1E1E1E !important;
   text-shadow: none !important;
   border-bottom: 1px solid #1E1E1E !important;
 }
 .file-manager-body #settings label.sh-uniform {
   color: #1E1E1E !important;
+  font-size: 0.855rem !important;
 }
