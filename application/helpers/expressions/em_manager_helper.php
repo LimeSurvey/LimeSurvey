@@ -2583,8 +2583,8 @@
                     $sgqa = $qinfo['sgqa'];
                     switch ($type)
                     {
-                        case '|': //List - dropdown
-                            $eqn = "(" . $sgqa . "_filecount >= (" . $min_num_of_files . "))";
+                        case '|':
+                            $eqn = "(" . $sgqa . "_filecount.NAOK >= (" . $min_num_of_files . "))";
                             break;
                         default:
                             break;
@@ -2617,8 +2617,8 @@
                     $sgqa = $qinfo['sgqa'];
                     switch ($type)
                     {
-                        case '|': //List - dropdown
-                            $eqn = "(" . $sgqa . "_filecount <= (" . $max_num_of_files . "))";
+                        case '|':
+                            $eqn = "(is_empty(" . $sgqa . "_filecount.NAOK) || " . $sgqa . "_filecount.NAOK <= (" . $max_num_of_files . "))";
                             break;
                         default:
                             break;
