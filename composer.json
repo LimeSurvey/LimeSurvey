@@ -78,8 +78,7 @@
 	},
 	"scripts": {
 		"openapi": [
-			"php ./open-api-gen.php v1",
-			"php ./open-api-gen.php v2"
+			"php ./open-api-gen.php v1"
 		],
 		"phpunit": "./vendor/bin/phpunit --testdox --coverage-text",
 		"phpunit-api": "./vendor/bin/phpunit --testdox --coverage-text tests/unit/api/",

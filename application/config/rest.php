@@ -13,8 +13,7 @@
  */
 
 $rest = array_merge(
-    include __DIR__ . '/rest/v1.php',
-    include __DIR__ . '/rest/v2.php',
+    include __DIR__ . '/rest/v1.php'
 );
 
 return array('rest' => $rest);

@@ -112,7 +112,7 @@ foreach ($rest as $path => $config) {
                 ->description(
                     !empty($tagConfig['description']) ? $tagConfig['description'] : ''
                 );
-            $openApi = $openApi->tags(...$tags);
+            $openApi = $openApi->tags(...array_values($tags));
         }
         if (isset($tags[$tagId])) {
             $oaOperation = $oaOperation->tags($tags[$tagId]);

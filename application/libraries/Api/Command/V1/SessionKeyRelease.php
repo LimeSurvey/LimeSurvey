@@ -5,9 +5,9 @@ namespace LimeSurvey\Api\Command\V1;
 use LimeSurvey\Api\Auth\AuthSession;
 use LimeSurvey\Api\Command\{
     CommandInterface,
+    Mixin\CommandResponseTrait,
     Request\Request
 };
-use LimeSurvey\Api\Command\Mixin\CommandResponseTrait;
 
 class SessionKeyRelease implements CommandInterface
 {

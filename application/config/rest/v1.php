@@ -13,23 +13,10 @@ $rest = [
                 'name' => 'Survey',
                 'description' => 'Survey',
             ],
-            'questionGroup' => [
-                'name' => 'Question Group',
-                'description' => 'Question Group',
-            ],
-            'question' => [
-                'name' => 'Question',
-                'description' => 'Question',
-            ],
             'session' => [
                 'name' => 'Session',
                 'description' => 'Session',
-            ],
-            'site-settings' => [
-                'name' => 'Site Settings',
-                'description' => 'Site Settings',
             ]
-
         ]
     ]
 ];
@@ -37,8 +24,5 @@ $rest = [
 return array_merge(
     $rest,
     include __DIR__ . '/v1/survey.php',
-    include __DIR__ . '/v1/question-group.php',
-    include __DIR__ . '/v1/question.php',
-    include __DIR__ . '/v1/session.php',
-    include __DIR__ . '/v1/site-settings.php'
+    include __DIR__ . '/v1/session.php'
 );
