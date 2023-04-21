@@ -1465,6 +1465,7 @@ class statistics_helper
 
         $othEncrypted = Response::encryptSingle('-oth-');
         $emptyStringEncrypted = Response::encryptSingle('');
+        // TODO: Figure out if question is encrypted or not, and if to compare with normal or encrypted empty string
 
         foreach ($outputs['alist'] as $al) {
 
