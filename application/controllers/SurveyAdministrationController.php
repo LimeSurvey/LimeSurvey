@@ -1718,6 +1718,35 @@ class SurveyAdministrationController extends LSBaseController
         $this->render('deactivateSurvey_view', $aData);
     }
 
+    /**
+     * @return void
+     */
+    public function actionActivateSurvey()
+    {
+        $surveyId = (int) Yii::app()->request->getPost('surveyid');
+        if (!Permission::model()->hasSurveyPermission($surveyId, 'surveyactivation', 'update')) {
+            Yii::app()->user->setFlash('error', gT("Access denied"));
+            $this->redirect(Yii::app()->request->urlReferrer);
+        }
+        $oSurvey = Survey::model()->findByPk($surveyId);
+        $aSurveysettings = getSurveyInfo($surveyId);
+
+        return $this->renderPartial(
+            '/admin/super/_renderJson',
+            [
+                'data' => [
+                    'success' => true,
+                    'message' => 'all good',
+                    'html' => $this->renderPartial('_activateSurveyOptions', [
+                        'oSurvey' => $oSurvey,
+                        'aSurveysettings' => $aSurveysettings,
+                    ]),
+                ]
+            ],
+            false,
+            false
+        );
+    }
 
     /**
      * Function responsible to activate survey.
@@ -1728,7 +1757,7 @@ class SurveyAdministrationController extends LSBaseController
      * @access public
      * @throws CException
      */
-    public function actionActivate($iSurveyID)
+    public function actionActivate2($iSurveyID)
     {
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update')) {
             Yii::app()->user->setFlash('error', gT("Access denied"));
@@ -1739,7 +1768,8 @@ class SurveyAdministrationController extends LSBaseController
         $survey = Survey::model()->findByPk($iSurveyID);
         $surveyActivator = new SurveyActivator($survey);
 
-        Yii::app()->user->setState('sql_' . $iSurveyID, ''); //If user has set some filters for responses from statistics on a previous activation, it must be wiped out
+        //If user has set some filters for responses from statistics on a previous activation, it must be wiped out
+        Yii::app()->user->setState('sql_' . $iSurveyID, '');
         $aData = array();
         $aData['oSurvey'] = $survey;
         $aData['sidemenu']['state'] = false;

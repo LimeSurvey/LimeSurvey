@@ -144,7 +144,7 @@ $optionsOnOff = ['Y' => gt('On'), 'N' => gt('Off')];
                 <?php
                 $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name' => 'refurl',
-                    'checkedOption' => $aSurveysettings['savetimings'],
+                    'checkedOption' => $aSurveysettings['refurl'],
                     'selectOptions' => $optionsOnOff
                 ]);
                 ?>
@@ -176,19 +176,5 @@ $optionsOnOff = ['Y' => gt('On'), 'N' => gt('Off')];
     </div>
 </div>
 -->
-
-<div class='row'>
-    <div class='col-md-6'>
-        <a class="btn btn-cancel"
-           href="<?php echo $this->createUrl("surveyAdministration/view/", ['surveyid' => $oSurvey->sid]); ?>">
-            <?php eT("Cancel"); ?>
-        </a>
-    </div>
-    <div class='col-md-6'>
-        <input type='hidden' name='ok' value='Y'/>
-        <input id="activateSurvey__basicSettings--proceed" type='submit' class="btn btn-primary"
-               value="<?php eT("Save and activate"); ?>"/>
-    </div>
-</div>
 
 </form>
