@@ -1,7 +1,5 @@
 <?php
-require_once __DIR__ . '/vendor/autoload.php';
 
-use Greew\OAuth2\Client\Provider\Azure;
 use LimeSurvey\PluginManager\SmtpOAuthPluginBase;
 use PHPMailer\PHPMailer\PHPMailer;
 
@@ -38,6 +36,18 @@ class AzureOAuthSMTP extends SmtpOAuthPluginBase
 
     public function init()
     {
+        // This plugin is only compatible with PHP 7.3 and above,
+        // while LimeSurvey is still compatible with PHP 7.2, so
+        // we need to make sure we only load composer's autoload
+        // on PHP 7.3 and above. We also need to prevent activation
+        // of the plugin on PHP 7.2 and below.
+        // TODO: Remove this once we drop support for PHP 7.2
+        $this->subscribe('beforeActivate');
+        if (!(PHP_VERSION_ID >= 70300)) {
+            return;
+        }
+        require_once __DIR__ . '/vendor/autoload.php';
+
         $this->subscribe('listEmailPlugins');
         $this->subscribe('afterSelectEmailPlugin');
         $this->subscribe('MailerConstruct');    // Handler defined in SmtpOAuthPluginBase
@@ -46,6 +56,18 @@ class AzureOAuthSMTP extends SmtpOAuthPluginBase
         $this->subscribe('afterReceiveOAuthResponse');  // Handler defined in SmtpOAuthPluginBase
 
         $this->subscribe('beforeEmailDispatch');
+    }
+
+    /**
+     * TODO: Remove this once we drop support for PHP 7.2
+     */
+    public function beforeActivate()
+    {
+        if (!(PHP_VERSION_ID >= 70300)) {
+            $event = $this->getEvent();
+            $event->set('success', false);
+            $event->set('message', gT("This plugin requires PHP 7.3 or above."));
+        }
     }
 
     /**
@@ -96,7 +118,7 @@ class AzureOAuthSMTP extends SmtpOAuthPluginBase
             'accessType' => 'offline',
             'prompt' => 'consent',
         ];
-        return new Azure($params);
+        return new Greew\OAuth2\Client\Provider\Azure($params);
     }
 
     /**
