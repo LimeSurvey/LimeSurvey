@@ -19239,8 +19239,8 @@ table [class^=ri-], table [class*=" ri-"] {
 }
 .file-manager-body #settings fieldset .radio {
   display: flex;
-  width: 17px !important;
-  height: 17px !important;
+  width: 18px !important;
+  height: 18px !important;
   border: 1px solid #1E1E1E !important;
 }
 .file-manager-body #settings fieldset .radio:hover, .file-manager-body #settings fieldset .radio:focus {
@@ -19248,11 +19248,12 @@ table [class^=ri-], table [class*=" ri-"] {
   box-shadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4) !important;
 }
 .file-manager-body #settings fieldset .radio span.checked {
-  width: 11px;
-  height: 11px;
-  background: black;
+  width: 10px;
+  height: 10px;
+  background: #333641 !important;
   border-radius: 9999px;
   margin: auto;
+  border: 1px solid #1E1E1E !important;
 }
 .file-manager-body #settings fieldset .checker {
   width: 17px !important;
@@ -19274,10 +19275,10 @@ table [class^=ri-], table [class*=" ri-"] {
   content: "";
   position: absolute;
   top: 1px;
-  right: 6px;
+  right: 5px;
   display: table;
   width: 5px;
-  height: 11px;
+  height: 10px;
   border: 2px solid #fff;
   border-top-width: 0;
   border-right-width: 0;
@@ -19294,10 +19295,9 @@ table [class^=ri-], table [class*=" ri-"] {
   margin-right: -1px !important;
 }
 .file-manager-body #settings fieldset .checker input[type=checkbox]:checked:after {
-  border: none !important;
   width: 17px !important;
   height: 17px !important;
-  background-color: #1E1E1E !important;
+  background-color: #333641 !important;
 }
 .file-manager-body #settings fieldset:hover, .file-manager-body #settings fieldset:focus {
   text-shadow: none !important;

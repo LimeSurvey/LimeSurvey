@@ -25403,6 +25403,12 @@
   }, {
     originIcon: "a[href='kcdir:/files'] span.folder",
     newIcon: "ri-folder-line"
+  }, {
+    originIcon: "a[href='kcdir:/images'] span.folder",
+    newIcon: "ri-folder-line"
+  }, {
+    originIcon: "a[href='kcdir:/flash'] span.folder",
+    newIcon: "ri-folder-line"
   }];
   var menuReplacingIconData = [{
     originIcon: "a[href='kcact:refresh'][class='ui-menu-item-wrapper'] span",
@@ -25488,45 +25494,46 @@
 
         // Select the element to observe
         var targetNode = fileManagerIframe.contentWindow.document.getElementById("folders");
-
-        // Create a new MutationObserver
-        var observer = new MutationObserver(function (mutationsList) {
-          var _iterator = _createForOfIteratorHelper(mutationsList),
-            _step;
-          try {
-            for (_iterator.s(); !(_step = _iterator.n()).done;) {
-              var mutation = _step.value;
-              if (mutation.type === "childList" && mutation.addedNodes.length > 0) {
-                var _iterator2 = _createForOfIteratorHelper(mutation.addedNodes),
-                  _step2;
-                try {
-                  for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
-                    var node = _step2.value;
-                    if (node.nodeName === "DIV" && node.classList.contains("folders")) {
-                      // Do something if a matching node was added
-                      console.log('New span element with class "folder regular" added:', node);
-                      handleReplaceFolderIcons(fileManagerIframe, menuReplacingIconData);
+        if (targetNode) {
+          // Create a new MutationObserver
+          var observer = new MutationObserver(function (mutationsList) {
+            var _iterator = _createForOfIteratorHelper(mutationsList),
+              _step;
+            try {
+              for (_iterator.s(); !(_step = _iterator.n()).done;) {
+                var mutation = _step.value;
+                if (mutation.type === "childList" && mutation.addedNodes.length > 0) {
+                  var _iterator2 = _createForOfIteratorHelper(mutation.addedNodes),
+                    _step2;
+                  try {
+                    for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+                      var node = _step2.value;
+                      if (node.nodeName === "DIV" && node.classList.contains("folders")) {
+                        // Do something if a matching node was added
+                        console.log('New span element with class "folder regular" added:', node);
+                        handleReplaceFolderIcons(fileManagerIframe, menuReplacingIconData);
+                      }
                     }
+                  } catch (err) {
+                    _iterator2.e(err);
+                  } finally {
+                    _iterator2.f();
                   }
-                } catch (err) {
-                  _iterator2.e(err);
-                } finally {
-                  _iterator2.f();
                 }
               }
+            } catch (err) {
+              _iterator.e(err);
+            } finally {
+              _iterator.f();
             }
-          } catch (err) {
-            _iterator.e(err);
-          } finally {
-            _iterator.f();
-          }
-        });
+          });
 
-        // Start observing the target node for mutations
-        observer.observe(targetNode, {
-          childList: true,
-          subtree: true
-        });
+          // Start observing the target node for mutations
+          observer.observe(targetNode, {
+            childList: true,
+            subtree: true
+          });
+        }
 
         // Load sea_green css again after iframe is fully loaded
         handleAppendCssLink({

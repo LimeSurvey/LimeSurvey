@@ -23,6 +23,14 @@ const replacingIconData = [
         originIcon: "a[href='kcdir:/files'] span.folder",
         newIcon: "ri-folder-line",
     },
+    {
+        originIcon: "a[href='kcdir:/images'] span.folder",
+        newIcon: "ri-folder-line",
+    },
+    {
+        originIcon: "a[href='kcdir:/flash'] span.folder",
+        newIcon: "ri-folder-line",
+    },
 ];
 
 const menuReplacingIconData = [
@@ -143,35 +151,40 @@ export default function fileManagerStyle() {
                     "folders"
                 );
 
-            // Create a new MutationObserver
-            const observer = new MutationObserver((mutationsList) => {
-                for (let mutation of mutationsList) {
-                    if (
-                        mutation.type === "childList" &&
-                        mutation.addedNodes.length > 0
-                    ) {
-                        for (let node of mutation.addedNodes) {
-                            if (
-                                node.nodeName === "DIV" &&
-                                node.classList.contains("folders")
-                            ) {
-                                // Do something if a matching node was added
-                                console.log(
-                                    'New span element with class "folder regular" added:',
-                                    node
-                                );
-                                handleReplaceFolderIcons(
-                                    fileManagerIframe,
-                                    menuReplacingIconData
-                                );
+            if (targetNode) {
+                // Create a new MutationObserver
+                const observer = new MutationObserver((mutationsList) => {
+                    for (let mutation of mutationsList) {
+                        if (
+                            mutation.type === "childList" &&
+                            mutation.addedNodes.length > 0
+                        ) {
+                            for (let node of mutation.addedNodes) {
+                                if (
+                                    node.nodeName === "DIV" &&
+                                    node.classList.contains("folders")
+                                ) {
+                                    // Do something if a matching node was added
+                                    console.log(
+                                        'New span element with class "folder regular" added:',
+                                        node
+                                    );
+                                    handleReplaceFolderIcons(
+                                        fileManagerIframe,
+                                        menuReplacingIconData
+                                    );
+                                }
                             }
                         }
                     }
-                }
-            });
+                });
 
-            // Start observing the target node for mutations
-            observer.observe(targetNode, { childList: true, subtree: true });
+                // Start observing the target node for mutations
+                observer.observe(targetNode, {
+                    childList: true,
+                    subtree: true,
+                });
+            }
 
             // Load sea_green css again after iframe is fully loaded
             handleAppendCssLink({
