@@ -270,7 +270,7 @@
         */
         private $groupId2groupSeq;
         /**
-        * map question # to an incremental count of question order across the whole survey
+        * Map question # to an incremental count of question order across the whole survey
         *
         * @example [157] = 13 // means that that 14th question in the survey has qid=157
         *
