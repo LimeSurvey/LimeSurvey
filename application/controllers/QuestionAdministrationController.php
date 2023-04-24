@@ -309,28 +309,15 @@ class QuestionAdministrationController extends LSBaseController
         $aData['title_bar']['title']    = $oSurvey->currentLanguageSettings->surveyls_title .
             " (" . gT("ID") . ":" . $iSurveyID . ")";
 
-        $aData['topbar']['middleButtons'] = $this->renderPartial(
-            'partial/topbarBtns/listquestionsTopbarLeft_view',
-            [
-                'oSurvey' => $oSurvey,
-                'hasSurveyContentCreatePermission' => Permission::model()->hasSurveyPermission(
-                    $iSurveyID,
-                    'surveycontent',
-                    'create'
-                ),
-            ],
-            true
-        );
-
         // The DataProvider will be build from the Question model, search method
-        $model = new Question('search');
+        $questionModel = new Question('search');
         // Global filter
         if (isset($_GET['Question'])) {
-            $model->setAttributes($_GET['Question'], false);
+            $questionModel->setAttributes($_GET['Question'], false);
         }
         // Filter group
         if (isset($_GET['gid'])) {
-            $model->gid = $_GET['gid'];
+            $questionModel->gid = $_GET['gid'];
         }
         // Set number of page
         if (isset($_GET['pageSize'])) {
@@ -338,10 +325,84 @@ class QuestionAdministrationController extends LSBaseController
         }
         $aData['pageSize'] = App()->user->getState('pageSize', App()->params['defaultPageSize']);
         // We filter the current survey id
-        $model->sid = $oSurvey->sid;
-        $aData['model'] = $model;
+        $questionModel->sid = $oSurvey->sid;
+        $aData['questionModel'] = $questionModel;
+
+
+        // =========================   group data =============================
+      
+        // *  group model  *
+        $groupModel    = new QuestionGroup('search');
+
+        if (isset($_GET['QuestionGroup']['group_name'])) {
+            $groupModel->group_name = $_GET['QuestionGroup']['group_name'];
+        }
+
+        if (isset($_GET['pageSize'])) {
+            Yii::app()->user->setState('pageSize', (int) $_GET['pageSize']);
+        }
+
+        $baselang = $oSurvey->language;
+        $groupModel['sid'] = $iSurveyID;
+        $groupModel['language'] = $baselang;
+        // ====================== *
+
+
+        $aData['groupModel'] = $groupModel;
+        $aData['surveyid'] = $iSurveyID;
+        $aData['surveybar'] = [];
+
+        // =========================================================================
+
+        // =========================   reorder data =============================
+        // cloned below content from surveyAdministrationController line#2550
+        $groups = $oSurvey->groups;
+        $groupData = [];
+        $initializedReplacementFields = false;
+
+        foreach ($groups as $iGID => $oGroup) {
+            $groupData[$iGID]['gid'] = $oGroup->gid;
+            $groupData[$iGID]['group_text'] = $oGroup->gid . ' ' . $oGroup->questiongroupl10ns[$baselang]->group_name;
+            LimeExpressionManager::StartProcessingGroup($oGroup->gid, false, $iSurveyID);
+            if (!$initializedReplacementFields) {
+                templatereplace("{SITENAME}"); // Hack to ensure the EM sets values of LimeReplacementFields
+                $initializedReplacementFields = true;
+            }
+
+            $qs = array();
+
+            foreach ($oGroup->questions as $question) {
+                $relevance = $question->relevance == '' ? 1 : $question->relevance;
+                $questionText = sprintf(
+                    '[{%s}] %s % s',
+                    $relevance,
+                    $question->title,
+                    $question->questionl10ns[$baselang]->question
+                );
+                LimeExpressionManager::ProcessString($questionText, $question->qid);
+                $questionData['question'] = viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
+                $questionData['gid'] = $oGroup->gid;
+                $questionData['qid'] = $question->qid;
+                $questionData['title'] = $question->title;
+                $qs[] = $questionData;
+            }
+            $groupData[$iGID]['questions'] = $qs;
+            LimeExpressionManager::FinishProcessingGroup();
+        }
+
+        $aData['aGroupsAndQuestions'] = $groupData;
+
+        // =========================================================================
+
 
         $this->aData = $aData;
+
+         $aData['hasSurveyContentCreatePermission'] = Permission::model()->hasSurveyPermission(
+            $iSurveyID,
+            'surveycontent',
+            'create'
+         );
+
 
         $this->render("listquestions", $aData);
     }
