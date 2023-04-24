@@ -168,7 +168,7 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
 
-      - name: Setup 
+      - name: Setup
         run: |
           touch enabletests
           composer install -vvv
@@ -258,7 +258,7 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
 
-      - name: Setup 
+      - name: Setup
         run: |
           touch enabletests
           composer install -vvv

@@ -570,6 +570,8 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         }
         // If we made it here, authentication was a success and we do have a valid user
         $this->pluginManager->dispatchEvent(new PluginEvent('newUserLogin', $this));
+        /* Set the username as found in LimeSurvey */
+        $this->setUsername($user->users_name);
         $this->setAuthSuccess($user);
     }
 }

@@ -7,10 +7,7 @@
     <i class="ri-information-line me-2"></i>
     <p class="me-1">ᴵ</p>
     <div>
-      <?= gT(" Go to") ?>
-      <a href="<?php echo $this->createUrl('userManagement/index'); ?>" target="_blank"> 
-        <?= gT(" global user management ") ?></a> <?= gT("for general user management (add/edit/delete general users).") ?>
-      <?= gT("If you don't have permission please contact your administrator.") ?>
+      <?= sprintf(gT("Go to %sglobal user management%s for general user management (add/edit/delete general users). %sIf you don't have permission please contact your administrator.%s"), '<a href="' . $this->createUrl('userManagement/index') . '" target="_blank">', '</a>', '<br>', '</br>'); ?>
     </div>
   </div>
 </div>
