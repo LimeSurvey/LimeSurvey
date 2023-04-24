@@ -13,6 +13,6 @@ class Op implements OpInterface
 
     public function __toString()
     {
-        return static::CODE;
+        return static::getId();
     }
 }
