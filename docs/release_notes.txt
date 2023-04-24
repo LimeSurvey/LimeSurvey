@@ -34,6 +34,28 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.16 (build 230418) to 5.6.17 (build 230426) April 24, 2023
+-Fixed issue #18756: Unable to set non-integer values for initial slider value (#3057) (Denis Chenu)
+-Fixed issue #18739: ComfortUpdate notification not being shown (Gabriel Jenik)
+-Fixed issue #18696: Survey titles too short when I want to copy a survey (#3012) (Denis Chenu)
+-* Fixed issue #18696: Survey titles too short when I want to copy a survey (Denis Chenu)
+#Updated translation: Turkish by kayazeren
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by mauriciofurtado, samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Norwegian (Bokmål) by c_schmitz, pmonstad
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: German (Easy) by assistedmindfulness, holch
+#Updated translation: Dutch by Han, kpadm
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by c_schmitz, jelen1
+#Updated translation: Czech (Informal) by jelen1, slansky
+
+
 Changes from 5.6.15 (build 230412) to 5.6.16 (build 230418) April 18, 2023
 -Fixed issue: [security] Administrator can change his own password without entering the existing one (Carsten Schmitz)
 #Updated translation: Spanish (Mexican) by josanes
