@@ -34,6 +34,13 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.56 (build 230404) to 3.28.57 (build 230425) April 24, 2023
+-Fixed issue #18703: Upload files show error if not seen (using index) (#3014) (Denis Chenu)
+#Updated translation: Turkish by kayazeren
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: German (Easy) by c_schmitz
+
+
 Changes from 3.28.55 (build 230328) to 3.28.56 (build 230404) April 3, 2023
 -Fixed issue: PCLZip error on last step of ComfortUpdate when trying to update from version 3 to latest version (Carsten Schmitz)
 
