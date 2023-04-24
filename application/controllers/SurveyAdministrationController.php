@@ -190,8 +190,7 @@ class SurveyAdministrationController extends LSBaseController
 
         $surveyUrls = [];
         foreach ($survey->allLanguages as $language) {
-            $surveyUrlCreator = new \LimeSurvey\Models\Services\SurveyUrl(
-                $language);
+            $surveyUrlCreator = new \LimeSurvey\Models\Services\SurveyUrl($language);
             $surveyUrls[$language] = $surveyUrlCreator->getUrl(
                 $survey->sid,
                 $survey->languagesettings,
