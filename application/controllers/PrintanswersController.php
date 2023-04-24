@@ -184,6 +184,7 @@ class PrintanswersController extends LSYii_Controller
             Yii::import("application.libraries.admin.quexmlpdf", true);
 
             $quexmlpdf = new quexmlpdf();
+            $quexmlpdf->applyGlobalSettings();
 
             // Setting the selected language for printout
             App()->setLanguage($sLanguage);

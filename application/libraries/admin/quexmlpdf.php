@@ -2261,6 +2261,48 @@ class quexmlpdf extends pdf
     }
 
     /**
+     * Apply global settings from LimeSurvey application
+     *
+     */
+    public function applyGlobalSettings()
+    {
+        foreach ($this->_quexmlsettings() as $s) {
+            $setting = App()->getConfig($s);
+            if ($setting !== null && trim($setting) !== '') {
+                $method = str_replace("queXML", "set", $s);
+                $this->$method($setting);
+            }
+        }
+    }
+
+    /**
+     * Return a list of queXML settings
+     *
+     * @access public
+     * @return string[] queXML settings
+     */
+    public function _quexmlsettings()
+    {
+        return array('queXMLBackgroundColourQuestion',
+            'queXMLPageFormat',
+            'queXMLPageOrientation',
+            'queXMLEdgeDetectionFormat',
+            'queXMLBackgroundColourSection',
+            'queXMLSectionHeight',
+            'queXMLResponseLabelFontSize',
+            'queXMLResponseLabelFontSizeSmall',
+            'queXMLResponseTextFontSize',
+            'queXMLQuestionnaireInfoMargin',
+            'queXMLSingleResponseHorizontalHeight',
+            'queXMLSingleResponseAreaHeight',
+            'queXMLStyle',
+            'queXMLAllowSplittingVas',
+            'queXMLAllowSplittingMatrixText',
+            'queXMLAllowSplittingSingleChoiceVertical',
+            'queXMLAllowSplittingSingleChoiceHorizontal');
+    }
+
+    /**
      * Import the settings/styles set from XML
      *
      * @author Adam Zammit <adam.zammit@acspri.org.au>
