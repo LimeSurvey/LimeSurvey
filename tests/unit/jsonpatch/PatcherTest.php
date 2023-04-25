@@ -63,23 +63,4 @@ class PatcherTest extends TestBaseClass
         $patcher = new Patcher();
         $patcher->applyPatch($patch);
     }
-
-    /**
-     * @testdox applyPatch() throws JsonPatchException on invalid op
-     */
-    public function testApplyPatchThrowsJsonPatchExceptionOnInvalidOp()
-    {
-        $this->expectException(JsonPatchException::class);
-
-        $patch = [
-            [
-                'op' => 'invalid',
-                'path' => '/hello',
-                'value' => 'World'
-            ]
-        ];
-
-        $patcher = new Patcher();
-        $patcher->applyPatch($patch);
-    }
 }

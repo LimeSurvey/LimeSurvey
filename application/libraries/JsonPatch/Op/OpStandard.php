@@ -48,7 +48,7 @@ class OpStandard implements OpInterface
         if (!isset($path)) {
             throw new JsonPatchException(sprintf(
                 'Invalid operation path for "%s":"%s"',
-                $type ? $type->getid() : '?',
+                $type ?? '?',
                 $path
             ));
         }
