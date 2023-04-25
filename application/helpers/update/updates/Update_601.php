@@ -1,6 +1,7 @@
 <?php
 
 namespace LimeSurvey\Helpers\Update;
+use Exception;
 
 class Update_601 extends DatabaseUpdateBase
 {
@@ -11,12 +12,10 @@ class Update_601 extends DatabaseUpdateBase
     {
         // Add button text column to boxes table
         try {
-            $this->db->createCommand()
-            ->addColumn('{{boxes}}', 'buttontext', 'string(255)');
+            $this->db->createCommand()->addColumn('{{boxes}}', 'buttontext', 'string(255)');
         } catch (Exception $e) {
             // Column already exists - ignore
-        }        
-
+        }
         $this->updateCreateSurvey();
         $this->updateSurveyList();
         $this->updateGlobalSettings();
