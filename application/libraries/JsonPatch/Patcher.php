@@ -65,7 +65,7 @@ class Patcher
      * @throws JsonPatchException
      * @return void
      */
-    protected function applyOp($op, $params)
+    protected function applyOp($op, $params = [])
     {
         $handled = false;
         foreach ($this->opHandlers as $opHandler) {
@@ -90,7 +90,7 @@ class Patcher
             }
             $params = array_merge(
                 $matches,
-                $params
+                is_array($params) ? $params : []
             );
 
             $opHandler->applyOperation($params, $op->getValue());

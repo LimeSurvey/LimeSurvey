@@ -3,8 +3,8 @@
 namespace LimeSurvey\JsonPatch\Patcher;
 
 use LimeSurvey\JsonPatch\Patcher;
-use LimeSurvey\JsonPatch\OpHandler\OpHandlerQuestionGroupProp;
-use LimeSurvey\JsonPatch\OpHandler\OpHandlerSurveyPropUpdate;
+use LimeSurvey\JsonPatch\OpHandler\OpHandlerQuestionGroupPropReplace;
+use LimeSurvey\JsonPatch\OpHandler\OpHandlerSurveyPropReplace;
 
 class PatcherSurvey extends Patcher
 {
@@ -13,7 +13,7 @@ class PatcherSurvey extends Patcher
         $this->setParams([
             'surveyId' => $surveyId
         ]);
-        $this->addOpHandler(new OpHandlerSurveyPropUpdate);
-        $this->addOpHandler(new OpHandlerQuestionGroupProp);
+        $this->addOpHandler(new OpHandlerSurveyPropReplace);
+        $this->addOpHandler(new OpHandlerQuestionGroupPropReplace);
     }
 }
