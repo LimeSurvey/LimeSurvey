@@ -668,45 +668,35 @@ JAVASCRIPT
      */
     public function templaterename()
     {
-        $sOldName = sanitize_dirname(returnGlobal('copydir'));
-
+        $sNewName = sanitize_dirname(App()->getRequest()->getPost('newname'));
+        $sOldName = sanitize_dirname(App()->getRequest()->getPost('copydir'));
         if (Permission::model()->hasGlobalPermission('templates', 'update')) {
-            if (returnGlobal('action') == "templaterename" && returnGlobal('newname') && returnGlobal('copydir')) {
-                $sNewName = sanitize_dirname(returnGlobal('newname'));
-                $sNewDirectoryPath = sanitize_dirname(Yii::app()->getConfig('userthemerootdir') . "/" . $sNewName);
-                $sOldDirectoryPath = sanitize_dirname(Yii::app()->getConfig('userthemerootdir') . "/" . returnGlobal('copydir'));
-
-                if (Template::isStandardTemplate(returnGlobal('newname'))) {
-                    Yii::app()->user->setFlash('error', sprintf(gT("Template could not be renamed to '%s'."), $sNewName) . " " . gT("This name is reserved for standard template."));
-
-                    $this->getController()->redirect(array("admin/themes/sa/upload"));
+            if ($sNewName && $sOldName) {
+                $sNewDirectoryPath = Yii::app()->getConfig('userthemerootdir') . DIRECTORY_SEPARATOR . $sNewName;
+                $sOldDirectoryPath = Yii::app()->getConfig('userthemerootdir') . DIRECTORY_SEPARATOR . $sOldName;
+                if (Template::isStandardTemplate($sNewName)) {
+                    App()->user->setFlash('error', sprintf(gT("Template could not be renamed to '%s'."), $sNewName) . " " . gT("This name is reserved for standard template."));
                 } elseif (file_exists($sNewDirectoryPath)) {
-                    Yii::app()->user->setFlash('error', sprintf(gT("Template could not be renamed to '%s'."), $sNewName) . " " . gT("A template with that name already exists."));
-
-                    $this->getController()->redirect(array("admin/themes/sa/upload"));
+                    App()->user->setFlash('error', sprintf(gT("Template could not be renamed to '%s'."), $sNewName) . " " . gT("A template with that name already exists."));
                 } elseif (rename($sOldDirectoryPath, $sNewDirectoryPath) == false) {
-                    Yii::app()->user->setFlash('error', sprintf(gT("Template could not be renamed to '%s'."), $sNewName) . " " . gT("Maybe you don't have permission."));
-
-                    $this->getController()->redirect(array("admin/themes/sa/upload"));
+                    App()->user->setFlash('error', sprintf(gT("Template could not be renamed to '%s'."), $sNewName) . " " . gT("Maybe you don't have permission."));
                 } else {
+                    /* We renamle the directory */
                     $oTemplate = Template::model()->findByAttributes(array('name' => $sOldName));
-
                     if (is_a($oTemplate, 'Template')) {
                         $oTemplate->renameTo($sNewName);
-                        if (getGlobalSetting('defaulttheme') == $sOldName) {
+                        if (App()->getConfig('defaulttheme') == $sOldName) {
                             SettingGlobal::setSetting('defaulttheme', $sNewName);
                         }
-
                         $this->getController()->redirect(array('admin/themes', 'sa' => 'view', 'editfile' => 'layout_global.twig', 'screenname' => 'welcome', 'templatename' => $sNewName));
                     } else {
-                        Yii::app()->user->setFlash('error', sprintf(gT("Template '%s' could not be found."), $sOldName));
+                        App()->user->setFlash('error', sprintf(gT("Template '%s' could not be found."), $sOldName));
                     }
-
                     $this->getController()->redirect(array('themeOptions/index'));
                 }
             }
         } else {
-            Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
+            App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
         }
         $this->getController()->redirect(array('admin/themes', 'sa' => 'view', 'editfile' => 'layout_global.twig', 'screenname' => 'welcome', 'templatename' => $sOldName));
     }
