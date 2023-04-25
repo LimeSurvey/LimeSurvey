@@ -14388,6 +14388,17 @@ input.imageselect-checkbox:checked ~ .imageselect-select::after {
   margin-left: 0;
 }
 
+.bootstrap-select .bs-searchbox .form-control {
+  padding: 0.375rem 0.75rem;
+  margin-bottom: 4px;
+}
+.bootstrap-select .bs-ok-default:after {
+  font-size: 0.9975rem;
+}
+.bootstrap-select .dropdown-toggle:focus, .bootstrap-select .bootstrap-select > select.mobile-device:focus + .dropdown-toggle {
+  outline: none;
+}
+
 .checkbox-item {
   padding-left: 20px;
 }
