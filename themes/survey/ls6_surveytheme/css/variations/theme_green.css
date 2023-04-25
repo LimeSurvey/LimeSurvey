@@ -5953,7 +5953,8 @@ textarea.form-control-lg {
   float: left;
   width: 100%;
   margin-right: -100%;
-  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
   transition: transform 0.6s ease-in-out;
 }
 @media (prefers-reduced-motion: reduce) {
@@ -12250,9 +12251,6 @@ body {
 .ls6_surveytheme #survey_title a {
   color: #ffffff;
 }
-.ls6_surveytheme .question-item {
-  padding-top: 1em;
-}
 .ls6_surveytheme .placeholder {
   background-color: #6bd7c9;
 }
@@ -12612,15 +12610,6 @@ li.question-item.answer-item.text-item.form-group {
   font-weight: 400;
 }
 
-/* Show input number at right alignment */
-[data-number="1"] {
-  text-align: right;
-}
-
-.dir-rtl [data-number="1"] {
-  text-align: left;
-}
-
 .slider-list .ls-group-dynamic [data-number="1"] {
   text-align: center;
 }
@@ -12743,11 +12732,6 @@ table.ls-answers {
 
 .dir-rtl .ls-answers .answertextright {
   text-align: right;
-}
-
-/* ls-dynamic */
-.ls-group-dynamic {
-  text-align: center;
 }
 
 /*
@@ -13737,12 +13721,12 @@ a {
   margin-left: -2px;
 }
 
-.ls-answers label label, .answer-item label label {
+.ls-answers label, .answer-item label, .control-label {
   font-weight: 600;
   font-size: 1.14rem;
   line-height: 20px;
 }
-.ls-answers label .radio-label, .answer-item label .radio-label {
+.ls-answers label .radio-label, .answer-item label .radio-label, .control-label .radio-label {
   padding-left: 12px;
 }
 
@@ -13756,6 +13740,10 @@ textarea {
   font-size: 0.9975rem;
   line-height: 16px;
   border-width: 2px;
+}
+
+.question-item.mb-3 {
+  padding-top: 0;
 }
 
 .form-control {
@@ -13798,7 +13786,7 @@ fieldset[disabled] .form-control {
   opacity: 1;
 }
 
-.ls-answers label, .answer-item label {
+.ls-answers label, .answer-item label, .control-label {
   color: #6E748C;
 }
 
@@ -14583,6 +14571,33 @@ input.imageselect-checkbox:checked ~ .imageselect-select::after {
 }
 .ranking-advanced-style .ranking-advanced-available-items .selector__dragHandle.d-none, .ranking-advanced-style .ranking-advanced-available-items .selector__index_row {
   color: #6E748C;
+}
+
+.numeric-multi .ls-group-total-separator-row {
+  display: flex !important;
+}
+.numeric-multi .ls-group-total-separator hr {
+  border-top: solid 2px;
+  -webkit-margin-before: 0;
+          margin-block-start: 0;
+  -webkit-margin-after: 0;
+          margin-block-end: 0;
+}
+.numeric-multi .dynamic-total {
+  font-weight: 600;
+  font-size: 1.14rem;
+  line-height: 20px;
+}
+
+.numeric-multi .ls-group-total-separator hr {
+  border-color: #14AE5C;
+  opacity: 1;
+}
+.numeric-multi .ls-group-total .control-label {
+  color: #14AE5C;
+}
+.numeric-multi .dynamic-total.text-success {
+  color: #14AE5C !important;
 }
 
 .checkbox-item {

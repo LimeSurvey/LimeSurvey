@@ -35,7 +35,13 @@
 {% endif %}
 
 {% if sumEqn %}
-    <li class="mb-3 ls-group-total ls-group-dynamic">
+    <li class="ls-group-total-separator-row row d-none">
+        <div class="col-12 col-md-{{sLabelWidth}}"></div>
+        <div class="ls-group-total-separator col-12 col-md-{{sInputContainerWidth}}">
+            <hr>
+        </div>
+    </li>
+    <li class="mb-3 ls-group-total ls-group-dynamic row">
         <div class="control-label col-12 col-md-{{sLabelWidth}}">
             {{ gT('Total:') }}
         </div>

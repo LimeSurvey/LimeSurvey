@@ -1,0 +1,13 @@
+.numeric-multi {
+    .ls-group-total-separator-row {
+        display: flex !important;
+    }
+    .ls-group-total-separator hr {
+        border-top: solid 2px;
+        margin-block-start: 0;
+        margin-block-end: 0;
+    }
+    .dynamic-total {
+        @include h2;
+    }
+}

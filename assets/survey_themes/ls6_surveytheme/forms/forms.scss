@@ -18,10 +18,8 @@ $dropdown-font-size: $font-size-sm;
     margin-left: -$input-border-width;
 }
 
-.ls-answers label, .answer-item label {
-    label {
-        @include h2
-    }
+.ls-answers label, .answer-item label, .control-label {
+    @include h2;
 
     .radio-label {
         padding-left : 12px;
@@ -39,4 +37,8 @@ textarea {
     font-size    : $dropdown-font-size;
     line-height  : $line-height-16;
     border-width : $input-border-width;
+}
+
+.question-item.mb-3 {
+    padding-top: 0;
 }

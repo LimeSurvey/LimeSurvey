@@ -1,0 +1,16 @@
+.numeric-multi {
+    .ls-group-total-separator hr {
+        border-color: $base-color;
+        opacity: 1;
+    }
+
+    .ls-group-total {
+        .control-label {
+            color: $base-color;
+        }
+    }
+
+    .dynamic-total.text-success {
+        color: $base-color !important;
+    }
+}

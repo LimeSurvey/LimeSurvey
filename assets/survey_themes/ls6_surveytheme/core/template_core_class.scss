@@ -244,15 +244,6 @@ li.question-item.answer-item.text-item.form-group {
     font-weight : 400
 }
 
-/* Show input number at right alignment */
-[data-number='1'] {
-    text-align : right
-}
-
-.dir-rtl [data-number='1'] {
-    text-align : left
-}
-
 .slider-list .ls-group-dynamic [data-number='1'] {
     text-align : center
 }
@@ -376,11 +367,6 @@ table.ls-answers {
 
 .dir-rtl .ls-answers .answertextright {
     text-align : right
-}
-
-/* ls-dynamic */
-.ls-group-dynamic {
-    text-align : center
 }
 
 /*
