@@ -71,28 +71,11 @@ var ThemeScripts = function ThemeScripts() {// defining the console object once.
    * fix padding of body according to navbar-fixed-top
    * in endpage and in $(window).resize
    */var fixBodyPadding = function fixBodyPadding() {/* The 60 px is fixed in template.css */$('body').css('padding-top', Math.round($('.navbar-fixed-top').height()) + 'px');}; /**
-   * Set suffix/prefix clone for little screen (at top)
-   */var sliderSuffixClone = function sliderSuffixClone() {$('.numeric-multi .slider-item .slider-right').each(function () {var colWidth = '12';if ($(this).closest('.slider-item').find('.slider-left').length) {colWidth = '6';}$(this).clone().addClass('d-block d-md-none col-' + colWidth).prop('aria-hidden', true).insertBefore($(this).prev('.slider-container'));$(this).addClass('d-none d-md-block');$(this).closest('.slider-item').find('.slider-left');});
-  };
-
-  /**
    * Hide some part if empty
    * Some can be needed if contain only js
    * Some are not really needed : little margin only is shown
    * Allowed content -> <script> and <img/>
-   */
-  var hideEmptyPart = function hideEmptyPart() {
-    $('.question-help-container').each(function () {
-      /* Only if have only script tag inside or empty tag */
-      if ($(this).text().trim() == '' && !/<img/.test($(this).html())) {
-        $(this).addClass('d-none');
-      }
-    });
-    $('.group-description').each(function () {
-      /* Only if have only script tag inside or empty tag */
-      if ($(this).text().trim() == '' && !/<img/.test($(this).html())) {
-        $(this).addClass('d-none');
-      }
+   */var hideEmptyPart = function hideEmptyPart() {$('.question-help-container').each(function () {/* Only if have only script tag inside or empty tag */if ($(this).text().trim() == '' && !/<img/.test($(this).html())) {$(this).addClass('d-none');}});$('.group-description').each(function () {/* Only if have only script tag inside or empty tag */if ($(this).text().trim() == '' && !/<img/.test($(this).html())) {$(this).addClass('d-none');}
     });
     $('.question-help-container.hidden').on('html:updated', function () {
       if ($(this).text().trim() != '' && !/<img/.test($(this).html())) {
@@ -248,12 +231,10 @@ var ThemeScripts = function ThemeScripts() {// defining the console object once.
   };
 
   var initUserForms = function initUserForms() {
-    sliderSuffixClone();
     fixBodyPadding();
     hideEmptyPart();
   };
   var initGlobal = function initGlobal() {
-    sliderSuffixClone();
     fixBodyPadding();
     if (jQuery.isFunction(window.templateCore.hideQuestionWithRelevanceSubQuestion)) {
       window.templateCore.hideQuestionWithRelevanceSubQuestion();
@@ -274,7 +255,6 @@ var ThemeScripts = function ThemeScripts() {// defining the console object once.
     initGlobal: initGlobal,
     initWelcomePage: initWelcomePage,
     focusFirst: focusFirst,
-    sliderSuffixClone: sliderSuffixClone,
     fixBodyPadding: fixBodyPadding,
     hideQuestionWithRelevanceSubQuestion: window.templateCore.hideQuestionWithRelevanceSubQuestion,
     hideEmptyPart: hideEmptyPart,
@@ -989,14 +969,12 @@ var _array = _interopRequireDefault(require("./questiontypes/array/array.js"));f
   };
 
   var initArrayEvents = function initArrayEvents() {
-    var affectedQuestionTypes = ['array-multi-flexi', 'array-multi-flexi-text', 'array-flexible-dual-scale'];
     $(document).on(
     "change",
     '.array-multi-flexi .multiflexitext.text-item, .array-multi-flexi .answer-item .form-select, .array-flexible-dual-scale .answer-item .form-select, .array-multi-flexi-text input.form-control',
     function () {
-      var parentDiv = $(this).closest(".question-container");
       var enteredValue = $(this).val();
-      if (enteredValue != undefined && enteredValue != '') {
+      if (enteredValue !== undefined && enteredValue !== '') {
         addEntryMarker($(this));
       } else {
         removeEntryMarker($(this));

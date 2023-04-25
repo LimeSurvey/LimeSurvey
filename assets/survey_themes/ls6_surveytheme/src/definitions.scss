@@ -1361,32 +1361,6 @@ body {
     .placeholder {
         background-color : $color_acapulco_approx;
     }
-    /* Sliders */
-    .slider.slider-horizontal .slider-tick.triangle,
-    .slider.slider-horizontal .slider-handle.triangle {
-        border-bottom-color : $base-color;
-    }
-    .slider.slider-vertical .slider-tick.triangle,
-    .slider.slider-vertical .slider-handle.triangle {
-        border-left-color  : $base-color;
-        border-right-color : $base-color;
-    }
-    .slider-handle {
-        background-color : $base-color;
-    }
-    .slider-handle.custom::before {
-        color : $base-color;
-    }
-    .slider-tick.custom::before {
-        color : $base-color;
-    }
-    .slider-selection {
-        background-image : linear-gradient(
-                to bottom,
-                $color_acapulco_approx 0%,
-                $color_paradiso_approx 100%
-        );
-    }
     /* INput errors*/
     .question-container.input-error {
         box-shadow : 0 10px 20px rgba($color_danger, 0.9);

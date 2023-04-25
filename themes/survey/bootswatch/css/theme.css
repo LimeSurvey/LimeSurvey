@@ -287,6 +287,11 @@ padding-top:1em;padding-bottom:1em;margin-bottom:2em;
     cursor: pointer;
 }
 
+.slider-item {
+    margin-bottom: 20px;
+    min-height: 50px;
+}
+
 .slider-container {
     min-height: 15px;
 }

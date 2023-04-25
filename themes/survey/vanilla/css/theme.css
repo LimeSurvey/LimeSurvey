@@ -328,6 +328,7 @@ body {
 }
 
 .slider-item {
+    margin-bottom: 20px;
     min-height: 50px;
 }
 

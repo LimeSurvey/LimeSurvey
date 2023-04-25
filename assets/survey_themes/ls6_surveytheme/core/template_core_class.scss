@@ -116,7 +116,7 @@
         white-space    : nowrap;
         vertical-align : middle;
         display        : table-cell;
-        padding        : 0.6rem 1.2rem;
+        padding        : 0.5rem 1.2rem;
         line-height    : 1;
     }
     .ls-input-sized .ls-input-group-extra {
@@ -244,10 +244,6 @@ li.question-item.answer-item.text-item.form-group {
     font-weight : 400
 }
 
-.slider-list .ls-group-dynamic [data-number='1'] {
-    text-align : center
-}
-
 /* no form-group on radio-item and checkbox-item */
 li.checkbox-item,
 li.radio-text-item,
@@ -300,20 +296,6 @@ li.checkbox-text-item {
     opacity : 0;
 }
 
-@media only screen and (max-width : 760px) {
-    .slider-list .slider-left {
-        text-align : left
-    }
-    .slider-list .slider-right {
-        text-align : right;
-    }
-    .dir-rtl .slider-list .slider-left {
-        text-align : right
-    }
-    .dir-rtl .slider-list .slider-right {
-        text-align : left;
-    }
-}
 
 /**
  * Table .question feature

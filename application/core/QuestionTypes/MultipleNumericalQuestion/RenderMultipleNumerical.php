@@ -65,16 +65,20 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
 
         if ($this->useSliderLayout) {
             $this->sCoreClasses  .= " slider-list";
-            $this->extraclass   .= " withslider";
             $this->sliderOptionsArray = [
                 'slider_step'          => trim(LimeExpressionManager::ProcessString("{{$this->getQuestionAttribute('slider_accuracy')}}", $this->oQuestion->qid, [], 1, 1, false, false, true)),
                 'slider_min'           => trim(LimeExpressionManager::ProcessString("{{$this->getQuestionAttribute('slider_min')}}", $this->oQuestion->qid, [], 1, 1, false, false, true)),
                 'slider_max'           => trim(LimeExpressionManager::ProcessString("{{$this->getQuestionAttribute('slider_max')}}", $this->oQuestion->qid, [], 1, 1, false, false, true)),
                 'slider_default'       => trim(LimeExpressionManager::ProcessString("{{$this->getQuestionAttribute('slider_default')}}", $this->oQuestion->qid, [], 1, 1, false, false, true)),
-                'slider_orientation'   => (trim($this->getQuestionAttribute('slider_orientation')) == 0) ? 'horizontal' : 'vertical',
                 'slider_custom_handle' => (trim($this->getQuestionAttribute('slider_custom_handle'))),
             ];
-            
+            if ((trim($this->getQuestionAttribute('slider_orientation')) == 0)) {
+                $this->sliderOptionsArray['slider_orientation'] = 'horizontal';
+                $this->extraclass .= ' ' . 'withslider' . ' ' . 'ls-slider-item-horizontal';
+            } else {
+                $this->sliderOptionsArray['slider_orientation'] = 'vertical';
+                $this->extraclass .= ' ' . 'withslider' . ' ' . 'ls-slider-item-vertical';
+            }
             $this->sliderOptionsArray['slider_min'] = (is_numeric($this->sliderOptionsArray['slider_min'])) ? $this->sliderOptionsArray['slider_min'] : 0;
             $this->sliderOptionsArray['slider_mintext'] = $this->sliderOptionsArray['slider_min'];
             $this->sliderOptionsArray['slider_max'] = (is_numeric($this->sliderOptionsArray['slider_max'])) ? $this->sliderOptionsArray['slider_max'] : 100;
@@ -204,23 +208,12 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
                     'integeronly'            => $this->getQuestionAttribute('num_value_int_only'),
                 );
             } else {
-                $sliderWidth = 12;
-
                 if ($this->sliderOptionsArray['slider_separator'] != '') {
                     $aAnswer     = explode($this->sliderOptionsArray['slider_separator'], $sSubquestionText);
                     $theanswer   = $aAnswer[0] ?? "";
                     $labelText   = $theanswer;
                     $sliderleft  = $aAnswer[1] ?? null;
                     $sliderright = $aAnswer[2] ?? null;
-
-                    /* sliderleft and sliderright is in input, but is part of answers then take label width */
-                    if (!empty($sliderleft)) {
-                        $sliderWidth = $sliderWidth - 2;
-                    }
-                    
-                    if (!empty($sliderright)) {
-                        $sliderWidth = $sliderWidth - 2;
-                    }
                 } else {
                     $theanswer = $sQuestionText;
                     $sliders   = false;
@@ -243,7 +236,6 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
                         'dispVal'                => $dispVal,
                         'sliderleft'             => $sliderleft,
                         'sliderright'            => $sliderright,
-                        'sliderWidth'            => $sliderWidth,
                         'sUnformatedValue'       => $sUnformatedValue,
                         'extraclass'             => $this->extraclass,
                         'qid'                    => $this->oQuestion->qid,
