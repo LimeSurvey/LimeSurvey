@@ -1341,8 +1341,8 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             unset($insertdata['allowjumps']);
         }
 
-        if (isset($insertdata['tokenlength']) && $insertdata['tokenlength'] > 35) {
-            $insertdata['tokenlength'] = 35;
+        if (isset($insertdata['tokenlength']) && $insertdata['tokenlength'] > Token::MAX_LENGTH) {
+            $insertdata['tokenlength'] = Token::MAX_LENGTH;
         }
         /* Remove unknow column */
         $aSurveyModelsColumns = Survey::model()->attributes;
