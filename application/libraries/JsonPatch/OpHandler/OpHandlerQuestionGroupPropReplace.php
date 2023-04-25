@@ -8,7 +8,7 @@ use LimeSurvey\JsonPatch\OpType\OpTypeReplace;
 use LimeSurvey\JsonPatch\Pattern\PatternInterface;
 use LimeSurvey\JsonPatch\Pattern\PatternSimple;
 
-class OpHandlerQuestionGroupProp implements OpHandlerInterface
+class OpHandlerQuestionGroupPropReplace implements OpHandlerInterface
 {
     public function applyOperation($params, $value)
     {
