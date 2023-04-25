@@ -34,6 +34,14 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.0.3 (build 230424) to 6.0.4 (build 230427) April 25, 2023
+-Fixed issue: Error on database upgrade (Carsten Schmitz)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by nomoto
+#Updated translation: German by c_schmitz
+
+
 Changes from 6.0.2 (build 230417) to 6.0.3 (build 230424) April 24, 2023
 -Fixed issue: Pagination not working issue for clsgrid tables (#3063) (jack-han-115)
 -Fixed issue CR-1086: adjusted xml_path in db for imageselect questions (#3052) (Tim Willig)
