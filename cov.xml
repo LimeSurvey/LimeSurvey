@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1682344220">
-  <project timestamp="1682344220">
+<coverage generated="1682408196">
+  <project timestamp="1682408196">
     <package name="LimeSurvey\Api\Auth">
       <file name="/Users/kfoster/Documents/Dev/Env/ls-docker-dev-env/www/ls-ce/public/application/libraries/Api/Auth/AuthSession.php">
         <class name="LimeSurvey\Api\Auth\AuthSession" namespace="LimeSurvey\Api\Auth">

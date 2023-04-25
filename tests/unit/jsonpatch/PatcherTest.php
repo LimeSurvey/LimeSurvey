@@ -4,9 +4,11 @@ namespace ls\tests\unit\jsonpatch;
 
 use ls\tests\TestBaseClass;
 
+use LimeSurvey\JsonPatch\JsonPatchException;
 use LimeSurvey\JsonPatch\Patcher;
-use LimeSurvey\JsonPatch\Op\OpAdd;
+use LimeSurvey\JsonPatch\OpType\OpTypeAdd;
 use LimeSurvey\JsonPatch\Pattern\PatternRaw;
+use LimeSurvey\JsonPatch\OpHandler\OpHandlerInterface;
 
 /**
  * @testdox Patcher
@@ -27,10 +29,10 @@ class PatcherTest extends TestBaseClass
         ];
 
         $opHandler = \Mockery::mock(
-            'LimeSurvey\JsonPatch\OpHandler\OpHandlerInterface'
+            OpHandlerInterface::class
         );
-        $opHandler->shouldReceive('getOp')
-            ->andReturn(new OpAdd);
+        $opHandler->shouldReceive('getOpType')
+            ->andReturn(new OpTypeAdd);
         $opHandler->shouldReceive('getPattern')
             ->andReturn(new PatternRaw($patch[0]['path']));
         $opHandler->shouldReceive('applyOperation')
@@ -41,5 +43,43 @@ class PatcherTest extends TestBaseClass
         $operationsApplied = $patcher->applyPatch($patch);
 
         $this->assertEquals(1, $operationsApplied);
+    }
+
+    /**
+     * @testdox applyPatch() throws JsonPatchException on missing op
+     */
+    public function testApplyPatchThrowsJsonPatchExceptionOnMissingOp()
+    {
+        $this->expectException(JsonPatchException::class);
+
+        $patch = [
+            [
+                // Op not set
+                'path' => '/hello',
+                'value' => 'World'
+            ]
+        ];
+
+        $patcher = new Patcher();
+        $patcher->applyPatch($patch);
+    }
+
+    /**
+     * @testdox applyPatch() throws JsonPatchException on invalid op
+     */
+    public function testApplyPatchThrowsJsonPatchExceptionOnInvalidOp()
+    {
+        $this->expectException(JsonPatchException::class);
+
+        $patch = [
+            [
+                'op' => 'invalid',
+                'path' => '/hello',
+                'value' => 'World'
+            ]
+        ];
+
+        $patcher = new Patcher();
+        $patcher->applyPatch($patch);
     }
 }

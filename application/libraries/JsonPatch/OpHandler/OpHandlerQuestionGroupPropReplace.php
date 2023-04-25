@@ -3,8 +3,8 @@
 namespace LimeSurvey\JsonPatch\OpHandler;
 
 use QuestionGroup;
-use LimeSurvey\JsonPatch\Op\OpInterface;
-use LimeSurvey\JsonPatch\Op\OpReplace;
+use LimeSurvey\JsonPatch\OpType\OpTypeInterface;
+use LimeSurvey\JsonPatch\OpType\OpTypeReplace;
 use LimeSurvey\JsonPatch\Pattern\PatternInterface;
 use LimeSurvey\JsonPatch\Pattern\PatternSimple;
 
@@ -34,8 +34,8 @@ class OpHandlerQuestionGroupProp implements OpHandlerInterface
         );
     }
 
-    public function getOp(): OpInterface
+    public function getOpType(): OpTypeInterface
     {
-        return new OpReplace;
+        return new OpTypeReplace;
     }
 }

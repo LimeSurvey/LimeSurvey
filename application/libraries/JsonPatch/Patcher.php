@@ -2,52 +2,74 @@
 
 namespace LimeSurvey\JsonPatch;
 
+use LimeSurvey\JsonPatch\Op\OpInterface;
+use LimeSurvey\JsonPatch\Op\OpStandard;
 use LimeSurvey\JsonPatch\OpHandler\OpHandlerInterface;
+
 
 class Patcher
 {
     private $opHandlers = [];
     private $params = [];
 
+    /**
+     * Apply patch
+     *
+     * @throws JsonPatchException
+     */
     public function applyPatch($patch, $params = [])
     {
         $operationsApplied = 0;
         if (is_array($patch) && !empty($patch)) {
             $params = array_merge($params, $this->params);
-
-            $validationResult = $this->validatePatch($patch);
-            if ($validationResult !== true) {
-                throw new JsonPatchException(
-                    sprintf(
-                        'Invalid patch %s',
-                        print_r($patch, true)
-                    )
+            foreach ($patch as $patchOpData) {
+                $op = OpStandard::factory(
+                    $patchOpData['path'] ?? null,
+                    $patchOpData['op'] ?? null,
+                    $patchOpData['value'] ?? null
                 );
-            }
-
-            foreach ($patch as $patchOp) {
-                $this->applyOp($patchOp, $params);
+                $this->applyOp($op, $params);
                 $operationsApplied++;
             }
         }
         return $operationsApplied;
     }
 
+    /**
+     * Add operation handler
+     *
+     * @param OpHandlerInterface $opHandler
+     * @return void
+     */
     public function addOpHandler(OpHandlerInterface $opHandler)
     {
         $this->opHandlers[] = $opHandler;
     }
 
+    /**
+     * Set params
+     *
+     * @param array $params
+     * @return void
+     */
     public function setParams($params)
     {
         $this->params = $params;
     }
 
-    protected function applyOp($patchOp, $params)
+    /**
+     * Apply operation
+     *
+     * @param OpInterface $op
+     * @param array $params
+     * @throws JsonPatchException
+     * @return void
+     */
+    protected function applyOp($op, $params)
     {
         $handled = false;
         foreach ($this->opHandlers as $opHandler) {
-            if ($opHandler->getOp()->getId() !== $patchOp['op']) {
+            if ($opHandler->getOpType()->getId() !== $op->getType()->getId()) {
                 continue;
             }
 
@@ -55,7 +77,7 @@ class Patcher
             if (
                 preg_match(
                     '#' . $opHandler->getPattern()->getRaw() . '#',
-                    $patchOp['path'],
+                    $op->getPath(),
                     $matches
                 ) !== 1
             ) {
@@ -71,7 +93,7 @@ class Patcher
                 $params
             );
 
-            $opHandler->applyOperation($params, $patchOp['value']);
+            $opHandler->applyOperation($params, $op->getValue());
             $handled = true;
 
             break;
@@ -81,61 +103,10 @@ class Patcher
             throw new JsonPatchException(
                 sprintf(
                     'No oepration handler found for "%s":"%s"',
-                    $patchOp['op'],
-                    $patchOp['path']
+                    $op->getType()->getId(),
+                    $op->getValue()
                 )
             );
         }
-    }
-
-    /**
-     * Validate patches
-     *
-     * @param array $patch
-     * @return boolean|array
-     */
-    protected function validatePatch($patch)
-    {
-        $errors = [];
-        foreach ($patch as $k => $patchOp) {
-            $patchErrors = $this->validatePatchOp($patchOp);
-            if ($patchErrors !== true) {
-                $errors[$k] = $patchErrors;
-            }
-        }
-        return empty($errors) ?: $errors;
-    }
-
-    /**
-     * Validate patch
-     *
-     * @param array $patch
-     * @return boolean|array
-     */
-    protected function validatePatchOp($patchOp)
-    {
-        $errors = [];
-        if (!isset($patchOp['op'])) {
-            $errors[] = sprintf(
-                'Invalid operation for "%s":"%s"',
-                $patchOp['op'],
-                $patchOp['path']
-            );
-        }
-        if (!isset($patchOp['path'])) {
-            $errors[] = sprintf(
-                'Invalid path for "%s":"%s"',
-                $patchOp['op'],
-                $patchOp['path']
-            );
-        }
-        if (!array_key_exists('value', $patchOp)) {
-            $errors[] = sprintf(
-                'No value provided for "%s":"%s"',
-                $patchOp['op'],
-                $patchOp['path']
-            );
-        }
-        return empty($errors) ?: $errors;
     }
 }

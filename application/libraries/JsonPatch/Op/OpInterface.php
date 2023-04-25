@@ -2,7 +2,11 @@
 
 namespace LimeSurvey\JsonPatch\Op;
 
+use LimeSurvey\JsonPatch\OpType\OpTypeInterface;
+
 interface OpInterface
 {
-    public function getId();
+    public function getPath();
+    public function getType(): OpTypeInterface;
+    public function getValue();
 }

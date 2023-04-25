@@ -3,8 +3,8 @@
 namespace LimeSurvey\JsonPatch\OpHandler;
 
 use Survey;
-use LimeSurvey\JsonPatch\Op\OpInterface;
-use LimeSurvey\JsonPatch\Op\OpReplace;
+use LimeSurvey\JsonPatch\OpType\OpTypeInterface;
+use LimeSurvey\JsonPatch\OpType\OpTypeReplace;
 use LimeSurvey\JsonPatch\Pattern\PatternInterface;
 use LimeSurvey\JsonPatch\Pattern\PatternSimple;
 
@@ -33,8 +33,8 @@ class OpHandlerSurveyPropUpdate implements OpHandlerInterface
         return new PatternSimple('/$prop');
     }
 
-    public function getOp(): OpInterface
+    public function getOpType(): OpTypeInterface
     {
-        return new OpReplace;
+        return new OpTypeReplace;
     }
 }

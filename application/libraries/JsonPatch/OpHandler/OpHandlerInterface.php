@@ -2,12 +2,12 @@
 
 namespace LimeSurvey\JsonPatch\OpHandler;
 
-use LimeSurvey\JsonPatch\Op\OpInterface;
+use LimeSurvey\JsonPatch\OpType\OpTypeInterface;
 use LimeSurvey\JsonPatch\Pattern\PatternInterface;
 
 interface OpHandlerInterface
 {
     public function applyOperation($params, $value);
-    public function getOp(): OpInterface;
+    public function getOpType(): OpTypeInterface;
     public function getPattern(): PatternInterface;
 }
