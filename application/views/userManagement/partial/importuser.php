@@ -1,7 +1,8 @@
 <?php
+
 /**
- * Subview: Userimport form 
- * 
+ * Subview: Userimport form
+ *
  * @package UserManagement
  * @author LimeSurvey GmbH <info@limesurvey.org>
  * @license GPL3.0
@@ -15,39 +16,42 @@ Yii::app()->getController()->renderPartial(
 );
 ?>
 
-<?=TbHtml::formTb(
+<?= TbHtml::formTb(
     null,
-    App()->createUrl('userManagement/importUsers',['importFormat' => $importFormat]),
+    App()->createUrl('userManagement/importUsers', ['importFormat' => $importFormat]),
     'post',
-    ["id"=>"UserManagement--modalform--import", 'enctype'=>'multipart/form-data']
-)?>
+    ["id" => "UserManagement--modalform--import", 'enctype' => 'multipart/form-data']
+) ?>
 
 <div class="modal-body">
-    <div class="container-center">
-        <div class="row">
-            <div class="col-sm-12 well">
-                <?=$note?>
-            </div>
-        </div>
-        <div class="row ls-space margin top-5 bottom-5 hidden" id="UserManagement--errors">
-        </div>
-        <div class="row ls-space margin top-5 bottom-5" >
-            <input type="checkbox" name="overwrite" value="overwrite"> <?= eT("Overwrite existing users")?>
-        </div>
-        <hr>
-        
-        <div class="row ls-space margin top-5 bottom-15">
-            <label for="the_file"><?=gT('Select '.$importFormat.' file')?></label>
-            <input type="file" accept="<?=$allowFile?>" name="the_file" id="the_file" class="form control" required/>
-        </div>
-        <div class="row ls-space margin top-5">
-            <hr class="ls-space margin top-5 bottom-10"/>
-        </div>
+    <?php
+    $this->widget('ext.AlertWidget.AlertWidget', [
+        'text' => $note,
+        'type' => 'info',
+    ]);
+    ?>
+    <div class="md-3" id="UserManagement--errors">
+    </div>
+    <div class="mb-3 ">
+        <input type="checkbox" name="overwrite" value="overwrite" id="overwrite">
+        <label class="form-check-label" for="overwrite">
+            <?= eT("Overwrite existing users"); ?>
+        </label>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label" for="the_file"><?= sprintf(gT('Select %s file:', 'js'), $importFormat); ?></label>
+        <input class="form-control" id="the_file" type="file" accept="<?= $allowFile ?>" name="the_file" id="the_file"
+               class="form control" required/>
     </div>
 </div>
 
 <div class="modal-footer modal-footer-buttons">
-    <button class="btn btn-cancel" id="exitForm"><?=gT('Cancel')?></button>
-    <button class="btn btn-success " id="submitForm"><?=gT('Import')?></button>
+    <button class="btn btn-cancel" id="exitForm" data-bs-dismiss="modal">
+        <?= gT('Cancel') ?>
+    </button>
+    <button class="btn btn-primary" id="submitForm">
+        <?= gT('Import') ?>
+    </button>
 </div>
-</form>
+<?= CHtml::endForm() ?>

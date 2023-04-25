@@ -31,7 +31,7 @@ if (!isset($tableLabels)) {
                         <?php eT('Selected'); ?>
                     </td>
                 <?php else: ?>
-                    <td class="text-warning">
+                    <td class="text-danger">
                         <?php echo CHtml::encode($result['error']) ; ?>
                     </td>
                 <?php endif;?>

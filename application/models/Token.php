@@ -104,7 +104,7 @@ abstract class Token extends Dynamic
             'validfrom' => gT('Valid from'),
             'validuntil' => gT('Valid until'),
         );
-        foreach (decodeTokenAttributes($this->survey->attributedescriptions) as $key => $info) {
+        foreach (decodeTokenAttributes($this->survey->attributedescriptions ?? '') as $key => $info) {
             $labels[$key] = !empty($info['description']) ? $info['description'] : '';
         }
         return $labels;
@@ -292,7 +292,7 @@ abstract class Token extends Dynamic
         if ($token === false) {
             throw new CHttpException(500, gT('Failed to generate random string for token. Please check your configuration and ensure that the openssl or mcrypt extension is enabled.'));
         }
-        $token = str_replace(array('~', '_'), array('a', 'z'), $token);
+        $token = str_replace(array('~', '_'), array('a', 'z'), (string) $token);
         $event = new PluginEvent('afterGenerateToken');
         $event->set('surveyId', $this->getSurveyId());
         $event->set('iTokenLength', $iTokenLength);
@@ -321,7 +321,8 @@ abstract class Token extends Dynamic
      */
     public static function sanitizeAttribute($attribute)
     {
-        return filter_var($attribute, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+        // TODO: Use HTML Purifier?
+        return filter_var($attribute, @FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
     }
 
     /**
@@ -424,7 +425,7 @@ abstract class Token extends Dynamic
             array('completed', 'length', 'min' => 0, 'max' => 17),
             array('remindersent', 'filter', 'filter' => array(self::class, 'sanitizeAttribute')),
             array('remindercount', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
-            array('email', 'filter', 'filter' => 'trim'),
+            array('email', 'LSYii_FilterValidator', 'filter' => 'trim', 'skipOnEmpty' => true),
             array('email', 'LSYii_EmailIDNAValidator', 'allowEmpty' => true, 'allowMultiple' => true, 'except' => 'allowinvalidemail'),
             array('emailstatus', 'default', 'value' => 'OK'),
             array('emailstatus', 'filter', 'filter' => array(self::class, 'sanitizeAttribute')),
@@ -434,7 +435,7 @@ abstract class Token extends Dynamic
             array('validfrom', 'date','format' => ['yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m','yyyy-M-d'],'allowEmpty' => true),
             array('validuntil','date','format' => ['yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m','yyyy-M-d'],'allowEmpty' => true),
         );
-        foreach (decodeTokenAttributes($this->survey->attributedescriptions) as $key => $info) {
+        foreach (decodeTokenAttributes($this->survey->attributedescriptions ?? '') as $key => $info) {
             $aRules[] = array(
                 $key, 'filter',
                 'filter' => array(self::class, 'sanitizeAttribute'),

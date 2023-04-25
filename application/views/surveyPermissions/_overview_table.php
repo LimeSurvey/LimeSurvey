@@ -25,72 +25,67 @@
         /** @var $content Permission */
         //button column
         ?>
-    <tr>
-        <td class='icon-btn-row'>
-        <?php if (Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'update')) {?>
-            <a class="btn btn-default btn-sm green-border" href="<?php echo Yii::app()->createUrl("surveyPermissions/settingsPermissions/", [
-                'surveyid' => $surveyid,
-                'action' => 'user',
-                'id' => $content->uid
-            ]);?>" data-toggle='tooltip' title="<?= gT("Edit permissions")?>">
-                <span class='fa fa-pencil text-success'></span>
-            </a>
-        <?php }?>
-            <?php if (Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'delete')) {
-                $deleteUrl = App()->createUrl("surveyPermissions/deleteUserPermissions/");
-                $deleteConfirmMessage = gT("Are you sure you want to delete this entry?"); ?>
-                <span data-toggle='tooltip' title=" <?= gT("Delete") ?> ">
+        <tr>
+            <td class='text-center button-column'>
+                <div class="icon-btn-row">
+                    <?php if (Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'update')) { ?>
+                        <a class="btn btn-outline-secondary btn-sm"
+                           href="<?php echo Yii::app()->createUrl("surveyPermissions/settingsPermissions/", [
+                               'surveyid' => $surveyid,
+                               'action' => 'user',
+                               'id' => $content->uid
+                           ]); ?>" data-bs-toggle='tooltip' title="<?= gT("Edit permissions") ?>">
+                            <span class='ri-pencil-fill text-success'></span>
+                        </a>
+                    <?php } ?>
+                    <?php if (Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'delete')) {
+                        $deleteUrl = App()->createUrl("surveyPermissions/deleteUserPermissions/");
+                        $deleteConfirmMessage = gT("Are you sure you want to delete this entry?"); ?>
+                        <span data-bs-toggle='tooltip' title=" <?= gT("Delete") ?> ">
                     <a
-                        data-target='#confirmation-modal'
-                        data-toggle='modal'
+                        data-bs-target='#confirmation-modal'
+                        data-bs-toggle='modal'
                         data-btntext="Delete"
-                        data-title="<?php echo gt('Delete user survey permissions')?>"
+                        data-title="<?php echo gt('Delete user survey permissions') ?>"
                         data-btnclass='btn-danger'
-                        data-message="<?php echo $deleteConfirmMessage;?>"
-                        data-post-url="<?php echo $deleteUrl;?>"
+                        data-message="<?php echo $deleteConfirmMessage; ?>"
+                        data-post-url="<?php echo $deleteUrl; ?>"
                         data-post-datas='<?php echo json_encode(['surveyid' => $surveyid, 'userid' => $content->uid]); ?>'
                         type='submit'
-                        class='btn-sm btn btn-default'>
-                        <span class='fa fa-trash text-danger'></span>
+                        class='btn btn-outline-secondary btn-sm'>
+                        <span class='ri-delete-bin-fill text-danger'></span>
                     </a>
                 </span>
-            <?php }?>
-        </td>
-        <td><?php echo $content->user->users_name?></td>
-        <td>
+                    <?php } ?>
+                </div>
+            </td>
+            <td><?php echo $content->user->users_name ?></td>
+            <td>
+                <?php
+                $groupsStr = $oSurveyPermissions->getUserGroupNames($content->uid, Yii::app()->getConfig('usercontrolSameGroupPolicy'));
+                echo implode(", ", $groupsStr);
+                ?>
+            </td>
+            <td><?php echo $content->user->full_name ?></td>
             <?php
-            $groupsStr = $oSurveyPermissions->getUserGroupNames($content->uid, Yii::app()->getConfig('usercontrolSameGroupPolicy'));
-            echo implode(", ", $groupsStr);
-            ?>
-        </td>
-        <td><?php echo $content->user->full_name?></td>
-        <?php
-        // permission columns
-        foreach ($basePermissions as $sPermission => $aSubPermissions) {
-            $userPerm = $oSurveyPermissions->getUsersSurveyPermissionEntity($content->uid, $sPermission);
-            ?>
-        <td class='text-center' >
-            <?php
-            $result = [];
-            $result = $oSurveyPermissions->getTooltipAllPermissions($content->uid, $sPermission, $aSubPermissions);
-            if ($result['hasPermissions']) {
-                if ($result['allPermissionsSet']) {
-                    $appendClass = 'class="fa fa-check ">&nbsp;</div>';
-                } else {
-                    $appendClass = 'class="fa fa-check mixed">&nbsp;</div>';
-                }
-                $titleOutput = implode(',', $result['permissionCrudArray']);
-                $titleOutput = ucfirst($titleOutput);
-                echo "<div data-toggle='tooltip' title='" . $titleOutput . "'" . $appendClass;
-            } else {
-                echo '<div>&#8211;</div>';
-            }
-            ?>
-
-         </td>
-        <?php } ?>
-    </tr>
-    <?php    }
+            // permission columns
+            foreach ($basePermissions as $sPermission => $aSubPermissions) {
+                $userPerm = $oSurveyPermissions->getUsersSurveyPermissionEntity($content->uid, $sPermission);
+                ?>
+                <td class='text-center'>
+                    <?php $result = $oSurveyPermissions->getTooltipAllPermissions($content->uid, $sPermission, $aSubPermissions); ?>
+                    <?php if ($result['hasPermissions']) : ?>
+                        <div data-bs-toggle="tooltip" title="<?= ucfirst(implode(', ', $result['permissionCrudArray'])) ?>"
+                             class="ri-check-fill <?= $result['allPermissionsSet'] ? '' : 'mixed' ?>">
+                            &nbsp;
+                        </div>
+                    <?php else : ?>
+                        <div>&#8211;</div>
+                    <?php endif; ?>
+                </td>
+            <?php } ?>
+        </tr>
+    <?php }
     // ?>
     </tbody>
 </table>

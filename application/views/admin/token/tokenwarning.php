@@ -6,9 +6,9 @@
 ?>
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="row welcome survey-action">
-        <div class="col-sm-12 content-right">
+        <div class="col-12 content-right">
             <div class="jumbotron message-box message-box-error">
-                <p class="lead text-warning">
+                <p class="lead text-danger">
                     <strong>
                         <?php eT("Survey participants have not been initialised for this survey."); ?>
                     </strong>
@@ -25,8 +25,8 @@
                         <br /><br />
 
                         <?php echo CHtml::form(array("admin/tokens/sa/index/surveyid/{$oSurvey->sid}"), 'post'); ?>
-                            <button type="submit" class="btn btn-default  btn-lg"  name="createtable" value="Y"><?php eT("Switch to closed-access mode"); ?></button>
-                            <a href="<?php echo $this->createUrl("surveyAdministration/view/surveyid/$oSurvey->sid"); ?>" class="btn btn-default  btn-lg"><?php eT("Continue in open-access mode"); ?></a>
+                            <button type="submit" class="btn btn-outline-secondary  btn-lg"  name="createtable" value="Y"><?php eT("Switch to closed-access mode"); ?></button>
+                            <a href="<?php echo $this->createUrl("surveyAdministration/view/surveyid/$oSurvey->sid"); ?>" class="btn btn-outline-secondary  btn-lg"><?php eT("Continue in open-access mode"); ?></a>
                     <?php echo CHtml::endForm() ?>
 
 
@@ -47,7 +47,7 @@
 // Do not offer old postgres survey participants tables for restore since these are having an issue with missing index
 if ($tcount > 0 && (Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveysettings', 'update') || Permission::model()->hasSurveyPermission($oSurvey->sid, 'tokens','create'))):
 ?>
-        <div class="col-sm-12 content-right">
+        <div class="col-12 content-right">
             <div class="jumbotron message-box">
                 <h2><?php eT("Restore options"); ?></h2>
                 <p class="text-info">
@@ -67,7 +67,7 @@ if ($tcount > 0 && (Permission::model()->hasSurveyPermission($oSurvey->sid, 'sur
                                 }
                             ?>
                         </select><br /><br />
-                        <input type='submit' value='<?php eT("Restore"); ?>' class="btn btn-default btn-lg"/>
+                        <input type='submit' value='<?php eT("Restore"); ?>' class="btn btn-outline-secondary btn-lg"/>
                         <input type='hidden' name='restoretable' value='Y' />
                         <input type='hidden' name='sid' value='<?php echo $oSurvey->sid; ?>' />
                     <?php echo CHtml::endForm() ?>
