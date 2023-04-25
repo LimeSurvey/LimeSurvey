@@ -16,6 +16,12 @@ class PatternSimple implements PatternInterface
         return $this->pattern;
     }
 
+    /**
+     * Get Pattern
+     *
+     * @param string $path
+     * @return string
+     */
     protected function getPattern($path)
     {
         $parts = array_map(function($part){

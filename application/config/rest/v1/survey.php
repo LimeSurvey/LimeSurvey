@@ -3,13 +3,13 @@
 use \LimeSurvey\Api\Command\V1\{
     SurveyList,
     SurveyDetail,
-    JsonPatch
+    SurveyPatch
 };
 use LimeSurvey\Api\Rest\V1\SchemaFactory\{
     SchemaFactoryError,
     SchemaFactorySurveyList,
     SchemaFactorySurveyDetail,
-    SchemaFactoryJsonPatch
+    SchemaFactorySurveyPatch
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -17,7 +17,7 @@ use LimeSurvey\Api\Rest\V1\SchemaFactory\{
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 $errorSchema = (new SchemaFactoryError)->create();
-$JsonPatchSchema = (new SchemaFactoryJsonPatch)->create();
+$surveyPatchSchema = (new SchemaFactorySurveyPatch)->create();
 
 $rest = [];
 
@@ -81,12 +81,12 @@ $rest['v1/survey-detail/$id'] = [
     'PATCH' => [
         'tag' => 'survey',
         'description' => 'Survey update via RFC 6902 based patch',
-        'commandClass' => JsonPatch::class,
+        'commandClass' => SurveyPatch::class,
         'auth' => 'session',
         'params' => [],
         'examples' => null,
         'content' => null,
-        'schema' => $JsonPatchSchema,
+        'schema' => $surveyPatchSchema,
         'responses' => [
             'success' => [
                 'code' => 200,

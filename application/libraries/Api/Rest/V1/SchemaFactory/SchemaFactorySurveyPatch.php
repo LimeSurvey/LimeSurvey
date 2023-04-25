@@ -6,7 +6,7 @@ use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\AllOf;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\OneOf;
 
-class SchemaFactoryJsonPatch
+class SchemaFactorySurveyPatch
 {
     public function create(): Schema
     {
