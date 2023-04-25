@@ -13,178 +13,178 @@ body {
         background : $yellow;
         color      : $black;
     }
-    a {
-        color : $base-color;
-        &:hover {
-            color : $color_parsley_approx;
-        }
-        &:focus {
-            color : $color_parsley_approx;
-        }
-        &.badge {
-            &:hover {
-                color : $white;
-            }
-            &:focus {
-                color : $white;
-            }
-        }
-        &.list-group-item {
-            color : $color_fuscous_gray_approx;
-            &.active {
-                @extend %extend_12;
-                &:hover {
-                    @extend %extend_12;
-                    .list-group-item-text {
-                        color : $color_moss_green_approx;
-                    }
-                }
-                &:focus {
-                    @extend %extend_12;
-                    .list-group-item-text {
-                        color : $color_moss_green_approx;
-                    }
-                }
-                .list-group-item-text {
-                    color : $color_moss_green_approx;
-                }
-                > .badge {
-                    color            : $base-color;
-                    background-color : $white;
-                }
-            }
-            .list-group-item-heading {
-                color : $color_mine_shaft_approx;
-            }
-            &:hover {
-                background-color : $color_norway_approx;
-            }
-            &:focus {
-                background-color : $color_norway_approx;
-            }
-        }
-        &.thumbnail {
-            &:hover {
-                border : 1px solid $base-color;
-            }
-            &:focus {
-                border : 1px solid $base-color;
-            }
-            &.active {
-                border : 1px solid $base-color;
-            }
-        }
-        &.list-group-item-success {
-            color : $base-color;
-            &:hover {
-                color            : $base-color;
-                background-color : $color_moss_green_approx;
-            }
-            &:focus {
-                color            : $base-color;
-                background-color : $color_moss_green_approx;
-            }
-            &.active {
-                @extend %extend_13;
-                &:hover {
-                    @extend %extend_13;
-                }
-                &:focus {
-                    @extend %extend_13;
-                }
-            }
-        }
-        &.list-group-item-info {
-            color : $color_paradiso_approx;
-            &:hover {
-                color            : $color_paradiso_approx;
-                background-color : $color_shadow_green_approx;
-            }
-            &:focus {
-                color            : $color_paradiso_approx;
-                background-color : $color_shadow_green_approx;
-            }
-            &.active {
-                @extend %extend_14;
-                &:hover {
-                    @extend %extend_14;
-                }
-                &:focus {
-                    @extend %extend_14;
-                }
-            }
-        }
-        &.list-group-item-warning {
-            color : $color_sandy_brown_approx;
-            &:hover {
-                color            : $color_sandy_brown_approx;
-                background-color : $color_sandrift_approx;
-            }
-            &:focus {
-                color            : $color_sandy_brown_approx;
-                background-color : $color_sandrift_approx;
-            }
-            &.active {
-                @extend %extend_15;
-                &:hover {
-                    @extend %extend_15;
-                }
-                &:focus {
-                    @extend %extend_15;
-                }
-            }
-        }
-        &.list-group-item-danger {
-            color : $color_shilo_approx;
-            &:hover {
-                color            : $color_shilo_approx;
-                background-color : $color_matrix_approx;
-            }
-            &:focus {
-                color            : $color_shilo_approx;
-                background-color : $color_matrix_approx;
-            }
-            &.active {
-                @extend %extend_16;
-                &:hover {
-                    @extend %extend_16;
-                }
-                &:focus {
-                    @extend %extend_16;
-                }
-            }
-        }
-        &.text-primary:hover {
-            color : $color_green_pea_approx;
-        }
-        &.text-success:hover {
-            color : $color_green_pea_approx;
-        }
-        &.text-info:hover {
-            color : $color_eden_approx !important;
-        }
-        &.text-warning:hover {
-            color : $color_warning;
-        }
-        &.text-danger:hover {
-            color : $color_new_york_pink_approx;
-        }
-        &.bg-primary:hover {
-            background-color : $color_green_pea_approx;
-        }
-        &.bg-success:hover {
-            background-color : $color_granny_smith_apple_approx;
-        }
-        &.bg-info:hover {
-            background-color : $color_gulf_stream_approx;
-        }
-        &.bg-warning:hover {
-            background-color : $color_sandal_approx;
-        }
-        &.bg-danger:hover {
-            background-color : $color_apple_blossom_approx;
-        }
-    }
+    //a {
+    //    color : $base-color;
+    //    &:hover {
+    //        color : $color_parsley_approx;
+    //    }
+    //    &:focus {
+    //        color : $color_parsley_approx;
+    //    }
+    //    &.badge {
+    //        &:hover {
+    //            color : $white;
+    //        }
+    //        &:focus {
+    //            color : $white;
+    //        }
+    //    }
+    //    &.list-group-item {
+    //        color : $color_fuscous_gray_approx;
+    //        &.active {
+    //            @extend %extend_12;
+    //            &:hover {
+    //                @extend %extend_12;
+    //                .list-group-item-text {
+    //                    color : $color_moss_green_approx;
+    //                }
+    //            }
+    //            &:focus {
+    //                @extend %extend_12;
+    //                .list-group-item-text {
+    //                    color : $color_moss_green_approx;
+    //                }
+    //            }
+    //            .list-group-item-text {
+    //                color : $color_moss_green_approx;
+    //            }
+    //            > .badge {
+    //                color            : $base-color;
+    //                background-color : $white;
+    //            }
+    //        }
+    //        .list-group-item-heading {
+    //            color : $color_mine_shaft_approx;
+    //        }
+    //        &:hover {
+    //            background-color : $color_norway_approx;
+    //        }
+    //        &:focus {
+    //            background-color : $color_norway_approx;
+    //        }
+    //    }
+    //    &.thumbnail {
+    //        &:hover {
+    //            border : 1px solid $base-color;
+    //        }
+    //        &:focus {
+    //            border : 1px solid $base-color;
+    //        }
+    //        &.active {
+    //            border : 1px solid $base-color;
+    //        }
+    //    }
+    //    &.list-group-item-success {
+    //        color : $base-color;
+    //        &:hover {
+    //            color            : $base-color;
+    //            background-color : $color_moss_green_approx;
+    //        }
+    //        &:focus {
+    //            color            : $base-color;
+    //            background-color : $color_moss_green_approx;
+    //        }
+    //        &.active {
+    //            @extend %extend_13;
+    //            &:hover {
+    //                @extend %extend_13;
+    //            }
+    //            &:focus {
+    //                @extend %extend_13;
+    //            }
+    //        }
+    //    }
+    //    &.list-group-item-info {
+    //        color : $color_paradiso_approx;
+    //        &:hover {
+    //            color            : $color_paradiso_approx;
+    //            background-color : $color_shadow_green_approx;
+    //        }
+    //        &:focus {
+    //            color            : $color_paradiso_approx;
+    //            background-color : $color_shadow_green_approx;
+    //        }
+    //        &.active {
+    //            @extend %extend_14;
+    //            &:hover {
+    //                @extend %extend_14;
+    //            }
+    //            &:focus {
+    //                @extend %extend_14;
+    //            }
+    //        }
+    //    }
+    //    &.list-group-item-warning {
+    //        color : $color_sandy_brown_approx;
+    //        &:hover {
+    //            color            : $color_sandy_brown_approx;
+    //            background-color : $color_sandrift_approx;
+    //        }
+    //        &:focus {
+    //            color            : $color_sandy_brown_approx;
+    //            background-color : $color_sandrift_approx;
+    //        }
+    //        &.active {
+    //            @extend %extend_15;
+    //            &:hover {
+    //                @extend %extend_15;
+    //            }
+    //            &:focus {
+    //                @extend %extend_15;
+    //            }
+    //        }
+    //    }
+    //    &.list-group-item-danger {
+    //        color : $color_shilo_approx;
+    //        &:hover {
+    //            color            : $color_shilo_approx;
+    //            background-color : $color_matrix_approx;
+    //        }
+    //        &:focus {
+    //            color            : $color_shilo_approx;
+    //            background-color : $color_matrix_approx;
+    //        }
+    //        &.active {
+    //            @extend %extend_16;
+    //            &:hover {
+    //                @extend %extend_16;
+    //            }
+    //            &:focus {
+    //                @extend %extend_16;
+    //            }
+    //        }
+    //    }
+    //    &.text-primary:hover {
+    //        color : $color_green_pea_approx;
+    //    }
+    //    &.text-success:hover {
+    //        color : $color_green_pea_approx;
+    //    }
+    //    &.text-info:hover {
+    //        color : $color_eden_approx !important;
+    //    }
+    //    &.text-warning:hover {
+    //        color : $color_warning;
+    //    }
+    //    &.text-danger:hover {
+    //        color : $color_new_york_pink_approx;
+    //    }
+    //    &.bg-primary:hover {
+    //        background-color : $color_green_pea_approx;
+    //    }
+    //    &.bg-success:hover {
+    //        background-color : $color_granny_smith_apple_approx;
+    //    }
+    //    &.bg-info:hover {
+    //        background-color : $color_gulf_stream_approx;
+    //    }
+    //    &.bg-warning:hover {
+    //        background-color : $color_sandal_approx;
+    //    }
+    //    &.bg-danger:hover {
+    //        background-color : $color_apple_blossom_approx;
+    //    }
+    //}
     .img-thumbnail {
         background-color : $white;
         border           : 1px solid $color_alto_approx;
@@ -554,54 +554,6 @@ body {
             color : $color_gravel_approx;
         }
     }
-    .alert-success {
-        background-color : transparent;
-        border           : 1px solid $color_success;
-        color            : $color_success;
-        hr {
-            border-top-color : $color_success;
-        }
-        .alert-link {
-            color           : $color_success;
-            text-decoration : underline;
-        }
-    }
-    .alert-info {
-        background-color : transparent;
-        border           : 1px solid $color_info;
-        color            : $color_info;
-        hr {
-            border-top-color : $color_info;
-        }
-        .alert-link {
-            color           : $color_info;
-            text-decoration : underline;
-        }
-    }
-    .alert-warning {
-        background-color : transparent;
-        border           : 1px solid $color_warning;
-        color            : $color_warning;
-        hr {
-            border-top-color : $color_warning;
-        }
-        .alert-link {
-            color           : $color_warning;
-            text-decoration : underline;
-        }
-    }
-    .alert-danger {
-        background-color : transparent;
-        border           : 1px solid $color_danger;
-        color            : $color_danger;
-        hr {
-            border-top-color : $color_danger;
-        }
-        .alert-link {
-            color           : $color_danger;
-            text-decoration : underline;
-        }
-    }
     .progress {
         background-color : $color_wild_sand_approx;
         box-shadow       : inset 0 1px 2px $black_10;
@@ -836,21 +788,6 @@ body {
     }
     .close {
         text-shadow : 0 1px 0 $white;
-    }
-    .modal-content {
-        background-color : $white;
-        border           : 1px solid $color_mountain_mist_approx;
-        border           : 1px solid $black_20;
-        box-shadow       : 0 3px 9px $black_50;
-    }
-    .modal-backdrop {
-        background-color : $black;
-    }
-    .modal-header {
-        border-bottom : 1px solid $mercury;
-    }
-    .modal-footer {
-        border-top : 1px solid $mercury;
     }
     .tooltip-inner {
         color            : $white;

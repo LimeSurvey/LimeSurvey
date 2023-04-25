@@ -22,7 +22,7 @@
            data-showcomment="{{ showComment }}"
            data-fieldname="{{ basename }}"
         >
-            <span class='fa fa-upload'></span>
+            <span class='fa fa-upload ri-upload-fill'></span>
             &nbsp;
             {{ uploadButtonLabel }}
         </a>
@@ -64,7 +64,7 @@
                 <div id="uploader{{fileid}}" name="uploader{{fileid}}" class="uploader-frame" data-src="{{uploadurl}}" title="{{gT("Upload")}}"></div>
             </div>
             <div class="modal-footer file-upload-modal-footer">
-                <button type="button" class="btn btn-success" data-bs-dismiss="modal">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
                     {{ gT("Save changes") }}
                 </button>
             </div>
@@ -140,7 +140,7 @@
         <td class="upload edit">{name}</td>
         <td>
             <a role="button" class="btn btn-primary trigger_edit_upload_{{fileid}}" data-file="{filepointer}">
-                <i class="fa fa-pencil"></i> 
+                <i class="fa fa-pencil ri-pencil-fill"></i>
                 &nbsp; 
                 {{ "Edit" | gT }}
             </a>

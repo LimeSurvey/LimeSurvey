@@ -114,10 +114,15 @@ $base-color: #ffffff;
 @import "questiontypes/ranking/ranking_advanced_colors.scss";
 @import "questiontypes/multiple_numerical_input/multiple_numerical_input.scss";
 @import "questiontypes/multiple_numerical_input/multiple_numerical_input_colors.scss";
+@import "questiontypes/file_upload/file_upload.scss";
 @import "forms/checkboxes/checkboxes.scss";
 @import "forms/checkboxes/checkboxes_colors.scss";
 @import "datetimepicker/datetimepicker.scss";
 @import "datetimepicker/datetimepicker_colors.scss";
+@import "icons/icons.scss";
+@import "modal/modal.scss";
+@import "modal/modal_colors.scss";
+@import "alert/alert.scss";
 
 // TODO: placeholder, will probbably be removed
 @import "darkmode/darkmode_colors.scss";
