@@ -36,7 +36,7 @@ class CustomFormatter extends CFormatter {
         if (mb_strlen($value, 'UTF-8') > $this->longTextMaxLength) {
             $value = ellipsize($value, $this->longTextMaxLength);
         }
-        $value = '<span class="longtext-content" data-toggle="tooltip" data-placement="left" title="' . $originalvalue . '">' . $value . '</span>';
+        $value = '<span class="longtext-content" data-bs-toggle="tooltip" data-bs-placement="left" title="' . $originalvalue . '">' . $value . '</span>';
         return $value;
     }
 }
