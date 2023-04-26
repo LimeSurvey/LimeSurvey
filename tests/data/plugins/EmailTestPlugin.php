@@ -44,4 +44,24 @@ class EmailPlugin extends SmtpOAuthPluginBase
     {
         return $this->getCredentials();
     }
+
+    public function validateTestPluginCredentials($credentials)
+    {
+        return $this->validateCredentials($credentials);
+    }
+
+    public function haveTestPluginCredentialsChanged($oldCredentials, $newCredentials)
+    {
+        return $this->haveCredentialsChanged($oldCredentials, $newCredentials);
+    }
+
+    public function saveTestPluginRefreshToken($refreshToken, $credentials)
+    {
+        $this->saveRefreshToken($refreshToken, $credentials);
+    }
+
+    public function getPluginProperty($name)
+    {
+        return $this->get($name);
+    }
 }
