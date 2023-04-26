@@ -1,9 +1,11 @@
 <?php
 
-namespace LimeSurvey\JsonPatch\OpHandler;
+namespace LimeSurvey\Api\Command\V1\SurveyPatch\OpHandler;
 
 use Survey;
 use LimeSurvey\JsonPatch\{
+    OpHandler\OpHandlerInterface,
+    OpHandler\OpHandlerException,
     OpType\OpTypeInterface,
     OpType\OpTypeReplace,
     Pattern\PatternInterface,

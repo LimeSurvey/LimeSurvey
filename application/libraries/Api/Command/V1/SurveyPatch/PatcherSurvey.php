@@ -1,9 +1,9 @@
 <?php
 
-namespace LimeSurvey\JsonPatch\Patcher;
+namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
-use LimeSurvey\JsonPatch\{
-    Patcher,
+use LimeSurvey\JsonPatch\Patcher;
+use LimeSurvey\Api\Command\V1\SurveyPatch\{
     OpHandler\OpHandlerQuestionGroupPropReplace,
     OpHandler\OpHandlerSurveyPropReplace
 };

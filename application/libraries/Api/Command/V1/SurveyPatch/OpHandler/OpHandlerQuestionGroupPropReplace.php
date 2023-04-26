@@ -1,12 +1,16 @@
 <?php
 
-namespace LimeSurvey\JsonPatch\OpHandler;
+namespace LimeSurvey\Api\Command\V1\SurveyPatch\OpHandler;
 
 use QuestionGroup;
-use LimeSurvey\JsonPatch\OpType\OpTypeInterface;
-use LimeSurvey\JsonPatch\OpType\OpTypeReplace;
-use LimeSurvey\JsonPatch\Pattern\PatternInterface;
-use LimeSurvey\JsonPatch\Pattern\PatternSimple;
+use LimeSurvey\JsonPatch\{
+    OpHandler\OpHandlerInterface,
+    OpHandler\OpHandlerException,
+    OpType\OpTypeInterface,
+    OpType\OpTypeReplace,
+    Pattern\PatternInterface,
+    Pattern\PatternSimple
+};
 
 class OpHandlerQuestionGroupPropReplace implements OpHandlerInterface
 {
