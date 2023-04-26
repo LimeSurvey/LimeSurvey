@@ -3,12 +3,13 @@
 namespace LimeSurvey\Api\Command\V1\Transformer\Output;
 
 use LimeSurvey\Api\Transformer\Output\TransformerOutputActiveRecord;
+use LimeSurvey\Api\Transformer\Formatter\FormatterYnToBool;
 
 class TransformerOutputQuestion extends TransformerOutputActiveRecord
 {
     public function __construct()
     {
-        $typeYnToBool = 'LimeSurvey\Api\Transformer\TypeFormat::ynToBool';
+        $formatterYn = new FormatterYnToBool;
 
         $this->setDataMap([
             'qid' => ['type' => 'int'],
@@ -17,17 +18,17 @@ class TransformerOutputQuestion extends TransformerOutputActiveRecord
             'type' => true,
             'title' => true,
             'preg' => true,
-            'other' => ['type' => $typeYnToBool],
-            'mandatory' => ['type' => $typeYnToBool],
-            'encrypted' => ['type' => $typeYnToBool],
+            'other' => ['formatter' => $formatterYn],
+            'mandatory' => ['formatter' => $formatterYn],
+            'encrypted' => ['formatter' => $formatterYn],
             'question_order' => ['key' => 'questionOrder', 'type' => 'int'],
             'scale_id' => ['key' => 'scaleId', 'type' => 'int'],
-            'same_default' => ['key' => 'sameDefault', 'type' => $typeYnToBool],
+            'same_default' => ['key' => 'sameDefault', 'formatter' => $formatterYn],
             'question_theme_name' => 'questionThemeName',
             'modulename' => 'moduleName',
             'gid' => ['type' => 'int'],
             'relevance' => true,
-            'same_script' => ['key' => 'sameScript', 'type' => $typeYnToBool]
+            'same_script' => ['key' => 'sameScript', 'formatter' => $formatterYn]
         ]);
     }
 

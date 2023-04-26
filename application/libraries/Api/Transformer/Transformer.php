@@ -28,11 +28,8 @@ class Transformer implements TransformerInterface
             }
 
             $config = $this->normaliseConfig($config, $key);
-
-            $value = $this->cast(
-                $data[$key],
-                $config
-            );
+            $value = $this->cast($data[$key], $config);
+            $value = $this->format($value, $config);
 
             // Null value reverts to default value
             // - the default value itself defaults to null
@@ -59,6 +56,7 @@ class Transformer implements TransformerInterface
     {
         $key = null;
         $type = null;
+        $formatter = null;
         $default = null;
         $null = true;
         $empty = true;
@@ -72,6 +70,7 @@ class Transformer implements TransformerInterface
         } elseif (is_array($config)) {
             $key = isset($config['key']) ? $config['key'] : $inputKey;
             $type = isset($config['type']) ? $config['type'] : null;
+            $formatter = isset($config['formatter']) ? $config['formatter'] : null;
             $default = isset($config['default']) ? (bool) $config['default'] : null;
             $null = isset($config['null']) ? (bool) $config['null'] : true;
             $empty = isset($config['empty']) ? (bool) $config['empty'] : true;
@@ -80,6 +79,7 @@ class Transformer implements TransformerInterface
         return [
             'key' => $key,
             'type' => $type,
+            'formatter' => $formatter,
             'default' => $default,
             'null' => $null,
             'empty' => $empty
@@ -87,7 +87,7 @@ class Transformer implements TransformerInterface
     }
 
     /**
-     *  Cast Value
+     * Cast Value
      *
      * @param mixed $value
      * @param array $config
@@ -108,9 +108,23 @@ class Transformer implements TransformerInterface
     }
 
     /**
+     * Format Value
+     *
+     * @param mixed $value
+     * @return mixed
+     */
+    private function format($value, $config)
+    {
+        if (isset($config['formatter'])) {
+            $value = $config['formatter']->format($value);
+        }
+        return $value;
+    }
+
+    /**
      *  Validate Value
      *
-     *  @param string $key
+     * @param string $key
      * @param mixed $value
      * @param array $config
      * @throws \Exception
