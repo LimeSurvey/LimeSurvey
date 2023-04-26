@@ -51,7 +51,7 @@ class SurveyPatch implements CommandInterface
             );
         }
 
-        return $this->responseSuccess();
+        return $this->responseSuccess(true);
     }
 
 }

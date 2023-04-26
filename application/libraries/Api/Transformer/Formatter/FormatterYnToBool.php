@@ -4,10 +4,10 @@ namespace LimeSurvey\Api\Transformer\Formatter;
 
 class FormatterYnToBool implements FormatterRevertibleInterface
 {
-    private $revert = true;
-    private $lowercaseCase = true;
+    private $revert = false;
+    private $lowercaseCase = false;
 
-    public function __construct($revert = false, $lowercase = true)
+    public function __construct($revert = false, $lowercase = false)
     {
         $this->revert = $revert;
         $this->lowercaseCase = $lowercase;
