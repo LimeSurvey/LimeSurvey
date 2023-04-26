@@ -18,6 +18,8 @@
 
 class LSYii_NoUpdateValidator extends CValidator
 {
+    /* Act as filter or really validate */
+    public $filter = true;
 
     /**
      * @inheritdoc
@@ -35,6 +37,13 @@ class LSYii_NoUpdateValidator extends CValidator
         }
         $classOfObject = get_class($object);
         $originalObject = $classOfObject::model()->findByPk($object->getPrimaryKey());
-        $object->$attribute = $originalObject->$attribute;
+        if ($this->filter) {
+            $object->$attribute = $originalObject->$attribute;
+            return;
+        }
+        if ($object->$attribute != $originalObject->$attribute) {
+            $label = $object->getAttributeLabel($attribute);
+            $this->addError($object, $attribute, sprintf(gT("%s can not be updated."), $label));
+        }
     }
 }
