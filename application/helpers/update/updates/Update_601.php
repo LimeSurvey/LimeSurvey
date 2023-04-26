@@ -1,6 +1,7 @@
 <?php
 
 namespace LimeSurvey\Helpers\Update;
+
 use Exception;
 
 class Update_601 extends DatabaseUpdateBase
