@@ -8,7 +8,6 @@ var LSSlider = function (options) {
     "use strict";
     var LSvar = window.LSvar || {};
     var debugMode = LSvar.debugMode || 0;
-    console.ls.log(LSvar, debugMode);
 
     //contextual settings and constants
     var
@@ -37,6 +36,11 @@ var LSSlider = function (options) {
             integer: options.integer || true,
             reversed: options.reversed || ''
         };
+
+    // Properly handle "0" position when Set Position is enabled
+    if (options.position === 0 && setPosition) {
+        position = 0;
+    }
 
     //fillable variables
     var sliderObject = null,

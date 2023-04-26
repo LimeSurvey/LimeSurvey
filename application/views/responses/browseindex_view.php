@@ -15,8 +15,8 @@ echo viewHelper::getViewTestTag('surveyResponsesIndex');
 <div class='side-body <?php echo getSideBodyClass(true); ?>'>
     <h3><?php eT("Response summary"); ?></h3>
     <div class="row">
-        <div class="col-lg-12 content-right">
-            <table class='statisticssummary table'>
+        <div class="col-12 content-right">
+            <table class='ls-statisticssummary table'>
                 <tbody>
                 <tr>
                     <th><?php eT("Full responses"); ?></th>
@@ -26,19 +26,19 @@ echo viewHelper::getViewTestTag('surveyResponsesIndex');
                     <th><?php eT("Incomplete responses"); ?></th>
                     <td><?php echo($num_total_answers - $num_completed_answers); ?></td>
                 </tr>
-                </tbody>
-                <tr>
+                <tr class="ls-statisticssummary__sum">
                     <th><?php eT("Total responses"); ?></th>
                     <td><?php echo $num_total_answers; ?></td>
                 </tr>
+                </tbody>
             </table>
         </div>
     </div>
     <?php if (isset($with_token)): ?>
         <h3><?php eT("Survey participant summary"); ?></h3>
         <div class="row">
-            <div class="col-lg-12 content-right">
-                <table class='statisticssummary table'>
+            <div class="col-12 content-right">
+                <table class='ls-statisticssummary table'>
                     <tbody>
                     <tr>
                         <th><?php eT("Total invitations sent"); ?></th>
@@ -52,11 +52,11 @@ echo viewHelper::getViewTestTag('surveyResponsesIndex');
                         <th><?php eT("Total with no unique access code"); ?></th>
                         <td><?php echo $tokeninfo['invalid'] ?></td>
                     </tr>
-                    </tbody>
-                    <tr>
+                    <tr class="ls-statisticssummary__sum">
                         <th><?php eT("Total records"); ?></th>
                         <td><?php echo $tokeninfo['count']; ?></td>
                     </tr>
+                    </tbody>
                 </table>
             </div>
         </div>

@@ -35,7 +35,7 @@ export default {
             if(this.$store.state.lastMenuItemOpen == menuItem.id){
                 classes+=' btn-primary ';
             } else {
-                classes+=' btn-default ';
+                classes+=' btn-outline-secondary ';
             }
             if(!menuItem.link_external){
                 classes+=' pjax ';
@@ -75,7 +75,7 @@ export default {
                 v-bind:key="menuItem.id" 
                 :href="menuItem.link" :title="reConvertHTML(menuItem.menu_description)" 
                 :target="menuItem.link_external ? '_blank' : '_self'"
-                data-toggle="tooltip" 
+                data-bs-toggle="tooltip"
                 class="btn btn-icon"
                 :class="compileEntryClasses(menuItem)"
                 >
@@ -86,6 +86,9 @@ export default {
                         <img width="32px" :src="menuItem.menu_icon" />
                     </template>
                     <template v-else-if="menuItem.menu_icon_type == 'iconclass'">
+                        <i class="quickmenuIcon"  :class="menuItem.menu_icon" ></i>
+                    </template>
+                    <template v-else-if="menuItem.menu_icon_type == 'remix'">
                         <i class="quickmenuIcon"  :class="menuItem.menu_icon" ></i>
                     </template>
                 </a>

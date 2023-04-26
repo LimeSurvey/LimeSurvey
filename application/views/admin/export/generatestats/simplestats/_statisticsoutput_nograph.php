@@ -4,9 +4,13 @@
  */
 ?>
 <div class="row">
-    <div class="col-sm-12">
-        <div class="alert alert-warning" role="alert"  style="height: 300px;">
-            <?php eT('No simple graph for this question type');?>
-        </div>
+    <div class="col-md-12">
+        <?php
+        $this->widget('ext.AlertWidget.AlertWidget', [
+        'text' => gT("No simple graph for this question type"),
+        'type' => 'warning',
+        'htmlOptions' => ['class' => 'no-simple-graph']
+        ]);
+        ?>
     </div>
 </div>

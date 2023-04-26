@@ -1,5 +1,5 @@
 <select 
-    class="form-control" 
+    class="form-select" 
     name="<?= $inputBaseName ?>"
     id="<?= CHtml::getIdByName($inputBaseName); ?>"
     <?= ($this->setting['help']) ? 'aria-describedby="help-' . CHtml::getIdByName($inputBaseName) . '"' : "" ?>

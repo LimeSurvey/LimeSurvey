@@ -96,11 +96,11 @@ var bindAction = function(){
             data: params,
             success : function(result) {
                 if (result.success) {
-                    LS.LsGlobalNotifier.createFlash(result.success, 'alert-success fade in');
+                    window.LS.ajaxAlerts(result.success, 'success');
                 } else {
                     var errorMsg = result.error.message ? result.error.message : result.error;
                     if (!errorMsg) errorMsg = "Unexpected error";
-                    LS.LsGlobalNotifier.createFlash(errorMsg, 'alert-danger fade in');
+                    window.LS.ajaxAlerts(errorMsg, 'danger');
                 }
                 $('#assessmentsdeleteform').find('input[name=id]').val(' ');
                 $('#assesements-delete').modal('hide');

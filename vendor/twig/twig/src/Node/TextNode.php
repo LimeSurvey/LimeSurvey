@@ -21,12 +21,12 @@ use Twig\Compiler;
  */
 class TextNode extends Node implements NodeOutputInterface
 {
-    public function __construct($data, $lineno)
+    public function __construct(string $data, int $lineno)
     {
         parent::__construct([], ['data' => $data], $lineno);
     }
 
-    public function compile(Compiler $compiler)
+    public function compile(Compiler $compiler): void
     {
         $compiler
             ->addDebugInfo($this)
@@ -36,5 +36,3 @@ class TextNode extends Node implements NodeOutputInterface
         ;
     }
 }
-
-class_alias('Twig\Node\TextNode', 'Twig_Node_Text');
