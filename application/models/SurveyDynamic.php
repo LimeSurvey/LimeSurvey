@@ -1006,7 +1006,17 @@ class SurveyDynamic extends LSActiveRecord
 
         $oSurvey = self::$survey;
         $aGroupArray = array();
+
         $oResponses = SurveyDynamic::model($oSurvey->sid)->findByAttributes(array('id' => $sSRID));
+
+        //responses have to be decrypted before output and before rendering via twig ...
+        $encryptedAttr = Response::getEncryptedAttributes($oSurvey->sid);
+        $attributes = $oResponses->attributes;
+        $sodium = Yii::app()->sodium;
+        foreach ($encryptedAttr as $key) {
+            $oResponses->setAttribute($key, $sodium->decrypt($attributes[$key]));
+        }
+
         $oGroupList = $oSurvey->groups;
 
         foreach ($oGroupList as $oGroup) {
