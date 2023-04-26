@@ -2,9 +2,11 @@
 
 namespace LimeSurvey\Api\Command\V1\Transformer\Input;
 
-use LimeSurvey\Api\Transformer\Transformer;
-use LimeSurvey\Api\Transformer\Formatter\FormatterYnToBool;
-use LimeSurvey\Api\Transformer\Formatter\FormatterDateTimeToJson;
+use LimeSurvey\Api\Transformer\{
+    Transformer,
+    Formatter\FormatterYnToBool,
+    Formatter\FormatterDateTimeToJson
+};
 
 class TransformerInputSurvey extends Transformer
 {

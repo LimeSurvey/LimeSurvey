@@ -11,9 +11,10 @@ use LimeSurvey\Api\Command\Mixin\{
     Auth\AuthSessionTrait,
     Auth\AuthPermissionTrait
 };
-
-use LimeSurvey\JsonPatch\Patcher\PatcherSurvey;
-use LimeSurvey\JsonPatch\JsonPatchException;
+use LimeSurvey\JsonPatch\{
+    Patcher\PatcherSurvey,
+    JsonPatchException
+};
 
 class SurveyPatch implements CommandInterface
 {

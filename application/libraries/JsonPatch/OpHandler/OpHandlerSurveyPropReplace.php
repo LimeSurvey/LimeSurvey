@@ -3,10 +3,12 @@
 namespace LimeSurvey\JsonPatch\OpHandler;
 
 use Survey;
-use LimeSurvey\JsonPatch\OpType\OpTypeInterface;
-use LimeSurvey\JsonPatch\OpType\OpTypeReplace;
-use LimeSurvey\JsonPatch\Pattern\PatternInterface;
-use LimeSurvey\JsonPatch\Pattern\PatternSimple;
+use LimeSurvey\JsonPatch\{
+    OpType\OpTypeInterface,
+    OpType\OpTypeReplace,
+    Pattern\PatternInterface,
+    Pattern\PatternSimple
+};
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputSurvey;
 
 class OpHandlerSurveyPropReplace implements OpHandlerInterface

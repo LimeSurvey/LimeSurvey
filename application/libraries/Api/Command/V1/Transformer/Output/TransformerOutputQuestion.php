@@ -2,8 +2,10 @@
 
 namespace LimeSurvey\Api\Command\V1\Transformer\Output;
 
-use LimeSurvey\Api\Transformer\Output\TransformerOutputActiveRecord;
-use LimeSurvey\Api\Transformer\Formatter\FormatterYnToBool;
+use LimeSurvey\Api\Transformer\{
+    Output\TransformerOutputActiveRecord,
+    Formatter\FormatterYnToBool
+};
 
 class TransformerOutputQuestion extends TransformerOutputActiveRecord
 {
