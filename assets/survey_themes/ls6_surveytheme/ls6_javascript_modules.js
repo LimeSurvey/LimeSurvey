@@ -3,3 +3,4 @@
  */
 
 import ThemeScripts from './core/ls6_core_theme.js';
+import ArrayScripts from './questiontypes/array/array.js';

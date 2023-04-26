@@ -331,7 +331,7 @@ var TemplateCoreClass = function TemplateCoreClass() {
      * @var string title
      */
     alertSurveyDialog: function alertSurveyDialog(startPopups, title) {
-      text = "";
+      var text = "";
       if (LSvar.showpopup == 1 && $.isArray(startPopups)) {
         startPopups = startPopups.map(function (text) {
           return "<p>" + text + "</p>";
@@ -975,6 +975,40 @@ window.resetQuestionTimers = resetQuestionTimers;
 
 
 
-var _ls6_core_theme = _interopRequireDefault(require("./core/ls6_core_theme.js"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { "default": obj };}
+var _ls6_core_theme = _interopRequireDefault(require("./core/ls6_core_theme.js"));
+var _array = _interopRequireDefault(require("./questiontypes/array/array.js"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { "default": obj };}
 
-},{"./core/ls6_core_theme.js":1}]},{},[4]);
+},{"./core/ls6_core_theme.js":1,"./questiontypes/array/array.js":5}],5:[function(require,module,exports){
+"use strict";Object.defineProperty(exports, "__esModule", { value: true });exports.ArrayScripts = void 0;var ArrayScripts = function ArrayScripts() {
+  var addEntryMarker = function addEntryMarker(element) {
+    element.addClass('success-border');
+  };
+
+  var removeEntryMarker = function removeEntryMarker(element) {
+    element.removeClass('success-border');
+  };
+
+  var initArrayEvents = function initArrayEvents() {
+    var affectedQuestionTypes = ['array-multi-flexi', 'array-multi-flexi-text', 'array-flexible-dual-scale'];
+    $(document).on(
+    "change",
+    '.array-multi-flexi .multiflexitext.text-item, .array-multi-flexi .answer-item .form-select, .array-flexible-dual-scale .answer-item .form-select, .array-multi-flexi-text input.form-control',
+    function () {
+      var parentDiv = $(this).closest(".question-container");
+      var enteredValue = $(this).val();
+      if (enteredValue != undefined && enteredValue != '') {
+        addEntryMarker($(this));
+      } else {
+        removeEntryMarker($(this));
+      }
+    });
+  };
+
+  return {
+    initArrayEvents: initArrayEvents
+  };
+};
+// register to global scope
+exports.ArrayScripts = ArrayScripts;window.ArrayScripts = ArrayScripts;
+
+},{}]},{},[4]);

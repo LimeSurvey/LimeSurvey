@@ -14399,6 +14399,10 @@ input.imageselect-checkbox:checked ~ .imageselect-select::after {
   outline: none;
 }
 
+.success-border {
+  border-color: #14AE5C;
+}
+
 .checkbox-item {
   padding-left: 20px;
 }

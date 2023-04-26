@@ -122,8 +122,12 @@
                 {{ registerScript("BasicThemeScripts", "
                 if(window.basicThemeScripts === undefined){ 
                     window.basicThemeScripts = new ThemeScripts(); 
-                } 
-                basicThemeScripts.initGlobal(); 
+                }
+                if(window.arrayScripts === undefined){
+                    window.arrayScripts = new ArrayScripts();
+                }
+                arrayScripts.initArrayEvents();
+                basicThemeScripts.initGlobal();
                 ", "POS_END") }}
 
             {% endblock %}

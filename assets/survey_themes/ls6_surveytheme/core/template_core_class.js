@@ -41,7 +41,7 @@ export var TemplateCoreClass = function () {
          * @var string title
          */
         alertSurveyDialog: function (startPopups, title) {
-            text = "";
+            var text = "";
             if (LSvar.showpopup == 1  && $.isArray(startPopups)) {
                 startPopups = startPopups.map(function (text) {
                     return "<p>"+text+"</p>";
