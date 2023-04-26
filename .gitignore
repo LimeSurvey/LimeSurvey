@@ -55,6 +55,7 @@
 !/upload/global/readme.txt
 
 # tmp directory : whole except the index.html for directory create
+/cov.xml
 /tmp/*
 /tmp/assets/*
 /tmp/runtime/*
