@@ -643,7 +643,7 @@ class Export extends SurveyCommonAction
                         echo "* Variable name was incorrect and was changed from {$field['title']} to $ftitle .\n";
                     }
 
-                    echo "RENAME VARIABLE ( " . $field['id'] . ' = ' . $ftitle . " ).\n";
+                    echo "RENAME VARIABLES ( " . $field['id'] . ' = ' . $ftitle . " ).\n";
                 }
             }
             echo "RESTORE LOCALE.\n";
