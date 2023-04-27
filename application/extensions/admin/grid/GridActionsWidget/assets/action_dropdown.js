@@ -1,7 +1,7 @@
 function action_dropdown() {
     "use strict";
     let dropdownElementList = [].slice.call(
-        document.querySelectorAll(".ls-dropdown-toggle")
+        document.querySelectorAll(".dropdown-menu")
     );
     dropdownElementList.map(function (dropdownToggleEl) {
         return new bootstrap.Dropdown(dropdownToggleEl, {
