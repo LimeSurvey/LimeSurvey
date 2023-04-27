@@ -136,8 +136,7 @@ class Export extends SurveyCommonAction
      */
     public function exportresults()
     {
-        $iSurveyID = sanitize_int(Yii::app()->request->getParam('surveyid')) ??
-            sanitize_int(Yii::app()->request->getParam('surveyId'));
+        $iSurveyID = sanitize_int(App()->request->getParam('surveyid', App()->request->getParam('surveyId')));
         $survey = Survey::model()->findByPk($iSurveyID);
 
         if (!isset($imageurl)) {
@@ -217,7 +216,7 @@ class Export extends SurveyCommonAction
                 $aFieldsOptions[$sFieldName] = array('title' => viewHelper::getFieldText($fieldinfo), 'data-fieldname' => $fieldinfo['fieldname'], 'data-emcode' => viewHelper::getFieldCode($fieldinfo, array('LEMcompat' => true))); // No need to filter title : Yii do it (remove all tag)
             }
 
-            $data['SingleResponse'] = (int) returnGlobal('id');
+            $data['SingleResponse'] = intval(App()->getRequest()->getParam('id'));
             $data['selecthide'] = $selecthide;
             $data['selectshow'] = $selectshow;
             $data['selectinc'] = $selectinc;
