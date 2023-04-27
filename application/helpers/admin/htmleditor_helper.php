@@ -247,7 +247,7 @@ function getPopupEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $g
         'style' => "display:none",
     ), '');
     /* @var final code to return */
-    $htmlcode = CHtml::link(
+    return CHtml::link(
         $content,
         "javascript:start_popup_editor('{$fieldname}','" . $editorUrl . "');",
         array(
@@ -255,7 +255,6 @@ function getPopupEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $g
             'class' => "{$class} btn btn-default btn-xs",
         )
     );
-    return $htmlcode;
 }
 
 /**
@@ -341,16 +340,16 @@ function getInlineEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $
     $replacementFieldsUrlParams = array(
         'fieldtype' => $fieldtype, // email_XX_lang, question_lang …
     );
-    if(!empty($action)) {
+    if (!empty($action)) {
         $replacementFieldsUrlParams['action'] = javascriptEscape($action);
     }
-    if(!empty($surveyID)) {
+    if (!empty($surveyID)) {
         $replacementFieldsUrlParams['surveyid'] = $surveyID;
     }
-    if(!empty($gID)) {
+    if (!empty($gID)) {
         $replacementFieldsUrlParams['gid'] = $gID;
     }
-    if(!empty($qID)) {
+    if (!empty($qID)) {
         $replacementFieldsUrlParams['qid'] = $qID;
     }
     /* @var string the replacementfields url */

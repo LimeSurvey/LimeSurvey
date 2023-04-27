@@ -14,7 +14,7 @@
     </head>
 
     <body>
-        <?php echo CHtml::form('', 'post', array('onsubmit'=>'saveChanges=true;'));?>
+        <?php echo CHtml::form('', 'post', array('onsubmit' => 'saveChanges=true;'));?>
 
             <script type='text/javascript'>
                 <!--
@@ -30,8 +30,8 @@
 
 
                 var saveChanges = false;
-                var sReplacementFieldTitle = '<?php eT('Placeholder fields','js');?>';
-                var sReplacementFieldButton = '<?php eT('Insert/edit placeholder field','js');?>';
+                var sReplacementFieldTitle = '<?php eT('Placeholder fields', 'js');?>';
+                var sReplacementFieldButton = '<?php eT('Insert/edit placeholder field', 'js');?>';
                 $(document).on('ready pjax:scriptcomplete', function(){
                     //console.log('iGroupId: '+iGroupId);
             // Better use try/catch to not crash JS completely
@@ -44,16 +44,16 @@
                     $replacementFieldsUrlParams = array(
                         'fieldtype' => $sFieldType, // email_XX_lang, question_lang …
                     );
-                    if(!empty($sAction)) {
+                    if (!empty($sAction)) {
                         $replacementFieldsUrlParams['action'] = javascriptEscape($sAction);
                     }
-                    if(!empty($iSurveyId)) {
+                    if (!empty($iSurveyId)) {
                         $replacementFieldsUrlParams['surveyid'] = $iSurveyId;
                     }
-                    if(!empty($iGroupId)) {
+                    if (!empty($iGroupId)) {
                         $replacementFieldsUrlParams['gid'] = $iGroupId;
                     }
-                    if(!empty($iQuestionId)) {
+                    if (!empty($iQuestionId)) {
                         $replacementFieldsUrlParams['qid'] = $iQuestionId;
                     }
                     /* @var string the replacementfields url */
@@ -64,8 +64,9 @@
                     ?>
                     CKEDITOR.on('instanceReady',CKeditor_OnComplete);
                     
-                    var oCKeditor = CKEDITOR.replace( 'MyTextarea' ,  { height	: '350',
-                        width	: '98%',
+                    var oCKeditor = CKEDITOR.replace( 'MyTextarea' ,  {
+                        height : '350',
+                        width : '98%',
                         toolbarStartupExpanded : true,
                         ToolbarCanCollapse : false,
                         toolbar : '<?php echo $toolbarname; ?>',
@@ -89,22 +90,15 @@
                     var oEditor = CKEDITOR.instances['MyTextarea'];
 
                     <?php
-                    if (in_array($sFieldType, array('editanswer', 'addanswer', 'editlabel', 'addlabel')))
-                    {
+                    if (in_array($sFieldType, array('editanswer', 'addanswer', 'editlabel', 'addlabel'))) {
                     ?>
-
                     var editedtext = oEditor.getData().replace(new RegExp( "\n", "g" ),'');
                     var editedtext = oEditor.getData().replace(new RegExp( "\r", "g" ),'');
-
                     <?php
-                    }
-                    else
-                    {
+                    } else {
                     ?>
-
                     var editedtext = oEditor.getData('no strip new line'); // adding a parameter avoids stripping \n
-
-                        <?php
+                    <?php
                     }
                     ?>
 
