@@ -13,7 +13,7 @@ echo viewHelper::getViewTestTag('surveyParticipantsIndex');
     <h3><?php eT("Survey participant summary"); ?></h3>
 
     <div class="row">
-        <div class="col-lg-4 content-right">
+        <div class="col-xl-4 content-right">
             <table class="items table table-striped"  >
                 <tr>
                     <th>

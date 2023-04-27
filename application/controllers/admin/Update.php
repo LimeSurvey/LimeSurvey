@@ -113,9 +113,12 @@ class Update extends DynamicSurveyCommonAction
         $serverAnswer = $updateModel->getUpdateInfo($buttons);
         $aData['serverAnswer'] = $serverAnswer;
 
-        // Green Bar (SurveyManagerBar Heading)
-        $aData['pageTitle'] = gT('ComfortUpdate');
-        $aData['fullpagebar']['update'] = true;
+        $aData['topbar']['title'] = gt('ComfortUpdate');
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/admin/update/partials/topbarBtns/rightSideButtons',
+            [],
+            true
+        );
 
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'comfortupdate/comfortupdate.js');
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'comfortupdate/buildComfortButtons.js');
@@ -131,12 +134,24 @@ class Update extends DynamicSurveyCommonAction
             $updateModel = new UpdateForm();
             $serverAnswer = $updateModel->getUpdateInfo($buttons);
             $aData['serverAnswer'] = $serverAnswer;
-            $aData['fullpagebar']['closebutton']['url'] = 'admin/update';
             $updateKey = $aData['updateKey'] = getGlobalSetting('update_key');
 
-            //$this->controller->renderPartial('//admin/update/updater/welcome/_subscribe', array('serverAnswer' => $serverAnswer),  false, false);
             if (!$updateKey) {
-                $aData['fullpagebar']['saveandclosebutton']['form'] = true;
+                $pageTitle = gt('Subscribe to ComfortUpdate');
+            } else {
+                $pageTitle = gt('ComfortUpdate');
+            }
+
+            $aData['topbar']['title'] = $pageTitle;
+            $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+                '/admin/update/partials/topbarBtns_subscribe/rightSideButtons',
+                [
+                    'saveAndClose' => !$updateKey
+                ],
+                true
+            );
+
+            if (!$updateKey) {
                 $this->renderWrappedTemplate('update/manage/', 'subscribe', $aData);
             } else {
                 $aData['updateKeyInfos'] = $updateModel->checkUpdateKeyonServer($updateKey);
@@ -148,15 +163,12 @@ class Update extends DynamicSurveyCommonAction
     public function manageSubmitkey()
     {
         $updateModel = new UpdateForm();
-        $serverAnswer = $updateModel->getUpdateInfo($buttons);
-        $aData['serverAnswer'] = $serverAnswer;
-        $aData['fullpagebar']['closebutton']['url'] = 'admin/update';
         $aData['updateKey'] = $updateKey = SettingGlobal::model()->findByPk('update_key');
 
         if (Permission::model()->hasGlobalPermission('superadmin')) {
             if (App()->request->getPost('keyid')) {
                 // We trim it, just in case user added a space...
-                $submittedUpdateKey = trim(App()->request->getPost('keyid'));
+                $submittedUpdateKey = trim(App()->request->getPost('keyid', ''));
 
                 $updateModel = new UpdateForm();
                 $check = $updateModel->checkUpdateKeyonServer($submittedUpdateKey);
@@ -311,6 +323,7 @@ class Update extends DynamicSurveyCommonAction
     public function fileSystem()
     {
         if (Permission::model()->hasGlobalPermission('superadmin')) {
+            App()->session['update_changed_files'] = null;
             if (isset($_REQUEST['destinationBuild'])) {
                 $tobuild = $_REQUEST['destinationBuild'];
                 $access_token = $_REQUEST['access_token'];
@@ -321,9 +334,9 @@ class Update extends DynamicSurveyCommonAction
 
                 if ($changedFiles->result) {
                     $aData = $updateModel->getFileStatus($changedFiles->files);
+                    App()->session['update_changed_files'] = json_decode(json_encode($changedFiles->files), true);
 
-                    $aData['html_from_server'] = (isset($changedFiles->html)) ? $changedFiles->html : '';
-                    $aData['datasupdateinfo'] = $this->parseToView($changedFiles->files);
+                    $aData['html_from_server'] = $changedFiles->html ?? '';
                     $aData['destinationBuild'] = $tobuild;
                     $aData['updateinfo'] = $changedFiles->files;
                     $aData['access_token'] = $access_token;
@@ -346,12 +359,10 @@ class Update extends DynamicSurveyCommonAction
             if (App()->request->getPost('destinationBuild')) {
                 $destinationBuild = App()->request->getPost('destinationBuild');
                 $access_token     = $_REQUEST['access_token'];
-
-                if (App()->request->getPost('datasupdateinfo')) {
-                    $updateinfos = (array) json_decode(base64_decode(App()->request->getPost('datasupdateinfo')), true);
-
-                    $updateModel = new UpdateForm();
-                    $backupInfos = $updateModel->backupFiles($updateinfos);
+                $updateModel = new UpdateForm();
+                $changedFiles = App()->session['update_changed_files'];
+                if ($changedFiles) {
+                    $backupInfos = $updateModel->backupFiles($changedFiles);
 
                     if ($backupInfos->result) {
                         $dbBackupInfos = $updateModel->backupDb($destinationBuild);
@@ -360,7 +371,6 @@ class Update extends DynamicSurveyCommonAction
                         $aData['dbBackupInfos'] = $dbBackupInfos;
                         $aData['basefilename'] = $backupInfos->basefilename;
                         $aData['tempdir'] = $backupInfos->tempdir;
-                        $aData['datasupdateinfo'] = $this->parseToView($updateinfos);
                         $aData['destinationBuild'] = $destinationBuild;
                         $aData['access_token'] = $access_token;
                         return $this->controller->renderPartial('update/updater/steps/_backup', $aData, false, false);
@@ -383,21 +393,22 @@ class Update extends DynamicSurveyCommonAction
      */
     public function step4()
     {
+        Yii::app()->loadLibrary("admin/pclzip");
+        $event = new CExceptionEvent($this, new Exception());  // Dummy line to preload CExceptionEvent class.
         if (Permission::model()->hasGlobalPermission('superadmin')) {
             if (App()->request->getPost('destinationBuild')) {
                 $destinationBuild = App()->request->getPost('destinationBuild');
                 $access_token     = $_REQUEST['access_token'];
 
-                if (App()->request->getPost('datasupdateinfo')) {
-                    $updateinfos = json_decode(base64_decode(App()->request->getPost('datasupdateinfo')), true);
-
+                $changedFiles = App()->session['update_changed_files'];
+                if ($changedFiles) {
                     // this is the last step - Download the zip file, unpack it and replace files accordingly
 
                     $updateModel = new UpdateForm();
-
-                    $remove = $updateModel->removeDeletedFiles($updateinfos);
+                    Yii::app()->loadLibrary("admin/pclzip"); //Preload PCLZip library in case it is moved to a different location in the update
+                    $remove = $updateModel->removeDeletedFiles((array)$changedFiles);
                     if (!$remove->result) {
-                        return $this->renderErrorString($remove->error);
+                        return $this->renderErrorString($remove->error, $remove->message);
                     };
                     $file = $updateModel->downloadUpdateFile($access_token, $destinationBuild);
                     if ($file->result) {
@@ -405,12 +416,13 @@ class Update extends DynamicSurveyCommonAction
                         if ($unzip->result) {
                             // Should never bug (version.php is checked before))
                             $updateModel->updateVersion($destinationBuild);
-                            $updateModel->destroyGlobalSettings();
                             $updateModel->removeTmpFile('update.zip');
                             $updateModel->removeTmpFile('comfort_updater_cookie.txt');
 
                             App()->session['update_result'] = null;
                             App()->session['security_update'] = null;
+                            App()->session['update_changed_files'] = null;
+
                             $today = new DateTime("now");
                             App()->session['next_update_check'] = $today->add(new DateInterval('PT6H'));
 
@@ -500,7 +512,7 @@ class Update extends DynamicSurveyCommonAction
         if (Permission::model()->hasGlobalPermission('superadmin')) {
             if (App()->request->getPost('keyid')) {
                 // We trim it, just in case user added a space...
-                $submittedUpdateKey = trim(App()->request->getPost('keyid'));
+                $submittedUpdateKey = trim(App()->request->getPost('keyid', ''));
 
                 $updateModel = new UpdateForm();
                 $check = $updateModel->checkUpdateKeyonServer($submittedUpdateKey);
@@ -624,11 +636,12 @@ class Update extends DynamicSurveyCommonAction
      * @param string $error the error message
      * @return string
      */
-    private function renderErrorString($error)
+    private function renderErrorString($error, $message = null)
     {
             $errorObject = new stdClass();
             $errorObject->result = false;
             $errorObject->error = $error;
+            $errorObject->message = $message;
             return $this->renderError($errorObject);
     }
 

@@ -170,7 +170,7 @@ class SurveymenuEntryController extends SurveyCommonAction
 
     public function batchEdit()
     {
-        $aSurveyMenuEntryIds = json_decode(Yii::app()->request->getPost('sItems'));
+        $aSurveyMenuEntryIds = json_decode(Yii::app()->request->getPost('sItems', '')) ?? [];
         $aResults = array();
         $oBaseModel = SurveymenuEntries::model();
         if (Permission::model()->hasGlobalPermission('settings', 'update')) {
@@ -182,7 +182,7 @@ class SurveymenuEntryController extends SurveyCommonAction
             $aCoreTokenFields = array('menu_id', 'menu_class', 'permission', 'permission_grade', 'language');
 
             foreach ($aCoreTokenFields as $sCoreTokenField) {
-                if (trim(Yii::app()->request->getPost($sCoreTokenField, 'lskeep')) != 'lskeep') {
+                if (trim((string) Yii::app()->request->getPost($sCoreTokenField, 'lskeep')) != 'lskeep') {
                     $aData[$sCoreTokenField] = flattenText(Yii::app()->request->getPost($sCoreTokenField));
                 }
             }
@@ -277,14 +277,14 @@ class SurveymenuEntryController extends SurveyCommonAction
         }
 
         if (Yii::app()->request->isPostRequest) {
-            $aSurveyMenuEntryIds = json_decode(Yii::app()->request->getPost('sItems'));
+            $aSurveyMenuEntryIds = json_decode(Yii::app()->request->getPost('sItems', '')) ?? [];
             $success = [];
             foreach ($aSurveyMenuEntryIds as $menuEntryid) {
                 $model = $this->loadModel($menuEntryid);
                 $success[$menuEntryid] = $model->delete();
             }
 
-            $debug = isset($userConfig['config']['debug']) ? $userConfig['config']['debug'] : 0;
+            $debug = $userConfig['config']['debug'] ?? 0;
             $returnData = array(
                 'data' => [
                     'success' => $success,
@@ -330,7 +330,7 @@ class SurveymenuEntryController extends SurveyCommonAction
                 $this->getController()->redirect(Yii::app()->createUrl('/admin'));
             }
             $success = $model->delete();
-            $debug = isset($userConfig['config']['debug']) ? $userConfig['config']['debug'] : 0;
+            $debug = $userConfig['config']['debug'] ?? 0;
 
             $returnData = array(
                 'data' => [
@@ -370,7 +370,7 @@ class SurveymenuEntryController extends SurveyCommonAction
         if (Yii::app()->request->isPostRequest) {
             $model = SurveymenuEntries::model();
             $success = $model->reorder();
-            $debug = isset($userConfig['config']['debug']) ? $userConfig['config']['debug'] : 0;
+            $debug = $userConfig['config']['debug'] ?? 0;
 
             $returnData = array(
                 'data' => [

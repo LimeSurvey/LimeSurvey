@@ -414,9 +414,9 @@ class TemplateManifest extends TemplateConfiguration
 
         $thissurvey['aAssessments']['show'] = true;
 
-
-        $thissurvey['aError']['title'] = gT("Error");
-        $thissurvey['aError']['message'] = gT("This is an error message example");
+        $thissurvey['aError']['title'] = '<p class=" text-danger inherit-sizes" role="alert">' . gT("Error title") . '</p>';
+        $thissurvey['aError']['message'] = '<p class="message-0">' . gT("This is an error message example") . '</p>';
+        $thissurvey['adminemail'] = 'your-email@example.net';
 
         // Datas for assessments
         $thissurvey['aAssessments']["datas"]["total"][0]["name"]       = gT("Welcome to the Assessment");
@@ -428,6 +428,9 @@ class TemplateManifest extends TemplateConfiguration
         $thissurvey['aAssessments']["datas"]["subtotal"]["datas"][2]   = 3;
         $thissurvey['aAssessments']["datas"]["subtotal_score"][1]      = 3;
         $thissurvey['aAssessments']["datas"]["total_score"]            = 3;
+
+        $thissurvey['aLoadForm']['aCaptcha']['show'] = true;
+        $thissurvey['aLoadForm']['aCaptcha']['sImageUrl'] = Yii::app()->getController()->createUrl('/verification/image', array('sid' => 1));
 
         // Those values can be overwritten by XML
         $thissurvey['name'] = gT("Template Sample");
@@ -487,7 +490,7 @@ class TemplateManifest extends TemplateConfiguration
         foreach ($filesFromXML as $file) {
             if ($file->attributes()->role == "content") {
                 // The path of the file is defined inside the theme itself.
-                $aExplodedFile = pathinfo($file);
+                $aExplodedFile = pathinfo((string) $file);
                 $sFormatedFile = $aExplodedFile['filename'];
                 return (string) $sFormatedFile;
             }
@@ -525,7 +528,7 @@ class TemplateManifest extends TemplateConfiguration
         if (!file_exists($this->path . $sFile) && !file_exists($this->viewPath . $sFile)) {
             // Copy file from mother template to local directory
             $sSourceFilePath = $this->getFilePath($sFile, $this);
-            $sDestinationFilePath = (pathinfo($sFile, PATHINFO_EXTENSION) == 'twig') ? $this->viewPath . $sFile : $this->path . $sFile;
+            $sDestinationFilePath = (pathinfo((string) $sFile, PATHINFO_EXTENSION) == 'twig') ? $this->viewPath . $sFile : $this->path . $sFile;
 
             //PHP 7 seems not to create the folder on copy automatically.
             @mkdir(dirname($sDestinationFilePath), 0775, true);
@@ -537,7 +540,7 @@ class TemplateManifest extends TemplateConfiguration
             if ($sExt == "css" || $sExt == "js") {
                 // Check if that CSS/JS file is in DB/XML
                 $aFiles = $this->getFilesForPackages($sExt, $this);
-                $sFile  = str_replace('./', '', $sFile);
+                $sFile  = str_replace('./', '', (string) $sFile);
 
                 // The CSS/JS file is a configuration one....
                 if (in_array($sFile, $aFiles)) {
@@ -628,6 +631,7 @@ class TemplateManifest extends TemplateConfiguration
     }
 
 
+    // TODO: please write documentation here, seems to be no entrypoints for this
     public function getButtons()
     {
         $sEditorUrl  = Yii::app()->getController()->createUrl('admin/themes/sa/view', array("templatename" => $this->sTemplateName));
@@ -638,19 +642,28 @@ class TemplateManifest extends TemplateConfiguration
         $sEditorLink = "<a
             id='template_editor_link_" . $this->sTemplateName . "'
             href='" . $sEditorUrl . "'
-            class='btn btn-default btn-block'>
-                <span class='icon-templates'></span>
+            class='btn btn-outline-secondary btn-sm'>
+                <span class='ri-brush-fill'></span>
                 " . gT('Theme editor') . "
             </a>";
 
             //
 
         // TODO: Installs Theme (maybe rename importManifest to install ?)
-        $sLoadLink = CHtml::form(array("themeOptions/importManifest/"), 'post', array('id' => 'frmínstalltheme','name' => 'frmínstalltheme', 'class' => 'btn-block')) .
+        $sLoadLink = CHtml::form(
+            [
+                "themeOptions/importManifest/"
+            ],
+            'post',
+            [
+                'id' => 'frmínstalltheme',
+                'name' => 'frmínstalltheme'
+            ]
+        ) .
                 "<input type='hidden' name='templatename' value='" . $this->sTemplateName . "'>
                 <button id='template_options_link_" . $this->sTemplateName . "'
-                class='btn btn-default btn-block'>
-                    <span class='fa fa-download text-warning'></span>
+                class='btn btn-outline-secondary btn-sm w-100'>
+                    <span class='ri-download-fill'></span>
                     " . gT('Install') . "
                 </button>
                 </form>";
@@ -669,13 +682,13 @@ class TemplateManifest extends TemplateConfiguration
               data-button-yes="' . gt('Delete') . '"
               data-button-type="btn-danger"
               title="' . gT('Delete') . '"
-              class="btn btn-danger btn-block selector--ConfirmModal">
-                  <span class="fa fa-trash "></span>
+              class="btn btn-danger btn-sm selector--ConfirmModal">
+                  <span class="ri-delete-bin-fill "></span>
                   ' . gT('Delete') . '
                   </a>';
         }
 
-        return $sEditorLink . $sLoadLink . $sDeleteLink;
+        return '<div class="d-grid gap-2">' . $sEditorLink . $sLoadLink . $sDeleteLink . '</div>';
     }
 
     /**
@@ -927,7 +940,7 @@ class TemplateManifest extends TemplateConfiguration
         $oConfig        = $oNewManifest->getElementsByTagName('config')->item(0);
         $ometadata = $oConfig->getElementsByTagName('metadata')->item(0);
         $oOldMailNode   = $ometadata->getElementsByTagName('authorEmail')->item(0);
-        $oNvMailNode    = $oNewManifest->createElement('authorEmail', htmlspecialchars(Yii::app()->getConfig('siteadminemail')));
+        $oNvMailNode    = $oNewManifest->createElement('authorEmail', htmlspecialchars((string) Yii::app()->getConfig('siteadminemail')));
         $ometadata->replaceChild($oNvMailNode, $oOldMailNode);
     }
 
@@ -1240,7 +1253,7 @@ class TemplateManifest extends TemplateConfiguration
     protected function setThisTemplate()
     {
         // Mandtory setting in config XML (can be not set in inheritance tree, but must be set in mother template (void value is still a setting))
-        $this->apiVersion         = (isset($this->config->metadata->apiVersion)) ? $this->config->metadata->apiVersion : null;
+        $this->apiVersion         = $this->config->metadata->apiVersion ?? null;
 
 
         $this->viewPath           = $this->path . $this->getTemplateConfigurationForAttribute($this, '//viewdirectory')->config->engine->viewdirectory . DIRECTORY_SEPARATOR;

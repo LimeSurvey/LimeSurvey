@@ -83,16 +83,17 @@ function populateDatabase($oDB)
             'position' => "integer NULL ",
             'url' => "text NOT NULL ",
             'title' => "text NOT NULL ",
+            'buttontext' => "string(255) NULL ",
             'ico' => "string(255) NULL ",
             'desc' => "text NOT NULL ",
             'page' => "text NOT NULL ",
             'usergroup' => "integer NOT NULL "
         ), $options);
-        
+
         foreach ($boxesData = LsDefaultDataSets::getBoxesData() as $box) {
             $oDB->createCommand()->insert("{{boxes}}", $box);
         }
-       
+
         // conditions
         $oDB->createCommand()->createTable('{{conditions}}', array(
             'cid' => 'pk',
@@ -158,8 +159,8 @@ function populateDatabase($oDB)
             'grelevance' =>  "text NULL"
         ), $options);
         $oDB->createCommand()->createIndex('{{idx1_groups}}', '{{groups}}', 'sid', false);
-        
-        
+
+
         $oDB->createCommand()->createTable('{{group_l10ns}}', array(
             'id' =>  "pk",
             'gid' =>  "integer NOT NULL",
@@ -390,7 +391,7 @@ function populateDatabase($oDB)
         $oDB->createCommand()->createIndex('{{idx4_questions}}', '{{questions}}', 'title', false);
         $oDB->createCommand()->createIndex('{{idx5_questions}}', '{{questions}}', 'parent_qid', false);
 
-        
+
         // question language settings
         $oDB->createCommand()->createTable('{{question_l10ns}}', array(
             'id' =>  "pk",
@@ -442,6 +443,7 @@ function populateDatabase($oDB)
             'quotals_url' => "string(255)",
             'quotals_urldescrip' => "string(255)",
         ), $options);
+        $oDB->createCommand()->createIndex('{{idx1_quota_id}}', '{{quota_languagesettings}}', ['quotals_quota_id']);
 
 
         // quota_members
@@ -454,6 +456,7 @@ function populateDatabase($oDB)
         ), $options);
 
         $oDB->createCommand()->createIndex('{{idx1_quota_members}}', '{{quota_members}}', ['sid', 'qid', 'quota_id', 'code'], true);
+        $oDB->createCommand()->createIndex('{{idx2_quota_id}}', '{{quota_members}}', ['quota_id']);
 
 
 
@@ -564,7 +567,7 @@ function populateDatabase($oDB)
             }
             $oDB->createCommand()->insert("{{surveymenu}}", $surveyMenuRow);
         }
-        
+
         // Surveymenu entries
 
         $oDB->createCommand()->createTable('{{surveymenu_entries}}', array(
@@ -600,7 +603,7 @@ function populateDatabase($oDB)
         $oDB->createCommand()->createIndex('{{idx1_surveymenu_entries}}', '{{surveymenu_entries}}', 'menu_id', false);
         $oDB->createCommand()->createIndex('{{idx5_surveymenu_entries}}', '{{surveymenu_entries}}', 'menu_title', false);
         $oDB->createCommand()->createIndex('{{surveymenu_entries_name}}', '{{surveymenu_entries}}', 'name', true);
-        
+
         foreach ($surveyMenuEntryRowData = LsDefaultDataSets::getSurveyMenuEntryData() as $surveyMenuEntryRow) {
             if (in_array($oDB->getDriverName(), array('mssql', 'sqlsrv', 'dblib'))) {
                 unset($surveyMenuEntryRow['id']);
@@ -619,7 +622,6 @@ function populateDatabase($oDB)
             'startdate' => "datetime NULL",
             'adminemail' => "string(254) NULL",
             'anonymized' => "string(1) NOT NULL default 'N'",
-            'faxto' => "string(20) NULL",
             'format' => "string(1) NULL",
             'savetimings' => "string(1) NOT NULL default 'N'",
             'template' => "string(100) default 'default'",
@@ -869,6 +871,7 @@ function populateDatabase($oDB)
             'surveyls_email_confirm' => "mediumtext NULL",
             'surveyls_dateformat' => "integer NOT NULL DEFAULT 1",
             'surveyls_attributecaptions' => "text NULL",
+            'surveyls_alias' => "string(100) NULL",
             'email_admin_notification_subj' => "string(255) NULL",
             'email_admin_notification' => "mediumtext NULL",
             'email_admin_responses_subj' => "string(255) NULL",
@@ -1091,7 +1094,8 @@ function populateDatabase($oDB)
             'modified' => "datetime",
             'validation_key' => 'string(38)',
             'validation_key_expiration' => 'datetime',
-            'last_forgot_email_password' => 'datetime'
+            'last_forgot_email_password' => 'datetime',
+            'expires' => 'datetime'
         ), $options);
 
         $oDB->createCommand()->createIndex('{{idx1_users}}', '{{users}}', 'users_name', true);
@@ -1171,6 +1175,7 @@ function populateDatabase($oDB)
                 'created' => "datetime NOT NULL",  //this one has always to be set to delete after x days ...
                 'status' => "string(20) NULL DEFAULT 'SEND FAILED'",
                 'updated' => "datetime NULL",
+                'resend_vars' => "text NOT NULL"
             ]
         );
 

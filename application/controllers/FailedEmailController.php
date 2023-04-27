@@ -42,6 +42,12 @@ class FailedEmailController extends LSBaseController
             $this->redirect(['surveyAdministration/view', 'surveyid' => $surveyId]);
         }
 
+        // Set number of page, else pagination won't work
+        $pageSize = App()->request->getParam('pageSize', null);
+        if ($pageSize != null) {
+            App()->user->setState('pageSize', (int) $pageSize);
+        }
+
         App()->getClientScript()->registerScriptFile('/application/views/failedEmail/javascript/failedEmail.js', LSYii_ClientScript::POS_BEGIN);
         $failedEmailModel = FailedEmail::model();
         $failedEmailModel->setAttributes(App()->getRequest()->getParam('FailedEmail'), false);
@@ -52,6 +58,15 @@ class FailedEmailController extends LSBaseController
             'permissions' => $permissions
         ], true);
 
+        $aData = [];
+        $topbarData = TopbarConfiguration::getSurveyTopbarData($surveyId);
+        $aData['topbar']['middleButtons'] = $this->renderPartial(
+            '/surveyAdministration/partial/topbar/surveyTopbarLeft_view',
+            $topbarData,
+            true
+        );
+
+        $this->aData = $aData;
 
         $this->render('failedEmail_index', [
             'failedEmailModel' => $failedEmailModel,
@@ -81,7 +96,7 @@ class FailedEmailController extends LSBaseController
         $deleteAfterResend = App()->request->getParam('deleteAfterResend');
         $preserveResend = is_null($deleteAfterResend);
         $item = [App()->request->getParam('item')];
-        $items = json_decode(App()->request->getParam('sItems'));
+        $items = json_decode(App()->request->getParam('sItems', ''));
         $selectedItems = $items ?? $item;
         $emailsByType = [];
         if (!empty($selectedItems)) {
@@ -97,9 +112,10 @@ class FailedEmailController extends LSBaseController
                         'responseId' => $failedEmail->responseid,
                         'recipient' => $failedEmail->recipient,
                         'language' => $failedEmail->language,
+                        'resendVars' => $failedEmail->resend_vars,
                     ];
                 }
-                $result = sendSubmitNotifications($surveyId, $emailsByType, $preserveResend, true);
+                $result = sendSubmitNotifications($surveyId, $emailsByType, true);
                 if (!$preserveResend) {
                     // only delete FailedEmail entries that have succeeded
                     $criteria->addCondition('status = :status');
@@ -154,7 +170,7 @@ class FailedEmailController extends LSBaseController
             $this->redirect(['failedEmail/index/', 'surveyid' => $surveyId]);
         }
         $item = [App()->request->getParam('item')];
-        $items = json_decode(App()->request->getParam('sItems'));
+        $items = json_decode(App()->request->getParam('sItems', ''));
         $selectedItems = $items ?? $item;
         if (!empty($selectedItems)) {
             $criteria = new CDbCriteria();

@@ -74,14 +74,14 @@
                             <div class="{{ aSurveyInfo.class.navigator }} row" id="{{ aSurveyInfo.id.navigator }}" {{ aSurveyInfo.attr.navigator }}>
 
                                 <!-- Previous button container -->
-                                <div class="{{ aSurveyInfo.class.navigatorcoll }} col-xs-6 text-left" {{ aSurveyInfo.attr.navigatorcoll }}>
+                                <div class="{{ aSurveyInfo.class.navigatorcoll }} col-6 text-start" {{ aSurveyInfo.attr.navigatorcoll }}>
                                     <!-- Button previous -->
-                                    <button {{ aSurveyInfo.attr.navigatorcollbutton }} value="{{ aSurveyInfo.aQuotas.sQuotaStep }}" class=" {{ aSurveyInfo.class.navigatorcollbutton }}  btn btn-lg btn-default " accesskey="p">
+                                    <button {{ aSurveyInfo.attr.navigatorcollbutton }} value="{{ aSurveyInfo.aQuotas.sQuotaStep }}" class=" {{ aSurveyInfo.class.navigatorcollbutton }}  btn btn-lg btn-outline-secondary " accesskey="p">
                                         {{ gT("Previous") }}
                                     </button>
                                 </div>
 
-                                <div class=" {{ aSurveyInfo.class.navigatorcolr }} col-xs-6 text-right " {{ aSurveyInfo.attr.navigatorcolr }}>
+                                <div class=" {{ aSurveyInfo.class.navigatorcolr }} col-6 text-end " {{ aSurveyInfo.attr.navigatorcolr }}>
                                     <!-- Button submit -->
                                     {# submit button is disabled to behave the same as in LS2: no "Submit" button if quota exceeded
                                     <button  {{ aSurveyInfo.attr.navigatorcolrbutton}} class=" {{ aSurveyInfo.class.navigatorcolrbutton}}  btn btn-lg btn-primary " accesskey="n">

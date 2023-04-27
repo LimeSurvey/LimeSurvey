@@ -93,6 +93,7 @@ class RegisterController extends LSYii_Controller
         } else {
             $iSurveyId = Yii::app()->request->getPost('sid');
         }
+        $iSurveyId = (int) $iSurveyId;
 
         $oSurvey = Survey::model()->find("sid=:sid", array(':sid' => $iSurveyId));
         /* Throw 404 if needed */
@@ -172,7 +173,7 @@ class RegisterController extends LSYii_Controller
         //Check that the email is a valid style address
         if ($aFieldValue['sEmail'] == "") {
             $this->aRegisterErrors[] = gT("You must enter a valid email. Please try again.");
-        } elseif (!validateEmailAddress(trim($aFieldValue['sEmail']))) {
+        } elseif (!validateEmailAddress(trim((string) $aFieldValue['sEmail']))) {
             $this->aRegisterErrors[] = gT("The email you used is not valid. Please try again.");
         }
         //Check and validate attribute
@@ -323,7 +324,7 @@ class RegisterController extends LSYii_Controller
             $oToken->decrypt();
             if ($oToken->usesleft < 1 && $aSurveyInfo['alloweditaftercompletion'] != 'Y') {
                 $this->aRegisterErrors[] = gT("The email address you have entered is already registered and the survey has been completed.");
-            } elseif (strtolower(substr(trim($oToken->emailstatus), 0, 6)) === "optout") {
+            } elseif (strtolower(substr(trim((string) $oToken->emailstatus), 0, 6)) === "optout") {
                 // And global blacklisting ?
                 {
                 $this->aRegisterErrors[] = gT("This email address cannot be used because it was opted out of this survey.");
@@ -337,12 +338,11 @@ class RegisterController extends LSYii_Controller
         } else {
             // TODO : move xss filtering in model
             $oToken = Token::create($iSurveyId);
-            $oToken->firstname = sanitize_xss_string($aFieldValue['sFirstName']);
-            $oToken->lastname = sanitize_xss_string($aFieldValue['sLastName']);
+            $oToken->firstname = $aFieldValue['sFirstName'];
+            $oToken->lastname = $aFieldValue['sLastName'];
             $oToken->email = $aFieldValue['sEmail'];
             $oToken->emailstatus = 'OK';
             $oToken->language = $sLanguage;
-            $aFieldValue['aAttribute'] = array_map('sanitize_xss_string', $aFieldValue['aAttribute']);
             $oToken->setAttributes($aFieldValue['aAttribute']);
             if ($aSurveyInfo['startdate']) {
                 $oToken->validfrom = $aSurveyInfo['startdate'];
@@ -351,6 +351,7 @@ class RegisterController extends LSYii_Controller
                 $oToken->validuntil = $aSurveyInfo['expires'];
             }
             $oToken->generateToken();
+            $oToken->setScenario('register');
             $oToken->encryptSave(true);
             $this->sMailMessage = gT("An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed.");
             return $oToken->tid;

@@ -399,7 +399,7 @@ class InstallerConfigForm extends CFormModel
         try {
             $query = "SELECT " . $item . ";";
             $result = $this->db->createCommand($query)->queryRow();
-            return isset($result[$item]) ? $result[$item] : null;
+            return $result[$item] ?? null;
         } catch (\Exception $e) {
             // ignore
         }
@@ -702,7 +702,7 @@ class InstallerConfigForm extends CFormModel
     public function getDataBaseName()
     {
         if ($this->db) {
-            preg_match("/dbname=([^;]*)/", $this->db->connectionString, $matches);
+            preg_match("/dbname=([^;]*)/", (string) $this->db->connectionString, $matches);
             $databaseName = $matches[1];
             return $databaseName;
         }

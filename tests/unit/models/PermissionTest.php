@@ -6,8 +6,10 @@ use Permission;
 use SurveysGroups;
 use PHPUnit\Framework\TestCase;
 
-class PermissionTest extends TestCase
+class PermissionTest extends BaseModelTestCase
 {
+    protected $modelClassName = Permission::class;
+
     public static function setupBeforeClass(): void
     {
         \Yii::import('application.helpers.common_helper', true);

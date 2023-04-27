@@ -170,7 +170,7 @@ class ThemeOptionsController extends LSBaseController
      */
     public function actionUninstallMultiple()
     {
-        $aTemplates = json_decode(App()->request->getPost('sItems')); //array of ids
+        $aTemplates = json_decode(App()->request->getPost('sItems', '')); //array of ids
 
         //can be 'themeoptions-grid' (for survey themes) or 'questionthemes-grid'
         $gridid = App()->request->getPost('grididvalue');
@@ -186,8 +186,8 @@ class ThemeOptionsController extends LSBaseController
                     $templatename = $model->name;
                     $aResults[$template]['title'] = $templatename;
                     $aUninstallResult = QuestionTheme::uninstall($model);
-                    $aResults[$template]['result'] = isset($aUninstallResult['result']) ? $aUninstallResult['result'] : false;
-                    $aResults[$template]['error'] = isset($aUninstallResult['error']) ? $aUninstallResult['error'] : null;
+                    $aResults[$template]['result'] = $aUninstallResult['result'] ?? false;
+                    $aResults[$template]['error'] = $aUninstallResult['error'] ?? null;
                 } elseif ($gridid === 'themeoptions-grid') {
                     $aResults[$template]['title'] = $model->template_name;
                     $templatename = $model->template_name;
@@ -231,7 +231,7 @@ class ThemeOptionsController extends LSBaseController
      */
     public function actionSelectedItems()
     {
-        $aTemplates = json_decode(App()->request->getPost('$oCheckedItems'));
+        $aTemplates = json_decode(App()->request->getPost('$oCheckedItems', ''));
         $aResults = [];
         $gridid = App()->request->getParam('$grididvalue');
 
@@ -304,7 +304,7 @@ class ThemeOptionsController extends LSBaseController
         $attributes = $templateConfiguration->getAttributes();
         $hasOptions = isset($attributes['options']);
         if ($hasOptions) {
-            $options = $attributes['options'];
+            $options = $attributes['options'] ?? '';
             $optionsJSON = json_decode($options, true);
 
             if ($options !== 'inherit' && $optionsJSON !== null) {
@@ -367,8 +367,8 @@ class ThemeOptionsController extends LSBaseController
             if (empty($gsid)) {
                 throw new CHttpException(403, gT("You do not have permission to access this page."));
             }
-            $oSurveysInGroup = SurveysInGroup::model()->findByPk($gsid);
-            if (empty($oSurveysInGroup) && !$oSurveysInGroup->hasPermission('surveys', 'update')) {
+            $oSurveysGroups = SurveysGroups::model()->findByPk($gsid);
+            if (empty($oSurveysGroups) || !$oSurveysGroups->hasPermission('surveysettings', 'update')) {
                 throw new CHttpException(403, gT("You do not have permission to access this page."));
             }
         }
@@ -475,20 +475,16 @@ class ThemeOptionsController extends LSBaseController
         $aData['importErrorMessage']  = $importErrorMessage;
         $aData['pageSize'] = App()->user->getState('pageSizeTemplateView', App()->params['defaultPageSize']); // Page size
 
-        // Green Bar Page Title
-        $aData['pageTitle'] = gT('Themes');
-
-        // White Bar with Buttons
-        $aData['fullpagebar']['returnbutton'] = [
-            'url' => 'admin/index',
-            'text' => gT('Back'),
-        ];
-
-        // Upload and install button
-        $aData['fullpagebar']['themes']['canImport'] = true;
-        $aData['fullpagebar']['themes']['buttons']['uploadAndInstall']['modalSurvey'] = 'importSurveyModal';
-        $aData['fullpagebar']['themes']['buttons']['uploadAndInstall']['modalQuestion'] = 'importQuestionModal';
-        $aData['fullpagebar']['importErrorMessage'] = $importErrorMessage;
+        $aData['topbar']['title'] = gT('Themes');
+        $aData['topbar']['rightButtons'] = $this->renderPartial('partial/topbarBtns/rightSideButtons', [], true);
+        if (Permission::model()->hasGlobalPermission('templates', 'import')) {
+            //only show upload&install button if user has the permission ...
+            $aData['topbar']['middleButtons'] = $this->renderPartial(
+                'partial/topbarBtns/leftSideButtons',
+                ['canImport' => $canImport, 'importErrorMessage' => $importErrorMessage ],
+                true
+            );
+        }
         $this->aData = $aData;
 
         $this->render('index', $aData);
@@ -623,8 +619,8 @@ class ThemeOptionsController extends LSBaseController
             if (empty($gsid)) {
                 throw new CHttpException(403, gT("You do not have permission to access this page."));
             }
-            $oSurveysInGroup = SurveysInGroup::model()->findByPk($gsid);
-            if (empty($oSurveysInGroup) && !$oSurveysInGroup->hasPermission('surveys', 'update')) {
+            $oSurveysGroups = SurveysGroups::model()->findByPk($gsid);
+            if (empty($oSurveysGroups) || !$oSurveysGroups->hasPermission('surveysettings', 'update')) {
                 throw new CHttpException(403, gT("You do not have permission to access this page."));
             }
         }
@@ -746,31 +742,58 @@ class ThemeOptionsController extends LSBaseController
         );
 
         if ($sid !== null) {
-            $aData['topBar']['showSaveButton'] = true;
-            $aData['surveybar']['buttons']['view'] = true;
-            $aData['surveybar']['savebutton']['form'] = true;
             $aData['surveyid'] = $sid;
             $aData['title_bar']['title'] = gT("Survey theme options");
             $aData['subaction'] = gT("Survey theme options");
             $aData['sidemenu']['landOnSideMenuTab'] = 'settings';
-        }
-
-        // Title concatenation
-        $templateName = $model->template_name;
-        $basePageTitle = sprintf('Survey options for theme %s', $templateName);
-
-        if (!is_null($sid)) {
-            $addictionalSubtitle = gT(" for survey id: $sid");
-        } elseif (!is_null($gsid)) {
-            $addictionalSubtitle = gT(" for survey group id: $gsid");
+            //buttons in topbar
+            $aData['topBar']['showSaveButton'] = true;
+            $topbarData = TopbarConfiguration::getSurveyTopbarData($sid);
+            $topbarData = array_merge($topbarData, $aData['topBar']);
+            $aData['topbar']['middleButtons'] = $this->renderPartial(
+                '/surveyAdministration/partial/topbar/surveyTopbarLeft_view',
+                $topbarData,
+                true
+            );
+            $aData['topbar']['rightButtons'] = $this->renderPartial(
+                '/layouts/partial_topbar/right_close_saveclose_save',
+                [
+                    'isCloseBtn' => false,
+                    'backUrl' => Yii::app()->createUrl('themeOptions'),
+                    'isSaveBtn' => true,
+                    'isSaveAndCloseBtn' => false,
+                    'formIdSave' => 'template-options-form'
+                ],
+                true
+            );
         } else {
-            $addictionalSubtitle = gT(" global level");
+            // Title concatenation
+            $templateName = $model->template_name;
+            $basePageTitle = sprintf('Survey options for theme %s', $templateName);
+
+            if (!is_null($sid)) {
+                $addictionalSubtitle = gT(" for survey id: $sid");
+            } elseif (!is_null($gsid)) {
+                $addictionalSubtitle = gT(" for survey group id: $gsid");
+            } else {
+                $addictionalSubtitle = gT(" global level");
+            }
+
+            $pageTitle = $basePageTitle . " (" . $addictionalSubtitle . " )";
+
+            $aData['topbar']['title'] = $pageTitle;
+            $aData['topbar']['rightButtons'] = $this->renderPartial(
+                '/layouts/partial_topbar/right_close_saveclose_save',
+                [
+                    'isCloseBtn' => true,
+                    'backUrl' => Yii::app()->createUrl('themeOptions'),
+                    'isSaveBtn' => true,
+                    'isSaveAndCloseBtn' => false,
+                    'formIdSave' => 'template-options-form'
+                ],
+                true
+            );
         }
-
-        $pageTitle = $basePageTitle . " (" . $addictionalSubtitle . " )";
-
-        // Green Bar (SurveyManagerBar) Page Title
-        $aData['pageTitle'] = $pageTitle;
 
         $this->aData = $aData;
         $this->render('update', $aData);

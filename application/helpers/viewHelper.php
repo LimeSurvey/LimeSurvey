@@ -51,7 +51,7 @@ class viewHelper
         }
         if (!empty($attribs)) {
             foreach ($attribs as $attrib => $value) {
-                $output .= ' ' . $attrib . '="' . str_replace('"', '&quot;', $value) . '"';
+                $output .= ' ' . $attrib . '="' . str_replace('"', '&quot;', (string) $value) . '"';
             }
         }
         $output .= '><img src="' . Yii::app()->getConfig('adminimageurl') . $imgName . '" alt="' . $linkTxt . '" title="' . $linkTxt . '"></a>';
@@ -88,7 +88,7 @@ class viewHelper
         }
         if (!empty($attribs)) {
             foreach ($attribs as $attrib => $value) {
-                $output .= ' ' . $attrib . '="' . str_replace('"', '&quot;', $value) . '"';
+                $output .= ' ' . $attrib . '="' . str_replace('"', '&quot;', (string) $value) . '"';
             }
         }
         $output .= '><span class="' . $icoClasses . '"></span></a>';
@@ -120,7 +120,7 @@ class viewHelper
 
         $sQuestionText = ""; // Always return a string
         if (isset($aField['fieldname'])) {
-            $sQuestionText = self::flatEllipsizeText(isset($aField['answertabledefinition']) ? $aField['answertabledefinition'] : $aField['question'], $aOption['flat'], $aOption['abbreviated'], $aOption['ellipsis']);
+            $sQuestionText = self::flatEllipsizeText($aField['answertabledefinition'] ?? $aField['question'], $aOption['flat'], $aOption['abbreviated'], $aOption['ellipsis']);
             // Did this question have sub question, maybe not needed, think only isset is OK
             $bHaveSubQuestion = isset($aField['aid']) && $aField['aid'] != "";
             if ($bHaveSubQuestion) {
@@ -280,7 +280,7 @@ class viewHelper
             'HTML.Allowed' => '',
             'Output.Newline' => ' '
         );
-        return $oPurifier->purify($sHtml);
+        return (string) $oPurifier->purify($sHtml);
     }
 
     /**

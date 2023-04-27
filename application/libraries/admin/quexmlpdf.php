@@ -20,7 +20,6 @@
 */
 
 require('pdf.php');
-require_once($tcpdf['base_directory'] . '/tcpdf.php');
 
 /**
 * A TCPDF based class to produce queXF compatible questionnaire PDF files and banding description XML from queXML
@@ -822,7 +821,7 @@ class quexmlpdf extends pdf
      */
     protected function wordLength($txt)
     {
-        $words = explode(' ', $txt);
+        $words = explode(' ', (string) $txt);
         $length = 0;
         foreach ($words as $v) {
             if (strlen($v) > $length) {
@@ -2262,6 +2261,48 @@ class quexmlpdf extends pdf
     }
 
     /**
+     * Apply global settings from LimeSurvey application
+     *
+     */
+    public function applyGlobalSettings()
+    {
+        foreach ($this->_quexmlsettings() as $s) {
+            $setting = App()->getConfig($s);
+            if ($setting !== null && trim($setting) !== '') {
+                $method = str_replace("queXML", "set", $s);
+                $this->$method($setting);
+            }
+        }
+    }
+
+    /**
+     * Return a list of queXML settings
+     *
+     * @access public
+     * @return string[] queXML settings
+     */
+    public function _quexmlsettings()
+    {
+        return array('queXMLBackgroundColourQuestion',
+            'queXMLPageFormat',
+            'queXMLPageOrientation',
+            'queXMLEdgeDetectionFormat',
+            'queXMLBackgroundColourSection',
+            'queXMLSectionHeight',
+            'queXMLResponseLabelFontSize',
+            'queXMLResponseLabelFontSizeSmall',
+            'queXMLResponseTextFontSize',
+            'queXMLQuestionnaireInfoMargin',
+            'queXMLSingleResponseHorizontalHeight',
+            'queXMLSingleResponseAreaHeight',
+            'queXMLStyle',
+            'queXMLAllowSplittingVas',
+            'queXMLAllowSplittingMatrixText',
+            'queXMLAllowSplittingSingleChoiceVertical',
+            'queXMLAllowSplittingSingleChoiceHorizontal');
+    }
+
+    /**
      * Import the settings/styles set from XML
      *
      * @author Adam Zammit <adam.zammit@acspri.org.au>
@@ -2566,7 +2607,7 @@ class quexmlpdf extends pdf
                             $this->SetY($this->GetY() + $this->subQuestionLineSpacing, false);
                             break;
                         case 'vas':
-                            $this->addBoxGroup(1, $varname, $rtext, strlen($this->vasIncrements));
+                            $this->addBoxGroup(1, $varname, $rtext, strlen((string) $this->vasIncrements));
                             $this->drawVas("", $response['labelleft'], $response['labelright']);
                             break;
                         case 'i25':
@@ -2723,7 +2764,7 @@ class quexmlpdf extends pdf
         for ($i = 0; $i < $c; $i++) {
             $s = $subquestions[$i];
 
-            $this->addBoxGroup(5, $s['varname'], $s['text'], strlen($s['defaultvalue']));
+            $this->addBoxGroup(5, $s['varname'], $s['text'], strlen((string) $s['defaultvalue']));
 
             $x = $this->getColumnX();
             $y = $this->GetY();
@@ -2767,7 +2808,7 @@ class quexmlpdf extends pdf
 
         $c = count($subquestions);
 
-        $width = strlen($this->vasIncrements);
+        $width = strlen((string) $this->vasIncrements);
 
         $heading = true;
 
@@ -3146,7 +3187,7 @@ class quexmlpdf extends pdf
             if ($bgtype != 6) {
                 $string = false;
                 if (isset($s['defaultvalue'])) {
-                    $string = mb_substr($s['defaultvalue'], 0, $width, "UTF-8");
+                    $string = mb_substr((string) $s['defaultvalue'], 0, $width, "UTF-8");
                 }
 
                 //Draw the cells
@@ -3873,7 +3914,7 @@ class quexmlpdf extends pdf
                 $calc = -$cw;
             }
 
-            $barcodeValue = substr(str_pad($this->questionnaireId, $this->idLength, "0", STR_PAD_LEFT), 0, $this->idLength) . substr(str_pad($this->getPage(), $this->pageLength, "0", STR_PAD_LEFT), 0, $this->pageLength);
+            $barcodeValue = substr(str_pad((string) $this->questionnaireId, $this->idLength, "0", STR_PAD_LEFT), 0, $this->idLength) . substr(str_pad($this->getPage(), $this->pageLength, "0", STR_PAD_LEFT), 0, $this->pageLength);
 
             //Calc X position of barcode from page width
             $barcodeX = $width - ($this->barcodeMarginX + $this->barcodeW);
