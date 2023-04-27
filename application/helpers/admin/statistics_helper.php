@@ -2700,7 +2700,7 @@ class statistics_helper
                         // or at least I don't know how !!! (lemeur)
                     } else {
                         //we want to have some "real" data here
-                        if ($gdata[$i] != "N/A") {
+                        if ($gdata[$i] != "N/A" && $TotalCompleted > 0) {
                             //calculate percentage
                             $gdata[$i] = ($grawdata[$i] / $TotalCompleted) * 100;
                         }
@@ -3319,8 +3319,9 @@ class statistics_helper
 
         //PCHART has to be enabled and we need some data
         //
-        if ($usegraph == 1) {
-            $bShowGraph = $aattr["statistics_showgraph"] == "1";
+        $bShowGraph = false;
+        if ($aattr && $usegraph == 1) {
+            $bShowGraph = ($aattr["statistics_showgraph"] == 1); 
             $bAllowPieChart = ($outputs['qtype'] != "M" && $outputs['qtype'] != "P");
             $bAllowMap = (isset($aattr["location_mapservice"]) && $aattr["location_mapservice"] == "1");
             $bShowMap = ($bAllowMap && $aattr["statistics_showmap"] == "1");

@@ -112,7 +112,7 @@ function loadanswers()
                     $_SESSION['survey_' . $surveyid][$column] = '';
                 } elseif ($_SESSION['survey_' . $surveyid]['fieldmap'][$column]['type'] == '|' && !preg_match('/_filecount$/', $column)) {
                     $aFiles = json_decode($value);
-                    $iSize = @count($aFiles);
+                    $iSize = count(empty($aFiles) ? [] : $aFiles);
                     if (!is_null($aFiles) && $iSize > 0) {
                         for ($i = 0; $i < $iSize; $i++) {
                             // Encode html entities

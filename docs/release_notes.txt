@@ -34,6 +34,50 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.56 (build 230404) to 3.28.57 (build 230425) April 24, 2023
+-Fixed issue #18703: Upload files show error if not seen (using index) (#3014) (Denis Chenu)
+#Updated translation: Turkish by kayazeren
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: German (Easy) by c_schmitz
+
+
+Changes from 3.28.55 (build 230328) to 3.28.56 (build 230404) April 3, 2023
+-Fixed issue: PCLZip error on last step of ComfortUpdate when trying to update from version 3 to latest version (Carsten Schmitz)
+
+
+Changes from 3.28.54 (build 230321) to 3.28.55 (build 230328) March 27, 2023
+-Fixed issue: Division by Zero error when running statistics (Carsten Schmitz)
+-Fixed issue #18071: Importing Qaestion through Remote Control may fail if the imported question already exists (#2972) (Denis Chenu)
+
+
+Changes from 3.28.53 (build 230314) to 3.28.54 (build 230321) March 20, 2023
++New feature #18197: Allow GA4 tracking (#2962)
+-Fixed issue: $aFiles can be null (Olle Haerstedt)
+
+
+Changes from 3.28.52 (build 230307) to 3.28.53 (build 230314) March 13, 2023
+#Updated translation: Polish by elissa
+#Updated translation: Japanese by d_inoue
+
+
+Changes from 3.28.51 (build 230228) to 3.28.52 (build 230307) March 6, 2023
+-Fixed issue: Unable to run integrity check on databases with a big number of surveys (Carsten Schmitz)
+#Updated translation: Valencian by vbraque
+#Updated translation: Russian by vipgroup
+#Updated translation: Basque by admin67
+
+
+Changes from 3.28.50 (build 230221) to 3.28.51 (build 230228) February 27, 2023
+-Fixed issue #18532: Data entry screen incorrectly assigns 0 value to empty multiflex array checkbox values (Adam Zammit)
+-Fixed issue #18407: On-page conditions not working when pre-filling question with equation on the same page (#2676) (Denis Chenu)
+#Updated translation: Ukrainian by c_schmitz
+#Updated translation: Bosnian by amer.kurta
+
+
+Changes from 3.28.49 (build 230215) to 3.28.50 (build 230221) February 20, 2023
+-Fixed issue #18492: [security] Updates for several JS libraries (Carsten Schmitz)
+
+
 Changes from 3.28.48 (build 230207) to 3.28.49 (build 230215) February 14, 2023
 -Fixed issue: Intermittent unstyled page when creating/copying a survey (Carsten Schmitz)
 #Updated translation: Tagalog by c_schmitz

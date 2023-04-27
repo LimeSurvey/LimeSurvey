@@ -270,7 +270,7 @@
         */
         private $groupId2groupSeq;
         /**
-        * map question # to an incremental count of question order across the whole survey
+        * Map question # to an incremental count of question order across the whole survey
         *
         * @example [157] = 13 // means that that 14th question in the survey has qid=157
         *
@@ -2583,8 +2583,8 @@
                     $sgqa = $qinfo['sgqa'];
                     switch ($type)
                     {
-                        case '|': //List - dropdown
-                            $eqn = "(" . $sgqa . "_filecount >= (" . $min_num_of_files . "))";
+                        case '|':
+                            $eqn = "(" . $sgqa . "_filecount.NAOK >= (" . $min_num_of_files . "))";
                             break;
                         default:
                             break;
@@ -2617,8 +2617,8 @@
                     $sgqa = $qinfo['sgqa'];
                     switch ($type)
                     {
-                        case '|': //List - dropdown
-                            $eqn = "(" . $sgqa . "_filecount <= (" . $max_num_of_files . "))";
+                        case '|':
+                            $eqn = "(is_empty(" . $sgqa . "_filecount.NAOK) || " . $sgqa . "_filecount.NAOK <= (" . $max_num_of_files . "))";
                             break;
                         default:
                             break;
