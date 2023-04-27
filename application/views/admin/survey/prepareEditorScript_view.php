@@ -53,7 +53,7 @@ $script.="CKEDITOR.on('instanceReady', function(event) {
         return null;
     }
 
-    function start_popup_editor(fieldname, fieldtext, sid, gid, qid, fieldtype, action)
+    function start_popup_editor(fieldnamee, editorurl)
     {
         controlidena = fieldname + '_popupctrlena';
         controliddis = fieldname + '_popupctrldis';
@@ -66,7 +66,6 @@ $script.="CKEDITOR.on('instanceReady', function(event) {
             targetField.readOnly=true;
             document.getElementById(controlidena).style.display='none';
             document.getElementById(controliddis).style.display='';
-            var editorurl = '".$this->createUrl('admin/htmleditorpop/sa/index')."/name/'+fieldname+'/text/'+fieldtext+'/type/'+fieldtype+'/action/'+action+'/sid/'+sid+'/gid/'+gid+'/qid/'+qid+'/lang/".App()->language."';
             
             // Override language direction if 'data-contents-dir' attribute is set in the target field
             if (targetField.hasAttribute('data-contents-dir')) {
