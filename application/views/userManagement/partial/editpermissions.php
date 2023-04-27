@@ -9,7 +9,7 @@ Yii::app()->getController()->renderPartial(
 <div class="modal-body selector--edit-permissions-container table-responsive">
     <div class="container-center">
             <input type='hidden' name='userid' value='<?php echo (isset($oUser) ? $oUser->uid : '');?>' />
-            <table id='UserManagement--userpermissions-table table' class='activecell table table-striped'>
+            <table id='UserManagement--userpermissions-table' class='activecell table table-striped'>
                 <thead>
                     <tr>
                         <th></th>
