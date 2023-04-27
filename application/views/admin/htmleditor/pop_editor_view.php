@@ -41,25 +41,25 @@
                 if($('textarea').length > 0){
                     <?php
                     /* @var string[] parameters of the replacementfields url */
-                    $replacementfieldsurlparams = array(
+                    $replacementFieldsUrlParams = array(
                         'fieldtype' => $sFieldType, // email_XX_lang, question_lang …
                     );
                     if(!empty($sAction)) {
-                        $replacementfieldsurlparams['action'] = javascriptEscape($sAction);
+                        $replacementFieldsUrlParams['action'] = javascriptEscape($sAction);
                     }
                     if(!empty($iSurveyId)) {
-                        $replacementfieldsurlparams['surveyid'] = $iSurveyId;
+                        $replacementFieldsUrlParams['surveyid'] = intval($iSurveyId);
                     }
                     if(!empty($iGroupId)) {
-                        $replacementfieldsurlparams['gid'] = $iGroupId;
+                        $replacementFieldsUrlParams['gid'] = intval($iGroupId);
                     }
                     if(!empty($iQuestionId)) {
-                        $replacementfieldsurlparams['qid'] = $iQuestionId;
+                        $replacementFieldsUrlParams['qid'] = intval($iQuestionId);
                     }
                     /* @var string the replacementfields url */
-                    $replacementfieldsurl = App()->getController()->createUrl(
+                    $replacementFieldsUrl = App()->getController()->createUrl(
                         'limereplacementfields/index',
-                        $replacementfieldsurlparams
+                        $replacementFieldsUrlParams
                     );
                     ?>
                     CKEDITOR.on('instanceReady',CKeditor_OnComplete);
@@ -69,7 +69,7 @@
                         toolbarStartupExpanded : true,
                         ToolbarCanCollapse : false,
                         toolbar : '<?php echo $toolbarname; ?>',
-                        LimeReplacementFieldsUrl : "<?php echo $replacementfieldsurl; ?>",
+                        LimeReplacementFieldsUrl : "<?php echo $replacementFieldsUrl; ?>",
                         language : "<?php echo $ckLanguage ?>"
                         <?php echo !is_null($contentsLangDirection) ? ",contentsLangDirection: '{$contentsLangDirection}'" : ''; ?>
                         <?php echo $htmlformatoption; ?> });
