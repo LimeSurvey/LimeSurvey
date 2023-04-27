@@ -27,7 +27,7 @@ class Box extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('url, title, ico, desc, page', 'required'),
+            array('url, title, ico, position, desc, page', 'required'),
             array('url', 'match', 'pattern' => '/(http:\/\/)?[a-zA-Z]([a-zA-Z0-9-_?&"\'=]\/?)*/'),
             array('position', 'numerical', 'integerOnly' => true),
             array('usergroup', 'numerical', 'integerOnly' => true, 'min' => -3),
@@ -157,7 +157,7 @@ class Box extends CActiveRecord
         . ' data-target="top"'
         . ' title="' . gT('Delete the box') . '"'
         . ' role="button" data-post=\'' . json_encode(['id' => $this->id]) . '\''
-        . ' data-text="' . gT('Are you sure you want to delete this box ?') . '"'
+        . ' data-text="' . gT('Are you sure you want to delete this box?') . '"'
         . '><span class="fa fa-trash text-danger" ></span></a>';
         $button .= "</div>";
         return $button;

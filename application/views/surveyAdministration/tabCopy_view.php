@@ -14,7 +14,7 @@
                     <div class="form-group">
                         <label for='copysurveylist' class=" control-label"><?php  eT("Select survey to copy:"); ?> </label>
                         <div class="">
-                            <select id='copysurveylist' name='copysurveylist' required="required" class="form-control">
+                            <select id='copysurveylist' name='copysurveylist' required="required" class="form-control activate-search">
                                 <?php echo getSurveyList(false); ?>
                             </select>
                         </div>
@@ -27,11 +27,11 @@
                     <div class="form-group">
                         <label for='copysurveyname' class=" control-label"><?php echo  eT("New survey title:"); ?> </label>
                         <div class="">
-                            <input type='text' id='copysurveyname' size='82' maxlength='200' name='copysurveyname' value='' required="required" class="form-control" />
+                            <input type='text' id='copysurveyname' size='82' maxlength='200' name='copysurveyname' placeholder="<?php eT('Copy original survey title');?>" value='' class="form-control" />
                         </div>
                         <div class="">
                           <p class="form-control-static">
-                            <span class='annotation text-warning'><?php echo  gT("Required"); ?> </span>
+                            <span class='annotation text-warning'><?php echo  gT("Optional"); ?>  </span>
                           </p>
                         </div>
                     </div>
@@ -161,3 +161,14 @@
     </div>
 </div>
 </div>
+
+<script>
+    $(document).on('ready pjax:scriptcomplete', function(){
+        $('#copysurveyform').on('submit',  function(event){
+            // Disable both buttons. Normally there's no need to re-enable them. The 'save-form-button' may already be disabled by it's onclick event.
+            $('#copysurveyform').find('input[type="submit"]').prop('disabled', true);
+            $('#save-form-button').addClass('disabled').attr('onclick', 'return false;');
+        });
+    });
+
+</script>

@@ -2439,6 +2439,7 @@ class LimeExpressionManager
                         switch ($type) {
                             case Question::QT_K_MULTIPLE_NUMERICAL: //MULTI NUMERICAL QUESTION TYPE (Need a attribute, not set in 131014)
                                 $subqValidSelector = $sq['jsVarName_on'];
+                                // no break
                             case Question::QT_N_NUMERICAL: //NUMERICAL QUESTION TYPE
                                 $sq_name = ($this->sgqaNaming) ? $sq['rowdivid'] . ".NAOK" : $sq['varName'] . ".NAOK";
                                 $sq_eqn = '( is_int(' . $sq_name . ') || is_empty(' . $sq_name . ') )';
@@ -3771,14 +3772,13 @@ class LimeExpressionManager
                                 'jsVarName_on' => $jsVarName_on,
                                 'sqsuffix'     => '_comment',
                             ];
-                        } else // The question list
-                        {
+                        } else { // The question list
                             $q2subqInfo[$questionNum]['subqs'][] = [
-                                'varName'      => $varName,
-                                'rowdivid'     => $surveyid . 'X' . $groupNum . 'X' . $questionNum,
-                                'jsVarName'    => $jsVarName,
-                                'jsVarName_on' => $jsVarName_on,
-                            ];
+                                    'varName'      => $varName,
+                                    'rowdivid'     => $surveyid . 'X' . $groupNum . 'X' . $questionNum,
+                                    'jsVarName'    => $jsVarName,
+                                    'jsVarName_on' => $jsVarName_on,
+                                ];
                         }
                         break;
                     case Question::QT_N_NUMERICAL:
@@ -3942,14 +3942,8 @@ class LimeExpressionManager
 
             $token = Token::model($surveyid)->findByToken($_SESSION[$this->sessid]['token']);
             if ($token) {
-                $tokenEncryptionOptions = $survey->getTokenEncryptionOptions();
+                $token->decrypt();
                 foreach ($token as $key => $val) {
-                    // Decrypt encrypted token attributes
-                    if (isset($tokenEncryptionOptions['columns'][$key]) && $tokenEncryptionOptions['columns'][$key] === 'Y') {
-                        if (!empty($val)) {
-                            $val = $token->decrypt($val);
-                        }
-                    }
                     $this->knownVars["TOKEN:" . strtoupper($key)] = [
                         'code'      => $anonymized ? '' : $val,
                         'jsName_on' => '',
@@ -4106,7 +4100,7 @@ class LimeExpressionManager
             }
             $qid = $rel['qid'];
             $gseq = $rel['gseq'];
-            if(
+            if (
                 $gseq != $this->currentGroupSeq // ONLY validate current group
                 && !$this->allOnOnePage // except if all in one page
                 && (is_null($groupSeq) || $gseq > $groupSeq)
@@ -4835,7 +4829,7 @@ class LimeExpressionManager
                     'invalidSQs'    => $result['invalidSQs'],
                 ];
                 return $LEM->lastMoveResult;
-            // NB: No break needed
+                // NB: No break needed
             case 'group':
                 // First validate the current group
                 $LEM->StartProcessingPage();
@@ -4845,7 +4839,7 @@ class LimeExpressionManager
                     $result = $LEM->_ValidateGroup($LEM->currentGroupSeq);
                     $message .= $result['message'];
                     $updatedValues = array_merge($updatedValues, $result['updatedValues']);
-                    if (!is_null($result) && ($result['mandViolation'] || !$result['valid']) && empty(App()->request->getPost('mandSoft'))) {
+                    if (!is_null($result) && ($result['mandViolation'] || !$result['valid'])) {
                         // redisplay the current group
                         $message .= $LEM->_UpdateValuesInDatabase();
                         $LEM->runtimeTimings[] = [__METHOD__, (microtime(true) - $now)];
@@ -4924,7 +4918,7 @@ class LimeExpressionManager
                     $updatedValues = array_merge($updatedValues, $result['updatedValues']);
                     $gRelInfo = $LEM->gRelInfo[$LEM->currentGroupSeq];
                     $grel = $gRelInfo['result'];
-                    if ($grel && !is_null($result) && ($result['mandViolation'] || !$result['valid']) && empty(App()->request->getPost('mandSoft'))) {
+                    if ($grel && !is_null($result) && ($result['mandViolation'] || !$result['valid'])) {
                         // redisplay the current question with all error
                         $message .= $LEM->_UpdateValuesInDatabase();
                         $LEM->runtimeTimings[] = [__METHOD__, (microtime(true) - $now)];
@@ -5159,7 +5153,16 @@ class LimeExpressionManager
                     return;
                 }
                 if ($oResponse->submitdate == null || Survey::model()->findByPk($this->sid)->alloweditaftercompletion == 'Y') {
-                    $oResponse->setAttributes($aResponseAttributes, false);
+                    try {
+                        $oResponse->setAllAttributes($aResponseAttributes, false);
+                    } catch (Exception $ex) {
+                        // This can happen if the table is missing fields. It should never happen, but somehow it does.
+                        submitfailed($ex->getMessage());
+                        if (YII_DEBUG) {
+                            throw $ex;
+                        }
+                        $this->throwFatalError();
+                    }
                     $oResponse->decrypt();
                     if (!$oResponse->encryptSave()) {
                         $message = submitfailed('', print_r($oResponse->getErrors(), true)); // $response->getErrors() is array[string[]], then can not join
@@ -5313,7 +5316,7 @@ class LimeExpressionManager
                     'invalidSQs'    => $result['invalidSQs'],
                 ];
                 return $LEM->lastMoveResult;
-            // NB: No break needed
+                // NB: No break needed
             case 'group':
                 // First validate the current group
                 $LEM->StartProcessingPage();
@@ -5640,7 +5643,6 @@ class LimeExpressionManager
         /////////////////////////////////////////////////////////
         for ($i = $groupSeqInfo['qstart']; $i <= $groupSeqInfo['qend']; ++$i) {
             $qStatus = $LEM->_ValidateQuestion($i, $force);
-
             $updatedValues = array_merge($updatedValues, $qStatus['updatedValues']);
 
             if ($gRelInfo['result'] == true && $qStatus['relevant'] == true) {
@@ -5972,7 +5974,7 @@ class LimeExpressionManager
                                     $_SESSION[$LEM->sessid]['relevanceStatus'][$sq['rowdivid']] = false;
                                 }
                             }
-                        // No break : next part is for array text and array number too
+                        // no break : next part is for array text and array number too
                         case Question::QT_A_ARRAY_5_POINT: // Array (5 point choice) radio-buttons
                         case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: // Array (10 point choice) radio-buttons
                         case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: // Array (Yes/Uncertain/No)
@@ -6086,8 +6088,7 @@ class LimeExpressionManager
         //////////////////////////////////////////////
         $qmandViolation = false;    // assume there is no mandatory violation until discover otherwise
         $mandatoryTip = '';
-        // bypass validation if soft mandatory button was pressed
-        if (($qrel && !$qhidden && ($qInfo['mandatory'] == 'Y' || $qInfo['mandatory'] == 'S')) && empty(App()->request->getPost('mandSoft'))) {
+        if ($qrel && !$qhidden && ($qInfo['mandatory'] == 'Y' || $qInfo['mandatory'] == 'S')) {
             //$mandatoryTip = "<p class='errormandatory alert alert-danger' role='alert'><span class='fa fa-exclamation-sign'></span>&nbsp" . $LEM->gT('This question is mandatory') . "</p>";
             $mandatoryTip = App()->twigRenderer->renderPartial(
                 '/survey/questions/question_help/mandatory_tip.twig',
@@ -6250,6 +6251,15 @@ class LimeExpressionManager
                     }
                     break;
             }
+        }
+        /* Set qmandViolation to false if mandSoft and POST is set */
+        if (
+            $qmandViolation
+            && $qInfo['mandatory'] == 'S'
+            && App()->request->getPost('mandSoft')
+        ) {
+            $qmandViolation = false;
+            $mandatoryTip = '';
         }
 
         /////////////////////////////////////////////////////////////
@@ -6717,20 +6727,20 @@ class LimeExpressionManager
         switch ($LEM->surveyMode) {
             case 'survey':
                 return $LEM->lastMoveResult;
-            // NB: No break needed
+                // NB: No break needed
             case 'group':
                 // #14595
                 if (is_null($step) || !array_key_exists($step, $LEM->indexGseq)) {
                     return $LEM->indexGseq;
                 }
                 return $LEM->indexGseq[$step];
-            // NB: No break needed
+                // NB: No break needed
             case 'question':
                 if (is_null($step)) {
                     return $LEM->indexQseq;
                 }
                 return $LEM->indexQseq[$step];
-            // NB: No break needed
+                // NB: No break needed
         }
     }
 
@@ -8613,7 +8623,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         switch ($attr) {
             case 'varName':
                 return $name;
-            // NB: No break needed
+                // NB: No break needed
             case 'code':
             case 'NAOK':
                 if (isset($var['code'])) {
@@ -8639,6 +8649,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                 } else {
                                     return $_SESSION[$this->sessid][$sgqa];
                                 }
+                                // no break
                             default:
                                 return $_SESSION[$this->sessid][$sgqa];
                         }
@@ -8647,7 +8658,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     }
                     return $default;
                 }
-            // NB: No break needed
+                // NB: No break needed
+                // no break
             case 'value':
             case 'valueNAOK':
                 $type = $var['type'];
@@ -8686,7 +8698,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                         break;
                 }
                 return $value;
-            // NB: No break needed
+                // NB: No break needed
             case 'jsName':
                 if (
                     $this->surveyMode == 'survey'
@@ -8698,7 +8710,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 } else {
                     return (isset($var['jsName']) ? $var['jsName'] : $default);
                 }
-            // NB: No break needed
+                // NB: No break needed
+                // no break
             case 'shown':
                 if (isset($var['shown'])) {
                     return $var['shown'];    // for static values like TOKEN
@@ -8792,6 +8805,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     return $shown;
                 }
                 // NB: No break needed
+                // no break
             case 'relevanceStatus':
                 $gseq = (isset($var['gseq'])) ? $var['gseq'] : -1;
                 $qid = (isset($var['qid'])) ? $var['qid'] : -1;
@@ -8803,15 +8817,15 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     return 1;
                 }
                 $grel = 1; // Group relevance true by default
-                if(isset($_SESSION[$this->sessid]['relevanceStatus']['G' . $gseq])) {
+                if (isset($_SESSION[$this->sessid]['relevanceStatus']['G' . $gseq])) {
                     $grel =  $_SESSION[$this->sessid]['relevanceStatus']['G' . $gseq];
                 }
                 $qrel = 0; // Question relevance false by default since EM creation. Update it must create a major API update
-                if(isset($_SESSION[$this->sessid]['relevanceStatus'][$qid])) {
+                if (isset($_SESSION[$this->sessid]['relevanceStatus'][$qid])) {
                     $qrel =  $_SESSION[$this->sessid]['relevanceStatus'][$qid];
                 }
                 $sqrel = 1; // true by default - only want false if a subquestion is really irrelevant
-                if(isset($_SESSION[$this->sessid]['relevanceStatus'][$rowdivid])) {
+                if (isset($_SESSION[$this->sessid]['relevanceStatus'][$rowdivid])) {
                     $sqrel =  $_SESSION[$this->sessid]['relevanceStatus'][$rowdivid];
                 }
                 return ($grel && $qrel && $sqrel);
@@ -8821,7 +8835,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     return 1;
                 }
                 return (isset($var[$attr])) ? $var[$attr] : $default;
-            // NB: No break needed
+                // NB: No break needed
             case 'sgqa':
             case 'mandatory':
             case 'qid':
@@ -9085,7 +9099,15 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             <th class=\"column-3\">" . $LEM->gT('Text [Help] (Tip)') . "</th>
             </tr>\n";
 
-        $_gseq = -1;
+        // Picking up questions in the survey.
+        // To be used later while composing the logic file, for auxiliary information.
+        $criteria = new CDbCriteria();
+        $criteria->addCondition("sid = :sid");
+        $criteria->params[':sid'] = $sid;
+        $criteria->index = 'qid';
+        $questions = Question::model()->with('question_theme')->findAll($criteria);
+        
+        $_gseq = -1;        
         $baseQuestionThemes = QuestionTheme::findQuestionMetaDataForAllTypes();
         foreach ($LEM->currentQset as $q) {
             $gseq = $q['info']['gseq'];
@@ -9139,6 +9161,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             $mandatory = (($q['info']['mandatory'] == 'Y' || $q['info']['mandatory'] == 'S') ? "<span class='mandatory'>*</span>" : '');
             $type = $q['info']['type'];
             $typedesc = $baseQuestionThemes[$type]->title;
+            $questionTheme = $questions[$q['info']['qid']]->question_theme;
+            $themeDesc = !empty($questionTheme->extends) ? "({$questionTheme->title})" : "";
             $sgqas = explode('|', $q['sgqa']);
             $qReplacement = array_merge(
                 $standardsReplacementFields,
@@ -9485,7 +9509,15 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     . "onclick='window.open(\"$editlink\",\"_blank\")'>"
                     . $rootVarName . "</span>";
             }
-            $questionRow .= "</b><br />[<a target='_blank' href='$editlink'>QID $qid</a>]<br/>$typedesc [$type] $errText $sWarningsText</td>"
+            $questionRow .= "</b>"
+                . "<br/>"
+                . "[<a target='_blank' href='$editlink'>" . sprintf(gT("Question ID %s"), $qid) . "</a>]"
+                . "<br/>"
+                . "<span class='question-type'>$typedesc [$type]</span> "
+                . "<span class='question-theme'>$themeDesc</span> "
+                . $errText . " "
+                . $sWarningsText
+                . "</td>"
                 . "<td>" . $relevance . $prettyValidEqn . $default . "</td>"
                 . "<td>" . $qdetails . "</td>"
                 . "</tr>\n";
@@ -9808,7 +9840,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             case 'K': // Multiple numerical
             case 'N': // Numerical
                 if (!preg_match("/^[-]?(\d{1,20}\.\d{0,10}|\d{1,20})$/", $value)) { // DECIMAL(30,10)
-                    $LEM->addValidityString($sgq, $value, gT("This question only accept 30 digits including 10 decimals."), $set);
+                    $LEM->addValidityString($sgq, $value, gT("This question only accepts 30 digits including 10 decimals."), $set);
                     /* Show an error but don't unset value : this can happen without hack */
                 }
                 break;
@@ -9933,6 +9965,35 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
     public function getUpdatedValues(): array
     {
         return $this->updatedValues;
+    }
+
+    /**
+     * Kills the survey session and throws an exception with the specified message.
+     * @param string $message If empty, a default message is used.
+     * @throws Exception
+     */
+    private function throwFatalError($message = null)
+    {
+        if (empty($message)) {
+            $surveyInfo = getSurveyInfo($this->sid, $_SESSION['LEMlang']);
+            if (!empty($surveyInfo['admin'])) {
+                $message = sprintf(
+                    $this->gT("Due to a technical problem, your response could not be saved. Please contact the survey administrator %s (%s) about this problem. You will not be able to proceed with this survey."),
+                    $surveyInfo['admin'],
+                    $surveyInfo['adminemail']
+                );
+            } elseif (!empty(Yii::app()->getConfig("siteadminname"))) {
+                $message = sprintf(
+                    $this->gT("Due to a technical problem, your response could not be saved. Please contact the survey administrator %s (%s) about this problem. You will not be able to proceed with this survey."),
+                    Yii::app()->getConfig("siteadminname"),
+                    Yii::app()->getConfig("siteadminemail")
+                );
+            } else {
+                $message = $this->gT("Due to a technical problem, your response could not be saved. You will not be able to proceed with this survey.");
+            }
+        }
+        killSurveySession($this->sid);
+        throw new Exception($message);
     }
 }
 

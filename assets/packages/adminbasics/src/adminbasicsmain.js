@@ -88,6 +88,7 @@ const AdminCore = function(){
             appendToLoad(notificationSystem.initNotification);
             appendToLoad(activateSubSubMenues);
             appendToLoad(globalWindowMethods.fixAccordionPosition);
+            appendToLoad(globalWindowMethods.doSelect2);
         },
         appendToLoad = (fn, event, root, delay) => {
             event = event || 'pjax:scriptcomplete ready';

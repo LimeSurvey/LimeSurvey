@@ -1248,11 +1248,15 @@ class ExpressionManager
             return '';
         }
         $tokens = $this->RDP_tokens;
+        /* @var string|null used for ASSIGN expression */
+        $idToSet = null;
+        /* @var string[] the final expression line by line (to be join at end) */
         $stringParts = array();
         $numTokens = count($tokens);
 
-        /* Static function management */
+        /* @var integer bracket count for static function management */
         $bracket = 0;
+        /* @var string static string to be parsed bedfore send to JS */
         $staticStringToParse = "";
         for ($i = 0; $i < $numTokens; ++$i) {
             $token = $tokens[$i]; // When do these need to be quoted?
@@ -1306,12 +1310,15 @@ class ExpressionManager
                             }
                         } elseif ($i + 1 < $numTokens && $tokens[$i + 1][2] == 'ASSIGN') {
                             $jsName = $this->GetVarAttribute($token[0], 'jsName', '');
-                            $stringParts[] = "document.getElementById('" . $jsName . "').value";
-                            if ($tokens[$i + 1][0] == '+=') {
-                                // Javascript does concatenation unless both left and right side are numbers, so refactor the equation
-                                $varName = $this->GetVarAttribute($token[0], 'varName', $token[0]);
-                                $stringParts[] = " = LEMval('" . $varName . "') + ";
-                                ++$i;
+                            /* Value is in the page : can not set */
+                            if (!empty($jsName)) {
+                                $idToSet = $jsName;
+                                if ($tokens[$i + 1][0] == '+=') {
+                                    // Javascript does concatenation unless both left and right side are numbers, so refactor the equation
+                                    $varName = $this->GetVarAttribute($token[0], 'varName', $token[0]);
+                                    $stringParts[] = " = LEMval('" . $varName . "') + ";
+                                    ++$i;
+                                }
                             }
                         } else {
                             if (preg_match("/\.(" . $this->getRegexpStaticValidAttributes() . ")$/", $token[0])) {
@@ -1369,6 +1376,9 @@ class ExpressionManager
                             case '!=':
                                 $stringParts[] = ' != ';
                                 break;
+                            case '=':
+                                /* ASSIGN : usage jquery: don't add anything (disable default) */;
+                                break;
                             default:
                                 $stringParts[] = ' ' . $token[0] . ' ';
                                 break;
@@ -1392,6 +1402,10 @@ class ExpressionManager
             }
         }
         $mainClause = implode('', $stringParts);
+        if ($idToSet) {
+            /* If there are an id to set (assign) : set it via jquery */
+            $mainClause = "$('#{$idToSet}').val({$mainClause})";
+        }
         $varsUsed = implode("', '", $nonNAvarsUsed);
         if ($varsUsed != '') {
             $this->jsExpression = "LEMif(LEManyNA('" . $varsUsed . "'),'',(" . $mainClause . "))";
@@ -2921,7 +2935,7 @@ function exprmgr_convert_value($fValueToReplace, $iStrict, $sTranslateFromList, 
  */
 function exprmgr_date($format, $timestamp = null)
 {
-    $timestamp = isset($timestamp) ? $timestamp : time();
+    $timestamp = $timestamp ?? time();
     if (!is_numeric($timestamp)) {
         return false;
     }
@@ -3071,7 +3085,7 @@ function exprmgr_log($args)
     if (!is_numeric($number)) {
         return NAN;
     }
-    $base = (isset($args[1])) ? $args[1] : exp(1);
+    $base = $args[1] ?? exp(1);
     if (!is_numeric($base)) {
         return NAN;
     }
@@ -3094,13 +3108,13 @@ function exprmgr_log($args)
  */
 function exprmgr_mktime($hour = null, $minute = null, $second = null, $month = null, $day = null, $year = null)
 {
-    $hour = isset($hour) ? $hour : date("H");
-    $minute = isset($minute) ? $minute : date("i");
-    $second = isset($second) ? $second : date("s");
-    $month = isset($month) ? $month : date("n");
-    $day = isset($day) ? $day : date("j");
-    $year = isset($year) ? $year : date("Y");
-    $hour = isset($hour) ? $hour : date("H");
+    $hour = $hour ?? date("H");
+    $minute = $minute ?? date("i");
+    $second = $second ?? date("s");
+    $month = $month ?? date("n");
+    $day = $day ?? date("j");
+    $year = $year ?? date("Y");
+    $hour = $hour ?? date("H");
     $iInvalidArg = count(array_filter(array($hour, $minute, $second, $month, $day, $year), function ($timeValue) {
         return !is_numeric($timeValue); /* This allow get by string like "01.000" , same than javascript with 2.72.6 and default PHP(5.6) function*/
     }));

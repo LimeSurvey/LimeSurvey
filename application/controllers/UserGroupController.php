@@ -235,7 +235,7 @@ class UserGroupController extends LSBaseController
         $ugid = (int) $ugid;
 
         $aData = [];
-        $action = (isset($_POST['action'])) ? $_POST['action'] : '';
+        $action = $_POST['action'] ?? '';
         if (Permission::model()->hasGlobalPermission('usergroups', 'update')) {
             if ($action == "editusergroupindb") {
                 $ugid = (int) $_POST['ugid'];
@@ -281,7 +281,7 @@ class UserGroupController extends LSBaseController
      */
     public function actionAddGroup()
     {
-        $action = (isset($_POST['action'])) ? $_POST['action'] : '';
+        $action = $_POST['action'] ?? '';
         $aData = array();
 
         if (Permission::model()->hasGlobalPermission('usergroups', 'create')) {

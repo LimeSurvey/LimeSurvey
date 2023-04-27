@@ -97,7 +97,7 @@ function quoteText($sText, $sEscapeMode = 'html')
 /**
 * getSurveyList() Queries the database (survey table) for a list of existing surveys
 *
-* @param boolean $bReturnArray If set to true an array instead of an HTML option list is given back
+* @param boolean $bReturnArray If set to true an array instead of an HTML option list is given back (unused by core)
 * @return string|array This string is returned containing <option></option> formatted list of existing surveys
 *
 */
@@ -106,14 +106,20 @@ function getSurveyList($bReturnArray = false)
     static $cached = null;
     $bCheckIntegrity = false;
     $timeadjust = getGlobalSetting('timeadjust');
-    App()->setLanguage((isset(Yii::app()->session['adminlang']) ? Yii::app()->session['adminlang'] : 'en'));
+    App()->setLanguage((Yii::app()->session['adminlang'] ?? 'en'));
     $surveynames = array();
 
     if (is_null($cached)) {
+        $criteria = new CDBCriteria();
+        $criteria->select = ['sid','language', 'active', 'expires','startdate'];
+        $criteria->with = ['languagesettings' => [
+                'select'=>'surveyls_title',
+                'where'=>'t.language = languagesettings.language'
+            ]
+        ];
         $surveyidresult = Survey::model()
             ->permission(Yii::app()->user->getId())
-            ->with('languagesettings')
-            ->findAll();
+            ->findAll($criteria);
         foreach ($surveyidresult as $result) {
             if (isset($result->languagesettings[$result->language])) {
                 $surveynames[] = array_merge(
@@ -122,9 +128,8 @@ function getSurveyList($bReturnArray = false)
                 );
             }
         }
-
         usort($surveynames, function ($a, $b) {
-                return strcmp($a['surveyls_title'], $b['surveyls_title']);
+            return strcmp($a['surveyls_title'], $b['surveyls_title']);
         });
         $cached = $surveynames;
     } else {
@@ -138,27 +143,23 @@ function getSurveyList($bReturnArray = false)
     $inactivesurveys = '';
     $expiredsurveys = '';
     foreach ($surveynames as $sv) {
-        $surveylstitle = flattenText($sv['surveyls_title']);
-        if (strlen($surveylstitle) > 70) {
-            $surveylstitle = htmlspecialchars(mb_strcut(html_entity_decode($surveylstitle, ENT_QUOTES, 'UTF-8'), 0, 70, 'UTF-8')) . "...";
-        }
-
+        $surveylstitle = CHtml::encode($sv['surveyls_title']) . " [" . $sv['sid'] . "]";
         if ($sv['active'] != 'Y') {
             $inactivesurveys .= "<option ";
             if (Yii::app()->user->getId() == $sv['owner_id']) {
-                $inactivesurveys .= " class='mysurvey emphasis'";
+                $inactivesurveys .= " class='mysurvey emphasis inactivesurvey'";
             }
             $inactivesurveys .= " value='{$sv['sid']}'>{$surveylstitle}</option>\n";
         } elseif ($sv['expires'] != '' && $sv['expires'] < dateShift((string) date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)) {
             $expiredsurveys .= "<option ";
             if (Yii::app()->user->getId() == $sv['owner_id']) {
-                $expiredsurveys .= " class='mysurvey emphasis'";
+                $expiredsurveys .= " class='mysurvey emphasis expiredsurvey'";
             }
             $expiredsurveys .= " value='{$sv['sid']}'>{$surveylstitle}</option>\n";
         } else {
             $activesurveys .= "<option ";
             if (Yii::app()->user->getId() == $sv['owner_id']) {
-                $activesurveys .= " class='mysurvey emphasis'";
+                $activesurveys .= " class='mysurvey emphasis activesurvey'";
             }
             $activesurveys .= " value='{$sv['sid']}'>{$surveylstitle}</option>\n";
         }
@@ -655,7 +656,13 @@ function getGroupListLang($gid, $language, $surveyid)
     return $groupselecter;
 }
 
-
+/**
+ * Returns a user list. If 'usercontrolSameGroupPolicy' is set and set to true, only users which are in the same
+ * group as me (--> logged in user) will be returned. Superadmin always gets the full list of users.
+ *
+ * @param $outputformat string could be 'onlyuidarray' which only returns array with userids, default is 'fullinfoarray'
+ * @return array returns a list of user ids (param='onlyuidarray') or a list with full user details (e.g. uid, name, full_name etc.)
+ */
 function getUserList($outputformat = 'fullinfoarray')
 {
     if (!empty(Yii::app()->session['loginID'])) {
@@ -706,9 +713,23 @@ function getUserList($outputformat = 'fullinfoarray')
     foreach ($uresult as $srow) {
         if ($outputformat != 'onlyuidarray') {
             if ($srow['uid'] != Yii::app()->session['loginID']) {
-                $userlist[] = array("user" => $srow['users_name'], "uid" => $srow['uid'], "email" => $srow['email'], "password" => $srow['password'], "full_name" => $srow['full_name'], "parent_id" => $srow['parent_id']);
+                $userlist[] = array(
+                    "user" => $srow['users_name'],
+                    "uid" => $srow['uid'],
+                    "email" => $srow['email'],
+                    "password" => $srow['password'],
+                    "full_name" => $srow['full_name'],
+                    "parent_id" => $srow['parent_id']
+                );
             } else {
-                $userlist[0] = array("user" => $srow['users_name'], "uid" => $srow['uid'], "email" => $srow['email'], "password" => $srow['password'], "full_name" => $srow['full_name'], "parent_id" => $srow['parent_id']);
+                $userlist[0] = array(
+                    "user" => $srow['users_name'],
+                    "uid" => $srow['uid'],
+                    "email" => $srow['email'],
+                    "password" => $srow['password'],
+                    "full_name" => $srow['full_name'],
+                    "parent_id" => $srow['parent_id']
+                );
             }
         } else {
             if ($srow['uid'] != Yii::app()->session['loginID']) {
@@ -788,6 +809,7 @@ function getSurveyInfo($surveyid, $languagecode = '', $force = false)
             $thissurvey['email_register'] = $thissurvey['surveyls_email_register'];
             $thissurvey['attributedescriptions'] = $result->survey->tokenAttributes;
             $thissurvey['attributecaptions'] = $result->attributeCaptions;
+            $thissurvey['googleanalyticsapikey'] = $oSurvey->getGoogleanalyticsapikey();
             if (!isset($thissurvey['adminname'])) {
                 $thissurvey['adminname'] = Yii::app()->getConfig('siteadminemail');
             }
@@ -805,6 +827,7 @@ function getSurveyInfo($surveyid, $languagecode = '', $force = false)
             } else {
                 $thissurvey['owner_username'] = '';
             }
+            
 
             $staticSurveyInfo[$surveyid][$languagecode] = $thissurvey;
         }
@@ -2333,9 +2356,8 @@ function languageDropdown($surveyid, $selected)
     $baselang = Survey::model()->findByPk($surveyid)->language;
     array_unshift($slangs, $baselang);
     $html = "<select class='listboxquestions' name='langselect' onchange=\"window.open(this.options[this.selectedIndex].value, '_top')\">\n";
-
     foreach ($slangs as $lang) {
-        $link = Yii::app()->homeUrl . ("/admin/dataentry/sa/view/surveyid/" . $surveyid . "/lang/" . $lang);
+        $link = Yii::app()->createUrl("admin/dataentry/sa/view/surveyid/". $surveyid . "/lang/" . $lang);
         if ($lang == $selected) {
             $html .= "\t<option value='{$link}' selected='selected'>" . getLanguageNameFromCode($lang, false) . "</option>\n";
         }
@@ -3305,13 +3327,13 @@ function short_implode($sDelimeter, $sHyphen, $aArray)
 */
 function includeKeypad()
 {
-    App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party') . 'jquery-keypad/jquery.plugin.min.js');
-    App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party') . 'jquery-keypad/jquery.keypad.min.js');
-    $localefile = Yii::app()->getConfig('rootdir') . '/third_party/jquery-keypad/jquery.keypad-' . App()->language . '.js';
+    App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('vendor') . 'jquery-keypad/jquery.plugin.min.js');
+    App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('vendor') . 'jquery-keypad/jquery.keypad.min.js');
+    $localefile = Yii::app()->getConfig('rootdir') . '/vendor/jquery-keypad/jquery.keypad-' . App()->language . '.js';
     if (App()->language != 'en' && file_exists($localefile)) {
-        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party') . 'jquery-keypad/jquery.keypad-' . App()->language . '.js');
+        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('vendor') . 'jquery-keypad/jquery.keypad-' . App()->language . '.js');
     }
-    Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('third_party') . "jquery-keypad/jquery.keypad.alt.css");
+    Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('vendor') . "jquery-keypad/jquery.keypad.alt.css");
 }
 
 
@@ -4366,112 +4388,6 @@ function doFooter()
     echo getFooter();
 }
 
-
-
-/**
-* Retrieve a HTML <OPTION> list of survey admin users
-*
-* @param boolean $bIncludeOwner If the survey owner should be included
-* @param boolean $bIncludeSuperAdmins If Super admins should be included
-* @param int $surveyid
-* @return string
-*/
-function getSurveyUserList($bIncludeSuperAdmins, $surveyid)
-{
-
-    $surveyid = (int) $surveyid;
-
-    $sSurveyIDQuery = "SELECT a.uid, a.users_name, a.full_name FROM {{users}} AS a
-    LEFT OUTER JOIN (SELECT uid AS id FROM {{permissions}} WHERE entity_id = {$surveyid} and entity='survey') AS b ON a.uid = b.id
-    WHERE id IS NULL ";
-    if (!$bIncludeSuperAdmins) {
-        // @todo: Adjust for new permission system - not urgent since it it just display
-        //   $sSurveyIDQuery.='and superadmin=0 ';
-    }
-    $sSurveyIDQuery .= 'ORDER BY a.users_name';
-    $oSurveyIDResult = Yii::app()->db->createCommand($sSurveyIDQuery)->query(); //Checked
-    $aSurveyIDResult = $oSurveyIDResult->readAll();
-
-    $surveyselecter = "";
-    $authorizedUsersList = [];
-
-    if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == true) {
-        $authorizedUsersList = getUserList('onlyuidarray');
-    }
-
-    $svexist = false;
-    foreach ($aSurveyIDResult as $sv) {
-        if (
-            Yii::app()->getConfig('usercontrolSameGroupPolicy') == false ||
-            in_array($sv['uid'], $authorizedUsersList)
-        ) {
-            $surveyselecter .= "<option";
-            $surveyselecter .= " value='{$sv['uid']}'>" . \CHtml::encode($sv['users_name']) . " " . \CHtml::encode($sv['full_name']) . "</option>\n";
-            $svexist = true;
-        }
-    }
-
-    if ($svexist) {
-        $surveyselecter = "<option value='-1' selected='selected'>" . gT("Please choose...") . "</option>\n" . $surveyselecter;
-    } else {
-        $surveyselecter = "<option value='-1'>" . gT("None") . "</option>\n" . $surveyselecter;
-    }
-
-    return $surveyselecter;
-}
-
-/**
- * Return HTML <option> list of user groups
- * @param string $outputformat 'htmloptions' or 'simpleugidarray' (todo: check if this is correct)
- * @param int $surveyid
- * @return string|array
- */
-function getSurveyUserGroupList($outputformat, $surveyid)
-{
-
-    $surveyid = sanitize_int($surveyid);
-
-    $surveyidquery = "SELECT a.ugid, a.name, MAX(d.ugid) AS da
-        FROM {{user_groups}} AS a
-        LEFT JOIN (
-        SELECT b.ugid
-        FROM {{user_in_groups}} AS b
-        LEFT JOIN (SELECT * FROM {{permissions}}
-        WHERE entity_id = {$surveyid} and entity='survey') AS c ON b.uid = c.uid WHERE c.uid IS NULL
-        ) AS d ON a.ugid = d.ugid GROUP BY a.ugid, a.name HAVING MAX(d.ugid) IS NOT NULL ORDER BY a.name";
-    $surveyidresult = Yii::app()->db->createCommand($surveyidquery)->query(); //Checked
-    $aResult = $surveyidresult->readAll();
-
-    $authorizedGroupsList = getUserGroupList();
-    $svexist = false;
-    $surveyselecter = "";
-    $simpleugidarray = [];
-    foreach ($aResult as $sv) {
-        if (
-            in_array($sv['ugid'], $authorizedGroupsList)
-        ) {
-            $surveyselecter .= "<option";
-            $surveyselecter .= " value='{$sv['ugid']}'>{$sv['name']}</option>\n";
-            $simpleugidarray[] = $sv['ugid'];
-            $svexist = true;
-        }
-    }
-
-    if ($svexist) {
-        $surveyselecter = "<option value='-1' selected='selected'>" . gT("Please choose...") . "</option>\n" . $surveyselecter;
-    } else {
-        $surveyselecter = "<option value='-1'>" . gT("None") . "</option>\n" . $surveyselecter;
-    }
-
-    if ($outputformat == 'simpleugidarray') {
-        return $simpleugidarray;
-    } else {
-        return $surveyselecter;
-    }
-}
-
-
-
 /**
 * This function fixes the group ID and type on all subquestions,
 * or removes the subquestions if the parent question's type doesn't
@@ -4841,7 +4757,7 @@ function getSerialClass($sSerial)
     $aTypes = array('s' => 'string', 'a' => 'array', 'b' => 'bool', 'i' => 'int', 'd' => 'float', 'N;' => 'NULL');
 
     $aParts = explode(':', $sSerial, 4);
-    return isset($aTypes[$aParts[0]]) ? $aTypes[$aParts[0]] : (isset($aParts[2]) ? trim($aParts[2], '"') : null);
+    return $aTypes[$aParts[0]] ?? (isset($aParts[2]) ? trim($aParts[2], '"') : null);
 }
 
 /**

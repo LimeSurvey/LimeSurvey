@@ -442,6 +442,7 @@ function populateDatabase($oDB)
             'quotals_url' => "string(255)",
             'quotals_urldescrip' => "string(255)",
         ), $options);
+        $oDB->createCommand()->createIndex('{{idx1_quota_id}}', '{{quota_languagesettings}}', ['quotals_quota_id']);
 
 
         // quota_members
@@ -454,6 +455,7 @@ function populateDatabase($oDB)
         ), $options);
 
         $oDB->createCommand()->createIndex('{{idx1_quota_members}}', '{{quota_members}}', ['sid', 'qid', 'quota_id', 'code'], true);
+        $oDB->createCommand()->createIndex('{{idx2_quota_id}}', '{{quota_members}}', ['quota_id']);
 
 
 
@@ -619,7 +621,6 @@ function populateDatabase($oDB)
             'startdate' => "datetime NULL",
             'adminemail' => "string(254) NULL",
             'anonymized' => "string(1) NOT NULL default 'N'",
-            'faxto' => "string(20) NULL",
             'format' => "string(1) NULL",
             'savetimings' => "string(1) NOT NULL default 'N'",
             'template' => "string(100) default 'default'",
@@ -869,6 +870,7 @@ function populateDatabase($oDB)
             'surveyls_email_confirm' => "mediumtext NULL",
             'surveyls_dateformat' => "integer NOT NULL DEFAULT 1",
             'surveyls_attributecaptions' => "text NULL",
+            'surveyls_alias' => "string(100) NULL",
             'email_admin_notification_subj' => "string(255) NULL",
             'email_admin_notification' => "mediumtext NULL",
             'email_admin_responses_subj' => "string(255) NULL",
@@ -1091,7 +1093,8 @@ function populateDatabase($oDB)
             'modified' => "datetime",
             'validation_key' => 'string(38)',
             'validation_key_expiration' => 'datetime',
-            'last_forgot_email_password' => 'datetime'
+            'last_forgot_email_password' => 'datetime',
+            'expires' => 'datetime'
         ), $options);
 
         $oDB->createCommand()->createIndex('{{idx1_users}}', '{{users}}', 'users_name', true);

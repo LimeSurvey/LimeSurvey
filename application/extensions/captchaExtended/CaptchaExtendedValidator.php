@@ -20,7 +20,7 @@ class CaptchaExtendedValidator extends CCaptchaValidator{
 			return parent::clientValidateAttribute($object,$attribute);
 		}
 		
-		$message=$this->message!==null ? $this->message : Yii::t('main','The verification code "{attribute}" is incorrect.');
+		$message=$this->message ?? Yii::t('main','The verification code "{attribute}" is incorrect.');
 		$message=strtr($message, array(
 			'{attribute}'=>$object->getAttributeLabel($attribute),
 		));

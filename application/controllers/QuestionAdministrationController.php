@@ -117,6 +117,9 @@ class QuestionAdministrationController extends LSBaseController
     public function actionEdit(int $questionId, string $tabOverviewEditor = null)
     {
         $questionId = (int) $questionId;
+        if (!in_array($tabOverviewEditor, ['overview', 'editor'], true)) {
+            $tabOverviewEditor = null;
+        }
 
         /** @var $question Question|null */
         $question = Question::model()->findByPk($questionId);
@@ -268,7 +271,7 @@ class QuestionAdministrationController extends LSBaseController
      * Load list questions view for a specified survey by $surveyid
      *
      * @param int $surveyid Goven Survey ID
-     * @param string  $landOnSideMenuTab Name of the side menu tab. Default behavior is to land on settings tab.
+     * @param string  $landOnSideMenuTab Name of the side menu tab (settings or structure). Default behavior is to land on settings tab.
      *
      * @return string
      * @access public
@@ -280,6 +283,9 @@ class QuestionAdministrationController extends LSBaseController
             throw new CHttpException(403, gT("No permission"));
         }
         $iSurveyID = sanitize_int($surveyid);
+        if (!in_array($landOnSideMenuTab, ['settings', 'structure', ''])) {
+            $landOnSideMenuTab = 'settings';
+        }
         // Reinit LEMlang and LEMsid: ensure LEMlang are set to default lang, surveyid are set to this survey id
         // Ensure Last GetLastPrettyPrintExpression get info from this sid and default lang
         LimeExpressionManager::SetEMLanguage(Survey::model()->findByPk($iSurveyID)->language);
@@ -1226,8 +1232,8 @@ class QuestionAdministrationController extends LSBaseController
         $aData['display']['menu_bars']['qid_action'] = 'editdefaultvalues';
         $aData['sidemenu']['state'] = false;
         $aData['sidemenu']['explorer']['state'] = true;
-        $aData['sidemenu']['explorer']['gid'] = (isset($gid)) ? $gid : false;
-        $aData['sidemenu']['explorer']['qid'] = (isset($qid)) ? $qid : false;
+        $aData['sidemenu']['explorer']['gid'] = $gid ?? false;
+        $aData['sidemenu']['explorer']['qid'] = $qid ?? false;
         $aData['sidemenu']['landOnSideMenuTab'] = 'structure';
 
         $aData['topBar']['name'] = 'baseTopbar_view';
@@ -1629,8 +1635,8 @@ class QuestionAdministrationController extends LSBaseController
             $copyQuestionTextValues = [];
             if (!empty($newQuestionL10n)) {
                 foreach ($newQuestionL10n as $lang => $texts) {
-                    $questionText = isset($texts['question']) ? $texts['question'] : '';
-                    $questionHelp = isset($texts['help']) ? $texts['help'] : '';
+                    $questionText = $texts['question'] ?? '';
+                    $questionHelp = $texts['help'] ?? '';
                     $copyQuestionTextValues[$lang] = new \LimeSurvey\Datavalueobjects\CopyQuestionTextValues($questionText, $questionHelp);
                 }
             }
@@ -2144,7 +2150,7 @@ class QuestionAdministrationController extends LSBaseController
 
                     $options = [];
                     if ($aQuestionAttributes['type'] == Question::QT_M_MULTIPLE_CHOICE || $aQuestionAttributes['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
-                        $options = ['' => gT('<No default value>'), 'Y' => gT('Checked')];
+                        $options = ['' => gT('(No default value)'), 'Y' => gT('Checked')];
                     }
 
                     foreach ($sqresult as $aSubquestion) {
@@ -2573,7 +2579,7 @@ class QuestionAdministrationController extends LSBaseController
                 [
                     'question' => $aI10NBlock['question'],
                     'help'     => $aI10NBlock['help'],
-                    'script'   => isset($aI10NBlock['script']) ? $aI10NBlock['script'] : ''
+                    'script'   => $aI10NBlock['script'] ?? ''
                 ],
                 false
             );
@@ -3017,7 +3023,7 @@ class QuestionAdministrationController extends LSBaseController
             throw new CHttpException(404, gT("Invalid survey id"));
         }
         if ($qid) {
-            $oQuestion = Question::model()->findByPk($qid);
+            $oQuestion = Question::model()->findByAttributes(['qid' => $qid, 'sid' => $sid]);
             if (empty($oQuestion)) {
                 throw new CHttpException(404, gT("Invalid question id"));
             }
@@ -3032,8 +3038,11 @@ class QuestionAdministrationController extends LSBaseController
             $oQuestion->parent_qid = 0; // Unsure needed it, but we need it's a parent_qid=0
         }
         $oQuestion->title = $code;
+        header('Content-Type: application/json');
         if (!$oQuestion->validate(['title'])) {
-            echo $oQuestion->getError('title');
+            echo json_encode(['message' => $oQuestion->getError('title')]);
+        } else {
+            echo json_encode(['message' => null]);
         }
         Yii::app()->end();
     }

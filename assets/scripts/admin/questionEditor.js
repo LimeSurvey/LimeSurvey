@@ -774,8 +774,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
     } else {
         $('#current_scale_id').val(scaleId);
     }
-
-    $('#labelsets').select2();
+    $('#labelsets').select2({dropdownParent: $("#labelsetbrowserModal")});
     $('#labelsetpreview').html('');
     $('#labelsetsSelectorContainer').hide();
     hideLabelSetAlert();
@@ -1487,18 +1486,14 @@ $(document).on('ready pjax:scriptcomplete', function () {
     const $that = ui.item;
     const newindex = Number($that.parent().children().index($that) + 1);
     const oldindex = $that.data('oldindex');
-    const languages = languageJson.langs.split(';');
+    const scaleId = $that.closest('table').data('scaleid');
 
-    languages.forEach((curLanguage, x) => {
-      if (x > 0) {
-        const tablebody = $(`#tabpage_${languages[x]}`).find('tbody');
-        // 
-        if (newindex < oldindex) {
-          $(`#tabpage_${languages[x]} tbody tr:nth-child(${newindex})`).before($(`#tabpage_${languages[x]} tbody tr:nth-child(${oldindex})`));
-        } else {
-          $(`#tabpage_${languages[x]} tbody tr:nth-child(${newindex})`).after($(`#tabpage_${languages[x]} tbody tr:nth-child(${oldindex})`));
-          tablebody.find('.row_'+newindex).after(tablebody.find('.row_'+oldindex));
-        }
+    // Process the corresponding scale id table for each extra language
+    $that.closest('.tab-pane').find(".extra-lang  table[data-scaleid='" + scaleId + "']").each((idx, table) => {
+      if (newindex < oldindex) {
+        $(table).find(`tbody tr:nth-child(${newindex})`).before($(table).find(`tbody tr:nth-child(${oldindex})`));
+      } else {
+        $(table).find(`tbody tr:nth-child(${newindex})`).after($(table).find(`tbody tr:nth-child(${oldindex})`));
       }
     });
   }
@@ -1794,15 +1789,16 @@ $(document).on('ready pjax:scriptcomplete', function () {
           code
         },
         success: (data) => {
-          if (data) {
-              $('#question-title-warning').text(data);
+          const message = data.message;
+          if (message !== null) {
+              $('#question-title-warning').text(message);
               $('#question-title-warning').removeClass('hidden');
           } else {
               // Continue
           }
         },
         error: (data) => {
-          alert('Internal error in checkQuestionCodeUniqueness: ' + data);
+          alert('Internal error in checkQuestionValidateTitle: ' + JSON.stringify(data));
           throw 'abort';
         }
       });
@@ -1955,8 +1951,9 @@ $(document).on('ready pjax:scriptcomplete', function () {
           code
         },
         success: (data) => {
-          if (data) {
-              $('#question-title-warning').text(data);
+          const message = data.message;
+          if (message !== null) {
+              $('#question-title-warning').text(message);
               $('#question-title-warning').removeClass('hidden');
           } else {
             // TODO: Check other things too.
@@ -2019,6 +2016,16 @@ $(document).on('ready pjax:scriptcomplete', function () {
     } else {
       $('.same-script-alert').addClass("hidden");
     }
+  }
+
+  /**
+   * Updates the answer/subquestion code on secondary languages
+   */
+  function syncAnswerSubquestionCode() {
+    const itemCode = $(this).val();
+    const commonId = $(this).closest('tr').data('common-id');
+
+    $(this).closest('.tab-pane').find(".extra-lang tr[data-common-id='" + commonId + "'] td.code-title").text(itemCode);
   }
 
   // Below, things run on pjax:scriptcomplete.
@@ -2136,4 +2143,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
     });
     
     $('#relevance').on('keyup', showConditionsWarning);
+
+    $(document).on('focusout', '#subquestions table.subquestions-table:first-of-type td.code-title input.code', syncAnswerSubquestionCode);
+    $(document).on('focusout', '#answeroptions table.answeroptions-table:first-of-type td.code-title input.code', syncAnswerSubquestionCode);
 });

@@ -114,6 +114,7 @@ class User extends LSActiveRecord
             array('templateeditormode', 'default', 'value' => 'default'),
             array('templateeditormode', 'in', 'range' => array('default', 'full', 'none'), 'allowEmpty' => true),
             array('dateformat', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
+            array('expires', 'date','format' => ['yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m'],'allowEmpty' => true),
 
             // created as datetime default current date in create scenario ?
             // modifier as datetime default current date ?
@@ -141,6 +142,7 @@ class User extends LSActiveRecord
             'created' => gT('Created at'),
             'modified' => gT('Modified at'),
             'last_login' => gT('Last recorded login'),
+            'expires' => gT("Expiry date/time:"),
         ];
     }
 
@@ -181,9 +183,10 @@ class User extends LSActiveRecord
      * @param string $new_full_name
      * @param string $new_email
      * @param int $parent_user
+     * @param string|null $expires
      * @return integer|boolean User ID if success
      */
-    public static function insertUser($new_user, $new_pass, $new_full_name, $parent_user, $new_email)
+    public static function insertUser($new_user, $new_pass, $new_full_name, $parent_user, $new_email, $expires = null)
     {
         $oUser = new self();
         $oUser->users_name = $new_user;
@@ -194,6 +197,7 @@ class User extends LSActiveRecord
         $oUser->email = $new_email;
         $oUser->created = date('Y-m-d H:i:s');
         $oUser->modified = date('Y-m-d H:i:s');
+        $oUser->expires = $expires;
         if ($oUser->save()) {
             return $oUser->uid;
         } else {
@@ -432,8 +436,12 @@ class User extends LSActiveRecord
     {
         // TODO should be static
         $criteria = new CDbCriteria();
-        $criteria->join = ' JOIN {{permissions}} AS p ON p.uid = t.uid';
-        $criteria->addCondition('p.permission = \'superadmin\'');
+        /* have read superadmin permissions */
+        $criteria->with = array('permissions');
+        $criteria->compare('permissions.permission', 'superadmin');
+        $criteria->compare('permissions.read_p', '1');
+        /* OR are inside forcedsuperadmin config */
+        $criteria->addInCondition('t.uid', App()->getConfig('forcedsuperadmin'), 'OR');
         /** @var User[] $users */
         $users = $this->findAll($criteria);
         return $users;
@@ -926,6 +934,25 @@ class User extends LSActiveRecord
         $this->validation_key_expiration = $datePlusMaxExpiration->format('Y-m-d H:i:s');
 
         return $this->save();
+    }
+
+    /**
+     * Returns true if the user has expired.
+     *
+     * @return boolean
+     */
+    public function isExpired()
+    {
+        $expired = false;
+        if (!empty($this->expires)) {
+            // Time adjust
+            $now = date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
+            $expirationTime = date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->expires)));
+
+            // Time comparison
+            $expired = new DateTime($expirationTime) < new DateTime($now);
+        }
+        return $expired;
     }
 
     /**

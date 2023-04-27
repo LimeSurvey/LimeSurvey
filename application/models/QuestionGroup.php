@@ -25,7 +25,7 @@
  *
  * @property Survey $survey
  * @property Question[] $questions Questions without subquestions
- * @property QuestionGroupL10n[] $questionGroupL10ns
+ * @property QuestionGroupL10n[] $questiongroupl10ns
  */
 class QuestionGroup extends LSActiveRecord
 {
@@ -182,7 +182,7 @@ class QuestionGroup extends LSActiveRecord
      */
     public function getGroupDescription($iGroupId, $sLanguage)
     {
-        return $this->findByPk(array('gid' => $iGroupId, 'language' => $sLanguage))->description;
+        return $this->findByPk($iGroupId)->getGroupDescriptionI10N($sLanguage);
     }
 
     /**
@@ -309,7 +309,7 @@ class QuestionGroup extends LSActiveRecord
                     . '</button>'
                     . '</span>';
             } else {
-                $buttons .= '<span data-toggle="tooltip" title="' . gT('Group cant be deleted, because of depending conditions') . '">'
+                $buttons .= '<span data-toggle="tooltip" title="' . gT("Group can't be deleted because of depending conditions") . '">'
                     . '<button class="btn btn-sm btn-default" '
                     . ' disabled '
                     . ' role="button"'
