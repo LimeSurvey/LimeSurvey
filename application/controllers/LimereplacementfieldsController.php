@@ -37,7 +37,7 @@ class LimeReplacementFieldsController extends LSBaseController
             throw new CHttpException(401);
         }
 
-        if ($surveyid && !Permission::model()->hasSurveyPermission($surveyid, 'survey', 'read')) {
+        if (!Permission::model()->hasSurveyPermission($surveyid, 'survey', 'read')) {
             throw new CHttpException(403);
         }
 

@@ -27,7 +27,13 @@
                                 id : 'text',
                                 type : 'html',
                                 label : lang.title,
-                                html : CKEDITOR.ajax.load(editor.config.LimeReplacementFieldsUrl),
+                                html : CKEDITOR.ajax.load( editor.config.LimeReplacementFieldsPath + '/fieldtype/' +
+                                    editor.config.LimeReplacementFieldsType + '/action/' +
+                                    editor.config.LimeReplacementFieldsAction + '/surveyid/' +
+                                    editor.config.LimeReplacementFieldsSID + '/gid/' +
+                                    editor.config.LimeReplacementFieldsGID + '/qid/' +
+                                    editor.config.LimeReplacementFieldsQID
+                                ),
                                 setup : function( element )
                                 {
                                     if ( isEdit )
