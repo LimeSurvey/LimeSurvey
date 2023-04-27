@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2023-04-24 14:24:37+00:00\n"
+"POT-Creation-Date: 2023-04-26 14:16:39+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -5000,21 +5000,21 @@ msgstr ""
 msgid "Texts for language %s could not be updated:"
 msgstr ""
 
-#: application/controllers/admin/Database.php:788
-#: application/controllers/admin/Database.php:962
+#: application/controllers/admin/Database.php:785
+#: application/controllers/admin/Database.php:959
 msgid "Survey settings were successfully saved."
 msgstr ""
 
-#: application/controllers/admin/Database.php:790
+#: application/controllers/admin/Database.php:787
 msgid "Survey settings were saved, but there where errors with some languages."
 msgstr ""
 
-#: application/controllers/admin/Database.php:793
-#: application/controllers/admin/Database.php:964
+#: application/controllers/admin/Database.php:790
+#: application/controllers/admin/Database.php:961
 msgid "Survey could not be updated, please fix the following error:"
 msgstr ""
 
-#: application/controllers/admin/Database.php:937
+#: application/controllers/admin/Database.php:934
 msgid "Survey language could not be created."
 msgstr ""
 
@@ -15485,6 +15485,10 @@ msgstr ""
 
 #: application/models/Survey.php:232
 msgid "running"
+msgstr ""
+
+#: application/models/Survey.php:541
+msgid "Token length cannot be bigger than {max} characters."
 msgstr ""
 
 #: application/models/Survey.php:1172 tests/unit/models/SurveyTest.php:169
