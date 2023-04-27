@@ -4,3 +4,12 @@
         th > .sort-link .caret{ right: -10px; }
     }
 }
+.grid-view .table td .longtext-content {
+    min-width:8em;
+    max-width:16em;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+    height:1.5em;
+    display:inline-block
+}

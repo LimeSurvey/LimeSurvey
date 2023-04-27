@@ -1833,6 +1833,35 @@
   // https://tc39.es/ecma262/#sec-array.prototype-@@unscopables
   addToUnscopables('includes');
 
+  var arrayMethodIsStrict = function (METHOD_NAME, argument) {
+    var method = [][METHOD_NAME];
+    return !!method && fails(function () {
+      // eslint-disable-next-line no-useless-call,no-throw-literal -- required for testing
+      method.call(null, argument || function () { throw 1; }, 1);
+    });
+  };
+
+  /* eslint-disable es/no-array-prototype-indexof -- required for testing */
+
+  var $indexOf = arrayIncludes.indexOf;
+
+
+  var nativeIndexOf = [].indexOf;
+
+  var NEGATIVE_ZERO = !!nativeIndexOf && 1 / [1].indexOf(1, -0) < 0;
+  var STRICT_METHOD = arrayMethodIsStrict('indexOf');
+
+  // `Array.prototype.indexOf` method
+  // https://tc39.es/ecma262/#sec-array.prototype.indexof
+  _export({ target: 'Array', proto: true, forced: NEGATIVE_ZERO || !STRICT_METHOD }, {
+    indexOf: function indexOf(searchElement /* , fromIndex = 0 */) {
+      return NEGATIVE_ZERO
+        // convert -0 to +0
+        ? nativeIndexOf.apply(this, arguments) || 0
+        : $indexOf(this, searchElement, arguments.length > 1 ? arguments[1] : undefined);
+    }
+  });
+
   var correctPrototypeGetter = !fails(function () {
     function F() { /* empty */ }
     F.prototype.constructor = null;
@@ -2065,25 +2094,50 @@
   addToUnscopables('values');
   addToUnscopables('entries');
 
-  var arrayMethodIsStrict = function (METHOD_NAME, argument) {
-    var method = [][METHOD_NAME];
-    return !!method && fails(function () {
-      // eslint-disable-next-line no-useless-call,no-throw-literal -- required for testing
-      method.call(null, argument || function () { throw 1; }, 1);
-    });
-  };
-
   var nativeJoin = [].join;
 
   var ES3_STRINGS = indexedObject != Object;
-  var STRICT_METHOD = arrayMethodIsStrict('join', ',');
+  var STRICT_METHOD$1 = arrayMethodIsStrict('join', ',');
 
   // `Array.prototype.join` method
   // https://tc39.es/ecma262/#sec-array.prototype.join
-  _export({ target: 'Array', proto: true, forced: ES3_STRINGS || !STRICT_METHOD }, {
+  _export({ target: 'Array', proto: true, forced: ES3_STRINGS || !STRICT_METHOD$1 }, {
     join: function join(separator) {
       return nativeJoin.call(toIndexedObject(this), separator === undefined ? ',' : separator);
     }
+  });
+
+  /* eslint-disable es/no-array-prototype-lastindexof -- safe */
+
+
+
+
+
+  var min$3 = Math.min;
+  var $lastIndexOf = [].lastIndexOf;
+  var NEGATIVE_ZERO$1 = !!$lastIndexOf && 1 / [1].lastIndexOf(1, -0) < 0;
+  var STRICT_METHOD$2 = arrayMethodIsStrict('lastIndexOf');
+  var FORCED$1 = NEGATIVE_ZERO$1 || !STRICT_METHOD$2;
+
+  // `Array.prototype.lastIndexOf` method implementation
+  // https://tc39.es/ecma262/#sec-array.prototype.lastindexof
+  var arrayLastIndexOf = FORCED$1 ? function lastIndexOf(searchElement /* , fromIndex = @[*-1] */) {
+    // convert -0 to +0
+    if (NEGATIVE_ZERO$1) return $lastIndexOf.apply(this, arguments) || 0;
+    var O = toIndexedObject(this);
+    var length = toLength(O.length);
+    var index = length - 1;
+    if (arguments.length > 1) index = min$3(index, toInteger(arguments[1]));
+    if (index < 0) index = length + index;
+    for (;index >= 0; index--) if (index in O && O[index] === searchElement) return index || 0;
+    return -1;
+  } : $lastIndexOf;
+
+  // `Array.prototype.lastIndexOf` method
+  // https://tc39.es/ecma262/#sec-array.prototype.lastindexof
+  // eslint-disable-next-line es/no-array-prototype-lastindexof -- required for testing
+  _export({ target: 'Array', proto: true, forced: arrayLastIndexOf !== [].lastIndexOf }, {
+    lastIndexOf: arrayLastIndexOf
   });
 
   var $map = arrayIteration.map;
@@ -2117,6 +2171,80 @@
       while (argumentsLength > index) createProperty(result, index, arguments[index++]);
       result.length = argumentsLength;
       return result;
+    }
+  });
+
+  // `Array.prototype.{ reduce, reduceRight }` methods implementation
+  var createMethod$2 = function (IS_RIGHT) {
+    return function (that, callbackfn, argumentsLength, memo) {
+      aFunction$1(callbackfn);
+      var O = toObject(that);
+      var self = indexedObject(O);
+      var length = toLength(O.length);
+      var index = IS_RIGHT ? length - 1 : 0;
+      var i = IS_RIGHT ? -1 : 1;
+      if (argumentsLength < 2) while (true) {
+        if (index in self) {
+          memo = self[index];
+          index += i;
+          break;
+        }
+        index += i;
+        if (IS_RIGHT ? index < 0 : length <= index) {
+          throw TypeError('Reduce of empty array with no initial value');
+        }
+      }
+      for (;IS_RIGHT ? index >= 0 : length > index; index += i) if (index in self) {
+        memo = callbackfn(memo, self[index], index, O);
+      }
+      return memo;
+    };
+  };
+
+  var arrayReduce = {
+    // `Array.prototype.reduce` method
+    // https://tc39.es/ecma262/#sec-array.prototype.reduce
+    left: createMethod$2(false),
+    // `Array.prototype.reduceRight` method
+    // https://tc39.es/ecma262/#sec-array.prototype.reduceright
+    right: createMethod$2(true)
+  };
+
+  var engineIsNode = classofRaw(global_1.process) == 'process';
+
+  var $reduce = arrayReduce.left;
+
+
+
+
+  var STRICT_METHOD$3 = arrayMethodIsStrict('reduce');
+  // Chrome 80-82 has a critical bug
+  // https://bugs.chromium.org/p/chromium/issues/detail?id=1049982
+  var CHROME_BUG = !engineIsNode && engineV8Version > 79 && engineV8Version < 83;
+
+  // `Array.prototype.reduce` method
+  // https://tc39.es/ecma262/#sec-array.prototype.reduce
+  _export({ target: 'Array', proto: true, forced: !STRICT_METHOD$3 || CHROME_BUG }, {
+    reduce: function reduce(callbackfn /* , initialValue */) {
+      return $reduce(this, callbackfn, arguments.length, arguments.length > 1 ? arguments[1] : undefined);
+    }
+  });
+
+  var $reduceRight = arrayReduce.right;
+
+
+
+
+  var STRICT_METHOD$4 = arrayMethodIsStrict('reduceRight');
+  // Chrome 80-82 has a critical bug
+  // https://bugs.chromium.org/p/chromium/issues/detail?id=1049982
+  var CHROME_BUG$1 = !engineIsNode && engineV8Version > 79 && engineV8Version < 83;
+
+  // `Array.prototype.reduceRight` method
+  // https://tc39.es/ecma262/#sec-array.prototype.reduceright
+  _export({ target: 'Array', proto: true, forced: !STRICT_METHOD$4 || CHROME_BUG$1 }, {
+    reduceRight: function reduceRight(callbackfn /* , initialValue */) {
+      return $reduceRight(this, callbackfn, arguments.length, arguments.length > 1 ? arguments[1] : undefined);
     }
   });
 
@@ -2157,6 +2285,32 @@
     }
   });
 
+  var test$1 = [];
+  var nativeSort = test$1.sort;
+
+  // IE8-
+  var FAILS_ON_UNDEFINED = fails(function () {
+    test$1.sort(undefined);
+  });
+  // V8 bug
+  var FAILS_ON_NULL = fails(function () {
+    test$1.sort(null);
+  });
+  // Old WebKit
+  var STRICT_METHOD$5 = arrayMethodIsStrict('sort');
+
+  var FORCED$2 = FAILS_ON_UNDEFINED || !FAILS_ON_NULL || !STRICT_METHOD$5;
+
+  // `Array.prototype.sort` method
+  // https://tc39.es/ecma262/#sec-array.prototype.sort
+  _export({ target: 'Array', proto: true, forced: FORCED$2 }, {
+    sort: function sort(comparefn) {
+      return comparefn === undefined
+        ? nativeSort.call(toObject(this))
+        : nativeSort.call(toObject(this), aFunction$1(comparefn));
+    }
+  });
+
   var SPECIES$3 = wellKnownSymbol('species');
 
   var setSpecies = function (CONSTRUCTOR_NAME) {
@@ -2178,7 +2332,7 @@
   var HAS_SPECIES_SUPPORT$3 = arrayMethodHasSpeciesSupport('splice');
 
   var max$2 = Math.max;
-  var min$3 = Math.min;
+  var min$4 = Math.min;
   var MAX_SAFE_INTEGER$1 = 0x1FFFFFFFFFFFFF;
   var MAXIMUM_ALLOWED_LENGTH_EXCEEDED = 'Maximum allowed length exceeded';
 
@@ -2199,7 +2353,7 @@
         actualDeleteCount = len - actualStart;
       } else {
         insertCount = argumentsLength - 2;
-        actualDeleteCount = min$3(max$2(toInteger(deleteCount), 0), len - actualStart);
+        actualDeleteCount = min$4(max$2(toInteger(deleteCount), 0), len - actualStart);
       }
       if (len + insertCount - actualDeleteCount > MAX_SAFE_INTEGER$1) {
         throw TypeError(MAXIMUM_ALLOWED_LENGTH_EXCEEDED);
@@ -3077,7 +3231,7 @@
   var sqrt = Math.sqrt;
   var LN2$1 = Math.LN2;
 
-  var FORCED$1 = !$acosh
+  var FORCED$3 = !$acosh
     // V8 bug: https://code.google.com/p/v8/issues/detail?id=3509
     || Math.floor($acosh(Number.MAX_VALUE)) != 710
     // Tor Browser bug: Math.acosh(Infinity) -> NaN
@@ -3085,7 +3239,7 @@
 
   // `Math.acosh` method
   // https://tc39.es/ecma262/#sec-math.acosh
-  _export({ target: 'Math', stat: true, forced: FORCED$1 }, {
+  _export({ target: 'Math', stat: true, forced: FORCED$3 }, {
     acosh: function acosh(x) {
       return (x = +x) < 1 ? NaN : x > 94906265.62425156
         ? log$2(x) + LN2$1
@@ -3254,14 +3408,14 @@
   // eslint-disable-next-line es/no-math-imul -- required for testing
   var $imul = Math.imul;
 
-  var FORCED$2 = fails(function () {
+  var FORCED$4 = fails(function () {
     return $imul(0xFFFFFFFF, 5) != -5 || $imul.length != 2;
   });
 
   // `Math.imul` method
   // https://tc39.es/ecma262/#sec-math.imul
   // some WebKit versions fails with big numbers, some has wrong arity
-  _export({ target: 'Math', stat: true, forced: FORCED$2 }, {
+  _export({ target: 'Math', stat: true, forced: FORCED$4 }, {
     imul: function imul(x, y) {
       var UINT16 = 0xFFFF;
       var xn = +x;
@@ -3308,7 +3462,7 @@
   var exp$1 = Math.exp;
   var E$1 = Math.E;
 
-  var FORCED$3 = fails(function () {
+  var FORCED$5 = fails(function () {
     // eslint-disable-next-line es/no-math-sinh -- required for testing
     return Math.sinh(-2e-17) != -2e-17;
   });
@@ -3316,7 +3470,7 @@
   // `Math.sinh` method
   // https://tc39.es/ecma262/#sec-math.sinh
   // V8 near Chromium 38 has a problem with very small numbers
-  _export({ target: 'Math', stat: true, forced: FORCED$3 }, {
+  _export({ target: 'Math', stat: true, forced: FORCED$5 }, {
     sinh: function sinh(x) {
       return abs$5(x = +x) < 1 ? (mathExpm1(x) - mathExpm1(-x)) / 2 : (exp$1(x - 1) - exp$1(-x - 1)) * (E$1 / 2);
     }
@@ -3358,7 +3512,7 @@
   var rtrim = RegExp(whitespace + whitespace + '*$');
 
   // `String.prototype.{ trim, trimStart, trimEnd, trimLeft, trimRight }` methods implementation
-  var createMethod$2 = function (TYPE) {
+  var createMethod$3 = function (TYPE) {
     return function ($this) {
       var string = String(requireObjectCoercible($this));
       if (TYPE & 1) string = string.replace(ltrim, '');
@@ -3370,13 +3524,13 @@
   var stringTrim = {
     // `String.prototype.{ trimLeft, trimStart }` methods
     // https://tc39.es/ecma262/#sec-string.prototype.trimstart
-    start: createMethod$2(1),
+    start: createMethod$3(1),
     // `String.prototype.{ trimRight, trimEnd }` methods
     // https://tc39.es/ecma262/#sec-string.prototype.trimend
-    end: createMethod$2(2),
+    end: createMethod$3(2),
     // `String.prototype.trim` method
     // https://tc39.es/ecma262/#sec-string.prototype.trim
-    trim: createMethod$2(3)
+    trim: createMethod$3(3)
   };
 
   var getOwnPropertyNames$1 = objectGetOwnPropertyNames.f;
@@ -3517,11 +3671,11 @@
 
 
   var $parseFloat = global_1.parseFloat;
-  var FORCED$4 = 1 / $parseFloat(whitespaces + '-0') !== -Infinity;
+  var FORCED$6 = 1 / $parseFloat(whitespaces + '-0') !== -Infinity;
 
   // `parseFloat` method
   // https://tc39.es/ecma262/#sec-parsefloat-string
-  var numberParseFloat = FORCED$4 ? function parseFloat(string) {
+  var numberParseFloat = FORCED$6 ? function parseFloat(string) {
     var trimmedString = trim$1(String(string));
     var result = $parseFloat(trimmedString);
     return result === 0 && trimmedString.charAt(0) == '-' ? -0 : result;
@@ -3539,11 +3693,11 @@
 
   var $parseInt = global_1.parseInt;
   var hex = /^[+-]?0[Xx]/;
-  var FORCED$5 = $parseInt(whitespaces + '08') !== 8 || $parseInt(whitespaces + '0x16') !== 22;
+  var FORCED$7 = $parseInt(whitespaces + '08') !== 8 || $parseInt(whitespaces + '0x16') !== 22;
 
   // `parseInt` method
   // https://tc39.es/ecma262/#sec-parseint-string-radix
-  var numberParseInt = FORCED$5 ? function parseInt(string, radix) {
+  var numberParseInt = FORCED$7 ? function parseInt(string, radix) {
     var S = trim$2(String(string));
     return $parseInt(S, (radix >>> 0) || (hex.test(S) ? 16 : 10));
   } : $parseInt;
@@ -3626,7 +3780,7 @@
     } return s;
   };
 
-  var FORCED$6 = nativeToFixed && (
+  var FORCED$8 = nativeToFixed && (
     0.00008.toFixed(3) !== '0.000' ||
     0.9.toFixed(0) !== '1' ||
     1.255.toFixed(2) !== '1.25' ||
@@ -3638,7 +3792,7 @@
 
   // `Number.prototype.toFixed` method
   // https://tc39.es/ecma262/#sec-number.prototype.tofixed
-  _export({ target: 'Number', proto: true, forced: FORCED$6 }, {
+  _export({ target: 'Number', proto: true, forced: FORCED$8 }, {
     toFixed: function toFixed(fractionDigits) {
       var number = thisNumberValue(this);
       var fractDigits = toInteger(fractionDigits);
@@ -3779,7 +3933,7 @@
   var propertyIsEnumerable = objectPropertyIsEnumerable.f;
 
   // `Object.{ entries, values }` methods implementation
-  var createMethod$3 = function (TO_ENTRIES) {
+  var createMethod$4 = function (TO_ENTRIES) {
     return function (it) {
       var O = toIndexedObject(it);
       var keys = objectKeys(O);
@@ -3800,10 +3954,10 @@
   var objectToArray = {
     // `Object.entries` method
     // https://tc39.es/ecma262/#sec-object.entries
-    entries: createMethod$3(true),
+    entries: createMethod$4(true),
     // `Object.values` method
     // https://tc39.es/ecma262/#sec-object.values
-    values: createMethod$3(false)
+    values: createMethod$4(false)
   };
 
   var $entries = objectToArray.entries;
@@ -3846,11 +4000,11 @@
 
 
   var FAILS_ON_PRIMITIVES$1 = fails(function () { nativeGetOwnPropertyDescriptor$1(1); });
-  var FORCED$7 = !descriptors || FAILS_ON_PRIMITIVES$1;
+  var FORCED$9 = !descriptors || FAILS_ON_PRIMITIVES$1;
 
   // `Object.getOwnPropertyDescriptor` method
   // https://tc39.es/ecma262/#sec-object.getownpropertydescriptor
-  _export({ target: 'Object', stat: true, forced: FORCED$7, sham: !descriptors }, {
+  _export({ target: 'Object', stat: true, forced: FORCED$9, sham: !descriptors }, {
     getOwnPropertyDescriptor: function getOwnPropertyDescriptor(it, key) {
       return nativeGetOwnPropertyDescriptor$1(toIndexedObject(it), key);
     }
@@ -4021,6 +4175,12 @@
     }
   });
 
+  // `Object.setPrototypeOf` method
+  // https://tc39.es/ecma262/#sec-object.setprototypeof
+  _export({ target: 'Object', stat: true }, {
+    setPrototypeOf: objectSetPrototypeOf
+  });
+
   // `Object.prototype.toString` method implementation
   // https://tc39.es/ecma262/#sec-object.prototype.tostring
   var objectToString = toStringTagSupport ? {}.toString : function toString() {
@@ -4043,6 +4203,18 @@
     }
   });
 
+  // `parseFloat` method
+  // https://tc39.es/ecma262/#sec-parsefloat-string
+  _export({ global: true, forced: parseFloat != numberParseFloat }, {
+    parseFloat: numberParseFloat
+  });
+
+  // `parseInt` method
+  // https://tc39.es/ecma262/#sec-parseint-string-radix
+  _export({ global: true, forced: parseInt != numberParseInt }, {
+    parseInt: numberParseInt
+  });
+
   var nativePromiseConstructor = global_1.Promise;
 
   var SPECIES$4 = wellKnownSymbol('species');
@@ -4056,8 +4228,6 @@
   };
 
   var engineIsIos = /(?:iphone|ipod|ipad).*applewebkit/i.test(engineUserAgent);
-
-  var engineIsNode = classofRaw(global_1.process) == 'process';
 
   var location = global_1.location;
   var set$2 = global_1.setImmediate;
@@ -4327,7 +4497,7 @@
   var SUBCLASSING = false;
   var Internal, OwnPromiseCapability, PromiseWrapper, nativeThen;
 
-  var FORCED$8 = isForced_1(PROMISE, function () {
+  var FORCED$a = isForced_1(PROMISE, function () {
     var GLOBAL_CORE_JS_PROMISE = inspectSource(PromiseConstructor) !== String(PromiseConstructor);
     // V8 6.6 (Node 10 and Chrome 66) have a bug with resolving custom thenables
     // https://bugs.chromium.org/p/chromium/issues/detail?id=830565
@@ -4350,7 +4520,7 @@
     return !GLOBAL_CORE_JS_PROMISE && engineIsBrowser && !NATIVE_REJECTION_EVENT;
   });
 
-  var INCORRECT_ITERATION$1 = FORCED$8 || !checkCorrectnessOfIteration(function (iterable) {
+  var INCORRECT_ITERATION$1 = FORCED$a || !checkCorrectnessOfIteration(function (iterable) {
     PromiseConstructor.all(iterable)['catch'](function () { /* empty */ });
   });
 
@@ -4498,7 +4668,7 @@
   };
 
   // constructor polyfill
-  if (FORCED$8) {
+  if (FORCED$a) {
     // 25.4.3.1 Promise(executor)
     PromiseConstructor = function Promise(executor) {
       anInstance(this, PromiseConstructor, PROMISE);
@@ -4587,7 +4757,7 @@
     }
   }
 
-  _export({ global: true, wrap: true, forced: FORCED$8 }, {
+  _export({ global: true, wrap: true, forced: FORCED$a }, {
     Promise: PromiseConstructor
   });
 
@@ -4597,7 +4767,7 @@
   PromiseWrapper = getBuiltIn(PROMISE);
 
   // statics
-  _export({ target: PROMISE, stat: true, forced: FORCED$8 }, {
+  _export({ target: PROMISE, stat: true, forced: FORCED$a }, {
     // `Promise.reject` method
     // https://tc39.es/ecma262/#sec-promise.reject
     reject: function reject(r) {
@@ -4607,7 +4777,7 @@
     }
   });
 
-  _export({ target: PROMISE, stat: true, forced:  FORCED$8 }, {
+  _export({ target: PROMISE, stat: true, forced:  FORCED$a }, {
     // `Promise.resolve` method
     // https://tc39.es/ecma262/#sec-promise.resolve
     resolve: function resolve(x) {
@@ -4749,9 +4919,9 @@
   var ARGS_BUG = !fails(function () {
     nativeConstruct(function () { /* empty */ });
   });
-  var FORCED$9 = NEW_TARGET_BUG || ARGS_BUG;
+  var FORCED$b = NEW_TARGET_BUG || ARGS_BUG;
 
-  _export({ target: 'Reflect', stat: true, forced: FORCED$9, sham: FORCED$9 }, {
+  _export({ target: 'Reflect', stat: true, forced: FORCED$b, sham: FORCED$b }, {
     construct: function construct(Target, args /* , newTarget */) {
       aFunction$1(Target);
       anObject(args);
@@ -5009,7 +5179,7 @@
 
   var UNSUPPORTED_Y$1 = regexpStickyHelpers.UNSUPPORTED_Y;
 
-  var FORCED$a = descriptors && isForced_1('RegExp', (!CORRECT_NEW || UNSUPPORTED_Y$1 || fails(function () {
+  var FORCED$c = descriptors && isForced_1('RegExp', (!CORRECT_NEW || UNSUPPORTED_Y$1 || fails(function () {
     re2[MATCH$1] = false;
     // RegExp constructor can alter flags and IsRegExp works correct with @@match
     return NativeRegExp(re1) != re1 || NativeRegExp(re2) == re2 || NativeRegExp(re1, 'i') != '/a/i';
@@ -5017,7 +5187,7 @@
 
   // `RegExp` constructor
   // https://tc39.es/ecma262/#sec-regexp-constructor
-  if (FORCED$a) {
+  if (FORCED$c) {
     var RegExpWrapper = function RegExp(pattern, flags) {
       var thisIsRegExp = this instanceof RegExpWrapper;
       var patternIsRegExp = isRegexp(pattern);
@@ -5203,7 +5373,7 @@
   }, collectionStrong);
 
   // `String.prototype.{ codePointAt, at }` methods implementation
-  var createMethod$4 = function (CONVERT_TO_STRING) {
+  var createMethod$5 = function (CONVERT_TO_STRING) {
     return function ($this, pos) {
       var S = String(requireObjectCoercible($this));
       var position = toInteger(pos);
@@ -5221,10 +5391,10 @@
   var stringMultibyte = {
     // `String.prototype.codePointAt` method
     // https://tc39.es/ecma262/#sec-string.prototype.codepointat
-    codeAt: createMethod$4(false),
+    codeAt: createMethod$5(false),
     // `String.prototype.at` method
     // https://github.com/mathiasbynens/String.prototype.at
-    charAt: createMethod$4(true)
+    charAt: createMethod$5(true)
   };
 
   var codeAt = stringMultibyte.codeAt;
@@ -5266,7 +5436,7 @@
 
   // eslint-disable-next-line es/no-string-prototype-endswith -- safe
   var $endsWith = ''.endsWith;
-  var min$4 = Math.min;
+  var min$5 = Math.min;
 
   var CORRECT_IS_REGEXP_LOGIC = correctIsRegexpLogic('endsWith');
   // https://github.com/zloirock/core-js/pull/702
@@ -5283,7 +5453,7 @@
       notARegexp(searchString);
       var endPosition = arguments.length > 1 ? arguments[1] : undefined;
       var len = toLength(that.length);
-      var end = endPosition === undefined ? len : min$4(toLength(endPosition), len);
+      var end = endPosition === undefined ? len : min$5(toLength(endPosition), len);
       var search = String(searchString);
       return $endsWith
         ? $endsWith.call(that, search, end)
@@ -5557,7 +5727,7 @@
   var ceil$2 = Math.ceil;
 
   // `String.prototype.{ padStart, padEnd }` methods implementation
-  var createMethod$5 = function (IS_END) {
+  var createMethod$6 = function (IS_END) {
     return function ($this, maxLength, fillString) {
       var S = String(requireObjectCoercible($this));
       var stringLength = S.length;
@@ -5575,10 +5745,10 @@
   var stringPad = {
     // `String.prototype.padStart` method
     // https://tc39.es/ecma262/#sec-string.prototype.padstart
-    start: createMethod$5(false),
+    start: createMethod$6(false),
     // `String.prototype.padEnd` method
     // https://tc39.es/ecma262/#sec-string.prototype.padend
-    end: createMethod$5(true)
+    end: createMethod$6(true)
   };
 
   // https://github.com/zloirock/core-js/issues/280
@@ -5671,7 +5841,7 @@
   };
 
   var max$3 = Math.max;
-  var min$5 = Math.min;
+  var min$6 = Math.min;
 
   var maybeToString = function (it) {
     return it === undefined ? it : String(it);
@@ -5733,7 +5903,7 @@
           result = results[i];
 
           var matched = String(result[0]);
-          var position = max$3(min$5(toInteger(result.index), S.length), 0);
+          var position = max$3(min$6(toInteger(result.index), S.length), 0);
           var captures = [];
           // NOTE: This is equivalent to
           //   captures = result.slice(1).map(maybeToString)
@@ -5789,7 +5959,7 @@
 
   var UNSUPPORTED_Y$4 = regexpStickyHelpers.UNSUPPORTED_Y;
   var arrayPush = [].push;
-  var min$6 = Math.min;
+  var min$7 = Math.min;
   var MAX_UINT32 = 0xFFFFFFFF;
 
   // @@split logic
@@ -5891,7 +6061,7 @@
           var e;
           if (
             z === null ||
-            (e = min$6(toLength(splitter.lastIndex + (UNSUPPORTED_Y$4 ? q : 0)), S.length)) === p
+            (e = min$7(toLength(splitter.lastIndex + (UNSUPPORTED_Y$4 ? q : 0)), S.length)) === p
           ) {
             q = advanceStringIndex(S, q, unicodeMatching);
           } else {
@@ -5919,7 +6089,7 @@
 
   // eslint-disable-next-line es/no-string-prototype-startswith -- safe
   var $startsWith = ''.startsWith;
-  var min$7 = Math.min;
+  var min$8 = Math.min;
 
   var CORRECT_IS_REGEXP_LOGIC$1 = correctIsRegexpLogic('startsWith');
   // https://github.com/zloirock/core-js/pull/702
@@ -5934,7 +6104,7 @@
     startsWith: function startsWith(searchString /* , position = 0 */) {
       var that = String(requireObjectCoercible(this));
       notARegexp(searchString);
-      var index = toLength(min$7(arguments.length > 1 ? arguments[1] : undefined, that.length));
+      var index = toLength(min$8(arguments.length > 1 ? arguments[1] : undefined, that.length));
       var search = String(searchString);
       return $startsWith
         ? $startsWith.call(that, search, index)
@@ -5966,9 +6136,9 @@
   var $trimEnd = stringTrim.end;
 
 
-  var FORCED$b = stringTrimForced('trimEnd');
+  var FORCED$d = stringTrimForced('trimEnd');
 
-  var trimEnd = FORCED$b ? function trimEnd() {
+  var trimEnd = FORCED$d ? function trimEnd() {
     return $trimEnd(this);
   // eslint-disable-next-line es/no-string-prototype-trimstart-trimend -- safe
   } : ''.trimEnd;
@@ -5976,7 +6146,7 @@
   // `String.prototype.{ trimEnd, trimRight }` methods
   // https://tc39.es/ecma262/#sec-string.prototype.trimend
   // https://tc39.es/ecma262/#String.prototype.trimright
-  _export({ target: 'String', proto: true, forced: FORCED$b }, {
+  _export({ target: 'String', proto: true, forced: FORCED$d }, {
     trimEnd: trimEnd,
     trimRight: trimEnd
   });
@@ -5984,9 +6154,9 @@
   var $trimStart = stringTrim.start;
 
 
-  var FORCED$c = stringTrimForced('trimStart');
+  var FORCED$e = stringTrimForced('trimStart');
 
-  var trimStart = FORCED$c ? function trimStart() {
+  var trimStart = FORCED$e ? function trimStart() {
     return $trimStart(this);
   // eslint-disable-next-line es/no-string-prototype-trimstart-trimend -- safe
   } : ''.trimStart;
@@ -5994,7 +6164,7 @@
   // `String.prototype.{ trimStart, trimLeft }` methods
   // https://tc39.es/ecma262/#sec-string.prototype.trimstart
   // https://tc39.es/ecma262/#String.prototype.trimleft
-  _export({ target: 'String', proto: true, forced: FORCED$c }, {
+  _export({ target: 'String', proto: true, forced: FORCED$e }, {
     trimStart: trimStart,
     trimLeft: trimStart
   });
@@ -6755,7 +6925,7 @@
     return $includes$1(aTypedArray$8(this), searchElement, arguments.length > 1 ? arguments[1] : undefined);
   });
 
-  var $indexOf = arrayIncludes.indexOf;
+  var $indexOf$1 = arrayIncludes.indexOf;
 
   var aTypedArray$9 = arrayBufferViewCore.aTypedArray;
   var exportTypedArrayMethod$9 = arrayBufferViewCore.exportTypedArrayMethod;
@@ -6763,7 +6933,7 @@
   // `%TypedArray%.prototype.indexOf` method
   // https://tc39.es/ecma262/#sec-%typedarray%.prototype.indexof
   exportTypedArrayMethod$9('indexOf', function indexOf(searchElement /* , fromIndex */) {
-    return $indexOf(aTypedArray$9(this), searchElement, arguments.length > 1 ? arguments[1] : undefined);
+    return $indexOf$1(aTypedArray$9(this), searchElement, arguments.length > 1 ? arguments[1] : undefined);
   });
 
   var ITERATOR$5 = wellKnownSymbol('iterator');
@@ -6810,32 +6980,6 @@
     return $join.apply(aTypedArray$b(this), arguments);
   });
 
-  /* eslint-disable es/no-array-prototype-lastindexof -- safe */
-
-
-
-
-
-  var min$8 = Math.min;
-  var $lastIndexOf = [].lastIndexOf;
-  var NEGATIVE_ZERO = !!$lastIndexOf && 1 / [1].lastIndexOf(1, -0) < 0;
-  var STRICT_METHOD$1 = arrayMethodIsStrict('lastIndexOf');
-  var FORCED$d = NEGATIVE_ZERO || !STRICT_METHOD$1;
-
-  // `Array.prototype.lastIndexOf` method implementation
-  // https://tc39.es/ecma262/#sec-array.prototype.lastindexof
-  var arrayLastIndexOf = FORCED$d ? function lastIndexOf(searchElement /* , fromIndex = @[*-1] */) {
-    // convert -0 to +0
-    if (NEGATIVE_ZERO) return $lastIndexOf.apply(this, arguments) || 0;
-    var O = toIndexedObject(this);
-    var length = toLength(O.length);
-    var index = length - 1;
-    if (arguments.length > 1) index = min$8(index, toInteger(arguments[1]));
-    if (index < 0) index = length + index;
-    for (;index >= 0; index--) if (index in O && O[index] === searchElement) return index || 0;
-    return -1;
-  } : $lastIndexOf;
-
   var aTypedArray$c = arrayBufferViewCore.aTypedArray;
   var exportTypedArrayMethod$c = arrayBufferViewCore.exportTypedArrayMethod;
 
@@ -6874,43 +7018,7 @@
     return result;
   }, typedArrayConstructorsRequireWrappers);
 
-  // `Array.prototype.{ reduce, reduceRight }` methods implementation
-  var createMethod$6 = function (IS_RIGHT) {
-    return function (that, callbackfn, argumentsLength, memo) {
-      aFunction$1(callbackfn);
-      var O = toObject(that);
-      var self = indexedObject(O);
-      var length = toLength(O.length);
-      var index = IS_RIGHT ? length - 1 : 0;
-      var i = IS_RIGHT ? -1 : 1;
-      if (argumentsLength < 2) while (true) {
-        if (index in self) {
-          memo = self[index];
-          index += i;
-          break;
-        }
-        index += i;
-        if (IS_RIGHT ? index < 0 : length <= index) {
-          throw TypeError('Reduce of empty array with no initial value');
-        }
-      }
-      for (;IS_RIGHT ? index >= 0 : length > index; index += i) if (index in self) {
-        memo = callbackfn(memo, self[index], index, O);
-      }
-      return memo;
-    };
-  };
-
-  var arrayReduce = {
-    // `Array.prototype.reduce` method
-    // https://tc39.es/ecma262/#sec-array.prototype.reduce
-    left: createMethod$6(false),
-    // `Array.prototype.reduceRight` method
-    // https://tc39.es/ecma262/#sec-array.prototype.reduceright
-    right: createMethod$6(true)
-  };
-
-  var $reduce = arrayReduce.left;
+  var $reduce$1 = arrayReduce.left;
 
   var aTypedArray$e = arrayBufferViewCore.aTypedArray;
   var exportTypedArrayMethod$e = arrayBufferViewCore.exportTypedArrayMethod;
@@ -6918,10 +7026,10 @@
   // `%TypedArray%.prototype.reduce` method
   // https://tc39.es/ecma262/#sec-%typedarray%.prototype.reduce
   exportTypedArrayMethod$e('reduce', function reduce(callbackfn /* , initialValue */) {
-    return $reduce(aTypedArray$e(this), callbackfn, arguments.length, arguments.length > 1 ? arguments[1] : undefined);
+    return $reduce$1(aTypedArray$e(this), callbackfn, arguments.length, arguments.length > 1 ? arguments[1] : undefined);
   });
 
-  var $reduceRight = arrayReduce.right;
+  var $reduceRight$1 = arrayReduce.right;
 
   var aTypedArray$f = arrayBufferViewCore.aTypedArray;
   var exportTypedArrayMethod$f = arrayBufferViewCore.exportTypedArrayMethod;
@@ -6929,7 +7037,7 @@
   // `%TypedArray%.prototype.reduceRicht` method
   // https://tc39.es/ecma262/#sec-%typedarray%.prototype.reduceright
   exportTypedArrayMethod$f('reduceRight', function reduceRight(callbackfn /* , initialValue */) {
-    return $reduceRight(aTypedArray$f(this), callbackfn, arguments.length, arguments.length > 1 ? arguments[1] : undefined);
+    return $reduceRight$1(aTypedArray$f(this), callbackfn, arguments.length, arguments.length > 1 ? arguments[1] : undefined);
   });
 
   var aTypedArray$g = arrayBufferViewCore.aTypedArray;
@@ -6954,7 +7062,7 @@
   var aTypedArray$h = arrayBufferViewCore.aTypedArray;
   var exportTypedArrayMethod$h = arrayBufferViewCore.exportTypedArrayMethod;
 
-  var FORCED$e = fails(function () {
+  var FORCED$f = fails(function () {
     // eslint-disable-next-line es/no-typed-arrays -- required for testing
     new Int8Array(1).set({});
   });
@@ -6970,14 +7078,14 @@
     var index = 0;
     if (len + offset > length) throw RangeError('Wrong length');
     while (index < len) this[offset + index] = src[index++];
-  }, FORCED$e);
+  }, FORCED$f);
 
   var aTypedArray$i = arrayBufferViewCore.aTypedArray;
   var aTypedArrayConstructor$5 = arrayBufferViewCore.aTypedArrayConstructor;
   var exportTypedArrayMethod$i = arrayBufferViewCore.exportTypedArrayMethod;
   var $slice = [].slice;
 
-  var FORCED$f = fails(function () {
+  var FORCED$g = fails(function () {
     // eslint-disable-next-line es/no-typed-arrays -- required for testing
     new Int8Array(1).slice();
   });
@@ -6992,7 +7100,7 @@
     var result = new (aTypedArrayConstructor$5(C))(length);
     while (length > index) result[index] = list[index++];
     return result;
-  }, FORCED$f);
+  }, FORCED$g);
 
   var $some = arrayIteration.some;
 
@@ -7042,7 +7150,7 @@
     $toLocaleString.call(new Int8Array$3(1));
   });
 
-  var FORCED$g = fails(function () {
+  var FORCED$h = fails(function () {
     return [1, 2].toLocaleString() != new Int8Array$3([1, 2]).toLocaleString();
   }) || !fails(function () {
     Int8Array$3.prototype.toLocaleString.call([1, 2]);
@@ -7052,7 +7160,7 @@
   // https://tc39.es/ecma262/#sec-%typedarray%.prototype.tolocalestring
   exportTypedArrayMethod$m('toLocaleString', function toLocaleString() {
     return $toLocaleString.apply(TO_LOCALE_STRING_BUG ? $slice$1.call(aTypedArray$m(this)) : aTypedArray$m(this), arguments);
-  }, FORCED$g);
+  }, FORCED$h);
 
   var exportTypedArrayMethod$n = arrayBufferViewCore.exportTypedArrayMethod;
 
@@ -8640,13 +8748,13 @@
   var charAt$2 = stringMultibyte.charAt;
 
 
-  var FORCED$h = fails(function () {
+  var FORCED$i = fails(function () {
     return '𠮷'.at(0) !== '𠮷';
   });
 
   // `String.prototype.at` method
   // https://github.com/mathiasbynens/String.prototype.at
-  _export({ target: 'String', proto: true, forced: FORCED$h }, {
+  _export({ target: 'String', proto: true, forced: FORCED$i }, {
     at: function at(pos) {
       return charAt$2(this, pos);
     }
@@ -8953,11 +9061,11 @@
   var $forEach$2 = arrayIteration.forEach;
 
 
-  var STRICT_METHOD$2 = arrayMethodIsStrict('forEach');
+  var STRICT_METHOD$6 = arrayMethodIsStrict('forEach');
 
   // `Array.prototype.forEach` method implementation
   // https://tc39.es/ecma262/#sec-array.prototype.foreach
-  var arrayForEach = !STRICT_METHOD$2 ? function forEach(callbackfn /* , thisArg */) {
+  var arrayForEach = !STRICT_METHOD$6 ? function forEach(callbackfn /* , thisArg */) {
     return $forEach$2(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
   // eslint-disable-next-line es/no-array-prototype-foreach -- safe
   } : [].forEach;
@@ -9001,10 +9109,10 @@
     }
   }
 
-  var FORCED$i = !global_1.setImmediate || !global_1.clearImmediate;
+  var FORCED$j = !global_1.setImmediate || !global_1.clearImmediate;
 
   // http://w3c.github.io/setImmediate/
-  _export({ global: true, bind: true, enumerable: true, forced: FORCED$i }, {
+  _export({ global: true, bind: true, enumerable: true, forced: FORCED$j }, {
     // `setImmediate` method
     // http://w3c.github.io/setImmediate/#si-setImmediate
     setImmediate: task.set,

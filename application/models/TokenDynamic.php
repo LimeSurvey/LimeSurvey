@@ -787,12 +787,11 @@ class TokenDynamic extends LSActiveRecord
             $aCustomAttributesCols[] = array(
                 'header' => $desc, // $aAttributedescriptions->$sColName->description,
                 'name' => $sColName,
-                'value'=>'$data->'.$sColName,
+                'type' => 'longtext',
                 'headerHtmlOptions'=>array('class' => 'hidden-xs'),
                 'htmlOptions' => array('class' => 'hidden-xs'),
             );
         }
-
         return array_merge($this->standardColsForGrid, $aCustomAttributesCols);
     }
 
