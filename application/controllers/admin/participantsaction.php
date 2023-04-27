@@ -675,7 +675,7 @@ $url .= "_view"; });
 
         // Abort if not found (internal error)
         if (empty($participant)) {
-            ls\ajax\AjaxHelper::outputError(sprintf('Found no participant with id %s', $aData['participant_id']));
+            ls\ajax\AjaxHelper::outputError(sprintf('Found no participant with id %s', strip_tags($aData['participant_id'])));
         }
 
         if (!$participant->userHasPermissionToEdit()) {
@@ -2344,7 +2344,7 @@ $url .= "_view"; });
         $participantIdsString = Yii::app()->request->getPost('participant_id'); // TODO: This is a comma separated string of ids
         $participantIds = explode(",", $participantIdsString);
 
-        $surveyId = Yii::app()->request->getPost('surveyid');
+        $surveyId = (int) Yii::app()->request->getPost('surveyid');
 
         /**
          * mapped can take values like

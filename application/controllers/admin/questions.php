@@ -1069,7 +1069,7 @@ class questions extends Survey_Common_Action
         $eqrow['modulename'] = '';
         $eqrow['conditions_number'] = false;
         $eqrow['type'] = 'T';
-        
+
         if (isset($_GET['gid'])) {
             $eqrow['gid'] = $_GET['gid'];
         }
@@ -1130,8 +1130,8 @@ class questions extends Survey_Common_Action
 
         $aViewUrls = [];
         $aViewUrls['editQuestion_view'][] = $aData;
-        App()->getClientScript()->registerScript("EditQuestionView_question_jsviews_".$surveyid.$eqrow['gid'].'new', "OtherSelection('".$eqrow['type']."');", LSYii_ClientScript::POS_POSTSCRIPT);            
-        
+        App()->getClientScript()->registerScript("EditQuestionView_question_jsviews_" . $surveyid . $eqrow['gid'] . 'new', "OtherSelection('" . $eqrow['type'] . "');", LSYii_ClientScript::POS_POSTSCRIPT);
+
 
 
         $this->_renderWrappedTemplate('survey/Question', $aViewUrls, $aData);
@@ -1332,7 +1332,7 @@ class questions extends Survey_Common_Action
             }
 
             $aData['activated'] = $arSurveyInfo->active;
-            
+
             // Prepare selector Class for javascript function
             if (Yii::app()->session['questionselectormode'] !== 'default') {
                 $selectormodeclass = Yii::app()->session['questionselectormode'];
@@ -1362,16 +1362,16 @@ class questions extends Survey_Common_Action
             $aData['sValidateUrl'] = ($adding || $copying) ? $this->getController()->createUrl('admin/questions', array('sa' => 'ajaxValidate', 'surveyid'=>$surveyid)) : $this->getController()->createUrl('admin/questions', array('sa' => 'ajaxValidate', 'surveyid'=>$surveyid, 'qid'=>$qid));
             $aData['ajaxDatas']['sValidateUrl'] = $aData['sValidateUrl'];
             $aData['ajaxDatas']['qTypeOutput'] = $aData['qTypeOutput'];
-            
+
             $aData['addlanguages'] = Survey::model()->findByPk($surveyid)->additionalLanguages;
 
             $aViewUrls['editQuestion_view'][] = $aData;
-            App()->getClientScript()->registerScript("EditQuestionView_question_jsviews_".$surveyid.$gid.$qid, "OtherSelection('".$eqrow['type']."');", LSYii_ClientScript::POS_POSTSCRIPT);            
+            App()->getClientScript()->registerScript("EditQuestionView_question_jsviews_" . $surveyid . $gid . $qid, "OtherSelection('" . $eqrow['type'] . "');", LSYii_ClientScript::POS_POSTSCRIPT);
         } else {
                     include('accessDenied.php');
         }
 
-        
+
         $aData['ajaxDatas']['qTypeOutput'] = $aData['qTypeOutput'];
 
         ///////////
@@ -1399,8 +1399,8 @@ class questions extends Survey_Common_Action
 
         foreach ($aQidsAndLang as $sQidAndLang) {
             $aQidAndLang = explode(',', $sQidAndLang);
-            $iQid        = $aQidAndLang[0];
-            $sLanguage   = $aQidAndLang[1];
+            $iQid        = sanitize_int($aQidAndLang[0]);
+            $sLanguage   = sanitize_languagecode($aQidAndLang[1]);
 
             $oQuestion   = Question::model()->find('qid=:qid and language=:language', array(":qid"=>$iQid, ":language"=>$sLanguage));
 
@@ -1425,7 +1425,7 @@ class questions extends Survey_Common_Action
     public function delete($surveyid=null, $qid=null, $ajax = false, $gid = 0)
     {
         if(is_null($qid)) {
-            $qid = Yii::app()->getRequest()->getPost('qid');
+            $qid = (int) Yii::app()->getRequest()->getPost('qid');
         }
         $oQuestion = Question::model()->find("qid = :qid",array(":qid"=>$qid));
         if(empty($oQuestion)) {
@@ -1676,11 +1676,11 @@ class questions extends Survey_Common_Action
             );
         $aAttributesWithValues = Question::model()->getAdvancedSettingsWithValues($qid, $type, $surveyid);
 
-        // get all attributes from old custom question theme and then unset them, only attributes from selected question theme should be visible  
+        // get all attributes from old custom question theme and then unset them, only attributes from selected question theme should be visible
         if (!empty($sOldQuestionTemplate) && $sOldQuestionTemplate !== 'core'){
             // get old custom question theme attributes
             $aOldQuestionThemeAttributes = \LimeSurvey\Helpers\questionHelper::getQuestionThemeAttributeValues($sOldQuestionTemplate, $questionTypeList[$type]);
-            if (!empty($aOldQuestionThemeAttributes)){ 
+            if (!empty($aOldQuestionThemeAttributes)) {
                 foreach ($aOldQuestionThemeAttributes as $key => $value) {
                     unset($aAttributesWithValues[$value['name']]);
                 }
@@ -1747,12 +1747,12 @@ class questions extends Survey_Common_Action
 
         if($oLabelSet !== null) {
             $aUsedLanguages = explode(' ', $oLabelSet->languages);
-        
+
             foreach ($aUsedLanguages as $sLanguage) {
                 $aResult[$sLanguage] = array_map(
                     function($attribute) { return \viewHelper::flatten($attribute); },
                     $oLabelSet->attributes
-                ); 
+                );
                 foreach ($oLabelSet->labels as $oLabel) {
                     if($oLabel->language === $sLanguage) {
                         $aLabels = $oLabel->attributes;
@@ -1768,7 +1768,7 @@ class questions extends Survey_Common_Action
                 $aLanguages[$sLanguage] = getLanguageNameFromCode($sLanguage,false);
             };
         }
-        
+
         $resultdata = ['results' => $aResult, 'languages' => $aLanguages];
 
         return Yii::app()->getController()->renderPartial(
@@ -1776,7 +1776,7 @@ class questions extends Survey_Common_Action
             array(
                 'data' => [
                     'success' => count($aResult) > 0,
-                    'results' => $aResult, 
+                    'results' => $aResult,
                     'languages' => $aLanguages
                 ],
             ),
@@ -1801,7 +1801,7 @@ class questions extends Survey_Common_Action
             $criteria->addCondition('languages LIKE :language');
             $criteria->params = [':language' => '%'.$language.'%'];
         }
-        
+
         $resultdata = LabelSet::model()->findAll($criteria);
         // $resultdata = [];
         // create languagespecific array
@@ -1810,9 +1810,9 @@ class questions extends Survey_Common_Action
             $aResults[] = array_map(
                 function($attribute) { return \viewHelper::flatten($attribute); },
                 $oResult->attributes
-            ); 
+            );
         }
-        
+
         return Yii::app()->getController()->renderPartial(
             '/admin/super/_renderJson',
             array(
@@ -1898,7 +1898,7 @@ class questions extends Survey_Common_Action
 #            echo CActiveForm::validate($model);
 #            Yii::app()->end();
 #        }
-#    }    
+#    }
 
     /**
      * @param string $question_type

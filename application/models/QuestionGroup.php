@@ -66,6 +66,7 @@ class QuestionGroup extends LSActiveRecord
                 'params'=>array(':language'=>$this->language)
                 ),
                 'message'=>'{attribute} "{value}" is already in use.'),
+            array('grelevance', 'filter', 'filter' => 'trim'),
             array('language', 'length', 'min' => 2, 'max'=>20), // in array languages ?
             array('group_name,description', 'LSYii_Validators'),
             array('group_name', 'length', 'min' => 0, 'max'=>100),

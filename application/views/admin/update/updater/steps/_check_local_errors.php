@@ -106,9 +106,9 @@
                 </td>
             <?php else: ?>
                 <td>
-                    <h3 class="label label-danger">
+                    <span class="label label-danger">
                         <?php printf(gT('PHP version is only %s'),$localChecks->php->local_php_ver);?>
-                    </h3>
+                    </span>
                 </td>
                 <?php $errors = TRUE; $cant_ignore = true; $ignore = false;?>
             <?php endif; ?>

@@ -143,6 +143,7 @@ class PrintanswersController extends LSYii_Controller
         if (empty($sExportType)) {
             Yii::app()->setLanguage($sLanguage);
             $aData['aSurveyInfo']['include_content'] = 'printanswers';
+            $aData['aSurveyInfo']['trackUrlPageName'] = 'printanswers';
             Yii::app()->twigRenderer->renderTemplateFromFile('layout_printanswers.twig', $aData, false);
 
         } else if ($sExportType == 'pdf') {
@@ -189,6 +190,15 @@ class PrintanswersController extends LSYii_Controller
             Yii::import("application.libraries.admin.quexmlpdf", true);
 
             $quexmlpdf = new quexmlpdf();
+
+            //apply settings stored at last output
+            foreach ($quexmlpdf->_quexmlsettings() as $s) {
+                $setting = getGlobalSetting($s);
+                if ($setting !== null && trim($setting) !== '') {
+                    $method = str_replace("queXML", "set", $s);
+                    $quexmlpdf->$method($setting);
+                }
+            }
 
             // Setting the selected language for printout
             App()->setLanguage($sLanguage);

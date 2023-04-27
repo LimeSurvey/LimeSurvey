@@ -7,7 +7,7 @@
 
 <div class='side-body <?php echo getSideBodyClass(true); ?>'>
     <?php if(App()->request->getParam('group_name')!=''):?>
-        <h3><?php eT('Questions in group: '); ?> <em><?php echo App()->request->getParam('group_name'); ?></em></h3>
+        <h3><?php eT('Questions in group: '); ?> <em><?php echo \CHtml::encode(App()->request->getParam('group_name')); ?></em></h3>
     <?php else:?>
         <h3><?php eT('Questions in this survey'); ?></h3>
     <?php endif;?>

@@ -3,9 +3,9 @@
  * CHtml class file.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright 2008-2013 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 
@@ -75,7 +75,7 @@ class CHtml
 	 * You can override this setting for a particular element by setting the htmlOptions delegate attribute
 	 * (see {@link clientChange}).
 	 *
-	 * For more information about attaching jQuery event handler see {@link http://api.jquery.com/on/}
+	 * For more information about attaching jQuery event handler see {@link https://api.jquery.com/on/}
 	 * @since 1.1.9
 	 * @see clientChange
 	 */
@@ -101,7 +101,7 @@ class CHtml
 	 */
 	public static $renderSpecialAttributesValue=true;
 	/**
-	 * @var callback the generator used in the {@link CHtml::modelName()} method.
+	 * @var callable the generator used in the {@link CHtml::modelName()} method.
 	 * @since 1.1.14
 	 */
 	private static $_modelNameConverter;
@@ -111,11 +111,11 @@ class CHtml
 	 * The {@link CApplication::charset application charset} will be used for encoding.
 	 * @param string $text data to be encoded
 	 * @return string the encoded data
-	 * @see http://www.php.net/manual/en/function.htmlspecialchars.php
+	 * @see https://www.php.net/manual/en/function.htmlspecialchars.php
 	 */
 	public static function encode($text)
 	{
-		return htmlspecialchars($text,ENT_QUOTES,Yii::app()->charset);
+		return htmlspecialchars((string)$text,ENT_QUOTES,Yii::app()->charset);
 	}
 
 	/**
@@ -123,7 +123,7 @@ class CHtml
 	 * This is the opposite of {@link encode()}.
 	 * @param string $text data to be decoded
 	 * @return string the decoded data
-	 * @see http://www.php.net/manual/en/function.htmlspecialchars-decode.php
+	 * @see https://www.php.net/manual/en/function.htmlspecialchars-decode.php
 	 * @since 1.1.8
 	 */
 	public static function decode($text)
@@ -138,7 +138,7 @@ class CHtml
 	 * The {@link CApplication::charset application charset} will be used for encoding.
 	 * @param array $data data to be encoded
 	 * @return array the encoded data
-	 * @see http://www.php.net/manual/en/function.htmlspecialchars.php
+	 * @see https://www.php.net/manual/en/function.htmlspecialchars.php
 	 */
 	public static function encodeArray($data)
 	{
@@ -1168,7 +1168,7 @@ class CHtml
 
 		foreach($data as $value=>$labelTitle)
 		{
-			$checked=!is_array($select) && !strcmp($value,$select) || is_array($select) && in_array($value,$select);
+			$checked=!is_array($select) && !strcmp($value,(string)$select) || is_array($select) && in_array($value,$select);
 			$checkAll=$checkAll && $checked;
 			$htmlOptions['value']=$value;
 			$htmlOptions['id']=$baseID.'_'.$id++;
@@ -1280,7 +1280,7 @@ EOD;
 		$id=0;
 		foreach($data as $value=>$labelTitle)
 		{
-			$checked=!strcmp($value,$select);
+			$checked=!strcmp($value,(string)$select);
 			$htmlOptions['value']=$value;
 			$htmlOptions['id']=$baseID.'_'.$id++;
 			$option=self::radioButton($name,$checked,$htmlOptions);
@@ -1367,7 +1367,7 @@ EOD;
 	 * </ul>
 	 * Note, if you specify the 'success' option, the above options will be ignored.
 	 * @return string the generated JavaScript
-	 * @see http://api.jquery.com/jQuery.ajax/#jQuery-ajax-settings
+	 * @see https://api.jquery.com/jQuery.ajax/#jQuery-ajax-settings
 	 */
 	public static function ajax($options)
 	{
@@ -2439,7 +2439,7 @@ EOD;
 	 * Set generator used in the {@link CHtml::modelName()} method. You can use the `null` value to restore default
 	 * generator.
 	 *
-	 * @param callback|null $converter the new generator, the model or class name will be passed to the this callback
+	 * @param callable|null $converter the new generator, the model or class name will be passed to this callback
 	 * and result must be a valid value for HTML name attribute.
 	 * @throws CException if $converter isn't a valid callback
 	 * @since 1.1.14
@@ -2591,7 +2591,7 @@ EOD;
 			else
 			{
 				$attributes=array('value'=>(string)$key,'encode'=>!$raw);
-				if(!is_array($selection) && !strcmp($key,$selection) || is_array($selection) && in_array($key,$selection))
+				if(!is_array($selection) && !strcmp($key,(string)$selection) || is_array($selection) && in_array($key,$selection))
 					$attributes['selected']='selected';
 				if(isset($options[$key]))
 					$attributes=array_merge($attributes,$options[$key]);
@@ -2729,7 +2729,7 @@ EOD;
 	{
 		$modelName=self::modelName($model);
 
-		if(($pos=strpos($attribute,'['))!==false)
+		if(($pos=strpos((string)$attribute,'['))!==false)
 		{
 			if($pos!==0)  // e.g. name[a][b]
 				return $modelName.'['.substr($attribute,0,$pos).']'.substr($attribute,$pos);

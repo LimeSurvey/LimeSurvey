@@ -17,6 +17,7 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
     var sAdminEmailAddressNeeded = '".gT("If you are using token functions or notifications emails you need to set an administrator email address.",'js')."'
     var sURLParameters = '';
     var sAddParam = '';
+    var expirationLowerThanStartError = '" . gT("Expiration date can't be earlier than the start date") . "';
 ", LSYii_ClientScript::POS_BEGIN);
 ?>
 <!-- Publication panel -->

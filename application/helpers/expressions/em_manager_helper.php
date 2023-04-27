@@ -270,7 +270,7 @@
         */
         private $groupId2groupSeq;
         /**
-        * map question # to an incremental count of question order across the whole survey
+        * Map question # to an incremental count of question order across the whole survey
         *
         * @example [157] = 13 // means that that 14th question in the survey has qid=157
         *
@@ -1639,7 +1639,7 @@
                                     if (trim($qattr['date_min'])!='')
                                     {
                                         $mindate=$qattr['date_min'];
-                                        if ((strlen($mindate)==4) && ($mindate>=1900) && ($mindate<=2099))
+                                        if ((strlen($mindate)==4))
                                         {
                                             // backward compatibility: if only a year is given, add month and day
                                             $date_min='\''.$mindate.'-01-01'.' 00:00\'';
@@ -1708,7 +1708,7 @@
                                     if (trim($qattr['date_max'])!='')
                                     {
                                         $maxdate=$qattr['date_max'];
-                                        if ((strlen($maxdate)==4) && ($maxdate>=1900) && ($maxdate<=2099))
+                                        if ((strlen($maxdate)==4))
                                         {
                                             // backward compatibility: if only a year is given, add month and day
                                             $date_max='\''.$maxdate.'-12-31 23:59'.'\'';
@@ -2583,8 +2583,8 @@
                     $sgqa = $qinfo['sgqa'];
                     switch ($type)
                     {
-                        case '|': //List - dropdown
-                            $eqn = "(" . $sgqa . "_filecount >= (" . $min_num_of_files . "))";
+                        case '|':
+                            $eqn = "(" . $sgqa . "_filecount.NAOK >= (" . $min_num_of_files . "))";
                             break;
                         default:
                             break;
@@ -2617,8 +2617,8 @@
                     $sgqa = $qinfo['sgqa'];
                     switch ($type)
                     {
-                        case '|': //List - dropdown
-                            $eqn = "(" . $sgqa . "_filecount <= (" . $max_num_of_files . "))";
+                        case '|':
+                            $eqn = "(is_empty(" . $sgqa . "_filecount.NAOK) || " . $sgqa . "_filecount.NAOK <= (" . $max_num_of_files . "))";
                             break;
                         default:
                             break;
@@ -3750,9 +3750,9 @@
                 if($this->sPreviewMode=='group' || $this->sPreviewMode=='question') $fielddata['grelevance']=1;
 
                 $questionNum = $fielddata['qid'];
-                $relevance = (isset($fielddata['relevance'])) ? $fielddata['relevance'] : 1;
-                $SQrelevance = (isset($fielddata['SQrelevance'])) ? $fielddata['SQrelevance'] : 1;
-                $grelevance = (isset($fielddata['grelevance'])) ? $fielddata['grelevance'] : 1;
+                $relevance = (isset($fielddata['relevance'])) ? trim($fielddata['relevance']) : 1;
+                $SQrelevance = (isset($fielddata['SQrelevance'])) ? trim($fielddata['SQrelevance']) : 1;
+                $grelevance = (isset($fielddata['grelevance'])) ? trim($fielddata['grelevance']) : 1;
                 $hidden = (isset($qattr[$questionNum]['hidden'])) ? ($qattr[$questionNum]['hidden'] == '1') : false;
                 $scale_id = (isset($fielddata['scale_id'])) ? $fielddata['scale_id'] : '0';
                 $preg = (isset($fielddata['preg'])) ? $fielddata['preg'] : NULL; // a perl regular exrpession validation function

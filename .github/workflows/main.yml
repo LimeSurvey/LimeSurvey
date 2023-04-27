@@ -8,7 +8,7 @@ on:
 
 jobs:
   CI-pipeline:
-    runs-on: ubuntu-18.04    # ubuntu runner hosted by Github
+    runs-on: ubuntu-20.04    # ubuntu runner hosted by Github
     strategy:
       matrix:
         # Specify what versions of php you want to test
@@ -48,6 +48,7 @@ jobs:
           # Set up the Apache and PHP
           sudo apt-get update > /dev/null
           sudo apt install php libapache2-mod-php -y
+          sudo apt install php php-mysql php-mbstring php-xml php7.4-mbstring php8.0-mysql php7.4-mysql php5.6-mysql php7.4-xml php5.6-xml -y
           
           sudo cp -f ./tests/CI-pipeline/github-actions-apache /etc/apache2/sites-available/000-default.conf
           sudo sed -e "s?%CI_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/000-default.conf
@@ -67,14 +68,17 @@ jobs:
           chmod +x ./tests/bin/lint-*
       - name: Load custom console and start the Application
         run: |
-          php application/commands/console.php install admin password TravisLS no@email.com verbose
           cp application/config/config-sample-mysql.php application/config/config.php
+          php application/commands/console.php install admin password TravisLS no@email.com verbose
+          cat application/config/config.php
       - name: Check MySQL service
         run: |
           # InnoDB needs large_file_prefix & Barracuda file format
           # https://discuss.gogs.io/t/solved-mysql-error-1064-while-running-first-install/1604
           # InnoDB variables ARE already set to desired values in Github runner (ubuntu-18.04)
           sudo service mysql status
+          mysql -uroot -proot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';" || true
+          mysql -uroot -proot -b limesurvey -e "INSERT INTO lime_plugins VALUES (NULL, 'Authdb', 1, NULL);" || true
           mysql -uroot -proot -e "Show  variables like '%large%';"
           mysql -uroot -proot -e "Show  variables like '%innodb_file%';"
           mysql -uroot -proot -e "Show  variables like '%innodb_default%';"

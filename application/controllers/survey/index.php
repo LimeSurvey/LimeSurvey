@@ -32,7 +32,7 @@ class index extends CAction
 
         $this->_loadRequiredHelpersAndLibraries();
         $param       = $this->_getParameters(func_get_args(), $_POST);
-        $surveyid    = $param['sid'];
+        $surveyid    = (int) $param['sid'];
         $thisstep    = $param['thisstep'];
         $move        = getMove();
 
@@ -456,6 +456,7 @@ class index extends CAction
             $thissurvey['aLoadForm'] = $aLoadForm;
             //$oTemplate->registerAssets();
             $thissurvey['include_content'] = 'load';
+            $thissurvey['trackUrlPageName'] = 'load';
             Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey'=>Survey::model()->findByPk($surveyid), 'aSurveyInfo'=>$thissurvey), false);
         }
 

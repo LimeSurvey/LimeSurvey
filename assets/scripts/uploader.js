@@ -54,7 +54,7 @@ function doFileUpload()
             var previewblock = "<li id='" + fieldname + "_li_" + i + "' class='previewblock file-element'>";
             previewblock += "<div class='file-preview'>";
             if (isValueInArray(image_extensions, json[i - 1].ext.toLowerCase()))
-                previewblock += "<img src='" + uploadurl + "/filegetcontents/" + json[i - 1].filename + "' class='uploaded' onload='fixParentHeigth(fieldname)' />";
+                previewblock += "<img src='" + uploadurl + "/filegetcontents/" + json[i - 1].filename + "/fieldname/" + fieldname + "' class='uploaded' onload='fixParentHeigth(fieldname)' />";
             else
                 previewblock += "<div class='upload-placeholder' />";
 
@@ -189,7 +189,7 @@ function doFileUpload()
 
                 previewblock += "<div class='file-preview'>";
                 if (isValueInArray(image_extensions, metadata.ext.toLowerCase()))
-                    previewblock += "<img src='" + uploadurl + "/filegetcontents/" + decodeURIComponent(metadata.filename) + "' class='uploaded'  onload='fixParentHeigth(fieldname)' />";
+                    previewblock += "<img src='" + uploadurl + "/filegetcontents/" + decodeURIComponent(metadata.filename) + "/fieldname/" + fieldname + "' class='uploaded'  onload='fixParentHeigth(fieldname)' />";
                 else
                     previewblock += "<div class='upload-placeholder' />";
                 previewblock += "<span class='file-name'>" + escapeHtml(decodeURIComponent(metadata.name)) + "<span>";

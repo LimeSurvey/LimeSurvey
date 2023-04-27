@@ -1194,6 +1194,8 @@ class ExpressionManager
         }
         $tokens = $this->RDP_tokens;
         $stringParts = array();
+        /* @var string|null used for ASSIGN expression */
+        $idToSet = null;
         $numTokens = count($tokens);
         for ($i = 0; $i < $numTokens; ++$i) {
             $token = $tokens[$i];
@@ -1217,7 +1219,12 @@ class ExpressionManager
                         $stringParts[] = $funcInfo[1]; // the PHP function name
                     } elseif ($i + 1 < $numTokens && $tokens[$i + 1][2] == 'ASSIGN') {
                         $jsName = $this->GetVarAttribute($token[0], 'jsName', '');
-                        $stringParts[] = "document.getElementById('".$jsName."').value";
+                        /* Value is not in the page : can not set */
+                        if (empty($jsName)) {
+                            $this->jsExpression = '';
+                            return '';
+                        }
+                        $idToSet = $jsName;
                         if ($tokens[$i + 1][0] == '+=') {
                             // Javascript does concatenation unless both left and right side are numbers, so refactor the equation
                             $varName = $this->GetVarAttribute($token[0], 'varName', $token[0]);
@@ -1248,6 +1255,7 @@ class ExpressionManager
                 default:
                     // don't need to check type of $token[2] here since already handling SQ_STRING and DQ_STRING above
                     switch (strtolower($token[0])) {
+                        case '=': /* ASSIGN : usage jquery,  */; break;
                         case 'and': $stringParts[] = ' && '; break;
                         case 'or':  $stringParts[] = ' || '; break;
                         case 'lt':  $stringParts[] = ' < '; break;
@@ -1264,7 +1272,7 @@ class ExpressionManager
         // for each variable that does not have a default value, add clause to throw error if any of them are NA
         $nonNAvarsUsed = array();
         foreach ($this->GetVarsUsed() as $var) {
-// this function wants to see the NAOK suffix
+            // this function wants to see the NAOK suffix
             if (!preg_match("/^.*\.(NAOK|relevanceStatus)$/", $var)) {
                 if ($this->GetVarAttribute($var, 'jsName', '') != '') {
                     $nonNAvarsUsed[] = $var;
@@ -1272,6 +1280,10 @@ class ExpressionManager
             }
         }
         $mainClause = implode('', $stringParts);
+        if ($idToSet) {
+            /* This set value to the hidden part only */
+            $mainClause = "$('#{$idToSet}').val({$mainClause})";
+        }
         $varsUsed = implode("', '", $nonNAvarsUsed);
         if ($varsUsed != '') {
             $this->jsExpression = "LEMif(LEManyNA('".$varsUsed."'),'',(".$mainClause."))";
@@ -2750,7 +2762,8 @@ function exprmgr_if($testDone, $iftrue, $iffalse = '')
 
 /**
  * Return true if the variable is an integer for LimeSurvey
- * Can not really use is_int due to SQL DECIMAL system. This function can surely be improved
+ * Allow usage of numeric answercode as int
+ * Can not use is_int due to SQL DECIMAL system.
  * @param string $arg
  * @return integer
  * @link http://php.net/is_int#82857
@@ -2758,9 +2771,12 @@ function exprmgr_if($testDone, $iftrue, $iffalse = '')
 function exprmgr_int($arg)
 {
     if (strpos($arg, ".")) {
-        $arg = preg_replace("/\.$/", "", rtrim(strval($arg), "0")); // DECIMAL from SQL return always .00000000, the remove all 0 and one . , see #09550
+        // DECIMAL from SQL return always .00000000, the remove all 0 and one . , see #09550
+        $arg = preg_replace("/\.$/", "", rtrim(strval($arg), "0"));
     }
-    return (preg_match("/^-?[0-9]*$/", $arg)); // Allow 000 for value, @link https://bugs.limesurvey.org/view.php?id=9550 DECIMAL sql type.
+    // Allow 000 for value
+    // Disallow '' (and false) @link https://bugs.limesurvey.org/view.php?id=17950
+    return (preg_match("/^-?\d+$/", $arg));
 }
 /**
  * Join together $args[0-N] with ', '
