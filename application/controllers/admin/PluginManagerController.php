@@ -374,13 +374,7 @@ class PluginManagerController extends SurveyCommonAction
         $aPluginProp = App()->getPluginManager()->getPluginInfo($plugin->name);
 
         $topbar['title'] = gT('Plugins') . ' ' . $plugin['name'];
-        $topbar['rightButtons'] = Yii::app()->getController()->renderPartial(
-            '/admin/pluginmanager/partial/topbarBtns_detail/rightSideButtons',
-            [
-                'backUrl' => $this->getController()->createUrl('/admin/pluginmanager', ['sa' => 'index'])
-            ],
-            true
-        );
+        $topbar['backLink'] = $this->getController()->createUrl('/admin/pluginmanager', ['sa' => 'index']);
 
         $this->renderWrappedTemplate(
             'pluginmanager',
