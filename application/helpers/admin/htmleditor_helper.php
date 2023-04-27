@@ -209,67 +209,29 @@ function getPopupEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $g
         $class = "editorLink input-group-text";
     }
     /* @var string[] parameters of the editor url */
-    $editorurlparams = array(
+    $editorUrlParams = array(
         'name' => $fieldname,
         'text' => javascriptEscape($fieldtext), // usage for title of the new window
         'type' => $fieldtype, // email_XX_lang, question_lang …
     );
     if (!empty($action)) {
-        $editorurlparams['action'] = javascriptEscape($action);
+        $editorUrlParams['action'] = javascriptEscape($action);
     }
     if (!empty($surveyID)) {
-        $editorurlparams['sid'] = $surveyID;
+        $editorUrlParams['sid'] = $surveyID;
     }
     if (!empty($gID)) {
-        $editorurlparams['gid'] = $gID;
+        $editorUrlParams['gid'] = $gID;
     }
     if (!empty($qID)) {
-        $editorurlparams['qid'] = $qID;
+        $editorUrlParams['qid'] = $qID;
     }
-    $editorurlparams['lang'] = App()->language;
-    $editorurlparams['contdir'] = getLanguageRTL(App()->language) ? 'rtl' : 'ltr';
+    $editorUrlParams['lang'] = App()->language;
+    $editorUrlParams['contdir'] = getLanguageRTL(App()->language) ? 'rtl' : 'ltr';
     /* @var string the editor url */
-    $editorurl = App()->getController()->createUrl(
+    $editorUrl = App()->getController()->createUrl(
         'admin/htmleditorpop/sa/index',
-        $editorurlparams
-    );
-    /* @var string content of the action link */
-    $content = CHtml::tag('i', array(
-        'class' => "fa fa-pencil btneditanswerena",
-        'id' => $fieldname . "_popupctrlena",
-        'data-toggle' => "tooltip",
-        'data-placement' => "tooltip",
-        'title' => gT("Start HTML editor in a popup window")
-    ), '')
-    . CHtml::tag('i', array(
-        'class' => "fa fa-pencil btneditanswerdis",
-        'id' => $fieldname . "_popupctrldis",
-        'style' => "display:none",
-    ), '');
-    /* @var string[] parameters of the editor url */
-    $editorurlparams = array(
-        'name' => $fieldname,
-        'text' => javascriptEscape($fieldtext), // usage for title of the new window
-        'type' => $fieldtype, // email_XX_lang, question_lang …
-    );
-    if (!empty($action)) {
-        $editorurlparams['action'] = javascriptEscape($action);
-    }
-    if (!empty($surveyID)) {
-        $editorurlparams['sid'] = $surveyID;
-    }
-    if (!empty($gID)) {
-        $editorurlparams['gid'] = $gID;
-    }
-    if (!empty($qID)) {
-        $editorurlparams['qid'] = $qID;
-    }
-    $editorurlparams['lang'] = App()->language;
-    $editorurlparams['contdir'] = getLanguageRTL(App()->language) ? 'rtl' : 'ltr';
-    /* @var string the editor url */
-    $editorurl = App()->getController()->createUrl(
-        'admin/htmleditorpop/sa/index',
-        $editorurlparams
+        $editorUrlParams
     );
     /* @var string content of the action link */
     $content = CHtml::tag('i', array(
@@ -287,7 +249,7 @@ function getPopupEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $g
     /* @var final code to return */
     $htmlcode = CHtml::link(
         $content,
-        "javascript:start_popup_editor('{$fieldname}','" . $editorurl . "');",
+        "javascript:start_popup_editor('{$fieldname}','" . $editorUrl . "');",
         array(
             'id' => $fieldname . "_ctrl",
             'class' => "{$class} btn btn-default btn-xs",
@@ -376,25 +338,25 @@ function getInlineEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $
             ,filebrowserImageUploadUrl:'{$sFakeBrowserURL}'";
     }
     /* @var string[] parameters of the replacementfields url */
-    $replacementfieldsurlparams = array(
+    $replacementFieldsUrlParams = array(
         'fieldtype' => $fieldtype, // email_XX_lang, question_lang …
     );
     if(!empty($action)) {
-        $replacementfieldsurlparams['action'] = javascriptEscape($action);
+        $replacementFieldsUrlParams['action'] = javascriptEscape($action);
     }
     if(!empty($surveyID)) {
-        $replacementfieldsurlparams['surveyid'] = $surveyID;
+        $replacementFieldsUrlParams['surveyid'] = $surveyID;
     }
     if(!empty($gID)) {
-        $replacementfieldsurlparams['gid'] = $gID;
+        $replacementFieldsUrlParams['gid'] = $gID;
     }
     if(!empty($qID)) {
-        $replacementfieldsurlparams['qid'] = $qID;
+        $replacementFieldsUrlParams['qid'] = $qID;
     }
     /* @var string the replacementfields url */
-    $replacementfieldsurl = App()->getController()->createUrl(
+    $replacementFieldsUrl = App()->getController()->createUrl(
         'limereplacementfields/index',
-        $replacementfieldsurlparams
+        $replacementFieldsUrlParams
     );
     $loaderHTML = getLoaderHTML($fieldname);
 
@@ -411,7 +373,7 @@ function getInlineEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $
                 $('#" . $fieldname . "').before('$loaderHTML');
 
                 var ckeConfig = {
-                    LimeReplacementFieldsUrl : \"" . $replacementfieldsurl . "\"
+                    LimeReplacementFieldsUrl : \"" . $replacementFieldsUrl . "\"
                     ,language:'" . sTranslateLangCode2CK(Yii::app()->session['adminlang']) . "'"
                 . $sFileBrowserAvailable
                 . $htmlformatoption
