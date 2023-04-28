@@ -12,8 +12,9 @@ App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl'
             $this->widget('ext.AlertWidget.AlertWidget', [
                     'header' => 'Reordering',
                     'text' => gT("To reorder questions/questiongroups just drag the question/group with your mouse to the desired position.") . ' ' .
-                gT("After you are done, please click the 'Save' button to save your changes."),
-                'type' => 'info',
+                        ($surveyActivated ? gT("Survey is activated, you can not move question on another group.") : "") . ' ' .
+                        gT("After you are done, please click the 'Save' button to save your changes."),
+                    'type' => 'info',
             ]);
             ?>
         </div>
@@ -24,7 +25,7 @@ App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl'
     </div>
 
     <div class='movableList'>
-        <ol class="organizer group-list list-unstyled" data-level='group'>
+        <ol class="organizer group-list list-unstyled" data-level='group' data-disableparentchange='<?= intval($surveyActivated) ?>'>
             <?php
             foreach ($aGroupsAndQuestions as  $aGroupAndQuestions) { ?>
                 <li id='list_g<?php echo $aGroupAndQuestions['gid']; ?>' class='card mjs-nestedSortable-expanded mt-2' data-level='group'>
