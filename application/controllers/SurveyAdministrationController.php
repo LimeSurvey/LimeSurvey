@@ -1985,9 +1985,8 @@ class SurveyAdministrationController extends LSBaseController
 
         $iSurveyID = sanitize_int($iSurveyID);
         $thereIsPostData = $request->getPost('orgdata') !== null;
-        $userHasPermissionToUpdate = Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update');
 
-        if (!$userHasPermissionToUpdate) {
+        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update')) {
             Yii::app()->user->setFlash('error', gT("Access denied"));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
