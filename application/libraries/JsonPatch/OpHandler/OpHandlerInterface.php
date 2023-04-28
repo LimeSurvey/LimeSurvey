@@ -10,4 +10,6 @@ interface OpHandlerInterface
     public function applyOperation($params, $value);
     public function getOpType(): OpTypeInterface;
     public function getPattern(): PatternInterface;
+    public function getGroupByParams();
+    public function getValueKeyParam();
 }

@@ -15,12 +15,10 @@ use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputSurvey;
 
 class OpHandlerSurveyPropReplace implements OpHandlerInterface
 {
-    public function applyOperation($params, $value)
+    public function applyOperation($params, $values)
     {
         $transformer = new TransformerInputSurvey();
-        $data = [];
-        $data[$params['prop']] = $value;
-        $data = $transformer->transform($data);
+        $data = $transformer->transform($values);
 
         $model = Survey::model()->findByPk(
             $params['surveyId']
@@ -34,13 +32,26 @@ class OpHandlerSurveyPropReplace implements OpHandlerInterface
             );
         }
 
-        $model->{$params['prop']} = $data[$params['prop']];
+        foreach ($data as $key => $value) {
+            $model->{$key} = $value;
+        }
+
         $model->save();
     }
 
     public function getPattern(): PatternInterface
     {
         return new PatternSimple('/$prop');
+    }
+
+    public function getGroupByParams(): array
+    {
+        return ['surveyId'];
+    }
+
+    public function getValueKeyParam()
+    {
+        return 'prop';
     }
 
     public function getOpType(): OpTypeInterface

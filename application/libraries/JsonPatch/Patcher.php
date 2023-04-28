@@ -6,11 +6,11 @@ use LimeSurvey\JsonPatch\Op\OpInterface;
 use LimeSurvey\JsonPatch\Op\OpStandard;
 use LimeSurvey\JsonPatch\OpHandler\OpHandlerInterface;
 
-
 class Patcher
 {
     private $opHandlers = [];
     private $params = [];
+    private $opGroups = [];
 
     /**
      * Apply patch
@@ -28,9 +28,10 @@ class Patcher
                     $patchOpData['op'] ?? null,
                     $patchOpData['value'] ?? null
                 );
-                $this->applyOp($op, $params);
+                $this->handleOp($op, $params);
                 $operationsApplied++;
             }
+            $this->applyGroupedOps();
         }
         return $operationsApplied;
     }
@@ -65,23 +66,24 @@ class Patcher
      * @throws JsonPatchException
      * @return void
      */
-    protected function applyOp($op, $params = [])
+    private function handleOp(OpInterface $op, $params = [])
     {
         $handled = false;
+        $opTypeId = $op->getType()->getId();
         foreach ($this->opHandlers as $opHandler) {
-            if ($opHandler->getOpType()->getId() !== $op->getType()->getId()) {
+            if ($opHandler->getOpType()->getId() !== $opTypeId) {
                 continue;
             }
 
             $matches = [];
+            $patternString = $opHandler->getPattern()->getRaw();
             if (
                 preg_match(
-                    '#' . $opHandler->getPattern()->getRaw() . '#',
+                    '#' . $patternString . '#',
                     $op->getPath(),
                     $matches
                 ) !== 1
             ) {
-                print_r($opHandler->getPattern()->getRaw()); exit;
                 continue;
             }
 
@@ -93,7 +95,16 @@ class Patcher
                 is_array($params) ? $params : []
             );
 
-            $opHandler->applyOperation($params, $op->getValue());
+            if (!empty($opHandler->getGroupByParams())) {
+                $this->queueToOpGroup(
+                    $op,
+                    $opHandler,
+                    $params
+                );
+            } else {
+                $opHandler->applyOperation($params, $op->getValue());
+            }
+
             $handled = true;
 
             break;
@@ -102,11 +113,77 @@ class Patcher
         if (!$handled) {
             throw new JsonPatchException(
                 sprintf(
-                    'No oepration handler found for "%s":"%s"',
+                    'No operation handler found for "%s":"%s"',
                     $op->getType()->getId(),
                     $op->getValue()
                 )
             );
+        }
+    }
+
+    /**
+     * Queue operation to op group
+     *
+     * A group of operations are handled by a single handler.
+     *
+     * @param OpInterface $op
+     * @param OpHandlerInterface $opHandler
+     * @param array $params
+     * @return void
+     */
+    private function queueToOpGroup(OpInterface $op, OpHandlerInterface $opHandler, $params)
+    {
+        $groupByParams = $opHandler->getGroupByParams();
+        $groupValues = [];
+        foreach ($groupByParams as $groupByParam) {
+            if (array_key_exists($groupByParam, $params)) {
+                $groupValues[$groupByParam] = $params[$groupByParam];
+            }
+        }
+        $patternString = $opHandler->getPattern()->getRaw();
+        $opTypeId = $op->getType()->getId();
+        $groupId = implode(
+        '|', [
+            $patternString,
+            $opTypeId,
+            implode(',', $groupValues)
+        ]);
+        if (!isset($this->opGroups[$groupId])) {
+            $this->opGroups[$groupId] = [
+                'opHandler' => $opHandler,
+                'params' => $params,
+                'values' => []
+            ];
+        }
+
+        $valueKey = null;
+        if ($valueKeyParam = $opHandler->getValueKeyParam()) {
+            $valueKey = $params[$valueKeyParam];
+        }
+
+        if ($valueKey) {
+            $this->opGroups[$groupId]['values'][$valueKey] = $op->getValue();
+        } else {
+            $this->opGroups[$groupId]['values'][] = $op->getValue();
+        }
+    }
+
+    /**
+     * Apply grouped operations
+     *
+     * A group operation is a group of operations which are handled by a single handler.
+     *
+     * @return void
+     */
+    private function applyGroupedOps()
+    {
+        if ($this->opGroups) {
+            foreach ($this->opGroups as $opGroup) {
+                $opGroup['opHandler']->applyOperation(
+                    $opGroup['params'],
+                    $opGroup['values']
+                );
+            }
         }
     }
 }

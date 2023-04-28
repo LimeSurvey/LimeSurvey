@@ -35,8 +35,9 @@ class PatcherTest extends TestBaseClass
             ->andReturn(new OpTypeAdd);
         $opHandler->shouldReceive('getPattern')
             ->andReturn(new PatternRaw($patch[0]['path']));
-        $opHandler->shouldReceive('applyOperation')
-            ->withArgs([[], $patch[0]['value']]);
+        $opHandler->shouldReceive('getGroupByParams');
+        $opHandler->shouldReceive('getValueKeyParam');
+        $opHandler->shouldReceive('applyOperation');
 
         $patcher = new Patcher();
         $patcher->addOpHandler($opHandler);

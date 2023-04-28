@@ -14,7 +14,7 @@ use LimeSurvey\JsonPatch\{
 
 class OpHandlerQuestionGroupPropReplace implements OpHandlerInterface
 {
-    public function applyOperation($params, $value)
+    public function applyOperation($params, $values)
     {
         $model = QuestionGroup::model()->findByPk(
             $params['questionGroupId']
@@ -27,7 +27,11 @@ class OpHandlerQuestionGroupPropReplace implements OpHandlerInterface
                 )
             );
         }
-        $model->{$params['prop']} = $value;
+
+        foreach ($values as $key => $value) {
+            $model->{$key} = $value;
+        }
+
         $model->save();
     }
 
@@ -36,6 +40,16 @@ class OpHandlerQuestionGroupPropReplace implements OpHandlerInterface
         return new PatternSimple(
             '/questionGroups/$questionGroupId/$prop'
         );
+    }
+
+    public function getGroupByParams(): array
+    {
+        return ['surveyId', 'questionGroupId'];
+    }
+
+    public function getValueKeyParam()
+    {
+        return 'prop';
     }
 
     public function getOpType(): OpTypeInterface
