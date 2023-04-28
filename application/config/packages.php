@@ -290,7 +290,8 @@ return array(
         'depends' => array(
             'jquery',
             'pjaxbackend',
-            'lslog'
+            'lslog',
+            'select2-bootstrap'
         )
     ),
 

@@ -913,7 +913,7 @@ class LsDefaultDataSets
                           'desc'       => gT('Create a new survey from scratch. Or simply copy or import an existing survey.'),
                           'page'       => 'welcome',
                           'usergroup'  => '-2',
-                          'buttontext' => 'Create survey'
+                          'buttontext' => gt('Create survey')
         ];
         $returnArray[] = ['position'   => '2',
                           'url'        => 'surveyAdministration/listsurveys',
@@ -931,7 +931,7 @@ class LsDefaultDataSets
                           'desc'       => gT('Edit global settings'),
                           'page'       => 'welcome',
                           'usergroup'  => '-2',
-                          'buttontext' => 'View global settings'
+                          'buttontext' => gt('View global settings')
         ];
         $returnArray[] = ['position'   => '4',
                           'url'        => 'userManagement/index',
@@ -940,16 +940,16 @@ class LsDefaultDataSets
                           'desc'       => gT('The user management allows you to add additional users to your survey site.'),
                           'page'       => 'welcome',
                           'usergroup'  => '-2',
-                          'buttontext' => 'Manage administrators'
+                          'buttontext' => gt('Manage administrators')
         ];
         $returnArray[] = ['position'   => '5',
                           'url'        => 'admin/labels/sa/view',
                           'title'      => gT('Label sets'),
                           'ico'        => 'ri-price-tag-3-line',
-                          'desc'       => gT('Label sets are templayes which can be loaded in most question types to speed up.'),
+                          'desc'       => gT('Label sets can be used as answer options or subquestions to speed up creation of similar questions.'),
                           'page'       => 'welcome',
                           'usergroup'  => '-2',
-                          'buttontext' => 'Edit label sets'
+                          'buttontext' => gt('Edit label sets')
         ];
         $returnArray[] = ['position'   => '6',
                           'url'        => 'themeOptions',
@@ -958,7 +958,7 @@ class LsDefaultDataSets
                           'desc'       => gT('The themes functionality allows you to edit survey-, admin- or question themes.'),
                           'page'       => 'welcome',
                           'usergroup'  => '-2',
-                          'buttontext' => 'Edit themes'
+                          'buttontext' => gt('Edit themes')
         ];
 
         App()->setLanguage($sOldLanguage);
@@ -1848,7 +1848,7 @@ class LsDefaultDataSets
         ];
     }
 
-    static function getBaseLabelSets($language = 'en')
+    public static function getBaseLabelSets($language = 'en')
     {
         $sOldLanguage = App()->language;
         Yii::app()->setLanguage($language);
@@ -2827,8 +2827,7 @@ class LsDefaultDataSets
             gT("Select font:"),
             gT("Select variation:"),
             gT("Fruity fonts"),
-            gT("Fruity variations"),
-            gt("Select all that apply") // This string will replace 'Check any that apply' later 
+            gT("Fruity variations")
         ];
     }
 

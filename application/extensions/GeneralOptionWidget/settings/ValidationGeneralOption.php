@@ -17,7 +17,7 @@ class ValidationGeneralOption extends GeneralOption
         $this->formElement = new FormElement(
             'preg',
             null,
-            gT('You can add any regular expression based validation in here'),
+            gT('You can add any regular expression based validation in here','unescaped'),
             $question->preg,
             [
                 'classes' => ['form-control'],

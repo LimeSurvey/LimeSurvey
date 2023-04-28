@@ -555,10 +555,10 @@ class Themes extends SurveyCommonAction
 
         App()->getClientScript()->reset();
 
-        $undo    = gT("Undo (ctrl + Z)", "js");
-        $redo    = gT("Redo (ctrl + Y)", "js");
-        $find    = gT("Find (ctrl + F)", "js");
-        $replace = gT("Replace (ctrl + H)", "js");
+        $undo    = gT("Undo (Ctrl-Z)", "js");
+        $redo    = gT("Redo (Ctrl-Y)", "js");
+        $find    = gT("Find (Ctrl-F)", "js");
+        $replace = gT("Replace (Ctrl-H)", "js");
         App()->getClientScript()->registerScript(
             "SurveyThemeEditorLanguageData",
             <<<JAVASCRIPT

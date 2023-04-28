@@ -2,7 +2,7 @@
 
 namespace LimeSurvey\Helpers\Update;
 
-class Update_499 extends DatabaseUpdateBase
+class Update_603 extends DatabaseUpdateBase
 {
     /**
      * @inheritDoc
