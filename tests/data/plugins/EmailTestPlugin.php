@@ -10,9 +10,14 @@ class EmailPlugin extends SmtpOAuthPluginBase
 
     protected $credentialAttributes = ['clientId', 'clientSecret'];
 
+    public function init()
+    {
+        $this->subscribe('listEmailPlugins');
+    }
+
     protected function getDisplayName()
     {
-        return 'Test';
+        return 'Test Plugin';
     }
 
     protected function getProvider($credentials)
@@ -63,5 +68,13 @@ class EmailPlugin extends SmtpOAuthPluginBase
     public function getPluginProperty($name)
     {
         return $this->get($name);
+    }
+
+    public function listEmailPlugins()
+    {
+        $event = $this->getEvent();
+        $event->append('plugins', [
+            'Test' => $this->getEmailPluginInfo()
+        ]);
     }
 }

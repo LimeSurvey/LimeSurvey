@@ -14,17 +14,7 @@ class EmailPluginTest extends TestBaseClass
         parent::setUpBeforeClass();
         require_once self::$dataFolder . '/plugins/EmailTestPlugin.php';
 
-        $plugin = \Plugin::model()->findByAttributes(array('name' => 'EmailPlugin'));
-
-        if (!$plugin) {
-            $plugin = new \Plugin();
-            $plugin->name = 'EmailPlugin';
-            $plugin->active = 1;
-            $plugin->save();
-        } else {
-            $plugin->active = 1;
-            $plugin->save();
-        }
+        $plugin = self::installAndActivatePlugin('EmailPlugin');
 
         // Get a handle to the plugin being tested
         self::$plugin = App()->getPluginManager()->loadPlugin('EmailPlugin', $plugin->id);
@@ -146,5 +136,18 @@ class EmailPluginTest extends TestBaseClass
 
         $setCredentials = self::$plugin->getPluginProperty('refreshTokenMetadata');
         $this->assertEmpty($credentials, 'The credentials were not cleared.');
+    }
+
+    public function testListPluginEmailsEvent()
+    {
+        $event = self::dispatchPluginEvent('EmailPlugin', 'listEmailPlugins', array());
+
+        $this->assertInstanceOf(\PluginEvent::class, $event, 'The event object should be of \PluginEvent class.');
+        $plugins = $event->get('plugins');
+        $this->assertArrayHaskey('Test', $plugins, 'Test plugin was not registered, the event was not fired.');
+        $testInfo = $plugins['Test'];
+        $this->assertInstanceOf(\LimeSurvey\Datavalueobjects\EmailPluginInfo::class, $testInfo, 'testInfo should be an instance of LimeSurvey\Datavalueobjects\EmailPluginInfo.');
+        $this->assertSame('Test Plugin', $testInfo->name, 'The plugin display name is not the one set.');
+        $this->assertSame('EmailPlugin', $testInfo->class, 'The plugin class name is not the one set.');
     }
 }
