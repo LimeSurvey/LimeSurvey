@@ -1001,6 +1001,22 @@ class SurveyDynamic extends LSActiveRecord
         return $aQuestionAttributes;
     }
 
+    /**
+     * Decrypts all encrypted response values for output (e.g. printanswers, detailed admin info)
+     *
+     * @return void
+     */
+    public function decryptBeforeOutput()
+    {
+        //get response values which are encrypted
+        $encryptedAttr = Response::getEncryptedAttributes($this->getSurveyId());
+        $attributes = $this->attributes;
+        $sodium = Yii::app()->sodium;
+        foreach ($encryptedAttr as $key) {
+            $this->setAttribute($key, $sodium->decrypt($attributes[$key]));
+        }
+    }
+
     public function getPrintAnswersArray($sSRID, $sLanguage, $bHonorConditions = false)
     {
 
@@ -1008,14 +1024,7 @@ class SurveyDynamic extends LSActiveRecord
         $aGroupArray = array();
 
         $oResponses = SurveyDynamic::model($oSurvey->sid)->findByAttributes(array('id' => $sSRID));
-
-        //responses have to be decrypted before output and before rendering via twig ...
-        $encryptedAttr = Response::getEncryptedAttributes($oSurvey->sid);
-        $attributes = $oResponses->attributes;
-        $sodium = Yii::app()->sodium;
-        foreach ($encryptedAttr as $key) {
-            $oResponses->setAttribute($key, $sodium->decrypt($attributes[$key]));
-        }
+        $oResponses->decryptBeforeOutput();
 
         $oGroupList = $oSurvey->groups;
 
