@@ -58,7 +58,7 @@
                 <?php } ?>
 
                 <!-- Prepended extra menus from plugins -->
-                <?php $this->renderPartial("application.libraries.MenuObjects.views._extraMenu", ['extraMenus' => $extraMenus, 'prependedMenu' => true]); ?>
+                <?php $this->renderPartial("application.libraries.MenuObjects.views._extraMenu", ['extraMenus' => $extraMenus, 'middleSection' => true, 'prependedMenu' => true]); ?>
 
                 <!-- create survey -->
                 <li class="nav-item">
@@ -92,11 +92,13 @@
 
 
                 <!-- Extra menus from plugins -->
-                <?php $this->renderPartial("application.libraries.MenuObjects.views._extraMenu", ['extraMenus' => $extraMenus, 'prependedMenu' => false]); ?>
+                <?php $this->renderPartial("application.libraries.MenuObjects.views._extraMenu", ['extraMenus' => $extraMenus, 'middleSection' => true, 'prependedMenu' => false]); ?>
             </ul>
         </div>
         <div class="collapse navbar-collapse justify-content-end">
             <ul class="nav navbar-nav">
+                <!-- Extra menus from plugins -->
+                <?php $this->renderPartial("application.libraries.MenuObjects.views._extraMenu", ['extraMenus' => $extraMenus, 'middleSection' => false, 'prependedMenu' => true]); ?>
                 <!-- Admin notification system -->
                 <?php echo $adminNotifications; ?>
 
@@ -125,7 +127,8 @@
                         </li>
                     </ul>
                 </li>
-
+                <!-- Extra menus from plugins -->
+                <?php $this->renderPartial("application.libraries.MenuObjects.views._extraMenu", ['extraMenus' => $extraMenus, 'middleSection' => false, 'prependedMenu' => false]); ?>
             </ul>
         </div><!-- /.nav-collapse -->
 

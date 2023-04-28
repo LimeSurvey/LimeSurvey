@@ -1,6 +1,8 @@
 <?php
 /** @var array $extraMenus */
 
+/** @var bool $middleSection */
+
 /** @var bool $prependedMenu */
 
 use LimeSurvey\Menu\Menu;
@@ -8,8 +10,10 @@ use LimeSurvey\Menu\MenuButton;
 
 foreach ($extraMenus as $menu): ?>
     <?php
+    $sectionFilter = (($middleSection && $menu->isInMiddleSection()) || (!$middleSection && !$menu->isInMiddleSection()));
+    $prependedFilter = (($prependedMenu && $menu->isPrepended()) || (!$prependedMenu && !$menu->isPrepended()));
     /** @var Menu $menu */
-    if (($prependedMenu && $menu->isPrepended()) || (!$prependedMenu && !$menu->isPrepended())) : ?>
+    if ($sectionFilter && $prependedFilter) : ?>
         <li class="dropdown nav-item">
             <?php
             if ($menu->isDropDown()): ?>
@@ -51,16 +55,16 @@ foreach ($extraMenus as $menu): ?>
                 /** @var MenuButton $menuButton */
                 $target = $menuButton->getOpenInNewTab() ? '_blank' : '_self';
                 ?>
-                <p class="btn"><a id="<?= $menuButton->getButtonId() ?>"
-                                  href="<?= $menuButton->getHref(); ?>"
-                                  class="<?= $menuButton->getButtonClass() ?>"
-                                  title="<?= $menuButton->getTooltip() ?>"
-                                         data-toggle="tooltip"
-                                         data-placement="bottom"
-                                  onclick="<?= $menuButton->getOnClick() ?>"
-                                  target="<?= $target ?>">
-                        <?= $menuButton->getLabel(); ?></a>
-                </p>
+                <a id="<?= $menuButton->getButtonId() ?>"
+                   href="<?= $menuButton->getHref(); ?>"
+                   class="<?= $menuButton->getButtonClass() ?>"
+                   title="<?= $menuButton->getTooltip() ?>"
+                   data-toggle="tooltip"
+                   data-placement="bottom"
+                   onclick="<?= $menuButton->getOnClick() ?>"
+                   target="<?= $target ?>">
+                    <?= $menuButton->getLabel(); ?>
+                </a>
             <?php
             else: ?>
                 <a href="<?= $menu->getHref(); ?>" class="nav-link">
