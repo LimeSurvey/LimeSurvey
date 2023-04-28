@@ -3200,6 +3200,7 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
 
     //Get response data
     $idrow = SurveyDynamic::model($iSurveyID)->findByAttributes(array('id' => $iResponseID));
+    $idrow->decryptBeforeOutput();
 
     // Create array of non-null values - those are the relevant ones
     $aRelevantFields = array();
