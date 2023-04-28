@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2023-03-27 08:55:37+00:00\n"
+"POT-Creation-Date: 2023-04-28 08:23:06+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -683,7 +683,7 @@ msgid "Uploading"
 msgstr ""
 
 #: application/controllers/UploaderController.php:317
-#: application/controllers/UploaderController.php:365
+#: application/controllers/UploaderController.php:371
 msgid "Select file"
 msgstr ""
 
@@ -750,7 +750,7 @@ msgstr ""
 msgid "Edit"
 msgstr ""
 
-#: application/controllers/UploaderController.php:368
+#: application/controllers/UploaderController.php:374
 msgid "You can upload %s under %s KB each."
 msgstr ""
 
@@ -12953,8 +12953,8 @@ msgstr ""
 #: application/models/SurveyDynamic.php:283
 #: application/models/SurveyDynamic.php:290
 #: application/models/SurveyTimingDynamic.php:190
-#: application/models/TokenDynamic.php:811
-#: application/models/TokenDynamic.php:817
+#: application/models/TokenDynamic.php:810
+#: application/models/TokenDynamic.php:816
 #: application/views/admin/responses/browseallrow_view.php:5
 msgid "View response details"
 msgstr ""
@@ -13001,8 +13001,8 @@ msgid "Please note that if you delete an incomplete response during a running su
 msgstr ""
 
 #: application/models/SurveyDynamic.php:603
-#: application/models/TokenDynamic.php:898
-#: application/models/TokenDynamic.php:904
+#: application/models/TokenDynamic.php:897
+#: application/models/TokenDynamic.php:903
 msgid "Edit this survey participant"
 msgstr ""
 
@@ -13481,32 +13481,32 @@ msgstr ""
 msgid "Completed?"
 msgstr ""
 
-#: application/models/TokenDynamic.php:836
-#: application/models/TokenDynamic.php:843
+#: application/models/TokenDynamic.php:835
+#: application/models/TokenDynamic.php:842
 msgid "Launch the survey with this token"
 msgstr ""
 
-#: application/models/TokenDynamic.php:863
-#: application/models/TokenDynamic.php:869
+#: application/models/TokenDynamic.php:862
+#: application/models/TokenDynamic.php:868
 #: application/views/admin/token/token_bar.php:111
 msgid "Send email invitation"
 msgstr ""
 
-#: application/models/TokenDynamic.php:875
-#: application/models/TokenDynamic.php:881
+#: application/models/TokenDynamic.php:874
+#: application/models/TokenDynamic.php:880
 #: application/views/admin/token/massive_actions/_selector.php:101
 #: application/views/admin/token/remind.php:8
 #: application/views/admin/token/token_bar.php:119
 msgid "Send email reminder"
 msgstr ""
 
-#: application/models/TokenDynamic.php:912
-#: application/models/TokenDynamic.php:918
+#: application/models/TokenDynamic.php:911
+#: application/models/TokenDynamic.php:917
 msgid "Delete survey participant"
 msgstr ""
 
-#: application/models/TokenDynamic.php:926
-#: application/models/TokenDynamic.php:932
+#: application/models/TokenDynamic.php:925
+#: application/models/TokenDynamic.php:931
 msgid "View this participant in the central participants database"
 msgstr ""
 
