@@ -77,6 +77,36 @@ class CLSGridView extends TbGridView
             ['test321' => "something"]
         );
 
+        // ========== this is added for pagination size working by referencing from old limegridview  ==============
+        $id = $this->getId();
+
+        if ($this->ajaxUpdate) {
+            $ajaxUpdate = array_unique(preg_split('/\s*,\s*/', $this->ajaxUpdate . ',' . $id, -1, PREG_SPLIT_NO_EMPTY));
+        } else {
+            $ajaxUpdate = false;
+        }
+
+        $options = array(
+            'ajaxUpdate' => $ajaxUpdate,
+            'ajaxVar' => $this->ajaxVar,
+            'pagerClass' => $this->pagerCssClass,
+            'loadingClass' => $this->loadingCssClass,
+            'filterClass' => $this->filterCssClass,
+            'tableClass' => $this->itemsCssClass,
+            'selectableRows' => $this->selectableRows,
+            'enableHistory' => $this->enableHistory,
+            'updateSelector' => $this->updateSelector,
+            'filterSelector' => $this->filterSelector
+        );
+
+        $options = CJavaScript::encode($options);
+
+        $cs = Yii::app()->getClientScript();
+        $cs->registerScript(__CLASS__ . '#' . $id, "jQuery('#$id').yiiGridView($options);", LSYii_ClientScript::POS_POSTSCRIPT);
+
+        // ====================================================================================================
+
+
         // changePageSize
         $script = '
 			jQuery(document).on("change", "#' . $this->id . ' .changePageSize", function(){

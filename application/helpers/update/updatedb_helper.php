@@ -52,7 +52,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
      * @link https://manual.limesurvey.org/Database_versioning for explanations
      * @var array $aCriticalDBVersions An array of cricital database version.
      */
-    $aCriticalDBVersions = array(310, 400, 450);
+    $aCriticalDBVersions = array(310, 400, 450, 600);
     $aAllUpdates         = range($iOldDBVersion + 1, Yii::app()->getConfig('dbversionnumber'));
 
     // If trying to update silenty check if it is really possible

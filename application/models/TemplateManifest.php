@@ -414,7 +414,7 @@ class TemplateManifest extends TemplateConfiguration
 
         $thissurvey['aAssessments']['show'] = true;
 
-        $thissurvey['aError']['title'] = '<p class=" text-danger inherit-sizes" role="alert">' . gT("Error-Title") . '</p>';
+        $thissurvey['aError']['title'] = '<p class=" text-danger inherit-sizes" role="alert">' . gT("Error title") . '</p>';
         $thissurvey['aError']['message'] = '<p class="message-0">' . gT("This is an error message example") . '</p>';
         $thissurvey['adminemail'] = 'your-email@example.net';
 
