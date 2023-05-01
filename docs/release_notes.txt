@@ -34,6 +34,35 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.0.3 (build 230424) to 6.0.4 (build 230427) April 25, 2023
+-Fixed issue: Error on database upgrade (Carsten Schmitz)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by nomoto
+#Updated translation: German by c_schmitz
+
+
+Changes from 6.0.2 (build 230417) to 6.0.3 (build 230424) April 24, 2023
+-Fixed issue: Pagination not working issue for clsgrid tables (#3063) (jack-han-115)
+-Fixed issue CR-1086: adjusted xml_path in db for imageselect questions (#3052) (Tim Willig)
+-Fixed issue #18756: Unable to set non-integer values for initial slider value (#3058) (Denis Chenu)
+-Fixed issue #18750: Incomplete translation of admin homepage buttons (Carsten Schmitz)
+-Fixed issue #18749: Tooltips text display errors in French (Carsten Schmitz)
+-Fixed issue #18739: ComfortUpdate notification not being shown (#3047) (Gabriel Jenik)
+-Fixed issue #18719: custom admin theme failing if new logo files are not set in the theme (Patrick Teichmann)
+-Fixed issue #18703: Upload files show error if not seen (using index) (#3015) (Denis Chenu)
+-Fixed issue #18696: Survey titles too short when I want to copy a survey  (#3044) (Denis Chenu)
+-Fixed issue #18191: Cannot use statCount in specific condition (#3056) (Denis Chenu)
+-Fixed issue #14108: No error proper error message when LDAP login fails due to case-sensitivity (#2692) (Denis Chenu)
+#Updated translation: German by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Mongolian by amidral
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Polish by elissa
+#Updated translation: Turkish by kayazeren
+#Updated translation: German (Easy) by assistedmindfulness, holch
+#Updated translation: Polish (Informal) by elissa
+
 Changes from 6.0.1 (build 230411) to 6.0.2 (build 230417) April 17, 2023
 -Fixed issue: [security] Administrator can change his own password without entering the existing one (Carsten Schmitz)
 -Fixed issue #CR-1054: Vertical scrollbar appearing between accordion transitions in questioneditor (#3031) (jack-han-115)

@@ -882,7 +882,7 @@ class LsDefaultDataSets
                           'url'        => 'userManagement/index',
                           'title'      => gT('Manage survey administrators'),
                           'ico'        => 'ri-user-line',
-                          'desc'       => gT('The user management allows you to add additional users to your survey site.'),
+                          'desc'       => gT('The user management allows you to add additional users to your survey administration.'),
                           'page'       => 'welcome',
                           'usergroup'  => '-2',
                           'buttontext' => gt('Manage administrators')
