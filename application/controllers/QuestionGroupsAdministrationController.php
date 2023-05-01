@@ -327,7 +327,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
             . " (" . gT("ID") . ":" . $surveyid . ")";
 
         $aData['backUrl'] = $this->createUrl(
-            'questionGroupsAdministration/listquestiongroups',
+            'questionAdministration/listQuestions',
             [
                 'surveyid' => $surveyid
             ]

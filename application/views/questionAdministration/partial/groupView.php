@@ -50,24 +50,6 @@
                     'class' => '',
                 ),
             )); ?>
-                <div class="row row-cols-lg-auto g-1 align-items-center mb-3 float-end">
-                    <div class="col-12">
-                        <?php echo CHtml::label(gT('Search by group name:'), 'group_name', array('class' => 'text-nowrap col-sm-7 col-form-label col-form-label-sm')); ?>
-                    </div>
-                    <div class="col-12">
-                        <?php echo $form->textField($groupModel, 'group_name', array('class' => 'form-control')); ?>
-                    </div>
-
-
-                    <div class="col-12">
-                        <?php echo CHtml::submitButton(gT('Search', 'unescaped'), array('class' => 'btn btn-primary')); ?>
-                        <a href="<?php echo Yii::app()->createUrl('questionAdministration/listquestions/surveyid/' . $surveyid);?>"
-                           class="btn btn-warning">
-                            <span class="ri-refresh-line"></span>
-                            <?php eT('Reset');?>
-                        </a>
-                    </div>
-                </div>
             <?php $this->endWidget(); ?>
         </div>
     </div>
@@ -80,6 +62,7 @@
             [
                 'id'              => 'question-group-grid',
                 'dataProvider'    => $groupModel->search(),
+                'filter' => $groupModel,
                 'emptyText'       => gT('No question groups found.'),
                 'summaryText'     => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
                     gT('%s rows per page'),
@@ -100,14 +83,17 @@
                     [
                         'header' => gT('Group ID'),
                         'name'   => 'group_id',
-                        'value'  => '$data->gid'
+                        'value'  => '$data->gid',
+                        'filter'            => false,
+
                     ],
 
                     // Group Order
                     [
                         'header' => gT('Group order'),
                         'name'   => 'group_order',
-                        'value'  => '$data->group_order'
+                        'value'  => '$data->group_order',
+                        'filter'            => false,
                     ],
 
                     // Group Name
@@ -125,12 +111,14 @@
                         'type'        => 'raw',
                         'value'       => 'viewHelper::flatEllipsizeText($data->primaryDescription, true, 0)',
                         'htmlOptions' => ['class' => ''],
+                        'filter'            => false,
                     ],
                     // Action buttons (defined in model)
                     [
                         'header'      => gT('Action'),
                         'name'        => 'actions',
                         'type'        => 'raw',
+                        'filter'            => false,
                         'value'       => '$data->buttons',
                         'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
                         'htmlOptions'       => ['class' => 'text-center button-column ls-sticky-column'],
