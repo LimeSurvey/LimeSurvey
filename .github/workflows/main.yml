@@ -68,11 +68,6 @@ jobs:
           chmod +x ./tests/bin/lint-*
           php -v
           php -m
-      - name: Load custom console and start the Application
-        run: |
-          cp application/config/config-sample-mysql.php application/config/config.php
-          php application/commands/console.php install admin password TravisLS no@email.com verbose
-          cat application/config/config.php
       - name: Check MySQL service
         run: |
           # InnoDB needs large_file_prefix & Barracuda file format
@@ -80,7 +75,7 @@ jobs:
           # InnoDB variables ARE already set to desired values in Github runner (ubuntu-18.04)
           sudo service mysql status
           mysql -uroot -proot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';" || true
-          mysql -uroot -proot -b limesurvey -e "INSERT INTO lime_plugins VALUES (NULL, 'Authdb', 1, NULL);" || true
+          #mysql -uroot -proot -b limesurvey -e "INSERT INTO lime_plugins VALUES (NULL, 'Authdb', 1, NULL);" || true
           mysql -uroot -proot -e "Show  variables like '%large%';"
           mysql -uroot -proot -e "Show  variables like '%innodb_file%';"
           mysql -uroot -proot -e "Show  variables like '%innodb_default%';"
@@ -90,6 +85,12 @@ jobs:
         # NB: There can be a difference in assets used when debug = 0 or 2 (minified version or not)
         # sed -i '61s/.*/        "debug"=>2,/' application/config/config.php
         # cat application/config/config.php
+
+      - name: Load custom console and start the Application
+        run: |
+          cp application/config/config-sample-mysql.php application/config/config.php
+          php application/commands/console.php install admin password TravisLS no@email.com verbose
+          cat application/config/config.php
 
       - name: Test the server
         run: |
