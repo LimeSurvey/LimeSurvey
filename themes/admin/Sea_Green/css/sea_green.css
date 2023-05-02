@@ -14543,6 +14543,11 @@ html[dir=rtl] th {
   overflow-x: visible;
 }
 
+/** Hide Relevance Equation column for subquestions when not supported */
+.subquestions-table.hide-relevance #rel-eq-th, .subquestions-table.hide-relevance td.relevance-equation {
+  display: none;
+}
+
 .jcarousel-wrapper {
   margin: 20px auto;
   position: relative;
@@ -16734,6 +16739,7 @@ tr.info, tr.danger {
 
 .btn-group .btn {
   padding: 8px 16px;
+  margin-left: 0px !important;
 }
 .btn-group .btn input[type=radio],
 .btn-group .btn input[type=checkbox] {
