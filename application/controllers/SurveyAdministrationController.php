@@ -1960,7 +1960,7 @@ class SurveyAdministrationController extends LSBaseController
         if ($adminLanguage !== 'en-GB' && $menuEntry->language === 'en-GB') {
             $aData['subaction'] = gT($menuEntry->title);
         } else {
-           $aData['subaction'] = $menuEntry->title;
+            $aData['subaction'] = $menuEntry->title;
         }
 
         if ($subaction === 'resources') {
