@@ -321,7 +321,9 @@ class Quotas
                 case 'activate':
                 case 'deactivate':
                     $oQuota->active = ($action == 'activate' ? 1 : 0);
-                    $oQuota->save();
+                    if (!$oQuota->save()) {
+                        $errors[] = $oQuota->errors;
+                    }
                     break;
                 case 'delete':
                     $oQuota->delete();

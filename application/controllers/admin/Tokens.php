@@ -643,7 +643,7 @@ class Tokens extends SurveyCommonAction
                 } else {
                     $redirectUrl = Yii::app()->createUrl("/admin/tokens/sa/edit", ["iSurveyId" => $iSurveyId, "iTokenId" => $token->tid]);
                 }
-                Yii::app()->setFlashMessage(gT("The survey participant was successfully updated."));
+                Yii::app()->setFlashMessage(gT("The survey participant was successfully added."));
                 $this->getController()->redirect($redirectUrl);
             }
             $this->renderWrappedTemplate('token', array('addtokenpost'), $aData);
