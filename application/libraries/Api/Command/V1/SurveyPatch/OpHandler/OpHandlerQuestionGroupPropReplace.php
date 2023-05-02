@@ -11,11 +11,15 @@ use LimeSurvey\JsonPatch\{
     Pattern\PatternInterface,
     Pattern\PatternSimple
 };
+use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionGroup;
 
 class OpHandlerQuestionGroupPropReplace implements OpHandlerGroupableInterface
 {
     public function applyOperation($params, $values)
     {
+        $transformer = new TransformerInputQuestionGroup();
+        $data = $transformer->transform($values);
+
         $model = QuestionGroup::model()->findByPk(
             $params['questionGroupId']
         );
@@ -28,7 +32,7 @@ class OpHandlerQuestionGroupPropReplace implements OpHandlerGroupableInterface
             );
         }
 
-        foreach ($values as $key => $value) {
+        foreach ($data as $key => $value) {
             $model->{$key} = $value;
         }
 

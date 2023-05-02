@@ -116,8 +116,9 @@ class Patcher
         if (!$handled) {
             throw new JsonPatchException(
                 sprintf(
-                    'No operation handler found for "%s":"%s"',
+                    'No operation handler found for "%s":"%s":"%s"',
                     $op->getType()->getId(),
+                    $op->getPath(),
                     $op->getValue()
                 )
             );
