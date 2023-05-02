@@ -15,7 +15,7 @@ class Update_601 extends DatabaseUpdateBase
             ->addColumn('{{boxes}}', 'buttontext', 'string(255)');
         } catch (Exception $e) {
             // Column already exists - ignore
-        }        
+        }
 
         $this->updateCreateSurvey();
         $this->updateSurveyList();
