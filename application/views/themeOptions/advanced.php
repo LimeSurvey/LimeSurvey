@@ -8,26 +8,8 @@
         'text' => '<strong>' . gT('Warning') . '</strong> ' . gT("Don't touch the values below unless you know what you're doing."),
         'type' => 'warning',
     ]);
-
-    $actionBaseUrl = 'themeOptions/update/';
-    $actionUrlArray = ['id' => $model->id];
-
-    if ($model->sid) {
-        unset($actionUrlArray['id']);
-        $actionUrlArray['sid'] = $model->sid;
-        $actionUrlArray['surveyd'] = $model->sid;
-        $actionUrlArray['gsid'] = $model->gsid;
-        $actionBaseUrl = 'themeOptions/updateSurvey/';
-    }
-    if ($model->gsid) {
-        unset($actionUrlArray['id']);
-        $actionBaseUrl = 'themeOptions/updateSurveyGroup/';
-        $actionUrlArray['gsid'] = $model->gsid;
-        $actionUrlArray['id'] = $model->id;
-    }
-
-    $actionUrl = Yii::app()->getController()->createUrl($actionBaseUrl, $actionUrlArray);
     ?>
+
     <div class="row ls-space margin bottom-15">
         <div class="row mb-3">
             <div class="col-4">
@@ -64,30 +46,14 @@
         <hr/>
     </div>
     <div class="row">
-        <?php $form = $this->beginWidget(
-            'TbActiveForm',
-            [
-                'id'                   => 'template-options-form',
-                'enableAjaxValidation' => false,
-                'htmlOptions'          => ['class' => 'form '],
-                'action'               => $actionUrl
-            ]
-        ); ?>
+
         <p class="note"><?php echo sprintf(gT('Fields with %s are required.'), '<span class="required">*</span>'); ?></p>
         <?php
         $this->widget('ext.AlertWidget.AlertWidget', ['errorSummaryModel' => $model]);
         ?>
 
 
-        <?php echo $form->hiddenField($model, 'template_name'); ?>
-        <?php echo $form->hiddenField($model, 'sid'); ?>
-        <?php echo $form->hiddenField($model, 'gsid'); ?>
-        <?php echo $form->hiddenField($model, 'uid'); ?>
-
-        <?php echo CHtml::hiddenField('optionInheritedValues', json_encode($optionInheritedValues)); ?>
-        <?php echo CHtml::hiddenField('optionCssFiles', json_encode($optionCssFiles)); ?>
-        <?php echo CHtml::hiddenField('optionCssFramework', json_encode($optionCssFramework)); ?>
-        <?php echo CHtml::hiddenField('translationInheritedValue', gT("Inherited value:") . ' '); ?>
+   
 
         <div class="row">
             <div class="mb-3">
@@ -149,6 +115,5 @@
             <?php echo TbHtml::submitButton($model->isNewRecord ? gT('Create') : gT('Save'), ['class' => 'btn-primary']); ?>
         </div>
 
-        <?php $this->endWidget(); ?>
     </div>
 </div>
