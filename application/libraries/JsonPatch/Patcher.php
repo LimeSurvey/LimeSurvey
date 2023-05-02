@@ -130,15 +130,13 @@ class Patcher
      * A group of operations are handled by a single handler.
      *
      * @param OpInterface $op
-     * @param OpHandlerInterface|OpHandlerGroupableInterface $opHandler
+     * @param OpHandlerGroupableInterface $opHandler
      * @param array $params
      * @return void
      */
-    private function queueToOpGroup(OpInterface $op, OpHandlerInterface $opHandler, $params)
+    private function queueToOpGroup(OpInterface $op, OpHandlerGroupableInterface $opHandler, $params)
     {
-        $groupByParams = $op instanceof OpHandlerGroupableInterface
-            ? $opHandler->getGroupByParams()
-            : [];
+        $groupByParams = $opHandler->getGroupByParams();
         $groupValues = [];
         foreach ($groupByParams as $groupByParam) {
             if (array_key_exists($groupByParam, $params)) {
