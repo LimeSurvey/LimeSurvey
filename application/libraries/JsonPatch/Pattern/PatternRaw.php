@@ -4,15 +4,15 @@ namespace LimeSurvey\JsonPatch\Pattern;
 
 class PatternRaw implements PatternInterface
 {
-    private $pattern = '';
+    private $regex = '';
 
-    public function __construct($pattern)
+    public function __construct($regex)
     {
-        $this->pattern = $pattern;
+        $this->regex = $regex;
     }
 
-    public function getRaw()
+    public function getRegex()
     {
-        return $this->pattern;
+        return $this->regex;
     }
 }

@@ -79,7 +79,7 @@ class Patcher
             }
 
             $matches = [];
-            $patternString = $opHandler->getPattern()->getRaw();
+            $patternString = $opHandler->getPattern()->getRegex();
             if (
                 preg_match(
                     '#' . $patternString . '#',
@@ -143,11 +143,11 @@ class Patcher
                 $groupValues[$groupByParam] = $params[$groupByParam];
             }
         }
-        $patternString = $opHandler->getPattern()->getRaw();
+        $regex = $opHandler->getPattern()->getRegex();
         $opTypeId = $op->getType()->getId();
         $groupId = implode(
         '|', [
-            $patternString,
+            $regex,
             $opTypeId,
             implode(',', $groupValues)
         ]);

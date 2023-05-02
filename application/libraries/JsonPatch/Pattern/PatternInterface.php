@@ -4,5 +4,5 @@ namespace LimeSurvey\JsonPatch\Pattern;
 
 interface PatternInterface
 {
-    public function getRaw();
+    public function getRegex();
 }
