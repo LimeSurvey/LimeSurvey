@@ -4,7 +4,7 @@ namespace LimeSurvey\Api\Command\V1\SurveyPatch\OpHandler;
 
 use Survey;
 use LimeSurvey\JsonPatch\{
-    OpHandler\OpHandlerInterface,
+    OpHandler\OpHandlerGroupableInterface,
     OpHandler\OpHandlerException,
     OpType\OpTypeInterface,
     OpType\OpTypeReplace,
@@ -13,7 +13,7 @@ use LimeSurvey\JsonPatch\{
 };
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputSurvey;
 
-class OpHandlerSurveyPropReplace implements OpHandlerInterface
+class OpHandlerSurveyPropReplace implements OpHandlerGroupableInterface
 {
     public function applyOperation($params, $values)
     {

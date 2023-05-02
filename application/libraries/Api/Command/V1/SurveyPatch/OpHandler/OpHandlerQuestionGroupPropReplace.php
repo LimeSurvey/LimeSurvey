@@ -4,7 +4,7 @@ namespace LimeSurvey\Api\Command\V1\SurveyPatch\OpHandler;
 
 use QuestionGroup;
 use LimeSurvey\JsonPatch\{
-    OpHandler\OpHandlerInterface,
+    OpHandler\OpHandlerGroupableInterface,
     OpHandler\OpHandlerException,
     OpType\OpTypeInterface,
     OpType\OpTypeReplace,
@@ -12,7 +12,7 @@ use LimeSurvey\JsonPatch\{
     Pattern\PatternSimple
 };
 
-class OpHandlerQuestionGroupPropReplace implements OpHandlerInterface
+class OpHandlerQuestionGroupPropReplace implements OpHandlerGroupableInterface
 {
     public function applyOperation($params, $values)
     {

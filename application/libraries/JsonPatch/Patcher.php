@@ -4,7 +4,10 @@ namespace LimeSurvey\JsonPatch;
 
 use LimeSurvey\JsonPatch\Op\OpInterface;
 use LimeSurvey\JsonPatch\Op\OpStandard;
-use LimeSurvey\JsonPatch\OpHandler\OpHandlerInterface;
+use LimeSurvey\JsonPatch\OpHandler\{
+    OpHandlerInterface,
+    OpHandlerGroupableInterface
+};
 
 class Patcher
 {
@@ -95,7 +98,7 @@ class Patcher
                 is_array($params) ? $params : []
             );
 
-            if (!empty($opHandler->getGroupByParams())) {
+            if ($opHandler instanceof OpHandlerGroupableInterface) {
                 $this->queueToOpGroup(
                     $op,
                     $opHandler,
@@ -127,13 +130,15 @@ class Patcher
      * A group of operations are handled by a single handler.
      *
      * @param OpInterface $op
-     * @param OpHandlerInterface $opHandler
+     * @param OpHandlerInterface|OpHandlerGroupableInterface $opHandler
      * @param array $params
      * @return void
      */
     private function queueToOpGroup(OpInterface $op, OpHandlerInterface $opHandler, $params)
     {
-        $groupByParams = $opHandler->getGroupByParams();
+        $groupByParams = $op instanceof OpHandlerGroupableInterface
+            ? $opHandler->getGroupByParams()
+            : [];
         $groupValues = [];
         foreach ($groupByParams as $groupByParam) {
             if (array_key_exists($groupByParam, $params)) {
