@@ -144,7 +144,7 @@ class InstallCommand extends CConsoleCommand
             $this->output('Opening connection...');
             $this->connection->active = true;
         } catch (Exception $e) {
-            throw new CException("Invalid access data. Check your config.php db access data");
+            throw new CException("Invalid access data. Check your config.php db access data: " . $e->getMessage());
         }
 
         $sDatabaseName = $this->getDBConnectionStringProperty('dbname', $connectionString);
