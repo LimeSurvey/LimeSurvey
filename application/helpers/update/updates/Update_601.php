@@ -2,6 +2,8 @@
 
 namespace LimeSurvey\Helpers\Update;
 
+use Exception;
+
 class Update_601 extends DatabaseUpdateBase
 {
     /**
@@ -74,7 +76,7 @@ class Update_601 extends DatabaseUpdateBase
                 [
                     'ico' => 'ri-user-line',
                     'title' => 'Manage survey administrators',
-                    'desc' => 'The user management allows you to add additional users to your survey site.',
+                    'desc' => 'The user management allows you to add additional users to your survey administration.',
                     'buttontext' => 'Manage administrators',
                     'url' => 'userManagement/index'
                 ],
