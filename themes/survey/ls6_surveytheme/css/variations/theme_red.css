@@ -10541,10 +10541,6 @@ body {
  * Question part
  */
 /** Question Design **/
-.question-container {
-  margin-bottom: 2em;
-}
-
 .question-container-printanswers {
   margin-top: 2em;
   margin-bottom: 2em;
@@ -10552,93 +10548,8 @@ body {
   border-bottom: 1px solid rgba(225, 225, 255, 0.6);
 }
 
-.question-title-container {
-  padding-top: 1em;
-  padding-bottom: 1em;
-}
-
-.question-number, .question-code {
-  float: left;
-  margin: 0 0.3em;
-}
-
-.question-number:empty, .question-code:empty {
-  display: none;
-}
-
 .question-valid-container {
   position: relative;
-}
-
-.ls-question-help,
-.ls-questionhelp {
-  margin-bottom: 5px;
-}
-
-.question-valid-container .text-danger {
-  font-weight: bold;
-}
-
-.question-valid-container .text-info {
-  font-weight: bold;
-}
-
-.answer-container, .question-help-container {
-  border-color: #dbdbdb;
-}
-
-.answer-container {
-  border-width: 0px 1px 0px 1px;
-  border-style: solid;
-  padding-top: 0.5em;
-  padding-bottom: 0.5em;
-}
-
-.ls-answers {
-  padding-top: 15px;
-  padding-bottom: 15px;
-  margin-bottom: 0;
-}
-
-/* little icon near the question-help */
-.ls-questionhelp {
-  position: relative;
-}
-
-.dir-ltr .ls-questionhelp {
-  margin-left: 1.2em;
-}
-
-.dir-rtl .ls-questionhelp {
-  margin-right: 1.2em;
-}
-
-.ls-questionhelp:before {
-  content: "\f059";
-}
-
-.ls-questionhelp:before {
-  display: block;
-  position: absolute;
-  font-family: FontAwesome;
-  font-size: inherit;
-  line-height: inherit;
-  height: 100%;
-}
-
-/* If you want to center the icon */
-/*
-.ls-questionhelp:before {
-    top:50%;
-    margin-top:-0.7em;
-}
-*/
-.dir-ltr .ls-questionhelp:before {
-  left: -1.1em;
-}
-
-.dir-rtl .ls-questionhelp:before {
-  right: -1.1em;
 }
 
 /**
@@ -10910,11 +10821,6 @@ div.yes-no .btn-group label {
   .question-container {
     margin-bottom: 1em;
   }
-  .question-title-container {
-    padding-top: 5px;
-    padding-bottom: 5px;
-  }
-  .ls-question-help,
   .ls-questionhelp {
     font-size: 14px;
   }
@@ -10955,16 +10861,6 @@ p.return-to-survey {
 .superset {
   font-size: 50%;
   vertical-align: top;
-}
-
-/* Remove question container*/
-.question-title-container, .question-valid-container {
-  background: none;
-  border: none;
-}
-
-.answer-container, .question-container {
-  border: none;
 }
 
 .alert {
@@ -11018,7 +10914,6 @@ body {
   /**
   * comfortUpdate
   */
-  /* INput errors*/
 }
 .ls6_surveytheme mark, .ls6_surveytheme .mark {
   background: white;
@@ -12058,9 +11953,6 @@ body {
 .ls6_surveytheme .placeholder {
   background-color: #fae1d6;
 }
-.ls6_surveytheme .question-container.input-error {
-  box-shadow: 0 10px 20px rgba(169, 68, 66, 0.9);
-}
 
 /* Define the color for Awesome Bootsrap Checkboxes ; based on bg-primary background-color*/
 body .answer-item label::after {
@@ -12327,10 +12219,6 @@ body .answer-item label::after {
   position: relative;
   float: none;
   box-shadow: 0 0 0 #fff;
-}
-
-.input-error input {
-  border: 1px solid #E75041;
 }
 
 .form-inline .checkbox-item {
@@ -13384,6 +13272,12 @@ a {
   font-weight: 400;
 }
 
+.text-muted {
+  font-size: 1.14rem;
+  line-height: 20px;
+  color: #6E748C;
+}
+
 .h1, .h2, .h3, h1, h2, h3 {
   margin-top: 2rem;
   margin-bottom: 1rem;
@@ -13444,6 +13338,7 @@ a {
   padding: 10px 12px;
   border-width: 2px;
   line-height: 16px;
+  font-size: 1.14rem;
 }
 
 .input-group-text {
@@ -13484,6 +13379,7 @@ textarea {
 .form-control {
   color: #1E1E1E;
   border-color: #6E748C;
+  font-size: 14px;
 }
 .form-control:focus {
   box-shadow: 4px 4px 0 rgba(66, 0, 255, 0.2);
@@ -13542,11 +13438,11 @@ textarea,
 }
 
 .input-error input {
-  border: 1px solid #FFE046;
-  color: #FFE046;
+  border: 2px solid #FF515F;
+  color: #FF515F;
 }
 .input-error input:focus {
-  border: 1px solid #FF515F;
+  border: 2px solid #FF515F;
   color: #FF515F;
 }
 
@@ -13861,7 +13757,7 @@ input[type=radio] .styled:checked + label::after {
   vertical-align: middle;
 }
 
-tbody, td, tfoot, th, thead, tr {
+tbody, td, tfoot, th, thead, tr, .table > :not(:first-child) {
   border: none;
 }
 
@@ -14914,16 +14810,6 @@ input[type=checkbox]:checked:after,
     order: 6;
     text-align: center;
   }
-}
-@media (min-width: 768px) {
-  .slider-list .ls-slider-item-horizontal .slider-min-block {
-    margin-right: -1rem;
-  }
-  .slider-list .ls-slider-item-horizontal .slider-max-block {
-    margin-left: -1rem;
-  }
-}
-@media only screen and (max-width: 760px) {
   .slider-list .slider-left {
     text-align: left;
   }
@@ -14935,6 +14821,14 @@ input[type=checkbox]:checked:after,
   }
   .dir-rtl .slider-list .slider-right {
     text-align: left;
+  }
+}
+@media (min-width: 768px) {
+  .slider-list .ls-slider-item-horizontal .slider-min-block {
+    margin-right: -1rem;
+  }
+  .slider-list .ls-slider-item-horizontal .slider-max-block {
+    margin-left: -1rem;
   }
 }
 [class^=ri-], [class*=" ri-"] {
@@ -15259,6 +15153,37 @@ input[type=checkbox]:checked:after,
   height: 300px;
 }
 
+.question-container {
+  margin-bottom: 3em;
+}
+.question-container .ls-label-question {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 32px;
+}
+.question-container .question-number:empty,
+.question-container .question-code:empty {
+  display: none;
+}
+.question-container .question-title-container {
+  margin-bottom: 10px;
+}
+.question-container .question-help-container {
+  margin-bottom: 5px;
+  position: relative;
+}
+.question-container .question-valid-container {
+  margin-bottom: 20px;
+}
+.question-container .asterisk {
+  vertical-align: -0.125em;
+}
+
+@media only screen and (max-device-width: 767px) {
+  .ls-questionhelp {
+    font-size: 14px;
+  }
+}
 .darkmode-on {
   background-color: #333641;
   color: white;

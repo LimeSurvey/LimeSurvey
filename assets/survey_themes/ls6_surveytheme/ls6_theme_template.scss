@@ -85,7 +85,6 @@ $base-color: #ffffff;
 
 // 6. Add additional custom code here
 @import "old_fruity.scss";
-//@import "old_vanilla.scss";
 @import "ls6_theme_variables.scss";
 @import "src/colors.scss";
 @import "src/definitions.scss";
@@ -126,6 +125,7 @@ $base-color: #ffffff;
 @import "modal/modal.scss";
 @import "modal/modal_colors.scss";
 @import "alert/alert.scss";
+@import "question/question.scss";
 
 // TODO: placeholder, will probbably be removed
 @import "darkmode/darkmode_colors.scss";

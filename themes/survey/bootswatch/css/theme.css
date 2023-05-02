@@ -132,7 +132,6 @@ padding-top:1em;padding-bottom:1em;margin-bottom:2em;
   //padding-bottom: 1em;
 }
 
-.ls-question-help,
 .ls-questionhelp{
   margin-bottom:5px;
 }
@@ -744,7 +743,6 @@ div.yes-no .btn-group label {
     //padding-bottom:0.5em;
   }
 
-  .ls-question-help,
   .ls-questionhelp{
     font-size:14px;
   }

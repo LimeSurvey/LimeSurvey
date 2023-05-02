@@ -2,7 +2,7 @@
     vertical-align : middle;
 }
 
-tbody, td, tfoot, th, thead, tr {
+tbody, td, tfoot, th, thead, tr, .table > :not(:first-child) {
     border : none;
 }
 

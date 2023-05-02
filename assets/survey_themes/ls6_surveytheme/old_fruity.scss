@@ -1,368 +1,292 @@
 // old theme.css
 body {
-    padding-bottom: 10px;
-    padding-top: 90px;/* now is redefine in JS to fit any title length */
+    padding-bottom : 10px;
+    padding-top    : 90px; /* now is redefine in JS to fit any title length */
 }
-
-
 
 element.style {
 }
 
-
-
 /* specific for survey listing */
-@media (min-width: 761px) {
+@media (min-width : 761px) {
     .surveys-list .btn-group {
-        width: 49%;
+        width : 49%;
     }
 }
 
 .space-col {
-    margin-top: 1em;
-    margin-bottom: 2em;
+    margin-top    : 1em;
+    margin-bottom : 2em;
 }
 
-.group-outer-container{
-    display: flex;
+.group-outer-container {
+    display : flex;
 }
-.group-container{
-    width:100%;
+
+.group-container {
+    width : 100%;
 }
 
 .group-title-container {
-    padding: 1em;
-    background:transparent;
+    padding    : 1em;
+    background : transparent;
 }
 
 .top-container {
-    width: 100%;
-    padding: 0;
-    border-bottom: none;
-    color: inherit;
+    width         : 100%;
+    padding       : 0;
+    border-bottom : none;
+    color         : inherit;
 }
 
-.top-container .top-content{
-    padding-top:1em;
-    padding-bottom:1em;
-    margin-bottom:2em;
+.top-container .top-content {
+    padding-top    : 1em;
+    padding-bottom : 1em;
+    margin-bottom  : 2em;
 }
 
-.top-content .form-change-lang{float:right}
-.dir-rtl .top-content .form-change-lang{float:left}
-.no-js .top-content .form-change-lang{display:none}
+.top-content .form-change-lang {float : right}
 
-.top-container .top-content:empty{display:none}
-.group-description:empty{display:none}
-.group-title:empty{display:none}
+.dir-rtl .top-content .form-change-lang {float : left}
+
+.no-js .top-content .form-change-lang {display : none}
+
+.top-container .top-content:empty {display : none}
+
+.group-description:empty {display : none}
+
+.group-title:empty {display : none}
+
 .top-container .progress {
-    height: 21px;
-    margin-bottom: 0;
+    height        : 21px;
+    margin-bottom : 0;
 }
+
 .top-container .progress {
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) inset; /* flatly remove box-shadow : readd one */
+    box-shadow : 0 2px 5px rgba(0, 0, 0, 0.1) inset; /* flatly remove box-shadow : readd one */
 }
+
 .progress .progress-bar {
-    line-height:19px;
+    line-height : 19px;
 }
-.top-container .form-change-lang {text-align:center}
+
+.top-container .form-change-lang {text-align : center}
 
 /**
  * Navigator
  */
-
 #navigator-container {
-    padding-bottom: 1em;
+    padding-bottom : 1em;
 }
-#navigator-container > hr
-{
-    margin-top: 0px;
-    margin-bottom: 0px;
+
+#navigator-container > hr {
+    margin-top    : 0px;
+    margin-bottom : 0px;
 }
 
 /**
  * Question part
  */
 /** Question Design **/
-
-.question-container {
-    margin-bottom: 2em;
-}
-
-
-
 .question-container-printanswers {
-    margin-top: 2em ;
-    margin-bottom: 2em ;
-    padding-bottom: 2em ;
-    border-bottom: 1px solid rgba(225, 225, 255, 0.6);
+    margin-top     : 2em;
+    margin-bottom  : 2em;
+    padding-bottom : 2em;
+    border-bottom  : 1px solid rgba(225, 225, 255, 0.6);
 }
-
-.question-title-container {
-    padding-top: 1em;
-    padding-bottom:1em;
-}
-.question-number,.question-code{float:left;margin:0 0.3em}
-.question-number:empty,.question-code:empty{display:none}
 
 .question-valid-container {
-    position: relative;
-}
-
-.ls-question-help,
-.ls-questionhelp{
-    margin-bottom:5px;
-}
-
-.question-valid-container .text-danger{
-    font-weight: bold;
-}
-
-.question-valid-container .text-info{
-    font-weight: bold;
-}
-.answer-container, .question-help-container {
-    border-color: #dbdbdb;
-}
-.answer-container {
-    border-width: 0px 1px 0px 1px;
-    border-style: solid;
-    padding-top: 0.5em;
-    padding-bottom:0.5em;
-}
-
-.ls-answers{
-    padding-top:15px;
-    padding-bottom:15px;
-    margin-bottom:0;
+    position : relative;
 }
 
 .question-help-container {
-
-}
-/* little icon near the question-help */
-.ls-questionhelp{position: relative;}
-.dir-ltr .ls-questionhelp{margin-left:1.2em;}
-.dir-rtl .ls-questionhelp{margin-right:1.2em;}
-
-.ls-questionhelp:before{content:"\f059"}
-.ls-questionhelp:before {
-    display: block;
-    position:absolute;
-    font-family: FontAwesome;
-    font-size: inherit;
-    line-height: inherit;
-    height:100%;
-}
-
-/* If you want to center the icon */
-/*
-.ls-questionhelp:before {
-    top:50%;
-    margin-top:-0.7em;
-}
-*/
-.dir-ltr .ls-questionhelp:before {
-    left:-1.1em;
-}
-.dir-rtl .ls-questionhelp:before {
-    right:-1.1em;
 }
 
 /**
  * Unsure part
  */
-
 #main-col {
-    margin-top: 1em;
+    margin-top : 1em;
 }
 
-.col-centered{
-    float: none;
-    margin: 0 auto;
+.col-centered {
+    float  : none;
+    margin : 0 auto;
 }
 
-.question-item .other-label
-{
-    margin: 0px;
-    padding: 0px;
+.question-item .other-label {
+    margin  : 0px;
+    padding : 0px;
 }
 
 /**
  * For em-type
  */
-.hide-tip
-{
-    display: none;
+.hide-tip {
+    display : none;
 }
 
 /**
  * Surveys list
  */
 .surveys-list {
-    margin-top: 1em;
-    list-style: none;
+    margin-top : 1em;
+    list-style : none;
 }
+
 .surveys-list li {
-    padding: 0.5em;
+    padding : 0.5em;
 }
+
 .surveys-list li a {
-    margin-left: 0.5em;
+    margin-left : 0.5em;
 }
 
 #surveys-list-jumbotron {
-    text-align: center;
+    text-align : center;
 }
 
 #surveys-list-jumbotron img.site-surveylist-logo {
-    max-width: 35%;
-    display: block;
-    margin: 15px auto;
+    max-width : 35%;
+    display   : block;
+    margin    : 15px auto;
 }
 
 /*#outerframeContainer {
     height: 100%;
 }*/
-
 #surveyListFooter {
-    width: 100%;
-    text-align: center;
-    margin-bottom: 0;
-    padding-bottom: 80px;
-    padding-top: 10px;
-    margin-top: 10px;
-
-    bottom: 0px;
-    height: 60px;
-    background-color: rgba(236, 240, 241, 0.2);
+    width            : 100%;
+    text-align       : center;
+    margin-bottom    : 0;
+    padding-bottom   : 80px;
+    padding-top      : 10px;
+    margin-top       : 10px;
+    bottom           : 0px;
+    height           : 60px;
+    background-color : rgba(236, 240, 241, 0.2);
 }
 
-@media (max-width: 768px) {
+@media (max-width : 768px) {
     #surveyListFooter {
-        padding-bottom: 40px;
-        padding-top: 5px;
-        margin-top: 5px;
-        height: 40px;
+        padding-bottom : 40px;
+        padding-top    : 5px;
+        margin-top     : 5px;
+        height         : 40px;
     }
 }
 
 /**
  * Specific question part
  */
-.radio-item label,.checkbox-item label {
-    cursor: pointer;
+.radio-item label, .checkbox-item label {
+    cursor : pointer;
 }
-.radio-item [type='radio'],.checkbox-item [type='checkbox'] { /* Why we must positionning at same place */
-    cursor: pointer;
+
+.radio-item [type='radio'], .checkbox-item [type='checkbox'] { /* Why we must positionning at same place */
+    cursor : pointer;
 }
 
 /* Show more the heading in table */
-.ls-answers .ls-heading th{font-weight:700}
+.ls-answers .ls-heading th {font-weight : 700}
+
 /* Max width for some answer part */
-@media (min-width: 768px) {
-    .yesno-button,.gender-button {
-        width: 50%;
+@media (min-width : 768px) {
+    .yesno-button, .gender-button {
+        width : 50%;
     }
-    .yesno-button,.gender-button {
-        float: left;
+    .yesno-button, .gender-button {
+        float : left;
     }
-    .dir-rtl .yesno-button,.dir-rtl .gender-button {
-        float: right;
+    .dir-rtl .yesno-button, .dir-rtl .gender-button {
+        float : right;
     }
 }
 
 /* dynamic group (multiple-numeric) .form-control-static same padding and border width than form-control for better alignment */
-.ls-group-dynamic .form-control-static{border: 2px solid transparent;padding-left:15px;padding-right:15px;}
-/* array by column hover column */
+.ls-group-dynamic .form-control-static {border : 2px solid transparent;padding-left : 15px;padding-right : 15px;}
 
+/* array by column hover column */
 /**
  * Gender buttons
  */
-
 /* General */
 .button-item .ls-icon, .ls-button-label .ls-icon {
-    display: block;
+    display : block;
 }
 
 .button-item .ls-icon, .ls-button-label .ls-icon {
-    font-size: 1.4em;
-    line-height: 1.4em;
+    font-size   : 1.4em;
+    line-height : 1.4em;
 }
 
-
-.file-upload-modal,.modal{
-    z-index: 2001;
+.file-upload-modal, .modal {
+    z-index : 2001;
 }
 
 /* Wrap text in e.g. gender button "No answer */
 .wrap-normal {
-    white-space: normal;
+    white-space : normal;
 }
 
 /* Center modal vertically, used by file-upload modal */
 .modal {
-    text-align: center;
-    padding: 0!important;
+    text-align : center;
+    padding    : 0 !important;
 }
+
 .modal:before {
-    content: '';
-    display: inline-block;
-    height: 100%;
-    vertical-align: middle;
-    margin-right: -4px;
+    content        : '';
+    display        : inline-block;
+    height         : 100%;
+    vertical-align : middle;
+    margin-right   : -4px;
 }
+
 .modal-dialog {
-    display: inline-block;
-    text-align: left;
-    vertical-align: middle;
+    display        : inline-block;
+    text-align     : left;
+    vertical-align : middle;
 }
 
 #yii-flash-message {
-    margin-top: 3em;
+    margin-top : 3em;
 }
 
 .prefix-text-right {
-    text-align: right;
+    text-align : right;
 }
 
 .align-middle {
-    vertical-align: middle !important;
+    vertical-align : middle !important;
 }
-
 
 /* Used for date-picker icon within input */
 .form-control-feedback {
-    right: 1em;
-    left: auto;
+    right : 1em;
+    left  : auto;
 }
 
 /* Only use <label> to get vertical align easy. Don't want boldness. */
 .no-label {
-    font-weight: normal;
+    font-weight : normal;
 }
-
 
 /**
  * Display adjust, question type by question type
  */
-
-
-
 .othertext-label-checkox-container {
-    padding-top: 5px;
-    margin-right: 5px;
+    padding-top  : 5px;
+    margin-right : 5px;
 }
 
 .geoname_search {
-    margin-bottom: 10px;
+    margin-bottom : 10px;
 }
-
-
-
 
 /* Give help text some space */
 .questionhelp {
-    padding-bottom:0.5em;
+    padding-bottom : 0.5em;
 }
 
 /* Arrow */
@@ -381,168 +305,142 @@ element.style {
     margin-left: -0.9em;
 }
 */
-
 /* Asterix */
 .input-error .asterisk {
-    font-size: 1.2em;
-    margin-top:-0.2em;
+    font-size  : 1.2em;
+    margin-top : -0.2em;
 }
 
-#surveys-list-container
-{
-    margin-top: 50px;
+#surveys-list-container {
+    margin-top : 50px;
 }
 
 #outerframeContainer {
-    min-height: 100%;
-    word-wrap: break-word;
-    -webkit-hyphens: auto;
-    -moz-hyphens: auto;
-    -ms-hyphens: auto;
-    -o-hyphens: auto;
-    hyphens: auto;
+    min-height      : 100%;
+    word-wrap       : break-word;
+    -webkit-hyphens : auto;
+    -moz-hyphens    : auto;
+    -ms-hyphens     : auto;
+    -o-hyphens      : auto;
+    hyphens         : auto;
 }
 
 .xdebug-var-dump {
-    z-index: 10000;
-    position: relative;
-    top: 10px;
+    z-index  : 10000;
+    position : relative;
+    top      : 10px;
 }
-
 
 div.yes-no .btn-group label {
-    white-space:normal;
+    white-space : normal;
 }
 
-.privacy-header{
-    font-weight: bold;
-    font-style: italic;
+.privacy-header {
+    font-weight : bold;
+    font-style  : italic;
 }
 
 /*** Divider for Bootstrap ***/
-
-.horizontal-divider.top{
-    border-top: 3px solid #323232;
+.horizontal-divider.top {
+    border-top : 3px solid #323232;
 }
-.horizontal-divider.bottom{
-    border-bottom: 3px solid #323232;
+
+.horizontal-divider.bottom {
+    border-bottom : 3px solid #323232;
 }
 
 .vertical-divider.left {
-    border-left: 3px solid #323232;
+    border-left : 3px solid #323232;
 }
+
 .vertical-divider.right {
-    border-right: 3px solid #323232;
+    border-right : 3px solid #323232;
 }
-@media (max-width: 800px){
+
+@media (max-width : 800px) {
     .vertical-divider.left {
-        border: none;
+        border : none;
     }
     .vertical-divider.right {
-        border: none;
+        border : none;
     }
 }
 
-@media only screen and (max-device-width: 760px){
-
-    .question-container{
-        margin-bottom:1em;
+@media only screen and (max-device-width : 760px) {
+    .question-container {
+        margin-bottom : 1em;
     }
-
-    .question-title-container{
-        padding-top:5px;
-        padding-bottom: 5px;
+    .ls-questionhelp {
+        font-size : 14px;
     }
-
-    .answer-container{
-        //padding-top:0.5em;
-        //padding-bottom:0.5em;
+    .ls-answers {
+        padding-top    : 0;
+        padding-bottom : 0;
     }
-
-    .ls-question-help,
-    .ls-questionhelp{
-        font-size:14px;
+    .help-block:last-child {
+        margin-bottom : 0;
     }
-
-    .ls-answers{
-        padding-top:0;
-        padding-bottom:0;
-    }
-
-    .help-block:last-child{
-        margin-bottom:0;
-    }
-
     .ls-questionhelp,
-    .help-block{
-        font-size:90%;
+    .help-block {
+        font-size : 90%;
     }
 }
 
-p.return-to-survey{
-    clear:left;
+p.return-to-survey {
+    clear : left;
 }
 
 /* Make sure question index menu is not too long. */
 #index-menu ul.dropdown-menu {
-    max-height: 50vh;
-    overflow-y: scroll;
+    max-height : 50vh;
+    overflow-y : scroll;
 }
 
-.text-break-pre{
-    white-space: pre-line;
+.text-break-pre {
+    white-space : pre-line;
 }
 
-.child-row-spacing>.row{
-    padding-bottom: 8px;
+.child-row-spacing > .row {
+    padding-bottom : 8px;
 }
-.child-row-border-bottom>.row:last-child{
-    padding-bottom: 0;
+
+.child-row-border-bottom > .row:last-child {
+    padding-bottom : 0;
 }
 
 .superset {
-    font-size: 50%;
-    vertical-align: top;
-}
-
-/* Remove question container*/
-.question-title-container, .question-valid-container{
-    background: none; border: none;
-}
-.answer-container, .question-container{
-    border: none;
+    font-size      : 50%;
+    vertical-align : top;
 }
 
 .alert {
-    background: none;
+    background : none;
 }
 
 .question-item {
-    border: none;
+    border : none;
 }
 
 /* aligns navigator buttons with question borders */
 #navigator-container > div {
-    padding: 0px;
+    padding : 0px;
 }
-
 
 //.radio-item input[type="radio"]:focus + label::before, input[type="radio"]:focus, input[type="checkbox"]:focus{
 //    outline: none;
 //}
-
 .limit-text-window {
-    max-height: 40rem;
-    max-height: 33vh;
-    padding: 15px 5px;
-    overflow: auto;
-    border-top: 1px solid #dedede;
-    border-bottom: 1px solid #dedede;
-    border-left: none;
-    border-right: none;
-    outline: none;
+    max-height    : 40rem;
+    max-height    : 33vh;
+    padding       : 15px 5px;
+    overflow      : auto;
+    border-top    : 1px solid #dedede;
+    border-bottom : 1px solid #dedede;
+    border-left   : none;
+    border-right  : none;
+    outline       : none;
 }
 
 label {
-    font-weight: bold;
+    font-weight : bold;
 }

@@ -1361,10 +1361,6 @@ body {
     .placeholder {
         background-color : $color_acapulco_approx;
     }
-    /* INput errors*/
-    .question-container.input-error {
-        box-shadow : 0 10px 20px rgba($color_danger, 0.9);
-    }
 }
 
 /* Define the color for Awesome Bootsrap Checkboxes ; based on bg-primary background-color*/

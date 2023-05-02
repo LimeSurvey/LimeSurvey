@@ -83,8 +83,8 @@
         <showclearall type="buttons" category="Simple options" width="4" title="Show Clear All button" options="on|off" optionlabels="Yes|No">off</showclearall>
         <questionhelptextposition type="buttons" category="Simple options" width="4" title="Question help text position" options="top|bottom" optionlabels="Top|Bottom">top</questionhelptextposition>
         <fixnumauto type="buttons" category="Simple options" width="4" title="Fix automatically numeric value" options="enable|partial|disable" optionlabels="Yes|For expression|No">disable</fixnumauto>
-        <questionborder type="buttons" category="Simple options" width="4" title="Question borders" options="on|off" optionlabels="Yes|No">on</questionborder>
-        <questioncontainershadow type="buttons" category="Simple options" width="4" title="Question shadow" options="on|off" optionlabels="Yes|No">on</questioncontainershadow>
+<!--        <questionborder type="buttons" category="Simple options" width="4" title="Question borders" options="on|off" optionlabels="Yes|No">on</questionborder>-->
+<!--        <questioncontainershadow type="buttons" category="Simple options" width="4" title="Question shadow" options="on|off" optionlabels="Yes|No">on</questioncontainershadow>-->
         <darkmode type="buttons" category="Simple options" width="4" title="Dark mode" options="on|off" optionlabels="Yes|No">off</darkmode>
         <!-- images -->
         <backgroundimage type="buttons" category="Images" width="4" title="Background image" options="on|off" optionlabels="Yes|No">off</backgroundimage>

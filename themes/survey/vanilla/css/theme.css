@@ -170,7 +170,6 @@ body {
     position: relative;
 }
 
-.ls-question-help,
 .ls-questionhelp {
     margin-bottom: 5px;
 }
@@ -751,7 +750,6 @@ div.yes-no .btn-group label {
     / / padding-bottom: 0.5 em;
     }
 
-    .ls-question-help,
     .ls-questionhelp {
         font-size: 14px;
     }

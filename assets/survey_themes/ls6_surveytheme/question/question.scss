@@ -1,0 +1,31 @@
+.question-container {
+    margin-bottom : 3em;
+    .ls-label-question {
+        font-size   : 24px;
+        font-weight : $font-weight-600;
+        line-height : 32px;
+    }
+    .question-number:empty,
+    .question-code:empty {
+        display : none
+    }
+    .question-title-container {
+        margin-bottom : 10px;
+    }
+    .question-help-container {
+        margin-bottom : 5px;
+        position      : relative;
+    }
+    .question-valid-container {
+        margin-bottom : 20px;
+    }
+    .asterisk {
+        vertical-align : -0.125em;
+    }
+}
+
+@media only screen and (max-device-width : 767px) {
+    .ls-questionhelp {
+        font-size : 14px;
+    }
+}

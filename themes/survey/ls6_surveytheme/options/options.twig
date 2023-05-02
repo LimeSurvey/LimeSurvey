@@ -103,57 +103,57 @@
                 </div>
 
                 {# Question Border #}
-                <div class='col-12 col-md-6 col-lg-4 col-xl-3'>
-                    <div class='mb-3 row'>
-                        <label for='simple_edit_options_questionborder' class='control-label'>{{ gT("Question borders") }}</label>
-                        <div class='col-12'>
-                            <div class="btn-group" data-toggle="buttons">
-                                <label class="btn btn-outline-secondary">
-                                    <input type='radio' name='questionborder' value='on' class='selector_option_radio_field simple_edit_options_questionborder ' data-id='questionborder'/>
-                                    {{ gT("Yes") }}
-                                </label>
-                                <label class="btn btn-outline-secondary">
-                                    <input type='radio' name='questionborder' value='off' class='selector_option_radio_field simple_edit_options_questionborder ' data-id='questionborder'/>
-                                    {{ gT("No") }}
-                                </label>
+{#                <div class='col-12 col-md-6 col-lg-4 col-xl-3'>#}
+{#                    <div class='mb-3 row'>#}
+{#                        <label for='simple_edit_options_questionborder' class='control-label'>{{ gT("Question borders") }}</label>#}
+{#                        <div class='col-12'>#}
+{#                            <div class="btn-group" data-toggle="buttons">#}
+{#                                <label class="btn btn-outline-secondary">#}
+{#                                    <input type='radio' name='questionborder' value='on' class='selector_option_radio_field simple_edit_options_questionborder ' data-id='questionborder'/>#}
+{#                                    {{ gT("Yes") }}#}
+{#                                </label>#}
+{#                                <label class="btn btn-outline-secondary">#}
+{#                                    <input type='radio' name='questionborder' value='off' class='selector_option_radio_field simple_edit_options_questionborder ' data-id='questionborder'/>#}
+{#                                    {{ gT("No") }}#}
+{#                                </label>#}
 
-                                {# If this is a root template setting, don't show the inherit button #}
-                                {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
-                                    <label class="btn btn-outline-secondary">
-                                        <input type='radio' name='questionborder' value='inherit' class='selector_option_radio_field simple_edit_options_questionborder ' data-id='questionborder'/>
-                                        {{ gT("Inherit") }} [{{ oParentOptions.questionborder }}]
-                                    </label>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
+{#                                #}{# If this is a root template setting, don't show the inherit button #}
+{#                                {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}#}
+{#                                    <label class="btn btn-outline-secondary">#}
+{#                                        <input type='radio' name='questionborder' value='inherit' class='selector_option_radio_field simple_edit_options_questionborder ' data-id='questionborder'/>#}
+{#                                        {{ gT("Inherit") }} [{{ oParentOptions.questionborder }}]#}
+{#                                    </label>#}
+{#                                {% endif %}#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
 
                 {# Question Shadow #}
-                <div class='col-12 col-md-6 col-lg-4 col-xl-3'>
-                    <div class='mb-3 row'>
-                        <label for='simple_edit_options_questioncontainershadow' class='control-label'>{{ gT("Question shadow") }}</label>
-                        <div class='col-12'>
-                            <div class="btn-group" data-toggle="buttons">
-                                <label class="btn btn-outline-secondary">
-                                    <input type='radio' name='questioncontainershadow' value='on' class='selector_option_radio_field simple_edit_options_questioncontainershadow ' data-id='questioncontainershadow'/>
-                                    {{ gT("Yes") }}
-                                </label>
-                                <label class="btn btn-outline-secondary">
-                                    <input type='radio' name='questioncontainershadow' value='off' class='selector_option_radio_field simple_edit_options_questioncontainershadow ' data-id='questioncontainershadow'/>
-                                    {{ gT("No") }}
-                                </label>
-                                {# If this is a root template setting, don't show the inherit button #}
-                                {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
-                                    <label class="btn btn-outline-secondary">
-                                        <input type='radio' name='questioncontainershadow' value='inherit' class='selector_option_radio_field simple_edit_options_questioncontainershadow ' data-id='questioncontainershadow'/>
-                                        {{ gT("Inherit") }} [{{ oParentOptions.questioncontainershadow }}]
-                                    </label>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
+{#                <div class='col-12 col-md-6 col-lg-4 col-xl-3'>#}
+{#                    <div class='mb-3 row'>#}
+{#                        <label for='simple_edit_options_questioncontainershadow' class='control-label'>{{ gT("Question shadow") }}</label>#}
+{#                        <div class='col-12'>#}
+{#                            <div class="btn-group" data-toggle="buttons">#}
+{#                                <label class="btn btn-outline-secondary">#}
+{#                                    <input type='radio' name='questioncontainershadow' value='on' class='selector_option_radio_field simple_edit_options_questioncontainershadow ' data-id='questioncontainershadow'/>#}
+{#                                    {{ gT("Yes") }}#}
+{#                                </label>#}
+{#                                <label class="btn btn-outline-secondary">#}
+{#                                    <input type='radio' name='questioncontainershadow' value='off' class='selector_option_radio_field simple_edit_options_questioncontainershadow ' data-id='questioncontainershadow'/>#}
+{#                                    {{ gT("No") }}#}
+{#                                </label>#}
+{#                                #}{# If this is a root template setting, don't show the inherit button #}
+{#                                {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}#}
+{#                                    <label class="btn btn-outline-secondary">#}
+{#                                        <input type='radio' name='questioncontainershadow' value='inherit' class='selector_option_radio_field simple_edit_options_questioncontainershadow ' data-id='questioncontainershadow'/>#}
+{#                                        {{ gT("Inherit") }} [{{ oParentOptions.questioncontainershadow }}]#}
+{#                                    </label>#}
+{#                                {% endif %}#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
             </div>
 
 
