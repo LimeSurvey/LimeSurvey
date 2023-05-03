@@ -11,7 +11,7 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
         unset($actionUrlArray['id']);
         $actionUrlArray['sid'] = $model->sid;
         $actionUrlArray['surveyd'] = $model->sid;
-        $actionUrlArray['gsid'] = $model->gsid;
+        $actionUrlArray['gsid'] = $model->gsid ?  $model->gsid : $gsid;
         $actionBaseUrl = 'themeOptions/updateSurvey/';
     }
     if ($model->gsid) {
