@@ -1133,7 +1133,7 @@ class DataEntry extends SurveyCommonAction
                     case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: // Array (Yes/Uncertain/No)
                         $aDataentryoutput .= "<table class='table'>\n";
                         $thisqid = $fname['qid'];
-                        while ($fname['qid'] == $thisqid) {
+                        while ($fname && $fname['qid'] == $thisqid) {
                             $aDataentryoutput .= "\t<tr>\n"
                             . "<td align='right'>{$fname['subquestion']}</td>\n"
                             . "<td>\n"
