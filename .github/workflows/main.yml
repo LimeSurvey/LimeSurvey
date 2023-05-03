@@ -89,10 +89,10 @@ jobs:
       - name: Load custom console and start the Application
         run: |
           # find /var/log  # Dump all available logs
-          sudo tail -f -n 500 /var/log/mysql/error.log &
           cp application/config/config-sample-mysql.php application/config/config.php
-          php application/commands/console.php install admin password TravisLS no@email.com verbose
+          php application/commands/console.php install admin password TravisLS no@email.com verbose || true
           cat application/config/config.php
+          sudo tail -n 500 /var/log/mysql/error.log || true
 
       - name: Test the server
         run: |
