@@ -2083,7 +2083,7 @@ class SurveyAdministrationController extends LSBaseController
             $closeAfterSave = $request->getPost('close-after-save') === 'true';
             if ($closeAfterSave) {
                  // save reordering redirect to listquestion page as this part is moved there
-                 $this->redirect(array('questionAdministration/listQuestions?surveyid=' . $iSurveyID));
+                 $this->redirect(array('questionAdministration/listQuestions?surveyid=' . $iSurveyID . '&activeTab=reorder' ));
             }
         }
         $aData = $this->showReorderForm($iSurveyID);
