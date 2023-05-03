@@ -689,7 +689,7 @@ class DataEntry extends SurveyCommonAction
                         $aDataentryoutput .= CHtml::tag('span', array(), '&nbsp;' . $idrow[$fname['fieldname']]);
                         break;
                     case Question::QT_5_POINT_CHOICE: //5 POINT CHOICE radio-buttons
-                        $questionInput = "";
+                        $questionInput = '<div class="five-point-options">';
                         for ($i = 1; $i <= 5; $i++) {
                             $checked = false;
                             if ($idrow[$fname['fieldname']] == $i) {
@@ -700,6 +700,7 @@ class DataEntry extends SurveyCommonAction
                             $questionInput .= '<label for="5-point-choice-' . $i . '">' . $i . '</label>';
                             $questionInput .= '</span>';
                         }
+                        $questionInput .= '</div>';
                         $questionInputs[$fname['fieldname']] = $questionInput;
                         break;
                     case Question::QT_D_DATE: //DATE
