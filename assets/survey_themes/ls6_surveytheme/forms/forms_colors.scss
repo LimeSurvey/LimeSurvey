@@ -65,16 +65,6 @@ textarea,
     color : $color_storm_dust_approx;
 }
 
-// input error
-.input-error input {
-    border : 2px solid $error;
-    color  : $error;
-    &:focus {
-        border : 2px solid $error;
-        color  : $error;
-    }
-}
-
 // select
 .form-select {
     border-color : $input-border-color;
@@ -96,6 +86,34 @@ textarea,
         &:disabled, &[readonly] {
             border           : 2px solid $input-border-color-disabled !important;
             background-color : $g-400;
+        }
+    }
+}
+
+.has-success {
+    .form-control {
+        box-shadow : 4px 4px 0 $base-color;
+        &:focus {
+            box-shadow : 4px 4px 0 $base-color;
+        }
+    }
+}
+
+.has-warning {
+    .form-control {
+        box-shadow : 4px 4px 0 $warning;
+        &:focus {
+            box-shadow : 4px 4px 0 $warning;
+        }
+    }
+}
+
+.has-error,
+.input-error {
+    .form-control {
+        box-shadow : 4px 4px 0 $error;
+        &:focus {
+            box-shadow : 4px 4px 0 $error;
         }
     }
 }
