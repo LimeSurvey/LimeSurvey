@@ -88,6 +88,7 @@ jobs:
 
       - name: Load custom console and start the Application
         run: |
+          find /var/log  # Dump all available logs
           cp application/config/config-sample-mysql.php application/config/config.php
           php application/commands/console.php install admin password TravisLS no@email.com verbose
           cat application/config/config.php
