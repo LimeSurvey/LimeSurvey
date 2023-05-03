@@ -443,6 +443,7 @@ function populateDatabase($oDB)
             'quotals_url' => "string(255)",
             'quotals_urldescrip' => "string(255)",
         ), $options);
+        $oDB->createCommand()->createIndex('{{idx1_quota_id}}', '{{quota_languagesettings}}', ['quotals_quota_id']);
 
 
         // quota_members
@@ -455,6 +456,7 @@ function populateDatabase($oDB)
         ), $options);
 
         $oDB->createCommand()->createIndex('{{idx1_quota_members}}', '{{quota_members}}', ['sid', 'qid', 'quota_id', 'code'], true);
+        $oDB->createCommand()->createIndex('{{idx2_quota_id}}', '{{quota_members}}', ['quota_id']);
 
 
 
