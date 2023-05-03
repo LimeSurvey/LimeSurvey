@@ -22,8 +22,7 @@ echo viewHelper::getViewTestTag('surveyTexts');
     var sTargetQuestion = '';
     var sNoParametersDefined = '';
     var sAdminEmailAddressNeeded = '" .
-        gT("If you are using token functions or notifications emails 
-        you need to set an administrator email address.", 'js') . "'
+        gT("If you are using surveys with a closed participant group or notifications emails you need to set an administrator email address.", 'js') . "'
     var sURLParameters = '';
     var sAddParam = '';
     ",
