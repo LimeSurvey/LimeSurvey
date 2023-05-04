@@ -65,7 +65,13 @@
 
                 <div class="col-12">
                     <?php echo CHtml::submitButton(gT('Search', 'unescaped'), array('class' => 'btn btn-primary')); ?>
-                    <a href="<?php echo Yii::app()->createUrl('questionAdministration/listQuestions&surveyid=' . $surveyid . '&activeTab=groups'); ?>" class="btn btn-warning">
+                    <a href="<?php echo Yii::app()->createUrl(
+                                    'questionAdministration/listQuestions',
+                                    [
+                                        'surveyid' => $surveyid,
+                                        'activeTab' => 'groups'
+                                    ]
+                                ); ?>" class="btn btn-warning">
                         <span class="ri-refresh-line"></span>
                         <?php eT('Reset'); ?>
                     </a>
