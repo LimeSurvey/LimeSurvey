@@ -245,7 +245,7 @@ class OS_Guess
             return array();
         }
         if (!@file_exists('/usr/bin/cpp') || !@is_executable('/usr/bin/cpp')) {
-            return $this-_parseFeaturesHeaderFile($features_header_file);
+            return $this->_parseFeaturesHeaderFile($features_header_file);
         } // no cpp
 
         return $this->_fromGlibCTest();
