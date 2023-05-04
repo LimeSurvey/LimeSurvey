@@ -348,52 +348,7 @@ body {
     .help-block {
         color : $color_monsoon_approx;
     }
-    .dropdown-menu {
-        background-color : $white;
-        border           : 1px solid $color_celeste_approx;
-        border           : 1px solid $black_15;
-        box-shadow       : 0 6px 12px $black_175;
-        .divider {
-            background-color : $mercury;
-        }
-        > {
-            li > a {
-                color : $color_gravel_approx;
-                &:hover {
-                    color            : $white;
-                    background-color : $color_parsley_approx !important;
-                }
-                &:focus {
-                    color            : $white;
-                    background-color : $color_parsley_approx !important;
-                }
-            }
-            .active > a {
-                color            : $white;
-                background-color : $color_parsley_approx !important;
-                &:hover {
-                    color            : $white;
-                    background-color : $color_parsley_approx !important;
-                }
-                &:focus {
-                    color            : $white;
-                    background-color : $color_parsley_approx !important;
-                }
-            }
-            li > a.disabled {
-                color : $color_gunsmoke_approx;
-                :hover {
-                    color : $color_gunsmoke_approx !important;
-                }
-                :focus {
-                    color : $color_gunsmoke_approx !important;
-                }
-            }
-        }
-    }
-    .dropdown-header {
-        color : $color_gunsmoke_approx;
-    }
+
     .input-group-addon {
         color            : white;
         background-color : $base-color;

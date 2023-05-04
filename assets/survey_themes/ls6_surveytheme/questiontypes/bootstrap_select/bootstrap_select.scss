@@ -1,12 +1,20 @@
 .bootstrap-select {
     .bs-searchbox .form-control {
-        padding : 0.375rem 0.75rem;
-        margin-bottom: 4px;
+        padding       : 0.375rem 0.75rem;
+        margin-bottom : 4px;
     }
+
     .bs-ok-default:after {
-        font-size: $font-size-sm;
+        font-size : $font-size-sm;
     }
-    .dropdown-toggle:focus, .bootstrap-select>select.mobile-device:focus+.dropdown-toggle {
-        outline: none;
+
+    .btn.dropdown-toggle:focus, & > select.mobile-device:focus + .dropdown-toggle {
+        outline : none !important;
+    }
+}
+
+.dropdown-menu {
+    .dropdown-item {
+        @include h2;
     }
 }
