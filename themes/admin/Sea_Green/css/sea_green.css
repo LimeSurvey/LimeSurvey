@@ -16749,6 +16749,7 @@ tr.info, tr.danger {
 
 .btn-group .btn {
   padding: 8px 16px;
+  margin-left: 0px !important;
 }
 .btn-group .btn input[type=radio],
 .btn-group .btn input[type=checkbox] {
@@ -18803,6 +18804,7 @@ table [class^=ri-], table [class*=" ri-"] {
 #advanced-question-editor .settings-accordion-container .accordion-body,
 #copy-question .settings-accordion-container .accordion-body {
   padding: 0;
+  margin-left: 10px;
 }
 #advanced-question-editor .settings-accordion-container .accordion-body label,
 #copy-question .settings-accordion-container .accordion-body label {
