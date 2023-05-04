@@ -34,6 +34,25 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.17 (build 230426) to 5.6.18 (build 230503) May 2, 2023
+-Fixed issue: Very slow survey start if a lot of quotas exist (Carsten Schmitz)
+-Fixed issue: SPSS import throws error on "RENAME VARIABLE" (Patricia Stell)
+-Fixed issue #18786: Error shown when token length is set to 36 characters (Carsten Schmitz)
+-Fixed issue #18782: Bad width set for Array dual scale (#3079) (Denis Chenu)
+-Fixed issue #18771: Super-admin unable to rename theme (#3077) (Denis Chenu)
+-Fixed issue #18678: Missing translation in bread crumbs. (#3073) (Gabriel Jenik)
+-Fixed issue #18639: Token browse can be unusable with lot of data in some attribute (#3081) (Denis Chenu)
+-Fixed issue #18604: Set minimum number of files for file upload not working (#3083) (Denis Chenu)
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Spanish (Spain) by aesteban, c_schmitz, ireneoh, jmlopez, larjona, rodrirokr, valdomir
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Portuguese (Portugal) by c_schmitz, samarta
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Japanese by nomoto
+#Updated translation: French (France) by Amaury VAN ESPEN, arnaud21, b00z00, c_schmitz, DenisChenu, DenisChenu_TEST, nmenard, riqcles, twilllig
+#Updated translation: Finnish by Jmantysalo
+
+
 Changes from 5.6.16 (build 230418) to 5.6.17 (build 230426) April 24, 2023
 -Fixed issue #18756: Unable to set non-integer values for initial slider value (#3057) (Denis Chenu)
 -Fixed issue #18739: ComfortUpdate notification not being shown (Gabriel Jenik)
