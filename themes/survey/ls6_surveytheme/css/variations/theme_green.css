@@ -14028,6 +14028,9 @@ input.imageselect-checkbox:checked ~ .imageselect-select::after {
 .ranking-advanced-style .icon-divider {
   display: none;
 }
+.ranking-advanced-style .sortable-list {
+  border: none;
+}
 
 .ranking-advanced-style div.ls-choice.sortable-block {
   background: unset;
