@@ -452,7 +452,9 @@ function buildSelects($allfields, $surveyid, $language)
                 $pvParts = explode(",", str_replace('*', '%', str_replace(' OR ', ',', $_POST[$pv])));
                 if (is_array($pvParts) and count($pvParts)) {
                     foreach ($pvParts as $pvPart) {
-                        $selectSubs[] = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv))) . " LIKE " . App()->db->quoteValue($pvPart);
+                        $columnName = substr($pv, 1, strlen($pv));
+                        $encryptedValue = getEncryptedCondition($responseModel, $columnName, $pvPart);
+                        $selectSubs[] = Yii::app()->db->quoteColumnName($columnName) . " LIKE " . App()->db->quoteValue($encryptedValue);
                     }
                     if (count($selectSubs)) {
                         $selects[] = ' (' . implode(' OR ', $selectSubs) . ') ';
@@ -1463,9 +1465,7 @@ class statistics_helper
         //loop though the array which contains all answer data
         $ColumnName_RM = array();
 
-        $othEncrypted = Response::encryptSingle('-oth-');
-        $emptyStringEncrypted = Response::encryptSingle('');
-        // TODO: Figure out if question is encrypted or not, and if to compare with normal or encrypted empty string
+        $responseModel = SurveyDynamic::model($surveyid);
 
         foreach ($outputs['alist'] as $al) {
 
@@ -1473,6 +1473,8 @@ class statistics_helper
                 //handling for "other" option
                 if ($al[0] == gT("Other")) {
                     if ($outputs['qtype'] == Question::QT_EXCLAMATION_LIST_DROPDOWN || $outputs['qtype'] == Question::QT_L_LIST) {
+                        $columnName = substr($al[2], 0, strlen($al[2]) - 5);
+                        $othEncrypted = getEncryptedCondition($responseModel, $columnName, '-oth-');
                         $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName(substr($al[2], 0, strlen($al[2]) - 5))."='$othEncrypted'";
                     } else {
                         $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ";
@@ -2195,6 +2197,8 @@ class statistics_helper
         $tableXLS  = array();
         $tablePDF2 = array();
 
+        $responseModel = SurveyDynamic::model($surveyid);
+
         foreach ($outputs['alist'] as $al) {
             //picks out answer list ($outputs['alist']/$al)) that come from the multiple list above
             if (isset($al[2]) && $al[2]) {
@@ -2204,7 +2208,9 @@ class statistics_helper
                         // It is better for single choice question types to filter on the number of '-oth-' entries, than to
                         // just count the number of 'other' values - that way with failing Javascript the statistics don't get messed up
                         /* This query selects a count of responses where "other" has been selected */
-                        $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName(substr($al[2], 0, strlen($al[2]) - 5))."='-oth-'";
+                        $columnName = substr($al[2], 0, strlen($al[2]) - 5);
+                        $othEncrypted = getEncryptedCondition($responseModel, $columnName, '-oth-');
+                        $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName($columnName)."='{$othEncrypted}'";
                     } else {
                         //get data - select a count of responses where no answer is provided
                         $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ";
@@ -2253,11 +2259,12 @@ class statistics_helper
                 if ($al[0] != "") {
                     //get more data
                     $sDatabaseType = Yii::app()->db->getDriverName();
+                    $encryptedValue = getEncryptedCondition($responseModel, $rt, $al[0]);
                     if ($sDatabaseType == 'mssql' || $sDatabaseType == 'sqlsrv' || $sDatabaseType == 'dblib') {
                         // mssql cannot compare text blobs so we have to cast here
-                        $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE cast(".Yii::app()->db->quoteColumnName($rt)." as varchar)= '$al[0]'";
+                        $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE cast(".Yii::app()->db->quoteColumnName($rt)." as varchar)= '$encryptedValue'";
                     } else {
-                        $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName($rt)." = '$al[0]'";
+                        $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName($rt)." = '$encryptedValue'";
                     }
                 } else {
                     // This is for the 'NoAnswer' case
