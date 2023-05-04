@@ -38,6 +38,7 @@ textarea {
     font-size    : $dropdown-font-size;
     line-height  : $line-height-16;
     border-width : $input-border-width;
+    padding: $form-select-padding-y $form-select-indicator-padding $form-select-padding-y $form-select-padding-x;
 }
 
 .question-item.mb-3 {
