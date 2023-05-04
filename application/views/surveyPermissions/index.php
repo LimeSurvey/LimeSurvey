@@ -26,7 +26,7 @@
                         <?= gT("User") ?>:
                     </label>
                     <div class='col-4'>
-                        <select id='uidselect' name='uid' class='form-select'>
+                        <select id='uidselect' name='uid' class='form-select activate-search'>
                             <?php
                             if (count($userList) > 0) {
                                 echo "<option value='-1' selected='selected'>" . gT("Please choose...") . "</option>";
@@ -59,7 +59,7 @@
                         <?= gT("User group") ?>:
                     </label>
                     <div class='col-4'>
-                        <select id='ugidselect' name='ugid' class='form-select'>
+                        <select id='ugidselect' name='ugid' class='form-select activate-search'>
                             <?php
                             if (count($userGroupList) > 0) {
                                 echo "<option value='-1' selected='selected'>" . gT("Please choose...") . "</option>";

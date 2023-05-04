@@ -25,7 +25,7 @@ class CLSGridView extends TbGridView
         $this->registerGridviewScripts();
 
         $this->pager = ['class' => 'application.extensions.admin.grid.CLSYiiPager'];
-        $this->htmlOptions['class'] = '';
+        $this->htmlOptions['class'] = 'grid-view-ls';
         $classes = ['table', 'table-hover'];
         $this->template = $this->render('template', ['massiveActionTemplate' => $this->massiveActionTemplate], true);
         $this->lsAfterAjaxUpdate();
@@ -80,8 +80,14 @@ class CLSGridView extends TbGridView
         // ========== this is added for pagination size working by referencing from old limegridview  ==============
         $id = $this->getId();
 
+        if ($this->ajaxUpdate) {
+            $ajaxUpdate = array_unique(preg_split('/\s*,\s*/', $this->ajaxUpdate . ',' . $id, -1, PREG_SPLIT_NO_EMPTY));
+        } else {
+            $ajaxUpdate = false;
+        }
+
         $options = array(
-            'ajaxUpdate' => false,
+            'ajaxUpdate' => $ajaxUpdate,
             'ajaxVar' => $this->ajaxVar,
             'pagerClass' => $this->pagerCssClass,
             'loadingClass' => $this->loadingCssClass,
