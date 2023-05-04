@@ -2294,7 +2294,7 @@ class ExpressionManager
     public function asSplitStringOnExpressions($src)
     {
         // Empty string, return an array
-        if ($src === "") {
+        if ($src === "" || $src === null) {
             return array();
         }
         // No replacement to do, preg_split get more time than strpos
