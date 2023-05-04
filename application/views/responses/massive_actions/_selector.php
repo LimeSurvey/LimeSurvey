@@ -78,8 +78,9 @@ if (Permission::model()->hasSurveyPermission($surveyId, 'responses', 'read')) {
         'iconClasses'     => 'ri-upload-fill',
         'text'            =>  gT('Export'),
         'aLinkSpecificDatas'  => [
-            'input-name'      => 'responseIds',
+            'input-name' => 'responseIds',
             'input-separator' => ',',
+            'target' => '_self',
         ],
         'actionType'    => 'redirect',
     ];
