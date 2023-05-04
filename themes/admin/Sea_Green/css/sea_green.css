@@ -14914,6 +14914,16 @@ div.mappable-attribute-wrapper.paired.ui-state-disabled {
   display: none;
 }
 
+.grid-view-ls .table td .longtext-content {
+  min-width: 8em;
+  max-width: 16em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  height: 1.5em;
+  display: inline-block;
+}
+
 .dropdown-menu.larger-dropdown {
   min-width: 240px;
 }

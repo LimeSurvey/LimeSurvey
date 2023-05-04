@@ -56,7 +56,7 @@
         "vendor-dir": "vendor",
         "bin-dir": "vendor/bin",
 		"platform": {
-			"php": "7.2.5"
+			"php": "7.4.0"
 		}
     },
     "require-dev": {
