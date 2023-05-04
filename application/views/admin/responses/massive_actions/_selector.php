@@ -78,8 +78,9 @@
             'iconClasses'     => 'fa fa-upload',
             'text'            =>  gT('Export'),
             'aLinkSpecificDatas'  => array(
-                'input-name'     => 'responseIds',
-                'input-separator'     => ',',
+                'input-name' => 'responseIds',
+                'input-separator' => ',',
+                'target' => '_self',
             ),
             'actionType'    => 'redirect',
         );
