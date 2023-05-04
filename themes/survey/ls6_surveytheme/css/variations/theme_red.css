@@ -5953,7 +5953,8 @@ textarea.form-control-lg {
   float: left;
   width: 100%;
   margin-right: -100%;
-  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
   transition: transform 0.6s ease-in-out;
 }
 @media (prefers-reduced-motion: reduce) {
@@ -10653,13 +10654,6 @@ body {
     float: right;
   }
 }
-/* dynamic group (multiple-numeric) .form-control-static same padding and border width than form-control for better alignment */
-.ls-group-dynamic .form-control-static {
-  border: 2px solid transparent;
-  padding-left: 15px;
-  padding-right: 15px;
-}
-
 /* array by column hover column */
 /**
  * Gender buttons
@@ -12182,11 +12176,6 @@ body .answer-item label::after {
   display: table-cell;
   padding: 0.6rem 1.2rem;
   line-height: 1;
-}
-
-/* specific for multiple number with dynamic : @todo move this to question class */
-.ls-group-dynamic .control-label, .ls-group-dynamic .form-control-static {
-  display: inline-block;
 }
 
 /* Survey list (home page) : break line in btn for long survey title*/
@@ -14218,6 +14207,11 @@ input.imageselect-checkbox:checked ~ .imageselect-select::after {
   font-weight: 600;
   font-size: 1.14rem;
   line-height: 20px;
+}
+.numeric-multi .ls-group-dynamic .control-label, .numeric-multi .ls-group-dynamic .form-control-static {
+  border: 2px solid transparent;
+  padding-left: 12px;
+  padding-right: 12px;
 }
 
 .numeric-multi .ls-group-total-separator hr {

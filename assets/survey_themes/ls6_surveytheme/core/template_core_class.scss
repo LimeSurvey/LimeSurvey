@@ -173,11 +173,6 @@
     line-height    : 1;
 }
 
-/* specific for multiple number with dynamic : @todo move this to question class */
-.ls-group-dynamic .control-label, .ls-group-dynamic .form-control-static {
-    display : inline-block
-}
-
 /* Survey list (home page) : break line in btn for long survey title*/
 .surveytitle.btn {
     white-space : normal;

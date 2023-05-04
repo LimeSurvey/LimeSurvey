@@ -10,4 +10,9 @@
     .dynamic-total {
         @include h2;
     }
+    .ls-group-dynamic .control-label, .ls-group-dynamic .form-control-static {
+        border : 2px solid transparent;
+        padding-left : 12px;
+        padding-right : 12px;
+    }
 }
