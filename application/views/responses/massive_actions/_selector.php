@@ -77,10 +77,10 @@ if (Permission::model()->hasSurveyPermission($surveyId, 'responses', 'read')) {
         'url'             =>  App()->createUrl('admin/export/sa/exportresults/surveyId/'.$surveyId),
         'iconClasses'     => 'fa fa-upload',
         'text'            =>  gT('Export'),
-
         'aLinkSpecificDatas'  => [
-            'input-name'     => 'responseIds',
-            'input-separator'     => ',',
+            'input-name' => 'responseIds',
+            'input-separator' => ',',
+            'target' => '_self',
         ],
         'actionType'    => 'redirect',
     ];
