@@ -26,5 +26,4 @@ class Update_497 extends DatabaseUpdateBase
             "name='reorder'"
         );
     }
-
 }
