@@ -1,0 +1,102 @@
+// input field
+.form-control {
+    border        : $input-border-width solid $input-border-color !important;
+    line-height   : $line-height-16;
+    border-radius : $border-radius;
+    &:focus {
+        box-shadow : 4px 4px 0px $elevation-shadow;
+    }
+    &:disabled, &[readonly] {
+        border           : $input-border-width solid $input-border-color-disabled !important;
+        background-color : $g-400;
+        color            : $g-600;
+    }
+}
+
+.col-form-label {
+    line-height : $line-height-16;
+}
+
+.form-control.ls-important-field {
+    padding     : 14px 12px;
+    font-weight : 400;
+    font-size   : 14px;
+    line-height : $line-height-16;
+    border      : 2px solid $g-900 !important;
+    box-shadow  : 8px 8px 0px $g-200;
+    &:focus {
+        box-shadow : 8px 8px 0px $elevation-shadow;
+    }
+    &:disabled, &[readonly] {
+        border           : 2px solid $input-border-color-disabled !important;
+        background-color : $g-400;
+    }
+}
+
+input[type="file"] {
+    position   : relative;
+    padding    : 13px 14px;
+    box-shadow : 8px 8px 0px #eeeff7;
+}
+
+input[type="file"]::file-selector-button {
+    position      : absolute;
+    top           : 50%;
+    right         : 4px;
+    transform     : translateY(-50%);
+    margin        : 0;
+    padding       : 8px 12px;
+    background    : $white;
+    color         : $g-900;
+    border        : 1px solid $g-900 !important;
+    border-radius : $btn-border-radius;
+    font-weight   : 500;
+}
+
+input[type="number"] {
+  height : 38px;
+}
+
+// select
+.form-select {
+    border      : 1px solid $g-900;
+    font-weight : $font-weight-normal;
+    font-size   : $dropdown-font-size;
+    line-height : $line-height-16;
+    &:focus {
+        box-shadow : 4px 4px 0px $elevation-shadow;
+    }
+    &:disabled {
+        border           : $input-border-width solid $input-border-color-disabled;
+        background-color : $g-400;
+        color            : $g-600;
+    }
+    &.ls-important-field {
+        border     : 2px solid $g-900 !important;
+        box-shadow : 8px 8px 0px $g-200;
+        &:focus {
+            box-shadow : 8px 8px 0px $elevation-shadow;
+        }
+        &:disabled, &[readonly] {
+            border           : 2px solid $input-border-color-disabled !important;
+            background-color : $g-400;
+        }
+    }
+}
+
+.input-group-text {
+    background-color : $g-800;
+    color            : $white;
+}
+
+.ls-input-button {
+    top       : 50%;
+    right     : 5px;
+    transform : translateY(-50%);
+}
+
+.hint {
+    font-size : 0.8em;
+}
+
+@import "select2.scss";

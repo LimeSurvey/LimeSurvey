@@ -16,7 +16,7 @@ if (Permission::model()->hasSurveyPermission($_GET['surveyId'], 'responses', 'de
         'type'        => 'action',
         'action'      => 'delete',
         'url'         =>  App()->createUrl("responses/delete/", ['surveyId' => $_GET['surveyId']]),
-        'iconClasses' => 'fa fa-trash text-danger',
+        'iconClasses' => 'ri-delete-bin-fill text-danger',
         'text'        =>  gT('Delete'),
         'grid-reload' => 'yes',
 
@@ -38,7 +38,7 @@ if (Permission::model()->hasSurveyPermission($_GET['surveyId'], 'responses', 'de
         'action'      => 'deleteAttachments',
         //'url'         =>  App()->createUrl("admin/responses", array("sa"=>"actionDeleteAttachments")),
         'url'         =>  App()->createUrl("responses/deleteAttachments/", ["surveyId" => $_GET['surveyId']]),
-        'iconClasses' => 'text-danger fa fa-paperclip',
+        'iconClasses' => 'text-danger ri-attachment-2',
         'text'        =>  gT('Delete attachments'),
         'grid-reload' => 'yes',
 
@@ -60,7 +60,7 @@ if (Permission::model()->hasSurveyPermission($_GET['surveyId'], 'responses', 're
         'type' => 'action',
         'action' => 'downloadZip',
         'url' => App()->createUrl('responses/downloadfiles/', ['surveyId' => $_GET['surveyId'], 'responseIds' => '']),
-        'iconClasses' => 'fa fa-download test',
+        'iconClasses' => 'ri-download-fill test',
         'text' => gT('Download files'),
         'grid-reload' => 'no',
 
@@ -74,7 +74,7 @@ if (Permission::model()->hasSurveyPermission($_GET['surveyId'], 'responses', 're
         'type'            => 'action',
         'action'          => 'export',
         'url'             =>  App()->createUrl('admin/export/sa/exportresults/surveyId/'.$_GET['surveyId']),
-        'iconClasses'     => 'fa fa-upload',
+        'iconClasses'     => 'ri-upload-fill',
         'text'            =>  gT('Export'),
 
         'aLinkSpecificDatas'  => [

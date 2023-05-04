@@ -9,44 +9,44 @@
 <form class="custom-modal-datas form-horizontal">
 
     <!-- Public statistics -->
-    <div  class="form-group" id="PublicStatistcs">
-        <label class="col-sm-4 control-label" for="public_statistics"><?php eT("Show in public statistics:"); ?></label>
-        <div class="col-sm-8">
-            <?php $this->widget(
-                    'yiiwheels.widgets.switch.WhSwitch',
-                    array(
-                        'name' => 'public_statistics',
-                        'htmlOptions'=> array(
-                            'class'=>'custom-data attributes-to-update bootstrap-switch-integer'
-                        ),
-                    'value'=> '',
-                    'onLabel'=>gT('On'),
-                    'offLabel'=>gT('Off')));
-            ?>
+    <div  class="mb-3" id="PublicStatistcs">
+        <label class="col-md-4 form-label" for="public_statistics"><?php eT("Show in public statistics:"); ?></label>
+        <div class="col-md-8">
+            <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                'name'          => 'public_statistics',
+                'checkedOption' => '0',
+                'selectOptions' => [
+                    '1' => gT('On'),
+                    '0' => gT('Off'),
+                ],
+                'htmlOptions'   => [
+                    'class' => 'custom-data attributes-to-update bootstrap-switch-integer'
+                ],
+            ]); ?>
         </div>
     </div>
     <!-- Display charts -->
-    <div  class="form-group" id="StatisticsShowgraph">
-        <label class="col-sm-4 control-label" for="statistics_showgraph"><?php eT("Display chart:"); ?></label>
-        <div class="col-sm-8">
-            <?php $this->widget(
-                'yiiwheels.widgets.switch.WhSwitch',
-                array(
-                    'name' => 'statistics_showgraph',
-                    'htmlOptions'=>array(
-                        'class'=>'custom-data attributes-to-update bootstrap-switch-integer'
-                    ),
-                'value'=> '',
-                'onLabel'=>gT('On'),
-                'offLabel'=>gT('Off')));
-            ?>
+    <div  class="mb-3" id="StatisticsShowgraph">
+        <label class="col-md-4 form-label" for="statistics_showgraph"><?php eT("Display chart:"); ?></label>
+        <div class="col-md-8">
+            <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                'name'          => 'statistics_showgraph',
+                'checkedOption' => '0',
+                'selectOptions' => [
+                    '1' => gT('On'),
+                    '0' => gT('Off'),
+                ],
+                'htmlOptions'   => [
+                    'class' => 'custom-data attributes-to-update bootstrap-switch-integer'
+                ],
+            ]); ?>
         </div>
     </div>
     <!-- Display charts -->
-    <div  class="form-group" id="StatisticsGraphType">
-        <label class="col-sm-4 control-label" for="statistics_showgraph"><?php eT("Chart type:"); ?></label>
-        <div class="col-sm-8">
-            <select class="form-control custom-data attributes-to-update" id="statistics_graphtype" name="statistics_graphtype">
+    <div  class="mb-3" id="StatisticsGraphType">
+        <label class="col-md-4 form-label" for="statistics_showgraph"><?php eT("Chart type:"); ?></label>
+        <div class="col-md-8">
+            <select class="form-select custom-data attributes-to-update" id="statistics_graphtype" name="statistics_graphtype">
                 <option value="0" selected="selected">Bar chart</option>
                 <option value="1"><?php eT('Pie chart'); ?></option>
                 <option value="2"><?php eT('Radar'); ?></option>

@@ -488,7 +488,7 @@ class Themes extends SurveyCommonAction
                     $uploadresult = gT("Demo mode: Uploading template files is disabled.");
                 } elseif ($filename != $_FILES['upload_file']['name']) {
                     $uploadresult = gT("This filename is not allowed to be uploaded.");
-                } elseif (!in_array(strtolower(substr(strrchr($filename, '.'), 1)), explode(",", $allowedthemeuploads))) {
+                } elseif (!in_array(strtolower(substr(strrchr((string) $filename, '.'), 1)), explode(",", $allowedthemeuploads))) {
                     $uploadresult = gT("This file type is not allowed to be uploaded.");
                 } else {
                     //Uploads the file into the appropriate directory
@@ -545,24 +545,59 @@ class Themes extends SurveyCommonAction
         // This can happen if the global default template is deleted
         if (!Template::checkIfTemplateExists($templatename)) {
             // Redirect to the default template
-            Yii::app()->setFlashMessage(sprintf(gT('Theme %s does not exist.'), htmlspecialchars($templatename, ENT_QUOTES)), 'error');
+            Yii::app()->setFlashMessage(sprintf(gT('Theme %s does not exist.'), htmlspecialchars((string) $templatename, ENT_QUOTES)), 'error');
             $this->getController()->redirect(array('admin/themes/sa/view/', 'templatename' => getGlobalSetting('defaulttheme')));
         }
 
         /* Keep Bootstrap Package clean after loading template : because template can update boostrap */
-        $aBootstrapPackage = Yii::app()->clientScript->packages['bootstrap-admin'];
 
         $aViewUrls = $this->initialise($templatename, $screenname, $editfile, true, true);
 
         App()->getClientScript()->reset();
-        Yii::app()->clientScript->packages['bootstrap'] = $aBootstrapPackage;
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'templates.js');
+
+        $undo    = gT("Undo (Ctrl-Z)", "js");
+        $redo    = gT("Redo (Ctrl-Y)", "js");
+        $find    = gT("Find (Ctrl-F)", "js");
+        $replace = gT("Replace (Ctrl-H)", "js");
+        App()->getClientScript()->registerScript(
+            "SurveyThemeEditorLanguageData",
+            <<<JAVASCRIPT
+surveyThemeEditorLanguageData = {
+    undo: "$undo",
+    redo: "$redo",
+    find: "$find",
+    replace: "$replace"
+};
+JAVASCRIPT
+            ,
+            CClientScript::POS_BEGIN
+        );
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'templates.js', CClientScript::POS_END);
         App()->getClientScript()->registerPackage('ace');
         App()->getClientScript()->registerPackage('jsuri');
+        AdminTheme::getInstance()->registerStylesAndScripts();
 
-        // Green SurveyManagerBar Page Title
+        // page title
         $pageTitle = gT('Theme editor:') . ' ' . $templatename;
-        $aData['pageTitle'] = $pageTitle;
+
+        //$aData['pageTitle'] = $pageTitle;
+        $aData['topbar']['title'] = $pageTitle;
+
+        $aData['topbar']['middleButtons'] = Yii::app()->getController()->renderPartial(
+            '/admin/themes/partial/topbarBtns/leftSideButtons',
+            [
+                'isExport' => (Permission::model()->hasGlobalPermission('templates', 'export') && class_exists('ZipArchive')),
+                'templatename' => $templatename,
+                'isExtend' => true,
+            ],
+            true
+        );
+
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/admin/themes/partial/topbarBtns/rightSideButtons',
+            [],
+            true
+        );
 
         // White Bar
         $aData['templateEditorBar']['buttons']['returnbutton'] = true;
@@ -594,13 +629,13 @@ class Themes extends SurveyCommonAction
 
             if ($sPostedFiletype == 'screen') {
                 $filesdir        = $oEditedTemplate->viewPath;
-                $sFileToDelete   = str_replace($oEditedTemplate->filesPath, '', $sPostedFile);
+                $sFileToDelete   = str_replace($oEditedTemplate->filesPath, '', (string) $sPostedFile);
             } elseif ($sPostedFiletype == 'js' || $sPostedFiletype == 'css') {
                 $filesdir        = $oEditedTemplate->path;
-                $sFileToDelete   = str_replace($oEditedTemplate->filesPath, '', $sPostedFile);
+                $sFileToDelete   = str_replace($oEditedTemplate->filesPath, '', (string) $sPostedFile);
             } elseif ($sPostedFiletype == 'other') {
                 $filesdir        = $oEditedTemplate->filesPath;
-                $sFileToDelete   = str_replace($oEditedTemplate->filesPath, '', $sPostedFile);
+                $sFileToDelete   = str_replace($oEditedTemplate->filesPath, '', (string) $sPostedFile);
             } else {
                 Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
                 $this->getController()->redirect(array('admin/themes', 'sa' => 'view', 'editfile' => App()->request->getPost('editfile'), 'screenname' => App()->request->getPost('screenname'), 'templatename' => $sTemplateName));
@@ -633,45 +668,35 @@ class Themes extends SurveyCommonAction
      */
     public function templaterename()
     {
-        $sOldName = sanitize_dirname(returnGlobal('copydir'));
-
+        $sNewName = sanitize_dirname(App()->getRequest()->getPost('newname'));
+        $sOldName = sanitize_dirname(App()->getRequest()->getPost('copydir'));
         if (Permission::model()->hasGlobalPermission('templates', 'update')) {
-            if (returnGlobal('action') == "templaterename" && returnGlobal('newname') && returnGlobal('copydir')) {
-                $sNewName = sanitize_dirname(returnGlobal('newname'));
-                $sNewDirectoryPath = sanitize_dirname(Yii::app()->getConfig('userthemerootdir') . "/" . $sNewName);
-                $sOldDirectoryPath = sanitize_dirname(Yii::app()->getConfig('userthemerootdir') . "/" . returnGlobal('copydir'));
-
-                if (Template::isStandardTemplate(returnGlobal('newname'))) {
-                    Yii::app()->user->setFlash('error', sprintf(gT("Template could not be renamed to '%s'."), $sNewName) . " " . gT("This name is reserved for standard template."));
-
-                    $this->getController()->redirect(array("admin/themes/sa/upload"));
+            if ($sNewName && $sOldName) {
+                $sNewDirectoryPath = Yii::app()->getConfig('userthemerootdir') . DIRECTORY_SEPARATOR . $sNewName;
+                $sOldDirectoryPath = Yii::app()->getConfig('userthemerootdir') . DIRECTORY_SEPARATOR . $sOldName;
+                if (Template::isStandardTemplate($sNewName)) {
+                    App()->user->setFlash('error', sprintf(gT("Template could not be renamed to '%s'."), $sNewName) . " " . gT("This name is reserved for standard template."));
                 } elseif (file_exists($sNewDirectoryPath)) {
-                    Yii::app()->user->setFlash('error', sprintf(gT("Template could not be renamed to '%s'."), $sNewName) . " " . gT("A template with that name already exists."));
-
-                    $this->getController()->redirect(array("admin/themes/sa/upload"));
+                    App()->user->setFlash('error', sprintf(gT("Template could not be renamed to '%s'."), $sNewName) . " " . gT("A template with that name already exists."));
                 } elseif (rename($sOldDirectoryPath, $sNewDirectoryPath) == false) {
-                    Yii::app()->user->setFlash('error', sprintf(gT("Template could not be renamed to '%s'."), $sNewName) . " " . gT("Maybe you don't have permission."));
-
-                    $this->getController()->redirect(array("admin/themes/sa/upload"));
+                    App()->user->setFlash('error', sprintf(gT("Template could not be renamed to '%s'."), $sNewName) . " " . gT("Maybe you don't have permission."));
                 } else {
+                    /* We renamle the directory */
                     $oTemplate = Template::model()->findByAttributes(array('name' => $sOldName));
-
                     if (is_a($oTemplate, 'Template')) {
                         $oTemplate->renameTo($sNewName);
-                        if (getGlobalSetting('defaulttheme') == $sOldName) {
+                        if (App()->getConfig('defaulttheme') == $sOldName) {
                             SettingGlobal::setSetting('defaulttheme', $sNewName);
                         }
-
                         $this->getController()->redirect(array('admin/themes', 'sa' => 'view', 'editfile' => 'layout_global.twig', 'screenname' => 'welcome', 'templatename' => $sNewName));
                     } else {
-                        Yii::app()->user->setFlash('error', sprintf(gT("Template '%s' could not be found."), $sOldName));
+                        App()->user->setFlash('error', sprintf(gT("Template '%s' could not be found."), $sOldName));
                     }
-
                     $this->getController()->redirect(array('themeOptions/index'));
                 }
             }
         } else {
-            Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
+            App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
         }
         $this->getController()->redirect(array('admin/themes', 'sa' => 'view', 'editfile' => 'layout_global.twig', 'screenname' => 'welcome', 'templatename' => $sOldName));
     }
@@ -737,7 +762,7 @@ class Themes extends SurveyCommonAction
      */
     public function delete()
     {
-        $templatename = trim(Yii::app()->request->getPost('templatename'));
+        $templatename = trim(Yii::app()->request->getPost('templatename', ''));
         if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
             Yii::app()->loadHelper("admin/template");
 
@@ -784,7 +809,7 @@ class Themes extends SurveyCommonAction
 
     public function deleteBrokenTheme()
     {
-        $templatename = trim(Yii::app()->request->getPost('templatename'));
+        $templatename = trim(Yii::app()->request->getPost('templatename', ''));
 
         if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
             // First we check that the theme is really broken
@@ -805,12 +830,12 @@ class Themes extends SurveyCommonAction
 
     public function deleteAvailableTheme()
     {
-        $templatename = trim(Yii::app()->request->getPost('templatename'));
+        $templatename = trim(Yii::app()->request->getPost('templatename', ''));
 
         if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
             $completeFileName = realpath(Yii::app()->getConfig('userthemerootdir') . "/" . $templatename);
             /* If retuirn false, not a dir or not inside userthemerootdir: try to hack : throw a 403 for security */
-            if (!is_dir($completeFileName) || substr($completeFileName, 0, strlen(Yii::app()->getConfig('userthemerootdir'))) !== Yii::app()->getConfig('userthemerootdir')) {
+            if (!is_dir($completeFileName) || substr($completeFileName, 0, strlen((string) Yii::app()->getConfig('userthemerootdir'))) !== Yii::app()->getConfig('userthemerootdir')) {
                 throw new CHttpException(403, "Disable for security reasons.");
             }
             // CheckIfTemplateExists check if the template is installed....
@@ -843,12 +868,12 @@ class Themes extends SurveyCommonAction
 
             if (returnGlobal('changes')) {
                 $changedtext = returnGlobal('changes');
-                $changedtext = str_replace('<?', '', $changedtext);
+                $changedtext = str_replace('<?', '', (string) $changedtext);
             }
 
             if (returnGlobal('changes_cp')) {
                 $changedtext = returnGlobal('changes_cp');
-                $changedtext = str_replace('<?', '', $changedtext);
+                $changedtext = str_replace('<?', '', (string) $changedtext);
             }
 
             $action               = returnGlobal('action');
@@ -982,7 +1007,7 @@ class Themes extends SurveyCommonAction
             $aData['filenotwritten'] = true;
         } else {
             //App()->getClientScript()->reset();
-            @fwrite($fnew, getHeader());
+            @fwrite($fnew, (string) getHeader());
 
             App()->getClientScript()->registerScript("activateActionLink", "activateActionLink();", LSYii_ClientScript::POS_POSTSCRIPT); /* show the button if needed */
 
@@ -1263,7 +1288,7 @@ class Themes extends SurveyCommonAction
         $otherfiles = $oEditedTemplate->getOtherFiles();
         $sEditfile = $oEditedTemplate->getFilePathForEditing($editfile, array_merge($files, $aCssAndJsfiles));
 
-        $extension = substr(strrchr($sEditfile, "."), 1);
+        $extension = substr(strrchr((string) $sEditfile, "."), 1);
         $highlighter = 'html';
         if ($extension == 'css' || $extension == 'js') {
             $highlighter = $extension;
@@ -1395,7 +1420,7 @@ class Themes extends SurveyCommonAction
             $extConfig = ExtensionConfig::loadFromZip($src);
             return $extConfig->getName();
         } else {
-            return sanitize_dirname(pathinfo($_FILES['the_file']['name'], PATHINFO_FILENAME));
+            return sanitize_dirname(pathinfo((string) $_FILES['the_file']['name'], PATHINFO_FILENAME));
         }
     }
 

@@ -1,6 +1,6 @@
 <div class="input-group col-12">
     <?php if (isset($this->setting['aFormElementOptions']['inputGroup']['prefix'])) : ?>
-        <div class="input-group-addon">
+        <div class="input-group-text">
             <?= $this->setting['aFormElementOptions']['inputGroup']['prefix']; ?>
         </div>
     <?php endif; ?>
@@ -15,7 +15,7 @@
         min="1"
     />
     <?php if (isset($this->setting['aFormElementOptions']['inputGroup']['suffix'])) : ?>
-        <div class="input-group-addon">
+        <div class="input-group-text">
             <?= $this->setting['aFormElementOptions']['inputGroup']['suffix']; ?>
         </div>
     <?php endif; ?>

@@ -14,7 +14,7 @@ function getRatingSlider(qID){
     basicSettings = {
     },
     package = {
-      sliderHtmlElement       : $("<div id='emoji_slider_container_"+qID+"' class='slider-wrapper' aria-hidden='true'></div>"),               //wrapper for the slider parts
+      sliderHtmlElement       : $("<div id='emoji_slider_container_"+qID+"' class='ls-emojislider slider-wrapper' aria-hidden='true'></div>"),               //wrapper for the slider parts
       sliderInnerHtmlElement  : $("<div class='slider-labels'></div>"),                                                    //the labels of the wrapper
       sliderGrabContainer     : $("<div id='emoji_slider_grab_container_"+qID+"' class='slider-grab-container'></div>"),   //the container for the handle and the colorline
       sliderLine              : $("<div id='slider_line_item_"+qID+"' class='slider-line'></div>"),                        //The colored baseline
@@ -174,7 +174,7 @@ function getRatingSlider(qID){
   //hide the basic radioes
     pinUpHtml();
     bindEventsToContainer();
-    answersList.addClass("slidered-list sr-only");
+    answersList.addClass("slidered-list visually-hidden");
   //if a value is set, set it in the emojis
   var openValue = checkOpenValue();
     if(openValue){

@@ -202,7 +202,7 @@ class QuestionGroupEditorTest extends TestBaseClassWeb
         try {
             $button = self::$webDriver->wait(1)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
-                    WebDriverBy::cssSelector('#admin-notification-modal button.btn-default')
+                    WebDriverBy::cssSelector('#admin-notification-modal button.btn-outline-secondary')
                 )
             );
             $button->click();

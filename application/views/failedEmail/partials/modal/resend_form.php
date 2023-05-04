@@ -13,7 +13,7 @@
 </div>
 <div class="modal-footer modal-footer-buttons">
     <button id="exitForm" class="btn btn-cancel  "><?= gT('Cancel') ?></button>
-    <button class="btn btn-success" id="submitForm"><?= gT('Resend') ?></button>
+    <button class="btn btn-primary" id="submitForm"><?= gT('Resend') ?></button>
 </div>
 <?= CHtml::endForm() ?>
 
