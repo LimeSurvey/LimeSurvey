@@ -1,5 +1,8 @@
 .checkbox-item {
     padding-left: 20px;
+    &.mb-1 {
+        margin-bottom: 20px !important;
+    }
 }
 
 .checkbox-item label {

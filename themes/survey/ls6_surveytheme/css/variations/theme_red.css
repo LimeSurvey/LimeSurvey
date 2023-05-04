@@ -14256,6 +14256,9 @@ input.imageselect-checkbox:checked ~ .imageselect-select::after {
 .checkbox-item {
   padding-left: 20px;
 }
+.checkbox-item.mb-1 {
+  margin-bottom: 20px !important;
+}
 
 .checkbox-item label {
   display: inline-block;
