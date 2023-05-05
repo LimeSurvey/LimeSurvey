@@ -41,7 +41,6 @@
 
             <!-- Search Box -->
             <?php $form = $this->beginWidget('TbActiveForm', array(
-                // 'action' => Yii::app()->createUrl('questionGroupsAdministration/listquestiongroups/surveyid/' . $surveyid),
                 'action' => App()->createUrl(
                     'questionAdministration/listquestions',
                     [
@@ -68,7 +67,7 @@
                     <a href="<?php echo Yii::app()->createUrl(
                                     'questionAdministration/listQuestions',
                                     [
-                                        'surveyid' => $surveyid,
+                                        'surveyid' => $oSurvey->primaryKey,
                                         'activeTab' => 'groups'
                                     ]
                                 ); ?>" class="btn btn-warning">
@@ -160,38 +159,42 @@
 </div>
 
 <!-- To update rows per page via ajax -->
-<?php App()->getClientScript()->registerScript("ListQuestionGroups-pagination", "
-        var bindPageSizeChange = function(){
-            $(document).trigger('actions-updated');
-        };
-        var activeTabContent = function() {
-            const params = new URLSearchParams(window.location.search);
-            const activeTab = params.get('activeTab');
-            console.log('activeTab: ', activeTab);
-            if (activeTab) {
-                // set tab as active
-                const selector = '#overviewTab a[href=\"' + '#' + activeTab + '\"' + ']'
-                const tab = document.querySelector(selector);
-                if (tab) {
-                    tab.classList.add('active');
-                    const tabs = document.querySelectorAll('#overviewTab a.nav-link');
-                    for (const tabElement of tabs) {
-                        if (tabElement !== tab) {
-                          tabElement.classList.remove('active');
-                        }
-                      }
-                 }
-                // show tab content
-                 const tabContents = document.querySelectorAll('.tab-content .tab-pane');
-                 for (const tabContent of tabContents) {
-                   if (tabContent.id === activeTab) {
-                    tabContent.classList.add('active');
-                   } else {
-                    tabContent.classList.remove('active');
-                   }
-                 }
-            }
+<?php
+$paginationAndTabActive = <<<JAVASCRIPT
+
+var bindPageSizeChange = function () {
+  $(document).trigger("actions-updated");
+};
+
+const activeTabContent = () => {
+  const params = new URLSearchParams(window.location.search);
+  const activeTab = params.get("activeTab");
+  if (activeTab) {
+    // set tab as active
+    const selector = '#overviewTab a[href="' + "#" + activeTab + '"' + "]";
+    const tab = document.querySelector(selector);
+    if (tab) {
+      tab.classList.add("active");
+      const tabs = document.querySelectorAll("#overviewTab a.nav-link");
+      for (const tabElement of tabs) {
+        if (tabElement !== tab) {
+          tabElement.classList.remove("active");
         }
-    ", LSYii_ClientScript::POS_BEGIN); ?>
+      }
+    }
+    // show tab content
+    const tabContents = document.querySelectorAll(".tab-content .tab-pane");
+    for (const tabContent of tabContents) {
+      if (tabContent.id === activeTab) {
+        tabContent.classList.add("active");
+      } else {
+        tabContent.classList.remove("active");
+      }
+    }
+  }
+};
+JAVASCRIPT;
+
+App()->getClientScript()->registerScript("ListQuestionGroups-pagination-active-tab", $paginationAndTabActive, LSYii_ClientScript::POS_BEGIN); ?>
 
 <?php App()->getClientScript()->registerScript("ListQuestionGroups-run-pagination", "bindPageSizeChange(); activeTabContent();", LSYii_ClientScript::POS_POSTSCRIPT); ?>

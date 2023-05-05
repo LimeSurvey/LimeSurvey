@@ -328,38 +328,48 @@ class QuestionAdministrationController extends LSBaseController
         $questionModel->sid = $oSurvey->sid;
         $aData['questionModel'] = $questionModel;
 
+        $aData['surveyid'] = $iSurveyID;
+        $aData['surveybar'] = [];
+        
+        // for newly combined groups and reorder parts
+        $aData['groupModel'] = $this->getGroupData($oSurvey);
+        $aData['aGroupsAndQuestions'] = $this->getReorderData($oSurvey);
 
-        // =========================   group data =============================
-      
-        // *  group model  *
-        $groupModel    = new QuestionGroup('search');
+        $this->aData = $aData;
+
+         $aData['hasSurveyContentCreatePermission'] = Permission::model()->hasSurveyPermission(
+            $iSurveyID,
+            'surveycontent',
+            'create'
+         );
+
+
+        $this->render("listquestions", $aData);
+    }
+
+    public function getGroupData($oSurvey) {
+        $model    = new QuestionGroup('search');
 
         if (isset($_GET['QuestionGroup']['group_name'])) {
-            $groupModel->group_name = $_GET['QuestionGroup']['group_name'];
+            $model->group_name = $_GET['QuestionGroup']['group_name'];
         }
 
         if (isset($_GET['pageSize'])) {
             Yii::app()->user->setState('pageSize', (int) $_GET['pageSize']);
         }
+        $model['sid'] = $oSurvey->primaryKey;
+        $model['language'] = $oSurvey->language;
 
+        return $model;
+    }
+
+    public function getReorderData($oSurvey) {
+        $iSurveyID = $oSurvey->primaryKey;
         $baselang = $oSurvey->language;
-        $groupModel['sid'] = $iSurveyID;
-        $groupModel['language'] = $baselang;
-        // ====================== *
-
-
-        $aData['groupModel'] = $groupModel;
-        $aData['surveyid'] = $iSurveyID;
-        $aData['surveybar'] = [];
-
-        // =========================================================================
-
-        // =========================   reorder data =============================
         // cloned below content from surveyAdministrationController line#2550
         $groups = $oSurvey->groups;
         $groupData = [];
         $initializedReplacementFields = false;
-
         foreach ($groups as $iGID => $oGroup) {
             $groupData[$iGID]['gid'] = $oGroup->gid;
             $groupData[$iGID]['group_text'] = $oGroup->gid . ' ' . $oGroup->questiongroupl10ns[$baselang]->group_name;
@@ -390,21 +400,7 @@ class QuestionAdministrationController extends LSBaseController
             LimeExpressionManager::FinishProcessingGroup();
         }
 
-        $aData['aGroupsAndQuestions'] = $groupData;
-
-        // =========================================================================
-
-
-        $this->aData = $aData;
-
-         $aData['hasSurveyContentCreatePermission'] = Permission::model()->hasSurveyPermission(
-            $iSurveyID,
-            'surveycontent',
-            'create'
-         );
-
-
-        $this->render("listquestions", $aData);
+        return $groupData;
     }
 
     /****
