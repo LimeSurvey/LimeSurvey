@@ -4,7 +4,24 @@
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
+    $actionBaseUrl = 'themeOptions/update/';
+    $actionUrlArray = ['id' => $model->id];
 
+    if ($model->sid) {
+        unset($actionUrlArray['id']);
+        $actionUrlArray['sid'] = $model->sid;
+        $actionUrlArray['surveyd'] = $model->sid;
+        $actionUrlArray['gsid'] = $model->gsid;
+        $actionBaseUrl = 'themeOptions/updateSurvey/';
+    }
+    if ($model->gsid) {
+        unset($actionUrlArray['id']);
+        $actionBaseUrl = 'themeOptions/updateSurveyGroup/';
+        $actionUrlArray['gsid'] = $model->gsid;
+        $actionUrlArray['id'] = $model->id;
+    }
+
+    $actionUrl = Yii::app()->getController()->createUrl($actionBaseUrl, $actionUrlArray);
 ?>
 <?php if (empty($model->sid)) : ?>
 <div class="">
@@ -42,7 +59,13 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
     </div>
     <div class="row" id="trigger-save-button">
         <div class="col-12" >
-            <form class='form action_update_options_string_form' action=''>
+            <?php $form = $this->beginWidget('TbActiveForm', [
+                                'id'                   => 'template-options-form',
+                                'enableAjaxValidation' => false,
+                                'htmlOptions'          => ['class' => 'form action_update_options_string_form'],
+                                'action'               => $actionUrl
+                            ]
+                        ); ?>
                 <?php echo TbHtml::submitButton($model->isNewRecord ? gT('Create') : gT('Save'), ['id' => 'theme-options--submit', 'class' => 'd-none action_update_options_string_button']); ?>
             <!-- Tab panes -->
                 <div class="tab-content">
@@ -86,10 +109,23 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
                         }
                     }
                     ?>
+
+
+                <?php echo $form->hiddenField($model, 'template_name'); ?>
+                <?php echo $form->hiddenField($model, 'sid'); ?>
+                <?php echo $form->hiddenField($model, 'gsid'); ?>
+                <?php echo $form->hiddenField($model, 'uid'); ?>
+
+                <?php echo CHtml::hiddenField('optionInheritedValues', json_encode($optionInheritedValues)); ?>
+                <?php echo CHtml::hiddenField('optionCssFiles', json_encode($optionCssFiles)); ?>
+                <?php echo CHtml::hiddenField('optionCssFramework', json_encode($optionCssFramework)); ?>
+                <?php echo CHtml::hiddenField('translationInheritedValue', gT("Inherited value:") . ' '); ?>
+
                 <?php $this->renderPartial(
                     '/themeOptions/advanced',
                     [
                         'model' => $model,
+                        'form' => $form,
                         'optionInheritedValues' => $optionInheritedValues,
                         'optionCssFiles' => $optionCssFiles,
                         'optionCssFramework' => $optionCssFramework
@@ -97,7 +133,7 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
                 ); ?>
             </div>
             <!-- End form tag -->
-            </form>
+             <?php $this->endWidget(); ?>
         </div>
     </div>
 <?php $this->renderPartial('/surveyAdministration/_inherit_sub_footer'); ?>
