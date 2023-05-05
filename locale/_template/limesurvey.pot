@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2023-04-26 14:16:30+00:00\n"
+"POT-Creation-Date: 2023-04-28 08:42:10+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1116,10 +1116,10 @@ msgstr ""
 #: application/controllers/admin/Themes.php:506
 #: application/controllers/admin/Themes.php:640
 #: application/controllers/admin/Themes.php:658
-#: application/controllers/admin/Themes.php:709
-#: application/controllers/admin/Themes.php:761
-#: application/controllers/admin/Themes.php:812
-#: application/controllers/admin/Themes.php:950
+#: application/controllers/admin/Themes.php:699
+#: application/controllers/admin/Themes.php:751
+#: application/controllers/admin/Themes.php:802
+#: application/controllers/admin/Themes.php:940
 #: application/controllers/admin/Tokens.php:99
 #: application/controllers/admin/Tokens.php:502
 #: application/controllers/survey/index.php:101
@@ -2086,7 +2086,7 @@ msgstr ""
 #: application/controllers/SurveyAdministrationController.php:1505
 #: application/controllers/admin/Labels.php:68
 #: application/controllers/admin/PluginManagerController.php:698
-#: application/controllers/admin/Themes.php:1407
+#: application/controllers/admin/Themes.php:1397
 msgid "Incorrect permissions in your %s folder."
 msgstr ""
 
@@ -2860,7 +2860,7 @@ msgstr ""
 #: application/controllers/admin/SurveysGroupsController.php:301
 #: application/core/plugins/expressionFixedDbVar/expressionFixedDbVar.php:168
 #: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:325
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:237
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:236
 #: application/views/themeOptions/options_core.php:6
 #: application/views/themeOptions/options_core.php:181
 #: application/views/themeOptions/options_core.php:191
@@ -5686,7 +5686,7 @@ msgid "Plugin upload is disabled"
 msgstr ""
 
 #: application/controllers/admin/PrintableSurvey.php:77
-#: application/controllers/admin/Themes.php:1228
+#: application/controllers/admin/Themes.php:1218
 msgid "Please submit by %s"
 msgstr ""
 
@@ -5699,12 +5699,12 @@ msgid "table"
 msgstr ""
 
 #: application/controllers/admin/PrintableSurvey.php:126
-#: application/controllers/admin/Themes.php:1226
+#: application/controllers/admin/Themes.php:1216
 msgid "Submit your survey."
 msgstr ""
 
 #: application/controllers/admin/PrintableSurvey.php:129
-#: application/controllers/admin/Themes.php:1229
+#: application/controllers/admin/Themes.php:1219
 msgid "Thank you for completing this survey."
 msgstr ""
 
@@ -5800,7 +5800,7 @@ msgid "Question code:"
 msgstr ""
 
 #: application/controllers/admin/PrintableSurvey.php:534
-#: application/controllers/admin/Themes.php:1203
+#: application/controllers/admin/Themes.php:1193
 msgid "*"
 msgstr ""
 
@@ -5809,7 +5809,7 @@ msgstr ""
 #: application/controllers/admin/PrintableSurvey.php:592
 #: application/controllers/admin/PrintableSurvey.php:651
 #: application/controllers/admin/PrintableSurvey.php:827
-#: application/controllers/admin/Themes.php:1207
+#: application/controllers/admin/Themes.php:1197
 msgid "Please choose *only one* of the following:"
 msgstr ""
 
@@ -6101,131 +6101,131 @@ msgstr ""
 msgid "File %s couldn't be deleted. Please check the permissions on the /upload/themes folder"
 msgstr ""
 
+#: application/controllers/admin/Themes.php:678
 #: application/controllers/admin/Themes.php:680
-#: application/controllers/admin/Themes.php:684
-#: application/controllers/admin/Themes.php:688
+#: application/controllers/admin/Themes.php:682
 msgid "Template could not be renamed to '%s'."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:680
+#: application/controllers/admin/Themes.php:678
 msgid "This name is reserved for standard template."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:684
+#: application/controllers/admin/Themes.php:680
 msgid "A template with that name already exists."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:688
+#: application/controllers/admin/Themes.php:682
 msgid "Maybe you don't have permission."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:702
+#: application/controllers/admin/Themes.php:693
 msgid "Template '%s' could not be found."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:730
-#: application/controllers/admin/Themes.php:750
+#: application/controllers/admin/Themes.php:720
+#: application/controllers/admin/Themes.php:740
 msgid "Directory with the name `%s` already exists - choose another name"
 msgstr ""
 
-#: application/controllers/admin/Themes.php:753
+#: application/controllers/admin/Themes.php:743
 msgid "Unable to create directory `%s`."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:754
+#: application/controllers/admin/Themes.php:744
 msgid "Please check the directory permissions."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:801
+#: application/controllers/admin/Themes.php:791
 msgid "Template '%s' was successfully deleted."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:803
-#: application/controllers/admin/Themes.php:857
+#: application/controllers/admin/Themes.php:793
+#: application/controllers/admin/Themes.php:847
 msgid "There was a problem deleting the template '%s'. Please check your directory/file permissions."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:806
+#: application/controllers/admin/Themes.php:796
 msgid "You can't delete template '%s' because one or more templates inherit from it."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:809
+#: application/controllers/admin/Themes.php:799
 msgid "Theme '%s' does not exist."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:830
-#: application/controllers/admin/Themes.php:855
+#: application/controllers/admin/Themes.php:820
+#: application/controllers/admin/Themes.php:845
 msgid "Theme '%s' was successfully deleted."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:833
+#: application/controllers/admin/Themes.php:823
 msgid "Not a broken theme!"
 msgstr ""
 
-#: application/controllers/admin/Themes.php:912
+#: application/controllers/admin/Themes.php:902
 msgid "Invalid theme name"
 msgstr ""
 
-#: application/controllers/admin/Themes.php:925
+#: application/controllers/admin/Themes.php:915
 msgid "Could not open file "
 msgstr ""
 
-#: application/controllers/admin/Themes.php:930
+#: application/controllers/admin/Themes.php:920
 msgid "Could not write file "
 msgstr ""
 
-#: application/controllers/admin/Themes.php:1120
+#: application/controllers/admin/Themes.php:1110
 msgid "Invalid screen name"
 msgstr ""
 
-#: application/controllers/admin/Themes.php:1167
+#: application/controllers/admin/Themes.php:1157
 #: tmp/runtime/twig_cache/4c/4c5759b6da0644e5779dee3126b2ae396979f52ea8e4348ff31269dad832b7e0.php:40
 msgid "How many roads must a man walk down?"
 msgstr ""
 
-#: application/controllers/admin/Themes.php:1169
+#: application/controllers/admin/Themes.php:1159
 #: application/models/TemplateManifest.php:392
 #: application/models/TemplateManifest.php:402
 msgid "This is some helpful text."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:1178
+#: application/controllers/admin/Themes.php:1168
 msgid "Hint when response is valid"
 msgstr ""
 
-#: application/controllers/admin/Themes.php:1214
+#: application/controllers/admin/Themes.php:1204
 msgid "This is a sample question text. The user was asked to pick an entry."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:1215
+#: application/controllers/admin/Themes.php:1205
 msgid "This is some help text for this question."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:1230
+#: application/controllers/admin/Themes.php:1220
 msgid "This is the survey end message."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:1252
+#: application/controllers/admin/Themes.php:1242
 msgid "Question group name"
 msgstr ""
 
-#: application/controllers/admin/Themes.php:1253
+#: application/controllers/admin/Themes.php:1243
 msgid "Question group description"
 msgstr ""
 
-#: application/controllers/admin/Themes.php:1341
+#: application/controllers/admin/Themes.php:1331
 msgid "LimeSurvey theme editor"
 msgstr ""
 
-#: application/controllers/admin/Themes.php:1345
+#: application/controllers/admin/Themes.php:1335
 msgid "Welcome to the theme editor of LimeSurvey. To get an overview of new functionality and possibilities, please visit the %s LimeSurvey manual %s. For further questions and information, feel free to post your questions on the %s LimeSurvey forums %s."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:1374
+#: application/controllers/admin/Themes.php:1364
 msgid "Demo mode: Uploading templates is disabled."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:1412
+#: application/controllers/admin/Themes.php:1402
 msgid "Template '%s' does already exist."
 msgstr ""
 
@@ -7504,7 +7504,7 @@ msgid "Manage survey administrators"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:940
-msgid "The user management allows you to add additional users to your survey site."
+msgid "The user management allows you to add additional users to your survey administration."
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:943
@@ -9381,7 +9381,7 @@ msgstr ""
 #: application/models/SurveysGroupsettings.php:409
 #: application/views/admin/globalsettings/_general.php:271
 #: application/views/admin/globalsettings/_general.php:289
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:35
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:34
 #: application/views/admin/themes/templateeditor_preview.php:9
 msgid "Full"
 msgstr ""
@@ -11807,7 +11807,7 @@ msgstr ""
 
 #: application/helpers/questionHelper.php:128
 #: application/models/SurveysGroupsettings.php:409
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:33
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:32
 #: tmp/runtime/twig_cache/1e/1e599b20ccfb3ec2029f4c567b407ca5ed3bc0437b5cbb895d99909b921b481e.php:357
 #: tmp/runtime/twig_cache/1e/1e599b20ccfb3ec2029f4c567b407ca5ed3bc0437b5cbb895d99909b921b481e.php:410
 msgid "Disabled"
@@ -15300,41 +15300,41 @@ msgid "All in one"
 msgstr ""
 
 #: application/models/SurveysGroupsettings.php:409
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:34
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:33
 msgid "Incremental"
 msgstr ""
 
 #: application/models/SurveysGroupsettings.php:411
 #: application/models/SurveysGroupsettings.php:413
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:108
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:140
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:107
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:139
 msgid "Show both"
 msgstr ""
 
 #: application/models/SurveysGroupsettings.php:411
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:110
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:109
 msgid "Show group description only"
 msgstr ""
 
 #: application/models/SurveysGroupsettings.php:411
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:109
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:108
 msgid "Show group name only"
 msgstr ""
 
 #: application/models/SurveysGroupsettings.php:411
 #: application/models/SurveysGroupsettings.php:413
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:111
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:143
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:110
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:142
 msgid "Hide both"
 msgstr ""
 
 #: application/models/SurveysGroupsettings.php:413
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:142
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:141
 msgid "Show question code only"
 msgstr ""
 
 #: application/models/SurveysGroupsettings.php:413
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:141
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:140
 msgid "Show question number only"
 msgstr ""
 
@@ -15458,7 +15458,7 @@ msgid "Print answers"
 msgstr ""
 
 #: application/models/TemplateManifest.php:176
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:222
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:221
 #: tmp/runtime/twig_cache/ff/ff7cfc975efe11d07252e9ab9c729433d449d4a203e1be0f1158d932ebf066a8.php:40
 msgid "Navigation"
 msgstr ""
@@ -19725,46 +19725,45 @@ msgid "Copy of survey is completed."
 msgstr ""
 
 #: application/views/admin/survey/editDataSecurityLocalSettings_view.php:25
-msgid ""
-"If you are using token functions or notifications emails \n"
-"        you need to set an administrator email address."
+#: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:14
+#: application/views/admin/survey/subview/accordion/_plugin_panel.php:15
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:21
+#: application/views/admin/survey/subview/accordion/_resources_panel.php:16
+#: application/views/surveyAdministration/tabCreate_view.php:26
+msgid "If you are using surveys with a closed participant group or notifications emails you need to set an administrator email address."
 msgstr ""
 
-#: application/views/admin/survey/editDataSecurityLocalSettings_view.php:39
+#: application/views/admin/survey/editDataSecurityLocalSettings_view.php:38
 msgid "Privacy policy checkbox label:"
 msgstr ""
 
-#: application/views/admin/survey/editDataSecurityLocalSettings_view.php:48
+#: application/views/admin/survey/editDataSecurityLocalSettings_view.php:47
 msgid ""
 "If you want to specify a link to the privacy policy, \n"
 "                set \"Show privacy policy text with mandatory checkbox\" to \"Collapsible text\" and use the placeholders {STARTPOLICYLINK} and {ENDPOLICYLINK} in the \n"
 "                \"Privacy policy checkbox label\" field to define the link that opens the policy popup. If there is no placeholder given, there will be an appendix."
 msgstr ""
 
-#: application/views/admin/survey/editDataSecurityLocalSettings_view.php:58
+#: application/views/admin/survey/editDataSecurityLocalSettings_view.php:57
 msgid "Privacy policy message:"
 msgstr ""
 
-#: application/views/admin/survey/editDataSecurityLocalSettings_view.php:67
+#: application/views/admin/survey/editDataSecurityLocalSettings_view.php:66
 msgid "Survey data policy:"
 msgstr ""
 
-#: application/views/admin/survey/editDataSecurityLocalSettings_view.php:77
+#: application/views/admin/survey/editDataSecurityLocalSettings_view.php:76
 msgid "Privacy policy error message:"
 msgstr ""
 
-#: application/views/admin/survey/editDataSecurityLocalSettings_view.php:86
+#: application/views/admin/survey/editDataSecurityLocalSettings_view.php:85
 msgid "Survey data policy error:"
 msgstr ""
 
 #: application/views/admin/survey/editLocalSettings_view.php:24
-#: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:14
 #: application/views/admin/survey/subview/accordion/_notification_panel.php:18
-#: application/views/admin/survey/subview/accordion/_plugin_panel.php:15
 #: application/views/admin/survey/subview/accordion/_plugins_panel.php:18
 #: application/views/admin/survey/subview/accordion/_publication_panel.php:17
-#: application/views/admin/survey/subview/accordion/_resources_panel.php:16
-#: application/views/surveyAdministration/tabCreate_view.php:26
 #: application/views/surveyAdministration/tab_survey_view.php:17
 msgid "If you are using token functions or notifications emails you need to set an administrator email address."
 msgstr ""
@@ -20104,74 +20103,68 @@ msgstr ""
 msgid "Settings for plugin %s"
 msgstr ""
 
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:21
-msgid ""
-"If you are using token functions or notifications \n"
-"                                                emails you need to set an administrator email address."
-msgstr ""
-
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:46
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:45
 msgid "Show..."
 msgstr ""
 
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:51
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:50
 msgid "... “no answer”"
 msgstr ""
 
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:69
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:68
 msgid "... “There are X questions in this survey”"
 msgstr ""
 
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:101
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:100
 msgid "... group name and description"
 msgstr ""
 
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:133
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:132
 msgid "... question number and code"
 msgstr ""
 
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:153
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:152
 msgid "... welcome screen"
 msgstr ""
 
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:170
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:169
 msgid "... on-screen keyboard"
 msgstr ""
 
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:187
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:186
 msgid "... progress bar"
 msgstr ""
 
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:204
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:203
 msgid "... question index, allow jumping"
 msgstr ""
 
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:228
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:227
 msgid "Navigation delay (seconds):"
 msgstr ""
 
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:254
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:253
 msgid "Automatically load end URL when survey complete:"
 msgstr ""
 
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:273
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:272
 msgid "Allow backward navigation:"
 msgstr ""
 
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:288
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:287
 msgid "Participants may print answers:"
 msgstr ""
 
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:306
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:305
 #: tmp/runtime/twig_cache/65/65a46e3536ea484decfdc79a166624ce11bf7636e23bd8b6fc164c5dab08f786.php:40
 msgid "Public statistics"
 msgstr ""
 
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:310
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:309
 msgid "Public statistics:"
 msgstr ""
 
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:330
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:329
 msgid "Show graphs in public statistics:"
 msgstr ""
 

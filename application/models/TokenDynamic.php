@@ -749,6 +749,7 @@ class TokenDynamic extends LSActiveRecord
             $aCustomAttributesCols[] = array(
                 'header' => $desc . $this->setEncryptedAttributeLabel(self::$sid, 'Token', $sColName), // $aAttributedescriptions->$sColName->description,
                 'name' => $sColName,
+                'type' => 'longtext',
                 'value' => '$data->' . $sColName,
                 'headerHtmlOptions' => array('class' => ''),
                 'htmlOptions' => array('class' => ''),

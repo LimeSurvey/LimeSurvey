@@ -34,6 +34,24 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.0.4 (build 230427) to 6.0.5 (build 230502) May 2, 2023
+-Fixed issue: Very slow survey start if a lot of quotas exist (Carsten Schmitz)
+-Fixed issue #18786: Error shown when token length is set to 36 characters (Carsten Schmitz)
+-Fixed issue #18782: Bad width set for array dual scale (#3078) (Denis Chenu)
+-Fixed issue #18771: Super-admin unable to rename theme (#3076) (Denis Chenu)
+-Fixed issue #18747: User administration email - reserved words send 403 error (Denis Chenu)
+-Fixed issue #18684: Missing translation. (#3053) (Gabriel Jenik)
+-Fixed issue #18604: Set empty to maximum number of files not working (#2865) (Denis Chenu)
+-Fixed issue #18343: Problem with interpreting double slash in URL (IIS) (Denis Chenu)
+#Updated translation: Swedish by c_schmitz, maxzomborszki
+#Updated translation: Spanish (Spain) by aesteban, c_schmitz, ireneoh, jmlopez, valdomir
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz, markusfluer
+#Updated translation: German (Informal) by assistedmindfulness, c_schmitz, holch, p_teichmann, richterd
+#Updated translation: French (France) by Amaury VAN ESPEN, arnaud21, b00z00, c_schmitz, DenisChenu, DenisChenu_TEST, GuillaumeZ6, nmenard, riqcles, twilllig
+
+
 Changes from 6.0.3 (build 230424) to 6.0.4 (build 230427) April 25, 2023
 -Fixed issue: Error on database upgrade (Carsten Schmitz)
 #Updated translation: Polish by elissa
