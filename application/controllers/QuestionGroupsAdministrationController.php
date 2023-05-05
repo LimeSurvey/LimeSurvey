@@ -606,7 +606,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
                         'questionGroupsAdministration/listquestiongroups/',
                         ['surveyid' => $iSurveyId]
                     )
-                    
+
                 ]
             );
             return;

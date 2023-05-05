@@ -330,7 +330,7 @@ class QuestionAdministrationController extends LSBaseController
 
         $aData['surveyid'] = $iSurveyID;
         $aData['surveybar'] = [];
-        
+
         // for newly combined groups and reorder parts
         $aData['groupModel'] = $this->getGroupData($oSurvey);
         $aData['aGroupsAndQuestions'] = $this->getReorderData($oSurvey);
@@ -338,16 +338,17 @@ class QuestionAdministrationController extends LSBaseController
         $this->aData = $aData;
 
          $aData['hasSurveyContentCreatePermission'] = Permission::model()->hasSurveyPermission(
-            $iSurveyID,
-            'surveycontent',
-            'create'
+             $iSurveyID,
+             'surveycontent',
+             'create'
          );
 
 
         $this->render("listquestions", $aData);
     }
 
-    public function getGroupData($oSurvey) {
+    public function getGroupData($oSurvey)
+    {
         $model    = new QuestionGroup('search');
 
         if (isset($_GET['QuestionGroup']['group_name'])) {
@@ -363,7 +364,8 @@ class QuestionAdministrationController extends LSBaseController
         return $model;
     }
 
-    public function getReorderData($oSurvey) {
+    public function getReorderData($oSurvey)
+    {
         $iSurveyID = $oSurvey->primaryKey;
         $baselang = $oSurvey->language;
         // cloned below content from surveyAdministrationController line#2550
