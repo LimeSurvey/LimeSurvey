@@ -242,8 +242,8 @@ class LimeReplacementFieldsController extends LSBaseController
         }
         if ($fieldtype === 'admincreationemailtemplate') {
             $replFields['SITENAME'] = gT("Name of the website");
-            $replFields['ADMINNAME'] = gT("Name of the survey administrator");
-            $replFields['ADMINEMAIL'] = gT("Email address of the survey administrator");
+            $replFields['ADMINNAME'] = gT("Name of the administrator");
+            $replFields['ADMINEMAIL'] = gT("Email address of the administrator");
             $replFields['USERNAME'] = gT("Username of the new user");
             $replFields['FULLNAME'] = gT("Full name of the new user");
             $replFields['LOGINURL'] = gT("Link to create password");
