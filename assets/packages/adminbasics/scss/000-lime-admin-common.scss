@@ -4361,13 +4361,13 @@ html[dir="rtl"] th {
 /** Styles for Data Entry screen */
 #responsedetail {
     .checkbox {
-            input[type="checkbox"] {
-                margin-left: 0;
-            }
-            label {
-                padding-left: 0px;
-            }
+        input[type="checkbox"] {
+            margin-left: 0;
         }
+        label {
+            padding-left: 0px;
+        }
+    }
 
     .answer-item {
         display:flex;
@@ -4375,12 +4375,12 @@ html[dir="rtl"] th {
         margin-bottom: 1em;
     }
 
-    .checkbox.unseen-item {
+    .checkbox.unseen-checkbox {
         margin-top: 0;
         min-width: 6em;
     }
 
-    .checkbox:not(.unseen-item) {
+    .checkbox:not(.unseen-checkbox) {
         margin-top: 0;
     }
 
