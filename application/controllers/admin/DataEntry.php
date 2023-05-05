@@ -1143,7 +1143,7 @@ class DataEntry extends SurveyCommonAction
                         break;
                     case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: // Array (Yes/Uncertain/No)
                         $thisqid = $fname['qid'];
-                        while (isset($fname['qid']) && $fname['qid'] == $thisqid) {
+                        while ($fname['qid'] == $thisqid) {
                             $questionInput = "<span>" . $fname['subquestion'] . "</span>";
                             $questionInput .= " <span>";
                             $options = [
