@@ -538,7 +538,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             array('googleanalyticsstyle', 'numerical', 'integerOnly' => true, 'min' => '0', 'max' => '3', 'allowEmpty' => true),
             array('autonumber_start', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
             array('tokenlength', 'default', 'value' => 15),
-            array('tokenlength', 'numerical', 'integerOnly' => true, 'allowEmpty' => false, 'min' => '-1', 'max' => '35'),
+            array('tokenlength', 'numerical', 'integerOnly' => true, 'allowEmpty' => false, 'min' => '-1', 'max' => Token::MAX_LENGTH, 'tooBig' => gT('Token length cannot be bigger than {max} characters.')),
             array('bouncetime', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
             array('navigationdelay', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
             array('template', 'filter', 'filter' => array($this, 'filterTemplateSave')),
