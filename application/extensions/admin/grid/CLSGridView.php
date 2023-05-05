@@ -25,7 +25,7 @@ class CLSGridView extends TbGridView
         $this->registerGridviewScripts();
 
         $this->pager = ['class' => 'application.extensions.admin.grid.CLSYiiPager'];
-        $this->htmlOptions['class'] = '';
+        $this->htmlOptions['class'] = 'grid-view-ls';
         $classes = ['table', 'table-hover'];
         $this->template = $this->render('template', ['massiveActionTemplate' => $this->massiveActionTemplate], true);
         $this->lsAfterAjaxUpdate();
