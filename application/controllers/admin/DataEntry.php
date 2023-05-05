@@ -633,11 +633,11 @@ class DataEntry extends SurveyCommonAction
                 $highlight = !$highlight;
                 $aDataentryoutput .= ">\n";
                 // First column (Question)
-                $aDataentryoutput .= "<td>";
+                $aDataentryoutput .= "<td class=\"question-cell\">";
                 $aDataentryoutput .= stripJavaScript($question);
                 $aDataentryoutput .= "</td>\n";
                 // Second column (Answer)
-                $aDataentryoutput .= "<td>\n";
+                $aDataentryoutput .= "<td class=\"answers-cell\">\n";
                 //$aDataentryoutput .= "\t-={$fname[3]}=-"; //Debugging info
                 $qidattributes = [];
                 if (isset($fname['qid']) && isset($fname['type'])) {
@@ -837,11 +837,12 @@ class DataEntry extends SurveyCommonAction
                             }
                             $questionInput .= ">{$llrow->answerl10ns[$sDataEntryLanguage]->answer}</option>\n";
                         }
+                        $baseFieldName = $fname['fieldname'];
                         $fname = next($fnames);
                         $questionInput .= "\t</select>\n"
                         . "\t<br />\n"
                         . CHtml::textArea($fname['fieldname'], $idrow[$fname['fieldname']], array('cols' => 45,'rows' => 5));
-                        $questionInputs[$fname['fieldname']] = $questionInput;
+                        $questionInputs[$baseFieldName] = $questionInput;
                         break;
                     case Question::QT_R_RANKING: // Ranking TYPE QUESTION
                         $thisqid = $fname['qid'];
@@ -1333,11 +1334,11 @@ class DataEntry extends SurveyCommonAction
                     $aDataentryoutput .= "<div class=\"answers-list {$answerWrapperClass}\">";
                     foreach ($questionInputs as $questionInputField => $questionInput) {
                         $aDataentryoutput .= "<div class=\"answer-item\">";
-                        $aDataentryoutput .= "<div class=\"checkbox unseen-item\">"
-                            . "<input type='checkbox' name='unseen_{$questionInputField}' id='unseen_{$questionInputField}'"
+                        $aDataentryoutput .= "<div class=\"checkbox unseen-checkbox\">"
+                            . "<input type='checkbox' name='unseen:{$questionInputField}' id='unseen:{$questionInputField}'"
                             . (!empty($unseenStatus[$questionInputField]) ? " checked" : "")
                             . ">"
-                            . "<label for='unseen_{$questionInputField}'>" . gT("Unseen") . "</label>"
+                            . "<label for='unseen:{$questionInputField}'>" . gT("Unseen") . "</label>"
                             . "</div>\n";
                         $aDataentryoutput .= "<div class=\"answer-wrapper\">" . $questionInput . "</div>";
                         $aDataentryoutput .= "</div>";
@@ -1480,12 +1481,12 @@ class DataEntry extends SurveyCommonAction
             // For questions, if the "Unseen" checkbox is checked, we must set the field to null.
             // There are some special cases we need to handle.
             if ($irow['type'] == Question::QT_R_RANKING) {
-                $unseenFieldName = "unseen_" . $irow['sid'] . 'X' . $irow['gid'] . 'X' . $irow['qid'];
+                $unseenFieldName = "unseen:" . $irow['sid'] . 'X' . $irow['gid'] . 'X' . $irow['qid'];
             } elseif ($irow['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
                 // Remove trailing "comment" from the fieldname, if present
-                $unseenFieldName = "unseen_" . preg_replace('/comment$/', '', $fieldname);
+                $unseenFieldName = "unseen:" . preg_replace('/comment$/', '', $fieldname);
             } else {
-                $unseenFieldName = "unseen_" . $fieldname;
+                $unseenFieldName = "unseen:" . $fieldname;
             }
             if (!empty($irow['title']) && Yii::app()->request->getPost($unseenFieldName, false)) {
                 $oResponse->$fieldname = null;

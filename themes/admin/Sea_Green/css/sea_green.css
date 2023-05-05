@@ -14560,11 +14560,11 @@ html[dir=rtl] th {
   gap: 1em;
   margin-bottom: 1em;
 }
-#responsedetail .checkbox.unseen-item {
+#responsedetail .checkbox.unseen-checkbox {
   margin-top: 0;
   min-width: 6em;
 }
-#responsedetail .checkbox:not(.unseen-item) {
+#responsedetail .checkbox:not(.unseen-checkbox) {
   margin-top: 0;
 }
 #responsedetail tr.multiple-opt-comments input[type=text] {
