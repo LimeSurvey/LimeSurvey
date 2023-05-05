@@ -56,8 +56,16 @@ const menuReplacingIconData = [
         newIcon: "ri-delete-bin-line",
     },
 
-    // folder regular
 ];
+
+/**
+ * Replace old icons in the file manager toolbar and window.
+ *
+ * @param iframeSource - The iframe source where icons will be replaced.
+ * @param originIcon - The origin icon that were already existed in the iframe.
+ * @param newIcon - The new remix icon that will replace old icon.
+ * @returns 
+ */
 
 const handleReplaceIcons = ({ iframeSource, originIcon, newIcon }) => {
     const replacingElement =
@@ -70,6 +78,13 @@ const handleReplaceIcons = ({ iframeSource, originIcon, newIcon }) => {
     }
 };
 
+/**
+ * Register styles in the iframe header
+ *
+ * @param header - The iframe header where styles to load are registered
+ * @param linkUrl - style links that will be loaded after iframe loaded
+ * @returns 
+ */
 const handleAppendCssLink = ({ header, linkUrl }) => {
     const cssLink = document.createElement("link");
     cssLink.rel = "stylesheet";
@@ -79,6 +94,13 @@ const handleAppendCssLink = ({ header, linkUrl }) => {
     header.appendChild(cssLink);
 };
 
+/**
+ * Replace icons that is shown at first load in the iframe left menu and the icons that is shown when right click on that item
+ *
+ * @param header - The iframe header where styles to load are registered
+ * @param linkUrl - style links that will be loaded after iframe loaded
+ * @returns 
+ */
 const handleReplaceFolderIcons = (fileManagerIframe, menuReplacingIconData) => {
     const replacingElements =
         fileManagerIframe.contentWindow.document.querySelectorAll(
@@ -133,9 +155,11 @@ export default function fileManagerStyle() {
     const fileManagerIframe = document.getElementById("browseiframe");
     if (fileManagerIframe) {
         fileManagerIframe.addEventListener("load", function () {
+            // after iframe is loaded
             fileManagerIframe.contentWindow.document.body.classList.add(
                 "file-manager-body"
             );
+            // replace icons in the toolbar and main window
             replacingIconData.map((data) =>
                 handleReplaceIcons({
                     ...data,
@@ -143,9 +167,11 @@ export default function fileManagerStyle() {
                 })
             );
 
+            // replace icons in the left menu folder icons, and icons that is shown when right click each of them.
             handleReplaceFolderIcons(fileManagerIframe, menuReplacingIconData);
 
-            // Select the element to observe
+            // Target Node that is observed of changes
+            // this is used when new subfolder is created
             const targetNode =
                 fileManagerIframe.contentWindow.document.getElementById(
                     "folders"
@@ -164,11 +190,7 @@ export default function fileManagerStyle() {
                                     node.nodeName === "DIV" &&
                                     node.classList.contains("folders")
                                 ) {
-                                    // Do something if a matching node was added
-                                    console.log(
-                                        'New span element with class "folder regular" added:',
-                                        node
-                                    );
+                                    // if new subfolder is created, then replace icons
                                     handleReplaceFolderIcons(
                                         fileManagerIframe,
                                         menuReplacingIconData
