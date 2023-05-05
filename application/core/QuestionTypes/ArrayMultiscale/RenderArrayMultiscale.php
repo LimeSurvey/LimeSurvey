@@ -295,6 +295,9 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
                 if ($aData['shownoanswer']) {
                     // No answer for accessibility and no javascript (but hide hide even with no js: need reworking)
                     $fname0value = $this->getFromSurveySession($myfname0);
+                    // If value is empty, notset should be checked.
+                    // string "0" should be considered as valid answer,
+                    // so notset should not be checked in that case.
                     if ($fname0value !== '0' && empty($fname0value)) {
                         //$answer .= CHECKED;
                         $aData['aSubQuestions'][$i]['myfname0_notset'] = CHECKED;
@@ -319,6 +322,9 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
             if ($aData['shownoanswer']) {
                 if (count($aData['labelans1']) > 0) {
                     $fname1value = $this->getFromSurveySession($myfname1);
+                    // If value is empty, notset should be checked.
+                    // string "0" should be considered as valid answer,
+                    // so notset should not be checked in that case.
                     if ($fname1value !== '0' && empty($fname1value)) {
                         #$answer .= CHECKED;
                         $aData['aSubQuestions'][$i]['myfname1_notset'] = CHECKED;
@@ -327,6 +333,9 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
                     }
                 } else {
                     $fname0value = $this->getFromSurveySession($myfname0);
+                    // If value is empty, notset should be checked.
+                    // string "0" should be considered as valid answer,
+                    // so notset should not be checked in that case.                   
                     if ($fname0value !== '0' && empty($fname0value)) {
                         //$answer .= CHECKED;
                         $aData['aSubQuestions'][$i]['myfname0_notset'] = CHECKED;
