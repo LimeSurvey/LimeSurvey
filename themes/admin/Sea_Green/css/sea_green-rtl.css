@@ -11149,6 +11149,15 @@ a {
 
 body {
   background-color: #F9F9FB;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.full-page-wrapper {
+  padding-bottom: 70px;
 }
 
 .summary-table {
@@ -17083,6 +17092,9 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 
 .footer {
   width: 100%;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
 }
 
 .sub_footer {
@@ -18331,6 +18343,10 @@ input[type=number] {
   width: 294px;
 }
 
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
 table .ls-sticky-column:first-child {
   position: sticky;
   background-color: #fff;
