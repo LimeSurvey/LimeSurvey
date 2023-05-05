@@ -4357,3 +4357,12 @@ html[dir="rtl"] th {
         display: none;
     }
 }
+
+/** Make modals full width */
+@media screen and (min-width: 768px) {
+  .dialog-fullwidth {
+    width: auto;
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+}
