@@ -1,9 +1,5 @@
 <?php
-    $sResponsesId = '';
-    $aResponsesId = json_decode(Yii::app()->session['responsesid']);
-    foreach($aResponsesId as $aResponseId){
-        $sResponsesId .= $aResponseId.', ';
-    }
+    $sResponsesId = App()->getRequest()->getParam('responseIds');
 ?>
 
 <div class="panel panel-primary" id="panel-2" <?php if ($SingleResponse) { echo 'style="display:none"';} ?> >
@@ -20,14 +16,20 @@
         </label>
 
         <div class="col-sm-6">
-          <input type="text" readonly value="<?php echo  $sResponsesId; ?>" class="form-control" name="responses_id" id="responses_id" />
+          <input
+             name="responses_id" id="responses_id"
+            type="text" readonly class="form-control"
+            value="<?= Chtml::encode($sResponsesId); ?>"
+          />
         </div>
         <div class="col-sm-2">
-          <a class="btn btn-default" href="<?php echo Yii::app()->getController()->createUrl("responses/setSession/", ['unset' => 'true', 'surveyId' => $surveyid]); ?>" role="button">
+          <a
+            href="<?php echo Yii::app()->getController()->createUrl("admin/export/sa/exportresults", array('surveyid'=>$surveyid)); ?>"
+            class="btn btn-default"  role="button"
+          >
             <?php eT("Reset");?>
           </a>
         </div>
-        <input type="hidden" value='<?php echo json_encode($aResponsesId); ?>' name="export_ids" id="export_ids" />
     </div>
   </div>
 </div>
