@@ -606,6 +606,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
                         'questionGroupsAdministration/listquestiongroups/',
                         ['surveyid' => $iSurveyId]
                     )
+                    
                 ]
             );
             return;
@@ -635,7 +636,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
                 )
             );
         } else {
-            $this->redirect(array('questionGroupsAdministration/listquestiongroups/surveyid/' . $iSurveyId));
+            $this->redirect($this->createUrl('questionAdministration/listQuestions', ['surveyid' => $iSurveyId , 'activeTab' => 'groups']));
         }
     }
 
