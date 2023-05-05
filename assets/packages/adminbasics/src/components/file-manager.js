@@ -216,7 +216,7 @@ export default function fileManagerStyle() {
             handleAppendCssLink({
                 header: fileManagerIframe.contentWindow.document.head,
                 linkUrl:
-                    "http://ls-ce/assets/fonts/font-src/remix/remixicon.css",
+                    "/assets/fonts/font-src/remix/remixicon.css",
             });
         });
     }
