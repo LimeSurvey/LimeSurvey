@@ -303,7 +303,7 @@ class LsDefaultDataSets
                 'listQuestions',
                 gT('Overview question & groups', 'unescaped'),
                 gT('Overview question & groups', 'unescaped'),
-                gT('Overview question & groups', 'unescaped'),
+                gT('Overview question and groups', 'unescaped'),
                 '',
                 'remix',
                 '',
