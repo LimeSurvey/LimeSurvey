@@ -3058,7 +3058,7 @@ EOD;
             $htmlOptions['data-loading-text'] = $loading;
         }
         if (TbArray::popValue('toggle', $htmlOptions, false)) {
-            $htmlOptions['data-toggle'] = 'button';
+            $htmlOptions['data-bs-toggle'] = 'button';
         }
         $icon = TbArray::popValue('icon', $htmlOptions);
         $iconOptions = TbArray::popValue('iconOptions', $htmlOptions, array());
@@ -3320,7 +3320,7 @@ EOD;
     {
         self::addCssClass('dropdown-toggle', $htmlOptions);
         $label .= ' <b class="caret"></b>';
-        $htmlOptions['data-toggle'] = 'dropdown';
+        $htmlOptions['data-bs-toggle'] = 'dropdown';
         return self::btn($type, $label, $htmlOptions);
     }
 
@@ -3338,7 +3338,7 @@ EOD;
         if ($depth === 0) {
             $label .= ' <b class="caret"></b>';
         }
-        $htmlOptions['data-toggle'] = 'dropdown';
+        $htmlOptions['data-bs-toggle'] = 'dropdown';
         return self::link($label, $url, $htmlOptions);
     }
 
@@ -3365,7 +3365,7 @@ EOD;
                 $name .= '[]';
             }
             if (in_array($toggle, array(self::BUTTON_TOGGLE_CHECKBOX, self::BUTTON_TOGGLE_RADIO))) {
-                $htmlOptions['data-toggle'] = 'buttons';
+                $htmlOptions['data-bs-toggle'] = 'buttons';
                 if (empty($name)) {
                     if ($toggle === self::BUTTON_TOGGLE_CHECKBOX) {
                         $name = 'checkbox[]';
@@ -3374,7 +3374,7 @@ EOD;
                     }
                 }
             } else {
-                $htmlOptions['data-toggle'] = $toggle;
+                $htmlOptions['data-bs-toggle'] = $toggle;
             }
             $parentOptions = array(
                 'color' => TbArray::popValue('color', $htmlOptions),
@@ -3806,12 +3806,12 @@ EOD;
             $menuItem['htmlOptions'] = TbArray::popValue('htmlOptions', $tabOptions, array());
             $items = TbArray::popValue('items', $tabOptions, array());
             if (!empty($items)) {
-                $menuItem['linkOptions']['data-toggle'] = 'dropdown';
+                $menuItem['linkOptions']['data-bs-toggle'] = 'dropdown';
                 $menuItem['items'] = self::normalizeTabs($items, $panes, $i);
             } else {
                 $paneOptions = TbArray::popValue('paneOptions', $tabOptions, array());
                 $id = $paneOptions['id'] = TbArray::popValue('id', $tabOptions, 'tab_' . ++$i);
-                $menuItem['linkOptions']['data-toggle'] = 'tab';
+                $menuItem['linkOptions']['data-bs-toggle'] = 'tab';
                 $menuItem['url'] = '#' . $id;
                 self::addCssClass('tab-pane', $paneOptions);
                 if (TbArray::popValue('fade', $tabOptions, true)) {
@@ -3929,7 +3929,7 @@ EOD;
     {
         self::addCssClass('btn btn-navbar', $htmlOptions);
         $htmlOptions['type'] = 'button';
-        $htmlOptions['data-toggle'] = 'collapse';
+        $htmlOptions['data-bs-toggle'] = 'collapse';
         $htmlOptions['data-target'] = $target;
         self::addCssClass('navbar-toggle', $htmlOptions);
         $content = self::tag('span', array('class' => 'sr-only'), 'Toggle navigation');
@@ -4560,7 +4560,7 @@ EOD;
      */
     public static function collapseLink($label, $target, $htmlOptions = array())
     {
-        $htmlOptions['data-toggle'] = 'collapse';
+        $htmlOptions['data-bs-toggle'] = 'collapse';
         return self::link($label, $target, $htmlOptions);
     }
 
@@ -4648,7 +4648,7 @@ EOD;
     {
         $htmlOptions['rel'] = 'popover';
         $htmlOptions['data-content'] = $content;
-        $htmlOptions['data-toggle'] = 'popover';
+        $htmlOptions['data-bs-toggle'] = 'popover';
         return self::tooltipPopover($label, '#', $title, $htmlOptions);
     }
 

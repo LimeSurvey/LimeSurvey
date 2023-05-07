@@ -11,7 +11,7 @@ $labelAttr .= CHtml::getIdByName($this->generalOption->name) . '"';
         <?php if ($this->generalOption->formElement->help): ?>
             <a
                 role="button"
-                data-toggle="collapse"
+                data-bs-toggle="collapse"
                 href="#help-<?= CHtml::getIdByName($this->generalOption->name); ?>"
             ><i
                 class="ri-information-fill"
