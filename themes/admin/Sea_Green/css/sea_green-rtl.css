@@ -18782,6 +18782,7 @@ table [class^=ri-], table [class*=" ri-"] {
 #copy-question .settings-accordion-container .accordion-body {
   padding: 0;
   margin-right: 10px;
+  margin-left: 10px;
 }
 #advanced-question-editor .settings-accordion-container .accordion-body label,
 #copy-question .settings-accordion-container .accordion-body label {
