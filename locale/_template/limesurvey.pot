@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2023-04-28 08:23:06+00:00\n"
+"POT-Creation-Date: 2023-05-08 09:54:03+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -722,7 +722,7 @@ msgstr ""
 #: application/views/admin/participants/modal_subviews/_deleteParticipant.php:26
 #: application/views/admin/quotas/viewquotas_massive_selector.php:80
 #: application/views/admin/quotas/viewquotas_quota_actions.php:17
-#: application/views/admin/responses/massive_actions/_selector.php:20
+#: application/views/admin/responses/massive_actions/_selector.php:21
 #: application/views/admin/survey/Question/massive_actions/_selector.php:37
 #: application/views/admin/survey/Question/questionbar_view.php:132
 #: application/views/admin/survey/Question/questionbar_view.php:137
@@ -2433,8 +2433,8 @@ msgstr ""
 #: application/controllers/admin/export.php:414
 #: application/controllers/admin/export.php:626
 #: application/controllers/admin/export.php:627
-#: application/controllers/admin/responses.php:1104
-#: application/controllers/admin/responses.php:1105
+#: application/controllers/admin/responses.php:1085
+#: application/controllers/admin/responses.php:1086
 #: application/controllers/admin/saved.php:130
 #: application/controllers/admin/saved.php:134
 #: application/controllers/admin/statistics.php:854
@@ -4189,7 +4189,7 @@ msgstr ""
 msgid "Sorry, there are no files for this response."
 msgstr ""
 
-#: application/controllers/admin/responses.php:1103
+#: application/controllers/admin/responses.php:1084
 msgid "Responses and statistics"
 msgstr ""
 
@@ -4767,7 +4767,7 @@ msgstr ""
 #: application/views/admin/participants/participantsPanel_view.php:8
 #: application/views/admin/responses/browsemenubar_view.php:73
 #: application/views/admin/responses/browsemenubar_view.php:183
-#: application/views/admin/responses/massive_actions/_selector.php:78
+#: application/views/admin/responses/massive_actions/_selector.php:79
 #: application/views/admin/survey/surveybar_displayexport.php:156
 #: application/views/admin/themeoptions/index.php:105
 #: application/views/admin/themeoptions/index.php:149
@@ -7947,7 +7947,7 @@ msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/searchBox.php:63
 #: application/models/TemplateConfiguration.php:680
-#: application/views/admin/export/exportresult_panels/_single-value.php:27
+#: application/views/admin/export/exportresult_panels/_single-value.php:23
 #: application/views/admin/participants/attributeMapCSV_view.php:79
 #: application/views/admin/participants/attributeMapToken_view.php:99
 #: application/views/admin/participants/attributeMap_view.php:185
@@ -8121,7 +8121,7 @@ msgstr ""
 msgid "Survey response %d"
 msgstr ""
 
-#: application/helpers/admin/htmleditor_helper.php:186
+#: application/helpers/admin/htmleditor_helper.php:211
 msgid "Start HTML editor in a popup window"
 msgstr ""
 
@@ -12996,7 +12996,7 @@ msgstr ""
 
 #: application/models/SurveyDynamic.php:359
 #: application/views/admin/responses/browsemenubar_view.php:159
-#: application/views/admin/responses/massive_actions/_selector.php:30
+#: application/views/admin/responses/massive_actions/_selector.php:31
 msgid "Please note that if you delete an incomplete response during a running survey, the participant will not be able to complete it."
 msgstr ""
 
@@ -14566,11 +14566,11 @@ msgstr ""
 msgid "Quote equations for CSV export"
 msgstr ""
 
-#: application/views/admin/export/exportresult_panels/_single-value.php:12
+#: application/views/admin/export/exportresult_panels/_single-value.php:8
 msgid "Selection"
 msgstr ""
 
-#: application/views/admin/export/exportresult_panels/_single-value.php:19
+#: application/views/admin/export/exportresult_panels/_single-value.php:15
 msgid "Selected answers"
 msgstr ""
 
@@ -14598,7 +14598,7 @@ msgstr ""
 msgid "Single response: ID %s"
 msgstr ""
 
-#: application/views/admin/export/exportresults_view.php:57
+#: application/views/admin/export/exportresults_view.php:56
 #: application/views/admin/export/spss_view.php:94
 msgid "Export data"
 msgstr ""
@@ -15604,7 +15604,7 @@ msgstr ""
 msgid "Insert/edit placeholder field"
 msgstr ""
 
-#: application/views/admin/htmleditor/pop_editor_view.php:65
+#: application/views/admin/htmleditor/pop_editor_view.php:83
 msgid "Editing"
 msgstr ""
 
@@ -16978,7 +16978,7 @@ msgid "Delete this entry"
 msgstr ""
 
 #: application/views/admin/responses/browsemenubar_view.php:236
-#: application/views/admin/responses/massive_actions/_selector.php:64
+#: application/views/admin/responses/massive_actions/_selector.php:65
 msgid "Download files"
 msgstr ""
 
@@ -17048,20 +17048,20 @@ msgstr ""
 msgid "Edit survey participant"
 msgstr ""
 
-#: application/views/admin/responses/massive_actions/_selector.php:27
+#: application/views/admin/responses/massive_actions/_selector.php:28
 msgid "Delete responses"
 msgstr ""
 
-#: application/views/admin/responses/massive_actions/_selector.php:28
+#: application/views/admin/responses/massive_actions/_selector.php:29
 msgid "Are you sure you want to delete the selected responses?"
 msgstr ""
 
-#: application/views/admin/responses/massive_actions/_selector.php:42
-#: application/views/admin/responses/massive_actions/_selector.php:49
+#: application/views/admin/responses/massive_actions/_selector.php:43
+#: application/views/admin/responses/massive_actions/_selector.php:50
 msgid "Delete attachments"
 msgstr ""
 
-#: application/views/admin/responses/massive_actions/_selector.php:50
+#: application/views/admin/responses/massive_actions/_selector.php:51
 msgid "Are you sure you want to delete all uploaded files from the selected responses?"
 msgstr ""
 
