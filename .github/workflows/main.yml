@@ -97,10 +97,6 @@ jobs:
       - name: Check for syntax errors
         run: find application/ -type f -name '*.php' -print0 | xargs -I {} -0 -P 0 php -l {}
 
-      - name: Run the test script
-        run: |
-          DOMAIN=localhost ./third_party/bin/phpunit --stop-on-failure
-
         # Chromedriver setup.
         # Note: Keep getting timeout problems on Travis with chromedriver.
         # wget https://chromedriver.storage.googleapis.com/2.33/chromedriver_linux64.zip
@@ -119,3 +115,7 @@ jobs:
           wget "https://selenium-release.storage.googleapis.com/3.7/selenium-server-standalone-3.7.1.jar"
           export MOZ_HEADLESS=1
           java -jar selenium-server-standalone-3.7.1.jar -enablePassThrough false > /dev/null 2> /dev/null &
+
+      - name: Run the test script
+        run: |
+          DOMAIN=localhost ./third_party/bin/phpunit --stop-on-failure
