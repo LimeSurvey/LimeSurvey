@@ -960,7 +960,9 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude = array())
         // getAttachmentsData() returns the attachments with "safe" paths
         $attachments = $surveyLanguageSetting->getAttachmentsData();
         if (!empty($attachments)) {
-            $item['attachments'] = serialize($attachments);
+            // Attachments were previously exported as a serialized array, but that may lead to
+            // security issues on import, so we're now exporting them as JSON.
+            $item['attachments'] = json_encode($attachments);
         }
         $surveyLanguageSettingsData[] = $item;
     }
