@@ -1067,25 +1067,6 @@ class responses extends Survey_Common_Action
         $this->getController()->redirect(array("admin/responses", "sa" => "browse", "surveyid" => $iSurveyID));
     }
 
-
-
-    /**
-     * Responsible for setting the session variables for attribute map page redirect
-     * @todo Use user session?
-     * @todo Used?
-     */
-    public function setSession($unset = false, $sid = null)
-    {
-        if (!$unset) {
-            unset(Yii::app()->session['responsesid']);
-            Yii::app()->session['responsesid'] = Yii::app()->request->getPost('itemsid');
-        } else {
-            unset(Yii::app()->session['responsesid']);
-            $this->getController()->redirect(array("admin/export", "sa"=>"exportresults", "surveyid"=>$sid));
-        }
-
-    }
-
     /**
      * Renders template(s) wrapped in header and footer
      *

@@ -47,11 +47,11 @@ var onClickListAction =  function () {
         $oCheckedItems = $gridid.yiiGridView('getChecked', $('.listActions').data('pk')); // So we can join
         var newForm = jQuery('<form>', {
             'action': $actionUrl,
-            'target': '_blank',
+            'target': $that.data('target') ?? '_blank',
             'method': 'POST'
         }).append(jQuery('<input>', {
             'name': $that.data('input-name'),
-            'value': $oCheckedItems.join("|"),
+            'value': $oCheckedItems.join($that.data('input-separator') ?? '|'),
             'type': 'hidden'
         })).append(jQuery('<input>', {
             'name': LS.data.csrfTokenName,

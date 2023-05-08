@@ -199,7 +199,7 @@ class export extends Survey_Common_Action
                 $aFieldsOptions[$sFieldName] = array('title'=>viewHelper::getFieldText($fieldinfo), 'data-fieldname'=>$fieldinfo['fieldname'], 'data-emcode'=>viewHelper::getFieldCode($fieldinfo, array('LEMcompat'=>true))); // No need to filter title : Yii do it (remove all tag)
             }
 
-            $data['SingleResponse'] = (int) returnGlobal('id');
+            $data['SingleResponse'] = intval(App()->getRequest()->getParam('id'));
             $data['selecthide'] = $selecthide;
             $data['selectshow'] = $selectshow;
             $data['selectinc'] = $selectinc;
