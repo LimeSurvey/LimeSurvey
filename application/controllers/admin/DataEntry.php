@@ -1478,6 +1478,7 @@ class DataEntry extends SurveyCommonAction
             if ($fieldname == 'id') {
                 continue;
             }
+            $thisvalue = Yii::app()->request->getPost($fieldname, '');
             // For questions, if the "Unseen" checkbox is checked, we must set the field to null.
             // There are some special cases we need to handle.
             if ($irow['type'] == Question::QT_R_RANKING) {
@@ -1489,10 +1490,13 @@ class DataEntry extends SurveyCommonAction
                 $unseenFieldName = "unseen:" . $fieldname;
             }
             if (!empty($irow['title']) && Yii::app()->request->getPost($unseenFieldName, false)) {
+                // Throw an error if "unseen" is checked but the field is not empty. This should never happen.
+                if ($thisvalue !== '') {
+                    throw new CHttpException(400, gT("Invalid request"));
+                }
                 $oResponse->$fieldname = null;
                 continue;
             }
-            $thisvalue = Yii::app()->request->getPost($fieldname, '');
             switch ($irow['type']) {
                 case 'lastpage':
                     // Last page not updated : not in view
