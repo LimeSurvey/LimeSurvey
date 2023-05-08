@@ -2,8 +2,19 @@
 .imageselect-radiobutton.d-none, .imageselect-select.d-none {
     display  : inline-block !important;
     position : absolute;
-    left     : 45px;
     top      : 8px;
+}
+
+.dir-ltr {
+    .imageselect-radiobutton.d-none, .imageselect-select.d-none {
+        left : 45px;
+    }
+}
+
+.dir-rtl {
+    .imageselect-radiobutton.d-none, .imageselect-select.d-none {
+        right : 45px;
+    }
 }
 
 // imageselect list radio
@@ -26,6 +37,15 @@ li.imageselect-listitem .imageselect-container .imageselect-label {
     border-radius : 50%;
     transition    : border 0.15s ease-in-out;
     z-index       : 1;
+}
+
+.dir-rtl {
+    .imageselect-container .imageselect-radiobutton::before,
+    .imageselect-list .no-anwser-item .radio-label::before,
+    .imageselect-list .radio-text-item .label-radio::before {
+        margin-right : -20px;
+        margin-left  : 0;
+    }
 }
 
 .imageselect-container .imageselect-radiobutton::after,
@@ -52,28 +72,67 @@ li.imageselect-listitem .imageselect-container .imageselect-label {
     z-index            : 1;
 }
 
+.dir-rtl {
+    .imageselect-container .imageselect-radiobutton::after,
+    .imageselect-list .no-anwser-item .radio-label::after,
+    .imageselect-list .radio-text-item .label-radio::after {
+        margin-right : -18px;
+        margin-left  : 0;
+        right        : 4px;
+    }
+}
+
 li.imageselect-listitem .imageselect-container input.imageselect-checkbox:checked + label + .imageselect-radiobutton:after {
     transform : scale(1, 1);
 }
 
 // no answer, other
-.imageselect-list .no-anwser-item, .imageselect-list .radio-text-item, .imageselect-list .radio-item {
-    padding-left : 55px;
+.dir-ltr {
+    .imageselect-list {
+        .no-anwser-item, .radio-text-item, .radio-item {
+            padding-left : 55px;
+        }
+
+        no-anwser-item .radio-label, .radio-text-item .label-radio {
+            padding-left : 10px;
+            padding-top  : 2px;
+        }
+
+        no-anwser-item {
+            // "row g-1" without the actual class, to match other-item
+            margin-left : calc(4px * -.5);
+        }
+
+        .othertext-label-checkox-container {
+            padding-left : 0;
+        }
+    }
 }
 
-.imageselect-list .no-anwser-item {
-    // "row g-1" without the actual class, to match other-item
-    margin-left : calc(4px * -.5);
-}
+.dir-rtl {
+    .imageselect-list {
+        .no-anwser-item, .radio-text-item, .radio-item {
+            padding-right : 55px;
+        }
 
-.imageselect-list .othertext-label-checkox-container {
-    padding-left : 0;
+        no-anwser-item .radio-label, .radio-text-item .label-radio {
+            padding-right : 10px;
+            padding-top   : 2px;
+        }
+
+        no-anwser-item {
+            // "row g-1" without the actual class, to match other-item
+            margin-right : calc(4px * -.5);
+        }
+
+        .othertext-label-checkox-container {
+            padding-right : 0;
+        }
+    }
 }
 
 .imageselect-list .no-anwser-item .radio-label, .imageselect-list .radio-text-item .label-radio {
-    padding-left : 10px;
-    padding-top  : 2px;
-    font-weight  : $font-weight-600;
+    font-weight : $font-weight-600;
 }
 
 // Multiple choice
@@ -94,15 +153,15 @@ input.imageselect-checkbox:checked ~ .imageselect-select::after {
     font-size   : 20px;
     font-weight : $font-weight-900;
     text-align  : center;
-    margin-left: -16px;
+    margin-left : -16px;
 }
 
 //Make multi spacing like imageselect list radio
 .checkbox-item.imageselect-listitem {
-    padding: 0;
-    margin: 6px 8px;
+    padding : 0;
+    margin  : 6px 8px;
 }
 
 .imageselect-other .othertext-label-checkbox-container {
-    padding-left: 48px;
+    padding-left : 48px;
 }

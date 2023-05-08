@@ -13836,8 +13836,15 @@ table > tbody > tr > td.ddprefix {
 .imageselect-radiobutton.d-none, .imageselect-select.d-none {
   display: inline-block !important;
   position: absolute;
-  left: 45px;
   top: 8px;
+}
+
+.dir-ltr .imageselect-radiobutton.d-none, .dir-ltr .imageselect-select.d-none {
+  left: 45px;
+}
+
+.dir-rtl .imageselect-radiobutton.d-none, .dir-rtl .imageselect-select.d-none {
+  right: 45px;
 }
 
 li.imageselect-listitem .imageselect-container .imageselect-label {
@@ -13860,6 +13867,13 @@ li.imageselect-listitem .imageselect-container .imageselect-label {
   z-index: 1;
 }
 
+.dir-rtl .imageselect-container .imageselect-radiobutton::before,
+.dir-rtl .imageselect-list .no-anwser-item .radio-label::before,
+.dir-rtl .imageselect-list .radio-text-item .label-radio::before {
+  margin-right: -20px;
+  margin-left: 0;
+}
+
 .imageselect-container .imageselect-radiobutton::after,
 .imageselect-list .no-anwser-item .radio-label::after,
 .imageselect-list .radio-text-item .label-radio::after {
@@ -13878,25 +13892,47 @@ li.imageselect-listitem .imageselect-container .imageselect-label {
   z-index: 1;
 }
 
+.dir-rtl .imageselect-container .imageselect-radiobutton::after,
+.dir-rtl .imageselect-list .no-anwser-item .radio-label::after,
+.dir-rtl .imageselect-list .radio-text-item .label-radio::after {
+  margin-right: -18px;
+  margin-left: 0;
+  right: 4px;
+}
+
 li.imageselect-listitem .imageselect-container input.imageselect-checkbox:checked + label + .imageselect-radiobutton:after {
   transform: scale(1, 1);
 }
 
-.imageselect-list .no-anwser-item, .imageselect-list .radio-text-item, .imageselect-list .radio-item {
+.dir-ltr .imageselect-list .no-anwser-item, .dir-ltr .imageselect-list .radio-text-item, .dir-ltr .imageselect-list .radio-item {
   padding-left: 55px;
 }
-
-.imageselect-list .no-anwser-item {
+.dir-ltr .imageselect-list no-anwser-item .radio-label, .dir-ltr .imageselect-list .radio-text-item .label-radio {
+  padding-left: 10px;
+  padding-top: 2px;
+}
+.dir-ltr .imageselect-list no-anwser-item {
   margin-left: -2px;
 }
-
-.imageselect-list .othertext-label-checkox-container {
+.dir-ltr .imageselect-list .othertext-label-checkox-container {
   padding-left: 0;
 }
 
-.imageselect-list .no-anwser-item .radio-label, .imageselect-list .radio-text-item .label-radio {
-  padding-left: 10px;
+.dir-rtl .imageselect-list .no-anwser-item, .dir-rtl .imageselect-list .radio-text-item, .dir-rtl .imageselect-list .radio-item {
+  padding-right: 55px;
+}
+.dir-rtl .imageselect-list no-anwser-item .radio-label, .dir-rtl .imageselect-list .radio-text-item .label-radio {
+  padding-right: 10px;
   padding-top: 2px;
+}
+.dir-rtl .imageselect-list no-anwser-item {
+  margin-right: -2px;
+}
+.dir-rtl .imageselect-list .othertext-label-checkox-container {
+  padding-right: 0;
+}
+
+.imageselect-list .no-anwser-item .radio-label, .imageselect-list .radio-text-item .label-radio {
   font-weight: 600;
 }
 
