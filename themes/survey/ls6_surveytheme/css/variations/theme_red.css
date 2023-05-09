@@ -13304,6 +13304,7 @@ textarea,
 .form-select.ls-important-field {
   border: 2px solid #1E1E1E !important;
   box-shadow: 8px 8px 0px #EEEFF7;
+  z-index: 3;
 }
 .form-select.ls-important-field:focus {
   box-shadow: 8px 8px 0px rgba(66, 0, 255, 0.2);
@@ -13315,6 +13316,7 @@ textarea,
 
 .has-success .form-control {
   box-shadow: 4px 4px 0 #FF515F;
+  z-index: 3;
 }
 .has-success .form-control:focus {
   box-shadow: 4px 4px 0 #FF515F;
@@ -13322,6 +13324,7 @@ textarea,
 
 .has-warning .form-control {
   box-shadow: 4px 4px 0 #FFE046;
+  z-index: 3;
 }
 .has-warning .form-control:focus {
   box-shadow: 4px 4px 0 #FFE046;
@@ -13330,6 +13333,7 @@ textarea,
 .has-error .form-control,
 .input-error .form-control {
   box-shadow: 4px 4px 0 #FF515F;
+  z-index: 3;
 }
 .has-error .form-control:focus,
 .input-error .form-control:focus {
