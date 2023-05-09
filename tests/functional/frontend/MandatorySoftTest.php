@@ -30,9 +30,9 @@ class MandatorySoftTest extends TestBaseClassWeb
                 !empty(self::$webDriver->findElement(WebDriverBy::id('question' . $questions['Q00']->qid))),
                 'Soft mandatory Q00 question are not in 1st page'
             );
-            $groupTitleDiv = self::$webDriver->wait(10)->until(
+            $mandatorysoftButton = self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
-                    WebDriverBy::cssSelector('#mandatory-soft-alert-box-modal')
+                    WebDriverBy::id('mandatory-soft-alert-box-modal')
                 )
             );
             /* Check if question Q00 mandatoiry are shown */
@@ -43,7 +43,6 @@ class MandatorySoftTest extends TestBaseClassWeb
                 !empty(self::$webDriver->findElement(WebDriverBy::id('mandatory-soft-alert-box-modal'))),
                 'Unable to find the action button after try to submit'
             );
-            $mandatorysoftButton = self::$webDriver->findElement(WebDriverBy::id('mandatory-soft-alert-box-modal'));
             $mandatorysoftButton->click();
             /* Check if question Q01 is here */
             $this->assertTrue(
