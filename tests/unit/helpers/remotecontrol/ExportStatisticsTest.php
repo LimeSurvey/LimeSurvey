@@ -24,7 +24,11 @@ class RemoteControlExportStatisticsTest extends BaseTest
         $htmlStatistics = $this->handler->export_statistics($sessionKey, self::$surveyId, 'html');
         $htmlStatistics = base64_decode($htmlStatistics);
 
+	$this->assertIsString($htmlStatistics, 'The html statistics were not returned or decoded correctly.');
+
         $q1Data = $this->getTableData($htmlStatistics, 'quid_1');
+        
+        $this->assertNotEmpty($q1Data, 'The statistics table or data were not found in the html string.');
 
         // Option A row.
         $this->assertSame($q1Data[0][0], 'Option A (A)', 'The Answer text is incorrect for this option.');
@@ -207,6 +211,11 @@ class RemoteControlExportStatisticsTest extends BaseTest
         $doc->loadHtml($htmlStatistics);
 
         $table = $doc->getElementById($tableHtmlId);
+        
+        if ($table === null) {
+            return $options;	
+        }
+        
         $thead = $table->getElementsByTagName('thead')->item(0);
         // The td tags should be identified with the opening tbody tag but it is not added by export_statistics.
         $table->removeChild($thead);
