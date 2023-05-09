@@ -27,7 +27,7 @@ class DefaultBaseRenderer
     protected function bakeTooltip($text)
     {
         if ($text) {
-            return [sprintf("title='%s'", $text), "data-toggle='tooltip'"];
+            return [sprintf("title='%s'", $text), "data-bs-toggle='tooltip'"];
         } else {
             return ['', ''];
         }

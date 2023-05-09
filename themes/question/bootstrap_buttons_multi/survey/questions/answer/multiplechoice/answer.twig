@@ -17,7 +17,7 @@
 {% set max_buttons_row = (question_template_attribute.max_buttons_row == 'default' or question_template_attribute.max_buttons_row is empty) ? 'col-md-2' : question_template_attribute.max_buttons_row %}
 <input type="hidden" name="MULTI{{name}}" value="{{anscount}}" />
 <div class="{{coreClass}} row {{ extraclass }}" >
-    <div class="list-unstyled form-inline btn-toolbar col-12 " data-toggle="buttons" role="group" aria-labelledby="ls-question-text-{{basename }}">
+    <div class="list-unstyled form-inline btn-toolbar col-12 " data-bs-toggle="buttons" role="group" aria-labelledby="ls-question-text-{{basename }}">
         {% for aRow in aRows %}
             {% set aRow = aRow|merge({'button_size_class': button_size_class})|merge({'max_buttons_row': max_buttons_row}) %}
             {% set rowTemplate = aRow.other ? './survey/questions/answer/multiplechoice/rows/answer_row_other.twig' : './survey/questions/answer/multiplechoice/rows/answer_row.twig' %}

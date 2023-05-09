@@ -497,7 +497,7 @@ class User extends LSActiveRecord
             'linkClass'        => "UserManagement--action--openmodal UserManagement--action--permissions",
             'linkAttributes'   => [
                 'data-href'      => $setPermissionsUrl,
-                'data-modalsize' => 'modal-lg',
+                'data-modalsize' => 'modal-xl',
             ],
             'enabledCondition' =>
                 ($permission_superadmin_read

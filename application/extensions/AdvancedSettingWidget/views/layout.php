@@ -20,7 +20,7 @@ $labelAttr .= CHtml::getIdByName($inputBaseName) . '"';
         <?php if ($this->setting['help']): ?>
             <a
                 role="button"
-                data-toggle="collapse"
+                data-bs-toggle="collapse"
                 href="#help-<?= CHtml::getIdByName($inputBaseName); ?>"
             ><i
                 class="ri-information-fill"
