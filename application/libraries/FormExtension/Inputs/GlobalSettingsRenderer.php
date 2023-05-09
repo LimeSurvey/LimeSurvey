@@ -59,7 +59,7 @@ HTML;
                         'offLabel'    => gT('Off'),
                         'htmlOptions' => [
                             'disabled' => $input->isDisabled(),
-                            //'data-toggle' => $input->getTooltip() ? 'tooltip' : null,
+                            //'data-bs-toggle' => $input->getTooltip() ? 'tooltip' : null,
                             //'title' => $input->getTooltip()
                         ]
                     ],
