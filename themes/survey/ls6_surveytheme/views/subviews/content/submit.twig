@@ -33,8 +33,8 @@
         <div class='{{ aSurveyInfo.class.submitwrappertext }}' {{ aSurveyInfo.attr.submitwrappertext }}>
             {% block endtext %}
             {% if (aSurveyInfo.aCompleted.showDefault == true) %}
-                <p {{ aSurveyInfo.attr.submitwrappertextpa }}>{{ gT("Thank you!") }}</p>
-                <p {{ aSurveyInfo.attr.submitwrappertextpb }}>{{ gT("Your survey responses have been recorded.") }}</p>
+                <p class="{{ aSurveyInfo.class.submitwrappertextHeading }}" {{ aSurveyInfo.attr.submitwrappertextpa }}>{{ gT("Thank you.") }}</p>
+                <p class="{{ aSurveyInfo.class.submitwrappertextContent }}" {{ aSurveyInfo.attr.submitwrappertextpb }}>{{ gT("Your survey responses have been recorded.") }}</p>
             {% else %}
                 {{ aSurveyInfo.aCompleted.sEndText }}
             {% endif %}
