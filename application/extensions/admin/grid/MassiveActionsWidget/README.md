@@ -23,7 +23,7 @@
 
 This will generate a dropup button of this kind :
 ```html
-    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
       Selected items(s)...    <span class="caret"></span>
     </button>
     <ul class="dropdown-menu listActions" aria-labelledby="muhListActions">
@@ -60,12 +60,12 @@ The array of actions and modals can accept different types of items :
 
 This will generate a dropup button of this kind :
 ```html
-    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
       Selected items(s)...    <span class="caret"></span>
     </button>
     <ul class="dropdown-menu listActions" aria-labelledby="muhListActions">
         <!-- Separator -->
-        <li role="separator" class="divider"></li>        
+        <li role="separator" class="dropdown-divider"></li>        
 
         <!-- Header -->
         <li class="dropdown-header">Muh Header</li>
@@ -108,7 +108,7 @@ array(
 
 This will generate a dropup button of this kind :
 ```html
-    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
       Selected items(s)...    <span class="caret"></span>
     </button>
     <ul class="dropdown-menu listActions" aria-labelledby="muhListActions">
@@ -147,7 +147,7 @@ array(
 
 This will generate a dropup button of this kind :
 ```html
-    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
       Selected items(s)...    <span class="caret"></span>
     </button>
     <ul class="dropdown-menu listActions" aria-labelledby="muhListActions">
@@ -204,9 +204,9 @@ The form will not be posted to the url directly by the ajax request. Indeed, the
 ```html
 <!-- The form itself is optional-->
 <form class="custom-modal-datas">                                               
-    <div class="form-group">
-        <label class="col-sm-4 control-label"><?php eT("Muh Value:"); ?></label>
-        <div class="col-sm-8">
+    <div class="mb-3">
+        <label class="col-md-4 control-label"><?php eT("Muh Value:"); ?></label>
+        <div class="col-md-8">
             <!-- Thoses input have the class "custom-data", they will be posted by the ajax request -->
             <input type="text" class="form-control custom-data" id="muhvalue" name="muhvalue" value="">         
             <input type="hidden" name="sid" value="<?php echo $_GET['surveyid']; ?>" class="custom-data"/>

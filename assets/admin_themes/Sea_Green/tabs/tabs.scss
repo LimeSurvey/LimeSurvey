@@ -1,0 +1,38 @@
+.nav-tabs {
+    border : none;
+    .nav-link {
+        font-size        : $font-size-sm;
+        color            : $nav-tabs-link-active-color;
+        border           : 0;
+        border-radius    : 0;
+        border-top       : 2px solid $g-100;
+        border-bottom    : 2px solid $g-400;
+        background-color : $g-100;
+        padding          : 6px 20px;
+        &:hover,
+        &:focus {
+            border-top : 2px solid $g-100;
+        }
+        &:hover:not(.active) {
+            border-bottom : 2px solid $grape75;
+            border-top    : 2px solid $g-100;
+            box-shadow    : inset 0 0 0 1px $grape75;
+        }
+        &.disabled,
+        &:disabled {
+            color            : $g-600;
+            border-bottom    : 2px solid $g-400;
+            background-color : $g-100;
+        }
+    }
+    .nav-link.active,
+    .nav-item.show .nav-link {
+        color            : $nav-tabs-link-active-color;
+        background-color : $white;
+        border-top       : 2px solid $active-green;
+    }
+}
+.tab-content {
+  padding: 1rem;
+  background-color: $white;
+}

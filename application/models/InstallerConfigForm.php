@@ -702,7 +702,7 @@ class InstallerConfigForm extends CFormModel
     public function getDataBaseName()
     {
         if ($this->db) {
-            preg_match("/dbname=([^;]*)/", $this->db->connectionString, $matches);
+            preg_match("/dbname=([^;]*)/", (string) $this->db->connectionString, $matches);
             $databaseName = $matches[1];
             return $databaseName;
         }

@@ -132,7 +132,7 @@ class RemoteAddress
         }
 
         // Extract IPs
-        $ips = explode(',', $_SERVER[$header]);
+        $ips = explode(',', (string) $_SERVER[$header]);
         // trim, so we can compare against trusted proxies properly
         $ips = array_map('trim', $ips);
         // remove trusted proxy IPs

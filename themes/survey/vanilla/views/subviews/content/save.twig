@@ -39,16 +39,18 @@
     {# This will display the script and the hidden inputs needed for ExpressionScript Engine #}
     {{ aSurveyInfo.EM.ScriptsAndHiddenInputs  }}
 
-    <div class="{{ aSurveyInfo.class.savecontainer }} well clearfix " {{ aSurveyInfo.attr.savecontainer }}>
-        <div class="{{ aSurveyInfo.class.savecontainertitle }} h2" {{ aSurveyInfo.attr.savecontainertitle }}>{{ gT("Save your unfinished survey") }}</div>
-        <div class="{{ aSurveyInfo.class.savecontainertext }} text-info" {{ aSurveyInfo.attr.savecontainertext }}>
-            <p {{ aSurveyInfo.attr.savecontainertextpa }}> {{ gT("Enter a name and password for this survey and click save below.") }} </p>
-            <p {{ aSurveyInfo.attr.savecontainertextpb }}> {{ gT("Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password.") }} </p>
-            <p class='{{ aSurveyInfo.class.savecontainertextpc }}' {{ aSurveyInfo.attr.savecontainertextpc }}> {{ gT("If you give an email address, an email containing the details will be sent to you.") }} </p>
-            <p {{ aSurveyInfo.attr.savecontainertextpd }}> {{ gT("After having clicked the save button you can either close this browser window or continue filling out the survey.") }} </p>
-        </div>
-        <div class="{{ aSurveyInfo.class.savecontainerwarning }} text-warning" {{ aSurveyInfo.attr.savecontainerwarning }}>
-            <p> {{ gT("To remain anonymous please use a pseudonym as your username, also an email address is not required.") }} </p>
+    <div class="{{ aSurveyInfo.class.savecontainer }} card bg-light mb-3 clearfix " {{ aSurveyInfo.attr.savecontainer }}>
+        <div class="card-body">
+            <div class="{{ aSurveyInfo.class.savecontainertitle }} h2" {{ aSurveyInfo.attr.savecontainertitle }}>{{ gT("Save your unfinished survey") }}</div>
+            <div class="{{ aSurveyInfo.class.savecontainertext }} text-info" {{ aSurveyInfo.attr.savecontainertext }}>
+                <p {{ aSurveyInfo.attr.savecontainertextpa }}> {{ gT("Enter a name and password for this survey and click save below.") }} </p>
+                <p {{ aSurveyInfo.attr.savecontainertextpb }}> {{ gT("Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password.") }} </p>
+                <p class='{{ aSurveyInfo.class.savecontainertextpc }}' {{ aSurveyInfo.attr.savecontainertextpc }}> {{ gT("If you give an email address, an email containing the details will be sent to you.") }} </p>
+                <p {{ aSurveyInfo.attr.savecontainertextpd }}> {{ gT("After having clicked the save button you can either close this browser window or continue filling out the survey.") }} </p>
+            </div>
+            <div class="{{ aSurveyInfo.class.savecontainerwarning }} text-warning" {{ aSurveyInfo.attr.savecontainerwarning }}>
+                <p> {{ gT("To remain anonymous please use a pseudonym as your username, also an email address is not required.") }} </p>
+            </div>
         </div>
     </div>
 
@@ -91,16 +93,16 @@
             {{  aSurveyInfo.aSaveForm.sHiddenField }}
 
             <!-- Name and Password -->
-            <div class='{{ aSurveyInfo.class.saveformsurvey }} form-horizontal' {{ aSurveyInfo.attr.saveformsurvey }}>
-                <div class='{{ aSurveyInfo.class.saveformsurveydiva }} form-group ' {{ aSurveyInfo.attr.saveformsurveydiva }}>
+            <div class='{{ aSurveyInfo.class.saveformsurvey }} col-lg-8 offset-lg-2' {{ aSurveyInfo.attr.saveformsurvey }}>
+                <div class='{{ aSurveyInfo.class.saveformsurveydiva }} mb-3' {{ aSurveyInfo.attr.saveformsurveydiva }}>
 
                     <!-- Saved name  -->
-                    <label class='{{ aSurveyInfo.class.saveformsurveydivalabel }} control-label col-sm-3' {{ aSurveyInfo.attr.saveformsurveydivalabel }}>
+                    <label class='{{ aSurveyInfo.class.saveformsurveydivalabel }} control-label' {{ aSurveyInfo.attr.saveformsurveydivalabel }}>
                         {{ gT("Name:") }}
-                        <small class="{{ aSurveyInfo.class.saveformsurveydivalabelsmall }} text-danger asterisk fa fa-asterisk pull-left small " {{ aSurveyInfo.attr.saveformsurveydivalabelsmall }} ></small>
-                        <span class="{{ aSurveyInfo.class.saveformsurveydivalabelspan }} sr-only text-danger asterisk" {{ aSurveyInfo.attr.saveformsurveydivalabelspan }}>{{ gT("Mandatory") }}<span>
+                        <small class="{{ aSurveyInfo.class.saveformsurveydivalabelsmall }} text-danger asterisk fa fa-asterisk float-start small " {{ aSurveyInfo.attr.saveformsurveydivalabelsmall }} >&nbsp;</small>
+                        <span class="{{ aSurveyInfo.class.saveformsurveydivalabelspan }} visually-hidden text-danger asterisk" {{ aSurveyInfo.attr.saveformsurveydivalabelspan }}>{{ gT("Mandatory") }}<span>
                     </label>
-                    <div class='{{ aSurveyInfo.class.saveformsurveydivb }} col-sm-7 ' {{ aSurveyInfo.attr.saveformsurveydivb }}>
+                    <div class='{{ aSurveyInfo.class.saveformsurveydivb }}' {{ aSurveyInfo.attr.saveformsurveydivb }}>
 
                         {% set htmlOptions = {
                                 'id'          : 'savename',
@@ -121,14 +123,14 @@
                 </div>
 
                 <!-- Password -->
-                <div class='{{ aSurveyInfo.class.saveformsurveydivc }} form-group' {{ aSurveyInfo.attr.saveformsurveydivc }}>
-                    <label class='{{ aSurveyInfo.class.saveformsurveydivclabel }} control-label col-sm-3 ' {{ aSurveyInfo.attr.saveformsurveydivclabel }}>
+                <div class='{{ aSurveyInfo.class.saveformsurveydivc }} row mb-3' {{ aSurveyInfo.attr.saveformsurveydivc }}>
+                    <label class='{{ aSurveyInfo.class.saveformsurveydivclabel }} control-label' {{ aSurveyInfo.attr.saveformsurveydivclabel }}>
                         {{ gT("Password:") }}
-                        <small class="{{ aSurveyInfo.class.saveformsurveydivcsmall }} text-danger asterisk fa fa-asterisk pull-left small" {{ aSurveyInfo.attr.saveformsurveydivcsmall }} ></small>
-                        <span class="{{ aSurveyInfo.class.saveformsurveydivcspan }} sr-only text-danger asterisk" {{ aSurveyInfo.attr.saveformsurveydivcspan }}>{{ gT("Mandatory") }}<span>
+                        <small class="{{ aSurveyInfo.class.saveformsurveydivcsmall }} text-danger asterisk fa fa-asterisk float-start small" {{ aSurveyInfo.attr.saveformsurveydivcsmall }} >&nbsp;</small>
+                        <span class="{{ aSurveyInfo.class.saveformsurveydivcspan }} visually-hidden text-danger asterisk" {{ aSurveyInfo.attr.saveformsurveydivcspan }}>{{ gT("Mandatory") }}<span>
                     </label>
 
-                    <div class='{{ aSurveyInfo.class.saveformsurveydivcdiv }} col-sm-7 ' {{ aSurveyInfo.attr.saveformsurveydivcdiv }}>
+                    <div class='{{ aSurveyInfo.class.saveformsurveydivcdiv }}' {{ aSurveyInfo.attr.saveformsurveydivcdiv }}>
 
                         {% set htmlOptions = {
                                 'id'          : 'savepass',
@@ -147,14 +149,14 @@
                 </div>
 
                 <!-- Confirm password -->
-                <div class='{{ aSurveyInfo.class.saveformsurveydivd }} form-group ' {{ aSurveyInfo.attr.saveformsurveydivd }}>
-                    <label class='{{ aSurveyInfo.class.saveformsurveydivdlabel }} control-label col-sm-3 ' {{ aSurveyInfo.attr.saveformsurveydivdlabel }} >
+                <div class='{{ aSurveyInfo.class.saveformsurveydivd }} mb-3' {{ aSurveyInfo.attr.saveformsurveydivd }}>
+                    <label class='{{ aSurveyInfo.class.saveformsurveydivdlabel }} control-label' {{ aSurveyInfo.attr.saveformsurveydivdlabel }} >
                         {{ gT("Repeat password:") }}
-                        <small class="{{ aSurveyInfo.class.saveformsurveydivdlabelsmall }}  text-danger asterisk fa fa-asterisk pull-left small" {{ aSurveyInfo.attr.saveformsurveydivdlabelsmall }}></small>
-                        <span class="{{ aSurveyInfo.class.saveformsurveydivdlabelspan }} sr-only text-danger asterisk" {{ aSurveyInfo.attr.saveformsurveydivdlabelspan }}>{{ gT("Mandatory") }}<span>
+                        <small class="{{ aSurveyInfo.class.saveformsurveydivdlabelsmall }}  text-danger asterisk fa fa-asterisk float-start small" {{ aSurveyInfo.attr.saveformsurveydivdlabelsmall }}>&nbsp;</small>
+                        <span class="{{ aSurveyInfo.class.saveformsurveydivdlabelspan }} visually-hidden text-danger asterisk" {{ aSurveyInfo.attr.saveformsurveydivdlabelspan }}>{{ gT("Mandatory") }}<span>
                     </label>
 
-                    <div class='{{ aSurveyInfo.class.saveformsurveydivddiv }} col-sm-7 ' {{ aSurveyInfo.attr.saveformsurveydivddiv }}>
+                    <div class='{{ aSurveyInfo.class.saveformsurveydivddiv }}' {{ aSurveyInfo.attr.saveformsurveydivddiv }}>
                         {% set htmlOptions = {
                                 'id'          : 'savepass2',
                                 'name'        : 'savepass2',
@@ -172,11 +174,11 @@
                 </div>
 
                 <!-- Email -->
-                <div class='{{ aSurveyInfo.class.saveformsurveydive }}  form-group ' {{ aSurveyInfo.attr.saveformsurveydive }}>
-                    <label class='{{ aSurveyInfo.class.saveformsurveydivelabel }} control-label col-sm-3 ' {{ aSurveyInfo.attr.saveformsurveydivelabel }} >
+                <div class='{{ aSurveyInfo.class.saveformsurveydive }}  mb-3' {{ aSurveyInfo.attr.saveformsurveydive }}>
+                    <label class='{{ aSurveyInfo.class.saveformsurveydivelabel }} control-label' {{ aSurveyInfo.attr.saveformsurveydivelabel }} >
                         {{ gT("Your email address:") }}
                     </label>
-                    <div class='{{ aSurveyInfo.class.saveformsurveydivediv }} col-sm-7 ' {{ aSurveyInfo.attr.saveformsurveydivediv }}>
+                    <div class='{{ aSurveyInfo.class.saveformsurveydivediv }}' {{ aSurveyInfo.attr.saveformsurveydivediv }}>
 
                         {% set htmlOptions = {
                                 'id'          : 'saveemail',
@@ -196,11 +198,11 @@
 
                 {% if aSurveyInfo.aSaveForm.aCaptcha.show %}
                     <!-- Captcha -->
-                    <div class='{{ aSurveyInfo.class.saveformsurveydivf }} form-group ' {{ aSurveyInfo.attr.saveformsurveydivd }} >
-                        <label class='{{ aSurveyInfo.class.saveformsurveydivflabel }} control-label col-sm-3 ' {{ aSurveyInfo.attr.saveformsurveydivdlabel }}  >
+                    <div class='{{ aSurveyInfo.class.saveformsurveydivf }} mb-3' {{ aSurveyInfo.attr.saveformsurveydivd }} >
+                        <label class='{{ aSurveyInfo.class.saveformsurveydivflabel }} control-label' {{ aSurveyInfo.attr.saveformsurveydivdlabel }}  >
                             {{ gT("Security question:") }}
                         </label>
-                        <div class='{{ aSurveyInfo.class.saveformsurveydivfdiv }} col-sm-7 ' {{ aSurveyInfo.attr.saveformsurveydivddiv }} >
+                        <div class='{{ aSurveyInfo.class.saveformsurveydivfdiv }}' {{ aSurveyInfo.attr.saveformsurveydivddiv }} >
                             <div class='{{ aSurveyInfo.class.saveformsurveydivfdivdiv }} input-group' {{ aSurveyInfo.attr.saveformsurveydivddivdiv }}>
                                 <div class='{{ aSurveyInfo.class.saveformsurveydivfdivdivdiv }} ' {{ aSurveyInfo.attr.saveformsurveydivddivdivdiv }} >
                                     <img src='{{ aSurveyInfo.aSaveForm.aCaptcha.sImageUrl }}' {{ aSurveyInfo.attr.saveformsurveydivddivdivdivimg }}   />
@@ -212,9 +214,9 @@
                 {% endif %}
 
                 <!-- save button -->
-                <div class='{{ aSurveyInfo.class.saveformsurveydivg }} form-group' {{ aSurveyInfo.attr.saveformsurveydivg }}>
-                    <div class='{{ aSurveyInfo.class.saveformsurveydivgdiv }}  col-sm-7 col-md-offset-3' {{ aSurveyInfo.attr.saveformsurveydivgdiv }}>
-                        <button {{ aSurveyInfo.attr.saveformsurveydivgdivbutton }}  class='{{ aSurveyInfo.class.saveformsurveydivgdivbutton }} btn btn-default' >
+                <div class='{{ aSurveyInfo.class.saveformsurveydivg }} mb-3' {{ aSurveyInfo.attr.saveformsurveydivg }}>
+                    <div class='{{ aSurveyInfo.class.saveformsurveydivgdiv }} float-end' {{ aSurveyInfo.attr.saveformsurveydivgdiv }}>
+                        <button {{ aSurveyInfo.attr.saveformsurveydivgdivbutton }}  class='{{ aSurveyInfo.class.saveformsurveydivgdivbutton }} btn btn-outline-secondary' >
                             {{ gT("Save Now") }}
                         </button>
                     </div>

@@ -45,7 +45,7 @@ var FailedEmail = function () {
 
     var startSubmit = function () {
         $('#submitForm').append(
-            '<i class="fa fa-spinner fa-pulse failedemail-action-modal--spinner"></i>'
+            '<i class="ri-loader-2-fill remix-pulse failedemail-action-modal--spinner"></i>'
         ).prop('disabled', true);
     };
     var stopSubmit = function () {
@@ -72,7 +72,7 @@ var FailedEmail = function () {
                         $('#failedemail-action-modal').find('.modal-content').html(result.html);
                         if (!result.hasOwnProperty('html')) {
                             triggerModalClose();
-                            window.LS.notifyFader(result.message, 'well-lg text-center ' + (result.success ? 'bg-primary' : 'bg-danger'));
+                            window.LS.notifyFader(result.message, 'well-lg text-center ' + (result.success ? '' : 'bg-danger'));
                             return;
                         }
                         $('#exitForm').on('click', function (e) {

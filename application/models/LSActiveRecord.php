@@ -504,7 +504,7 @@ class LSActiveRecord extends CActiveRecord
         $encryptionNotice = gT("This field is encrypted and can only be searched by exact match. Please enter the exact value you are looking for.");
         if (isset($encryptedAttributes)) {
             if (in_array($attributeName, $encryptedAttributes)) {
-                return ' <span  data-toggle="tooltip" title="' . $encryptionNotice . '" class="fa fa-key text-success"></span>';
+                return ' <span  data-bs-toggle="tooltip" title="' . $encryptionNotice . '" class="ri-key-2-fill text-success"></span>';
             }
         }
     }

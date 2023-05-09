@@ -51,14 +51,14 @@ namespace ArPHP\I18N;
  * @copyright 2006-2023 Khaled Al-Shamaa
  *
  * @license   LGPL <http://www.gnu.org/licenses/lgpl.txt>
- * @version   6.3.2 released in Jan 21, 2023
+ * @version   6.3.3 released in Apr 1, 2023
  * @link      http://www.ar-php.org
  */
  
 class Arabic
 {
     /** @var string */
-    public $version = '6.3.2';
+    public $version = '6.3.3';
     
     /** @var array<string> */
     private $arStandardPatterns = array();

@@ -26,17 +26,17 @@
 <div class="{{ aSurveyInfo.class.navigatorcontainer }} row navigator space-col" id="{{ aSurveyInfo.id.navigatorcontainer }}" {{ aSurveyInfo.attr.navigatorcontainer }}>
 
     <!-- Previous button container -->
-    <div class="{{ aSurveyInfo.class.navigatorbuttonl }} col-xs-6 text-left" {{ aSurveyInfo.attr.navigatorbuttonl }}>
+    <div class="{{ aSurveyInfo.class.navigatorbuttonl }} col-6 text-start" {{ aSurveyInfo.attr.navigatorbuttonl }}>
 
         {# Previous button must be set to ON in survey settings (and it's not shown in first page, in All in One survey mode, etc) #}
         {% if aNavigator.aMovePrev.show %}
             <!-- Button previous -->
-            <button {{ aSurveyInfo.attr.navigatorbuttonprev }} accesskey="p" class=" {{ aNavigator.disabled }} {{ aSurveyInfo.class.navigatorbuttonprev }} btn btn-lg btn-default " >
+            <button {{ aSurveyInfo.attr.navigatorbuttonprev }} accesskey="p" class=" {{ aNavigator.disabled }} {{ aSurveyInfo.class.navigatorbuttonprev }} btn btn-lg btn-outline-secondary " >
                 {{ gT("Previous") }}
             </button>
         {% endif %}
     </div>
-    <div class="{{ aSurveyInfo.class.navigatorbuttonr }} col-xs-6 text-right">
+    <div class="{{ aSurveyInfo.class.navigatorbuttonr }} col-6 text-end">
 
         {# Next button is not always shown (last page, all in one mode, etc) #}
         {% if aNavigator.aMoveNext.show %}

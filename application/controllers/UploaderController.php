@@ -49,9 +49,9 @@ class UploaderController extends SurveyController
 
         // Validate and filter and throw error if problems
         // Using 'futmp_'.randomChars(15).'_'.$pathinfo['extension'] for filename, then remove all other characters
-        $sFileGetContentFiltered = preg_replace('/[^a-zA-Z0-9_]/', '', $sFileGetContent);
-        $sFileNameFiltered = preg_replace('/[^a-zA-Z0-9_]/', '', $sFileName);
-        $sFieldNameFiltered = preg_replace('/[^X0-9]/', '', $sFieldName);
+        $sFileGetContentFiltered = preg_replace('/[^a-zA-Z0-9_]/', '', (string) $sFileGetContent);
+        $sFileNameFiltered = preg_replace('/[^a-zA-Z0-9_]/', '', (string) $sFileName);
+        $sFieldNameFiltered = preg_replace('/[^X0-9]/', '', (string) $sFieldName);
         if ($sFileGetContent != $sFileGetContentFiltered || $sFileName != $sFileNameFiltered || $sFieldName != $sFieldNameFiltered) {
             // If one seems to be a hack: Bad request
             throw new CHttpException(400); // See for debug > 1
@@ -78,9 +78,9 @@ class UploaderController extends SurveyController
                 Yii::app()->end();
             }
         } elseif ($bDelete) {
-            if (substr($sFileName, 0, 6) == 'futmp_') {
+            if (substr((string) $sFileName, 0, 6) == 'futmp_') {
                 $sFileDir = $tempdir . '/upload/';
-            } elseif (substr($sFileName, 0, 3) == 'fu_') {
+            } elseif (substr((string) $sFileName, 0, 3) == 'fu_') {
                 // Need to validate $_SESSION['srid'], and this file is from this srid !
                 $sFileDir = "{$uploaddir}/surveys/{$surveyid}/files/";
             } else {
@@ -88,10 +88,10 @@ class UploaderController extends SurveyController
             }
             if (isset($_SESSION[$sFieldName])) {
                 // We already have $sFieldName ?
-                $sJSON = $_SESSION[$sFieldName];
-                $aFiles = json_decode(stripslashes($sJSON), true);
+                $sJSON = $_SESSION[$sFieldName] ?? '';
+                $aFiles = json_decode(stripslashes($sJSON), true) ?? [];
 
-                if (substr($sFileName, 0, 3) == 'fu_') {
+                if (substr((string) $sFileName, 0, 3) == 'fu_') {
                     $iFileIndex = 0;
                     $found = false;
                     foreach ($aFiles as $aFile) {
@@ -178,9 +178,9 @@ class UploaderController extends SurveyController
                 Yii::app()->end();
             }
 
-            $valid_extensions_array = explode(",", $aAttributes['allowed_filetypes']);
+            $valid_extensions_array = explode(",", (string) $aAttributes['allowed_filetypes']);
             $valid_extensions_array = array_map('trim', $valid_extensions_array);
-            $pathinfo = pathinfo($_FILES['uploadfile']['name']);
+            $pathinfo = pathinfo((string) $_FILES['uploadfile']['name']);
             $ext = strtolower($pathinfo['extension']);
             $cleanExt = CHtml::encode($ext);
             $randfilename = 'futmp_' . randomChars(15) . '_' . $pathinfo['extension'];
@@ -244,7 +244,7 @@ class UploaderController extends SurveyController
                                 "success"       => true,
                                 "file_index"    => $filecount,
                                 "size"          => $size,
-                                "name"          => rawurlencode(basename($filename)),
+                                "name"          => rawurlencode(basename((string) $filename)),
                                 "ext"           => $cleanExt,
                                 "filename"      => $randfilename,
                                 "msg"           => gT("The file has been successfully uploaded.")

@@ -3,54 +3,60 @@
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('expressionsFunctions');
-$aFunctions = ExpressionManager::GetAllowableFunctions();
+$aFunctions = array_map(
+    function ($val, $key) {
+        $val['name'] = $key;
+        $val['id'] = $key;
+        return $val;
+    },
+    ExpressionManager::GetAllowableFunctions(),
+    array_keys(ExpressionManager::GetAllowableFunctions())
+);
 
 ?>
-<div class="container container-center">
-    <div class="row">
-        <div class="col-sm-12">
-            <h3>Functions available within ExpressionScript Engine</h3>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-12">
-            <table border='1' class='table' id="selector__EmAvailFunctions">
-                <thead>
-                    <tr>
-                        <th>Function</th>
-                        <th>Meaning</th>
-                        <th>Syntax</th>
-                        <th>Reference</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($aFunctions as $sName => $aFuncDefinition) { ?>
-                        <tr>
-                            <td>
-                                <?=$sName?>
-                            </td>
-                            <td>
-                                <?=$aFuncDefinition[2]?>
-                            </td>
-                            <td>
-                                <?=$aFuncDefinition[3]?>
-                            </td>
-                            <td>
-                                <?=(!empty($aFuncDefinition[4]) ? '<a target="_blank" href="'.$aFuncDefinition[4].'">'.$aFuncDefinition[4].'</a>' : "&nbsp;")?>
-                            </td>
-                        </tr>
-                    <?php } ?> 
-                </tbody>
-            </table>
-        </div>
+<div class="row">
+    <div class="col-12">
+        <h3>Functions available within ExpressionScript Engine</h3>
     </div>
 </div>
-
-<?php
-    App()->getClientScript()->registerPackage('jquery-datatable');
-    App()->getClientScript()->registerScript("EMFunctionDefinitionDataTable", "
-        $('#selector__EmAvailFunctions').DataTable({
-            pageLength: 10
-          });
-    ", LSYii_ClientScript::POS_POSTSCRIPT);
-?>
+<div class="row">
+    <div class="col-12">
+        <?php $this->widget(
+            'application.extensions.admin.grid.CLSGridView',
+            [
+                /*
+                'dataProvider' => new class ($aFunctions) extends CDataProvider {
+                    private $data;
+                    public function __construct($data) { $this->data = $data; }
+                    public function getData($refresh = false) { return $this->data; }
+                    public function fetchData() { return array_values($this->data); }
+                    public function fetchKeys() { return array_keys($this->data); }
+                    public function calculateTotalItemCount() { return count($this->data); }
+                    //public function getSort() { return null; }
+                    //public function getPagination() { return null; }
+                },
+                 */
+                'dataProvider' => new CArrayDataProvider($aFunctions),
+                'columns' => [
+                    [
+                        'header' => gT('Function'),
+                        'value' => '$data["name"]',
+                    ],
+                    [
+                        'header' => gT('Meaning'),
+                        'value' => '$data[2]',
+                    ],
+                    [
+                        'header' => gT('Syntax'),
+                        'value' => '$data[3]',
+                    ],
+                    [
+                        'header' => gT('Reference'),
+                        'type' => 'raw',
+                        'value' => function($data) { return sprintf('<a target="_blank" href="%s">%s</a>', $data[4], $data[4]); }
+                    ]
+                ]
+            ]
+        ); ?>
+    </div>
+</div>

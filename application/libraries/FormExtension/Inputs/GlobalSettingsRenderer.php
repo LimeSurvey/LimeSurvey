@@ -5,11 +5,32 @@ namespace LimeSurvey\Libraries\FormExtension\Inputs;
 class GlobalSettingsRenderer extends DefaultBaseRenderer
 {
     /**
-     * @param RawHtmlInput|BaseInput $input
+     * @param RawHtmlInput|BaseInput|FileInput $input
      */
     public function run($input): string
     {
         switch (true) {
+            case $input instanceof FileInput:
+                $id = $input->getId() ? 'id="' . $input->getId() . '"' : '';
+                $disabled = $input->isDisabled() ? "disabled" : '';
+                [$tooltipText, $tooltipTrigger] = $this->bakeTooltip($input->getTooltip());
+                $helpDiv = $this->bakeHelpDiv($input->getHelp());
+                return <<<HTML
+<div class="row ls-space margin top-10">
+    <div class="form-group col-xs-12">
+        <label class="col-sm-12 control-label">{$input->getLabel()}</label>
+        <div class="col-sm-12">
+            <input
+                class="form-control"
+                {$id} {$input->getAcceptHtml()} {$disabled} {$tooltipTrigger} {$tooltipText}
+                name="{$input->getName()}"
+                type="file"
+            />
+        </div>
+        {$helpDiv}
+    </div>
+</div>
+HTML;
             case $input instanceof TextInput:
                 $disabled = $input->isDisabled() ? "disabled" : "";
                 [$tooltipText, $tooltipTrigger] = $this->bakeTooltip($input->getTooltip());
