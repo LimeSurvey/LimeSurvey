@@ -275,7 +275,7 @@ class Question extends LSActiveRecord
     {
         $aRules = array();
         /* can not update group */
-        $aRules[] = array('gid', 'LSYii_NoUpdateValidator', 'filter' => false);
+        $aRules[] = array('gid', 'LSYii_DisableUpdateValidator');
         return $aRules;
     }
 
