@@ -9,7 +9,68 @@ use Facebook\WebDriver\WebDriverBy;
  */
 class MandatorySoftTest extends TestBaseClassWeb
 {
-    /* Check mandatory soft checkbox don't disable mandatory question */
+    /*
+     * Check basic mandatory soft functionnality with multiple page
+     * Warning : some part came for Vanilla theme with a lot of JS
+     * @since 2023-05-09
+     **/
+    public function testMandatorySoftAction()
+    {
+        $surveyFile = self::$surveysFolder . '/limesurvey_survey_MandatorySoftMultiPage.lss';
+        self::importSurvey($surveyFile);
+        $url = $this->getSurveyUrl();
+        $questions = $this->getAllSurveyQuestions();
+        try {
+            self::$webDriver->get($url);
+            self::$webDriver->next();
+            /* Try to submit */
+            self::$webDriver->next();
+            /* Check if question Q00 is here */
+            $this->assertTrue(
+                !empty(self::$webDriver->findElement(WebDriverBy::id('question' . $questions['Q00']->qid))),
+                'Soft mandatory Q00 question are not in 1st page'
+            );
+            /* Check if question Q00 mandatoiry are shown */
+            $MandatoryTip = trim(self::$webDriver->findElement(WebDriverBy::cssSelector('#question' . $questions['Q00']->qid . ' .ls-question-mandatory'))->getText());
+            $this->assertEquals("Please note that you have not answered this question. You may continue without answering.", $MandatoryTip);
+            /* Find the action button (theme dependant ?) */
+            $this->assertTrue(
+                !empty(self::$webDriver->findElement(WebDriverBy::id('mandatory-soft-alert-box-modal'))),
+                'Unable to find the action button after try to submit'
+            );
+            $mandatorysoftButton = self::$webDriver->findElement(WebDriverBy::id('mandatory-soft-alert-box-modal'));
+            $mandatorysoftButton->click();
+            /* Check if question Q01 is here */
+            $this->assertTrue(
+                !empty(self::$webDriver->findElement(WebDriverBy::id('question' . $questions['G02Q02']->qid))),
+                'Soft mandatory G02Q02 question are not in 2nd page after confirm soft mandatory for Q01'
+            );
+            /* Try to submit */
+            self::$webDriver->next();
+            /* Check if question Q01 is here */
+            $this->assertTrue(
+                !empty(self::$webDriver->findElement(WebDriverBy::id('question' . $questions['G02Q02']->qid))),
+                'Soft mandatory G02Q02 question are not in 2nd page after move next'
+            );
+            $MandatoryTip = trim(self::$webDriver->findElement(WebDriverBy::cssSelector('#question' . $questions['G02Q02']->qid . ' .ls-question-mandatory'))->getText());
+            $this->assertEquals("Please note that you have not answered this question. You may continue without answering.", $MandatoryTip);
+        } catch (\Exception $ex) {
+            self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
+            $this->assertFalse(
+                true,
+                'Url: ' . $url . PHP_EOL
+                . 'Screenshot taken.' . PHP_EOL
+                . self::$testHelper->javaTrace($ex)
+            );
+        }
+        self::$testSurvey->delete();
+        self::$testSurvey = null;
+    }
+
+    /*
+     * Check mandatory soft checkbox don't disable mandatory question
+     * @since 2023-04-02
+     **/
     public function testMandatorySoftAndMandatory()
     {
         $surveyFile = self::$surveysFolder . '/limesurvey_survey_MandatorySoftBrokeMandatory.lss';
@@ -47,8 +108,8 @@ class MandatorySoftTest extends TestBaseClassWeb
             $this->assertFalse(
                 true,
                 'Url: ' . $url . PHP_EOL
-                .  'Screenshot taken.' . PHP_EOL
-                .  self::$testHelper->javaTrace($ex)
+                . 'Screenshot taken.' . PHP_EOL
+                . self::$testHelper->javaTrace($ex)
             );
         }
         self::$testSurvey->delete();
