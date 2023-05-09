@@ -29,7 +29,7 @@ class LSYii_DisableUpdateValidator extends CValidator
             return;
         }
         if (empty($object->getPrimaryKey())) {
-            throw new \Exception('Unable to use LSYii_NoUpdateValidator without PrimaryKey');
+            throw new \InvalidArgumentException('Unable to use LSYii_DisableUpdateValidator without PrimaryKey');
         }
         $classOfObject = get_class($object);
         $originalObject = $classOfObject::model()->findByPk($object->getPrimaryKey());
