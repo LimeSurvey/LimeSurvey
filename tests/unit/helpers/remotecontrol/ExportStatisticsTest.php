@@ -27,7 +27,7 @@ class RemoteControlExportStatisticsTest extends BaseTest
 	$this->assertIsString($htmlStatistics, 'The html statistics were not returned or decoded correctly.');
 
         $q1Data = $this->getTableData($htmlStatistics, 'quid_1');
-        
+        echo $htmlStatistics;
         $this->assertNotEmpty($q1Data, 'The statistics table or data were not found in the html string.');
 
         // Option A row.
