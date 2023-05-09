@@ -129,6 +129,7 @@ $base-color: #ffffff;
 @import "question/question.scss";
 @import "question/question_states.scss";
 @import "group/group.scss";
+@import "participant/token.scss";
 
 // TODO: placeholder, will probbably be removed
 @import "darkmode/darkmode_colors.scss";

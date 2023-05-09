@@ -13174,6 +13174,13 @@ a {
   font-size: 1.14rem;
 }
 
+.form-control.ls-important-field {
+  padding: 14px 12px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16px;
+}
+
 .input-group-text {
   padding: 10px 12px;
   border-width: 2px;
@@ -13244,6 +13251,17 @@ textarea {
 .form-control[readonly] {
   background-color: #f5f5f5;
   opacity: 1;
+}
+
+.form-control.ls-important-field {
+  border: 2px solid #1E1E1E !important;
+  box-shadow: 8px 8px 0px #EEEFF7;
+}
+.form-control.ls-important-field:focus {
+  box-shadow: 8px 8px 0px rgba(66, 0, 255, 0.2);
+}
+.form-control.ls-important-field:disabled, .form-control.ls-important-field[readonly] {
+  border: 2px solid #9094A7 !important;
 }
 
 fieldset[disabled] .form-control {
@@ -15206,6 +15224,19 @@ input[type=checkbox]:checked:after,
   font-size: 18px;
   font-weight: 400;
   line-height: 24px;
+}
+
+.token-page .form-heading {
+  font-weight: 400;
+  font-size: 1.425rem;
+  line-height: 24px;
+  margin-bottom: 40px;
+}
+.token-page .control-label {
+  margin-bottom: 12px;
+}
+.token-page .load-survey-submit {
+  margin-top: 40px;
 }
 
 .darkmode-on {
