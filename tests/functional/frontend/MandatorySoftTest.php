@@ -30,6 +30,11 @@ class MandatorySoftTest extends TestBaseClassWeb
                 !empty(self::$webDriver->findElement(WebDriverBy::id('question' . $questions['Q00']->qid))),
                 'Soft mandatory Q00 question are not in 1st page'
             );
+            $groupTitleDiv = self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::cssSelector('#mandatory-soft-alert-box-modal')
+                )
+            );
             /* Check if question Q00 mandatoiry are shown */
             $MandatoryTip = trim(self::$webDriver->findElement(WebDriverBy::cssSelector('#question' . $questions['Q00']->qid . ' .ls-question-mandatory'))->getText());
             $this->assertEquals("Please note that you have not answered this question. You may continue without answering.", $MandatoryTip);
