@@ -237,7 +237,7 @@ function getPopupEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $g
     $content = CHtml::tag('i', array(
         'class' => "fa fa-pencil btneditanswerena",
         'id' => $fieldname . "_popupctrlena",
-        'data-toggle' => "tooltip",
+        'data-bs-toggle' => "tooltip",
         'data-placement' => "tooltip",
         'title' => gT("Start HTML editor in a popup window")
     ), '')
