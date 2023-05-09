@@ -15195,6 +15195,19 @@ input[type=checkbox]:checked:after,
   color: #FF515F;
 }
 
+.group-container .group-title {
+  font-size: 40px;
+  font-weight: 600;
+  line-height: 52px;
+  margin-top: 1em;
+  margin-bottom: 10px;
+}
+.group-container .group-description {
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 24px;
+}
+
 .darkmode-on {
   background-color: #333641;
   color: white;
