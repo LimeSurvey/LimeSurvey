@@ -1,5 +1,7 @@
-[class^="ri-"], [class*=" ri-"]  {
-  vertical-align: -0.25em;
+[class^="ri-"], [class*=" ri-"] {
+  &:not(.superset) {
+    vertical-align : -0.25em;
+  }
 }
 
 .remix-2xs {

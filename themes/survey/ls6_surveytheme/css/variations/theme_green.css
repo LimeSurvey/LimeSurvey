@@ -10845,11 +10845,6 @@ p.return-to-survey {
   padding-bottom: 0;
 }
 
-.superset {
-  font-size: 50%;
-  vertical-align: top;
-}
-
 .alert {
   background: none;
 }
@@ -13129,6 +13124,11 @@ a {
     font-size: 16px;
   }
 }
+.superset {
+  font-size: 50%;
+  vertical-align: super;
+}
+
 body {
   color: #1E1E1E;
 }
@@ -14804,7 +14804,7 @@ input[type=checkbox]:checked:after,
     margin-left: -1rem;
   }
 }
-[class^=ri-], [class*=" ri-"] {
+[class^=ri-]:not(.superset), [class*=" ri-"]:not(.superset) {
   vertical-align: -0.25em;
 }
 
@@ -15238,9 +15238,15 @@ input[type=checkbox]:checked:after,
 }
 .token-page .control-label {
   margin-bottom: 12px;
+  font-weight: 400;
+  line-height: 24px;
 }
 .token-page .load-survey-submit {
   margin-top: 40px;
+}
+
+.token-page .control-label {
+  color: #1E1E1E;
 }
 
 .darkmode-on {
