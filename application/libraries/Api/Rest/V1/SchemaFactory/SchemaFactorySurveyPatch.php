@@ -5,8 +5,7 @@ namespace LimeSurvey\Api\Rest\V1\SchemaFactory;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\{
     Schema,
     AllOf,
-    AnyOf,
-    OneOf
+    AnyOf
 };
 
 class SchemaFactorySurveyPatch
