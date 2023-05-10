@@ -683,7 +683,7 @@ class QuestionAdministrationController extends LSBaseController
         }
         $html  = [];
         $first = true;
-        $qid   = '-QUIDPLACEHOLDER-';
+        $qid   = App()->getRequest()->getParam('subqid') ?? 'new' . rand(0, 99999);
         foreach ($oSurvey->allLanguages as $language) {
             $html[$language] = $this->getSubquestionRow(
                 $oSurvey->sid,
@@ -755,7 +755,7 @@ class QuestionAdministrationController extends LSBaseController
         }
         $html  = [];
         $first = true;
-        $qid   = '-QUIDPLACEHOLDER-';
+        $qid   = App()->getRequest()->getParam('subqid') ?? 'new' . rand(0, 99999);
         foreach ($oSurvey->allLanguages as $language) {
             $html[$language] = $this->getAnswerOptionRow(
                 $oSurvey->sid,

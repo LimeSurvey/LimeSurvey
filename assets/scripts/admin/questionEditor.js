@@ -209,6 +209,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
       position: position,
       type: 'subquestion',
       languages: JSON.stringify($dataInput.data('languages').join(';')),
+      subqid: '-QUIDPLACEHOLDER-'
     };
     // We get the HTML of the new row to insert
     return $.ajax({
