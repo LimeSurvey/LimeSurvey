@@ -243,9 +243,9 @@
 
                 $oCKeditorVarName = CKEDITOR.replace('$fieldname', {
                 LimeReplacementFieldsType : \"".$fieldtype."\"
-                ,LimeReplacementFieldsSID : \"".$surveyID."\"
-                ,LimeReplacementFieldsGID : \"".$gID."\"
-                ,LimeReplacementFieldsQID : \"".$qID."\"
+                ,LimeReplacementFieldsSID : \"".intval($surveyID)."\"
+                ,LimeReplacementFieldsGID : \"".intval($gID)."\"
+                ,LimeReplacementFieldsQID : \"".intval($qID)."\"
                 ,LimeReplacementFieldsAction : \"".$action."\"
                 ,LimeReplacementFieldsPath : \"".Yii::app()->getController()->createUrl("admin/limereplacementfields/sa/index/")."\"
                 ,language:'".sTranslateLangCode2CK(Yii::app()->session['adminlang'])."'"
