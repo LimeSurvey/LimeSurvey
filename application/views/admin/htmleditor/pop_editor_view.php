@@ -35,41 +35,23 @@
                 var sReplacementFieldButton = '<?php eT('Insert/edit placeholder field','js');?>';
                 jQuery(document).on('ready pjax:scriptcomplete', function(){
                     //console.log('iGroupId: '+iGroupId);
-                // Better use try/catch to not crash JS completely
-                /*
+            // Better use try/catch to not crash JS completely
+            /*
                 try{ console.log('iGroupId: '+iGroupId); } catch (e){ console.log(e); }
                 */
                 if($('textarea').length > 0){
-                    <?php
-                    /* @var string[] parameters of the replacementfields url */
-                    $replacementfieldsurlparams = array(
-                        'fieldtype' => $sFieldType, // email_XX_lang, question_lang …
-                    );
-                    if(!empty($sAction)) {
-                        $replacementfieldsurlparams['action'] = javascriptEscape($sAction);
-                    }
-                    if(!empty($iSurveyId)) {
-                        $replacementfieldsurlparams['surveyid'] = $iSurveyId;
-                    }
-                    if(!empty($iGroupId)) {
-                        $replacementfieldsurlparams['gid'] = $iGroupId;
-                    }
-                    if(!empty($iQuestionId)) {
-                        $replacementfieldsurlparams['qid'] = $iQuestionId;
-                    }
-                    /* @var string the replacementfields url */
-                    $replacementfieldsurl = App()->getController()->createUrl(
-                        'admin/limereplacementfields/sa/index/',
-                        $replacementfieldsurlparams
-                    );
-                    ?>
                     CKEDITOR.on('instanceReady',CKeditor_OnComplete);
                     var oCKeditor = CKEDITOR.replace( 'MyTextarea' ,  { height	: '350',
                         width	: '98%',
                         toolbarStartupExpanded : true,
                         ToolbarCanCollapse : false,
                         toolbar : '<?php echo $toolbarname; ?>',
-                        LimeReplacementFieldsUrl : "<?php echo $replacementfieldsurl; ?>",
+                        LimeReplacementFieldsSID : "<?php echo $iSurveyId; ?>",
+                        LimeReplacementFieldsGID : "<?php echo $iGroupId; ?>",
+                        LimeReplacementFieldsQID : "<?php echo $iQuestionId; ?>",
+                        LimeReplacementFieldsType: "<?php echo $sFieldType; ?>",
+                        LimeReplacementFieldsAction: "<?php echo $sAction; ?>",
+                        LimeReplacementFieldsPath : "<?php echo $this->createUrl("/admin/limereplacementfields/sa/index"); ?>",
                         language : "<?php echo $ckLanguage ?>"
                         <?php echo $htmlformatoption; ?> });
                 }
