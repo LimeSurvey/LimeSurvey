@@ -53,13 +53,12 @@ $script.="CKEDITOR.on('instanceReady', function(event) {
         return null;
     }
 
-    function start_popup_editor(fieldnamee, editorurl)
+    function start_popup_editor(fieldname, editorurl)
     {
         controlidena = fieldname + '_popupctrlena';
         controliddis = fieldname + '_popupctrldis';
         numwindows = editorwindowsHash.length;
         activepopup = find_popup_editor(fieldname);
-
         if (activepopup == null)
         {
             var targetField = document.getElementById(fieldname);
@@ -72,7 +71,6 @@ $script.="CKEDITOR.on('instanceReady', function(event) {
                 var inputLangDirection = targetField.getAttribute('data-contents-dir');
                 editorurl = editorurl + '/contdir/' + (inputLangDirection ? inputLangDirection : '');
             }
-
             popup = window.open(editorurl,'', 'location=no, status=yes, scrollbars=auto, menubar=no, resizable=yes, width=690, height=500');
 
             editorwindowsHash[fieldname] = popup;
