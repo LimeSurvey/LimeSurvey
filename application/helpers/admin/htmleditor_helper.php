@@ -170,6 +170,9 @@
             $surveyID = 'uniq';
         }
 
+
+        $htmlcode = '';
+
         if ($fieldtype == 'editanswer' ||
         $fieldtype == 'addanswer' ||
         $fieldtype == 'editlabel' ||
@@ -178,52 +181,12 @@
         } else {
             $class = "editorLink input-group-addon";
         }
-        /* @var string[] parameters of the editor url */ 
-        $editorurlparams = array(
-            'name' => $fieldname,
-            'text' => javascriptEscape($fieldtext), // usage for title of the new window
-            'type' => $fieldtype, // email_XX_lang, question_lang …
-        );
-        if(!empty($action)) {
-            $editorurlparams['action'] = javascriptEscape($action);
-        }
-        if(!empty($surveyID)) {
-            $editorurlparams['sid'] = $surveyID;
-        }
-        if(!empty($gID)) {
-            $editorurlparams['gid'] = $gID;
-        }
-        if(!empty($qID)) {
-            $editorurlparams['qid'] = $qID;
-        }
-        $editorurlparams['lang'] = App()->language;
-        /* @var string the editor url */ 
-        $editorurl = App()->getController()->createUrl(
-            'admin/htmleditor_pop/sa/index',
-            $editorurlparams
-        );
-        /* @var string content of the action link */ 
-        $content = CHtml::tag('i',array(
-            'class' => "fa fa-pencil btneditanswerena",
-            'id' => $fieldname . "_popupctrlena",
-            'data-toggle' => "tooltip",
-            'data-placement' => "tooltip",
-            'title' => gT("Start HTML editor in a popup window")
-        ),'')
-        . CHtml::tag('i',array(
-            'class' => "fa fa-pencil btneditanswerdis",
-            'id' => $fieldname . "_popupctrldis",
-            'style' => "display:none",
-        ),'');
-        /* @var final code to return */ 
-        $htmlcode = CHtml::link(
-             $content,
-            "javascript:start_popup_editor('{$fieldname}','" . $editorurl . "');",
-            array(
-                'id' => $fieldname."_ctrl",
-                'class' => "{$class} btn btn-default btn-xs",
-            )
-        );
+        $htmlcode .= ""
+        . "<a href=\"javascript:start_popup_editor('".$fieldname."','".addslashes(htmlspecialchars_decode($fieldtext, ENT_QUOTES))."','".$surveyID."','".$gID."','".$qID."','".$fieldtype."','".$action."')\" id='".$fieldname."_ctrl' class='{$class} btn btn-default btn-xs'>\n"
+        . "\t<i class='fa fa-pencil btneditanswerena' id='".$fieldname."_popupctrlena' data-toggle='tooltip' data-placement='bottom' title='".gT("Start HTML editor in a popup window")."'></i>"
+        . "\t<i class='fa fa-pencil btneditanswerdis' id='".$fieldname."_popupctrldis'  style='display:none'  ></i>"
+        . "</a>\n";
+
         return $htmlcode;
     }
 
@@ -268,27 +231,7 @@
             ,filebrowserImageUploadUrl:'{$sFakeBrowserURL}'
             ,filebrowserFlashUploadUrl:'{$sFakeBrowserURL}'";
         }
-        /* @var string[] parameters of the replacementfields url */
-        $replacementfieldsurlparams = array(
-            'fieldtype' => $fieldtype, // email_XX_lang, question_lang …
-        );
-        if(!empty($action)) {
-            $replacementfieldsurlparams['action'] = javascriptEscape($action);
-        }
-        if(!empty($surveyID)) {
-            $replacementfieldsurlparams['surveyid'] = $surveyID;
-        }
-        if(!empty($gID)) {
-            $replacementfieldsurlparams['gid'] = $gID;
-        }
-        if(!empty($qID)) {
-            $replacementfieldsurlparams['qid'] = $qID;
-        }
-        /* @var string the replacementfields url */
-        $replacementfieldsurl = App()->getController()->createUrl(
-            'admin/limereplacementfields/sa/index/',
-            $replacementfieldsurlparams
-        );
+
         $scriptCode = ""
         . "
             if($('#".$fieldname."').length >0){
@@ -299,7 +242,12 @@
                 }
 
                 $oCKeditorVarName = CKEDITOR.replace('$fieldname', {
-                LimeReplacementFieldsUrl : \"".$replacementfieldsurl."\"
+                LimeReplacementFieldsType : \"".$fieldtype."\"
+                ,LimeReplacementFieldsSID : \"".$surveyID."\"
+                ,LimeReplacementFieldsGID : \"".$gID."\"
+                ,LimeReplacementFieldsQID : \"".$qID."\"
+                ,LimeReplacementFieldsAction : \"".$action."\"
+                ,LimeReplacementFieldsPath : \"".Yii::app()->getController()->createUrl("admin/limereplacementfields/sa/index/")."\"
                 ,language:'".sTranslateLangCode2CK(Yii::app()->session['adminlang'])."'"
                 . $sFileBrowserAvailable
                 . $htmlformatoption
