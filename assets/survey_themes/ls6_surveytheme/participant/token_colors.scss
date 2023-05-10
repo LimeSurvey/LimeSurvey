@@ -2,4 +2,8 @@
     .control-label {
         color: $g-900;
     }
+    .captcha-container .img-fluid {
+        border: 1px dashed $g-700;
+        background-color: $g-200;
+    }
 }

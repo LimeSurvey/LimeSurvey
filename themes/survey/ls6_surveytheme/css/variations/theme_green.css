@@ -13175,6 +13175,7 @@ a {
 }
 
 .form-control.ls-important-field {
+  height: 44px;
   padding: 14px 12px;
   font-weight: 400;
   font-size: 14px;
@@ -15244,9 +15245,24 @@ input[type=checkbox]:checked:after,
 .token-page .load-survey-submit {
   margin-top: 40px;
 }
+.token-page .captcha-item {
+  margin-top: 24px;
+}
+.token-page .captcha-item .captcha-container {
+  display: flex;
+}
+@media only screen and (max-width: 766px) {
+  .token-page .reload-button, .token-page .captcha-input {
+    padding-top: 8px;
+  }
+}
 
 .token-page .control-label {
   color: #1E1E1E;
+}
+.token-page .captcha-container .img-fluid {
+  border: 1px dashed #6E748C;
+  background-color: #EEEFF7;
 }
 
 .darkmode-on {
