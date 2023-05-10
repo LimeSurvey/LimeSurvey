@@ -1,0 +1,13 @@
+// css for participant related sites like captcha, token,...
+.token-page {
+    .form-heading {
+        @include formheading;
+        margin-bottom: 40px;
+    }
+    .control-label {
+        @include control-label
+    }
+    .load-survey-submit {
+        @include submit-button;
+    }
+}
