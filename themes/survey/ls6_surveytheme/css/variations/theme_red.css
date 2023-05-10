@@ -15210,6 +15210,21 @@ input[type=checkbox]:checked:after,
   color: #FF515F;
 }
 
+.public-stats .statsSurveyTitle {
+  color: #1E1E1E;
+  font-weight: 600;
+  font-size: 2.85rem;
+  line-height: 52px;
+  margin: 0 0 10px;
+}
+.public-stats .statsNumRecords {
+  color: #1E1E1E;
+  font-size: 1.2825rem;
+  font-weight: 400;
+  line-height: 24px;
+  margin: 0 0 10px;
+}
+
 .darkmode-on {
   background-color: #333641;
   color: white;
