@@ -13174,6 +13174,13 @@ a {
   font-size: 1.14rem;
 }
 
+.form-control.ls-important-field {
+  padding: 14px 12px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16px;
+}
+
 .input-group-text {
   padding: 10px 12px;
   border-width: 2px;
@@ -13246,6 +13253,17 @@ textarea {
   opacity: 1;
 }
 
+.form-control.ls-important-field {
+  border: 2px solid #1E1E1E !important;
+  box-shadow: 8px 8px 0px #EEEFF7;
+}
+.form-control.ls-important-field:focus {
+  box-shadow: 8px 8px 0px rgba(66, 0, 255, 0.2);
+}
+.form-control.ls-important-field:disabled, .form-control.ls-important-field[readonly] {
+  border: 2px solid #9094A7 !important;
+}
+
 fieldset[disabled] .form-control {
   background-color: #f5f5f5;
   opacity: 1;
@@ -13286,6 +13304,7 @@ textarea,
 .form-select.ls-important-field {
   border: 2px solid #1E1E1E !important;
   box-shadow: 8px 8px 0px #EEEFF7;
+  z-index: 3;
 }
 .form-select.ls-important-field:focus {
   box-shadow: 8px 8px 0px rgba(66, 0, 255, 0.2);
@@ -13297,6 +13316,7 @@ textarea,
 
 .has-success .form-control {
   box-shadow: 4px 4px 0 #14AE5C;
+  z-index: 3;
 }
 .has-success .form-control:focus {
   box-shadow: 4px 4px 0 #14AE5C;
@@ -13304,6 +13324,7 @@ textarea,
 
 .has-warning .form-control {
   box-shadow: 4px 4px 0 #FFE046;
+  z-index: 3;
 }
 .has-warning .form-control:focus {
   box-shadow: 4px 4px 0 #FFE046;
@@ -13312,6 +13333,7 @@ textarea,
 .has-error .form-control,
 .input-error .form-control {
   box-shadow: 4px 4px 0 #FF515F;
+  z-index: 3;
 }
 .has-error .form-control:focus,
 .input-error .form-control:focus {
@@ -15223,6 +15245,32 @@ input[type=checkbox]:checked:after,
   font-weight: 400;
   line-height: 24px;
   margin: 0 0 10px;
+}
+
+.group-container .group-title {
+  font-size: 40px;
+  font-weight: 600;
+  line-height: 52px;
+  margin-top: 1em;
+  margin-bottom: 10px;
+}
+.group-container .group-description {
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 24px;
+}
+
+.token-page .form-heading {
+  font-weight: 400;
+  font-size: 1.425rem;
+  line-height: 24px;
+  margin-bottom: 40px;
+}
+.token-page .control-label {
+  margin-bottom: 12px;
+}
+.token-page .load-survey-submit {
+  margin-top: 40px;
 }
 
 .darkmode-on {

@@ -38,6 +38,17 @@ $input-font-size             : 14px;
     opacity          : 1;
 }
 
+.form-control.ls-important-field {
+    border      : 2px solid $g-900 !important;
+    box-shadow  : 8px 8px 0px $g-200;
+    &:focus {
+        box-shadow : 8px 8px 0px $elevation-shadow;
+    }
+    &:disabled, &[readonly] {
+        border           : 2px solid $input-border-color-disabled !important;
+    }
+}
+
 fieldset[disabled] {
     .form-control {
         background-color : $color_wild_sand_approx;
@@ -80,6 +91,7 @@ textarea,
     &.ls-important-field {
         border     : 2px solid $input-focus-border-color !important;
         box-shadow : 8px 8px 0px $g-200;
+        z-index    : 3;
         &:focus {
             box-shadow : 8px 8px 0px $elevation-shadow;
         }
@@ -93,6 +105,7 @@ textarea,
 .has-success {
     .form-control {
         box-shadow : 4px 4px 0 $base-color;
+        z-index    : 3;
         &:focus {
             box-shadow : 4px 4px 0 $base-color;
         }
@@ -102,6 +115,7 @@ textarea,
 .has-warning {
     .form-control {
         box-shadow : 4px 4px 0 $warning;
+        z-index    : 3;
         &:focus {
             box-shadow : 4px 4px 0 $warning;
         }
@@ -112,9 +126,11 @@ textarea,
 .input-error {
     .form-control {
         box-shadow : 4px 4px 0 $error;
+        z-index    : 3;
         &:focus {
             box-shadow : 4px 4px 0 $error;
         }
     }
 }
+
 
