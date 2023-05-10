@@ -15195,6 +15195,17 @@ input[type=checkbox]:checked:after,
   color: #FF515F;
 }
 
+.printanswers-container {
+  margin-bottom: 3em;
+}
+.printanswers-container span {
+  color: #1E1E1E;
+  line-height: 24px;
+  font-size: 1.2825rem;
+  font-weight: 400;
+  margin-right: 5px;
+}
+
 .darkmode-on {
   background-color: #333641;
   color: white;
