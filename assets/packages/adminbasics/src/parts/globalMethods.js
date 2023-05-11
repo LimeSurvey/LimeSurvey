@@ -5,20 +5,6 @@
 import LOG from '../components/lslog';
 
 const globalWindowMethods = {
-    renderBootstrapSwitch : () => {
-        try{
-            if(!$('[data-is-bootstrap-switch]').parent().hasClass('bootstrap-switch-container')) {
-                $('[data-is-bootstrap-switch]').bootstrapSwitch({
-                    onInit: () => LOG.log("BootstrapSwitch Initialized")
-                });
-            }
-        } catch(e) { LOG.error(e); }
-    },
-    unrenderBootstrapSwitch : () => {
-        try{
-            $('[data-is-bootstrap-switch]').bootstrapSwitch('destroy');
-        } catch(e) { LOG.error(e); }
-    },
     validatefilename: (form, strmessage) => {
         if (form.the_file.value == "") {
             $('#pleaseselectfile-popup').modal();
@@ -43,10 +29,10 @@ const globalWindowMethods = {
         $("select.activate-search").select2();
     },
     // finds any duplicate array elements using the fewest possible comparison
-    arrHasDupes:  ( arrayToCheck ) => {  
+    arrHasDupes:  ( arrayToCheck ) => {
         return (_.uniq(arrayToCheck).length !== arrayToCheck.length);
     },
-    arrHasDupesWhich: ( arrayToCheck ) => {  
+    arrHasDupesWhich: ( arrayToCheck ) => {
         return (_.difference(_.uniq(arrayToCheck), arrayToCheck)).length > 0;
     },
     getkey :  (e) => {
@@ -55,10 +41,10 @@ const globalWindowMethods = {
     goodchars : (e, goods) => {
         const key = getkey(e);
         if (key == null) return true;
-        
+
         // get character
         const keychar = (String.fromCharCode(key)).toLowerCase();
-        
+
         goods = goods.toLowerCase();
 
         return (goods.indexOf(keychar) != -1) || ( key==null || key==0 || key==8 || key==9  || key==27 );
@@ -93,11 +79,11 @@ const globalWindowMethods = {
                 contentObject = _.merge(contentObject, JSON.parse(content));
             } catch(e) { console.error('JSON parse on sendPost failed!') }
         }
-        
+
         _.each(contentObject, (value,key) => {
             $("<input type='hidden'>").attr("name", key).attr("value", value).appendTo($form);
         });
-        
+
         $("<input type='hidden'>").attr("name", LS.data.csrfTokenName).attr("value", LS.data.csrfToken).appendTo($form);
         $form.appendTo("body");
         $form.submit();

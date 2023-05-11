@@ -14,7 +14,7 @@
     );
 ?>
     <input type="hidden" name="oper" value="<?php echo $editType; ?>" />
-    <?php 
+    <?php
     if($editType=='edit')
     {
         echo '<input type="hidden" id="ParticipantAttributeName_attribute_id" name="ParticipantAttributeName[attribute_id]" value="'.$model->attribute_id.'" />';
@@ -66,7 +66,7 @@
             <h4 class="col-8 col-offset-2"><?php eT("Dropdown fields") ?></h4>
         </div>
         <div id='ParticipantAttributeNamesDropdownEditList'>
-            <?php 
+            <?php
                 foreach($model->getAttributesValues($model->attribute_id) as $attribute_value){
                     echo "<div class='control-group'>";
                     echo "<div class='dropDownContainer col-8 col-offset-2'>";
@@ -112,10 +112,10 @@
             </div>
         </div>
         <div id='languagesList' class="row">
-            <?php 
+            <?php
                 if($editType!=='edit'){
                     $languageKey = Yii::app()->getLanguage();
-                    echo 
+                    echo
                     '<div class="ex-form-group mb-3" data-lang="'.$languageKey .'">
                         <label class="col-12 form-label" for="ParticipantAttributeNameLanguages_'.$languageKey.'">'.getLanguageNameFromCode($languageKey,false).'</label>
                         <div class="d-flex flex-row align-items-center flex-wrap">
@@ -132,7 +132,7 @@
                 }
                 foreach($languagesOfAttribute as $languageKey => $languageOfAttribute)
                 {
-                    echo 
+                    echo
                     '<div class="col-12 ex-form-group mb-3" data-lang="'.$languageKey.'">
                         <label class=" form-label" for="ParticipantAttributeNameLanguages_'.$languageKey.'">'.getLanguageNameFromCode($languageKey,false).'</label>
                         <div class="d-flex flex-row align-items-center flex-wrap">
@@ -170,7 +170,7 @@
             </div>
         </div>
     </div>
-        
+
     <script>
         jQuery('#ParticipantAttributeName_attribute_type').on('change', function(){
             console.log($(this).val() == "DD");
@@ -232,12 +232,11 @@
                         }
                     }
                 })
-            
+
             return false;
         });
         jQuery(function(){jQuery('#ParticipantAttributeName_attribute_type').trigger('change');});
 
-        LS.renderBootstrapSwitch();
     </script>
 </div>
 <div class="modal-footer">

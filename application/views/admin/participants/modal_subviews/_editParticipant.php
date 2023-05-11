@@ -140,9 +140,7 @@ Yii::app()->getController()->renderPartial(
         <?php echo $buttonTitle; ?>
     </button>
 </div>
-<script>
-$('#editPartcipantActiveForm .bootstrap-switch').bootstrapSwitch();
-</script>
+
 <?php
 $this->endWidget();
 ?>

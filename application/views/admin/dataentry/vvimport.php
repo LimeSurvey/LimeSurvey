@@ -12,7 +12,7 @@
         <h3></h3>
     </div>
     <?php endif;?>
-    
+
 
         <div class="row">
             <div class="col-12 content-right">
@@ -20,8 +20,8 @@
 <?php
     if ($tableExists) {
     ?>
-    
-    
+
+
     <div class="card card-primary" id="panel-1">
         <div class="card-header ">
             <div class="">
@@ -158,18 +158,3 @@
         <?php } ?>
 
 </div></div></div>
-<?php
-App()->getClientScript()->registerScript('VVImportBSSwitcher', "
-LS.renderBootstrapSwitch();
-
-$('#noid').on('switchChange.bootstrapSwitch', function(event, state) {
-    if (!state){
-        $('#insertmethod').removeAttr('disabled');
-        $('#insertmethod-container').show('slow');
-    }else{
-        $('#insertmethod').attr('disabled','disabled');
-        $('#insertmethod-container').hide('slow');
-    }
-});
-", LSYii_ClientScript::POS_POSTSCRIPT);
-?>

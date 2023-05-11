@@ -107,23 +107,16 @@ $optionsOnOff = array(
 </div>
 
 <script>
-    window.LS.unrenderBootstrapSwitch();
-    window.LS.renderBootstrapSwitch();
-
     $('#surveySettings a').click(function (e) {
         window.location.hash = $(this).attr('href');
         e.preventDefault();
         $("#survey-settings-form").attr('action', ' <?php echo Yii::app()->getController()->createUrl('/admin/globalsettings/sa/surveysettings') ?>' + window.location.hash);
         $(this).tab('show');
     });
-
-
     $(document).on('ready pjax:scriptcomplete', function () {
         if (window.location.hash) {
             $('#surveySettings').find('a[href=' + window.location.hash + ']').trigger('click');
         }
-
         $('#save-form-button, #save-and-close-form-button').attr('data-form-id', 'survey-settings-form');
-
     })
 </script>

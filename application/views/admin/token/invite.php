@@ -58,10 +58,10 @@
                             <div class='mb-3'>
                                 <?php echo CHtml::label(
                                     gT("Bypass date control before sending email:"),
-                                    'bypassdatecontrol', 
+                                    'bypassdatecontrol',
                                     array(
                                         'title'=>gt("If some participants have a 'valid from' date set which is in the future, they will not be able to access the survey before that 'valid from' date."),
-                                        'unescaped' => 'unescaped', 
+                                        'unescaped' => 'unescaped',
                                         'class' => 'form-label ')
                                     ); ?>
                                 <div>
@@ -174,9 +174,8 @@
 <?php
 
 App()->getClientScript()->registerScript("Tokens:BindInviteView", "
-        LS.renderBootstrapSwitch();
         $('#send-invitation-button').on('click', function(){
             $('#sendinvitation').submit();
         })
-", LSYii_ClientScript::POS_POSTSCRIPT ); 
+", LSYii_ClientScript::POS_POSTSCRIPT );
 ?>

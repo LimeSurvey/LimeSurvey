@@ -119,22 +119,20 @@ Yii::app()->getClientScript()->registerScript(
     <?php
     Yii::app()->getClientScript()->registerScript(
         "editLocalSettings_submit",
-        "window.LS.unrenderBootstrapSwitch();
-        window.LS.renderBootstrapSwitch();
-    
+        "
         $('#surveySettings a').click(function (e) {
             window.location.hash = $(this).attr('href');
             e.preventDefault();
             $('#survey-settings-options-form').attr('action',' " . Yii::app()->getController()->createUrl('/admin/surveysgroups/sa/surveysettings/id/' . $oSurvey->gsid) . "'+window.location.hash);
-            $(this).tab('show');       
+            $(this).tab('show');
         });
-    
+
         $('.text-option-inherit').on('change', function(e){
             var newValue = $(this).find('.btn-check:checked').val();
             var parent = $(this).parent().parent();
             var inheritValue = parent.find('.inherit-edit').data('inherit-value');
             var savedValue = parent.find('.inherit-edit').data('saved-value');
-    
+
             if (newValue == 'Y'){
                 parent.find('.inherit-edit').addClass('d-none').removeClass('d-block').val(inheritValue);
                 parent.find('.inherit-readonly').addClass('d-block').removeClass('d-none');
@@ -144,7 +142,7 @@ Yii::app()->getClientScript()->registerScript(
                 parent.find('.inherit-readonly').addClass('d-none').removeClass('d-block');
             }
         });
-    
+
         if(window.location.hash){
             $('#surveySettings').find('a[href='+window.location.hash+']').trigger('click');
         }
