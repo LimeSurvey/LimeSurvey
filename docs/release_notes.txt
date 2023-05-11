@@ -34,6 +34,24 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.18 (build 230503) to 5.6.19 (build 230509) May 8, 2023
+-Fixed issue: Error when using detailed admin notifications or print responses on encrypted fields (#3094) (Patricia Stell)
+-Fixed issue: Cannot add survey menu when using PHP8 (#3110) (Patricia Stell)
+-Fixed issue #18635: Export single response can goes to a white page (#2923) (Denis Chenu)
+#Updated translation: Spanish (Spain) by ireneoh
+#Updated translation: Slovak by c_schmitz, jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by ciampix, lfanfoni
+#Updated translation: Dutch by Han, kbadata
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 5.6.17 (build 230426) to 5.6.18 (build 230503) May 2, 2023
 -Fixed issue: Very slow survey start if a lot of quotas exist (Carsten Schmitz)
 -Fixed issue: SPSS import throws error on "RENAME VARIABLE" (Patricia Stell)
