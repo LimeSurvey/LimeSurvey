@@ -52,7 +52,7 @@ class OpHandlerActiveRecordUpdate implements OpHandlerInterface
                 printf(
                     '%s with id "%s" not found',
                     $this->entity,
-                    $op->getEntityId()
+                    json_encode($op->getEntityId())
                 )
             );
         }
@@ -71,7 +71,7 @@ class OpHandlerActiveRecordUpdate implements OpHandlerInterface
                 printf(
                     'Invalid value for %s with id "%s"',
                     $this->entity,
-                    print_r($op->getEntityId(), true)
+                    json_encode($op->getEntityId())
                 )
             );
         }

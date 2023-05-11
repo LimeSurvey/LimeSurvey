@@ -17,7 +17,7 @@ class RendererBasic implements RendererInterface
 {
     public function returnResponse(Response $response)
     {
-        $this->renderJSON(
+        $this->renderJson(
             $response->getData(),
             $this->getHttpResponseCode($response->getStatus())
         );
@@ -45,7 +45,7 @@ class RendererBasic implements RendererInterface
      * @param int $responseCode
      * @return void
      */
-    protected function renderJSON($data, $responseCode = 200)
+    protected function renderJson($data, $responseCode = 200)
     {
         http_response_code($responseCode);
         header('Content-type: application/json');

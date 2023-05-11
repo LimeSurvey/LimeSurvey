@@ -1,6 +1,6 @@
 <?php
 
-namespace LimeSurvey\Api\Command\V1\SurveyPatch\OpHandler;
+namespace LimeSurvey\ObjectPatch\OpHandler;
 
 use CModel;
 use LimeSurvey\Api\Transformer\TransformerInterface;
@@ -8,10 +8,10 @@ use LimeSurvey\ObjectPatch\{
     OpHandler\OpHandlerInterface,
     OpHandler\OpHandlerException,
     Op\OpInterface,
-    OpType\OpTypeUpdate
+    OpType\OpTypeDelete
 };
 
-class OpHandlerActiveRecordUpdate implements OpHandlerInterface
+class OpHandlerActiveRecordDelete implements OpHandlerInterface
 {
     protected $entity = null;
     protected $model = null;
@@ -27,7 +27,7 @@ class OpHandlerActiveRecordUpdate implements OpHandlerInterface
     public function canHandle(OpInterface $op): bool
     {
         return $op->getEntityType() == $this->entity
-            && $op->getType()->getId() == OpTypeUpdate::ID;
+            && $op->getType()->getId() == OpTypeDelete::ID;
     }
 
     private function getEntityId(OpInterface $op)
@@ -46,36 +46,17 @@ class OpHandlerActiveRecordUpdate implements OpHandlerInterface
             : $this->model->findByPk(
                 $op->getEntityId()
             );
-        ;
+
         if (!$record) {
             throw new OpHandlerException(
-                printf(
+                sprintf(
                     '%s with id "%s" not found',
                     $this->entity,
-                    $op->getEntityId()
+                    json_encode($op->getEntityId())
                 )
             );
         }
 
-        $props = $this->transformer
-            ? $this->transformer->transform(
-                $op->getProps()
-            )
-            : $op->getProps();
-        if (is_array($props)) {
-            foreach ($props as $prop => $v) {
-                $record->{$prop} = $v;
-            }
-        } else {
-            throw new OpHandlerException(
-                printf(
-                    'Invalid value for %s with id "%s"',
-                    $this->entity,
-                    print_r($op->getEntityId(), true)
-                )
-            );
-        }
-
-        $record->save();
+        $record->delete();
     }
 }

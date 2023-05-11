@@ -11,6 +11,9 @@ use Question;
 use QuestionL10n;
 use QuestionAttribute;
 
+use CModel;
+use LimeSurvey\Api\Transformer\TransformerInterface;
+
 use LimeSurvey\Api\Command\V1\Transformer\Input\{
     TransformerInputSurvey,
     TransformerInputAnswer,
@@ -24,67 +27,89 @@ use LimeSurvey\Api\Command\V1\Transformer\Input\{
 
 use LimeSurvey\ObjectPatch\{
     Patcher,
-    OpHandler\OpHandlerActiveRecordUpdate
+    OpHandler\OpHandlerActiveRecordUpdate,
+    OpHandler\OpHandlerActiveRecordDelete,
+    OpHandler\OpHandlerActiveRecordCreate
 };
 
 class PatcherSurvey extends Patcher
 {
     public function __construct()
     {
+        $this->addCrud(
+            'survey',
+            Survey::model(),
+            new TransformerInputSurvey
+        );
+
+        $this->addCrud(
+            'languageSetting',
+            SurveyLanguageSetting::model(),
+            new TransformerInputSurveyLanguageSettings
+        );
+
+        $this->addCrud(
+            'questionGroup',
+            QuestionGroup::model(),
+            new TransformerInputQuestionGroup
+        );
+
+        $this->addCrud(
+            'questionGroupL10n',
+            QuestionGroupL10n::model(),
+            new TransformerInputQuestionGroupL10ns
+        );
+
+        $this->addCrud(
+            'question',
+            Question::model(),
+            new TransformerInputQuestion
+        );
+
+        $this->addCrud(
+            'questionL10n',
+            QuestionL10n::model(),
+            new TransformerInputQuestionL10ns
+        );
+
+        $this->addCrud(
+            'questionAttribute',
+            QuestionAttribute::model(),
+            new TransformerInputQuestionAttribute
+        );
+
+        $this->addCrud(
+            'questionAnswer',
+            Answer::model(),
+            new TransformerInputAnswer
+        );
+    }
+
+    private function addCrud(
+        $entity,
+        CModel $model,
+        TransformerInterface $transformer = null
+    )
+    {
         $this->addOpHandler(
             new OpHandlerActiveRecordUpdate(
-                'survey',
-                Survey::model(),
-                new TransformerInputSurvey
+                $entity,
+                $model,
+                $transformer
             )
         );
         $this->addOpHandler(
-            new OpHandlerActiveRecordUpdate(
-                'languageSetting',
-                SurveyLanguageSetting::model(),
-                new TransformerInputSurveyLanguageSettings
+            new OpHandlerActiveRecordDelete(
+                $entity,
+                $model,
+                $transformer
             )
         );
         $this->addOpHandler(
-            new OpHandlerActiveRecordUpdate(
-                'questionGroup',
-                QuestionGroup::model(),
-                new TransformerInputQuestionGroup
-            )
-        );
-        $this->addOpHandler(
-            new OpHandlerActiveRecordUpdate(
-                'questionGroupL10n',
-                QuestionGroupL10n::model(),
-                new TransformerInputQuestionGroupL10ns
-            )
-        );
-        $this->addOpHandler(
-            new OpHandlerActiveRecordUpdate(
-                'question',
-                Question::model(),
-                new TransformerInputQuestion
-            )
-        );
-        $this->addOpHandler(
-            new OpHandlerActiveRecordUpdate(
-                'questionL10n',
-                QuestionL10n::model(),
-                new TransformerInputQuestionL10ns
-            )
-        );
-        $this->addOpHandler(
-            new OpHandlerActiveRecordUpdate(
-                'questionAttribute',
-                QuestionAttribute::model(),
-                new TransformerInputQuestionAttribute
-            )
-        );
-        $this->addOpHandler(
-            new OpHandlerActiveRecordUpdate(
-                'questionAnswer',
-                Answer::model(),
-                new TransformerInputAnswer
+            new OpHandlerActiveRecordCreate(
+                $entity,
+                $model,
+                $transformer
             )
         );
     }

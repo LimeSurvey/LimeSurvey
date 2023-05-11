@@ -12,7 +12,6 @@ use LimeSurvey\Api\Command\Mixin\{
     Auth\AuthSessionTrait,
     Auth\AuthPermissionTrait
 };
-use LimeSurvey\ObjectPatch\ObjectPatchException;
 
 class SurveyPatch implements CommandInterface
 {
@@ -42,13 +41,7 @@ class SurveyPatch implements CommandInterface
         }
 
         $patcher = new PatcherSurvey($id);
-        try {
-            $patcher->applyPatch($patch);
-        } catch (ObjectPatchException $e) {
-            return $this->responseErrorBadRequest(
-                $e->getMessage()
-            );
-        }
+        $patcher->applyPatch($patch);
 
         return $this->responseSuccess(true);
     }

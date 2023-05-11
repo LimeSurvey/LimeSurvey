@@ -5,6 +5,7 @@ namespace LimeSurvey\ObjectPatch;
 use LimeSurvey\ObjectPatch\Op\OpInterface;
 use LimeSurvey\ObjectPatch\Op\OpStandard;
 use LimeSurvey\ObjectPatch\OpHandler\OpHandlerInterface;
+use LimeSurvey\ObjectPatch\OpHandler\OpHandlerException;
 
 class Patcher
 {
@@ -70,7 +71,7 @@ class Patcher
                     'No operation handler found for "%s":"%s":"%s"',
                     $op->getEntityType(),
                     $op->getType()->getId(),
-                    print_r($op->getEntityId(), true)
+                    json_encode($op->getEntityId())
                 )
             );
         }
