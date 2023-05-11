@@ -1,0 +1,19 @@
+.register-container {
+    .register-jumbotron, .register-jumbotron.card.bg-light {
+        padding: 0 !important;
+        background : none !important;
+        box-shadow : none;
+        border     : none;
+        .form-header {
+            @include formheading;
+        }
+    }
+    .register-form {
+        .control-label {
+            @include control-label;
+        }
+    }
+    #register_button {
+        @include submit-button;
+    }
+}

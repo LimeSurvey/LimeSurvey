@@ -1,0 +1,7 @@
+.register-container {
+    .register-form {
+        .control-label {
+            @include control-label_color;
+        }
+    }
+}

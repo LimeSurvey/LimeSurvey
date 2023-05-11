@@ -20,22 +20,16 @@
     {% block formcontent %}
         <div class="col-lg-12">
             <div class='{{ aSurveyInfo.class.maincolform }}' {{ aSurveyInfo.attr.maincolform }}>
-                <label
-                    class='{{ aSurveyInfo.class.maincolformlabel }} control-label' {{ aSurveyInfo.attr.maincolformlabel }}>
-                    {{ gT("Access code") }}
-                    <small
-                            class="{{ aSurveyInfo.class.maincolformlabelsmall }} asterisk fa fa-asterisk small " {{ aSurveyInfo.attr.maincolformlabelsmall }} ></small>
-                    <span
-                        class="{{ aSurveyInfo.class.maincolformlabelspan }} visually-hidden asterisk " {{ aSurveyInfo.attr.maincolformlabelspan }}>
+                <label class='{{ aSurveyInfo.class.maincolformlabel }} control-label' {{ aSurveyInfo.attr.maincolformlabel }}>
+                    {{ gT("Access code") }}<small class="{{ aSurveyInfo.class.maincolformlabelsmall }} asterisk ri-asterisk small " {{ aSurveyInfo.attr.maincolformlabelsmall }} ></small>
+                    <span class="{{ aSurveyInfo.class.maincolformlabelspan }} visually-hidden asterisk " {{ aSurveyInfo.attr.maincolformlabelspan }}>
                     ( {{ gT("Mandatory") }} )
-                </span>
-
+                    </span>
                 </label>
 
                 <div class='{{ aSurveyInfo.class.maincolformdiva }}' {{ aSurveyInfo.attr.maincolformdiva }}>
                     {% if aSurveyInfo.aForm.token == null %}
-                        <input
-                            class='{{ aSurveyInfo.class.maincolformdivainput }} form-control ls-important-field' {{ aSurveyInfo.attr.maincolformdivainput }} >
+                        <input class='{{ aSurveyInfo.class.maincolformdivainput }} form-control ls-important-field' {{ aSurveyInfo.attr.maincolformdivainput }} placeholder="{{ gT("enter access code") }}">
                     {% else %}
 
                         {% set passwordFieldHtmlOptions = {
@@ -57,29 +51,23 @@
             {# CAPTACHA INSIDE TOKEN FORM #}
             {% if ( aSurveyInfo.aForm.bCaptchaEnabled == true ) %}
                 <div class="{{ aSurveyInfo.class.maincolformdivb }}" {{ aSurveyInfo.attr.maincolformdivb }}>
-                    <label
-                        class='{{ aSurveyInfo.class.maincolformdivblabel }} control-label' {{ aSurveyInfo.attr.maincolformdivblabel }} >
-                        {{ gT("Please solve the following equation:") }}
-                        <small
-                            class="{{ aSurveyInfo.class.maincolformdivblabelsmall }} text-danger asterisk fa fa-asterisk float-start small" {{ aSurveyInfo.attr.maincolformdivblabelsmall }} >&nbsp;</small>
-                        <span
-                            class="{{ aSurveyInfo.class.maincolformdivblabelspan }} visually-hidden text-danger asterisk" {{ aSurveyInfo.attr.maincolformdivblabelspan }}>
+                    <label class='{{ aSurveyInfo.class.maincolformdivblabel }} control-label' {{ aSurveyInfo.attr.maincolformdivblabel }} >
+                        {{ gT("Please solve the following equation") }}<small class="{{ aSurveyInfo.class.maincolformdivblabelsmall }} superset asterisk ri-asterisk" {{ aSurveyInfo.attr.maincolformdivblabelsmall }} >&nbsp;</small>
+                        <span class="{{ aSurveyInfo.class.maincolformdivblabelspan }} visually-hidden asterisk" {{ aSurveyInfo.attr.maincolformdivblabelspan }}>
                         ( {{ gT("Mandatory") }} )
-                    </span>
+                        </span>
                     </label>
                     <div class="row">
-                        <div class="col-2">
+                        <div class="captcha-container col-md-2 col-sm-12">
                             {{ renderCaptcha().renderOut() }}
                         </div>
-                        <div class="col-1 align-self-center">
-                            <a href="#" class="btn btn-sm btn-outline-secondary" id="reloadCaptcha"
+                        <div class="col-md-1 col-sm-12 reload-button align-self-center">
+                            <a href="#" class="btn btn-outline-secondary" id="reloadCaptcha"
                                title="{{ gT("Reload captcha") }}" data-toggle="captcha"><i
-                                    class="fa fa-refresh"></i></a>
+                                        class="ri-refresh-line"></i></a>
                         </div>
-                        <div
-                            class="{{ aSurveyInfo.class.maincolformdivbdiv }} col-9 align-self-center" {{ aSurveyInfo.attr.maincolformdivbdiv }}>
-                            <input
-                                class='form-control {{ aSurveyInfo.class.maincolformdivbdivdivinput }}' {{ aSurveyInfo.attr.maincolformdivbdivdivinput }} >
+                        <div class="{{ aSurveyInfo.class.maincolformdivbdiv }} col-md-9 col-sm-12 captcha-input align-self-center" {{ aSurveyInfo.attr.maincolformdivbdiv }}>
+                            <input class='form-control ls-important-field {{ aSurveyInfo.class.maincolformdivbdivdivinput }}' {{ aSurveyInfo.attr.maincolformdivbdivdivinput }} placeholder="{{ gT("enter result here - numbers only") }}">
                         </div>
                     </div>
                 </div>
@@ -89,7 +77,7 @@
 
             <div class='{{ aSurveyInfo.class.maincolformdivc }} ' {{ aSurveyInfo.attr.maincolformdivc }}>
                 <div
-                    class='{{ aSurveyInfo.class.maincolformdivcdiv }}' {{ aSurveyInfo.attr.maincolformdivcdiv }}>
+                        class='{{ aSurveyInfo.class.maincolformdivcdiv }}' {{ aSurveyInfo.attr.maincolformdivcdiv }}>
                     <button type="submit"
                             class='{{ aSurveyInfo.class.maincolformdivcdivbutton }} btn btn-primary' {{ aSurveyInfo.attr.maincolformdivcdivbutton }}>
                         {{ gT("Continue") }}

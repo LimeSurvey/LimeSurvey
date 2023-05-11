@@ -131,8 +131,13 @@ $base-color: #ffffff;
 @import "quotas/quotas.scss";
 @import "statistics/statistics.scss";
 @import "group/group.scss";
-@import "participant/token.scss";
 @import "printanswers/printanswers.scss";
+@import "participant/token/token";
+@import "participant/token/token_colors";
+@import "participant/registration/registration.scss";
+@import "participant/registration/registration_colors.scss";
+@import "participant/captcha/captcha.scss";
+@import "participant/captcha/captcha_colors.scss";
 
 // TODO: placeholder, will probbably be removed
 @import "darkmode/darkmode_colors.scss";

@@ -5,9 +5,9 @@
         margin-bottom: 40px;
     }
     .control-label {
-        margin-bottom: 12px;
+        @include control-label
     }
     .load-survey-submit {
-        margin-top: 40px;
+        @include submit-button;
     }
 }

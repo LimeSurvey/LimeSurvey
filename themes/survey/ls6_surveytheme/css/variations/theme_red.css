@@ -10845,11 +10845,6 @@ p.return-to-survey {
   padding-bottom: 0;
 }
 
-.superset {
-  font-size: 50%;
-  vertical-align: top;
-}
-
 .alert {
   background: none;
 }
@@ -13129,6 +13124,11 @@ a {
     font-size: 16px;
   }
 }
+.superset {
+  font-size: 50%;
+  vertical-align: super;
+}
+
 body {
   color: #1E1E1E;
 }
@@ -13175,6 +13175,7 @@ a {
 }
 
 .form-control.ls-important-field {
+  height: 44px;
   padding: 14px 12px;
   font-weight: 400;
   font-size: 14px;
@@ -14804,7 +14805,7 @@ input[type=checkbox]:checked:after,
     margin-left: -1rem;
   }
 }
-[class^=ri-], [class*=" ri-"] {
+[class^=ri-]:not(.superset), [class*=" ri-"]:not(.superset) {
   vertical-align: -0.25em;
 }
 
@@ -15160,21 +15161,6 @@ input[type=checkbox]:checked:after,
     font-size: 14px;
   }
 }
-.completed-wrapper .completed-heading {
-  color: #1E1E1E;
-  font-weight: 600;
-  font-size: 2.85rem;
-  line-height: 52px;
-  margin: 0 0 10px;
-}
-.completed-wrapper .completed-Content {
-  color: #1E1E1E;
-  font-size: 1.2825rem;
-  font-weight: 400;
-  line-height: 24px;
-  margin: 0 0 10px;
-}
-
 .has-success .help-block {
   color: #FF515F;
 }
@@ -15232,29 +15218,6 @@ input[type=checkbox]:checked:after,
   color: #FF515F;
 }
 
-.quotamessage {
-  color: #1E1E1E;
-  font-size: 1.71rem;
-  font-weight: 600;
-  line-height: 24px;
-  margin: 0 0 10px;
-}
-
-.public-stats .statsSurveyTitle {
-  color: #1E1E1E;
-  font-weight: 600;
-  font-size: 2.85rem;
-  line-height: 52px;
-  margin: 0 0 10px;
-}
-.public-stats .statsNumRecords {
-  color: #1E1E1E;
-  font-size: 1.2825rem;
-  font-weight: 400;
-  line-height: 24px;
-  margin: 0 0 10px;
-}
-
 .group-container .group-title {
   font-size: 40px;
   font-weight: 600;
@@ -15276,20 +15239,56 @@ input[type=checkbox]:checked:after,
 }
 .token-page .control-label {
   margin-bottom: 12px;
+  font-weight: 400;
+  line-height: 24px;
 }
 .token-page .load-survey-submit {
   margin-top: 40px;
 }
 
-.printanswers-container {
-  margin-bottom: 3em;
-}
-.printanswers-container span {
+.token-page .control-label {
   color: #1E1E1E;
-  line-height: 24px;
-  font-size: 1.2825rem;
+}
+
+.register-container .register-jumbotron, .register-container .register-jumbotron.card.bg-light {
+  padding: 0 !important;
+  background: none !important;
+  box-shadow: none;
+  border: none;
+}
+.register-container .register-jumbotron .form-header, .register-container .register-jumbotron.card.bg-light .form-header {
   font-weight: 400;
-  margin-right: 5px;
+  font-size: 1.425rem;
+  line-height: 24px;
+}
+.register-container .register-form .control-label {
+  margin-bottom: 12px;
+  font-weight: 400;
+  line-height: 24px;
+}
+.register-container #register_button {
+  margin-top: 40px;
+}
+
+.register-container .register-form .control-label {
+  color: #1E1E1E;
+}
+
+.captcha-item {
+  margin-top: 24px;
+}
+.captcha-item .captcha-container {
+  display: flex;
+}
+
+@media only screen and (max-width: 766px) {
+  .reload-button, .captcha-input {
+    padding-top: 8px;
+  }
+}
+.captcha-container .img-fluid {
+  border: 1px dashed #6E748C;
+  background-color: #EEEFF7;
 }
 
 .darkmode-on {
