@@ -16,4 +16,7 @@
     #register_button {
         @include submit-button;
     }
+    .register-success {
+        @include largeheading;
+    }
 }

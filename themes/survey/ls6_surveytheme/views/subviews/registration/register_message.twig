@@ -14,18 +14,25 @@
     If there is a message on the registration page, like "Survey has not started, or Register now! here it is displayed
 
 #}
-<div {{ aSurveyInfo.attr.registermessagea }} class="form-header">
+
 {% if registerSuccess %}
-    {{ gT("Thank you for registering. You will receive an email shortly.") }}
+    <div {{ aSurveyInfo.attr.registermessagea }} class="register-success">
+        {{ gT("Thank you for registering.") }}
+        <div class="form-header mt-3">
+            {{ gT("You will receive an email shortly.") }}
+        </div>
+    </div>
 {% else %}
+    <div {{ aSurveyInfo.attr.registermessageb }} class="form-header">
     {% if sStartDate %}
         {{ gT("You may register for this survey but you have to wait for the {{sStartDate}} before starting the survey.") }}
     {% else %}
         {{ gT("You may have to register to take part in this survey.") }}
     {% endif %}
     {{ gT("Please fill in the information and we’ll send you a link immediately.") }}
+    </div>
 {% endif %}
-</div>
+
 {% if  not empty(aSurveyInfo.aErrors) %}
     <ul class='{{ aSurveyInfo.class.maincoldivdivbul }} alert alert-danger list-unstyled' {{ aSurveyInfo.attr.maincoldivdivbul }}>
         {% for  key, error in aSurveyInfo.aErrors%}

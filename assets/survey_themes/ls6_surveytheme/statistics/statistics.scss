@@ -1,13 +1,9 @@
 .public-stats {
   .statsSurveyTitle {
-    color: $g-900;
-    font-weight: $font-weight-600;
-    font-size: $font-size-2xl;
-    line-height: $line-height-52;
+    @include largeheading;
     margin: 0 0 10px;
   }
   .statsNumRecords {
-    color: $g-900;
     font-size: $font-size-md;
     font-weight: $font-weight-normal;
     line-height: $line-height-24;

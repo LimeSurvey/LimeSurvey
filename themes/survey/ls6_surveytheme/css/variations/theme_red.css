@@ -15174,18 +15174,23 @@ a [class^=ri-], a [class*=" ri-"] {
   }
 }
 .completed-wrapper .completed-heading {
-  color: #1E1E1E;
   font-weight: 600;
   font-size: 2.85rem;
   line-height: 52px;
   margin: 0 0 10px;
 }
 .completed-wrapper .completed-Content {
-  color: #1E1E1E;
   font-size: 1.2825rem;
   font-weight: 400;
   line-height: 24px;
   margin: 0 0 10px;
+}
+
+.completed-wrapper .completed-heading {
+  color: #1E1E1E;
+}
+.completed-wrapper .completed-Content {
+  color: #1E1E1E;
 }
 
 .has-success .help-block {
@@ -15246,31 +15251,39 @@ a [class^=ri-], a [class*=" ri-"] {
 }
 
 .quotamessage {
-  color: #1E1E1E;
   font-size: 1.71rem;
   font-weight: 600;
   line-height: 24px;
   margin: 0 0 10px;
 }
 
-.public-stats .statsSurveyTitle {
+.quotamessage {
   color: #1E1E1E;
+}
+
+.public-stats .statsSurveyTitle {
   font-weight: 600;
   font-size: 2.85rem;
   line-height: 52px;
   margin: 0 0 10px;
 }
 .public-stats .statsNumRecords {
-  color: #1E1E1E;
   font-size: 1.2825rem;
   font-weight: 400;
   line-height: 24px;
   margin: 0 0 10px;
 }
 
+.public-stats .statsSurveyTitle {
+  color: #1E1E1E;
+}
+.public-stats .statsNumRecords {
+  color: #1E1E1E;
+}
+
 .group-container .group-title {
-  font-size: 40px;
   font-weight: 600;
+  font-size: 2.85rem;
   line-height: 52px;
   margin-top: 1em;
   margin-bottom: 10px;
@@ -15329,6 +15342,11 @@ a [class^=ri-], a [class*=" ri-"] {
 }
 .register-container #register_button {
   margin-top: 40px;
+}
+.register-container .register-success {
+  font-weight: 600;
+  font-size: 2.85rem;
+  line-height: 52px;
 }
 
 .register-container .register-form .control-label {
