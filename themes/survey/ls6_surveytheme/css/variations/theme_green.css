@@ -12964,14 +12964,14 @@ Responsive navbar-brand image CSS
 }
 .yesno-button .ls-button-label .ls-icon,
 .gender-button .ls-button-label .ls-icon {
-  font-size: 1.425rem;
+  font-size: 32px;
   display: block;
   line-height: 1;
 }
 
 .btn-check + .btn {
   min-height: 44px;
-  padding: 12px;
+  padding: 8px 12px;
   line-height: 20px;
 }
 

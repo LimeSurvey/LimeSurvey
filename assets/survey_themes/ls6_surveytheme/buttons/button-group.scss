@@ -13,7 +13,7 @@
     .ls-button-label {
         min-width : 80px;
         .ls-icon {
-            font-size   : $font-size-lg;
+            font-size   : 32px;
             display     : block;
             line-height : 1;
         }
@@ -22,7 +22,7 @@
 
 .btn-check + .btn {
     min-height  : $btn-height-lg;
-    padding     : 12px;
+    padding     : 8px 12px;
     line-height : $line-height-20;
 }
 
