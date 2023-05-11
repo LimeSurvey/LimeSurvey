@@ -1,16 +1,20 @@
 <?php
 /** @var $aSurveysettings array */
 /** @var  $oSurvey Survey */
+/** @var bool $closeAccessMode */
 
 $optionsOnOff = ['Y' => gt('On'), 'N' => gt('Off')];
 ?>
-<h1><?php eT("Activate Survey"); ?></h1>
-<h2><?php eT("Please keep in mind:"); ?></h2>
-<h2><?php eT("Once a survey has been activated you can no longer add or delete questions, question groups or subquestions.") ?> </h2>
-<p>
-    <?php eT("Editing questions, question groups or subquestions is still possible. The following settings cannot
+<div class="row">
+    <div class='col-md-12'>
+        <h2><?php eT("Please keep in mind:"); ?></h2>
+        <h2><?php eT("Once a survey has been activated you can no longer add or delete questions, question groups or subquestions.") ?> </h2>
+        <p>
+            <?php eT("Editing questions, question groups or subquestions is still possible. The following settings cannot
     be changed once a survey has been activated", 'unescaped'); ?>
-</p>
+        </p>
+    </div>
+</div>
 
 <?php if ($oSurvey->getIsDateExpired()): ?>
     <div class="row">
@@ -28,7 +32,7 @@ $optionsOnOff = ['Y' => gt('On'), 'N' => gt('Off')];
 <?php endif; ?>
 
 <?php echo CHtml::form(
-    ["surveyAdministration/activate/iSurveyID/{$aSurveysettings['sid']}/"],
+    ["surveyAdministration/activate/"],
     'post',
     array('class' => 'form-horizontal')
 ); ?>
@@ -153,28 +157,36 @@ $optionsOnOff = ['Y' => gt('On'), 'N' => gt('Off')];
     </div>
 </div>
 
-<!--
-<div class="row sub_footer">
-    <div class="col-12 mt-5 mb-3">
-        <div class="sub_footer_border"></div>
-    </div>
-    <h2><?php //eT("Do you want your survey to be public for everyone (open-access mode) or invite only (closed-access mode)"); ?></h2>
-    <div class='col-md-10'>
-        <div class="mb-5">
-            <?php
-/*
-            $openAccessMode = 'Y'; //todo: check if it is in open-access mode ...
-            $optionsOnOff = ['Y' => gt('Open-access mode'), 'N' => gt('Closed-access mode')];
-            $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
-                'name' => 'openAccessMode',
-                'checkedOption' => $openAccessMode,
-                'selectOptions' => $optionsOnOff
-            ]);
-*/
-            ?>
+<?php
+if (!$closeAccessMode) {
+    ?>
+    <div class="row sub_footer">
+        <div class="col-12 mt-5 mb-3">
+            <div class="sub_footer_border"></div>
+        </div>
+        <h3><?php eT("Do you want your survey to be public for everyone (open-access mode) or invite only (closed-access mode)"); ?></h3>
+        <div class='col-md-10'>
+            <div class="mb-5">
+                <?php
+
+                //only allow here to switch to close-access-mode (and to open-access-mode)
+                //close-access-mode means that 'N' should be selected
+                $optionsOnOff = ['Y' => gt('Open-access mode'), 'N' => gt('Closed-access mode')];
+                $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'name' => 'openAccessMode',
+                    'checkedOption' => $closeAccessMode ? 'N' : 'Y',
+                    'selectOptions' => $optionsOnOff
+                ]);
+
+                ?>
+            </div>
         </div>
     </div>
-</div>
--->
+    <?php
+}
+?>
+
+<input type="hidden" name="surveyId" value="<?php echo $aSurveysettings['sid']; ?>">
+<input type="submit" class="d-none" id="submitActivateSurvey">
 
 </form>

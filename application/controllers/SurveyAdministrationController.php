@@ -1719,11 +1719,18 @@ class SurveyAdministrationController extends LSBaseController
     }
 
     /**
+     * This action renders the view for survey activation where
+     * the user can preselect some options like "ipanonymize" etc.
+     * It is also possible to switch between the "open access mode" and
+     * the "close-access-mode" before the survey is activated.
+     * The action also checks if it is even possible to activate the survey
+     *  (see checkGroup() and checkQuestions() for more information)
+     *
      * @return void
      */
     public function actionActivateSurvey()
     {
-        $surveyId = (int) Yii::app()->request->getPost('surveyid');
+        $surveyId = (int) Yii::app()->request->getPost('surveyId');
         if (!Permission::model()->hasSurveyPermission($surveyId, 'surveyactivation', 'update')) {
             Yii::app()->user->setFlash('error', gT("Access denied"));
             $this->redirect(Yii::app()->request->urlReferrer);
@@ -1731,22 +1738,132 @@ class SurveyAdministrationController extends LSBaseController
         $oSurvey = Survey::model()->findByPk($surveyId);
         $aSurveysettings = getSurveyInfo($surveyId);
 
+        /*
+           todo: this one here can only happen AFTER view with failed--check has been shown
+           todo: maybe
+
+        if (isset($_GET['fixnumbering']) && $_GET['fixnumbering']) {
+            fixNumbering($_GET['fixnumbering'], $iSurveyID);
+        }*/
+
+        Yii::app()->loadHelper("admin/activate");
+        $failedgroupcheck = checkGroup($surveyId);
+        $failedcheck = checkQuestions($surveyId, $surveyId);
+        if ((isset($failedcheck) && $failedcheck) || (isset($failedgroupcheck) && $failedgroupcheck)) {
+            //survey can not be activated
+            $html = $this->renderPartial(
+                '/surveyAdministration/_activateSurveyCheckFailed',
+                [
+                'failedcheck' => $failedcheck,
+                'failedgroupcheck' => $failedgroupcheck,
+                'surveyid' => $oSurvey->sid
+                ],
+                true
+            );
+        } else {
+            //check if survey is in "open-access-mode"
+            $survey = Survey::model()->findByPk($surveyId);
+            $surveyActivator = new SurveyActivator($survey);
+            $html = $this->renderPartial(
+                '_activateSurveyOptions',
+                [
+                'oSurvey' => $oSurvey,
+                'aSurveysettings' => $aSurveysettings,
+                    'closeAccessMode' => $surveyActivator->isCloseAccessMode(),
+                ],
+                true
+            );
+        }
+
         return $this->renderPartial(
             '/admin/super/_renderJson',
             [
                 'data' => [
                     'success' => true,
-                    'message' => 'all good',
-                    'html' => $this->renderPartial('_activateSurveyOptions', [
-                        'oSurvey' => $oSurvey,
-                        'aSurveysettings' => $aSurveysettings,
-                    ]),
+                    'html' => $html,
                 ]
             ],
             false,
             false
         );
     }
+
+    /**
+     * This action activates the survey with selected options.
+     *
+     * @return void
+     */
+    public function actionActivate()
+    {
+        $surveyId = (int) Yii::app()->request->getPost('surveyId');
+        if (!Permission::model()->hasSurveyPermission($surveyId, 'surveyactivation', 'update')) {
+            Yii::app()->user->setFlash('error', gT("Access denied"));
+            $this->redirect(Yii::app()->request->urlReferrer);
+        }
+
+        $survey = Survey::model()->findByPk($surveyId);
+        $surveyActivator = new SurveyActivator($survey);
+        $aData['oSurvey'] = $survey;
+        $aData['sidemenu']['state'] = false;
+        $aData['aSurveysettings'] = getSurveyInfo($surveyId);
+        $aData['surveyid'] = $surveyId;
+
+        if (!is_null($survey)) {
+            $survey->anonymized = Yii::app()->request->getPost('anonymized');
+            $survey->datestamp = Yii::app()->request->getPost('datestamp');
+            $survey->ipaddr = Yii::app()->request->getPost('ipaddr');
+            $survey->ipanonymize = Yii::app()->request->getPost('ipanonymize');
+            $survey->refurl = Yii::app()->request->getPost('refurl');
+            $survey->savetimings = Yii::app()->request->getPost('savetimings');
+            $survey->save();
+
+            // Make sure the saved values will be picked up
+            Survey::model()->resetCache();
+            $survey->setOptions();
+        }
+
+        $aResult = $surveyActivator->activate();
+        if (
+            (isset($aResult['error']) && $aResult['error'] == 'plugin')
+            || (isset($aResult['blockFeedback']) && $aResult['blockFeedback'])
+        ) {
+            // Got false from plugin, redirect to survey front-page
+            $this->redirect(array('surveyAdministration/view', 'surveyid' => $surveyId));
+        } elseif (isset($aResult['pluginFeedback'])) {
+            // Special feedback from plugin should be given to user
+            //todo: what should be done here ...
+            $this->render('_activation_feedback', []);
+        } elseif (isset($aResult['error'])) {
+            $data['result'] = $aResult;
+            //$this->aData = $aData;
+            //todo: what should be done here ...
+            $this->render('_activation_error', $data);
+        } else {
+            $warning = (isset($aResult['warning'])) ? true : false;
+            $allowregister = $survey->isAllowRegister;
+            $onclickAction = convertGETtoPOST(
+                Yii::app()->getController()->createUrl("admin/tokens/sa/index/surveyid/" . $surveyId)
+            );
+            $closedOnclickAction = convertGETtoPOST(
+                Yii::app()->getController()->createUrl("admin/tokens/sa/index/surveyid/" . $surveyId));
+            $noOnclickAction = "window.location.href='" . (Yii::app()->getController()->createUrl(
+                "surveyAdministration/view/surveyid/" . $surveyId)
+                ) . "'";
+
+            $activationData = array(
+                'iSurveyID'           => $surveyId,
+                'survey'              => $survey,
+                'warning'             => $warning,
+                'allowregister'       => $allowregister,
+                'onclickAction'       => $onclickAction,
+                'closedOnclickAction' => $closedOnclickAction,
+                'noOnclickAction'     => $noOnclickAction,
+            );
+            $this->aData = $aData;
+            $this->render('_activation_feedback', $activationData);
+        }
+    }
+
 
     /**
      * Function responsible to activate survey.

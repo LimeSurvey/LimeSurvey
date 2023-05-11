@@ -1,27 +1,34 @@
 // Namespace
 var LS = LS || {  onDocumentReady: {} };
 
-$('#ls-activate-survey').on('click', function (e) {
-    e.preventDefault();
-
+function openModalActivate(){
     let activateBtn = document.getElementById('ls-activate-survey');
-    let surveyId = activateBtn.surveyid;
-    //use survey id to get the data for the modal
-    //create an ajax-request to get the data
-    let url = activateBtn.url;
-    console.log('in js activatesurvey');
-    LS.AjaxHelper.ajax({
+    let surveyId = activateBtn.dataset.surveyid;
+    let url = activateBtn.dataset.url;
+    //LS.AjaxHelper.ajax
+    $.ajax({
         url: url,
         data: {surveyId},
         method: 'POST',
-        success: function (data) {
+        success: function (result) {
             //set data in modal
-            console.log(data);
-            //open the modal
+            let modalDialog = $('#surveyactivation-modal');
+
+            modalDialog.find('.modal-body').empty().html(result.html);
+            modalDialog.modal('show');
         },
         error: function () {
-            console.ls.log('in error');
+            console.log('error: no data from ajaxrequest');
         }
     });
-    //open the modal with either the data or an error message
-});
+}
+
+/**
+ * Trigger submit button
+ */
+function activateWithOptions(){
+    //get the selected options from modal
+    //ajax request doing all what is necessary in  backend (tokens-table etc.)
+    //open another modal to inform user
+    document.getElementById('submitActivateSurvey').click();
+}

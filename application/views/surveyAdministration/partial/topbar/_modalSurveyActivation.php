@@ -1,8 +1,8 @@
 <?php
-   /** @var Survey $oSurvey */
-   /** @var bool|array $failedcheck */
-   /** @var bool|array $failedgroupcheck */
-   /** @var array $aSurveysettings */
+/** @var Survey $oSurvey */
+/** @var bool|array $failedcheck */
+/** @var bool|array $failedgroupcheck */
+/** @var array $aSurveysettings */
 ?>
 
 <div id="surveyactivation-modal" class="modal fade" role="dialog">
@@ -10,44 +10,24 @@
         <!-- Modal content-->
         <div class="modal-content">
 
-<?php
-  //modal header
-App()->getController()->renderPartial(
-    '/layouts/partial_modals/modal_header',
-    ['modalTitle' => gt('Activate survey')]
-);
-?>
+            <?php
+            //modal header
+            App()->getController()->renderPartial(
+                '/layouts/partial_modals/modal_header',
+                ['modalTitle' => gt('Activate survey')]
+            );
+            ?>
 
-<?php
- //modal content
-?>
-<div class="modal-body" id="modal-body-activate">
-    <?php
+            <div class="modal-body" id="modal-body-activate">
+            </div>
 
-/*
-    if ((isset($failedcheck) && $failedcheck) || (isset($failedgroupcheck) && $failedgroupcheck)) {
-        //survey can not be activated
-        App()->getController()->renderPartial('/surveyAdministration/_activateSurveyCheckFailed', [
-            'failedcheck' => $failedcheck,
-            'failedgroupcheck' => $failedgroupcheck,
-            'surveyid' => $oSurvey->sid
-        ]);
-    } else {
-        App()->getController()->renderPartial('/surveyAdministration/_activateSurveyOptions', [
-            'aSurveysettings' => $aSurveysettings,
-            'oSurvey' => $oSurvey
-        ]);
-    } */
 
-    ?>
-</div>
-
-<?php
-  //modal footer
-?>
-            <div class="modal-footer modal-footer-yes-no">
+            <div class="modal-footer">
                 <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT("Cancel"); ?></button>
-                <a id="actionBtn" class="btn btn-ok" data-actionbtntext="<?php eT('Save and Activate'); ?>"></a>
+
+                <button type="button" class="btn btn-primary" onclick="activateWithOptions()">
+                    <?php eT("Save and activate"); ?>
+                </button>
             </div>
 
         </div>

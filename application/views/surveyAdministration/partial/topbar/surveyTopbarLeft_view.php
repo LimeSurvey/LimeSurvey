@@ -55,10 +55,11 @@ App()->getClientScript()->registerScriptFile(
             //'link' => App()->createUrl("surveyAdministration/activate/", ['iSurveyID' => $sid]),
             'htmlOptions' => [
                 'class' => 'btn btn-primary btntooltip',
-                'data-bs-toggle' => 'modal',
+                // 'data-bs-toggle' => 'modal',
                 //'data-bs-target' => '#surveyactivation-modal',
                 'data-surveyid' => $sid,
                 'data-url' => Yii::app()->createUrl('surveyAdministration/activateSurvey'),
+                'onclick' => 'openModalActivate();'
             ],
         ]); ?>
     <?php if (!$canactivate) : ?>
@@ -154,8 +155,7 @@ if (Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'export')) {
     );
 }
 
-//modal for survey activation
-App()->getController()->renderPartial('/surveyAdministration/partial/topbar/_modalSurveyActivation');
+
 
 ?>
 
