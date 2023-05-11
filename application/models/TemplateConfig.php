@@ -796,6 +796,10 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['previewsubmittext']  = ' completed-text  ';
         $aClassAndAttributes['class']['submitwrapper']      = ' completed-wrapper  ';
         $aClassAndAttributes['class']['submitwrappertext']  = ' completed-text  ';
+        // class name for last message elements
+        $aClassAndAttributes['class']['submitwrappertextHeading']  = ' completed-heading ';
+        $aClassAndAttributes['class']['submitwrappertextContent']  = ' completed-Content ';
+        // ===
         $aClassAndAttributes['class']['submitwrapperdiva']  = ' url-wrapper url-wrapper-survey-print ';
         $aClassAndAttributes['class']['submitwrapperdivaa'] = ' ls-print ';
         $aClassAndAttributes['class']['submitwrapperdivb']  = ' url-wrapper url-wrapper-survey-print ';

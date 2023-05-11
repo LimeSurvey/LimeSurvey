@@ -79,7 +79,6 @@ $base-color: #ffffff;
 @import "node_modules/bootstrap/scss/placeholders";
 @import "node_modules/bootstrap/scss/helpers";
 
-
 // 5. Optionally include utilities API last to generate classes based on the Sass map in `_utilities.scss`
 @import "node_modules/bootstrap/scss/utilities/api";
 
@@ -127,8 +126,12 @@ $base-color: #ffffff;
 @import "modal/modal_colors.scss";
 @import "alert/alert.scss";
 @import "question/question.scss";
+@import "completed/completed.scss";
 @import "question/question_states.scss";
+@import "quotas/quotas.scss";
+@import "statistics/statistics.scss";
 @import "group/group.scss";
+@import "printanswers/printanswers.scss";
 @import "participant/token/token";
 @import "participant/token/token_colors";
 @import "participant/registration/registration.scss";

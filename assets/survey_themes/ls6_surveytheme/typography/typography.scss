@@ -41,6 +41,11 @@ dl {
 // LINKS
 a {
     font-weight : $font-weight-500;
+    font-size: $font-size-sm;
+    text-decoration: none;
+    &:hover {
+        text-decoration: none;
+    }
 }
 
 .has-link {

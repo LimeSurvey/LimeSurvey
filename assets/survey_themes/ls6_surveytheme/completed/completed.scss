@@ -1,0 +1,16 @@
+.completed-wrapper {
+  .completed-heading {
+    color: $g-900;
+    font-weight: $font-weight-600;
+    font-size: $font-size-2xl;
+    line-height: $line-height-52;
+    margin: 0 0 10px;
+  }
+  .completed-Content {
+    color: $g-900;
+    font-size: $font-size-md;
+    font-weight: $font-weight-normal;
+    line-height: $line-height-24;
+    margin: 0 0 10px;
+  }
+}

@@ -2,7 +2,10 @@
 $font-size-base: 1.14rem; // 16px, Browser default usually is 14px
 $font-size-xs: $font-size-base * 0.75; // 12px
 $font-size-sm: $font-size-base * 0.875; // 14px
+$font-size-md: $font-size-base * 1.125; // 18px
 $font-size-lg: $font-size-base * 1.25; // 20px
+$font-size-xl: $font-size-base * 1.5; // 24px
+$font-size-2xl: $font-size-base * 2.5; // 40px
 
 $font-weight-300: 300;
 $font-weight-normal: 400;
@@ -13,7 +16,7 @@ $font-weight-900: 900;
 $line-height-20: 20px;
 $line-height-24: 24px;
 $line-height-26: 26px;
+$line-height-52: 52px;
 // Typography End
-
 
 $border-radius: 4px;

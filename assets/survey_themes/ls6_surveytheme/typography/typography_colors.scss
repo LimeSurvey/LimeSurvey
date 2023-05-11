@@ -1,4 +1,5 @@
 $link-color : $base-color;
+$link-hover-color : darken($link-color, 15%);
 
     body {
   color       : $g-900;
@@ -34,6 +35,9 @@ dl {
 // LINKS
 a {
   color: $link-color;
+  &:hover {
+    color: $link-hover-color;
+  }
 }
 
 .has-link a {
