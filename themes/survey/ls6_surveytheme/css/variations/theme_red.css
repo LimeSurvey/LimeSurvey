@@ -10779,8 +10779,7 @@ div.yes-no .btn-group label {
   .help-block:last-child {
     margin-bottom: 0;
   }
-  .ls-questionhelp,
-  .help-block {
+  .ls-questionhelp {
     font-size: 90%;
   }
 }
@@ -14686,14 +14685,6 @@ input[type=checkbox]:checked:after,
   border-right-color: #FF515F;
 }
 
-.slider-handle {
-  background-color: #FF515F;
-}
-
-.slider-handle.custom::before {
-  color: #FF515F;
-}
-
 .slider-tick.custom::before {
   color: #FF515F;
 }
@@ -14706,9 +14697,22 @@ input[type=checkbox]:checked:after,
   overflow-x: hidden;
   padding-top: 1em;
 }
+.slider-list .slider .slider-handle {
+  background-color: #FF515F;
+  background-image: unset;
+}
+.slider-list .slider .slider-handle.custom::before {
+  color: #FF515F;
+}
 .slider-list .slider .slider-selection {
   background-color: #FF515F;
   background-image: unset;
+}
+.slider-list .slider .tooltip {
+  font-size: 1.14rem;
+  line-height: 20px;
+  font-weight: 600;
+  z-index: 1000;
 }
 .slider-list .slider .tooltip.bs-tooltip-top, .slider-list .slider .tooltip.bs-tooltip-auto[data-popper-placement^=top] {
   margin-top: -34px;
@@ -15145,6 +15149,7 @@ a [class^=ri-], a [class*=" ri-"] {
 }
 .question-container .help-block {
   font-weight: 600;
+  color: #6E748C;
 }
 
 @media only screen and (max-device-width: 767px) {
