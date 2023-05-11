@@ -27,7 +27,7 @@
         </div>
         <div class="row mb-3">
             {# Participants first name #}
-            <div class='{{ aSurveyInfo.class.registerformcolrow }} col-md-6 col-12' {{ aSurveyInfo.attr.registerformcolrow }}>
+            <div class='{{ aSurveyInfo.class.registerformcolrow }} col-md-6 col-12 mb-3 mb-md-0' {{ aSurveyInfo.attr.registerformcolrow }}>
                 <label for='register_firstname' class='{{ aSurveyInfo.class.registerformcolrowlabel }} control-label '>{{ gT("First name") }}</label>
                 <div class="">
                     {{ C.Html.textField('register_firstname', aSurveyInfo.sFirstName, ({'id' : 'register_firstname','class' : 'form-control ls-important-field', 'placeholder' : gT('enter your first name') })) }}
