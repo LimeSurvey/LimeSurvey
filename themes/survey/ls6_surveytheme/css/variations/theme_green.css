@@ -10628,32 +10628,6 @@ body {
   font-weight: 700;
 }
 
-/* Max width for some answer part */
-@media (min-width: 768px) {
-  .yesno-button, .gender-button {
-    width: 50%;
-  }
-  .yesno-button, .gender-button {
-    float: left;
-  }
-  .dir-rtl .yesno-button, .dir-rtl .gender-button {
-    float: right;
-  }
-}
-/* array by column hover column */
-/**
- * Gender buttons
- */
-/* General */
-.button-item .ls-icon, .ls-button-label .ls-icon {
-  display: block;
-}
-
-.button-item .ls-icon, .ls-button-label .ls-icon {
-  font-size: 1.4em;
-  line-height: 1.4em;
-}
-
 .file-upload-modal, .modal {
   z-index: 2001;
 }
@@ -12463,30 +12437,6 @@ Responsive navbar-brand image CSS
   font-size: 1.14rem;
 }
 
-.yesno-button.btn-group > .btn, .gender-button.btn-group > .btn {
-  border-radius: 4px;
-  margin-right: 0;
-}
-.yesno-button.btn-group > .btn:not(:last-child), .gender-button.btn-group > .btn:not(:last-child) {
-  border-radius: 4px;
-  margin-right: 20px;
-}
-
-.btn-check + .btn {
-  min-height: 44px;
-  padding: 12px;
-  font-size: 0.9975rem;
-  line-height: 28px;
-}
-
-.row > .bootstrap-buttons-div {
-  padding-left: 0;
-  padding-right: 20px;
-}
-.row > .bootstrap-buttons-div .form-check {
-  padding-left: 0;
-}
-
 *[class*=btn-outline-] {
   background-color: #ffffff;
   border: 1px solid #1E1E1E;
@@ -12999,6 +12949,47 @@ Responsive navbar-brand image CSS
   box-shadow: none;
 }
 
+.yesno-button.btn-group > .btn,
+.gender-button.btn-group > .btn {
+  border-radius: 4px;
+  margin-right: 0;
+}
+.yesno-button.btn-group > .btn:not(:last-child),
+.gender-button.btn-group > .btn:not(:last-child) {
+  border-radius: 4px;
+  margin-right: 20px;
+}
+.yesno-button .ls-button-label,
+.gender-button .ls-button-label {
+  min-width: 80px;
+}
+.yesno-button .ls-button-label .ls-icon,
+.gender-button .ls-button-label .ls-icon {
+  font-size: 1.425rem;
+  display: block;
+  line-height: 1;
+}
+
+.btn-check + .btn {
+  min-height: 44px;
+  padding: 12px;
+  line-height: 20px;
+}
+
+.row > .bootstrap-buttons-div {
+  padding-left: 0;
+  padding-right: 20px;
+}
+.row > .bootstrap-buttons-div .form-check {
+  padding-left: 0;
+}
+
+@media (min-width: 768px) {
+  .dir-rtl .yesno-button,
+  .dir-rtl .gender-button {
+    float: right;
+  }
+}
 body {
   font-weight: 400;
   font-size: 1.14rem;

@@ -177,33 +177,6 @@ element.style {
 /* Show more the heading in table */
 .ls-answers .ls-heading th {font-weight : 700}
 
-/* Max width for some answer part */
-@media (min-width : 768px) {
-    .yesno-button, .gender-button {
-        width : 50%;
-    }
-    .yesno-button, .gender-button {
-        float : left;
-    }
-    .dir-rtl .yesno-button, .dir-rtl .gender-button {
-        float : right;
-    }
-}
-
-/* array by column hover column */
-/**
- * Gender buttons
- */
-/* General */
-.button-item .ls-icon, .ls-button-label .ls-icon {
-    display : block;
-}
-
-.button-item .ls-icon, .ls-button-label .ls-icon {
-    font-size   : 1.4em;
-    line-height : 1.4em;
-}
-
 .file-upload-modal, .modal {
     z-index : 2001;
 }
