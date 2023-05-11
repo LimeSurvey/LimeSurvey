@@ -1,3 +1,15 @@
+.captcha-page {
+    .control-label {
+        @include control-label;
+    }
+    button#default {
+        @include submit-button;
+    }
+    .form-heading {
+        @include formheading;
+    }
+}
+
 .captcha-item {
     margin-top: 24px;
     .captcha-container {

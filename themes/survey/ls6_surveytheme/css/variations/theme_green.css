@@ -15330,7 +15330,7 @@ a [class^=ri-], a [class*=" ri-"] {
   box-shadow: none;
   border: none;
 }
-.register-container .register-jumbotron .form-header, .register-container .register-jumbotron.card.bg-light .form-header {
+.register-container .register-jumbotron .form-heading, .register-container .register-jumbotron.card.bg-light .form-heading {
   font-weight: 400;
   font-size: 1.425rem;
   line-height: 24px;
@@ -15353,6 +15353,20 @@ a [class^=ri-], a [class*=" ri-"] {
   color: #1E1E1E;
 }
 
+.captcha-page .control-label {
+  margin-bottom: 12px;
+  font-weight: 400;
+  line-height: 24px;
+}
+.captcha-page button#default {
+  margin-top: 40px;
+}
+.captcha-page .form-heading {
+  font-weight: 400;
+  font-size: 1.425rem;
+  line-height: 24px;
+}
+
 .captcha-item {
   margin-top: 24px;
 }
@@ -15365,6 +15379,10 @@ a [class^=ri-], a [class*=" ri-"] {
     padding-top: 8px;
   }
 }
+.captcha-page .control-label {
+  color: #1E1E1E;
+}
+
 .captcha-container .img-fluid {
   border: 1px dashed #6E748C;
   background-color: #EEEFF7;
