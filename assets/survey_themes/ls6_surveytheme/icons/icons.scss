@@ -4,6 +4,12 @@
   }
 }
 
+a {
+  [class^="ri-"], [class*=" ri-"] {
+    font-size: $font-size-base;
+  }
+}
+
 .remix-2xs {
   font-size: 10px;
 }
