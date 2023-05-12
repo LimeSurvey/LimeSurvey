@@ -35,10 +35,10 @@ class SessionKeyCreate implements CommandInterface
 
         try {
             return $this->responseSuccess(
-        $apiSession->doLogin(
-        $username,
-        $password,
-        $plugin
+                $apiSession->doLogin(
+                    $username,
+                    $password,
+                    $plugin
                 )
             );
         } catch (ExceptionInvalidUser $e) {

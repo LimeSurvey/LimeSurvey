@@ -87,7 +87,10 @@ class AuthSession
     }
 
     /**
-     * Check if the session key is valid. If yes returns true, otherwise false and sends an error message with error code 1
+     * Check Key
+     *
+     * Check if the session key is valid. If yes returns true,
+     * otherwise false and sends an error message with error code 1
      *
      * @access public
      * @param string $sSessionKey Auth credentials

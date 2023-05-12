@@ -13,11 +13,8 @@ class Request
 
     public function getData($key = null, $defaultValue = null)
     {
-        return ($key === null)
-            ? $this->data
-            : (isset($this->data[$key])
-                ? $this->data[$key]
-                : $defaultValue
-            );
+        return $key && isset($this->data[$key])
+            ? $this->data[$key]
+            : $defaultValue;
     }
 }
