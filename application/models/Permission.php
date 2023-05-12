@@ -651,7 +651,7 @@ class Permission extends LSActiveRecord
     {
         $dropdownItems = [];
         $dropdownItems[] = [
-            'title'            => gT('Edit Permissioin'),
+            'title'            => gT('Edit permissions'),
             'url'              => App()->createUrl("surveyPermissions/settingsPermissions/", [
                 'id'       => $this->uid,
                 'surveyid' => $this->entity_id,

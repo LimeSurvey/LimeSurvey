@@ -90,6 +90,7 @@ class ResponsesController extends LSBaseController
             $sBrowseLanguage = $aData['language'];
             Yii::import("application.libraries.admin.quexmlpdf", true);
             $quexmlpdf = new quexmlpdf();
+            $quexmlpdf->applyGlobalSettings();
             // Setting the selected language for printout
             App()->setLanguage($sBrowseLanguage);
             $quexmlpdf->setLanguage($sBrowseLanguage);
@@ -939,21 +940,6 @@ class ResponsesController extends LSBaseController
             'columns'    => $aData['columns'],
             'statistics' => $aData['statistics'],
         ]);
-    }
-
-    /**
-     * Responsible for setting the session variables for attribute map page redirect
-     * @param bool $unset
-     * @param int|null $surveyId
-     */
-    public function actionSetSession(bool $unset = false, int $surveyId = null): void
-    {
-        unset(App()->session['responsesid']);
-        if (!$unset) {
-            App()->session['responsesid'] = App()->request->getPost('itemsid');
-        } else {
-            $this->redirect(["admin/export", "sa" => "exportresults", "surveyid" => $surveyId]);
-        }
     }
 
     /**

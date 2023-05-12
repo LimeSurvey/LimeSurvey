@@ -14520,6 +14520,11 @@ html[dir=ltr] th {
   overflow-x: visible;
 }
 
+/** Hide Relevance Equation column for subquestions when not supported */
+.subquestions-table.hide-relevance #rel-eq-th, .subquestions-table.hide-relevance td.relevance-equation {
+  display: none;
+}
+
 .jcarousel-wrapper {
   margin: 20px auto;
   position: relative;
@@ -14875,6 +14880,16 @@ div.mappable-attribute-wrapper.paired.ui-state-disabled {
 
 .grid-view-ls.grid-view-loading .table th > .sort-link .caret {
   display: none;
+}
+
+.grid-view-ls .table td .longtext-content {
+  min-width: 8em;
+  max-width: 16em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  height: 1.5em;
+  display: inline-block;
 }
 
 .dropdown-menu.larger-dropdown {
@@ -16678,8 +16693,8 @@ tr.info, tr.danger {
   border: 1px solid #cccccc;
 }
 
-[data-toggle=buttons] > .btn input[type=radio],
-[data-toggle=buttons] > .btn input[type=checkbox] {
+[data-bs-toggle=buttons] > .btn input[type=radio],
+[data-bs-toggle=buttons] > .btn input[type=checkbox] {
   position: absolute;
   clip: rect(0, 0, 0, 0);
   pointer-events: none;

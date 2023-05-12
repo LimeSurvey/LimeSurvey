@@ -2376,7 +2376,7 @@ class LimeExpressionManager
                 $sgqa = $qinfo['sgqa'];
                 switch ($type) {
                     case Question::QT_VERTICAL_FILE_UPLOAD: //List - dropdown
-                        $eqn = "(" . $sgqa . "_filecount >= (" . $min_num_of_files . "))";
+                        $eqn = "(" . $sgqa . "_filecount.NAOK >= (" . $min_num_of_files . "))";
                         break;
                     default:
                         break;
@@ -2404,7 +2404,7 @@ class LimeExpressionManager
                 $sgqa = $qinfo['sgqa'];
                 switch ($type) {
                     case Question::QT_VERTICAL_FILE_UPLOAD: //List - dropdown
-                        $eqn = "(" . $sgqa . "_filecount <= (" . $max_num_of_files . "))";
+                        $eqn = "(is_empty(" . $sgqa . "_filecount.NAOK) || " . $sgqa . "_filecount.NAOK <= (" . $max_num_of_files . "))";
                         break;
                     default:
                         break;
@@ -2901,7 +2901,7 @@ class LimeExpressionManager
                     $qtips['default'] = $this->gT('Choose one of the following answers');
                     break;
                 case Question::QT_M_MULTIPLE_CHOICE:
-                    $qtips['default'] = $this->gT('Check any that apply');
+                    $qtips['default'] = $this->gT('Select all that apply');
                     break;
                 case Question::QT_N_NUMERICAL:
                     $qtips['default'] = $this->gT("Only numbers may be entered in this field.");

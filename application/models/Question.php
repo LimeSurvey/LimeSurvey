@@ -36,8 +36,8 @@ use LimeSurvey\Helpers\questionHelper;
  * @property integer $same_script Whether the same script should be used for all languages
  *
  * @property Survey $survey
- * @property QuestionGroup $groups  //@TODO should be singular
- * @property Question $parents      //@TODO should be singular
+ * @property QuestionGroup $group
+ * @property Question $parent
  * @property Question[] $subquestions
  * @property QuestionAttribute[] $questionAttributes NB! returns all QuestionArrtibute Models fot this QID regardless of the specified language
  * @property QuestionL10n[] $questionl10ns Question Languagesettings indexd by language code
@@ -725,7 +725,7 @@ class Question extends LSActiveRecord
             'linkAttributes'   => [
                 'data-bs-toggle' => 'tooltip',
                 'onclick' => '$.fn.bsconfirm("'
-                    . CHtml::encode(gT("Deleting  will also delete any answer options and subquestions it includes. Are you sure you want to continue?"))
+                    . CHtml::encode(gT("Deleting will also delete any answer options and subquestions it includes. Are you sure you want to continue?"))
                     . '", {"confirm_ok": "'
                     . gT("Delete")
                     . '", "confirm_cancel": "'
