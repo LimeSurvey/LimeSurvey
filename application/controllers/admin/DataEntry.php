@@ -700,6 +700,12 @@ class DataEntry extends SurveyCommonAction
                             $questionInput .= '<label for="5-point-choice-' . $i . '">' . $i . '</label>';
                             $questionInput .= '</span> ';
                         }
+                        //Add 'No Answer'
+                        $questionInput .= "<input type='radio' class='' name='{$fname['fieldname']}' value=''";
+                        if ($idrow[$fname['fieldname']] == '') {
+                            $questionInput .= " checked";
+                        }
+                        $questionInput .= " />" . gT("No answer") . "&nbsp;\n";
                         $questionInputs[$fname['fieldname']] = $questionInput;
                         break;
                     case Question::QT_D_DATE: //DATE
@@ -1091,6 +1097,14 @@ class DataEntry extends SurveyCommonAction
                                 $questionInput .= " /><label for='5-point-radio-{$fname['fieldname']}'>$j</label>&nbsp;\n";
                                 $questionInput .= '</span>';
                             }
+                            //Add 'No Answer'
+                            $questionInput .= '<span class="five-point">';
+                            $questionInput .= "<input type='radio' class='' name='{$fname['fieldname']}' value=''";
+                            if ($idrow[$fname['fieldname']] == '') {
+                                $questionInput .= " checked";
+                            }
+                            $questionInput .= " />" . gT("No answer") . "&nbsp;\n";
+                            $questionInput .= '</span>';
                             $questionInput .= "</span>";
                             $questionInputs[$fname['fieldname']] = $questionInput;
                             $unseenStatus[$fname['fieldname']] = is_null($idrow[$fname['fieldname']]);
@@ -1112,6 +1126,14 @@ class DataEntry extends SurveyCommonAction
                                 $questionInput .= " /><label for='ten-point-{$fname['fieldname']}-$j'>$j</label>&nbsp;\n";
                                 $questionInput .= '</span>';
                             }
+                            //Add 'No Answer'
+                            $questionInput .= '<span class="five-point">';
+                            $questionInput .= "<input type='radio' class='' name='{$fname['fieldname']}' value=''";
+                            if ($idrow[$fname['fieldname']] == '') {
+                                $questionInput .= " checked";
+                            }
+                            $questionInput .= " />" . gT("No answer") . "&nbsp;\n";
+                            $questionInput .= '</span>';
                             $questionInput .= "</span>";
                             $questionInputs[$fname['fieldname']] = $questionInput;
                             $unseenStatus[$fname['fieldname']] = is_null($idrow[$fname['fieldname']]);
@@ -1136,6 +1158,12 @@ class DataEntry extends SurveyCommonAction
                                 }
                                 $questionInput .= " />" . $optionLabel . "&nbsp;";
                             }
+                            //Add 'No Answer'
+                            $questionInput .= "<input type='radio' class='' name='{$fname['fieldname']}' value=''";
+                            if ($idrow[$fname['fieldname']] == '') {
+                                $questionInput .= " checked";
+                            }
+                            $questionInput .= " />" . gT("No answer") . "&nbsp;\n";
                             $questionInput .= "</span>";
                             $questionInputs[$fname['fieldname']] = $questionInput;
                             $unseenStatus[$fname['fieldname']] = is_null($idrow[$fname['fieldname']]);
@@ -1160,6 +1188,12 @@ class DataEntry extends SurveyCommonAction
                                 }
                                 $questionInput .= " />" . $optionLabel . "&nbsp;";
                             }
+                            //Add 'No Answer'
+                            $questionInput .= "<input type='radio' class='' name='{$fname['fieldname']}' value=''";
+                            if ($idrow[$fname['fieldname']] == '') {
+                                $questionInput .= " checked";
+                            }
+                            $questionInput .= " />" . gT("No answer") . "&nbsp;\n";
                             $questionInput .= "</span>";
                             $questionInputs[$fname['fieldname']] = $questionInput;
                             $unseenStatus[$fname['fieldname']] = is_null($idrow[$fname['fieldname']]);
@@ -1340,7 +1374,7 @@ class DataEntry extends SurveyCommonAction
                             . ">"
                             . "<label for='unseen:{$questionInputField}'>" . gT("Unseen") . "</label>"
                             . "</div>\n";
-                        $aDataentryoutput .= "<div class=\"answer-wrapper\">" . $questionInput . "</div>";
+                        $aDataentryoutput .= "<div class=\"answer-wrapper\" data-field=\"{$questionInputField}\">" . $questionInput . "</div>";
                         $aDataentryoutput .= "</div>";
                         $aDataentryoutput .= "</div>";
                     }
@@ -1368,6 +1402,13 @@ class DataEntry extends SurveyCommonAction
         }
 
         $aDataentryoutput .= "</form>\n";
+
+        // Register JS variables for localized messages
+        Yii::app()->getClientScript()->registerScript("dataentry-vars", "
+            var invalidUnseenCheckboxMessage = '" . gT("If the field is marked as Unseen no value should be set.") . "';
+        ", LSYii_ClientScript::POS_BEGIN);
+
+        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'dataentry.js');
 
         $aViewUrls['output'] = $aDataentryoutput;
         $aData['sidemenu']['state'] = false;
