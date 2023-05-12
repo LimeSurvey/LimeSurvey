@@ -1,12 +1,6 @@
 .captcha-page {
-    .control-label {
-        @include control-label;
-    }
     button#default {
         @include submit-button;
-    }
-    .form-heading {
-        @include formheading;
     }
 }
 

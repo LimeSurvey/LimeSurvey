@@ -33,9 +33,9 @@
     {# This will display the script and the hidden inputs needed for ExpressionScript Engine #}
     {{ aSurveyInfo.EM.ScriptsAndHiddenInputs  }}
 
-    <div class="{{ aSurveyInfo.class.savemessage }} card card-body bg-light clearfix mb-3" {{ aSurveyInfo.attr.savemessage }}>
-        <div class="{{ aSurveyInfo.class.savemessagetitle }} card-title h2" {{ aSurveyInfo.attr.savemessagetitle }}>{{ gT("Load unfinished survey") }}</div>
-        <div class="{{ aSurveyInfo.class.savemessagetext }} text-info" {{ aSurveyInfo.attr.savemessagetext }}>
+    <div class="{{ aSurveyInfo.class.savemessage }} clearfix" {{ aSurveyInfo.attr.savemessage }}>
+        <div class="{{ aSurveyInfo.class.savemessagetitle }} large-heading mb-3" {{ aSurveyInfo.attr.savemessagetitle }}>{{ gT("Load unfinished survey") }}</div>
+        <div class="{{ aSurveyInfo.class.savemessagetext }} form-heading mb-3" {{ aSurveyInfo.attr.savemessagetext }}>
             <p {{ aSurveyInfo.attr.savemessagetextp }} > {{ gT("You can load a survey that you have previously saved from this screen.") }} </p>
             <p {{ aSurveyInfo.attr.savemessagetextpb }} > {{ gT("Type in the 'name' you used to save the survey, and the password.") }} </p>
         </div>
@@ -80,30 +80,28 @@
             {{  aSurveyInfo.aLoadForm.sHiddenField }}
 
             <!-- Name and Password -->
-            <div class="{{ aSurveyInfo.class.saveform }} col-lg-8 offset-lg-2" {{ aSurveyInfo.attr.saveform }}>
+            <div class="{{ aSurveyInfo.class.saveform }} col-12" {{ aSurveyInfo.attr.saveform }}>
 
                 <!-- Saved name  -->
                 <div class="{{ aSurveyInfo.class.saveformrow }} mb-3" {{ aSurveyInfo.attr.saveformrow }}>
                     <label class="{{ aSurveyInfo.class.saveformrowlabel }} control-label" {{ aSurveyInfo.attr.saveformrowlabel }}>
-                        {{ gT("Saved name:") }}
-                        <small class="{{ aSurveyInfo.class.saveformrowlabelsmall }} text-danger asterisk fa fa-asterisk float-start small" {{ aSurveyInfo.attr.saveformrowlabelsmall }} >&nbsp;</small>
-                        <span class="{{ aSurveyInfo.class.saveformrowlabelspan }} visually-hidden text-danger asterisk"  {{ aSurveyInfo.attr.saveformrowlabelspan }} >{{ gT("Mandatory") }}<span>
+                        {{ gT("Saved name:") }}<small class="{{ aSurveyInfo.class.saveformrowlabelsmall }} asterisk ri-asterisk superset" {{ aSurveyInfo.attr.saveformrowlabelsmall }} >&nbsp;</small>
+                        <span class="{{ aSurveyInfo.class.saveformrowlabelspan }} visually-hidden asterisk"  {{ aSurveyInfo.attr.saveformrowlabelspan }} >{{ gT("Mandatory") }}</span>
                     </label>
                     <div class="{{ aSurveyInfo.class.saveformrowcol }} input-cell" {{ aSurveyInfo.attr.saveformrowcol }}>
-                        <input class="{{ aSurveyInfo.class.saveformrowcolinput }} form-control" {{ aSurveyInfo.attr.saveformrowcolinput }} id="{{ aSurveyInfo.id.saveformrowcolinput }}" >
+                        <input class="{{ aSurveyInfo.class.saveformrowcolinput }} form-control ls-important-field" {{ aSurveyInfo.attr.saveformrowcolinput }} id="{{ aSurveyInfo.id.saveformrowcolinput }}" placeholder =" {{ gT('enter your name') }} ">
                     </div>
                 </div>
 
                 <!-- Password -->
                 <div class="{{ aSurveyInfo.class.passwordrow }} mb-3" {{ aSurveyInfo.attr.passwordrow }}>
                     <label class='{{ aSurveyInfo.class.passwordrowcol }} control-label'  {{ aSurveyInfo.attr.passwordrowcol }} >
-                        {{ gT("Password:") }}
-                        <small class="{{ aSurveyInfo.class.passwordrowcolsmall }} text-danger asterisk fa fa-asterisk float-start small" {{ aSurveyInfo.attr.passwordrowcolsmall }}>&nbsp;</small>
-                        <span class="{{ aSurveyInfo.class.passwordrowcolspan }} visually-hidden text-danger asterisk" {{ aSurveyInfo.attr.passwordrowcolspan }}>{{ gT("Mandatory") }}<span>
+                        {{ gT("Password:") }}<small class="{{ aSurveyInfo.class.passwordrowcolsmall }} asterisk ri-asterisk superset" {{ aSurveyInfo.attr.passwordrowcolsmall }}>&nbsp;</small>
+                        <span class="{{ aSurveyInfo.class.passwordrowcolspan }} visually-hidden asterisk" {{ aSurveyInfo.attr.passwordrowcolspan }}>{{ gT("Mandatory") }}</span>
                     </label>
 
                     <div class='{{ aSurveyInfo.class.passwordrowinput }}'>
-                        <input class='form-control' {{ aSurveyInfo.attr.passwordrowinputi }} >
+                        <input class='form-control ls-important-field' {{ aSurveyInfo.attr.passwordrowinputi }} placeholder =" {{ gT('enter your password') }} ">
                     </div>
                 </div>
 
@@ -115,29 +113,30 @@
                         </label>
                         <div class='{{ aSurveyInfo.class.captcharowcol }}' {{ aSurveyInfo.attr.captcharowcol }}>
                             <div class='{{ aSurveyInfo.class.captcharowcoldiv }}' {{ aSurveyInfo.attr.captcharowcoldiv }}>
-                                <span class='{{ aSurveyInfo.class.captcharowcoldivdiv }}' {{ aSurveyInfo.attr.captcharowcoldivdiv }} >
+                                <span class='{{ aSurveyInfo.class.captcharowcoldivdiv }}  ls-important-field' {{ aSurveyInfo.attr.captcharowcoldivdiv }} >
                                     <img src="{{ aSurveyInfo.aLoadForm.aCaptcha.sImageUrl }}" {{ aSurveyInfo.attr.captcharowcoldivdivimg }} />
                                 </span>
-                                <input id="{{ aSurveyInfo.id.captcharowcoldivinput }}" class='{{ aSurveyInfo.class.captcharowcoldivinput }} form-control' {{ aSurveyInfo.attr.captcharowcoldivinput }} />
+                                <input id="{{ aSurveyInfo.id.captcharowcoldivinput }}" class='{{ aSurveyInfo.class.captcharowcoldivinput }}   form-control ls-important-field' {{ aSurveyInfo.attr.captcharowcoldivinput }} placeholder="{{ gT("enter result here - numbers only") }}"/>
                             </div>
                         </div>
                     </div>
                 {% endif %}
-
-                <!-- load button -->
-                <div class='{{ aSurveyInfo.class.loadrow }} mb-3' {{ aSurveyInfo.attr.loadrow }}>
-                    <div class='{{ aSurveyInfo.class.loadrowcol }}  float-end' {{ aSurveyInfo.attr.loadrowcol }}>
-                        <button class='{{ aSurveyInfo.class.loadrowcolbutton }} btn btn-outline-secondary' {{ aSurveyInfo.attr.loadrowcolbutton }} >
-                            {{ gT("Load now") }}
-                        </button>
+                    <div class="row button-row">
+                        <!-- return button -->
+                    <div class='{{ aSurveyInfo.class.returntosurvey }} mb-3 col-auto' {{ aSurveyInfo.attr.returntosurvey }}>
+                        <div class="{{ aSurveyInfo.class.returntosurveydiv }}" {{ aSurveyInfo.attr.returntosurveydiv }}>
+                            <a href="{{ aSurveyInfo.surveyUrl }}" class="{{ aSurveyInfo.class.returntosurveydiva }} btn btn-outline-secondary" {{ aSurveyInfo.attr.returntosurveydiva }}  >{{ gT("Return to survey") }}</a>
+                        </div>
+                    </div>
+                    <!-- load button -->
+                    <div class='{{ aSurveyInfo.class.loadrow }} mb-3 col-auto' {{ aSurveyInfo.attr.loadrow }}>
+                        <div class='{{ aSurveyInfo.class.loadrowcol }}  float-end' {{ aSurveyInfo.attr.loadrowcol }}>
+                            <button class='{{ aSurveyInfo.class.loadrowcolbutton }} btn btn-primary' {{ aSurveyInfo.attr.loadrowcolbutton }} >
+                                {{ gT("Load now") }}
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
 
-
-        <div class='{{ aSurveyInfo.class.returntosurvey }}' {{ aSurveyInfo.attr.returntosurvey }}>
-            <div class="{{ aSurveyInfo.class.returntosurveydiv }}" {{ aSurveyInfo.attr.returntosurveydiv }}>
-                <a href="{{ aSurveyInfo.surveyUrl }}" class="{{ aSurveyInfo.class.returntosurveydiva }}" {{ aSurveyInfo.attr.returntosurveydiva }}  >{{ gT("Return to survey") }}</a>
-            </div>
-        </div>
     </div>

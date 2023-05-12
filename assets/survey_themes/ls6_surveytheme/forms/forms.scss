@@ -53,3 +53,11 @@ textarea {
 .question-item.mb-3 {
     padding-top: 0;
 }
+
+.form-heading {
+    @include formheading;
+}
+
+.control-label {
+    @include control-label;
+}

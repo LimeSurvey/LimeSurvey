@@ -4,19 +4,8 @@
         background : none !important;
         box-shadow : none;
         border     : none;
-        .form-heading {
-            @include formheading;
-        }
-    }
-    .register-form {
-        .control-label {
-            @include control-label;
-        }
     }
     #register_button {
         @include submit-button;
-    }
-    .register-success {
-        @include largeheading;
     }
 }

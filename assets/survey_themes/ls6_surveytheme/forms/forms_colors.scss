@@ -67,6 +67,9 @@ fieldset[disabled] {
     & label {
         color : $input-group-addon-color;
     }
+    &.ls-important-field {
+        border : 2px solid $g-900;
+    }
 }
 
 input[type="password"],
@@ -133,4 +136,6 @@ textarea,
     }
 }
 
-
+.control-label {
+    @include control-label_color;
+}

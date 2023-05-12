@@ -13069,6 +13069,12 @@ label {
   line-height: 20px;
 }
 
+.large-heading {
+  font-weight: 600;
+  font-size: 2.85rem;
+  line-height: 52px;
+}
+
 dl {
   font-weight: 400;
   font-size: 1.14rem;
@@ -13226,6 +13232,18 @@ textarea {
   padding-top: 0;
 }
 
+.form-heading {
+  font-weight: 400;
+  font-size: 1.425rem;
+  line-height: 24px;
+}
+
+.control-label {
+  margin-bottom: 12px;
+  font-weight: 400;
+  line-height: 24px;
+}
+
 .form-control {
   color: #1E1E1E;
   border-color: #6E748C;
@@ -13290,6 +13308,9 @@ fieldset[disabled] .form-control {
 .input-group-text label, label .input-group-text label {
   color: #ffffff;
 }
+.input-group-text.ls-important-field, label .input-group-text.ls-important-field {
+  border: 2px solid #1E1E1E;
+}
 
 input[type=password],
 .ui-autocomplete-input,
@@ -13347,6 +13368,10 @@ textarea,
 .has-error .form-control:focus,
 .input-error .form-control:focus {
   box-shadow: 4px 4px 0 #FF515F;
+}
+
+.control-label {
+  color: #1E1E1E;
 }
 
 /* no form-group on radio-item and checkbox-item */
@@ -15306,22 +15331,10 @@ a [class^=ri-], a [class*=" ri-"] {
 }
 
 .token-page .form-heading {
-  font-weight: 400;
-  font-size: 1.425rem;
-  line-height: 24px;
   margin-bottom: 40px;
-}
-.token-page .control-label {
-  margin-bottom: 12px;
-  font-weight: 400;
-  line-height: 24px;
 }
 .token-page .load-survey-submit {
   margin-top: 40px;
-}
-
-.token-page .control-label {
-  color: #1E1E1E;
 }
 
 .register-container .register-jumbotron, .register-container .register-jumbotron.card.bg-light {
@@ -15330,41 +15343,12 @@ a [class^=ri-], a [class*=" ri-"] {
   box-shadow: none;
   border: none;
 }
-.register-container .register-jumbotron .form-heading, .register-container .register-jumbotron.card.bg-light .form-heading {
-  font-weight: 400;
-  font-size: 1.425rem;
-  line-height: 24px;
-}
-.register-container .register-form .control-label {
-  margin-bottom: 12px;
-  font-weight: 400;
-  line-height: 24px;
-}
 .register-container #register_button {
   margin-top: 40px;
 }
-.register-container .register-success {
-  font-weight: 600;
-  font-size: 2.85rem;
-  line-height: 52px;
-}
 
-.register-container .register-form .control-label {
-  color: #1E1E1E;
-}
-
-.captcha-page .control-label {
-  margin-bottom: 12px;
-  font-weight: 400;
-  line-height: 24px;
-}
 .captcha-page button#default {
   margin-top: 40px;
-}
-.captcha-page .form-heading {
-  font-weight: 400;
-  font-size: 1.425rem;
-  line-height: 24px;
 }
 
 .captcha-item {
@@ -15379,13 +15363,24 @@ a [class^=ri-], a [class*=" ri-"] {
     padding-top: 8px;
   }
 }
-.captcha-page .control-label {
-  color: #1E1E1E;
-}
-
 .captcha-container .img-fluid {
   border: 1px dashed #6E748C;
   background-color: #EEEFF7;
+}
+
+.input-group-text.captcha-image {
+  background-color: #EEEFF7;
+}
+
+.save-message {
+  margin-bottom: 40px;
+}
+.save-message .form-heading p {
+  margin-bottom: 0;
+}
+
+.load-form .button-row, .save-form .button-row {
+  margin-top: 40px;
 }
 
 .darkmode-on {

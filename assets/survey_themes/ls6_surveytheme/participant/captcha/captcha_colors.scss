@@ -1,10 +1,7 @@
-.captcha-page {
-    .control-label {
-        @include control-label_color;
-    }
-}
-
 .captcha-container .img-fluid {
     border: 1px dashed $g-700;
     background-color: $g-200;
+}
+.input-group-text.captcha-image {
+   background-color: $g-200;
 }

@@ -23,6 +23,10 @@ label {
     @include h2
 }
 
+.large-heading {
+    @include largeheading;
+}
+
 dl {
     font-weight : $font-weight-normal;
     font-size   : $font-size-base;
