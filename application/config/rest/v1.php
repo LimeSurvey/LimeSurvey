@@ -23,6 +23,6 @@ $rest = [
 
 return array_merge(
     $rest,
-    include __DIR__ . '/v1/survey.php',
-    include __DIR__ . '/v1/session.php'
+    include_once __DIR__ . '/v1/survey.php',
+    include_once __DIR__ . '/v1/session.php'
 );

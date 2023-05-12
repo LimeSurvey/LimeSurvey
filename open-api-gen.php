@@ -1,6 +1,6 @@
 <?php
 
-include './vendor/autoload.php';
+include_once './vendor/autoload.php';
 
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Info;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\MediaType;
@@ -22,7 +22,7 @@ use GoldSpecDigital\ObjectOrientedOAS\OpenApi;
 $versionNum = !empty($argv[1]) ? ltrim($argv[1], 'v') : '1';
 $version = 'v' . $versionNum;
 
-$rest = include(__DIR__ . '/application/config/rest/' . $version . '.php');
+$rest = include_once(__DIR__ . '/application/config/rest/' . $version . '.php');
 $outputFile = __DIR__ . '/docs/open-api/' . $version . '.json';
 
 $apiConfig = isset($rest[$version]) ? $rest[$version] : [];
