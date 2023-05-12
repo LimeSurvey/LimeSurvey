@@ -12367,66 +12367,62 @@ Responsive navbar-brand image CSS
   border: none;
 }
 
-.ls6_surveytheme .navbar-collapse {
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
-}
-.ls6_surveytheme .navbar-form {
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1);
-}
-.ls6_surveytheme .navbar {
-  background-color: #ffffff !important;
-  box-shadow: 0 3px 3px rgba(132, 136, 138, 0.1);
+.navbar {
   border-radius: 0 !important;
 }
-.ls6_surveytheme .navbar a {
+.navbar a {
   text-decoration: none;
   line-height: 1.8rem;
   font-size: 1.2rem;
 }
 @media (min-width: 769px) {
-  .ls6_surveytheme .navbar .navbar-nav .nav-item .nav-link:hover {
+  .navbar .navbar-nav .nav-item .nav-link:hover {
     text-decoration: none;
   }
-  .ls6_surveytheme .navbar .navbar-nav .nav-item .nav-link:active {
+  .navbar .navbar-nav .nav-item .nav-link:active {
     text-decoration: none;
   }
-  .ls6_surveytheme .navbar .navbar-nav .nav-item .nav-link:focus {
+  .navbar .navbar-nav .nav-item .nav-link:focus {
     text-decoration: none;
   }
-  .ls6_surveytheme .navbar .navbar-nav .nav-item .nav-link {
+  .navbar .navbar-nav .nav-item .nav-link {
     padding-bottom: 0;
     padding-left: 0;
   }
-  .ls6_surveytheme .navbar .navbar-nav .nav-item {
+  .navbar .navbar-nav .nav-item {
     position: relative;
-  }
-  .ls6_surveytheme .navbar .navbar-nav .nav-item::after {
-    text-align: right;
-    content: "";
-    display: block;
-    width: 0;
-    height: 2px;
-    background-color: #14AE5C;
-    transition: width 0.3s;
-  }
-  .ls6_surveytheme .navbar .navbar-nav .nav-item:hover::after {
-    width: 100%;
   }
 }
 @media (max-width: 768px) {
-  .ls6_surveytheme .navbar {
+  .navbar {
     padding-top: 15px;
     padding-bottom: 15px;
+  }
+}
+
+.navbar-collapse {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.navbar-form {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.navbar {
+  background-color: #ffffff !important;
+  box-shadow: 0 1px 20px 0 rgb(196, 196, 196);
+}
+@media (max-width: 768px) {
+  .navbar {
     box-shadow: 1px 2px 3px rgba(132, 136, 138, 0.1);
   }
 }
-.ls6_surveytheme .navbar .nav-icon-btn.nav-icon-btn-danger .label {
-  background: #a94442;
-}
-.ls6_surveytheme .navbar-toggle {
+
+.navbar-toggle {
   border: solid 1px #14AE5C;
 }
-.ls6_surveytheme .navbar-toggle .icon-bar {
+
+.navbar-toggle .icon-bar {
   background-color: #14AE5C;
 }
 
