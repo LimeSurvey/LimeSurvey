@@ -1615,7 +1615,6 @@ class Survey extends LSActiveRecord
         // Search filter
         $sid_reference = (Yii::app()->db->getDriverName() == 'pgsql' ? ' t.sid::varchar' : 't.sid');
         $aWithRelations[] = 'owner';
-        $aWithRelations[] = 'surveygroup';
         $criteria->compare($sid_reference, $this->searched_value, true);
         $criteria->compare('t.admin', $this->searched_value, true, 'OR');
         $criteria->compare('owner.users_name', $this->searched_value, true, 'OR');
@@ -1624,7 +1623,16 @@ class Survey extends LSActiveRecord
 
         // Survey group filter
         if (isset($this->gsid)) {
-            $criteria->compare("t.gsid", $this->gsid, false);
+            // The survey group filter (from the dropdown, not by title search) is applied to three levels of survey groups.
+            // That is, it matches the group the survey is in, the parent group of that group, and the "grandparent" group.
+            $groupJoins = 'LEFT JOIN {{surveys_groups}} surveygroup ON t.gsid = surveygroup.gsid ';
+            $groupJoins .= 'LEFT JOIN {{surveys_groups}} parentGroup ON surveygroup.parent_id = parentGroup.gsid ';
+            $groupJoins .= 'LEFT JOIN {{surveys_groups}} grandParentGroup ON parentGroup.parent_id = grandParentGroup.gsid ';
+            $criteria->mergeWith([
+                'join' => $groupJoins,
+            ]);
+            $criteria->addCondition('t.gsid=:gsid OR parentGroup.gsid=:gsid OR grandParentGroup.gsid=:gsid', 'AND');
+            $criteria->params = array_merge($criteria->params ?? [], [':gsid' => $this->gsid]);
         }
 
         // show only surveys belonging to selected survey group
