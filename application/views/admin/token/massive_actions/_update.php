@@ -373,7 +373,7 @@
                     </div>
                 </div>
 
-                <?php /*
+                <?php /*                            
                 <?php foreach($aCoreTokenFields as $sCoreTokenField): ?>
                     <div class="row">
                         <div class="ex-form-group mb-3 row">
@@ -422,6 +422,14 @@
 
 <?php App()->getClientScript()->registerScript("Tokens:MassActionUpdateView_Scripts", "
 
+   var bindBSSwitch = function(formGroup){
+       console.log(\"bindBSSwitch run on:\",formGroup);
+       //Script to update the completed settings
+       formGroup.find('.YesNoSwitch').on('switchChange.bootstrapSwitch', function(e, state){        
+           formGroup.find('.selector_datechange').css('display', (state ? '' : 'none'));
+       });
+   };
+
    var bindDatepicker = function(myFormGroup){
     myFormGroup.find('.action_datepickerUpdateHiddenField').on('change dp.change', function(){
         myFormGroup.find('.selector_submitField').val($(this).val());
@@ -442,7 +450,7 @@
     $('.action_check_to_keep_old_value').on('click', function(){
         var currentValue = !$(this).prop('checked');
         var myFormGroup = $(this).closest('.ex-form-group');
-
+        
         myFormGroup.find('input:not(.action_check_to_keep_old_value),select:not(.action_check_to_keep_old_value)').prop('disabled', currentValue)
 
         if(myFormGroup.find('.bootstrap-switch-container').length > 0){
@@ -454,14 +462,15 @@
             myFormGroup.find('.selector_submitField').val('lskeep');
         } else {
             myFormGroup.find('.selector_submitField').val('');
+            bindBSSwitch(myFormGroup);
             bindDatepicker(myFormGroup);
         }
-
+        
     });
 };
-bindClicksInModal();
+bindClicksInModal(); 
 $(document).on('actions-updated', function(){
-    bindClicksInModal();
+    bindClicksInModal(); 
 });
 
 ", LSYii_ClientScript::POS_END); ?>

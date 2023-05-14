@@ -28,7 +28,7 @@ var onClickListAction =  function () {
     var $grididvalue   = $gridid.attr('id');
     var $oCheckedItems = $gridid.yiiGridView('getChecked', $(this).closest('div.listActions').data('pk')); // List of the clicked checkbox
     $oCheckedItems = JSON.stringify($oCheckedItems);
-    var actionType     = $that.data('actionType');
+    var actionType     = $that.data('actionType');   
     var selectedList   = $(".selected-items-list");
 
     if ($oCheckedItems == '[]') {
@@ -39,8 +39,8 @@ var onClickListAction =  function () {
         modal.show();
         return;
     }
-
-
+    
+    
     // TODO : Switch action (post, session, ajax...)
 
     // For actions without modal, doing a redirection
@@ -120,29 +120,29 @@ var onClickListAction =  function () {
     var $oldModalButtons   = $modal.find('.modal-footer-buttons');     // Modal footer with yes/no buttons
     var $modalShowSelected = $modal.data('show-selected');
     var $modalSelectedUrl = $modal.data('selected-url');
-
+    
     //Display selected data in modals after clicked on action
-    if($modalShowSelected == 'yes' && $modalSelectedUrl ){
-
+    if($modalShowSelected == 'yes' && $modalSelectedUrl ){  
+        
         //set csrfToken for ajaxpost
         var csrfToken = $('meta[name="csrf-token"]').attr("content");
-
-        //clear selected list view
+        
+        //clear selected list view 
         selectedList.empty();
 
         console.log('before ajax');
-        //ajaxpost to set data in the selected items div
+        //ajaxpost to set data in the selected items div 
         $.ajax({
             url :$modalSelectedUrl,
             type : 'POST',
             data : {$grididvalue, $oCheckedItems,csrfToken},
-            success: function(html, statut){
+            success: function(html, statut){    
                 selectedList.html(html);
             },
             error: function(requestObject, error, errorThrown){
                     console.log(error);
             }
-        });
+        });           
     }
 
     // When user close the modal, we put it back to its original state
@@ -278,6 +278,34 @@ var onClickListAction =  function () {
  *
  */
 
+// i think below two functions are not used and can be deleted
+ function prepareBsSwitchBoolean($gridid){
+     // Bootstrap switch with class "bootstrap-switch-boolean" will use the default boolean values.
+     // e.g: question mandatory, question other, etc
+     $('.bootstrap-switch-boolean').each(function(){
+         $(this).attr('value', false);                                           // we specify its value in a "visible" way (see point 1)
+
+         // Switch change
+         $(this).on('switchChange.bootstrapSwitch', function(event, state) {
+             $(this).attr('value', state);                                       // When the switch change,we specify its value in a "visible" way (see point 1)
+         });
+     });
+}
+
+function prepareBsSwitchInteger($gridid){
+    // Bootstrap switch with class "bootstrap-switch-integer" will use integer values
+    // e.g: question statistics_showgraph, question public_statistics, etc
+    $('.bootstrap-switch-integer').each(function(){
+        $(this).attr('value', 0);                                               // we specify its value in a "visible" way (see point 1)
+
+        // Switch change
+        $(this).on('switchChange.bootstrapSwitch', function(event, state) {
+            var intValue = (state==true)?'1':'0';                               // Convertion of the boolean to integer (see point 2)
+            $(this).attr('value', intValue)
+        });
+    });
+}
+
 function prepareBsDateTimePicker($gridid){
     var dateTimeSettings = getDefaultDateTimePickerSettings();
     if (dateTimeSettings) {
@@ -321,8 +349,13 @@ function bindListItemclick(){
 
 
 $(document).off('pjax:scriptcomplete.listActions').on('pjax:scriptcomplete.listActions, ready ', function() {
+    prepareBsSwitchBoolean(gridId);
+    prepareBsSwitchInteger(gridId);
+
     // Grid refresh: see point 3
     $(document).on('actions-updated', function(){
+        prepareBsSwitchBoolean(gridId);
+        prepareBsSwitchInteger(gridId);
         prepareBsDateTimePicker(gridId);
         bindListItemclick();
     });

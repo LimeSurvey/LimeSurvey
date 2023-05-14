@@ -12,7 +12,7 @@
         <h3></h3>
     </div>
     <?php endif;?>
-
+    
 
         <div class="row">
             <div class="col-12 content-right">
@@ -20,8 +20,8 @@
 <?php
     if ($tableExists) {
     ?>
-
-
+    
+    
     <div class="card card-primary" id="panel-1">
         <div class="card-header ">
             <div class="">
@@ -65,7 +65,7 @@
                             'renumber' => gT("Renumber the new record."),
                             'replace' => gT("Replace the existing record."),
                             'replaceanswers' => gT("Replace answers in file in the existing record."),
-                            ),array('disabled'=>'','class'=>'form-control'));
+                            ),array('disabled'=>'disabled','class'=>'form-control'));
                      ?>
                 </div>
             </div>

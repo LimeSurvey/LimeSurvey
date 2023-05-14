@@ -48,10 +48,10 @@
                                     if (isset($tokenfielddata[$sTokenField])) {
                                         $tokenvalues = $tokenfielddata[$sTokenField];
                                         if (!array_key_exists('encrypted', $tokenvalues)){
-                                            $tokenvalues['encrypted'] = 'N';
+                                            $tokenvalues['encrypted'] = 'N';   
                                         }
                                         if (!array_key_exists('cpdbmap', $tokenvalues)){
-                                            $tokenvalues['cpdbmap'] = '';
+                                            $tokenvalues['cpdbmap'] = '';   
                                         }
                                     } else {
                                         $tokenvalues = array('description' => '','mandatory' => 'N','encrypted' => 'N','show_register' => 'N','cpdbmap'=>'');
