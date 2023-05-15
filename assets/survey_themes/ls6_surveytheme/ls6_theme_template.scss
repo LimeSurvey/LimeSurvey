@@ -141,6 +141,8 @@ $base-color: #ffffff;
 @import "participant/captcha/captcha_colors.scss";
 @import "participant/load_save/load_save.scss";
 @import "participant/load_save/load_save_colors.scss";
+@import "progressbar/progressbar.scss";
+@import "progressbar/progressbar_colors.scss";
 
 // TODO: placeholder, will probbably be removed
 @import "darkmode/darkmode_colors.scss";

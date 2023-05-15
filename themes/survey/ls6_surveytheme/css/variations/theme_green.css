@@ -10508,19 +10508,6 @@ body {
   display: none;
 }
 
-.top-container .progress {
-  height: 21px;
-  margin-bottom: 0;
-}
-
-.top-container .progress {
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) inset; /* flatly remove box-shadow : readd one */
-}
-
-.progress .progress-bar {
-  line-height: 19px;
-}
-
 .top-container .form-change-lang {
   text-align: center;
 }
@@ -11076,42 +11063,6 @@ body {
 }
 .ls6_surveytheme .thumbnail .caption {
   color: rgb(53, 54, 63);
-}
-.ls6_surveytheme .progress {
-  background-color: #f5f5f5;
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
-}
-.ls6_surveytheme .progress-bar {
-  color: #ffffff;
-  background-color: #14AE5C;
-  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
-}
-.ls6_surveytheme .progress-striped .progress-bar {
-  background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
-}
-.ls6_surveytheme .progress-striped .progress-bar-success {
-  background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
-}
-.ls6_surveytheme .progress-striped .progress-bar-info {
-  background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
-}
-.ls6_surveytheme .progress-striped .progress-bar-warning {
-  background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
-}
-.ls6_surveytheme .progress-striped .progress-bar-danger {
-  background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
-}
-.ls6_surveytheme .progress-bar-success {
-  background-color: #14AE5C;
-}
-.ls6_surveytheme .progress-bar-info {
-  background-color: #17c568;
-}
-.ls6_surveytheme .progress-bar-warning {
-  background-color: #f6863a;
-}
-.ls6_surveytheme .progress-bar-danger {
-  background-color: #a0352f;
 }
 .ls6_surveytheme .list-group-item {
   background-color: #ffffff;
@@ -15393,6 +15344,25 @@ a [class^=ri-], a [class*=" ri-"] {
 
 .load-form .button-row, .save-form .button-row {
   margin-top: 40px;
+}
+
+.top-container .progress {
+  height: 2px;
+  margin-bottom: 0;
+}
+.top-container .progress-bar {
+  min-width: 2em;
+}
+
+.progress {
+  background-color: #D3D5DA;
+  box-shadow: none;
+}
+
+.progress-bar {
+  color: #ffffff;
+  background-color: #14AE5C;
+  box-shadow: none;
 }
 
 .darkmode-on {
