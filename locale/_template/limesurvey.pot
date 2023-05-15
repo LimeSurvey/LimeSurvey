@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2023-05-08 09:54:03+00:00\n"
+"POT-Creation-Date: 2023-05-15 10:26:02+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -8121,7 +8121,7 @@ msgstr ""
 msgid "Survey response %d"
 msgstr ""
 
-#: application/helpers/admin/htmleditor_helper.php:211
+#: application/helpers/admin/htmleditor_helper.php:186
 msgid "Start HTML editor in a popup window"
 msgstr ""
 
@@ -15604,7 +15604,7 @@ msgstr ""
 msgid "Insert/edit placeholder field"
 msgstr ""
 
-#: application/views/admin/htmleditor/pop_editor_view.php:83
+#: application/views/admin/htmleditor/pop_editor_view.php:65
 msgid "Editing"
 msgstr ""
 
