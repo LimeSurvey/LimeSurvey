@@ -5,7 +5,7 @@
 import LOG from '../components/lslog';
 
 const globalWindowMethods = {
-    // i think below two functions are not used and can be deleted
+    // TODO: It seems below two functions are not used and can be deleted. Please confirm.
     renderBootstrapSwitch : () => {
         try{
             if(!$('[data-is-bootstrap-switch]').parent().hasClass('bootstrap-switch-container')) {
@@ -20,6 +20,9 @@ const globalWindowMethods = {
             $('[data-is-bootstrap-switch]').bootstrapSwitch('destroy');
         } catch(e) { LOG.error(e); }
     },
+    // ==================================================================================
+
+    
     validatefilename: (form, strmessage) => {
         if (form.the_file.value == "") {
             $('#pleaseselectfile-popup').modal();
