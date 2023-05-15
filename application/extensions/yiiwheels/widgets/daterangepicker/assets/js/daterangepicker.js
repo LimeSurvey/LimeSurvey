@@ -559,7 +559,7 @@
             $(document)
                 .on('mousedown.daterangepicker', this._outsideClickProxy)
                 // also explicitly play nice with Bootstrap dropdowns, which stopPropagation when clicking them
-                .on('click.daterangepicker', '[data-toggle=dropdown]', this._outsideClickProxy)
+                .on('click.daterangepicker', '[data-bs-toggle=dropdown]', this._outsideClickProxy)
                 // and also close when focus changes to outside the picker (eg. tabbing between controls)
                 .on('focusin.daterangepicker', this._outsideClickProxy);
 
@@ -584,7 +584,7 @@
 
             $(document)
                 .off('mousedown.daterangepicker')
-                .off('click.daterangepicker', '[data-toggle=dropdown]')
+                .off('click.daterangepicker', '[data-bs-toggle=dropdown]')
                 .off('focusin.daterangepicker');
 
             this.element.removeClass('active');

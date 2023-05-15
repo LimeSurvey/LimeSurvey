@@ -943,21 +943,6 @@ class ResponsesController extends LSBaseController
     }
 
     /**
-     * Responsible for setting the session variables for attribute map page redirect
-     * @param bool $unset
-     * @param int|null $surveyId
-     */
-    public function actionSetSession(bool $unset = false, int $surveyId = null): void
-    {
-        unset(App()->session['responsesid']);
-        if (!$unset) {
-            App()->session['responsesid'] = App()->request->getPost('itemsid');
-        } else {
-            $this->redirect(["admin/export", "sa" => "exportresults", "surveyid" => $surveyId]);
-        }
-    }
-
-    /**
      * Change the value of the max characters to elipsize headers/questions in response grid.
      * It's called via ajax request
      *

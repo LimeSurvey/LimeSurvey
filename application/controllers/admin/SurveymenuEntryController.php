@@ -123,8 +123,9 @@ class SurveymenuEntryController extends SurveyCommonAction
             $this->getController()->redirect(Yii::app()->createUrl('/admin'));
         }
         //Update or create
+        $id = (int) $id;
         if ($id != 0) {
-            $model = $this->loadModel($id);
+            $model = SurveymenuEntries::model()->findByPk($id);
         } else {
             $model = new SurveymenuEntries();
         }
@@ -280,8 +281,12 @@ class SurveymenuEntryController extends SurveyCommonAction
             $aSurveyMenuEntryIds = json_decode(Yii::app()->request->getPost('sItems', '')) ?? [];
             $success = [];
             foreach ($aSurveyMenuEntryIds as $menuEntryid) {
-                $model = $this->loadModel($menuEntryid);
-                $success[$menuEntryid] = $model->delete();
+                $model = SurveymenuEntries::model()->findByPk((int)$menuEntryid);
+                $success[$menuEntryid] = false;
+                if ($model !== null) {
+                    $model->delete();
+                    $success[$menuEntryid] = true;
+                }
             }
 
             $debug = $userConfig['config']['debug'] ?? 0;
@@ -323,13 +328,15 @@ class SurveymenuEntryController extends SurveyCommonAction
         if (Yii::app()->request->isPostRequest) {
             $menuEntryid = Yii::app()->request->getPost('menuEntryid', 0);
             $success = false;
-            $model = $this->loadModel($menuEntryid);
+            $model = SurveymenuEntries::model()->findByPk((int)$menuEntryid);
             //Don't delete  main menu entries when not superadmin
             if (($model->menu_id == 1 || $model->menu_id == 2) && !Permission::model()->hasGlobalPermission('superadmin', 'read')) {
                 Yii::app()->user->setFlash('error', gT("Access denied"));
                 $this->getController()->redirect(Yii::app()->createUrl('/admin'));
             }
-            $success = $model->delete();
+            if ($model !== null) {
+                $success = $model->delete();
+            }
             $debug = $userConfig['config']['debug'] ?? 0;
 
             $returnData = array(
@@ -404,6 +411,7 @@ class SurveymenuEntryController extends SurveyCommonAction
      * @param integer $id the ID of the model to be loaded
      * @return SurveymenuEntries the loaded model
      * @throws CHttpException
+     * * @deprecated do not use this function in future
      */
     public function loadModel($id)
     {
