@@ -65,6 +65,10 @@ class CLSGridView extends TbGridView
             }
             $this->afterAjaxUpdate .= 'action_dropdown();';
             $this->afterAjaxUpdate .= '}';
+        } else {
+            // trigger action_dropdown() as a default although no lsAfterAjaxUpdate param passed.
+            // this method is useful for preventing action dropdown cut off && overlapped in other browsers like firefox
+            $this->afterAjaxUpdate = 'function(){ action_dropdown(); }';
         }
     }
 
