@@ -683,7 +683,7 @@ class QuestionAdministrationController extends LSBaseController
         }
         $html  = [];
         $first = true;
-        $qid   = 'new' . rand(0, 99999);
+        $qid   = App()->getRequest()->getParam('subqid') ?? 'new' . rand(0, 99999);
         foreach ($oSurvey->allLanguages as $language) {
             $html[$language] = $this->getSubquestionRow(
                 $oSurvey->sid,
@@ -710,7 +710,7 @@ class QuestionAdministrationController extends LSBaseController
      */
     public function actionGetSubquestionRowQuickAdd($surveyid, $gid)
     {
-        $qid               = '{{quid_placeholder}}';
+        $qid               = '-QUIDPLACEHOLDER-';
         $request           = Yii::app()->request;
         $codes             = $request->getPost('codes');
         $language          = $request->getPost('language');
@@ -729,7 +729,7 @@ class QuestionAdministrationController extends LSBaseController
      */
     public function actionGetAnswerOptionRowQuickAdd($surveyid, $gid)
     {
-        $qid               = '{{quid_placeholder}}';
+        $qid               = '-QUIDPLACEHOLDER-';
         $request           = Yii::app()->request;
         $codes             = $request->getPost('codes');
         $language          = $request->getPost('language');
@@ -755,7 +755,7 @@ class QuestionAdministrationController extends LSBaseController
         }
         $html  = [];
         $first = true;
-        $qid   = 'new' . rand(0, 99999);
+        $qid   = App()->getRequest()->getParam('subqid') ?? 'new' . rand(0, 99999);
         foreach ($oSurvey->allLanguages as $language) {
             $html[$language] = $this->getAnswerOptionRow(
                 $oSurvey->sid,
