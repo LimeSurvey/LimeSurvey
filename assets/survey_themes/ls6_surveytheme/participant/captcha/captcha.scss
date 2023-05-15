@@ -1,0 +1,17 @@
+.captcha-page {
+    button#default {
+        @include submit-button;
+    }
+}
+
+.captcha-item {
+    margin-top: 24px;
+    .captcha-container {
+        display: flex;
+    }
+}
+@media only screen and (max-width: 766px) {
+    .reload-button, .captcha-input {
+        padding-top: 8px;
+    }
+}

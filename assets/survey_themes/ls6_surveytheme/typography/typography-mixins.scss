@@ -15,3 +15,15 @@
   font-size   : $font-size-sm;
   line-height : $line-height-20;
 }
+
+@mixin formheading {
+  font-weight : $font-weight-normal;
+  font-size   : $font-size-lg;
+  line-height : $line-height-24;
+}
+
+@mixin largeheading {
+  font-weight: $font-weight-600;
+  font-size: $font-size-2xl;
+  line-height: $line-height-52;
+}

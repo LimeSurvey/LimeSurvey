@@ -23,6 +23,10 @@ label {
     @include h2
 }
 
+.large-heading {
+    @include largeheading;
+}
+
 dl {
     font-weight : $font-weight-normal;
     font-size   : $font-size-base;
@@ -41,6 +45,11 @@ dl {
 // LINKS
 a {
     font-weight : $font-weight-500;
+    font-size: $font-size-sm;
+    text-decoration: none;
+    &:hover {
+        text-decoration: none;
+    }
 }
 
 .has-link {
@@ -80,4 +89,9 @@ a {
     .h4 {
         font-size : 16px;
     }
+}
+
+.superset {
+    font-size      : 50%;
+    vertical-align : super;
 }

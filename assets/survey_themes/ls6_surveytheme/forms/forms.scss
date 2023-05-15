@@ -10,6 +10,15 @@ $dropdown-font-size: $font-size-sm;
     line-height  : $input-line-height;
     font-size : $font-size-base;
 }
+
+.form-control.ls-important-field {
+    height      : 44px;
+    padding     : 14px 12px;
+    font-weight : 400;
+    font-size   : 14px;
+    line-height : $line-height-16;
+}
+
 .input-group-text {
     padding      : $input-padding-y $input-padding-x;
     border-width : $input-border-width;
@@ -43,4 +52,12 @@ textarea {
 
 .question-item.mb-3 {
     padding-top: 0;
+}
+
+.form-heading {
+    @include formheading;
+}
+
+.control-label {
+    @include control-label;
 }

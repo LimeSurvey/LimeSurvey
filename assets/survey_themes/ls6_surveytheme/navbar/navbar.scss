@@ -57,3 +57,50 @@ body .navbar-default .navbar-brand:hover {
 .navbar-default .navbar-brand, .navbar-default  {
     border: none;
 }
+
+.navbar {
+    border-radius    : 0 !important;
+
+    a {
+        text-decoration : none;
+        line-height     : 1.8rem;
+        font-size       : 1.2rem;
+    }
+
+    @media(min-width : 769px) {
+        .navbar-nav .nav-item .nav-link:hover {
+            text-decoration : none;
+        }
+        .navbar-nav .nav-item .nav-link:active {
+            text-decoration : none;
+        }
+        .navbar-nav .nav-item .nav-link:focus {
+            text-decoration : none;
+        }
+        .navbar-nav .nav-item .nav-link {
+            padding-bottom : 0;
+            padding-left   : 0;
+        }
+        .navbar-nav .nav-item {
+            position : relative;
+        }
+
+        //.navbar-nav .nav-item::after {
+        //    text-align       : right;
+        //    content          : '';
+        //    display          : block;
+        //    width            : 0;
+        //    height           : 2px;
+        //    background-color : $base-color;
+        //    transition       : width 0.3s;
+        //}
+        //.navbar-nav .nav-item:hover::after {
+        //    width : 100%;
+        //}
+    }
+    @media(max-width : 768px) {
+        padding-top    : 15px;
+        padding-bottom : 15px;
+    }
+
+}

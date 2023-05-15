@@ -548,9 +548,9 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['attr']['completedwrapper'] = $aClassAndAttributes['attr']['completedtext'] = $aClassAndAttributes['attr']['quotamessage'] = $aClassAndAttributes['attr']['navigator'] = $aClassAndAttributes['attr']['navigatorcoll'] = $aClassAndAttributes['attr']['navigatorcolr'] = $aClassAndAttributes['attr']['completedquotaurl'] = '';
 
         // Register
-        $aClassAndAttributes['class']['register']                 = '  ';
-        $aClassAndAttributes['class']['registerrow']              = '  ';
-        $aClassAndAttributes['class']['registerrowjumbotron']     = ' card bg-light p-6 mb-3';
+        $aClassAndAttributes['class']['register']                 = ' register-container';
+        $aClassAndAttributes['class']['registerrow']              = ' register-row';
+        $aClassAndAttributes['class']['registerrowjumbotron']     = ' register-jumbotron card bg-light p-6 mb-3';
         $aClassAndAttributes['class']['registerrowjumbotrondiv']  = 'card-body';
 
         $aClassAndAttributes['class']['registerform']             = ' register-form  ';
