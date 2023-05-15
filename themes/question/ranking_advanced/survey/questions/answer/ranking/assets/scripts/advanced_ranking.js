@@ -33,12 +33,16 @@ var AdvancedRankingQuestion = function (options) {
         var sortableObjectChoice = {
             group: "sortable-" + questionId,
             ghostClass: "ls-rank-placeholder",
-            onEnd: function(){updateRankingNumber();}
+            onEnd: function(){
+                updateRankingNumber();
+            }
         },
         sortableObjectRank = {
             group: "sortable-" + questionId,
             ghostClass: "ls-rank-placeholder",
-            onEnd: function(){updateRankingNumber();},
+            onEnd: function(){
+                updateRankingNumber();
+            },
             onSort: function (evt) {
                 if ($(evt.item).hasClass("disabled")) {
                     /* see https://github.com/RubaXa/Sortable/issues/933 */
@@ -56,8 +60,8 @@ var AdvancedRankingQuestion = function (options) {
         }
 
 
-        $('#sortable-choice-' + questionId).sortable(sortableObjectChoice);
-        $('#sortable-rank-' + questionId).sortable(sortableObjectRank);
+        Sortable.create(document.getElementById('sortable-choice-' + questionId), sortableObjectChoice);
+        Sortable.create(document.getElementById('sortable-rank-' + questionId), sortableObjectRank);
 
         $('#question' + questionId + ' .ls-remove').remove();
         // Adapt choice and list height

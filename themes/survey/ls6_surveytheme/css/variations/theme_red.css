@@ -14051,17 +14051,19 @@ input.imageselect-checkbox:checked ~ .imageselect-select::after {
   color: #6E748C;
 }
 
-.ranking-advanced-style .ranking-advanced-sorted-items {
+.ranking-advanced-style .ranking-advanced-sorted-items .sortable-rank {
   border-radius: 8px;
 }
 .ranking-advanced-style .ranking-advanced-sorted-items .sortable-rank-subtitle {
   display: none;
 }
-.ranking-advanced-style .ranking-advanced-available-items {
+.ranking-advanced-style .ranking-advanced-available-items,
+.ranking-advanced-style .ranking-advanced-sorted-items {
   margin-bottom: 12px;
   padding: 6px;
 }
-.ranking-advanced-style .ranking-advanced-available-items .sortable-rank-subtitle {
+.ranking-advanced-style .ranking-advanced-available-items .sortable-rank-subtitle,
+.ranking-advanced-style .ranking-advanced-sorted-items .sortable-rank-subtitle {
   font-weight: 600;
 }
 .ranking-advanced-style .sortable-item {
@@ -14085,10 +14087,14 @@ input.imageselect-checkbox:checked ~ .imageselect-select::after {
   background: unset;
   background-color: #fff;
 }
-.ranking-advanced-style .ranking-advanced-sorted-items, .ranking-advanced-style .ranking-advanced-sorted-items .sortable-item {
+.ranking-advanced-style .sortable-rank,
+.ranking-advanced-style .ranking-advanced-sorted-items .sortable-item {
   border: 2px solid #FF515F;
 }
-.ranking-advanced-style .ranking-advanced-sorted-items .selector__dragHandle.d-none, .ranking-advanced-style .ranking-advanced-sorted-items .selector__index_row, .ranking-advanced-style .ranking-advanced-sorted-items .sortable-item .selector__dragHandle.d-none, .ranking-advanced-style .ranking-advanced-sorted-items .sortable-item .selector__index_row {
+.ranking-advanced-style .sortable-rank .selector__dragHandle.d-none,
+.ranking-advanced-style .sortable-rank .selector__index_row,
+.ranking-advanced-style .ranking-advanced-sorted-items .sortable-item .selector__dragHandle.d-none,
+.ranking-advanced-style .ranking-advanced-sorted-items .sortable-item .selector__index_row {
   color: #FF515F;
 }
 .ranking-advanced-style .ranking-advanced-available-items {
@@ -14100,7 +14106,8 @@ input.imageselect-checkbox:checked ~ .imageselect-select::after {
 .ranking-advanced-style .ranking-advanced-available-items .sortable-item {
   border: 2px solid #6E748C;
 }
-.ranking-advanced-style .ranking-advanced-available-items .selector__dragHandle.d-none, .ranking-advanced-style .ranking-advanced-available-items .selector__index_row {
+.ranking-advanced-style .ranking-advanced-available-items .selector__dragHandle.d-none,
+.ranking-advanced-style .ranking-advanced-available-items .selector__index_row {
   color: #6E748C;
 }
 
