@@ -34,6 +34,11 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.19 (build 230509) to 5.6.20 (build 230516) May 15, 2023
+-Fixed issue: No proper error when entering ComfortUpdate key and server cannot be reached (Carsten Schmitz)
+-Fixed issue #18765: Answers are not populated correct in array dual scale after clicking "Back" (#3117) (Gabriel Jenik)
+-Fixed issue #17560: Layout issue when setting user rights. (#3074) (Gabriel Jenik)
+
 Changes from 5.6.18 (build 230503) to 5.6.19 (build 230509) May 8, 2023
 -Fixed issue: Error when using detailed admin notifications or print responses on encrypted fields (#3094) (Patricia Stell)
 -Fixed issue: Cannot add survey menu when using PHP8 (#3110) (Patricia Stell)
