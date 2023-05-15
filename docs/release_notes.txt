@@ -34,6 +34,16 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.0.6 (build 230508) to 6.0.7 (build 230515) May 15, 2023
+-Fixed issue: No proper error when entering ComfortUpdate key and server cannot be reached (Carsten Schmitz)
+-Fixed issue #18765: Answers are not populated correct in array dual scale after clicking "Back" (#3061) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 6.0.5 (build 230502) to 6.0.6 (build 230508) May 8, 2023
 -Fixed issue: Cannot add survey menu when using PHP8 (#3115) (Patricia Stell)
 -Fixed issue CR-1119: Saving change disables active status for theme option page (#3104) (Tim Willig)
