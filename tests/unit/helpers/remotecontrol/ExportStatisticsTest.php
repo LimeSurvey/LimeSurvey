@@ -24,7 +24,13 @@ class RemoteControlExportStatisticsTest extends BaseTest
         $htmlStatistics = $this->handler->export_statistics($sessionKey, self::$surveyId, 'html');
         $htmlStatistics = base64_decode($htmlStatistics);
 
-        $q1Data = $this->getTableData($htmlStatistics, 'quid_1');
+        $this->assertIsString($htmlStatistics, 'The html statistics were not returned or decoded correctly.');
+
+        $questions = \Question::model()->getQuestionList(self::$surveyId);
+
+        $q1Data = $this->getTableData($htmlStatistics, 'quid_' . $questions[0]->qid);
+
+        $this->assertNotEmpty($q1Data, 'The statistics table or data were not found in the html string.');
 
         // Option A row.
         $this->assertSame($q1Data[0][0], 'Option A (A)', 'The Answer text is incorrect for this option.');
@@ -70,8 +76,10 @@ class RemoteControlExportStatisticsTest extends BaseTest
         $htmlStatistics = $this->handler->export_statistics($sessionKey, self::$surveyId, 'html');
         $htmlStatistics = base64_decode($htmlStatistics);
 
+        $questions = \Question::model()->getQuestionList(self::$surveyId);
+
         // Q00
-        $q1Data = $this->getTableData($htmlStatistics, 'quid_2');
+        $q1Data = $this->getTableData($htmlStatistics, 'quid_' . $questions[0]->qid);
 
         // Option A row.
         $this->assertSame($q1Data[0][0], 'Q00 option A (Q00A)', 'The Answer text is incorrect for this option.');
@@ -107,7 +115,7 @@ class RemoteControlExportStatisticsTest extends BaseTest
         $this->assertSame($q1Data[6][2], '100.00%', 'The Percentage is incorrect for this option.');
 
         // Q01
-        $q1Data = $this->getTableData($htmlStatistics, 'quid_3');
+        $q1Data = $this->getTableData($htmlStatistics, 'quid_' . $questions[1]->qid);
 
         // Option 1 row.
         $this->assertSame($q1Data[0][0], '1 (1)', 'The Answer text is incorrect for this option.');
@@ -158,7 +166,7 @@ class RemoteControlExportStatisticsTest extends BaseTest
         $this->assertSame($q1Data[9][2], '100.00%', 'The Percentage is incorrect for this option.');
 
         // Q02
-        $q1Data = $this->getTableData($htmlStatistics, 'quid_4');
+        $q1Data = $this->getTableData($htmlStatistics, 'quid_' . $questions[2]->qid);
 
         // Option A row.
         $this->assertSame($q1Data[0][0], 'Question 2 option A (Q02A)', 'The Answer text is incorrect for this option.');
@@ -207,6 +215,11 @@ class RemoteControlExportStatisticsTest extends BaseTest
         $doc->loadHtml($htmlStatistics);
 
         $table = $doc->getElementById($tableHtmlId);
+
+        if ($table === null) {
+            return $options;
+        }
+
         $thead = $table->getElementsByTagName('thead')->item(0);
         // The td tags should be identified with the opening tbody tag but it is not added by export_statistics.
         $table->removeChild($thead);
