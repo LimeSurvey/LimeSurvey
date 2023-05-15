@@ -12312,6 +12312,22 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
     margin-right: 0px;
   }
 }
+#datapolicy {
+  margin-top: 1em;
+  flex: 1 1 auto;
+  display: flex;
+  align-items: flex-end;
+}
+
+.datapolicy-links a {
+  padding: 10px;
+}
+
+.datapolicy-links a:hover {
+  cursor: pointer;
+  text-decoration: none;
+}
+
 .navbar-default .navbar-nav > li > a:hover {
   text-decoration: underline;
 }
