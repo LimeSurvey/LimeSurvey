@@ -46,7 +46,6 @@ Yii::import('application.helpers.replacements_helper', true);
 Yii::import('application.helpers.admin.export.*');
 Yii::import('application.helpers.admin.backupdb_helper', true);
 Yii::import('application.helpers.admin.activate_helper', true);
-Yii::import('application.helpers.admin.import_helper', true);
 Yii::import('application.libraries.PluginManager.PluginManager', true);
 Yii::import('application.libraries.MenuObjects.*', true);
 Yii::import('application.helpers.update.update_helper', true);
@@ -64,4 +63,6 @@ $pluginManager->scanPlugins(true);
 
 error_reporting(E_ALL);
 
-define('LOGO_URL', 'dummy_logo_url');
+// Needed for LOGO_URL constant. TODO: Why is this defined in a class...? Should be Yii config?
+$adminTheme = new AdminTheme();
+$adminTheme->setAdminTheme();

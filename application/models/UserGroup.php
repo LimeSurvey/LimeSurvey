@@ -66,7 +66,8 @@ class UserGroup extends LSActiveRecord
                 'min' => 1,
                 'max' => 20,
                 'tooShort' => gT("Name can not be empty."),
-                'tooLong' => gT('Failed to add group! Group name length more than 20 characters.')),
+                'tooLong' => gT('Failed to add group! Group name length more than 20 characters.')
+            ),
         );
     }
 
@@ -138,18 +139,18 @@ class UserGroup extends LSActiveRecord
         $iLoginID = intval(Yii::app()->session['loginID']);
         $iquery = "INSERT INTO {{user_groups}} (name, description, owner_id) VALUES(:group_name, :group_desc, :loginID)";
         $command = Yii::app()->db->createCommand($iquery)->bindParam(":group_name", $group_name, PDO::PARAM_STR)
-                                                            ->bindParam(":group_desc", $group_description, PDO::PARAM_STR)
-                                                            ->bindParam(":loginID", $iLoginID, PDO::PARAM_INT);
+            ->bindParam(":group_desc", $group_description, PDO::PARAM_STR)
+            ->bindParam(":loginID", $iLoginID, PDO::PARAM_INT);
         $result = $command->query();
         if ($result) {
-//Checked
+            //Checked
             $id = (int) getLastInsertID($this->tableName());
             if ($id > 0) {
-                    $user_in_groups_query = 'INSERT INTO {{user_in_groups}} (ugid, uid) VALUES (:ugid, :uid)';
-                    Yii::app()->db->createCommand($user_in_groups_query)
-                        ->bindParam(":ugid", $id, PDO::PARAM_INT)
-                        ->bindParam(":uid", $iLoginID, PDO::PARAM_INT)
-                        ->query();
+                $user_in_groups_query = 'INSERT INTO {{user_in_groups}} (ugid, uid) VALUES (:ugid, :uid)';
+                Yii::app()->db->createCommand($user_in_groups_query)
+                    ->bindParam(":ugid", $id, PDO::PARAM_INT)
+                    ->bindParam(":uid", $iLoginID, PDO::PARAM_INT)
+                    ->query();
             }
             return $id;
         } else {
@@ -171,9 +172,9 @@ class UserGroup extends LSActiveRecord
         $group->description = $description;
         $group->save();
         if ($group->getErrors()) {
-                    return false;
+            return false;
         } else {
-                    return true;
+            return true;
         }
     }
 
@@ -208,7 +209,7 @@ class UserGroup extends LSActiveRecord
     {
         $sQuery = "SELECT a.ugid, a.name, a.owner_id, a.description, b.uid FROM {{user_groups}} AS a LEFT JOIN {{user_in_groups}} AS b ON a.ugid = b.ugid WHERE a.ugid = :ugid";
         if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-            $sQuery .= "  AND uid = :userid ";
+            $sQuery .= "  AND (owner_id = :userid OR uid = :userid) ";
         }
         $sQuery .= " ORDER BY name";
         $command = Yii::app()->db->createCommand($sQuery)->bindParam(":ugid", $ugId, PDO::PARAM_INT);
@@ -273,7 +274,7 @@ class UserGroup extends LSActiveRecord
                 'header' => gT('User group ID'),
                 'name' => 'usergroup_id',
                 'value' => '$data->ugid',
-                'htmlOptions' => array('class' => 'col-md-1'),
+                'htmlOptions' => array('class' => 'col-lg-1'),
             ),
 
             array(
@@ -287,21 +288,21 @@ class UserGroup extends LSActiveRecord
                 'header' => gT('Description'),
                 'name' => 'description',
                 'value' => '$data->description',
-                'htmlOptions' => array('class' => 'col-md-5'),
+                'htmlOptions' => array('class' => 'col-lg-5'),
             ),
 
             array(
                 'header' => gT('Owner'),
                 'name' => 'owner',
                 'value' => '$data->owner->users_name',
-                'htmlOptions' => array('class' => 'col-md-1'),
+                'htmlOptions' => array('class' => 'col-lg-1'),
             ),
 
             array(
                 'header' => gT('Members'),
                 'name' => 'members',
                 'value' => '$data->countUsers',
-                'htmlOptions' => array('class' => 'col-md-1'),
+                'htmlOptions' => array('class' => 'col-lg-1'),
             ),
 
             array(
@@ -317,32 +318,110 @@ class UserGroup extends LSActiveRecord
 
     /**
      * Returns the buttons for grid view
+     *
+     * @todo where is this used??
+     *
      * @return string
      */
     public function getButtons()
     {
-        $button = "<div class='icon-btn-row'>";
-        // Edit user group
-        if (Permission::model()->hasGlobalPermission('usergroups', 'update')) {
-            $url = Yii::app()->createUrl("userGroup/edit/ugid/$this->ugid");
-            $button .= ' <a class="btn btn-default btn-sm green-border" data-toggle="tooltip" data-placement="top" title="' . gT('Edit user group') . '" href="' . $url . '" role="button"><span class="fa fa-pencil" ></span></a>';
-        }
+        $permissionUsergroupsEdit = Permission::model()->hasGlobalPermission('usergroups', 'update');
+        $permissionUsergroupsDelete = Permission::model()->hasGlobalPermission('usergroups', 'delete');
 
-        // View users
-        $url = Yii::app()->createUrl("userGroup/viewGroup/ugid/$this->ugid");
-        $button .= '<a class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="' . gT('View users') . '" href="' . $url . '" role="button"><span class="fa fa-list-alt" ></span></a>';
+        $dropdownItems = [];
+        $dropdownItems[] = [
+            'title'            => gT('Edit user group'),
+            'iconClass'        => 'ri-pencil-fill',
+            'url'              => Yii::app()->createUrl("userGroup/edit/ugid/$this->ugid"),
+            'enabledCondition' => $permissionUsergroupsEdit
+        ];
 
-        // Mail to user group
-        // Which permission should be checked for this button to be available?
-        $url = Yii::app()->createUrl("userGroup/mailToAllUsersInGroup/ugid/$this->ugid");
-        $button .= ' <a class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="' . gT('Email user group') . '" href="' . $url . '" role="button"><span class="icon-invite" ></span></a>';
+        $dropdownItems[] = [
+            'title'            => gT('View users'),
+            'iconClass'        => 'ri-list-unordered',
+            'url'              => Yii::app()->createUrl("userGroup/viewGroup/ugid/$this->ugid"),
+        ];
+        $dropdownItems[] = [
+            'title'            => gT('Email user group'),
+            'iconClass'        => 'ri-mail-send-fill',
+            'url'              => Yii::app()->createUrl("userGroup/mailToAllUsersInGroup/ugid/$this->ugid"),
+            'enabledCondition' => $permissionUsergroupsEdit
+        ];
 
-        // Delete user group
-        if (Permission::model()->hasGlobalPermission('usergroups', 'delete')) {
-            $button .= '<button class="btn btn-default btn-sm red-border action__delete-group" data-toggle="tooltip" data-placement="top" title="' . gT('Delete user group') . '" href="#delete-modal" data-toggle="modal" data-ugid="' . $this->ugid . '" role="button"><span class="fa fa-trash text-danger"></span></button>';
-        }
-        $button .= "</div>";
-        return $button;
+        $deletePostData = json_encode(['ugid' => $this->ugid]);
+        $dropdownItems[] = [
+            'title'            => gT('Delete user group'),
+            'iconClass'        => 'ri-delete-bin-fill text-danger',
+            'enabledCondition' => $permissionUsergroupsDelete,
+            'linkAttributes'   => [
+                'data-bs-toggle' => "modal",
+                'data-post-url'  => App()->createUrl("userGroup/deleteGroup"),
+                'data-post-datas' => $deletePostData,
+                'data-message'   => sprintf(gt("Are you sure you want to delete user group '%s'?"), $this->name),
+                'data-bs-target' => "#confirmation-modal",
+                'data-btnclass'  => 'btn-danger',
+                'data-btntext'   => gt('Delete'),
+                'data-title'     => gt('Delete user group')
+            ]
+        ];
+
+        return App()->getController()->widget(
+            'ext.admin.grid.GridActionsWidget.GridActionsWidget',
+            ['dropdownItems' => $dropdownItems],
+            true
+        );
+    }
+
+    /**
+     * Returns the buttons for grid view
+     * @return array
+     */
+    public function getManagementButtons(): array
+    {
+        return [
+            array(
+                'header'      => gT('User group ID'),
+                'name'        => 'usergroup_id',
+                'value'       => '$data->ugid',
+                'htmlOptions' => array('class' => ''),
+            ),
+
+            array(
+                'header'      => gT('Name'),
+                'name'        => 'name',
+                'value'       => '$data->name',
+                'htmlOptions' => array('class' => ''),
+            ),
+
+            array(
+                'header'      => gT('Description'),
+                'name'        => 'description',
+                'value'       => '$data->description',
+                'htmlOptions' => array('class' => ''),
+            ),
+
+            array(
+                'header'      => gT('Owner'),
+                'name'        => 'owner',
+                'value'       => '$data->owner->users_name',
+                'htmlOptions' => array('class' => ''),
+            ),
+
+            array(
+                'header'      => gT('Members'),
+                'name'        => 'members',
+                'value'       => '$data->countUsers',
+                'htmlOptions' => array('class' => ''),
+            ),
+            array(
+                'header'      => gT('Actions'),
+                'name'        => 'buttons',
+                'type'        => 'raw',
+                'value'       => '$data->buttons',
+                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+                'htmlOptions'       => ['class' => 'text-center button-column ls-sticky-column'],
+            ),
+        ];
     }
 
 
@@ -363,24 +442,24 @@ class UserGroup extends LSActiveRecord
         $sort = new CSort();
         $sort->attributes = array(
             'usergroup_id' => array(
-            'asc' => 'ugid',
-            'desc' => 'ugid desc',
+                'asc' => 'ugid',
+                'desc' => 'ugid desc',
             ),
             'name' => array(
-            'asc' => 'name',
-            'desc' => 'name desc',
+                'asc' => 'name',
+                'desc' => 'name desc',
             ),
             'description' => array(
-            'asc' => 'description',
-            'desc' => 'description desc',
+                'asc' => 'description',
+                'desc' => 'description desc',
             ),
             'owner' => array(
-            'asc' => 'users.users_name',
-            'desc' => 'users.users_name desc',
+                'asc' => 'users.users_name',
+                'desc' => 'users.users_name desc',
             ),
             'members' => array(
-            'asc' => 'member_count',
-            'desc' => 'member_count desc',
+                'asc' => 'member_count',
+                'desc' => 'member_count desc',
             ),
         );
 
@@ -483,7 +562,7 @@ class UserGroup extends LSActiveRecord
             $usersInGroup[] = $oAuxUserInGroup;
         }
         $mailer->Subject = $subject;
-        $body = str_replace("\n.", "\n..", $body);
+        $body = str_replace("\n.", "\n..", (string) $body);
         $body = wordwrap($body, 70);
         $mailer->Body = $body;
         $cnt = 0;
@@ -512,7 +591,7 @@ class UserGroup extends LSActiveRecord
             if ($emaiLResult['success']) {
                 $msgToUser .= gT('Sending successful') . "<br>";
             } else {
-                $msgToUser .= gT('Error: ') . $emaiLResult['msg'] . "<br>";
+                throw new Exception("Failed to send mail");
             }
         }
 

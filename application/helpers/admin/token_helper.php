@@ -37,7 +37,7 @@ function emailTokens($iSurveyID, $aResultTokens, $sType, $continueOnError = fals
         $mail->setToken($aTokenRow['token']);
         $mail->setTypeWithRaw($sType, $aTokenRow['language']);
 
-        if (isset($aTokenRow['validfrom']) && trim($aTokenRow['validfrom']) != '' && convertDateTimeFormat($aTokenRow['validfrom'], 'Y-m-d H:i:s', 'U') * 1 > date('U') * 1) {
+        if (isset($aTokenRow['validfrom']) && trim((string) $aTokenRow['validfrom']) != '' && convertDateTimeFormat($aTokenRow['validfrom'], 'Y-m-d H:i:s', 'U') * 1 > date('U') * 1) {
             $aResult[$aTokenRow['tid']] = array(
                 'name' => $aTokenRow["firstname"] . " " . $aTokenRow["lastname"],
                 'email' => $aTokenRow["email"],
@@ -50,7 +50,7 @@ function emailTokens($iSurveyID, $aResultTokens, $sType, $continueOnError = fals
                 break 1;
             }
         }
-        if (isset($aTokenRow['validuntil']) && trim($aTokenRow['validuntil']) != '' && convertDateTimeFormat($aTokenRow['validuntil'], 'Y-m-d H:i:s', 'U') * 1 < date('U') * 1) {
+        if (isset($aTokenRow['validuntil']) && trim((string) $aTokenRow['validuntil']) != '' && convertDateTimeFormat($aTokenRow['validuntil'], 'Y-m-d H:i:s', 'U') * 1 < date('U') * 1) {
             $aResult[$aTokenRow['tid']] = array(
                 'name' => $aTokenRow["firstname"] . " " . $aTokenRow["lastname"],
                 'email' => $aTokenRow["email"],

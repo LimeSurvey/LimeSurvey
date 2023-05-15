@@ -356,7 +356,7 @@ class Authentication extends SurveyCommonAction
             case 'login':
             default:
                 $sSummary = '<br />' . sprintf(gT('Welcome %s!'), Yii::app()->session['full_name']) . '<br />&nbsp;';
-                if (!empty(Yii::app()->session['redirect_after_login']) && strpos(Yii::app()->session['redirect_after_login'], 'logout') === false) {
+                if (!empty(Yii::app()->session['redirect_after_login']) && strpos((string) Yii::app()->session['redirect_after_login'], 'logout') === false) {
                     Yii::app()->session['metaHeader'] = '<meta http-equiv="refresh"'
                     . ' content="1;URL=' . Yii::app()->session['redirect_after_login'] . '" />';
                     $sSummary = '<p><font size="1"><i>' . gT('Reloading screen. Please wait.') . '</i></font>';

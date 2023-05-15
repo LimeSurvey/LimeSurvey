@@ -6,6 +6,7 @@
 class NotificationController extends SurveyCommonAction
 {
     /**
+     * TODO: function seems to be unused, Notification are only displayed by getNotificationAsJSON and getMenuWidget
      * List all notifications for a user
      */
     public function index()
@@ -139,7 +140,7 @@ class NotificationController extends SurveyCommonAction
         $data['nrOfNewNotifications'] = Notification::countNewNotifications($surveyId);
         $data['nrOfNotifications'] = Notification::countNotifications($surveyId);
         $data['nrOfImportantNotifications'] = Notification::countImportantNotifications($surveyId);
-        $data['bellColor'] = $data['nrOfNewNotifications'] == 0 ? 'text-success' : 'text-warning';
+        $data['bellColor'] = $data['nrOfNewNotifications'] == 0 ? '' : '';
 
         // If we have any important notification we might as well load everything
         if ($data['nrOfImportantNotifications'] > 0) {

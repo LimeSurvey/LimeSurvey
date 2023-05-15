@@ -24,40 +24,42 @@
  */
 #}
 <!-- answer_row -->
-<li id="javatbd{{ name }}" class='row checkbox-text-item form-group' role='group'>
+<li id="javatbd{{ name }}" class='checkbox-text-item mb-1' role='group'>
     <!-- Checkbox + label -->
-    <div class="col-sm-{{ sLabelWidth }} col-xs-12">
-        <div class="checkbox-item answer-item">
-            <input
-                class="{{ classes }} {{ kpclass }}"
-                title="{{ title }}"
-                type="checkbox"
-                name="{{ name }}"
-                id="{{ id }}"
-                value="{{ value }}"
-                {{ checked }}
-              />
+    <div class="row">
+        <div class="col-md-{{ sLabelWidth }} col-12 form-check mb-2">
+            <div class="checkbox-item answer-item">
+                <input
+                    class="{{ classes }} {{ kpclass }} form-check-input"
+                    title="{{ title }}"
+                    type="checkbox"
+                    name="{{ name }}"
+                    id="{{ id }}"
+                    value="{{ value }}"
+                    {{ checked }}
+                  />
 
-            <label id="label-{{ id }}" for="{{ id }}" class="control-label checkbox-label">{{ processString(labeltext) }}</label>
-            {# Value for expression manager javascript (use val()) ; no need to submit #}
-            {{ C.Html.hiddenField(javaname,javavalue,({
-                'id' : javaname,
-                'disabled' : true,
-            }))
-            }}
+                <label id="label-{{ id }}" for="{{ id }}" class="control-label checkbox-label form-check-label">{{ processString(labeltext) }}</label>
+                {# Value for expression manager javascript (use val()) ; no need to submit #}
+                {{ C.Html.hiddenField(javaname,javavalue,({
+                    'id' : javaname,
+                    'disabled' : true,
+                }))
+                }}
+            </div>
         </div>
-    </div>
 
-    <!-- Comment -->
-    <div class="col-sm-{{ sInputContainerWidth }} col-xs-12 answer-item text-item comment-item">
-            <input
-                class='form-control {{ kpclass }}'
-                type='text'
-                id='{{ inputCommentId }}'
-                name='{{ inputCommentName }}'
-                value='{{ inputCOmmentValue }}'
-                aria-labelledby='label-{{ id }}'
-            />
+        <!-- Comment -->
+        <div class="col-md-{{ sInputContainerWidth }} col-12 answer-item text-item comment-item mb-2">
+                <input
+                    class='form-control {{ kpclass }}'
+                    type='text'
+                    id='{{ inputCommentId }}'
+                    name='{{ inputCommentName }}'
+                    value='{{ inputCOmmentValue }}'
+                    aria-labelledby='label-{{ id }}'
+                />
+        </div>
     </div>
 </li>
 <!-- end of answer_row -->

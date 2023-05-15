@@ -5,20 +5,23 @@
 
     //All paths relative from /application/views
 
+$layoutHelper = new LayoutHelper();
+
 //headers will be generated with the template file /admin/super/header.php
 $this->showHeaders($aData, false);
 //The adminmenu bar will be generated from /admin/super/adminmenu.php
 $this->showadminmenu($aData);
 
 // Generated through /admin/usergroup/usergroupbar_view
-$this->userGroupBar($aData);
+//$this->userGroupBar($aData);
 
 echo "<!-- BEGIN LAYOUT_INSURVEY -->";
 // Needed to evaluate EM expressions in question summary
 // See bug #11845
 LimeExpressionManager::StartProcessingPage(false, true);
 $aData['debug'] = $aData;
-$this->titlebar($aData);
+
+echo $layoutHelper->renderTopbarTemplate($aData);
 
 //The load indicator for pjax
 echo ' <div id="pjax-file-load-container" class="ls-flex-row col-12"><div style="height:2px;width:0px;"></div></div>';
@@ -37,7 +40,6 @@ echo ' <!-- Survey page, started in SurveyCommonAction::renderWrappedTemplate() 
     . '>';
 
         echo '<div id="pjax-content" class="col-12">';
-            echo LayoutHelper::renderTopbar($aData);
 
             //Rendered through /admin/responses/browsemenubar_view
             //$this->_browsemenubar($aData);
