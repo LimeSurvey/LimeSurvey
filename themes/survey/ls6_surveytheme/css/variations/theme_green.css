@@ -14572,6 +14572,37 @@ input[type=checkbox]:checked:after,
   width: 24px;
 }
 
+body.ls6_surveytheme {
+  margin: 0;
+  padding: 0;
+  background: #ffffff;
+  display: flex;
+  height: 100vh;
+  font-family: Arial, Helvetica, sans-serif;
+}
+body.ls6_surveytheme .error-title {
+  font-weight: 600;
+  font-size: 2.85rem;
+  line-height: 52px;
+  letter-spacing: -0.017em;
+}
+body.ls6_surveytheme .error-title p {
+  color: #1E1E1E !important;
+}
+body.ls6_surveytheme .error-content {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1.2825rem;
+  line-height: 24px;
+  letter-spacing: -0.017em;
+  color: #1E1E1E;
+}
+body.ls6_surveytheme .error-link {
+  font-weight: 400;
+  font-size: 1.2825rem;
+  line-height: 24px;
+}
+
 .date-timepicker-group .input-group-addon {
   border: 2px solid #6E748C;
 }
