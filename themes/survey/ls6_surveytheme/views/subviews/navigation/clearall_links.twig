@@ -24,9 +24,10 @@ This file render the exit button for top menu bar
          <!-- Exit and clear survey -->
          <li class="nav-item ls-no-js-hidden px-2">
              <a href="#" class='nav-link ls-link-action ls-link-clearall'
+                data-bs-toggle="modal"
+                data-bs-target="#clear-all-modal"
                 data-limesurvey-submit='{ "clearall":"clearall" }'
-                data-confirmedby='{ "confirm-clearall":"confirm" }'
-                data-confirmlabel='{{ gT("Please confirm you want to clear your response?" ) }}'>
+                data-confirmedby='{ "confirm-clearall":"confirm" }'>
                  {{ gT("Exit and clear survey" ) }}
              </a>
          </li>

@@ -771,41 +771,27 @@ function activateActionLink() {
         $('form#limesurvey').submit();
       } else {
         var submits = $.extend(submit, confirmedby);
-        confirmSurveyDialog($(this).data('confirmlabel'), $(this).text(), submits);
+        $('#clear-all-submit').on('click', function (event) {
+          confirmSurveyDialog(submits);
+        });
+
       }
     });
   }
 }
 /**
  * function for replacing submit after confirm
- * @var string text : the text to be shown
- * @var string optional title
  * @var object[] submits : name.value to submit
  */
-function confirmSurveyDialog(text, title, submits) {
-  if ($.bsconfirm !== undefined) {
-    $.bsconfirm(text, LSvar.lang.confirm, function () {
-      $.each(submits, function (name, value) {
-        $("<input/>", {
-          'type': "hidden",
-          'name': name,
-          'value': value
-        }).appendTo('form#limesurvey');
-      });
-      $('form#limesurvey').submit();
-    });
-  } else {
-    if (confirm(text)) {
-      $.each(submits, function (name, value) {
-        $("<input/>", {
-          'type': "hidden",
-          'name': name,
-          'value': value
-        }).appendTo('form#limesurvey');
-      });
-      $('form#limesurvey').submit();
-    }
-  }
+function confirmSurveyDialog(submits) {
+  $.each(submits, function (name, value) {
+    $("<input/>", {
+      'type': "hidden",
+      'name': name,
+      'value': value
+    }).appendTo('form#limesurvey');
+  });
+  $('form#limesurvey').submit();
 }
 /**
  *  Ask confirmation on click on .needconfirm
