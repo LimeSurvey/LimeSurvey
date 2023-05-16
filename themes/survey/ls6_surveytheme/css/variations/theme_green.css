@@ -11037,26 +11037,6 @@ body {
 .ls6_surveytheme .thumbnail .caption {
   color: rgb(53, 54, 63);
 }
-.ls6_surveytheme .list-group-item {
-  background-color: #ffffff;
-  border: 1px solid #dadada;
-}
-.ls6_surveytheme .list-group-item-success {
-  color: #14AE5C;
-  background-color: #b9f3d3;
-}
-.ls6_surveytheme .list-group-item-info {
-  color: #17c568;
-  background-color: #41c889;
-}
-.ls6_surveytheme .list-group-item-warning {
-  color: #ffe370;
-  background-color: #dcce75;
-}
-.ls6_surveytheme .list-group-item-danger {
-  color: #a94442;
-  background-color: #e48a49;
-}
 .ls6_surveytheme .card {
   background-color: #ffffff;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
@@ -15366,6 +15346,31 @@ a [class^=ri-], a [class*=" ri-"] {
   color: #ffffff;
   background-color: #14AE5C;
   box-shadow: none;
+}
+
+.list-group-item {
+  background-color: #ffffff;
+  border: 1px solid #1E1E1E;
+}
+
+.list-group-item-success {
+  color: #ffffff;
+  background-color: #14AE5C;
+}
+
+.list-group-item-info {
+  color: #ffffff;
+  background-color: #8146F6;
+}
+
+.list-group-item-warning {
+  color: #1E1E1E;
+  background-color: #FFE046;
+}
+
+.list-group-item-danger {
+  color: #1E1E1E;
+  background-color: #FF515F;
 }
 
 .darkmode-on {

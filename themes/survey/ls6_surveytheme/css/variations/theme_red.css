@@ -11037,26 +11037,6 @@ body {
 .ls6_surveytheme .thumbnail .caption {
   color: rgb(53, 54, 63);
 }
-.ls6_surveytheme .list-group-item {
-  background-color: #ffffff;
-  border: 1px solid #dadada;
-}
-.ls6_surveytheme .list-group-item-success {
-  color: #FF515F;
-  background-color: white;
-}
-.ls6_surveytheme .list-group-item-info {
-  color: #ff6b76;
-  background-color: #f3a5a6;
-}
-.ls6_surveytheme .list-group-item-warning {
-  color: #fffeff;
-  background-color: #ebe3fc;
-}
-.ls6_surveytheme .list-group-item-danger {
-  color: #a94442;
-  background-color: #bec6fd;
-}
 .ls6_surveytheme .card {
   background-color: #ffffff;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
@@ -15366,6 +15346,31 @@ a [class^=ri-], a [class*=" ri-"] {
   color: #ffffff;
   background-color: #FF515F;
   box-shadow: none;
+}
+
+.list-group-item {
+  background-color: #ffffff;
+  border: 1px solid #1E1E1E;
+}
+
+.list-group-item-success {
+  color: #ffffff;
+  background-color: #FF515F;
+}
+
+.list-group-item-info {
+  color: #ffffff;
+  background-color: #8146F6;
+}
+
+.list-group-item-warning {
+  color: #1E1E1E;
+  background-color: #FFE046;
+}
+
+.list-group-item-danger {
+  color: #1E1E1E;
+  background-color: #FF515F;
 }
 
 .darkmode-on {

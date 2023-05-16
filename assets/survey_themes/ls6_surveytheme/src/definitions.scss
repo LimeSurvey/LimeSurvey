@@ -398,26 +398,6 @@ body {
         }
     }
 
-    .list-group-item {
-        background-color : $white;
-        border           : 1px solid $color_alto_approx;
-    }
-    .list-group-item-success {
-        color            : $base-color;
-        background-color : $color_sea_mist_approx;
-    }
-    .list-group-item-info {
-        color            : $color_paradiso_approx;
-        background-color : $color_opal_approx;
-    }
-    .list-group-item-warning {
-        color            : $color_sandy_brown_approx;
-        background-color : $color_quicksand_approx;
-    }
-    .list-group-item-danger {
-        color            : $color_shilo_approx;
-        background-color : $color_contessa_approx;
-    }
     .card {
         background-color : $white;
         box-shadow       : 0 1px 1px $black_5;
