@@ -24,7 +24,6 @@
 #}
 
 {# We register a specific css file for that layout. #}
-{{ registerTemplateCssFile('css/errors.css') }}
 {% set aError     = aSurveyInfo.aError    %}
 
 <!DOCTYPE html>
@@ -51,37 +50,40 @@
     {% endif %}
 </head>
 
-<body class="{{ aSurveyInfo.class.body }} darkmode-{{aSurveyInfo.options.darkmode }} lang-{{ aSurveyInfo.languagecode }} {{ surveyformat }}" marginwidth="0"
+<body class="error-page {{ aSurveyInfo.class.body }} darkmode-{{aSurveyInfo.options.darkmode }} lang-{{ aSurveyInfo.languagecode }} {{ surveyformat }}" marginwidth="0"
       marginheight="0" {{ aSurveyInfo.attr.body }}>
-<div class="container">
-    <div id="error-card" class="card w-75 mt-6 mb-0 mx-auto">
-        <div class="card-body">
-            <h2 class="card-title">
-                {% if aError.error %}
-                    {{ aError.error }}
+    <div class="container m-auto ">
+        <div class="row align-items-center">
+            <div class="col">
+                <h2 class="error-title">
+                    {% if aError.error %}
+                        {{ aError.error }}
+                    {% endif %}
+                    {{ aError.title }}
+                </h2>
+                <div class="error-content">{{ aError.message }}</div>
+                {% if aError.contact %}
+                    {{ aError.contact }}
+                {% else %}
+                    {{ gT("For further information please contact %s:")|format (aSurveyInfo.admin) }}
+                    {% if aSurveyInfo.adminemail %}
+                        <br>
+                        <a class="error-link" href='mailto:{{ aSurveyInfo.adminemail }}'>{{ aSurveyInfo.adminemail }}</a>
+                    {% endif %}
                 {% endif %}
-                {{ aError.title }}
-            </h2>
-            <hr>
-            <div class="card-text">{{ aError.message }}</div>
-            {% if aError.contact %}
-                {{ aError.contact }}
-            {% else %}
-                {{ gT("For further information please contact %s:")|format (aSurveyInfo.admin) }}
-                {% if aSurveyInfo.adminemail %}
-                    <br>
-                    <a class="card-link" href='mailto:{{ aSurveyInfo.adminemail }}'>{{ aSurveyInfo.adminemail }}</a>
+                {% if aError.trace is not empty %}
+                    <pre>
+                            {{ aError.trace }}
+                    </pre>
                 {% endif %}
-            {% endif %}
-            {% if aError.trace is not empty %}
-                <pre>
-                        {{ aError.trace }}
-                </pre>
-            {% endif %}
+            </div>
+            <div class="col d-flex">
+              {% if(imageSrc('./files/error.png')) %}
+                {{ image("./files/error.png", "Survey Error", {class: 'm-auto'}) }}
+              {% endif %}
+            </div>      
         </div>
-
     </div>
-</div>
 {% block footer %}
     {{ include('./subviews/footer/footer.twig') }}
 {% endblock %}
