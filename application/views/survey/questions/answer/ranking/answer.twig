@@ -77,8 +77,9 @@ try{
  ranking{{qId}}.init()
 } catch(e){}
 {% endset %}
+{{ registerPackage('sortablejs') }}
 {{ registerPackage('question-ranking') }}
-{{ registerScript( 
+{{ registerScript(
     'RankingQuestionTranslate'~qId, 
     'LSvar.lang.rankhelp="' ~ gT("Double-click or drag-and-drop items in the left list to move them to the right - your highest ranking item should be on the top right, moving through to your lowest ranking item.") ~ '";', 'POS_BEGIN') 
 }}

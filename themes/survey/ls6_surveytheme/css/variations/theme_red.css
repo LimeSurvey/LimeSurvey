@@ -10508,19 +10508,6 @@ body {
   display: none;
 }
 
-.top-container .progress {
-  height: 21px;
-  margin-bottom: 0;
-}
-
-.top-container .progress {
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) inset; /* flatly remove box-shadow : readd one */
-}
-
-.progress .progress-bar {
-  line-height: 19px;
-}
-
 .top-container .form-change-lang {
   text-align: center;
 }
@@ -10639,32 +10626,6 @@ body {
 /* Show more the heading in table */
 .ls-answers .ls-heading th {
   font-weight: 700;
-}
-
-/* Max width for some answer part */
-@media (min-width: 768px) {
-  .yesno-button, .gender-button {
-    width: 50%;
-  }
-  .yesno-button, .gender-button {
-    float: left;
-  }
-  .dir-rtl .yesno-button, .dir-rtl .gender-button {
-    float: right;
-  }
-}
-/* array by column hover column */
-/**
- * Gender buttons
- */
-/* General */
-.button-item .ls-icon, .ls-button-label .ls-icon {
-  display: block;
-}
-
-.button-item .ls-icon, .ls-button-label .ls-icon {
-  font-size: 1.4em;
-  line-height: 1.4em;
 }
 
 .file-upload-modal, .modal {
@@ -10818,8 +10779,7 @@ div.yes-no .btn-group label {
   .help-block:last-child {
     margin-bottom: 0;
   }
-  .ls-questionhelp,
-  .help-block {
+  .ls-questionhelp {
     font-size: 90%;
   }
 }
@@ -11076,62 +11036,6 @@ body {
 }
 .ls6_surveytheme .thumbnail .caption {
   color: rgb(53, 54, 63);
-}
-.ls6_surveytheme .progress {
-  background-color: #f5f5f5;
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
-}
-.ls6_surveytheme .progress-bar {
-  color: #ffffff;
-  background-color: #FF515F;
-  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
-}
-.ls6_surveytheme .progress-striped .progress-bar {
-  background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
-}
-.ls6_surveytheme .progress-striped .progress-bar-success {
-  background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
-}
-.ls6_surveytheme .progress-striped .progress-bar-info {
-  background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
-}
-.ls6_surveytheme .progress-striped .progress-bar-warning {
-  background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
-}
-.ls6_surveytheme .progress-striped .progress-bar-danger {
-  background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
-}
-.ls6_surveytheme .progress-bar-success {
-  background-color: #FF515F;
-}
-.ls6_surveytheme .progress-bar-info {
-  background-color: #ff6b76;
-}
-.ls6_surveytheme .progress-bar-warning {
-  background-color: #f6863a;
-}
-.ls6_surveytheme .progress-bar-danger {
-  background-color: #a0352f;
-}
-.ls6_surveytheme .list-group-item {
-  background-color: #ffffff;
-  border: 1px solid #dadada;
-}
-.ls6_surveytheme .list-group-item-success {
-  color: #FF515F;
-  background-color: white;
-}
-.ls6_surveytheme .list-group-item-info {
-  color: #ff6b76;
-  background-color: #f3a5a6;
-}
-.ls6_surveytheme .list-group-item-warning {
-  color: #fffeff;
-  background-color: #ebe3fc;
-}
-.ls6_surveytheme .list-group-item-danger {
-  color: #a94442;
-  background-color: #bec6fd;
 }
 .ls6_surveytheme .card {
   background-color: #ffffff;
@@ -12312,6 +12216,22 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
     margin-right: 0px;
   }
 }
+#datapolicy {
+  margin-top: 1em;
+  flex: 1 1 auto;
+  display: flex;
+  align-items: flex-end;
+}
+
+.datapolicy-links a {
+  padding: 10px;
+}
+
+.datapolicy-links a:hover {
+  cursor: pointer;
+  text-decoration: none;
+}
+
 .navbar-default .navbar-nav > li > a:hover {
   text-decoration: underline;
 }
@@ -12494,30 +12414,6 @@ Responsive navbar-brand image CSS
 }
 .btn-xs [class^=ri-], .btn-xs [class*=" ri-"] {
   font-size: 1.14rem;
-}
-
-.yesno-button.btn-group > .btn, .gender-button.btn-group > .btn {
-  border-radius: 4px;
-  margin-right: 0;
-}
-.yesno-button.btn-group > .btn:not(:last-child), .gender-button.btn-group > .btn:not(:last-child) {
-  border-radius: 4px;
-  margin-right: 20px;
-}
-
-.btn-check + .btn {
-  min-height: 44px;
-  padding: 12px;
-  font-size: 0.9975rem;
-  line-height: 28px;
-}
-
-.row > .bootstrap-buttons-div {
-  padding-left: 0;
-  padding-right: 20px;
-}
-.row > .bootstrap-buttons-div .form-check {
-  padding-left: 0;
 }
 
 *[class*=btn-outline-] {
@@ -13032,6 +12928,47 @@ Responsive navbar-brand image CSS
   box-shadow: none;
 }
 
+.yesno-button.btn-group > .btn,
+.gender-button.btn-group > .btn {
+  border-radius: 4px;
+  margin-right: 0;
+}
+.yesno-button.btn-group > .btn:not(:last-child),
+.gender-button.btn-group > .btn:not(:last-child) {
+  border-radius: 4px;
+  margin-right: 20px;
+}
+.yesno-button .ls-button-label,
+.gender-button .ls-button-label {
+  min-width: 80px;
+}
+.yesno-button .ls-button-label .ls-icon,
+.gender-button .ls-button-label .ls-icon {
+  font-size: 32px;
+  display: block;
+  line-height: 1;
+}
+
+.btn-check + .btn {
+  min-height: 44px;
+  padding: 8px 12px;
+  line-height: 20px;
+}
+
+.row > .bootstrap-buttons-div {
+  padding-left: 0;
+  padding-right: 20px;
+}
+.row > .bootstrap-buttons-div .form-check {
+  padding-left: 0;
+}
+
+@media (min-width: 768px) {
+  .dir-rtl .yesno-button,
+  .dir-rtl .gender-button {
+    float: right;
+  }
+}
 body {
   font-weight: 400;
   font-size: 1.14rem;
@@ -14094,17 +14031,19 @@ input.imageselect-checkbox:checked ~ .imageselect-select::after {
   color: #6E748C;
 }
 
-.ranking-advanced-style .ranking-advanced-sorted-items {
+.ranking-advanced-style .ranking-advanced-sorted-items .sortable-rank {
   border-radius: 8px;
 }
 .ranking-advanced-style .ranking-advanced-sorted-items .sortable-rank-subtitle {
   display: none;
 }
-.ranking-advanced-style .ranking-advanced-available-items {
+.ranking-advanced-style .ranking-advanced-available-items,
+.ranking-advanced-style .ranking-advanced-sorted-items {
   margin-bottom: 12px;
   padding: 6px;
 }
-.ranking-advanced-style .ranking-advanced-available-items .sortable-rank-subtitle {
+.ranking-advanced-style .ranking-advanced-available-items .sortable-rank-subtitle,
+.ranking-advanced-style .ranking-advanced-sorted-items .sortable-rank-subtitle {
   font-weight: 600;
 }
 .ranking-advanced-style .sortable-item {
@@ -14128,10 +14067,14 @@ input.imageselect-checkbox:checked ~ .imageselect-select::after {
   background: unset;
   background-color: #fff;
 }
-.ranking-advanced-style .ranking-advanced-sorted-items, .ranking-advanced-style .ranking-advanced-sorted-items .sortable-item {
+.ranking-advanced-style .sortable-rank,
+.ranking-advanced-style .ranking-advanced-sorted-items .sortable-item {
   border: 2px solid #FF515F;
 }
-.ranking-advanced-style .ranking-advanced-sorted-items .selector__dragHandle.d-none, .ranking-advanced-style .ranking-advanced-sorted-items .selector__index_row, .ranking-advanced-style .ranking-advanced-sorted-items .sortable-item .selector__dragHandle.d-none, .ranking-advanced-style .ranking-advanced-sorted-items .sortable-item .selector__index_row {
+.ranking-advanced-style .sortable-rank .selector__dragHandle.d-none,
+.ranking-advanced-style .sortable-rank .selector__index_row,
+.ranking-advanced-style .ranking-advanced-sorted-items .sortable-item .selector__dragHandle.d-none,
+.ranking-advanced-style .ranking-advanced-sorted-items .sortable-item .selector__index_row {
   color: #FF515F;
 }
 .ranking-advanced-style .ranking-advanced-available-items {
@@ -14143,7 +14086,8 @@ input.imageselect-checkbox:checked ~ .imageselect-select::after {
 .ranking-advanced-style .ranking-advanced-available-items .sortable-item {
   border: 2px solid #6E748C;
 }
-.ranking-advanced-style .ranking-advanced-available-items .selector__dragHandle.d-none, .ranking-advanced-style .ranking-advanced-available-items .selector__index_row {
+.ranking-advanced-style .ranking-advanced-available-items .selector__dragHandle.d-none,
+.ranking-advanced-style .ranking-advanced-available-items .selector__index_row {
   color: #6E748C;
 }
 
@@ -14759,14 +14703,6 @@ body.error-page .error-link {
   border-right-color: #FF515F;
 }
 
-.slider-handle {
-  background-color: #FF515F;
-}
-
-.slider-handle.custom::before {
-  color: #FF515F;
-}
-
 .slider-tick.custom::before {
   color: #FF515F;
 }
@@ -14779,9 +14715,22 @@ body.error-page .error-link {
   overflow-x: hidden;
   padding-top: 1em;
 }
+.slider-list .slider .slider-handle {
+  background-color: #FF515F;
+  background-image: unset;
+}
+.slider-list .slider .slider-handle.custom::before {
+  color: #FF515F;
+}
 .slider-list .slider .slider-selection {
   background-color: #FF515F;
   background-image: unset;
+}
+.slider-list .slider .tooltip {
+  font-size: 1.14rem;
+  line-height: 20px;
+  font-weight: 600;
+  z-index: 1000;
 }
 .slider-list .slider .tooltip.bs-tooltip-top, .slider-list .slider .tooltip.bs-tooltip-auto[data-popper-placement^=top] {
   margin-top: -34px;
@@ -15218,6 +15167,7 @@ a [class^=ri-], a [class*=" ri-"] {
 }
 .question-container .help-block {
   font-weight: 600;
+  color: #6E748C;
 }
 
 @media only screen and (max-device-width: 767px) {
@@ -15408,6 +15358,50 @@ a [class^=ri-], a [class*=" ri-"] {
 
 .load-form .button-row, .save-form .button-row {
   margin-top: 40px;
+}
+
+.top-container .progress {
+  height: 2px;
+  margin-bottom: 0;
+}
+.top-container .progress-bar {
+  min-width: 2em;
+}
+
+.progress {
+  background-color: #D3D5DA;
+  box-shadow: none;
+}
+
+.progress-bar {
+  color: #ffffff;
+  background-color: #FF515F;
+  box-shadow: none;
+}
+
+.list-group-item {
+  background-color: #ffffff;
+  border: 1px solid #1E1E1E;
+}
+
+.list-group-item-success {
+  color: #ffffff;
+  background-color: #FF515F;
+}
+
+.list-group-item-info {
+  color: #ffffff;
+  background-color: #8146F6;
+}
+
+.list-group-item-warning {
+  color: #1E1E1E;
+  background-color: #FFE046;
+}
+
+.list-group-item-danger {
+  color: #1E1E1E;
+  background-color: #FF515F;
 }
 
 .darkmode-on {

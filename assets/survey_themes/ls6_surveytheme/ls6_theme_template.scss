@@ -95,6 +95,7 @@ $base-color: #ffffff;
 @import "navbar/navbar_colors.scss";
 @import "buttons/buttons.scss";
 @import "buttons/buttons_colors.scss";
+@import "buttons/button-group.scss";
 @import "typography/typography.scss";
 @import "typography/typography_colors.scss";
 @import "forms/forms.scss";
@@ -142,6 +143,9 @@ $base-color: #ffffff;
 @import "participant/captcha/captcha_colors.scss";
 @import "participant/load_save/load_save.scss";
 @import "participant/load_save/load_save_colors.scss";
+@import "progressbar/progressbar.scss";
+@import "progressbar/progressbar_colors.scss";
+@import "list-group/list-group_colors.scss";
 
 // TODO: placeholder, will probbably be removed
 @import "darkmode/darkmode_colors.scss";

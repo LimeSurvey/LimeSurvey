@@ -3,9 +3,11 @@
         background: unset;
         background-color: #fff;
     }
-    .ranking-advanced-sorted-items, .ranking-advanced-sorted-items .sortable-item {
+    .sortable-rank,
+    .ranking-advanced-sorted-items .sortable-item {
         border : 2px solid $base-color;
-        .selector__dragHandle.d-none, .selector__index_row {
+        .selector__dragHandle.d-none,
+        .selector__index_row {
             color: $base-color;
         }
     }
@@ -17,7 +19,8 @@
         .sortable-item {
             border : 2px solid $g-700;
         }
-        .selector__dragHandle.d-none, .selector__index_row {
+        .selector__dragHandle.d-none,
+        .selector__index_row {
             color: $g-700;
         }
     }

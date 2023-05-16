@@ -18,14 +18,6 @@
     border-right-color : $base-color;
 }
 
-.slider-handle {
-    background-color : $base-color;
-}
-
-.slider-handle.custom::before {
-    color : $base-color;
-}
-
 .slider-tick.custom::before {
     color : $base-color;
 }
@@ -40,11 +32,22 @@
         padding-top : 1em;
     }
     .slider {
+        .slider-handle {
+            background-color : $base-color;
+            background-image : unset;
+        }
+        .slider-handle.custom::before {
+            color : $base-color;
+        }
         .slider-selection {
             background-color : $base-color;
             background-image : unset;
         }
         .tooltip {
+            font-size   : $font-size-base;
+            line-height : $line-height-20;
+            font-weight : $font-weight-600;
+            z-index     : $zindex-dropdown; // prevent overlapping of navbar which is 1030 ($zindex-fixed)
             &.bs-tooltip-top {
                 margin-top : -34px;
             }
