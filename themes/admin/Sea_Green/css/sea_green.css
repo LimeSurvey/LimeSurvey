@@ -16749,7 +16749,6 @@ tr.info, tr.danger {
 
 .btn-group .btn {
   padding: 8px 16px;
-  margin-left: 0px !important;
 }
 .btn-group .btn input[type=radio],
 .btn-group .btn input[type=checkbox] {
