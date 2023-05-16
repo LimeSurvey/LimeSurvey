@@ -17,7 +17,7 @@
 <div class="btn-group d-none d-md-block">
 
     <!-- Main button dropdown -->
-    <button id="ls-tools-button" type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <button id="ls-tools-button" type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <span class="ri-tools-fill" ></span>
          <?php eT('Tools'); ?><span class="caret"></span>
     </button>

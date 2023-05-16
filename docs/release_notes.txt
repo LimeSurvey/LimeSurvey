@@ -34,6 +34,37 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.0.6 (build 230508) to 6.0.7 (build 230515) May 15, 2023
+-Fixed issue: No proper error when entering ComfortUpdate key and server cannot be reached (Carsten Schmitz)
+-Fixed issue #18765: Answers are not populated correct in array dual scale after clicking "Back" (#3061) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.0.5 (build 230502) to 6.0.6 (build 230508) May 8, 2023
+-Fixed issue: Cannot add survey menu when using PHP8 (#3115) (Patricia Stell)
+-Fixed issue CR-1119: Saving change disables active status for theme option page (#3104) (Tim Willig)
+-Fixed issue #18747: User administration email - reserved words send 403 error (Denis Chenu)
+-Fixed issue #18744: Window of user permissions is not adapting to space needed by languages. (#3075) (Gabriel Jenik)
+-Fixed issue #18739: ComfortUpdate notification not being shown (#3102) (Gabriel Jenik)
+-Fixed issue #18679: API access to question type array dual scale merges scales if answer code is not unique (#3049) (Gabriel Jenik)
+-Fixed issue #18639: Token browse can be unusable with lot of data in attribute (#3082) (Denis Chenu)
+-Fixed issue #18635: When you export single response : sometimes goes to a white page (#3090) (Denis Chenu)
+-Fixed issue #18612: When surveys are copied without copying resources links are not handled (#3009) (Gabriel Jenik)
+-Fixed issue #18456: Interface language parameter use exotic dropdown list. (#3067) (Gabriel Jenik)
+-Fixed issue #18343: Problem with interpreting double slash in URL (IIS) (#3087) (Denis Chenu)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 6.0.4 (build 230427) to 6.0.5 (build 230502) May 2, 2023
 -Fixed issue: Very slow survey start if a lot of quotas exist (Carsten Schmitz)
 -Fixed issue #18786: Error shown when token length is set to 36 characters (Carsten Schmitz)

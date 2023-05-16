@@ -34,7 +34,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     } else if (activeTab) {
         $('a[href="' + activeTab + '"]').tab('show');
     }
-    $('body').on('click', 'a[data-toggle=\'tab\']', function (e) {
+    $('body').on('click', 'a[data-bs-toggle=\'tab\']', function (e) {
         e.preventDefault();
         var tab_name = this.getAttribute('href');
         if (history.pushState) {
@@ -50,7 +50,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     });
     $(window).on('popstate', function () {
         var anchor = location.hash ||
-            $('a[data-toggle=\'tab\']').first().attr('href');
+            $('a[data-bs-toggle=\'tab\']').first().attr('href');
         $('a[href=\'' + anchor + '\']').tab('show');
     });
 

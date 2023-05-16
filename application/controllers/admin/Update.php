@@ -199,6 +199,11 @@ class Update extends DynamicSurveyCommonAction
                             $title = gT("Key can't be empty!");
                             $message = "";
                             break;
+
+                        case 'no_server_answer':
+                            $title = gT('No server answer!');
+                            $message = gT("It seems that the ComfortUpdate server is not responding. Please try again in few minutes or contact the LimeSurvey team.");
+                            break;
                     }
 
                     App()->setFlashMessage('<strong>' . gT($title) . '</strong> ' . gT($message), 'error');
