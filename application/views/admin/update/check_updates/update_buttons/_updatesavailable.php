@@ -72,7 +72,7 @@
             </td>
 
             <!-- stable / unstable -->
-            <?php if ($aUpdateVersion['branch']!='master'):?>
+            <?php if (!in_array($aUpdateVersion['branch'], ['master','5.x','3.x-LTS'])):?>
                 <td class="text-warning">
                     <?php  eT('unstable'); ?>
                 </td>
