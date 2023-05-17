@@ -263,7 +263,7 @@ class FailedEmail extends LSActiveRecord
             $response = Response::model($this->surveyid)->findByPk($this->responseid);
             if (!empty($response)) {
                 $responseUrl = App()->createUrl("responses/view/", ['surveyId' => $this->surveyid, 'id' => $this->responseid]);
-                $responseLink = '<a href="' . $responseUrl . '" role="button" data-toggle="tooltip" title="' . gT('View response details') . '">' . $this->responseid . '</a>';
+                $responseLink = '<a href="' . $responseUrl . '" role="button" data-bs-toggle="tooltip" title="' . gT('View response details') . '">' . $this->responseid . '</a>';
             } else {
                 $responseLink = (string)$this->responseid;
             }

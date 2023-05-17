@@ -75,7 +75,7 @@
                 array(
                     'class' => "surveytitle btn btn-primary col-12",
                     'title'=>gT('Start survey'),
-                    // broken : jquery-ui tooltip replace bs tooltip 'data-toggle'=>'tooltip',
+                    // broken : jquery-ui tooltip replace bs tooltip 'data-bs-toggle'=>'tooltip',
                     'lang'=>$surveylang // Must add dir ?
                 )
             );
