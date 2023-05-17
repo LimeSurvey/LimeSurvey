@@ -397,14 +397,14 @@ class LimesurveyApi
 
     /**
      * @param int $surveyId
-     * @param string $language
+     * @param string $language Deprecated, use $question->questionl10ns[$language].
      * $param array $conditions
      * @return \Question[]
+     * TODO: Remove $language parameter in the next major release.
      */
     public function getQuestions($surveyId, $language = 'en', $conditions = array())
     {
         $conditions['sid'] = $surveyId;
-        $conditions['language'] = $language;
         return \Question::model()->with('subquestions')->findAllByAttributes($conditions);
     }
 
