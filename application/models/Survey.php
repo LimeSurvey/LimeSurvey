@@ -1623,16 +1623,23 @@ class Survey extends LSActiveRecord
 
         // Survey group filter
         if (isset($this->gsid)) {
-            // The survey group filter (from the dropdown, not by title search) is applied to three levels of survey groups.
-            // That is, it matches the group the survey is in, the parent group of that group, and the "grandparent" group.
+            // The survey group filter (from the dropdown, not by title search) is applied to five levels of survey groups.
+            // That is, it matches the group the survey is in, the parent group of that group, and the "grandparent" group, etc.
             $groupJoins = 'LEFT JOIN {{surveys_groups}} surveygroup ON t.gsid = surveygroup.gsid ';
-            $groupJoins .= 'LEFT JOIN {{surveys_groups}} parentGroup ON surveygroup.parent_id = parentGroup.gsid ';
-            $groupJoins .= 'LEFT JOIN {{surveys_groups}} grandParentGroup ON parentGroup.parent_id = grandParentGroup.gsid ';
+            $groupJoins .= 'LEFT JOIN {{surveys_groups}} parentGroup1 ON surveygroup.parent_id = parentGroup1.gsid ';
+            $groupJoins .= 'LEFT JOIN {{surveys_groups}} parentGroup2 ON parentGroup1.parent_id = parentGroup2.gsid ';
+            $groupJoins .= 'LEFT JOIN {{surveys_groups}} parentGroup3 ON parentGroup2.parent_id = parentGroup3.gsid ';
+            $groupJoins .= 'LEFT JOIN {{surveys_groups}} parentGroup4 ON parentGroup3.parent_id = parentGroup4.gsid ';
             $criteria->mergeWith([
                 'join' => $groupJoins,
             ]);
-            $criteria->addCondition('t.gsid=:gsid OR parentGroup.gsid=:gsid OR grandParentGroup.gsid=:gsid', 'AND');
-            $criteria->params = array_merge($criteria->params ?? [], [':gsid' => $this->gsid]);
+            $groupCondition = "t.gsid=:gsid";
+            $groupCondition .= " OR parentGroup1.gsid=:gsid";
+            $groupCondition .= " OR parentGroup2.gsid=:gsid";
+            $groupCondition .= " OR parentGroup3.gsid=:gsid";
+            $groupCondition .= " OR parentGroup4.gsid=:gsid";
+            $criteria->addCondition($groupCondition, 'AND');
+            $criteria->params = array_merge($criteria->params, [':gsid' => $this->gsid]);
         }
 
         // show only surveys belonging to selected survey group
