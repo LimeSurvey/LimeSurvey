@@ -70,7 +70,7 @@ var ThemeScripts = function ThemeScripts() {// defining the console object once.
    */var focusFirst = function focusFirst() {$('#limesurvey :input:visible:enabled:first').focus();}; /**
    * fix padding of body according to navbar-fixed-top
    * in endpage and in $(window).resize
-   */var fixBodyPadding = function fixBodyPadding() {/* The 60 px is fixed in template.css */$('body').css('padding-top', Math.round($('.navbar-fixed-top').height()) + 'px');}; /**
+   */var fixBodyPadding = function fixBodyPadding() {console.log('fixBodyPadding');$('body').css('padding-top', Math.round($('#survey-nav').height()) + 'px');}; /**
    * Hide some part if empty
    * Some can be needed if contain only js
    * Some are not really needed : little margin only is shown
@@ -146,7 +146,8 @@ var ThemeScripts = function ThemeScripts() {// defining the console object once.
       //Survey list container
       if ($('#surveys-list-container').length > 0) {
         var footerHeight = $('#surveyListFooter').outerHeight();
-        var headerHeight = 2 * $('#navbar').outerHeight();
+        var headerHeight = 2 * $('#survey-nav').outerHeight();
+        console.log(footerHeight, headerHeight);
         var bodyHeight = $(document).height() - (footerHeight + headerHeight);
         logObject.log({
           footerHeight: footerHeight,

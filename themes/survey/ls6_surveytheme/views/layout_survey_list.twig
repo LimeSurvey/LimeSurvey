@@ -112,7 +112,7 @@ NOTE: Feel free to ask for functions, variables, etc, that you feel are missing 
 
             {# Replace the content block #}
             {% block content %}
-                <div class="container-fluid">
+                <div class="container-md">
                     {{ registerTemplateCssFile('./css/survey-list.css') }}
 
                     <div class="{{ aSurveyInfo.class.surveylistrow }} row"
@@ -120,11 +120,13 @@ NOTE: Feel free to ask for functions, variables, etc, that you feel are missing 
                         <div class="col-12">
                             {# include the alert for no JavaScript #}
                             {{ include('./subviews/messages/no_js_alert.twig') }}
-                            <div class="row justify-content-center">
+                            <div class="row justify-content-center mb-3">
                                 <div
                                     id="{{ aSurveyInfo.id.surveylistrowjumbotron }}" {{ aSurveyInfo.attr.surveylistrowjumbotron }}>
-                                    {{ image('./files/survey_list_header.png', aSurveyInfo.name, {"class": "img-fluid mx-auto d-block"}) }}
-                                    <span class="text-center">{{ aSurveyInfo.sSiteName }}</span>
+                                    <div class="img-fluid mx-auto d-block">
+                                        {{ include('./ls_logo_svg.twig') }}
+                                    </div>
+                                    <span class="text-center h3">{{ aSurveyInfo.sSiteName }}</span>
                                 </div>
                             </div>
                             <div class="row">
@@ -139,7 +141,7 @@ NOTE: Feel free to ask for functions, variables, etc, that you feel are missing 
                                 <div
                                     class="{{ aSurveyInfo.class.surveylistrowdiva }} col-12" {{ aSurveyInfo.attr.surveylistrowdiva }}>
                                     <div
-                                        class='{{ aSurveyInfo.class.surveylistrowdivadiv }} h3' {{ aSurveyInfo.attr.surveylistrowdivadiv }}>
+                                        class='{{ aSurveyInfo.class.surveylistrowdivadiv }} form-heading' {{ aSurveyInfo.attr.surveylistrowdivadiv }}>
                                         {{ gT("The following surveys are available:") }}
                                     </div>
                                 </div>
@@ -169,7 +171,7 @@ NOTE: Feel free to ask for functions, variables, etc, that you feel are missing 
                             </div>
                             <div class="row">
                                 <div
-                                    class="{{ aSurveyInfo.class.surveylistrowdivc }} col-12 " {{ aSurveyInfo.attr.surveylistrowdivc }}>
+                                    class="{{ aSurveyInfo.class.surveylistrowdivc }} col-12" {{ aSurveyInfo.attr.surveylistrowdivc }}>
                                     {{ sprintf( gT("Please contact %s ( %s ) for further assistance."), aSurveyInfo.sSiteAdminName, aSurveyInfo.sSiteAdminEmail ) }}
                                 </div>
                             </div>
@@ -179,7 +181,7 @@ NOTE: Feel free to ask for functions, variables, etc, that you feel are missing 
                     <div id="{{ aSurveyInfo.id.surveylistfooter }}"
                          class="{{ aSurveyInfo.class.surveylistfooter }}" {{ aSurveyInfo.attr.surveylistfooter }}>
                         <div
-                            class="{{ aSurveyInfo.class.surveylistfootercont }} container" {{ aSurveyInfo.attr.surveylistfootercont }}>
+                            class="{{ aSurveyInfo.class.surveylistfootercont }}" {{ aSurveyInfo.attr.surveylistfootercont }}>
                             <div {{ aSurveyInfo.attr.surveylistfootercontp }} class="row">
                                 <div class="col-6 col-md-12">
                                     <a {{ aSurveyInfo.attr.surveylistfootercontpaa }}>

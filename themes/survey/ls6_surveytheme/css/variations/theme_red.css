@@ -10442,17 +10442,6 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
-body {
-  padding-bottom: 10px;
-  padding-top: 90px; /* now is redefine in JS to fit any title length */
-}
-
-/* specific for survey listing */
-@media (min-width: 761px) {
-  .surveys-list .btn-group {
-    width: 49%;
-  }
-}
 .space-col {
   margin-top: 1em;
   margin-bottom: 2em;
@@ -10592,26 +10581,6 @@ body {
 /*#outerframeContainer {
     height: 100%;
 }*/
-#surveyListFooter {
-  width: 100%;
-  text-align: center;
-  margin-bottom: 0;
-  padding-bottom: 80px;
-  padding-top: 10px;
-  margin-top: 10px;
-  bottom: 0px;
-  height: 60px;
-  background-color: rgba(236, 240, 241, 0.2);
-}
-
-@media (max-width: 768px) {
-  #surveyListFooter {
-    padding-bottom: 40px;
-    padding-top: 5px;
-    margin-top: 5px;
-    height: 40px;
-  }
-}
 /**
  * Specific question part
  */
@@ -10713,10 +10682,6 @@ body {
     margin-left: -0.9em;
 }
 */
-#surveys-list-container {
-  margin-top: 50px;
-}
-
 #outerframeContainer {
   min-height: 100%;
   word-wrap: break-word;
@@ -13060,14 +13025,6 @@ a:hover {
   margin-bottom: 1rem;
 }
 
-@media only screen and (max-device-width: 760px) {
-  h1, .h1, .h3 {
-    font-size: 18px;
-  }
-  .h4 {
-    font-size: 16px;
-  }
-}
 .superset {
   font-size: 50%;
   vertical-align: super;
@@ -15402,6 +15359,62 @@ a [class^=ri-], a [class*=" ri-"] {
 .list-group-item-danger {
   color: #1E1E1E;
   background-color: #FF515F;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+#outerframeContainer {
+  min-height: 88%;
+}
+
+.ls-logo {
+  width: 30%;
+}
+
+#surveys-list-container {
+  margin-top: 50px;
+}
+
+#surveyListFooter {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 0;
+  padding-bottom: 80px;
+  padding-top: 10px;
+  margin-top: 10px;
+  bottom: 0px;
+  height: 60px;
+}
+
+@media (max-width: 992px) {
+  .ls-logo {
+    width: 50%;
+  }
+}
+@media (max-width: 768px) {
+  .ls-logo {
+    width: 90%;
+  }
+  #surveys-list-container {
+    margin-top: 50px;
+  }
+  #surveyListFooter {
+    padding-bottom: 40px;
+    padding-top: 5px;
+    margin-top: 5px;
+    height: 40px;
+  }
+}
+@media (min-width: 761px) {
+  .surveys-list .btn-group {
+    width: 49%;
+  }
+}
+#surveyListFooter {
+  background-color: #ffffff;
 }
 
 .darkmode-on {

@@ -1,18 +1,4 @@
 // old theme.css
-body {
-    padding-bottom : 10px;
-    padding-top    : 90px; /* now is redefine in JS to fit any title length */
-}
-
-element.style {
-}
-
-/* specific for survey listing */
-@media (min-width : 761px) {
-    .surveys-list .btn-group {
-        width : 49%;
-    }
-}
 
 .space-col {
     margin-top    : 1em;
@@ -142,26 +128,7 @@ element.style {
 /*#outerframeContainer {
     height: 100%;
 }*/
-#surveyListFooter {
-    width            : 100%;
-    text-align       : center;
-    margin-bottom    : 0;
-    padding-bottom   : 80px;
-    padding-top      : 10px;
-    margin-top       : 10px;
-    bottom           : 0px;
-    height           : 60px;
-    background-color : rgba(236, 240, 241, 0.2);
-}
 
-@media (max-width : 768px) {
-    #surveyListFooter {
-        padding-bottom : 40px;
-        padding-top    : 5px;
-        margin-top     : 5px;
-        height         : 40px;
-    }
-}
 
 /**
  * Specific question part
@@ -263,9 +230,6 @@ element.style {
 }
 */
 
-#surveys-list-container {
-    margin-top : 50px;
-}
 
 #outerframeContainer {
     min-height      : 100%;
