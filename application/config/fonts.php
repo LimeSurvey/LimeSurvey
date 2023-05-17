@@ -21,6 +21,27 @@ if (isset($_GET['isAjax'])) {
 // When adding new fonts, please keep fonts ordered alphabetically
 $coreFonts = array(
     
+    'font-ibm-sans' => array(
+        'title' => 'IBM Sans',
+        'type' => 'core',
+        'devBaseUrl' => 'assets/fonts/ibm-plex-sans',
+        'basePath' => 'fonts.ibm-plex-sans',
+        'css' => array(
+            'ibm-sans.css',
+        ),
+    ),
+
+    'remix' => array(
+        'title' => 'Remix Icon',
+        'type' => 'core',
+        //'basePath' => 'vendor.bootstrap', // Need fix vendor alias
+        'devBaseUrl' => 'assets/fonts/font-src/remix',
+        'basePath' => 'fonts.font-src.remix',
+        'css'=> array(
+            'remixicon.css',
+        ),
+    ),
+
     'fontawesome' => array(
         'title' => 'Font Awesome',
         'type' => 'core',

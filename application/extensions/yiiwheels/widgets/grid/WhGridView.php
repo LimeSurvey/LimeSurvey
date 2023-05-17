@@ -16,8 +16,8 @@
  * @uses Yiistrap.widgets.TbHtml
  * @uses Yiistrap.widgets.TbGridView
  */
-Yii::import('bootstrap.helpers.TbHtml');
-Yii::import('bootstrap.widgets.TbGridView');
+Yii::import('yiistrap_fork.helpers.TbHtml');
+Yii::import('yiistrap_fork.widgets.TbGridView');
 
 class WhGridView extends TbGridView
 {
@@ -381,7 +381,7 @@ class WhGridView extends TbGridView
 	public function getColumnByName($name)
 	{
 		foreach ($this->columns as $column) {
-			if (strcmp($column->name, $name) === 0) {
+			if (strcmp((string) $column->name, $name) === 0) {
 				return $column;
 			}
 		}

@@ -62,16 +62,21 @@ class TestBaseClass extends TestCase
 
     /**
      * @param string $fileName
+     * @param integer $asuser
      * @return void
      */
-    protected static function importSurvey($fileName)
+    protected static function importSurvey($fileName, $asuser = 1)
     {
-        \Yii::app()->session['loginID'] = 1;
+        \Yii::app()->session['loginID'] = $asuser;
         $surveyFile = $fileName;
         if (!file_exists($surveyFile)) {
             throw new Exception(sprintf('Survey file %s not found', $surveyFile));
         }
 
+        // Reset the cache to prevent import from failing if there is a cached survey and it's active.
+        // When importing, activating, deleting and importing again (usual with automated tests),
+        // as using the same SID, it was picking up the cached (old) version of the survey
+        \Survey::model()->resetCache();
         $translateLinksFields = false;
         $newSurveyName = null;
         $result = \importSurveyFile(
@@ -81,7 +86,7 @@ class TestBaseClass extends TestCase
             null
         );
         if ($result) {
-            if ($result['error']) {
+            if (!empty($result['error'])) {
                 throw new Exception(sprintf('Could not import survey %s: %s', $fileName, $result['error']));
             }
             \Survey::model()->resetCache(); // Reset the cache so findByPk doesn't return a previously cached survey

@@ -63,15 +63,15 @@ function doFileUpload()
             {
                 if ($('#' + fieldname + '_show_title').val() == 1)
                 {
-                    previewblock += "<div class='form-group'><label class='control-label col-xs-4' for='" + fieldname + "_title_" + i + "'>" + uploadLang.titleFld + "</label>" + "<div class='input-container'><input class='form-control' type='text' value='" + escapeHtml(json[i - 1].title) + "' id='" + fieldname + "_title_" + i + "' /></div></div>";
+                    previewblock += "<div class='mb-3'><label class='control-label col-5' for='" + fieldname + "_title_" + i + "'>" + uploadLang.titleFld + "</label>" + "<div class='input-container'><input class='form-control' type='text' value='" + escapeHtml(json[i - 1].title) + "' id='" + fieldname + "_title_" + i + "' /></div></div>";
                 }
                 if ($('#' + fieldname + '_show_comment').val() == 1)
                 {
-                    previewblock += "<div class='form-group'><label class='control-label col-xs-4' for='" + fieldname + "_comment_" + i + "'>" + uploadLang.commentFld + "</label>" + "<div class='input-container'><input class='form-control' type='text' value='" + escapeHtml(json[i - 1].comment) + "' id='" + fieldname + "_comment_" + i + "' /></div></div>";
+                    previewblock += "<div class='mb-3'><label class='control-label col-5' for='" + fieldname + "_comment_" + i + "'>" + uploadLang.commentFld + "</label>" + "<div class='input-container'><input class='form-control' type='text' value='" + escapeHtml(json[i - 1].comment) + "' id='" + fieldname + "_comment_" + i + "' /></div></div>";
                 }
 
             }
-            previewblock += "<div class='form-group'><div class='col-xs-4'></div><div class='input-container'><a class='btn btn-danger' onclick='deletefile(\"" + fieldname + "\", " + i + ")'><span class='fa fa-trash'></span>&nbsp;" + uploadLang.deleteFile + "</a></div></div>";
+            previewblock += "<div class='mb-3'><div class='col-5'></div><div class='input-container'><a class='btn btn-danger' onclick='deletefile(\"" + fieldname + "\", " + i + ")'><span class='fa fa-trash'></span>&nbsp;" + uploadLang.deleteFile + "</a></div></div>";
             previewblock += "</fieldset></div>";
 
             previewblock += "<input type='hidden' id='" + fieldname + "_size_" + i + "' value=" + json[i - 1].size + " />" +
@@ -197,14 +197,14 @@ function doFileUpload()
                 {
                     if ($('#' + fieldname + '_show_title').val() == 1)
                     {
-                        previewblock += "<div class='form-group'><label class='control-label col-xs-4' for='" + fieldname + "_title_" + count + "'>" + uploadLang.titleFld + "</label>" + "<div class='input-container'><input class='form-control' type='text' value='' id='" + fieldname + "_title_" + count + "' /></div></div>";
+                        previewblock += "<div class='mb-3'><label class='control-label col-5' for='" + fieldname + "_title_" + count + "'>" + uploadLang.titleFld + "</label>" + "<div class='input-container'><input class='form-control' type='text' value='' id='" + fieldname + "_title_" + count + "' /></div></div>";
                     }
                     if ($('#' + fieldname + '_show_comment').val() == 1)
                     {
-                        previewblock += "<div class='form-group'><label class='control-label col-xs-4' for='" + fieldname + "_comment_" + count + "'>" + uploadLang.commentFld + "</label>" + "<div class='input-container'><input class='form-control' type='text' value='' id='" + fieldname + "_comment_" + count + "' /></div></div>";
+                        previewblock += "<div class='mb-3'><label class='control-label col-5' for='" + fieldname + "_comment_" + count + "'>" + uploadLang.commentFld + "</label>" + "<div class='input-container'><input class='form-control' type='text' value='' id='" + fieldname + "_comment_" + count + "' /></div></div>";
                     }
                 }
-                previewblock += "<div class='form-group'><div class='col-xs-4'></div><div class='input-container'><a class='btn btn-danger' onclick='deletefile(\"" + fieldname + "\", " + count + ")'><span class='fa fa-trash'></span>&nbsp;" + uploadLang.deleteFile + "</a></div></div>";
+                previewblock += "<div class='mb-3'><div class='col-5'></div><div class='input-container'><a class='btn btn-danger' onclick='deletefile(\"" + fieldname + "\", " + count + ")'><span class='fa fa-trash'></span>&nbsp;" + uploadLang.deleteFile + "</a></div></div>";
                 previewblock += "</fieldset></div>";
 
                 previewblock += "<input type='hidden' id='" + fieldname + "_size_" + count + "' value=" + metadata.size + " />" +
@@ -224,11 +224,11 @@ function doFileUpload()
                 $('#' + fieldname + '_filecount').val(filecount);
 
                 if (filecount < minfiles) {
-                    $('#uploadstatus').html(uploadLang.errorNeedMore.replace('%s', (minfiles - filecount))).removeClass('hidden');
+                    $('#uploadstatus').html(uploadLang.errorNeedMore.replace('%s', (minfiles - filecount))).removeClass('d-none');
                 } else if (filecount < maxfiles) {
-                    $('#uploadstatus').html(uploadLang.errorMoreAllowed.replace('%s', (maxfiles - filecount))).removeClass('hidden');
+                    $('#uploadstatus').html(uploadLang.errorMoreAllowed.replace('%s', (maxfiles - filecount))).removeClass('d-none');
                 } else {
-                    $('#uploadstatus').html(uploadLang.errorMaxReached).removeClass('hidden');
+                    $('#uploadstatus').html(uploadLang.errorMaxReached).removeClass('d-none');
                 }
                 fixParentHeigth(fieldname);
                 if (filecount >= maxfiles) {

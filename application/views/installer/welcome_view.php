@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-md-3">
+    <div class="col-lg-3">
         <?php $this->renderPartial('/installer/sidebar_view', compact('progressValue', 'classesForStep')); ?>
     </div>
     <div class="col-md-6">
@@ -8,16 +8,16 @@
         <?php echo CHtml::form(array("installer/welcome"), 'post', array('class' => 'form-vertical')); ?>
             <legend><?php eT('Language selection'); ?></legend>
             <div class="row">
-                <div class='form-group'>
-                    <div class="span6 col-md-12">
+                <div class='mb-3'>
+                    <div class="span6 col-12">
                         <?php
-                            echo CHtml::label(gT('Please select your preferred language:'), 'installerLang', array('class' => 'control-label'));
+                            echo CHtml::label(gT('Please select your preferred language:'), 'installerLang', array('class' => 'form-label'));
                         ?>
                         <br/><br/>
                     </div>
                     <div class="col-md-6">
                         <?php
-                            echo CHtml::dropDownList('installerLang', 'en', $languages, array('id' => 'installerLang', 'class'=>'form-control', 'encode' => false));
+                            echo CHtml::dropDownList('installerLang', 'en', $languages, array('id' => 'installerLang', 'class'=>'form-select', 'encode' => false));
                         ?>
                         <br/><br/>
                     </div>
@@ -27,9 +27,9 @@
             echo CHtml::tag('p', array(), gT('Your preferred language will be used through out the installation process.'));
             ?>
             <div class="row navigator">
-                <div class="col-md-8"></div>
-                <div class="col-md-4">
-                    <input id="ls-start-installation" class='btn btn-default' type="submit" value="<?php eT('Start installation'); ?>" />
+                <div class="col-lg-8"></div>
+                <div class="col-lg-4">
+                    <input id="ls-start-installation" class='btn btn-outline-secondary' role="button" type="submit" value="<?php eT('Start installation'); ?>" />
                 </div>
             </div>
         <?php echo CHtml::endForm(); ?>
@@ -37,7 +37,7 @@
 
     <div class="col-md-3">
         <div class="thumbnail" style="padding: 1em;">
-            <img style="width: 50%;" src="<?php echo Yii::app()->baseUrl; ?>/installer/images/cloud-logo.svg" alt="LimeSurvey Cloud Logo">
+            <img class="rounded mx-auto d-block m-3" style="width: 50%;" src="<?php echo Yii::app()->baseUrl; ?>/installer/images/cloud-logo.svg" alt="LimeSurvey Cloud Logo">
             <div class="caption">
                 <h3>LimeSurvey Cloud</h3>
                 <p>
@@ -49,7 +49,7 @@
                         <li><?= gT("Technical support"); ?></li>
                     </ul>
                 </p>
-                <p class="text-center">
+                <p class="text-center d-grid gap-2">
                     <a href="https://www.limesurvey.org/pricing/" class="btn btn-primary btn-block" role="button" target="_blank">
                         <?= gT("Try now"); ?>
                     </a>

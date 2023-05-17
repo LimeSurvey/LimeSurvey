@@ -1,8 +1,8 @@
 <div class="row">
-    <div class="col-md-3">
+    <div class="col-lg-3">
         <?php $this->renderPartial('/installer/sidebar_view', compact('progressValue', 'classesForStep')); ?>
     </div>
-    <div class="col-md-9">
+    <div class="col-lg-9">
         <?php
             echo CHtml::tag('h2', array(), $title);
             echo CHtml::tag('p', array(), $descp);
@@ -12,12 +12,12 @@
 
 
             <div class="row navigator">
-            <div class="col-md-4">
-                <input id="ls-previous" class="btn btn-default" type="button" value="<?php eT("Previous"); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/install/welcome"); ?>', '_top')" />
+            <div class="col-lg-4">
+                <input id="ls-previous" class="btn btn-outline-secondary" type="button" value="<?php eT("Previous"); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/install/welcome"); ?>', '_top')" />
             </div>
-            <div class="col-md-4"></div>
-            <div class="col-md-4">
-                <input id="ls-accept-license" class="btn btn-default" type="submit" value="<?php eT('I accept'); ?>" />
+            <div class="col-lg-4"></div>
+            <div class="col-lg-4">
+                <input id="ls-accept-license" class="btn btn-outline-secondary" type="submit" value="<?php eT('I accept'); ?>" />
             </div>
             </div>
         </form>

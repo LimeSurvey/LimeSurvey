@@ -858,19 +858,19 @@ var uploadHandler = function uploadHandler(qid, options) {
             var previewCommentContainer = $('');
 
             if ($('#' + fieldname + '_show_title').val() == 1) {
-                var previewTitleContainer = $('<div class="form-group"></div>');
-                $('<label class="control-label col-xs-4"></label>').attr('for', fieldname + '_title_' + i).text(options.uploadLang.titleFld).appendTo(previewTitleContainer);
+                var previewTitleContainer = $('<div class="mb-3"></div>');
+                $('<label class="control-label col-4"></label>').attr('for', fieldname + '_title_' + i).text(options.uploadLang.titleFld).appendTo(previewTitleContainer);
                 $('<input class="form-control" type="text"/>').attr('id', fieldname + "_title_" + i).val(item.title).wrap('<div class="input-container"></div>').appendTo(previewTitleContainer);
             }
 
             if ($('#' + fieldname + '_show_comment').val() == 1) {
-                var previewCommentContainer = $('<div class="form-group"></div>');
-                $('<label class="control-label col-xs-4"></label>').attr('for', fieldname + '_comment_' + i).text(options.uploadLang.commentFld).appendTo(previewCommentContainer);
+                var previewCommentContainer = $('<div class="mb-3"></div>');
+                $('<label class="control-label col-4"></label>').attr('for', fieldname + '_comment_' + i).text(options.uploadLang.commentFld).appendTo(previewCommentContainer);
                 $('<input class="form-control" type="text"/>').attr('id', fieldname + "_comment_" + i).val(item.comment).wrap('<div class="input-container"></div>').appendTo(previewCommentContainer);
             }
         }
 
-        var previewDeleteBlock = $('<div class="form-group"></div>').append($('<a class="btn btn-danger"></a>').html('<span class="fa fa-trash"></span>&nbsp;' + options.uploadLang.deleteFile).on('click', function () {
+        var previewDeleteBlock = $('<div class="mb-3"></div>').append($('<a class="btn btn-danger"></a>').html('<span class="fa fa-trash"></span>&nbsp;' + options.uploadLang.deleteFile).on('click', function () {
             deletefile(fieldname, i);
         }).wrap('<div class="input-container text-center"></div>'));
 
@@ -1001,14 +1001,14 @@ var uploadHandler = function uploadHandler(qid, options) {
                     // {
                     //     if($('#'+fieldname+'_show_title').val() == 1)
                     //     {
-                    //         previewblock += "<div class='form-group'><label class='control-label col-xs-4' for='"+fieldname+"_title_"+count+"'>"+uploadLang.titleFld+"</label>"+"<div class='input-container'><input class='form-control' type='text' value='' id='"+fieldname+"_title_"+count+"' /></div></div>";
+                    //         previewblock += "<div class='mb-3'><label class='control-label col-4' for='"+fieldname+"_title_"+count+"'>"+uploadLang.titleFld+"</label>"+"<div class='input-container'><input class='form-control' type='text' value='' id='"+fieldname+"_title_"+count+"' /></div></div>";
                     //     }
                     //     if($('#'+fieldname+'_show_comment').val() == 1)
                     //     {
-                    //         previewblock += "<div class='form-group'><label class='control-label col-xs-4' for='"+fieldname+"_comment_"+count+"'>"+uploadLang.commentFld+"</label>"+"<div class='input-container'><input class='form-control' type='text' value='' id='"+fieldname+"_comment_"+count+"' /></div></div>";
+                    //         previewblock += "<div class='mb-3'><label class='control-label col-4' for='"+fieldname+"_comment_"+count+"'>"+uploadLang.commentFld+"</label>"+"<div class='input-container'><input class='form-control' type='text' value='' id='"+fieldname+"_comment_"+count+"' /></div></div>";
                     //     }
                     // }
-                    // previewblock += "<div class='form-group'><div class='col-xs-4'></div><div class='input-container'><a class='btn btn-danger' onclick='deletefile(\""+fieldname+"\", "+count+")'><span class='fa fa-trash'></span>&nbsp;"+uploadLang.deleteFile+"</a></div></div>";
+                    // previewblock += "<div class='mb-3'><div class='col-4'></div><div class='input-container'><a class='btn btn-danger' onclick='deletefile(\""+fieldname+"\", "+count+")'><span class='fa fa-trash'></span>&nbsp;"+uploadLang.deleteFile+"</a></div></div>";
                     // previewblock += "</fieldset></div>";
 
                     // previewblock += "<input type='hidden' id='"+fieldname+"_size_"+count+"' value="+metadata.size+" />"+

@@ -1125,9 +1125,12 @@ CKEDITOR.DIALOG_STATE_BUSY = 2;
 			if ( !this._.parentDialog ) {
 				hideCover( this._.editor );
 			} else {
-				var parentElement = this._.parentDialog.getElement().getFirst();
-				this._.parentDialog.getElement().removeStyle( 'z-index' );
-				parentElement.setStyle( 'z-index', parseInt( parentElement.$.style.zIndex, 10 ) + Math.floor( this._.editor.config.baseFloatZIndex / 2 ) );
+				var parentElement = this._.parentDialog.getElement().getFirst(),
+					newZIndex = parseInt( parentElement.$.style.zIndex, 10 ) +
+						Math.floor( this._.editor.config.baseFloatZIndex / 2 );
+
+				this._.parentDialog.getElement().setStyle( 'z-index', newZIndex );
+				parentElement.setStyle( 'z-index', newZIndex );
 			}
 			CKEDITOR.dialog._.currentTop = this._.parentDialog;
 
@@ -3169,8 +3172,7 @@ CKEDITOR.DIALOG_STATE_BUSY = 2;
 	};
 
 	( function() {
-		var notEmptyRegex = /^([a]|[^a])+$/,
-			integerRegex = /^\d*$/,
+		var integerRegex = /^\d*$/,
 			numberRegex = /^\d*(?:\.\d+)?$/,
 			htmlLengthRegex = /^(((\d*(\.\d+))|(\d*))(px|\%)?)?$/,
 			cssLengthRegex = /^(((\d*(\.\d+))|(\d*))(px|em|ex|in|cm|mm|pt|pc|\%)?)?$/i,
@@ -3213,6 +3215,8 @@ CKEDITOR.DIALOG_STATE_BUSY = 2;
 			 * 	'error!'
 			 * );
 			 * ```
+			 * **Note:** validation functions should return `true` value for successful validation. Since 4.19.1
+			 * this method does not coerce return type to boolean.
 			 *
 			 * @param {Function...} validators Validation functions which will be composed into a single validator.
 			 * @param {String} [msg] Error message returned by the composed validation function.
@@ -3223,12 +3227,14 @@ CKEDITOR.DIALOG_STATE_BUSY = 2;
 			 */
 			functions: function() {
 				var args = arguments;
-				return function() {
+				return function( value ) {
 					// It's important for validate functions to be able to accept the value
 					// as argument in addition to this.getValue(), so that it is possible to
 					// combine validate functions together to make more sophisticated
 					// validators.
-					var value = this && this.getValue ? this.getValue() : args[ 0 ];
+					if ( this && this.getValue ) {
+						value = this.getValue();
+					}
 
 					var msg,
 						relation = CKEDITOR.VALIDATE_AND,
@@ -3236,10 +3242,11 @@ CKEDITOR.DIALOG_STATE_BUSY = 2;
 						i;
 
 					for ( i = 0; i < args.length; i++ ) {
-						if ( typeof args[ i ] == 'function' )
+						if ( typeof args[ i ] == 'function' ) {
 							functions.push( args[ i ] );
-						else
+						} else {
 							break;
+						}
 					}
 
 					if ( i < args.length && typeof args[ i ] == 'string' ) {
@@ -3247,27 +3254,39 @@ CKEDITOR.DIALOG_STATE_BUSY = 2;
 						i++;
 					}
 
-					if ( i < args.length && typeof args[ i ] == 'number' )
+					if ( i < args.length && typeof args[ i ] == 'number' ) {
 						relation = args[ i ];
-
-					var passed = ( relation == CKEDITOR.VALIDATE_AND ? true : false );
-					for ( i = 0; i < functions.length; i++ ) {
-						if ( relation == CKEDITOR.VALIDATE_AND )
-							passed = passed && functions[ i ]( value );
-						else
-							passed = passed || functions[ i ]( value );
 					}
+
+					var passed = runValidators( functions, relation, value );
 
 					return !passed ? msg : true;
 				};
+
+				function runValidators( functions, relation, value ) {
+					var passed = relation == CKEDITOR.VALIDATE_AND;
+
+					for ( var i = 0; i < functions.length; i++ ) {
+						// Do not confuse `true` with `truthy` not empty error message (#4449).
+						var doesValidationPassed = functions[ i ]( value ) === true;
+
+						if ( relation == CKEDITOR.VALIDATE_AND ) {
+							passed = passed && doesValidationPassed;
+						} else {
+							passed = passed || doesValidationPassed;
+						}
+					}
+
+					return passed;
+				}
 			},
 
 			/**
 			 * Checks if a dialog UI element value meets the regex condition.
 			 *
 			 * ```javascript
-			 * CKEDITOR.dialog.validate.regex( 'error!', /^\d*$/ )( '123' ) // true
-			 * CKEDITOR.dialog.validate.regex( 'error!' )( '123.321' ) // error!
+			 * CKEDITOR.dialog.validate.regex( /^\d*$/, 'error!' )( '123' ) // true
+			 * CKEDITOR.dialog.validate.regex( /^\d*$/, 'error!' )( '123.321' ) // error!
 			 * ```
 			 *
 			 * @param {RegExp} regex Regular expression used to validate the value.
@@ -3275,14 +3294,9 @@ CKEDITOR.DIALOG_STATE_BUSY = 2;
 			 * @returns {Function} Validation function.
 			 */
 			regex: function( regex, msg ) {
-				/*
-				 * Can be greatly shortened by deriving from functions validator if code size
-				 * turns out to be more important than performance.
-				 */
-				return function() {
-					var value = this && this.getValue ? this.getValue() : arguments[ 0 ];
-					return !regex.test( value ) ? msg : true;
-				};
+				return this.functions( function( val ) {
+					return regex.test( val );
+				}, msg );
 			},
 
 			/**
@@ -3297,7 +3311,12 @@ CKEDITOR.DIALOG_STATE_BUSY = 2;
 			 * @returns {Function} Validation function.
 			 */
 			notEmpty: function( msg ) {
-				return this.regex( notEmptyRegex, msg );
+				return this.functions( function( val ) {
+					var trimCharacters = '\\u0020\\u00a0\\u1680\\u202f\\u205f\\u3000\\u2000-\\u200a\\s',
+						trimRegex = new RegExp( '^[' + trimCharacters + ']+|[' + trimCharacters + ']+$', 'g' );
+
+					return val.replace( trimRegex, '' ).length > 0;
+				}, msg );
 			},
 
 			/**

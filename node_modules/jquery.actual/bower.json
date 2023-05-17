@@ -1,0 +1,19 @@
+{
+  "author": "dreamerslab",
+  "name": "jquery.actual",
+  "version": "1.0.19",
+  "description": "Get the actual width/height of invisible DOM elements with jQuery.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dreamerslab/jquery.actual"
+  },
+  "keywords": [
+    "jquery",
+    "actual"
+  ],
+  "dependencies": {
+    "jquery": ">= 1.2.3"
+  },
+  "main": "jquery.actual.js",
+  "license": "MIT"
+}

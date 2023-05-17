@@ -97,7 +97,7 @@ class FailedEmail extends LSActiveRecord
      */
     public function search(): CActiveDataProvider
     {
-        $pageSize = App()->user->getState('pageSize', App()->params['defaultPageSize']);
+        $pageSize = App()->request->getParam('pageSize') ?? App()->user->getState('pageSize', App()->params['defaultPageSize']);
         $criteria = new CDbCriteria();
 
         $criteria->compare('id', $this->id);
@@ -137,12 +137,9 @@ class FailedEmail extends LSActiveRecord
                 'id'             => 'id',
                 'class'          => 'CCheckBoxColumn',
                 'selectableRows' => '100',
-            ],
-            [
-                'name'        => 'buttons',
-                'type'        => 'raw',
-                'filter'      => false,
-                'header'      => gT('Action'),
+                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+                'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
+                'htmlOptions'       => ['class' => 'ls-sticky-column']
             ],
             [
                 'header' => gT('Status'),
@@ -187,21 +184,72 @@ class FailedEmail extends LSActiveRecord
                 'name'   => 'language',
                 'value'  => '$data->language',
             ],
+            [
+                'name'        => 'actions',
+                'type'        => 'raw',
+                'filter'      => false,
+                'header'      => gT('Action'),
+                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+                'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
+                'htmlOptions'       => ['class' => 'ls-sticky-column']
+            ],
         ];
     }
 
-    public function getButtons(): string
+    /**
+     * Renders the actions for each table row
+     *
+     * @return string
+     * @throws Exception
+     */
+    public function getActions(): string
     {
-        $permissions = [
-            'update' => Permission::model()->hasSurveyPermission($this->surveyid, 'responses', 'update'),
-            'delete' => Permission::model()->hasSurveyPermission($this->surveyid, 'responses', 'delete'),
-            'read'   => Permission::model()->hasSurveyPermission($this->surveyid, 'responses', 'read')
+        $permission_responses_update = Permission::model()->hasSurveyPermission($this->surveyid, 'responses', 'update');
+        $permission_responses_delete = Permission::model()->hasSurveyPermission($this->surveyid, 'responses', 'delete');
+        $permission_responses_read = Permission::model()->hasSurveyPermission($this->surveyid, 'responses', 'read');
+
+        $dropdownItems = [];
+        $dropdownItems[] = [
+            'title'            => gT('Resend email'),
+            'linkClass'        => 'failedemail-action-modal-open',
+            'iconClass'        => 'ri-mail-line',
+            'linkAttributes'   => [
+                'data-href'        => App()->createUrl('/failedEmail/modalcontent', ['id' => $this->id]),
+                'data-contentFile' => "resend_form",
+            ],
+            'enabledCondition' => $permission_responses_update,
         ];
-        $buttons = App()->getController()->renderPartial('/failedEmail/partials/buttons', [
-            'id' => $this->id,
-            'permissions' => $permissions
-        ], true);
-        return $buttons;
+        $dropdownItems[] = [
+            'title'            => gT('Email content'),
+            'linkClass'        => 'failedemail-action-modal-open',
+            'iconClass'        => 'ri-search-line',
+            'linkAttributes'   => [
+                'data-href'        => App()->createUrl('/failedEmail/modalcontent', ['id' => $this->id]),
+                'data-contentFile' => "email_content",
+            ],
+            'enabledCondition' => $permission_responses_read,
+        ];
+        $dropdownItems[] = [
+            'title'            => gT('Error message'),
+            'linkClass'        => 'failedemail-action-modal-open',
+            'iconClass'        => 'ri-alert-fill',
+            'linkAttributes'   => [
+                'data-href'        => App()->createUrl('/failedEmail/modalcontent', ['id' => $this->id]),
+                'data-contentFile' => "email_error",
+            ],
+            'enabledCondition' => $permission_responses_read,
+        ];
+        $dropdownItems[] = [
+            'title'            => gT('Delete'),
+            'linkClass'        => 'failedemail-action-modal-open',
+            'iconClass'        => 'ri-delete-bin-fill text-danger',
+            'linkAttributes'   => [
+                'data-href'        => App()->createUrl('/failedEmail/modalcontent', ['id' => $this->id]),
+                'data-contentFile' => "delete_form",
+            ],
+            'enabledCondition' => $permission_responses_delete,
+        ];
+        return App()->getController()->widget('ext.admin.grid.GridActionsWidget.GridActionsWidget', ['dropdownItems' => $dropdownItems], true);
     }
 
     /**
@@ -215,7 +263,7 @@ class FailedEmail extends LSActiveRecord
             $response = Response::model($this->surveyid)->findByPk($this->responseid);
             if (!empty($response)) {
                 $responseUrl = App()->createUrl("responses/view/", ['surveyId' => $this->surveyid, 'id' => $this->responseid]);
-                $responseLink = '<a href="' . $responseUrl . '" role="button" data-toggle="tooltip" title="' . gT('View response details') . '">' . $this->responseid . '</a>';
+                $responseLink = '<a href="' . $responseUrl . '" role="button" data-bs-toggle="tooltip" title="' . gT('View response details') . '">' . $this->responseid . '</a>';
             } else {
                 $responseLink = (string)$this->responseid;
             }

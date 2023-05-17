@@ -1,12 +1,12 @@
  {% extends "./subviews/printanswers/printanswers_question.twig" %}
  {% block question_answer %}
- <div class="col-md-8 child-row-spacing">
+ <div class="col-lg-8 child-row-spacing">
     {% for subquestionId, subquestion in question.subquestions %}
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-lg-8">
                 {{subquestion.answervalue|escape}}
             </div>
-            <div class="col-md-4 text-left">
+            <div class="col-lg-4 text-start">
                 <b>{{subquestion.question}} ({{subquestion.qid}})</b>
             </div>
         </div>

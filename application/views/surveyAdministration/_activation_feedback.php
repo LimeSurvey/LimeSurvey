@@ -14,7 +14,7 @@
 ?>
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="row welcome survey-action">
-        <div class="col-lg-12 content-right">
+        <div class="col-12 content-right">
             <div class='jumbotron message-box'>
                 <h3>
                     <?php eT('Activate Survey'); ?> (<?php echo $survey->currentLanguageSettings->surveyls_title; ?>)
@@ -24,7 +24,7 @@
                 </p>
 
                 <?php if ($warning) :?>
-                    <strong class='text-warning'>
+                    <strong class='text-danger'>
                         <?php eT("The required directory for saving the uploaded files couldn't be created. Please check file premissions on the /upload/surveys directory."); ?>
                     </strong>
                 <?php endif; ?>
@@ -36,7 +36,7 @@
                         <br />
                         <input
                             type="submit"
-                            class="btn btn-default btn-lg limebutton"
+                            class="btn btn-outline-secondary btn-lg limebutton"
                             value="<?php eT("Initialize participant table"); ?>"
                             onclick='<?php echo $onclickAction;?>'
                             />
@@ -59,20 +59,20 @@
                             <br />
                             <input
                                 type='submit'
-                                class='btn btn-default'
+                                class='btn btn-outline-secondary'
                                 id='activateTokenTable__selector--yes'
                                 value='<?php eT("Switch to closed-access mode"); ?>'
                                 />
                             <input
                                 type='submit'
-                                class='btn btn-default'
+                                class='btn btn-outline-secondary'
                                 id='activateTokenTable__selector--no'
                                 value='<?php eT("Continue in open-access mode"); ?>'
                                 />
                         <?php else :?>
                             <input
                                 type='submit'
-                                class='btn btn-default'
+                                class='btn btn-outline-secondary'
                                 id='activateRedirectSurvey__selector'
                                 value='<?php eT("Back to survey home"); ?>'
                                 />
