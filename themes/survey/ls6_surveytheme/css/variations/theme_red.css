@@ -15169,6 +15169,9 @@ a [class^=ri-], a [class*=" ri-"] {
   font-weight: 600;
   color: #6E748C;
 }
+.question-container .timer_header {
+  margin-top: 1rem;
+}
 
 @media only screen and (max-device-width: 767px) {
   .ls-questionhelp {
