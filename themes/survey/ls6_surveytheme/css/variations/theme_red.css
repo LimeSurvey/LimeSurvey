@@ -13047,7 +13047,6 @@ a:hover {
 .text-muted {
   font-size: 1.14rem;
   line-height: 20px;
-  color: #6E748C;
 }
 
 .h1, .h2, .h3, h1, h2, h3 {
@@ -13112,6 +13111,10 @@ a:hover {
 
 .has-link a {
   color: #1E1E1E;
+}
+
+.text-muted {
+  color: #6E748C !important;
 }
 
 .form-control {

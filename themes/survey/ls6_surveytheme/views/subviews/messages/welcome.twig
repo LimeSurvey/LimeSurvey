@@ -25,17 +25,17 @@
 <div id="{{ aSurveyInfo.id.welcomecontainer }}" class="{{ aSurveyInfo.class.welcomecontainer }}" {{ aSurveyInfo.attr.welcomecontainer }}>
 
     <!-- Survey Name -->
-    <h1 class="{{ aSurveyInfo.class.surveyname }} text-center" {{ aSurveyInfo.attr.surveyname }} >
+    <div class="{{ aSurveyInfo.class.surveyname }} text-center large-heading" {{ aSurveyInfo.attr.surveyname }} >
         {{ processString(aSurveyInfo.name,1) }}
-    </h1>
+    </div>
 
     <!-- Survey description -->
-    <div class="{{ aSurveyInfo.class.description }} text-info text-center" {{ aSurveyInfo.attr.description }}>
+    <div class="{{ aSurveyInfo.class.description }} form-heading" {{ aSurveyInfo.attr.description }}>
         {{ processString(aSurveyInfo.description,1) }}
     </div>
 
     <!-- Welcome text -->
-    <div class="{{ aSurveyInfo.class.welcome }} h5 text-primary" {{ aSurveyInfo.attr.welcome }}>
+    <div class="{{ aSurveyInfo.class.welcome }} form-heading" {{ aSurveyInfo.attr.welcome }}>
         {{ processString(aSurveyInfo.welcome,1) }}
     </div>
 
