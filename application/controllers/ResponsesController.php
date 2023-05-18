@@ -386,6 +386,8 @@ class ResponsesController extends LSBaseController
      *
      * @param int $surveyId
      */
+    // TODO, this method is triggered when click summary btn in the survey response page,
+    //  but won't be used later after optimizing page
     public function actionIndex(int $surveyId): void
     {
         // logging for webserver when parameter is somehting like $surveyid=125<script ...
@@ -411,10 +413,10 @@ class ResponsesController extends LSBaseController
 
         $this->aData = $aData;
         $this->render('browseindex_view', [
-          'num_completed_answers' => $aData['num_completed_answers'],
-          'num_total_answers'     => $aData['num_total_answers'],
-          'tokeninfo'             => $aData['tokeninfo'],
-          'with_token'            => $aData['with_token']
+            'num_completed_answers' => $aData['num_completed_answers'],
+            'num_total_answers'     => $aData['num_total_answers'],
+            'tokeninfo'             => $aData['tokeninfo'],
+            'with_token'            => $aData['with_token']
         ]);
     }
 
@@ -440,12 +442,12 @@ class ResponsesController extends LSBaseController
         if (Permission::model()->hasSurveyPermission($surveyId, 'responses', 'read')) {
             App()->getClientScript()->registerScriptFile(
                 App()->getConfig('adminscripts') .
-                'listresponse.js',
+                    'listresponse.js',
                 LSYii_ClientScript::POS_BEGIN
             );
             App()->getClientScript()->registerScriptFile(
                 App()->getConfig('adminscripts') .
-                'tokens.js',
+                    'tokens.js',
                 LSYii_ClientScript::POS_BEGIN
             );
 
@@ -521,9 +523,42 @@ class ResponsesController extends LSBaseController
                 $topbarData,
                 true
             );
+            $aData['topbar']['rightButtons'] = $this->renderPartial(
+                'partial/topbarBtns/rightSideButtons',
+                $topbarData,
+                true
+            );
+            // below codes are copied from above actionIndex method for summary page data
+            $aData['num_total_answers'] = SurveyDynamic::model($surveyId)->count();
+            $aData['num_completed_answers'] = SurveyDynamic::model($surveyId)->count('submitdate IS NOT NULL');
+            if ($survey->hasTokensTable && Permission::model()->hasSurveyPermission($surveyId, 'tokens', 'read')) {
+                $aData['with_token'] = App()->db->schema->getTable($survey->tokensTableName);
+                $aData['tokeninfo'] = Token::model($surveyId)->summary();
+            }
+            // =============================================================================
+
+            // these codes are copied from 'applicatioin\controllers\admin' for "saved but not submitted" table data
+            // *** how it worked? admin/saved.php -> renderWrappedTemplate -> surveyCommonAction.php -> layout_insurvey
+            $oSavedControlModel = SavedControl::model();
+            $oSavedControlModel->sid = $survey->sid;
+
+            // Filter state
+            $aFilters = App()->request->getParam('SavedControl');
+            if (!empty($aFilters)) {
+                $oSavedControlModel->setAttributes($aFilters, false);
+            }
+            $aData['savedModel'] = $oSavedControlModel;
+            // ===================================================
 
             $this->aData = $aData;
-            $this->render('listResponses_view', [
+
+            $this->render('browseindex_view', [
+                // summary table data
+                'num_completed_answers' => $aData['num_completed_answers'],
+                'num_total_answers'     => $aData['num_total_answers'],
+                'tokeninfo'             => $aData['tokeninfo'],
+                'with_token'            => $aData['with_token'],
+                // response table data
                 'surveyid' => $aData['surveyid'],
                 'dateformatdetails' => $aData['dateformatdetails'],
                 'model' => $aData['model'],
@@ -532,6 +567,8 @@ class ResponsesController extends LSBaseController
                 'pageSize' => $aData['pageSize'],
                 'fieldmap' => $aData['fieldmap'],
                 'filteredColumns' => $aData['filteredColumns'],
+                // saved but not submitted data
+                'savedModel' => $aData['savedModel'],
 
             ]);
         } else {
@@ -703,7 +740,7 @@ class ResponsesController extends LSBaseController
                 if ($sRealUserPath === false) {
                     throw new CHttpException(404, "File not found.");
                 } elseif (strpos((string) $sRealUserPath, $sDir) !== 0) {
-                        throw new CHttpException(403, "File cannot be accessed.");
+                    throw new CHttpException(403, "File cannot be accessed.");
                 } else {
                     $mimeType = CFileHelper::getMimeType($sFileRealName, null, false);
                     if (is_null($mimeType)) {

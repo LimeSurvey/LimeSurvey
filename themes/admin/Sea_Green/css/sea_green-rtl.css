@@ -11177,6 +11177,37 @@ body {
   border-bottom: solid 2px #D3D5DA;
 }
 
+.survey-response-page h2, .survey-response-page .h2 {
+  color: #182535;
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-weight: 600;
+  font-size: 1.14rem;
+  line-height: 26px;
+}
+.survey-response-page .ls-response-summary.table {
+  background: none;
+  border-collapse: collapse;
+}
+.survey-response-page .ls-response-summary.table table,
+.survey-response-page .ls-response-summary.table th,
+.survey-response-page .ls-response-summary.table td {
+  border: none;
+}
+.survey-response-page .accordion-button,
+.survey-response-page .accordion-body {
+  background: #F9F9FB;
+}
+.survey-response-page .accordion-button {
+  padding: 0;
+}
+.survey-response-page .summary-detail {
+  color: #182535;
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-weight: 600;
+  font-size: 1.14rem;
+  line-height: 26px;
+}
+
 /**
  * comfortUpdate
  */
