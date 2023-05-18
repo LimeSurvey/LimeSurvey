@@ -8,11 +8,12 @@
         <h3><?php eT('Organize question group/questions');?></h3>
         <div class='row'>
             <div class='col-sm-8'>
-                <p class='alert alert-info'>
+                <div class='alert alert-info'>
                     <span class='fa fa-info-circle'></span>&nbsp;
                     <?php eT("To reorder questions/questiongroups just drag the question/group with your mouse to the desired position.");?>
+                    <?= $surveyActivated ? gT("Survey is activated, you can not move question on another group.") : ""?>
                     <?php eT("After you are done, please click the 'Save' button to save your changes.");?>
-                </p>
+                </div>
             </div>
             <div class='col-sm-4'>
                 <button id='organizer-collapse-all' class='btn btn-default'><span class='fa fa-compress'></span>&nbsp;<?php eT("Collapse all"); ?></button>
@@ -21,7 +22,7 @@
         </div>
 
         <div class='movableList'>
-            <ol class="organizer group-list list-unstyled" data-level='group'>
+            <ol class="organizer group-list list-unstyled" data-level='group' data-disableparentchange='<?= intval($surveyActivated) ?>'>
                 <?php
                     foreach ($aGroupsAndQuestions as  $aGroupAndQuestions)
                     {?>

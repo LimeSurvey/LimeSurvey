@@ -207,6 +207,9 @@ class Question extends LSActiveRecord
                 $aRules[] = array('other', 'compare', 'compareValue' => 'Y', 'operator' => '!=', 'message' => sprintf(gT("'%s' can not be used if the 'Other' option for this question is activated."), 'other'));
             }
         }
+        if ($this->survey->isActive) {
+            $aRules = array_merge($aRules, $this->rulesForActiveSurvey());
+        }
         /* When question exist and are already set with title, allow keep bad title */
         if (!$this->isNewRecord) {
             $oActualValue = Question::model()->findByPk(array("qid" => $this->qid));
@@ -264,6 +267,17 @@ class Question extends LSActiveRecord
         return $aRules;
     }
 
+    /**
+     * return rules specific for activated survey
+     * @return array
+     */
+    private function rulesForActiveSurvey()
+    {
+        $aRules = array();
+        /* can not update group */
+        $aRules[] = array('gid', 'LSYii_NoUpdateValidator', 'filter' => false);
+        return $aRules;
+    }
 
 
     /**
