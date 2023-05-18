@@ -1365,6 +1365,15 @@ class DataEntry extends SurveyCommonAction
                 }
 
                 if (!empty($questionInputs)) {
+                    if (
+                        $fname['type'] == Question::QT_K_MULTIPLE_NUMERICAL
+                        || $fname['type'] == Question::QT_N_NUMERICAL
+                        || $fname['type'] == Question::QT_D_DATE
+                    ) {
+                        $unseenLabel = gT("Unseen or not answered");
+                    } else {
+                        $unseenLabel = gT("Unseen");
+                    }
                     $aDataentryoutput .= "<div class=\"answers-list {$answerWrapperClass}\">";
                     foreach ($questionInputs as $questionInputField => $questionInput) {
                         $aDataentryoutput .= "<div class=\"answer-item\">";
@@ -1372,7 +1381,7 @@ class DataEntry extends SurveyCommonAction
                             . "<input type='checkbox' name='unseen:{$questionInputField}' id='unseen:{$questionInputField}'"
                             . (!empty($unseenStatus[$questionInputField]) ? " checked" : "")
                             . ">"
-                            . "<label for='unseen:{$questionInputField}'>" . gT("Unseen") . "</label>"
+                            . "<label for='unseen:{$questionInputField}'>" . $unseenLabel . "</label>"
                             . "</div>\n";
                         $aDataentryoutput .= "<div class=\"answer-wrapper\" data-field=\"{$questionInputField}\">" . $questionInput . "</div>";
                         $aDataentryoutput .= "</div>";
