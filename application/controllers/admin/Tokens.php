@@ -28,7 +28,7 @@ class Tokens extends SurveyCommonAction
      * @param int $surveyid  The survey ID
      * @return void
      */
-    public function index(int $surveyid)
+    public function index(int $surveyid, $limit = 50, $start = 0)
     {
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'tokens.js', LSYii_ClientScript::POS_BEGIN);
         $iSurveyId = $surveyid;
@@ -68,6 +68,75 @@ class Tokens extends SurveyCommonAction
             true
         );
 
+        // this data is for table
+        if (!$survey->hasTokensTable) {
+            $this->newtokentable($iSurveyId);
+        }
+        Yii::import('application.libraries.Date_Time_Converter', true);
+        $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
+
+        $limit = (int) $limit;
+        $start = (int) $start;
+
+        $tkcount = Token::model($iSurveyId)->count();
+        $next = $start + $limit;
+        $last = $start - $limit;
+        $end = $tkcount - $limit;
+
+        if ($end < 0) {
+            $end = 0;
+        }
+        if ($last < 0) {
+            $last = 0;
+        }
+        if ($next >= $tkcount) {
+            $next = $tkcount - $limit;
+        }
+        if ($end < 0) {
+            $end = 0;
+        }
+        $order = Yii::app()->request->getPost('order', 'tid');
+        $order = preg_replace('/[^_ a-z0-9-]/i', '', (string) $order);
+
+        $aData['next'] = $next;
+        $aData['last'] = $last;
+        $aData['end'] = $end;
+        $searchstring = Yii::app()->request->getPost('searchstring');
+
+        $aData['searchstring'] = $searchstring;
+        $aData['bgc'] = "";
+        $aData['limit'] = $limit;
+        $aData['start'] = $start;
+        $aData['order'] = $order;
+        $aData['dateformatdetails'] = $dateformatdetails;
+        $aLanguageCodes = Survey::model()->findByPk($iSurveyId)->getAllLanguages();
+        $aLanguages = array();
+
+        foreach ($aLanguageCodes as $aCode) {
+            $aLanguages[$aCode] = getLanguageNameFromCode($aCode, false);
+        }
+
+        $aData['aLanguages']                    = $aLanguages;
+        $aData['title_bar']['title']            = $survey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyId . ")";
+        $aData['sidemenu']["token_menu"]        = true;
+        $aData['sidemenu']['state'] = false;
+
+        /// FOR GRID View
+        $model = TokenDynamic::model($iSurveyId);
+        $model->bEncryption = true;
+        $filterForm = Yii::app()->request->getPost('TokenDynamic', false);
+        if ($filterForm) {
+            $model->setAttributes($filterForm, false);
+        }
+
+        $aData['model'] = $model;
+
+        // Set number of page
+        if (isset($_POST['pageSizeTokenView'])) {
+            Yii::app()->user->setState('pageSizeTokenView', (int) $_POST['pageSizeTokenView']);
+        }
+
+        $aData['massiveAction'] = App()->getController()->renderPartial('/admin/token/massive_actions/_selector', $aData, true, false);
 
         // CHECK TO SEE IF A Survey participants table EXISTS FOR THIS SURVEY
         if (!$survey->hasTokensTable) {
@@ -76,7 +145,9 @@ class Tokens extends SurveyCommonAction
             $aData['thissurvey'] = $thissurvey;
             $aData['surveyid'] = $iSurveyId;
             $aData['queries'] = Token::model($iSurveyId)->summary();
-            $this->renderWrappedTemplate('token', array('tokensummary'), $aData);
+            
+            $this->renderWrappedTemplate('token', array('surveyParticipantView'), $aData);
+            // $this->renderWrappedTemplate('token', array('tokensummary'), $aData);
         }
     }
 
@@ -407,6 +478,7 @@ class Tokens extends SurveyCommonAction
 
         $aData['massiveAction'] = App()->getController()->renderPartial('/admin/token/massive_actions/_selector', $aData, true, false);
 
+        // seems table
         $this->renderWrappedTemplate('token', array('browse'), $aData);
     }
 

@@ -11173,11 +11173,16 @@ body {
   line-height: 20px;
 }
 
-.side-body h3, .side-body .h3 {
+.side-body h3, .side-body .h3,
+.side-body h2,
+.side-body .h2 {
   border-bottom: solid 2px #D3D5DA;
 }
 
-.survey-response-page h2, .survey-response-page .h2 {
+.survey-response-page .accordion-item {
+  border: none;
+}
+.survey-response-page .summary-title {
   color: #182535;
   font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-weight: 600;
@@ -11198,7 +11203,8 @@ body {
   background: #F9F9FB;
 }
 .survey-response-page .accordion-button {
-  padding: 0;
+  padding-right: 0;
+  padding-bottom: 5px;
 }
 .survey-response-page .summary-detail {
   color: #182535;
