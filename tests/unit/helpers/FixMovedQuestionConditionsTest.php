@@ -17,6 +17,10 @@ class FixMovedQuestionConditions extends BaseTest
         \Yii::app()->setConfig('sid', self::$surveyId);
     }
 
+    /**
+     * Test fixing just one condition.
+     * This test uses the survey previously imported in setupBeforeClass.
+     */
     public function testFixOneCondition()
     {
         $groups = self::$testSurvey->groups;
@@ -38,7 +42,7 @@ class FixMovedQuestionConditions extends BaseTest
             'The cfieldname field is not correct.'
         );
 
-        // Fix conditions for questions moved from group one to group two.
+        // Fix conditions, informing question has been moved from group one to group two.
         fixMovedQuestionConditions($questions[0]->qid, $groups[0]->gid, $groups[1]->gid);
 
         $fixedConditions = \Condition::model()
@@ -58,6 +62,10 @@ class FixMovedQuestionConditions extends BaseTest
         );
     }
 
+    /**
+     * Test fixing multiple conditions.
+     * This test uses the survey previously imported in setupBeforeClass.
+     */
     public function testFixMultipleConditions()
     {
         $groups = self::$testSurvey->groups;
@@ -83,7 +91,7 @@ class FixMovedQuestionConditions extends BaseTest
             );
         }
 
-        // Fix conditions for questions moved from group three to group four.
+        // Fix conditions, informing question has been moved from group three to group four.
         fixMovedQuestionConditions($questions[2]->qid, $groups[2]->gid, $groups[3]->gid);
 
         $fixedConditions = \Condition::model()
@@ -107,6 +115,10 @@ class FixMovedQuestionConditions extends BaseTest
         }
     }
 
+    /**
+     * Test fixing just one condition.
+     * This test imports a new survey.
+     */
     public function testFixOneConditionInNewSurvey()
     {
         // Import new survey
@@ -132,7 +144,7 @@ class FixMovedQuestionConditions extends BaseTest
             'The cfieldname field is not correct.'
         );
 
-        // Fix conditions for questions moved from group two to group one.
+        // Fix conditions, informing question has been moved from group two to group one.
         fixMovedQuestionConditions($questions[3]->qid, $groups[1]->gid, $groups[0]->gid, self::$surveyId);
 
         $fixedConditions = \Condition::model()
@@ -152,6 +164,10 @@ class FixMovedQuestionConditions extends BaseTest
         );
     }
 
+    /**
+     * Test fixing multiple conditions.
+     * This test uses the survey imported in the previous test.
+     */
     public function testFixMultitpleConditionsInNewSurvey()
     {
         $groups = self::$testSurvey->groups;
@@ -177,7 +193,7 @@ class FixMovedQuestionConditions extends BaseTest
             );
         }
 
-        // Fix conditions for questions moved from group one to group two.
+        // Fix conditions, informing question has been moved from group one to group two.
         fixMovedQuestionConditions($questions[0]->qid, $groups[0]->gid, $groups[1]->gid, self::$surveyId);
 
         $fixedConditions = \Condition::model()
