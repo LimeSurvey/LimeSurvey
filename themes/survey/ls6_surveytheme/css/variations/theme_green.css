@@ -15424,13 +15424,18 @@ a [class^=ri-], a [class*=" ri-"] {
   color: #6E748C;
 }
 
+.form-change-lang {
+  padding-bottom: 10px;
+}
 .form-change-lang .control-label {
   font-weight: 600;
   font-size: 1.14rem;
   line-height: 20px;
 }
 .form-change-lang .language-icon {
-  vertical-align: 0em;
+  float: left;
+  margin-right: 4px;
+  margin-top: 2px;
   font-weight: 400;
 }
 .form-change-lang #language-changer-select {
