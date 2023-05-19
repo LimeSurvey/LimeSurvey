@@ -137,9 +137,10 @@ class SettingsUser extends LSActiveRecord
      * @param integer $uid | Can be omitted to just take the currently logged in users id
      * @param string $entity | optional defaults to 'null'
      * @param integer $entity_id | optional defaults to 'null'
+     * @param mixed $default | optional defaults to 'null'
      * @return SettingsUser The current settings Object
      */
-    public static function getUserSetting($stg_name, $uid = null, $entity = null, $entity_id = null)
+    public static function getUserSetting($stg_name, $uid = null, $entity = null, $entity_id = null, $default = null)
     {
         if ($uid === null) {
             $uid = Yii::app()->user->getId();
@@ -168,7 +169,7 @@ class SettingsUser extends LSActiveRecord
 
         $setting = self::model()->find($searchCriteria);
 
-        return $setting ?? null;
+        return $setting ?? $default;
     }
 
     /**
