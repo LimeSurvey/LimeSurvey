@@ -1,0 +1,19 @@
+.form-change-lang {
+    .control-label {
+        @include h2;
+    }
+    .language-icon {
+        vertical-align: 0em;
+        font-weight: $font-weight-normal;
+    }
+    #language-changer-select {
+        @include h2;
+        border: none;
+        &:focus-visible {
+            outline: none;
+        }
+    }
+    .ls-language-changer-item {
+        display: none;
+    }
+}

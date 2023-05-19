@@ -15424,6 +15424,35 @@ a [class^=ri-], a [class*=" ri-"] {
   color: #6E748C;
 }
 
+.form-change-lang .control-label {
+  font-weight: 600;
+  font-size: 1.14rem;
+  line-height: 20px;
+}
+.form-change-lang .language-icon {
+  vertical-align: 0em;
+  font-weight: 400;
+}
+.form-change-lang #language-changer-select {
+  font-weight: 600;
+  font-size: 1.14rem;
+  line-height: 20px;
+  border: none;
+}
+.form-change-lang #language-changer-select:focus-visible {
+  outline: none;
+}
+.form-change-lang .ls-language-changer-item {
+  display: none;
+}
+
+.form-change-lang .language-icon, .form-change-lang .control-label {
+  color: #6E748C;
+}
+.form-change-lang #language-changer-select {
+  color: #14AE5C;
+}
+
 .darkmode-on {
   background-color: #333641;
   color: white;
