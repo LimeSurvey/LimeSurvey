@@ -10818,18 +10818,6 @@ p.return-to-survey {
   padding: 0px;
 }
 
-.limit-text-window {
-  max-height: 40rem;
-  max-height: 33vh;
-  padding: 15px 5px;
-  overflow: auto;
-  border-top: 1px solid #dedede;
-  border-bottom: 1px solid #dedede;
-  border-left: none;
-  border-right: none;
-  outline: none;
-}
-
 label {
   font-weight: bold;
 }
@@ -15405,6 +15393,35 @@ a [class^=ri-], a [class*=" ri-"] {
 .list-group-item-danger {
   color: #1E1E1E;
   background-color: #FF515F;
+}
+
+.survey-name, .survey-description, .survey-welcome {
+  margin-bottom: 10px;
+}
+
+.privacy {
+  margin-top: 40px;
+}
+
+.datasecurity-checkbox-container {
+  margin-top: 14px;
+  padding-left: 16px;
+}
+
+#datasecurity_notice {
+  font-weight: 500;
+  font-size: 0.855rem;
+  line-height: 16px;
+}
+
+.datasecurity-checkbox-label, .datasecurity-checkbox-label a.show-policy {
+  font-weight: 600;
+  font-size: 1.14rem;
+  line-height: 20px;
+}
+
+#datasecurity_notice, .datasecurity-checkbox-label {
+  color: #6E748C;
 }
 
 .darkmode-on {
