@@ -2554,7 +2554,6 @@ class SurveyAdministrationController extends LSBaseController
                     $aQuestionOrder[$gid] = 0;
                 }
 
-                $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
                 $oQuestion = Question::model()->findByPk($qid);
                 $oldGid = $oQuestion->gid;
                 $oQuestion->gid = $gid;
