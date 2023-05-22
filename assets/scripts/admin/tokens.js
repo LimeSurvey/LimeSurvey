@@ -137,8 +137,8 @@ function submitEditToken(){
             if (result.success) {
                 $modal.hide();
                 $('body').removeClass('modal-open');
+                $('body').removeAttr('style');
                 $('.modal-backdrop').remove();
-                window.LS.ajaxAlerts(result.success, 'success');
             } else {
                 var errorMsg = result.error.message ? result.error.message : result.error;
                 if (!errorMsg) errorMsg = "Unexpected error";
@@ -152,6 +152,7 @@ function submitEditToken(){
                     complete: function(s){
                         $modal.hide();
                         $('body').removeClass('modal-open');
+                        $('body').removeAttr('style');
                         $('.modal-backdrop').remove();
                     } // Update the surveys list
                 });
@@ -161,6 +162,7 @@ function submitEditToken(){
                     console.ls.error(e);
                     $modal.hide();
                     $('body').removeClass('modal-open');
+                    $('body').removeAttr('style');
                     $('.modal-backdrop').remove();
                 }
             }
