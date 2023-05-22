@@ -27,7 +27,7 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
             "usecookie" => ['key' => 'useCookie', 'formatter' => $formatterYn],
             "allowregister" => ['key' => 'allowRegister', 'formatter' => $formatterYn],
             "allowsave" => ['key' => 'allowSave', 'formatter' => $formatterYn],
-            "autonumber_start" => ['key' => 'autonumberStart', 'type' => 'int'],
+            "autonumber_start" => ['key' => 'autoNumberStart', 'type' => 'int'],
             "autoredirect" => ['key' => 'autoRedirect', 'formatter' => $formatterYn],
             "allowprev" => ['key' => 'allowPrev', 'formatter' => $formatterYn],
             "printanswers" => ['key' => 'printAnswers', 'formatter' => $formatterYn],

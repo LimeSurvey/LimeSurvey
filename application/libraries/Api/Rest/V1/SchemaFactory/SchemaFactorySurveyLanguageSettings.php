@@ -17,15 +17,15 @@ class SchemaFactorySurveyLanguageSettings
                 Schema::string('language')->default(null),
                 Schema::string('title')->default(null),
                 Schema::string('description')->default(null),
-                Schema::string('welcometext')->default(null),
-                Schema::string('endtext')->default(null),
-                Schema::string('policy_notice')->default(null),
-                Schema::string('policy_error')->default(null),
-                Schema::string('policy_notice_label')->default(null),
+                Schema::string('welcomeText')->default(null),
+                Schema::string('endText')->default(null),
+                Schema::string('policyNotice')->default(null),
+                Schema::string('policyError')->default(null),
+                Schema::string('policyNoticeLabel')->default(null),
                 Schema::string('url')->default(null),
-                Schema::string('urldescription')->default(null),
-                Schema::integer('dateformat')->default(null),
-                Schema::integer('numberformat')->default(null)
+                Schema::string('urlDescription')->default(null),
+                Schema::integer('dateFormat')->default(null),
+                Schema::integer('numberFormat')->default(null)
             );
     }
 }

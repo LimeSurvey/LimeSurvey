@@ -16,9 +16,9 @@ class SchemaFactoryQuestionGroup
             ->properties(
                 Schema::integer('gid')->default(null),
                 Schema::integer('sid')->default(null),
-                Schema::integer('group_order')->default(null),
-                Schema::string('randomization_group')->default(null),
-                Schema::string('grelevance')->default(null),
+                Schema::integer('groupOrder')->default(null),
+                Schema::string('randomizationGroup')->default(null),
+                Schema::string('gRelevance')->default(null),
                 Schema::create('l10ns')
                     ->additionalProperties(
                         (new SchemaFactoryQuestionGroupL10ns())->create()

@@ -14,7 +14,7 @@ class SchemaFactoryQuestion
             ->type(Schema::TYPE_OBJECT)
             ->properties(
                 Schema::integer('qid')->default(null),
-                Schema::integer('parent_qid')->default(0),
+                Schema::integer('parentQid')->default(0),
                 Schema::integer('sid')->default(null),
                 Schema::string('type')->default(null),
                 Schema::string('title')->default(null),
@@ -22,15 +22,15 @@ class SchemaFactoryQuestion
                 Schema::boolean('other')->default(null),
                 Schema::boolean('mandatory')->default(null),
                 Schema::boolean('encrypted')->default(null),
-                Schema::integer('question_order')->default(0),
-                Schema::integer('scale_id')->default(null),
-                Schema::boolean('same_default')->default(null),
+                Schema::integer('questionOrder')->default(0),
+                Schema::integer('scaleId')->default(null),
+                Schema::boolean('sameDefault')->default(null),
                 Schema::boolean('mandatory')->default(null),
-                Schema::string('question_theme_name')->default(null),
-                Schema::string('modulename')->default(null),
+                Schema::string('questionThemeName')->default(null),
+                Schema::string('moduleName')->default(null),
                 Schema::integer('gid')->default(0),
                 Schema::string('relevance')->default(null),
-                Schema::string('same_script')->default(null),
+                Schema::string('sameScript')->default(null),
                 Schema::boolean('mandatory')->default(null),
                 Schema::create('l10ns')
                     ->additionalProperties(

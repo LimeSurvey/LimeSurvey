@@ -16,9 +16,9 @@ class SchemaFactoryAnswer
                 Schema::integer('aid')->default(null),
                 Schema::integer('qid')->default(null),
                 Schema::string('code')->default(null),
-                Schema::integer('sortorder')->default(null),
-                Schema::integer('assessment_value')->default(null),
-                Schema::integer('scale_id')->default(null)
+                Schema::integer('sortOrder')->default(null),
+                Schema::integer('assessmentValue')->default(null),
+                Schema::integer('scaleId')->default(null)
             );
     }
 }
