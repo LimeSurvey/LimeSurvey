@@ -29,6 +29,6 @@ class Update_607 extends DatabaseUpdateBase
             '{{surveymenu_entries}}',
             'name=:name',
             [':name' => 'reorder']
-        )
+        );
     }
 }
