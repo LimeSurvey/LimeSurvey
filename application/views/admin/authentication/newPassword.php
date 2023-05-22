@@ -48,7 +48,7 @@ echo viewHelper::getViewTestTag('login');
                                         <?= gT('Random password (suggestion):') ?>
                                     </label>
                                     <input type="text" class="form-control" readonly name="random_example_password"
-                                           value="<?= htmlspecialchars($randomPassword) ?>"/>
+                                           value="<?= htmlspecialchars((string) $randomPassword) ?>"/>
                                 </span>
                             <input type="hidden" name="validation_key" value="<?= $validationKey ?>">
                         </div>

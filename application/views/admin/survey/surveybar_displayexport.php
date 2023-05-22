@@ -105,7 +105,7 @@
         ",
         "href" => $this->createUrl("admin/export/sa/survey/action/exportprintables/surveyid/".$oSurvey->sid),
         "download" => true,
-        "downloadFilename" => $oSurvey->sid.'_'.strtolower(preg_replace('([^\w\s\d\-_~,;\[\]\(\).])','',$oSurvey->currentLanguageSettings->surveyls_title)).'.html'
+        "downloadFilename" => $oSurvey->sid.'_'.strtolower(preg_replace('([^\w\s\d\-_~,;\[\]\(\).])','',(string) $oSurvey->currentLanguageSettings->surveyls_title)).'.html'
     ];
     if (Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveycontent', 'read')) {
         if ($onelanguage) {
@@ -144,7 +144,7 @@
                     ",
                     "href" => $this->createUrl("admin/printablesurvey/sa/index/surveyid/".$oSurvey->sid."/lang/".$tmp_lang),
                     "external" => true,
-                    "downloadFilename" => $oSurvey->sid.'_'.strtolower(preg_replace('([^\w\s\d\-_~,;\[\]\(\).])','',$oSurvey->currentLanguageSettings->surveyls_title)).'.html'
+                    "downloadFilename" => $oSurvey->sid.'_'.strtolower(preg_replace('([^\w\s\d\-_~,;\[\]\(\).])','',(string) $oSurvey->currentLanguageSettings->surveyls_title)).'.html'
                 ];
             }
         }

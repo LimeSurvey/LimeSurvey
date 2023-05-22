@@ -29,7 +29,7 @@
                 <span><?php echo CHtml::encode($name); ?></span>
             </td>
             <td class='col-lg-2 operatornametd'>
-                <span><?php echo $method[trim($row['method'])]; ?> </span>
+                <span><?php echo $method[trim((string) $row['method'])]; ?> </span>
             </td>
             <td class='col-lg-3 questionanswertd'>
                 <span><?php echo $target; ?></span>

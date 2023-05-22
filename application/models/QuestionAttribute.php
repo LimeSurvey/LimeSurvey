@@ -380,6 +380,8 @@ class QuestionAttribute extends LSActiveRecord
             "readonly_when_active" => false,
             "expression" => null,
             "xssfilter" => true,
+            "min" => null, // Used for integer type
+            "max" => null, // Used for integer type
         );
     }
 
@@ -413,7 +415,7 @@ class QuestionAttribute extends LSActiveRecord
             $attributes = \LimeSurvey\Helpers\questionHelper::getAttributesDefinitions();
             /* Filter to get this question type setting */
             $aQuestionTypeAttributes = array_filter($attributes, function ($attribute) use ($sType) {
-                return stripos($attribute['types'], $sType) !== false;
+                return stripos((string) $attribute['types'], $sType) !== false;
             });
             foreach ($aQuestionTypeAttributes as $attribute => $settings) {
                   self::$questionAttributesSettings[$sType][$attribute] = array_merge(

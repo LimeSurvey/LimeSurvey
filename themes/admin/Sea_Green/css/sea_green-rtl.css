@@ -11094,7 +11094,7 @@ a {
   font-weight: 500;
   font-size: 1rem;
   line-height: 20px;
-  color: #5E6372;
+  color: #6E748C;
 }
 
 .ls-settings-wrapper {
@@ -14520,6 +14520,11 @@ html[dir=ltr] th {
   overflow-x: visible;
 }
 
+/** Hide Relevance Equation column for subquestions when not supported */
+.subquestions-table.hide-relevance #rel-eq-th, .subquestions-table.hide-relevance td.relevance-equation {
+  display: none;
+}
+
 .jcarousel-wrapper {
   margin: 20px auto;
   position: relative;
@@ -14875,6 +14880,16 @@ div.mappable-attribute-wrapper.paired.ui-state-disabled {
 
 .grid-view-ls.grid-view-loading .table th > .sort-link .caret {
   display: none;
+}
+
+.grid-view-ls .table td .longtext-content {
+  min-width: 8em;
+  max-width: 16em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  height: 1.5em;
+  display: inline-block;
 }
 
 .dropdown-menu.larger-dropdown {
@@ -16678,8 +16693,8 @@ tr.info, tr.danger {
   border: 1px solid #cccccc;
 }
 
-[data-toggle=buttons] > .btn input[type=radio],
-[data-toggle=buttons] > .btn input[type=checkbox] {
+[data-bs-toggle=buttons] > .btn input[type=radio],
+[data-bs-toggle=buttons] > .btn input[type=checkbox] {
   position: absolute;
   clip: rect(0, 0, 0, 0);
   pointer-events: none;
@@ -16814,6 +16829,13 @@ tr.info, tr.danger {
 
 .dropdown-divider {
   margin: 8px 0;
+}
+
+.ls-action_dropdown > .btn {
+  line-height: 16px;
+}
+.ls-action_dropdown > .btn .ri-more-fill {
+  vertical-align: bottom;
 }
 
 .btn-circle {
@@ -17088,10 +17110,9 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 }
 .navbar .navbar-brand {
   font-style: normal;
-  font-weight: 700;
-  font-size: 16px;
+  font-weight: 800;
+  font-size: 18px;
   color: #fff;
-  height: 30px;
   width: auto;
 }
 .navbar .navbar-toggler {
@@ -17125,7 +17146,7 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   height: 25px;
 }
 .navbar a {
-  font-weight: 500;
+  font-weight: 400;
 }
 .navbar .dropdown-menu {
   z-index: 10000;
@@ -17163,7 +17184,7 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 .mega-dropdown-menu {
   margin-right: auto;
   margin-left: auto;
-  padding: 24px var(--bs-gutter-x, 0.75rem);
+  padding: 24px 20px;
   width: 100%;
 }
 .mega-dropdown-menu .dropdown-header {
@@ -17300,10 +17321,6 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   background-color: unset;
   border: none;
 }
-.card.card-primary .card-header + .card-body {
-  padding-top: 0;
-  margin-top: -1rem;
-}
 .card.card-primary .card-footer {
   justify-content: flex-start;
   height: unset;
@@ -17399,7 +17416,7 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 }
 
 [class^=ri-], [class*=" ri-"] {
-  vertical-align: -0.25em;
+  vertical-align: -0.125em;
 }
 
 .remix-2xs {
@@ -18190,10 +18207,10 @@ input[type=number] {
   font-size: 14px;
 }
 #sidebar .subpanel .wrapper .title {
-  color: #5E6372;
+  color: #6E748C;
 }
 #sidebar .subpanel .wrapper .icon {
-  color: #5E6372;
+  color: #6E748C;
 }
 #sidebar .subpanel.level-0 .menu-selected {
   background: linear-gradient(to left, #40ab46 0px, #40ab46 6px, #fff 6px, #fff 100%);
@@ -18220,6 +18237,9 @@ input[type=number] {
 }
 #sidebar .subpanel.level-2 .selected {
   background: linear-gradient(to left, #5cc262 0px, #5cc262 8px, #fff 8px, #fff 100%);
+}
+#sidebar .ls-questiongroup-tools i, #sidebar .ls-question-tools i {
+  font-size: 24px;
 }
 
 .list-group {
@@ -18760,6 +18780,8 @@ table [class^=ri-], table [class*=" ri-"] {
 #advanced-question-editor .settings-accordion-container .accordion-body,
 #copy-question .settings-accordion-container .accordion-body {
   padding: 0;
+  margin-right: 10px;
+  margin-left: 10px;
 }
 #advanced-question-editor .settings-accordion-container .accordion-body label,
 #copy-question .settings-accordion-container .accordion-body label {

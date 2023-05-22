@@ -51,14 +51,14 @@ namespace ArPHP\I18N;
  * @copyright 2006-2023 Khaled Al-Shamaa
  *
  * @license   LGPL <http://www.gnu.org/licenses/lgpl.txt>
- * @version   6.3.2 released in Jan 21, 2023
+ * @version   6.3.4 released in Apr 5, 2023
  * @link      http://www.ar-php.org
  */
  
 class Arabic
 {
     /** @var string */
-    public $version = '6.3.2';
+    public $version = '6.3.4';
     
     /** @var array<string> */
     private $arStandardPatterns = array();
@@ -2396,7 +2396,8 @@ class Arabic
                     $output .= '&#x' . $this->arGlyphs[$crntChar . $nextChar][0] . ';';
                 }
                 if ($prevChar == 'ل') {
-                    $tmp_form = ($this->arGlyphs[$chars[$i - 2]]['prevLink'] == true) ? 3 : 2;
+                    $tmp_form = (isset($this->arGlyphs[$chars[$i - 2]]['prevLink']) &&
+                                 $this->arGlyphs[$chars[$i - 2]]['prevLink'] == true) ? 3 : 2;
                     $output .= '&#x' . $this->arGlyphs[$prevChar][$tmp_form] . ';';
                     $i--;
                 }

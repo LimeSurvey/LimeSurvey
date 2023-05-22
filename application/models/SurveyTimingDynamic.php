@@ -140,17 +140,17 @@ class SurveyTimingDynamic extends LSActiveRecord
         }
 
         if (isset($data['id'])) {
-             switchMSSQLIdentityInsert(trim($this->tableName(), "{}"), true);
+             switchMSSQLIdentityInsert(trim((string) $this->tableName(), "{}"), true);
         }
         try {
             $record->save();
             if (isset($data['id'])) {
-                 switchMSSQLIdentityInsert(trim($this->tableName(), "{}"), false);
+                 switchMSSQLIdentityInsert(trim((string) $this->tableName(), "{}"), false);
             }
             return $record->id;
         } catch (Exception $e) {
             if (isset($data['id'])) {
-                 switchMSSQLIdentityInsert(trim($this->tableName(), "{}"), false);
+                 switchMSSQLIdentityInsert(trim((string) $this->tableName(), "{}"), false);
             }
             if (App()->getConfig('debug') > 1) {
                 throw new \CException($e->getMessage());

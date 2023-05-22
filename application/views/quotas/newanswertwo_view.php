@@ -36,7 +36,7 @@
                                     <?php
                                         foreach ($question_answers as $key => $value) {
                                             if (!isset($value['rowexists'])) {
-                                                echo '<option value="' . $key . '">' . strip_tags(substr($value['Display'], 0, 40)) . '</option>';
+                                                echo '<option value="' . $key . '">' . strip_tags(substr((string) $value['Display'], 0, 40)) . '</option>';
                                             }
                                         }
                                     ?>

@@ -76,7 +76,7 @@ class QuestionL10n extends LSActiveRecord
             ['qid', 'numerical', 'integerOnly' => true],
             array('question', 'LSYii_Validators'),
             array('help', 'LSYii_Validators'),
-            array('script', 'LSYii_Validators'),
+            array('script', 'safe'),
             array('language', 'length', 'min' => 2, 'max' => 20), // in array languages ?
             /* Add rules for existing unique index : idx1_question_ls ['qid', 'language'] */
             array('qid', 'unique', 'criteria' => array(
@@ -91,6 +91,9 @@ class QuestionL10n extends LSActiveRecord
                 ),
             ),
         );
+        if (!Yii::app()->user->isScriptUpdateAllowed()) {
+            $rules[] = array('script', 'LSYii_NoUpdateValidator');
+        }
         return $rules;
     }
 }

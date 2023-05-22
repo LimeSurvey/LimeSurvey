@@ -1134,9 +1134,9 @@ function getJSDateFromDateFormat($sDateformat)
      */
 function getDateFormatDataForQID($aQidAttributes, $mThisSurvey, $language = '')
 {
-    if (isset($aQidAttributes['date_format']) && trim($aQidAttributes['date_format']) != '') {
+    if (isset($aQidAttributes['date_format']) && trim((string) $aQidAttributes['date_format']) != '') {
         $aDateFormatDetails = array();
-        $aDateFormatDetails['dateformat'] = trim($aQidAttributes['date_format']);
+        $aDateFormatDetails['dateformat'] = trim((string) $aQidAttributes['date_format']);
         $aDateFormatDetails['phpdate'] = getPHPDateFromDateFormat($aDateFormatDetails['dateformat']);
         $aDateFormatDetails['jsdate'] = getJSDateFromDateFormat($aDateFormatDetails['dateformat']);
     } else {
@@ -1288,8 +1288,8 @@ function getLanguageDataRestricted($bOrderByNative = false, $sDetail = 'full')
 {
     $aLanguageData = getLanguageData($bOrderByNative);
 
-    if (trim(Yii::app()->getConfig('restrictToLanguages')) != '') {
-        foreach (explode(' ', trim(Yii::app()->getConfig('restrictToLanguages'))) as $key) {
+    if (trim((string) Yii::app()->getConfig('restrictToLanguages')) != '') {
+        foreach (explode(' ', trim((string) Yii::app()->getConfig('restrictToLanguages'))) as $key) {
             $aResult[$key] = $aLanguageData[$key];
         }
     } else {

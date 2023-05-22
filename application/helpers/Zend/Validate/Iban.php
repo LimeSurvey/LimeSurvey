@@ -184,7 +184,7 @@ class Zend_Validate_Iban extends Zend_Validate_Abstract
         if ($locale !== false) {
             require_once 'Zend/Locale.php';
             $locale = Zend_Locale::findLocale($locale);
-            if (strlen($locale) < 4) {
+            if (strlen((string) $locale) < 4) {
                 require_once 'Zend/Validate/Exception.php';
                 throw new Zend_Validate_Exception('Region must be given for IBAN validation');
             }

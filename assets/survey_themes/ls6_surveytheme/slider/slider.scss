@@ -1,8 +1,3 @@
-.slider-item {
-    margin-bottom : 20px;
-    min-height    : 50px;
-}
-
 .slider-container {
     min-height : 15px;
 }
@@ -28,16 +23,25 @@
 
 .slider-list {
     .slider-item {
-        overflow-x  : hidden;
-        padding-top : 1em;
+        margin-bottom : 20px;
+        min-height    : 50px;
+        overflow-x    : hidden;
+        padding-top   : 1rem;
+    }
+    .slider-item:first-child {
+        padding-top: calc(1rem + 20px);
     }
     .slider {
         .slider-handle {
             background-color : $base-color;
             background-image : unset;
         }
-        .slider-handle.custom::before {
-            color : $base-color;
+        .slider-handle.custom {
+            background-color: $body-background;
+            width: auto;
+            &::before {
+                color : $base-color;
+            }
         }
         .slider-selection {
             background-color : $base-color;
@@ -59,6 +63,16 @@
                 color            : $base-color;
             }
         }
+    }
+    .slider.slider-untouched .slider-handle {
+        background-color : $g-700;
+    }
+    .slider.slider-untouched .slider-handle.custom {
+        background-color: $body-background;
+        &::before {
+            color : $g-700;
+        }
+
     }
     .ls-slider-item-vertical {
         .slider-min-block {

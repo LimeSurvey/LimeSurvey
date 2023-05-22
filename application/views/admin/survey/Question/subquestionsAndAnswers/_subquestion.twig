@@ -107,9 +107,7 @@
             value="{{ question }}"
             onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('save-button').click(); return false;}"
             />
-            <span class="input-group-addon">
-                {{ getEditor("editanswer","answer_"~language~"_"~qid~"_"~scale_id, "["~gT("Subquestion:", "js")~"]("~language~")",surveyid,gid,qid,'editanswer') }}
-            </span>
+            {{ getEditor("editanswer","answer_"~language~"_"~qid~"_"~scale_id, "["~gT("Subquestion:", "js")~"]("~language~")",surveyid,gid,qid,'editanswer') }}
         </div>
     </td>
 

@@ -62,11 +62,12 @@ class TestBaseClass extends TestCase
 
     /**
      * @param string $fileName
+     * @param integer $asuser
      * @return void
      */
-    protected static function importSurvey($fileName)
+    protected static function importSurvey($fileName, $asuser = 1)
     {
-        \Yii::app()->session['loginID'] = 1;
+        \Yii::app()->session['loginID'] = $asuser;
         $surveyFile = $fileName;
         if (!file_exists($surveyFile)) {
             throw new Exception(sprintf('Survey file %s not found', $surveyFile));

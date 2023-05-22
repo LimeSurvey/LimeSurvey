@@ -36,25 +36,25 @@
     <!-- Name -->
     <div class="mb-3 col-12">
         <label class="col-2 form-label"><?php eT("Name:"); ?></label>
-        <?= htmlentities($config->getName()); ?>
+        <?= htmlentities((string) $config->getName()); ?>
     </div>
 
     <!-- Description -->
     <div class="mb-3 col-12">
         <label class="col-2 form-label"><?php eT("Description:"); ?></label>
-        <?= htmlentities($config->getDescription()); ?>
+        <?= htmlentities((string) $config->getDescription()); ?>
     </div>
 
     <!-- Version -->
     <div class="mb-3 col-12">
         <label class="col-2 form-label"><?php eT("Version:"); ?></label>
-        <?= htmlentities($config->getVersion()); ?>
+        <?= htmlentities((string) $config->getVersion()); ?>
     </div>
 
     <!-- Author -->
     <div class="mb-3 col-12">
         <label class="col-2 form-label"><?php eT("Author:"); ?></label>
-        <?= htmlentities($config->getAuthor()); ?>
+        <?= htmlentities((string) $config->getAuthor()); ?>
     </div>
 
     <!-- Compatible -->

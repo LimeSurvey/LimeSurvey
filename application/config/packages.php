@@ -291,7 +291,8 @@ return [
         'depends'    => [
             'jquery',
             'pjaxbackend',
-            'lslog'
+            'lslog',
+            'select2-bootstrap'
         ]
     ],
 

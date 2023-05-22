@@ -232,6 +232,8 @@ class TwoFactorAdminLogin extends AuthPluginBase
             'href' => '#',
             'menuItems' => $aMenuItems,
             'iconClass' => 'ri-lock-fill',
+            'isInMiddleSection' => true,
+            'isPrepended' => false,
         ];
         $oNewMenu = new TFAMenuClass($aNewMenuOptions);
 

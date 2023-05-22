@@ -5,7 +5,7 @@
  */
 ?>
 <!DOCTYPE html>
-<html lang="<?php echo str_replace(['-informal','-easy'], ['',''], htmlspecialchars($adminlang)); ?>"<?php echo $languageRTL;?> >
+<html lang="<?php echo str_replace(['-informal','-easy'], ['',''], htmlspecialchars((string) $adminlang)); ?>"<?php echo $languageRTL;?> >
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />

@@ -306,8 +306,8 @@ class WhRangeSlider extends CInputWidget
         //inserting trigger
         if (isset($this->events['valuesChanged'])) {
             $orig = $this->events['valuesChanged'];
-            if (strpos($orig, 'js:') === 0) {
-                $orig = substr($orig, 3);
+            if (strpos((string) $orig, 'js:') === 0) {
+                $orig = substr((string) $orig, 3);
             }
             $orig = "\n($orig).apply(this, arguments);";
         } else {

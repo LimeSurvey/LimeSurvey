@@ -16,6 +16,7 @@ $action                : #4200FF; // links on light
 $active-green          : #14AE5C; // buttons & links
 $elevation-shadow      : rgba(66, 0, 255, 0.2); // LSD/Elevation/Shadow
 $elevation-shadow-soft : rgba(0, 0, 0, 0.2); // LSD/Elevation/ShadowSoft
+$body-background       : #fff;
 
 $white                 : #fff;
 $black                 : #000;
@@ -33,15 +34,15 @@ $g-300                 : #DDDEE8;
 $g-200                 : #EEEFF7;
 $g-100                 : #F9F9FB;
 
-$theme-colors: (
-        "primary":    $base-color,
-        "secondary":  $g-600,
-        "success":    $success,
-        "danger":     $error,
-        "warning":    $warning,
-        "info":       $grape,
-        "light":      $g-200,
-        "dark":       $g-900,
-        "black60":    $black60,
-        "cancel":     $g-600, // replace with secondary
+$theme-colors          : (
+        "primary": $base-color,
+        "secondary": $g-600,
+        "success": $success,
+        "danger": $error,
+        "warning": $warning,
+        "info": $grape,
+        "light": $g-200,
+        "dark": $g-900,
+        "black60": $black60,
+        "cancel": $g-600, // replace with secondary
 );
