@@ -14918,6 +14918,7 @@ a [class^=ri-], a [class*=" ri-"] {
 }
 
 .modal-header {
+  padding: 1.5rem;
   border-bottom: none;
 }
 .modal-header .btn-close {
@@ -14931,7 +14932,12 @@ a [class^=ri-], a [class*=" ri-"] {
 }
 
 .modal-title {
+  margin-top: 0;
   line-height: 26px;
+}
+
+.modal-body {
+  padding: 1.5rem;
 }
 
 .modal-footer {
