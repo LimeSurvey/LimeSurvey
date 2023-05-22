@@ -15350,7 +15350,7 @@ a [class^=ri-], a [class*=" ri-"] {
   display: flex;
 }
 
-@media only screen and (max-width: 766px) {
+@media only screen and (max-width: 767px) {
   .reload-button, .captcha-input {
     padding-top: 8px;
   }
