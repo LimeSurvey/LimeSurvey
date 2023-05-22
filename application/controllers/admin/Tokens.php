@@ -359,7 +359,7 @@ class Tokens extends SurveyCommonAction
         } else {
             Yii::app()->setFlashMessage(gT('Could not delete survey participant.'), 'error');
         }
-        $this->getController()->redirect(array("admin/tokens", "sa" => "browse", "surveyid" => $iSid));
+        $this->getController()->redirect(array("admin/tokens", "sa" => "index", "surveyid" => $iSid));
     }
 
     /**
@@ -711,7 +711,14 @@ class Tokens extends SurveyCommonAction
 
             if ($aData['success']) {
                 if ($request->getPost('close-after-save')) {
-                    $redirectUrl = Yii::app()->createUrl('admin/tokens/sa/browse/surveyid/' . $iSurveyId);
+                    // confirmed
+                    $redirectUrl = Yii::app()->createUrl(
+                        "admin/tokens",
+                            [
+                                "sa" => 'index',
+                                "surveyid" => $iSurveyId,
+                            ]
+                        );
                 } else {
                     $redirectUrl = Yii::app()->createUrl("/admin/tokens/sa/edit", ["iSurveyId" => $iSurveyId, "iTokenId" => $token->tid]);
                 }
@@ -880,7 +887,7 @@ class Tokens extends SurveyCommonAction
         }
         if (!$survey->hasTokensTable) {
             // If no tokens table exists
-            $this->newtokentable($iSurveyId);
+            $this->newtokentable($iSurveyID);
         }
 
         $beforeTokenDelete = new PluginEvent('beforeTokenDelete');
@@ -933,8 +940,14 @@ class Tokens extends SurveyCommonAction
         $aData['topBar']['showSaveAndCloseButton'] = true;
         // White Close Button
         $aData['topBar']['showWhiteCloseButton'] = true;
-        $aData['topBar']['closeUrl'] = Yii::app()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId);
-
+        $aData['topBar']['closeUrl'] = Yii::app()->createUrl(
+            "admin/tokens",
+                [
+                    "sa" => 'index',
+                    "surveyid" => $iSurveyId,
+                ]
+            ); 
+        
         if (!empty($subaction) && $subaction == 'add') {
             $message = '';
             $this->getController()->loadLibrary('Date_Time_Converter');
@@ -1025,7 +1038,7 @@ class Tokens extends SurveyCommonAction
                 $aData['success'] = true;
                 Yii::app()->session['flashmessage'] = gT("New dummy participants were added.");
                 //admin/tokens/sa/browse/surveyid/652779//
-                $this->getController()->redirect(array("/admin/tokens/sa/browse/surveyid/{$iSurveyId}"));
+                $this->getController()->redirect(array("admin/tokens", "sa" => "index", "surveyid" => $iSurveyId));
             } else {
                 $aData['success'] = false;
                 $aData['topBar']['name'] = 'tokensTopbar_view';
@@ -1067,7 +1080,13 @@ class Tokens extends SurveyCommonAction
                     'showSaveAndCloseButton' => true,
                     'showWhiteCloseButton' => true,
                     'showSaveButton' => true,
-                    'closeUrl' => Yii::app()->createUrl('admin/tokens/sa/browse/surveyid/' . $iSurveyId)
+                    'closeUrl' => Yii::app()->createUrl(
+                        "admin/tokens",
+                            [
+                                "sa" => 'index',
+                                "surveyid" => $iSurveyId,
+                            ]
+                        )
                 ],
                 true
             );
@@ -1156,7 +1175,13 @@ class Tokens extends SurveyCommonAction
             '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
             [
                 'showCloseButton' => true,
-                'closeUrl' => Yii::app()->createUrl('admin/tokens/sa/browse/surveyid/' . $iSurveyId)
+                'closeUrl' => Yii::app()->createUrl(
+                    "admin/tokens",
+                        [
+                            "sa" => 'index',
+                            "surveyid" => $iSurveyId,
+                        ]
+                    )
             ],
             true
         );
@@ -1790,7 +1815,13 @@ class Tokens extends SurveyCommonAction
 
             // White Close Button
             //$aData['showWhiteCloseButton'] = true;
-            $aData['closeUrl'] = Yii::app()->createUrl('admin/tokens/sa/browse/surveyid/' . $iSurveyId);
+            $aData['closeUrl'] = Yii::app()->createUrl(
+                "admin/tokens",
+                    [
+                        "sa" => 'index',
+                        "surveyid" => $iSurveyId,
+                    ]
+                );
 
             //$aData['topBar']['name'] = 'tokensTopbar_view';
             //$aData['topBar']['rightSideView'] = 'tokensTopbarRight_view';
@@ -1798,7 +1829,13 @@ class Tokens extends SurveyCommonAction
             $topbarData = TopbarConfiguration::getTokensTopbarData($iSurveyId);
             $aData['topbar']['showWhiteCloseButton'] = true;
             $aData['topbar']['showDownloadButton'] = true;
-            $aData['topbar']['closeUrl'] = Yii::app()->createUrl('admin/tokens/sa/browse/surveyid/' . $iSurveyId);
+            $aData['topbar']['closeUrl'] = Yii::app()->createUrl(
+                "admin/tokens",
+                    [
+                        "sa" => 'index',
+                        "surveyid" => $iSurveyId,
+                    ]
+                );
             $topbarData = array_merge($topbarData, $aData['topbar']);
             $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
                 '/surveyAdministration/partial/topbar_tokens/rightSideButtons',
@@ -1847,7 +1884,13 @@ class Tokens extends SurveyCommonAction
             '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
             [
                 'showCloseButton' => true,
-                'closeUrl' => Yii::app()->createUrl('admin/tokens/sa/browse/surveyid/' . $iSurveyId)
+                'closeUrl' => Yii::app()->createUrl(
+                    "admin/tokens",
+                        [
+                            "sa" => 'index',
+                            "surveyid" => $iSurveyId,
+                        ]
+                    )
             ],
             true
         );
@@ -2097,7 +2140,13 @@ class Tokens extends SurveyCommonAction
             '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
             [
                 'showCloseButton' => true,
-                'closeUrl' => Yii::app()->createUrl('admin/tokens/sa/browse/surveyid/' . $iSurveyId)
+                'closeUrl' => Yii::app()->createUrl(
+                    "admin/tokens",
+                        [
+                            "sa" => 'index',
+                            "surveyid" => $iSurveyId,
+                        ]
+                    )
             ],
             true
         );
@@ -2586,7 +2635,13 @@ class Tokens extends SurveyCommonAction
         $topbarData = TopbarConfiguration::getTokensTopbarData($iSurveyId);
         $aData['topbar']['showSaveButton'] = true;
         $aData['topbar']['showWhiteCloseButton'] = true;
-        $aData['topbar']['closeUrl'] = Yii::app()->createUrl('admin/tokens/sa/browse/surveyid/' . $iSurveyId);
+        $aData['topbar']['closeUrl'] =Yii::app()->createUrl(
+            "admin/tokens",
+                [
+                    "sa" => 'index',
+                    "surveyid" => $iSurveyId,
+                ]
+            );
         $topbarData = array_merge($topbarData, $aData['topbar']);
         $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
             '/surveyAdministration/partial/topbar_tokens/rightSideButtons',
@@ -2669,7 +2724,13 @@ class Tokens extends SurveyCommonAction
             [
                 'showGreenSaveAndCloseButton' => true,
                 'showWhiteCloseButton' => true,
-                'closeUrl' => Yii::app()->createUrl('admin/tokens/sa/browse/surveyid/' . $iSurveyId)
+                'closeUrl' => Yii::app()->createUrl(
+                    "admin/tokens",
+                        [
+                            "sa" => 'index',
+                            "surveyid" => $iSurveyId,
+                        ]
+                    )
             ],
             true
         );
@@ -2991,7 +3052,13 @@ class Tokens extends SurveyCommonAction
 
         $topbarData = TopbarConfiguration::getTokensTopbarData($iSurveyId);
         $aData['topbar']['showWhiteCloseButton'] = true;
-        $aData['topbar']['closeUrl'] = Yii::app()->createUrl('admin/tokens/sa/browse/surveyid/' . $iSurveyId);
+        $aData['topbar']['closeUrl'] = Yii::app()->createUrl(
+            "admin/tokens",
+                [
+                    "sa" => 'index',
+                    "surveyid" => $iSurveyId,
+                ]
+            );
         $topbarData = array_merge($topbarData, $aData['topbar']);
         $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
             '/surveyAdministration/partial/topbar_tokens/rightSideButtons',

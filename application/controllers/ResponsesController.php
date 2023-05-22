@@ -415,8 +415,8 @@ class ResponsesController extends LSBaseController
         $this->render('browseindex_view', [
             'num_completed_answers' => $aData['num_completed_answers'],
             'num_total_answers'     => $aData['num_total_answers'],
-            'tokeninfo'             => $aData['tokeninfo'],
-            'with_token'            => $aData['with_token']
+            'tokeninfo'             => null,
+            'with_token'            => null
         ]);
     }
 
