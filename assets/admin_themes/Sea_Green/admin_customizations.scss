@@ -24,12 +24,12 @@ body {
 // Headings
 .pagetitle {
   padding-bottom: 4px;
-  border-bottom : solid 2px $g-400;
-  position      : relative;
-  margin-bottom : 1em;
+  border-bottom: solid 2px $g-400;
+  position: relative;
+  margin-bottom: 1em;
 
   &.h3 {
-    @include h3
+    @include h3;
   }
 }
 .side-body {
