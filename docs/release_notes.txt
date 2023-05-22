@@ -34,6 +34,15 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.21 (build 230518) to 5.6.22 (build 230523) May 22, 2023
+-Fixed issue #18814: Array question statistics fail for Remote Control. (#3141) (Gabriel Jenik)
+-Fixed issue #18736: Error exporting participants when using MSSQL DB (Carsten Schmitz)
+-Fixed issue #18725: Reorder questions/question groups can broke survey (#3091) (Denis Chenu)
+-Fixed issue #18670: "Validation of quota" action button always shows 1st quota (#3122) (Gabriel Jenik)
+-Fixed issue #18343: Problem with double slash in an URL(IIS) (#3155) (Denis Chenu)
+#Updated translation: German by c_schmitz
+
+
 Changes from 5.6.20 (build 230516) to 5.6.21 (build 230518) May 16, 2023
 -Fixed issue: ComfortUpdate showing updates as unstable, even though they are not (Carsten Schmitz)
 -Fixed issue #18787: Wrong default answers are loaded for multilingual surveys (#3107) (Denis Chenu)
