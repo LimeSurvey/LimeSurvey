@@ -71,7 +71,7 @@ if (empty($errorinupload)) {
             $warningSummary .= "<li style='width: 400px'>" . sprintf(gT("%s records where the number of fields does not match"), count($aInvalidFormatlist));
             $warningSummary .= "<div class='badtokenlist' id='invalidattributelist' ><ul>";
             foreach ($aInvalidFormatlist as $data) {
-                $warningSummary .= "<li>" . vsprintf(gT('Line %s: Fields found: %s Expected: %s'), explode(',', $data)) . "</li>";
+                $warningSummary .= "<li>" . vsprintf(gT('Line %s: Fields found: %s Expected: %s'), explode(',', (string) $data)) . "</li>";
             }
             $warningSummary .= "</ul></div></li>";
         }

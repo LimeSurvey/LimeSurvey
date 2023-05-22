@@ -11,10 +11,9 @@
   }
   .navbar-brand {
     font-style: normal;
-    font-weight: 700;
-    font-size: 16px;
+    font-weight: 800;
+    font-size: 18px;
     color: $navbar-color;
-    height: 30px;
     width: auto;
   }
   .navbar-toggler {
@@ -48,7 +47,7 @@
     height: 25px;
   }
   a {
-    font-weight : $font-weight-500;
+    font-weight : $font-weight-normal;
   }
   .dropdown-menu {
     z-index: 10000;
@@ -91,7 +90,7 @@
 .mega-dropdown-menu {
   margin-left: auto;
   margin-right: auto;
-  padding: $grid-gutter-width var(--bs-gutter-x, .75rem);
+  padding: $grid-gutter-width $container-padding;
   width: 100%;
   .dropdown-header {
     color: $g-600;

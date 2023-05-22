@@ -97,7 +97,7 @@
                                 <div class="default controls">
                                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', array(
                                         'name' => 'bounceaccountencryption',
-                                        'checkedOption'=> strtolower($settings['bounceaccountencryption']),
+                                        'checkedOption'=> strtolower((string) $settings['bounceaccountencryption']),
                                         'selectOptions' => array(
                                             "off" => gT("Off (unsafe)", 'unescaped'),
                                             "ssl" => gT("SSL/TLS", 'unescaped'),

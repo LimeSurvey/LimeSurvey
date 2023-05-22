@@ -22,7 +22,7 @@
             </div>
             <div class="col-10">
                 <?php
-                if (trim($grow['description']) != '') {
+                if (trim((string) $grow['description']) != '') {
                     templatereplace($grow['description']);
                     echo LimeExpressionManager::GetLastPrettyPrintExpression();
                 }
@@ -30,7 +30,7 @@
             </div>
         </div>
         <?php
-        if (trim($grow['grelevance']) != '') { ?>
+        if (trim((string) $grow['grelevance']) != '') { ?>
             <div class="row">
                 <div class="col-2">
                     <strong><?php eT("Condition:"); ?></strong>
@@ -45,7 +45,7 @@
         <?php
         } ?>
         <?php
-        if (trim($grow['randomization_group']) != '') {
+        if (trim((string) $grow['randomization_group']) != '') {
             ?>
             <div class="row">
                 <div class="col-2"><?php eT("Randomization group:"); ?></div>

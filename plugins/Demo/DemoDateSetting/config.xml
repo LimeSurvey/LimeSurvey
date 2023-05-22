@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <metadata>
+        <name>DemoDateSetting</name>
+        <type>plugin</type>
+        <creationDate>2022-12-01</creationDate>
+        <lastUpdate>2023-03-06</lastUpdate>
+        <author>Denis Chenu</author>
+        <authorUrl>https://community.limesurvey.org/</authorUrl>
+        <version>0.1.0</version>
+        <license>MIT</license>
+        <description><![CDATA[Way to save date settings.]]></description>
+    </metadata>
+    <compatibility>
+        <version>5</version>
+    </compatibility>
+</config>

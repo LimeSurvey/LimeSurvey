@@ -106,7 +106,7 @@
                                 $subject = Replacefields($oSurvey->languagesettings[$language]->surveyls_email_invite_subj, $fieldsarray, false);
                                 $textarea = Replacefields($oSurvey->languagesettings[$language]->surveyls_email_invite, $fieldsarray, false);
                                 if ($ishtml !== true) {
-                                    $textarea = str_replace(array('<x>', '</x>'), array(''), $textarea);
+                                    $textarea = str_replace(array('<x>', '</x>'), array(''), (string) $textarea);
                                 }
                             ?>
                             <div id="<?php echo $language; ?>" class="tab-pane fade <?php if ($c){$c=false;echo 'show active';}?>">
@@ -129,7 +129,7 @@
 
                                     <label class='form-label ' for='message_<?php echo $language; ?>'><?php eT("Message:"); ?></label>
                                     <div class=''>
-                                        <div class="htmleditor">
+                                        <div class="input-group htmleditor">
                                             <?php echo CHtml::textArea("message_{$language}",$textarea,array('cols'=>80,'rows'=>20, 'class' => 'form-control')); ?>
                                             <?php echo getEditor("email-invitation", "message_$language", "[" . gT("Invitation email:", "js") . "](" . $language . ")", $surveyid, '', '', "tokens"); ?>
                                         </div>

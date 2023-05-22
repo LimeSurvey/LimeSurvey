@@ -115,17 +115,15 @@
                 data-contents-dir="{{ getLanguageRTL(language) ? 'rtl' : 'ltr' }}"
                 value="{{ answerOptionl10n.answer|escape('html_attr') }}"
             />
-            <span class="input-group-addon">
-                {{ getEditor(
-                    "editanswer",
-                    "answeroptions["~answerOption.aid~"]["~scale_id~"][answeroptionl10n]["~language~"]",
-                    "["~gT("Answer option:", "js")~"]("~language~")",
-                    question.sid,
-                    question.gid,
-                    question.qid,
-                    'editanswer'
-                ) }}
-            </span>
+            {{ getEditor(
+                "editanswer",
+                "answeroptions["~answerOption.aid~"]["~scale_id~"][answeroptionl10n]["~language~"]",
+                "["~gT("Answer option:", "js")~"]("~language~")",
+                question.sid,
+                question.gid,
+                question.qid,
+                'editanswer'
+            ) }}
         </div>
     </td>
 

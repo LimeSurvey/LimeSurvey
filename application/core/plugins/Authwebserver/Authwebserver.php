@@ -66,12 +66,12 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
             $sUser = $_SERVER[$serverKey];
             // Only strip domain part when desired
             if ($this->get('strip_domain', null, null, false)) {
-                if (strpos($sUser, "\\") !== false) {
+                if (strpos((string) $sUser, "\\") !== false) {
                     // Get username for DOMAIN\USER
-                    $sUser = substr($sUser, strrpos($sUser, "\\") + 1);
-                } elseif (strpos($sUser, "@") !== false) {
+                    $sUser = substr((string) $sUser, strrpos((string) $sUser, "\\") + 1);
+                } elseif (strpos((string) $sUser, "@") !== false) {
                     // Get username for USER@DOMAIN
-                    $sUser = substr($sUser, 0, strrpos($sUser, "@"));
+                    $sUser = substr((string) $sUser, 0, strrpos((string) $sUser, "@"));
                 }
             }
             $aUserMappings = $this->api->getConfigKey('auth_webserver_user_map', array());

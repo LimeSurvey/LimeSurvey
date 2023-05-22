@@ -66,13 +66,11 @@
             <div class="{{ aSurveyInfo.class.registerformcaptcha }} " {{ aSurveyInfo.attr.maincolformdivb }}>
                 <label class='{{ aSurveyInfo.class.registerformcaptchalabel }} control-label ' {{ aSurveyInfo.attr.registerformcaptchalabel }} >{{ gT("Please solve the following equation") }} {{ include('./subviews/registration/required.twig') }}</label>
                 <div class="row" {{ aSurveyInfo.attr.registerformcaptchadiv }}>
-                    <div class="{{ aSurveyInfo.class.registerformcaptchadivb }} captcha-container col-md-2 col-sm-12" {{ aSurveyInfo.attr.registerformcaptchadivb }}>
+                    <div class="{{ aSurveyInfo.class.registerformcaptchadivb }} captcha-container col-xl-2 col-lg-3 col-md-12 align-items-center" {{ aSurveyInfo.attr.registerformcaptchadivb }}>
                             {{ renderCaptcha().renderOut() }}
-                    </div>
-                    <div class="{{ aSurveyInfo.class.registerformcaptchadivc }} col-md-1 col-sm-12 reload-button align-self-center" {{ aSurveyInfo.attr.registerformcaptchadivc }}>
                         <a href="#" class="btn btn-outline-secondary" id="reloadCaptcha" title="{{ gT("Reload captcha") }}" data-toggle="captcha"><i class="ri-refresh-line"></i></a>
                     </div>
-                    <div class="col-md-9 col-sm-12 captcha-input align-self-center">
+                    <div class="col-xl-10 col-lg-9 col-md-12 captcha-input align-self-center">
                         <input class='form-control ls-important-field {{ aSurveyInfo.class.registerformcaptchainput }}' {{ aSurveyInfo.attr.registerformcaptchainput }} placeholder="{{ gT("enter result here - numbers only") }}">
                     </div>
                 </div>

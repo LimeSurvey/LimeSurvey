@@ -122,7 +122,7 @@ class FailedLoginAttempt extends LSActiveRecord
         }
 
         if ($row != null) {
-            $lastattempt = strtotime($row->last_attempt);
+            $lastattempt = strtotime((string) $row->last_attempt);
             if (time() > $lastattempt + $timeOut) {
                 $this->deleteAttempts($attemptType);
             } else {

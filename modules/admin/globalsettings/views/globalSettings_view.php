@@ -14,19 +14,6 @@ LS.renderBootstrapSwitch();
 );
 
 ?>
-<?php if (YII_DEBUG): ?>
-    <?php
-    $this->widget('ext.AlertWidget.AlertWidget', [
-        'tag' => 'p',
-        'text' => gT(
-            'this view is rendered from global setting module. This message is shown only when debug mode is on'
-        ),
-        'type' => 'info',
-        'showCloseButton' => false,
-    ]);
-    ?>
-    </div>
-<?php endif; ?>
 <script type="text/javascript">
     var msgCantRemoveDefaultLanguage = '<?php eT("You can't remove the default language.", 'js'); ?>';
 </script>
