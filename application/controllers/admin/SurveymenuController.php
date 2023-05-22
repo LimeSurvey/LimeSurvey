@@ -53,11 +53,11 @@ class SurveymenuController extends SurveyCommonAction
             Yii::app()->user->setFlash('error', gT("Access denied"));
             $this->getController()->redirect(Yii::app()->createUrl('/admin'));
         }
-
+        $id = (int) $id;
         if ($id != 0) {
-                    $model = $this->loadModel($id);
+            $model = Surveymenu::model()->findByPk($id);
         } else {
-                    $model = new Surveymenu();
+            $model = new Surveymenu();
         }
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
@@ -124,7 +124,7 @@ class SurveymenuController extends SurveyCommonAction
             $this->getController()->redirect(Yii::app()->createUrl('/admin'));
         }
 
-        $aSurveyMenuIds = json_decode(Yii::app()->request->getPost('sItems'));
+        $aSurveyMenuIds = json_decode(Yii::app()->request->getPost('sItems', '')) ?? [];
         $aResults = array();
         $oBaseModel = Surveymenu::model();
         if (Permission::model()->hasGlobalPermission('settings', 'update')) {
@@ -183,11 +183,15 @@ class SurveymenuController extends SurveyCommonAction
         }
 
         if (Yii::app()->request->isPostRequest) {
-            $aSurveyMenuIds = json_decode(Yii::app()->request->getPost('sItems'));
+            $aSurveyMenuIds = json_decode(Yii::app()->request->getPost('sItems', '')) ?? [];
             $success = [];
             foreach ($aSurveyMenuIds as $menuid) {
-                $model = $this->loadModel($menuid);
-                $success[$menuid] = $model->delete();
+                $model = Surveymenu::model()->findByPk((int)$menuid);
+                $success[$menuid] = false;
+                if ($model !== null) {
+                    $model->delete();
+                    $success[$menuid] = true;
+                }
             }
 
             $debug = $userConfig['config']['debug'] ?? 0;
@@ -229,9 +233,12 @@ class SurveymenuController extends SurveyCommonAction
 
         if (Yii::app()->request->isPostRequest) {
             $menuid = Yii::app()->request->getPost('menuid', 0);
+            $model = Surveymenu::model()->findByPk((int)$menuid);
             $success = false;
-            $model = $this->loadModel($menuid);
-            $success = $model->delete();
+            if ($model !== null) {
+                $model->delete();
+                $success = true;
+            }
             $debug = $userConfig['config']['debug'] ?? 0;
             $returnData = array(
                 'data' => [
@@ -332,6 +339,7 @@ class SurveymenuController extends SurveyCommonAction
      * @param integer $id the ID of the model to be loaded
      * @return Surveymenu the loaded model
      * @throws CHttpException
+     * @deprecated do not use this function anymore
      */
     public function loadModel($id)
     {

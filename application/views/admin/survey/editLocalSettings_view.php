@@ -64,7 +64,7 @@ echo viewHelper::getViewTestTag('surveyTexts');
             <label class="form-label "><?php eT("Decimal mark:"); ?></label>
             <?php $aRadixPoint = [];
             foreach (getRadixPointData() as $index => $radixptdata) {
-                $aRadixPoint[$index] = html_entity_decode($radixptdata['desc']);
+                $aRadixPoint[$index] = html_entity_decode((string) $radixptdata['desc']);
             }
             $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                 'name'          => 'numberformat_' . $aSurveyLanguageSettings['surveyls_language'],
@@ -162,7 +162,7 @@ echo viewHelper::getViewTestTag('surveyTexts');
                 <label class="form-label "><?php eT("End URL:"); ?></label>
                 <?php echo CHtml::textField(
                     "url_{$aSurveyLanguageSettings['surveyls_language']}",
-                    htmlspecialchars_decode($aSurveyLanguageSettings['surveyls_url']),
+                    htmlspecialchars_decode((string) $aSurveyLanguageSettings['surveyls_url']),
                     array('class' => 'form-control', 'size' => "80", 
                             'placeholder' => 'http://', 'id' => "url_{$aSurveyLanguageSettings['surveyls_language']}")
                 ); ?>

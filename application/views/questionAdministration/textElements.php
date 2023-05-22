@@ -135,7 +135,8 @@
                             'data-filetype' => 'javascript',
                             'class' => 'ace form-control',
                             'style' => 'width: 100%',
-                            'data-lang' => "$lang"
+                            'data-lang' => "$lang",
+                            'readonly' => !App()->user->isScriptUpdateAllowed()
                         ]
                     ); ?>
                     <p class="alert well">

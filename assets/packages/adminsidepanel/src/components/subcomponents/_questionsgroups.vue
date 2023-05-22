@@ -376,7 +376,7 @@ export default {
                             </span>
                         </div>
 
-                        <div class="cursor-pointer" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                        <div class="ls-questiongroup-tools cursor-pointer" id="dropdownMenuButton1" data-bs-toggle="dropdown"
                         aria-expanded="false">
                              <i class="ri-more-fill"></i>
                         </div>
@@ -478,7 +478,7 @@ export default {
                                     </span>
                                 </a>
                                 <div v-if="itemActivated(question)||(hoveredQuestion && hoveredQuestion.qid === question.qid)" class="dropdown position-absolute" style="right:10px" >
-                                    <div class="ms-auto position-relative cursor-pointer" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                                    <div class="ls-question-tools ms-auto position-relative cursor-pointer" id="dropdownMenuButton1" data-bs-toggle="dropdown"
                                      aria-expanded="false">
                                         <i class="ri-more-fill"></i>
                                     </div>

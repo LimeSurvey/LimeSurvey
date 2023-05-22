@@ -27,7 +27,7 @@ class CaptchaExtendedValidator extends CCaptchaValidator{
 
 		$result=$captcha->getVerifyResult();
 		// remove whitespaces
-		$result = preg_replace('/\s/', '', $result);
+		$result = preg_replace('/\s/', '', (string) $result);
 		
 		if(!$this->caseSensitive){
 			$result = mb_convert_case($result, MB_CASE_LOWER, 'utf-8');

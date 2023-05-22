@@ -15,7 +15,7 @@
 
 <textarea readonly="readonly" style="background-color: #FFF; width: 800px; height: 150px; font-family: Monospace; font-size: 11px;">
 <?php foreach ($readonlyfiles as $readonlyfile):?>
-<?php echo trim(htmlspecialchars($readonlyfile))."\n"; ?>
+<?php echo trim(htmlspecialchars((string) $readonlyfile))."\n"; ?>
 <?php endforeach;?>
 </textarea>
 <?php  else:?>

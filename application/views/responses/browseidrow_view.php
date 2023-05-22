@@ -30,7 +30,7 @@
                                 <?php if (isset($fnames[$answer['i']]['code'])) { ?>
                                     [<strong class="qcode"><?php echo $fnames[$answer['i']]['code']; ?></strong>]
                                 <?php } ?>
-                                <?php echo strip_tags(stripJavaScript($fnames[$answer['i']][1])); ?></th>
+                                <?php echo strip_tags((string) stripJavaScript($fnames[$answer['i']][1])); ?></th>
                             <td>
                                 <?php
                                 echo $answer['answervalue']; ?>

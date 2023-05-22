@@ -31,7 +31,7 @@ function updateset($lid)
     $postlabel_name = Yii::app()->getRequest()->getPost('label_name');
 
     $labelset = LabelSet::model()->findByAttributes(array('lid' => $lid));
-    $oldlangidsarray = explode(' ', $labelset->languages);
+    $oldlangidsarray = explode(' ', (string) $labelset->languages);
 
     $addlangidsarray = array_diff($newlanidarray, $oldlangidsarray);
     $dellangidsarray = array_diff($oldlangidsarray, $newlanidarray);
@@ -124,7 +124,7 @@ function modlabelsetanswers($lid)
         $_POST['method'] = gT("Save");
     }
 
-    $sPostData = Yii::app()->getRequest()->getPost('dataToSend');
+    $sPostData = Yii::app()->getRequest()->getPost('dataToSend', '');
     $sPostData = str_replace("\t", '', $sPostData);
     $data = json_decode($sPostData, true);
 
@@ -202,7 +202,7 @@ function fixorder($lid)
     $qulabelset = "SELECT * FROM {{labelsets}} WHERE lid=$lid";
     $rslabelset = Yii::app()->db->createCommand($qulabelset)->query();
     $rwlabelset = $rslabelset->read();
-    $lslanguages = explode(" ", trim($rwlabelset['languages']));
+    $lslanguages = explode(" ", trim((string) $rwlabelset['languages']));
     foreach ($lslanguages as $lslanguage) {
         $query = "SELECT lid, code, title, sortorder FROM {{labels}} WHERE lid=:lid and language=:lang ORDER BY sortorder, code";
         $result = Yii::app()->createCommand($query)->query(array(':lid' => $lid, ':lang' => $lslanguage)); // or safeDie("Can't read labels table: $query // (lid=$lid, language=$lslanguage) "

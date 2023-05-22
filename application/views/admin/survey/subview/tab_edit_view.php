@@ -35,7 +35,7 @@ PrepareEditorScript(false, $this);
 <ul class="nav nav-tabs" id="edit-survey-text-element-language-selection">
     <?php foreach ($aTabTitles as $i => $title): ?>
         <li role="presentation" class="nav-item">
-            <a class="nav-link <?= ($count === 0 || (strpos($title, ' (' . gT("Base language") . ')'))) ? "active" : "" ?>"
+            <a class="nav-link <?= ($count === 0 || (strpos((string) $title, ' (' . gT("Base language") . ')'))) ? "active" : "" ?>"
                data-bs-toggle="tab"
                href="#edittxtele-<?php echo $count; $count++; ?>">
                 <?php echo $title; ?>

@@ -120,7 +120,7 @@ gT('Themes');
 
     <?php
     //Check for IE and show a warning box
-    if (preg_match('~MSIE|Internet Explorer~i', $_SERVER['HTTP_USER_AGENT']) || (strpos($_SERVER['HTTP_USER_AGENT'], 'Trident/7.0') !== false && strpos($_SERVER['HTTP_USER_AGENT'], 'rv:11.0') !== false)) {
+    if (preg_match('~MSIE|Internet Explorer~i', (string) $_SERVER['HTTP_USER_AGENT']) || (strpos((string) $_SERVER['HTTP_USER_AGENT'], 'Trident/7.0') !== false && strpos((string) $_SERVER['HTTP_USER_AGENT'], 'rv:11.0') !== false)) {
     ?>
         <div class="container">
             <?php

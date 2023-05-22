@@ -52,16 +52,14 @@
                     </span>
                 </label>
                 <div class="row">
-                    <div class='{{ aSurveyInfo.class.maincolformdivbdivdivdiv }} captcha-container col-md-2 col-sm-12' {{ aSurveyInfo.attr.maincolformdivbdivdivdiv }} >
+                    <div class='{{ aSurveyInfo.class.maincolformdivbdivdivdiv }} captcha-container col-xl-2 col-lg-3 col-md-12 align-items-center' {{ aSurveyInfo.attr.maincolformdivbdivdivdiv }} >
                         {# see: LS_Twig_Extension::renderCaptcha() in application/core/LS_Twig_Extension.php #}
                         {{ renderCaptcha().renderOut() }}
-                    </div>
-                    <div class="col-md-1 col-sm-12 reload-button align-self-center">
                         <a href="#" class="btn btn-outline-secondary" id="reloadCaptcha"
                            title="{{ gT("Reload captcha") }}" data-toggle="captcha"><i
                                     class="ri-refresh-line"></i></a>
                     </div>
-                    <div class="{{ aSurveyInfo.class.maincolformdivbdiv }} col-md-9 col-sm-12 captcha-input align-self-center" {{ aSurveyInfo.attr.maincolformdivbdiv }}>
+                    <div class="{{ aSurveyInfo.class.maincolformdivbdiv }} col-xl-10 col-lg-9 col-md-12 captcha-input align-self-center" {{ aSurveyInfo.attr.maincolformdivbdiv }}>
                         <input class='form-control ls-important-field {{ aSurveyInfo.class.maincolformdivbdivdivinput }}' {{ aSurveyInfo.attr.maincolformdivbdivdivinput }} placeholder="{{ gT("enter result here - numbers only") }}">
                     </div>
                 </div>

@@ -37,7 +37,7 @@
                     <div class='col-md-10'>
                         <select class='form-select' name='quick-add-cquestions' id='quick-add-cquestions' size='7'>
                             <?php foreach ($cquestions as $cqn): ?>
-                                <option value='<?php echo $cqn[3]; ?>' title="<?php echo htmlspecialchars($cqn[0]); ?>">
+                                <option value='<?php echo $cqn[3]; ?>' title="<?php echo htmlspecialchars((string) $cqn[0]); ?>">
                                     <?php echo $cqn[0]; ?>
                                 </option>
                             <?php endforeach; ?>
@@ -51,7 +51,7 @@
                     <div class='col-md-10'>
                         <select class='form-select' name='quick-add-csrctoken' id='quick-add-csrctoken' size='7'>
                             <?php foreach ($tokenFieldsAndNames as $tokenattr => $tokenattrName): ?>
-                                <option value='{TOKEN:<?php echo strtoupper($tokenattr); ?>}' <?php if ($p_csrctoken == '{TOKEN:'.strtoupper($tokenattr).'}'): echo ' selected="selected" '; endif; ?>>
+                                <option value='{TOKEN:<?php echo strtoupper((string) $tokenattr); ?>}' <?php if ($p_csrctoken == '{TOKEN:'.strtoupper((string) $tokenattr).'}'): echo ' selected="selected" '; endif; ?>>
                                     <?php echo HTMLEscape($tokenattrName['description']); ?>
                                 </option>
                             <?php endforeach; ?>
@@ -152,7 +152,7 @@
                     <div class='col-md-10'>
                         <select class='form-select' name='quick-add-tokenAttr' id='quick-add-tokenAttr' size='7'>
                             <?php foreach ($tokenFieldsAndNames as $tokenattr => $tokenattrName): ?>
-                                <option value='{TOKEN:<?php echo strtoupper($tokenattr); ?>}'>
+                                <option value='{TOKEN:<?php echo strtoupper((string) $tokenattr); ?>}'>
                                     <?php echo HTMLEscape($tokenattrName['description']); ?>
                                 </option>
                             <?php endforeach; ?>

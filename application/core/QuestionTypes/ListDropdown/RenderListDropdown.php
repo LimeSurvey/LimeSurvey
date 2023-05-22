@@ -117,7 +117,7 @@ class RenderListDropdown extends QuestionBaseRenderer
 
         foreach ($this->aAnswerOptions[0] as $oAnsweroption) {
             // Let's sort answers in an array indexed by subcategories
-            @list($categorytext, $answertext) = explode($this->optCategorySeparator, $oAnsweroption->answerl10ns[$this->sLanguage]->answer);
+            @list($categorytext, $answertext) = explode($this->optCategorySeparator, (string) $oAnsweroption->answerl10ns[$this->sLanguage]->answer);
             // The blank category is left at the end outside optgroups
             if ($categorytext == '' || $answertext == '') {
                 $defaultopts[] = array('code' => $oAnsweroption->code, 'answer' => $oAnsweroption->answerl10ns[$this->sLanguage]->answer);
@@ -183,7 +183,7 @@ class RenderListDropdown extends QuestionBaseRenderer
                 'display' => $this->mSessionValue != '-oth-' ? 'display: none;' : '',
                 'label' => $this->othertext,
                 'value' => (isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$this->sSGQA . "other"]))
-                    ? htmlspecialchars($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$this->sSGQA . "other"], ENT_QUOTES)
+                    ? htmlspecialchars((string) $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$this->sSGQA . "other"], ENT_QUOTES)
                     : ''
             ], true);
     }

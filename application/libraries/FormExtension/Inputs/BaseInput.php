@@ -17,6 +17,9 @@ class BaseInput implements InputInterface
     /** @var ?callable */
     private $conditionFunction;
 
+    /** @var ?string */
+    private $id;
+
     /** @var string */
     private $name;
 
@@ -39,6 +42,7 @@ class BaseInput implements InputInterface
         }
 
         $this->name = $options['name'];
+        $this->id = $options['id'] ?? null;
         $this->label = $options['label'] ?? null;
         $this->help = $options['help'] ?? null;
         $this->tooltip = $options['tooltip'] ?? null;
@@ -51,6 +55,12 @@ class BaseInput implements InputInterface
     public function getName(): string
     {
         return $this->name;
+    }
+
+    /** @return ?string */
+    public function getId()
+    {
+        return $this->id;
     }
 
     /** @return ?string */

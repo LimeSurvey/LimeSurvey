@@ -10684,7 +10684,6 @@ body {
  * Display adjust, question type by question type
  */
 .othertext-label-checkox-container {
-  padding-top: 5px;
   margin-right: 5px;
 }
 
@@ -14674,11 +14673,6 @@ body.error-page .error-link {
   border-color: #14AE5C;
 }
 
-.slider-item {
-  margin-bottom: 20px;
-  min-height: 50px;
-}
-
 .slider-container {
   min-height: 15px;
 }
@@ -14703,12 +14697,21 @@ body.error-page .error-link {
 }
 
 .slider-list .slider-item {
+  margin-bottom: 20px;
+  min-height: 50px;
   overflow-x: hidden;
-  padding-top: 1em;
+  padding-top: 1rem;
+}
+.slider-list .slider-item:first-child {
+  padding-top: calc(1rem + 20px);
 }
 .slider-list .slider .slider-handle {
   background-color: #14AE5C;
   background-image: unset;
+}
+.slider-list .slider .slider-handle.custom {
+  background-color: #fff;
+  width: auto;
 }
 .slider-list .slider .slider-handle.custom::before {
   color: #14AE5C;
@@ -14732,6 +14735,15 @@ body.error-page .error-link {
 .slider-list .slider .tooltip .tooltip-inner {
   background-color: transparent;
   color: #14AE5C;
+}
+.slider-list .slider.slider-untouched .slider-handle {
+  background-color: #6E748C;
+}
+.slider-list .slider.slider-untouched .slider-handle.custom {
+  background-color: #fff;
+}
+.slider-list .slider.slider-untouched .slider-handle.custom::before {
+  color: #6E748C;
 }
 .slider-list .ls-slider-item-vertical .slider-min-block {
   margin-right: -1rem;
@@ -14805,10 +14817,6 @@ body.error-page .error-link {
     margin-left: -1rem;
   }
 }
-[class^=ri-]:not(.superset), [class*=" ri-"]:not(.superset) {
-  vertical-align: -0.25em;
-}
-
 a [class^=ri-], a [class*=" ri-"] {
   font-size: 1.14rem;
 }
@@ -15160,6 +15168,9 @@ a [class^=ri-], a [class*=" ri-"] {
   font-weight: 600;
   color: #6E748C;
 }
+.question-container .timer_header {
+  margin-top: 1rem;
+}
 
 @media only screen and (max-device-width: 767px) {
   .ls-questionhelp {
@@ -15326,8 +15337,13 @@ a [class^=ri-], a [class*=" ri-"] {
   display: flex;
 }
 
-@media only screen and (max-width: 766px) {
-  .reload-button, .captcha-input {
+#reloadCaptcha {
+  max-height: 36px;
+  margin-left: 10px;
+}
+
+@media only screen and (max-width: 991px) {
+  .captcha-input {
     padding-top: 8px;
   }
 }
