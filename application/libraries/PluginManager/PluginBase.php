@@ -150,7 +150,7 @@ abstract class PluginBase implements iPlugin
         if (!empty($data) && in_array($key, $this->encryptedSettings)) {
             try {
                 $json = LSActiveRecord::decryptSingle($data);
-                $data = !empty($json) ? json_decode($json, true) : $json;
+                $data = !empty($json) ? json_decode((string) $json, true) : $json;
             } catch (\Throwable $e) {
                 // If decryption fails, just leave the value untouched (it was probably saved as plain text)
             }
@@ -233,9 +233,9 @@ abstract class PluginBase implements iPlugin
     public function publish($fileName)
     {
         // Check if filename is relative.
-        if (strpos('//', $fileName) === false) {
+        if (strpos('//', (string) $fileName) === false) {
             // This is a limesurvey relative path.
-            if (strpos('/', $fileName) === 0) {
+            if (strpos('/', (string) $fileName) === 0) {
                 $url = \Yii::getPathOfAlias('webroot') . $fileName;
             } else {
                 // This is a plugin relative path.
@@ -295,6 +295,10 @@ abstract class PluginBase implements iPlugin
      */
     protected function set($key, $data, $model = null, $id = null)
     {
+        /* Date time settings format */
+        if (isset($this->settings[$key]['type']) && $this->settings[$key]['type'] == 'date' && !empty($this->settings[$key]['saveformat'])) {
+            $data = LimesurveyApi::getFormattedDateTime($data, $this->settings[$key]['saveformat']);
+        }
         // Encrypt the attribute if needed
         // TODO: Handle encryption in storage class, as that would allow each storage to handle
         // it on it's own way. Currently there is no good way of telling the storage which

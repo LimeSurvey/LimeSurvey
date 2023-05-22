@@ -26,7 +26,7 @@ $heading-title-color: #152536;
 
 $g-900        : #1E1E1E;
 $g-800        : #333641;
-$g-700        : #5E6372;
+$g-700        : #6E748C;
 $g-600        : #9094A7;
 $g-400        : #D3D5DA;
 $g-300        : #DDDEE8;
@@ -175,8 +175,7 @@ $table-hover-bg     : $g-200;
 $table-border-color : $g-400;
 
 // Main spacing
-$left-main-padding: 20px;
-$right-main-padding: 20px;
+$container-padding: 20px;
 
 // pagination
 @import "tables/pagination_varriables.scss";

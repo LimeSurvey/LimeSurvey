@@ -144,7 +144,7 @@
                     <div class="mb-3 col-6">
                         <label  class=" form-label" for='<?php echo $attr_name; ?>'><?php echo $attr_description['description'] . ($attr_description['mandatory'] == 'Y' ? '*' : '') ?>:</label>
                         <div class="">
-                            <input class='form-control' type='text' size='55' id='<?php echo $attr_name; ?>' name='<?php echo $attr_name; ?>' value='<?php if (isset($$attr_name)){echo htmlspecialchars($$attr_name, ENT_QUOTES, 'UTF-8');}?>' />
+                            <input class='form-control' type='text' size='55' id='<?php echo $attr_name; ?>' name='<?php echo $attr_name; ?>' value='<?php if (isset($$attr_name)){echo htmlspecialchars((string) $$attr_name, ENT_QUOTES, 'UTF-8');}?>' />
                         </div>
                     </div>
                 <?php endforeach; ?>

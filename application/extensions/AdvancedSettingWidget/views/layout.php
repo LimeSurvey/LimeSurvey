@@ -20,12 +20,12 @@ $labelAttr .= CHtml::getIdByName($inputBaseName) . '"';
         <?php if ($this->setting['help']): ?>
             <a
                 role="button"
-                data-toggle="collapse"
+                data-bs-toggle="collapse"
                 href="#help-<?= CHtml::getIdByName($inputBaseName); ?>"
             ><i
                 class="ri-information-fill"
                 data-bs-toggle="tooltip"
-                title="<?= CHtml::encode(strip_tags($this->setting['help'])) ?>"
+                title="<?= CHtml::encode(strip_tags((string) $this->setting['help'])) ?>"
             > </i><span class="visually-hidden"><?= gT("Show help"); ?></span> </a>
             <div class="help-block collapse" id="help-<?= CHtml::getIdByName($inputBaseName); ?>" aria-expanded="false"><?= $this->setting['help']; ?></div>
         <?php endif; ?>

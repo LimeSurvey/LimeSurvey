@@ -192,7 +192,7 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
             }
 
             if(value != newval){
-                window.correctNumberField = setTimeout(function(){$('#answer'+name).val(newval).trigger("keyup");}, 400);
+                window.correctNumberField = setTimeout(function(){$('#answer'+name).val(newval).trigger("keyup");}, 1500);
             }
         }
     }

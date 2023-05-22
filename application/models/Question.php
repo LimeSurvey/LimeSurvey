@@ -36,8 +36,8 @@ use LimeSurvey\Helpers\questionHelper;
  * @property integer $same_script Whether the same script should be used for all languages
  *
  * @property Survey $survey
- * @property QuestionGroup $groups  //@TODO should be singular
- * @property Question $parents      //@TODO should be singular
+ * @property QuestionGroup $group
+ * @property Question $parent
  * @property Question[] $subquestions
  * @property QuestionAttribute[] $questionAttributes NB! returns all QuestionArrtibute Models fot this QID regardless of the specified language
  * @property QuestionL10n[] $questionl10ns Question Languagesettings indexd by language code
@@ -154,7 +154,7 @@ class Question extends LSActiveRecord
             array('scale_id', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
             array('same_default', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
             array('type', 'length', 'min' => 1, 'max' => 1),
-            array('relevance', 'filter', 'filter' => 'trim'),
+            array('relevance', 'LSYii_FilterValidator', 'filter' => 'trim', 'skipOnEmpty' => true),
             array('preg', 'safe'),
             array('modulename', 'length', 'max' => 255),
             array('same_script', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
@@ -206,6 +206,9 @@ class Question extends LSActiveRecord
                 // Disallow other if sub question have 'other' for title
                 $aRules[] = array('other', 'compare', 'compareValue' => 'Y', 'operator' => '!=', 'message' => sprintf(gT("'%s' can not be used if the 'Other' option for this question is activated."), 'other'));
             }
+        }
+        if ($this->survey->isActive) {
+            $aRules = array_merge($aRules, $this->rulesForActiveSurvey());
         }
         /* When question exist and are already set with title, allow keep bad title */
         if (!$this->isNewRecord) {
@@ -264,7 +267,17 @@ class Question extends LSActiveRecord
         return $aRules;
     }
 
-
+    /**
+     * return rules specific for activated survey
+     * @return array
+     */
+    private function rulesForActiveSurvey()
+    {
+        $aRules = array();
+        /* can not update group */
+        $aRules[] = array('gid', 'LSYii_DisableUpdateValidator');
+        return $aRules;
+    }
 
     /**
      * Rewrites sort order for questions in a group
@@ -725,7 +738,7 @@ class Question extends LSActiveRecord
             'linkAttributes'   => [
                 'data-bs-toggle' => 'tooltip',
                 'onclick' => '$.fn.bsconfirm("'
-                    . CHtml::encode(gT("Deleting  will also delete any answer options and subquestions it includes. Are you sure you want to continue?"))
+                    . CHtml::encode(gT("Deleting will also delete any answer options and subquestions it includes. Are you sure you want to continue?"))
                     . '", {"confirm_ok": "'
                     . gT("Delete")
                     . '", "confirm_cancel": "'
@@ -1734,5 +1747,26 @@ class Question extends LSActiveRecord
     public function getQuestionTheme()
     {
         return $this->getRelated("question_theme", $this->isNewRecord);
+    }
+
+    /**
+     * Is it a dual scale type.
+     */
+    public function getIsDualScale()
+    {
+        $dualScaleTypes = $this->getDualScaleTypes();
+        return in_array($this->type, $dualScaleTypes);
+    }
+
+    /**
+     * Returns the question types that are dual scale.
+     */
+    public function getDualScaleTypes()
+    {
+        $dualScaleTypes = array(
+            Question::QT_1_ARRAY_DUAL
+        );
+
+        return $dualScaleTypes;
     }
 }

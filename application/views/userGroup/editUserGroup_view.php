@@ -9,12 +9,12 @@
             
             <div class="mb-3">
                 <label class="form-label" for='name'><?php eT("Name:"); ?></label>
-                <input type='text' size='50' maxlength='20' id='name' name='name' value="<?php echo htmlspecialchars($model['name'], ENT_QUOTES, 'UTF-8'); ?>" class="form-control" />
+                <input type='text' size='50' maxlength='20' id='name' name='name' value="<?php echo htmlspecialchars((string) $model['name'], ENT_QUOTES, 'UTF-8'); ?>" class="form-control" />
             </div>
 
             <div class="mb-3">
                 <label class="form-label " for='description'><?php eT("Description:"); ?></label>
-                <textarea cols='50' rows='4' id='description' name='description' class="form-control"><?php echo htmlspecialchars($model['description'], ENT_QUOTES, 'UTF-8'); ?></textarea>
+                <textarea cols='50' rows='4' id='description' name='description' class="form-control"><?php echo htmlspecialchars((string) $model['description'], ENT_QUOTES, 'UTF-8'); ?></textarea>
             </div>
 
             <input type='submit' value='<?php eT("Update user group"); ?>' class="d-none" />

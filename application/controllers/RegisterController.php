@@ -173,7 +173,7 @@ class RegisterController extends LSYii_Controller
         //Check that the email is a valid style address
         if ($aFieldValue['sEmail'] == "") {
             $this->aRegisterErrors[] = gT("You must enter a valid email. Please try again.");
-        } elseif (!validateEmailAddress(trim($aFieldValue['sEmail']))) {
+        } elseif (!validateEmailAddress(trim((string) $aFieldValue['sEmail']))) {
             $this->aRegisterErrors[] = gT("The email you used is not valid. Please try again.");
         }
         //Check and validate attribute
@@ -324,7 +324,7 @@ class RegisterController extends LSYii_Controller
             $oToken->decrypt();
             if ($oToken->usesleft < 1 && $aSurveyInfo['alloweditaftercompletion'] != 'Y') {
                 $this->aRegisterErrors[] = gT("The email address you have entered is already registered and the survey has been completed.");
-            } elseif (strtolower(substr(trim($oToken->emailstatus), 0, 6)) === "optout") {
+            } elseif (strtolower(substr(trim((string) $oToken->emailstatus), 0, 6)) === "optout") {
                 // And global blacklisting ?
                 {
                 $this->aRegisterErrors[] = gT("This email address cannot be used because it was opted out of this survey.");

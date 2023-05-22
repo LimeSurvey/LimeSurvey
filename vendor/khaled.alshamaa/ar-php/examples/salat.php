@@ -55,7 +55,7 @@ be positive for bearings east of north, negative for bearings west of north.</p>
 
 <i>Reference: The Correct Qibla, S. Kamal Abdali k.abdali@acm.org</i><br />
 
-<i>PDF version in <a href="http://www.patriot.net/users/abdali/ftp/qibla.pdf" target=_blank>http://www.patriot.net/users/abdali/ftp/qibla.pdf</a></i>
+<i>PDF version in <a href="https://geomete.com/abdali/papers/qibla.pdf" target=_blank>https://geomete.com/abdali/papers/qibla.pdf</a></i>
 </div><br />
 
 <div class="Paragraph">

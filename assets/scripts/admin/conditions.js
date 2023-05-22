@@ -14,14 +14,14 @@ var LS = LS || {  onDocumentReady: {} };
 				value = value + 1;
 				$tab = $(this).children('ul').children(':nth-child('+value+')');
 				$tab.removeClass("disabled");
-				$tab.children('a').attr('data-toggle', 'tab');
+				$tab.children('a').attr('data-bs-toggle', 'tab');
 			}
 			if(fonc=='disable')
 			{
 				value = value + 1;
 				$tab = $(this).children('ul').children(':nth-child('+value+')');
 				$tab.addClass("disabled");
-				$tab.children('a').removeAttr('data-toggle');
+				$tab.children('a').removeAttr('data-bs-toggle');
 			}
 			
 			if(fonc=='option')

@@ -232,7 +232,6 @@ class AdminTheme extends CFormModel
         $package = [];
         $package['css'] = $aCssFiles; // add the css files to the package
         $package['js'] = $aJsFiles; // add the js files to the package
-        $package['depends'] = ['bootstrap'];
 
         // We check if the asset manager should be use.
         // When defining the package with a base path (a directory on the file system), the asset manager is used
@@ -352,11 +351,27 @@ class AdminTheme extends CFormModel
     {
         // Define images url
         if (!YII_DEBUG || self::$use_asset_manager || Yii::app()->getConfig('use_asset_manager')) {
-            define('LOGO_URL', App()->getAssetManager()->publish($this->path . '/images/logo.svg'));
-            define('LOGO_ICON_URL', App()->getAssetManager()->publish($this->path . '/images/logo_icon.png'));
+            if (file_exists($this->path . '/images/logo.svg')) {
+                define('LOGO_URL', App()->getAssetManager()->publish($this->path . '/images/logo.svg'));
+            } else {
+                define('LOGO_URL', App()->getAssetManager()->publish(App()->getConfig("styledir") . '/Sea_Green/images/logo.svg'));
+            }
+            if (file_exists($this->path . '/images/logo_icon.png')) {
+                define('LOGO_ICON_URL', App()->getAssetManager()->publish($this->path . '/images/logo_icon.png'));
+            } else {
+                define('LOGO_ICON_URL', App()->getAssetManager()->publish(App()->getConfig("styledir") . '/Sea_Green/images/logo_icon.png'));
+            }
         } else {
-            define('LOGO_URL', $this->sTemplateUrl . '/images/logo.svg');
-            define('LOGO_ICON_URL', $this->sTemplateUrl . '/images/logo_icon.png');
+            if (file_exists($this->path . '/images/logo.svg')) {
+                define('LOGO_URL', $this->sTemplateUrl . '/images/logo.svg');
+            } else {
+                define('LOGO_URL', App()->getConfig('styleurl') . '/Sea_Green/images/logo.svg');
+            }
+            if (file_exists($this->path . '/images/logo_icon.png')) {
+                define('LOGO_ICON_URL', $this->sTemplateUrl . '/images/logo_icon.png');
+            } else {
+                define('LOGO_ICON_URL', App()->getConfig('styleurl') . '/Sea_Green/images/logo_icon.png');
+            }
         }
 
         // Define presentation text on welcome page

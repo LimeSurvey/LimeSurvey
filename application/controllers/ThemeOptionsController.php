@@ -170,7 +170,7 @@ class ThemeOptionsController extends LSBaseController
      */
     public function actionUninstallMultiple()
     {
-        $aTemplates = json_decode(App()->request->getPost('sItems')); //array of ids
+        $aTemplates = json_decode(App()->request->getPost('sItems', '')); //array of ids
 
         //can be 'themeoptions-grid' (for survey themes) or 'questionthemes-grid'
         $gridid = App()->request->getPost('grididvalue');
@@ -231,7 +231,7 @@ class ThemeOptionsController extends LSBaseController
      */
     public function actionSelectedItems()
     {
-        $aTemplates = json_decode(App()->request->getPost('$oCheckedItems'));
+        $aTemplates = json_decode(App()->request->getPost('$oCheckedItems', ''));
         $aResults = [];
         $gridid = App()->request->getParam('$grididvalue');
 
@@ -304,7 +304,7 @@ class ThemeOptionsController extends LSBaseController
         $attributes = $templateConfiguration->getAttributes();
         $hasOptions = isset($attributes['options']);
         if ($hasOptions) {
-            $options = $attributes['options'];
+            $options = $attributes['options'] ?? '';
             $optionsJSON = json_decode($options, true);
 
             if ($options !== 'inherit' && $optionsJSON !== null) {
@@ -328,6 +328,7 @@ class ThemeOptionsController extends LSBaseController
     public function actionUpdateSurvey()
     {
         $sid = $this->getSurveyIdFromGetRequest();
+        $gsid = $this->getSurveyGroupIdFromGetRequest();
         if (
             !Permission::model()->hasGlobalPermission('templates', 'update')
             && !Permission::model()->hasSurveyPermission($sid, 'surveysettings', 'update')
@@ -345,10 +346,10 @@ class ThemeOptionsController extends LSBaseController
             $model->attributes = $_POST['TemplateConfiguration'];
             if ($model->save()) {
                 App()->user->setFlash('success', gT('Theme options saved.'));
-                $this->redirect(array("themeOptions/updateSurvey", 'surveyid' => $sid));
+                $this->redirect(array("themeOptions/updateSurvey", 'surveyid' => $sid, 'gsid' => $gsid));
             }
         }
-        $this->updateCommon($model, $sid);
+        $this->updateCommon($model, $sid, $gsid);
     }
 
     /**
@@ -796,6 +797,7 @@ class ThemeOptionsController extends LSBaseController
         }
 
         $this->aData = $aData;
+        // here, render update //
         $this->render('update', $aData);
     }
 
@@ -823,5 +825,14 @@ class ThemeOptionsController extends LSBaseController
         }
 
         return (int) $surveyId;
+    }
+
+    private function getSurveyGroupIdFromGetRequest()
+    {
+        $surveyGroupId = Yii::app()->request->getParam('gsid');
+        if ($surveyGroupId === null) {
+            $surveyGroupId = Yii::app()->request->getParam('surveyGroupId');
+        }
+        return (int) $surveyGroupId;
     }
 }

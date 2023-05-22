@@ -18,7 +18,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
 <!-- for filter columns with datepicker-->
 <div style="display: none;">
     <?php
-    $datePickerWidget = Yii::app()->getController()->widget(
+    $datePickerWidget = App()->getController()->widget(
         'ext.DateTimePickerWidget.DateTimePicker',
         [
             'name'          => "no",
@@ -27,7 +27,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                 'format'           => $dateformatdetails['jsdate'],
                 'allowInputToggle' => true,
                 'showClear'        => true,
-                'locale'           => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
+                'locale'           => convertLStoDateTimePickerLocale(App()->session['adminlang'])
             ]
         ]
     );
@@ -62,8 +62,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                     'classes' => 'selector__action-change-display-mode'
                 ]
             ]); ?>
-            <input type="hidden" name="surveyid" value="<?= $surveyid ?>"/>
-            <input type="hidden" name="<?= Yii::app()->request->csrfTokenName ?>" value="<?= Yii::app()->request->csrfToken ?>"/>
+            <input type="hidden" name="<?= App()->request->csrfTokenName ?>" value="<?= App()->request->csrfToken ?>"/>
             <input type="submit" class="d-none" name="submit" value="submit"/>
         </div>
     </form>
