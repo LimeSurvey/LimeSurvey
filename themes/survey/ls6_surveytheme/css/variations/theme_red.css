@@ -14826,10 +14826,6 @@ body.error-page .error-link {
     margin-left: -1rem;
   }
 }
-[class^=ri-]:not(.superset), [class*=" ri-"]:not(.superset) {
-  vertical-align: -0.25em;
-}
-
 a [class^=ri-], a [class*=" ri-"] {
   font-size: 1.14rem;
 }
@@ -15350,8 +15346,13 @@ a [class^=ri-], a [class*=" ri-"] {
   display: flex;
 }
 
-@media only screen and (max-width: 767px) {
-  .reload-button, .captcha-input {
+#reloadCaptcha {
+  max-height: 36px;
+  margin-left: 10px;
+}
+
+@media only screen and (max-width: 991px) {
+  .captcha-input {
     padding-top: 8px;
   }
 }
