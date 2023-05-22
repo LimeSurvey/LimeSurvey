@@ -53,8 +53,8 @@ export var ThemeScripts = function () {
      * in endpage and in $(window).resize
      */
     var fixBodyPadding = function fixBodyPadding() {
-        /* The 60 px is fixed in template.css */
-        $('body').css('padding-top', Math.round($('.navbar-fixed-top').height()) + 'px');
+        console.log('fixBodyPadding');
+        $('body').css('padding-top', Math.round($('#survey-nav').height()) + 'px');
     };
 
     /**
@@ -145,7 +145,7 @@ export var ThemeScripts = function () {
             //Survey list container
             if ($('#surveys-list-container').length > 0) {
                 var footerHeight = $('#surveyListFooter').outerHeight();
-                var headerHeight = 2 * $('#navbar').outerHeight();
+                var headerHeight = 2 * $('#survey-nav').outerHeight();
                 var bodyHeight = $(document).height() - (footerHeight + headerHeight);
                 logObject.log({
                     footerHeight: footerHeight,
