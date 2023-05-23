@@ -11117,7 +11117,7 @@ a {
   font-weight: 500;
   font-size: 1rem;
   line-height: 20px;
-  color: #5E6372;
+  color: #6E748C;
 }
 
 .ls-settings-wrapper {
@@ -17435,7 +17435,7 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 }
 
 [class^=ri-], [class*=" ri-"] {
-  vertical-align: -0.25em;
+  vertical-align: -0.125em;
 }
 
 .remix-2xs {
@@ -18226,10 +18226,10 @@ input[type=number] {
   font-size: 14px;
 }
 #sidebar .subpanel .wrapper .title {
-  color: #5E6372;
+  color: #6E748C;
 }
 #sidebar .subpanel .wrapper .icon {
-  color: #5E6372;
+  color: #6E748C;
 }
 #sidebar .subpanel.level-0 .menu-selected {
   background: linear-gradient(to right, #40ab46 0px, #40ab46 6px, #fff 6px, #fff 100%);
@@ -18799,6 +18799,8 @@ table [class^=ri-], table [class*=" ri-"] {
 #advanced-question-editor .settings-accordion-container .accordion-body,
 #copy-question .settings-accordion-container .accordion-body {
   padding: 0;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 #advanced-question-editor .settings-accordion-container .accordion-body label,
 #copy-question .settings-accordion-container .accordion-body label {

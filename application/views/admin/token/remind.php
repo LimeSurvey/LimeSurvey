@@ -162,7 +162,7 @@
                             <div class='mb-3'>
                                 <label class='form-label '
                                        for='message_<?php echo $language; ?>'><?php eT("Message:"); ?></label>
-                                <div class="htmleditor ">
+                                <div class="input-group htmleditor ">
                                     <?php echo CHtml::textArea("message_{$language}", $textarea, array('cols' => 80, 'rows' => 20, 'class' => 'form-control')); ?>
                                     <?php echo getEditor("email-reminder", "message_$language", "[" . gT("Reminder Email:", "js") . "](" . $language . ")", $surveyid, '', '', "tokens"); ?>
                                 </div>
