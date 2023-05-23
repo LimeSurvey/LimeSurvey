@@ -16,7 +16,7 @@
 #}
 
 {% if aSurveyInfo.datasecurity_error %}
-<div class="{{ aSurveyInfo.class.activealert }} alert alert-danger alert-dismissible fade in alert-dismissible {% if not aSurveyInfo.datasecuritynotaccepted %}ls-js-hidden {% endif %}" {{ aSurveyInfo.attr.activealert }} id="datasecurity_error">
+<div class="{{ aSurveyInfo.class.activealert }} alert alert-danger alert-dismissible alert-dismissible {% if not aSurveyInfo.datasecuritynotaccepted %}ls-js-hidden {% endif %}" {{ aSurveyInfo.attr.activealert }} id="datasecurity_error">
 	<a {{ aSurveyInfo.attr.activealertbutton }} class="{{ aSurveyInfo.class.activealertbutton }} btn-close" aria-hidden="true"></a>
 	{{ aSurveyInfo.datasecurity_error }}
 </div>
@@ -24,28 +24,37 @@
 		{% set describeprivacy = "datasecurity_error " ~ describeprivacy %}
 	{% endif %}
 {% endif %}
-<div class="form-check">
-    <input required class="{{ aSurveyInfo.class.privacydataseccheckbox }} form-check-input" type="checkbox" name="datasecurity_accepted" id="datasecurity_accepted" />
-    <label for="datasecurity_accepted" class="form-check-label fw-bold {{ aSurveyInfo.class.privacydataseccheckboxlabel }}">{{ aSurveyInfo.datasecurity_notice_label }}</label>
+<div class="row row-cols-lg-auto align-items-center datasecurity-checkbox-container">
+    <div class="col-12 checkbox-item">
+        <input required class="{{ aSurveyInfo.class.privacydataseccheckbox }} form-check-input" type="checkbox" name="datasecurity_accepted" id="datasecurity_accepted" />
+        <label for="datasecurity_accepted" class="control-label checkbox-label form-check-label datasecurity-checkbox-label {{ aSurveyInfo.class.privacydataseccheckboxlabel }}">
+            {{ aSurveyInfo.datasecurity_notice_label }}
+        </label>
+    </div>
 </div>
-<div class="collapse fade" id="data-security-modal-{{aSurveyInfo.sid}}">
-    <div class="card card-primary">
-        <div class="card-header bg-primary">
-            <h4 class="modal-title">{{gT('Privacy policy')}}</h4>
-        </div>
-        <div class="card-body {{ aSurveyInfo.class.privacydatasecmodalbody }}">
-            {{ aSurveyInfo.datasecurity_notice }}
-        </div>
-        <div class="ls-no-js-hidden card-footer">
-            <button type="button" class="btn btn-primary" onclick="$('#datasecurity_accepted').prop('checked',true).trigger('change');" data-bs-dismiss="modal">
-                {{gT("Accept")}}
-            </button>
-            <button type="button" class="btn btn-outline-secondary" onclick="$('#data-security-modal-{{aSurveyInfo.sid}}').collapse('hide');">
-                {{gT("Close")}}
-            </button>
+
+<div id="data-security-modal-{{aSurveyInfo.sid}}" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{gT('Privacy policy')}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div id="datasecurity_notice" class="modal-body {{ aSurveyInfo.class.privacydatasecmodalbody }}">
+                {{ aSurveyInfo.datasecurity_notice }}
+            </div>
+            <div class="modal-footer ls-no-js-hidden">
+                <button type="button" class="btn btn-primary" onclick="$('#datasecurity_accepted').prop('checked',true).trigger('change');" data-bs-dismiss="modal">
+                    {{gT("Accept")}}
+                </button>
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    {{gT("Close")}}
+                </button>
+            </div>
         </div>
     </div>
 </div>
+
 <script>
 $(function() {
     $("#ls-button-submit").on("click", function() {

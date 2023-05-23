@@ -147,7 +147,6 @@ var ThemeScripts = function ThemeScripts() {// defining the console object once.
       if ($('#surveys-list-container').length > 0) {
         var footerHeight = $('#surveyListFooter').outerHeight();
         var headerHeight = 2 * $('#survey-nav').outerHeight();
-        console.log(footerHeight, headerHeight);
         var bodyHeight = $(document).height() - (footerHeight + headerHeight);
         logObject.log({
           footerHeight: footerHeight,
@@ -628,6 +627,15 @@ function activateLanguageChanger() {
   if (limesurveyForm.length == 0 && $('form[name="limesurvey"]').length == 1) {/* #form-token for example */
     limesurveyForm = $('form[name="limesurvey"]');
   }
+  //autosizing for width of select (space between caret and selected option text)
+  var autoSizeSelect = function autoSizeSelect() {
+    var text = $('#language-changer-select').find('option:selected').text();
+    var $aux = $('<select/>').append($('<option/>').text(text));
+    $('#language-changer-select').after($aux);
+    var width = $aux.width() + $aux.width() * 0.04;
+    $('#language-changer-select').width(width);
+    $aux.remove();
+  };
   /**
    * @param {string} lang Language to change to.
    */
@@ -644,7 +652,7 @@ function activateLanguageChanger() {
     $('<input type="hidden" id="onsubmitbuttoninput" name="move" value="changelang" />').appendTo(limesurveyForm);
     limesurveyForm.submit();
   };
-
+  autoSizeSelect();
   $('.form-change-lang a.ls-language-link').on('click', function () {
     var closestForm = $(this).closest('form');
     if (!closestForm.length) {
@@ -700,6 +708,7 @@ function activateLanguageChanger() {
     $(this).data("limesurvey-lastkey", null);
   });
   $('.form-change-lang [name="lang"]').on('change', function (event) {
+    autoSizeSelect();
     if ($(this).data("limesurvey-lastkey") == 38 || $(this).data("lastkey") == 40) {
       /* Last key is up or down : disable auto submit mantis #16024 */
       return;
@@ -745,6 +754,8 @@ function activateLanguageChanger() {
       $(this).closest('.form-change-lang').find(':submit').click();
     }
   });
+
+
 }
 
 /**

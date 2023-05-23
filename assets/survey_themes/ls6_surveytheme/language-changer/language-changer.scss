@@ -1,0 +1,22 @@
+.form-change-lang {
+    padding-bottom: 10px;
+    .control-label {
+        @include h2;
+    }
+    .language-icon {
+        float: left; //preparation for rtl
+        margin-right: 4px;
+        margin-top: 2px; // vertical align doesn't work with float
+        font-weight: $font-weight-normal;
+    }
+    #language-changer-select {
+        @include h2;
+        border: none;
+        &:focus-visible {
+            outline: none;
+        }
+    }
+    .ls-language-changer-item {
+        display: none;
+    }
+}

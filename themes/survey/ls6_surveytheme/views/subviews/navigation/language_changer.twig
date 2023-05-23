@@ -27,19 +27,26 @@
     <!-- Language Changer -->
     <div class=" {{ aSurveyInfo.class.formgroup }} form-change-lang row row-cols-lg-auto g-1" {{ aSurveyInfo.attr.formgroup }} >
         <label class="{{ aSurveyInfo.class.controllabel }} col-form-label col-auto fw-bold" {{ aSurveyInfo.attr.controllabel }} for="lang">
-            <span class="control-label" {{ aSurveyInfo.attr.languagechanger }}>{{ gT("Language:") }}</span>
+            <span class="control-label" {{ aSurveyInfo.attr.languagechanger }}>
+                <span class="language-icon ri-earth-line"></span>
+                {{ gT("Change Language") }}
+            </span>
         </label>
+
         <div class="col-auto">
-                {{
-                    C.Html.dropDownList(
-                        'lang',
-                        aLCD.sSelected,
-                        aLCD.aListLang,
-                        htmlOptions
-                    )
-                }}
-        </div>
-        <div class="col-auto">
+            <select
+                    class="col-form-label"
+                    name="lang"
+                    id="language-changer-select"
+            >
+                {% for key,value in  aLCD.aListLang %}
+                    {% if key == aLCD.sSelected %}
+                    <option value="{{ key }}" selected="selected">{{ value }} </option>
+                     {% else %}
+                         <option value="{{ key }}">{{ value }}</option>
+                         {% endif %}
+                {% endfor %}
+            </select>
         <!-- for no js functionality (need form) -->
         {% set buttonhtmlOptions = {
                 'type'          : 'submit',

@@ -21,13 +21,10 @@
 
     <!-- Main Col -->
     <div class="{{ aSurveyInfo.class.maincol }} col-centered " id="{{ aSurveyInfo.id.maincol }}" {{ aSurveyInfo.attr.maincol }}>
-
+        {{ include('./subviews/navigation/language_changer_form.twig') }}
         <div class='{{aSurveyInfo.aForm.sType}}-page' {{ aSurveyInfo.attr.maincoldiv }}>
                 {% set sUserformContent =  './subviews/logincomponents/' ~ aSurveyInfo.aForm.sType ~ '.twig' %}
                 {% include sUserformContent %}
         </div>
-
-        {{ include('./subviews/navigation/language_changer_form.twig') }}
-
     </div> <!-- main col -->
 </div> <!-- main row -->
