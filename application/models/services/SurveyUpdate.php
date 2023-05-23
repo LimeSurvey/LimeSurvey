@@ -49,65 +49,103 @@ class SurveyUpdate
      */
     public function update($surveyId, $input)
     {
-        $oSurvey = $this->modelSurvey->findByPk($surveyId);
-        $languageList = $oSurvey->additionalLanguages;
-        $languageList[] = $oSurvey->language;
+        $survey = $this->modelSurvey->findByPk(
+            $surveyId
+        );
 
-        $hasSurveyLanguageSettingError = false;
+        $this->updateLanguageSettings(
+            $survey,
+            $input
+        );
+    }
+
+    /**
+     * Update language specific settings
+     *
+     * @param Survey $survey
+     * @param array $input
+     * @return void
+     */
+    protected function updateLanguageSettings(Survey $survey, $input)
+    {
+        if (isset($survey)) {
+            $languageList = $survey->additionalLanguages;
+            $languageList[] = $survey->language;
+        }
+
         if (
             $this->modelPermission
                 ->hasSurveyPermission(
-                    $surveyId,
+                    $survey->sid,
                     'surveylocale',
                     'update'
                 )
         ) {
-            $fields = [
-                'url_description',
-                'url',
-                'short_title',
-                'alias',
-                'description',
-                'welcome',
-                'end_text',
-                'data_section',
-                'data_section_error',
-                'data_section_label',
-                'date_format',
-                'number_format'
-            ];
-
             foreach ($languageList as $languageName) {
-                if ($languageName && isset($input[$languageName])) {
-                    continue;
-                }
+                $data = $this->getLanguageSettings(
+                    $input,
+                    $languageName
+                );
 
-                $data = array();
-                foreach ($fields as $field) {
-                    $value = $this->getValue($input[$languageName], $field);
-                    if ($value === null) {
-                        $data[$field] = $value;
-                    }
-                }
-
-                if (count($data) > 0) {
-                    $oSurveyLanguageSetting = $this->modelSurveyLanguageSetting
+                if ($data && count($data) > 0) {
+                    $surveyLanguageSetting = $this->modelSurveyLanguageSetting
                         ->findByPk(array(
-                            'surveyls_survey_id' => $surveyId,
+                            'surveyls_survey_id' => $survey->sid,
                             'surveyls_language' => $languageName
                         ));
-                    $oSurveyLanguageSetting->setAttributes($data);
-                    if (!$oSurveyLanguageSetting->save()) { // save the change to database
-                        $languageDescription = getLanguageNameFromCode(
-                            $languageName,
-                            false
-                        );
-                        $hasSurveyLanguageSettingError = true;
+                    $surveyLanguageSetting->setAttributes($data);
+                    // save the change to database
+                    if (!$surveyLanguageSetting->save()) {
+                        // $languageDescription = getLanguageNameFromCode(
+                        //    $languageName,
+                        //    false
+                        //);
                     }
                 }
-
             }
         }
+    }
+
+    /**
+     * Parse language settings from input data
+     *
+     * @param array $input
+     * @param string $languageName
+     * @return array
+     */
+    protected function getLanguageSettings($input, $languageName)
+    {
+        $fields = [
+            'url_description',
+            'url',
+            'short_title',
+            'alias',
+            'description',
+            'welcome',
+            'end_text',
+            'data_section',
+            'data_section_error',
+            'data_section_label',
+            'date_format',
+            'number_format'
+        ];
+
+        if (!isset($input[$languageName])) {
+            return null;
+        }
+
+        $data = array();
+        foreach ($fields as $field) {
+            $value = $this->getValue(
+                $input[$languageName],
+                $field
+            );
+            if ($value === null) {
+                $data[$field] = $value;
+            }
+        }
+
+        return $data;
     }
 
     /**
