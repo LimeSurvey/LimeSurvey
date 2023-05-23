@@ -8,7 +8,7 @@ function action_dropdown() {
             boundary: document.querySelector("body"),
             popperConfig: function (defaultBsPopperConfig) {
                 return {
-                    defaultBsPopperConfig,
+                    ...defaultBsPopperConfig,
                     strategy: "fixed",
                 };
             },
