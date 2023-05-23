@@ -146,6 +146,12 @@ $base-color: #ffffff;
 @import "progressbar/progressbar.scss";
 @import "progressbar/progressbar_colors.scss";
 @import "list-group/list-group_colors.scss";
+@import "surveylist/surveylist.scss";
+@import "surveylist/surveylist_colors.scss";
+@import "welcome/welcome.scss";
+@import "welcome/welcome_colors.scss";
+@import "language-changer/language-changer.scss";
+@import "language-changer/language-changer_colors.scss";
 
 // TODO: placeholder, will probbably be removed
 @import "darkmode/darkmode_colors.scss";
