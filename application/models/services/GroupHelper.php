@@ -13,10 +13,11 @@ class GroupHelper
      *
      * @return void
      */
-    public function reorderGroup($iSurveyID, $sOrgdata)
+    public function reorderGroup($iSurveyID, $orgdata)
     {
+        $result = array();
         $grouporder = 1;
-        $orgdata = $this->getOrgdata($sOrgdata);
+
         foreach ($orgdata as $ID => $parent) {
             if ($parent == 'root' && $ID[0] == 'g') {
                 \QuestionGroup::model()->updateAll(
@@ -53,32 +54,16 @@ class GroupHelper
                     \Question::model()->updateAll(array('gid' => $gid), 'parent_qid=:parent_qid', array(':parent_qid' => $qid));
                     $aQuestionOrder[$gid]++;
                 } else {
-                    App()->setFlashMessage(sprintf(gT("Unable to reorder question %s."), $oQuestion->title), 'warning');
+                    $result['type'] = 'error';
+                    $result['question-title'] = $oQuestion->title;
+
+                    return $result;
                 }
             }
         }
         \LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
-        App()->setFlashMessage(gT("The new question group/question order was successfully saved."));
-    }
+        $result['type'] = 'success';
 
-    /**
-     * Get the new question organization from the post data.
-     * This function replaces parse_str, since parse_str
-     * is bound by max_input_vars.
-     *
-     * @return array
-     */
-    private function getOrgdata($orgdata)
-    {
-        $ex = explode('&', $orgdata);
-        $vars = array();
-        foreach ($ex as $str) {
-            list($list, $target) = explode('=', $str);
-            $list = str_replace('list[', '', $list);
-            $list = str_replace(']', '', $list);
-            $vars[$list] = $target;
-        }
-
-        return $vars;
+        return $result;
     }
 }

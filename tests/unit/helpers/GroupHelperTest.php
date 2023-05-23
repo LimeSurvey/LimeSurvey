@@ -35,10 +35,10 @@ class GroupHelper extends TestBaseClass
         $groups[1] = self::$testSurvey->groups[0];
         $groups[2] = self::$testSurvey->groups[2];
 
-        $sOrgdata = $this->getOrgData($groups, self::$testSurvey->questions);
+        $orgdata = $this->getOrgData($groups, self::$testSurvey->questions);
 
         $groupHelper = new \LimeSurvey\Models\Services\GroupHelper();
-        $groupHelper->reorderGroup(self::$surveyId, $sOrgdata);
+        $result = $groupHelper->reorderGroup(self::$surveyId, $orgdata);
 
         // Check the new order.
         $changedOrder = \Yii::app()->db->createCommand()->select('group_order')
@@ -50,31 +50,23 @@ class GroupHelper extends TestBaseClass
         $this->assertSame('1', $changedOrder[1]['group_order'], 'The group id is incorrect.');
         $this->assertSame('3', $changedOrder[2]['group_order'], 'The group id is incorrect.');
 
-        // Test message.
-        $flashMessage = $_SESSION['aFlashMessage'][0];
-
-        $this->assertSame('success', $flashMessage['type'], 'Apparently, the new order was not saved correctly (See the flash message)');
-        $this->assertSame('The new question group/question order was successfully saved.', $flashMessage['message'], 'Apparently, the new order was not saved correctly (See the flash message)');
+        // Test result.
+        $this->assertArrayHasKey('type', $result, 'The returned value is not correct.');
+        $this->assertSame('success', $result['type'], 'The returned value is not correct.');
     }
 
     private function getOrgData($groups, $questions)
     {
-        $sOrgdata = '';
+        $orgdata = array();
 
         foreach ($groups as $group) {
-            $sOrgdata .= 'list[g' . $group->gid . ']=root&';
+            $orgdata['g' . $group->gid] = 'root';
         }
-
-        $lastkey = array_key_last($questions);
 
         foreach ($questions as $key => $question) {
-            $sOrgdata .= 'list[q' . $question->qid . ']=' . 'g' . $question->gid;
-
-            if ($key !== $lastkey) {
-                $sOrgdata .= '&';
-            }
+            $orgdata['q' . $question->qid] = 'g' . $question->gid;
         }
 
-        return $sOrgdata;
+        return $orgdata;
     }
 }

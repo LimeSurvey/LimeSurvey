@@ -2079,11 +2079,16 @@ class SurveyAdministrationController extends LSBaseController
 
         if ($thereIsPostData) {
             // Save the new ordering
-            $request = Yii::app()->request;
-            $orgdata = $request->getPost('orgdata', '');
+            $orgdata = $this->getOrgdata();
 
             $groupHelper = new LimeSurvey\Models\Services\GroupHelper();
-            $groupHelper->reorderGroup($iSurveyID, $orgdata);
+            $result = $groupHelper->reorderGroup($iSurveyID, $orgdata);
+
+            if ($result['type'] === 'success') {
+                App()->setFlashMessage(gT("The new question group/question order was successfully saved."));
+            } else {
+                App()->setFlashMessage(sprintf(gT("Unable to reorder question %s."), $result['question-title']), 'warning');
+            }
 
             $closeAfterSave = $request->getPost('close-after-save') === 'true';
             if ($closeAfterSave) {
@@ -2597,6 +2602,29 @@ class SurveyAdministrationController extends LSBaseController
         $aData['surveyid'] = $iSurveyID;
         $aData['surveyActivated'] = $survey->getIsActive();
         return $aData;
+    }
+
+    /**
+     * Get the new question organization from the post data.
+     * This function replaces parse_str, since parse_str
+     * is bound by max_input_vars.
+     *
+     * @return array
+     */
+    private function getOrgdata()
+    {
+        $request = Yii::app()->request;
+        $orgdata = $request->getPost('orgdata', '');
+        $ex = explode('&', $orgdata);
+        $vars = array();
+        foreach ($ex as $str) {
+            list($list, $target) = explode('=', $str);
+            $list = str_replace('list[', '', $list);
+            $list = str_replace(']', '', $list);
+            $vars[$list] = $target;
+        }
+
+        return $vars;
     }
 
     /**
