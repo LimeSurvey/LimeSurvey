@@ -34,7 +34,7 @@
 {% endif %}
 
 {% if  not empty(aSurveyInfo.aErrors) %}
-    <ul class='{{ aSurveyInfo.class.maincoldivdivbul }} alert alert-danger list-unstyled' {{ aSurveyInfo.attr.maincoldivdivbul }}>
+    <ul class='{{ aSurveyInfo.class.maincoldivdivbul }} alert alert-danger list-unstyled mt-3' {{ aSurveyInfo.attr.maincoldivdivbul }}>
         {% for  key, error in aSurveyInfo.aErrors%}
             <li>{{ error }}</li>
         {% endfor %}
