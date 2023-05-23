@@ -1643,11 +1643,6 @@ class Survey extends LSActiveRecord
             $criteria->params = array_merge($criteria->params, [':gsid' => $this->gsid]);
         }
 
-        // show only surveys belonging to selected survey group
-        if (!empty(Yii::app()->request->getParam('id'))) {
-            $criteria->addCondition("t.gsid = " . sanitize_int(Yii::app()->request->getParam('id')), 'AND');
-        }
-
         // Active filter
         if (isset($this->active)) {
             if ($this->active == 'N' || $this->active == "Y") {
