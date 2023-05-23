@@ -305,6 +305,7 @@ export function activateActionLink(){
             var submit=$(this).data('limesurvey-submit');
             var confirmedby=$(this).data('confirmedby');
             if(!confirmedby){
+                //For question index
                 $.each(submit, function(name, value) {
                     $("<input/>",{
                         'type':"hidden",
@@ -314,60 +315,31 @@ export function activateActionLink(){
                 });
                 $('form#limesurvey').submit();
             }else{
+                //For clear all
                 var submits=$.extend(submit,confirmedby);
-                confirmSurveyDialog($(this).data('confirmlabel'),$(this).text(),submits)
+                $('#clear-all-submit').on('click',function(event) {
+                    confirmSurveyDialog(submits);
+                });
+
             }
         });
     }
 }
 /**
  * function for replacing submit after confirm
- * @var string text : the text to be shown
- * @var string optional title
  * @var object[] submits : name.value to submit
  */
-export function confirmSurveyDialog(text,title,submits){
-    if($.bsconfirm !== undefined) {
-        $.bsconfirm(text, LSvar.lang.confirm, function(){
-            $.each(submits, function(name, value) {
-                $("<input/>",{
-                    'type':"hidden",
-                    'name':name,
-                    'value':value,
-                }).appendTo('form#limesurvey');
-            });
-            $('form#limesurvey').submit();
-        });
-    } else {
-        if(confirm(text)){
-            $.each(submits, function(name, value) {
-                $("<input/>",{
-                    'type':"hidden",
-                    'name':name,
-                    'value':value,
-                }).appendTo('form#limesurvey');
-            });
-            $('form#limesurvey').submit();
-        }
-    }
-}
-/**
- *  Ask confirmation on click on .needconfirm
- */
-export function activateConfirmButton(){
-    /* With ajax mode : using $(document).on attache X times the same event */
-    $("button[data-confirmedby]").on('click',function(event){
-        var btnConfirm=$(this);
-        var cbConfirm=$(this).parent().find("[name='"+$(this).data('confirmedby')+"']");
-        if(!$(cbConfirm).is(":checked")) {
-            event.preventDefault();
-            var submits = { };
-            submits[$(btnConfirm).attr('name')]=$(btnConfirm).val();
-            submits[$(cbConfirm).attr('name')]=$(cbConfirm).val();
-            confirmSurveyDialog($(cbConfirm).parent("label").text(),$(btnConfirm).text(),submits)
-        }
+export function confirmSurveyDialog(submits){
+    $.each(submits, function(name, value) {
+        $("<input/>",{
+            'type':"hidden",
+            'name':name,
+            'value':value,
+        }).appendTo('form#limesurvey');
     });
+    $('form#limesurvey').submit();
 }
+
 /**
  * Trigger tip class when classChangeGood/classChangeError happen
  */
@@ -392,6 +364,24 @@ export function triggerEmClassChange(){
     });
     $(document).on('classChangeGood','input,select,textarea', function(event){
         $(this).closest(".form-control").removeClass("has-warning");
+    });
+}
+
+/**
+ *  Ask confirmation on click on .needconfirm
+ */
+export function activateConfirmButton(){
+    /* With ajax mode : using $(document).on attache X times the same event */
+    $("button[data-confirmedby]").on('click',function(event){
+        var btnConfirm=$(this);
+        var cbConfirm=$(this).parent().find("[name='"+$(this).data('confirmedby')+"']");
+        if(!$(cbConfirm).is(":checked")) {
+            event.preventDefault();
+            var submits = { };
+            submits[$(btnConfirm).attr('name')]=$(btnConfirm).val();
+            submits[$(cbConfirm).attr('name')]=$(cbConfirm).val();
+            confirmSurveyDialog($(cbConfirm).parent("label").text(),$(btnConfirm).text(),submits)
+        }
     });
 }
 

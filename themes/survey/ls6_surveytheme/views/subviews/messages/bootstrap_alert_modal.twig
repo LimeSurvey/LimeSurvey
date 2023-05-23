@@ -53,3 +53,21 @@
     </div>
 </div>
 {% endif %}
+<!-- Clear all modal -->
+<div id="clear-all-modal" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">{{ gT("Exit and clear survey" ) }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>{{ gT("Please confirm you want to clear your response?") }}</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ gT("Cancel") }}</button>
+                <button id="clear-all-submit" type="submit" class="btn btn-primary">{{ gT("Clear") }}</button>
+            </div>
+        </div>
+    </div>
+</div>
