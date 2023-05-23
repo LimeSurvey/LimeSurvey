@@ -13334,10 +13334,6 @@ table#responsedetail tr td {
   margin-bottom: 30px;
 }
 
-#insertmethod-container {
-  display: none;
-}
-
 /* Some printing optimization */
 @media print {
   html, body {

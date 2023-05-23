@@ -277,7 +277,7 @@ var onClickListAction =  function () {
  * So, when refreshing the grid, the bootstrap-switch must be re-applyed to the elements
  *
  */
-
+// TODO: It seems below two functions are not used and can be deleted. Please confirm.
  function prepareBsSwitchBoolean($gridid){
      // Bootstrap switch with class "bootstrap-switch-boolean" will use the default boolean values.
      // e.g: question mandatory, question other, etc
@@ -304,6 +304,8 @@ function prepareBsSwitchInteger($gridid){
         });
     });
 }
+// =================================================================================
+
 
 function prepareBsDateTimePicker($gridid){
     var dateTimeSettings = getDefaultDateTimePickerSettings();

@@ -71,11 +71,5 @@ App()->getClientScript()->registerScriptFile(
 <?php
 $aModalData = ['aAttributes' => $aAttributes];
 App()->getController()->renderPartial('/admin/participants/modal_subviews/_exportCSV', $aModalData);
-
-App()->getClientScript()->registerScript(
-    'ParticipantsPanelBSSwitcher',
-    "LS.renderBootstrapSwitch();",
-    LSYii_ClientScript::POS_POSTSCRIPT
-);
 ?>
 
