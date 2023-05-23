@@ -99,7 +99,7 @@
                     <!-- Saved name  -->
                     <label class='{{ aSurveyInfo.class.saveformsurveydivalabel }} control-label' {{ aSurveyInfo.attr.saveformsurveydivalabel }}>
                         {{ gT("Name") }}<small class="{{ aSurveyInfo.class.saveformsurveydivalabelsmall }} asterisk ri-asterisk superset" {{ aSurveyInfo.attr.saveformsurveydivalabelsmall }} >&nbsp;</small>
-                        <span class="{{ aSurveyInfo.class.saveformsurveydivalabelspan }} visually-hidden asterisk" {{ aSurveyInfo.attr.saveformsurveydivalabelspan }}>{{ gT("Mandatory") }}<span>
+                        <span class="{{ aSurveyInfo.class.saveformsurveydivalabelspan }} visually-hidden asterisk" {{ aSurveyInfo.attr.saveformsurveydivalabelspan }}>{{ gT("Mandatory") }}</span>
                     </label>
                     <div class='{{ aSurveyInfo.class.saveformsurveydivb }}' {{ aSurveyInfo.attr.saveformsurveydivb }}>
 
@@ -127,7 +127,7 @@
                     <div class='{{ aSurveyInfo.class.saveformsurveydivc }} col-md-6 col-12 mb-3 mb-md-0' {{ aSurveyInfo.attr.saveformsurveydivc }}>
                         <label class='{{ aSurveyInfo.class.saveformsurveydivclabel }} control-label' {{ aSurveyInfo.attr.saveformsurveydivclabel }}>
                             {{ gT("Password") }}<small class="{{ aSurveyInfo.class.saveformsurveydivcsmall }} asterisk ri-asterisk superset" {{ aSurveyInfo.attr.saveformsurveydivcsmall }} >&nbsp;</small>
-                            <span class="{{ aSurveyInfo.class.saveformsurveydivcspan }} visually-hidden asterisk" {{ aSurveyInfo.attr.saveformsurveydivcspan }}>{{ gT("Mandatory") }}<span>
+                            <span class="{{ aSurveyInfo.class.saveformsurveydivcspan }} visually-hidden asterisk" {{ aSurveyInfo.attr.saveformsurveydivcspan }}>{{ gT("Mandatory") }}</span>
                         </label>
 
                         <div class='{{ aSurveyInfo.class.saveformsurveydivcdiv }}' {{ aSurveyInfo.attr.saveformsurveydivcdiv }}>
@@ -143,7 +143,7 @@
 
                             {{ C.Html.passwordField(
                                     'savepass',
-                                    '',
+                                    getPost('savepass'),
                                     (htmlOptions)
                             )  }}
                         </div>
@@ -153,7 +153,7 @@
                     <div class='{{ aSurveyInfo.class.saveformsurveydivd }} col-md-6 col-12 mb-3 mb-md-0' {{ aSurveyInfo.attr.saveformsurveydivd }}>
                         <label class='{{ aSurveyInfo.class.saveformsurveydivdlabel }} control-label' {{ aSurveyInfo.attr.saveformsurveydivdlabel }} >
                             {{ gT("Repeat password") }}<small class="{{ aSurveyInfo.class.saveformsurveydivdlabelsmall }}  asterisk ri-asterisk superset" {{ aSurveyInfo.attr.saveformsurveydivdlabelsmall }}>&nbsp;</small>
-                            <span class="{{ aSurveyInfo.class.saveformsurveydivdlabelspan }} visually-hidden asterisk" {{ aSurveyInfo.attr.saveformsurveydivdlabelspan }}>{{ gT("Mandatory") }}<span>
+                            <span class="{{ aSurveyInfo.class.saveformsurveydivdlabelspan }} visually-hidden asterisk" {{ aSurveyInfo.attr.saveformsurveydivdlabelspan }}>{{ gT("Mandatory") }}</span>
                         </label>
 
                         <div class='{{ aSurveyInfo.class.saveformsurveydivddiv }}' {{ aSurveyInfo.attr.saveformsurveydivddiv }}>
@@ -168,7 +168,7 @@
 
                             {{ C.Html.passwordField(
                                     'savepass2',
-                                    '',
+                                    getPost('savepass2'),
                                     (htmlOptions)
                             )  }}
                         </div>
@@ -192,7 +192,7 @@
 
                         {{ C.Html.emailField(
                                 'saveemail',
-                                '',
+                                getPost('saveemail'),
                                 (htmlOptions)
                         )  }}
                     </div>
