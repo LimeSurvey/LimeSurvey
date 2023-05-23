@@ -10782,18 +10782,6 @@ p.return-to-survey {
   padding: 0px;
 }
 
-.limit-text-window {
-  max-height: 40rem;
-  max-height: 33vh;
-  padding: 15px 5px;
-  overflow: auto;
-  border-top: 1px solid #dedede;
-  border-bottom: 1px solid #dedede;
-  border-left: none;
-  border-right: none;
-  outline: none;
-}
-
 label {
   font-weight: bold;
 }
@@ -13011,7 +12999,6 @@ a:hover {
 .text-muted {
   font-size: 1.14rem;
   line-height: 20px;
-  color: #6E748C;
 }
 
 .h1, .h2, .h3, h1, h2, h3 {
@@ -13068,6 +13055,10 @@ a:hover {
 
 .has-link a {
   color: #1E1E1E;
+}
+
+.text-muted {
+  color: #6E748C !important;
 }
 
 .form-control {
@@ -14884,6 +14875,7 @@ a [class^=ri-], a [class*=" ri-"] {
 }
 
 .modal-header {
+  padding: 1.5rem;
   border-bottom: none;
 }
 .modal-header .btn-close {
@@ -14897,7 +14889,12 @@ a [class^=ri-], a [class*=" ri-"] {
 }
 
 .modal-title {
+  margin-top: 0;
   line-height: 26px;
+}
+
+.modal-body {
+  padding: 1.5rem;
 }
 
 .modal-footer {
@@ -15073,7 +15070,10 @@ a [class^=ri-], a [class*=" ri-"] {
   text-align: start;
   font-size: 0.9975rem;
   line-height: 20px;
-  padding: 0.625rem 1rem;
+  padding-top: 0.625rem;
+  padding-right: 2rem;
+  padding-left: 1rem;
+  padding-bottom: 0.625rem;
   position: relative;
 }
 .alert > span[class*=ri-] {
@@ -15431,6 +15431,69 @@ html, body {
 }
 #surveyListFooter {
   background-color: #ffffff;
+}
+
+.survey-name, .survey-description, .survey-welcome {
+  margin-bottom: 10px;
+}
+
+.privacy {
+  margin-top: 40px;
+}
+
+.datasecurity-checkbox-container {
+  margin-top: 14px;
+  padding-left: 16px;
+}
+
+#datasecurity_notice {
+  font-weight: 500;
+  font-size: 0.855rem;
+  line-height: 16px;
+}
+
+.datasecurity-checkbox-label, .datasecurity-checkbox-label a.show-policy {
+  font-weight: 600;
+  font-size: 1.14rem;
+  line-height: 20px;
+}
+
+#datasecurity_notice, .datasecurity-checkbox-label {
+  color: #6E748C;
+}
+
+.form-change-lang {
+  padding-bottom: 10px;
+}
+.form-change-lang .control-label {
+  font-weight: 600;
+  font-size: 1.14rem;
+  line-height: 20px;
+}
+.form-change-lang .language-icon {
+  float: left;
+  margin-right: 4px;
+  margin-top: 2px;
+  font-weight: 400;
+}
+.form-change-lang #language-changer-select {
+  font-weight: 600;
+  font-size: 1.14rem;
+  line-height: 20px;
+  border: none;
+}
+.form-change-lang #language-changer-select:focus-visible {
+  outline: none;
+}
+.form-change-lang .ls-language-changer-item {
+  display: none;
+}
+
+.form-change-lang .language-icon, .form-change-lang .control-label {
+  color: #6E748C;
+}
+.form-change-lang #language-changer-select {
+  color: #14AE5C;
 }
 
 .darkmode-on {

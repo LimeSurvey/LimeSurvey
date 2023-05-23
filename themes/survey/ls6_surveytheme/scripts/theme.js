@@ -147,7 +147,6 @@ var ThemeScripts = function ThemeScripts() {// defining the console object once.
       if ($('#surveys-list-container').length > 0) {
         var footerHeight = $('#surveyListFooter').outerHeight();
         var headerHeight = 2 * $('#survey-nav').outerHeight();
-        console.log(footerHeight, headerHeight);
         var bodyHeight = $(document).height() - (footerHeight + headerHeight);
         logObject.log({
           footerHeight: footerHeight,
