@@ -10442,17 +10442,6 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
-body {
-  padding-bottom: 10px;
-  padding-top: 90px; /* now is redefine in JS to fit any title length */
-}
-
-/* specific for survey listing */
-@media (min-width: 761px) {
-  .surveys-list .btn-group {
-    width: 49%;
-  }
-}
 .space-col {
   margin-top: 1em;
   margin-bottom: 2em;
@@ -10592,26 +10581,6 @@ body {
 /*#outerframeContainer {
     height: 100%;
 }*/
-#surveyListFooter {
-  width: 100%;
-  text-align: center;
-  margin-bottom: 0;
-  padding-bottom: 80px;
-  padding-top: 10px;
-  margin-top: 10px;
-  bottom: 0px;
-  height: 60px;
-  background-color: rgba(236, 240, 241, 0.2);
-}
-
-@media (max-width: 768px) {
-  #surveyListFooter {
-    padding-bottom: 40px;
-    padding-top: 5px;
-    margin-top: 5px;
-    height: 40px;
-  }
-}
 /**
  * Specific question part
  */
@@ -10712,10 +10681,6 @@ body {
     margin-left: -0.9em;
 }
 */
-#surveys-list-container {
-  margin-top: 50px;
-}
-
 #outerframeContainer {
   min-height: 100%;
   word-wrap: break-word;
@@ -10815,6 +10780,18 @@ p.return-to-survey {
 /* aligns navigator buttons with question borders */
 #navigator-container > div {
   padding: 0px;
+}
+
+.limit-text-window {
+  max-height: 40rem;
+  max-height: 33vh;
+  padding: 15px 5px;
+  overflow: auto;
+  border-top: 1px solid #dedede;
+  border-bottom: 1px solid #dedede;
+  border-left: none;
+  border-right: none;
+  outline: none;
 }
 
 label {
@@ -13034,6 +13011,7 @@ a:hover {
 .text-muted {
   font-size: 1.14rem;
   line-height: 20px;
+  color: #6E748C;
 }
 
 .h1, .h2, .h3, h1, h2, h3 {
@@ -13046,14 +13024,6 @@ a:hover {
   margin-bottom: 1rem;
 }
 
-@media only screen and (max-device-width: 760px) {
-  h1, .h1, .h3 {
-    font-size: 18px;
-  }
-  .h4 {
-    font-size: 16px;
-  }
-}
 .superset {
   font-size: 50%;
   vertical-align: super;
@@ -13098,10 +13068,6 @@ a:hover {
 
 .has-link a {
   color: #1E1E1E;
-}
-
-.text-muted {
-  color: #6E748C !important;
 }
 
 .form-control {
@@ -14918,7 +14884,6 @@ a [class^=ri-], a [class*=" ri-"] {
 }
 
 .modal-header {
-  padding: 1.5rem;
   border-bottom: none;
 }
 .modal-header .btn-close {
@@ -14932,12 +14897,7 @@ a [class^=ri-], a [class*=" ri-"] {
 }
 
 .modal-title {
-  margin-top: 0;
   line-height: 26px;
-}
-
-.modal-body {
-  padding: 1.5rem;
 }
 
 .modal-footer {
@@ -15113,10 +15073,7 @@ a [class^=ri-], a [class*=" ri-"] {
   text-align: start;
   font-size: 0.9975rem;
   line-height: 20px;
-  padding-top: 0.625rem;
-  padding-right: 2rem;
-  padding-left: 1rem;
-  padding-bottom: 0.625rem;
+  padding: 0.625rem 1rem;
   position: relative;
 }
 .alert > span[class*=ri-] {
@@ -15420,67 +15377,60 @@ a [class^=ri-], a [class*=" ri-"] {
   background-color: #FF515F;
 }
 
-.survey-name, .survey-description, .survey-welcome {
-  margin-bottom: 10px;
+html, body {
+  height: 100%;
+  margin: 0;
 }
 
-.privacy {
-  margin-top: 40px;
+#outerframeContainer {
+  min-height: 88%;
 }
 
-.datasecurity-checkbox-container {
-  margin-top: 14px;
-  padding-left: 16px;
+.ls-logo {
+  width: 30%;
 }
 
-#datasecurity_notice {
-  font-weight: 500;
-  font-size: 0.855rem;
-  line-height: 16px;
+#surveys-list-container {
+  margin-top: 50px;
 }
 
-.datasecurity-checkbox-label, .datasecurity-checkbox-label a.show-policy {
-  font-weight: 600;
-  font-size: 1.14rem;
-  line-height: 20px;
+#surveyListFooter {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 0;
+  padding-bottom: 80px;
+  padding-top: 10px;
+  margin-top: 10px;
+  bottom: 0px;
+  height: 60px;
 }
 
-#datasecurity_notice, .datasecurity-checkbox-label {
-  color: #6E748C;
+@media (max-width: 992px) {
+  .ls-logo {
+    width: 50%;
+  }
 }
-
-.form-change-lang {
-  padding-bottom: 10px;
+@media (max-width: 768px) {
+  .ls-logo {
+    width: 90%;
+  }
+  #surveys-list-container {
+    margin-top: 50px;
+  }
+  #surveyListFooter {
+    padding-bottom: 40px;
+    padding-top: 5px;
+    margin-top: 5px;
+    height: 40px;
+  }
 }
-.form-change-lang .control-label {
-  font-weight: 600;
-  font-size: 1.14rem;
-  line-height: 20px;
+@media (min-width: 761px) {
+  .surveys-list .btn-group {
+    width: 49%;
+  }
 }
-.form-change-lang .language-icon {
-  float: left;
-  margin-right: 4px;
-  margin-top: 2px;
-  font-weight: 400;
-}
-.form-change-lang #language-changer-select {
-  font-weight: 600;
-  font-size: 1.14rem;
-  line-height: 20px;
-  border: none;
-}
-.form-change-lang #language-changer-select:focus-visible {
-  outline: none;
-}
-.form-change-lang .ls-language-changer-item {
-  display: none;
-}
-
-.form-change-lang .language-icon, .form-change-lang .control-label {
-  color: #6E748C;
-}
-.form-change-lang #language-changer-select {
-  color: #14AE5C;
+#surveyListFooter {
+  background-color: #ffffff;
 }
 
 .darkmode-on {

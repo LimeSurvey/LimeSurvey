@@ -41,7 +41,7 @@
         } 
     </script>
     {# LSvar update with  #}
-    {{ registerScript("LSvarTemplateInit","LSvar= LSvar || {};","POS_HEAD") }}
+    {{ registerScript("LSvarTemplateInit","if(typeof LSvar === 'undefined') { var LSvar = {}; };","POS_HEAD") }}
     {% if(aSurveyInfo.options.fixnumauto and aSurveyInfo.options.fixnumauto != "off") %}
         {{ registerScript("LSvarTemplateRealFixNumAuto","LSvar.bFixNumAuto = "~(aSurveyInfo.options.fixnumauto == "enable" ? 1 : 0)~";","POS_HEAD") }}
         {{ registerScript("LSvarTemplateRealNumRealValue","LSvar.bNumRealValue = "~(aSurveyInfo.options.fixnumauto == "disable" ? 1 : 0)~";","POS_HEAD") }}
