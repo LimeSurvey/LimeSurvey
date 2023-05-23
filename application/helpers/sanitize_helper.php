@@ -431,6 +431,7 @@ function check_system_string($input, $min = '', $max = '')
  * @param string $min
  * @param string $max
  * @return bool
+ * @throws Exception
  */
 function check($input, $flags, $min = '', $max = '')
 {
