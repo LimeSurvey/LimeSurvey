@@ -15113,7 +15113,10 @@ a [class^=ri-], a [class*=" ri-"] {
   text-align: start;
   font-size: 0.9975rem;
   line-height: 20px;
-  padding: 0.625rem 1rem;
+  padding-top: 0.625rem;
+  padding-right: 2rem;
+  padding-left: 1rem;
+  padding-bottom: 0.625rem;
   position: relative;
 }
 .alert > span[class*=ri-] {
