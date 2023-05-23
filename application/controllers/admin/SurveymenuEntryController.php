@@ -286,7 +286,7 @@ class SurveymenuEntryController extends SurveyCommonAction
                 }
             }
 
-            $debug = 0;
+            $debug = App()->getConfig('debug');
             $returnData = array(
                 'data' => [
                     'success' => $success,
@@ -331,7 +331,7 @@ class SurveymenuEntryController extends SurveyCommonAction
                 Yii::app()->user->setFlash('error', gT("Access denied"));
                 $this->getController()->redirect(Yii::app()->createUrl('/admin'));
             }
-            $debug = 0;
+            $debug = App()->getConfig('debug');
             if ($model !== null) {
                 $success = $model->delete();
             }
@@ -374,7 +374,7 @@ class SurveymenuEntryController extends SurveyCommonAction
         if (Yii::app()->request->isPostRequest) {
             $model = SurveymenuEntries::model();
             $success = $model->reorder();
-            $debug = 0;
+            $debug = App()->getConfig('debug');
 
             $returnData = array(
                 'data' => [

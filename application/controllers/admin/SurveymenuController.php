@@ -194,7 +194,7 @@ class SurveymenuController extends SurveyCommonAction
                 }
             }
 
-            $debug = 0;
+            $debug = App()->getConfig('debug');
             $returnData = array(
                 'data' => [
                     'success' => $success,
@@ -278,7 +278,7 @@ class SurveymenuController extends SurveyCommonAction
         if (Yii::app()->request->isPostRequest) {
             //Check for permission!
             if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-                $debug = 0;
+                $debug = App()->getConfig('debug');
                 $returnData = array(
                     'data' => [
                         'success' => 0,
@@ -305,7 +305,7 @@ class SurveymenuController extends SurveyCommonAction
             }
             //get model to do the work
             $success = $model->restoreDefaults();
-            $debug = 0;
+            $debug = App()->getConfig('debug');
             $returnData = array(
                 'data' => [
                     'success' => $success,
