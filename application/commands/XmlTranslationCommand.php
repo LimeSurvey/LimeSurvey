@@ -11,14 +11,34 @@ class XmlTranslationCommand extends CConsoleCommand
     public function actionIndex()
     {
         echo "This command will take all config.xml files \n";
-        echo "in " . realpath(dirname(__FILE__) . "/../views/survey/questions/answer") . "\n";
-        echo "and it will generate php files with the strings to be translated \n";
-        echo "in " . realpath(dirname(__FILE__) . "/../../tmp \n");
+        echo "in the followin directories:\n \n";
+        echo " * " . realpath(dirname(__FILE__) . "/../views/survey/questions/answer") . "\n";
+        echo " * " . realpath(dirname(__FILE__) . '/../../themes/question') . "\n \n";
+        echo "And it will generate php files with the strings to be translated \n";
+        echo "in " . realpath(dirname(__FILE__) . "/../../tmp") . "\n";
     }
 
     public function actionGenerateTranslationFiles()
     {
-        $sViewsDir = dirname(__FILE__) . '/../views/survey/questions/answer';
+        //Create view files
+        $this->generateFiles(dirname(__FILE__) . '/../views/survey/questions/answer', 'view');
+
+        //Create theme files
+        $oThemesDir = new DirectoryIterator(dirname(__FILE__) . '/../../themes/question');
+
+        foreach ($oThemesDir as $dirInfo) {
+            if ($dirInfo->isDot() || $dirInfo->isFile()) {
+                continue;
+            }
+
+            $sDirPath = $dirInfo->getRealPath();
+            $this->generateFiles($sDirPath . '/survey/questions/answer', 'theme');
+
+        }
+    }
+
+    private function generateFiles($sViewsDir, $sFilePrefix)
+    {
         $oViewsDir = new DirectoryIterator($sViewsDir);
 
         foreach ($oViewsDir as $fileInfo) {
@@ -39,7 +59,7 @@ class XmlTranslationCommand extends CConsoleCommand
 
             $fileName = $fileInfo->getFileName();
             $tmpPath = dirname(__FILE__) . '/../../tmp';
-            $fileHandler = fopen($tmpPath . '/' . $fileName . '-config-xml.php', 'w');
+            $fileHandler = fopen($tmpPath . '/' . $fileName . '-' . $sFilePrefix . '-config-xml.php', 'w');
             $date = date('F d, Y');
 
             fwrite($fileHandler, '<?php' . PHP_EOL);
@@ -70,7 +90,11 @@ class XmlTranslationCommand extends CConsoleCommand
 
                     foreach ($attribute->options->children() as $option) {
 
-                        fwrite($fileHandler, 'gT("' . $option->text . '");' . PHP_EOL);
+                        if (! empty($option->text)) {
+                            fwrite($fileHandler, 'gT("' . $option->text . '");' . PHP_EOL);
+                        } else {
+                            fwrite($fileHandler, 'gT("' . $option . '");' . PHP_EOL);
+                        }
 
                     }
                 }

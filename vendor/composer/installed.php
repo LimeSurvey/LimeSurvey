@@ -3,7 +3,7 @@
         'name' => 'limesurvey/limesurvey',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => 'aa37c2f11cb45f9932d4da2cde3d396505337933',
+        'reference' => '0969f32e762e13c02a15bfc7861a2c25b169419e',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -31,7 +31,7 @@
         'limesurvey/limesurvey' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => 'aa37c2f11cb45f9932d4da2cde3d396505337933',
+            'reference' => '0969f32e762e13c02a15bfc7861a2c25b169419e',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -65,9 +65,9 @@
             'dev_requirement' => false,
         ),
         'paragonie/sodium_compat' => array(
-            'pretty_version' => 'v1.19.0',
-            'version' => '1.19.0.0',
-            'reference' => 'cb15e403ecbe6a6cc515f855c310eb6b1872a933',
+            'pretty_version' => 'v1.20.0',
+            'version' => '1.20.0.0',
+            'reference' => 'e592a3e06d1fa0d43988c7c7d9948ca836f644b6',
             'type' => 'library',
             'install_path' => __DIR__ . '/../paragonie/sodium_compat',
             'aliases' => array(),
@@ -92,9 +92,9 @@
             'dev_requirement' => false,
         ),
         'pear/pear-core-minimal' => array(
-            'pretty_version' => 'v1.10.11',
-            'version' => '1.10.11.0',
-            'reference' => '68d0d32ada737153b7e93b8d3c710ebe70ac867d',
+            'pretty_version' => 'v1.10.13',
+            'version' => '1.10.13.0',
+            'reference' => 'aed862e95fd286c53cc546734868dc38ff4b5b1d',
             'type' => 'library',
             'install_path' => __DIR__ . '/../pear/pear-core-minimal',
             'aliases' => array(),
@@ -148,7 +148,7 @@
         'rsky/pear-core-min' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v1.10.11',
+                0 => 'v1.10.13',
             ),
         ),
         'symfony/polyfill-ctype' => array(
@@ -188,9 +188,9 @@
             'dev_requirement' => false,
         ),
         'twig/twig' => array(
-            'pretty_version' => 'v3.5.1',
-            'version' => '3.5.1.0',
-            'reference' => 'a6e0510cc793912b451fd40ab983a1d28f611c15',
+            'pretty_version' => 'v3.6.0',
+            'version' => '3.6.0.0',
+            'reference' => '106c170d08e8415d78be2d16c3d057d0d108262b',
             'type' => 'library',
             'install_path' => __DIR__ . '/../twig/twig',
             'aliases' => array(),

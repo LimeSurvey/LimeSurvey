@@ -171,6 +171,7 @@ class TestBaseClassWeb extends TestBaseClass
         $submit = self::$webDriver->findElement(WebDriverBy::name('login_submit'));
         $submit->click();
 
+        self::ignoreWelcomeModal();
         self::ignoreAdminNotification();
         self::ignoreAdminNotification();
 
@@ -233,7 +234,7 @@ class TestBaseClassWeb extends TestBaseClass
     {
         // Ignore password warning.
         try {
-            $button = self::$webDriver->wait(1)->until(
+            $button = self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
                     WebDriverBy::cssSelector('#admin-notification-modal button.btn-outline-secondary')
                 )
@@ -255,9 +256,10 @@ class TestBaseClassWeb extends TestBaseClass
     protected static function ignoreWelcomeModal()
     {
         try {
-            $button = self::$webDriver->wait(1)->until(
+            sleep(1);
+            $button = self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
-                    WebDriverBy::cssSelector('#welcomeModal button.btn-default')
+                    WebDriverBy::cssSelector('#welcomeModal button.btn-outline-secondary')
                 )
             );
             $button->click();

@@ -11094,7 +11094,7 @@ a {
   font-weight: 500;
   font-size: 1rem;
   line-height: 20px;
-  color: #5E6372;
+  color: #6E748C;
 }
 
 .ls-settings-wrapper {
@@ -13311,10 +13311,6 @@ table#responsedetail tr td {
   margin-bottom: 30px;
 }
 
-#insertmethod-container {
-  display: none;
-}
-
 /* Some printing optimization */
 @media print {
   html, body {
@@ -14520,6 +14516,11 @@ html[dir=ltr] th {
   overflow-x: visible;
 }
 
+/** Hide Relevance Equation column for subquestions when not supported */
+.subquestions-table.hide-relevance #rel-eq-th, .subquestions-table.hide-relevance td.relevance-equation {
+  display: none;
+}
+
 .jcarousel-wrapper {
   margin: 20px auto;
   position: relative;
@@ -14875,6 +14876,16 @@ div.mappable-attribute-wrapper.paired.ui-state-disabled {
 
 .grid-view-ls.grid-view-loading .table th > .sort-link .caret {
   display: none;
+}
+
+.grid-view-ls .table td .longtext-content {
+  min-width: 8em;
+  max-width: 16em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  height: 1.5em;
+  display: inline-block;
 }
 
 .dropdown-menu.larger-dropdown {
@@ -16678,8 +16689,8 @@ tr.info, tr.danger {
   border: 1px solid #cccccc;
 }
 
-[data-toggle=buttons] > .btn input[type=radio],
-[data-toggle=buttons] > .btn input[type=checkbox] {
+[data-bs-toggle=buttons] > .btn input[type=radio],
+[data-bs-toggle=buttons] > .btn input[type=checkbox] {
   position: absolute;
   clip: rect(0, 0, 0, 0);
   pointer-events: none;
@@ -17401,7 +17412,7 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 }
 
 [class^=ri-], [class*=" ri-"] {
-  vertical-align: -0.25em;
+  vertical-align: -0.125em;
 }
 
 .remix-2xs {
@@ -18192,10 +18203,10 @@ input[type=number] {
   font-size: 14px;
 }
 #sidebar .subpanel .wrapper .title {
-  color: #5E6372;
+  color: #6E748C;
 }
 #sidebar .subpanel .wrapper .icon {
-  color: #5E6372;
+  color: #6E748C;
 }
 #sidebar .subpanel.level-0 .menu-selected {
   background: linear-gradient(to left, #40ab46 0px, #40ab46 6px, #fff 6px, #fff 100%);
@@ -18765,6 +18776,8 @@ table [class^=ri-], table [class*=" ri-"] {
 #advanced-question-editor .settings-accordion-container .accordion-body,
 #copy-question .settings-accordion-container .accordion-body {
   padding: 0;
+  margin-right: 10px;
+  margin-left: 10px;
 }
 #advanced-question-editor .settings-accordion-container .accordion-body label,
 #copy-question .settings-accordion-container .accordion-body label {

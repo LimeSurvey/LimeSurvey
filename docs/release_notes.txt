@@ -34,6 +34,83 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.0.7 (build 230515) to 6.1.0 (build 230522) May 22, 2023
++New feature #18792: Allow to move question inside group and group order with activated survey (Denis Chenu)
+-Fixed issue: ComfortUpdate showing updates as unstable, even though they are not (Carsten Schmitz)
+-Fixed issue: Action dropdown menu cut off in Firefox (#3085) (jack-han-115)
+-Fixed issue CR-956: wrong color code for g-700 grey (Patrick Teichmann)
+-Fixed issue #18811: Button that triggers HTML editor in pop-up window doesn't work (Denis Chenu)
+-Fixed issue #18805: No replacement variables available on user administration page (#3113) (Denis Chenu)
+-Fixed issue #18784: timer.min.js outdated, updated the build process (#3151) (Bert Hankes)
+-Fixed issue #18736: Error exporting participants when using MSSQL DB (Carsten Schmitz)
+-Fixed issue #18725: Reorder questions/question groups can break survey (Denis Chenu)
+-Fixed issue #18670: "Validation of quota" action button always shows 1st quota (#3139) (Gabriel Jenik)
+-Fixed issue #18605: Missing success alerts in participant view (#2876) (Gabriel Jenik)
+-Fixed issue #18464: Min/max settings doesn't work for question attrib… (#2708) (Denis Chenu)
+-Fixed issue #18262: QCode.gid is not working anymore (#3138) (Denis Chenu)
+#Updated translation: Ukrainian by DermanskiyIM
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Greek by baltzis, kiolalis
+#Updated translation: German by c_schmitz
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Bulgarian by bmtteam
+
+
+Changes from 6.0.6 (build 230508) to 6.0.7 (build 230515) May 15, 2023
+-Fixed issue: No proper error when entering ComfortUpdate key and server cannot be reached (Carsten Schmitz)
+-Fixed issue #18765: Answers are not populated correct in array dual scale after clicking "Back" (#3061) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.0.5 (build 230502) to 6.0.6 (build 230508) May 8, 2023
+-Fixed issue: Cannot add survey menu when using PHP8 (#3115) (Patricia Stell)
+-Fixed issue CR-1119: Saving change disables active status for theme option page (#3104) (Tim Willig)
+-Fixed issue #18747: User administration email - reserved words send 403 error (Denis Chenu)
+-Fixed issue #18744: Window of user permissions is not adapting to space needed by languages. (#3075) (Gabriel Jenik)
+-Fixed issue #18739: ComfortUpdate notification not being shown (#3102) (Gabriel Jenik)
+-Fixed issue #18679: API access to question type array dual scale merges scales if answer code is not unique (#3049) (Gabriel Jenik)
+-Fixed issue #18639: Token browse can be unusable with lot of data in attribute (#3082) (Denis Chenu)
+-Fixed issue #18635: When you export single response : sometimes goes to a white page (#3090) (Denis Chenu)
+-Fixed issue #18612: When surveys are copied without copying resources links are not handled (#3009) (Gabriel Jenik)
+-Fixed issue #18456: Interface language parameter use exotic dropdown list. (#3067) (Gabriel Jenik)
+-Fixed issue #18343: Problem with interpreting double slash in URL (IIS) (#3087) (Denis Chenu)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.0.4 (build 230427) to 6.0.5 (build 230502) May 2, 2023
+-Fixed issue: Very slow survey start if a lot of quotas exist (Carsten Schmitz)
+-Fixed issue #18786: Error shown when token length is set to 36 characters (Carsten Schmitz)
+-Fixed issue #18782: Bad width set for array dual scale (#3078) (Denis Chenu)
+-Fixed issue #18771: Super-admin unable to rename theme (#3076) (Denis Chenu)
+-Fixed issue #18747: User administration email - reserved words send 403 error (Denis Chenu)
+-Fixed issue #18684: Missing translation. (#3053) (Gabriel Jenik)
+-Fixed issue #18604: Set empty to maximum number of files not working (#2865) (Denis Chenu)
+-Fixed issue #18343: Problem with interpreting double slash in URL (IIS) (Denis Chenu)
+#Updated translation: Swedish by c_schmitz, maxzomborszki
+#Updated translation: Spanish (Spain) by aesteban, c_schmitz, ireneoh, jmlopez, valdomir
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz, markusfluer
+#Updated translation: German (Informal) by assistedmindfulness, c_schmitz, holch, p_teichmann, richterd
+#Updated translation: French (France) by Amaury VAN ESPEN, arnaud21, b00z00, c_schmitz, DenisChenu, DenisChenu_TEST, GuillaumeZ6, nmenard, riqcles, twilllig
+
+
 Changes from 6.0.3 (build 230424) to 6.0.4 (build 230427) April 25, 2023
 -Fixed issue: Error on database upgrade (Carsten Schmitz)
 #Updated translation: Polish by elissa

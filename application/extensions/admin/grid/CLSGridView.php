@@ -25,7 +25,7 @@ class CLSGridView extends TbGridView
         $this->registerGridviewScripts();
 
         $this->pager = ['class' => 'application.extensions.admin.grid.CLSYiiPager'];
-        $this->htmlOptions['class'] = '';
+        $this->htmlOptions['class'] = 'grid-view-ls';
         $classes = ['table', 'table-hover'];
         $this->template = $this->render('template', ['massiveActionTemplate' => $this->massiveActionTemplate], true);
         $this->lsAfterAjaxUpdate();
@@ -65,6 +65,10 @@ class CLSGridView extends TbGridView
             }
             $this->afterAjaxUpdate .= 'action_dropdown();';
             $this->afterAjaxUpdate .= '}';
+        } else {
+            // trigger action_dropdown() as a default although no lsAfterAjaxUpdate param passed.
+            // this method is useful for preventing action dropdown cut off && overlapped in other browsers like firefox
+            $this->afterAjaxUpdate = 'function(){ action_dropdown(); }';
         }
     }
 
