@@ -40,7 +40,7 @@ class CacheControl implements HeaderInterface
         list($name, $value) = GenericHeader::splitHeaderLine($headerLine);
 
         // check to ensure proper header type for this factory
-        if (strtolower($name) !== 'cache-control') {
+        if (strtolower((string) $name) !== 'cache-control') {
             throw new Exception\InvalidArgumentException(sprintf(
                 'Invalid header line for Cache-Control string: ""',
                 $name
@@ -145,7 +145,7 @@ class CacheControl implements HeaderInterface
             if (true === $value) {
                 $parts[] = $key;
             } else {
-                if (preg_match('#[^a-zA-Z0-9._-]#', $value)) {
+                if (preg_match('#[^a-zA-Z0-9._-]#', (string) $value)) {
                     $value = '"' . $value . '"';
                 }
                 $parts[] = "$key=$value";
@@ -199,12 +199,12 @@ class CacheControl implements HeaderInterface
         state_value:
         switch (static::match(array('="[^"]*"', '=[^",\s;]*'), $value, $lastMatch)) {
             case 0:
-                $directives[$directive] = substr($lastMatch, 2, -1);
+                $directives[$directive] = substr((string) $lastMatch, 2, -1);
                 goto state_separator;
                 // intentional fall-through
 
             case 1:
-                $directives[$directive] = rtrim(substr($lastMatch, 1));
+                $directives[$directive] = rtrim(substr((string) $lastMatch, 1));
                 goto state_separator;
                 // intentional fall-through
 

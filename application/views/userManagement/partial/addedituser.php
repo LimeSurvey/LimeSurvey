@@ -52,7 +52,7 @@ Yii::app()->getController()->renderPartial(
                 'id'            => 'expires',
                 'value'         => $oUser->expires ? date(
                     $dateformatdetails['phpdate'] . " H:i",
-                    strtotime($oUser->expires)
+                    strtotime((string) $oUser->expires)
                 ) : '',
                 'pluginOptions' => [
                     'format'           => $dateformatdetails['jsdate'] . " HH:mm",
@@ -131,7 +131,7 @@ Yii::app()->getController()->renderPartial(
                     <?= gT('Random password (suggestion):') ?>
                 </label>
                 <input type="text" class="form-control" readonly name="random_example_password"
-                       value="<?= htmlspecialchars($randomPassword) ?>"/>
+                       value="<?= htmlspecialchars((string) $randomPassword) ?>"/>
             </div>
         <?php } ?>
     </div>

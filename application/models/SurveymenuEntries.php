@@ -104,7 +104,7 @@ class SurveymenuEntries extends LSActiveRecord
         if (is_array($menuEntryArray['manualParams'])) {
             $oMenuEntryData->linkData = $menuEntryArray['manualParams'];
         } elseif ($menuEntryArray['manualParams'] != '') {
-            $oMenuEntryData->linkData = json_decode($menuEntryArray['manualParams'], true);
+            $oMenuEntryData->linkData = json_decode((string) $menuEntryArray['manualParams'], true);
         }
 
         //pjax optional

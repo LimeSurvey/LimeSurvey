@@ -326,7 +326,7 @@ class TemplateConfiguration extends TemplateConfig
                 $aTemplateConfigurations[$key]['sid'] = $iSurveyId;
                 $aTemplateConfigurations[$key]['template_name'] = $oAttributes['template_name'];
                 $aTemplateConfigurations[$key]['config']['options'] = isJson($oAttributes['options'])
-                    ? (array)json_decode($oAttributes['options'])
+                    ? (array)json_decode((string) $oAttributes['options'])
                     : $oAttributes['options'];
             }
         }
@@ -665,7 +665,7 @@ class TemplateConfiguration extends TemplateConfig
     public function addFileReplacement($sFile, $sType)
     {
         $sField = 'files_' . $sType;
-        $oFiles = (array) json_decode($this->$sField);
+        $oFiles = (array) json_decode((string) $this->$sField);
 
         $oFiles['replace'][] = $sFile;
 
@@ -931,8 +931,8 @@ class TemplateConfiguration extends TemplateConfig
      */
     private function getRelativePath($from, $to)
     {
-        $dir = explode(DIRECTORY_SEPARATOR, is_file($from) ? dirname($from) : rtrim($from, DIRECTORY_SEPARATOR));
-        $file = explode(DIRECTORY_SEPARATOR, $to);
+        $dir = explode(DIRECTORY_SEPARATOR, is_file($from) ? dirname((string) $from) : rtrim((string) $from, DIRECTORY_SEPARATOR));
+        $file = explode(DIRECTORY_SEPARATOR, (string) $to);
 
         while ($dir && $file && ($dir[0] == $file[0])) {
             array_shift($dir);
@@ -997,7 +997,7 @@ class TemplateConfiguration extends TemplateConfig
             $fileList = Template::getOtherFiles($basePath);
             // Order File List alphabetically
             usort($fileList, function ($a, $b) {
-                return strcasecmp($a['name'], $b['name']);
+                return strcasecmp((string) $a['name'], (string) $b['name']);
             });
             // Keep only image files
             foreach ($fileList as $file) {
@@ -1094,7 +1094,7 @@ class TemplateConfiguration extends TemplateConfig
                     if ($action == $sAction) {
                         // Specific inheritance of one of the value of the json array
                         if ($aFileList[0] == 'inherit') {
-                            $aParentjFiles = (array) json_decode($oTemplate->getParentConfiguration->$sField);
+                            $aParentjFiles = (array) json_decode((string) $oTemplate->getParentConfiguration->$sField);
                             $aFileList = $aParentjFiles[$action];
                         }
 
@@ -1131,7 +1131,7 @@ class TemplateConfiguration extends TemplateConfig
         $files = $oTemplate->$sField;
         $oFiles = [];
         if (!empty($files)) {
-            $oFiles = json_decode($files, true);
+            $oFiles = json_decode((string) $files, true);
             if ($oFiles === null) {
                 App()->setFlashMessage(
                     sprintf(
@@ -1354,7 +1354,7 @@ class TemplateConfiguration extends TemplateConfig
         $this->aFrameworkAssetsToReplace[$sType] = array();
 
         $sFieldName  = 'cssframework_' . $sType;
-        $aFieldValue = (array) json_decode($this->$sFieldName);
+        $aFieldValue = (array) json_decode((string) $this->$sFieldName);
 
         if (!empty($aFieldValue) && !empty($aFieldValue['replace'])) {
             $this->aFrameworkAssetsToReplace[$sType] = (array) $aFieldValue['replace'];
@@ -1583,7 +1583,7 @@ class TemplateConfiguration extends TemplateConfig
     {
         // Validates all options of the theme. Not only classic ones which are expected to hold a path,
         // as other options may hold a path as well (eg. custom theme options)
-        $decodedOptions = json_decode($this->$attribute, true);
+        $decodedOptions = json_decode((string) $this->$attribute, true);
         if (is_array($decodedOptions)) {
             Yii::import('application.helpers.SurveyThemeHelper');
             foreach ($decodedOptions as &$value) {

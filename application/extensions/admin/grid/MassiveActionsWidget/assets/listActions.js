@@ -52,11 +52,11 @@ var onClickListAction =  function () {
         $oCheckedItems = $gridid.yiiGridView('getChecked', $('.listActions').data('pk')); // So we can join
         var newForm = jQuery('<form>', {
             'action': $actionUrl,
-            'target': '_blank',
+            'target': $that.data('target') ?? '_blank',
             'method': 'POST'
         }).append(jQuery('<input>', {
             'name': $that.data('input-name'),
-            'value': $oCheckedItems.join("|"),
+            'value': $oCheckedItems.join($that.data('input-separator') ?? '|'),
             'type': 'hidden'
         })).append(jQuery('<input>', {
             'name': LS.data.csrfTokenName,
@@ -362,5 +362,29 @@ $(document).off('pjax:scriptcomplete.listActions').on('pjax:scriptcomplete.listA
 });
 
 $(document).off('bindscroll.listActions').on('bindscroll.listActions, ready ', function () {
+    var checkboxes = $('input[type="checkbox"]');
+    var actionButton = $('.massiveAction');
+    // Attach an onchange event handler to all checkboxes
+    checkboxes.on('change', function() {
+      if (isAnyCheckboxChecked()) {
+        actionButton.removeClass('disabled');
+      } else {
+        actionButton.addClass('disabled');
+      }
+    });
+  
+    // Function to check if at least one checkbox is checked
+    function isAnyCheckboxChecked() {
+      var isChecked = false;
+      checkboxes.each(function() {
+        if ($(this).is(':checked')) {
+          isChecked = true;
+          return false; // Break out of the loop
+        }
+      });
+      return isChecked;
+    }
+    
+
     bindListItemclick();
 });

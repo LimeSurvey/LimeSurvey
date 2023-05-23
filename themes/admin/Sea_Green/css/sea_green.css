@@ -11172,6 +11172,15 @@ a {
 
 body {
   background-color: #F9F9FB;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.full-page-wrapper {
+  padding-bottom: 70px;
 }
 
 .summary-table {
@@ -14543,6 +14552,11 @@ html[dir=rtl] th {
   overflow-x: visible;
 }
 
+/** Hide Relevance Equation column for subquestions when not supported */
+.subquestions-table.hide-relevance #rel-eq-th, .subquestions-table.hide-relevance td.relevance-equation {
+  display: none;
+}
+
 .jcarousel-wrapper {
   margin: 20px auto;
   position: relative;
@@ -14898,6 +14912,16 @@ div.mappable-attribute-wrapper.paired.ui-state-disabled {
 
 .grid-view-ls.grid-view-loading .table th > .sort-link .caret {
   display: none;
+}
+
+.grid-view-ls .table td .longtext-content {
+  min-width: 8em;
+  max-width: 16em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  height: 1.5em;
+  display: inline-block;
 }
 
 .dropdown-menu.larger-dropdown {
@@ -16701,8 +16725,8 @@ tr.info, tr.danger {
   border: 1px solid #cccccc;
 }
 
-[data-toggle=buttons] > .btn input[type=radio],
-[data-toggle=buttons] > .btn input[type=checkbox] {
+[data-bs-toggle=buttons] > .btn input[type=radio],
+[data-bs-toggle=buttons] > .btn input[type=checkbox] {
   position: absolute;
   clip: rect(0, 0, 0, 0);
   pointer-events: none;
@@ -16837,6 +16861,13 @@ tr.info, tr.danger {
 
 .dropdown-divider {
   margin: 8px 0;
+}
+
+.ls-action_dropdown > .btn {
+  line-height: 16px;
+}
+.ls-action_dropdown > .btn .ri-more-fill {
+  vertical-align: bottom;
 }
 
 .btn-circle {
@@ -17084,6 +17115,9 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 
 .footer {
   width: 100%;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
 }
 
 .sub_footer {
@@ -17111,10 +17145,9 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 }
 .navbar .navbar-brand {
   font-style: normal;
-  font-weight: 700;
-  font-size: 16px;
+  font-weight: 800;
+  font-size: 18px;
   color: #fff;
-  height: 30px;
   width: auto;
 }
 .navbar .navbar-toggler {
@@ -17148,7 +17181,7 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   height: 25px;
 }
 .navbar a {
-  font-weight: 500;
+  font-weight: 400;
 }
 .navbar .dropdown-menu {
   z-index: 10000;
@@ -17322,10 +17355,6 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   height: unset;
   background-color: unset;
   border: none;
-}
-.card.card-primary .card-header + .card-body {
-  padding-top: 0;
-  margin-top: -1rem;
 }
 .card.card-primary .card-footer {
   justify-content: flex-start;
@@ -18244,6 +18273,9 @@ input[type=number] {
 #sidebar .subpanel.level-2 .selected {
   background: linear-gradient(to right, #5cc262 0px, #5cc262 8px, #fff 8px, #fff 100%);
 }
+#sidebar .ls-questiongroup-tools i, #sidebar .ls-question-tools i {
+  font-size: 24px;
+}
 
 .list-group {
   border-radius: 0px !important;
@@ -18334,6 +18366,10 @@ input[type=number] {
   width: 294px;
 }
 
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
 table .ls-sticky-column:first-child {
   position: sticky;
   background-color: #fff;
@@ -19037,4 +19073,277 @@ table [class^=ri-], table [class*=" ri-"] {
     animation: slidein 300ms forwards;
     transform-style: preserve-3d;
   }
+}
+.file-manager #browseiframe {
+  border: 1px solid #1E1E1E !important;
+}
+
+.file-manager-body {
+  all: unset;
+  background: #fff !important;
+  color: #1E1E1E !important;
+  box-shadow: 4px 4px #EEEFF7 !important;
+}
+.file-manager-body .ri-delete-bin-line {
+  color: #FF515F !important;
+}
+.file-manager-body .ui-dialog {
+  border: 1px solid #1E1E1E !important;
+  box-shadow: none !important;
+}
+.file-manager-body .ui-dialog .ui-dialog-titlebar {
+  box-shadow: none;
+  border: 1px solid #1E1E1E;
+  background: none;
+  color: #1E1E1E;
+  text-shadow: none;
+  border-radius: 0;
+}
+.file-manager-body .ui-dialog .ui-dialog-content {
+  box-shadow: none;
+}
+.file-manager-body .ui-dialog .ui-dialog-content .uniform-input {
+  background: none;
+  border: 1px solid #1E1E1E;
+  box-shadow: none;
+}
+.file-manager-body .ui-dialog .ui-dialog-content .uniform-input:focus {
+  box-shadow: 4px 4px 0px rgba(66, 0, 255, 0.2) !important;
+}
+.file-manager-body .ui-dialog .ui-dialog-buttonpane {
+  box-shadow: none;
+}
+.file-manager-body .ui-dialog .ui-dialog-buttonpane button {
+  background: none;
+  box-shadow: none;
+  border: 1px solid #1E1E1E;
+  padding: 4px 10px;
+}
+.file-manager-body .ui-dialog .ui-dialog-buttonpane button:hover {
+  text-shadow: none !important;
+  box-shadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4) !important;
+}
+.file-manager-body .ui-dialog .ui-dialog-buttonpane button .ui-button-icon {
+  margin: auto;
+}
+.file-manager-body .ui-dialog .box {
+  box-shadow: none;
+  border-radius: 0;
+}
+.file-manager-body .ui-dialog .ui-dialog-titlebar-close {
+  display: none;
+}
+.file-manager-body .ui-dialog .about div.head a {
+  background: none;
+}
+.file-manager-body #menu .ui-menu {
+  box-shadow: none !important;
+  border: 1px solid #1E1E1E !important;
+  background: #fff !important;
+}
+.file-manager-body #menu .ui-menu .ui-menu-divider {
+  border-color: #5E6372 !important;
+}
+.file-manager-body #menu .ui-menu .ui-state-active {
+  background: #fff !important;
+  text-shadow: none !important;
+  box-shadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4) !important;
+  color: #1E1E1E !important;
+  border-radius: 0 !important;
+}
+.file-manager-body #menu .ui-menu a {
+  color: #1E1E1E !important;
+  display: flex !important;
+  align-items: center !important;
+}
+.file-manager-body #menu .ui-menu a span {
+  background-image: none !important;
+  padding-left: 5px !important;
+}
+.file-manager-body #toolbar {
+  height: auto !important;
+  display: flex !important;
+  flex-shrink: 0 !important;
+}
+.file-manager-body #toolbar a {
+  color: #1E1E1E !important;
+  background: none !important;
+  border: 1px solid #1E1E1E !important;
+  padding: 6px 8px !important;
+  margin-right: 8px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+.file-manager-body #toolbar a:hover, .file-manager-body #toolbar a:focus, .file-manager-body #toolbar a.selected {
+  text-shadow: none !important;
+  box-shadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4) !important;
+}
+.file-manager-body #toolbar a span {
+  background-image: none !important;
+  padding: 0 !important;
+  padding-left: 5px !important;
+}
+.file-manager-body #toolbar a.hover {
+  text-shadow: none !important;
+  box-shadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4) !important;
+}
+.file-manager-body #folders {
+  box-shadow: none !important;
+  border: 1px solid #1E1E1E !important;
+  border-radius: 0 !important;
+  background: #fff !important;
+}
+.file-manager-body #folders a {
+  width: 65px !important;
+  margin-left: 8px !important;
+  color: #1E1E1E !important;
+  background: none !important;
+  padding: 2px 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  border-radius: 4px !important;
+}
+.file-manager-body #folders a .folder.current,
+.file-manager-body #folders a .folder.regular {
+  color: #1E1E1E !important;
+  background-color: #fff !important;
+  background-image: none !important;
+  padding: 0 !important;
+  text-shadow: none !important;
+  border: none !important;
+  margin-left: 5px !important;
+  text-overflow: ellipsis !important;
+  overflow: hidden !important;
+}
+.file-manager-body #folders a.hover {
+  text-shadow: none !important;
+  box-shadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4) !important;
+}
+.file-manager-body #folders a:has(span.folder.current) {
+  box-shadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4) !important;
+}
+.file-manager-body #files {
+  background: #fff !important;
+  border: 1px solid #1E1E1E !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+.file-manager-body #files .file:hover, .file-manager-body #files .file:focus {
+  border: 1px solid #1E1E1E !important;
+  border-radius: 4px !important;
+  color: #1E1E1E !important;
+  text-shadow: none !important;
+  background: none !important;
+}
+.file-manager-body #files div.selected {
+  background: none !important;
+  border: 1px solid #1E1E1E !important;
+  border-radius: 4px !important;
+  color: #1E1E1E !important;
+  text-shadow: none !important;
+}
+.file-manager-body #files div.selected:hover, .file-manager-body #files div.selected:focus {
+  box-shadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4) !important;
+}
+.file-manager-body #files .file {
+  width: auto !important;
+}
+.file-manager-body #files .name {
+  font-weight: 500 !important;
+  height: auto !important;
+  overflow: auto !important;
+  padding-bottom: 2px;
+}
+.file-manager-body #settings fieldset {
+  margin-top: 5px !important;
+  background: #fff !important;
+  border: 1px solid #1E1E1E !important;
+  border-radius: 4px !important;
+  color: #1E1E1E !important;
+  box-shadow: none !important;
+}
+.file-manager-body #settings fieldset .radio,
+.file-manager-body #settings fieldset .checker {
+  background: none !important;
+  background-color: #fff !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+.file-manager-body #settings fieldset .radio {
+  display: flex;
+  width: 18px !important;
+  height: 18px !important;
+  border: 1px solid #1E1E1E !important;
+}
+.file-manager-body #settings fieldset .radio:hover, .file-manager-body #settings fieldset .radio:focus {
+  text-shadow: none !important;
+  box-shadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4) !important;
+}
+.file-manager-body #settings fieldset .radio span.checked {
+  width: 10px;
+  height: 10px;
+  background: #333641 !important;
+  border-radius: 9999px;
+  margin: auto;
+  border: 1px solid #1E1E1E !important;
+}
+.file-manager-body #settings fieldset .checker {
+  width: 17px !important;
+  height: 17px !important;
+  border: none !important;
+}
+.file-manager-body #settings fieldset .checker span {
+  width: 16px !important;
+  height: 18px !important;
+}
+.file-manager-body #settings fieldset .checker input {
+  opacity: 1 !important;
+}
+.file-manager-body #settings fieldset .checker input:hover, .file-manager-body #settings fieldset .checker input:focus {
+  text-shadow: none !important;
+  box-shadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4) !important;
+}
+.file-manager-body #settings fieldset .checker input[type=checkbox]:checked:before {
+  content: "";
+  position: absolute;
+  top: 1px;
+  left: 5px;
+  display: table;
+  width: 5px;
+  height: 10px;
+  border: 2px solid #fff;
+  border-top-width: 0;
+  border-left-width: 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+.file-manager-body #settings fieldset .checker input[type=checkbox]:after {
+  border: 1px solid #1E1E1E !important;
+  width: 17px !important;
+  height: 17px !important;
+  margin-top: -1px !important;
+  margin-left: -1px !important;
+}
+.file-manager-body #settings fieldset .checker input[type=checkbox]:checked:after {
+  width: 17px !important;
+  height: 17px !important;
+  background-color: #333641 !important;
+}
+.file-manager-body #settings fieldset:hover, .file-manager-body #settings fieldset:focus {
+  text-shadow: none !important;
+  box-shadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4) !important;
+}
+.file-manager-body #settings fieldset.sh-uniform legend {
+  font-weight: 500 !important;
+  font-size: 0.9975rem !important;
+  color: #1E1E1E !important;
+  text-shadow: none !important;
+  border-bottom: 1px solid #1E1E1E !important;
+}
+.file-manager-body #settings label.sh-uniform {
+  color: #1E1E1E !important;
+  font-size: 0.855rem !important;
 }

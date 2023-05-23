@@ -513,7 +513,7 @@ class SettingsWidget extends CWidget
         // Remove class 'form-control' because of double styling
         // TODO: Where is this class added in the first place??
         $html = App()->getController()->widget('yiiwheels.widgets.select2.WhSelect2', $properties, true);
-        $html = str_replace('form-control', '', $html);
+        $html = str_replace('form-control', '', (string) $html);
         return $html;
 
     }
@@ -619,10 +619,26 @@ class SettingsWidget extends CWidget
     {
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
         $value = $metaData['current'] ?? '';
-        $html = Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', array(
+        /**
+         * Fix the value according to saveformat only if isset and not empty
+         * By defalt : save as sent by input (admin lanuage dependent
+         **/
+        if (!empty($metaData['saveformat'])) {
+            if (is_string($value) && $value !== "") {
+                $datetimeobj = new Date_Time_Converter($value, $metaData['saveformat']);
+                $value = $datetimeobj->convert($dateformatdetails['phpdate'] . "H:i");
+            } else {
+                $value = "";
+            }
+        }
+        $metaData['class'][] = 'form-control';
+        $htmlOptions = $this->htmlOptions($metaData, $form);
+
+        return Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', array(
                 'name' => $name,
                 'id' => \CHtml::getIdByName($name),
                 'value' => $value,
+                'htmlOptions' => $htmlOptions,
                 'pluginOptions' => array(
                     'format' => $dateformatdetails['jsdate'] . " HH:mm",
                     'allowInputToggle' => true,
@@ -631,7 +647,6 @@ class SettingsWidget extends CWidget
                 )
             ), true
         );
-        return $html;
     }
 
     /* Return htmlOptions for an input od seting

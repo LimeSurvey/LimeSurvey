@@ -267,7 +267,7 @@ class BreadcrumbWidget extends CWidget
         $countChars = 0;
         foreach ($breadcrumbs as $breadcrumbArray) {
             // counts the number of chars
-            $countChars += strlen($breadcrumbArray['text']) + 1;
+            $countChars += strlen((string) $breadcrumbArray['text']) + 1;
         }
         return $countChars;
     }
@@ -282,8 +282,8 @@ class BreadcrumbWidget extends CWidget
     {
         // keep the first breadcrumb full, only touch 2nd and maybe 3rd entry
         $charsTooMuch = $countChars - self::THRESHOLD;
-        $charsOf2nd = array_key_exists(1, $breadcrumbs) ? strlen($breadcrumbs[1]['text']) : 0;
-        $charsOf3rd = array_key_exists(2, $breadcrumbs) ? strlen($breadcrumbs[2]['text']) : 0;
+        $charsOf2nd = array_key_exists(1, $breadcrumbs) ? strlen((string) $breadcrumbs[1]['text']) : 0;
+        $charsOf3rd = array_key_exists(2, $breadcrumbs) ? strlen((string) $breadcrumbs[2]['text']) : 0;
         $secondIsLastElement = count($breadcrumbs) === 2;
         $thirdIsLastElement = count($breadcrumbs) === 3;
         if ($charsOf2nd > $charsTooMuch) {

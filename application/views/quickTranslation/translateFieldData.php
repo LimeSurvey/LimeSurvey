@@ -20,9 +20,9 @@ if ($type == 'answer') {
     $translateoutput .= "<td class='col-sm-2'>" . htmlspecialchars($rowfrom['question_title'] . " / " . $rowfrom['code']) . " (" . $rowfrom['aid'] . ") </td>";
 }
 if ($type == 'question_help' || $type == 'question') {
-    $translateoutput .= "<td class='col-sm-2'>" . htmlspecialchars($rowfrom['title']) . " ({$rowfrom['qid']}) </td>";
+    $translateoutput .= "<td class='col-sm-2'>" . htmlspecialchars((string) $rowfrom['title']) . " ({$rowfrom['qid']}) </td>";
 } elseif ($type == 'subquestion') {
-    $translateoutput .= "<td class='col-sm-2'>" . htmlspecialchars($rowfrom['parent']['title']) . " ({$rowfrom['parent']['qid']}) </td>";
+    $translateoutput .= "<td class='col-sm-2'>" . htmlspecialchars((string) $rowfrom['parent']['title']) . " ({$rowfrom['parent']['qid']}) </td>";
 }
 
 $translateoutput .= "<td class='_from_ col-sm-5' id='" . $type . "_from_" . $j . "'><div class='question-text-from'>"
@@ -63,7 +63,7 @@ $translateoutput .= CHtml::textArea("{$type}_newvalue_{$j}", $textto, $aDisplayO
 $htmleditor_data = array(
     "edit" . $type,
     $type . "_newvalue_" . $j,
-    htmlspecialchars($textto),
+    htmlspecialchars((string) $textto),
     $surveyId,
     $gid,
     $qid,

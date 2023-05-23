@@ -17,14 +17,12 @@ use Twig\Source;
 /**
  * Loads templates from other loaders.
  *
- * @final
- *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class ChainLoader implements LoaderInterface, ExistsLoaderInterface, SourceContextLoaderInterface
+final class ChainLoader implements LoaderInterface
 {
     private $hasSourceCache = [];
-    protected $loaders = [];
+    private $loaders = [];
 
     /**
      * @param LoaderInterface[] $loaders
@@ -36,7 +34,7 @@ class ChainLoader implements LoaderInterface, ExistsLoaderInterface, SourceConte
         }
     }
 
-    public function addLoader(LoaderInterface $loader)
+    public function addLoader(LoaderInterface $loader): void
     {
         $this->loaders[] = $loader;
         $this->hasSourceCache = [];
@@ -45,23 +43,21 @@ class ChainLoader implements LoaderInterface, ExistsLoaderInterface, SourceConte
     /**
      * @return LoaderInterface[]
      */
-    public function getLoaders()
+    public function getLoaders(): array
     {
         return $this->loaders;
     }
 
-    public function getSource($name)
+    public function getSourceContext(string $name): Source
     {
-        @trigger_error(sprintf('Calling "getSource" on "%s" is deprecated since 1.27. Use getSourceContext() instead.', static::class), \E_USER_DEPRECATED);
-
         $exceptions = [];
         foreach ($this->loaders as $loader) {
-            if ($loader instanceof ExistsLoaderInterface && !$loader->exists($name)) {
+            if (!$loader->exists($name)) {
                 continue;
             }
 
             try {
-                return $loader->getSource($name);
+                return $loader->getSourceContext($name);
             } catch (LoaderError $e) {
                 $exceptions[] = $e->getMessage();
             }
@@ -70,65 +66,26 @@ class ChainLoader implements LoaderInterface, ExistsLoaderInterface, SourceConte
         throw new LoaderError(sprintf('Template "%s" is not defined%s.', $name, $exceptions ? ' ('.implode(', ', $exceptions).')' : ''));
     }
 
-    public function getSourceContext($name)
+    public function exists(string $name): bool
     {
-        $exceptions = [];
-        foreach ($this->loaders as $loader) {
-            if ($loader instanceof ExistsLoaderInterface && !$loader->exists($name)) {
-                continue;
-            }
-
-            try {
-                if ($loader instanceof SourceContextLoaderInterface) {
-                    return $loader->getSourceContext($name);
-                }
-
-                return new Source($loader->getSource($name), $name);
-            } catch (LoaderError $e) {
-                $exceptions[] = $e->getMessage();
-            }
-        }
-
-        throw new LoaderError(sprintf('Template "%s" is not defined%s.', $name, $exceptions ? ' ('.implode(', ', $exceptions).')' : ''));
-    }
-
-    public function exists($name)
-    {
-        $name = (string) $name;
-
         if (isset($this->hasSourceCache[$name])) {
             return $this->hasSourceCache[$name];
         }
 
         foreach ($this->loaders as $loader) {
-            if ($loader instanceof ExistsLoaderInterface) {
-                if ($loader->exists($name)) {
-                    return $this->hasSourceCache[$name] = true;
-                }
-
-                continue;
-            }
-
-            try {
-                if ($loader instanceof SourceContextLoaderInterface) {
-                    $loader->getSourceContext($name);
-                } else {
-                    $loader->getSource($name);
-                }
-
+            if ($loader->exists($name)) {
                 return $this->hasSourceCache[$name] = true;
-            } catch (LoaderError $e) {
             }
         }
 
         return $this->hasSourceCache[$name] = false;
     }
 
-    public function getCacheKey($name)
+    public function getCacheKey(string $name): string
     {
         $exceptions = [];
         foreach ($this->loaders as $loader) {
-            if ($loader instanceof ExistsLoaderInterface && !$loader->exists($name)) {
+            if (!$loader->exists($name)) {
                 continue;
             }
 
@@ -142,11 +99,11 @@ class ChainLoader implements LoaderInterface, ExistsLoaderInterface, SourceConte
         throw new LoaderError(sprintf('Template "%s" is not defined%s.', $name, $exceptions ? ' ('.implode(', ', $exceptions).')' : ''));
     }
 
-    public function isFresh($name, $time)
+    public function isFresh(string $name, int $time): bool
     {
         $exceptions = [];
         foreach ($this->loaders as $loader) {
-            if ($loader instanceof ExistsLoaderInterface && !$loader->exists($name)) {
+            if (!$loader->exists($name)) {
                 continue;
             }
 
@@ -160,5 +117,3 @@ class ChainLoader implements LoaderInterface, ExistsLoaderInterface, SourceConte
         throw new LoaderError(sprintf('Template "%s" is not defined%s.', $name, $exceptions ? ' ('.implode(', ', $exceptions).')' : ''));
     }
 }
-
-class_alias('Twig\Loader\ChainLoader', 'Twig_Loader_Chain');

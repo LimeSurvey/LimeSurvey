@@ -166,7 +166,7 @@ class DateTimePicker extends CInputWidget
      */
     protected function getEscapedId()
     {
-        $id = str_replace('[', '\\\\[', $this->getId());
+        $id = str_replace('[', '\\\\[', (string) $this->getId());
         $id = str_replace(']', '\\\\]', $id);
         return $id;
     }

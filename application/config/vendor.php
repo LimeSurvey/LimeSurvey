@@ -80,19 +80,6 @@ return array(
         ]
     ],
 
-    // Bootstrap for theme editor,
-    // must be different for theme editor not to collide with theme files replacement
-    'bootstrap-themeeditor' => array(
-        'devBaseUrl' => 'assets/bootstrap_5/',
-        'basePath' => 'bootstrap',
-        'css' => array(
-            'build/css/bootstrap_5.min.css',
-        ),
-        'js' => array(
-            'build/js/bootstrap_5.min.js',
-        ),
-    ),
-
     // bootstrap-slider : for multinumeric with slider
     'bootstrap-slider' => array(
         'devBaseUrl' => 'assets/packages/bootstrap/plugins/slider',

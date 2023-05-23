@@ -11,11 +11,20 @@ class FileInput extends BaseInput
 
     public function __construct(array $options)
     {
-        $this->accept = $options['accept'] ?? [];
-        $options['attributes'] = array_merge(
-            ['type' => 'file', 'accept' => $this->accept],
-            $options['attributes'] ?? []
-        );
         parent::__construct($options);
+
+        $this->accept = $options['accept'] ?? [];
+    }
+
+    public function getAccept(): array
+    {
+        return $this->accept;
+    }
+
+    public function getAcceptHtml(): string
+    {
+        return !empty($this->accept)
+            ? 'accept="' . implode(',', $this->accept) . '"'
+            : '';
     }
 }

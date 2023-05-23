@@ -89,8 +89,8 @@ class LSHttpRequest extends CHttpRequest
     {
 
         $referrer = parent::getUrlReferrer();
-        $baseReferrer    = str_replace(Yii::app()->getBaseUrl(true), "", $referrer);
-        $baseRequestUri  = str_replace(Yii::app()->getBaseUrl(), "", Yii::app()->request->requestUri);
+        $baseReferrer    = str_replace(Yii::app()->getBaseUrl(true), "", (string) $referrer);
+        $baseRequestUri  = str_replace(Yii::app()->getBaseUrl(), "", (string) Yii::app()->request->requestUri);
         $referrer = ($baseReferrer != $baseRequestUri) ? $referrer : null;
         //Use alternative url if the $referrer is still available in the checkLoopInNavigationStack
         if (($this->checkLoopInNavigationStack($referrer)) || (is_null($referrer))) {
@@ -163,7 +163,7 @@ class LSHttpRequest extends CHttpRequest
             // $validationParams['request'] = 'acs';
 
             foreach ($validationRoutes as $cr) {
-                if (preg_match('#' . $cr . '#', $route)) {
+                if (preg_match('#' . $cr . '#', (string) $route)) {
                     Yii::app()->detachEventHandler(
                         'onBeginRequest',
                         array($this, 'validateCsrfToken')
@@ -192,20 +192,20 @@ class LSHttpRequest extends CHttpRequest
         if ($this->_pathInfo === null) {
             $pathInfo = $this->getRequestUri();
 
-            if (($pos = strpos($pathInfo, '?')) !== false) {
-                            $pathInfo = substr($pathInfo, 0, $pos);
+            if (($pos = strpos((string) $pathInfo, '?')) !== false) {
+                            $pathInfo = substr((string) $pathInfo, 0, $pos);
             }
 
             $pathInfo = $this->decodePathInfo($pathInfo);
 
             $scriptUrl = $this->getScriptUrl();
             $baseUrl = $this->getBaseUrl();
-            if (strpos($pathInfo, $scriptUrl) === 0) {
-                            $pathInfo = substr($pathInfo, strlen($scriptUrl));
-            } elseif ($baseUrl === '' || strpos($pathInfo, $baseUrl) === 0) {
-                            $pathInfo = substr($pathInfo, strlen($baseUrl));
-            } elseif (strpos($_SERVER['PHP_SELF'], $scriptUrl) === 0) {
-                            $pathInfo = substr($_SERVER['PHP_SELF'], strlen($scriptUrl));
+            if (strpos((string) $pathInfo, (string) $scriptUrl) === 0) {
+                            $pathInfo = substr((string) $pathInfo, strlen((string) $scriptUrl));
+            } elseif ($baseUrl === '' || strpos((string) $pathInfo, (string) $baseUrl) === 0) {
+                            $pathInfo = substr((string) $pathInfo, strlen((string) $baseUrl));
+            } elseif (strpos((string) $_SERVER['PHP_SELF'], (string) $scriptUrl) === 0) {
+                            $pathInfo = substr((string) $_SERVER['PHP_SELF'], strlen((string) $scriptUrl));
             } else {
                             throw new CException(Yii::t('yii', 'CHttpRequest is unable to determine the path info of the request.'));
             }

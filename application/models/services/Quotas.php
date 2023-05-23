@@ -109,7 +109,7 @@ class Quotas
                     ->findAllByAttributes(array('parent_qid' => $iQuestionId));
                 foreach ($aResults as $oDbAnsList) {
                     $tmparrayans = array('Title' => $aQuestion['title'],
-                        'Display' => substr($oDbAnsList->questionl10ns[$sBaseLang]->question, 0, 40),
+                        'Display' => substr((string) $oDbAnsList->questionl10ns[$sBaseLang]->question, 0, 40),
                         'code' => $oDbAnsList->title);
                     $aAnswerList[$oDbAnsList->title] = $tmparrayans;
                 }
@@ -140,7 +140,7 @@ class Quotas
                 foreach ($aAnsResults as $aDbAnsList) {
                     for ($x = 1; $x < 6; $x++) {
                         $tmparrayans = array('Title' => $aQuestion['title'],
-                            'Display' => substr($aDbAnsList->questionl10ns[$sBaseLang]->question, 0, 40) . ' [' . $x . ']',
+                            'Display' => substr((string) $aDbAnsList->questionl10ns[$sBaseLang]->question, 0, 40) . ' [' . $x . ']',
                             'code' => $aDbAnsList['title']);
                         $aAnswerList[$aDbAnsList['title'] . "-" . $x] = $tmparrayans;
                     }
@@ -154,7 +154,7 @@ class Quotas
                 foreach ($aAnsResults as $aDbAnsList) {
                     for ($x = 1; $x < 11; $x++) {
                         $tmparrayans = array('Title' => $aQuestion['title'],
-                            'Display' => substr($aDbAnsList->questionl10ns[$sBaseLang]->question, 0, 40) . ' [' . $x . ']',
+                            'Display' => substr((string) $aDbAnsList->questionl10ns[$sBaseLang]->question, 0, 40) . ' [' . $x . ']',
                             'code' => $aDbAnsList['title']);
                         $aAnswerList[$aDbAnsList['title'] . "-" . $x] = $tmparrayans;
                     }

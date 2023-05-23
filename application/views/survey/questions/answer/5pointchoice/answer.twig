@@ -17,7 +17,7 @@
 
 <ul class="{{coreClass}} list-unstyled list-group list-group-horizontal" role="radiogroup" aria-labelledby="ls-question-text-{{name}}">
     {% for aRow in aRows %}
-        {% include './survey/questions/answer/5pointchoice/rows/item_row.twig' with aRow only %}
+        {% include './survey/questions/answer/5pointchoice/rows/item_row.twig' with aRow %}
     {% endfor %}
 </ul>
 

@@ -65,7 +65,7 @@
             <div class="col-10">
 
                 <?php
-                    if (trim($question->questionl10ns[$question->survey->language]->help) != '')
+                    if (trim((string) $question->questionl10ns[$question->survey->language]->help) != '')
                     {
                         templatereplace(
                             $question->questionl10ns[$question->survey->language]->help,
@@ -90,7 +90,7 @@
                     </strong>
                 </div>
                 <div class="col-10">
-                   <?= htmlspecialchars($question->preg); ?>
+                   <?= htmlspecialchars((string) $question->preg); ?>
                 </div>
             </div>
         <?php endif; ?>
@@ -194,7 +194,7 @@
         <?php endif; ?>
 
         <!-- Condition for this question -->
-        <?php if (trim($question->relevance) != '') : ?>
+        <?php if (trim((string) $question->relevance) != '') : ?>
             <div class="row">
                 <div class="col-2">
                     <strong>
@@ -204,7 +204,7 @@
                 <div class="col-10">
                     <?php
                     LimeExpressionManager::ProcessString(
-                        "{" . trim($question->relevance) . "}",
+                        "{" . trim((string) $question->relevance) . "}",
                         $question->qid
                     );
                     echo viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
@@ -214,13 +214,13 @@
         <?php endif; ?>
 
         <!-- Group Relevance equation -->
-        <?php if (trim($question->group->grelevance) != '') : ?>
+        <?php if (trim((string) $question->group->grelevance) != '') : ?>
             <div class="row">
                 <div class="col-2"><strong><?php eT("Group relevance:"); ?></strong></div>
                 <div class="col-10">
                     <?php
                     LimeExpressionManager::ProcessString(
-                        "{" . trim($question->group->grelevance) . "}",
+                        "{" . trim((string) $question->group->grelevance) . "}",
                         $question->qid
                     );
                     echo viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
@@ -254,7 +254,7 @@
                                 }
                                 echo viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
                             } else {
-                                echo htmlspecialchars($value);
+                                echo htmlspecialchars((string) $value);
                             }
                         ?>
                     </div>

@@ -75,7 +75,7 @@
                         );
                         foreach (getLanguageDataRestricted(true) as $sLangKey => $aLanguage)
                         {
-                            $languageData[$sLangKey] =  html_entity_decode($aLanguage['nativedescription'], ENT_NOQUOTES, 'UTF-8') . " - " . $aLanguage['description'];
+                            $languageData[$sLangKey] =  html_entity_decode((string) $aLanguage['nativedescription'], ENT_NOQUOTES, 'UTF-8') . " - " . $aLanguage['description'];
                         }
                         echo CHtml::label(gT('Language'), 'loginlang');
 

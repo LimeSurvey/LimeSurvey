@@ -49,7 +49,7 @@ class customToken extends PluginBase
                 $token = str_replace(
                     array('~','_','0','O','1','l','I'),
                     array('a','z','7','P','8','k','K'),
-                    Yii::app()->securityManager->generateRandomString($iTokenLength)
+                    (string) Yii::app()->securityManager->generateRandomString($iTokenLength)
                 );
                 break;
             case 3: // 3 = CAPITALS ONLY

@@ -122,7 +122,7 @@ class LayoutHelper
                     'importance' => Notification::HIGH_IMPORTANCE,
                     'title' => gT('SSL not enforced'),
                     'message' => '<span class="ri-error-warning-fill"></span>&nbsp;' .
-                        gT("Warning: Please enforce SSL encrpytion in Global settings/Security after SSL is properly configured for your webserver.")
+                        gT("Warning: Please enforce SSL encryption in Global settings/Security after SSL is properly configured for your webserver.")
                 ));
                 $not->save();
             }
@@ -190,6 +190,7 @@ class LayoutHelper
     public function renderTopbarTemplate($aData)
     {
         $titleTextBreadcrumb = null;
+        $titleBackLink = null;
         $isBreadCrumb = isset($aData['title_bar']); //only the existence is important, indicator for breadcrumb
 
         if (isset($aData['topbar']['title'])) {
@@ -197,6 +198,10 @@ class LayoutHelper
         } elseif ($isBreadCrumb) {
             $titleTextBreadcrumb = App()->getController()->renderPartial("/layouts/title_bar", $aData, true);
         }
+        if (isset($aData['topbar']['backLink'])) {
+            $titleBackLink = $aData['topbar']['backLink'];
+        }
+
         $middle = $aData['topbar']['middleButtons'] ?? '';
         $rightSide = $aData['topbar']['rightButtons'] ?? '';
         if ($titleTextBreadcrumb !== null) {
@@ -221,7 +226,8 @@ class LayoutHelper
                     'leftSide'     => $titleTextBreadcrumb,
                     'middle'       => $middle, //array of ButtonWidget
                     'rightSide'    => $rightSide, //array of ButtonWidget
-                    'isBreadCrumb' => $isBreadCrumb
+                    'isBreadCrumb' => $isBreadCrumb,
+                    'titleBackLink' => $titleBackLink
                 ],
                 true
             );

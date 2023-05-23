@@ -2,14 +2,13 @@
 
 class ClassFactory
 {
-
     protected static $map = array();
     protected static $registered = false;
 
-    public static function autoload($className)
+    public static function autoload(string $className)
     {
         foreach (self::$map as $prefix => $baseClass) {
-            if (strpos($className, $prefix) === 0) {
+            if (strpos($className, (string) $prefix) === 0) {
                 self::createClass($baseClass, $className);
                 return true;
             }
