@@ -356,6 +356,24 @@ export function triggerEmClassChange(){
 }
 
 /**
+ *  Ask confirmation on click on .needconfirm
+ */
+export function activateConfirmButton(){
+    /* With ajax mode : using $(document).on attache X times the same event */
+    $("button[data-confirmedby]").on('click',function(event){
+        var btnConfirm=$(this);
+        var cbConfirm=$(this).parent().find("[name='"+$(this).data('confirmedby')+"']");
+        if(!$(cbConfirm).is(":checked")) {
+            event.preventDefault();
+            var submits = { };
+            submits[$(btnConfirm).attr('name')]=$(btnConfirm).val();
+            submits[$(cbConfirm).attr('name')]=$(cbConfirm).val();
+            confirmSurveyDialog($(cbConfirm).parent("label").text(),$(btnConfirm).text(),submits)
+        }
+    });
+}
+
+/**
  * has-error management for ls-error-mandatory
  * Only add ls-error-mandatory in PHP currently, not in js : different behaviour after try next and don't try next
  * /!\ We can more easily doing without js ( usage of :empty in css with :text & select) but then no boostrap, for before submit : use only css in template

@@ -14948,6 +14948,19 @@ a [class^=ri-], a [class*=" ri-"] {
   padding: 1.5rem;
 }
 
+@media only screen and (max-width: 768px) {
+  .modal-dialog {
+    position: fixed;
+    top: 0;
+    margin: 0;
+    padding: 10px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1050;
+    width: 96%;
+  }
+}
 .modal-content {
   background-color: #ffffff;
 }

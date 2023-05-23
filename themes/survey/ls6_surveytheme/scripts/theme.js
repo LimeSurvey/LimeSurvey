@@ -761,6 +761,7 @@ function activateActionLink() {
       var submit = $(this).data('limesurvey-submit');
       var confirmedby = $(this).data('confirmedby');
       if (!confirmedby) {
+        //For question index
         $.each(submit, function (name, value) {
           $("<input/>", {
             'type': "hidden",
@@ -770,6 +771,7 @@ function activateActionLink() {
         });
         $('form#limesurvey').submit();
       } else {
+        //For clear all
         var submits = $.extend(submit, confirmedby);
         $('#clear-all-submit').on('click', function (event) {
           confirmSurveyDialog(submits);
@@ -793,23 +795,7 @@ function confirmSurveyDialog(submits) {
   });
   $('form#limesurvey').submit();
 }
-/**
- *  Ask confirmation on click on .needconfirm
- */
-function activateConfirmButton() {
-  /* With ajax mode : using $(document).on attache X times the same event */
-  $("button[data-confirmedby]").on('click', function (event) {
-    var btnConfirm = $(this);
-    var cbConfirm = $(this).parent().find("[name='" + $(this).data('confirmedby') + "']");
-    if (!$(cbConfirm).is(":checked")) {
-      event.preventDefault();
-      var submits = {};
-      submits[$(btnConfirm).attr('name')] = $(btnConfirm).val();
-      submits[$(cbConfirm).attr('name')] = $(cbConfirm).val();
-      confirmSurveyDialog($(cbConfirm).parent("label").text(), $(btnConfirm).text(), submits);
-    }
-  });
-}
+
 /**
  * Trigger tip class when classChangeGood/classChangeError happen
  */
@@ -834,6 +820,24 @@ function triggerEmClassChange() {
   });
   $(document).on('classChangeGood', 'input,select,textarea', function (event) {
     $(this).closest(".form-control").removeClass("has-warning");
+  });
+}
+
+/**
+ *  Ask confirmation on click on .needconfirm
+ */
+function activateConfirmButton() {
+  /* With ajax mode : using $(document).on attache X times the same event */
+  $("button[data-confirmedby]").on('click', function (event) {
+    var btnConfirm = $(this);
+    var cbConfirm = $(this).parent().find("[name='" + $(this).data('confirmedby') + "']");
+    if (!$(cbConfirm).is(":checked")) {
+      event.preventDefault();
+      var submits = {};
+      submits[$(btnConfirm).attr('name')] = $(btnConfirm).val();
+      submits[$(cbConfirm).attr('name')] = $(cbConfirm).val();
+      confirmSurveyDialog($(cbConfirm).parent("label").text(), $(btnConfirm).text(), submits);
+    }
   });
 }
 
