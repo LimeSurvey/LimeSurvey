@@ -55,15 +55,17 @@ class GroupHelper
                     $aQuestionOrder[$gid]++;
                 } else {
                     $result['type'] = 'error';
-                    $result['question-title'] = $oQuestion->title;
-
-                    return $result;
+                    $result['question-titles'][] = $oQuestion->title;
                 }
             }
         }
         \LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
-        $result['type'] = 'success';
 
+        if (!empty($result)) {
+            return $result;
+        }
+
+        $result['type'] = 'success';
         return $result;
     }
 }
