@@ -34,6 +34,10 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.22 (build 230523) to 5.6.23 (build 230524) May 24, 2023
+-Fixed issue: Dragging a question between groups can be unresponsive (Patrick Teichmann)
+-Fixed issue #18659: Cannot install two plugins in a row (#3146) (Gabriel Jenik)
+
 Changes from 5.6.21 (build 230518) to 5.6.22 (build 230523) May 22, 2023
 -Fixed issue #18814: Array question statistics fail for Remote Control. (#3141) (Gabriel Jenik)
 -Fixed issue #18736: Error exporting participants when using MSSQL DB (Carsten Schmitz)
