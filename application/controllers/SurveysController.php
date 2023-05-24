@@ -106,11 +106,11 @@ class SurveysController extends LSYii_Controller
      * @throws Twig_Error_Syntax
      * @throws WrongTemplateVersionException
      */
-    public function spitOutHtmlError(array $error, $surveyId )
+    public function spitOutHtmlError(array $error, $surveyId)
     {
-        if($surveyId) {
+        if ($surveyId) {
             $oTemplate = Template::model()->getInstance('', $surveyId);
-        }else{
+        } else {
             $oTemplate = Template::getLastInstance();
         }
         $this->sTemplate = $oTemplate->sTemplateName;
