@@ -424,13 +424,13 @@ class QuotasController extends LSBaseController
             $aQuotaIds = json_decode($sItems);
             if (isset($_POST['QuotaLanguageSetting'])) {
                 $errors = $quotaService->multipleItemsAction($aQuotaIds, $action, $_POST['QuotaLanguageSetting']);
-                if (empty($errors)) {
-                    eT("OK!");
-                } else {
-                    eT("Error!");
-                }
             } else {
-                $quotaService->multipleItemsAction($aQuotaIds, $action);
+                $errors = $quotaService->multipleItemsAction($aQuotaIds, $action);
+            }
+            if (empty($errors)) {
+                eT("OK!");
+            } else {
+                eT("Error!");
             }
         } else {
             Yii::app()->user->setFlash('error', gT("Access denied."));

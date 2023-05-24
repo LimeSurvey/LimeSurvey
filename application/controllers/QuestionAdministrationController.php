@@ -683,7 +683,7 @@ class QuestionAdministrationController extends LSBaseController
         }
         $html  = [];
         $first = true;
-        $qid   = 'new' . rand(0, 99999);
+        $qid   = App()->getRequest()->getParam('subqid') ?? 'new' . rand(0, 99999);
         foreach ($oSurvey->allLanguages as $language) {
             $html[$language] = $this->getSubquestionRow(
                 $oSurvey->sid,
@@ -710,7 +710,7 @@ class QuestionAdministrationController extends LSBaseController
      */
     public function actionGetSubquestionRowQuickAdd($surveyid, $gid)
     {
-        $qid               = '{{quid_placeholder}}';
+        $qid               = '-QUIDPLACEHOLDER-';
         $request           = Yii::app()->request;
         $codes             = $request->getPost('codes');
         $language          = $request->getPost('language');
@@ -729,7 +729,7 @@ class QuestionAdministrationController extends LSBaseController
      */
     public function actionGetAnswerOptionRowQuickAdd($surveyid, $gid)
     {
-        $qid               = '{{quid_placeholder}}';
+        $qid               = '-QUIDPLACEHOLDER-';
         $request           = Yii::app()->request;
         $codes             = $request->getPost('codes');
         $language          = $request->getPost('language');
@@ -755,7 +755,7 @@ class QuestionAdministrationController extends LSBaseController
         }
         $html  = [];
         $first = true;
-        $qid   = 'new' . rand(0, 99999);
+        $qid   = App()->getRequest()->getParam('subqid') ?? 'new' . rand(0, 99999);
         foreach ($oSurvey->allLanguages as $language) {
             $html[$language] = $this->getAnswerOptionRow(
                 $oSurvey->sid,
@@ -956,7 +956,7 @@ class QuestionAdministrationController extends LSBaseController
             "update"       => Permission::model()->hasSurveyPermission($oQuestion->sid, 'surveycontent', 'update'),
             "editorpreset" => App()->session['htmleditormode'],
             "script"       =>
-                Permission::model()->hasSurveyPermission($oQuestion->sid, 'surveycontent', 'update')
+            Permission::model()->hasSurveyPermission($oQuestion->sid, 'surveycontent', 'update')
                 && SettingsUser::getUserSetting('showScriptEdit', App()->user->id),
         ];
 
@@ -1228,11 +1228,11 @@ class QuestionAdministrationController extends LSBaseController
         $aData['questiongroupbar']['savebutton']['form'] = 'frmeditgroup';
         $this->createUrl(
             "questionAdministration/view",
-            ["surveyid" => $iSurveyID , "gid" => $gid , "qid" => $qid]
+            ["surveyid" => $iSurveyID, "gid" => $gid, "qid" => $qid]
         );
         $aData['questiongroupbar']['closebutton']['url'] = $this->createUrl(
             "questionAdministration/view",
-            ["surveyid" => $iSurveyID , "gid" => $gid , "qid" => $qid]
+            ["surveyid" => $iSurveyID, "gid" => $gid, "qid" => $qid]
         );
         $aData['questiongroupbar']['saveandclosebutton']['form'] = 'frmeditgroup';
         $aData['display']['menu_bars']['surveysummary'] = 'editdefaultvalues';
@@ -1515,7 +1515,7 @@ class QuestionAdministrationController extends LSBaseController
     {
         $aQids = json_decode(Yii::app()->request->getPost('$oCheckedItems', ''));
         $aResults     = [];
-        $tableLabels  = [gT('Question ID'),gT('Question title') ,gT('Status')];
+        $tableLabels  = [gT('Question ID'), gT('Question title'), gT('Status')];
 
         foreach ($aQids as $sQid) {
             $iQid        = (int)$sQid;
@@ -2759,7 +2759,7 @@ class QuestionAdministrationController extends LSBaseController
                     throw new CHttpException(
                         500,
                         "Could not save default values. ERRORS:"
-                        . print_r($oQuestion->getErrors(), true)
+                            . print_r($oQuestion->getErrors(), true)
                     );
                 }
 
@@ -2772,7 +2772,7 @@ class QuestionAdministrationController extends LSBaseController
                         throw new CHttpException(
                             500,
                             "Could not save default value I10Ns. ERRORS:"
-                            . print_r($oQuestion->getErrors(), true)
+                                . print_r($oQuestion->getErrors(), true)
                         );
                     }
                 }
@@ -2796,6 +2796,7 @@ class QuestionAdministrationController extends LSBaseController
     private function storeSubquestions($question, $subquestionsArray)
     {
         $questionOrder = 0;
+        $errorQuestions = [];
         foreach ($subquestionsArray as $subquestionId => $subquestionArray) {
             foreach ($subquestionArray as $scaleId => $data) {
                 $subquestion = new Question();
@@ -2816,8 +2817,8 @@ class QuestionAdministrationController extends LSBaseController
                 }
                 $subquestion->scale_id   = $scaleId;
                 if (!$subquestion->save()) {
-                    throw (new LSUserException(500, gT("Could not save subquestion")))
-                        ->setDetailedErrorsFromModel($subquestion);
+                    array_push($errorQuestions, $subquestion);
+                    continue;
                 }
                 $subquestion->refresh();
                 foreach ($data['subquestionl10n'] as $lang => $questionText) {
@@ -2831,6 +2832,10 @@ class QuestionAdministrationController extends LSBaseController
                     }
                 }
             }
+        }
+        foreach ($errorQuestions as $errorQuestion) {
+            throw (new LSUserException(500, gT("Could not save subquestion")))
+                ->setDetailedErrorsFromModel($errorQuestion);
         }
     }
 
