@@ -6,10 +6,18 @@ use Survey;
 use Permission;
 use SurveyURLParameter;
 use SurveyLanguageSetting;
+use LimeSurvey\Models\Services\Exception\{
+    ExceptionPersistError,
+    ExceptionNotFound,
+    ExceptionPermissionDenied
+};
 
 /**
+ * Service SurveyUpdate
+ *
  * Service class for survey group creation.
- * All dependencies are injected to enable mocking.
+ *
+ * Dependencies are injected to enable mocking.
  */
 class SurveyUpdate
 {
@@ -29,8 +37,8 @@ class SurveyUpdate
     /**
      * Update
      *
-     * Optional input data:
-     * - language
+     * Input is an array of language specific settings keyed by language code.
+     * Each element is an array with one or more of the follow keys:
      *  - url_description
      *  - url
      *  - short_title
@@ -46,12 +54,30 @@ class SurveyUpdate
      *
      * @param int $surveyId
      * @param array $input
+     * @throws ExceptionPersistError
+     * @throws ExceptionNotFound
+     * @throws ExceptionPermissionDenied
+     * @return void
      */
     public function update($surveyId, $input)
     {
+        if (
+            $this->modelPermission
+            ->hasSurveyPermission(
+                $surveyId,
+                'surveylocale',
+                'update'
+            )
+        ) {
+            throw new ExceptionPermissionDenied('Permission denied');
+        }
+
         $survey = $this->modelSurvey->findByPk(
             $surveyId
         );
+        if (!$survey) {
+            throw new ExceptionNotFound;
+        }
 
         $this->updateLanguageSettings(
             $survey,
@@ -64,44 +90,37 @@ class SurveyUpdate
      *
      * @param Survey $survey
      * @param array $input
+     * @throws ExceptionPersistError
+     * @throws ExceptionNotFound
      * @return void
      */
     protected function updateLanguageSettings(Survey $survey, $input)
     {
-        if (isset($survey)) {
-            $languageList = $survey->additionalLanguages;
-            $languageList[] = $survey->language;
-        }
+        $languageList = $survey->additionalLanguages;
+        $languageList[] = $survey->language;
 
-        if (
-            $this->modelPermission
-                ->hasSurveyPermission(
-                    $survey->sid,
-                    'surveylocale',
-                    'update'
-                )
-        ) {
-            foreach ($languageList as $languageName) {
-                $data = $this->getLanguageSettings(
-                    $input,
-                    $languageName
-                );
+        foreach ($languageList as $languageCode) {
+            $data = $this->getLanguageSettings(
+                $input,
+                $languageCode
+            );
 
-                if ($data && count($data) > 0) {
-                    $surveyLanguageSetting = $this->modelSurveyLanguageSetting
-                        ->findByPk(array(
-                            'surveyls_survey_id' => $survey->sid,
-                            'surveyls_language' => $languageName
-                        ));
-                    $surveyLanguageSetting->setAttributes($data);
-                    // save the change to database
-                    if (!$surveyLanguageSetting->save()) {
-                        // $languageDescription = getLanguageNameFromCode(
-                        //    $languageName,
-                        //    false
-                        //);
-                    }
-                }
+            if (empty($data)) {
+                continue;
+            }
+
+            $surveyLanguageSetting = $this->modelSurveyLanguageSetting
+                ->findByPk(array(
+                    'surveyls_survey_id' => $survey->sid,
+                    'surveyls_language' => $languageCode
+                ));
+            if (!$surveyLanguageSetting) {
+                throw new ExceptionNotFound('Language settings not found');
+            }
+
+            $surveyLanguageSetting->setAttributes($data);
+            if (!$surveyLanguageSetting->save()) {
+                throw new ExceptionPersistError('Failed saving language settings');
             }
         }
     }
@@ -110,10 +129,10 @@ class SurveyUpdate
      * Parse language settings from input data
      *
      * @param array $input
-     * @param string $languageName
+     * @param string $languageCode
      * @return array
      */
-    protected function getLanguageSettings($input, $languageName)
+    protected function getLanguageSettings($input, $languageCode)
     {
         $fields = [
             'url_description',
@@ -130,17 +149,21 @@ class SurveyUpdate
             'number_format'
         ];
 
-        if (!isset($input[$languageName])) {
+        if (
+            !is_array($input)
+            || !isset($input[$languageCode])
+            || !is_array($input[$languageCode])
+        )  {
             return null;
         }
 
         $data = array();
         foreach ($fields as $field) {
             $value = $this->getValue(
-                $input[$languageName],
+                $input[$languageCode],
                 $field
             );
-            if ($value === null) {
+            if ($value !== null) {
                 $data[$field] = $value;
             }
         }
