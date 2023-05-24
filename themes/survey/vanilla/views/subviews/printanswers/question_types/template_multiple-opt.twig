@@ -4,7 +4,7 @@
     {% for subquestionId, subquestion in question.subquestions %}
         <div class="row">
             <div class="col-lg-4 text-end">
-                {% if subquestion.answervalue is sameas("Y") %}
+                {% if subquestion.answervalue is same as("Y") %}
                     <i class="fa fa-check-square-o"></i>
                 {% else %}
                     {{subquestion.answervalue|escape}}
