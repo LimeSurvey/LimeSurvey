@@ -1732,8 +1732,8 @@ class TemplateConfiguration extends TemplateConfig
               $aJsFiles  = $this->changeMotherConfiguration('js', $aJsFiles);
         }
 
-        // Then we add the direction files if they exist
-        // TODO: attribute system rather than specific fields for RTL
+        //For new LS6 surveytheme we completely replace the variation theme css file:
+        $aCssFiles = $this->replaceVariationFilesWithRtl($aCssFiles);
 
         $this->sPackageName = 'survey-template-' . $this->sTemplateName;
         $sTemplateurl       = $oTemplate->getTemplateURL();
@@ -1750,5 +1750,25 @@ class TemplateConfiguration extends TemplateConfig
             'js'          => $aJsFiles,
             'depends'     => $aDepends,
         ));
+    }
+
+    /**
+     * When rtl language is chosen:
+     * if a css file in folder variations is in array cssFiles, then it will be replaced with the
+     * *-rtl version
+     * @param array $cssFiles
+     * @return array
+     */
+    private function replaceVariationFilesWithRtl(array $cssFiles)
+    {
+        if (getLanguageRTL(App()->getLanguage()) == 'rtl') {
+            foreach ($cssFiles as $index => $cssFile) {
+                if (strpos($cssFile, 'css/variations/theme_') !== false) {
+                    $cssFileSplitArray = explode('.', $cssFile);
+                    $cssFiles[$index] =  $cssFileSplitArray[0] . '-rtl.css';
+                }
+            }
+        }
+        return $cssFiles;
     }
 }

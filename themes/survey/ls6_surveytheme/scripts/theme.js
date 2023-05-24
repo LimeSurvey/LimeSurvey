@@ -70,13 +70,12 @@ var ThemeScripts = function ThemeScripts() {// defining the console object once.
    */var focusFirst = function focusFirst() {$('#limesurvey :input:visible:enabled:first').focus();}; /**
    * fix padding of body according to navbar-fixed-top
    * in endpage and in $(window).resize
-   */var fixBodyPadding = function fixBodyPadding() {console.log('fixBodyPadding');$('body').css('padding-top', Math.round($('#survey-nav').height()) + 'px');}; /**
+   */var fixBodyPadding = function fixBodyPadding() {$('body').css('padding-top', Math.round($('#survey-nav').height()) + 'px');}; /**
    * Hide some part if empty
    * Some can be needed if contain only js
    * Some are not really needed : little margin only is shown
    * Allowed content -> <script> and <img/>
-   */var hideEmptyPart = function hideEmptyPart() {$('.question-help-container').each(function () {/* Only if have only script tag inside or empty tag */if ($(this).text().trim() == '' && !/<img/.test($(this).html())) {$(this).addClass('d-none');}});$('.group-description').each(function () {/* Only if have only script tag inside or empty tag */if ($(this).text().trim() == '' && !/<img/.test($(this).html())) {$(this).addClass('d-none');}
-    });
+   */var hideEmptyPart = function hideEmptyPart() {$('.question-help-container').each(function () {/* Only if have only script tag inside or empty tag */if ($(this).text().trim() == '' && !/<img/.test($(this).html())) {$(this).addClass('d-none');}});$('.group-description').each(function () {/* Only if have only script tag inside or empty tag */if ($(this).text().trim() == '' && !/<img/.test($(this).html())) {$(this).addClass('d-none');}});
     $('.question-help-container.hidden').on('html:updated', function () {
       if ($(this).text().trim() != '' && !/<img/.test($(this).html())) {
         $(this).removeClass('d-none');

@@ -164,7 +164,9 @@
                     <file type="view" role="subview">./subviews/survey/question_subviews/survey_question_help.twig</file>
                     <file type="view" role="subview">./subviews/survey/question_subviews/valid_message_and_help.twig</file>
                     <file type="css">./css/variations/theme_green.css</file>
+                    <file type="css">./css/variations/theme_green-rtl.css</file>
                     <file type="css">./css/variations/theme_red.css</file>
+                    <file type="css">./css/variations/theme_red-rtl.css</file>
                     <file type="js">./scripts/theme.js</file>
                     <file type="css">./css/custom.css</file>
                     <file type="js">./scripts/custom.js</file>
@@ -179,7 +181,9 @@
                     <file type="view" role="subview">./subviews/content/outerframe.twig</file>
                     <file type="view" role="subview">./subviews/navigation/language_changer_form.twig</file>
                     <file type="css">./css/variations/theme_green.css</file>
+                    <file type="css">./css/variations/theme_green-rtl.css</file>
                     <file type="css">./css/variations/theme_red.css</file>
+                    <file type="css">./css/variations/theme_red-rtl.css</file>
                     <file type="js">./scripts/theme.js</file>
                     <file type="css">./css/custom.css</file>
                     <file type="js">./scripts/custom.js</file>
@@ -204,7 +208,9 @@
                     <file type="view" role="subview">./subviews/logincomponents/captcha.twig</file>
                     <file type="view" role="subview">./subviews/logincomponents/token.twig</file>
                     <file type="css">./css/variations/theme_green.css</file>
+                    <file type="css">./css/variations/theme_green-rtl.css</file>
                     <file type="css">./css/variations/theme_red.css</file>
+                    <file type="css">./css/variations/theme_red-rtl.css</file>
                     <file type="js">./scripts/theme.js</file>
                     <file type="css">./css/custom.css</file>
                     <file type="js">./scripts/custom.js</file>
@@ -218,7 +224,9 @@
                     <file type="view" role="subview">./subviews/content/outerframe.twig</file>
                     <file type="view" role="content">./subviews/content/submit.twig</file>
                     <file type="css">./css/variations/theme_green.css</file>
+                    <file type="css">./css/variations/theme_green-rtl.css</file>
                     <file type="css">./css/variations/theme_red.css</file>
+                    <file type="css">./css/variations/theme_red-rtl.css</file>
                     <file type="js">./scripts/theme.js</file>
                     <file type="css">./css/custom.css</file>
                     <file type="js">./scripts/custom.js</file>
@@ -233,7 +241,9 @@
                     <file type="view" role="content">./subviews/content/submit.twig</file>
                     <file type="view" role="subview">./subviews/messages/assessments.twig</file>
                     <file type="css">./css/variations/theme_green.css</file>
+                    <file type="css">./css/variations/theme_green-rtl.css</file>
                     <file type="css">./css/variations/theme_red.css</file>
+                    <file type="css">./css/variations/theme_red-rtl.css</file>
                     <file type="js">./scripts/theme.js</file>
                     <file type="css">./css/custom.css</file>
                     <file type="js">./scripts/custom.js</file>
@@ -253,7 +263,9 @@
                     <file type="view" role="subview">./subviews/content/outerframe.twig</file>
                     <file type="view" role="content">./subviews/content/clearall.twig</file>
                     <file type="css">./css/variations/theme_green.css</file>
+                    <file type="css">./css/variations/theme_green-rtl.css</file>
                     <file type="css">./css/variations/theme_red.css</file>
+                    <file type="css">./css/variations/theme_red-rtl.css</file>
                     <file type="js">./scripts/theme.js</file>
                     <file type="css">./css/custom.css</file>
                     <file type="js">./scripts/custom.js</file>
@@ -267,7 +279,9 @@
                     <file type="view" role="subview">./subviews/content/outerframe.twig</file>
                     <file type="view" role="content">./subviews/content/load.twig</file>
                     <file type="css">./css/variations/theme_green.css</file>
+                    <file type="css">./css/variations/theme_green-rtl.css</file>
                     <file type="css">./css/variations/theme_red.css</file>
+                    <file type="css">./css/variations/theme_red-rtl.css</file>
                     <file type="js">./scripts/theme.js</file>
                     <file type="css">./css/custom.css</file>
                     <file type="js">./scripts/custom.js</file>
@@ -281,7 +295,9 @@
                     <file type="view" role="subview">./subviews/content/outerframe.twig</file>
                     <file type="view" role="content">./subviews/content/save.twig</file>
                     <file type="css">./css/variations/theme_green.css</file>
+                    <file type="css">./css/variations/theme_green-rtl.css</file>
                     <file type="css">./css/variations/theme_red.css</file>
+                    <file type="css">./css/variations/theme_red-rtl.css</file>
                     <file type="js">./scripts/theme.js</file>
                     <file type="css">./css/custom.css</file>
                     <file type="js">./scripts/custom.js</file>

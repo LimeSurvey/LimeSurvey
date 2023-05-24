@@ -11,12 +11,8 @@ li.radio-item {
 }
 
 /* map item : .input-group-addon.checkbox-item : put awesome padding */
-.dir-ltr .input-group-addon.radio-item {
+.input-group-addon.radio-item {
     padding-left : 25px;
-}
-
-.dir-rtl .input-group-addon.radio-item {
-    padding-right : 25px;
 }
 
 .radio-item {
@@ -31,28 +27,13 @@ li.radio-item {
     width    : 17px;
 }
 
-.dir-ltr .radio-item input[type="radio"] {
+.radio-item input[type="radio"] {
     left : 0;
-}
-
-.dir-rtl .radio-item input[type="radio"] {
-    right : 0;
 }
 
 .radio-item input[type="radio"] {
     opacity : 0;
 }
-
-/* We need complete width in array , but don't touch to padding-(top|bottom) */
-//.dir-ltr .ls-answers td.radio-item {
-//    padding-left  : 20px;
-//    padding-right : 0;
-//}
-//
-//.dir-rtl .ls-answers td.radio-item {
-//    padding-right : 20px;
-//    padding-left  : 0;
-//}
 
 .radio-item .ls-label-xs-visibility {
     display     : inline-block;
@@ -65,22 +46,13 @@ li.radio-item {
 }
 
 /* no margin on label : no margin after and before too */
-.dir-ltr .radio-item label.ls-label-xs-visibility::before {
+.radio-item label.ls-label-xs-visibility::before {
     margin-left : 0;
 }
 
-.dir-rtl .radio-item label.ls-label-xs-visibility::before {
-    margin-right : 0;
-}
-
-.dir-ltr .radio-item label.ls-label-xs-visibility::after {
+.radio-item label.ls-label-xs-visibility::after {
     margin-left  : 2px;
     padding-left : 0;
-}
-
-.dir-rtl .radio-item label.ls-label-xs-visibility::after {
-    margin-right  : 2px;
-    padding-right : 0;
 }
 
 /* Hide the other content inside visually-hidden */
@@ -92,11 +64,7 @@ li.radio-item {
     overflow : hidden;
 }
 
-.dir-ltr .radio-item label.ls-label-xs-visibility > * {
-    left : -10000px;
-}
-
-.dir-rtl .radio-item label.ls-label-xs-visibility > * {
+.radio-item label.ls-label-xs-visibility > * {
     left : -10000px;
 }
 
@@ -104,26 +72,17 @@ li.radio-item {
     padding : 4px;
 }
 
-.dir-ltr table.ls-answers .radio-item .ls-label-xs-visibility {
+table.ls-answers .radio-item .ls-label-xs-visibility {
     margin-left : 0;
-}
-.dir-rtl table.ls-answers .radio-item .ls-label-xs-visibility {
-    margin-right : 0;
 }
 
 /* Fix for IE11 - no array question radio buttons on small screens */
 @media all and (max-width : 760px) and (-ms-high-contrast : none), (-ms-high-contrast : active) {
-    .dir-ltr table.ls-answers .radio-item label.ls-label-xs-visibility::before {
+    table.ls-answers .radio-item label.ls-label-xs-visibility::before {
         margin-left : 0px;
     }
-    .dir-rtl table.ls-answers .radio-item label.ls-label-xs-visibility::before {
-        margin-right : 0px;
-    }
-    .dir-ltr table.ls-answers .radio-item label.ls-label-xs-visibility::after {
+    table.ls-answers .radio-item label.ls-label-xs-visibility::after {
         margin-left : 0px;
-    }
-    .dir-rtl table.ls-answers .radio-item label.ls-label-xs-visibility::after {
-        margin-right : 0px;
     }
 }
 // template_core END
@@ -209,67 +168,25 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
         padding: 4px;
     }
 
-    .dir-ltr .ls-answers td.radio-item {
+    .ls-answers td.radio-item {
         padding-left: 24px;
         padding-right: 4px;
     }
-
-    .dir-rtl .ls-answers td.radio-item {
-        padding-right: 24px;
-        padding-left: 4px;
-    }
-
 
     table.ls-answers .radio-item .ls-label-xs-visibility {
         line-height: initial;
         text-indent: initial;
     }
 
-    .dir-ltr table.ls-answers .radio-item .ls-label-xs-visibility {
+    table.ls-answers .radio-item .ls-label-xs-visibility {
         margin-left: 0;
     }
 
-    .dir-rtl table.ls-answers .radio-item .ls-label-xs-visibility {
-        margin-right: 0;
-    }
-
-    .dir-ltr table.ls-answers .radio-item label.ls-label-xs-visibility::before {
+    table.ls-answers .radio-item label.ls-label-xs-visibility::before {
         margin-left: -20px;
     }
 
-    .dir-rtl table.ls-answers .radio-item label.ls-label-xs-visibility::before {
-        margin-right: -20px;
-    }
-
-    .dir-ltr table.ls-answers .radio-item label.ls-label-xs-visibility::after {
+    table.ls-answers .radio-item label.ls-label-xs-visibility::after {
         margin-left: -18px !important;
-    }
-
-    .dir-rtl table.ls-answers .radio-item label.ls-label-xs-visibility::after {
-        margin-right: -18px !important;
-    }
-
-}
-// RTL
-.dir-rtl {
-    .radio-item label {
-        padding-left: 0px;
-        padding-right: 28px;
-        &::before {
-            right: 0;
-        }
-        &::after {
-            right: 5px;
-        }
-    }
-    td.radio-item label {
-        padding-left: 0px;
-        padding-right: 8px;
-        &::before {
-            right: 0;
-        }
-        &::after {
-            right: 3px;
-        }
     }
 }
