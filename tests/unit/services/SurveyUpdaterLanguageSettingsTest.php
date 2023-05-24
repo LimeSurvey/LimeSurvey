@@ -8,14 +8,14 @@ use Survey;
 use Permission;
 use SurveyLanguageSetting;
 use Mockery;
-use LimeSurvey\Models\Services\SurveyLanguageSettingsUpdater;
+use LimeSurvey\Models\Services\SurveyUpdaterLanguageSettings;
 use LimeSurvey\Models\Services\Exception\{
     ExceptionPersistError,
     ExceptionNotFound,
     ExceptionPermissionDenied
 };
 
-class SurveyLanguageSettingsUpdaterTest extends TestBaseClass
+class SurveyUpdaterLanguageSettingsTest extends TestBaseClass
 {
     /**
      * @testdox update() throws ExceptionPermissionDenied
@@ -31,7 +31,7 @@ class SurveyLanguageSettingsUpdaterTest extends TestBaseClass
         $modelPermission->shouldReceive('hasSurveyPermission')
             ->andReturn(false);
 
-        $surveyUpdate = new SurveyLanguageSettingsUpdater;
+        $surveyUpdate = new SurveyUpdaterLanguageSettings;
         $surveyUpdate->setModelPermission($modelPermission);
 
         $surveyUpdate->update(1, []);
@@ -56,7 +56,7 @@ class SurveyLanguageSettingsUpdaterTest extends TestBaseClass
         $modelSurvey->shouldReceive('findByPk')
             ->andReturn(null);
 
-        $surveyUpdate = new SurveyLanguageSettingsUpdater;
+        $surveyUpdate = new SurveyUpdaterLanguageSettings;
         $surveyUpdate->setModelPermission($modelPermission);
         $surveyUpdate->setModelSurvey($modelSurvey);
 
@@ -97,7 +97,7 @@ class SurveyLanguageSettingsUpdaterTest extends TestBaseClass
             ->shouldReceive('findByPk')
             ->andReturn(null);
 
-        $surveyUpdate = new SurveyLanguageSettingsUpdater;
+        $surveyUpdate = new SurveyUpdaterLanguageSettings;
         $surveyUpdate->setModelPermission($modelPermission);
         $surveyUpdate->setModelSurvey($modelSurvey);
         $surveyUpdate->setModelSurveyLanguageSetting(
@@ -149,7 +149,7 @@ class SurveyLanguageSettingsUpdaterTest extends TestBaseClass
             ->shouldReceive('findByPk')
             ->andReturn($surveyLanguageSetting);
 
-        $surveyUpdate = new SurveyLanguageSettingsUpdater;
+        $surveyUpdate = new SurveyUpdaterLanguageSettings;
         $surveyUpdate->setModelPermission($modelPermission);
         $surveyUpdate->setModelSurvey($modelSurvey);
         $surveyUpdate->setModelSurveyLanguageSetting(
@@ -197,7 +197,7 @@ class SurveyLanguageSettingsUpdaterTest extends TestBaseClass
             ->shouldReceive('findByPk')
             ->andReturn($surveyLanguageSetting);
 
-        $surveyUpdate = new SurveyLanguageSettingsUpdater;
+        $surveyUpdate = new SurveyUpdaterLanguageSettings;
         $surveyUpdate->setModelPermission($modelPermission);
         $surveyUpdate->setModelSurvey($modelSurvey);
         $surveyUpdate->setModelSurveyLanguageSetting(

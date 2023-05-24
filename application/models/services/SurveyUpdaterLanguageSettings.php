@@ -13,13 +13,13 @@ use LimeSurvey\Models\Services\Exception\{
 };
 
 /**
- * Service SurveyLanguageSettingsUpdater
+ * Service SurveyUpdaterLanguageSettings
  *
  * Service class for survey language setting updating.
  *
  * Dependencies are injected to enable mocking.
  */
-class SurveyLanguageSettingsUpdater
+class SurveyUpdaterLanguageSettings
 {
     private ?Permission $modelPermission = null;
     private ?Survey $modelSurvey = null;
@@ -55,8 +55,8 @@ class SurveyLanguageSettingsUpdater
      *
      * Input is an array of language specific settings keyed by language code.
      * Each element is an array with one or more of the follow keys:
-     *  - url_description
      *  - url
+     *  - url_description
      *  - short_title
      *  - alias
      *  - description
