@@ -26,18 +26,18 @@ class SurveyLanguageSettingsUpdater
     private ?SurveyURLParameter $modelSurveyUrlParameter = null;
     private ?SurveyLanguageSetting $modelSurveyLanguageSetting = null;
     private $fieldMap = [
-        'url_description' => 'url_description',
-        'url' => 'url',
-        'short_title' => 'short_title',
-        'alias' => 'alias',
-        'description' => 'description',
-        'welcome' => 'welcome',
-        'end_text' => 'end_text',
-        'data_section' => 'data_section',
-        'data_section_error' => 'data_section_error',
-        'data_section_label' => 'data_section_label',
-        'date_format' => 'date_format',
-        'number_format' => 'number_format',
+        'url_description' => 'surveyls_urldescription',
+        'url' => 'surveyls_url',
+        'short_title' => 'surveyls_title',
+        'alias' => 'surveyls_alias',
+        'description' => 'surveyls_description',
+        'welcome' => 'surveyls_welcometext',
+        'end_text' => 'surveyls_endtext',
+        'policy_notice' => 'surveyls_policy_notice',
+        'policy_error' => 'surveyls_policy_error',
+        'policy_notice_label' => 'surveyls_policy_notice_label',
+        'date_format' => 'surveyls_dateformat',
+        'number_format' => 'surveyls_numberformat'
     ];
     private $inputFields = [];
 
@@ -62,9 +62,9 @@ class SurveyLanguageSettingsUpdater
      *  - description
      *  - welcome
      *  - end_text
-     *  - data_section
-     *  - data_section_error
-     *  - data_section_label
+     *  - policy_notice
+     *  - policy_error
+     *  - policy_notice_label
      *  - date_format
      *  - number_format
      *
@@ -73,7 +73,7 @@ class SurveyLanguageSettingsUpdater
      * @throws ExceptionPersistError
      * @throws ExceptionNotFound
      * @throws ExceptionPermissionDenied
-     * @return void
+     * @return boolean
      */
     public function update($surveyId, $input)
     {
@@ -84,7 +84,9 @@ class SurveyLanguageSettingsUpdater
                 'update'
             );
         if ($hasPermission == false) {
-            throw new ExceptionPermissionDenied('Permission denied');
+            throw new ExceptionPermissionDenied(
+                'Permission denied'
+            );
         }
 
         $survey = $this->modelSurvey->findByPk(
@@ -98,6 +100,8 @@ class SurveyLanguageSettingsUpdater
             $survey,
             $input
         );
+
+        return true;
     }
 
     /**
@@ -125,17 +129,23 @@ class SurveyLanguageSettingsUpdater
             }
 
             $surveyLanguageSetting = $this->modelSurveyLanguageSetting
-                ->findByPk(array(
-                    'surveyls_survey_id' => $survey->sid,
-                    'surveyls_language' => $languageCode
-                ));
+                ->findByPk(
+                    array(
+                        'surveyls_survey_id' => $survey->sid,
+                        'surveyls_language' => $languageCode
+                    )
+                );
             if (!$surveyLanguageSetting) {
-                throw new ExceptionNotFound('Language settings not found');
+                throw new ExceptionNotFound(
+                    'Language settings not found'
+                );
             }
 
             $surveyLanguageSetting->setAttributes($data);
             if (!$surveyLanguageSetting->save()) {
-                throw new ExceptionPersistError('Failed saving language settings');
+                throw new ExceptionPersistError(
+                    'Failed saving language settings'
+                );
             }
         }
     }
@@ -147,7 +157,7 @@ class SurveyLanguageSettingsUpdater
      * @param string $languageCode
      * @return array
      */
-    protected function getLanguageSettingsData($input, $languageCode)
+    private function getLanguageSettingsData($input, $languageCode)
     {
         if (
             !is_array($input)

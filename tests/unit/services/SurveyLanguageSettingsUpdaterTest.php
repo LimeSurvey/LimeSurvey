@@ -18,7 +18,7 @@ use LimeSurvey\Models\Services\Exception\{
 class SurveyLanguageSettingsUpdaterTest extends TestBaseClass
 {
     /**
-     * @testdox update() throws ExceptionPermissionDenied if no survey update permission
+     * @testdox update() throws ExceptionPermissionDenied
      */
     public function testThrowsExceptionPermissionDenied()
     {
@@ -38,7 +38,7 @@ class SurveyLanguageSettingsUpdaterTest extends TestBaseClass
     }
 
     /**
-     * @testdox update() throws ExceptionNotFound if survey not found
+     * @testdox update() throws ExceptionNotFound is survey not found
      */
     public function testThrowsExceptionNotFoundIfSurveyNotFound()
     {
@@ -107,5 +107,108 @@ class SurveyLanguageSettingsUpdaterTest extends TestBaseClass
         $surveyUpdate->update(1, [
             'en' => ['url_description' => 'test']
         ]);
+    }
+
+    /**
+     * @testdox update() throws ExceptionPersistError on save failure
+     */
+    public function testThrowsExceptionPersistErrorOnSaveFailure()
+    {
+        $this->expectException(
+            ExceptionPersistError::class
+        );
+
+        $survey = Mockery::mock(Survey::class)->makePartial();
+        $survey->sid = 1;
+        $survey->language = 'en';
+        // return empty array for additionalLanguages relation
+        $survey->shouldReceive('getRelated')
+            ->andReturn([]);
+
+        $modelPermission = Mockery::mock(Permission::class)
+            ->makePartial();
+        $modelPermission
+            ->shouldReceive('hasSurveyPermission')
+            ->andReturn(true);
+
+        $modelSurvey = Mockery::mock(Survey::class)
+            ->makePartial();
+        $modelSurvey->shouldReceive('findByPk')
+            ->andReturn($survey);
+
+        $surveyLanguageSetting = Mockery::mock(
+                SurveyLanguageSetting::class
+            )->makePartial();
+        $surveyLanguageSetting->shouldReceive('save')
+            ->andReturn(false);
+
+        $modelSurveyLanguageSetting = Mockery::mock(
+            SurveyLanguageSetting::class
+            )->makePartial();
+        $modelSurveyLanguageSetting
+            ->shouldReceive('findByPk')
+            ->andReturn($surveyLanguageSetting);
+
+        $surveyUpdate = new SurveyLanguageSettingsUpdater;
+        $surveyUpdate->setModelPermission($modelPermission);
+        $surveyUpdate->setModelSurvey($modelSurvey);
+        $surveyUpdate->setModelSurveyLanguageSetting(
+            $modelSurveyLanguageSetting
+        );
+
+        $surveyUpdate->update(1, [
+            'en' => ['url_description' => 'test']
+        ]);
+    }
+
+    /**
+     * @testdox update()
+     */
+    public function testUpdate()
+    {
+        $survey = Mockery::mock(Survey::class)->makePartial();
+        $survey->sid = 1;
+        $survey->language = 'en';
+        // return empty array for additionalLanguages relation
+        $survey->shouldReceive('getRelated')
+            ->andReturn(['de']);
+
+        $modelPermission = Mockery::mock(Permission::class)
+            ->makePartial();
+        $modelPermission
+            ->shouldReceive('hasSurveyPermission')
+            ->andReturn(true);
+
+        $modelSurvey = Mockery::mock(Survey::class)
+            ->makePartial();
+        $modelSurvey->shouldReceive('findByPk')
+            ->andReturn($survey);
+
+        $surveyLanguageSetting = Mockery::mock(
+                SurveyLanguageSetting::class
+            )->makePartial();
+        $surveyLanguageSetting->shouldReceive('save')
+            ->andReturn(true);
+
+        $modelSurveyLanguageSetting = Mockery::mock(
+            SurveyLanguageSetting::class
+            )->makePartial();
+        $modelSurveyLanguageSetting
+            ->shouldReceive('findByPk')
+            ->andReturn($surveyLanguageSetting);
+
+        $surveyUpdate = new SurveyLanguageSettingsUpdater;
+        $surveyUpdate->setModelPermission($modelPermission);
+        $surveyUpdate->setModelSurvey($modelSurvey);
+        $surveyUpdate->setModelSurveyLanguageSetting(
+            $modelSurveyLanguageSetting
+        );
+
+        $result = $surveyUpdate->update(1, [
+            'en' => ['url_description' => 'test'],
+            'de' => ['url_description' => 'test'],
+        ]);
+
+        $this->assertEquals( true, $result);
     }
 }
