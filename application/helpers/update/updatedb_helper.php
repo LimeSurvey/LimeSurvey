@@ -463,6 +463,7 @@ function decryptArchivedTables450($oDB)
  * @param $survey
  * @return array
  * @throws CException
+ * @psalm-suppress RedundantCondition
  */
 function createFieldMap450($survey): array
 {
