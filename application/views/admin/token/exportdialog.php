@@ -150,4 +150,11 @@
         </div>
     </div>
 </div>
+
+
 </div>
+<?php
+App()->getClientScript()->registerScript('ExportDialogViewBSSwitcher', "
+LS.renderBootstrapSwitch();
+", LSYii_ClientScript::POS_POSTSCRIPT);
+?>
