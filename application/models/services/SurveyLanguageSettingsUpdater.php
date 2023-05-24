@@ -13,18 +13,33 @@ use LimeSurvey\Models\Services\Exception\{
 };
 
 /**
- * Service SurveyUpdate
+ * Service SurveyLanguageSettingsUpdater
  *
- * Service class for survey group creation.
+ * Service class for survey language setting updating.
  *
  * Dependencies are injected to enable mocking.
  */
-class SurveyUpdate
+class SurveyLanguageSettingsUpdater
 {
     private ?Permission $modelPermission = null;
     private ?Survey $modelSurvey = null;
     private ?SurveyURLParameter $modelSurveyUrlParameter = null;
     private ?SurveyLanguageSetting $modelSurveyLanguageSetting = null;
+    private $fieldMap = [
+        'url_description' => 'url_description',
+        'url' => 'url',
+        'short_title' => 'short_title',
+        'alias' => 'alias',
+        'description' => 'description',
+        'welcome' => 'welcome',
+        'end_text' => 'end_text',
+        'data_section' => 'data_section',
+        'data_section_error' => 'data_section_error',
+        'data_section_label' => 'data_section_label',
+        'date_format' => 'date_format',
+        'number_format' => 'number_format',
+    ];
+    private $inputFields = [];
 
     public function __construct()
     {
@@ -32,6 +47,7 @@ class SurveyUpdate
         $this->modelSurvey = Survey::model();
         $this->modelSurveyUrlParameter = SurveyURLParameter::model();
         $this->modelSurveyLanguageSetting = SurveyLanguageSetting::model();
+        $this->inputFields = array_keys($this->fieldMap);
     }
 
     /**
@@ -61,14 +77,13 @@ class SurveyUpdate
      */
     public function update($surveyId, $input)
     {
-        if (
-            $this->modelPermission
+        $hasPermission = $this->modelPermission
             ->hasSurveyPermission(
                 $surveyId,
                 'surveylocale',
                 'update'
-            )
-        ) {
+            );
+        if ($hasPermission == false) {
             throw new ExceptionPermissionDenied('Permission denied');
         }
 
@@ -100,7 +115,7 @@ class SurveyUpdate
         $languageList[] = $survey->language;
 
         foreach ($languageList as $languageCode) {
-            $data = $this->getLanguageSettings(
+            $data = $this->getLanguageSettingsData(
                 $input,
                 $languageCode
             );
@@ -132,36 +147,22 @@ class SurveyUpdate
      * @param string $languageCode
      * @return array
      */
-    protected function getLanguageSettings($input, $languageCode)
+    protected function getLanguageSettingsData($input, $languageCode)
     {
-        $fields = [
-            'url_description',
-            'url',
-            'short_title',
-            'alias',
-            'description',
-            'welcome',
-            'end_text',
-            'data_section',
-            'data_section_error',
-            'data_section_label',
-            'date_format',
-            'number_format'
-        ];
-
         if (
             !is_array($input)
             || !isset($input[$languageCode])
             || !is_array($input[$languageCode])
-        )  {
+        ) {
             return null;
         }
 
         $data = array();
-        foreach ($fields as $field) {
+        foreach ($this->inputFields as $inputField) {
+            $field = $this->fieldMap[$inputField];
             $value = $this->getValue(
                 $input[$languageCode],
-                $field
+                $inputField
             );
             if ($value !== null) {
                 $data[$field] = $value;
