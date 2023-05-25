@@ -34,7 +34,7 @@ There is two possible displays for index, depending on Survey Mode:
                 {{ gT("Question index") }}
                 <span class="caret"></span>
             </a>
-            <ul class="dropdown-menu">
+            <ul class="dropdown-menu dropdown-menu-end">
                 {# TODO: move back this logic to SurveyRuntime, and provide a ready to use indexItem.statusClass #}
                 {% for step, indexItem in aSurveyInfo.aQuestionIndex.items %}
                     {% set statusClass = '' %}
