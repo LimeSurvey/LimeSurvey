@@ -66,10 +66,6 @@ class SurveymenuEntryController extends SurveyCommonAction
                     'reorder'      => true,
                 ],
             ],
-            'returnbutton' => [
-                'url'  => 'admin/index',
-                'text' => gT('Back'),
-            ],
         ];
         App()->getClientScript()->registerPackage('surveymenufunctions');
         $this->renderWrappedTemplate(null, array('surveymenu_entries/index'), $data);
