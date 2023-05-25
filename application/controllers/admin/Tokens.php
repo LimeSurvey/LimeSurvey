@@ -147,7 +147,6 @@ class Tokens extends SurveyCommonAction
             $aData['queries'] = Token::model($iSurveyId)->summary();
             
             $this->renderWrappedTemplate('token', array('surveyParticipantView'), $aData);
-            // $this->renderWrappedTemplate('token', array('tokensummary'), $aData);
         }
     }
 
