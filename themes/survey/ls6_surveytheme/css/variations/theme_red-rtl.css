@@ -14844,6 +14844,8 @@ a [class^=ri-], a [class*=" ri-"] {
 
 .alert-dismissible .btn-close {
   padding: 1rem 1rem;
+  left: 0;
+  right: auto;
 }
 .alert-dismissible .btn-close:focus {
   box-shadow: none;
