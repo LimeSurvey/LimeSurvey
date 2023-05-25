@@ -14246,6 +14246,8 @@ input[type=checkbox]:checked:after,
 .tempus-dominus-widget .time-container-second div:not(.no-highlight).today:before {
   bottom: 0;
   right: 0;
+  left: auto;
+  transform: scale(1, 1) /*!rtl:scale(-1, 1)*/;
 }
 .tempus-dominus-widget [data-time-component=hours],
 .tempus-dominus-widget .separator,
