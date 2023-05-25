@@ -30,7 +30,6 @@ class SurveyUpdater
     private ?LSYii_Application $yiiApp = null;
     private ?PluginManager $yiiPluginManager = null;
 
-
     public function __construct()
     {
         $this->modelPermission = Permission::model();
@@ -39,7 +38,6 @@ class SurveyUpdater
         $this->modelSurveyLanguageSetting = SurveyLanguageSetting::model();
         $this->yiiApp = App();
         $this->yiiPluginManager = App()->getPluginManager();
-
     }
 
     /**
@@ -52,7 +50,7 @@ class SurveyUpdater
      * @throws ExceptionPermissionDenied
      * @return boolean
      */
-    public function update($surveyId, $input)
+    public function update($surveyId, array $input)
     {
         $surveyUpdaterLanguageSettings = new SurveyUpdaterLanguageSettings;
         $surveyUpdaterLanguageSettings->setModelPermission(
@@ -89,6 +87,17 @@ class SurveyUpdater
             $surveyId,
             $input
         );
+
+        if (!empty($input['url_params'])) {
+            $surveyUpdaterUrlParams = new SurveyUpdaterUrlParams;
+            $surveyUpdaterUrlParams->setModelSurveyUrlParameter(
+                $this->modelSurveyUrlParameter
+            );
+            $surveyUpdaterUrlParams->update(
+                $surveyId,
+                $input['url_params']
+            );
+        }
 
         return true;
     }
