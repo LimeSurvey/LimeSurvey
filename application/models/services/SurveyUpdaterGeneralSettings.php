@@ -31,8 +31,7 @@ class SurveyUpdaterGeneralSettings
 
     const FIELD_TYPE_YN = 'yersno';
     const FIELD_TYPE_DATETIME = 'dateime';
-
-    private $fields = [];
+    const FIELD_TYPE_GAKEY = 'gakey';
 
     public function __construct()
     {
@@ -40,8 +39,107 @@ class SurveyUpdaterGeneralSettings
         $this->modelSurvey = Survey::model();
         $this->yiiApp = App();
         $this->yiiPluginManager = App()->getPluginManager();
+    }
 
-        $this->fields = [
+    /**
+     * Update
+     *
+     * @param int $surveyId
+     * @param array $input
+     * @throws ExceptionPersistError
+     * @throws ExceptionNotFound
+     * @throws ExceptionPermissionDenied
+     * @return boolean
+     */
+    public function update($surveyId, $input)
+    {
+        $input = is_array($input) && !empty($input)
+            ? $input
+            : [];
+
+        $hasPermission = $this->modelPermission
+            ->hasSurveyPermission(
+                $surveyId,
+                'surveysettings',
+                'update'
+            );
+        if ($hasPermission == false) {
+            throw new ExceptionPermissionDenied(
+                'Permission denied'
+            );
+        }
+
+        $survey = $this->modelSurvey->findByPk(
+            $surveyId
+        );
+        if (!$survey) {
+            throw new ExceptionNotFound;
+        }
+
+        $fields = $this->getFields($survey);
+        return $this->updateGeneralSettings(
+            $survey,
+            $input,
+            $fields
+        );
+    }
+
+    /**
+     * Update General Settings
+     *
+     * @param Survey $survey
+     * @param array $input
+     * @throws ExceptionPersistError
+     * @throws ExceptionNotFound
+     * @throws ExceptionPermissionDenied
+     * @return array
+     */
+    public function updateGeneralSettings(Survey $survey, array $input, array $fields)
+    {
+        $input = is_array($input) && !empty($input)
+            ? $input
+            : [];
+
+        $this->dispatchPluginEventNewSurveySettings(
+            $survey,
+            isset($input['plugin']) ? $input['plugin'] : []
+        );
+
+        $input = $this->filterInput($input);
+
+        $meta = ['updateFields' => []];
+
+        foreach ($fields as $field => $fieldOpts) {
+            $meta = $this->setField(
+                $field,
+                $input,
+                $survey,
+                $meta,
+                $fieldOpts
+            );
+        }
+
+        if (!empty($meta['updateFields'])) {
+            $this->dispatchPluginEventBeforeSurveySettingsSave(
+                $survey
+            );
+            $survey->save();
+        }
+
+        return $meta;
+    }
+
+    /**
+     * Get Fields
+     *
+     * @param Survey $survey
+     * @return array
+     */
+    public function getFields(Survey $survey)
+    {
+        $surveyNotActive = $survey->active != 'Y';
+
+        return [
             'owner_id' => [],
             'admin' => [],
             'format' => [],
@@ -49,12 +147,30 @@ class SurveyUpdaterGeneralSettings
             'startdate' => ['type' => static::FIELD_TYPE_DATETIME],
             'template' => [],
             'assessments' => ['type' => static::FIELD_TYPE_YN],
-            'anonymized' => ['type' => static::FIELD_TYPE_YN],
-            'savetimings' => ['type' => static::FIELD_TYPE_YN],
-            'datestamp' => ['type' => static::FIELD_TYPE_YN],
-            'ipaddr' => ['type' => static::FIELD_TYPE_YN],
-            'ipanonymize' => ['type' => static::FIELD_TYPE_YN],
-            'refurl' => ['type' => static::FIELD_TYPE_YN],
+            'anonymized' => [
+                'type' => static::FIELD_TYPE_YN,
+                'canUpdate' => $surveyNotActive
+            ],
+            'savetimings' => [
+                'type' => static::FIELD_TYPE_YN,
+                'canUpdate' => $surveyNotActive
+            ],
+            'datestamp' => [
+                'type' => static::FIELD_TYPE_YN,
+                'canUpdate' => $surveyNotActive
+            ],
+            'ipaddr' => [
+                'type' => static::FIELD_TYPE_YN,
+                'canUpdate' => $surveyNotActive
+            ],
+            'ipanonymize' => [
+                'type' => static::FIELD_TYPE_YN,
+                'canUpdate' => $surveyNotActive
+            ],
+            'refurl' => [
+                'type' => static::FIELD_TYPE_YN,
+                'canUpdate' => $surveyNotActive
+            ],
             'publicgraphs' => ['type' => static::FIELD_TYPE_YN],
             'usecookie' => ['type' => static::FIELD_TYPE_YN],
             'allowregister' => ['type' => static::FIELD_TYPE_YN],
@@ -94,91 +210,6 @@ class SurveyUpdaterGeneralSettings
     }
 
     /**
-     * Update
-     *
-     * @param int $surveyId
-     * @param array $input
-     * @throws ExceptionPersistError
-     * @throws ExceptionNotFound
-     * @throws ExceptionPermissionDenied
-     * @return boolean
-     */
-    public function update($surveyId, $input)
-    {
-        $input = is_array($input) && !empty($input)
-            ? $input
-            : [];
-
-        $hasPermission = $this->modelPermission
-            ->hasSurveyPermission(
-                $surveyId,
-                'surveysettings',
-                'update'
-            );
-        if ($hasPermission == false) {
-            throw new ExceptionPermissionDenied(
-                'Permission denied'
-            );
-        }
-
-        $survey = $this->modelSurvey->findByPk(
-            $surveyId
-        );
-        if (!$survey) {
-            throw new ExceptionNotFound;
-        }
-
-        $this->updateGeneralSettings(
-            $survey,
-            $input
-        );
-
-        return true;
-    }
-
-    /**
-     * Update General Settings
-     *
-     * @param Survey $survey
-     * @param array $input
-     * @throws ExceptionPersistError
-     * @throws ExceptionNotFound
-     * @throws ExceptionPermissionDenied
-     * @return void
-     */
-    public function updateGeneralSettings(Survey $survey, $input)
-    {
-        $input = is_array($input) && !empty($input)
-            ? $input
-            : [];
-
-        $this->dispatchPluginEventNewSurveySettings(
-            $survey,
-            isset($input['plugin']) ? $input['plugin'] : []
-        );
-
-        $input = $this->filterInput($input);
-
-        $meta = [
-            'updateFields' => []
-        ];
-
-        foreach ($this->fields as $field => $fieldOpts) {
-            $meta = $this->setField(
-                $field,
-                $input,
-                $survey,
-                $meta,
-                $fieldOpts
-            );
-        }
-
-        if (!empty($meta['updateFields'])) {
-            $survey->save();
-        }
-    }
-
-    /**
      * Set Field
      *
      * @param string $field
@@ -211,6 +242,13 @@ class SurveyUpdaterGeneralSettings
             ? $fieldOpts['default']
             : '';
 
+        if (
+            isset($fieldOpts['canUpdate'])
+            && !$fieldOpts['canUpdate']
+        ) {
+            return $meta;
+        }
+
         $value = $input[$field];
         switch ($type) {
             case static::FIELD_TYPE_DATETIME:
@@ -221,6 +259,13 @@ class SurveyUpdaterGeneralSettings
             case static::FIELD_TYPE_YN:
                 if (!in_array($value, ['Y', 'N', 'I'])) {
                     $value = ((int) $value === 1) ? 'Y' : 'N';
+                }
+            break;
+            case static::FIELD_TYPE_GAKEY:
+                if ($survey->googleanalyticsapikeysetting == 'G') {
+                    $value  = "9999useGlobal9999";
+                } elseif ($survey->googleanalyticsapikeysetting == 'N') {
+                    $value = '';
                 }
             break;
             case 'int':
@@ -280,6 +325,20 @@ class SurveyUpdaterGeneralSettings
             $this->yiiPluginManager
                 ->dispatchEvent($settingsEvent, $plugin);
         }
+    }
+
+    /**
+     * Dispatch plugin event before survey settings save
+     *
+     * @param int $surveyId
+     * @param array $pluginSettings
+     * @return void
+     */
+    public function dispatchPluginEventBeforeSurveySettingsSave(Survey $survey)
+    {
+        $event = new PluginEvent('beforeSurveySettingsSave');
+        $event->set('modifiedSurvey', $survey);
+        $this->yiiPluginManager->dispatchEvent($event);
     }
 
     /**
