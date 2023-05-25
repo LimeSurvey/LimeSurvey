@@ -57,6 +57,7 @@ echo viewHelper::getViewTestTag('surveyResponsesIndex');
                 'partial/notSubmittedResponseListTable',
                 [
                     'model' => $savedModel,
+                    'savedResponsesPageSize' => $savedResponsesPageSize,
                 ],
                 true
             );

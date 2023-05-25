@@ -505,6 +505,11 @@ class ResponsesController extends LSBaseController
                 $oSavedControlModel->setAttributes($aFilters, false);
             }
             $aData['savedModel'] = $oSavedControlModel;
+            if (App()->request->getPost('savedResponsesPageSize')) {
+                App()->user->setState('savedResponsesPageSize', App()->request->getPost('savedResponsesPageSize'));
+            }
+            $aData['savedResponsesPageSize'] = App()->user->getState('savedResponsesPageSize', App()->params['defaultPageSize']);
+            $aViewUrls[] = 'savedlist_view';
             // ===================================================
 
             $this->aData = $aData;
@@ -524,6 +529,7 @@ class ResponsesController extends LSBaseController
                 'filteredColumns' => $aData['filteredColumns'],
                 // saved but not submitted data
                 'savedModel' => $aData['savedModel'],
+                'savedResponsesPageSize' => $aData['savedResponsesPageSize'],
 
             ]);
         } else {

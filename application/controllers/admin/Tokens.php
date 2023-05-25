@@ -103,11 +103,15 @@ class Tokens extends SurveyCommonAction
         $aData['end'] = $end;
         $searchstring = Yii::app()->request->getPost('searchstring');
 
+        $aData['thissurvey'] = getSurveyInfo($iSurveyId);
         $aData['searchstring'] = $searchstring;
+        $aData['surveyid'] = $iSurveyId;
+
         $aData['bgc'] = "";
         $aData['limit'] = $limit;
         $aData['start'] = $start;
         $aData['order'] = $order;
+        $aData['surveyprivate'] = $aData['thissurvey']['anonymized'];
         $aData['dateformatdetails'] = $dateformatdetails;
         $aLanguageCodes = Survey::model()->findByPk($iSurveyId)->getAllLanguages();
         $aLanguages = array();
@@ -142,8 +146,6 @@ class Tokens extends SurveyCommonAction
         if (!$survey->hasTokensTable) {
             $this->newtokentable($iSurveyId);
         } else {
-            $aData['thissurvey'] = $thissurvey;
-            $aData['surveyid'] = $iSurveyId;
             $aData['queries'] = Token::model($iSurveyId)->summary();
             
             $this->renderWrappedTemplate('token', array('surveyParticipantView'), $aData);
