@@ -650,7 +650,8 @@ class DataEntry extends SurveyCommonAction
                     $fname['fieldname'] => !isset($idrow[$fname['fieldname']])
                 ];
                 $answerWrapperClass = '';
-                switch ($fname['type']) {
+                $fieldType = $fname['type'];
+                switch ($fieldType) {
                     case "completed":
                         $selected = (empty($idrow['submitdate'])) ? 'N' : 'Y';
                         $select_options = array(
@@ -1366,9 +1367,9 @@ class DataEntry extends SurveyCommonAction
 
                 if (!empty($questionInputs)) {
                     if (
-                        $fname['type'] == Question::QT_K_MULTIPLE_NUMERICAL
-                        || $fname['type'] == Question::QT_N_NUMERICAL
-                        || $fname['type'] == Question::QT_D_DATE
+                        $fieldType == Question::QT_K_MULTIPLE_NUMERICAL
+                        || $fieldType == Question::QT_N_NUMERICAL
+                        || $fieldType == Question::QT_D_DATE
                     ) {
                         $unseenLabel = gT("Unseen or not answered");
                     } else {
@@ -1542,10 +1543,11 @@ class DataEntry extends SurveyCommonAction
             if (!empty($irow['title']) && Yii::app()->request->getPost($unseenFieldName, false)) {
                 // Throw an error if "unseen" is checked but the field is not empty. This should never happen.
                 if ($thisvalue !== '') {
-                    throw new CHttpException(400, gT("Invalid request"));
+                    Yii::app()->setFlashMessage(sprintf(gT("Question %s was marked as \"Unseen\" but a value was provided. The \"Unseen\" status has been ignored."), $irow['title']), 'warning');
+                } else {
+                    $oResponse->$fieldname = null;
+                    continue;
                 }
-                $oResponse->$fieldname = null;
-                continue;
             }
             switch ($irow['type']) {
                 case 'lastpage':
