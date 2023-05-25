@@ -155,6 +155,25 @@ class GroupHelper extends TestBaseClass
         $this->assertSame('success', $result['type'], 'The returned value is not correct.');
     }
 
+    /**
+     * Test group order change on an active survey.
+     */
+    public function testQuestionGroupChangeOnActiveSurvey()
+    {
+        $activator = new \SurveyActivator(self::$testSurvey);
+        $result = $activator->activate();
+
+        $orgdata = $this->getOrgData(self::$testSurvey->groups, self::$testSurvey->questions);
+
+        $groupHelper = new \LimeSurvey\Models\Services\GroupHelper();
+        $result = $groupHelper->reorderGroup(self::$surveyId, $orgdata);
+
+        // Asserting Q03 could not be moved back to group two.
+        $this->assertArrayHasKey('type', $result, 'The returned value is not correct.');
+        $this->assertSame('error', $result['type'], 'The returned value is not correct.');
+        $this->assertSame('Q03', $result['question-titles'][0], 'The question title is not the one expected.');
+    }
+
     private function getOrgData($groups, $questions)
     {
         $orgdata = array();

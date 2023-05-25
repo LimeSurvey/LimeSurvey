@@ -2086,7 +2086,7 @@ class SurveyAdministrationController extends LSBaseController
 
             if ($result['type'] === 'success') {
                 App()->setFlashMessage(gT("The new question group/question order was successfully saved."));
-            } elseif ($result['type'] === 'error' && !empty($result['question-titles'])) {
+            } elseif ($result['type'] === 'error') {
                 foreach ($result['question-titles'] as $questionTitle) {
                     App()->setFlashMessage(sprintf(gT("Unable to reorder question %s."), $questionTitle), 'warning');
                 }
