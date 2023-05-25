@@ -34,6 +34,34 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.0.7 (build 230515) to 6.1.0 (build 230522) May 22, 2023
++New feature #18792: Allow to move question inside group and group order with activated survey (Denis Chenu)
+-Fixed issue: ComfortUpdate showing updates as unstable, even though they are not (Carsten Schmitz)
+-Fixed issue: Action dropdown menu cut off in Firefox (#3085) (jack-han-115)
+-Fixed issue CR-956: wrong color code for g-700 grey (Patrick Teichmann)
+-Fixed issue #18811: Button that triggers HTML editor in pop-up window doesn't work (Denis Chenu)
+-Fixed issue #18805: No replacement variables available on user administration page (#3113) (Denis Chenu)
+-Fixed issue #18784: timer.min.js outdated, updated the build process (#3151) (Bert Hankes)
+-Fixed issue #18736: Error exporting participants when using MSSQL DB (Carsten Schmitz)
+-Fixed issue #18725: Reorder questions/question groups can break survey (Denis Chenu)
+-Fixed issue #18670: "Validation of quota" action button always shows 1st quota (#3139) (Gabriel Jenik)
+-Fixed issue #18605: Missing success alerts in participant view (#2876) (Gabriel Jenik)
+-Fixed issue #18464: Min/max settings doesn't work for question attrib… (#2708) (Denis Chenu)
+-Fixed issue #18262: QCode.gid is not working anymore (#3138) (Denis Chenu)
+#Updated translation: Ukrainian by DermanskiyIM
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Greek by baltzis, kiolalis
+#Updated translation: German by c_schmitz
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Bulgarian by bmtteam
+
+
 Changes from 6.0.6 (build 230508) to 6.0.7 (build 230515) May 15, 2023
 -Fixed issue: No proper error when entering ComfortUpdate key and server cannot be reached (Carsten Schmitz)
 -Fixed issue #18765: Answers are not populated correct in array dual scale after clicking "Back" (#3061) (Gabriel Jenik)
