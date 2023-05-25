@@ -13967,6 +13967,12 @@ input.imageselect-checkbox:checked ~ .imageselect-select::after {
   border-color: #14AE5C;
 }
 
+@media screen and (max-width: 767px) {
+  .choice-5-pt-radio .list-group-horizontal {
+    flex-direction: column;
+  }
+}
+
 .checkbox-item {
   padding-left: 20px;
 }
