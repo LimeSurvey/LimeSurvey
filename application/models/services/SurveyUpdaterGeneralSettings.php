@@ -6,9 +6,9 @@ use Survey;
 use Permission;
 use SurveyURLParameter;
 use LSYii_Application;
-use PluginManager;
 use PluginEvent;
 use Date_Time_Converter;
+use LimeSurvey\PluginManager\PluginManager;
 use LimeSurvey\Models\Services\Exception\{
     ExceptionPersistError,
     ExceptionNotFound,
@@ -123,7 +123,11 @@ class SurveyUpdaterGeneralSettings
             $this->dispatchPluginEventBeforeSurveySettingsSave(
                 $survey
             );
-            $survey->save();
+            if (!$survey->save()) {
+                throw new ExceptionPersistError(
+                    'Failed saving general settings'
+                );
+            }
         }
 
         return $meta;
@@ -135,7 +139,7 @@ class SurveyUpdaterGeneralSettings
      * @param Survey $survey
      * @return array
      */
-    public function getFields(Survey $survey)
+    private function getFields(Survey $survey)
     {
         $surveyNotActive = $survey->active != 'Y';
 
@@ -219,7 +223,7 @@ class SurveyUpdaterGeneralSettings
      * @param ?array $fieldOpts
      * @return void
      */
-    protected function setField($field, $input, Survey $survey, $meta, $fieldOpts = null)
+    private function setField($field, $input, Survey $survey, $meta, $fieldOpts = null)
     {
         $meta = is_array($meta) ? $meta : [
             'updateFields' => []
@@ -281,9 +285,9 @@ class SurveyUpdaterGeneralSettings
 
         $survey->{$field} = $value;
 
-        if (in_array(
-            $field,
-            $meta['updateFields']
+        if (!in_array(
+        $field,
+        $meta['updateFields']
         )) {
             $meta['updateFields'][] = $field;
         }
@@ -313,7 +317,7 @@ class SurveyUpdaterGeneralSettings
      * @param array $pluginSettings
      * @return void
      */
-    public function dispatchPluginEventNewSurveySettings($surveyId, $pluginSettings)
+    private function dispatchPluginEventNewSurveySettings($surveyId, $pluginSettings)
     {
         $pluginSettings = is_array($pluginSettings) && !empty($pluginSettings)
             ? $pluginSettings
@@ -334,7 +338,7 @@ class SurveyUpdaterGeneralSettings
      * @param array $pluginSettings
      * @return void
      */
-    public function dispatchPluginEventBeforeSurveySettingsSave(Survey $survey)
+    private function dispatchPluginEventBeforeSurveySettingsSave(Survey $survey)
     {
         $event = new PluginEvent('beforeSurveySettingsSave');
         $event->set('modifiedSurvey', $survey);
@@ -353,14 +357,16 @@ class SurveyUpdaterGeneralSettings
     {
         $this->yiiApp->loadHelper('surveytranslator');
         $this->yiiApp->loadLibrary('Date_Time_Converter');
-        $formatData = getDateFormatData(
-            $this->yiiApp->session['dateformat']
-        );
+        $dateFormat =  isset($this->yiiApp->session)
+            && !empty($this->yiiApp->session['dateformat'])
+            ? $this->yiiApp->session['dateformat']
+            : 1;
+        $formatData = getDateFormatData($dateFormat);
         $dateTimeObj = new Date_Time_Converter(
             $inputDateTimeString,
             $formatData['phpdate'] . ' H:i'
         );
-        return $dateTimeObj->convert("Y-m-d H:i:s");
+        return $dateTimeObj->convert('Y-m-d H:i:s');
     }
 
     /**
@@ -397,7 +403,7 @@ class SurveyUpdaterGeneralSettings
      * @param SurveyURLParameter $model
      * @return void
      */
-    public function setModelSurveyUrlParameter(LSYii_Application $app)
+    public function setYiiApp(LSYii_Application $app)
     {
         $this->yiiApp = $app;
     }
@@ -410,7 +416,7 @@ class SurveyUpdaterGeneralSettings
      * @param PluginManager $model
      * @return void
      */
-    public function setModelSurveyLanguageSetting(PluginManager $pluginManager)
+    public function setYiiPluginManager(PluginManager $pluginManager)
     {
         $this->yiiPluginManager = $pluginManager;
     }

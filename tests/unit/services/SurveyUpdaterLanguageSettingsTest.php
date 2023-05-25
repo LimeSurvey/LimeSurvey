@@ -31,10 +31,10 @@ class SurveyUpdaterLanguageSettingsTest extends TestBaseClass
         $modelPermission->shouldReceive('hasSurveyPermission')
             ->andReturn(false);
 
-        $surveyUpdate = new SurveyUpdaterLanguageSettings;
-        $surveyUpdate->setModelPermission($modelPermission);
+        $surveyUpdater = new SurveyUpdaterLanguageSettings;
+        $surveyUpdater->setModelPermission($modelPermission);
 
-        $surveyUpdate->update(1, []);
+        $surveyUpdater->update(1, []);
     }
 
     /**
@@ -56,11 +56,11 @@ class SurveyUpdaterLanguageSettingsTest extends TestBaseClass
         $modelSurvey->shouldReceive('findByPk')
             ->andReturn(null);
 
-        $surveyUpdate = new SurveyUpdaterLanguageSettings;
-        $surveyUpdate->setModelPermission($modelPermission);
-        $surveyUpdate->setModelSurvey($modelSurvey);
+        $surveyUpdater = new SurveyUpdaterLanguageSettings;
+        $surveyUpdater->setModelPermission($modelPermission);
+        $surveyUpdater->setModelSurvey($modelSurvey);
 
-        $surveyUpdate->update(1, []);
+        $surveyUpdater->update(1, []);
     }
 
     /**
@@ -97,14 +97,14 @@ class SurveyUpdaterLanguageSettingsTest extends TestBaseClass
             ->shouldReceive('findByPk')
             ->andReturn(null);
 
-        $surveyUpdate = new SurveyUpdaterLanguageSettings;
-        $surveyUpdate->setModelPermission($modelPermission);
-        $surveyUpdate->setModelSurvey($modelSurvey);
-        $surveyUpdate->setModelSurveyLanguageSetting(
+        $surveyUpdater = new SurveyUpdaterLanguageSettings;
+        $surveyUpdater->setModelPermission($modelPermission);
+        $surveyUpdater->setModelSurvey($modelSurvey);
+        $surveyUpdater->setModelSurveyLanguageSetting(
             $modelSurveyLanguageSetting
         );
 
-        $surveyUpdate->update(1, [
+        $surveyUpdater->update(1, [
             'en' => ['surveyls_urldescription' => 'test']
         ]);
     }
@@ -149,14 +149,14 @@ class SurveyUpdaterLanguageSettingsTest extends TestBaseClass
             ->shouldReceive('findByPk')
             ->andReturn($surveyLanguageSetting);
 
-        $surveyUpdate = new SurveyUpdaterLanguageSettings;
-        $surveyUpdate->setModelPermission($modelPermission);
-        $surveyUpdate->setModelSurvey($modelSurvey);
-        $surveyUpdate->setModelSurveyLanguageSetting(
+        $surveyUpdater = new SurveyUpdaterLanguageSettings;
+        $surveyUpdater->setModelPermission($modelPermission);
+        $surveyUpdater->setModelSurvey($modelSurvey);
+        $surveyUpdater->setModelSurveyLanguageSetting(
             $modelSurveyLanguageSetting
         );
 
-        $surveyUpdate->update(1, [
+        $surveyUpdater->update(1, [
             'en' => ['surveyls_urldescription' => 'test']
         ]);
     }
@@ -197,14 +197,14 @@ class SurveyUpdaterLanguageSettingsTest extends TestBaseClass
             ->shouldReceive('findByPk')
             ->andReturn($surveyLanguageSetting);
 
-        $surveyUpdate = new SurveyUpdaterLanguageSettings;
-        $surveyUpdate->setModelPermission($modelPermission);
-        $surveyUpdate->setModelSurvey($modelSurvey);
-        $surveyUpdate->setModelSurveyLanguageSetting(
+        $surveyUpdater = new SurveyUpdaterLanguageSettings;
+        $surveyUpdater->setModelPermission($modelPermission);
+        $surveyUpdater->setModelSurvey($modelSurvey);
+        $surveyUpdater->setModelSurveyLanguageSetting(
             $modelSurveyLanguageSetting
         );
 
-        $result = $surveyUpdate->update(1, [
+        $result = $surveyUpdater->update(1, [
             'en' => ['surveyls_urldescription' => 'test'],
             'de' => ['surveyls_urldescription' => 'test'],
         ]);
