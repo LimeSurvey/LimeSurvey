@@ -5,8 +5,6 @@
  * @var $this AdminController
  * @var $num_completed_answers string
  * @var $num_total_answers string
- * @var $tokeninfo mixed
- * @var $with_token CDbTableSchema|null
  */
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
