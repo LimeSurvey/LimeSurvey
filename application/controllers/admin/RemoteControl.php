@@ -33,6 +33,8 @@ class RemoteControl extends SurveyCommonAction
         $setAccessControlHeader = Yii::app()->getConfig('add_access_control_header', 1);
         if ($setAccessControlHeader == 1) {
             header("Access-Control-Allow-Origin: *");
+            header("Access-Control-Allow-Methods: POST");
+            header("Access-Control-Allow-Headers: *");
         }
 
         $oHandler = new remotecontrol_handle($this->controller);
