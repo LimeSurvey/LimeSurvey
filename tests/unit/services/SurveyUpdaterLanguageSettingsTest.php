@@ -105,7 +105,7 @@ class SurveyUpdaterLanguageSettingsTest extends TestBaseClass
         );
 
         $surveyUpdate->update(1, [
-            'en' => ['url_description' => 'test']
+            'en' => ['surveyls_urldescription' => 'test']
         ]);
     }
 
@@ -157,7 +157,7 @@ class SurveyUpdaterLanguageSettingsTest extends TestBaseClass
         );
 
         $surveyUpdate->update(1, [
-            'en' => ['url_description' => 'test']
+            'en' => ['surveyls_urldescription' => 'test']
         ]);
     }
 
@@ -205,8 +205,8 @@ class SurveyUpdaterLanguageSettingsTest extends TestBaseClass
         );
 
         $result = $surveyUpdate->update(1, [
-            'en' => ['url_description' => 'test'],
-            'de' => ['url_description' => 'test'],
+            'en' => ['surveyls_urldescription' => 'test'],
+            'de' => ['surveyls_urldescription' => 'test'],
         ]);
 
         $this->assertEquals( true, $result);

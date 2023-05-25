@@ -25,21 +25,21 @@ class SurveyUpdaterLanguageSettings
     private ?Survey $modelSurvey = null;
     private ?SurveyURLParameter $modelSurveyUrlParameter = null;
     private ?SurveyLanguageSetting $modelSurveyLanguageSetting = null;
-    private $fieldMap = [
-        'url_description' => 'surveyls_urldescription',
-        'url' => 'surveyls_url',
-        'short_title' => 'surveyls_title',
-        'alias' => 'surveyls_alias',
-        'description' => 'surveyls_description',
-        'welcome' => 'surveyls_welcometext',
-        'end_text' => 'surveyls_endtext',
-        'policy_notice' => 'surveyls_policy_notice',
-        'policy_error' => 'surveyls_policy_error',
-        'policy_notice_label' => 'surveyls_policy_notice_label',
-        'date_format' => 'surveyls_dateformat',
-        'number_format' => 'surveyls_numberformat'
+
+    private $inputFields = [
+        'surveyls_url',
+        'surveyls_urldescription',
+        'surveyls_title',
+        'surveyls_alias',
+        'surveyls_description',
+        'surveyls_welcometext',
+        'surveyls_endtext',
+        'surveyls_policy_notice',
+        'surveyls_policy_error',
+        'surveyls_policy_notice_label',
+        'surveyls_dateformat',
+        'surveyls_numberformat'
     ];
-    private $inputFields = [];
 
     public function __construct()
     {
@@ -47,7 +47,6 @@ class SurveyUpdaterLanguageSettings
         $this->modelSurvey = Survey::model();
         $this->modelSurveyUrlParameter = SurveyURLParameter::model();
         $this->modelSurveyLanguageSetting = SurveyLanguageSetting::model();
-        $this->inputFields = array_keys($this->fieldMap);
     }
 
     /**
@@ -169,13 +168,12 @@ class SurveyUpdaterLanguageSettings
 
         $data = array();
         foreach ($this->inputFields as $inputField) {
-            $field = $this->fieldMap[$inputField];
             $value = $this->getValue(
                 $input[$languageCode],
                 $inputField
             );
             if ($value !== null) {
-                $data[$field] = $value;
+                $data[$inputField] = $value;
             }
         }
 
