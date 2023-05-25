@@ -58,6 +58,11 @@ body .navbar-default .navbar-brand:hover {
     border: none;
 }
 
+.navbar-right.ms-auto {
+    margin-left  : auto !important;
+    margin-right : 0 !important;
+}
+
 .navbar {
     border-radius    : 0 !important;
 
