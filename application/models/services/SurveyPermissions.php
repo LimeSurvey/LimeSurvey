@@ -15,6 +15,9 @@ class SurveyPermissions
     /** @var bool */
     private $userControlSameGroupPolicy;
 
+    /** @var int[] Used to cache the list of UIDs. Affected by usercontrolSameGroupPolicy. */
+    private $filteredUserIdList = null;
+
     /**
      * SurveyPermissions constructor.
      *
@@ -49,7 +52,8 @@ class SurveyPermissions
      */
     public function getUserPermissionCriteria()
     {
-        $userList = getUserList('onlyuidarray'); // Limit the user list for the samegrouppolicy
+        $userList = $this->getFilteredUserIdList(); // Limit the user list for the samegrouppolicy
+        $hasUserReadPermission = \Permission::model()->hasGlobalPermission('users', 'read');
         /** @var \LSYii_Application */
         $app = \Yii::app();
         $currentUserId = $app->user->getId(); //current logged in user
@@ -59,7 +63,9 @@ class SurveyPermissions
         $criteria->condition = 't.entity_id =:entity_id';
         $criteria->addCondition('t.entity =:entity');
         $criteria->addNotInCondition('u.uid', [$currentUserId]);
-        $criteria->addInCondition('t.uid', $userList);
+        if (!$hasUserReadPermission && $this->userControlSameGroupPolicy) {
+            $criteria->addInCondition('t.uid', $userList);
+        }
         $criteria->params = array_merge($criteria->params, [
             ':entity_id' => $this->survey->sid,
             ':entity'    => 'survey'
@@ -110,7 +116,7 @@ class SurveyPermissions
     {
         $isResult = false;
         $user = \User::model()->findByPk($userid);
-        if (isset($user) && in_array($userid, getUserList('onlyuidarray'))) {
+        if (isset($user) && $this->canManageSurveyPermissionsForUser($userid)) {
             $isResult = \Permission::model()->insertSomeRecords(
                 array(
                 'entity_id' => $this->survey->sid,
@@ -173,6 +179,14 @@ class SurveyPermissions
      */
     public function getSurveyUserList()
     {
+        $hasUserReadPermission = \Permission::model()->hasGlobalPermission('users', 'read');
+
+        // If the user doesn't have User Read permission, and it's not allowed
+        // to see at least the users of the same group, then return an empty list
+        if (!$hasUserReadPermission && !$this->userControlSameGroupPolicy) {
+            return [];
+        }
+
         $aUserIds = $this->getUserIdsWithSurveyPermissions();
         $criteria = new \CDbCriteria();
         $criteria->select = 't.uid, t.users_name, t.full_name';
@@ -183,12 +197,14 @@ class SurveyPermissions
         $userList = [];
 
         if ($this->userControlSameGroupPolicy) {
-            $authorizedUsersList = getUserList('onlyuidarray');
+            $authorizedUsersList = $this->getFilteredUserIdList();
         }
         $index = 0;
         foreach ($users as $user) {
             if (
-                !$this->userControlSameGroupPolicy || in_array($user->uid, $authorizedUsersList)
+                $hasUserReadPermission ||
+                !$this->userControlSameGroupPolicy
+                || in_array($user->uid, $authorizedUsersList)
             ) {
                 $userList[$index]['userid'] = $user->uid;
                 $userList[$index]['fullname'] = $user->full_name;
@@ -209,6 +225,14 @@ class SurveyPermissions
      */
     public function getSurveyUserGroupList()
     {
+        $hasUserReadPermission = \Permission::model()->hasGlobalPermission('users', 'read');
+
+        // If the user doesn't have User Read permission, and it's not allowed
+        // to see at least the users of the same group, then return an empty list
+        if (!$hasUserReadPermission && !$this->userControlSameGroupPolicy) {
+            return [];
+        }
+
         //find all groups that have not all their users already in 'survey permissions'
         $criteria = new \CDbCriteria();
         $criteria->select = "t.ugid, t.name, MAX(d.ugid)";
@@ -252,6 +276,10 @@ class SurveyPermissions
     public function saveUserPermissions($userId, $permissions)
     {
         $isSaved = true;
+
+        if (!$this->canManageSurveyPermissionsForUser($userId)) {
+            throw new \Exception(gT("No permission"));
+        }
 
         //delete current survey permissions and reset the new ones
         // ...easier as to compare all of them
@@ -328,6 +356,10 @@ class SurveyPermissions
      */
     public function deleteUserPermissions($userId)
     {
+        if (!$this->canManageSurveyPermissionsForUser($userId)) {
+            throw new \Exception(gT("No permission to delete survey permissions from user."));
+        }
+
         return \Permission::model()->deleteAllByAttributes([
             'entity_id' => $this->survey->sid,
             'entity' => 'survey',
@@ -414,5 +446,47 @@ class SurveyPermissions
             $aUserIds[] = $userid->uid;
         }
         return $aUserIds;
+    }
+
+    private function getFilteredUserIdList()
+    {
+        if (!isset($this->filteredUserIdList)) {
+            $this->filteredUserIdList = getUserList('onlyuidarray');
+        }
+        return $this->filteredUserIdList;
+    }
+
+    /**
+     * Returns true if the current user can manage survey permissions
+     * for the given user (ie. can add/remove permissions for the given user).
+     * @param int $userId
+     * @return bool
+     */
+    public function canManageSurveyPermissionsForUser($userId)
+    {
+        $hasUserReadPermission = \Permission::model()->hasGlobalPermission('users', 'read');
+
+        // If the user has global User Read permission, then he can manage survey
+        // permissions for any user.
+        if ($hasUserReadPermission) {
+            return true;
+        }
+
+        // If the user doesn't have User Read permission, and it's not allowed
+        // to see at least the users of the same group, then he can't manage survey
+        // permissions for any user.
+        if (!$this->userControlSameGroupPolicy) {
+            return false;
+        }
+
+        // If the user doesn't have User Read permission, but it's allowed to see
+        // at least the users of the same group, and the given user is in the same
+        // group, then he can manage survey permissions for the given user.
+        $authorizedUsersList = $this->getFilteredUserIdList();
+        if (in_array($userId, $authorizedUsersList)) {
+            return true;
+        }
+
+        return false;
     }
 }
