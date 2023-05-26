@@ -33,6 +33,10 @@ class SurveyActivator
     }
 
     /**
+     * Sets a survey into "activate" state.
+     * Creates necessary tables "responseTable", "timingTable".
+     * Fires events "beforeSurveyActivate" and "afterSurveyActivation"
+     *
      * @return array
      * @throws CException
      */

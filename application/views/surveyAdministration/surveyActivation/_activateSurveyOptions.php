@@ -183,7 +183,9 @@ if (!$closeAccessMode) {
         </div>
     </div>
     <?php
-}
+} else {  //transmit input value for "openAccessMode", it's needed to take further steps in action ?>
+    <input type="hidden" name="openAccessMode" value="N">
+<?php }
 ?>
 
 <input type="hidden" name="surveyId" value="<?php echo $aSurveysettings['sid']; ?>">

@@ -12,6 +12,15 @@ echo viewHelper::getViewTestTag('surveyParticipantsIndex');
 <div class='side-body <?php echo getSideBodyClass(true); ?>'>
     <h3><?php eT("Survey participant summary"); ?></h3>
 
+    <?php
+    if (isset($surveyActivationFeedback) && $surveyActivationFeedback) {
+        Yii::app()->getController()->renderPartial(
+            '/surveyAdministration/surveyActivation/_activated_closedAccess',
+            ['nameTokensTable' => 'someTokenTableName']
+        );
+    }
+    ?>
+
     <div class="row">
         <div class="col-xl-4 content-right">
             <table class="items table table-striped"  >

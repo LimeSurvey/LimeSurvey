@@ -1719,12 +1719,45 @@ class SurveyAdministrationController extends LSBaseController
     }
 
     /**
+     * fixes the numbering of questions
+     * This can happen if question 1 have subquestion code 1 and
+     * have question 11 in same survey and group (then same SGQA).
+     *
+     * @todo: maybe this one could not happen anymore ?
+     *
+     * @return array|false|string|string[]|null
+     * @throws CException
+     */
+    public function actionFixNumbering()
+    {
+        //get params surveyid and questionid
+        $surveyId = sanitize_int(Yii::app()->request->getParam('iSurveyID', 0));
+        $questionId = sanitize_int(Yii::app()->request->getParam('questionId', 0));
+
+        $success = false;
+        if (($surveyId > 0) && ($questionId > 0)) {
+            fixNumbering($questionId, $surveyId);
+            $success = true;
+        }
+
+        return $this->renderPartial(
+            '/admin/super/_renderJson',
+            [
+                'data' => [
+                    'success' => $success,
+                    //'html' => $html,  todo: should we give any feedback here?
+                ]
+            ],
+        );
+    }
+
+    /**
      * This action renders the view for survey activation where
      * the user can preselect some options like "ipanonymize" etc.
      * It is also possible to switch between the "open access mode" and
      * the "close-access-mode" before the survey is activated.
      * The action also checks if it is even possible to activate the survey
-     *  (see checkGroup() and checkQuestions() for more information)
+     * (see checkGroup() and checkQuestions() for more information).
      *
      * @return void
      */
@@ -1738,21 +1771,13 @@ class SurveyAdministrationController extends LSBaseController
         $oSurvey = Survey::model()->findByPk($surveyId);
         $aSurveysettings = getSurveyInfo($surveyId);
 
-        /*
-           todo: this one here can only happen AFTER view with failed--check has been shown
-           todo: maybe
-
-        if (isset($_GET['fixnumbering']) && $_GET['fixnumbering']) {
-            fixNumbering($_GET['fixnumbering'], $iSurveyID);
-        }*/
-
         Yii::app()->loadHelper("admin/activate");
         $failedgroupcheck = checkGroup($surveyId);
         $failedcheck = checkQuestions($surveyId, $surveyId);
         if ((isset($failedcheck) && $failedcheck) || (isset($failedgroupcheck) && $failedgroupcheck)) {
             //survey can not be activated
             $html = $this->renderPartial(
-                '/surveyAdministration/_activateSurveyCheckFailed',
+                '/surveyAdministration/surveyActivation/_activateSurveyCheckFailed',
                 [
                 'failedcheck' => $failedcheck,
                 'failedgroupcheck' => $failedgroupcheck,
@@ -1765,7 +1790,7 @@ class SurveyAdministrationController extends LSBaseController
             $survey = Survey::model()->findByPk($surveyId);
             $surveyActivator = new SurveyActivator($survey);
             $html = $this->renderPartial(
-                '_activateSurveyOptions',
+                '/surveyAdministration/surveyActivation/_activateSurveyOptions',
                 [
                 'oSurvey' => $oSurvey,
                 'aSurveysettings' => $aSurveysettings,
@@ -1783,8 +1808,6 @@ class SurveyAdministrationController extends LSBaseController
                     'html' => $html,
                 ]
             ],
-            false,
-            false
         );
     }
 
@@ -1807,6 +1830,8 @@ class SurveyAdministrationController extends LSBaseController
         $aData['sidemenu']['state'] = false;
         $aData['aSurveysettings'] = getSurveyInfo($surveyId);
         $aData['surveyid'] = $surveyId;
+
+        $openAccessMode = Yii::app()->request->getPost('openAccessMode', null);
 
         if (!is_null($survey)) {
             $survey->anonymized = Yii::app()->request->getPost('anonymized');
@@ -1832,15 +1857,18 @@ class SurveyAdministrationController extends LSBaseController
         } elseif (isset($aResult['pluginFeedback'])) {
             // Special feedback from plugin should be given to user
             //todo: what should be done here ...
-            $this->render('_activation_feedback', []);
+            $this->render('surveyActivation/_activation_feedback', $aResult);
         } elseif (isset($aResult['error'])) {
             $data['result'] = $aResult;
             //$this->aData = $aData;
             //todo: what should be done here ...
-            $this->render('_activation_error', $data);
+            $this->render('surveyActivation/_activation_error', $data);
         } else {
             $warning = (isset($aResult['warning'])) ? true : false;
-            $allowregister = $survey->isAllowRegister;
+            $allowregister = $survey->isAllowRegister; //todo: where to ask for this one here
+            /*
+             * ---> this is not necessary any more
+             *
             $onclickAction = convertGETtoPOST(
                 Yii::app()->getController()->createUrl("admin/tokens/sa/index/surveyid/" . $surveyId)
             );
@@ -1849,18 +1877,38 @@ class SurveyAdministrationController extends LSBaseController
             $noOnclickAction = "window.location.href='" . (Yii::app()->getController()->createUrl(
                 "surveyAdministration/view/surveyid/" . $surveyId)
                 ) . "'";
+            */
+
+            if ($openAccessMode !== null) {
+                switch ($openAccessMode) {
+                    case 'Y': //show a modal or give feedback on another page
+                        break;
+                    case 'N': //check if token table exists or 'allowRegister' set to true
+                        $this->redirect([
+                            '/admin/tokens/sa/index/',
+                            'surveyid' => $surveyId,
+                            'surveyActivationFeedback' => 'surveyActivationFeedback'
+                        ]);
+                        //$this->redirect(['/admin/tokens/sa/index/surveyid/' . $surveyId]);
+                        break;
+                    default: //this should never happen exception ...
+                }
+            }
+
+            //token table should be generated here, if in closed access mode
 
             $activationData = array(
                 'iSurveyID'           => $surveyId,
                 'survey'              => $survey,
                 'warning'             => $warning,
                 'allowregister'       => $allowregister,
-                'onclickAction'       => $onclickAction,
-                'closedOnclickAction' => $closedOnclickAction,
-                'noOnclickAction'     => $noOnclickAction,
+              //  'onclickAction'       => $onclickAction,
+              //  'closedOnclickAction' => $closedOnclickAction,
+              //  'noOnclickAction'     => $noOnclickAction,
             );
             $this->aData = $aData;
-            $this->render('_activation_feedback', $activationData);
+            $this->render('surveyActivation/_activation_feedback', $activationData);
+            //todo: this action here should be an ajax-request opening another modal aftwards
         }
     }
 
@@ -1963,7 +2011,7 @@ class SurveyAdministrationController extends LSBaseController
             } elseif (isset($aResult['error'])) {
                 $data['result'] = $aResult;
                 $this->aData = $aData;
-                $this->render('_activation_error', $data);
+                $this->render('surveyActivation/_activation_error', $data);
             } else {
                 $warning = (isset($aResult['warning'])) ? true : false;
                 $allowregister = $survey->isAllowRegister;

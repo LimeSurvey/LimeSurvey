@@ -5,6 +5,8 @@
 /** @var bool|array $failedgroupcheck */
 /** @var array $aSurveysettings */
 
+//todo: this view is deprecated, we moved content to a modal
+
 ?>
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <h3>

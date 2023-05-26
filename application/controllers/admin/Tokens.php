@@ -35,7 +35,7 @@ class Tokens extends SurveyCommonAction
         $iSurveyId = (int) $iSurveyId;
         $survey = Survey::model()->findByPk($iSurveyId);
 
-        //// TODO : check if it does something different than the model function
+        //TODO : check if it does something different than the model function
         $thissurvey = getSurveyInfo($iSurveyId);
         if (
             !Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'read') && !Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'create') && !Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update')
@@ -70,8 +70,9 @@ class Tokens extends SurveyCommonAction
 
 
         // CHECK TO SEE IF A Survey participants table EXISTS FOR THIS SURVEY
+        $aData['surveyActivationFeedback'] = Yii::app()->request->getParam('surveyActivationFeedback', null);
         if (!$survey->hasTokensTable) {
-            $this->newtokentable($iSurveyId);
+            $this->newtokentable($iSurveyId, $aData['surveyActivationFeedback']);
         } else {
             $aData['thissurvey'] = $thissurvey;
             $aData['surveyid'] = $iSurveyId;
@@ -2604,7 +2605,7 @@ class Tokens extends SurveyCommonAction
      * @param int $iSurveyId
      * @return void
      */
-    private function newtokentable($iSurveyId)
+    private function newtokentable($iSurveyId, $surveyActivationFeedback = null)
     {
         $aSurveyInfo = getSurveyInfo($iSurveyId);
         $survey = Survey::model()->findByPk($iSurveyId);

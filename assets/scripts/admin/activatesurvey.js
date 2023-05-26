@@ -18,7 +18,7 @@ function openModalActivate(){
             modalDialog.modal('show');
         },
         error: function () {
-            console.log('error: no data from ajaxrequest');
+            console.log('error: no data from request for activation modal');
         }
     });
 }
