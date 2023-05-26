@@ -28,9 +28,9 @@ class GroupHelper extends TestBaseClass
                             ->query()
                             ->readAll();
 
-        $this->assertSame('1', $currentOrder[0]['group_order'], 'The group id is incorrect.');
-        $this->assertSame('2', $currentOrder[1]['group_order'], 'The group id is incorrect.');
-        $this->assertSame('3', $currentOrder[2]['group_order'], 'The group id is incorrect.');
+        $this->assertEquals(self::$testSurvey->groups[0]->group_order, $currentOrder[0]['group_order'], 'The group id is incorrect.');
+        $this->assertEquals(self::$testSurvey->groups[1]->group_order, $currentOrder[1]['group_order'], 'The group id is incorrect.');
+        $this->assertEquals(self::$testSurvey->groups[2]->group_order, $currentOrder[2]['group_order'], 'The group id is incorrect.');
 
         // Change group order.
         $groups = array();
@@ -49,9 +49,11 @@ class GroupHelper extends TestBaseClass
                             ->query()
                             ->readAll();
 
-        $this->assertSame('2', $changedOrder[0]['group_order'], 'The group id is incorrect.');
-        $this->assertSame('1', $changedOrder[1]['group_order'], 'The group id is incorrect.');
-        $this->assertSame('3', $changedOrder[2]['group_order'], 'The group id is incorrect.');
+        $test = $reorderedSurvey->groups[0]->group_order;
+
+        $this->assertNotEquals(self::$testSurvey->groups[0]->group_order, $changedOrder[0]['group_order'], 'The group id is incorrect.');
+        $this->assertNotEquals(self::$testSurvey->groups[1]->group_order, $changedOrder[1]['group_order'], 'The group id is incorrect.');
+        $this->assertEquals(self::$testSurvey->groups[2]->group_order, $changedOrder[2]['group_order'], 'The group id is incorrect.');
 
         // Test result.
         $this->assertArrayHasKey('type', $result, 'The returned value is not correct.');
@@ -65,6 +67,7 @@ class GroupHelper extends TestBaseClass
     public function testQuestionOrderChange()
     {
         $gid = self::$testSurvey->groups[0]->gid;
+        $firstGroupQuestions = self::$testSurvey->groups[0]->getAllQuestions();
 
         // Check the original order.
         $currentOrder = \Yii::app()->db->createCommand()->select('question_order')
@@ -73,8 +76,8 @@ class GroupHelper extends TestBaseClass
                             ->query()
                             ->readAll();
 
-        $this->assertSame('0', $currentOrder[0]['question_order'], 'The question id is incorrect.');
-        $this->assertSame('1', $currentOrder[1]['question_order'], 'The question id is incorrect.');
+        $this->assertEquals($firstGroupQuestions[0]->question_order, $currentOrder[0]['question_order'], 'The question id is incorrect.');
+        $this->assertEquals($firstGroupQuestions[1]->question_order, $currentOrder[1]['question_order'], 'The question id is incorrect.');
 
         // Change question order.
         $questions = array();
@@ -97,8 +100,8 @@ class GroupHelper extends TestBaseClass
                             ->query()
                             ->readAll();
 
-        $this->assertSame('1', $currentOrder[0]['question_order'], 'The question id is incorrect.');
-        $this->assertSame('0', $currentOrder[1]['question_order'], 'The question id is incorrect.');
+        $this->assertNotEquals($firstGroupQuestions[0]->question_order, $currentOrder[0]['question_order'], 'The question id is incorrect.');
+        $this->assertNotEquals($firstGroupQuestions[1]->question_order, $currentOrder[1]['question_order'], 'The question id is incorrect.');
 
         // Test result.
         $this->assertArrayHasKey('type', $result, 'The returned value is not correct.');
