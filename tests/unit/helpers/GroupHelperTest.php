@@ -28,8 +28,6 @@ class GroupHelper extends TestBaseClass
                             ->where('sid=' . self::$surveyId)
                             ->query()
                             ->readAll();
-                           
-        var_dump( $currentOrder );
 
         $this->assertEquals(self::$testSurvey->groups[0]->group_order, $currentOrder[0]['group_order'], 'The group id is incorrect.');
         $this->assertEquals(self::$testSurvey->groups[1]->group_order, $currentOrder[1]['group_order'], 'The group id is incorrect.');
@@ -71,7 +69,7 @@ class GroupHelper extends TestBaseClass
         $gid = self::$testSurvey->groups[0]->gid;
         $firstGroupQuestions = self::$testSurvey->groups[0]->getAllQuestions();
 
-        // Check the original order.
+        // Check the original order (Use sql to avoid cache).
         $currentOrder = \Yii::app()->db->createCommand()->select('question_order')
                             ->from('{{questions}}')
                             ->where('gid=' . $gid)
@@ -122,9 +120,11 @@ class GroupHelper extends TestBaseClass
         $currentOrder = \Yii::app()->db->createCommand()->select('title')
                             ->from('{{questions}}')
                             ->where('gid=' . $gid)
+                            ->order('question_order, title ASC')
                             ->query()
                             ->readAll();
 
+        // Checking initial order status Q05 Q06 and number of questions on the group.
         $this->assertCount(2, $currentOrder, 'The number of questions in the group is not correct.');
         $this->assertSame('Q05', $currentOrder[0]['title'], 'The question title is incorrect.');
         $this->assertSame('Q06', $currentOrder[1]['title'], 'The question title is incorrect.');
@@ -132,9 +132,11 @@ class GroupHelper extends TestBaseClass
         // Change question group.
         $orgdata = $this->getOrgData(self::$testSurvey->groups, self::$testSurvey->questions);
 
+        // Changing Q03 to another group.
         $qid = \Yii::app()->db->createCommand()->select('qid')
                             ->from('{{questions}}')
                             ->where('title = "Q03"')
+                            ->andWhere('sid=' . self::$surveyid)
                             ->query()
                             ->readAll()[0]['qid'];
 
@@ -143,10 +145,11 @@ class GroupHelper extends TestBaseClass
         $groupHelper = new \LimeSurvey\Models\Services\GroupHelper();
         $result = $groupHelper->reorderGroup(self::$surveyId, $orgdata);
 
-        // Check the original order.
+        // Check the current order.
         $currentOrder = \Yii::app()->db->createCommand()->select('title')
                             ->from('{{questions}}')
                             ->where('gid=' . $gid)
+                            ->order('question_order, title ASC')
                             ->query()
                             ->readAll();
 
