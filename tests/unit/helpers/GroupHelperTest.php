@@ -27,6 +27,8 @@ class GroupHelper extends TestBaseClass
                             ->from('{{groups}}')
                             ->query()
                             ->readAll();
+                           
+        var_dump( $currentOrder );
 
         $this->assertEquals(self::$testSurvey->groups[0]->group_order, $currentOrder[0]['group_order'], 'The group id is incorrect.');
         $this->assertEquals(self::$testSurvey->groups[1]->group_order, $currentOrder[1]['group_order'], 'The group id is incorrect.');
