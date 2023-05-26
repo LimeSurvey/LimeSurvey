@@ -8,10 +8,18 @@ use LimeSurvey\Api\Transformer\Formatter\FormatterDateTimeToJson;
 
 class TransformerOutputSurvey extends TransformerOutputActiveRecord
 {
-    public function __construct()
+    private $transformerOutputSurveyLanguageSettings = null;
+
+    /**
+     * Construct
+     */
+    public function __construct(
+        FormatterYnToBool $formatterYn,
+        FormatterDateTimeToJson $formatterDateTime,
+        TransformerOutputSurveyLanguageSettings $transformerOutputSurveyLanguageSettings
+    )
     {
-        $formatterYn = new FormatterYnToBool;
-        $formatterDateTime = new FormatterDateTimeToJson;
+        $this->transformerOutputSurveyLanguageSettings = $transformerOutputSurveyLanguageSettings;
 
         $this->setDataMap([
             'sid' => ['type' => 'int'],
@@ -73,12 +81,11 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
 
     public function transform($surveyModel)
     {
-        $transformer = new TransformerOutputSurveyLanguageSettings();
         $survey = parent::transform($surveyModel);
-        $survey['defaultLanguage'] = $transformer->transform(
+        $survey['defaultLanguage'] = $this->transformerOutputSurveyLanguageSettings->transform(
             $surveyModel->defaultlanguage
         );
-        $survey['languageSettings'] = $transformer->transformAll(
+        $survey['languageSettings'] = $this->transformerOutputSurveyLanguageSettings->transformAll(
             $surveyModel->languagesettings
         );
         return $survey;

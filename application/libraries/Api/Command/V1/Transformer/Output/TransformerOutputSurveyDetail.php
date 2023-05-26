@@ -9,26 +9,34 @@ use LimeSurvey\Api\Transformer\Output\TransformerOutputActiveRecord;
  */
 class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
 {
-    private $transformerSurvey = null;
-    private $transformerQuestionGroup = null;
-    private $transformerQuestionGroupL10ns = null;
-    private $transformerQuestion = null;
-    private $transformerQuestionL10ns = null;
-    private $transformerQuestionAttribute = null;
-    private $transformerAnswer = null;
+    private ?TransformerOutputSurvey $transformerSurvey = null;
+    private ?TransformerOutputQuestionGroup $transformerQuestionGroup = null;
+    private ?TransformerOutputQuestionGroupL10ns $transformerQuestionGroupL10ns = null;
+    private ?TransformerOutputQuestion $transformerQuestion = null;
+    private ?TransformerOutputQuestionL10ns $transformerQuestionL10ns = null;
+    private ?TransformerOutputQuestionAttribute $transformerQuestionAttribute = null;
+    private ?TransformerOutputAnswer $transformerAnswer = null;
 
     /**
-     * TransformerOutputSurveyDetail
+     * Construct
      */
-    public function __construct()
+    public function __construct(
+        TransformerOutputSurvey $transformerOutputSurvey,
+        TransformerOutputQuestionGroup $transformerOutputQuestionGroup,
+        TransformerOutputQuestionGroupL10ns $transformerOutputQuestionGroupL10ns,
+        TransformerOutputQuestion $transformerOutputQuestion,
+        TransformerOutputQuestionL10ns $transformerOutputQuestionL10ns,
+        TransformerOutputQuestionAttribute $transformerOutputQuestionAttribute,
+        TransformerOutputAnswer $transformerOutputAnswer
+    )
     {
-        $this->transformerSurvey = new TransformerOutputSurvey();
-        $this->transformerQuestionGroup = new TransformerOutputQuestionGroup();
-        $this->transformerQuestionGroupL10ns = new TransformerOutputQuestionGroupL10ns();
-        $this->transformerQuestion = new TransformerOutputQuestion();
-        $this->transformerQuestionL10ns = new TransformerOutputQuestionL10ns();
-        $this->transformerQuestionAttribute = new TransformerOutputQuestionAttribute();
-        $this->transformerAnswer = new TransformerOutputAnswer();
+        $this->transformerSurvey = $transformerOutputSurvey;
+        $this->transformerQuestionGroup = $transformerOutputQuestionGroup;
+        $this->transformerQuestionGroupL10ns = $transformerOutputQuestionGroupL10ns;
+        $this->transformerQuestion = $transformerOutputQuestion;
+        $this->transformerQuestionL10ns = $transformerOutputQuestionL10ns;
+        $this->transformerQuestionAttribute = $transformerOutputQuestionAttribute;
+        $this->transformerAnswer = $transformerOutputAnswer;
     }
 
     /**
