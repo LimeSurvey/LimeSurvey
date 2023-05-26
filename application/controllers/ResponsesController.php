@@ -411,10 +411,10 @@ class ResponsesController extends LSBaseController
 
         $this->aData = $aData;
         $this->render('browseindex_view', [
-          'num_completed_answers' => $aData['num_completed_answers'],
-          'num_total_answers'     => $aData['num_total_answers'],
-          'tokeninfo'             => $aData['tokeninfo'],
-          'with_token'            => $aData['with_token']
+            'num_completed_answers' => $aData['num_completed_answers'],
+            'num_total_answers'     => $aData['num_total_answers'],
+            'tokeninfo'             => $aData['tokeninfo'],
+            'with_token'            => $aData['with_token']
         ]);
     }
 
@@ -440,12 +440,12 @@ class ResponsesController extends LSBaseController
         if (Permission::model()->hasSurveyPermission($surveyId, 'responses', 'read')) {
             App()->getClientScript()->registerScriptFile(
                 App()->getConfig('adminscripts') .
-                'listresponse.js',
+                    'listresponse.js',
                 LSYii_ClientScript::POS_BEGIN
             );
             App()->getClientScript()->registerScriptFile(
                 App()->getConfig('adminscripts') .
-                'tokens.js',
+                    'tokens.js',
                 LSYii_ClientScript::POS_BEGIN
             );
 
@@ -703,7 +703,7 @@ class ResponsesController extends LSBaseController
                 if ($sRealUserPath === false) {
                     throw new CHttpException(404, "File not found.");
                 } elseif (strpos((string) $sRealUserPath, $sDir) !== 0) {
-                        throw new CHttpException(403, "File cannot be accessed.");
+                    throw new CHttpException(403, "File cannot be accessed.");
                 } else {
                     $mimeType = CFileHelper::getMimeType($sFileRealName, null, false);
                     if (is_null($mimeType)) {

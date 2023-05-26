@@ -2,40 +2,25 @@
 
 namespace LimeSurvey\Helpers\Update;
 
+/**
+ * Fix organizer link : icon and survey activated
+ * @package LimeSurvey\Helpers\Update
+ */
 class Update_606 extends DatabaseUpdateBase
 {
-  /**
-   * @inheritDoc
-   */
+    /**
+     * @inheritDoc
+     */
     public function up()
     {
-      // $this->db->createCommand()->update(
-      //     '{{surveymenu_entries}}',
-      //     array(
-      //         'menu_link' => 'quotas/index',
-      //     ),
-      //     "name='quotas'"
-      // );
         $this->db->createCommand()->update(
-            '{{surveymenu_entries}}',
+            "{{surveymenu_entries}}",
             [
-            "title" => "Overview question & groups",
-            "menu_title" => "Overview question & groups",
-            "menu_description" => "Overview question and groups",
+                'data' => '{"render": {"link": {"data": {"surveyid": ["survey", "sid"]}}}}',
+                'menu_icon' => 'reorder',
+                'menu_icon_type' => 'fontawesome'
             ],
-            'name=:name',
-            [':name' => 'listQuestions']
-        );
-
-        $this->db->createCommand()->delete(
-            '{{surveymenu_entries}}',
-            'name=:name',
-            [':name' => 'listQuestionGroups']
-        );
-        $this->db->createCommand()->delete(
-            '{{surveymenu_entries}}',
-            'name=:name',
-            [':name' => 'reorder']
+            "name='reorder'"
         );
     }
 }

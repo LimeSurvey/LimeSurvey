@@ -141,23 +141,6 @@ $(document).on('ready pjax:scriptcomplete', function () {
         updateIfEmpty($(this).find('.answer'), 'name', `answer_${language}_${uniqueRowId}_${scaleId}`);
         updateIfEmpty($(this).find('.assessment'), 'id', `assessment_${uniqueRowId}_${scaleId}`);
         updateIfEmpty($(this).find('.assessment'), 'name', `assessment_${uniqueRowId}_${scaleId}`);
-        // Newly inserted row editor button
-        $(this).find('.editorLink').each(function() {
-          var inputName = $(this).closest('.input-group').find('input[type=text]').first().attr('name');
-          if (inputName) {
-            $(this).attr(
-              'href',
-              `javascript:start_popup_editor(
-                '${inputName}','[Answer:](${language})','${sID}','${gID}','${qID}','editanswer','editanswer'
-              )`
-            );
-            $(this).attr('id', `${inputName}_ctrl`);
-            $(this).find('.btneditanswerena').attr('id', `${inputName}_popupctrlena`);
-            $(this).find('.btneditanswerena').attr('name', `${inputName}_popupctrlena`);
-            $(this).find('.btneditanswerdis').attr('id', `${inputName}_popupctrldis`);
-            $(this).find('.btneditanswerdis').attr('name', `${inputName}_popupctrldis`);
-          }
-        });
       });
     });
   }
@@ -226,6 +209,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
       position: position,
       type: 'subquestion',
       languages: JSON.stringify($dataInput.data('languages').join(';')),
+      subqid: '-QUIDPLACEHOLDER-'
     };
     // We get the HTML of the new row to insert
     return $.ajax({
@@ -893,7 +877,6 @@ $(document).on('ready pjax:scriptcomplete', function () {
               $tr = $row.eq(4);
             } else if (source === 'answeroptions') {
               $tr = $row.eq(2);
-
               // Make sure codes are limited to 5 characters
               label.code = label.code.substr(0, 5);
             } else {
@@ -902,7 +885,6 @@ $(document).on('ready pjax:scriptcomplete', function () {
             if ($tr.length === 0) {
               throw 'Found no $tr in transferLabels';
             }
-
             // Only define random ids the FIRST language we loop for.
             // Different translations still use the same question code in the input name.
             if (langIds[i] === undefined) {
@@ -918,31 +900,34 @@ $(document).on('ready pjax:scriptcomplete', function () {
               generatedIds.push(randId);
               langIds[i] = randId;
             }
-
-            $tr.attr('data-common-id', $tr.attr('data-common-id').replace(/new[0-9]{3,6}/, langIds[i]));
-            $tr.attr('id', $tr.attr('id').replace(/new[0-9]{3,6}/, langIds[i]));
-
-            $row.find('input').each((j /*: number */, inputField) => {
-              $(inputField).attr('name', $(inputField).attr('name').replace(/new[0-9]{3,6}/, langIds[i]));
-              $(inputField).attr('id', $(inputField).attr('id').replace(/new[0-9]{3,6}/, langIds[i]));
+            $tr.attr('data-common-id', $tr.attr('data-common-id').replace(/-QUIDPLACEHOLDER-/, langIds[i]));
+            $tr.attr('id', $tr.attr('id').replace(/-QUIDPLACEHOLDER-/, langIds[i]));
+            $tr.find('[name]').each((j /*: number */, nameElement) => {
+              $(nameElement).attr('name', $(nameElement).attr('name').replace(/-QUIDPLACEHOLDER-/, langIds[i]));
+            });
+            $tr.find('[id]').each((j /*: number */, idElement) => {
+              $(idElement).attr('id', $(idElement).attr('id').replace(/-QUIDPLACEHOLDER-/, langIds[i]));
+            });
+            $tr.find('[href]').each((j /*: number */, hrefElement) => {
+              $(hrefElement).attr('href', $(hrefElement).attr('href').replace(/-QUIDPLACEHOLDER-/g, langIds[i]));
             });
 
-            if ($row.find('td.code-title').find('input[type=text]').length > 0) {
-              $row.find('td.code-title').find('input[type=text]').val(label.code);
+            if ($tr.find('td.code-title').find('input[type=text]').length > 0) {
+              $tr.find('td.code-title').find('input[type=text]').val(label.code);
             } else if ($row.find('td.code-title').length > 0) {
-              $row.find('td.code-title').text(label.code);
+              $tr.find('td.code-title').text(label.code);
             } else {
               throw 'Found nowhere to put label.code';
             }
 
-            if ($row.find('td.relevance-equation').find('input[type=text]').length > 0) {
-              $row.find('td.relevance-equation').find('input[type=text]').val(1);
+            if ($tr.find('td.relevance-equation').find('input[type=text]').length > 0) {
+              $tr.find('td.relevance-equation').find('input[type=text]').val(1);
             } else {
               // ??
             }
 
-            $row.find('td.subquestion-text, td.answeroption-text').find('input[type=text]').val(label.title);
-            $table.find('tbody').append($row);
+            $tr.find('td.subquestion-text, td.answeroption-text').find('input[type=text]').val(label.title);
+            $table.find('tbody').append($tr);
 
             if (source === 'subquestions') {
               $table.find('.btnaddsubquestion').off('click.subquestions').on('click.subquestions', addSubquestionInput);
@@ -1128,8 +1113,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
           answers[item.lang].forEach((row /*: {quid: string, text: string, code: string} */) => {
             try {
               const { html } = item;
-              const htmlQuid = html.replace(/{{quid_placeholder}}/g, row.quid);
-
+              const htmlQuid = html.replace(/-QUIDPLACEHOLDER-/g, row.quid);
               // Create HTMLElement from HTML string.
               const wrapper = document.createElement('tbody');
               wrapper.innerHTML = htmlQuid;
@@ -1159,7 +1143,6 @@ $(document).on('ready pjax:scriptcomplete', function () {
               } else {
                 // Do nothing.
               }
-
               $(item.langtable).find('tbody').append(tableRow);
             } catch (e) {
               alert('Internal error in quickAddLabels:' + e);
