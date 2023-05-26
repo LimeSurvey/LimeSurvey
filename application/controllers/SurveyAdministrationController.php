@@ -2078,7 +2078,7 @@ class SurveyAdministrationController extends LSBaseController
         }
 
         if ($thereIsPostData) {
-            // Save the new ordering
+            // Save the new ordering.
             $orgdata = $this->getOrgdata();
 
             $groupHelper = new LimeSurvey\Models\Services\GroupHelper();
