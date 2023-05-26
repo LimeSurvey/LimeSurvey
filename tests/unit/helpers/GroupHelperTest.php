@@ -136,7 +136,7 @@ class GroupHelper extends TestBaseClass
         $qid = \Yii::app()->db->createCommand()->select('qid')
                             ->from('{{questions}}')
                             ->where('title = "Q03"')
-                            ->andWhere('sid=' . self::$surveyid)
+                            ->andWhere('sid=' . self::$surveyId)
                             ->query()
                             ->readAll()[0]['qid'];
 
