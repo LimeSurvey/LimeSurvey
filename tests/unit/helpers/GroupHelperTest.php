@@ -25,6 +25,7 @@ class GroupHelper extends TestBaseClass
         // Check the original order.
         $currentOrder = \Yii::app()->db->createCommand()->select('group_order')
                             ->from('{{groups}}')
+                            ->where('sid=' . self::$surveyId)
                             ->query()
                             ->readAll();
                            
@@ -48,10 +49,9 @@ class GroupHelper extends TestBaseClass
         // Check the new order.
         $changedOrder = \Yii::app()->db->createCommand()->select('group_order')
                             ->from('{{groups}}')
+                            ->where('sid=' . self::$surveyId)
                             ->query()
                             ->readAll();
-
-        $test = $reorderedSurvey->groups[0]->group_order;
 
         $this->assertNotEquals(self::$testSurvey->groups[0]->group_order, $changedOrder[0]['group_order'], 'The group id is incorrect.');
         $this->assertNotEquals(self::$testSurvey->groups[1]->group_order, $changedOrder[1]['group_order'], 'The group id is incorrect.');
