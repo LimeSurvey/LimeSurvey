@@ -1,16 +1,12 @@
 <?php
-
 /**
- * Response Summary view
- * @var $this AdminController
- * @var $num_completed_answers string
- * @var $num_total_answers string
- * @var $tokeninfo mixed
- * @var $with_token CDbTableSchema|null
+ * @var AdminController $this
+ * @var Survey $oSurvey
+ * @var array $queries
  */
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
-echo viewHelper::getViewTestTag('surveyResponsesIndex');
+echo viewHelper::getViewTestTag('surveyParticipantsIndex');
 
 ?>
 <div class='side-body survey-response-page <?php echo getSideBodyClass(true); ?>'>

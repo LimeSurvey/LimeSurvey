@@ -8,7 +8,7 @@
  */
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
-echo viewHelper::getViewTestTag('surveyResponsesIndex');
+echo viewHelper::getViewTestTag('surveyResponsesBrowse');
 
 ?>
 <div class='side-body survey-response-page <?php echo getSideBodyClass(true); ?>'>

@@ -381,43 +381,6 @@ class ResponsesController extends LSBaseController
         ]);
     }
 
-    // TODO: below function can be deleted, but leave it now as testing fails.
-    /**
-     * Shows the responses summary
-     *
-     * @param int $surveyId
-     */
-    public function actionIndex(int $surveyId): void
-    {
-        // logging for webserver when parameter is somehting like $surveyid=125<script ...
-        if (!is_numeric(Yii::app()->request->getParam('surveyId'))) {
-            throw new CHttpException(403, gT("Invalid survey ID"));
-        }
-        $survey = Survey::model()->findByPk($surveyId);
-        $aData = $this->getData($surveyId);
-
-        $aData['num_total_answers'] = SurveyDynamic::model($surveyId)->count();
-        $aData['num_completed_answers'] = SurveyDynamic::model($surveyId)->count('submitdate IS NOT NULL');
-        if ($survey->hasTokensTable && Permission::model()->hasSurveyPermission($surveyId, 'tokens', 'read')) {
-            $aData['with_token'] = App()->db->schema->getTable($survey->tokensTableName);
-            $aData['tokeninfo'] = Token::model($surveyId)->summary();
-        }
-
-        $topbarData = TopbarConfiguration::getResponsesTopbarData($survey->sid);
-        $aData['topbar']['middleButtons'] = $this->renderPartial(
-            'partial/topbarBtns/leftSideButtons',
-            $topbarData,
-            true
-        );
-
-        $this->aData = $aData;
-        $this->render('browseindex_view', [
-            'num_completed_answers' => $aData['num_completed_answers'],
-            'num_total_answers'     => $aData['num_total_answers'],
-            'tokeninfo'             => $aData['tokeninfo'],
-            'with_token'            => $aData['with_token']
-        ]);
-    }
 
     /**
      * Show responses for survey
