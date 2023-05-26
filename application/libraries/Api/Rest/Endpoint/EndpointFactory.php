@@ -6,9 +6,17 @@ use Exception;
 use LSHttpRequest;
 use Yii;
 use LimeSurvey\Api\Rest\Endpoint;
+use DI\FactoryInterface;
 
 class EndpointFactory
 {
+    protected ?FactoryInterface $diFactory = null;
+
+    public function __construct(FactoryInterface $diFactory)
+    {
+        $this->diFactory = $diFactory;
+    }
+
     /**
      * Create
      *
@@ -18,10 +26,10 @@ class EndpointFactory
     public function create(LSHttpRequest $request)
     {
         $endpointConfig = $this->getEndpointConfig($request);
-        return new Endpoint(
-            $endpointConfig,
-            $this->getCommandParams($endpointConfig, $request)
-        );
+        return $this->diFactory->make(Endpoint::class, [
+            'config' => $endpointConfig,
+            'commandParams' => $this->getCommandParams($endpointConfig, $request)
+        ]);
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace LimeSurvey\Api\Rest;
 
 use LimeSurvey\Api\Command\Request\Request;
+use Psr\Container\ContainerInterface;
 
 /**
  * RestEndpoint
@@ -12,18 +13,21 @@ class Endpoint
 {
     protected $config = [];
     protected $commandParams = [];
+    protected ?ContainerInterface $diContainer = null;
 
     /**
      * Constructor
      *
      * @param array $config
      * @param array $commandParams
+     * @param ContainerInterface $diContainer
      * @return string|null
      */
-    public function __construct($config, $commandParams)
+    public function __construct($config, $commandParams, ContainerInterface $diContainer)
     {
         $this->config = $config;
         $this->commandParams = $commandParams;
+        $this->diContainer = $diContainer;
     }
 
     /**
@@ -33,16 +37,17 @@ class Endpoint
      */
     protected function getCommand()
     {
-        return new $this->config['commandClass']();
+        return $this->diContainer->get($this->config['commandClass']);
     }
 
     protected function getResponseRenderer()
     {
+
         $apiVersion = ucfirst($this->config['apiVersion']);
         $class = 'LimeSurvey\Api\Rest\\'
             . $apiVersion
             . '\RestRenderer' . $apiVersion;
-        return new $class;
+        return $this->diContainer->get($class);
     }
 
     /**

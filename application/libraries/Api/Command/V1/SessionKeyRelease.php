@@ -13,6 +13,18 @@ class SessionKeyRelease implements CommandInterface
 {
     use CommandResponseTrait;
 
+    protected ?AuthSession $authSession = null;
+
+    /**
+     * Constructor
+     *
+     * @param AuthSession $authSession
+     */
+    public function __construct(AuthSession $authSession)
+    {
+        $this->authSession = $authSession;
+    }
+
     /**
      * Run session key release command.
      *
@@ -22,7 +34,7 @@ class SessionKeyRelease implements CommandInterface
      */
     public function run(Request $request)
     {
-        (new AuthSession())->doLogout(
+        $this->authSession->doLogout(
             $request
             ->getData('sessionKey')
         );

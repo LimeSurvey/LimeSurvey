@@ -13,12 +13,26 @@ use LimeSurvey\Api\Command\Mixin\{
     Auth\AuthPermissionTrait
 };
 use LimeSurvey\ObjectPatch\ObjectPatchException;
+use DI\FactoryInterface;
+
 
 class SurveyPatch implements CommandInterface
 {
     use AuthSessionTrait;
     use AuthPermissionTrait;
     use CommandResponseTrait;
+
+    protected ?FactoryInterface $diFactory = null;
+
+    /**
+     * Constructor
+     *
+     * @param FactoryInterface $diFactory
+     */
+    public function __construct(FactoryInterface $diFactory)
+    {
+        $this->diFactory = $diFactory;
+    }
 
     /**
      * Run survey patch command
@@ -41,7 +55,10 @@ class SurveyPatch implements CommandInterface
             return $response;
         }
 
-        $patcher = new PatcherSurvey($id);
+        $patcher = $this->diFactory->make(
+            PatcherSurvey::class,
+            ['id' => $id]
+        );
         try {
             $patcher->applyPatch($patch);
         } catch (ObjectPatchException $e) {

@@ -20,6 +20,18 @@ class SurveyList implements CommandInterface
     use AuthPermissionTrait;
     use CommandResponseTrait;
 
+    protected ?TransformerOutputSurvey $transformerOutputSurvey = null;
+
+    /**
+     * Constructor
+     *
+     * @param TransformerOutputSurvey $transformerOutputSurvey
+     */
+    public function __construct(TransformerOutputSurvey $transformerOutputSurvey)
+    {
+        $this->transformerOutputSurvey = $transformerOutputSurvey;
+    }
+
     /**
      * Run survey list command
      *
@@ -46,7 +58,7 @@ class SurveyList implements CommandInterface
             'currentPage' => $page + 1 // one based rather than zero based
         ]);
 
-        $data = (new TransformerOutputSurvey)
+        $data = $this->transformerOutputSurvey
             ->transformAll($dataProvider->getData());
 
         return $this->responseSuccess(['surveys' => $data]);

@@ -21,6 +21,18 @@ class SurveyDetail implements CommandInterface
     use AuthPermissionTrait;
     use CommandResponseTrait;
 
+    protected ?TransformerOutputSurveyDetail $transformerOutputSurveyDetail = null;
+
+    /**
+     * Constructor
+     *
+     * @param TransformerOutputSurvey $transformerOutputSurvey
+     */
+    public function __construct(TransformerOutputSurveyDetail $transformerOutputSurveyDetail)
+    {
+        $this->transformerOutputSurveyDetail = $transformerOutputSurveyDetail;
+    }
+
     /**
      * Run survey detail command
      *
@@ -62,7 +74,7 @@ class SurveyDetail implements CommandInterface
             );
         }
 
-        $survey = (new TransformerOutputSurveyDetail)
+        $survey = $this->transformerOutputSurveyDetail
             ->transform($surveyModel);
 
         return $this->responseSuccess(['survey' => $survey]);

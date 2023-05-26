@@ -15,6 +15,7 @@
 
 
 use LimeSurvey\Api\Rest\Endpoint\EndpointFactory;
+use LimeSurvey\DI;
 
 // phpcs:ignore
 class RestController extends LSYii_Controller
@@ -33,8 +34,11 @@ class RestController extends LSYii_Controller
      */
     public function run($actionId = null)
     {
+        $endpointFactory = DI::getContainer()
+            ->get(EndpointFactory::class);
+
         Yii::app()->loadConfig('rest');
-        (new EndpointFactory())->create(
+        ($endpointFactory)->create(
             Yii::app()->request
         )->run();
     }

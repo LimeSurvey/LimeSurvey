@@ -15,6 +15,18 @@ class SessionKeyCreate implements CommandInterface
 {
     use CommandResponseTrait;
 
+    protected ?AuthSession $authSession = null;
+
+    /**
+     * Constructor
+     *
+     * @param AuthSession $authSession
+     */
+    public function __construct(AuthSession $authSession)
+    {
+        $this->authSession = $authSession;
+    }
+
     /**
      * Run session key create command.
      *
@@ -24,8 +36,6 @@ class SessionKeyCreate implements CommandInterface
      */
     public function run(Request $request)
     {
-        $apiSession = new AuthSession();
-
         $username = (string) $request->getData('username');
         $password = (string) $request->getData('password');
         $plugin = (string) $request->getData(
@@ -35,7 +45,7 @@ class SessionKeyCreate implements CommandInterface
 
         try {
             return $this->responseSuccess(
-                $apiSession->doLogin(
+                $this->authSession->doLogin(
                     $username,
                     $password,
                     $plugin
