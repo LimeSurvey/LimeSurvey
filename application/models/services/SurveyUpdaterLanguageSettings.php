@@ -4,7 +4,6 @@ namespace LimeSurvey\Models\Services;
 
 use Survey;
 use Permission;
-use SurveyURLParameter;
 use SurveyLanguageSetting;
 use LimeSurvey\Models\Services\Exception\{
     ExceptionPersistError,
@@ -23,7 +22,6 @@ class SurveyUpdaterLanguageSettings
 {
     private ?Permission $modelPermission = null;
     private ?Survey $modelSurvey = null;
-    private ?SurveyURLParameter $modelSurveyUrlParameter = null;
     private ?SurveyLanguageSetting $modelSurveyLanguageSetting = null;
 
     private $inputFields = [
@@ -45,7 +43,6 @@ class SurveyUpdaterLanguageSettings
     {
         $this->modelPermission = Permission::model();
         $this->modelSurvey = Survey::model();
-        $this->modelSurveyUrlParameter = SurveyURLParameter::model();
         $this->modelSurveyLanguageSetting = SurveyLanguageSetting::model();
     }
 
@@ -216,19 +213,6 @@ class SurveyUpdaterLanguageSettings
     public function setModelSurvey(Survey $model)
     {
         $this->modelSurvey = $model;
-    }
-
-    /**
-     * Set model SurveyURLParameter
-     *
-     * Dependency injection of SurveyURLParameter::model().
-     *
-     * @param SurveyURLParameter $model
-     * @return void
-     */
-    public function setModelSurveyUrlParameter(SurveyURLParameter $model)
-    {
-        $this->modelSurveyUrlParameter = $model;
     }
 
     /**
