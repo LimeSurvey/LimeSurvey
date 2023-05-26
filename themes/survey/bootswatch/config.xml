@@ -338,12 +338,12 @@
               <question_1 type="core">
                 <code type="data" >'Q1 '</code>
                 <text type="data" twig="on"><![CDATA[ {{ gT("How many roads must a man walk down?") }} ]]></text>
-                <valid_message type="data" twig="on"><![CDATA[ <div id="vmsg_4496_num_answers" class="em_num_answers emtip error"><span class="fa fa-exclamation-circle" aria-hidden="true"></span> {{ gT("Choose one of the following answers") }} </div> ]]></valid_message>
+                <valid_message type="data" twig="on"><![CDATA[ <div id="vmsg_4496_num_answers" class="em_num_answers emtip error"><span class="fa fa-exclamation-circle ri-error-warning-fill" aria-hidden="true"></span> {{ gT("Choose one of the following answers") }} </div> ]]></valid_message>
               </question_1>
               <question_2 type="core">
                 <code type="data" >'Q2 '</code>
                 <text type="data" twig="on"><![CDATA[ {{ gT("Please explain something in detail:") }} ]]></text>
-                <valid_message type="data" twig="on"><![CDATA[<div id="vmsg_4496_num_answers" class="em_num_answers emtip error"><span class="fa fa-exclamation-circle" aria-hidden="true"></span> {{ gT("Hint when response is not valid") }} </div> ]]></valid_message>
+                <valid_message type="data" twig="on"><![CDATA[<div id="vmsg_4496_num_answers" class="em_num_answers emtip error"><span class="fa fa-exclamation-circle ri-error-warning-fill" aria-hidden="true"></span> {{ gT("Hint when response is not valid") }} </div> ]]></valid_message>
               </question_2>
               <assessments  type="core">
                 <name type="data" twig="on"><![CDATA[ {{ gT("Welcome to the Assessment") }} ]]></name>

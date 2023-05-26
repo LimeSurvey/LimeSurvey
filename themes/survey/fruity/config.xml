@@ -88,18 +88,18 @@
         <!--  When adding new items, please keep them ordered alphabetically -->
         <checkicon type="icon" category="Colors" width="4" title="Check icon">f00c
             <dropdownoptions>
-                <option value="f061"> <i class="fa fa-arrow-right"></i> Arrow right </option>
-                <option value="f069"> <i class="fa fa-asterisk"></i> Asterisk </option>
-                <option value="f00c"> <i class="fa fa-check"></i> Check </option>
-                <option value="f058"> <i class="fa fa-check-circle"></i> Check circle </option>
-                <option value="f14a"> <i class="fa fa-check-square"></i> Check square </option>
-                <option value="f138"> <i class="fa fa-chevron-circle-right"></i> Chevron circle right </option>
-                <option value="f111"> <i class="fa fa-circle"></i> Circle </option>
-                <option value="f067"> <i class="fa fa-plus"></i> Plus </option>
-                <option value="f1d0"> <i class="fa fa-resistance"></i> Resistance </option>
-                <option value="f0c8"> <i class="fa fa-square"></i> Square </option>
-                <option value="f005"> <i class="fa fa-star"></i> Star </option>
-                <option value="f00d"> <i class="fa fa-times"></i> Times </option>
+                <option value="f061"> <i class="fa fa-arrow-right ri-arrow-right-s-fill"></i> Arrow right </option>
+                <option value="f069"> <i class="fa fa-asterisk ri-star-fill"></i> Asterisk </option>
+                <option value="f00c"> <i class="fa fa-check ri-check-fill"></i> Check </option>
+                <option value="f058"> <i class="fa fa-check-circle ri-checkbox-circle-fill"></i> Check circle </option>
+                <option value="f14a"> <i class="fa fa-check-square ri-chat-check-fillri-checkbox-line"></i> Check square </option>
+                <option value="f138"> <i class="fa fa-chevron-circle-right ri-arrow-right-s-line"></i> Chevron circle right </option>
+                <option value="f111"> <i class="fa fa-circle ri-checkbox-blank-circle-fill"></i> Circle </option>
+                <option value="f067"> <i class="fa fa-plus ri-add-line"></i> Plus </option>
+                <option value="f1d0"> <i class="fa fa-resistance ri-stop-circle-line"></i> Resistance </option>
+                <option value="f0c8"> <i class="fa fa-square ri-checkbox-blank-line"></i> Square </option>
+                <option value="f005"> <i class="fa fa-star ri-star-fill"></i> Star </option>
+                <option value="f00d"> <i class="fa fa-times ri-close-fill"></i> Times </option>
             </dropdownoptions>
         </checkicon>
         <!-- images -->
