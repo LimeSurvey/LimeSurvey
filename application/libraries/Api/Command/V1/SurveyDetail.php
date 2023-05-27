@@ -7,19 +7,35 @@ use LimeSurvey\Api\Command\V1\Transformer\Output\TransformerOutputSurveyDetail;
 use LimeSurvey\Api\Command\{
     CommandInterface,
     Request\Request,
-    ResponseData\ResponseDataError
+    ResponseData\ResponseDataError,
+    Response\ResponseFactory
 };
-use LimeSurvey\Api\Command\Mixin\{
-    CommandResponseTrait,
-    Auth\AuthSessionTrait,
-    Auth\AuthPermissionTrait
-};
+use LimeSurvey\Api\Auth\AuthSession;
+use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
 
 class SurveyDetail implements CommandInterface
 {
-    use AuthSessionTrait;
     use AuthPermissionTrait;
-    use CommandResponseTrait;
+
+    protected ?AuthSession $authSession = null;
+    protected ?TransformerOutputSurveyDetail $transformerOutputSurveyDetail = null;
+    protected ?ResponseFactory $responseFactory = null;
+
+    /**
+     * Constructor
+     *
+     * @param TransformerOutputSurvey $transformerOutputSurvey
+     */
+    public function __construct(
+        AuthSession $authSession,
+        TransformerOutputSurveyDetail $transformerOutputSurveyDetail,
+        ResponseFactory $responseFactory
+    )
+    {
+        $this->authSession = $authSession;
+        $this->transformerOutputSurveyDetail = $transformerOutputSurveyDetail;
+        $this->responseFactory = $responseFactory;
+    }
 
     /**
      * Run survey detail command
@@ -34,7 +50,10 @@ class SurveyDetail implements CommandInterface
         $surveyId = (string) $request->getData('_id');
 
         if (
-            ($response = $this->checkKey($sessionKey)) !== true
+            (
+                $response = $this->authSession
+                    ->checkKey($sessionKey)
+            ) !== true
         ) {
             return $response;
         }
@@ -57,14 +76,18 @@ class SurveyDetail implements CommandInterface
             )->findByPk($surveyId);
 
         if (!$surveyModel) {
-            return $this->responseErrorNotFound(
-                (new ResponseDataError('SURVEY_NOT_FOUND', 'Survey not found'))->toArray()
+            return $this->responseFactory->makeErrorNotFound(
+                (new ResponseDataError(
+                    'SURVEY_NOT_FOUND',
+                    'Survey not found')
+                )->toArray()
             );
         }
 
-        $survey = (new TransformerOutputSurveyDetail)
+        $survey = $this->transformerOutputSurveyDetail
             ->transform($surveyModel);
 
-        return $this->responseSuccess(['survey' => $survey]);
+        return $this->responseFactory
+            ->makeSuccess(['survey' => $survey]);
     }
 }

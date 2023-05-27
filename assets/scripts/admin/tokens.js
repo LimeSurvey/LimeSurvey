@@ -138,6 +138,7 @@ function submitEditToken(){
                 $modal.hide();
                 $('body').removeClass('modal-open');
                 $('.modal-backdrop').remove();
+                window.LS.ajaxAlerts(result.success, 'success');
             } else {
                 var errorMsg = result.error.message ? result.error.message : result.error;
                 if (!errorMsg) errorMsg = "Unexpected error";

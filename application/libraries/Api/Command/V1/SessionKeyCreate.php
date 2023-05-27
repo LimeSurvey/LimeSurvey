@@ -7,13 +7,28 @@ use LimeSurvey\Api\Command\V1\Exception\ExceptionInvalidUser;
 use LimeSurvey\Api\Command\{
     CommandInterface,
     Request\Request,
-    Mixin\CommandResponseTrait,
-    ResponseData\ResponseDataError
+    ResponseData\ResponseDataError,
+    Response\ResponseFactory
 };
 
 class SessionKeyCreate implements CommandInterface
 {
-    use CommandResponseTrait;
+    protected ?AuthSession $authSession = null;
+    protected ?ResponseFactory $responseFactory = null;
+
+    /**
+     * Constructor
+     *
+     * @param AuthSession $authSession
+     */
+    public function __construct(
+        AuthSession $authSession,
+        ResponseFactory $responseFactory
+    )
+    {
+        $this->authSession = $authSession;
+        $this->responseFactory = $responseFactory;
+    }
 
     /**
      * Run session key create command.
@@ -24,8 +39,6 @@ class SessionKeyCreate implements CommandInterface
      */
     public function run(Request $request)
     {
-        $apiSession = new AuthSession();
-
         $username = (string) $request->getData('username');
         $password = (string) $request->getData('password');
         $plugin = (string) $request->getData(
@@ -34,15 +47,15 @@ class SessionKeyCreate implements CommandInterface
         );
 
         try {
-            return $this->responseSuccess(
-                $apiSession->doLogin(
+            return $this->responseFactory->makeSuccess(
+                $this->authSession->doLogin(
                     $username,
                     $password,
                     $plugin
                 )
             );
         } catch (ExceptionInvalidUser $e) {
-            return $this->responseErrorUnauthorised(
+            return $this->responseFactory->makeErrorUnauthorised(
                 (new ResponseDataError(
                     'INVALID_USER',
                     'Invalid user name or password'

@@ -7,7 +7,7 @@ use GoldSpecDigital\ObjectOrientedOAS\Objects\AllOf;
 
 class SchemaFactorySurveyList
 {
-    public function create(): Schema
+    public function make(): Schema
     {
         return Schema::create()
             ->title('Survey List')
@@ -16,7 +16,7 @@ class SchemaFactorySurveyList
             ->properties(
                 Schema::array('surveys')->items(
             AllOf::create()->schemas(
-                        (new SchemaFactorySurvey)->create()
+                        (new SchemaFactorySurvey)->make()
                     )
                 )
             );

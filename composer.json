@@ -53,7 +53,8 @@
 		"pear/ole": "1.*@dev",
 		"pear/spreadsheet_excel_writer": "^0.9.7",
 		"vintagesucks/twig-renderer": "^3.0",
-		"goldspecdigital/oooas": "^2.10"
+		"goldspecdigital/oooas": "^2.10",
+		"php-di/php-di": "6.4.0"
 	},
     "config": {
         "vendor-dir": "vendor",

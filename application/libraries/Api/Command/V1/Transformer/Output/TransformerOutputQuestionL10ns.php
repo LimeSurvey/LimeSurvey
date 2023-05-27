@@ -12,6 +12,7 @@ class TransformerOutputQuestionL10ns extends TransformerOutputActiveRecord
             'id' => ['type' => 'int'],
             'qid' => ['type' => 'int'],
             'question' => true,
+            'help' => true,
             'script' => true,
             'language' => true
         ]);

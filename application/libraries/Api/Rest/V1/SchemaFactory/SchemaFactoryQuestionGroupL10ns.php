@@ -6,7 +6,7 @@ use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
 
 class SchemaFactoryQuestionGroupL10ns
 {
-    public function create(): Schema
+    public function make(): Schema
     {
         return Schema::create('$language')->properties(
             Schema::integer('id')->default(null),

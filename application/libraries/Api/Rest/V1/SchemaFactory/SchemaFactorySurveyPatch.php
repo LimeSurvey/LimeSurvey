@@ -10,7 +10,7 @@ use GoldSpecDigital\ObjectOrientedOAS\Objects\{
 
 class SchemaFactorySurveyPatch
 {
-    public function create(): Schema
+    public function make(): Schema
     {
         $props = [
             Schema::array('patch')->items(

@@ -7,7 +7,7 @@ use GoldSpecDigital\ObjectOrientedOAS\Objects\AllOf;
 
 class SchemaFactoryQuestionGroup
 {
-    public function create(): Schema
+    public function make(): Schema
     {
         return Schema::create()
             ->title('Question Group')
@@ -21,7 +21,7 @@ class SchemaFactoryQuestionGroup
                 Schema::string('gRelevance')->default(null),
                 Schema::create('l10ns')
                     ->additionalProperties(
-                        (new SchemaFactoryQuestionGroupL10ns())->create()
+                        (new SchemaFactoryQuestionGroupL10ns())->make()
                     )
             );
     }

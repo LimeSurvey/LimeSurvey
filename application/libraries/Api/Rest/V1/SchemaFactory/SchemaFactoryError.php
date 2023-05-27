@@ -6,7 +6,7 @@ use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
 
 class SchemaFactoryError
 {
-    public function create() : Schema
+    public function make() : Schema
     {
         return Schema::create()
             ->title('Error')

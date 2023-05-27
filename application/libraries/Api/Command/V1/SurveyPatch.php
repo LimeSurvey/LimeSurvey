@@ -2,23 +2,40 @@
 
 namespace LimeSurvey\Api\Command\V1;
 
+use LimeSurvey\Api\Auth\AuthSession;
 use LimeSurvey\Api\Command\V1\SurveyPatch\PatcherSurvey;
 use LimeSurvey\Api\Command\{
     CommandInterface,
-    Request\Request
+    Request\Request,
+    Response\ResponseFactory
 };
-use LimeSurvey\Api\Command\Mixin\{
-    CommandResponseTrait,
-    Auth\AuthSessionTrait,
-    Auth\AuthPermissionTrait
-};
+use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
 use LimeSurvey\ObjectPatch\ObjectPatchException;
+use DI\FactoryInterface;
 
 class SurveyPatch implements CommandInterface
 {
-    use AuthSessionTrait;
     use AuthPermissionTrait;
-    use CommandResponseTrait;
+
+    protected ?AuthSession $authSession = null;
+    protected ?FactoryInterface $diFactory = null;
+    protected ?ResponseFactory $responseFactory = null;
+
+    /**
+     * Constructor
+     *
+     * @param FactoryInterface $diFactory
+     */
+    public function __construct(
+        AuthSession $authSession,
+        FactoryInterface $diFactory,
+        ResponseFactory $responseFactory
+    )
+    {
+        $this->authSession = $authSession;
+        $this->diFactory = $diFactory;
+        $this->responseFactory = $responseFactory;
+    }
 
     /**
      * Run survey patch command
@@ -36,21 +53,28 @@ class SurveyPatch implements CommandInterface
         $patch = $request->getData('patch');
 
         if (
-            ($response = $this->checkKey($sessionKey)) !== true
+            (
+                $response = $this->authSession
+                    ->checkKey($sessionKey)
+            ) !== true
         ) {
             return $response;
         }
 
-        $patcher = new PatcherSurvey($id);
+        $patcher = $this->diFactory->make(
+            PatcherSurvey::class,
+            ['id' => $id]
+        );
         try {
             $patcher->applyPatch($patch);
         } catch (ObjectPatchException $e) {
-            return $this->responseErrorBadRequest(
+            return $this->responseFactory->makeErrorBadRequest(
                 $e->getMessage()
             );
         }
 
-        return $this->responseSuccess(true);
+        return $this->responseFactory
+            ->makeSuccess(true);
     }
 
 }

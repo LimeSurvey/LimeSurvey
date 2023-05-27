@@ -6,19 +6,35 @@ use Survey;
 use LimeSurvey\Api\Command\V1\Transformer\Output\TransformerOutputSurvey;
 use LimeSurvey\Api\Command\{
     CommandInterface,
-    Request\Request
+    Request\Request,
+    Response\ResponseFactory
 };
-use LimeSurvey\Api\Command\Mixin\{
-    CommandResponseTrait,
-    Auth\AuthSessionTrait,
-    Auth\AuthPermissionTrait
-};
+use LimeSurvey\Api\Auth\AuthSession;
+use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
 
 class SurveyList implements CommandInterface
 {
-    use AuthSessionTrait;
     use AuthPermissionTrait;
-    use CommandResponseTrait;
+
+    protected ?AuthSession $authSession = null;
+    protected ?TransformerOutputSurvey $transformerOutputSurvey = null;
+    protected ?ResponseFactory $responseFactory = null;
+
+    /**
+     * Constructor
+     *
+     * @param TransformerOutputSurvey $transformerOutputSurvey
+     */
+    public function __construct(
+        AuthSession $authSession,
+        TransformerOutputSurvey $transformerOutputSurvey,
+        ResponseFactory $responseFactory
+    )
+    {
+        $this->authSession = $authSession;
+        $this->transformerOutputSurvey = $transformerOutputSurvey;
+        $this->responseFactory = $responseFactory;
+    }
 
     /**
      * Run survey list command
@@ -34,7 +50,10 @@ class SurveyList implements CommandInterface
         $page = (string) $request->getData('page', 1);
 
         if (
-            ($response = $this->checkKey($sessionKey)) !== true
+            (
+                $response = $this->authSession
+                    ->checkKey($sessionKey)
+            ) !== true
         ) {
             return $response;
         }
@@ -46,9 +65,10 @@ class SurveyList implements CommandInterface
             'currentPage' => $page + 1 // one based rather than zero based
         ]);
 
-        $data = (new TransformerOutputSurvey)
+        $data = $this->transformerOutputSurvey
             ->transformAll($dataProvider->getData());
 
-        return $this->responseSuccess(['surveys' => $data]);
+        return $this->responseFactory
+            ->makeSuccess(['surveys' => $data]);
     }
 }

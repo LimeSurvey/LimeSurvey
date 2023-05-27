@@ -13,7 +13,7 @@ use LimeSurvey\Api\Rest\V1\SchemaFactory\{
 // Session
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-$errorSchema = (new SchemaFactoryError)->create();
+$errorSchema = (new SchemaFactoryError)->make();
 
 $rest = [];
 
@@ -31,7 +31,7 @@ $rest['v1/session'] = [
                 'code' => 200,
                 'description' => 'Success - returns string access token for use in header '
                     . '"Authorization: Bearer $token"',
-                'schema' => (new SchemaFactoryAuthToken)->create()
+                'schema' => (new SchemaFactoryAuthToken)->make()
             ],
             'unauthorized' => [
                 'code' => 403,
