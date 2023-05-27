@@ -59,9 +59,6 @@ class SurveyUpdater
         $surveyUpdaterLanguageSettings->setModelSurvey(
             $this->modelSurvey
         );
-        $surveyUpdaterLanguageSettings->setModelSurveyUrlParameter(
-            $this->modelSurveyUrlParameter
-        );
         $surveyUpdaterLanguageSettings->setModelSurveyLanguageSetting(
             $this->modelSurveyLanguageSetting
         );
