@@ -18,8 +18,8 @@ use GoldSpecDigital\ObjectOrientedOAS\Objects\Example;
 // REST V2 Survey Config
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-$errorSchema = (new SchemaFactoryError)->create();
-$surveyPatchSchema = (new SchemaFactorySurveyPatch)->create();
+$errorSchema = (new SchemaFactoryError)->make();
+$surveyPatchSchema = (new SchemaFactorySurveyPatch)->make();
 
 $rest = [];
 
@@ -37,7 +37,7 @@ $rest['v1/survey'] = [
                 'code' => 200,
                 'description' => 'Success',
                 'content' => null,
-                'schema' => (new SchemaFactorySurveyList)->create()
+                'schema' => (new SchemaFactorySurveyList)->make()
             ],
             'unauthorized' => [
                 'code' => 401,
@@ -59,7 +59,7 @@ $rest['v1/survey-detail/$id'] = [
                 'code' => 200,
                 'description' => 'Success',
                 'content' => null,
-                'schema' => (new SchemaFactorySurveyDetail)->create()
+                'schema' => (new SchemaFactorySurveyDetail)->make()
             ],
             'unauthorized' => [
                 'code' => 401,

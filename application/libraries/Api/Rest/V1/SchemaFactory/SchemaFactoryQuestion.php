@@ -6,7 +6,7 @@ use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
 
 class SchemaFactoryQuestion
 {
-    public function create() : Schema
+    public function make() : Schema
     {
         return Schema::create()
             ->title('Question')
@@ -34,7 +34,7 @@ class SchemaFactoryQuestion
                 Schema::boolean('mandatory')->default(null),
                 Schema::create('l10ns')
                     ->additionalProperties(
-                        (new SchemaFactoryQuestionL10ns())->create()
+                        (new SchemaFactoryQuestionL10ns())->make()
                     )
             );
     }

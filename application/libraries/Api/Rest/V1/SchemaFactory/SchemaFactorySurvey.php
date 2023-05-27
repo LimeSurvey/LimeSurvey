@@ -6,9 +6,9 @@ use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
 
 class SchemaFactorySurvey
 {
-    public function create(): Schema
+    public function make(): Schema
     {
-        $schemaSurveyLanguageSettings = (new SchemaFactorySurveyLanguageSettings)->create();
+        $schemaSurveyLanguageSettings = (new SchemaFactorySurveyLanguageSettings)->make();
         $schemaSurveyDefaultLanguage = Schema::object('defaultlanguage')
             ->properties(...$schemaSurveyLanguageSettings->properties);
 
