@@ -4,6 +4,7 @@ namespace LimeSurvey\Api\Command\Response;
 
 use LimeSurvey\Api\Command\Response\{
     Response,
+    Status,
     Status\StatusSuccess,
     Status\StatusError,
     Status\StatusErrorNotFound,
@@ -15,7 +16,7 @@ class ResponseFactory
 {
     public function makeSuccess($data = null): Response
     {
-        return new Response(
+        return $this->make(
             $data,
             new StatusSuccess()
         );
@@ -23,7 +24,7 @@ class ResponseFactory
 
     public function makeError($data = null): Response
     {
-        return new Response(
+        return $this->make(
             $data,
             new StatusError()
         );
@@ -31,7 +32,7 @@ class ResponseFactory
 
     public function makeErrorNotFound($data = null): Response
     {
-        return new Response(
+        return $this->make(
             $data,
             new StatusErrorNotFound()
         );
@@ -39,7 +40,7 @@ class ResponseFactory
 
     public function makeErrorBadRequest($data = null): Response
     {
-        return new Response(
+        return $this->make(
             $data,
             new StatusErrorBadRequest()
         );
@@ -47,7 +48,7 @@ class ResponseFactory
 
     public function makeErrorUnauthorised($data = null): Response
     {
-        return new Response(
+        return $this->make(
             $data,
             new StatusErrorUnauthorised()
         );
@@ -55,9 +56,17 @@ class ResponseFactory
 
     public function makeException(\Exception $e, $message = null): Response
     {
-        return new Response(
+        return $this->make(
             array('status' => $message ?? $e->getMessage()),
             new StatusError()
+        );
+    }
+
+    public function make($data, Status $status): Response
+    {
+        return new Response(
+            $data,
+            $status
         );
     }
 }
