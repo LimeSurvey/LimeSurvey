@@ -10,15 +10,11 @@ use LimeSurvey\Api\Command\{
     Response\ResponseFactory
 };
 use LimeSurvey\Api\Auth\AuthSession;
-use LimeSurvey\Api\Command\Mixin\{
-    CommandResponseTrait,
-    Auth\AuthPermissionTrait
-};
+use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
 
 class SurveyList implements CommandInterface
 {
     use AuthPermissionTrait;
-    use CommandResponseTrait;
 
     protected ?AuthSession $authSession = null;
     protected ?TransformerOutputSurvey $transformerOutputSurvey = null;

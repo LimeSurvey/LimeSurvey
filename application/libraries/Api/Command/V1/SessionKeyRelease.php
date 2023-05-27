@@ -5,15 +5,12 @@ namespace LimeSurvey\Api\Command\V1;
 use LimeSurvey\Api\Auth\AuthSession;
 use LimeSurvey\Api\Command\{
     CommandInterface,
-    Mixin\CommandResponseTrait,
     Request\Request,
     Response\ResponseFactory
 };
 
 class SessionKeyRelease implements CommandInterface
 {
-    use CommandResponseTrait;
-
     protected ?AuthSession $authSession = null;
     protected ?ResponseFactory $responseFactory = null;
 

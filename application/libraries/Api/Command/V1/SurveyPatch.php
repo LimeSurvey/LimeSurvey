@@ -9,18 +9,13 @@ use LimeSurvey\Api\Command\{
     Request\Request,
     Response\ResponseFactory
 };
-use LimeSurvey\Api\Command\Mixin\{
-    CommandResponseTrait,
-    Auth\AuthPermissionTrait
-};
+use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
 use LimeSurvey\ObjectPatch\ObjectPatchException;
 use DI\FactoryInterface;
-
 
 class SurveyPatch implements CommandInterface
 {
     use AuthPermissionTrait;
-    use CommandResponseTrait;
 
     protected ?AuthSession $authSession = null;
     protected ?FactoryInterface $diFactory = null;
