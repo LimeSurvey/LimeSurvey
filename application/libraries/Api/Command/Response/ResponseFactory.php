@@ -53,7 +53,7 @@ class ResponseFactory
         );
     }
 
-    public function makeexception(\Exception $e, $message = null): Response
+    public function makeException(\Exception $e, $message = null): Response
     {
         return new Response(
             array('status' => $message ?? $e->getMessage()),
