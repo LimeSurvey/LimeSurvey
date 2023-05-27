@@ -1,6 +1,6 @@
 <?php
 
-namespace LimeSurvey\Api\Command\Mixin;
+namespace LimeSurvey\Api\Command\Response;
 
 use LimeSurvey\Api\Command\Response\{
     Response,
@@ -11,9 +11,9 @@ use LimeSurvey\Api\Command\Response\{
     Status\StatusErrorUnauthorised
 };
 
-trait CommandResponseTrait
+class ResponseFactory
 {
-    protected function responseSuccess($data = null): Response
+    public function makeSuccess($data = null): Response
     {
         return new Response(
             $data,
@@ -21,7 +21,7 @@ trait CommandResponseTrait
         );
     }
 
-    protected function responseError($data = null): Response
+    public function makeError($data = null): Response
     {
         return new Response(
             $data,
@@ -29,7 +29,7 @@ trait CommandResponseTrait
         );
     }
 
-    protected function responseErrorNotFound($data = null): Response
+    public function makeErrorNotFound($data = null): Response
     {
         return new Response(
             $data,
@@ -37,7 +37,7 @@ trait CommandResponseTrait
         );
     }
 
-    protected function responseErrorBadRequest($data = null): Response
+    public function makeErrorBadRequest($data = null): Response
     {
         return new Response(
             $data,
@@ -45,7 +45,7 @@ trait CommandResponseTrait
         );
     }
 
-    protected function responseErrorUnauthorised($data = null): Response
+    public function makeErrorUnauthorised($data = null): Response
     {
         return new Response(
             $data,
@@ -53,7 +53,7 @@ trait CommandResponseTrait
         );
     }
 
-    protected function responseException(\Exception $e, $message = null): Response
+    public function makeException(\Exception $e, $message = null): Response
     {
         return new Response(
             array('status' => $message ?? $e->getMessage()),

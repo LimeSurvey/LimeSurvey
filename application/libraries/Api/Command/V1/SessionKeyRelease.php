@@ -6,7 +6,8 @@ use LimeSurvey\Api\Auth\AuthSession;
 use LimeSurvey\Api\Command\{
     CommandInterface,
     Mixin\CommandResponseTrait,
-    Request\Request
+    Request\Request,
+    Response\ResponseFactory
 };
 
 class SessionKeyRelease implements CommandInterface
@@ -14,15 +15,20 @@ class SessionKeyRelease implements CommandInterface
     use CommandResponseTrait;
 
     protected ?AuthSession $authSession = null;
+    protected ?ResponseFactory $responseFactory = null;
 
     /**
      * Constructor
      *
      * @param AuthSession $authSession
      */
-    public function __construct(AuthSession $authSession)
+    public function __construct(
+        AuthSession $authSession,
+        ResponseFactory $responseFactory
+    )
     {
         $this->authSession = $authSession;
+        $this->responseFactory = $responseFactory;
     }
 
     /**
@@ -38,6 +44,7 @@ class SessionKeyRelease implements CommandInterface
             $request
             ->getData('sessionKey')
         );
-        return $this->responseSuccess('OK');
+        return $this->responseFactory
+            ->makeSuccess('OK');
     }
 }

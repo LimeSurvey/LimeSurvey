@@ -8,7 +8,8 @@ use LimeSurvey\Api\Command\{
     CommandInterface,
     Request\Request,
     Mixin\CommandResponseTrait,
-    ResponseData\ResponseDataError
+    ResponseData\ResponseDataError,
+    Response\ResponseFactory
 };
 
 class SessionKeyCreate implements CommandInterface
@@ -16,15 +17,20 @@ class SessionKeyCreate implements CommandInterface
     use CommandResponseTrait;
 
     protected ?AuthSession $authSession = null;
+    protected ?ResponseFactory $responseFactory = null;
 
     /**
      * Constructor
      *
      * @param AuthSession $authSession
      */
-    public function __construct(AuthSession $authSession)
+    public function __construct(
+        AuthSession $authSession,
+        ResponseFactory $responseFactory
+    )
     {
         $this->authSession = $authSession;
+        $this->responseFactory = $responseFactory;
     }
 
     /**
@@ -44,7 +50,7 @@ class SessionKeyCreate implements CommandInterface
         );
 
         try {
-            return $this->responseSuccess(
+            return $this->responseFactory->makeSuccess(
                 $this->authSession->doLogin(
                     $username,
                     $password,
@@ -52,7 +58,7 @@ class SessionKeyCreate implements CommandInterface
                 )
             );
         } catch (ExceptionInvalidUser $e) {
-            return $this->responseErrorUnauthorised(
+            return $this->responseFactory->makeErrorUnauthorised(
                 (new ResponseDataError(
                     'INVALID_USER',
                     'Invalid user name or password'
