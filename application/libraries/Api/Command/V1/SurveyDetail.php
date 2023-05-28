@@ -17,6 +17,7 @@ class SurveyDetail implements CommandInterface
 {
     use AuthPermissionTrait;
 
+    protected ?Survey $survey = null;
     protected ?AuthSession $authSession = null;
     protected ?TransformerOutputSurveyDetail $transformerOutputSurveyDetail = null;
     protected ?ResponseFactory $responseFactory = null;
@@ -27,11 +28,13 @@ class SurveyDetail implements CommandInterface
      * @param TransformerOutputSurvey $transformerOutputSurvey
      */
     public function __construct(
+        Survey $survey,
         AuthSession $authSession,
         TransformerOutputSurveyDetail $transformerOutputSurveyDetail,
         ResponseFactory $responseFactory
     )
     {
+        $this->survey = $survey;
         $this->authSession = $authSession;
         $this->transformerOutputSurveyDetail = $transformerOutputSurveyDetail;
         $this->responseFactory = $responseFactory;
@@ -58,7 +61,7 @@ class SurveyDetail implements CommandInterface
             return $response;
         }
 
-        $surveyModel = Survey::model()
+        $surveyModel = $this->survey
             ->with(
                 'languagesettings',
                 'defaultlanguage',
