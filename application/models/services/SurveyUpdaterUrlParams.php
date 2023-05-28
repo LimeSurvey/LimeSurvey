@@ -76,7 +76,15 @@ class SurveyUpdaterUrlParams
             foreach ($param as $k => $v) {
                 $urlParam->$k = $v;
             }
-            $urlParam->save();
+            if (!$urlParam->save()) {
+                throw new ExceptionPersistError(
+                    sprintf(
+                    'Failed saving language settings for survey #%s, url param "%s"',
+                    $surveyId,
+                    $param['parameter']
+                    )
+                );
+            }
         }
     }
 }

@@ -15,6 +15,12 @@
 
 use LimeSurvey\Helpers\questionHelper;
 
+use LimeSurvey\Models\Services\Exception\{
+    ExceptionPersistError,
+    ExceptionNotFound,
+    ExceptionPermissionDenied
+};
+
 /**
 * Database
 *
@@ -544,6 +550,7 @@ class Database extends SurveyCommonAction
 //
 //        //This is SUPER important! Recalculating the ExpressionScript Engine state!
 //        LimeExpressionManager::SetDirtyFlag();
+
 //        LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyID);
 //        $this->resetEM();
 //
@@ -567,6 +574,174 @@ class Database extends SurveyCommonAction
      * @param integer $iSurveyID
      * @return void (redirect)
      */
+    private function actionUpdateSurveyLocaleSettings($surveyId)
+    {
+        $diContainer = \LimeSurvey\DI::getContainer();
+        $surveyUpdater = $diContainer->get(
+            LimeSurvey\Models\Services\SurveyUpdater::class
+        );
+
+        $surveyModel = $diContainer->get(Survey::class);
+
+        //@todo  here is something wrong ...
+        $oSurvey = $surveyModel->findByPk($surveyId);
+        $languageList = $oSurvey->additionalLanguages;
+        $languageList[] = $oSurvey->language;
+
+        $request = Yii::app()->request;
+
+        $fields = [
+            'startdate',
+            'expires',
+            'assessments',
+            'anonymized',
+            'savetimings',
+            'datestamp',
+            'ipaddr',
+            'ipanonymize',
+            'refurl',
+            'publicgraphs',
+            'usecookie',
+            'allowregister',
+            'allowsave',
+            'navigationdelay',
+            'printanswers',
+            'publicstatistics',
+            'autoredirect',
+            'showxquestions',
+            'showgroupinfo',
+            'showqnumcode',
+            'shownoanswer',
+            'showwelcome',
+            'showsurveypolicynotice',
+            'allowprev',
+            'questionindex',
+            'nokeyboard',
+            'showprogress',
+            'listpublic',
+            'htmlemail',
+            'sendconfirmation',
+            'tokenanswerspersistence',
+            'alloweditaftercompletion',
+            'usecaptcha',
+            'emailresponseto',
+            'emailnotificationto',
+            'googleanalyticsapikeysetting',
+            'googleanalyticsstyle',
+            'tokenlength',
+            'allurlparams'
+        ];
+
+        $input = [];
+        foreach ($fields as $field) {
+            $input[$field] = $request->getPost(
+                $field,
+                null
+            );
+        }
+
+        foreach ($languageList as $langCode) {
+            $input[$langCode] = [
+                'surveyls_url' => $request->getPost(
+                    'url_' . $langCode,
+                    null
+                ),
+                'surveyls_urldescription' => $request->getPost(
+                    'urldescrip_' . $langCode,
+                    null
+                ),
+                'surveyls_title' => $request->getPost(
+                    'short_title_' . $langCode,
+                    null
+                ),
+                'surveyls_alias' => $request->getPost(
+                    'alias_' . $langCode,
+                    null
+                ),
+                'surveyls_description' => $request->getPost(
+                    'description_' . $langCode,
+                    null
+                ),
+                'surveyls_welcometext' => $request->getPost(
+                    'welcome_' . $langCode,
+                    null
+                ),
+                'surveyls_endtext' => $request->getPost(
+                    'endtext_' . $langCode,
+                    null
+                ),
+                'surveyls_policy_notice' => $request->getPost(
+                    'datasec_' . $langCode,
+                    null
+                ),
+                'surveyls_policy_error' => $request->getPost(
+                    'datasecerror_' . $langCode,
+                    null
+                ),
+                'surveyls_policy_notice_label' => $request->getPost(
+                    'dataseclabel_' . $langCode,
+                    null
+                ),
+                'surveyls_dateformat' => $request->getPost(
+                    'dateformat_' . $langCode,
+                    null
+                ),
+                'surveyls_numberformat' => $request->getPost(
+                    'numberformat_' . $langCode,
+                    null
+                )
+            ];
+        }
+
+
+        $meta = [];
+        try {
+            $meta = $surveyUpdater->update($surveyId, $input);
+        } catch (ExceptionPersistError $e) {
+            Yii::app()->setFlashMessage(
+                $e->getMessage(),
+                "error"
+            );
+        }
+
+        LimeExpressionManager::SetDirtyFlag();
+        $this->resetEM();
+
+        if (Yii::app()->request->getPost('responsejson', 0) == 1) {
+            return Yii::app()->getController()->renderPartial(
+                '/admin/super/_renderJson',
+                array(
+                    'data' => [
+                        'success' => true,
+                        'updated' => is_array($meta) && !empty($meta['updatedFields']) ? $meta['updatedFields'] : null
+                    ],
+                ),
+                false,
+                false
+            );
+        } else {
+            ////////////////////////////////////////
+            if (Yii::app()->request->getPost('close-after-save') === 'true') {
+                $this->getController()
+                    ->redirect(
+                        array('surveyAdministration/view/surveyid/' . $surveyId)
+                    );
+            }
+
+            $referrer = Yii::app()->request->urlReferrer;
+            if ($referrer) {
+                $this->getController()
+                    ->redirect(array($referrer));
+            } else {
+                $this->getController()
+                    ->redirect(array(
+                        '/surveyAdministration/rendersidemenulink/subaction/generalsettings/surveyid/' . $surveyId
+                    ));
+            }
+        }
+    }
+
+    /*
     private function actionUpdateSurveyLocaleSettings($iSurveyID)
     {
 
@@ -681,8 +856,8 @@ class Database extends SurveyCommonAction
                 App()->getPluginManager()->dispatchEvent($settingsEvent, $plugin);
             }
 
-            /* Start to fix some param before save (TODO : use models directly ?) */
-            /* Date management */
+            // Start to fix some param before save (TODO : use models directly ?)
+            // Date management
             Yii::app()->loadHelper('surveytranslator');
             $formatdata = getDateFormatData(Yii::app()->session['dateformat']);
             Yii::app()->loadLibrary('Date_Time_Converter');
@@ -861,6 +1036,7 @@ class Database extends SurveyCommonAction
             }
         }
     }
+    */
 
     /**
      * Action for the page "General settings".

@@ -129,7 +129,10 @@ class SurveyUpdaterGeneralSettings
             );
             if (!$survey->save()) {
                 throw new ExceptionPersistError(
-                    'Failed saving general settings'
+                    sprintf(
+                        'Failed saving general settings for survey #%s',
+                        $survey->sid
+                        )
                 );
             }
         }

@@ -40,7 +40,7 @@ class SurveyUpdater
      * @throws ExceptionPersistError
      * @throws ExceptionNotFound
      * @throws ExceptionPermissionDenied
-     * @return boolean
+     * @return array
      */
     public function update($surveyId, array $input)
     {
@@ -49,7 +49,7 @@ class SurveyUpdater
             $input
         );
 
-        $this->surveyUpdaterGeneralSettings->update(
+        $meta = $this->surveyUpdaterGeneralSettings->update(
             $surveyId,
             $input
         );
@@ -61,6 +61,6 @@ class SurveyUpdater
             );
         }
 
-        return true;
+        return $meta;
     }
 }
