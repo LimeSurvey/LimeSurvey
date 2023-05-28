@@ -39,11 +39,15 @@ class SurveyUpdaterLanguageSettings
         'surveyls_numberformat'
     ];
 
-    public function __construct()
+    public function __construct(
+        Permission $modelPermission,
+        Survey $modelSurvey,
+        SurveyLanguageSetting $modelSurveyLanguageSetting
+    )
     {
-        $this->modelPermission = Permission::model();
-        $this->modelSurvey = Survey::model();
-        $this->modelSurveyLanguageSetting = SurveyLanguageSetting::model();
+        $this->modelPermission = $modelPermission;
+        $this->modelSurvey = $modelSurvey;
+        $this->modelSurveyLanguageSetting = $modelSurveyLanguageSetting;
     }
 
     /**
@@ -187,44 +191,5 @@ class SurveyUpdaterLanguageSettings
     private function getValue($data, $field, $default = null)
     {
         return isset($data[$field]) ? $data[$field] : $default;
-    }
-
-    /**
-     * Set model Permission
-     *
-     * Dependency injection of Permission::model().
-     *
-     * @param Permission $model
-     * @return void
-     */
-    public function setModelPermission(Permission $model)
-    {
-        $this->modelPermission = $model;
-    }
-
-    /**
-     * Set model Survey
-     *
-     * Dependency injection of Survey::model().
-     *
-     * @param Survey $model
-     * @return void
-     */
-    public function setModelSurvey(Survey $model)
-    {
-        $this->modelSurvey = $model;
-    }
-
-    /**
-     * Set model SurveyLanguageSetting
-     *
-     * Dependency injection of SurveyLanguageSetting::model().
-     *
-     * @param SurveyLanguageSetting $model
-     * @return void
-     */
-    public function setModelSurveyLanguageSetting(SurveyLanguageSetting $model)
-    {
-        $this->modelSurveyLanguageSetting = $model;
     }
 }

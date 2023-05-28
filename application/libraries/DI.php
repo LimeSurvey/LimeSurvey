@@ -30,6 +30,14 @@ class DI
             return $class::model();
         });
 
+        $container->set('LSYii_Application', function () {
+            return App();
+        });
+
+        $container->set('PluginManager', function () {
+            return App()->getPluginManager();
+        });
+
         return $container;
     }
 }

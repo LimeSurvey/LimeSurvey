@@ -4,7 +4,6 @@ namespace LimeSurvey\Models\Services;
 
 use Survey;
 use Permission;
-use SurveyURLParameter;
 use LSYii_Application;
 use PluginEvent;
 use Date_Time_Converter;
@@ -33,12 +32,17 @@ class SurveyUpdaterGeneralSettings
     const FIELD_TYPE_DATETIME = 'dateime';
     const FIELD_TYPE_GAKEY = 'gakey';
 
-    public function __construct()
+    public function __construct(
+        Permission $modelPermission,
+        Survey $modelSurvey,
+        LSYii_Application $yiiApp,
+        PluginManager $yiiPluginManager
+    )
     {
-        $this->modelPermission = Permission::model();
-        $this->modelSurvey = Survey::model();
-        $this->yiiApp = App();
-        $this->yiiPluginManager = App()->getPluginManager();
+        $this->modelPermission = $modelPermission;
+        $this->modelSurvey = $modelSurvey;
+        $this->yiiApp = $yiiApp;
+        $this->yiiPluginManager = $yiiPluginManager;
     }
 
     /**
@@ -367,57 +371,5 @@ class SurveyUpdaterGeneralSettings
             $formatData['phpdate'] . ' H:i'
         );
         return $dateTimeObj->convert('Y-m-d H:i:s');
-    }
-
-    /**
-     * Set model Permission
-     *
-     * Dependency injection of Permission::model().
-     *
-     * @param Permission $model
-     * @return void
-     */
-    public function setModelPermission(Permission $model)
-    {
-        $this->modelPermission = $model;
-    }
-
-    /**
-     * Set model Survey
-     *
-     * Dependency injection of Survey::model().
-     *
-     * @param Survey $model
-     * @return void
-     */
-    public function setModelSurvey(Survey $model)
-    {
-        $this->modelSurvey = $model;
-    }
-
-    /**
-     * Set Yii App
-     *
-     * Dependency injection of LSYii_Application.
-     *
-     * @param SurveyURLParameter $model
-     * @return void
-     */
-    public function setYiiApp(LSYii_Application $app)
-    {
-        $this->yiiApp = $app;
-    }
-
-    /**
-     * Set Yii PluginManager
-     *
-     * Dependency injection of PluginManager.
-     *
-     * @param PluginManager $model
-     * @return void
-     */
-    public function setYiiPluginManager(PluginManager $pluginManager)
-    {
-        $this->yiiPluginManager = $pluginManager;
     }
 }

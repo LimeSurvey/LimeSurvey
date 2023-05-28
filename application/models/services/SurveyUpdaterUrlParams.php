@@ -18,9 +18,9 @@ class SurveyUpdaterUrlParams
 {
     private ?SurveyURLParameter $modelSurveyUrlParameter = null;
 
-    public function __construct()
+    public function __construct(SurveyURLParameter $modelSurveyUrlParameter)
     {
-        $this->modelSurveyUrlParameter = SurveyURLParameter::model();
+        $this->modelSurveyUrlParameter = $modelSurveyUrlParameter;
     }
 
     /**
@@ -78,18 +78,5 @@ class SurveyUpdaterUrlParams
             }
             $urlParam->save();
         }
-    }
-
-    /**
-     * Set model SurveyURLParameter
-     *
-     * Dependency injection of Permission::model().
-     *
-     * @param SurveyURLParameter $model
-     * @return void
-     */
-    public function setModelSurveyUrlParameter(SurveyURLParameter $model)
-    {
-        $this->modelSurveyUrlParameter = $model;
     }
 }
