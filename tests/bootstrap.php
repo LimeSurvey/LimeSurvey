@@ -242,8 +242,7 @@ $configBackupFile = __DIR__ . '/application/config/test-backup.config.php';
 $forceDebug = true;
 $isDebug = $forceDebug || getenv('RUNNER_DEBUG', false);
 fwrite(STDERR, 'Error Reporting and Debug: ' . ($isDebug ? 'Yes' : 'No') . "\n");
-if ($isDebug) {
-    fwrite(STDERR, "Enabling Error Reporting and Debug\n");
+if ($isDebug) {    
     define('YII_DEBUG', true);
     error_reporting(E_ALL);
     ini_set('display_errors', '1');

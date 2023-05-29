@@ -6,14 +6,10 @@ class GroupHelperTest extends TestBaseClass
 {
     public static function setUpBeforeClass(): void
     {
-        error_reporting(E_ALL);
-        ini_set('display_errors', '1');
-        ini_set('display_startup_errors', '1');    
-
         parent::setUpBeforeClass();
 
         fwrite(STDERR, "Importing GroupHelper\n");
-        \Yii::import('application.models.services.GroupHelper', true);
+        // \Yii::import('application.models.services.GroupHelper', true);
 
         fwrite(STDERR, "DummyController\n");
         \Yii::app()->setController(new DummyController('dummyid'));
