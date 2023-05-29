@@ -244,6 +244,7 @@ if ($forceDebug) {
     // Set env variable as to have test cases to enable error reporting.
     // Seems setting it globally here is not enough
     putenv('RUNNER_DEBUG=1');
+    fwrite(STDERR, 'Set $forceDebug=false in tests/bootstrap.php to reduce the logging.' . "\n"); 
 }
 $isDebug = getenv('RUNNER_DEBUG', false);
 fwrite(STDERR, 'Error Reporting and Debug: ' . ($isDebug ? 'Yes' : 'No') . "\n");
@@ -251,7 +252,9 @@ if ($isDebug) {
     define('YII_DEBUG', true);
     error_reporting(E_ALL);
     ini_set('display_errors', '1');
-    ini_set('display_startup_errors', '1');    
+    ini_set('display_startup_errors', '1');        
+} else {
+   fwrite(STDERR, 'Set $forceDebug=true in tests/bootstrap.php to enable more logging.' . "\n"); 
 }
 
 if (file_exists($configFile)) {
