@@ -239,7 +239,7 @@ $configFile = __DIR__ . '/application/config/config.php';
 $configBackupFile = __DIR__ . '/application/config/test-backup.config.php';
 
 // Enable if phpunit fails.
-$forceDebug = true;
+$forceDebug = false;
 if ($forceDebug) {
     // Set env variable as to have test cases to enable error reporting.
     // Seems setting it globally here is not enough
@@ -256,6 +256,7 @@ if ($isDebug) {
 } else {
    fwrite(STDERR, 'Set $forceDebug=true in tests/bootstrap.php to enable more logging.' . "\n"); 
 }
+fwrite(STDERR, "\n");
 
 if (file_exists($configFile)) {
     copy($configFile, $configBackupFile);

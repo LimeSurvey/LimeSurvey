@@ -39,7 +39,7 @@ class TestBaseClass extends TestCase
 
         // Enable Debug and Error Reporting if logging is enabled
         $isDebug = getenv('RUNNER_DEBUG', false);
-        fwrite(STDERR, 'Error Reporting and Debug: ' . ($isDebug ? 'Yes' : 'No'));
+        // fwrite(STDERR, 'Error Reporting and Debug: ' . ($isDebug ? 'Yes' : 'No'));
         if ($isDebug) {
             error_reporting(E_ALL);
             ini_set('display_errors', '1');
