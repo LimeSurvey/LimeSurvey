@@ -239,7 +239,9 @@ $configFile = __DIR__ . '/application/config/config.php';
 $configBackupFile = __DIR__ . '/application/config/test-backup.config.php';
 
 // Enable if phpunit fails.
-if (getenv('RUNNER_DEBUG', false)) {
+echo 'Setting Error Reporting and Debug: ';
+var_dump(getenv('RUNNER_DEBUG', false));
+if (1 || getenv('RUNNER_DEBUG', false)) {
     echo 'Setting Error Reporting and Debug';
     define('YII_DEBUG', true);
     error_reporting(E_ALL);
