@@ -34,7 +34,7 @@ class GenerateSimpleStatisticsTest extends TestBaseClass
         $allQuestions = \Question::model()->getQuestionList(self::$surveyId);
         var_dump($allQuestions);
         echo 'createCompleteSGQA';
-        $summary = createCompleteSGQA(self::$surveyId, $allQuestions);
+        $summary = createCompleteSGQA(self::$surveyId, $allQuestions, null);
 
         echo 'statistics_helper->generate_simple_statistics';
         $helper = new \statistics_helper();
