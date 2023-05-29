@@ -239,10 +239,13 @@ $configFile = __DIR__ . '/application/config/config.php';
 $configBackupFile = __DIR__ . '/application/config/test-backup.config.php';
 
 // Enable if phpunit fails.
-var_dump('RUNNER_DEBUG:' . getenv('RUNNER_DEBUG', false));
-error_reporting(E_ALL);
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
+if (getenv('RUNNER_DEBUG', false)) {
+    echo 'Setting Error Reporting and Debug';
+    define('YII_DEBUG', true);
+    error_reporting(E_ALL);
+    ini_set('display_errors', '1');
+    ini_set('display_startup_errors', '1');    
+}
 
 if (file_exists($configFile)) {
     copy($configFile, $configBackupFile);
