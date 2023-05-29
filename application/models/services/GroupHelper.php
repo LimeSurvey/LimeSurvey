@@ -10,8 +10,8 @@ class GroupHelper
      * REFACTORED in SurveyAdministration
      *
      * @param int $iSurveyID Given Survey ID
+     * @param array $orgdata Data to change
      *
-     * @return void
      */
     public function reorderGroup($iSurveyID, $orgdata)
     {
