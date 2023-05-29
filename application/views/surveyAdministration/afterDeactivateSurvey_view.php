@@ -31,7 +31,7 @@
             </div>
             <div class="card-footer d-flex">
                     <a href="<?php echo Yii::app()->createUrl('surveyAdministration/view/surveyid/' . $surveyid); ?>"
-                       class="btn btn-outline-secondary btn-lg">
+                       class="btn btn-outline-secondary ">
                         <?php eT('Close'); ?>
                     </a>
             </div>
