@@ -2,7 +2,7 @@
 
 namespace ls\tests;
 
-class GroupHelper extends TestBaseClass
+class GroupHelperTest extends TestBaseClass
 {
     public static function setUpBeforeClass(): void
     {
