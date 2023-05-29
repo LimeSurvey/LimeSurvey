@@ -19,14 +19,14 @@ class GroupHelper
         $grouporder = 1;
 
         foreach ($orgdata as $ID => $parent) {
-            if ($parent == 'root' && $ID[0] == 'g') {
+            if ($parent == 'root' && substr_compare($ID, 'g', 0, 1) === 0) {
                 \QuestionGroup::model()->updateAll(
                     array('group_order' => $grouporder),
                     'gid=:gid',
                     array(':gid' => (int) substr($ID, 1))
                 );
                 $grouporder++;
-            } elseif ($ID[0] == 'q') {
+            } elseif (substr_compare($ID, 'q', 0, 1) === 0) {
                 $qid = (int) substr($ID, 1);
                 $gid = (int) substr((string) $parent, 1);
                 if (!isset($aQuestionOrder[$gid])) {
