@@ -241,9 +241,9 @@ $configBackupFile = __DIR__ . '/application/config/test-backup.config.php';
 // Enable if phpunit fails.
 $forceDebug = true;
 $isDebug = getenv('RUNNER_DEBUG', false);
-echo 'Error Reporting and Debug: ' . ($isDebug ? 'Yes' : 'No');
+fwrite(STDERR, 'Error Reporting and Debug: ' . ($isDebug ? 'Yes' : 'No') . "\n");
 if ($forceDebug || $isDebug) {
-    echo 'Enabling Error Reporting and Debug';
+    fwrite(STDERR, "Enabling Error Reporting and Debug\n");
     define('YII_DEBUG', true);
     error_reporting(E_ALL);
     ini_set('display_errors', '1');

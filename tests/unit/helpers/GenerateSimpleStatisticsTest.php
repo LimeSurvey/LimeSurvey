@@ -40,6 +40,7 @@ class GenerateSimpleStatisticsTest extends TestBaseClass
         $helper = new \statistics_helper();
         $statistics = $helper->generate_simple_statistics(self::$surveyId, $summary, $summary, 1, 'html', 'DD');
 
+        var_dump($statistics);
         echo 'Dom Parsing';
         $doc = new \DOMDocument();
         $doc->loadHtml($statistics);
