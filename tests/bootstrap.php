@@ -243,7 +243,7 @@ $forceDebug = true;
 if ($forceDebug) {
     // Set env variable as to have test cases to enable error reporting.
     // Seems setting it globally here is not enough
-    putenv('RUNNER_DEBUG', true);
+    putenv('RUNNER_DEBUG=1');
 }
 $isDebug = getenv('RUNNER_DEBUG', false);
 fwrite(STDERR, 'Error Reporting and Debug: ' . ($isDebug ? 'Yes' : 'No') . "\n");
