@@ -6,13 +6,20 @@ class GroupHelperTest extends TestBaseClass
 {
     public static function setUpBeforeClass(): void
     {
-        \Yii::import('application.models.services.GroupHelper', true);
+        error_reporting(E_ALL);
+        ini_set('display_errors', '1');
+        ini_set('display_startup_errors', '1');    
 
         parent::setUpBeforeClass();
 
+        fwrite(STDERR, "Importing GroupHelper\n");
+        \Yii::import('application.models.services.GroupHelper', true);
+
+        fwrite(STDERR, "DummyController\n");
         \Yii::app()->setController(new DummyController('dummyid'));
 
         // Import survey
+        fwrite(STDERR, "importSurvey\n");
         $filename = self::$surveysFolder . '/survey_groupHelper_test.lss';
         self::importSurvey($filename);
     }
@@ -41,7 +48,9 @@ class GroupHelperTest extends TestBaseClass
 
         $orgdata = $this->getOrgData($groups, self::$testSurvey->questions);
 
+        fwrite(STDERR, "groupHelper\n");
         $groupHelper = new \LimeSurvey\Models\Services\GroupHelper();
+        fwrite(STDERR, "groupHelper->reorderGroup\n");
         $result = $groupHelper->reorderGroup(self::$surveyId, $orgdata);
 
         // Check the new order.
