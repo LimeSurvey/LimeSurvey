@@ -9,7 +9,7 @@ class GroupHelperTest extends TestBaseClass
         parent::setUpBeforeClass();
 
         fwrite(STDERR, "Importing GroupHelper\n");
-        // \Yii::import('application.models.services.GroupHelper', true);
+        \Yii::import('application.models.services.GroupHelper', true);
 
         fwrite(STDERR, "DummyController\n");
         \Yii::app()->setController(new DummyController('dummyid'));
