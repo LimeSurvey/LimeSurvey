@@ -25,26 +25,39 @@ class GenerateSimpleStatisticsTest extends TestBaseClass
 
     public function testStatisticsForThreeQuestions()
     {
-        // Form SGQA identifiers.
-        $allQuestions = \Question::model()->getQuestionList(self::$surveyId);
-        $summary = createCompleteSGQA(self::$surveyId, $allQuestions, 'en');
+        error_reporting(E_ALL);
+        ini_set('display_errors', '1');
+        ini_set('display_startup_errors', '1');    
 
+        // Form SGQA identifiers.
+        echo 'Fetching Questions';
+        $allQuestions = \Question::model()->getQuestionList(self::$surveyId);
+        var_dump($allQuestions);
+        echo 'createCompleteSGQA';
+        $summary = createCompleteSGQA(self::$surveyId, $allQuestions);
+
+        echo 'statistics_helper->generate_simple_statistics';
         $helper = new \statistics_helper();
         $statistics = $helper->generate_simple_statistics(self::$surveyId, $summary, $summary, 1, 'html', 'DD');
 
+        echo 'Dom Parsing';
         $doc = new \DOMDocument();
         $doc->loadHtml($statistics);
 
+        echo "getElementsByTagName('script')";
         $scripts = $doc->getElementsByTagName('script');
 
+        echo "Node Values";
         $scriptQ1 = trim($scripts->item(0)->nodeValue);
         $scriptQ2 = trim($scripts->item(1)->nodeValue);
         $scriptQ3 = trim($scripts->item(2)->nodeValue);
 
+        echo "QIDs";
         $questionId1 = $allQuestions[0]->qid;
         $questionId2 = $allQuestions[1]->qid;
         $questionId3 = $allQuestions[2]->qid;
 
+        echo "Asserts";
         $this->assertStringContainsString("['quid'+'" . $questionId1 . "']", $scriptQ1, 'The statistics do not contain the correct question id.');
         $this->assertStringContainsString("[2,2,4,0]", $scriptQ1, 'The statistics values are not correct.');
 
