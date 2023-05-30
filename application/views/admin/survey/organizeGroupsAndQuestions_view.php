@@ -11,7 +11,7 @@
                 <div class='alert alert-info'>
                     <span class='fa fa-info-circle'></span>&nbsp;
                     <?php eT("To reorder questions/questiongroups just drag the question/group with your mouse to the desired position.");?>
-                    <?= $surveyActivated ? gT("Survey is activated, you can not move question on another group.") : ""?>
+                    <?= $surveyActivated ? gT("Survey is activated, you can not move a question to another group.") : ""?>
                     <?php eT("After you are done, please click the 'Save' button to save your changes.");?>
                 </div>
             </div>
