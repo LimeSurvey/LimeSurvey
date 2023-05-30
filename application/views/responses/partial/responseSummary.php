@@ -24,7 +24,7 @@
                 <?php eT("Incomplete responses"); ?>
               </div>
               <div class="col">
-                <?php echo $num_completed_answers; ?>
+                <?php echo ($num_total_answers - $num_completed_answers); ?>
               </div>
               <div class="col">
               </div>
