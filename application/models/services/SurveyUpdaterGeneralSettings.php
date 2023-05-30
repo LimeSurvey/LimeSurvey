@@ -31,6 +31,7 @@ class SurveyUpdaterGeneralSettings
     const FIELD_TYPE_YN = 'yersno';
     const FIELD_TYPE_DATETIME = 'dateime';
     const FIELD_TYPE_GAKEY = 'gakey';
+    const FIELD_TYPE_USE_CAPTCHA = 'use_captcha';
 
     public function __construct(
         Permission $modelPermission,
@@ -98,7 +99,7 @@ class SurveyUpdaterGeneralSettings
      * @throws ExceptionPermissionDenied
      * @return array
      */
-    public function updateGeneralSettings(Survey $survey, array $input, array $fields)
+    private function updateGeneralSettings(Survey $survey, array $input, array $fields)
     {
         $input = is_array($input) && !empty($input)
             ? $input
@@ -140,8 +141,9 @@ class SurveyUpdaterGeneralSettings
         return $meta;
     }
 
+
     /**
-     * Get Fields
+     * Get Database Fields
      *
      * @param Survey $survey
      * @return array
@@ -205,6 +207,10 @@ class SurveyUpdaterGeneralSettings
             'sendconfirmation' => ['type' => static::FIELD_TYPE_YN],
             'tokenanswerspersistence' => ['type' => static::FIELD_TYPE_YN],
             'alloweditaftercompletion' => ['type' => static::FIELD_TYPE_YN],
+            'usecaptcha' => ['type' => static::FIELD_TYPE_USE_CAPTCHA, 'compositeInput' => true],
+             // 'usecaptcha_surveyaccess' => [], // used on input to calculate 'usecaptcha'
+             // 'usecaptcha_registration' => [], // used on input to calculate 'usecaptcha'
+             // 'usecaptcha_saveandload' => [], // used on input to calculate 'usecaptcha'
             'emailresponseto' => [],
             'emailnotificationto' => [],
             'googleanalyticsapikeysetting' => [],
@@ -213,10 +219,7 @@ class SurveyUpdaterGeneralSettings
             'tokenlength' => [],
             'adminemail' => [],
             'bounce_email' => [],
-            'gsid' => ['default' => 1],
-            'usecaptcha_surveyaccess' => ['type' => static::FIELD_TYPE_YN],
-            'usecaptcha_registration' => ['type' => static::FIELD_TYPE_YN],
-            'usecaptcha_saveandload' => ['type' => static::FIELD_TYPE_YN],
+            'gsid' => ['default' => 1]
         ];
     }
 
@@ -239,19 +242,31 @@ class SurveyUpdaterGeneralSettings
             ? $meta['updateFields']
             : [];
 
-        if (!isset($input[$field])) {
-            return $meta;
-        }
-
         $fieldOpts = !empty($fieldOpts)
             ? $fieldOpts
             : [];
+
+        // Composite inputs always have to be processed
+        // - even if the field itself is not provided
+        $isCompositeInput = (
+            isset($fieldOpts['compositeInput'])
+            && $fieldOpts['compositeInput']
+        );
+
+        if (
+            !isset($input[$field])
+            && !$isCompositeInput
+        ) {
+            return $meta;
+        }
+
         $type = !empty($fieldOpts['type'])
             ? $fieldOpts['type']
             : null;
+        $initValue = $survey->{$field} ?? '';
         $default = !empty($fieldOpts['default'])
             ? $fieldOpts['default']
-            : '';
+            : $initValue;
 
         if (
             isset($fieldOpts['canUpdate'])
@@ -279,15 +294,36 @@ class SurveyUpdaterGeneralSettings
                     $value = '';
                 }
             break;
+            case static::FIELD_TYPE_USE_CAPTCHA:
+                $value = $this->calculateUseCaptchaOption(
+                    $input['usecaptcha_surveyaccess'] ?? null,
+                    $input['usecaptcha_registration'] ?? null,
+                    $input['usecaptcha_saveandload'] ?? null
+                );
+                if (is_null($value)) {
+                    $value = $default;
+                }
+            break;
             case 'int':
                 $value = (int) $value;
             break;
             case null:
             default:
-                $value = !empty($value)
-                    ? $value
-                    : $default;
+                $value = is_null($value)
+                    ? $default
+                    : $value;
             break;
+        }
+
+        if ($field == 'tokenlength') {
+            $value = (int) (
+                (
+                    ($value  < 5 || $value  > 36)
+                    && $value != -1
+                )
+                ? 15
+                : $value
+            );
         }
 
         $survey->{$field} = $value;
@@ -374,5 +410,104 @@ class SurveyUpdaterGeneralSettings
             $formatData['phpdate'] . ' H:i'
         );
         return $dateTimeObj->convert('Y-m-d H:i:s');
+    }
+
+    /**
+     * Transcribe from 3 checkboxes to 1 char for captcha usages
+     * Uses variables from $_POST and transferred Surveyobject
+     *
+     * 'A' = All three captcha enabled
+     * 'B' = All but save and load
+     * 'C' = All but registration
+     * 'D' = All but survey access
+     * 'X' = Only survey access
+     * 'R' = Only registration
+     * 'S' = Only save and load
+     *
+     * 'E' = All inherited
+     * 'F' = Inherited save and load + survey access + registration
+     * 'G' = Inherited survey access + registration + save and load
+     * 'H' = Inherited registration + save and load + survey access
+     * 'I' = Inherited save and load + inherited survey access + registration
+     * 'J' = Inherited survey access + inherited registration + save and load
+     * 'K' = Inherited registration + inherited save and load + survey access
+     *
+     * 'L' = Inherited survey access + save and load
+     * 'M' = Inherited survey access + registration
+     * 'O' = Inherited registration + survey access
+     * '1' = Inherited survey access + inherited registration
+     * '2' = Inherited survey access + inherited save and load
+     * '3' = Inherited registration + inherited save and load
+     * '4' = Inherited survey access
+     * '5' = Inherited save and load
+     * '6' = Inherited registration
+     *
+     * 'N' = None
+     *
+     * @return string One character that corresponds to captcha usage
+     * @todo Should really be saved as three fields in the database!
+     * @todo Copied from Survey:::saveTranscribeCaptchaOptions() replace uses of original copy.
+     */
+    private function calculateUseCaptchaOption($surveyaccess, $registration, $saveandload)
+    {
+        if ($surveyaccess === null && $registration === null && $saveandload === null) {
+            return null;
+        }
+
+        if ($surveyaccess == 'I' && $registration == 'I' && $saveandload == 'I') {
+            return 'E';
+        } elseif ($surveyaccess == 'Y' && $registration == 'Y' && $saveandload == 'I') {
+            return 'F';
+        } elseif ($surveyaccess == 'I' && $registration == 'Y' && $saveandload == 'Y') {
+            return 'G';
+        } elseif ($surveyaccess == 'Y' && $registration == 'I' && $saveandload == 'Y') {
+            return 'H';
+        } elseif ($surveyaccess == 'I' && $registration == 'Y' && $saveandload == 'I') {
+            return 'I';
+        } elseif ($surveyaccess == 'I' && $registration == 'I' && $saveandload == 'Y') {
+            return 'J';
+        } elseif ($surveyaccess == 'Y' && $registration == 'I' && $saveandload == 'I') {
+            return 'K';
+        } elseif ($surveyaccess == 'I' && $saveandload == 'Y') {
+            return 'L';
+        } elseif ($surveyaccess == 'I' && $registration == 'Y') {
+            return 'M';
+        } elseif ($registration == 'I' && $surveyaccess == 'Y') {
+            return 'O';
+        } elseif ($registration == 'I' && $saveandload == 'Y') {
+            return 'P';
+        } elseif ($saveandload == 'I' && $surveyaccess == 'Y') {
+            return 'T';
+        } elseif ($saveandload == 'I' && $registration == 'Y') {
+            return 'U';
+        } elseif ($surveyaccess == 'I' && $registration == 'I') {
+            return '1';
+        } elseif ($surveyaccess == 'I' && $saveandload == 'I') {
+            return '2';
+        } elseif ($registration == 'I' && $saveandload == 'I') {
+            return '3';
+        } elseif ($surveyaccess == 'I') {
+            return '4';
+        } elseif ($saveandload == 'I') {
+            return '5';
+        } elseif ($registration == 'I') {
+            return '6';
+        } elseif ($surveyaccess == 'Y' && $registration == 'Y' && $saveandload == 'Y') {
+            return 'A';
+        } elseif ($surveyaccess == 'Y' && $registration == 'Y') {
+            return 'B';
+        } elseif ($surveyaccess == 'Y' && $saveandload == 'Y') {
+            return 'C';
+        } elseif ($registration == 'Y' && $saveandload == 'Y') {
+            return 'D';
+        } elseif ($surveyaccess == 'Y') {
+            return 'X';
+        } elseif ($registration == 'Y') {
+            return 'R';
+        } elseif ($saveandload == 'Y') {
+            return 'S';
+        }
+
+        return 'N';
     }
 }
