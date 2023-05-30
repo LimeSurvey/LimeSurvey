@@ -640,30 +640,35 @@
                 //Get qidattributes for this question
                 echo '<h4 class="question-selector-title">'.$oStatisticsHelper::_showSpeaker($niceqtext).'</h4><br/>';
                 $qidattributes=QuestionAttribute::model()->getQuestionAttributes($flt[0]);
-                if (trim($qidattributes['multiflexible_max'])!='' && trim($qidattributes['multiflexible_min']) ==''){
-                    $maxvalue=$qidattributes['multiflexible_max'];
-                    $minvalue=1;
+                $minvalue = 1;
+                $maxvalue = 10;
+                if (trim($qidattributes['multiflexible_max']) != '' && trim($qidattributes['multiflexible_min']) == '') {
+                    $maxvalue = $qidattributes['multiflexible_max'];
+                    $minvalue = 1;
                 }
-                if (trim($qidattributes['multiflexible_min'])!='' && trim($qidattributes['multiflexible_max']) ==''){
-                    $minvalue=$qidattributes['multiflexible_min'];
-                    $maxvalue=$qidattributes['multiflexible_min'] + 10;
+                if (trim($qidattributes['multiflexible_min']) != '' && trim($qidattributes['multiflexible_max']) == '') {
+                    $minvalue = $qidattributes['multiflexible_min'];
+                    $maxvalue = $qidattributes['multiflexible_min'] + 10;
                 }
-                if (trim($qidattributes['multiflexible_min'])=='' && trim($qidattributes['multiflexible_max']) ==''){
-                    $minvalue=1;
-                    $maxvalue=10;
-                }
-                if (trim($qidattributes['multiflexible_min']) !='' && trim($qidattributes['multiflexible_max']) !=''){
-                    if($qidattributes['multiflexible_min'] < $qidattributes['multiflexible_max']){
-                        $minvalue=$qidattributes['multiflexible_min'];
-                        $maxvalue=$qidattributes['multiflexible_max'];
+                if (trim($qidattributes['multiflexible_min']) != '' && trim($qidattributes['multiflexible_max']) != '') {
+                    if ($qidattributes['multiflexible_min'] < $qidattributes['multiflexible_max']) {
+                        $minvalue = $qidattributes['multiflexible_min'];
+                        $maxvalue = $qidattributes['multiflexible_max'];
                     }
                 }
 
-                if (trim($qidattributes['multiflexible_step'])!='') {
-                    $stepvalue=$qidattributes['multiflexible_step'];
+                $stepvalue = (trim($qidattributes['multiflexible_step']) != '' && $qidattributes['multiflexible_step'] > 0) ? $qidattributes['multiflexible_step'] : 1;
+
+                if ($qidattributes['reverse'] == 1) {
+                    $tmp = $minvalue;
+                    $minvalue = $maxvalue;
+                    $maxvalue = $tmp;
+                    $reverse = true;
+                    $stepvalue = -$stepvalue;
                 } else {
-                    $stepvalue=1;
+                    $reverse = false;
                 }
+
                 if ($qidattributes['multiflexible_checkbox']!=0)
                 {
                     $minvalue=0;

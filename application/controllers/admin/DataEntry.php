@@ -1199,11 +1199,18 @@ class DataEntry extends SurveyCommonAction
                             }
                         }
 
-                        if (trim($qidattributes['multiflexible_step']) != '') {
-                            $stepvalue = $qidattributes['multiflexible_step'];
+                        $stepvalue = (trim($qidattributes['multiflexible_step']) != '' && $qidattributes['multiflexible_step'] > 0) ? $qidattributes['multiflexible_step'] : 1;
+
+                        if ($qidattributes['reverse'] == 1) {
+                            $tmp = $minvalue;
+                            $minvalue = $maxvalue;
+                            $maxvalue = $tmp;
+                            $reverse = true;
+                            $stepvalue = -$stepvalue;
                         } else {
-                            $stepvalue = 1;
+                            $reverse = false;
                         }
+
                         if ($qidattributes['multiflexible_checkbox'] != 0) {
                             $minvalue = 0;
                             $maxvalue = 1;
@@ -2204,11 +2211,18 @@ class DataEntry extends SurveyCommonAction
                                 }
                             }
 
-                            if (trim($qidattributes['multiflexible_step']) != '') {
-                                $stepvalue = $qidattributes['multiflexible_step'];
+                            $stepvalue = (trim($qidattributes['multiflexible_step']) != '' && $qidattributes['multiflexible_step'] > 0) ? $qidattributes['multiflexible_step'] : 1;
+
+                            if ($qidattributes['reverse'] == 1) {
+                                $tmp = $minvalue;
+                                $minvalue = $maxvalue;
+                                $maxvalue = $tmp;
+                                $reverse = true;
+                                $stepvalue = -$stepvalue;
                             } else {
-                                $stepvalue = 1;
+                                $reverse = false;
                             }
+
                             if ($qidattributes['multiflexible_checkbox'] != 0) {
                                 $minvalue = 0;
                                 $maxvalue = 1;
