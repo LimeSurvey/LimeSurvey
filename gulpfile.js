@@ -154,8 +154,10 @@ exports.watch_survey_theme_fruity = function () {
 
 function survey_theme_ls6() {
     let variations = [
-        ["green", "#14AE5C"],
-        ["red", "#FF515F"],
+        ["apple", "#14AE5C"],
+        ["blueberry", "#5076FF"],
+        ["grape", "#8146F6"],
+        ["litchi", "#ED5046"],
     ];
     let plugins = [
         autoprefixer(),
