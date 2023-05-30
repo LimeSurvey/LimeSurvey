@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2023-05-22 09:00:11+00:00\n"
+"POT-Creation-Date: 2023-05-30 15:58:17+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1412,7 +1412,7 @@ msgstr ""
 #: application/controllers/QuestionGroupsAdministrationController.php:460
 #: application/controllers/SurveyAdministrationController.php:2193
 #: application/controllers/UserRoleController.php:314
-#: application/libraries/ExtensionInstaller/FileFetcherUploadZip.php:197
+#: application/libraries/ExtensionInstaller/FileFetcherUploadZip.php:198
 #: application/models/UserParser.php:27
 #: application/models/services/UploadValidator.php:59
 msgid "Sorry, this file is too large. Only files up to %01.2f MB are allowed."
@@ -2093,10 +2093,10 @@ msgstr ""
 #: application/views/admin/authentication/login.php:75
 #: application/views/admin/authentication/login.php:82
 #: application/views/admin/survey/subview/accordion/_notification_panel.php:30
-#: application/views/admin/user/personalsettings.php:242
-#: application/views/admin/user/personalsettings.php:263
-#: application/views/admin/user/personalsettings.php:290
-#: application/views/admin/user/personalsettings.php:399
+#: application/views/admin/user/personalsettings.php:243
+#: application/views/admin/user/personalsettings.php:264
+#: application/views/admin/user/personalsettings.php:291
+#: application/views/admin/user/personalsettings.php:400
 msgid "Default"
 msgstr ""
 
@@ -2166,7 +2166,7 @@ msgstr ""
 #: application/controllers/admin/Themes.php:254
 #: application/controllers/admin/Themes.php:417
 #: application/controllers/admin/Themes.php:496
-#: application/libraries/ExtensionInstaller/FileFetcherUploadZip.php:230
+#: application/libraries/ExtensionInstaller/FileFetcherUploadZip.php:231
 #: application/models/UserParser.php:39
 msgid "An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."
 msgstr ""
@@ -2720,10 +2720,10 @@ msgstr ""
 #: application/views/admin/token/tokenform.php:317
 #: application/views/admin/token/tokenform.php:360
 #: application/views/admin/token/tokenform.php:370
-#: application/views/admin/user/personalsettings.php:325
-#: application/views/admin/user/personalsettings.php:340
-#: application/views/admin/user/personalsettings.php:384
-#: application/views/admin/user/personalsettings.php:400
+#: application/views/admin/user/personalsettings.php:326
+#: application/views/admin/user/personalsettings.php:341
+#: application/views/admin/user/personalsettings.php:385
+#: application/views/admin/user/personalsettings.php:401
 #: application/views/questionAdministration/copyQuestionForm.php:81
 #: application/views/questionAdministration/copyQuestionForm.php:94
 #: application/views/questionAdministration/copyQuestionForm.php:107
@@ -2876,10 +2876,10 @@ msgstr ""
 #: application/views/admin/token/tokenform.php:316
 #: application/views/admin/token/tokenform.php:359
 #: application/views/admin/token/tokenform.php:369
-#: application/views/admin/user/personalsettings.php:326
-#: application/views/admin/user/personalsettings.php:341
-#: application/views/admin/user/personalsettings.php:385
-#: application/views/admin/user/personalsettings.php:401
+#: application/views/admin/user/personalsettings.php:327
+#: application/views/admin/user/personalsettings.php:342
+#: application/views/admin/user/personalsettings.php:386
+#: application/views/admin/user/personalsettings.php:402
 #: application/views/questionAdministration/copyQuestionForm.php:80
 #: application/views/questionAdministration/copyQuestionForm.php:93
 #: application/views/questionAdministration/copyQuestionForm.php:106
@@ -3578,7 +3578,7 @@ msgid "GroupId missing"
 msgstr ""
 
 #: application/controllers/UserGroupController.php:163
-#: application/core/QuestionTypes/ArrayFlexibleRow/RenderArrayFlexibleRow.php:215
+#: application/core/QuestionTypes/ArrayFlexibleRow/RenderArrayFlexibleRow.php:212
 #: application/core/QuestionTypes/ListDropdown/RenderListDropdown.php:72
 #: application/core/QuestionTypes/RankingStyle/RenderRanking.php:76
 #: application/helpers/common_helper.php:181
@@ -4288,9 +4288,9 @@ msgstr ""
 #: application/controllers/admin/ConditionsAction.php:1674
 #: application/controllers/admin/DataEntry.php:1187
 #: application/core/QuestionTypes/5PointChoice/RenderFivePointChoice.php:50
-#: application/core/QuestionTypes/ArrayFlexibleRow/RenderArrayFlexibleRow.php:170
-#: application/core/QuestionTypes/ArrayFlexibleRow/RenderArrayFlexibleRow.php:232
-#: application/core/QuestionTypes/ArrayFlexibleRow/RenderArrayFlexibleRow.php:305
+#: application/core/QuestionTypes/ArrayFlexibleRow/RenderArrayFlexibleRow.php:168
+#: application/core/QuestionTypes/ArrayFlexibleRow/RenderArrayFlexibleRow.php:229
+#: application/core/QuestionTypes/ArrayFlexibleRow/RenderArrayFlexibleRow.php:301
 #: application/core/QuestionTypes/ListDropdown/RenderListDropdown.php:206
 #: application/core/QuestionTypes/ListWithComment/RenderListComment.php:62
 #: application/core/QuestionTypes/ListWithComment/RenderListComment.php:117
@@ -6095,7 +6095,7 @@ msgid "This theme type (%s) is not allowed."
 msgstr ""
 
 #: application/controllers/admin/Themes.php:377
-#: application/libraries/ExtensionInstaller/FileFetcherUploadZip.php:248
+#: application/libraries/ExtensionInstaller/FileFetcherUploadZip.php:249
 msgid "This file is not a valid ZIP file archive. Import failed."
 msgstr ""
 
@@ -13967,32 +13967,32 @@ msgstr ""
 msgid "Question template"
 msgstr ""
 
-#: application/libraries/ExtensionInstaller/FileFetcherUploadZip.php:61
+#: application/libraries/ExtensionInstaller/FileFetcherUploadZip.php:62
 msgid "Temporary folder cannot be determined."
 msgstr ""
 
-#: application/libraries/ExtensionInstaller/FileFetcherUploadZip.php:65
+#: application/libraries/ExtensionInstaller/FileFetcherUploadZip.php:66
 msgid "Temporary folder does not exist."
 msgstr ""
 
-#: application/libraries/ExtensionInstaller/FileFetcherUploadZip.php:94
+#: application/libraries/ExtensionInstaller/FileFetcherUploadZip.php:95
 msgid "No temporary folder, cannot read configuration file."
 msgstr ""
 
-#: application/libraries/ExtensionInstaller/FileFetcherUploadZip.php:100
+#: application/libraries/ExtensionInstaller/FileFetcherUploadZip.php:101
 #: application/libraries/PluginManager/PluginManager.php:117
 msgid "Could not parse config.xml file."
 msgstr ""
 
-#: application/libraries/ExtensionInstaller/FileFetcherUploadZip.php:129
+#: application/libraries/ExtensionInstaller/FileFetcherUploadZip.php:130
 msgid "Configuration file config.xml does not exist."
 msgstr ""
 
-#: application/libraries/ExtensionInstaller/FileFetcherUploadZip.php:191
+#: application/libraries/ExtensionInstaller/FileFetcherUploadZip.php:192
 msgid "Found no file"
 msgstr ""
 
-#: application/libraries/ExtensionInstaller/FileFetcherUploadZip.php:213
+#: application/libraries/ExtensionInstaller/FileFetcherUploadZip.php:214
 msgid "Unzipped file is too big."
 msgstr ""
 
@@ -15615,7 +15615,7 @@ msgstr ""
 msgid "Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey version."
 msgstr ""
 
-#: application/models/TemplateConfiguration.php:1638
+#: application/models/TemplateConfiguration.php:1644
 msgid "No preview available"
 msgstr ""
 
@@ -17747,7 +17747,7 @@ msgstr ""
 
 #: application/views/admin/globalsettings/_bounce.php:44
 #: application/views/admin/token/bounce.php:74
-#: application/views/admin/user/personalsettings.php:105
+#: application/views/admin/user/personalsettings.php:106
 msgid "User name:"
 msgstr ""
 
@@ -17874,7 +17874,7 @@ msgid "Default theme:"
 msgstr ""
 
 #: application/views/admin/globalsettings/_general.php:56
-#: application/views/admin/user/personalsettings.php:394
+#: application/views/admin/user/personalsettings.php:395
 msgid "Create example question group and question:"
 msgstr ""
 
@@ -17980,7 +17980,7 @@ msgid "Always closed"
 msgstr ""
 
 #: application/views/admin/globalsettings/_general.php:263
-#: application/views/admin/user/personalsettings.php:257
+#: application/views/admin/user/personalsettings.php:258
 msgid "Question type selector:"
 msgstr ""
 
@@ -19952,7 +19952,7 @@ msgstr ""
 
 #: application/views/admin/survey/editLocalSettings_view.php:52
 #: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:246
-#: application/views/admin/user/personalsettings.php:302
+#: application/views/admin/user/personalsettings.php:303
 msgid "Date format:"
 msgstr ""
 
@@ -21422,7 +21422,7 @@ msgid "Access code length"
 msgstr ""
 
 #: application/views/admin/token/dummytokenform.php:59
-#: application/views/admin/user/personalsettings.php:129
+#: application/views/admin/user/personalsettings.php:130
 #: application/views/survey/frontpage/registerForm/form.php:17
 #: tmp/runtime/twig_cache/77/77a988d404a66c96ff9a7eeb1e8eb4cf283ea21862899195d3fd73a4742d6cb6.php:131
 msgid "Email address:"
@@ -22437,132 +22437,132 @@ msgid "Editing user"
 msgstr ""
 
 #: application/views/admin/user/modifyuser.php:32
-#: application/views/admin/user/personalsettings.php:110
+#: application/views/admin/user/personalsettings.php:111
 msgid "The user name cannot be changed."
 msgstr ""
 
-#: application/views/admin/user/personalsettings.php:66
+#: application/views/admin/user/personalsettings.php:67
 msgid "Preview question type"
 msgstr ""
 
-#: application/views/admin/user/personalsettings.php:71
+#: application/views/admin/user/personalsettings.php:72
 msgid "Invalid question"
 msgstr ""
 
-#: application/views/admin/user/personalsettings.php:92
-#: application/views/admin/user/personalsettings.php:101
+#: application/views/admin/user/personalsettings.php:93
+#: application/views/admin/user/personalsettings.php:102
 msgid "Profile"
 msgstr ""
 
-#: application/views/admin/user/personalsettings.php:93
+#: application/views/admin/user/personalsettings.php:94
 msgid "Personal settings"
 msgstr ""
 
-#: application/views/admin/user/personalsettings.php:94
+#: application/views/admin/user/personalsettings.php:95
 msgid "Personalized menus"
 msgstr ""
 
-#: application/views/admin/user/personalsettings.php:95
+#: application/views/admin/user/personalsettings.php:96
 msgid "Personalized menu entries"
 msgstr ""
 
-#: application/views/admin/user/personalsettings.php:121
+#: application/views/admin/user/personalsettings.php:122
 msgid "Full name:"
 msgstr ""
 
-#: application/views/admin/user/personalsettings.php:143
+#: application/views/admin/user/personalsettings.php:144
 msgid "Change password"
 msgstr ""
 
-#: application/views/admin/user/personalsettings.php:147
+#: application/views/admin/user/personalsettings.php:148
 msgid "Change email address"
 msgstr ""
 
-#: application/views/admin/user/personalsettings.php:156
+#: application/views/admin/user/personalsettings.php:157
 msgid "Current password:"
 msgstr ""
 
-#: application/views/admin/user/personalsettings.php:169
+#: application/views/admin/user/personalsettings.php:170
 msgid "New password:"
 msgstr ""
 
-#: application/views/admin/user/personalsettings.php:180
+#: application/views/admin/user/personalsettings.php:181
 msgid "Repeat new password:"
 msgstr ""
 
-#: application/views/admin/user/personalsettings.php:191
+#: application/views/admin/user/personalsettings.php:192
 msgid "New email address:"
 msgstr ""
 
-#: application/views/admin/user/personalsettings.php:202
+#: application/views/admin/user/personalsettings.php:203
 msgid "My personal settings"
 msgstr ""
 
-#: application/views/admin/user/personalsettings.php:207
+#: application/views/admin/user/personalsettings.php:208
 msgid "Interface language:"
 msgstr ""
 
-#: application/views/admin/user/personalsettings.php:236
+#: application/views/admin/user/personalsettings.php:237
 msgid "HTML editor mode:"
 msgstr ""
 
-#: application/views/admin/user/personalsettings.php:243
+#: application/views/admin/user/personalsettings.php:244
 msgid "Inline HTML editor"
 msgstr ""
 
-#: application/views/admin/user/personalsettings.php:244
+#: application/views/admin/user/personalsettings.php:245
 msgid "Popup HTML editor"
 msgstr ""
 
-#: application/views/admin/user/personalsettings.php:245
+#: application/views/admin/user/personalsettings.php:246
 msgid "Sourcecode editor"
 msgstr ""
 
-#: application/views/admin/user/personalsettings.php:264
+#: application/views/admin/user/personalsettings.php:265
 msgid "Full selector"
 msgstr ""
 
-#: application/views/admin/user/personalsettings.php:265
+#: application/views/admin/user/personalsettings.php:266
 msgid "Simple selector"
 msgstr ""
 
-#: application/views/admin/user/personalsettings.php:275
+#: application/views/admin/user/personalsettings.php:276
 msgid "Preselected question type:"
 msgstr ""
 
-#: application/views/admin/user/personalsettings.php:284
+#: application/views/admin/user/personalsettings.php:285
 msgid "Template editor mode:"
 msgstr ""
 
-#: application/views/admin/user/personalsettings.php:291
+#: application/views/admin/user/personalsettings.php:292
 msgid "Full template editor"
 msgstr ""
 
-#: application/views/admin/user/personalsettings.php:292
+#: application/views/admin/user/personalsettings.php:293
 msgid "Simple template editor"
 msgstr ""
 
-#: application/views/admin/user/personalsettings.php:320
+#: application/views/admin/user/personalsettings.php:321
 msgid "Show script field:"
 msgstr ""
 
-#: application/views/admin/user/personalsettings.php:335
+#: application/views/admin/user/personalsettings.php:336
 msgid "Directly show edit mode:"
 msgstr ""
 
-#: application/views/admin/user/personalsettings.php:350
+#: application/views/admin/user/personalsettings.php:351
 msgid "Non-Numerical answer option prefix:"
 msgstr ""
 
-#: application/views/admin/user/personalsettings.php:364
+#: application/views/admin/user/personalsettings.php:365
 msgid "Non-Numerical subquestions prefix:"
 msgstr ""
 
-#: application/views/admin/user/personalsettings.php:379
+#: application/views/admin/user/personalsettings.php:380
 msgid "Lock question organizer in sidebar by default:"
 msgstr ""
 
-#: application/views/admin/user/personalsettings.php:422
+#: application/views/admin/user/personalsettings.php:423
 #: application/views/admin/user/setusertemplates.php:41
 msgid "Save settings"
 msgstr ""
