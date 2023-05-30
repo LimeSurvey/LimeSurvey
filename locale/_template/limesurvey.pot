@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2023-05-30 16:07:24+00:00\n"
+"POT-Creation-Date: 2023-05-30 16:08:31+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -20582,7 +20582,7 @@ msgid "To reorder questions/questiongroups just drag the question/group with you
 msgstr ""
 
 #: application/views/admin/survey/organizeGroupsAndQuestions_view.php:14
-msgid "Survey is activated, you can not move question on another group."
+msgid "Survey is activated, you can not move a question to another group."
 msgstr ""
 
 #: application/views/admin/survey/organizeGroupsAndQuestions_view.php:15
