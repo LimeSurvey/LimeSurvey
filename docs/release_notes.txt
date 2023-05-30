@@ -34,6 +34,29 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.1.0 (build 230522) to 6.1.1 (build 230530) May 30, 2023
+-Fixed issue: [security] Unsafe way to detect IP address against brute-force attacks (Carsten Schmitz)
+-Fixed issue: Editing a quota shows that it was saved, while it was not (Carsten Schmitz)
+-Fixed issue CR-1168: Errors for printanswers after twig upgrade from version 1 to 3 (sameas vs. same as) (twilligls)
+-Fixed issue #CR-1167: update registering new function name (jack-han-115)
+-Fixed issue #18835: Array question doesn't reload anwsers (#3162) (Denis Chenu)
+-Fixed issue #18745: table action dropdown cut off in firefox (Patrick Teichmann)
+-Fixed issue #18659: cannot install two plugins in a row (#3160) (Gabriel Jenik)
+-Fixed issue #18462: Missing option to search for survey groups at list survey screen. (#3159) (Gabriel Jenik)
+-Fixed issue #18456: Interface language parmater use exotic dropdown list. (#3112) (Gabriel Jenik)
+-Fixed issue #18246: The setting in the theme variation field (global level) is not shown (#2510) (Gabriel Jenik)
+-* Fixed issue #18456: Interface language parmater use exotic dropdown list. (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 6.0.7 (build 230515) to 6.1.0 (build 230522) May 22, 2023
 +New feature #18792: Allow to move question inside group and group order with activated survey (Denis Chenu)
 -Fixed issue: ComfortUpdate showing updates as unstable, even though they are not (Carsten Schmitz)
