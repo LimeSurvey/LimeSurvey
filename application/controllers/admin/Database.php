@@ -304,9 +304,15 @@ class Database extends SurveyCommonAction
 
         $request = Yii::app()->request;
 
+        // $input optionally provided to function for unit testing
+        // - otherwise we expect data from $_POST
         $post = isset($_POST) ? $_POST : [];
         $input = !empty($input) ? $input : $post;
 
+        // form inputs are named differently from db fields
+        // - they have a prefix and a language suffix
+        // - we need to convert this to a array of database
+        // - fields for each language indexed by lanuage code
         $langFields = [
             'surveyls_url' => 'url_',
             'surveyls_urldescription' => 'urldescrip_',
@@ -338,11 +344,14 @@ class Database extends SurveyCommonAction
 
         $meta = [];
         try {
-            $meta = $surveyUpdater->update($surveyId, $input);
+            $meta = $surveyUpdater->update(
+                $surveyId,
+                $input
+            );
         } catch (ExceptionPersistError $e) {
             Yii::app()->setFlashMessage(
                 $e->getMessage(),
-                "error"
+                'error'
             );
         }
 
