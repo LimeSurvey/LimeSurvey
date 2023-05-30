@@ -34,6 +34,26 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.23 (build 230524) to 5.6.24 (build 230531) May 30, 2023
+-Fixed issue: [security] Unsafe way to detect IP address against brute-force attacks (Carsten Schmitz)
+-Fixed issue: Editing a quota and setting a limit too high shows a database exception (Carsten Schmitz)
+-Fixed issue #18848: setting specific values for steps in Array(numbers) causes php timeout (Patrick Teichmann)
+#Updated translation: Spanish (Spain) by ireneoh
+#Updated translation: Spanish (Informal) by daniel.gonzalez, Ignacio, ignaciogros, ireneoh, DarioRoig, ireneoh, jmlopez, jparis, albertodominguez
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Japanese by nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Albanian by darliv
+
+
 Changes from 5.6.22 (build 230523) to 5.6.23 (build 230524) May 24, 2023
 -Fixed issue: Dragging a question between groups can be unresponsive (Patrick Teichmann)
 -Fixed issue #18659: Cannot install two plugins in a row (#3146) (Gabriel Jenik)
