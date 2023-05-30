@@ -13935,6 +13935,10 @@ input.imageselect-checkbox:checked ~ .imageselect-select::after {
   color: #ED5046;
 }
 
+body .imageselect-listitem label::after {
+  background-color: transparent;
+}
+
 .select-sortable-lists:not(.ranking-advanced-style) .list-group-item {
   border-radius: 2px;
   margin-bottom: 10px;
