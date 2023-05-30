@@ -20,16 +20,19 @@ class SurveyUpdater
     private ?SurveyUpdaterLanguageSettings $surveyUpdaterLanguageSettings = null;
     private ?SurveyUpdaterGeneralSettings $surveyUpdaterGeneralSettings = null;
     private ?SurveyUpdaterUrlParams $surveyUpdaterUrlParams = null;
+    private ?ExpressionManager $expressionManager = null;
 
     public function __construct(
         SurveyUpdaterLanguageSettings $surveyUpdaterLanguageSettings,
         SurveyUpdaterGeneralSettings $surveyUpdaterGeneralSettings,
-        SurveyUpdaterUrlParams $surveyUpdaterUrlParams
+        SurveyUpdaterUrlParams $surveyUpdaterUrlParams,
+        ExpressionManager $expressionManager
     )
     {
         $this->surveyUpdaterLanguageSettings = $surveyUpdaterLanguageSettings;
         $this->surveyUpdaterGeneralSettings = $surveyUpdaterGeneralSettings;
         $this->surveyUpdaterUrlParams = $surveyUpdaterUrlParams;
+        $this->expressionManager = $expressionManager;
     }
 
     /**
@@ -60,6 +63,9 @@ class SurveyUpdater
                 $input['url_params']
             );
         }
+
+        $this->expressionManager
+            ->reset($surveyId);
 
         return $meta;
     }

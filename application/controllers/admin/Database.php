@@ -46,59 +46,6 @@ class Database extends SurveyCommonAction
      */
     private $iSurveyID;
 
-
-    private $updateableFields = [
-                'owner_id' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
-                'admin' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
-                'format' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
-                'expires' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
-                'startdate' => ['type' => 'default', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
-                'template' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
-                'assessments' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
-                'anonymized' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
-                'savetimings' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
-                'datestamp' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
-                'ipaddr' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
-                'ipanonymize' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
-                'refurl' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
-                'publicgraphs' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
-                'usecookie' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
-                'allowregister' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
-                'allowsave' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
-                'navigationdelay' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
-                'printanswers' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
-                'publicstatistics' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
-                'autoredirect' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
-                'showxquestions' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
-                'showgroupinfo' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
-                'showqnumcode' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
-                'shownoanswer' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
-                'showwelcome' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
-                'showsurveypolicynotice' => ['type' => '', 'default' => 0, 'dbname' => false, 'active' => true, 'required' => []],
-                'allowprev' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
-                'questionindex' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
-                'nokeyboard' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
-                'showprogress' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
-                'listpublic' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
-                'htmlemail' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
-                'sendconfirmation' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
-                'tokenanswerspersistence' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
-                'alloweditaftercompletion' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
-                'emailresponseto' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
-                'emailnotificationto' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
-                'googleanalyticsapikeysetting' => ['type' => 'default', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
-                'googleanalyticsapikey' => ['type' => 'default', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
-                'googleanalyticsstyle' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
-                'tokenlength' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
-                'adminemail' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
-                'bounce_email' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
-                'gsid' => ['type' => '', 'default' => 1, 'dbname' => false, 'active' => true, 'required' => []],
-                'usecaptcha_surveyaccess' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
-                'usecaptcha_registration' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
-                'usecaptcha_saveandload' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
-            ];
-        private $updatedFields = [];
-
     /**
      * @var object LSYii_Validators
      * @todo : use model (and validate if we do it in model rules)
@@ -283,9 +230,12 @@ class Database extends SurveyCommonAction
     }
 
     /**
-     * action to do when update survey seetings + survey language
+     * Action to run when update survey settings + survey language
+     *
+     * Refactored to use Services\SurveyUpdater 2023-05-30 (kfoster).
+     *
      * @param integer $iSurveyID
-     * @param ?array $input For dependancy injection during testing
+     * @param ?array $input For dependency injection during testing
      * @return void (redirect)
      */
     private function actionUpdateSurveyLocaleSettings($surveyId, $input = [])
@@ -355,17 +305,20 @@ class Database extends SurveyCommonAction
             );
         }
 
-        LimeExpressionManager::SetDirtyFlag();
-        $this->resetEM();
-
         if (Yii::app()->request->getPost('responsejson', 0) == 1) {
             return Yii::app()->getController()->renderPartial(
                 '/admin/super/_renderJson',
                 array(
                     'data' => [
                         'success' => true,
-                        'updated' => is_array($meta) && !empty($meta['updatedFields']) ? $meta['updatedFields'] : null
-                    ],
+                        'updated' => is_array($meta) && !empty($meta['updatedFields']) ? $meta['updatedFields'] : null,
+                        'DEBUG' => [
+                            'POST' => $_POST,
+                            'reloaded' => [],
+                            'aURLParams' => '',
+                            'initial' => '',
+                            'afterApply' => '']
+                        ],
                 ),
                 false,
                 false
@@ -391,303 +344,6 @@ class Database extends SurveyCommonAction
             }
         }
     }
-
-    /*
-    private function actionUpdateSurveyLocaleSettings($iSurveyID)
-    {
-
-        //@todo  here is something wrong ...
-        $oSurvey = Survey::model()->findByPk($iSurveyID);
-        $languagelist = $oSurvey->additionalLanguages;
-        $languagelist[] = $oSurvey->language;
-
-        Yii::app()->loadHelper('database');
-
-        $hasSurveyLanguageSettingError = false;
-        if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'update')) {
-            foreach ($languagelist as $langname) {
-                if ($langname) {
-                    $data = array();
-                    $sURLDescription = Yii::app()->request->getPost('urldescrip_' . $langname, null);
-                    $sURL = Yii::app()->request->getPost('url_' . $langname, null);
-                    $short_title = Yii::app()->request->getPost('short_title_' . $langname, null);
-                    $alias = Yii::app()->request->getPost('alias_' . $langname, null);
-                    $description = Yii::app()->request->getPost('description_' . $langname, null);
-                    $welcome = Yii::app()->request->getPost('welcome_' . $langname, null);
-                    $endtext = Yii::app()->request->getPost('endtext_' . $langname, null);
-                    $datasec = Yii::app()->request->getPost('datasec_' . $langname, null);
-                    $datasecerror = Yii::app()->request->getPost('datasecerror_' . $langname, null);
-                    $dataseclabel = Yii::app()->request->getPost('dataseclabel_' . $langname, null);
-                    $dateformat = Yii::app()->request->getPost('dateformat_' . $langname, null);
-                    $numberformat = Yii::app()->request->getPost('numberformat_' . $langname, null);
-
-                    if ($short_title !== null) {
-                        // Fix bug with FCKEditor saving strange BR types
-                        $short_title = $this->oFixCKeditor->fixCKeditor($short_title);
-                        $data['surveyls_title'] = $short_title;
-                    }
-                    if ($alias !== null) {
-                        $data['surveyls_alias'] = $alias;
-                    }
-                    if ($description !== null) {
-                        // Fix bug with FCKEditor saving strange BR types
-                        $description = $this->oFixCKeditor->fixCKeditor($description);
-                        $data['surveyls_description'] = $description;
-                    }
-                    if ($welcome !== null) {
-                        // Fix bug with FCKEditor saving strange BR types
-                        $welcome = $this->oFixCKeditor->fixCKeditor($welcome);
-                        $data['surveyls_welcometext'] = $welcome;
-                    }
-                    if ($endtext !== null) {
-                        // Fix bug with FCKEditor saving strange BR types
-                        $endtext = $this->oFixCKeditor->fixCKeditor($endtext);
-                        $data['surveyls_endtext'] = $endtext;
-                    }
-                    if ($datasec !== null) {
-                        // Fix bug with FCKEditor saving strange BR types
-                        $datasec = $this->oFixCKeditor->fixCKeditor($datasec);
-                        $data['surveyls_policy_notice'] = $datasec;
-                    }
-                    if ($datasecerror !== null) {
-                        // Fix bug with FCKEditor saving strange BR types
-                        $datasecerror = $this->oFixCKeditor->fixCKeditor($datasecerror);
-                        $data['surveyls_policy_error'] = $datasecerror;
-                    }
-                    if ($dataseclabel !== null) {
-                        $data['surveyls_policy_notice_label'] = $dataseclabel;
-                    }
-                    if ($sURL !== null) {
-                        $data['surveyls_url'] = $sURL;
-                    }
-                    if ($sURLDescription !== null) {
-                        $data['surveyls_urldescription'] = $sURLDescription;
-                    }
-                    if ($dateformat !== null) {
-                        $data['surveyls_dateformat'] = $dateformat;
-                    }
-                    if ($numberformat !== null) {
-                        $data['surveyls_numberformat'] = $numberformat;
-                    }
-
-                    if (count($data) > 0) {
-                        $oSurveyLanguageSetting = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id' => $iSurveyID, 'surveyls_language' => $langname));
-                        $oSurveyLanguageSetting->setAttributes($data);
-                        if (!$oSurveyLanguageSetting->save()) { // save the change to database
-                            $languageDescription = getLanguageNameFromCode($langname, false);
-                            Yii::app()->setFlashMessage(
-                                Chtml::errorSummary(
-                                    $oSurveyLanguageSetting,
-                                    Chtml::tag(
-                                        "p",
-                                        ['class' => 'strong'],
-                                        sprintf(gT("Texts for language %s could not be updated:"), $languageDescription)
-                                    )
-                                ),
-                                "error"
-                            );
-                            $hasSurveyLanguageSettingError = true;
-                        }
-                    }
-                }
-            }
-        }
-        ////////////////////////////////////////////////////////////////////////////////////
-        // General settings (copy / paste from surveyadmin::update)
-        if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update')) {
-            // Preload survey
-            $oSurvey = Survey::model()->findByPk($iSurveyID);
-            $aOldAttributes = $oSurvey->attributes;
-            // Save plugin settings : actually leave it before saving core : we are sure core settings is saved in LS way.
-            $pluginSettings = App()->request->getPost('plugin', array());
-            foreach ($pluginSettings as $plugin => $settings) {
-                $settingsEvent = new PluginEvent('newSurveySettings');
-                $settingsEvent->set('settings', $settings);
-                $settingsEvent->set('survey', $iSurveyID);
-                App()->getPluginManager()->dispatchEvent($settingsEvent, $plugin);
-            }
-
-            // Start to fix some param before save (TODO : use models directly ?)
-            // Date management
-            Yii::app()->loadHelper('surveytranslator');
-            $formatdata = getDateFormatData(Yii::app()->session['dateformat']);
-            Yii::app()->loadLibrary('Date_Time_Converter');
-
-            $unfilteredStartdate = App()->request->getPost('startdate', null);
-            $startdate = $this->filterEmptyFields($oSurvey, 'startdate');
-            if ($unfilteredStartdate === null) {
-                // Not submitted.
-            } elseif (trim((string) $unfilteredStartdate) == "") {
-                $oSurvey->startdate = "";
-            } else {
-                Yii::app()->loadLibrary('Date_Time_Converter');
-                $datetimeobj = new Date_Time_Converter($startdate, $formatdata['phpdate'] . ' H:i');
-                $startdate = $datetimeobj->convert("Y-m-d H:i:s");
-                $oSurvey->startdate = $startdate;
-            }
-
-            $unfilteredExpires = App()->request->getPost('expires', null);
-            $expires = $this->filterEmptyFields($oSurvey, 'expires');
-            if ($unfilteredExpires === null) {
-                // Not submitted.
-            } elseif (trim((string) $unfilteredExpires) == "") {
-                // Must not convert if empty.
-                $oSurvey->expires = "";
-            } else {
-                $datetimeobj = new Date_Time_Converter($expires, $formatdata['phpdate'] . ' H:i');
-                $expires = $datetimeobj->convert("Y-m-d H:i:s");
-                $oSurvey->expires = $expires;
-            }
-
-            $oSurvey->assessments = $this->filterEmptyFields($oSurvey, 'assessments');
-
-            if ($oSurvey->active != 'Y') {
-                $oSurvey->anonymized = $this->filterEmptyFields($oSurvey, 'anonymized');
-                $oSurvey->savetimings = $this->filterEmptyFields($oSurvey, 'savetimings');
-                $oSurvey->datestamp = $this->filterEmptyFields($oSurvey, 'datestamp');
-                $oSurvey->ipaddr = $this->filterEmptyFields($oSurvey, 'ipaddr');
-                //save the new setting ipanonymize
-                $oSurvey->ipanonymize = $this->filterEmptyFields($oSurvey, 'ipanonymize');
-                //todo: here we have to change the ip-addresses already saved ?!?
-                $oSurvey->refurl = $this->filterEmptyFields($oSurvey, 'refurl');
-            }
-
-            $oSurvey->publicgraphs = $this->filterEmptyFields($oSurvey, 'publicgraphs');
-            $oSurvey->usecookie = $this->filterEmptyFields($oSurvey, 'usecookie');
-            $oSurvey->allowregister = $this->filterEmptyFields($oSurvey, 'allowregister');
-            $oSurvey->allowsave = $this->filterEmptyFields($oSurvey, 'allowsave');
-            $oSurvey->navigationdelay = (int) $this->filterEmptyFields($oSurvey, 'navigationdelay');
-            $oSurvey->printanswers = $this->filterEmptyFields($oSurvey, 'printanswers');
-            $oSurvey->publicstatistics = $this->filterEmptyFields($oSurvey, 'publicstatistics');
-            $oSurvey->autoredirect = $this->filterEmptyFields($oSurvey, 'autoredirect');
-
-            // save into the database only if global settings are off
-            //if (getGlobalSetting('showxquestions') === 'choose'){
-                $oSurvey->showxquestions = $this->filterEmptyFields($oSurvey, 'showxquestions');
-            //}
-            //if (getGlobalSetting('showgroupinfo') === 'choose'){
-                $oSurvey->showgroupinfo = $this->filterEmptyFields($oSurvey, 'showgroupinfo');
-            //}
-            //if (getGlobalSetting('showqnumcode') === 'choose'){
-                $oSurvey->showqnumcode = $this->filterEmptyFields($oSurvey, 'showqnumcode');
-            //}
-            //if (getGlobalSetting('shownoanswer') == 2){  // Don't do exact comparison because the value could be from global settings table (string) or from config (integer)
-                $oSurvey->shownoanswer = $this->filterEmptyFields($oSurvey, 'shownoanswer');
-            //}
-            $oSurvey->showwelcome = $this->filterEmptyFields($oSurvey, 'showwelcome');
-            $oSurvey->showsurveypolicynotice = $this->filterEmptyFields($oSurvey, 'showsurveypolicynotice');
-            $oSurvey->allowprev = $this->filterEmptyFields($oSurvey, 'allowprev');
-            $oSurvey->questionindex = (int) $this->filterEmptyFields($oSurvey, 'questionindex');
-            $oSurvey->nokeyboard = $this->filterEmptyFields($oSurvey, 'nokeyboard');
-            $oSurvey->showprogress = $this->filterEmptyFields($oSurvey, 'showprogress');
-            $oSurvey->listpublic = $this->filterEmptyFields($oSurvey, 'listpublic');
-            $oSurvey->htmlemail = $this->filterEmptyFields($oSurvey, 'htmlemail');
-            $oSurvey->sendconfirmation = $this->filterEmptyFields($oSurvey, 'sendconfirmation');
-            $oSurvey->tokenanswerspersistence = $this->filterEmptyFields($oSurvey, 'tokenanswerspersistence');
-            $oSurvey->alloweditaftercompletion = $this->filterEmptyFields($oSurvey, 'alloweditaftercompletion');
-            $oSurvey->usecaptcha = Survey::saveTranscribeCaptchaOptions($oSurvey);
-            $oSurvey->emailresponseto = $this->filterEmptyFields($oSurvey, 'emailresponseto');
-            $oSurvey->emailnotificationto = $this->filterEmptyFields($oSurvey, 'emailnotificationto');
-            $googleanalyticsapikeysetting = $this->filterEmptyFields($oSurvey, 'googleanalyticsapikeysetting');
-            $oSurvey->googleanalyticsapikeysetting = $googleanalyticsapikeysetting;
-
-            if ($googleanalyticsapikeysetting == "Y") {
-                $oSurvey->googleanalyticsapikey = $this->filterEmptyFields($oSurvey, 'googleanalyticsapikey');
-            } elseif ($googleanalyticsapikeysetting == "G") {
-                $oSurvey->googleanalyticsapikey = "9999useGlobal9999";
-            } elseif ($googleanalyticsapikeysetting == "N") {
-                $oSurvey->googleanalyticsapikey = "";
-            }
-
-            $oSurvey->googleanalyticsstyle = $this->filterEmptyFields($oSurvey, 'googleanalyticsstyle');
-            $oSurvey->tokenlength = $this->filterEmptyFields($oSurvey, 'tokenlength');
-            $event = new PluginEvent('beforeSurveySettingsSave');
-            $event->set('modifiedSurvey', $oSurvey);
-            App()->getPluginManager()->dispatchEvent($event);
-            $aAfterApplyAttributes = $oSurvey->attributes;
-
-            if ($oSurvey->save()) {
-                if (!$hasSurveyLanguageSettingError) {
-                    Yii::app()->setFlashMessage(gT("Survey settings were successfully saved."));
-                } else {
-                    Yii::app()->setFlashMessage(gT("Survey settings were saved, but there where errors with some languages."), "warning");
-                }
-            } else {
-                Yii::app()->setFlashMessage(CHtml::errorSummary($oSurvey, CHtml::tag("p", array('class' => 'strong'), gT("Survey could not be updated, please fix the following error:"))), "error");
-            }
-        }
-        $oSurvey->refresh();
-
-        // Url params in json
-        if (Yii::app()->request->getPost('allurlparams', false) !== false) {
-            $aURLParams = json_decode(Yii::app()->request->getPost('allurlparams', ''), true) ?? [];
-            SurveyURLParameter::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
-            foreach ($aURLParams as $aURLParam) {
-                $aURLParam['parameter'] = trim((string) $aURLParam['parameter']);
-                if ($aURLParam['parameter'] == '' || !preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $aURLParam['parameter']) || $aURLParam['parameter'] == 'sid' || $aURLParam['parameter'] == 'newtest' || $aURLParam['parameter'] == 'token' || $aURLParam['parameter'] == 'lang') {
-                    continue; // this parameter name seems to be invalid - just ignore it
-                }
-                $aURLParam['targetqid']  = $aURLParam['qid'];
-                $aURLParam['targetsqid'] = $aURLParam['sqid'];
-                unset($aURLParam['actionBtn']);
-                unset($aURLParam['title']);
-                unset($aURLParam['id']);
-                unset($aURLParam['qid']);
-                unset($aURLParam['targetQuestionText']);
-                unset($aURLParam['sqid']);
-                if ($aURLParam['targetqid'] == '') {
-                    $aURLParam['targetqid'] = null;
-                }
-                if ($aURLParam['targetsqid'] == '') {
-                    $aURLParam['targetsqid'] = null;
-                }
-                $aURLParam['sid'] = $iSurveyID;
-
-                $param = new SurveyURLParameter();
-                foreach ($aURLParam as $k => $v) {
-                                    $param->$k = $v;
-                }
-                $param->save();
-            }
-        }
-        //This is SUPER important! Recalculating the ExpressionScript Engine state!
-        LimeExpressionManager::SetDirtyFlag();
-        $this->resetEM();
-
-        if (Yii::app()->request->getPost('responsejson', 0) == 1) {
-            $updatedFields = $this->updatedFields;
-            $this->updatedFields = [];
-            return Yii::app()->getController()->renderPartial(
-                '/admin/super/_renderJson',
-                array(
-                    'data' => [
-                        'success' => true,
-                        'updated' => $updatedFields,
-                        'DEBUG' => ['POST' => $_POST,
-                                    'reloaded' => $oSurvey->attributes,
-                                    'aURLParams' => $aURLParams ?? '',
-                                    'initial' => $aOldAttributes ?? '',
-                                    'afterApply' => $aAfterApplyAttributes ?? '']
-                    ],
-                ),
-                false,
-                false
-            );
-        } else {
-            ////////////////////////////////////////
-            if (Yii::app()->request->getPost('close-after-save') === 'true') {
-                $this->getController()->redirect(array('surveyAdministration/view/surveyid/' . $iSurveyID));
-            }
-
-            $referrer = Yii::app()->request->urlReferrer;
-            if ($referrer) {
-                $this->getController()->redirect(array($referrer));
-            } else {
-                $this->getController()->redirect(array('/surveyAdministration/rendersidemenulink/subaction/generalsettings/surveyid/' . $iSurveyID));
-            }
-        }
-    }
-    */
 
     /**
      * Action for the page "General settings".
@@ -788,45 +444,6 @@ class Database extends SurveyCommonAction
             Yii::app()->setFlashMessage(CHtml::errorSummary($oSurvey, CHtml::tag("p", array('class' => 'strong'), gT("Survey could not be updated, please fix the following error:"))), "error");
         }
         Yii::app()->end();
-    }
-
-    /**
-     * @param Survey $oSurvey
-     * @param string $fieldArrayName
-     * @param mixed $newValue
-     * @return mixed
-     */
-    private function filterEmptyFields($oSurvey, $fieldArrayName, $newValue = null)
-    {
-        $aSurvey = $oSurvey->attributes;
-
-        if ($newValue === null) {
-            $newValue = App()->request->getPost($fieldArrayName, null);
-        }
-
-        if ($newValue === null) {
-            $newValue = $aSurvey[$fieldArrayName] ?? $oSurvey->{$fieldArrayName};
-        } else {
-            $this->updatedFields[] = $fieldArrayName;
-        }
-
-        $newValue = trim((string) $newValue);
-
-        $options = $this->updateableFields[$fieldArrayName];
-
-        switch ($options['type']) {
-            case 'yesno':
-                if ($newValue != 'Y' && $newValue != 'N' && $newValue != 'I') {
-                    $newValue = (int) $newValue;
-                    $newValue = ($newValue === 1) ? 'Y' : 'N';
-                }
-                break;
-            case 'Int':
-                $newValue = (int) $newValue;
-                break;
-        }
-
-        return $newValue;
     }
 
     private function resetEM()
