@@ -113,7 +113,7 @@
                 <option data-value="css/variations/theme_apple.css" value="apple">Apple</option>
                 <option data-value="css/variations/theme_blueberry.css" value="blueberry">Blueberry</option>
                 <option data-value="css/variations/theme_grape.css" value="grape">Grape</option>
-                <option data-value="css/variations/theme_litchi.css" value="litchi">Litchi</option>
+                <option data-value="css/variations/theme_mango.css" value="mango">Mango</option>
             </dropdownoptions>
         </cssframework>
     </options>
@@ -168,7 +168,7 @@
                     <file type="css">./css/variations/theme_apple.css</file>
                     <file type="css">./css/variations/theme_blueberry.css</file>
                     <file type="css">./css/variations/theme_grape.css</file>
-                    <file type="css">./css/variations/theme_litchi.css</file>
+                    <file type="css">./css/variations/theme_mango.css</file>
                     <file type="js">./scripts/theme.js</file>
                     <file type="css">./css/custom.css</file>
                     <file type="js">./scripts/custom.js</file>
@@ -185,7 +185,7 @@
                     <file type="css">./css/variations/theme_apple.css</file>
                     <file type="css">./css/variations/theme_blueberry.css</file>
                     <file type="css">./css/variations/theme_grape.css</file>
-                    <file type="css">./css/variations/theme_litchi.css</file>
+                    <file type="css">./css/variations/theme_mango.css</file>
                     <file type="js">./scripts/theme.js</file>
                     <file type="css">./css/custom.css</file>
                     <file type="js">./scripts/custom.js</file>
@@ -212,7 +212,7 @@
                     <file type="css">./css/variations/theme_apple.css</file>
                     <file type="css">./css/variations/theme_blueberry.css</file>
                     <file type="css">./css/variations/theme_grape.css</file>
-                    <file type="css">./css/variations/theme_litchi.css</file>
+                    <file type="css">./css/variations/theme_mango.css</file>
                     <file type="js">./scripts/theme.js</file>
                     <file type="css">./css/custom.css</file>
                     <file type="js">./scripts/custom.js</file>
@@ -228,7 +228,7 @@
                     <file type="css">./css/variations/theme_apple.css</file>
                     <file type="css">./css/variations/theme_blueberry.css</file>
                     <file type="css">./css/variations/theme_grape.css</file>
-                    <file type="css">./css/variations/theme_litchi.css</file>
+                    <file type="css">./css/variations/theme_mango.css</file>
                     <file type="js">./scripts/theme.js</file>
                     <file type="css">./css/custom.css</file>
                     <file type="js">./scripts/custom.js</file>
@@ -245,7 +245,7 @@
                     <file type="css">./css/variations/theme_apple.css</file>
                     <file type="css">./css/variations/theme_blueberry.css</file>
                     <file type="css">./css/variations/theme_grape.css</file>
-                    <file type="css">./css/variations/theme_litchi.css</file>
+                    <file type="css">./css/variations/theme_mango.css</file>
                     <file type="js">./scripts/theme.js</file>
                     <file type="css">./css/custom.css</file>
                     <file type="js">./scripts/custom.js</file>
@@ -267,7 +267,7 @@
                     <file type="css">./css/variations/theme_apple.css</file>
                     <file type="css">./css/variations/theme_blueberry.css</file>
                     <file type="css">./css/variations/theme_grape.css</file>
-                    <file type="css">./css/variations/theme_litchi.css</file>
+                    <file type="css">./css/variations/theme_mango.css</file>
                     <file type="js">./scripts/theme.js</file>
                     <file type="css">./css/custom.css</file>
                     <file type="js">./scripts/custom.js</file>
@@ -283,7 +283,7 @@
                     <file type="css">./css/variations/theme_apple.css</file>
                     <file type="css">./css/variations/theme_blueberry.css</file>
                     <file type="css">./css/variations/theme_grape.css</file>
-                    <file type="css">./css/variations/theme_litchi.css</file>
+                    <file type="css">./css/variations/theme_mango.css</file>
                     <file type="js">./scripts/theme.js</file>
                     <file type="css">./css/custom.css</file>
                     <file type="js">./scripts/custom.js</file>
@@ -299,7 +299,7 @@
                     <file type="css">./css/variations/theme_apple.css</file>
                     <file type="css">./css/variations/theme_blueberry.css</file>
                     <file type="css">./css/variations/theme_grape.css</file>
-                    <file type="css">./css/variations/theme_litchi.css</file>
+                    <file type="css">./css/variations/theme_mango.css</file>
                     <file type="js">./scripts/theme.js</file>
                     <file type="css">./css/custom.css</file>
                     <file type="js">./scripts/custom.js</file>
