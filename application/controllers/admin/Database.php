@@ -15,11 +15,7 @@
 
 use LimeSurvey\Helpers\questionHelper;
 
-use LimeSurvey\Models\Services\Exception\{
-    ExceptionPersistError,
-    ExceptionNotFound,
-    ExceptionPermissionDenied
-};
+use LimeSurvey\Models\Services\Exception\ExceptionPersistError;
 
 /**
 * Database
