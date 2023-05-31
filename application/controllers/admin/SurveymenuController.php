@@ -230,6 +230,7 @@ class SurveymenuController extends SurveyCommonAction
             Yii::app()->user->setFlash('error', gT("Access denied"));
             $this->getController()->redirect(Yii::app()->createUrl('/admin'));
         }
+        $debug = App()->getConfig('debug');
 
         if (Yii::app()->request->isPostRequest) {
             $menuid = Yii::app()->request->getPost('menuid', 0);
