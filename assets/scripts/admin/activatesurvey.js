@@ -15,10 +15,15 @@ function openModalActivate(){
             let modalDialog = $('#surveyactivation-modal');
 
             modalDialog.find('.modal-body').empty().html(result.html);
+            if (result.checkFailed) {
+                //footer buttons have to be different, if any activation-checks failed
+                modalDialog.find('.modal-footer').empty().html(result.footerButton);
+            }
             modalDialog.modal('show');
         },
-        error: function () {
+        error: function (result) {
             console.log('error: no data from request for activation modal');
+            console.log(result);
         }
     });
 }

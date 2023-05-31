@@ -35,14 +35,10 @@ App()->getClientScript()->registerScriptFile(
         <?php }
     } ?>
 </ul>
+<!--
+<button class="btn btn-outline-secondary" id="ajaxAllConsistency">Fix numbering</button>
+-->
 <p>
     <?php eT("The survey cannot be activated until these problems have been resolved."); ?>
 </p>
 
-<p>
-    <button class="btn btn-outline-secondary" id="ajaxAllConsistency"><?= gT("Resolve all issues") ?></button>
-    <a class="btn btn-outline-secondary"
-       href="<?php echo $this->createUrl("surveyAdministration/view/surveyid/$surveyid"); ?>" role="button">
-        <?php eT("Return to survey"); ?>
-    </a>
-</p>

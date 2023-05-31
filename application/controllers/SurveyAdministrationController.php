@@ -1774,7 +1774,9 @@ class SurveyAdministrationController extends LSBaseController
         Yii::app()->loadHelper("admin/activate");
         $failedgroupcheck = checkGroup($surveyId);
         $failedcheck = checkQuestions($surveyId, $surveyId);
-        if ((isset($failedcheck) && $failedcheck) || (isset($failedgroupcheck) && $failedgroupcheck)) {
+        $checkFailed = (isset($failedcheck) && $failedcheck) || (isset($failedgroupcheck) && $failedgroupcheck);
+        $footerButton = '';
+        if ($checkFailed) {
             //survey can not be activated
             $html = $this->renderPartial(
                 '/surveyAdministration/surveyActivation/_activateSurveyCheckFailed',
@@ -1783,6 +1785,11 @@ class SurveyAdministrationController extends LSBaseController
                 'failedgroupcheck' => $failedgroupcheck,
                 'surveyid' => $oSurvey->sid
                 ],
+                true
+            );
+            $footerButton = $this->renderPartial(
+                '/surveyAdministration/surveyActivation/_failedFooterBtn',
+                [],
                 true
             );
         } else {
@@ -1806,6 +1813,8 @@ class SurveyAdministrationController extends LSBaseController
                 'data' => [
                     'success' => true,
                     'html' => $html,
+                    'checkFailed' => $checkFailed,
+                    'footerButton' => $footerButton
                 ]
             ],
         );
@@ -1866,18 +1875,6 @@ class SurveyAdministrationController extends LSBaseController
         } else {
             $warning = (isset($aResult['warning'])) ? true : false;
             $allowregister = $survey->isAllowRegister; //todo: where to ask for this one here
-            /*
-             * ---> this is not necessary any more
-             *
-            $onclickAction = convertGETtoPOST(
-                Yii::app()->getController()->createUrl("admin/tokens/sa/index/surveyid/" . $surveyId)
-            );
-            $closedOnclickAction = convertGETtoPOST(
-                Yii::app()->getController()->createUrl("admin/tokens/sa/index/surveyid/" . $surveyId));
-            $noOnclickAction = "window.location.href='" . (Yii::app()->getController()->createUrl(
-                "surveyAdministration/view/surveyid/" . $surveyId)
-                ) . "'";
-            */
 
             if ($openAccessMode !== null) {
                 switch ($openAccessMode) {
@@ -1889,7 +1886,6 @@ class SurveyAdministrationController extends LSBaseController
                             'surveyid' => $surveyId,
                             'surveyActivationFeedback' => 'surveyActivationFeedback'
                         ]);
-                        //$this->redirect(['/admin/tokens/sa/index/surveyid/' . $surveyId]);
                         break;
                     default: //this should never happen exception ...
                 }
@@ -1902,13 +1898,9 @@ class SurveyAdministrationController extends LSBaseController
                 'survey'              => $survey,
                 'warning'             => $warning,
                 'allowregister'       => $allowregister,
-              //  'onclickAction'       => $onclickAction,
-              //  'closedOnclickAction' => $closedOnclickAction,
-              //  'noOnclickAction'     => $noOnclickAction,
             );
             $this->aData = $aData;
             $this->render('surveyActivation/_activation_feedback', $activationData);
-            //todo: this action here should be an ajax-request opening another modal aftwards
         }
     }
 

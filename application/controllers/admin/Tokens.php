@@ -2725,7 +2725,7 @@ class Tokens extends SurveyCommonAction
                     $aData
                 );
             }
-        } else {
+        } else { //this is the case when "allowPublicRegistration" = Y and no token table has been created
             Yii::app()->loadHelper('database');
             Survey::model()->updateByPk($iSurveyId, array('tokenencryptionoptions' => ls_json_encode($aTokenencryptionoptions)));
             $result = Yii::app()->db->createCommand(dbSelectTablesLike("{{old_tokens_" . intval($iSurveyId) . "_%}}"))->queryAll();
