@@ -19,15 +19,10 @@
 #}
 
 <!-- outer frame container -->
-{% set colClass = 'col-lg-8' %}
-{% if aSurveyInfo.format == 'S' and include_content == './subviews/content/main.twig' %}
-        {#        only for question when in mode "question by question" #}
-    {% set colClass = 'col-lg-6' %}
-{% endif %}
 <div class="{{ aSurveyInfo.class.outerframe }}  {% if (aSurveyInfo.options.container == "on") %} container-md {% else %} container-fluid {% endif %} "
      id="{{ aSurveyInfo.id.outerframe }}" {{ aSurveyInfo.attr.outerframe }} >
     <div class="row">
-        <div class="col-centered {{ colClass }}">
+        <div class="col-centered col-lg-8">
             {# Which file to include for content is decided inside the layout #}
             {% include './subviews/content/mainrow.twig' with {'include_content': include_content } %}
         </div>
