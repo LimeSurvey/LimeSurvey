@@ -832,6 +832,15 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['es']['radixpoint'] = 1;
     $supportedLanguages['es']['momentjs'] = 'es';
 
+    // Spanish (informal)
+    $supportedLanguages['es-informal']['description'] = gT('Spanish (informal)');
+    $supportedLanguages['es-informal']['nativedescription'] = 'Espa&#241;ol (informal)';
+    $supportedLanguages['es-informal']['rtl'] = false;
+    $supportedLanguages['es-informal']['dateformat'] = 5;
+    $supportedLanguages['es-informal']['radixpoint'] = 1;
+    $supportedLanguages['es-informal']['momentjs'] = 'es';
+
+
     // Spanish (Argentina)
     $supportedLanguages['es-AR']['description'] = gT('Spanish (Argentina)');
     $supportedLanguages['es-AR']['nativedescription'] = 'Espa&#241;ol rioplatense';
