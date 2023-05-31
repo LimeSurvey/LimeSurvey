@@ -5,6 +5,9 @@
         font-weight : $font-weight-600;
         line-height : 32px;
     }
+    .ls-question-message {
+        color: $g-900;
+    }
     .question-number:empty,
     .question-code:empty {
         display : none

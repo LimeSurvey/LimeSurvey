@@ -15136,6 +15136,9 @@ a [class^=ri-], a [class*=" ri-"] {
   font-weight: 600;
   line-height: 32px;
 }
+.question-container .ls-question-message {
+  color: #1E1E1E;
+}
 .question-container .question-number:empty,
 .question-container .question-code:empty {
   display: none;
