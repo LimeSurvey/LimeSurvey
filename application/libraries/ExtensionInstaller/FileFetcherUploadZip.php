@@ -41,6 +41,7 @@ class FileFetcherUploadZip extends FileFetcher
     public function fetch()
     {
         $this->checkFileSizeError();
+        $this->clearTmpdir();
         $this->extractZipFile($this->getTempdir());
     }
 
