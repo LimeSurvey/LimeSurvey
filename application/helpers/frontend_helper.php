@@ -2072,7 +2072,7 @@ function display_first_page($thissurvey, $aSurveyInfo)
     // WHY HERE ?????
     $_SESSION['survey_'.$surveyid]['LEMpostKey'] = mt_rand();
 
-    $loadsecurity = returnGlobal('loadsecurity', true);
+
 
     $thissurvey['EM']['ScriptsAndHiddenInputs']  = \CHtml::hiddenField('sid', $surveyid, array('id'=>'sid'));
     $thissurvey['EM']['ScriptsAndHiddenInputs'] .= \CHtml::hiddenField('lastgroupname', '_WELCOME_SCREEN_', array('id'=>'lastgroupname')); //This is to ensure consistency with mandatory checks, and new group test
@@ -2082,8 +2082,10 @@ function display_first_page($thissurvey, $aSurveyInfo)
         $thissurvey['EM']['ScriptsAndHiddenInputs'] .= \CHtml::hiddenField('token', $_SESSION['survey_'.$surveyid]['token'], array('id'=>'token'));
     }
 
-    if (isset($loadsecurity)) {
-        $thissurvey['EM']['ScriptsAndHiddenInputs'] .= "\n<input type='hidden' name='loadsecurity' value='$loadsecurity' id='loadsecurity' />\n";
+    /* Get the loadsecurity parameters from captcha only by POST value and set it in current page (1st position) */
+    $loadsecurity = App()->getRequest()->getPost('loadsecurity');
+    if (!empty($loadsecurity)) {
+        $thissurvey['EM']['ScriptsAndHiddenInputs'] .= \CHtml::hiddenField('loadsecurity', $loadsecurity, array('id' => 'loadsecurity'));
     }
 
     $thissurvey['EM']['ScriptsAndHiddenInputs'] .= LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
