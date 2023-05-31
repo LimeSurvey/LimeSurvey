@@ -382,7 +382,7 @@ abstract class PluginBase implements iPlugin
         $fullAlias = $alias . '.views.' . $viewfile;
 
         if (isset($data['plugin'])) {
-            throw new InvalidArgumentException("Key 'plugin' in data variable is for plugin base only. Please use another key name.");
+            throw new \InvalidArgumentException("Key 'plugin' in data variable is for plugin base only. Please use another key name.");
         }
 
         // Provide this so we can use $plugin->gT() in plugin views
@@ -619,7 +619,7 @@ abstract class PluginBase implements iPlugin
             $cssToRegister = \Yii::app()->getAssetManager()->publish(
                 \Yii::getPathOfAlias('userdir') . '/plugins/' . $parentPlugin . '/' . $relativePathToCss
             );
-        } elseif (file_exists(YiiBase::getPathOfAlias('webroot') . '/plugins/' . $parentPlugin . '/' . $relativePathToCss)) {
+        } elseif (file_exists(\Yii::getPathOfAlias('webroot') . '/plugins/' . $parentPlugin . '/' . $relativePathToCss)) {
             $cssToRegister = \Yii::app()->getAssetManager()->publish(
                 \Yii::getPathOfAlias('webroot') . '/plugins/' . $parentPlugin . '/' . $relativePathToCss
             );
