@@ -32,7 +32,9 @@
             ],
 			"LimeSurvey\\Models\\Services\\": "application/models/services",
 			"LimeSurvey\\Datavalueobjects\\": "application/datavalueobjects",
-			"LimeSurvey\\Exceptions\\": "application/exceptions"
+			"LimeSurvey\\Exceptions\\": "application/exceptions",
+			"LimeSurvey\\": "application/libraries",
+			"ls\\tests\\": "tests"
 		}
 	},
 	"require": {
@@ -50,7 +52,9 @@
 		"html2text/html2text": "^4.3",
 		"pear/ole": "1.*@dev",
 		"pear/spreadsheet_excel_writer": "^0.9.7",
-		"vintagesucks/twig-renderer": "^3.0"
+		"vintagesucks/twig-renderer": "^3.0",
+		"goldspecdigital/oooas": "^2.10",
+		"php-di/php-di": "6.4.0"
 	},
     "config": {
         "vendor-dir": "vendor",
@@ -66,9 +70,15 @@
         "phpunit/phpunit": "^8.0",
         "vimeo/psalm": "^4.29",
 		"misantron/dbunit": "^5.1",
-		"tebazil/yii1-db-seeder": "^0.0.0"
+		"tebazil/yii1-db-seeder": "^0.0.0",
+		"mockery/mockery": "^1.5"
     },
     "scripts": {
+		"openapi": [
+			"php ./open-api-gen.php v1"
+		],
+		"phpunit": "./vendor/bin/phpunit --testdox --coverage-text",
+		"phpunit-api": "./vendor/bin/phpunit --testdox --coverage-text tests/unit/api/",
         "test": [
             "./tests/bin/lint-tests",
             "./tests/bin/lint-application",
