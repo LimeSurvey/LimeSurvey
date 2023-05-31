@@ -72,7 +72,7 @@
     <!-- for checkbox icons, use the Unicode of the charcter (eg: http://fontawesome.io/icon/check/ is f00c ) -->
     <options>
         <!-- simple options -->
-        <container type="buttons" category="Simple options" width="4" title="Survey container" options="on|off" optionlabels="Yes|No">on</container>
+        <container type="buttons" category="Simple options" width="4" title="Survey container" options="on|off" optionlabels="Yes|No">off</container>
         <zebrastriping type="buttons" category="Simple options" width="4" title="Zebra-striped questions" options="on|off" optionlabels="Yes|No">off</zebrastriping>
         <stickymatrixheaders type="buttons" category="Simple options" width="4" title="Sticky array headers" options="on|off" optionlabels="Yes|No">off</stickymatrixheaders>
         <greyoutselected type="buttons" category="Simple options" width="4" title="Dim answered array rows" options="on|off" optionlabels="Yes|No">off</greyoutselected>
