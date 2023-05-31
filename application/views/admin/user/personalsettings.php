@@ -354,8 +354,8 @@ echo $oQuestionSelector->getModal();
                                         'name'          => 'showScriptEdit',
                                         'checkedOption' => $aUserSettings['showScriptEdit'] ?? 0,
                                         'selectOptions' =>    [
-                                            '0' => gT("No", 'unescaped'),
                                             '1' => gT("Yes", 'unescaped'),
+                                            '0' => gT("No", 'unescaped'),
                                         ],
                                         'htmlOptions' => []
                                     ]); ?>
@@ -372,8 +372,8 @@ echo $oQuestionSelector->getModal();
                                         'name'          => 'noViewMode',
                                         'checkedOption' => $aUserSettings['noViewMode'] ?? 0,
                                         'selectOptions' =>    [
-                                            '0' => gT("No", 'unescaped'),
                                             '1' => gT("Yes", 'unescaped'),
+                                            '0' => gT("No", 'unescaped'),
                                         ],
                                         'htmlOptions' => []
                                     ]); ?>
@@ -391,8 +391,8 @@ echo $oQuestionSelector->getModal();
                                         'name'          => 'lock_organizer',
                                         'checkedOption' => $aUserSettings['lock_organizer'] ?? 0,
                                         'selectOptions' =>    [
-                                            '0' => gT("No", 'unescaped'),
                                             '1' => gT("Yes", 'unescaped'),
+                                            '0' => gT("No", 'unescaped'),
                                         ],
                                         'htmlOptions' => []
                                     ]); ?>
@@ -409,9 +409,9 @@ echo $oQuestionSelector->getModal();
                                         'name'          => 'createsample',
                                         'checkedOption' => $aUserSettings['createsample'] ?? 'default',
                                         'selectOptions' =>    [
-                                            'default' => gT("Default", 'unescaped'),
-                                            '0' => gT("No", 'unescaped'),
                                             '1' => gT("Yes", 'unescaped'),
+                                            '0' => gT("No", 'unescaped'),
+                                            'default' => gT("Default", 'unescaped'),
                                         ],
                                         'htmlOptions' => []
                                     ]); ?>
