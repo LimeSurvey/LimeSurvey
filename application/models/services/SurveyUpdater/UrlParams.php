@@ -1,6 +1,6 @@
 <?php
 
-namespace LimeSurvey\Models\Services;
+namespace LimeSurvey\Models\Services\SurveyUpdater;
 
 use SurveyURLParameter;
 use LimeSurvey\Models\Services\Exception\{
@@ -10,11 +10,11 @@ use LimeSurvey\Models\Services\Exception\{
 };
 
 /**
- * Service SurveyUpdaterUrlParams
+ * Survey Updater Service UrlParams
  *
  * Dependencies are injected to enable mocking.
  */
-class SurveyUpdaterUrlParams
+class UrlParams
 {
     private ?SurveyURLParameter $modelSurveyUrlParameter = null;
 

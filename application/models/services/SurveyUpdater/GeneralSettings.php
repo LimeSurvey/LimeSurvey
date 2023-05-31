@@ -1,6 +1,6 @@
 <?php
 
-namespace LimeSurvey\Models\Services;
+namespace LimeSurvey\Models\Services\SurveyUpdater;
 
 use Survey;
 use Permission;
@@ -15,13 +15,13 @@ use LimeSurvey\Models\Services\Exception\{
 };
 
 /**
- * Service SurveyUpdaterGeneralSettings
+ * Survey Updater Service GeneralSettings
  *
  * Service class for survey language setting updating.
  *
  * Dependencies are injected to enable mocking.
  */
-class SurveyUpdaterGeneralSettings
+class GeneralSettings
 {
     private ?Permission $modelPermission = null;
     private ?Survey $modelSurvey = null;

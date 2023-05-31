@@ -2,6 +2,11 @@
 
 namespace LimeSurvey\Models\Services;
 
+use LimeSurvey\Models\Services\SurveyUpdater\{
+    LanguageSettings,
+    GeneralSettings,
+    UrlParams
+};
 use LimeSurvey\Models\Services\Exception\{
     ExceptionPersistError,
     ExceptionNotFound,
@@ -9,7 +14,7 @@ use LimeSurvey\Models\Services\Exception\{
 };
 
 /**
- * Service SurveyUpdater
+ * Survey Updater Service
  *
  * Service class for update survey settings.
  *
@@ -17,21 +22,21 @@ use LimeSurvey\Models\Services\Exception\{
  */
 class SurveyUpdater
 {
-    private ?SurveyUpdaterLanguageSettings $surveyUpdaterLanguageSettings = null;
-    private ?SurveyUpdaterGeneralSettings $surveyUpdaterGeneralSettings = null;
-    private ?SurveyUpdaterUrlParams $surveyUpdaterUrlParams = null;
+    private ?LanguageSettings $languageSettings = null;
+    private ?GeneralSettings $generalSettings = null;
+    private ?UrlParams $urlParams = null;
     private ?ExpressionManager $expressionManager = null;
 
     public function __construct(
-        SurveyUpdaterLanguageSettings $surveyUpdaterLanguageSettings,
-        SurveyUpdaterGeneralSettings $surveyUpdaterGeneralSettings,
-        SurveyUpdaterUrlParams $surveyUpdaterUrlParams,
+        LanguageSettings $languageSettings,
+        GeneralSettings $generalSettings,
+        UrlParams $urlParams,
         ExpressionManager $expressionManager
     )
     {
-        $this->surveyUpdaterLanguageSettings = $surveyUpdaterLanguageSettings;
-        $this->surveyUpdaterGeneralSettings = $surveyUpdaterGeneralSettings;
-        $this->surveyUpdaterUrlParams = $surveyUpdaterUrlParams;
+        $this->languageSettings = $languageSettings;
+        $this->generalSettings = $generalSettings;
+        $this->urlParams = $urlParams;
         $this->expressionManager = $expressionManager;
     }
 
@@ -47,18 +52,18 @@ class SurveyUpdater
      */
     public function update($surveyId, array $input)
     {
-        $this->surveyUpdaterLanguageSettings->update(
+        $this->languageSettings->update(
             $surveyId,
             $input
         );
 
-        $meta = $this->surveyUpdaterGeneralSettings->update(
+        $meta = $this->generalSettings->update(
             $surveyId,
             $input
         );
 
         if (!empty($input['url_params'])) {
-            $this->surveyUpdaterUrlParams->update(
+            $this->urlParams->update(
                 $surveyId,
                 $input['url_params']
             );
