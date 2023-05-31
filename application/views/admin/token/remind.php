@@ -192,6 +192,7 @@
 
         <?php
         App()->getClientScript()->registerScript("Tokens:BindReminderView", "
+        LS.renderBootstrapSwitch();
         $('#send-reminders-button').on('click', function(){
             $('#sendreminder').submit();
         })

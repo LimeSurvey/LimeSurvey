@@ -9,7 +9,7 @@ class FailedLoginAttempTest extends TestBaseClass
     public function testAddDeleteAttemp()
     {
         // Save Ip
-        $ip = substr(getIPAddress(), 0, 40);
+        $ip = substr(getRealIPAddress(), 0, 40);
 
         // Make sure there are no records for the ip
         FailedLoginAttempt::model()->deleteAttempts(FailedLoginAttempt::TYPE_LOGIN);

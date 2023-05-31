@@ -206,7 +206,7 @@ class QuotasController extends LSBaseController
 
         if (isset($_POST['Quota'])) {
             $quotaService = new \LimeSurvey\Models\Services\Quotas($oSurvey);
-            if ($quotaService->editQuota($oQuota, $_POST['Quota'])) {
+            if ($quotaService->editQuota($oQuota, $_POST['Quota']) && !$oQuota->getErrors()) {
                 Yii::app()->user->setFlash('success', gT("Quota saved"));
                 $this->redirect($this->createUrl("quotas/index/surveyid/$surveyid"));
             } else {

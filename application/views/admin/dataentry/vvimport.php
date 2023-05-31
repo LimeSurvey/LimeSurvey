@@ -55,7 +55,7 @@
                 </div>
             </div>
 
-            <div class="mb-3 d-none" id="insertmethod-container">
+            <div class="mb-3" id="insertmethod-container">
                 <label for="insertmethod" class=" form-label">
                     <?php eT("When an imported record matches an existing record ID:"); ?>
                 </label>
@@ -159,19 +159,17 @@
 
 </div></div></div>
 <?php
-$excludeRecordActive = <<<JAVASCRIPT
+App()->getClientScript()->registerScript('VVImportBSSwitcher', "
+LS.renderBootstrapSwitch();
 
-$('#noid_1').on('change', function (evt) {
-    $('#insertmethod-container').addClass('d-none');
-    $('#insertmethod').attr('disabled','disabled');
+$('#noid').on('switchChange.bootstrapSwitch', function(event, state) {
+    if (!state){
+        $('#insertmethod').removeAttr('disabled');
+        $('#insertmethod-container').show('slow');
+    }else{
+        $('#insertmethod').attr('disabled','disabled');
+        $('#insertmethod-container').hide('slow');
+    }
 });
-
-$('#noid_2').on('change', function (evt) {
-    $('#insertmethod-container').removeClass('d-none');
-    $('#insertmethod').removeAttr('disabled');
-});
-JAVASCRIPT;
-
-
-App()->getClientScript()->registerScript('VVImportBS5Switcher', $excludeRecordActive, LSYii_ClientScript::POS_POSTSCRIPT);
+", LSYii_ClientScript::POS_POSTSCRIPT);
 ?>
