@@ -278,7 +278,7 @@ class SurveyPermissions
         $isSaved = true;
 
         if (!$this->canManageSurveyPermissionsForUser($userId)) {
-            throw new \Exception(gT("No permission"));
+            throw new \LSUserException(403, gT("No permission."));
         }
 
         //delete current survey permissions and reset the new ones
