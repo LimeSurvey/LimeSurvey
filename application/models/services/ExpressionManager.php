@@ -38,17 +38,17 @@ class ExpressionManager
      */
     public function reset($surveyId)
     {
-        $oSurvey = $this->modelSurvey->findByPk($surveyId);
+        $survey = $this->modelSurvey->findByPk($surveyId);
         // UpgradeConditionsToRelevance SetDirtyFlag too
         LimeExpressionManager::SetDirtyFlag();
         LimeExpressionManager::UpgradeConditionsToRelevance(
-            $this->iSurveyID
+            $surveyId
         );
         // Deactivate _UpdateValuesInDatabase
         LimeExpressionManager::SetPreviewMode('database');
         LimeExpressionManager::StartSurvey(
-            $oSurvey->sid, 'survey',
-            $oSurvey->attributes,
+            $surveyId, 'survey',
+            $survey->attributes,
             true
         );
         LimeExpressionManager::StartProcessingPage(
@@ -60,7 +60,7 @@ class ExpressionManager
         foreach ($aGrouplist as $aGroup) {
             LimeExpressionManager::StartProcessingGroup(
                 $aGroup['gid'],
-                $oSurvey->anonymized != 'Y',
+                $survey->anonymized != 'Y',
                 $surveyId
             );
             LimeExpressionManager::FinishProcessingGroup();

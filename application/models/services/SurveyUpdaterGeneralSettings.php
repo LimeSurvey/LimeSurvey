@@ -153,7 +153,15 @@ class SurveyUpdaterGeneralSettings
         $surveyNotActive = $survey->active != 'Y';
 
         return [
-            'owner_id' => [],
+            'owner_id' => [
+                'canUpdate' => isset($this->yiiApp->session) && (
+                    $survey->owner_id == $this->yiiApp->session['loginID']
+                    || $this->modelPermission->hasGlobalPermission(
+                    'superadmin',
+                    'read'
+                    )
+                )
+            ],
             'admin' => [],
             'format' => [],
             'expires' =>  ['type' => static::FIELD_TYPE_DATETIME],
@@ -219,7 +227,18 @@ class SurveyUpdaterGeneralSettings
             'tokenlength' => [],
             'adminemail' => [],
             'bounce_email' => [],
-            'gsid' => ['default' => 1]
+            'gsid' => ['default' => 1],
+
+
+            // from Database::actionUpdateSurveyLocaleSettingsGeneralSettings()
+            'language' => [],
+            'additional_languages' => [],
+            'admin' => [],
+            'adminemail' => [],
+            'bounce_email' => [],
+            'gsid' => [],
+            'format' => [],
+            'template' => []
         ];
     }
 
@@ -315,15 +334,35 @@ class SurveyUpdaterGeneralSettings
             break;
         }
 
-        if ($field == 'tokenlength') {
-            $value = (int) (
-                (
-                    ($value  < 5 || $value  > 36)
-                    && $value != -1
-                )
-                ? 15
-                : $value
-            );
+        switch ($field) {
+            case 'tokenlength':
+                $value = (int) (
+                    (
+                        ($value  < 5 || $value  > 36)
+                        && $value != -1
+                    )
+                    ? 15
+                    : $value
+                );
+            break;
+            case 'additional_languages':
+                if (is_array($value)) {
+                    if (
+                        (
+                            $index = array_search(
+                            $survey->language,
+                            $value
+                            )
+                        ) !== false
+                    ) {
+                        unset($value[$index]);
+                    }
+                    $value = implode(
+                        ' ',
+                        $value
+                    );
+                }
+            break;
         }
 
         $survey->{$field} = $value;
