@@ -18,6 +18,7 @@ class SessionKeyRelease implements CommandInterface
      * Constructor
      *
      * @param AuthSession $authSession
+     * @param ResponseFactory $responseFactory
      */
     public function __construct(
         AuthSession $authSession,
@@ -32,8 +33,8 @@ class SessionKeyRelease implements CommandInterface
      * Run session key release command.
      *
      * @access public
-     * @param \LimeSurvey\Api\Command\Request\Request $request
-     * @return \LimeSurvey\Api\Command\Response\Response
+     * @param Request $request
+     * @return Response
      */
     public function run(Request $request)
     {

@@ -2,6 +2,8 @@
 
 namespace LimeSurvey\Api\Command\V1\Exception;
 
-class ExceptionInvalidUser extends \LimeSurvey\Api\Command\Exception
+use LimeSurvey\Api\Command\ApiCommandException;
+
+class ExceptionInvalidUser extends ApiCommandException
 {
 }

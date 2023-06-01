@@ -2,6 +2,6 @@
 
 namespace LimeSurvey\Api;
 
-class Exception extends \Exception
+class ApiException extends \Exception
 {
 }

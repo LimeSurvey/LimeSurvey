@@ -9,6 +9,10 @@ class FormatterDateTimeToJson implements
     private $revert = false;
     private $inputTimezone = 'UTC';
 
+    /**
+     * @param bool $revert If true performs reverse format conversion
+     * @param bool $inputTimezone Defaults to date_default_timezone_get()
+     */
     public function __construct($revert = false, $inputTimezone = null)
     {
         $this->revert = $revert;
@@ -63,6 +67,15 @@ class FormatterDateTimeToJson implements
         );
     }
 
+    /**
+     * Date format
+     *
+     * @param ?string $value
+     * @param string $inputTimeZone
+     * @param string $outputTimezone
+     * @param string $outputFormat
+     * @return string
+     */
     private function dateFormat(
         $value,
         $inputTimeZone, $outputTimezone,

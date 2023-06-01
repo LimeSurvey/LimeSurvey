@@ -15,6 +15,12 @@ use LimeSurvey\Api\Command\Response\{
 
 class RendererBasic implements RendererInterface
 {
+    /**
+     * Return Response
+     *
+     * @param Response $response
+     * @return void
+     */
     public function returnResponse(Response $response)
     {
         $this->renderJSON(
@@ -23,6 +29,12 @@ class RendererBasic implements RendererInterface
         );
     }
 
+    /**
+     * Return Exception Response
+     *
+     * @param Exception $exception
+     * @return void
+     */
     public function returnException(Exception $exception)
     {
         $error = [];

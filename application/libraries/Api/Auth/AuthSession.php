@@ -34,9 +34,9 @@ class AuthSession
         if (!$identity->authenticate()) {
             if ($identity->errorMessage) {
                 // don't return an empty string
-                return new ExceptionInvalidUser($identity->errorMessage);
+                throw new ExceptionInvalidUser($identity->errorMessage);
             }
-            throw new ExceptionInvalidUser('Login failed');
+            throw new ExceptionInvalidUser('Invalid user name or password');
         } else {
             $this->jumpStartSession($sUsername);
             $sSessionKey = Yii::app()->securityManager->generateRandomString(32);

@@ -1,6 +1,6 @@
 <?php
 
-use \LimeSurvey\Api\Command\V1\{
+use LimeSurvey\Api\Command\V1\{
     SurveyList,
     SurveyDetail,
     SurveyPatch
@@ -11,12 +11,6 @@ use LimeSurvey\Api\Rest\V1\SchemaFactory\{
     SchemaFactorySurveyDetail,
     SchemaFactorySurveyPatch
 };
-
-use GoldSpecDigital\ObjectOrientedOAS\Objects\Example;
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// REST V2 Survey Config
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 $errorSchema = (new SchemaFactoryError)->make();
 $surveyPatchSchema = (new SchemaFactorySurveyPatch)->make();

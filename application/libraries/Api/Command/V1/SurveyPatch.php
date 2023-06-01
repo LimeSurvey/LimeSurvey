@@ -24,7 +24,9 @@ class SurveyPatch implements CommandInterface
     /**
      * Constructor
      *
+     * @param AuthSession $authSession
      * @param FactoryInterface $diFactory
+     * @param ResponseFactory $responseFactory
      */
     public function __construct(
         AuthSession $authSession,
@@ -42,9 +44,8 @@ class SurveyPatch implements CommandInterface
      *
      * Apply patch and respond with update patch to be applied to the source (if any).
      *
-     * @access public
-     * @param \LimeSurvey\Api\Command\Request\Request $request
-     * @return \LimeSurvey\Api\Command\Response\Response
+     * @param Request $request
+     * @return Response
      */
     public function run(Request $request)
     {
