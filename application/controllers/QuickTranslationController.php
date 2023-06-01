@@ -429,9 +429,12 @@ class QuickTranslationController extends LSBaseController
         }
     }
 
-    /*
+    /**
      * translateGoogleApi.php
      * Creates a JSON interface for the auto-translate feature
+     *
+     * @psalm-suppress UndefinedClass TODO: Dead code?
+     * @psalm-suppress MissingFile
      */
     private function translateGoogleApi()
     {

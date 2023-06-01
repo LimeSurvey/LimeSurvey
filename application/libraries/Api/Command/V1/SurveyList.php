@@ -24,7 +24,10 @@ class SurveyList implements CommandInterface
     /**
      * Constructor
      *
+     * @param Survey $survey
+     * @param AuthSession $authSession
      * @param TransformerOutputSurvey $transformerOutputSurvey
+     * @param ResponseFactory $responseFactory
      */
     public function __construct(
         Survey $survey,
@@ -43,8 +46,8 @@ class SurveyList implements CommandInterface
      * Run survey list command
      *
      * @access public
-     * @param \LimeSurvey\Api\Command\Request\Request $request
-     * @return \LimeSurvey\Api\Command\Response\Response
+     * @param Request $request
+     * @return Response
      */
     public function run(Request $request)
     {

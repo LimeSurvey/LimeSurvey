@@ -7,6 +7,10 @@ class FormatterYnToBool implements FormatterRevertibleInterface
     private $revert = false;
     private $lowercaseCase = false;
 
+    /**
+     * @param bool $revert
+     * @param bool $lowercase
+     */
     public function __construct($revert = false, $lowercase = false)
     {
         $this->revert = $revert;

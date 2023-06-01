@@ -4610,6 +4610,22 @@ function getIPAddress()
     return $sIPAddress;
 }
 
+
+/**
+ * This function returns the real IP address and should mainly be used for security sensitive purposes
+ * If you want to use the IP address for language detection or similar, use getIPAddress() instead
+ * 
+ * @return  string  Client IP Address
+ */
+function getRealIPAddress()
+{
+    $sIPAddress = '127.0.0.1';
+    if (!empty($_SERVER['REMOTE_ADDR']) && filter_var($_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP) !== false) {
+        $sIPAddress = $_SERVER['REMOTE_ADDR'];
+    }
+    return $sIPAddress;
+}
+
 /**
 * This function tries to find out a valid language code for the language of the browser used
 * If it cannot find it it will return the default language from global settings

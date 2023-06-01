@@ -20,6 +20,7 @@ class SessionKeyCreate implements CommandInterface
      * Constructor
      *
      * @param AuthSession $authSession
+     * @param ResponseFactory $responseFactory
      */
     public function __construct(
         AuthSession $authSession,
@@ -34,8 +35,8 @@ class SessionKeyCreate implements CommandInterface
      * Run session key create command.
      *
      * @access public
-     * @param \LimeSurvey\Api\Command\Request\Request $request
-     * @return \LimeSurvey\Api\Command\Response\Response
+     * @param Request $request
+     * @return Response
      */
     public function run(Request $request)
     {
@@ -58,7 +59,7 @@ class SessionKeyCreate implements CommandInterface
             return $this->responseFactory->makeErrorUnauthorised(
                 (new ResponseDataError(
                     'INVALID_USER',
-                    'Invalid user name or password'
+                    $e->getMessage()
                 ))->toArray()
             );
         }

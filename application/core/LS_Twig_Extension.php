@@ -617,11 +617,13 @@ class LS_Twig_Extension extends AbstractExtension
      * @param mixed $needle The searched value.
      * @param array $haystack The array.
      * @param bool $strict If the third parameter strict is set to TRUE then the in_array() function will also check the types of the needle in the haystack.
+     * @todo in_array_r is not defined - delete this method?
      */
     function in_multiarray($needle, $haystack, $strict = false)
     {
 
         foreach ($haystack as $item) {
+            /** @psalm-suppress UndefinedFunction */
             if (($strict ? $item === $needle : $item == $needle) || (is_array($item) && in_array_r($needle, $item, $strict))) {
                 return true;
             }

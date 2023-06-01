@@ -2,7 +2,7 @@
 
 namespace LimeSurvey\Api\Rest\Endpoint;
 
-use Exception;
+use LimeSurvey\Api\ApiException;
 use LSHttpRequest;
 use Yii;
 use LimeSurvey\Api\Rest\Endpoint;
@@ -12,6 +12,9 @@ class EndpointFactory
 {
     protected ?FactoryInterface $diFactory = null;
 
+    /**
+     * @param FactoryInterface $diFactory
+     */
     public function __construct(FactoryInterface $diFactory)
     {
         $this->diFactory = $diFactory;
@@ -21,7 +24,7 @@ class EndpointFactory
      * Create
      *
      * @param LSHttpRequest $request
-     * @return LimeSurvey\Api\Rest\RestEndpoint
+     * @return RestEndpoint
      */
     public function create(LSHttpRequest $request)
     {
@@ -36,6 +39,7 @@ class EndpointFactory
      * Get Endpoint
      *
      * @param LSHttpRequest $request
+     * @throws ApiException
      * @return array
      */
     protected function getEndpointConfig(LSHttpRequest $request)
@@ -81,13 +85,13 @@ class EndpointFactory
         }
 
         if (!$endpointConfig) {
-            throw new Exception('Endpoint not configured');
+            throw new ApiException('Endpoint not configured');
         }
         if (!isset($endpointConfig['commandClass'])) {
-            throw new Exception('Command class not specified');
+            throw new ApiException('Command class not specified');
         }
         if (!class_exists($endpointConfig['commandClass'])) {
-            throw new Exception('Invalid command class');
+            throw new ApiException('Invalid command class');
         }
 
         return $endpointConfig;

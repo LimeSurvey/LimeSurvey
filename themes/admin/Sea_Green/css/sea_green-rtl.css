@@ -11065,88 +11065,6 @@ a {
   text-decoration: none;
 }
 
-.table > :not(:first-child) {
-  border-top: 0;
-}
-
-.ls-text-underline-hover {
-  text-decoration: none;
-}
-
-.ls-text-underline-hover:hover {
-  text-decoration: underline;
-}
-
-.list-group {
-  border-radius: 0px !important;
-}
-
-.list-group-item {
-  border: none !important;
-}
-
-.hidden {
-  display: none !important;
-}
-
-.ls-footer-label {
-  font-style: normal;
-  font-weight: 500;
-  font-size: 1rem;
-  line-height: 20px;
-  color: #6E748C;
-}
-
-.ls-settings-wrapper {
-  position: relative !important;
-  min-height: 100vh !important;
-}
-
-.select2-selection__choice {
-  background-color: #EEEFF7;
-  color: #9094A7 !important;
-  font-weight: 500 !important;
-  font-size: 12px !important;
-  line-height: 16px;
-}
-
-.ls-option-disabled {
-  z-index: 999 !important;
-  background-color: #fff;
-  opacity: 0.8;
-  position: absolute;
-  inset: 0;
-}
-
-.ls-tab-disabled {
-  opacity: 0.4;
-  pointer-events: none !important;
-  cursor: not-allowed !important;
-}
-
-.tab-content {
-  padding-top: 1rem;
-}
-
-.cursor-pointer {
-  cursor: pointer;
-}
-
-.ls-survey-menu-item {
-  padding-right: 30px !important;
-}
-
-.ls-survey-menu-item.menu-label {
-  padding-right: 33px !important;
-}
-
-.list-group-item.disabled {
-  color: #777;
-  cursor: not-allowed;
-  background-color: #fff !important;
-  pointer-events: auto !important;
-}
-
 body {
   background-color: #F9F9FB;
   margin: 0;
@@ -11305,6 +11223,88 @@ blockquote.float-end {
  * This file contain all the common css definitions for the different admin theme.
  * It should not contain color definition (grey, blacks, and white are acceptable)
  */
+.table > :not(:first-child) {
+  border-top: 0;
+}
+
+.ls-text-underline-hover {
+  text-decoration: none;
+}
+
+.ls-text-underline-hover:hover {
+  text-decoration: underline;
+}
+
+.list-group {
+  border-radius: 0px !important;
+}
+
+.list-group-item {
+  border: none !important;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.ls-footer-label {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 20px;
+  color: #6E748C;
+}
+
+.ls-settings-wrapper {
+  position: relative !important;
+  min-height: 100vh !important;
+}
+
+.select2-selection__choice {
+  background-color: #EEEFF7;
+  color: #9094A7 !important;
+  font-weight: 500 !important;
+  font-size: 12px !important;
+  line-height: 16px;
+}
+
+.ls-option-disabled {
+  z-index: 999 !important;
+  background-color: #fff;
+  opacity: 0.8;
+  position: absolute;
+  inset: 0;
+}
+
+.ls-tab-disabled {
+  opacity: 0.4;
+  pointer-events: none !important;
+  cursor: not-allowed !important;
+}
+
+.tab-content {
+  padding-top: 1rem;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.ls-survey-menu-item {
+  padding-right: 30px !important;
+}
+
+.ls-survey-menu-item.menu-label {
+  padding-right: 33px !important;
+}
+
+.list-group-item.disabled {
+  color: #777;
+  cursor: not-allowed;
+  background-color: #fff !important;
+  pointer-events: auto !important;
+}
+
 #ls-loading {
   width: 100%;
   height: 100%;
@@ -17428,7 +17428,7 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 }
 
 [class^=ri-], [class*=" ri-"] {
-  vertical-align: -0.25em;
+  vertical-align: -0.125em;
 }
 
 .remix-2xs {

@@ -25,7 +25,10 @@ class SurveyDetail implements CommandInterface
     /**
      * Constructor
      *
+     * @param Survey $survey
+     * @param AuthSession $authSession
      * @param TransformerOutputSurvey $transformerOutputSurvey
+     * @param ResponseFactory $responseFactory
      */
     public function __construct(
         Survey $survey,
@@ -44,8 +47,8 @@ class SurveyDetail implements CommandInterface
      * Run survey detail command
      *
      * @access public
-     * @param \LimeSurvey\Api\Command\Request\Request $request
-     * @return \LimeSurvey\Api\Command\Response\Response
+     * @param Request $request
+     * @return Response
      */
     public function run(Request $request)
     {

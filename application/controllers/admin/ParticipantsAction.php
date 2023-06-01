@@ -14,6 +14,7 @@
 */
 
 use ls\ajax\AjaxHelper;
+use LimeSurvey\Exceptions\CPDBException;
 
 /**
  * @param array $a
@@ -2373,7 +2374,7 @@ class ParticipantsAction extends SurveyCommonAction
      * @param int $shareUid
      * @return void
      */
-    public function deleteSingleParticipantShare($participantId, $shareUid)
+    public function deleteSingleParticipantShare($participantId = null, $shareUid = null)
     {
         $this->requirePostRequest();
 

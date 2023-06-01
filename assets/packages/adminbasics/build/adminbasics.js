@@ -17965,6 +17965,9 @@
 	  },
 	  doSelect2: () => {
 	    $("select.activate-search").select2();
+	    $(document).on('select2:open', function (e) {
+	      document.querySelector("[aria-controls=\"select2-".concat(e.target.id, "-results\"]")).focus();
+	    });
 	  },
 	  // finds any duplicate array elements using the fewest possible comparison
 	  arrHasDupes: arrayToCheck => {
