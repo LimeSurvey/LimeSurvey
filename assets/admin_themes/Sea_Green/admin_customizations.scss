@@ -14,17 +14,47 @@ body {
 // Headings
 .pagetitle {
   padding-bottom: 4px;
-  border-bottom : solid 2px $g-400;
-  position      : relative;
-  margin-bottom : 1em;
+  border-bottom: solid 2px $g-400;
+  position: relative;
+  margin-bottom: 1em;
 
   &.h3 {
-    @include h3
+    @include h3;
   }
 }
 .side-body {
-  h3 {
+  h3,
+  h2 {
     border-bottom: solid 2px $g-400;
+  }
+}
+.survey-response-page {
+  .accordion-item {
+    border: none;
+  }
+  .summary-title {
+    @include h2;
+  }
+  .ls-response-summary.table {
+    background: none;
+    border-collapse: collapse;
+
+    table,
+    th,
+    td {
+      border: none;
+    }
+  }
+  .accordion-button,
+  .accordion-body {
+    background: $g-100;
+  }
+  .accordion-button {
+    padding-left: 0;
+    padding-bottom: 5px;
+  }
+  .summary-detail {
+    @include h2;
   }
 }
 
