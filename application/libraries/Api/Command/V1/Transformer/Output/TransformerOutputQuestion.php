@@ -11,7 +11,7 @@ class TransformerOutputQuestion extends TransformerOutputActiveRecord
 {
     public function __construct()
     {
-        $formatterYn = new FormatterYnToBool;
+        $formatterYn = new FormatterYnToBool();
 
         $this->setDataMap([
             'qid' => ['type' => 'int'],
@@ -38,7 +38,7 @@ class TransformerOutputQuestion extends TransformerOutputActiveRecord
     {
         $array = parent::transformAll($array);
 
-        usort($array,function($a, $b){
+        usort($array, function ($a, $b) {
             return ((int)$a['questionOrder']) > ((int)$b['questionOrder']);
         });
 

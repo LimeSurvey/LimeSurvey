@@ -8,7 +8,7 @@ class SchemaFactorySurvey
 {
     public function make(): Schema
     {
-        $schemaSurveyLanguageSettings = (new SchemaFactorySurveyLanguageSettings)->make();
+        $schemaSurveyLanguageSettings = (new SchemaFactorySurveyLanguageSettings())->make();
         $schemaSurveyDefaultLanguage = Schema::object('defaultlanguage')
             ->properties(...$schemaSurveyLanguageSettings->properties);
 

@@ -9,23 +9,23 @@ class SchemaFactorySurveyDetail
 {
     public function make(): Schema
     {
-        $schemaSurveyLanguageSettings = (new SchemaFactorySurveyLanguageSettings)->make();
+        $schemaSurveyLanguageSettings = (new SchemaFactorySurveyLanguageSettings())->make();
         $schemaSurveyDefaultLanguage = Schema::object('defaultlanguage')
             ->properties(...$schemaSurveyLanguageSettings->properties);
 
-        $questionAttributeSchema = (new SchemaFactoryQuestionAttribute)->make();
+        $questionAttributeSchema = (new SchemaFactoryQuestionAttribute())->make();
         $questionAttributesSchema = Schema::object('attributes')->additionalProperties(
             $questionAttributeSchema
         );
 
-        $answerSchema = (new SchemaFactoryAnswer)->make();
+        $answerSchema = (new SchemaFactoryAnswer())->make();
         $answersSchema = Schema::array('answers')->items(
             AllOf::create()->schemas(
                 $answerSchema
             )
         );
 
-        $questionSchema = (new SchemaFactoryQuestion)->make();
+        $questionSchema = (new SchemaFactoryQuestion())->make();
         $questionSchema = $questionSchema->properties(
             ...array_merge(
                 $questionSchema->properties,
@@ -38,17 +38,17 @@ class SchemaFactorySurveyDetail
             )
         );
 
-        $questionGroupSchema = (new SchemaFactoryQuestionGroup)->make();
+        $questionGroupSchema = (new SchemaFactoryQuestionGroup())->make();
         $questionGroupSchema = $questionGroupSchema->properties(
             ...array_merge(
-            $questionGroupSchema->properties,
-            [$questionsSchema]
+                $questionGroupSchema->properties,
+                [$questionsSchema]
             )
         );
 
         $props = [
             AllOf::create()->schemas(
-                (new SchemaFactorySurvey)->make(),
+                (new SchemaFactorySurvey())->make(),
                 Schema::array('languages')->items(
                     AllOf::create()->schemas(
                         Schema::string()

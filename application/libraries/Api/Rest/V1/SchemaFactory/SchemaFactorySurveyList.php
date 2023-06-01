@@ -15,8 +15,8 @@ class SchemaFactorySurveyList
             ->type(Schema::TYPE_OBJECT)
             ->properties(
                 Schema::array('surveys')->items(
-            AllOf::create()->schemas(
-                        (new SchemaFactorySurvey)->make()
+                    AllOf::create()->schemas(
+                        (new SchemaFactorySurvey())->make()
                     )
                 )
             );

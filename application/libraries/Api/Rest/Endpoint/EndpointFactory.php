@@ -76,7 +76,6 @@ class EndpointFactory
                 && is_array($config[$requestMethod])
                 && (false === $keyId || !is_null($id))
             ) {
-
                 $endpointConfig = $config[$requestMethod];
 
                 $endpointConfig['apiVersion'] = $apiVersion;

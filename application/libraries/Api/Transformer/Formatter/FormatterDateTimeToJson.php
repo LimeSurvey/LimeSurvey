@@ -78,10 +78,10 @@ class FormatterDateTimeToJson implements
      */
     private function dateFormat(
         $value,
-        $inputTimeZone, $outputTimezone,
+        $inputTimeZone,
+        $outputTimezone,
         $outputFormat
-    )
-    {
+    ) {
         $timezone = $inputTimeZone;
         if ($value === null || $value === "") {
             return null;

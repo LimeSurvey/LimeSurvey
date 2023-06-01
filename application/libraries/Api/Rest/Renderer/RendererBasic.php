@@ -6,7 +6,6 @@ use CJSON;
 use CWebLogRoute;
 use Exception;
 use Yii;
-
 use LimeSurvey\Api\Rest\Renderer\RendererInterface;
 use LimeSurvey\Api\Command\Response\{
     Response,

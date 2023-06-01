@@ -77,6 +77,6 @@ class FormatterYnToBool implements FormatterRevertibleInterface
 
         return $this->lowercaseCase
             ? $string
-            : strtoupper( $string );
+            : strtoupper($string);
     }
 }

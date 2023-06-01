@@ -6,7 +6,7 @@ use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
 
 class SchemaFactoryAnswer
 {
-    public function make() : Schema
+    public function make(): Schema
     {
         return Schema::create()
             ->title('Answer')

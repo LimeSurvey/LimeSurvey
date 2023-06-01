@@ -34,8 +34,7 @@ class SurveyList implements CommandInterface
         AuthSession $authSession,
         TransformerOutputSurvey $transformerOutputSurvey,
         ResponseFactory $responseFactory
-    )
-    {
+    ) {
         $this->survey = $survey;
         $this->authSession = $authSession;
         $this->transformerOutputSurvey = $transformerOutputSurvey;
