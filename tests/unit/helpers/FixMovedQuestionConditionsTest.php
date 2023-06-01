@@ -18,7 +18,11 @@ class FixMovedQuestionConditions extends BaseTest
     }
 
     /**
-     * Test fixing just one condition.
+     * We want to be sure that the cfieldname has the correct
+     * group id before and after executing fixMovedQuestionConditions.
+     *
+     * Testing just one condition.
+     *
      * This test uses the survey previously imported in setupBeforeClass.
      */
     public function testFixOneCondition()
@@ -38,7 +42,7 @@ class FixMovedQuestionConditions extends BaseTest
 
         $this->assertSame(
             $firstQuestionConditions[0]['cfieldname'],
-            '265486X' . $groups[0]->gid . 'X' . $questions[0]->qid,
+            self::$surveyId . 'X' . $groups[0]->gid . 'X' . $questions[0]->qid,
             'The cfieldname field is not correct.'
         );
 
@@ -57,13 +61,17 @@ class FixMovedQuestionConditions extends BaseTest
 
         $this->assertSame(
             $firstQuestionFixedConditions[0]['cfieldname'],
-            '265486X' . $groups[1]->gid . 'X' . $questions[0]->qid,
-            'The cfieldname field is not correct.'
+            self::$surveyId . 'X' . $groups[1]->gid . 'X' . $questions[0]->qid,
+            'The cfieldname field is not correct : bad group after moving question'
         );
     }
 
     /**
-     * Test fixing multiple conditions.
+     * We want to be sure that the cfieldname has the correct
+     * group id before and after executing fixMovedQuestionConditions.
+     *
+     * Testing multiple conditions.
+     *
      * This test uses the survey previously imported in setupBeforeClass.
      */
     public function testFixMultipleConditions()
@@ -81,7 +89,7 @@ class FixMovedQuestionConditions extends BaseTest
 
         $questionConditions = $conditions->readAll();
 
-        $expectedCfieldname = '265486X' . $groups[2]->gid . 'X' . $questions[2]->qid;
+        $expectedCfieldname = self::$surveyId . 'X' . $groups[2]->gid . 'X' . $questions[2]->qid;
 
         foreach ($questionConditions as $condition) {
             $this->assertSame(
@@ -104,20 +112,24 @@ class FixMovedQuestionConditions extends BaseTest
 
         $questionFixedConditions = $fixedConditions->readAll();
 
-        $expectedFixedCfieldname = '265486X' . $groups[3]->gid . 'X' . $questions[2]->qid;
+        $expectedFixedCfieldname = self::$surveyId . 'X' . $groups[3]->gid . 'X' . $questions[2]->qid;
 
         foreach ($questionFixedConditions as $condition) {
             $this->assertSame(
                 $expectedFixedCfieldname,
                 $condition['cfieldname'],
-                'The cfieldname field is not correct.'
+                'The cfieldname field is not correct : bad group after moving question'
             );
         }
     }
 
     /**
-     * Test fixing just one condition.
-     * This test imports a new survey.
+     * We want to be sure that the cfieldname has the correct
+     * group id before and after executing fixMovedQuestionConditions.
+     *
+     * Testing just one condition.
+     *
+     * This test uses a new survey.
      */
     public function testFixOneConditionInNewSurvey()
     {
@@ -140,7 +152,7 @@ class FixMovedQuestionConditions extends BaseTest
 
         $this->assertSame(
             $firstQuestionConditions[0]['cfieldname'],
-            '849698X' . $groups[1]->gid . 'X' . $questions[3]->qid,
+            self::$surveyId . 'X' . $groups[1]->gid . 'X' . $questions[3]->qid,
             'The cfieldname field is not correct.'
         );
 
@@ -159,13 +171,17 @@ class FixMovedQuestionConditions extends BaseTest
 
         $this->assertSame(
             $firstQuestionFixedConditions[0]['cfieldname'],
-            '849698X' . $groups[0]->gid . 'X' . $questions[3]->qid,
-            'The cfieldname field is not correct.'
+            self::$surveyId . 'X' . $groups[0]->gid . 'X' . $questions[3]->qid,
+            'The cfieldname field is not correct : bad group after moving question'
         );
     }
 
     /**
-     * Test fixing multiple conditions.
+     * We want to be sure that the cfieldname has the correct
+     * group id before and after executing fixMovedQuestionConditions.
+     *
+     * Testing multiple conditions.
+     *
      * This test uses the survey imported in the previous test.
      */
     public function testFixMultitpleConditionsInNewSurvey()
@@ -183,7 +199,7 @@ class FixMovedQuestionConditions extends BaseTest
 
         $questionConditions = $conditions->readAll();
 
-        $expectedCfieldname = '849698X' . $groups[0]->gid . 'X' . $questions[0]->qid;
+        $expectedCfieldname = self::$surveyId . 'X' . $groups[0]->gid . 'X' . $questions[0]->qid;
 
         foreach ($questionConditions as $condition) {
             $this->assertSame(
@@ -206,13 +222,13 @@ class FixMovedQuestionConditions extends BaseTest
 
         $questionFixedConditions = $fixedConditions->readAll();
 
-        $expectedFixedCfieldname = '849698X' . $groups[1]->gid . 'X' . $questions[0]->qid;
+        $expectedFixedCfieldname = self::$surveyId . 'X' . $groups[1]->gid . 'X' . $questions[0]->qid;
 
         foreach ($questionFixedConditions as $condition) {
             $this->assertSame(
                 $expectedFixedCfieldname,
                 $condition['cfieldname'],
-                'The cfieldname field is not correct.'
+                'The cfieldname field is not correct : bad group after moving question'
             );
         }
     }
