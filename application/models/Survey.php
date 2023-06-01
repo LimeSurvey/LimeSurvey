@@ -172,7 +172,11 @@ class Survey extends LSActiveRecord
     public function init()
     {
         /** @inheritdoc */
-
+        /* Do not set any default when search, reset gsid */
+        if ($this->scenario == 'search') {
+            $this->gsid = null;
+            return;
+        }
         // Set the default values
         $this->htmlemail = 'Y';
         $this->format = 'G';
