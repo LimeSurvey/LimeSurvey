@@ -153,6 +153,32 @@ class SurveySearchTest extends TestBaseClass
         $this->assertThat($sids, $this->contains($data[0]->sid), 'One of the expected surveys was not found.');
         $this->assertThat($sids, $this->contains($data[1]->sid), 'One of the expected surveys was not found.');
         $this->assertThat($sids, $this->contains($data[2]->sid), 'One of the expected surveys was not found.');
+
+        // Preserve test data
+        return $testData;
+    }
+
+    /**
+     * Testing that all surveys can be found when
+     * searching for any group (without a specific gsid)
+     *
+     * @depends testThreeSurveysFoundOnGroupOne
+     */
+    public function testAllSurveysFound($testData)
+    {
+        $s = new \Survey('search');
+
+        $dataProvider = $s->search();
+        $data = $dataProvider->getData();
+
+        $sids = array($testData['sid'], $testData['sidTwo'], $survey->sid);
+
+        $this->assertNotEmpty($data, 'The survey search results were unexpectedly empty');
+        $this->assertCount(3, $data, 'Three surveys should have been found.');
+
+        $this->assertThat($sids, $this->contains($data[0]->sid), 'One of the expected surveys was not found.');
+        $this->assertThat($sids, $this->contains($data[1]->sid), 'One of the expected surveys was not found.');
+        $this->assertThat($sids, $this->contains($data[2]->sid), 'One of the expected surveys was not found.');
     }
 
     private function createGroups()
