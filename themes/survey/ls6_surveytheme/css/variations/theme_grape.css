@@ -12951,6 +12951,7 @@ Responsive navbar-brand image CSS
 .yesno-button .ls-button-label,
 .gender-button .ls-button-label {
   min-width: 80px;
+  font-size: 0.9975rem;
 }
 .yesno-button .ls-button-label .ls-icon,
 .gender-button .ls-button-label .ls-icon {
@@ -13016,6 +13017,7 @@ label {
   font-weight: 600;
   font-size: 2.85rem;
   line-height: 52px;
+  font-family: "IBMPlexSerif", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
 dl {
@@ -13059,12 +13061,22 @@ a:hover {
   line-height: 20px;
 }
 
-.h1, .h2, .h3, h1, h2, h3 {
+.h1,
+.h2,
+.h3,
+h1,
+h2,
+h3 {
   margin-top: 2rem;
   margin-bottom: 1rem;
 }
 
-.h4, .h5, .h6, h4, h5, h6 {
+.h4,
+.h5,
+.h6,
+h4,
+h5,
+h6 {
   margin-top: 1rem;
   margin-bottom: 1rem;
 }
@@ -13172,7 +13184,7 @@ textarea {
 
 .form-heading {
   font-weight: 400;
-  font-size: 1.425rem;
+  font-size: 1.2825rem;
   line-height: 24px;
 }
 
@@ -13843,6 +13855,7 @@ table > tbody > tr > td.ddprefix {
 
 li.imageselect-listitem .imageselect-container .imageselect-label {
   border-radius: 4px !important;
+  overflow: hidden;
 }
 
 .imageselect-container .imageselect-radiobutton::before,
@@ -14751,7 +14764,7 @@ body.error-page .error-link {
   z-index: 1000;
 }
 .slider-list .slider .tooltip.bs-tooltip-top, .slider-list .slider .tooltip.bs-tooltip-auto[data-popper-placement^=top] {
-  margin-top: -34px;
+  margin-top: -30px;
 }
 .slider-list .slider .tooltip .tooltip-arrow {
   display: none;
@@ -15513,12 +15526,29 @@ html, body {
   background-color: #ffffff;
 }
 
-.survey-name, .survey-description, .survey-welcome {
+.survey-name,
+.survey-description,
+.survey-welcome {
   margin-bottom: 10px;
+}
+
+.question-count-text {
+  font-weight: 600;
+  font-size: 2.85rem;
+  line-height: 52px;
 }
 
 .privacy {
   margin-top: 40px;
+  font-weight: 400;
+  font-size: 0.855rem;
+  line-height: 16px;
+}
+.privacy p {
+  margin-bottom: 0;
+}
+.privacy .checkbox-item label::before {
+  border: 3px solid #14AE5C;
 }
 
 .datasecurity-checkbox-container {
@@ -15532,7 +15562,8 @@ html, body {
   line-height: 16px;
 }
 
-.datasecurity-checkbox-label, .datasecurity-checkbox-label a.show-policy {
+.datasecurity-checkbox-label,
+.datasecurity-checkbox-label a.show-policy {
   font-weight: 600;
   font-size: 1.14rem;
   line-height: 20px;

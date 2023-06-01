@@ -19,11 +19,11 @@
 <!-- Privacy message -->
 
 <div class="{{ aSurveyInfo.class.privacycontainer }} row" {{ aSurveyInfo.attr.privacycontainer }}>
-    <div class="{{ aSurveyInfo.class.privacycol }}  col-12 col-centered" {{ aSurveyInfo.attr.privacycol }}>
+    <div class="col-12 col-centered {{ aSurveyInfo.class.privacycol }}" {{ aSurveyInfo.attr.privacycol }}>
         {% if (aSurveyInfo.options.hideprivacyinfo == "off" ) %}
             {% block anonymous %}
                 {% if (aSurveyInfo.anonymized == "Y") %}
-                <div class="{{ aSurveyInfo.class.privacyhead }} h4 text-primary " {{ aSurveyInfo.attr.privacyhead }}>
+                <div class="{{ aSurveyInfo.class.privacyhead }} fw-bold text-uppercase" {{ aSurveyInfo.attr.privacyhead }}>
                     {{ gT("This survey is anonymous.") }}
                 </div>
                 <div>
