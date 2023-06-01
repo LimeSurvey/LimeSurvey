@@ -15,7 +15,7 @@ use LimeSurvey\Models\Services\Exception\{
 };
 
 /**
- * Survey Updater Service GeneralSettings
+ * Service GeneralSettings
  *
  * Service class for survey language setting updating.
  *
@@ -27,6 +27,7 @@ class GeneralSettings
     private ?Survey $modelSurvey = null;
     private ?LSYii_Application $yiiApp = null;
     private ?PluginManager $yiiPluginManager = null;
+    private ?LanguageConsistency $languageConsistency = null;
 
     const FIELD_TYPE_YN = 'yersno';
     const FIELD_TYPE_DATETIME = 'dateime';
@@ -37,13 +38,15 @@ class GeneralSettings
         Permission $modelPermission,
         Survey $modelSurvey,
         LSYii_Application $yiiApp,
-        PluginManager $yiiPluginManager
+        PluginManager $yiiPluginManager,
+        LanguageConsistency $languageConsistency
     )
     {
         $this->modelPermission = $modelPermission;
         $this->modelSurvey = $modelSurvey;
         $this->yiiApp = $yiiApp;
         $this->yiiPluginManager = $yiiPluginManager;
+        $this->languageConsistency = $languageConsistency;
     }
 
     /**
@@ -101,6 +104,8 @@ class GeneralSettings
      */
     private function updateGeneralSettings(Survey $survey, array $input, array $fields)
     {
+        $initAttributes = $survey->getAttributes();
+
         $input = is_array($input) && !empty($input)
             ? $input
             : [];
@@ -125,9 +130,15 @@ class GeneralSettings
         }
 
         if (!empty($meta['updateFields'])) {
+            $this->languageConsistency->update(
+                $survey,
+                $initAttributes['language']
+            );
+
             $this->dispatchPluginEventBeforeSurveySettingsSave(
                 $survey
             );
+
             if (!$survey->save()) {
                 throw new ExceptionPersistError(
                     sprintf(

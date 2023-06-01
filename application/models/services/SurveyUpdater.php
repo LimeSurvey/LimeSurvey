@@ -5,7 +5,8 @@ namespace LimeSurvey\Models\Services;
 use LimeSurvey\Models\Services\SurveyUpdater\{
     LanguageSettings,
     GeneralSettings,
-    UrlParams
+    UrlParams,
+    TemplateConfiguration
 };
 use LimeSurvey\Models\Services\Exception\{
     ExceptionPersistError,
@@ -26,18 +27,21 @@ class SurveyUpdater
     private ?GeneralSettings $generalSettings = null;
     private ?UrlParams $urlParams = null;
     private ?ExpressionManager $expressionManager = null;
+    private ?TemplateConfiguration $templateConfiguration = null;
 
     public function __construct(
         LanguageSettings $languageSettings,
         GeneralSettings $generalSettings,
         UrlParams $urlParams,
-        ExpressionManager $expressionManager
+        ExpressionManager $expressionManager,
+        TemplateConfiguration $templateConfiguration
     )
     {
         $this->languageSettings = $languageSettings;
         $this->generalSettings = $generalSettings;
         $this->urlParams = $urlParams;
         $this->expressionManager = $expressionManager;
+        $this->templateConfiguration = $templateConfiguration;
     }
 
     /**
@@ -50,7 +54,7 @@ class SurveyUpdater
      * @throws ExceptionPermissionDenied
      * @return array
      */
-    public function update($surveyId, array $input)
+    public function update($surveyId, $input)
     {
         $this->languageSettings->update(
             $surveyId,
@@ -71,6 +75,9 @@ class SurveyUpdater
 
         $this->expressionManager
             ->reset($surveyId);
+
+        $this->templateConfiguration
+            ->update($surveyId);
 
         return $meta;
     }
