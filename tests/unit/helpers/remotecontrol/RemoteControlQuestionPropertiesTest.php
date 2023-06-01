@@ -81,7 +81,7 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
 
         $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
 
-        $question = \Question::model()->findByAttributes(array('title' => 'G01Q02'));
+        $question = \Question::model()->findByAttributes(array('sid' => self::$surveyId, 'title' => 'G01Q02'));
         $qid = $question->qid;
 
         $result = $this->handler->get_question_properties($sessionKey, $qid);
