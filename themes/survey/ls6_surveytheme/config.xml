@@ -140,6 +140,7 @@
             <add>pjax</add>
             <add>moment</add>
             <add>font-ibm-sans</add>
+            <add>font-ibm-serif</add>
         </packages>
 
         <!--
