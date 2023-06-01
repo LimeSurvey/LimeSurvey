@@ -10,6 +10,12 @@ use LimeSurvey\Api\Auth\AuthSession;
  */
 class AuthSessionTest extends TestBaseClass
 {
+    public static function tearDownAfterClass(): void
+    {
+        $_SESSION = [];
+        $_POST    = [];
+    }
+
     /**
      * @testdox doLogin() Returns boolean token if login successful.
      */
