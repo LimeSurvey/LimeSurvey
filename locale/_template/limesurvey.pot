@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2023-05-15 10:26:02+00:00\n"
+"POT-Creation-Date: 2023-06-02 10:00:19+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1772,9 +1772,9 @@ msgstr ""
 #: application/controllers/admin/dataentry.php:1062
 #: application/controllers/admin/printablesurvey.php:288
 #: application/controllers/admin/printablesurvey.php:307
-#: application/controllers/admin/printablesurvey.php:836
-#: application/controllers/admin/printablesurvey.php:922
-#: application/controllers/admin/printablesurvey.php:935
+#: application/controllers/admin/printablesurvey.php:835
+#: application/controllers/admin/printablesurvey.php:921
+#: application/controllers/admin/printablesurvey.php:934
 #: application/controllers/admin/quotas.php:565
 #: application/controllers/admin/tokens.php:2311
 #: application/core/Survey_Common_Action.php:1089
@@ -1913,8 +1913,8 @@ msgstr ""
 #: application/controllers/admin/conditionsaction.php:1369
 #: application/controllers/admin/dataentry.php:1065
 #: application/controllers/admin/printablesurvey.php:308
-#: application/controllers/admin/printablesurvey.php:923
-#: application/controllers/admin/printablesurvey.php:936
+#: application/controllers/admin/printablesurvey.php:922
+#: application/controllers/admin/printablesurvey.php:935
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:245
 #: application/helpers/admin/statistics_helper.php:1260
 #: application/helpers/common_helper.php:1182
@@ -1934,9 +1934,9 @@ msgstr ""
 #: application/controllers/admin/dataentry.php:1068
 #: application/controllers/admin/printablesurvey.php:289
 #: application/controllers/admin/printablesurvey.php:309
-#: application/controllers/admin/printablesurvey.php:837
-#: application/controllers/admin/printablesurvey.php:924
-#: application/controllers/admin/printablesurvey.php:937
+#: application/controllers/admin/printablesurvey.php:836
+#: application/controllers/admin/printablesurvey.php:923
+#: application/controllers/admin/printablesurvey.php:936
 #: application/controllers/admin/quotas.php:566
 #: application/controllers/admin/tokens.php:2313
 #: application/core/Survey_Common_Action.php:1087
@@ -2067,8 +2067,8 @@ msgstr ""
 
 #: application/controllers/admin/conditionsaction.php:1374
 #: application/controllers/admin/printablesurvey.php:314
-#: application/controllers/admin/printablesurvey.php:952
-#: application/controllers/admin/printablesurvey.php:964
+#: application/controllers/admin/printablesurvey.php:951
+#: application/controllers/admin/printablesurvey.php:963
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:250
 #: application/helpers/admin/statistics_helper.php:1277
 #: application/helpers/common_helper.php:1187
@@ -2083,8 +2083,8 @@ msgstr ""
 
 #: application/controllers/admin/conditionsaction.php:1375
 #: application/controllers/admin/printablesurvey.php:316
-#: application/controllers/admin/printablesurvey.php:953
-#: application/controllers/admin/printablesurvey.php:965
+#: application/controllers/admin/printablesurvey.php:952
+#: application/controllers/admin/printablesurvey.php:964
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:254
 #: application/helpers/admin/statistics_helper.php:1278
 #: application/helpers/common_helper.php:1189
@@ -2099,8 +2099,8 @@ msgstr ""
 
 #: application/controllers/admin/conditionsaction.php:1376
 #: application/controllers/admin/printablesurvey.php:315
-#: application/controllers/admin/printablesurvey.php:954
-#: application/controllers/admin/printablesurvey.php:966
+#: application/controllers/admin/printablesurvey.php:953
+#: application/controllers/admin/printablesurvey.php:965
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:258
 #: application/helpers/admin/statistics_helper.php:1279
 #: application/helpers/common_helper.php:1188
@@ -2943,12 +2943,12 @@ msgid "The answer(s) must meet these array_filter criteria:"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:2240
-#: application/controllers/admin/printablesurvey.php:1479
+#: application/controllers/admin/printablesurvey.php:1478
 msgid "Only answer this question for the items you selected in question %s ('%s')"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:2249
-#: application/controllers/admin/printablesurvey.php:1492
+#: application/controllers/admin/printablesurvey.php:1491
 msgid "Only answer this question for the items you did not select in question %s ('%s')"
 msgstr ""
 
@@ -3450,7 +3450,7 @@ msgstr ""
 #: application/core/Survey_Common_Action.php:1235
 #: application/extensions/LimeScript/LimeScript.php:27
 #: application/helpers/SurveyRuntimeHelper.php:1328
-#: application/helpers/frontend_helper.php:2252
+#: application/helpers/frontend_helper.php:2254
 #: application/views/admin/homepagesettings/index.php:16
 #: application/views/admin/participants/participantsPanel_view.php:6
 #: application/views/admin/survey/Question/_subQuestionsAndAnwsersJsVariables.php:21
@@ -3705,7 +3705,7 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:585
 #: application/controllers/admin/printablesurvey.php:604
 #: application/controllers/admin/printablesurvey.php:654
-#: application/controllers/admin/printablesurvey.php:835
+#: application/controllers/admin/printablesurvey.php:834
 #: application/controllers/admin/themes.php:1102
 msgid "Please choose *only one* of the following:"
 msgstr ""
@@ -3747,37 +3747,37 @@ msgstr ""
 msgid "Other:"
 msgstr ""
 
-#: application/controllers/admin/printablesurvey.php:772
+#: application/controllers/admin/printablesurvey.php:771
 msgid "Please write your answer(s) here:"
 msgstr ""
 
-#: application/controllers/admin/printablesurvey.php:795
-#: application/controllers/admin/printablesurvey.php:802
-#: application/controllers/admin/printablesurvey.php:811
-#: application/controllers/admin/printablesurvey.php:829
+#: application/controllers/admin/printablesurvey.php:794
+#: application/controllers/admin/printablesurvey.php:801
+#: application/controllers/admin/printablesurvey.php:810
+#: application/controllers/admin/printablesurvey.php:828
 msgid "Please write your answer here:"
 msgstr ""
 
-#: application/controllers/admin/printablesurvey.php:844
-#: application/controllers/admin/printablesurvey.php:888
-#: application/controllers/admin/printablesurvey.php:917
-#: application/controllers/admin/printablesurvey.php:947
-#: application/controllers/admin/printablesurvey.php:1089
-#: application/controllers/admin/printablesurvey.php:1160
-#: application/controllers/admin/printablesurvey.php:1255
+#: application/controllers/admin/printablesurvey.php:843
+#: application/controllers/admin/printablesurvey.php:887
+#: application/controllers/admin/printablesurvey.php:916
+#: application/controllers/admin/printablesurvey.php:946
+#: application/controllers/admin/printablesurvey.php:1088
+#: application/controllers/admin/printablesurvey.php:1159
+#: application/controllers/admin/printablesurvey.php:1254
 msgid "Please choose the appropriate response for each item:"
 msgstr ""
 
-#: application/controllers/admin/printablesurvey.php:1302
+#: application/controllers/admin/printablesurvey.php:1301
 #: tmp/runtime/twig_cache/b1/b109e969d1cb41841db97c84f4166ca9cd12b44e40f83b85bce239e297263eb0.php:141
 msgid "There are %s questions in this survey."
 msgstr ""
 
-#: application/controllers/admin/printablesurvey.php:1343
+#: application/controllers/admin/printablesurvey.php:1342
 msgid "Please choose at least %s items."
 msgstr ""
 
-#: application/controllers/admin/printablesurvey.php:1346
+#: application/controllers/admin/printablesurvey.php:1345
 msgid "Please choose no more than %s items."
 msgstr ""
 
@@ -9882,15 +9882,15 @@ msgstr ""
 msgid "There are empty question groups in this survey - please create at least one question within a question group."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2251
+#: application/helpers/frontend_helper.php:2253
 msgid "By continuing this survey you approve the data protection policy of the service provider."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2253
+#: application/helpers/frontend_helper.php:2255
 msgid "View policy"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2254
+#: application/helpers/frontend_helper.php:2256
 msgid "Please be patient until you are forwarded to the final URL."
 msgstr ""
 
