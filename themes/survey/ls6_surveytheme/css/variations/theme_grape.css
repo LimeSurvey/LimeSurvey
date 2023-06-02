@@ -13125,7 +13125,7 @@ textarea {
 
 .form-heading {
   font-weight: 400;
-  font-size: 1.425rem;
+  font-size: 1.2825rem;
   line-height: 24px;
 }
 
@@ -15467,12 +15467,29 @@ html, body {
   background-color: #ffffff;
 }
 
-.survey-name, .survey-description, .survey-welcome {
+.survey-name,
+.survey-description,
+.survey-welcome {
   margin-bottom: 10px;
+}
+
+.question-count-text {
+  font-weight: 600;
+  font-size: 2.85rem;
+  line-height: 52px;
 }
 
 .privacy {
   margin-top: 40px;
+  font-weight: 400;
+  font-size: 0.855rem;
+  line-height: 16px;
+}
+.privacy p {
+  margin-bottom: 0;
+}
+.privacy .checkbox-item label::before {
+  border: 3px solid #14AE5C;
 }
 
 .datasecurity-checkbox-container {
@@ -15486,7 +15503,8 @@ html, body {
   line-height: 16px;
 }
 
-.datasecurity-checkbox-label, .datasecurity-checkbox-label a.show-policy {
+.datasecurity-checkbox-label,
+.datasecurity-checkbox-label a.show-policy {
   font-weight: 600;
   font-size: 1.14rem;
   line-height: 20px;
