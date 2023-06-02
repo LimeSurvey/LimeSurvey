@@ -315,36 +315,6 @@ echo $oQuestionSelector->getModal();
                                 </div>
                             </div>
                         </div>
-                        <!-- Show script field in question editor -->
-                        <div class="col-12 col-lg-6">
-                            <div class="mb-3">
-                                <?php echo TbHtml::label(gT("Show script field:"), 'showScriptEdit', ['class' => " form-label"]); ?>
-                                <?php echo TbHtml::dropDownList(
-                                    'showScriptEdit',
-                                    ($aUserSettings['showScriptEdit'] ?? '1'),
-                                    [
-                                        '0' => gT("No", 'unescaped'),
-                                        '1' => gT("Yes", 'unescaped'),
-                                    ],
-                                    ['class' => "form-select"]
-                                ); ?>
-                            </div>
-                        </div>
-                        <!-- Directly show edit mode -->
-                        <div class="col-12 col-lg-6">
-                            <div class="mb-3">
-                                <?php echo TbHtml::label(gT("Directly show edit mode:"), 'noViewMode', ['class' => " form-label"]); ?>
-                                <?php echo TbHtml::dropDownList(
-                                    'noViewMode',
-                                    ($aUserSettings['noViewMode'] ?? '0'),
-                                    [
-                                        '0' => gT("No", 'unescaped'),
-                                        '1' => gT("Yes", 'unescaped'),
-                                    ],
-                                    ['class' => "form-select"]
-                                ); ?>
-                            </div>
-                        </div>
                         <!-- Basic non numerical part of answer options -->
                         <div class="col-12 col-lg-6">
                             <div class="mb-3">
@@ -374,35 +344,78 @@ echo $oQuestionSelector->getModal();
                                 ?>
                             </div>
                         </div>
+                        <!-- Show script field in question editor -->
+                        <div class="col-12 col-lg-6">
+                            <div class="mb-3">
+                                <?php echo TbHtml::label(gT("Show script field:"), 'showScriptEdit', ['class' => " form-label"]); ?>
+                                <div>
+                                    <?php
+                                    $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                        'name'          => 'showScriptEdit',
+                                        'checkedOption' => $aUserSettings['showScriptEdit'] ?? 0,
+                                        'selectOptions' =>    [
+                                            '1' => gT("Yes", 'unescaped'),
+                                            '0' => gT("No", 'unescaped'),
+                                        ],
+                                        'htmlOptions' => []
+                                    ]); ?>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Directly show edit mode -->
+                        <div class="col-12 col-lg-6">
+                            <div class="mb-3">
+                                <?php echo TbHtml::label(gT("Directly show edit mode:"), 'noViewMode', ['class' => " form-label"]); ?>
+                                <div>
+                                    <?php
+                                    $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                        'name'          => 'noViewMode',
+                                        'checkedOption' => $aUserSettings['noViewMode'] ?? 0,
+                                        'selectOptions' =>    [
+                                            '1' => gT("Yes", 'unescaped'),
+                                            '0' => gT("No", 'unescaped'),
+                                        ],
+                                        'htmlOptions' => []
+                                    ]); ?>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Lock questionorganizer in sidebar -->
                         <div class="col-12 col-lg-6">
                             <div class="mb-3">
                                 <?php echo TbHtml::label(gT("Lock question organizer in sidebar by default:"), 'lock_organizer', ['class' => " form-label"]); ?>
-                                <?php echo TbHtml::dropDownList(
-                                    'lock_organizer',
-                                    ($aUserSettings['lock_organizer'] ?? '0'),
-                                    [
-                                        '0' => gT("No", 'unescaped'),
-                                        '1' => gT("Yes", 'unescaped'),
-                                    ],
-                                    ['class' => "form-select"]
-                                ); ?>
+                                <div>
+                                    <?php
+                                    $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                        'name'          => 'lock_organizer',
+                                        'checkedOption' => $aUserSettings['lock_organizer'] ?? 0,
+                                        'selectOptions' =>    [
+                                            '1' => gT("Yes", 'unescaped'),
+                                            '0' => gT("No", 'unescaped'),
+                                        ],
+                                        'htmlOptions' => []
+                                    ]); ?>
+                                </div>
                             </div>
                         </div>
                         <!-- Create example question group and question -->
                         <div class="col-12 col-lg-6">
                             <div class="mb-3">
                                 <?php echo TbHtml::label(gT("Create example question group and question:"), 'createsample', ['class' => " form-label"]); ?>
-                                <?php echo TbHtml::dropDownList(
-                                    'createsample',
-                                    ($aUserSettings['createsample'] ?? 'default'),
-                                    [
-                                        'default' => gT("Default", 'unescaped'),
-                                        '0'       => gT("No", 'unescaped'),
-                                        '1'       => gT("Yes", 'unescaped'),
-                                    ],
-                                    ['class' => "form-select"]
-                                ); ?>
+                                <div>
+                                    <?php
+                                    $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                        'name'          => 'createsample',
+                                        'checkedOption' => $aUserSettings['createsample'] ?? 'default',
+                                        'selectOptions' =>    [
+                                            '1' => gT("Yes", 'unescaped'),
+                                            '0' => gT("No", 'unescaped'),
+                                            'default' => gT("Default", 'unescaped'),
+                                        ],
+                                        'htmlOptions' => []
+                                    ]); ?>
+                                </div>
                             </div>
                         </div>
                     </div>
