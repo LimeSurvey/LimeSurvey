@@ -14,13 +14,13 @@
 */
 
 /**
-* Tokens Controller
-*
-* This controller performs token actions
-*
-* @package       LimeSurvey
-* @subpackage    Backend
-*/
+ * Tokens Controller
+ *
+ * This controller performs token actions
+ *
+ * @package       LimeSurvey
+ * @subpackage    Backend
+ */
 class Tokens extends SurveyCommonAction
 {
     /**
@@ -28,7 +28,7 @@ class Tokens extends SurveyCommonAction
      * @param int $surveyid  The survey ID
      * @return void
      */
-    public function index(int $surveyid)
+    public function index(int $surveyid, $limit = 50, $start = 0)
     {
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'tokens.js', LSYii_ClientScript::POS_BEGIN);
         $iSurveyId = $surveyid;
@@ -68,15 +68,87 @@ class Tokens extends SurveyCommonAction
             true
         );
 
+        // this data is for table
+        if (!$survey->hasTokensTable) {
+            $this->newtokentable($iSurveyId);
+        }
+        Yii::import('application.libraries.Date_Time_Converter', true);
+        $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
+
+        $limit = (int) $limit;
+        $start = (int) $start;
+
+        $tkcount = Token::model($iSurveyId)->count();
+        $next = $start + $limit;
+        $last = $start - $limit;
+        $end = $tkcount - $limit;
+
+        if ($end < 0) {
+            $end = 0;
+        }
+        if ($last < 0) {
+            $last = 0;
+        }
+        if ($next >= $tkcount) {
+            $next = $tkcount - $limit;
+        }
+        if ($end < 0) {
+            $end = 0;
+        }
+        $order = Yii::app()->request->getPost('order', 'tid');
+        $order = preg_replace('/[^_ a-z0-9-]/i', '', (string) $order);
+
+        $aData['next'] = $next;
+        $aData['last'] = $last;
+        $aData['end'] = $end;
+        $searchstring = Yii::app()->request->getPost('searchstring');
+
+        $aData['thissurvey'] = getSurveyInfo($iSurveyId);
+        $aData['searchstring'] = $searchstring;
+        $aData['surveyid'] = $iSurveyId;
+
+        $aData['bgc'] = "";
+        $aData['limit'] = $limit;
+        $aData['start'] = $start;
+        $aData['order'] = $order;
+        $aData['surveyprivate'] = $aData['thissurvey']['anonymized'];
+        $aData['dateformatdetails'] = $dateformatdetails;
+        $aLanguageCodes = Survey::model()->findByPk($iSurveyId)->getAllLanguages();
+        $aLanguages = array();
+
+        foreach ($aLanguageCodes as $aCode) {
+            $aLanguages[$aCode] = getLanguageNameFromCode($aCode, false);
+        }
+
+        $aData['aLanguages']                    = $aLanguages;
+        $aData['title_bar']['title']            = $survey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyId . ")";
+        $aData['sidemenu']["token_menu"]        = true;
+        $aData['sidemenu']['state'] = false;
+
+        /// FOR GRID View
+        $model = TokenDynamic::model($iSurveyId);
+        $model->bEncryption = true;
+        $filterForm = Yii::app()->request->getPost('TokenDynamic', false);
+        if ($filterForm) {
+            $model->setAttributes($filterForm, false);
+        }
+
+        $aData['model'] = $model;
+
+        // Set number of page
+        if (isset($_POST['pageSizeTokenView'])) {
+            Yii::app()->user->setState('pageSizeTokenView', (int) $_POST['pageSizeTokenView']);
+        }
+
+        $aData['massiveAction'] = App()->getController()->renderPartial('/admin/token/massive_actions/_selector', $aData, true, false);
 
         // CHECK TO SEE IF A Survey participants table EXISTS FOR THIS SURVEY
         if (!$survey->hasTokensTable) {
             $this->newtokentable($iSurveyId);
         } else {
-            $aData['thissurvey'] = $thissurvey;
-            $aData['surveyid'] = $iSurveyId;
             $aData['queries'] = Token::model($iSurveyId)->summary();
-            $this->renderWrappedTemplate('token', array('tokensummary'), $aData);
+
+            $this->renderWrappedTemplate('token', array('surveyParticipantView'), $aData);
         }
     }
 
@@ -102,8 +174,8 @@ class Tokens extends SurveyCommonAction
 
         if ($thissurvey['bounceprocessing'] != 'N' || ($thissurvey['bounceprocessing'] == 'G' && getGlobalSetting('bounceaccounttype') != 'off')) {
             if (!function_exists('imap_open')) {
-                    eT("The imap PHP library is not installed or not activated. Please contact your system administrator.");
-                    return;
+                eT("The imap PHP library is not installed or not activated. Please contact your system administrator.");
+                return;
             }
             $bouncetotal = 0;
             $checktotal = 0;
@@ -146,7 +218,7 @@ class Tokens extends SurveyCommonAction
                     }
                 }
             } else {
-                    $hostname = $hostname . ":" . $port;
+                $hostname = $hostname . ":" . $port;
             }
 
             $flags = "";
@@ -288,7 +360,7 @@ class Tokens extends SurveyCommonAction
         } else {
             Yii::app()->setFlashMessage(gT('Could not delete survey participant.'), 'error');
         }
-        $this->getController()->redirect(array("admin/tokens", "sa" => "browse", "surveyid" => $iSid));
+        $this->getController()->redirect(array("admin/tokens", "sa" => "index", "surveyid" => $iSid));
     }
 
     /**
@@ -407,6 +479,7 @@ class Tokens extends SurveyCommonAction
 
         $aData['massiveAction'] = App()->getController()->renderPartial('/admin/token/massive_actions/_selector', $aData, true, false);
 
+        // seems table
         $this->renderWrappedTemplate('token', array('browse'), $aData);
     }
 
@@ -528,7 +601,7 @@ class Tokens extends SurveyCommonAction
     {
         $aData = array();
         App()->getClientScript()->registerScriptFile(App()
-                ->getConfig('adminscripts') . 'tokens.js', LSYii_ClientScript::POS_BEGIN);
+            ->getConfig('adminscripts') . 'tokens.js', LSYii_ClientScript::POS_BEGIN);
         $iSurveyId = (int) $iSurveyId;
         $survey = Survey::model()->findByPk($iSurveyId);
 
@@ -550,7 +623,7 @@ class Tokens extends SurveyCommonAction
             . gT("ID") . ":" . $iSurveyId . ")";
         $aData['sidemenu']["token_menu"] = true;
         App()->getClientScript()->registerScriptFile(App()
-                ->getConfig('adminscripts') . 'tokens.js', LSYii_ClientScript::POS_BEGIN);
+            ->getConfig('adminscripts') . 'tokens.js', LSYii_ClientScript::POS_BEGIN);
         $request = App()->request;
         $subAction = $request->getPost('subaction');
         if ($subAction == 'inserttoken') {
@@ -639,7 +712,14 @@ class Tokens extends SurveyCommonAction
 
             if ($aData['success']) {
                 if ($request->getPost('close-after-save')) {
-                    $redirectUrl = Yii::app()->createUrl('admin/tokens/sa/browse/surveyid/' . $iSurveyId);
+                    // confirmed
+                    $redirectUrl = Yii::app()->createUrl(
+                        "admin/tokens",
+                        [
+                            "sa" => 'index',
+                            "surveyid" => $iSurveyId,
+                        ]
+                    );
                 } else {
                     $redirectUrl = Yii::app()->createUrl("/admin/tokens/sa/edit", ["iSurveyId" => $iSurveyId, "iTokenId" => $token->tid]);
                 }
@@ -861,7 +941,13 @@ class Tokens extends SurveyCommonAction
         $aData['topBar']['showSaveAndCloseButton'] = true;
         // White Close Button
         $aData['topBar']['showWhiteCloseButton'] = true;
-        $aData['topBar']['closeUrl'] = Yii::app()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId);
+        $aData['topBar']['closeUrl'] = Yii::app()->createUrl(
+            "admin/tokens",
+            [
+                "sa" => 'index',
+                "surveyid" => $iSurveyId,
+            ]
+        );
 
         if (!empty($subaction) && $subaction == 'add') {
             $message = '';
@@ -953,16 +1039,16 @@ class Tokens extends SurveyCommonAction
                 $aData['success'] = true;
                 Yii::app()->session['flashmessage'] = gT("New dummy participants were added.");
                 //admin/tokens/sa/browse/surveyid/652779//
-                $this->getController()->redirect(array("/admin/tokens/sa/browse/surveyid/{$iSurveyId}"));
+                $this->getController()->redirect(array("admin/tokens", "sa" => "index", "surveyid" => $iSurveyId));
             } else {
                 $aData['success'] = false;
                 $aData['topBar']['name'] = 'tokensTopbar_view';
                 $message = array(
-                'title' => gT("Failed"),
-                'message' => "<p>" . sprintf(gT("Only %s new dummy participants were added after %s trials."), $newDummyToken, $invalidtokencount)
-                . gT("Try with a bigger access code length.") . "</p>"
-                . "\n<input type='button' value='"
-                . gT("Browse participants") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/sa/browse/surveyid/$iSurveyId") . "', '_top')\" />\n"
+                    'title' => gT("Failed"),
+                    'message' => "<p>" . sprintf(gT("Only %s new dummy participants were added after %s trials."), $newDummyToken, $invalidtokencount)
+                        . gT("Try with a bigger access code length.") . "</p>"
+                        . "\n<input type='button' value='"
+                        . gT("Browse participants") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/sa/browse/surveyid/$iSurveyId") . "', '_top')\" />\n"
                 );
                 $this->renderWrappedTemplate('token', array('message' => $message), $aData);
             }
@@ -995,7 +1081,13 @@ class Tokens extends SurveyCommonAction
                     'showSaveAndCloseButton' => true,
                     'showWhiteCloseButton' => true,
                     'showSaveButton' => true,
-                    'closeUrl' => Yii::app()->createUrl('admin/tokens/sa/browse/surveyid/' . $iSurveyId)
+                    'closeUrl' => Yii::app()->createUrl(
+                        "admin/tokens",
+                        [
+                            "sa" => 'index',
+                            "surveyid" => $iSurveyId,
+                        ]
+                    )
                 ],
                 true
             );
@@ -1068,7 +1160,7 @@ class Tokens extends SurveyCommonAction
         $languages = array_merge((array) Survey::model()->findByPk($iSurveyId)->language, Survey::model()->findByPk($iSurveyId)->additionalLanguages);
         $captions = array();
         foreach ($languages as $language) {
-                    $captions[$language] = SurveyLanguageSetting::model()->findByAttributes(array('surveyls_survey_id' => $iSurveyId, 'surveyls_language' => $language))->attributeCaptions;
+            $captions[$language] = SurveyLanguageSetting::model()->findByAttributes(array('surveyls_survey_id' => $iSurveyId, 'surveyls_language' => $language))->attributeCaptions;
         }
         $aData['languages'] = $languages;
         $aData['tokencaptions'] = $captions;
@@ -1084,7 +1176,13 @@ class Tokens extends SurveyCommonAction
             '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
             [
                 'showCloseButton' => true,
-                'closeUrl' => Yii::app()->createUrl('admin/tokens/sa/browse/surveyid/' . $iSurveyId)
+                'closeUrl' => Yii::app()->createUrl(
+                    "admin/tokens",
+                    [
+                        "sa" => 'index',
+                        "surveyid" => $iSurveyId,
+                    ]
+                )
             ],
             true
         );
@@ -1172,15 +1270,15 @@ class Tokens extends SurveyCommonAction
                 true
             );
             $this->renderWrappedTemplate('token', array('message' => array(
-            'title' => sprintf(gT("Delete participant attribute %s"), $sAttributeToDelete),
-            'message' => "<p>" . gT("If deleted, all information stored in this attribute field will be lost.") . "</p>\n"
-            . CHtml::form(array("admin/tokens/sa/deletetokenattributes/surveyid/{$iSurveyId}"), 'post', array('id' => 'attributenumber'))
-            . CHtml::hiddenField('deleteattribute', $sAttributeToDelete)
-            . CHtml::hiddenField('sid', $iSurveyId)
-            . CHtml::htmlButton(gT('Cancel'), array('type' => 'submit', 'value' => 'cancel', 'name' => 'cancel', 'class' => 'btn btn-outline-secondary'))
-            . '&nbsp;'
-            . CHtml::htmlButton(gT('Delete attribute'), array('type' => 'submit', 'value' => 'confirm', 'name' => 'confirm', 'class' => 'btn btn-danger'))
-            . CHtml::endForm()
+                'title' => sprintf(gT("Delete participant attribute %s"), $sAttributeToDelete),
+                'message' => "<p>" . gT("If deleted, all information stored in this attribute field will be lost.") . "</p>\n"
+                    . CHtml::form(array("admin/tokens/sa/deletetokenattributes/surveyid/{$iSurveyId}"), 'post', array('id' => 'attributenumber'))
+                    . CHtml::hiddenField('deleteattribute', $sAttributeToDelete)
+                    . CHtml::hiddenField('sid', $iSurveyId)
+                    . CHtml::htmlButton(gT('Cancel'), array('type' => 'submit', 'value' => 'cancel', 'name' => 'cancel', 'class' => 'btn btn-outline-secondary'))
+                    . '&nbsp;'
+                    . CHtml::htmlButton(gT('Delete attribute'), array('type' => 'submit', 'value' => 'confirm', 'name' => 'confirm', 'class' => 'btn btn-danger'))
+                    . CHtml::endForm()
             )), $aData);
         } elseif ($sAttributeToDelete) {
             // Update field attributedescriptions in survey table
@@ -1601,12 +1699,12 @@ class Tokens extends SurveyCommonAction
                         'message' => array(
                             'title' => gT("Warning"),
                             'message' => gT("There were no eligible emails to send. This will be because none satisfied the criteria of:")
-                            . "<br/>&nbsp;<ul class='list-unstyled'><li>" . gT("having a valid email address") . "</li>"
-                            . "<li>" . gT("not having been sent an invitation already") . "</li>"
-                            . "<li>" . gT("not having already completed the survey") . "</li>"
-                            . "<li>" . gT("having an access code") . "</li>"
-                            . "<li>" . gT("having at least one use left") . "</li></ul>"
-                            . '<p class="mt-3"><a href="' . App()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId) . '" title="" class="btn btn-cancel ">' . gT("Cancel") . '</a></p>'
+                                . "<br/>&nbsp;<ul class='list-unstyled'><li>" . gT("having a valid email address") . "</li>"
+                                . "<li>" . gT("not having been sent an invitation already") . "</li>"
+                                . "<li>" . gT("not having already completed the survey") . "</li>"
+                                . "<li>" . gT("having an access code") . "</li>"
+                                . "<li>" . gT("having at least one use left") . "</li></ul>"
+                                . '<p class="mt-3"><a href="' . App()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId) . '" title="" class="btn btn-cancel ">' . gT("Cancel") . '</a></p>'
                         )
                     ),
                     $aData
@@ -1718,7 +1816,13 @@ class Tokens extends SurveyCommonAction
 
             // White Close Button
             //$aData['showWhiteCloseButton'] = true;
-            $aData['closeUrl'] = Yii::app()->createUrl('admin/tokens/sa/browse/surveyid/' . $iSurveyId);
+            $aData['closeUrl'] = Yii::app()->createUrl(
+                "admin/tokens",
+                [
+                    "sa" => 'index',
+                    "surveyid" => $iSurveyId,
+                ]
+            );
 
             //$aData['topBar']['name'] = 'tokensTopbar_view';
             //$aData['topBar']['rightSideView'] = 'tokensTopbarRight_view';
@@ -1726,7 +1830,13 @@ class Tokens extends SurveyCommonAction
             $topbarData = TopbarConfiguration::getTokensTopbarData($iSurveyId);
             $aData['topbar']['showWhiteCloseButton'] = true;
             $aData['topbar']['showDownloadButton'] = true;
-            $aData['topbar']['closeUrl'] = Yii::app()->createUrl('admin/tokens/sa/browse/surveyid/' . $iSurveyId);
+            $aData['topbar']['closeUrl'] = Yii::app()->createUrl(
+                "admin/tokens",
+                [
+                    "sa" => 'index',
+                    "surveyid" => $iSurveyId,
+                ]
+            );
             $topbarData = array_merge($topbarData, $aData['topbar']);
             $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
                 '/surveyAdministration/partial/topbar_tokens/rightSideButtons',
@@ -1775,7 +1885,13 @@ class Tokens extends SurveyCommonAction
             '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
             [
                 'showCloseButton' => true,
-                'closeUrl' => Yii::app()->createUrl('admin/tokens/sa/browse/surveyid/' . $iSurveyId)
+                'closeUrl' => Yii::app()->createUrl(
+                    "admin/tokens",
+                    [
+                        "sa" => 'index',
+                        "surveyid" => $iSurveyId,
+                    ]
+                )
             ],
             true
         );
@@ -1792,8 +1908,8 @@ class Tokens extends SurveyCommonAction
             $duplicatelist = array();
             $invalidemaillist = array();
             $tokenoutput .= "\t<tr><td colspan='2' height='4'><strong>"
-            . gT("Uploading LDAP Query") . "</strong></td></tr>\n"
-            . "\t<tr><td align='center'>\n";
+                . gT("Uploading LDAP Query") . "</strong></td></tr>\n"
+                . "\t<tr><td align='center'>\n";
             $ldapq = Yii::app()->request->getPost('ldapQueries'); // the ldap query id
 
             $ldap_server_id = $ldap_queries[$ldapq]['ldapServerId'];
@@ -1808,8 +1924,10 @@ class Tokens extends SurveyCommonAction
             }
 
             // define $attrlist: list of attributes to read from users' entries
-            $attrparams = array('firstname_attr', 'lastname_attr',
-            'email_attr', 'token_attr', 'language');
+            $attrparams = array(
+                'firstname_attr', 'lastname_attr',
+                'email_attr', 'token_attr', 'language'
+            );
 
             $aTokenAttr = getAttributeFieldNames($iSurveyId);
             foreach ($aTokenAttr as $thisattrfieldname) {
@@ -1881,7 +1999,7 @@ class Tokens extends SurveyCommonAction
 
                                 // The following attrs are optional
                                 if (isset($responseGroup[$j][$ldap_queries[$ldapq]['token_attr']])) {
-                                                                    $mytoken = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['token_attr']]);
+                                    $mytoken = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['token_attr']]);
                                 }
 
                                 foreach ($aTokenAttr as $thisattrfieldname) {
@@ -1890,12 +2008,12 @@ class Tokens extends SurveyCommonAction
                                         isset($ldap_queries[$ldapq]['attr' . $attridx]) &&
                                         isset($responseGroup[$j][$ldap_queries[$ldapq]['attr' . $attridx]])
                                     ) {
-                                                                            $myattrArray[$attridx] = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['attr' . $attridx]]);
+                                        $myattrArray[$attridx] = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['attr' . $attridx]]);
                                     }
                                 }
 
                                 if (isset($responseGroup[$j][$ldap_queries[$ldapq]['language']])) {
-                                                                    $mylanguage = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['language']]);
+                                    $mylanguage = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['language']]);
                                 }
 
                                 // In case LDAP Server encoding isn't UTF-8, let's translate
@@ -1936,7 +2054,7 @@ class Tokens extends SurveyCommonAction
                                 } elseif ($meetminirequirements === true) {
                                     // No issue, let's import
                                     $iq = "INSERT INTO {{tokens_" . intval($iSurveyId) . "}} \n"
-                                    . "(firstname, lastname, email, emailstatus, token, language";
+                                        . "(firstname, lastname, email, emailstatus, token, language";
 
                                     foreach ($aTokenAttr as $thisattrfieldname) {
                                         $attridx = substr((string) $thisattrfieldname, 10); // the 'attribute_' prefix is 10 chars long
@@ -1945,18 +2063,18 @@ class Tokens extends SurveyCommonAction
                                         }
                                     }
                                     $iq .= ") \n"
-                                    . "VALUES (" . Yii::app()->db->quoteValue($myfirstname) . ", " . Yii::app()->db->quoteValue($mylastname) . ", " . Yii::app()->db->quoteValue($myemail) . ", 'OK', " . Yii::app()->db->quoteValue($mytoken) . ", " . Yii::app()->db->quoteValue($mylanguage) . "";
+                                        . "VALUES (" . Yii::app()->db->quoteValue($myfirstname) . ", " . Yii::app()->db->quoteValue($mylastname) . ", " . Yii::app()->db->quoteValue($myemail) . ", 'OK', " . Yii::app()->db->quoteValue($mytoken) . ", " . Yii::app()->db->quoteValue($mylanguage) . "";
 
                                     foreach ($aTokenAttr as $thisattrfieldname) {
                                         $attridx = substr((string) $thisattrfieldname, 10); // the 'attribute_' prefix is 10 chars long
                                         if (!empty($myattrArray[$attridx])) {
                                             $iq .= ", " . Yii::app()->db->quoteValue($myattrArray[$attridx]) . "";
-                                        }// dbquote_all encloses str with quotes
+                                        } // dbquote_all encloses str with quotes
                                     }
                                     $iq .= ")";
                                     $ir = Yii::app()->db->createCommand($iq)->execute();
                                     if (!$ir) {
-                                                                            $duplicatecount++;
+                                        $duplicatecount++;
                                     }
                                     $xz++;
                                     // or die ("Couldn't insert line<br />\n$buffer<br />\n".htmlspecialchars($connect->ErrorMsg())."<pre style='text-align: left'>$iq</pre>\n");
@@ -2025,7 +2143,13 @@ class Tokens extends SurveyCommonAction
             '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
             [
                 'showCloseButton' => true,
-                'closeUrl' => Yii::app()->createUrl('admin/tokens/sa/browse/surveyid/' . $iSurveyId)
+                'closeUrl' => Yii::app()->createUrl(
+                    "admin/tokens",
+                    [
+                        "sa" => 'index',
+                        "surveyid" => $iSurveyId,
+                    ]
+                )
             ],
             true
         );
@@ -2105,9 +2229,9 @@ class Tokens extends SurveyCommonAction
                                 $comma = substr_count((string) $buffer, ',');
                                 $semicolon = substr_count((string) $buffer, ';');
                                 if ($semicolon > $comma) {
-                                                                    $sSeparator = ';';
+                                    $sSeparator = ';';
                                 } else {
-                                                                        $sSeparator = ',';
+                                    $sSeparator = ',';
                                 }
                         }
                         $aFirstLine = str_getcsv((string) $buffer, $sSeparator, '"');
@@ -2192,7 +2316,7 @@ class Tokens extends SurveyCommonAction
                                 }
                             }
                             if (!empty($aParams)) {
-                                                            $oCriteria->params = $aParams;
+                                $oCriteria->params = $aParams;
                             }
                             $dupresult = TokenDynamic::model($iSurveyId)->count($oCriteria);
                             if ($dupresult > 0) {
@@ -2208,7 +2332,7 @@ class Tokens extends SurveyCommonAction
                                     if ($bAllowInvalidEmail) {
                                         $iInvalidEmailCount++;
                                         if (empty($aWriteArray['emailstatus']) || strtoupper($aWriteArray['emailstatus'] == "OK")) {
-                                                                                    $aWriteArray['emailstatus'] = "invalid";
+                                            $aWriteArray['emailstatus'] = "invalid";
                                         }
                                     } else {
                                         $bInvalidEmail = true;
@@ -2257,7 +2381,7 @@ class Tokens extends SurveyCommonAction
                             // unset all empty value
                             foreach ($aWriteArray as $key => $value) {
                                 if ($aWriteArray[$key] == "") {
-                                                                    unset($aWriteArray[$key]);
+                                    unset($aWriteArray[$key]);
                                 }
                                 if (substr((string) $value, 0, 1) == '"' && substr((string) $value, -1) == '"') {
                                     // Fix CSV quote
@@ -2271,7 +2395,7 @@ class Tokens extends SurveyCommonAction
                                 $oToken->scenario = 'allowinvalidemail';
                             }
                             foreach ($aWriteArray as $key => $value) {
-                                    $oToken->$key = $value;
+                                $oToken->$key = $value;
                             }
                             if (!$oToken->encryptSave(true)) {
                                 $aModelErrorList[] = array('line' => $iRecordCount, 'errors' => CHtml::errorSummary($oToken, '', '', ['class' => 'text-start']));
@@ -2368,13 +2492,13 @@ class Tokens extends SurveyCommonAction
         if (!Yii::app()->request->getParam('ok')) {
             $aData['sidemenu']['state'] = false;
             $this->renderWrappedTemplate('token', array('message' => array(
-            'title' => gT("Create access codes"),
-            'message' => gT("Clicking 'Yes' will generate access codes for all those in this participant list that have not been issued one. Continue?") . "<br /><br />\n"
-            . "<button class='btn btn-outline-secondary' type='submit' value='"
-            . gT("Yes") . "' onclick='" . convertGETtoPOST($this->getController()->createUrl("admin/tokens/sa/tokenify/surveyid/$iSurveyId", array('ok' => 'Y'))) . "' >" . gT("Yes") . "</button>\n"
-            . "<input class='btn btn-outline-secondary' type='submit' value='"
-            . gT("No") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/sa/index/surveyid/$iSurveyId") . "', '_top')\" />\n"
-            . "<br />\n"
+                'title' => gT("Create access codes"),
+                'message' => gT("Clicking 'Yes' will generate access codes for all those in this participant list that have not been issued one. Continue?") . "<br /><br />\n"
+                    . "<button class='btn btn-outline-secondary' type='submit' value='"
+                    . gT("Yes") . "' onclick='" . convertGETtoPOST($this->getController()->createUrl("admin/tokens/sa/tokenify/surveyid/$iSurveyId", array('ok' => 'Y'))) . "' >" . gT("Yes") . "</button>\n"
+                    . "<input class='btn btn-outline-secondary' type='submit' value='"
+                    . gT("No") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/sa/index/surveyid/$iSurveyId") . "', '_top')\" />\n"
+                    . "<br />\n"
             )), $aData);
         } else {
             //get token length from survey settings
@@ -2384,7 +2508,7 @@ class Tokens extends SurveyCommonAction
             if ($neededtokencount > $newtokencount) {
                 $aData['success'] = false;
                 $message = ngT('Only {n} access code has been created.|Only {n} access codes have been created.', $newtokencount)
-                            . ngT('Need {n} access code.|Need {n} access codes.', $neededtokencount);
+                    . ngT('Need {n} access code.|Need {n} access codes.', $neededtokencount);
                 $message .= '<p class="mt-3"><a href="' . App()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId) . '" title="" class="btn btn-outline-secondary ">' . gT("Ok") . '</a></p>';
             } else {
                 $aData['success'] = true;
@@ -2392,8 +2516,8 @@ class Tokens extends SurveyCommonAction
                 $message .= '<p class="mt-3"><a href="' . App()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId) . '" title="" class="btn btn-outline-secondary ">' . gT("Ok") . '</a></p>';
             }
             $this->renderWrappedTemplate('token', array('message' => array(
-            'title' => gT("Create access codes"),
-            'message' => $message
+                'title' => gT("Create access codes"),
+                'message' => $message
             )), $aData);
         }
     }
@@ -2514,7 +2638,13 @@ class Tokens extends SurveyCommonAction
         $topbarData = TopbarConfiguration::getTokensTopbarData($iSurveyId);
         $aData['topbar']['showSaveButton'] = true;
         $aData['topbar']['showWhiteCloseButton'] = true;
-        $aData['topbar']['closeUrl'] = Yii::app()->createUrl('admin/tokens/sa/browse/surveyid/' . $iSurveyId);
+        $aData['topbar']['closeUrl'] = Yii::app()->createUrl(
+            "admin/tokens",
+            [
+                "sa" => 'index',
+                "surveyid" => $iSurveyId,
+            ]
+        );
         $topbarData = array_merge($topbarData, $aData['topbar']);
         $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
             '/surveyAdministration/partial/topbar_tokens/rightSideButtons',
@@ -2597,7 +2727,13 @@ class Tokens extends SurveyCommonAction
             [
                 'showGreenSaveAndCloseButton' => true,
                 'showWhiteCloseButton' => true,
-                'closeUrl' => Yii::app()->createUrl('admin/tokens/sa/browse/surveyid/' . $iSurveyId)
+                'closeUrl' => Yii::app()->createUrl(
+                    "admin/tokens",
+                    [
+                        "sa" => 'index',
+                        "surveyid" => $iSurveyId,
+                    ]
+                )
             ],
             true
         );
@@ -2651,10 +2787,10 @@ class Tokens extends SurveyCommonAction
             Token::createTable($iSurveyId);
             LimeExpressionManager::SetDirtyFlag(); // LimeExpressionManager needs to know about the new survey participants table
             $this->renderWrappedTemplate('token', array('message' => array(
-            'title' => gT("Survey participants"),
-            'message' => gT("A participant table has been created for this survey.") . " (\"" . Yii::app()->db->tablePrefix . "tokens_$iSurveyId\")<br /><br />\n"
-            . "<input type='submit' class='btn btn-outline-secondary' value='"
-            . gT("Continue") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/sa/index/surveyid/$iSurveyId") . "', '_top')\" />\n"
+                'title' => gT("Survey participants"),
+                'message' => gT("A participant table has been created for this survey.") . " (\"" . Yii::app()->db->tablePrefix . "tokens_$iSurveyId\")<br /><br />\n"
+                    . "<input type='submit' class='btn btn-outline-secondary' value='"
+                    . gT("Continue") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/sa/index/surveyid/$iSurveyId") . "', '_top')\" />\n"
             )), $aData);
         } elseif (returnGlobal('restoretable') === "Y" && Yii::app()->request->getPost('oldtable')) {
             /* Restore a previously deleted tokens table */
@@ -2919,7 +3055,13 @@ class Tokens extends SurveyCommonAction
 
         $topbarData = TopbarConfiguration::getTokensTopbarData($iSurveyId);
         $aData['topbar']['showWhiteCloseButton'] = true;
-        $aData['topbar']['closeUrl'] = Yii::app()->createUrl('admin/tokens/sa/browse/surveyid/' . $iSurveyId);
+        $aData['topbar']['closeUrl'] = Yii::app()->createUrl(
+            "admin/tokens",
+            [
+                "sa" => 'index',
+                "surveyid" => $iSurveyId,
+            ]
+        );
         $topbarData = array_merge($topbarData, $aData['topbar']);
         $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
             '/surveyAdministration/partial/topbar_tokens/rightSideButtons',

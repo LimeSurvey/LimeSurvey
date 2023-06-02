@@ -86,6 +86,7 @@
             "./vendor/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/controllers",
             "./vendor/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/libraries/ExtensionInstaller",
             "./vendor/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/libraries/FormExtension",
+            "./vendor/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/libraries/Api",
             "./vendor/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/helpers/update/updatedb_helper.php",
             "./vendor/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/helpers/update/updates",
             "./vendor/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/core/plugins/ExpressionAnswerOptions/ExpressionAnswerOptions.php",

@@ -452,7 +452,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     {
         return array(
             'permissions'     => array(self::HAS_MANY, 'Permission', array('entity_id' => 'sid')), //
-            'languagesettings' => array(self::HAS_MANY, 'SurveyLanguageSetting', 'surveyls_survey_id', 'select' => ['surveyls_language', 'surveyls_title'],'index' => 'surveyls_language'),
+            'languagesettings' => array(self::HAS_MANY, 'SurveyLanguageSetting', 'surveyls_survey_id', 'index' => 'surveyls_language'),
             'defaultlanguage' => array(self::BELONGS_TO, 'SurveyLanguageSetting', array('language' => 'surveyls_language', 'sid' => 'surveyls_survey_id')),
             'correct_relation_defaultlanguage' => array(self::HAS_ONE, 'SurveyLanguageSetting', array('surveyls_language' => 'language', 'surveyls_survey_id' => 'sid')),
             'owner' => array(self::BELONGS_TO, 'User', 'owner_id',),

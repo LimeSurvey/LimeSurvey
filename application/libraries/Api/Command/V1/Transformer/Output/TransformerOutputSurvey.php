@@ -17,8 +17,7 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
         FormatterYnToBool $formatterYn,
         FormatterDateTimeToJson $formatterDateTime,
         TransformerOutputSurveyLanguageSettings $transformerOutputSurveyLanguageSettings
-    )
-    {
+    ) {
         $this->transformerOutputSurveyLanguageSettings = $transformerOutputSurveyLanguageSettings;
 
         $this->setDataMap([

@@ -32,8 +32,7 @@ class SurveyPatch implements CommandInterface
         AuthSession $authSession,
         FactoryInterface $diFactory,
         ResponseFactory $responseFactory
-    )
-    {
+    ) {
         $this->authSession = $authSession;
         $this->diFactory = $diFactory;
         $this->responseFactory = $responseFactory;
@@ -77,5 +76,4 @@ class SurveyPatch implements CommandInterface
         return $this->responseFactory
             ->makeSuccess(true);
     }
-
 }

@@ -28,16 +28,15 @@ class SchemaFactorySurveyPatch
                             'questionAttribute'
                         ),
                         Schema::string('op')->enum(
-                          'update',
-                          'delete',
-                          'create'
+                            'update',
+                            'delete',
+                            'create'
                         ),
                         AnyOf::create('id')
                             ->schemas(
                                 Schema::string(),
                                 Schema::object()
-                            )
-                        ,
+                            ),
                         Schema::object('props')
                     )
                 )

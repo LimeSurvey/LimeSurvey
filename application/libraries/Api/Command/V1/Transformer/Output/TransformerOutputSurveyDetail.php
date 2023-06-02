@@ -28,8 +28,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         TransformerOutputQuestionL10ns $transformerOutputQuestionL10ns,
         TransformerOutputQuestionAttribute $transformerOutputQuestionAttribute,
         TransformerOutputAnswer $transformerOutputAnswer
-    )
-    {
+    ) {
         $this->transformerSurvey = $transformerOutputSurvey;
         $this->transformerQuestionGroup = $transformerOutputQuestionGroup;
         $this->transformerQuestionGroupL10ns = $transformerOutputQuestionGroupL10ns;

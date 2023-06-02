@@ -401,7 +401,7 @@ class STATAxmlWriter extends Writer
                             // For radio lists, user wants code, not label
                             // TODO: We could skip this loop if we had answer code
                             foreach ($this->customFieldmap['answers'][$iQID][$iScaleID] as $answer) {
-                                if ($answer['answer'] == $response) {
+                                if (isset($answer['answer']) && $answer['answer'] == $response) {
                                     $response = $answer['code'];
                                     break;
                                 }

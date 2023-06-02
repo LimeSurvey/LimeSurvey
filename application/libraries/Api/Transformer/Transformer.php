@@ -162,7 +162,7 @@ class Transformer implements TransformerInterface
      */
     public function transformAll(array $array)
     {
-        return is_array($array) ? array_map( function ($data) {
+        return is_array($array) ? array_map(function ($data) {
             return $this->transform($data);
         }, $array) : null;
     }

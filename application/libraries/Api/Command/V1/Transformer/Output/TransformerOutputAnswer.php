@@ -22,7 +22,7 @@ class TransformerOutputAnswer extends TransformerOutputActiveRecord
     {
         $array = parent::transformAll($array);
 
-        usort($array,function ($a, $b){
+        usort($array, function ($a, $b) {
             return ((int)$a['sortOrder']) > ((int)$b['sortOrder']);
         });
 

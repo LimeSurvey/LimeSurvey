@@ -10,7 +10,6 @@ use QuestionGroupL10n;
 use Question;
 use QuestionL10n;
 use QuestionAttribute;
-
 use LimeSurvey\Api\Command\V1\Transformer\Input\{
     TransformerInputSurvey,
     TransformerInputAnswer,
@@ -21,12 +20,10 @@ use LimeSurvey\Api\Command\V1\Transformer\Input\{
     TransformerInputQuestionAttribute,
     TransformerInputSurveyLanguageSettings
 };
-
 use LimeSurvey\ObjectPatch\{
     Patcher,
     OpHandler\OpHandlerActiveRecordUpdate
 };
-
 use DI\FactoryInterface;
 use Psr\Container\ContainerInterface;
 

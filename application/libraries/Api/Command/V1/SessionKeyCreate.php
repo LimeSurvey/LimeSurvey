@@ -25,8 +25,7 @@ class SessionKeyCreate implements CommandInterface
     public function __construct(
         AuthSession $authSession,
         ResponseFactory $responseFactory
-    )
-    {
+    ) {
         $this->authSession = $authSession;
         $this->responseFactory = $responseFactory;
     }

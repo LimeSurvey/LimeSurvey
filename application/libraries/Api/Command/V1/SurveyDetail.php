@@ -35,8 +35,7 @@ class SurveyDetail implements CommandInterface
         AuthSession $authSession,
         TransformerOutputSurveyDetail $transformerOutputSurveyDetail,
         ResponseFactory $responseFactory
-    )
-    {
+    ) {
         $this->survey = $survey;
         $this->authSession = $authSession;
         $this->transformerOutputSurveyDetail = $transformerOutputSurveyDetail;
@@ -85,7 +84,8 @@ class SurveyDetail implements CommandInterface
             return $this->responseFactory->makeErrorNotFound(
                 (new ResponseDataError(
                     'SURVEY_NOT_FOUND',
-                    'Survey not found')
+                    'Survey not found'
+                )
                 )->toArray()
             );
         }
