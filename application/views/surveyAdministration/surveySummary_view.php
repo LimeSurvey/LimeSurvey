@@ -39,6 +39,13 @@ $respstatsread  = Permission::model()->hasSurveyPermission($iSurveyID, 'response
         </div>
     </div>
 </div> -->
+
+<?php
+    //survey has been activated in open-access mode
+   if (isset($surveyActivationFeedback)) {
+       $this->renderPartial('/surveyAdministration/surveyActivation/_feedbackOpenAccess', ['surveyId' => $iSurveyID]);
+   }
+?>
 <div class="row survey-summary">
     <?php
     $possiblePanelFolder = realpath(Yii::app()->getConfig('rootdir') . '/application/views/admin/survey/subview/surveydashboard/');

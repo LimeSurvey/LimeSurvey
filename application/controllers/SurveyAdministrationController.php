@@ -202,6 +202,8 @@ class SurveyAdministrationController extends LSBaseController
 
         // Display 'Overview' in Green Bar
      //   $aData['subaction'] = gT('Overview');
+        $surveyActivationFeedback = Yii::app()->request->getParam('surveyActivationFeedback', null);
+        $aData['surveyActivationFeedback'] = $surveyActivationFeedback;
 
         $this->aData = $aData;
         $this->render('sidebody', [
@@ -1879,6 +1881,11 @@ class SurveyAdministrationController extends LSBaseController
             if ($openAccessMode !== null) {
                 switch ($openAccessMode) {
                     case 'Y': //show a modal or give feedback on another page
+                        $this->redirect([
+                            '/surveyAdministration/view/',
+                            'surveyid' => $surveyId,
+                            'surveyActivationFeedback' => 'surveyActivationFeedback'
+                        ]);
                         break;
                     case 'N': //check if token table exists or 'allowRegister' set to true
                         $this->redirect([
