@@ -14,7 +14,6 @@
 */
 
 use LimeSurvey\Helpers\questionHelper;
-
 use LimeSurvey\Models\Services\Exception\ExceptionPersistError;
 
 /**
