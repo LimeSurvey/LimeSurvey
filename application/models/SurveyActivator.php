@@ -471,5 +471,4 @@ class SurveyActivator
     {
         return $this->survey->isAllowRegister || tableExists('tokens_' . $this->survey->sid);
     }
-
 }
