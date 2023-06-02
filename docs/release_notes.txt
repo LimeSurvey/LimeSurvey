@@ -34,6 +34,11 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.58 (build 230504) to 3.28.59 (build 230517) May 15, 2023
+-Fixed issue #18634: Export single selected response can export a empty line (#2909) (Denis Chenu)
+-Fixed issue #18343: Problem with interpreting double slash in URL (IIS) (#2630) (Denis Chenu)
+
+
 Changes from 3.28.57 (build 230425) to 3.28.58 (build 230504) May 3, 2023
 -Fixed issue #18639: Token browse can be unusable with lot of data in attribute (#2915) (Denis Chenu)
 -Fixed issue #18603: Set minimum number of files for file upload not working (#2864) (Denis Chenu)
