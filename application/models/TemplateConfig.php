@@ -635,7 +635,7 @@ class TemplateConfig extends CActiveRecord
 //        $aClassAndAttributes['class']['navbarcollapse'] = ' collapse navbar-collapse ';
 //        $aClassAndAttributes['class']['navbarlink']     = ' nav navbar-nav  navbar-action-link ';
 
-//        $aClassAndAttributes['attr']['navbartoggle']    = ' data-toggle="collapse" data-bs-target="#navbar" aria-expanded="false" aria-controls="navbar" ';
+//        $aClassAndAttributes['attr']['navbartoggle']    = ' data-bs-toggle="collapse" data-bs-target="#navbar" aria-expanded="false" aria-controls="navbar" ';
 //        $aClassAndAttributes['attr']['navbar'] = $aClassAndAttributes['attr']['navbarbrand'] = '';
 
         // Language changer
@@ -744,7 +744,7 @@ class TemplateConfig extends CActiveRecord
 //        $aClassAndAttributes['class']['lctdropdownli']  = 'index-item ';
 //        $aClassAndAttributes['class']['lctdropdownlia'] = 'ls-language-link ';
 
-//        $aClassAndAttributes['attr']['lctla']       = ' data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" ';
+//        $aClassAndAttributes['attr']['lctla']       = ' data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" ';
 //        $aClassAndAttributes['attr']['lctdropdown'] = ' style="overflow: scroll" ';
 
 //        $aClassAndAttributes['attr']['lctli'] = $aClassAndAttributes['attr']['lctspan'] = $aClassAndAttributes['attr']['lctdropdownli'] = $aClassAndAttributes['attr']['lctdropdownlia'] = ' ';
@@ -784,8 +784,8 @@ class TemplateConfig extends CActiveRecord
 //        $aClassAndAttributes['class']['indexmenusddspan'] = '  ';
 //        $aClassAndAttributes['class']['indexmenusddul']   = '  dropdown-sub-menu ';
 
-//        $aClassAndAttributes['attr']['indexmenuglia']          = ' data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"';
-//        $aClassAndAttributes['attr']['indexmenuslia']          = ' data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"';
+//        $aClassAndAttributes['attr']['indexmenuglia']          = ' data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"';
+//        $aClassAndAttributes['attr']['indexmenuslia']          = ' data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"';
 
 //        $aClassAndAttributes['attr']['indexmenussul'] = '';
 //        $aClassAndAttributes['attr']['indexmenusgli'] = '';

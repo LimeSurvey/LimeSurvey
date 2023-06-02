@@ -27,6 +27,7 @@ use LimeSurvey\Helpers\questionHelper;
  * @property string $other Other option enabled for question (Y/N)
  * @property string $mandatory Whether question is mandatory (Y/S/N)
  * @property string $encrypted Whether question is encrypted (Y/N)
+ * @property string $question_theme_name
  * @property integer $question_order Question order in greoup
  * @property integer $parent_qid Questions parent question ID eg for subquestions
  * @property integer $scale_id  The scale ID
@@ -36,8 +37,8 @@ use LimeSurvey\Helpers\questionHelper;
  * @property integer $same_script Whether the same script should be used for all languages
  *
  * @property Survey $survey
- * @property QuestionGroup $groups  //@TODO should be singular
- * @property Question $parents      //@TODO should be singular
+ * @property QuestionGroup $group
+ * @property Question $parent
  * @property Question[] $subquestions
  * @property QuestionAttribute[] $questionAttributes NB! returns all QuestionArrtibute Models fot this QID regardless of the specified language
  * @property QuestionL10n[] $questionl10ns Question Languagesettings indexd by language code
@@ -126,7 +127,13 @@ class Question extends LSActiveRecord
             'parent' => array(self::HAS_ONE, 'Question', array("qid" => "parent_qid")),
             'questionattributes' => array(self::HAS_MANY, 'QuestionAttribute', 'qid'),
             'questionl10ns' => array(self::HAS_MANY, 'QuestionL10n', 'qid', 'together' => true),
-            'subquestions' => array(self::HAS_MANY, 'Question', array('parent_qid' => 'qid'), 'order' => App()->getDb()->quoteColumnName('subquestions.question_order') . ' ASC'),
+            'subquestions' => array(
+                self::HAS_MANY,
+                'Question',
+                array('parent_qid' => 'qid'),
+                'order' => 'subquestions.question_order ASC',
+                'together' => false
+            ),
             'conditions' => array(self::HAS_MANY, 'Condition', 'qid'),
             'answers' => array(self::HAS_MANY, 'Answer', 'qid'),
             // This relation will fail for non saved questions, which is often the case
@@ -207,6 +214,9 @@ class Question extends LSActiveRecord
                 $aRules[] = array('other', 'compare', 'compareValue' => 'Y', 'operator' => '!=', 'message' => sprintf(gT("'%s' can not be used if the 'Other' option for this question is activated."), 'other'));
             }
         }
+        if ($this->survey->isActive) {
+            $aRules = array_merge($aRules, $this->rulesForActiveSurvey());
+        }
         /* When question exist and are already set with title, allow keep bad title */
         if (!$this->isNewRecord) {
             $oActualValue = Question::model()->findByPk(array("qid" => $this->qid));
@@ -264,7 +274,17 @@ class Question extends LSActiveRecord
         return $aRules;
     }
 
-
+    /**
+     * return rules specific for activated survey
+     * @return array
+     */
+    private function rulesForActiveSurvey()
+    {
+        $aRules = array();
+        /* can not update group */
+        $aRules[] = array('gid', 'LSYii_DisableUpdateValidator');
+        return $aRules;
+    }
 
     /**
      * Rewrites sort order for questions in a group
@@ -725,7 +745,7 @@ class Question extends LSActiveRecord
             'linkAttributes'   => [
                 'data-bs-toggle' => 'tooltip',
                 'onclick' => '$.fn.bsconfirm("'
-                    . CHtml::encode(gT("Deleting  will also delete any answer options and subquestions it includes. Are you sure you want to continue?"))
+                    . CHtml::encode(gT("Deleting will also delete any answer options and subquestions it includes. Are you sure you want to continue?"))
                     . '", {"confirm_ok": "'
                     . gT("Delete")
                     . '", "confirm_cancel": "'
@@ -1734,5 +1754,26 @@ class Question extends LSActiveRecord
     public function getQuestionTheme()
     {
         return $this->getRelated("question_theme", $this->isNewRecord);
+    }
+
+    /**
+     * Is it a dual scale type.
+     */
+    public function getIsDualScale()
+    {
+        $dualScaleTypes = $this->getDualScaleTypes();
+        return in_array($this->type, $dualScaleTypes);
+    }
+
+    /**
+     * Returns the question types that are dual scale.
+     */
+    public function getDualScaleTypes()
+    {
+        $dualScaleTypes = array(
+            Question::QT_1_ARRAY_DUAL
+        );
+
+        return $dualScaleTypes;
     }
 }

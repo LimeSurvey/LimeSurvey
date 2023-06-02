@@ -649,15 +649,21 @@ class Permission extends LSActiveRecord
 
     public function getButtons(): string
     {
+        $setPermissionsUrl = App()->getController()->createUrl(
+            'surveyPermissions/settingsPermissions',
+            ['id' => $this->uid, 'action' => 'user','surveyid' => $this->entity_id,]
+        );
+
         $dropdownItems = [];
+
         $dropdownItems[] = [
-            'title'            => gT('Edit Permissioin'),
-            'url'              => App()->createUrl("surveyPermissions/settingsPermissions/", [
-                'id'       => $this->uid,
-                'surveyid' => $this->entity_id,
-                'action'   => 'user',
-            ]),
-            'iconClass'        => 'ri-pencil-fill',
+            'title'            => gT('Edit permissions'),
+            'iconClass'        => "ri-pencil-fill",
+            'linkClass'        => "UserManagement--action--openmodal UserManagement--action--permissions",
+            'linkAttributes'   => [
+                'data-href'      => $setPermissionsUrl,
+                'data-modalsize' => 'modal-lg',
+            ],
             'enabledCondition' => Permission::model()->hasSurveyPermission($this->entity_id, 'surveysecurity', 'update')
         ];
 
@@ -857,7 +863,7 @@ class Permission extends LSActiveRecord
                 'export' => false,
                 'title' => gT("Settings & Plugins"),
                 'description' => gT("Permission to view and update global settings & plugins and to delete and import plugins"),
-                'img' => 'ri-earth-fil',
+                'img' => 'ri-earth-fill',
             ),
             'participantpanel' => array(
                 'title' => gT("Central participant database"),

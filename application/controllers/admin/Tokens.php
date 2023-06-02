@@ -254,7 +254,13 @@ class Tokens extends SurveyCommonAction
         if (!Permission::model()->hasSurveyPermission($iSid, 'tokens', 'delete')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
-        TokenDynamic::model($iSid)->deleteRecords($aTokenIds);
+        Yii::import('application.helpers.admin.ajax_helper', true);
+        $deletedTokenCount = TokenDynamic::model($iSid)->deleteRecords($aTokenIds);
+        if ($deletedTokenCount > 0) {
+            ls\ajax\AjaxHelper::outputSuccess(ngT('Deleted {n} survey participant.|Deleted {n} survey participants.', $deletedTokenCount));
+        } else {
+            ls\ajax\AjaxHelper::outputError(gT('Could not delete survey participants.'));
+        }
         return true;
     }
 
@@ -277,7 +283,12 @@ class Tokens extends SurveyCommonAction
         if (!Permission::model()->hasSurveyPermission($iSid, 'tokens', 'delete')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
-        TokenDynamic::model($iSid)->deleteRecords(array($aTokenId));
+        $deletedTokenCount = TokenDynamic::model($iSid)->deleteRecords(array($aTokenId));
+        if ($deletedTokenCount > 0) {
+            Yii::app()->setFlashMessage(ngT('Deleted {n} survey participant.|Deleted {n} survey participants.', $deletedTokenCount));
+        } else {
+            Yii::app()->setFlashMessage(gT('Could not delete survey participant.'), 'error');
+        }
         $this->getController()->redirect(array("admin/tokens", "sa" => "browse", "surveyid" => $iSid));
     }
 
@@ -633,6 +644,7 @@ class Tokens extends SurveyCommonAction
                 } else {
                     $redirectUrl = Yii::app()->createUrl("/admin/tokens/sa/edit", ["iSurveyId" => $iSurveyId, "iTokenId" => $token->tid]);
                 }
+                Yii::app()->setFlashMessage(gT("The survey participant was successfully added."));
                 $this->getController()->redirect($redirectUrl);
             }
             $this->renderWrappedTemplate('token', array('addtokenpost'), $aData);
@@ -797,7 +809,7 @@ class Tokens extends SurveyCommonAction
         }
         if (!$survey->hasTokensTable) {
             // If no tokens table exists
-            $this->newtokentable($iSurveyId);
+            $this->newtokentable($iSurveyID);
         }
 
         $beforeTokenDelete = new PluginEvent('beforeTokenDelete');

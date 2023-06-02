@@ -276,7 +276,7 @@ class StatisticsUserController extends SurveyController
                 case Question::QT_S_SHORT_FREE_TEXT: // Short free text
                 case Question::QT_T_LONG_FREE_TEXT: // Long free text
                 case Question::QT_U_HUGE_FREE_TEXT: // Huge free text
-                    $allfields = "T" . $SGQidentifier;
+                    $allfields[] = "T" . $SGQidentifier;
                     break;
                 case Question::QT_SEMICOLON_ARRAY_TEXT:  // Array (Text)
                 case Question::QT_COLON_ARRAY_NUMBERS:  // Array (Numbers)

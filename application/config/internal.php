@@ -155,6 +155,7 @@ $internalConfig = array(
             'enableCookieValidation' => false, // Enable to activate cookie protection
             'noCsrfValidationParams' => array(),
             'noCsrfValidationRoutes' => array(
+                'rest',
                 'remotecontrol',
                 'plugins/unsecure',
             ),
@@ -307,10 +308,8 @@ $internalConfig = array(
                 'createUrl'               => 'LS_Twig_Extension::createUrl',
                 'json_decode'             => 'LS_Twig_Extension::json_decode',
                 'json_encode'             => 'CJSON::encode',
-                'getLanguageNameFromCode' => 'getLanguageNameFromCode',
                 'checkconditionFunction'  => 'checkconditionFunction',
                 'doRender'                => 'doRender',
-                'flattenText'             => 'flattenText',
                 'getEditor'               => 'getEditor',
                 'darkencss'               => 'LS_Twig_Extension::darkencss',
                 'lightencss'              => 'LS_Twig_Extension::lightencss',
@@ -430,10 +429,8 @@ $internalConfig = array(
                     /* Not in twigRenderer[functions] */
                     'include',
                     'dump',
-                    'getLanguageNameFromCode',
                     'checkconditionFunction',
                     'doRender',
-                    'flattenText',
                     'range',
                     'getEditor',
                     'darkencss',

@@ -26,7 +26,7 @@
                         <?= gT("User") ?>:
                     </label>
                     <div class='col-4'>
-                        <select id='uidselect' name='uid' class='form-select'>
+                        <select id='uidselect' name='uid' class='form-select activate-search'>
                             <?php
                             if (count($userList) > 0) {
                                 echo "<option value='-1' selected='selected'>" . gT("Please choose...") . "</option>";
@@ -59,7 +59,7 @@
                         <?= gT("User group") ?>:
                     </label>
                     <div class='col-4'>
-                        <select id='ugidselect' name='ugid' class='form-select'>
+                        <select id='ugidselect' name='ugid' class='form-select activate-search'>
                             <?php
                             if (count($userGroupList) > 0) {
                                 echo "<option value='-1' selected='selected'>" . gT("Please choose...") . "</option>";
@@ -131,7 +131,7 @@
                         'htmlOptions'       => ['class' => 'd-none d-sm-table-cell'],
                     ],
                     [
-                        'header' => gT('User Group'),
+                        'header' => gT('User group'),
                         'type'   => 'raw',
                         'value'  => function ($data) use ($oSurveyPermissions) {
                             $groupsStr = $oSurveyPermissions->getUserGroupNames($data->uid,
@@ -143,7 +143,7 @@
                         'htmlOptions'       => ['class' => 'd-none d-sm-table-cell '],
                     ],
                     [
-                        'header'            => gT('Full Name'),
+                        'header'            => gT('Full name'),
                         'name'              => 'full_name',
                         'type'              => 'raw',
                         'value'             => '$data->user->full_name',
@@ -160,4 +160,10 @@
     </div>
     <?php $this->renderPartial('/surveyAdministration/_user_management_sub_footer'); ?>
 
+</div>
+<div id='UserManagement-action-modal' class="modal fade UserManagement--selector--modal" tabindex="-1" role="dialog">
+    <div id="usermanagement-modal-doalog" class="modal-dialog" role="document">
+        <div class="modal-content">
+        </div>
+    </div>
 </div>

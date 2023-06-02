@@ -45,6 +45,7 @@ class UserManagementTest extends TestBaseClass
     public static function setupBeforeClass(): void
     {
         parent::setupBeforeClass();
+        $_SESSION = [];
         include(ROOT.DIRECTORY_SEPARATOR.'tests'.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'datasets'.DIRECTORY_SEPARATOR.'userdata.php');
         //\Yii::import('application.controllers.admin.UserManagement', true);
         \Yii::import('application.controllers.UserManagementController', true);
@@ -109,6 +110,7 @@ class UserManagementTest extends TestBaseClass
     }
 
     public function testUpdateAdminUserTamperproofed() {
+        $_SESSION = [];
         $oUserManagementController = new \UserManagementController('userManagement');
         $aChangeDataSet = $this->dataSet['change_admin_user'];
         $aChangeDataSet['uid'] = 1;

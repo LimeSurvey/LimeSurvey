@@ -295,6 +295,10 @@ abstract class PluginBase implements iPlugin
      */
     protected function set($key, $data, $model = null, $id = null)
     {
+        /* Date time settings format */
+        if (isset($this->settings[$key]['type']) && $this->settings[$key]['type'] == 'date' && !empty($this->settings[$key]['saveformat'])) {
+            $data = LimesurveyApi::getFormattedDateTime($data, $this->settings[$key]['saveformat']);
+        }
         // Encrypt the attribute if needed
         // TODO: Handle encryption in storage class, as that would allow each storage to handle
         // it on it's own way. Currently there is no good way of telling the storage which
@@ -378,7 +382,7 @@ abstract class PluginBase implements iPlugin
         $fullAlias = $alias . '.views.' . $viewfile;
 
         if (isset($data['plugin'])) {
-            throw new InvalidArgumentException("Key 'plugin' in data variable is for plugin base only. Please use another key name.");
+            throw new \InvalidArgumentException("Key 'plugin' in data variable is for plugin base only. Please use another key name.");
         }
 
         // Provide this so we can use $plugin->gT() in plugin views
@@ -615,7 +619,7 @@ abstract class PluginBase implements iPlugin
             $cssToRegister = \Yii::app()->getAssetManager()->publish(
                 \Yii::getPathOfAlias('userdir') . '/plugins/' . $parentPlugin . '/' . $relativePathToCss
             );
-        } elseif (file_exists(YiiBase::getPathOfAlias('webroot') . '/plugins/' . $parentPlugin . '/' . $relativePathToCss)) {
+        } elseif (file_exists(\Yii::getPathOfAlias('webroot') . '/plugins/' . $parentPlugin . '/' . $relativePathToCss)) {
             $cssToRegister = \Yii::app()->getAssetManager()->publish(
                 \Yii::getPathOfAlias('webroot') . '/plugins/' . $parentPlugin . '/' . $relativePathToCss
             );

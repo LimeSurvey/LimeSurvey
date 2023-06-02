@@ -7,13 +7,14 @@
 echo viewHelper::getViewTestTag('surveyResources');
 
 App()->getClientScript()->registerScript(
-  "resources-panel-variables", "
+    "resources-panel-variables",
+    "
 var jsonUrl = '';
 var sAction = '';
 var sParameter = '';
 var sTargetQuestion = '';
 var sNoParametersDefined = '';
-var sAdminEmailAddressNeeded = '" . gT("If you are using token functions or notifications emails you need to set an administrator email address.", 'js') . "'
+var sAdminEmailAddressNeeded = '" . gT("If you are using surveys with a closed participant group or notifications emails you need to set an administrator email address.", 'js') . "'
 var sURLParameters = '';
 var sAddParam = '';
 ",
@@ -39,7 +40,7 @@ var sAddParam = '';
                     'images' => gT('Images', 'unescaped')
                 ),
                 array(
-                    'class'     =>'form-select',
+                    'class'     => 'form-select',
                     'data-href' => App()->request->getBaseUrl() . "/vendor/kcfinder/browse.php?language=" . sTranslateLangCode2CK(App()->language)
                 )
             );
@@ -55,7 +56,7 @@ var sAddParam = '';
                 <?php eT("Import resources ZIP archive"); ?>
             </a>
         </div>
-        <div class="col-12">
+        <div class="col-12 file-manager">
             <iframe
                 id="browseiframe"
                 src="<?php echo App()->request->getBaseUrl(); ?>/vendor/kcfinder/browse.php?language='<?php echo sTranslateLangCode2CK(App()->language); ?>'"

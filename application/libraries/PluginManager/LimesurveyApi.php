@@ -234,6 +234,27 @@ class LimesurveyApi
     }
 
     /**
+     * Get the current survey in current oage
+     * @param boolean $onlyactivated return it only if activated
+     * @return false|integer
+     */
+    public function getCurrentSurveyid($onlyactivated = false)
+    {
+        $surveyId = \LimeExpressionManager::getLEMsurveyId();
+        if (empty($surveyId)) {
+            return false;
+        }
+        $survey = \Survey::model()->findByPk($surveyId);
+        if (!$survey) {
+            return false;
+        }
+        if ($onlyactivated && !$survey->getIsActive()) {
+            return false;
+        }
+        return $surveyId;
+    }
+
+    /**
      * Get the current Response
      * @param integer $surveyId
      * @return \Response|null
@@ -241,7 +262,7 @@ class LimesurveyApi
     public function getCurrentResponses($surveyId = null)
     {
         if (empty($surveyId)) {
-            $surveyId = \LimeExpressionManager::getLEMsurveyId();
+            $surveyId = $this->getCurrentSurveyid();
         }
         if (empty($surveyId)) {
             return;
@@ -289,7 +310,7 @@ class LimesurveyApi
      */
     public function getGroupList($surveyId)
     {
-        $result = \QuestionGroup::model()->findListByAttributes(array('sid' => $surveyId), 'group_name');
+        $result = \QuestionGroup::model()->findAllByAttributes(array('sid' => $surveyId), 'group_name');
         return $result;
     }
 
@@ -627,5 +648,26 @@ class LimesurveyApi
         }
 
         return $questionAttributes;
+    }
+
+    /**
+     * Get a formatted date time by a string
+     * Used to return date from date input in admin
+     * @param string $dateValue the string as date value
+     * @param string $returnFormat the final date format
+     * @param integer|null $currentFormat the current format of dateValue, defaut from App()->session['dateformat'] @see getDateFormatData function (in surveytranslator_helper)
+     * @return string
+     */
+    public static function getFormattedDateTime($dateValue, $returnFormat, $currentFormat = null)
+    {
+        if (empty($dateValue)) {
+            return "";
+        }
+        if (empty($currentFormat)) {
+            $currentFormat = intval(App()->session['dateformat']);
+        }
+        $dateformatdetails = getDateFormatData($currentFormat);
+        $datetimeobj = new \Date_Time_Converter($dateValue, $dateformatdetails['phpdate'] . " H:i");
+        return $datetimeobj->convert($returnFormat);
     }
 }

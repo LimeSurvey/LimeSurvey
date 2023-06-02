@@ -477,6 +477,7 @@ class CaptchaExtendedAction extends CCaptchaAction{
 		}
 
 		if($this->fontFile === null){
+            /** @psalm-suppress UndefinedFunction TODO: realname does not exist */
 			$this->fontFile = realname(Yii::app()->basePath."/../assets/fonts/font-src/lato-v11-latin-700.ttf");
 			
 		}

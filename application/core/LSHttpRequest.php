@@ -36,7 +36,7 @@ class LSHttpRequest extends CHttpRequest
 {
 
     private $_pathInfo;
-    
+
     public $noCsrfValidationRoutes = array();
     public $noCsrfValidationParams = array();
 
@@ -149,10 +149,6 @@ class LSHttpRequest extends CHttpRequest
     protected function normalizeRequest()
     {
         parent::normalizeRequest();
-
-        if (!isset($_SERVER['REQUEST_METHOD']) || $_SERVER['REQUEST_METHOD'] != 'POST') {
-            return;
-        }
 
         $route = Yii::app()->getUrlManager()->parseUrl($this);
 

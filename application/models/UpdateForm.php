@@ -571,20 +571,23 @@ class UpdateForm extends CFormModel
                     $security_update_available = false;
                     $unstable_update_available = false;
 
-                    if (is_array($updates) || $updates instanceof Countable) {
-                        if (count($updates) > 0) {
-                            $update_available = true;
-                            foreach ($updates as $update) {
-                                if ($update->security_update) {
-                                    $security_update_available = true;
-                                }
+                    if (!is_array($updates) && !($updates instanceof Countable)) {
+                        $updates = (array) $updates;
+                    }
 
-                                if ($update->branch != 'master') {
-                                    $unstable_update_available = true;
-                                }
+                    if (count($updates) > 0) {
+                        $update_available = true;
+                        foreach ($updates as $update) {
+                            if ($update->security_update) {
+                                $security_update_available = true;
+                            }
+
+                            if ($update->branch != 'master') {
+                                $unstable_update_available = true;
                             }
                         }
                     }
+
                     Yii::app()->session['update_result'] = $update_available;
                     Yii::app()->session['security_update'] = $security_update_available;
 

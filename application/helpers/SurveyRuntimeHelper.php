@@ -178,6 +178,8 @@ class SurveyRuntimeHelper
     private $groupname;
     private $groupdescription;
 
+    private $thissurvey;
+
     /**
      * Main function
      *
@@ -543,6 +545,10 @@ class SurveyRuntimeHelper
             /* Reset session with multiple tabs (show Token mismatch issue) , but only for not anonymous survey */
             if (!empty($_SESSION[$this->LEMsessid]['token']) and $this->aSurveyInfo['anonymized'] != 'Y') {
                 $this->aSurveyInfo['hiddenInputs']     .= \CHtml::hiddenField('token', $_SESSION[$this->LEMsessid]['token'], array('id' => 'token'));
+            }
+            /* Set sof man to true if it's already in POST */
+            if (App()->request->getPost('mandSoft')) {
+                $this->aSurveyInfo['hiddenInputs']     .= \CHtml::hiddenField('mandSoft', App()->request->getPost('mandSoft'), array('id' => 'mandSoft'));
             }
         }
 
@@ -1494,6 +1500,7 @@ class SurveyRuntimeHelper
      */
     private function manageClearAll()
     {
+        global $token;
         $sessionSurvey = Yii::app()->session["survey_{$this->iSurveyid}"];
         if (App()->request->getPost('confirm-clearall') != 'confirm') {
             /* Save current response, and come back to survey if clearll is not confirmed */
@@ -1527,7 +1534,6 @@ class SurveyRuntimeHelper
 
             killSurveySession($this->iSurveyid);
 
-            global $token;
             if ($token) {
                 $restartparam['token'] = Token::sanitizeToken($token);
             }

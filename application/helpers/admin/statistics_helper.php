@@ -746,10 +746,7 @@ class statistics_helper
             list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
 
             //select details for this question
-            /**
-            FIXME $iQuestionIDlength not defined!!
-             */
-            $nresult = Question::model()->find('language=:language AND parent_qid=0 AND qid=:qid', array(':language' => $language, ':qid' => substr($qqid, 0, $iQuestionIDlength)));
+            $nresult = Question::model()->find('language=:language AND parent_qid=0 AND qid=:qid', array(':language' => $language, ':qid' => substr($qqid, 0)));
             $qtitle = $nresult->title;
             $qtype = $nresult->type;
             $qquestion = flattenText($nresult->question);
@@ -860,10 +857,7 @@ class statistics_helper
         elseif ($sQuestionType == "N" || $sQuestionType == "K") {
             //NUMERICAL TYPE
             //Zero handling
-            if (!isset($excludezeros)) {
-                //If this hasn't been set, set it to on as default:
-                $excludezeros = 1;
-            }
+            $excludezeros = 1;
             //check last character, greater/less/equals don't need special treatment
             if (substr($rt, -1) == "G" || substr($rt, -1) == "L" || substr($rt, -1) == "=") {
                 //DO NOTHING
@@ -1120,8 +1114,6 @@ class statistics_helper
                         default:
                             break;
                     }
-
-                    unset($showem);
                 }
             }    //end else -> check last character, greater/less/equals don't need special treatment
         }    //end else-if -> multiple numerical types
@@ -1455,6 +1447,7 @@ class statistics_helper
      * @param integer $usegraph
      * @param boolean $browse
      * @return array
+     * @psalm-suppress UndefinedVariable
      */
     protected function displaySimpleResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $sLanguage)
     {
@@ -2166,8 +2159,7 @@ class statistics_helper
      * @param mixed $surveyid
      * @param mixed $sql
      * @param integer $usegraph
-     *
-     *
+     * @psalm-suppress UndefinedVariable
      */
     protected function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $sLanguage)
     {
@@ -2645,7 +2637,7 @@ class statistics_helper
                         //we want to have some "real" data here
                         if ($gdata[$i] != "N/A") {
                             //calculate percentage
-                            $gdata[$i] = ($grawdata[$i] / $TotalCompleted) * 100;
+                            $gdata[$i] = $TotalCompleted !== 0 ? ($grawdata[$i] / $TotalCompleted) * 100 : 0;
                         }
                     }
 
@@ -3547,6 +3539,7 @@ class statistics_helper
 
     /**
      * Generates statistics with subviews
+     * @psalm-suppress UndefinedVariable
      */
     public function generate_html_chartjs_statistics($surveyid, $allfields, $q2show = 'all', $usegraph = 0, $outputType = 'pdf', $pdfOutput = 'I', $sLanguageCode = null, $browse = true)
     {
@@ -3772,6 +3765,7 @@ class statistics_helper
      * @param string $outputType Optional - Can be xls, html or pdf - Defaults to pdf
      * @param mixed $browse  Show browse buttons
      * @return string
+     * @psalm-suppress UndefinedVariable
      */
     public function generate_statistics($surveyid, $allfields, $q2show = 'all', $usegraph = 0, $outputType = 'pdf', $outputTarget = 'I', $sLanguageCode = null, $browse = true)
     {
