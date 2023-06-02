@@ -43,8 +43,7 @@ class LanguageSettings
         Permission $modelPermission,
         Survey $modelSurvey,
         SurveyLanguageSetting $modelSurveyLanguageSetting
-    )
-    {
+    ) {
         $this->modelPermission = $modelPermission;
         $this->modelSurvey = $modelSurvey;
         $this->modelSurveyLanguageSetting = $modelSurveyLanguageSetting;
@@ -93,7 +92,7 @@ class LanguageSettings
             $surveyId
         );
         if (!$survey) {
-            throw new ExceptionNotFound;
+            throw new ExceptionNotFound();
         }
 
         $this->updateLanguageSettings(
@@ -145,9 +144,9 @@ class LanguageSettings
             if (!$surveyLanguageSetting->save()) {
                 throw new ExceptionPersistError(
                     sprintf(
-                    'Failed saving language settings for survey #%s and language "%s"',
-                    $survey->sid,
-                    $languageCode
+                        'Failed saving language settings for survey #%s and language "%s"',
+                        $survey->sid,
+                        $languageCode
                     )
                 );
             }

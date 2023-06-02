@@ -3,6 +3,7 @@
 namespace LimeSurvey\Models\Services;
 
 use Survey,
+
 QuestionGroup,
 LimeExpressionManager,
 EmCacheHelper;
@@ -47,7 +48,8 @@ class ExpressionManager
         // Deactivate _UpdateValuesInDatabase
         LimeExpressionManager::SetPreviewMode('database');
         LimeExpressionManager::StartSurvey(
-            $surveyId, 'survey',
+            $surveyId,
+            'survey',
             $survey->attributes,
             true
         );

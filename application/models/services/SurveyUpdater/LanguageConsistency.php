@@ -24,8 +24,7 @@ class LanguageConsistency
     public function __construct(
         SurveyLanguageSetting $modelSurveyLanguageSetting,
         LSYii_Application $yiiApp
-    )
-    {
+    ) {
         $this->modelSurveyLanguageSetting = $modelSurveyLanguageSetting;
         $this->yiiApp = $yiiApp;
     }

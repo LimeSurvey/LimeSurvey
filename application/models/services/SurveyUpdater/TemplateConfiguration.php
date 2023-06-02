@@ -2,7 +2,6 @@
 
 namespace LimeSurvey\Models\Services\SurveyUpdater;
 
-
 /**
  * Survey Updater Service template configuration
  *

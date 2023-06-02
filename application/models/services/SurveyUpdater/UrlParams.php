@@ -79,9 +79,9 @@ class UrlParams
             if (!$urlParam->save()) {
                 throw new ExceptionPersistError(
                     sprintf(
-                    'Failed saving language settings for survey #%s, url param "%s"',
-                    $surveyId,
-                    $param['parameter']
+                        'Failed saving language settings for survey #%s, url param "%s"',
+                        $surveyId,
+                        $param['parameter']
                     )
                 );
             }

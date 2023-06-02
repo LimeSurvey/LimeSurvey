@@ -35,8 +35,7 @@ class SurveyUpdater
         UrlParams $urlParams,
         ExpressionManager $expressionManager,
         TemplateConfiguration $templateConfiguration
-    )
-    {
+    ) {
         $this->languageSettings = $languageSettings;
         $this->generalSettings = $generalSettings;
         $this->urlParams = $urlParams;

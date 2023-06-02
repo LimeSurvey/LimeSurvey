@@ -40,8 +40,7 @@ class GeneralSettings
         LSYii_Application $yiiApp,
         PluginManager $yiiPluginManager,
         LanguageConsistency $languageConsistency
-    )
-    {
+    ) {
         $this->modelPermission = $modelPermission;
         $this->modelSurvey = $modelSurvey;
         $this->yiiApp = $yiiApp;
@@ -81,7 +80,7 @@ class GeneralSettings
             $surveyId
         );
         if (!$survey) {
-            throw new ExceptionNotFound;
+            throw new ExceptionNotFound();
         }
 
         $fields = $this->getFields($survey);
@@ -144,7 +143,7 @@ class GeneralSettings
                     sprintf(
                         'Failed saving general settings for survey #%s',
                         $survey->sid
-                        )
+                    )
                 );
             }
         }
@@ -168,8 +167,8 @@ class GeneralSettings
                 'canUpdate' => isset($this->yiiApp->session) && (
                     $survey->owner_id == $this->yiiApp->session['loginID']
                     || $this->modelPermission->hasGlobalPermission(
-                    'superadmin',
-                    'read'
+                        'superadmin',
+                        'read'
                     )
                 )
             ],
@@ -311,19 +310,19 @@ class GeneralSettings
                 $value = !empty($value)
                     ? $this->formatDateTimeInput($value)
                     : $default;
-            break;
+                break;
             case static::FIELD_TYPE_YN:
                 if (!in_array($value, ['Y', 'N', 'I'])) {
                     $value = ((int) $value === 1) ? 'Y' : 'N';
                 }
-            break;
+                break;
             case static::FIELD_TYPE_GAKEY:
                 if ($survey->googleanalyticsapikeysetting == 'G') {
                     $value  = "9999useGlobal9999";
                 } elseif ($survey->googleanalyticsapikeysetting == 'N') {
                     $value = '';
                 }
-            break;
+                break;
             case static::FIELD_TYPE_USE_CAPTCHA:
                 $value = $this->calculateUseCaptchaOption(
                     $input['usecaptcha_surveyaccess'] ?? null,
@@ -333,16 +332,16 @@ class GeneralSettings
                 if (is_null($value)) {
                     $value = $default;
                 }
-            break;
+                break;
             case 'int':
                 $value = (int) $value;
-            break;
+                break;
             case null:
             default:
                 $value = is_null($value)
                     ? $default
                     : $value;
-            break;
+                break;
         }
 
         switch ($field) {
@@ -355,14 +354,14 @@ class GeneralSettings
                     ? 15
                     : $value
                 );
-            break;
+                break;
             case 'additional_languages':
                 if (is_array($value)) {
                     if (
                         (
                             $index = array_search(
-                            $survey->language,
-                            $value
+                                $survey->language,
+                                $value
                             )
                         ) !== false
                     ) {
@@ -373,15 +372,17 @@ class GeneralSettings
                         $value
                     );
                 }
-            break;
+                break;
         }
 
         $survey->{$field} = $value;
 
-        if (!in_array(
-        $field,
-        $meta['updateFields']
-        )) {
+        if (
+            !in_array(
+                $field,
+                $meta['updateFields']
+            )
+        ) {
             $meta['updateFields'][] = $field;
         }
 
