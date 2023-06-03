@@ -34,7 +34,6 @@ $codeids = '';
                             $codeids = $codeids . ' ' . $row['sortorder'];
                         }
                         ?>
-                         <?php print_r(['update' => $updatePermission]) ?>
                         <?= Yii::app()->twigRenderer->renderViewFromFile(
                             '/application/views/admin/labels/labelRow.twig',
                             [
