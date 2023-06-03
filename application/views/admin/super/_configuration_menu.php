@@ -11,6 +11,7 @@
 <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')
     || Permission::model()->hasGlobalPermission('templates', 'read')
     || Permission::model()->hasGlobalPermission('labelsets', 'read')
+    || Permission::model()->hasGlobalPermission('labelsets', 'create')
     || Permission::model()->hasGlobalPermission('users', 'read')
     || Permission::model()->hasGlobalPermission('usergroups', 'read')
     || Permission::model()->hasGlobalPermission('participantpanel', 'read')
@@ -147,7 +148,8 @@
                                 </a>
                             </li>
                         <?php endif; ?>
-                        <?php if (Permission::model()->hasGlobalPermission('labelsets', 'read')): ?>
+                        <?php if (Permission::model()->hasGlobalPermission('labelsets', 'read') || Permission::model()->hasGlobalPermission('labelsets', 'create')): ?>
+                            <?php /* Can remove permission check when we have way to : update owner or complete Permission system */ ?>
                             <!-- Edit label sets -->
                             <li class="dropdown-item">
                                 <a href="<?php echo $this->createUrl("admin/labels/sa/view"); ?>">

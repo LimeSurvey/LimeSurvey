@@ -183,6 +183,7 @@ function populateDatabase($oDB)
         $oDB->createCommand()->createIndex('{{idx4_labels}}', '{{labels}}', ['lid','sortorder'], false);
         $oDB->createCommand()->createIndex('{{idx5_labels}}', '{{labels}}', ['lid','code'], true);
 
+
         // label_l10ns
         $oDB->createCommand()->createTable('{{label_l10ns}}', array(
             'id' =>  "pk",
@@ -194,10 +195,12 @@ function populateDatabase($oDB)
         // labelsets
         $oDB->createCommand()->createTable('{{labelsets}}', array(
             'lid' => 'pk',
+            'owner_id' => "integer NULL",
             'label_name' =>  "string(100) NOT NULL DEFAULT ''",
             'languages' =>  "string(255) NOT NULL",
         ), $options);
-
+        $oDB->createCommand()->createIndex('{{idx1_labelsets}}', '{{labelsets}}', 'owner_id', false);
+        $oDB->createCommand()->createIndex('{{idx2_labelsets}}', '{{labelsets}}', ['lid','owner_id'], false);
 
         // notifications
         $oDB->createCommand()->createTable('{{notifications}}', array(

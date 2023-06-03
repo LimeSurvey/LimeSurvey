@@ -16,6 +16,9 @@ interface PermissionInterface
         'export'
         ];
 
+    /**
+     * @return integer|null
+     */
     public function getOwnerId();
     /**
      * @return array

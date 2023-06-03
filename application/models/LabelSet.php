@@ -21,8 +21,11 @@
  * @property string $label_name Label Name (max 100 chars)
  * @property string $languages
  */
-class LabelSet extends LSActiveRecord
+class LabelSet extends LSActiveRecord implements PermissionInterface
 {
+
+    use PermissionTrait;
+
     /** @inheritdoc */
     public function tableName()
     {
@@ -50,6 +53,7 @@ class LabelSet extends LSActiveRecord
     public function rules()
     {
         return array(
+            array('owner_id', 'numerical', 'integerOnly' => true),
             array('label_name', 'required'),
             array('label_name', 'length', 'min' => 1, 'max' => 100),
             array('label_name', 'LSYii_Validators'),
@@ -64,7 +68,8 @@ class LabelSet extends LSActiveRecord
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
-            'labels' => array(self::HAS_MANY, 'Label', 'lid', 'order' => 'sortorder ASC')
+            'labels' => array(self::HAS_MANY, 'Label', 'lid', 'order' => 'sortorder ASC'),
+            'owner' => array(self::BELONGS_TO, 'User', 'owner_id', 'together' => true),
         );
     }
 
@@ -124,33 +129,41 @@ class LabelSet extends LSActiveRecord
      */
     public function getbuttons()
     {
-        $permission_labelsets_update = Permission::model()->hasGlobalPermission('labelsets', 'update');
-        $permission_labelsets_export = Permission::model()->hasGlobalPermission('labelsets', 'export');
-        $permission_labelsets_delete = Permission::model()->hasGlobalPermission('labelsets', 'delete');
+        //~ $permission_labelsets_update = Permission::model()->hasGlobalPermission('labelsets', 'update');
+        //~ $permission_labelsets_export = Permission::model()->hasGlobalPermission('labelsets', 'export');
+        //~ $permission_labelsets_delete = Permission::model()->hasGlobalPermission('labelsets', 'delete');
+
+        $permissions = [
+            'read' => $this->hasPermission('labelset', 'read'),
+            'edit' => $this->hasPermission('labelset', 'update'),
+            'export' => $this->hasPermission('labelset', 'export'),
+            'delete' => $this->hasPermission('labelset', 'delete'),
+        ];
 
         $dropdownItems = [];
         $dropdownItems[] = [
             'title'            => gT('Edit label set'),
             'iconClass'        => 'ri-pencil-fill',
             'url'              => App()->createUrl("admin/labels/sa/editlabelset/lid/$this->lid"),
-            'enabledCondition' => $permission_labelsets_update
+            'enabledCondition' => $permissions['edit']
         ];
         $dropdownItems[] = [
             'title'     => gT('View labels'),
             'iconClass' => 'ri-list-unordered',
             'url'       => App()->createUrl("admin/labels/sa/view/lid/$this->lid"),
+            'enabledCondition' => $permissions['read'] // Must not appear, filtered by seacrh criteria
         ];
         $dropdownItems[] = [
             'title'            => gT('Export label set'),
             'iconClass'        => 'ri-download-fill',
             'url'              => App()->createUrl("admin/export/sa/dumplabel/lid/$this->lid"),
-            'enabledCondition' => $permission_labelsets_export
+            'enabledCondition' => $permissions['export']
         ];
         $dropdownItems[] = [
             'title'            => gT('Delete'),
             'tooltip'          => gT('Delete label sets'),
             'iconClass'        => 'ri-delete-bin-fill text-danger',
-            'enabledCondition' => $permission_labelsets_delete,
+            'enabledCondition' => $permissions['delete'],
             'linkAttributes'   => [
                 'data-bs-toggle' => "modal",
                 'data-post-url'  => App()->createUrl("admin/labels/sa/delete", ["lid" => $this->lid]),
@@ -170,6 +183,11 @@ class LabelSet extends LSActiveRecord
     {
         $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
 
+        $criteria = new CDbCriteria();
+        // Permission
+        $criteriaPerm = self::getPermissionCriteria();
+        $criteria->mergeWith($criteriaPerm, 'AND');
+
         $sort = new CSort();
         $sort->attributes = array(
             'labelset_id' => array(
@@ -187,6 +205,7 @@ class LabelSet extends LSActiveRecord
         );
 
         $dataProvider = new CActiveDataProvider('LabelSet', array(
+            'criteria' => $criteria,
             'sort' => $sort,
             'pagination' => array(
                 'pageSize' => $pageSize,
@@ -207,5 +226,45 @@ class LabelSet extends LSActiveRecord
             $oLabel->delete();
         }
         rmdirr(App()->getConfig('uploaddir') . '/labels/' . $this->lid);
+    }
+
+    /**
+     * get criteria from Permission
+     * @return CDbCriteria
+     */
+    protected static function getPermissionCriteria()
+    {
+        $criteriaPerm = new CDbCriteria();
+        if (!Permission::model()->hasGlobalPermission("labelsets", 'read')) {
+            /* owner of labelsets */
+            $criteriaPerm->compare('t.owner_id', Yii::app()->user->id, false);
+        }
+        return $criteriaPerm;
+    }
+
+    /**
+     * Get the owner id of this Survey group Used for Permission
+     * @return integer
+     */
+    public function getOwnerId()
+    {
+        return $this->owner_id;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function hasPermission($sPermission, $sCRUD = 'read', $iUserID = null)
+    {
+        /* If have global : return true */
+        if (Permission::model()->hasPermission(0, 'global', 'labelsets', $sCRUD, $iUserID)) {
+            return true;
+        }
+        /* Specific need primaryKey */
+        if (!$this->primaryKey) {
+            return false;
+        }
+        /* Finally : return specific one : always false if not  */
+        return Permission::model()->hasPermission($this->lid, 'labelset', $sPermission, $sCRUD, $iUserID);
     }
 }
