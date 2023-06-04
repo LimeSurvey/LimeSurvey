@@ -1,7 +1,7 @@
 {% extends "./views/basic.twig" %}
 {% block choice %}
-    <div class="col-md-6 col-12">
-        <strong class="sortable-subtitle sortable-rank-subtitle">{{rank_title}}</strong>
+    <div class="col-md-6 col-12 ranking-advanced-available-items">
+        <strong class="sortable-subtitle sortable-rank-subtitle">{{choice_title}}</strong>
         <!-- @todo : move htmlblock at the good place -->      
         <div id="sortable-choice-{{qId}}" class="sortable-choice sortable-list ">
             {% for index, ansrow in  answers %}
@@ -26,8 +26,8 @@
 {% endblock %}
 
 {% block rank %}
-    <div class="col-md-6 col-12">
-        <strong class="sortable-subtitle sortable-rank-subtitle">{{choice_title}}</strong>
+    <div class="col-md-6 col-12 ranking-advanced-sorted-items">
+        <strong class="sortable-subtitle sortable-rank-subtitle">{{rank_title}}</strong>
         <div id="sortable-rank-{{qId}}" class="sortable-rank sortable-list list-group">
             <div class="d-none ls-remove"></div>
         </div>

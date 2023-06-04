@@ -1,0 +1,25 @@
+.navbar-collapse {
+    box-shadow : inset 0 1px 0 $white_10;
+}
+
+.navbar-form {
+    box-shadow : inset 0 1px 0 $white_10, 0 1px 0 $white_10;
+}
+
+.navbar {
+    background-color : $white !important;
+    box-shadow : 0 1px 20px 0 rgba(196, 196, 196, 1);
+
+    @media(max-width : 768px) {
+        box-shadow     : 1px 2px 3px $color_gunsmoke_10_approx;
+    }
+}
+
+// Collapsed button for menu
+.navbar-toggle {
+    border : solid 1px $base-color;
+}
+
+.navbar-toggle .icon-bar {
+    background-color : $base-color;
+}

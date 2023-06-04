@@ -1,0 +1,17 @@
+{#
+    This file is part of LimeSurvey
+    Copyright (C) 2007-2018 The LimeSurvey Project Team
+    This file render the load or save buttons without javascript needed
+#}
+{% if aSurveyInfo.aNavigator.load.show == "Y" %}
+<div class="mb-3 pe-2">
+    <button {{ aSurveyInfo.attr.loadbutton }} accesskey="l" class="{{ aSurveyInfo.class.loadbutton }} action--ls-button-submit btn btn-outline-secondary mb-3">{{ gT("Load unfinished survey") }}</button>
+</div>
+{% endif %}
+{% if aSurveyInfo.aNavigator.save.show == "Y" %}
+<div class="mb-3 pe-2">
+    <button {{ aSurveyInfo.attr.savebutton }} accesskey="s" class='{{ aSurveyInfo.class.savebutton }} action--ls-button-submit btn btn-outline-secondary mb-3'>
+        {{ gT('Resume later') }}
+    </button>
+</div>
+{% endif %}

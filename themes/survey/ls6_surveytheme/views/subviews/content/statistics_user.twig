@@ -1,0 +1,21 @@
+{# 
+    LimeSurvey 
+    Copyright (C) 2007-2020 The LimeSurvey Project Team / Louis Gac 
+    All rights reserved. 
+    License: GNU/GPL License v2 or later, see LICENSE.php 
+    LimeSurvey is free software. This version may have been modified pursuant 
+    to the GNU General Public License, and as distributed it includes or 
+    is derivative of works licensed under the GNU General Public License or 
+    other free or open source software licenses. 
+    See COPYRIGHT.php for copyright notices and details. 
+ 
+    (¯`·._.·(¯`·._.· Public Statistics Layout  ·._.·´¯)·._.·´¯) 
+ 
+    This file displays the page shown to user when viewing the statistics after taking a survey. 
+ 
+    NOTE: see layout_main.twig for more infos 
+#}<section> 
+        {{ include('./subviews/statistics_user/statistics_user_head.twig') }} 
+        {{ include('./subviews/statistics_user/statistics_user_content.twig') }} 
+        {{ include('./subviews/statistics_user/statistics_user_foot.twig') }} 
+    </section>

@@ -4,6 +4,8 @@
 // gulp build_theme / gulp watch_theme
 // for survey_theme_fruity:
 // gulp build_survey_theme_fruity / gulp watch_survey_theme_fruity
+// for survey_theme_ls6:
+// gulp build_survey_theme_ls6 / gulp watch_survey_theme_ls6
 
 const {watch, series, parallel} = require('gulp');
 const {src, dest} = require('gulp');
@@ -19,6 +21,11 @@ const gulpIf = require('gulp-if');
 const useref = require('gulp-useref');
 const replace = require('gulp-replace');
 const merge = require('merge-stream');
+const sourcemaps = require('gulp-sourcemaps');
+const babelify = require('babelify');
+const source = require('vinyl-source-stream');
+const buffer = require('vinyl-buffer');
+const browserify = require('browserify');
 
 function js_minify() {
     return src(['node_modules/bootstrap/dist/js/bootstrap.bundle.min.js', 'assets/bootstrap_5/js/bootstrap_5.js'])
@@ -143,4 +150,62 @@ exports.build_survey_theme_fruity = parallel(
 
 exports.watch_survey_theme_fruity = function () {
     watch('assets/survey_themes/fruity/src/**/*.scss', survey_theme_fruity);
+};
+
+function survey_theme_ls6() {
+    let variations = [
+        ["apple", "#14AE5C"],
+        ["blueberry", "#5076FF"],
+        ["grape", "#8146F6"],
+        ["mango", "#ED5046"],
+    ];
+    let plugins = [
+        autoprefixer(),
+        // cssnano()
+    ];
+
+    let variationsFiles = variations.map(variation => {
+        let variationName = variation[0];
+        let variationColor = variation[1];
+        return src(['assets/survey_themes/ls6_surveytheme/ls6_theme_template.scss'])
+            .pipe(replace('$base-color: #ffffff;', '$base-color: ' + variationColor + ';'))
+            .pipe(sass())
+            .pipe(gulppostcss(plugins))
+            .pipe(rename('theme_' + variationName + '.css'))
+            .pipe(dest('themes/survey/ls6_surveytheme/css/variations'));
+    });
+    return merge(variationsFiles);
+}
+
+function survey_theme_ls6_js() {
+    // browserify package handler
+    return browserify({
+        entries: ['assets/survey_themes/ls6_surveytheme/ls6_javascript_modules.js']
+    })
+        // transform babelify ES6 to ES5 [@babel/preset-env]
+        .transform(babelify, {
+            presets: ['@babel/preset-env'],
+            retainLines: true,
+            compact: false,
+        })
+        // bundle the transformed code
+        .bundle()
+        // sourcemap
+        .pipe(source('assets/survey_themes/ls6_surveytheme/ls6_javascript_modules.js'))
+        // rename
+        .pipe(rename('theme.js'))
+        // buffer
+        .pipe(buffer())
+        // distination
+        .pipe(dest('themes/survey/ls6_surveytheme/scripts/'));
+}
+
+exports.build_survey_theme_ls6 = parallel(
+    survey_theme_ls6,
+    survey_theme_ls6_js
+);
+
+exports.watch_survey_theme_ls6 = function () {
+    watch('assets/survey_themes/ls6_surveytheme/**/*.scss', survey_theme_ls6);
+    watch('assets/survey_themes/ls6_surveytheme/**/*.js', survey_theme_ls6_js);
 };

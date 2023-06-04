@@ -234,6 +234,7 @@ class TemplateConfig extends CActiveRecord
     /**
      * Get the depends package
      * @uses self::@package
+     * TODO: unused variable
      * @param TemplateConfiguration $oTemplate
      * @return string[]
      */
@@ -547,9 +548,9 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['attr']['completedwrapper'] = $aClassAndAttributes['attr']['completedtext'] = $aClassAndAttributes['attr']['quotamessage'] = $aClassAndAttributes['attr']['navigator'] = $aClassAndAttributes['attr']['navigatorcoll'] = $aClassAndAttributes['attr']['navigatorcolr'] = $aClassAndAttributes['attr']['completedquotaurl'] = '';
 
         // Register
-        $aClassAndAttributes['class']['register']                 = '  ';
-        $aClassAndAttributes['class']['registerrow']              = '  ';
-        $aClassAndAttributes['class']['registerrowjumbotron']     = ' card bg-light p-6 mb-3';
+        $aClassAndAttributes['class']['register']                 = ' register-container';
+        $aClassAndAttributes['class']['registerrow']              = ' register-row';
+        $aClassAndAttributes['class']['registerrowjumbotron']     = ' register-jumbotron card bg-light p-6 mb-3';
         $aClassAndAttributes['class']['registerrowjumbotrondiv']  = 'card-body';
 
         $aClassAndAttributes['class']['registerform']             = ' register-form  ';
@@ -795,6 +796,10 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['previewsubmittext']  = ' completed-text  ';
         $aClassAndAttributes['class']['submitwrapper']      = ' completed-wrapper  ';
         $aClassAndAttributes['class']['submitwrappertext']  = ' completed-text  ';
+        // class name for last message elements
+        $aClassAndAttributes['class']['submitwrappertextHeading']  = ' completed-heading ';
+        $aClassAndAttributes['class']['submitwrappertextContent']  = ' completed-Content ';
+        // ===
         $aClassAndAttributes['class']['submitwrapperdiva']  = ' url-wrapper url-wrapper-survey-print ';
         $aClassAndAttributes['class']['submitwrapperdivaa'] = ' ls-print ';
         $aClassAndAttributes['class']['submitwrapperdivb']  = ' url-wrapper url-wrapper-survey-print ';
@@ -910,7 +915,6 @@ class TemplateConfig extends CActiveRecord
         if ($oNewTemplate->save()) {
             $oNewTemplateConfiguration                  = new TemplateConfiguration();
             $oNewTemplateConfiguration->template_name   = $sTemplateName;
-            $oNewTemplateConfiguration->template_name   = $sTemplateName;
 
             // Those ones are only filled when importing manifest from upload directory
 
@@ -952,6 +956,12 @@ class TemplateConfig extends CActiveRecord
      */
     public static function formatToJsonArray($oFiled, $bConvertEmptyToString = false)
     {
+        if ($bConvertEmptyToString) {
+            foreach ($oFiled as $option => $optionValue) {
+                // clean every value from newlines, tabs and blank spaces for options
+                $oFiled->$option = trim(preg_replace('/[ \t]+/', ' ', preg_replace('/\s*$^\s*/m', "", $optionValue)));
+            }
+        }
         // encode then decode will convert the SimpleXML to a normal object
         $jFiled = json_encode($oFiled);
         $oFiled = json_decode($jFiled);
@@ -1025,7 +1035,6 @@ class TemplateConfig extends CActiveRecord
      */
     protected function getFilesToLoad($oTemplate, $sType)
     {
-        $aFiles        = array();
         $aFiles        = $this->getFilesTo($oTemplate, $sType, 'add');
         $aReplaceFiles = $this->getFilesTo($oTemplate, $sType, 'replace');
         $aFiles        = array_merge($aFiles, $aReplaceFiles);

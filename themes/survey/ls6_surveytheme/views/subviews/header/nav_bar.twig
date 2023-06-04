@@ -1,0 +1,51 @@
+{#
+LimeSurvey
+Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+All rights reserved.
+License: GNU/GPL License v2 or later, see LICENSE.php
+LimeSurvey is free software. This version may have been modified pursuant
+to the GNU General Public License, and as distributed it includes or
+is derivative of works licensed under the GNU General Public License or
+other free or open source software licenses.
+See COPYRIGHT.php for copyright notices and details.
+
+(¯`·._.·(¯`·._.· Bootstrap Navigation Bar ·._.·´¯)·._.·´¯)
+
+This file renders a typical bootstrap navigation bar.
+See: https://getbootstrap.com/components/#navbar
+
+For the survey navigator ("Next", "Back", etc.), see: navigation/navigator.twig
+#}
+{% set navClass = "navbar-light bg-light" %}
+{% if( aSurveyInfo.template == "bootswatch") %}
+    {% set navClass = "navbar-default bg-primary" %}
+{% endif %}
+<!-- Bootstrap Navigation Bar -->
+<div id="survey-nav" class="navbar {{ navClass }} navbar-expand-md fixed-top border-bottom pt-0 pb-0">
+    <div class="container-fluid">
+     <a class="navbar-brand" href="#"></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar"
+                aria-controls="small-screens-menus" aria-expanded="false">
+
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        {# Logo option #}
+        {% if( aSurveyInfo.options.brandlogo == "on") %}
+            <div class="navbar-brand logo-container d-none d-md-block">
+                {{ image(aSurveyInfo.options.brandlogofile, aSurveyInfo.name, {"class": "logo img-fluid"}) }}
+            </div>
+        {% else %}
+            <div class="navbar-brand">
+                {{ aSurveyInfo.name }}
+            </div>
+        {% endif %}
+        <div id="navbar" class="collapse navbar-collapse navbar-nav-scroll pt-2">
+            <ul class="nav navbar-nav navbar-action-link navbar-right ms-auto">
+                {{ include('./subviews/navigation/save_links.twig') }}
+                {{ include('./subviews/navigation/clearall_links.twig') }}
+                {{ include('./subviews/navigation/question_index_menu.twig') }}
+                {{ include('./subviews/navigation/language_changer_top_menu.twig') }}
+            </ul>
+        </div>
+    </div>
+</div>

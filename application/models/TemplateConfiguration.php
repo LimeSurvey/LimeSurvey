@@ -1211,7 +1211,7 @@ class TemplateConfiguration extends TemplateConfig
             ),
             'error'
         );
-        App()->getController()->redirect(array("admin/themeoptions"));
+        App()->getController()->redirect(array("themeOptions/index", "#" => "surveythemes"));
         App()->end();
     }
 
@@ -1222,14 +1222,11 @@ class TemplateConfiguration extends TemplateConfig
      */
     protected function setThisTemplate()
     {
-        $this->apiVersion       = (!empty($this->template->api_version)) ?
-            $this->template->api_version : null; // Mandtory setting in config XML
-        $this->viewPath         = $this->path . $this->getTemplateConfigurationForAttribute($this, 'view_folder')
-                ->template->view_folder . DIRECTORY_SEPARATOR;
-        $this->filesPath        = $this->path . $this->getTemplateConfigurationForAttribute($this, 'files_folder')
-                ->template->files_folder . DIRECTORY_SEPARATOR;
-        $this->generalFilesPath = App()->getConfig("userthemerootdir")
-            . DIRECTORY_SEPARATOR . 'generalfiles' . DIRECTORY_SEPARATOR;
+        // Mandatory setting in config XML
+        $this->apiVersion = (!empty($this->template->api_version)) ? $this->template->api_version : null;
+        $this->viewPath = $this->path . $this->getTemplateConfigurationForAttribute($this, 'view_folder')->template->view_folder . DIRECTORY_SEPARATOR;
+        $this->filesPath = $this->path . $this->getTemplateConfigurationForAttribute($this, 'files_folder')->template->files_folder . DIRECTORY_SEPARATOR;
+        $this->generalFilesPath = App()->getConfig("userthemerootdir") . DIRECTORY_SEPARATOR . 'generalfiles' . DIRECTORY_SEPARATOR;
         // Options are optional
         $this->setOptions();
 
@@ -1242,7 +1239,7 @@ class TemplateConfiguration extends TemplateConfig
                 $this->packages = array_merge($templateToLoadPackages->add, $this->packages);
             }
             if (!empty($templateToLoadPackages->remove)) {
-                $this->packages =  array_diff($this->packages, $templateToLoadPackages->remove);
+                $this->packages = array_diff($this->packages, $templateToLoadPackages->remove);
             }
         }
 
@@ -1325,7 +1322,7 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * @todo document me
+     * loads the main theme template from the parent theme that it is extending, as a package. Ready to be registered
      *
      * @param string[] $packages
      * @return string[]
