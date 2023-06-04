@@ -12893,6 +12893,7 @@ Responsive navbar-brand image CSS
 .yesno-button .ls-button-label,
 .gender-button .ls-button-label {
   min-width: 80px;
+  font-size: 0.9975rem;
 }
 .yesno-button .ls-button-label .ls-icon,
 .gender-button .ls-button-label .ls-icon {
@@ -13796,6 +13797,7 @@ table > tbody > tr > td.ddprefix {
 
 li.imageselect-listitem .imageselect-container .imageselect-label {
   border-radius: 4px !important;
+  overflow: hidden;
 }
 
 .imageselect-container .imageselect-radiobutton::before,
@@ -14705,7 +14707,7 @@ body.error-page .error-link {
   z-index: 1000;
 }
 .slider-list .slider .tooltip.bs-tooltip-top, .slider-list .slider .tooltip.bs-tooltip-auto[data-popper-placement^=top] {
-  margin-top: -34px;
+  margin-top: -30px;
 }
 .slider-list .slider .tooltip .tooltip-arrow {
   display: none;
