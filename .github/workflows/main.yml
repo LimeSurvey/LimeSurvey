@@ -8,14 +8,20 @@ on:
 
 jobs:
   CI-pipeline:
-    runs-on: ubuntu-20.04    # ubuntu runner hosted by Github
     strategy:
       matrix:
         # Specify what versions of php you want to test
         php-versions: ['5.6' , '7.4']
+        os: [ubuntu-latest, ubuntu-20.04]
+        exclude:
+          - os: ubuntu-20.04
+            php-versions: 5.6
+          - os: ubuntu-latest
+            php-versions: 7.4
       # Run all jobs, even if some fail
       fail-fast: false
     # Env vars for this job
+    runs-on: ${{ matrix.os }}
     env:
       DBENGINE: INNODB
 
