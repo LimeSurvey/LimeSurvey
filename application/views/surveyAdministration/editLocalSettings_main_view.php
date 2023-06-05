@@ -68,6 +68,9 @@ if (isset($scripts)) {
 
 App()->getClientScript()->registerScript("editLocalSettings_submit_" . $entryData['name'],
     "
+window.LS.unrenderBootstrapSwitch();
+window.LS.renderBootstrapSwitch();
+
 $('#" . $entryData['name'] . "').off('.editLocalsettings');
 
 $('#" . $entryData['name'] . "').on('submit.editLocalsettings', function(e){

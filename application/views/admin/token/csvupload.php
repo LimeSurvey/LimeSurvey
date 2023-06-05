@@ -160,3 +160,10 @@
         </div>
     </div>
 </div>
+<?php
+App()->getClientScript()->registerScript('CSVUploadViewBSSwitcher',
+    "
+LS.renderBootstrapSwitch();
+",
+    LSYii_ClientScript::POS_POSTSCRIPT);
+?>
