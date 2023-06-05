@@ -573,16 +573,17 @@ class remotecontrol_handle
         $aSummary = createCompleteSGQA($iSurveyID, $oAllQuestions, $sLanguage);
 
         $helper = new statistics_helper();
+        $tempDir = Yii::app()->getConfig("tempdir");
         switch ($docType) {
             case 'pdf':
-                $sTempFile = sanitize_filename(
+                $sTempFile = $tempDir . DIRECTORY_SEPARATOR . sanitize_filename(
                     $helper->generate_statistics($iSurveyID, $aSummary, $aSummary, $graph, $docType, 'F', $sLanguage)
                 );
                 $sResult = file_get_contents($sTempFile);
                 unlink($sTempFile);
                 break;
             case 'xls':
-                $sTempFile = sanitize_filename(
+                $sTempFile = $tempDir . DIRECTORY_SEPARATOR . sanitize_filename(
                     $helper->generate_statistics($iSurveyID, $aSummary, $aSummary, '0', $docType, 'F', $sLanguage)
                 );
                 $sResult = file_get_contents($sTempFile);
