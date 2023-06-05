@@ -23,6 +23,14 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
+      # setup upterm session for debugging
+      - name: Setup upterm session
+        uses: lhotari/action-upterm@v1
+        with:
+          ## limits ssh access and adds the ssh public key for the user which triggered the workflow
+          limit-access-to-actor: true
+          ## limits ssh access and adds the ssh public keys of the listed GitHub users
+          limit-access-to-users: tiborpacalat
       # This will change the php version for every version specified in matrix https://github.com/marketplace/actions/setup-php-action
       - name: Install specified PHP
         uses: shivammathur/setup-php@v2
