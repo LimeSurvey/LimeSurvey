@@ -16,7 +16,6 @@ jobs:
       # Run all jobs, even if some fail
       fail-fast: false
     # Env vars for this job
-    runs-on: ${{ matrix.os }}
     env:
       DBENGINE: INNODB
 
