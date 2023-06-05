@@ -82,7 +82,9 @@ class GroupHelperTest extends TestBaseClass
     public function testQuestionOrderChange()
     {
         $gid = self::$testSurvey->groups[0]->gid;
-        $firstGroupQuestions = self::$testSurvey->groups[0]->getAllQuestions();
+        $attributes = array('sid' => self::$surveyId, 'gid' => $gid);
+        $criteria = new \CDbCriteria(array('order' => 'question_order ASC'));
+        $firstGroupQuestions = \Question::model()->findAllByAttributes($attributes, $criteria);
 
         // Check the original order (Use sql to avoid cache).
         $currentOrder = \Yii::app()->db->createCommand()->select(['qid', 'question_order'])
