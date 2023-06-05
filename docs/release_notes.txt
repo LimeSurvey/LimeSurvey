@@ -34,6 +34,32 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.24 (build 230531) to 5.6.25 (build 230605) June 5, 2023
+-Fixed issue #18808: Mandatory soft only works once per survey if over multiple pages/groups (#3120) (Denis Chenu)
+-Fixed issue #18731: Edit a question "script" tab has disappeared (#3156) (Denis Chenu)
+-Fixed issue #17491: Multiple Short Text subquestions missing from Export Printable Survey (#3133) (Adam Zammit)
+#Updated translation: Valencian by vbraque
+#Updated translation: Turkish by kayazeren
+#Updated translation: Spanish (Informal) by c_schmitz
+#Updated translation: Spanish (Informal) by aesteban, baronlopez, corzel, daniel.gonzalez, diegor, gabrieljenik, ireneoh, jmlopez, jparis, larjona, oleggorfinkel, rodrirokr, segui
+#Updated translation: Spanish (Informal) by aesteban, atavei, baronlopez, c_schmitz, cbrito, cdorin, corzel, cripton, daniel.gonzalez, DarioRoig, dgimeno, Dhel210, diegor, ecocitizen, eddylackmann, fercavero, fernandoessv, gabrieljenik, grudolf, Ignacio, ignaciogros, ireneoh, jaimealvarezv, jbermudezperez, jigal, jmlopez, jmlorenzo, jparis, kadejo, larjona, martinbauerarg, Nodens, oleggorfinkel, pavelwil, pnueda, rodrirokr, segui, valdomir, xtingray
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Italian by c_schmitz, lfanfoni, ritapas
+#Updated translation: Italian (Informal) by c_schmitz, lfanfoni
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: French (France) by DenisChenu
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 5.6.23 (build 230524) to 5.6.24 (build 230531) May 30, 2023
 -Fixed issue: [security] Unsafe way to detect IP address against brute-force attacks (Carsten Schmitz)
 -Fixed issue: Editing a quota and setting a limit too high shows a database exception (Carsten Schmitz)
