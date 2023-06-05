@@ -1,6 +1,6 @@
 <?php
 
-namespace ls\tests;
+namespace ls\tests\SurveyUpdater;
 
 use ls\tests\TestBaseClass;
 
@@ -15,7 +15,7 @@ use LimeSurvey\Models\Services\Exception\{
     ExceptionPermissionDenied
 };
 
-class SurveyUpdaterLanguageSettingsTest extends TestBaseClass
+class LanguageSettingsTest extends TestBaseClass
 {
     /**
      * @testdox update() throws ExceptionPermissionDenied
