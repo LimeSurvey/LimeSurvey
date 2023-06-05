@@ -8,7 +8,7 @@ use Survey;
 use Permission;
 use SurveyLanguageSetting;
 use Mockery;
-use LimeSurvey\Models\Services\SurveyUpdaterLanguageSettings;
+use LimeSurvey\Models\Services\SurveyUpdater\LanguageSettings;
 use LimeSurvey\Models\Services\Exception\{
     ExceptionPersistError,
     ExceptionNotFound,
@@ -31,8 +31,18 @@ class SurveyUpdaterLanguageSettingsTest extends TestBaseClass
         $modelPermission->shouldReceive('hasSurveyPermission')
             ->andReturn(false);
 
-        $surveyUpdater = new SurveyUpdaterLanguageSettings;
-        $surveyUpdater->setModelPermission($modelPermission);
+        $modelSurvey = Mockery::mock(Survey::class)
+            ->makePartial();
+
+        $modelSurveyLanguageSetting = Mockery::mock(
+            SurveyLanguageSetting::class
+        )->makePartial();
+
+        $surveyUpdater = new LanguageSettings(
+            $modelPermission,
+            $modelSurvey,
+            $modelSurveyLanguageSetting
+        );
 
         $surveyUpdater->update(1, []);
     }
@@ -56,9 +66,15 @@ class SurveyUpdaterLanguageSettingsTest extends TestBaseClass
         $modelSurvey->shouldReceive('findByPk')
             ->andReturn(null);
 
-        $surveyUpdater = new SurveyUpdaterLanguageSettings;
-        $surveyUpdater->setModelPermission($modelPermission);
-        $surveyUpdater->setModelSurvey($modelSurvey);
+        $modelSurveyLanguageSetting = Mockery::mock(
+            SurveyLanguageSetting::class
+        )->makePartial();
+
+        $surveyUpdater = new LanguageSettings(
+            $modelPermission,
+            $modelSurvey,
+            $modelSurveyLanguageSetting
+        );
 
         $surveyUpdater->update(1, []);
     }
@@ -97,10 +113,9 @@ class SurveyUpdaterLanguageSettingsTest extends TestBaseClass
             ->shouldReceive('findByPk')
             ->andReturn(null);
 
-        $surveyUpdater = new SurveyUpdaterLanguageSettings;
-        $surveyUpdater->setModelPermission($modelPermission);
-        $surveyUpdater->setModelSurvey($modelSurvey);
-        $surveyUpdater->setModelSurveyLanguageSetting(
+        $surveyUpdater = new LanguageSettings(
+            $modelPermission,
+            $modelSurvey,
             $modelSurveyLanguageSetting
         );
 
@@ -149,10 +164,9 @@ class SurveyUpdaterLanguageSettingsTest extends TestBaseClass
             ->shouldReceive('findByPk')
             ->andReturn($surveyLanguageSetting);
 
-        $surveyUpdater = new SurveyUpdaterLanguageSettings;
-        $surveyUpdater->setModelPermission($modelPermission);
-        $surveyUpdater->setModelSurvey($modelSurvey);
-        $surveyUpdater->setModelSurveyLanguageSetting(
+        $surveyUpdater = new LanguageSettings(
+            $modelPermission,
+            $modelSurvey,
             $modelSurveyLanguageSetting
         );
 
@@ -197,10 +211,9 @@ class SurveyUpdaterLanguageSettingsTest extends TestBaseClass
             ->shouldReceive('findByPk')
             ->andReturn($surveyLanguageSetting);
 
-        $surveyUpdater = new SurveyUpdaterLanguageSettings;
-        $surveyUpdater->setModelPermission($modelPermission);
-        $surveyUpdater->setModelSurvey($modelSurvey);
-        $surveyUpdater->setModelSurveyLanguageSetting(
+        $surveyUpdater = new LanguageSettings(
+            $modelPermission,
+            $modelSurvey,
             $modelSurveyLanguageSetting
         );
 
