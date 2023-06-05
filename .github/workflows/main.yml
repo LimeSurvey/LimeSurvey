@@ -8,16 +8,11 @@ on:
 
 jobs:
   CI-pipeline:
+    runs-on: ubuntu-20.04
     strategy:
       matrix:
         # Specify what versions of php you want to test
         php-versions: ['5.6' , '7.4']
-        os: [ubuntu-latest, ubuntu-20.04]
-        exclude:
-          - os: ubuntu-20.04
-            php-versions: 5.6
-          - os: ubuntu-latest
-            php-versions: 7.4
       # Run all jobs, even if some fail
       fail-fast: false
     # Env vars for this job
@@ -53,8 +48,8 @@ jobs:
         run: |
           # Set up the Apache and PHP
           sudo apt-get update > /dev/null
-          sudo apt install php libapache2-mod-php -y
           sudo apt install php php-mysql php-mbstring php-xml php7.4-mbstring php8.0-mysql php7.4-mysql php5.6-mysql php7.4-xml php5.6-xml -y
+          if [[ ${{ matrix.php-versions }} == '5.6' ]] then sudo apt install php libapache2-mod-php5.6 -y else sudo apt install php libapache2-mod-php -y fi
           
           sudo cp -f ./tests/CI-pipeline/github-actions-apache /etc/apache2/sites-available/000-default.conf
           sudo sed -e "s?%CI_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/000-default.conf
