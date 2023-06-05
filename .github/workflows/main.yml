@@ -33,6 +33,7 @@ jobs:
       - name: Start the MySQL service
         run: |
           sudo systemctl start mysql.service
+          echo -e '[client]\ndefault-character-set="utf8"\n[mysql]\nuser="root"\npassword="root"\nhost="localhost"\n[mysqld]\ncollation-server="utf8_unicode_ci"\ncharacter-set-server="utf8"\ndefault-authentication-plugin="mysql_native_password"' > "$HOME/.my.cnf"
       - name: Initilize and check all dependencies
         run: |
           mysql --version
