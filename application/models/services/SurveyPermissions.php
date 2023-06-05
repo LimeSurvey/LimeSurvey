@@ -202,8 +202,8 @@ class SurveyPermissions
         $index = 0;
         foreach ($users as $user) {
             if (
-                $hasUserReadPermission ||
-                !$this->userControlSameGroupPolicy
+                $hasUserReadPermission
+                || !$this->userControlSameGroupPolicy
                 || in_array($user->uid, $authorizedUsersList)
             ) {
                 $userList[$index]['userid'] = $user->uid;
