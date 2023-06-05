@@ -91,7 +91,7 @@ export var ThemeScripts = function () {
 
     var initTopMenuLanguageChanger = function (selectorItem, selectorGlobalForm) {
         // $(selectorContainer).height($('#main-row').height());
-        $(selectorItem).on('click', function () {
+        $(document).on('click', selectorItem, function () {
             var lang = $(this).data('limesurvey-lang');
             /* The limesurvey form exist in document, move select and button inside and click */
             $(selectorGlobalForm + ' [name=\'lang\']').remove();                        // Remove existing lang selector

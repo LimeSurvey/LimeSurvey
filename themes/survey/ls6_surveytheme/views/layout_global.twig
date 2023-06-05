@@ -126,7 +126,11 @@
                 if(window.arrayScripts === undefined){
                     window.arrayScripts = new ArrayScripts();
                 }
+                if(window.navbarScripts === undefined){
+                    window.navbarScripts = new NavbarScripts();
+                }
                 arrayScripts.initArrayEvents();
+                navbarScripts.initNavbarEvents();
                 basicThemeScripts.initGlobal();
                 ", "POS_END") }}
 

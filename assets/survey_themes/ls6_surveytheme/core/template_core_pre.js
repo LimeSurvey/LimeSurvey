@@ -185,7 +185,7 @@ export function activateLanguageChanger(){
         limesurveyForm.submit();
     };
     autoSizeSelect();
-    $('.form-change-lang a.ls-language-link').on('click', function() {
+    $(document).on('click', 'a.ls-language-link', function() {
         var closestForm = $(this).closest('form');
         if (!closestForm.length) {
             /* we are not in a forum, can not submit directly */
@@ -300,7 +300,7 @@ export function activateActionLink(){
     }
     /* Submit limesurvey form on click */
     else{
-        $('[data-limesurvey-submit]').on('click',function(event) {
+        $(document).on('click', '[data-limesurvey-submit]', function(event) {
             event.preventDefault();
             var submit=$(this).data('limesurvey-submit');
             var confirmedby=$(this).data('confirmedby');
