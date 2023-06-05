@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2023-06-02 09:59:42+00:00\n"
+"POT-Creation-Date: 2023-06-05 09:15:16+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -23350,7 +23350,11 @@ msgid "The script for this language will not be used because \"Use for all langu
 msgstr ""
 
 #: application/views/questionAdministration/textElements.php:143
-msgid "This optional script field will be wrapped, so that the script is correctly executed after the question is on the screen. If you do not have the correct permissions, this will be ignored"
+msgid "This optional script field will be wrapped, so that the script is correctly executed after the question is on the screen."
+msgstr ""
+
+#: application/views/questionAdministration/textElements.php:144
+msgid "You do not have sufficient permissions to update the script."
 msgstr ""
 
 #: application/views/questionAdministration/typeSelector.php:26
