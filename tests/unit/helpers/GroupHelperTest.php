@@ -16,53 +16,68 @@ class GroupHelperTest extends TestBaseClass
     }
 
     /**
-     * Test group order change.
+     * Testing that gid and group_order fields change
+     * after changing group order with reorderGroup function.
      */
     public function testGroupOrderChange()
     {
-        // Check the original order.
-        $currentOrder = \Yii::app()->db->createCommand()->select('group_order')
+        // Check the original order (Use sql to avoid cache).
+        $currentOrder = \Yii::app()->db->createCommand()->select(['gid', 'group_order'])
                             ->from('{{groups}}')
                             ->where('sid=' . self::$surveyId)
+                            ->order('group_order ASC')
                             ->query()
                             ->readAll();
 
-        $this->assertEquals(self::$testSurvey->groups[0]->group_order, $currentOrder[0]['group_order'], 'The group id is incorrect.');
-        $this->assertEquals(self::$testSurvey->groups[1]->group_order, $currentOrder[1]['group_order'], 'The group id is incorrect.');
-        $this->assertEquals(self::$testSurvey->groups[2]->group_order, $currentOrder[2]['group_order'], 'The group id is incorrect.');
+        // Checking gid
+        $this->assertEquals(self::$testSurvey->groups[0]->gid, $currentOrder[0]['gid'], 'Group found with an unexpected id');
+        $this->assertEquals(self::$testSurvey->groups[1]->gid, $currentOrder[1]['gid'], 'Group found with an unexpected id');
+        $this->assertEquals(self::$testSurvey->groups[2]->gid, $currentOrder[2]['gid'], 'Group found with an unexpected id');
+
+        // Checking group order
+        $this->assertEquals(self::$testSurvey->groups[0]->group_order, $currentOrder[0]['group_order'], 'Group found with an unexpected order position');
+        $this->assertEquals(self::$testSurvey->groups[1]->group_order, $currentOrder[1]['group_order'], 'Group found with an unexpected order position');
+        $this->assertEquals(self::$testSurvey->groups[2]->group_order, $currentOrder[2]['group_order'], 'Group found with an unexpected order position');
 
         // Change group order.
         $groups = array();
         $groups[0] = self::$testSurvey->groups[1];
-        $groups[1] = self::$testSurvey->groups[0];
-        $groups[2] = self::$testSurvey->groups[2];
+        $groups[1] = self::$testSurvey->groups[2];
+        $groups[2] = self::$testSurvey->groups[0];
 
         $orgdata = $this->getOrgData($groups, self::$testSurvey->questions);
 
-        fwrite(STDERR, "groupHelper\n");
         $groupHelper = new \LimeSurvey\Models\Services\GroupHelper();
-        fwrite(STDERR, "groupHelper->reorderGroup\n");
         $result = $groupHelper->reorderGroup(self::$surveyId, $orgdata);
 
-        // Check the new order.
-        $changedOrder = \Yii::app()->db->createCommand()->select('group_order')
+        // Check the new order (Use sql to avoid cache).
+        $changedOrder = \Yii::app()->db->createCommand()->select(['gid', 'group_order'])
                             ->from('{{groups}}')
                             ->where('sid=' . self::$surveyId)
+                            ->order('group_order ASC')
                             ->query()
                             ->readAll();
 
-        $this->assertNotEquals(self::$testSurvey->groups[0]->group_order, $changedOrder[0]['group_order'], 'The group id is incorrect.');
-        $this->assertNotEquals(self::$testSurvey->groups[1]->group_order, $changedOrder[1]['group_order'], 'The group id is incorrect.');
-        $this->assertEquals(self::$testSurvey->groups[2]->group_order, $changedOrder[2]['group_order'], 'The group id is incorrect.');
+        // Checking gid
+        $this->assertNotEquals(self::$testSurvey->groups[0]->gid, $changedOrder[0]['gid'], 'Group found with an unexpected id');
+        $this->assertNotEquals(self::$testSurvey->groups[1]->gid, $changedOrder[1]['gid'], 'Group found with an unexpected id');
+        $this->assertNotEquals(self::$testSurvey->groups[2]->gid, $changedOrder[2]['gid'], 'Group found with an unexpected id');
+
+        // Checking group order
+        $this->assertEquals(self::$testSurvey->groups[0]->group_order, $changedOrder[0]['group_order'], 'Group found with an unexpected order position');
+        $this->assertEquals(self::$testSurvey->groups[1]->group_order, $changedOrder[1]['group_order'], 'Group found with an unexpected order position');
+        $this->assertEquals(self::$testSurvey->groups[2]->group_order, $changedOrder[2]['group_order'], 'Group found with an unexpected order position');
 
         // Test result.
-        $this->assertArrayHasKey('type', $result, 'The returned value is not correct.');
-        $this->assertSame('success', $result['type'], 'The returned value is not correct.');
+        $this->assertArrayHasKey('type', $result, 'Result of reorder operation is not as expected.');
+        $this->assertSame('success', $result['type'], 'Result of reorder operation is not as expected.');
     }
 
     /**
-     * Test question order change.
-     * Use questions in the first group.
+     * Testing that qid and question_order fields change
+     * after changing question order with reorderGroup function.
+     *
+     * Use questions in the first gruop.
      */
     public function testQuestionOrderChange()
     {
@@ -70,14 +85,20 @@ class GroupHelperTest extends TestBaseClass
         $firstGroupQuestions = self::$testSurvey->groups[0]->getAllQuestions();
 
         // Check the original order (Use sql to avoid cache).
-        $currentOrder = \Yii::app()->db->createCommand()->select('question_order')
+        $currentOrder = \Yii::app()->db->createCommand()->select(['qid', 'question_order'])
                             ->from('{{questions}}')
                             ->where('gid=' . $gid)
+                            ->order('question_order ASC')
                             ->query()
                             ->readAll();
 
-        $this->assertEquals($firstGroupQuestions[0]->question_order, $currentOrder[0]['question_order'], 'The question id is incorrect.');
-        $this->assertEquals($firstGroupQuestions[1]->question_order, $currentOrder[1]['question_order'], 'The question id is incorrect.');
+        // Checking qid.
+        $this->assertEquals($firstGroupQuestions[0]->qid, $currentOrder[0]['qid'], 'Question found with an unexpected id.');
+        $this->assertEquals($firstGroupQuestions[1]->qid, $currentOrder[1]['qid'], 'Question found with an unexpected id.');
+
+        // Checking question order.
+        $this->assertEquals($firstGroupQuestions[0]->question_order, $currentOrder[0]['question_order'], 'Question found with an unexpected order position');
+        $this->assertEquals($firstGroupQuestions[1]->question_order, $currentOrder[1]['question_order'], 'Question found with an unexpected order position');
 
         // Change question order.
         $questions = array();
@@ -93,19 +114,25 @@ class GroupHelperTest extends TestBaseClass
         $groupHelper = new \LimeSurvey\Models\Services\GroupHelper();
         $result = $groupHelper->reorderGroup(self::$surveyId, $orgdata);
 
-        // Check the new order.
-        $currentOrder = \Yii::app()->db->createCommand()->select('question_order')
+        // Check the new order (Use sql to avoid cache).
+        $newOrder = \Yii::app()->db->createCommand()->select(['qid', 'question_order'])
                             ->from('{{questions}}')
                             ->where('gid=' . $gid)
+                            ->order('question_order ASC')
                             ->query()
                             ->readAll();
 
-        $this->assertNotEquals($firstGroupQuestions[0]->question_order, $currentOrder[0]['question_order'], 'The question id is incorrect.');
-        $this->assertNotEquals($firstGroupQuestions[1]->question_order, $currentOrder[1]['question_order'], 'The question id is incorrect.');
+        // Checking qid.
+        $this->assertNotEquals($firstGroupQuestions[0]->qid, $newOrder[0]['qid'], 'Question found with an unexpected id.');
+        $this->assertNotEquals($firstGroupQuestions[1]->qid, $newOrder[1]['qid'], 'Question found with an unexpected id.');
+
+        // Checking new question order (It should be the same since ordered by question_order field).
+        $this->assertEquals($firstGroupQuestions[0]->question_order, $newOrder[0]['question_order'], 'Question found with an unexpected order position');
+        $this->assertEquals($firstGroupQuestions[1]->question_order, $newOrder[1]['question_order'], 'Question found with an unexpected order position');
 
         // Test result.
-        $this->assertArrayHasKey('type', $result, 'The returned value is not correct.');
-        $this->assertSame('success', $result['type'], 'The returned value is not correct.');
+        $this->assertArrayHasKey('type', $result, 'Result of reorder operation is not as expected.');
+        $this->assertSame('success', $result['type'], 'Result of reorder operation is not as expected.');
     }
 
     /**
@@ -116,7 +143,7 @@ class GroupHelperTest extends TestBaseClass
     {
         $gid = self::$testSurvey->groups[2]->gid;
 
-        // Check the original order.
+        // Check the original order (Use sql to avoid cache).
         $currentOrder = \Yii::app()->db->createCommand()->select('title')
                             ->from('{{questions}}')
                             ->where('gid=' . $gid)
@@ -124,10 +151,10 @@ class GroupHelperTest extends TestBaseClass
                             ->query()
                             ->readAll();
 
-        // Checking initial order status Q05 Q06 and number of questions on the group.
-        $this->assertCount(2, $currentOrder, 'The number of questions in the group is not correct.');
-        $this->assertSame('Q05', $currentOrder[0]['title'], 'The question title is incorrect.');
-        $this->assertSame('Q06', $currentOrder[1]['title'], 'The question title is incorrect.');
+        // Checking initial order (Q05 Q06) and number of questions in the group.
+        $this->assertCount(2, $currentOrder, 'The number of questions in the group is not as expected.');
+        $this->assertSame('Q05', $currentOrder[0]['title'], 'The question title is not as expected.');
+        $this->assertSame('Q06', $currentOrder[1]['title'], 'The question title is not as expected.');
 
         // Change question group.
         $orgdata = $this->getOrgData(self::$testSurvey->groups, self::$testSurvey->questions);
@@ -145,7 +172,7 @@ class GroupHelperTest extends TestBaseClass
         $groupHelper = new \LimeSurvey\Models\Services\GroupHelper();
         $result = $groupHelper->reorderGroup(self::$surveyId, $orgdata);
 
-        // Check the current order.
+        // Check the new order (Use sql to avoid cache).
         $currentOrder = \Yii::app()->db->createCommand()->select('title')
                             ->from('{{questions}}')
                             ->where('gid=' . $gid)
@@ -153,18 +180,20 @@ class GroupHelperTest extends TestBaseClass
                             ->query()
                             ->readAll();
 
-        $this->assertCount(3, $currentOrder, 'The number of questions in the group is not correct.');
-        $this->assertSame('Q03', $currentOrder[0]['title'], 'The question title is incorrect.');
-        $this->assertSame('Q05', $currentOrder[1]['title'], 'The question title is incorrect.');
-        $this->assertSame('Q06', $currentOrder[2]['title'], 'The question title is incorrect.');
+        // Checking new order (Q03 Q05 Q06) and number of questions in the group.
+        $this->assertCount(3, $currentOrder, 'The number of questions in the group is not as expected.');
+        $this->assertSame('Q03', $currentOrder[0]['title'], 'The question title is not as expected.');
+        $this->assertSame('Q05', $currentOrder[1]['title'], 'The question title is not as expected.');
+        $this->assertSame('Q06', $currentOrder[2]['title'], 'The question title is not as expected.');
 
         // Test result.
-        $this->assertArrayHasKey('type', $result, 'The returned value is not correct.');
-        $this->assertSame('success', $result['type'], 'The returned value is not correct.');
+        $this->assertArrayHasKey('type', $result, 'Result of reorder operation is not as expected.');
+        $this->assertSame('success', $result['type'], 'Result of reorder operation is not as expected.');
     }
 
     /**
-     * Test group order change on an active survey.
+     * Testing that a question can not be changed
+     * from one group to another on an active survey.
      */
     public function testQuestionGroupChangeOnActiveSurvey()
     {
