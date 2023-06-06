@@ -155,6 +155,7 @@ class SurveySearchTest extends TestBaseClass
         $this->assertThat($sids, $this->contains($data[2]->sid), 'One of the expected surveys was not found.');
 
         // Preserve test data
+        $testData['sidThree'] = $survey->sid;
         return $testData;
     }
 
@@ -171,10 +172,11 @@ class SurveySearchTest extends TestBaseClass
         $dataProvider = $s->search();
         $data = $dataProvider->getData();
 
-        $sids = array($testData['sid'], $testData['sidTwo'], $survey->sid);
+        $sids = array($testData['sid'], $testData['sidTwo'], $testData['sidThree']);
+        $surveyCount = (int)\Survey::model()->count();
 
         $this->assertNotEmpty($data, 'The survey search results were unexpectedly empty');
-        $this->assertCount(3, $data, 'Three surveys should have been found.');
+        $this->assertCount($surveyCount, $data, 'The number of surveys found does not match the number of surveys in the database.');
 
         $this->assertThat($sids, $this->contains($data[0]->sid), 'One of the expected surveys was not found.');
         $this->assertThat($sids, $this->contains($data[1]->sid), 'One of the expected surveys was not found.');
