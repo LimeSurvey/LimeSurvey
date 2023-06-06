@@ -150,6 +150,11 @@ class LSHttpRequest extends CHttpRequest
     {
         parent::normalizeRequest();
 
+        // Dont run this code in console
+        if (php_sapi_name() == 'cli') {
+            return;
+        }
+
         $route = Yii::app()->getUrlManager()->parseUrl($this);
 
         if ($this->enableCsrfValidation) {
