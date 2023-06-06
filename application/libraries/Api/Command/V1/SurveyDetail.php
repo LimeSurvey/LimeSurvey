@@ -7,6 +7,7 @@ use LimeSurvey\Api\Command\V1\Transformer\Output\TransformerOutputSurveyDetail;
 use LimeSurvey\Api\Command\{
     CommandInterface,
     Request\Request,
+    Response\Response,
     ResponseData\ResponseDataError,
     Response\ResponseFactory
 };
@@ -17,10 +18,10 @@ class SurveyDetail implements CommandInterface
 {
     use AuthPermissionTrait;
 
-    protected ?Survey $survey = null;
-    protected ?AuthSession $authSession = null;
-    protected ?TransformerOutputSurveyDetail $transformerOutputSurveyDetail = null;
-    protected ?ResponseFactory $responseFactory = null;
+    protected Survey $survey;
+    protected AuthSession $authSession;
+    protected TransformerOutputSurveyDetail $transformerOutputSurveyDetail;
+    protected ResponseFactory $responseFactory;
 
     /**
      * Constructor
@@ -45,7 +46,6 @@ class SurveyDetail implements CommandInterface
     /**
      * Run survey detail command
      *
-     * @access public
      * @param Request $request
      * @return Response
      */
@@ -55,12 +55,11 @@ class SurveyDetail implements CommandInterface
         $surveyId = (string) $request->getData('_id');
 
         if (
-            (
-                $response = $this->authSession
+            !$this->authSession
                     ->checkKey($sessionKey)
-            ) !== true
         ) {
-            return $response;
+            return $this->responseFactory
+                ->makeErrorUnauthorised();
         }
 
         $surveyModel = $this->survey

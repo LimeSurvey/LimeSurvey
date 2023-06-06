@@ -14,7 +14,6 @@ class AuthSession
     /**
      * Login with username and password
      *
-     * @access public
      * @param string $sUsername username
      * @param string $sPassword password
      * @param string $sPlugin plugin to be used
@@ -39,7 +38,7 @@ class AuthSession
             throw new ExceptionInvalidUser('Invalid user name or password');
         } else {
             $this->jumpStartSession($sUsername);
-            $sSessionKey = Yii::app()->securityManager->generateRandomString(32);
+            $sSessionKey = (string) Yii::app()->securityManager->generateRandomString(32);
             $session = new Session();
             $session->id = $sSessionKey;
             $session->expire = time() + (int) Yii::app()
@@ -54,19 +53,21 @@ class AuthSession
     /**
      * Fills the session with necessary user info on the fly
      *
-     * @access public
      * @param string $username The username
      * @return bool
      */
     public function jumpStartSession($username)
     {
-        $oUser = \User::model()->findByAttributes(array('users_name' => (string) $username));
+        $oUser = \User::model()->findByAttributes(array('users_name' => $username));
 
         if (!$oUser) {
             return false;
         }
 
         $aUserData = $oUser->attributes;
+
+        /** @var \LSYii_Application */
+        $app = \Yii::app();
 
         $session = array(
             'loginID' => intval($aUserData['uid']),
@@ -79,9 +80,9 @@ class AuthSession
             'adminlang' => 'en'
         );
         foreach ($session as $k => $v) {
-            \Yii::app()->session[$k] = $v;
+            $app->session[$k] = $v;
         }
-        \Yii::app()->user->setId($aUserData['uid']);
+        $app->user->setId($aUserData['uid']);
 
         return true;
     }
@@ -92,13 +93,11 @@ class AuthSession
      * Check if the session key is valid. If yes returns true,
      * otherwise false and sends an error message with error code 1
      *
-     * @access public
      * @param string $sSessionKey Auth credentials
      * @return bool
      */
     public function checkKey($sSessionKey)
     {
-        $sSessionKey = (string) $sSessionKey;
         $criteria = new \CDbCriteria();
         $criteria->condition = 'expire < ' . time();
         \Session::model()->deleteAll($criteria);
@@ -115,9 +114,8 @@ class AuthSession
     /**
      * Logout
      *
-     * @access public
-     * @param string $sSessionKey
-     * @return bool
+     * @param ?string $sessionKey
+     * @return void
      */
     public function doLogout($sessionKey)
     {

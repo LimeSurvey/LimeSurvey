@@ -7,14 +7,15 @@ use LimeSurvey\Api\Command\V1\Exception\ExceptionInvalidUser;
 use LimeSurvey\Api\Command\{
     CommandInterface,
     Request\Request,
+    Response\Response,
     ResponseData\ResponseDataError,
     Response\ResponseFactory
 };
 
 class SessionKeyCreate implements CommandInterface
 {
-    protected ?AuthSession $authSession = null;
-    protected ?ResponseFactory $responseFactory = null;
+    protected AuthSession $authSession;
+    protected ResponseFactory $responseFactory;
 
     /**
      * Constructor
@@ -33,7 +34,6 @@ class SessionKeyCreate implements CommandInterface
     /**
      * Run session key create command.
      *
-     * @access public
      * @param Request $request
      * @return Response
      */

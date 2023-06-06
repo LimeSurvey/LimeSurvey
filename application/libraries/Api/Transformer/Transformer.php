@@ -159,7 +159,7 @@ class Transformer implements TransformerInterface
     {
         return is_array($array) ? array_map(function ($data) {
             return $this->transform($data);
-        }, $array) : null;
+        }, $array) : [];
     }
 
     /**

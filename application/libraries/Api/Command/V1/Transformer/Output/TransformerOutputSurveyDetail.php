@@ -2,6 +2,7 @@
 
 namespace LimeSurvey\Api\Command\V1\Transformer\Output;
 
+use Survey;
 use LimeSurvey\Api\Transformer\Output\TransformerOutputActiveRecord;
 
 /**
@@ -9,13 +10,13 @@ use LimeSurvey\Api\Transformer\Output\TransformerOutputActiveRecord;
  */
 class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
 {
-    private ?TransformerOutputSurvey $transformerSurvey = null;
-    private ?TransformerOutputQuestionGroup $transformerQuestionGroup = null;
-    private ?TransformerOutputQuestionGroupL10ns $transformerQuestionGroupL10ns = null;
-    private ?TransformerOutputQuestion $transformerQuestion = null;
-    private ?TransformerOutputQuestionL10ns $transformerQuestionL10ns = null;
-    private ?TransformerOutputQuestionAttribute $transformerQuestionAttribute = null;
-    private ?TransformerOutputAnswer $transformerAnswer = null;
+    private TransformerOutputSurvey $transformerSurvey;
+    private TransformerOutputQuestionGroup $transformerQuestionGroup;
+    private TransformerOutputQuestionGroupL10ns $transformerQuestionGroupL10ns;
+    private TransformerOutputQuestion $transformerQuestion;
+    private TransformerOutputQuestionL10ns $transformerQuestionL10ns;
+    private TransformerOutputQuestionAttribute $transformerQuestionAttribute;
+    private TransformerOutputAnswer $transformerAnswer;
 
     /**
      * Construct

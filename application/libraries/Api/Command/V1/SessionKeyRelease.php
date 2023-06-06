@@ -6,13 +6,14 @@ use LimeSurvey\Api\Auth\AuthSession;
 use LimeSurvey\Api\Command\{
     CommandInterface,
     Request\Request,
+    Response\Response,
     Response\ResponseFactory
 };
 
 class SessionKeyRelease implements CommandInterface
 {
-    protected ?AuthSession $authSession = null;
-    protected ?ResponseFactory $responseFactory = null;
+    protected AuthSession $authSession;
+    protected ResponseFactory $responseFactory;
 
     /**
      * Constructor
@@ -31,7 +32,6 @@ class SessionKeyRelease implements CommandInterface
     /**
      * Run session key release command.
      *
-     * @access public
      * @param Request $request
      * @return Response
      */
