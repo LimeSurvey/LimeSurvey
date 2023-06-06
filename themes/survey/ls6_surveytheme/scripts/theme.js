@@ -76,7 +76,7 @@ var ThemeScripts = function ThemeScripts() {// defining the console object once.
    * Some are not really needed : little margin only is shown
    * Allowed content -> <script> and <img/>
    */var hideEmptyPart = function hideEmptyPart() {$('.question-help-container').each(function () {/* Only if have only script tag inside or empty tag */if ($(this).text().trim() == '' && !/<img/.test($(this).html())) {$(this).addClass('d-none');}});$('.group-description').each(function () {/* Only if have only script tag inside or empty tag */if ($(this).text().trim() == '' && !/<img/.test($(this).html())) {$(this).addClass('d-none');}
-    });
+      });
     $('.question-help-container.hidden').on('html:updated', function () {
       if ($(this).text().trim() != '' && !/<img/.test($(this).html())) {
         $(this).removeClass('d-none');
@@ -972,16 +972,16 @@ var _array = _interopRequireDefault(require("./questiontypes/array/array.js"));f
 
   var initArrayEvents = function initArrayEvents() {
     $(document).on(
-    "change",
-    '.array-multi-flexi .multiflexitext.text-item, .array-multi-flexi .answer-item .form-select, .array-flexible-dual-scale .answer-item .form-select, .array-multi-flexi-text input.form-control',
-    function () {
-      var enteredValue = $(this).val();
-      if (enteredValue !== undefined && enteredValue !== '') {
-        addEntryMarker($(this));
-      } else {
-        removeEntryMarker($(this));
-      }
-    });
+      "change",
+      '.array-multi-flexi .multiflexitext.text-item, .array-multi-flexi .answer-item .form-select, .array-flexible-dual-scale .answer-item .form-select, .array-multi-flexi-text input.form-control',
+      function () {
+        var enteredValue = $(this).val();
+        if (enteredValue !== undefined && enteredValue !== '') {
+          addEntryMarker($(this));
+        } else {
+          removeEntryMarker($(this));
+        }
+      });
   };
 
   return {

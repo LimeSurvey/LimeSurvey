@@ -17,6 +17,9 @@
 <div class="privacy-block mt-4">
     {% set describeprivacy = "" %}
     {% if aSurveyInfo.datasecurity_notice %}
+        <div id="datasecurity_notice_label" class="fw-bold text-uppercase">
+            {{ gT("Privacy policy") }}
+        </div>
         <div class="{{ aSurveyInfo.class.privacydatasectextbody }} mb-4" id="datasecurity_notice">
             {{ aSurveyInfo.datasecurity_notice }}
         </div>

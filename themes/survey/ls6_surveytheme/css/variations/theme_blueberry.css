@@ -15476,9 +15476,9 @@ html, body {
 }
 
 .question-count-text {
+  font-size: 1.2825rem;
+  line-height: 24px;
   font-weight: 600;
-  font-size: 2.85rem;
-  line-height: 52px;
 }
 
 .privacy {
@@ -15493,16 +15493,14 @@ html, body {
 .privacy .checkbox-item label::before {
   border: 3px solid #14AE5C;
 }
+.privacy .ls-privacy-head,
+.privacy #datasecurity_notice_label {
+  font-weight: 500;
+}
 
 .datasecurity-checkbox-container {
   margin-top: 14px;
   padding-left: 16px;
-}
-
-#datasecurity_notice {
-  font-weight: 500;
-  font-size: 0.855rem;
-  line-height: 16px;
 }
 
 .datasecurity-checkbox-label,
@@ -15512,7 +15510,9 @@ html, body {
   line-height: 20px;
 }
 
-#datasecurity_notice, .datasecurity-checkbox-label {
+#datasecurity_notice,
+#datasecurity_notice_label,
+.datasecurity-checkbox-label {
   color: #6E748C;
 }
 

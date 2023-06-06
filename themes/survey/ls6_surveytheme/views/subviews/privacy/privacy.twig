@@ -23,8 +23,8 @@
         {% if (aSurveyInfo.options.hideprivacyinfo == "off" ) %}
             {% block anonymous %}
                 {% if (aSurveyInfo.anonymized == "Y") %}
-                <div class="{{ aSurveyInfo.class.privacyhead }} fw-bold text-uppercase" {{ aSurveyInfo.attr.privacyhead }}>
-                    {{ gT("This survey is anonymous.") }}
+                <div class="{{ aSurveyInfo.class.privacyhead }} text-uppercase" {{ aSurveyInfo.attr.privacyhead }}>
+                    {{ gT("This survey is anonymous") }}
                 </div>
                 <div>
                     <p class="{{ aSurveyInfo.class.privacybody }}" {{ aSurveyInfo.attr.privacybody }}>
