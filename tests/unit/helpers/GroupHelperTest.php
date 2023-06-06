@@ -199,6 +199,9 @@ class GroupHelperTest extends TestBaseClass
      */
     public function testQuestionGroupChangeOnActiveSurvey()
     {
+        // V5 doesn't implement the feature
+        $this->markTestSkipped("V5 doesn't implement the feature.");
+
         $activator = new \SurveyActivator(self::$testSurvey);
         $result = $activator->activate();
 
