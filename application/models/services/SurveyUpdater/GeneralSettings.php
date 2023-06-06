@@ -83,11 +83,9 @@ class GeneralSettings
             throw new ExceptionNotFound();
         }
 
-        $fields = $this->getFields($survey);
         return $this->updateGeneralSettings(
             $survey,
-            $input,
-            $fields
+            $input
         );
     }
 
@@ -101,7 +99,7 @@ class GeneralSettings
      * @throws ExceptionPermissionDenied
      * @return array
      */
-    private function updateGeneralSettings(Survey $survey, array $input, array $fields)
+    private function updateGeneralSettings(Survey $survey, array $input)
     {
         $initAttributes = $survey->getAttributes();
 
@@ -118,6 +116,7 @@ class GeneralSettings
 
         $meta = ['updateFields' => []];
 
+        $fields = $this->getFields($survey);
         foreach ($fields as $field => $fieldOpts) {
             $meta = $this->setField(
                 $field,
