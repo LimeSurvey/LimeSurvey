@@ -171,14 +171,15 @@ class SurveySearchTest extends TestBaseClass
         $s->active = null; // Somehow this gets defaulted to N, so setting it to null.
 
         $dataProvider = $s->search();
-        $data = $dataProvider->getData();
-        var_dump($dataProvider->getCriteria());
+        $data = $dataProvider->query->all();
+        $totalItemCount = $dataProvider->totalItemCount();
 
         $sids = array($testData['sid'], $testData['sidTwo'], $testData['sidThree']);
         $surveyCount = (int)\Survey::model()->count();
 
         $this->assertNotEmpty($data, 'The survey search results were unexpectedly empty');
-        $this->assertCount($surveyCount, $data, 'The number of surveys found does not match the number of surveys in the database.');
+        $this->assertCount($surveyCount, $data, 'The number of surveys in the resultset found does not match the number of surveys in the database.');
+        $this->assertEquals($surveyCount, $totalItemCount, 'The number of surveys found does not match the number of surveys in the database.');
 
         $this->assertThat($sids, $this->contains($data[0]->sid), 'One of the expected surveys was not found.');
         $this->assertThat($sids, $this->contains($data[1]->sid), 'One of the expected surveys was not found.');
