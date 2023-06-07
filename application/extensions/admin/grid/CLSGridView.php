@@ -25,7 +25,7 @@ class CLSGridView extends TbGridView
         $this->registerGridviewScripts();
 
         $this->pager = ['class' => 'application.extensions.admin.grid.CLSYiiPager'];
-        $this->htmlOptions['class'] = '';
+        $this->htmlOptions['class'] = 'grid-view-ls';
         $classes = ['table', 'table-hover'];
         $this->template = $this->render('template', ['massiveActionTemplate' => $this->massiveActionTemplate], true);
         $this->lsAfterAjaxUpdate();
@@ -63,8 +63,12 @@ class CLSGridView extends TbGridView
             foreach ($this->lsAfterAjaxUpdate as $jsCode) {
                 $this->afterAjaxUpdate .= $jsCode;
             }
-            $this->afterAjaxUpdate .= 'action_dropdown();';
+            $this->afterAjaxUpdate .= 'LS.actionDropdown.create();';
             $this->afterAjaxUpdate .= '}';
+        } else {
+            // trigger action_dropdown() as a default although no lsAfterAjaxUpdate param passed.
+            // this method is useful for preventing action dropdown cut off && overlapped in other browsers like firefox
+            $this->afterAjaxUpdate = 'function(){ LS.actionDropdown.create(); }';
         }
     }
 
@@ -76,6 +80,36 @@ class CLSGridView extends TbGridView
             CClientScript::POS_BEGIN,
             ['test321' => "something"]
         );
+
+        // ========== this is added for pagination size working by referencing from old limegridview  ==============
+        $id = $this->getId();
+
+        if ($this->ajaxUpdate) {
+            $ajaxUpdate = array_unique(preg_split('/\s*,\s*/', $this->ajaxUpdate . ',' . $id, -1, PREG_SPLIT_NO_EMPTY));
+        } else {
+            $ajaxUpdate = false;
+        }
+
+        $options = array(
+            'ajaxUpdate' => $ajaxUpdate,
+            'ajaxVar' => $this->ajaxVar,
+            'pagerClass' => $this->pagerCssClass,
+            'loadingClass' => $this->loadingCssClass,
+            'filterClass' => $this->filterCssClass,
+            'tableClass' => $this->itemsCssClass,
+            'selectableRows' => $this->selectableRows,
+            'enableHistory' => $this->enableHistory,
+            'updateSelector' => $this->updateSelector,
+            'filterSelector' => $this->filterSelector
+        );
+
+        $options = CJavaScript::encode($options);
+
+        $cs = Yii::app()->getClientScript();
+        $cs->registerScript(__CLASS__ . '#' . $id, "jQuery('#$id').yiiGridView($options);", LSYii_ClientScript::POS_POSTSCRIPT);
+
+        // ====================================================================================================
+
 
         // changePageSize
         $script = '

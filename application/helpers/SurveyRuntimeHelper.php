@@ -178,6 +178,8 @@ class SurveyRuntimeHelper
     private $groupname;
     private $groupdescription;
 
+    private $thissurvey;
+
     /**
      * Main function
      *
@@ -1498,6 +1500,7 @@ class SurveyRuntimeHelper
      */
     private function manageClearAll()
     {
+        global $token;
         $sessionSurvey = Yii::app()->session["survey_{$this->iSurveyid}"];
         if (App()->request->getPost('confirm-clearall') != 'confirm') {
             /* Save current response, and come back to survey if clearll is not confirmed */
@@ -1531,7 +1534,6 @@ class SurveyRuntimeHelper
 
             killSurveySession($this->iSurveyid);
 
-            global $token;
             if ($token) {
                 $restartparam['token'] = Token::sanitizeToken($token);
             }

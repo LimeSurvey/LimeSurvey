@@ -2085,7 +2085,8 @@ class SurveyAdministrationController extends LSBaseController
 
             $closeAfterSave = $request->getPost('close-after-save') === 'true';
             if ($closeAfterSave) {
-                $this->redirect(array('surveyAdministration/view/surveyid/' . $iSurveyID));
+                 // save reordering redirect to listquestion page as this part is moved there
+                 $this->redirect($this->createUrl('questionAdministration/listQuestions', ['surveyid' => $iSurveyID , 'activeTab' => 'reorder']));
             }
         }
         $aData = $this->showReorderForm($iSurveyID);
@@ -2593,7 +2594,7 @@ class SurveyAdministrationController extends LSBaseController
 
         $aData['aGroupsAndQuestions'] = $groupData;
         $aData['surveyid'] = $iSurveyID;
-
+        $aData['surveyActivated'] = $survey->getIsActive();
         return $aData;
     }
 
@@ -2648,26 +2649,33 @@ class SurveyAdministrationController extends LSBaseController
                     $aQuestionOrder[$gid] = 0;
                 }
 
-                $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
-                $oQuestion = Question::model()->findByPk(array("qid" => $qid, 'language' => $sBaseLanguage));
-                $oldGid = $oQuestion['gid'];
-                if ($oldGid != $gid) {
-                    fixMovedQuestionConditions($qid, $oldGid, $gid, $iSurveyID);
+                $oQuestion = Question::model()->findByPk($qid);
+                /* @var integer old value of gid to check if updated */
+                $oldGid = $oQuestion->gid;
+                /* Update quuestion, and update other if saved */
+                $oQuestion->gid = $gid;
+                $oQuestion->question_order = $aQuestionOrder[$gid];
+                if ($oQuestion->save(true)) {
+                    if ($oldGid != $gid) {
+                        fixMovedQuestionConditions($qid, $oldGid, $gid, $iSurveyID);
+                    }
+                    Question::model()->updateAll(
+                        array(
+                            'question_order' => $aQuestionOrder[$gid],
+                            'gid' => $gid
+                        ),
+                        'qid=:qid',
+                        array(':qid' => $qid)
+                    );
+                    Question::model()->updateAll(array('gid' => $gid), 'parent_qid=:parent_qid', array(':parent_qid' => $qid));
+                    $aQuestionOrder[$gid]++;
+                } else {
+                    App()->setFlashMessage(sprintf(gT("Unable to reorder question %s."), $oQuestion->title), 'warning');
                 }
-                Question::model()->updateAll(
-                    array(
-                        'question_order' => $aQuestionOrder[$gid],
-                        'gid' => $gid
-                    ),
-                    'qid=:qid',
-                    array(':qid' => $qid)
-                );
-                Question::model()->updateAll(array('gid' => $gid), 'parent_qid=:parent_qid', array(':parent_qid' => $qid));
-                $aQuestionOrder[$gid]++;
             }
         }
         LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
-        Yii::app()->session['flashmessage'] = gT("The new question group/question order was successfully saved.");
+        App()->setFlashMessage(gT("The new question group/question order was successfully saved."));
     }
 
     /**
@@ -3288,8 +3296,6 @@ class SurveyAdministrationController extends LSBaseController
                 'Subquestion ID' => gT('Subquestion ID'),
                 'Add URL parameter' => gT('Add URL parameter'),
                 'Edit URL parameter' => gT('Edit URL parameter'),
-                'Parameter' => gT('Parameter'),
-                'Target question' => gT('Target question'),
                 'No target question' => gT('(No target question)'),
                 'Are you sure you want to delete this URL parameter?' => gT('Are you sure you want to delete this URL parameter?'),
                 'No parameters defined' => gT('No parameters defined'),

@@ -1,23 +1,6 @@
 <?php
 
 
-if ($hasTokensReadPermission) {
-    $this->widget(
-        'ext.ButtonWidget.ButtonWidget',
-        [
-            'name' => 'ls-question-tools-button',
-            'id' => 'ls-question-tools-button',
-            'text' => gT('Display participants'),
-            'icon' => 'ri-list-unordered',
-            'link' => Yii::App()->createUrl("admin/tokens/sa/browse/surveyid/$oSurvey->sid"),
-            'htmlOptions' => [
-                'class' => 'btn btn-outline-secondary',
-                'role' => 'button'
-            ],
-        ]
-    );
-}
-
 if ($hasTokensCreatePermission || $hasTokensImportPermission) {
     $createDropdownItems = $this->renderPartial(
         '/surveyAdministration/partial/topbar_tokens/tokensCreateDropdownItems',
@@ -28,7 +11,7 @@ if ($hasTokensCreatePermission || $hasTokensImportPermission) {
     <?php $this->widget('ext.ButtonWidget.ButtonWidget', [
         'name' => 'ls-create-token-button',
         'id' => 'ls-create-token-button',
-        'text' => gT('Create...'),
+        'text' => gT('Add...'),
         'icon' => 'ri-add-circle-fill',
         'isDropDown' => true,
         'dropDownContent' => $createDropdownItems,
@@ -85,7 +68,7 @@ if ($hasTokensUpdatePermission) {
     $this->widget('ext.ButtonWidget.ButtonWidget', [
         'name' => 'ls-inv-rem-button',
         'id' => 'ls-inv-rem-button',
-        'text' => gT('Invitations & reminders'),
+        'text' => gT('Invite & remind'),
         'icon' => 'ri-mail-settings-line',
         'isDropDown' => true,
         'dropDownContent' => $invRemDropDownItems,

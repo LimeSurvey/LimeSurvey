@@ -49,7 +49,7 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
             $this->defaultWidth = false;
         } else {
             $this->answerwidth = 33;
-            $this->defaultWidth = false;
+            $this->defaultWidth = true;
         }
     }
 
@@ -135,7 +135,7 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
         }
         if ($numColExtraAnswer > 0) {
             $extraanswerwidth = $this->answerwidth / $numColExtraAnswer; /* If there are 2 separator : set to 1/2 else to same */
-            if ($defaultWidth) {
+            if ($this->defaultWidth) {
                 $columnswidth -= $this->answerwidth;
             } else {
                 $this->answerwidth  = $this->answerwidth / 2;
@@ -294,7 +294,11 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
 
                 if ($aData['shownoanswer']) {
                     // No answer for accessibility and no javascript (but hide hide even with no js: need reworking)
-                    if (empty($this->getFromSurveySession($myfname0))) {
+                    $fname0value = $this->getFromSurveySession($myfname0);
+                    // If value is empty, notset should be checked.
+                    // string "0" should be considered as valid answer,
+                    // so notset should not be checked in that case.
+                    if ($fname0value !== '0' && empty($fname0value)) {
                         //$answer .= CHECKED;
                         $aData['aSubQuestions'][$i]['myfname0_notset'] = CHECKED;
                     } else {
@@ -317,15 +321,23 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
             $aData['answertextright'] = $answertextright;
             if ($aData['shownoanswer']) {
                 if (count($aData['labelans1']) > 0) {
-                    if (empty($this->getFromSurveySession($myfname1))) {
+                    $fname1value = $this->getFromSurveySession($myfname1);
+                    // If value is empty, notset should be checked.
+                    // string "0" should be considered as valid answer,
+                    // so notset should not be checked in that case.
+                    if ($fname1value !== '0' && empty($fname1value)) {
                         #$answer .= CHECKED;
                         $aData['aSubQuestions'][$i]['myfname1_notset'] = CHECKED;
                     } else {
                         $aData['aSubQuestions'][$i]['myfname1_notset'] = "";
                     }
                 } else {
-                    if (empty($this->getFromSurveySession($myfname0))) {
-                        $answer .= CHECKED;
+                    $fname0value = $this->getFromSurveySession($myfname0);
+                    // If value is empty, notset should be checked.
+                    // string "0" should be considered as valid answer,
+                    // so notset should not be checked in that case.                   
+                    if ($fname0value !== '0' && empty($fname0value)) {
+                        //$answer .= CHECKED;
                         $aData['aSubQuestions'][$i]['myfname0_notset'] = CHECKED;
                     } else {
                         $aData['aSubQuestions'][$i]['myfname0_notset'] = '';

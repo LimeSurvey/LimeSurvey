@@ -510,7 +510,7 @@ class SurveyCommonAction extends CAction
                     'importance' => Notification::HIGH_IMPORTANCE,
                     'title' => gT('SSL not enforced'),
                     'message' => '<span class="ri-error-warning-fill"></span>&nbsp;' .
-                        gT("Warning: Please enforce SSL encrpytion in Global settings/Security after SSL is properly configured for your webserver.")
+                        gT("Warning: Please enforce SSL encryption in Global settings/Security after SSL is properly configured for your webserver.")
                 ));
                 $not->save();
             }
@@ -532,10 +532,6 @@ class SurveyCommonAction extends CAction
             }
 
             $aData['sitename'] = Yii::app()->getConfig("sitename");
-
-            $updateModel = new UpdateForm();
-            $updateNotification = $updateModel->updateNotification;
-            $aData['showupdate'] = Yii::app()->getConfig('updatable') && $updateNotification->result && !$updateNotification->unstable_update;
 
             // Fetch extra menus from plugins, e.g. last visited surveys
             $aData['extraMenus'] = $this->fetchExtraMenus($aData);

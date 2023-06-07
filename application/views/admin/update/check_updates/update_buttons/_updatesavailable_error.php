@@ -23,7 +23,7 @@ switch ($serverAnswer->error) {
 
     case 'no_server_answer':
         $sTile = gT('Error!');
-        $sHeader = gT('No server answer');
+        $sHeader = gT('No server answer!');
         $sMessage = gT(
             "It seems that the ComfortUpdate server is not responding. Please try again in few minutes or contact the LimeSurvey team."
         );

@@ -240,6 +240,7 @@ class UploaderController extends SurveyController
             // If this is just a preview, don't save the file
             if ($preview) {
                 if (move_uploaded_file($_FILES['uploadfile']['tmp_name'], $randfileloc)) {
+                    /** @psalm-suppress UndefinedVariable TODO: Dead code? */
                     $return = array(
                                 "success"       => true,
                                 "file_index"    => $filecount,
@@ -304,7 +305,7 @@ class UploaderController extends SurveyController
         $oEvent->set('surveyId', $surveyid);
         App()->getPluginManager()->dispatchEvent($oEvent);
         if (!is_null($oEvent->get('template'))) {
-            $aSurveyInfo['templatedir'] = $event->get('template');
+            $aSurveyInfo['templatedir'] = $oEvent->get('template');
         }
         $sTemplateDir = getTemplatePath($aSurveyInfo['template']);
         $sTemplateUrl = getTemplateURL($aSurveyInfo['template']) . "/";
@@ -346,12 +347,18 @@ class UploaderController extends SurveyController
 
         $fn = $sFieldName;
         $qid = (int) Yii::app()->request->getParam('qid');
-        $minfiles = (int) Yii::app()->request->getParam('minfiles');
-        $maxfiles = (int) Yii::app()->request->getParam('maxfiles');
         $qidattributes = QuestionAttribute::model()->getQuestionAttributes($qid);
         $qidattributes['max_filesize'] = floor(min(intval($qidattributes['max_filesize']), getMaximumFileUploadSize() / 1024));
         if ($qidattributes['max_filesize'] <= 0) {
             $qidattributes['max_filesize'] = getMaximumFileUploadSize() / 1024;
+        }
+        $minfiles = "";
+        if (!empty($qidattributes['min_num_of_files'])) {
+            $minfiles = intval($qidattributes['min_num_of_files']);
+        }
+        $maxfiles = "";
+        if (!empty($qidattributes['max_num_of_files'])) {
+            $maxfiles = intval($qidattributes['max_num_of_files']);
         }
         $aData = [
             'fn' => $fn,

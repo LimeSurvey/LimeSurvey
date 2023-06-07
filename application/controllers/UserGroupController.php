@@ -69,7 +69,7 @@ class UserGroupController extends LSBaseController
         $aData = [];
 
         $model = UserGroup::model();
-   
+
         $aData['topbar']['title'] = gT('User group list');
         $aData['topbar']['backLink'] = App()->createUrl('admin/index');
 
@@ -170,7 +170,7 @@ class UserGroupController extends LSBaseController
 
         $aData['topbar']['title'] = gT('User group') . ': ' . $userGroup->name;
         $aData['topbar']['backLink'] = App()->createUrl('userGroup/index');
-        
+
         $aData['topbar']['middleButtons'] = $this->renderPartial(
             'partial/topbarBtns_manageGroup/leftSideButtons',
             [

@@ -195,11 +195,7 @@ class Labels extends SurveyCommonAction
 
             $langidsarray = explode(" ", trim((string) $langids)); // Make an array of it
 
-            if (isset($row['lid'])) {
-                $panecookie = $row['lid'];
-            } else {
-                $panecookie = 'new';
-            }
+            $panecookie = 'new';
 
             $aData['langids'] = $langids;
             $aData['langidsarray'] = $langidsarray;
@@ -213,7 +209,7 @@ class Labels extends SurveyCommonAction
             $aData['topbar']['title'] = $pageTitle;
             $aData['topbar']['backLink'] = App()->createUrl('admin/labels/sa/view');
 
-            
+
             $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
                 '/admin/labels/partials/topbarBtns_newimport/rightSideButtons',
                 [
@@ -507,7 +503,7 @@ class Labels extends SurveyCommonAction
             $this->saveLabelSetAux($lid, $codes, $answers, $assessmentValues);
             $transaction->commit();
         } catch (Exception $exception) {
-            $transation->rollback();
+            $transaction->rollback();
             throw new CHttpException(500, $exception->getMessage());
         }
 

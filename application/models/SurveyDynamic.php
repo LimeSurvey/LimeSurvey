@@ -296,6 +296,18 @@ class SurveyDynamic extends LSActiveRecord
             ),
         ];
         $dropdownItems[] = [
+            'title'            => gT('View response details as queXML PDF'),
+            'iconClass'        => 'ri-file-pdf-line',
+            'url'              => App()->createUrl(
+                "responses/viewquexmlpdf",
+                [
+                    "surveyId" => self::$sid,
+                    "id" => $this->id,
+                    "browseLang" => $sBrowseLanguage
+                ]
+            ),
+        ];
+        $dropdownItems[] = [
             'title'            => gT('Edit this response'),
             'iconClass'        => 'ri-pencil-fill text-success',
             'url'              => App()->createUrl(
@@ -1001,12 +1013,31 @@ class SurveyDynamic extends LSActiveRecord
         return $aQuestionAttributes;
     }
 
+    /**
+     * Decrypts all encrypted response values for output (e.g. printanswers, detailed admin info)
+     *
+     * @return void
+     */
+    public function decryptBeforeOutput()
+    {
+        //get response values which are encrypted
+        $encryptedAttr = Response::getEncryptedAttributes($this->getSurveyId());
+        $attributes = $this->attributes;
+        $sodium = Yii::app()->sodium;
+        foreach ($encryptedAttr as $key) {
+            $this->setAttribute($key, $sodium->decrypt($attributes[$key]));
+        }
+    }
+
     public function getPrintAnswersArray($sSRID, $sLanguage, $bHonorConditions = false)
     {
 
         $oSurvey = self::$survey;
         $aGroupArray = array();
+
         $oResponses = SurveyDynamic::model($oSurvey->sid)->findByAttributes(array('id' => $sSRID));
+        $oResponses->decryptBeforeOutput();
+
         $oGroupList = $oSurvey->groups;
 
         foreach ($oGroupList as $oGroup) {
