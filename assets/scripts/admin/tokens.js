@@ -137,6 +137,7 @@ function submitEditToken(){
             if (result.success) {
                 $modal.hide();
                 $('body').removeClass('modal-open');
+                $('body').removeAttr('style');
                 $('.modal-backdrop').remove();
                 window.LS.ajaxAlerts(result.success, 'success');
             } else {
