@@ -14666,7 +14666,6 @@ body.error-page .error-link {
 .slider-list .slider-item {
   margin-bottom: 20px;
   min-height: 50px;
-  overflow-x: hidden;
   padding-top: 1rem;
 }
 .slider-list .slider-item:first-child {
