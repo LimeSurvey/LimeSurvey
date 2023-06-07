@@ -17,6 +17,7 @@ class SurveySearchTest extends TestBaseClass
 
         $dataProvider = $s->search();
         $data = $dataProvider->getData();
+        var_dump($dataProvider->getCriteria());
 
         $this->assertNotEmpty($data, 'The survey search results were unexpectedly empty');
         $this->assertEquals($testData['sid'], $data[0]->sid, 'The survey found was not the expected one');
