@@ -207,7 +207,7 @@ class Labels extends SurveyCommonAction
                 'hasPermissionExport' => $lid && $LabelSet->haspermission('export')
             ],
             true
-        ); 
+        );
         $this->renderWrappedTemplate('labels', $aViewUrls, $aData);
     }
 
@@ -338,7 +338,7 @@ class Labels extends SurveyCommonAction
             $lid = $this->validateLabelSetId(App()->getRequest()->getParam('lid'), 'update');
             modlabelsetanswers($lid);
         }
-        if ($action == "deletelabelset" ) {
+        if ($action == "deletelabelset") {
             /* @todo : validate it's a POST request */
             $lid = $this->validateLabelSetId(App()->getRequest()->getParam('lid'), 'delete');
             if (LabelSet::model()->deleteLabelSet($lid)) {
@@ -422,16 +422,48 @@ class Labels extends SurveyCommonAction
 
     /**
      * Get all label sets
+     * @param boolean $update with update permission
      *
      * @return void
      */
-    public function getAllSets()
+    public function getAllSets($update = false)
     {
         /* Using of lable sets are not controlled all label sets can be used by every one */
         $results = LabelSet::model()->findAll();
-
         $output = array();
+        foreach ($results as $row) {
+            $output[$row->lid] = flattenText($row->getAttribute('label_name'));
+        }
+        header('Content-type: application/json');
+        echo ls_json_encode($output);
+    }
 
+    /**
+     * Get all label sets with permission
+     *
+     * @return void
+     */
+    public function getRestrictedSets()
+    {
+        $results = LabelSet::model()->with('permission')->findAll();
+        $output = array();
+        foreach ($results as $row) {
+            $output[$row->lid] = flattenText($row->getAttribute('label_name'));
+        }
+        header('Content-type: application/json');
+        echo ls_json_encode($output);
+    }
+
+    /**
+     * Get all label sets with update permission
+     *
+     * @return void
+     */
+    public function getWritePermissionSets()
+    {
+        /* Using of lable sets are not controlled all label sets can be used by every one */
+        $results = LabelSet::model()->findAll();
+        $output = array();
         foreach ($results as $row) {
             $output[$row->lid] = flattenText($row->getAttribute('label_name'));
         }
@@ -767,7 +799,6 @@ class Labels extends SurveyCommonAction
         }
         if (empty(LabelSet::model()->findByPk($lid))) {
             throw new CHttpException(404, gT("Label set not found"));
-            
         }
         if (!LabelSet::model()->findByPk($lid)->hasPermission('update')) {
             throw new CHttpException(403);
