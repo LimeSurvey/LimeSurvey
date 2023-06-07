@@ -173,7 +173,7 @@ class SurveySearchTest extends TestBaseClass
         $dataProvider = $s->search();
         $dataProvider->pagination = false;
         $data = $dataProvider->getData();
-        $totalItemCount = $dataProvider->totalItemCount();
+        $totalItemCount = $dataProvider->getTotalItemCount();
 
         $sids = array($testData['sid'], $testData['sidTwo'], $testData['sidThree']);
         $surveyCount = (int)\Survey::model()->count();
