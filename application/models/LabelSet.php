@@ -23,7 +23,6 @@
  */
 class LabelSet extends LSActiveRecord implements PermissionInterface
 {
-
     use PermissionTrait;
 
     /** @inheritdoc */
