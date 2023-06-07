@@ -28,7 +28,7 @@ const buffer = require('vinyl-buffer');
 const browserify = require('browserify');
 
 function js_minify() {
-    return src(['node_modules/bootstrap/dist/js/bootstrap.bundle.min.js', 'assets/bootstrap_5/js/bootstrap_5.js'])
+    return src(['node_modules/bootstrap/dist/js/bootstrap.bundle.js', 'assets/bootstrap_5/js/bootstrap_5.js'])
         .pipe(concat('bootstrap_5.js'))
         .pipe(dest('assets/bootstrap_5/build/js/'))
         .pipe(uglify())
@@ -157,7 +157,7 @@ function survey_theme_ls6() {
         ["apple", "#14AE5C"],
         ["blueberry", "#5076FF"],
         ["grape", "#8146F6"],
-        ["litchi", "#ED5046"],
+        ["mango", "#ED5046"],
     ];
     let plugins = [
         autoprefixer(),

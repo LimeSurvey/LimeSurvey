@@ -296,6 +296,18 @@ class SurveyDynamic extends LSActiveRecord
             ),
         ];
         $dropdownItems[] = [
+            'title'            => gT('View response details as queXML PDF'),
+            'iconClass'        => 'ri-file-pdf-line',
+            'url'              => App()->createUrl(
+                "responses/viewquexmlpdf",
+                [
+                    "surveyId" => self::$sid,
+                    "id" => $this->id,
+                    "browseLang" => $sBrowseLanguage
+                ]
+            ),
+        ];
+        $dropdownItems[] = [
             'title'            => gT('Edit this response'),
             'iconClass'        => 'ri-pencil-fill text-success',
             'url'              => App()->createUrl(
