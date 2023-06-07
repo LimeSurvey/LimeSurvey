@@ -13,7 +13,7 @@ echo viewHelper::getViewTestTag('surveyParticipantsIndex');
     <h3><?php eT("Survey participant summary"); ?></h3>
 
     <?php
-    if (isset($surveyActivationFeedback) && $surveyActivationFeedback) {
+    if (!empty($surveyActivationFeedback)) {
         Yii::app()->getController()->renderPartial(
             '/surveyAdministration/surveyActivation/_activated_closedAccess',
             ['nameTokensTable' => 'someTokenTableName']

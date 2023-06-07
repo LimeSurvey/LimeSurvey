@@ -1898,8 +1898,6 @@ class SurveyAdministrationController extends LSBaseController
                 }
             }
 
-            //token table should be generated here, if in closed access mode
-
             $activationData = array(
                 'iSurveyID'           => $surveyId,
                 'survey'              => $survey,
@@ -1908,128 +1906,6 @@ class SurveyAdministrationController extends LSBaseController
             );
             $this->aData = $aData;
             $this->render('surveyActivation/_activation_feedback', $activationData);
-        }
-    }
-
-
-    /**
-     * Function responsible to activate survey.
-     *
-     * @param int $iSurveyID Given Survey ID
-     *
-     * @return void
-     * @access public
-     * @throws CException
-     */
-    public function actionActivate2($iSurveyID)
-    {
-        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update')) {
-            Yii::app()->user->setFlash('error', gT("Access denied"));
-            $this->redirect(Yii::app()->request->urlReferrer);
-        }
-
-        $iSurveyID = (int) $iSurveyID;
-        $survey = Survey::model()->findByPk($iSurveyID);
-        $surveyActivator = new SurveyActivator($survey);
-
-        //If user has set some filters for responses from statistics on a previous activation, it must be wiped out
-        Yii::app()->user->setState('sql_' . $iSurveyID, '');
-        $aData = array();
-        $aData['oSurvey'] = $survey;
-        $aData['sidemenu']['state'] = false;
-        $aData['aSurveysettings'] = getSurveyInfo($iSurveyID);
-        $aData['surveyid'] = $iSurveyID;
-        $aData['sid'] = $iSurveyID;
-        $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyID . ")";
-        $aData['topBar']['hide'] = true;
-
-        //topbar
-        $topbarData = TopbarConfiguration::getSurveyTopbarData($iSurveyID);
-        $aData['topbar']['middleButtons'] = $this->renderPartial(
-            'partial/topbar/surveyTopbarLeft_view',
-            $topbarData,
-            true
-        );
-        $aData['topbar']['rightButtons'] = $this->renderPartial(
-            'partial/topbar/surveyTopbarRight_view',
-            $topbarData,
-            true
-        );
-        // Redirect if this is not possible
-        if (!isset($aData['aSurveysettings']['active']) || $aData['aSurveysettings']['active'] == 'Y') {
-            Yii::app()->setFlashMessage(gT("This survey is already active."), 'error');
-            $this->redirect(array('surveyAdministration/view', 'surveyid' => $iSurveyID));
-        }
-        Yii::app()->loadHelper("admin/activate");
-
-        if (Yii::app()->request->getPost('ok') === null) { //go to activate survey options page
-            if (isset($_GET['fixnumbering']) && $_GET['fixnumbering']) {
-                fixNumbering($_GET['fixnumbering'], $iSurveyID);
-            }
-
-            // Check consistency for groups and questions
-            $failedgroupcheck = checkGroup($iSurveyID);
-            $failedcheck = checkQuestions($iSurveyID, $iSurveyID);
-
-            $aData['failedcheck'] = $failedcheck;
-            $aData['failedgroupcheck'] = $failedgroupcheck;
-            $aData['aSurveysettings'] = getSurveyInfo($iSurveyID);
-
-            $this->aData = $aData;
-            $this->render('activateSurvey', $aData);
-        } else {
-            if (!is_null($survey)) {
-                $survey->anonymized = Yii::app()->request->getPost('anonymized');
-                $survey->datestamp = Yii::app()->request->getPost('datestamp');
-                $survey->ipaddr = Yii::app()->request->getPost('ipaddr');
-                $survey->ipanonymize = Yii::app()->request->getPost('ipanonymize');
-                $survey->refurl = Yii::app()->request->getPost('refurl');
-                $survey->savetimings = Yii::app()->request->getPost('savetimings');
-                $survey->save();
-
-                // Make sure the saved values will be picked up
-                Survey::model()->resetCache();
-                $survey->setOptions();
-            }
-
-            $aResult = $surveyActivator->activate();
-
-            $aViewUrls = array();
-            if (
-                (isset($aResult['error']) && $aResult['error'] == 'plugin')
-                || (isset($aResult['blockFeedback']) && $aResult['blockFeedback'])
-            ) {
-                // Got false from plugin, redirect to survey front-page
-                $this->redirect(array('surveyAdministration/view', 'surveyid' => $iSurveyID));
-            } elseif (isset($aResult['pluginFeedback'])) {
-                // Special feedback from plugin
-                $aViewUrls['output'] = $aResult['pluginFeedback'];
-                //check if feedback is given to user ...
-                $this->aData = $aData;
-                $this->render('_activation_feedback', $aData);
-            } elseif (isset($aResult['error'])) {
-                $data['result'] = $aResult;
-                $this->aData = $aData;
-                $this->render('surveyActivation/_activation_error', $data);
-            } else {
-                $warning = (isset($aResult['warning'])) ? true : false;
-                $allowregister = $survey->isAllowRegister;
-                $onclickAction = convertGETtoPOST(Yii::app()->getController()->createUrl("admin/tokens/sa/index/surveyid/" . $iSurveyID));
-                $closedOnclickAction = convertGETtoPOST(Yii::app()->getController()->createUrl("admin/tokens/sa/index/surveyid/" . $iSurveyID));
-                $noOnclickAction = "window.location.href='" . (Yii::app()->getController()->createUrl("surveyAdministration/view/surveyid/" . $iSurveyID)) . "'";
-
-                $activationData = array(
-                    'iSurveyID'           => $iSurveyID,
-                    'survey'              => $survey,
-                    'warning'             => $warning,
-                    'allowregister'       => $allowregister,
-                    'onclickAction'       => $onclickAction,
-                    'closedOnclickAction' => $closedOnclickAction,
-                    'noOnclickAction'     => $noOnclickAction,
-                );
-                $this->aData = $aData;
-                $this->render('_activation_feedback', $activationData);
-            }
         }
     }
 

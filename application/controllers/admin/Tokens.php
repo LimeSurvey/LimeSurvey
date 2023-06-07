@@ -72,7 +72,7 @@ class Tokens extends SurveyCommonAction
         // CHECK TO SEE IF A Survey participants table EXISTS FOR THIS SURVEY
         $aData['surveyActivationFeedback'] = Yii::app()->request->getParam('surveyActivationFeedback', null);
         if (!$survey->hasTokensTable) {
-            $this->newtokentable($iSurveyId, $aData['surveyActivationFeedback']);
+            $this->newtokentable($iSurveyId);
         } else {
             $aData['thissurvey'] = $thissurvey;
             $aData['surveyid'] = $iSurveyId;
@@ -2617,11 +2617,12 @@ class Tokens extends SurveyCommonAction
      * @param int $iSurveyId
      * @return void
      */
-    private function newtokentable($iSurveyId, $surveyActivationFeedback = null)
+    private function newtokentable($iSurveyId)
     {
         $aSurveyInfo = getSurveyInfo($iSurveyId);
         $survey = Survey::model()->findByPk($iSurveyId);
-        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'surveysettings', 'update') && !Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'create')) {
+        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'surveysettings', 'update') &&
+            !Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'create')) {
             Yii::app()->session['flashmessage'] = gT("Survey participants have not been initialised for this survey.");
             $this->getController()->redirect(array("/surveyAdministration/view/surveyid/{$iSurveyId}"));
         }
