@@ -171,7 +171,8 @@ class SurveySearchTest extends TestBaseClass
         $s->active = null; // Somehow this gets defaulted to N, so setting it to null.
 
         $dataProvider = $s->search();
-        $data = $dataProvider->query->all();
+        $dataProvider->pagination = false;
+        $data = $dataProvider->getData();
         $totalItemCount = $dataProvider->totalItemCount();
 
         $sids = array($testData['sid'], $testData['sidTwo'], $testData['sidThree']);
