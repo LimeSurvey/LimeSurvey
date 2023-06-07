@@ -168,6 +168,7 @@ class SurveySearchTest extends TestBaseClass
     public function testAllSurveysFound($testData)
     {
         $s = new \Survey('search');
+        $s->active = null; // Somehow this gets defaulted to N, so setting it to null.
 
         $dataProvider = $s->search();
         $data = $dataProvider->getData();
