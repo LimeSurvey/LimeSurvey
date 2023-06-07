@@ -43,10 +43,13 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
      * Transform
      *
      * Returns an array of entity references indexed by the specified key.
-     *
      */
     public function transform($data)
     {
+        if (!$data instanceof Survey) {
+            return null;
+        }
+
         $survey =  $this->transformerSurvey->transform($data);
 
         $survey['languages'] = $data->allLanguages;

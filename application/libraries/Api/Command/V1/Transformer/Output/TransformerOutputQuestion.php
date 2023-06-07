@@ -34,10 +34,6 @@ class TransformerOutputQuestion extends TransformerOutputActiveRecord
         ]);
     }
 
-    /**
-     * @param array $array
-     * @return array
-     */
     public function transformAll($array)
     {
         $array = parent::transformAll($array);

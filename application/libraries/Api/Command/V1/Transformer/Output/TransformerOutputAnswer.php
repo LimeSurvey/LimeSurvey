@@ -19,7 +19,7 @@ class TransformerOutputAnswer extends TransformerOutputActiveRecord
     }
 
     /**
-     * @param array $array
+     * @param mixed $array
      * @return array
      */
     public function transformAll($array)

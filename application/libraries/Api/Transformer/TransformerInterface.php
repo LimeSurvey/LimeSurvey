@@ -4,6 +4,15 @@ namespace LimeSurvey\Api\Transformer;
 
 interface TransformerInterface
 {
+    /**
+     * @param ?mixed $data
+     * @return ?mixed
+     */
     public function transform($data);
-    public function transformAll(array $array);
+
+    /**
+     * @param ?array $array
+     * @return ?array
+     */
+    public function transformAll($array);
 }

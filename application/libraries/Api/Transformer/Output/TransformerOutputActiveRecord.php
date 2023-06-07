@@ -8,8 +8,8 @@ use LimeSurvey\Api\Transformer\Transformer;
 abstract class TransformerOutputActiveRecord extends Transformer
 {
     /**
-     * @param mixed $data
-     * @return array
+     * @param ?mixed $data
+     * @return ?array
      */
     public function transform($data)
     {

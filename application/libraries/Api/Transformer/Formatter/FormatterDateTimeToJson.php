@@ -6,12 +6,14 @@ class FormatterDateTimeToJson implements
     FormatterInterface,
     FormatterRevertibleInterface
 {
+    /** @var bool */
     private $revert = false;
+    /** @var string */
     private $inputTimezone = 'UTC';
 
     /**
      * @param bool $revert If true performs reverse format conversion
-     * @param bool $inputTimezone Defaults to date_default_timezone_get()
+     * @param ?string $inputTimezone Defaults to date_default_timezone_get()
      */
     public function __construct($revert = false, $inputTimezone = null)
     {
@@ -23,8 +25,8 @@ class FormatterDateTimeToJson implements
      * Cast UTC datetime string to JSON datetime string
      *
      * @see https://www.w3.org/TR/NOTE-datetime
-     * @param string $value
-     * @return string|null
+     * @param ?mixed $value
+     * @return ?mixed
      */
     public function format($value)
     {
@@ -37,8 +39,8 @@ class FormatterDateTimeToJson implements
      * Cast UTC datetime string to JSON datetime string
      *
      * @see https://www.w3.org/TR/NOTE-datetime
-     * @param string $value
-     * @return string|null
+     * @param ?mixed $value
+     * @return ?string
      */
     private function apply($value)
     {
@@ -54,8 +56,8 @@ class FormatterDateTimeToJson implements
      * Cast JSON datetime string to UTC datetime string
      *
      * @see https://www.w3.org/TR/NOTE-datetime
-     * @param string $value
-     * @return string|null
+     * @param ?mixed $value
+     * @return ?string
      */
     public function revert($value)
     {
@@ -74,7 +76,7 @@ class FormatterDateTimeToJson implements
      * @param string $inputTimeZone
      * @param string $outputTimezone
      * @param string $outputFormat
-     * @return string
+     * @return ?string
      */
     private function dateFormat(
         $value,
