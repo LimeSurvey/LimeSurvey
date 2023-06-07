@@ -2,15 +2,17 @@
 
 namespace LimeSurvey\Api\Rest\Endpoint;
 
-use LimeSurvey\Api\ApiException;
 use LSHttpRequest;
 use Yii;
-use LimeSurvey\Api\Rest\Endpoint;
 use DI\FactoryInterface;
+use LimeSurvey\Api\{
+    Rest\Endpoint,
+    ApiException
+};
 
 class EndpointFactory
 {
-    protected ?FactoryInterface $diFactory = null;
+    protected FactoryInterface $diFactory;
 
     /**
      * @param FactoryInterface $diFactory
@@ -24,7 +26,7 @@ class EndpointFactory
      * Create
      *
      * @param LSHttpRequest $request
-     * @return RestEndpoint
+     * @return Endpoint
      */
     public function create(LSHttpRequest $request)
     {
@@ -52,7 +54,7 @@ class EndpointFactory
         $requestMethod = $request->getRequestType();
 
         // lookup the endpoint config matching the http request
-        $endpointConfig = null;
+        $endpointConfig = [];
         foreach ($restConfig as $key => $config) {
             $keyParts = explode('/', $key);
 
@@ -110,8 +112,7 @@ class EndpointFactory
         $params = [];
 
         if (
-            $endpoint
-            && !empty($endpoint['auth'])
+            !empty($endpoint['auth'])
             && $endpoint['auth'] == 'session'
         ) {
             $params['sessionKey'] = $this->getAuthToken();
@@ -132,7 +133,7 @@ class EndpointFactory
         return array_merge(
             $query,
             $params,
-            is_array($content) ? $content : null,
+            $content,
             $source
         );
     }
@@ -144,45 +145,29 @@ class EndpointFactory
      *
      * @param array $endpoint
      * @param LSHttpRequest $request
-     * @return void
+     * @return array
      */
     protected function getParams($endpoint, LSHttpRequest $request)
     {
         $result = [];
         if (
-            $endpoint
-            && isset($endpoint['params'])
+            isset($endpoint['params'])
             && is_array($endpoint['params'])
         ) {
             foreach ($endpoint['params'] as $paramName => $options) {
-                if ($options == false) {
+                if (!$options) {
                     continue; // turned off
                 }
-                $opts = is_array($options) ? $this->normaliseParamOptions($options) : [];
-                $default = isset($opts['default']) ? $opts['default'] : null;
-                $result[$paramName] = $request->getParam($paramName, $default);
+                $default = is_array($options) && isset($options['default'])
+                    ? $options['default']
+                    : null;
+                $result[$paramName] = $request->getParam(
+                    $paramName,
+                    $default
+                );
             }
         }
         return $result;
-    }
-
-    /**
-     * Normalise param options
-     *
-     * Applies default values to param options.
-     *
-     * @param array $options
-     * @return array
-     */
-    protected function normaliseParamOptions($options)
-    {
-        $defaults = [
-            'default' => null
-        ];
-
-        return is_array($options)
-            ? array_merge($defaults, $options)
-            : $defaults;
     }
 
     /**
@@ -230,8 +215,8 @@ class EndpointFactory
     /**
      * Get all HTTP header key/values as an associative array for the current request.
      *
-     * @source https://github.com/ralouphie/getallheaders ralouphie/getallheader
-     * @return string[string] The HTTP header key/value pairs.
+     * @source https://github.com/ralouphie/getallheaders
+     * @return array The HTTP header key/value pairs.
      */
     protected function getAllHeaders()
     {

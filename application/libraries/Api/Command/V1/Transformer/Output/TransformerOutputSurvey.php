@@ -2,13 +2,14 @@
 
 namespace LimeSurvey\Api\Command\V1\Transformer\Output;
 
+use Survey;
 use LimeSurvey\Api\Transformer\Output\TransformerOutputActiveRecord;
 use LimeSurvey\Api\Transformer\Formatter\FormatterYnToBool;
 use LimeSurvey\Api\Transformer\Formatter\FormatterDateTimeToJson;
 
 class TransformerOutputSurvey extends TransformerOutputActiveRecord
 {
-    private $transformerOutputSurveyLanguageSettings = null;
+    private TransformerOutputSurveyLanguageSettings $transformerOutputSurveyLanguageSettings;
 
     /**
      * Construct
@@ -78,14 +79,14 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
         ]);
     }
 
-    public function transform($surveyModel)
+    public function transform($data)
     {
-        $survey = parent::transform($surveyModel);
+        $survey = parent::transform($data);
         $survey['defaultLanguage'] = $this->transformerOutputSurveyLanguageSettings->transform(
-            $surveyModel->defaultlanguage
+            $data->defaultlanguage
         );
         $survey['languageSettings'] = $this->transformerOutputSurveyLanguageSettings->transformAll(
-            $surveyModel->languagesettings
+            $data->languagesettings
         );
         return $survey;
     }

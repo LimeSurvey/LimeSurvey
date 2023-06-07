@@ -34,13 +34,22 @@ class TransformerOutputQuestion extends TransformerOutputActiveRecord
         ]);
     }
 
+    /**
+     * @param array $array
+     * @return array
+     */
     public function transformAll($array)
     {
         $array = parent::transformAll($array);
 
-        usort($array, function ($a, $b) {
-            return ((int)$a['questionOrder']) > ((int)$b['questionOrder']);
-        });
+        usort(
+            $array,
+            function ($a, $b) {
+                return (int)(
+                    (int)$a['questionOrder'] > (int)$b['questionOrder']
+                );
+            }
+        );
 
         return $array;
     }

@@ -26,18 +26,15 @@ class TransformerOutputAnswer extends TransformerOutputActiveRecord
     {
         $array = parent::transformAll($array);
 
-        usort($array, array($this, 'sort'));
+        usort(
+            $array,
+            function ($a, $b) {
+                return (int)(
+                    (int)$a['sortOrder'] > (int)$b['sortOrder']
+                );
+            }
+        );
 
         return $array;
-    }
-
-    /**
-     * @param int $a
-     * @param int $b
-     * @return bool
-     */
-    private function sort($a, $b)
-    {
-        return ((int)$a['sortOrder']) > ((int)$b['sortOrder']);
     }
 }
