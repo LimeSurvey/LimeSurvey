@@ -73,10 +73,6 @@ class Save
         $thisstep    = $_SESSION['survey_' . $iSurveyId]['step'] ?? 0;
         $clienttoken = $_SESSION['survey_' . $iSurveyId]['token'] ?? '';
 
-        $oSurvey   = Survey::model()->findByPk($iSurveyId);
-        $sTemplate = $oSurvey->template;
-        $oTemplate = Template::model()->getInstance($sTemplate);
-
         $aSaveForm['aErrors'] = $this->aSaveErrors;
         $this->launchSaveFormEvent($iSurveyId);
         /* Construction of the form */
