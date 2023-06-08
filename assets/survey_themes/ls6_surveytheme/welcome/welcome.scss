@@ -15,15 +15,21 @@
     font-weight : $font-weight-normal;
     font-size   : $font-size-xs;
     line-height : $line-height-16;
+    .ls-privacy-head,
+    #datasecurity_notice_label {
+        font-weight : $font-weight-500;
+    }
+    .ls-privacy-block{
+
+    }
+    .ls-privacy-block:not(:first-child) {
+        margin-top : 1rem;
+    }
     p {
         margin-bottom : 0;
     }
     .checkbox-item label::before {
         border : 3px solid $active-green;
-    }
-    .ls-privacy-head,
-    #datasecurity_notice_label {
-        font-weight : $font-weight-500;
     }
 }
 

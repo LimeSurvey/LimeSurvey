@@ -15487,15 +15487,18 @@ html, body {
   font-size: 0.855rem;
   line-height: 16px;
 }
+.privacy .ls-privacy-head,
+.privacy #datasecurity_notice_label {
+  font-weight: 500;
+}
+.privacy .ls-privacy-block:not(:first-child) {
+  margin-top: 1rem;
+}
 .privacy p {
   margin-bottom: 0;
 }
 .privacy .checkbox-item label::before {
   border: 3px solid #14AE5C;
-}
-.privacy .ls-privacy-head,
-.privacy #datasecurity_notice_label {
-  font-weight: 500;
 }
 
 .datasecurity-checkbox-container {
