@@ -1709,6 +1709,9 @@ class SurveyAdministrationController extends LSBaseController
 
                 $aData['surveyid'] = $iSurveyID;
                 Yii::app()->db->schema->refresh();
+
+                //after deactivation redirect to survey overview and show message...
+                //$this->redirect(['surveyAdministration/view', 'surveyid' => $iSurveyID]);
             }
 
             $aData['sidemenu']['state'] = false;
