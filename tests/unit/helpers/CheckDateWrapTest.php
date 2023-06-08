@@ -60,4 +60,19 @@ class CheckDateWrapTest extends TestBaseClass
         $check_int = exprmgr_checkdate(06, 07, 2023);
         $this->assertTrue($check_int, 'Unexpected evaluation result, the year parameter can be an integer.');
     }
+
+    /**
+     * Testing the result of checkdate.
+     */
+    public function testCheckdate()
+    {
+        $check_numercic = exprmgr_checkdate('06', '07', '2023');
+        $this->assertTrue($check_numercic, 'Unexpected evaluation result, all parameters are correct.');
+
+        $check_int = exprmgr_checkdate(06, 07, 2023);
+        $this->assertTrue($check_int, 'Unexpected evaluation result, all paramaters are correct.');
+
+        $check_wrong_order = exprmgr_checkdate(15, 07, 2023);
+        $this->assertFalse($check_wrong_order, 'Unexpected evaluation result, the parameter order is incorrect.');
+    }
 }
