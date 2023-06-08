@@ -128,10 +128,6 @@ class LabelSet extends LSActiveRecord implements PermissionInterface
      */
     public function getbuttons()
     {
-        //~ $permission_labelsets_update = Permission::model()->hasGlobalPermission('labelsets', 'update');
-        //~ $permission_labelsets_export = Permission::model()->hasGlobalPermission('labelsets', 'export');
-        //~ $permission_labelsets_delete = Permission::model()->hasGlobalPermission('labelsets', 'delete');
-
         $permissions = [
             'read' => $this->hasPermission('labelset', 'read'),
             'edit' => $this->hasPermission('labelset', 'update'),

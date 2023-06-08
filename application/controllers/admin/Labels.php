@@ -172,7 +172,6 @@ class Labels extends SurveyCommonAction
         /* update */
         if ($sa == "editlabelset") {
             $lid = $this->validateLabelSetId($lid, 'update');
-            $LabelSet = LabelSet::model()->findByPk($lid);
             $lbname = $LabelSet->label_name;
             $lblid = $LabelSet->lid;
             $langids = $LabelSet->languages;
@@ -204,7 +203,7 @@ class Labels extends SurveyCommonAction
         $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
             '/admin/labels/partials/topbarBtns_newimport/rightSideButtons',
             [
-                'hasPermissionExport' => $lid && $LabelSet->haspermission('export')
+                'hasPermissionExport' => $lid && LabelSet::model()->findByPk($lid)->haspermission('export')
             ],
             true
         );
@@ -336,7 +335,7 @@ class Labels extends SurveyCommonAction
             $oLabelSet = insertlabelset();
             $lid = $oLabelSet->lid;
         }
-        if (($action == "modlabelsetanswers" || ($action == "ajaxmodlabelsetanswers"))) {
+        if ($action == "modlabelsetanswers" || ($action == "ajaxmodlabelsetanswers")) {
             $lid = $this->validateLabelSetId(App()->getRequest()->getPost('lid'), 'update');
             modlabelsetanswers($lid);
         }
@@ -392,8 +391,9 @@ class Labels extends SurveyCommonAction
     {
         $this->requirePostRequest();
         $lid = $this->validateLabelSetId(App()->getRequest()->getParam('lid'), 'delete');
-        if (LabelSet::model()->findByPk($lid)->deleteLabelSet($lid)) {
-            Yii::app()->setFlashMessage(sprintf(gT("Label set “%s” was successfully deleted."), CHtml::encode($oLabelsSet->label_name)));
+        $labelSet = LabelSet::model()->findByPk($lid);
+        if ($labelSet->deleteLabelSet($lid)) {
+            Yii::app()->setFlashMessage(sprintf(gT("Label set “%s” was successfully deleted."), CHtml::encode($labelSet->label_name)));
         } else {
             Yii::app()->setFlashMessage(sprintf(gT("Unable to delete label set %s."), $lid));
         }
@@ -778,7 +778,7 @@ class Labels extends SurveyCommonAction
         if (empty(LabelSet::model()->findByPk($lid))) {
             throw new CHttpException(404, gT("Label set not found"));
         }
-        if (!LabelSet::model()->findByPk($lid)->hasPermission('update')) {
+        if (!LabelSet::model()->findByPk($lid)->hasPermission($permission)) {
             throw new CHttpException(403);
         }
         return $lid;
