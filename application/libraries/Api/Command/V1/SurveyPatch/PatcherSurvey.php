@@ -37,7 +37,19 @@ class PatcherSurvey extends Patcher
      */
     public function __construct(FactoryInterface $diFactory, ContainerInterface $diContainer)
     {
-        $opHandlerSurvey = $diFactory->make(
+        $this->addOpHandlerSurvey($diFactory,$diContainer);
+        $this->addOpHandlerLanguageSetting($diFactory,$diContainer);
+        $this->addOpHandlerQuestionGroup($diFactory,$diContainer);
+        $this->addOpHandlerQuestionGroupL10n($diFactory,$diContainer);
+        $this->addOpHandlerQuestion($diFactory,$diContainer);
+        $this->addOpHandlerQuestionL10n($diFactory,$diContainer);
+        $this->addOpHandlerQuestionAttribute($diFactory,$diContainer);
+        $this->addOpHandlerQuestionAnswer($diFactory,$diContainer);
+    }
+
+    private function addOpHandlerSurvey(FactoryInterface $diFactory, ContainerInterface $diContainer): void
+    {
+        $this->addOpHandler($diFactory->make(
             OpHandlerActiveRecordUpdate::class,
             [
                 'entity' => 'survey',
@@ -46,10 +58,12 @@ class PatcherSurvey extends Patcher
                     TransformerInputSurvey::class
                 )
             ]
-        );
-        $this->addOpHandler($opHandlerSurvey);
+        ));
+    }
 
-        $opHandlerLanguageSetting = $diFactory->make(
+    private function addOpHandlerLanguageSetting(FactoryInterface $diFactory, ContainerInterface $diContainer): void
+    {
+        $this->addOpHandler($diFactory->make(
             OpHandlerActiveRecordUpdate::class,
             [
                 'entity' => 'languageSetting',
@@ -58,10 +72,12 @@ class PatcherSurvey extends Patcher
                     TransformerInputSurveyLanguageSettings::class
                 )
             ]
-        );
-        $this->addOpHandler($opHandlerLanguageSetting);
+        ));
+    }
 
-        $opHandlerQuestionGroup = $diFactory->make(
+    private function addOpHandlerQuestionGroup(FactoryInterface $diFactory, ContainerInterface $diContainer): void
+    {
+        $this->addOpHandler($diFactory->make(
             OpHandlerActiveRecordUpdate::class,
             [
                 'entity' => 'questionGroup',
@@ -70,10 +86,13 @@ class PatcherSurvey extends Patcher
                     TransformerInputQuestionGroup::class
                 )
             ]
-        );
-        $this->addOpHandler($opHandlerQuestionGroup);
+        ));
+    }
 
-        $opHandlerQuestionGroupL10n = $diFactory->make(
+
+    private function addOpHandlerQuestionGroupL10n(FactoryInterface $diFactory, ContainerInterface $diContainer): void
+    {
+        $this->addOpHandler($diFactory->make(
             OpHandlerActiveRecordUpdate::class,
             [
                 'entity' => 'questionGroupL10n',
@@ -82,10 +101,12 @@ class PatcherSurvey extends Patcher
                     TransformerInputQuestionGroupL10ns::class
                 )
             ]
-        );
-        $this->addOpHandler($opHandlerQuestionGroupL10n);
+        ));
+    }
 
-        $opHandlerQuestion = $diFactory->make(
+    private function addOpHandlerQuestion(FactoryInterface $diFactory, ContainerInterface $diContainer): void
+    {
+        $this->addOpHandler($diFactory->make(
             OpHandlerActiveRecordUpdate::class,
             [
                 'entity' => 'question',
@@ -94,10 +115,12 @@ class PatcherSurvey extends Patcher
                     TransformerInputQuestion::class
                 )
             ]
-        );
-        $this->addOpHandler($opHandlerQuestion);
+        ));
+    }
 
-        $opHandlerQuestionL10n = $diFactory->make(
+    private function addOpHandlerQuestionL10n(FactoryInterface $diFactory, ContainerInterface $diContainer): void
+    {
+        $this->addOpHandler($diFactory->make(
             OpHandlerActiveRecordUpdate::class,
             [
                 'entity' => 'questionL10n',
@@ -106,10 +129,12 @@ class PatcherSurvey extends Patcher
                     TransformerInputQuestionL10ns::class
                 )
             ]
-        );
-        $this->addOpHandler($opHandlerQuestionL10n);
+        ));
+    }
 
-        $opHandlerQuestionAttribute = $diFactory->make(
+    private function addOpHandlerQuestionAttribute(FactoryInterface $diFactory, ContainerInterface $diContainer): void
+    {
+        $this->addOpHandler($diFactory->make(
             OpHandlerActiveRecordUpdate::class,
             [
                 'entity' => 'questionAttribute',
@@ -118,10 +143,12 @@ class PatcherSurvey extends Patcher
                     TransformerInputQuestionAttribute::class
                 )
             ]
-        );
-        $this->addOpHandler($opHandlerQuestionAttribute);
+        ));
+    }
 
-        $opHandlerQuestionAnswer = $diFactory->make(
+    private function addOpHandlerQuestionAnswer(FactoryInterface $diFactory, ContainerInterface $diContainer): void
+    {
+        $this->addOpHandler($diFactory->make(
             OpHandlerActiveRecordUpdate::class,
             [
                 'entity' => 'questionAnswer',
@@ -130,7 +157,6 @@ class PatcherSurvey extends Patcher
                     TransformerInputAnswer::class
                 )
             ]
-        );
-        $this->addOpHandler($opHandlerQuestionAnswer);
+        ));
     }
 }

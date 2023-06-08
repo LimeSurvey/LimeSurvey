@@ -12,7 +12,7 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
     private TransformerOutputSurveyLanguageSettings $transformerOutputSurveyLanguageSettings;
 
     /**
-     * Construct
+     *  @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function __construct(
         FormatterYnToBool $formatterYn,

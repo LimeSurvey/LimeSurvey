@@ -15,7 +15,7 @@ class Patcher
      *
      * @throws ObjectPatchException
      */
-    public function applyPatch($patch)
+    public function applyPatch($patch): int
     {
         $operationsApplied = 0;
         if (is_array($patch) && !empty($patch)) {
@@ -36,10 +36,8 @@ class Patcher
     /**
      * Add operation handler
      *
-     * @param OpHandlerInterface $opHandler
-     * @return void
      */
-    public function addOpHandler(OpHandlerInterface $opHandler)
+    public function addOpHandler(OpHandlerInterface $opHandler): void
     {
         $this->opHandlers[] = $opHandler;
     }
@@ -48,11 +46,9 @@ class Patcher
      * Apply operation
      *
      * @param OpInterface $op
-     * @param array $params
      * @throws ObjectPatchException
-     * @return void
      */
-    private function handleOp(OpInterface $op)
+    private function handleOp(OpInterface $op): void
     {
         $handled = false;
         foreach ($this->opHandlers as $opHandler) {
