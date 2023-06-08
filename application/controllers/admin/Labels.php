@@ -324,23 +324,24 @@ class Labels extends SurveyCommonAction
         $action = App()->getRequest()->getParam('action');
         Yii::app()->loadHelper('admin/label');
         if ($action == "updateset") {
-            /* @todo : validate it's a POST request */
-            $lid = $this->validateLabelSetId(App()->getRequest()->getParam('lid'), 'update');
+            $lid = $this->validateLabelSetId(App()->getRequest()->getPost('lid'), 'update');
             updateset($lid);
             Yii::app()->setFlashMessage(gT("Label set successfully saved."), 'success');
         }
-        if ($action == "insertlabelset" && Permission::model()->hasGlobalPermission('labelsets', 'create')) {
+        if ($action == "insertlabelset") {
+            if (!Permission::model()->hasGlobalPermission('labelsets', 'create')) {
+                throw new CHttpException(403);
+            }
+            $this->requirePostRequest();
             $oLabelSet = insertlabelset();
             $lid = $oLabelSet->lid;
         }
         if (($action == "modlabelsetanswers" || ($action == "ajaxmodlabelsetanswers"))) {
-            /* @todo : validate it's a POST request */
-            $lid = $this->validateLabelSetId(App()->getRequest()->getParam('lid'), 'update');
+            $lid = $this->validateLabelSetId(App()->getRequest()->getPost('lid'), 'update');
             modlabelsetanswers($lid);
         }
         if ($action == "deletelabelset") {
-            /* @todo : validate it's a POST request */
-            $lid = $this->validateLabelSetId(App()->getRequest()->getParam('lid'), 'delete');
+            $lid = $this->validateLabelSetId(App()->getRequest()->getPost('lid'), 'delete');
             if (LabelSet::model()->deleteLabelSet($lid)) {
                 Yii::app()->setFlashMessage(gT("Label set successfully deleted."), 'success');
             }
@@ -373,8 +374,6 @@ class Labels extends SurveyCommonAction
         $oLabelSet->label_name = $label_name;
         $oLabelSet->owner_id = Permission::model()->getUserId();
         $oLabelSet->languages = implode(' ', $languageids);
-        tracevar($oLabelSet);
-        App()->end();
         if ($oLabelSet->save()) {
             Yii::app()->setFlashMessage(gT("Label set successfully created."), 'success');
             $this->getController()->redirect(array("admin/labels/sa/view/lid/" . $oLabelSet->lid));
@@ -472,15 +471,13 @@ class Labels extends SurveyCommonAction
         $labelName = $request->getPost('laname');
         $languages = implode(' ', $request->getPost('languages'));
         $assessmentValues = $request->getPost('assessmentvalues', []);
-
         if (empty($labelName)) {
             throw new CHttpException(400, gT('Could not save label set: Label set name is empty.'));
         }
-
         if (empty($answers)) {
             throw new CHttpException(400, gT('Could not save label set: Found no answers.'));
         }
-
+        /* Create new labelset */
         try {
             $transaction      = Yii::app()->db->beginTransaction();
             $lset             = new LabelSet();
@@ -510,7 +507,8 @@ class Labels extends SurveyCommonAction
         $codes     = $request->getPost('codes');
         $assessmentValues = $request->getPost('assessmentvalues', []);
         $languages = implode(' ', $request->getPost('languages'));
-
+        /* Update this label set */
+        $labelSet = LabelSet::model()->findByPk($labelSetId);
         try {
             $transaction = Yii::app()->db->beginTransaction();
             $labelSet->languages = $languages;
