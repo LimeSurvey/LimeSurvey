@@ -172,9 +172,10 @@ class Labels extends SurveyCommonAction
         /* update */
         if ($sa == "editlabelset") {
             $lid = $this->validateLabelSetId($lid, 'update');
-            $lbname = $LabelSet->label_name;
-            $lblid = $LabelSet->lid;
-            $langids = $LabelSet->languages;
+            $labelSet = LabelSet::model()->findByPk($lid);
+            $lbname = $labelSet->label_name;
+            $lblid = $labelSet->lid;
+            $langids = $labelSet->languages;
             $aData['lbname'] = $lbname;
             $aData['lblid'] = $lblid;
             $tabitem = gT("Edit label set");
