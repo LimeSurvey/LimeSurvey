@@ -12270,6 +12270,7 @@ Responsive navbar-brand image CSS
 #survey-nav .navbar-toggler {
   border: none;
   padding: 0;
+  margin-top: 20px;
 }
 #survey-nav .navbar-toggler .ri-more-fill {
   font-size: 1.92375rem;
