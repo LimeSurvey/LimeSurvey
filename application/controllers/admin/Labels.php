@@ -422,13 +422,12 @@ class Labels extends SurveyCommonAction
 
     /**
      * Get all label sets
-     * @param boolean $update with update permission
      *
      * @return void
      */
-    public function getAllSets($update = false)
+    public function getAllSets()
     {
-        /* Using of lable sets are not controlled all label sets can be used by every one */
+        /* Using of label sets are not controlled all label sets can be used by every one */
         $results = LabelSet::model()->findAll();
         $output = array();
         foreach ($results as $row) {
@@ -439,33 +438,16 @@ class Labels extends SurveyCommonAction
     }
 
     /**
-     * Get all label sets with permission
+     * Get all label sets with permission to update
      *
      * @return void
      */
     public function getRestrictedSets()
     {
-        $results = LabelSet::model()->with('permission')->findAll();
+        $labelSets = LabelSet::model()->permission()->findAll();
         $output = array();
-        foreach ($results as $row) {
-            $output[$row->lid] = flattenText($row->getAttribute('label_name'));
-        }
-        header('Content-type: application/json');
-        echo ls_json_encode($output);
-    }
-
-    /**
-     * Get all label sets with update permission
-     *
-     * @return void
-     */
-    public function getWritePermissionSets()
-    {
-        /* Using of lable sets are not controlled all label sets can be used by every one */
-        $results = LabelSet::model()->findAll();
-        $output = array();
-        foreach ($results as $row) {
-            $output[$row->lid] = flattenText($row->getAttribute('label_name'));
+        foreach ($labelSets as $labelSet) {
+            $output[$labelSet->lid] = flattenText($labelSet->getAttribute('label_name'));
         }
         header('Content-type: application/json');
         echo ls_json_encode($output);
@@ -485,7 +467,6 @@ class Labels extends SurveyCommonAction
             throw new CHttpException(403);
         }
         $request   = Yii::app()->getRequest();
-        $lid       = (int) $request->getPost('lid');
         $answers   = $request->getPost('answers');
         $codes     = $request->getPost('codes');
         $labelName = $request->getPost('laname');
@@ -525,7 +506,6 @@ class Labels extends SurveyCommonAction
     {
         $request = Yii::app()->request;
         $labelSetId = $this->validateLabelSetId(App()->getRequest()->getParam('labelSetId'), 'update');
-
         $answers   = $request->getPost('answers');
         $codes     = $request->getPost('codes');
         $assessmentValues = $request->getPost('assessmentvalues', []);

@@ -183,7 +183,7 @@ class LabelSet extends LSActiveRecord implements PermissionInterface
         $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
 
         $criteria = new CDbCriteria();
-        // Permission
+        // Permission : do nnot use for list : All labelSets can be used by anyone currently.
         $criteriaPerm = self::getPermissionCriteria();
         $criteria->mergeWith($criteriaPerm, 'AND');
 
@@ -214,6 +214,7 @@ class LabelSet extends LSActiveRecord implements PermissionInterface
         return $dataProvider;
     }
 
+
     /**
      * Delete all childs(Label and LabelL10n) for a LabelSet
      */
@@ -229,16 +230,38 @@ class LabelSet extends LSActiveRecord implements PermissionInterface
 
     /**
      * get criteria from Permission
+     * @param int|null $userid for this user id , if not set : get current one
      * @return CDbCriteria
      */
-    protected static function getPermissionCriteria()
+    protected static function getPermissionCriteria($userid = null)
     {
+        if (!$userid) {
+            $userid = Yii::app()->user->id;
+        }
         $criteriaPerm = new CDbCriteria();
         if (!Permission::model()->hasGlobalPermission("labelsets", 'read')) {
             /* owner of labelsets */
-            $criteriaPerm->compare('t.owner_id', Yii::app()->user->id, false);
+            $criteriaPerm->compare('t.owner_id', intval($userid), false);
         }
         return $criteriaPerm;
+    }
+
+    /**
+     * permission scope for this model
+     * Actually only test if user have access to LabelSets (read)
+     * Usage don't need read permission
+     * @param int|null $userid
+     * @return self
+     */
+    public function permission($userid = null)
+    {
+        if (!$userid) {
+            $userid = Yii::app()->user->id;
+        }
+        $criteria = $this->getDBCriteria();
+        $criteriaPerm = self::getPermissionCriteria($userid);
+        $criteria->mergeWith($criteriaPerm, 'AND');
+        return $this;
     }
 
     /**
