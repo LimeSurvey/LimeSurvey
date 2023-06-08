@@ -5,9 +5,9 @@
         <div class="col-lg-4 text-end">
         </div>
         <div class="col-lg-8 text-start">
-            {% if question.answervalue is sameas("Y") %}
+            {% if question.answervalue is same as("Y") %}
                 {{ gT("Yes") }} <i class="fa fa-check"></i>
-            {% elseif question.answervalue is sameas("N") %}
+            {% elseif question.answervalue is same as("N") %}
                 {{ gT("No") }} <i class="fa fa-close"></i>
             {% else %}
                 {{question.answervalue}}

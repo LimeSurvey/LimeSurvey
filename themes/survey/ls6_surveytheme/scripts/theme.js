@@ -92,7 +92,7 @@ var ThemeScripts = function ThemeScripts() {// defining the console object once.
 
   var initTopMenuLanguageChanger = function initTopMenuLanguageChanger(selectorItem, selectorGlobalForm) {
     // $(selectorContainer).height($('#main-row').height());
-    $(selectorItem).on('click', function () {
+    $(document).on('click', selectorItem, function () {
       var lang = $(this).data('limesurvey-lang');
       /* The limesurvey form exist in document, move select and button inside and click */
       $(selectorGlobalForm + ' [name=\'lang\']').remove(); // Remove existing lang selector
@@ -653,7 +653,7 @@ function activateLanguageChanger() {
     limesurveyForm.submit();
   };
   autoSizeSelect();
-  $('.form-change-lang a.ls-language-link').on('click', function () {
+  $(document).on('click', 'a.ls-language-link', function () {
     var closestForm = $(this).closest('form');
     if (!closestForm.length) {
       /* we are not in a forum, can not submit directly */
@@ -768,7 +768,7 @@ function activateActionLink() {
   }
   /* Submit limesurvey form on click */else
   {
-    $('[data-limesurvey-submit]').on('click', function (event) {
+    $(document).on('click', '[data-limesurvey-submit]', function (event) {
       event.preventDefault();
       var submit = $(this).data('limesurvey-submit');
       var confirmedby = $(this).data('confirmedby');
@@ -958,9 +958,43 @@ window.resetQuestionTimers = resetQuestionTimers;
 
 
 var _ls6_core_theme = _interopRequireDefault(require("./core/ls6_core_theme.js"));
-var _array = _interopRequireDefault(require("./questiontypes/array/array.js"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { "default": obj };}
+var _array = _interopRequireDefault(require("./questiontypes/array/array.js"));
+var _navbar = _interopRequireDefault(require("./navbar/navbar.js"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { "default": obj };}
 
-},{"./core/ls6_core_theme.js":1,"./questiontypes/array/array.js":5}],5:[function(require,module,exports){
+},{"./core/ls6_core_theme.js":1,"./navbar/navbar.js":5,"./questiontypes/array/array.js":6}],5:[function(require,module,exports){
+"use strict";Object.defineProperty(exports, "__esModule", { value: true });exports.NavbarScripts = void 0;var NavbarScripts = function NavbarScripts() {
+  var getContentByElementId = function getContentByElementId(elementId) {
+    var targetHtml = document.getElementById(elementId);
+    return targetHtml.innerHTML;
+  };
+
+  var replaceContent = function replaceContent(replacementContent, targetElementId) {
+    var element = document.getElementById(targetElementId);
+    element.innerHTML = '';
+    element.innerHTML = replacementContent;
+  };
+
+  var initNavbarEvents = function initNavbarEvents() {
+
+    $(document).on('click', '[data-navtargetid]', function () {
+      replaceContent(getContentByElementId('main-dropdown'), 'back-content');
+      //replace menu content with submenu content
+      replaceContent(getContentByElementId($(this).data('navtargetid')), 'main-dropdown');
+    });
+    $(document).on('click', '.back-link', function () {
+      // switch menu content back to original content (this currently works only with one level nested elements)
+      replaceContent(getContentByElementId('back-content'), 'main-dropdown');
+    });
+  };
+
+  return {
+    initNavbarEvents: initNavbarEvents
+  };
+};
+// register to global scope
+exports.NavbarScripts = NavbarScripts;window.NavbarScripts = NavbarScripts;
+
+},{}],6:[function(require,module,exports){
 "use strict";Object.defineProperty(exports, "__esModule", { value: true });exports.ArrayScripts = void 0;var ArrayScripts = function ArrayScripts() {
   var addEntryMarker = function addEntryMarker(element) {
     element.addClass('success-border');
