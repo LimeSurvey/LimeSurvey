@@ -10817,9 +10817,6 @@ body {
   background-color: #ffffff;
   border: 1px solid #dadada;
 }
-.ls6_surveytheme hr {
-  border-top: 1px solid #f0f3fd;
-}
 .ls6_surveytheme .page-header {
   border-bottom: 1px solid #f0f3fd;
 }
@@ -12242,11 +12239,6 @@ Responsive navbar-brand image CSS
 .navbar {
   border-radius: 0 !important;
 }
-.navbar a {
-  text-decoration: none;
-  line-height: 1.8rem;
-  font-size: 1.2rem;
-}
 @media (min-width: 769px) {
   .navbar .navbar-nav .nav-item .nav-link:hover {
     text-decoration: none;
@@ -12270,6 +12262,49 @@ Responsive navbar-brand image CSS
     padding-top: 15px;
     padding-bottom: 15px;
   }
+}
+
+#survey-nav.navbar {
+  box-shadow: none;
+}
+#survey-nav .navbar-toggler {
+  border: none;
+  padding: 0;
+  margin-top: 20px;
+}
+#survey-nav .navbar-toggler .ri-more-fill {
+  font-size: 1.92375rem;
+}
+#survey-nav #main-dropdown {
+  min-width: 250px;
+}
+#survey-nav .dropdown-header {
+  font-weight: 500;
+  font-size: 0.855rem;
+  line-height: 16px;
+}
+#survey-nav .dropdown-divider {
+  padding: 0;
+  margin: 0 1rem;
+}
+#survey-nav .dropdown-menu > li > a {
+  text-decoration: none;
+  font-weight: 400;
+  font-size: 0.9975rem;
+  line-height: 20px;
+}
+#survey-nav .dropdown-toggle::after {
+  display: none;
+}
+#survey-nav .back-link .ri-arrow-left-s-line, #survey-nav .nav-link .ri-arrow-right-s-line {
+  vertical-align: -0.1em;
+  font-size: 1.425rem;
+}
+#survey-nav .back-link .ri-arrow-left-s-line {
+  margin-right: 16px;
+}
+#survey-nav .form-change-lang {
+  padding-bottom: 0;
 }
 
 .navbar-collapse {
@@ -12296,6 +12331,34 @@ Responsive navbar-brand image CSS
 
 .navbar-toggle .icon-bar {
   background-color: #5076FF;
+}
+
+#survey-nav .navbar-toggler .ri-more-fill {
+  color: #6E748C;
+}
+#survey-nav .dropdown-menu > li > a {
+  color: #1E1E1E;
+}
+#survey-nav #main-dropdown .list-group-item {
+  border: none;
+}
+#survey-nav #main-dropdown .list-group-item a.disabled {
+  color: #9094A7;
+}
+#survey-nav #main-dropdown .list-group-item a.index-warning {
+  background: none;
+  border-left: #FFE046 solid 8px;
+}
+#survey-nav #main-dropdown .list-group-item a.index-danger {
+  background: none;
+  border-left: #FF515F solid 8px;
+}
+#survey-nav #main-dropdown .list-group-item a:not(.index-danger):not(.index-warning) {
+  background: none;
+  border-left: transparent solid 8px;
+}
+#survey-nav #main-dropdown .dropdown-divider {
+  border-top: 1px solid #D3D5DA;
 }
 
 .ls-answers label.btn {
