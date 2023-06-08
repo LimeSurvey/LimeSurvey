@@ -21,9 +21,14 @@ class TransformerOutputQuestionGroup extends TransformerOutputActiveRecord
     {
         $array = parent::transformAll($array);
 
-        usort($array, function ($a, $b) {
-            return ((int)$a['groupOrder']) > ((int)$b['groupOrder']);
-        });
+        usort(
+            $array,
+            function ($a, $b) {
+                return (int)(
+                    (int)$a['groupOrder'] > (int)$b['groupOrder']
+                );
+            }
+        );
 
         return $array;
     }

@@ -9,9 +9,9 @@ class SchemaFactorySurveyDetail
 {
     public function make(): Schema
     {
-        $schemaSurveyLanguageSettings = (new SchemaFactorySurveyLanguageSettings())->make();
-        $schemaSurveyDefaultLanguage = Schema::object('defaultlanguage')
-            ->properties(...$schemaSurveyLanguageSettings->properties);
+        //$schemaSurveyLanguageSettings = (new SchemaFactorySurveyLanguageSettings())->make();
+        //$schemaSurveyDefaultLanguage = Schema::object('defaultlanguage')
+        //    ->properties(...$schemaSurveyLanguageSettings->properties);
 
         $questionAttributeSchema = (new SchemaFactoryQuestionAttribute())->make();
         $questionAttributesSchema = Schema::object('attributes')->additionalProperties(
@@ -28,7 +28,7 @@ class SchemaFactorySurveyDetail
         $questionSchema = (new SchemaFactoryQuestion())->make();
         $questionSchema = $questionSchema->properties(
             ...array_merge(
-                $questionSchema->properties,
+                $questionSchema->properties ?? [],
                 [$questionAttributesSchema, $answersSchema]
             )
         );
@@ -41,7 +41,7 @@ class SchemaFactorySurveyDetail
         $questionGroupSchema = (new SchemaFactoryQuestionGroup())->make();
         $questionGroupSchema = $questionGroupSchema->properties(
             ...array_merge(
-                $questionGroupSchema->properties,
+                $questionGroupSchema->properties ?? [],
                 [$questionsSchema]
             )
         );

@@ -29,10 +29,10 @@ class RestController extends LSYii_Controller
     /**
      * Run REST controller action.
      *
-     * @param string $actionId
+     * @param string $actionID
      * @return void
      */
-    public function run($actionId = null)
+    public function run($actionID = null)
     {
         $endpointFactory = DI::getContainer()
             ->get(EndpointFactory::class);

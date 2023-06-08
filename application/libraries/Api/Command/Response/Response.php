@@ -6,7 +6,7 @@ use LimeSurvey\Api\Command\Response\Status;
 
 class Response
 {
-    private ?Status $status = null;
+    private Status $status;
 
     /**
      * @var mixed
@@ -15,16 +15,16 @@ class Response
 
      /**
      * @param mixed $data
-     * @param ?Status $status
+     * @param Status $status
      */
-    public function __construct($data, Status $status = null)
+    public function __construct($data, Status $status)
     {
         $this->status = $status;
         $this->data = $data;
     }
 
     /**
-     * @return ?Status
+     * @return Status
      */
     public function getStatus()
     {

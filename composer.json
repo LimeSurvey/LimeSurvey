@@ -79,6 +79,7 @@
 		],
 		"phpunit": "./vendor/bin/phpunit --testdox --coverage-text",
 		"phpunit-api": "./vendor/bin/phpunit --testdox --coverage-text tests/unit/api/",
+		"psalm-strict": "./vendor/bin/psalm -c psalm-strict.xml",
         "test": [
             "./tests/bin/lint-tests",
             "./tests/bin/lint-application",
