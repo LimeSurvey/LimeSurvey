@@ -815,6 +815,14 @@ function confirmSurveyDialog(submits) {
  */
 function triggerEmClassChange() {
   /* The tips */
+  const elements = $('span.fa-exclamation-circle');
+  for (const el of elements) {
+    if($(el).parents('div.ls-question-mandatory')?.hasClass('text-danger')) {
+      continue;
+    }
+    $(el).addClass('d-none');
+  }
+
   $(document).on('classChangeError', '.ls-em-tip', function (event) {
     $(this).removeClass("ls-em-success").addClass("ls-em-error text-danger");
   });
