@@ -34,18 +34,18 @@ via survey configuration, at start page, when survey is completed, etc
             {{ gT('Resume later') }}
         </a>
         {% if(aSurveyInfo.saved.text and aSurveyInfo.options.showpopups > 0) %}
-            <div class="alert-popup"></div>
             {{ registerScript("saveflashmessage","
-                $('.alert-popup').popover({
-                    title: '" ~ aSurveyInfo.saved.title ~ "',
-                    content: '<div>" ~ aSurveyInfo.saved.text ~ "</div>',
-                    html: true,
-                    container: 'body',
-                    placement: 'bottom',
-                    delay: { 'show': 500, 'hide': 100 },
-                    trigger: 'click',
-                }).popover('show');
-                setTimeout(function(){ $('.alert-popup').popover('dispose'); }, 3500);
+            var modalElement = document.getElementById('bootstrap-alert-box-modal');
+            var myModal = new bootstrap.Modal(modalElement, {});
+            myModal.hide();
+            var modalBody = modalElement.getElementsByClassName('modal-body');
+            modalBody[0].textContent = '" ~ aSurveyInfo.saved.text ~ "';
+            myModal.show();
+
+            modalElement.addEventListener('hidden.bs.modal', function (event) {
+                document.body.classList.remove('modal-open');
+                document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+            });
                 ", "POS_POSTSCRIPT" ) }}
         {% endif %}
     </li>
