@@ -392,7 +392,7 @@ class Labels extends SurveyCommonAction
     {
         $this->requirePostRequest();
         $lid = $this->validateLabelSetId(App()->getRequest()->getParam('lid'), 'delete');
-        if ($oLabelsSet->deleteLabelSet($lid)) {
+        if (LabelSet::model()->findByPk($lid)->deleteLabelSet($lid)) {
             Yii::app()->setFlashMessage(sprintf(gT("Label set “%s” was successfully deleted."), CHtml::encode($oLabelsSet->label_name)));
         } else {
             Yii::app()->setFlashMessage(sprintf(gT("Unable to delete label set %s."), $lid));
