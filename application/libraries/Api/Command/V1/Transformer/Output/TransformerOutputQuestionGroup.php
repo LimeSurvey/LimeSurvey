@@ -30,6 +30,11 @@ class TransformerOutputQuestionGroup extends TransformerOutputActiveRecord
             }
         );
 
-        return $array;
+        $output = [];
+        foreach ($array as $value) {
+            $output[$value['gid']] = $value;
+        }
+
+        return (object) $output;
     }
 }

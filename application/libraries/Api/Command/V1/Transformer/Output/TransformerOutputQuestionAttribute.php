@@ -15,4 +15,13 @@ class TransformerOutputQuestionAttribute extends TransformerOutputActiveRecord
             'language' => true
         ]);
     }
+
+    /**
+     * @param mixed $array
+     * @return array
+     */
+    public function transformAll($array)
+    {
+        return (object) $array;
+    }
 }
