@@ -37,14 +37,14 @@ class PatcherSurvey extends Patcher
      */
     public function __construct(FactoryInterface $diFactory, ContainerInterface $diContainer)
     {
-        $this->addOpHandlerSurvey($diFactory,$diContainer);
-        $this->addOpHandlerLanguageSetting($diFactory,$diContainer);
-        $this->addOpHandlerQuestionGroup($diFactory,$diContainer);
-        $this->addOpHandlerQuestionGroupL10n($diFactory,$diContainer);
-        $this->addOpHandlerQuestion($diFactory,$diContainer);
-        $this->addOpHandlerQuestionL10n($diFactory,$diContainer);
-        $this->addOpHandlerQuestionAttribute($diFactory,$diContainer);
-        $this->addOpHandlerQuestionAnswer($diFactory,$diContainer);
+        $this->addOpHandlerSurvey($diFactory, $diContainer);
+        $this->addOpHandlerLanguageSetting($diFactory, $diContainer);
+        $this->addOpHandlerQuestionGroup($diFactory, $diContainer);
+        $this->addOpHandlerQuestionGroupL10n($diFactory, $diContainer);
+        $this->addOpHandlerQuestion($diFactory, $diContainer);
+        $this->addOpHandlerQuestionL10n($diFactory, $diContainer);
+        $this->addOpHandlerQuestionAttribute($diFactory, $diContainer);
+        $this->addOpHandlerQuestionAnswer($diFactory, $diContainer);
     }
 
     private function addOpHandlerSurvey(FactoryInterface $diFactory, ContainerInterface $diContainer): void
