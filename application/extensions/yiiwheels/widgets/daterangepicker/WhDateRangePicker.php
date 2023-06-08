@@ -10,7 +10,7 @@
  * @package YiiWheels.widgets.daterangepicker
  * @uses YiiStrap.helpers.TbArray
  */
-Yii::import('bootstrap.helpers.TbArray');
+Yii::import('yiistrap_fork.helpers.TbArray');
 
 class WhDateRangePicker extends CInputWidget
 {
@@ -123,9 +123,7 @@ class WhDateRangePicker extends CInputWidget
         $cs->registerScriptFile($assetsUrl . '/js/daterangepicker.js', CClientScript::POS_END);
 
         /* initialize plugin */
-        $selector = null === $this->selector
-            ? '#' . TbArray::getValue('id', $this->htmlOptions, $this->getId())
-            : $this->selector;
+        $selector = $this->selector ?? '#' . TbArray::getValue('id', $this->htmlOptions, $this->getId());
 
         $callback = ($this->callback instanceof CJavaScriptExpression)
             ? $this->callback

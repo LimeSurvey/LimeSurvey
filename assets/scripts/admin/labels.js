@@ -33,14 +33,15 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         }
     });
 
-    if ($(".answertable tbody").children().length == 0) {
+    const answersTable = $(".answertable tbody");
+    if (answersTable.length && answersTable.children().length == 0) {
         add_label(undefined);
     }
 
-    $('.btnaddanswer').on('click', add_label);
-    $('.btndelanswer').on('click', del_label);
-    $('.codeval').on('keyup change', sync_label);
-    $('.assessmentval').on('keyup change', sync_label);
+    $(document).on('click', '.btnaddanswer', add_label);
+    $(document).on('click', '.btndelanswer', del_label);
+    $(document).on('keyup change', '.codeval', sync_label);
+    $(document).on('keyup change', '.assessmentval', sync_label);
 
     $('#neweditlblset0 .answertable tbody').sortable({
         update:sort_complete,
@@ -110,6 +111,9 @@ function quickaddfunction() {
     }
 
     console.log('lsrows', lsrows);
+
+    // parsedRows is an array of objects with the parsed row data (ie: [{code:"code", titles:{"en":"Title"}}])
+    let parsedRows = [];
     $(lsrows).each(function(index, row) {
         var code = undefined;
 
@@ -120,37 +124,50 @@ function quickaddfunction() {
             k++;
         }
 
-        var event = {};
-        event.target = $(".btnaddanswer:last");
-        var retcode = add_label(event);
+        let parsedRow = {
+            code: code,
+            titles: {},
+        };
 
-        if (lsreplace) {
-            if (index!=0|| (!lsreplace && $("div[id^='newedit']:not(:last) tbody>tr").length > 0)) {
-                event = {};
-                event.target = $(".btnaddanswer:last");
-            } else {
-                retcode = add_label();
-            }
-        }
-
-        // seems always undefined
-        if (typeof(code) != "undefined") {
-            $("#code_"+retcode).val(code);
-        }
-
-        // TODO: What does this do?
         $(".lslanguage").each(function(i) {
-            //console.log("input[name=title_"+$(this).val()+"_"+retcode+"]");
-            //console.log('i', i);
-            $("input[name=title_" + $(this).val() + "_" + retcode + "]").val(params[k]);
-            if (typeof(code) != "undefined" && i > 0) {
-                $("#row_" + $(this).val() + "_" + retcode + " td:first").text(code);
-            }
+            parsedRow.titles[$(this).val()] = params[k];
             k++;
+            if (k >= params.length) {
+                return false; // Break out of the loop if there are no more params
+            }
         });
+
+        parsedRows.push(parsedRow);
     });
-    $("#quickaddarea").val('');
-    $('#quickadd').modal('hide');
+
+    const inputData = $('#add-label-input-javascript-datas').data();
+    const datas = {
+        lid: inputData.lid,
+        newId: '{{newid_placeholder}}',
+        code: '{{code_placeholder}}',
+        title: '{{title_placeholder}}',
+    };
+    const mainTable = $(".first tbody");
+    retrieveRowHtml(datas)
+        .then((result) => {
+            $.each(parsedRows, (index, parsedRow) => {
+                // We insert each row for each language
+                $.each(result.arrayofhtml, (lang, htmlRow) => {
+                    const randomid = 'new' + Math.floor(Math.random()*1111111);
+                    const title = parsedRow.titles[lang] || '';
+                    let finalRowHtml = htmlRow;
+                    finalRowHtml = finalRowHtml.replaceAll("{{newid_placeholder}}", randomid);
+                    finalRowHtml = finalRowHtml.replaceAll("{{code_placeholder}}", parsedRow.code);
+                    finalRowHtml = finalRowHtml.replaceAll("{{title_placeholder}}", title);
+                    const tableToUpdate = mainTable.closest('.tab-content').find(`.lang-${lang} > table > tbody`); // The table for the current language
+                    tableToUpdate.append(finalRowHtml);
+                });
+            });
+        })
+        .then(() => {
+            $("#quickaddarea").val('');
+            $('#quickadd').modal('hide');
+        });
 }
 
 /**
@@ -232,55 +249,74 @@ function get_next_code(event) {
     return next_code;
 }
 
+/*:: declare function retrieveRowHtml({}): {} */
+/**
+ * Retrieves the HTML for new label rows. Returns a promise.
+ *
+ * @param {object} datas
+ * @return {Promise}
+ */
+function retrieveRowHtml(datas) {
+    const inputData = $('#add-label-input-javascript-datas').data();
+    const url = inputData.url;
+    const errormessage = inputData.errormessage;
+    const $defer = $.Deferred();
+    $.ajax({
+        type: 'GET',
+        url: url,
+        data: datas,
+        success(arrayofhtml) {
+            // arrayofhtml is a json object containing the different HTML row by language
+            // eg: {"en":"{the html of the en row}", "fr":{the html of the fr row}}
+            $defer.resolve({ arrayofhtml: arrayofhtml });
+        },
+        error(html, status) {
+            alert('Internal error retrieving row html: ' + errormessage);
+            $defer.reject([html, status, errormessage]);
+        },
+    });
+    return $defer.promise();
+}
+
 /**
  * @param {object} event
+ * @param {object} datas
  * @return {string} Random id.
  */
-function add_label(event) {
-    var next_code = get_next_code(event);
-    var html = createNewLabelTR(true,true);
-    var row_id;
+function add_label(event, datas) {
+    const inputData = $('#add-label-input-javascript-datas').data();
 
+    var next_code = get_next_code(event);
+
+    let mainTable;
+    let rowIndex;
     if (typeof(event) == "undefined") {
-        row_id = -1;
+        mainTable = $(".first tbody");
+        rowIndex = mainTable.children().index(mainTable.find("tr:last-child"));
     } else {
-        row_id = $(event.target)
-            .closest('tbody')
-            .children()
-            .index(
-                $(event.target).closest('tr')
-            );
+        mainTable = $(event.target).closest('tbody');
+        rowIndex = mainTable.children().index($(event.target).closest('tr'));
     }
 
     var randomid = 'new' + Math.floor(Math.random()*1111111);
 
-    html = str_replace("###assessmentval###",'0',html);
-    html = str_replace("###codeval###",next_code,html);
-    html = str_replace("###next###",randomid,html);
-    html = str_replace("###lang###",$("#lslanguagemain").val(),html);
+    datas = datas || {};
+    datas.lid = datas.lid || inputData.lid;
+    datas.newId = datas.newId || randomid;
+    datas.code = datas.code || next_code;
 
-    if (typeof(event) == "undefined") {
-        $(".first tbody").append(html);
-    } else {
-        $(event.target).closest('tr').after(html);
-    }
-    html = createNewLabelTR(true,false);
-
-    html = str_replace("###assessmentval###",'0',html);
-    html = str_replace("###codeval###",next_code,html);
-    html = str_replace("###next###",randomid,html);
-
-    // NB: Class "not_first" corresponds to all the language tabs that are not first...
-    $(".not_first").each(function(index, element){
-        var temp_html = str_replace("###lang###",$(".lslanguage",element).val(),html);
-        if (row_id >= 0) {
-            $($("tbody",element).children()[row_id]).after(temp_html);
-        } else {
-            $(".answertable tbody",$(element)).append(temp_html);
-        }
+    retrieveRowHtml(datas).then((result) => {
+        // We insert each row for each language
+        $.each(result.arrayofhtml, (lang, htmlRow) => {
+            const tableToUpdate = mainTable.closest('.tab-content').find(`.lang-${lang} > table > tbody`); // The table for the current language
+            const rowToUpdate = tableToUpdate.children()[rowIndex];
+            if (rowToUpdate) {
+                $(rowToUpdate).after(htmlRow); // We insert the HTML of the new row after this one
+            } else {
+                tableToUpdate.append(htmlRow);
+            }
+        });
     });
-
-    $("tr[id$='_"+randomid+"']").hide().fadeIn(500);
 
     fix_highlighting();
 
@@ -293,7 +329,8 @@ function add_label(event) {
 function del_label(event) {
     event.preventDefault();
     var sRowID = $(event.target).closest('tr').attr('id');
-
+    // tooltip remains after delete label after bootstrap 5 upgrade, so remove tooltip manually here until find better solution.
+    $('.tooltip').tooltip('dispose');
     var aRowInfo = sRowID.split('_');// first is row, second langage and last the row number
     $(".tab-pane").each(function(divindex,divelement){
         var div_language = $(".lslanguage",divelement).val();
@@ -316,45 +353,6 @@ function del_label(event) {
 function fix_highlighting(){
     $("tbody tr").removeClass("highlight");
     $("tbody tr:even").addClass("highlight");
-}
-
-/**
- * @param {boolean} alternate
- * @param {boolean} first
- * @return {string} HTML
- */
-function createNewLabelTR(alternate, first) {
-    x = "<tr class='labelDatas ";
-    if (alternate) {
-        x = x + "highlight";
-    }
-
-    x = x + "' style = 'white-space: nowrap;' id='row_###lang###_###next###'>";
-
-    if (!first) {
-        x = x + "<td>###codeval###</td><td>###assessmentval###</td>";
-    } else {
-        x = x + "<td>"
-        + "<span class='fa fa-bars bigIcons text-success'></span>"
-        + "</td><td>"
-        + "<input type='hidden' class='hiddencode' value='###codeval###' />"
-        + "<input type='text' class='codeval form-control  ' value='###codeval###' name='code_###next###' id='code_###next###' size='6' maxlength='5' >"
-        + "</td><td>"
-        + "<input type=\"number\" class='assessmentval form-control  ' value=\"###assessmentval###\" name=\"assessmentvalue_###next###\" id=\"assessmentvalue_###next###\" style=\"text-align: right;\" size=\"6\" maxlength=\"5\" >";
-    }
-
-    x = x + "<td><input class=' form-control  ' name=\"title_###lang###_###next###\" id=\"title_###lang###_###next###\" type=\"text\" value=\"\" size=\"80\" maxlength=\"3000\" >"+
-    "</td>";
-
-    x = x + "<td style=\"text-align: center;\">&nbsp;&nbsp;&nbsp;<a href='#' class='btn btn-default btn-sm htmleditor--openmodal' data-target-field-id='title_###lang###_###next###' data-toggle='tooltip' title='Open editor'><i class='fa fa-edit'></i></a>";
-
-    if (first) {
-        x = x + "&nbsp<button class='btn btn-default btn-sm btnaddanswer'><i class=\"icon-add text-success\"></i></button> <button class='btn btn-default btn-sm btndelanswer'><i class=\" fa fa-trash  text-warning\"></i></button>";
-    }
-
-    x = x + "</td></tr>";
-
-    return x;
 }
 
 /**

@@ -171,6 +171,7 @@ class TestBaseClassWeb extends TestBaseClass
         $submit = self::$webDriver->findElement(WebDriverBy::name('login_submit'));
         $submit->click();
 
+        self::ignoreWelcomeModal();
         self::ignoreAdminNotification();
         self::ignoreAdminNotification();
 
@@ -233,9 +234,9 @@ class TestBaseClassWeb extends TestBaseClass
     {
         // Ignore password warning.
         try {
-            $button = self::$webDriver->wait(1)->until(
+            $button = self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
-                    WebDriverBy::cssSelector('#admin-notification-modal button.btn-default')
+                    WebDriverBy::cssSelector('#admin-notification-modal button.btn-outline-secondary')
                 )
             );
             $button->click();
@@ -244,6 +245,27 @@ class TestBaseClassWeb extends TestBaseClass
         } catch (NoSuchElementException $ex) {
             // Do nothing.
         } catch (UnrecognizedExceptionException $ex) {
+            // Do nothing.
+        }
+    }
+
+    /**
+     * Closes the welcome modal if present
+     * @return void
+     */
+    protected static function ignoreWelcomeModal()
+    {
+        try {
+            sleep(1);
+            $button = self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::cssSelector('#welcomeModal button.btn-outline-secondary')
+                )
+            );
+            $button->click();
+        } catch (NoSuchElementException $ex) {
+            // Do nothing.
+        } catch (TimeOutException $ex) {
             // Do nothing.
         }
     }

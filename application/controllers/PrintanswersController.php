@@ -139,6 +139,7 @@ class PrintanswersController extends LSYii_Controller
         if (empty($sExportType)) {
             Yii::app()->setLanguage($sLanguage);
             $aData['aSurveyInfo']['include_content'] = 'printanswers';
+            $aData['aSurveyInfo']['trackUrlPageName'] = 'printanswers';
             Yii::app()->twigRenderer->renderTemplateFromFile('layout_printanswers.twig', $aData, false);
         } elseif ($sExportType == 'pdf') {
             // Get images for TCPDF from template directory
@@ -162,14 +163,14 @@ class PrintanswersController extends LSYii_Controller
 
             $html = Yii::app()->twigRenderer->renderTemplateFromFile('layout_printanswers.twig', $aData, true);
             //filter all scripts
-            $html = preg_replace("/<script>[^<]*<\/script>/", '', $html);
+            $html = preg_replace("/<script>[^<]*<\/script>/", '', (string) $html);
             //replace fontawesome icons
-            $html = preg_replace('/(<i class="fa fa-check-square-o"><\/i>|<i class="fa fa-close"><\/i>)/', '[X]', $html);
-            $html = preg_replace('/<i class="fa fa-minus-square-o">\<\/i>/', '[-]', $html);
-            $html = preg_replace('/<i class="fa fa-square-o"><\/i>/', '[ ]', $html);
-            $html = preg_replace('/<i class="fa fa-plus"><\/i>/', '+', $html);
-            $html = preg_replace('/<i class="fa fa-circle"><\/i>/', '|', $html);
-            $html = preg_replace('/<i class="fa fa-minus"><\/i>/', '-', $html);
+            $html = preg_replace('/(<i class="ri-checkbox-line"><\/i>|<i class="ri-close-fill"><\/i>)/', '[X]', $html);
+            $html = preg_replace('/<i class="ri-checkbox-indeterminate-line">\<\/i>/', '[-]', $html);
+            $html = preg_replace('/<i class="ri-checkbox-blank-line"><\/i>/', '[ ]', $html);
+            $html = preg_replace('/<i class="ri-add-line"><\/i>/', '+', $html);
+            $html = preg_replace('/<i class="ri-checkbox-blank-circle-fill"><\/i>/', '|', $html);
+            $html = preg_replace('/<i class="ri-subtract-fill"><\/i>/', '-', $html);
 
             $oPDF->writeHTML($html, true, false, true, false, '');
 
@@ -183,6 +184,7 @@ class PrintanswersController extends LSYii_Controller
             Yii::import("application.libraries.admin.quexmlpdf", true);
 
             $quexmlpdf = new quexmlpdf();
+            $quexmlpdf->applyGlobalSettings();
 
             // Setting the selected language for printout
             App()->setLanguage($sLanguage);

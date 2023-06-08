@@ -1,3 +1,5 @@
+
+
 # exclude build/devel/test files from export to zip/tarball
 .bowerrc                export-ignore
 buildVueComponents.js   export-ignore
@@ -13,9 +15,10 @@ package.json            export-ignore
 phpci.yml               export-ignore
 phpcs.ruleset.xml       export-ignore
 phpunit.xml             export-ignore
-palm.xml             export-ignore
+palm.xml                export-ignore
 tests                   export-ignore
 yarn.lock               export-ignore
+vendor/khaled.alshamaa/ar-php/examples export-ignore
 
 # Set default behaviour, in case users don't have core.autocrlf set.
 * text=auto
@@ -36,3 +39,4 @@ yarn.lock               export-ignore
 *.gif binary
 *.ico binary
 *.mo binary
+node_modules/* binary

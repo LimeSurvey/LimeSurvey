@@ -18,8 +18,6 @@ class WipeCommand extends CConsoleCommand
     {
         if (isset($sArgument) && isset($sArgument[0]) && $sArgument[0] = 'yes') {
             Yii::import('application.helpers.common_helper', true);
-            Yii::import('application.helpers.database_helper', true);
-
             $actquery = "truncate table {{assessments}}";
             Yii::app()->db->createCommand($actquery)->execute();
             $actquery = "truncate table {{answers}}";
@@ -156,7 +154,7 @@ class WipeCommand extends CConsoleCommand
 
             $surveyidresult = dbGetTablesLike("survey\_%");
             foreach ($surveyidresult as $sv) {
-                if (strpos($sv, 'survey_links') === false && strpos($sv, 'survey_url_parameters') === false) {
+                if (strpos((string) $sv, 'survey_links') === false && strpos((string) $sv, 'survey_url_parameters') === false) {
                                     Yii::app()->db->createCommand("drop table " . $sv)->execute();
                 }
             }

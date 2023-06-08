@@ -13,5 +13,6 @@ class Update_490 extends DatabaseUpdateBase
     public function up()
     {
         $this->db->createCommand()->update("{{surveymenu_entries}}", ['title' => 'Privacy policy settings', 'menu_title' => 'Privacy policy', 'menu_description' => 'Edit privacy policy settings'], "name='datasecurity'");
+        $this->db->createCommand()->dropColumn('{{surveys}}', 'faxto');
     }
 }

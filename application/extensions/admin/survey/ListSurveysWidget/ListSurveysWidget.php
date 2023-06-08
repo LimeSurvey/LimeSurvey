@@ -1,4 +1,5 @@
 <?php
+
 /*
 * LimeSurvey
 * Copyright (C) 2007-2016 The LimeSurvey Project Team / Carsten Schmitz
@@ -32,40 +33,38 @@ class ListSurveysWidget extends CWidget
     public function run()
     {
         // Search
-        if (isset($_GET['Survey']['searched_value'])){
+        if (isset($_GET['Survey']['searched_value'])) {
             $this->model->searched_value = $_GET['Survey']['searched_value'];
         }
 
-        $this->model->active = null;
-        $this->model->gsid  = null;
-
+        $this->model->active = "";
         // Filter state
-        if (isset($_GET['active']) && !empty($_GET['active'])){
+        if (isset($_GET['active']) && !empty($_GET['active'])) {
             $this->model->active = $_GET['active'];
         }
 
-        // Filter survey group
-        if (isset($_GET['gsid']) &&  !empty($_GET['gsid'])){
-            $this->model->gsid = $_GET['gsid'];
+        // Filter survey group (by grid param)
+        if (empty($this->model->gsid) && App()->getRequest()->getQuery('gsid')) {
+            $this->model->gsid = (int)App()->getRequest()->getQuery('gsid');
         }
-
 
         // Set number of page
-        if (isset($_GET['pageSize'])){
-            Yii::app()->user->setState('pageSize',(int)$_GET['pageSize']);
+        if (isset($_GET['pageSize'])) {
+            Yii::app()->user->setState('pageSize', (int)$_GET['pageSize']);
         }
 
-        $this->pageSize = Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
+        $this->pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
 
-        Yii::app()->getClientScript()->registerScriptFile(App()->getAssetManager()->publish(dirname(__FILE__) . '/assets/reload.js'));
+        App()->getClientScript()->registerScriptFile(App()->getAssetManager()->publish(dirname(__FILE__) . '/assets/reload.js'));
 
         $this->massiveAction = $this->render('massive_actions/_selector', array(), true, false);
 
+        /* ---> all gridviews will use the same footer template
         if ($this->bRenderFooter) {
-            $this->template = "{items}\n<div class=\"row-fluid\"><div class=\"col-sm-4\" id=\"massive-action-container\">$this->massiveAction</div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>";
+            $this->template = "{items}\n<div class=\"row-fluid\"><div class=\"col-md-4\" id=\"massive-action-container\">$this->massiveAction</div><div class=\"col-md-4 pager-container ls-ba \">{pager}</div><div class=\"col-md-4 summary-container\">{summary}</div></div>";
         } else {
             $this->template = "{items}";
-        }
+        }*/
 
         if ($this->bRenderSearchBox) {
             $this->render('searchBox');

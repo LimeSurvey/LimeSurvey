@@ -1,20 +1,20 @@
  {% extends "./subviews/printanswers/printanswers_question.twig" %}
  {% block question_answer %}
- <div class="col-md-8">
+ <div class="col-lg-8">
     {% for subquestionId, subquestion in question.subquestions %}
         <div class="row">
-            <div class="col-md-4 text-right">
-                {% if subquestion.answervalue is sameas("Y") %}
+            <div class="col-lg-4 text-end">
+                {% if subquestion.answervalue is same as("Y") %}
                     {{ gT("Yes") }} <i class="fa fa-check-square-o"></i>
-                {% elseif subquestion.answervalue is sameas("N") %}
+                {% elseif subquestion.answervalue is same as("N") %}
                     {{ gT("No") }} <i class="fa fa-square-o"></i>
-                {% elseif subquestion.answervalue is sameas("U") %}
+                {% elseif subquestion.answervalue is same as("U") %}
                     {{ gT("Uncertain") }} <i class="fa fa-minus-square-o"></i>
                 {% else %}
 
                 {% endif %}
             </div>
-            <div class="col-md-8 text-left">
+            <div class="col-lg-8 text-start">
                 <b>{{subquestion.question}} ({{subquestion.qid}})</b>
             </div>
         </div>

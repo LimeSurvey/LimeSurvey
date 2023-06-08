@@ -20,17 +20,27 @@
 body {
     text-align: center;
     padding-top: 200px !important;
-    font: 20px Helvetica, sans-serif; color: #333;
+    font: 20px Helvetica, sans-serif;
+    color: #333;
 }
+
 h1 {
     font-size: 50px;
 }
+
 article {
-    display: block; text-align: center; width: 800px; margin: 0 auto;
+    display: block;
+    text-align: center;
+    width: 800px;
+    margin: 0 auto;
 }
+
 a {
-    color: #dc8100; text-decoration: none;
+    color: #dc8100;
+    text-decoration: none;
 }
+
 a:hover {
-    color: #333; text-decoration: none;
+    color: #333;
+    text-decoration: none;
 }

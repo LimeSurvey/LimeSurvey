@@ -85,21 +85,6 @@ class LSBaseController extends LSYii_Controller
      */
     protected function beforeRender($view)
     {
-        //this lines come from _renderWarppedTemplate
-        //todo: this should be moved to the new questioneditor controller when it is being refactored
-        /*
-        if (isset($this->aData['surveyid'])) {
-            $this->aData['oSurvey'] = Survey::model()->findByPk($this->aData['surveyid']);
-
-            // Needed to evaluate EM expressions in question summary
-            // See bug #11845
-            LimeExpressionManager::SetSurveyId($this->aData['surveyid']);
-            LimeExpressionManager::StartProcessingPage(false, true);
-
-            $basePath = (string) Yii::getPathOfAlias('application.views.layouts');
-            $this->layout = $basePath.'/layout_questioneditor.php';
-        }*/
-
         return parent::beforeRender($view);
     }
 

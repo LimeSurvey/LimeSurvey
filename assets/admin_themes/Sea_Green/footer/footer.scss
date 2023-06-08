@@ -1,0 +1,16 @@
+// Footer
+.footer {
+  width: 100%;
+}
+.sub_footer {
+  width: 100%;
+  .sub_footer_border {
+    border-top: 1px solid $g-900;
+  }
+}
+
+@media print {
+  footer.footer {
+    display: none;
+  }
+}

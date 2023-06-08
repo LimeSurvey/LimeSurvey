@@ -1,0 +1,217 @@
+// datepicker
+$td-light: #fff !default;
+$td-widget-background: $td-light !default;
+$td-font-color: #000 !default;
+$td-timepicker-font-size: 1.2em !default;
+$td-active-bg: var(--bs-primary) !default;
+$td-active-color: $td-light !default;
+$td-active-border-color: var(--bs-info) !default;
+$td-border-radius: 2px !default;
+$td-btn-hover-bg: $td-light !default;
+$td-disabled-color: #6c757d !default;
+$td-alternate-color: $g-400 !default;
+$td-secondary-border-color: #ccc !default;
+$td-secondary-border-color-rgba: rgba(0, 0, 0, 0.2) !default;
+$td-primary-border-color: $td-light !default;
+$td-text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25) !default;
+$td-dow-color: $td-font-color;
+
+.tempus-dominus-widget {
+  padding: 0px;
+  width: 20rem;
+
+  .timepicker-hour,
+  .timepicker-minute,
+  .timepicker-second {
+    font-size: $td-timepicker-font-size;
+  }
+
+  .calendar-header {
+    margin-bottom: 2px;
+    font-weight: normal;
+    border-bottom: 1px solid $g-400;
+    padding: 8px;
+
+    & .next {
+      color: $g-400;
+    }
+
+    & .previous {
+      color: $g-400;
+    }
+
+    & i {
+      font-size: 20px;
+    }
+  }
+
+  .toolbar {
+    grid-auto-rows: 32px;
+    border-top: 1px solid $g-400;
+    margin-top: 2px;
+    padding: 10px;
+
+    & div {
+      border-radius: $td-border-radius;
+    }
+  }
+
+  .date-container-days {
+    grid-auto-rows: 32px;
+    padding: 8px 12px;
+
+  }
+
+  .time-container-clock {
+    grid-auto-rows: minmax(24px, auto);
+    padding: 0px 32px;
+  }
+
+  // adjust padding only when dateformat contains seconds
+  .time-container-clock:has([data-time-component="seconds"])  {
+    padding: 0px 6px;
+  }
+
+  .date-container-decades,
+  .date-container-years,
+  .date-container-months,
+  .date-container-days,
+  .time-container-clock,
+  .time-container-hour,
+  .time-container-minute,
+  .time-container-second {
+    div:not(.no-highlight) {
+      height: 24px;
+      border-radius: $td-border-radius;
+      border: 2px solid transparent;
+    }
+  }
+
+  .time-container {
+    margin-top: 31px;
+    margin-bottom: 31px;
+  }
+
+  color: $td-font-color;
+  background-color: $td-widget-background;
+
+  [data-action] {
+    &.disabled,
+    &.disabled:hover {
+      color: $td-disabled-color;
+    }
+  }
+
+  .toolbar {
+    & div {
+      &:hover {
+        background: $td-btn-hover-bg;
+      }
+    }
+
+    & > div + div {
+      border-left: 2px solid $g-400;
+    }
+
+    & i {
+      font-size: 20px;
+      padding:2px 0px;
+    }
+  }
+
+  .date-container-days {
+    & .dow {
+      color: $td-dow-color;
+      font-weight: $font-weight-normal;
+    }
+
+    & .cw {
+      color: $td-alternate-color;
+    }
+  }
+
+  .date-container-decades,
+  .date-container-years,
+  .date-container-months,
+  .date-container-days,
+  .time-container-clock,
+  .time-container-hour,
+  .time-container-minute,
+  .time-container-second {
+    div:not(.no-highlight) {
+      &:hover {
+        background: $td-btn-hover-bg;
+        border: 2px solid $elevation-shadow;
+        border-radius: $td-border-radius;
+      }
+
+      &.active {
+        background-color: $td-active-bg;
+        color: $td-active-color;
+        text-shadow: none;
+
+        &.old,
+        &.new {
+          color: $td-active-color;
+        }
+      }
+
+      &.active.today:before {
+        border-bottom-color: $td-active-border-color;
+      }
+
+      &.old,
+      &.new {
+        color: $td-alternate-color;
+      }
+
+      &.disabled,
+      &.disabled:hover {
+        color: $td-disabled-color;
+      }
+
+      &.today {
+        &:before {
+          border-bottom-color: $td-active-bg;
+          border-top-color: $td-secondary-border-color-rgba;
+          bottom: 0px;
+          right: 0px;
+        }
+      }
+    }
+  }
+
+  button {
+    color: $td-active-color;
+    background-color: $td-active-bg;
+    border-color: $td-active-bg;
+  }
+
+  [data-time-component="hours"],
+  .separator,
+  [data-time-component="minutes"],
+  [data-time-component="seconds"] {
+    height: 75px !important;
+    font-size: 62px;
+    font-weight: $font-weight-300;
+  }
+
+
+  [data-action="incrementHours"],
+  [data-action="incrementMinutes"],
+  [data-action="incrementSeconds"] {
+    align-self: end;
+  }
+
+  .date-container-days div:not(.no-highlight) {
+    width: 24px;
+  }
+}
+
+
+
+
+
+
+
+

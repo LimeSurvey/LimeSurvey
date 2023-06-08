@@ -168,7 +168,7 @@ class SettingsUser extends LSActiveRecord
 
         $setting = self::model()->find($searchCriteria);
 
-        return $setting !== null ? $setting : null;
+        return $setting ?? null;
     }
 
     /**
