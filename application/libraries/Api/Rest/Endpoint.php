@@ -2,11 +2,11 @@
 
 namespace LimeSurvey\Api\Rest;
 
-use LimeSurvey\Api\{
-    Command\CommandInterface,
-    Command\Request\Request,
-    Rest\Renderer\RendererInterface
+use LimeSurvey\Api\Command\{
+    CommandInterface,
+    Request\Request
 };
+use LimeSurvey\Api\Rest\Renderer\RendererInterface;
 use Psr\Container\ContainerInterface;
 
 /**
