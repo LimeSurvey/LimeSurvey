@@ -2,7 +2,7 @@
 
 namespace LimeSurvey\Api\Rest\Endpoint;
 
-use LSHttpRequest;
+use CHttpRequest;
 use Yii;
 use DI\FactoryInterface;
 use LimeSurvey\Api\{
@@ -25,10 +25,10 @@ class EndpointFactory
     /**
      * Create
      *
-     * @param LSHttpRequest $request
+     * @param CHttpRequest $request
      * @return Endpoint
      */
-    public function create(LSHttpRequest $request)
+    public function create(CHttpRequest $request)
     {
         $endpointConfig = $this->getEndpointConfig($request);
         return $this->diFactory->make(Endpoint::class, [
@@ -40,11 +40,11 @@ class EndpointFactory
     /**
      * Get Endpoint
      *
-     * @param LSHttpRequest $request
+     * @param CHttpRequest $request
      * @throws ApiException
      * @return array
      */
-    protected function getEndpointConfig(LSHttpRequest $request)
+    protected function getEndpointConfig(CHttpRequest $request)
     {
         // rest config contains specification of all endpoints
         $restConfig = Yii::app()->getConfig('rest');
@@ -104,10 +104,10 @@ class EndpointFactory
      * Parse REST API command params from HTTP request.
      *
      * @param array $endpoint
-     * @param LSHttpRequest $request
+     * @param CHttpRequest $request
      * @return array
      */
-    public function getCommandParams($endpoint, LSHttpRequest $request)
+    public function getCommandParams($endpoint, CHttpRequest $request)
     {
         $params = [];
 
@@ -144,10 +144,10 @@ class EndpointFactory
      * Parse REST config params from the HTTP request.
      *
      * @param array $endpoint
-     * @param LSHttpRequest $request
+     * @param CHttpRequest $request
      * @return array
      */
-    protected function getParams($endpoint, LSHttpRequest $request)
+    protected function getParams($endpoint, CHttpRequest $request)
     {
         $result = [];
         if (

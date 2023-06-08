@@ -41,7 +41,7 @@ class RendererBasic implements RendererInterface
 
         $error['code'] = get_class($exception);
         // @todo replace global constant with injected config
-        /** @psalm-suppress TypeDoesNotContainType */
+        /** @psalm-suppress all */
         if (YII_DEBUG) {
             $error['message'] = $exception->getMessage();
             $error['file'] = $exception->getFile();
