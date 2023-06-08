@@ -74,7 +74,7 @@
     <options>
         <!-- simple options -->
         <container type="buttons" category="Simple options" width="4" title="Survey container" options="on|off"
-                   optionlabels="Yes|No">on
+                   optionlabels="Yes|No">off
         </container>
         <zebrastriping type="buttons" category="Simple options" width="4" title="Zebra-striped questions"
                        options="on|off" optionlabels="Yes|No">off
