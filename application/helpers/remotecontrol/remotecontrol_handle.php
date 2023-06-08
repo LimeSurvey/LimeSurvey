@@ -577,7 +577,10 @@ class remotecontrol_handle
         switch ($docType) {
             case 'pdf':
                 $sTempFile = $tempDir . DIRECTORY_SEPARATOR . sanitize_filename(
-                    $helper->generate_statistics($iSurveyID, $aSummary, $aSummary, $graph, $docType, 'F', $sLanguage)
+                    $helper->generate_statistics($iSurveyID, $aSummary, $aSummary, $graph, $docType, 'F', $sLanguage),
+                    false,
+                    false,
+                    false
                 );
                 $sResult = file_get_contents($sTempFile);
                 unlink($sTempFile);
