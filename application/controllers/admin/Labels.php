@@ -493,7 +493,7 @@ class Labels extends SurveyCommonAction
         $labelName = $request->getPost('laname');
         $languages = implode(' ', $request->getPost('languages'));
         $assessmentValues = $request->getPost('assessmentvalues', []);
-        if(!Permission::model()->hasGlobalPermission('labelsets', 'create')) {
+        if (!Permission::model()->hasGlobalPermission('labelsets', 'create')) {
             throw new CHttpException(403);
         }
         if (empty($labelName)) {
