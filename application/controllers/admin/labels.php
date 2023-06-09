@@ -340,9 +340,9 @@ class labels extends Survey_Common_Action
             Yii::app()->session['flashmessage'] = gT('Access denied!');
             $this->getController()->redirect(App()->createUrl("/admin"));
         }
-        $action = returnGlobal('action');
+        $action = App()->getRequest()->getParam('action');
         Yii::app()->loadHelper('admin/label');
-        $lid = (int) returnGlobal('lid');
+        $lid = (int) App()->getRequest()->getpost('lid');
 
         if ($action == "updateset" && Permission::model()->hasGlobalPermission('labelsets', 'update')) {
             updateset($lid);
@@ -438,6 +438,9 @@ class labels extends Survey_Common_Action
         }
         $language = trim($language);
         if ($lid == 0) {
+            if(!Permission::model()->hasGlobalPermission('labelsets', 'create')) {
+                throw new CHttpException(403);
+            }
             $lset = new LabelSet;
             $lset->label_name = Yii::app()->getRequest()->getPost('laname');
             $lset->languages = $language;
@@ -445,6 +448,9 @@ class labels extends Survey_Common_Action
 
             $lid = getLastInsertID($lset->tableName());
         } else {
+            if(!Permission::model()->hasGlobalPermission('labelsets', 'update')) {
+                throw new CHttpException(403);
+            }
             Label::model()->deleteAll('lid = :lid', array(':lid' => $lid));
         }
         $res = 'ok'; //optimistic
