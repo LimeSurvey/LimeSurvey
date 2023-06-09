@@ -343,27 +343,32 @@ class labels extends Survey_Common_Action
         $action = App()->getRequest()->getParam('action');
         Yii::app()->loadHelper('admin/label');
         $lid = (int) App()->getRequest()->getpost('lid');
-
         if ($action == "updateset" && Permission::model()->hasGlobalPermission('labelsets', 'update')) {
+            if (!$lid) {
+                throw new CHttpException(400);
+            }
             updateset($lid);
             Yii::app()->setFlashMessage(gT("Label set properties sucessfully updated."), 'success');
         }
         if ($action == "insertlabelset" && Permission::model()->hasGlobalPermission('labelsets', 'create')) {
-                    $lid = insertlabelset();
+            $lid = insertlabelset();
         }
         if (($action == "modlabelsetanswers" || ($action == "ajaxmodlabelsetanswers")) && Permission::model()->hasGlobalPermission('labelsets', 'update')) {
-                    modlabelsetanswers($lid);
+            modlabelsetanswers($lid);
         }
         if ($action == "deletelabelset" && Permission::model()->hasGlobalPermission('labelsets', 'delete')) {
+            if (!$lid) {
+                throw new CHttpException(400);
+            }
             if (deletelabelset($lid)) {
                 Yii::app()->setFlashMessage(gT("Label set sucessfully deleted."), 'success');
                 $lid = 0;
             }
         }
         if ($lid) {
-                    $this->getController()->redirect(array("admin/labels/sa/view/lid/".$lid));
+            $this->getController()->redirect(array("admin/labels/sa/view/lid/".$lid));
         } else {
-                    $this->getController()->redirect(array("admin/labels/sa/view"));
+            $this->getController()->redirect(array("admin/labels/sa/view"));
         }
     }
 
