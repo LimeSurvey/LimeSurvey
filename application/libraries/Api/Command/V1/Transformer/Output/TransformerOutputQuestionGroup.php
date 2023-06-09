@@ -17,12 +17,12 @@ class TransformerOutputQuestionGroup extends TransformerOutputActiveRecord
         ]);
     }
 
-    public function transformAll($array)
+    public function transformAll($collection)
     {
-        $array = parent::transformAll($array);
+        $collection = parent::transformAll($collection);
 
         usort(
-            $array,
+            $collection,
             function ($a, $b) {
                 return (int)(
                     (int)$a['groupOrder'] > (int)$b['groupOrder']
@@ -31,7 +31,7 @@ class TransformerOutputQuestionGroup extends TransformerOutputActiveRecord
         );
 
         $output = [];
-        foreach ($array as $value) {
+        foreach ($collection as $value) {
             $output[$value['gid']] = $value;
         }
 

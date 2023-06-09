@@ -16,12 +16,8 @@ class TransformerOutputQuestionAttribute extends TransformerOutputActiveRecord
         ]);
     }
 
-    /**
-     * @param mixed $array
-     * @return array
-     */
-    public function transformAll($array)
+    public function transformAll($collection)
     {
-        return (object) $array;
+        return (object) $collection;
     }
 }
