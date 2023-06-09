@@ -6,6 +6,9 @@ use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
 
 class SchemaFactorySurvey
 {
+    /**
+     *  @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     */
     public function make(): Schema
     {
         $schemaSurveyLanguageSettings = (new SchemaFactorySurveyLanguageSettings())->make();

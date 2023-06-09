@@ -7,12 +7,11 @@ use GoldSpecDigital\ObjectOrientedOAS\Objects\AllOf;
 
 class SchemaFactorySurveyDetail
 {
+    /**
+     *  @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     */
     public function make(): Schema
     {
-        //$schemaSurveyLanguageSettings = (new SchemaFactorySurveyLanguageSettings())->make();
-        //$schemaSurveyDefaultLanguage = Schema::object('defaultlanguage')
-        //    ->properties(...$schemaSurveyLanguageSettings->properties);
-
         $questionAttributeSchema = (new SchemaFactoryQuestionAttribute())->make();
         $questionAttributesSchema = Schema::object('attributes')->additionalProperties(
             $questionAttributeSchema
