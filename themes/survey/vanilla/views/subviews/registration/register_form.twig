@@ -21,12 +21,12 @@
 
     {{aSurveyInfo.registerform.hiddeninputs}}
 
-    <div class='{{ aSurveyInfo.class.registerformcol }} col-md-8 col-md-offset-2' {{ aSurveyInfo.attr.registerformcol }}>
-        <div class="ls-js-hidden form-group row">
+    <div class='{{ aSurveyInfo.class.registerformcol }} col-lg-8 offset-lg-2' {{ aSurveyInfo.attr.registerformcol }}>
+        <div class="ls-js-hidden mb-3">
             {{ include('./subviews/navigation/language_changer.twig') }}
         </div>
         {# Participants first name #}
-        <div class='{{ aSurveyInfo.class.registerformcolrow }} form-group row' {{ aSurveyInfo.attr.registerformcolrow }}>
+        <div class='{{ aSurveyInfo.class.registerformcolrow }} mb-3' {{ aSurveyInfo.attr.registerformcolrow }}>
             <label for='register_firstname' class='{{ aSurveyInfo.class.registerformcolrowlabel }} control-label '>{{ gT("First name:") }}</label>
             <div class="">
                 {{ C.Html.textField('register_firstname', aSurveyInfo.sFirstName, ({'id' : 'register_firstname','class' : 'form-control'})) }}
@@ -34,7 +34,7 @@
         </div>
 
         {# Participants last name #}
-        <div class='{{ aSurveyInfo.class.registerformcolrowb }} form-group row' {{ aSurveyInfo.attr.registerformcolrowb }}>
+        <div class='{{ aSurveyInfo.class.registerformcolrowb }} mb-3' {{ aSurveyInfo.attr.registerformcolrowb }}>
             <label {{ aSurveyInfo.attr.registerformcolrowblabel }}  class='{{ aSurveyInfo.class.registerformcolrowblabel }} control-label '>{{ gT("Last name:") }}</label>
             <div {{ aSurveyInfo.attr.registerformcolrowbdiv }} >
                 {{ C.Html.textField('register_lastname', aSurveyInfo.sLastName, ({'id' : 'register_lastname', 'class' : 'form-control'})) }}
@@ -42,7 +42,7 @@
         </div>
 
         {# Participants email #}
-        <div class='{{ aSurveyInfo.class.registerformcolrowc }} form-group row' {{ aSurveyInfo.attr.registerformcolrowc }}>
+        <div class='{{ aSurveyInfo.class.registerformcolrowc }} mb-3' {{ aSurveyInfo.attr.registerformcolrowc }}>
             <label {{ aSurveyInfo.attr.registerformcolrowclabel }} class='{{ aSurveyInfo.class.registerformcolrowclabel }}  control-label'> {{ gT("Email address:") }} {{ include('./subviews/registration/required.twig') }}</label>
             <div {{ aSurveyInfo.attr.registerformcolrowcdiv }}  >
                 {{ C.Html.emailField('register_email', aSurveyInfo.sEmail, ({'id' : 'register_email','class' : 'form-control input-sm','required' : true})) }}
@@ -51,7 +51,7 @@
 
         {# Loop to add extra attributes #}
         {% for key, aExtraAttribute in aSurveyInfo.aExtraAttributes  %}
-            <div class=' {{ aSurveyInfo.class.registerformextras }} form-group row' {{ aSurveyInfo.attr.registerformextras }} >
+            <div class=' {{ aSurveyInfo.class.registerformextras }} mb-3' {{ aSurveyInfo.attr.registerformextras }} >
                 {% set registerKey = "register_" ~ key %}
                 <label for="{{ registerKey }}" class='{{ aSurveyInfo.class.registerformextraslabel }} control-label '> {{ aExtraAttribute.caption }} {% if aExtraAttribute.mandatory == 'Y' %}{{ include('./subviews/registration/required.twig') }}{% endif %}</label>
                 <div {{ aSurveyInfo.attr.registerformcolrowcdiv }} >
@@ -62,31 +62,32 @@
 
         {# Captcha box #}
         {% if aSurveyInfo.bCaptcha %}
-            <div class='{{ aSurveyInfo.class.registerformcaptcha }} form-group row ' {{ aSurveyInfo.attr.registerformcaptcha }}>
+            <div class="{{ aSurveyInfo.class.registerformcaptcha }} mb-3" {{ aSurveyInfo.attr.maincolformdivb }}>
                 <label class='{{ aSurveyInfo.class.registerformcaptchalabel }} control-label ' {{ aSurveyInfo.attr.registerformcaptchalabel }} >{{ gT("Please solve the following equation:") }} {{ include('./subviews/registration/required.twig') }}</label>
-                <div {{ aSurveyInfo.attr.registerformcaptchadiv }}>
-                    <div class='{{ aSurveyInfo.class.registerformcaptchadivb }} input-group' {{ aSurveyInfo.attr.registerformcaptchadivb }}>
-                        <div class='{{ aSurveyInfo.class.registerformcaptchadivc }} control-label' {{ aSurveyInfo.attr.registerformcaptchadivc }}>
+                <div class="row" {{ aSurveyInfo.attr.registerformcaptchadiv }}>
+                    <div class="{{ aSurveyInfo.class.registerformcaptchadivb }} col-2" {{ aSurveyInfo.attr.registerformcaptchadivb }}>
                             {{ renderCaptcha().renderOut() }}
-                            <!-- TODO: Problems with reload and name getting empty/not in POST. -->
-                            <a href="#" class="btn btn-sm btn-default" onclick="window.location.reload();" id="reloadCaptcha" title="{{ gT("Reload captcha") }}" data-toggle="captcha"><i class="fa fa-refresh"></i></a>
-                        </div>
-                        <input class='{{ aSurveyInfo.class.registerformcaptchainput }} form-control' {{ aSurveyInfo.attr.registerformcaptchainput }} >
+                    </div>
+                    <div class="{{ aSurveyInfo.class.registerformcaptchadivc }} col-1 align-self-center" {{ aSurveyInfo.attr.registerformcaptchadivc }}>
+                        <a href="#" class="btn btn-sm btn-outline-secondary" id="reloadCaptcha" title="{{ gT("Reload captcha") }}" data-bs-toggle="captcha"><i class="fa fa-refresh"></i></a>
+                    </div>
+                    <div class="col-9 align-self-center">
+                        <input class='form-control {{ aSurveyInfo.class.registerformcaptchainput }}' {{ aSurveyInfo.attr.registerformcaptchainput }}>
                     </div>
                 </div>
             </div>
         {% endif %}
 
         {# Mandatory information #}
-        <div class='{{ aSurveyInfo.class.registermandatoryinfo }} row' {{ aSurveyInfo.attr.registermandatoryinfo }} >
+        <div class='{{ aSurveyInfo.class.registermandatoryinfo }}' {{ aSurveyInfo.attr.registermandatoryinfo }} >
                 {{ gT('Fields marked with an asterisk are mandatory.')}}
         </div>
 
         {# Submit register button #}
-        <div class='{{ aSurveyInfo.class.registersave }} form-group row' {{ aSurveyInfo.attr.registersave }} >
-            <div class='{{ aSurveyInfo.class.registersavediv }} col-md-offset-7' {{ aSurveyInfo.attr.registersavediv }} >
+        <div class='{{ aSurveyInfo.class.registersave }} mb-3' {{ aSurveyInfo.attr.registersave }} >
+            <div class='{{ aSurveyInfo.class.registersavediv }} float-end' {{ aSurveyInfo.attr.registersavediv }} >
                 {% set continue = gT("Continue",'unescaped') %}
-                <button {{ aSurveyInfo.attr.registersavedivbutton }}  class='{{ aSurveyInfo.class.registersavedivbutton }} btn btn-default' >
+                <button {{ aSurveyInfo.attr.registersavedivbutton }}  class='{{ aSurveyInfo.class.registersavedivbutton }} btn btn-outline-secondary' >
                     {{ continue }}
                 </button>
             </div>
@@ -94,7 +95,7 @@
 
         {# If there is additional form parts, a.e. trhough a plugin render it out here #}
     </div>
-    <div class='{{ aSurveyInfo.class.registerformcoladdidtions }} col-md-8 col-md-offset-2' {{ aSurveyInfo.attr.registerformcoladdidtions }}>
+    <div class='{{ aSurveyInfo.class.registerformcoladdidtions }} col-lg-8 offset-lg-2' {{ aSurveyInfo.attr.registerformcoladdidtions }}>
         {{ aSurveyInfo.formAdditions | raw  }}
     </div>
 

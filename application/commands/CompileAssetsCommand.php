@@ -32,7 +32,7 @@ class CompileAssetsCommand extends CConsoleCommand
 
         $method  = $aArguments[0];
         $package = $aArguments[1];
-        $silent  = isset($aArguments[2]) ? $aArguments[2] : false;
+        $silent  = $aArguments[2] ?? false;
 
         if (!in_array($method, ['gulp', 'bash', 'npm', 'uglify'])) {
             echo "=========================================================================\n";

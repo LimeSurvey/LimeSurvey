@@ -3,6 +3,7 @@
 namespace ls\tests;
 
 use PHPUnit\Framework\TestCase;
+use Exception;
 
 class TestBaseClass extends TestCase
 {
@@ -61,16 +62,21 @@ class TestBaseClass extends TestCase
 
     /**
      * @param string $fileName
+     * @param integer $asuser
      * @return void
      */
-    protected static function importSurvey($fileName)
+    protected static function importSurvey($fileName, $asuser = 1)
     {
-        \Yii::app()->session['loginID'] = 1;
+        \Yii::app()->session['loginID'] = $asuser;
         $surveyFile = $fileName;
         if (!file_exists($surveyFile)) {
-            throw new \Exception(sprintf('Survey file %s not found', $surveyFile));
+            throw new Exception(sprintf('Survey file %s not found', $surveyFile));
         }
 
+        // Reset the cache to prevent import from failing if there is a cached survey and it's active.
+        // When importing, activating, deleting and importing again (usual with automated tests),
+        // as using the same SID, it was picking up the cached (old) version of the survey
+        \Survey::model()->resetCache();
         $translateLinksFields = false;
         $newSurveyName = null;
         $result = \importSurveyFile(
@@ -80,11 +86,14 @@ class TestBaseClass extends TestCase
             null
         );
         if ($result) {
+            if (!empty($result['error'])) {
+                throw new Exception(sprintf('Could not import survey %s: %s', $fileName, $result['error']));
+            }
             \Survey::model()->resetCache(); // Reset the cache so findByPk doesn't return a previously cached survey
             self::$testSurvey = \Survey::model()->findByPk($result['newsid']);
             self::$surveyId = $result['newsid'];
         } else {
-            throw new \Exception(sprintf('Failed to import survey file %s', $surveyFile));
+            throw new Exception(sprintf('Failed to import survey file %s', $surveyFile));
         }
     }
 
@@ -95,11 +104,11 @@ class TestBaseClass extends TestCase
     public function getAllSurveyQuestions()
     {
         if (empty(self::$surveyId)) {
-            throw new \Exception('getAllSurveyQuestions call without survey.');
+            throw new Exception('getAllSurveyQuestions call without survey.');
         }
         $survey = \Survey::model()->findByPk(self::$surveyId);
         if (empty($survey)) {
-            throw new \Exception('getAllSurveyQuestions call with an invalid survey.');
+            throw new Exception('getAllSurveyQuestions call with an invalid survey.');
         }
         $questions = [];
         foreach ($survey->groups as $group) {
@@ -168,6 +177,24 @@ class TestBaseClass extends TestCase
         }
     }
 
+    /**
+     * Helper dispatch evento to specific plugin
+     * @param string $pluginName
+     * @param \PluginEvent $eventName
+     * @param array $eventValues
+     * @return void
+     */
+    public static function dispatchPluginEvent($pluginName, $eventName, $eventValues)
+    {
+        $oEvent = (new \PluginEvent($eventName));
+        foreach($eventValues as $key => $value) {
+            $oEvent->set($key, $value);
+        }
+        \Yii::app()->getPluginManager()->dispatchEvent($oEvent, $pluginName);
+
+        return $oEvent;
+    }
+
     protected static function createUserWithPermissions(array $userData, array $permissions = [])
     {
         if ($userData['password'] != ' ') {
@@ -178,7 +205,7 @@ class TestBaseClass extends TestCase
         $oUser->setAttributes($userData);
 
         if(!$oUser->save()) {
-            throw new \Exception( 
+            throw new Exception( 
                 "Could not save user: "
                 .print_r($oUser->getErrors(),true)
             );

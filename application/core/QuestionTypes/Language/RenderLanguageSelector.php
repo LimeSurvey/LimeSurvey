@@ -51,7 +51,7 @@ class RenderLanguageSelector extends QuestionBaseRenderer
             'name' => $this->sSGQA,
             'basename' => $this->sSGQA,
             'checkconditionFunction' => 'checkconditions(this.value, this.name, this.type)',
-            'coreClass' => 'ls-answers answer-item dropdow-item langage-item ' . $sCoreClasses,
+            'coreClass' => 'ls-answers answer-item dropdow-item language-item ' . $sCoreClasses,
             'answerlangs' => $aAnswerlangs,
             'sLang' => $sLanguage,
             ), true);

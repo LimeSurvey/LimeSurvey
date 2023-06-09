@@ -100,7 +100,7 @@ class FixedFunctionExpressionPluginTest extends TestBaseClassWeb
             $this->assertEquals(
                 $textToCompare, 
                 "Event #1 (still 7 places)",
-                'Text on sub-questions broken «' . $textToCompare ."» vs «Event #1 (still 7 places)»"
+                'Text on subquestions broken «' . $textToCompare ."» vs «Event #1 (still 7 places)»"
             );
             
             

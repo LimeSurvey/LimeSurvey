@@ -2,21 +2,41 @@
 
 namespace LimeSurvey\Helpers\Update;
 
-/**
- * Some of it is a copy of update 453 which has been skipped on some installations
- */
+use LsDefaultDataSets;
+use SurveymenuEntries;
+
 class Update_489 extends DatabaseUpdateBase
 {
+    /**
+     * This table is needed to collect failed emails.
+     */
     public function up()
     {
-        $columnSchema = $this->db->getSchema()->getTable('{{archived_table_settings}}')->getColumn('attributes');
-        if ($columnSchema === null) {
-            $this->db->createCommand()->addColumn('{{archived_table_settings}}', 'attributes', 'text NULL');
-            $archivedTableSettings = \Yii::app()->db->createCommand("SELECT * FROM {{archived_table_settings}}")->queryAll();
-            foreach ($archivedTableSettings as $archivedTableSetting) {
-                if ($archivedTableSetting['tbl_type'] === 'token') {
-                    $this->db->createCommand()->update('{{archived_table_settings}}', ['attributes' => json_encode(['unknown'])], 'id = :id', ['id' => $archivedTableSetting['id']]);
+        $this->db->createCommand()->createTable(
+            '{{failed_emails}}',
+            [
+                'id' => "pk",
+                'surveyid' => "integer NOT NULL",
+                'responseid' => "integer NOT NULL",
+                'email_type' => "string(200) NOT NULL",
+                'recipient' => "string(320) NOT NULL",
+                'language' => "string(20) NOT NULL DEFAULT 'en'",
+                'error_message'  => "text",
+                'created' => "datetime NOT NULL",  //this one has always to be set to delete after x days ...
+                'status' => "string(20) NULL DEFAULT 'SEND FAILED'",
+                'updated' => "datetime NULL",
+                'resend_vars' => "text NOT NULL"
+            ]
+        );
+        $aDefaultSurveyMenuEntries = LsDefaultDataSets::getSurveyMenuEntryData();
+        foreach ($aDefaultSurveyMenuEntries as $aSurveymenuentry) {
+            if ($aSurveymenuentry['name'] === 'failedemail') {
+                $aSurveymenuentry['ordering'] = 5;
+                if (SurveymenuEntries::model()->findByAttributes(['name' => $aSurveymenuentry['name']]) === null) {
+                    $this->db->createCommand()->insert('{{surveymenu_entries}}', $aSurveymenuentry);
+                    SurveymenuEntries::reorderMenu(2);
                 }
+                break;
             }
         }
     }

@@ -47,11 +47,11 @@ class PasswordManagement
         $emailTemplate = \Yii::app()->getConfig("admincreationemailtemplate");
 
         //Replace placeholder in Email subject
-        $emailSubject = str_replace("{SITENAME}", $siteName, $emailSubject);
+        $emailSubject = str_replace("{SITENAME}", $siteName, (string) $emailSubject);
         $emailSubject = str_replace("{SITEADMINEMAIL}", $siteAdminEmail, $emailSubject);
 
         //Replace placeholder in Email body
-        $emailTemplate = str_replace("{SITENAME}", $siteName, $emailTemplate);
+        $emailTemplate = str_replace("{SITENAME}", $siteName, (string) $emailTemplate);
         $emailTemplate = str_replace("{SITEADMINEMAIL}", $siteAdminEmail, $emailTemplate);
         $emailTemplate = str_replace("{FULLNAME}", $this->user->full_name, $emailTemplate);
         $emailTemplate = str_replace("{USERNAME}", $this->user->users_name, $emailTemplate);
@@ -238,12 +238,10 @@ class PasswordManagement
 
         $emailType = "addadminuser";
 
-        $oCurrentlyLoggedInUser = \User::model()->findByPk(\Yii::app()->user->id);
-
         $mailer = new \LimeMailer();
         $mailer->addAddress($this->user->email, $this->user->full_name);
         $mailer->Subject = $subject;
-        $mailer->setFrom($oCurrentlyLoggedInUser->email, $oCurrentlyLoggedInUser->users_name);
+        $mailer->setFrom(\Yii::app()->getConfig("siteadminemail"), \Yii::app()->getConfig("siteadminname"));
         $mailer->Body = $body;
         $mailer->isHtml(true);
         $mailer->emailType = $emailType;

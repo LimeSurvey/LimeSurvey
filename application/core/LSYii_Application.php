@@ -102,6 +102,9 @@ class LSYii_Application extends CWebApplication
         if (!isset($aApplicationConfig['components']['assetManager']['basePath'])) {
             App()->getAssetManager()->setBasePath($this->config['tempdir'] . '/assets');
         }
+
+        // Load common helper
+        $this->loadHelper("common");
     }
 
     /* @inheritdoc */
@@ -282,9 +285,19 @@ class LSYii_Application extends CWebApplication
      */
     public function getConfig($name, $default = false)
     {
-        return isset($this->config[$name]) ? $this->config[$name] : $default;
+        return $this->config[$name] ?? $default;
     }
 
+    /**
+     * Returns the array of available configurations
+     *
+     * @access public
+     * @return array
+     */
+    public function getAvailableConfigs()
+    {
+        return $this->config;
+    }
 
     /**
      * For future use, cache the language app wise as well.
@@ -298,11 +311,11 @@ class LSYii_Application extends CWebApplication
         // This method is also called from AdminController and LSUser
         // But if a param is defined, it should always have the priority
         // eg: index.php/admin/authentication/sa/login/&lang=de
-        if ($this->request->getParam('lang') !== null && in_array('authentication', explode('/', Yii::app()->request->url))) {
+        if ($this->request->getParam('lang') !== null && in_array('authentication', explode('/', (string) Yii::app()->request->url))) {
             $sLanguage = $this->request->getParam('lang');
         }
 
-        $sLanguage = preg_replace('/[^a-z0-9-]/i', '', $sLanguage);
+        $sLanguage = preg_replace('/[^a-z0-9-]/i', '', (string) $sLanguage);
         App()->session['_lang'] = $sLanguage; // See: http://www.yiiframework.com/wiki/26/setting-and-maintaining-the-language-in-application-i18n/
         parent::setLanguage($sLanguage);
     }
@@ -398,15 +411,9 @@ class LSYii_Application extends CWebApplication
             /* Activate since DBVersion for 2.50 and up (i know it include previous line, but stay clear) */
             return;
         }
-        if (
-            Yii::app()->request->isAjaxRequest &&
-            $event->exception instanceof CHttpException
-        ) {
-            header('Content-Type: application/json');
-            http_response_code($event->exception->statusCode);
-            die(json_encode(['message' => $event->exception->getMessage()]));
-        }
-        $statusCode = isset($event->exception->statusCode) ? $event->exception->statusCode : null; // Needed ?
+        // Handle specific exception cases, like "user friendly" exceptions and exceptions on ajax requests
+        $this->handleSpecificExceptions($event->exception);
+        $statusCode = $event->exception->statusCode ?? null; // Needed ?
         if (Yii::app()->getConfig('debug') > 1) {
             /* Can restrict to admin ? */
             /* debug ro 2 : always send Yii debug even 404 */
@@ -471,7 +478,7 @@ class LSYii_Application extends CWebApplication
         $files = array();
 
         foreach ($iterator as $info) {
-            $ext = pathinfo($info->getPathname(), PATHINFO_EXTENSION);
+            $ext = pathinfo((string) $info->getPathname(), PATHINFO_EXTENSION);
             if ($ext == 'xml') {
                 $CustomTwigExtensionsManifestFiles[] = $info->getPathname();
             }
@@ -512,6 +519,126 @@ class LSYii_Application extends CWebApplication
         }
 
         return $aApplicationConfig;
+    }
+
+    /**
+     * @inheritdoc
+     * Special handling for SEO friendly URLs
+     */
+    public function createController($route, $owner=null)
+    {
+        $controller = parent::createController($route, $owner);
+
+        // If no controller is found by standard ways, check if the route matches
+        // an existing survey's alias.
+        if (is_null($controller)) {
+            $controller = $this->createControllerFromShortUrl($route);
+        }
+
+        return $controller;
+    }
+
+    /**
+     * Create controller from short url if the route matches a survey alias.
+     * @param string $route the route of the request.
+     * @return array<mixed>|null
+     */
+    private function createControllerFromShortUrl($route)
+    {
+        // When updating from versions that didn't support short urls, this code runs before the update process,
+        // so we cannot asume the field exists. We try to retrieve the Survey Language Settings and, if it fails,
+        // just don't do anything.
+        try {
+            $alias = explode("/", $route)[0];
+            $criteria = new CDbCriteria();
+            $criteria->addCondition('surveyls_alias = :alias');
+            $criteria->params[':alias'] = $alias;
+            $criteria->index = 'surveyls_language';
+
+            $languageSettings = SurveyLanguageSetting::model()->find($criteria);
+        } catch (CDbException $ex) {
+            // It's probably just because the field doesn't exist, so don't do anything.
+        }
+
+        if (empty($languageSettings)) {
+            return null;
+        }
+
+        // If no language is specified in the request, add a GET param based on the survey's language for this alias
+        $language = $this->request->getParam('lang');
+        if (empty($language)) {
+            $_GET['lang'] = $languageSettings->surveyls_language;
+        }
+        return parent::createController("survey/index/sid/" . $languageSettings->surveyls_survey_id);
+    }
+
+    /**
+     * Handles specific exception cases, like "user friendly" exceptions and exceptions on ajax requests.
+     *
+     * @param CException $exception
+     * @return void
+     */
+    private function handleSpecificExceptions($exception)
+    {
+        if (
+            Yii::app()->request->isAjaxRequest &&
+            $exception instanceof CHttpException
+        ) {
+            $this->outputJsonError($exception);
+        } elseif ($exception instanceof LSUserException) {
+            $this->handleFriendlyException($exception);
+        }
+    }
+
+    /**
+     * Handles "friendly" exceptions by setting a flash message and redirecting.
+     * If the exception doesn't specify a redirect URL, the referrer is used.
+     *
+     * @param array $error
+     * @param LSUserException $exception
+     * @return void
+     */
+    private function handleFriendlyException($exception)
+    {
+        $message = "<p>" . $exception->getMessage() . "</p>" . $exception->getDetailedErrorSummary();
+        Yii::app()->setFlashMessage($message, 'error');
+        if ($exception->getRedirectUrl() != null) {
+            $redirectTo = $exception->getRedirectUrl();
+        } else {
+            $redirectTo = Yii::app()->request->urlReferrer;
+        }
+        Yii::app()->request->redirect($redirectTo);
+    }
+
+    /**
+     * Outputs an exception as JSON.
+     *
+     * @param CHttpException $exception
+     * @return void
+     */
+    private function outputJsonError($exception)
+    {
+        $outputData = [
+            'success' => false,
+            'message' => $exception->getMessage(),
+        ];
+        if ($exception instanceof LSUserException) {
+            if ($exception->getRedirectUrl() != null) {
+                $outputData['redirectTo'] = $exception->getRedirectUrl();
+            }
+            if ($exception->getNoReload() != null) {
+                $outputData['noReload'] = $exception->getNoReload();
+            }
+            // Add the detailed errors to the message, so simple handlers can just show it.
+            $outputData['message'] = "<p>" . $exception->getMessage() . "</p>". $exception->getDetailedErrorSummary();
+            // But save the "simpler" message on 'error', and the list of errors on "detailedErrors"
+            // so that more complex handlers can decide what to show.
+            $outputData['error'] = $exception->getMessage();
+            $outputData['detailedErrors'] = $exception->getDetailedErrors();
+        }
+        header('Content-Type: application/json');
+        http_response_code($exception->statusCode);
+        die(json_encode($outputData));
     }
 
     /**

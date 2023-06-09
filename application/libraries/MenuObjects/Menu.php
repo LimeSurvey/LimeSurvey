@@ -6,7 +6,7 @@ class Menu implements MenuInterface
 {
     /**
      * If true, render this menu as a dropdown.
-     * @var boolean
+     * @var bool
      */
     protected $isDropDown = false;
 
@@ -42,6 +42,19 @@ class Menu implements MenuInterface
     protected $tooltip = "";
 
     /**
+     * Added option because we split the menu into two sections for LS6
+     * If true, render this menu in the middle section. False would render it in the right section
+     * @var bool
+     */
+    protected $isInMiddleSection = true;
+
+    /**
+     * If true, render this menu before the main menu.
+     * @var bool
+     */
+    protected $isPrepended = false;
+
+    /**
      * @param array $options - Options for either dropdown menu or plain link
      * @return void
      */
@@ -74,10 +87,18 @@ class Menu implements MenuInterface
         if (isset($options['tooltip'])) {
             $this->tooltip = $options['tooltip'];
         }
+
+        if (isset($options['isInMiddleSection'])) {
+            $this->isInMiddleSection = $options['isInMiddleSection'];
+        }
+
+        if (isset($options['isPrepended'])) {
+            $this->isPrepended = $options['isPrepended'];
+        }
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isDropDown()
     {
@@ -130,5 +151,29 @@ class Menu implements MenuInterface
     public function getTooltip()
     {
         return $this->tooltip;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isInMiddleSection()
+    {
+        return $this->isInMiddleSection;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPrepended()
+    {
+        return $this->isPrepended;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isButton()
+    {
+        return false;
     }
 }

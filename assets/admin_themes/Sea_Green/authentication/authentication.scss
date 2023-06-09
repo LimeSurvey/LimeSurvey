@@ -1,0 +1,75 @@
+.logo-alt-1 {
+    background: url(/assets/images/logo-white.png) no-repeat center;
+    width: 300px;
+    height: 82px;
+}
+
+.decor-1 {
+    background: url(/assets/images/decor-1.png) no-repeat center;
+    width: 414px;
+    height: 514px;
+}
+
+.decor-2 {
+    background: url(/assets/images/decor-2.png) no-repeat center;
+    width: 148px;
+    height: 148px;
+}
+
+
+.login {
+    .main-body {
+        padding: 0;
+        min-height: 100vh;
+    }
+
+    .login-panel {
+        max-width: 460px;
+    }
+
+    .col-right {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 40px 109px;
+
+        h1 {
+            font-size: 3.3rem;
+            margin-bottom: 1.7rem;
+        }
+
+        input, select, button, .select2 {
+            margin-bottom: 1rem;
+        }
+    }
+
+    .sidebar-l {
+        background: $g-800;
+        padding: 60px 0;
+        position: relative;
+        overflow: hidden;
+
+        .box-left {
+            overflow: hidden;
+            .logo {
+                display: flex;
+                justify-content: center;
+                position: relative;
+                scale: 80%;
+                z-index: 2;
+            }
+
+            .box-pattern {
+                position: absolute;
+                right: -3px;
+                bottom: 8%;
+            }
+
+            .decor-2 {
+                position: absolute;
+                bottom: 30%;
+                left: 10%;
+            }
+        }
+    }
+}

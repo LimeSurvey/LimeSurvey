@@ -7,7 +7,7 @@
         {% set savedClass = 'info' %}
     {% endif %}
     <div class="alert alert-{{ savedClass }} alert-dismissible fade in{% if(intval(aSurveyInfo.options.showpopups) > 0) %} ls-js-hidden{% endif %} " role="alert">
-        <button class="close ls-no-js-hidden" data-dismiss="alert"><span aria-hidden="true">x</span><span class="sr-only">{{ gT("Close") }}</span></button>
+        <button class="btn-close ls-no-js-hidden" data-bs-dismiss="alert"><span class="visually-hidden">{{ gT("Close") }}</span></button>
         {{ aSurveyInfo.saved.text }}
     </div>
 {% endif %}

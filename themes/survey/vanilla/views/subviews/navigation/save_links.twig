@@ -1,26 +1,27 @@
 {#
-    LimeSurvey
-    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
-    All rights reserved.
-    License: GNU/GPL License v2 or later, see LICENSE.php
-    LimeSurvey is free software. This version may have been modified pursuant
-    to the GNU General Public License, and as distributed it includes or
-    is derivative of works licensed under the GNU General Public License or
-    other free or open source software licenses.
-    See COPYRIGHT.php for copyright notices and details.
+LimeSurvey
+Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+All rights reserved.
+License: GNU/GPL License v2 or later, see LICENSE.php
+LimeSurvey is free software. This version may have been modified pursuant
+to the GNU General Public License, and as distributed it includes or
+is derivative of works licensed under the GNU General Public License or
+other free or open source software licenses.
+See COPYRIGHT.php for copyright notices and details.
 
 
 
-    (¯`·._.·(¯`·._.·  Save/Load buttons  ·._.·´¯)·._.·´¯)
+(¯`·._.·(¯`·._.·  Save/Load buttons  ·._.·´¯)·._.·´¯)
 
-    Display the buttons to load/save a survey.
-    There are many cases when those button are not shown:
-    via survey configuration, at start page, when survey is completed, etc
+Display the buttons to load/save a survey.
+There are many cases when those button are not shown:
+via survey configuration, at start page, when survey is completed, etc
 #}
 {% if aSurveyInfo.aNavigator.load.show == "Y" %}
     <!-- Load unfinished survey button -->
-    <li class="{{ aSurveyInfo.class.loadlinksli }}" {{ aSurveyInfo.attr.loadlinksli }}>
-        <a href="#" data-limesurvey-submit='{ "loadall":"loadall" }' class='{{ aSurveyInfo.class.loadlinkslia }} animate' {{ aSurveyInfo.attr.loadlinkslia }}>
+    <li class="nav-item ls-no-js-hidden px-2" {{ aSurveyInfo.attr.loadlinksli }}>
+        <a href="#" data-limesurvey-submit='{ "loadall":"loadall" }'
+           class='nav-link ls-link-action ls-link-loadall'>
             {{ gT('Load unfinished survey') }}
         </a>
     </li>
@@ -28,8 +29,8 @@
 
 {% if aSurveyInfo.aNavigator.save.show == "Y" %}
     <!-- Resume later button -->
-    <li class="{{ aSurveyInfo.class.savelinksli }}" {{ aSurveyInfo.attr.savelinksli }}>
-        <a href="#" data-limesurvey-submit='{ "saveall":"saveall" }' class='{{ aSurveyInfo.class.savelinkslia }} animate'>
+    <li class="nav-item ls-no-js-hidden">
+        <a href="#" data-limesurvey-submit='{ "saveall":"saveall" }' class='nav-link'>
             {{ gT('Resume later') }}
         </a>
         {% if(aSurveyInfo.saved.text and aSurveyInfo.options.showpopups > 0) %}
@@ -44,7 +45,7 @@
                     delay: { 'show': 500, 'hide': 100 },
                     trigger: 'click',
                 }).popover('show');
-                setTimeout(function(){ $('.alert-popup').popover('destroy'); }, 3500);
+                setTimeout(function(){ $('.alert-popup').popover('dispose'); }, 3500);
                 ", "POS_POSTSCRIPT" ) }}
         {% endif %}
     </li>

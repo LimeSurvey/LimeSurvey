@@ -1,0 +1,63 @@
+{
+    "name": "pear/spreadsheet_excel_writer",
+    "type": "library",
+    "description": "Allows writing of Excel spreadsheets without the need for COM objects. Supports formulas, images (BMP) and all kinds of formatting for text and cells.",
+    "license": "LGPL-2.1-or-later",
+    "authors": [
+        {
+            "name": "Carsten Schmitz",
+            "email": "cschmitz@limesurvey.org",
+            "role": "Lead"
+        },
+        {
+            "name": "Xavier Noguer",
+            "email": "xnoguer@php.net",
+            "role": "Lead"
+        },
+        {
+            "name": "Franck Lefevre",
+            "email": "progi1984@gmail.com",
+            "role": "Developer"
+        },
+        {
+            "name": "Mika Tuupola",
+            "email": "tuupola@appelsiini.net",
+            "role": "Developer"
+        },
+        {
+            "name": "Alexey Kopytko",
+            "email": "alexey@kopytko.com",
+            "role": "Lead"
+        }
+    ],
+    "require": {
+        "php": ">=5.6",
+        "pear/ole": ">=1.0.0RC4",
+        "pear/pear-core-minimal": "^1.10"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^2",
+        "php-coveralls/php-coveralls": "^2.2",
+        "phpunit/phpunit": ">=5 <10",
+        "sanmai/phpunit-legacy-adapter": "^6 || ^8"
+    },
+    "autoload": {
+        "psr-0": {
+            "Spreadsheet": ""
+        }
+    },
+    "autoload-dev": {
+        "psr-0": {
+            "Test": "test"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "include-path": [
+        "./"
+    ],
+    "support": {
+        "issues": "http://pear.php.net/bugs/search.php?cmd=display&package_name[]=Spreadsheet_Excel_Writer",
+        "source": "https://github.com/pear/Spreadsheet_Excel_Writer"
+    }
+}

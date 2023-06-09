@@ -13,10 +13,10 @@
 
     <!-- The upload button -->
     <div class="upload-div">
-        <button id="button_<?=$qid?>" class="btn btn-default" type="button" ><?=gT("Select file")?></button>
+        <button id="button_<?=$qid?>" class="btn btn-outline-secondary" type="button" ><?=gT("Select file")?></button>
     </div>
     <p class="alert alert-info uploadmsg"><?=sprintf(gT("You can upload %s under %s KB each."), $qidattributes['allowed_filetypes'], $qidattributes['max_filesize'])?></p>
-    <div id="uploadstatus_<?=$qid?>" class="uploadstatus alert alert-warning hidden"></div>
+    <div id="uploadstatus_<?=$qid?>" class="uploadstatus alert alert-warning d-none"></div>
     <!-- The list of uploaded files -->
 </div>
         

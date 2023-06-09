@@ -7,8 +7,10 @@ var formSubmitting = false;
 var changed = false;
 
 $(document).on('ready  pjax:scriptcomplete', function(){
-    var sourceItem;
+    /* @var boolean did we disable parent change , only on ol.organizer in page */
+    let disableParentChange = $('ol.organizer').data('disableparentchange');
     $('ol.organizer').nestedSortable({
+        disableParentChange: disableParentChange,
         doNotClear: true,
         disableNesting: 'no-nest',
         disableNestingClass: 'no-nest',
@@ -73,7 +75,9 @@ $(document).on('ready  pjax:scriptcomplete', function(){
 /**
  * Show confirmation message when user leaves without saving
  */
-window.onload = function() {
+// Don't show the confirmation prompt for now. It doesn't work when "leaving" through PJAX,
+// and it interferes with save.
+/*window.onload = function() {
     window.addEventListener("beforeunload", function (e) {
         if (formSubmitting) {
             return undefined;
@@ -86,7 +90,7 @@ window.onload = function() {
             return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
         }
     });
-}
+}*/
 
 /**
  * Fix big question part
