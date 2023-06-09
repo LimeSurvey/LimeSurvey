@@ -354,6 +354,9 @@ class labels extends Survey_Common_Action
             $lid = insertlabelset();
         }
         if (($action == "modlabelsetanswers" || ($action == "ajaxmodlabelsetanswers")) && Permission::model()->hasGlobalPermission('labelsets', 'update')) {
+            if (!$lid) {
+                throw new CHttpException(400);
+            }
             modlabelsetanswers($lid);
         }
         if ($action == "deletelabelset" && Permission::model()->hasGlobalPermission('labelsets', 'delete')) {
@@ -443,7 +446,7 @@ class labels extends Survey_Common_Action
         }
         $language = trim($language);
         if ($lid == 0) {
-            if(!Permission::model()->hasGlobalPermission('labelsets', 'create')) {
+            if (!Permission::model()->hasGlobalPermission('labelsets', 'create')) {
                 throw new CHttpException(403);
             }
             $lset = new LabelSet;
@@ -453,7 +456,7 @@ class labels extends Survey_Common_Action
 
             $lid = getLastInsertID($lset->tableName());
         } else {
-            if(!Permission::model()->hasGlobalPermission('labelsets', 'update')) {
+            if (!Permission::model()->hasGlobalPermission('labelsets', 'update')) {
                 throw new CHttpException(403);
             }
             Label::model()->deleteAll('lid = :lid', array(':lid' => $lid));
