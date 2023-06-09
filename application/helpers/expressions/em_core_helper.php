@@ -2885,6 +2885,28 @@ function exprmgr_sumifop($args)
 }
 
 /**
+ * Validate a Gregorian date
+ * @see https://www.php.net/checkdate
+ * Check if all params are valid before send it to PHP checkdate to avoid PHP Warning
+ *
+ * @param mixed $month
+ * @param mixed $day
+ * @param mixed $year
+ * @return boolean
+ */
+function exprmgr_checkdate($month, $day, $year)
+{
+    if (
+        (!ctype_digit($month) && !is_int($month))
+        || (!ctype_digit($day) && !is_int($day))
+        || (!ctype_digit($year) && !is_int($year))
+    ) {
+        return false;
+    }
+    return checkdate(intval($month), intval($day), intval($year));
+}
+
+/**
  * Find the closest matching Numerical input values in a list an replace it by the
  * corresponding value within another list
  *
