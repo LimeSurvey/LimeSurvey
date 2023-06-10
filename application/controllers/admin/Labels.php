@@ -137,7 +137,7 @@ class Labels extends SurveyCommonAction
             }
             $options = $aImportResults = [];
             $options['checkforduplicates'] = 'off';
-            if ($_POST['checkforduplicates'] == 1) {
+            if (App()->getRequest()->getPost('checkforduplicates') == 1) {
                 $options['checkforduplicates'] = 'on';
             }
 
@@ -384,7 +384,7 @@ class Labels extends SurveyCommonAction
         $languageids  = Yii::app()->request->getPost('languageids');
         $oLabelSet = new LabelSet();
         $oLabelSet->label_name = $label_name;
-        $oLabelSet->owner_id = Permission::model()->getUserId();
+        $oLabelSet->owner_id = App()->user->getId();
         $oLabelSet->languages = implode(' ', $languageids);
         if ($oLabelSet->save()) {
             Yii::app()->setFlashMessage(gT("Label set successfully created."), 'success');
@@ -496,6 +496,7 @@ class Labels extends SurveyCommonAction
             $lset             = new LabelSet();
             $lset->label_name = $request->getPost('laname');
             $lset->languages  = trim($languages);
+            $lset->owner_id   = App()->user->getId();
             $lset->save();
             $lid = getLastInsertID($lset->tableName());
             $this->saveLabelSetAux($lid, $codes, $answers, $assessmentValues);
@@ -616,7 +617,7 @@ class Labels extends SurveyCommonAction
 
     /**
      * New label set from question editor
-     *
+     * @deprecated : not used in 6.0 and before
      * @return void
      */
     public function newLabelSetFromQuestionEditor()
@@ -626,6 +627,7 @@ class Labels extends SurveyCommonAction
         $aLabels = $aLabelSet['labels'];
         $oLabelSet->label_name = $aLabelSet['label_name'];
         $oLabelSet->languages = $aLabelSet['languages'];
+        $oLabelSet->owner_id = App()->user->getId();
         $result = $oLabelSet->save();
         $aDebug['saveLabelSet'] = $result;
 
