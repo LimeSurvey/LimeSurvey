@@ -191,16 +191,28 @@ class Labels extends SurveyCommonAction
             $pageTitle = gT('Create or import new label set(s)');
             $lid = null;
         }
+
         /* other sa ? What is the default ? */
         $langidsarray = explode(" ", trim((string) $langids)); // Make an array of it
         /* unknow usage */
         $panecookie = 'new';
+        /* render data */
         $aData['langids'] = $langids;
         $aData['langidsarray'] = $langidsarray;
         $aData['panecookie'] = $panecookie;
         $aData['tabitem'] = $tabitem;
         $aViewUrls['editlabel_view'][] = $aData;
         $aData['topbar']['title'] = $pageTitle;
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/admin/labels/partials/topbarBtns_newimport/rightSideButtons',
+            [
+                'hasPermissionExport' => $lid && LabelSet::model()->findByPk($lid)->haspermission('export')
+            ],
+            true
+        );
+        $aData['topbar']['title'] = $pageTitle;
+        $aData['topbar']['backLink'] = App()->createUrl('admin/labels/sa/view');
+
         $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
             '/admin/labels/partials/topbarBtns_newimport/rightSideButtons',
             [
@@ -489,7 +501,7 @@ class Labels extends SurveyCommonAction
             $this->saveLabelSetAux($lid, $codes, $answers, $assessmentValues);
             $transaction->commit();
         } catch (Exception $exception) {
-            $transation->rollback();
+            $transaction->rollback();
             throw new CHttpException(500, $exception->getMessage());
         }
 

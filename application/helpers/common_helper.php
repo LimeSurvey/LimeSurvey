@@ -2210,7 +2210,7 @@ function SendEmailMessage($body, $subject, $to, string $from, $sitename, $ishtml
 * @param boolean $bKeepSpan set to true for keep span, used for expression manager. Default: false
 * @param boolean $bDecodeHTMLEntities If set to true then all HTML entities will be decoded to the specified charset. Default: false
 * @param string $sCharset Charset to decode to if $decodeHTMLEntities is set to true. Default: UTF-8
-* @param string $bStripNewLines strip new lines if true, if false replace all new line by \r\n. Default: true
+* @param boolean $bStripNewLines strip new lines if true, if false replace all new line by \r\n. Default: true
 *
 * @return string  Cleaned text
 */
@@ -3697,7 +3697,7 @@ function cleanLanguagesFromSurvey($iSurveyID, $availlangs)
 
 /**
 * fixLanguageConsistency() fixes missing groups, questions, answers, quotas & assessments for languages on a survey
-* @param string $sid - the currently selected survey
+* @param int $sid - the currently selected survey
 * @param string $availlangs - space separated list of additional languages in survey - if empty all additional languages of a survey are checked against the base language
 * @param string $baselang - language to use as base (useful when changing the base language) - if empty, it will be picked from the survey
 * @return bool - always returns true

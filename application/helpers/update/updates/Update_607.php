@@ -16,11 +16,26 @@ class Update_607 extends DatabaseUpdateBase
      */
     public function up()
     {
-        $table = $this->db->getSchema()->getTable('{{labelsets}}');
-        if (!in_array('owner_id', $table->getColumnNames())) {
-            $this->db->createCommand()->addColumn('{{labelsets}}', 'owner_id', "integer NULL");
-            $this->db->createCommand()->createIndex('{{idx1_labelsets}}', '{{labelsets}}', 'owner_id', false);
-            $this->db->createCommand()->createIndex('{{idx2_labelsets}}', '{{labelsets}}', ['lid','owner_id'], false);
-        }
+        $this->db->createCommand()->update(
+            '{{surveymenu_entries}}',
+            [
+            "title" => "Overview question & groups",
+            "menu_title" => "Overview question & groups",
+            "menu_description" => "Overview question and groups",
+            ],
+            'name=:name',
+            [':name' => 'listQuestions']
+        );
+
+        $this->db->createCommand()->delete(
+            '{{surveymenu_entries}}',
+            'name=:name',
+            [':name' => 'listQuestionGroups']
+        );
+        $this->db->createCommand()->delete(
+            '{{surveymenu_entries}}',
+            'name=:name',
+            [':name' => 'reorder']
+        );
     }
 }

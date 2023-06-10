@@ -37,6 +37,15 @@ class TestBaseClass extends TestCase
     {
         parent::setUpBeforeClass();
 
+        // Enable Debug and Error Reporting if logging is enabled
+        $isDebug = getenv('RUNNER_DEBUG', false);
+        // fwrite(STDERR, 'Error Reporting and Debug: ' . ($isDebug ? 'Yes' : 'No'));
+        if ($isDebug) {
+            error_reporting(E_ALL);
+            ini_set('display_errors', '1');
+            ini_set('display_startup_errors', '1');    
+        }
+
         // Clear database cache.
         \Yii::app()->db->schema->refresh();
 

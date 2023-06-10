@@ -2,6 +2,7 @@
 
 use LimeSurvey\Models\Services\CopySurveyResources;
 use LimeSurvey\Models\Services\FilterImportedResources;
+use LimeSurvey\Models\Services\GroupHelper;
 
 /**
  * Class SurveyAdministrationController
@@ -225,9 +226,9 @@ class SurveyAdministrationController extends LSBaseController
         }
         $aData['model'] = new Survey('search');
         $aData['groupModel'] = new SurveysGroups('search');
-
         $aData['topbar']['title'] = gT('Survey list');
-        $aData['topbar']['rightButtons'] = $this->renderPartial('partial/topbarBtns/rightSideButtons', [], true);
+        $aData['topbar']['backLink'] = App()->createUrl('admin/index');
+
         $aData['topbar']['middleButtons'] = $this->renderPartial('partial/topbarBtns/leftSideButtons', [], true);
 
         $this->aData = $aData;
@@ -1709,6 +1710,9 @@ class SurveyAdministrationController extends LSBaseController
 
                 $aData['surveyid'] = $iSurveyID;
                 Yii::app()->db->schema->refresh();
+
+                //after deactivation redirect to survey overview and show message...
+                //$this->redirect(['surveyAdministration/view', 'surveyid' => $iSurveyID]);
             }
 
             $aData['sidemenu']['state'] = false;
@@ -2077,12 +2081,24 @@ class SurveyAdministrationController extends LSBaseController
         }
 
         if ($thereIsPostData) {
-            // Save the new ordering
-            $this->reorderGroup($iSurveyID);
+            // Save the new ordering.
+            $orgdata = $this->getOrgdata();
+
+            $groupHelper = new LimeSurvey\Models\Services\GroupHelper();
+            $result = $groupHelper->reorderGroup($iSurveyID, $orgdata);
+
+            if ($result['type'] === 'success') {
+                App()->setFlashMessage(gT("The new question group/question order was successfully saved."));
+            } elseif ($result['type'] === 'error') {
+                foreach ($result['question-titles'] as $questionTitle) {
+                    App()->setFlashMessage(sprintf(gT("Unable to reorder question %s."), $questionTitle), 'warning');
+                }
+            }
 
             $closeAfterSave = $request->getPost('close-after-save') === 'true';
             if ($closeAfterSave) {
-                $this->redirect(array('surveyAdministration/view/surveyid/' . $iSurveyID));
+                 // save reordering redirect to listquestion page as this part is moved there
+                 $this->redirect($this->createUrl('questionAdministration/listQuestions', ['surveyid' => $iSurveyID , 'activeTab' => 'reorder']));
             }
         }
         $aData = $this->showReorderForm($iSurveyID);
@@ -2615,63 +2631,6 @@ class SurveyAdministrationController extends LSBaseController
         }
 
         return $vars;
-    }
-
-    /**
-     * Reorder groups and questions
-     *
-     * REFACTORED in SurveyAdministration
-     *
-     * @param int $iSurveyID Given Survey ID
-     *
-     * @return void
-     */
-    private function reorderGroup($iSurveyID)
-    {
-        $grouporder = 1;
-        $orgdata = $this->getOrgdata();
-        foreach ($orgdata as $ID => $parent) {
-            if ($parent == 'root' && $ID[0] == 'g') {
-                QuestionGroup::model()->updateAll(
-                    array('group_order' => $grouporder),
-                    'gid=:gid',
-                    array(':gid' => (int) substr($ID, 1))
-                );
-                $grouporder++;
-            } elseif ($ID[0] == 'q') {
-                $qid = (int) substr($ID, 1);
-                $gid = (int) substr((string) $parent, 1);
-                if (!isset($aQuestionOrder[$gid])) {
-                    $aQuestionOrder[$gid] = 0;
-                }
-
-                $oQuestion = Question::model()->findByPk($qid);
-                /* @var integer old value of gid to check if updated */
-                $oldGid = $oQuestion->gid;
-                /* Update quuestion, and update other if saved */
-                $oQuestion->gid = $gid;
-                $oQuestion->question_order = $aQuestionOrder[$gid];
-                if ($oQuestion->save(true)) {
-                    if ($oldGid != $gid) {
-                        fixMovedQuestionConditions($qid, $oldGid, $gid, $iSurveyID);
-                    }
-                    Question::model()->updateAll(
-                        array(
-                            'question_order' => $aQuestionOrder[$gid],
-                            'gid' => $gid
-                        ),
-                        'qid=:qid',
-                        array(':qid' => $qid)
-                    );
-                    Question::model()->updateAll(array('gid' => $gid), 'parent_qid=:parent_qid', array(':parent_qid' => $qid));
-                    $aQuestionOrder[$gid]++;
-                } else {
-                    App()->setFlashMessage(sprintf(gT("Unable to reorder question %s."), $oQuestion->title), 'warning');
-                }
-            }
-        }
-        LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
-        App()->setFlashMessage(gT("The new question group/question order was successfully saved."));
     }
 
     /**
@@ -3292,8 +3251,6 @@ class SurveyAdministrationController extends LSBaseController
                 'Subquestion ID' => gT('Subquestion ID'),
                 'Add URL parameter' => gT('Add URL parameter'),
                 'Edit URL parameter' => gT('Edit URL parameter'),
-                'Parameter' => gT('Parameter'),
-                'Target question' => gT('Target question'),
                 'No target question' => gT('(No target question)'),
                 'Are you sure you want to delete this URL parameter?' => gT('Are you sure you want to delete this URL parameter?'),
                 'No parameters defined' => gT('No parameters defined'),
