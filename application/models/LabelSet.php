@@ -225,7 +225,8 @@ class LabelSet extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * get criteria from Permission
+     * Get criteria from Permission
+     * If currrent user didn't have global permission (read) : add Permission criteria, currentky only owner_id check
      * @param int|null $userid for this user id , if not set : get current one
      * @return CDbCriteria
      */
