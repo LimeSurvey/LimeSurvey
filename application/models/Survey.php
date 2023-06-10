@@ -550,11 +550,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
             array('startdate', 'date','format' => ['yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m'],'allowEmpty' => true),
             array('datecreated', 'date','format' => ['yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m'],'allowEmpty' => true),
             array('expires', 'checkExpireAfterStart'),
-            // The Google Analytics Tracking ID is inserted in a JS script. If the following rule is changed, make sure
-            // that it doesn't render it vulnerable to XSS attacks.
-            array('googleanalyticsapikey', 'match', 'pattern' => '/^[a-zA-Z\-\d]*$/',
-                'message' => gT('Google Analytics Tracking ID may only contain alphanumeric characters and hyphens.'),
-            ),
         );
     }
 
@@ -846,13 +841,11 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function getGoogleanalyticsapikey()
     {
-        $key = null;
         if ($this->googleanalyticsapikey === "9999useGlobal9999") {
-            $key = trim((string) Yii::app()->getConfig('googleanalyticsapikey'));
+            return trim((string) Yii::app()->getConfig('googleanalyticsapikey'));
         } else {
-            $key = trim((string) $this->googleanalyticsapikey);
+            return trim((string) $this->googleanalyticsapikey);
         }
-        return sanitize_alphanumeric($key);
     }
 
     /**
