@@ -2,13 +2,6 @@
 
 namespace LimeSurvey\Helpers\Update;
 
-use Exception;
-
-/**
- * Fix organizer link : icon and survey activated
- * @package LimeSurvey\Helpers\Update
- */
-
 class Update_607 extends DatabaseUpdateBase
 {
     /**
