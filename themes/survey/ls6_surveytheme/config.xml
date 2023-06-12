@@ -26,6 +26,10 @@
         <lastUpdate>2023-03-15 12:00:00</lastUpdate>
     </metadata>
 
+    <compatibility>
+        <version>6.0</version>
+    </compatibility>
+
     <!--
         Here the list of the css/js files to add to the template package.
         About packages in Yii: http://www.yiiframework.com/doc/api/1.1/CClientScript#packages-detail
@@ -152,7 +156,6 @@
             </dropdownoptions>
         </font>
         <cssframework type="dropdown" category="Simple options" width="12" title="Variations" parent="cssframework">
-            apple
             <dropdownoptions>
                 <option data-value="css/variations/theme_apple.css" value="apple">Apple</option>
                 <option data-value="css/variations/theme_blueberry.css" value="blueberry">Blueberry</option>

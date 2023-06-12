@@ -26,6 +26,10 @@
         <extends>vanilla</extends>
     </metadata>
 
+    <compatibility>
+        <version>6.0</version>
+    </compatibility>
+
     <!--
         Here the list of the css/js files to add to the template package.
         About packages in Yii: http://www.yiiframework.com/doc/api/1.1/CClientScript#packages-detail
