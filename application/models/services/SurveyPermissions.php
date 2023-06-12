@@ -457,14 +457,14 @@ class SurveyPermissions
 
     /**
      * Returns the list of user ids that can be used in the user selector.
-     * @return int[]|null
+     * @return int[]
      */
     private function getFilteredUserIdList()
     {
         if (!isset($this->filteredUserIdList)) {
             $this->filteredUserIdList = getUserList('onlyuidarray');
         }
-        return $this->filteredUserIdList;
+        return $this->filteredUserIdList ?? [];
     }
 
     /**
