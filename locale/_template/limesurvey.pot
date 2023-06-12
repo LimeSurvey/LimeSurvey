@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2023-06-05 09:15:24+00:00\n"
+"POT-Creation-Date: 2023-06-12 08:43:19+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -372,7 +372,7 @@ msgstr ""
 
 #: application/controllers/AssessmentController.php:271
 #: application/core/LsDefaultDataSets.php:501
-#: application/models/Survey.php:2178
+#: application/models/Survey.php:2194
 #: application/models/TemplateManifest.php:172
 #: application/views/admin/survey/copySurvey_view.php:54
 #: application/views/assessment/assessments_view.php:14
@@ -3956,102 +3956,102 @@ msgstr ""
 msgid "Deleting orphaned quota members: %u quota members deleted"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:472
+#: application/controllers/admin/CheckIntegrity.php:479
 msgid "Deleting orphaned quota languages: %u quota languages deleted"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:487
+#: application/controllers/admin/CheckIntegrity.php:501
 msgid "Deleting orphaned quotas: %u quotas deleted"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:509
+#: application/controllers/admin/CheckIntegrity.php:523
 msgid "Deleting orphaned default values: %u default values deleted."
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:528
+#: application/controllers/admin/CheckIntegrity.php:542
 msgid "Unable to delete question attributes for question %s"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:531
+#: application/controllers/admin/CheckIntegrity.php:545
 msgid "Deleting question attributes: %u attributes deleted"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:550
+#: application/controllers/admin/CheckIntegrity.php:564
 msgid "Unable to delete condition %s"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:553
+#: application/controllers/admin/CheckIntegrity.php:567
 msgid "Deleting conditions: %u conditions deleted"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:760
+#: application/controllers/admin/CheckIntegrity.php:774
 msgid "No matching CQID"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:770
+#: application/controllers/admin/CheckIntegrity.php:784
 msgid "No matching QID"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:785
+#: application/controllers/admin/CheckIntegrity.php:799
 msgid "No matching CFIELDNAME group!"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:792
+#: application/controllers/admin/CheckIntegrity.php:806
 msgid "No CFIELDNAME field set!"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:851
+#: application/controllers/admin/CheckIntegrity.php:865
 msgid "No matching survey"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:861
-#: application/controllers/admin/CheckIntegrity.php:939
+#: application/controllers/admin/CheckIntegrity.php:875
+#: application/controllers/admin/CheckIntegrity.php:953
 msgid "No matching group"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:874
-#: application/controllers/admin/CheckIntegrity.php:951
+#: application/controllers/admin/CheckIntegrity.php:888
+#: application/controllers/admin/CheckIntegrity.php:965
 msgid "No parent question"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:885
+#: application/controllers/admin/CheckIntegrity.php:899
 msgid "No parent answer"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:927
+#: application/controllers/admin/CheckIntegrity.php:941
 msgid "The related survey is missing."
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:964
+#: application/controllers/admin/CheckIntegrity.php:978
 msgid "There is no matching survey."
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:977
+#: application/controllers/admin/CheckIntegrity.php:991
 #: application/models/SurveysGroups.php:365
 msgid "No parent group"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:989
+#: application/controllers/admin/CheckIntegrity.php:1003
 msgid "There is no matching user %s in group %s."
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:1028
+#: application/controllers/admin/CheckIntegrity.php:1042
 msgid "responses"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:1033
+#: application/controllers/admin/CheckIntegrity.php:1047
 msgid "timings"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:1054
+#: application/controllers/admin/CheckIntegrity.php:1068
 msgid "Survey ID %d saved at %s containing %d record(s) (%s)"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:1105
+#: application/controllers/admin/CheckIntegrity.php:1119
 msgid "Survey ID %d saved at %s containing %d record(s)"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:1170
+#: application/controllers/admin/CheckIntegrity.php:1184
 msgid "Some automatic fixes were already applied."
 msgstr ""
 
@@ -6144,7 +6144,7 @@ msgstr ""
 
 #: application/controllers/admin/Quotas.php:156
 #: application/core/LsDefaultDataSets.php:473
-#: application/models/Survey.php:2185
+#: application/models/Survey.php:2201
 #: application/views/admin/survey/copySurvey_view.php:55
 #: application/views/surveyAdministration/importSurvey_view.php:83
 msgid "Quotas"
@@ -6227,7 +6227,7 @@ msgstr ""
 #: application/helpers/questionHelper.php:430
 #: application/helpers/questionHelper.php:829
 #: application/helpers/userstatistics_helper.php:2584
-#: application/models/Survey.php:1540 application/models/Survey.php:2200
+#: application/models/Survey.php:1540 application/models/Survey.php:2216
 #: application/views/admin/export/statistics_subviews/_statistics_header.php:3
 #: application/views/admin/export/statistics_user_view.php:18
 #: application/views/admin/export/statistics_view.php:23
@@ -6296,7 +6296,7 @@ msgstr ""
 #: application/controllers/admin/SurveysGroupsController.php:329
 #: application/controllers/admin/globalsettings.php:522
 #: application/core/LsDefaultDataSets.php:895
-#: application/models/Survey.php:2250 application/models/SurveysGroups.php:314
+#: application/models/Survey.php:2266 application/models/SurveysGroups.php:314
 #: application/models/SurveysGroups.php:449
 msgid "Survey settings"
 msgstr ""
@@ -7348,7 +7348,7 @@ msgid "Open general survey settings"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:80
-#: application/core/LsDefaultDataSets.php:82 application/models/Survey.php:2234
+#: application/core/LsDefaultDataSets.php:82 application/models/Survey.php:2250
 #: tmp/runtime/twig_cache/4b/4bc999cec5ba23e8686a2429d9d8fbc0fd1efd598bd4f547a9796e19c4d5e89e.php:42
 msgid "Survey text elements"
 msgstr ""
@@ -7515,7 +7515,7 @@ msgstr ""
 #: application/core/LsDefaultDataSets.php:556
 #: application/core/LsDefaultDataSets.php:557
 #: application/core/LsDefaultDataSets.php:558
-#: application/models/Survey.php:2190
+#: application/models/Survey.php:2206
 #: application/views/admin/export/exportresult_panels/_responses.php:4
 #: application/views/admin/survey/surveybar_statistics.php:18
 #: application/views/admin/survey/surveybar_statistics.php:23
@@ -10362,7 +10362,7 @@ msgstr ""
 #: application/helpers/userstatistics_helper.php:2595
 #: application/helpers/userstatistics_helper.php:2698
 #: application/helpers/userstatistics_helper.php:2799
-#: application/models/Survey.php:2210 application/models/Surveymenu.php:336
+#: application/models/Survey.php:2226 application/models/Surveymenu.php:336
 #: application/views/admin/participants/modal_subviews/_addToSurvey.php:22
 #: application/views/admin/super/quickmenu.php:6
 msgid "Survey"
@@ -15541,80 +15541,80 @@ msgstr ""
 msgid "General settings & texts"
 msgstr ""
 
-#: application/models/Survey.php:2067
+#: application/models/Survey.php:2083
 msgid "Show policy"
 msgstr ""
 
-#: application/models/Survey.php:2179
+#: application/models/Survey.php:2195
 msgid "Permission to create/view/update/delete assessments rules for a survey"
 msgstr ""
 
-#: application/models/Survey.php:2186
+#: application/models/Survey.php:2202
 msgid "Permission to create/view/update/delete quota rules for a survey"
 msgstr ""
 
-#: application/models/Survey.php:2191
+#: application/models/Survey.php:2207
 msgid "Permission to create(data entry)/view/update/delete/import/export responses"
 msgstr ""
 
-#: application/models/Survey.php:2201
+#: application/models/Survey.php:2217
 msgid "Permission to view statistics"
 msgstr ""
 
-#: application/models/Survey.php:2211
+#: application/models/Survey.php:2227
 msgid "Permission on survey (delete). Read permission is used to give access to this group."
 msgstr ""
 
-#: application/models/Survey.php:2220
+#: application/models/Survey.php:2236
 msgid "Survey activation"
 msgstr ""
 
-#: application/models/Survey.php:2221
+#: application/models/Survey.php:2237
 msgid "Permission to activate/deactivate a survey"
 msgstr ""
 
-#: application/models/Survey.php:2225
+#: application/models/Survey.php:2241
 msgid "Survey content"
 msgstr ""
 
-#: application/models/Survey.php:2226
+#: application/models/Survey.php:2242
 msgid "Permission to create/view/update/delete/import/export the questions, groups, answers & conditions of a survey"
 msgstr ""
 
-#: application/models/Survey.php:2235
+#: application/models/Survey.php:2251
 msgid "Permission to view/update the survey text elements, e.g. survey title, survey description, welcome and end message"
 msgstr ""
 
-#: application/models/Survey.php:2241
+#: application/models/Survey.php:2257
 msgid "Survey security"
 msgstr ""
 
-#: application/models/Survey.php:2242
+#: application/models/Survey.php:2258
 msgid "Permission to modify survey security settings"
 msgstr ""
 
-#: application/models/Survey.php:2251
+#: application/models/Survey.php:2267
 msgid "Permission to view/update the survey settings including survey participants table creation"
 msgstr ""
 
-#: application/models/Survey.php:2255
+#: application/models/Survey.php:2271
 #: application/views/admin/survey/subview/accordion/_accordion_container.php:109
 msgid "Participants"
 msgstr ""
 
-#: application/models/Survey.php:2255
+#: application/models/Survey.php:2271
 msgid "Permission to create/update/delete/import/export participants"
 msgstr ""
 
-#: application/models/Survey.php:2263
+#: application/models/Survey.php:2279
 msgid "Quick translation"
 msgstr ""
 
-#: application/models/Survey.php:2264
+#: application/models/Survey.php:2280
 msgid "Permission to view & update the translations using the quick-translation feature"
 msgstr ""
 
-#: application/models/Survey.php:2391
+#: application/models/Survey.php:2407
 #: application/views/admin/survey/subview/accordion/_publication_panel.php:20
 msgid "Expiration date can't be lower than the start date"
 msgstr ""
