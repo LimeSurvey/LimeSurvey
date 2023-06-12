@@ -226,8 +226,3 @@
          </div>
     </div>
 </div>
-<?php
-App()->getClientScript()->registerScript('QueXMLExportBSSwitcher', "
-LS.renderBootstrapSwitch();
-", LSYii_ClientScript::POS_POSTSCRIPT);
-?>
