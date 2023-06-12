@@ -214,6 +214,11 @@ foreach ($systemInfos as $key => $systemInfo) {
     </div>
 </div>
 
+<?php
+//modal for survey activation
+App()->getController()->renderPartial('/surveyAdministration/partial/topbar/_modalSurveyActivation');
+?>
+
 <!-- Modal for admin notifications -->
 <div id="admin-notification-modal" class="modal fade" role="dialog">
     <div class="modal-dialog">

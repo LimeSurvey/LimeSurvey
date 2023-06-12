@@ -81,7 +81,7 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
 
         $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
 
-        $question = \Question::model()->findByAttributes(array('title' => 'G01Q02'));
+        $question = \Question::model()->findByAttributes(array('sid' => self::$surveyId,'title' => 'G01Q02'));
         $qid = $question->qid;
 
         $result = $this->handler->get_question_properties($sessionKey, $qid);
@@ -150,7 +150,7 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
 
         $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
 
-        $question = \Question::model()->findByAttributes(array('title' => 'G01Q02'));
+        $question = \Question::model()->findByAttributes(array('sid' => self::$surveyId,'title' => 'G01Q02'));
         $qid = $question->qid;
 
         //Get properties in Spanish
@@ -190,7 +190,7 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
 
         $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
 
-        $question = \Question::model()->findByAttributes(array('title' => 'G01Q03'));
+        $question = \Question::model()->findByAttributes(array('sid' => self::$surveyId,'title' => 'G01Q03'));
         $qid = $question->qid;
 
         $result = $this->handler->get_question_properties($sessionKey, $qid, null);
@@ -229,7 +229,7 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
 
         $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
 
-        $question = \Question::model()->findByAttributes(array('title' => 'G01Q04'));
+        $question = \Question::model()->findByAttributes(array('sid' => self::$surveyId,'title' => 'G01Q04'));
         $qid = $question->qid;
 
         $result = $this->handler->get_question_properties($sessionKey, $qid, null);
@@ -259,7 +259,7 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
 
         $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
 
-        $question = \Question::model()->findByAttributes(array('title' => 'G01Q05'));
+        $question = \Question::model()->findByAttributes(array('sid' => self::$surveyId,'title' => 'G01Q05'));
         $qid = $question->qid;
 
         $result = $this->handler->get_question_properties($sessionKey, $qid, null);
@@ -319,7 +319,7 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
 
         $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
 
-        $question = \Question::model()->findByAttributes(array('title' => 'G01Q06'));
+        $question = \Question::model()->findByAttributes(array('sid' => self::$surveyId,'title' => 'G01Q06'));
         $qid = $question->qid;
 
         $result = $this->handler->get_question_properties($sessionKey, $qid, null);
@@ -339,7 +339,7 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
     {
         $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
 
-        $question = \Question::model()->findByAttributes(array('title' => 'G01Q07'));
+        $question = \Question::model()->findByAttributes(array('sid' => self::$surveyId,'title' => 'G01Q07'));
         $qid = $question->qid;
 
         $result = $this->handler->get_question_properties($sessionKey, $qid, null);
