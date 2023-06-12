@@ -103,6 +103,7 @@ export var TemplateCoreClass = function () {
                     }
                     let questionContainer = $(this).parents('div.question-container');
                     questionContainer.addClass('input-error'); /* No difference betwwen error after submit and error before submit : think (Shnoulle) it's better to have a difference */
+                    $(this).find('span.fa-exclamation-circle').removeClass('d-none');
                 });
 
                 $(this).on('classChangeGood', function () {
@@ -115,6 +116,7 @@ export var TemplateCoreClass = function () {
                     }
                     let questionContainer = $(this).parents('div.question-container');
                     questionContainer.removeClass('input-error'); /* Not working with mandatory question ... */
+                    $(this).find('span.fa-exclamation-circle').addClass('d-none');
                 });
             });
 

@@ -15206,6 +15206,11 @@ a [class^=ri-], a [class*=" ri-"] {
   font-weight: 600;
   line-height: 32px;
 }
+.question-container .ls-question-message {
+  color: #1E1E1E;
+  font-style: italic;
+  font-size: 0.9975rem;
+}
 .question-container .question-number:empty,
 .question-container .question-code:empty {
   display: none;
@@ -15218,6 +15223,7 @@ a [class^=ri-], a [class*=" ri-"] {
   position: relative;
 }
 .question-container .question-valid-container {
+  margin-top: 10px;
   margin-bottom: 20px;
 }
 .question-container .asterisk {

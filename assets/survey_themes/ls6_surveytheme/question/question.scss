@@ -5,6 +5,11 @@
         font-weight : $font-weight-600;
         line-height : 32px;
     }
+    .ls-question-message {
+        color: $g-900;
+        font-style: italic;    
+        font-size: $font-size-sm;
+    }
     .question-number:empty,
     .question-code:empty {
         display : none
@@ -17,6 +22,7 @@
         position      : relative;
     }
     .question-valid-container {
+        margin-top: 10px;
         margin-bottom : 20px;
     }
     .asterisk {
