@@ -10,6 +10,9 @@ use LimeSurvey\Api\Transformer\{
 
 class TransformerInputSurvey extends Transformer
 {
+    /**
+     *  @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     */
     public function __construct()
     {
         $formatterYn = new FormatterYnToBool(true);

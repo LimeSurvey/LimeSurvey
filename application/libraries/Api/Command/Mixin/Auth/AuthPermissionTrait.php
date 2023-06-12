@@ -10,22 +10,38 @@ use LimeSurvey\Api\Command\Response\{
 
 trait AuthPermissionTrait
 {
+    /**
+     * @var ?Permission
+     */
     private $permissionModel = null;
 
+
+    /**
+     * @return void
+     */
     public function setPermissionModel(Permission $permissionModel)
     {
         $this->permissionModel = $permissionModel;
     }
 
+    /**
+     * @return Permission
+     */
     protected function getPermissionModel(): Permission
     {
-        if (!$this->permissionModel) {
+        if (!isset($this->permissionModel)) {
             $this->permissionModel = Permission::model();
         }
 
         return $this->permissionModel;
     }
 
+    /**
+     * @param string $sPermission
+     * @param string $sCRUD
+     * @param ?int $iUserID
+     * @return Response | boolean
+     */
     protected function hasGlobalPermission($sPermission, $sCRUD, $iUserID = null)
     {
         $result =
@@ -45,6 +61,13 @@ trait AuthPermissionTrait
         }
     }
 
+    /**
+     * @param int $iSurveyID
+     * @param string $sPermission
+     * @param string $sCRUD
+     * @param ?string $iUserID
+     * @return Response | boolean
+     */
     protected function hasSurveyPermission($iSurveyID, $sPermission, $sCRUD, $iUserID = null)
     {
         $result =

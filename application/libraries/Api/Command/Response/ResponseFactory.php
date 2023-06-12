@@ -14,6 +14,9 @@ use LimeSurvey\Api\Command\Response\{
 
 class ResponseFactory
 {
+    /**
+     * @param mixed $data
+     */
     public function makeSuccess($data = null): Response
     {
         return $this->make(
@@ -22,6 +25,9 @@ class ResponseFactory
         );
     }
 
+    /**
+     * @param mixed $data
+     */
     public function makeError($data = null): Response
     {
         return $this->make(
@@ -30,6 +36,9 @@ class ResponseFactory
         );
     }
 
+    /**
+     * @param mixed $data
+     */
     public function makeErrorNotFound($data = null): Response
     {
         return $this->make(
@@ -38,6 +47,9 @@ class ResponseFactory
         );
     }
 
+    /**
+     * @param mixed $data
+     */
     public function makeErrorBadRequest($data = null): Response
     {
         return $this->make(
@@ -46,6 +58,9 @@ class ResponseFactory
         );
     }
 
+    /**
+     * @param mixed $data
+     */
     public function makeErrorUnauthorised($data = null): Response
     {
         return $this->make(
@@ -54,6 +69,10 @@ class ResponseFactory
         );
     }
 
+    /**
+     * @param \Exception $e
+     * @param ?string $message
+     */
     public function makeException(\Exception $e, $message = null): Response
     {
         return $this->make(
@@ -62,6 +81,10 @@ class ResponseFactory
         );
     }
 
+    /**
+     * @param mixed $data
+     * @param Status $status
+     */
     public function make($data, Status $status): Response
     {
         return new Response(

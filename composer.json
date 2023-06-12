@@ -79,6 +79,8 @@
 		],
 		"phpunit": "./vendor/bin/phpunit --testdox --coverage-text",
 		"phpunit-api": "./vendor/bin/phpunit --testdox --coverage-text tests/unit/api/",
+		"psalm-strict": "./vendor/bin/psalm -c psalm-strict.xml",
+		"test-api": "./vendor/bin/phpmd application/libraries/Api/ text tests/rulesets/phpmd_ruleset_strict.xml",
         "test": [
             "./tests/bin/lint-tests",
             "./tests/bin/lint-application",
@@ -103,6 +105,7 @@
             "./vendor/bin/phpmd application/libraries/ExtensionInstaller/ text tests/rulesets/phpmd_ruleset.xml",
             "./vendor/bin/phpmd application/core/plugins/ExpressionAnswerOptions/ExpressionAnswerOptions.php text tests/rulesets/phpmd_ruleset_strict.xml",
             "./vendor/bin/phpmd application/core/plugins/ExpressionAnswerOptions/AnswerOptionsFunctions.php text tests/rulesets/phpmd_ruleset_strict.xml",
+			"./vendor/bin/phpmd application/libraries/Api/ text tests/rulesets/phpmd_ruleset_strict.xml",
             "./vendor/bin/psalm",
             "./vendor/bin/psalm -c psalm-strict.xml"
         ]

@@ -38,9 +38,14 @@ class TransformerOutputQuestion extends TransformerOutputActiveRecord
     {
         $array = parent::transformAll($array);
 
-        usort($array, function ($a, $b) {
-            return ((int)$a['questionOrder']) > ((int)$b['questionOrder']);
-        });
+        usort(
+            $array,
+            function ($a, $b) {
+                return (int)(
+                    (int)$a['questionOrder'] > (int)$b['questionOrder']
+                );
+            }
+        );
 
         return $array;
     }

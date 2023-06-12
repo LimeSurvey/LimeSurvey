@@ -7,6 +7,7 @@ use LimeSurvey\Api\Command\V1\SurveyPatch\PatcherSurvey;
 use LimeSurvey\Api\Command\{
     CommandInterface,
     Request\Request,
+    Response\Response,
     Response\ResponseFactory
 };
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
@@ -17,9 +18,9 @@ class SurveyPatch implements CommandInterface
 {
     use AuthPermissionTrait;
 
-    protected ?AuthSession $authSession = null;
-    protected ?FactoryInterface $diFactory = null;
-    protected ?ResponseFactory $responseFactory = null;
+    protected AuthSession $authSession;
+    protected FactoryInterface $diFactory;
+    protected ResponseFactory $responseFactory;
 
     /**
      * Constructor
@@ -53,12 +54,11 @@ class SurveyPatch implements CommandInterface
         $patch = $request->getData('patch');
 
         if (
-            (
-                $response = $this->authSession
-                    ->checkKey($sessionKey)
-            ) !== true
+            !$this->authSession
+                ->checkKey($sessionKey)
         ) {
-            return $response;
+            return $this->responseFactory
+                ->makeErrorUnauthorised();
         }
 
         $patcher = $this->diFactory->make(

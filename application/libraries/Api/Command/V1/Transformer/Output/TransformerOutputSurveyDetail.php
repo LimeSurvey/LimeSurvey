@@ -2,6 +2,7 @@
 
 namespace LimeSurvey\Api\Command\V1\Transformer\Output;
 
+use Survey;
 use LimeSurvey\Api\Transformer\Output\TransformerOutputActiveRecord;
 
 /**
@@ -9,13 +10,13 @@ use LimeSurvey\Api\Transformer\Output\TransformerOutputActiveRecord;
  */
 class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
 {
-    private ?TransformerOutputSurvey $transformerSurvey = null;
-    private ?TransformerOutputQuestionGroup $transformerQuestionGroup = null;
-    private ?TransformerOutputQuestionGroupL10ns $transformerQuestionGroupL10ns = null;
-    private ?TransformerOutputQuestion $transformerQuestion = null;
-    private ?TransformerOutputQuestionL10ns $transformerQuestionL10ns = null;
-    private ?TransformerOutputQuestionAttribute $transformerQuestionAttribute = null;
-    private ?TransformerOutputAnswer $transformerAnswer = null;
+    private TransformerOutputSurvey $transformerSurvey;
+    private TransformerOutputQuestionGroup $transformerQuestionGroup;
+    private TransformerOutputQuestionGroupL10ns $transformerQuestionGroupL10ns;
+    private TransformerOutputQuestion $transformerQuestion;
+    private TransformerOutputQuestionL10ns $transformerQuestionL10ns;
+    private TransformerOutputQuestionAttribute $transformerQuestionAttribute;
+    private TransformerOutputAnswer $transformerAnswer;
 
     /**
      * Construct
@@ -42,20 +43,21 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
      * Transform
      *
      * Returns an array of entity references indexed by the specified key.
-     *
-     * @param Survey $surveyModel
-     * @return array
      */
-    public function transform($surveyModel)
+    public function transform($data)
     {
-        $survey =  $this->transformerSurvey->transform($surveyModel);
+        if (!$data instanceof Survey) {
+            return null;
+        }
 
-        $survey['languages'] = $surveyModel->allLanguages;
+        $survey =  $this->transformerSurvey->transform($data);
+
+        $survey['languages'] = $data->allLanguages;
 
         // transformAll() can apply required entity sort so we must retain the sort order going forward
         // - We use a lookup array later to access entities without needing to know their position in the collection
         $survey['questionGroups'] = $this->transformerQuestionGroup->transformAll(
-            $surveyModel->groups
+            $data->groups
         );
 
         // An array of groups indexed by gid for easy look up
@@ -65,7 +67,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
             $survey['questionGroups']
         );
 
-        foreach ($surveyModel->groups as $questionGroupModel) {
+        foreach ($data->groups as $questionGroupModel) {
             // order of groups from the model relation may be different than from the transformed data
             // - so we use the lookup to get a reference to the required entity without needing to
             // - know its position in the output array
@@ -100,7 +102,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
      *
      * @param array $questionLookup
      * @param array $questions
-     * @return array
+     * @return void
      */
     private function transformQuestions($questionLookup, $questions)
     {

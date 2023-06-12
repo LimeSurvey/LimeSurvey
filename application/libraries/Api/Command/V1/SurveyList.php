@@ -7,6 +7,7 @@ use LimeSurvey\Api\Command\V1\Transformer\Output\TransformerOutputSurvey;
 use LimeSurvey\Api\Command\{
     CommandInterface,
     Request\Request,
+    Response\Response,
     Response\ResponseFactory
 };
 use LimeSurvey\Api\Auth\AuthSession;
@@ -16,10 +17,10 @@ class SurveyList implements CommandInterface
 {
     use AuthPermissionTrait;
 
-    protected ?Survey $survey = null;
-    protected ?AuthSession $authSession = null;
-    protected ?TransformerOutputSurvey $transformerOutputSurvey = null;
-    protected ?ResponseFactory $responseFactory = null;
+    protected Survey $survey;
+    protected AuthSession $authSession;
+    protected TransformerOutputSurvey $transformerOutputSurvey;
+    protected ResponseFactory $responseFactory;
 
     /**
      * Constructor
@@ -44,31 +45,24 @@ class SurveyList implements CommandInterface
     /**
      * Run survey list command
      *
-     * @access public
      * @param Request $request
      * @return Response
      */
     public function run(Request $request)
     {
         $sessionKey = (string) $request->getData('sessionKey');
-        $pageSize = (string) $request->getData('pageSize', 20);
-        $page = (string) $request->getData('page', 1);
 
         if (
-            (
-                $response = $this->authSession
-                    ->checkKey($sessionKey)
-            ) !== true
+            !$this->authSession
+                ->checkKey($sessionKey)
         ) {
-            return $response;
+            return $this->responseFactory
+                ->makeErrorUnauthorised();
         }
 
         $dataProvider = $this->survey
-        ->with('defaultlanguage')
-        ->search([
-            'pageSize' => $pageSize,
-            'currentPage' => $page + 1 // one based rather than zero based
-        ]);
+            ->with('defaultlanguage')
+            ->search();
 
         $data = $this->transformerOutputSurvey
             ->transformAll($dataProvider->getData());
