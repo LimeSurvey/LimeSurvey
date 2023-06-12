@@ -4432,3 +4432,12 @@ html[dir="rtl"] th {
         flex-grow: 1;
     }
 }
+
+/** Make modals full width */
+@media screen and (min-width: 768px) {
+  .dialog-fullwidth {
+    width: auto;
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+}

@@ -1203,22 +1203,33 @@ class userstatistics_helper
 
                     case Question::QT_COLON_ARRAY_NUMBERS: // Array (Multiple Flexi) (Numbers)
                         $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($qiqid);
-                        if (trim($aQuestionAttributes['multiflexible_max']) != '') {
+                        $minvalue = 1;
+                        $maxvalue = 10;
+                        if (trim($aQuestionAttributes['multiflexible_max']) != '' && trim($aQuestionAttributes['multiflexible_min']) == '') {
                             $maxvalue = $aQuestionAttributes['multiflexible_max'];
-                        } else {
-                            $maxvalue = 10;
-                        }
-
-                        if (trim($aQuestionAttributes['multiflexible_min']) != '') {
-                            $minvalue = $aQuestionAttributes['multiflexible_min'];
-                        } else {
                             $minvalue = 1;
                         }
+                        if (trim($aQuestionAttributes['multiflexible_min']) != '' && trim($aQuestionAttributes['multiflexible_max']) == '') {
+                            $minvalue = $aQuestionAttributes['multiflexible_min'];
+                            $maxvalue = $aQuestionAttributes['multiflexible_min'] + 10;
+                        }
+                        if (trim($aQuestionAttributes['multiflexible_min']) != '' && trim($aQuestionAttributes['multiflexible_max']) != '') {
+                            if ($aQuestionAttributes['multiflexible_min'] < $aQuestionAttributes['multiflexible_max']) {
+                                $minvalue = $aQuestionAttributes['multiflexible_min'];
+                                $maxvalue = $aQuestionAttributes['multiflexible_max'];
+                            }
+                        }
 
-                        if (trim($aQuestionAttributes['multiflexible_step']) != '') {
-                            $stepvalue = $aQuestionAttributes['multiflexible_step'];
+                        $stepvalue = (trim($aQuestionAttributes['multiflexible_step']) != '' && $aQuestionAttributes['multiflexible_step'] > 0) ? $aQuestionAttributes['multiflexible_step'] : 1;
+
+                        if ($aQuestionAttributes['reverse'] == 1) {
+                            $tmp = $minvalue;
+                            $minvalue = $maxvalue;
+                            $maxvalue = $tmp;
+                            $reverse = true;
+                            $stepvalue = -$stepvalue;
                         } else {
-                            $stepvalue = 1;
+                            $reverse = false;
                         }
 
                         if ($aQuestionAttributes['multiflexible_checkbox'] != 0) {

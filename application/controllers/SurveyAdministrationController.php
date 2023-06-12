@@ -1994,9 +1994,8 @@ class SurveyAdministrationController extends LSBaseController
 
         $iSurveyID = sanitize_int($iSurveyID);
         $thereIsPostData = $request->getPost('orgdata') !== null;
-        $userHasPermissionToUpdate = Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update');
 
-        if (!$userHasPermissionToUpdate) {
+        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update')) {
             Yii::app()->user->setFlash('error', gT("Access denied"));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
@@ -2004,7 +2003,6 @@ class SurveyAdministrationController extends LSBaseController
         if ($thereIsPostData) {
             // Save the new ordering
             $this->reorderGroup($iSurveyID);
-
             $closeAfterSave = $request->getPost('close-after-save') === 'true';
             if ($closeAfterSave) {
                 $this->redirect(array('surveyAdministration/view/surveyid/' . $iSurveyID));
@@ -2501,7 +2499,7 @@ class SurveyAdministrationController extends LSBaseController
 
         $aData['aGroupsAndQuestions'] = $groupData;
         $aData['surveyid'] = $iSurveyID;
-
+        $aData['surveyActivated'] = $survey->getIsActive();
         return $aData;
     }
 
@@ -2556,25 +2554,32 @@ class SurveyAdministrationController extends LSBaseController
                     $aQuestionOrder[$gid] = 0;
                 }
 
-                $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
-                $oQuestion = Question::model()->findByPk(array("qid" => $qid, 'language' => $sBaseLanguage));
-                $oldGid = $oQuestion['gid'];
-                if ($oldGid != $gid) {
-                    fixMovedQuestionConditions($qid, $oldGid, $gid, $iSurveyID);
+                $oQuestion = Question::model()->findByPk($qid);
+                $oldGid = $oQuestion->gid;
+                $oQuestion->gid = $gid;
+                $oQuestion->question_order = $aQuestionOrder[$gid];
+                if ($oQuestion->save(true)) {
+                    $oldGid = $oQuestion['gid'];
+                    if ($oldGid != $gid) {
+                        fixMovedQuestionConditions($qid, $oldGid, $gid, $iSurveyID);
+                    }
+                    Question::model()->updateAll(
+                        array(
+                            'question_order' => $aQuestionOrder[$gid],
+                            'gid' => $gid
+                        ),
+                        'qid=:qid',
+                        array(':qid' => $qid)
+                    );
+                    Question::model()->updateAll(array('gid' => $gid), 'parent_qid=:parent_qid', array(':parent_qid' => $qid));
+                    $aQuestionOrder[$gid]++;
+                } else {
+                    App()->setFlashMessage(sprintf(gT("Unable to reorder question %s."), $oQuestion->title), 'warning');
                 }
-                Question::model()->updateAll(
-                    array(
-                    'question_order' => $aQuestionOrder[$gid],
-                    'gid' => $gid),
-                    'qid=:qid',
-                    array(':qid' => $qid)
-                );
-                Question::model()->updateAll(array('gid' => $gid), 'parent_qid=:parent_qid', array(':parent_qid' => $qid));
-                $aQuestionOrder[$gid]++;
             }
         }
         LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
-        Yii::app()->session['flashmessage'] = gT("The new question group/question order was successfully saved.");
+        App()->setFlashMessage(gT("The new question group/question order was successfully saved."));
     }
 
     /**

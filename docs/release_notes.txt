@@ -34,6 +34,102 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.25 (build 230605) to 5.6.26 (build 230613) June 12, 2023
+-Fixed issue #18833: Mobile phone issue with formulas on columns headings with array numbers on checkbox layout (#3206) (Denis Chenu)
+-Fixed issue #18615: Data integrity SQL syntax error on PostgreSQL when trying to fix quotas (Carsten Schmitz)
+-Fixed issue #18459: When filtering the survey list by a parent survey group, surveys assigned to a child survey group are not listed (#3168) (Gabriel Jenik)
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Hungarian by kkd
+
+
+Changes from 5.6.24 (build 230531) to 5.6.25 (build 230605) June 5, 2023
+-Fixed issue #18808: Mandatory soft only works once per survey if over multiple pages/groups (#3120) (Denis Chenu)
+-Fixed issue #18731: Edit a question "script" tab has disappeared (#3156) (Denis Chenu)
+-Fixed issue #17491: Multiple Short Text subquestions missing from Export Printable Survey (#3133) (Adam Zammit)
+#Updated translation: Valencian by vbraque
+#Updated translation: Turkish by kayazeren
+#Updated translation: Spanish (Informal) by c_schmitz
+#Updated translation: Spanish (Informal) by aesteban, baronlopez, corzel, daniel.gonzalez, diegor, gabrieljenik, ireneoh, jmlopez, jparis, larjona, oleggorfinkel, rodrirokr, segui
+#Updated translation: Spanish (Informal) by aesteban, atavei, baronlopez, c_schmitz, cbrito, cdorin, corzel, cripton, daniel.gonzalez, DarioRoig, dgimeno, Dhel210, diegor, ecocitizen, eddylackmann, fercavero, fernandoessv, gabrieljenik, grudolf, Ignacio, ignaciogros, ireneoh, jaimealvarezv, jbermudezperez, jigal, jmlopez, jmlorenzo, jparis, kadejo, larjona, martinbauerarg, Nodens, oleggorfinkel, pavelwil, pnueda, rodrirokr, segui, valdomir, xtingray
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Italian by c_schmitz, lfanfoni, ritapas
+#Updated translation: Italian (Informal) by c_schmitz, lfanfoni
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: French (France) by DenisChenu
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 5.6.23 (build 230524) to 5.6.24 (build 230531) May 30, 2023
+-Fixed issue: [security] Unsafe way to detect IP address against brute-force attacks (Carsten Schmitz)
+-Fixed issue: Editing a quota and setting a limit too high shows a database exception (Carsten Schmitz)
+-Fixed issue #18848: setting specific values for steps in Array(numbers) causes php timeout (Patrick Teichmann)
+#Updated translation: Spanish (Spain) by ireneoh
+#Updated translation: Spanish (Informal) by daniel.gonzalez, Ignacio, ignaciogros, ireneoh, DarioRoig, ireneoh, jmlopez, jparis, albertodominguez
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Japanese by nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Albanian by darliv
+
+
+Changes from 5.6.22 (build 230523) to 5.6.23 (build 230524) May 24, 2023
+-Fixed issue: Dragging a question between groups can be unresponsive (Patrick Teichmann)
+-Fixed issue #18659: Cannot install two plugins in a row (#3146) (Gabriel Jenik)
+
+Changes from 5.6.21 (build 230518) to 5.6.22 (build 230523) May 22, 2023
+-Fixed issue #18814: Array question statistics fail for Remote Control. (#3141) (Gabriel Jenik)
+-Fixed issue #18736: Error exporting participants when using MSSQL DB (Carsten Schmitz)
+-Fixed issue #18725: Reorder questions/question groups can broke survey (#3091) (Denis Chenu)
+-Fixed issue #18670: "Validation of quota" action button always shows 1st quota (#3122) (Gabriel Jenik)
+-Fixed issue #18343: Problem with double slash in an URL(IIS) (#3155) (Denis Chenu)
+#Updated translation: German by c_schmitz
+
+
+Changes from 5.6.20 (build 230516) to 5.6.21 (build 230518) May 16, 2023
+-Fixed issue: ComfortUpdate showing updates as unstable, even though they are not (Carsten Schmitz)
+-Fixed issue #18787: Wrong default answers are loaded for multilingual surveys (#3107) (Denis Chenu)
+-Fixed issue #18703: Upload files show error if not seen (using index) (#3066) (Denis Chenu)
+
+
+Changes from 5.6.19 (build 230509) to 5.6.20 (build 230516) May 15, 2023
+-Fixed issue: No proper error when entering ComfortUpdate key and server cannot be reached (Carsten Schmitz)
+-Fixed issue #18765: Answers are not populated correct in array dual scale after clicking "Back" (#3117) (Gabriel Jenik)
+-Fixed issue #17560: Layout issue when setting user rights. (#3074) (Gabriel Jenik)
+
+Changes from 5.6.18 (build 230503) to 5.6.19 (build 230509) May 8, 2023
+-Fixed issue: Error when using detailed admin notifications or print responses on encrypted fields (#3094) (Patricia Stell)
+-Fixed issue: Cannot add survey menu when using PHP8 (#3110) (Patricia Stell)
+-Fixed issue #18635: Export single response can goes to a white page (#2923) (Denis Chenu)
+#Updated translation: Spanish (Spain) by ireneoh
+#Updated translation: Slovak by c_schmitz, jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by ciampix, lfanfoni
+#Updated translation: Dutch by Han, kbadata
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 5.6.17 (build 230426) to 5.6.18 (build 230503) May 2, 2023
 -Fixed issue: Very slow survey start if a lot of quotas exist (Carsten Schmitz)
 -Fixed issue: SPSS import throws error on "RENAME VARIABLE" (Patricia Stell)
