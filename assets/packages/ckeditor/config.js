@@ -6,12 +6,12 @@ CKEDITOR.editorConfig = function (a) {
     
         a.plugins = "a11ychecker,dialogui,dialog,a11yhelp,about,xml,ajax,basicstyles,bidi,blockquote,notification,button,toolbar,clipboard,codemirror,panelbutton,panel,floatpanel,colorbutton,colordialog,menu,contextmenu,copyformatting,dialogadvtab,div,elementspath,enterkey,entities,popup,filebrowser,find,fakeobjects,floatingspace,listblock,richcombo,font,format,horizontalrule,htmlwriter,iframe,image,indent,indentblock,indentlist,justify,menubutton,language,link,list,liststyle,magicline,maximize,newpage,pagebreak,pastefromword,pastetext,removeformat,resize,save,scayt,selectall,showblocks,showborders,emoji,sourcearea,specialchar,stylescombo,tab,table,tabletools,undo,videodetector,wsc,wysiwygarea,lineutils,widgetselection,widget,html5video,markdown";
        
-        a.filebrowserBrowseUrl = CKEDITOR.basePath + "../../../third_party/kcfinder/browse.php?type\x3dfiles";
-        a.filebrowserImageBrowseUrl = CKEDITOR.basePath + "../../../third_party/kcfinder/browse.php?type\x3dimages";
-        a.filebrowserFlashBrowseUrl = CKEDITOR.basePath + "../../../third_party/kcfinder/browse.php?type\x3dflash";
-        a.filebrowserUploadUrl = CKEDITOR.basePath + "../../../third_party/kcfinder/upload.php?type\x3dfiles";
-        a.filebrowserImageUploadUrl = CKEDITOR.basePath + "../../../third_party/kcfinder/upload.php?type\x3dimages";
-        a.filebrowserFlashUploadUrl = CKEDITOR.basePath + "../../../third_party/kcfinder/upload.php?type\x3dflash";
+        a.filebrowserBrowseUrl = CKEDITOR.basePath + "../../../vendor/kcfinder/browse.php?type\x3dfiles";
+        a.filebrowserImageBrowseUrl = CKEDITOR.basePath + "../../../vendor/kcfinder/browse.php?type\x3dimages";
+        a.filebrowserFlashBrowseUrl = CKEDITOR.basePath + "../../../vendor/kcfinder/browse.php?type\x3dflash";
+        a.filebrowserUploadUrl = CKEDITOR.basePath + "../../../vendor/kcfinder/upload.php?type\x3dfiles";
+        a.filebrowserImageUploadUrl = CKEDITOR.basePath + "../../../vendor/kcfinder/upload.php?type\x3dimages";
+        a.filebrowserFlashUploadUrl = CKEDITOR.basePath + "../../../vendor/kcfinder/upload.php?type\x3dflash";
         a.removeDialogTabs = "link:upload;image:Upload";
         a.image_prefillDimensions = !1;
         a.image2_prefillDimensions = !1;

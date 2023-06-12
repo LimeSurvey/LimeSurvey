@@ -336,7 +336,7 @@ class Zend_Http_UserAgent implements Serializable
             } elseif (is_array($deviceConfig) && isset($deviceConfig['path'])) {
                 $loader = $this->getPluginLoader('device');
                 $path   = $deviceConfig['path'];
-                $prefix = isset($deviceConfig['prefix']) ? $deviceConfig['prefix'] : 'Zend_Http_UserAgent';
+                $prefix = $deviceConfig['prefix'] ?? 'Zend_Http_UserAgent';
                 $loader->addPrefixPath($prefix, $path);
 
                 $device = $loader->load($browserType);

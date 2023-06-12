@@ -4350,3 +4350,19 @@ html[dir="rtl"] th {
 #question-grid {
     overflow-x: visible;
 }
+
+/** Hide Relevance Equation column for subquestions when not supported */
+.subquestions-table.hide-relevance {
+    #rel-eq-th, td.relevance-equation {
+        display: none;
+    }
+}
+
+/** Make modals full width */
+@media screen and (min-width: 768px) {
+  .dialog-fullwidth {
+    width: auto;
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+}

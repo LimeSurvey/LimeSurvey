@@ -46,3 +46,13 @@
 .grid-view-ls.grid-view-loading .table th > .sort-link .caret {
     display: none;
 }
+
+.grid-view-ls .table td .longtext-content {
+    min-width:8em;
+    max-width:16em;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+    height:1.5em;
+    display:inline-block
+}

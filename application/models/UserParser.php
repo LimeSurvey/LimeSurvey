@@ -55,7 +55,7 @@ class UserParser
         while (($row = fgetcsv($oCSVFile, 0, $delimiter, '"')) !== false) {
             $rowarray = array();
             for ($i = 0; $i < $iHeaderCount; ++$i) {
-                $val = (isset($row[$i]) ? $row[$i] : '');
+                $val = ($row[$i] ?? '');
                 // if Excel was used, it surrounds strings with quotes and doubles internal double quotes.  Fix that.
                 if (preg_match('/^".*"$/', $val)) {
                     $val = trim(str_replace('""', '"', substr($val, 1, -1)), "\xC2\xA0\n");

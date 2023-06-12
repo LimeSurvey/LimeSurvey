@@ -331,7 +331,7 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
         $criteria = new CDbCriteria();
         $criteriaPerm = self::getPermissionCriteria();
         $criteria->mergeWith($criteriaPerm, 'AND');
-
+        $criteria->order = 'title ASC';
         $oSurveyGroups = self::model()->findAll($criteria);
 
         foreach ($oSurveyGroups as $oSurveyGroup) {

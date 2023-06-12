@@ -183,8 +183,8 @@ class Hash
 
         foreach ($conditions as $cond) {
             $attr = $cond['attr'];
-            $op = isset($cond['op']) ? $cond['op'] : null;
-            $val = isset($cond['val']) ? $cond['val'] : null;
+            $op = $cond['op'] ?? null;
+            $val = $cond['val'] ?? null;
 
             // Presence test.
             if (empty($op) && empty($val) && !isset($data[$attr])) {
@@ -196,7 +196,7 @@ class Hash
                 return false;
             }
 
-            $prop = isset($data[$attr]) ? $data[$attr] : null;
+            $prop = $data[$attr] ?? null;
 
             // Pattern matches and other operators.
             if ($op === '=' && $val && $val[0] === '/') {
@@ -354,7 +354,7 @@ class Hash
 
         $count = count($keys);
         for ($i = 0; $i < $count; $i++) {
-            $vals[$i] = isset($vals[$i]) ? $vals[$i] : null;
+            $vals[$i] = $vals[$i] ?? null;
         }
 
         if ($groupPath !== null) {

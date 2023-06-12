@@ -1619,9 +1619,7 @@ EOD;
             $help = self::inputHelp($help, $helpOptions);
         }
 
-        $input = isset($htmlOptions['input'])
-            ? $htmlOptions['input']
-            : self::createInput($type, $name, $value, $htmlOptions, $data);
+        $input = $htmlOptions['input'] ?? self::createInput($type, $name, $value, $htmlOptions, $data);
 
         if (!empty($color)) {
             self::addCssClass($color, $groupOptions);
@@ -2449,7 +2447,7 @@ EOD;
 
         // Special label case case for individual checkboxes and radios
         if ($type == self::INPUT_TYPE_CHECKBOX || $type == self::INPUT_TYPE_RADIOBUTTON) {
-            $htmlOptions['label'] = isset($label) ? $label : $model->getAttributeLabel($attribute);
+            $htmlOptions['label'] = $label ?? $model->getAttributeLabel($attribute);
             $htmlOptions['labelOptions'] = $labelOptions;
             $htmlOptions['useContainer'] = true;
             $label = false;
@@ -2503,9 +2501,7 @@ EOD;
         }
         $error = TbArray::popValue('error', $htmlOptions, '');
 
-        $input = isset($htmlOptions['input'])
-            ? $htmlOptions['input']
-            : self::createActiveInput($type, $model, $attribute, $htmlOptions, $data);
+        $input = $htmlOptions['input'] ?? self::createActiveInput($type, $model, $attribute, $htmlOptions, $data);
 
         if (!empty($color)) {
             self::addCssClass($color, $groupOptions);
@@ -3491,7 +3487,7 @@ EOD;
     public static function buttonDropdown($label, $items, $htmlOptions = array())
     {
         $htmlOptions['items'] = $items;
-        $type = isset($htmlOptions['type']) ? $htmlOptions['type'] : self::BUTTON_TYPE_SUBMIT;
+        $type = $htmlOptions['type'] ?? self::BUTTON_TYPE_SUBMIT;
         $type = is_array($type) ? $type[0] : $type;
         return self::btn($type, $label, $htmlOptions);
     }

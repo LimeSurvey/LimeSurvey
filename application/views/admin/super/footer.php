@@ -12,7 +12,7 @@ $systemInfos = [
     gT('PHP version') => phpversion(),
     gT('Web server name') => $_SERVER['SERVER_NAME'],
     gT('Web server software') => $_SERVER['SERVER_SOFTWARE'],
-    gT('Web server info') => isset($_SERVER['SERVER_SIGNATURE']) ? $_SERVER['SERVER_SIGNATURE'] : $_SERVER['SERVER_PROTOCOL']
+    gT('Web server info') => $_SERVER['SERVER_SIGNATURE'] ?? $_SERVER['SERVER_PROTOCOL']
 ];
 
 // MSSQL does not support some of these attributes, so much

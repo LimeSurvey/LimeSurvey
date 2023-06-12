@@ -148,7 +148,7 @@ class LayoutHelper
            // $aData['extraMenus'] = ''; //todo extraMenu should work
 
             // Get notification menu
-            $surveyId = isset($aData['surveyid']) ? $aData['surveyid'] : null;
+            $surveyId = $aData['surveyid'] ?? null;
             Yii::import('application.controllers.admin.NotificationController');
             $aData['adminNotifications'] = NotificationController::getMenuWidget($surveyId, true /* show spinner */);
 
@@ -472,7 +472,7 @@ class LayoutHelper
      */
     public function renderGeneraltopbar(array $aData)
     {
-        $aData['topBar'] = isset($aData['topBar']) ? $aData['topBar'] : [];
+        $aData['topBar'] = $aData['topBar'] ?? [];
         $aData['topBar'] = array_merge(
             [
                 'type' => 'survey',
@@ -550,7 +550,7 @@ class LayoutHelper
      */
     public function renderGeneralTopbarAdditions(array $aData)
     {
-        $aData['topBar'] = isset($aData['topBar']) ? $aData['topBar'] : [];
+        $aData['topBar'] = $aData['topBar'] ?? [];
         $aData['topBar'] = array_merge(
             [
                 'type' => 'survey',
@@ -564,9 +564,9 @@ class LayoutHelper
         );
 
         if (isset($aData['qid'])) {
-            $aData['topBar']['type'] = isset($aData['topBar']['type']) ? $aData['topBar']['type'] : 'question';
+            $aData['topBar']['type'] = $aData['topBar']['type'] ?? 'question';
         } elseif (isset($aData['gid'])) {
-            $aData['topBar']['type'] = isset($aData['topBar']['type']) ? $aData['topBar']['type'] : 'group';
+            $aData['topBar']['type'] = $aData['topBar']['type'] ?? 'group';
         } elseif (isset($aData['surveyid'])) {
             $sid = $aData['sid'];
             $oSurvey       = Survey::model()->findByPk($sid);
@@ -578,7 +578,7 @@ class LayoutHelper
             $aData['respstatsread'] = $respstatsread;
             $aData['surveyexport']  = $surveyexport;
             $aData['onelanguage']   = $oneLanguage;
-            $aData['topBar']['type'] = isset($aData['topBar']['type']) ? $aData['topBar']['type'] : 'survey';
+            $aData['topBar']['type'] = $aData['topBar']['type'] ?? 'survey';
         }
         Yii::app()->getController()->renderPartial("/admin/survey/topbar/topbar_additions", $aData);
     }

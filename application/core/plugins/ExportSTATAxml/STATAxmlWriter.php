@@ -125,10 +125,10 @@ class STATAxmlWriter extends Writer
         // here we go through the answers-array and check whether answer-codes are numerical. If they are not, we save the respective QIDs
         // so responses can later be set to full answer test of Question or SQ'
         foreach ($aFieldmap['answers'] as $qid => $aScale) {
-            foreach ($aFieldmap['answers'][$qid] as $iScale => $aAnswers) {
-                foreach ($aFieldmap['answers'][$qid][$iScale] as $iAnswercode => $aAnswer) {
-                    if (!is_numeric($aAnswer['code'])) {
-                        $this->aQIDnonumericalAnswers[$aAnswer['qid']] = true;
+            foreach ($aScale as $aAnswers) {
+                foreach (array_keys($aAnswers) as $iAnswercode) {
+                    if (!is_numeric($iAnswercode)) {
+                        $this->aQIDnonumericalAnswers[$qid] = true;
                     }
                 }
             }
@@ -583,7 +583,7 @@ class STATAxmlWriter extends Writer
             $xml->startElement('lblname');
             $xml->writeAttribute('varname', $question['varname']);
             if (!empty($this->customFieldmap['answers'][$question['qid']]) && $question['commentother'] == false && $question['nonnumericanswercodes'] == false) {
-                $iScaleID = isset($question['scale_id']) ? $question['scale_id'] : 0;
+                $iScaleID = $question['scale_id'] ?? 0;
                 $xml->text('vall' . $question['qid'] . $iScaleID);
             }
             $xml->endElement(); //close lblname
@@ -627,9 +627,11 @@ class STATAxmlWriter extends Writer
                     $xml->startElement('vallab');
                     $xml->writeAttribute('name', 'vall' . $iQid . $iScaleID);
                     foreach ($aAnswercodes as $iAnscode => $aAnswer) {
+                        // Before version 4.0, $aAnswer was an array. Now it's just the answer option text.
+                        $answer = is_array($aAnswer) ? $aAnswer['answer'] : $aAnswer;
                         $xml->startElement('label');
                         $xml->writeAttribute('value', $iAnscode);
-                        $xml->text($aAnswer['answer']);
+                        $xml->text($answer);
                         $xml->endElement(); // close label
                     }
                     $xml->endElement(); // close vallab

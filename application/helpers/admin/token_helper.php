@@ -19,9 +19,10 @@
 * @param integer $iSurveyID
 * @param CActiveRecord[]  $aResultTokens
 * @param string $sType type of notification invite|register|remind|confirm
+* @param bool $continueOnError Don't stop on first invalid participant
 * @return array of results
 */
-function emailTokens($iSurveyID, $aResultTokens, $sType)
+function emailTokens($iSurveyID, $aResultTokens, $sType, $continueOnError = false)
 {
     if (!in_array($sType, ['invite','remind','register','confirm'])) {
         throw new Exception('Invalid email type');
@@ -43,7 +44,11 @@ function emailTokens($iSurveyID, $aResultTokens, $sType)
                 'status' => 'fail',
                 'error' => 'Token not valid yet'
             );
-            break 1;
+            if ($continueOnError) {
+                continue;
+            } else {
+                break 1;
+            }
         }
         if (isset($aTokenRow['validuntil']) && trim($aTokenRow['validuntil']) != '' && convertDateTimeFormat($aTokenRow['validuntil'], 'Y-m-d H:i:s', 'U') * 1 < date('U') * 1) {
             $aResult[$aTokenRow['tid']] = array(
@@ -52,7 +57,11 @@ function emailTokens($iSurveyID, $aResultTokens, $sType)
                 'status' => 'fail',
                 'error' => 'Token not valid anymore'
             );
-            break 1;
+            if ($continueOnError) {
+                continue;
+            } else {
+                break 1;
+            }
         }
         if ($mail->sendMessage()) {
             $oToken = Token::model($iSurveyID)->findByPk($aTokenRow['tid']);

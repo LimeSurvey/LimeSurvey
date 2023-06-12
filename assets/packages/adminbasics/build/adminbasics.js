@@ -29722,6 +29722,9 @@
       $('[data-tooltip="true"]').tooltip();
       $('[data-toggle="tooltip"]').tooltip();
     },
+    doSelect2: function doSelect2() {
+      $("select.activate-search").select2();
+    },
     // finds any duplicate array elements using the fewest possible comparison
     arrHasDupes: function arrHasDupes(arrayToCheck) {
       return _.uniq(arrayToCheck).length !== arrayToCheck.length;
@@ -29829,6 +29832,9 @@
 
         $("div", this).html(pValue + "%");
       });
+      /* set default for select2 */
+
+      $.fn.select2.defaults.set("theme", "bootstrap");
       globalWindowMethods.tableCellAdapters();
     }
   };
@@ -41970,6 +41976,7 @@
       appendToLoad(notificationSystem.initNotification);
       appendToLoad(activateSubSubMenues);
       appendToLoad(globalWindowMethods.fixAccordionPosition);
+      appendToLoad(globalWindowMethods.doSelect2);
     },
         appendToLoad = function appendToLoad(fn, event, root, delay) {
       event = event || 'pjax:scriptcomplete ready';

@@ -44,7 +44,7 @@
                             <div class="form-group col-md-6">
                                 <label  class="control-label" for='label_name'><?php eT("Set name:"); ?></label>
                                 <div class="">
-                                <?php echo CHtml::textField('label_name',isset($lbname)?$lbname:"",array('maxlength'=>100,'size'=>50, 'class' => 'form-control')); ?>
+                                <?php echo CHtml::textField('label_name',$lbname ?? "",array('maxlength'=>100,'size'=>50, 'class' => 'form-control')); ?>
                                 </div>
                             </div>
 

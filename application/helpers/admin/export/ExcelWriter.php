@@ -23,7 +23,6 @@ class ExcelWriter extends Writer
      */
     public function __construct()
     {
-        require_once(APPPATH . '/third_party/xlsx_writer/xlsxwriter.class.php');
         $this->separator = '~|';
         $this->hasOutputHeader = false;
         $this->rowCounter = 0;

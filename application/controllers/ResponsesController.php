@@ -139,7 +139,12 @@ class ResponsesController extends LSBaseController
 
 
         $fieldmap = createFieldMap($survey, 'full', false, false, $aData['language']);
-        $bHaveToken = $survey->anonymized == "N" && tableExists('tokens_' . $surveyId); // Boolean : show (or not) the token
+        // just used to check if the token exists for the given response id before we create the real query
+        $response = SurveyDynamic::model($surveyId)->find('id=:id', [':id' => $id]);
+        // Boolean : show (or not) the token
+        $bHaveToken = $survey->anonymized == "N"
+            && tableExists('tokens_' . $surveyId)
+            && isset($response->tokens);
         if (!Permission::model()->hasSurveyPermission($surveyId, 'tokens', 'read')) {
             // If not allowed to read: remove it
             unset($fieldmap['token']);
@@ -905,21 +910,6 @@ class ResponsesController extends LSBaseController
             'columns'    => $aData['columns'],
             'statistics' => $aData['statistics'],
         ]);
-    }
-
-    /**
-     * Responsible for setting the session variables for attribute map page redirect
-     * @param bool $unset
-     * @param int|null $surveyId
-     */
-    public function actionSetSession(bool $unset = false, int $surveyId = null): void
-    {
-        unset(App()->session['responsesid']);
-        if (!$unset) {
-            App()->session['responsesid'] = App()->request->getPost('itemsid');
-        } else {
-            $this->redirect(["admin/export", "sa" => "exportresults", "surveyid" => $surveyId]);
-        }
     }
 
     /**

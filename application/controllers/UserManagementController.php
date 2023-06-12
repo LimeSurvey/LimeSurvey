@@ -107,7 +107,8 @@ class UserManagementController extends LSBaseController
             }
         }
         $randomPassword = \LimeSurvey\Models\Services\PasswordManagement::getRandomPassword();
-        return $this->renderPartial('partial/addedituser', ['oUser' => $oUser, 'randomPassword' => $randomPassword]);
+        $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
+        return $this->renderPartial('partial/addedituser', ['oUser' => $oUser, 'randomPassword' => $randomPassword, 'dateformatdetails' => $dateformatdetails]);
     }
 
     /**
@@ -154,6 +155,25 @@ class UserManagementController extends LSBaseController
                     'errors' => gT('Passwords does not fulfill minimum requirement:') . '<br/>' . $oPasswordTestEvent->get('passwordError'),
                 ]]);
             }
+        }
+
+        $expires = Yii::app()->request->getPost('expires', null);
+        if (!empty($expires)) {
+            $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
+            $datetimeobj = new Date_Time_Converter($expires, $dateformatdetails['phpdate'] . ' H:i');
+            $aUser['expires'] = $datetimeobj->convert("Y-m-d H:i:s");
+        } else {
+            $aUser['expires'] = null;
+        }
+
+        // A user may not edit himself using this action
+        if (isset($aUser['uid']) && $aUser['uid'] && $aUser['uid'] == Yii::app()->user->id) {
+            return App()->getController()->renderPartial('/admin/super/_renderJson', [
+                "data" => [
+                    'success' => false,
+                    'errors'  =>  gT('No permission')
+                ]
+                ]);
         }
 
         if (isset($aUser['uid']) && $aUser['uid']) {
@@ -798,11 +818,11 @@ class UserManagementController extends LSBaseController
                 fprintf($fp, chr(0xEF) . chr(0xBB) . chr(0xBF));
                 $header = array('uid', 'users_name', 'full_name', 'email', 'lang', 'password');
                 //Add csv header
-                fputcsv($fp, $header, ';');
+                fputcsv($fp, $header, ';', '"');
 
                 //add csv row datas
                 foreach ($aUsers as $fields) {
-                    fputcsv($fp, $fields, ';');
+                    fputcsv($fp, $fields, ';', '"');
                 }
                 fclose($fp);
                 header('Content-Encoding: UTF-8');

@@ -97,7 +97,7 @@ class WhTimeAgoFormatter extends CFormatter
         $days    = $hours / 24;
         $years   = $days / 365;
 
-        $separator = $this->data['wordSeparator'] === null ? " " : $this->data['wordSeparator'];
+        $separator = $this->data['wordSeparator'] ?? " ";
 
         $wordsConds = array(
             $seconds < 45,

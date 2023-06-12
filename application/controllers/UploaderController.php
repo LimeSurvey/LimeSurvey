@@ -32,7 +32,7 @@ class UploaderController extends SurveyController
             throw new CHttpException(400);
         }
 
-        $sLanguage = isset(Yii::app()->session['survey_' . $surveyid]['s_lang']) ? Yii::app()->session['survey_' . $surveyid]['s_lang'] : "";
+        $sLanguage = Yii::app()->session['survey_' . $surveyid]['s_lang'] ?? "";
         Yii::app()->setLanguage($sLanguage);
         $uploaddir = Yii::app()->getConfig("uploaddir");
         $tempdir = Yii::app()->getConfig("tempdir");
@@ -346,12 +346,18 @@ class UploaderController extends SurveyController
 
         $fn = $sFieldName;
         $qid = (int) Yii::app()->request->getParam('qid');
-        $minfiles = (int) Yii::app()->request->getParam('minfiles');
-        $maxfiles = (int) Yii::app()->request->getParam('maxfiles');
         $qidattributes = QuestionAttribute::model()->getQuestionAttributes($qid);
         $qidattributes['max_filesize'] = floor(min(intval($qidattributes['max_filesize']), getMaximumFileUploadSize() / 1024));
         if ($qidattributes['max_filesize'] <= 0) {
             $qidattributes['max_filesize'] = getMaximumFileUploadSize() / 1024;
+        }
+        $minfiles = "";
+        if (!empty($qidattributes['min_num_of_files'])) {
+            $minfiles = intval($qidattributes['min_num_of_files']);
+        }
+        $maxfiles = "";
+        if (!empty($qidattributes['max_num_of_files'])) {
+            $maxfiles = intval($qidattributes['max_num_of_files']);
         }
         $aData = [
             'fn' => $fn,

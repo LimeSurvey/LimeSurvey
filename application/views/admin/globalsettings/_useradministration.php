@@ -25,7 +25,7 @@
                             'uncheckValue' => false,
                         ),
 
-                        'value' => isset($sSendAdminCreationEmail) ? $sSendAdminCreationEmail : 0,
+                        'value' => $sSendAdminCreationEmail ?? 0,
                         'onLabel' => gT('On'),
                         'offLabel' => gT('Off')
                     )

@@ -39,7 +39,7 @@ abstract class LSYii_Controller extends CController
         // Deprecated function
         $this->loadHelper('globalsettings');
         // tracevar function
-        $this->loadHelper('common');
+        //$this->loadHelper('common');
         $this->loadHelper('expressions.em_manager');
         $this->loadHelper('replacements');
         $this->customInit();
