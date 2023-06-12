@@ -1292,7 +1292,7 @@ class TemplateConfiguration extends TemplateConfig
 
         if (!empty($oOptions)) {
             foreach ($oOptions as $sKey => $sOption) {
-                $oOptions->$sKey = $this->getOptionKey($sKey);
+                $this->oOptions->$sKey = $this->getOptionKey($sKey,);
             }
         }
     }
