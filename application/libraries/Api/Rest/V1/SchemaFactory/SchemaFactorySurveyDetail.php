@@ -3,6 +3,7 @@
 namespace LimeSurvey\Api\Rest\V1\SchemaFactory;
 
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
+use GoldSpecDigital\ObjectOrientedOAS\Objects\SchemaComposition;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\AllOf;
 
 class SchemaFactorySurveyDetail
@@ -24,48 +25,42 @@ class SchemaFactorySurveyDetail
             )
         );
 
-        $questionSchema = (new SchemaFactoryQuestion())->make();
-        $questionSchema = $questionSchema->properties(
-            ...array_merge(
-                $questionSchema->properties ?? [],
-                [$questionAttributesSchema, $answersSchema]
-            )
+        $questionSchema = (new SchemaFactoryQuestion())->make(
+            $answersSchema,
+            $questionAttributesSchema
         );
-        $questionsSchema = Schema::array('questions')->items(
-            AllOf::create()->schemas(
+        $questionsSchema = Schema::object('questions')->properties(
+            AllOf::create('0')->schemas(
                 $questionSchema
             )
         );
 
-        $questionGroupSchema = (new SchemaFactoryQuestionGroup())->make();
-        $questionGroupSchema = $questionGroupSchema->properties(
-            ...array_merge(
-                $questionGroupSchema->properties ?? [],
-                [$questionsSchema]
-            )
+        $questionGroupSchema = (new SchemaFactoryQuestionGroup())->make(
+            $questionsSchema
         );
 
-        $props = [
-            AllOf::create()->schemas(
-                (new SchemaFactorySurvey())->make(),
+
+        $surveySchema = AllOf::create('survey')->schemas(
+            (new SchemaFactorySurvey())->make(
                 Schema::array('languages')->items(
                     AllOf::create()->schemas(
                         Schema::string()
                     )
                 ),
-                Schema::array('questionGroups')->items(
-                    AllOf::create()->schemas(
+                Schema::object('questionGroups')->properties(
+                    AllOf::create('0')->schemas(
                         $questionGroupSchema
                     )
                 ),
-                Schema::string('created_at')->format(Schema::FORMAT_DATE_TIME)
+                Schema::string('created_at')
+                    ->format(Schema::FORMAT_DATE_TIME)
             )
-        ];
+        );
 
         return Schema::create()
             ->title('Survey Detail')
             ->description('Survey Detail')
             ->type(Schema::TYPE_OBJECT)
-            ->properties(...$props);
+            ->properties( $surveySchema);
     }
 }
