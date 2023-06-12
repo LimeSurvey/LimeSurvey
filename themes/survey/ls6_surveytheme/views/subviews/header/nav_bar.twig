@@ -27,9 +27,8 @@ For the survey navigator ("Next", "Back", etc.), see: navigation/navigator.twig
         <div id="navbar-menu" class="dropdown ms-auto ls-no-js-hidden">
             {% if( aSurveyInfo.aNavigator.load.show == "Y" or
                 aSurveyInfo.aNavigator.save.show == "Y" or
-                aSurveyInfo.bShowClearAll == true or
-                aSurveyInfo.bShowClearAll == null or
-                aSurveyInfo.options.showclearall == 'on' or
+                ((aSurveyInfo.bShowClearAll == true or aSurveyInfo.bShowClearAll == null) and
+                aSurveyInfo.options.showclearall == 'on') or
                 aSurveyInfo.aQuestionIndex.bShow == true or
                 aSurveyInfo.alanguageChanger.show == true) %}
                 <div id="navbar-toggler" class="navbar-toggler" data-bs-toggle="dropdown"
@@ -40,9 +39,8 @@ For the survey navigator ("Next", "Back", etc.), see: navigation/navigator.twig
                     {{ include('./subviews/navigation/language_changer_top_menu.twig') }}
                     {% if( aSurveyInfo.aNavigator.load.show == "Y" or
                         aSurveyInfo.aNavigator.save.show == "Y" or
-                        aSurveyInfo.bShowClearAll == true or
-                        aSurveyInfo.bShowClearAll == null or
-                        aSurveyInfo.options.showclearall == 'on' or
+                        ((aSurveyInfo.bShowClearAll == true or aSurveyInfo.bShowClearAll == null) and
+                        aSurveyInfo.options.showclearall == 'on') or
                         aSurveyInfo.aQuestionIndex.bShow == true) %}
                     <li class="dropdown-header">{{ gT("SURVEY OPTIONS") }}</li>
                     {% endif %}
