@@ -61,6 +61,6 @@ class SchemaFactorySurveyDetail
             ->title('Survey Detail')
             ->description('Survey Detail')
             ->type(Schema::TYPE_OBJECT)
-            ->properties( $surveySchema);
+            ->properties($surveySchema);
     }
 }
