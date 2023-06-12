@@ -627,7 +627,7 @@ class TemplateConfiguration extends TemplateConfig
             $this->bTemplateCheckResult = true;
             if (
                 !is_object($this->template) ||
-                (is_object($this->template) && !Template::checkTemplateXML($this->template->folder))
+                (is_object($this->template) && !Template::checkTemplateXML($this->template->name, $this->template->folder))
             ) {
                 $this->bTemplateCheckResult = false;
             }
@@ -1035,7 +1035,6 @@ class TemplateConfiguration extends TemplateConfig
 
         $oTemplate->setToInherit();
         $oTemplate->setOptions();
-        $oTemplate->setOptionInheritance();
 
         $oOptions = (array) $oSimpleInheritanceTemplate->oOptions;
 
@@ -1267,7 +1266,8 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * @todo document me
+     * Decodes json string from the database field "options" and stores it inside $this->oOptions
+     * Also triggers inheritence checks
      * @return void
      */
     protected function setOptions()
@@ -1283,7 +1283,8 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * @todo document me
+     * Loop through all theme options defined, trigger check for inheritance and write the new value back to the options object
+     * @return void
      */
     protected function setOptionInheritance()
     {
@@ -1297,8 +1298,7 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * @todo document me
-     *
+     * Search through the inheritence chain and find the inherited value for theme option
      * @param string $key
      * @return mixed
      */

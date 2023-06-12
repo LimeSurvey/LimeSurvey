@@ -864,19 +864,20 @@ class TemplateConfig extends CActiveRecord
     }
 
     /**
-     * @todo document me
+     * Uninstalls the selected surveytheme and deletes database entry and configuration
      * @param string $templatename Name of Template
      * @return bool|int
+     * @throws CDbException
      */
     public static function uninstall($templatename)
     {
         if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
-            $oTemplate = Template::model()->findByAttributes(array('name' => $templatename));
+            $oTemplate = Template::model()->findByAttributes(['name' => $templatename]);
             if ($oTemplate) {
                 if ($oTemplate->delete()) {
                     return TemplateConfiguration::model()->deleteAll(
                         'template_name=:templateName',
-                        array(':templateName' => $templatename)
+                        [':templateName' => $templatename]
                     );
                 }
             }
@@ -1006,7 +1007,7 @@ class TemplateConfig extends CActiveRecord
     }
 
     /**
-     * @todo document me
+     * Returns an array with uninstalled or incompatible survey themes
      * @return array|null
      */
     public function getTemplatesWithNoDb()
