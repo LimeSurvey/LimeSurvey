@@ -18,7 +18,7 @@ class SurveyPermissions
     /** @var bool */
     private $userControlSameGroupPolicy;
 
-    /** @var int[] Used to cache the list of UIDs. Affected by usercontrolSameGroupPolicy. */
+    /** @var int[]|null Used to cache the list of UIDs. Affected by usercontrolSameGroupPolicy. */
     private $filteredUserIdList = null;
 
     /**
@@ -360,7 +360,7 @@ class SurveyPermissions
     public function deleteUserPermissions($userId)
     {
         if (!$this->canManageSurveyPermissionsForUser($userId)) {
-            throw new \Exception(gT("No permission to delete survey permissions from user."));
+            throw new \LSUserException(403, gT("No permission."));
         }
 
         return \Permission::model()->deleteAllByAttributes([
@@ -455,6 +455,10 @@ class SurveyPermissions
         return $aUserIds;
     }
 
+    /**
+     * Returns the list of user ids that can be used in the user selector.
+     * @return int[]|null
+     */
     private function getFilteredUserIdList()
     {
         if (!isset($this->filteredUserIdList)) {
