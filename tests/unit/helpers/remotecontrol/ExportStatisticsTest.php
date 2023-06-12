@@ -203,6 +203,28 @@ class RemoteControlExportStatisticsTest extends BaseTest
     }
 
     /**
+     * Testing that exports_statistics returns
+     * statistics in xls format.
+     */
+    public function testXlsStatistics()
+    {
+        $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
+        $xlsStatistics = $this->handler->export_statistics($sessionKey, self::$surveyId, 'xls');
+        $this->assertNotEmpty($xlsStatistics, 'Remote control export_statistics result was empty. Expecting statistics in xls format.');
+    }
+
+    /**
+     * Testing that exports_statistics returns
+     * statistics in pdf format.
+     */
+    public function testPdfStatistics()
+    {
+        $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
+        $pdfStatistics = $this->handler->export_statistics($sessionKey, self::$surveyId, 'pdf');
+        $this->assertNotEmpty($pdfStatistics, 'Remote control export_statistics result was empty. Expecting statistics in pdf format.');
+    }
+
+    /**
      * Get the statistics data from the table with the
      * id specified.
      */
