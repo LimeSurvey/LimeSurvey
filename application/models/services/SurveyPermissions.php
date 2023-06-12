@@ -6,6 +6,9 @@ namespace LimeSurvey\Models\Services;
  * This class is responsible for the relationship between permissions, users and surveys.
  * It could be handled as a specific permissions system for surveys.
  *
+ * TODO: Remove the warning supression when getUserGroupNames() and getTooltipAllPermissions() are
+ *      moved to other classes.
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 class SurveyPermissions
 {
@@ -373,6 +376,8 @@ class SurveyPermissions
      * @param int $userid
      * @param bool $usercontrolSameGroupPolicy
      * @return array names of user groups, or empty array
+     *
+     * TODO: Move to another class.
      */
     public function getUserGroupNames($userid, $usercontrolSameGroupPolicy)
     {
@@ -401,6 +406,8 @@ class SurveyPermissions
      * @return array  structure is ['hasPermissions'] --> if user has at least one permission entity
      *                             ['allPermissions'] --> does the user has ALL possible permission entities
      *                             ['permissionCrudArray'] --> array with permission entities the user has
+     *
+     * TODO: Move to another class.
      */
     public function getTooltipAllPermissions($userId, $permissioName, $basicPermissionDetails)
     {
