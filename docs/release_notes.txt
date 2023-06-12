@@ -34,6 +34,11 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.60 (build 230607) to 3.28.61 (build 230614) June 12, 2023
+-Fixed issue #18585: Click again on link by email submit again the survey (#3193) (Denis Chenu)
+#Updated translation: Hungarian by kkd
+
+
 Changes from 3.28.59 (build 230517) to 3.28.60 (build 230607) June 5, 2023
 - Fixed issue #17491: Multiple Short Text subquestions missing from Export Printable Survey (#3134)
 - Fixed issue [security] #18847: Cross-Site Scripting vulnerability via the loadsecurity parameter (#3181)
