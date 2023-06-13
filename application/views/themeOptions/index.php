@@ -7,6 +7,7 @@
  * @var object $oQuestionTheme
  * @var TemplateConfig $oSurveyTheme
  * @var int $pageSize
+ * @var array $aAdminThemes
  */
 
 // TODO: rename to template_list.php and move to template controller
@@ -42,7 +43,8 @@ echo viewHelper::getViewTestTag('templateOptions');
                     ]
                 ); ?>
                 <!-- Available Themes -->
-                <?php if (count($oSurveyTheme->getTemplatesWithNoDb()) > 0) : ?>
+                <?php $templatewithNoDb = $oSurveyTheme->getTemplatesWithNoDb()?>
+                <?php if (count($templatewithNoDb) > 0) : ?>
                     <h3><?php eT('Available survey themes:'); ?></h3>
                     <div id="templates_no_db" >
                         <table class="items table table-hover">
@@ -58,19 +60,50 @@ echo viewHelper::getViewTestTag('templateOptions');
                             </thead>
 
                             <tbody>
-                            <?php foreach ($oSurveyTheme->templatesWithNoDb as $oTemplate) : ?>
-                                <?php /** @var TemplateManifest $oTemplate */ ?>
+                            <?php /** @var TemplateManifest $oTemplate */ ?>
+                            <?php $surveyThemeIterator = 0 ?>
+                            <?php foreach ($templatewithNoDb as $key => $oTemplate) : ?>
                                 <tr class="odd">
                                     <td class="col-lg-1"><?php echo $oTemplate->getPreview(); ?></td>
                                     <td class="col-lg-2"><?php echo $oTemplate->sTemplateName; ?></td>
                                     <td class="col-lg-3"><?php echo $oTemplate->getDescription(); ?></td>
                                     <td class="col-lg-2"><?php eT('XML themes'); ?></td>
                                     <td class="col-lg-1"><?php echo $oTemplate->config->metadata->extends; ?></td>
-                                    <td class="col-lg-2"><?php echo $oTemplate->getButtons(); ?></td>
+                                    <?php if (TemplateConfig::isCompatible($oTemplate->path . 'config.xml')): ?>
+                                        <td class="col-lg-2"><?php echo $oTemplate->getButtons(); ?></td>
+                                    <?php else: ?>
+                                        <td class="col-lg-2">
+                                            <div class="d-grid gap-2">
+                                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                                        data-bs-target="#templates_no_db_error_<?= $surveyThemeIterator ?>">
+                                                    <i class="ri-error-warning-fill"></i><?= gT('Show errors') ?>
+                                                </button>
+                                                <div class="modal fade" id="templates_no_db_error_<?= $surveyThemeIterator ?>" tabindex="-1"
+                                                     aria-labelledby="templates_no_db_error_title_<?= $surveyThemeIterator ?>" aria-hidden="true">
+                                                    <div class="modal-dialog modal-lg">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="templates_no_db_error_title_<?= $surveyThemeIterator ?>"><?= gT('Errors') ?></h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <?= gT(
+                                                                    'This theme has been disabled because of major changes inside the html and css code, please export the theme and add the "compatibility" option with the correct versionnumber inside the "config.xml" file for this theme. <br><br> Carefully examine in a dummy survey which changes you need to make before using your custom survey theme in a live environment',
+                                                                    'unescaped'
+                                                                ) ?>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><?= gT('Close') ?></button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    <?php endif; ?>
                                 </tr>
+                                <?php $surveyThemeIterator++ ?>
                             <?php endforeach; ?>
-
-
                             </tbody>
                         </table>
                     </div>
@@ -174,7 +207,7 @@ echo viewHelper::getViewTestTag('templateOptions');
         <div id="adminthemes" class="tab-pane">
             <div class="list-surveys">
                 <h3><?php eT('Available admin themes:'); ?></h3>
-                <div id="templates_no_db">
+                <div id="admin_themes">
                     <table class="items table table-hover">
                         <thead>
                         <tr>
@@ -186,28 +219,51 @@ echo viewHelper::getViewTestTag('templateOptions');
                         </tr>
                         </thead>
                         <tbody>
-                        <?php foreach ($oAdminTheme->adminThemeList as $oTheme) : ?>
+                        <?php $adminThemeIterator = 0 ?>
+                        <?php foreach ($aAdminThemes as $key => $oTheme) : ?>
                             <tr class="odd">
                                 <td class="col-lg-1"><?php echo $oTheme->preview; ?></td>
                                 <td class="col-lg-2"><?php echo $oTheme->metadata->name; ?></td>
                                 <td class="col-lg-3"><?php echo $oTheme->metadata->description; ?></td>
                                 <td class="col-lg-2"><?php eT('Core admin theme'); ?></td>
                                 <td class="col-lg-1">
-                                    <?php if ($oTheme->path == getGlobalSetting('admintheme')) : ?>
-                                        <h3><strong class="text-info"><?php eT("Selected") ?></strong></h3>
-                                    <?php else : ?>
-                                        <a href="
-                                        <?= $this->createUrl(
-                                            "themeOptions/setAdminTheme/",
-                                            ['sAdminThemeName' => $oTheme->path]
-                                        ); ?>"
-                                           class="btn btn-outline-secondary btn-sm">
-                                            <?php
-                                            eT("Select"); ?>
-                                        </a>
+                                    <?php if (TemplateConfig::isCompatible($oTheme->path . 'config.xml')): ?>
+                                        <?php if ($oTheme->name === App()->getConfig('admintheme')) : ?>
+                                            <h3><strong class="text-info"><?php eT("Selected") ?></strong></h3>
+                                        <?php else : ?>
+                                            <a href="<?= $this->createUrl("themeOptions/setAdminTheme/", ['sAdminThemeName' => $oTheme->path]) ?>"
+                                               class="btn btn-outline-secondary btn-sm">
+                                                <?= gT("Select") ?>
+                                            </a>
+                                        <?php endif; ?>
+                                    <?php else: ?>
+                                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#admin_theme_error_<?= $adminThemeIterator ?>">
+                                            <i class="ri-error-warning-fill"></i><?= gT('Show errors') ?>
+                                        </button>
+                                        <div class="modal fade" id="admin_theme_error_<?= $adminThemeIterator ?>" tabindex="-1"
+                                             aria-labelledby="#admin_theme_error_title_<?= $adminThemeIterator ?>" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="admin_theme_error_title_<?= $adminThemeIterator ?>"><?= gT('Errors') ?></h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <?= gT(
+                                                            'This theme has been disabled because of major changes inside the html and css code. <br><br>If there are any problems with the theme make sure to manually set the theme inside the databasetable "settings_global" to the default theme "Sea_Green". <br><br>To enable this theme again add the "compatibility" option with the correct versionnumber inside the "config.xml" file for this theme.',
+                                                            'unescaped'
+                                                        ) ?>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><?= gT('Close') ?></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     <?php endif; ?>
                                 </td>
                             </tr>
+                            <?php $adminThemeIterator++?>
                         <?php endforeach; ?>
                         </tbody>
                     </table>

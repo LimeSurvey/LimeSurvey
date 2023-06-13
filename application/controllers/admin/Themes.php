@@ -843,7 +843,7 @@ JAVASCRIPT
         if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
             $completeFileName = realpath(App()->getConfig('userthemerootdir') . "/" . $templatename);
             /* If retuirn false, not a dir or not inside userthemerootdir: try to hack : throw a 403 for security */
-            if (!is_dir($completeFileName) || !str_starts_with($completeFileName, App()->getConfig('userthemerootdir'))) {
+            if (!is_dir($completeFileName) || strpos($completeFileName, App()->getConfig('userthemerootdir')) !== 0) {
                 throw new CHttpException(403, "Disable for security reasons.");
             }
             // CheckIfTemplateExists check if the template is installed....
