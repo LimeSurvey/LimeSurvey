@@ -273,13 +273,13 @@ class Update_157 extends DatabaseUpdateBase
         if (\Yii::app()->db->driverName == 'pgsql') {
             try {
                 setTransactionBookmark();
-                $this->db->createCommand("ALTER TABLE ONLY {{user_groups}} ADD PRIMARY KEY (ugid); ")->execute;
+                $this->db->createCommand("ALTER TABLE ONLY {{user_groups}} ADD PRIMARY KEY (ugid); ")->execute();
             } catch (Exception $e) {
                 rollBackToTransactionBookmark();
             };
             try {
                 setTransactionBookmark();
-                $this->db->createCommand("ALTER TABLE ONLY {{users}} ADD PRIMARY KEY (uid); ")->execute;
+                $this->db->createCommand("ALTER TABLE ONLY {{users}} ADD PRIMARY KEY (uid); ")->execute();
             } catch (Exception $e) {
                 rollBackToTransactionBookmark();
             };

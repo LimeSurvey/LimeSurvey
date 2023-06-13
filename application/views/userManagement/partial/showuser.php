@@ -1,7 +1,7 @@
 <?php
 Yii::app()->getController()->renderPartial(
     '/layouts/partial_modals/modal_header',
-    ['modalTitle' => gT('User detail')]
+    ['modalTitle' => gT('User details')]
 );
 ?>
 
@@ -18,7 +18,7 @@ Yii::app()->getController()->renderPartial(
             </tr>
         <?php endif; ?>
         <tr>
-            <td><?=gT('Surveys created:')?></td>
+            <td><?=gT('Surveys owned:')?></td>
             <td><?=$oUser->surveysCreated?></td>
         </tr>
         <tr>

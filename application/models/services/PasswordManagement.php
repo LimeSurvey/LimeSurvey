@@ -18,7 +18,7 @@ class PasswordManagement
     const EMAIL_TYPE_RESET_PW = 'resetPassword';
     const MIN_TIME_NEXT_FORGOT_PW_EMAIL = 5; //forgot pw email is send again, only after 5 min delay
 
-    /** @var $user \User */
+    /** @var \User */
     private $user;
 
     /**

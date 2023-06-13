@@ -37,13 +37,12 @@ class LimeReplacementFieldsController extends LSBaseController
             throw new CHttpException(401);
         }
 
-        if (!Permission::model()->hasSurveyPermission($surveyid, 'survey', 'read')) {
+        if ($surveyid && !Permission::model()->hasSurveyPermission($surveyid, 'survey', 'read')) {
             throw new CHttpException(403);
         }
 
         if ($newType) {
             $newTypeResponse = $this->getNewTypeResponse($fieldtype, $surveyid, $gid, $qid);
-
             return $this->renderPartial('/admin/super/_renderJson', ['data' => $newTypeResponse]);
         }
 
@@ -232,7 +231,6 @@ class LimeReplacementFieldsController extends LSBaseController
         $oSurvey = Survey::model()->findByPk($surveyid);
         $replFields = array();
 
-        // The only time no survey id is necessary is in the global settings
         if ($fieldtype === 'globalSurveySettings') {
             $replFields['TOKEN:FIRSTNAME'] = gT("First name of the participant");
             $replFields['TOKEN:LASTNAME'] = gT("Last name of the participant");
@@ -242,7 +240,16 @@ class LimeReplacementFieldsController extends LSBaseController
             $replFields['ADMINEMAIL'] = gT("Email address of the survey administrator");
             return array($replFields, false);
         }
-
+        if ($fieldtype === 'admincreationemailtemplate') {
+            $replFields['SITENAME'] = gT("Name of the website");
+            $replFields['ADMINNAME'] = gT("Name of the administrator");
+            $replFields['ADMINEMAIL'] = gT("Email address of the administrator");
+            $replFields['USERNAME'] = gT("Username of the new user");
+            $replFields['FULLNAME'] = gT("Full name of the new user");
+            $replFields['LOGINURL'] = gT("Link to create password");
+            return array($replFields, false);
+        }
+        /* For other $fieldtype : we need $surveyId */
         if (!$surveyid) {
             return array($replFields, false);
         }
@@ -325,8 +332,8 @@ class LimeReplacementFieldsController extends LSBaseController
             $replFields['GLOBALOPTINURL'] = gT("Participant - Central participant DB opt-in URL");
             $replFields['FIRSTNAME'] = gT("Participant - First name");
             $replFields['LASTNAME'] = gT("Participant - Last name");
-            $replFields['VALIDFROM'] = gT("Participant - The date the token is valid from");
-            $replFields['VALIDUNTIL'] = gT("Participant - The date the token is valid until");
+            $replFields['VALIDFROM'] = gT("Participant - The date from which the token is valid");
+            $replFields['VALIDUNTIL'] = gT("Participant - The date until which the token is valid");
             $replFields['SURVEYNAME'] = gT("Survey title");
             $replFields['SID'] = gT("Survey ID");
             $replFields['SURVEYDESCRIPTION'] = gT("Survey description");

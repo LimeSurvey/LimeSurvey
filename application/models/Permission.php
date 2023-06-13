@@ -664,6 +664,7 @@ class Permission extends LSActiveRecord
                 'data-href'      => $setPermissionsUrl,
                 'data-modalsize' => 'modal-lg',
             ],
+            'enabledCondition' => Permission::model()->hasSurveyPermission($this->entity_id, 'surveysecurity', 'update')
         ];
 
         $dropdownItems[] = [

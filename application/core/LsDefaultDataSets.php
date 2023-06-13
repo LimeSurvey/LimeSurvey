@@ -301,9 +301,9 @@ class LsDefaultDataSets
                 null,
                 1,
                 'listQuestions',
-                gT('Question list', 'unescaped'),
-                gT('Question list', 'unescaped'),
-                gT('List questions', 'unescaped'),
+                gT('Overview question & groups', 'unescaped'),
+                gT('Overview question & groups', 'unescaped'),
+                gT('Overview question and groups', 'unescaped'),
                 '',
                 'remix',
                 '',
@@ -324,62 +324,7 @@ class LsDefaultDataSets
                 0,
                 1
             ],
-            [
-                2,
-                null,
-                2,
-                'listQuestionGroups',
-                gT('Group list', 'unescaped'),
-                gT('Group list', 'unescaped'),
-                gT('List question groups', 'unescaped'),
-                '',
-                'remix',
-                '',
-                'questionGroupsAdministration/listquestiongroups',
-                '',
-                '',
-                '',
-                '',
-                'surveycontent',
-                'read',
-                '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}',
-                '',
-                'en-GB',
-                1,
-                date('Y-m-d H:i:s'),
-                0,
-                date('Y-m-d H:i:s'),
-                0,
-                1
-            ],
-            [
-                2,
-                null,
-                3,
-                'reorder',
-                gT('Reorder questions & groups', 'unescaped'),
-                gT('Reorder questions & groups', 'unescaped'),
-                gT('Reorder questions & groups', 'unescaped'),
-                '',
-                'remix',
-                '',
-                'surveyAdministration/organize/',
-                '',
-                '',
-                '',
-                '',
-                'surveycontent',
-                'update',
-                '{"render": {"isActive": false, "link": {"data": {"surveyid": ["survey", "sid"]}}}}',
-                '',
-                'en-GB',
-                1,
-                date('Y-m-d H:i:s'),
-                0,
-                date('Y-m-d H:i:s'),
-                0,
-                1
-            ],
+         
             [
                 2,
                 null,
@@ -913,7 +858,7 @@ class LsDefaultDataSets
                           'desc'       => gT('Create a new survey from scratch. Or simply copy or import an existing survey.'),
                           'page'       => 'welcome',
                           'usergroup'  => '-2',
-                          'buttontext' => 'Create survey'
+                          'buttontext' => gt('Create survey')
         ];
         $returnArray[] = ['position'   => '2',
                           'url'        => 'surveyAdministration/listsurveys',
@@ -931,25 +876,25 @@ class LsDefaultDataSets
                           'desc'       => gT('Edit global settings'),
                           'page'       => 'welcome',
                           'usergroup'  => '-2',
-                          'buttontext' => 'View global settings'
+                          'buttontext' => gt('View global settings')
         ];
         $returnArray[] = ['position'   => '4',
                           'url'        => 'userManagement/index',
                           'title'      => gT('Manage survey administrators'),
                           'ico'        => 'ri-user-line',
-                          'desc'       => gT('The user management allows you to add additional users to your survey site.'),
+                          'desc'       => gT('The user management allows you to add additional users to your survey administration.'),
                           'page'       => 'welcome',
                           'usergroup'  => '-2',
-                          'buttontext' => 'Manage administrators'
+                          'buttontext' => gt('Manage administrators')
         ];
         $returnArray[] = ['position'   => '5',
                           'url'        => 'admin/labels/sa/view',
                           'title'      => gT('Label sets'),
                           'ico'        => 'ri-price-tag-3-line',
-                          'desc'       => gT('Label sets are templayes which can be loaded in most question types to speed up.'),
+                          'desc'       => gT('Label sets can be used as answer options or subquestions to speed up creation of similar questions.'),
                           'page'       => 'welcome',
                           'usergroup'  => '-2',
-                          'buttontext' => 'Edit label sets'
+                          'buttontext' => gt('Edit label sets')
         ];
         $returnArray[] = ['position'   => '6',
                           'url'        => 'themeOptions',
@@ -958,7 +903,7 @@ class LsDefaultDataSets
                           'desc'       => gT('The themes functionality allows you to edit survey-, admin- or question themes.'),
                           'page'       => 'welcome',
                           'usergroup'  => '-2',
-                          'buttontext' => 'Edit themes'
+                          'buttontext' => gt('Edit themes')
         ];
 
         App()->setLanguage($sOldLanguage);
@@ -1848,7 +1793,7 @@ class LsDefaultDataSets
         ];
     }
 
-    static function getBaseLabelSets($language = 'en')
+    public static function getBaseLabelSets($language = 'en')
     {
         $sOldLanguage = App()->language;
         Yii::app()->setLanguage($language);
@@ -2827,8 +2772,7 @@ class LsDefaultDataSets
             gT("Select font:"),
             gT("Select variation:"),
             gT("Fruity fonts"),
-            gT("Fruity variations"),
-            gt("Select all that apply") // This string will replace 'Check any that apply' later 
+            gT("Fruity variations")
         ];
     }
 

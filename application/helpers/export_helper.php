@@ -2315,7 +2315,6 @@ function tokensExport($iSurveyID)
     if ($sTokenLanguage != '') {
         $oRecordSet->andWhere("lt.language=" . App()->db->quoteValue($sTokenLanguage));
     }
-    $oRecordSet->order("lt.tid");
 
     //HEADERS should be after the above query else timeout errors in case there are lots of tokens!
     header("Content-Disposition: attachment; filename=tokens_" . $iSurveyID . ".csv");
@@ -2346,8 +2345,10 @@ function tokensExport($iSurveyID)
     $attributes = array_keys($token->getAttributes());
     $aExportedTokens = [];
     $countRecordSetSelector = clone $oRecordSet;
-    $countRecordSetSelector->select('count(*)');
+    $countRecordSetSelector->select('count(tid)');
     $countRestSet = $countRecordSetSelector->queryScalar();
+    // The order clause may only be added after the count query, otherwise the count query will fail in MSSQL
+    $oRecordSet->order("lt.tid");
     $maxRows = 1000;
     $maxPages = ceil($countRestSet / $maxRows);
     for ($i = 0; $i < $maxPages; $i++) {
@@ -3068,8 +3069,9 @@ function tsvSurveyExport($surveyid)
 function sortArrayByColumn($array, $column_name)
 {
     $keys = array_keys($array);
+    $tmparr = array_column($array, $column_name);
     array_multisort(
-        array_column($array, $column_name),
+        $tmparr,
         SORT_ASC,
         SORT_NUMERIC,
         $array,

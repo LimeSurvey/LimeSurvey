@@ -50,6 +50,7 @@ import parameterGlobals from './parts/parameterGlobals';
 // import components
 import activateSubSubMenues from './components/bootstrap-sub-submenues';
 import confirmDeletemodal from './components/confirmdeletemodal';
+import fileManagerStyle from './components/file-manager';
 import panelClickable from './components/panelclickable';
 import panelsAnimation from './components/panelsanimation';
 import notificationSystem from './components/notifications';
@@ -58,6 +59,8 @@ import EventBus from './components/eventbus';
 import LOG from './components/lslog';
 
 const AdminCore = function(){
+  
+     
     //Singelton Pattern -> the AdminCore functions can only be nound once.
     if(typeof window.LS.adminCore === 'object') {
         window.LS.adminCore.refresh();
@@ -82,12 +85,14 @@ const AdminCore = function(){
             appendToLoad(confirmationModal);
             appendToLoad(questionEdit);
             appendToLoad(confirmDeletemodal);
+            appendToLoad(fileManagerStyle);
             appendToLoad(panelClickable);
             appendToLoad(window.LS.doToolTip);
             appendToLoad(panelsAnimation, null, null, 200);
             appendToLoad(notificationSystem.initNotification);
             appendToLoad(activateSubSubMenues);
             appendToLoad(globalWindowMethods.fixAccordionPosition);
+            appendToLoad(globalWindowMethods.doSelect2);
         },
         appendToLoad = (fn, event, root, delay) => {
             event = event || 'pjax:scriptcomplete ready';
@@ -138,6 +143,7 @@ const AdminCore = function(){
                 confirmationModal,
                 questionEdit,
                 confirmDeletemodal,
+                fileManagerStyle,
                 panelClickable,
                 panelsAnimation,
                 initNotification : notificationSystem.initNotification,

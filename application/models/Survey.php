@@ -454,7 +454,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             'defaultlanguage' => array(self::BELONGS_TO, 'SurveyLanguageSetting', array('language' => 'surveyls_language', 'sid' => 'surveyls_survey_id')),
             'correct_relation_defaultlanguage' => array(self::HAS_ONE, 'SurveyLanguageSetting', array('surveyls_language' => 'language', 'surveyls_survey_id' => 'sid')),
             'owner' => array(self::BELONGS_TO, 'User', 'owner_id',),
-            'groups' => array(self::HAS_MANY, 'QuestionGroup', 'sid', 'order' => 'groups.group_order ASC'),
+            'groups' => array(self::HAS_MANY, 'QuestionGroup', 'sid', 'order' => 'groups.group_order ASC', 'together' => true),
             'questions' => array(self::HAS_MANY, 'Question', 'sid', 'order' => 'questions.qid ASC'),
             'quotas' => array(self::HAS_MANY, 'Quota', 'sid', 'order' => 'name ASC'),
             'surveymenus' => array(self::HAS_MANY, 'Surveymenu', array('survey_id' => 'sid')),
@@ -534,7 +534,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             array('googleanalyticsstyle', 'numerical', 'integerOnly' => true, 'min' => '0', 'max' => '3', 'allowEmpty' => true),
             array('autonumber_start', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
             array('tokenlength', 'default', 'value' => 15),
-            array('tokenlength', 'numerical', 'integerOnly' => true, 'allowEmpty' => false, 'min' => '-1', 'max' => '35'),
+            array('tokenlength', 'numerical', 'integerOnly' => true, 'allowEmpty' => false, 'min' => '-1', 'max' => Token::MAX_LENGTH, 'tooBig' => gT('Token length cannot be bigger than {max} characters.')),
             array('bouncetime', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
             array('navigationdelay', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
             array('template', 'filter', 'filter' => array($this, 'filterTemplateSave')),
@@ -548,6 +548,11 @@ class Survey extends LSActiveRecord implements PermissionInterface
             array('startdate', 'date','format' => ['yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m'],'allowEmpty' => true),
             array('datecreated', 'date','format' => ['yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m'],'allowEmpty' => true),
             array('expires', 'checkExpireAfterStart'),
+            // The Google Analytics Tracking ID is inserted in a JS script. If the following rule is changed, make sure
+            // that it doesn't render it vulnerable to XSS attacks.
+            array('googleanalyticsapikey', 'match', 'pattern' => '/^[a-zA-Z\-\d]*$/',
+                'message' => gT('Google Analytics Tracking ID may only contain alphanumeric characters and hyphens.'),
+            ),
         );
     }
 
@@ -839,11 +844,13 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function getGoogleanalyticsapikey()
     {
+        $key = null;
         if ($this->googleanalyticsapikey === "9999useGlobal9999") {
-            return trim((string) Yii::app()->getConfig('googleanalyticsapikey'));
+            $key = trim((string) Yii::app()->getConfig('googleanalyticsapikey'));
         } else {
-            return trim((string) $this->googleanalyticsapikey);
+            $key = trim((string) $this->googleanalyticsapikey);
         }
+        return sanitize_alphanumeric($key);
     }
 
     /**

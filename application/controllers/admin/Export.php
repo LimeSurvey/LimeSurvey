@@ -136,21 +136,11 @@ class Export extends SurveyCommonAction
      */
     public function exportresults()
     {
-        $iSurveyID = sanitize_int(Yii::app()->request->getParam('surveyid')) ??
-            sanitize_int(Yii::app()->request->getParam('surveyId'));
+        $iSurveyID = sanitize_int(App()->request->getParam('surveyid', App()->request->getParam('surveyId')));
         $survey = Survey::model()->findByPk($iSurveyID);
 
-        if (!isset($imageurl)) {
-            $imageurl = "./images";
-        }
         if (!isset($iSurveyID)) {
             $iSurveyID = returnGlobal('sid');
-        }
-        if (!isset($convertyto)) {
-            $convertyto = returnGlobal('convertyto');
-        }
-        if (!isset($convertnto)) {
-            $convertnto = returnGlobal('convertnto');
         }
 
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export')) {
@@ -217,7 +207,7 @@ class Export extends SurveyCommonAction
                 $aFieldsOptions[$sFieldName] = array('title' => viewHelper::getFieldText($fieldinfo), 'data-fieldname' => $fieldinfo['fieldname'], 'data-emcode' => viewHelper::getFieldCode($fieldinfo, array('LEMcompat' => true))); // No need to filter title : Yii do it (remove all tag)
             }
 
-            $data['SingleResponse'] = (int) returnGlobal('id');
+            $data['SingleResponse'] = intval(App()->getRequest()->getParam('id'));
             $data['selecthide'] = $selecthide;
             $data['selectshow'] = $selectshow;
             $data['selectinc'] = $selectinc;
@@ -643,7 +633,7 @@ class Export extends SurveyCommonAction
                         echo "* Variable name was incorrect and was changed from {$field['title']} to $ftitle .\n";
                     }
 
-                    echo "RENAME VARIABLE ( " . $field['id'] . ' = ' . $ftitle . " ).\n";
+                    echo "RENAME VARIABLES ( " . $field['id'] . ' = ' . $ftitle . " ).\n";
                 }
             }
             echo "RESTORE LOCALE.\n";
@@ -1190,20 +1180,11 @@ class Export extends SurveyCommonAction
             echo $this->xmlToJson($surveyInXmlFormat);
             Yii::app()->end();
         } elseif ($action == "exportstructurequexml") {
-            if (isset($surveyprintlang) && !empty($surveyprintlang)) {
-                $quexmllang = $surveyprintlang;
-            } else {
-                $quexmllang = Survey::model()->findByPk($iSurveyID)->language;
-            }
-
-            if (!(isset($noheader) && $noheader == true)) {
-                $fn = "survey_{$iSurveyID}_{$quexmllang}.xml";
-
-                $this->addHeaders($fn, "text/xml", "Mon, 26 Jul 1997 05:00:00 GMT");
-
-                echo quexml_export($iSurveyID, $quexmllang);
-                Yii::app()->end();
-            }
+            $quexmllang = Survey::model()->findByPk($iSurveyID)->language;
+            $fn = "survey_{$iSurveyID}_{$quexmllang}.xml";
+            $this->addHeaders($fn, "text/xml", "Mon, 26 Jul 1997 05:00:00 GMT");
+            echo quexml_export($iSurveyID, $quexmllang);
+            Yii::app()->end();
         } elseif ($action == 'exportstructuretsv') {
             $this->exporttsv($iSurveyID);
         } elseif ($action == "exportarchive") {

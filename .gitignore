@@ -136,6 +136,7 @@ yarn-error.log
 
 # Test stuff
 chromedriver
+cov.xml
 
 # RFC and commons directory and files
 /.well-known/

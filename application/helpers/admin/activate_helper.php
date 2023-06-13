@@ -274,7 +274,8 @@ function checkQuestions($postsid, $iSurveyID)
     $fieldmap = createFieldMap($survey, 'full', true, false, $survey->language, $aDuplicateQIDs);
     if (count($aDuplicateQIDs)) {
         foreach ($aDuplicateQIDs as $iQID => $aDuplicate) {
-            $sFixLink = "[<a class='selector__fixConsistencyProblem' href='" . Yii::app()->getController()->createUrl("/surveyAdministration/activate/iSurveyID/{$iSurveyID}/fixnumbering/{$iQID}") . "'>Click here to fix</a>]";
+            $sFixLink = "[<a class='selector__fixConsistencyProblem'
+            href='" . Yii::app()->getController()->createUrl("/surveyAdministration/fixNumbering/iSurveyID/{$iSurveyID}/questionId/{$iQID}") . "'>Click here to fix</a>]";
             $failedcheck[] = array($iQID, $aDuplicate['question'], ": Bad duplicate fieldname {$sFixLink}", $aDuplicate['gid']);
         }
     }

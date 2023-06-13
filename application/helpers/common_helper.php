@@ -97,23 +97,28 @@ function quoteText($sText, $sEscapeMode = 'html')
 /**
 * getSurveyList() Queries the database (survey table) for a list of existing surveys
 *
-* @param boolean $bReturnArray If set to true an array instead of an HTML option list is given back
+* @param boolean $bReturnArray If set to true an array instead of an HTML option list is given back (unused by core (2023-04-12))
 * @return string|array This string is returned containing <option></option> formatted list of existing surveys
 *
 */
 function getSurveyList($bReturnArray = false)
 {
     static $cached = null;
-    $bCheckIntegrity = false;
     $timeadjust = getGlobalSetting('timeadjust');
     App()->setLanguage((Yii::app()->session['adminlang'] ?? 'en'));
     $surveynames = array();
 
     if (is_null($cached)) {
+        $criteria = new CDBCriteria();
+        $criteria->select = ['sid','language', 'active', 'expires','startdate'];
+        $criteria->with = ['languagesettings' => [
+                'select'=>'surveyls_title',
+                'where'=>'t.language = languagesettings.language'
+            ]
+        ];
         $surveyidresult = Survey::model()
             ->permission(Yii::app()->user->getId())
-            ->with('languagesettings')
-            ->findAll();
+            ->findAll($criteria);
         foreach ($surveyidresult as $result) {
             if (isset($result->languagesettings[$result->language])) {
                 $surveynames[] = array_merge(
@@ -124,7 +129,7 @@ function getSurveyList($bReturnArray = false)
         }
 
         usort($surveynames, function ($a, $b) {
-                return strcmp((string) $a['surveyls_title'], (string) $b['surveyls_title']);
+            return strcmp((string) $a['surveyls_title'], (string) $b['surveyls_title']);
         });
         $cached = $surveynames;
     } else {
@@ -138,27 +143,23 @@ function getSurveyList($bReturnArray = false)
     $inactivesurveys = '';
     $expiredsurveys = '';
     foreach ($surveynames as $sv) {
-        $surveylstitle = flattenText($sv['surveyls_title']);
-        if (strlen($surveylstitle) > 70) {
-            $surveylstitle = htmlspecialchars(mb_strcut(html_entity_decode($surveylstitle, ENT_QUOTES, 'UTF-8'), 0, 70, 'UTF-8')) . "...";
-        }
-
+        $surveylstitle = CHtml::encode($sv['surveyls_title']) . " [" . $sv['sid'] . "]";
         if ($sv['active'] != 'Y') {
             $inactivesurveys .= "<option ";
             if (Yii::app()->user->getId() == $sv['owner_id']) {
-                $inactivesurveys .= " class='mysurvey emphasis'";
+                $inactivesurveys .= " class='mysurvey emphasis inactivesurvey'";
             }
             $inactivesurveys .= " value='{$sv['sid']}'>{$surveylstitle}</option>\n";
         } elseif ($sv['expires'] != '' && $sv['expires'] < dateShift((string) date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)) {
             $expiredsurveys .= "<option ";
             if (Yii::app()->user->getId() == $sv['owner_id']) {
-                $expiredsurveys .= " class='mysurvey emphasis'";
+                $expiredsurveys .= " class='mysurvey emphasis expiredsurvey'";
             }
             $expiredsurveys .= " value='{$sv['sid']}'>{$surveylstitle}</option>\n";
         } else {
             $activesurveys .= "<option ";
             if (Yii::app()->user->getId() == $sv['owner_id']) {
-                $activesurveys .= " class='mysurvey emphasis'";
+                $activesurveys .= " class='mysurvey emphasis activesurvey'";
             }
             $activesurveys .= " value='{$sv['sid']}'>{$surveylstitle}</option>\n";
         }
@@ -1214,7 +1215,7 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
 
                 //go through all the (multiple) answers
                 foreach ($result as $row) {
-                    $myfield2 = $myfield . reset($row);
+                    $myfield2 = $myfield . $row['title'];
                     $allfields[] = $myfield2;
                 }
                 break;
@@ -1413,8 +1414,8 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
 
     $defaultsQuery = "SELECT a.qid, a.sqid, a.scale_id, a.specialtype, al10.defaultvalue"
     . " FROM {{defaultvalues}} as a "
-    . " LEFT JOIN  {{defaultvalue_l10ns}} as al10 ON a.dvid = al10.dvid "
-    . " LEFT JOIN {{questions}} as b ON a.qid = b.qid "
+    . " JOIN {{defaultvalue_l10ns}} as al10 ON a.dvid = al10.dvid " // We NEED a default value set
+    . " JOIN {{questions}} as b ON a.qid = b.qid " // We NEED only question in this survey
     . " AND al10.language = '{$sLanguage}'"
     . " AND b.same_default=0"
     . " AND b.sid = " . $surveyid;
@@ -1434,8 +1435,8 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
     $baseLanguage = $survey->language;
     $defaultsQuery = "SELECT a.qid, a.sqid, a.scale_id, a.specialtype, al10.defaultvalue"
     . " FROM {{defaultvalues}} as a "
-    . " LEFT JOIN  {{defaultvalue_l10ns}} as al10 ON a.dvid = al10.dvid "
-    . " LEFT JOIN {{questions}} as b ON a.qid = b.qid "
+    . " JOIN {{defaultvalue_l10ns}} as al10 ON a.dvid = al10.dvid " // We NEED a default value set
+    . " JOIN {{questions}} as b ON a.qid = b.qid " // We NEED only question in this survey
     . " AND al10.language = '{$baseLanguage}'"
     . " AND b.same_default=1"
     . " AND b.sid = " . $surveyid;
@@ -2209,7 +2210,7 @@ function SendEmailMessage($body, $subject, $to, string $from, $sitename, $ishtml
 * @param boolean $bKeepSpan set to true for keep span, used for expression manager. Default: false
 * @param boolean $bDecodeHTMLEntities If set to true then all HTML entities will be decoded to the specified charset. Default: false
 * @param string $sCharset Charset to decode to if $decodeHTMLEntities is set to true. Default: UTF-8
-* @param string $bStripNewLines strip new lines if true, if false replace all new line by \r\n. Default: true
+* @param boolean $bStripNewLines strip new lines if true, if false replace all new line by \r\n. Default: true
 *
 * @return string  Cleaned text
 */
@@ -2642,6 +2643,32 @@ function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, string $sString)
     } else // unknown type
     {
         return $sString;
+    }
+}
+
+/**
+ * Returns true if there are old links in answer/question/survey/email template/label set texts.
+ *
+ * @param string $type 'survey' or 'label'
+ * @param mixed $oldSurveyId
+ * @param mixed $string
+ * @return boolean True if the provided string includes links to the old survey. If the type is not 'survey' or 'label', it returns false.
+ */
+function checkOldLinks($type, $oldSurveyId, $string)
+{
+    if (empty($string)) {
+        return false;
+    }
+    $oldSurveyId = (int) $oldSurveyId;
+    if ($type == 'survey') {
+        $pattern = '(http(s)?:\/\/)?(([a-z0-9\/\.])*(?=(\/upload))\/upload\/surveys\/' . $oldSurveyId . '\/)';
+        return preg_match('/' . $pattern . '/u', $string, $m);
+    } elseif ($type == 'label') {
+        $pattern = '(http(s)?:\/\/)?(([a-z0-9\/\.])*(?=(\/upload))\/upload\/labels\/' . $oldSurveyId . '\/)';
+        return preg_match('/' . $pattern . '/u', $string, $m);
+    } else // unknown type
+    {
+        return false;
     }
 }
 
@@ -3197,6 +3224,7 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
 
     //Get response data
     $idrow = SurveyDynamic::model($iSurveyID)->findByAttributes(array('id' => $iResponseID));
+    $idrow->decryptBeforeOutput();
 
     // Create array of non-null values - those are the relevant ones
     $aRelevantFields = array();
@@ -3669,7 +3697,7 @@ function cleanLanguagesFromSurvey($iSurveyID, $availlangs)
 
 /**
 * fixLanguageConsistency() fixes missing groups, questions, answers, quotas & assessments for languages on a survey
-* @param string $sid - the currently selected survey
+* @param int $sid - the currently selected survey
 * @param string $availlangs - space separated list of additional languages in survey - if empty all additional languages of a survey are checked against the base language
 * @param string $baselang - language to use as base (useful when changing the base language) - if empty, it will be picked from the survey
 * @return bool - always returns true
@@ -4579,6 +4607,22 @@ function getIPAddress()
         $sIPAddress = $_SERVER['REMOTE_ADDR'];
     }
 
+    return $sIPAddress;
+}
+
+
+/**
+ * This function returns the real IP address and should mainly be used for security sensitive purposes
+ * If you want to use the IP address for language detection or similar, use getIPAddress() instead
+ * 
+ * @return  string  Client IP Address
+ */
+function getRealIPAddress()
+{
+    $sIPAddress = '127.0.0.1';
+    if (!empty($_SERVER['REMOTE_ADDR']) && filter_var($_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP) !== false) {
+        $sIPAddress = $_SERVER['REMOTE_ADDR'];
+    }
     return $sIPAddress;
 }
 
