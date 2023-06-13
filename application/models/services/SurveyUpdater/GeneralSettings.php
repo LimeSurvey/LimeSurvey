@@ -260,7 +260,7 @@ class GeneralSettings
      * @param array $meta
      * @param ?array $fieldOpts
      * @return void
-     * @SuppressWarnings('php:S3776') Cognitive Complexity
+     * @SuppressWarnings("php:S3776") Cognitive Complexity
      */
     private function setField($field, $input, Survey $survey, $meta, $fieldOpts = null)
     {
@@ -497,68 +497,70 @@ class GeneralSettings
      * @return string One character that corresponds to captcha usage
      * @todo Should really be saved as three fields in the database!
      * @todo Copied from Survey:::saveTranscribeCaptchaOptions() replace uses of original copy
-     * @SuppressWarnings('php:S3776') Cognitive Complexity
+     * @SuppressWarnings("php:S3776") Cognitive Complexity
      */
     private function calculateUseCaptchaOption($surveyaccess, $registration, $saveandload)
     {
+        $result = 'N';
+
         if ($surveyaccess === null && $registration === null && $saveandload === null) {
             return null;
         }
 
         if ($surveyaccess == 'I' && $registration == 'I' && $saveandload == 'I') {
-            return 'E';
+            $result = 'E';
         } elseif ($surveyaccess == 'Y' && $registration == 'Y' && $saveandload == 'I') {
-            return 'F';
+            $result = 'F';
         } elseif ($surveyaccess == 'I' && $registration == 'Y' && $saveandload == 'Y') {
-            return 'G';
+            $result = 'G';
         } elseif ($surveyaccess == 'Y' && $registration == 'I' && $saveandload == 'Y') {
-            return 'H';
+            $result = 'H';
         } elseif ($surveyaccess == 'I' && $registration == 'Y' && $saveandload == 'I') {
-            return 'I';
+            $result = 'I';
         } elseif ($surveyaccess == 'I' && $registration == 'I' && $saveandload == 'Y') {
-            return 'J';
+            $result = 'J';
         } elseif ($surveyaccess == 'Y' && $registration == 'I' && $saveandload == 'I') {
-            return 'K';
+            $result = 'K';
         } elseif ($surveyaccess == 'I' && $saveandload == 'Y') {
-            return 'L';
+            $result = 'L';
         } elseif ($surveyaccess == 'I' && $registration == 'Y') {
-            return 'M';
+            $result = 'M';
         } elseif ($registration == 'I' && $surveyaccess == 'Y') {
-            return 'O';
+            $result = 'O';
         } elseif ($registration == 'I' && $saveandload == 'Y') {
-            return 'P';
+            $result = 'P';
         } elseif ($saveandload == 'I' && $surveyaccess == 'Y') {
-            return 'T';
+            $result = 'T';
         } elseif ($saveandload == 'I' && $registration == 'Y') {
-            return 'U';
+            $result = 'U';
         } elseif ($surveyaccess == 'I' && $registration == 'I') {
-            return '1';
+            $result = '1';
         } elseif ($surveyaccess == 'I' && $saveandload == 'I') {
-            return '2';
+            $result = '2';
         } elseif ($registration == 'I' && $saveandload == 'I') {
-            return '3';
+            $result = '3';
         } elseif ($surveyaccess == 'I') {
-            return '4';
+            $result = '4';
         } elseif ($saveandload == 'I') {
-            return '5';
+            $result = '5';
         } elseif ($registration == 'I') {
-            return '6';
+            $result = '6';
         } elseif ($surveyaccess == 'Y' && $registration == 'Y' && $saveandload == 'Y') {
-            return 'A';
+            $result = 'A';
         } elseif ($surveyaccess == 'Y' && $registration == 'Y') {
-            return 'B';
+            $result = 'B';
         } elseif ($surveyaccess == 'Y' && $saveandload == 'Y') {
-            return 'C';
+            $result = 'C';
         } elseif ($registration == 'Y' && $saveandload == 'Y') {
-            return 'D';
+            $result = 'D';
         } elseif ($surveyaccess == 'Y') {
-            return 'X';
+            $result = 'X';
         } elseif ($registration == 'Y') {
-            return 'R';
+            $result = 'R';
         } elseif ($saveandload == 'Y') {
-            return 'S';
+            $result = 'S';
         }
 
-        return 'N';
+        return $result;
     }
 }

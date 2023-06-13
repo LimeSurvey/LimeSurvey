@@ -50,37 +50,72 @@ class LanguageConsistency
             ->surveyls_title;
 
         // Add new language fixLanguageConsistency do it
-        $aAvailableLanguage = $survey->getAllLanguages();
-        foreach ($aAvailableLanguage as $sLang) {
+        $aAvailableLanguages = $survey->getAllLanguages();
+        foreach ($aAvailableLanguages as $sLang) {
             if ($sLang) {
-                $oLanguageSettings = $this->modelSurveyLanguageSetting->find(
-                    'surveyls_survey_id=:surveyid AND surveyls_language=:langname',
-                    array(':surveyid' => $survey->sid, ':langname' => $sLang)
+                $this->updateLanguage(
+                    $survey,
+                    $sLang,
+                    $surveyTitle
                 );
-                if (!$oLanguageSettings) {
-                    $oLanguageSettings = new SurveyLanguageSetting();
-                    $languagedetails = getLanguageDetails($sLang);
-                    $oLanguageSettings->surveyls_survey_id = $survey->sid;
-                    $oLanguageSettings->surveyls_language = $sLang;
-                    if ($sLang == $survey->language) {
-                        $oLanguageSettings->surveyls_title = $surveyTitle;
-                    } else {
-                        $oLanguageSettings->surveyls_title = ''; // Not in default model ?
-                    }
-                    $oLanguageSettings->surveyls_dateformat = $languagedetails['dateformat'];
-                    if (!$oLanguageSettings->save()) {
-                        $this->yiiApp->setFlashMessage(
-                            gT("Survey language could not be created."),
-                            "error"
-                        );
-                        tracevar($oLanguageSettings->getErrors());
-                    }
-                }
             }
         }
+
+        $this->cleanup(
+            $survey,
+            $initBaseLanguage,
+            $aAvailableLanguages
+        );
+    }
+
+    /**
+     * Update
+     *
+     * @param Survey $survey
+     * @param string $sLang
+     * @param string $surveyTitle
+     * @return void
+     */
+    private function updateLanguage(Survey $survey, $sLang, $surveyTitle)
+    {
+        $oLanguageSettings = $this->modelSurveyLanguageSetting->find(
+            'surveyls_survey_id=:surveyid AND surveyls_language=:langname',
+            array(':surveyid' => $survey->sid, ':langname' => $sLang)
+        );
+        if (!$oLanguageSettings) {
+            $oLanguageSettings = new SurveyLanguageSetting();
+            $languagedetails = getLanguageDetails($sLang);
+            $oLanguageSettings->surveyls_survey_id = $survey->sid;
+            $oLanguageSettings->surveyls_language = $sLang;
+            if ($sLang == $survey->language) {
+                $oLanguageSettings->surveyls_title = $surveyTitle;
+            } else {
+                $oLanguageSettings->surveyls_title = ''; // Not in default model ?
+            }
+            $oLanguageSettings->surveyls_dateformat = $languagedetails['dateformat'];
+            if (!$oLanguageSettings->save()) {
+                $this->yiiApp->setFlashMessage(
+                    gT("Survey language could not be created."),
+                    "error"
+                );
+                tracevar($oLanguageSettings->getErrors());
+            }
+        }
+    }
+
+    /**
+     * Update
+     *
+     * @param Survey $survey
+     * @param string $initBaseLanguage
+     * @param array $aAvailableLanguages
+     * @return void
+     */
+    private function cleanup(Survey $survey, $initBaseLanguage, $aAvailableLanguages)
+    {
         fixLanguageConsistency(
             $survey->sid,
-            implode(' ', $aAvailableLanguage),
+            implode(' ', $aAvailableLanguages),
             $initBaseLanguage
         );
 
@@ -93,7 +128,7 @@ class LanguageConsistency
         );
         $oCriteria->addNotInCondition(
             'surveyls_language',
-            $aAvailableLanguage
+            $aAvailableLanguages
         );
         $this->modelSurveyLanguageSetting
             ->deleteAll($oCriteria);
