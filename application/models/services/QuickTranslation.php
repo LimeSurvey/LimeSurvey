@@ -383,6 +383,7 @@ class QuickTranslation
     public function getAnswerTranslations($baselang)
     {
         return Answer::model()
+            ->resetScope()
             ->with('answerl10ns', [
                 'condition' => 'language =:baselang ',
                 'params' => [':baselang' => $baselang]])
@@ -391,7 +392,7 @@ class QuickTranslation
             ->findAllByAttributes(
                 [],
                 [
-                    'order' => 'group_order, question.question_order, t.scale_id, t.sortorder',
+                    'order' => 'group_order, question.question_order, t.scale_id, t.sortorder, t.code',
                     'condition' => 'question.sid=:sid',
                     'params' => array(':sid' => $this->survey->sid)
                 ]
