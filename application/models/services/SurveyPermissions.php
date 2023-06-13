@@ -483,18 +483,11 @@ class SurveyPermissions
             return true;
         }
 
-        // If the user doesn't have User Read permission, and it's not allowed
-        // to see at least the users of the same group, then he can't manage survey
-        // permissions for any user.
-        if (!$this->userControlSameGroupPolicy) {
-            return false;
-        }
-
         // If the user doesn't have User Read permission, but it's allowed to see
         // at least the users of the same group, and the given user is in the same
         // group, then he can manage survey permissions for the given user.
         $authorizedUsersList = $this->getFilteredUserIdList();
-        if (in_array($userId, $authorizedUsersList)) {
+        if ($this->userControlSameGroupPolicy && in_array($userId, $authorizedUsersList)) {
             return true;
         }
 
