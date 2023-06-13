@@ -421,7 +421,7 @@ class ThemeOptionsController extends LSBaseController
         }
         $aData = array();
         $oSurveyTheme = new TemplateConfiguration();
-        $aData['oAdminTheme']  = new AdminTheme();
+        $aData['aAdminThemes']  = AdminTheme::getAdminThemeList();
         $aData['oQuestionTheme'] = new QuestionTheme();
         $canImport = true;
         $importErrorMessage = null;
