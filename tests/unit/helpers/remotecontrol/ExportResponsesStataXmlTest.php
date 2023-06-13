@@ -27,7 +27,7 @@ class ExportResponsesStataXmlTest extends BaseTest
         self::installAndActivatePlugin(self::$pluginName);
 
         // Import survey
-        $filename = self::$surveysFolder . '/survey_archive_RemoteControlExportResponses.lsa';
+        $filename = self::$surveysFolder . '/survey_export_responses_with_tokens.lsa';
         self::importSurvey($filename);
     }
 
@@ -44,6 +44,6 @@ class ExportResponsesStataXmlTest extends BaseTest
 
     public static function tearDownAfterClass(): void
     {
-        \Survey::model()->deleteSurvey(self::$surveyId);
+        self::$testSurvey->delete();
     }
 }
