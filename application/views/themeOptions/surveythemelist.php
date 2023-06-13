@@ -1,5 +1,9 @@
 
 <?php
+/**
+ * @var $oSurveyTheme TemplateConfiguration
+ */
+
 $massiveAction = App()->getController()->renderPartial(
     '/themeOptions/_selector',
     [

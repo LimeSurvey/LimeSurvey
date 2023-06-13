@@ -300,9 +300,9 @@ class TemplateConfig extends CActiveRecord
 
 
     /**
-     * @todo document me
-     * @todo missing return value (php warning)
-     * @return boolean|null
+     * Check if this template is a standard template and save it in current model $this->isStandard
+     * @return void
+     * @throws CException
      */
     protected function setIsStandard()
     {
@@ -1053,7 +1053,7 @@ class TemplateConfig extends CActiveRecord
     }
 
     /**
-     * @todo document me
+     * Returns an array of all unique template folders that are registered in the database
      * @return array|null
      */
     public function getAllDbTemplateFolders()
