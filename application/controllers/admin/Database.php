@@ -363,7 +363,8 @@ class Database extends SurveyCommonAction
             'bounce_email' => $request->getPost('bounce_email'),
             'gsid' => $request->getPost('gsid'),
             'format' => $request->getPost('format'),
-            'owner_id' => $request->getPost('owner_id')
+            'owner_id' => $request->getPost('owner_id'),
+            'template' => $request->getPost('template')
         ];
 
         try {
