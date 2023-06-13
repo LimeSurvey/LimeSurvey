@@ -464,7 +464,7 @@ class SurveyPermissions
         if (!isset($this->filteredUserIdList)) {
             $this->filteredUserIdList = getUserList('onlyuidarray');
         }
-        return $this->filteredUserIdList ?? [];
+        return $this->filteredUserIdList;
     }
 
     /**
