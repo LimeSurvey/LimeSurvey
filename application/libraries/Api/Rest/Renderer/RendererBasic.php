@@ -6,6 +6,7 @@ use CJSON;
 use CWebLogRoute;
 use Exception;
 use Yii;
+use LSYii_Application;
 use LimeSurvey\Api\Rest\Renderer\RendererInterface;
 use LimeSurvey\Api\Command\Response\{
     Response,
@@ -39,6 +40,8 @@ class RendererBasic implements RendererInterface
         $error = [];
 
         $error['code'] = get_class($exception);
+        // @todo replace global constant with injected config
+        /** @psalm-suppress all */
         if (YII_DEBUG) {
             $error['message'] = $exception->getMessage();
             $error['file'] = $exception->getFile();
@@ -62,19 +65,21 @@ class RendererBasic implements RendererInterface
         header('Content-type: application/json');
         echo CJSON::encode($data);
 
-        foreach (Yii::app()->log->routes as $route) {
+        /** @var LSYii_Application */
+        $app = Yii::app();
+        foreach ($app->log->routes as $route) {
             if ($route instanceof CWebLogRoute) {
                 $route->enabled = false; // disable any weblogroutes
             }
         }
-        Yii::app()->end();
+        $app->end();
     }
 
     /**
      * Get HTTP response code from command response status.
      *
-     * @param StatusAbstract $status
-     * @return void
+     * @param Status $status
+     * @return int
      */
     protected function getHttpResponseCode(Status $status)
     {

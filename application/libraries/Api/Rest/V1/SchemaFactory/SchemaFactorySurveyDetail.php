@@ -7,12 +7,11 @@ use GoldSpecDigital\ObjectOrientedOAS\Objects\AllOf;
 
 class SchemaFactorySurveyDetail
 {
+    /**
+     *  @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     */
     public function make(): Schema
     {
-        $schemaSurveyLanguageSettings = (new SchemaFactorySurveyLanguageSettings())->make();
-        $schemaSurveyDefaultLanguage = Schema::object('defaultlanguage')
-            ->properties(...$schemaSurveyLanguageSettings->properties);
-
         $questionAttributeSchema = (new SchemaFactoryQuestionAttribute())->make();
         $questionAttributesSchema = Schema::object('attributes')->additionalProperties(
             $questionAttributeSchema
@@ -28,7 +27,7 @@ class SchemaFactorySurveyDetail
         $questionSchema = (new SchemaFactoryQuestion())->make();
         $questionSchema = $questionSchema->properties(
             ...array_merge(
-                $questionSchema->properties,
+                $questionSchema->properties ?? [],
                 [$questionAttributesSchema, $answersSchema]
             )
         );
@@ -41,7 +40,7 @@ class SchemaFactorySurveyDetail
         $questionGroupSchema = (new SchemaFactoryQuestionGroup())->make();
         $questionGroupSchema = $questionGroupSchema->properties(
             ...array_merge(
-                $questionGroupSchema->properties,
+                $questionGroupSchema->properties ?? [],
                 [$questionsSchema]
             )
         );

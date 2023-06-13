@@ -4,7 +4,8 @@ namespace LimeSurvey\Api\Transformer;
 
 class Transformer implements TransformerInterface
 {
-    protected $dataMap = null;
+    /** @var array */
+    protected $dataMap = [];
 
     /**
      * Transform data
@@ -21,8 +22,8 @@ class Transformer implements TransformerInterface
      * and callable formatter.
 >>>>>>> develop
      *
-     * @param mixed $data
-     * @return array
+     * @param ?mixed $data
+     * @return ?array
      */
     public function transform($data)
     {
@@ -61,7 +62,7 @@ class Transformer implements TransformerInterface
     /**
      * Normalise config
      *
-     * @param bool|string|array $config
+     * @param bool|int|string|array $config
      * @param string|int $inputKey
      * @return array
      */
@@ -124,6 +125,7 @@ class Transformer implements TransformerInterface
      * Format Value
      *
      * @param mixed $value
+     * @param array $config
      * @return mixed
      */
     private function format($value, $config)
@@ -157,14 +159,14 @@ class Transformer implements TransformerInterface
     /**
      * Transform array of data
      *
-     * @param array $data
+     * @param ?array $array
      * @return array
      */
-    public function transformAll(array $array)
+    public function transformAll($array)
     {
-        return is_array($array) ? array_map(function ($data) {
-            return $this->transform($data);
-        }, $array) : null;
+        return is_array($array) ? array_map(function ($allData) {
+            return $this->transform($allData);
+        }, $array) : [];
     }
 
     /**

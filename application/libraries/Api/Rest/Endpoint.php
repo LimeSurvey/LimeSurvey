@@ -2,7 +2,11 @@
 
 namespace LimeSurvey\Api\Rest;
 
-use LimeSurvey\Api\Command\Request\Request;
+use LimeSurvey\Api\Command\{
+    CommandInterface,
+    Request\Request
+};
+use LimeSurvey\Api\Rest\Renderer\RendererInterface;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -11,9 +15,11 @@ use Psr\Container\ContainerInterface;
  */
 class Endpoint
 {
+    /** @var array */
     protected $config = [];
+    /** @var array */
     protected $commandParams = [];
-    protected ?ContainerInterface $diContainer = null;
+    protected ContainerInterface $diContainer;
 
     /**
      * Constructor
@@ -33,16 +39,20 @@ class Endpoint
     /**
      * Get Command
      *
-     * @return LimeSurvey\Api\Command\CommandInterface
+     * @return CommandInterface
      */
     protected function getCommand()
     {
         return $this->diContainer->get($this->config['commandClass']);
     }
 
+    /**
+     * Get Response Renderer
+     *
+     * @return RendererInterface
+     */
     protected function getResponseRenderer()
     {
-
         $apiVersion = ucfirst($this->config['apiVersion']);
         $class = 'LimeSurvey\Api\Rest\\'
             . $apiVersion
@@ -62,7 +72,7 @@ class Endpoint
             $response = $this->getCommand()->run(
                 new Request($this->commandParams)
             );
-            return $renderer->returnResponse($response);
+            $renderer->returnResponse($response);
         } catch (\Exception $e) {
             $renderer->returnException($e);
         }

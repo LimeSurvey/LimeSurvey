@@ -33,6 +33,10 @@ class SurveyActivator
     }
 
     /**
+     * Sets a survey into "activate" state.
+     * Creates necessary tables "responseTable", "timingTable".
+     * Fires events "beforeSurveyActivate" and "afterSurveyActivation"
+     *
      * @return array
      * @throws CException
      */
@@ -456,5 +460,15 @@ class SurveyActivator
         /* seems OK, sysadmin allowed to broke system */
         $db->createCommand(new CDbExpression(sprintf('SET default_storage_engine=%s;', $dbEngine)))
             ->execute();
+    }
+
+    /**
+     * Checks if the survey is in close access mode.
+     *
+     * @return bool
+     */
+    public function isCloseAccessMode()
+    {
+        return $this->survey->isAllowRegister || tableExists('tokens_' . $this->survey->sid);
     }
 }

@@ -7,14 +7,13 @@
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="row welcome survey-action">
         <div class="col-12 content-right">
-            <div class="jumbotron message-box message-box-error">
+            <div class="card card-primary border-left-danger">
                 <p class="lead text-danger">
                     <strong>
                         <?php eT("Survey participants have not been initialised for this survey."); ?>
                     </strong>
                 </p>
                 <p>
-
                     <?php
                         if (Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveysettings', 'update') || Permission::model()->hasSurveyPermission($oSurvey->sid, 'tokens','create')) {
                             /** eT("If you initialise a survey participants table for this survey then this survey will only be accessible to users who provide an access code either manually or by URL."); **/
@@ -25,8 +24,17 @@
                         <br /><br />
 
                         <?php echo CHtml::form(array("admin/tokens/sa/index/surveyid/{$oSurvey->sid}"), 'post'); ?>
-                            <button type="submit" class="btn btn-outline-secondary  btn-lg"  name="createtable" value="Y"><?php eT("Switch to closed-access mode"); ?></button>
-                            <a href="<?php echo $this->createUrl("surveyAdministration/view/surveyid/$oSurvey->sid"); ?>" class="btn btn-outline-secondary  btn-lg"><?php eT("Continue in open-access mode"); ?></a>
+                            <button
+                                type="submit"
+                                class="btn btn-outline-secondary btn-lg"
+                                name="createtable"
+                                value="Y"><?php eT("Switch to closed-access mode"); ?>
+                            </button>
+                            <a
+                                href="<?php echo $this->createUrl("surveyAdministration/view/surveyid/$oSurvey->sid"); ?>"
+                                class="btn btn-outline-secondary btn-lg">
+                                <?php eT("Continue in open-access mode"); ?>
+                            </a>
                     <?php echo CHtml::endForm() ?>
 
 
@@ -48,7 +56,7 @@
 if ($tcount > 0 && (Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveysettings', 'update') || Permission::model()->hasSurveyPermission($oSurvey->sid, 'tokens','create'))):
 ?>
         <div class="col-12 content-right">
-            <div class="jumbotron message-box">
+            <div class="card card-primary">
                 <h2><?php eT("Restore options"); ?></h2>
                 <p class="text-info">
                     <?php eT("Please be aware that tables including encryption should not be restored if they have been created in LimeSurvey 4 before version 4.6.1")?>

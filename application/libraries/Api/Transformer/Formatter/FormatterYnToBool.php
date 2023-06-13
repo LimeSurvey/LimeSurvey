@@ -4,7 +4,9 @@ namespace LimeSurvey\Api\Transformer\Formatter;
 
 class FormatterYnToBool implements FormatterRevertibleInterface
 {
+    /** @var bool */
     private $revert = false;
+    /** @var bool */
     private $lowercaseCase = false;
 
     /**
@@ -24,8 +26,8 @@ class FormatterYnToBool implements FormatterRevertibleInterface
      * Converts 'N' or 'n' to boolean false.
      * Any other value will produce null.
      *
-     * @param string $value
-     * @return boolean|null
+     * @param ?mixed $value
+     * @return ?mixed
      */
     public function format($value)
     {
@@ -41,12 +43,14 @@ class FormatterYnToBool implements FormatterRevertibleInterface
      * Converts 'N' or 'n' to boolean false.
      * Any other value will produce null.
      *
-     * @param string $value
-     * @return boolean|null
+     * @param ?string $value
+     * @return ?boolean
      */
     private function apply($value)
     {
-        $lowercase = strtolower($value);
+        $lowercase = is_string($value)
+            ? strtolower($value)
+            : $value;
         if (
              $value === null
              || $value === ''
@@ -64,8 +68,8 @@ class FormatterYnToBool implements FormatterRevertibleInterface
      * Converts boolean false to 'n'.
      * Any other value will produce null.
      *
-     * @param boolean $value
-     * @return string|null
+     * @param ?mixed $value
+     * @return ?mixed
      */
     public function revert($value)
     {

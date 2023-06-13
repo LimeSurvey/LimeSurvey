@@ -64,6 +64,7 @@
                     textarea.ace('val', textarea.val());
                     editor.setHighlightActiveLine(config.highlightActiveLine);
                     editor.clearSelection();
+                    editor.setReadOnly(textarea.prop('readonly'));
                     session.on('change', function(e) {
                         textarea.val(editor.getValue());
                     });

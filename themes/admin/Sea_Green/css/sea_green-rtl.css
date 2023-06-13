@@ -11065,6 +11065,20 @@ a {
   text-decoration: none;
 }
 
+.stop-survey-body .card.card-primary {
+  font-size: 16px;
+}
+.stop-survey-body .card-header {
+  font-size: 22px;
+}
+.stop-survey-body .help-block {
+  margin-top: 28px;
+  margin-bottom: 37px;
+}
+.stop-survey-body .table-rename {
+  color: #9094A7;
+}
+
 body {
   background-color: #F9F9FB;
   margin: 0;
@@ -13355,10 +13369,6 @@ table#responsedetail tr td {
   display: -ms-flexbox;
   display: flex;
   margin-bottom: 30px;
-}
-
-#insertmethod-container {
-  display: none;
 }
 
 /* Some printing optimization */

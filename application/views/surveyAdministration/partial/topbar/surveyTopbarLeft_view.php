@@ -3,8 +3,12 @@
 /**
  * Left side buttons for general Survey Topbar
  *
- * todo: this view comes from old topbarWidget
  */
+
+App()->getClientScript()->registerScriptFile(
+    App()->getConfig('adminscripts') . 'activatesurvey.js',
+    LSYii_ClientScript::POS_BEGIN
+);
 
 ?>
 
@@ -44,12 +48,19 @@
     <?php endif; ?>
         <?php
         $this->widget('ext.ButtonWidget.ButtonWidget', [
-            'name' => '',
-            'id' => 'ls-activate-survey',
+            'name' => 'ls-activate-survey',
+            'id' => 'ls-activate-survey', // --> used in js to trigger show modal
             'text' => gT('Activate survey'),
             'icon' => 'ri-check-fill',
-            'link' => App()->createUrl("surveyAdministration/activate/", ['iSurveyID' => $sid]),
-            'htmlOptions' => $htmlOptions,
+            //'link' => App()->createUrl("surveyAdministration/activate/", ['iSurveyID' => $sid]),
+            'htmlOptions' => [
+                'class' => 'btn btn-primary btntooltip',
+                // 'data-bs-toggle' => 'modal',
+                //'data-bs-target' => '#surveyactivation-modal',
+                'data-surveyid' => $sid,
+                'data-url' => Yii::app()->createUrl('surveyAdministration/activateSurvey'),
+                'onclick' => 'openModalActivate();'
+            ],
         ]); ?>
     <?php if (!$canactivate) : ?>
         </span>
@@ -130,8 +141,9 @@ if ($hasSurveyContentPermission) {
 <?php } ?>
 
 <!-- Export -->
-<?php if (Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'export')) : ?>
-    <?php App()->getController()->renderPartial(
+<?php
+if (Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'export')) {
+    App()->getController()->renderPartial(
         '/admin/survey/surveybar_displayexport',
         [
             'hasResponsesExportPermission' => $hasResponsesExportPermission,
@@ -140,5 +152,10 @@ if ($hasSurveyContentPermission) {
             'oSurvey' => $oSurvey,
             'onelanguage' => (count($oSurvey->allLanguages) == 1)
         ]
-    ); ?>
-<?php endif; ?>
+    );
+}
+
+
+
+?>
+
