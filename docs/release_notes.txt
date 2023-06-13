@@ -34,6 +34,64 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.1.2 (build 230606) to 6.1.3 (build 230612) June 12, 2023
+-Fixed issue #18833: Mobile phone issue with formulas on columns headings with array numbers on checkbox layout (#3207) (Denis Chenu)
+-Fixed issue #18814: Array question statistics fail for Remote Control (#3191) (Gabriel Jenik)
+-Fixed issue #18808: Mandatory soft only works once per survey if over multiple pages/groups (#3195) (Denis Chenu)
+-Fixed issue #18789: Database upgrade error when trying to update from 6.0.x to any later version and using Postgres (Carsten Schmitz)
+-Fixed issue #18669: XSS simple admin via Google key (#3004) (Gabriel Jenik)
+-Fixed issue #18615: Data integrity SQL syntax error on Postgres when trying to fix quotas (Carsten Schmitz)
+-Fixed issue #16409: Emoticon style is different if emoticon is chosen (#3152) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Hungarian by kkd
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.1.1 (build 230530) to 6.1.2 (build 230606) June 5, 2023
+-Fixed issue #18823: STATA Export fails with certain question types (#3148) (Oz-men)
+-Fixed issue #18814: Array question statistics fail for Remote Control. (#3165) (Gabriel Jenik)
+-Fixed issue #18808: Mandatory soft only works once per survey if over multiple pages/groups (#3119) (Denis Chenu)
+-Fixed issue #18737: Missing response action: View response as queXML PDF (#3042) (Adam Zammit)
+-Fixed issue #18720: Script show as updatable for simple user with XSS (#3145) (Denis Chenu)
+-Fixed issue #17491: Multiple Short Text subquestions missing from Export Printable Survey (#3135) (Adam Zammit)
+#Updated translation: Valencian by c_schmitz, joamuran, vbraque
+#Updated translation: Turkish by kayazeren
+#Updated translation: Spanish (Spain) by ireneoh
+#Updated translation: Slovak by jelen1
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: French (France) by DenisChenu
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by mymast, qualitatuvic
+
+
+Changes from 6.1.0 (build 230522) to 6.1.1 (build 230530) May 30, 2023
+-Fixed issue: [security] Unsafe way to detect IP address against brute-force attacks (Carsten Schmitz)
+-Fixed issue: Editing a quota shows that it was saved, while it was not (Carsten Schmitz)
+-Fixed issue CR-1168: Errors for printanswers after twig upgrade from version 1 to 3 (sameas vs. same as) (twilligls)
+-Fixed issue #CR-1167: update registering new function name (jack-han-115)
+-Fixed issue #18835: Array question doesn't reload anwsers (#3162) (Denis Chenu)
+-Fixed issue #18745: table action dropdown cut off in firefox (Patrick Teichmann)
+-Fixed issue #18659: cannot install two plugins in a row (#3160) (Gabriel Jenik)
+-Fixed issue #18462: Missing option to search for survey groups at list survey screen. (#3159) (Gabriel Jenik)
+-Fixed issue #18456: Interface language parmater use exotic dropdown list. (#3112) (Gabriel Jenik)
+-Fixed issue #18246: The setting in the theme variation field (global level) is not shown (#2510) (Gabriel Jenik)
+-* Fixed issue #18456: Interface language parmater use exotic dropdown list. (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 6.0.7 (build 230515) to 6.1.0 (build 230522) May 22, 2023
 +New feature #18792: Allow to move question inside group and group order with activated survey (Denis Chenu)
 -Fixed issue: ComfortUpdate showing updates as unstable, even though they are not (Carsten Schmitz)
