@@ -48,7 +48,7 @@ class UrlParams
             $param['parameter'] = trim((string) $param['parameter']);
             if (
                 $param['parameter'] == ''
-                || !preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $param['parameter'])
+                || !preg_match('/^[a-zA-Z_][\w]*$/', $param['parameter'])
                 || $param['parameter'] == 'sid'
                 || $param['parameter'] == 'newtest'
                 || $param['parameter'] == 'token'

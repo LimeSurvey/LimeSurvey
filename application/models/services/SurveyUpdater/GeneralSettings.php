@@ -70,7 +70,7 @@ class GeneralSettings
                 'surveysettings',
                 'update'
             );
-        if ($hasPermission == false) {
+        if (!$hasPermission) {
             throw new ExceptionPermissionDenied(
                 'Permission denied'
             );

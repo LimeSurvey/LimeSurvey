@@ -222,6 +222,6 @@ class LanguageSettingsTest extends TestBaseClass
             'de' => ['surveyls_urldescription' => 'test'],
         ]);
 
-        $this->assertEquals( true, $result);
+        $this->assertEquals(true, $result);
     }
 }
