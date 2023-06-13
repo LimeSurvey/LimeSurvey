@@ -2757,8 +2757,10 @@ class Tokens extends SurveyCommonAction
     {
         $aSurveyInfo = getSurveyInfo($iSurveyId);
         $survey = Survey::model()->findByPk($iSurveyId);
-        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'surveysettings', 'update') &&
-            !Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'create')) {
+        if (
+            !Permission::model()->hasSurveyPermission($iSurveyId, 'surveysettings', 'update') &&
+            !Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'create')
+        ) {
             Yii::app()->session['flashmessage'] = gT("Survey participants have not been initialised for this survey.");
             $this->getController()->redirect(array("/surveyAdministration/view/surveyid/{$iSurveyId}"));
         }
