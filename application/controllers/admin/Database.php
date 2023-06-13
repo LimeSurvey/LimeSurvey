@@ -312,8 +312,9 @@ class Database extends SurveyCommonAction
                             'reloaded' => [],
                             'aURLParams' => '',
                             'initial' => '',
-                            'afterApply' => '']
-                        ],
+                            'afterApply' => ''
+                        ]
+                    ],
                 ),
                 false,
                 false
@@ -342,123 +343,43 @@ class Database extends SurveyCommonAction
 
     /**
      * Action for the page "General settings".
-     * @param int $iSurveyID
+     * @param int $surveyId
      * @return void
      */
-    protected function actionUpdateSurveyLocaleSettingsGeneralSettings($iSurveyID)
+    protected function actionUpdateSurveyLocaleSettingsGeneralSettings($surveyId)
     {
-        $oSurvey = Survey::model()->findByPk($iSurveyID);
-        $request = Yii::app()->request;
-        $oldBaseLanguage = $oSurvey->language;
-        $newBaseLanguage = Yii::app()->request->getPost('language', $oldBaseLanguage);
-        $oSurvey->language = $newBaseLanguage;
-        // On the UI the field is "Survey Languages", but on the db and model the field is "additional_languages".
-        $additionalLanguages = Yii::app()->request->getPost('additional_languages', array());
-        // Exclude base language from the additional languages array
-        if (($newBaseLanguageKey = array_search($newBaseLanguage, $additionalLanguages)) !== false) {
-            unset($additionalLanguages[$newBaseLanguageKey]);
-        }
-        $oSurvey->additional_languages = implode(' ', $additionalLanguages);
-        $oSurvey->admin = $request->getPost('admin');
-        $oSurvey->adminemail = $request->getPost('adminemail');
-        $oSurvey->bounce_email = $request->getPost('bounce_email');
-        $oSurvey->gsid = $request->getPost('gsid');
-        $oSurvey->format = $request->getPost('format');
+        $diContainer = \LimeSurvey\DI::getContainer();
+        $surveyUpdater = $diContainer->get(
+            LimeSurvey\Models\Services\SurveyUpdater::class
+        );
 
-        // For the new template system we have to check that the changed template is also applied.
-        $current_template = $oSurvey->template;
-        $new_template = $request->getPost('template');
-        if ($current_template != '' && $current_template !== $new_template) {
-            $currentConfiguration = TemplateConfiguration::getInstance(
-                $current_template,
-                $oSurvey->gsid,
-                $oSurvey->sid
+        $request = Yii::app()->request;
+
+        $input = [
+            'language' => $request->getPost('language'),
+            'additional_languages' => $request->getPost('additional_languages'),
+            'admin' => $request->getPost('admin'),
+            'adminemail' => $request->getPost('adminemail'),
+            'bounce_email' => $request->getPost('bounce_email'),
+            'gsid' => $request->getPost('gsid'),
+            'format' => $request->getPost('format'),
+            'owner_id' => $request->getPost('owner_id')
+        ];
+
+        try {
+            $surveyUpdater->update(
+                $surveyId,
+                $input
+            );
+            Yii::app()
+                ->setFlashMessage(gT('Survey settings were successfully saved.'));
+        } catch (ExceptionPersistError $e) {
+            Yii::app()->setFlashMessage(
+                $e->getMessage(),
+                'error'
             );
         }
-        $oSurvey->template = $new_template;
 
-        // Only owner and superadmins may change the survey owner
-        if (
-            $oSurvey->owner_id == Yii::app()->session['loginID']
-            || Permission::model()->hasGlobalPermission('superadmin', 'read')
-        ) {
-            $oSurvey->owner_id = $request->getPost('owner_id');
-        }
-
-        // If the base language is changing, we may need the current title to avoid the survey
-        // being listed with an empty title.
-        $surveyTitle = $oSurvey->languagesettings[$oldBaseLanguage]->surveyls_title;
-
-        /* Add new language fixLanguageConsistency do it ?*/
-        $aAvailableLanguage = $oSurvey->getAllLanguages();
-        foreach ($aAvailableLanguage as $sLang) {
-            if ($sLang) {
-                $oLanguageSettings = SurveyLanguageSetting::model()->find(
-                    'surveyls_survey_id=:surveyid AND surveyls_language=:langname',
-                    array(':surveyid' => $iSurveyID, ':langname' => $sLang)
-                );
-                if (!$oLanguageSettings) {
-                    $oLanguageSettings = new SurveyLanguageSetting();
-                    $languagedetails = getLanguageDetails($sLang);
-                    $oLanguageSettings->surveyls_survey_id = $iSurveyID;
-                    $oLanguageSettings->surveyls_language = $sLang;
-                    if ($sLang == $newBaseLanguage) {
-                        $oLanguageSettings->surveyls_title = $surveyTitle;
-                    } else {
-                        $oLanguageSettings->surveyls_title = ''; // Not in default model ?
-                    }
-                    $oLanguageSettings->surveyls_dateformat = $languagedetails['dateformat'];
-                    if (!$oLanguageSettings->save()) {
-                        Yii::app()->setFlashMessage(gT("Survey language could not be created."), "error");
-                        tracevar($oLanguageSettings->getErrors());
-                    }
-                }
-            }
-        }
-        fixLanguageConsistency($iSurveyID, implode(" ", $aAvailableLanguage), $oldBaseLanguage);
-
-        /* Delete removed language cleanLanguagesFromSurvey do it already why redo it (cleanLanguagesFromSurvey must be moved to model) ?*/
-        $oCriteria = new CDbCriteria();
-        $oCriteria->compare('surveyls_survey_id', $iSurveyID);
-        $oCriteria->addNotInCondition('surveyls_language', $aAvailableLanguage);
-        SurveyLanguageSetting::model()->deleteAll($oCriteria);
-
-        /* Language fix : remove and add question/group */
-        cleanLanguagesFromSurvey($iSurveyID, implode(" ", $oSurvey->additionalLanguages));
-
-        //This is SUPER important! Recalculating the ExpressionScript Engine state!
-        LimeExpressionManager::SetDirtyFlag();
-        $this->resetEM();
-
-        // This will force the generation of the entry for survey group
-        TemplateConfiguration::checkAndcreateSurveyConfig($iSurveyID);
-
-        if ($oSurvey->save()) {
-            Yii::app()->setFlashMessage(gT("Survey settings were successfully saved."));
-        } else {
-            Yii::app()->setFlashMessage(CHtml::errorSummary($oSurvey, CHtml::tag("p", array('class' => 'strong'), gT("Survey could not be updated, please fix the following error:"))), "error");
-        }
         Yii::app()->end();
-    }
-
-    private function resetEM()
-    {
-        $oSurvey = Survey::model()->findByPk($this->iSurveyID);
-        $oEM =& LimeExpressionManager::singleton();
-        LimeExpressionManager::SetDirtyFlag(); // UpgradeConditionsToRelevance SetDirtyFlag too
-        LimeExpressionManager::UpgradeConditionsToRelevance($this->iSurveyID);
-        LimeExpressionManager::SetPreviewMode('database');// Deactivate _UpdateValuesInDatabase
-        LimeExpressionManager::StartSurvey($oSurvey->sid, 'survey', $oSurvey->attributes, true);
-        LimeExpressionManager::StartProcessingPage(true, true);
-        $aGrouplist = QuestionGroup::model()->findAllByAttributes(['sid' => $this->iSurveyID]);
-        foreach ($aGrouplist as $iGID => $aGroup) {
-            LimeExpressionManager::StartProcessingGroup($aGroup['gid'], $oSurvey->anonymized != 'Y', $this->iSurveyID);
-            LimeExpressionManager::FinishProcessingGroup();
-        }
-        LimeExpressionManager::FinishProcessingPage();
-
-        // Flush emcache when changes are made to the survey.
-        EmCacheHelper::init(['sid' => $this->iSurveyID, 'active' => 'Y']);
-        EmCacheHelper::flush();
     }
 }
