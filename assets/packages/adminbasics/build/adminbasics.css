@@ -4357,6 +4357,77 @@ html[dir=rtl] th {
   display: none;
 }
 
+/** Styles for Data Entry screen */
+#responsedetail .checkbox input[type=checkbox] {
+  margin-left: 0;
+}
+#responsedetail .checkbox label {
+  padding-left: 0px;
+}
+#responsedetail .answer-item {
+  display: flex;
+  gap: 1em;
+  margin-bottom: 1em;
+}
+#responsedetail .checkbox.unseen-checkbox {
+  margin-top: 0;
+  min-width: 6em;
+}
+#responsedetail .checkbox:not(.unseen-checkbox) {
+  margin-top: 0;
+}
+#responsedetail tr.multiple-opt-comments input[type=text] {
+  width: 100%;
+}
+#responsedetail tr.multiple-opt-comments .checkbox {
+  margin-bottom: 0;
+}
+#responsedetail tr.multiple-opt-comments .answer-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+}
+#responsedetail tr.array-5-pt .answer-wrapper,
+#responsedetail tr.array-10-pt .answer-wrapper,
+#responsedetail tr.array-yes-uncertain-no .answer-wrapper,
+#responsedetail tr.array-increase-same-decrease .answer-wrapper,
+#responsedetail tr.array-flexible-row .answer-wrapper,
+#responsedetail tr.array-flexible-column .answer-wrapper,
+#responsedetail tr.array-flexible-dual-scale .answer-wrapper {
+  display: flex;
+  gap: 1em;
+}
+#responsedetail tr.array-5-pt .answer-wrapper > span,
+#responsedetail tr.array-10-pt .answer-wrapper > span,
+#responsedetail tr.array-yes-uncertain-no .answer-wrapper > span,
+#responsedetail tr.array-increase-same-decrease .answer-wrapper > span,
+#responsedetail tr.array-flexible-row .answer-wrapper > span,
+#responsedetail tr.array-flexible-column .answer-wrapper > span,
+#responsedetail tr.array-flexible-dual-scale .answer-wrapper > span {
+  flex: 1;
+}
+#responsedetail tr.array-5-pt .answer-wrapper > span:first-of-type,
+#responsedetail tr.array-10-pt .answer-wrapper > span:first-of-type,
+#responsedetail tr.array-yes-uncertain-no .answer-wrapper > span:first-of-type,
+#responsedetail tr.array-increase-same-decrease .answer-wrapper > span:first-of-type,
+#responsedetail tr.array-flexible-row .answer-wrapper > span:first-of-type,
+#responsedetail tr.array-flexible-column .answer-wrapper > span:first-of-type,
+#responsedetail tr.array-flexible-dual-scale .answer-wrapper > span:first-of-type {
+  text-align: end;
+}
+#responsedetail tr.array-multi-flexi .answer-wrapper,
+#responsedetail tr.array-multi-flexi-text .answer-wrapper {
+  display: flex;
+  gap: 1em;
+}
+#responsedetail tr.array-multi-flexi .answer-wrapper > span,
+#responsedetail tr.array-multi-flexi-text .answer-wrapper > span {
+  flex: 1;
+}
+#responsedetail .answer-wrapper {
+  flex-grow: 1;
+}
+
 /** Make modals full width */
 @media screen and (min-width: 768px) {
   .dialog-fullwidth {
@@ -4365,6 +4436,113 @@ html[dir=rtl] th {
     margin-right: 1rem;
   }
 }
+.draggable-container {
+  min-height: 300px;
+}
+
+#newcreated,
+#tokenattribute,
+#csvattribute,
+#centralattribute {
+  margin-left: 0.75%;
+  margin-right: 0.75%;
+  margin-bottom: 20px;
+}
+
+#tokenattribute {
+  margin-left: 1.5%;
+}
+
+#centralattribute {
+  margin-right: 1.5%;
+}
+
+#centralattribute .centralatt {
+  padding-bottom: 15px;
+}
+
+#newcreated .attribute-item input {
+  display: block;
+  margin: 2px auto;
+  width: 80%;
+}
+
+#centralattribute div.centralatt div.token-attribute {
+  margin-top: -5px;
+  min-height: 20px;
+}
+
+#newcreated,
+#tokenattribute {
+  height: 100%;
+}
+
+.heading {
+  height: auto;
+  padding-top: 7px;
+  font-weight: bold;
+}
+
+div.mappable-attribute-wrapper {
+  width: 80%;
+  margin: 6px auto;
+  padding: 6px;
+}
+
+div.attribute-item, .already-mapped-attribute {
+  width: 80%;
+  margin: 6px auto;
+  padding: 4px;
+  text-align: center;
+}
+
+#centralattribute .explanation {
+  width: 90%;
+  margin: 0 auto;
+  text-align: left;
+}
+
+#centralattribute .explanation-row {
+  display: table-row;
+}
+
+#centralattribute .explanation input,
+#centralattribute .explanation label {
+  display: table-cell;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#centralattribute .explanation label {
+  padding-left: 8px;
+}
+
+.attribute-item.draggable {
+  cursor: move;
+}
+
+div.mappable-attribute-wrapper.target-hover {
+  padding-bottom: 27px;
+}
+
+div.mappable-attribute-wrapper.paired.target-hover {
+  padding-bottom: 4px;
+}
+
+div.mappable-attribute-wrapper.paired.ui-state-disabled {
+  opacity: 1;
+  filter: alpha(opacity=100);
+}
+
+.draggable-container .attribute-column .ui-draggable-dragging {
+  z-index: 100;
+}
+
+/* Existing attribute column in CSV CPDB import */
+.centralatt {
+  min-height: 100px;
+}
+
 .jcarousel-wrapper {
   margin: 20px auto;
   position: relative;
@@ -4486,111 +4664,20 @@ html[dir=rtl] th {
   min-height: 100px;
 }
 
-.draggable-container {
-  min-height: 300px;
+#responses-column-filter-modal .checkbox label {
+  vertical-align: text-bottom;
+  white-space: nowrap;
+  overflow-x: hidden;
 }
 
-#newcreated,
-#tokenattribute,
-#csvattribute,
-#centralattribute {
-  margin-left: 0.75%;
-  margin-right: 0.75%;
-  margin-bottom: 20px;
+.responses-multiselect-checkboxes {
+  overflow-y: scroll;
+  height: 60vh;
 }
 
-#tokenattribute {
-  margin-left: 1.5%;
-}
-
-#centralattribute {
-  margin-right: 1.5%;
-}
-
-#centralattribute .centralatt {
-  padding-bottom: 15px;
-}
-
-#newcreated .attribute-item input {
-  display: block;
-  margin: 2px auto;
-  width: 80%;
-}
-
-#centralattribute div.centralatt div.token-attribute {
-  margin-top: -5px;
-  min-height: 20px;
-}
-
-#newcreated,
-#tokenattribute {
-  height: 100%;
-}
-
-.heading {
-  height: auto;
-  padding-top: 7px;
-  font-weight: bold;
-}
-
-div.mappable-attribute-wrapper {
-  width: 80%;
-  margin: 6px auto;
-  padding: 6px;
-}
-
-div.attribute-item, .already-mapped-attribute {
-  width: 80%;
-  margin: 6px auto;
-  padding: 4px;
-  text-align: center;
-}
-
-#centralattribute .explanation {
-  width: 90%;
-  margin: 0 auto;
+.responses-column-filter-modal-checkbox-buttons {
   text-align: left;
-}
-
-#centralattribute .explanation-row {
-  display: table-row;
-}
-
-#centralattribute .explanation input,
-#centralattribute .explanation label {
-  display: table-cell;
-  padding-top: 4px;
-  padding-bottom: 4px;
-}
-
-#centralattribute .explanation label {
-  padding-left: 8px;
-}
-
-.attribute-item.draggable {
-  cursor: move;
-}
-
-div.mappable-attribute-wrapper.target-hover {
-  padding-bottom: 27px;
-}
-
-div.mappable-attribute-wrapper.paired.target-hover {
-  padding-bottom: 4px;
-}
-
-div.mappable-attribute-wrapper.paired.ui-state-disabled {
-  opacity: 1;
-  filter: alpha(opacity=100);
-}
-
-.draggable-container .attribute-column .ui-draggable-dragging {
-  z-index: 100;
-}
-
-/* Existing attribute column in CSV CPDB import */
-.centralatt {
-  min-height: 100px;
+  padding-bottom: 15px;
 }
 
 #selectable .ui-selecting {
@@ -4655,22 +4742,6 @@ div.mappable-attribute-wrapper.paired.ui-state-disabled {
   padding: 10px;
   border-radius: 3px;
   margin: 8px;
-}
-
-#responses-column-filter-modal .checkbox label {
-  vertical-align: text-bottom;
-  white-space: nowrap;
-  overflow-x: hidden;
-}
-
-.responses-multiselect-checkboxes {
-  overflow-y: scroll;
-  height: 60vh;
-}
-
-.responses-column-filter-modal-checkbox-buttons {
-  text-align: left;
-  padding-bottom: 15px;
 }
 
 .translate > table {
