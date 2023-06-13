@@ -3,13 +3,12 @@
 namespace LimeSurvey\Api\Rest\V1\SchemaFactory;
 
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
-use GoldSpecDigital\ObjectOrientedOAS\Objects\SchemaComposition;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\AllOf;
 
 class SchemaFactorySurveyDetail
 {
     /**
-     *  @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function make(): Schema
     {

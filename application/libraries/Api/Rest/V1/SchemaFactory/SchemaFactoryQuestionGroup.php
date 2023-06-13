@@ -12,7 +12,7 @@ class SchemaFactoryQuestionGroup
      */
     public function make(SchemaContract ...$properties): Schema
     {
-        $properties = !empty($properties) ? $properties : [];
+        $properties = $properties ?? [];
 
         return Schema::create()
             ->title('Question Group')

@@ -13,7 +13,7 @@ class SchemaFactorySurvey
      */
     public function make(SchemaContract ...$properties): Schema
     {
-        $properties = !empty($properties) ? $properties : [];
+        $properties = $properties ?? [];
 
         $schemaSurveyLanguageSettings = (new SchemaFactorySurveyLanguageSettings())->make();
         $schemaSurveyDefaultLanguage = Schema::object('defaultlanguage')
