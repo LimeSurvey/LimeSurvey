@@ -20,7 +20,7 @@ class ExportResponsesStataXmlTest extends BaseTest
         \Yii::import('application.helpers.viewHelper', true);
         \Yii::import('application.libraries.BigData', true);
 
-        // Get a handle to the plugin being testes
+        // Get a handle to the plugin being tested
         self::$plugin = App()->getPluginManager()->loadPlugin(self::$pluginName);
 
         // Activate it, if not already
@@ -40,5 +40,10 @@ class ExportResponsesStataXmlTest extends BaseTest
 
         $result = $this->handler->export_responses($sessionKey, self::$surveyId, 'stataxml');
         $this->assertNotNull($result);
+    }
+
+    public static function tearDownAfterClass(): void
+    {
+        \Survey::model()->deleteSurvey(self::$surveyId);
     }
 }
