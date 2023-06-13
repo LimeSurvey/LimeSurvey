@@ -260,6 +260,7 @@ class GeneralSettings
      * @param array $meta
      * @param ?array $fieldOpts
      * @return void
+     * @SuppressWarnings('php:S3776') Cognitive Complexity
      */
     private function setField($field, $input, Survey $survey, $meta, $fieldOpts = null)
     {
@@ -343,35 +344,34 @@ class GeneralSettings
                 break;
         }
 
-        switch ($field) {
-            case 'tokenlength':
-                $value = (int) (
-                    (
-                        ($value  < 5 || $value  > 36)
-                        && $value != -1
-                    )
-                    ? 15
-                    : $value
-                );
-                break;
-            case 'additional_languages':
-                if (is_array($value)) {
-                    if (
-                        (
-                            $index = array_search(
-                                $survey->language,
-                                $value
-                            )
-                        ) !== false
-                    ) {
-                        unset($value[$index]);
-                    }
-                    $value = implode(
-                        ' ',
+        if ($field == 'tokenlength') {
+            $value = (int) (
+                (
+                    ($value  < 5 || $value  > 36)
+                    && $value != -1
+                )
+                ? 15
+                : $value
+            );
+        }
+        if (
+            $field == 'additional_languages'
+            && is_array($value)
+        ) {
+            if (
+                (
+                    $index = array_search(
+                        $survey->language,
                         $value
-                    );
-                }
-                break;
+                    )
+                ) !== false
+            ) {
+                unset($value[$index]);
+            }
+            $value = implode(
+                ' ',
+                $value
+            );
         }
 
         $survey->{$field} = $value;
@@ -496,7 +496,8 @@ class GeneralSettings
      *
      * @return string One character that corresponds to captcha usage
      * @todo Should really be saved as three fields in the database!
-     * @todo Copied from Survey:::saveTranscribeCaptchaOptions() replace uses of original copy.
+     * @todo Copied from Survey:::saveTranscribeCaptchaOptions() replace uses of original copy
+     * @SuppressWarnings('php:S3776') Cognitive Complexity
      */
     private function calculateUseCaptchaOption($surveyaccess, $registration, $saveandload)
     {
