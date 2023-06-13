@@ -512,5 +512,5 @@ function check_ip_address($ip)
  */
 function sanitize_alphanumeric($value)
 {
-    return preg_replace("[^a-zA-Z0-9\-\_]", "", $value);
+    return preg_replace("/[^a-zA-Z0-9\-\_]/", "", $value);
 }
