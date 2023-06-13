@@ -55,12 +55,12 @@ class LanguageConsistency
             if ($sLang) {
                 $oLanguageSettings = $this->modelSurveyLanguageSetting->find(
                     'surveyls_survey_id=:surveyid AND surveyls_language=:langname',
-                    array(':surveyid' => $survey->id, ':langname' => $sLang)
+                    array(':surveyid' => $survey->sid, ':langname' => $sLang)
                 );
                 if (!$oLanguageSettings) {
                     $oLanguageSettings = new SurveyLanguageSetting();
                     $languagedetails = getLanguageDetails($sLang);
-                    $oLanguageSettings->surveyls_survey_id = $survey->id;
+                    $oLanguageSettings->surveyls_survey_id = $survey->sid;
                     $oLanguageSettings->surveyls_language = $sLang;
                     if ($sLang == $survey->language) {
                         $oLanguageSettings->surveyls_title = $surveyTitle;
@@ -79,7 +79,7 @@ class LanguageConsistency
             }
         }
         fixLanguageConsistency(
-            $survey->id,
+            $survey->sid,
             implode(' ', $aAvailableLanguage),
             $initBaseLanguage
         );
@@ -89,7 +89,7 @@ class LanguageConsistency
         $oCriteria = new CDbCriteria();
         $oCriteria->compare(
             'surveyls_survey_id',
-            $survey->id
+            $survey->sid
         );
         $oCriteria->addNotInCondition(
             'surveyls_language',
@@ -100,7 +100,7 @@ class LanguageConsistency
 
         // Language fix : remove and add question/group
         cleanLanguagesFromSurvey(
-            $survey->id,
+            $survey->sid,
             implode(' ', $survey->additionalLanguages)
         );
     }
