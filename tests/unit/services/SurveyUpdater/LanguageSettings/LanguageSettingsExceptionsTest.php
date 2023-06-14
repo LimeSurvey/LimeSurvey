@@ -15,7 +15,7 @@ use LimeSurvey\Models\Services\Exception\{
     ExceptionPermissionDenied
 };
 
-class LanguageSettingsTest extends TestBaseClass
+class LanguageSettingsExceptionsTest extends TestBaseClass
 {
     /**
      * @testdox update() throws ExceptionPermissionDenied

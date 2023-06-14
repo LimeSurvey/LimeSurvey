@@ -19,7 +19,7 @@ use LimeSurvey\Models\Services\Exception\{
     ExceptionPermissionDenied
 };
 
-class GeneralSettingsTest extends TestBaseClass
+class GeneralSettingsExceptionsTest extends TestBaseClass
 {
     /**
      * @testdox update() throws ExceptionPermissionDenied

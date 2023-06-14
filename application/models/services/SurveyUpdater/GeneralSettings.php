@@ -56,7 +56,7 @@ class GeneralSettings
      * @throws ExceptionPersistError
      * @throws ExceptionNotFound
      * @throws ExceptionPermissionDenied
-     * @return boolean
+     * @return array
      */
     public function update($surveyId, $input)
     {
