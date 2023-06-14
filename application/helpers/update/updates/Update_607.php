@@ -2,33 +2,22 @@
 
 namespace LimeSurvey\Helpers\Update;
 
+/**
+ * Some of it is a copy of update 453 which has been skipped on some installations
+ */
 class Update_607 extends DatabaseUpdateBase
 {
-    /**
-     * @inheritDoc
-     */
     public function up()
     {
-        $this->db->createCommand()->update(
-            '{{surveymenu_entries}}',
-            [
-            "title" => "Overview question & groups",
-            "menu_title" => "Overview question & groups",
-            "menu_description" => "Overview question and groups",
-            ],
-            'name=:name',
-            [':name' => 'listQuestions']
-        );
-
-        $this->db->createCommand()->delete(
-            '{{surveymenu_entries}}',
-            'name=:name',
-            [':name' => 'listQuestionGroups']
-        );
-        $this->db->createCommand()->delete(
-            '{{surveymenu_entries}}',
-            'name=:name',
-            [':name' => 'reorder']
-        );
+        $columnSchema = $this->db->getSchema()->getTable('{{archived_table_settings}}')->getColumn('attributes');
+        if ($columnSchema === null) {
+            $this->db->createCommand()->addColumn('{{archived_table_settings}}', 'attributes', 'text NULL');
+            $archivedTableSettings = \Yii::app()->db->createCommand("SELECT * FROM {{archived_table_settings}}")->queryAll();
+            foreach ($archivedTableSettings as $archivedTableSetting) {
+                if ($archivedTableSetting['tbl_type'] === 'token') {
+                    $this->db->createCommand()->update('{{archived_table_settings}}', ['attributes' => json_encode(['unknown'])], 'id = :id', ['id' => $archivedTableSetting['id']]);
+                }
+            }
+        }
     }
 }
