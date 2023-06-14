@@ -5,7 +5,8 @@ on:
       - master
       - sonarcubefixes
   pull_request:
-    types: [opened, synchronize, reopened]
+    #types: [opened, synchronize, reopened]
+    types: []
 jobs:
   sonarcloud:
     name: SonarCloud
