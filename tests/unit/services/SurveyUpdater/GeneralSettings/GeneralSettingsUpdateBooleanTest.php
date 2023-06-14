@@ -1,6 +1,6 @@
 <?php
 
-namespace ls\tests\SurveyUpdater;
+namespace ls\tests\unit\services\SurveyUpdater\GeneralSettings;
 
 use ls\tests\TestBaseClass;
 

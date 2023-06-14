@@ -2,21 +2,16 @@
 
 namespace ls\tests\unit\services\SurveyUpdater\GeneralSettings;
 
-use ls\tests\TestBaseClass;
-
 use Survey;
 use Permission;
 use LSYii_Application;
 use Mockery;
 use LimeSurvey\PluginManager\PluginManager;
-use LimeSurvey\Models\Services\SurveyUpdater\{
-    GeneralSettings,
-    LanguageConsistency
-};
+use LimeSurvey\Models\Services\SurveyUpdater\LanguageConsistency;
 
-class GeneralSettingsUpdateReturnsMetaTest extends TestBaseClass
+class GeneralSettingsMockFactory
 {
-    public function testUpdateReturnsMeta()
+    public static function make()
     {
         $modelPermission = Mockery::mock(Permission::class)
             ->makePartial();
@@ -31,10 +26,9 @@ class GeneralSettingsUpdateReturnsMetaTest extends TestBaseClass
             ->andReturn(true);
         $survey->shouldReceive('setAttributes')
             ->passthru();
-        $survey->setAttributes([
-            'sid' => 1,
-            'startdate' => '2023-12-01 00:00:00'
-        ]);
+        $survey->shouldReceive('getAttributes')
+            ->passthru();
+        $survey->setAttributes([]);
 
         $modelSurvey = Mockery::mock(Survey::class)
             ->makePartial();
@@ -52,23 +46,13 @@ class GeneralSettingsUpdateReturnsMetaTest extends TestBaseClass
         $languageConsistency = Mockery::mock(LanguageConsistency::class)
             ->makePartial();
 
-        $surveyUpdate = new GeneralSettings(
-            $modelPermission,
-            $modelSurvey,
-            $yiiApp,
-            $pluginManager,
-            $languageConsistency
-        );
-
-        $meta = $surveyUpdate->update(1, [
-            'startdate' => '01.01.2024 13:45'
-        ]);
-
-        $this->assertIsArray($meta);
-
-        $this->assertIsArray($meta);
-        $this->assertArrayHasKey('updateFields', $meta);
-        $this->assertIsArray($meta['updateFields']);
-        $this->assertContains('startdate', $meta['updateFields']);
+        return (object) [
+            'modelPermission' => $modelPermission,
+            'survey' => $survey,
+            'modelSurvey' => $modelSurvey,
+            'yiiApp' => $yiiApp,
+            'pluginManager' => $pluginManager,
+            'languageConsistency' => $languageConsistency
+        ];
     }
 }
