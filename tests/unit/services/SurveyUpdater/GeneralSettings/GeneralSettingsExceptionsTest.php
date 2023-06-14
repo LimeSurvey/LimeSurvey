@@ -4,15 +4,10 @@ namespace ls\tests\unit\services\SurveyUpdater\GeneralSettings;
 
 use ls\tests\TestBaseClass;
 
+use Mockery;
 use Survey;
 use Permission;
-use LSYii_Application;
-use Mockery;
-use LimeSurvey\PluginManager\PluginManager;
-use LimeSurvey\Models\Services\SurveyUpdater\{
-    GeneralSettings,
-    LanguageConsistency
-};
+use LimeSurvey\Models\Services\SurveyUpdater\GeneralSettings;
 use LimeSurvey\Models\Services\Exception\{
     ExceptionPersistError,
     ExceptionNotFound,
@@ -35,27 +30,18 @@ class GeneralSettingsExceptionsTest extends TestBaseClass
         $modelPermission->shouldReceive('hasSurveyPermission')
             ->andReturn(false);
 
-        $modelSurvey = Mockery::mock(Survey::class)
-            ->makePartial();
+        $mockSetInit = new GeneralSettingsMockSet;
+        $mockSetInit->modelPermission = $modelPermission;
 
-        $yiiApp = Mockery::mock(LSYii_Application::class)
-            ->makePartial();
-
-        $pluginManager = Mockery::mock(PluginManager::class)
-            ->makePartial();
-        $pluginManager->shouldReceive('dispatchEvent')
-            ->andReturn(null);
-
-
-        $languageConsistency = Mockery::mock(LanguageConsistency::class)
-            ->makePartial();
+        $mockSet = (new GeneralSettingsMockFactory)
+            ->make($mockSetInit);
 
         $surveyUpdate = new GeneralSettings(
-            $modelPermission,
-            $modelSurvey,
-            $yiiApp,
-            $pluginManager,
-            $languageConsistency
+            $mockSet->modelPermission,
+            $mockSet->modelSurvey,
+            $mockSet->yiiApp,
+            $mockSet->pluginManager,
+            $mockSet->languageConsistency
         );
 
         $surveyUpdate->update(1, []);
@@ -70,33 +56,23 @@ class GeneralSettingsExceptionsTest extends TestBaseClass
             ExceptionNotFound::class
         );
 
-        $modelPermission = Mockery::mock(Permission::class)
-            ->makePartial();
-        $modelPermission->shouldReceive('hasSurveyPermission')
-            ->andReturn(true);
-
         $modelSurvey = Mockery::mock(Survey::class)
             ->makePartial();
         $modelSurvey->shouldReceive('findByPk')
             ->andReturn(null);
 
-        $yiiApp = Mockery::mock(LSYii_Application::class)
-            ->makePartial();
+        $mockSetInit = new GeneralSettingsMockSet;
+        $mockSetInit->modelSurvey = $modelSurvey;
 
-        $pluginManager = Mockery::mock(PluginManager::class)
-            ->makePartial();
-        $pluginManager->shouldReceive('dispatchEvent')
-            ->andReturn(null);
-
-        $languageConsistency = Mockery::mock(LanguageConsistency::class)
-            ->makePartial();
+        $mockSet = (new GeneralSettingsMockFactory)
+            ->make($mockSetInit);
 
         $surveyUpdate = new GeneralSettings(
-            $modelPermission,
-            $modelSurvey,
-            $yiiApp,
-            $pluginManager,
-            $languageConsistency
+            $mockSet->modelPermission,
+            $mockSet->modelSurvey,
+            $mockSet->yiiApp,
+            $mockSet->pluginManager,
+            $mockSet->languageConsistency
         );
 
         $surveyUpdate->update(1, []);
@@ -111,40 +87,23 @@ class GeneralSettingsExceptionsTest extends TestBaseClass
             ExceptionPersistError::class
         );
 
-        $survey = Mockery::mock(Survey::class)->makePartial();
-        $survey
-            ->shouldReceive('save')
+        $survey = Mockery::mock(Survey::class)
+            ->makePartial();
+        $survey->shouldReceive('save')
             ->andReturn(false);
 
-        $modelPermission = Mockery::mock(Permission::class)
-            ->makePartial();
-        $modelPermission
-            ->shouldReceive('hasSurveyPermission')
-            ->andReturn(true);
+        $mockSetInit = new GeneralSettingsMockSet;
+        $mockSetInit->survey = $survey;
 
-        $modelSurvey = Mockery::mock(Survey::class)
-            ->makePartial();
-        $modelSurvey->shouldReceive('findByPk')
-            ->andReturn($survey);
-
-        $yiiApp = Mockery::mock(LSYii_Application::class)
-            ->makePartial();
-
-        $pluginManager = Mockery::mock(PluginManager::class)
-            ->makePartial();
-        $pluginManager->shouldReceive('dispatchEvent')
-            ->andReturn(null);
-
-
-        $languageConsistency = Mockery::mock(LanguageConsistency::class)
-            ->makePartial();
+        $mockSet = (new GeneralSettingsMockFactory)
+            ->make($mockSetInit);
 
         $surveyUpdate = new GeneralSettings(
-            $modelPermission,
-            $modelSurvey,
-            $yiiApp,
-            $pluginManager,
-            $languageConsistency
+            $mockSet->modelPermission,
+            $mockSet->modelSurvey,
+            $mockSet->yiiApp,
+            $mockSet->pluginManager,
+            $mockSet->languageConsistency
         );
 
         $surveyUpdate->update(1, ['owner_id' => 99999]);

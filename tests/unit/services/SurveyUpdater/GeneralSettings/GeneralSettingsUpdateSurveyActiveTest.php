@@ -9,9 +9,9 @@ class GeneralSettingsUpdateSurveyActiveTest extends TestBaseClass
 {
     public function testCanNotUpdateSomeSettingsWhenSurveyIsActive()
     {
-        $mocks = GeneralSettingsMockFactory::make();
+        $mockSet = (new GeneralSettingsMockFactory)->make();
 
-        $mocks->survey->setAttributes([
+        $mockSet->survey->setAttributes([
             'sid' => 1,
             'active' => 'Y',
 
@@ -24,11 +24,11 @@ class GeneralSettingsUpdateSurveyActiveTest extends TestBaseClass
         ]);
 
         $surveyUpdate = new GeneralSettings(
-            $mocks->modelPermission,
-            $mocks->modelSurvey,
-            $mocks->yiiApp,
-            $mocks->pluginManager,
-            $mocks->languageConsistency
+            $mockSet->modelPermission,
+            $mockSet->modelSurvey,
+            $mockSet->yiiApp,
+            $mockSet->pluginManager,
+            $mockSet->languageConsistency
         );
 
         $surveyUpdate->update(1, [
@@ -40,7 +40,7 @@ class GeneralSettingsUpdateSurveyActiveTest extends TestBaseClass
             'refurl' => 'Y'
         ]);
 
-        $attributes = $mocks->survey->getAttributes();
+        $attributes = $mockSet->survey->getAttributes();
 
         $this->assertEquals('N', $attributes['anonymized']);
         $this->assertEquals('N', $attributes['savetimings']);
@@ -52,9 +52,9 @@ class GeneralSettingsUpdateSurveyActiveTest extends TestBaseClass
 
     public function testCanNotUpdateSomeSettingsWhenSurveyIsActiveSurveyInactive()
     {
-        $mocks = GeneralSettingsMockFactory::make();
+        $mockSet = (new GeneralSettingsMockFactory)->make();
 
-        $mocks->survey->setAttributes([
+        $mockSet->survey->setAttributes([
             'sid' => 1,
             'active' => 'N',
 
@@ -67,11 +67,11 @@ class GeneralSettingsUpdateSurveyActiveTest extends TestBaseClass
         ]);
 
         $surveyUpdate = new GeneralSettings(
-            $mocks->modelPermission,
-            $mocks->modelSurvey,
-            $mocks->yiiApp,
-            $mocks->pluginManager,
-            $mocks->languageConsistency
+            $mockSet->modelPermission,
+            $mockSet->modelSurvey,
+            $mockSet->yiiApp,
+            $mockSet->pluginManager,
+            $mockSet->languageConsistency
         );
 
         $surveyUpdate->update(1, [
@@ -83,7 +83,7 @@ class GeneralSettingsUpdateSurveyActiveTest extends TestBaseClass
             'refurl' => 'Y'
         ]);
 
-        $attributes = $mocks->survey->getAttributes();
+        $attributes = $mockSet->survey->getAttributes();
 
         $this->assertEquals('Y', $attributes['anonymized']);
         $this->assertEquals('Y', $attributes['savetimings']);
