@@ -8,12 +8,10 @@ use GoldSpecDigital\ObjectOrientedOAS\Contracts\SchemaContract;
 class SchemaFactoryQuestion
 {
     /**
-     * @param ?\GoldSpecDigital\ObjectOrientedOAS\Contracts\SchemaContract[] $properties
+     * @param \GoldSpecDigital\ObjectOrientedOAS\Contracts\SchemaContract $properties
      */
     public function make(SchemaContract ...$properties): Schema
     {
-        $properties = $properties ?? [];
-
         return Schema::create()
             ->title('Question')
             ->description('Question')

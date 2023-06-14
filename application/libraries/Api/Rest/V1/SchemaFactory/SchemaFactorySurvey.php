@@ -9,12 +9,10 @@ class SchemaFactorySurvey
 {
     /**
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
-     * @param ?\GoldSpecDigital\ObjectOrientedOAS\Contracts\SchemaContract[] $properties
+     * @param \GoldSpecDigital\ObjectOrientedOAS\Contracts\SchemaContract $properties
      */
     public function make(SchemaContract ...$properties): Schema
     {
-        $properties = $properties ?? [];
-
         $schemaSurveyLanguageSettings = (new SchemaFactorySurveyLanguageSettings())->make();
         $schemaSurveyDefaultLanguage = Schema::object('defaultlanguage')
             ->properties(...$schemaSurveyLanguageSettings->properties);
