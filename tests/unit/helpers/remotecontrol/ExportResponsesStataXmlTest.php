@@ -7,10 +7,7 @@ namespace ls\tests;
  */
 class ExportResponsesStataXmlTest extends BaseTest
 {
-    private static $username = null;
-    private static $password = null;
     private static $pluginName = 'ExportSTATAxml';
-    private static $plugin;
 
     public static function setUpBeforeClass(): void
     {
@@ -19,9 +16,6 @@ class ExportResponsesStataXmlTest extends BaseTest
         \Yii::import('application.helpers.remotecontrol.remotecontrol_handle', true);
         \Yii::import('application.helpers.viewHelper', true);
         \Yii::import('application.libraries.BigData', true);
-
-        // Get a handle to the plugin being tested
-        self::$plugin = App()->getPluginManager()->loadPlugin(self::$pluginName);
 
         // Activate it, if not already
         self::installAndActivatePlugin(self::$pluginName);
@@ -40,10 +34,5 @@ class ExportResponsesStataXmlTest extends BaseTest
 
         $result = $this->handler->export_responses($sessionKey, self::$surveyId, 'stataxml');
         $this->assertNotNull($result);
-    }
-
-    public static function tearDownAfterClass(): void
-    {
-        self::$testSurvey->delete();
     }
 }
