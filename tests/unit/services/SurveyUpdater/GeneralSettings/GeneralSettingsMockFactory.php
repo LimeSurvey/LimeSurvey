@@ -9,6 +9,11 @@ use Mockery;
 use LimeSurvey\PluginManager\PluginManager;
 use LimeSurvey\Models\Services\SurveyUpdater\LanguageConsistency;
 
+/**
+ * General Settings Mock Factory
+ *
+ * Reusable initialisation of mock dependencies for use in GeneralSettings tests.
+ */
 class GeneralSettingsMockFactory
 {
     /**
@@ -72,7 +77,7 @@ class GeneralSettingsMockFactory
         return $survey;
     }
 
-    private function getMockModelSurvey($survey): Survey
+    private function getMockModelSurvey(Survey $survey): Survey
     {
         $modelSurvey = Mockery::mock(Survey::class)
             ->makePartial();
@@ -84,10 +89,8 @@ class GeneralSettingsMockFactory
 
     private function getMockYiiApp(): LSYii_Application
     {
-        $yiiApp = Mockery::mock(LSYii_Application::class)
+        return Mockery::mock(LSYii_Application::class)
             ->makePartial();
-
-        return $yiiApp;
     }
 
     private function getMockPluginManager(): PluginManager
@@ -102,10 +105,8 @@ class GeneralSettingsMockFactory
 
     private function getMockLanguageConsistency(): LanguageConsistency
     {
-        $languageConsistency = Mockery::mock(
+        return Mockery::mock(
             LanguageConsistency::class
         )->makePartial();
-
-        return $languageConsistency;
     }
 }
