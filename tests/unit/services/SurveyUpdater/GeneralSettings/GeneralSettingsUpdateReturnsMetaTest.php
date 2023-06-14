@@ -16,7 +16,7 @@ use LimeSurvey\Models\Services\SurveyUpdater\{
 
 class GeneralSettingsUpdateReturnsMetaTest extends TestBaseClass
 {
-    public function testUpdateReturnsMetaDate()
+    public function testUpdateReturnsMeta()
     {
         $modelPermission = Mockery::mock(Permission::class)
             ->makePartial();
@@ -43,7 +43,6 @@ class GeneralSettingsUpdateReturnsMetaTest extends TestBaseClass
 
         $yiiApp = Mockery::mock(LSYii_Application::class)
             ->makePartial();
-        $yiiApp->session['loginID'] = 9876;
 
         $pluginManager = Mockery::mock(PluginManager::class)
             ->makePartial();

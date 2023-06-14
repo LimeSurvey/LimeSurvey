@@ -450,7 +450,7 @@ class GeneralSettings
     {
         $this->yiiApp->loadHelper('surveytranslator');
         $this->yiiApp->loadLibrary('Date_Time_Converter');
-        $dateFormat =  isset($this->yiiApp->session)
+        $dateFormat = isset($this->yiiApp->session)
             && !empty($this->yiiApp->session['dateformat'])
             ? $this->yiiApp->session['dateformat']
             : 1;
