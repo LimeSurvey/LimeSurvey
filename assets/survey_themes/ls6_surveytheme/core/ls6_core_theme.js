@@ -23,7 +23,7 @@ export var ThemeScripts = function () {
      * in endpage and in $(window).resize
      */
     var fixBodyPadding = function fixBodyPadding() {
-        $('body').css('padding-top', Math.round($('#survey-nav').height()) + 'px');
+        $('body').css('padding-top', Math.round($('#survey-nav').outerHeight()) + 'px');
     };
 
     /**

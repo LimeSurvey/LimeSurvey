@@ -10419,11 +10419,6 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
-.space-col {
-  margin-top: 1em;
-  margin-bottom: 2em;
-}
-
 .group-outer-container {
   display: flex;
 }
@@ -10437,37 +10432,12 @@ textarea.form-control-lg {
   background: transparent;
 }
 
-.top-container {
-  width: 100%;
-  padding: 0;
-  border-bottom: none;
-  color: inherit;
-}
-
-.top-container .top-content {
-  padding-top: 1em;
-  padding-bottom: 1em;
-  margin-bottom: 2em;
-}
-
-.no-js .top-content .form-change-lang {
-  display: none;
-}
-
-.top-container .top-content:empty {
-  display: none;
-}
-
 .group-description:empty {
   display: none;
 }
 
 .group-title:empty {
   display: none;
-}
-
-.top-container .form-change-lang {
-  text-align: center;
 }
 
 /**
@@ -12174,8 +12144,8 @@ Responsive navbar-brand image CSS
 }
 #survey-nav .navbar-toggler {
   border: none;
-  padding: 0;
-  margin-top: 20px;
+  padding-left: 0;
+  line-height: 20px;
 }
 #survey-nav .navbar-toggler .ri-more-fill {
   font-size: 1.92375rem;
@@ -15218,6 +15188,12 @@ a [class^=ri-], a [class*=" ri-"] {
   margin-top: 40px;
 }
 
+.top-container {
+  margin-bottom: 2rem;
+}
+.top-container .ls-progress-container {
+  padding: 4px 0;
+}
 .top-container .progress {
   height: 2px;
   margin-bottom: 0;
@@ -15379,14 +15355,19 @@ html, body {
 .form-change-lang .language-icon {
   float: right;
   margin-left: 4px;
-  margin-top: 2px;
   font-weight: 400;
 }
 .form-change-lang #language-changer-select {
   font-weight: 600;
   font-size: 1.14rem;
   line-height: 20px;
+  cursor: pointer;
   border: none;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  position: relative;
+  z-index: 10;
 }
 .form-change-lang #language-changer-select:focus-visible {
   outline: none;
@@ -15404,6 +15385,24 @@ html, body {
 }
 .form-change-lang #language-changer-select {
   color: #14AE5C;
+  background-color: transparent;
+}
+.form-change-lang #lang-select {
+  background-color: #ffffff;
+}
+.form-change-lang #lang-select::after {
+  cursor: pointer;
+  position: relative;
+  left: 16px;
+  color: #14AE5C;
+  font-family: "remixicon";
+  content: "\ea50";
+  z-index: 5;
+}
+
+.space-col {
+  margin-top: 1em;
+  margin-bottom: 2em;
 }
 
 .darkmode-on {
