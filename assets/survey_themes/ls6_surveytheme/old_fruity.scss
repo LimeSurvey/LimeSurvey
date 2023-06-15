@@ -1,10 +1,5 @@
 // old theme.css
 
-.space-col {
-    margin-top    : 1em;
-    margin-bottom : 2em;
-}
-
 .group-outer-container {
     display : flex;
 }
@@ -18,32 +13,9 @@
     background : transparent;
 }
 
-.top-container {
-    width         : 100%;
-    padding       : 0;
-    border-bottom : none;
-    color         : inherit;
-}
-
-.top-container .top-content {
-    padding-top    : 1em;
-    padding-bottom : 1em;
-    margin-bottom  : 2em;
-}
-
-.top-content .form-change-lang {float : right}
-
-.dir-rtl .top-content .form-change-lang {float : left}
-
-.no-js .top-content .form-change-lang {display : none}
-
-.top-container .top-content:empty {display : none}
-
 .group-description:empty {display : none}
 
 .group-title:empty {display : none}
-
-.top-container .form-change-lang {text-align : center}
 
 /**
  * Navigator
