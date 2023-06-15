@@ -29,21 +29,62 @@ class LSYiiValidatorsTest extends TestBaseClass
     }
 
     /**
-     * Testing that the xssfilter attribute varies
-     * depending on the user.
+     * Testing that the xssfilter attribute will always be
+     * false for super admin users even if filterxsshtml is
+     * changed.
      */
-    public function testXssFilterAttribute()
+    public function testXssFilterAttributeForSuperAdmin()
     {
-        $regularUserValidator = new \LSYii_Validators();
-
-        $isFiltered = $regularUserValidator->xssfilter;
-        $this->assertTrue($isFiltered, 'The xssfilter attribute should be true for regular users.');
-
+        //Mocking super admin login.
         \Yii::app()->session['loginID'] = 1;
         $superAdminValidator = new \LSYii_Validators();
 
-        $isFiltered = $superAdminValidator->xssfilter;
-        $this->assertFalse($isFiltered, 'The xssfilter attribute should be false for super admins.');
+        $this->assertTrue(\Yii::app()->getConfig('filterxsshtml'), 'filterxsshtml should be true by default.');
+        $this->assertFalse($superAdminValidator->xssfilter, 'The xssfilter attribute should be false for super admins.');
+
+        //Changing filterxsshtml.
+        \Yii::app()->setConfig('filterxsshtml', false);
+        $newSuperAdminValidator = new \LSYii_Validators();
+
+        $this->assertFalse(\Yii::app()->getConfig('filterxsshtml'), 'filterxsshtml was just changed to false.');
+        $this->assertFalse($newSuperAdminValidator->xssfilter, 'The xssfilter attribute should be false for super admins.');
+
+        //Returning to original values.
+        \Yii::app()->setConfig('filterxsshtml', true);
+        \Yii::app()->session['loginID'] = null;
+    }
+
+    /**
+     * Testing that the xssfilter attribute varies
+     * for regular users depending on filterxsshtml.
+     */
+    public function testXssFilterAttributeForRegularUsers()
+    {
+        //Create user.
+        $newPassword = createPassword();
+        $userId = \User::insertUser('test_user', $newPassword, 'John Doe', 1, 'jd@mail.com');
+
+        //Mocking regular user login.
+        \Yii::app()->session['loginID'] = $userId;
+        $regularUserValidator = new \LSYii_Validators();
+
+        $this->assertTrue(\Yii::app()->getConfig('filterxsshtml'), 'filterxsshtml should be true by default.');
+        $this->assertTrue($regularUserValidator->xssfilter, 'The xssfilter attribute should be true for regular users.');
+
+        //Changing filterxsshtml.
+        \Yii::app()->setConfig('filterxsshtml', false);
+        $newRegularUserValidator = new \LSYii_Validators();
+
+        $this->assertFalse(\Yii::app()->getConfig('filterxsshtml'), 'filterxsshtml was just changed to false.');
+        $this->assertFalse($newRegularUserValidator->xssfilter, 'The xssfilter attribute should be false for regular users with filterxsshtml set to false.');
+
+        //Returning to original values.
+        \Yii::app()->setConfig('filterxsshtml', true);
+        \Yii::app()->session['loginID'] = null;
+
+        //Delete user.
+        $user = \User::model()->findByPk($userId);
+        $user->delete();
     }
 
     /**
@@ -74,10 +115,32 @@ class LSYiiValidatorsTest extends TestBaseClass
                 'string'   => `{join('html_entity_decode("', '<', 'script>alert("Test")<', '/script>")')`,
                 'expected' => ''
             ),
+            array(
+                'string'   => '<title>html_entity_decode("<script>alert("Test")</script>123456")</title>',
+                'expected' => 'html_entity_decode("123456")'
+            )
         );
 
         foreach ($cases as $case) {
             $this->assertSame($case['expected'], $validator->xssFilter($case['string']), 'Unexpected filtered dangerous string.');
+        }
+    }
+
+    /**
+     * Testing that safe HTML tags are not removed.
+     */
+    public function testSafeHtml()
+    {
+        $validator = new \LSYii_Validators();
+
+        $cases = array(
+            '<p>Paragraph</p>',
+            '<strong>Text</strong>',
+            '<span>Some text</span>',
+        );
+
+        foreach ($cases as $case) {
+            $this->assertSame($case, $validator->xssFilter($case), 'Unexpected filtered safe HTML tags.');
         }
     }
 }
