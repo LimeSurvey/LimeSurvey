@@ -54,7 +54,7 @@ export var ThemeScripts = function () {
      */
     var fixBodyPadding = function fixBodyPadding() {
         console.log('fixBodyPadding');
-        $('body').css('padding-top', Math.round($('#survey-nav').height()) + 'px');
+        $('body').css('padding-top', Math.round($('#survey-nav').outerHeight()) + 'px');
     };
 
     /**

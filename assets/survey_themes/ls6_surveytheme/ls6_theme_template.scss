@@ -155,5 +155,8 @@ $base-color: #ffffff;
 @import "language-changer/language-changer.scss";
 @import "language-changer/language-changer_colors.scss";
 
+// 6.2 Utilities
+@import "spacing/spacing.scss";
+
 // TODO: placeholder, will probbably be removed
 @import "darkmode/darkmode_colors.scss";
