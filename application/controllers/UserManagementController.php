@@ -291,7 +291,7 @@ class UserManagementController extends LSBaseController
                 ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
             );
         }
-        $userId = Yii::app()->request->getPost('userid');
+        $userId = (int) Yii::app()->request->getPost('userid');
         if ($userId == Yii::app()->user->id) {
             return App()->getController()->renderPartial('/admin/super/_renderJson', [
                 'data' => [
