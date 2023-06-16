@@ -59,9 +59,11 @@ class Update_607 extends DatabaseUpdateBase
             $standardTemplateRootDir = App()->getConfig("standardthemerootdir");
             if ($standardTemplateRootDir && $dirHandle = opendir($standardTemplateRootDir)) {
                 while (false !== ($fileName = readdir($dirHandle))) {
-                    if (!is_file("$standardTemplateRootDir/$fileName") && $fileName !== "." && $fileName !== ".." && $fileName !== ".svn" && (file_exists(
+                    if (
+                        !is_file("$standardTemplateRootDir/$fileName") && $fileName !== "." && $fileName !== ".." && $fileName !== ".svn" && (file_exists(
                             "{$standardTemplateRootDir}/{$fileName}/config.xml"
-                        ))) {
+                        ))
+                    ) {
                         $templateList[$fileName] = $standardTemplateRootDir . DIRECTORY_SEPARATOR . $fileName;
                     }
                 }
