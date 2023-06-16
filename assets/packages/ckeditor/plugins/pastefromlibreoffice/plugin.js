@@ -1,0 +1,6 @@
+﻿/*
+ Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
+ For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+*/
+(function(){CKEDITOR.plugins.add("pastefromlibreoffice",{requires:"pastetools",isSupportedEnvironment:function(){var b=CKEDITOR.env.ie&&11>=CKEDITOR.env.version;return!(CKEDITOR.env.webkit&&!CKEDITOR.env.chrome)&&!b},init:function(b){if(this.isSupportedEnvironment()){var d=CKEDITOR.plugins.getPath("pastetools"),f=this.path;b.pasteTools.register({priority:100,filters:[CKEDITOR.getUrl(d+"filter/common.js"),CKEDITOR.getUrl(d+"filter/image.js"),CKEDITOR.getUrl(f+"filter/default.js")],canHandle:function(a){a=
+a.data;return(a=a.dataTransfer.getData("text/html",!0)||a.dataValue)?"libreoffice"===CKEDITOR.plugins.pastetools.getContentGeneratorName(a):!1},handle:function(a,d){var c=a.data,e=c.dataValue||CKEDITOR.plugins.pastetools.getClipboardData(c,"text/html");c.dontFilter=!0;e=CKEDITOR.pasteFilters.image(e,b,CKEDITOR.plugins.pastetools.getClipboardData(c,"text/rtf"));c.dataValue=CKEDITOR.pasteFilters.libreoffice(e,b);!0===b.config.forcePasteAsPlainText&&(c.type="text");d()}})}}})})();
