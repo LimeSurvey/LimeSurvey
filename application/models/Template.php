@@ -274,7 +274,7 @@ class Template extends LSActiveRecord
         }
         if (!$extensionConfig->isCompatible()) {
             // TODO: write recursiveuninstall for childthemes
-            $extendedTemplates = (new Template)->findAll('extends = :templateName', [':templatename' => $templateName]);
+            $extendedTemplates = (new Template())->findAll('extends = :templateName', [':templatename' => $templateName]);
             if (!empty($extendedTemplates)) {
                 foreach ($extendedTemplates as $extendedTemplate) {
                     TemplateConfig::uninstall($extendedTemplate->name);
