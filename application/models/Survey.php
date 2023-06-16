@@ -1160,8 +1160,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
             // If it's active, then we check if not expired
             // Time adjust
             $sNow    = date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
-            $sStop   = ($this->expires != '') ? date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime($this->expires))) : '';
-            $sStart  = ($this->startdate != '') ? date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime($this->startdate))) : $sNow;
+            $sStop   = ($this->expires != '') ? date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime($this->expires))) : null;
+            $sStart  = ($this->startdate != '') ? date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime($this->startdate))) : null;
 
             // Time comparaison
             $oNow   = new DateTime($sNow);
