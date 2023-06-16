@@ -398,14 +398,18 @@ class LimesurveyApi
     /**
      * @param int $surveyId
      * @param string $language
-     * $param array $conditions
+     * @param array $conditions
      * @return \Question[]
      */
     public function getQuestions($surveyId, $language = 'en', $conditions = array())
     {
-        $conditions['sid'] = $surveyId;
-        $conditions['language'] = $language;
-        return \Question::model()->with('subquestions')->findAllByAttributes($conditions);
+        $criteria = new \CDbCriteria();
+        $criteria->addCondition('t.sid = :sid');
+        $criteria->addCondition('questionl10ns.language = :language');
+        $criteria->params[':sid'] = $surveyId;
+        $criteria->params[':language'] = $language;
+
+        return \Question::model()->with('subquestions', 'questionl10ns')->findAllByAttributes($conditions, $criteria);
     }
 
     /**
