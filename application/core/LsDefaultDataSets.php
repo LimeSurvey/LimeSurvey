@@ -1022,6 +1022,27 @@ class LsDefaultDataSets
             'packages_ltr'      => null,
             'packages_rtl'      => null
         ];
+        //todo this element needs to be adjusted after task "bootstrap twice"
+        //the data here has been taken according to the xml-file themes/survey/ls6_surveytheme/config.xml
+        $returnArray[] = [
+            'template_name'     =>  'ls6_surveytheme',
+            'sid'               =>  null,
+            'gsid'              =>  null,
+            'uid'               =>  null,
+            'files_css'         => '{"add":["css/variations/theme_apple.css","css/base.css","css/custom.css"], "remove":["survey.css", "template-core.css", "awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css", "awesome-bootstrap-checkbox/awesome-bootstrap-checkbox-rtl.css"]}',
+            'files_js'          =>  '{"add":["scripts/theme.js","scripts/custom.js"], "remove":["survey.js", "template-core.js"]}',
+            'files_print_css'   => '{"add":["css/print_theme.css"]}',
+            'options'           => '{"hideprivacyinfo":"off","showpopups":"1","showclearall":"off","questionhelptextposition":"top","fixnumauto":"disable","backgroundimage":"off","backgroundimagefile":".\/files\/pattern.png",
+                                     "brandlogo":"off","brandlogofile":"image::theme::files\/logo.png","font":"ibm-sans",
+                                     "cssframework":{"@attributes":{"type":"dropdown","category":"Simple options",
+                                     "width":"12","title":"Variations","parent":"cssframework"}}}',
+            'cssframework_name' => 'bootstrap',
+            'cssframework_css'  => '',
+            'cssframework_js'   => '',
+            'packages_to_load'  => '{"add":["pjax","moment","font-ibm-sans","font-ibm-serif"]}',
+            'packages_ltr'      => null,
+            'packages_rtl'      => null
+        ];
 
         return $returnArray;
     }
@@ -1109,6 +1130,25 @@ class LsDefaultDataSets
             'last_update'   => null,
             'owner_id'      => 1,
             'extends'       => 'vanilla',
+        ];
+        $returnArray[] = [
+            'name'          => 'ls6_surveytheme',
+            'folder'        => 'ls6_surveytheme',
+            'title'         => 'ls6_surveytheme',
+            'creation_date' => date('Y-m-d H:i:s'),
+            'author'        => 'LimeSurvey GmbH',
+            'author_email'  => 'info@limesurvey.org',
+            'author_url'    => 'https://www.limesurvey.org/',
+            'copyright'     => 'Copyright (C) 2005 - 2023 LimeSurvey Gmbh, Inc. All rights reserved.',
+            'license'       => 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.',
+            'version'       => '1.0.0',
+            'api_version'   => '3.0',
+            'view_folder'   => 'views',
+            'files_folder'  => 'files',
+            'description'   => '<strong>LimeSurvey6  Theme</strong><br>',
+            'last_update'   => null,
+            'owner_id'      => 1,
+            'extends'       => '',
         ];
 
         return $returnArray;

@@ -10,8 +10,8 @@
 <config>
     <!-- Those metadata are displayed in the theme configuration page.  -->
     <metadata>
-        <name>LS6 Surveytheme</name>
-        <title>LS6 Surveytheme</title>
+        <name>ls6_surveytheme</name>
+        <title>ls6_surveytheme</title>
         <type>theme</type>
         <creationDate>03/15/2023</creationDate>
         <author>LimeSurvey GmbH</author>
@@ -53,7 +53,6 @@
         <css>
             <add>css/variations/theme_apple.css</add>
             <add>css/base.css</add>
-            <add>css/noTablesOnMobile.css</add>
             <add>css/custom.css</add>
             <remove>survey.css</remove>
             <remove>template-core.css</remove>

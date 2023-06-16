@@ -764,7 +764,7 @@ function populateDatabase($oDB)
             'anonymized' => 'N',
             'format' => 'G',
             'savetimings' => 'N',
-            'template' => 'fruity',
+            'template' => 'ls6_surveytheme',
             'datestamp' => 'N',
             'usecookie' => 'N',
             'allowregister' => 'N',
