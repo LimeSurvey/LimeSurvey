@@ -268,7 +268,7 @@ class Template extends LSActiveRecord
         }
 
         // check compatability with current limesurvey version
-        if (!TemplateConfig::validateTheme($templateName, $currentThemePath)){
+        if (!TemplateConfig::validateTheme($templateName, $currentThemePath)) {
             return false;
         }
 
