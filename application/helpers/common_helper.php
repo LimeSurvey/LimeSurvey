@@ -2622,10 +2622,10 @@ function hasTemplateManageRights($userid, $sThemeFolder)
 * @param string $sType 'survey' or 'label'
 * @param mixed $iOldSurveyID
 * @param mixed $iNewSurveyID
-* @param string $sString
+* @param string $sString A string or null
 * @return string
 */
-function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, string $sString)
+function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString)
 {
     if ($sString == '') {
         return $sString;
