@@ -1877,8 +1877,8 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             if (
                 $insertdata['attribute'] == 'alphasort'
                 || (
-                    $insertdata['attribute'] == 'random_order'
-                    && in_array($importedQuestions[$insertdata['qid']]->type, ['!', 'L', 'O', 'R'])
+                $insertdata['attribute'] == 'random_order'
+                && in_array($importedQuestions[$insertdata['qid']]->type, ['!', 'L', 'O', 'R'])
                 )
             ) {
                 $answerOrderAttributes[$insertdata['qid']][$insertdata['attribute']] = $insertdata['value'];
@@ -1910,9 +1910,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         foreach ($answerOrderAttributes as $importedQid => $questionAttributes) {
             if (!empty($questionAttributes['random_order'])) {
                 $insertdata = [
-                    'qid' => $importedQid,
-                    'attribute' => 'answer_order',
-                    'value' => 'random',
+                'qid' => $importedQid,
+                'attribute' => 'answer_order',
+                'value' => 'random',
                 ];
                 App()->db->createCommand()->insert('{{question_attributes}}', $insertdata);
                 $results['question_attributes']++;
@@ -1920,9 +1920,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
             if (!empty($questionAttributes['alphasort'])) {
                 $insertdata = [
-                    'qid' => $importedQid,
-                    'attribute' => 'answer_order',
-                    'value' => 'alphabetical',
+                'qid' => $importedQid,
+                'attribute' => 'answer_order',
+                'value' => 'alphabetical',
                 ];
                 App()->db->createCommand()->insert('{{question_attributes}}', $insertdata);
                 $results['question_attributes']++;
@@ -2083,8 +2083,19 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             unset($insertdata['id']);
             // now translate any links
             $quotaMember->setAttributes($insertdata, false);
+
+            if (!$quotaMember->validate()) {
+                // Display validation errors
+                foreach ($quotaMember->errors as $attribute => $errors) {
+                    $errorText = '';
+                    foreach ($errors as $error) {
+                        $errorText .= 'Field "' . $attribute . '": ' . $error . " Value: '{$quotaMember->$attribute}'\n";
+                    }
+                    throw new Exception(gT("Error:") . " Failed to insert quota member" . "\n" . $errorText);
+                }
+            }
             if (!$quotaMember->save()) {
-                throw new Exception(gT("Error") . ": Failed to insert data[13]<br />");
+                throw new Exception(gT("Error:") . " Failed to insert quota member database entry\n");
             }
             $results['quotamembers']++;
         }
