@@ -5,6 +5,7 @@ namespace ls\tests;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\Exception\NoSuchElementException;
+use Facebook\WebDriver\WebDriverExpectedCondition;
 
 /**
  * Subclass of Facebook webdriver.
@@ -85,7 +86,11 @@ class LimeSurveyWebDriver extends RemoteWebDriver
      */
     public function next()
     {
-        $nextButton = $this->findElement(WebDriverBy::id('ls-button-submit'));
+        $nextButton = $this->wait(5)->until(
+            WebDriverExpectedCondition::presenceOfElementLocated(
+                WebDriverBy::id('ls-button-submit')
+            )
+        );
         $nextButton->click();
     }
 
