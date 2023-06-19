@@ -45,9 +45,7 @@ class QuotaMember extends LSActiveRecord
     public function rules()
     {
         return array(
-            array('code', 'required', 'on' => array('create')),
-            array('code', 'length', 'max' => 11)
-
+            array('code', 'required', 'on' => array('create'))
         );
     }
     /**
