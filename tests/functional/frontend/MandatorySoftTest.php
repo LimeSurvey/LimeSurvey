@@ -2,6 +2,7 @@
 
 namespace ls\tests;
 
+use Facebook\WebDriver\Remote\RemoteWebElement;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverExpectedCondition;
 
@@ -39,8 +40,14 @@ class MandatorySoftTest extends TestBaseClassWeb
             /* Enter value in ManOn and check if move next show end (using id added manually in survey */
             self::$webDriver->answerTextQuestion($ManOnSgqa, 'Some value');
             self::$webDriver->next();
+            /** @var $surveyCompletedElement RemoteWebElement */
+            $surveyCompletedElement = self::$webDriver->wait(5)->until(
+                WebDriverExpectedCondition::presenceOfElementLocated(
+                    WebDriverBy::id('text-completed-survey')
+                )
+            );
             $this->assertTrue(
-                !empty(self::$webDriver->findElement(WebDriverBy::id('text-completed-survey'))),
+                !empty($surveyCompletedElement),
                 'Completed are not shown after fill mandatory question'
             );
         } catch (\Exception $ex) {
