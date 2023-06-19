@@ -34,6 +34,10 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.61 (build 230614) to 3.28.62 (build 230619) June 19, 2023
+-Fixed issue 18459: When filtering the survey list by a parent survey group, surveys assigned to a child survey group are not listed (#3147) (Gabriel Jenik)
+
+
 Changes from 3.28.60 (build 230607) to 3.28.61 (build 230614) June 12, 2023
 -Fixed issue #18585: Click again on link by email submit again the survey (#3193) (Denis Chenu)
 #Updated translation: Hungarian by kkd
