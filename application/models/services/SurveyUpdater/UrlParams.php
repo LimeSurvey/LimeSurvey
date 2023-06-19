@@ -16,7 +16,7 @@ use LimeSurvey\Models\Services\Exception\{
  */
 class UrlParams
 {
-    private ?SurveyURLParameter $modelSurveyUrlParameter = null;
+    private SurveyURLParameter $modelSurveyUrlParameter;
 
     public function __construct(SurveyURLParameter $modelSurveyUrlParameter)
     {

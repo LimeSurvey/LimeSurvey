@@ -23,11 +23,11 @@ use LimeSurvey\Models\Services\Exception\{
  */
 class SurveyUpdater
 {
-    private ?LanguageSettings $languageSettings = null;
-    private ?GeneralSettings $generalSettings = null;
-    private ?UrlParams $urlParams = null;
-    private ?ExpressionManager $expressionManager = null;
-    private ?TemplateConfiguration $templateConfiguration = null;
+    private LanguageSettings $languageSettings;
+    private GeneralSettings $generalSettings;
+    private UrlParams $urlParams;
+    private ExpressionManager $expressionManager;
+    private TemplateConfiguration $templateConfiguration;
 
     public function __construct(
         LanguageSettings $languageSettings,

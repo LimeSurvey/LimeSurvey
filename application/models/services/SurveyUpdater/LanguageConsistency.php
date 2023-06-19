@@ -14,8 +14,8 @@ use CDbCriteria;
  */
 class LanguageConsistency
 {
-    private ?SurveyLanguageSetting $modelSurveyLanguageSetting = null;
-    private ?LSYii_Application $yiiApp = null;
+    private SurveyLanguageSetting $modelSurveyLanguageSetting;
+    private LSYii_Application $yiiApp;
 
     /**
      * @param SurveyLanguageSetting $modelSurveyLanguageSetting

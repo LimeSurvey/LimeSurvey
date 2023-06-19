@@ -23,11 +23,11 @@ use LimeSurvey\Models\Services\Exception\{
  */
 class GeneralSettings
 {
-    private ?Permission $modelPermission = null;
-    private ?Survey $modelSurvey = null;
-    private ?LSYii_Application $yiiApp = null;
-    private ?PluginManager $yiiPluginManager = null;
-    private ?LanguageConsistency $languageConsistency = null;
+    private Permission $modelPermission;
+    private Survey $modelSurvey;
+    private LSYii_Application $yiiApp;
+    private PluginManager $yiiPluginManager;
+    private LanguageConsistency $languageConsistency;
 
     const FIELD_TYPE_YN = 'yersno';
     const FIELD_TYPE_DATETIME = 'dateime';

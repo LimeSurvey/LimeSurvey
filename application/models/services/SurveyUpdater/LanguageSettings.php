@@ -20,9 +20,9 @@ use LimeSurvey\Models\Services\Exception\{
  */
 class LanguageSettings
 {
-    private ?Permission $modelPermission = null;
-    private ?Survey $modelSurvey = null;
-    private ?SurveyLanguageSetting $modelSurveyLanguageSetting = null;
+    private ?Permission $modelPermission;
+    private ?Survey $modelSurvey;
+    private ?SurveyLanguageSetting $modelSurveyLanguageSetting;
 
     private $inputFields = [
         'surveyls_url',
