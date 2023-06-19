@@ -34,6 +34,21 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.26 (build 230613) to 5.6.27 (build 230621) June 19, 2023
+-Fixed issue: [security] Administrator can self-delete (Carsten Schmitz)
+-Fixed issue: ComfortUpdate showing updates as unstable, even though they are not (fixed the related alert) (twilligls)
+-Fixed issue [security] #18868: No CRSF control for action of label set (Denis Chenu)
+-Fixed issue [security] #18866: Label sets can be created by any admin user (#3211) (Denis Chenu)
+-Fixed issue #18881: CKeditor 4.20.2 in use which is vulnerable to CVE-2023-28439 (#3227) (Gabriel Jenik)
+-Fixed issue #18818: dump when using getQuestions API (#3144) (Gabriel Jenik)
+-Fixed issue #18793: Quick Translation crash with MS SQL Database Error (#3218) (Gabriel Jenik)
+-Fixed issue #18704: Error when trying to add another language to a survey and MSSQL server is used (Carsten Schmitz)
+-Fixed issue #18694: Invalid HTML for list radio questions due to missing closing ul element (#3205) (Gabriel Jenik)
+-Fixed issue #18693: Using checkbox question for yes/no loses data when data entry view (#3109) (Gabriel Jenik)
+-Fixed issue #18181: "no answer" still shown after turning it off (#2700) (Denis Chenu)
+#Updated translation: Swedish by maxzomborszki
+
+
 Changes from 5.6.25 (build 230605) to 5.6.26 (build 230613) June 12, 2023
 -Fixed issue #18833: Mobile phone issue with formulas on columns headings with array numbers on checkbox layout (#3206) (Denis Chenu)
 -Fixed issue #18615: Data integrity SQL syntax error on PostgreSQL when trying to fix quotas (Carsten Schmitz)
