@@ -2,10 +2,13 @@
 
 namespace ls\tests;
 
+use Facebook\WebDriver\Exception\TimeoutException;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
+use Facebook\WebDriver\Remote\RemoteWebElement;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverExpectedCondition;
 use Facebook\WebDriver\Exception\NoSuchElementException;
+use Facebook\WebDriver\WebDriverExpectedCondition;
 
 /**
  * Subclass of Facebook webdriver.
@@ -86,7 +89,7 @@ class LimeSurveyWebDriver extends RemoteWebDriver
      */
     public function next()
     {
-        $nextButton = $this->wait(1)->until(
+        $nextButton = $this->wait(5)->until(
             WebDriverExpectedCondition::elementToBeClickable(
                 WebDriverBy::id('ls-button-submit')
             )
@@ -183,5 +186,27 @@ class LimeSurveyWebDriver extends RemoteWebDriver
         } catch (\Exception $ex) {
             // Do nothing.
         }
+    }
+
+    /**
+     * Scroll to the bottom of the page
+     * @see https://stackoverflow.com/questions/45610679/how-can-i-scroll-page-in-php-webdriver
+     * @return void
+     */
+    public function scrollToBottom()
+    {
+        $this->executeScript('window.scrollTo(0,document.body.scrollHeight);');
+        sleep(1);
+    }
+
+    /**
+     * Fixes php-webdriver error when scrolling and instead use the browsers function
+     * @param $element RemoteWebElement
+     * @return RemoteWebElement
+     */
+    public function click(RemoteWebElement $element): RemoteWebElement
+    {
+        $this->executeScript('window.scrollTo({top: (arguments[0].offsetTop + arguments[0].offsetHeight - window.innerHeight), behavior: "instant"});', [$element]);
+        return $element->click();
     }
 }
