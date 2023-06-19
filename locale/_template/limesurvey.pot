@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2023-06-12 08:43:29+00:00\n"
+"POT-Creation-Date: 2023-06-19 09:24:51+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1846,8 +1846,8 @@ msgstr ""
 #: application/models/ParticipantShare.php:139
 #: application/models/ParticipantShare.php:144
 #: application/models/ParticipantShare.php:252
-#: application/models/Question.php:865 application/models/Survey.php:1104
-#: application/models/Survey.php:1112
+#: application/models/Question.php:865 application/models/Survey.php:1108
+#: application/models/Survey.php:1116
 #: application/views/admin/conditions/deleteAllConditions.php:17
 #: application/views/admin/conditions/includes/conditions_edit.php:8
 #: application/views/admin/dataentry/content_view.php:642
@@ -2003,8 +2003,8 @@ msgstr ""
 #: application/models/ParticipantShare.php:139
 #: application/models/ParticipantShare.php:144
 #: application/models/ParticipantShare.php:252
-#: application/models/Question.php:865 application/models/Survey.php:1104
-#: application/models/Survey.php:1112
+#: application/models/Question.php:865 application/models/Survey.php:1108
+#: application/models/Survey.php:1116
 #: application/views/admin/conditions/includes/conditions_edit.php:8
 #: application/views/admin/dataentry/content_view.php:643
 #: application/views/admin/dataentry/content_view.php:712
@@ -4237,7 +4237,7 @@ msgstr ""
 #: application/helpers/questionHelper.php:433
 #: application/helpers/questionHelper.php:822
 #: application/helpers/userstatistics_helper.php:2676
-#: application/models/Permission.php:102 application/models/Survey.php:1541
+#: application/models/Permission.php:102 application/models/Survey.php:1545
 #: application/views/admin/export/statistics_subviews/_statistics_header.php:3
 #: application/views/admin/export/statistics_user_view.php:17
 #: application/views/admin/export/statistics_view.php:18
@@ -7905,7 +7905,7 @@ msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/searchBox.php:40
 #: application/helpers/common_helper.php:235 application/models/Quota.php:101
-#: application/models/Survey.php:1206
+#: application/models/Survey.php:1210
 msgid "Active"
 msgstr ""
 
@@ -7914,7 +7914,7 @@ msgid "Active and running"
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/searchBox.php:42
-#: application/helpers/common_helper.php:243 application/models/Survey.php:1171
+#: application/helpers/common_helper.php:243 application/models/Survey.php:1175
 msgid "Inactive"
 msgstr ""
 
@@ -12899,27 +12899,27 @@ msgstr ""
 msgid "Date saved"
 msgstr ""
 
-#: application/models/Survey.php:213
+#: application/models/Survey.php:217
 msgid "running"
 msgstr ""
 
-#: application/models/Survey.php:1192
+#: application/models/Survey.php:1196
 msgid "End: %s"
 msgstr ""
 
-#: application/models/Survey.php:1193
+#: application/models/Survey.php:1197
 msgid "Expired: %s"
 msgstr ""
 
-#: application/models/Survey.php:1194
+#: application/models/Survey.php:1198
 msgid "Start: %s"
 msgstr ""
 
-#: application/models/Survey.php:1537
+#: application/models/Survey.php:1541
 msgid "General settings & texts"
 msgstr ""
 
-#: application/models/Survey.php:1548
+#: application/models/Survey.php:1552
 #: application/views/admin/survey/subview/_survey_quickaction.php:125
 #: application/views/admin/survey/subview/_survey_quickaction.php:131
 #: application/views/admin/survey/subview/_survey_quickaction.php:179
@@ -12931,7 +12931,7 @@ msgstr ""
 msgid "Add new question"
 msgstr ""
 
-#: application/models/Survey.php:1550
+#: application/models/Survey.php:1554
 #: application/views/admin/survey/subview/_survey_quickaction.php:105
 #: application/views/admin/survey/subview/_survey_quickaction.php:109
 #: application/views/admin/survey/subview/_survey_quickaction.php:152
@@ -12941,11 +12941,11 @@ msgstr ""
 msgid "Add new group"
 msgstr ""
 
-#: application/models/Survey.php:2000
+#: application/models/Survey.php:2015
 msgid "Show policy"
 msgstr ""
 
-#: application/models/Survey.php:2035
+#: application/models/Survey.php:2050
 #: application/views/admin/survey/subview/accordion/_publication_panel.php:20
 msgid "Expiration date can't be earlier than the start date"
 msgstr ""
