@@ -20,6 +20,7 @@ use LimeSurvey\Models\Services\Exception\{
  * Service class for survey language setting updating.
  *
  * Dependencies are injected to enable mocking.
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 class GeneralSettings
 {
@@ -155,6 +156,7 @@ class GeneralSettings
      *
      * @param Survey $survey
      * @return array
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     private function getFields(Survey $survey)
     {
@@ -264,6 +266,7 @@ class GeneralSettings
      * @param ?array $fieldOpts
      * @return void
      * @SuppressWarnings("php:S3776") Cognitive Complexity
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     private function setField($field, $input, Survey $survey, $meta, $fieldOpts = null)
     {
@@ -500,6 +503,7 @@ class GeneralSettings
      * @todo Should really be saved as three fields in the database!
      * @todo Copied from Survey:::saveTranscribeCaptchaOptions() replace uses of original copy
      * @SuppressWarnings("php:S3776") Cognitive Complexity
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     private function calculateUseCaptchaOption($surveyaccess, $registration, $saveandload)
     {
