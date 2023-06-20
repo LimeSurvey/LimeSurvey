@@ -150,7 +150,6 @@ class GeneralSettings
         return $meta;
     }
 
-
     /**
      * Get Database Fields
      *
@@ -224,14 +223,18 @@ class GeneralSettings
             'sendconfirmation' => ['type' => static::FIELD_TYPE_YN],
             'tokenanswerspersistence' => ['type' => static::FIELD_TYPE_YN],
             'alloweditaftercompletion' => ['type' => static::FIELD_TYPE_YN],
-            'usecaptcha' => ['type' => static::FIELD_TYPE_USE_CAPTCHA, 'compositeInput' => true],
-             // 'usecaptcha_surveyaccess' => [], // used on input to calculate 'usecaptcha'
-             // 'usecaptcha_registration' => [], // used on input to calculate 'usecaptcha'
-             // 'usecaptcha_saveandload' => [], // used on input to calculate 'usecaptcha'
+            'usecaptcha' => [
+                'type' => static::FIELD_TYPE_USE_CAPTCHA,
+                'compositeInputs' => [
+                    'usecaptcha_surveyaccess',
+                    'usecaptcha_registration',
+                    'usecaptcha_saveandload'
+                ]
+            ],
             'emailresponseto' => [],
             'emailnotificationto' => [],
             'googleanalyticsapikeysetting' => [],
-            'googleanalyticsapikey' => [],
+            'googleanalyticsapikey' => ['type' => static::FIELD_TYPE_GAKEY],
             'googleanalyticsstyle' => [],
             'tokenlength' => [],
             'adminemail' => [],
@@ -278,8 +281,7 @@ class GeneralSettings
         // Composite inputs always have to be processed
         // - even if the field itself is not provided
         $isCompositeInput = (
-            isset($fieldOpts['compositeInput'])
-            && $fieldOpts['compositeInput']
+            isset($fieldOpts['compositeInputs'])
         );
 
         if (
@@ -317,9 +319,9 @@ class GeneralSettings
                 }
                 break;
             case static::FIELD_TYPE_GAKEY:
-                if ($survey->googleanalyticsapikeysetting == 'G') {
+                if ($value == 'G') {
                     $value  = "9999useGlobal9999";
-                } elseif ($survey->googleanalyticsapikeysetting == 'N') {
+                } elseif ($value == 'N') {
                     $value = '';
                 }
                 break;
