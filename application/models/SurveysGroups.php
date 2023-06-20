@@ -65,7 +65,8 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
             array('name', 'match', 'pattern' => '/^[A-Za-z0-9_\.]+$/u','message' => gT('Group code can contain only alphanumeric character, underscore or dot. Spaces are not allowed.')),
             array('title', 'length', 'max' => 100),
             array('alwaysavailable', 'boolean'),
-            array('description, created, modified', 'safe'),
+            array('created, modified', 'safe'),
+            array('title, description', 'LSYii_Validators'), // XSS if non super-admin
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array('gsid, name, title, description, owner_id, parent_id, created, modified, created_by', 'safe', 'on' => 'search'),
