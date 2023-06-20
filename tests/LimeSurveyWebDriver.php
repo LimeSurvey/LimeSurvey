@@ -190,4 +190,15 @@ class LimeSurveyWebDriver extends RemoteWebDriver
             // Do nothing.
         }
     }
+
+    /**
+     * Scroll to the bottom of the page
+     * @see https://stackoverflow.com/questions/45610679/how-can-i-scroll-page-in-php-webdriver
+     * @return void
+     */
+    public function scrollToBottom()
+    {
+        $this->executeScript('window.scrollTo(0,document.body.scrollHeight);');
+        sleep(1);
+    }
 }
