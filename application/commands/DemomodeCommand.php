@@ -13,7 +13,6 @@
 */
 class DemomodeCommand extends CConsoleCommand
 {
-
     public function run($sArgument)
     {
         if (isset($sArgument) && isset($sArgument[0]) && $sArgument[0] = 'yes') {
@@ -48,6 +47,7 @@ class DemomodeCommand extends CConsoleCommand
             '{{defaultvalue_l10ns}}',
             '{{failed_login_attempts}}',
             '{{groups}}',
+            '{{group_l10ns}}',
             '{{labels}}',
             '{{label_l10ns}}',
             '{{labelsets}}',
@@ -68,9 +68,11 @@ class DemomodeCommand extends CConsoleCommand
             '{{surveys_languagesettings}}',
             '{{survey_links}}',
             '{{templates}}',
+            '{{asset_version}}',
             '{{template_configuration}}',
             '{{user_in_groups}}',
             '{{user_groups}}',
+            '{{user_in_permissionrole}}',
         ];
         foreach ($truncatableTables as $table) {
             $quotedTable = Yii::app()->db->quoteTableName($table);
@@ -78,7 +80,7 @@ class DemomodeCommand extends CConsoleCommand
             Yii::app()->db->createCommand($actquery)->execute();
         }
         //Now delete the basics in all other tables
-        $actquery = "delete from {{permissions}} where uid<>1";
+        $actquery = "delete from {{permissions}} where uid<>1 or entity<>'global'";
         Yii::app()->db->createCommand($actquery)->execute();
         $actquery = "delete from {{surveys_groupsettings}} where gsid>1";
         Yii::app()->db->createCommand($actquery)->execute();
@@ -89,8 +91,6 @@ class DemomodeCommand extends CConsoleCommand
         $actquery = "delete from {{surveys_groups}} where gsid>1";
         Yii::app()->db->createCommand($actquery)->execute();
         $actquery = "delete from {{users}} where uid<>1";
-        Yii::app()->db->createCommand($actquery)->execute();
-        $actquery = "update {{users}} set lang='en'";
         Yii::app()->db->createCommand($actquery)->execute();
         $actquery = "update {{users}} set lang='auto'";
         Yii::app()->db->createCommand($actquery)->execute();
@@ -107,6 +107,8 @@ class DemomodeCommand extends CConsoleCommand
         $actquery = "update {{settings_global}} set stg_value='Administrator' where stg_name='siteadminname'";
         Yii::app()->db->createCommand($actquery)->execute();
         $actquery = "update {{settings_global}} set stg_value='Sea_Green' where stg_name='admintheme'";
+        Yii::app()->db->createCommand($actquery)->execute();
+        $actquery = "update {{settings_global}} set stg_value='' where stg_name='restrictToLanguages'";
         Yii::app()->db->createCommand($actquery)->execute();
 
         $surveyidresult = dbGetTablesLike("tokens%");
@@ -165,6 +167,10 @@ class DemomodeCommand extends CConsoleCommand
         $surveysToActivate = [];
         foreach ($aSamplesurveys as $sSamplesurvey) {
             $result = null;
+            if ($sSamplesurvey[0] == '.') {
+                continue;
+            }
+            echo "Importing {$sSamplesurvey}\n";
             //Try catch for console application to be able to import surveys
 
             $result = @ XMLImportSurvey($documentationSurveyPath . $sSamplesurvey);
