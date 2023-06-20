@@ -70,8 +70,6 @@ class GeneralSettingsMockFactory
             ->andReturn(true);
         $survey->shouldReceive('setAttributes')
             ->passthru();
-        $survey->shouldReceive('getAttributes')
-            ->passthru();
         $survey->setAttributes([]);
 
         return $survey;
