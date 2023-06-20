@@ -40,7 +40,7 @@ class LanguageConsistency
     {
         if ($survey->language == $initBaseLanguage) {
             // language has not changed - nothing to do
-            return null;
+            return;
         }
 
         // If the base language is changing, we may need the current title to avoid the survey

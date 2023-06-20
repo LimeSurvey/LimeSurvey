@@ -57,7 +57,7 @@ class GeneralSettings
      * @throws ExceptionPersistError
      * @throws ExceptionNotFound
      * @throws ExceptionPermissionDenied
-     * @return array
+     * @return array<array-key, mixed>
      */
     public function update($surveyId, $input)
     {
@@ -98,7 +98,7 @@ class GeneralSettings
      * @throws ExceptionPersistError
      * @throws ExceptionNotFound
      * @throws ExceptionPermissionDenied
-     * @return array
+     * @return array<array-key, mixed>
      */
     private function updateGeneralSettings(Survey $survey, array $input)
     {
@@ -109,7 +109,7 @@ class GeneralSettings
             : [];
 
         $this->dispatchPluginEventNewSurveySettings(
-            $survey,
+            $survey->sid,
             isset($input['plugin']) ? $input['plugin'] : []
         );
 
@@ -172,11 +172,8 @@ class GeneralSettings
                     )
                 )
             ],
-            'admin' => [],
-            'format' => [],
             'expires' =>  ['type' => static::FIELD_TYPE_DATETIME],
             'startdate' => ['type' => static::FIELD_TYPE_DATETIME],
-            'template' => [],
             'assessments' => ['type' => static::FIELD_TYPE_YN],
             'anonymized' => [
                 'type' => static::FIELD_TYPE_YN,
@@ -239,10 +236,6 @@ class GeneralSettings
             'googleanalyticsapikey' => ['type' => static::FIELD_TYPE_GAKEY],
             'googleanalyticsstyle' => [],
             'tokenlength' => [],
-            'adminemail' => [],
-            'bounce_email' => [],
-            'gsid' => ['default' => 1],
-
 
             // from Database::actionUpdateSurveyLocaleSettingsGeneralSettings()
             'language' => [],
@@ -250,7 +243,7 @@ class GeneralSettings
             'admin' => [],
             'adminemail' => [],
             'bounce_email' => [],
-            'gsid' => [],
+            'gsid' => ['default' => 1],
             'format' => [],
             'template' => []
         ];
@@ -264,7 +257,7 @@ class GeneralSettings
      * @param Survey $survey
      * @param array $meta
      * @param ?array $fieldOpts
-     * @return void
+     * @return array<array-key, mixed>
      * @SuppressWarnings("php:S3776") Cognitive Complexity
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
@@ -499,7 +492,7 @@ class GeneralSettings
      *
      * 'N' = None
      *
-     * @return string One character that corresponds to captcha usage
+     * @return ?string One character that corresponds to captcha usage
      * @todo Should really be saved as three fields in the database!
      * @todo Copied from Survey:::saveTranscribeCaptchaOptions() replace uses of original copy
      * @SuppressWarnings("php:S3776") Cognitive Complexity

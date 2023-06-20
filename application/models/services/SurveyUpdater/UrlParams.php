@@ -31,7 +31,7 @@ class UrlParams
      * @throws ExceptionPersistError
      * @throws ExceptionNotFound
      * @throws ExceptionPermissionDenied
-     * @return boolean
+     * @return void
      */
     public function update($surveyId, $params)
     {

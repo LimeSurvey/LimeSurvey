@@ -158,7 +158,7 @@ class LanguageSettings
      *
      * @param array $input
      * @param string $languageCode
-     * @return array
+     * @return ?array
      */
     private function getLanguageSettingsData($input, $languageCode)
     {
