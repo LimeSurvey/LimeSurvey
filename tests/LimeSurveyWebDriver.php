@@ -3,7 +3,6 @@
 namespace ls\tests;
 
 use Facebook\WebDriver\Remote\RemoteWebDriver;
-use Facebook\WebDriver\Remote\RemoteWebElement;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\Exception\NoSuchElementException;
 use Facebook\WebDriver\WebDriverExpectedCondition;
@@ -87,16 +86,11 @@ class LimeSurveyWebDriver extends RemoteWebDriver
      */
     public function next()
     {
-        /** @var $nextButton RemoteWebElement  */
         $nextButton = $this->wait(5)->until(
             WebDriverExpectedCondition::presenceOfElementLocated(
                 WebDriverBy::id('ls-button-submit')
             )
         );
-        $action = $this->action();
-        $action->moveToElement($nextButton)->perform();
-        // TODO: test if more sleep helps remove it
-        sleep(5);
         $nextButton->click();
     }
 
