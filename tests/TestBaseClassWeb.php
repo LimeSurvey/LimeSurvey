@@ -173,6 +173,7 @@ class TestBaseClassWeb extends TestBaseClass
 
         self::ignoreWelcomeModal();
         self::ignoreAdminNotification();
+        self::ignoreAdminNotification();
 
         /*
         try {
