@@ -1568,7 +1568,7 @@ class statistics_helper
                 $query .= " AND $sql";
             }
 
-            $row = Yii::app()->db->createCommand($query)->queryScalar();
+            $row = (int) Yii::app()->db->createCommand($query)->queryScalar();
 
             //store temporarily value of answer count of question type '5' and 'A'.
             $tempcount = -1; //count can't be less han zero
