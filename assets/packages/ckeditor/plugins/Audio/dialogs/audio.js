@@ -1,9 +1,350 @@
-﻿CKEDITOR.dialog.add("audio",function(d){function g(a,c){var b=this.getValue();b||"id"!=this.id||(b=p());a.setAttribute(this.id,b);if(b)switch(this.id){case "poster":c.backgroundImage="url("+b+")";break;case "width":c.width=b+"px";break;case "height":c.height=b+"px"}}function k(a,c,b){c=this.id.match(/(\w+)(\d)/);a=c[1];c=parseInt(c[2],10);(b[c]||(b[c]={}))[a]=this.getValue()}function l(a){a?this.setValue(a.getAttribute(this.id)):"id"==this.id&&this.setValue(p())}function h(a,c){var b=this.id.match(/(\w+)(\d)/),
-d=b[1],b=parseInt(b[2],10);(b=c[b])&&this.setValue(b[d])}function p(){var a=new Date;return"audio"+a.getFullYear()+a.getMonth()+a.getDate()+a.getHours()+a.getMinutes()+a.getSeconds()}var e=d.lang.audio,n=function(){var a=this.previewImage;a.removeListener("load",n);a.removeListener("error",f);a.removeListener("abort",f);this.setValueOf("info","width",a.$.width);this.setValueOf("info","height",a.$.height)},f=function(){var a=this.previewImage;a.removeListener("load",n);a.removeListener("error",f);
-a.removeListener("abort",f)};return{title:e.dialogTitle,minWidth:400,minHeight:200,onShow:function(){this.fakeImage=this.audioNode=null;this.previewImage=d.document.createElement("img");var a=this.getSelectedElement();if(a&&a.data("cke-real-element-type")&&"audio"==a.data("cke-real-element-type")){this.fakeImage=a;var a=d.restoreRealElement(a),c=[],b=a.getElementsByTag("source","");0==b.count()&&(b=a.getElementsByTag("source","cke"));for(var e=0,f=b.count();e<f;e++){var g=b.getItem(e);c.push({src:g.getAttribute("src"),
-type:g.getAttribute("type")})}this.audioNode=a;this.setupContent(a,c)}else this.setupContent(null,[])},onOk:function(){var a=null;this.fakeImage?a=this.audioNode:(a=CKEDITOR.dom.element.createFromHtml("\x3ccke:audio\x3e\x3c/cke:audio\x3e",d.document),a.setAttributes({controls:"controls"}));var c={},b=[];this.commitContent(a,c,b);for(var f="",g="",k=e.linkTemplate||"",l=e.fallbackTemplate||"",h=0;h<b.length;h++){var m=b[h];m&&m.src&&(f+='\x3ccke:source src\x3d"'+m.src+'" type\x3d"'+m.type+'" /\x3e',
-g+=k.replace("%src%",m.src).replace("%type%",m.type))}a.setHtml(f+l.replace("%links%",g));a=d.createFakeElement(a,"cke_audio","audio",!1);a.setStyles(c);this.fakeImage?(a.replace(this.fakeImage),d.getSelection().selectElement(a)):(c=new CKEDITOR.dom.element("DIV",d.document),d.insertElement(c),c.append(a))},onHide:function(){this.previewImage&&(this.previewImage.removeListener("load",n),this.previewImage.removeListener("error",f),this.previewImage.removeListener("abort",f),this.previewImage.remove(),
-this.previewImage=null)},contents:[{id:"info",elements:[{type:"hbox",widths:["","100px"],children:[{type:"text",id:"poster",label:e.poster,commit:g,setup:l,onChange:function(){var a=this.getDialog(),c=this.getValue();if(0<c.length){var a=this.getDialog(),b=a.previewImage;b.on("load",n,a);b.on("error",f,a);b.on("abort",f,a);b.setAttribute("src",c)}}},{type:"button",id:"browse",hidden:"true",style:"display:inline-block;margin-top:10px;",filebrowser:{action:"Browse",target:"info:poster",url:d.config.filebrowserImageBrowseUrl||
-d.config.filebrowserBrowseUrl},label:d.lang.common.browseServer}]},{type:"hbox",widths:["33%","33%","33%"],children:[{type:"text",id:"width",label:d.lang.common.width,"default":400,validate:CKEDITOR.dialog.validate.notEmpty(e.widthRequired),commit:g,setup:l},{type:"text",id:"height",label:d.lang.common.height,"default":300,validate:CKEDITOR.dialog.validate.notEmpty(e.heightRequired),commit:g,setup:l},{type:"text",id:"id",label:"Id",commit:g,setup:l}]},{type:"hbox",widths:["","100px","75px"],children:[{type:"text",
-id:"src0",label:e.sourceaudio,commit:k,setup:h},{type:"button",id:"browse",hidden:"true",style:"display:inline-block;margin-top:10px;",filebrowser:{action:"Browse",target:"info:src0",url:d.config.filebrowserAudioBrowseUrl||d.config.filebrowserBrowseUrl},label:d.lang.common.browseServer},{id:"type0",label:e.sourceType,type:"select","default":"audio/mp3",items:[["MP3","audio/mp3"],["WAV","audio/wav"]],commit:k,setup:h}]},{type:"hbox",widths:["","100px","75px"],children:[{type:"text",id:"src1",label:e.sourceaudio,
-commit:k,setup:h},{type:"button",id:"browse",hidden:"true",style:"display:inline-block;margin-top:10px;",filebrowser:{action:"Browse",target:"info:src1",url:d.config.filebrowserAudioBrowseUrl||d.config.filebrowserBrowseUrl},label:d.lang.common.browseServer},{id:"type1",label:e.sourceType,type:"select","default":"audio/wav",items:[["MP3","audio/mp3"],["WAV","audio/wav"]],commit:k,setup:h}]}]}]}});
+﻿CKEDITOR.dialog.add( 'audio', function ( editor )
+{
+	var lang = editor.lang.audio;
+
+	function commitValue( audioNode, extraStyles )
+	{
+		var value=this.getValue();
+
+		if ( !value && this.id=='id' )
+			value = generateId();
+
+		audioNode.setAttribute( this.id, value);
+
+		if ( !value )
+			return;
+		switch( this.id )
+		{
+			case 'poster':
+				extraStyles.backgroundImage = 'url(' + value + ')';
+				break;
+			case 'width':
+				extraStyles.width = value + 'px';
+				break;
+			case 'height':
+				extraStyles.height = value + 'px';
+				break;
+		}
+	}
+
+	function commitSrc( audioNode, extraStyles, audios )
+	{
+		var match = this.id.match(/(\w+)(\d)/),
+			id = match[1],
+			number = parseInt(match[2], 10);
+
+		var audio = audios[number] || (audios[number]={});
+		audio[id] = this.getValue();
+	}
+
+	function loadValue( audioNode )
+	{
+		if ( audioNode )
+			this.setValue( audioNode.getAttribute( this.id ) );
+		else
+		{
+			if ( this.id == 'id')
+				this.setValue( generateId() );
+		}
+	}
+
+	function loadSrc( audioNode, audios )
+	{
+		var match = this.id.match(/(\w+)(\d)/),
+			id = match[1],
+			number = parseInt(match[2], 10);
+
+		var audio = audios[number];
+		if (!audio)
+			return;
+		this.setValue( audio[ id ] );
+	}
+
+	function generateId()
+	{
+		var now = new Date();
+		return 'audio' + now.getFullYear() + now.getMonth() + now.getDate() + now.getHours() + now.getMinutes() + now.getSeconds();
+	}
+
+	// To automatically get the dimensions of the poster image
+	var onImgLoadEvent = function()
+	{
+		// Image is ready.
+		var preview = this.previewImage;
+		preview.removeListener( 'load', onImgLoadEvent );
+		preview.removeListener( 'error', onImgLoadErrorEvent );
+		preview.removeListener( 'abort', onImgLoadErrorEvent );
+
+		this.setValueOf( 'info', 'width', preview.$.width );
+		this.setValueOf( 'info', 'height', preview.$.height );
+	};
+
+	var onImgLoadErrorEvent = function()
+	{
+		// Error. Image is not loaded.
+		var preview = this.previewImage;
+		preview.removeListener( 'load', onImgLoadEvent );
+		preview.removeListener( 'error', onImgLoadErrorEvent );
+		preview.removeListener( 'abort', onImgLoadErrorEvent );
+	};
+
+	return {
+		title : lang.dialogTitle,
+		minWidth : 400,
+		minHeight : 200,
+
+		onShow : function()
+		{
+			// Clear previously saved elements.
+			this.fakeImage = this.audioNode = null;
+			// To get dimensions of poster image
+			this.previewImage = editor.document.createElement( 'img' );
+
+			var fakeImage = this.getSelectedElement();
+			if ( fakeImage && fakeImage.data( 'cke-real-element-type' ) && fakeImage.data( 'cke-real-element-type' ) == 'audio' )
+			{
+				this.fakeImage = fakeImage;
+
+				var audioNode = editor.restoreRealElement( fakeImage ),
+					audios = [],
+					sourceList = audioNode.getElementsByTag( 'source', '' );
+				if (sourceList.count()==0)
+					sourceList = audioNode.getElementsByTag( 'source', 'cke' );
+
+				for ( var i = 0, length = sourceList.count() ; i < length ; i++ )
+				{
+					var item = sourceList.getItem( i );
+					audios.push( {src : item.getAttribute( 'src' ), type: item.getAttribute( 'type' )} );
+				}
+
+				this.audioNode = audioNode;
+
+				this.setupContent( audioNode, audios );
+			}
+			else
+				this.setupContent( null, [] );
+		},
+
+		onOk : function()
+		{
+			// If there's no selected element create one. Otherwise, reuse it
+			var audioNode = null;
+			if ( !this.fakeImage )
+			{
+				audioNode = CKEDITOR.dom.element.createFromHtml( '<cke:audio></cke:audio>', editor.document );
+				audioNode.setAttributes(
+					{
+						controls : 'controls'
+					} );
+			}
+			else
+			{
+				audioNode = this.audioNode;
+			}
+
+			var extraStyles = {}, audios = [];
+			this.commitContent( audioNode, extraStyles, audios );
+
+			var innerHtml = '', links = '',
+				link = lang.linkTemplate || '',
+				fallbackTemplate = lang.fallbackTemplate || '';
+			for(var i=0; i<audios.length; i++)
+			{
+				var audio = audios[i];
+				if ( !audio || !audio.src )
+					continue;
+				innerHtml += '<cke:source src="' + audio.src + '" type="' + audio.type + '" />';
+				links += link.replace('%src%', audio.src).replace('%type%', audio.type);
+			}
+			audioNode.setHtml( innerHtml + fallbackTemplate.replace( '%links%', links ) );
+
+			// Refresh the fake image.
+			var newFakeImage = editor.createFakeElement( audioNode, 'cke_audio', 'audio', false );
+			newFakeImage.setStyles( extraStyles );
+			if ( this.fakeImage )
+			{
+				newFakeImage.replace( this.fakeImage );
+				editor.getSelection().selectElement( newFakeImage );
+			}
+			else
+			{
+				// Insert it in a div
+				var div = new CKEDITOR.dom.element( 'DIV', editor.document );
+				editor.insertElement( div );
+				div.append( newFakeImage );
+			}
+		},
+		onHide : function()
+		{
+			if ( this.previewImage )
+			{
+				this.previewImage.removeListener( 'load', onImgLoadEvent );
+				this.previewImage.removeListener( 'error', onImgLoadErrorEvent );
+				this.previewImage.removeListener( 'abort', onImgLoadErrorEvent );
+				this.previewImage.remove();
+				this.previewImage = null;		// Dialog is closed.
+			}
+		},
+
+		contents :
+		[
+			{
+				id : 'info',
+				elements :
+				[
+					{
+						type : 'hbox',
+						widths: [ '', '100px'],
+						children : [
+							{
+								type : 'text',
+								id : 'poster',
+								label : lang.poster,
+								commit : commitValue,
+								setup : loadValue,
+								onChange : function()
+								{
+									var dialog = this.getDialog(),
+										newUrl = this.getValue();
+
+									//Update preview image
+									if ( newUrl.length > 0 )	//Prevent from load before onShow
+									{
+										dialog = this.getDialog();
+										var preview = dialog.previewImage;
+
+										preview.on( 'load', onImgLoadEvent, dialog );
+										preview.on( 'error', onImgLoadErrorEvent, dialog );
+										preview.on( 'abort', onImgLoadErrorEvent, dialog );
+										preview.setAttribute( 'src', newUrl );
+									}
+								}
+							},
+							{
+								type : 'button',
+								id : 'browse',
+								hidden : 'true',
+								style : 'display:inline-block;margin-top:10px;',
+								filebrowser :
+								{
+									action : 'Browse',
+									target: 'info:poster',
+									url: editor.config.filebrowserImageBrowseUrl || editor.config.filebrowserBrowseUrl
+								},
+								label : editor.lang.common.browseServer
+							}]
+					},
+					{
+						type : 'hbox',
+						widths: [ '33%', '33%', '33%'],
+						children : [
+							{
+								type : 'text',
+								id : 'width',
+								label : editor.lang.common.width,
+								'default' : 400,
+								validate : CKEDITOR.dialog.validate.notEmpty( lang.widthRequired ),
+								commit : commitValue,
+								setup : loadValue
+							},
+							{
+								type : 'text',
+								id : 'height',
+								label : editor.lang.common.height,
+								'default' : 300,
+								validate : CKEDITOR.dialog.validate.notEmpty(lang.heightRequired ),
+								commit : commitValue,
+								setup : loadValue
+							},
+							{
+								type : 'text',
+								id : 'id',
+								label : 'Id',
+								commit : commitValue,
+								setup : loadValue
+							}
+								]
+					},
+					{
+						type : 'hbox',
+						widths: [ '', '100px', '75px'],
+						children : [
+							{
+								type : 'text',
+								id : 'src0',
+								label : lang.sourceaudio,
+								commit : commitSrc,
+								setup : loadSrc
+							},
+							{
+								type : 'button',
+								id : 'browse',
+								hidden : 'true',
+								style : 'display:inline-block;margin-top:10px;',
+								filebrowser :
+								{
+									action : 'Browse',
+									target: 'info:src0',
+									url: editor.config.filebrowserAudioBrowseUrl || editor.config.filebrowserBrowseUrl
+								},
+								label : editor.lang.common.browseServer
+							},
+							{
+								id : 'type0',
+								label : lang.sourceType,
+								type : 'select',
+								'default' : 'audio/mp3',
+								items :
+								[
+									[ 'MP3', 'audio/mp3' ],
+									[ 'WAV', 'audio/wav' ]
+								],
+								commit : commitSrc,
+								setup : loadSrc
+							}]
+					},
+
+					{
+						type : 'hbox',
+						widths: [ '', '100px', '75px'],
+						children : [
+							{
+								type : 'text',
+								id : 'src1',
+								label : lang.sourceaudio,
+								commit : commitSrc,
+								setup : loadSrc
+							},
+							{
+								type : 'button',
+								id : 'browse',
+								hidden : 'true',
+								style : 'display:inline-block;margin-top:10px;',
+								filebrowser :
+								{
+									action : 'Browse',
+									target: 'info:src1',
+									url: editor.config.filebrowserAudioBrowseUrl || editor.config.filebrowserBrowseUrl
+								},
+								label : editor.lang.common.browseServer
+							},
+							{
+								id : 'type1',
+								label : lang.sourceType,
+								type : 'select',
+								'default':'audio/wav',
+								items :
+								[
+									[ 'MP3', 'audio/mp3' ],
+									[ 'WAV', 'audio/wav' ]
+								],
+								commit : commitSrc,
+								setup : loadSrc
+							}]
+					}
+				]
+			}
+
+		]
+	};
+} );

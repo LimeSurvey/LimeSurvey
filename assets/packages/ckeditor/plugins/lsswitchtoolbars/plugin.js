@@ -1,2 +1,64 @@
-﻿(function(){CKEDITOR.plugins.add("lsswitchtoolbars",{lang:["en"],init:function(a){if(a.config.basicToolbar&&a.config.fullToolbar){var d=a.lang.lsswitchtoolbars;a.addCommand("switchToolbar",{exec:function(a){var d=a.name,b=a.config,c=a.getCommand("maximize").state==CKEDITOR.TRISTATE_ON;c&&a.execCommand("maximize");var e=b.toolbar==b.basicToolbar;a.destroy();b.toolbar=e?b.fullToolbar:b.basicToolbar;a=CKEDITOR.replace(d,b);if(c)a.on("instanceReady",function(a){this.execCommand("maximize")});CKEDITOR.tools.setCookie("LS_CKE_TOOLBAR",
-e?"full":"basic")},editorFocus:!1,canUndo:!1});var c=a.config.toolbar==a.config.basicToolbar;a.ui.addButton("SwitchToolbar",{label:c?d.titleFull:d.titleBasic,command:"switchToolbar",icon:this.path+(c?"full":"basic")+".gif"})}}})})();CKEDITOR.plugins.setLang("lsswitchtoolbars","en",{titleBasic:sSwitchToolbarBasicTitle,titleFull:sSwitchToolbarFullTitle});
+/**
+ * @fileOverview The "lsswitchtoolbars" plugin.
+ *
+ */
+
+(function()
+{
+    CKEDITOR.plugins.add('lsswitchtoolbars',
+    {
+        lang : [ 'en' ],
+        init : function( editor )
+        {
+            if (!editor.config.basicToolbar || !editor.config.fullToolbar) {
+                return;
+            }
+
+            var lang = editor.lang.lsswitchtoolbars;
+
+            var commandDefinition = {
+                exec: function (editor) {
+                    var name = editor.name;
+                    var config = editor.config;
+
+                    var isMaximized = editor.getCommand('maximize').state == CKEDITOR.TRISTATE_ON;
+                    if (isMaximized) {
+                        editor.execCommand('maximize');
+                    }
+                    var switchToFull = config.toolbar == config.basicToolbar;
+                    editor.destroy();
+                    config.toolbar = switchToFull ? config.fullToolbar : config.basicToolbar;
+                    var newEditor = CKEDITOR.replace(name, config);
+                    if (isMaximized) {
+                        newEditor.on('instanceReady', function(event) {
+                            this.execCommand('maximize');
+                        });
+                    }
+                    CKEDITOR.tools.setCookie('LS_CKE_TOOLBAR', switchToFull ? 'full' : 'basic');
+                },
+
+                editorFocus: false,
+                canUndo: false
+            };
+
+            editor.addCommand('switchToolbar', commandDefinition);
+
+            var switchToFull = editor.config.toolbar == editor.config.basicToolbar;
+            var icon = switchToFull ? 'full' : 'basic';
+            var label = switchToFull ? lang.titleFull : lang.titleBasic;
+
+            editor.ui.addButton('SwitchToolbar', {
+                label : label,
+                command :'switchToolbar',
+                icon : this.path + icon + '.gif'
+            });
+
+        },
+    });
+})();
+
+CKEDITOR.plugins.setLang('lsswitchtoolbars','en', {
+        titleBasic:sSwitchToolbarBasicTitle,
+        titleFull:sSwitchToolbarFullTitle,
+    }
+);
