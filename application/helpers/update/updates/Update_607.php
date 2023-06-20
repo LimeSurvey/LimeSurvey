@@ -20,28 +20,29 @@ class Update_607 extends DatabaseUpdateBase
             ->select('*')
             ->from('{{templates}}')
             ->queryAll();
-        if (!empty($surveyThemes)) {
-            foreach ($surveyThemes as $surveyTheme) {
-                $surveyThemeName = $surveyTheme['name'];
-                setTransactionBookmark();
-                try {
-                    if (!$this->isStandardTemplate($surveyThemeName)) {
-                        $rowsDeleted = $this->db->createCommand()->delete(
-                            '{{templates}}',
-                            'name=:name',
-                            [':name' => $surveyThemeName]
+        if (empty($surveyThemes)) {
+            return;
+        }
+        foreach ($surveyThemes as $surveyTheme) {
+            $surveyThemeName = $surveyTheme['name'];
+            setTransactionBookmark('beforeThemeDelete');
+            try {
+                if (!$this->isStandardTemplate($surveyThemeName)) {
+                    $rowsDeleted = $this->db->createCommand()->delete(
+                        '{{templates}}',
+                        'name=:name',
+                        [':name' => $surveyThemeName]
+                    );
+                    if ($rowsDeleted >= 1) {
+                        $this->db->createCommand()->delete(
+                            '{{template_configuration}}',
+                            'template_name=:templateName',
+                            [':templateName' => $surveyThemeName]
                         );
-                        if ($rowsDeleted >= 1) {
-                            $this->db->createCommand()->delete(
-                                '{{template_configuration}}',
-                                'template_name=:templateName',
-                                [':templateName' => $surveyThemeName]
-                            );
-                        }
                     }
-                } catch (Exception $e) {
-                    rollBackToTransactionBookmark();
                 }
+            } catch (Exception $e) {
+                rollBackToTransactionBookmark('beforeThemeDelete');
             }
         }
     }

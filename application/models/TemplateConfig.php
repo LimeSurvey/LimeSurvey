@@ -914,7 +914,7 @@ class TemplateConfig extends CActiveRecord
     public static function validateTheme($themeName, $themePath, bool $redirect = true): bool
     {
         // check compatability with current limesurvey version
-        $isCompatible = self::isCompatible($themePath);
+        $isCompatible = (new TemplateConfig())->isCompatible($themePath);
         if (!$isCompatible) {
             self::uninstallThemesRecursive($themeName);
             if ($redirect) {
@@ -1076,8 +1076,7 @@ class TemplateConfig extends CActiveRecord
 
     /**
      * Returns an array with uninstalled and/or incompatible survey themes
-     * @return array
-     * @throws CDbException
+     * @return TemplateConfiguration[]
      */
     public function getTemplatesWithNoDb(): array
     {
