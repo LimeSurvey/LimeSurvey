@@ -2333,13 +2333,19 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 }
 
                 // Create the URL according to the configured format
+                $sPublicUrl = Yii::app()->getConfig("publicurl");
+                $aPublicUrl = parse_url($sPublicUrl);
+                $baseUrl = Yii::app()->getBaseUrl(true);
+                if (isset($aPublicUrl['scheme']) && isset($aPublicUrl['host'])) {
+                    $baseUrl = $sPublicUrl;
+                }
                 $urlManager = Yii::app()->getUrlManager();
                 $urlFormat = $urlManager->getUrlFormat();
                 if ($urlFormat == CUrlManager::GET_FORMAT) {
-                    $url = Yii::app()->getBaseUrl(true);
+                    $url = $baseUrl;
                     $params = [$urlManager->routeVar => $alias] + $params;
                 } else {
-                    $url = Yii::app()->getBaseUrl(true) . '/' . $alias;
+                    $url = $baseUrl . '/' . $alias;
                 }
                 $query = $urlManager->createPathInfo($params, '=', '&');
                 if (!empty($query)) {
@@ -2351,7 +2357,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
         // If short url is not preferred or no alias is found, return a traditional URL
         $urlParams = array_merge($params, ['sid' => $this->sid, 'lang' => $language]);
-        $url = Yii::app()->createAbsoluteUrl('survey/index', $urlParams);
+        $url = App()->getController()->createAbsoluteUrl('survey/index', $urlParams);
+
         return $url;
     }
 
