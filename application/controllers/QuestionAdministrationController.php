@@ -204,7 +204,7 @@ class QuestionAdministrationController extends LSBaseController
         );
 
         $showScriptField = Permission::model()->hasSurveyPermission($question->sid, 'surveycontent', 'update') &&
-            SettingsUser::getUserSettingValue('showScriptEdit', App()->user->id);
+            SettingsUser::getUserSettingValue('showScriptEdit', App()->user->id, null, null, 1);
 
         // TODO: Problem with CSRF cookie when entering directly after login.
         $modalsHtml =  Yii::app()->twigRenderer->renderViewFromFile(
@@ -952,7 +952,7 @@ class QuestionAdministrationController extends LSBaseController
             "editorpreset" => App()->session['htmleditormode'],
             "script"       =>
                 Permission::model()->hasSurveyPermission($oQuestion->sid, 'surveycontent', 'update')
-                && SettingsUser::getUserSetting('showScriptEdit', App()->user->id),
+                && SettingsUser::getUserSetting('showScriptEdit', App()->user->id, null, null, 1),
         ];
 
         $this->renderJSON($aPermissions);

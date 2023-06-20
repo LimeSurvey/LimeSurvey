@@ -97,7 +97,7 @@ function quoteText($sText, $sEscapeMode = 'html')
 /**
 * getSurveyList() Queries the database (survey table) for a list of existing surveys
 *
-* @param boolean $bReturnArray If set to true an array instead of an HTML option list is given back
+* @param boolean $bReturnArray If set to true an array instead of an HTML option list is given back (unused by core)
 * @return string|array This string is returned containing <option></option> formatted list of existing surveys
 *
 */
@@ -110,10 +110,16 @@ function getSurveyList($bReturnArray = false)
     $surveynames = array();
 
     if (is_null($cached)) {
+        $criteria = new CDBCriteria();
+        $criteria->select = ['sid','language', 'active', 'expires','startdate'];
+        $criteria->with = ['languagesettings' => [
+                'select'=>'surveyls_title',
+                'where'=>'t.language = languagesettings.language'
+            ]
+        ];
         $surveyidresult = Survey::model()
             ->permission(Yii::app()->user->getId())
-            ->with('languagesettings')
-            ->findAll();
+            ->findAll($criteria);
         foreach ($surveyidresult as $result) {
             if (isset($result->languagesettings[$result->language])) {
                 $surveynames[] = array_merge(
@@ -122,9 +128,8 @@ function getSurveyList($bReturnArray = false)
                 );
             }
         }
-
         usort($surveynames, function ($a, $b) {
-                return strcmp($a['surveyls_title'], $b['surveyls_title']);
+            return strcmp($a['surveyls_title'], $b['surveyls_title']);
         });
         $cached = $surveynames;
     } else {
@@ -138,27 +143,23 @@ function getSurveyList($bReturnArray = false)
     $inactivesurveys = '';
     $expiredsurveys = '';
     foreach ($surveynames as $sv) {
-        $surveylstitle = flattenText($sv['surveyls_title']);
-        if (strlen($surveylstitle) > 70) {
-            $surveylstitle = htmlspecialchars(mb_strcut(html_entity_decode($surveylstitle, ENT_QUOTES, 'UTF-8'), 0, 70, 'UTF-8')) . "...";
-        }
-
+        $surveylstitle = CHtml::encode($sv['surveyls_title']) . " [" . $sv['sid'] . "]";
         if ($sv['active'] != 'Y') {
             $inactivesurveys .= "<option ";
             if (Yii::app()->user->getId() == $sv['owner_id']) {
-                $inactivesurveys .= " class='mysurvey emphasis'";
+                $inactivesurveys .= " class='mysurvey emphasis inactivesurvey'";
             }
             $inactivesurveys .= " value='{$sv['sid']}'>{$surveylstitle}</option>\n";
         } elseif ($sv['expires'] != '' && $sv['expires'] < dateShift((string) date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)) {
             $expiredsurveys .= "<option ";
             if (Yii::app()->user->getId() == $sv['owner_id']) {
-                $expiredsurveys .= " class='mysurvey emphasis'";
+                $expiredsurveys .= " class='mysurvey emphasis expiredsurvey'";
             }
             $expiredsurveys .= " value='{$sv['sid']}'>{$surveylstitle}</option>\n";
         } else {
             $activesurveys .= "<option ";
             if (Yii::app()->user->getId() == $sv['owner_id']) {
-                $activesurveys .= " class='mysurvey emphasis'";
+                $activesurveys .= " class='mysurvey emphasis activesurvey'";
             }
             $activesurveys .= " value='{$sv['sid']}'>{$surveylstitle}</option>\n";
         }
@@ -1214,7 +1215,7 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
 
                 //go through all the (multiple) answers
                 foreach ($result as $row) {
-                    $myfield2 = $myfield . reset($row);
+                    $myfield2 = $myfield . $row['title'];
                     $allfields[] = $myfield2;
                 }
                 break;
@@ -1413,8 +1414,8 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
 
     $defaultsQuery = "SELECT a.qid, a.sqid, a.scale_id, a.specialtype, al10.defaultvalue"
     . " FROM {{defaultvalues}} as a "
-    . " LEFT JOIN  {{defaultvalue_l10ns}} as al10 ON a.dvid = al10.dvid "
-    . " LEFT JOIN {{questions}} as b ON a.qid = b.qid "
+    . " JOIN {{defaultvalue_l10ns}} as al10 ON a.dvid = al10.dvid " // We NEED a default value set
+    . " JOIN {{questions}} as b ON a.qid = b.qid " // We NEED only question in this survey
     . " AND al10.language = '{$sLanguage}'"
     . " AND b.same_default=0"
     . " AND b.sid = " . $surveyid;
@@ -1434,8 +1435,8 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
     $baseLanguage = $survey->language;
     $defaultsQuery = "SELECT a.qid, a.sqid, a.scale_id, a.specialtype, al10.defaultvalue"
     . " FROM {{defaultvalues}} as a "
-    . " LEFT JOIN  {{defaultvalue_l10ns}} as al10 ON a.dvid = al10.dvid "
-    . " LEFT JOIN {{questions}} as b ON a.qid = b.qid "
+    . " JOIN {{defaultvalue_l10ns}} as al10 ON a.dvid = al10.dvid " // We NEED a default value set
+    . " JOIN {{questions}} as b ON a.qid = b.qid " // We NEED only question in this survey
     . " AND al10.language = '{$baseLanguage}'"
     . " AND b.same_default=1"
     . " AND b.sid = " . $surveyid;
@@ -3199,6 +3200,7 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
 
     //Get response data
     $idrow = SurveyDynamic::model($iSurveyID)->findByAttributes(array('id' => $iResponseID));
+    $idrow->decryptBeforeOutput();
 
     // Create array of non-null values - those are the relevant ones
     $aRelevantFields = array();
@@ -3785,7 +3787,6 @@ function fixLanguageConsistency($sid, $availlangs = '', $baselang = '')
     switchMSSQLIdentityInsert('assessments', false);
 
 
-    switchMSSQLIdentityInsert('quota_languagesettings', true);
     $query = "SELECT * FROM {{quota_languagesettings}} join {{quota}} q on quotals_quota_id=q.id WHERE q.sid='{$sid}' AND quotals_language='{$baselang}'";
     $result = Yii::app()->db->createCommand($query)->query();
     foreach ($result->readAll() as $qls) {
@@ -3806,7 +3807,6 @@ function fixLanguageConsistency($sid, $availlangs = '', $baselang = '')
         }
         reset($langs);
     }
-    switchMSSQLIdentityInsert('quota_languagesettings', false);
 
     return true;
 }
@@ -4581,6 +4581,22 @@ function getIPAddress()
         $sIPAddress = $_SERVER['REMOTE_ADDR'];
     }
 
+    return $sIPAddress;
+}
+
+
+/**
+ * This function returns the real IP address and should mainly be used for security sensitive purposes
+ * If you want to use the IP address for language detection or similar, use getIPAddress() instead
+ * 
+ * @return  string  Client IP Address
+ */
+function getRealIPAddress()
+{
+    $sIPAddress = '127.0.0.1';
+    if (!empty($_SERVER['REMOTE_ADDR']) && filter_var($_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP) !== false) {
+        $sIPAddress = $_SERVER['REMOTE_ADDR'];
+    }
     return $sIPAddress;
 }
 

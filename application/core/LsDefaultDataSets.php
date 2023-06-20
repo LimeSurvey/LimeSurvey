@@ -360,8 +360,8 @@ class LsDefaultDataSets
                 gT('Reorder questions & groups', 'unescaped'),
                 gT('Reorder questions & groups', 'unescaped'),
                 gT('Reorder questions & groups', 'unescaped'),
-                'icon-organize',
-                'iconclass',
+                'reorder',
+                'fontawesome',
                 '',
                 'surveyAdministration/organize/',
                 '',
@@ -370,7 +370,7 @@ class LsDefaultDataSets
                 '',
                 'surveycontent',
                 'update',
-                '{"render": {"isActive": false, "link": {"data": {"surveyid": ["survey", "sid"]}}}}',
+                '{"render": {"link": {"data": {"surveyid": ["survey", "sid"]}}}}',
                 '',
                 'en-GB',
                 1,
@@ -1791,7 +1791,7 @@ class LsDefaultDataSets
     {
         return [
             ['stg_name' => 'editorPreset', 'stg_value' => 'wysiwyg'],
-            ['stg_name' => 'showScriptEditor', 'stg_value' => '1'],
+            ['stg_name' => 'showScriptEdit', 'stg_value' => '1'],
             ['stg_name' => 'noViewMode', 'stg_value' => '0'],
             ['stg_name' => 'answeroptionprefix', 'stg_value' => 'AO'],
             ['stg_name' => 'subquestionprefix', 'stg_value' => 'SQ'],

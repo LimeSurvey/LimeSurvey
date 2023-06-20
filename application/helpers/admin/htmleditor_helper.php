@@ -209,7 +209,7 @@ function getPopupEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $g
         $class = "editorLink input-group-addon";
     }
     $htmlcode .= ""
-    . "<a href=\"javascript:start_popup_editor('" . $fieldname . "','" . addslashes(htmlspecialchars_decode($fieldtext, ENT_QUOTES)) . "','" . $surveyID . "','" . $gID . "','" . $qID . "','" . $fieldtype . "','" . $action . "')\" id='" . $fieldname . "_ctrl' class='{$class} btn btn-default btn-xs'>\n"
+    . "<a href=\"javascript:start_popup_editor('" . $fieldname . "','" . addslashes(htmlspecialchars_decode($fieldtext, ENT_QUOTES)) . "','" . intval($surveyID) . "','" . intval($gID) . "','" . intval($qID) . "','" . $fieldtype . "','" . $action . "')\" id='" . $fieldname . "_ctrl' class='{$class} btn btn-default btn-xs'>\n"
     . "\t<i class='fa fa-pencil btneditanswerena' id='" . $fieldname . "_popupctrlena' data-toggle='tooltip' data-placement='bottom' title='" . gT("Start HTML editor in a popup window") . "'></i>"
     . "\t<i class='fa fa-pencil btneditanswerdis' id='" . $fieldname . "_popupctrldis'  style='display:none'  ></i>"
     . "</a>\n";
@@ -313,9 +313,9 @@ function getInlineEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $
 
                 var ckeConfig = {
                     LimeReplacementFieldsType : \"" . $fieldtype . "\"
-                    ,LimeReplacementFieldsSID : \"" . $surveyID . "\"
-                    ,LimeReplacementFieldsGID : \"" . $gID . "\"
-                    ,LimeReplacementFieldsQID : \"" . $qID . "\"
+                    ,LimeReplacementFieldsSID : \"" . intval($surveyID) . "\"
+                    ,LimeReplacementFieldsGID : \"" . intval($gID) . "\"
+                    ,LimeReplacementFieldsQID : \"" . intval($qID) . "\"
                     ,LimeReplacementFieldsAction : \"" . $action . "\"
                     ,LimeReplacementFieldsPath : \"" . Yii::app()->getController()->createUrl("limereplacementfields/index") . "\"
                     ,language:'" . sTranslateLangCode2CK(Yii::app()->session['adminlang']) . "'"
@@ -336,7 +336,7 @@ function getInlineEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $
                 }
 
                 // Show full toolbar if cookie is set
-			    var toolbarCookie = CKEDITOR.tools.getCookie('LS_CKE_TOOLBAR');
+                var toolbarCookie = CKEDITOR.tools.getCookie('LS_CKE_TOOLBAR');
                 if (toolbarCookie == 'full' && ckeConfig.toolbar == ckeConfig.basicToolbar) {
                     ckeConfig.toolbar = ckeConfig.fullToolbar;
                 }

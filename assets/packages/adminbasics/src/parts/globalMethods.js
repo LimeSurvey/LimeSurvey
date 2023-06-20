@@ -41,8 +41,9 @@ const globalWindowMethods = {
         $(".btntooltip").tooltip();
         $('[data-tooltip="true"]').tooltip();
         $('[data-toggle="tooltip"]').tooltip();
-
-
+    },
+    doSelect2: () => {
+        $("select.activate-search").select2();
     },
     // finds any duplicate array elements using the fewest possible comparison
     arrHasDupes:  ( arrayToCheck ) => {  
@@ -148,7 +149,8 @@ const globalStartUpMethods = {
             if (pValue > 85){ $("div",$(this)).css({ 'background': 'Red' }); }
             $("div",this).html(pValue + "%");
         });
-
+        /* set default for select2 */
+        $.fn.select2.defaults.set("theme", "bootstrap");
         globalWindowMethods.tableCellAdapters();
     }
 };

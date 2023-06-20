@@ -1871,6 +1871,7 @@ class SurveyAdministrationController extends LSBaseController
         array_unshift($grplangs, $baselang);
 
         //@TODO add language checks here
+        //Multi language can't be implemented since the name column is indexed (unique).
         $menuEntry = SurveymenuEntries::model()->find('name=:name', array(':name' => $menuaction));
 
         if (!(Permission::model()->hasSurveyPermission($iSurveyID, $menuEntry->permission, $menuEntry->permission_grade))) {
@@ -1931,7 +1932,6 @@ class SurveyAdministrationController extends LSBaseController
 
         // override survey settings if global settings exist
         $templateData['showqnumcode']   = getGlobalSetting('showqnumcode') !== 'choose' ? getGlobalSetting('showqnumcode') : $survey->showqnumcode;
-        $templateData['shownoanswer']   = getGlobalSetting('shownoanswer') !== 'choose' ? getGlobalSetting('shownoanswer') : $survey->shownoanswer;
         $templateData['showgroupinfo']  = getGlobalSetting('showgroupinfo') !== '2' ? getGlobalSetting('showgroupinfo') : $survey->showgroupinfo;
         $templateData['showxquestions'] = getGlobalSetting('showxquestions') !== 'choose' ? getGlobalSetting('showxquestions') : $survey->showxquestions;
 
@@ -1945,7 +1945,6 @@ class SurveyAdministrationController extends LSBaseController
         $aData['action'] = $menuEntry->action;
         $aData['entryData'] = $menuEntry->attributes;
         $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat']);
-        $aData['subaction'] = $menuEntry->title;
         $aData['display']['menu_bars']['surveysummary'] = $menuEntry->title;
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyID . ")";
         $aData['surveybar']['buttons']['view'] = true;
@@ -1953,6 +1952,15 @@ class SurveyAdministrationController extends LSBaseController
         $aData['surveybar']['savebutton']['useformid'] = 'true';
         $aData['surveybar']['saveandclosebutton']['form'] = true;
         $aData['topBar']['closeUrl'] = $this->createUrl("surveyAdministration/view/", ['surveyid' => $iSurveyID]); // Close button
+
+
+        $adminLanguage = Yii::app()->session['adminlang'];
+
+        if ($adminLanguage !== 'en-GB' && $menuEntry->language === 'en-GB') {
+            $aData['subaction'] = gT($menuEntry->title);
+        } else {
+            $aData['subaction'] = $menuEntry->title;
+        }
 
         if ($subaction === 'resources') {
             $aData['topBar']['showSaveButton'] = false;
@@ -1985,9 +1993,8 @@ class SurveyAdministrationController extends LSBaseController
 
         $iSurveyID = sanitize_int($iSurveyID);
         $thereIsPostData = $request->getPost('orgdata') !== null;
-        $userHasPermissionToUpdate = Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update');
 
-        if (!$userHasPermissionToUpdate) {
+        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update')) {
             Yii::app()->user->setFlash('error', gT("Access denied"));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
@@ -1995,7 +2002,6 @@ class SurveyAdministrationController extends LSBaseController
         if ($thereIsPostData) {
             // Save the new ordering
             $this->reorderGroup($iSurveyID);
-
             $closeAfterSave = $request->getPost('close-after-save') === 'true';
             if ($closeAfterSave) {
                 $this->redirect(array('surveyAdministration/view/surveyid/' . $iSurveyID));
@@ -2492,7 +2498,7 @@ class SurveyAdministrationController extends LSBaseController
 
         $aData['aGroupsAndQuestions'] = $groupData;
         $aData['surveyid'] = $iSurveyID;
-
+        $aData['surveyActivated'] = $survey->getIsActive();
         return $aData;
     }
 
@@ -2547,25 +2553,32 @@ class SurveyAdministrationController extends LSBaseController
                     $aQuestionOrder[$gid] = 0;
                 }
 
-                $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
-                $oQuestion = Question::model()->findByPk(array("qid" => $qid, 'language' => $sBaseLanguage));
-                $oldGid = $oQuestion['gid'];
-                if ($oldGid != $gid) {
-                    fixMovedQuestionConditions($qid, $oldGid, $gid, $iSurveyID);
+                $oQuestion = Question::model()->findByPk($qid);
+                $oldGid = $oQuestion->gid;
+                $oQuestion->gid = $gid;
+                $oQuestion->question_order = $aQuestionOrder[$gid];
+                if ($oQuestion->save(true)) {
+                    $oldGid = $oQuestion['gid'];
+                    if ($oldGid != $gid) {
+                        fixMovedQuestionConditions($qid, $oldGid, $gid, $iSurveyID);
+                    }
+                    Question::model()->updateAll(
+                        array(
+                            'question_order' => $aQuestionOrder[$gid],
+                            'gid' => $gid
+                        ),
+                        'qid=:qid',
+                        array(':qid' => $qid)
+                    );
+                    Question::model()->updateAll(array('gid' => $gid), 'parent_qid=:parent_qid', array(':parent_qid' => $qid));
+                    $aQuestionOrder[$gid]++;
+                } else {
+                    App()->setFlashMessage(sprintf(gT("Unable to reorder question %s."), $oQuestion->title), 'warning');
                 }
-                Question::model()->updateAll(
-                    array(
-                    'question_order' => $aQuestionOrder[$gid],
-                    'gid' => $gid),
-                    'qid=:qid',
-                    array(':qid' => $qid)
-                );
-                Question::model()->updateAll(array('gid' => $gid), 'parent_qid=:parent_qid', array(':parent_qid' => $qid));
-                $aQuestionOrder[$gid]++;
             }
         }
         LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
-        Yii::app()->session['flashmessage'] = gT("The new question group/question order was successfully saved.");
+        App()->setFlashMessage(gT("The new question group/question order was successfully saved."));
     }
 
     /**

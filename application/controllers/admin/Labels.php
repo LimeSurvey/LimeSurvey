@@ -345,9 +345,12 @@ class Labels extends SurveyCommonAction
 
         $action = returnGlobal('action');
         Yii::app()->loadHelper('admin/label');
-        $lid = (int) returnGlobal('lid');
+        $lid = (int) App()->getRequest()->getPost('lid');
 
         if ($action == "updateset" && Permission::model()->hasGlobalPermission('labelsets', 'update')) {
+            if (!$lid) {
+                throw new CHttpException(400);
+            }
             updateset($lid);
             Yii::app()->setFlashMessage(gT("Label set successfully saved."), 'success');
         }
@@ -356,9 +359,15 @@ class Labels extends SurveyCommonAction
             $lid = $oLabelSet->lid;
         }
         if (($action == "modlabelsetanswers" || ($action == "ajaxmodlabelsetanswers")) && Permission::model()->hasGlobalPermission('labelsets', 'update')) {
+            if (!$lid) {
+                throw new CHttpException(400);
+            }
             modlabelsetanswers($lid);
         }
         if ($action == "deletelabelset" && Permission::model()->hasGlobalPermission('labelsets', 'delete')) {
+            if (!$lid) {
+                throw new CHttpException(400);
+            }
             if (LabelSet::model()->deleteLabelSet($lid)) {
                 Yii::app()->setFlashMessage(gT("Label set successfully deleted."), 'success');
                 $lid = 0;
@@ -479,13 +488,14 @@ class Labels extends SurveyCommonAction
     public function ajaxSave()
     {
         $request   = Yii::app()->getRequest();
-        $lid       = (int) $request->getPost('lid');
         $answers   = $request->getPost('answers');
         $codes     = $request->getPost('codes');
         $labelName = $request->getPost('laname');
         $languages = implode(' ', $request->getPost('languages'));
         $assessmentValues = $request->getPost('assessmentvalues', []);
-
+        if (!Permission::model()->hasGlobalPermission('labelsets', 'create')) {
+            throw new CHttpException(403);
+        }
         if (empty($labelName)) {
             throw new CHttpException(400, gT('Could not save label set: Label set name is empty.'));
         }

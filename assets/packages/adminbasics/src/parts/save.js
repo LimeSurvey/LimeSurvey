@@ -44,6 +44,13 @@ const SaveController = () => {
         LS.EventBus.$emit('loadingFinished');
         // $('.lsLoadingStateIndicator').each((i,item) => {$(item).remove();});
     },
+    bindInvalidFormHandler = ($form) => {
+        var $submittableElements = $form.find('button, input, select, textarea');
+        $submittableElements.off('invalid.save').on('invalid.save', function() {
+            stopDisplayLoadingState();
+            $submittableElements.off('invalid.save');
+        });
+    },
     //###########PRIVATE
     checks = () => {
         return {
@@ -78,11 +85,22 @@ const SaveController = () => {
                         console.ls.log('Seems no CKEDITOR4 is loaded');
                     }
 
+                    // If the form has the 'data-trigger-validation' attribute set, trigger the standard form
+                    // validation and quit if it fails.
+                    if ($form.attr('data-trigger-validation')) {
+                        if (!$form[0].reportValidity()) {
+                            return;
+                        }
+                    }
+
                     if ($form.data('isvuecomponent') == true) {
                         LS.EventBus.$emit('componentFormSubmit', button)
                     } else {
-                        $form.find('[type="submit"]:not(.ck)').first().trigger('click');
+                        // Attach handler to detect validation errors on the form and re-enable the button
+                        bindInvalidFormHandler($form);
+
                         displayLoadingState(this);
+                        $form.find('[type="submit"]:not(.ck)').first().trigger('click');
                     }
                 },
                 on: 'click'

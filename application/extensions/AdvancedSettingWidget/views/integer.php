@@ -4,17 +4,15 @@
             <?= $this->setting['aFormElementOptions']['inputGroup']['prefix']; ?>
         </div>
     <?php endif; ?>
-        <!--
-        max=""
-        min=""
-        -->
-    <input 
+    <input
         type="number" 
         class="form-control" 
         name="<?= $inputBaseName ?>"
         id="<?= CHtml::getIdByName($inputBaseName); ?>"
         <?= ($this->setting['help']) ? 'aria-describedby="help-' . CHtml::getIdByName($inputBaseName) . '"' : "" ?>
         value="<?= CHtml::encode($this->setting['value']); ?>"
+        min="<?= $this->setting['min'] ?? ''?>"
+        max="<?= $this->setting['max'] ?? ''?>"
     />
     <?php if (isset($this->setting['aFormElementOptions']['inputGroup']['suffix'])) : ?>
         <div class="input-group-addon">

@@ -749,7 +749,7 @@ class PrintableSurvey extends SurveyCommonAction
                             // ==================================================================
                         case Question::QT_Q_MULTIPLE_SHORT_TEXT:  //Multiple short text
                             $aWidth = $this->getColumnWidth($qidattributes['label_input_columns'], $qidattributes['text_input_columns']);
-                            break;
+                            // fallthru
                         case Question::QT_K_MULTIPLE_NUMERICAL:  //MULTIPLE NUMERICAL
                             //~ $question['type_help'] = "";
                             $width = (isset($qidattributes['input_size']) && $qidattributes['input_size']) ? $qidattributes['input_size'] : null;

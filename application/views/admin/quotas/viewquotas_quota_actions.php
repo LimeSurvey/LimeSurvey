@@ -44,13 +44,15 @@
 
 <?php 
     Yii::app()->getClientScript()->registerScript('quotas_load_validationmodal', "
-    $('.selector__quota_open_validation').remoteModal({
-        saveButton: false,
-    }, {
-        closeIcon : '<button type=\"button\" class=\"close\" data-dismiss=\"modal\"><span aria-hidden=\"true\">&times;</span></button>',
-        closeButton : '<button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">".gT("Close")."</button>',
-        saveButton : '<button type=\"button\" class=\"btn btn-primary\">".gT("Close")."</button>'
-    })
+    $('.selector__quota_open_validation').each(function() {
+        $(this).remoteModal({
+            saveButton: false,
+        }, {
+            closeIcon : '<button type=\"button\" class=\"close\" data-dismiss=\"modal\"><span aria-hidden=\"true\">&times;</span></button>',
+            closeButton : '<button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">".gT("Close")."</button>',
+            saveButton : '<button type=\"button\" class=\"btn btn-primary\">".gT("Close")."</button>'
+        });
+    });
 ", LSYii_ClientScript::POS_POSTSCRIPT);
 
 ?>

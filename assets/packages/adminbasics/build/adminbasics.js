@@ -29722,6 +29722,9 @@
       $('[data-tooltip="true"]').tooltip();
       $('[data-toggle="tooltip"]').tooltip();
     },
+    doSelect2: function doSelect2() {
+      $("select.activate-search").select2();
+    },
     // finds any duplicate array elements using the fewest possible comparison
     arrHasDupes: function arrHasDupes(arrayToCheck) {
       return _.uniq(arrayToCheck).length !== arrayToCheck.length;
@@ -29829,6 +29832,9 @@
 
         $("div", this).html(pValue + "%");
       });
+      /* set default for select2 */
+
+      $.fn.select2.defaults.set("theme", "bootstrap");
       globalWindowMethods.tableCellAdapters();
     }
   };
@@ -31068,6 +31074,13 @@
         stopDisplayLoadingState = function stopDisplayLoadingState() {
       LS.EventBus.$emit('loadingFinished'); // $('.lsLoadingStateIndicator').each((i,item) => {$(item).remove();});
     },
+        bindInvalidFormHandler = function bindInvalidFormHandler($form) {
+      var $submittableElements = $form.find('button, input, select, textarea');
+      $submittableElements.off('invalid.save').on('invalid.save', function () {
+        stopDisplayLoadingState();
+        $submittableElements.off('invalid.save');
+      });
+    },
         //###########PRIVATE
     checks = function checks() {
       return {
@@ -31102,13 +31115,23 @@
               }
             } catch (e) {
               console.ls.log('Seems no CKEDITOR4 is loaded');
+            } // If the form has the 'data-trigger-validation' attribute set, trigger the standard form
+            // validation and quit if it fails.
+
+
+            if ($form.attr('data-trigger-validation')) {
+              if (!$form[0].reportValidity()) {
+                return;
+              }
             }
 
             if ($form.data('isvuecomponent') == true) {
               LS.EventBus.$emit('componentFormSubmit', button);
             } else {
-              $form.find('[type="submit"]:not(.ck)').first().trigger('click');
+              // Attach handler to detect validation errors on the form and re-enable the button
+              bindInvalidFormHandler($form);
               displayLoadingState(this);
+              $form.find('[type="submit"]:not(.ck)').first().trigger('click');
             }
           },
           on: 'click'
@@ -41970,6 +41993,7 @@
       appendToLoad(notificationSystem.initNotification);
       appendToLoad(activateSubSubMenues);
       appendToLoad(globalWindowMethods.fixAccordionPosition);
+      appendToLoad(globalWindowMethods.doSelect2);
     },
         appendToLoad = function appendToLoad(fn, event, root, delay) {
       event = event || 'pjax:scriptcomplete ready';

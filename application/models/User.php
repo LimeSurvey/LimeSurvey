@@ -580,7 +580,7 @@ class User extends LSActiveRecord
                 title='" . gT("Edit permissions") . "'  
                 class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--permissions' 
                 data-href='" . $setPermissionsUrl . "'
-                data-modalsize='modal-lg'
+                data-modalsize='modal-lg dialog-fullwidth'
                 ><i class='fa fa-lock'></i></button>";
         $addRoleButton = ""
             . "<button 
