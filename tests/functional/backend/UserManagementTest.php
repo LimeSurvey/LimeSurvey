@@ -5,6 +5,7 @@ namespace ls\tests;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverExpectedCondition;
 use Facebook\WebDriver\WebDriverKeys;
+use User;
 
 /**
  * Manage users.
@@ -35,6 +36,8 @@ class UserManagementTest extends TestBaseClassWeb
 
     protected function tearDown(): void
     {
+        $deleteCondition = App()->db->getCommandBuilder()->createInCondition('{{users}}', 'users_name', ['testuser1', 'testuser2', 'testuser3']);
+        User::model()->deleteAll($deleteCondition);
         self::adminLogout();
         parent::tearDown();
     }
@@ -55,9 +58,6 @@ class UserManagementTest extends TestBaseClassWeb
             // Go to User Management page
             $url = $urlMan->createUrl('userManagement/index');
             $web->get($url);
-
-            self::ignoreWelcomeModal();
-            self::ignoreAdminNotification();
 
             // Click on "Add user" button.
             $addUserButton = self::$webDriver->wait(10)->until(
@@ -113,9 +113,13 @@ class UserManagementTest extends TestBaseClassWeb
                 )
             );
             $save->click();
-
+            self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::invisibilityOfElementLocated(
+                    WebDriverBy::id('UserManagement-action-modal')
+                )
+            );
             // Make sure the user was saved in database.
-            $users = \User::model()->findAllByAttributes(['users_name' => $username]);
+            $users = User::model()->findAllByAttributes(['users_name' => $username]);
             $this->assertCount(1, $users);
 
             $user = $users[0];
@@ -165,9 +169,6 @@ class UserManagementTest extends TestBaseClassWeb
             // Go to User Management page
             $url = $urlMan->createUrl('userManagement/index');
             $web->get($url);
-
-            self::ignoreWelcomeModal();
-            self::ignoreAdminNotification();
 
             // Click on "Add user" button.
             $addUserButton = self::$webDriver->wait(10)->until(
@@ -226,9 +227,13 @@ class UserManagementTest extends TestBaseClassWeb
                 )
             );
             $save->click();
-
+            self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::invisibilityOfElementLocated(
+                    WebDriverBy::id('UserManagement-action-modal')
+                )
+            );
             // Make sure the user was saved in database.
-            $users = \User::model()->findAllByAttributes(['users_name' => $username]);
+            $users = User::model()->findAllByAttributes(['users_name' => $username]);
             $this->assertCount(1, $users);
 
             $user = $users[0];
@@ -280,9 +285,6 @@ class UserManagementTest extends TestBaseClassWeb
             $url = $urlMan->createUrl('userManagement/index');
             $web->get($url);
 
-            self::ignoreWelcomeModal();
-            self::ignoreAdminNotification();
-
             // Click on "Add user" button.
             $addUserButton = self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
@@ -340,9 +342,13 @@ class UserManagementTest extends TestBaseClassWeb
                 )
             );
             $save->click();
-
+            self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::invisibilityOfElementLocated(
+                    WebDriverBy::id('UserManagement-action-modal')
+                )
+            );
             // Make sure the user was saved in database.
-            $users = \User::model()->findAllByAttributes(['users_name' => $username]);
+            $users = User::model()->findAllByAttributes(['users_name' => $username]);
             $this->assertCount(1, $users);
 
             $user = $users[0];

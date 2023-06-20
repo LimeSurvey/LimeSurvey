@@ -173,7 +173,6 @@ class TestBaseClassWeb extends TestBaseClass
 
         self::ignoreWelcomeModal();
         self::ignoreAdminNotification();
-        self::ignoreAdminNotification();
 
         /*
         try {
@@ -234,7 +233,17 @@ class TestBaseClassWeb extends TestBaseClass
     {
         // Ignore password warning.
         try {
-            $button = self::$webDriver->wait(10)->until(
+            try {
+                self::$webDriver->wait(2)->until(
+                    WebDriverExpectedCondition::visibilityOfElementLocated(
+                        WebDriverBy::id('admin-notification-modal')
+                    )
+                );
+            } catch (TimeoutException $ex) {
+                // ignore
+                return;
+            }
+            $button = self::$webDriver->wait(5)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
                     WebDriverBy::cssSelector('#admin-notification-modal button.btn-outline-secondary')
                 )
@@ -256,8 +265,17 @@ class TestBaseClassWeb extends TestBaseClass
     protected static function ignoreWelcomeModal()
     {
         try {
-            sleep(1);
-            $button = self::$webDriver->wait(10)->until(
+            try {
+                self::$webDriver->wait(2)->until(
+                    WebDriverExpectedCondition::visibilityOfElementLocated(
+                        WebDriverBy::id('welcomeModal')
+                    )
+                );
+            } catch (TimeoutException $ex) {
+                // ignore
+                return;
+            }
+            $button = self::$webDriver->wait(5)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
                     WebDriverBy::cssSelector('#welcomeModal button.btn-outline-secondary')
                 )
