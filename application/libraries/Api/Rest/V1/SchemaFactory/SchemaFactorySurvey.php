@@ -3,13 +3,15 @@
 namespace LimeSurvey\Api\Rest\V1\SchemaFactory;
 
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
+use GoldSpecDigital\ObjectOrientedOAS\Contracts\SchemaContract;
 
 class SchemaFactorySurvey
 {
     /**
-     *  @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     * @param \GoldSpecDigital\ObjectOrientedOAS\Contracts\SchemaContract $properties
      */
-    public function make(): Schema
+    public function make(SchemaContract ...$properties): Schema
     {
         $schemaSurveyLanguageSettings = (new SchemaFactorySurveyLanguageSettings())->make();
         $schemaSurveyDefaultLanguage = Schema::object('defaultlanguage')
@@ -72,7 +74,8 @@ class SchemaFactorySurvey
                 Schema::integer('googleAnalyticsStyle')->default(null),
                 Schema::string('googleAnalyticsApiKey')->default(null),
                 Schema::integer('showSurveyPolicyNotice')->default(null),
-                $schemaSurveyDefaultLanguage
+                $schemaSurveyDefaultLanguage,
+                ...$properties
             );
     }
 }

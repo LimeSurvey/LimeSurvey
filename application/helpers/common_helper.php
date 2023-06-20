@@ -2622,10 +2622,10 @@ function hasTemplateManageRights($userid, $sThemeFolder)
 * @param string $sType 'survey' or 'label'
 * @param mixed $iOldSurveyID
 * @param mixed $iNewSurveyID
-* @param string $sString
+* @param string $sString A string or null
 * @return string
 */
-function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, string $sString)
+function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString)
 {
     if ($sString == '') {
         return $sString;
@@ -3811,7 +3811,6 @@ function fixLanguageConsistency($sid, $availlangs = '', $baselang = '')
     switchMSSQLIdentityInsert('assessments', false);
 
 
-    switchMSSQLIdentityInsert('quota_languagesettings', true);
     $query = "SELECT * FROM {{quota_languagesettings}} join {{quota}} q on quotals_quota_id=q.id WHERE q.sid='{$sid}' AND quotals_language='{$baselang}'";
     $result = Yii::app()->db->createCommand($query)->query();
     foreach ($result->readAll() as $qls) {
@@ -3832,7 +3831,6 @@ function fixLanguageConsistency($sid, $availlangs = '', $baselang = '')
         }
         reset($langs);
     }
-    switchMSSQLIdentityInsert('quota_languagesettings', false);
 
     return true;
 }
