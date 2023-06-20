@@ -22,6 +22,7 @@ class MandatorySoftTest extends TestBaseClassWeb
         $ManOnSgqa = self::$surveyId . 'X' . $questions['ManOn']->gid . 'X' . $questions['ManOn']->qid;
         try {
             self::$webDriver->get($url);
+            self::$webDriver->scrollToBottom();
             self::$webDriver->next();
             /* Check if question ManOn is here */
             $this->assertTrue(
@@ -39,7 +40,7 @@ class MandatorySoftTest extends TestBaseClassWeb
             );
             /* Enter value in ManOn and check if move next show end (using id added manually in survey */
             self::$webDriver->answerTextQuestion($ManOnSgqa, 'Some value');
-            sleep(1);
+            self::$webDriver->scrollToBottom();
             self::$webDriver->next();
             /** @var $surveyCompletedElement RemoteWebElement */
             $surveyCompletedElement = self::$webDriver->wait(5)->until(
