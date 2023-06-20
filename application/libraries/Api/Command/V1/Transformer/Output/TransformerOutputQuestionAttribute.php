@@ -15,4 +15,9 @@ class TransformerOutputQuestionAttribute extends TransformerOutputActiveRecord
             'language' => true
         ]);
     }
+
+    public function transformAll($collection)
+    {
+        return (object) $collection;
+    }
 }

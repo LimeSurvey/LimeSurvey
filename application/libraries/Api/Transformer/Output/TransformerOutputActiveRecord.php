@@ -9,7 +9,7 @@ abstract class TransformerOutputActiveRecord extends Transformer
 {
     /**
      * @param ?mixed $data
-     * @return ?array
+     * @return ?mixed
      */
     public function transform($data)
     {
