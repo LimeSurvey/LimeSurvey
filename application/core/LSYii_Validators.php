@@ -71,7 +71,7 @@ class LSYii_Validators extends CValidator
             $object->$attribute = $this->xssFilter($object->$attribute);
             if ($this->isUrl) {
                 // If the URL contains "javascript:", we clear the field completely. The URL is either valid o invalid.
-                if (strpos($object->$attribute, 'javascript:') !== false) {
+                if (stripos($object->$attribute, 'javascript:') !== false) {
                     $object->$attribute = "";
                 }
             }
