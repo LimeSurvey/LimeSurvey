@@ -143,4 +143,39 @@ class LSYiiValidatorsTest extends TestBaseClass
             $this->assertSame($case, $validator->xssFilter($case), 'Unexpected filtered safe HTML tags.');
         }
     }
+
+    /**
+     * Testing the language filters
+     * through the Survey model.
+     */
+    public function testLanguageFilters()
+    {
+        // Testing languageFilter.
+        $survey = \Survey::model()->insertNewSurvey(array('language' => 'ko')); // Set language to Korean.
+
+        $this->assertSame('ko', $survey->language, 'The language filter did not return a correctly filtered language string.');
+
+        $survey->language = 'enǵ';
+        $survey->save();
+
+        $this->assertSame('en', $survey->language, 'The language filter did not return a correctly filtered language string.');
+
+        // Testing multiLanguageFilter.
+        $survey->additional_languages = 'es';
+        $survey->save();
+
+        $this->assertSame('es', $survey->additional_languages, 'The multi language filter did not return a correctly filtered string.');
+
+        $survey->additional_languages = 'esñ frá';
+        $survey->save();
+
+        $this->assertSame('es fr', $survey->additional_languages, 'The multi language filter did not return a correctly filtered string.');
+
+        $survey->additional_languages = 'esñ frá it';
+        $survey->save();
+
+        $this->assertSame('es fr it', $survey->additional_languages, 'The multi language filter did not return a correctly filtered string.');
+
+        $survey->delete(true);
+    }
 }
