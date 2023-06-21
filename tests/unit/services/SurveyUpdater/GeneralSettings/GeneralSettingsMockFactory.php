@@ -5,6 +5,7 @@ namespace ls\tests\unit\services\SurveyUpdater\GeneralSettings;
 use Survey;
 use Permission;
 use LSYii_Application;
+use CHttpSession;
 use Mockery;
 use LimeSurvey\SessionData;
 use LimeSurvey\PluginManager\PluginManager;
@@ -101,7 +102,9 @@ class GeneralSettingsMockFactory
 
     private function getMockSessionData(): SessionData
     {
-        return new SessionData();
+        $mockSession = Mockery::mock(CHttpSession::class)
+            ->makePartial();
+        return new SessionData($mockSession, true);
     }
 
     private function getMockPluginManager(): PluginManager

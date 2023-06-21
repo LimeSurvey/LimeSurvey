@@ -18,18 +18,19 @@ use ArrayAccess;
  */
 class SessionData implements ArrayAccess
 {
-    private ?CHttpSession $yiiSession;
+    private CHttpSession $yiiSession;
+    private $mock;
     public $mockContainer = [];
 
-    public function __construct(
-        ?CHttpSession $yiiSession = null
-    ) {
+    public function __construct(CHttpSession $yiiSession, $mock = false)
+    {
         $this->yiiSession = $yiiSession;
+        $this->mock = $mock;
     }
 
     private function &getContainer()
     {
-        if (isset($this->yiiSession)) {
+        if (!$this->mock) {
             return $this->yiiSession;
         }
         return $this->mockContainer;
