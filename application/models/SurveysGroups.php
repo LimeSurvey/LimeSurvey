@@ -141,7 +141,7 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
                 array(
                     'header' => gT('Title'),
                     'name' => 'title',
-                    'value' => '$data->hasViewSurveyGroupRight ? CHtml::link($data->title, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid))) : $data->title',
+                    'value' => '$data->hasViewSurveyGroupRight ? CHtml::link(CHtml::encode($data->title), Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid))) : CHtml::encode($data->title)',
                     'type'              => 'raw',
                     'htmlOptions' => ['class' => 'has-link'],
                 ),
@@ -149,7 +149,7 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
                 array(
                     'header' => gT('Description'),
                     'name' => 'description',
-                    'value' => '$data->hasViewSurveyGroupRight ? CHtml::link($data->description, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid))) : $data->description',
+                    'value' => '$data->hasViewSurveyGroupRight ? CHtml::link(CHtml::encode($data->description), Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid))) : CHtml::encode($data->description)',
                     'type'              => 'raw',
                     'headerHtmlOptions' => array('class' => ''),
                     'htmlOptions' => ['class' => 'has-link'],
