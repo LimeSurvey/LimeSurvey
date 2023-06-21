@@ -15,14 +15,13 @@
                 <div class="col-4 card-label">
                     {{gT("Description:")}}
                 </div>
-                <div class="col-8 ">
+                <div class="col-8 py-1">
                         {% if surveyTextContent.surveyls_description != '' %}
                             <span id="description" class="line-clamp-3">
                                 {{getExpressionManagerOutput(surveyTextContent.surveyls_description)}}
                             </span>
                             {% if surveyTextContent.surveyls_description|length > 50  %}
-                                <a href="#" onclick="{document.getElementById('description').classList.remove('line-clamp-3'); 
-                                            this.style.display = 'none'}"> {{gT("...more")}}</a>
+                                {{getTextDisplayWidget(surveyTextContent.surveyls_description, "description_text")}}
                             {% endif %}
                         {% endif %}
 

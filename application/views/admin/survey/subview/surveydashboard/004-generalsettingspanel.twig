@@ -41,7 +41,7 @@
                         {% if checkPermission('templates','read') %}
                             {% set sTemplateOptionsUrl = createUrl("themeOptions/updateSurvey", {'surveyid' : oSurvey.sid} ) %}
                             {% set sTemplateEditorUrl = createUrl("admin/themes/sa/view", {'templatename' : oSurvey.aOptions['template'] } ) %}
-                            {{templateModel.title}} ( {{templateModel.name}})
+                            {{templateModel.title}} ( {{templateModel.name}} )
                             <a href='{{sTemplateOptionsUrl}}' title="{{ gT("Edit theme options")}}" class="btn btn-outline-secondary btn-xs float-end"><i class="ri-contrast-drop-line"></i></a>
                             <a href='{{sTemplateEditorUrl}}' title="{{ gT("Open theme editor in new window")}}" target="_blank" class="btn btn-outline-secondary btn-xs float-end"><i class="ri-pencil-line"></i></a>
                         {% else %}
