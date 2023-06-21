@@ -415,7 +415,6 @@ class SurveysGroupsettings extends LSActiveRecord
             return str_replace(array('Y', 'N'), array(gT("On"), gT("Off")), (string) $value);
         }
         return (string) $value;
-        
     }
 
     /**
