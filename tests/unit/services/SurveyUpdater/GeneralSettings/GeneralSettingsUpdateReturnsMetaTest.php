@@ -18,6 +18,8 @@ class GeneralSettingsUpdateReturnsMetaTest extends TestBaseClass
 {
     public function testUpdateReturnsMeta()
     {
+        $mockSet = (new GeneralSettingsMockFactory)->make();
+
         $modelPermission = Mockery::mock(Permission::class)
             ->makePartial();
         $modelPermission->shouldReceive('hasSurveyPermission')
@@ -56,6 +58,7 @@ class GeneralSettingsUpdateReturnsMetaTest extends TestBaseClass
             $modelPermission,
             $modelSurvey,
             $yiiApp,
+            $mockSet->sessionData,
             $pluginManager,
             $languageConsistency
         );

@@ -40,6 +40,7 @@ class GeneralSettingsExceptionsTest extends TestBaseClass
             $mockSet->modelPermission,
             $mockSet->modelSurvey,
             $mockSet->yiiApp,
+            $mockSet->sessionData,
             $mockSet->pluginManager,
             $mockSet->languageConsistency
         );
@@ -71,6 +72,7 @@ class GeneralSettingsExceptionsTest extends TestBaseClass
             $mockSet->modelPermission,
             $mockSet->modelSurvey,
             $mockSet->yiiApp,
+            $mockSet->sessionData,
             $mockSet->pluginManager,
             $mockSet->languageConsistency
         );
@@ -102,6 +104,7 @@ class GeneralSettingsExceptionsTest extends TestBaseClass
             $mockSet->modelPermission,
             $mockSet->modelSurvey,
             $mockSet->yiiApp,
+            $mockSet->sessionData,
             $mockSet->pluginManager,
             $mockSet->languageConsistency
         );

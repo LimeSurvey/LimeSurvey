@@ -18,6 +18,8 @@ class GeneralSettingsUpdateBooleanTest extends TestBaseClass
 {
     public function testUpdateAllowRegisterSetTrue()
     {
+        $mockSet = (new GeneralSettingsMockFactory)->make();
+
         $modelPermission = Mockery::mock(Permission::class)
             ->makePartial();
         $modelPermission->shouldReceive('hasSurveyPermission')
@@ -56,6 +58,7 @@ class GeneralSettingsUpdateBooleanTest extends TestBaseClass
             $modelPermission,
             $modelSurvey,
             $yiiApp,
+            $mockSet->sessionData,
             $pluginManager,
             $languageConsistency
         );
@@ -69,6 +72,8 @@ class GeneralSettingsUpdateBooleanTest extends TestBaseClass
 
     public function testUpdateAllowRegisterSetFalse()
     {
+        $mockSet = (new GeneralSettingsMockFactory)->make();
+
         $modelPermission = Mockery::mock(Permission::class)
             ->makePartial();
         $modelPermission->shouldReceive('hasSurveyPermission')
@@ -107,6 +112,7 @@ class GeneralSettingsUpdateBooleanTest extends TestBaseClass
             $modelPermission,
             $modelSurvey,
             $yiiApp,
+            $mockSet->sessionData,
             $pluginManager,
             $languageConsistency
         );
@@ -120,6 +126,8 @@ class GeneralSettingsUpdateBooleanTest extends TestBaseClass
 
     public function testUpdateAllowRegisterSetInherit()
     {
+        $mockSet = (new GeneralSettingsMockFactory)->make();
+
         $modelPermission = Mockery::mock(Permission::class)
             ->makePartial();
         $modelPermission->shouldReceive('hasSurveyPermission')
@@ -158,6 +166,7 @@ class GeneralSettingsUpdateBooleanTest extends TestBaseClass
             $modelPermission,
             $modelSurvey,
             $yiiApp,
+            $mockSet->sessionData,
             $pluginManager,
             $languageConsistency
         );

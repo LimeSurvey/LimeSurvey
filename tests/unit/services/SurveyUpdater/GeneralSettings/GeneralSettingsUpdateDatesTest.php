@@ -22,6 +22,7 @@ class GeneralSettingsUpdateDatesTest extends TestBaseClass
             $mockSet->modelPermission,
             $mockSet->modelSurvey,
             $mockSet->yiiApp,
+            $mockSet->sessionData,
             $mockSet->pluginManager,
             $mockSet->languageConsistency
         );
@@ -50,6 +51,7 @@ class GeneralSettingsUpdateDatesTest extends TestBaseClass
             $mockSet->modelPermission,
             $mockSet->modelSurvey,
             $mockSet->yiiApp,
+            $mockSet->sessionData,
             $mockSet->pluginManager,
             $mockSet->languageConsistency
         );

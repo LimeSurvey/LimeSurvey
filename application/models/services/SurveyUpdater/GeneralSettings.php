@@ -7,6 +7,7 @@ use Permission;
 use LSYii_Application;
 use PluginEvent;
 use Date_Time_Converter;
+use LimeSurvey\SessionData;
 use LimeSurvey\PluginManager\PluginManager;
 use LimeSurvey\Models\Services\Exception\{
     ExceptionPersistError,
@@ -27,6 +28,7 @@ class GeneralSettings
     private Permission $modelPermission;
     private Survey $modelSurvey;
     private LSYii_Application $yiiApp;
+    private SessionData $sessionData;
     private PluginManager $yiiPluginManager;
     private LanguageConsistency $languageConsistency;
 
@@ -39,12 +41,14 @@ class GeneralSettings
         Permission $modelPermission,
         Survey $modelSurvey,
         LSYii_Application $yiiApp,
+        SessionData $sessionData,
         PluginManager $yiiPluginManager,
         LanguageConsistency $languageConsistency
     ) {
         $this->modelPermission = $modelPermission;
         $this->modelSurvey = $modelSurvey;
         $this->yiiApp = $yiiApp;
+        $this->sessionData = $sessionData;
         $this->yiiPluginManager = $yiiPluginManager;
         $this->languageConsistency = $languageConsistency;
     }
@@ -164,8 +168,8 @@ class GeneralSettings
 
         return [
             'owner_id' => [
-                'canUpdate' => isset($this->yiiApp->session) && (
-                    $survey->owner_id == $this->yiiApp->session['loginID']
+                'canUpdate' => (
+                    $survey->owner_id == $this->sessionData['loginID']
                     || $this->modelPermission->hasGlobalPermission(
                         'superadmin',
                         'read'
@@ -448,9 +452,8 @@ class GeneralSettings
     {
         $this->yiiApp->loadHelper('surveytranslator');
         $this->yiiApp->loadLibrary('Date_Time_Converter');
-        $dateFormat = isset($this->yiiApp->session)
-            && !empty($this->yiiApp->session['dateformat'])
-            ? $this->yiiApp->session['dateformat']
+        $dateFormat = !empty($this->sessionData['dateformat'])
+            ? $this->sessionData['dateformat']
             : 1;
         $formatData = getDateFormatData($dateFormat);
         $dateTimeObj = new Date_Time_Converter(

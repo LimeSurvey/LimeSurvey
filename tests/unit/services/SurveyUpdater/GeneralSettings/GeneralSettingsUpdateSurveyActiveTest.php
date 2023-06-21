@@ -27,6 +27,7 @@ class GeneralSettingsUpdateSurveyActiveTest extends TestBaseClass
             $mockSet->modelPermission,
             $mockSet->modelSurvey,
             $mockSet->yiiApp,
+            $mockSet->sessionData,
             $mockSet->pluginManager,
             $mockSet->languageConsistency
         );
@@ -70,6 +71,7 @@ class GeneralSettingsUpdateSurveyActiveTest extends TestBaseClass
             $mockSet->modelPermission,
             $mockSet->modelSurvey,
             $mockSet->yiiApp,
+            $mockSet->sessionData,
             $mockSet->pluginManager,
             $mockSet->languageConsistency
         );

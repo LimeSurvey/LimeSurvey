@@ -6,6 +6,7 @@ use Survey;
 use Permission;
 use LSYii_Application;
 use Mockery;
+use LimeSurvey\SessionData;
 use LimeSurvey\PluginManager\PluginManager;
 use LimeSurvey\Models\Services\SurveyUpdater\LanguageConsistency;
 
@@ -39,6 +40,10 @@ class GeneralSettingsMockFactory
             ? $init->yiiApp
             : $this->getMockYiiApp();
 
+        $mockSet->sessionData = ($init && isset($init->sessionData))
+            ? $init->sessionData
+            : $this->getMockSessionData();
+
         $mockSet->pluginManager = ($init && isset($init->pluginManager))
             ? $init->pluginManager
             : $this->getMockPluginManager();
@@ -71,6 +76,9 @@ class GeneralSettingsMockFactory
         $survey->shouldReceive('setAttributes')
             ->passthru();
         $survey->setAttributes([]);
+        $survey->shouldReceive('getAttributes')
+            ->passthru();
+        $survey->getAttributes([]);
 
         return $survey;
     }
@@ -89,6 +97,11 @@ class GeneralSettingsMockFactory
     {
         return Mockery::mock(LSYii_Application::class)
             ->makePartial();
+    }
+
+    private function getMockSessionData(): SessionData
+    {
+        return new SessionData();
     }
 
     private function getMockPluginManager(): PluginManager
