@@ -35,11 +35,35 @@ class LSYiiValidatorsTest extends TestBaseClass
      */
     public function testXssFilterAttributeForSuperAdmin()
     {
-        //For test : we use user #1 as superadmin.
-        \Yii::app()->session['loginID'] = 1;
+        //Create super admin
+        $userName = \Yii::app()->securityManager->generateRandomString(8);
+
+        $userData = array(
+            'users_name' => $userName,
+            'email'      => $userName . '@example.com'
+        );
+
+        $permissions = array(
+            'superadmin' => array(
+                'create' => true,
+                'read'   => true,
+                'update' => true,
+                'delete' => true,
+                'import' => true,
+                'export' => true,
+            )
+        );
+
+        $user = self::createUserWithPermissions($userData, $permissions);
+
+        //Login as super admin.
+        \Yii::app()->session['loginID'] = $user->uid;
         $superAdminValidator = new \LSYii_Validators();
 
-        $this->assertTrue(\Yii::app()->getConfig('filterxsshtml'), 'filterxsshtml should be true by default.');
+        //Save config state in order to restore it later.
+        $filterXssTmp = \Yii::app()->getConfig('filterxsshtml');
+        \Yii::app()->setConfig('filterxsshtml', true);
+
         $this->assertFalse($superAdminValidator->xssfilter, 'The xssfilter attribute should be false for super admins.');
 
         //Changing filterxsshtml.
@@ -50,8 +74,11 @@ class LSYiiValidatorsTest extends TestBaseClass
         $this->assertFalse($newSuperAdminValidator->xssfilter, 'The xssfilter attribute should be false for super admins.');
 
         //Returning to original values.
-        \Yii::app()->setConfig('filterxsshtml', true);
+        \Yii::app()->setConfig('filterxsshtml', $filterXssTmp);
         \Yii::app()->session['loginID'] = null;
+
+        //Delete user.
+        $user->delete();
     }
 
     /**
@@ -69,7 +96,10 @@ class LSYiiValidatorsTest extends TestBaseClass
         \Yii::app()->session['loginID'] = $userId;
         $regularUserValidator = new \LSYii_Validators();
 
-        $this->assertTrue(\Yii::app()->getConfig('filterxsshtml'), 'filterxsshtml should be true by default.');
+        //Save config state in order to restore it later.
+        $filterXssTmp = \Yii::app()->getConfig('filterxsshtml');
+        \Yii::app()->setConfig('filterxsshtml', true);
+
         $this->assertTrue($regularUserValidator->xssfilter, 'The xssfilter attribute should be true for regular users.');
 
         //Changing filterxsshtml.
@@ -80,7 +110,7 @@ class LSYiiValidatorsTest extends TestBaseClass
         $this->assertFalse($newRegularUserValidator->xssfilter, 'The xssfilter attribute should be false for regular users with filterxsshtml set to false.');
 
         //Returning to original values.
-        \Yii::app()->setConfig('filterxsshtml', true);
+        \Yii::app()->setConfig('filterxsshtml', $filterXssTmp);
         \Yii::app()->session['loginID'] = null;
 
         //Delete user.
@@ -122,7 +152,7 @@ class LSYiiValidatorsTest extends TestBaseClass
             ),
             array(
                 'string'   => `{join("<","script",">",'alert("Test")',"<","/script",">")}`,
-                'expected' => ''
+                'expected' => '&lt;script&gt;alert("Test")&lt;/script&gt;'
             ),
             array(
                 'string'   => '{join("<s", "cript>alert("Test")</script>")}',
@@ -143,6 +173,7 @@ class LSYiiValidatorsTest extends TestBaseClass
         $validator = new \LSYii_Validators();
 
         $cases = array(
+            '<h1>Header</h1>',
             '<p>Paragraph</p>',
             '<strong>Text</strong>',
             '<span>Some text</span>',
