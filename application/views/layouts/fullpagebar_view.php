@@ -125,7 +125,15 @@
             <!-- Box Buttons -->
             <?php if (isset($fullpagebar['boxbuttons'])) :?>
                 <!-- Reset Boxes Button -->
-                <a href="<?php echo $this->createUrl('homepageSettings/resetAllBoxes/');?>" class="btn btn-warning" data-confirm="<?php eT('This will delete all current boxes to restore the default ones. Are you sure you want to continue?'); ?>">                    <span class="fa fa-refresh"></span>
+                <a href="#"
+                    data-post-url="<?php echo $this->createUrl('homepageSettings/resetAllBoxes/');?>"
+                    class="btn btn-warning"
+                    data-message="<?php eT('This will delete all current boxes to restore the default ones. Are you sure you want to continue?'); ?>"
+                    data-toggle="modal"
+                    data-target="#confirmation-modal"
+                    data-btntext="<?= gT('OK') ?>"
+                    data-title="<?= gT("Please confirm") ?>">
+                    <span class="fa fa-refresh"></span>
                     <?php eT("Reset");?>
                 </a>
                 <!-- Save Box Settings Button -->
