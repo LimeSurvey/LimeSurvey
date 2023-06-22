@@ -241,6 +241,7 @@ class LSYii_Validators extends CValidator
      */
     public static function treatSpecialChars($string)
     {
+        // TODO: Recurse?
         return urldecode(html_entity_decode($string));
     }
 }
