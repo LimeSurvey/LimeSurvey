@@ -15,7 +15,7 @@ class GeneralSettingsUpdateYnFieldType extends TestBaseClass
             'usecookie' => 'N'
         ]);
 
-        $surveyUpdate = new GeneralSettings(
+        $surveyUpdater = new GeneralSettings(
             $mockSet->modelPermission,
             $mockSet->modelSurvey,
             $mockSet->yiiApp,
@@ -24,7 +24,7 @@ class GeneralSettingsUpdateYnFieldType extends TestBaseClass
             $mockSet->languageConsistency
         );
 
-        $surveyUpdate->update(1, [
+        $surveyUpdater->update(1, [
             'usecookie' => 'Y'
         ]);
 
@@ -41,7 +41,7 @@ class GeneralSettingsUpdateYnFieldType extends TestBaseClass
             'usecookie' => 'Y'
         ]);
 
-        $surveyUpdate = new GeneralSettings(
+        $surveyUpdater = new GeneralSettings(
             $mockSet->modelPermission,
             $mockSet->modelSurvey,
             $mockSet->yiiApp,
@@ -50,7 +50,7 @@ class GeneralSettingsUpdateYnFieldType extends TestBaseClass
             $mockSet->languageConsistency
         );
 
-        $surveyUpdate->update(1, [
+        $surveyUpdater->update(1, [
             'usecookie' => 'N'
         ]);
 
@@ -67,7 +67,7 @@ class GeneralSettingsUpdateYnFieldType extends TestBaseClass
             'usecookie' => 'Y'
         ]);
 
-        $surveyUpdate = new GeneralSettings(
+        $surveyUpdater = new GeneralSettings(
             $mockSet->modelPermission,
             $mockSet->modelSurvey,
             $mockSet->yiiApp,
@@ -76,7 +76,7 @@ class GeneralSettingsUpdateYnFieldType extends TestBaseClass
             $mockSet->languageConsistency
         );
 
-        $surveyUpdate->update(1, [
+        $surveyUpdater->update(1, [
             'usecookie' => 'I'
         ]);
 
@@ -93,7 +93,7 @@ class GeneralSettingsUpdateYnFieldType extends TestBaseClass
             'usecookie' => 'Y'
         ]);
 
-        $surveyUpdate = new GeneralSettings(
+        $surveyUpdater = new GeneralSettings(
             $mockSet->modelPermission,
             $mockSet->modelSurvey,
             $mockSet->yiiApp,
@@ -102,7 +102,7 @@ class GeneralSettingsUpdateYnFieldType extends TestBaseClass
             $mockSet->languageConsistency
         );
 
-        $surveyUpdate->update(1, [
+        $surveyUpdater->update(1, [
             'usecookie' => 0
         ]);
 
@@ -119,7 +119,7 @@ class GeneralSettingsUpdateYnFieldType extends TestBaseClass
             'usecookie' => 'Y'
         ]);
 
-        $surveyUpdate = new GeneralSettings(
+        $surveyUpdater = new GeneralSettings(
             $mockSet->modelPermission,
             $mockSet->modelSurvey,
             $mockSet->yiiApp,
@@ -128,7 +128,7 @@ class GeneralSettingsUpdateYnFieldType extends TestBaseClass
             $mockSet->languageConsistency
         );
 
-        $surveyUpdate->update(1, [
+        $surveyUpdater->update(1, [
             'usecookie' => '0'
         ]);
 
@@ -145,7 +145,7 @@ class GeneralSettingsUpdateYnFieldType extends TestBaseClass
             'usecookie' => 'Y'
         ]);
 
-        $surveyUpdate = new GeneralSettings(
+        $surveyUpdater = new GeneralSettings(
             $mockSet->modelPermission,
             $mockSet->modelSurvey,
             $mockSet->yiiApp,
@@ -154,7 +154,7 @@ class GeneralSettingsUpdateYnFieldType extends TestBaseClass
             $mockSet->languageConsistency
         );
 
-        $surveyUpdate->update(1, [
+        $surveyUpdater->update(1, [
             'usecookie' => ''
         ]);
 
@@ -171,7 +171,7 @@ class GeneralSettingsUpdateYnFieldType extends TestBaseClass
             'usecookie' => 'N'
         ]);
 
-        $surveyUpdate = new GeneralSettings(
+        $surveyUpdater = new GeneralSettings(
             $mockSet->modelPermission,
             $mockSet->modelSurvey,
             $mockSet->yiiApp,
@@ -180,7 +180,7 @@ class GeneralSettingsUpdateYnFieldType extends TestBaseClass
             $mockSet->languageConsistency
         );
 
-        $surveyUpdate->update(1, [
+        $surveyUpdater->update(1, [
             'usecookie' => 1
         ]);
 
@@ -197,7 +197,7 @@ class GeneralSettingsUpdateYnFieldType extends TestBaseClass
             'usecookie' => 'N'
         ]);
 
-        $surveyUpdate = new GeneralSettings(
+        $surveyUpdater = new GeneralSettings(
             $mockSet->modelPermission,
             $mockSet->modelSurvey,
             $mockSet->yiiApp,
@@ -206,7 +206,7 @@ class GeneralSettingsUpdateYnFieldType extends TestBaseClass
             $mockSet->languageConsistency
         );
 
-        $surveyUpdate->update(1, [
+        $surveyUpdater->update(1, [
             'usecookie' => '1'
         ]);
 
