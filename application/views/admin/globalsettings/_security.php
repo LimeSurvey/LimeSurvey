@@ -72,7 +72,7 @@
             'offLabel' => gT('Off')));
         ?>
     </div>
-    <span class='hint'><?= gT("Allows users to see other users in the same group even if they don't have global User Read permission."); ?></span>
+    <span class='hint'><?= gT("Allows a user who belongs to a group to view the members of his group, even if he does not have global permissions to view users."); ?></span>
 </div>
 
 <div class="form-group">
