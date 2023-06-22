@@ -38,11 +38,6 @@ class LanguageConsistency
      */
     public function update(Survey $survey, $initBaseLanguage)
     {
-        if ($survey->language == $initBaseLanguage) {
-            // language has not changed - nothing to do
-            return;
-        }
-
         // If the base language is changing, we may need the current title to avoid the survey
         // being listed with an empty title.
         $surveyTitle = $survey

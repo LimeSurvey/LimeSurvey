@@ -306,7 +306,7 @@ class GeneralSettings
             return $meta;
         }
 
-        $value = $input[$field];
+        $value = $input[$field] ?? null;
         switch ($type) {
             case static::FIELD_TYPE_DATETIME:
                 $value = !empty($value)
