@@ -194,10 +194,11 @@ class LSYii_Validators extends CValidator
      */
     public static function isXssUrl($url)
     {
-        $clean = self::removeInvisibleChars($url);
+        $decodedUrl = self::treatSpecialChars($url);
+        $clean = self::removeInvisibleChars($decodedUrl);
 
         // Remove javascript:
-        if (stripos($clean, "javascript:") !== false) {
+        if (self::hasUnsafeScheme($clean)) {
             return true;
         }
         return false;
@@ -210,15 +211,36 @@ class LSYii_Validators extends CValidator
      */
     public static function removeInvisibleChars($string)
     {
-        $clean = urldecode(html_entity_decode($string));
-
         // Remove invisible characters
         $prevString = '';
-        while ($prevString != $clean) {
-            $prevString = $clean;
-            $clean = preg_replace('/\p{C}/u', '', $clean);
+        while ($prevString != $string) {
+            $prevString = $string;
+            $string = preg_replace('/\p{C}/u', '', $string);
         };
 
-        return $clean;
+        return $string;
+    }
+
+    /**
+     * Checks if URL contains an unsafe scheme.
+     * It currently checks for "javascript:" only.
+     * Note: URL should be previously decoded.
+     * @param string $url
+     * @return boolean
+     */
+    public static function hasUnsafeScheme($url)
+    {
+        // TODO: Check for other schemes? FTP? vbscript?
+        return stripos($url, "javascript:") !== false;
+    }
+
+    /**
+     * Decodes URL encoded characters and html entities.
+     * @param string $string
+     * @return string
+     */
+    public static function treatSpecialChars($string)
+    {
+        return urldecode(html_entity_decode($string));
     }
 }
