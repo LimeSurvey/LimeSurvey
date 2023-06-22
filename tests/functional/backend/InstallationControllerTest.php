@@ -167,7 +167,7 @@ class InstallationControllerTest extends TestBaseClassWeb
             self::$webDriver->executeScript('window.scrollTo(0,document.body.scrollHeight);');
 
             // Confirm optional settings (admin password etc).
-            self::$webDriver->wait(10)->until(
+            $button = self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::visibilityOfElementLocated(
                     WebDriverBy::cssSelector('input[type="submit"]')
                 )
