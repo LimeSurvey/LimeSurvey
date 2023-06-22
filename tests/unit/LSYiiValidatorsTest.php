@@ -35,7 +35,7 @@ class LSYiiValidatorsTest extends TestBaseClass
      */
     public function testXssFilterAttributeForSuperAdmin()
     {
-        //Mocking super admin login.
+        //For test : we use user #1 as superadmin.
         \Yii::app()->session['loginID'] = 1;
         $superAdminValidator = new \LSYii_Validators();
 
@@ -62,7 +62,8 @@ class LSYiiValidatorsTest extends TestBaseClass
     {
         //Create user.
         $newPassword = createPassword();
-        $userId = \User::insertUser('test_user', $newPassword, 'John Doe', 1, 'jd@mail.com');
+        $userName = \Yii::app()->securityManager->generateRandomString(8);
+        $userId = \User::insertUser($userName, $newPassword, 'John Doe', 1, 'jd@mail.com');
 
         //Mocking regular user login.
         \Yii::app()->session['loginID'] = $userId;
@@ -118,6 +119,14 @@ class LSYiiValidatorsTest extends TestBaseClass
             array(
                 'string'   => '<title>html_entity_decode("<script>alert("Test")</script>123456")</title>',
                 'expected' => 'html_entity_decode("123456")'
+            ),
+            array(
+                'string'   => `{join("<","script",">",'alert("Test")',"<","/script",">")}`,
+                'expected' => ''
+            ),
+            array(
+                'string'   => '{join("<s", "cript>alert("Test")</script>")}',
+                'expected' => '{join("<s></s>", "cript&gt;alert("Test")")}'
             )
         );
 
@@ -155,6 +164,11 @@ class LSYiiValidatorsTest extends TestBaseClass
 
         $this->assertSame('ko', $survey->language, 'The language filter did not return a correctly filtered language string.');
 
+        $survey->language = 'de-easy';
+        $survey->save();
+
+        $this->assertSame('de-easy', $survey->language, 'The language filter did not return a correctly filtered language string.');
+
         $survey->language = 'enǵ';
         $survey->save();
 
@@ -175,6 +189,11 @@ class LSYiiValidatorsTest extends TestBaseClass
         $survey->save();
 
         $this->assertSame('es fr it', $survey->additional_languages, 'The multi language filter did not return a correctly filtered string.');
+
+        $survey->additional_languages = 'de-informal de-easy es';
+        $survey->save();
+
+        $this->assertSame('de-informal de-easy es', $survey->additional_languages, 'The multi language filter did not return a correctly filtered string.');
 
         $survey->delete(true);
     }
