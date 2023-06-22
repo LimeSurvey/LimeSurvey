@@ -135,8 +135,6 @@ class InstallationControllerTest extends TestBaseClassWeb
             $dbLocationInput->clear()->sendKeys($dbLocation);
             $dbnameInput->sendKeys($databaseName);
 
-            self::$webDriver->executeScript('window.scrollTo(0,document.body.scrollHeight);');
-
             // Click next.
             $next = self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::visibilityOfElementLocated(
@@ -149,8 +147,6 @@ class InstallationControllerTest extends TestBaseClassWeb
             $button = self::$webDriver->findElement(WebDriverBy::cssSelector('input[type="submit"]'));
             self::$webDriver->click($button);
 
-            self::$webDriver->executeScript('window.scrollTo(0,document.body.scrollHeight);');
-            sleep(1);
 
             // Click "Populate".
             $button = self::$webDriver->findElement(WebDriverBy::cssSelector('input[type="submit"]'));
@@ -164,7 +160,6 @@ class InstallationControllerTest extends TestBaseClassWeb
             $adminLoginPwd->clear()->sendKeys($password);
             $confirmPwd->clear()->sendKeys($password);
 
-            self::$webDriver->executeScript('window.scrollTo(0,document.body.scrollHeight);');
 
             // Confirm optional settings (admin password etc).
             $button = self::$webDriver->wait(10)->until(

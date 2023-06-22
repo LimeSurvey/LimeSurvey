@@ -250,6 +250,11 @@ class TestBaseClassWeb extends TestBaseClass
                 )
             );
             $button->click();
+            self::$webDriver->wait(5)->until(
+                WebDriverExpectedCondition::invisibilityOfElementLocated(
+                    WebDriverBy::id('admin-notification-modal')
+                )
+            );
         } catch (TimeOutException $ex) {
             // Do nothing.
         } catch (NoSuchElementException $ex) {
@@ -282,6 +287,11 @@ class TestBaseClassWeb extends TestBaseClass
                 )
             );
             $button->click();
+            self::$webDriver->wait(5)->until(
+                WebDriverExpectedCondition::invisibilityOfElementLocated(
+                    WebDriverBy::id('welcomeModal')
+                )
+            );
         } catch (NoSuchElementException $ex) {
             // Do nothing.
         } catch (TimeOutException $ex) {
