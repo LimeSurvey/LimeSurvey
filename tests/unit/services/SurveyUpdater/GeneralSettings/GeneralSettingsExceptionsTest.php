@@ -7,7 +7,6 @@ use ls\tests\TestBaseClass;
 use Mockery;
 use Survey;
 use Permission;
-use LimeSurvey\Models\Services\SurveyUpdater\GeneralSettings;
 use LimeSurvey\Models\Services\Exception\{
     ExceptionPersistError,
     ExceptionNotFound,
@@ -30,22 +29,12 @@ class GeneralSettingsExceptionsTest extends TestBaseClass
         $modelPermission->shouldReceive('hasSurveyPermission')
             ->andReturn(false);
 
-        $mockSetInit = new GeneralSettingsMockSet;
-        $mockSetInit->modelPermission = $modelPermission;
+        $mockSet = (new GeneralSettingsMockSetFactory)->make();
+        $mockSet->modelPermission = $modelPermission;
 
-        $mockSet = (new GeneralSettingsMockFactory)
-            ->make($mockSetInit);
+        $generalSettings = (new GeneralSettingsFactory)->make($mockSet);
 
-        $surveyUpdater = new GeneralSettings(
-            $mockSet->modelPermission,
-            $mockSet->modelSurvey,
-            $mockSet->yiiApp,
-            $mockSet->sessionData,
-            $mockSet->pluginManager,
-            $mockSet->languageConsistency
-        );
-
-        $surveyUpdater->update(1, []);
+        $generalSettings->update(1, []);
     }
 
     /**
@@ -62,22 +51,12 @@ class GeneralSettingsExceptionsTest extends TestBaseClass
         $modelSurvey->shouldReceive('findByPk')
             ->andReturn(null);
 
-        $mockSetInit = new GeneralSettingsMockSet;
-        $mockSetInit->modelSurvey = $modelSurvey;
+        $mockSet = (new GeneralSettingsMockSetFactory)->make();
+        $mockSet->modelSurvey = $modelSurvey;
 
-        $mockSet = (new GeneralSettingsMockFactory)
-            ->make($mockSetInit);
+        $generalSettings = (new GeneralSettingsFactory)->make($mockSet);
 
-        $surveyUpdater = new GeneralSettings(
-            $mockSet->modelPermission,
-            $mockSet->modelSurvey,
-            $mockSet->yiiApp,
-            $mockSet->sessionData,
-            $mockSet->pluginManager,
-            $mockSet->languageConsistency
-        );
-
-        $surveyUpdater->update(1, []);
+        $generalSettings->update(1, []);
     }
 
     /**
@@ -94,21 +73,13 @@ class GeneralSettingsExceptionsTest extends TestBaseClass
         $survey->shouldReceive('save')
             ->andReturn(false);
 
-        $mockSetInit = new GeneralSettingsMockSet;
+        $mockSetInit = new GeneralSettingsMockSet();
         $mockSetInit->survey = $survey;
 
-        $mockSet = (new GeneralSettingsMockFactory)
-            ->make($mockSetInit);
+        $mockSet = (new GeneralSettingsMockSetFactory)->make($mockSetInit);
 
-        $surveyUpdater = new GeneralSettings(
-            $mockSet->modelPermission,
-            $mockSet->modelSurvey,
-            $mockSet->yiiApp,
-            $mockSet->sessionData,
-            $mockSet->pluginManager,
-            $mockSet->languageConsistency
-        );
+        $generalSettings = (new GeneralSettingsFactory)->make($mockSet);
 
-        $surveyUpdater->update(1, ['owner_id' => 99999]);
+        $generalSettings->update(1, ['owner_id' => 99999]);
     }
 }

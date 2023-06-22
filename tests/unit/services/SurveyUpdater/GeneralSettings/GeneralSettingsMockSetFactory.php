@@ -16,7 +16,7 @@ use LimeSurvey\Models\Services\SurveyUpdater\LanguageConsistency;
  *
  * Reusable initialisation of mock dependencies for use in GeneralSettings tests.
  */
-class GeneralSettingsMockFactory
+class GeneralSettingsMockSetFactory
 {
     /**
      * @param ?GeneralSettingsMockSet $init

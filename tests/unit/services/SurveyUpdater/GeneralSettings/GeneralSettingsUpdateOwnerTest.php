@@ -5,13 +5,12 @@ namespace ls\tests\unit\services\SurveyUpdater\GeneralSettings;
 use Mockery;
 use Permission;
 use ls\tests\TestBaseClass;
-use LimeSurvey\Models\Services\SurveyUpdater\GeneralSettings;
 
 class GeneralSettingsUpdateOwnerTest extends TestBaseClass
 {
     public function testCanUpdateOwnerIdIfUserIsCurrentOwner()
     {
-        $mockSet = (new GeneralSettingsMockFactory)->make();
+        $mockSet = (new GeneralSettingsMockSetFactory)->make();
 
         $mockSet->modelPermission->shouldReceive('hasGlobalPermission')
             ->andReturn(false);
@@ -23,16 +22,9 @@ class GeneralSettingsUpdateOwnerTest extends TestBaseClass
             'owner_id' => 123
         ], false);
 
-        $surveyUpdater = new GeneralSettings(
-            $mockSet->modelPermission,
-            $mockSet->modelSurvey,
-            $mockSet->yiiApp,
-            $mockSet->sessionData,
-            $mockSet->pluginManager,
-            $mockSet->languageConsistency
-        );
+        $generalSettings = (new GeneralSettingsFactory)->make($mockSet);
 
-        $surveyUpdater->update(1, [
+        $generalSettings->update(1, [
             'owner_id' => 456
         ]);
 
@@ -43,14 +35,15 @@ class GeneralSettingsUpdateOwnerTest extends TestBaseClass
 
     public function testCanNotUpdateOwnerIdIfUserIsNotCurrentOwner()
     {
-        $mockSet = (new GeneralSettingsMockFactory)->make();
-
         $modelPermission = Mockery::mock(Permission::class)
             ->makePartial();
         $modelPermission->shouldReceive('hasSurveyPermission')
             ->andReturn(true);
         $modelPermission->shouldReceive('hasGlobalPermission')
             ->andReturn(false);
+
+        $mockSet = (new GeneralSettingsMockSetFactory)->make();
+        $mockSet->modelPermission = $modelPermission;
 
         $mockSet->sessionData['loginID'] = 456;
 
@@ -59,16 +52,9 @@ class GeneralSettingsUpdateOwnerTest extends TestBaseClass
             'owner_id' => 123
         ], false);
 
-        $surveyUpdater = new GeneralSettings(
-            $modelPermission,
-            $mockSet->modelSurvey,
-            $mockSet->yiiApp,
-            $mockSet->sessionData,
-            $mockSet->pluginManager,
-            $mockSet->languageConsistency
-        );
+        $generalSettings = (new GeneralSettingsFactory)->make($mockSet);
 
-        $surveyUpdater->update(1, [
+        $generalSettings->update(1, [
             'owner_id' => 456
         ]);
 

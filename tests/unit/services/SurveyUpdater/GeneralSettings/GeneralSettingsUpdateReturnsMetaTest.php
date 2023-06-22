@@ -4,13 +4,11 @@ namespace ls\tests\unit\services\SurveyUpdater\GeneralSettings;
 
 use ls\tests\TestBaseClass;
 
-use LimeSurvey\Models\Services\SurveyUpdater\GeneralSettings;
-
 class GeneralSettingsUpdateReturnsMetaTest extends TestBaseClass
 {
     public function testUpdateReturnsMeta()
     {
-        $mockSet = (new GeneralSettingsMockFactory)->make();
+        $mockSet = (new GeneralSettingsMockSetFactory)->make();
 
         $mockSet->survey->shouldReceive('setAttributes')
             ->passthru();
@@ -19,16 +17,9 @@ class GeneralSettingsUpdateReturnsMetaTest extends TestBaseClass
             'startdate' => '2023-12-01 00:00:00'
         ]);
 
-        $surveyUpdater = new GeneralSettings(
-            $mockSet->modelPermission,
-            $mockSet->modelSurvey,
-            $mockSet->yiiApp,
-            $mockSet->sessionData,
-            $mockSet->pluginManager,
-            $mockSet->languageConsistency
-        );
+        $generalSettings = (new GeneralSettingsFactory)->make($mockSet);
 
-        $meta = $surveyUpdater->update(1, [
+        $meta = $generalSettings->update(1, [
             'startdate' => '01.01.2024 13:45'
         ]);
 

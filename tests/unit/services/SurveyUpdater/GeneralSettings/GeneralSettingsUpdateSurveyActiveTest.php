@@ -3,13 +3,12 @@
 namespace ls\tests\unit\services\SurveyUpdater\GeneralSettings;
 
 use ls\tests\TestBaseClass;
-use LimeSurvey\Models\Services\SurveyUpdater\GeneralSettings;
 
 class GeneralSettingsUpdateSurveyActiveTest extends TestBaseClass
 {
     public function testCanNotUpdateSomeSettingsWhenSurveyIsActive()
     {
-        $mockSet = (new GeneralSettingsMockFactory)->make();
+        $mockSet = (new GeneralSettingsMockSetFactory)->make();
 
         $mockSet->survey->setAttributes([
             'sid' => 1,
@@ -23,16 +22,9 @@ class GeneralSettingsUpdateSurveyActiveTest extends TestBaseClass
             'refurl' => 'N'
         ]);
 
-        $surveyUpdate = new GeneralSettings(
-            $mockSet->modelPermission,
-            $mockSet->modelSurvey,
-            $mockSet->yiiApp,
-            $mockSet->sessionData,
-            $mockSet->pluginManager,
-            $mockSet->languageConsistency
-        );
+        $generalSettings = (new GeneralSettingsFactory)->make($mockSet);
 
-        $surveyUpdate->update(1, [
+        $generalSettings->update(1, [
             'anonymized' => 'Y',
             'savetimings' => 'Y',
             'datestamp' => 'Y',
@@ -53,7 +45,7 @@ class GeneralSettingsUpdateSurveyActiveTest extends TestBaseClass
 
     public function testCanNotUpdateSomeSettingsWhenSurveyIsActiveSurveyInactive()
     {
-        $mockSet = (new GeneralSettingsMockFactory)->make();
+        $mockSet = (new GeneralSettingsMockSetFactory)->make();
 
         $mockSet->survey->setAttributes([
             'sid' => 1,
@@ -67,16 +59,9 @@ class GeneralSettingsUpdateSurveyActiveTest extends TestBaseClass
             'refurl' => 'N'
         ]);
 
-        $surveyUpdate = new GeneralSettings(
-            $mockSet->modelPermission,
-            $mockSet->modelSurvey,
-            $mockSet->yiiApp,
-            $mockSet->sessionData,
-            $mockSet->pluginManager,
-            $mockSet->languageConsistency
-        );
+        $generalSettings = (new GeneralSettingsFactory)->make($mockSet);
 
-        $surveyUpdate->update(1, [
+        $generalSettings->update(1, [
             'anonymized' => 'Y',
             'savetimings' => 'Y',
             'datestamp' => 'Y',

@@ -3,28 +3,20 @@
 namespace ls\tests\unit\services\SurveyUpdater\GeneralSettings;
 
 use ls\tests\TestBaseClass;
-use LimeSurvey\Models\Services\SurveyUpdater\GeneralSettings;
 
 class GeneralSettingsUpdateYnFieldType extends TestBaseClass
 {
     public function testAcceptsY()
     {
-        $mockSet = (new GeneralSettingsMockFactory)->make();
+        $mockSet = (new GeneralSettingsMockSetFactory)->make();
 
         $mockSet->survey->setAttributes([
             'usecookie' => 'N'
         ]);
 
-        $surveyUpdater = new GeneralSettings(
-            $mockSet->modelPermission,
-            $mockSet->modelSurvey,
-            $mockSet->yiiApp,
-            $mockSet->sessionData,
-            $mockSet->pluginManager,
-            $mockSet->languageConsistency
-        );
+        $generalSettings = (new GeneralSettingsFactory)->make($mockSet);
 
-        $surveyUpdater->update(1, [
+        $generalSettings->update(1, [
             'usecookie' => 'Y'
         ]);
 
@@ -35,22 +27,15 @@ class GeneralSettingsUpdateYnFieldType extends TestBaseClass
 
     public function testAcceptsN()
     {
-        $mockSet = (new GeneralSettingsMockFactory)->make();
+        $mockSet = (new GeneralSettingsMockSetFactory)->make();
 
         $mockSet->survey->setAttributes([
             'usecookie' => 'Y'
         ]);
 
-        $surveyUpdater = new GeneralSettings(
-            $mockSet->modelPermission,
-            $mockSet->modelSurvey,
-            $mockSet->yiiApp,
-            $mockSet->sessionData,
-            $mockSet->pluginManager,
-            $mockSet->languageConsistency
-        );
+        $generalSettings = (new GeneralSettingsFactory)->make($mockSet);
 
-        $surveyUpdater->update(1, [
+        $generalSettings->update(1, [
             'usecookie' => 'N'
         ]);
 
@@ -61,22 +46,15 @@ class GeneralSettingsUpdateYnFieldType extends TestBaseClass
 
     public function testAcceptsI()
     {
-        $mockSet = (new GeneralSettingsMockFactory)->make();
+        $mockSet = (new GeneralSettingsMockSetFactory)->make();
 
         $mockSet->survey->setAttributes([
             'usecookie' => 'Y'
         ]);
 
-        $surveyUpdater = new GeneralSettings(
-            $mockSet->modelPermission,
-            $mockSet->modelSurvey,
-            $mockSet->yiiApp,
-            $mockSet->sessionData,
-            $mockSet->pluginManager,
-            $mockSet->languageConsistency
-        );
+        $generalSettings = (new GeneralSettingsFactory)->make($mockSet);
 
-        $surveyUpdater->update(1, [
+        $generalSettings->update(1, [
             'usecookie' => 'I'
         ]);
 
@@ -87,22 +65,15 @@ class GeneralSettingsUpdateYnFieldType extends TestBaseClass
 
     public function testAcceptsFalsyZero()
     {
-        $mockSet = (new GeneralSettingsMockFactory)->make();
+        $mockSet = (new GeneralSettingsMockSetFactory)->make();
 
         $mockSet->survey->setAttributes([
             'usecookie' => 'Y'
         ]);
 
-        $surveyUpdater = new GeneralSettings(
-            $mockSet->modelPermission,
-            $mockSet->modelSurvey,
-            $mockSet->yiiApp,
-            $mockSet->sessionData,
-            $mockSet->pluginManager,
-            $mockSet->languageConsistency
-        );
+        $generalSettings = (new GeneralSettingsFactory)->make($mockSet);
 
-        $surveyUpdater->update(1, [
+        $generalSettings->update(1, [
             'usecookie' => 0
         ]);
 
@@ -113,22 +84,15 @@ class GeneralSettingsUpdateYnFieldType extends TestBaseClass
 
     public function testAcceptsFalsyStringZero()
     {
-        $mockSet = (new GeneralSettingsMockFactory)->make();
+        $mockSet = (new GeneralSettingsMockSetFactory)->make();
 
         $mockSet->survey->setAttributes([
             'usecookie' => 'Y'
         ]);
 
-        $surveyUpdater = new GeneralSettings(
-            $mockSet->modelPermission,
-            $mockSet->modelSurvey,
-            $mockSet->yiiApp,
-            $mockSet->sessionData,
-            $mockSet->pluginManager,
-            $mockSet->languageConsistency
-        );
+        $generalSettings = (new GeneralSettingsFactory)->make($mockSet);
 
-        $surveyUpdater->update(1, [
+        $generalSettings->update(1, [
             'usecookie' => '0'
         ]);
 
@@ -139,22 +103,15 @@ class GeneralSettingsUpdateYnFieldType extends TestBaseClass
 
     public function testAcceptsFalsyEmpty()
     {
-        $mockSet = (new GeneralSettingsMockFactory)->make();
+        $mockSet = (new GeneralSettingsMockSetFactory)->make();
 
         $mockSet->survey->setAttributes([
             'usecookie' => 'Y'
         ]);
 
-        $surveyUpdater = new GeneralSettings(
-            $mockSet->modelPermission,
-            $mockSet->modelSurvey,
-            $mockSet->yiiApp,
-            $mockSet->sessionData,
-            $mockSet->pluginManager,
-            $mockSet->languageConsistency
-        );
+        $generalSettings = (new GeneralSettingsFactory)->make($mockSet);
 
-        $surveyUpdater->update(1, [
+        $generalSettings->update(1, [
             'usecookie' => ''
         ]);
 
@@ -165,22 +122,15 @@ class GeneralSettingsUpdateYnFieldType extends TestBaseClass
 
     public function testAcceptsNoneFalsyOne()
     {
-        $mockSet = (new GeneralSettingsMockFactory)->make();
+        $mockSet = (new GeneralSettingsMockSetFactory)->make();
 
         $mockSet->survey->setAttributes([
             'usecookie' => 'N'
         ]);
 
-        $surveyUpdater = new GeneralSettings(
-            $mockSet->modelPermission,
-            $mockSet->modelSurvey,
-            $mockSet->yiiApp,
-            $mockSet->sessionData,
-            $mockSet->pluginManager,
-            $mockSet->languageConsistency
-        );
+        $generalSettings = (new GeneralSettingsFactory)->make($mockSet);
 
-        $surveyUpdater->update(1, [
+        $generalSettings->update(1, [
             'usecookie' => 1
         ]);
 
@@ -191,22 +141,15 @@ class GeneralSettingsUpdateYnFieldType extends TestBaseClass
 
     public function testAcceptsNoneFalsyStringOne()
     {
-        $mockSet = (new GeneralSettingsMockFactory)->make();
+        $mockSet = (new GeneralSettingsMockSetFactory)->make();
 
         $mockSet->survey->setAttributes([
             'usecookie' => 'N'
         ]);
 
-        $surveyUpdater = new GeneralSettings(
-            $mockSet->modelPermission,
-            $mockSet->modelSurvey,
-            $mockSet->yiiApp,
-            $mockSet->sessionData,
-            $mockSet->pluginManager,
-            $mockSet->languageConsistency
-        );
+        $generalSettings = (new GeneralSettingsFactory)->make($mockSet);
 
-        $surveyUpdater->update(1, [
+        $generalSettings->update(1, [
             'usecookie' => '1'
         ]);
 
