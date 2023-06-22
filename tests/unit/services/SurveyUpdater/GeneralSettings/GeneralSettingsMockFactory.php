@@ -119,8 +119,11 @@ class GeneralSettingsMockFactory
 
     private function getMockLanguageConsistency(): LanguageConsistency
     {
-        return Mockery::mock(
+        $mockLanguageConsistency = Mockery::mock(
             LanguageConsistency::class
         )->makePartial();
+        $mockLanguageConsistency->shouldReceive('update')
+            ->andReturn(null);
+        return $mockLanguageConsistency;
     }
 }

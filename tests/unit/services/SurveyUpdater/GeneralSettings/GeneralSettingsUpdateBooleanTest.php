@@ -4,15 +4,7 @@ namespace ls\tests\unit\services\SurveyUpdater\GeneralSettings;
 
 use ls\tests\TestBaseClass;
 
-use Survey;
-use Permission;
-use LSYii_Application;
-use Mockery;
-use LimeSurvey\PluginManager\PluginManager;
-use LimeSurvey\Models\Services\SurveyUpdater\{
-    GeneralSettings,
-    LanguageConsistency
-};
+use LimeSurvey\Models\Services\SurveyUpdater\GeneralSettings;
 
 class GeneralSettingsUpdateBooleanTest extends TestBaseClass
 {
@@ -20,161 +12,83 @@ class GeneralSettingsUpdateBooleanTest extends TestBaseClass
     {
         $mockSet = (new GeneralSettingsMockFactory)->make();
 
-        $modelPermission = Mockery::mock(Permission::class)
-            ->makePartial();
-        $modelPermission->shouldReceive('hasSurveyPermission')
-            ->andReturn(true);
-        $modelPermission->shouldReceive('hasGlobalPermission')
-            ->andReturn(true);
-
-        $survey = Mockery::mock(Survey::class)
-            ->makePartial();
-        $survey->shouldReceive('save')
-            ->andReturn(true);
-        $survey->shouldReceive('setAttributes')
-            ->passthru();
-        $survey->setAttributes([
+        $mockSet->survey->setAttributes([
             'sid' => 1,
             'allowregister' => 'N',
         ]);
 
-        $modelSurvey = Mockery::mock(Survey::class)
-            ->makePartial();
-        $modelSurvey->shouldReceive('findByPk')
-            ->andReturn($survey);
-
-        $yiiApp = Mockery::mock(LSYii_Application::class)
-            ->makePartial();
-
-        $pluginManager = Mockery::mock(PluginManager::class)
-            ->makePartial();
-        $pluginManager->shouldReceive('dispatchEvent')
-            ->andReturn(null);
-
-        $languageConsistency = Mockery::mock(LanguageConsistency::class)
-            ->makePartial();
-
-        $surveyUpdate = new GeneralSettings(
-            $modelPermission,
-            $modelSurvey,
-            $yiiApp,
+        $surveyUpdater = new GeneralSettings(
+            $mockSet->modelPermission,
+            $mockSet->modelSurvey,
+            $mockSet->yiiApp,
             $mockSet->sessionData,
-            $pluginManager,
-            $languageConsistency
+            $mockSet->pluginManager,
+            $mockSet->languageConsistency
         );
 
-        $surveyUpdate->update(1, [
+        $surveyUpdater->update(1, [
             'allowregister' => '1'
         ]);
 
-        $this->assertEquals('Y', $survey->allowregister);
+        $this->assertEquals(
+            'Y',
+            $mockSet->survey->allowregister
+        );
     }
 
     public function testUpdateAllowRegisterSetFalse()
     {
         $mockSet = (new GeneralSettingsMockFactory)->make();
 
-        $modelPermission = Mockery::mock(Permission::class)
-            ->makePartial();
-        $modelPermission->shouldReceive('hasSurveyPermission')
-            ->andReturn(true);
-        $modelPermission->shouldReceive('hasGlobalPermission')
-            ->andReturn(true);
-
-        $survey = Mockery::mock(Survey::class)
-            ->makePartial();
-        $survey->shouldReceive('save')
-            ->andReturn(true);
-        $survey->shouldReceive('setAttributes')
-            ->passthru();
-        $survey->setAttributes([
+        $mockSet->survey->setAttributes([
             'sid' => 1,
             'allowregister' => 'Y',
         ]);
 
-        $modelSurvey = Mockery::mock(Survey::class)
-            ->makePartial();
-        $modelSurvey->shouldReceive('findByPk')
-            ->andReturn($survey);
-
-        $yiiApp = Mockery::mock(LSYii_Application::class)
-            ->makePartial();
-
-        $pluginManager = Mockery::mock(PluginManager::class)
-            ->makePartial();
-        $pluginManager->shouldReceive('dispatchEvent')
-            ->andReturn(null);
-
-        $languageConsistency = Mockery::mock(LanguageConsistency::class)
-            ->makePartial();
-
-        $surveyUpdate = new GeneralSettings(
-            $modelPermission,
-            $modelSurvey,
-            $yiiApp,
+        $surveyUpdater = new GeneralSettings(
+            $mockSet->modelPermission,
+            $mockSet->modelSurvey,
+            $mockSet->yiiApp,
             $mockSet->sessionData,
-            $pluginManager,
-            $languageConsistency
+            $mockSet->pluginManager,
+            $mockSet->languageConsistency
         );
 
-        $surveyUpdate->update(1, [
+        $surveyUpdater->update(1, [
             'allowregister' => '0'
         ]);
 
-        $this->assertEquals('N', $survey->allowregister);
+        $this->assertEquals(
+            'N',
+            $mockSet->survey->allowregister
+        );
     }
 
     public function testUpdateAllowRegisterSetInherit()
     {
         $mockSet = (new GeneralSettingsMockFactory)->make();
 
-        $modelPermission = Mockery::mock(Permission::class)
-            ->makePartial();
-        $modelPermission->shouldReceive('hasSurveyPermission')
-            ->andReturn(true);
-        $modelPermission->shouldReceive('hasGlobalPermission')
-            ->andReturn(true);
-
-        $survey = Mockery::mock(Survey::class)
-            ->makePartial();
-        $survey->shouldReceive('save')
-            ->andReturn(true);
-        $survey->shouldReceive('setAttributes')
-            ->passthru();
-        $survey->setAttributes([
+        $mockSet->survey->setAttributes([
             'sid' => 1,
             'allowregister' => 'Y',
         ]);
 
-        $modelSurvey = Mockery::mock(Survey::class)
-            ->makePartial();
-        $modelSurvey->shouldReceive('findByPk')
-            ->andReturn($survey);
-
-        $yiiApp = Mockery::mock(LSYii_Application::class)
-            ->makePartial();
-
-        $pluginManager = Mockery::mock(PluginManager::class)
-            ->makePartial();
-        $pluginManager->shouldReceive('dispatchEvent')
-            ->andReturn(null);
-
-        $languageConsistency = Mockery::mock(LanguageConsistency::class)
-            ->makePartial();
-
-        $surveyUpdate = new GeneralSettings(
-            $modelPermission,
-            $modelSurvey,
-            $yiiApp,
+        $surveyUpdater = new GeneralSettings(
+            $mockSet->modelPermission,
+            $mockSet->modelSurvey,
+            $mockSet->yiiApp,
             $mockSet->sessionData,
-            $pluginManager,
-            $languageConsistency
+            $mockSet->pluginManager,
+            $mockSet->languageConsistency
         );
 
-        $surveyUpdate->update(1, [
+        $surveyUpdater->update(1, [
             'allowregister' => 'I'
         ]);
 
-        $this->assertEquals('I', $survey->allowregister);
+        $this->assertEquals(
+            'I',
+            $mockSet->survey->allowregister
+        );
     }
 }

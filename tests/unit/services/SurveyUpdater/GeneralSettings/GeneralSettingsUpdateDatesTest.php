@@ -18,7 +18,7 @@ class GeneralSettingsUpdateDatesTest extends TestBaseClass
             'startdate' => '2023-12-01 12:00:00'
         ]);
 
-        $surveyUpdate = new GeneralSettings(
+        $surveyUpdater = new GeneralSettings(
             $mockSet->modelPermission,
             $mockSet->modelSurvey,
             $mockSet->yiiApp,
@@ -27,7 +27,7 @@ class GeneralSettingsUpdateDatesTest extends TestBaseClass
             $mockSet->languageConsistency
         );
 
-        $surveyUpdate->update(1, [
+        $surveyUpdater->update(1, [
             'startdate' => '01.01.2024 13:45'
         ]);
 
@@ -47,7 +47,7 @@ class GeneralSettingsUpdateDatesTest extends TestBaseClass
             'expires' => '2023-12-01 00:00:00',
         ]);
 
-        $surveyUpdate = new GeneralSettings(
+        $surveyUpdater = new GeneralSettings(
             $mockSet->modelPermission,
             $mockSet->modelSurvey,
             $mockSet->yiiApp,
@@ -56,7 +56,7 @@ class GeneralSettingsUpdateDatesTest extends TestBaseClass
             $mockSet->languageConsistency
         );
 
-        $surveyUpdate->update(1, [
+        $surveyUpdater->update(1, [
             'expires' => '01.01.2024 13:45'
         ]);
 

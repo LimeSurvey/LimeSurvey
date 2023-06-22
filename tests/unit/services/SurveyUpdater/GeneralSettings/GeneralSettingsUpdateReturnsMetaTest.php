@@ -4,15 +4,7 @@ namespace ls\tests\unit\services\SurveyUpdater\GeneralSettings;
 
 use ls\tests\TestBaseClass;
 
-use Survey;
-use Permission;
-use LSYii_Application;
-use Mockery;
-use LimeSurvey\PluginManager\PluginManager;
-use LimeSurvey\Models\Services\SurveyUpdater\{
-    GeneralSettings,
-    LanguageConsistency
-};
+use LimeSurvey\Models\Services\SurveyUpdater\GeneralSettings;
 
 class GeneralSettingsUpdateReturnsMetaTest extends TestBaseClass
 {
@@ -20,50 +12,23 @@ class GeneralSettingsUpdateReturnsMetaTest extends TestBaseClass
     {
         $mockSet = (new GeneralSettingsMockFactory)->make();
 
-        $modelPermission = Mockery::mock(Permission::class)
-            ->makePartial();
-        $modelPermission->shouldReceive('hasSurveyPermission')
-            ->andReturn(true);
-        $modelPermission->shouldReceive('hasGlobalPermission')
-            ->andReturn(true);
-
-        $survey = Mockery::mock(Survey::class)
-            ->makePartial();
-        $survey->shouldReceive('save')
-            ->andReturn(true);
-        $survey->shouldReceive('setAttributes')
+        $mockSet->survey->shouldReceive('setAttributes')
             ->passthru();
-        $survey->setAttributes([
+            $mockSet->survey->setAttributes([
             'sid' => 1,
             'startdate' => '2023-12-01 00:00:00'
         ]);
 
-        $modelSurvey = Mockery::mock(Survey::class)
-            ->makePartial();
-        $modelSurvey->shouldReceive('findByPk')
-            ->andReturn($survey);
-
-        $yiiApp = Mockery::mock(LSYii_Application::class)
-            ->makePartial();
-
-        $pluginManager = Mockery::mock(PluginManager::class)
-            ->makePartial();
-        $pluginManager->shouldReceive('dispatchEvent')
-            ->andReturn(null);
-
-        $languageConsistency = Mockery::mock(LanguageConsistency::class)
-            ->makePartial();
-
-        $surveyUpdate = new GeneralSettings(
-            $modelPermission,
-            $modelSurvey,
-            $yiiApp,
+        $surveyUpdater = new GeneralSettings(
+            $mockSet->modelPermission,
+            $mockSet->modelSurvey,
+            $mockSet->yiiApp,
             $mockSet->sessionData,
-            $pluginManager,
-            $languageConsistency
+            $mockSet->pluginManager,
+            $mockSet->languageConsistency
         );
 
-        $meta = $surveyUpdate->update(1, [
+        $meta = $surveyUpdater->update(1, [
             'startdate' => '01.01.2024 13:45'
         ]);
 

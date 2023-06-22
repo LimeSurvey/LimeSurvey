@@ -13,11 +13,7 @@ class GeneralSettingsUpdateOwnerTest extends TestBaseClass
     {
         $mockSet = (new GeneralSettingsMockFactory)->make();
 
-        $modelPermission = Mockery::mock(Permission::class)
-            ->makePartial();
-        $modelPermission->shouldReceive('hasSurveyPermission')
-            ->andReturn(true);
-        $modelPermission->shouldReceive('hasGlobalPermission')
+        $mockSet->modelPermission->shouldReceive('hasGlobalPermission')
             ->andReturn(false);
 
         $mockSet->sessionData['loginID'] = 123;
@@ -28,7 +24,7 @@ class GeneralSettingsUpdateOwnerTest extends TestBaseClass
         ], false);
 
         $surveyUpdater = new GeneralSettings(
-            $modelPermission,
+            $mockSet->modelPermission,
             $mockSet->modelSurvey,
             $mockSet->yiiApp,
             $mockSet->sessionData,

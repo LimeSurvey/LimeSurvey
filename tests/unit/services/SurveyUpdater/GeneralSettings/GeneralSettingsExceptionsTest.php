@@ -36,7 +36,7 @@ class GeneralSettingsExceptionsTest extends TestBaseClass
         $mockSet = (new GeneralSettingsMockFactory)
             ->make($mockSetInit);
 
-        $surveyUpdate = new GeneralSettings(
+        $surveyUpdater = new GeneralSettings(
             $mockSet->modelPermission,
             $mockSet->modelSurvey,
             $mockSet->yiiApp,
@@ -45,7 +45,7 @@ class GeneralSettingsExceptionsTest extends TestBaseClass
             $mockSet->languageConsistency
         );
 
-        $surveyUpdate->update(1, []);
+        $surveyUpdater->update(1, []);
     }
 
     /**
@@ -68,7 +68,7 @@ class GeneralSettingsExceptionsTest extends TestBaseClass
         $mockSet = (new GeneralSettingsMockFactory)
             ->make($mockSetInit);
 
-        $surveyUpdate = new GeneralSettings(
+        $surveyUpdater = new GeneralSettings(
             $mockSet->modelPermission,
             $mockSet->modelSurvey,
             $mockSet->yiiApp,
@@ -77,7 +77,7 @@ class GeneralSettingsExceptionsTest extends TestBaseClass
             $mockSet->languageConsistency
         );
 
-        $surveyUpdate->update(1, []);
+        $surveyUpdater->update(1, []);
     }
 
     /**
@@ -100,7 +100,7 @@ class GeneralSettingsExceptionsTest extends TestBaseClass
         $mockSet = (new GeneralSettingsMockFactory)
             ->make($mockSetInit);
 
-        $surveyUpdate = new GeneralSettings(
+        $surveyUpdater = new GeneralSettings(
             $mockSet->modelPermission,
             $mockSet->modelSurvey,
             $mockSet->yiiApp,
@@ -109,6 +109,6 @@ class GeneralSettingsExceptionsTest extends TestBaseClass
             $mockSet->languageConsistency
         );
 
-        $surveyUpdate->update(1, ['owner_id' => 99999]);
+        $surveyUpdater->update(1, ['owner_id' => 99999]);
     }
 }
