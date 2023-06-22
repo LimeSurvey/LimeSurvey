@@ -314,7 +314,7 @@ class GeneralSettings
                     : $default;
                 break;
             case static::FIELD_TYPE_YN:
-                if (!in_array($value, ['Y', 'N', 'I'])) {
+                if (!in_array('' . $value, ['Y', 'N', 'I'])) {
                     $value = ((int) $value === 1) ? 'Y' : 'N';
                 }
                 break;
