@@ -70,8 +70,7 @@ class LSYii_Validators extends CValidator
         if ($this->xssfilter) {
             $object->$attribute = $this->xssFilter($object->$attribute);
             if ($this->isUrl) {
-                // If the URL contains "javascript:", we clear the field completely. The URL is either valid o invalid.
-                if (stripos($object->$attribute, 'javascript:') !== false) {
+                if (self::isXssUrl($object->$attribute)) {
                     $object->$attribute = "";
                 }
             }
@@ -186,5 +185,40 @@ class LSYii_Validators extends CValidator
         $aValue = explode(" ", trim((string) $value));
         $aValue = array_map("sanitize_languagecode", $aValue);
         return implode(" ", $aValue);
+    }
+
+    /**
+     * Checks whether an URL seems unsafe in terms of XSS.
+     * @param string $url
+     * @return boolean Returns true if the URL is unsafe.
+     */
+    public static function isXssUrl($url)
+    {
+        $clean = self::removeInvisibleChars($url);
+
+        // Remove javascript:
+        if (stripos($clean, "javascript:") !== false) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Removes invisible characters from a string.
+     * @param string $string
+     * @return string
+     */
+    public static function removeInvisibleChars($string)
+    {
+        $clean = urldecode(html_entity_decode($string));
+
+        // Remove invisible characters
+        $prevString = '';
+        while ($prevString != $clean) {
+            $prevString = $clean;
+            $clean = preg_replace('/\p{C}/u', '', $clean);
+        };
+
+        return $clean;
     }
 }
