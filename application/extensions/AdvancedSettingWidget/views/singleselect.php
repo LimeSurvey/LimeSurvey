@@ -1,5 +1,5 @@
 <select 
-    class="form-control" 
+    class="form-select" 
     name="<?= $inputBaseName ?>"
     id="<?= CHtml::getIdByName($inputBaseName); ?>"
     <?= ($this->setting['help']) ? 'aria-describedby="help-' . CHtml::getIdByName($inputBaseName) . '"' : "" ?>
@@ -10,7 +10,7 @@
         <?php else: ?>
             <option value="<?= CHtml::encode($value); ?>">
         <?php endif; ?>
-        <?= $text; ?>
+        <?= gT($text); ?>
         </option>
     <?php endforeach; ?>
 </select>

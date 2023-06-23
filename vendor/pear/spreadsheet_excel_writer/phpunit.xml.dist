@@ -1,0 +1,28 @@
+<phpunit bootstrap="vendor/autoload.php"
+         cacheTokens="false"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         stopOnError="false"
+         stopOnFailure="false"
+         stopOnIncomplete="false"
+         stopOnSkipped="false">
+
+    <testsuites>
+        <testsuite name="Test Suite">
+            <directory>test/</directory>
+        </testsuite>
+    </testsuites>
+
+    <filter>
+        <whitelist>
+            <directory suffix=".php">Spreadsheet/</directory>
+        </whitelist>
+    </filter>
+
+    <logging>
+        <log type="coverage-clover" target="build/logs/clover.xml"/>
+        <log type="coverage-text" target="php://stdout"/>
+    </logging>
+</phpunit>

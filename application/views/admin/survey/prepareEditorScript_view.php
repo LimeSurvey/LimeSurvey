@@ -30,14 +30,6 @@ $script = "
 $script.="CKEDITOR.on('instanceReady', function(event) {
         var textareaId = event.editor.element.getId();
         $('#'+textareaId+'_htmleditor_loader').remove();
-        
-        // Change config. for editors with name like email_*
-        // Those editors are initialized for email templates.
-        // It doesn't have effects on popup Editors.
-        if(event.editor.name.startsWith('email_')){
-            event.editor.config.fullPage = true;
-        }
-        
         event.editor.dataProcessor.writer.setRules( 'br', { breakAfterOpen: 0 } );
     });    
 
@@ -61,35 +53,26 @@ $script.="CKEDITOR.on('instanceReady', function(event) {
         return null;
     }
 
-    function start_popup_editor(fieldname, fieldtext, sid, gid, qid, fieldtype, action)
+    function start_popup_editor(fieldname, editorurl)
     {
         controlidena = fieldname + '_popupctrlena';
         controliddis = fieldname + '_popupctrldis';
         numwindows = editorwindowsHash.length;
         activepopup = find_popup_editor(fieldname);
-
         if (activepopup == null)
         {
             var targetField = document.getElementById(fieldname);
             targetField.readOnly=true;
             document.getElementById(controlidena).style.display='none';
             document.getElementById(controliddis).style.display='';
-            var editorurl = '".$this->createUrl('admin/htmleditorpop/sa/index')."/name/'+fieldname+'/text/'+fieldtext+'/type/'+fieldtype+'/action/'+action+'/sid/'+sid+'/gid/'+gid+'/qid/'+qid+'/lang/".App()->language."';
             
             // Override language direction if 'data-contents-dir' attribute is set in the target field
             if (targetField.hasAttribute('data-contents-dir')) {
                 var inputLangDirection = targetField.getAttribute('data-contents-dir');
                 editorurl = editorurl + '/contdir/' + (inputLangDirection ? inputLangDirection : '');
             }
-
             popup = window.open(editorurl,'', 'location=no, status=yes, scrollbars=auto, menubar=no, resizable=yes, width=690, height=500');
-            
-            // Check if action is related to email templates.
-            if(action === 'editemailtemplates'){
-                // Add a listener to load event, change config once the popup has finish loaded.
-                popup.addEventListener('load', enableFullPageConfigForEditor, false);
-            }
-            
+
             editorwindowsHash[fieldname] = popup;
         }
         else
@@ -98,12 +81,6 @@ $script.="CKEDITOR.on('instanceReady', function(event) {
         }
     }
 
-    // Used for the popup editor in email templates.
-    function enableFullPageConfigForEditor()
-    {
-        this.CKEDITOR.config.fullPage = true;
-    }
-    
     function updateCKeditor(fieldname,value)
     {
         var mypopup= editorwindowsHash[fieldname];

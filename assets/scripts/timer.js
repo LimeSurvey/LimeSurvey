@@ -147,11 +147,11 @@ var TimerConstructor = function(options){
      */
     _showWarning = function(){
         timerLogger.log('Warning called!');
-        $warningDisplayElement.removeClass('hidden').css({opacity: 0}).animate({'opacity': 1}, 200);
+        $warningDisplayElement.removeClass('d-none').css({opacity: 0}).animate({'opacity': 1}, 200);
         setTimeout( function(){
             timerLogger.log('Warning ended!');
             $warningDisplayElement.animate({opacity: 0}, 200, function(){
-                $(this).addClass('hidden');
+                $(this).addClass('d-none');
             }) 
         }, 1000*option.warninghide );
     },
@@ -161,11 +161,11 @@ var TimerConstructor = function(options){
      */
     _showWarning2 = function(){
         timerLogger.log('Warning2 called!');
-        $warning2DisplayElement.removeClass('hidden').css({opacity: 0}).animate({'opacity': 1}, 200);
+        $warning2DisplayElement.removeClass('d-none').css({opacity: 0}).animate({'opacity': 1}, 200);
         setTimeout(function(){
             timerLogger.log('Warning2 ended!');
             $warning2DisplayElement.animate({opacity: 0}, 200, function(){
-                $(this).addClass('hidden');
+                $(this).addClass('d-none');
             }) 
         }, 1000*option.warning2hide );
     },
@@ -235,7 +235,7 @@ var TimerConstructor = function(options){
      * Show the notice that the time is up and the input is expired
      */
     _showExpiredNotice = function(){
-        $timerExpiredElement.removeClass('hidden');
+        $timerExpiredElement.removeClass('d-none');
     },
 
     /**

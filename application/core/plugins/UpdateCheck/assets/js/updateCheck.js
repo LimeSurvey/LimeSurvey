@@ -7,7 +7,7 @@ $(document).ready(function () {
         method: 'GET',
         success: function (response) {
             console.log(response);
-            LS.updateNotificationWidget(notificationUpdateUrl, false);
+            LS.updateNotificationWidget(notificationUpdateUrl);
         },
         error : function (arguments) {
             console.log(arguments);

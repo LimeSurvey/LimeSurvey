@@ -5,10 +5,10 @@
  */
 ?>
 <div class=''>
-    <div class='form-group'>
-        <div class='form-group captcha-item'>
-            <label class='control-label col-sm-3' for='loadsecurity'><?php echo gT("Please solve the following equation:") ?></label>
-            <div class='col-sm-7'>
+    <div class='mb-3'>
+        <div class='mb-3 captcha-item'>
+            <label class='form-label col-md-3' for='loadsecurity'><?php echo gT("Please solve the following equation:") ?></label>
+            <div class='col-md-7'>
                 <div class='ls-input-group'>
                     <div class='ls-input-group-extra captcha-widget' >
                           <?php $this->widget('CCaptcha',array(
@@ -34,9 +34,9 @@
         <?php echo CHtml::hiddenField('loadpass', $sLoadpass, array('id' => 'loadpass')); ?>
     <?php endif; ?>
 
-    <div class='form-group load-survey-row load-survey-submit'>
-        <div class='col-sm-7 col-md-offset-3 load-survey-input input-cell'>
-            <button type='submit' id='default' name="continue" class='btn btn-default' value='continue'><?php echo gT("Continue") ?></button>
+    <div class='mb-3 load-survey-row load-survey-submit'>
+        <div class='col-md-7 offset-lg-3 load-survey-input input-cell'>
+            <button type='submit' id='default' name="continue" class='btn btn-outline-secondary' value='continue'><?php echo gT("Continue") ?></button>
         </div>
     </div>
 </div>

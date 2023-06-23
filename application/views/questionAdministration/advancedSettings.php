@@ -1,21 +1,38 @@
-<div id="advanced-options-container" class="custom custom-margin top-5">
-    <?php foreach ($advancedSettings as $category => $settings) : ?>
-        <div class="panel panel-default panel-advancedquestionsettings col-12" id="<?= CHtml::getIdByName($category); ?>">
-            <div class="panel-heading" id="<?= CHtml::getIdByName($category); ?>-heading">
-                <a class="panel-title h4 selector--questionEdit-collapse" id="button-collapse-<?= CHtml::getIdByName($category); ?>" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-<?= CHtml::getIdByName($category); ?>" aria-expanded="false" aria-controls="collapse-<?= CHtml::getIdByName($category); ?>">
-                    <?= gT($category); ?>
-                </a>
-            </div>
-            <div id="collapse-<?= CHtml::getIdByName($category); ?>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="<?= CHtml::getIdByName($category); ?>-heading">
-                <div class="panel-body">
-                    <?php foreach ($settings as $setting) : ?>
-                        <?php $this->widget(
-                            'ext.AdvancedSettingWidget.AdvancedSettingWidget',
-                            ['setting' => $setting, 'survey' => $oSurvey]
-                        ); ?>
-                    <?php endforeach; ?>
-                </div>
+<div id="advanced-options-container">
+<?php foreach ($advancedSettings as $category => $settings) : ?>
+    <div class="accordion-item panel-advancedquestionsettings border-top-0 rounded-0" id="<?= CHtml::getIdByName($category); ?>">
+        <h2 class="accordion-header" id="<?= CHtml::getIdByName($category); ?>-heading">
+            <button
+                class="selector--questionEdit-collapse accordion-button collapsed rounded-0"
+                id="button-collapse-<?= CHtml::getIdByName($category); ?>"
+                role="button"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapse-<?= CHtml::getIdByName($category); ?>"
+                data-bs-parent="#accordion"
+                href="#collapse-<?= CHtml::getIdByName($category); ?>"
+                aria-expanded="false"
+                aria-controls="collapse-<?= CHtml::getIdByName($category); ?>"
+            >
+                <?= gT($category); ?>
+            </button>
+        </h2>
+        <div
+            id="collapse-<?= CHtml::getIdByName($category); ?>"
+            class="accordion-collapse collapse"
+            data-bs-parent="#accordion"
+            role="tabpanel"
+            aria-labelledby="<?= CHtml::getIdByName($category); ?>-heading"
+        >
+            <div class="accordion-body">
+                <?php foreach ($settings as $setting) : ?>
+                    <?php $this->widget(
+                        'ext.AdvancedSettingWidget.AdvancedSettingWidget',
+                        ['setting' => $setting, 'survey' => $oSurvey]
+                    ); ?>
+                <?php endforeach; ?>
             </div>
         </div>
-    <?php endforeach; ?>
+    </div>
+<?php endforeach; ?>
 </div>

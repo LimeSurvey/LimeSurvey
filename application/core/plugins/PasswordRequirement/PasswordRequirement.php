@@ -16,6 +16,14 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
     public $allowedPublicMethods = array();
 
     protected $settings = [
+        'adminPart' => array(
+            'content' => 'Password requirements for administration login',
+            'type' => 'info',
+            'class' => "h3",
+            'controlOptions' => array(
+                'class' => "col-md-offset-4 col-md-6"
+            ),
+        ),
         'needsNumber' => array(
             'label' => 'Require at least one digit',
             'type' => 'checkbox',
@@ -35,6 +43,15 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
             'label' => 'Minimum password length',
             'type' => 'int',
             'default' => 12,
+        ),
+        'surveyPart' => array(
+            'content' => 'Password requirements for “Save and return later” feature',
+            'type' => 'info',
+            'class' => "h3",
+            'controlOptions' => array(
+                'class' => "col-md-offset-4 col-md-6"
+            ),
+            'type' => 'info',
         ),
         'surveySaveActive' => array(
             'type' => 'boolean',
@@ -137,10 +154,10 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
     private function checkValidityOfPassword($password, $needsNumber, $needsUppercase, $needsNonAlphanumeric, $minimumSize = 8)
     {
         $errors = [];
-        if ($needsNumber && ctype_alpha($password)) {
+        if ($needsNumber && preg_match('/\d/', $password) === 0) {
             $errors[] = gT('The password does require at least one digit');
         }
-        if ($needsUppercase && ctype_lower($password)) {
+        if ($needsUppercase && strtolower($password) == $password) {
             $errors[] = gT('The password does require at least one uppercase character');
         }
         if ($needsNonAlphanumeric && ctype_alnum($password)) {
@@ -177,37 +194,105 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
      */
     public function getPluginSettings($getValues = true)
     {
-        $settings = parent::getPluginSettings();
+        $settings = parent::getPluginSettings($getValues);
+        $settings['adminPart']['content'] = $this->gT("Password requirements for administration login");
+        $settings['needsNumber']['label'] = $this->gT("Require at least one digit");
+        $settings['needsUppercase']['label'] = $this->gT("Require at least one uppercase character");
+        $settings['needsNonAlphanumeric']['label'] = $this->gT("Require at least one special character");
+        $settings['minimumSize']['label'] = $this->gT("Minimum password length");
+        $settings['surveyPart']['content'] = $this->gT("Password requirements for “Save and return later” feature");
+        $settings['surveySaveActive']['label'] = $this->gT("Check password when use “Save and return later” feature");
+        $settings['surveySaveNeedsNumber']['label'] = $this->gT("Require at least one digit");
+        $settings['surveySaveNeedsUppercase']['label'] = $this->gT("Require at least one uppercase character");
+        $settings['surveySaveNeedsNonAlphanumeric']['label'] = $this->gT("Require at least one special character");
+        $settings['surveySaveMinimumSize']['label'] = $this->gT("Minimum password length");
         return $settings;
     }
 
     private function getRandomString($length = 8, $uppercase = false, $numeric = false, $nonAlpha = false)
     {
-        $chars = "abcdefghijklmnopqrstuvwxyz";
-        
-        if ($uppercase) {
-            $chars .= 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        }
-        if ($numeric) {
-            $chars .= '0123456789';
-        }
-        if ($nonAlpha) {
-            $chars .= '-=!@#$%&*_+,.?;:';
-        }
-
+        // Init
         $str = '';
-        $max = strlen($chars) - 1;
 
-        if (function_exists('random_int')) {
-            for ($i = 0; $i < $length; $i++) {
-                $str .= $chars[random_int(0, $max)];
-            }
-        } else {
-            for ($i = 0; $i < $length; $i++) {
-                $str .= $chars[mt_rand(0, $max)];
-            }
+        /**
+         * For each required character set:
+         * - Add one character to the output string.
+         * - Add the char set to the general char pool.
+         */
+
+        // Lowercase (always on)
+        $chars = "abcdefghijklmnopqrstuvwxyz";
+        $str .= static::pickRandomChar($chars);
+
+        // Uppercase if applies
+        // Add one character and also add the charset to the pool of available chars
+        if ($uppercase) {
+            $uppercase_chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            $str .= static::pickRandomChar($uppercase_chars);
+            $chars .= $uppercase_chars;
         }
+
+        // Numeric if applies
+        // Add one character and also add the charset to the pool of available chars
+        if ($numeric) {
+            $numeric_chars = '0123456789';
+            $str .= static::pickRandomChar($numeric_chars);
+            $chars .= $numeric_chars;
+        }
+
+        // NonAlpha if applies
+        // Add one character and also add the charset to the pool of available chars
+        if ($nonAlpha) {
+            $nonAlpha_chars = '-=!@#$%&*_+,.?;:';
+            $str .= static::pickRandomChar($nonAlpha_chars);
+            $chars .= $nonAlpha_chars;
+        }
+
+        // Trim in case length is less than the already appended characters
+        if (strlen($str) > $length) {
+            $str = substr($str, 0, $length);
+        }
+
+        /**
+         * Pick remaning characters from the general char pool
+         */
+
+        // Fill string from general char pool
+        for ($i = strlen($str); $i < $length; $i++) {
+            $str .= static::pickRandomChar($chars);
+        }
+
+        /**
+         * Wrap up
+         */
+        
+        // Shuffle, as to not have always to start with the loweracse, then uppercase, ...
+        $str = str_shuffle($str);
 
         return $str;
+    }
+
+    /**
+     * Returns a random number using random_int if available or mt_rand f not.
+     * @param int $max The highest value to be returned
+     * @param int $min The lowest value to be returned
+     * @return int
+     */
+    private static function safeRandom($max, $min = 0)
+    {
+        if (function_exists('random_int')) {
+            return random_int($min, $max);
+        }
+        return mt_rand($min, $max);
+    }
+
+    /**
+     * Returns a random character from a string
+     * @param string $chars Pool fo character from where to pick
+     * @return string Picked character
+     */
+    private static function pickRandomChar($chars)
+    {
+        return $chars[static::safeRandom(strlen($chars) - 1)];
     }
 }

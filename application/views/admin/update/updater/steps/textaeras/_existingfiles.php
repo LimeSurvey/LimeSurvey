@@ -3,7 +3,7 @@
  * This view render the textaera to display the list of existing files in the local installation but that shoulb created by the updater
  * If no existing file, display a success message
  *
- * @var array $existingfiles array continaing the readonly files.
+ * @var array $existingfiles array containing the readonly files.
  * @var obj clang
  */
 ?>
@@ -19,7 +19,7 @@
 sort($existingfiles);
 foreach ($existingfiles as $existingfile)
 {
-echo htmlspecialchars($existingfile['file'])."\n";
+echo htmlspecialchars((string) $existingfile['file'])."\n";
 }
 ?>
 </textarea>

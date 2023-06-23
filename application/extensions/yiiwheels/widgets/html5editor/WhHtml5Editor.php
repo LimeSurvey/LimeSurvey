@@ -12,7 +12,7 @@
  * @package YiiWheels.widgets.highcharts
  * @uses YiiStrap.helpers.TbArray
  */
-Yii::import('bootstrap.helpers.TbArray');
+Yii::import('yiistrap_fork.helpers.TbArray');
 
 class WhHtml5Editor extends CInputWidget
 {

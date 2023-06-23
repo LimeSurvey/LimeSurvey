@@ -1,5 +1,5 @@
 <?php if ($andOrOr): ?>
-    <h4 class='condition-and-or-or'><span class='label label-default'> <?php echo $andOrOr; ?> </span></h4>
+    <h4 class='condition-and-or-or my-2'><span class='badge'> <?php echo $andOrOr; ?> </span></h4>
 <?php endif; ?>
 
 <?php echo TbHtml::form(
@@ -25,16 +25,16 @@
                 </td>
             <?php endif; ?>
 
-            <td class='col-md-4 questionnamecol'>
+            <td class='col-lg-4 questionnamecol'>
                 <span><?php echo CHtml::encode($name); ?></span>
             </td>
-            <td class='col-md-2 operatornametd'>
-                <span><?php echo $method[trim($row['method'])]; ?> </span>
+            <td class='col-lg-2 operatornametd'>
+                <span><?php echo $method[trim((string) $row['method'])]; ?> </span>
             </td>
-            <td class='col-md-3 questionanswertd'>
+            <td class='col-lg-3 questionanswertd'>
                 <span><?php echo $target; ?></span>
             </td>
-            <td class='text-right'>
+            <td class='text-end'>
                 <?php echo $editButtons; ?>
                 <?php echo $hiddenFields; ?>
             </td>

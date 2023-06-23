@@ -138,7 +138,7 @@ class SurveysGroupsPermissionController extends LSBaseController
             $oAddUserList = User::model()->findAll($oCriteria);
             /* User group according to rights */
             $oCriteria = new CDbCriteria();
-            if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == true && !Permission::model()->hasGlobalPermission('superadmin')) {
+            if (shouldFilterUserGroupList()) {
                 $authorizedGroupsList = getUserGroupList();
                 $oCriteria->addInCondition("ugid", $authorizedGroupsList);
             }
@@ -155,15 +155,17 @@ class SurveysGroupsPermissionController extends LSBaseController
             'model' => $model,
         );
 
-        // Green Bar Page Title
-        $aData['pageTitle'] = gT('Permission for group: ') . $model->title;
-
-        // White Top Bar
-        $aData['fullpagebar'] = array(
-            'returnbutton' => array(
-                'text' => gT('Back'),
-                'url'  => 'surveyAdministration/listsurveys#surveygroups',
-            ),
+        $aData['topbar']['title'] = gT('Permission for group: ') . $model->title;
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/layouts/partial_topbar/right_close_saveclose_save',
+            [
+                'isReturnBtn' => true,
+                'returnUrl' => Yii::app()->createUrl("surveyAdministration/listsurveys#surveygroups"),
+                'isCloseBtn' => false,
+                'isSaveBtn' => false,
+                'isSaveAndCloseBtn' => false,
+            ],
+            true
         );
         $this->aData = $aData;
 
@@ -195,15 +197,17 @@ class SurveysGroupsPermissionController extends LSBaseController
         );
         $aData['subview'] = 'addUserResult';
 
-        // Green Bar Page Title
-        $aData['pageTitle'] = gT('Permission for group: ') . $model->title;
-
-        $aData['fullpagebar'] = [
-            'closebutton' => [
-                'url' => App()->createUrl("SurveysGroupsPermission/index", ["id" => $id]),
-                'url_keep' => true,
+        $aData['topbar']['title'] = gT('Permission for group: ') . $model->title;
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/layouts/partial_topbar/right_close_saveclose_save',
+            [
+                'backUrl' => App()->createUrl("SurveysGroupsPermission/index", ["id" => $id]),
+                'isCloseBtn' => true,
+                'isSaveBtn' => false,
+                'isSaveAndCloseBtn' => false,
             ],
-        ];
+            true
+        );
         $aData['aPermissionData'] = array(
             'result' => array(),
             'uid' => $uid,
@@ -218,7 +222,7 @@ class SurveysGroupsPermissionController extends LSBaseController
         if (!$oPermission->hasErrors()) {
             $result['success'] = gT("User added.");
         } else {
-            $result['error'] = CHtml::errorSummary($oPermission);
+            $result['error'] = $oPermission;
         }
 
         $aData['aPermissionData']['result'] = $result;
@@ -245,7 +249,7 @@ class SurveysGroupsPermissionController extends LSBaseController
             throw new CHttpException(400, gT("Invalid action"));
         }
         /* Check if logged user can see user group */
-        if (!in_array($ugid, getUserGroupList())) {
+        if (shouldFilterUserGroupList() && !in_array($ugid, getUserGroupList())) {
             throw new CHttpException(403, gT("You do not have permission to this user group."));
         }
         $aData = array(
@@ -253,15 +257,17 @@ class SurveysGroupsPermissionController extends LSBaseController
         );
         $aData['subview'] = 'addUserGroupResult';
 
-        // Green Bar Page Title
-        $aData['pageTitle'] = gT('Permission for group: ') . $model->title;
-
-        $aData['fullpagebar'] = [
-            'closebutton' => [
-                'url' => App()->createUrl("SurveysGroupsPermission/index", ["id" => $id]),
-                'url_keep' => true,
+        $aData['topbar']['title'] = gT('Permission for group: ') . $model->title;
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/layouts/partial_topbar/right_close_saveclose_save',
+            [
+                'backUrl' => App()->createUrl("SurveysGroupsPermission/index", ["id" => $id]),
+                'isCloseBtn' => true,
+                'isSaveBtn' => false,
+                'isSaveAndCloseBtn' => false,
             ],
-        ];
+            true
+        );
         $aData['aPermissionData'] = array(
             'result' => array(),
             'ugid' => $ugid,
@@ -326,7 +332,7 @@ class SurveysGroupsPermissionController extends LSBaseController
             throw new CHttpException(401, gT("User group not found"));
         }
         /* Check if logged user can see user group */
-        if (!in_array($to, getUserGroupList())) {
+        if (shouldFilterUserGroupList() && !in_array($to, getUserGroupList())) {
             throw new CHttpException(403, gT("You do not have permission to access this user group."));
         }
         $this->viewUserOrUserGroup($id, $to, 'group');
@@ -440,15 +446,17 @@ class SurveysGroupsPermissionController extends LSBaseController
         );
         $aData['subview'] = 'deleteUserResult';
 
-        // Green Bar Page Title
-        $aData['pageTitle'] = gT('Permission for group: ') . $model->title;
-
-        $aData['fullpagebar'] = [
-            'closebutton' => [
-                'url' => App()->createUrl("SurveysGroupsPermission/index", ["id" => $id]),
-                'url_keep' => true,
+        $aData['topbar']['title'] = gT('Permission for group: ') . $model->title;
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/layouts/partial_topbar/right_close_saveclose_save',
+            [
+                'backUrl' => App()->createUrl("SurveysGroupsPermission/index", ["id" => $id]),
+                'isCloseBtn' => true,
+                'isSaveBtn' => false,
+                'isSaveAndCloseBtn' => false,
             ],
-        ];
+            true
+        );
         $aData['aPermissionData'] = array(
             'model' => $model,
             'oUser' => $oUser,
@@ -496,34 +504,25 @@ class SurveysGroupsPermissionController extends LSBaseController
             $aSurveysGroupsPermissions,
             $aSurveysInGroupPermissions
         );
-        $buttons = array(
-            'closebutton' => array(
-                'url' => App()->createUrl("SurveysGroupsPermission/index", ["id" => $id]),
-                'url_keep' => true,
-            )
-        );
-        if ($model->hasPermission('permission', 'update')) {
-            $buttons = array(
-                'savebutton' => array(
-                    'form' => 'permissionsSave'
-                ),
-                'saveandclosebutton' => array(
-                    'form' => 'permissionsSave'
-                ),
-                'closebutton' => array(
-                    'url' => App()->createUrl("SurveysGroupsPermission/index", ["id" => $id]),
-                    'url_keep' => true,
-                )
-            );
-        }
         $aData = array(
             'model' => $model,
             'subview' => 'setPermissionForm',
-            'fullpagebar' => $buttons
         );
 
-        // Green Bar Page Title
-        $aData['pageTitle'] = gT('Permission for group: ') . $model->title;
+        $hasUpdatePermission = $model->hasPermission('permission', 'update');
+        $aData['topbar']['title'] = gT('Permission for group: ') . $model->title;
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/layouts/partial_topbar/right_close_saveclose_save',
+            [
+                'backUrl' => App()->createUrl("SurveysGroupsPermission/index", ["id" => $id]),
+                'isCloseBtn' => true,
+                'isSaveBtn' => $hasUpdatePermission,
+                'formIdSave' => 'permissionsSave',
+                'isSaveAndCloseBtn' => $hasUpdatePermission,
+                'formIdSaveClose' => 'permissionsSave',
+            ],
+            true
+        );
 
         $aData['aPermissionData'] = array(
             'aPermissions' => $aPermissions,

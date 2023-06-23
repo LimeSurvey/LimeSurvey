@@ -70,7 +70,7 @@ class EMWarningBase implements EMWarningInterface
             return CHtml::link(
                 $this->msg,
                 $this->helpLink,
-                array("target" => "_blank",'class' => 'text-warning')
+                array("target" => "_blank",'class' => 'text-danger')
             );
         } else {
             return '[no help link]';

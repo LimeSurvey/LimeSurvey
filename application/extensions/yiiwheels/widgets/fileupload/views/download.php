@@ -23,7 +23,7 @@
 		<td colspan="2"></td>
 		{% } %}
 		<td class="delete">
-			<button class="btn btn-danger" data-type="{%=file.delete_type%}" data-url="{%=file.delete_url%}">
+			<button type="button" class="btn btn-danger" data-type="{%=file.delete_type%}" data-url="{%=file.delete_url%}">
 				<i class="icon-trash icon-white"></i>
 				<span>{%=locale.fileupload.destroy%}</span>
 			</button>

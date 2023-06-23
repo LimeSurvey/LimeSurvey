@@ -43,7 +43,7 @@ class expressionQuestionHelp extends PluginBase
         $knownVars = $this->event->get('knownVars');
         $language = $this->event->get('language');
         foreach ($knownVars as $var => $values) {
-            if (isset($values['question']) && isset($values['qid'])) {
+            if (isset($values['question']) && isset($values['qid']) && $values['qid'] != '') {
                 $oQuestionL10n = QuestionL10n::model()->find('qid = :qid and language = :language', array(":qid" => $values['qid'],":language" => $language));
                 if ($oQuestionL10n) {
                     $knownVars[$var]['help'] = $oQuestionL10n->help;

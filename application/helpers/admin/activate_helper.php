@@ -62,7 +62,7 @@ function fixNumbering($iQuestionID, $iSurveyID)
         foreach ($aSwitcher as $aSwitch) {
             $sQuery = "UPDATE {{conditions}}
             SET cqid=$iNewQID,
-            cfieldname='" . str_replace("X" . $iQuestionID, "X" . $iNewQID, $aSwitch['cfieldname']) . "'
+            cfieldname='" . str_replace("X" . $iQuestionID, "X" . $iNewQID, (string) $aSwitch['cfieldname']) . "'
             WHERE cqid=$iQuestionID";
             Yii::app()->db->createCommand($sQuery)->query();
         }
@@ -304,8 +304,8 @@ function mssql_drop_constraint($fieldname, $tablename)
     WHERE (c_obj.xtype = 'D') AND (col.name = '{$fieldname}') AND (t_obj.name='{{{$tablename}}}')";
     $result = Yii::app()->db->createCommand($dfquery)->query();
     $result = $result->read();
-    $defaultname = $result['CONSTRAINT_NAME'];
-    if ($defaultname != false) {
+    if (!empty($result['CONSTRAINT_NAME'])) {
+        $defaultname = $result['CONSTRAINT_NAME'];
         modifyDatabase("", "ALTER TABLE {{{$tablename}}} DROP CONSTRAINT {$defaultname[0]}");
         echo $modifyoutput;
         flush();

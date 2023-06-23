@@ -255,7 +255,7 @@ comments = {list(self.comments)}<br/>]]></question>
     <gid><![CDATA[1]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[1]]></title>
-    <question><![CDATA[1st sub-question]]></question>
+    <question><![CDATA[1st subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -273,7 +273,7 @@ comments = {list(self.comments)}<br/>]]></question>
     <gid><![CDATA[1]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[2]]></title>
-    <question><![CDATA[2nd sub-question]]></question>
+    <question><![CDATA[2nd subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -291,7 +291,7 @@ comments = {list(self.comments)}<br/>]]></question>
     <gid><![CDATA[1]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[3]]></title>
-    <question><![CDATA[3rd sub-question]]></question>
+    <question><![CDATA[3rd subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -363,7 +363,7 @@ comments = {list(self.comments)}<br/>]]></question>
     <gid><![CDATA[1]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[1]]></title>
-    <question><![CDATA[1st sub-question]]></question>
+    <question><![CDATA[1st subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -381,7 +381,7 @@ comments = {list(self.comments)}<br/>]]></question>
     <gid><![CDATA[1]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[2]]></title>
-    <question><![CDATA[2nd sub-question]]></question>
+    <question><![CDATA[2nd subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -399,7 +399,7 @@ comments = {list(self.comments)}<br/>]]></question>
     <gid><![CDATA[1]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[3]]></title>
-    <question><![CDATA[3rd sub-question]]></question>
+    <question><![CDATA[3rd subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -417,7 +417,7 @@ comments = {list(self.comments)}<br/>]]></question>
     <gid><![CDATA[1]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[4]]></title>
-    <question><![CDATA[4th sub-question]]></question>
+    <question><![CDATA[4th subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -435,7 +435,7 @@ comments = {list(self.comments)}<br/>]]></question>
     <gid><![CDATA[1]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[5]]></title>
-    <question><![CDATA[5th sub-question]]></question>
+    <question><![CDATA[5th subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -948,7 +948,7 @@ comments = {list(self.comments)}<br/>]]></question>
 <br />
     comments - only subquestions that are comments (e.g. from multiple choice with comment and list with comment)<br />
     nocomments - only subquestions that are not comments<br />
-    sq_X - where X is a row or column identifier. Only sub-questions matching pattern X are selected.<br />
+    sq_X - where X is a row or column identifier. Only subquestions matching pattern X are selected.<br />
 <br />
 The 'that' variable is like the 'self' variable, but lets you refer to other questions. Its syntax is:<br />
 <ul>
@@ -962,7 +962,7 @@ The 'that' variable is like the 'self' variable, but lets you refer to other que
 		    that.<em>qname.sub-selector.suffix</em></li>
 </ul>
 <br />
-<em>qname </em>is the question name without any sub-question extensions. So, say you create a question 'q1', that is its qname<br />
+<em>qname </em>is the question name without any subquestion extensions. So, say you create a question 'q1', that is its qname<br />
 <br />
 Examples:<br />
 <ul>

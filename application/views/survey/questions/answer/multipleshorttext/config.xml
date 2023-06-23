@@ -382,7 +382,7 @@
                 </option>
             </options>
             <default>0</default>
-            <help>Specify how array-filtered sub-questions should be displayed</help>
+            <help>Specify how array-filtered subquestions should be displayed</help>
             <caption>Array filter style</caption>
             <i18n></i18n>
             <readonly></readonly>
@@ -445,8 +445,8 @@
             <inputtype>textarea</inputtype>
             <expression>2</expression>
             <xssfilter>0</xssfilter>
-            <help>Enter a boolean equation to validate each sub-question.</help>
-            <caption>Sub-question validation equation</caption>
+            <help>Enter a boolean equation to validate each subquestion.</help>
+            <caption>Subquestion validation equation</caption>
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
@@ -458,8 +458,8 @@
             <inputtype>textarea</inputtype>
             <expression>1</expression>
             <i18n>1</i18n>
-            <help>This is a tip shown to the participant describing the sub-question validation equation.</help>
-            <caption>Sub-question validation tip</caption>
+            <help>This is a tip shown to the participant describing the subquestion validation equation.</help>
+            <caption>Subquestion validation tip</caption>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
         </attribute>
@@ -590,7 +590,7 @@
         <!-- Statistics Attributes END -->
         <!-- Timer Attributes START -->
         <!-- Timer Attributes END -->
-        <!-- Input Atributes START -->
+        <!-- Input Attributes START -->
         <attribute>
             <name>maximum_chars</name>
             <category>Input</category>
@@ -604,7 +604,7 @@
             <readonly_when_active></readonly_when_active>
             <expression></expression>
         </attribute>
-        <!-- Input Atributes END -->
+        <!-- Input Attributes END -->
     </attributes>
 
     <!-- Core question js/css configuration -->
