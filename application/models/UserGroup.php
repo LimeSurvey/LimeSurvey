@@ -167,15 +167,18 @@ class UserGroup extends LSActiveRecord
      */
     public function updateGroup($name, $description, $ugId)
     {
-        $group = UserGroup::model()->findByPk($ugId);
-        $group->name = $name;
-        $group->description = $description;
-        $group->save();
-        if ($group->getErrors()) {
-            return false;
-        } else {
-            return true;
+        $group = $this->requestEditGroup($ugId, App()->user->id);
+        if ($group !== null) {
+            $group->name = $name;
+            $group->description = $description;
+            $group->save();
+            if ($group->getErrors()) {
+                return false;
+            } else {
+                return true;
+            }
         }
+        return false;
     }
 
     /**
