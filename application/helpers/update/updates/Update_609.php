@@ -6,7 +6,7 @@ namespace LimeSurvey\Helpers\Update;
  * Add labelsets->owner_id and index
  * @package LimeSurvey\Helpers\Update
  */
-class Update_608 extends DatabaseUpdateBase
+class Update_609 extends DatabaseUpdateBase
 {
     /**
      * @inheritDoc
