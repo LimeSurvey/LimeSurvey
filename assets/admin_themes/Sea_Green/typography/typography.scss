@@ -1,0 +1,72 @@
+body {
+  color       : $g-900;
+  font-family : $ibm-font-family;
+  font-weight : $font-weight-normal;
+  font-size   : $font-size-base;
+  line-height : $line-height-24;
+}
+
+h1,
+.h1 {
+  @include h1
+}
+
+h2,
+.h2 {
+  color       : $heading-title-color;
+  font-family : $ibm-font-family;
+  font-weight : $font-weight-600;
+  font-size   : $font-size-base;
+  line-height : $line-height-20;
+}
+
+h3,
+.h3 {
+  @include h3
+}
+
+label {
+  color       : $heading-title-color;
+  font-family : $ibm-font-family;
+  font-weight : $font-weight-500;
+  font-size   : $font-size-sm;
+  line-height : $line-height-20;
+}
+
+dl {
+  color       : $g-800;
+  font-family : $ibm-font-family;
+  font-weight : $font-weight-normal;
+  font-size   : $font-size-base;
+  line-height : $line-height-24;
+
+  dt {
+    color       : $g-900;
+    font-weight : $font-weight-600;
+    font-size   : $font-size-base;
+    line-height : $line-height-24;
+  }
+}
+
+.fw-bold {
+  font-weight: 600 !important;
+}
+
+// LINKS
+a {
+  color: $link-color;
+  font-weight: $font-weight-500;
+}
+
+.has-link {
+  cursor: pointer;
+}
+
+.has-link a:hover {
+  text-decoration: none;
+}
+
+.has-link a {
+  color: $g-900;
+  font-weight: $font-weight-normal;
+}

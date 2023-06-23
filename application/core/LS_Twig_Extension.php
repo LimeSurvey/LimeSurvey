@@ -40,8 +40,9 @@
  * To get the pure HTML, just do: {{ foo($bar) | raw }}
  */
 
+use Twig\Extension\AbstractExtension;
 
-class LS_Twig_Extension extends Twig_Extension
+class LS_Twig_Extension extends AbstractExtension
 {
     /**
      * Publish a css file from public style directory, using or not the asset manager (depending on configuration)
@@ -134,7 +135,7 @@ class LS_Twig_Extension extends Twig_Extension
      */
     public static function json_decode($json, $assoc = true)
     {
-        return (array) json_decode($json, $assoc);
+        return (array) json_decode((string)$json, $assoc);
     }
 
     /**
@@ -184,7 +185,7 @@ class LS_Twig_Extension extends Twig_Extension
         return 0;
     }
     /**
-     * Retreive the question classes for a given question id
+     * Retrieve the question classes for a given question id
      * Use in survey template question.twig file.
      * TODO: we'd rather provide a oQuestion object to the twig view with a method getAllQuestion(). But for now, this public static function respect the old way of doing
      *
@@ -197,7 +198,7 @@ class LS_Twig_Extension extends Twig_Extension
 
         $lemQuestionInfo = LimeExpressionManager::GetQuestionStatus($iQid);
         $sType           = $lemQuestionInfo['info']['type'];
-        $aSGQA           = explode('X', $lemQuestionInfo['sgqa']);
+        $aSGQA           = explode('X', (string) $lemQuestionInfo['sgqa']);
         $iSurveyId       = $aSGQA[0];
 
         $aQuestionClass  = Question::getQuestionClass($sType);
@@ -219,7 +220,7 @@ class LS_Twig_Extension extends Twig_Extension
         //add additional classes
         if (isset($aQuestionAttributes['cssclass']) && $aQuestionAttributes['cssclass'] != "") {
             /* Got to use static expression */
-            $emCssClass = trim(LimeExpressionManager::ProcessString($aQuestionAttributes['cssclass'], null, array(), 1, 1, false, false, true)); /* static var is the lmast one ...*/
+            $emCssClass = trim((string) LimeExpressionManager::ProcessString($aQuestionAttributes['cssclass'], null, array(), 1, 1, false, false, true)); /* static var is the lmast one ...*/
             if ($emCssClass != "") {
                 $aQuestionClass .= " " . CHtml::encode($emCssClass);
             }
@@ -288,7 +289,7 @@ class LS_Twig_Extension extends Twig_Extension
     public static function imageSrc($sImagePath, $default = false)
     {
         // If $sImagePath is a 'virtual' path, we must get the real path.
-        if (preg_match('/(image::\w+::)/', $sImagePath, $m)) {
+        if (preg_match('/(image::\w+::)/', (string) $sImagePath, $m)) {
             $oTemplate =  Template::getLastInstance();
             Yii::import('application.helpers.SurveyThemeHelper');
             $sFullPath = SurveyThemeHelper::getRealThemeFilePath($sImagePath, $oTemplate->template_name, $oTemplate->sid);
@@ -329,8 +330,8 @@ class LS_Twig_Extension extends Twig_Extension
     public static function templateResourceUrl($resourcePath, $default = false)
     {
         /* get extension of file in allowedthemeuploads */
-        $aAllowExtensions = explode(',', Yii::app()->getConfig('allowedthemeuploads'));
-        $info = pathinfo($resourcePath);
+        $aAllowExtensions = explode(',', (string) Yii::app()->getConfig('allowedthemeuploads'));
+        $info = pathinfo((string) $resourcePath);
         if (!isset($info['extension']) || !in_array(strtolower($info['extension']), $aAllowExtensions)) {
             if ($default) {
                 return self::templateResourceUrl($default);
@@ -574,7 +575,7 @@ class LS_Twig_Extension extends Twig_Extension
      * @deprecated (4.0)
      * @param string $sString :the string
      * @param boolean $bFlat : flattenText or not : completely flat (not like flattenText from common_helper)
-     * @param integer $iAbbreviated : max string text (if true : allways flat), 0 or false : don't abbreviated
+     * @param integer $iAbbreviated : max string text (if true : always flat), 0 or false : don't abbreviated
      * @param string $sEllipsis if abbreviated : the char to put at end (or middle)
      * @param integer $fPosition if abbreviated position to split (in % : 0 to 1)
      * @return string
@@ -582,19 +583,19 @@ class LS_Twig_Extension extends Twig_Extension
     public static function flatEllipsizeText($sString, $bFlat = true, $iAbbreviated = 0, $sEllipsis = '...', $fPosition = 1)
     {
         if (!$bFlat && !$iAbbreviated) {
-            return $sString;
+            return (string) $sString;
         }
         $sString = self::flatString($sString);
         if ($iAbbreviated > 0) {
             $sString = ellipsize($sString, $iAbbreviated, $fPosition, $sEllipsis);
         }
-        return $sString;
+        return (string) $sString;
     }
 
     public static function darkencss($cssColor, $grade = 10, $alpha = 1)
     {
 
-        $aColors = str_split(substr($cssColor, 1), 2);
+        $aColors = str_split(substr((string) $cssColor, 1), 2);
         $return = [];
         foreach ($aColors as $color) {
             $decColor = hexdec($color);
@@ -632,7 +633,7 @@ class LS_Twig_Extension extends Twig_Extension
 
     public static function lightencss($cssColor, $grade = 10, $alpha = 1)
     {
-        $aColors = str_split(substr($cssColor, 1), 2);
+        $aColors = str_split(substr((string) $cssColor, 1), 2);
         $return = [];
         foreach ($aColors as $color) {
             $decColor = hexdec($color);
@@ -656,7 +657,7 @@ class LS_Twig_Extension extends Twig_Extension
 
 
     /**
-     * Retreive all the previous answers from a given token
+     * Retrieve all the previous answers from a given token
      * To use it:
      *  {% set aResponses = getAllTokenAnswers(aSurveyInfo.sid) %}
      *  {{ dump(aResponses) }}
@@ -691,5 +692,59 @@ class LS_Twig_Extension extends Twig_Extension
     {
         Yii::app()->loadHelper('surveytranslator');
         return getLanguageRTL($sLanguageCode);
+    }
+
+    /**
+     * Returns the "tracking url" for Google Analytics when style is "Survey-SID/GROUP"
+     * @param int $surveyId
+     * @param string $trackUrlPageName  Specific page name to include in the tracking url. If it's empty, we will try to infer it from the context.
+     * @return string The tracking URL as "<survey name>-[<survey id>]/[<page name|group seq>]-<group name>"
+     */
+    public static function getGoogleAnalyticsTrackingUrl($surveyId, $trackUrlPageName = '')
+    {
+        $survey = Survey::model()->findByPk($surveyId);
+
+        $googleAnalyticsAPIKey = $survey->getGoogleanalyticsapikey();
+        $googleAnalyticsStyle = isset($survey->googleanalyticsstyle) ? $survey->googleanalyticsstyle : '1';
+
+        // Tracking URL can only be used if there is an API key and the style is set to "Survey-SID/GROUP"
+        if ($googleAnalyticsAPIKey == '' || $googleAnalyticsStyle != 2) {
+            return '';
+        }
+
+        $surveyName = $survey->localizedTitle;
+        $groupName = '';
+
+        // If a page name is specified, use that. Otherwise, try to get it from the context.
+        if (!empty($trackUrlPageName)) {
+            $page = $trackUrlPageName;
+        } else {
+            $moveInfo = LimeExpressionManager::GetLastMoveResult();
+            if (is_null($moveInfo) || (isset($moveInfo['at_start']) && $moveInfo['at_start'])) {
+                $page = 'welcome';
+            } elseif ($moveInfo['finished']) {
+                $page = 'finished';
+            } else {
+                $showgroupinfo = Yii::app()->getConfig('showgroupinfo');
+                if ($survey->format == 'A') {
+                    $page = 1;
+                } else {
+                    if (
+                        $showgroupinfo == 'both'
+                        || $showgroupinfo == 'name'
+                        || ($showgroupinfo == 'choose' && !isset($survey->showgroupinfo))
+                        || ($showgroupinfo == 'choose' && $survey->showgroupinfo == 'B')
+                        || ($showgroupinfo == 'choose' && $survey->showgroupinfo == 'N')
+                    ) {
+                        $groupInfo = LimeExpressionManager::GetStepIndexInfo($moveInfo['seq']);
+                        $groupName = isset($groupInfo['gname']) ? $groupInfo['gname'] : '';
+                    }
+                    $page = $moveInfo['gseq']+1;
+                };
+            }
+        }
+
+        $trackURL = htmlspecialchars($surveyName . '-[' . $surveyId . ']/[' . $page . ']-' . $groupName);
+        return $trackURL;
     }
 }

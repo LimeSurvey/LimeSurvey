@@ -72,7 +72,7 @@ class WhCountOfTypeOperation extends WhOperation
 	 */
 	public function processValue($value)
 	{
-		$clean = strip_tags($value);
+		$clean = strip_tags((string) $value);
 
 		if (array_key_exists($clean, $this->types)) {
 			if (!isset($this->types[$clean]['value'])) {

@@ -39,7 +39,7 @@ abstract class LSYii_Controller extends CController
         // Deprecated function
         $this->loadHelper('globalsettings');
         // tracevar function
-        $this->loadHelper('common');
+        //$this->loadHelper('common');
         $this->loadHelper('expressions.em_manager');
         $this->loadHelper('replacements');
         $this->customInit();
@@ -145,10 +145,10 @@ abstract class LSYii_Controller extends CController
 
         //SET LOCAL TIME
         $timeadjust = Yii::app()->getConfig("timeadjust");
-        if (substr($timeadjust, 0, 1) != '-' && substr($timeadjust, 0, 1) != '+') {
+        if (substr((string) $timeadjust, 0, 1) != '-' && substr((string) $timeadjust, 0, 1) != '+') {
             $timeadjust = '+' . $timeadjust;
         }
-        if (strpos($timeadjust, 'hours') === false && strpos($timeadjust, 'minutes') === false && strpos($timeadjust, 'days') === false) {
+        if (strpos((string) $timeadjust, 'hours') === false && strpos((string) $timeadjust, 'minutes') === false && strpos((string) $timeadjust, 'days') === false) {
             Yii::app()->setConfig("timeadjust", $timeadjust . ' hours');
         }
         /* Set the default language, other controller can update if wanted */
@@ -156,7 +156,9 @@ abstract class LSYii_Controller extends CController
     }
 
     /**
-     * Creates an absolute URL based on the given controller and action information.
+     * Returns an absolute URL based on the given controller and action information.
+     * The functionalty was moved to
+     * \LSYii_Application::createPublicUrl, to be safe the function remains here.
      * @param string $route the URL route. This should be in the format of 'ControllerID/ActionID'.
      * @param array $params additional GET parameters (name=>value). Both the name and value will be URL-encoded.
      * @param string $schema schema to use (e.g. http, https). If empty, the schema used for the current request will be used.
@@ -165,20 +167,7 @@ abstract class LSYii_Controller extends CController
      */
     public function createAbsoluteUrl($route, $params = array(), $schema = '', $ampersand = '&')
     {
-        $sPublicUrl = Yii::app()->getConfig("publicurl");
-        // Control if public url are really public : need scheme and host
-        // If yes: use it
-        $aPublicUrl = parse_url($sPublicUrl);
-        if (isset($aPublicUrl['scheme']) && isset($aPublicUrl['host'])) {
-            $url = parent::createAbsoluteUrl($route, $params, $schema, $ampersand);
-            $sActualBaseUrl = Yii::app()->getBaseUrl(true);
-            if (substr($url, 0, strlen($sActualBaseUrl)) == $sActualBaseUrl) {
-                $url = substr($url, strlen($sActualBaseUrl));
-            }
-            return trim($sPublicUrl, "/") . $url;
-        } else {
-                    return parent::createAbsoluteUrl($route, $params, $schema, $ampersand);
-        }
+        return App()->createPublicUrl($route, $params, $schema, $ampersand);
     }
 
     /**

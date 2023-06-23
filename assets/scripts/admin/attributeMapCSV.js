@@ -2,16 +2,18 @@
 // Namespace
 var LS = LS || {  onDocumentReady: {} };
 
-$(document).on('ready  pjax:scriptcomplete', function() {
+
+$(document).on('ready pjax:scriptcomplete', function() {
+
     if(!$('#csvattribute').length ) {
         //alert("All the attributes are automatically mapped");
     }
     
     // Find the biggest column and set both to that height
+    // TODO: Not needed since BS5 can adjust height.
     function adjustHeights() {
-
         var max = Math.max($('.droppable-new').height(), $('.droppable-csv').height());
-        console.ls.log('max', max);
+        console.log('max', max);
 
         $('.droppable-new').css('min-height', max);
         $('.droppable-csv').css('min-height', max);
@@ -95,7 +97,7 @@ $(document).on('ready  pjax:scriptcomplete', function() {
         drop: function(event, ui) {
 
             // Insert nice arrow
-            var col = $(this).find('.col-sm-6:first-child');
+            var col = $(this).find('.col-md-6:first-child');
             col.append('<span class="fa fa-arrows-h csvatt-arrow"></span>');
 
             // Physically  move the draggable to the target (the plugin just visually moves it)
@@ -142,7 +144,7 @@ $(document).on('ready  pjax:scriptcomplete', function() {
                 $(newDraggable).text($(newDraggable).attr('data-name'));
             }        
 
-            newDraggable.wrap("<div class='col-sm-6'></div>");
+            newDraggable.wrap("<div class='col-md-6'></div>");
 
             adjustHeights();
         }
@@ -204,26 +206,6 @@ $(document).on('ready  pjax:scriptcomplete', function() {
             }
         });
 
-        var dialog_buttons={};
-
-        dialog_buttons[okBtn]=function(){
-            $(location).attr('href',displayParticipants);
-        };
-
-        $("#processing").dialog({
-            height: 550,
-            width: 700,
-            modal: true,
-            buttons: dialog_buttons,
-            open: function(event, ui) {
-                $('#processing').parent().find("button").each(function() {
-                    if ($(this).text() == okBtn) {
-                        $(this).attr('disabled', true);
-                    }
-                });
-            }
-        });
-
         $("#processing").load(copyUrl, {
             characterset: characterset,
             separatorused : separator,
@@ -233,11 +215,9 @@ $(document).on('ready  pjax:scriptcomplete', function() {
             overwrite : attoverwrite,
             filterbea : filterblankemails
         }, function(msg){
-            $('#processing').parent().find("button").each(function() {
-                if ($(this).text() == okBtn) {
-                    $(this).attr('disabled', false);
-                }
-            });
+            var options = {};
+            var uploadSummaryModal = new bootstrap.Modal(document.getElementById('attribute-map-csv-modal'), options);
+            uploadSummaryModal.show();
         });
     });
 });

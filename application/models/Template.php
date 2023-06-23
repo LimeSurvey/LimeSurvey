@@ -134,6 +134,8 @@ class Template extends LSActiveRecord
      */
     public static function templateNameFilter($sTemplateName)
     {
+        $sTemplateName = sanitize_filename($sTemplateName, false, false, false);
+
         // If the names has already been filtered, we skip the process
         if (!empty(self::$aNamesFiltered[$sTemplateName])) {
             return self::$aNamesFiltered[$sTemplateName];
@@ -489,7 +491,7 @@ class Template extends LSActiveRecord
     {
 
         if ($bForceXML === null) {
-          // Template developper could prefer to work with XML rather than DB as a first step, for quick and easy changes
+          // Template developer could prefer to work with XML rather than DB as a first step, for quick and easy changes
             $bForceXML = (App()->getConfig('force_xmlsettings_for_survey_rendering')) ? true : false;
         }
         // The error page from default template can be called when no survey found with a specific ID.
@@ -549,7 +551,7 @@ class Template extends LSActiveRecord
 
     /**
     * Alias function for resetAssetVersion()
-    * Don't delete this one to maintain updgrade compatibilty
+    * Don't delete this one to maintain updgrade compatibility
     * @return void
     */
     public function forceAssets()

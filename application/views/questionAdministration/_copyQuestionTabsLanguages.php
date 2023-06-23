@@ -9,6 +9,7 @@
  */
 ?>
 <div class="row">
+   <div class="col-6">
     <!-- Question code -->
     <?php $this->renderPartial(
         "questionCode",
@@ -18,12 +19,11 @@
             'newQid' => true
         ]
     ); ?>
-    <!-- Language selector -->
-    <?php $this->renderPartial("languageselector", ['oSurvey' => $oSurvey]); ?>
+   </div>
 </div>
 
 <div class="row">
-    <div class="col-xs-12">
+    <div class="col-12">
         <!-- Text elements -->
         <?php $this->renderPartial(
             "textElements",
@@ -37,6 +37,8 @@
 </div>
 
 <div id='questionactioncopy' class='extra-action'>
-    <button type='submit' class="btn btn-primary saveandreturn hidden"  name="redirection" value="edit"><?php eT("Save") ?> </button>
-    <input type='submit' value='<?php eT("Save and close"); ?>'  class="btn btn-default hidden"/>
+    <button role="button" type='submit' class="btn btn-primary saveandreturn d-none" name="redirection" value="edit">
+        <?php eT("Save"); ?>
+    </button>
+    <input type='submit' value='<?php eT("Save and close"); ?>'  class="btn btn-outline-secondary d-none"/>
 </div>

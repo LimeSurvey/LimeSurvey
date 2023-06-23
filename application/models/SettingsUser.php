@@ -3,7 +3,7 @@
 /**
  * This is the model class for table "{{settings_user}}".
  *
- * The followings are the available columns in table '{{settings_user}}':
+ * The following are the available columns in table '{{settings_user}}':
  * @property integer $uid User id
  * @property string $entity Entity name
  * @property string $entity_id Entity ID
@@ -168,7 +168,7 @@ class SettingsUser extends LSActiveRecord
 
         $setting = self::model()->find($searchCriteria);
 
-        return $setting !== null ? $setting : null;
+        return $setting ?? null;
     }
 
     /**
@@ -179,6 +179,7 @@ class SettingsUser extends LSActiveRecord
      * @param integer|null $uid | Can be omitted to just take the currently logged in users id
      * @param integer|null $entity | optional defaults to 'null'
      * @param integer|null $entity_id | optional defaults to 'null'
+     * @param mixed $default | optional defaults to 'null'
      * @return mixed|null  The current settings value or null id there is no setting
      */
     public static function getUserSettingValue($stg_name, $uid = null, $entity = null, $entity_id = null, $default = null)

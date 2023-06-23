@@ -25,7 +25,10 @@ const SaveController = () => {
             var formId = '#' + $(that).attr('data-form-to-save');
             form = $(document).find(formId).first();
         } else {
-            form = $('#pjax-content').find('form:not(#translatemenu)').first(); // #translatemenu is a first form on survey quick translate page, so we want to skip it
+            form = $('#in_survey_common').find('form:not(#translatemenu)').first(); // #translatemenu is a first form on survey quick translate page, so we want to skip it
+            if (form.length < 1) {
+                form = $('#trigger-save-button').find('form:not(#translatemenu)').first();
+            }
         }
 
         if (form.length < 1)
@@ -36,13 +39,20 @@ const SaveController = () => {
     isSubmitting = () => formSubmitting,
     displayLoadingState = (el) => {
         if($(el).data('form-id') == 'addnewsurvey') {
-            const loadingSpinner = '<i class="fa fa-cog fa-spin lsLoadingStateIndicator"></i>';
+            const loadingSpinner = '<i class="ri-settings-5-fill remix-spin lsLoadingStateIndicator"></i>';
             $(el).prop('disabled', true).append(loadingSpinner);
         }
     },
     stopDisplayLoadingState = () => {
         LS.EventBus.$emit('loadingFinished');
         // $('.lsLoadingStateIndicator').each((i,item) => {$(item).remove();});
+    },
+    bindInvalidFormHandler = ($form) => {
+        var $submittableElements = $form.find('button, input, select, textarea');
+        $submittableElements.off('invalid.save').on('invalid.save', function() {
+            stopDisplayLoadingState();
+            $submittableElements.off('invalid.save');
+        });
     },
     //###########PRIVATE
     checks = () => {
@@ -78,11 +88,22 @@ const SaveController = () => {
                         console.ls.log('Seems no CKEDITOR4 is loaded');
                     }
 
+                    // If the form has the 'data-trigger-validation' attribute set, trigger the standard form
+                    // validation and quit if it fails.
+                    if ($form.attr('data-trigger-validation')) {
+                        if (!$form[0].reportValidity()) {
+                            return;
+                        }
+                    }
+
                     if ($form.data('isvuecomponent') == true) {
                         LS.EventBus.$emit('componentFormSubmit', button)
                     } else {
-                        $form.find('[type="submit"]:not(.ck)').first().trigger('click');
+                        // Attach handler to detect validation errors on the form and re-enable the button
+                        bindInvalidFormHandler($form);
+
                         displayLoadingState(this);
+                        $form.find('[type="submit"]:not(.ck)').first().trigger('click');
                     }
                 },
                 on: 'click'

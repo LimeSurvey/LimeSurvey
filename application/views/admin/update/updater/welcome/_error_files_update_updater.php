@@ -21,7 +21,7 @@
 	<?php endforeach; ?>
 	<br/>
 
-	<a class="btn btn-default" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
+	<a class="btn btn-cancel" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
 		<?php eT("Cancel"); ?>
 	</a>
 </p>

@@ -2,7 +2,7 @@
 
 /**
  * This file is part of statFunctions plugin
- * @version 0.2.0
+ * @version 0.2.1
  */
 
 namespace statFunctions;
@@ -14,11 +14,12 @@ use Survey;
 use SurveyDynamic;
 use CDbCriteria;
 use Permission;
+use LimeSurvey\PluginManager\LimesurveyApi as LimesurveyApi;
 
 class countFunctions
 {
     /**
-     * Return the count of reponse on current ExpressionScript Engine survey equal to a specific value
+     * Return the count of response on current ExpressionScript Engine survey equal to a specific value
      * @param string $qCode : code of question, currently must be existing sgqa. Sample Q01.sgqa.
      * @param string $comparaison : comparre with value. Can use < or > … see https://www.yiiframework.com/doc/api/1.1/CDbCriteria#compare-detail
      * @param boolean $submitted (or not) response
@@ -27,8 +28,9 @@ class countFunctions
      */
     public static function statCountIf($qCode, $comparaison, $submitted = true, $self = true)
     {
-        $surveyId = LimeExpressionManager::getLEMsurveyId();
-        if (!Survey::model()->findByPk($surveyId)->getIsActive()) {
+        $api = new LimesurveyApi();
+        $surveyId = $api->getCurrentSurveyid(true);
+        if (!$surveyId) {
             return 0;
         }
         $questionCodeHelper = new \statFunctions\questionCodeHelper($surveyId);
@@ -54,7 +56,7 @@ class countFunctions
     }
 
     /**
-     * Return the count of reponse on current ExpressionScript Engine survey equal to a specific value
+     * Return the count of response on current ExpressionScript Engine survey equal to a specific value
      * @param string $qCode : code of question, currently must be existing sgqa. Sample Q01.sgqa.
      * @param boolean $submitted (or not)  response
      * @param boolean $self include (or not) current response
@@ -62,8 +64,9 @@ class countFunctions
      */
     public static function statCount($qCode, $submitted = true, $self = true)
     {
-        $surveyId = LimeExpressionManager::getLEMsurveyId();
-        if (!Survey::model()->findByPk($surveyId)->getIsActive()) {
+        $api = new LimesurveyApi();
+        $surveyId = $api->getCurrentSurveyid(true);
+        if (!$surveyId) {
             return 0;
         }
         $questionCodeHelper = new \statFunctions\questionCodeHelper($surveyId);
