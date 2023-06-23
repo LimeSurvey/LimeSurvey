@@ -568,7 +568,7 @@ class User extends LSActiveRecord
                 'data-bs-target' => '#confirmation-modal',
                 'data-url'       => $changeOwnershipUrl,
                 'data-userid'    => $this->uid,
-                'data-user'      => $this->full_name,
+                'data-user'      => CHtml::encode($this->full_name),
                 'data-action'    => 'deluser',
                 'data-onclick'   => "LS.UserManagement.triggerRunAction(\"#UserManagement--takeown-$this->uid\")",
                 'data-message'   => gT('Do you want to take ownerschip of this user?'),
@@ -933,8 +933,8 @@ class User extends LSActiveRecord
                 'data-post-datas' => json_encode(['ugid' => $userGroupId, 'uid' => $currentUserId]),
                 'data-message'   => sprintf(
                     gT("Are you sure you want to delete user '%s' from usergroup '%s'?"),
-                    $this->users_name,
-                    $userGroup->name
+                    CHtml::encode($this->users_name),
+                    CHtml::encode($userGroup->name)
                 ),
                 'data-bs-target' => "#confirmation-modal"
             ]
