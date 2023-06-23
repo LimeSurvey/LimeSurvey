@@ -102,7 +102,7 @@ foreach ($systemInfos as $key => $systemInfo) {
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read') || !Yii::app()->getConfig('demoMode')) { ?>
+                <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read') && !Yii::app()->getConfig('demoMode')) { ?>
                     <h4><?php eT("Your system configuration:") ?></h4>
                     <ul class="list-group">
                         <?php foreach ($systemInfos as $name => $systemInfo) { ?>
