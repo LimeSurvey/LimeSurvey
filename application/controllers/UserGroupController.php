@@ -100,15 +100,13 @@ class UserGroupController extends LSBaseController
      */
     public function actionViewGroup($ugid, bool $header = false)
     {
-        if (empty(Yii::app()->session['loginID']) || !Permission::model()->hasGlobalPermission('usergroups', 'read')) {
-            Yii::app()->session['flashmessage'] = gT('Access denied!');
-            $this->redirect(App()->createUrl("/admin"));
+        if (!Permission::model()->hasGlobalPermission('usergroups', 'read')) {
+            throw new CHttpException(403);
         }
 
         $ugid = (int)$ugid;
         if (empty($ugid)) {
-            Yii::app()->user->setFlash('error', gT('GroupId missing'));
-            $this->redirect('index');
+            throw new CHttpException(400, gT('GroupId missing'));
         }
 
         $userGroup = UserGroup::model()->findByPk($ugid);
@@ -125,7 +123,7 @@ class UserGroupController extends LSBaseController
                 $userGroup->owner_id == Yii::app()->user->id ||
                 $userGroup->hasUser(Yii::app()->user->id) ||
                 Permission::model()->hasGlobalPermission('superadmin', 'read')
-              )
+            )
         ) {
             throw new CHttpException(403);
         }
