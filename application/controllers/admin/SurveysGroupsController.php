@@ -163,7 +163,7 @@ class SurveysGroupsController extends SurveyCommonAction
         $aData = array(
             'model' => $model,
             'action' => App()->createUrl("admin/surveysgroups/sa/update", array('id' => $model->gsid, '#' => 'settingsForThisGroup')),
-            'pageTitle' => gT('Update survey group: ') . $model->title,
+            'pageTitle' => gT('Update survey group: ') . CHtml::encode($model->title),
         );
 
         $aData['oSurveySearch'] = $oSurveySearch;
