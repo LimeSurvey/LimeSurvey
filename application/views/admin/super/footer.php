@@ -97,8 +97,8 @@ foreach ($systemInfos as $key => $systemInfo) {
                 <div class="h3 modal-title"><?php eT("System information"); ?></div>
             </div>
             <div class="modal-body">
-                <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')) { ?>
-                    <h4><?php eT("Your system configuration:")?></h4>
+			<?php if (Permission::model()->hasGlobalPermission('superadmin', 'read') && !Yii::app()->getConfig('demoMode')) { ?> 
+           		<h4><?php eT("Your system configuration:")?></h4>
                     <ul class="list-group">
                         <?php foreach ($systemInfos as $name => $systemInfo) { ?>
                             <li class="list-group-item">
