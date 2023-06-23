@@ -7,8 +7,9 @@ Yii::app()->getController()->renderPartial(
     '/layouts/partial_modals/modal_header',
     ['modalTitle' => $modalTitle]
 );
-?>
 
+?>
+<?php /** @var $form TbActiveForm */ ?>
 <?php $form = $this->beginWidget('TbActiveForm', [
     'id'                     => 'UserManagement--modalform',
     'action'                 => App()->createUrl('userManagement/applyedit'),
@@ -23,13 +24,11 @@ Yii::app()->getController()->renderPartial(
     </div>
     <div class="mb-3">
         <?php echo $form->labelEx($oUser, 'users_name', ['for' => 'User_Form_users_name']); ?>
-        <?php
-        if ($oUser->isNewRecord) {
-            echo $form->textField($oUser, 'users_name', ['id' => 'User_Form_users_name', 'required' => 'required']);
-        } else {
-            echo '<input class="form-control" type="text" name="usernameshim" value="' . $oUser->users_name . '" disabled="true" />';
-        }
-        ?>
+        <?php if ($oUser->isNewRecord) : ?>
+            <?= $form->textField($oUser, 'users_name', ['id' => 'User_Form_users_name', 'required' => 'required']) ?>
+        <?php else : ?>
+            <input class="form-control" type="text" value="<?= $oUser->users_name ?>" disabled="true"/>
+        <?php endif; ?>
 
         <?php echo $form->error($oUser, 'users_name'); ?>
     </div>
