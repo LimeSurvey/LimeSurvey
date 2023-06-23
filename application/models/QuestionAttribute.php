@@ -165,7 +165,7 @@ class QuestionAttribute extends LSActiveRecord
      *
      * @var integer $iSid                   the sid to update  (only to check permission)
      * @var array $aQids                    an array containing the list of primary keys for questions
-     * @var array $aAttributesToUpdate    array continaing the list of attributes to update
+     * @var array $aAttributesToUpdate    array containing the list of attributes to update
      * @var array $aValidQuestionTypes    the question types we can update for those attributes
      * @todo Missign noun in function name - set multiple what?
      */

@@ -230,8 +230,8 @@ class QuestionAttributeHelper
     protected function categorySort($a, $b)
     {
         $categoryOrders = $this->getCategoryOrders();
-        $orderA = isset($categoryOrders[$a['category']]) ? $categoryOrders[$a['category']] : PHP_INT_MAX;
-        $orderB = isset($categoryOrders[$b['category']]) ? $categoryOrders[$b['category']] : PHP_INT_MAX;
+        $orderA = $categoryOrders[$a['category']] ?? PHP_INT_MAX;
+        $orderB = $categoryOrders[$b['category']] ?? PHP_INT_MAX;
         if ($orderA == $orderB) {
             $result = strnatcasecmp($a['category'], $b['category']);
             if ($result == 0) {

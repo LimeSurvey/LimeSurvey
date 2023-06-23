@@ -398,14 +398,18 @@ class LimesurveyApi
     /**
      * @param int $surveyId
      * @param string $language
-     * $param array $conditions
+     * @param array $conditions
      * @return \Question[]
      */
     public function getQuestions($surveyId, $language = 'en', $conditions = array())
     {
-        $conditions['sid'] = $surveyId;
-        $conditions['language'] = $language;
-        return \Question::model()->with('subquestions')->findAllByAttributes($conditions);
+        $criteria = new \CDbCriteria();
+        $criteria->addCondition('t.sid = :sid');
+        $criteria->addCondition('questionl10ns.language = :language');
+        $criteria->params[':sid'] = $surveyId;
+        $criteria->params[':language'] = $language;
+
+        return \Question::model()->with('subquestions', 'questionl10ns')->findAllByAttributes($conditions, $criteria);
     }
 
     /**
@@ -627,5 +631,26 @@ class LimesurveyApi
         }
 
         return $questionAttributes;
+    }
+
+    /**
+     * Get a formatted date time by a string
+     * Used to return date from date input in admin
+     * @param string $dateValue the string as date value
+     * @param string $returnFormat the final date format
+     * @param integer|null $currentFormat the current format of dateValue, defaut from App()->session['dateformat'] @see getDateFormatData function (in surveytranslator_helper)
+     * @return string
+     */
+    public static function getFormattedDateTime($dateValue, $returnFormat, $currentFormat = null)
+    {
+        if (empty($dateValue)) {
+            return "";
+        }
+        if (empty($currentFormat)) {
+            $currentFormat = intval(App()->session['dateformat']);
+        }
+        $dateformatdetails = getDateFormatData($currentFormat);
+        $datetimeobj = new \Date_Time_Converter($dateValue, $dateformatdetails['phpdate'] . " H:i");
+        return $datetimeobj->convert($returnFormat);
     }
 }

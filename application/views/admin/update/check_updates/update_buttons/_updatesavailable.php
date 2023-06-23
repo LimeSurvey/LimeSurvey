@@ -2,7 +2,7 @@
 /**
  * This view display the buttons "use ComfortUpdate".
  * It is injected by the javascript inside the li#udapteButtonsContainer, in the _checkButton view.
- * @var obj updateInfos the update informations provided by the update server
+ * @var obj updateInfos the update information provided by the update server
  * @var obj $clang : the translate object, now moved to global function TODO : remove it
  */
 ?>
@@ -72,7 +72,7 @@
             </td>
 
             <!-- stable / unstable -->
-            <?php if ($aUpdateVersion['branch']!='master'):?>
+            <?php if (!in_array($aUpdateVersion['branch'], ['master','5.x','3.x-LTS'])):?>
                 <td class="text-warning">
                     <?php  eT('unstable'); ?>
                 </td>

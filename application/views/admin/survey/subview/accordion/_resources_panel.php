@@ -1,6 +1,6 @@
 <?php
 /**
- * Ressources panel tab
+ * Resources panel tab
  **/
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
@@ -8,7 +8,7 @@ echo viewHelper::getViewTestTag('surveyResources');
 
 
 App()->getClientScript()->registerScript(
-  "ressources-panel-variables", "
+  "resources-panel-variables", "
 var jsonUrl = '';
 var sAction = '';
 var sParameter = '';
@@ -21,12 +21,12 @@ var sAddParam = '';
 LSYii_ClientScript::POS_BEGIN
 );
 
-//The ressources panel is a little special thus the unorganized html
+//The resources panel is a little special thus the unorganized html
 // @TODO Fix rendering!
 ?>
 
 <div class="row">
-  <!-- ressources panel -->
+  <!-- resources panel -->
   <div id='resources' class="container-fluid">
     <div class="row">
       <!-- Export -->
@@ -41,7 +41,7 @@ LSYii_ClientScript::POS_BEGIN
                     'images' =>  gT('Images', 'unescaped')),
                 array(
                     'class'=>'btn btn-default',
-                    "data-href" => App()->request->getBaseUrl()."/third_party/kcfinder/browse.php?language=".sTranslateLangCode2CK(App()->language)
+                    "data-href" => App()->request->getBaseUrl()."/vendor/kcfinder/browse.php?language=".sTranslateLangCode2CK(App()->language)
                 )
             ); 
         ?>
@@ -61,7 +61,7 @@ LSYii_ClientScript::POS_BEGIN
     </div>
     <div class="row">
         <div class="col-sm-12 col-md-12">
-            <iframe id="browseiframe" src="<?php echo App()->request->getBaseUrl() ; ?>/third_party/kcfinder/browse.php?language='<?php echo sTranslateLangCode2CK( App()->language); ?>'" width="100%" height="600px"></iframe>
+            <iframe id="browseiframe" src="<?php echo App()->request->getBaseUrl() ; ?>/vendor/kcfinder/browse.php?language='<?php echo sTranslateLangCode2CK( App()->language); ?>'" width="100%" height="600px"></iframe>
         </div>
     </div>
   </div>

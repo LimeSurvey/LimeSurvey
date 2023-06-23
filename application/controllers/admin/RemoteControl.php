@@ -140,7 +140,7 @@ class RemoteControl extends SurveyCommonAction
             if ($aResult['status'] == 'OK') {
                 echo 'Tokens for Survey ID ' . $iSurveyID . ' successfully activated.<br>';
             }
-            $aResult = $client->call('set_survey_properties', array($sSessionKey, $iSurveyID, array('faxto' => '0800-LIMESURVEY')));
+            $aResult = $client->call('set_survey_properties', array($sSessionKey, $iSurveyID, array('admin' => 'Admin name')));
             if (!array_key_exists('status', $aResult)) {
                 echo 'Modified survey settings for survey ' . $iSurveyID . '<br>';
             }

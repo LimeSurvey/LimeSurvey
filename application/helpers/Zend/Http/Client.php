@@ -804,7 +804,7 @@ class Zend_Http_Client
      *
      * This function is here for two reasons:
      * 1. For advanced user who would like to set their own data, already encoded
-     * 2. For backwards compatibilty: If someone uses the old post($data) method.
+     * 2. For backwards compatibility: If someone uses the old post($data) method.
      *    this method will be used to set the encoded data.
      *
      * $data can also be stream (such as file) from which the data will be read.
@@ -999,7 +999,7 @@ class Zend_Http_Client
         if (!is_string($this->_stream_name)) {
             // If name is not given, create temp name
             $this->_stream_name = tempnam(
-                isset($this->config['stream_tmp_dir']) ? $this->config['stream_tmp_dir'] : sys_get_temp_dir(),
+                $this->config['stream_tmp_dir'] ?? sys_get_temp_dir(),
                 'Zend_Http_Client'
             );
         }

@@ -2,7 +2,7 @@
     var redUrl = "<?php echo $this->createUrl("/admin/participants/sa/displayParticipants"); ?>";
     var copyUrl = "<?php echo $this->createUrl("/admin/participants/sa/addToCentral"); ?>";
 
-    var surveyId = "<?php echo Yii::app()->request->getQuery('sid'); ?>";
+    var surveyId = "<?php echo (int) Yii::app()->request->getQuery('sid'); ?>";
 
     /* LANGUAGE */
     var attributesMappedText = "<?php eT("There are no unmapped attributes") ?>";

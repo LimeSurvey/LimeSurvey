@@ -73,8 +73,8 @@ echo viewHelper::getViewTestTag('statisticsIndex');
                 <input type='hidden' id='filterchoice_state' name='filterchoice_state' value='<?php echo $filterchoice_state; ?>' />
 
                 <?php
-                                                                                                            $dshresults = (isset($dshresults)) ? $dshresults : '';
-                                                                                                            $dshresults2 = (isset($dshresults2)) ? $dshresults2 : '';
+                                                                                                            $dshresults = $dshresults ?? '';
+                                                                                                            $dshresults2 = $dshresults2 ?? '';
                 ?>
                 <!-- Filter choice -->
                 <?php $this->renderPartial(

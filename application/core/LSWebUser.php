@@ -84,7 +84,7 @@ class LSWebUser extends CWebUser
 
     public function setState($key, $value, $defaultValue = null)
     {
-        $current = isset($_SESSION[$this->sessionVariable]) ? $_SESSION[$this->sessionVariable] : array();
+        $current = $_SESSION[$this->sessionVariable] ?? array();
         if ($value === $defaultValue) {
             $_SESSION[$this->sessionVariable] = Hash::remove($current, $key);
         } else {

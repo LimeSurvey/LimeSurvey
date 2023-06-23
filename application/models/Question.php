@@ -154,7 +154,8 @@ class Question extends LSActiveRecord
             array('scale_id', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
             array('same_default', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
             array('type', 'length', 'min' => 1, 'max' => 1),
-            array('preg,relevance', 'safe'),
+            array('relevance', 'filter', 'filter' => 'trim'),
+            array('preg', 'safe'),
             array('modulename', 'length', 'max' => 255),
             array('same_script', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
         );
@@ -205,6 +206,9 @@ class Question extends LSActiveRecord
                 // Disallow other if sub question have 'other' for title
                 $aRules[] = array('other', 'compare', 'compareValue' => 'Y', 'operator' => '!=', 'message' => sprintf(gT("'%s' can not be used if the 'Other' option for this question is activated."), 'other'));
             }
+        }
+        if ($this->survey->isActive) {
+            $aRules = array_merge($aRules, $this->rulesForActiveSurvey());
         }
         /* When question exist and are already set with title, allow keep bad title */
         if (!$this->isNewRecord) {
@@ -263,6 +267,17 @@ class Question extends LSActiveRecord
         return $aRules;
     }
 
+    /**
+     * return rules specific for activated survey
+     * @return array
+     */
+    private function rulesForActiveSurvey()
+    {
+        $aRules = array();
+        /* can not update group */
+        $aRules[] = array('gid', 'LSYii_NoUpdateValidator', 'filter' => false);
+        return $aRules;
+    }
 
 
     /**
@@ -546,6 +561,7 @@ class Question extends LSActiveRecord
 
     /**
      * @return string
+     * NOTE: Not used anymore. Based on a deprecated method. Should be deprecated.
      */
     public function getTypedesc()
     {
@@ -726,54 +742,94 @@ class Question extends LSActiveRecord
             return $aAnswerOptions[$scale_id];
         }
 
-        // Random order
-        if ($this->getQuestionAttribute('random_order') == 1 && $this->getQuestionType()->subquestions == 0) {
-            foreach ($aAnswerOptions as $scaleId => $aScaleArray) {
-                $keys = array_keys($aScaleArray);
+        $aAnswerOptions = $this->sortAnswerOptions($aAnswerOptions);
+        return $aAnswerOptions;
+    }
+
+    /**
+     * Returns the specified answer options sorted according to the question attributes.
+     * Refactored from getOrderedAnswers();
+     * @param array<int,Answer[]> The answer options to sort
+     * @return array<int,Answer[]>
+     */
+    private function sortAnswerOptions($answerOptions)
+    {
+        // Sort randomly if applicable
+        if ($this->shouldOrderAnswersRandomly()) {
+            foreach ($answerOptions as $scaleId => $scaleArray) {
+                $keys = array_keys($scaleArray);
                 shuffle($keys); // See: https://forum.yiiframework.com/t/order-by-rand-and-total-posts/68099
 
-                $aNew = array();
+                $sortedScaleAnswers = array();
                 foreach ($keys as $key) {
-                    $aNew[$key] = $aScaleArray[$key];
+                    $sortedScaleAnswers[$key] = $scaleArray[$key];
                 }
-                $aAnswerOptions[$scaleId] = $aNew;
+                $answerOptions[$scaleId] = $sortedScaleAnswers;
             }
-
-            return $aAnswerOptions;
+            return $answerOptions;
         }
 
-        // Alphabetic ordrer
-        $alphasort = $this->getQuestionAttribute('alphasort');
-        if ($alphasort == 1) {
-            foreach ($aAnswerOptions as $scaleId => $aScaleArray) {
-                $aSorted = array();
+        // Sort alphabetically if applicable
+        if ($this->shouldOrderAnswersAlphabetically()) {
+            foreach ($answerOptions as $scaleId => $scaleArray) {
+                $sorted = array();
 
-                // We create an aray aSorted that will use the answer in the current language as key, and that will store its old index as value
-                foreach ($aScaleArray as $iKey => $oAnswer) {
-                    $aSorted[$oAnswer->answerl10ns[$this->survey->language]->answer] = $iKey;
+                // We create an aray sorted that will use the answer in the current language as key, and that will store its old index as value
+                foreach ($scaleArray as $key => $answer) {
+                    $sorted[$answer->answerl10ns[$this->survey->language]->answer] = $key;
                 }
+                ksort($sorted);
 
-                ksort($aSorted);
-
-                // Now, we create a new array that store the old values of $aAnswerOptions in the order of $aSorted
-                $aNew = array();
-                foreach ($aSorted as $sAnswer => $iKey) {
-                    $aNew[] = $aScaleArray[$iKey];
+                // Now, we create a new array that store the old values of $answerOptions in the order of $sorted
+                $sortedScaleAnswers = array();
+                foreach ($sorted as $answer => $key) {
+                    $sortedScaleAnswers[] = $scaleArray[$key];
                 }
-                $aAnswerOptions[$scaleId] = $aNew;
+                $answerOptions[$scaleId] = $sortedScaleAnswers;
             }
-            return $aAnswerOptions;
+            return $answerOptions;
         }
 
-        foreach ($aAnswerOptions as $scaleId => $aScaleArray) {
-            usort($aScaleArray, function ($a, $b) {
+        // Sort by Answer's own sort order
+        foreach ($answerOptions as $scaleId => $scaleArray) {
+            usort($scaleArray, function ($a, $b) {
                 return $a->sortorder > $b->sortorder
                     ? 1
                     : ($a->sortorder < $b->sortorder ? -1 : 0);
             });
-            $aAnswerOptions[$scaleId] = $aScaleArray;
+            $answerOptions[$scaleId] = $scaleArray;
         }
-        return $aAnswerOptions;
+        return $answerOptions;
+    }
+
+    /**
+     * Returns true if the answer options should be ordered randomly.
+     * @return bool
+     */
+    private function shouldOrderAnswersRandomly()
+    {
+        // Question types supporting both Random Order and Alphabetical Order should
+        // implement the 'answer_order' attribute instead of using separate attributes.
+        $answerOrder = $this->getQuestionAttribute('answer_order');
+        if (!is_null($answerOrder)) {
+            return $answerOrder == 'random';
+        }
+        return $this->getQuestionAttribute('random_order') == 1 && $this->getQuestionType()->subquestions == 0;
+    }
+
+    /**
+     * Returns true if the answer options should be ordered alphabetically.
+     * @return bool
+     */
+    private function shouldOrderAnswersAlphabetically()
+    {
+        // Question types supporting both Random Order and Alphabetical Order should
+        // implement the 'answer_order' attribute instead of using separate attributes.
+        $answerOrder = $this->getQuestionAttribute('answer_order');
+        if (!is_null($answerOrder)) {
+            return $answerOrder == 'alphabetical';
+        }
+        return $this->getQuestionAttribute('alphasort') == 1;
     }
 
     /**
@@ -895,7 +951,7 @@ class Question extends LSActiveRecord
 
     /**
      * Get an new title/code for a question
-     * @param integer $index base for question code (exemple : inde of question when survey import)
+     * @param integer $index base for question code (example : inde of question when survey import)
      * @return string|null : new title, null if impossible
      */
     public function getNewTitle($index = 0)
@@ -976,7 +1032,7 @@ class Question extends LSActiveRecord
                 'header' => gT('Question type'),
                 'name' => 'type',
                 'type' => 'raw',
-                'value' => '$data->typedesc',
+                'value' => '$data->question_theme->title . (YII_DEBUG ? " <em>{$data->type}</em>" : "")',
                 'htmlOptions' => array('class' => ''),
             ),
 
@@ -1056,13 +1112,18 @@ class Question extends LSActiveRecord
         $criteria->compare("t.sid", $this->sid, false, 'AND');
         $criteria->compare("t.parent_qid", 0, false, 'AND');
         //$criteria->group = 't.qid, t.parent_qid, t.sid, t.gid, t.type, t.title, t.preg, t.other, t.mandatory, t.question_order, t.scale_id, t.same_default, t.relevance, t.modulename, t.encrypted';
-        $criteria->with = array('group' => array('alias' => 'g'), 'questionl10ns' => array('alias' => 'ql10n', 'condition' => "language='" . $this->survey->language . "'"));
+        $criteria->with = [
+            'group' => ['alias' => 'g'],
+            'questionl10ns' => ['alias' => 'ql10n', 'condition' => "language='" . $this->survey->language . "'"],
+            'question_theme' => ['alias' => 'qt']
+        ];
 
         if (!empty($this->title)) {
             $criteria2 = new CDbCriteria();
             $criteria2->compare('t.title', $this->title, true, 'OR');
             $criteria2->compare('ql10n.question', $this->title, true, 'OR');
             $criteria2->compare('t.type', $this->title, true, 'OR');
+            $criteria2->compare('qt.description', $this->title, true, 'OR');
             /* search exact qid and make sure it's a numeric */
             if (is_numeric($this->title)) {
                 $criteria2->compare('t.qid', $this->title, false, 'OR');
@@ -1217,7 +1278,7 @@ class Question extends LSActiveRecord
 
     public function getRenderererObject($aFieldArray, $type = null)
     {
-        $type = $type === null ? $this->type : $type;
+        $type = $type ?? $this->type;
         LoadQuestionTypes::load($type);
         switch ($type) {
             case Question::QT_X_TEXT_DISPLAY:
@@ -1317,7 +1378,7 @@ class Question extends LSActiveRecord
 
     public function getDataSetObject($type = null)
     {
-        $type = $type === null ? $this->type : $type;
+        $type = $type ?? $this->type;
         LoadQuestionTypes::load($type);
 
         switch ($type) {
@@ -1652,5 +1713,26 @@ class Question extends LSActiveRecord
     public function getQuestionTheme()
     {
         return $this->getRelated("question_theme", $this->isNewRecord);
+    }
+
+    /**
+     * Is it a dual scale type.
+     */
+    public function getIsDualScale()
+    {
+        $dualScaleTypes = $this->getDualScaleTypes();
+        return in_array($this->type, $dualScaleTypes);
+    }
+
+    /**
+     * Returns the question types that are dual scale.
+     */
+    public function getDualScaleTypes()
+    {
+        $dualScaleTypes = array(
+            Question::QT_1_ARRAY_DUAL
+        );
+
+        return $dualScaleTypes;
     }
 }

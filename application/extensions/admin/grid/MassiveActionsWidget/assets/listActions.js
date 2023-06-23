@@ -25,10 +25,9 @@ var onClickListAction =  function () {
     var $gridid        = $('#'+$(this).closest('div.listActions').data('grid-id'));
     var $grididvalue   = $gridid.attr('id');
     var $oCheckedItems = $gridid.yiiGridView('getChecked', $(this).closest('div.listActions').data('pk')); // List of the clicked checkbox
-    var $oCheckedItems = JSON.stringify($oCheckedItems);
+    $oCheckedItems = JSON.stringify($oCheckedItems);
     var actionType     = $that.data('actionType');   
     var selectedList   = $(".selected-items-list");
-
     if ($oCheckedItems == '[]') {
         //If no item selected, the error modal "please select first an item" is shown
         // TODO: add a variable in the widget to replace "item" by the item type (e.g: survey, question, token, etc.)
@@ -48,11 +47,11 @@ var onClickListAction =  function () {
         $oCheckedItems = $gridid.yiiGridView('getChecked', $('.listActions').data('pk')); // So we can join
         var newForm = jQuery('<form>', {
             'action': $actionUrl,
-            'target': '_blank',
+            'target': $that.data('target') ?? '_blank',
             'method': 'POST'
         }).append(jQuery('<input>', {
             'name': $that.data('input-name'),
-            'value': $oCheckedItems.join("|"),
+            'value': $oCheckedItems.join($that.data('input-separator') ?? '|'),
             'type': 'hidden'
         })).append(jQuery('<input>', {
             'name': LS.data.csrfTokenName,
@@ -155,6 +154,12 @@ var onClickListAction =  function () {
     /* Define what should be done when user confirm the mass action */
     /* remove all existing action before adding the new one */
     $modalButton.off('click').on('click', function(){
+        var $form = $modal.find('form');
+        if ($form.data('trigger-validation')) {
+            if (!$form[0].reportValidity()) {
+                return;
+            }
+        }
 
         // Custom datas comming from the modal (like sid)
         var $postDatas  = {sItems:$oCheckedItems};

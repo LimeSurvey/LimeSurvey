@@ -219,7 +219,7 @@
             e.preventDefault();
             var self = this,
                 attribute_id = $('#ParticipantAttributeName_attribute_id').val(),
-                formGroup = $(this).closest('div.form-group.'),
+                formGroup = $(this).closest('div.form-group'),
                 lang = formGroup.data('lang');
                 $.ajax({
                     url: deleteLanguageFromAttributeUrl,

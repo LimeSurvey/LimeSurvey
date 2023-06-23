@@ -61,9 +61,15 @@ function triggerEmRelevanceSubQuestion(){
         data = $.extend({style:'hidden'}, data);
         $(this).removeClass("ls-irrelevant ls-"+data.style);
         if(data.style=='disabled'){
-            $(event.target).find('input').each(function(itrt, item ){
-                $(item).prop("disabled", false );
-            });
+            if($(event.target).hasClass("answer-item")) {
+                $(event.target).find('input').each(function(itrt, item ){
+                    $(item).prop("disabled", false );
+                });
+            } else {
+                $(event.target).find('.answer-item input').each(function(itrt, item ){
+                    $(item).prop("disabled", false );
+                });
+            }
         }
         if(data.style=='hidden'){
             updateLineClass($(this));
@@ -305,7 +311,7 @@ function activateActionLink(){
 /**
  * function for replacing submit after confirm
  * @var string text : the text to be shown
- * @var string optionnal title
+ * @var string optional title
  * @var object[] submits : name.value to submit
  */
 function confirmSurveyDialog(text,title,submits){

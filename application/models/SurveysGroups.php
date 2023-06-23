@@ -3,7 +3,7 @@
 /**
  * This is the model class for table "{{surveys_groups}}".
  *
- * The followings are the available columns in table '{{surveys_groups}}':
+ * The following are the available columns in table '{{surveys_groups}}':
  * @property integer $gsid
  * @property string $name
  * @property string $title
@@ -331,7 +331,7 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
         $criteria = new CDbCriteria();
         $criteriaPerm = self::getPermissionCriteria();
         $criteria->mergeWith($criteriaPerm, 'AND');
-
+        $criteria->order = 'title ASC';
         $oSurveyGroups = self::model()->findAll($criteria);
 
         foreach ($oSurveyGroups as $oSurveyGroup) {

@@ -15,7 +15,7 @@
 /**
  * This is the model class for table "{{{{participant_attribute_names_lang}}}}".
  *
- * The followings are the available columns in table '{{{{participant_attribute_names_lang}}}}':
+ * The following are the available columns in table '{{{{participant_attribute_names_lang}}}}':
  * @property integer $attribute_id
  * @property string $attribute_name
  * @property string $lang

@@ -81,7 +81,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                     $massiveAction = App()->getController()->renderPartial('/responses/massive_actions/_selector', [], true);
 
 
-                    // The first few colums are fixed.
+                    // The first few columns are fixed.
                     // Specific columns at start
                     $aColumns = [
                         [
@@ -250,7 +250,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                             'ajaxUpdate'      => 'responses-grid',
                             'ajaxType'        => 'POST',
                             'afterAjaxUpdate' => 'js:function(id, data){ LS.resp.bindScrollWrapper(); onUpdateTokenGrid();$(".grid-view [data-toggle=\'popover\']").popover(); }',
-                            'template'        => "{items}\n<div id='reponsesListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction$filterColumns</div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
+                            'template'        => "{items}\n<div id='responsesListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction$filterColumns</div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
                             'summaryText'     => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
                                 gT('%s rows per page'),
                                 CHtml::dropDownList(

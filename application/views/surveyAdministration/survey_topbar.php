@@ -161,7 +161,7 @@ if ($hasSurveyTranslatePermission) {
     if ($hasAdditionalLanguages) {
         // Quick-translation
         $buttons['quick_translation'] = [
-            'url' => $this->createUrl("admin/translate/sa/index/surveyid/{$sid}"),
+            'url' => $this->createUrl("quicktranslation/index/surveyid/{$sid}"),
             'icon' => 'fa fa-language',
             'name' => gT('Quick-translation'),
             'id' => 'quick_translation_button',
@@ -245,7 +245,7 @@ if ($hasSurveyReadPermission) {
 if (!$isActive && $hasSurveyContentPermission) {
     // Divider
     $buttons['divider'] = [
-        'role' => 'seperator',
+        'role' => 'separator',
         'class' => 'divider',
         'id' => 'divider---1'
     ];
@@ -284,7 +284,7 @@ if (!empty($extraToolsMenuItems)) {
         if ($menuItem->isDivider()) {
             // Divider
             $buttons['divider' . $i] = [
-                'role' => 'seperator',
+                'role' => 'separator',
                 'class' => 'divider',
                 'id' => 'divider---1' . $i
             ];
@@ -423,7 +423,7 @@ if (!empty($beforeSurveyBarRender)) {
                 if ($item->isDivider()) {
                     // Divider
                     $item = [
-                        'role' => 'seperator',
+                        'role' => 'separator',
                         'class' => 'divider',
                         'id' => 'divider---1' . $i
                     ];

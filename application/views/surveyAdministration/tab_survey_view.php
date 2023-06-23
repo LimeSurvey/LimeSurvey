@@ -6,7 +6,7 @@
  * It doesn't render the tab content
  */
 
-$active = (isset($_GET['tab']))?$_GET['tab']:'create';
+$active = $_GET['tab'] ?? 'create';
 
 App()->getClientScript()->registerScript("tab-survey-view-variables", "
     var jsonUrl = '';

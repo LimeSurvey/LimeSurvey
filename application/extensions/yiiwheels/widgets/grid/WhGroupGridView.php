@@ -171,7 +171,7 @@ class WhGroupGridView extends TbGridView
 			foreach ($current as $colName => $curValue) {
 				//value changed
 				$valueChanged = ($curValue != $lastStored[$colName]['value']);
-				//change already occured in this loop and mergeType set to MERGETYPE_NESTED
+				//change already occurred in this loop and mergeType set to MERGETYPE_NESTED
 				$saveChange = $valueChanged || ($changeOccurred && $this->mergeType == self::MERGE_NESTED);
 
 				if ($saveChangeForAllColumns || $saveChange) {
@@ -260,7 +260,7 @@ class WhGroupGridView extends TbGridView
 							$options = $column->htmlOptions;
 							$column->htmlOptions['rowspan'] = $change['columns'][$column->name]['count'];
 							$column->htmlOptions['class'] = 'merge';
-							$style = isset($column->htmlOptions['style']) ? $column->htmlOptions['style'] : '';
+							$style = $column->htmlOptions['style'] ?? '';
 							$column->htmlOptions['style'] = $style . ';' . $this->mergeCellCss;
 							$column->renderDataCell($row);
 							$column->htmlOptions = $options;
@@ -305,7 +305,7 @@ class WhGroupGridView extends TbGridView
 				}
 			}
 		}
-		return isset($result) ? $result : false;
+		return $result ?? false;
 	}
 
 	/**

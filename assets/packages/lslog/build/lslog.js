@@ -31,7 +31,7 @@
 	  }
 	};
 
-	// Thank's IE8 for his funny defineProperty
+	// Thanks IE8 for your funny defineProperty
 	var descriptors = !fails(function () {
 	  return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
 	});
@@ -125,7 +125,7 @@
 	  return EXISTS ? document.createElement(it) : {};
 	};
 
-	// Thank's IE8 for his funny defineProperty
+	// Thanks IE8 for your funny defineProperty
 	var ie8DomDefine = !descriptors && !fails(function () {
 	  return Object.defineProperty(documentCreateElement('div'), 'a', {
 	    get: function () { return 7; }

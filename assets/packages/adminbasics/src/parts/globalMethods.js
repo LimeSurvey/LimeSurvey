@@ -41,8 +41,9 @@ const globalWindowMethods = {
         $(".btntooltip").tooltip();
         $('[data-tooltip="true"]').tooltip();
         $('[data-toggle="tooltip"]').tooltip();
-
-
+    },
+    doSelect2: () => {
+        $("select.activate-search").select2();
     },
     // finds any duplicate array elements using the fewest possible comparison
     arrHasDupes:  ( arrayToCheck ) => {  
@@ -112,7 +113,29 @@ const globalWindowMethods = {
             if(e.target != this) return;
             $('#accordion').find('.panel-collapse.collapse').not('#'+$(this).attr('id')).collapse('hide');
         });
-    }
+    },
+    /**
+     * Validates that an end date is not lower than a start date
+     * @param {Object} startDatePicker Start datepicker object
+     * @param {Object} endDatePicker End datepicker object
+     * @param {?function} errorCallback Optional function to call in case of error
+     */
+    validateEndDateHigherThanStart: (startDatePicker, endDatePicker, errorCallback) => {
+        if (!startDatePicker || !startDatePicker.date()) {
+            return true;
+        }
+        if (!endDatePicker || !endDatePicker.date()) {
+            return true;
+        }
+        const difference = endDatePicker.date().diff(startDatePicker.date());
+        if (difference >= 0) {
+            return true;
+        }
+        if (typeof errorCallback === 'function') {
+            errorCallback();
+        }
+        return false;
+    },
 };
 const globalStartUpMethods = {
     bootstrapping : ()=>{
@@ -126,7 +149,8 @@ const globalStartUpMethods = {
             if (pValue > 85){ $("div",$(this)).css({ 'background': 'Red' }); }
             $("div",this).html(pValue + "%");
         });
-
+        /* set default for select2 */
+        $.fn.select2.defaults.set("theme", "bootstrap");
         globalWindowMethods.tableCellAdapters();
     }
 };

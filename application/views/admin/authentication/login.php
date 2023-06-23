@@ -55,7 +55,8 @@ echo viewHelper::getViewTestTag('login');
                                     foreach($pluginNames as $plugin)
                                     {
                                         $info = App()->getPluginManager()->getPluginInfo($plugin);
-                                        $possibleAuthMethods[$plugin] = $info['pluginName'];
+                                        $methodName = call_user_func([$info['pluginClass'], 'getAuthMethodName']);
+                                        $possibleAuthMethods[$plugin] = !empty($methodName) ? $methodName : $info['pluginName'];
                                     }
                                     //print_r($possibleAuthMethods); die();
 

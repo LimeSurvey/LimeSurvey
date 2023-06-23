@@ -161,6 +161,15 @@ class RenderListRadio extends QuestionBaseRenderer
             }
         }
 
+        if ($this->bColumnIsOpen) {
+            $sRows  .= Yii::app()->twigRenderer->renderQuestion(
+                $this->getMainView() . '/columns/column_footer',
+                array('last' => true),
+                true
+            );
+            $this->bColumnIsOpen = false;
+        }
+
         return $sRows;
     }
 

@@ -41,7 +41,7 @@ class ExpressionManager
     );
     // These are the allowable static suffixes for variables - each represents an attribute of a variable that can not be updated on same page
     private $aRDP_regexpStaticAttribute = array(
-        'qid',
+        'gid',
         'grelevance',
         'gseq',
         'jsName',
@@ -66,9 +66,9 @@ class ExpressionManager
     private $RDP_tokens; // the list of generated tokens
     private $RDP_count; // total number of $RDP_tokens
     private $RDP_pos; // position within the $token array while processing equation
-    /** @var array[] informations about current errors : array with string, $token (EM internal array). Resetted in RDP_Evaluate (and only in RDP_Evaluate) */
+    /** @var array[] information about current errors : array with string, $token (EM internal array). Reset in RDP_Evaluate (and only in RDP_Evaluate) */
     private $RDP_errs;
-    /** @var array[] informations about current warnings : array with string, $token (EM internal array) and optional link Resetted in RDP_Evaluate or manually */
+    /** @var array[] information about current warnings : array with string, $token (EM internal array) and optional link Reset in RDP_Evaluate or manually */
     private $RDP_warnings = array();
     private $RDP_onlyparse;
     private $RDP_stack; // stack of intermediate results
@@ -1248,11 +1248,15 @@ class ExpressionManager
             return '';
         }
         $tokens = $this->RDP_tokens;
+        /* @var string|null used for ASSIGN expression */
+        $idToSet = null;
+        /* @var string[] the final expression line by line (to be join at end) */
         $stringParts = array();
         $numTokens = count($tokens);
 
-        /* Static function management */
+        /* @var integer bracket count for static function management */
         $bracket = 0;
+        /* @var string static string to be parsed bedfore send to JS */
         $staticStringToParse = "";
         for ($i = 0; $i < $numTokens; ++$i) {
             $token = $tokens[$i]; // When do these need to be quoted?
@@ -1306,12 +1310,15 @@ class ExpressionManager
                             }
                         } elseif ($i + 1 < $numTokens && $tokens[$i + 1][2] == 'ASSIGN') {
                             $jsName = $this->GetVarAttribute($token[0], 'jsName', '');
-                            $stringParts[] = "document.getElementById('" . $jsName . "').value";
-                            if ($tokens[$i + 1][0] == '+=') {
-                                // Javascript does concatenation unless both left and right side are numbers, so refactor the equation
-                                $varName = $this->GetVarAttribute($token[0], 'varName', $token[0]);
-                                $stringParts[] = " = LEMval('" . $varName . "') + ";
-                                ++$i;
+                            /* Value is in the page : can not set */
+                            if (!empty($jsName)) {
+                                $idToSet = $jsName;
+                                if ($tokens[$i + 1][0] == '+=') {
+                                    // Javascript does concatenation unless both left and right side are numbers, so refactor the equation
+                                    $varName = $this->GetVarAttribute($token[0], 'varName', $token[0]);
+                                    $stringParts[] = " = LEMval('" . $varName . "') + ";
+                                    ++$i;
+                                }
                             }
                         } else {
                             if (preg_match("/\.(" . $this->getRegexpStaticValidAttributes() . ")$/", $token[0])) {
@@ -1369,6 +1376,9 @@ class ExpressionManager
                             case '!=':
                                 $stringParts[] = ' != ';
                                 break;
+                            case '=':
+                                /* ASSIGN : usage jquery: don't add anything (disable default) */;
+                                break;
                             default:
                                 $stringParts[] = ' ' . $token[0] . ' ';
                                 break;
@@ -1392,6 +1402,10 @@ class ExpressionManager
             }
         }
         $mainClause = implode('', $stringParts);
+        if ($idToSet) {
+            /* If there are an id to set (assign) : set it via jquery */
+            $mainClause = "$('#{$idToSet}').val({$mainClause})";
+        }
         $varsUsed = implode("', '", $nonNAvarsUsed);
         if ($varsUsed != '') {
             $this->jsExpression = "LEMif(LEManyNA('" . $varsUsed . "'),'',(" . $mainClause . "))";
@@ -1997,7 +2011,7 @@ class ExpressionManager
                 if ($this->RDP_Evaluate($expr, false, $this->resetErrorsAndWarningsOnEachPart)) {
                     $resolvedPart = $this->GetResult();
                 } else {
-                    // show original and errors in-line only if user have the rigth to update survey content
+                    // show original and errors in-line only if user have the right to update survey content
                     if ($this->sid && Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update')) {
                         $resolvedPart = $this->GetPrettyPrintString();
                     } else {
@@ -2054,7 +2068,7 @@ class ExpressionManager
             switch ($token[2]) {
                 case 'SGQA':
                 case 'WORD':
-                    $splitter = '(?:\b(?:self|that))(?:\.(?:[A-Z0-9_]+))*'; // self or that, optionnaly followed by dot and alnum
+                    $splitter = '(?:\b(?:self|that))(?:\.(?:[A-Z0-9_]+))*'; // self or that, optionaly followed by dot and alnum
                     if (preg_match("/" . $splitter . "/", $token[0])) {
                         $setInCache = false;
                         $expandedVar .= LimeExpressionManager::GetAllVarNamesForQ($this->questionSeq, $token[0]);
@@ -2921,7 +2935,7 @@ function exprmgr_convert_value($fValueToReplace, $iStrict, $sTranslateFromList, 
  */
 function exprmgr_date($format, $timestamp = null)
 {
-    $timestamp = isset($timestamp) ? $timestamp : time();
+    $timestamp = $timestamp ?? time();
     if (!is_numeric($timestamp)) {
         return false;
     }
@@ -2945,7 +2959,8 @@ function exprmgr_if($testDone, $iftrue, $iffalse = '')
 
 /**
  * Return true if the variable is an integer for LimeSurvey
- * Can not really use is_int due to SQL DECIMAL system. This function can surely be improved
+ * Allow usage of numeric answercode as int
+ * Can not use is_int due to SQL DECIMAL system.
  * @param string $arg
  * @return integer
  * @link http://php.net/is_int#82857
@@ -2953,10 +2968,14 @@ function exprmgr_if($testDone, $iftrue, $iffalse = '')
 function exprmgr_int($arg)
 {
     if (strpos($arg, ".")) {
-        $arg = preg_replace("/\.$/", "", rtrim(strval($arg), "0")); // DECIMAL from SQL return always .00000000, the remove all 0 and one . , see #09550
+        // DECIMAL from SQL return always .00000000, the remove all 0 and one . , see #09550
+        $arg = preg_replace("/\.$/", "", rtrim(strval($arg), "0"));
     }
-    return (preg_match("/^-?[0-9]*$/", $arg)); // Allow 000 for value, @link https://bugs.limesurvey.org/view.php?id=9550 DECIMAL sql type.
+    // Allow 000 for value
+    // Disallow '' (and false) @link https://bugs.limesurvey.org/view.php?id=17950
+    return (preg_match("/^-?\d+$/", $arg));
 }
+
 /**
  * Join together $args[0-N] with ', '
  * @param array $args
@@ -3066,7 +3085,7 @@ function exprmgr_log($args)
     if (!is_numeric($number)) {
         return NAN;
     }
-    $base = (isset($args[1])) ? $args[1] : exp(1);
+    $base = $args[1] ?? exp(1);
     if (!is_numeric($base)) {
         return NAN;
     }
@@ -3089,13 +3108,13 @@ function exprmgr_log($args)
  */
 function exprmgr_mktime($hour = null, $minute = null, $second = null, $month = null, $day = null, $year = null)
 {
-    $hour = isset($hour) ? $hour : date("H");
-    $minute = isset($minute) ? $minute : date("i");
-    $second = isset($second) ? $second : date("s");
-    $month = isset($month) ? $month : date("n");
-    $day = isset($day) ? $day : date("j");
-    $year = isset($year) ? $year : date("Y");
-    $hour = isset($hour) ? $hour : date("H");
+    $hour = $hour ?? date("H");
+    $minute = $minute ?? date("i");
+    $second = $second ?? date("s");
+    $month = $month ?? date("n");
+    $day = $day ?? date("j");
+    $year = $year ?? date("Y");
+    $hour = $hour ?? date("H");
     $iInvalidArg = count(array_filter(array($hour, $minute, $second, $month, $day, $year), function ($timeValue) {
         return !is_numeric($timeValue); /* This allow get by string like "01.000" , same than javascript with 2.72.6 and default PHP(5.6) function*/
     }));

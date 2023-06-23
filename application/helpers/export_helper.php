@@ -170,7 +170,7 @@ function SPSSExportData($iSurveyID, $iLength, $na = '', $sEmptyAnswerValue = '',
             if ($field['SPSStype'] == 'DATETIME23.2') {
                 // convert mysql datestamp (yyyy-mm-dd hh:mm:ss) to SPSS datetime (dd-mmm-yyyy hh:mm:ss) format
                 if (isset($row[$fieldno])) {
-                    list($year, $month, $day, $hour, $minute, $second) = preg_split('([^0-9])', $row[$fieldno]);
+                    [$year, $month, $day, $hour, $minute, $second] = preg_split('([^0-9])', $row[$fieldno]);
                     if ($year != '' && (int) $year >= 1900) {
                         echo quoteSPSS(date('d-m-Y H:i:s', mktime($hour, $minute, $second, $month, $day, $year)), $q, $field);
                     } elseif ($row[$fieldno] === '') {
@@ -338,9 +338,41 @@ function SPSSGetValues($field, $qidattributes, $language)
                 'size' => numericSize($field['sql_name']),
             );
         } else {
-            $minvalue = trim($qidattributes['multiflexible_min']) ? $qidattributes['multiflexible_min'] : 1;
-            $maxvalue = trim($qidattributes['multiflexible_max']) ? $qidattributes['multiflexible_max'] : 10;
-            $stepvalue = trim($qidattributes['multiflexible_step']) ? $qidattributes['multiflexible_step'] : 1;
+            $minvalue = 1;
+            $maxvalue = 10;
+            if (trim($qidattributes['multiflexible_max']) != '' && trim($qidattributes['multiflexible_min']) == '') {
+                $maxvalue = $qidattributes['multiflexible_max'];
+                $minvalue = 1;
+            }
+            if (trim($qidattributes['multiflexible_min']) != '' && trim($qidattributes['multiflexible_max']) == '') {
+                $minvalue = $qidattributes['multiflexible_min'];
+                $maxvalue = $qidattributes['multiflexible_min'] + 10;
+            }
+            if (trim($qidattributes['multiflexible_min']) != '' && trim($qidattributes['multiflexible_max']) != '') {
+                if ($qidattributes['multiflexible_min'] < $qidattributes['multiflexible_max']) {
+                    $minvalue = $qidattributes['multiflexible_min'];
+                    $maxvalue = $qidattributes['multiflexible_max'];
+                }
+            }
+
+            $stepvalue = (trim($qidattributes['multiflexible_step']) != '' && $qidattributes['multiflexible_step'] > 0) ? $qidattributes['multiflexible_step'] : 1;
+
+            if ($qidattributes['reverse'] == 1) {
+                $tmp = $minvalue;
+                $minvalue = $maxvalue;
+                $maxvalue = $tmp;
+                $reverse = true;
+                $stepvalue = -$stepvalue;
+            } else {
+                $reverse = false;
+            }
+
+            if ($qidattributes['multiflexible_checkbox']!=0)
+            {
+                $minvalue=0;
+                $maxvalue=1;
+                $stepvalue=1;
+            }
             for ($i = $minvalue; $i <= $maxvalue; $i += $stepvalue) {
                 $answers[] = array('code' => $i, 'value' => $i);
             }
@@ -631,7 +663,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage = '')
         }
         $iFieldNumber++;
         $fid = $iFieldNumber - $diff;
-        $lsLong = isset($typeMap[$ftype]["name"]) ? $typeMap[$ftype]["name"] : $ftype;
+        $lsLong = $typeMap[$ftype]["name"] ?? $ftype;
         $tempArray = array(
             'id' => $prefix . $fid,
             'name' => mb_substr($fieldname, 0, 8),
@@ -2308,25 +2340,6 @@ function tokensExport($iSurveyID)
     if ($sTokenLanguage != '') {
         $oRecordSet->andWhere("lt.language=" . App()->db->quoteValue($sTokenLanguage));
     }
-    $oRecordSet->order("lt.tid");
-    $bresult = $oRecordSet->query();
-    // fetching all records into array, values need to be decrypted
-    $bresultAll = $bresult->readAll();
-    foreach ($bresultAll as $tokenKey => $tokenValue) {
-        // creating TokenDynamic object to be able to decrypt easier
-        $token = TokenDynamic::model($iSurveyID);
-        $attributes = array_keys($token->getAttributes());
-        // Populate TokenDynamic object with values
-        // NB: $tokenValue also contains values not belonging to TokenDynamic model (joined with survey)
-        foreach ($tokenValue as $key => $value) {
-            if (in_array($key, $attributes)) {
-                $token->$key = $value;
-            }
-        }
-        // decrypting
-        $token->decrypt();
-        $bresultAll[$tokenKey] = $token->attributes;
-    }
 
     //HEADERS should be after the above query else timeout errors in case there are lots of tokens!
     header("Content-Disposition: attachment; filename=tokens_" . $iSurveyID . ".csv");
@@ -2349,50 +2362,80 @@ function tokensExport($iSurveyID)
     $tokenoutput .= "\n";
     echo $tokenoutput;
     $tokenoutput = "";
-
     // Export token line by line and fill $aExportedTokens with token exported
     Yii::import('application.libraries.Date_Time_Converter', true);
-    $aExportedTokens = array();
-    foreach ($bresultAll as $brow) {
-        if (Yii::app()->request->getPost('maskequations')) {
-            $brow = array_map('MaskFormula', $brow);
-        }
-        if (trim($brow['validfrom'] != '')) {
-            $datetimeobj = new Date_Time_Converter($brow['validfrom'], "Y-m-d H:i:s");
-            $brow['validfrom'] = $datetimeobj->convert('Y-m-d H:i');
-        }
-        if (trim($brow['validuntil'] != '')) {
-            $datetimeobj = new Date_Time_Converter($brow['validuntil'], "Y-m-d H:i:s");
-            $brow['validuntil'] = $datetimeobj->convert('Y-m-d H:i');
-        }
 
-        $tokenoutput .= '"' . trim($brow['tid']) . '",';
-        $tokenoutput .= '"' . str_replace('"', '""', trim($brow['firstname'])) . '",';
-        $tokenoutput .= '"' . str_replace('"', '""', trim($brow['lastname'])) . '",';
-        $tokenoutput .= '"' . trim($brow['email']) . '",';
-        $tokenoutput .= '"' . trim($brow['emailstatus']) . '",';
-        $tokenoutput .= '"' . trim($brow['token']) . '",';
-        $tokenoutput .= '"' . trim($brow['language']) . '",';
-        $tokenoutput .= '"' . trim($brow['validfrom']) . '",';
-        $tokenoutput .= '"' . trim($brow['validuntil']) . '",';
-        $tokenoutput .= '"' . trim($brow['sent']) . '",';
-        $tokenoutput .= '"' . trim($brow['remindersent']) . '",';
-        $tokenoutput .= '"' . trim($brow['remindercount']) . '",';
-        $tokenoutput .= '"' . trim($brow['completed']) . '",';
-        $tokenoutput .= '"' . trim($brow['usesleft']) . '",';
-        if ($iTokenStatus == 4 && $bIsNotAnonymous && $bIsDateStamped) {
-            $tokenoutput .= '"' . trim($brow['started']) . '",';
-        }
-        foreach ($attrfieldnames as $attr_name) {
-            $tokenoutput .= '"' . str_replace('"', '""', trim($brow[$attr_name])) . '",';
-        }
-        $tokenoutput = substr($tokenoutput, 0, -1); // remove last comma
-        $tokenoutput .= "\n";
-        // @todo: Use proper fputcsv, instead
-        echo $tokenoutput;
-        $tokenoutput = '';
+    // creating TokenDynamic object to be able to decrypt easier
+    $token = TokenDynamic::model($iSurveyID);
+    $attributes = array_keys($token->getAttributes());
+    $aExportedTokens = [];
+    $countRecordSetSelector = clone $oRecordSet;
+    $countRecordSetSelector->select('count(tid)');
+    $countRestSet = $countRecordSetSelector->queryScalar();
+    // The order clause may only be added after the count query, otherwise the count query will fail in MSSQL
+    $oRecordSet->order("lt.tid");
+    $maxRows = 1000;
+    $maxPages = ceil($countRestSet / $maxRows);
+    for ($i = 0; $i < $maxPages; $i++) {
+        $offset = $i * $maxRows;
+        $oRecordSetQuery = clone $oRecordSet;
+        $oRecordSetQuery->limit($maxRows, $offset);
+        $bresult = $oRecordSetQuery->query();
+        // fetching all records into array, values need to be decrypted
+        foreach ($bresult as $tokenValue) {
 
-        $aExportedTokens[] = $brow['tid'];
+            // Populate TokenDynamic object with values
+            // NB: $tokenValue also contains values not belonging to TokenDynamic model (joined with survey)
+            foreach ($tokenValue as $key => $value) {
+                if (in_array($key, $attributes)) {
+                    $token->$key = $value;
+                }
+            }
+            // decrypting
+            $token->decrypt();
+            $brow = $token->attributes;
+            if (Yii::app()->request->getPost('maskequations')) {
+                $brow = array_map('MaskFormula', $brow);
+            }
+            if (trim($brow['validfrom'] != '')) {
+                $datetimeobj = new Date_Time_Converter($brow['validfrom'], "Y-m-d H:i:s");
+                $brow['validfrom'] = $datetimeobj->convert('Y-m-d H:i');
+            }
+            if (trim($brow['validuntil'] != '')) {
+                $datetimeobj = new Date_Time_Converter($brow['validuntil'], "Y-m-d H:i:s");
+                $brow['validuntil'] = $datetimeobj->convert('Y-m-d H:i');
+            }
+
+            $tokenoutput .= '"' . trim($brow['tid']) . '",';
+            $tokenoutput .= '"' . str_replace('"', '""', trim($brow['firstname'])) . '",';
+            $tokenoutput .= '"' . str_replace('"', '""', trim($brow['lastname'])) . '",';
+            $tokenoutput .= '"' . trim($brow['email']) . '",';
+            $tokenoutput .= '"' . trim($brow['emailstatus']) . '",';
+            $tokenoutput .= '"' . trim($brow['token']) . '",';
+            $tokenoutput .= '"' . trim($brow['language']) . '",';
+            $tokenoutput .= '"' . trim($brow['validfrom']) . '",';
+            $tokenoutput .= '"' . trim($brow['validuntil']) . '",';
+            $tokenoutput .= '"' . trim($brow['sent']) . '",';
+            $tokenoutput .= '"' . trim($brow['remindersent']) . '",';
+            $tokenoutput .= '"' . trim($brow['remindercount']) . '",';
+            $tokenoutput .= '"' . trim($brow['completed']) . '",';
+            $tokenoutput .= '"' . trim($brow['usesleft']) . '",';
+            if ($iTokenStatus == 4 && $bIsNotAnonymous && $bIsDateStamped) {
+                $tokenoutput .= '"' . trim($brow['started']) . '",';
+            }
+            foreach ($attrfieldnames as $attr_name) {
+                $tokenoutput .= '"' . str_replace('"', '""', trim($brow[$attr_name])) . '",';
+            }
+            $tokenoutput = substr($tokenoutput, 0, -1); // remove last comma
+            $tokenoutput .= "\n";
+            // @todo: Use proper fputcsv, instead
+            echo $tokenoutput;
+            $tokenoutput = '';
+
+            if (Yii::app()->request->getPost('tokendeleteexported')) {
+                $aExportedTokens[] = $brow['tid'];
+            }
+        }
     }
 
     if (Yii::app()->request->getPost('tokendeleteexported') && Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'delete') && !empty($aExportedTokens)) {
@@ -2883,7 +2926,7 @@ function tsvSurveyExport($surveyid)
                         $tsv_output['class'] = 'Q';
                         $tsv_output['type/scale'] = $question['type'];
                         $tsv_output['name'] = !empty($question['title']) ? $question['title'] : '';
-                        $tsv_output['relevance'] = isset($question['relevance']) ? $question['relevance'] : '';
+                        $tsv_output['relevance'] = $question['relevance'] ?? '';
                         $tsv_output['text'] = !empty($question['question']) ? str_replace(array("\n", "\r"), '', $question['question']) : '';
                         $tsv_output['help'] = !empty($question['help']) ? str_replace(array("\n", "\r"), '', $question['help']) : '';
                         $tsv_output['language'] = $question['language'];

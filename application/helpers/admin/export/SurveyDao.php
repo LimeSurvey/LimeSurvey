@@ -92,7 +92,7 @@ class SurveyDao
         if (!empty($aFields)) {
             $aSelectFields = array_intersect($aFields, $aSelectFields);
         }
-        // Allways add Table prefix : see bug #08396 . Don't use array_walk for PHP < 5.3 compatibility
+        // Always add Table prefix : see bug #08396 . Don't use array_walk for PHP < 5.3 compatibility
         foreach ($aSelectFields as &$sField) {
             $sField = $oSurvey->responsesTableName . "." . $sField;
         }

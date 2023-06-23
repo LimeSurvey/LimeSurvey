@@ -92,7 +92,7 @@
                     <div class=" has-feedback">
                         <?php Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
                                 'name' => "validfrom",
-                                'value' => isset($validfrom) ? $validfrom : '',
+                                'value' => $validfrom ?? '',
                                 'pluginOptions' => array(
                                     'format' => $dateformatdetails['jsdate'] . " HH:mm",
                                     'allowInputToggle' =>true,
@@ -122,7 +122,7 @@
                     <div class=" has-feedback">
                         <?php Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
                                 'name' => "validuntil",
-                                'value' => isset($validuntil) ? $validuntil : '',
+                                'value' => $validuntil ?? '',
                                 'pluginOptions' => array(
                                     'format' => $dateformatdetails['jsdate'] . " HH:mm",
                                     'allowInputToggle' =>true,

@@ -53,9 +53,9 @@ class TopbarConfiguration
     public function __construct(array $config = [])
     {
         // Set defaults
-        $this->viewName = isset($config['name']) ? $config['name'] : 'surveyTopbar_view';
-        $this->id = isset($config['topbarId']) ? $config['topbarId'] : 'surveybarid';
-        $this->hide = isset($config['hide']) ? $config['hide'] : false;
+        $this->viewName = $config['name'] ?? 'surveyTopbar_view';
+        $this->id = $config['topbarId'] ?? 'surveybarid';
+        $this->hide = $config['hide'] ?? false;
 
         if (isset($config['leftSideView'])) {
             $this->leftSideView = $config['leftSideView'];
@@ -83,7 +83,7 @@ class TopbarConfiguration
      */
     public static function createFromViewData($aData)
     {
-        $config = isset($aData['topBar']) ? $aData['topBar'] : [];
+        $config = $aData['topBar'] ?? [];
 
         // If 'sid' is not specified in the topbar config, but is present in the $aData array, assign it to the config
         $sid = self::getSid($config);

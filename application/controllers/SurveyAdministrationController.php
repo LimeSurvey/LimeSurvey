@@ -185,6 +185,12 @@ class SurveyAdministrationController extends LSBaseController
             $aData['display']['menu_bars']['surveysummary'] = 'viewgroup';
         }
 
+        $surveyUrls = [];
+        foreach ($survey->allLanguages as $language) {
+            $surveyUrls[$language] = $survey->getSurveyUrl($language);
+        }
+        $aData['surveyUrls'] = $surveyUrls;
+
         $this->surveysummary($aData);
 
         // Display 'Overview' in Green Bar
@@ -508,8 +514,7 @@ class SurveyAdministrationController extends LSBaseController
                 $iNewGroupID = $this->createSampleGroup($iNewSurveyid);
                 $iNewQuestionID = $this->createSampleQuestion($iNewSurveyid, $iNewGroupID);
 
-                Yii::app()->setFlashMessage(gT("Your new survey was created. 
-                We also created a first question group and an example question for you."), 'info');
+                Yii::app()->setFlashMessage(gT("Your new survey was created. We also created a first question group and an example question for you."), 'info');
                 $redirecturl = $this->getSurveyAndSidemenueDirectionURL(
                     $iNewSurveyid,
                     $iNewGroupID,
@@ -566,7 +571,7 @@ class SurveyAdministrationController extends LSBaseController
      */
     public function actionImportsurveyresources()
     {
-        $iSurveyID = Yii::app()->request->getPost('surveyid');
+        $iSurveyID = sanitize_int(Yii::app()->request->getPost('surveyid'));
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update')) {
             Yii::app()->user->setFlash('error', gT("Access denied"));
             $this->redirect(Yii::app()->request->urlReferrer);
@@ -1200,7 +1205,7 @@ class SurveyAdministrationController extends LSBaseController
         $changes = Yii::app()->request->getPost('changes', []);
         $aSuccess = [];
 
-        $oSurvey->showsurveypolicynotice = isset($changes['showsurveypolicynotice']) ? $changes['showsurveypolicynotice'] : 0;
+        $oSurvey->showsurveypolicynotice = $changes['showsurveypolicynotice'] ?? 0;
         $aSuccess[] = $oSurvey->save();
         foreach ($oSurvey->allLanguages as $sLanguage) {
             $oSurveyLanguageSetting = SurveyLanguageSetting::model()->findByPk([
@@ -1214,9 +1219,9 @@ class SurveyAdministrationController extends LSBaseController
                 $oSurveyLanguageSetting->surveyls_language = $sLanguage;
             }
 
-            $oSurveyLanguageSetting->surveyls_policy_notice = isset($changes['datasecmessage'][$sLanguage]) ? $changes['datasecmessage'][$sLanguage] : '';
-            $oSurveyLanguageSetting->surveyls_policy_error = isset($changes['datasecerror'][$sLanguage]) ? $changes['datasecerror'][$sLanguage] : '';
-            $oSurveyLanguageSetting->surveyls_policy_notice_label = isset($changes['dataseclabel'][$sLanguage]) ? $changes['dataseclabel'][$sLanguage] : '';
+            $oSurveyLanguageSetting->surveyls_policy_notice = $changes['datasecmessage'][$sLanguage] ?? '';
+            $oSurveyLanguageSetting->surveyls_policy_error = $changes['datasecerror'][$sLanguage] ?? '';
+            $oSurveyLanguageSetting->surveyls_policy_notice_label = $changes['dataseclabel'][$sLanguage] ?? '';
             $aSuccess[$sLanguage] = $oSurveyLanguageSetting->save();
             unset($oSurveyLanguageSetting);
         }
@@ -1288,7 +1293,7 @@ class SurveyAdministrationController extends LSBaseController
         $uploadValidator = new LimeSurvey\Models\Services\UploadValidator();
         $uploadValidator->renderJsonOnError('file', $debug);
 
-        $iSurveyID = Yii::app()->request->getPost('surveyid');
+        $iSurveyID = (int) Yii::app()->request->getPost('surveyid');
         $success = false;
         $debug = [];
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update')) {
@@ -1866,6 +1871,7 @@ class SurveyAdministrationController extends LSBaseController
         array_unshift($grplangs, $baselang);
 
         //@TODO add language checks here
+        //Multi language can't be implemented since the name column is indexed (unique).
         $menuEntry = SurveymenuEntries::model()->find('name=:name', array(':name' => $menuaction));
 
         if (!(Permission::model()->hasSurveyPermission($iSurveyID, $menuEntry->permission, $menuEntry->permission_grade))) {
@@ -1920,13 +1926,12 @@ class SurveyAdministrationController extends LSBaseController
             $aData['moreInfo'] = $temp;
         }
 
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'surveysettings.js');
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'surveysettings.js', LSYii_ClientScript::POS_BEGIN);
         App()->getClientScript()->registerPackage('jquery-json');
         App()->getClientScript()->registerPackage('bootstrap-switch');
 
         // override survey settings if global settings exist
         $templateData['showqnumcode']   = getGlobalSetting('showqnumcode') !== 'choose' ? getGlobalSetting('showqnumcode') : $survey->showqnumcode;
-        $templateData['shownoanswer']   = getGlobalSetting('shownoanswer') !== 'choose' ? getGlobalSetting('shownoanswer') : $survey->shownoanswer;
         $templateData['showgroupinfo']  = getGlobalSetting('showgroupinfo') !== '2' ? getGlobalSetting('showgroupinfo') : $survey->showgroupinfo;
         $templateData['showxquestions'] = getGlobalSetting('showxquestions') !== 'choose' ? getGlobalSetting('showxquestions') : $survey->showxquestions;
 
@@ -1940,7 +1945,6 @@ class SurveyAdministrationController extends LSBaseController
         $aData['action'] = $menuEntry->action;
         $aData['entryData'] = $menuEntry->attributes;
         $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat']);
-        $aData['subaction'] = $menuEntry->title;
         $aData['display']['menu_bars']['surveysummary'] = $menuEntry->title;
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyID . ")";
         $aData['surveybar']['buttons']['view'] = true;
@@ -1948,6 +1952,15 @@ class SurveyAdministrationController extends LSBaseController
         $aData['surveybar']['savebutton']['useformid'] = 'true';
         $aData['surveybar']['saveandclosebutton']['form'] = true;
         $aData['topBar']['closeUrl'] = $this->createUrl("surveyAdministration/view/", ['surveyid' => $iSurveyID]); // Close button
+
+
+        $adminLanguage = Yii::app()->session['adminlang'];
+
+        if ($adminLanguage !== 'en-GB' && $menuEntry->language === 'en-GB') {
+            $aData['subaction'] = gT($menuEntry->title);
+        } else {
+            $aData['subaction'] = $menuEntry->title;
+        }
 
         if ($subaction === 'resources') {
             $aData['topBar']['showSaveButton'] = false;
@@ -1980,9 +1993,8 @@ class SurveyAdministrationController extends LSBaseController
 
         $iSurveyID = sanitize_int($iSurveyID);
         $thereIsPostData = $request->getPost('orgdata') !== null;
-        $userHasPermissionToUpdate = Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update');
 
-        if (!$userHasPermissionToUpdate) {
+        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update')) {
             Yii::app()->user->setFlash('error', gT("Access denied"));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
@@ -1990,7 +2002,6 @@ class SurveyAdministrationController extends LSBaseController
         if ($thereIsPostData) {
             // Save the new ordering
             $this->reorderGroup($iSurveyID);
-
             $closeAfterSave = $request->getPost('close-after-save') === 'true';
             if ($closeAfterSave) {
                 $this->redirect(array('surveyAdministration/view/surveyid/' . $iSurveyID));
@@ -2099,9 +2110,6 @@ class SurveyAdministrationController extends LSBaseController
             } elseif ($action == 'copysurvey') {
                 $iSurveyID = sanitize_int(Yii::app()->request->getParam('copysurveylist'));
                 $aExcludes = array();
-
-                $sNewSurveyName = Yii::app()->request->getPost('copysurveyname');
-
                 if (Yii::app()->request->getPost('copysurveyexcludequotas') == "1") {
                     $aExcludes['quotas'] = true;
                 }
@@ -2141,6 +2149,12 @@ class SurveyAdministrationController extends LSBaseController
                 } else {
                     Yii::app()->loadHelper('export');
                     $copysurveydata = surveyGetXMLData($iSurveyID, $aExcludes);
+                    if (empty(Yii::app()->request->getPost('copysurveyname'))) {
+                        $sourceSurvey = Survey::model()->findByPk($iSurveyID);
+                        $sNewSurveyName = $sourceSurvey->currentLanguageSettings->surveyls_title;
+                    } else {
+                        $sNewSurveyName = Yii::app()->request->getPost('copysurveyname');
+                    }
                 }
             }
 
@@ -2484,7 +2498,7 @@ class SurveyAdministrationController extends LSBaseController
 
         $aData['aGroupsAndQuestions'] = $groupData;
         $aData['surveyid'] = $iSurveyID;
-
+        $aData['surveyActivated'] = $survey->getIsActive();
         return $aData;
     }
 
@@ -2539,25 +2553,32 @@ class SurveyAdministrationController extends LSBaseController
                     $aQuestionOrder[$gid] = 0;
                 }
 
-                $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
-                $oQuestion = Question::model()->findByPk(array("qid" => $qid, 'language' => $sBaseLanguage));
-                $oldGid = $oQuestion['gid'];
-                if ($oldGid != $gid) {
-                    fixMovedQuestionConditions($qid, $oldGid, $gid, $iSurveyID);
+                $oQuestion = Question::model()->findByPk($qid);
+                $oldGid = $oQuestion->gid;
+                $oQuestion->gid = $gid;
+                $oQuestion->question_order = $aQuestionOrder[$gid];
+                if ($oQuestion->save(true)) {
+                    $oldGid = $oQuestion['gid'];
+                    if ($oldGid != $gid) {
+                        fixMovedQuestionConditions($qid, $oldGid, $gid, $iSurveyID);
+                    }
+                    Question::model()->updateAll(
+                        array(
+                            'question_order' => $aQuestionOrder[$gid],
+                            'gid' => $gid
+                        ),
+                        'qid=:qid',
+                        array(':qid' => $qid)
+                    );
+                    Question::model()->updateAll(array('gid' => $gid), 'parent_qid=:parent_qid', array(':parent_qid' => $qid));
+                    $aQuestionOrder[$gid]++;
+                } else {
+                    App()->setFlashMessage(sprintf(gT("Unable to reorder question %s."), $oQuestion->title), 'warning');
                 }
-                Question::model()->updateAll(
-                    array(
-                    'question_order' => $aQuestionOrder[$gid],
-                    'gid' => $gid),
-                    'qid=:qid',
-                    array(':qid' => $qid)
-                );
-                Question::model()->updateAll(array('gid' => $gid), 'parent_qid=:parent_qid', array(':parent_qid' => $qid));
-                $aQuestionOrder[$gid]++;
             }
         }
         LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
-        Yii::app()->session['flashmessage'] = gT("The new question group/question order was successfully saved.");
+        App()->setFlashMessage(gT("The new question group/question order was successfully saved."));
     }
 
     /**
@@ -2983,7 +3004,7 @@ class SurveyAdministrationController extends LSBaseController
             "window.TextEditData = {
                 connectorBaseUrl: '" . Yii::app()->getController()->createUrl('surveyAdministration/') . "',
                 isNewSurvey: " . ($survey->getIsNewRecord() ? "true" : "false") . ",
-                sid: $survey->sid, 
+                sid: $survey->sid,
                 i10N: {
                     'Survey title' : '" . gT('Survey title') . "',
                     'Date format' : '" . gT('Date format') . "',
@@ -3173,8 +3194,8 @@ class SurveyAdministrationController extends LSBaseController
                 'Action' => gT('Action'),
                 'Parameter' => gT('Parameter'),
                 'Target question' => gT('Target question'),
-                'Survey ID' => gT('Survey id'),
-                'Question ID' => gT('Question id'),
+                'Survey ID' => gT('Survey ID'),
+                'Question ID' => gT('Question ID'),
                 'Subquestion ID' => gT('Subquestion ID'),
                 'Add URL parameter' => gT('Add URL parameter'),
                 'Edit URL parameter' => gT('Edit URL parameter'),

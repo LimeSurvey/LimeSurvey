@@ -30,7 +30,7 @@
                         array(
                             'form'=>$form,
                             'oQuota'=>$oQuota,
-                            'oQuotaLanguageSetting' => (isset($aQuotaLanguageSettings[$language]) ? $aQuotaLanguageSettings[$language] : new QuotaLanguageSetting),
+                            'oQuotaLanguageSetting' => ($aQuotaLanguageSettings[$language] ?? new QuotaLanguageSetting),
                             'language' =>$language,
                         ),true)
                     );

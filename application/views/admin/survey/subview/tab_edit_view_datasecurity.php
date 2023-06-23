@@ -24,7 +24,7 @@ PrepareEditorScript(false, $this);
     <div class="row">
         <!-- security notice -->
         <div class="form-group">
-            <label class="control-label" for='showsurveypolicynotice'><?php  eT("Show survey policy text with mandatory checkbox:") ; ?></label>
+            <label class="control-label" for='showsurveypolicynotice'><?php  eT("Show privacy policy text with mandatory checkbox:") ; ?></label>
             <div class="">
                 <div class="btn-group" data-toggle="buttons">
                     <label class="btn btn-default <?=$oSurvey->showsurveypolicynotice==0 ? 'active' : ''?>" >

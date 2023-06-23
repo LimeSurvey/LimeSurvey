@@ -44,7 +44,6 @@ class Database extends SurveyCommonAction
     private $updateableFields = [
                 'owner_id' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
                 'admin' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
-                'faxto' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
                 'format' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
                 'expires' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
                 'startdate' => ['type' => 'default', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
@@ -578,6 +577,7 @@ class Database extends SurveyCommonAction
 
         Yii::app()->loadHelper('database');
 
+        $hasSurveyLanguageSettingError = false;
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'update')) {
             foreach ($languagelist as $langname) {
                 if ($langname) {
@@ -585,6 +585,7 @@ class Database extends SurveyCommonAction
                     $sURLDescription = Yii::app()->request->getPost('urldescrip_' . $langname, null);
                     $sURL = Yii::app()->request->getPost('url_' . $langname, null);
                     $short_title = Yii::app()->request->getPost('short_title_' . $langname, null);
+                    $alias = Yii::app()->request->getPost('alias_' . $langname, null);
                     $description = Yii::app()->request->getPost('description_' . $langname, null);
                     $welcome = Yii::app()->request->getPost('welcome_' . $langname, null);
                     $endtext = Yii::app()->request->getPost('endtext_' . $langname, null);
@@ -598,6 +599,9 @@ class Database extends SurveyCommonAction
                         // Fix bug with FCKEditor saving strange BR types
                         $short_title = $this->oFixCKeditor->fixCKeditor($short_title);
                         $data['surveyls_title'] = $short_title;
+                    }
+                    if ($alias !== null) {
+                        $data['surveyls_alias'] = $alias;
                     }
                     if ($description !== null) {
                         // Fix bug with FCKEditor saving strange BR types
@@ -643,7 +647,21 @@ class Database extends SurveyCommonAction
                     if (count($data) > 0) {
                         $oSurveyLanguageSetting = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id' => $iSurveyID, 'surveyls_language' => $langname));
                         $oSurveyLanguageSetting->setAttributes($data);
-                        $oSurveyLanguageSetting->save(); // save the change to database
+                        if (!$oSurveyLanguageSetting->save()) { // save the change to database
+                            $languageDescription = getLanguageNameFromCode($langname, false);
+                            Yii::app()->setFlashMessage(
+                                Chtml::errorSummary(
+                                    $oSurveyLanguageSetting,
+                                    Chtml::tag(
+                                        "p",
+                                        ['class' => 'strong'],
+                                        sprintf(gT("Texts for language %s could not be updated:"), $languageDescription)
+                                    )
+                                ),
+                                "error"
+                            );
+                            $hasSurveyLanguageSettingError = true;
+                        }
                     }
                 }
             }
@@ -717,19 +735,11 @@ class Database extends SurveyCommonAction
             $oSurvey->publicstatistics = $this->filterEmptyFields($oSurvey, 'publicstatistics');
             $oSurvey->autoredirect = $this->filterEmptyFields($oSurvey, 'autoredirect');
 
-            // save into the database only if global settings are off
-            //if (getGlobalSetting('showxquestions') === 'choose'){
-                $oSurvey->showxquestions = $this->filterEmptyFields($oSurvey, 'showxquestions');
-            //}
-            //if (getGlobalSetting('showgroupinfo') === 'choose'){
-                $oSurvey->showgroupinfo = $this->filterEmptyFields($oSurvey, 'showgroupinfo');
-            //}
-            //if (getGlobalSetting('showqnumcode') === 'choose'){
-                $oSurvey->showqnumcode = $this->filterEmptyFields($oSurvey, 'showqnumcode');
-            //}
-            //if (getGlobalSetting('shownoanswer') == 2){  // Don't do exact comparison because the value could be from global settings table (string) or from config (integer)
-                $oSurvey->shownoanswer = $this->filterEmptyFields($oSurvey, 'shownoanswer');
-            //}
+            $oSurvey->shownoanswer = $this->filterEmptyFields($oSurvey, 'shownoanswer');
+            $oSurvey->showxquestions = $this->filterEmptyFields($oSurvey, 'showxquestions');
+            $oSurvey->showgroupinfo = $this->filterEmptyFields($oSurvey, 'showgroupinfo');
+            $oSurvey->showqnumcode = $this->filterEmptyFields($oSurvey, 'showqnumcode');
+
             $oSurvey->showwelcome = $this->filterEmptyFields($oSurvey, 'showwelcome');
             $oSurvey->showsurveypolicynotice = $this->filterEmptyFields($oSurvey, 'showsurveypolicynotice');
             $oSurvey->allowprev = $this->filterEmptyFields($oSurvey, 'allowprev');
@@ -756,17 +766,18 @@ class Database extends SurveyCommonAction
             }
 
             $oSurvey->googleanalyticsstyle = $this->filterEmptyFields($oSurvey, 'googleanalyticsstyle');
-
-            $tokenlength = $this->filterEmptyFields($oSurvey, 'tokenlength');
-            $oSurvey->tokenlength = (int) ((($tokenlength < 5 || $tokenlength > 36) && $tokenlength != -1) ? 15 : $tokenlength);
-
+            $oSurvey->tokenlength = $this->filterEmptyFields($oSurvey, 'tokenlength');
             $event = new PluginEvent('beforeSurveySettingsSave');
             $event->set('modifiedSurvey', $oSurvey);
             App()->getPluginManager()->dispatchEvent($event);
             $aAfterApplyAttributes = $oSurvey->attributes;
 
             if ($oSurvey->save()) {
-                Yii::app()->setFlashMessage(gT("Survey settings were successfully saved."));
+                if (!$hasSurveyLanguageSettingError) {
+                    Yii::app()->setFlashMessage(gT("Survey settings were successfully saved."));
+                } else {
+                    Yii::app()->setFlashMessage(gT("Survey settings were saved, but there where errors with some languages."), "warning");
+                }
             } else {
                 Yii::app()->setFlashMessage(CHtml::errorSummary($oSurvey, CHtml::tag("p", array('class' => 'strong'), gT("Survey could not be updated, please fix the following error:"))), "error");
             }
@@ -820,9 +831,9 @@ class Database extends SurveyCommonAction
                         'updated' => $updatedFields,
                         'DEBUG' => ['POST' => $_POST,
                                     'reloaded' => $oSurvey->attributes,
-                                    'aURLParams' => isset($aURLParams) ? $aURLParams : '',
-                                    'initial' => isset($aOldAttributes) ? $aOldAttributes : '',
-                                    'afterApply' => isset($aAfterApplyAttributes) ? $aAfterApplyAttributes : '']
+                                    'aURLParams' => $aURLParams ?? '',
+                                    'initial' => $aOldAttributes ?? '',
+                                    'afterApply' => $aAfterApplyAttributes ?? '']
                     ],
                 ),
                 false,
@@ -865,7 +876,6 @@ class Database extends SurveyCommonAction
         $oSurvey->admin = $request->getPost('admin');
         $oSurvey->adminemail = $request->getPost('adminemail');
         $oSurvey->bounce_email = $request->getPost('bounce_email');
-        $oSurvey->faxto = $request->getPost('faxto');
         $oSurvey->gsid = $request->getPost('gsid');
         $oSurvey->format = $request->getPost('format');
 
@@ -960,7 +970,7 @@ class Database extends SurveyCommonAction
         }
 
         if ($newValue === null) {
-            $newValue = isset($aSurvey[$fieldArrayName]) ? $aSurvey[$fieldArrayName] : $oSurvey->{$fieldArrayName};
+            $newValue = $aSurvey[$fieldArrayName] ?? $oSurvey->{$fieldArrayName};
         } else {
             $this->updatedFields[] = $fieldArrayName;
         }

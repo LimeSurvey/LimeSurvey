@@ -15,7 +15,7 @@
 
             <div class="modal-body">
                 <p>
-                    {{ gT('Enter one label per line. You can provide a code by separating code and label text with a semicolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semicolon or tab.') }}
+                    {{ gT('Enter one label per line. You can provide a code by separating code and label text with a semicolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semicolon or tab. Please remember to use the save button after applying the changes.') }}
                 </p>
                 <textarea id='quickaddarea' class='tipme' title='' cols='100' rows='10' style='width:570px;'></textarea>
             </div>
@@ -39,19 +39,35 @@
 
             <div class="modal-body">
                 <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <label for="labelsets">{{ gT('Label sets list') }}</label>
+                    <div class="row" id="labelsetsLoader">
+                        <div class="ls-flex ls-flex-column align-items-center align-content-center" style="height: 200px;">
+                            <div class="loader--loaderWidget ls-flex ls-flex-column align-content-center align-items-center" style="min-height: 100%;">
+                                <div class="ls-flex align-content-center align-items-center">
+                                <div class="loader-adminpanel text-center">
+                                    <div class="contain-pulse animate-pulse">
+                                        <div class="square"></div>
+                                        <div class="square"></div>
+                                        <div class="square"></div>
+                                        <div class="square"></div>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-sm-12">
-                            <select id='labelsets' size='10' style='width:250px;'>
-                                <option>--{{ gT('Label sets') }}--</option>
-                            </select>
+                    </div>
+                    <div id="labelsetsModalContent" style="display: none;">
+                        <div class="row" id="labelsetsSelectorContainer">
+                            <div class="col-sm-12">
+                                <label for="labelsets">{{ gT('Label sets list') }}</label>
+                            </div>
+                            <div class="col-sm-12">
+                                <select id='labelsets' size='10' style='width:250px;'>
+                                    <option>--{{ gT('Label sets') }}--</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="row">
-                            <div id="longcodesalert" class="col-sm-12" style="display: none;">
-                                <div class="alert alert-warning ls-space margin bottom-0 top-15">{{ gT('Warning: Some answer codes will be truncated.') }}</div>
-                            </div>
+                            <div id="labelsetalert" class="col-sm-12" style="display: none;"></div>
                             <div id='labelsetpreview' class="col-sm-12 ls-space margin top-15" >
                             </div>
                         </div>

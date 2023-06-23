@@ -29,7 +29,7 @@ class LSYii_CompareInsensitiveValidator extends CValidator
     public $allowEmpty = false;
     /**
      * @var string the operator for comparison. Defaults to '='.
-     * The followings are valid operators:
+     * The following are valid operators:
      * <ul>
      * <li>'=' or '==': validates to see if the two values are equal. If {@link strict} is true, the comparison
      * will be done in strict mode (i.e. checking value type as well).</li>
@@ -62,12 +62,12 @@ class LSYii_CompareInsensitiveValidator extends CValidator
             case '=':
             case '==':
                 if ($value != $compareValue) {
-                                    $message = $this->message !== null ? $this->message : sprintf(gT('%s must be case-insensitive equal to %s'), $attribute, $compareTo);
+                                    $message = $this->message ?? sprintf(gT('%s must be case-insensitive equal to %s'), $attribute, $compareTo);
                 }
                 break;
             case '!=':
                 if ($value == $compareValue) {
-                                    $message = $this->message !== null ? $this->message : sprintf(gT('%s must not be case-insensitive equal to %s'), $attribute, $compareTo);
+                                    $message = $this->message ?? sprintf(gT('%s must not be case-insensitive equal to %s'), $attribute, $compareTo);
                 }
                 break;
             default:

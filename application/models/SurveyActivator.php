@@ -100,6 +100,39 @@ class SurveyActivator
     }
 
     /**
+     * See bug #09828: Ranking question : update allowed can broke Survey DB
+     * If max_subquestions is not set or is invalid : set it to actual answers numbers
+     *
+     * @return void
+     */
+    public function fixQuestionAttributeForRanking($sFieldMap)
+    {
+        foreach ($sFieldMap as $aRow) {
+            switch ($aRow['type']) {
+                case Question::QT_R_RANKING:
+                    $nrOfAnswers = Answer::model()->countByAttributes(
+                        array('qid' => $aRow['qid'])
+                    );
+                    $oQuestionAttribute = QuestionAttribute::model()->find(
+                        "qid = :qid AND attribute = 'max_subquestions'",
+                        array(':qid' => $aRow['qid'])
+                    );
+                    if (empty($oQuestionAttribute)) {
+                        $oQuestionAttribute = new QuestionAttribute();
+                        $oQuestionAttribute->qid = $aRow['qid'];
+                        $oQuestionAttribute->attribute = 'max_subquestions';
+                        $oQuestionAttribute->value = $nrOfAnswers;
+                        $oQuestionAttribute->save();
+                    } elseif (intval($oQuestionAttribute->value) < 1) {
+                        // Fix it if invalid : disallow 0, but need a sub question minimum for EM
+                        $oQuestionAttribute->value = $nrOfAnswers;
+                        $oQuestionAttribute->save();
+                    }
+            }
+        }
+    }
+
+    /**
      * For each question, create the appropriate field(s)
      *
      * @param string $collation
@@ -190,29 +223,6 @@ class SurveyActivator
                     $aTableDefinition[$aRow['fieldname']] = isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "text";
                     break;
                 case Question::QT_R_RANKING:
-                    /**
-                     * See bug #09828: Ranking question : update allowed can broke Survey DB
-                     * If max_subquestions is not set or is invalid : set it to actual answers numbers
-                     */
-
-                    $nrOfAnswers = Answer::model()->countByAttributes(
-                        array('qid' => $aRow['qid'])
-                    );
-                    $oQuestionAttribute = QuestionAttribute::model()->find(
-                        "qid = :qid AND attribute = 'max_subquestions'",
-                        array(':qid' => $aRow['qid'])
-                    );
-                    if (empty($oQuestionAttribute)) {
-                        $oQuestionAttribute = new QuestionAttribute();
-                        $oQuestionAttribute->qid = $aRow['qid'];
-                        $oQuestionAttribute->attribute = 'max_subquestions';
-                        $oQuestionAttribute->value = $nrOfAnswers;
-                        $oQuestionAttribute->save();
-                    } elseif (intval($oQuestionAttribute->value) < 1) {
-                        // Fix it if invalid : disallow 0, but need a sub question minimum for EM
-                        $oQuestionAttribute->value = $nrOfAnswers;
-                        $oQuestionAttribute->save();
-                    }
                     $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : (isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "string(5)");
                     break;                                                                                                                                                                                                                                                                 default:
                     $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : (isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "string(5)");
@@ -293,6 +303,7 @@ class SurveyActivator
         $this->survey->fixInvalidQuestions();
         //Get list of questions for the base language
         $sFieldMap = createFieldMap($this->survey, 'full', true, false, $this->survey->language);
+        $this->fixQuestionAttributeForRanking($sFieldMap);
         $this->prepareTableDefinition($collation, $sFieldMap);
         $this->prepareSimulateQuery();
     }

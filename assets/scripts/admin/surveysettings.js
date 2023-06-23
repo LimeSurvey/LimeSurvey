@@ -152,6 +152,22 @@ function guidGenerator() {
     return (S4() + S4() + '-' + S4() + '-' + S4() + '-' + S4() + '-' + S4() + S4() + S4());
 }
 
+/**
+ * Validate settings form depending on form name
+ */
+function validateSettingsForm($form) {
+    switch ($form.attr('id')) {
+        case 'publication':
+            return LS.validateEndDateHigherThanStart(
+                $('#startdate_datetimepicker').data('DateTimePicker'),
+                $('#expires_datetimepicker').data('DateTimePicker'),
+                () => {LS.LsGlobalNotifier.createFlash(expirationLowerThanStartError, 'alert-danger fade in')}
+            );
+        default:
+            return true;
+    }
+}
+
 $(document).on('ready  pjax:scriptcomplete', function(){
     if (window.PanelIntegrationData) {
         var i10n = window.PanelIntegrationData.i10n;

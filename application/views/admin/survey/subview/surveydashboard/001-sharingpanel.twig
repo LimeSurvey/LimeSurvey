@@ -13,7 +13,7 @@
                 </div>
                 <div class="col-8">
                     {% if oSurvey.sid %} {# pseudo condition due to reverse parsing problems while generating twig admin cache via console.php twig generateAdminCache #}
-                        {% set tmp_url = createAbsoluteUrl("survey/index", { "sid" : oSurvey.sid, "lang" : oSurvey.language}) %}
+                        {% set tmp_url = surveyUrls[oSurvey.language] %}
                     {% endif %}
                     <a href='{{tmp_url}}' target='_blank'> {{tmp_url}} </a>
                 </div>
@@ -28,7 +28,7 @@
                 </div>
                 <div class="col-8">
                     {% if oSurvey.sid %} {# pseudo condition due to reverse parsing problems while generating twig admin cache via console.php twig generateAdminCache #}
-                        {% set tmp_url = createAbsoluteUrl("survey/index", { "sid" : oSurvey.sid, "lang" : langname}) %}
+                        {% set tmp_url = surveyUrls[langname] %}
                     {% endif %}
                     <a href='{{tmp_url}}' target='_blank'> {{tmp_url}} </a>
                 </div>

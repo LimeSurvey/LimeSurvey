@@ -57,6 +57,8 @@
 
     <div class="collapse navbar-collapse js-navbar-collapse pull-right ls--selector--configuration-menu">
         <ul class="nav navbar-nav navbar-right">
+            <!-- Prepended extra menus from plugins -->
+            <?php $this->renderPartial( "application.libraries.MenuObjects.views._extraMenu", ['extraMenus' => $extraMenus, 'prependedMenu' => true]); ?>
 
             <li>
                 <a  href="<?php echo $this->createUrl("surveyAdministration/newSurvey"); ?>" >
@@ -91,39 +93,8 @@
             <?php endif;?>
 
             <!-- Extra menus from plugins -->
-            <?php // TODO: This views should be in same module as ExtraMenu and ExtraMenuItem classes (not plugin) ?>
-            <?php foreach ($extraMenus as $menu): ?>
-                <li class="dropdown">
-                    <?php if ($menu->isDropDown()): ?>
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                          <?php echo $menu->getLabel(); ?>
-                          &nbsp;
-                          <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu" role="menu">
-                            <?php foreach ($menu->getMenuItems() as $menuItem): ?>
-                                <?php if ($menuItem->isDivider()): ?>
-                                    <li class="divider"></li>
-                                <?php elseif ($menuItem->isSmallText()): ?>
-                                    <li class="dropdown-header"><?php echo $menuItem->getLabel();?></li>
-                                <?php else: ?>
-                                    <li>
-                                        <a href="<?php echo $menuItem->getHref(); ?>">
-                                            <!-- Spit out icon if present -->
-                                            <?php if ($menuItem->getIconClass() != ''): ?>
-                                              <span class="<?php echo $menuItem->getIconClass(); ?>">&nbsp;</span>
-                                            <?php endif; ?>
-                                            <?php echo $menuItem->getLabel(); ?>
-                                        </a>
-                                    </li>
-                                <?php endif; ?>
-                            <?php endforeach; ?>
-                        </ul>
-                    <?php else: ?>
-                        <a href="<?php echo $menu->getHref(); ?>"><?php echo $menu->getLabel(); ?></a>
-                    <?php endif; ?>
-                </li>
-            <?php endforeach; ?>
+            <?php $this->renderPartial( "application.libraries.MenuObjects.views._extraMenu", ['extraMenus' => $extraMenus, 'prependedMenu' => false]); ?>
+
 
             <!-- Admin notification system -->
             <?php echo $adminNotifications; ?>

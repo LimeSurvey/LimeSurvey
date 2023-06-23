@@ -57,7 +57,7 @@ class FormattingOptions
     public $useEMCode;
 
     /**
-     * What is the caracters to separate code and text
+     * What is the characters to separate code and text
      *
      * @var boolean
      */

@@ -376,7 +376,7 @@ class TestHelper extends TestCase
      * @param $exception
      * @param $seen      - array passed to recursive calls to accumulate trace lines already seen
      *                     leave as NULL when calling this function
-     * @return array of strings, one entry per trace line
+     * @return string
      */
     public function javaTrace($ex, $seen = null)
     {
@@ -447,7 +447,7 @@ class TestHelper extends TestCase
 
                 // Further settings to automatically download exported theme files.
                 // Test testExportAndImport() in ThemeControllerTest depends on these lines.
-                $profile->setPreference('browser.download.dir', BASEPATH . '../tmp/');
+                $profile->setPreference('browser.download.dir', ROOT . '/tmp/');
                 $profile->setPreference('browser.download.panel.shown', false);
                 $profile->setPreference('browser.helperApps.neverAsk.saveToDisk', 'application/force-download');
 
@@ -459,6 +459,9 @@ class TestHelper extends TestCase
                 // This two lines are necessary to avoid issue https://github.com/SeleniumHQ/docker-selenium/issues/388.
                 $profile->setPreference('browser.tabs.remote.autostart', false);
                 $profile->setPreference('browser.tabs.remote.autostart.2', false);
+
+                $capabilities->setCapability('acceptSslCerts', true);
+                $capabilities->setCapability('acceptInsecureCerts', true);
 
                 $capabilities->setCapability(FirefoxDriver::PROFILE, $profile);
                 $webDriver = LimeSurveyWebDriver::create($host, $capabilities, 5000);

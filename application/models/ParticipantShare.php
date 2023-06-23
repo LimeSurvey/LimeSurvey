@@ -18,7 +18,7 @@ use ls\ajax\AjaxHelper;
 /**
  * This is the model class for table "{{participant_shares}}".
  *
- * The followings are the available columns in table '{{participant_shares}}':
+ * The following are the available columns in table '{{participant_shares}}':
  * @property string $participant_id
  * @property integer $share_uid
  * @property string $date_added
@@ -224,17 +224,17 @@ class ParticipantShare extends LSActiveRecord
             array(
                 "name" => 'participant.lastname',
                 "header" => gT("Last name"),
-                "filter" => TbHtml::textField("Participant[lastname]", isset($participantFilter['lastname']) ? $participantFilter['lastname'] : '')
+                "filter" => TbHtml::textField("Participant[lastname]", $participantFilter['lastname'] ?? '')
             ),
             array(
                 "name" => 'participant.firstname',
                 "header" => gT("First name"),
-                "filter" => TbHtml::textField("Participant[firstname]", isset($participantFilter['firstname']) ? $participantFilter['firstname'] : '')
+                "filter" => TbHtml::textField("Participant[firstname]", $participantFilter['firstname'] ?? '')
             ),
             array(
                 "name" => 'participant.email',
                 "header" => gT("Email address"),
-                "filter" => TbHtml::textField("Participant[email]", isset($participantFilter['email']) ? $participantFilter['email'] : '')
+                "filter" => TbHtml::textField("Participant[email]", $participantFilter['email'] ?? '')
             ),
             array(
                 "name" => 'share_uid',
@@ -336,8 +336,8 @@ class ParticipantShare extends LSActiveRecord
      */
     public function storeParticipantShare($data, $permission)
     {
-        $hasUpdatePermission = isset($permission['hasUpdatePermission']) ? $permission['hasUpdatePermission'] : false;
-        $isSuperAdmin = isset($permission['isSuperAdmin']) ? $permission['isSuperAdmin'] : false;
+        $hasUpdatePermission = $permission['hasUpdatePermission'] ?? false;
+        $isSuperAdmin = $permission['isSuperAdmin'] ?? false;
         $userId = App()->user->getId();
         $ownerid = App()->db->createCommand()->select('*')->from('{{participants}}')->where('participant_id = :participant_id')->bindParam(":participant_id", $data['participant_id'], PDO::PARAM_STR)->queryRow();
 

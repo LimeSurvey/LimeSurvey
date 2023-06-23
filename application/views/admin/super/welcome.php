@@ -1,4 +1,5 @@
 <?php
+
 /**
  * The welcome page is the home page
  * TODO : make a recursive function, taking any number of box in the database, calculating how much rows are needed.
@@ -27,7 +28,7 @@ echo viewHelper::getViewTestTag('index');
 <div class="container-fluid welcome full-page-wrapper">
 
     <!-- Logo & Presentation -->
-    <?php if($bShowLogo):?>
+    <?php if ($bShowLogo) :?>
         <div class="row">
             <div class="jumbotron" id="welcome-jumbotron">
                 <img alt="logo" src="<?php echo LOGO_URL;?>" id="lime-logo"  class="profile-img-card img-responsive center-block" />
@@ -37,7 +38,7 @@ echo viewHelper::getViewTestTag('index');
     <?php endif;?>
 
     <!-- Message when first start -->
-    <?php if($countSurveyList==0  && Permission::model()->hasGlobalPermission('surveys','create') ):?>
+    <?php if ($countSurveyList == 0  && Permission::model()->hasGlobalPermission('surveys', 'create')) :?>
         <script type="text/javascript">
             $(window).load(function(){
                 $('#welcomeModal').modal('show');
@@ -56,8 +57,10 @@ echo viewHelper::getViewTestTag('index');
                             <div class="row" id="selector__welcome-modal--simplesteps">
                                 <p><?php eT("Some piece-of-cake steps to create your very own first survey:"); ?></p>
                                 <ol>
-                                    <li><?php echo sprintf(gT('Create a new survey clicking on the %s icon.'),
-                                                "<i class='icon-add text-success'></i>"); ?></li>
+                                    <li><?php echo sprintf(
+                                        gT('Create a new survey by clicking on the %s icon.'),
+                                        "<i class='icon-add text-success'></i>"
+                                    ); ?></li>
                                     <li><?php eT('Create a new question group inside your survey.'); ?></li>
                                     <li><?php eT('Create one or more questions inside the new question group.'); ?></li>
                                     <li><?php echo sprintf(gT('Done. Test your survey using the %s icon.'), "<i class='icon-do text-success'></i>"); ?></li>
@@ -65,10 +68,10 @@ echo viewHelper::getViewTestTag('index');
                             </div>
                             <div class="row"><hr/></div>
 
-                            <?php 
+                            <?php
                             // Hide this until we have fixed the tutorial
                             // @TODO FIX TUTORIAL
-                            if(Permission::model()->hasGlobalPermission('surveys','create') && 1==2) { ?>
+                            if (Permission::model()->hasGlobalPermission('surveys', 'create') && 1 == 2) { ?>
                                 <div class="row" id="selector__welcome-modal--tutorial">
                                     <p><?php eT('Or, try out our interactive tutorial tour'); ?> </p>
                                     <p class="text-center"><button class="btn btn-primary btn-lg" id="selector__welcome-modal--starttour"><?php eT("Start the tour"); ?></button></p>
@@ -86,10 +89,10 @@ echo viewHelper::getViewTestTag('index');
 
     <?php endif;?>
 
-    <?php 
+    <?php
         //Check for IE and show a warning box
-        if (preg_match('~MSIE|Internet Explorer~i', $_SERVER['HTTP_USER_AGENT']) || (strpos($_SERVER['HTTP_USER_AGENT'], 'Trident/7.0') !== false && strpos($_SERVER['HTTP_USER_AGENT'], 'rv:11.0') !== false)) {
-    ?>
+    if (preg_match('~MSIE|Internet Explorer~i', $_SERVER['HTTP_USER_AGENT']) || (strpos($_SERVER['HTTP_USER_AGENT'], 'Trident/7.0') !== false && strpos($_SERVER['HTTP_USER_AGENT'], 'rv:11.0') !== false)) {
+        ?>
     <div class="container">
         <div class="alert alert-danger" role="alert" id="warningIE11">
             <div class="container-fluid">
@@ -98,36 +101,36 @@ echo viewHelper::getViewTestTag('index');
                 </div>
                 <div class="row">
                     <div class="col-xs-12">
-                        <?php eT("You are using Microsoft Internet Explorer."); ?><br/><br/>
-                        <?php eT("LimeSurvey 3.x or newer does not support Internet Explorer for the LimeSurvey administration, anymore. However most of the functionality should still work."); ?><br/>
-                        <?php eT("If you have any issues, please try using a modern browser first, before reporting it.");?>
+                    <?php eT("You are using Microsoft Internet Explorer."); ?><br/><br/>
+                    <?php eT("LimeSurvey 3.x or newer does not support Internet Explorer for the LimeSurvey administration, anymore. However most of the functionality should still work."); ?><br/>
+                    <?php eT("If you have any issues, please try using a modern browser first, before reporting it.");?>
                     </div>
                 </div>
             </div>
         </div>
     </div>
         
-    <?php 
+        <?php
     }
     App()->getClientScript()->registerScript('WelcomeCheckIESafety', "
     if(!/(MSIE|Trident\/)/i.test(navigator.userAgent)) {
         $('#warningIE11').remove();
     }
-    ", LSYii_ClientScript::POS_POSTSCRIPT); 
+    ", LSYii_ClientScript::POS_POSTSCRIPT);
     ?>
     <!-- Last visited survey/question -->
-    <?php if( $bShowLastSurveyAndQuestion && ($showLastSurvey || $showLastQuestion)): // bShowLastSurveyAndQuestion is the homepage setting, showLastSurvey & showLastQuestion are about if infos are available ?>
+    <?php if ($bShowLastSurveyAndQuestion && ($showLastSurvey || $showLastQuestion)) : // bShowLastSurveyAndQuestion is the homepage setting, showLastSurvey & showLastQuestion are about if infos are available ?>
         <div class="row text-right">
             <div class="col-lg-9 col-sm-9  ">
                 <div class='pull-right'>
-                <?php if($showLastSurvey):?>
+                <?php if ($showLastSurvey) :?>
                     <span id="last_survey" class=""> <!-- to enable rotation again set class back to "rotateShown" -->
                     <?php eT("Last visited survey:");?>
                     <a href="<?php echo $surveyUrl;?>" class=""><?php echo viewHelper::flatEllipsizeText($surveyTitle, true, 60);?></a>
                     </span>
                 <?php endif; ?>
 
-                <?php if($showLastQuestion):?>
+                <?php if ($showLastQuestion) :?>
                     <span id="last_question" class=""> <!-- to enable rotation again set class back to "rotateHidden" -->
                     <?php eT("Last visited question:");?>
                     <a href="<?php echo $last_question_link;?>" class=""><?php echo viewHelper::flatEllipsizeText($last_question_name, true, 60); ?></a>
@@ -141,14 +144,14 @@ echo viewHelper::getViewTestTag('index');
 
     <!-- Rendering all boxes in database -->
     <?php $this->widget('ext.PanelBoxWidget.PanelBoxWidget', array(
-            'display'=>'allboxesinrows',
-            'boxesbyrow'=>$iBoxesByRow,
-            'offset'=>$sBoxesOffSet,
+            'display' => 'allboxesinrows',
+            'boxesbyrow' => $iBoxesByRow,
+            'offset' => $sBoxesOffSet,
             'boxesincontainer' => $bBoxesInContainer
         ));
-    ?>
+?>
 
-    <?php if( $bShowSurveyList ): ?>
+    <?php if ($bShowSurveyList) : ?>
         <div class="col-sm-12 list-surveys">
             <h2><?php eT('Survey list'); ?></h2>
             <?php
@@ -163,7 +166,7 @@ echo viewHelper::getViewTestTag('index');
 
     <!-- Boxes for smartphones -->
     <div class="row  hidden-sm  hidden-md hidden-lg ">
-        <div class="panel panel-primary panel-clickable" id="panel-7" data-url="/limesurvey/LimeSurveyNext/index.php/surveyAdministration//listsurveys" style="opacity: 1; top: 0px;">
+        <div class="panel panel-primary panel-clickable" id="panel-7" data-url="<?php echo $this->createUrl("surveyAdministration/listSurveys") ?>" style="opacity: 1; top: 0px;">
             <div class="panel-heading">
                 <div class="panel-title"><?php eT('List surveys');?></div>
             </div>
@@ -176,7 +179,7 @@ echo viewHelper::getViewTestTag('index');
             </div>
         </div>
 
-        <div class="panel panel-primary panel-clickable" id="panel-8" data-url="/limesurvey/LimeSurveyNext/index.php/admin/globalsettings" style="opacity: 1; top: 0px;">
+        <div class="panel panel-primary panel-clickable" id="panel-8" data-url="<?php echo $this->createUrl("admin/globalsettings") ?>" style="opacity: 1; top: 0px;">
             <div class="panel-heading">
                 <div class="panel-title"><?php eT('Edit global settings');?></div>
             </div>

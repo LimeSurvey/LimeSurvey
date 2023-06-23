@@ -2,6 +2,8 @@
 
 namespace LimeSurvey\PluginManager;
 
+use LSActiveRecord;
+
 /**
  * Base class for plugins.
  */
@@ -73,6 +75,12 @@ abstract class PluginBase implements iPlugin
     public $allowedPublicMethods = null;
 
     /**
+     * List of settings that should be encrypted before saving.
+     * @var string[]
+     */
+    protected $encryptedSettings = [];
+
+    /**
      * Constructor for the plugin
      * @todo Add proper type hint in 3.0
      * @param PluginManager $manager    The plugin manager instantiating the object
@@ -133,7 +141,21 @@ abstract class PluginBase implements iPlugin
      */
     protected function get($key = null, $model = null, $id = null, $default = null)
     {
-        return $this->getStore()->get($this, $key, $model, $id, $default);
+        $data = $this->getStore()->get($this, $key, $model, $id, $default);
+        // Decrypt the attribute if needed
+        // TODO: Handle decryption in storage class, as that would allow each storage to handle
+        // it on it's own way. Currently there is no good way of telling the storage which
+        // attributes should be encrypted. Adding a method to the storage interface would break
+        // backward compatibility. See https://bugs.limesurvey.org/view.php?id=18375#c72133
+        if (!empty($data) && in_array($key, $this->encryptedSettings)) {
+            try {
+                $json = LSActiveRecord::decryptSingle($data);
+                $data = !empty($json) ? json_decode($json, true) : $json;
+            } catch (\Throwable $e) {
+                // If decryption fails, just leave the value untouched (it was probably saved as plain text)
+            }
+        }
+        return $data;
     }
 
     /**
@@ -176,7 +198,7 @@ abstract class PluginBase implements iPlugin
         $settings = $this->settings;
         foreach ($settings as $name => &$setting) {
             if ($getValues) {
-                $setting['current'] = $this->get($name, null, null, isset($setting['default']) ? $setting['default'] : null);
+                $setting['current'] = $this->get($name, null, null, $setting['default'] ?? null);
             }
             if ($setting['type'] == 'logo') {
                 $setting['path'] = $this->publish($setting['path']);
@@ -273,6 +295,19 @@ abstract class PluginBase implements iPlugin
      */
     protected function set($key, $data, $model = null, $id = null)
     {
+        /* Date time settings format */
+        if (isset($this->settings[$key]['type']) && $this->settings[$key]['type'] == 'date' && !empty($this->settings[$key]['saveformat'])) {
+            $data = LimesurveyApi::getFormattedDateTime($data, $this->settings[$key]['saveformat']);
+        }
+        // Encrypt the attribute if needed
+        // TODO: Handle encryption in storage class, as that would allow each storage to handle
+        // it on it's own way. Currently there is no good way of telling the storage which
+        // attributes should be encrypted. Adding a method to the storage interface would break
+        // backward compatibility. See https://bugs.limesurvey.org/view.php?id=18375#c72133
+        if (!empty($data) && in_array($key, $this->encryptedSettings)) {
+            // Data is json encoded before encryption because it might be an array or object.
+            $data = LSActiveRecord::encryptSingle(json_encode($data));
+        }
         return $this->getStore()->set($this, $key, $data, $model, $id);
     }
 
@@ -551,7 +586,7 @@ abstract class PluginBase implements iPlugin
      */
     protected function registerScript($relativePathToScript, $parentPlugin = null)
     {
-        $parentPlugin = $parentPlugin === null ? get_class($this) : $parentPlugin;
+        $parentPlugin = $parentPlugin ?? get_class($this);
 
         $scriptToRegister = null;
         if (file_exists(\Yii::getPathOfAlias('userdir') . '/plugins/' . $parentPlugin . '/' . $relativePathToScript)) {
@@ -577,7 +612,7 @@ abstract class PluginBase implements iPlugin
      */
     protected function registerCss($relativePathToCss, $parentPlugin = null)
     {
-        $parentPlugin = $parentPlugin === null ? get_class($this) : $parentPlugin;
+        $parentPlugin = $parentPlugin ?? get_class($this);
 
         $cssToRegister = null;
         if (file_exists(\Yii::getPathOfAlias('userdir') . '/plugins/' . $parentPlugin . '/' . $relativePathToCss)) {

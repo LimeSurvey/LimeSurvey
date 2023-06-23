@@ -114,7 +114,7 @@
                     <div class='form-group'>
                         <label for='anonymized' class='control-label col-sm-7'>
                             <?php eT("Anonymized responses"); ?>
-                            <i class="fa fa-question-circle text-success" data-toggle="tooltip" title="<?= gT("If enabled, reponses will be anonymized - there will be no way to connect responses and participants."); ?>"></i>
+                            <i class="fa fa-question-circle text-success" data-toggle="tooltip" title="<?= gT("If enabled, responses will be anonymized - there will be no way to connect responses and participants."); ?>"></i>
                             <script type="text/javascript">
                                 <!--
                                 function alertPrivacy()

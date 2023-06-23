@@ -16,7 +16,7 @@
 /**
  * This is the model class for table "{{{{participant_attribute_names}}}}".
  *
- * The followings are the available columns in table '{{{{participant_attribute_names}}}}':
+ * The following are the available columns in table '{{{{participant_attribute_names}}}}':
  * @property integer $attribute_id
  * @property string $attribute_type
  * @property string $defaultname
@@ -58,6 +58,7 @@ class ParticipantAttributeName extends LSActiveRecord
     {
         // NOTE: you should only define rules for those attributes that will receive user inputs.
         return array(
+            array('core_attribute', 'default', 'value' => 'N'),
             array('defaultname', 'filter', 'filter' => 'strip_tags'),
             array('attribute_type, visible, encrypted, core_attribute', 'required'),
             array('attribute_type', 'length', 'max' => 4),

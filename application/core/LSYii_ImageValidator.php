@@ -60,6 +60,7 @@ class LSYii_ImageValidator
             "image/ico",
             "image/gif",
             "image/svg+xml",
+            "image/svg",
             "image/x-icon",
             "image/vnd.microsoft.icon"
         );

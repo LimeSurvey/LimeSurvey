@@ -20,7 +20,6 @@
 */
 
 require('pdf.php');
-require_once($tcpdf['base_directory'] . '/tcpdf.php');
 
 /**
 * A TCPDF based class to produce queXF compatible questionnaire PDF files and banding description XML from queXML
@@ -55,7 +54,7 @@ class quexmlpdf extends pdf
     protected $ppi = 300;
 
     /**
-     * Whether a page break has occured
+     * Whether a page break has occurred
      * Should be a private var but crash occurs on PHP 5.1.6, see Limesurvey Bug 5824
      * @var bool
      */
@@ -3647,7 +3646,7 @@ class quexmlpdf extends pdf
     /**
      * Draw an "other" box
      *
-     * @param array $other An array continaing varname,text,width,defaultvalue
+     * @param array $other An array containing varname,text,width,defaultvalue
      *
      * @return TODO
      * @author Adam Zammit <adam.zammit@acspri.org.au>
@@ -3914,7 +3913,7 @@ class quexmlpdf extends pdf
     /**
      * Override of the acceptPageBreak function
      *
-     * Allow our page handling function to know that a page break has occured
+     * Allow our page handling function to know that a page break has occurred
      *
      * $return bool Returns false so no page break is automatically issued
      */

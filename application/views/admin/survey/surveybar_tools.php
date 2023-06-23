@@ -42,7 +42,7 @@
 
                     <!-- Quick-translation -->
                     <li>
-                        <a href="<?php echo $this->createUrl("admin/translate/sa/index/surveyid/{$oSurvey->sid}"); ?>">
+                        <a href="<?php echo $this->createUrl("quicktranslation/index/surveyid/{$oSurvey->sid}"); ?>">
                         <span class="fa fa-language" ></span>
                         <?php eT("Quick-translation"); ?>
                         </a>

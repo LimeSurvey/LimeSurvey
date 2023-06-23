@@ -634,7 +634,7 @@ class ConditionsAction extends SurveyCommonAction
     }
 
     /**
-     * This array will be used to explain wich conditions is used to evaluate the question
+     * This array will be used to explain which conditions is used to evaluate the question
      * @return array
      */
     protected function getMethod()
@@ -1072,7 +1072,7 @@ class ConditionsAction extends SurveyCommonAction
         $copyconditionsfrom = returnGlobal('copyconditionsfrom');
         $copyconditionsto = returnGlobal('copyconditionsto');
         if (isset($copyconditionsto) && is_array($copyconditionsto) && isset($copyconditionsfrom) && is_array($copyconditionsfrom)) {
-            //Get the conditions we are going to copy
+            //Get the conditions we are going to copy and quote them properly
             foreach ($copyconditionsfrom as &$entry) {
                 $entry = Yii::app()->db->quoteValue($entry);
             }
@@ -1085,11 +1085,11 @@ class ConditionsAction extends SurveyCommonAction
 
             foreach ($result->readAll() as $row) {
                 $proformaconditions[] = array(
-                    "scenario"        =>    $row['scenario'],
-                    "cqid"            =>    $row['cqid'],
+                    "scenario"      =>    $row['scenario'],
+                    "cqid"          =>    $row['cqid'],
                     "cfieldname"    =>    $row['cfieldname'],
                     "method"        =>    $row['method'],
-                    "value"            =>    $row['value']
+                    "value"         =>    $row['value']
                 );
             } // while
 
@@ -1100,7 +1100,7 @@ class ConditionsAction extends SurveyCommonAction
 
                     //First lets make sure there isn't already an exact replica of this condition
                     $conditions_data = array(
-                        'qid'        => $newqid,
+                        'qid'        => (int) $newqid,
                         'scenario'   => $pfc['scenario'],
                         'cqid'       => $pfc['cqid'],
                         'cfieldname' => $pfc['cfieldname'],
@@ -1498,7 +1498,7 @@ class ConditionsAction extends SurveyCommonAction
                 foreach ($aresult as $arows) {
                     $attr = QuestionAttribute::model()->getQuestionAttributes($rows['qid']);
                     $sLanguage = $this->language;
-                    // dualscale_header are allways set, but can be empty
+                    // dualscale_header are always set, but can be empty
                     $label1 = empty($attr['dualscale_headerA'][$sLanguage]) ? gT('Scale 1') : $attr['dualscale_headerA'][$sLanguage];
                     $label2 = empty($attr['dualscale_headerB'][$sLanguage]) ? gT('Scale 2') : $attr['dualscale_headerB'][$sLanguage];
                     $shortanswer = "{$arows['title']}: [" . strip_tags($arows->questionl10ns[$this->language]->question) . "][$label1]";

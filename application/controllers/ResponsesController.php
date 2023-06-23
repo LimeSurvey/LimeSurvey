@@ -139,7 +139,12 @@ class ResponsesController extends LSBaseController
 
 
         $fieldmap = createFieldMap($survey, 'full', false, false, $aData['language']);
-        $bHaveToken = $survey->anonymized == "N" && tableExists('tokens_' . $surveyId); // Boolean : show (or not) the token
+        // just used to check if the token exists for the given response id before we create the real query
+        $response = SurveyDynamic::model($surveyId)->find('id=:id', [':id' => $id]);
+        // Boolean : show (or not) the token
+        $bHaveToken = $survey->anonymized == "N"
+            && tableExists('tokens_' . $surveyId)
+            && isset($response->tokens);
         if (!Permission::model()->hasSurveyPermission($surveyId, 'tokens', 'read')) {
             // If not allowed to read: remove it
             unset($fieldmap['token']);
@@ -151,6 +156,12 @@ class ResponsesController extends LSBaseController
             $fnames[] = ["firstname", gT("First name"), 'code' => 'firstname']; // or token:firstname ?
             $fnames[] = ["lastname", gT("Last name"), 'code' => 'lastname'];
             $fnames[] = ["email", gT("Email"), 'code' => 'email'];
+
+            $customTokenAttributes = $survey->tokenAttributes;
+            foreach ($customTokenAttributes as $attributeName => $tokenAttribute) {
+                $tokenAttributeDescription = ($tokenAttribute['description'] != '') ? $tokenAttribute['description'] : $attributeName;
+                $fnames[] = [$attributeName, $tokenAttributeDescription, 'code' => $attributeName];
+            }
         }
         if ($survey->isDateStamp) {
             $fnames[] = ["submitdate", gT("Submission date"), gT("Completed"), "0", 'D', 'code' => 'submitdate'];
@@ -324,7 +335,7 @@ class ResponsesController extends LSBaseController
                     }
                 } else {
                     $answervalue = htmlspecialchars(
-                        strip_tags(
+                        viewHelper::flatten(
                             stripJavaScript(
                                 getExtendedAnswer(
                                     $surveyId,
@@ -902,22 +913,7 @@ class ResponsesController extends LSBaseController
     }
 
     /**
-     * Responsible for setting the session variables for attribute map page redirect
-     * @param bool $unset
-     * @param int|null $surveyId
-     */
-    public function actionSetSession(bool $unset = false, int $surveyId = null): void
-    {
-        unset(App()->session['responsesid']);
-        if (!$unset) {
-            App()->session['responsesid'] = App()->request->getPost('itemsid');
-        } else {
-            $this->redirect(["admin/export", "sa" => "exportresults", "surveyid" => $surveyId]);
-        }
-    }
-
-    /**
-     * Change the value of the max characters to elipsize headers/questions in reponse grid.
+     * Change the value of the max characters to elipsize headers/questions in response grid.
      * It's called via ajax request
      *
      * @param string $displaymode
@@ -941,15 +937,15 @@ class ResponsesController extends LSBaseController
      * and it will be be spit out on success
      *
      * @param int $surveyId
-     * @param array $reponseId
+     * @param array $responseId
      * @param string $zipfilename
      */
-    private function zipFiles(int $surveyId, array $reponseId, string $zipfilename): void
+    private function zipFiles(int $surveyId, array $responseId, string $zipfilename): void
     {
         $tmpdir = App()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . "surveys" . DIRECTORY_SEPARATOR . $surveyId . DIRECTORY_SEPARATOR . "files" . DIRECTORY_SEPARATOR;
 
         $filelist = [];
-        $responses = Response::model($surveyId)->findAllByPk($reponseId);
+        $responses = Response::model($surveyId)->findAllByPk($responseId);
         $filecount = 0;
         foreach ($responses as $response) {
             foreach ($response->getFiles() as $fileInfo) {

@@ -48,10 +48,10 @@ class TwigCommand extends CConsoleCommand
     /**
      * Generate twig cache files for each core Survey Theme and core questions views.
      */
-    public function actionGenerateTwigTmpFiles($sThemeDir = null, $bGenerateSurveyCache = true, $bGenerateQuestionsCache = true, $bGenerateAdminCache = true)
+    public function actionGenerateTwigTmpFiles($sThemeDir = null, $bGenerateSurveyCache = true, $bGenerateQuestionsCache = true, $bGenerateAdminCache = true, $bGenerateQuestionThemeCache = true)
     {
         $this->aLogs = array();
-        $this->aLogs["action"] = "actionGenerateTwigTmpFiles $sThemeDir $bGenerateSurveyCache $bGenerateQuestionsCache $bGenerateAdminCache";
+        $this->aLogs["action"] = "actionGenerateTwigTmpFiles $sThemeDir $bGenerateSurveyCache $bGenerateQuestionsCache $bGenerateAdminCache $bGenerateQuestionThemeCache";
         if ($bGenerateSurveyCache) {
             $this->actionGenerateSurveyThemesCache($sThemeDir);
         }
@@ -62,6 +62,10 @@ class TwigCommand extends CConsoleCommand
 
         if ($bGenerateAdminCache) {
             $this->actionGenerateAdminCache(null);
+        }
+
+        if ($bGenerateQuestionThemeCache) {
+            $this->actionGenerateQuestionThemesCache($sThemeDir);
         }
     }
 
@@ -106,7 +110,7 @@ class TwigCommand extends CConsoleCommand
         $this->aLogs["action"] = "actionGenerateQuestionsCache $sQuestionDir";
 
       // Generate cache for question theme
-        $sQuestionDir = ($sQuestionDir === null) ? dirname(__FILE__) . '/../views/survey/questions/answer' : $sQuestionDir;
+        $sQuestionDir = $sQuestionDir ?? dirname(__FILE__) . '/../views/survey/questions/answer';
         $oQuestionDir = new DirectoryIterator($sQuestionDir);
 
         foreach ($oQuestionDir as $fileinfo) {
@@ -120,10 +124,10 @@ class TwigCommand extends CConsoleCommand
                *  - get the Question XML rather than answer.twig
                *  - load the default data from the XML
                *
-               * NOTE 1: as long as this is not done, it's highly probable that some twig files will never be reached.
+               * NOTE 1: as long as this is not done, it's highly probable that some twig files will never be reached (Ex: Conditionally included twig files).
                *
                * NOTE 2: It should be possible to parse the XML to get the different values for the attributes, and then to generate a cache file for each attribue possible value.
-               *         Doing this could allow to test easely the rendering for all question type, with all question attribute variations.
+               *         Doing this could allow to test easily the rendering for all question type, with all question attribute variations.
                *         Since we're very far to get this with Unit Test (it will imlpy to write around 1000 tests in a row), it could be a first step.
                *         One way to do: for a stable version, save the rendered HTML somwhere, then in unitest, call this function, compare the rendered HTML to the saved one.
                *         Enjoy the 1000 test in a single one :) (sadly, only for HTML rendering, not for JS or DB saving)
@@ -154,7 +158,7 @@ class TwigCommand extends CConsoleCommand
         $this->aLogs["action"] = "actionGenerateAdminCache $sAdminDir";
 
       // Generate cache for admin area
-        $sAdminDir = ($sAdminDir === null) ? dirname(__FILE__) . '/../views/admin' : $sAdminDir;
+        $sAdminDir = $sAdminDir ?? dirname(__FILE__) . '/../views/admin';
         $oAdminDirectory = new RecursiveDirectoryIterator($sAdminDir);
         $oAdminIterator = new RecursiveIteratorIterator($oAdminDirectory);
         $oAdminRegex = new RegexIterator($oAdminIterator, '/^.+\.twig$/i', RecursiveRegexIterator::GET_MATCH);
@@ -166,6 +170,58 @@ class TwigCommand extends CConsoleCommand
                 $this->aLogs["twig"] = "$sTwigFile";
                 $line       = file_get_contents($sTwigFile);
                 $sHtml      = Yii::app()->twigRenderer->convertTwigToHtml($line);
+            }
+        }
+    }
+
+    /**
+     * Generate twig cache files for each core question theme
+     *
+     * @param string $themesRootDir the directory to parse, where to find the manifests.
+     */
+    public function actionGenerateQuestionThemesCache($themesRootDir = null)
+    {
+        $this->aLogs["action"] = "actionGenerateQuestionThemesCache $themesRootDir";
+
+        $themesRootDir = ($themesRootDir == null) ? dirname(__FILE__) . '/../../themes/question' : $themesRootDir;
+
+        // Iterate over all folders in the themes root dir (first level only)
+        $themesRootDirIterator = new DirectoryIterator($themesRootDir);
+        foreach ($themesRootDirIterator as $fileinfo) {
+            // Skip files as well as ".." and "."
+            if (!$fileinfo->isDir() || $fileinfo->getFilename() == ".." || $fileinfo->getFilename() == ".") {
+                continue;
+            }
+            $themeName = $fileinfo->getFilename();
+            $themeDir = $fileinfo->getPathname();
+
+            // Get paths to folders containing config.xml files inside this theme.
+            $questionPaths = $this->getQuestionThemePaths($themeDir);
+
+            $loader = Yii::app()->twigRenderer->getLoader();
+
+            foreach ($questionPaths as $themePath) {
+                /**
+                 * TODO for LS5:
+                 *  - load the default data from the XML
+                 *
+                 * NOTE 1: as long as this is not done, it's highly probable that some twig files will never be reached (Ex: Conditionally included twig files).
+                 */
+                $twigFile = $themePath . DIRECTORY_SEPARATOR . "answer.twig";
+                $questionData = []; // See todo
+                if (file_exists($twigFile)) {
+                    $this->aLogs[$themeName] = "$twigFile";
+                    $line = file_get_contents($twigFile);
+                    // We need to add the theme directory to the Twig loader paths.
+                    // Keep the original paths to restore them later
+                    $originalTwigPaths = $loader->getPaths();
+                    // Add the path
+                    $loader->addPath($themeDir);
+                    // Convert the twig to generate the cache
+                    Yii::app()->twigRenderer->convertTwigToHtml($line, $questionData);
+                    // Restore paths
+                    $loader->setPaths($originalTwigPaths);
+                }
             }
         }
     }
@@ -212,5 +268,25 @@ class TwigCommand extends CConsoleCommand
         }
 
         $this->aLogs[$oTemplateForPreview->sTemplateName]['manifest'] =  "done";
+    }
+
+    /**
+     * Finds all subfolders of $questionThemeDirectory containing XML files
+     * @param string $questionThemeDirectory
+     * @return array
+     */
+    private function getQuestionThemePaths($questionThemeDirectory)
+    {
+        $questionDirectoriesAndPaths = [];
+
+        $directory = new RecursiveDirectoryIterator($questionThemeDirectory);
+        $iterator = new RecursiveIteratorIterator($directory);
+        foreach ($iterator as $info) {
+            if ($info->getFileName() == 'config.xml') {
+                $questionDirectoriesAndPaths[] = dirname($info->getPathname());
+            }
+        }
+
+        return $questionDirectoriesAndPaths;
     }
 }

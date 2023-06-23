@@ -12,11 +12,6 @@ App()->getClientScript()->registerScript(
 );
 
 ?>
-<script type="text/javascript">
-    strConfirm = '<?php eT('Please confirm', 'js');?>';
-    strCancel = '<?php eT('Cancel', 'js');?>';
-    strOK = '<?php eT('OK', 'js');?>';
-</script>
 
 <div class="col-lg-12 list-surveys">
 

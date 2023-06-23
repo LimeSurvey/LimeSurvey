@@ -39,7 +39,7 @@
                 </div>
             </a>
         </div>
-    <?php endforeach; ?>
+<?php endforeach; ?>
 </div>
 <script>
     // TODO: Needs to be moved to QuickMenu core plugin

@@ -3,7 +3,7 @@
 // Code below copied from index.php.
 // File also used for Psalm checker.
 
-$system_path = "framework";
+$system_path = "vendor/yiisoft/yii/framework";
 $application_folder = dirname(__FILE__) . "/../../application";
 if (realpath($system_path) !== false) {
     $system_path = realpath($system_path).'/';
@@ -21,7 +21,7 @@ define('FCPATH', str_replace(SELF, '', __FILE__));
 define('SYSDIR', trim(strrchr(trim(BASEPATH, '/'), '/'), '/'));
 define('YII_DEBUG', true);
 
-require_once __DIR__ . '/../../third_party/autoload.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
 require_once BASEPATH . 'yii' . EXT;
 require_once APPPATH . 'core/LSYii_Application' . EXT;
 $config = require_once(APPPATH . 'config/internal' . EXT);
@@ -46,6 +46,7 @@ Yii::import('application.helpers.replacements_helper', true);
 Yii::import('application.helpers.admin.export.*');
 Yii::import('application.helpers.admin.backupdb_helper', true);
 Yii::import('application.helpers.admin.activate_helper', true);
+Yii::import('application.helpers.admin.import_helper', true);
 Yii::import('application.libraries.PluginManager.PluginManager', true);
 Yii::import('application.libraries.MenuObjects.*', true);
 Yii::import('application.helpers.update.update_helper', true);
@@ -63,6 +64,4 @@ $pluginManager->scanPlugins(true);
 
 error_reporting(E_ALL);
 
-// Needed for LOGO_URL constant. TODO: Why is this defined in a class...? Should be Yii config?
-$adminTheme = new AdminTheme();
-$adminTheme->setAdminTheme();
+define('LOGO_URL', 'dummy_logo_url');
