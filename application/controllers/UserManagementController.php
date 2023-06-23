@@ -1134,10 +1134,6 @@ class UserManagementController extends LSBaseController
             App()->user->setFlash('error', gT("User does not exist"));
             $this->redirect(App()->request->urlReferrer);
         }
-        if (!Permission::model()->hasGlobalPermission('users', 'update')) {
-            App()->user->setFlash('error', gT("Access denied"));
-            $this->redirect(App()->request->urlReferrer);
-        }
         $permission_superadmin = Permission::model()->hasGlobalPermission('superadmin', 'read');
         if (
             !($permission_superadmin
