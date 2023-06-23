@@ -96,24 +96,6 @@ class Question extends LSActiveRecord
 
     /**
      * @inheritdoc
-     */
-    public function init()
-    {
-        $this->attachEventHandler("onAfterFind", array($this, 'afterFindQuestion'));
-    }
-
-    /**
-     * Action to do after find a question
-     * @see https://www.yiiframework.com/doc/api/1.1/CActiveRecordBehavior#afterFind-detail
-     * - fix theme name after find
-     */
-    public function afterFindQuestion()
-    {
-        $this->questionThemeNameValidator();
-    }
-
-    /**
-     * @inheritdoc
      * @return Question
      */
     public static function model($className = __CLASS__)
@@ -186,7 +168,7 @@ class Question extends LSActiveRecord
             return 'N';
         });
         /* Don't save empty or 'core' question theme name */
-        $aRules[] = ['question_theme_name', 'questionThemeNameValidator'];
+        $aRules[] = ['question_theme_name', 'filter', 'filter' =>  [$this, 'questionThemeNameValidator'] ];
         /* Specific rules to avoid collapse with column name in database */
         if ($this->parent_qid) {
             /* Subquestion specific rules */
@@ -1215,14 +1197,13 @@ class Question extends LSActiveRecord
     protected function beforeSave()
     {
         if (parent::beforeSave()) {
+            /* No update when surey activated */
             $surveyIsActive = Survey::model()->findByPk($this->sid)->active !== 'N';
-
             if ($surveyIsActive) {
                 //don't override questiontype when survey is active, set it back to what it was...
                 $oActualValue = Question::model()->findByPk(array("qid" => $this->qid));
                 $this->type = $oActualValue->type;
             }
-
             if ($surveyIsActive && $this->getIsNewRecord()) {
                 return false;
             }
@@ -1231,7 +1212,6 @@ class Question extends LSActiveRecord
             return false;
         }
     }
-
 
     /**
      * Fix sub question of a parent question
@@ -1745,21 +1725,28 @@ class Question extends LSActiveRecord
     {
         /* need a type */
         if (empty($this->type)) {
-            return;
+            return null;
         }
         /* not needed in child question */
         if (!empty($this->parent_qid)) {
-            return;
+            return null;
         }
-        /* Is OK (@todo test with deleted question_theme_name) */
         if (!empty($this->question_theme_name) && $this->question_theme_name != 'core') {
-            return;
+            $criteria = new CDbCriteria();
+            $criteria->addCondition('question_type = :question_type AND name = :name');
+            $criteria->params = [':question_type' => $this->type, ':name' => $this->question_theme_name];
+            $questionTheme = QuestionTheme::model()->query($criteria, false);
+            if ($questionTheme) {
+                return $this->question_theme_name;
+            }
         }
         /* Get default theme name from type */
         $baseQuestionThemeName = QuestionTheme::model()->getBaseThemeNameForQuestionType($this->type);
         if (!empty($baseQuestionThemeName)) {
-            $this->question_theme_name = $baseQuestionThemeName;
+            return $baseQuestionThemeName;
         }
+        /* Not a valid type ? */
+        return null;
     }
 
     /**
