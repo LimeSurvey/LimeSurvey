@@ -778,10 +778,10 @@ class Labels extends SurveyCommonAction
     }
 
     /**
-     * Sanaitize existence and permission of LabelSet(>pk
-     * @param $lid mixed
+     * Sanitize existence and permission of LabelSet->pk, throw exception if there are an issue.
+     * @param $lid mixed, sanitized to intreger
      * @param $permisson to check
-     * @return integer
+     * @return integer : the label id
      * @throws CHttpException
      */
     private function validateLabelSetId($lid, $permission = 'read')

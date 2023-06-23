@@ -11,8 +11,8 @@ interface TransformerInterface
     public function transform($data);
 
     /**
-     * @param ?array $array
-     * @return ?array
+     * @param mixed $collection
+     * @return mixed
      */
-    public function transformAll($array);
+    public function transformAll($collection);
 }

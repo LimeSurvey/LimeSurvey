@@ -18,7 +18,7 @@ class Transformer implements TransformerInterface
      * and callable formatter.
      *
      * @param ?mixed $data
-     * @return ?array
+     * @return ?mixed
      */
     public function transform($data)
     {
@@ -154,14 +154,14 @@ class Transformer implements TransformerInterface
     /**
      * Transform array of data
      *
-     * @param ?array $array
-     * @return array
+     * @param mixed $collection
+     * @return mixed
      */
-    public function transformAll($array)
+    public function transformAll($collection)
     {
-        return is_array($array) ? array_map(function ($allData) {
+        return is_array($collection) ? array_map(function ($allData) {
             return $this->transform($allData);
-        }, $array) : [];
+        }, $collection) : [];
     }
 
     /**

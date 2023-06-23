@@ -34,12 +34,12 @@ class TransformerOutputQuestion extends TransformerOutputActiveRecord
         ]);
     }
 
-    public function transformAll($array)
+    public function transformAll($collection)
     {
-        $array = parent::transformAll($array);
+        $collection = parent::transformAll($collection);
 
         usort(
-            $array,
+            $collection,
             function ($a, $b) {
                 return (int)(
                     (int)$a['questionOrder'] > (int)$b['questionOrder']
@@ -47,6 +47,11 @@ class TransformerOutputQuestion extends TransformerOutputActiveRecord
             }
         );
 
-        return $array;
+        $output = [];
+        foreach ($collection as $value) {
+            $output[$value['qid']] = $value;
+        }
+
+        return (object) $collection;
     }
 }

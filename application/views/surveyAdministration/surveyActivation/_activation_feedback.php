@@ -1,31 +1,27 @@
 <?php
 /**
- * View for the message box after activated a survey
- * It's called from SurveyAdmin::activate
- *
- * @var $iSurveyID
- * @var $warning                    isset($aResult['warning'])
- * @var $allowregister $survey->allowregister=='Y'
- * @var $onclickAction              convertGETtoPOST(Yii::app()->getController()->createUrl("admin/tokens/sa/index/surveyid/".$iSurveyID))
- * @var $closedOnclickAction        convertGETtoPOST(Yii::app()->getController()->createUrl("admin/tokens/sa/index/surveyid/".$iSurveyID))
- * @var $noOnclickAction            convertGETtoPOST(Yii::app()->getController()->createUrl("surveyAdministration/view/surveyid/".$iSurveyID))
- *
- */
+* View for the message box after activated a survey
+* It's called from SurveyAdmin::activate
+*
+* @var $iSurveyID
+* @var $warning                    isset($aResult['warning'])
+* @var $allowregister              $survey->allowregister=='Y'
+* @var $onclickAction              convertGETtoPOST(Yii::app()->getController()->createUrl("admin/tokens/sa/index/surveyid/".$iSurveyID))
+* @var $closedOnclickAction        convertGETtoPOST(Yii::app()->getController()->createUrl("admin/tokens/sa/index/surveyid/".$iSurveyID))
+* @var $noOnclickAction            convertGETtoPOST(Yii::app()->getController()->createUrl("surveyAdministration/view/surveyid/".$iSurveyID))
+*
+*/
 ?>
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="row welcome survey-action">
         <div class="col-12 content-right">
-            <div class='card card-primary'>
-                <div class="card-header">
-                    <h3>
-                        <?php eT('Activate Survey'); ?> (<?php echo $survey->currentLanguageSettings->surveyls_title; ?>
-                        )
-                    </h3>
-                </div>
-                <div class="card-body">
-                    <p class='lead'>
-                        <?php eT("Your survey has been activated and the responses and statistics section is now available."); ?>
-                    </p>
+            <div class="card card-primary h-100">
+                <h3>
+                    <?php eT('Activate Survey'); ?> (<?php echo $survey->currentLanguageSettings->surveyls_title; ?>)
+                </h3>
+                <p class='lead'>
+                    <?php eT("Your survey has been activated and the responses and statistics section is now available."); ?>
+                </p>
 
                     <?php if ($warning) : ?>
                         <strong class='text-danger'>

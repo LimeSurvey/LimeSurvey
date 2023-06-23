@@ -13371,10 +13371,6 @@ table#responsedetail tr td {
   margin-bottom: 30px;
 }
 
-#insertmethod-container {
-  display: none;
-}
-
 /* Some printing optimization */
 @media print {
   html, body {
@@ -14583,6 +14579,77 @@ html[dir=ltr] th {
 /** Hide Relevance Equation column for subquestions when not supported */
 .subquestions-table.hide-relevance #rel-eq-th, .subquestions-table.hide-relevance td.relevance-equation {
   display: none;
+}
+
+/** Styles for Data Entry screen */
+#responsedetail .checkbox input[type=checkbox] {
+  margin-right: 0;
+}
+#responsedetail .checkbox label {
+  padding-right: 0px;
+}
+#responsedetail .answer-item {
+  display: flex;
+  gap: 1em;
+  margin-bottom: 1em;
+}
+#responsedetail .checkbox.unseen-checkbox {
+  margin-top: 0;
+  min-width: 6em;
+}
+#responsedetail .checkbox:not(.unseen-checkbox) {
+  margin-top: 0;
+}
+#responsedetail tr.multiple-opt-comments input[type=text] {
+  width: 100%;
+}
+#responsedetail tr.multiple-opt-comments .checkbox {
+  margin-bottom: 0;
+}
+#responsedetail tr.multiple-opt-comments .answer-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+}
+#responsedetail tr.array-5-pt .answer-wrapper,
+#responsedetail tr.array-10-pt .answer-wrapper,
+#responsedetail tr.array-yes-uncertain-no .answer-wrapper,
+#responsedetail tr.array-increase-same-decrease .answer-wrapper,
+#responsedetail tr.array-flexible-row .answer-wrapper,
+#responsedetail tr.array-flexible-column .answer-wrapper,
+#responsedetail tr.array-flexible-dual-scale .answer-wrapper {
+  display: flex;
+  gap: 1em;
+}
+#responsedetail tr.array-5-pt .answer-wrapper > span,
+#responsedetail tr.array-10-pt .answer-wrapper > span,
+#responsedetail tr.array-yes-uncertain-no .answer-wrapper > span,
+#responsedetail tr.array-increase-same-decrease .answer-wrapper > span,
+#responsedetail tr.array-flexible-row .answer-wrapper > span,
+#responsedetail tr.array-flexible-column .answer-wrapper > span,
+#responsedetail tr.array-flexible-dual-scale .answer-wrapper > span {
+  flex: 1;
+}
+#responsedetail tr.array-5-pt .answer-wrapper > span:first-of-type,
+#responsedetail tr.array-10-pt .answer-wrapper > span:first-of-type,
+#responsedetail tr.array-yes-uncertain-no .answer-wrapper > span:first-of-type,
+#responsedetail tr.array-increase-same-decrease .answer-wrapper > span:first-of-type,
+#responsedetail tr.array-flexible-row .answer-wrapper > span:first-of-type,
+#responsedetail tr.array-flexible-column .answer-wrapper > span:first-of-type,
+#responsedetail tr.array-flexible-dual-scale .answer-wrapper > span:first-of-type {
+  text-align: end;
+}
+#responsedetail tr.array-multi-flexi .answer-wrapper,
+#responsedetail tr.array-multi-flexi-text .answer-wrapper {
+  display: flex;
+  gap: 1em;
+}
+#responsedetail tr.array-multi-flexi .answer-wrapper > span,
+#responsedetail tr.array-multi-flexi-text .answer-wrapper > span {
+  flex: 1;
+}
+#responsedetail .answer-wrapper {
+  flex-grow: 1;
 }
 
 .jcarousel-wrapper {
