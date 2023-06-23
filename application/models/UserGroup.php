@@ -404,7 +404,7 @@ class UserGroup extends LSActiveRecord
             array(
                 'header'      => gT('Owner'),
                 'name'        => 'owner',
-                'value'       => '$data->owner->users_name',
+                'value'       => '$data->owner ? $data->owner->users_name : gT("(Deleted user)")',
                 'htmlOptions' => array('class' => ''),
             ),
 
