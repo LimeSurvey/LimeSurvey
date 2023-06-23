@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2023-06-19 09:24:23+00:00\n"
+"POT-Creation-Date: 2023-06-23 09:59:36+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -49,14 +49,13 @@ msgstr ""
 #: application/helpers/admin/import_helper.php:2148
 #: application/helpers/admin/import_helper.php:2179
 #: application/helpers/admin/import_helper.php:2205
-#: application/helpers/admin/import_helper.php:2232
-#: application/helpers/admin/import_helper.php:2254
-#: application/helpers/admin/import_helper.php:2277
-#: application/helpers/admin/import_helper.php:2380
-#: application/helpers/admin/import_helper.php:2561
-#: application/helpers/admin/import_helper.php:2923
-#: application/helpers/admin/import_helper.php:3554
-#: application/helpers/admin/import_helper.php:3599
+#: application/helpers/admin/import_helper.php:2265
+#: application/helpers/admin/import_helper.php:2288
+#: application/helpers/admin/import_helper.php:2391
+#: application/helpers/admin/import_helper.php:2572
+#: application/helpers/admin/import_helper.php:2934
+#: application/helpers/admin/import_helper.php:3565
+#: application/helpers/admin/import_helper.php:3610
 #: application/models/TemplateManifest.php:171
 #: application/models/services/PasswordManagement.php:85
 #: application/views/admin/checkintegrity/fix_view.php:16
@@ -464,10 +463,10 @@ msgstr ""
 msgid "Invalid ID"
 msgstr ""
 
-#: application/controllers/HomepageSettingsController.php:50
-#: application/controllers/HomepageSettingsController.php:86
-#: application/controllers/HomepageSettingsController.php:142
-#: application/controllers/HomepageSettingsController.php:198
+#: application/controllers/HomepageSettingsController.php:60
+#: application/controllers/HomepageSettingsController.php:96
+#: application/controllers/HomepageSettingsController.php:152
+#: application/controllers/HomepageSettingsController.php:208
 #: application/controllers/SurveyAdministrationController.php:3347
 #: application/controllers/SurveyAdministrationController.php:3420
 #: application/controllers/UserGroupController.php:65
@@ -483,52 +482,52 @@ msgstr ""
 msgid "Access denied!"
 msgstr ""
 
-#: application/controllers/HomepageSettingsController.php:61
+#: application/controllers/HomepageSettingsController.php:71
 #: application/views/admin/super/_configuration_menu.php:260
 msgid "Dashboard"
 msgstr ""
 
-#: application/controllers/HomepageSettingsController.php:93
-#: application/controllers/HomepageSettingsController.php:146
-#: application/controllers/HomepageSettingsController.php:202
-#: application/controllers/HomepageSettingsController.php:261
-#: application/controllers/HomepageSettingsController.php:277
-#: application/controllers/HomepageSettingsController.php:295
-#: application/controllers/HomepageSettingsController.php:313
-#: application/controllers/HomepageSettingsController.php:330
-#: application/controllers/HomepageSettingsController.php:349
+#: application/controllers/HomepageSettingsController.php:103
+#: application/controllers/HomepageSettingsController.php:156
+#: application/controllers/HomepageSettingsController.php:212
+#: application/controllers/HomepageSettingsController.php:271
+#: application/controllers/HomepageSettingsController.php:287
+#: application/controllers/HomepageSettingsController.php:305
+#: application/controllers/HomepageSettingsController.php:323
+#: application/controllers/HomepageSettingsController.php:340
+#: application/controllers/HomepageSettingsController.php:359
 msgid "This setting cannot be changed because demo mode is active."
 msgstr ""
 
-#: application/controllers/HomepageSettingsController.php:98
+#: application/controllers/HomepageSettingsController.php:108
 msgid "New box created"
 msgstr ""
 
-#: application/controllers/HomepageSettingsController.php:105
+#: application/controllers/HomepageSettingsController.php:115
 msgid "Could not create new box"
 msgstr ""
 
-#: application/controllers/HomepageSettingsController.php:109
+#: application/controllers/HomepageSettingsController.php:119
 msgid "New box"
 msgstr ""
 
-#: application/controllers/HomepageSettingsController.php:158
+#: application/controllers/HomepageSettingsController.php:168
 msgid "Box updated"
 msgstr ""
 
-#: application/controllers/HomepageSettingsController.php:164
+#: application/controllers/HomepageSettingsController.php:174
 msgid "Could not update box"
 msgstr ""
 
-#: application/controllers/HomepageSettingsController.php:167
+#: application/controllers/HomepageSettingsController.php:177
 msgid "Update box"
 msgstr ""
 
-#: application/controllers/HomepageSettingsController.php:208
+#: application/controllers/HomepageSettingsController.php:218
 msgid "Box deleted"
 msgstr ""
 
-#: application/controllers/HomepageSettingsController.php:210
+#: application/controllers/HomepageSettingsController.php:220
 msgid "Could not delete Box"
 msgstr ""
 
@@ -1071,7 +1070,7 @@ msgstr ""
 #: application/controllers/SurveyAdministrationController.php:2075
 #: application/controllers/SurveyAdministrationController.php:2160
 #: application/controllers/UserGroupController.php:398
-#: application/controllers/admin/Labels.php:521
+#: application/controllers/admin/Labels.php:531
 #: application/controllers/admin/ParticipantsAction.php:627
 #: application/controllers/admin/SurveymenuController.php:53
 #: application/controllers/admin/SurveymenuController.php:123
@@ -1115,7 +1114,7 @@ msgstr ""
 #: application/controllers/SurveyAdministrationController.php:1363
 #: application/controllers/UserManagementController.php:178
 #: application/controllers/admin/DataEntry.php:258
-#: application/controllers/admin/Labels.php:752
+#: application/controllers/admin/Labels.php:761
 #: application/controllers/admin/ParticipantsAction.php:59
 #: application/controllers/admin/ParticipantsAction.php:2572
 #: application/controllers/admin/ParticipantsAction.php:2757
@@ -1687,7 +1686,7 @@ msgstr ""
 #: application/models/TutorialEntry.php:60
 #: application/views/admin/labels/_labelviewtabcontent_view.php:20
 #: application/views/admin/notification/index.php:26
-#: application/views/homepageSettings/index.php:65
+#: application/views/homepageSettings/index.php:60
 #: application/views/questionGroupsAdministration/group_view.php:14
 #: tmp/runtime/twig_cache/be/bee6848bdc49d16becf948b499992da8ef26d1fb275ae18d41dba009ec27526e.php:113
 #: tmp/runtime/twig_cache/be/bee6848bdc49d16becf948b499992da8ef26d1fb275ae18d41dba009ec27526e.php:199
@@ -1842,7 +1841,7 @@ msgstr ""
 #: application/views/admin/labels/labelsets_view.php:55
 #: application/views/admin/pluginmanager/index.php:93
 #: application/views/admin/survey/subview/accordion/_integration_panel.php:84
-#: application/views/homepageSettings/index.php:96
+#: application/views/homepageSettings/index.php:91
 #: application/views/questionGroupsAdministration/listquestiongroups.php:115
 #: application/views/quotas/index.php:96
 #: application/views/responses/partial/responseListTable.php:249
@@ -1973,11 +1972,11 @@ msgstr ""
 #: application/views/admin/token/remind.php:81
 #: application/views/admin/user/setusertemplates.php:30
 #: application/views/admin/user/setusertemplates.php:64
-#: application/views/homepageSettings/index.php:117
-#: application/views/homepageSettings/index.php:130
-#: application/views/homepageSettings/index.php:147
-#: application/views/homepageSettings/index.php:160
-#: application/views/homepageSettings/index.php:177
+#: application/views/homepageSettings/index.php:112
+#: application/views/homepageSettings/index.php:125
+#: application/views/homepageSettings/index.php:142
+#: application/views/homepageSettings/index.php:155
+#: application/views/homepageSettings/index.php:172
 #: application/views/questionAdministration/importQuestion.php:48
 #: application/views/questionAdministration/importQuestion.php:61
 #: application/views/questionAdministration/importQuestion.php:75
@@ -2068,11 +2067,11 @@ msgstr ""
 #: application/views/admin/token/remind.php:82
 #: application/views/admin/user/setusertemplates.php:31
 #: application/views/admin/user/setusertemplates.php:65
-#: application/views/homepageSettings/index.php:118
-#: application/views/homepageSettings/index.php:131
-#: application/views/homepageSettings/index.php:148
-#: application/views/homepageSettings/index.php:161
-#: application/views/homepageSettings/index.php:178
+#: application/views/homepageSettings/index.php:113
+#: application/views/homepageSettings/index.php:126
+#: application/views/homepageSettings/index.php:143
+#: application/views/homepageSettings/index.php:156
+#: application/views/homepageSettings/index.php:173
 #: application/views/questionAdministration/importQuestion.php:49
 #: application/views/questionAdministration/importQuestion.php:62
 #: application/views/questionAdministration/importQuestion.php:76
@@ -2479,7 +2478,7 @@ msgstr ""
 #: application/models/services/FilterImportedResources.php:69
 #: application/views/admin/participants/participantsPanel_view.php:19
 #: application/views/admin/survey/Question/_subQuestionsAndAnwsersJsVariables.php:12
-#: application/views/homepageSettings/index.php:18
+#: application/views/homepageSettings/partial/topbarBtns/rightSideButtons.php:28
 msgid "OK"
 msgstr ""
 
@@ -2955,7 +2954,7 @@ msgstr ""
 #: application/models/UserGroup.php:288 application/models/UserGroup.php:397
 #: application/models/UserInPermissionrole.php:58
 #: application/views/admin/pluginmanager/index.php:81
-#: application/views/homepageSettings/index.php:78
+#: application/views/homepageSettings/index.php:73
 #: application/views/questionGroupsAdministration/listquestiongroups.php:107
 #: application/views/themeOptions/availablethemelist.php:18
 #: application/views/themeOptions/index.php:51
@@ -3068,7 +3067,7 @@ msgstr ""
 #: application/views/admin/user/modifyuser.php:67
 #: application/views/admin/user/setuserpermissions.php:82
 #: application/views/assessment/assessments_edit.php:127
-#: application/views/homepageSettings/partial/topbarBtns/rightSideButtons.php:37
+#: application/views/homepageSettings/partial/topbarBtns/rightSideButtons.php:42
 #: application/views/layouts/partial_modals/modal_footer_cancelsave.php:10
 #: application/views/layouts/partial_topbar/right_close_saveclose_save.php:63
 #: application/views/questionAdministration/_copyQuestionTabsLanguages.php:41
@@ -3160,7 +3159,6 @@ msgstr ""
 #: application/views/assessment/assessments_edit.php:143
 #: application/views/failedEmail/partials/modal/delete_form.php:15
 #: application/views/failedEmail/partials/modal/resend_form.php:15
-#: application/views/homepageSettings/index.php:17
 #: application/views/layouts/partial_modals/modal_footer_canceladd.php:7
 #: application/views/layouts/partial_modals/modal_footer_cancelapply.php:7
 #: application/views/layouts/partial_modals/modal_footer_cancelchange.php:7
@@ -3602,7 +3600,7 @@ msgstr ""
 
 #: application/controllers/UserGroupController.php:168
 #: application/views/admin/super/permissions/addGroupForm.php:4
-#: application/views/homepageSettings/index.php:90
+#: application/views/homepageSettings/index.php:85
 #: application/views/surveyPermissions/_overview_table.php:14
 #: application/views/surveyPermissions/index.php:59
 #: application/views/surveyPermissions/index.php:134
@@ -5263,66 +5261,66 @@ msgstr ""
 msgid "Label sets list"
 msgstr ""
 
-#: application/controllers/admin/Labels.php:358
+#: application/controllers/admin/Labels.php:361
 msgid "Label set successfully saved."
 msgstr ""
 
-#: application/controllers/admin/Labels.php:369
+#: application/controllers/admin/Labels.php:378
 msgid "Label set successfully deleted."
 msgstr ""
 
-#: application/controllers/admin/Labels.php:398
+#: application/controllers/admin/Labels.php:407
 msgid "Label set successfully created."
 msgstr ""
 
-#: application/controllers/admin/Labels.php:401
+#: application/controllers/admin/Labels.php:410
 msgid "Label could not be created."
 msgstr ""
 
-#: application/controllers/admin/Labels.php:416
+#: application/controllers/admin/Labels.php:425
 msgid "You are not authorized to delete label sets."
 msgstr ""
 
-#: application/controllers/admin/Labels.php:421
-#: application/controllers/admin/Labels.php:756
+#: application/controllers/admin/Labels.php:430
+#: application/controllers/admin/Labels.php:765
 msgid "Invalid label set."
 msgstr ""
 
-#: application/controllers/admin/Labels.php:424
+#: application/controllers/admin/Labels.php:433
 msgid "Label set “%s” was successfully deleted."
 msgstr ""
 
-#: application/controllers/admin/Labels.php:426
+#: application/controllers/admin/Labels.php:435
 msgid "Unable to delete label set %s."
 msgstr ""
 
-#: application/controllers/admin/Labels.php:441
+#: application/controllers/admin/Labels.php:450
 #: application/views/admin/labels/partials/topbarBtns/rightSideButtons.php:11
 msgid "Export multiple label sets"
 msgstr ""
 
-#: application/controllers/admin/Labels.php:490
+#: application/controllers/admin/Labels.php:500
 msgid "Could not save label set: Label set name is empty."
 msgstr ""
 
-#: application/controllers/admin/Labels.php:494
+#: application/controllers/admin/Labels.php:504
 msgid "Could not save label set: Found no answers."
 msgstr ""
 
-#: application/controllers/admin/Labels.php:511
-#: application/controllers/admin/Labels.php:673
+#: application/controllers/admin/Labels.php:521
+#: application/controllers/admin/Labels.php:682
 msgid "Label set successfully saved"
 msgstr ""
 
-#: application/controllers/admin/Labels.php:528
+#: application/controllers/admin/Labels.php:537
 msgid "Could not update label set: Label set id is empty."
 msgstr ""
 
-#: application/controllers/admin/Labels.php:533
+#: application/controllers/admin/Labels.php:542
 msgid "Found no label set with this id"
 msgstr ""
 
-#: application/controllers/admin/Labels.php:552
+#: application/controllers/admin/Labels.php:561
 msgid "Label set successfully updated"
 msgstr ""
 
@@ -8988,7 +8986,7 @@ msgstr ""
 #: application/views/admin/tutorials/index.php:36
 #: application/views/assessment/assessments_view.php:43
 #: application/views/failedEmail/failedEmail_index.php:27
-#: application/views/homepageSettings/index.php:47
+#: application/views/homepageSettings/index.php:42
 #: application/views/questionAdministration/listquestions.php:130
 #: application/views/questionGroupsAdministration/listquestiongroups.php:68
 #: application/views/quotas/index.php:44
@@ -9025,7 +9023,7 @@ msgstr ""
 #: application/views/admin/tutorials/index.php:36
 #: application/views/assessment/assessments_view.php:44
 #: application/views/failedEmail/failedEmail_index.php:28
-#: application/views/homepageSettings/index.php:49
+#: application/views/homepageSettings/index.php:44
 #: application/views/questionAdministration/listquestions.php:132
 #: application/views/questionGroupsAdministration/listquestiongroups.php:69
 #: application/views/quotas/index.php:45
@@ -9956,7 +9954,7 @@ msgid "Title of subquestion %s was updated to %s."
 msgstr ""
 
 #: application/helpers/admin/import_helper.php:577
-#: application/helpers/admin/import_helper.php:2394
+#: application/helpers/admin/import_helper.php:2405
 msgid "Attention: Several question codes were updated. Please check these carefully as the update  may not be perfect with customized expressions."
 msgstr ""
 
@@ -10051,77 +10049,83 @@ msgstr ""
 msgid "Answer option %s of question %s has outdated links."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2300
+#: application/helpers/admin/import_helper.php:2239
+#: application/helpers/admin/import_helper.php:2243
+#: application/views/admin/databaseupdate/verify.php:21
+msgid "Error:"
+msgstr ""
+
+#: application/helpers/admin/import_helper.php:2311
 msgid "Error when saving %s for plugin %s"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2303
+#: application/helpers/admin/import_helper.php:2314
 msgid "Plugin %s didn't exist, settings not imported"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2443
+#: application/helpers/admin/import_helper.php:2454
 msgid "This is not a valid participant data XML file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2487
+#: application/helpers/admin/import_helper.php:2498
 msgid "Skipped participant entry:"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2530
+#: application/helpers/admin/import_helper.php:2541
 msgid "This is not a valid response data XML file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2580
+#: application/helpers/admin/import_helper.php:2591
 #: application/views/surveyAdministration/_activation_error.php:14
 msgid "The survey response table could not be created."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2580
+#: application/helpers/admin/import_helper.php:2591
 #: application/views/surveyAdministration/_activation_error.php:15
 msgid "Usually this is caused by having too many (sub-)questions in your survey. Please try removing questions from your survey."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2629
+#: application/helpers/admin/import_helper.php:2640
 msgid "File is empty or you selected an invalid character set (%s)."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2642
+#: application/helpers/admin/import_helper.php:2653
 msgid "File seems empty or has only one line"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2692
+#: application/helpers/admin/import_helper.php:2703
 msgid "Import failed: Forced import was requested but the input file doesn't contain enough columns to fill the survey."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2699
+#: application/helpers/admin/import_helper.php:2710
 msgid "Import failed: No answers could be mapped."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2859
+#: application/helpers/admin/import_helper.php:2870
 msgid "%s response lines in your file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2861
+#: application/helpers/admin/import_helper.php:2872
 msgid "No response lines in your file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2864
+#: application/helpers/admin/import_helper.php:2875
 msgid "%s responses were inserted."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2868
+#: application/helpers/admin/import_helper.php:2879
 msgid "%s responses were updated."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2871
+#: application/helpers/admin/import_helper.php:2882
 msgid "%s responses cannot be inserted or updated."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2874
+#: application/helpers/admin/import_helper.php:2885
 msgid "%s responses already exist."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2891
+#: application/helpers/admin/import_helper.php:2902
 msgid "This is not a valid timings data XML file."
 msgstr ""
 
@@ -15207,7 +15211,7 @@ msgstr ""
 msgid "Permission to view & update the translations using the quick-translation feature"
 msgstr ""
 
-#: application/models/Survey.php:2383
+#: application/models/Survey.php:2385
 #: application/views/admin/survey/subview/accordion/_publication_panel.php:20
 msgid "Expiration date can't be lower than the start date"
 msgstr ""
@@ -15336,7 +15340,7 @@ msgstr ""
 
 #: application/models/Surveymenu.php:346
 #: application/views/admin/labels/_labelviewtabcontent_view.php:16
-#: application/views/homepageSettings/index.php:59
+#: application/views/homepageSettings/index.php:54
 msgid "Position"
 msgstr ""
 
@@ -16871,10 +16875,6 @@ msgid "Target database version:"
 msgstr ""
 
 #: application/views/admin/databaseupdate/verify.php:21
-msgid "Error:"
-msgstr ""
-
-#: application/views/admin/databaseupdate/verify.php:21
 msgid "You will not be able to update because your previous LimeSurvey version is too old."
 msgstr ""
 
@@ -17201,6 +17201,7 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_mainoptions.php:14
 #: application/views/admin/export/statistics_user_view.php:30
 #: application/views/admin/export/vv_view.php:39
+#: application/views/responses/browseindex_view.php:32
 msgid "All responses"
 msgstr ""
 
@@ -21989,9 +21990,6 @@ msgstr ""
 
 #: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:76
 #: application/views/admin/update/updater/_error.php:68
-#: application/views/admin/update/updater/_error.php:86
-#: application/views/admin/update/updater/_error.php:92
-#: application/views/admin/update/updater/_error.php:98
 #: application/views/admin/update/updater/_error.php:133
 msgid "Please contact the LimeSurvey team."
 msgstr ""
@@ -22109,11 +22107,14 @@ msgid "Update server busy"
 msgstr ""
 
 #: application/views/admin/update/updater/_error.php:80
-msgid "The update server is currently busy. This usually happens when the update files for a new version are being prepared."
+msgid "The update server is currently busy."
 msgstr ""
 
 #: application/views/admin/update/updater/_error.php:80
-msgid "Please be patient and try again in about 5 minutes."
+#: application/views/admin/update/updater/_error.php:86
+#: application/views/admin/update/updater/_error.php:92
+#: application/views/admin/update/updater/_error.php:98
+msgid "Most likely this is a temporary problem, so please try again in 5 minutes. If the issue persists, please contact LimeSurvey support."
 msgstr ""
 
 #: application/views/admin/update/updater/_error.php:85
@@ -22167,7 +22168,7 @@ msgid "ComfortUpdate couldn't remove one or more files that were deleted with th
 msgstr ""
 
 #: application/views/admin/update/updater/_error.php:126
-msgid "Could not remove the deleted directories"
+msgid "Could not remove deleted directories"
 msgstr ""
 
 #: application/views/admin/update/updater/_error.php:127
@@ -22778,71 +22779,67 @@ msgstr ""
 msgid "Fields with %s*%s are required."
 msgstr ""
 
-#: application/views/homepageSettings/index.php:16
-msgid "Please confirm"
-msgstr ""
-
-#: application/views/homepageSettings/index.php:27
+#: application/views/homepageSettings/index.php:22
 msgid "Boxes"
 msgstr ""
 
-#: application/views/homepageSettings/index.php:32
+#: application/views/homepageSettings/index.php:27
 msgid "Box Settings"
 msgstr ""
 
-#: application/views/homepageSettings/index.php:71
+#: application/views/homepageSettings/index.php:66
 msgid "Icon"
 msgstr ""
 
-#: application/views/homepageSettings/index.php:84
+#: application/views/homepageSettings/index.php:79
 msgid "URL"
 msgstr ""
 
-#: application/views/homepageSettings/index.php:111
+#: application/views/homepageSettings/index.php:106
 msgid "Display logo:"
 msgstr ""
 
-#: application/views/homepageSettings/index.php:124
+#: application/views/homepageSettings/index.php:119
 msgid "Show last visited survey and question:"
 msgstr ""
 
-#: application/views/homepageSettings/index.php:141
+#: application/views/homepageSettings/index.php:136
 msgid "Show survey list:"
 msgstr ""
 
-#: application/views/homepageSettings/index.php:154
+#: application/views/homepageSettings/index.php:149
 msgid "Show search box on survey list:"
 msgstr ""
 
-#: application/views/homepageSettings/index.php:171
+#: application/views/homepageSettings/index.php:166
 msgid "Wrap container around boxes"
 msgstr ""
 
-#: application/views/homepageSettings/index.php:188
+#: application/views/homepageSettings/index.php:183
 msgid "Boxes by row:"
 msgstr ""
 
-#: application/views/homepageSettings/index.php:192
+#: application/views/homepageSettings/index.php:187
 msgid "Box orientation:"
 msgstr ""
 
-#: application/views/homepageSettings/index.php:197
+#: application/views/homepageSettings/index.php:192
 msgid "Left to right"
 msgstr ""
 
-#: application/views/homepageSettings/index.php:200
+#: application/views/homepageSettings/index.php:195
 msgid "Right to left"
 msgstr ""
 
-#: application/views/homepageSettings/index.php:203
+#: application/views/homepageSettings/index.php:198
 msgid "Centered"
 msgstr ""
 
-#: application/views/homepageSettings/index.php:207
+#: application/views/homepageSettings/index.php:202
 msgid "Box settings updated!"
 msgstr ""
 
-#: application/views/homepageSettings/index.php:208
+#: application/views/homepageSettings/index.php:203
 msgid "Error while updating box settings!"
 msgstr ""
 
@@ -22850,7 +22847,11 @@ msgstr ""
 msgid "Create box"
 msgstr ""
 
-#: application/views/homepageSettings/partial/topbarBtns/rightSideButtons.php:26
+#: application/views/homepageSettings/partial/topbarBtns/rightSideButtons.php:30
+msgid "Please confirm"
+msgstr ""
+
+#: application/views/homepageSettings/partial/topbarBtns/rightSideButtons.php:31
 msgid "This will delete all current boxes to restore the default ones. Are you sure you want to continue?"
 msgstr ""
 
@@ -23379,7 +23380,7 @@ msgid "The script for this language will not be used because \"Use for all langu
 msgstr ""
 
 #: application/views/questionAdministration/textElements.php:143
-msgid "This optional script field will be wrapped, so that the script is correctly executed after the question is on the screen."
+msgid "This optional script field will be wrapped, so that the script is correctly executed after the question is displayed."
 msgstr ""
 
 #: application/views/questionAdministration/textElements.php:144
@@ -23618,10 +23619,6 @@ msgstr ""
 #: application/views/responses/browseindex_view.php:29
 #: application/views/responses/partial/responseSummary.php:5
 msgid "Response summary"
-msgstr ""
-
-#: application/views/responses/browseindex_view.php:32
-msgid "All Responses"
 msgstr ""
 
 #: application/views/responses/browseindex_view.php:33
