@@ -22,7 +22,7 @@
     || Permission::model()->hasGlobalPermission('settings', 'read')
 ): ?>
     <li class="dropdown mega-dropdown nav-item">
-        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+        <a href="#" class="nav-link dropdown-toggle mainmenu-dropdown-toggle" data-bs-toggle="dropdown">
             <!-- <i class="ri-settings-5-fill"></i> -->
             <?php eT('Configuration'); ?>
             <span class="caret"></span>
@@ -143,7 +143,7 @@
                         <?php if (Permission::model()->hasGlobalPermission('templates', 'read')): ?>
                             <!-- Theme Editor -->
                             <li class="dropdown-item">
-                                <a href="<?php echo $this->createUrl("themeOptions/index"); ?>">
+                                <a href="<?php echo $this->createUrl("themeOptions/index"); ?>" class="link-themes">
                                     <?php eT("Themes"); ?>
                                 </a>
                             </li>
@@ -152,7 +152,7 @@
                             <?php /* Can remove permission check when we have way to : update owner or complete Permission system */ ?>
                             <!-- Edit label sets -->
                             <li class="dropdown-item">
-                                <a href="<?php echo $this->createUrl("admin/labels/sa/view"); ?>">
+                                <a href="<?php echo $this->createUrl("admin/labels/sa/view"); ?>" class="link-labels">
                                     <?php eT("Label sets"); ?>
                                 </a>
                             </li>

@@ -310,8 +310,8 @@ class Labels extends SurveyCommonAction
             $aData['topbar']['middleButtons'] = Yii::app()->getController()->renderPartial(
                 '/admin/labels/partials/topbarBtns_singlelabelset/leftSideButtons',
                 [
-                    'hasUpdatePermission' => Permission::model()->hasGlobalPermission('labelsets', 'update'),
-                    'hasDeletePermission' => Permission::model()->hasGlobalPermission('labelsets', 'delete'),
+                    'hasUpdatePermission' => $model->hasPermission('update'),
+                    'hasDeletePermission' => $model->hasPermission('delete'),
                     'lid' => $lid
                 ],
                 true
