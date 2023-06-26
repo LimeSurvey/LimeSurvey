@@ -37,6 +37,7 @@ class UserManagerServiceTest extends \ls\tests\TestBaseClass
         );
 
         $managingUserPermissions = array(
+            'full_name'  => $managingUserName,
             'superadmin' => array(
                 'read'   => true,
             )
