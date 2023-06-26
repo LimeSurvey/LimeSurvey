@@ -34,6 +34,25 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.27 (build 230621) to 5.6.28 (build 230627) June 26, 2023
+-Fixed issue: SQL error on import if quota member code is too long (Carsten Schmitz)
+-Fixed issue: Disable system information in demo mode (Carsten Schmitz)
+-Fixed issue 18821: Public url is not used for SURVEYURL (#3228) (Tim Willig)
+-Fixed issue #18891: Capital letters N/Y in name of inherited survey themes are replaced by "Off" (Carsten Schmitz)
+-Fixed issue #18885: CSRF Leading to reset Boxes (#3243) (Gabriel Jenik)
+-Fixed issue #18881: CKeditor 4.20.2 in use which is vulnerable to CVE-2023-28439 (#3227) (Carsten Schmitz)
+-Fixed issue #18798: Out-of-memory problem in statistics export (#3231) (Gabriel Jenik)
+-Fixed issue #18798: Out-of-memory problem in statistics export (#3111) (Olle Härstedt)
+-Fixed issue #18706: Cannot use expression in End url description (#3203) (Gabriel Jenik)
+-Fixed issue #18465: ComfortUpdate shows error message to contact the LimeSurvey team, while just retrying usually works (Carsten Schmitz)
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 5.6.26 (build 230613) to 5.6.27 (build 230621) June 19, 2023
 -Fixed issue: [security] Administrator can self-delete (Carsten Schmitz)
 -Fixed issue: ComfortUpdate showing updates as unstable, even though they are not (fixed the related alert) (twilligls)
