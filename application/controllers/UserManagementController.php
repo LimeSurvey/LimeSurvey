@@ -291,6 +291,14 @@ class UserManagementController extends LSBaseController
     {
         $permission_users_delete = Permission::model()->hasGlobalPermission('users', 'delete');
         $permission_superadmin_read = Permission::model()->hasGlobalPermission('superadmin', 'read');
+        if (!$permission_users_delete) {
+            return App()->getController()->renderPartial('/admin/super/_renderJson', [
+                'data' => [
+                    'success' => false,
+                    'errors' => gT("We are sorry but you don't have permissions to do this.")
+                ]
+            ]);
+        }
         $userId = (int) App()->request->getPost('userid');
         $oUser = User::model()->findByPk($userId);
         $currentUser = (int) App()->user->getId();
@@ -342,7 +350,7 @@ class UserManagementController extends LSBaseController
                 ]);
             }
             // Can't delete users that are not owned by the current user
-            if ((int) $oUser->parent_id !== App()->session['loginID']) {
+            if ((int) $oUser->parent_id !== $currentUser) {
                 return App()->getController()->renderPartial('/admin/super/_renderJson', [
                     'data' => [
                         'success' => false,
@@ -1205,21 +1213,57 @@ class UserManagementController extends LSBaseController
      */
     public function deleteUser(int $uid): bool
     {
-        if (!Permission::model()->hasGlobalPermission('users', 'delete')) {
-            return $this->renderPartial(
-                'partial/error',
-                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
-            );
-        }
-
-        if ($uid == Yii::app()->user->id) {
+        $permission_users_delete = Permission::model()->hasGlobalPermission('users', 'delete');
+        $permission_superadmin_read = Permission::model()->hasGlobalPermission('superadmin', 'read');
+        if (!$permission_users_delete) {
             return false;
         }
-        if (Permission::isForcedSuperAdmin($uid)) {
+        $userId = $uid;
+        $oUser = User::model()->findByPk($userId);
+        $currentUser = (int)App()->user->getId();
+        if (!$oUser) {
+            return false;
+        }
+        if ($permission_superadmin_read) {
+            // Can't delete forced superadmins
+            if (Permission::isForcedSuperAdmin($userId)) {
+                return false;
+            }
+            // Can't delete yourself
+            if ($userId === $currentUser) {
+                return false;
+            }
+        }
+        if (!$permission_superadmin_read) {
+            // Can't delete yourself
+            if ($userId === $currentUser) {
+                return false;
+            }
+            // Dont have permission to delete users
+            if (!$permission_users_delete) {
+                return false;
+            }
+            // Can't delete users that are not owned by the current user
+            if ((int)$oUser->parent_id !== $currentUser) {
+                return false;
+            }
+            // Can't delete forced superadmins
+            if (Permission::isForcedSuperAdmin($userId)) {
+                return false;
+            }
+        }
+
+
+        // Check if user owns a survey
+        $aOwnedSurveys = Survey::model()->findAllByAttributes(['owner_id' => $userId]);
+        if (count($aOwnedSurveys)) {
             return false;
         }
 
-        $oUser = User::model()->findByPk($uid);
+        // Transfer any Participants owned by this user to site's admin
+        Participant::model()->updateAll(['owner_uid' => 1], 'owner_uid = :owner_uid', [':owner_uid' => $userId]);
+
+        //todo REFACTORING user permissions should be deleted also ... (in table permissions)
         return $oUser->delete();
     }
 
