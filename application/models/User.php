@@ -13,6 +13,8 @@
 *
 */
 
+use LimeSurvey\Models\Services\UserManager;
+
 /**
  * Class User
  *
