@@ -4,5 +4,7 @@
     }
     #language-changer-select {
         color: $base-color;
+        background-color: $white;
+        @include language-select-icon-color($base-color);
     }
 }

@@ -11,7 +11,12 @@
     }
     #language-changer-select {
         @include h2;
+        cursor: pointer;
         border: none;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+
         &:focus-visible {
             outline: none;
         }

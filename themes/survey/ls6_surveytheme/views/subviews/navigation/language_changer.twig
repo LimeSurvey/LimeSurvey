@@ -26,19 +26,17 @@
     %}
     <!-- Language Changer -->
     <div class=" {{ aSurveyInfo.class.formgroup }} form-change-lang row row-cols-lg-auto g-1" {{ aSurveyInfo.attr.formgroup }} >
-        <label class="{{ aSurveyInfo.class.controllabel }} col-form-label col-auto fw-bold" {{ aSurveyInfo.attr.controllabel }} for="lang">
-            <span class="control-label" {{ aSurveyInfo.attr.languagechanger }}>
+        <div class="col-auto">
+            <label class="{{ aSurveyInfo.class.controllabel }} col-form-label fw-bold control-label" {{ aSurveyInfo.attr.controllabel }} for="lang">
+            <span {{ aSurveyInfo.attr.languagechanger }}>
                 <span class="language-icon ri-earth-line"></span>
                 {{ gT("Change language") }}
             </span>
-        </label>
+            </label>
+        </div>
 
         <div class="col-auto">
-            <select
-                    class="col-form-label"
-                    name="lang"
-                    id="language-changer-select"
-            >
+            <select class="col-form-label" name="lang" id="language-changer-select">
                 {% for key,value in  aLCD.aListLang %}
                     {% if key == aLCD.sSelected %}
                     <option value="{{ key }}" selected="selected">{{ value }} </option>
