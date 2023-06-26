@@ -52,6 +52,7 @@ class UserManagerServiceTest extends \ls\tests\TestBaseClass
 
         $targetUserData = array(
             'users_name' => $targetUserName,
+            'full_name'  => $targetUserName,
             'email'      => $targetUserName . '@example.com',
         );
 
@@ -86,6 +87,7 @@ class UserManagerServiceTest extends \ls\tests\TestBaseClass
 
         $managingUserData = array(
             'users_name' => $managingUserName,
+            'full_name'  => $managingUserName,
             'email'      => $managingUserName . '@example.com'
         );
 
@@ -104,6 +106,7 @@ class UserManagerServiceTest extends \ls\tests\TestBaseClass
 
         $targetUserData = array(
             'users_name' => $targetUserName,
+            'full_name'  => $targetUserName,
             'email'      => $targetUserName . '@example.com',
         );
 
@@ -138,6 +141,7 @@ class UserManagerServiceTest extends \ls\tests\TestBaseClass
 
         $managingUserData = array(
             'users_name' => $managingUserName,
+            'full_name'  => $managingUserName,
             'email'      => $managingUserName . '@example.com'
         );
 
@@ -156,6 +160,7 @@ class UserManagerServiceTest extends \ls\tests\TestBaseClass
 
         $targetUserData = array(
             'users_name' => $targetUserName,
+            'full_name'  => $targetUserName,
             'email'      => $targetUserName . '@example.com',
             'parent_id'  => $userManagingUser->uid
         );
@@ -191,6 +196,7 @@ class UserManagerServiceTest extends \ls\tests\TestBaseClass
 
         $managingUserData = array(
             'users_name' => $managingUserName,
+            'full_name'  => $managingUserName,
             'email'      => $managingUserName . '@example.com'
         );
 
@@ -209,6 +215,7 @@ class UserManagerServiceTest extends \ls\tests\TestBaseClass
 
         $targetUserData = array(
             'users_name' => $targetUserName,
+            'full_name'  => $targetUserName,
             'email'      => $targetUserName . '@example.com',
             'parent_id'  => $userManagingUser->uid
         );
@@ -244,6 +251,7 @@ class UserManagerServiceTest extends \ls\tests\TestBaseClass
 
         $managingUserData = array(
             'users_name' => $managingUserName,
+            'full_name'  => $managingUserName,
             'email'      => $managingUserName . '@example.com'
         );
 
@@ -262,6 +270,7 @@ class UserManagerServiceTest extends \ls\tests\TestBaseClass
 
         $targetUserData = array(
             'users_name' => $targetUserName,
+            'full_name'  => $targetUserName,
             'email'      => $targetUserName . '@example.com',
         );
 
@@ -311,6 +320,7 @@ class UserManagerServiceTest extends \ls\tests\TestBaseClass
 
         $managingUserData = array(
             'users_name' => $managingUserName,
+            'full_name'  => $managingUserName,
             'email'      => $managingUserName . '@example.com'
         );
 
@@ -329,6 +339,7 @@ class UserManagerServiceTest extends \ls\tests\TestBaseClass
 
         $targetUserData = array(
             'users_name' => $targetUserName,
+            'full_name'  => $targetUserName,
             'email'      => $targetUserName . '@example.com',
         );
 
@@ -363,6 +374,7 @@ class UserManagerServiceTest extends \ls\tests\TestBaseClass
 
         $managingUserData = array(
             'users_name' => $managingUserName,
+            'full_name'  => $managingUserName,
             'email'      => $managingUserName . '@example.com'
         );
 
@@ -381,6 +393,7 @@ class UserManagerServiceTest extends \ls\tests\TestBaseClass
 
         $targetUserData = array(
             'users_name' => $targetUserName,
+            'full_name'  => $targetUserName,
             'email'      => $targetUserName . '@example.com',
         );
 
@@ -430,6 +443,7 @@ class UserManagerServiceTest extends \ls\tests\TestBaseClass
 
         $managingUserData = array(
             'users_name' => $managingUserName,
+            'full_name'  => $managingUserName,
             'email'      => $managingUserName . '@example.com'
         );
 
@@ -448,6 +462,7 @@ class UserManagerServiceTest extends \ls\tests\TestBaseClass
 
         $targetUserData = array(
             'users_name' => $targetUserName,
+            'full_name'  => $targetUserName,
             'email'      => $targetUserName . '@example.com',
         );
 
@@ -482,6 +497,7 @@ class UserManagerServiceTest extends \ls\tests\TestBaseClass
 
         $managingUserData = array(
             'users_name' => $managingUserName,
+            'full_name'  => $managingUserName,
             'email'      => $managingUserName . '@example.com'
         );
 
@@ -500,6 +516,7 @@ class UserManagerServiceTest extends \ls\tests\TestBaseClass
 
         $targetUserData = array(
             'users_name' => $targetUserName,
+            'full_name'  => $targetUserName,
             'email'      => $targetUserName . '@example.com',
         );
 
@@ -534,6 +551,7 @@ class UserManagerServiceTest extends \ls\tests\TestBaseClass
 
         $managingUserData = array(
             'users_name' => $managingUserName,
+            'full_name'  => $managingUserName,
             'email'      => $managingUserName . '@example.com'
         );
 
@@ -552,6 +570,7 @@ class UserManagerServiceTest extends \ls\tests\TestBaseClass
 
         $targetUserData = array(
             'users_name' => $targetUserName,
+            'full_name'  => $targetUserName,
             'email'      => $targetUserName . '@example.com',
             'parent_id'  => $userManagingUser->uid
         );
@@ -587,6 +606,7 @@ class UserManagerServiceTest extends \ls\tests\TestBaseClass
 
         $managingUserData = array(
             'users_name' => $managingUserName,
+            'full_name'  => $managingUserName,
             'email'      => $managingUserName . '@example.com'
         );
 
@@ -605,6 +625,7 @@ class UserManagerServiceTest extends \ls\tests\TestBaseClass
 
         $targetUserData = array(
             'users_name' => $targetUserName,
+            'full_name'  => $targetUserName,
             'email'      => $targetUserName . '@example.com',
             'parent_id'  => $userManagingUser->uid
         );
@@ -640,6 +661,7 @@ class UserManagerServiceTest extends \ls\tests\TestBaseClass
 
         $managingUserData = array(
             'users_name' => $managingUserName,
+            'full_name'  => $managingUserName,
             'email'      => $managingUserName . '@example.com'
         );
 
@@ -658,6 +680,7 @@ class UserManagerServiceTest extends \ls\tests\TestBaseClass
 
         $targetUserData = array(
             'users_name' => $targetUserName,
+            'full_name'  => $targetUserName,
             'email'      => $targetUserName . '@example.com',
         );
 
