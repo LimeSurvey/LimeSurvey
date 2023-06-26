@@ -8,6 +8,7 @@ use LimeSurvey\Models\Services\SurveyUpdater\{
     UrlParams,
     TemplateConfiguration
 };
+use LimeSurvey\Models\Services\Proxy\ProxyExpressionManager;
 use LimeSurvey\Models\Services\Exception\{
     ExceptionPersistError,
     ExceptionNotFound,
@@ -26,20 +27,20 @@ class SurveyUpdater
     private LanguageSettings $languageSettings;
     private GeneralSettings $generalSettings;
     private UrlParams $urlParams;
-    private ExpressionManager $expressionManager;
+    private ProxyExpressionManager $proxyExpressionManager;
     private TemplateConfiguration $templateConfiguration;
 
     public function __construct(
         LanguageSettings $languageSettings,
         GeneralSettings $generalSettings,
         UrlParams $urlParams,
-        ExpressionManager $expressionManager,
+        ProxyExpressionManager $proxyExpressionManager,
         TemplateConfiguration $templateConfiguration
     ) {
         $this->languageSettings = $languageSettings;
         $this->generalSettings = $generalSettings;
         $this->urlParams = $urlParams;
-        $this->expressionManager = $expressionManager;
+        $this->proxyExpressionManager = $proxyExpressionManager;
         $this->templateConfiguration = $templateConfiguration;
     }
 
@@ -72,7 +73,7 @@ class SurveyUpdater
             );
         }
 
-        $this->expressionManager
+        $this->proxyExpressionManager
             ->reset($surveyId);
 
         $this->templateConfiguration

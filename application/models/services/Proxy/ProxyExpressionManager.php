@@ -1,22 +1,22 @@
 <?php
 
-namespace LimeSurvey\Models\Services;
+namespace LimeSurvey\Models\Services\Proxy;
 
 use Survey,
-
 QuestionGroup,
 LimeExpressionManager,
 EmCacheHelper;
 
-
 /**
- * Expression Manager Service
+ * Proxy Expression Manager Service
+ *
+ * Wraps expression manager functionality to make it injectable into services.
  *
  */
-class ExpressionManager
+class ProxyExpressionManager
 {
-    private ?Survey $modelSurvey = null;
-    private ?QuestionGroup $modelQuestionGroup = null;
+    private Survey $modelSurvey;
+    private QuestionGroup $modelQuestionGroup;
 
     public function __construct(Survey $modelSurvey, QuestionGroup $modelQuestionGroup)
     {
