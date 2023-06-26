@@ -33,11 +33,11 @@ class UserManagerServiceTest extends \ls\tests\TestBaseClass
 
         $managingUserData = array(
             'users_name' => $managingUserName,
-            'email'      => $managingUserName . '@example.com'
+            'full_name'  => $managingUserName,
+            'email'      => $managingUserName . '@example.com',
         );
 
         $managingUserPermissions = array(
-            'full_name'  => $managingUserName,
             'superadmin' => array(
                 'read'   => true,
             )
