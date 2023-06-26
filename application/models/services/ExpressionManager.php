@@ -73,4 +73,15 @@ class ExpressionManager
         EmCacheHelper::init(['sid' => $surveyId, 'active' => 'Y']);
         EmCacheHelper::flush();
     }
+    /**
+     * Set Dirty flag
+     *
+     * Wraps static method making functionality injectable.
+     *
+     * @return void
+     */
+    public function setDirtyFlag()
+    {
+        LimeExpressionManager::SetDirtyFlag();
+    }
 }
