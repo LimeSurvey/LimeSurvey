@@ -328,7 +328,7 @@ class GeneralSettings
                 }
                 break;
             case static::FIELD_TYPE_USE_CAPTCHA:
-                $value = $this->calculateUseCaptchaOption(
+                $value = $input['usecaptcha'] ?? $this->calculateUseCaptchaOption(
                     $input['usecaptcha_surveyaccess'] ?? null,
                     $input['usecaptcha_registration'] ?? null,
                     $input['usecaptcha_saveandload'] ?? null
