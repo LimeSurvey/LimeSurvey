@@ -4,7 +4,7 @@ namespace ls\tests\unit\services\SurveyUpdater\GeneralSettings;
 
 use ls\tests\TestBaseClass;
 
-class GeneralSettingsUpdateYnFieldType extends TestBaseClass
+class GeneralSettingsUpdateYnFieldTypeTest extends TestBaseClass
 {
     public function testAcceptsY()
     {

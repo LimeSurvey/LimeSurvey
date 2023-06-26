@@ -37,6 +37,8 @@ class GeneralSettings
     const FIELD_TYPE_GAKEY = 'gakey';
     const FIELD_TYPE_USE_CAPTCHA = 'use_captcha';
 
+    const GA_GLOBAL_KEY= '9999useGlobal9999';
+
     public function __construct(
         Permission $modelPermission,
         Survey $modelSurvey,
@@ -320,7 +322,7 @@ class GeneralSettings
                 break;
             case static::FIELD_TYPE_GAKEY:
                 if ($value == 'G') {
-                    $value  = "9999useGlobal9999";
+                    $value  = static::GA_GLOBAL_KEY;
                 } elseif ($value == 'N') {
                     $value = '';
                 }
