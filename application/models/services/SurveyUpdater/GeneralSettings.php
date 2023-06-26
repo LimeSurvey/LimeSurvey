@@ -37,7 +37,7 @@ class GeneralSettings
     const FIELD_TYPE_GAKEY = 'gakey';
     const FIELD_TYPE_USE_CAPTCHA = 'use_captcha';
 
-    const GA_GLOBAL_KEY= '9999useGlobal9999';
+    const GA_GLOBAL_KEY = '9999useGlobal9999';
 
     public function __construct(
         Permission $modelPermission,
