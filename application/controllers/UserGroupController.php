@@ -252,8 +252,13 @@ class UserGroupController extends LSBaseController
                 }
             } else {
                 $result = UserGroup::model()->requestEditGroup($ugid, Yii::app()->session['loginID']);
-                $aData['model'] = $result;
-                $aData['ugid'] = $result->ugid;
+                if ($result !== null) {
+                    $aData['model'] = $result;
+                    $aData['ugid'] = $result->ugid;
+                } else {
+                    Yii::app()->session['flashmessage'] = gT("You don't have permission to edit this usergroup");
+                    $this->redirect(App()->createUrl("/admin"));
+                }
             }
         } else {
             Yii::app()->session['flashmessage'] = gT("You don't have permission to edit a usergroup");
