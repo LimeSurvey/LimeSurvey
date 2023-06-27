@@ -131,28 +131,28 @@ class LSYiiValidatorsTest extends TestBaseClass
                 'expected' => ''
             ),
             array(
-                'string'   => `{join('html_entity_decode("', '<script>alert("Test")</script>")')}`,
-                'expected' => ''
+                'string'   => '{join(\'html_entity_decode("\', \'<script>alert("Test")</script>")\')}',
+                'expected' => '{join(\'html_entity_decode("\', \'")\')}'
             ),
             array(
                 'string'   => '<title>html_entity_decode("<script>alert("Test")</script>")</title>',
                 'expected' => 'html_entity_decode("")'
             ),
             array(
-                'string'   => `{join('html_entity_decode("', '<s', 'cript>alert("Test")</script>")')}`,
-                'expected' => ''
+                'string'   => '{join(\'html_entity_decode("\', \'<s\', \'cript>alert("Test")</script>")\')}',
+                'expected' => '{join(\'html_entity_decode("\', \'<s></s>\', \'cript&gt;alert("Test")")\')}'
             ),
             array(
-                'string'   => `{join('html_entity_decode("', '<', 'script>alert("Test")<', '/script>")')`,
-                'expected' => ''
+                'string'   => '{join(\'html_entity_decode("\', \'<\', \'script>alert("Test")<\', \'/script>")\')',
+                'expected' => '{join(\'html_entity_decode("\', \'&lt;\', \'script&gt;alert("Test")&lt;\', \'/script&gt;")\')'
             ),
             array(
                 'string'   => '<title>html_entity_decode("<script>alert("Test")</script>123456")</title>',
                 'expected' => 'html_entity_decode("123456")'
             ),
             array(
-                'string'   => `{join("<","script",">",'alert("Test")',"<","/script",">")}`,
-                'expected' => '&lt;script&gt;alert("Test")&lt;/script&gt;'
+                'string'   => '{join(trim(" < "),"script",">",\'alert("Test")\',trim(" < "),"/script",">")}',
+                'expected' => '{join(trim(" &lt; "),"script","&gt;",\'alert("Test")\',trim(" &lt; "),"/script","&gt;")}'
             ),
             array(
                 'string'   => '{join("<s", "cript>alert("Test")</script>")}',
@@ -160,8 +160,8 @@ class LSYiiValidatorsTest extends TestBaseClass
             )
         );
 
-        foreach ($cases as $case) {
-            $this->assertSame($case['expected'], $validator->xssFilter($case['string']), 'Unexpected filtered dangerous string.');
+        foreach ($cases as $key => $case) {
+            $this->assertSame($case['expected'], $validator->xssFilter($case['string']), 'Unexpected filtered dangerous string. Case key: ' . $key);
         }
     }
 
