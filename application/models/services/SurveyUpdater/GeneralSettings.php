@@ -431,8 +431,7 @@ class GeneralSettings
     /**
      * Dispatch plugin event before survey settings save
      *
-     * @param int $surveyId
-     * @param array $pluginSettings
+     * @param Survey $survey
      * @return void
      */
     private function dispatchPluginEventBeforeSurveySettingsSave(Survey $survey)
