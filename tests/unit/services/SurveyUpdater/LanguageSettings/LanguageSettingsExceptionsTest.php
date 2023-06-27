@@ -48,7 +48,7 @@ class LanguageSettingsExceptionsTest extends TestBaseClass
     }
 
     /**
-     * @testdox update() throws ExceptionNotFound is survey not found
+     * @testdox update() throws ExceptionNotFound if survey not found
      */
     public function testThrowsExceptionNotFoundIfSurveyNotFound()
     {

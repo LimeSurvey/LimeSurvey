@@ -2,10 +2,10 @@
 
 namespace LimeSurvey\Models\Services\Proxy;
 
-use Survey,
-QuestionGroup,
-LimeExpressionManager,
-EmCacheHelper;
+use Survey;
+use QuestionGroup;
+use LimeExpressionManager;
+use EmCacheHelper;
 
 /**
  * Proxy Expression Manager Service
