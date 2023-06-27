@@ -4,9 +4,9 @@ namespace LimeSurvey\Models\Services\SurveyUpdater;
 
 use SurveyURLParameter;
 use LimeSurvey\Models\Services\Exception\{
-    ExceptionPersistError,
-    ExceptionNotFound,
-    ExceptionPermissionDenied
+    PersistErrorException,
+    NotFoundException,
+    PermissionDeniedException
 };
 
 /**
@@ -28,9 +28,9 @@ class UrlParams
      *
      * @param int $surveyId
      * @param array $params
-     * @throws ExceptionPersistError
-     * @throws ExceptionNotFound
-     * @throws ExceptionPermissionDenied
+     * @throws PersistErrorException
+     * @throws NotFoundException
+     * @throws PermissionDeniedException
      * @return void
      */
     public function update($surveyId, $params)
@@ -77,7 +77,7 @@ class UrlParams
                 $urlParam->$k = $v;
             }
             if (!$urlParam->save()) {
-                throw new ExceptionPersistError(
+                throw new PersistErrorException(
                     sprintf(
                         'Failed saving language settings for survey #%s, url param "%s"',
                         $surveyId,

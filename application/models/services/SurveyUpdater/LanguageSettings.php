@@ -6,9 +6,9 @@ use Survey;
 use Permission;
 use SurveyLanguageSetting;
 use LimeSurvey\Models\Services\Exception\{
-    ExceptionPersistError,
-    ExceptionNotFound,
-    ExceptionPermissionDenied
+    PersistErrorException,
+    NotFoundException,
+    PermissionDeniedException
 };
 
 /**
@@ -69,9 +69,9 @@ class LanguageSettings
      *
      * @param int $surveyId
      * @param array $input
-     * @throws ExceptionPersistError
-     * @throws ExceptionNotFound
-     * @throws ExceptionPermissionDenied
+     * @throws PersistErrorException
+     * @throws NotFoundException
+     * @throws PermissionDeniedException
      * @return boolean
      */
     public function update($surveyId, $input)
@@ -83,7 +83,7 @@ class LanguageSettings
                 'update'
             );
         if (!$hasPermission) {
-            throw new ExceptionPermissionDenied(
+            throw new PermissionDeniedException(
                 'Permission denied'
             );
         }
@@ -92,7 +92,7 @@ class LanguageSettings
             $surveyId
         );
         if (!$survey) {
-            throw new ExceptionNotFound();
+            throw new NotFoundException();
         }
 
         $this->updateLanguageSettings(
@@ -108,8 +108,8 @@ class LanguageSettings
      *
      * @param Survey $survey
      * @param array $input
-     * @throws ExceptionPersistError
-     * @throws ExceptionNotFound
+     * @throws PersistErrorException
+     * @throws NotFoundException
      * @return void
      */
     protected function updateLanguageSettings(Survey $survey, $input)
@@ -135,14 +135,14 @@ class LanguageSettings
                     )
                 );
             if (!$surveyLanguageSetting) {
-                throw new ExceptionNotFound(
+                throw new NotFoundException(
                     'Language settings not found'
                 );
             }
 
             $surveyLanguageSetting->setAttributes($data);
             if (!$surveyLanguageSetting->save()) {
-                throw new ExceptionPersistError(
+                throw new PersistErrorException(
                     sprintf(
                         'Failed saving language settings for survey #%s and language "%s"',
                         $survey->sid,

@@ -10,9 +10,9 @@ use Date_Time_Converter;
 use LimeSurvey\SessionData;
 use LimeSurvey\PluginManager\PluginManager;
 use LimeSurvey\Models\Services\Exception\{
-    ExceptionPersistError,
-    ExceptionNotFound,
-    ExceptionPermissionDenied
+    PersistErrorException,
+    NotFoundException,
+    PermissionDeniedException
 };
 
 /**
@@ -60,9 +60,9 @@ class GeneralSettings
      *
      * @param int $surveyId
      * @param array $input
-     * @throws ExceptionPersistError
-     * @throws ExceptionNotFound
-     * @throws ExceptionPermissionDenied
+     * @throws PersistErrorException
+     * @throws NotFoundException
+     * @throws PermissionDeniedException
      * @return array<array-key, mixed>
      */
     public function update($surveyId, $input)
@@ -78,7 +78,7 @@ class GeneralSettings
                 'update'
             );
         if (!$hasPermission) {
-            throw new ExceptionPermissionDenied(
+            throw new PermissionDeniedException(
                 'Permission denied'
             );
         }
@@ -87,7 +87,7 @@ class GeneralSettings
             $surveyId
         );
         if (!$survey) {
-            throw new ExceptionNotFound();
+            throw new NotFoundException();
         }
 
         return $this->updateGeneralSettings(
@@ -101,9 +101,9 @@ class GeneralSettings
      *
      * @param Survey $survey
      * @param array $input
-     * @throws ExceptionPersistError
-     * @throws ExceptionNotFound
-     * @throws ExceptionPermissionDenied
+     * @throws PersistErrorException
+     * @throws NotFoundException
+     * @throws PermissionDeniedException
      * @return array<array-key, mixed>
      */
     private function updateGeneralSettings(Survey $survey, array $input)
@@ -145,7 +145,7 @@ class GeneralSettings
             );
 
             if (!$survey->save()) {
-                throw new ExceptionPersistError(
+                throw new PersistErrorException(
                     sprintf(
                         'Failed saving general settings for survey #%s',
                         $survey->sid

@@ -13,7 +13,7 @@
 *
 */
 
-use LimeSurvey\Models\Services\Exception\ExceptionPersistError;
+use LimeSurvey\Models\Services\Exception\PersistErrorException;
 
 /**
 * Database
@@ -292,7 +292,7 @@ class Database extends SurveyCommonAction
                 $surveyId,
                 $input
             );
-        } catch (ExceptionPersistError $e) {
+        } catch (PersistErrorException $e) {
             Yii::app()->setFlashMessage(
                 $e->getMessage(),
                 'error'
@@ -373,7 +373,7 @@ class Database extends SurveyCommonAction
             );
             Yii::app()
                 ->setFlashMessage(gT('Survey settings were successfully saved.'));
-        } catch (ExceptionPersistError $e) {
+        } catch (PersistErrorException $e) {
             Yii::app()->setFlashMessage(
                 $e->getMessage(),
                 'error'

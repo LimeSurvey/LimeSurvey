@@ -10,20 +10,20 @@ use SurveyLanguageSetting;
 use Mockery;
 use LimeSurvey\Models\Services\SurveyUpdater\LanguageSettings;
 use LimeSurvey\Models\Services\Exception\{
-    ExceptionPersistError,
-    ExceptionNotFound,
-    ExceptionPermissionDenied
+    PersistErrorException,
+    NotFoundException,
+    PermissionDeniedException
 };
 
 class LanguageSettingsExceptionsTest extends TestBaseClass
 {
     /**
-     * @testdox update() throws ExceptionPermissionDenied
+     * @testdox update() throws PermissionDeniedException
      */
     public function testThrowsExceptionPermissionDenied()
     {
         $this->expectException(
-            ExceptionPermissionDenied::class
+            PermissionDeniedException::class
         );
 
         $modelPermission = Mockery::mock(Permission::class)
@@ -48,12 +48,12 @@ class LanguageSettingsExceptionsTest extends TestBaseClass
     }
 
     /**
-     * @testdox update() throws ExceptionNotFound if survey not found
+     * @testdox update() throws NotFoundException if survey not found
      */
     public function testThrowsExceptionNotFoundIfSurveyNotFound()
     {
         $this->expectException(
-            ExceptionNotFound::class
+            NotFoundException::class
         );
 
         $modelPermission = Mockery::mock(Permission::class)
@@ -80,12 +80,12 @@ class LanguageSettingsExceptionsTest extends TestBaseClass
     }
 
     /**
-     * @testdox update() throws ExceptionNotFound if language setting not found
+     * @testdox update() throws NotFoundException if language setting not found
      */
     public function testThrowsExceptionNotFoundIfLanguageSettingNotFound()
     {
         $this->expectException(
-            ExceptionNotFound::class
+            NotFoundException::class
         );
 
         $survey = Mockery::mock(Survey::class)->makePartial();
@@ -125,12 +125,12 @@ class LanguageSettingsExceptionsTest extends TestBaseClass
     }
 
     /**
-     * @testdox update() throws ExceptionPersistError on save failure
+     * @testdox update() throws PersistErrorException on save failure
      */
     public function testThrowsExceptionPersistErrorOnSaveFailure()
     {
         $this->expectException(
-            ExceptionPersistError::class
+            PersistErrorException::class
         );
 
         $survey = Mockery::mock(Survey::class)->makePartial();

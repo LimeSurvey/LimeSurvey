@@ -10,9 +10,9 @@ use LimeSurvey\Models\Services\SurveyUpdater\{
 };
 use LimeSurvey\Models\Services\Proxy\ProxyExpressionManager;
 use LimeSurvey\Models\Services\Exception\{
-    ExceptionPersistError,
-    ExceptionNotFound,
-    ExceptionPermissionDenied
+    PersistErrorException,
+    NotFoundException,
+    PermissionDeniedException
 };
 
 /**
@@ -49,9 +49,9 @@ class SurveyUpdater
      *
      * @param int $surveyId
      * @param array $input
-     * @throws ExceptionPersistError
-     * @throws ExceptionNotFound
-     * @throws ExceptionPermissionDenied
+     * @throws PersistErrorException
+     * @throws NotFoundException
+     * @throws PermissionDeniedException
      * @return array
      */
     public function update($surveyId, $input)
