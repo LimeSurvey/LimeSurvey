@@ -286,9 +286,9 @@ class Database extends SurveyCommonAction
         }
 
 
-        $meta = [];
+        $metaData = [];
         try {
-            $meta = $surveyUpdater->update(
+            $metaData = $surveyUpdater->update(
                 $surveyId,
                 $input
             );
@@ -305,7 +305,9 @@ class Database extends SurveyCommonAction
                 array(
                     'data' => [
                         'success' => true,
-                        'updated' => is_array($meta) && !empty($meta['updatedFields']) ? $meta['updatedFields'] : null,
+                        'updated' => is_array($metaData) && !empty($metaData['updatedFields'])
+                            ? $metaData['updatedFields']
+                            : null,
                         'DEBUG' => [
                             'POST' => $_POST,
                             'reloaded' => [],
