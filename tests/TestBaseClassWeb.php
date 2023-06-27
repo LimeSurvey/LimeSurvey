@@ -179,6 +179,7 @@ class TestBaseClassWeb extends TestBaseClass
 
         self::ignoreWelcomeModal();
         self::ignoreAdminNotification();
+        sleep(3);
         self::ignoreAdminNotification();
 
         /*
@@ -241,7 +242,7 @@ class TestBaseClassWeb extends TestBaseClass
         // Ignore password warning.
         try {
             try {
-                self::$webDriver->wait(2)->until(
+                self::$webDriver->wait(3)->until(
                     WebDriverExpectedCondition::visibilityOfElementLocated(
                         WebDriverBy::id('admin-notification-modal')
                     )
@@ -250,26 +251,17 @@ class TestBaseClassWeb extends TestBaseClass
                 // ignore
                 return;
             }
-            $button = self::$webDriver->wait(5)->until(
-                WebDriverExpectedCondition::elementToBeClickable(
+            $button = self::$webDriver->wait()->until(
+                WebDriverExpectedCondition::visibilityOfElementLocated(
                     WebDriverBy::cssSelector('#admin-notification-modal button.btn-outline-secondary')
                 )
             );
+            // modal fade in is 1 second.
+            sleep(1);
             self::$webDriver->click($button);
-            self::$webDriver->wait(5)->until(
-                WebDriverExpectedCondition::invisibilityOfElementLocated(
-                    WebDriverBy::id('admin-notification-modal')
-                )
-            );
-        } catch (TimeOutException $ex) {
-            // Do nothing.
-        } catch (NoSuchElementException $ex) {
-            // Do nothing.
-        } catch (UnrecognizedExceptionException $ex) {
-            // Do nothing.
         } catch (Exception $ex) {
             $screenshot = self::$webDriver->takeScreenshot();
-            $filename = self::$screenshotsFolder.'/ignoreAdminNotification.png';
+            $filename = self::$screenshotsFolder . '/ignoreAdminNotification.png';
             file_put_contents($filename, $screenshot);
             self::assertTrue(
                 false,
@@ -286,8 +278,8 @@ class TestBaseClassWeb extends TestBaseClass
     {
         try {
             try {
-                self::$webDriver->wait(2)->until(
-                    WebDriverExpectedCondition::visibilityOfElementLocated(
+                self::$webDriver->wait(3)->until(
+                    WebDriverExpectedCondition::presenceOfElementLocated(
                         WebDriverBy::id('welcomeModal')
                     )
                 );
@@ -295,24 +287,17 @@ class TestBaseClassWeb extends TestBaseClass
                 // ignore
                 return;
             }
-            $button = self::$webDriver->wait(5)->until(
-                WebDriverExpectedCondition::elementToBeClickable(
+            $button = self::$webDriver->wait()->until(
+                WebDriverExpectedCondition::visibilityOfElementLocated(
                     WebDriverBy::cssSelector('#welcomeModal button.btn-outline-secondary')
                 )
             );
+            // modal fade in is 1 second.
+            sleep(1);
             self::$webDriver->click($button);
-            self::$webDriver->wait(5)->until(
-                WebDriverExpectedCondition::invisibilityOfElementLocated(
-                    WebDriverBy::id('welcomeModal')
-                )
-            );
-        } catch (NoSuchElementException $ex) {
-            // Do nothing.
-        } catch (TimeOutException $ex) {
-            // Do nothing.
         } catch (Exception $ex) {
             $screenshot = self::$webDriver->takeScreenshot();
-            $filename = self::$screenshotsFolder.'/ignoreWelcomeModal.png';
+            $filename = self::$screenshotsFolder . '/ignoreWelcomeModal.png';
             file_put_contents($filename, $screenshot);
             self::assertTrue(
                 false,
