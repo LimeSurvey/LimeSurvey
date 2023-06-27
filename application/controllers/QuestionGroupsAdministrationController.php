@@ -1055,6 +1055,8 @@ class QuestionGroupsAdministrationController extends LSBaseController
     /**
      * Method to store and filter questionGroupData for editing a questionGroup
      *
+     * REFACTORED in QuestionGroupService
+     *
      * @param QuestionGroup $oQuestionGroup
      * @param array $aQuestionGroupData
      *
@@ -1081,6 +1083,8 @@ class QuestionGroupsAdministrationController extends LSBaseController
 
     /**
      * Stores questiongroup languages.
+     *
+     * REFACTORED in QuestionGroupService
      *
      * @param QuestionGroup $oQuestionGroup
      * @param array $dataSet array with languages
