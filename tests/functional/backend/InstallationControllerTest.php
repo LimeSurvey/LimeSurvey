@@ -144,16 +144,28 @@ class InstallationControllerTest extends TestBaseClassWeb
             self::$webDriver->click($next);
 
             // Click "Create database".
-            $button = self::$webDriver->findElement(WebDriverBy::cssSelector('input[type="submit"]'));
+            $button = self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::visibilityOfElementLocated(
+                    WebDriverBy::cssSelector('input[type="submit"]')
+                )
+            );
             self::$webDriver->click($button);
 
 
             // Click "Populate".
-            $button = self::$webDriver->findElement(WebDriverBy::cssSelector('input[type="submit"]'));
+            $button = self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::visibilityOfElementLocated(
+                    WebDriverBy::cssSelector('input[type="submit"]')
+                )
+            );
             self::$webDriver->click($button);
 
             // Fill in admin username/password.
-            $adminLoginName = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[adminLoginName]"]'));
+            $adminLoginName = self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::visibilityOfElementLocated(
+                    WebDriverBy::cssSelector('input[name="InstallerConfigForm[adminLoginName]"]')
+                )
+            );
             $adminLoginPwd  = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[adminLoginPwd]"]'));
             $confirmPwd     = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[confirmPwd]"]'));
             $adminLoginName->clear()->sendKeys($username);

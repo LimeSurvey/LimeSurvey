@@ -171,6 +171,11 @@ class TestBaseClassWeb extends TestBaseClass
 
         $submit = self::$webDriver->findElement(WebDriverBy::name('login_submit'));
         self::$webDriver->click($submit);
+        self::$webDriver->wait()->until(
+            WebDriverExpectedCondition::visibilityOfElementLocated(
+                WebDriverBy::id('welcome-jumbotron')
+            )
+        );
 
         self::ignoreWelcomeModal();
         self::ignoreAdminNotification();
@@ -266,7 +271,8 @@ class TestBaseClassWeb extends TestBaseClass
             $screenshot = self::$webDriver->takeScreenshot();
             $filename = self::$screenshotsFolder.'/ignoreAdminNotification.png';
             file_put_contents($filename, $screenshot);
-            self::fail(
+            self::assertTrue(
+                false,
                 'Screenshot in ' . $filename . PHP_EOL . $ex->getMessage()
             );
         }
@@ -308,7 +314,8 @@ class TestBaseClassWeb extends TestBaseClass
             $screenshot = self::$webDriver->takeScreenshot();
             $filename = self::$screenshotsFolder.'/ignoreWelcomeModal.png';
             file_put_contents($filename, $screenshot);
-            self::fail(
+            self::assertTrue(
+                false,
                 'Screenshot in ' . $filename . PHP_EOL . $ex->getMessage()
             );
         }
