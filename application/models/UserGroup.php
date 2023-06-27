@@ -159,7 +159,10 @@ class UserGroup extends LSActiveRecord
     }
 
     /**
-     * TODO should be in controller
+     * TODO should be in controller?
+     * When user is allowed to edit the group,
+     * it will be updated in the database.
+     * Returns true, when it was possible to save.
      * @param string $name
      * @param string $description
      * @param integer $ugId
@@ -182,6 +185,11 @@ class UserGroup extends LSActiveRecord
     }
 
     /**
+     * Works as permission check on db level for editing user groups.
+     * The usergroup needs to exist, and if the user is not a superadmin,
+     * user also has to be the owner of that group.
+     * If successful, the usergroup is returned.
+     *
      * @param integer $ugId
      * @param integer $ownerId
      * @return static
@@ -199,8 +207,8 @@ class UserGroup extends LSActiveRecord
 
         $aParams[':ugid'] = $ugId;
         $criteria->params = $aParams;
-        $result = UserGroup::model()->find($criteria);
-        return $result;
+
+        return UserGroup::model()->find($criteria);
     }
 
     /**
