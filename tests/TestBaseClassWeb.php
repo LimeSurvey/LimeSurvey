@@ -13,6 +13,7 @@
 
 namespace ls\tests;
 
+use Exception;
 use Facebook\WebDriver\WebDriver;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverElement;
@@ -261,6 +262,13 @@ class TestBaseClassWeb extends TestBaseClass
             // Do nothing.
         } catch (UnrecognizedExceptionException $ex) {
             // Do nothing.
+        } catch (Exception $ex) {
+            $screenshot = self::$webDriver->takeScreenshot();
+            $filename = self::$screenshotsFolder.'/ignoreAdminNotification.png';
+            file_put_contents($filename, $screenshot);
+            self::fail(
+                'Screenshot in ' . $filename . PHP_EOL . $ex->getMessage()
+            );
         }
     }
 
@@ -296,6 +304,13 @@ class TestBaseClassWeb extends TestBaseClass
             // Do nothing.
         } catch (TimeOutException $ex) {
             // Do nothing.
+        } catch (Exception $ex) {
+            $screenshot = self::$webDriver->takeScreenshot();
+            $filename = self::$screenshotsFolder.'/ignoreWelcomeModal.png';
+            file_put_contents($filename, $screenshot);
+            self::fail(
+                'Screenshot in ' . $filename . PHP_EOL . $ex->getMessage()
+            );
         }
     }
 }
