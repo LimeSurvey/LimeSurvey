@@ -32,7 +32,7 @@ class GeneralSettings
     private PluginManager $pluginManager;
     private LanguageConsistency $languageConsistency;
 
-    const FIELD_TYPE_YN = 'yersno';
+    const FIELD_TYPE_YN = 'yesorno';
     const FIELD_TYPE_DATETIME = 'dateime';
     const FIELD_TYPE_GAKEY = 'gakey';
     const FIELD_TYPE_USE_CAPTCHA = 'use_captcha';
