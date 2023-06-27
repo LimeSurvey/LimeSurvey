@@ -29,7 +29,7 @@ class GeneralSettings
     private Survey $modelSurvey;
     private LSYii_Application $yiiApp;
     private SessionData $sessionData;
-    private PluginManager $yiiPluginManager;
+    private PluginManager $pluginManager;
     private LanguageConsistency $languageConsistency;
 
     const FIELD_TYPE_YN = 'yersno';
@@ -44,14 +44,14 @@ class GeneralSettings
         Survey $modelSurvey,
         LSYii_Application $yiiApp,
         SessionData $sessionData,
-        PluginManager $yiiPluginManager,
+        PluginManager $pluginManager,
         LanguageConsistency $languageConsistency
     ) {
         $this->modelPermission = $modelPermission;
         $this->modelSurvey = $modelSurvey;
         $this->yiiApp = $yiiApp;
         $this->sessionData = $sessionData;
-        $this->yiiPluginManager = $yiiPluginManager;
+        $this->pluginManager = $pluginManager;
         $this->languageConsistency = $languageConsistency;
     }
 
@@ -423,7 +423,7 @@ class GeneralSettings
             $settingsEvent = new PluginEvent('newSurveySettings');
             $settingsEvent->set('settings', $settings);
             $settingsEvent->set('survey', $surveyId);
-            $this->yiiPluginManager
+            $this->pluginManager
                 ->dispatchEvent($settingsEvent, $plugin);
         }
     }
@@ -439,7 +439,7 @@ class GeneralSettings
     {
         $event = new PluginEvent('beforeSurveySettingsSave');
         $event->set('modifiedSurvey', $survey);
-        $this->yiiPluginManager->dispatchEvent($event);
+        $this->pluginManager->dispatchEvent($event);
     }
 
     /**
