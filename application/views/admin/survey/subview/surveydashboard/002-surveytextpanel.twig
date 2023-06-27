@@ -11,11 +11,11 @@
     <ul class="list-group list-group-flush">
             <!-- Description -->
         <li class="list-group-item p-0 border-0">
-            <div class="ls-flex-row col-12 gap-2">
+            <div class="ls-flex-row col-12 gap-2 py-1">
                 <div class="col-4 card-label">
                     {{gT("Description:")}}
                 </div>
-                <div class="col-8 py-1">
+                <div class="col-8">
                         {% if surveyTextContent.surveyls_description != '' %}
                             <span id="description" class="line-clamp-3">
                                 {{getExpressionManagerOutput(surveyTextContent.surveyls_description)}}
@@ -30,11 +30,11 @@
         </li>
         <!-- Welcome -->
         <li class="list-group-item p-0 border-0">
-            <div class="ls-flex-row col-12 gap-2">
+            <div class="ls-flex-row col-12 gap-2 py-1">
                 <div class="col-4 card-label">
                     {{gT("Welcome:")}}
                 </div>
-                <div class="col-8 py-1">
+                <div class="col-8">
                         {% if surveyTextContent.surveyls_welcometext != '' %}
                             {{getTextDisplayWidget(surveyTextContent.surveyls_welcometext, "welcome_text")}}
                         {% endif %}
@@ -44,7 +44,7 @@
 
         <!-- End message -->
         <li class="list-group-item p-0 border-0">
-            <div class="ls-flex-row col-12 gap-2">
+            <div class="ls-flex-row col-12 gap-2 py-1">
                 <div class="col-4 card-label">
                     {{gT("End message:")}}
                 </div>
