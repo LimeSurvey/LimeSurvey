@@ -14,7 +14,7 @@ var PrepEmailTemplates = function(){
         }
         addAttachment(currentTarget, url);
         window.KCFinder = null;
-        const modal = new bootstrap.Modal(document.getElementById('kc-modal-open'));
+        const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('kc-modal-open'));
         modal.hide();
     },
     
@@ -103,7 +103,7 @@ var PrepEmailTemplates = function(){
             $(newrow).find('input.relevance').val(relevance).attr('name', 'attachments' + templatetype + '[' + index + '][relevance]');
             $(newrow).find('input.filename').attr('name', 'attachments' + templatetype + '[' + index + '][url]');
             $(newrow).appendTo($(target).find('tbody'));
-            const modal = new bootstrap.Modal(document.getElementById('kc-modal-open'));
+            const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('kc-modal-open'));
             modal.hide();
         }
         else
