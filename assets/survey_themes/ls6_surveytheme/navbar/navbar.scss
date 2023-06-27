@@ -41,9 +41,6 @@ Responsive navbar-brand image CSS
     padding-top: 2em;
 }
 
-body .navbar-default .navbar-brand:hover {
-}
-
 /* text overflows, ellipsis and hyphens */
 .navbar-brand {
     overflow: hidden;
@@ -66,11 +63,6 @@ body .navbar-default .navbar-brand:hover {
 .navbar {
     border-radius    : 0 !important;
 
-    a {
-        text-decoration : none;
-        line-height     : 1.8rem;
-        font-size       : 1.2rem;
-    }
 
     @media(min-width : 769px) {
         .navbar-nav .nav-item .nav-link:hover {
@@ -108,4 +100,51 @@ body .navbar-default .navbar-brand:hover {
         padding-bottom : 15px;
     }
 
+}
+
+#survey-nav {
+    &.navbar {
+        box-shadow: none;
+    }
+    .navbar-toggler {
+        border: none;
+        padding: 0;
+        margin-top: 20px;
+        .ri-more-fill {
+            font-size: $font-size-xl * 1.125;
+        }
+    }
+
+    #main-dropdown {
+        min-width: 250px;
+    }
+    .dropdown-header {
+        font-weight : $font-weight-500;
+        font-size   : $font-size-xs;
+        line-height : $line-height-16;
+    }
+    .dropdown-divider {
+        padding: 0;
+        margin: 0 1rem;
+    }
+    .dropdown-menu > li > a {
+        text-decoration : none;
+        font-weight : $font-weight-normal;
+        font-size   : $font-size-sm;
+        line-height : $line-height-20;
+    }
+    .dropdown-toggle::after {
+        display: none;
+    }
+
+    .back-link .ri-arrow-left-s-line, .nav-link .ri-arrow-right-s-line {
+        vertical-align : -0.10em;
+        font-size      : $font-size-lg;
+    }
+    .back-link .ri-arrow-left-s-line {
+        margin-right   : 16px;
+    }
+    .form-change-lang {
+        padding-bottom: 0;
+    }
 }

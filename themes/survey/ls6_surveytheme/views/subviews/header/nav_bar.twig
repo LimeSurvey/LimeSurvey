@@ -16,36 +16,40 @@ See: https://getbootstrap.com/components/#navbar
 
 For the survey navigator ("Next", "Back", etc.), see: navigation/navigator.twig
 #}
-{% set navClass = "navbar-light bg-light" %}
-{% if( aSurveyInfo.template == "bootswatch") %}
-    {% set navClass = "navbar-default bg-primary" %}
-{% endif %}
 <!-- Bootstrap Navigation Bar -->
-<div id="survey-nav" class="navbar {{ navClass }} navbar-expand-md fixed-top border-bottom pt-0 pb-0">
-    <div class="container-fluid">
-     <a class="navbar-brand" href="#"></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar"
-                aria-controls="small-screens-menus" aria-expanded="false">
-
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        {# Logo option #}
+<div id="survey-nav" class="container-md navbar fixed-top pt-0 pb-0">
+    <div class="container-fluid ps-0 pe-0">
         {% if( aSurveyInfo.options.brandlogo == "on") %}
             <div class="navbar-brand logo-container d-none d-md-block">
                 {{ image(aSurveyInfo.options.brandlogofile, aSurveyInfo.name, {"class": "logo img-fluid"}) }}
             </div>
-        {% else %}
-            <div class="navbar-brand">
-                {{ aSurveyInfo.name }}
-            </div>
         {% endif %}
-        <div id="navbar" class="collapse navbar-collapse navbar-nav-scroll pt-2">
-            <ul class="nav navbar-nav navbar-action-link navbar-right ms-auto">
-                {{ include('./subviews/navigation/save_links.twig') }}
-                {{ include('./subviews/navigation/clearall_links.twig') }}
-                {{ include('./subviews/navigation/question_index_menu.twig') }}
-                {{ include('./subviews/navigation/language_changer_top_menu.twig') }}
-            </ul>
+        <div id="navbar-menu" class="dropdown ms-auto ls-no-js-hidden">
+            {% if( aSurveyInfo.aNavigator.load.show == "Y" or
+                aSurveyInfo.aNavigator.save.show == "Y" or
+                ((aSurveyInfo.bShowClearAll == true or aSurveyInfo.bShowClearAll == null) and
+                aSurveyInfo.options.showclearall == 'on') or
+                aSurveyInfo.aQuestionIndex.bShow == true or
+                aSurveyInfo.alanguageChanger.show == true) %}
+                <div id="navbar-toggler" class="navbar-toggler" data-bs-toggle="dropdown"
+                        data-bs-auto-close="outside" aria-expanded="false">
+                    <span class="ri-more-fill"></span>
+                </div>
+                <ul id="main-dropdown" class="dropdown-menu dropdown-menu-end" aria-labelledby="navbar-toggler">
+                    {{ include('./subviews/navigation/language_changer_top_menu.twig') }}
+                    {% if( aSurveyInfo.aNavigator.load.show == "Y" or
+                        aSurveyInfo.aNavigator.save.show == "Y" or
+                        ((aSurveyInfo.bShowClearAll == true or aSurveyInfo.bShowClearAll == null) and
+                        aSurveyInfo.options.showclearall == 'on') or
+                        aSurveyInfo.aQuestionIndex.bShow == true) %}
+                    <li class="dropdown-header">{{ gT("SURVEY OPTIONS") }}</li>
+                    {% endif %}
+                    {{ include('./subviews/navigation/save_links.twig') }}
+                    {{ include('./subviews/navigation/question_index_menu.twig') }}
+                    {{ include('./subviews/navigation/clearall_links.twig') }}
+                </ul>
+            {% endif %}
         </div>
+        <ul id="back-content" class="d-none"></ul>
     </div>
 </div>

@@ -14,6 +14,7 @@
 
 li.imageselect-listitem .imageselect-container .imageselect-label {
     border-radius : $border-radius !important;
+    overflow: hidden;
 }
 
 .imageselect-container .imageselect-radiobutton::before,

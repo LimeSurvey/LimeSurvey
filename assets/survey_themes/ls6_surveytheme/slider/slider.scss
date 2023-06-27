@@ -25,7 +25,6 @@
     .slider-item {
         margin-bottom : 20px;
         min-height    : 50px;
-        overflow-x    : hidden;
         padding-top   : 1rem;
     }
     .slider-item:first-child {
@@ -53,7 +52,7 @@
             font-weight : $font-weight-600;
             z-index     : $zindex-dropdown; // prevent overlapping of navbar which is 1030 ($zindex-fixed)
             &.bs-tooltip-top {
-                margin-top : -34px;
+                margin-top : -30px;
             }
             .tooltip-arrow {
                 display : none;

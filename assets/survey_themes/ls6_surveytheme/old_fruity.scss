@@ -200,9 +200,6 @@
     margin-right : 5px;
 }
 
-.geoname_search {
-    margin-bottom : 10px;
-}
 
 /* Give help text some space */
 .questionhelp {
@@ -325,11 +322,6 @@ p.return-to-survey {
 
 .question-item {
     border : none;
-}
-
-/* aligns navigator buttons with question borders */
-#navigator-container > div {
-    padding : 0px;
 }
 
 //.radio-item input[type="radio"]:focus + label::before, input[type="radio"]:focus, input[type="checkbox"]:focus{

@@ -5,7 +5,8 @@
  * @var bool $canImport
  * @var string $importErrorMessage
  * @var object $oQuestionTheme
- * @var object $oSurveyTheme
+ * @var TemplateConfig $oSurveyTheme
+ * @var int $pageSize
  */
 
 // TODO: rename to template_list.php and move to template controller
@@ -34,13 +35,14 @@ echo viewHelper::getViewTestTag('templateOptions');
     <div class="tab-content">
         <div id="surveythemes" class="tab-pane active">
             <div class="list-surveys">
-                <?php echo '<h3>' . gT('Installed survey themes:') . '</h3>'; ?>
-                <?php $this->renderPartial(
-                    './surveythemelist',
-                    ['oSurveyTheme' => $oSurveyTheme, 'pageSize' => $pageSize]
+                <h3><?= gT('Installed survey themes:') ?></h3>
+                <?php $this->renderPartial('./surveythemelist', [
+                        'oSurveyTheme' => $oSurveyTheme,
+                        'pageSize'     => $pageSize
+                    ]
                 ); ?>
                 <!-- Available Themes -->
-                <?php if (count($oSurveyTheme->templatesWithNoDb) > 0) : ?>
+                <?php if (count($oSurveyTheme->getTemplatesWithNoDb()) > 0) : ?>
                     <h3><?php eT('Available survey themes:'); ?></h3>
                     <div id="templates_no_db" >
                         <table class="items table table-hover">
@@ -57,14 +59,14 @@ echo viewHelper::getViewTestTag('templateOptions');
 
                             <tbody>
                             <?php foreach ($oSurveyTheme->templatesWithNoDb as $oTemplate) : ?>
-                                <?php // echo $oTemplate; ?>
+                                <?php /** @var TemplateManifest $oTemplate */ ?>
                                 <tr class="odd">
-                                    <td class="col-lg-1"><?php echo $oTemplate->preview; ?></td>
+                                    <td class="col-lg-1"><?php echo $oTemplate->getPreview(); ?></td>
                                     <td class="col-lg-2"><?php echo $oTemplate->sTemplateName; ?></td>
-                                    <td class="col-lg-3"><?php echo $oTemplate->description; ?></td>
+                                    <td class="col-lg-3"><?php echo $oTemplate->getDescription(); ?></td>
                                     <td class="col-lg-2"><?php eT('XML themes'); ?></td>
                                     <td class="col-lg-1"><?php echo $oTemplate->config->metadata->extends; ?></td>
-                                    <td class="col-lg-2"><?php echo $oTemplate->buttons; ?></td>
+                                    <td class="col-lg-2"><?php echo $oTemplate->getButtons(); ?></td>
                                 </tr>
                             <?php endforeach; ?>
 
@@ -150,8 +152,7 @@ echo viewHelper::getViewTestTag('templateOptions');
                                     <td class="col-lg-9"><?php echo $aDeprecatedTheme['name']; ?></td>
                                     <td class="col-lg-2">
                                         <div class="d-grid gap-2">
-                                            <?php if (Permission::model()->hasGlobalPermission('templates',
-                                                    'export') && class_exists('ZipArchive')) : ?>
+                                            <?php if (Permission::model()->hasGlobalPermission('templates', 'export') && class_exists('ZipArchive')) : ?>
                                                 <a class="btn btn-outline-secondary btn-sm" id="button-export"
                                                    href="<?php echo $this->createUrl('admin/themes/sa/deprecatedtemplatezip/templatename/' . $aDeprecatedTheme['name']) ?>"
                                                    role="button">

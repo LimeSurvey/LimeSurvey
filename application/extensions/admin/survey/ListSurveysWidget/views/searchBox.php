@@ -58,7 +58,7 @@
             <!-- select group -->
             <div class="col">
                 <?= $form->label($this->model, 'group', ['label' => gT('Group:'), 'class' => 'col-sm-3 col-form-label col-form-label-sm']) ?>
-                <select name="gsid" id='Survey_gsid' class="form-select">
+                <select name="gsid" id='Survey_gsid' class="form-select activate-search">
                     <option value=""><?= gT('(Any group)') ?></option>
                     <?php foreach (SurveysGroups::getSurveyGroupsList() as $gsid => $group_title) : ?>
                         <option value="<?= $gsid ?>" <?= ($gsid === $this->model->gsid) ? "selected" : "" ?>><?= flattenText($group_title) ?></option>

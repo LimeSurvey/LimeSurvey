@@ -131,6 +131,7 @@ class Template extends LSActiveRecord
      *
      * @param string $sTemplateName
      * @return string existing $sTemplateName
+     * @throws Exception
      */
     public static function templateNameFilter($sTemplateName)
     {
@@ -147,7 +148,7 @@ class Template extends LSActiveRecord
         /* Validate if template is OK in user dir, DIRECTORY_SEPARATOR not needed "/" is OK */
         $oTemplate = self::model()->findByPk($sTemplateName);
 
-        if (is_object($oTemplate) && $oTemplate->checkTemplate() && (self::checkTemplateXML($oTemplate->folder))) {
+        if (!empty($oTemplate) && $oTemplate->checkTemplate() && (self::checkTemplateXML($oTemplate->name, $oTemplate->folder))) {
             self::$aNamesFiltered[$sTemplateName] = $sTemplateName;
             return self::$aNamesFiltered[$sTemplateName];
         }
@@ -207,21 +208,25 @@ class Template extends LSActiveRecord
      */
     public function checkTemplateExtends()
     {
-        if (!empty($this->extends)) {
-            $oRTemplate = self::model()->findByPk($this->extends);
-            if (empty($oRTemplate)) {
-                // Why? it blocks the user at login screen....
-                // It should return false and show a nice warning message.
-
-                /*throw new Exception(
-                    sprintf(
-                        'Extended template "%s" is not installed.',
-                        $this->extends
-                    )
-                );*/
-            }
-        }
+        /**
+         * TODO: the following code needs to be rewritten, currently the only thing it does is return true, that why it is commented out
+         */
         return true;
+//        if (!empty($this->extends)) {
+//            $oRTemplate = self::model()->findByPk($this->extends);
+//            if (empty($oRTemplate)) {
+//                // Why? it blocks the user at login screen....
+//                // It should return false and show a nice warning message.
+//
+//                /*throw new Exception(
+//                    sprintf(
+//                        'Extended template "%s" is not installed.',
+//                        $this->extends
+//                    )
+//                );*/
+//            }
+//        }
+//        return true;
     }
 
     /**
@@ -243,14 +248,45 @@ class Template extends LSActiveRecord
 
     /**
      * Check if a given Template has a valid XML File
-     * @TODO: check api version
      *
-     * @param string $sTemplateFolder the template forder name where to look for the XML
+     * @param string $templateName the template name
+     * @param string $templateFolder the template folder name where to look for the XML
      * @return boolean
+     * @throws CDbException
      */
-    public static function checkTemplateXML($sTemplateFolder)
+    public static function checkTemplateXML($templateName, $templateFolder)
     {
-        return (is_file(Yii::app()->getConfig("userthemerootdir") . DIRECTORY_SEPARATOR . $sTemplateFolder . DIRECTORY_SEPARATOR . 'config.xml') || is_file(Yii::app()->getConfig("standardthemerootdir") . DIRECTORY_SEPARATOR . $sTemplateFolder . DIRECTORY_SEPARATOR . 'config.xml'));
+        // check if the configuration can be found
+        $userThemePath = App()->getConfig("userthemerootdir") . DIRECTORY_SEPARATOR . $templateFolder . DIRECTORY_SEPARATOR . 'config.xml';
+        $standardThemePath = App()->getConfig("standardthemerootdir") . DIRECTORY_SEPARATOR . $templateFolder . DIRECTORY_SEPARATOR . 'config.xml';
+        if (is_file($userThemePath)) {
+            $currentThemePath = $userThemePath;
+        } elseif (is_file($standardThemePath)) {
+            $currentThemePath = $standardThemePath;
+        } else {
+            return false;
+        }
+
+        // check compatability with current limesurvey version
+        $extensionConfig = ExtensionConfig::loadFromFile($currentThemePath);
+        if ($extensionConfig === null) {
+            return false;
+        }
+        if (!$extensionConfig->isCompatible()) {
+            // TODO: write recursiveuninstall for childthemes
+            $extendedTemplates = (new Template)->findAll('extends = :templateName', [':templatename' => $templateName]);
+            if (!empty($extendedTemplates)) {
+                foreach ($extendedTemplates as $extendedTemplate) {
+                    TemplateConfig::uninstall($extendedTemplate->name);
+                }
+            }
+
+            TemplateConfig::uninstall($templateName);
+            return false;
+        }
+
+        // all checks succeeded, continue loading the theme
+        return true;
     }
 
     /**
@@ -711,7 +747,7 @@ class Template extends LSActiveRecord
      */
     public static function getDeprecatedTemplates()
     {
-        $usertemplaterootdir     = Yii::app()->getConfig("uploaddir") . DIRECTORY_SEPARATOR . "templates";
+        $usertemplaterootdir     = App()->getConfig("uploaddir") . DIRECTORY_SEPARATOR . "templates";
         $aTemplateList = array();
 
         if ((is_dir($usertemplaterootdir)) && $usertemplaterootdir && $handle = opendir($usertemplaterootdir)) {
@@ -734,7 +770,7 @@ class Template extends LSActiveRecord
     public static function getBrokenThemes($sFolder = null)
     {
         $aBrokenTemplateList = array();
-        $sFolder    =  (empty($sFolder)) ? Yii::app()->getConfig("userthemerootdir") : $sFolder;
+        $sFolder    =  (empty($sFolder)) ? App()->getConfig("userthemerootdir") : $sFolder;
 
         if ($sFolder && $handle = opendir($sFolder)) {
             while (false !== ($sFileName = readdir($handle))) {

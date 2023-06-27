@@ -58,13 +58,13 @@
                         </span>
                     </label>
                     <div class="row">
-                        <div class="captcha-container col-xl-2 col-lg-3 col-md-12 align-items-center">
+                        <div class="captcha-container col-xl-3 col-lg-12 align-items-center">
                             {{ renderCaptcha().renderOut() }}
                             <a href="#" class="btn btn-outline-secondary" id="reloadCaptcha"
                                title="{{ gT("Reload captcha") }}" data-toggle="captcha"><i
                                         class="ri-refresh-line"></i></a>
                         </div>
-                        <div class="{{ aSurveyInfo.class.maincolformdivbdiv }} col-xl-10 col-lg-9 col-md-12 captcha-input align-self-center" {{ aSurveyInfo.attr.maincolformdivbdiv }}>
+                        <div class="{{ aSurveyInfo.class.maincolformdivbdiv }} col-xl-9 col-lg-12 captcha-input align-self-center" {{ aSurveyInfo.attr.maincolformdivbdiv }}>
                             <input class='form-control ls-important-field {{ aSurveyInfo.class.maincolformdivbdivdivinput }}' {{ aSurveyInfo.attr.maincolformdivbdivdivinput }} placeholder="{{ gT("enter result here - numbers only") }}">
                         </div>
                     </div>

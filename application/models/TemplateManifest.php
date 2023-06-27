@@ -631,7 +631,11 @@ class TemplateManifest extends TemplateConfiguration
     }
 
 
-    // TODO: please write documentation here, seems to be no entrypoints for this
+    /**
+     * Get buttons/actions for the "Available admin themes", not installed
+     * @return string
+     * @throws CException
+     */
     public function getButtons()
     {
         $sEditorUrl  = Yii::app()->getController()->createUrl('admin/themes/sa/view', array("templatename" => $this->sTemplateName));

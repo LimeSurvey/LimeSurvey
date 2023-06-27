@@ -1,33 +1,3 @@
-/*
-    LimeSurvey
-    Copyright (C) 2007-2023
-    The LimeSurvey Project Team / Patrick Teichmann
-    All rights reserved.
-    License: GNU/GPL License v3 or later, see LICENSE.php
-    LimeSurvey is free software. This version may have been modified pursuant
-    to the GNU General Public License, and as distributed it includes or
-    is derivative of works licensed under the GNU General Public License or
-    other free or open source software licenses.
-
-
-    (¯`·._.·(¯`·._.·  Theme main JavaScript   ·._.·´¯)·._.·´¯)
-
-     Javascript file for this template.
-
-     You'd rather not touch it. This file can be overwritten by an update.
-
-
-     ██████╗  ██████╗     ███╗   ██╗ ██████╗ ████████╗    ████████╗ ██████╗ ██╗   ██╗ ██████╗██╗  ██╗    ██╗
-     ██╔══██╗██╔═══██╗    ████╗  ██║██╔═══██╗╚══██╔══╝    ╚══██╔══╝██╔═══██╗██║   ██║██╔════╝██║  ██║    ██║
-     ██║  ██║██║   ██║    ██╔██╗ ██║██║   ██║   ██║          ██║   ██║   ██║██║   ██║██║     ███████║    ██║
-     ██║  ██║██║   ██║    ██║╚██╗██║██║   ██║   ██║          ██║   ██║   ██║██║   ██║██║     ██╔══██║    ╚═╝
-     ██████╔╝╚██████╔╝    ██║ ╚████║╚██████╔╝   ██║          ██║   ╚██████╔╝╚██████╔╝╚██████╗██║  ██║    ██╗
-     ╚═════╝  ╚═════╝     ╚═╝  ╚═══╝ ╚═════╝    ╚═╝          ╚═╝    ╚═════╝  ╚═════╝  ╚═════╝╚═╝  ╚═╝    ╚═╝
-
-     Please, use custom.js
-
-*/
-
 import TemplateCoreClass from './template_core_class.js';
 
 /**
@@ -90,7 +60,7 @@ export var ThemeScripts = function () {
 
     var initTopMenuLanguageChanger = function (selectorItem, selectorGlobalForm) {
         // $(selectorContainer).height($('#main-row').height());
-        $(selectorItem).on('click', function () {
+        $(document).on('click', selectorItem, function () {
             var lang = $(this).data('limesurvey-lang');
             /* The limesurvey form exist in document, move select and button inside and click */
             $(selectorGlobalForm + ' [name=\'lang\']').remove();                        // Remove existing lang selector

@@ -12,7 +12,7 @@ App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl'
             $this->widget('ext.AlertWidget.AlertWidget', [
                     'header' => 'Reordering',
                     'text' => gT("To reorder questions/questiongroups just drag the question/group with your mouse to the desired position.") . ' ' .
-                        ($surveyActivated ? gT("Survey is activated, you can not move question on another group.") : "") . ' ' .
+                        ($surveyActivated ? gT("Survey is activated, you can not move a question to another group.") : "") . ' ' .
                         gT("After you are done, please click the 'Save' button to save your changes."),
                     'type' => 'info',
             ]);

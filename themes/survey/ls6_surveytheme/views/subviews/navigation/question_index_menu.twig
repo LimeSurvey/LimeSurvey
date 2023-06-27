@@ -28,21 +28,22 @@ There is two possible displays for index, depending on Survey Mode:
 {% if (aSurveyInfo.aQuestionIndex.bShow == true) %}
     {% if aSurveyInfo.format == 'G' %}
         <!-- Question index, group, {{ aSurveyInfo.aQuestionIndex.type }} -->
-        <li class="dropdown nav-item ls-no-js-hidden px-2 index-menu-{{ aSurveyInfo.aQuestionIndex.type }}">
-            <a class="dropdown-toggle nav-link" data-bs-toggle="dropdown" role="button" aria-haspopup="true"
+        <li class="dropdown nav-item ls-no-js-hidden index-menu-{{ aSurveyInfo.aQuestionIndex.type }}">
+            <a class="dropdown-toggle nav-link" data-bs-toggle="dropdownCustom" data-navtargetid="index-dropdown" role="button" aria-haspopup="true"
                aria-expanded="false" href="#">
                 {{ gT("Question index") }}
-                <span class="caret"></span>
+                <span class="ri-arrow-right-s-line float-end"></span>
             </a>
-            <ul class="dropdown-menu dropdown-menu-end">
+            <ul id="index-dropdown" class="dropdown-menu dropdown-menu-end">
+                {{ include('./subviews/navigation/back.twig') }}
                 {# TODO: move back this logic to SurveyRuntime, and provide a ready to use indexItem.statusClass #}
                 {% for step, indexItem in aSurveyInfo.aQuestionIndex.items %}
                     {% set statusClass = '' %}
                     {% if attribute(indexItem.stepStatus, 'index-item-unanswered') is defined and attribute(indexItem.stepStatus, 'index-item-unanswered') == true %}
-                        {% set statusClass = statusClass ~ ' bg-warning' %}
+                        {% set statusClass = statusClass ~ ' index-warning' %}
                     {% endif %}
                     {% if attribute(indexItem.stepStatus, 'index-item-error') is defined and attribute(indexItem.stepStatus, 'index-item-error') == true %}
-                        {% set statusClass = statusClass ~ ' bg-danger' %}
+                        {% set statusClass = statusClass ~ ' index-danger' %}
                     {% endif %}
                     {% if attribute(indexItem.stepStatus, 'index-item-current') is defined and attribute(indexItem.stepStatus, 'index-item-current') == true %}
                         {% set statusClass = statusClass ~  ' disabled' %}

@@ -1215,7 +1215,7 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
 
                 //go through all the (multiple) answers
                 foreach ($result as $row) {
-                    $myfield2 = $myfield . reset($row);
+                    $myfield2 = $myfield . $row['title'];
                     $allfields[] = $myfield2;
                 }
                 break;
@@ -4607,6 +4607,22 @@ function getIPAddress()
         $sIPAddress = $_SERVER['REMOTE_ADDR'];
     }
 
+    return $sIPAddress;
+}
+
+
+/**
+ * This function returns the real IP address and should mainly be used for security sensitive purposes
+ * If you want to use the IP address for language detection or similar, use getIPAddress() instead
+ * 
+ * @return  string  Client IP Address
+ */
+function getRealIPAddress()
+{
+    $sIPAddress = '127.0.0.1';
+    if (!empty($_SERVER['REMOTE_ADDR']) && filter_var($_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP) !== false) {
+        $sIPAddress = $_SERVER['REMOTE_ADDR'];
+    }
     return $sIPAddress;
 }
 

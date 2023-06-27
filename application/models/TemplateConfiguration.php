@@ -627,7 +627,7 @@ class TemplateConfiguration extends TemplateConfig
             $this->bTemplateCheckResult = true;
             if (
                 !is_object($this->template) ||
-                (is_object($this->template) && !Template::checkTemplateXML($this->template->folder))
+                (is_object($this->template) && !Template::checkTemplateXML($this->template->name, $this->template->folder))
             ) {
                 $this->bTemplateCheckResult = false;
             }
@@ -1035,7 +1035,6 @@ class TemplateConfiguration extends TemplateConfig
 
         $oTemplate->setToInherit();
         $oTemplate->setOptions();
-        $oTemplate->setOptionInheritance();
 
         $oOptions = (array) $oSimpleInheritanceTemplate->oOptions;
 
@@ -1267,7 +1266,8 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * @todo document me
+     * Decodes json string from the database field "options" and stores it inside $this->oOptions
+     * Also triggers inheritence checks
      * @return void
      */
     protected function setOptions()
@@ -1283,7 +1283,8 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * @todo document me
+     * Loop through all theme options defined, trigger check for inheritance and write the new value back to the options object
+     * @return void
      */
     protected function setOptionInheritance()
     {
@@ -1291,14 +1292,13 @@ class TemplateConfiguration extends TemplateConfig
 
         if (!empty($oOptions)) {
             foreach ($oOptions as $sKey => $sOption) {
-                $oOptions->$sKey = $this->getOptionKey($sKey);
+                $this->oOptions->$sKey = $this->getOptionKey($sKey);
             }
         }
     }
 
     /**
-     * @todo document me
-     *
+     * Search through the inheritence chain and find the inherited value for theme option
      * @param string $key
      * @return mixed
      */
@@ -1578,12 +1578,18 @@ class TemplateConfiguration extends TemplateConfig
      */
     public function sanitizeImagePathsOnJson($attribute, $params)
     {
+        $excludedOptions = [
+            'cssframework'
+        ];
         // Validates all options of the theme. Not only classic ones which are expected to hold a path,
         // as other options may hold a path as well (eg. custom theme options)
         $decodedOptions = json_decode((string) $this->$attribute, true);
         if (is_array($decodedOptions)) {
             Yii::import('application.helpers.SurveyThemeHelper');
-            foreach ($decodedOptions as &$value) {
+            foreach ($decodedOptions as $option => &$value) {
+                if (in_array($option, $excludedOptions)) {
+                    continue;
+                }
                 $value = SurveyThemeHelper::sanitizePathInOption($value, $this->template_name, $this->sid);
             }
             $this->$attribute = json_encode($decodedOptions);
