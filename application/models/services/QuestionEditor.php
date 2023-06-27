@@ -8,10 +8,16 @@ use QuestionL10n;
 use Survey;
 use LSYii_Application;
 
-use LimeSurvey\Models\Services\Proxy\ProxySettingsUser;
-
 use CException;
 use LSUserException;
+
+use LimeSurvey\Models\Services\QuestionEditor\QuestionEditorAttributes;
+
+use LimeSurvey\Models\Services\Proxy\{
+    ProxySettingsUser,
+    ProxyExpressionManager,
+    ProxyQuestion
+};
 
 use LimeSurvey\Models\Services\Exception\{
     ExceptionPersistError,
@@ -31,30 +37,38 @@ class QuestionEditor
     private Permission $modelPermission;
     private Question $modelQuestion;
     private QuestionL10n $modelQuestionL10n;
+    private QuestionEditorAttributes $questionEditorAttributes;
     private Survey $modelSurvey;
     private ProxySettingsUser $proxySettingsUser;
+    private ProxyQuestion $proxyQuestion;
+    private ProxyExpressionManager $proxyExpressionManager;
     private LSYii_Application $yiiApp;
-    private ExpressionManager $expressionManager;
 
     public function __construct(
         Permission $modelPermission,
         Question $modelQuestion,
         QuestionL10n $modelQuestionL10n,
+        QuestionEditorAttributes $questionEditorAttributes,
         Survey $modelSurvey,
         ProxySettingsUser $proxySettingsUser,
-        LSYii_Application $yiiApp,
-        ExpressionManager $expressionManager
+        ProxyQuestion $proxyQuestion,
+        ProxyExpressionManager $proxyExpressionManager,
+        LSYii_Application $yiiApp
     ) {
         $this->modelPermission = $modelPermission;
         $this->modelQuestion = $modelQuestion;
-        $this->modelQuestionL10n = $modelQuestionL10n;
         $this->modelSurvey = $modelSurvey;
+        $this->modelQuestionL10n = $modelQuestionL10n;
+        $this->questionEditorAttributes = $questionEditorAttributes;
         $this->proxySettingsUser = $proxySettingsUser;
+        $this->proxyQuestion = $proxyQuestion;
+        $this->proxyExpressionManager = $proxyExpressionManager;
         $this->yiiApp = $yiiApp;
-        $this->expressionManager = $expressionManager;
     }
 
     /**
+     * Based on QuestionAdministrationController::actionSaveQuestionData()
+     *
      * @param <array-key, mixed> $input
      * @throws ExceptionPersistError
      * @throws ExceptionNotFound
@@ -63,7 +77,7 @@ class QuestionEditor
      */
     public function save($input)
     {
-        $request = App()->request;
+        $request = $this->yiiApp->request;
         $iSurveyId = (int) ($input['sid'] ?? 0);
 
         $questionData = [];
@@ -96,10 +110,15 @@ class QuestionEditor
         try {
             if ($questionData['question']['qid'] == 0) {
                 $questionData['question']['qid'] = null;
-                $question = $this->storeNewQuestionData($questionData['question']);
+                $question = $this->storeNewQuestionData(
+                    $questionData['question']
+                );
             } else {
                 // Store changes to the actual question data, by either storing it, or updating an old one
-                $question = $this->updateQuestionData($question, $questionData['question']);
+                $question = $this->updateQuestionData(
+                    $question,
+                    $questionData['question']
+                );
             }
 
             // Apply the changes to general settings, advanced settings and translations
@@ -110,22 +129,24 @@ class QuestionEditor
                 $questionData['questionI10N']
             );
 
-            $setApplied['advancedSettings'] = $this->unparseAndSetAdvancedOptions(
-                $question,
-                $questionData['advancedSettings']
-            );
+            $setApplied['advancedSettings'] = $this->questionEditorAttributes
+                ->updateAdvanced(
+                    $question,
+                    $questionData['advancedSettings']
+                );
 
-            $setApplied['question'] = $this->unparseAndSetGeneralOptions(
-                $question,
-                $questionData['question']
-            );
+            $setApplied['question'] = $this->questionEditorAttributes
+                ->updateGeneral(
+                    $question,
+                    $questionData['question']
+                );
 
             // save advanced attributes default values for given question type
             if (
                 array_key_exists('save_as_default', $questionData['question'])
                 && $questionData['question']['save_as_default'] == 'Y'
             ) {
-                ProxySettingsUser::setUserSetting(
+                $this->proxySettingsUser->setUserSetting(
                     'question_default_values_' . $questionData['question']['type'],
                     ls_json_encode($questionData['advancedSettings'])
                 );
@@ -133,7 +154,9 @@ class QuestionEditor
                 array_key_exists('clear_default', $questionData['question'])
                 && $questionData['question']['clear_default'] == 'Y'
             ) {
-                ProxySettingsUser::deleteUserSetting('question_default_values_' . $questionData['question']['type']);
+                $this->proxySettingsUser->deleteUserSetting(
+                    'question_default_values_' . $questionData['question']['type']
+                );
             }
 
             // Clean answer options before save.
@@ -169,7 +192,7 @@ class QuestionEditor
 
             // All done, redirect to edit form.
             $question->refresh();
-            $this->expressionManager->setDirtyFlag();
+            $this->proxyExpressionManager->setDirtyFlag();
 
         } catch (CException $ex) {
             $transaction->rollback();
@@ -219,7 +242,7 @@ class QuestionEditor
         }
     }
 
-        /**
+    /**
      * Method to store and filter questionData for a new question
      *
      * todo: move to model or service class
@@ -283,13 +306,13 @@ class QuestionEditor
 
         //set the question_order the highest existing number +1, if no question exists for the group
         //set the question_order to 1
-        $highestOrderNumber = Question::getHighestQuestionOrderNumberInGroup($iQuestionGroupId);
+        $highestOrderNumber = $this->proxyQuestion
+            ->getHighestQuestionOrderNumberInGroup($iQuestionGroupId);
         if ($highestOrderNumber === null) { //this means there is no question inside this group ...
             $oQuestion->question_order = Question::START_SORTING_VALUE;
         } else {
             $oQuestion->question_order = $highestOrderNumber + 1;
         }
-
 
         if ($oQuestion == null) {
             throw new LSUserException(
