@@ -205,8 +205,7 @@ class LimeSurveyWebDriver extends RemoteWebDriver
      */
     public function click(RemoteWebElement $element): RemoteWebElement
     {
-        $this->executeScript('arguments[0].scrollIntoView({ behaviour: "instant"});', [$element]);
-        sleep(1);
+        $this->executeScript('window.scrollTo({top: (arguments[0].offsetTop + arguments[0].offsetHeight - window.innerHeight), behavior: "instant"});', [$element]);
         return $element->click();
     }
 }

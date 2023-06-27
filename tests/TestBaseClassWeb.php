@@ -169,7 +169,7 @@ class TestBaseClassWeb extends TestBaseClass
         $passWordField->clear()->sendKeys($password);
 
         $submit = self::$webDriver->findElement(WebDriverBy::name('login_submit'));
-        $submit->click();
+        self::$webDriver->click($submit);
 
         self::ignoreWelcomeModal();
         self::ignoreAdminNotification();
@@ -249,7 +249,7 @@ class TestBaseClassWeb extends TestBaseClass
                     WebDriverBy::cssSelector('#admin-notification-modal button.btn-outline-secondary')
                 )
             );
-            $button->click();
+            self::$webDriver->click($button);
             self::$webDriver->wait(5)->until(
                 WebDriverExpectedCondition::invisibilityOfElementLocated(
                     WebDriverBy::id('admin-notification-modal')
@@ -286,7 +286,7 @@ class TestBaseClassWeb extends TestBaseClass
                     WebDriverBy::cssSelector('#welcomeModal button.btn-outline-secondary')
                 )
             );
-            $button->click();
+            self::$webDriver->click($button);
             self::$webDriver->wait(5)->until(
                 WebDriverExpectedCondition::invisibilityOfElementLocated(
                     WebDriverBy::id('welcomeModal')
