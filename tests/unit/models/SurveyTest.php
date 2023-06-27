@@ -167,7 +167,7 @@ class SurveyTest extends BaseModelTestCase
         $icon = $survey->getRunning();
 
         $this->assertStringContainsString(gT('End: Never'), $icon, 'The icon link does not have the right text.');
-        $this->assertStringContainsString('ri-play-fill text-secondary', $icon, 'The icon link does not have the right css classes.');
+        $this->assertStringContainsString('ri-play-fill text-primary', $icon, 'The icon link does not have the right css classes.');
 
         //Test with time adjust.
         \SettingGlobal::setSetting('timeadjust', '+420 minutes');
@@ -175,7 +175,7 @@ class SurveyTest extends BaseModelTestCase
         $newIcon = $survey->getRunning();
 
         $this->assertStringContainsString(gT('End: Never'), $newIcon, 'The icon link does not have the right text.');
-        $this->assertStringContainsString('ri-play-fill text-secondary', $newIcon, 'The icon link does not have the right css classes.');
+        $this->assertStringContainsString('ri-play-fill text-primary', $newIcon, 'The icon link does not have the right css classes.');
     }
 
     /**
@@ -195,7 +195,7 @@ class SurveyTest extends BaseModelTestCase
         $icon = $survey->getRunning();
 
         $this->assertStringContainsString(sprintf(gT('End: %s'), $sExpires), $icon, 'The icon link does not have the right text.');
-        $this->assertStringContainsString('ri-play-fill text-secondary', $icon, 'The icon link does not have the right css classes.');
+        $this->assertStringContainsString('ri-play-fill text-primary', $icon, 'The icon link does not have the right css classes.');
 
         //Test with time adjust.
         \SettingGlobal::setSetting('timeadjust', '+120 minutes');
@@ -205,7 +205,7 @@ class SurveyTest extends BaseModelTestCase
         $newIcon = $survey->getRunning();
 
         $this->assertStringContainsString(sprintf(gT('End: %s'), $sExpires), $newIcon, 'The icon link does not have the right text.');
-        $this->assertStringContainsString('ri-play-fill text-secondary', $newIcon, 'The icon link does not have the right css classes.');
+        $this->assertStringContainsString('ri-play-fill text-primary', $newIcon, 'The icon link does not have the right css classes.');
     }
 
     /**
@@ -228,7 +228,7 @@ class SurveyTest extends BaseModelTestCase
         $icon = $survey->getRunning();
 
         $this->assertStringContainsString(sprintf(gT('End: %s'), $sExpires), $icon, 'The icon link does not have the right text.');
-        $this->assertStringContainsString('ri-play-fill text-secondary', $icon, 'The icon link does not have the right css classes.');
+        $this->assertStringContainsString('ri-play-fill text-primary', $icon, 'The icon link does not have the right css classes.');
 
         //Test with time adjust.
         \SettingGlobal::setSetting('timeadjust', '+180 minutes');
@@ -238,7 +238,7 @@ class SurveyTest extends BaseModelTestCase
         $newIcon = $survey->getRunning();
 
         $this->assertStringContainsString(sprintf(gT('End: %s'), $sExpires), $newIcon, 'The icon link does not have the right text.');
-        $this->assertStringContainsString('ri-play-fill text-secondary', $newIcon, 'The icon link does not have the right css classes.');
+        $this->assertStringContainsString('ri-play-fill text-primary', $newIcon, 'The icon link does not have the right css classes.');
     }
 
     /**
