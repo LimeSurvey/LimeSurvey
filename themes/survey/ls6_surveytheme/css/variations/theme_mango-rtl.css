@@ -12199,14 +12199,22 @@ Responsive navbar-brand image CSS
   line-height: 20px;
 }
 #survey-nav .dropdown-toggle::after {
-  display: none;
-}
-#survey-nav .back-link .ri-arrow-right-s-line, #survey-nav .nav-link .ri-arrow-left-s-line {
-  vertical-align: -0.1em;
+  font-family: "remixicon";
+  content: '\ea64';
+  border: none;
+  vertical-align: 0;
+  position: absolute;
+  left: 0;
   font-size: 1.425rem;
 }
-#survey-nav .back-link .ri-arrow-left-s-line {
-  margin-left: 16px;
+#survey-nav .back-link::before {
+  font-family: "remixicon";
+  content: '\ea6e';
+  vertical-align: -0.1em;
+  position: relative;
+  right: -6px;
+  margin-left: 6px;
+  font-size: 1.425rem;
 }
 #survey-nav .form-change-lang {
   padding-bottom: 0;

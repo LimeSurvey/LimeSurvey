@@ -12222,14 +12222,22 @@ Responsive navbar-brand image CSS
   line-height: 20px;
 }
 #survey-nav .dropdown-toggle::after {
-  display: none;
-}
-#survey-nav .back-link .ri-arrow-left-s-line, #survey-nav .nav-link .ri-arrow-right-s-line {
-  vertical-align: -0.1em;
+  font-family: "remixicon";
+  content: "\ea6e" /*!rtl:'\ea64'*/;
+  border: none;
+  vertical-align: 0;
+  position: absolute;
+  right: 0;
   font-size: 1.425rem;
 }
-#survey-nav .back-link .ri-arrow-left-s-line {
-  margin-right: 16px;
+#survey-nav .back-link::before {
+  font-family: "remixicon";
+  content: "\ea64" /*!rtl:'\ea6e'*/;
+  vertical-align: -0.1em;
+  position: relative;
+  left: -6px;
+  margin-right: 6px;
+  font-size: 1.425rem;
 }
 #survey-nav .form-change-lang {
   padding-bottom: 0;
