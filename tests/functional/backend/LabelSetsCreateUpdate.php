@@ -17,9 +17,13 @@ class LabelSetsCreateUpdate extends TestBaseClassWeb
 {
 
     /**
-     * @var integer $testlabelSetId sample
+     * @var integer $superadminlabelSetId sample
      */
-    private static $testlabelSetId;
+    private static $superadminlabelSetId;
+    /**
+     * @var integer $userlabelSetId sample
+     */
+    private static $userlabelSetId;
     /**
      * @var integer $userId used for action
      */
@@ -37,11 +41,18 @@ class LabelSetsCreateUpdate extends TestBaseClassWeb
         $oLabelSet->label_name = \Yii::app()->securityManager->generateRandomString(50);
         $oLabelSet->languages = 'en';
         $oLabelSet->save();
-        self::$testlabelSetId = $oLabelSet->lid;
+        self::$superadminlabelSetId = $oLabelSet->lid;
         /* Create an random user and login */
         $username = "test_" . \Yii::app()->securityManager->generateRandomString(8);
         $password = createPassword();
         self::$userId = \User::insertUser($username, $password, 'Test user for label sets', 1, 'user@example.org');
+        $oLabelSet = new \LabelSet();
+        $oLabelSet->owner_id = self::$userId;
+        $oLabelSet->label_name = \Yii::app()->securityManager->generateRandomString(50);
+        $oLabelSet->languages = 'en';
+        $oLabelSet->save();
+        self::$userlabelSetId = $oLabelSet->lid;
+
         \User::model()->updateByPk(self::$userId, ['lang' => 'en']);
         \Permission::model()->setGlobalPermission(self::$userId, 'labelsets', array('create_p'));
         \Permission::model()->setGlobalPermission(self::$userId, 'auth_db', array('read_p'));
@@ -62,13 +73,13 @@ class LabelSetsCreateUpdate extends TestBaseClassWeb
         try {
             $linkLabels = self::$webDriver->wait(1)->until(
                 WebDriverExpectedCondition::visibilityOf(
-                   self::$webDriver->findElement(WebDriverBy::className('link-labels'))
+                    self::$webDriver->findElement(WebDriverBy::className('link-labels'))
                 )
             );
         } catch (\Exception $e) {
             //throw new Exception($e->getMessage());
             $screenshot = self::$webDriver->takeScreenshot();
-            file_put_contents(self::$screenshotsFolder. '/testLinkVisibility.png', $screenshot);
+            file_put_contents(self::$screenshotsFolder . '/testLinkVisibility.png', $screenshot);
         }
         $this->assertNotEmpty(
             $linkLabels,
@@ -77,8 +88,64 @@ class LabelSetsCreateUpdate extends TestBaseClassWeb
     }
 
     /**
-     * Check access to the list
-     * Create a label set and delete
+     * Check access disable if not owner
+     */
+    public function testViewInvalidLabelSet()
+    {
+        $urlMan = \Yii::app()->urlManager;
+        $url = $urlMan->createUrl('admin/labels/sa/view', ['lid' => self::$superadminlabelSetId]);
+        self::$webDriver->get($url);
+        $title = self::$webDriver->getTitle();
+        if (App()->getConfig('debug')) {
+            $this->assertEquals("CHttpException", trim($title));
+        } else {
+            $this->assertEquals("403: Forbidden", trim($title));
+        }
+    }
+
+    /**
+     * Check access disable if not owner
+     */
+    public function testDeleteInvalidLabelSet()
+    {
+        $urlMan = \Yii::app()->urlManager;
+        $url = $urlMan->createUrl('admin/labels/sa/view', ['lid' => self::$userlabelSetId]);
+        self::$webDriver->get($url);
+        /* Update the data-post-datas via JS */
+        self::$webDriver->executeScript("$('#create-import-button').attr('data-post-datas','{\"lid\":" . self::$superadminlabelSetId . "}')");
+        /* Delete it */
+        try {
+            $labelDeleteButton = self::$webDriver->wait(1)->until(
+                WebDriverExpectedCondition::visibilityOf(
+                    self::$webDriver->findElement(WebDriverBy::id('create-import-button'))
+                )
+            );
+            $labelDeleteButton->click();
+            $confirmButton = self::$webDriver->wait(3)->until(
+                WebDriverExpectedCondition::visibilityOf(
+                    self::$webDriver->findElement(WebDriverBy::id('actionBtn'))
+                )
+            );
+        } catch (\Exception $e) {
+            //throw new Exception($e->getMessage());
+            $screenshot = self::$webDriver->takeScreenshot();
+            file_put_contents(self::$screenshotsFolder . '/testDeleteInvalidLabelSet.png', $screenshot);
+        }
+        $this->assertNotEmpty(
+            $confirmButton,
+            'Unable to find confirm button to delete Label set'
+        );
+        $confirmButton->click();
+        $title = self::$webDriver->getTitle();
+        if (App()->getConfig('debug')) {
+            $this->assertEquals("CHttpException", trim($title));
+        } else {
+            $this->assertEquals("403: Forbidden", trim($title));
+        }
+    }
+
+    /**
+     * Check access to list, create, view
      */
     public function testCreateAndDeleteLabelSet()
     {
@@ -86,7 +153,6 @@ class LabelSetsCreateUpdate extends TestBaseClassWeb
         // Go to User Management page
         $url = $urlMan->createUrl('admin/labels/sa/view');
         self::$webDriver->get($url);
-
         try {
             // Click on "Add Label set" button.
             $addLabelButton = self::$webDriver->wait(1)->until(
@@ -108,15 +174,14 @@ class LabelSetsCreateUpdate extends TestBaseClassWeb
             // Wait for label set title and check it
             $labelNameTitle = self::$webDriver->wait(1)->until(
                 WebDriverExpectedCondition::visibilityOf(
-                   self::$webDriver->findElement(WebDriverBy::className('pagetitle'))
+                    self::$webDriver->findElement(WebDriverBy::className('pagetitle'))
                 )
             );
         } catch (\Exception $e) {
             //throw new Exception($e->getMessage());
             $screenshot = self::$webDriver->takeScreenshot();
-            file_put_contents(self::$screenshotsFolder. '/testCreateDeleteLabelSet-Add.png', $screenshot);
+            file_put_contents(self::$screenshotsFolder . '/testCreateDeleteLabelSet-Add.png', $screenshot);
         }
-
         $this->assertEquals(trim($labelNameTitle->getText()), "Labels - Sample label set");
         /* Delete it */
         try {
@@ -134,40 +199,50 @@ class LabelSetsCreateUpdate extends TestBaseClassWeb
         } catch (\Exception $e) {
             //throw new Exception($e->getMessage());
             $screenshot = self::$webDriver->takeScreenshot();
-            file_put_contents(self::$screenshotsFolder. '/testCreateDeleteLabelSet-Delete.png', $screenshot);
+            file_put_contents(self::$screenshotsFolder . '/testCreateDeleteLabelSet-Delete.png', $screenshot);
         }
         $this->assertNotEmpty(
             $confirmButton,
             'Unable to find confirm button to delete Label set'
         );
         $confirmButton->click();
-        /* Check if deleted : no Label sets muts be shown */
+        /* Check if deleted : one Label sets must be shown only */
         $isEmptyElement = self::$webDriver->wait(3)->until(
             WebDriverExpectedCondition::visibilityOf(
-                self::$webDriver->findElement(WebDriverBy::cssSelector('#labelsets-grid table.items tbody tr td .empty'))
+                self::$webDriver->findElement(WebDriverBy::cssSelector('#labelsets-grid table.items tbody tr'))
             )
         );
-        $this->assertEquals(trim($isEmptyElement->getText()), "No label sets found.");
+        $lineCount = count(self::$webDriver->findElements(WebDriverBy::cssSelector("#labelsets-grid table.items tbody tr")));
+        $this->assertEquals($lineCount, 1);
     }
 
     /**
-     * Check access disable if not owner
+     * Check access to list and view
      */
-    public function testViewInvalidLabelSet()
+    public function testViewListLabelSet()
     {
         $urlMan = \Yii::app()->urlManager;
-        $url = $urlMan->createUrl('admin/labels/sa/view', ['lid' => self::$testlabelSetId]);
+        // Go to User Management page
+        $url = $urlMan->createUrl('admin/labels/sa/view');
         self::$webDriver->get($url);
-        $title = self::$webDriver->getTitle();
-        $this->assertEquals(trim($title), "403: Forbidden");
+        /* Check if deleted : one Label sets must be shown only */
+        self::$webDriver->wait(1)->until(
+            WebDriverExpectedCondition::visibilityOf(
+                self::$webDriver->findElement(WebDriverBy::cssSelector('#labelsets-grid table.items tbody tr'))
+            )
+        );
+        $isEmptyCount = count(self::$webDriver->findElements(WebDriverBy::cssSelector('#labelsets-grid table.items tbody tr .empty')));
+        $this->assertEquals($isEmptyCount, 0);
     }
+
 
     /**
      * @inheritdoc
      */
     public static function tearDownAfterClass(): void
     {
-        \LabelSet::model()->deleteByPk(self::$testlabelSetId);
+        \LabelSet::model()->deleteByPk(self::$superadminlabelSetId);
+        \LabelSet::model()->deleteByPk(self::$userlabelSetId);
         \User::model()->deleteByPk(self::$userId);
         parent::tearDownAfterClass();
     }
