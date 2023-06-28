@@ -1144,7 +1144,7 @@ class UserManagementController extends LSBaseController
             )
         ) {
             App()->user->setFlash('error', gT("Access denied"));
-            $this->redirect(App()->request->urlReferrer);
+            $this->redirect(App()->createUrl("userManagement/index"));
         }
 
         $oUser->parent_id = App()->user->id;
