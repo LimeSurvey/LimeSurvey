@@ -6,10 +6,13 @@ use Permission;
 use Question;
 use QuestionL10n;
 use Survey;
+use Condition;
+use Answer;
+use AnswerL10n;
 use LSYii_Application;
 
 use CException;
-use LSUserException;
+use CHttpException;
 
 use LimeSurvey\Models\Services\QuestionEditor\QuestionEditorAttributes;
 
@@ -39,6 +42,7 @@ class QuestionEditor
     private QuestionL10n $modelQuestionL10n;
     private QuestionEditorAttributes $questionEditorAttributes;
     private Survey $modelSurvey;
+    private Condition $modelCondition;
     private ProxySettingsUser $proxySettingsUser;
     private ProxyQuestion $proxyQuestion;
     private ProxyExpressionManager $proxyExpressionManager;
@@ -50,6 +54,7 @@ class QuestionEditor
         QuestionL10n $modelQuestionL10n,
         QuestionEditorAttributes $questionEditorAttributes,
         Survey $modelSurvey,
+        Condition $modelCondition,
         ProxySettingsUser $proxySettingsUser,
         ProxyQuestion $proxyQuestion,
         ProxyExpressionManager $proxyExpressionManager,
@@ -57,8 +62,9 @@ class QuestionEditor
     ) {
         $this->modelPermission = $modelPermission;
         $this->modelQuestion = $modelQuestion;
-        $this->modelSurvey = $modelSurvey;
         $this->modelQuestionL10n = $modelQuestionL10n;
+        $this->modelSurvey = $modelSurvey;
+        $this->modelCondition = $modelCondition;
         $this->questionEditorAttributes = $questionEditorAttributes;
         $this->proxySettingsUser = $proxySettingsUser;
         $this->proxyQuestion = $proxyQuestion;
@@ -78,18 +84,19 @@ class QuestionEditor
     public function save($input)
     {
         $request = $this->yiiApp->request;
-        $iSurveyId = (int) ($input['sid'] ?? 0);
+        $surveyId = (int) ($input['sid'] ?? 0);
 
-        $questionData = [];
-        $questionData['question']         = $input['question'] ?? [];
+        $data = [];
+        $data['question']         = $input['question'] ?? [];
         // TODO: It's l10n, not i10n.
-        $questionData['questionI10N']     = $input['questionI10N'] ?? [];
-        $questionData['advancedSettings'] = $input['advancedSettings'] ?? [];
-        $questionData['question']['sid']  = $iSurveyId;
+        $data['questionI10N']     = $input['questionI10N'] ?? [];
+        $data['advancedSettings'] = $input['advancedSettings'] ?? [];
+        $data['question']['sid']  = $surveyId;
 
-        $question = $this->modelQuestion->findByPk((int) $questionData['question']['qid']);
+        $question = $this->modelQuestion
+            ->findByPk((int) $data['question']['qid']);
 
-        $surveyId = $question ? $question->sid : $iSurveyId;
+        $surveyId = $question ? $question->sid : $surveyId;
 
         // Different permission check when sid vs qid is given.
         // This double permission check is needed if user manipulates the post data.
@@ -108,54 +115,61 @@ class QuestionEditor
         // Rollback at failure.
         $transaction = $this->yiiApp->db->beginTransaction();
         try {
-            if ($questionData['question']['qid'] == 0) {
-                $questionData['question']['qid'] = null;
+            if ($data['question']['qid'] == 0) {
+                $data['question']['qid'] = null;
                 $question = $this->storeNewQuestionData(
-                    $questionData['question']
+                    $data['question']
                 );
             } else {
                 // Store changes to the actual question data, by either storing it, or updating an old one
                 $question = $this->updateQuestionData(
                     $question,
-                    $questionData['question']
+                    $data['question']
                 );
             }
 
-            // Apply the changes to general settings, advanced settings and translations
-            $setApplied = [];
-
             $this->applyL10n(
                 $question,
-                $questionData['questionI10N']
+                $data['questionI10N']
             );
 
-            $setApplied['advancedSettings'] = $this->questionEditorAttributes
+            $this->questionEditorAttributes
                 ->updateAdvanced(
                     $question,
-                    $questionData['advancedSettings']
+                    $data['advancedSettings']
                 );
 
-            $setApplied['question'] = $this->questionEditorAttributes
+            $this->questionEditorAttributes
                 ->updateGeneral(
                     $question,
-                    $questionData['question']
+                    $data['question']
                 );
 
             // save advanced attributes default values for given question type
             if (
-                array_key_exists('save_as_default', $questionData['question'])
-                && $questionData['question']['save_as_default'] == 'Y'
+                array_key_exists(
+                    'save_as_default',
+                    $data['question']
+                )
+                && $data['question']['save_as_default'] == 'Y'
             ) {
                 $this->proxySettingsUser->setUserSetting(
-                    'question_default_values_' . $questionData['question']['type'],
-                    ls_json_encode($questionData['advancedSettings'])
+                    'question_default_values_'
+                        . $data['question']['type'],
+                    ls_json_encode(
+                        $data['advancedSettings']
+                    )
                 );
             } elseif (
-                array_key_exists('clear_default', $questionData['question'])
-                && $questionData['question']['clear_default'] == 'Y'
+                array_key_exists(
+                    'clear_default',
+                    $data['question']
+                )
+                && $data['question']['clear_default'] == 'Y'
             ) {
                 $this->proxySettingsUser->deleteUserSetting(
-                    'question_default_values_' . $questionData['question']['type']
+                    'question_default_values_'
+                        . $data['question']['type']
                 );
             }
 
@@ -166,25 +180,25 @@ class QuestionEditor
             if ($question->questionType->answerscales > 0) {
                 $this->storeAnswerOptions(
                     $question,
-                    $request->getPost('answeroptions')
+                    $input['answeroptions'] ?? []
                 );
             }
 
             if ($question->survey->active == 'N') {
-                // Clean subquestions before save.
+                // Clean subQuestions before save.
                 $question->deleteAllSubquestions();
-                // If question type has subquestions, save them.
-                if ($question->questionType->subquestions > 0) {
+                // If question type has subQuestions, save them.
+                if ($question->questionType->subQuestions > 0) {
                     $this->storeSubquestions(
                         $question,
-                        $request->getPost('subquestions')
+                        $input['subQuestions'] ?? []
                     );
                 }
             } else {
-                if ($question->questionType->subquestions > 0) {
+                if ($question->questionType->subQuestions > 0) {
                     $this->updateSubquestions(
                         $question,
-                        $request->getPost('subquestions')
+                        $input['subQuestions'] ?? []
                     );
                 }
             }
@@ -193,7 +207,6 @@ class QuestionEditor
             // All done, redirect to edit form.
             $question->refresh();
             $this->proxyExpressionManager->setDirtyFlag();
-
         } catch (CException $ex) {
             $transaction->rollback();
 
@@ -243,44 +256,46 @@ class QuestionEditor
     }
 
     /**
-     * Method to store and filter questionData for a new question
+     * Method to store and filter data for a new question
      *
      * todo: move to model or service class
      *
-     * @param array $aQuestionData what is inside this array ??
-     * @param boolean $subquestion
+     * @param array $data
+     * @param boolean $subQuestion
      * @return Question
-     * @throws CHttpException
+     * @throws PersistErrorException
      */
-    private function storeNewQuestionData($aQuestionData = null, $subquestion = false)
+    private function storeNewQuestionData($data = null, $subQuestion = false)
     {
-        $iSurveyId = $aQuestionData['sid'];
-        $oSurvey = $this->modelSurvey->findByPk($iSurveyId);
-        $iQuestionGroupId = (int) $aQuestionData['gid'];
+        $surveyId = $data['sid'];
+        $survey = $this->modelSurvey
+            ->findByPk($surveyId);
+        $questionGroupId = (int) $data['gid'];
         $type = $this->proxySettingsUser->getUserSettingValue(
             'preselectquestiontype',
             null,
             null,
             null,
-            $this->yiiApp->getConfig('preselectquestiontype')
+            $this->yiiApp
+                ->getConfig('preselectquestiontype')
         );
 
-        if (isset($aQuestionData['same_default'])) {
-            if ($aQuestionData['same_default'] == 1) {
-                $aQuestionData['same_default'] = 0;
+        if (isset($data['same_default'])) {
+            if ($data['same_default'] == 1) {
+                $data['same_default'] = 0;
             } else {
-                $aQuestionData['same_default'] = 1;
+                $data['same_default'] = 1;
             }
         }
 
-        if (!isset($aQuestionData['same_script'])) {
-            $aQuestionData['same_script'] = 0;
+        if (!isset($data['same_script'])) {
+            $data['same_script'] = 0;
         }
 
-        $aQuestionData = array_merge(
+        $data = array_merge(
             [
-                'sid'        => $iSurveyId,
-                'gid'        => $iQuestionGroupId,
+                'sid'        => $surveyId,
+                'gid'        => $questionGroupId,
                 'type'       => $type,
                 'other'      => 'N',
                 'mandatory'  => 'N',
@@ -289,58 +304,46 @@ class QuestionEditor
                 'modulename' => '',
                 'encrypted'  => 'N'
             ],
-            $aQuestionData
+            $data
         );
-        unset($aQuestionData['qid']);
+        unset($data['qid']);
 
-        if ($subquestion) {
-            foreach ($oSurvey->allLanguages as $language) {
-                unset($aQuestionData[$language]);
+        if ($subQuestion) {
+            foreach ($survey->allLanguages as $language) {
+                unset($data[$language]);
             }
         } else {
-            $aQuestionData['question_order'] = getMaxQuestionOrder($iQuestionGroupId);
+            $data['question_order'] = $this->proxyQuestion
+                ->getMaxQuestionOrder($questionGroupId);
         }
 
-        $oQuestion = new Question();
-        $oQuestion->setAttributes($aQuestionData, false);
+        $question = new Question();
+        $question->setAttributes($data, false);
 
         //set the question_order the highest existing number +1, if no question exists for the group
         //set the question_order to 1
         $highestOrderNumber = $this->proxyQuestion
-            ->getHighestQuestionOrderNumberInGroup($iQuestionGroupId);
-        if ($highestOrderNumber === null) { //this means there is no question inside this group ...
-            $oQuestion->question_order = Question::START_SORTING_VALUE;
+            ->getHighestQuestionOrderNumberInGroup($questionGroupId);
+        if ($highestOrderNumber === null) {
+            //this means there is no question inside this group ...
+            $question->question_order = Question::START_SORTING_VALUE;
         } else {
-            $oQuestion->question_order = $highestOrderNumber + 1;
+            $question->question_order = $highestOrderNumber + 1;
         }
 
-        if ($oQuestion == null) {
-            throw new LSUserException(
-                500,
-                gT("Question creation failed - input was malformed or invalid"),
-                0,
-                null,
-                true
+        if (!$question->save()) {
+            throw new PersistErrorException(
+                gT('Could not save question')
             );
         }
 
-        $saved = $oQuestion->save();
-        if ($saved == false) {
-            throw (new LSUserException(
-                500,
-                gT('Could not save question'),
-                0,
-                null,
-                true
-            ))->setDetailedErrorsFromModel($oQuestion);
-        }
-
-        $i10N = [];
-        foreach ($oSurvey->allLanguages as $language) {
-            $i10N[$language] = new QuestionL10n();
-            $i10N[$language]->setAttributes(
+        // Init empty L10n records
+        $l10n = [];
+        foreach ($survey->allLanguages as $language) {
+            $l10n[$language] = new QuestionL10n();
+            $l10n[$language]->setAttributes(
                 [
-                    'qid'      => $oQuestion->qid,
+                    'qid'      => $question->qid,
                     'language' => $language,
                     'question' => '',
                     'help'     => '',
@@ -348,9 +351,240 @@ class QuestionEditor
                 ],
                 false
             );
-            $i10N[$language]->save();
+            $l10n[$language]->save();
         }
 
-        return $oQuestion;
+        return $question;
+    }
+
+    /**
+     * Method to store and filter data for editing a question
+     *
+     * @param Question $question
+     * @param array $data
+     * @return Question
+     * @throws PersistErrorException
+     */
+    private function updateQuestionData($question, $data)
+    {
+        //todo something wrong in frontend ... (?what is wrong?)
+
+        if (isset($data['same_default'])) {
+            if ($data['same_default'] == 1) {
+                $data['same_default'] = 0;
+            } else {
+                $data['same_default'] = 1;
+            }
+        }
+
+        if (!isset($data['same_script'])) {
+            $data['same_script'] = 0;
+        }
+
+        $originalRelevance = $question->relevance;
+
+        $question->setAttributes($data, false);
+
+        if (!$question->save()) {
+            throw new PersistErrorException(
+                gT('Update failed, could not save.')
+            );
+        }
+
+        // If relevance equation was manually edited,
+        // existing conditions must be cleared
+        if (
+            $question->relevance != $originalRelevance
+            && !empty($question->conditions)
+        ) {
+            $this->modelCondition->deleteAllByAttributes(
+                ['qid' => $question->qid]
+            );
+        }
+
+        return $question;
+    }
+
+    /**
+     * Store new answer options.
+     * Different from update during active survey?
+     *
+     * @param Question $question
+     * @param array $optionsArray
+     * @return void
+     * @throws PersistErrorException
+     */
+    private function storeAnswerOptions($question, $optionsArray)
+    {
+        $i = 0;
+        foreach ($optionsArray as $optionArray) {
+            foreach ($optionArray as $scaleId => $data) {
+                if (!isset($data['code'])) {
+                    throw new Exception(
+                        'code is not set in data: ' . json_encode($data)
+                    );
+                }
+                $answer = new Answer();
+                $answer->qid = $question->qid;
+                $answer->code = $data['code'];
+                $answer->sortorder = $i;
+                $i++;
+                if (isset($data['assessment'])) {
+                    $answer->assessment_value = $data['assessment'];
+                } else {
+                    $answer->assessment_value = 0;
+                }
+                $answer->scale_id = $scaleId;
+                if (!$answer->save()) {
+                    throw new PersistErrorException(
+                        gT('Could not save answer')
+                    );
+                }
+                $answer->refresh();
+                foreach ($data['answeroptionl10n'] as $lang => $answerOptionText) {
+                    $l10n = new AnswerL10n();
+                    $l10n->aid = $answer->aid;
+                    $l10n->language = $lang;
+                    $l10n->answer = $answerOptionText;
+                    if (!$l10n->save()) {
+                        if (!$answer->save()) {
+                            throw new PersistErrorException(
+                                gT('Could not save answer option')
+                            );
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Save subquestion.
+     * Used when survey is *not* activated.
+     *
+     * @param Question $question
+     * @param array $subquestionsArray Data from request.
+     * @return void
+     * @throws PersistErrorException
+     * @throws CHttpException
+     */
+    private function storeSubquestions($question, $subquestionsArray)
+    {
+        $questionOrder = 0;
+        foreach ($subquestionsArray as $subquestionArray) {
+            foreach ($subquestionArray as $scaleId => $data) {
+                $subquestion = new Question();
+                $subquestion->sid        = $question->sid;
+                $subquestion->gid        = $question->gid;
+                $subquestion->parent_qid = $question->qid;
+                $subquestion->question_order = $questionOrder;
+                $questionOrder++;
+                if (!isset($data['code'])) {
+                    throw new CHttpException(
+                        500,
+                        'Internal error: ' .
+                        'Missing mandatory field code for question: '
+                        . json_encode($data)
+                    );
+                }
+                $subquestion->title      = $data['code'];
+                if ($scaleId === 0) {
+                    $subquestion->relevance  = $data['relevance'];
+                }
+                $subquestion->scale_id   = $scaleId;
+                if (!$subquestion->save()) {
+                    throw new PersistErrorException(
+                        gT('Could not save subquestion')
+                    );
+                }
+                $subquestion->refresh();
+                foreach ($data['subquestionl10n'] as $lang => $questionText) {
+                    $l10n = new QuestionL10n();
+                    $l10n->qid = $subquestion->qid;
+                    $l10n->language = $lang;
+                    $l10n->question = $questionText;
+                    if (!$l10n->save()) {
+                        throw new PersistErrorException(
+                            gT('Could not save subquestion')
+                        );
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Save subquestion.
+     * Used when survey *is* activated.
+     *
+     * @param Question $question
+     * @param array $subquestionsArray Data from request.
+     * @return void
+     * @throws PersistErrorException
+     * @throws CHttpException
+     */
+    private function updateSubquestions($question, $subquestionsArray)
+    {
+        $questionOrder = 0;
+        foreach ($subquestionsArray as $subquestionArray) {
+            foreach ($subquestionArray as $scaleId => $data) {
+                $subquestion = Question::model()->findByAttributes(
+                    [
+                        'parent_qid' => $question->qid,
+                        'title'      => $data['code'],
+                        'scale_id'   => $scaleId
+                    ]
+                );
+                if (empty($subquestion)) {
+                    throw new NotFoundException(
+                        'Found no subquestion with code ' . $data['code']
+                    );
+                }
+                $subquestion->sid        = $question->sid;
+                $subquestion->gid        = $question->gid;
+                $subquestion->parent_qid = $question->qid;
+                $subquestion->question_order = $questionOrder;
+                $questionOrder++;
+                if (!isset($data['code'])) {
+                    throw new CHttpException(
+                        500,
+                        'Internal error: '
+                        . 'Missing mandatory field code for question: '
+                        . json_encode($data)
+                    );
+                }
+                $subquestion->title      = $data['code'];
+                if ($scaleId === 0) {
+                    $subquestion->relevance  = $data['relevance'];
+                }
+                $subquestion->scale_id   = $scaleId;
+                if (!$subquestion->update()) {
+                    throw new PersistErrorException(
+                        gT('Could not save subquestion')
+                    );
+                }
+                $subquestion->refresh();
+                foreach ($data['subquestionl10n'] as $lang => $questionText) {
+                    $l10n = QuestionL10n::model()->findByAttributes(
+                        [
+                            'qid' => $subquestion->qid,
+                            'language' => $lang
+                        ]
+                    );
+                    if (empty($l10n)) {
+                        $l10n = new QuestionL10n();
+                    }
+                    $l10n->qid = $subquestion->qid;
+                    $l10n->language = $lang;
+                    $l10n->question = $questionText;
+                    if (!$l10n->save()) {
+                        throw new PersistErrorException(
+                            gT('Could not save subquestion')
+                        );
+                    }
+                }
+            }
+        }
     }
 }

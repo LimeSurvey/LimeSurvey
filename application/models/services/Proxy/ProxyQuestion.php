@@ -23,4 +23,15 @@ class ProxyQuestion
     {
         return Question::getHighestQuestionOrderNumberInGroup($questionGroupId);
     }
+
+    /**
+     * Queries the database for the maximum sort order of questions inside question group.
+     *
+     * @param integer $gid
+     * @return integer
+     */
+    public static function getMaxQuestionOrder($gid)
+    {
+        return getMaxQuestionOrder($gid);
+    }
 }
