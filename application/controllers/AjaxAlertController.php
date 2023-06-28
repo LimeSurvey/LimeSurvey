@@ -27,7 +27,7 @@ class AjaxAlertController extends LSBaseController
         $customOptions = $request->getPost('customOptions', []);
 
         $translatedOptions = [];
-        $translatedOptions['text'] = $request->getPost('message', 'Test');
+        $translatedOptions['text'] = $request->getPost('message', 'message');
         $translatedOptions['type'] = $request->getPost('alertType', 'success');
         $knownOptions = ['tag', 'isFilled', 'showIcon', 'showCloseButton', 'timeout'];
         foreach ($knownOptions as $knownOption) {

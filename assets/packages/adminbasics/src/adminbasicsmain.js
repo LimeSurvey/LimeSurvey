@@ -35,7 +35,6 @@ import './components/bootstrap-remote-modals';
 import questionEdit from './pages/questionEditing';
 //import * as quickAction from './pages/quickaction'; ->temporary deprecated
 import {subquestionAndAnswersGlobalMethods} from './pages/subquestionandanswers';
-import {onExistBinding as surveyGrid} from './pages/surveyGrid';
 
 //import parts for globalscope
 import confirmationModal from './parts/confirmationModal';
@@ -75,7 +74,6 @@ const AdminCore = function(){
     const
         onLoadRegister = () => {
             globalStartUpMethods.bootstrapping();
-            surveyGrid();
             appendToLoad(function(){LOG.log('TRIGGERWARNING','Document ready triggered')}, 'ready');
             appendToLoad(function(){LOG.log('TRIGGERWARNING','Document scriptcomplete triggered')}, 'pjax:scriptcomplete');
             appendToLoad(saveBindings);
@@ -118,7 +116,6 @@ const AdminCore = function(){
                     }
                 });
             });
-            surveyGrid();
         },
         addToNamespace = (object, name="globalAddition") => {
             window.LS[name] = window.LS[name] || {};
