@@ -147,7 +147,7 @@ const NotifcationSystem  = function (){
     deleteAllNotifications = (url, updateUrl) => {
         return $.ajax({
             url: url,
-            method: 'GET',
+            method: 'POST',
             success: (response) => {
                LOG.log('response', response);
             }

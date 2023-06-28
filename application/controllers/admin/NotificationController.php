@@ -60,18 +60,22 @@ class NotificationController extends SurveyCommonAction
      * @param int|null $surveyId
      * @return void
      */
-    public function clearAllNotifications($surveyId = null)
+    public function clearAllNotifications()
     {
-        Notification::model()->deleteAll(
-            'entity = :entity AND entity_id = :entity_id',
-            array(":entity" => 'user', ":entity_id" => Yii::app()->user->id)
-        );
-
-        if (is_int($surveyId)) {
+        if (App()->request->isPostRequest) {
+            $this->checkPermission();
+            $surveyId = App()->request->getPost('surveyId', null);
             Notification::model()->deleteAll(
                 'entity = :entity AND entity_id = :entity_id',
-                array(":entity" => 'survey', ":entity_id" => $surveyId)
+                array(":entity" => 'user', ":entity_id" => Yii::app()->user->id)
             );
+
+            if (is_int($surveyId)) {
+                Notification::model()->deleteAll(
+                    'entity = :entity AND entity_id = :entity_id',
+                    array(":entity" => 'survey', ":entity_id" => $surveyId)
+                );
+            }
         }
     }
 

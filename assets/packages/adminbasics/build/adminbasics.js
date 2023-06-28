@@ -21295,7 +21295,8 @@
 	    deleteAllNotifications = (url, updateUrl) => {
 	      return $.ajax({
 	        url: url,
-	        method: 'GET',
+            data: {},
+	        method: 'POST',
 	        success: response => {
 	          adminCoreLSConsole.log('response', response);
 	        }
