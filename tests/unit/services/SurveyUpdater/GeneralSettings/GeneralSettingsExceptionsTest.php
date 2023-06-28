@@ -8,20 +8,20 @@ use Mockery;
 use Survey;
 use Permission;
 use LimeSurvey\Models\Services\Exception\{
-    ExceptionPersistError,
-    ExceptionNotFound,
-    ExceptionPermissionDenied
+    PersistErrorException,
+    NotFoundException,
+    PermissionDeniedException
 };
 
 class GeneralSettingsExceptionsTest extends TestBaseClass
 {
     /**
-     * @testdox update() throws ExceptionPermissionDenied
+     * @testdox update() throws PermissionDeniedException
      */
     public function testThrowsExceptionPermissionDenied()
     {
         $this->expectException(
-            ExceptionPermissionDenied::class
+            PermissionDeniedException::class
         );
 
         $modelPermission = Mockery::mock(Permission::class)
@@ -38,12 +38,12 @@ class GeneralSettingsExceptionsTest extends TestBaseClass
     }
 
     /**
-     * @testdox update() throws ExceptionNotFound is survey not found
+     * @testdox update() throws NotFoundException is survey not found
      */
     public function testThrowsExceptionNotFoundIfSurveyNotFound()
     {
         $this->expectException(
-            ExceptionNotFound::class
+            NotFoundException::class
         );
 
         $modelSurvey = Mockery::mock(Survey::class)
@@ -60,12 +60,12 @@ class GeneralSettingsExceptionsTest extends TestBaseClass
     }
 
     /**
-     * @testdox update() throws ExceptionPersistError on save failure
+     * @testdox update() throws PersistErrorException on save failure
      */
     public function testThrowsExceptionPersistErrorOnSaveFailure()
     {
         $this->expectException(
-            ExceptionPersistError::class
+            PersistErrorException::class
         );
 
         $survey = Mockery::mock(Survey::class)

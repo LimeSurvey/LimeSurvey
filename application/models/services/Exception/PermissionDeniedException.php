@@ -4,6 +4,6 @@ namespace LimeSurvey\Models\Services\Exception;
 
 use LimeSurvey\Models\Services\Exception;
 
-class ExceptionPermissionDenied extends Exception
+class PermissionDeniedException extends Exception
 {
 }

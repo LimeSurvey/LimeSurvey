@@ -15,7 +15,7 @@ class GeneralSettingsUpdateOwnerTest extends TestBaseClass
         $mockSet->modelPermission->shouldReceive('hasGlobalPermission')
             ->andReturn(false);
 
-        $mockSet->sessionData['loginID'] = 123;
+        $mockSet->session['loginID'] = 123;
 
         $mockSet->survey->setAttributes([
             'sid' => 1,
@@ -45,7 +45,7 @@ class GeneralSettingsUpdateOwnerTest extends TestBaseClass
         $mockSet = (new GeneralSettingsMockSetFactory)->make();
         $mockSet->modelPermission = $modelPermission;
 
-        $mockSet->sessionData['loginID'] = 456;
+        $mockSet->session['loginID'] = 456;
 
         $mockSet->survey->setAttributes([
             'sid' => 1,
