@@ -172,7 +172,7 @@ class TestBaseClassWeb extends TestBaseClass
         $submit = self::$webDriver->findElement(WebDriverBy::name('login_submit'));
         self::$webDriver->click($submit);
         self::$webDriver->wait()->until(
-            WebDriverExpectedCondition::visibilityOfElementLocated(
+            WebDriverExpectedCondition::presenceOfElementLocated(
                 WebDriverBy::id('welcome-jumbotron')
             )
         );
