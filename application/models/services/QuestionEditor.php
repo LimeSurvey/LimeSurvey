@@ -11,9 +11,6 @@ use Answer;
 use AnswerL10n;
 use LSYii_Application;
 
-use CException;
-use CHttpException;
-
 use LimeSurvey\Models\Services\QuestionEditor\QuestionEditorAttributes;
 
 use LimeSurvey\Models\Services\Proxy\{
@@ -25,7 +22,8 @@ use LimeSurvey\Models\Services\Proxy\{
 use LimeSurvey\Models\Services\Exception\{
     PersistErrorException,
     NotFoundException,
-    PermissionDeniedException
+    PermissionDeniedException,
+    BadRequestException
 };
 
 /**
@@ -83,7 +81,6 @@ class QuestionEditor
      */
     public function save($input)
     {
-        $request = $this->yiiApp->request;
         $surveyId = (int) ($input['sid'] ?? 0);
 
         $data = [];
@@ -207,7 +204,7 @@ class QuestionEditor
             // All done, redirect to edit form.
             $question->refresh();
             $this->proxyExpressionManager->setDirtyFlag();
-        } catch (CException $ex) {
+        } catch (\Exception $ex) {
             $transaction->rollback();
 
             throw new PersistErrorException(
@@ -223,14 +220,14 @@ class QuestionEditor
      * @todo document me
      *
      * @param Question $question
-     * @param array $dataSet
+     * @param array $data
      * @return void
      * @throws NotFoundException
      * @throws PersistErrorException
      */
-    private function applyL10n($question, $dataSet)
+    private function applyL10n($question, $data)
     {
-        foreach ($dataSet as $language => $l10nBlock) {
+        foreach ($data as $language => $l10nBlock) {
             $l10n = $this->modelQuestionL10n
                 ->findByAttributes([
                     'qid' => $question->qid,
@@ -367,8 +364,7 @@ class QuestionEditor
      */
     private function updateQuestionData($question, $data)
     {
-        //todo something wrong in frontend ... (?what is wrong?)
-
+        // @todo something wrong in frontend ... (?what is wrong?)
         if (isset($data['same_default'])) {
             if ($data['same_default'] == 1) {
                 $data['same_default'] = 0;
@@ -464,10 +460,10 @@ class QuestionEditor
      * Used when survey is *not* activated.
      *
      * @param Question $question
-     * @param array $subquestionsArray Data from request.
+     * @param array $subquestionsArray
      * @return void
      * @throws PersistErrorException
-     * @throws CHttpException
+     * @throws BadRequestException
      */
     private function storeSubquestions($question, $subquestionsArray)
     {
@@ -481,11 +477,9 @@ class QuestionEditor
                 $subquestion->question_order = $questionOrder;
                 $questionOrder++;
                 if (!isset($data['code'])) {
-                    throw new CHttpException(
-                        500,
+                    throw new BadRequestException(
                         'Internal error: ' .
-                        'Missing mandatory field code for question: '
-                        . json_encode($data)
+                        'Missing mandatory field "code" for question'
                     );
                 }
                 $subquestion->title      = $data['code'];
@@ -519,10 +513,10 @@ class QuestionEditor
      * Used when survey *is* activated.
      *
      * @param Question $question
-     * @param array $subquestionsArray Data from request.
+     * @param array $subquestionsArray
      * @return void
      * @throws PersistErrorException
-     * @throws CHttpException
+     * @throws BadRequestException
      */
     private function updateSubquestions($question, $subquestionsArray)
     {
@@ -547,11 +541,9 @@ class QuestionEditor
                 $subquestion->question_order = $questionOrder;
                 $questionOrder++;
                 if (!isset($data['code'])) {
-                    throw new CHttpException(
-                        500,
+                    throw new BadRequestException(
                         'Internal error: '
-                        . 'Missing mandatory field code for question: '
-                        . json_encode($data)
+                        . 'Missing mandatory field "code" for question'
                     );
                 }
                 $subquestion->title      = $data['code'];
