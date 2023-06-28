@@ -185,17 +185,17 @@ class QuestionEditor
                 // Clean subQuestions before save.
                 $question->deleteAllSubquestions();
                 // If question type has subQuestions, save them.
-                if ($question->questionType->subQuestions > 0) {
+                if ($question->questionType->subquestions > 0) {
                     $this->storeSubquestions(
                         $question,
-                        $input['subQuestions'] ?? []
+                        $input['subqestions'] ?? []
                     );
                 }
             } else {
-                if ($question->questionType->subQuestions > 0) {
+                if ($question->questionType->subquestions > 0) {
                     $this->updateSubquestions(
                         $question,
-                        $input['subQuestions'] ?? []
+                        $input['subquestions'] ?? []
                     );
                 }
             }
@@ -204,13 +204,14 @@ class QuestionEditor
             // All done, redirect to edit form.
             $question->refresh();
             $this->proxyExpressionManager->setDirtyFlag();
-        } catch (\Exception $ex) {
+        } catch (\Exception $e) {
             $transaction->rollback();
 
             throw new PersistErrorException(
                 sprintf(
-                    'Failed saving question for survey #%s',
-                    $surveyId
+                    'Failed saving question for survey #%s "%s"',
+                    $surveyId,
+                    $e->getMessage()
                 )
             );
         }
