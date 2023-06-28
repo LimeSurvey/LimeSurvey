@@ -132,6 +132,14 @@ class CLSGridView extends TbGridView
             'updateSelector' => $this->updateSelector,
             'filterSelector' => $this->filterSelector
         );
+        if ($this->ajaxType !== null) {
+            $options['ajaxType'] = strtoupper($this->ajaxType);
+            $request = Yii::app()->getRequest();
+            if ($options['ajaxType'] == 'POST' && $request->enableCsrfValidation) {
+                $options['csrfTokenName'] = $request->csrfTokenName;
+                $options['csrfToken'] = $request->getCsrfToken();
+            }
+        }
 
         $options = CJavaScript::encode($options);
 
