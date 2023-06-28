@@ -914,7 +914,7 @@ class TemplateConfig extends CActiveRecord
     public static function validateTheme($themeName, $themePath, bool $redirect = true): bool
     {
         // check compatability with current limesurvey version
-        $isCompatible = (new TemplateConfig())->isCompatible($themePath);
+        $isCompatible = TemplateConfig::isCompatible($themePath);
         if (!$isCompatible) {
             self::uninstallThemesRecursive($themeName);
             if ($redirect) {
