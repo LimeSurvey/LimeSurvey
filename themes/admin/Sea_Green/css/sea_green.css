@@ -18481,7 +18481,7 @@ table .ls-sticky-column.has-dropdown {
   z-index: 1020;
 }
 table [class^=ri-], table [class*=" ri-"] {
-  vertical-align: -0.2em;
+  vertical-align: 0;
 }
 
 .table > thead > tr.active > td, .table > thead > tr.active > th,
