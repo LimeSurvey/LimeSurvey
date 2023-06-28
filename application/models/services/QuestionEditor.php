@@ -20,9 +20,9 @@ use LimeSurvey\Models\Services\Proxy\{
 };
 
 use LimeSurvey\Models\Services\Exception\{
-    ExceptionPersistError,
-    ExceptionNotFound,
-    ExceptionPermissionDenied
+    PersistErrorException,
+    NotFoundException,
+    PermissionDeniedException
 };
 
 /**
@@ -70,9 +70,9 @@ class QuestionEditor
      * Based on QuestionAdministrationController::actionSaveQuestionData()
      *
      * @param <array-key, mixed> $input
-     * @throws ExceptionPersistError
-     * @throws ExceptionNotFound
-     * @throws ExceptionPermissionDenied
+     * @throws PersistErrorException
+     * @throws NotFoundException
+     * @throws PermissionDeniedException
      * @return array
      */
     public function save($input)
@@ -100,7 +100,7 @@ class QuestionEditor
             'update'
             )
         ) {
-            throw new ExceptionPermissionDenied(
+            throw new PermissionDeniedException(
                 'Access denied'
             );
         }
@@ -197,7 +197,7 @@ class QuestionEditor
         } catch (CException $ex) {
             $transaction->rollback();
 
-            throw new ExceptionPersistError(
+            throw new PersistErrorException(
                 sprintf(
                     'Failed saving question for survey #%s',
                     $surveyId
@@ -212,8 +212,8 @@ class QuestionEditor
      * @param Question $question
      * @param array $dataSet
      * @return void
-     * @throws ExceptionNotFound
-     * @throws ExceptionPersistError
+     * @throws NotFoundException
+     * @throws PersistErrorException
      */
     private function applyL10n($question, $dataSet)
     {
@@ -224,7 +224,7 @@ class QuestionEditor
                     'language' => $language
                 ]);
             if (empty($l10n)) {
-                throw new ExceptionNotFound('Found no L10n object');
+                throw new NotFoundException('Found no L10n object');
             }
             $l10n->setAttributes(
                 [
@@ -235,7 +235,7 @@ class QuestionEditor
                 false
             );
             if (!$l10n->save()) {
-                throw new ExceptionPersistError(
+                throw new PersistErrorException(
                     gT('Could not store translation')
                 );
             }

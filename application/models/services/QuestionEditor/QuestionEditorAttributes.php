@@ -4,7 +4,7 @@ namespace LimeSurvey\Models\Services\QuestionEditor;
 
 use QuestionAttribute;
 
-use LimeSurvey\Models\Services\Exception\ExceptionPersistError;
+use LimeSurvey\Models\Services\Exception\PersistErrorException;
 
 /**
  * Question Editor Attributes Service
@@ -36,7 +36,7 @@ class QuestionEditorAttributes
      *                       [logic]
      *                       ...
      * @return boolean
-     * @throws ExceptionPersistError
+     * @throws PersistErrorException
      */
     public function updateAdvanced($oQuestion, $dataSet)
     {
@@ -71,7 +71,7 @@ class QuestionEditorAttributes
                                 $lngKey
                             )
                         ) {
-                            throw new ExceptionPersistError(
+                            throw new PersistErrorException(
                             gT('Could not store advanced options')
                             );
                         }
@@ -85,7 +85,7 @@ class QuestionEditorAttributes
                         $newValue
                     )
                 ) {
-                    throw new ExceptionPersistError(
+                    throw new PersistErrorException(
                         gT('Could not store advanced options')
                     );
                 }
@@ -93,7 +93,7 @@ class QuestionEditorAttributes
         }
 
         if (!$oQuestion->save()) {
-            throw new ExceptionPersistError(
+            throw new PersistErrorException(
                 gT('Could not store advanced options')
             );
         }
@@ -107,7 +107,7 @@ class QuestionEditorAttributes
      * @param Question $oQuestion
      * @param array $dataSet
      * @return boolean
-     * @throws ExceptionPersistError
+     * @throws PersistErrorException
      */
     public function updateGeneral($oQuestion, $dataSet)
     {
@@ -126,14 +126,14 @@ class QuestionEditorAttributes
                     $attributeValue
                 )
             ) {
-                throw new ExceptionPersistError(
+                throw new PersistErrorException(
                     gT('Could not save question attributes')
                 );
             }
         }
 
         if (!$oQuestion->save()) {
-            throw new ExceptionPersistError( gT('Could not save question'));
+            throw new PersistErrorException( gT('Could not save question'));
         }
 
         return true;
