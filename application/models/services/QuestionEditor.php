@@ -77,7 +77,7 @@ class QuestionEditor
      * @throws PersistErrorException
      * @throws NotFoundException
      * @throws PermissionDeniedException
-     * @return array
+     * @return Question
      */
     public function save($input)
     {
@@ -214,6 +214,8 @@ class QuestionEditor
                 )
             );
         }
+
+        return $question;
     }
 
     /**

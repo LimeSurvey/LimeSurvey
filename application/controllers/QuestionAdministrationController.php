@@ -1,5 +1,15 @@
 <?php
 
+use \LimeSurvey\Models\Services\QuestionEditor;
+
+use LimeSurvey\Models\Services\Exception\{
+    PersistErrorException,
+    NotFoundException,
+    PermissionDeniedException,
+    BadRequestException
+};
+
+
 /**
  * Class QuestionAdministrationController
  */
@@ -434,6 +444,174 @@ class QuestionAdministrationController extends LSBaseController
      * @throws CException
      */
     public function actionSaveQuestionData()
+    {
+        $request = App()->request;
+        $question = (int) $request->getPost('question');
+        $calledWithAjax = (int) $request->getPost('ajax');
+        $sScenario = $request->getPost('scenario', '');
+        $surveyId = (int) $request->getPost('sid');
+
+        // Check the POST data is not truncated
+        if (!$request->getPost('bFullPOST')) {
+            $message = gT(
+                'The data received seems incomplete. '
+                . 'This usually happens due to server limitations '
+                . '(PHP setting max_input_vars) - '
+                . 'please contact your system administrator.'
+            );
+
+            if ($calledWithAjax) {
+                echo json_encode(['message' => $message]);
+                Yii::app()->end();
+            } else {
+                $sRedirectUrl = $this->createUrl(
+                    'questionAdministration/listQuestions',
+                    ['surveyid' => $surveyId]
+                );
+                Yii::app()->setFlashMessage($message, 'error');
+                $this->redirect($sRedirectUrl);
+            }
+        }
+
+        $data = !empty($_POST) ? $_POST : [];
+
+        $diContainer = \LimeSurvey\DI::getContainer();
+        $questionEditor = $diContainer->get(
+            QuestionEditor::class
+        );
+
+        try {
+            $question = $questionEditor->save($data);
+
+            $tabOverviewEditorValue = $request->getPost('tabOverviewEditor');
+            // only those two values are valid
+            if (
+                !(
+                    $tabOverviewEditorValue === 'overview'
+                    || $tabOverviewEditorValue === 'editor'
+                )
+            ) {
+                $tabOverviewEditorValue = 'overview';
+            }
+
+            if ($calledWithAjax) {
+                echo json_encode(
+                    ['message' => gT('Question saved')]
+                );
+                Yii::app()->end();
+            } else {
+                App()->setFlashMessage(
+                    gT('Question saved'),
+                    'success'
+                );
+                $landOnSideMenuTab = 'structure';
+                if (empty($sScenario)) {
+                    if (
+                        App()->request
+                            ->getPost('save-and-close', '')
+                    ) {
+                        $sScenario = 'save-and-close';
+                    } elseif (
+                        App()->request
+                            ->getPost('saveandnew', '')
+                    ) {
+                        $sScenario = 'save-and-new';
+                    } elseif (
+                        App()->request
+                            ->getPost('saveandnewquestion', '')
+                    ) {
+                        $sScenario = 'save-and-new-question';
+                    }
+                }
+                switch ($sScenario) {
+                    case 'save-and-new-question':
+                        $sRedirectUrl = $this->createUrl(
+                            // TODO: Double check
+                            'questionAdministration/create/',
+                            [
+                                'surveyid' => $surveyId,
+                                'gid' => $question->gid,
+                            ]
+                        );
+                        break;
+                    case 'save-and-new':
+                        $sRedirectUrl = $this->createUrl(
+                            'questionGroupsAdministration/add/',
+                            [
+                                'surveyid' => $surveyId,
+                            ]
+                        );
+                        break;
+                    case 'save-and-close':
+                        $sRedirectUrl = $this->createUrl(
+                            'questionGroupsAdministration/view/',
+                            [
+                                'surveyid' => $surveyId,
+                                'gid' => $question->gid,
+                                'landOnSideMenuTab' => $landOnSideMenuTab,
+                                'mode' => 'overview'
+                            ]
+                        );
+                        break;
+                    default:
+                        $sRedirectUrl = $this->createUrl(
+                            'questionAdministration/edit/',
+                            [
+                                'questionId' => $question->qid,
+                                'landOnSideMenuTab' => $landOnSideMenuTab,
+                                'tabOverviewEditor' => $tabOverviewEditorValue
+                            ]
+                        );
+                }
+                $this->redirect($sRedirectUrl);
+            }
+        } catch (PermissionDeniedException $e) {
+            Yii::app()->user->setFlash('error', gT('Access denied'));
+            $this->redirect(Yii::app()->request->urlReferrer);
+        } catch (\Exception $e) {
+            // Determine the proper redirect URL
+            if (empty($question)) {
+                $redirectUrl = $this->createUrl(
+                    'surveyAdministration/view/',
+                    ["surveyid" => $surveyId]
+                );
+            } else {
+                $tabOverviewEditorValue = $request->getPost('tabOverviewEditor');
+                if (
+                    $tabOverviewEditorValue !== 'overview'
+                    && $tabOverviewEditorValue !== 'editor'
+                ) {
+                    $tabOverviewEditorValue = 'overview';
+                }
+                $redirectUrl = $this->createUrl(
+                    'questionAdministration/edit/',
+                    [
+                        'questionId' => $question->qid,
+                        'landOnSideMenuTab' => 'structure',
+                        'tabOverviewEditor' => $tabOverviewEditorValue,
+                    ]
+                );
+            }
+
+            // If we are already dealing with a friendly exception (may include detailed errors),
+            // just set the redirect URL and rethrow.
+            if ($e instanceof LSUserException) {
+                throw $e->setRedirectUrl($redirectUrl);
+            }
+
+            throw new LSUserException(
+                500,
+                $e->getMessage(),
+                0,
+                $redirectUrl
+            );
+        }
+    }
+
+    /**
+     * Delete this after refactoring
+     */
+    public function actionSaveQuestionData_original_delete()
     {
         $request = App()->request;
         $iSurveyId = (int) $request->getPost('sid');
