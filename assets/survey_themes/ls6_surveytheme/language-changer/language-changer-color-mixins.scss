@@ -1,5 +1,0 @@
-@mixin language-select-icon-color($color) {
-    $color: 'rgb(' + red($color) + ',' + green($color) + ',' + blue($color) + ')';
-    background: url('data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="16" height="16" viewBox="0 0 24 24"%3E%3Cpath fill="#{$color}" d="m12 15l-4.243-4.242l1.415-1.414L12 12.172l2.828-2.828l1.415 1.414L12 15.001Z"%2F%3E%3C%2Fsvg%3E') no-repeat;
-    background-position: calc(100% - 0.25rem) center;
-}

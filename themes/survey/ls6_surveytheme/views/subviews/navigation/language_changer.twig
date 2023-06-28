@@ -36,15 +36,17 @@
         </div>
 
         <div class="col-auto">
-            <select class="col-form-label" name="lang" id="language-changer-select">
-                {% for key,value in  aLCD.aListLang %}
-                    {% if key == aLCD.sSelected %}
-                    <option value="{{ key }}" selected="selected">{{ value }} </option>
-                     {% else %}
-                         <option value="{{ key }}">{{ value }}</option>
-                         {% endif %}
-                {% endfor %}
-            </select>
+            <div id="lang-select">
+                <select class="col-form-label" name="lang" id="language-changer-select">
+                    {% for key,value in  aLCD.aListLang %}
+                        {% if key == aLCD.sSelected %}
+                        <option value="{{ key }}" selected="selected">{{ value }} </option>
+                         {% else %}
+                             <option value="{{ key }}">{{ value }}</option>
+                             {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
         <!-- for no js functionality (need form) -->
         {% set buttonhtmlOptions = {
                 'type'          : 'submit',
