@@ -1187,17 +1187,28 @@ class UserManagementController extends LSBaseController
      */
     public function actionTakeOwnership()
     {
-        if (!Permission::model()->hasGlobalPermission('users', 'update')) {
-            return $this->renderPartial(
-                'partial/error',
-                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
-            );
-        }
-        $userId = Yii::app()->request->getPost('userid');
+        $userId = App()->request->getPost('userid');
         $oUser = User::model()->findByPk($userId);
-        $oUser->parent_id = Yii::app()->user->id;
+        if (!$oUser) {
+            App()->user->setFlash('error', gT("User does not exist"));
+            $this->redirect(App()->request->urlReferrer);
+        }
+        $permission_superadmin = Permission::model()->hasGlobalPermission('superadmin', 'read');
+        if (
+            !($permission_superadmin
+                && !(Permission::isForcedSuperAdmin($oUser->uid)
+                    || $oUser->uid == App()->user->getId()
+                )
+                && $oUser->parent_id != App()->session['loginID']
+            )
+        ) {
+            App()->user->setFlash('error', gT("Access denied"));
+            $this->redirect(App()->createUrl("userManagement/index"));
+        }
+
+        $oUser->parent_id = App()->user->id;
         $oUser->save();
-        $this->redirect(Yii::app()->createUrl("userManagement/index"));
+        $this->redirect(App()->createUrl("userManagement/index"));
     }
 
     /**
