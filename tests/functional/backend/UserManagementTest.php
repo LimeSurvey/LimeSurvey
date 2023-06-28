@@ -114,8 +114,8 @@ class UserManagementTest extends TestBaseClassWeb
             );
             $save->click();
             self::$webDriver->wait(10)->until(
-                WebDriverExpectedCondition::invisibilityOfElementLocated(
-                    WebDriverBy::id('UserManagement-action-modal')
+                WebDriverExpectedCondition::presenceOfElementLocated(
+                    WebDriverBy::cssSelector('#UserManagement-action-modal:not(.grid-view-loading)')
                 )
             );
             // Make sure the user was saved in database.
@@ -228,8 +228,8 @@ class UserManagementTest extends TestBaseClassWeb
             );
             $save->click();
             self::$webDriver->wait(10)->until(
-                WebDriverExpectedCondition::invisibilityOfElementLocated(
-                    WebDriverBy::id('UserManagement-action-modal')
+                WebDriverExpectedCondition::presenceOfElementLocated(
+                    WebDriverBy::cssSelector('#UserManagement-action-modal:not(.grid-view-loading)')
                 )
             );
             // Make sure the user was saved in database.
@@ -343,8 +343,8 @@ class UserManagementTest extends TestBaseClassWeb
             );
             $save->click();
             self::$webDriver->wait(10)->until(
-                WebDriverExpectedCondition::invisibilityOfElementLocated(
-                    WebDriverBy::id('UserManagement-action-modal')
+                WebDriverExpectedCondition::presenceOfElementLocated(
+                    WebDriverBy::cssSelector('#UserManagement-action-modal:not(.grid-view-loading)')
                 )
             );
             // Make sure the user was saved in database.
