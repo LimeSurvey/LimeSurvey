@@ -83,7 +83,10 @@ class PermissionTest extends BaseModelTestCase
     public function testOwnershipFailure()
     {
         // NB: Not 1 (superadmin).
-        $userId = 2;
+        //Create user.
+        $newPassword = createPassword();
+        $userName = \Yii::app()->securityManager->generateRandomString(8);
+        $userId = \User::insertUser($userName, $newPassword, 'John Doe', 1, $userName . '@mail.com');
         $surveysGroupGid = 999;
 
         $surveysGroup = $this
