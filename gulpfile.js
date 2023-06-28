@@ -26,10 +26,31 @@ const babelify = require('babelify');
 const source = require('vinyl-source-stream');
 const buffer = require('vinyl-buffer');
 const browserify = require('browserify');
+const header = require('gulp-header');
+const fs = require('fs');
 
 function js_minify() {
-    return src(['node_modules/bootstrap/dist/js/bootstrap.bundle.js', 'assets/bootstrap_5/js/bootstrap_5.js'])
-        .pipe(concat('bootstrap_5.js'))
+    // browserify package handler
+    return browserify({
+        entries: ['assets/bootstrap_5/js/bootstrap_5.js']
+    })
+        // transform babelify ES6 to ES5 [@babel/preset-env]
+        .transform(babelify, {
+            presets: ['@babel/preset-env'],
+            retainLines: false,
+            compact: false,
+            global: true
+
+        })
+        // bundle the transformed code
+        .bundle()
+        // sourcemap
+        .pipe(source('assets/bootstrap_5/js/bootstrap_5.js'))
+        // rename
+        .pipe(rename('bootstrap_5.js'))
+        // buffer
+        .pipe(buffer())
+        // distination
         .pipe(dest('assets/bootstrap_5/build/js/'))
         .pipe(uglify())
         .pipe(rename({extname: '.min.js'}))
@@ -185,8 +206,9 @@ function survey_theme_ls6_js() {
         // transform babelify ES6 to ES5 [@babel/preset-env]
         .transform(babelify, {
             presets: ['@babel/preset-env'],
-            retainLines: true,
+            retainLines: false,
             compact: false,
+            global: true
         })
         // bundle the transformed code
         .bundle()
@@ -197,6 +219,7 @@ function survey_theme_ls6_js() {
         // buffer
         .pipe(buffer())
         // distination
+        .pipe(header(fs.readFileSync('assets/survey_themes/ls6_surveytheme/ls6_javascript_disclaimer.js')))
         .pipe(dest('themes/survey/ls6_surveytheme/scripts/'));
 }
 

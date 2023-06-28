@@ -16,6 +16,12 @@ class CLSGridView extends TbGridView
     public $lsAfterAjaxUpdate;
 
     /**
+     * string for a link that is on every row
+     * @var string
+     */
+    public $rowLink;
+
+    /**
      * Initializes the widget.
      * @throws CException
      */
@@ -28,6 +34,7 @@ class CLSGridView extends TbGridView
         $this->htmlOptions['class'] = 'grid-view-ls';
         $classes = ['table', 'table-hover'];
         $this->template = $this->render('template', ['massiveActionTemplate' => $this->massiveActionTemplate], true);
+        $this->rowLink();
         $this->lsAfterAjaxUpdate();
         if (!empty($classes)) {
             $classes = implode(' ', $classes);
@@ -64,6 +71,7 @@ class CLSGridView extends TbGridView
                 $this->afterAjaxUpdate .= $jsCode;
             }
             $this->afterAjaxUpdate .= 'LS.actionDropdown.create();';
+            $this->afterAjaxUpdate .= 'if (typeof LS.actionDropdown.create() !== "undefined"){ LS.actionDropdown.create();}';
             $this->afterAjaxUpdate .= '}';
         } else {
             // trigger action_dropdown() as a default although no lsAfterAjaxUpdate param passed.
@@ -72,14 +80,36 @@ class CLSGridView extends TbGridView
         }
     }
 
+    /**
+     * Adds the data-rowlink attribute to $this->rowHtmlOptionsExpression to be used by the rowLink.js
+     * The JS adds a link to every td element of the row
+     * @return void
+     */
+    protected function rowLink(): void
+    {
+        if (!empty($this->rowLink) && empty($this->rowHtmlOptionsExpression)) {
+            $this->rowHtmlOptionsExpression = function ($row, $data, $grid) {
+                $options = [];
+                $options['data-rowlink'] = eval('return ' . $this->rowLink . ';');
+                return $options;
+            };
+        }
+    }
+
     private function registerGridviewScripts()
     {
         // Scrollbar
         App()->clientScript->registerScriptFile(
             App()->getConfig("extensionsurl") . 'admin/grid/assets/gridScrollbar.js',
-            CClientScript::POS_BEGIN,
-            ['test321' => "something"]
+            CClientScript::POS_BEGIN
         );
+        // Link for each row
+        if (!empty($this->rowLink)) {
+            App()->clientScript->registerScriptFile(
+                App()->getConfig("extensionsurl") . 'admin/grid/assets/rowLink.js',
+                CClientScript::POS_BEGIN
+            );
+        }
 
         // ========== this is added for pagination size working by referencing from old limegridview  ==============
         $id = $this->getId();
@@ -102,6 +132,14 @@ class CLSGridView extends TbGridView
             'updateSelector' => $this->updateSelector,
             'filterSelector' => $this->filterSelector
         );
+        if ($this->ajaxType !== null) {
+            $options['ajaxType'] = strtoupper($this->ajaxType);
+            $request = Yii::app()->getRequest();
+            if ($options['ajaxType'] == 'POST' && $request->enableCsrfValidation) {
+                $options['csrfTokenName'] = $request->csrfTokenName;
+                $options['csrfToken'] = $request->getCsrfToken();
+            }
+        }
 
         $options = CJavaScript::encode($options);
 

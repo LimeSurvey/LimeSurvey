@@ -470,8 +470,15 @@ class CheckIntegrity extends SurveyCommonAction
     private function deleteQuotaLanguageSettings(array $aData)
     {
         $oCriteria = new CDbCriteria();
-        $oCriteria->join = 'LEFT JOIN {{quota}} q ON {{quota_languagesettings}}.quotals_quota_id=q.id';
-        $oCriteria->condition = '(q.id IS NULL)';
+
+        if (App()->db->driverName == 'pgsql') {
+            // This is much slower than the MySQL version, but it works
+            // PostgreSQL does not support DELETE with JOIN
+            $oCriteria->condition = '{{quota_languagesettings}}.quotals_quota_id not in (select id from {{quota}})';
+        } else {
+            $oCriteria->join = 'LEFT JOIN {{quota}} q ON {{quota_languagesettings}}.quotals_quota_id=q.id';
+            $oCriteria->condition = '(q.id IS NULL)';
+        }
         $count = QuotaLanguageSetting::model()->deleteAll($oCriteria);
         $aData['messages'][] = sprintf(gT('Deleting orphaned quota languages: %u quota languages deleted'), $count);
         return $aData;
@@ -485,8 +492,15 @@ class CheckIntegrity extends SurveyCommonAction
     private function deleteQuotas(array $aData)
     {
         $oCriteria = new CDbCriteria();
-        $oCriteria->join = 'LEFT JOIN {{surveys}} q ON {{quota}}.sid=q.sid';
-        $oCriteria->condition = '(q.sid IS NULL)';
+
+        if (App()->db->driverName == 'pgsql') {
+            // This is much slower than the MySQL version, but it works
+            // PostgreSQL does not support DELETE with JOIN
+            $oCriteria->condition = '{{quota}}.sid not in (select sid from {{surveys}})';
+        } else {
+            $oCriteria->join = 'LEFT JOIN {{surveys}} q ON {{quota}}.sid=q.sid';
+            $oCriteria->condition = '(q.sid IS NULL)';
+        }
         $count = Quota::model()->deleteAll($oCriteria);
         $aData['messages'][] = sprintf(gT('Deleting orphaned quotas: %u quotas deleted'), $count);
         return $aData;

@@ -34,6 +34,67 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.1.4 (build 230620) to 6.1.5 (build 230626) June 26, 2023
+-Fixed issue: SQL error on import if quota member code is too long (Carsten Schmitz)
+-Fixed issue: Disable system information in demo mode (Carsten Schmitz)
+-Fixed issue [security] #18868: No CRSF control for action of label set (Denis Chenu)
+-Fixed issue [security] #18866: Label sets can be created by any admin user (#3212) (Denis Chenu)
+-Fixed issue 18821: Public url is not used for SURVEYURL (#3229) (Tim Willig)
+-Fixed issue #18912: [security] Able to change username that is by default unchangeable (Patrick Teichmann)
+-Fixed issue #18896: Error on Postgres when creating a survey and expressionQuestionHelp plugins is activated (Carsten Schmitz)
+-Fixed issue #18891: Capital letters N/Y in name of inherited survey themes are replaced by "Off" (Carsten Schmitz)
+-Fixed issue #18885: CSRF Leading to reset Boxes (#3239) (Gabriel Jenik)
+-Fixed issue #18883: [security] Stored XSS vulnerability in user profile (#3247) (Patrick Teichmann)
+-Fixed issue #18881: [security] CKeditor 4.20.2 in use which is vulnerable to CVE-2023-28439 (#3237) (Gabriel Jenik)
+-Fixed issue #18706: Cannot use expression in End url description (#3204) (Gabriel Jenik)
+-Fixed issue #18465: ComfortUpdate shows error message to contact the LimeSurvey team, while just retrying usually works (Carsten Schmitz)
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian by c_schmitz, lfanfoni, mike73rn, ritapas, seccalisca
+#Updated translation: Italian (Informal) by c_schmitz, ciampix, lfanfoni, mike73rn, ritapas
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by actxcellence, c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 6.1.3 (build 230612) to 6.1.4 (build 230620) June 19, 2023
+-Fixed issue: [security] Administrator can self-delete (Carsten Schmitz)
+-Fixed issue: ComfortUpdate showing updates as unstable, even though they are not (fixed the related alert) (twilligls)
+-Fixed issue #18890: Group import leads to 500 error on translateLinks (Carsten Schmitz)
+-Fixed issue #18871: Can't add email attachment in email templates (#3215) (Gabriel Jenik)
+-Fixed issue #18793: Quick Translation crash with MS SQL Database Error (#3224) (Gabriel Jenik)
+-Fixed issue #18731: Edit a question "script" tab has disappeared (#3157) (Denis Chenu)
+-Fixed issue #18704: Error when trying to add another language to a survey and MSSQL server is used (Carsten Schmitz)
+-Fixed issue #18693: Using checkbox question for yes/no loses data when data entry view (#3018) (Gabriel Jenik)
+-Fixed issue #18459: When filtering the survey list by a parent survey group, surveys assigned to a child survey group are not listed (#3167) (Gabriel Jenik)
+-Fixed issue #18401: Unable to use checkdate function if debug set  (#3214) (Gabriel Jenik)
+-Fixed issue #17992: Unable to re-import tokens from old table (#2404) (Gabriel Jenik)
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Portuguese (Brazil) by holch
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Finnish by Jmantysalo
+
+
+Changes from 6.1.2 (build 230606) to 6.1.3 (build 230612) June 12, 2023
+-Fixed issue #18833: Mobile phone issue with formulas on columns headings with array numbers on checkbox layout (#3207) (Denis Chenu)
+-Fixed issue #18814: Array question statistics fail for Remote Control (#3191) (Gabriel Jenik)
+-Fixed issue #18808: Mandatory soft only works once per survey if over multiple pages/groups (#3195) (Denis Chenu)
+-Fixed issue #18789: Database upgrade error when trying to update from 6.0.x to any later version and using Postgres (Carsten Schmitz)
+-Fixed issue #18669: XSS simple admin via Google key (#3004) (Gabriel Jenik)
+-Fixed issue #18615: Data integrity SQL syntax error on Postgres when trying to fix quotas (Carsten Schmitz)
+-Fixed issue #16409: Emoticon style is different if emoticon is chosen (#3152) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Hungarian by kkd
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 6.1.1 (build 230530) to 6.1.2 (build 230606) June 5, 2023
 -Fixed issue #18823: STATA Export fails with certain question types (#3148) (Oz-men)
 -Fixed issue #18814: Array question statistics fail for Remote Control. (#3165) (Gabriel Jenik)

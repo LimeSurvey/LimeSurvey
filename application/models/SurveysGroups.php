@@ -122,9 +122,7 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
                 array(
                     'header' => gT('Survey group ID'),
                     'name' => 'gsid',
-                    'value' => '$data->hasViewSurveyGroupRight ? CHtml::link($data->gsid, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid))) : $data->gsid',
-                    'type' => 'raw',
-                    'headerHtmlOptions' => array('class' => ''),
+                    'value' => '$data->gsid',
                     'htmlOptions' => ['class' => 'has-link'],
                 ),
 
@@ -132,61 +130,49 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
                 array(
                     'header' => gT('Code'),
                     'name' => 'name',
-                    'value' => '$data->hasViewSurveyGroupRight ? CHtml::link($data->name, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid))) : $data->name',
-                    'type' => 'raw',
+                    'value' => '$data->name',
                     'htmlOptions' => ['class' => 'has-link'],
                 ),
 
                 array(
                     'header' => gT('Title'),
                     'name' => 'title',
-                    'value' => '$data->hasViewSurveyGroupRight ? CHtml::link($data->title, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid))) : $data->title',
-                    'type'              => 'raw',
+                    'value' => '$data->title',
                     'htmlOptions' => ['class' => 'has-link'],
                 ),
 
                 array(
                     'header' => gT('Description'),
                     'name' => 'description',
-                    'value' => '$data->hasViewSurveyGroupRight ? CHtml::link($data->description, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid))) : $data->description',
-                    'type'              => 'raw',
-                    'headerHtmlOptions' => array('class' => ''),
+                    'value' => '$data->description',
                     'htmlOptions' => ['class' => 'has-link'],
                 ),
 
                 array(
                     'header' => gT('Parent group'),
                     'name' => 'parent',
-                    'value' => '$data->hasViewSurveyGroupRight ? CHtml::link($data->parentTitle, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid))) : $data->parentTitle',
-                    'type'              => 'raw',
-                    'headerHtmlOptions' => array('class' => ''),
+                    'value' => '$data->parentTitle',
                     'htmlOptions' => ['class' => 'has-link'],
                 ),
 
                 array(
                     'header' => gT('Available'),
                     'name' => 'alwaysavailable',
-                    'value' => '$data->hasViewSurveyGroupRight ? CHtml::link($data->alwaysavailable, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid))) : $data->alwaysavailable',
-                    'type'              => 'raw',
-                    'headerHtmlOptions' => array('class' => ''),
+                    'value' => '$data->alwaysavailable',
                     'htmlOptions' => ['class' => 'has-link'],
                 ),
 
                 array(
                     'header' => gT('Owner'),
                     'name' => 'owner',
-                    'value' => '$data->hasViewSurveyGroupRight && !empty($data->owner) ? CHtml::link($data->owner->users_name, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid))) : ""',
-                    'type'              => 'raw',
-                    'headerHtmlOptions' => array('class' => ''),
+                    'value' => '$data->owner->users_name',
                     'htmlOptions' => ['class' => 'has-link'],
                 ),
 
                 array(
                     'header' => gT('Order'),
                     'name' => 'sortorder',
-                    'value' => '$data->hasViewSurveyGroupRight ? CHtml::link($data->sortorder, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid))) : $data->sortorder',
-                    'type'              => 'raw',
-                    'headerHtmlOptions' => array('class' => ''),
+                    'value' => '$data->sortorder',
                     'htmlOptions' => ['class' => 'has-link'],
                 ),
                 array(
