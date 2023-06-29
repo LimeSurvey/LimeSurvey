@@ -17605,18 +17605,6 @@
 	};
 
 	/**
-	 * Methods to load when a the surveygrid is available
-	 *     if($('#survey-grid').length>0)
-	 */
-
-	const onExistBinding = () => {
-	  $(document).on('click', '.has-link', function () {
-	    const linkUrl = $(this).find('a').attr('href');
-	    window.location.href = linkUrl;
-	  });
-	};
-
-	/**
 	 * Check the browsers console capabilities and bundle them into general functions
 	 * If the build environment was "production" only put out error messages.
 	 */
@@ -29072,7 +29060,6 @@
 	  };
 	  const onLoadRegister = () => {
 	      globalStartUpMethods.bootstrapping();
-	      onExistBinding();
 	      appendToLoad(function () {
 	        adminCoreLSConsole.log('TRIGGERWARNING', 'Document ready triggered');
 	      }, 'ready');
@@ -29133,7 +29120,6 @@
 	          }
 	        });
 	      });
-	      onExistBinding();
 	    },
 	    addToNamespace = function (object) {
 	      let name = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "globalAddition";
