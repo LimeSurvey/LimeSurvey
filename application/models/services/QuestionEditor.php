@@ -10,7 +10,6 @@ use Answer;
 use AnswerL10n;
 use LSYii_Application;
 
-
 use LimeSurvey\Models\Services\QuestionEditor\{
     QuestionEditorL10n,
     QuestionEditorAttributes

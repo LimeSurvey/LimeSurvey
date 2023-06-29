@@ -9,7 +9,6 @@ use LimeSurvey\Models\Services\Exception\{
     NotFoundException
 };
 
-
 /**
  * Question Editor L10n
  *
@@ -55,6 +54,8 @@ class QuestionEditorL10n
             if (empty($l10n)) {
                 if ($createIfNotExists) {
                     $l10n = new QuestionL10n();
+                    $l10n->qid = $questionId;
+                    $l10n->language = $language;
                 } else {
                     throw new NotFoundException(
                         'Found no L10n object'

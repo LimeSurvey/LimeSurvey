@@ -29,13 +29,32 @@ class QuestionEditorAttributes
      * Based on QuestionAdministrationController::unparseAndSetAdvancedOptions()
      *
      * @param Question $question
-     * @param array $dataSet these are the advancedSettings in an array like
-     *                       [display]
-     *                         [hidden]
-     *                         ...
-     *                       [logic]
-     *                       ...
-     * @return boolean
+     * @param array{
+     *      ?logic: array{
+     *          ?min_answers: int,
+     *          ?max_answers: int,
+     *          ?array_filter_style: int,
+     *          ?array_filter: string,
+     *          ?array_filter_exclude: string,
+     *          ?exclude_all_others: int,
+     *          ?random_group: string,
+     *          ?em_validation_q: string,
+     *          ?em_validation_q_tip: array{
+     *              ?en: string,
+     *              ?de: string,
+     *              ...<array-key, mixed>
+     *          },
+     *          ...<array-key, mixed>
+     *      },
+     *      ?display: array{
+     *          ...<array-key, mixed>
+     *      },
+     *      ?statistics: array{
+     *          ...<array-key, mixed>
+     *      },
+     *      ...<array-key, mixed>
+     * } $dataSet
+     * @return void
      * @throws PersistErrorException
      */
     public function updateAdvanced($question, $dataSet)
@@ -48,16 +67,7 @@ class QuestionEditorAttributes
             }
             foreach ($categorySettings as $attributeKey => $attributeValue) {
                 $newValue = $attributeValue;
-
-                // Set default value if empty.
-                // TODO: Default value
-                if (
-                    $newValue === ''
-                    && isset($attributeValue['aFormElementOptions']['default'])
-                ) {
-                    $newValue = $attributeValue['aFormElementOptions']['default'];
-                }
-
+                // @todo Set default value if empty.
                 if (is_array($newValue)) {
                     foreach ($newValue as $lngKey => $content) {
                         if ($lngKey === 'expression') {
@@ -101,15 +111,15 @@ class QuestionEditorAttributes
                 gT('Could not store advanced options')
             );
         }
-
-        return true;
     }
 
     /**
      * @todo document me
      *
      * @param Question $question
-     * @param array $dataSet
+     * @param array{
+     *  ...<array-key, mixed>
+     * } $dataSet
      * @return boolean
      * @throws PersistErrorException
      */

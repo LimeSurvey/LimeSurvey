@@ -6,7 +6,6 @@ use LimeSurvey\Models\Services\Exception\{
     PermissionDeniedException
 };
 
-
 /**
  * Class QuestionAdministrationController
  */
