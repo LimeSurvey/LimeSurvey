@@ -78,6 +78,7 @@ class QuestionEditor
      * Based on QuestionAdministrationController::actionSaveQuestionData()
      *
      * @param array{
+     *  sid: int,
      *  ?question: array{
      *      ?qid: int,
      *      ?sid: int,
@@ -98,10 +99,39 @@ class QuestionEditor
      *      ...<array-key, array{
      *          question: string,
      *          help: string,
+     *          ?language: string,
      *          ?script: string
      *      }>
      *  },
+     *  ?subquestions: array{
+     *      ...<array-key, mixed>
+     *  },
+     *  ?answeroptions: array{
+     *      ...<array-key, mixed>
+     *  },
      *  ?advancedSettings: array{
+     *      ?logic: array{
+     *          ?min_answers: int,
+     *          ?max_answers: int,
+     *          ?array_filter_style: int,
+     *          ?array_filter: string,
+     *          ?array_filter_exclude: string,
+     *          ?exclude_all_others: int,
+     *          ?random_group: string,
+     *          ?em_validation_q: string,
+     *          ?em_validation_q_tip: array{
+     *              ?en: string,
+     *              ?de: string,
+     *              ...<array-key, mixed>
+     *          },
+     *          ...<array-key, mixed>
+     *      },
+     *      ?display: array{
+     *          ...<array-key, mixed>
+     *      },
+     *      ?statistics: array{
+     *          ...<array-key, mixed>
+     *      },
      *      ...<array-key, mixed>
      *  }
      * } $input

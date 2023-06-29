@@ -3,10 +3,7 @@
 use \LimeSurvey\Models\Services\QuestionEditor;
 
 use LimeSurvey\Models\Services\Exception\{
-    PersistErrorException,
-    NotFoundException,
-    PermissionDeniedException,
-    BadRequestException
+    PermissionDeniedException
 };
 
 
