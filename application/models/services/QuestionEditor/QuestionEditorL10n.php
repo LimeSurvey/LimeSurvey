@@ -26,9 +26,9 @@ class QuestionEditorL10n
     /**
      * @todo document me
      *
-     * @param int $questionId
      * @param array{
      *      ...<array-key, array{
+     *          qid: int,
      *          question: string,
      *          help: string,
      *          ?language: string,
@@ -40,9 +40,10 @@ class QuestionEditorL10n
      * @throws NotFoundException
      * @throws PersistErrorException
      */
-    public function save($questionId, $data, $createIfNotExists = true)
+    public function save($data, $createIfNotExists = true)
     {
         foreach ($data as $language => $l10nBlock) {
+            $questionId = $l10nBlock['qid'] ?? null;
             $language = !empty($l10nBlock['language'])
                 ? $l10nBlock['language']
                 : $language;
@@ -76,7 +77,10 @@ class QuestionEditorL10n
             );
             if (!$l10n->save()) {
                 throw new PersistErrorException(
-                    gT('Could not store translation')
+                    sprintf(
+                        'Could not store translation %s',
+                        json_encode($l10n->getErrors())
+                    )
                 );
             }
         }

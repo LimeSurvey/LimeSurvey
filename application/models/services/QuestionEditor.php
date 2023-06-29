@@ -149,6 +149,7 @@ class QuestionEditor
         $data['questionL10n']     = $input['questionL10n'] ?? [];
         $data['advancedSettings'] = $input['advancedSettings'] ?? [];
         $data['question']['sid']  = $surveyId;
+        $data['question']['qid']  = $data['question']['qid'] ?? null;
 
         $question = $this->modelQuestion
             ->findByPk((int) $data['question']['qid']);
@@ -172,7 +173,7 @@ class QuestionEditor
         // Rollback at failure.
         $transaction = $this->yiiApp->db->beginTransaction();
         try {
-            if ($data['question']['qid'] == 0) {
+            if (empty($data['question']['qid'])) {
                 $data['question']['qid'] = null;
                 $question = $this->storeNewQuestionData(
                     $data['question']
@@ -192,18 +193,18 @@ class QuestionEditor
             );
 
             $this->questionEditorAttributes
-                ->updateAdvanced(
+                ->saveAdvanced(
                     $question,
                     $data['advancedSettings']
                 );
 
             $this->questionEditorAttributes
-                ->updateGeneral(
+                ->save(
                     $question,
                     $data['question']
                 );
 
-            // save advanced attributes default values for given question type
+            // Save advanced attributes default values for given question type
             if (
                 array_key_exists(
                     'save_as_default',
@@ -249,7 +250,7 @@ class QuestionEditor
                 if ($question->questionType->subquestions > 0) {
                     $this->storeSubquestions(
                         $question,
-                        $input['subqestions'] ?? []
+                        $input['subquestions'] ?? []
                     );
                 }
             } else {
@@ -515,11 +516,11 @@ class QuestionEditor
                         'Missing mandatory field "code" for question'
                     );
                 }
-                $subquestion->title      = $data['code'];
+                $subquestion->title = $data['code'];
                 if ($scaleId === 0) {
-                    $subquestion->relevance  = $data['relevance'];
+                    $subquestion->relevance = $data['relevance'];
                 }
-                $subquestion->scale_id   = $scaleId;
+                $subquestion->scale_id = $scaleId;
                 if (!$subquestion->save()) {
                     throw new PersistErrorException(
                         gT('Could not save subquestion')
@@ -528,9 +529,9 @@ class QuestionEditor
                 $subquestion->refresh();
                 foreach ($data['subquestionl10n'] as $lang => $questionText) {
                     $this->questionEditorL10n->save(
-                        $subquestion->qid,
                         array(
                             [
+                                'qid' => $subquestion->qid,
                                 'language' => $lang,
                                 'question' => $questionText
                             ]
@@ -592,9 +593,9 @@ class QuestionEditor
                 $subquestion->refresh();
                 foreach ($data['subquestionl10n'] as $lang => $questionText) {
                     $this->questionEditorL10n->save(
-                        $subquestion->qid,
                         array(
                             [
+                                'qid' => $subquestion->qid,
                                 'language' => $lang,
                                 'question' => $questionText
                             ]

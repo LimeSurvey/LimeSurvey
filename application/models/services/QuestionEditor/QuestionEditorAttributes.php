@@ -57,7 +57,7 @@ class QuestionEditorAttributes
      * @return void
      * @throws PersistErrorException
      */
-    public function updateAdvanced($question, $dataSet)
+    public function saveAdvanced($question, $dataSet)
     {
         $questionBaseAttributes = $question->attributes;
 
@@ -65,45 +65,7 @@ class QuestionEditorAttributes
             if ($category === 'debug') {
                 continue;
             }
-            foreach ($categorySettings as $attributeKey => $attributeValue) {
-                $newValue = $attributeValue;
-                // @todo Set default value if empty.
-                if (is_array($newValue)) {
-                    foreach ($newValue as $lngKey => $content) {
-                        if ($lngKey === 'expression') {
-                            continue;
-                        }
-                        if (
-                            !$this->modelQuestionAttribute
-                                ->setQuestionAttributeWithLanguage(
-                                    $question->qid,
-                                    $attributeKey,
-                                    $content,
-                                    $lngKey
-                                )
-                        ) {
-                            throw new PersistErrorException(
-                            gT('Could not store advanced options')
-                            );
-                        }
-                    }
-                } elseif (array_key_exists(
-                    $attributeKey,
-                    $questionBaseAttributes)
-                ) {
-                    $question->$attributeKey = $newValue;
-                } elseif (
-                    !$this->modelQuestionAttribute->setQuestionAttribute(
-                        $question->qid,
-                        $attributeKey,
-                        $newValue
-                    )
-                ) {
-                    throw new PersistErrorException(
-                        gT('Could not store advanced options')
-                    );
-                }
-            }
+            $this->save($question, $categorySettings);
         }
 
         if (!$question->save()) {
@@ -120,10 +82,10 @@ class QuestionEditorAttributes
      * @param array{
      *  ...<array-key, mixed>
      * } $dataSet
-     * @return boolean
+     * @return void
      * @throws PersistErrorException
      */
-    public function updateGeneral($question, $dataSet)
+    public function save($question, $dataSet)
     {
         $questionBaseAttributes = $question->attributes;
 
@@ -151,7 +113,5 @@ class QuestionEditorAttributes
                 gT('Could not save question')
             );
         }
-
-        return true;
     }
 }
