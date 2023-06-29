@@ -59,22 +59,29 @@ class NotificationController extends SurveyCommonAction
      * Delete all notifications for this user and this survey
      * @param int|null $surveyId
      * @return void
+     * @throws CHttpException
      */
-    public function clearAllNotifications()
+    public function clearAllNotifications($surveyId = null)
     {
         if (App()->request->isPostRequest) {
-            $this->checkPermission();
-            $surveyId = App()->request->getPost('surveyId', null);
+            if (App()->user->isGuest) {
+                throw new CHttpException(401);
+            }
             Notification::model()->deleteAll(
                 'entity = :entity AND entity_id = :entity_id',
-                array(":entity" => 'user', ":entity_id" => Yii::app()->user->id)
+                [":entity" => 'user', ":entity_id" => App()->user->id]
             );
-
-            if (is_int($surveyId)) {
-                Notification::model()->deleteAll(
-                    'entity = :entity AND entity_id = :entity_id',
-                    array(":entity" => 'survey', ":entity_id" => $surveyId)
-                );
+            if (is_null($surveyId)) {
+                $surveyId = App()->request->getPost('surveyId');
+            }
+            if (!is_null($surveyId)) {
+                $surveyId = (int)$surveyId;
+                if (Permission::model()->hasSurveyPermission($surveyId, 'survey', 'update')) {
+                    Notification::model()->deleteAll(
+                        'entity = :entity AND entity_id = :entity_id',
+                        [":entity" => 'survey', ":entity_id" => $surveyId]
+                    );
+                }
             }
         }
     }
@@ -119,15 +126,15 @@ class NotificationController extends SurveyCommonAction
         }
 
         $data = array();
-        $data['surveyId'] = $surveyId;
+        $data['surveyId'] = (int) $surveyId;
         $data['showLoader'] = $showLoader;
-        $params = array(
-            'sa' => 'clearAllNotifications',
-        );
         if ($surveyId !== null) {
-            $params['surveyId'] = $surveyId;
+            $surveyIdParam = 'surveyId=' . $surveyId;
+        } else {
+            $surveyIdParam = '';
         }
-        $data['clearAllNotificationsUrl'] = Yii::app()->createUrl('admin/notification', $params);
+        $data['clearAllNotificationsUrl'] = App()->createUrl('admin/notification', ['sa' => 'clearAllNotifications']);
+        $data['clearAllNotificationsParams'] = $surveyIdParam;
         $data['updateUrl'] = Notification::getUpdateUrl($surveyId);
         $data['nrOfNewNotifications'] = Notification::countNewNotifications($surveyId);
         $data['nrOfNotifications'] = Notification::countNotifications($surveyId);

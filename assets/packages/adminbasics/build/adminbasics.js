@@ -21293,9 +21293,10 @@
 	      $('#notification-inner-li').css('height', height - 60 + 'px');
 	    },
 	    deleteAllNotifications = (url, updateUrl) => {
+	      let data = document.querySelector('#notification-clear-all > a').getAttribute('data-params');
 	      return $.ajax({
 	        url: url,
-            data: {},
+	        data: data,
 	        method: 'POST',
 	        success: response => {
 	          adminCoreLSConsole.log('response', response);
