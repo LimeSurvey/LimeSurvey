@@ -118,7 +118,8 @@ class QuestionEditor
                     $data['question']
                 );
             } else {
-                // Store changes to the actual question data, by either storing it, or updating an old one
+                // Store changes to the actual question data,
+                // by either storing it, or updating an old one
                 $question = $this->updateQuestionData(
                     $question,
                     $data['question']
@@ -320,8 +321,9 @@ class QuestionEditor
         $question = new Question();
         $question->setAttributes($data, false);
 
-        //set the question_order the highest existing number +1, if no question exists for the group
-        //set the question_order to 1
+        // set the question_order the highest existing number +1,
+        // if no question exists for the group
+        // set the question_order to 1
         $highestOrderNumber = $this->proxyQuestion
             ->getHighestQuestionOrderNumberInGroup($questionGroupId);
         if ($highestOrderNumber === null) {

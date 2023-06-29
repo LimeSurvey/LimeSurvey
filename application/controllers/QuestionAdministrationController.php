@@ -593,8 +593,9 @@ class QuestionAdministrationController extends LSBaseController
                 );
             }
 
-            // If we are already dealing with a friendly exception (may include detailed errors),
-            // just set the redirect URL and rethrow.
+            // If we are already dealing with a friendly exception
+            // (may include detailed errors),
+            // just set the redirect URL and re-throw.
             if ($e instanceof LSUserException) {
                 throw $e->setRedirectUrl($redirectUrl);
             }

@@ -64,19 +64,23 @@ class QuestionEditorAttributes
                             continue;
                         }
                         if (
-                            !$this->modelQuestionAttribute->setQuestionAttributeWithLanguage(
-                                $oQuestion->qid,
-                                $sAttributeKey,
-                                $content,
-                                $lngKey
-                            )
+                            !$this->modelQuestionAttribute
+                                ->setQuestionAttributeWithLanguage(
+                                    $oQuestion->qid,
+                                    $sAttributeKey,
+                                    $content,
+                                    $lngKey
+                                )
                         ) {
                             throw new PersistErrorException(
                             gT('Could not store advanced options')
                             );
                         }
                     }
-                } elseif (array_key_exists($sAttributeKey, $aQuestionBaseAttributes)) {
+                } elseif (array_key_exists(
+                    $sAttributeKey,
+                    $aQuestionBaseAttributes)
+                ) {
                     $oQuestion->$sAttributeKey = $newValue;
                 } elseif (
                     !$this->modelQuestionAttribute->setQuestionAttribute(
@@ -133,7 +137,9 @@ class QuestionEditorAttributes
         }
 
         if (!$oQuestion->save()) {
-            throw new PersistErrorException( gT('Could not save question'));
+            throw new PersistErrorException(
+                gT('Could not save question')
+            );
         }
 
         return true;
