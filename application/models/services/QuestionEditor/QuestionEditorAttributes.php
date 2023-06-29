@@ -28,7 +28,7 @@ class QuestionEditorAttributes
      *
      * Based on QuestionAdministrationController::unparseAndSetAdvancedOptions()
      *
-     * @param Question $oQuestion
+     * @param Question $question
      * @param array $dataSet these are the advancedSettings in an array like
      *                       [display]
      *                         [hidden]
@@ -38,15 +38,15 @@ class QuestionEditorAttributes
      * @return boolean
      * @throws PersistErrorException
      */
-    public function updateAdvanced($oQuestion, $dataSet)
+    public function updateAdvanced($question, $dataSet)
     {
-        $aQuestionBaseAttributes = $oQuestion->attributes;
+        $questionBaseAttributes = $question->attributes;
 
-        foreach ($dataSet as $sAttributeCategory => $aAttributeCategorySettings) {
-            if ($sAttributeCategory === 'debug') {
+        foreach ($dataSet as $category => $categorySettings) {
+            if ($category === 'debug') {
                 continue;
             }
-            foreach ($aAttributeCategorySettings as $sAttributeKey => $attributeValue) {
+            foreach ($categorySettings as $attributeKey => $attributeValue) {
                 $newValue = $attributeValue;
 
                 // Set default value if empty.
@@ -66,8 +66,8 @@ class QuestionEditorAttributes
                         if (
                             !$this->modelQuestionAttribute
                                 ->setQuestionAttributeWithLanguage(
-                                    $oQuestion->qid,
-                                    $sAttributeKey,
+                                    $question->qid,
+                                    $attributeKey,
                                     $content,
                                     $lngKey
                                 )
@@ -78,14 +78,14 @@ class QuestionEditorAttributes
                         }
                     }
                 } elseif (array_key_exists(
-                    $sAttributeKey,
-                    $aQuestionBaseAttributes)
+                    $attributeKey,
+                    $questionBaseAttributes)
                 ) {
-                    $oQuestion->$sAttributeKey = $newValue;
+                    $question->$attributeKey = $newValue;
                 } elseif (
                     !$this->modelQuestionAttribute->setQuestionAttribute(
-                        $oQuestion->qid,
-                        $sAttributeKey,
+                        $question->qid,
+                        $attributeKey,
                         $newValue
                     )
                 ) {
@@ -96,7 +96,7 @@ class QuestionEditorAttributes
             }
         }
 
-        if (!$oQuestion->save()) {
+        if (!$question->save()) {
             throw new PersistErrorException(
                 gT('Could not store advanced options')
             );
@@ -108,25 +108,25 @@ class QuestionEditorAttributes
     /**
      * @todo document me
      *
-     * @param Question $oQuestion
+     * @param Question $question
      * @param array $dataSet
      * @return boolean
      * @throws PersistErrorException
      */
-    public function updateGeneral($oQuestion, $dataSet)
+    public function updateGeneral($question, $dataSet)
     {
-        $aQuestionBaseAttributes = $oQuestion->attributes;
+        $questionBaseAttributes = $question->attributes;
 
-        foreach ($dataSet as $sAttributeKey => $attributeValue) {
-            if ($sAttributeKey === 'debug' || !isset($attributeValue)) {
+        foreach ($dataSet as $attributeKey => $attributeValue) {
+            if ($attributeKey === 'debug' || !isset($attributeValue)) {
                 continue;
             }
-            if (array_key_exists($sAttributeKey, $aQuestionBaseAttributes)) {
-                $oQuestion->$sAttributeKey = $attributeValue;
+            if (array_key_exists($attributeKey, $questionBaseAttributes)) {
+                $question->$attributeKey = $attributeValue;
             } elseif (
                 !$this->modelQuestionAttribute->setQuestionAttribute(
-                    $oQuestion->qid,
-                    $sAttributeKey,
+                    $question->qid,
+                    $attributeKey,
                     $attributeValue
                 )
             ) {
@@ -136,7 +136,7 @@ class QuestionEditorAttributes
             }
         }
 
-        if (!$oQuestion->save()) {
+        if (!$question->save()) {
             throw new PersistErrorException(
                 gT('Could not save question')
             );
