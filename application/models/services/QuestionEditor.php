@@ -90,8 +90,8 @@ class QuestionEditor
      *      ?modulename: string,
      *      ?encrypted: string,
      *      ?subqestions: array,
-     *      ?save_as_default: int,
-     *      ?clear_default: int,
+     *      ?save_as_default: string,
+     *      ?clear_default: string,
      *      ...<array-key, mixed>
      *  },
      *  ?questionL10n: array{

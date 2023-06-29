@@ -59,8 +59,6 @@ class QuestionEditorAttributes
      */
     public function saveAdvanced($question, $dataSet)
     {
-        $questionBaseAttributes = $question->attributes;
-
         foreach ($dataSet as $category => $categorySettings) {
             if ($category === 'debug') {
                 continue;
@@ -93,7 +91,31 @@ class QuestionEditorAttributes
             if ($attributeKey === 'debug' || !isset($attributeValue)) {
                 continue;
             }
-            if (array_key_exists($attributeKey, $questionBaseAttributes)) {
+
+            if (is_array($attributeValue)) {
+                foreach ($attributeValue as $lngKey => $content) {
+                    if ($lngKey === 'expression') {
+                        continue;
+                    }
+                    if (
+                        !$this->modelQuestionAttribute->setQuestionAttributeWithLanguage(
+                            $question->qid,
+                            $attributeKey,
+                            $content,
+                            $lngKey
+                        )
+                    ) {
+                        throw new PersistErrorException(
+                            gT("Could not store advanced options")
+                        );
+                    }
+                }
+            } elseif (
+                array_key_exists(
+                    $attributeKey,
+                    $questionBaseAttributes
+                )
+            ) {
                 $question->$attributeKey = $attributeValue;
             } elseif (
                 !$this->modelQuestionAttribute->setQuestionAttribute(
