@@ -204,33 +204,7 @@ class QuestionEditor
                     $data['question']
                 );
 
-            // Save advanced attributes default values for given question type
-            if (
-                array_key_exists(
-                    'save_as_default',
-                    $data['question']
-                )
-                && $data['question']['save_as_default'] == 'Y'
-            ) {
-                $this->proxySettingsUser->setUserSetting(
-                    'question_default_values_'
-                        . $data['question']['type'],
-                    ls_json_encode(
-                        $data['advancedSettings']
-                    )
-                );
-            } elseif (
-                array_key_exists(
-                    'clear_default',
-                    $data['question']
-                )
-                && $data['question']['clear_default'] == 'Y'
-            ) {
-                $this->proxySettingsUser->deleteUserSetting(
-                    'question_default_values_'
-                        . $data['question']['type']
-                );
-            }
+            $this->saveDefaults($data);
 
             // Clean answer options before save.
             // NB: Still inside a database transaction.
@@ -279,6 +253,40 @@ class QuestionEditor
         }
 
         return $question;
+    }
+
+    /**
+     * Save defaults
+     */
+    private function saveDefaults($data)
+    {
+        // Save advanced attributes default values for given question type
+        if (
+            array_key_exists(
+                'save_as_default',
+                $data['question']
+            )
+            && $data['question']['save_as_default'] == 'Y'
+        ) {
+            $this->proxySettingsUser->setUserSetting(
+                'question_default_values_'
+                    . $data['question']['type'],
+                ls_json_encode(
+                    $data['advancedSettings']
+                )
+            );
+        } elseif (
+            array_key_exists(
+                'clear_default',
+                $data['question']
+            )
+            && $data['question']['clear_default'] == 'Y'
+        ) {
+            $this->proxySettingsUser->deleteUserSetting(
+                'question_default_values_'
+                    . $data['question']['type']
+            );
+        }
     }
 
 
@@ -396,7 +404,7 @@ class QuestionEditor
      * @return Question
      * @throws PersistErrorException
      */
-    private function updateQuestionData($question, $data)
+    private function updateQuestionData(Question $question, $data)
     {
         // @todo something wrong in frontend ... (?what is wrong?)
         if (isset($data['same_default'])) {
@@ -444,49 +452,87 @@ class QuestionEditor
      * @return void
      * @throws PersistErrorException
      */
-    private function storeAnswerOptions($question, $optionsArray)
+    private function storeAnswerOptions(Question $question, $optionsArray)
     {
-        $i = 0;
+        $count = 0;
         foreach ($optionsArray as $optionArray) {
-            foreach ($optionArray as $scaleId => $data) {
-                if (!isset($data['code'])) {
-                    throw new Exception(
-                        'code is not set in data: ' . json_encode($data)
-                    );
-                }
-                $answer = new Answer();
-                $answer->qid = $question->qid;
-                $answer->code = $data['code'];
-                $answer->sortorder = $i;
-                $i++;
-                if (isset($data['assessment'])) {
-                    $answer->assessment_value = $data['assessment'];
-                } else {
-                    $answer->assessment_value = 0;
-                }
-                $answer->scale_id = $scaleId;
-                if (!$answer->save()) {
-                    throw new PersistErrorException(
-                        gT('Could not save answer')
-                    );
-                }
-                $answer->refresh();
-                foreach ($data['answeroptionl10n'] as $lang => $answerOptionText) {
-                    $l10n = new AnswerL10n();
-                    $l10n->aid = $answer->aid;
-                    $l10n->language = $lang;
-                    $l10n->answer = $answerOptionText;
-                    if (!$l10n->save()) {
-                        if (!$answer->save()) {
-                            throw new PersistErrorException(
-                                gT('Could not save answer option')
-                            );
-                        }
-                    }
-                }
-            }
+            $this->storeAnswerOption(
+                $question,
+                $optionArray,
+                $count
+            );
         }
         return true;
+    }
+
+    /**
+     * Store new answer options.
+     * Different from update during active survey?
+     *
+     * @param Question $question
+     * @param array $optionsArray
+     * @param int &$count
+     * @return void
+     * @throws PersistErrorException
+     */
+    private function storeAnswerOption(Question $question, $optionArray, &$count)
+    {
+        foreach ($optionArray as $scaleId => $data) {
+            if (!isset($data['code'])) {
+                throw new Exception(
+                    'code is not set in data: ' . json_encode($data)
+                );
+            }
+            $answer = new Answer();
+            $answer->qid = $question->qid;
+            $answer->code = $data['code'];
+            $answer->sortorder = $count;
+            $count++;
+            if (isset($data['assessment'])) {
+                $answer->assessment_value = $data['assessment'];
+            } else {
+                $answer->assessment_value = 0;
+            }
+            $answer->scale_id = $scaleId;
+            if (!$answer->save()) {
+                throw new PersistErrorException(
+                    gT('Could not save answer')
+                );
+            }
+            $answer->refresh();
+            foreach (
+                $data['answeroptionl10n']
+                as $language => $answerOptionText
+            ) {
+                $this->storeAnswerL10n(
+                    $answer,
+                    $language,
+                    $answerOptionText
+                );
+            }
+        }
+    }
+
+    /**
+     * Store new answer L10n
+     *
+     * @param Answer $answer
+     * @param string $language
+     * @param string $text
+     * @return void
+     * @throws PersistErrorException
+     */
+    private function storeAnswerL10n(Answer $answer, $language, $text)
+    {
+        $l10n = new AnswerL10n();
+        $l10n->aid = $answer->aid;
+        $l10n->language = $language;
+        $l10n->answer = $text;
+        if (!$l10n->save()) {
+            throw new PersistErrorException(
+                gT('Could not save answer option')
+            );
+        }
     }
 
     /**
@@ -499,7 +545,7 @@ class QuestionEditor
      * @throws PersistErrorException
      * @throws BadRequestException
      */
-    private function storeSubquestions($question, $subquestionsArray)
+    private function storeSubquestions(Question $question, $subquestionsArray)
     {
         $questionOrder = 0;
         foreach ($subquestionsArray as $subquestionArray) {
@@ -527,17 +573,10 @@ class QuestionEditor
                     );
                 }
                 $subquestion->refresh();
-                foreach ($data['subquestionl10n'] as $lang => $questionText) {
-                    $this->questionEditorL10n->save(
-                        array(
-                            [
-                                'qid' => $subquestion->qid,
-                                'language' => $lang,
-                                'question' => $questionText
-                            ]
-                        )
-                    );
-                }
+                $this->updateSubquestionL10n(
+                    $subquestion,
+                    $data['subquestionl10n']
+                );
             }
         }
     }
@@ -552,7 +591,7 @@ class QuestionEditor
      * @throws PersistErrorException
      * @throws BadRequestException
      */
-    private function updateSubquestions($question, $subquestionsArray)
+    private function updateSubquestions(Question $question, $subquestionsArray)
     {
         $questionOrder = 0;
         foreach ($subquestionsArray as $subquestionArray) {
@@ -591,18 +630,35 @@ class QuestionEditor
                     );
                 }
                 $subquestion->refresh();
-                foreach ($data['subquestionl10n'] as $lang => $questionText) {
-                    $this->questionEditorL10n->save(
-                        array(
-                            [
-                                'qid' => $subquestion->qid,
-                                'language' => $lang,
-                                'question' => $questionText
-                            ]
-                        )
-                    );
-                }
+                $this->updateSubquestionL10n(
+                    $subquestion,
+                    $data['subquestionl10n']
+                );
             }
+        }
+    }
+
+    /**
+     * Save subquestion L10n
+     *
+     * @param Question $question
+     * @param string $language
+     * @return void
+     * @throws PersistErrorException
+     * @throws BadRequestException
+     */
+    private function updateSubquestionL10n(Question $subquestion, $data)
+    {
+        foreach ($data as $language => $questionText) {
+            $this->questionEditorL10n->save(
+                array(
+                    [
+                        'qid' => $subquestion->qid,
+                        'language' => $language,
+                        'question' => $questionText
+                    ]
+                )
+            );
         }
     }
 }
