@@ -38,9 +38,9 @@ class QuestionEditor
     private Permission $modelPermission;
     private Question $modelQuestion;
     private QuestionL10n $modelQuestionL10n;
-    private QuestionEditorAttributes $questionEditorAttributes;
     private Survey $modelSurvey;
     private Condition $modelCondition;
+    private QuestionEditorAttributes $questionEditorAttributes;
     private ProxySettingsUser $proxySettingsUser;
     private ProxyQuestion $proxyQuestion;
     private ProxyExpressionManager $proxyExpressionManager;
@@ -50,9 +50,9 @@ class QuestionEditor
         Permission $modelPermission,
         Question $modelQuestion,
         QuestionL10n $modelQuestionL10n,
-        QuestionEditorAttributes $questionEditorAttributes,
         Survey $modelSurvey,
         Condition $modelCondition,
+        QuestionEditorAttributes $questionEditorAttributes,
         ProxySettingsUser $proxySettingsUser,
         ProxyQuestion $proxyQuestion,
         ProxyExpressionManager $proxyExpressionManager,
