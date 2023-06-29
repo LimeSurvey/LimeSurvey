@@ -4,14 +4,17 @@ namespace LimeSurvey\Models\Services;
 
 use Permission;
 use Question;
-use QuestionL10n;
 use Survey;
 use Condition;
 use Answer;
 use AnswerL10n;
 use LSYii_Application;
 
-use LimeSurvey\Models\Services\QuestionEditor\QuestionEditorAttributes;
+
+use LimeSurvey\Models\Services\QuestionEditor\{
+    QuestionEditorL10n,
+    QuestionEditorAttributes
+};
 
 use LimeSurvey\Models\Services\Proxy\{
     ProxySettingsUser,
@@ -37,9 +40,10 @@ class QuestionEditor
 {
     private Permission $modelPermission;
     private Question $modelQuestion;
-    private QuestionL10n $modelQuestionL10n;
     private Survey $modelSurvey;
     private Condition $modelCondition;
+
+    private QuestionEditorL10n $questionEditorL10n;
     private QuestionEditorAttributes $questionEditorAttributes;
     private ProxySettingsUser $proxySettingsUser;
     private ProxyQuestion $proxyQuestion;
@@ -49,9 +53,9 @@ class QuestionEditor
     public function __construct(
         Permission $modelPermission,
         Question $modelQuestion,
-        QuestionL10n $modelQuestionL10n,
         Survey $modelSurvey,
         Condition $modelCondition,
+        QuestionEditorL10n $questionEditorL10n,
         QuestionEditorAttributes $questionEditorAttributes,
         ProxySettingsUser $proxySettingsUser,
         ProxyQuestion $proxyQuestion,
@@ -60,9 +64,9 @@ class QuestionEditor
     ) {
         $this->modelPermission = $modelPermission;
         $this->modelQuestion = $modelQuestion;
-        $this->modelQuestionL10n = $modelQuestionL10n;
         $this->modelSurvey = $modelSurvey;
         $this->modelCondition = $modelCondition;
+        $this->questionEditorL10n = $questionEditorL10n;
         $this->questionEditorAttributes = $questionEditorAttributes;
         $this->proxySettingsUser = $proxySettingsUser;
         $this->proxyQuestion = $proxyQuestion;
@@ -153,8 +157,8 @@ class QuestionEditor
                 );
             }
 
-            $this->applyL10n(
-                $question,
+            $this->questionEditorL10n->save(
+                $question->qid,
                 $data['questionL10n']
             );
 
@@ -247,41 +251,6 @@ class QuestionEditor
         return $question;
     }
 
-    /**
-     * @todo document me
-     *
-     * @param Question $question
-     * @param array $data
-     * @return void
-     * @throws NotFoundException
-     * @throws PersistErrorException
-     */
-    private function applyL10n($question, $data)
-    {
-        foreach ($data as $language => $l10nBlock) {
-            $l10n = $this->modelQuestionL10n
-                ->findByAttributes([
-                    'qid' => $question->qid,
-                    'language' => $language
-                ]);
-            if (empty($l10n)) {
-                throw new NotFoundException('Found no L10n object');
-            }
-            $l10n->setAttributes(
-                [
-                    'question' => $l10nBlock['question'],
-                    'help'     => $l10nBlock['help'],
-                    'script'   => $l10nBlock['script'] ?? ''
-                ],
-                false
-            );
-            if (!$l10n->save()) {
-                throw new PersistErrorException(
-                    gT('Could not store translation')
-                );
-            }
-        }
-    }
 
     /**
      * Method to store and filter data for a new question
@@ -346,13 +315,18 @@ class QuestionEditor
         }
 
         $question = new Question();
-        $question->setAttributes($data, false);
+        $question->setAttributes(
+            $data,
+            false
+        );
 
         // set the question_order the highest existing number +1,
         // if no question exists for the group
         // set the question_order to 1
         $highestOrderNumber = $this->proxyQuestion
-            ->getHighestQuestionOrderNumberInGroup($questionGroupId);
+            ->getHighestQuestionOrderNumberInGroup(
+                $questionGroupId
+            );
         if ($highestOrderNumber === null) {
             //this means there is no question inside this group ...
             $question->question_order = Question::START_SORTING_VALUE;
@@ -367,20 +341,18 @@ class QuestionEditor
         }
 
         // Init empty L10n records
-        $l10n = [];
         foreach ($survey->allLanguages as $language) {
-            $l10n[$language] = new QuestionL10n();
-            $l10n[$language]->setAttributes(
-                [
-                    'qid'      => $question->qid,
-                    'language' => $language,
-                    'question' => '',
-                    'help'     => '',
-                    'script'   => '',
-                ],
-                false
+            $this->questionEditorL10n->save(
+                $question->qid,
+                array(
+                    [
+                        'language' => $language,
+                        'question' => '',
+                        'help' => '',
+                        'script' => ''
+                    ]
+                )
             );
-            $l10n[$language]->save();
         }
 
         return $question;
@@ -502,7 +474,7 @@ class QuestionEditor
         $questionOrder = 0;
         foreach ($subquestionsArray as $subquestionArray) {
             foreach ($subquestionArray as $scaleId => $data) {
-                $subquestion = new Question();
+                $subquestion             = new Question();
                 $subquestion->sid        = $question->sid;
                 $subquestion->gid        = $question->gid;
                 $subquestion->parent_qid = $question->qid;
@@ -526,15 +498,15 @@ class QuestionEditor
                 }
                 $subquestion->refresh();
                 foreach ($data['subquestionl10n'] as $lang => $questionText) {
-                    $l10n = new QuestionL10n();
-                    $l10n->qid = $subquestion->qid;
-                    $l10n->language = $lang;
-                    $l10n->question = $questionText;
-                    if (!$l10n->save()) {
-                        throw new PersistErrorException(
-                            gT('Could not save subquestion')
-                        );
-                    }
+                    $this->questionEditorL10n->save(
+                        $subquestion->qid,
+                        array(
+                            [
+                                'language' => $lang,
+                                'question' => $questionText
+                            ]
+                        )
+                    );
                 }
             }
         }
@@ -590,23 +562,15 @@ class QuestionEditor
                 }
                 $subquestion->refresh();
                 foreach ($data['subquestionl10n'] as $lang => $questionText) {
-                    $l10n = QuestionL10n::model()->findByAttributes(
-                        [
-                            'qid' => $subquestion->qid,
-                            'language' => $lang
-                        ]
+                    $this->questionEditorL10n->save(
+                        $subquestion->qid,
+                        array(
+                            [
+                                'language' => $lang,
+                                'question' => $questionText
+                            ]
+                        )
                     );
-                    if (empty($l10n)) {
-                        $l10n = new QuestionL10n();
-                    }
-                    $l10n->qid = $subquestion->qid;
-                    $l10n->language = $lang;
-                    $l10n->question = $questionText;
-                    if (!$l10n->save()) {
-                        throw new PersistErrorException(
-                            gT('Could not save subquestion')
-                        );
-                    }
                 }
             }
         }
