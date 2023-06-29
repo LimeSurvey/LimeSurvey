@@ -621,7 +621,7 @@ class QuestionAdministrationController extends LSBaseController
         $questionData = [];
         $questionData['question']         = (array) $request->getPost('question');
         // TODO: It's l10n, not i10n.
-        $questionData['questionI10N']     = (array) $request->getPost('questionI10N');
+        $questionData['questionL10n']     = (array) $request->getPost('questionL10n');
         $questionData['advancedSettings'] = (array) $request->getPost('advancedSettings');
         $questionData['question']['sid']  = $iSurveyId;
 
@@ -671,7 +671,7 @@ class QuestionAdministrationController extends LSBaseController
             // Apply the changes to general settings, advanced settings and translations
             $setApplied = [];
 
-            $setApplied['questionI10N'] = $this->applyL10n($question, $questionData['questionI10N']);
+            $setApplied['questionL10n'] = $this->applyL10n($question, $questionData['questionL10n']);
 
             $setApplied['advancedSettings'] = $this->unparseAndSetAdvancedOptions(
                 $question,
@@ -1899,7 +1899,7 @@ class QuestionAdministrationController extends LSBaseController
         if (isset($savePressed) && $savePressed !== null) {
             $newTitle = Yii::app()->request->getParam('question')['title'];
 
-            $newQuestionL10n = Yii::app()->request->getParam('questionI10N');
+            $newQuestionL10n = Yii::app()->request->getParam('questionL10n');
             $copyQuestionTextValues = [];
             if (!empty($newQuestionL10n)) {
                 foreach ($newQuestionL10n as $lang => $texts) {

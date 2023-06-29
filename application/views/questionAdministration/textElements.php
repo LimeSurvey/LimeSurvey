@@ -34,7 +34,7 @@
             <div class="mb-3">
                 <div class="input-group w-100">
                     <?= CHtml::textArea(
-                        "questionI10N[$lang][question]",
+                        "questionL10n[$lang][question]",
                         $question->questionl10ns[$lang]->question ?? '',
                         [
                             'class' => 'form-control',
@@ -67,7 +67,7 @@
             <div class="mb-3">
                 <div class="input-group w-100">
                     <?= CHtml::textArea(
-                        "questionI10N[$lang][help]",
+                        "questionL10n[$lang][help]",
                         $question->questionl10ns[$lang]->help ?? '',
                         [
                             'class' => 'form-control',
@@ -126,10 +126,10 @@
                     <?php endif; ?>
 
                     <?= CHtml::textArea(
-                        "questionI10N[$lang][script]",
+                        "questionL10n[$lang][script]",
                         $question->questionl10ns[$lang]->script,
                         [
-                            'id' => CHtml::getIdByName("questionI10N[{$lang}][script]"),
+                            'id' => CHtml::getIdByName("questionL10n[{$lang}][script]"),
                             'rows' => '10',
                             'cols' => '20',
                             'data-filetype' => 'javascript',

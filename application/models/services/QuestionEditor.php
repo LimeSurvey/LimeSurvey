@@ -73,7 +73,11 @@ class QuestionEditor
     /**
      * Based on QuestionAdministrationController::actionSaveQuestionData()
      *
-     * @param <array-key, mixed> $input
+     * @param array{
+     *  ?question: <array-key, mixed>,
+     *  ?advancedSettings: <array-key, mixed>,
+     *  ?questionL10n: <array-key, mixed>
+     * } $input
      * @throws PersistErrorException
      * @throws NotFoundException
      * @throws PermissionDeniedException
@@ -85,8 +89,7 @@ class QuestionEditor
 
         $data = [];
         $data['question']         = $input['question'] ?? [];
-        // TODO: It's l10n, not i10n.
-        $data['questionI10N']     = $input['questionI10N'] ?? [];
+        $data['questionL10n']     = $input['questionL10n'] ?? [];
         $data['advancedSettings'] = $input['advancedSettings'] ?? [];
         $data['question']['sid']  = $surveyId;
 
@@ -128,7 +131,7 @@ class QuestionEditor
 
             $this->applyL10n(
                 $question,
-                $data['questionI10N']
+                $data['questionL10n']
             );
 
             $this->questionEditorAttributes
