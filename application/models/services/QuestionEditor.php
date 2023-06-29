@@ -91,7 +91,11 @@ class QuestionEditor
      *      ...<array-key, mixed>
      *  },
      *  ?questionL10n: array{
-     *      ...<array-key, mixed>
+     *      ...<array-key, array{
+     *          question: string,
+     *          help: string,
+     *          ?script: string
+     *      }>
      *  },
      *  ?advancedSettings: array{
      *      ...<array-key, mixed>
@@ -104,6 +108,7 @@ class QuestionEditor
      */
     public function save($input)
     {
+        $input  = $input ?? [];
         $surveyId = (int) ($input['sid'] ?? 0);
 
         $data = [];
