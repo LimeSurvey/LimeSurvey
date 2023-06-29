@@ -74,9 +74,28 @@ class QuestionEditor
      * Based on QuestionAdministrationController::actionSaveQuestionData()
      *
      * @param array{
-     *  ?question: <array-key, mixed>,
-     *  ?advancedSettings: <array-key, mixed>,
-     *  ?questionL10n: <array-key, mixed>
+     *  ?question: array{
+     *      ?qid: int,
+     *      ?sid: int,
+     *      ?gid: int,
+     *      ?type: string,
+     *      ?other: string,
+     *      ?mandatory: string,
+     *      ?relevance: int,
+     *      ?group_name: string,
+     *      ?modulename: string,
+     *      ?encrypted: string,
+     *      ?subqestions: array,
+     *      ?save_as_default: int,
+     *      ?clear_default: int,
+     *      ...<array-key, mixed>
+     *  },
+     *  ?questionL10n: array{
+     *      ...<array-key, mixed>
+     *  },
+     *  ?advancedSettings: array{
+     *      ...<array-key, mixed>
+     *  }
      * } $input
      * @throws PersistErrorException
      * @throws NotFoundException
