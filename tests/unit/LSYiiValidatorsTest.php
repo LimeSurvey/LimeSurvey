@@ -40,7 +40,7 @@ class LSYiiValidatorsTest extends TestBaseClass
 
         $userData = array(
             'users_name' => $userName,
-            'email'      => $userName . '@example.com'
+            'email'      => $userName . '@example.org'
         );
 
         $permissions = array(
@@ -90,7 +90,7 @@ class LSYiiValidatorsTest extends TestBaseClass
         //Create user.
         $newPassword = createPassword();
         $userName = \Yii::app()->securityManager->generateRandomString(8);
-        $userId = \User::insertUser($userName, $newPassword, 'John Doe', 1, 'jd@mail.com');
+        $userId = \User::insertUser($userName, $newPassword, 'John Doe', 1, $userName . '@example.org');
 
         //Mocking regular user login.
         \Yii::app()->session['loginID'] = $userId;

@@ -86,7 +86,7 @@ class PermissionTest extends BaseModelTestCase
         //Create user.
         $newPassword = createPassword();
         $userName = \Yii::app()->securityManager->generateRandomString(8);
-        $userId = \User::insertUser($userName, $newPassword, 'John Doe', 1, $userName . '@mail.com');
+        $userId = \User::insertUser($userName, $newPassword, 'John Doe', 1, $userName . '@example.org');
         $surveysGroupGid = 999;
 
         $surveysGroup = $this
@@ -109,5 +109,9 @@ class PermissionTest extends BaseModelTestCase
         $perm->method('getEntity')->willReturn($surveysGroup);
 
         $this->assertFalse($perm->hasPermission($surveysGroupGid, 'SurveysGroups', 'permission', 'create'));
+
+        //Delete user.
+        $user = \User::model()->findByPk($userId);
+        $user->delete();
     }
 }
