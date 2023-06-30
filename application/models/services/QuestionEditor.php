@@ -9,6 +9,7 @@ use Condition;
 use Answer;
 use AnswerL10n;
 use LSYii_Application;
+use CDbConnection;
 
 use LimeSurvey\Models\Services\QuestionEditor\{
     QuestionEditorL10n,
@@ -48,6 +49,7 @@ class QuestionEditor
     private ProxyQuestion $proxyQuestion;
     private ProxyExpressionManager $proxyExpressionManager;
     private LSYii_Application $yiiApp;
+    private CDbConnection $yiiDb;
 
     public function __construct(
         Permission $modelPermission,
@@ -59,7 +61,8 @@ class QuestionEditor
         ProxySettingsUser $proxySettingsUser,
         ProxyQuestion $proxyQuestion,
         ProxyExpressionManager $proxyExpressionManager,
-        LSYii_Application $yiiApp
+        LSYii_Application $yiiApp,
+        CDbConnection $yiiDb
     ) {
         $this->modelPermission = $modelPermission;
         $this->modelQuestion = $modelQuestion;
@@ -71,6 +74,7 @@ class QuestionEditor
         $this->proxyQuestion = $proxyQuestion;
         $this->proxyExpressionManager = $proxyExpressionManager;
         $this->yiiApp = $yiiApp;
+        $this->yiiDb = $yiiDb;
     }
 
     /**
@@ -171,7 +175,7 @@ class QuestionEditor
         }
 
         // Rollback at failure.
-        $transaction = $this->yiiApp->db->beginTransaction();
+        $transaction = $this->yiiDb->beginTransaction();
         try {
             if (empty($data['question']['qid'])) {
                 $data['question']['qid'] = null;
