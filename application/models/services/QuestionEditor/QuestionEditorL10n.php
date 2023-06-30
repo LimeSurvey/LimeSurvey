@@ -26,6 +26,7 @@ class QuestionEditorL10n
     /**
      * @todo document me
      *
+     * @param int $questionId
      * @param array{
      *      ...<array-key, array{
      *          qid: int,
@@ -40,10 +41,10 @@ class QuestionEditorL10n
      * @throws NotFoundException
      * @throws PersistErrorException
      */
-    public function save($data, $createIfNotExists = true)
+    public function save($questionId, $data, $createIfNotExists = true)
     {
         foreach ($data as $language => $l10nBlock) {
-            $questionId = $l10nBlock['qid'] ?? null;
+            $questionId = $l10nBlock['qid'] ?? $questionId;
             $language = !empty($l10nBlock['language'])
                 ? $l10nBlock['language']
                 : $language;

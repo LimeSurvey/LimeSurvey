@@ -651,6 +651,7 @@ class QuestionEditor
     {
         foreach ($data as $language => $questionText) {
             $this->questionEditorL10n->save(
+                $subquestion->qid,
                 array(
                     [
                         'qid' => $subquestion->qid,
