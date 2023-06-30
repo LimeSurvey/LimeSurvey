@@ -34,7 +34,6 @@ class QuestionEditorQuestion
     private Question $modelQuestion;
     private Survey $modelSurvey;
     private Condition $modelCondition;
-
     private QuestionEditorL10n $questionEditorL10n;
     private ProxySettingsUser $proxySettingsUser;
     private ProxyQuestion $proxyQuestion;
@@ -62,7 +61,8 @@ class QuestionEditorQuestion
      * Based on QuestionAdministrationController::actionSaveQuestionData()
      *
      * @param array{
-     *  sid: int,
+     *  ?sid: int,
+     *  ?same_default: int,
      *  ?question: array{
      *      ?qid: int,
      *      ?sid: int,
@@ -110,6 +110,8 @@ class QuestionEditorQuestion
                 $data['question']
             );
         }
+
+        $this->saveDefaults($data);
 
         return $question;
     }
@@ -265,5 +267,39 @@ class QuestionEditorQuestion
         }
 
         return $question;
+    }
+
+    /**
+     * Save defaults
+     */
+    private function saveDefaults($data)
+    {
+        // Save advanced attributes default values for given question type
+        if (
+            array_key_exists(
+                'save_as_default',
+                $data['question']
+            )
+            && $data['question']['save_as_default'] == 'Y'
+        ) {
+            $this->proxySettingsUser->setUserSetting(
+                'question_default_values_'
+                    . $data['question']['type'],
+                ls_json_encode(
+                    $data['advancedSettings']
+                )
+            );
+        } elseif (
+            array_key_exists(
+                'clear_default',
+                $data['question']
+            )
+            && $data['question']['clear_default'] == 'Y'
+        ) {
+            $this->proxySettingsUser->deleteUserSetting(
+                'question_default_values_'
+                    . $data['question']['type']
+            );
+        }
     }
 }

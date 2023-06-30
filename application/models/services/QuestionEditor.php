@@ -15,7 +15,6 @@ use LimeSurvey\Models\Services\QuestionEditor\{
 };
 
 use LimeSurvey\Models\Services\Proxy\{
-    ProxySettingsUser,
     ProxyExpressionManager
 };
 
@@ -41,7 +40,6 @@ class QuestionEditor
     private QuestionEditorSubQuestions $questionEditorSubQuestions;
     private Permission $modelPermission;
     private Question $modelQuestion;
-    private ProxySettingsUser $proxySettingsUser;
     private ProxyExpressionManager $proxyExpressionManager;
     private CDbConnection $yiiDb;
 
@@ -53,7 +51,6 @@ class QuestionEditor
         QuestionEditorSubQuestions $questionEditorSubQuestions,
         Question $modelQuestion,
         Permission $modelPermission,
-        ProxySettingsUser $proxySettingsUser,
         ProxyExpressionManager $proxyExpressionManager,
         CDbConnection $yiiDb
     ) {
@@ -64,7 +61,6 @@ class QuestionEditor
         $this->questionEditorSubQuestions = $questionEditorSubQuestions;
         $this->modelQuestion = $modelQuestion;
         $this->modelPermission = $modelPermission;
-        $this->proxySettingsUser = $proxySettingsUser;
         $this->proxyExpressionManager = $proxyExpressionManager;
         $this->yiiDb = $yiiDb;
     }
@@ -189,8 +185,6 @@ class QuestionEditor
                     $data['question']
                 );
 
-            $this->saveDefaults($data);
-
             $this->questionEditorAnswers->save(
                 $question,
                 $input['answeroptions']
@@ -219,39 +213,5 @@ class QuestionEditor
         }
 
         return $question;
-    }
-
-    /**
-     * Save defaults
-     */
-    private function saveDefaults($data)
-    {
-        // Save advanced attributes default values for given question type
-        if (
-            array_key_exists(
-                'save_as_default',
-                $data['question']
-            )
-            && $data['question']['save_as_default'] == 'Y'
-        ) {
-            $this->proxySettingsUser->setUserSetting(
-                'question_default_values_'
-                    . $data['question']['type'],
-                ls_json_encode(
-                    $data['advancedSettings']
-                )
-            );
-        } elseif (
-            array_key_exists(
-                'clear_default',
-                $data['question']
-            )
-            && $data['question']['clear_default'] == 'Y'
-        ) {
-            $this->proxySettingsUser->deleteUserSetting(
-                'question_default_values_'
-                    . $data['question']['type']
-            );
-        }
     }
 }
