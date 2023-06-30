@@ -34,7 +34,6 @@ use LimeSurvey\Models\Services\Exception\{
  */
 class QuestionEditor
 {
-
     private QuestionEditorQuestion $questionEditorQuestion;
     private QuestionEditorL10n $questionEditorL10n;
     private QuestionEditorAttributes $questionEditorAttributes;
@@ -52,19 +51,19 @@ class QuestionEditor
         QuestionEditorAttributes $questionEditorAttributes,
         QuestionEditorAnswers $questionEditorAnswers,
         QuestionEditorSubQuestions $questionEditorSubQuestions,
-        Permission $modelPermission,
         Question $modelQuestion,
+        Permission $modelPermission,
         ProxySettingsUser $proxySettingsUser,
         ProxyExpressionManager $proxyExpressionManager,
         CDbConnection $yiiDb
     ) {
         $this->questionEditorQuestion = $questionEditorQuestion;
         $this->questionEditorL10n = $questionEditorL10n;
-        $this->modelPermission = $modelPermission;
-        $this->modelQuestion = $modelQuestion;
         $this->questionEditorAttributes = $questionEditorAttributes;
         $this->questionEditorAnswers = $questionEditorAnswers;
         $this->questionEditorSubQuestions = $questionEditorSubQuestions;
+        $this->modelQuestion = $modelQuestion;
+        $this->modelPermission = $modelPermission;
         $this->proxySettingsUser = $proxySettingsUser;
         $this->proxyExpressionManager = $proxyExpressionManager;
         $this->yiiDb = $yiiDb;
