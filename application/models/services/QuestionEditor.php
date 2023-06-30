@@ -34,14 +34,14 @@ use LimeSurvey\Models\Services\Exception\{
  */
 class QuestionEditor
 {
-    private Permission $modelPermission;
-    private Question $modelQuestion;
 
     private QuestionEditorQuestion $questionEditorQuestion;
     private QuestionEditorL10n $questionEditorL10n;
     private QuestionEditorAttributes $questionEditorAttributes;
     private QuestionEditorAnswers $questionEditorAnswers;
     private QuestionEditorSubQuestions $questionEditorSubQuestions;
+    private Permission $modelPermission;
+    private Question $modelQuestion;
     private ProxySettingsUser $proxySettingsUser;
     private ProxyExpressionManager $proxyExpressionManager;
     private CDbConnection $yiiDb;
