@@ -4,14 +4,13 @@ namespace LimeSurvey\Models\Services;
 
 use Permission;
 use Question;
-use Answer;
-use AnswerL10n;
 use CDbConnection;
 
 use LimeSurvey\Models\Services\QuestionEditor\{
     QuestionEditorQuestion,
     QuestionEditorL10n,
-    QuestionEditorAttributes
+    QuestionEditorAttributes,
+    QuestionEditorAnswers
 };
 
 use LimeSurvey\Models\Services\Proxy\{
@@ -41,6 +40,7 @@ class QuestionEditor
     private QuestionEditorQuestion $questionEditorQuestion;
     private QuestionEditorL10n $questionEditorL10n;
     private QuestionEditorAttributes $questionEditorAttributes;
+    private QuestionEditorAnswers $questionEditorAnswers;
     private ProxySettingsUser $proxySettingsUser;
     private ProxyExpressionManager $proxyExpressionManager;
     private CDbConnection $yiiDb;
@@ -49,6 +49,7 @@ class QuestionEditor
         QuestionEditorQuestion $questionEditorQuestion,
         QuestionEditorL10n $questionEditorL10n,
         QuestionEditorAttributes $questionEditorAttributes,
+        QuestionEditorAnswers $questionEditorAnswers,
         Permission $modelPermission,
         Question $modelQuestion,
         ProxySettingsUser $proxySettingsUser,
@@ -60,6 +61,7 @@ class QuestionEditor
         $this->modelPermission = $modelPermission;
         $this->modelQuestion = $modelQuestion;
         $this->questionEditorAttributes = $questionEditorAttributes;
+        $this->questionEditorAnswers = $questionEditorAnswers;
         $this->proxySettingsUser = $proxySettingsUser;
         $this->proxyExpressionManager = $proxyExpressionManager;
         $this->yiiDb = $yiiDb;
@@ -187,16 +189,10 @@ class QuestionEditor
 
             $this->saveDefaults($data);
 
-            // Clean answer options before save.
-            // NB: Still inside a database transaction.
-            $question->deleteAllAnswers();
-            // If question type has answeroptions, save them.
-            if ($question->questionType->answerscales > 0) {
-                $this->storeAnswerOptions(
-                    $question,
-                    $input['answeroptions'] ?? []
-                );
-            }
+            $this->questionEditorAnswers->save(
+                $question,
+                $input['answeroptions']
+            );
 
             if ($question->survey->active == 'N') {
                 // Clean subQuestions before save.
@@ -266,99 +262,6 @@ class QuestionEditor
             $this->proxySettingsUser->deleteUserSetting(
                 'question_default_values_'
                     . $data['question']['type']
-            );
-        }
-    }
-
-
-    /**
-     * Store new answer options.
-     * Different from update during active survey?
-     *
-     * @param Question $question
-     * @param array $optionsArray
-     * @return void
-     * @throws PersistErrorException
-     */
-    private function storeAnswerOptions(Question $question, $optionsArray)
-    {
-        $count = 0;
-        foreach ($optionsArray as $optionArray) {
-            $this->storeAnswerOption(
-                $question,
-                $optionArray,
-                $count
-            );
-        }
-        return true;
-    }
-
-    /**
-     * Store new answer options.
-     * Different from update during active survey?
-     *
-     * @param Question $question
-     * @param array $optionsArray
-     * @param int &$count
-     * @return void
-     * @throws PersistErrorException
-     */
-    private function storeAnswerOption(Question $question, $optionArray, &$count)
-    {
-        foreach ($optionArray as $scaleId => $data) {
-            if (!isset($data['code'])) {
-                throw new Exception(
-                    'code is not set in data: ' . json_encode($data)
-                );
-            }
-            $answer = new Answer();
-            $answer->qid = $question->qid;
-            $answer->code = $data['code'];
-            $answer->sortorder = $count;
-            $count++;
-            if (isset($data['assessment'])) {
-                $answer->assessment_value = $data['assessment'];
-            } else {
-                $answer->assessment_value = 0;
-            }
-            $answer->scale_id = $scaleId;
-            if (!$answer->save()) {
-                throw new PersistErrorException(
-                    gT('Could not save answer')
-                );
-            }
-            $answer->refresh();
-            foreach (
-                $data['answeroptionl10n']
-                as $language => $answerOptionText
-            ) {
-                $this->storeAnswerL10n(
-                    $answer,
-                    $language,
-                    $answerOptionText
-                );
-            }
-        }
-    }
-
-    /**
-     * Store new answer L10n
-     *
-     * @param Answer $answer
-     * @param string $language
-     * @param string $text
-     * @return void
-     * @throws PersistErrorException
-     */
-    private function storeAnswerL10n(Answer $answer, $language, $text)
-    {
-        $l10n = new AnswerL10n();
-        $l10n->aid = $answer->aid;
-        $l10n->language = $language;
-        $l10n->answer = $text;
-        if (!$l10n->save()) {
-            throw new PersistErrorException(
-                gT('Could not save answer option')
             );
         }
     }
