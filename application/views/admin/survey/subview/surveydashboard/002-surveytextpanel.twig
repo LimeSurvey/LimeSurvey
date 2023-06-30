@@ -11,18 +11,17 @@
     <ul class="list-group list-group-flush">
             <!-- Description -->
         <li class="list-group-item p-0 border-0">
-            <div class="ls-flex-row col-12 gap-2">
+            <div class="ls-flex-row col-12">
                 <div class="col-4 card-label">
                     {{gT("Description:")}}
                 </div>
-                <div class="col-8 ">
+                <div class="col-8 ls-card-grid__description">
                         {% if surveyTextContent.surveyls_description != '' %}
                             <span id="description" class="line-clamp-3">
                                 {{getExpressionManagerOutput(surveyTextContent.surveyls_description)}}
                             </span>
                             {% if surveyTextContent.surveyls_description|length > 50  %}
-                                <a href="#" onclick="{document.getElementById('description').classList.remove('line-clamp-3'); 
-                                            this.style.display = 'none'}"> {{gT("...more")}}</a>
+                                {{getTextDisplayWidget(surveyTextContent.surveyls_description, "description_text")}}
                             {% endif %}
                         {% endif %}
 
@@ -31,11 +30,11 @@
         </li>
         <!-- Welcome -->
         <li class="list-group-item p-0 border-0">
-            <div class="ls-flex-row col-12 gap-2">
+            <div class="ls-flex-row col-12">
                 <div class="col-4 card-label">
                     {{gT("Welcome:")}}
                 </div>
-                <div class="col-8 py-1">
+                <div class="col-8 ls-card-grid__description">
                         {% if surveyTextContent.surveyls_welcometext != '' %}
                             {{getTextDisplayWidget(surveyTextContent.surveyls_welcometext, "welcome_text")}}
                         {% endif %}
@@ -45,11 +44,11 @@
 
         <!-- End message -->
         <li class="list-group-item p-0 border-0">
-            <div class="ls-flex-row col-12 gap-2">
+            <div class="ls-flex-row col-12">
                 <div class="col-4 card-label">
                     {{gT("End message:")}}
                 </div>
-                <div class="col-8">
+                <div class="col-8 ls-card-grid__description">
                     {% if surveyTextContent.surveyls_endtext != '' %}
                         {{getTextDisplayWidget(surveyTextContent.surveyls_endtext, "end_text")}}
                     {% endif %}
@@ -59,11 +58,11 @@
         {% if oSurvey.showsurveypolicynotice > 0 %}
                     <!-- Data security notice -->
                     <li class="list-group-item p-0 border-0">
-                        <div class="ls-flex-row col-12 gap-2">
+                        <div class="ls-flex-row col-12">
                             <div class="col-4 card-label">
                                  {{ gT("Privacy policy text:") }}
                             </div>
-                            <div class="col-8">
+                            <div class="col-8 ls-card-grid__description">
                                 {% if surveyTextContent.surveyls_policy_notice != '' %}
                                     {{getTextDisplayWidget(surveyTextContent.surveyls_policy_notice, "security_notice")}}
                                 {% endif %}
@@ -72,11 +71,11 @@
                     </li>
                     <!-- Data security notice error -->
                     <li class="list-group-item p-0 border-0">
-                        <div class="ls-flex-row col-12 gap-2">
+                        <div class="ls-flex-row col-12">
                             <div class="col-4 card-label">
                                 {{ gT("Privacy policy error text:") }}
                             </div>
-                            <div class="col-8">
+                            <div class="col-8 ls-card-grid__description">
                                 {% if surveyTextContent.surveyls_policy_error != '' %}
                                     {{getTextDisplayWidget(surveyTextContent.surveyls_policy_error, "security_error")}}
                                 {% endif %}
@@ -85,11 +84,11 @@
                     </li>
                     <!-- Data security notice label -->
                     <li class="list-group-item p-0 border-0">
-                        <div class="ls-flex-row col-12 gap-2">
+                        <div class="ls-flex-row col-12">
                             <div class="col-4 card-label">
                                 {{ gT("Privacy policy label text:") }}
                             </div>
-                            <div class="col-8">
+                            <div class="col-8 ls-card-grid__description">
                                 {% if surveyTextContent.surveyls_policy_notice_label != '' %}
                                     {{getExpressionManagerOutput(surveyTextContent.surveyls_policy_notice_label)}}
                                 {% endif %}
