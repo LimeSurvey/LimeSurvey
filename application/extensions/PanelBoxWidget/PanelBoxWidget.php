@@ -119,14 +119,14 @@ class PanelBoxWidget extends CWidget
         $box = ($box == '') ? $this : $box;
         if ($box->usergroup == '-1') {
             return true;
-        } // If the usergroup is not set, or set to -2, only admin can see the box
+        } // If the user group is not set, or set to -2, only admin can see the box
         elseif (empty($box->usergroup) || $box->usergroup == '-2') {
             if (Permission::model()->hasGlobalPermission('superadmin', 'read') ? 1 : 0) {
                 return true;
             } else {
                 return false;
             }
-        } // If usergroup is set to -3, nobody can see the box
+        } // If user group is set to -3, nobody can see the box
         elseif ($box->usergroup == '-3') {
             return false;
         } // If usegroup is set and exist, if the user belong to it, he can see the box

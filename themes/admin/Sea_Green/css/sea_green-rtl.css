@@ -15636,31 +15636,6 @@ fieldset[disabled] .form-control {
   background-color: #a0352f;
 }
 
-.list-group-item {
-  background-color: #fff;
-  border: 1px solid #dadada;
-}
-
-.list-group-item-success {
-  color: #328637;
-  background-color: #c0e3c2;
-}
-
-.list-group-item-info {
-  color: #39993f;
-  background-color: #649b6b;
-}
-
-.list-group-item-warning {
-  color: #FFE046;
-  background-color: #bba18c;
-}
-
-.list-group-item-danger {
-  color: #e8afae;
-  background-color: #be6665;
-}
-
 .close {
   color: #000;
   text-shadow: 0 1px 0 #fff;
@@ -19443,4 +19418,32 @@ table [class^=ri-], table [class*=" ri-"] {
 .file-manager-body #settings label.sh-uniform {
   color: #1E1E1E !important;
   font-size: 0.855rem !important;
+}
+
+.list-group-item {
+  background-color: #fff;
+  border: 1px solid #dadada;
+}
+.list-group-item .selector__toggle_full_text {
+  padding: 4px 0;
+}
+
+.list-group-item-success {
+  color: #328637;
+  background-color: #c0e3c2;
+}
+
+.list-group-item-info {
+  color: #39993f;
+  background-color: #649b6b;
+}
+
+.list-group-item-warning {
+  color: #FFE046;
+  background-color: #bba18c;
+}
+
+.list-group-item-danger {
+  color: #e8afae;
+  background-color: #be6665;
 }
