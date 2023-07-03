@@ -15402,14 +15402,19 @@ html, body {
 .form-change-lang .language-icon {
   float: left;
   margin-right: 4px;
-  margin-top: 2px;
   font-weight: 400;
 }
 .form-change-lang #language-changer-select {
   font-weight: 600;
   font-size: 1.14rem;
   line-height: 20px;
+  cursor: pointer;
   border: none;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  position: relative;
+  z-index: 10;
 }
 .form-change-lang #language-changer-select:focus-visible {
   outline: none;
@@ -15427,6 +15432,19 @@ html, body {
 }
 .form-change-lang #language-changer-select {
   color: #8146F6;
+  background-color: transparent;
+}
+.form-change-lang #lang-select {
+  background-color: #ffffff;
+}
+.form-change-lang #lang-select::after {
+  cursor: pointer;
+  position: relative;
+  right: 16px;
+  color: #8146F6;
+  font-family: "remixicon";
+  content: "\ea50";
+  z-index: 5;
 }
 
 .darkmode-on {

@@ -98,7 +98,7 @@ $(document).on('ready pjax:scriptcomplete', function() {
 
             // Insert nice arrow
             var col = $(this).find('.col-md-6:first-child');
-            col.append('<span class="fa fa-arrows-h csvatt-arrow"></span>');
+            col.append('<span class="ri-arrow-left-right-fill csvatt-arrow"></span>');
 
             // Physically  move the draggable to the target (the plugin just visually moves it)
             // Need to use a clone for this to fake out iPad

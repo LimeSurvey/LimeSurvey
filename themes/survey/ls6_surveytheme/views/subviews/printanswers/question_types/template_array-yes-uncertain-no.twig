@@ -5,11 +5,11 @@
         <div class="row">
             <div class="col-lg-4 text-end">
                 {% if subquestion.answervalue is same as("Y") %}
-                    {{ gT("Yes") }} <i class="fa fa-check-square-o"></i>
+                    {{ gT("Yes") }} <i class="ri-checkbox-line"></i>
                 {% elseif subquestion.answervalue is same as("N") %}
-                    {{ gT("No") }} <i class="fa fa-square-o"></i>
+                    {{ gT("No") }} <i class="ri-checkbox-blank-line"></i>
                 {% elseif subquestion.answervalue is same as("U") %}
-                    {{ gT("Uncertain") }} <i class="fa fa-minus-square-o"></i>
+                    {{ gT("Uncertain") }} <i class="ri-checkbox-indeterminate-line"></i>
                 {% else %}
 
                 {% endif %}

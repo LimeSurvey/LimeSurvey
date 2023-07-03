@@ -638,9 +638,10 @@ function activateLanguageChanger() {
   //autosizing for width of select (space between caret and selected option text)
   var autoSizeSelect = function autoSizeSelect() {
     var text = $('#language-changer-select').find('option:selected').text();
-    var $aux = $('<select/>').append($('<option/>').text(text));
+    var $aux = $('<span/>').text(text);
+    $aux.addClass('h2');
     $('#language-changer-select').after($aux);
-    var width = $aux.width() + $aux.width() * 0.04;
+    var width = $aux.width() + 8;
     $('#language-changer-select').width(width);
     $aux.remove();
   };

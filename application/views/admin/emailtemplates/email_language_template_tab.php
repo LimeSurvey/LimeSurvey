@@ -59,7 +59,7 @@ $script = array();
     <div class="row">
             <label class='form-label col-12' for="attachments_<?php echo "{$grouplang}-{$tab}"; ?>"><?php echo $details['attachments']; ?></label>
             <div class="col-12">
-                <button class="add-attachment btn btn-outline-secondary" data-bs-target="#attachments-<?php echo $grouplang; ?>-<?php echo $tab ?>" data-ck-target="<?="email_{$tab}_{$grouplang}"?>" id="add-attachment-<?php echo "{$grouplang}-{$tab}"; ?>"><?php eT("Add file"); ?></button> &nbsp;
+                <button class="add-attachment btn btn-outline-secondary" data-target="#attachments-<?php echo $grouplang; ?>-<?php echo $tab ?>" data-ck-target="<?="email_{$tab}_{$grouplang}"?>" id="add-attachment-<?php echo "{$grouplang}-{$tab}"; ?>"><?php eT("Add file"); ?></button> &nbsp;
             </div>
     </div>
 

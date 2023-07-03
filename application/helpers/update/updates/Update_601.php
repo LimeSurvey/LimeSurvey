@@ -13,9 +13,11 @@ class Update_601 extends DatabaseUpdateBase
     {
         // Add button text column to boxes table
         try {
+            setTransactionBookmark();
             $this->db->createCommand()->addColumn('{{boxes}}', 'buttontext', 'string(255)');
         } catch (Exception $e) {
             // Column already exists - ignore
+            rollBackToTransactionBookmark();
         }
         $this->updateCreateSurvey();
         $this->updateSurveyList();
