@@ -1253,7 +1253,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
                 alert('Found no <select>');
                 throw 'abort';
             }
-            $.getJSON(languageJson.lanameurl, (data) => {
+            $.getJSON(languageJson.lanrestrictedurl, (data) => {
               $.each(data, (key, val) => {
                 if (typeof val === 'string') {
                   $(select).append(`<option value="${key}">${val}</option>`);
