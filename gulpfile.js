@@ -198,6 +198,32 @@ function survey_theme_ls6() {
     return merge(variationsFiles);
 }
 
+function survey_theme_ls6_rtl() {
+    let variations = [
+        ["apple", "#14AE5C"],
+        ["blueberry", "#5076FF"],
+        ["grape", "#8146F6"],
+        ["mango", "#ED5046"],
+    ];
+    let plugins = [
+        autoprefixer(),
+        // cssnano()
+    ];
+
+    let variationsFiles = variations.map(variation => {
+        let variationName = variation[0];
+        let variationColor = variation[1];
+        return src(['assets/survey_themes/ls6_surveytheme/ls6_theme_template.scss'])
+            .pipe(replace('$base-color: #ffffff;', '$base-color: ' + variationColor + ';'))
+            .pipe(sass())
+            .pipe(rtlcss())
+            .pipe(gulppostcss(plugins))
+            .pipe(rename('theme_' + variationName + '-rtl.css'))
+            .pipe(dest('themes/survey/ls6_surveytheme/css/variations'));
+    });
+    return merge(variationsFiles);
+}
+
 function survey_theme_ls6_js() {
     // browserify package handler
     return browserify({
@@ -225,10 +251,12 @@ function survey_theme_ls6_js() {
 
 exports.build_survey_theme_ls6 = parallel(
     survey_theme_ls6,
+    survey_theme_ls6_rtl,
     survey_theme_ls6_js
 );
 
 exports.watch_survey_theme_ls6 = function () {
     watch('assets/survey_themes/ls6_surveytheme/**/*.scss', survey_theme_ls6);
+    watch('assets/survey_themes/ls6_surveytheme/**/*.scss', survey_theme_ls6_rtl);
     watch('assets/survey_themes/ls6_surveytheme/**/*.js', survey_theme_ls6_js);
 };
