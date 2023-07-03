@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2023-06-26 09:59:50+00:00\n"
+"POT-Creation-Date: 2023-07-03 08:02:14+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -18,7 +18,7 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 
 #: application/controllers/AdminController.php:98
-#: application/controllers/UserManagementController.php:1006
+#: application/controllers/UserManagementController.php:1080
 #: application/controllers/admin/DataEntry.php:196
 #: application/controllers/admin/DataEntry.php:1740
 #: application/controllers/admin/DataEntry.php:1743
@@ -160,30 +160,27 @@ msgstr ""
 #: application/controllers/ThemeOptionsController.php:420
 #: application/controllers/ThemeOptionsController.php:621
 #: application/controllers/ThemeOptionsController.php:625
-#: application/controllers/UserManagementController.php:44
-#: application/controllers/UserManagementController.php:100
-#: application/controllers/UserManagementController.php:130
-#: application/controllers/UserManagementController.php:244
-#: application/controllers/UserManagementController.php:295
-#: application/controllers/UserManagementController.php:376
-#: application/controllers/UserManagementController.php:400
-#: application/controllers/UserManagementController.php:423
-#: application/controllers/UserManagementController.php:477
-#: application/controllers/UserManagementController.php:510
-#: application/controllers/UserManagementController.php:547
-#: application/controllers/UserManagementController.php:579
+#: application/controllers/UserManagementController.php:46
+#: application/controllers/UserManagementController.php:102
+#: application/controllers/UserManagementController.php:132
+#: application/controllers/UserManagementController.php:246
+#: application/controllers/UserManagementController.php:441
+#: application/controllers/UserManagementController.php:465
+#: application/controllers/UserManagementController.php:493
+#: application/controllers/UserManagementController.php:548
+#: application/controllers/UserManagementController.php:581
 #: application/controllers/UserManagementController.php:618
-#: application/controllers/UserManagementController.php:655
-#: application/controllers/UserManagementController.php:686
-#: application/controllers/UserManagementController.php:775
-#: application/controllers/UserManagementController.php:856
-#: application/controllers/UserManagementController.php:933
-#: application/controllers/UserManagementController.php:986
-#: application/controllers/UserManagementController.php:1034
-#: application/controllers/UserManagementController.php:1088
-#: application/controllers/UserManagementController.php:1134
-#: application/controllers/UserManagementController.php:1156
-#: application/controllers/UserManagementController.php:1216
+#: application/controllers/UserManagementController.php:650
+#: application/controllers/UserManagementController.php:692
+#: application/controllers/UserManagementController.php:729
+#: application/controllers/UserManagementController.php:760
+#: application/controllers/UserManagementController.php:849
+#: application/controllers/UserManagementController.php:930
+#: application/controllers/UserManagementController.php:1007
+#: application/controllers/UserManagementController.php:1060
+#: application/controllers/UserManagementController.php:1108
+#: application/controllers/UserManagementController.php:1162
+#: application/controllers/UserManagementController.php:1338
 #: application/controllers/UserRoleController.php:148
 #: application/controllers/UserRoleController.php:195
 #: application/controllers/admin/CheckIntegrity.php:36
@@ -939,7 +936,7 @@ msgstr ""
 #: application/views/admin/token/massive_actions/_update.php:21
 #: application/views/admin/token/tokenform.php:52
 #: application/views/userManagement/massiveAction/_updatepermissions.php:29
-#: application/views/userManagement/partial/editpermissions.php:16
+#: application/views/userManagement/partial/editpermissions.php:18
 #: application/views/userRole/massiveAction/_updatepermissions.php:31
 #: application/views/userRole/partials/_permissions.php:28
 #: modules/admin/globalsettings/views/globalSettings_view.php:23
@@ -1069,7 +1066,8 @@ msgstr ""
 #: application/controllers/SurveyAdministrationController.php:1894
 #: application/controllers/SurveyAdministrationController.php:2075
 #: application/controllers/SurveyAdministrationController.php:2160
-#: application/controllers/UserGroupController.php:398
+#: application/controllers/UserGroupController.php:403
+#: application/controllers/UserManagementController.php:1220
 #: application/controllers/admin/Labels.php:531
 #: application/controllers/admin/ParticipantsAction.php:627
 #: application/controllers/admin/SurveymenuController.php:53
@@ -1112,7 +1110,7 @@ msgstr ""
 #: application/controllers/SurveyAdministrationController.php:1204
 #: application/controllers/SurveyAdministrationController.php:1276
 #: application/controllers/SurveyAdministrationController.php:1363
-#: application/controllers/UserManagementController.php:178
+#: application/controllers/UserManagementController.php:180
 #: application/controllers/admin/DataEntry.php:258
 #: application/controllers/admin/Labels.php:761
 #: application/controllers/admin/ParticipantsAction.php:59
@@ -1159,6 +1157,11 @@ msgstr ""
 #: application/controllers/ThemeOptionsController.php:290
 #: application/controllers/ThemeOptionsController.php:576
 #: application/controllers/ThemeOptionsController.php:602
+#: application/controllers/UserManagementController.php:300
+#: application/controllers/UserManagementController.php:321
+#: application/controllers/UserManagementController.php:350
+#: application/controllers/UserManagementController.php:359
+#: application/controllers/UserManagementController.php:368
 #: application/controllers/admin/Export.php:986
 #: application/controllers/admin/Export.php:998
 #: application/controllers/admin/QuestionThemes.php:13
@@ -1206,7 +1209,7 @@ msgstr ""
 
 #: application/controllers/QuestionAdministrationController.php:1312
 #: application/controllers/SurveyAdministrationController.php:262
-#: application/controllers/UserManagementController.php:879
+#: application/controllers/UserManagementController.php:953
 #: application/controllers/UserRoleController.php:386
 msgid "Deleted"
 msgstr ""
@@ -1247,12 +1250,12 @@ msgstr ""
 #: application/controllers/SurveyAdministrationController.php:276
 #: application/controllers/ThemeOptionsController.php:209
 #: application/controllers/ThemeOptionsController.php:251
-#: application/controllers/UserManagementController.php:873
-#: application/controllers/UserManagementController.php:909
-#: application/controllers/UserManagementController.php:963
-#: application/controllers/UserManagementController.php:1010
-#: application/controllers/UserManagementController.php:1065
-#: application/controllers/UserManagementController.php:1111
+#: application/controllers/UserManagementController.php:947
+#: application/controllers/UserManagementController.php:983
+#: application/controllers/UserManagementController.php:1037
+#: application/controllers/UserManagementController.php:1084
+#: application/controllers/UserManagementController.php:1139
+#: application/controllers/UserManagementController.php:1185
 #: application/controllers/UserRoleController.php:380
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:58
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_action_results.php:10
@@ -1274,8 +1277,8 @@ msgstr ""
 #: application/controllers/SurveyAdministrationController.php:290
 #: application/controllers/ThemeOptionsController.php:248
 #: application/controllers/ThemeOptionsController.php:257
-#: application/controllers/UserManagementController.php:906
-#: application/controllers/UserManagementController.php:915
+#: application/controllers/UserManagementController.php:980
+#: application/controllers/UserManagementController.php:989
 #: application/extensions/admin/grid/MassiveActionsWidget/views/_selected_items.php:31
 #: application/views/themeOptions/index.php:196
 msgid "Selected"
@@ -1400,7 +1403,7 @@ msgstr ""
 #: application/views/assessment/assessments_edit.php:87
 #: application/views/questionGroupsAdministration/addGroup_view.php:30
 #: application/views/quotas/_form_langsettings.php:16
-#: tmp/runtime/twig_cache/0d/0d210b40a407a4a73dfaab9a84c36ed3d6c73b6aa6ddc409846a5f07810a1185.php:57
+#: tmp/runtime/twig_cache/81/814deb1b5bd95e4b93b32455894c2929f6666fffddd321d9daa52d3b017bea69.php:57
 msgid "Base language"
 msgstr ""
 
@@ -1463,7 +1466,7 @@ msgstr ""
 #: application/controllers/QuotasController.php:358
 #: application/controllers/QuotasController.php:400
 #: application/controllers/QuotasController.php:436
-#: application/controllers/UserManagementController.php:251
+#: application/controllers/UserManagementController.php:253
 msgid "Access denied."
 msgstr ""
 
@@ -1654,8 +1657,8 @@ msgstr ""
 #: application/controllers/ResponsesController.php:158
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:118
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUserKey.php:115
-#: application/models/User.php:137 application/models/User.php:681
-#: application/models/User.php:751
+#: application/models/User.php:139 application/models/User.php:683
+#: application/models/User.php:753
 #: application/views/admin/token/massive_actions/_selector.php:78
 #: application/views/admin/user/modifyuser.php:37
 #: application/views/responses/partial/responseListTable.php:183
@@ -1833,8 +1836,8 @@ msgstr ""
 #: application/models/SurveymenuEntries.php:194
 #: application/models/SurveymenuEntries.php:207
 #: application/models/SurveysGroups.php:179
-#: application/models/TokenDynamic.php:763 application/models/User.php:717
-#: application/models/User.php:739
+#: application/models/TokenDynamic.php:763 application/models/User.php:719
+#: application/models/User.php:741
 #: application/views/SurveysGroupsPermission/subviews/currentUsersList.php:7
 #: application/views/admin/emailtemplates/email_language_template_tab.php:86
 #: application/views/admin/labels/_labelviewtabcontent_view.php:21
@@ -2230,7 +2233,7 @@ msgstr ""
 #: application/views/themeOptions/index.php:143
 #: application/views/themeOptions/index.php:159
 #: application/views/userManagement/massiveAction/_updatepermissions.php:35
-#: application/views/userManagement/partial/editpermissions.php:22
+#: application/views/userManagement/partial/editpermissions.php:24
 #: application/views/userManagement/partial/topbarBtns/leftSideButtons.php:61
 #: application/views/userRole/massiveAction/_updatepermissions.php:37
 #: application/views/userRole/partials/_permissions.php:40
@@ -2271,8 +2274,8 @@ msgstr ""
 #: application/models/TemplateManifest.php:682
 #: application/models/TemplateManifest.php:684
 #: application/models/TemplateManifest.php:687
-#: application/models/TokenDynamic.php:897 application/models/User.php:925
-#: application/models/User.php:931 application/models/UserGroup.php:363
+#: application/models/TokenDynamic.php:897 application/models/User.php:927
+#: application/models/User.php:933 application/models/UserGroup.php:373
 #: application/views/SurveysGroupsPermission/subviews/currentUsersList.php:39
 #: application/views/SurveysGroupsPermission/subviews/currentUsersList.php:40
 #: application/views/admin/conditions/includes/conditions_edit.php:8
@@ -2310,7 +2313,7 @@ msgstr ""
 #: application/views/userManagement/massiveAction/_selector.php:18
 #: application/views/userManagement/massiveAction/_updatepermissions.php:33
 #: application/views/userManagement/partial/confirmuserdelete.php:16
-#: application/views/userManagement/partial/editpermissions.php:20
+#: application/views/userManagement/partial/editpermissions.php:22
 #: application/views/userRole/massiveAction/_selector.php:17
 #: application/views/userRole/massiveAction/_updatepermissions.php:35
 #: application/views/userRole/partials/_permissions.php:36
@@ -2741,7 +2744,7 @@ msgstr ""
 #: application/views/surveyAdministration/activateSurvey_view.php:224
 #: application/views/surveyAdministration/activateSurvey_view.php:243
 #: application/views/userManagement/partial/addedituser.php:91
-#: tmp/runtime/twig_cache/33/33506470a77e5aa6e810f98ab5be2a0526d345524dfab42bc99d24fe814f9539.php:101
+#: tmp/runtime/twig_cache/f4/f41fa7a7b5746a0f674783def4292e293aae564db17e4c8280c36b7b108d1e12.php:101
 msgid "No"
 msgstr ""
 
@@ -2900,7 +2903,7 @@ msgstr ""
 #: tests/functional/acceptance/14782-override-translation/LSMessageSourceTest.php:25
 #: tests/functional/acceptance/14782-override-translation/LSMessageSourceTest.php:48
 #: tests/functional/acceptance/14782-override-translation/LSMessageSourceTest.php:49
-#: tmp/runtime/twig_cache/33/33506470a77e5aa6e810f98ab5be2a0526d345524dfab42bc99d24fe814f9539.php:101
+#: tmp/runtime/twig_cache/f4/f41fa7a7b5746a0f674783def4292e293aae564db17e4c8280c36b7b108d1e12.php:101
 msgid "Yes"
 msgstr ""
 
@@ -2928,7 +2931,7 @@ msgid "Inherit"
 msgstr ""
 
 #: application/controllers/SurveyAdministrationController.php:3103
-#: application/models/User.php:142
+#: application/models/User.php:144
 msgid "Date format"
 msgstr ""
 
@@ -2951,7 +2954,7 @@ msgstr ""
 #: application/models/Surveymenu.php:347
 #: application/models/SurveysGroups.php:97
 #: application/models/SurveysGroups.php:145
-#: application/models/UserGroup.php:288 application/models/UserGroup.php:397
+#: application/models/UserGroup.php:299 application/models/UserGroup.php:407
 #: application/models/UserInPermissionrole.php:58
 #: application/views/admin/pluginmanager/index.php:81
 #: application/views/homepageSettings/index.php:73
@@ -3086,8 +3089,8 @@ msgstr ""
 #: application/views/themeOptions/update.php:69
 #: application/views/userGroup/partial/topbarBtns/rightSideButtons.php:25
 #: application/views/userManagement/partial/addedituser.php:5
-#: application/views/userManagement/partial/addrole.php:50
-#: application/views/userManagement/partial/editpermissions.php:83
+#: application/views/userManagement/partial/addrole.php:52
+#: application/views/userManagement/partial/editpermissions.php:85
 #: application/views/userManagement/partial/edittemplatepermissions.php:53
 #: application/views/userRole/partials/_form.php:12
 #: application/views/userRole/partials/_permissions.php:118
@@ -3177,9 +3180,9 @@ msgstr ""
 #: application/views/themeOptions/index.php:117
 #: application/views/userManagement/partial/adddummyuser.php:32
 #: application/views/userManagement/partial/addedituser.php:141
-#: application/views/userManagement/partial/addrole.php:47
+#: application/views/userManagement/partial/addrole.php:49
 #: application/views/userManagement/partial/confirmuserdelete.php:15
-#: application/views/userManagement/partial/editpermissions.php:80
+#: application/views/userManagement/partial/editpermissions.php:82
 #: application/views/userManagement/partial/edittemplatepermissions.php:51
 #: application/views/userManagement/partial/importuser.php:51
 #: application/views/userRole/partials/_form.php:55
@@ -3226,7 +3229,7 @@ msgstr ""
 
 #: application/controllers/SurveyPermissionsController.php:124
 #: application/controllers/SurveysGroupsPermissionController.php:223
-#: application/controllers/UserGroupController.php:373
+#: application/controllers/UserGroupController.php:378
 msgid "User added."
 msgstr ""
 
@@ -3616,165 +3619,172 @@ msgid "Failed to edit user group! Group already exists?"
 msgstr ""
 
 #: application/controllers/UserGroupController.php:243
+msgid "You don't have permission to edit this usergroup"
+msgstr ""
+
+#: application/controllers/UserGroupController.php:248
 msgid "You don't have permission to edit a usergroup"
 msgstr ""
 
-#: application/controllers/UserGroupController.php:247
+#: application/controllers/UserGroupController.php:252
 msgid "Editing user group (Owner: %s)"
 msgstr ""
 
-#: application/controllers/UserGroupController.php:284
+#: application/controllers/UserGroupController.php:289
 msgid "User group successfully added!"
 msgstr ""
 
-#: application/controllers/UserGroupController.php:301
+#: application/controllers/UserGroupController.php:306
 #: application/views/SurveysGroupsPermission/subviews/addUserGroupResult.php:2
 #: application/views/userGroup/partial/topbarBtns/leftSideButtons.php:8
 msgid "Add user group"
 msgstr ""
 
-#: application/controllers/UserGroupController.php:345
+#: application/controllers/UserGroupController.php:350
 msgid "Successfully deleted user group."
 msgstr ""
 
-#: application/controllers/UserGroupController.php:347
+#: application/controllers/UserGroupController.php:352
 msgid "Could not delete user group."
 msgstr ""
 
-#: application/controllers/UserGroupController.php:375
+#: application/controllers/UserGroupController.php:380
 msgid "User could not be added."
 msgstr ""
 
-#: application/controllers/UserGroupController.php:412
+#: application/controllers/UserGroupController.php:417
 msgid "Group not found."
 msgstr ""
 
-#: application/controllers/UserGroupController.php:418
+#: application/controllers/UserGroupController.php:423
 msgid "You can not add or remove the group owner from the group."
 msgstr ""
 
-#: application/controllers/UserGroupController.php:425
+#: application/controllers/UserGroupController.php:430
 msgid "Unknown user. You have to select a user."
 msgstr ""
 
-#: application/controllers/UserGroupController.php:451
+#: application/controllers/UserGroupController.php:456
 msgid "User removed."
 msgstr ""
 
-#: application/controllers/UserGroupController.php:453
+#: application/controllers/UserGroupController.php:458
 msgid "Failed to remove user."
 msgstr ""
 
-#: application/controllers/UserGroupController.php:489
+#: application/controllers/UserGroupController.php:494
 msgid "Error: no email has been send."
 msgstr ""
 
-#: application/controllers/UserGroupController.php:493
+#: application/controllers/UserGroupController.php:498
 msgid "You do not have permission to send emails to all users. "
 msgstr ""
 
-#: application/controllers/UserGroupController.php:500
+#: application/controllers/UserGroupController.php:505
 #: application/views/userGroup/partial/topbarBtns_manageGroup/leftSideButtons.php:11
 msgid "Mail to all Members"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:69
+#: application/controllers/UserManagementController.php:71
 #: application/views/admin/super/_configuration_menu.php:205
 msgid "User management"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:108
+#: application/controllers/UserManagementController.php:110
+#: application/controllers/UserManagementController.php:311
+#: application/controllers/UserManagementController.php:1208
 msgid "User does not exist"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:146
+#: application/controllers/UserManagementController.php:148
 msgid "Passwords do not match"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:159
+#: application/controllers/UserManagementController.php:161
 msgid "Passwords does not fulfill minimum requirement:"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:196
+#: application/controllers/UserManagementController.php:198
 msgid "User successfully updated"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:303
+#: application/controllers/UserManagementController.php:330
+#: application/controllers/UserManagementController.php:341
 msgid "You cannot delete yourself."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:342
+#: application/controllers/UserManagementController.php:408
 msgid "All of the user's surveys were transferred to %s."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:350
+#: application/controllers/UserManagementController.php:416
 msgid "All participants owned by this user were transferred to %s."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:356
+#: application/controllers/UserManagementController.php:421
 msgid "User successfully deleted."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:435
+#: application/controllers/UserManagementController.php:501
 #: application/views/userManagement/massiveAction/_updatepermissions.php:6
 #: application/views/userRole/massiveAction/_updatepermissions.php:6
 msgid "Note: You can only give limited permissions to other users because your own permissions are limited, too."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:494
+#: application/controllers/UserManagementController.php:565
 msgid "Saved permissions successfully."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:559
+#: application/controllers/UserManagementController.php:630
 msgid "Saved template permissions successfully."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:659
+#: application/controllers/UserManagementController.php:733
 msgid "Please make sure that your CSV contains the fields '%s', '%s', '%s', '%s', and '%s'"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:663
+#: application/controllers/UserManagementController.php:737
 msgid "Please make sure that your JSON arrays contain the fields '%s', '%s', '%s', '%s', and '%s'"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:701
+#: application/controllers/UserManagementController.php:775
 msgid "No user definition found in file."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:756
+#: application/controllers/UserManagementController.php:830
 msgid "Users imported successfully."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:869
+#: application/controllers/UserManagementController.php:943
 msgid "You cannot delete yourself or a protected user."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:873
-#: application/controllers/UserManagementController.php:909
-#: application/controllers/UserManagementController.php:963
-#: application/controllers/UserManagementController.php:1010
-#: application/controllers/UserManagementController.php:1065
-#: application/controllers/UserManagementController.php:1111
+#: application/controllers/UserManagementController.php:947
+#: application/controllers/UserManagementController.php:983
+#: application/controllers/UserManagementController.php:1037
+#: application/controllers/UserManagementController.php:1084
+#: application/controllers/UserManagementController.php:1139
+#: application/controllers/UserManagementController.php:1185
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:17
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUserKey.php:48
-#: application/models/User.php:131 application/models/User.php:673
-#: application/models/User.php:743
+#: application/models/User.php:133 application/models/User.php:675
+#: application/models/User.php:745
 msgid "User ID"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:873
-#: application/controllers/UserManagementController.php:909
-#: application/controllers/UserManagementController.php:963
-#: application/controllers/UserManagementController.php:1010
-#: application/controllers/UserManagementController.php:1065
-#: application/controllers/UserManagementController.php:1111
+#: application/controllers/UserManagementController.php:947
+#: application/controllers/UserManagementController.php:983
+#: application/controllers/UserManagementController.php:1037
+#: application/controllers/UserManagementController.php:1084
+#: application/controllers/UserManagementController.php:1139
+#: application/controllers/UserManagementController.php:1185
 #: application/core/LsDefaultDataSets.php:2847
 #: application/core/plugins/AuthLDAP/AuthLDAP.php:378
 #: application/core/plugins/Authdb/Authdb.php:135
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:110
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUserKey.php:105
-#: application/models/User.php:132 application/models/User.php:677
-#: application/models/User.php:747
+#: application/models/User.php:134 application/models/User.php:679
+#: application/models/User.php:749
 #: application/views/SurveysGroupsPermission/subviews/currentUsersList.php:8
 #: application/views/admin/authentication/forgotpassword.php:35
 #: application/views/admin/user/modifyuser.php:26
@@ -3785,70 +3795,70 @@ msgstr ""
 msgid "Username"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:946
+#: application/controllers/UserManagementController.php:1020
 msgid "Error! Please change your password from your profile settings."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:950
+#: application/controllers/UserManagementController.php:1024
 msgid "Error! You do not have the permission to edit this user."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:956
+#: application/controllers/UserManagementController.php:1030
 msgid "Error: New password could not be sent to %s"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:969
+#: application/controllers/UserManagementController.php:1043
 msgid "Email successfully sent."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1016
+#: application/controllers/UserManagementController.php:1090
 #: application/views/userManagement/partial/permissionsuccess.php:8
 #: application/views/userManagement/partial/success.php:4
 #: application/views/userRole/partials/success.php:2
 msgid "Saved successfully"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1052
+#: application/controllers/UserManagementController.php:1126
 msgid "User is already a member of the group."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1061
+#: application/controllers/UserManagementController.php:1135
 msgid "No user group selected."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1071
+#: application/controllers/UserManagementController.php:1145
 msgid "Usergroup updated"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1103
+#: application/controllers/UserManagementController.php:1177
 msgid "The superadmin role cannot be changed."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1117
+#: application/controllers/UserManagementController.php:1191
 msgid "Role updated"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1247
+#: application/controllers/UserManagementController.php:1369
 msgid "User successfully created"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1277
+#: application/controllers/UserManagementController.php:1399
 msgid "Error: User was not created"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1294
+#: application/controllers/UserManagementController.php:1416
 msgid "You do not have permission for this action."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1305
+#: application/controllers/UserManagementController.php:1427
 msgid "A username was not supplied or the username is invalid."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1314
+#: application/controllers/UserManagementController.php:1436
 msgid "A user with this username already exists."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1321
+#: application/controllers/UserManagementController.php:1443
 #: application/core/plugins/AuthLDAP/AuthLDAP.php:285
 #: application/core/plugins/AuthLDAP/AuthLDAP.php:300
 #: application/core/plugins/Authdb/Authdb.php:72
@@ -3856,7 +3866,7 @@ msgstr ""
 msgid "Failed to add user"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1322
+#: application/controllers/UserManagementController.php:1444
 msgid "Plugin is not active"
 msgstr ""
 
@@ -3916,7 +3926,7 @@ msgstr ""
 #: application/models/Permissiontemplates.php:247
 #: application/models/Surveymenu.php:344
 #: application/models/SurveymenuEntries.php:187
-#: application/models/UserGroup.php:281 application/models/UserGroup.php:390
+#: application/models/UserGroup.php:292 application/models/UserGroup.php:400
 #: application/models/UserInPermissionrole.php:57
 #: application/views/admin/labels/labelsets_view.php:42
 #: application/views/themeOptions/index.php:87
@@ -5673,8 +5683,8 @@ msgstr ""
 #: application/views/userRole/partials/_view.php:37
 #: application/views/userRole/partials/error.php:37
 #: application/views/userRole/partials/success.php:32
-#: tmp/runtime/twig_cache/0d/0d210b40a407a4a73dfaab9a84c36ed3d6c73b6aa6ddc409846a5f07810a1185.php:558
 #: tmp/runtime/twig_cache/80/8024810791e88861194cbe75b2e5f64ae5cc6f142d04063f1fc7702087b9fbfe.php:71
+#: tmp/runtime/twig_cache/81/814deb1b5bd95e4b93b32455894c2929f6666fffddd321d9daa52d3b017bea69.php:558
 #: tmp/runtime/twig_cache/8d/8dda4672a6daa8876ee5819d137a9b890c445522f0ed3e68067d5165ca043b10.php:153
 #: tmp/runtime/twig_cache/f5/f5a008e014fbd7a199d4ac03dad9fcca899080d6b68c91c5267e6275f2bfe11b.php:120
 msgid "Close"
@@ -7179,7 +7189,7 @@ msgid "Open the general survey overview"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:52
-#: tmp/runtime/twig_cache/36/367e9dc4ad7ef886cbe874c15ff5da8d7c353b1a12b08d43e1b3f64ae6f49d38.php:47
+#: tmp/runtime/twig_cache/33/334f67bd8a1669929018e039777ce03729e48deb1d412da8658b682035b81dd7.php:47
 msgid "General survey settings"
 msgstr ""
 
@@ -7193,12 +7203,12 @@ msgstr ""
 
 #: application/core/LsDefaultDataSets.php:80
 #: application/core/LsDefaultDataSets.php:82 application/models/Survey.php:2226
-#: tmp/runtime/twig_cache/63/6383d646a71aaf173888d77ea2e3c1bced462ad1c867782ca45b6369c8515e28.php:49
+#: tmp/runtime/twig_cache/29/29eb195f386ebef4c9fcccf7e6c031a7b9340d338f868bff580de778ede56253.php:49
 msgid "Survey text elements"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:81
-#: tmp/runtime/twig_cache/63/6383d646a71aaf173888d77ea2e3c1bced462ad1c867782ca45b6369c8515e28.php:45
+#: tmp/runtime/twig_cache/29/29eb195f386ebef4c9fcccf7e6c031a7b9340d338f868bff580de778ede56253.php:45
 msgid "Text elements"
 msgstr ""
 
@@ -8657,7 +8667,7 @@ msgstr ""
 
 #: application/core/plugins/AuthLDAP/AuthLDAP.php:379
 #: application/core/plugins/Authdb/Authdb.php:136
-#: application/libraries/Save.php:221 application/models/User.php:133
+#: application/libraries/Save.php:221 application/models/User.php:135
 #: application/views/admin/authentication/newPassword.php:35
 #: application/views/admin/user/modifyuser.php:55
 #: application/views/userManagement/partial/createdrandoms.php:30
@@ -8933,8 +8943,8 @@ msgstr ""
 
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:114
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUserKey.php:110
-#: application/models/User.php:134 application/models/User.php:685
-#: application/models/User.php:755
+#: application/models/User.php:136 application/models/User.php:687
+#: application/models/User.php:757
 #: application/views/SurveysGroupsPermission/subviews/currentUsersList.php:9
 #: application/views/admin/user/modifyuser.php:45
 #: application/views/surveyPermissions/_overview_table.php:15
@@ -9392,7 +9402,7 @@ msgstr ""
 #: application/models/SurveysGroups.php:313
 #: application/views/admin/user/setuserpermissions.php:24
 #: application/views/userManagement/massiveAction/_updatepermissions.php:28
-#: application/views/userManagement/partial/editpermissions.php:15
+#: application/views/userManagement/partial/editpermissions.php:17
 #: application/views/userRole/massiveAction/_updatepermissions.php:30
 #: application/views/userRole/partials/_permissions.php:26
 msgid "Permission"
@@ -9408,7 +9418,7 @@ msgstr ""
 #: application/views/themeOptions/advanced.php:115
 #: application/views/themeOptions/update.php:69
 #: application/views/userManagement/massiveAction/_updatepermissions.php:30
-#: application/views/userManagement/partial/editpermissions.php:17
+#: application/views/userManagement/partial/editpermissions.php:19
 #: application/views/userRole/massiveAction/_updatepermissions.php:32
 #: application/views/userRole/partials/_form.php:9
 #: application/views/userRole/partials/_permissions.php:30
@@ -9419,7 +9429,7 @@ msgstr ""
 #: application/models/Permission.php:890
 #: application/views/admin/user/setuserpermissions.php:27
 #: application/views/userManagement/massiveAction/_updatepermissions.php:31
-#: application/views/userManagement/partial/editpermissions.php:18
+#: application/views/userManagement/partial/editpermissions.php:20
 #: application/views/userRole/massiveAction/_updatepermissions.php:33
 #: application/views/userRole/partials/_permissions.php:32
 msgid "View/read"
@@ -9431,7 +9441,7 @@ msgstr ""
 #: application/views/admin/pluginmanager/uploadConfirm.php:75
 #: application/views/admin/user/setuserpermissions.php:28
 #: application/views/userManagement/massiveAction/_updatepermissions.php:32
-#: application/views/userManagement/partial/editpermissions.php:19
+#: application/views/userManagement/partial/editpermissions.php:21
 #: application/views/userRole/massiveAction/_updatepermissions.php:34
 #: application/views/userRole/partials/_permissions.php:34
 msgid "Update"
@@ -9452,7 +9462,7 @@ msgstr ""
 #: application/views/surveyAdministration/tab_survey_view.php:66
 #: application/views/surveyAdministration/tab_survey_view.php:67
 #: application/views/userManagement/massiveAction/_updatepermissions.php:34
-#: application/views/userManagement/partial/editpermissions.php:21
+#: application/views/userManagement/partial/editpermissions.php:23
 #: application/views/userManagement/partial/importuser.php:54
 #: application/views/userManagement/partial/topbarBtns/leftSideButtons.php:42
 #: application/views/userRole/massiveAction/_updatepermissions.php:36
@@ -9493,7 +9503,7 @@ msgstr ""
 #: application/models/Participant.php:336
 #: application/models/SurveysGroups.php:99
 #: application/models/SurveysGroups.php:166
-#: application/models/UserGroup.php:295 application/models/UserGroup.php:404
+#: application/models/UserGroup.php:306 application/models/UserGroup.php:414
 msgid "Owner"
 msgstr ""
 
@@ -9545,7 +9555,7 @@ msgid "This will update the survey group for all selected surveys."
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_expiry_dialog.php:15
-#: application/models/User.php:146
+#: application/models/User.php:148
 #: application/views/admin/survey/subview/accordion/_publication_panel.php:49
 msgid "Expiry date/time:"
 msgstr ""
@@ -9651,7 +9661,7 @@ msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/searchBox.php:41
 #: application/helpers/common_helper.php:170 application/models/Quota.php:96
-#: application/models/Survey.php:1196 tests/unit/models/SurveyTest.php:153
+#: application/models/Survey.php:1196 tests/unit/models/SurveyTest.php:151
 msgid "Active"
 msgstr ""
 
@@ -9661,7 +9671,7 @@ msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/searchBox.php:47
 #: application/helpers/common_helper.php:178 application/models/Survey.php:1158
-#: tests/unit/models/SurveyTest.php:139
+#: tests/unit/models/SurveyTest.php:137
 msgid "Inactive"
 msgstr ""
 
@@ -11512,13 +11522,13 @@ msgstr ""
 #: application/views/questionGroupsAdministration/group_view.php:21
 #: application/views/userGroup/addUserGroup_view.php:21
 #: application/views/userGroup/editUserGroup_view.php:16
-#: tmp/runtime/twig_cache/63/6383d646a71aaf173888d77ea2e3c1bced462ad1c867782ca45b6369c8515e28.php:64
+#: tmp/runtime/twig_cache/29/29eb195f386ebef4c9fcccf7e6c031a7b9340d338f868bff580de778ede56253.php:64
 msgid "Description:"
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:9034
 #: application/views/admin/survey/editLocalSettings_view.php:132
-#: tmp/runtime/twig_cache/63/6383d646a71aaf173888d77ea2e3c1bced462ad1c867782ca45b6369c8515e28.php:103
+#: tmp/runtime/twig_cache/29/29eb195f386ebef4c9fcccf7e6c031a7b9340d338f868bff580de778ede56253.php:101
 msgid "Welcome:"
 msgstr ""
 
@@ -11526,14 +11536,14 @@ msgstr ""
 #: application/models/services/QuickTranslation.php:501
 #: application/views/admin/survey/editLocalSettings_view.php:144
 #: application/views/admin/survey/editLocalSettings_view.php:153
-#: tmp/runtime/twig_cache/63/6383d646a71aaf173888d77ea2e3c1bced462ad1c867782ca45b6369c8515e28.php:127
+#: tmp/runtime/twig_cache/29/29eb195f386ebef4c9fcccf7e6c031a7b9340d338f868bff580de778ede56253.php:125
 msgid "End message:"
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:9056
 #: application/views/admin/survey/editLocalSettings_view.php:162
 #: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:230
-#: tmp/runtime/twig_cache/0d/0d210b40a407a4a73dfaab9a84c36ed3d6c73b6aa6ddc409846a5f07810a1185.php:128
+#: tmp/runtime/twig_cache/81/814deb1b5bd95e4b93b32455894c2929f6666fffddd321d9daa52d3b017bea69.php:128
 msgid "End URL:"
 msgstr ""
 
@@ -12020,8 +12030,8 @@ msgstr ""
 #: application/helpers/questionHelper.php:128
 #: application/models/SurveysGroupsettings.php:409
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:32
-#: tmp/runtime/twig_cache/0d/0d210b40a407a4a73dfaab9a84c36ed3d6c73b6aa6ddc409846a5f07810a1185.php:357
-#: tmp/runtime/twig_cache/0d/0d210b40a407a4a73dfaab9a84c36ed3d6c73b6aa6ddc409846a5f07810a1185.php:410
+#: tmp/runtime/twig_cache/81/814deb1b5bd95e4b93b32455894c2929f6666fffddd321d9daa52d3b017bea69.php:357
+#: tmp/runtime/twig_cache/81/814deb1b5bd95e4b93b32455894c2929f6666fffddd321d9daa52d3b017bea69.php:410
 msgid "Disabled"
 msgstr ""
 
@@ -14142,7 +14152,7 @@ msgstr ""
 #: application/models/Participant.php:183
 #: application/models/QuestionGroupL10n.php:81
 #: application/models/SurveymenuEntries.php:197
-#: application/models/TokenDynamic.php:673 application/models/User.php:136
+#: application/models/TokenDynamic.php:673 application/models/User.php:138
 #: application/views/admin/authentication/ajaxLogin.php:80
 #: application/views/admin/authentication/login.php:95
 #: application/views/admin/globalsettings/globalSettings_view.php:24
@@ -14428,8 +14438,8 @@ msgstr ""
 
 #: application/models/Participant.php:187 application/models/Surveymenu.php:350
 #: application/models/SurveymenuEntries.php:205
-#: application/models/SurveysGroups.php:102 application/models/User.php:689
-#: application/models/User.php:772
+#: application/models/SurveysGroups.php:102 application/models/User.php:691
+#: application/models/User.php:774
 msgid "Created on"
 msgstr ""
 
@@ -14536,7 +14546,7 @@ msgstr ""
 msgid "Use internal database authentication"
 msgstr ""
 
-#: application/models/Permission.php:654 application/models/User.php:496
+#: application/models/Permission.php:654 application/models/User.php:498
 #: application/views/SurveysGroupsPermission/subviews/currentUsersList.php:22
 #: application/views/SurveysGroupsPermission/subviews/currentUsersList.php:23
 #: application/views/surveyPermissions/_overview_table.php:37
@@ -15094,26 +15104,26 @@ msgstr ""
 msgid "Google Analytics Tracking ID may only contain alphanumeric characters and hyphens."
 msgstr ""
 
-#: application/models/Survey.php:1178 tests/unit/models/SurveyTest.php:171
-#: tests/unit/models/SurveyTest.php:179
+#: application/models/Survey.php:1178 tests/unit/models/SurveyTest.php:169
+#: tests/unit/models/SurveyTest.php:177
 msgid "End: Never"
 msgstr ""
 
-#: application/models/Survey.php:1179 tests/unit/models/SurveyTest.php:199
-#: tests/unit/models/SurveyTest.php:209 tests/unit/models/SurveyTest.php:232
-#: tests/unit/models/SurveyTest.php:242
+#: application/models/Survey.php:1179 tests/unit/models/SurveyTest.php:197
+#: tests/unit/models/SurveyTest.php:207 tests/unit/models/SurveyTest.php:230
+#: tests/unit/models/SurveyTest.php:240
 msgid "End: %s"
 msgstr ""
 
-#: application/models/Survey.php:1180 tests/unit/models/SurveyTest.php:324
-#: tests/unit/models/SurveyTest.php:334 tests/unit/models/SurveyTest.php:355
-#: tests/unit/models/SurveyTest.php:365
+#: application/models/Survey.php:1180 tests/unit/models/SurveyTest.php:322
+#: tests/unit/models/SurveyTest.php:331 tests/unit/models/SurveyTest.php:352
+#: tests/unit/models/SurveyTest.php:362
 msgid "Expired: %s"
 msgstr ""
 
-#: application/models/Survey.php:1181 tests/unit/models/SurveyTest.php:262
-#: tests/unit/models/SurveyTest.php:272 tests/unit/models/SurveyTest.php:294
-#: tests/unit/models/SurveyTest.php:304
+#: application/models/Survey.php:1181 tests/unit/models/SurveyTest.php:260
+#: tests/unit/models/SurveyTest.php:270 tests/unit/models/SurveyTest.php:292
+#: tests/unit/models/SurveyTest.php:302
 msgid "Start: %s"
 msgstr ""
 
@@ -15354,8 +15364,8 @@ msgstr ""
 
 #: application/models/Surveymenu.php:351
 #: application/models/SurveymenuEntries.php:206
-#: application/models/SurveysGroups.php:104 application/models/User.php:694
-#: application/models/User.php:767
+#: application/models/SurveysGroups.php:104 application/models/User.php:696
+#: application/models/User.php:769
 msgid "Created by"
 msgstr ""
 
@@ -15880,162 +15890,162 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: application/models/User.php:135
+#: application/models/User.php:137
 msgid "Parent user"
 msgstr ""
 
-#: application/models/User.php:138
+#: application/models/User.php:140
 msgid "Editor mode"
 msgstr ""
 
-#: application/models/User.php:139
+#: application/models/User.php:141
 msgid "Template editor mode"
 msgstr ""
 
-#: application/models/User.php:140
+#: application/models/User.php:142
 msgid "Question selector mode"
 msgstr ""
 
-#: application/models/User.php:141
+#: application/models/User.php:143
 msgid "One-time password"
 msgstr ""
 
-#: application/models/User.php:143
+#: application/models/User.php:145
 msgid "Created at"
 msgstr ""
 
-#: application/models/User.php:144
+#: application/models/User.php:146
 msgid "Modified at"
 msgstr ""
 
-#: application/models/User.php:145
+#: application/models/User.php:147
 msgid "Last recorded login"
 msgstr ""
 
-#: application/models/User.php:289
+#: application/models/User.php:291
 msgid "Password must be at least %d character long|Password must be at least %d characters long"
 msgstr ""
 
-#: application/models/User.php:294
+#: application/models/User.php:296
 msgid "Password must be at most %d character long|Password must be at most %d characters long"
 msgstr ""
 
-#: application/models/User.php:299
+#: application/models/User.php:301
 msgid "Password must include at least %d lowercase letter|Password must include at least %d lowercase letters"
 msgstr ""
 
-#: application/models/User.php:304
+#: application/models/User.php:306
 msgid "Password must include at least %d uppercase letter|Password must include at least %d uppercase letters"
 msgstr ""
 
-#: application/models/User.php:309
+#: application/models/User.php:311
 msgid "Password must include at least %d number|Password must include at least %d numbers"
 msgstr ""
 
-#: application/models/User.php:314
+#: application/models/User.php:316
 msgid "Password must include at least %d special character|Password must include at least %d special characters"
 msgstr ""
 
-#: application/models/User.php:345
+#: application/models/User.php:347
 msgid "Your new password was not saved because the old password was wrong."
 msgstr ""
 
-#: application/models/User.php:348
+#: application/models/User.php:350
 msgid "Your new password was not saved because it matches the old password."
 msgstr ""
 
-#: application/models/User.php:351
+#: application/models/User.php:353
 msgid "Your new password was not saved because the passwords did not match."
 msgstr ""
 
-#: application/models/User.php:354
+#: application/models/User.php:356
 msgid "The new password can not be empty."
 msgstr ""
 
-#: application/models/User.php:367
+#: application/models/User.php:369
 msgid "A password must meet the following requirements: "
 msgstr ""
 
-#: application/models/User.php:369
+#: application/models/User.php:371
 msgid "At least %d character long.|At least %d characters long."
 msgstr ""
 
-#: application/models/User.php:372
+#: application/models/User.php:374
 msgid "At most %d character long.|At most %d characters long."
 msgstr ""
 
-#: application/models/User.php:376
+#: application/models/User.php:378
 msgid "Exactly %d character long.|Exactly %d characters long."
 msgstr ""
 
-#: application/models/User.php:378
+#: application/models/User.php:380
 msgid "Between %d and %d characters long."
 msgstr ""
 
-#: application/models/User.php:382
+#: application/models/User.php:384
 msgid "At least %d lower case letter.|At least %d lower case letters."
 msgstr ""
 
-#: application/models/User.php:385
+#: application/models/User.php:387
 msgid "At least %d upper case letter.|At least %d upper case letters."
 msgstr ""
 
-#: application/models/User.php:388
+#: application/models/User.php:390
 msgid "At least %d number.|At least %d numbers."
 msgstr ""
 
-#: application/models/User.php:391
+#: application/models/User.php:393
 msgid "At least %d special character.|At least %d special characters."
 msgstr ""
 
-#: application/models/User.php:474
+#: application/models/User.php:476
 #: application/views/userManagement/partial/showuser.php:4
 msgid "User details"
 msgstr ""
 
-#: application/models/User.php:520
+#: application/models/User.php:522
 msgid "User role"
 msgstr ""
 
-#: application/models/User.php:534
+#: application/models/User.php:536
 #: application/views/userManagement/partial/addedituser.php:4
 msgid "Edit user"
 msgstr ""
 
-#: application/models/User.php:549
+#: application/models/User.php:551
 msgid "Template permissions"
 msgstr ""
 
-#: application/models/User.php:563
+#: application/models/User.php:565
 msgid "Take ownership"
 msgstr ""
 
-#: application/models/User.php:574
+#: application/models/User.php:576
 msgid "Do you want to take ownerschip of this user?"
 msgstr ""
 
-#: application/models/User.php:590 application/views/admin/user/deluser.php:30
+#: application/models/User.php:592 application/views/admin/user/deluser.php:30
 #: application/views/userManagement/partial/transfersurveys.php:36
 msgid "Delete User"
 msgstr ""
 
-#: application/models/User.php:701 application/models/User.php:761
+#: application/models/User.php:703 application/models/User.php:763
 msgid "No of surveys"
 msgstr ""
 
-#: application/models/User.php:706
+#: application/models/User.php:708
 msgid "Usergroups"
 msgstr ""
 
-#: application/models/User.php:711
+#: application/models/User.php:713
 msgid "Applied role"
 msgstr ""
 
-#: application/models/User.php:882
+#: application/models/User.php:884
 msgid "%s (%s)"
 msgstr ""
 
-#: application/models/User.php:935
+#: application/models/User.php:937
 msgid "Are you sure you want to delete user '%s' from usergroup '%s'?"
 msgstr ""
 
@@ -16051,48 +16061,48 @@ msgstr ""
 msgid "Failed to add group! Group name length more than 20 characters."
 msgstr ""
 
-#: application/models/UserGroup.php:274 application/models/UserGroup.php:383
+#: application/models/UserGroup.php:285 application/models/UserGroup.php:393
 msgid "User group ID"
 msgstr ""
 
-#: application/models/UserGroup.php:302 application/models/UserGroup.php:411
+#: application/models/UserGroup.php:313 application/models/UserGroup.php:421
 msgid "Members"
 msgstr ""
 
-#: application/models/UserGroup.php:333
+#: application/models/UserGroup.php:344
 msgid "Edit user group"
 msgstr ""
 
-#: application/models/UserGroup.php:340
+#: application/models/UserGroup.php:351
 msgid "View users"
 msgstr ""
 
-#: application/models/UserGroup.php:345
+#: application/models/UserGroup.php:356
 msgid "Email user group"
 msgstr ""
 
-#: application/models/UserGroup.php:353 application/models/UserGroup.php:364
+#: application/models/UserGroup.php:363 application/models/UserGroup.php:374
 msgid "Delete user group"
 msgstr ""
 
-#: application/models/UserGroup.php:360
+#: application/models/UserGroup.php:370
 msgid "Are you sure you want to delete user group '%s'?"
 msgstr ""
 
-#: application/models/UserGroup.php:417
+#: application/models/UserGroup.php:427
 #: application/views/userGroup/viewUserGroup_view.php:85
 msgid "Actions"
 msgstr ""
 
-#: application/models/UserGroup.php:579
+#: application/models/UserGroup.php:589
 msgid "Email to %s failed. Error Message : %s"
 msgstr ""
 
-#: application/models/UserGroup.php:588
+#: application/models/UserGroup.php:598
 msgid "Sending emails to users(sucess/errors):"
 msgstr ""
 
-#: application/models/UserGroup.php:592
+#: application/models/UserGroup.php:602
 msgid "Sending successful"
 msgstr ""
 
@@ -19057,7 +19067,7 @@ msgid "Blacklist user:"
 msgstr ""
 
 #: application/views/admin/participants/modal_subviews/_editParticipant.php:91
-#: tmp/runtime/twig_cache/36/367e9dc4ad7ef886cbe874c15ff5da8d7c353b1a12b08d43e1b3f64ae6f49d38.php:62
+#: tmp/runtime/twig_cache/33/334f67bd8a1669929018e039777ce03729e48deb1d412da8658b682035b81dd7.php:62
 msgid "Owner:"
 msgstr ""
 
@@ -20221,7 +20231,7 @@ msgstr ""
 #: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:154
 #: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:262
 #: application/views/surveyAdministration/tabCreate_view.php:99
-#: tmp/runtime/twig_cache/36/367e9dc4ad7ef886cbe874c15ff5da8d7c353b1a12b08d43e1b3f64ae6f49d38.php:79
+#: tmp/runtime/twig_cache/33/334f67bd8a1669929018e039777ce03729e48deb1d412da8658b682035b81dd7.php:79
 msgid "Administrator:"
 msgstr ""
 
@@ -20254,7 +20264,7 @@ msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:320
 #: application/views/admin/themes/templateeditorbar_view.php:70
-#: tmp/runtime/twig_cache/36/367e9dc4ad7ef886cbe874c15ff5da8d7c353b1a12b08d43e1b3f64ae6f49d38.php:96
+#: tmp/runtime/twig_cache/33/334f67bd8a1669929018e039777ce03729e48deb1d412da8658b682035b81dd7.php:96
 msgid "Theme:"
 msgstr ""
 
@@ -20400,7 +20410,7 @@ msgid "Publication date"
 msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_publication_panel.php:30
-#: tmp/runtime/twig_cache/33/33506470a77e5aa6e810f98ab5be2a0526d345524dfab42bc99d24fe814f9539.php:61
+#: tmp/runtime/twig_cache/f4/f41fa7a7b5746a0f674783def4292e293aae564db17e4c8280c36b7b108d1e12.php:61
 msgid "Start date/time:"
 msgstr ""
 
@@ -24807,11 +24817,11 @@ msgstr ""
 msgid "Edit user roles"
 msgstr ""
 
-#: application/views/userManagement/partial/addrole.php:21
+#: application/views/userManagement/partial/addrole.php:23
 msgid "Note: Adding role(s) to a user will overwrite any individual user permissions!"
 msgstr ""
 
-#: application/views/userManagement/partial/addrole.php:27
+#: application/views/userManagement/partial/addrole.php:29
 msgid "Select role(s):"
 msgstr ""
 
@@ -24823,7 +24833,7 @@ msgstr ""
 msgid "Export as CSV"
 msgstr ""
 
-#: application/views/userManagement/partial/editpermissions.php:70
+#: application/views/userManagement/partial/editpermissions.php:72
 msgid "Warning: The user has at least one role assigned. Setting individual user permissions will remove all roles from this user!"
 msgstr ""
 
@@ -25066,54 +25076,6 @@ msgstr ""
 msgid "This action need to be confirmed."
 msgstr ""
 
-#: tmp/runtime/twig_cache/0d/0d210b40a407a4a73dfaab9a84c36ed3d6c73b6aa6ddc409846a5f07810a1185.php:44
-#: tmp/runtime/twig_cache/0d/0d210b40a407a4a73dfaab9a84c36ed3d6c73b6aa6ddc409846a5f07810a1185.php:200
-msgid "Share survey"
-msgstr ""
-
-#: tmp/runtime/twig_cache/0d/0d210b40a407a4a73dfaab9a84c36ed3d6c73b6aa6ddc409846a5f07810a1185.php:145
-msgid "Number of questions/groups:"
-msgstr ""
-
-#: tmp/runtime/twig_cache/0d/0d210b40a407a4a73dfaab9a84c36ed3d6c73b6aa6ddc409846a5f07810a1185.php:166
-msgid "Sharing panel:"
-msgstr ""
-
-#: tmp/runtime/twig_cache/0d/0d210b40a407a4a73dfaab9a84c36ed3d6c73b6aa6ddc409846a5f07810a1185.php:178
-msgid "Open sharing panel"
-msgstr ""
-
-#: tmp/runtime/twig_cache/0d/0d210b40a407a4a73dfaab9a84c36ed3d6c73b6aa6ddc409846a5f07810a1185.php:209
-msgid "Share QR-code:"
-msgstr ""
-
-#: tmp/runtime/twig_cache/0d/0d210b40a407a4a73dfaab9a84c36ed3d6c73b6aa6ddc409846a5f07810a1185.php:237
-#: tmp/runtime/twig_cache/0d/0d210b40a407a4a73dfaab9a84c36ed3d6c73b6aa6ddc409846a5f07810a1185.php:292
-msgid "Generate QR-Code"
-msgstr ""
-
-#: tmp/runtime/twig_cache/0d/0d210b40a407a4a73dfaab9a84c36ed3d6c73b6aa6ddc409846a5f07810a1185.php:324
-msgid "Share on Facebook:"
-msgstr ""
-
-#: tmp/runtime/twig_cache/0d/0d210b40a407a4a73dfaab9a84c36ed3d6c73b6aa6ddc409846a5f07810a1185.php:330
-msgid "Enable"
-msgstr ""
-
-#: tmp/runtime/twig_cache/0d/0d210b40a407a4a73dfaab9a84c36ed3d6c73b6aa6ddc409846a5f07810a1185.php:441
-msgid "Share on Twitter:"
-msgstr ""
-
-#: tmp/runtime/twig_cache/0d/0d210b40a407a4a73dfaab9a84c36ed3d6c73b6aa6ddc409846a5f07810a1185.php:469
-#: tmp/runtime/twig_cache/0d/0d210b40a407a4a73dfaab9a84c36ed3d6c73b6aa6ddc409846a5f07810a1185.php:525
-msgid "Thanks for taking this survey!"
-msgstr ""
-
-#: tmp/runtime/twig_cache/0d/0d210b40a407a4a73dfaab9a84c36ed3d6c73b6aa6ddc409846a5f07810a1185.php:475
-#: tmp/runtime/twig_cache/0d/0d210b40a407a4a73dfaab9a84c36ed3d6c73b6aa6ddc409846a5f07810a1185.php:531
-msgid "Tweet it"
-msgstr ""
-
 #: tmp/runtime/twig_cache/14/146c682c16b9c1d4f227331706d606d99a9577508d0c79d6441f50a575212780.php:40
 msgid "Group 1: The first lot of questions"
 msgstr ""
@@ -25146,20 +25108,32 @@ msgstr ""
 msgid "Reload captcha"
 msgstr ""
 
-#: tmp/runtime/twig_cache/33/33506470a77e5aa6e810f98ab5be2a0526d345524dfab42bc99d24fe814f9539.php:43
-msgid "Publication and access settings"
+#: tmp/runtime/twig_cache/29/29eb195f386ebef4c9fcccf7e6c031a7b9340d338f868bff580de778ede56253.php:152
+msgid "Privacy policy text:"
 msgstr ""
 
-#: tmp/runtime/twig_cache/33/33506470a77e5aa6e810f98ab5be2a0526d345524dfab42bc99d24fe814f9539.php:47
-msgid "Edit publication and access settings"
+#: tmp/runtime/twig_cache/29/29eb195f386ebef4c9fcccf7e6c031a7b9340d338f868bff580de778ede56253.php:175
+msgid "Privacy policy error text:"
 msgstr ""
 
-#: tmp/runtime/twig_cache/33/33506470a77e5aa6e810f98ab5be2a0526d345524dfab42bc99d24fe814f9539.php:78
-msgid "Expiration date/time:"
+#: tmp/runtime/twig_cache/29/29eb195f386ebef4c9fcccf7e6c031a7b9340d338f868bff580de778ede56253.php:198
+msgid "Privacy policy label text:"
 msgstr ""
 
-#: tmp/runtime/twig_cache/33/33506470a77e5aa6e810f98ab5be2a0526d345524dfab42bc99d24fe814f9539.php:95
-msgid "Listed publicly:"
+#: tmp/runtime/twig_cache/33/334f67bd8a1669929018e039777ce03729e48deb1d412da8658b682035b81dd7.php:43
+msgid "Survey general settings"
+msgstr ""
+
+#: tmp/runtime/twig_cache/33/334f67bd8a1669929018e039777ce03729e48deb1d412da8658b682035b81dd7.php:123
+msgid "Edit theme options"
+msgstr ""
+
+#: tmp/runtime/twig_cache/33/334f67bd8a1669929018e039777ce03729e48deb1d412da8658b682035b81dd7.php:129
+msgid "Open theme editor in new window"
+msgstr ""
+
+#: tmp/runtime/twig_cache/33/334f67bd8a1669929018e039777ce03729e48deb1d412da8658b682035b81dd7.php:144
+msgid "Error: Theme \"%s\" is not installed."
 msgstr ""
 
 #: tmp/runtime/twig_cache/36/365fb08cc4e307938ce410e99249d5c3653d4a9d53c544dc30071e16d7cfc514.php:54
@@ -25168,22 +25142,6 @@ msgstr ""
 
 #: tmp/runtime/twig_cache/36/365fb08cc4e307938ce410e99249d5c3653d4a9d53c544dc30071e16d7cfc514.php:76
 msgid "Open date/time selector"
-msgstr ""
-
-#: tmp/runtime/twig_cache/36/367e9dc4ad7ef886cbe874c15ff5da8d7c353b1a12b08d43e1b3f64ae6f49d38.php:43
-msgid "Survey general settings"
-msgstr ""
-
-#: tmp/runtime/twig_cache/36/367e9dc4ad7ef886cbe874c15ff5da8d7c353b1a12b08d43e1b3f64ae6f49d38.php:123
-msgid "Edit theme options"
-msgstr ""
-
-#: tmp/runtime/twig_cache/36/367e9dc4ad7ef886cbe874c15ff5da8d7c353b1a12b08d43e1b3f64ae6f49d38.php:129
-msgid "Open theme editor in new window"
-msgstr ""
-
-#: tmp/runtime/twig_cache/36/367e9dc4ad7ef886cbe874c15ff5da8d7c353b1a12b08d43e1b3f64ae6f49d38.php:144
-msgid "Error: Theme \"%s\" is not installed."
 msgstr ""
 
 #: tmp/runtime/twig_cache/39/39905c79ee8ac162ff6cfd4bbb806cca6d18f9fa9cd393dea4600873c94a0035.php:111
@@ -25230,22 +25188,6 @@ msgstr ""
 msgid "A fruity theme for a flexible use. This theme offers monochromes variations and many options for easy customizations."
 msgstr ""
 
-#: tmp/runtime/twig_cache/63/6383d646a71aaf173888d77ea2e3c1bced462ad1c867782ca45b6369c8515e28.php:85
-msgid "...more"
-msgstr ""
-
-#: tmp/runtime/twig_cache/63/6383d646a71aaf173888d77ea2e3c1bced462ad1c867782ca45b6369c8515e28.php:154
-msgid "Privacy policy text:"
-msgstr ""
-
-#: tmp/runtime/twig_cache/63/6383d646a71aaf173888d77ea2e3c1bced462ad1c867782ca45b6369c8515e28.php:177
-msgid "Privacy policy error text:"
-msgstr ""
-
-#: tmp/runtime/twig_cache/63/6383d646a71aaf173888d77ea2e3c1bced462ad1c867782ca45b6369c8515e28.php:200
-msgid "Privacy policy label text:"
-msgstr ""
-
 #: tmp/runtime/twig_cache/65/659ce82d31bb83e39f5ae4e9e426401c3cfc58733ca94918d2115c64c961b1ca.php:152
 msgid "For further information please contact %s:"
 msgstr ""
@@ -25256,6 +25198,54 @@ msgstr ""
 
 #: tmp/runtime/twig_cache/77/77a988d404a66c96ff9a7eeb1e8eb4cf283ea21862899195d3fd73a4742d6cb6.php:280
 msgid "Fields marked with an asterisk are mandatory."
+msgstr ""
+
+#: tmp/runtime/twig_cache/81/814deb1b5bd95e4b93b32455894c2929f6666fffddd321d9daa52d3b017bea69.php:44
+#: tmp/runtime/twig_cache/81/814deb1b5bd95e4b93b32455894c2929f6666fffddd321d9daa52d3b017bea69.php:200
+msgid "Share survey"
+msgstr ""
+
+#: tmp/runtime/twig_cache/81/814deb1b5bd95e4b93b32455894c2929f6666fffddd321d9daa52d3b017bea69.php:145
+msgid "Number of questions/groups:"
+msgstr ""
+
+#: tmp/runtime/twig_cache/81/814deb1b5bd95e4b93b32455894c2929f6666fffddd321d9daa52d3b017bea69.php:166
+msgid "Sharing panel:"
+msgstr ""
+
+#: tmp/runtime/twig_cache/81/814deb1b5bd95e4b93b32455894c2929f6666fffddd321d9daa52d3b017bea69.php:178
+msgid "Open sharing panel"
+msgstr ""
+
+#: tmp/runtime/twig_cache/81/814deb1b5bd95e4b93b32455894c2929f6666fffddd321d9daa52d3b017bea69.php:209
+msgid "Share QR-code:"
+msgstr ""
+
+#: tmp/runtime/twig_cache/81/814deb1b5bd95e4b93b32455894c2929f6666fffddd321d9daa52d3b017bea69.php:237
+#: tmp/runtime/twig_cache/81/814deb1b5bd95e4b93b32455894c2929f6666fffddd321d9daa52d3b017bea69.php:292
+msgid "Generate QR-Code"
+msgstr ""
+
+#: tmp/runtime/twig_cache/81/814deb1b5bd95e4b93b32455894c2929f6666fffddd321d9daa52d3b017bea69.php:324
+msgid "Share on Facebook:"
+msgstr ""
+
+#: tmp/runtime/twig_cache/81/814deb1b5bd95e4b93b32455894c2929f6666fffddd321d9daa52d3b017bea69.php:330
+msgid "Enable"
+msgstr ""
+
+#: tmp/runtime/twig_cache/81/814deb1b5bd95e4b93b32455894c2929f6666fffddd321d9daa52d3b017bea69.php:441
+msgid "Share on Twitter:"
+msgstr ""
+
+#: tmp/runtime/twig_cache/81/814deb1b5bd95e4b93b32455894c2929f6666fffddd321d9daa52d3b017bea69.php:469
+#: tmp/runtime/twig_cache/81/814deb1b5bd95e4b93b32455894c2929f6666fffddd321d9daa52d3b017bea69.php:525
+msgid "Thanks for taking this survey!"
+msgstr ""
+
+#: tmp/runtime/twig_cache/81/814deb1b5bd95e4b93b32455894c2929f6666fffddd321d9daa52d3b017bea69.php:475
+#: tmp/runtime/twig_cache/81/814deb1b5bd95e4b93b32455894c2929f6666fffddd321d9daa52d3b017bea69.php:531
+msgid "Tweet it"
 msgstr ""
 
 #: tmp/runtime/twig_cache/8d/8dda4672a6daa8876ee5819d137a9b890c445522f0ed3e68067d5165ca043b10.php:128
@@ -25333,6 +25323,22 @@ msgstr ""
 
 #: tmp/runtime/twig_cache/d6/d6f26731e4b2ddbb43b76caa60a02411d72afa5d1262ead6234ee2551ede9036.php:59
 msgid "This survey is currently not active. You will not be able to save your responses."
+msgstr ""
+
+#: tmp/runtime/twig_cache/f4/f41fa7a7b5746a0f674783def4292e293aae564db17e4c8280c36b7b108d1e12.php:43
+msgid "Publication and access settings"
+msgstr ""
+
+#: tmp/runtime/twig_cache/f4/f41fa7a7b5746a0f674783def4292e293aae564db17e4c8280c36b7b108d1e12.php:47
+msgid "Edit publication and access settings"
+msgstr ""
+
+#: tmp/runtime/twig_cache/f4/f41fa7a7b5746a0f674783def4292e293aae564db17e4c8280c36b7b108d1e12.php:78
+msgid "Expiration date/time:"
+msgstr ""
+
+#: tmp/runtime/twig_cache/f4/f41fa7a7b5746a0f674783def4292e293aae564db17e4c8280c36b7b108d1e12.php:95
+msgid "Listed publicly:"
 msgstr ""
 
 #: tmp/runtime/twig_cache/f5/f5a008e014fbd7a199d4ac03dad9fcca899080d6b68c91c5267e6275f2bfe11b.php:111
