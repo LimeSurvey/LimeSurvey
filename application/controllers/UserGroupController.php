@@ -240,7 +240,7 @@ class UserGroupController extends LSBaseController
                     $aData['model'] = $result;
                     $aData['ugid'] = $result->ugid;
                 } else {
-                    Yii::app()->session['flashmessage'] = gT("You don't have permission to edit this usergroup");
+                    Yii::app()->session['flashmessage'] = gT("You don't have permission to edit this usergroup.");
                     $this->redirect(App()->createUrl("/admin"));
                 }
             }
