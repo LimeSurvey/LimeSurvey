@@ -34,6 +34,17 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.28 (build 230627) to 5.6.29 (build 230704) July 3, 2023
+-Fixed issue 18915: [security] Non-superadmin Admin user is able to edit groups not owned (#3258) (Tim Willig)
+-Fixed issue #18918: [security] Ownership permission update (Patrick Teichmann)
+-Fixed issue #18913: [security] Incorrect permissions for user action (#3255) (Patrick Teichmann)
+#Updated translation: Spanish (Spain) by ireneoh
+#Updated translation: Spanish (Informal) by ireneoh
+#Updated translation: Portuguese (Portugal) by c_schmitz, samarta
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: French (France) by DenisChenu
+
+
 Changes from 5.6.27 (build 230621) to 5.6.28 (build 230627) June 26, 2023
 -Fixed issue: SQL error on import if quota member code is too long (Carsten Schmitz)
 -Fixed issue: Disable system information in demo mode (Carsten Schmitz)
