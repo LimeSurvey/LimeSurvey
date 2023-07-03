@@ -155,7 +155,7 @@ class SurveysGroupsPermissionController extends LSBaseController
             'model' => $model,
         );
 
-        $aData['topbar']['title'] = gT('Permission for group: ') . $model->title;
+        $aData['topbar']['title'] = gT('Permission for group: ') . CHtml::encode($model->title);
         $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
             '/layouts/partial_topbar/right_close_saveclose_save',
             [
@@ -197,7 +197,7 @@ class SurveysGroupsPermissionController extends LSBaseController
         );
         $aData['subview'] = 'addUserResult';
 
-        $aData['topbar']['title'] = gT('Permission for group: ') . $model->title;
+        $aData['topbar']['title'] = gT('Permission for group: ') . CHtml::encode($model->title);
         $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
             '/layouts/partial_topbar/right_close_saveclose_save',
             [
@@ -257,7 +257,7 @@ class SurveysGroupsPermissionController extends LSBaseController
         );
         $aData['subview'] = 'addUserGroupResult';
 
-        $aData['topbar']['title'] = gT('Permission for group: ') . $model->title;
+        $aData['topbar']['title'] = gT('Permission for group: ') . CHtml::encode($model->title);
         $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
             '/layouts/partial_topbar/right_close_saveclose_save',
             [
@@ -446,7 +446,7 @@ class SurveysGroupsPermissionController extends LSBaseController
         );
         $aData['subview'] = 'deleteUserResult';
 
-        $aData['topbar']['title'] = gT('Permission for group: ') . $model->title;
+        $aData['topbar']['title'] = gT('Permission for group: ') . CHtml::encode($model->title);
         $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
             '/layouts/partial_topbar/right_close_saveclose_save',
             [
@@ -510,7 +510,7 @@ class SurveysGroupsPermissionController extends LSBaseController
         );
 
         $hasUpdatePermission = $model->hasPermission('permission', 'update');
-        $aData['topbar']['title'] = gT('Permission for group: ') . $model->title;
+        $aData['topbar']['title'] = gT('Permission for group: ') . CHtml::encode($model->title);
         $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
             '/layouts/partial_topbar/right_close_saveclose_save',
             [
