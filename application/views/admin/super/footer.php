@@ -51,7 +51,7 @@ foreach ($systemInfos as $key => $systemInfo) {
 $questionEditor = $questionEditor ?? false;
 ?>
 <!-- Footer -->
-<footer class="footer d-flex flex-grow-1 flex-column justify-content-end text-end pt-3 pb-4 mt-5 pe-6">
+<footer class="footer d-flex flex-grow-1 flex-column justify-content-end text-end">
     <div>
         <a data-bs-toggle="tooltip" title='<?php eT("Visit our website!"); ?>' href='https://community.limesurvey.org' target='_blank'>LimeSurvey Community Edition</a>
         <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')) { ?>

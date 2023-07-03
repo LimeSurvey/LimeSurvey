@@ -11546,7 +11546,6 @@ blockquote.float-end {
 
 .side-body {
   position: relative;
-  /*margin-bottom: 65px;*/
 }
 
 .side-body h3, .side-body .h3,
@@ -16876,6 +16875,53 @@ tr.info, tr.danger {
   bottom: 16px;
   right: 20px;
 }
+#help-button-dropup > .dropdown-menu {
+  min-width: 167px;
+  color: #fff;
+  background-color: #666666;
+  box-shadow: none;
+  border-radius: 4px;
+  padding: 0px 0px 12px;
+  inset: auto 0px 8px auto !important;
+}
+#help-button-dropup > .dropdown-menu > li > a {
+  color: #fff;
+}
+#help-button-dropup > .dropdown-menu > li > a:hover {
+  background-color: #328637;
+}
+#help-button-dropup > .dropdown-menu > li > a:active, #help-button-dropup > .dropdown-menu > li > a:focus {
+  color: #333641;
+  background-color: #EEEFF7;
+}
+#help-button-dropup > .dropdown-menu .dropdown-header {
+  color: #fff;
+  font-size: var(--bs-root-font-size);
+}
+
+.btn-circle {
+  width: 44px;
+  height: 44px;
+  padding: 12px 10px;
+  border-radius: 35px;
+  text-align: center;
+}
+
+.btn-black60 {
+  color: #fff;
+  border: 1px solid #666666;
+}
+.btn-black60:hover, .btn-black60:focus, .btn-black60:active, .btn-black60.active, .btn-black60.dropdown-toggle.show, .btn-black60.dropdown-toggle.show:focus, .btn-black60[aria-expanded=true] {
+  background-color: #666666;
+  border: 1px solid #000;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+#help-button-dropup {
+  position: fixed;
+  bottom: 16px;
+  right: 20px;
+}
 #help-button-dropup.question-editor-positioning {
   bottom: 52px;
 }
@@ -17106,9 +17152,12 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 
 .footer {
   z-index: 100;
-  position: absolute !important;
   bottom: 0;
-  width: 98%;
+  margin-top: 36px;
+  padding-top: 12px;
+  padding-right: 84px;
+  padding-bottom: 24px;
+  padding-left: 20px;
 }
 
 .sub_footer {
