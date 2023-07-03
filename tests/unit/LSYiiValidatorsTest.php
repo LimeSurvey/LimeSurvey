@@ -51,8 +51,8 @@ class LSYiiValidatorsTest extends TestBaseClass
                 'expected' => '<p>Español.</p>'
             ),
             array(
-                'string'   => 'jav&#x20;ascript:alert(\'XSS\');',
-                'expected' => 'jav ascript:alert(\'XSS\');'
+                'string'   => 'jav&#x09;ascript:alert(\'XSS\');',
+                'expected' => 'jav' . chr(9) . 'ascript:alert(\'XSS\');'
             ),
             array(
                 'string'   => 'javascript:alert(1)',
@@ -122,6 +122,25 @@ class LSYiiValidatorsTest extends TestBaseClass
 
         foreach ($safeCases as $key => $case) {
             $this->assertFalse(\LSYii_Validators::isXssUrl($case), 'Unexpected result in case key ' . $key . '. ' . $case . ' is actually safe.');
+        }
+    }
+
+    /**
+     * Testing that invisible characters are removed.
+     */
+    public function testRemoveInvisibleChars()
+    {
+        $cases = array(
+            "jav&#x09;ascript:alert('XSS')",
+            "jav&#x0A;ascript:alert('XSS')",
+            "jav&#x0D;ascript:alert('XSS')",
+            "java\0script:alert('XSS')",
+        );
+
+        foreach ($cases as $case) {
+            $string = \LSYii_Validators::treatSpecialChars($case);
+            $result = \LSYii_Validators::removeInvisibleChars($string);
+            $this->assertSame('javascript:alert(\'XSS\')', $result, 'Unexpected result, apparently not all invisible chars were removed.');
         }
     }
 }
