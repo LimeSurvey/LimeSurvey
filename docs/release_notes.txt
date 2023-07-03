@@ -34,6 +34,10 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.63 (build 230628) to 3.28.64 (build 230705) July 3, 2023
+#Updated translation: Thai by tomzt
+
+
 Changes from 3.28.62 (build 230619) to 3.28.63 (build 230628) June 26, 2023
 -Fixed issue [security] #18866: Label sets can be replaced by any admin user (#3210) (Denis Chenu)
 -Fixed issue #18868: No CRSF control for delete action of label set (Denis Chenu)
