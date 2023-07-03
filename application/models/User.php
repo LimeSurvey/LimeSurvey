@@ -934,7 +934,7 @@ class User extends LSActiveRecord
                 'data-post-url'  => App()->createUrl("userGroup/deleteUserFromGroup"),
                 'data-post-datas' => json_encode(['ugid' => $userGroupId, 'uid' => $currentUserId]),
                 'data-message'   => sprintf(
-                    gT("Are you sure you want to delete user '%s' from usergroup '%s'?"),
+                    gT("Are you sure you want to delete user '%s' from user group '%s'?"),
                     CHtml::encode($this->users_name),
                     CHtml::encode($userGroup->name)
                 ),

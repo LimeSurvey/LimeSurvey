@@ -240,12 +240,12 @@ class UserGroupController extends LSBaseController
                     $aData['model'] = $result;
                     $aData['ugid'] = $result->ugid;
                 } else {
-                    Yii::app()->session['flashmessage'] = gT("You don't have permission to edit this usergroup.");
+                    Yii::app()->session['flashmessage'] = gT("You don't have permission to edit this user group.");
                     $this->redirect(App()->createUrl("/admin"));
                 }
             }
         } else {
-            Yii::app()->session['flashmessage'] = gT("You don't have permission to edit a usergroup");
+            Yii::app()->session['flashmessage'] = gT("You don't have permission to edit a user group");
             $this->redirect(App()->createUrl("/admin"));
         }
 
@@ -268,7 +268,7 @@ class UserGroupController extends LSBaseController
     }
 
     /**
-     * Adds a user to usergroup if action is set to "saveusergroup"
+     * Adds a user to user group if action is set to "saveusergroup"
      *
      */
     public function actionAddGroup()
@@ -328,7 +328,7 @@ class UserGroupController extends LSBaseController
     }
 
     /**
-     *  Deletes a usergroup and all entries in UserInGroup related to that group
+     *  Deletes a user group and all entries in UserInGroup related to that group
      *
      */
     public function actionDeleteGroup()
