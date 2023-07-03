@@ -519,6 +519,11 @@ class Survey extends LSActiveRecord
             array('startdate', 'date','format' => ['yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m'],'allowEmpty' => true),
             array('datecreated', 'date','format' => ['yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m'],'allowEmpty' => true),
             array('expires', 'checkExpireAfterStart'),
+            // The Google Analytics Tracking ID is inserted in a JS script. If the following rule is changed, make sure
+            // that it doesn't render it vulnerable to XSS attacks.
+            array('googleanalyticsapikey', 'match', 'pattern' => '/^[a-zA-Z\-\d]*$/',
+                'message' => gT('Google Analytics Tracking ID may only contain alphanumeric characters and hyphens.'),
+            ),
         );
     }
 
@@ -805,11 +810,13 @@ class Survey extends LSActiveRecord
      */
     public function getGoogleanalyticsapikey()
     {
+        $key = null;
         if ($this->googleanalyticsapikey === "9999useGlobal9999") {
-            return trim(Yii::app()->getConfig('googleanalyticsapikey'));
+            $key = trim(Yii::app()->getConfig('googleanalyticsapikey'));
         } else {
-            return trim($this->googleanalyticsapikey);
+            $key = trim($this->googleanalyticsapikey);
         }
+        return sanitize_alphanumeric($key);
     }
 
     public function getSurveyTemplateConfiguration()
