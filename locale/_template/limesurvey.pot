@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2023-07-03 08:05:05+00:00\n"
+"POT-Creation-Date: 2023-07-03 08:11:25+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -3250,7 +3250,7 @@ msgid "Unknown action."
 msgstr ""
 
 #: application/controllers/SurveyPermissionsController.php:208
-msgid "Unknown usergroup."
+msgid "Unknown user group."
 msgstr ""
 
 #: application/controllers/SurveyPermissionsController.php:216
@@ -3271,11 +3271,11 @@ msgid "You do not have permission to this user group."
 msgstr ""
 
 #: application/controllers/SurveyPermissionsController.php:292
-msgid "Successfully saved permissions for usergroup."
+msgid "Successfully saved permissions for user group."
 msgstr ""
 
 #: application/controllers/SurveyPermissionsController.php:294
-msgid "Error saving permissions for usergroup."
+msgid "Error saving permissions for user group."
 msgstr ""
 
 #: application/controllers/SurveyPermissionsController.php:298
@@ -3619,11 +3619,11 @@ msgid "Failed to edit user group! Group already exists?"
 msgstr ""
 
 #: application/controllers/UserGroupController.php:243
-msgid "You don't have permission to edit this usergroup."
+msgid "You don't have permission to edit this user group."
 msgstr ""
 
 #: application/controllers/UserGroupController.php:248
-msgid "You don't have permission to edit a usergroup"
+msgid "You don't have permission to edit a user group"
 msgstr ""
 
 #: application/controllers/UserGroupController.php:252
@@ -16046,7 +16046,7 @@ msgid "%s (%s)"
 msgstr ""
 
 #: application/models/User.php:937
-msgid "Are you sure you want to delete user '%s' from usergroup '%s'?"
+msgid "Are you sure you want to delete user '%s' from user group '%s'?"
 msgstr ""
 
 #: application/models/UserGroup.php:62
@@ -24510,7 +24510,7 @@ msgid "No file selected"
 msgstr ""
 
 #: application/views/surveyPermissions/settingsPermission.php:19
-msgid "Edit survey permissions for usergroup %s"
+msgid "Edit survey permissions for user group %s"
 msgstr ""
 
 #: application/views/surveyPermissions/settingsPermission.php:21
@@ -24751,7 +24751,7 @@ msgstr ""
 
 #: application/views/userManagement/massiveAction/_selector.php:74
 #: application/views/userManagement/massiveAction/_selector.php:82
-msgid "Add to usergroup"
+msgid "Add to user group"
 msgstr ""
 
 #: application/views/userManagement/massiveAction/_selector.php:94
