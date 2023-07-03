@@ -255,7 +255,7 @@ class TemplateConfig extends CActiveRecord
             }
 
             // Rtl version of bootstrap
-            if ($dir === "rtl") {
+            if ($dir === "rtl" && (string)$this->cssFramework->name === "bootstrap") {
                 $packages[] = 'bootstrap-rtl';
             }
 
