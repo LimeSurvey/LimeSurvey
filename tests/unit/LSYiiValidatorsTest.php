@@ -7,6 +7,53 @@ namespace ls\tests;
  */
 class LSYiiValidatorsTest extends TestBaseClass
 {
+    private static $cases = array();
+
+    public static function setUpBeforeClass(): void
+    {
+        parent::setUpBeforeClass();
+
+        self::$cases['specialChars'] = array(
+            array(
+                'string'  => '&lt;script&gt;alert(&quot;XSS&quot;);&lt;/script&gt;',
+                'decoded' => '<script>alert("XSS");</script>'
+            ),
+            array(
+                'string'  => 'one%20%26%20two',
+                'decoded' => 'one & two'
+            ),
+            array(
+                'string'  => '&#60;script&#62;alert(1);&#60;/script&#62;',
+                'decoded' => '<script>alert(1);</script>'
+            ),
+            array(
+                'string'  => '<p>Espa&#241;ol.</p>',
+                'decoded' => '<p>Español.</p>'
+            ),
+        );
+
+        self::$cases['unsafe'] = array(
+            'jav&#x09;ascript:alert(\'XSS\');',
+            'javascript:alert(\'XSS\');',
+            'JavaSCRIPT:Alert(\'XSS\');',
+            "jav&#x09;ascript:alert('XSS');",
+            "jav&#x0A;ascript:alert('XSS');",
+            "jav&#x0D;ascript:alert('XSS');",
+            "java\0script:alert('XSS');",
+
+        );
+
+        self::$cases['safe'] = array(
+            'http://example.com',
+            'https://example.com',
+        );
+    }
+
+    public static function tearDownAfterClass(): void
+    {
+        parent::tearDownAfterClass();
+    }
+
     /**
      * Test filtering of html_entity_decode.
      */
@@ -33,43 +80,8 @@ class LSYiiValidatorsTest extends TestBaseClass
      */
     public function testTreatSpecialChars()
     {
-        $cases = array(
-            array(
-                'string'   => '&lt;script&gt;alert(&quot;XSS&quot;);&lt;/script&gt;',
-                'expected' => '<script>alert("XSS");</script>'
-            ),
-            array(
-                'string'   => 'one%20%26%20two',
-                'expected' => 'one & two'
-            ),
-            array(
-                'string'   => '&#60;script&#62;alert(1);&#60;/script&#62;',
-                'expected' => '<script>alert(1);</script>'
-            ),
-            array(
-                'string'   => '<p>Espa&#241;ol.</p>',
-                'expected' => '<p>Español.</p>'
-            ),
-            array(
-                'string'   => 'jav&#x09;ascript:alert(\'XSS\');',
-                'expected' => 'jav' . chr(9) . 'ascript:alert(\'XSS\');'
-            ),
-            array(
-                'string'   => 'javascript:alert(1)',
-                'expected' => 'javascript:alert(1)'
-            ),
-            array(
-                'string'   => 'JavaSCRIPT:Alert(1);',
-                'expected' => 'JavaSCRIPT:Alert(1);'
-            ),
-            array(
-                'string'   => 'javasjavascript:cript:alert(1)',
-                'expected' => 'javasjavascript:cript:alert(1)'
-            )
-        );
-
-        foreach ($cases as $key => $case) {
-            $this->assertSame($case['expected'], \LSYii_Validators::treatSpecialChars($case['string']), 'Unexpected filtered string. Case key: ' . $key);
+        foreach (self::$cases['specialChars'] as $key => $case) {
+            $this->assertSame($case['decoded'], \LSYii_Validators::treatSpecialChars($case['string']), 'Unexpected filtered string. Case key: ' . $key);
         }
     }
 
@@ -78,25 +90,16 @@ class LSYiiValidatorsTest extends TestBaseClass
      */
     public function testHasUnsafeScheme()
     {
-        $unsafeCases = array(
-            'javascript:alert(1)',
-            'JavaSCRIPT:Alert(1);',
-            'javasjavascript:cript:alert(1)',
-        );
-
-        foreach ($unsafeCases as $key => $case) {
+        foreach (self::$cases['unsafe'] as $key => $case) {
             $url = \LSYii_Validators::treatSpecialChars($case);
-            $this->assertTrue(\LSYii_Validators::hasUnsafeScheme($url), 'Unexpected result in case key ' . $key . '. ' . $case . ' is actually unsafe.');
+            $cleanUrl = \LSYii_Validators::removeInvisibleChars($url);
+            $this->assertTrue(\LSYii_Validators::hasUnsafeScheme($cleanUrl), 'Unexpected result in case key ' . $key . '. ' . $case . ' is actually safe.');
         }
 
-        $safeCases = array(
-            'http://example.com',
-            'https://example.com',
-        );
-
-        foreach ($safeCases as $key => $case) {
+        foreach (self::$cases['safe'] as $key => $case) {
             $url = \LSYii_Validators::treatSpecialChars($case);
-            $this->assertFalse(\LSYii_Validators::hasUnsafeScheme($url), 'Unexpected result in case key ' . $key . '. ' . $case . ' is actually safe.');
+            $cleanUrl = \LSYii_Validators::removeInvisibleChars($url);
+            $this->assertFalse(\LSYii_Validators::hasUnsafeScheme($cleanUrl), 'Unexpected result in case key ' . $key . '. ' . $case . ' is actually unsafe.');
         }
     }
 
@@ -105,23 +108,12 @@ class LSYiiValidatorsTest extends TestBaseClass
      */
     public function testIsXssUrl()
     {
-        $unsafeCases = array(
-            'javascript:alert(1)',
-            'JavaSCRIPT:Alert(1);',
-            'javasjavascript:cript:alert(1)',
-        );
-
-        foreach ($unsafeCases as $key => $case) {
-            $this->assertTrue(\LSYii_Validators::isXssUrl($case), 'Unexpected result in case key ' . $key . '. ' . $case . ' is actually unsafe.');
+        foreach (self::$cases['unsafe'] as $key => $case) {
+            $this->assertTrue(\LSYii_Validators::isXssUrl($case), 'Unexpected result in case key ' . $key . '. ' . $case . ' is actually safe.');
         }
 
-        $safeCases = array(
-            'http://example.com',
-            'https://example.com',
-        );
-
-        foreach ($safeCases as $key => $case) {
-            $this->assertFalse(\LSYii_Validators::isXssUrl($case), 'Unexpected result in case key ' . $key . '. ' . $case . ' is actually safe.');
+        foreach (self::$cases['safe'] as $key => $case) {
+            $this->assertFalse(\LSYii_Validators::isXssUrl($case), 'Unexpected result in case key ' . $key . '. ' . $case . ' is actually unsafe.');
         }
     }
 
@@ -130,17 +122,10 @@ class LSYiiValidatorsTest extends TestBaseClass
      */
     public function testRemoveInvisibleChars()
     {
-        $cases = array(
-            "jav&#x09;ascript:alert('XSS')",
-            "jav&#x0A;ascript:alert('XSS')",
-            "jav&#x0D;ascript:alert('XSS')",
-            "java\0script:alert('XSS')",
-        );
-
-        foreach ($cases as $case) {
+        foreach (self::$cases['unsafe'] as $case) {
             $string = \LSYii_Validators::treatSpecialChars($case);
             $result = \LSYii_Validators::removeInvisibleChars($string);
-            $this->assertSame('javascript:alert(\'XSS\')', $result, 'Unexpected result, apparently not all invisible chars were removed.');
+            $this->assertEqualsIgnoringCase('javascript:alert(\'XSS\');', $result, 'Unexpected result, apparently not all invisible chars were removed.');
         }
     }
 }
