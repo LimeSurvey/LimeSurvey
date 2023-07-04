@@ -236,7 +236,7 @@ class SurveyPermissions
 
 
     /**
-     * Return a list (array) of usergroups which could still be added to survey permissions.
+     * Return a list (array) of user groups which could still be added to survey permissions.
      * A user group could be added to survey permissions if there is at least one user in the group
      * which has not already been added to survey permissions of this survey.
      *

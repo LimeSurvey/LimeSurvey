@@ -13,6 +13,8 @@
 *
 */
 
+use LimeSurvey\Models\Services\UserManager;
+
 /**
  * Class User
  *
@@ -115,6 +117,7 @@ class User extends LSActiveRecord
             array('templateeditormode', 'in', 'range' => array('default', 'full', 'none'), 'allowEmpty' => true),
             array('dateformat', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
             array('expires', 'date','format' => ['yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m'],'allowEmpty' => true),
+            array('users_name', 'unsafe' , 'on' => ['update']),
 
             // created as datetime default current date in create scenario ?
             // modifier as datetime default current date ?
@@ -497,7 +500,7 @@ class User extends LSActiveRecord
             'linkClass'        => "UserManagement--action--openmodal UserManagement--action--permissions",
             'linkAttributes'   => [
                 'data-href'      => $setPermissionsUrl,
-                'data-modalsize' => 'modal-lg',
+                'data-modalsize' => 'modal-xl',
             ],
             'enabledCondition' =>
                 ($permission_superadmin_read
@@ -567,7 +570,7 @@ class User extends LSActiveRecord
                 'data-bs-target' => '#confirmation-modal',
                 'data-url'       => $changeOwnershipUrl,
                 'data-userid'    => $this->uid,
-                'data-user'      => $this->full_name,
+                'data-user'      => CHtml::encode($this->full_name),
                 'data-action'    => 'deluser',
                 'data-onclick'   => "LS.UserManagement.triggerRunAction(\"#UserManagement--takeown-$this->uid\")",
                 'data-message'   => gT('Do you want to take ownerschip of this user?'),
@@ -694,17 +697,37 @@ class User extends LSActiveRecord
             ],
         ];
 
-        if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+        // NOTE: Super Administrators with just the "read" flag also have these flags
+        $permission_read_users      = Permission::model()->hasGlobalPermission('users', 'read');
+        $permission_read_usergroups = Permission::model()->hasGlobalPermission('usergroups', 'read');
+        $permission_read_surveys    = Permission::model()->hasGlobalPermission('surveys', 'read');
+
+        // Number of Surveys
+        // This info is already guessable by people able to list all Surveys
+        if ($permission_read_surveys) {
             $cols[] = array(
                 "name" => 'surveysCreated',
                 "header" => gT("No of surveys"),
                 'filter' => false
             );
+        }
+
+        // Usergroups Names
+        // This info is safe to be shown to who can read all Users and Groups.
+        // TODO: When there will be a more robust Group permissions system,
+        //       this column could be enabled by default, since each Group would
+        //       be checked individually.
+        if ($permission_read_users && $permission_read_usergroups) {
             $cols[] = array(
                 "name" => 'groupList',
                 "header" => gT("Usergroups"),
                 'filter' => false
             );
+        }
+
+        // Role Names
+        // Knowing this info makes sense if you can read all Users
+        if ($permission_read_users) {
             $cols[] = array(
                 "name" => 'roleList',
                 "header" => gT("Applied role"),
@@ -931,9 +954,9 @@ class User extends LSActiveRecord
                 'data-post-url'  => App()->createUrl("userGroup/deleteUserFromGroup"),
                 'data-post-datas' => json_encode(['ugid' => $userGroupId, 'uid' => $currentUserId]),
                 'data-message'   => sprintf(
-                    gT("Are you sure you want to delete user '%s' from usergroup '%s'?"),
-                    $this->users_name,
-                    $userGroup->name
+                    gT("Are you sure you want to delete user '%s' from user group '%s'?"),
+                    CHtml::encode($this->users_name),
+                    CHtml::encode($userGroup->name)
                 ),
                 'data-bs-target' => "#confirmation-modal"
             ]

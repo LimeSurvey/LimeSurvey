@@ -148,15 +148,7 @@ class PluginManagerController extends SurveyCommonAction
         );
 
         $data['topbar']['title'] = gT('Plugins - scanned files');
-        $data['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
-            '/admin/pluginmanager/partial/topbarBtns/rightSideButtons',
-            [
-                'backUrl' => $this->getController()->createUrl(
-                    '/admin/pluginmanager'
-                )
-            ],
-            true
-        );
+        $data['topbar']['backLink'] = $this->getController()->createUrl('/admin/pluginmanager');
         $data['topbar']['middleButtons'] = Yii::app()->getController()->renderPartial(
             '/admin/pluginmanager/partial/topbarBtns/leftSideButtons',
             [
@@ -374,13 +366,7 @@ class PluginManagerController extends SurveyCommonAction
         $aPluginProp = App()->getPluginManager()->getPluginInfo($plugin->name);
 
         $topbar['title'] = gT('Plugins') . ' ' . $plugin['name'];
-        $topbar['rightButtons'] = Yii::app()->getController()->renderPartial(
-            '/admin/pluginmanager/partial/topbarBtns_detail/rightSideButtons',
-            [
-                'backUrl' => $this->getController()->createUrl('/admin/pluginmanager', ['sa' => 'index'])
-            ],
-            true
-        );
+        $topbar['backLink'] = $this->getController()->createUrl('/admin/pluginmanager', ['sa' => 'index']);
 
         $this->renderWrappedTemplate(
             'pluginmanager',

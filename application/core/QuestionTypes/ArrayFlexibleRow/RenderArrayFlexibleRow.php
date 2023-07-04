@@ -41,7 +41,6 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
 
         $aLastMoveResult         = LimeExpressionManager::GetLastMoveResult();
         $this->aMandatoryViolationSubQ = ($aLastMoveResult['mandViolation'] && $this->oQuestion->mandatory == 'Y') ? explode("|", (string) $aLastMoveResult['unansweredSQs']) : [];
-        
         $this->repeatheadings    = Yii::app()->getConfig("repeatheadings");
         $this->minrepeatheadings = Yii::app()->getConfig("minrepeatheadings");
 
@@ -49,8 +48,7 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
             $this->repeatheadings    = intval($this->getQuestionAttribute('repeat_headings'));
             $this->minrepeatheadings = 0;
         }
-    
-    
+
         if ($this->getQuestionAttribute('use_dropdown') == 1) {
             $this->bUseDropdownLayout = true;
             $this->sCoreClass .= " dropdown-array";
@@ -62,7 +60,7 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
             // I suppose this is irrelevant and if not, why t** f*** is there hardcoded text in the renderer function?
             //$caption           = gT("A table with a subquestion on each row. The answer options are contained in the table header.");
         }
-        
+
         $this->setSubquestions();
         $this->setAnsweroptions();
 
@@ -183,7 +181,6 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
 
     public function getDropdownRows()
     {
-        
         // $labels[] = array(
         //     'code'   => $aAnswer->code,
         //     'answer' => $aAnswer->answerl10ns[$sSurveyLanguage]->answer
@@ -290,20 +287,19 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
                     'ld' => $oAnswer->code,
                     'code' => $oAnswer->code,
                     'label' => $oAnswer->answerl10ns[$this->sLanguage]->answer,
-                    'checked' => ($this->getFromSurveySession($myfname) == $oAnswer->code) ? 'checked' : '',
+                    'checked' => ($value == $oAnswer->code) ? 'checked' : '',
                     );
             }
 
             $aNoAnswerColumn = [];
             if (($this->oQuestion->mandatory != 'Y' && SHOW_NO_ANSWER == 1)) {
-                $checked = (!isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname] == '') ? 'CHECKED' : '';
                 $aNoAnswerColumn = array(
                     'basename' => $this->sSGQA,
                     'myfname'                => $myfname,
                     'ld'                     => '',
                     'code' => $oAnswer->code,
                     'label'                  => gT('No answer'),
-                    'checked'                => $checked,
+                    'checked'                => (is_null($value) || $value === '') ? 'checked' : '',
                 );
             }
 
@@ -374,7 +370,6 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
     {
 
         //return @do_array($this->aFieldArray);
-       
         $answer = '';
         $answer .=  Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/answer', array(
             'anscount'   => $this->getQuestionCount(),
@@ -392,7 +387,6 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
         return array($answer, $this->inputnames);
     }
 
-    
     protected function getAnswerCount($iScaleId = 0)
     {
         // Getting answerrcount

@@ -1,36 +1,48 @@
 <?php
 
-// Build the expanded list of languages
+/**
+ * @inheritdoc
+ */
 class CustomFormatter extends CFormatter {
 
-	public $maxLength = 125;
+    /* @var integer longTextMaxLength */
+    public $longTextMaxLength = 125;
 
-	public function formatLanguageList(string $value) {
+    /**
+     * Build the expanded list of languages
+     * @param string
+     * @return $string
+     */
+    public function formatLanguageList($value)
+    {
 
-		$langArr = explode(' ', trim($value));
-		$expandedArr = array();
+        $langArr = explode(' ', trim($value));
+        $expandedArr = array();
 
-		foreach($langArr as $lang) {
-			array_push($expandedArr, getLanguageNameFromCode($lang, false));
-		}
+        foreach($langArr as $lang) {
+            array_push($expandedArr, getLanguageNameFromCode($lang, false));
+        }
 
-		sort($expandedArr);
+        sort($expandedArr);
 
-		return implode(', ', $expandedArr);
-	}
+        return implode(', ', $expandedArr);
+    }
 
-	/**
-	 * return a string limited by $this->maxLength
-	 * @param $value
-	 * @deprecated in 3.6.2
-	 * @return $string
-	 */
-	public function formatLongText(string $value) {
-		$value = CHtml::encode($value);
-		if(strlen($value) > $this->maxLength) {
-			$truncated = substr($value, 0, $this->maxLength-3);
-			return trim($truncated)."...";
-		}
-		return $value;
-	}
+    /**
+     * return a string limited by $this->maxLength
+     * @param string|null $value
+     * @return $string
+     */
+    public function formatLongText($value)
+    {
+        if (empty($value)) {
+            return $value;
+        }
+        $originalvalue = $value = CHTML::encode($value);
+        if (mb_strlen($value, 'UTF-8') > $this->longTextMaxLength) {
+            $value = ellipsize($value, $this->longTextMaxLength);
+        }
+        $value = '<span class="longtext-content" data-bs-toggle="tooltip" data-bs-placement="left" title="' . $originalvalue . '">' . $value . '</span>';
+        return $value;
+    }
 }

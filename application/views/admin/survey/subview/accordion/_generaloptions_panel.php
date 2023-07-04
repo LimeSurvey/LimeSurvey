@@ -11,7 +11,7 @@ $scriptVarsNeccessary = "
         var sParameter = '';
         var sTargetQuestion = '';
         var sNoParametersDefined = '';
-        var sAdminEmailAddressNeeded = '" . gT("If you are using token functions or notifications emails you need to set an administrator email address.", 'js') . "'
+        var sAdminEmailAddressNeeded = '" . gT("If you are using surveys with a closed participant group or notifications emails you need to set an administrator email address.", 'js') . "'
         var sURLParameters = '';
         var sAddParam = '';
     ";
@@ -314,12 +314,12 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
                 ]); ?>
             </div>
         </div>
-        <!-- Template -->
 
+        <!-- Theme -->
         <div class="mb-3" >
             <label class=" form-label" for='template'><?php eT("Theme:"); ?></label>
             <div class="">
-                <select id='template' class="form-select" name='template' data-updateurl='<?php echo App()->createUrl('themeOptions/getPreviewTag') ?>'
+                <select id='template' style="width:100%;" class="form-select activate-search" name='template' data-updateurl='<?php echo App()->createUrl('themeOptions/getPreviewTag') ?>'
                         data-inherit-template-name='<?php echo $oSurveyOptions->template ?>'>
                     <?php if ($bShowInherited) { ?>
                         <option value="inherit" <?php echo ($oSurvey->template == 'inherit') ? 'selected="selected"' : ''; ?>><?php echo eT('Inherit'
@@ -355,4 +355,3 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
     </div>
 </div>
 <?php $this->renderPartial('/surveyAdministration/_inherit_sub_footer'); ?>
-

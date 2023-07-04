@@ -51,7 +51,14 @@ class IpAddressAnonymizeTest extends TestBaseClassWeb
         $overview = self::$webDriver->findElement(WebDriverBy::id('ls-activate-survey'));
         $overview->click();
 
-        sleep(1);
+        sleep(2);
+
+        //activate survey in open-access mode
+        //modal has been opend, activate survey in open-access mode
+        $overview = self::$webDriver->findElement(WebDriverBy::id('saveactivateBtn'));
+        $overview->click();
+
+        /**
 
         // Confirm.
         $overview = self::$webDriver->findElement(WebDriverBy::id('activateSurvey__basicSettings--proceed'));
@@ -62,8 +69,10 @@ class IpAddressAnonymizeTest extends TestBaseClassWeb
         // Click "No, thanks"
         $overview = self::$webDriver->findElement(WebDriverBy::id('activateTokenTable__selector--no'));
         $overview->click();
+         *
+         * */
 
-        sleep(1);
+        sleep(3);
 
         // Click "Run survey".
         $exceuteBtn = self::$webDriver->findById('execute_survey_button') ;
@@ -120,6 +129,11 @@ class IpAddressAnonymizeTest extends TestBaseClassWeb
 
         sleep(3);
 
+        //modal has been opend, activate survey in open-access mode
+        $overview = self::$webDriver->findElement(WebDriverBy::id('saveactivateBtn'));
+        $overview->click();
+
+        /**
         // Confirm.
         $overview = self::$webDriver->findElement(WebDriverBy::id('activateSurvey__basicSettings--proceed'));
         $overview->click();
@@ -129,8 +143,10 @@ class IpAddressAnonymizeTest extends TestBaseClassWeb
         // Click "No, thanks"
         $overview = self::$webDriver->findElement(WebDriverBy::id('activateTokenTable__selector--no'));
         $overview->click();
+         *
+         * */
 
-        sleep(1);
+        sleep(3);
 
         // Click "Run survey".
         $exceuteBtn = self::$webDriver->findById('execute_survey_button') ;
@@ -152,8 +168,6 @@ class IpAddressAnonymizeTest extends TestBaseClassWeb
 
         sleep(2);
 
-        //now check if ip was anonymized (ipv4, last digit should be 0)
-        //get ipadr from table survey_573837 ...
         $models = \Response::model(self::$surveyId)->findAll();
 
         $this->assertTrue((isset($models[0]->ipaddr)) && ($models[0]->ipaddr==='127.0.0.1'));

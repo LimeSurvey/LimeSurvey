@@ -416,15 +416,6 @@ function check_html_string($input, $min = '', $max = '')
 }
 
 
-function check_ldap_string($input, $min = '', $max = '')
-{
-    // FIXME undefined function sanitize_string
-    if ($input != sanitize_string($input, $min, $max)) {
-        return false;
-    }
-    return true;
-}
-
 function check_system_string($input, $min = '', $max = '')
 {
     if ($input != sanitize_system_string($input, $min, $max)) {
@@ -440,13 +431,14 @@ function check_system_string($input, $min = '', $max = '')
  * @param string $min
  * @param string $max
  * @return bool
- * @deprecated  2018-01-29 has undefined function my_utf8_decode inside !!
+ * @throws Exception
  */
 function check($input, $flags, $min = '', $max = '')
 {
     $oldput = $input;
     if ($flags & UTF8) {
-        $input = my_utf8_decode($input);
+        // This case used before function my_utf8_decode, which doesn't exist.
+        throw new Exception('UTF8 not supported');
     }
     if ($flags & PARANOID) {
         $input = sanitize_paranoid_string($input, $min, $max);
@@ -559,5 +551,5 @@ function check_absolute_url($string)
  */
 function sanitize_alphanumeric($value)
 {
-    return preg_replace("[^a-zA-Z0-9\-\_]", "", $value);
+    return preg_replace("/[^a-zA-Z0-9\-\_]/", "", $value);
 }

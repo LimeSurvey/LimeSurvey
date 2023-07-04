@@ -34,6 +34,238 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.1.5 (build 230626) to 6.1.6 (build 230703) July 3, 2023
+-Fixed issue CR-1206: Token field in responses table not actionable (#3230) (Tim Willig)
+-Fixed issue CR-1205: Request-URI Too Large on Responses page (#3235) (Tim Willig)
+-Fixed issue #18915: [security] Non-superadmin Admin user is able to edit groups not owned (#3248) (Tim Willig)
+-Fixed issue #18918: [security] Wwnership permissions update (#3251) (Patrick Teichmann)
+-Fixed issue #18917: [security] Stored XSS in the user group deletion confirmation popup (#3249) (Patrick Teichmann)
+-Fixed issue #18913: [security] Incorrect permissions for useraction (#3253) (Patrick Teichmann)
+-Fixed issue #18630: Survey list showing wrong icon for surveys. (#3232) (Gabriel Jenik)
+-Fixed issue #18356: [security] User with only user update allowed can set/remove any role to any user (#2625) (Gabriel Jenik)
+-Fixed issue CR-1234: Show more is inconsistent in Survey settings overview - Text elements card (tiborpacalat)
+-Fixed issue CR-1232: Survey settings overview - Vertical spacing between items is not equal (#3236) (tiborpacalat)
+#Updated translation: Thai by tomzt
+#Updated translation: Spanish (Spain) by ireneoh
+#Updated translation: Slovak by jelen1
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Greek by dfragkos
+#Updated translation: German by c_schmitz, eddylackmann
+#Updated translation: German (Informal) by c_schmitz, richterd
+#Updated translation: French (France) by AlainR, arnaud21, brunofr9316, c_schmitz, DenisChenu
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1, slansky, VBraun
+
+
+Changes from 6.1.4 (build 230620) to 6.1.5 (build 230626) June 26, 2023
+-Fixed issue: SQL error on import if quota member code is too long (Carsten Schmitz)
+-Fixed issue: Disable system information in demo mode (Carsten Schmitz)
+-Fixed issue [security] #18868: No CRSF control for action of label set (Denis Chenu)
+-Fixed issue [security] #18866: Label sets can be created by any admin user (#3212) (Denis Chenu)
+-Fixed issue 18821: Public url is not used for SURVEYURL (#3229) (Tim Willig)
+-Fixed issue #18912: [security] Able to change username that is by default unchangeable (Patrick Teichmann)
+-Fixed issue #18896: Error on Postgres when creating a survey and expressionQuestionHelp plugins is activated (Carsten Schmitz)
+-Fixed issue #18891: Capital letters N/Y in name of inherited survey themes are replaced by "Off" (Carsten Schmitz)
+-Fixed issue #18885: CSRF Leading to reset Boxes (#3239) (Gabriel Jenik)
+-Fixed issue #18883: [security] Stored XSS vulnerability in user profile (#3247) (Patrick Teichmann)
+-Fixed issue #18881: [security] CKeditor 4.20.2 in use which is vulnerable to CVE-2023-28439 (#3237) (Gabriel Jenik)
+-Fixed issue #18706: Cannot use expression in End url description (#3204) (Gabriel Jenik)
+-Fixed issue #18465: ComfortUpdate shows error message to contact the LimeSurvey team, while just retrying usually works (Carsten Schmitz)
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian by c_schmitz, lfanfoni, mike73rn, ritapas, seccalisca
+#Updated translation: Italian (Informal) by c_schmitz, ciampix, lfanfoni, mike73rn, ritapas
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by actxcellence, c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 6.1.3 (build 230612) to 6.1.4 (build 230620) June 19, 2023
+-Fixed issue: [security] Administrator can self-delete (Carsten Schmitz)
+-Fixed issue: ComfortUpdate showing updates as unstable, even though they are not (fixed the related alert) (twilligls)
+-Fixed issue #18890: Group import leads to 500 error on translateLinks (Carsten Schmitz)
+-Fixed issue #18871: Can't add email attachment in email templates (#3215) (Gabriel Jenik)
+-Fixed issue #18793: Quick Translation crash with MS SQL Database Error (#3224) (Gabriel Jenik)
+-Fixed issue #18731: Edit a question "script" tab has disappeared (#3157) (Denis Chenu)
+-Fixed issue #18704: Error when trying to add another language to a survey and MSSQL server is used (Carsten Schmitz)
+-Fixed issue #18693: Using checkbox question for yes/no loses data when data entry view (#3018) (Gabriel Jenik)
+-Fixed issue #18459: When filtering the survey list by a parent survey group, surveys assigned to a child survey group are not listed (#3167) (Gabriel Jenik)
+-Fixed issue #18401: Unable to use checkdate function if debug set  (#3214) (Gabriel Jenik)
+-Fixed issue #17992: Unable to re-import tokens from old table (#2404) (Gabriel Jenik)
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Portuguese (Brazil) by holch
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Finnish by Jmantysalo
+
+
+Changes from 6.1.2 (build 230606) to 6.1.3 (build 230612) June 12, 2023
+-Fixed issue #18833: Mobile phone issue with formulas on columns headings with array numbers on checkbox layout (#3207) (Denis Chenu)
+-Fixed issue #18814: Array question statistics fail for Remote Control (#3191) (Gabriel Jenik)
+-Fixed issue #18808: Mandatory soft only works once per survey if over multiple pages/groups (#3195) (Denis Chenu)
+-Fixed issue #18789: Database upgrade error when trying to update from 6.0.x to any later version and using Postgres (Carsten Schmitz)
+-Fixed issue #18669: XSS simple admin via Google key (#3004) (Gabriel Jenik)
+-Fixed issue #18615: Data integrity SQL syntax error on Postgres when trying to fix quotas (Carsten Schmitz)
+-Fixed issue #16409: Emoticon style is different if emoticon is chosen (#3152) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Hungarian by kkd
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.1.1 (build 230530) to 6.1.2 (build 230606) June 5, 2023
+-Fixed issue #18823: STATA Export fails with certain question types (#3148) (Oz-men)
+-Fixed issue #18814: Array question statistics fail for Remote Control. (#3165) (Gabriel Jenik)
+-Fixed issue #18808: Mandatory soft only works once per survey if over multiple pages/groups (#3119) (Denis Chenu)
+-Fixed issue #18737: Missing response action: View response as queXML PDF (#3042) (Adam Zammit)
+-Fixed issue #18720: Script show as updatable for simple user with XSS (#3145) (Denis Chenu)
+-Fixed issue #17491: Multiple Short Text subquestions missing from Export Printable Survey (#3135) (Adam Zammit)
+#Updated translation: Valencian by c_schmitz, joamuran, vbraque
+#Updated translation: Turkish by kayazeren
+#Updated translation: Spanish (Spain) by ireneoh
+#Updated translation: Slovak by jelen1
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: French (France) by DenisChenu
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by mymast, qualitatuvic
+
+
+Changes from 6.1.0 (build 230522) to 6.1.1 (build 230530) May 30, 2023
+-Fixed issue: [security] Unsafe way to detect IP address against brute-force attacks (Carsten Schmitz)
+-Fixed issue: Editing a quota shows that it was saved, while it was not (Carsten Schmitz)
+-Fixed issue CR-1168: Errors for printanswers after twig upgrade from version 1 to 3 (sameas vs. same as) (twilligls)
+-Fixed issue #CR-1167: update registering new function name (jack-han-115)
+-Fixed issue #18835: Array question doesn't reload anwsers (#3162) (Denis Chenu)
+-Fixed issue #18745: table action dropdown cut off in firefox (Patrick Teichmann)
+-Fixed issue #18659: cannot install two plugins in a row (#3160) (Gabriel Jenik)
+-Fixed issue #18462: Missing option to search for survey groups at list survey screen. (#3159) (Gabriel Jenik)
+-Fixed issue #18456: Interface language parmater use exotic dropdown list. (#3112) (Gabriel Jenik)
+-Fixed issue #18246: The setting in the theme variation field (global level) is not shown (#2510) (Gabriel Jenik)
+-* Fixed issue #18456: Interface language parmater use exotic dropdown list. (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.0.7 (build 230515) to 6.1.0 (build 230522) May 22, 2023
++New feature #18792: Allow to move question inside group and group order with activated survey (Denis Chenu)
+-Fixed issue: ComfortUpdate showing updates as unstable, even though they are not (Carsten Schmitz)
+-Fixed issue: Action dropdown menu cut off in Firefox (#3085) (jack-han-115)
+-Fixed issue CR-956: wrong color code for g-700 grey (Patrick Teichmann)
+-Fixed issue #18811: Button that triggers HTML editor in pop-up window doesn't work (Denis Chenu)
+-Fixed issue #18805: No replacement variables available on user administration page (#3113) (Denis Chenu)
+-Fixed issue #18784: timer.min.js outdated, updated the build process (#3151) (Bert Hankes)
+-Fixed issue #18736: Error exporting participants when using MSSQL DB (Carsten Schmitz)
+-Fixed issue #18725: Reorder questions/question groups can break survey (Denis Chenu)
+-Fixed issue #18670: "Validation of quota" action button always shows 1st quota (#3139) (Gabriel Jenik)
+-Fixed issue #18605: Missing success alerts in participant view (#2876) (Gabriel Jenik)
+-Fixed issue #18464: Min/max settings doesn't work for question attrib… (#2708) (Denis Chenu)
+-Fixed issue #18262: QCode.gid is not working anymore (#3138) (Denis Chenu)
+#Updated translation: Ukrainian by DermanskiyIM
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Greek by baltzis, kiolalis
+#Updated translation: German by c_schmitz
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Bulgarian by bmtteam
+
+
+Changes from 6.0.6 (build 230508) to 6.0.7 (build 230515) May 15, 2023
+-Fixed issue: No proper error when entering ComfortUpdate key and server cannot be reached (Carsten Schmitz)
+-Fixed issue #18765: Answers are not populated correct in array dual scale after clicking "Back" (#3061) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.0.5 (build 230502) to 6.0.6 (build 230508) May 8, 2023
+-Fixed issue: Cannot add survey menu when using PHP8 (#3115) (Patricia Stell)
+-Fixed issue CR-1119: Saving change disables active status for theme option page (#3104) (Tim Willig)
+-Fixed issue #18747: User administration email - reserved words send 403 error (Denis Chenu)
+-Fixed issue #18744: Window of user permissions is not adapting to space needed by languages. (#3075) (Gabriel Jenik)
+-Fixed issue #18739: ComfortUpdate notification not being shown (#3102) (Gabriel Jenik)
+-Fixed issue #18679: API access to question type array dual scale merges scales if answer code is not unique (#3049) (Gabriel Jenik)
+-Fixed issue #18639: Token browse can be unusable with lot of data in attribute (#3082) (Denis Chenu)
+-Fixed issue #18635: When you export single response : sometimes goes to a white page (#3090) (Denis Chenu)
+-Fixed issue #18612: When surveys are copied without copying resources links are not handled (#3009) (Gabriel Jenik)
+-Fixed issue #18456: Interface language parameter use exotic dropdown list. (#3067) (Gabriel Jenik)
+-Fixed issue #18343: Problem with interpreting double slash in URL (IIS) (#3087) (Denis Chenu)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 6.0.4 (build 230427) to 6.0.5 (build 230502) May 2, 2023
+-Fixed issue: Very slow survey start if a lot of quotas exist (Carsten Schmitz)
+-Fixed issue #18786: Error shown when token length is set to 36 characters (Carsten Schmitz)
+-Fixed issue #18782: Bad width set for array dual scale (#3078) (Denis Chenu)
+-Fixed issue #18771: Super-admin unable to rename theme (#3076) (Denis Chenu)
+-Fixed issue #18747: User administration email - reserved words send 403 error (Denis Chenu)
+-Fixed issue #18684: Missing translation. (#3053) (Gabriel Jenik)
+-Fixed issue #18604: Set empty to maximum number of files not working (#2865) (Denis Chenu)
+-Fixed issue #18343: Problem with interpreting double slash in URL (IIS) (Denis Chenu)
+#Updated translation: Swedish by c_schmitz, maxzomborszki
+#Updated translation: Spanish (Spain) by aesteban, c_schmitz, ireneoh, jmlopez, valdomir
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz, markusfluer
+#Updated translation: German (Informal) by assistedmindfulness, c_schmitz, holch, p_teichmann, richterd
+#Updated translation: French (France) by Amaury VAN ESPEN, arnaud21, b00z00, c_schmitz, DenisChenu, DenisChenu_TEST, GuillaumeZ6, nmenard, riqcles, twilllig
+
+
+Changes from 6.0.3 (build 230424) to 6.0.4 (build 230427) April 25, 2023
+-Fixed issue: Error on database upgrade (Carsten Schmitz)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by nomoto
+#Updated translation: German by c_schmitz
+
+
+Changes from 6.0.2 (build 230417) to 6.0.3 (build 230424) April 24, 2023
+-Fixed issue: Pagination not working issue for clsgrid tables (#3063) (jack-han-115)
+-Fixed issue CR-1086: adjusted xml_path in db for imageselect questions (#3052) (Tim Willig)
+-Fixed issue #18756: Unable to set non-integer values for initial slider value (#3058) (Denis Chenu)
+-Fixed issue #18750: Incomplete translation of admin homepage buttons (Carsten Schmitz)
+-Fixed issue #18749: Tooltips text display errors in French (Carsten Schmitz)
+-Fixed issue #18739: ComfortUpdate notification not being shown (#3047) (Gabriel Jenik)
+-Fixed issue #18719: custom admin theme failing if new logo files are not set in the theme (Patrick Teichmann)
+-Fixed issue #18703: Upload files show error if not seen (using index) (#3015) (Denis Chenu)
+-Fixed issue #18696: Survey titles too short when I want to copy a survey  (#3044) (Denis Chenu)
+-Fixed issue #18191: Cannot use statCount in specific condition (#3056) (Denis Chenu)
+-Fixed issue #14108: No error proper error message when LDAP login fails due to case-sensitivity (#2692) (Denis Chenu)
+#Updated translation: German by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Mongolian by amidral
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Polish by elissa
+#Updated translation: Turkish by kayazeren
+#Updated translation: German (Easy) by assistedmindfulness, holch
+#Updated translation: Polish (Informal) by elissa
+
 Changes from 6.0.1 (build 230411) to 6.0.2 (build 230417) April 17, 2023
 -Fixed issue: [security] Administrator can change his own password without entering the existing one (Carsten Schmitz)
 -Fixed issue #CR-1054: Vertical scrollbar appearing between accordion transitions in questioneditor (#3031) (jack-han-115)

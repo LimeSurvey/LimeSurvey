@@ -718,9 +718,10 @@ class TemplateConfiguration extends TemplateConfig
                 return '';
             }
         }
+        $templateName = CHtml::encode($this->template_name);
         $sEditorUrl = App()->getController()->createUrl(
             'admin/themes/sa/view',
-            array("templatename" => $this->template_name)
+            array("templatename" => $templateName)
         );
         $sExtendUrl = App()->getController()->createUrl('admin/themes/sa/templatecopy');
         $sOptionUrl = (App()->getController()->action->id == "surveysgroups") ?
@@ -740,7 +741,7 @@ class TemplateConfiguration extends TemplateConfig
         $dropdownItems[] = [
             'title'            => gT('Theme editor'),
             'url'              => $sEditorUrl,
-            'linkId'           => 'template_editor_link_' . $this->template_name,
+            'linkId'           => 'template_editor_link_' . $templateName,
             'linkClass'        => '',
             'iconClass'        => 'ri-brush-fill',
             'enabledCondition' => App()->getController()->action->id !== "surveysgroups",
@@ -750,7 +751,7 @@ class TemplateConfiguration extends TemplateConfig
         $dropdownItems[] = [
             'title'            => gT('Theme options'),
             'url'              => $sOptionUrl,
-            'linkId'           => 'template_options_link_' . $this->template_name ,
+            'linkId'           => 'template_options_link_' . $templateName ,
             'linkClass'        => '',
             'iconClass'        => 'ri-dashboard-3-fill',
             'enabledCondition' => $this->getHasOptionPage(),
@@ -760,19 +761,19 @@ class TemplateConfiguration extends TemplateConfig
         $dropdownItems[] = [
             'title'            => gT('Extend'),
             'url'              => $sExtendUrl,
-            'linkId'           => 'extendthis_' . $this->template_name,
+            'linkId'           => 'extendthis_' . $templateName,
             'linkClass'        => 'selector--ConfirmModal ',
             'iconClass'        => 'ri-file-copy-line text-success',
             'enabledCondition' => App()->getController()->action->id !== "surveysgroups",
             'linkAttributes'   => [
-                'title'            => sprintf(gT('Type in the new name to extend %s'), $this->template_name),
+                'title'            => sprintf(gT('Type in the new name to extend %s'), $templateName),
                 'data-button-no'   => gt('Cancel'),
                 'data-button-yes'  => gt('Extend'),
                 'data-text'        => gT('Please type in the new theme name above.'),
                 'data-post'        => json_encode([
-                    "copydir" => $this->template_name,
+                    "copydir" => $templateName,
                     "action"  => "templatecopy",
-                    "newname" => [ "value" => "extends_" . $this->template_name,
+                    "newname" => [ "value" => "extends_" . $templateName,
                                     "type" => "text",
                                     "class" => "form-control col-md-12" ]
                     ]),
@@ -783,18 +784,18 @@ class TemplateConfiguration extends TemplateConfig
         $dropdownItems[] = [
             'title'            => gT('Uninstall'),
             'url'              => $sUninstallUrl,
-            'linkId'           => 'remove_fromdb_link_' . $this->template_name,
+            'linkId'           => 'remove_fromdb_link_' . $templateName,
             'linkClass'        => 'selector--ConfirmModal ',
             'iconClass'        => 'ri-delete-bin-fill text-danger',
             'enabledCondition' => App()->getController()->action->id !== "surveysgroups" &&
-                                    $this->template_name != App()->getConfig('defaulttheme'),
+                                    $templateName != App()->getConfig('defaulttheme'),
             'linkAttributes'   => [
                 'title'            => gT('Uninstall this theme'),
                 'data-button-no'   => gt('Cancel'),
                 'data-button-yes'  => gt('Uninstall'),
                 'data-text'        => gT('This will reset all the specific configurations of this theme.')
                                          . '<br>' . gT('Do you want to continue?'),
-                'data-post'        => json_encode([ "templatename" => $this->template_name ]),
+                'data-post'        => json_encode([ "templatename" => $templateName ]),
                 'data-button-type' => "btn-danger"
             ]
         ];
@@ -802,7 +803,7 @@ class TemplateConfiguration extends TemplateConfig
         $dropdownItems[] = [
             'title'            => gT('Reset'),
             'url'              => $sResetUrl,
-            'linkId'           => 'remove_fromdb_link_' . $this->template_name,
+            'linkId'           => 'remove_fromdb_link_' . $templateName,
             'linkClass'        => 'selector--ConfirmModal ',
             'iconClass'        => 'ri-refresh-line text-warning',
             'enabledCondition' => App()->getController()->action->id !== "surveysgroups",
@@ -811,7 +812,7 @@ class TemplateConfiguration extends TemplateConfig
                 'data-button-no'   => gt('Cancel'),
                 'data-button-yes'  => gt('Reset'),
                 'data-text'        => gT('This will reload the configuration file of this theme.') . '<br>' . gT('Do you want to continue?'),
-                'data-post'        => json_encode([ "templatename" => $this->template_name ]),
+                'data-post'        => json_encode([ "templatename" => $templateName ]),
                 'data-button-type' => "btn-warning"
             ]
         ];
@@ -1581,12 +1582,18 @@ class TemplateConfiguration extends TemplateConfig
      */
     public function sanitizeImagePathsOnJson($attribute, $params)
     {
+        $excludedOptions = [
+            'cssframework'
+        ];
         // Validates all options of the theme. Not only classic ones which are expected to hold a path,
         // as other options may hold a path as well (eg. custom theme options)
         $decodedOptions = json_decode((string) $this->$attribute, true);
         if (is_array($decodedOptions)) {
             Yii::import('application.helpers.SurveyThemeHelper');
-            foreach ($decodedOptions as &$value) {
+            foreach ($decodedOptions as $option => &$value) {
+                if (in_array($option, $excludedOptions)) {
+                    continue;
+                }
                 $value = SurveyThemeHelper::sanitizePathInOption($value, $this->template_name, $this->sid);
             }
             $this->$attribute = json_encode($decodedOptions);

@@ -39,20 +39,23 @@ class ExpressionManager
         'valueNAOK',
         'value',
     );
-    // These are the allowable static suffixes for variables - each represents an attribute of a variable that can not be updated on same page
+    /* var string[] allowable static suffixes for variables - each represents an attribute of a variable that can not be updated on same page
+     * @see LimeExpressionManager->knownVars definition
+     */
     private $aRDP_regexpStaticAttribute = array(
-        'gid',
-        'grelevance',
-        'gseq',
-        'jsName',
-        'mandatory',
         'qid',
-        'qseq',
+        'gid',
         'question',
-        'relevance',
-        'rowdivid',
         'sgqa',
         'type',
+        'relevance',
+        'grelevance',
+        'qseq',
+        'gseq',
+        'jsName',
+        'jsName_on',
+        'mandatory',
+        'rowdivid',
     );
     // These three variables are effectively static once constructed
     private $RDP_ExpressionRegex;
@@ -199,7 +202,7 @@ class ExpressionManager
             'atan' => array('atan', 'Decimal.asNum.atan', gT('Arc tangent'), 'number atan(number)', 'http://php.net/atan', 1),
             'atan2' => array('atan2', 'Decimal.asNum.atan2', gT('Arc tangent of two variables'), 'number atan2(number, number)', 'http://php.net/atan2', 2),
             'ceil' => array('ceil', 'Decimal.asNum.ceil', gT('Round fractions up'), 'number ceil(number)', 'http://php.net/ceil', 1),
-            'checkdate' => array('checkdate', 'checkdate', gT('Returns true(1) if it is a valid date in gregorian calendar'), 'bool checkdate(month,day,year)', 'http://php.net/checkdate', 3),
+            'checkdate' => array('exprmgr_checkdate', 'checkdate', gT('Returns true(1) if it is a valid date in gregorian calendar'), 'bool checkdate(month,day,year)', 'http://php.net/checkdate', 3),
             'cos' => array('cos', 'Decimal.asNum.cos', gT('Cosine'), 'number cos(number)', 'http://php.net/cos', 1),
             'count' => array('exprmgr_count', 'LEMcount', gT('Count the number of answered questions in the list'), 'number count(arg1, arg2, ... argN)', '', -1),
             'countif' => array('exprmgr_countif', 'LEMcountif', gT('Count the number of answered questions in the list equal the first argument'), 'number countif(matches, arg1, arg2, ... argN)', '', -2),
@@ -2879,6 +2882,28 @@ function exprmgr_sumifop($args)
         }
     }
     return $result;
+}
+
+/**
+ * Validate a Gregorian date
+ * @see https://www.php.net/checkdate
+ * Check if all params are valid before send it to PHP checkdate to avoid PHP Warning
+ *
+ * @param mixed $month
+ * @param mixed $day
+ * @param mixed $year
+ * @return boolean
+ */
+function exprmgr_checkdate($month, $day, $year)
+{
+    if (
+        (!ctype_digit($month) && !is_int($month))
+        || (!ctype_digit($day) && !is_int($day))
+        || (!ctype_digit($year) && !is_int($year))
+    ) {
+        return false;
+    }
+    return checkdate(intval($month), intval($day), intval($year));
 }
 
 /**
