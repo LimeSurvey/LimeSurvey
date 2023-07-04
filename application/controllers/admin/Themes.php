@@ -538,11 +538,11 @@ class Themes extends SurveyCommonAction
     public function index(string $editfile = '', string $screenname = 'welcome', string $templatename = '')
     {
         if ($templatename == '') {
-            // @todo getGlobalSetting is deprecated!
-            $templatename = getGlobalSetting('defaulttheme');
+            $templatename = App()->getConfig('defaulttheme');
         }
 
         // This can happen if the global default template is deleted
+        // TODO: check if we can load template without needing the model, only from xml, so we can load the theme editor even when it is not installed
         if (!Template::checkIfTemplateExists($templatename)) {
             // Redirect to the default template
             Yii::app()->setFlashMessage(sprintf(gT('Theme %s does not exist.'), htmlspecialchars((string) $templatename, ENT_QUOTES)), 'error');

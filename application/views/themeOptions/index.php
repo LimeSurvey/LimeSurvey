@@ -87,10 +87,10 @@ echo viewHelper::getViewTestTag('templateOptions');
                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                <?= gT(
-                                                                    'This theme has been disabled because of major changes inside the html and css code, please export the theme and add the "compatibility" option with the correct versionnumber inside the "config.xml" file for this theme. <br><br> Carefully examine in a dummy survey which changes you need to make before using your custom survey theme in a live environment',
-                                                                    'unescaped'
-                                                                ) ?>
+                                                                <p><?= gT('The theme is not compatible with your version of LimeSurvey.') ?></p>
+                                                                <a href="https://manual.limesurvey.org/Extension_compatibility" target="_blank">
+                                                                    <?= gT('For more information consult our manual.') ?>
+                                                                </a>
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><?= gT('Close') ?></button>
@@ -98,6 +98,28 @@ echo viewHelper::getViewTestTag('templateOptions');
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <!-- Export -->
+                                                <?php if (Permission::model()->hasGlobalPermission('templates', 'export') && class_exists('ZipArchive')) : ?>
+                                                    <a class="btn btn-outline-secondary btn-sm" id="button-export"
+                                                       href="<?php echo $this->createUrl('admin/themes/sa/templatezip/templatename/' . $oTemplate->sTemplateName) ?>">
+                                                        <span class="ri-upload-fill"></span>
+                                                        <?php eT("Export"); ?>
+                                                    </a>
+                                                <?php endif; ?>
+                                                <!-- Delete -->
+                                                <?php if (Permission::model()->hasGlobalPermission('templates', 'delete')) : ?>
+                                                    <a id="template_editor_link_<?= $oTemplate->sTemplateName ?>"
+                                                       href="<?php echo Yii::app()->getController()->createUrl('admin/themes/sa/deleteAvailableTheme/') ?>"
+                                                       data-post='{ "templatename": "<?= $oTemplate->sTemplateName ?>" }'
+                                                       data-text="<?php eT('Are you sure you want to delete this theme?'); ?>"
+                                                       data-button-no="<?= gT('Cancel'); ?>"
+                                                       data-button-yes="<?= gT('Delete'); ?>"
+                                                       title="<?php eT('Delete'); ?>"
+                                                       class="btn btn-danger btn-sm selector--ConfirmModal">
+                                                        <span class="ri-delete-bin-fill"></span>
+                                                        <?php eT('Delete'); ?>
+                                                    </a>
+                                                <?php endif; ?>
                                             </div>
                                         </td>
                                     <?php endif; ?>
@@ -249,10 +271,10 @@ echo viewHelper::getViewTestTag('templateOptions');
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <?= gT(
-                                                            'This theme has been disabled because of major changes inside the html and css code. <br><br>If there are any problems with the theme make sure to manually set the theme inside the databasetable "settings_global" to the default theme "Sea_Green". <br><br>To enable this theme again add the "compatibility" option with the correct versionnumber inside the "config.xml" file for this theme.',
-                                                            'unescaped'
-                                                        ) ?>
+                                                        <p><?= gT('The theme is not compatible with your version of LimeSurvey.') ?></p>
+                                                        <a href="https://manual.limesurvey.org/Extension_compatibility" target="_blank">
+                                                            <?= gT('For more information consult our manual.') ?>
+                                                        </a>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><?= gT('Close') ?></button>
