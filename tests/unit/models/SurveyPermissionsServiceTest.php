@@ -272,6 +272,339 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
         self::assertLessThan($oSurveyPermissions->deleteUserPermissions(self::$userIds[0]), 0);
     }
 
+    /**
+     * Testing that a user can list all users which still not have survey permissions.
+     *
+     * Context:
+     * Users / read permission: Yes
+     * User in group: No
+     * Same group policy: Yes
+     */
+    public function testReadPermissionNotInGroupSameGroupPolicy()
+    {
+        $userName = \Yii::app()->securityManager->generateRandomString(8);
+        $password = createPassword();
+
+        $userData = array(
+            'users_name' => $userName,
+            'full_name' => $userName,
+            'email' => $userName . '@example.com',
+            'lang' => 'auto',
+            'password' => $password
+        );
+
+        $permissions = array(
+            'users' => array(
+                'read' => true
+            )
+        );
+
+        $user = self::createUserWithPermissions($userData, $permissions);
+
+        \Yii::app()->session['loginID'] = $user->uid;
+
+        $surveyPermissions = new SurveyPermissions(self::$testSurvey, true);
+        $users = $surveyPermissions->getSurveyUserList();
+        $this->assertCount(4, $users, 'The number of users which still not have survey permissions is incorrect.');
+
+        //Delete user
+        $user->delete();
+    }
+
+    /**
+     * Testing that a user can list all users which still not have survey permissions.
+     *
+     * Context:
+     * Users / read permission: Yes
+     * User in group: No
+     * Same group policy: No
+     */
+    public function testReadPermissionNotInGroupNoSameGroupPolicy()
+    {
+        $userName = \Yii::app()->securityManager->generateRandomString(8);
+        $password = createPassword();
+
+        $userData = array(
+            'users_name' => $userName,
+            'full_name' => $userName,
+            'email' => $userName . '@example.com',
+            'lang' => 'auto',
+            'password' => $password
+        );
+
+        $permissions = array(
+            'users' => array(
+                'read' => true
+            )
+        );
+
+        $user = self::createUserWithPermissions($userData, $permissions);
+
+        \Yii::app()->session['loginID'] = $user->uid;
+
+        $surveyPermissions = new SurveyPermissions(self::$testSurvey, false);
+        $users = $surveyPermissions->getSurveyUserList();
+        $this->assertCount(4, $users, 'The number of users which still not have survey permissions is incorrect.');
+
+        //Delete user
+        $user->delete();
+    }
+
+    /**
+     * Testing that a user can list all users which still not have survey permissions.
+     *
+     * Context:
+     * Users / read permission: Yes
+     * User in group: Yes
+     * Same group policy: Yes
+     */
+    public function testReadPermissionInGroupSameGroupPolicy()
+    {
+        $userName = \Yii::app()->securityManager->generateRandomString(8);
+        $password = createPassword();
+
+        $userData = array(
+            'users_name' => $userName,
+            'full_name' => $userName,
+            'email' => $userName . '@example.com',
+            'lang' => 'auto',
+            'password' => $password
+        );
+
+        $permissions = array(
+            'users' => array(
+                'read' => true
+            )
+        );
+
+        $user = self::createUserWithPermissions($userData, $permissions);
+
+        $userInGroup = new \UserInGroup();
+        $userInGroup->ugid = self::$userGroupId;
+        $userInGroup->uid = $user->uid;
+        $userInGroup->save();
+
+        \Yii::app()->session['loginID'] = $user->uid;
+
+        $surveyPermissions = new SurveyPermissions(self::$testSurvey, true);
+        $users = $surveyPermissions->getSurveyUserList();
+        $this->assertCount(4, $users, 'The number of users which still not have survey permissions is incorrect.');
+
+        //Delete user
+        $user->delete();
+    }
+
+    /**
+     * Testing that a user can list all users which still not have survey permissions.
+     *
+     * Context:
+     * Users / read permission: Yes
+     * User in group: Yes
+     * Same group policy: No
+     */
+    public function testReadPermissionInGroupNoSameGroupPolicy()
+    {
+        $userName = \Yii::app()->securityManager->generateRandomString(8);
+        $password = createPassword();
+
+        $userData = array(
+            'users_name' => $userName,
+            'full_name' => $userName,
+            'email' => $userName . '@example.com',
+            'lang' => 'auto',
+            'password' => $password
+        );
+
+        $permissions = array(
+            'users' => array(
+                'read' => true
+            )
+        );
+
+        $user = self::createUserWithPermissions($userData, $permissions);
+
+        $userInGroup = new \UserInGroup();
+        $userInGroup->ugid = self::$userGroupId;
+        $userInGroup->uid = $user->uid;
+        $userInGroup->save();
+
+        \Yii::app()->session['loginID'] = $user->uid;
+
+        $surveyPermissions = new SurveyPermissions(self::$testSurvey, false);
+        $users = $surveyPermissions->getSurveyUserList();
+        $this->assertCount(4, $users, 'The number of users which still not have survey permissions is incorrect.');
+
+        //Delete user
+        $user->delete();
+    }
+
+    /**
+     * Testing that a user can not list all users which still not have survey permissions.
+     *
+     * Context:
+     * Users / read permission: No
+     * User in group: No
+     * Same group policy: Yes
+     */
+    public function testNoReadPermissionNotInGroupSameGroupPolicy()
+    {
+        $userName = \Yii::app()->securityManager->generateRandomString(8);
+        $password = createPassword();
+
+        $userData = array(
+            'users_name' => $userName,
+            'full_name' => $userName,
+            'email' => $userName . '@example.com',
+            'lang' => 'auto',
+            'password' => $password
+        );
+
+        $permissions = array(
+            'users' => array(
+                'read' => false
+            )
+        );
+
+        $user = self::createUserWithPermissions($userData, $permissions);
+
+        \Yii::app()->session['loginID'] = $user->uid;
+
+        $surveyPermissions = new SurveyPermissions(self::$testSurvey, true);
+        $users = $surveyPermissions->getSurveyUserList();
+        $this->assertCount(1, $users, 'The number of users which still not have survey permissions is incorrect.');
+
+        //Delete user
+        $user->delete();
+    }
+
+    /**
+     * Testing that a user can not list all users which still not have survey permissions.
+     *
+     * Context:
+     * Users / read permission: No
+     * User in group: No
+     * Same group policy: No
+     */
+    public function testNoReadPermissionNotInGroupNoSameGroupPolicy()
+    {
+        $userName = \Yii::app()->securityManager->generateRandomString(8);
+        $password = createPassword();
+
+        $userData = array(
+            'users_name' => $userName,
+            'full_name' => $userName,
+            'email' => $userName . '@example.com',
+            'lang' => 'auto',
+            'password' => $password
+        );
+
+        $permissions = array(
+            'users' => array(
+                'read' => false
+            )
+        );
+
+        $user = self::createUserWithPermissions($userData, $permissions);
+
+        \Yii::app()->session['loginID'] = $user->uid;
+
+        $surveyPermissions = new SurveyPermissions(self::$testSurvey, false);
+        $users = $surveyPermissions->getSurveyUserList();
+        $this->assertEmpty($users, 'The number of users which still not have survey permissions is incorrect.');
+
+        //Delete user
+        $user->delete();
+    }
+
+    /**
+     * Testing that a user can list users which still not have survey permissions
+     * in the same group.
+     *
+     * Context:
+     * Users / read permission: No
+     * User in group: Yes
+     * Same group policy: Yes
+     */
+    public function testNoReadPermissionUserInGroupSameGroupPolicy()
+    {
+        $userName = \Yii::app()->securityManager->generateRandomString(8);
+        $password = createPassword();
+
+        $userData = array(
+            'users_name' => $userName,
+            'full_name' => $userName,
+            'email' => $userName . '@example.com',
+            'lang' => 'auto',
+            'password' => $password
+        );
+
+        $permissions = array(
+            'users' => array(
+                'read' => false
+            )
+        );
+
+        $user = self::createUserWithPermissions($userData, $permissions);
+
+        $userInGroup = new \UserInGroup();
+        $userInGroup->ugid = self::$userGroupId;
+        $userInGroup->uid = $user->uid;
+        $userInGroup->save();
+
+        \Yii::app()->session['loginID'] = $user->uid;
+
+        $surveyPermissions = new SurveyPermissions(self::$testSurvey, true);
+        $users = $surveyPermissions->getSurveyUserList();
+        $this->assertCount(2, $users, 'The number of users which still not have survey permissions is incorrect.');
+
+        //Delete user
+        $user->delete();
+    }
+
+    /**
+     * Testing that a user can list users which still not have survey permissions.
+     *
+     * Context:
+     * Users / read permission: No
+     * User in group: Yes
+     * Same group policy: No
+     */
+    public function testNoReadPermissionUserInGroupNoSameGroupPolicy()
+    {
+        $userName = \Yii::app()->securityManager->generateRandomString(8);
+        $password = createPassword();
+
+        $userData = array(
+            'users_name' => $userName,
+            'full_name' => $userName,
+            'email' => $userName . '@example.com',
+            'lang' => 'auto',
+            'password' => $password
+        );
+
+        $permissions = array(
+            'users' => array(
+                'read' => false
+            )
+        );
+
+        $user = self::createUserWithPermissions($userData, $permissions);
+
+        $userInGroup = new \UserInGroup();
+        $userInGroup->ugid = self::$userGroupId;
+        $userInGroup->uid = $user->uid;
+        $userInGroup->save();
+
+        \Yii::app()->session['loginID'] = $user->uid;
+
+        $surveyPermissions = new SurveyPermissions(self::$testSurvey, false);
+        $users = $surveyPermissions->getSurveyUserList();
+        $this->assertEmpty($users, 'The number of users which still not have survey permissions is incorrect.');
+
+        //Delete user
+        $user->delete();
+    }
+
     public static function tearDownAfterClass(): void
     {
         //delete users from group
