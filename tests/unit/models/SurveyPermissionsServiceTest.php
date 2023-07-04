@@ -273,15 +273,15 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
     }
 
     /**
-     * Testing that a user can list all users which still not have survey permissions.
+     * Testing methods in the following context:
      *
-     * Context:
      * Users / read permission: Yes
      * User in group: No
      * Same group policy: Yes
      */
     public function testReadPermissionNotInGroupSameGroupPolicy()
     {
+        // Create user.
         $userName = \Yii::app()->securityManager->generateRandomString(8);
         $password = createPassword();
 
@@ -303,24 +303,42 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
 
         \Yii::app()->session['loginID'] = $user->uid;
 
+        // List users without permissions for this survey
         $surveyPermissions = new SurveyPermissions(self::$testSurvey, true);
-        $users = $surveyPermissions->getSurveyUserList();
-        $this->assertCount(4, $users, 'The number of users which still not have survey permissions is incorrect.');
+        $usersWithoutPermissions = $surveyPermissions->getSurveyUserList();
+        $this->assertCount(4, $usersWithoutPermissions, 'The number of users which still not have survey permissions is incorrect.');
+
+        // List permissions for this survey
+        $permissionCriteria = $surveyPermissions->getUserPermissionCriteria();
+        $usersWithPermissions = \Permission::model()->findAll($permissionCriteria);
+        $this->assertCount(3, $usersWithPermissions, 'The number of users with permissions for the current survey is incorrect.');
+
+        // List user groups which could still be added to survey permissions.
+        $userGroups = $surveyPermissions->getSurveyUserGroupList();
+        $this->assertCount(1, $userGroups, 'Users in test group can still be given survey permissions.');
+
+        // User can manage survey permissions for a normal user.
+        $managePermissions = $surveyPermissions->canManageSurveyPermissionsForUser(self::$userIds[3]);
+        $this->assertTrue($managePermissions, 'The user should be able to manage permissions for a normal user in this context.');
+
+        // User can manage survey permissions for a user in the same group.
+        $managePermissions = $surveyPermissions->canManageSurveyPermissionsForUser(self::$userIds[0]);
+        $this->assertTrue($managePermissions, 'The user should be able to manage permissions for a user in the same group in this context.');
 
         //Delete user
         $user->delete();
     }
 
     /**
-     * Testing that a user can list all users which still not have survey permissions.
+     * Testing methods in the following context:
      *
-     * Context:
      * Users / read permission: Yes
      * User in group: No
      * Same group policy: No
      */
     public function testReadPermissionNotInGroupNoSameGroupPolicy()
     {
+        // Create user.
         $userName = \Yii::app()->securityManager->generateRandomString(8);
         $password = createPassword();
 
@@ -342,24 +360,42 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
 
         \Yii::app()->session['loginID'] = $user->uid;
 
+        // List users without permissions for this survey
         $surveyPermissions = new SurveyPermissions(self::$testSurvey, false);
         $users = $surveyPermissions->getSurveyUserList();
         $this->assertCount(4, $users, 'The number of users which still not have survey permissions is incorrect.');
+
+        // List permissions for this survey
+        $permissionCriteria = $surveyPermissions->getUserPermissionCriteria();
+        $usersWithPermissions = \Permission::model()->findAll($permissionCriteria);
+        $this->assertCount(3, $usersWithPermissions, 'The number of users with permissions for the current survey is incorrect.');
+
+        // List user groups which could still be added to survey permissions.
+        $userGroups = $surveyPermissions->getSurveyUserGroupList();
+        $this->assertCount(1, $userGroups, 'Users in test group can still be given survey permissions.');
+
+        // User can manage survey permissions for a normal user.
+        $managePermissions = $surveyPermissions->canManageSurveyPermissionsForUser(self::$userIds[3]);
+        $this->assertTrue($managePermissions, 'The user should be able to manage permissions for a normal user in this context.');
+
+        // User can manage survey permissions for a user in the same group.
+        $managePermissions = $surveyPermissions->canManageSurveyPermissionsForUser(self::$userIds[0]);
+        $this->assertTrue($managePermissions, 'The user should be able to manage permissions for a user in the same group in this context.');
 
         //Delete user
         $user->delete();
     }
 
     /**
-     * Testing that a user can list all users which still not have survey permissions.
+     * Testing methods in the following context:
      *
-     * Context:
      * Users / read permission: Yes
      * User in group: Yes
      * Same group policy: Yes
      */
     public function testReadPermissionInGroupSameGroupPolicy()
     {
+        // Create user
         $userName = \Yii::app()->securityManager->generateRandomString(8);
         $password = createPassword();
 
@@ -386,24 +422,42 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
 
         \Yii::app()->session['loginID'] = $user->uid;
 
+        // List users without permissions for this survey
         $surveyPermissions = new SurveyPermissions(self::$testSurvey, true);
         $users = $surveyPermissions->getSurveyUserList();
         $this->assertCount(4, $users, 'The number of users which still not have survey permissions is incorrect.');
+
+        // List permissions for this survey
+        $permissionCriteria = $surveyPermissions->getUserPermissionCriteria();
+        $usersWithPermissions = \Permission::model()->findAll($permissionCriteria);
+        $this->assertCount(3, $usersWithPermissions, 'The number of users with permissions for the current survey is incorrect.');
+
+        // List user groups which could still be added to survey permissions.
+        $userGroups = $surveyPermissions->getSurveyUserGroupList();
+        $this->assertCount(1, $userGroups, 'Users in test group can still be given survey permissions.');
+
+        // User can manage survey permissions for a normal user.
+        $managePermissions = $surveyPermissions->canManageSurveyPermissionsForUser(self::$userIds[3]);
+        $this->assertTrue($managePermissions, 'The user should be able to manage permissions for a normal user in this context.');
+
+        // User can manage survey permissions for a user in the same group.
+        $managePermissions = $surveyPermissions->canManageSurveyPermissionsForUser(self::$userIds[0]);
+        $this->assertTrue($managePermissions, 'The user should be able to manage permissions for a user in the same group in this context.');
 
         //Delete user
         $user->delete();
     }
 
     /**
-     * Testing that a user can list all users which still not have survey permissions.
+     * Testing methods in the following context:
      *
-     * Context:
      * Users / read permission: Yes
      * User in group: Yes
      * Same group policy: No
      */
     public function testReadPermissionInGroupNoSameGroupPolicy()
     {
+        // Create user
         $userName = \Yii::app()->securityManager->generateRandomString(8);
         $password = createPassword();
 
@@ -430,24 +484,42 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
 
         \Yii::app()->session['loginID'] = $user->uid;
 
+        // List users without permissions for this survey
         $surveyPermissions = new SurveyPermissions(self::$testSurvey, false);
         $users = $surveyPermissions->getSurveyUserList();
         $this->assertCount(4, $users, 'The number of users which still not have survey permissions is incorrect.');
+
+        // List permissions for this survey
+        $permissionCriteria = $surveyPermissions->getUserPermissionCriteria();
+        $usersWithPermissions = \Permission::model()->findAll($permissionCriteria);
+        $this->assertCount(3, $usersWithPermissions, 'The number of users with permissions for the current survey is incorrect.');
+
+        // List user groups which could still be added to survey permissions.
+        $userGroups = $surveyPermissions->getSurveyUserGroupList();
+        $this->assertCount(1, $userGroups, 'Users in test group can still be given survey permissions.');
+
+        // User can manage survey permissions for a normal user.
+        $managePermissions = $surveyPermissions->canManageSurveyPermissionsForUser(self::$userIds[3]);
+        $this->assertTrue($managePermissions, 'The user should be able to manage permissions for a normal user in this context.');
+
+        // User can manage survey permissions for a user in the same group.
+        $managePermissions = $surveyPermissions->canManageSurveyPermissionsForUser(self::$userIds[0]);
+        $this->assertTrue($managePermissions, 'The user should be able to manage permissions for a user in the same group in this context.');
 
         //Delete user
         $user->delete();
     }
 
     /**
-     * Testing that a user can not list all users which still not have survey permissions.
+     * Testing methods in the following context:
      *
-     * Context:
      * Users / read permission: No
      * User in group: No
      * Same group policy: Yes
      */
     public function testNoReadPermissionNotInGroupSameGroupPolicy()
     {
+        // Create user
         $userName = \Yii::app()->securityManager->generateRandomString(8);
         $password = createPassword();
 
@@ -469,24 +541,38 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
 
         \Yii::app()->session['loginID'] = $user->uid;
 
+        // List users without permissions for this survey
         $surveyPermissions = new SurveyPermissions(self::$testSurvey, true);
         $users = $surveyPermissions->getSurveyUserList();
         $this->assertCount(1, $users, 'The number of users which still not have survey permissions is incorrect.');
+
+        // List permissions for this survey
+        $permissionCriteria = $surveyPermissions->getUserPermissionCriteria();
+        $usersWithPermissions = \Permission::model()->findAll($permissionCriteria);
+        $this->assertEmpty($usersWithPermissions, 'The user should not be able to list survey permissions in this context.');
+
+        // List user groups which could still be added to survey permissions.
+        $userGroups = $surveyPermissions->getSurveyUserGroupList();
+        $this->assertEmpty($userGroups, 'User in this context can not list user groups.');
+
+        // User can't manage survey permissions for a normal user.
+        $managePermissions = $surveyPermissions->canManageSurveyPermissionsForUser(self::$userIds[3]);
+        $this->assertFalse($managePermissions, 'The user should not be able to manage permissions for a normal user in this context.');
 
         //Delete user
         $user->delete();
     }
 
     /**
-     * Testing that a user can not list all users which still not have survey permissions.
+     * Testing methods in the following context:
      *
-     * Context:
      * Users / read permission: No
      * User in group: No
      * Same group policy: No
      */
     public function testNoReadPermissionNotInGroupNoSameGroupPolicy()
     {
+        // Create user
         $userName = \Yii::app()->securityManager->generateRandomString(8);
         $password = createPassword();
 
@@ -508,25 +594,38 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
 
         \Yii::app()->session['loginID'] = $user->uid;
 
+        // List users without permissions for this survey
         $surveyPermissions = new SurveyPermissions(self::$testSurvey, false);
         $users = $surveyPermissions->getSurveyUserList();
         $this->assertEmpty($users, 'The number of users which still not have survey permissions is incorrect.');
+
+        // List permissions for this survey
+        $permissionCriteria = $surveyPermissions->getUserPermissionCriteria();
+        $usersWithPermissions = \Permission::model()->findAll($permissionCriteria);
+        $this->assertCount(3, $usersWithPermissions, 'The number of users with permissions for the current survey is incorrect.');
+
+        // List user groups which could still be added to survey permissions.
+        $userGroups = $surveyPermissions->getSurveyUserGroupList();
+        $this->assertEmpty($userGroups, 'User in this context can not list user groups.');
+
+        // User can't manage survey permissions for a normal user.
+        $managePermissions = $surveyPermissions->canManageSurveyPermissionsForUser(self::$userIds[3]);
+        $this->assertFalse($managePermissions, 'The user should not be able to manage permissions for a normal user in this context.');
 
         //Delete user
         $user->delete();
     }
 
     /**
-     * Testing that a user can list users which still not have survey permissions
-     * in the same group.
+     * Testing methods in the following context:
      *
-     * Context:
      * Users / read permission: No
      * User in group: Yes
      * Same group policy: Yes
      */
     public function testNoReadPermissionUserInGroupSameGroupPolicy()
     {
+        // Create user
         $userName = \Yii::app()->securityManager->generateRandomString(8);
         $password = createPassword();
 
@@ -553,24 +652,42 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
 
         \Yii::app()->session['loginID'] = $user->uid;
 
+        // List users without permissions for this survey
         $surveyPermissions = new SurveyPermissions(self::$testSurvey, true);
         $users = $surveyPermissions->getSurveyUserList();
         $this->assertCount(2, $users, 'The number of users which still not have survey permissions is incorrect.');
+
+        // List permissions for this survey
+        $permissionCriteria = $surveyPermissions->getUserPermissionCriteria();
+        $usersWithPermissions = \Permission::model()->findAll($permissionCriteria);
+        $this->assertCount(2, $usersWithPermissions, 'The number of users in this group with permissions for the current survey is incorrect.');
+
+        // List user groups which could still be added to survey permissions.
+        $userGroups = $surveyPermissions->getSurveyUserGroupList();
+        $this->assertCount(1, $userGroups, 'Users in test group can still be given survey permissions.');
+
+        // User can't manage survey permissions for a normal user.
+        $managePermissions = $surveyPermissions->canManageSurveyPermissionsForUser(self::$userIds[3]);
+        $this->assertFalse($managePermissions, 'The user should not be able to manage permissions for a normal user in this context.');
+
+        // User can manage survey permissions for a user in the same group.
+        $managePermissions = $surveyPermissions->canManageSurveyPermissionsForUser(self::$userIds[0]);
+        $this->assertTrue($managePermissions, 'The user should be able to manage permissions for a user in the same group in this context.');
 
         //Delete user
         $user->delete();
     }
 
     /**
-     * Testing that a user can list users which still not have survey permissions.
+     * Testing methods in the following context:
      *
-     * Context:
      * Users / read permission: No
      * User in group: Yes
      * Same group policy: No
      */
     public function testNoReadPermissionUserInGroupNoSameGroupPolicy()
     {
+        // Create user
         $userName = \Yii::app()->securityManager->generateRandomString(8);
         $password = createPassword();
 
@@ -597,9 +714,27 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
 
         \Yii::app()->session['loginID'] = $user->uid;
 
+        // List users without permissions for this survey
         $surveyPermissions = new SurveyPermissions(self::$testSurvey, false);
         $users = $surveyPermissions->getSurveyUserList();
         $this->assertEmpty($users, 'The number of users which still not have survey permissions is incorrect.');
+
+        // List permissions for this survey
+        $permissionCriteria = $surveyPermissions->getUserPermissionCriteria();
+        $usersWithPermissions = \Permission::model()->findAll($permissionCriteria);
+        $this->assertCount(3, $usersWithPermissions, 'The number of users with permissions for the current survey is incorrect.');
+
+        // List user groups which could still be added to survey permissions.
+        $userGroups = $surveyPermissions->getSurveyUserGroupList();
+        $this->assertEmpty($userGroups, 'User in this context can not list user groups.');
+
+        // User can't manage survey permissions for a normal user.
+        $managePermissions = $surveyPermissions->canManageSurveyPermissionsForUser(self::$userIds[3]);
+        $this->assertFalse($managePermissions, 'The user should not be able to manage permissions for a normal user in this context.');
+
+        // User can't manage survey permissions for a user in the same group in this context.
+        $managePermissions = $surveyPermissions->canManageSurveyPermissionsForUser(self::$userIds[0]);
+        $this->assertFalse($managePermissions, 'The user should not be able to manage permissions for a user in the same group in this context.');
 
         //Delete user
         $user->delete();
