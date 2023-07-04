@@ -175,7 +175,7 @@ $googleAnalyticsStyleOptions = array(
                             <?php echo ($bShowInherited && $emailnotificationto === 'inherit' ? 'd-none' : 'd-block'); ?>" type='
                             <?php echo ($bShowInherited) ? 'text' : 'email'; ?>' size='50' id='emailnotificationto' name='emailnotificationto' value="
                             <?php echo htmlspecialchars((string) $emailnotificationto); ?>" data-inherit-value="inherit" data-saved-value="
-                            <?php echo $emailnotificationto; ?>" />
+                            <?php echo htmlspecialchars((string) $emailnotificationto); ?>" />
                         <input class="form-control inherit-readonly
                          <?php echo ($bShowInherited && $emailnotificationto === 'inherit' ? 'd-block' : 'd-none'); ?>" type='text' size='50' value="
                          <?= htmlspecialchars((string) $oSurveyOptions->emailnotificationto ?? '') ?>" readonly />
@@ -204,7 +204,7 @@ $googleAnalyticsStyleOptions = array(
                             <?php echo ($bShowInherited && $emailresponseto === 'inherit' ? 'd-none' : 'd-block'); ?>" type='
                             <?php echo ($bShowInherited) ? 'text' : 'email'; ?>' size='50' id='emailresponseto' name='emailresponseto' value="
                             <?php echo htmlspecialchars((string) $emailresponseto); ?>" data-inherit-value="inherit" data-saved-value="
-                            <?php echo $emailresponseto; ?>" />
+                            <?php echo htmlspecialchars((string) $emailresponseto); ?>" />
                         <input class="form-control inherit-readonly 
                             <?php echo ($bShowInherited && $emailresponseto === 'inherit' ? 'd-block' : 'd-none'); ?>" type='text' size='50' value="
                             <?= htmlspecialchars((string) $oSurveyOptions->emailresponseto ?? '') ?>" readonly />
