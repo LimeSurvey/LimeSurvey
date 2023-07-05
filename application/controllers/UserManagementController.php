@@ -1,5 +1,7 @@
 <?php
 
+use LimeSurvey\Models\Services\UserManager;
+
 //LSYii_Controller
 /**
  * Class UserManagementController
@@ -476,16 +478,17 @@ class UserManagementController extends LSBaseController
      */
     public function actionUserPermissions()
     {
-        if (!Permission::model()->hasGlobalPermission('users', 'update')) {
+        $userId = Yii::app()->request->getParam('userid');
+        $userId = sanitize_int($userId);
+        $oUser = User::model()->findByPk($userId);
+
+        $userManager = new UserManager(Yii::app()->user, $oUser);
+        if (!$userManager->canAssignPermissions()) {
             return $this->renderPartial(
                 'partial/error',
                 ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
             );
         }
-
-        $userId = Yii::app()->request->getParam('userid');
-        $userId = sanitize_int($userId);
-        $oUser = User::model()->findByPk($userId);
 
         // Check permissions
         $aBasePermissions = Permission::model()->getGlobalBasePermissions();
@@ -530,20 +533,25 @@ class UserManagementController extends LSBaseController
      */
     public function actionSaveUserPermissions(): string
     {
-        if (!Permission::model()->hasGlobalPermission('users', 'update')) {
-            return $this->renderPartial(
-                'partial/error',
-                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
-            );
-        }
         $userId = Yii::app()->request->getPost('userid');
+        $oUser = User::model()->findByPk($userId);
+
+        $userManager = new UserManager(Yii::app()->user, $oUser);
+        if (!$userManager->canAssignPermissions()) {
+            return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
+                "data" => [
+                    'success' => false,
+                    'errors' => [gT("You do not have permission to access this page.")],
+                ]
+            ]);
+        }
+
         $aPermissions = Yii::app()->request->getPost('Permission', []);
 
         Permissiontemplates::model()->clearUser($userId);
 
         $results = $this->applyPermissionFromArray($userId, $aPermissions);
 
-        $oUser = User::model()->findByPk($userId);
         $oUser->modified = date('Y-m-d H:i:s');
         $oUser->save();
 
@@ -628,19 +636,17 @@ class UserManagementController extends LSBaseController
      */
     public function actionAddRole(): ?string
     {
-        //Permission check user should have permission to add/edit new user ('create' or 'update')
-        if (
-            !(Permission::model()->hasGlobalPermission('users', 'create') ||
-            Permission::model()->hasGlobalPermission('users', 'update'))
-        ) {
+        $userId = Yii::app()->request->getParam('userid');
+        $oUser = User::model()->findByPk($userId);
+
+        $userManager = new UserManager(Yii::app()->user, $oUser);
+        if (!$userManager->canAssignRole()) {
             return $this->renderPartial(
                 'partial/error',
                 ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
             );
         }
 
-        $userId = Yii::app()->request->getParam('userid');
-        $oUser = User::model()->findByPk($userId);
         $aPermissionTemplates = Permissiontemplates::model()->findAll();
         $aPossibleRoles = [];
         array_walk(
@@ -671,13 +677,18 @@ class UserManagementController extends LSBaseController
      */
     public function actionSaveRole(): ?string
     {
-        if (!Permission::model()->hasGlobalPermission('users', 'update')) {
-            return $this->renderPartial(
-                'partial/error',
-                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
-            );
-        }
         $iUserId = Yii::app()->request->getPost('userid');
+        $oUser = User::model()->findByPk($iUserId);
+
+        $userManager = new UserManager(Yii::app()->user, $oUser);
+        if (!$userManager->canAssignRole()) {
+            return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
+                "data" => [
+                    'success' => false,
+                    'errors' => [gT("You do not have permission to access this page.")],
+                ]
+            ]);
+        }
         $aUserRoleIds = Yii::app()->request->getPost('roleselector', []);
         $results = [];
 
@@ -1317,7 +1328,8 @@ class UserManagementController extends LSBaseController
 
         // Abort if logged in user has no access to this user.
         // Using same logic as User::getButtons().
-        if (!$oUser->canEdit(Yii::app()->session['loginID'])) {
+        $userManager = new UserManager(Yii::app()->user, $oUser);
+        if (!$userManager->canEdit()) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
 
