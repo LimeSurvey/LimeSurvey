@@ -315,6 +315,7 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
         foreach ($usersWithPermissions as $permission) {
             echo $permission->uid . PHP_EOL;
         }
+        var_dump(self::$userIds);
         $this->assertCount(3, $usersWithPermissions, 'The number of users with permissions for the current survey is incorrect.');
 
         // List user groups which could still be added to survey permissions.
