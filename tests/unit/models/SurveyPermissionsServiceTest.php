@@ -311,6 +311,10 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
         // List permissions for this survey
         $permissionCriteria = $surveyPermissions->getUserPermissionCriteria();
         $usersWithPermissions = \Permission::model()->findAll($permissionCriteria);
+        echo PHP_EOL;
+        foreach ($usersWithPermissions as $permission) {
+            echo $permission->uid . PHP_EOL;
+        }
         $this->assertCount(3, $usersWithPermissions, 'The number of users with permissions for the current survey is incorrect.');
 
         // List user groups which could still be added to survey permissions.
