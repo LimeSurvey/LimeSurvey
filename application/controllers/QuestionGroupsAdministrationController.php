@@ -582,17 +582,13 @@ class QuestionGroupsAdministrationController extends LSBaseController
             throw new CHttpException(401, gT("Invalid question group id"));
         }
         $iGroupId = sanitize_int($iGroupId);
-
         $oQuestionGroup = QuestionGroup::model()->find("gid = :gid", array(":gid" => $iGroupId));
-        /* Test the surveyid from question, not from submitted value */
         $iSurveyId = $oQuestionGroup->sid;
-        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'surveycontent', 'delete')) {
-            throw new CHttpException(403, gT("You are not authorized to delete questions."));
-        }
-
-        LimeExpressionManager::RevertUpgradeConditionsToRelevance($iSurveyId);
-
-        $iGroupsDeleted = QuestionGroup::deleteWithDependency($iGroupId, $iSurveyId);
+        $diContainer = \LimeSurvey\DI::getContainer();
+        $questionGroupService = $diContainer->get(
+            LimeSurvey\Models\Services\QuestionGroupService::class
+        );
+        $iGroupsDeleted = $questionGroupService->deleteGroup($iGroupId, $iSurveyId);
 
         //this is only important for massaction ... (do we have massaction for survey groups?)
         if ($asJson !== false) {
@@ -613,13 +609,11 @@ class QuestionGroupsAdministrationController extends LSBaseController
         }
 
         if ($iGroupsDeleted > 0) {
-            QuestionGroup::model()->updateGroupOrder($iSurveyId);
             App()->setFlashMessage(gT('The question group was deleted.'));
         } else {
             App()->setFlashMessage(gT('Group could not be deleted'), 'error');
         }
 
-        LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyId);
         $survey = Survey::model()->findByPk($iSurveyId);
         // Make sure we have the latest groups data
         $survey->refresh();
@@ -775,12 +769,14 @@ class QuestionGroupsAdministrationController extends LSBaseController
      */
     public function actionSaveQuestionGroupData(int $sid)
     {
-        $questionGroup = App()->request->getPost('questionGroup', []);
-        $questionGroupI10N = App()->request->getPost('questionGroupI10N', []);
+        $questionGroupData = App()->request->getPost('questionGroup', []);
+        $wholeQuestionGroupDataset = ['questionGroup'     => $questionGroupData,
+                                      'questionGroupI10N' => App()->request->getPost('questionGroupI10N', [])
+        ];
         $sScenario = App()->request->getPost('scenario', '');
-        $iSurveyId = (int) $sid;
+        $iSurveyId = (int)$sid;
 
-        $oQuestionGroup = isset($questionGroup['gid']) ? QuestionGroup::model()->findByPk($questionGroup['gid']) : null;
+        $oQuestionGroup = isset($questionGroupData['gid']) ? QuestionGroup::model()->findByPk($questionGroupData['gid']) : null;
 
         //permission check ...
         if ($oQuestionGroup == null) {
@@ -793,11 +789,15 @@ class QuestionGroupsAdministrationController extends LSBaseController
             $this->redirect(App()->request->urlReferrer);
         }
 
+        $diContainer = \LimeSurvey\DI::getContainer();
+        $questionGroupService = $diContainer->get(
+            LimeSurvey\Models\Services\QuestionGroupService::class
+        );
         if ($oQuestionGroup == null) {
             $isNewGroup = true;
-            $oQuestionGroup = $this->newQuestionGroup($iSurveyId, $questionGroup);
+            $oQuestionGroup = $questionGroupService->createGroup($iSurveyId, $wholeQuestionGroupDataset);
         } else {
-            $oQuestionGroup = $this->editQuestionGroup($oQuestionGroup, $questionGroup);
+            $oQuestionGroup = $questionGroupService->updateGroup($iSurveyId, $oQuestionGroup->gid, $wholeQuestionGroupDataset);
         }
 
         $landOnSideMenuTab = 'structure';
@@ -852,8 +852,6 @@ class QuestionGroupsAdministrationController extends LSBaseController
                     ]
                 );
         }
-
-        $this->applyI10N($oQuestionGroup, $questionGroupI10N);
 
         $aQuestionGroup = $oQuestionGroup->attributes;
         LimeExpressionManager::ProcessString('{' . $aQuestionGroup['grelevance'] . '}');
@@ -1003,108 +1001,4 @@ class QuestionGroupsAdministrationController extends LSBaseController
         return $oQuestionGroup;
     }
 
-    /**
-     * Method to store and filter questionData for a new question
-     *
-     * @param int $iSurveyId
-     * @param array $aQuestionGroupData
-     *
-     * @return QuestionGroup
-     * @throws CException
-     */
-    private function newQuestionGroup($iSurveyId, $aQuestionGroupData = null)
-    {
-        $oSurvey = Survey::model()->findByPk($iSurveyId);
-
-        $aQuestionGroupData = array_merge([
-            'sid' => $iSurveyId,
-        ], $aQuestionGroupData);
-        unset($aQuestionGroupData['gid']);
-
-        $oQuestionGroup = new QuestionGroup();
-        $oQuestionGroup->setAttributes($aQuestionGroupData, false);
-
-        if ($oQuestionGroup == null) {
-            throw new CException("Object creation failed, input array malformed or invalid");
-        }
-        // Always add at the end
-        $oQuestionGroup->group_order = safecount($oSurvey->groups) + 1;
-        $saved = $oQuestionGroup->save();
-        if ($saved == false) {
-            throw new CException(
-                "Object creation failed, couldn't save.\n ERRORS:"
-                . print_r($oQuestionGroup->getErrors(), true)
-            );
-        }
-
-        $i10N = [];
-        foreach ($oSurvey->allLanguages as $sLanguage) {
-            $i10N[$sLanguage] = new QuestionGroupL10n();
-            $i10N[$sLanguage]->setAttributes([
-                'gid' => $oQuestionGroup->gid,
-                'language' => $sLanguage,
-                'group_name' => '',
-                'description' => '',
-            ], false);
-            $i10N[$sLanguage]->save();
-        }
-
-        return $oQuestionGroup;
-    }
-
-    /**
-     * Method to store and filter questionGroupData for editing a questionGroup
-     *
-     * REFACTORED in QuestionGroupService
-     *
-     * @param QuestionGroup $oQuestionGroup
-     * @param array $aQuestionGroupData
-     *
-     * @return QuestionGroup
-     *
-     * @throws CException
-     */
-    private function editQuestionGroup(&$oQuestionGroup, $aQuestionGroupData)
-    {
-        $oQuestionGroup->setAttributes($aQuestionGroupData, false);
-        if ($oQuestionGroup == null) {
-            throw new CException("Object update failed, input array malformed or invalid");
-        }
-
-        $saved = $oQuestionGroup->save();
-        if ($saved == false) {
-            throw new CException(
-                "Object update failed, couldn't save. ERRORS:"
-                . print_r($oQuestionGroup->getErrors(), true)
-            );
-        }
-        return $oQuestionGroup;
-    }
-
-    /**
-     * Stores questiongroup languages.
-     *
-     * REFACTORED in QuestionGroupService
-     *
-     * @param QuestionGroup $oQuestionGroup
-     * @param array $dataSet array with languages
-     * @return bool true if ALL languages could be safed, false otherwise
-     */
-    private function applyI10N(&$oQuestionGroup, $dataSet)
-    {
-        $storeValid = true;
-
-        foreach ($dataSet as $sLanguage => $aI10NBlock) {
-            $i10N = QuestionGroupL10n::model()->findByAttributes(
-                ['gid' => $oQuestionGroup->gid,'language' => $sLanguage]
-            );
-            $i10N->setAttributes([
-                'group_name' => $aI10NBlock['group_name'],
-                'description' => $aI10NBlock['description'],
-            ], false);
-            $storeValid = $storeValid && $i10N->save();
-        }
-
-        return $storeValid;
-    }
 }

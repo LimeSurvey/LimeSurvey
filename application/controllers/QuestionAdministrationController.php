@@ -332,9 +332,13 @@ class QuestionAdministrationController extends LSBaseController
         $aData['surveybar'] = [];
 
         // for newly combined groups and reorder parts
-        $aData['groupModel'] = $this->getGroupData($oSurvey);
+        $diContainer = \LimeSurvey\DI::getContainer();
+        $questionGroupService = $diContainer->get(
+            LimeSurvey\Models\Services\QuestionGroupService::class
+        );
+        $aData['groupModel'] = $questionGroupService->getGroupData($iSurveyID);
         $aData['aGroupsAndQuestions'] = $this->getReorderData($oSurvey);
-
+        $aData['surveyActivated'] = $oSurvey->getIsActive();
         $this->aData = $aData;
 
          $aData['hasSurveyContentCreatePermission'] = Permission::model()->hasSurveyPermission(
@@ -347,22 +351,28 @@ class QuestionAdministrationController extends LSBaseController
         $this->render("listquestions", $aData);
     }
 
-    public function getGroupData($oSurvey)
-    {
-        $model    = new QuestionGroup('search');
-
-        if (isset($_GET['QuestionGroup']['group_name'])) {
-            $model->group_name = $_GET['QuestionGroup']['group_name'];
-        }
-
-        if (isset($_GET['pageSize'])) {
-            Yii::app()->user->setState('pageSize', (int) $_GET['pageSize']);
-        }
-        $model['sid'] = $oSurvey->primaryKey;
-        $model['language'] = $oSurvey->language;
-
-        return $model;
-    }
+//    /**
+//     * REFACTORED in QuestionGroupService
+//     *
+//     * @param $oSurvey
+//     * @return QuestionGroup
+//     */
+//    public function getGroupData($oSurvey)
+//    {
+//        $model    = new QuestionGroup('search');
+//
+//        if (isset($_GET['QuestionGroup']['group_name'])) {
+//            $model->group_name = $_GET['QuestionGroup']['group_name'];
+//        }
+//
+//        if (isset($_GET['pageSize'])) {
+//            Yii::app()->user->setState('pageSize', (int) $_GET['pageSize']);
+//        }
+//        $model['sid'] = $oSurvey->primaryKey;
+//        $model['language'] = $oSurvey->language;
+//
+//        return $model;
+//    }
 
     public function getReorderData($oSurvey)
     {

@@ -43,6 +43,7 @@ $baseLanguage = $oSurvey->language;
             <?php $this->renderPartial('/admin/survey/organizeGroupsAndQuestions_view',[
                 'surveyid' => $surveyid,
                 'aGroupsAndQuestions' => $aGroupsAndQuestions,
+                'surveyActivated' => $surveyActivated,
 
             ]) ?>
         </div>
