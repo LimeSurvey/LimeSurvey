@@ -305,17 +305,14 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
 
         // List users without permissions for this survey
         $surveyPermissions = new SurveyPermissions(self::$testSurvey, true);
+        $usercontrolSameGroupPolicyTmp = App()->getConfig('usercontrolSameGroupPolicy');
+        App()->setConfig('usercontrolSameGroupPolicy', true); // Set global same group policy.
         $usersWithoutPermissions = $surveyPermissions->getSurveyUserList();
         $this->assertCount(4, $usersWithoutPermissions, 'The number of users which still not have survey permissions is incorrect.');
 
         // List permissions for this survey
         $permissionCriteria = $surveyPermissions->getUserPermissionCriteria();
         $usersWithPermissions = \Permission::model()->findAll($permissionCriteria);
-        echo PHP_EOL;
-        foreach ($usersWithPermissions as $permission) {
-            echo $permission->uid . PHP_EOL;
-        }
-        var_dump(self::$userIds);
         $this->assertCount(3, $usersWithPermissions, 'The number of users with permissions for the current survey is incorrect.');
 
         // List user groups which could still be added to survey permissions.
@@ -332,6 +329,8 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
 
         //Delete user
         $user->delete();
+        // Restore global same group policy.
+        App()->setConfig('usercontrolSameGroupPolicy', $usercontrolSameGroupPolicyTmp);
     }
 
     /**
@@ -367,6 +366,8 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
 
         // List users without permissions for this survey
         $surveyPermissions = new SurveyPermissions(self::$testSurvey, false);
+        $usercontrolSameGroupPolicyTmp = App()->getConfig('usercontrolSameGroupPolicy');
+        App()->setConfig('usercontrolSameGroupPolicy', false); // Set global same group policy.
         $users = $surveyPermissions->getSurveyUserList();
         $this->assertCount(4, $users, 'The number of users which still not have survey permissions is incorrect.');
 
@@ -389,6 +390,8 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
 
         //Delete user
         $user->delete();
+        // Restore global same group policy.
+        App()->setConfig('usercontrolSameGroupPolicy', $usercontrolSameGroupPolicyTmp);
     }
 
     /**
@@ -429,6 +432,8 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
 
         // List users without permissions for this survey
         $surveyPermissions = new SurveyPermissions(self::$testSurvey, true);
+        $usercontrolSameGroupPolicyTmp = App()->getConfig('usercontrolSameGroupPolicy');
+        App()->setConfig('usercontrolSameGroupPolicy', true); // Set global same group policy.
         $users = $surveyPermissions->getSurveyUserList();
         $this->assertCount(4, $users, 'The number of users which still not have survey permissions is incorrect.');
 
@@ -451,6 +456,8 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
 
         //Delete user
         $user->delete();
+        // Restore global same group policy.
+        App()->setConfig('usercontrolSameGroupPolicy', $usercontrolSameGroupPolicyTmp);
     }
 
     /**
@@ -491,6 +498,8 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
 
         // List users without permissions for this survey
         $surveyPermissions = new SurveyPermissions(self::$testSurvey, false);
+        $usercontrolSameGroupPolicyTmp = App()->getConfig('usercontrolSameGroupPolicy');
+        App()->setConfig('usercontrolSameGroupPolicy', false); // Set global same group policy.
         $users = $surveyPermissions->getSurveyUserList();
         $this->assertCount(4, $users, 'The number of users which still not have survey permissions is incorrect.');
 
@@ -513,6 +522,8 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
 
         //Delete user
         $user->delete();
+        // Restore global same group policy.
+        App()->setConfig('usercontrolSameGroupPolicy', $usercontrolSameGroupPolicyTmp);
     }
 
     /**
@@ -548,6 +559,8 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
 
         // List users without permissions for this survey
         $surveyPermissions = new SurveyPermissions(self::$testSurvey, true);
+        $usercontrolSameGroupPolicyTmp = App()->getConfig('usercontrolSameGroupPolicy');
+        App()->setConfig('usercontrolSameGroupPolicy', true); // Set global same group policy.
         $users = $surveyPermissions->getSurveyUserList();
         $this->assertCount(1, $users, 'The number of users which still not have survey permissions is incorrect.');
 
@@ -566,6 +579,8 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
 
         //Delete user
         $user->delete();
+        // Restore global same group policy.
+        App()->setConfig('usercontrolSameGroupPolicy', $usercontrolSameGroupPolicyTmp);
     }
 
     /**
@@ -601,6 +616,8 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
 
         // List users without permissions for this survey
         $surveyPermissions = new SurveyPermissions(self::$testSurvey, false);
+        $usercontrolSameGroupPolicyTmp = App()->getConfig('usercontrolSameGroupPolicy');
+        App()->setConfig('usercontrolSameGroupPolicy', false); // Set global same group policy.
         $users = $surveyPermissions->getSurveyUserList();
         $this->assertEmpty($users, 'The number of users which still not have survey permissions is incorrect.');
 
@@ -619,6 +636,8 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
 
         //Delete user
         $user->delete();
+        // Restore global same group policy.
+        App()->setConfig('usercontrolSameGroupPolicy', $usercontrolSameGroupPolicyTmp);
     }
 
     /**
@@ -659,6 +678,8 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
 
         // List users without permissions for this survey
         $surveyPermissions = new SurveyPermissions(self::$testSurvey, true);
+        $usercontrolSameGroupPolicyTmp = App()->getConfig('usercontrolSameGroupPolicy');
+        App()->setConfig('usercontrolSameGroupPolicy', true); // Set global same group policy.
         $users = $surveyPermissions->getSurveyUserList();
         $this->assertCount(2, $users, 'The number of users which still not have survey permissions is incorrect.');
 
@@ -681,6 +702,8 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
 
         //Delete user
         $user->delete();
+        // Restore global same group policy.
+        App()->setConfig('usercontrolSameGroupPolicy', $usercontrolSameGroupPolicyTmp);
     }
 
     /**
@@ -721,6 +744,8 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
 
         // List users without permissions for this survey
         $surveyPermissions = new SurveyPermissions(self::$testSurvey, false);
+        $usercontrolSameGroupPolicyTmp = App()->getConfig('usercontrolSameGroupPolicy');
+        App()->setConfig('usercontrolSameGroupPolicy', false); // Set global same group policy.
         $users = $surveyPermissions->getSurveyUserList();
         $this->assertEmpty($users, 'The number of users which still not have survey permissions is incorrect.');
 
@@ -743,6 +768,8 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
 
         //Delete user
         $user->delete();
+        // Restore global same group policy.
+        App()->setConfig('usercontrolSameGroupPolicy', $usercontrolSameGroupPolicyTmp);
     }
 
     public static function tearDownAfterClass(): void
