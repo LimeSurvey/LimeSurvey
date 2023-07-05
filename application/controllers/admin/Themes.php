@@ -44,7 +44,7 @@ class Themes extends SurveyCommonAction
      */
     public function templatezip($templatename)
     {
-        $oEditedTemplate = Template::getInstance($templatename);
+        $oEditedTemplate = Template::getInstance($templatename, null, null, true);
 
         if (Permission::model()->hasGlobalPermission('templates', 'export')) {
             $templatedir = $oEditedTemplate->path;
