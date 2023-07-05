@@ -29,15 +29,13 @@ class SurveyTest extends BaseModelTestCase
 
     public function setUp(): void
     {
-        // TODO: Fix all icon checks in this class.
-        $this->markTestIncomplete();
         \SettingGlobal::setSetting('timeadjust', '+0 minutes');
     }
 
     /**
      * Survey state: inactive.
      */
-    public function testInactiveSurveyState(): void
+    public function testInactiveSurveyState()
     {
         $survey = new \Survey();
         $survey->active = 'N';
@@ -50,7 +48,7 @@ class SurveyTest extends BaseModelTestCase
     /**
      * Survey state: expired.
      */
-    public function testExpiredSurveyState(): void
+    public function testExpiredSurveyState()
     {
         $survey = new \Survey();
         $survey->active = 'Y';
@@ -73,7 +71,7 @@ class SurveyTest extends BaseModelTestCase
     /**
      * Survey state: willRun.
      */
-    public function testWillRunSurveyState(): void
+    public function testWillRunSurveyState()
     {
         $survey = new \Survey();
         $survey->active = 'Y';
@@ -89,7 +87,7 @@ class SurveyTest extends BaseModelTestCase
     /**
      * Survey state: willExpire (the survey is active and it has an expiredate).
      */
-    public function testWillExpireSurveyState(): void
+    public function testWillExpireSurveyState()
     {
         $survey = new \Survey();
         $survey->active = 'Y';
@@ -116,7 +114,7 @@ class SurveyTest extends BaseModelTestCase
     /**
      * Survey state: running (the survey is active but it does not have an expire date).
      */
-    public function testRunningSurveyState(): void
+    public function testRunningSurveyState()
     {
         $survey = new \Survey();
         $survey->active = 'Y';
@@ -129,7 +127,7 @@ class SurveyTest extends BaseModelTestCase
     /**
      * The survey is not active.
      */
-    public function testInactiveSurveyIcon(): void
+    public function testInactiveSurveyIcon()
     {
         $survey = new \Survey();
         $survey->active = 'N';
@@ -143,7 +141,7 @@ class SurveyTest extends BaseModelTestCase
     /**
      * The survey is active but it has no start or expire dates set.
      */
-    public function testActiveSurveyIconNoDates(): void
+    public function testActiveSurveyIconNoDates()
     {
         $survey = new \Survey();
         $survey->active = 'Y';
@@ -151,13 +149,13 @@ class SurveyTest extends BaseModelTestCase
         $icon = $survey->getRunning();
 
         $this->assertStringContainsString(gT('Active'), $icon, 'The icon link does not have the right text.');
-        $this->assertStringContainsString('ri-play-fill text-primary me-1', $icon, 'The icon link does not have the right css classes.');
+        $this->assertStringContainsString('ri-play-fill text-primary', $icon, 'The icon link does not have the right css classes.');
     }
 
     /**
      * The survey is active, it has a start date in the past but no expire date.
      */
-    public function testActiveSurveyIconNoExpireDate(): void
+    public function testActiveSurveyIconNoExpireDate()
     {
         $survey = new \Survey();
         $survey->active = 'Y';
@@ -169,7 +167,7 @@ class SurveyTest extends BaseModelTestCase
         $icon = $survey->getRunning();
 
         $this->assertStringContainsString(gT('End: Never'), $icon, 'The icon link does not have the right text.');
-        $this->assertStringContainsString('ri-play-fill text-secondary me-1', $icon, 'The icon link does not have the right css classes.');
+        $this->assertStringContainsString('ri-play-fill text-primary', $icon, 'The icon link does not have the right css classes.');
 
         //Test with time adjust.
         \SettingGlobal::setSetting('timeadjust', '+420 minutes');
@@ -177,13 +175,13 @@ class SurveyTest extends BaseModelTestCase
         $newIcon = $survey->getRunning();
 
         $this->assertStringContainsString(gT('End: Never'), $newIcon, 'The icon link does not have the right text.');
-        $this->assertStringContainsString('ri-play-fill text-secondary me-1', $newIcon, 'The icon link does not have the right css classes.');
+        $this->assertStringContainsString('ri-play-fill text-primary', $newIcon, 'The icon link does not have the right css classes.');
     }
 
     /**
      * The survey is active, it has an expire date in the future but no start date.
      */
-    public function testActiveSurveyIconNoStartDate(): void
+    public function testActiveSurveyIconNoStartDate()
     {
         $survey = new \Survey();
         $survey->active = 'Y';
@@ -197,23 +195,23 @@ class SurveyTest extends BaseModelTestCase
         $icon = $survey->getRunning();
 
         $this->assertStringContainsString(sprintf(gT('End: %s'), $sExpires), $icon, 'The icon link does not have the right text.');
-        $this->assertStringContainsString('ri-play-fill text-secondary me-1', $icon, 'The icon link does not have the right css classes.');
+        $this->assertStringContainsString('ri-play-fill text-primary', $icon, 'The icon link does not have the right css classes.');
 
         //Test with time adjust.
         \SettingGlobal::setSetting('timeadjust', '+120 minutes');
-        
+
         $sExpires = convertToGlobalSettingFormat(date("Y-m-d H:i:s", strtotime(\Yii::app()->getConfig('timeadjust'), strtotime($survey->expires))));
 
         $newIcon = $survey->getRunning();
 
         $this->assertStringContainsString(sprintf(gT('End: %s'), $sExpires), $newIcon, 'The icon link does not have the right text.');
-        $this->assertStringContainsString('ri-play-fill text-secondary me-1', $newIcon, 'The icon link does not have the right css classes.');
+        $this->assertStringContainsString('ri-play-fill text-primary', $newIcon, 'The icon link does not have the right css classes.');
     }
 
     /**
      * The survey is active, it has an expire date in the future and a start date in the past.
      */
-    public function testActiveSurveyIconExpireDateInTheFutureStartDateInThePast(): void
+    public function testActiveSurveyIconExpireDateInTheFutureStartDateInThePast()
     {
 
         $survey = new \Survey();
@@ -230,23 +228,23 @@ class SurveyTest extends BaseModelTestCase
         $icon = $survey->getRunning();
 
         $this->assertStringContainsString(sprintf(gT('End: %s'), $sExpires), $icon, 'The icon link does not have the right text.');
-        $this->assertStringContainsString('ri-play-fill text-secondary', $icon, 'The icon link does not have the right css classes.');
+        $this->assertStringContainsString('ri-play-fill text-primary', $icon, 'The icon link does not have the right css classes.');
 
         //Test with time adjust.
         \SettingGlobal::setSetting('timeadjust', '+180 minutes');
-        
+
         $sExpires = convertToGlobalSettingFormat(date("Y-m-d H:i:s", strtotime(\Yii::app()->getConfig('timeadjust'), strtotime($survey->expires))));
 
         $newIcon = $survey->getRunning();
 
         $this->assertStringContainsString(sprintf(gT('End: %s'), $sExpires), $newIcon, 'The icon link does not have the right text.');
-        $this->assertStringContainsString('ri-play-fill text-secondary', $newIcon, 'The icon link does not have the right css classes.');
+        $this->assertStringContainsString('ri-play-fill text-primary', $newIcon, 'The icon link does not have the right css classes.');
     }
 
     /**
      * The survey has a start date in the future and no expire date.
      */
-    public function testSurveyIconWillStartNoExpireDate(): void
+    public function testSurveyIconWillStartNoExpireDate()
     {
 
         $survey = new \Survey();
@@ -264,7 +262,7 @@ class SurveyTest extends BaseModelTestCase
 
         //Test with time adjust.
         \SettingGlobal::setSetting('timeadjust', '+240 minutes');
-        
+
         $sStart = convertToGlobalSettingFormat(date("Y-m-d H:i:s", strtotime(\Yii::app()->getConfig('timeadjust'), strtotime($survey->startdate))));
 
         $newIcon = $survey->getRunning();
@@ -276,7 +274,7 @@ class SurveyTest extends BaseModelTestCase
     /**
      * The survey has a start date in the future and an expire date in the future.
      */
-    public function testSurveyIconWillStart(): void
+    public function testSurveyIconWillStart()
     {
 
         $survey = new \Survey();
@@ -296,7 +294,7 @@ class SurveyTest extends BaseModelTestCase
 
         //Test with time adjust.
         \SettingGlobal::setSetting('timeadjust', '+300 minutes');
-        
+
         $sStart = convertToGlobalSettingFormat(date("Y-m-d H:i:s", strtotime(\Yii::app()->getConfig('timeadjust'), strtotime($survey->startdate))));
 
         $newIcon = $survey->getRunning();
@@ -308,7 +306,7 @@ class SurveyTest extends BaseModelTestCase
     /**
      * The survey has an expire date in the past and no start date.
      */
-    public function testSurveyIconExpiredNoStartdate(): void
+    public function testSurveyIconExpiredNoStartdate()
     {
 
         $survey = new \Survey();
@@ -322,23 +320,22 @@ class SurveyTest extends BaseModelTestCase
         $icon = $survey->getRunning();
 
         $this->assertStringContainsString(sprintf(gT('Expired: %s'), $sExpires), $icon, 'The icon link does not have the right text.');
-        $this->assertStringContainsString('fa fa fa-step-forward text-warning', $icon, 'The icon link does not have the right css classes.');
+        $this->assertStringContainsString('ri-skip-forward-fill text-secondary', $icon, 'The icon link does not have the right css classes.');
 
         //Test with time adjust.
         \SettingGlobal::setSetting('timeadjust', '+360 minutes');
-        
         $sExpires = convertToGlobalSettingFormat(date("Y-m-d H:i:s", strtotime(\Yii::app()->getConfig('timeadjust'), strtotime($survey->expires))));
 
         $newIcon = $survey->getRunning();
 
         $this->assertStringContainsString(sprintf(gT('Expired: %s'), $sExpires), $newIcon, 'The icon link does not have the right text.');
-        $this->assertStringContainsString('fa fa fa-step-forward text-warning', $newIcon, 'The icon link does not have the right css classes.');
+        $this->assertStringContainsString('ri-skip-forward-fill text-secondary', $newIcon, 'The icon link does not have the right css classes.');
     }
 
     /**
      * The survey has an expire date in the past and a start date in the past.
      */
-    public function testSurveyIconExpired(): void
+    public function testSurveyIconExpired()
     {
         $survey = new \Survey();
         $survey->active = 'Y';
@@ -353,16 +350,16 @@ class SurveyTest extends BaseModelTestCase
         $icon = $survey->getRunning();
 
         $this->assertStringContainsString(sprintf(gT('Expired: %s'), $sExpires), $icon, 'The icon link does not have the right text.');
-        $this->assertStringContainsString('fa fa fa-step-forward text-warning', $icon, 'The icon link does not have the right css classes.');
+        $this->assertStringContainsString('ri-skip-forward-fill text-secondary', $icon, 'The icon link does not have the right css classes.');
 
         //Test with time adjust.
         \SettingGlobal::setSetting('timeadjust', '+60 minutes');
-        
+
         $sExpires = convertToGlobalSettingFormat(date("Y-m-d H:i:s", strtotime(\Yii::app()->getConfig('timeadjust'), strtotime($survey->expires))));
 
         $newIcon = $survey->getRunning();
 
         $this->assertStringContainsString(sprintf(gT('Expired: %s'), $sExpires), $newIcon, 'The icon link does not have the right text.');
-        $this->assertStringContainsString('fa fa fa-step-forward text-warning', $newIcon, 'The icon link does not have the right css classes.');
+        $this->assertStringContainsString('ri-skip-forward-fill text-secondary', $newIcon, 'The icon link does not have the right css classes.');
     }
 }

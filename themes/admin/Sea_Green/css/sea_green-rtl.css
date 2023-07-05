@@ -15617,31 +15617,6 @@ fieldset[disabled] .form-control {
   background-color: #a0352f;
 }
 
-.list-group-item {
-  background-color: #fff;
-  border: 1px solid #dadada;
-}
-
-.list-group-item-success {
-  color: #328637;
-  background-color: #c0e3c2;
-}
-
-.list-group-item-info {
-  color: #39993f;
-  background-color: #649b6b;
-}
-
-.list-group-item-warning {
-  color: #FFE046;
-  background-color: #bba18c;
-}
-
-.list-group-item-danger {
-  color: #e8afae;
-  background-color: #be6665;
-}
-
 .close {
   color: #000;
   text-shadow: 0 1px 0 #fff;
@@ -17479,6 +17454,10 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   border-top: 1px solid #EEEFF7;
 }
 
+.ls-card-grid .ls-card-grid__description {
+  padding-right: 8px;
+}
+
 #statisticsview .box {
   text-align: right;
   margin-bottom: 1em;
@@ -19144,4 +19123,31 @@ table [class^=ri-], table [class*=" ri-"] {
     animation: slidein 300ms forwards;
     transform-style: preserve-3d;
   }
+}
+.list-group-item {
+  background-color: #fff;
+  border: 1px solid #dadada;
+}
+.list-group-item .selector__toggle_full_text {
+  padding: 4px 0;
+}
+
+.list-group-item-success {
+  color: #328637;
+  background-color: #c0e3c2;
+}
+
+.list-group-item-info {
+  color: #39993f;
+  background-color: #649b6b;
+}
+
+.list-group-item-warning {
+  color: #FFE046;
+  background-color: #bba18c;
+}
+
+.list-group-item-danger {
+  color: #e8afae;
+  background-color: #be6665;
 }

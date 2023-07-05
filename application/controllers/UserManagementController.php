@@ -1,5 +1,7 @@
 <?php
 
+use LimeSurvey\Models\Services\UserManager;
+
 //LSYii_Controller
 /**
  * Class UserManagementController
@@ -289,20 +291,84 @@ class UserManagementController extends LSBaseController
      */
     public function actionDeleteUser()
     {
-        if (!Permission::model()->hasGlobalPermission('users', 'delete')) {
-            return $this->renderPartial(
-                'partial/error',
-                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
-            );
-        }
-        $userId = (int) Yii::app()->request->getPost('userid');
-        if ($userId == Yii::app()->user->id) {
+        $permission_users_delete = Permission::model()->hasGlobalPermission('users', 'delete');
+        $permission_superadmin_read = Permission::model()->hasGlobalPermission('superadmin', 'read');
+        if (!$permission_users_delete) {
             return App()->getController()->renderPartial('/admin/super/_renderJson', [
                 'data' => [
                     'success' => false,
-                    'message' => gT("You cannot delete yourself.")
+                    'errors' => gT("We are sorry but you don't have permissions to do this.")
                 ]
             ]);
+        }
+        $userId = (int) App()->request->getPost('userid');
+        $oUser = User::model()->findByPk($userId);
+        $currentUser = (int) App()->user->getId();
+        if (!$oUser) {
+            return App()->getController()->renderPartial('/admin/super/_renderJson', [
+                'data' => [
+                    'success' => false,
+                    'errors' => gT("User does not exist")
+                ]
+            ]);
+        }
+        if ($permission_superadmin_read) {
+            // Can't delete forced superadmins
+            if (Permission::isForcedSuperAdmin($userId)) {
+                return App()->getController()->renderPartial('/admin/super/_renderJson', [
+                    'data' => [
+                        'success' => false,
+                        'errors' => gT("We are sorry but you don't have permissions to do this.")
+                    ]
+                ]);
+            }
+            // Can't delete yourself
+            if ($userId === $currentUser) {
+                return App()->getController()->renderPartial('/admin/super/_renderJson', [
+                    'data' => [
+                        'success' => false,
+                        'errors' => gT("You cannot delete yourself.")
+                    ]
+                ]);
+            }
+        }
+        if (!$permission_superadmin_read) {
+            // Can't delete yourself
+            if ($userId === $currentUser) {
+                return App()->getController()->renderPartial('/admin/super/_renderJson', [
+                    'data' => [
+                        'success' => false,
+                        'errors' => gT("You cannot delete yourself.")
+                    ]
+                ]);
+            }
+            // Dont have permission to delete users
+            if (!$permission_users_delete) {
+                return App()->getController()->renderPartial('/admin/super/_renderJson', [
+                    'data' => [
+                        'success' => false,
+                        'errors' => gT("We are sorry but you don't have permissions to do this.")
+                    ]
+                ]);
+            }
+            // Can't delete users that are not owned by the current user
+            if ((int) $oUser->parent_id !== $currentUser) {
+                return App()->getController()->renderPartial('/admin/super/_renderJson', [
+                    'data' => [
+                        'success' => false,
+                        'errors' => gT("We are sorry but you don't have permissions to do this.")
+                    ]
+                ]);
+            }
+            // Can't delete forced superadmins
+            if (Permission::isForcedSuperAdmin($userId)) {
+                return App()->getController()->renderPartial('/admin/super/_renderJson', [
+                    'data' => [
+                        'success' => false,
+                        'errors' => gT("We are sorry but you don't have permissions to do this.")
+                    ]
+                ]);
+            }
         }
 
         $message = '';
@@ -350,7 +416,6 @@ class UserManagementController extends LSBaseController
             $message .= sprintf(gT("All participants owned by this user were transferred to %s."), $transferredToName) . " ";
         }
 
-        $oUser = User::model()->findByPk($userId);
         //todo REFACTORING user permissions should be deleted also ... (in table permissions)
         $oUser->delete();
         $message .= gT("User successfully deleted.");
@@ -417,16 +482,17 @@ class UserManagementController extends LSBaseController
      */
     public function actionUserPermissions()
     {
-        if (!Permission::model()->hasGlobalPermission('users', 'update')) {
+        $userId = Yii::app()->request->getParam('userid');
+        $userId = sanitize_int($userId);
+        $oUser = User::model()->findByPk($userId);
+
+        $userManager = new UserManager(Yii::app()->user, $oUser);
+        if (!$userManager->canAssignPermissions()) {
             return $this->renderPartial(
                 'partial/error',
                 ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
             );
         }
-
-        $userId = Yii::app()->request->getParam('userid');
-        $userId = sanitize_int($userId);
-        $oUser = User::model()->findByPk($userId);
 
         // Check permissions
         $aBasePermissions = Permission::model()->getGlobalBasePermissions();
@@ -471,20 +537,25 @@ class UserManagementController extends LSBaseController
      */
     public function actionSaveUserPermissions(): string
     {
-        if (!Permission::model()->hasGlobalPermission('users', 'update')) {
-            return $this->renderPartial(
-                'partial/error',
-                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
-            );
-        }
         $userId = Yii::app()->request->getPost('userid');
+        $oUser = User::model()->findByPk($userId);
+
+        $userManager = new UserManager(Yii::app()->user, $oUser);
+        if (!$userManager->canAssignPermissions()) {
+            return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
+                "data" => [
+                    'success' => false,
+                    'errors' => [gT("You do not have permission to access this page.")],
+                ]
+            ]);
+        }
+
         $aPermissions = Yii::app()->request->getPost('Permission', []);
 
         Permissiontemplates::model()->clearUser($userId);
 
         $results = $this->applyPermissionFromArray($userId, $aPermissions);
 
-        $oUser = User::model()->findByPk($userId);
         $oUser->modified = date('Y-m-d H:i:s');
         $oUser->save();
 
@@ -569,19 +640,17 @@ class UserManagementController extends LSBaseController
      */
     public function actionAddRole(): ?string
     {
-        //Permission check user should have permission to add/edit new user ('create' or 'update')
-        if (
-            !(Permission::model()->hasGlobalPermission('users', 'create') ||
-            Permission::model()->hasGlobalPermission('users', 'update'))
-        ) {
+        $userId = Yii::app()->request->getParam('userid');
+        $oUser = User::model()->findByPk($userId);
+
+        $userManager = new UserManager(Yii::app()->user, $oUser);
+        if (!$userManager->canAssignRole()) {
             return $this->renderPartial(
                 'partial/error',
                 ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
             );
         }
 
-        $userId = Yii::app()->request->getParam('userid');
-        $oUser = User::model()->findByPk($userId);
         $aPermissionTemplates = Permissiontemplates::model()->findAll();
         $aPossibleRoles = [];
         array_walk(
@@ -612,13 +681,18 @@ class UserManagementController extends LSBaseController
      */
     public function actionSaveRole(): ?string
     {
-        if (!Permission::model()->hasGlobalPermission('users', 'update')) {
-            return $this->renderPartial(
-                'partial/error',
-                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
-            );
-        }
         $iUserId = Yii::app()->request->getPost('userid');
+        $oUser = User::model()->findByPk($iUserId);
+
+        $userManager = new UserManager(Yii::app()->user, $oUser);
+        if (!$userManager->canAssignRole()) {
+            return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
+                "data" => [
+                    'success' => false,
+                    'errors' => [gT("You do not have permission to access this page.")],
+                ]
+            ]);
+        }
         $aUserRoleIds = Yii::app()->request->getPost('roleselector', []);
         $results = [];
 
@@ -1128,17 +1202,28 @@ class UserManagementController extends LSBaseController
      */
     public function actionTakeOwnership()
     {
-        if (!Permission::model()->hasGlobalPermission('users', 'update')) {
-            return $this->renderPartial(
-                'partial/error',
-                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
-            );
-        }
-        $userId = Yii::app()->request->getPost('userid');
+        $userId = App()->request->getPost('userid');
         $oUser = User::model()->findByPk($userId);
-        $oUser->parent_id = Yii::app()->user->id;
+        if (!$oUser) {
+            App()->user->setFlash('error', gT("User does not exist"));
+            $this->redirect(App()->request->urlReferrer);
+        }
+        $permission_superadmin = Permission::model()->hasGlobalPermission('superadmin', 'read');
+        if (
+            !($permission_superadmin
+                && !(Permission::isForcedSuperAdmin($oUser->uid)
+                    || $oUser->uid == App()->user->getId()
+                )
+                && $oUser->parent_id != App()->session['loginID']
+            )
+        ) {
+            App()->user->setFlash('error', gT("Access denied"));
+            $this->redirect(App()->createUrl("userManagement/index"));
+        }
+
+        $oUser->parent_id = App()->user->id;
         $oUser->save();
-        $this->redirect(Yii::app()->createUrl("userManagement/index"));
+        $this->redirect(App()->createUrl("userManagement/index"));
     }
 
     /**
@@ -1150,21 +1235,57 @@ class UserManagementController extends LSBaseController
      */
     public function deleteUser(int $uid): bool
     {
-        if (!Permission::model()->hasGlobalPermission('users', 'delete')) {
-            return $this->renderPartial(
-                'partial/error',
-                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
-            );
-        }
-
-        if ($uid == Yii::app()->user->id) {
+        $permission_users_delete = Permission::model()->hasGlobalPermission('users', 'delete');
+        $permission_superadmin_read = Permission::model()->hasGlobalPermission('superadmin', 'read');
+        if (!$permission_users_delete) {
             return false;
         }
-        if (Permission::isForcedSuperAdmin($uid)) {
+        $userId = $uid;
+        $oUser = User::model()->findByPk($userId);
+        $currentUser = (int)App()->user->getId();
+        if (!$oUser) {
+            return false;
+        }
+        if ($permission_superadmin_read) {
+            // Can't delete forced superadmins
+            if (Permission::isForcedSuperAdmin($userId)) {
+                return false;
+            }
+            // Can't delete yourself
+            if ($userId === $currentUser) {
+                return false;
+            }
+        }
+        if (!$permission_superadmin_read) {
+            // Can't delete yourself
+            if ($userId === $currentUser) {
+                return false;
+            }
+            // Dont have permission to delete users
+            if (!$permission_users_delete) {
+                return false;
+            }
+            // Can't delete users that are not owned by the current user
+            if ((int)$oUser->parent_id !== $currentUser) {
+                return false;
+            }
+            // Can't delete forced superadmins
+            if (Permission::isForcedSuperAdmin($userId)) {
+                return false;
+            }
+        }
+
+
+        // Check if user owns a survey
+        $aOwnedSurveys = Survey::model()->findAllByAttributes(['owner_id' => $userId]);
+        if (count($aOwnedSurveys)) {
             return false;
         }
 
-        $oUser = User::model()->findByPk($uid);
+        // Transfer any Participants owned by this user to site's admin
+        Participant::model()->updateAll(['owner_uid' => 1], 'owner_uid = :owner_uid', [':owner_uid' => $userId]);
+
+        //todo REFACTORING user permissions should be deleted also ... (in table permissions)
         return $oUser->delete();
     }
 
@@ -1212,7 +1333,8 @@ class UserManagementController extends LSBaseController
 
         // Abort if logged in user has no access to this user.
         // Using same logic as User::getButtons().
-        if (!$oUser->canEdit(Yii::app()->session['loginID'])) {
+        $userManager = new UserManager(Yii::app()->user, $oUser);
+        if (!$userManager->canEdit()) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
 

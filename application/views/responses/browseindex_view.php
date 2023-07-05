@@ -29,7 +29,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
     <h2 class="summary-title mt-4 pb-2 mb-3"><?php eT("Response summary"); ?></h2>
 
     <ul class="nav nav-tabs mt-2 " role="tablist">
-        <li class="nav-item"><a class="nav-link active" href="#allResponses" aria-controls="allResponses" role="tab" data-bs-toggle="tab"><?php eT('All Responses'); ?></a></li>
+        <li class="nav-item"><a class="nav-link active" href="#allResponses" aria-controls="allResponses" role="tab" data-bs-toggle="tab"><?php eT('All responses'); ?></a></li>
         <li class="nav-item"><a class="nav-link" href="#notSubmittedResponses" aria-controls="notSubmittedResponses" role="tab" data-bs-toggle="tab"><?php eT('Saved but not submitted responses'); ?></a></li>
     </ul>
     <div class="tab-content p-4 h-100">

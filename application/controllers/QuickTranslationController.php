@@ -415,7 +415,7 @@ class QuickTranslationController extends LSBaseController
      *
      * @return void
      */
-    public function actionAjaxtranslategoogleapi()
+    public function actionAjaxtranslategoogleapi($surveyid)
     {
         // Ensure YII_CSRF_TOKEN, we are in admin, then only user with admin right can post
         /* No Permission check on survey, seems unneded (return a josn with current string posted */
@@ -447,7 +447,7 @@ class QuickTranslationController extends LSBaseController
         $error = false;
 
         try {
-            require_once(APPPATH . '/third_party/gtranslate-api/GTranslate.php');
+            require_once(APPPATH . '/../vendor/gtranslate-api/GTranslate.php');
             $gtranslate = new Gtranslate();
             $objGt = $gtranslate;
 

@@ -46,21 +46,21 @@ class LSYii_Validators extends CValidator
 
     public function __construct()
     {
-        if (Yii::app()->getConfig('DBVersion') < 172) {
+        if (App()->getConfig('DBVersion') < 172) {
             // Permission::model exist only after 172 DB version
-            return $this->xssfilter = ($this->xssfilter && Yii::app()->getConfig('filterxsshtml'));
+            return $this->xssfilter = ($this->xssfilter && App()->getConfig('filterxsshtml'));
         }
         // If run from console there is no user
         $this->xssfilter = (
-            $this->xssfilter && // this
-            (
-                (defined('PHP_ENV') && PHP_ENV == 'test') || // phpunit test : don't check controller
-                (
-                    ($controller = Yii::app()->getController()) !== null && // no controller
-                    (get_class($controller) !== 'ConsoleApplication') // ConsoleApplication
+            $this->xssfilter
+            && ((defined('PHP_ENV') // phpunit test : don't check controller
+                    && PHP_ENV == 'test'
                 )
-            ) &&
-            Yii::app()->user->isXssFiltered() // user
+                || (($controller = App()->getController()) !== null // no controller
+                    && (get_class($controller) !== 'ConsoleApplication') // ConsoleApplication
+                )
+            )
+            && App()->user->isXssFiltered() // user
         );
         return;
     }
