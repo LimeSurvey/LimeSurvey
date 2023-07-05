@@ -1,6 +1,7 @@
 <?php
 
 use LimeSurvey\Models\Services\UserManager;
+use LimeSurvey\Models\Services\UserManagementHelper;
 
 //LSYii_Controller
 /**
@@ -371,7 +372,7 @@ class UserManagementController extends LSBaseController
             }
         }
 
-        $message = '';
+        $messages = [];
         $transferTo = Yii::app()->request->getPost('transfer_surveys_to');
 
         if (empty($transferTo)) {
@@ -405,31 +406,18 @@ class UserManagementController extends LSBaseController
             $iSurveysTransferred = Survey::model()->updateAll(array('owner_id' => $transferTo), 'owner_id=' . $userId);
             if ($iSurveysTransferred) {
                 $sTransferredTo = User::model()->findByPk($transferTo)->users_name;
-                $message = sprintf(gT("All of the user's surveys were transferred to %s."), $sTransferredTo) . " ";
+                $messages[] = sprintf(gT("All of the user's surveys were transferred to %s."), $sTransferredTo);
             }
         }
 
-        $siteAdminName = User::model()->findByPk(1)->users_name;
+        $userManagementHelper = new UserManagementHelper();
+        $result = $userManagementHelper->deleteUser($userId);
+        $messages = array_merge($messages, $result->getRawMessages());
 
-        // Transfer any User Groups owned by this user to site's admin
-        $userGroupsTranferred = UserGroup::model()->updateAll(['owner_id' => 1], 'owner_id = :owner_id', [':owner_id' => $userId]);
-        if ($userGroupsTranferred) {
-            $message .= sprintf(gT("All of the user's user groups were transferred to %s."), $siteAdminName) . " ";
-        }
-
-        // Transfer any Participants owned by this user to site's admin
-        $participantsTranferred = Participant::model()->updateAll(['owner_uid' => 1], 'owner_uid = :owner_uid', [':owner_uid' => $userId]);
-        if ($participantsTranferred) {
-            $message .= sprintf(gT("All participants owned by this user were transferred to %s."), $siteAdminName) . " ";
-        }
-
-        //todo REFACTORING user permissions should be deleted also ... (in table permissions)
-        $oUser->delete();
-        $message .= gT("User successfully deleted.");
         return App()->getController()->renderPartial('/admin/super/_renderJson', [
             'data' => [
-                'success' => true,
-                'message' => $message,
+                'success' => $result->isSuccess(),
+                'message' => implode(" ", $messages),
             ]
         ]);
     }
