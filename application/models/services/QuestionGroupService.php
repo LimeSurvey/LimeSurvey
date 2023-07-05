@@ -2,6 +2,8 @@
 
 namespace LimeSurvey\Models\Services;
 
+use CHttpRequest;
+use CWebUser;
 use LimeExpressionManager;
 use Survey;
 use Permission;
@@ -15,24 +17,30 @@ class QuestionGroupService
 {
     private Permission $modelPermission;
     private Survey $modelSurvey;
+    private CWebUser $modelUser;
+    private CHttpRequest $modelRequest;
 
     /**
      *
      */
     public function __construct(
         Permission $modelPermission,
-        Survey $modelSurvey
+        Survey $modelSurvey,
+        CWebUser $modelUser,
+        CHttpRequest $modelRequest
     ) {
         $this->modelPermission = $modelPermission;
         $this->modelSurvey = $modelSurvey;
+        $this->modelUser = $modelUser;
+        $this->modelRequest = $modelRequest;
     }
 
     /**
      * Updates a question group and all the languages.
      *
-     * @param $surveyId int the survey id
-     * @param $questionGroupID int the question group id
-     * @param $input  array   has the data for a question group, including an array for languages
+     * @param int $surveyId the survey id
+     * @param int $questionGroupId the question group id
+     * @param array $input has the data for a question group, including an array for languages
      *                     ['questionGroup']
      *                          [gid]
      *                          [sid]
@@ -46,7 +54,7 @@ class QuestionGroupService
      *                         [...]    //more languages
      * @return QuestionGroup
      */
-    public function updateGroup($surveyId, $questionGroupID, $input)
+    public function updateGroup($surveyId, $questionGroupId, $input)
     {
         $survey = $this->getSurvey($surveyId);
 
@@ -56,15 +64,15 @@ class QuestionGroupService
             );
         }
 
-        $questionGroup = QuestionGroup::model()->findByPk($questionGroupID);
+        $questionGroup = QuestionGroup::model()->findByPk($questionGroupId);
         if (!$questionGroup) {
             throw new Exception(
                 'Group not found'
             );
         }
 
-        $questionGroup = $this->editQuestionGroup($questionGroup, $input['questionGroup']);
-        $this->editQuestionGroupLanguages($questionGroup, $input['questionGroupI10N']);
+        $questionGroup = $this->updateQuestionGroup($questionGroup, $input['questionGroup']);
+        $this->updateQuestionGroupLanguages($questionGroup, $input['questionGroupI10N']);
 
         return $questionGroup;
     }
@@ -72,8 +80,8 @@ class QuestionGroupService
     /**
      * Creates a question group and all the languages.
      *
-     * @param $surveyId int the survey id
-     * @param $input  array   has the data for a question group, including an array for languages
+     * @param int $surveyId the survey id
+     * @param array $input has the data for a question group, including an array for languages
      *                     ['questionGroup']
      *                          [gid]
      *                          [sid]
@@ -96,7 +104,7 @@ class QuestionGroupService
         }
 
         $questionGroup = $this->newQuestionGroup($surveyId, $input['questionGroup']);
-        $this->editQuestionGroupLanguages($questionGroup, $input['questionGroupI10N']);
+        $this->updateQuestionGroupLanguages($questionGroup, $input['questionGroupI10N']);
 
         return $questionGroup;
     }
@@ -104,12 +112,12 @@ class QuestionGroupService
     /**
      * Deletes a question group and all its dependencies.
      *
-     * @param $questionGroupID int the question group id
-     * @param $surveyId int the survey id
+     * @param int $questionGroupId the question group id
+     * @param int $surveyId the survey id
      * @return int number of deleted rows
      * @throws CHttpException
      */
-    public function deleteGroup($questionGroupID, $surveyId)
+    public function deleteGroup($questionGroupId, $surveyId)
     {
         if (!Permission::model()->hasSurveyPermission($surveyId, 'surveycontent', 'delete')) {
             throw new CHttpException(403, gT("You are not authorized to delete questions."));
@@ -117,8 +125,8 @@ class QuestionGroupService
 
         LimeExpressionManager::RevertUpgradeConditionsToRelevance($surveyId);
 
-        $deletedGroups = QuestionGroup::deleteWithDependency($questionGroupID, $surveyId);
-        if($deletedGroups > 0) {
+        $deletedGroups = QuestionGroup::deleteWithDependency($questionGroupId, $surveyId);
+        if ($deletedGroups > 0) {
             QuestionGroup::model()->updateGroupOrder($surveyId);
         }
         LimeExpressionManager::UpgradeConditionsToRelevance($surveyId);
@@ -133,7 +141,7 @@ class QuestionGroupService
      * @param array $dataSet array with languages
      * @return bool true if ALL languages could be safed, false otherwise
      */
-    public function editQuestionGroupLanguages($oQuestionGroup, $dataSet)
+    private function updateQuestionGroupLanguages($oQuestionGroup, $dataSet)
     {
         $storeValid = true;
 
@@ -161,7 +169,7 @@ class QuestionGroupService
      *
      * @throws CException
      */
-    public function editQuestionGroup($oQuestionGroup, $aQuestionGroupData)
+    private function updateQuestionGroup($oQuestionGroup, $aQuestionGroupData)
     {
         $oQuestionGroup->setAttributes($aQuestionGroupData, false);
         if ($oQuestionGroup == null) {
@@ -235,12 +243,14 @@ class QuestionGroupService
 
         $questionGroup = new QuestionGroup('search');
 
-        if (isset($_GET['QuestionGroup']['group_name'])) {
-            $questionGroup->group_name = $_GET['QuestionGroup']['group_name'];
+        $questionGroupArray = $this->modelRequest->getParam('QuestionGroup', []);
+        if (array_key_exists('group_name', $questionGroupArray)) {
+            $questionGroup->group_name = $questionGroupArray['group_name'];
         }
 
-        if (isset($_GET['pageSize'])) {
-            App()->user->setState('pageSize', (int)$_GET['pageSize']);
+        $pageSize = $this->modelRequest->getParam('pageSize', false);
+        if ($pageSize) {
+            $this->modelUser->setState('pageSize', (int)$pageSize);
         }
         $questionGroup->sid = $survey->primaryKey;
         $questionGroup->language = $survey->language;
