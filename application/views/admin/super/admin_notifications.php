@@ -1,3 +1,10 @@
+<?php
+/**
+ * @var $clearAllNotificationsUrl string
+ * @var $clearAllNotificationsParams string
+ */
+?>
+
 <!-- Admin notification system -->
 <?php if ($nrOfNotifications == 0): ?>
     <li id='notification-li' class='dropdown'>
@@ -70,10 +77,7 @@
             <li id='notification-divider' class="divider"></li>
 
             <li id='notification-clear-all'>
-                <a 
-                    href='#'
-                    onclick='(function() { LS.deleteAllNotifications("<?php echo $clearAllNotificationsUrl ?>", "<?php echo $updateUrl; ?>"); })()'
-                >
+                <a href='#' onclick='(function() { LS.deleteAllNotifications("<?php echo $clearAllNotificationsUrl ?>", "<?php echo $updateUrl; ?>"); })()' data-params="<?= $clearAllNotificationsParams ?>">
                     <span class='fa fa-trash text-danger'></span>&nbsp;
                     <?php eT('Delete all notifications'); ?>
                 </a>
