@@ -302,11 +302,9 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
         $user = self::createUserWithPermissions($userData, $permissions);
 
         \Yii::app()->session['loginID'] = $user->uid;
-        $userTmp = App()->getConfig('user');
-        $currentUserId = \Yii::app()->user->getId();
-        echo PHP_EOL;
-        var_dump($userTmp);
-        var_dump($currentUserId);
+
+        $app = \Yii::app();
+        var_dump($app->user);
 
         // List users without permissions for this survey
         $surveyPermissions = new SurveyPermissions(self::$testSurvey, true);
