@@ -303,7 +303,8 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
 
         \Yii::app()->session['loginID'] = $user->uid;
         $userTmp = App()->getConfig('user');
-        App()->setConfig('user', $user);
+        echo PHP_EOL;
+        var_dump($userTmp);
 
         // List users without permissions for this survey
         $surveyPermissions = new SurveyPermissions(self::$testSurvey, true);
@@ -327,7 +328,6 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
         $managePermissions = $surveyPermissions->canManageSurveyPermissionsForUser(self::$userIds[0]);
         $this->assertTrue($managePermissions, 'The user should be able to manage permissions for a user in the same group in this context.');
 
-        App()->setConfig('user', $userTmp);
         //Delete user
         $user->delete();
     }
