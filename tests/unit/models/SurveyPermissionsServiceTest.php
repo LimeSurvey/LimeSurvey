@@ -301,10 +301,12 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
 
         $user = self::createUserWithPermissions($userData, $permissions);
 
-        \Yii::app()->session['loginID'] = $user->uid;
+        // Login
+        $sessionUidTmp = \Yii::app()->session['loginID'];
+        $userIdTmp = \Yii::app()->user->id;
 
-        $app = \Yii::app();
-        var_dump($app->user);
+        \Yii::app()->session['loginID'] = $user->uid;
+        \Yii::app()->user->id = $user->uid;
 
         // List users without permissions for this survey
         $surveyPermissions = new SurveyPermissions(self::$testSurvey, true);
@@ -327,6 +329,10 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
         // User can manage survey permissions for a user in the same group.
         $managePermissions = $surveyPermissions->canManageSurveyPermissionsForUser(self::$userIds[0]);
         $this->assertTrue($managePermissions, 'The user should be able to manage permissions for a user in the same group in this context.');
+
+        // Restore login data
+        \Yii::app()->session['loginID'] = $sessionUidTmp;
+        \Yii::app()->user->id = $userIdTmp;
 
         //Delete user
         $user->delete();
