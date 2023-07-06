@@ -74,8 +74,6 @@ class LSYiiValidatorsTest extends TestBaseClass
             $this->assertEquals($expected, $actual);
         }
     }
-<<<<<<< HEAD
-=======
 
     /**
      * Testing that URL encoded characters and html entities are decoded correctly.
@@ -331,5 +329,4 @@ class LSYiiValidatorsTest extends TestBaseClass
 
         $survey->delete(true);
     }
->>>>>>> eaad89d9b2 (Fixed issue #18882: [security] Stored XSS in End page (#3240))
 }
