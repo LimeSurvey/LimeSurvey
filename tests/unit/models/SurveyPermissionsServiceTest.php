@@ -302,6 +302,8 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
         $user = self::createUserWithPermissions($userData, $permissions);
 
         \Yii::app()->session['loginID'] = $user->uid;
+        $userTmp = App()->getConfig('user');
+        App()->setConfig('user', $user);
 
         // List users without permissions for this survey
         $surveyPermissions = new SurveyPermissions(self::$testSurvey, true);
@@ -311,11 +313,6 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
         // List permissions for this survey
         $permissionCriteria = $surveyPermissions->getUserPermissionCriteria();
         $usersWithPermissions = \Permission::model()->findAll($permissionCriteria);
-        echo PHP_EOL;
-        foreach ($usersWithPermissions as $permission) {
-            echo $permission->uid . PHP_EOL;
-        }
-        var_dump(self::$userIds);
         $this->assertCount(3, $usersWithPermissions, 'The number of users with permissions for the current survey is incorrect.');
 
         // List user groups which could still be added to survey permissions.
@@ -330,6 +327,7 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
         $managePermissions = $surveyPermissions->canManageSurveyPermissionsForUser(self::$userIds[0]);
         $this->assertTrue($managePermissions, 'The user should be able to manage permissions for a user in the same group in this context.');
 
+        App()->setConfig('user', $userTmp);
         //Delete user
         $user->delete();
     }
