@@ -331,7 +331,8 @@ class AdminTheme extends CFormModel
                     } else {
                         $previewUrl = Yii::app()->getConfig('uploadurl') . DIRECTORY_SEPARATOR . 'admintheme' . DIRECTORY_SEPARATOR . $file;
                     }
-                    $oTemplateConfig->path    = $file;
+                    $oTemplateConfig->path    = $sDir . DIRECTORY_SEPARATOR . $file . DIRECTORY_SEPARATOR;
+                    $oTemplateConfig->name    = $file;
                     $oTemplateConfig->preview = '<img src="' . $previewUrl . '/preview.png" alt="admin theme preview" height="200" class="img-thumbnail" />';
                     $aListOfFiles[$file] = $oTemplateConfig;
                 }

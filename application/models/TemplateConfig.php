@@ -300,9 +300,9 @@ class TemplateConfig extends CActiveRecord
 
 
     /**
-     * @todo document me
-     * @todo missing return value (php warning)
-     * @return boolean|null
+     * Check if this template is a standard template and save it in current model $this->isStandard
+     * @return void
+     * @throws CException
      */
     protected function setIsStandard()
     {
@@ -889,6 +889,74 @@ class TemplateConfig extends CActiveRecord
     }
 
     /**
+     * Uninstalls all surveythemes that are being extended from the supplied surveytheme name
+     * @param $templateName
+     * @return void
+     * @throws CDbException
+     */
+    public static function uninstallThemesRecursive($templateName): void
+    {
+        $extendedTemplates = Template::model()->findAll('extends=:templateName', [':templateName' => $templateName]);
+        if (!empty($extendedTemplates)) {
+            foreach ($extendedTemplates as $extendedTemplate) {
+                self::uninstallThemesRecursive($extendedTemplate->name);
+            }
+        }
+        self::uninstall($templateName);
+    }
+
+    /**
+     * Checks if a theme is valid
+     * Can be extended with more checks in the future if needed
+     * @param $themeName
+     * @param $themePath
+     * @param bool $redirect
+     * @return bool
+     * @throws CDbException
+     */
+    public static function validateTheme($themeName, $themePath, bool $redirect = true): bool
+    {
+        // check compatability with current limesurvey version
+        $isCompatible = TemplateConfig::isCompatible($themePath);
+        if (!$isCompatible) {
+            self::uninstallThemesRecursive($themeName);
+            if ($redirect) {
+                App()->setFlashMessage(
+                    sprintf(
+                        gT("Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey version."),
+                        $themeName
+                    ),
+                    'error'
+                );
+                App()->getController()->redirect(["themeOptions/index", "#" => "surveythemes"]);
+                App()->end();
+            }
+        }
+        // add more tests here
+
+        // all checks succeeded, continue loading the theme
+        return true;
+    }
+
+    /**
+     * Checks if theme is compatible with the current limesurvey version
+     * @param $themePath
+     * @param bool $redirect
+     * @return bool
+     */
+    public static function isCompatible($themePath): bool
+    {
+        $extensionConfig = ExtensionConfig::loadFromFile($themePath);
+        if ($extensionConfig === null) {
+            return false;
+        }
+        if (!$extensionConfig->isCompatible()) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
      * Create a new entry in {{templates}} and {{template_configuration}} table using the template manifest
      * @param string $sTemplateName the name of the template to import
      * @param array $aDatas
@@ -988,7 +1056,7 @@ class TemplateConfig extends CActiveRecord
     }
 
     /**
-     * @todo document me
+     * Returns an array of all unique template folders that are registered in the database
      * @return array|null
      */
     public function getAllDbTemplateFolders()
@@ -1010,10 +1078,10 @@ class TemplateConfig extends CActiveRecord
     }
 
     /**
-     * Returns an array with uninstalled or incompatible survey themes
-     * @return array|null
+     * Returns an array with uninstalled and/or incompatible survey themes
+     * @return TemplateConfiguration[]
      */
-    public function getTemplatesWithNoDb()
+    public function getTemplatesWithNoDb(): array
     {
         if (empty(self::$aTemplatesWithoutDB)) {
             $aTemplatesDirectories = Template::getAllTemplatesDirectories();
@@ -1022,7 +1090,8 @@ class TemplateConfig extends CActiveRecord
 
             foreach ($aTemplatesDirectories as $sName => $sPath) {
                 if (!in_array($sName, $aTemplatesInDb)) {
-                    $aTemplatesWithoutDB[$sName] = Template::getTemplateConfiguration($sName, null, null, true); // Get the manifest
+                    // Get the manifest
+                    $aTemplatesWithoutDB[$sName] = Template::getTemplateConfiguration($sName, null, null, true);
                 }
             }
             self::$aTemplatesWithoutDB = $aTemplatesWithoutDB;

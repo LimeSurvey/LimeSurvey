@@ -74,37 +74,6 @@
                 </div>
             {% endif %}
 
-            {# First settings row #}
-            <div class='row action_hide_on_inherit'>
-
-                {# Container #}
-                <div class='col-12 col-md-6 col-lg-4 col-xl-3'>
-                    <div class='mb-3 row'>
-                        <label for='simple_edit_options_container' class='control-label'> {{ gT("Survey container") }} </label>
-                        <div class='col-12'>
-                            <div class="btn-group" data-toggle="buttons">
-                                <label class="btn btn-outline-secondary">
-                                    <input type='radio' name='container' value='on' class='selector_option_radio_field simple_edit_options_container ' data-id='container'/>
-                                    {{ gT("Yes") }}
-                                </label>
-                                <label class="btn btn-outline-secondary">
-                                    <input type='radio' name='container' value='off' class='selector_option_radio_field simple_edit_options_container ' data-id='container'/>
-                                    {{ gT("No") }}
-                                </label>
-                                {# If this is a root template setting, don't show the inherit button #}
-                                {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
-                                    <label class="btn btn-outline-secondary">
-                                        <input type='radio' name='container' value='inherit' class='selector_option_radio_field simple_edit_options_container ' data-id='container'/>
-                                        {{ gT("Inherit") }} [{{ oParentOptions.container }}]
-                                    </label>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
             {# Second settings row #}
             <div class='row action_hide_on_inherit'>
 
@@ -127,83 +96,6 @@
                                     <label class="btn btn-outline-secondary" title="{{ gT("Inherited value:") }} ">
                                         <input type='radio' name='showclearall' value='inherit' class='selector_option_radio_field simple_edit_options_showclearall ' data-id='showclearall'/>
                                         {{ gT("Inherit") }} [{{ oParentOptions.showclearall }}]
-                                    </label>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {# zebrastriping #}
-                <div class='col-12 col-md-6 col-lg-4 col-xl-3'>
-                    <div class='mb-3 row'>
-                        <label for='simple_edit_options_zebrastriping' class='test control-label'>{{ gT("Zebra-striped questions") }}</label>
-                        <div class='col-12'>
-                            <div class="btn-group" data-toggle="buttons">
-                                <label class="btn btn-outline-secondary">
-                                    <input type='radio' name='zebrastriping' value='on' class='selector_option_radio_field simple_edit_options_zebrastriping ' data-id='zebrastriping'/>
-                                    {{ gT("Yes") }}
-                                </label>
-                                <label class="btn btn-outline-secondary">
-                                    <input type='radio' name='zebrastriping' value='off' class='selector_option_radio_field simple_edit_options_zebrastriping ' data-id='zebrastriping'/>
-                                    {{ gT("No") }}
-                                </label>
-                                {# If this is a root template setting, don't show the inherit button #}
-                                {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
-                                    <label class="btn btn-outline-secondary">
-                                        <input type='radio' name='zebrastriping' value='inherit' class='selector_option_radio_field simple_edit_options_zebrastriping ' data-id='zebrastriping'/>
-                                        {{ gT("Inherit") }} [{{ oParentOptions.zebrastriping }}]
-                                    </label>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {# stickymatrixheaders #}
-                <div class='col-12 col-md-6 col-lg-4 col-xl-3'>
-                    <div class='mb-3 row'>
-                        <label for='simple_edit_options_stickymatrixheaders' class='control-label'>{{ gT("Sticky array headers") }}</label>
-                        <div class='col-12'>
-                            <div class="btn-group" data-toggle="buttons">
-                                <label class="btn btn-outline-secondary">
-                                    <input type='radio' name='stickymatrixheaders' value='on' class='selector_option_radio_field simple_edit_options_stickymatrixheaders ' data-id='stickymatrixheaders'/>
-                                    {{ gT("Yes") }}
-                                </label>
-                                <label class="btn btn-outline-secondary">
-                                    <input type='radio' name='stickymatrixheaders' value='off' class='selector_option_radio_field simple_edit_options_stickymatrixheaders ' data-id='stickymatrixheaders'/>
-                                    {{ gT("No") }}
-                                </label>
-                                {# If this is a root template setting, don't show the inherit button #}
-                                {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
-                                    <label class="btn btn-outline-secondary">
-                                        <input type='radio' name='stickymatrixheaders' value='inherit' class='selector_option_radio_field simple_edit_options_stickymatrixheaders ' data-id='stickymatrixheaders'/>
-                                        {{ gT("Inherit") }} [{{ oParentOptions.stickymatrixheaders }}]
-                                    </label>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {# greyoutselected #}
-                <div class='col-12 col-md-6 col-lg-4 col-xl-3'>
-                    <div class='mb-3 row'>
-                        <label for='simple_edit_options_greyoutselected' class='control-label'>{{ gT("Dim answered array rows") }}</label>
-                        <div class='col-12'>
-                            <div class="btn-group" data-toggle="buttons">
-                                <label class="btn btn-outline-secondary">
-                                    <input type='radio' name='greyoutselected' value='on' class='selector_option_radio_field simple_edit_options_greyoutselected ' data-id='greyoutselected'/>
-                                    {{ gT("Yes") }}
-                                </label>
-                                <label class="btn btn-outline-secondary">
-                                    <input type='radio' name='greyoutselected' value='off' class='selector_option_radio_field simple_edit_options_greyoutselected ' data-id='greyoutselected'/>
-                                    {{ gT("No") }}
-                                </label>
-                                {# If this is a root template setting, don't show the inherit button #}
-                                {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
-                                    <label class="btn btn-outline-secondary">
-                                        <input type='radio' name='greyoutselected' value='inherit' class='selector_option_radio_field simple_edit_options_greyoutselected ' data-id='greyoutselected'/>
-                                        {{ gT("Inherit") }} [{{ oParentOptions.greyoutselected }}]
                                     </label>
                                 {% endif %}
                             </div>
@@ -233,32 +125,6 @@
                                     <label class="btn btn-outline-secondary">
                                         <input type='radio' name='hideprivacyinfo' value='inherit' class='selector_option_radio_field simple_edit_options_hideprivacyinfo ' data-id='hideprivacyinfo'/>
                                         {{ gT("Inherit") }} [{{ oParentOptions.hideprivacyinfo }}]
-                                    </label>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                {# crosshover #}
-                <div class='col-12 col-md-6 col-lg-4 col-xl-3'>
-                    <div class='mb-3 row'>
-                        <label for='simple_edit_options_crosshover' class='control-label'>{{ gT("Cross-hover in matrix questions") }}</label>
-                        <div class='col-12'>
-                            <div class="btn-group" data-toggle="buttons">
-                                <label class="btn btn-outline-secondary">
-                                    <input type='radio' name='crosshover' value='on' class='selector_option_radio_field simple_edit_options_crosshover ' data-id='crosshover'/>
-                                    {{ gT("Yes") }}
-                                </label>
-                                <label class="btn btn-outline-secondary">
-                                    <input type='radio' name='crosshover' value='off' class='selector_option_radio_field simple_edit_options_crosshover ' data-id='crosshover'/>
-                                    {{ gT("No") }}
-                                </label>
-                                {# If this is a root template setting, don't show the inherit button #}
-                                {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
-                                    <label class="btn btn-outline-secondary">
-                                        <input type='radio' name='crosshover' value='inherit' class='selector_option_radio_field simple_edit_options_crosshover ' data-id='crosshover'/>
-                                        {{ gT("Inherit") }} [{{ oParentOptions.crosshover }}]
                                     </label>
                                 {% endif %}
                             </div>
@@ -358,36 +224,6 @@
                                             {{ gT("Inherit") }} [{{ oParentOptions.showpopups }}]
                                         </label>
                                     {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                {# always activate no more tables #}
-                <div class='col-12 col-md-6'>
-                    <div class='mb-3 row'>
-                        <label for='simple_edit_options_notables' class='control-label'>{{ gT("Wrap tables") }}</label>
-                        <div class='col-12'>
-                            <div class="btn-group" data-toggle="buttons">
-                                <label class="btn btn-outline-secondary">
-                                    <input type='radio' name='notables' value='2' class='selector_option_radio_field simple_edit_options_notables ' data-id='notables'/>
-                                    {{ gT("Always on") }}
-                                </label>
-                                <label class="btn btn-outline-secondary">
-                                    <input type='radio' name='notables' value='1' class='selector_option_radio_field simple_edit_options_notables ' data-id='notables'/>
-                                    {{ gT("Small screens") }}
-                                </label>
-                                <label class="btn btn-outline-secondary">
-                                    <input type='radio' name='notables' value='0' class='selector_option_radio_field simple_edit_options_notables ' data-id='notables'/>
-                                    {{ gT("Off") }}
-                                </label>
-                                {# If this is a root template setting, don't show the inherit button #}
-                                {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
-                                    <label class="btn btn-outline-secondary">
-                                        <input type='radio' name='notables' value='inherit' class='selector_option_radio_field simple_edit_options_notables ' data-id='notables'/>
-                                            {{ gT("Inherit") }} [{{ oParentOptions.notables }}]
-                                    </label>
-                                {% endif %}
                             </div>
                         </div>
                     </div>

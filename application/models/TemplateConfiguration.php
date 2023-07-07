@@ -617,7 +617,7 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * @todo document me
+     * Check if the template exists and is valid
      *
      * @return bool
      */
@@ -820,7 +820,7 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * @todo document me
+     * Returns true if this theme or any mothertemplate has a TemplateConfiguration set
      *
      * @return bool
      * @throws Exception
