@@ -1588,7 +1588,23 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
         // Survey group filter
         if (isset($this->gsid)) {
-            $criteria->compare("t.gsid", $this->gsid, false);
+            // The survey group filter (from the dropdown, not by title search) is applied to five levels of survey groups.
+            // That is, it matches the group the survey is in, the parent group of that group, and the "grandparent" group, etc.
+            $groupJoins = 'LEFT JOIN {{surveys_groups}} parentGroup1 ON t.gsid = parentGroup1.gsid ';
+            $groupJoins .= 'LEFT JOIN {{surveys_groups}} parentGroup2 ON parentGroup1.parent_id = parentGroup2.gsid ';
+            $groupJoins .= 'LEFT JOIN {{surveys_groups}} parentGroup3 ON parentGroup2.parent_id = parentGroup3.gsid ';
+            $groupJoins .= 'LEFT JOIN {{surveys_groups}} parentGroup4 ON parentGroup3.parent_id = parentGroup4.gsid ';
+            $groupJoins .= 'LEFT JOIN {{surveys_groups}} parentGroup5 ON parentGroup4.parent_id = parentGroup5.gsid ';
+            $criteria->mergeWith([
+                'join' => $groupJoins,
+            ]);
+            $groupCondition = "t.gsid=:gsid";
+            $groupCondition .= " OR parentGroup2.gsid=:gsid";
+            $groupCondition .= " OR parentGroup3.gsid=:gsid";
+            $groupCondition .= " OR parentGroup4.gsid=:gsid";
+            $groupCondition .= " OR parentGroup5.gsid=:gsid";
+            $criteria->addCondition($groupCondition, 'AND');
+            $criteria->params = array_merge($criteria->params, [':gsid' => $this->gsid]);
         }
 
         // Active filter
@@ -2317,13 +2333,14 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 }
 
                 // Create the URL according to the configured format
+                $baseUrl = App()->getPublicBaseUrl(true);
                 $urlManager = Yii::app()->getUrlManager();
                 $urlFormat = $urlManager->getUrlFormat();
                 if ($urlFormat == CUrlManager::GET_FORMAT) {
-                    $url = Yii::app()->getBaseUrl(true);
+                    $url = $baseUrl;
                     $params = [$urlManager->routeVar => $alias] + $params;
                 } else {
-                    $url = Yii::app()->getBaseUrl(true) . '/' . $alias;
+                    $url = $baseUrl . '/' . $alias;
                 }
                 $query = $urlManager->createPathInfo($params, '=', '&');
                 if (!empty($query)) {
@@ -2335,7 +2352,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
         // If short url is not preferred or no alias is found, return a traditional URL
         $urlParams = array_merge($params, ['sid' => $this->sid, 'lang' => $language]);
-        $url = Yii::app()->createAbsoluteUrl('survey/index', $urlParams);
+        $url = App()->createPublicUrl('survey/index', $urlParams);
+
         return $url;
     }
 

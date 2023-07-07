@@ -118,6 +118,7 @@ $base-color: #ffffff;
 @import "questiontypes/bootstrap_select/bootstrap_select_colors.scss";
 @import "questiontypes/array/array_colors.scss";
 @import "questiontypes/5pointchoice/5pointchoice.scss";
+@import "questiontypes/shortfreetext/shortfreetext.scss";
 @import "forms/checkboxes/checkboxes.scss";
 @import "forms/checkboxes/checkboxes_colors.scss";
 @import "datetimepicker/datetimepicker.scss";
@@ -153,6 +154,9 @@ $base-color: #ffffff;
 @import "welcome/welcome_colors.scss";
 @import "language-changer/language-changer.scss";
 @import "language-changer/language-changer_colors.scss";
+
+// 6.2 Utilities
+@import "spacing/spacing.scss";
 
 // TODO: placeholder, will probbably be removed
 @import "darkmode/darkmode_colors.scss";

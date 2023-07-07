@@ -12,6 +12,7 @@
     }
     .ls-button-label {
         min-width : 80px;
+        font-size: $font-size-sm;
         .ls-icon {
             font-size   : 32px;
             display     : block;
@@ -31,12 +32,5 @@
     padding-right : 20px;
     & .form-check {
         padding-left : 0;
-    }
-}
-
-@media (min-width : 768px) {
-    .dir-rtl .yesno-button,
-    .dir-rtl .gender-button {
-        float : right;
     }
 }

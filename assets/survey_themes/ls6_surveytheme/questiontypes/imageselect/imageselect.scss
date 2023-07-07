@@ -5,22 +5,16 @@
     top      : 8px;
 }
 
-.dir-ltr {
-    .imageselect-radiobutton.d-none, .imageselect-select.d-none {
-        left : 45px;
-    }
+.imageselect-radiobutton.d-none, .imageselect-select.d-none {
+    left : 45px;
 }
 
-.dir-rtl {
-    .imageselect-radiobutton.d-none, .imageselect-select.d-none {
-        right : 45px;
-    }
-}
 
 // imageselect list radio
 
 li.imageselect-listitem .imageselect-container .imageselect-label {
     border-radius : $border-radius !important;
+    overflow: hidden;
 }
 
 .imageselect-container .imageselect-radiobutton::before,
@@ -37,15 +31,6 @@ li.imageselect-listitem .imageselect-container .imageselect-label {
     border-radius : 50%;
     transition    : border 0.15s ease-in-out;
     z-index       : 1;
-}
-
-.dir-rtl {
-    .imageselect-container .imageselect-radiobutton::before,
-    .imageselect-list .no-anwser-item .radio-label::before,
-    .imageselect-list .radio-text-item .label-radio::before {
-        margin-right : -20px;
-        margin-left  : 0;
-    }
 }
 
 .imageselect-container .imageselect-radiobutton::after,
@@ -72,62 +57,28 @@ li.imageselect-listitem .imageselect-container .imageselect-label {
     z-index            : 1;
 }
 
-.dir-rtl {
-    .imageselect-container .imageselect-radiobutton::after,
-    .imageselect-list .no-anwser-item .radio-label::after,
-    .imageselect-list .radio-text-item .label-radio::after {
-        margin-right : -18px;
-        margin-left  : 0;
-        right        : 4px;
-    }
-}
-
 li.imageselect-listitem .imageselect-container input.imageselect-checkbox:checked + label + .imageselect-radiobutton:after {
     transform : scale(1, 1);
 }
 
 // no answer, other
-.dir-ltr {
-    .imageselect-list {
-        .no-anwser-item, .radio-text-item, .radio-item {
-            padding-left : 55px;
-        }
-
-        no-anwser-item .radio-label, .radio-text-item .label-radio {
-            padding-left : 10px;
-            padding-top  : 2px;
-        }
-
-        no-anwser-item {
-            // "row g-1" without the actual class, to match other-item
-            margin-left : calc(4px * -.5);
-        }
-
-        .othertext-label-checkox-container {
-            padding-left : 0;
-        }
+.imageselect-list {
+    .no-anwser-item, .radio-text-item, .radio-item {
+        padding-left : 55px;
     }
-}
 
-.dir-rtl {
-    .imageselect-list {
-        .no-anwser-item, .radio-text-item, .radio-item {
-            padding-right : 55px;
-        }
+    no-anwser-item .radio-label, .radio-text-item .label-radio {
+        padding-left : 10px;
+        padding-top  : 2px;
+    }
 
-        no-anwser-item .radio-label, .radio-text-item .label-radio {
-            padding-right : 10px;
-            padding-top   : 2px;
-        }
+    no-anwser-item {
+        // "row g-1" without the actual class, to match other-item
+        margin-left : calc(4px * -.5);
+    }
 
-        no-anwser-item {
-            // "row g-1" without the actual class, to match other-item
-            margin-right : calc(4px * -.5);
-        }
-
-        .othertext-label-checkox-container {
-            padding-right : 0;
-        }
+    .othertext-label-checkox-container {
+        padding-left : 0;
     }
 }
 

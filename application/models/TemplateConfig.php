@@ -255,7 +255,7 @@ class TemplateConfig extends CActiveRecord
             }
 
             // Rtl version of bootstrap
-            if ($dir === "rtl") {
+            if ($dir === "rtl" && (string)$this->cssFramework->name === "bootstrap") {
                 $packages[] = 'bootstrap-rtl';
             }
 
@@ -614,14 +614,17 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['required']     = '  ';
         $aClassAndAttributes['class']['requiredspan'] = '  ';
         $aClassAndAttributes['attr']['required']      = ' aria-hidden="true" ';
-        $aClassAndAttributes['class']['required']     = '';
+        $aClassAndAttributes['attr']['requiredspan']     = '';
 
         // Progress bar
         $aClassAndAttributes['class']['topcontainer'] = ' top-container ';
         $aClassAndAttributes['class']['topcontent']   = ' top-content ';
         $aClassAndAttributes['class']['progress']     = ' progress ';
         $aClassAndAttributes['class']['progressbar']  = ' progress-bar ';
-        $aClassAndAttributes['attr']['progressbar']   = $aClassAndAttributes['attr']['topcontainer'] = $aClassAndAttributes['class']['topcontent'] = $aClassAndAttributes['attr']['progressbar'] = $aClassAndAttributes['attr']['progress'] = ' ';
+        $aClassAndAttributes['attr']['topcontainer'] = '';
+        $aClassAndAttributes['attr']['topcontent'] = '';
+        $aClassAndAttributes['attr']['progress'] = '';
+        $aClassAndAttributes['attr']['progressbar']   = '';
 
         // No JS alert
         $aClassAndAttributes['class']['nojs'] = ' ls-js-hidden warningjs ';
@@ -712,7 +715,7 @@ class TemplateConfig extends CActiveRecord
         // Privacy
         $aClassAndAttributes['class']['privacycontainer'] = ' privacy ';
         $aClassAndAttributes['class']['privacycol']       = ' ';
-        $aClassAndAttributes['class']['privacyhead']      = ' ';
+        $aClassAndAttributes['class']['privacyhead']      = 'ls-privacy-head';
         $aClassAndAttributes['class']['privacybody']      = ' ls-privacy-body ';
 
         $aClassAndAttributes['class']['privacydatasecmodalbody'] = '';

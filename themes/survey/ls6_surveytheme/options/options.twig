@@ -13,6 +13,7 @@
 
     This is the form for the option parameters of the basic default template.
 
+    @TODO Check if even used
 #}
 {% set aOptions = json_decode(templateConfiguration.options)  %}
 
@@ -42,7 +43,7 @@
     {# Small loading animation to give the scripts time to parse and render the correct values #}
     <div class="" style="display:none;height:100%;width:100%;position:absolute;left:0;top:0;background:rgb(255,255,255);background:rgba(235,235,235,0.8);z-index:2000;">
         <div style="position:absolute; left:49%;top:35%;" class="text-center">
-            <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+            <i class="ri-loader-fill remix-pulse ri-3x"></i>
         </div>
     </div>
     <div class="row">
@@ -245,7 +246,7 @@
                             <input type="text" name="bodybackgroundcolor" data-inheritvalue="{{oParentOptions.bodybackgroundcolor}}" value="inherit" class="selector_option_value_field selector__color-picker form-control simple_edit_options_bodybackgroundcolor" data-id="bodybackgroundcolor" />
                             {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
                                 <div class="input-group-addon">
-                                    <button class="btn btn-outline-secondary btn-xs selector__reset-colorfield-to-inherit"><i class="fa fa-refresh"></i></button>
+                                    <button class="btn btn-outline-secondary btn-xs selector__reset-colorfield-to-inherit"><i class="ri-refresh-line"></i></button>
                                 </div>
                             {% endif %}
 
@@ -264,7 +265,7 @@
                             <input type="text" name="fontcolor" value="inherit" data-inheritvalue="{{oParentOptions.fontcolor}}" class="selector_option_value_field selector__color-picker form-control simple_edit_options_fontcolor" data-id="fontcolor" />
                             {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
                                 <div class="input-group-addon">
-                                    <button class="btn btn-outline-secondary btn-xs selector__reset-colorfield-to-inherit"><i class="fa fa-refresh"></i></button>
+                                    <button class="btn btn-outline-secondary btn-xs selector__reset-colorfield-to-inherit"><i class="ri-refresh-line"></i></button>
                                 </div>
                             {% endif %}
                         </div>
@@ -282,7 +283,7 @@
                             <input type="text" name="questionbackgroundcolor" value="inherit" data-inheritvalue="{{oParentOptions.questionbackgroundcolor}}" class="selector_option_value_field selector__color-picker form-control simple_edit_options_questionbackgroundcolor" data-id="questionbackgroundcolor" />
                             {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
                                 <div class="input-group-addon">
-                                    <button class="btn btn-outline-secondary btn-xs selector__reset-colorfield-to-inherit"><i class="fa fa-refresh"></i></button>
+                                    <button class="btn btn-outline-secondary btn-xs selector__reset-colorfield-to-inherit"><i class="ri-refresh-line"></i></button>
                                 </div>
                             {% endif %}
                         </div>
@@ -766,7 +767,7 @@
                     <span id="fileselector_frontend">
                         <label class="btn btn-outline-secondary col-8" for="upload_image_frontend">
                             <input class="d-none" id="upload_image_frontend" name="upload_image_frontend" type="file">
-                            <i class="fa fa-upload ls-space margin right-10"></i>
+                            <i class="ri-upload-fill ls-space margin right-10"></i>
                             {{ gT("Upload") }}
                         </label>
                     </span>

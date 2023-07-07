@@ -40,6 +40,8 @@ $alert-status : (
 .alert-dismissible {
     .btn-close {
         padding : 1rem 1rem;
+        right   : 0;
+        left    : auto;
 
         &:focus {
             box-shadow : none;

@@ -10442,11 +10442,6 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
-.space-col {
-  margin-top: 1em;
-  margin-bottom: 2em;
-}
-
 .group-outer-container {
   display: flex;
 }
@@ -10460,45 +10455,12 @@ textarea.form-control-lg {
   background: transparent;
 }
 
-.top-container {
-  width: 100%;
-  padding: 0;
-  border-bottom: none;
-  color: inherit;
-}
-
-.top-container .top-content {
-  padding-top: 1em;
-  padding-bottom: 1em;
-  margin-bottom: 2em;
-}
-
-.top-content .form-change-lang {
-  float: right;
-}
-
-.dir-rtl .top-content .form-change-lang {
-  float: left;
-}
-
-.no-js .top-content .form-change-lang {
-  display: none;
-}
-
-.top-container .top-content:empty {
-  display: none;
-}
-
 .group-description:empty {
   display: none;
 }
 
 .group-title:empty {
   display: none;
-}
-
-.top-container .form-change-lang {
-  text-align: center;
 }
 
 /**
@@ -10654,10 +10616,6 @@ textarea.form-control-lg {
  */
 .othertext-label-checkox-container {
   margin-right: 5px;
-}
-
-.geoname_search {
-  margin-bottom: 10px;
 }
 
 /* Give help text some space */
@@ -11798,11 +11756,8 @@ body .answer-item label::after {
     position: relative;
     z-index: 2;
   }
-  .dir-ltr .ls-input-group .form-control {
+  .ls-input-group .form-control {
     float: left;
-  }
-  .dir-rtl .ls-input-group .form-control {
-    float: right;
   }
   .ls-input-group-extra {
     width: 1%;
@@ -11848,12 +11803,8 @@ body .answer-item label::after {
   z-index: 2;
 }
 
-.dir-ltr .suffix-prefix-force .ls-input-group .form-control {
+.suffix-prefix-force .ls-input-group .form-control {
   float: left;
-}
-
-.dir-rtl .suffix-prefix-force .ls-input-group .form-control {
-  float: right;
 }
 
 .suffix-prefix-force .ls-input-group-extra {
@@ -11942,12 +11893,8 @@ li.checkbox-text-item {
 }
 
 /* map item : .input-group-addon.checkbox-item : put awesome padding */
-.dir-ltr .input-group-addon.checkbox-item {
+.input-group-addon.checkbox-item {
   padding-left: 25px;
-}
-
-.dir-rtl .input-group-addon.checkbox-item {
-  padding-right: 25px;
 }
 
 /* Else big label break*/
@@ -11967,12 +11914,8 @@ li.checkbox-text-item {
   width: 17px;
 }
 
-.dir-ltr .checkbox-item input[type=checkbox] {
+.checkbox-item input[type=checkbox] {
   left: 0;
-}
-
-.dir-rtl .checkbox-item input[type=checkbox] {
-  right: 0;
 }
 
 .checkbox-item input[type=checkbox] {
@@ -12029,10 +11972,6 @@ table.ls-answers {
   text-align: left;
 }
 
-.dir-rtl .ls-answers .answertextright {
-  text-align: right;
-}
-
 /*
 Max width before this PARTICULAR table gets nasty
 For iPads specifically : add this : (min-device-width: 768px) and (max-device-width: 1024px)
@@ -12041,11 +11980,8 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
   table.ls-answers, table.ls-answers thead, table.ls-answers tbody, table.ls-answers th, table.ls-answers td, table.ls-answers tr {
     display: block;
   }
-  .dir-ltr table.ls-answers, .dir-ltr table.ls-answers thead, .dir-ltr table.ls-answers tbody, .dir-ltr table.ls-answers th, .dir-ltr table.ls-answers td, table.ls-answers tr {
+  table.ls-answers, table.ls-answers thead, table.ls-answers tbody, table.ls-answers th, table.ls-answers td, table.ls-answers tr {
     text-align: left;
-  }
-  .dir-rtl table.ls-answers, .dir-rtl table.ls-answers thead, .dir-rtl table.ls-answers tbody, .dir-rtl table.ls-answers th, .dir-rtl table.ls-answers td, table.ls-answers tr {
-    text-align: right;
   }
   table.ls-answers thead {
     display: none;
@@ -12057,31 +11993,18 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
   table.ls-answers .information-item:empty {
     display: none;
   }
-  .dir-rtl table.ls-answers tbody td {
-    text-align: right;
-  }
   .ls-answers td.checkbox-item {
     padding: 4px;
   }
-  .dir-ltr .ls-answers td.checkbox-item {
+  .ls-answers td.checkbox-item {
     padding-left: 24px;
     padding-right: 4px;
-  }
-  .dir-rtl .ls-answers td.checkbox-item {
-    padding-right: 24px;
-    padding-left: 4px;
   }
   table.ls-answers tbody .control-label {
     text-align: left;
   }
-  .dir-rtl table.ls-answers tbody .control-label {
-    text-align: right;
-  }
   table.ls-answers .answertextright {
     text-align: right;
-  }
-  .dir-rtl table.ls-answers .answertextright {
-    text-align: left;
   }
   /* Show the label */
   table.ls-answers .ls-label-xs-visibility {
@@ -12092,21 +12015,15 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
     overflow: initial;
     white-space: normal;
   }
-  .dir-ltr table.ls-answers .ls-label-xs-visibility {
+  table.ls-answers .ls-label-xs-visibility {
     left: auto;
-  }
-  .dir-rtl table.ls-answers .ls-label-xs-visibility {
-    right: auto;
   }
   table.ls-answers .checkbox-item .ls-label-xs-visibility {
     line-height: initial;
     text-indent: initial;
   }
-  .dir-ltr table.ls-answers .checkbox-item .ls-label-xs-visibility {
+  table.ls-answers .checkbox-item .ls-label-xs-visibility {
     margin-left: 0;
-  }
-  .dir-rtl table.ls-answers .checkbox-item .ls-label-xs-visibility {
-    margin-right: 0;
   }
   table.ls-answers .ls-label-xs-visibility > * {
     position: relative;
@@ -12115,27 +12032,14 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
     height: auto;
     overflow: auto;
   }
-  .dir-ltr table.ls-answers .ls-label-xs-visibility > * {
+  table.ls-answers .ls-label-xs-visibility > * {
     left: auto;
   }
-  .dir-rtl table.ls-answers .ls-label-xs-visibility > * {
-    right: auto;
-  }
-  .dir-rtl table.ls-answers .answers-list p[dir=rtl] {
-    left: 0;
-    text-align: right;
-  }
-  .dir-ltr table.ls-answers .checkbox-item label.ls-label-xs-visibility::before {
+  table.ls-answers .checkbox-item label.ls-label-xs-visibility::before {
     margin-left: -20px;
   }
-  .dir-rtl table.ls-answers .checkbox-item label.ls-label-xs-visibility::before {
-    margin-right: -20px;
-  }
-  .dir-ltr table.ls-answers .checkbox-item label.ls-label-xs-visibility::after {
+  table.ls-answers .checkbox-item label.ls-label-xs-visibility::after {
     margin-left: -20px;
-  }
-  .dir-rtl table.ls-answers .checkbox-item label.ls-label-xs-visibility::after {
-    margin-right: -20px;
   }
   table.ls-answers > tbody > tr:hover {
     background-color: transparent;
@@ -12147,17 +12051,11 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
 }
 /* Fix for IE11 - no array question radio buttons on small screens */
 @media all and (max-width: 760px) and (-ms-high-contrast: none), (-ms-high-contrast: active) {
-  .dir-ltr table.ls-answers .checkbox-item label.ls-label-xs-visibility::before {
+  table.ls-answers .checkbox-item label.ls-label-xs-visibility::before {
     margin-left: 0px;
   }
-  .dir-rtl table.ls-answers .checkbox-item label.ls-label-xs-visibility::before {
-    margin-right: 0px;
-  }
-  .dir-ltr table.ls-answers .checkbox-item label.ls-label-xs-visibility::after {
+  table.ls-answers .checkbox-item label.ls-label-xs-visibility::after {
     margin-left: 0px;
-  }
-  .dir-rtl table.ls-answers .checkbox-item label.ls-label-xs-visibility::after {
-    margin-right: 0px;
   }
 }
 #datapolicy {
@@ -12231,6 +12129,11 @@ Responsive navbar-brand image CSS
   border: none;
 }
 
+.navbar-right.ms-auto {
+  margin-left: auto !important;
+  margin-right: 0 !important;
+}
+
 .navbar {
   border-radius: 0 !important;
 }
@@ -12264,8 +12167,8 @@ Responsive navbar-brand image CSS
 }
 #survey-nav .navbar-toggler {
   border: none;
-  padding: 0;
-  margin-top: 20px;
+  padding-right: 0;
+  line-height: 20px;
 }
 #survey-nav .navbar-toggler .ri-more-fill {
   font-size: 1.92375rem;
@@ -12289,14 +12192,22 @@ Responsive navbar-brand image CSS
   line-height: 20px;
 }
 #survey-nav .dropdown-toggle::after {
-  display: none;
-}
-#survey-nav .back-link .ri-arrow-left-s-line, #survey-nav .nav-link .ri-arrow-right-s-line {
-  vertical-align: -0.1em;
+  font-family: "remixicon";
+  content: "\ea6e" /*!rtl:'\ea64'*/;
+  border: none;
+  vertical-align: 0;
+  position: absolute;
+  right: 0;
   font-size: 1.425rem;
 }
-#survey-nav .back-link .ri-arrow-left-s-line {
-  margin-right: 16px;
+#survey-nav .back-link::before {
+  font-family: "remixicon";
+  content: "\ea64" /*!rtl:'\ea6e'*/;
+  vertical-align: -0.1em;
+  position: relative;
+  left: -6px;
+  margin-right: 6px;
+  font-size: 1.425rem;
 }
 #survey-nav .form-change-lang {
   padding-bottom: 0;
@@ -12951,6 +12862,7 @@ Responsive navbar-brand image CSS
 .yesno-button .ls-button-label,
 .gender-button .ls-button-label {
   min-width: 80px;
+  font-size: 0.9975rem;
 }
 .yesno-button .ls-button-label .ls-icon,
 .gender-button .ls-button-label .ls-icon {
@@ -12973,12 +12885,6 @@ Responsive navbar-brand image CSS
   padding-left: 0;
 }
 
-@media (min-width: 768px) {
-  .dir-rtl .yesno-button,
-  .dir-rtl .gender-button {
-    float: right;
-  }
-}
 body {
   font-weight: 400;
   font-size: 1.14rem;
@@ -13016,6 +12922,7 @@ label {
   font-weight: 600;
   font-size: 2.85rem;
   line-height: 52px;
+  font-family: "IBMPlexSerif", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
 dl {
@@ -13059,12 +12966,22 @@ a:hover {
   line-height: 20px;
 }
 
-.h1, .h2, .h3, h1, h2, h3 {
+.h1,
+.h2,
+.h3,
+h1,
+h2,
+h3 {
   margin-top: 2rem;
   margin-bottom: 1rem;
 }
 
-.h4, .h5, .h6, h4, h5, h6 {
+.h4,
+.h5,
+.h6,
+h4,
+h5,
+h6 {
   margin-top: 1rem;
   margin-bottom: 1rem;
 }
@@ -13142,6 +13059,17 @@ a:hover {
 
 .input-group > :not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback) {
   margin-left: -2px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 4px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 4px;
+}
+
+.input-group:not(.has-validation) > :not(:last-child):not(.dropdown-toggle):not(.dropdown-menu), .input-group:not(.has-validation) > .dropdown-toggle:nth-last-child(n+3) {
+  border-top-left-radius: 4px;
+  border-top-right-radius: 0;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 0;
 }
 
 .ls-answers label, .answer-item label, .control-label {
@@ -13172,7 +13100,7 @@ textarea {
 
 .form-heading {
   font-weight: 400;
-  font-size: 1.425rem;
+  font-size: 1.2825rem;
   line-height: 24px;
 }
 
@@ -13323,12 +13251,8 @@ li.radio-item {
 }
 
 /* map item : .input-group-addon.checkbox-item : put awesome padding */
-.dir-ltr .input-group-addon.radio-item {
+.input-group-addon.radio-item {
   padding-left: 25px;
-}
-
-.dir-rtl .input-group-addon.radio-item {
-  padding-right: 25px;
 }
 
 .radio-item {
@@ -13343,19 +13267,14 @@ li.radio-item {
   width: 17px;
 }
 
-.dir-ltr .radio-item input[type=radio] {
+.radio-item input[type=radio] {
   left: 0;
-}
-
-.dir-rtl .radio-item input[type=radio] {
-  right: 0;
 }
 
 .radio-item input[type=radio] {
   opacity: 0;
 }
 
-/* We need complete width in array , but don't touch to padding-(top|bottom) */
 .radio-item .ls-label-xs-visibility {
   display: inline-block;
   position: relative;
@@ -13367,22 +13286,13 @@ li.radio-item {
 }
 
 /* no margin on label : no margin after and before too */
-.dir-ltr .radio-item label.ls-label-xs-visibility::before {
+.radio-item label.ls-label-xs-visibility::before {
   margin-left: 0;
 }
 
-.dir-rtl .radio-item label.ls-label-xs-visibility::before {
-  margin-right: 0;
-}
-
-.dir-ltr .radio-item label.ls-label-xs-visibility::after {
+.radio-item label.ls-label-xs-visibility::after {
   margin-left: 2px;
   padding-left: 0;
-}
-
-.dir-rtl .radio-item label.ls-label-xs-visibility::after {
-  margin-right: 2px;
-  padding-right: 0;
 }
 
 /* Hide the other content inside visually-hidden */
@@ -13394,11 +13304,7 @@ li.radio-item {
   overflow: hidden;
 }
 
-.dir-ltr .radio-item label.ls-label-xs-visibility > * {
-  left: -10000px;
-}
-
-.dir-rtl .radio-item label.ls-label-xs-visibility > * {
+.radio-item label.ls-label-xs-visibility > * {
   left: -10000px;
 }
 
@@ -13406,27 +13312,17 @@ li.radio-item {
   padding: 4px;
 }
 
-.dir-ltr table.ls-answers .radio-item .ls-label-xs-visibility {
+table.ls-answers .radio-item .ls-label-xs-visibility {
   margin-left: 0;
-}
-
-.dir-rtl table.ls-answers .radio-item .ls-label-xs-visibility {
-  margin-right: 0;
 }
 
 /* Fix for IE11 - no array question radio buttons on small screens */
 @media all and (max-width: 760px) and (-ms-high-contrast: none), (-ms-high-contrast: active) {
-  .dir-ltr table.ls-answers .radio-item label.ls-label-xs-visibility::before {
+  table.ls-answers .radio-item label.ls-label-xs-visibility::before {
     margin-left: 0px;
   }
-  .dir-rtl table.ls-answers .radio-item label.ls-label-xs-visibility::before {
-    margin-right: 0px;
-  }
-  .dir-ltr table.ls-answers .radio-item label.ls-label-xs-visibility::after {
+  table.ls-answers .radio-item label.ls-label-xs-visibility::after {
     margin-left: 0px;
-  }
-  .dir-rtl table.ls-answers .radio-item label.ls-label-xs-visibility::after {
-    margin-right: 0px;
   }
 }
 .radio-item, .radio-text-item {
@@ -13502,58 +13398,24 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
   .ls-answers td.radio-item {
     padding: 4px;
   }
-  .dir-ltr .ls-answers td.radio-item {
+  .ls-answers td.radio-item {
     padding-left: 24px;
     padding-right: 4px;
-  }
-  .dir-rtl .ls-answers td.radio-item {
-    padding-right: 24px;
-    padding-left: 4px;
   }
   table.ls-answers .radio-item .ls-label-xs-visibility {
     line-height: initial;
     text-indent: initial;
   }
-  .dir-ltr table.ls-answers .radio-item .ls-label-xs-visibility {
+  table.ls-answers .radio-item .ls-label-xs-visibility {
     margin-left: 0;
   }
-  .dir-rtl table.ls-answers .radio-item .ls-label-xs-visibility {
-    margin-right: 0;
-  }
-  .dir-ltr table.ls-answers .radio-item label.ls-label-xs-visibility::before {
+  table.ls-answers .radio-item label.ls-label-xs-visibility::before {
     margin-left: -20px;
   }
-  .dir-rtl table.ls-answers .radio-item label.ls-label-xs-visibility::before {
-    margin-right: -20px;
-  }
-  .dir-ltr table.ls-answers .radio-item label.ls-label-xs-visibility::after {
+  table.ls-answers .radio-item label.ls-label-xs-visibility::after {
     margin-left: -18px !important;
   }
-  .dir-rtl table.ls-answers .radio-item label.ls-label-xs-visibility::after {
-    margin-right: -18px !important;
-  }
 }
-.dir-rtl .radio-item label {
-  padding-left: 0px;
-  padding-right: 28px;
-}
-.dir-rtl .radio-item label::before {
-  right: 0;
-}
-.dir-rtl .radio-item label::after {
-  right: 5px;
-}
-.dir-rtl td.radio-item label {
-  padding-left: 0px;
-  padding-right: 8px;
-}
-.dir-rtl td.radio-item label::before {
-  right: 0;
-}
-.dir-rtl td.radio-item label::after {
-  right: 3px;
-}
-
 .radio-item label::before {
   border: 2px solid #6E748C;
   background-color: #fff;
@@ -13620,10 +13482,6 @@ table > tbody > tr > td.ddprefix {
 
 .ls-answers tbody .answertext {
   text-align: left;
-}
-
-.dir-rtl .ls-answers tbody .answertext {
-  text-align: right;
 }
 
 /**
@@ -13833,16 +13691,13 @@ table > tbody > tr > td.ddprefix {
   top: 8px;
 }
 
-.dir-ltr .imageselect-radiobutton.d-none, .dir-ltr .imageselect-select.d-none {
+.imageselect-radiobutton.d-none, .imageselect-select.d-none {
   left: 45px;
-}
-
-.dir-rtl .imageselect-radiobutton.d-none, .dir-rtl .imageselect-select.d-none {
-  right: 45px;
 }
 
 li.imageselect-listitem .imageselect-container .imageselect-label {
   border-radius: 4px !important;
+  overflow: hidden;
 }
 
 .imageselect-container .imageselect-radiobutton::before,
@@ -13859,13 +13714,6 @@ li.imageselect-listitem .imageselect-container .imageselect-label {
   border-radius: 50%;
   transition: border 0.15s ease-in-out;
   z-index: 1;
-}
-
-.dir-rtl .imageselect-container .imageselect-radiobutton::before,
-.dir-rtl .imageselect-list .no-anwser-item .radio-label::before,
-.dir-rtl .imageselect-list .radio-text-item .label-radio::before {
-  margin-right: -20px;
-  margin-left: 0;
 }
 
 .imageselect-container .imageselect-radiobutton::after,
@@ -13886,44 +13734,22 @@ li.imageselect-listitem .imageselect-container .imageselect-label {
   z-index: 1;
 }
 
-.dir-rtl .imageselect-container .imageselect-radiobutton::after,
-.dir-rtl .imageselect-list .no-anwser-item .radio-label::after,
-.dir-rtl .imageselect-list .radio-text-item .label-radio::after {
-  margin-right: -18px;
-  margin-left: 0;
-  right: 4px;
-}
-
 li.imageselect-listitem .imageselect-container input.imageselect-checkbox:checked + label + .imageselect-radiobutton:after {
   transform: scale(1, 1);
 }
 
-.dir-ltr .imageselect-list .no-anwser-item, .dir-ltr .imageselect-list .radio-text-item, .dir-ltr .imageselect-list .radio-item {
+.imageselect-list .no-anwser-item, .imageselect-list .radio-text-item, .imageselect-list .radio-item {
   padding-left: 55px;
 }
-.dir-ltr .imageselect-list no-anwser-item .radio-label, .dir-ltr .imageselect-list .radio-text-item .label-radio {
+.imageselect-list no-anwser-item .radio-label, .imageselect-list .radio-text-item .label-radio {
   padding-left: 10px;
   padding-top: 2px;
 }
-.dir-ltr .imageselect-list no-anwser-item {
+.imageselect-list no-anwser-item {
   margin-left: -2px;
 }
-.dir-ltr .imageselect-list .othertext-label-checkox-container {
+.imageselect-list .othertext-label-checkox-container {
   padding-left: 0;
-}
-
-.dir-rtl .imageselect-list .no-anwser-item, .dir-rtl .imageselect-list .radio-text-item, .dir-rtl .imageselect-list .radio-item {
-  padding-right: 55px;
-}
-.dir-rtl .imageselect-list no-anwser-item .radio-label, .dir-rtl .imageselect-list .radio-text-item .label-radio {
-  padding-right: 10px;
-  padding-top: 2px;
-}
-.dir-rtl .imageselect-list no-anwser-item {
-  margin-right: -2px;
-}
-.dir-rtl .imageselect-list .othertext-label-checkox-container {
-  padding-right: 0;
 }
 
 .imageselect-list .no-anwser-item .radio-label, .imageselect-list .radio-text-item .label-radio {
@@ -14136,15 +13962,18 @@ body .imageselect-listitem label::after {
   margin-left: 0;
 }
 
-.bootstrap-select .bs-searchbox .form-control {
+.answer-container .bootstrap-select .bs-searchbox .form-control {
   padding: 0.375rem 0.75rem;
   margin-bottom: 4px;
 }
-.bootstrap-select .bs-ok-default:after {
+.answer-container .bootstrap-select .bs-ok-default:after {
   font-size: 0.9975rem;
 }
-.bootstrap-select .btn.dropdown-toggle:focus, .bootstrap-select > select.mobile-device:focus + .dropdown-toggle {
+.answer-container .bootstrap-select .btn.dropdown-toggle:focus, .answer-container .bootstrap-select > select.mobile-device:focus + .dropdown-toggle {
   outline: none !important;
+}
+.answer-container .bootstrap-select .dropdown-toggle .filter-option {
+  text-align: left;
 }
 
 .dropdown-menu .dropdown-item {
@@ -14207,6 +14036,13 @@ body .imageselect-listitem label::after {
   .choice-5-pt-radio .list-group-horizontal {
     flex-direction: column;
   }
+}
+
+.geoloc-item .geoname_search {
+  margin-bottom: 10px;
+}
+.geoloc-item .ls-geoloc-search {
+  min-width: 150px;
 }
 
 .checkbox-item {
@@ -14312,7 +14148,6 @@ body .imageselect-listitem label::after {
 
 /**
  *  awesome-bootstrap-checkbox inside table with an visually-hidden label
- * @todo : .dir-rtl
  */
 /* reset the margin and review the padding set by bootstrap */
 table.ls-answers input[type=checkbox],
@@ -14321,61 +14156,24 @@ table.ls-answers input[type=radio] {
 }
 
 /* We need complete width in array , but don't touch to padding-(top|bottom) */
-.dir-ltr .ls-answers td.checkbox-item {
+.ls-answers td.checkbox-item {
   padding-left: 20px;
   padding-right: 0;
 }
 
-.dir-rtl .ls-answers td.checkbox-item {
-  padding-right: 20px;
-  padding-left: 0;
-}
-
-.dir-ltr .checkbox-item .ls-label-xs-visibility {
+.checkbox-item .ls-label-xs-visibility {
   left: auto;
   margin-left: -20px;
 }
 
-.dir-rtl .checkbox-item .ls-label-xs-visibility {
-  right: auto;
-  margin-right: -20px;
-}
-
-.dir-rtl .checkbox-item label {
-  padding-right: 40px;
-  padding-left: 0;
-}
-.dir-rtl .checkbox-item label::before {
-  margin-left: 0;
-  left: auto;
-  right: 0;
-}
-.dir-rtl .checkbox-item label::after {
-  margin-left: 0;
-  left: auto;
-  right: 2px;
-}
-.dir-rtl .othertext-label-checkox-container {
-  margin-right: 0;
-}
-
 /* no margin on label : no margin after and before too */
-.dir-ltr .checkbox-item label.ls-label-xs-visibility::before {
+.checkbox-item label.ls-label-xs-visibility::before {
   margin-left: 0;
 }
 
-.dir-rtl .checkbox-item label.ls-label-xs-visibility::before {
-  margin-right: 0;
-}
-
-.dir-ltr .checkbox-item label.ls-label-xs-visibility::after {
+.checkbox-item label.ls-label-xs-visibility::after {
   margin-left: 0;
   padding-left: 0;
-}
-
-.dir-rtl .checkbox-item label.ls-label-xs-visibility::after {
-  margin-right: 0;
-  padding-right: 0;
 }
 
 .checkbox-item label.ls-label-xs-visibility::after {
@@ -14392,11 +14190,7 @@ table.ls-answers input[type=radio] {
   overflow: hidden;
 }
 
-.dir-ltr .checkbox-item label.ls-label-xs-visibility > * {
-  left: -10000px;
-}
-
-.dir-rtl .checkbox-item label.ls-label-xs-visibility > * {
+.checkbox-item label.ls-label-xs-visibility > * {
   left: -10000px;
 }
 
@@ -14513,6 +14307,8 @@ input[type=checkbox]:checked:after,
 .tempus-dominus-widget .time-container-second div:not(.no-highlight).today:before {
   bottom: 0;
   right: 0;
+  left: auto;
+  transform: scale(1, 1) /*!rtl:scale(-1, 1)*/;
 }
 .tempus-dominus-widget [data-time-component=hours],
 .tempus-dominus-widget .separator,
@@ -14751,7 +14547,7 @@ body.error-page .error-link {
   z-index: 1000;
 }
 .slider-list .slider .tooltip.bs-tooltip-top, .slider-list .slider .tooltip.bs-tooltip-auto[data-popper-placement^=top] {
-  margin-top: -34px;
+  margin-top: -30px;
 }
 .slider-list .slider .tooltip .tooltip-arrow {
   display: none;
@@ -14825,12 +14621,6 @@ body.error-page .error-link {
   }
   .slider-list .slider-right {
     text-align: right;
-  }
-  .dir-rtl .slider-list .slider-left {
-    text-align: right;
-  }
-  .dir-rtl .slider-list .slider-right {
-    text-align: left;
   }
 }
 @media (min-width: 768px) {
@@ -15139,6 +14929,8 @@ a [class^=ri-], a [class*=" ri-"] {
 
 .alert-dismissible .btn-close {
   padding: 1rem 1rem;
+  right: 0;
+  left: auto;
 }
 .alert-dismissible .btn-close:focus {
   box-shadow: none;
@@ -15193,6 +14985,11 @@ a [class^=ri-], a [class*=" ri-"] {
   font-weight: 600;
   line-height: 32px;
 }
+.question-container .ls-question-message {
+  color: #1E1E1E;
+  font-style: italic;
+  font-size: 0.9975rem;
+}
 .question-container .question-number:empty,
 .question-container .question-code:empty {
   display: none;
@@ -15205,6 +15002,7 @@ a [class^=ri-], a [class*=" ri-"] {
   position: relative;
 }
 .question-container .question-valid-container {
+  margin-top: 10px;
   margin-bottom: 20px;
 }
 .question-container .asterisk {
@@ -15413,6 +15211,12 @@ a [class^=ri-], a [class*=" ri-"] {
   margin-top: 40px;
 }
 
+.top-container {
+  margin-bottom: 2rem;
+}
+.top-container .ls-progress-container {
+  padding: 4px 0;
+}
 .top-container .progress {
   height: 2px;
   margin-bottom: 0;
@@ -15513,12 +15317,36 @@ html, body {
   background-color: #ffffff;
 }
 
-.survey-name, .survey-description, .survey-welcome {
+.survey-name,
+.survey-description,
+.survey-welcome {
   margin-bottom: 10px;
+}
+
+.question-count-text {
+  font-size: 1.2825rem;
+  line-height: 24px;
+  font-weight: 600;
 }
 
 .privacy {
   margin-top: 40px;
+  font-weight: 400;
+  font-size: 0.855rem;
+  line-height: 16px;
+}
+.privacy .ls-privacy-head,
+.privacy #datasecurity_notice_label {
+  font-weight: 500;
+}
+.privacy .ls-privacy-block:not(:first-child) {
+  margin-top: 1rem;
+}
+.privacy p {
+  margin-bottom: 0;
+}
+.privacy .checkbox-item label::before {
+  border: 3px solid #14AE5C;
 }
 
 .datasecurity-checkbox-container {
@@ -15526,19 +15354,16 @@ html, body {
   padding-left: 16px;
 }
 
-#datasecurity_notice {
-  font-weight: 500;
-  font-size: 0.855rem;
-  line-height: 16px;
-}
-
-.datasecurity-checkbox-label, .datasecurity-checkbox-label a.show-policy {
+.datasecurity-checkbox-label,
+.datasecurity-checkbox-label a.show-policy {
   font-weight: 600;
   font-size: 1.14rem;
   line-height: 20px;
 }
 
-#datasecurity_notice, .datasecurity-checkbox-label {
+#datasecurity_notice,
+#datasecurity_notice_label,
+.datasecurity-checkbox-label {
   color: #6E748C;
 }
 
@@ -15553,14 +15378,19 @@ html, body {
 .form-change-lang .language-icon {
   float: left;
   margin-right: 4px;
-  margin-top: 2px;
   font-weight: 400;
 }
 .form-change-lang #language-changer-select {
   font-weight: 600;
   font-size: 1.14rem;
   line-height: 20px;
+  cursor: pointer;
   border: none;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  position: relative;
+  z-index: 10;
 }
 .form-change-lang #language-changer-select:focus-visible {
   outline: none;
@@ -15569,11 +15399,33 @@ html, body {
   display: none;
 }
 
+.top-content .form-change-lang {
+  float: right;
+}
+
 .form-change-lang .language-icon, .form-change-lang .control-label {
   color: #6E748C;
 }
 .form-change-lang #language-changer-select {
   color: #14AE5C;
+  background-color: transparent;
+}
+.form-change-lang #lang-select {
+  background-color: #ffffff;
+}
+.form-change-lang #lang-select::after {
+  cursor: pointer;
+  position: relative;
+  right: 16px;
+  color: #14AE5C;
+  font-family: "remixicon";
+  content: "\ea50";
+  z-index: 5;
+}
+
+.space-col {
+  margin-top: 1em;
+  margin-bottom: 2em;
 }
 
 .darkmode-on {

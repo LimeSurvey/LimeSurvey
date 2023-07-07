@@ -98,7 +98,6 @@
 
 /**
  *  awesome-bootstrap-checkbox inside table with an visually-hidden label
- * @todo : .dir-rtl
  */
 /* reset the margin and review the padding set by bootstrap */
 table.ls-answers input[type="checkbox"],
@@ -107,66 +106,24 @@ table.ls-answers input[type="radio"] {
 }
 
 /* We need complete width in array , but don't touch to padding-(top|bottom) */
-.dir-ltr .ls-answers td.checkbox-item {
+.ls-answers td.checkbox-item {
     padding-left  : 20px;
     padding-right : 0;
 }
 
-.dir-rtl .ls-answers td.checkbox-item {
-    padding-right : 20px;
-    padding-left  : 0;
-}
-
-.dir-ltr .checkbox-item .ls-label-xs-visibility {
+.checkbox-item .ls-label-xs-visibility {
     left        : auto;
     margin-left : -20px;
 }
 
-.dir-rtl .checkbox-item .ls-label-xs-visibility {
-    right        : auto;
-    margin-right : -20px;
-}
-
-.dir-rtl {
-    .checkbox-item {
-
-    }
-    .checkbox-item label {
-        padding-right: 40px;
-        padding-left: 0;
-        &::before {
-            margin-left : 0;
-            left: auto;
-            right: 0;
-        }
-        &::after {
-            margin-left : 0;
-            left: auto;
-            right: 2px;
-        }
-    }
-    .othertext-label-checkox-container {
-        margin-right: 0;
-    }
-}
-
 /* no margin on label : no margin after and before too */
-.dir-ltr .checkbox-item label.ls-label-xs-visibility::before {
+.checkbox-item label.ls-label-xs-visibility::before {
     margin-left : 0;
 }
 
-.dir-rtl .checkbox-item label.ls-label-xs-visibility::before {
-    margin-right : 0;
-}
-
-.dir-ltr .checkbox-item label.ls-label-xs-visibility::after {
+.checkbox-item label.ls-label-xs-visibility::after {
     margin-left  : 0;
     padding-left : 0;
-}
-
-.dir-rtl .checkbox-item label.ls-label-xs-visibility::after {
-    margin-right  : 0;
-    padding-right : 0;
 }
 
 .checkbox-item label.ls-label-xs-visibility::after {
@@ -183,13 +140,10 @@ table.ls-answers input[type="radio"] {
     overflow : hidden;
 }
 
-.dir-ltr .checkbox-item label.ls-label-xs-visibility > * {
+.checkbox-item label.ls-label-xs-visibility > * {
     left : -10000px;
 }
 
-.dir-rtl .checkbox-item label.ls-label-xs-visibility > * {
-    left : -10000px;
-}
 
 /* Align privacy policy checkbox to top */
 #datasecurity_accepted {

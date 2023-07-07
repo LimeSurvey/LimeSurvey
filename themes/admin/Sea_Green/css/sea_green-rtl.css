@@ -11245,6 +11245,15 @@ blockquote.float-end {
   padding-left: 20px;
 }
 
+.full-page-wrapper {
+  position: relative;
+  padding-bottom: 65px;
+}
+
+#surveySettingsForThisGroup {
+  column-gap: 20px;
+}
+
 /**
  * Lime Admin Common CSS File
  *
@@ -11549,10 +11558,8 @@ blockquote.float-end {
   border-right-width: 1px;
 }
 
-.side-body,
-.full-page-wrapper {
+.side-body {
   position: relative;
-  /*margin-bottom: 65px;*/
 }
 
 .side-body h3, .side-body .h3,
@@ -14562,6 +14569,77 @@ html[dir=ltr] th {
   display: none;
 }
 
+/** Styles for Data Entry screen */
+#responsedetail .checkbox input[type=checkbox] {
+  margin-right: 0;
+}
+#responsedetail .checkbox label {
+  padding-right: 0px;
+}
+#responsedetail .answer-item {
+  display: flex;
+  gap: 1em;
+  margin-bottom: 1em;
+}
+#responsedetail .checkbox.unseen-checkbox {
+  margin-top: 0;
+  min-width: 6em;
+}
+#responsedetail .checkbox:not(.unseen-checkbox) {
+  margin-top: 0;
+}
+#responsedetail tr.multiple-opt-comments input[type=text] {
+  width: 100%;
+}
+#responsedetail tr.multiple-opt-comments .checkbox {
+  margin-bottom: 0;
+}
+#responsedetail tr.multiple-opt-comments .answer-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+}
+#responsedetail tr.array-5-pt .answer-wrapper,
+#responsedetail tr.array-10-pt .answer-wrapper,
+#responsedetail tr.array-yes-uncertain-no .answer-wrapper,
+#responsedetail tr.array-increase-same-decrease .answer-wrapper,
+#responsedetail tr.array-flexible-row .answer-wrapper,
+#responsedetail tr.array-flexible-column .answer-wrapper,
+#responsedetail tr.array-flexible-dual-scale .answer-wrapper {
+  display: flex;
+  gap: 1em;
+}
+#responsedetail tr.array-5-pt .answer-wrapper > span,
+#responsedetail tr.array-10-pt .answer-wrapper > span,
+#responsedetail tr.array-yes-uncertain-no .answer-wrapper > span,
+#responsedetail tr.array-increase-same-decrease .answer-wrapper > span,
+#responsedetail tr.array-flexible-row .answer-wrapper > span,
+#responsedetail tr.array-flexible-column .answer-wrapper > span,
+#responsedetail tr.array-flexible-dual-scale .answer-wrapper > span {
+  flex: 1;
+}
+#responsedetail tr.array-5-pt .answer-wrapper > span:first-of-type,
+#responsedetail tr.array-10-pt .answer-wrapper > span:first-of-type,
+#responsedetail tr.array-yes-uncertain-no .answer-wrapper > span:first-of-type,
+#responsedetail tr.array-increase-same-decrease .answer-wrapper > span:first-of-type,
+#responsedetail tr.array-flexible-row .answer-wrapper > span:first-of-type,
+#responsedetail tr.array-flexible-column .answer-wrapper > span:first-of-type,
+#responsedetail tr.array-flexible-dual-scale .answer-wrapper > span:first-of-type {
+  text-align: end;
+}
+#responsedetail tr.array-multi-flexi .answer-wrapper,
+#responsedetail tr.array-multi-flexi-text .answer-wrapper {
+  display: flex;
+  gap: 1em;
+}
+#responsedetail tr.array-multi-flexi .answer-wrapper > span,
+#responsedetail tr.array-multi-flexi-text .answer-wrapper > span {
+  flex: 1;
+}
+#responsedetail .answer-wrapper {
+  flex-grow: 1;
+}
+
 .jcarousel-wrapper {
   margin: 20px auto;
   position: relative;
@@ -16893,6 +16971,14 @@ tr.info, tr.danger {
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
+#help-button-dropup {
+  position: fixed;
+  bottom: 16px;
+  left: 20px;
+}
+#help-button-dropup.question-editor-positioning {
+  bottom: 52px;
+}
 #help-button-dropup > .dropdown-menu {
   min-width: 167px;
   color: #fff;
@@ -16915,6 +17001,24 @@ tr.info, tr.danger {
 #help-button-dropup > .dropdown-menu .dropdown-header {
   color: #fff;
   font-size: var(--bs-root-font-size);
+}
+
+.btn-circle {
+  width: 44px;
+  height: 44px;
+  padding: 12px 10px;
+  border-radius: 35px;
+  text-align: center;
+}
+
+.btn-black60 {
+  color: #fff;
+  border: 1px solid #666666;
+}
+.btn-black60:hover, .btn-black60:focus, .btn-black60:active, .btn-black60.active, .btn-black60.dropdown-toggle.show, .btn-black60.dropdown-toggle.show:focus, .btn-black60[aria-expanded=true] {
+  background-color: #666666;
+  border: 1px solid #000;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
 .modal-content {
@@ -17119,7 +17223,13 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 }
 
 .footer {
-  width: 100%;
+  z-index: 100;
+  bottom: 0;
+  margin-top: 36px;
+  padding-top: 12px;
+  padding-left: 84px;
+  padding-bottom: 24px;
+  padding-right: 20px;
 }
 
 .sub_footer {
@@ -18387,7 +18497,7 @@ table .ls-sticky-column.has-dropdown {
   z-index: 1020;
 }
 table [class^=ri-], table [class*=" ri-"] {
-  vertical-align: -0.2em;
+  vertical-align: 0;
 }
 
 .table > thead > tr.active > td, .table > thead > tr.active > th,

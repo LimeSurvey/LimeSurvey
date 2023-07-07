@@ -55,6 +55,11 @@ Responsive navbar-brand image CSS
     border: none;
 }
 
+.navbar-right.ms-auto {
+    margin-left  : auto !important;
+    margin-right : 0 !important;
+}
+
 .navbar {
     border-radius    : 0 !important;
 
@@ -103,8 +108,8 @@ Responsive navbar-brand image CSS
     }
     .navbar-toggler {
         border: none;
-        padding: 0;
-        margin-top: 20px;
+        padding-right: 0;
+        line-height: $line-height-20;
         .ri-more-fill {
             font-size: $font-size-xl * 1.125;
         }
@@ -129,15 +134,23 @@ Responsive navbar-brand image CSS
         line-height : $line-height-20;
     }
     .dropdown-toggle::after {
-        display: none;
+        font-family: "remixicon";
+        content: "\ea6e" #{"/*!rtl:'\ea64'*/"};
+        border: none;
+        vertical-align: 0;
+        position:absolute;
+        right: 0;
+        font-size: $font-size-lg;
     }
 
-    .back-link .ri-arrow-left-s-line, .nav-link .ri-arrow-right-s-line {
-        vertical-align : -0.10em;
-        font-size      : $font-size-lg;
-    }
-    .back-link .ri-arrow-left-s-line {
-        margin-right   : 16px;
+    .back-link::before {
+        font-family: "remixicon";
+        content: "\ea64" #{"/*!rtl:'\ea6e'*/"};
+        vertical-align: -0.10em;
+        position: relative;
+        left: -6px;
+        margin-right: 6px;
+        font-size: $font-size-lg;
     }
     .form-change-lang {
         padding-bottom: 0;

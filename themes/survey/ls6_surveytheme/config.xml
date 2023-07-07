@@ -63,7 +63,7 @@
         <js>
             <add>scripts/theme.js</add>
             <add>scripts/custom.js</add>
-          <!--   <add>bootstrap_5/js/bootstrap_5.js</add>  MAYBE: this is not necessary-->
+         <!--    <add>bootstrap_5/js/bootstrap_5.js</add>  -->
             <remove>survey.js</remove>
             <remove>template-core.js</remove>
         </js>
@@ -150,10 +150,10 @@
         <optionspage>core</optionspage>
 
         <!-- If empty, bootstrap css/js files will not be loaded. In the future, we may have more engines, like foundation -->
-        <!-- PLease do not load bootstrap twice...Not necessary here-->
-       <!--  <cssframework>
-            <name>bootstrap</name>
-        </cssframework> -->
+        <!-- Please do not load bootstrap twice...Not necessary here. Bootstrap is already loaded together with the theme css and theme js-->
+<!--        <cssframework>-->
+<!--            <name>bootstrap</name>-->
+<!--        </cssframework>-->
 
         <!-- Path of the views files (can be different than views -->
         <viewdirectory>views</viewdirectory>
@@ -167,6 +167,7 @@
             <add>pjax</add>
             <add>moment</add>
             <add>font-ibm-sans</add>
+            <add>font-ibm-serif</add>
         </packages>
 
         <!--
@@ -192,14 +193,16 @@
                     <file type="view" role="subview">./subviews/survey/question_subviews/question_text_content.twig
                     </file>
                     <file type="view" role="subview">./subviews/survey/question_subviews/answers.twig</file>
-                    <file type="view" role="subview">./subviews/survey/question_subviews/survey_question_help.twig
-                    </file>
-                    <file type="view" role="subview">./subviews/survey/question_subviews/valid_message_and_help.twig
-                    </file>
+                    <file type="view" role="subview">./subviews/survey/question_subviews/survey_question_help.twig</file>
+                    <file type="view" role="subview">./subviews/survey/question_subviews/valid_message_and_help.twig</file>
                     <file type="css">./css/variations/theme_apple.css</file>
+                    <file type="css">./css/variations/theme_apple-rtl.css</file>
                     <file type="css">./css/variations/theme_blueberry.css</file>
+                    <file type="css">./css/variations/theme_blueberry-rtl.css</file>
                     <file type="css">./css/variations/theme_grape.css</file>
+                    <file type="css">./css/variations/theme_grape-rtl.css</file>
                     <file type="css">./css/variations/theme_mango.css</file>
+                    <file type="css">./css/variations/theme_mango-rtl.css</file>
                     <file type="js">./scripts/theme.js</file>
                     <file type="css">./css/custom.css</file>
                     <file type="js">./scripts/custom.js</file>
@@ -214,9 +217,13 @@
                     <file type="view" role="subview">./subviews/content/outerframe.twig</file>
                     <file type="view" role="subview">./subviews/navigation/language_changer_form.twig</file>
                     <file type="css">./css/variations/theme_apple.css</file>
+                    <file type="css">./css/variations/theme_apple-rtl.css</file>
                     <file type="css">./css/variations/theme_blueberry.css</file>
+                    <file type="css">./css/variations/theme_blueberry-rtl.css</file>
                     <file type="css">./css/variations/theme_grape.css</file>
+                    <file type="css">./css/variations/theme_grape-rtl.css</file>
                     <file type="css">./css/variations/theme_mango.css</file>
+                    <file type="css">./css/variations/theme_mango-rtl.css</file>
                     <file type="js">./scripts/theme.js</file>
                     <file type="css">./css/custom.css</file>
                     <file type="js">./scripts/custom.js</file>
@@ -241,9 +248,13 @@
                     <file type="view" role="subview">./subviews/logincomponents/captcha.twig</file>
                     <file type="view" role="subview">./subviews/logincomponents/token.twig</file>
                     <file type="css">./css/variations/theme_apple.css</file>
+                    <file type="css">./css/variations/theme_apple-rtl.css</file>
                     <file type="css">./css/variations/theme_blueberry.css</file>
+                    <file type="css">./css/variations/theme_blueberry-rtl.css</file>
                     <file type="css">./css/variations/theme_grape.css</file>
+                    <file type="css">./css/variations/theme_grape-rtl.css</file>
                     <file type="css">./css/variations/theme_mango.css</file>
+                    <file type="css">./css/variations/theme_mango-rtl.css</file>
                     <file type="js">./scripts/theme.js</file>
                     <file type="css">./css/custom.css</file>
                     <file type="js">./scripts/custom.js</file>
@@ -257,9 +268,13 @@
                     <file type="view" role="subview">./subviews/content/outerframe.twig</file>
                     <file type="view" role="content">./subviews/content/submit.twig</file>
                     <file type="css">./css/variations/theme_apple.css</file>
+                    <file type="css">./css/variations/theme_apple-rtl.css</file>
                     <file type="css">./css/variations/theme_blueberry.css</file>
+                    <file type="css">./css/variations/theme_blueberry-rtl.css</file>
                     <file type="css">./css/variations/theme_grape.css</file>
+                    <file type="css">./css/variations/theme_grape-rtl.css</file>
                     <file type="css">./css/variations/theme_mango.css</file>
+                    <file type="css">./css/variations/theme_mango-rtl.css</file>
                     <file type="js">./scripts/theme.js</file>
                     <file type="css">./css/custom.css</file>
                     <file type="js">./scripts/custom.js</file>
@@ -274,9 +289,13 @@
                     <file type="view" role="content">./subviews/content/submit.twig</file>
                     <file type="view" role="subview">./subviews/messages/assessments.twig</file>
                     <file type="css">./css/variations/theme_apple.css</file>
+                    <file type="css">./css/variations/theme_apple-rtl.css</file>
                     <file type="css">./css/variations/theme_blueberry.css</file>
+                    <file type="css">./css/variations/theme_blueberry-rtl.css</file>
                     <file type="css">./css/variations/theme_grape.css</file>
+                    <file type="css">./css/variations/theme_grape-rtl.css</file>
                     <file type="css">./css/variations/theme_mango.css</file>
+                    <file type="css">./css/variations/theme_mango-rtl.css</file>
                     <file type="js">./scripts/theme.js</file>
                     <file type="css">./css/custom.css</file>
                     <file type="js">./scripts/custom.js</file>
@@ -296,9 +315,13 @@
                     <file type="view" role="subview">./subviews/content/outerframe.twig</file>
                     <file type="view" role="content">./subviews/content/clearall.twig</file>
                     <file type="css">./css/variations/theme_apple.css</file>
+                    <file type="css">./css/variations/theme_apple-rtl.css</file>
                     <file type="css">./css/variations/theme_blueberry.css</file>
+                    <file type="css">./css/variations/theme_blueberry-rtl.css</file>
                     <file type="css">./css/variations/theme_grape.css</file>
+                    <file type="css">./css/variations/theme_grape-rtl.css</file>
                     <file type="css">./css/variations/theme_mango.css</file>
+                    <file type="css">./css/variations/theme_mango-rtl.css</file>
                     <file type="js">./scripts/theme.js</file>
                     <file type="css">./css/custom.css</file>
                     <file type="js">./scripts/custom.js</file>
@@ -312,9 +335,13 @@
                     <file type="view" role="subview">./subviews/content/outerframe.twig</file>
                     <file type="view" role="content">./subviews/content/load.twig</file>
                     <file type="css">./css/variations/theme_apple.css</file>
+                    <file type="css">./css/variations/theme_apple-rtl.css</file>
                     <file type="css">./css/variations/theme_blueberry.css</file>
+                    <file type="css">./css/variations/theme_blueberry-rtl.css</file>
                     <file type="css">./css/variations/theme_grape.css</file>
+                    <file type="css">./css/variations/theme_grape-rtl.css</file>
                     <file type="css">./css/variations/theme_mango.css</file>
+                    <file type="css">./css/variations/theme_mango-rtl.css</file>
                     <file type="js">./scripts/theme.js</file>
                     <file type="css">./css/custom.css</file>
                     <file type="js">./scripts/custom.js</file>
@@ -328,9 +355,13 @@
                     <file type="view" role="subview">./subviews/content/outerframe.twig</file>
                     <file type="view" role="content">./subviews/content/save.twig</file>
                     <file type="css">./css/variations/theme_apple.css</file>
+                    <file type="css">./css/variations/theme_apple-rtl.css</file>
                     <file type="css">./css/variations/theme_blueberry.css</file>
+                    <file type="css">./css/variations/theme_blueberry-rtl.css</file>
                     <file type="css">./css/variations/theme_grape.css</file>
+                    <file type="css">./css/variations/theme_grape-rtl.css</file>
                     <file type="css">./css/variations/theme_mango.css</file>
+                    <file type="css">./css/variations/theme_mango-rtl.css</file>
                     <file type="js">./scripts/theme.js</file>
                     <file type="css">./css/custom.css</file>
                     <file type="js">./scripts/custom.js</file>
@@ -445,13 +476,13 @@
                     <code type="data">'Q1 '</code>
                     <text type="data" twig="on"><![CDATA[ {{ gT("How many roads must a man walk down?") }} ]]></text>
                     <valid_message type="data" twig="on">
-                        <![CDATA[ <div id="vmsg_4496_num_answers" class="em_num_answers emtip error"><span class="fa fa-exclamation-circle" aria-hidden="true"></span> {{ gT("Choose one of the following answers") }} </div> ]]></valid_message>
+                        <![CDATA[ <div id="vmsg_4496_num_answers" class="em_num_answers emtip error"><span class="ri-error-warning-fill" aria-hidden="true"></span> {{ gT("Choose one of the following answers") }} </div> ]]></valid_message>
                 </question_1>
                 <question_2 type="core">
                     <code type="data">'Q2 '</code>
                     <text type="data" twig="on"><![CDATA[ {{ gT("Please explain something in detail:") }} ]]></text>
                     <valid_message type="data" twig="on">
-                        <![CDATA[<div id="vmsg_4496_num_answers" class="em_num_answers emtip error"><span class="fa fa-exclamation-circle" aria-hidden="true"></span> {{ gT("Hint when response is not valid") }} </div> ]]></valid_message>
+                        <![CDATA[<div id="vmsg_4496_num_answers" class="em_num_answers emtip error"><span class="ri-error-warning-fill" aria-hidden="true"></span> {{ gT("Hint when response is not valid") }} </div> ]]></valid_message>
                 </question_2>
                 <assessments type="core">
                     <name type="data" twig="on"><![CDATA[ {{ gT("Welcome to the Assessment") }} ]]></name>

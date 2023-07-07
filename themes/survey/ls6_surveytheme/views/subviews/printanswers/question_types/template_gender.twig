@@ -5,10 +5,10 @@
         <div class="col-lg-4 text-end">
         </div>
         <div class="col-lg-8 text-start">
-            {% if question.answervalue is sameas("M") %}
-                {{ gT("Male") }} <i class="fa fa-mars"></i>
-            {% elseif question.answervalue is sameas("F") %}
-                {{ gT("Female") }} <i class="fa fa-venus"></i>
+            {% if question.answervalue is same as("M") %}
+                {{ gT("Male") }} <i class="ri-men-line"></i>
+            {% elseif question.answervalue is same as("F") %}
+                {{ gT("Female") }} <i class="ri-women-line"></i>
             {% else %}
                 {{question.answervalue}}
             {% endif %}

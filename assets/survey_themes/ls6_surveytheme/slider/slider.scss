@@ -52,7 +52,7 @@
             font-weight : $font-weight-600;
             z-index     : $zindex-dropdown; // prevent overlapping of navbar which is 1030 ($zindex-fixed)
             &.bs-tooltip-top {
-                margin-top : -34px;
+                margin-top : -30px;
             }
             .tooltip-arrow {
                 display : none;
@@ -140,12 +140,6 @@
     }
     .slider-list .slider-right {
         text-align : right;
-    }
-    .dir-rtl .slider-list .slider-left {
-        text-align : right
-    }
-    .dir-rtl .slider-list .slider-right {
-        text-align : left;
     }
 }
 
