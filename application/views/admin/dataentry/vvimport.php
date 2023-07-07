@@ -65,7 +65,7 @@
                             'renumber' => gT("Renumber the new record."),
                             'replace' => gT("Replace the existing record."),
                             'replaceanswers' => gT("Replace answers in file in the existing record."),
-                            ),array('disabled'=>'disabled','class'=>'form-control'));
+                            ),array('class'=>'form-control'));
                      ?>
                 </div>
             </div>
@@ -160,15 +160,16 @@
 </div></div></div>
 <?php
 App()->getClientScript()->registerScript('VVImportBSSwitcher', "
-LS.renderBootstrapSwitch();
-
-$('#noid').on('switchChange.bootstrapSwitch', function(event, state) {
-    if (!state){
-        $('#insertmethod').removeAttr('disabled');
-        $('#insertmethod-container').show('slow');
+$('#insertmethod').prop('disabled', true);
+$('#insertmethod-container').hide();
+$('input[name=\"noid\"]').on('change', function(event) {
+    let state = $('input[name=\"noid\"]:checked').val();
+    if (!state || state == '0'){
+        $('#insertmethod').prop('disabled', false);
+        $('#insertmethod-container').show();
     }else{
-        $('#insertmethod').attr('disabled','disabled');
-        $('#insertmethod-container').hide('slow');
+        $('#insertmethod').prop('disabled', true);
+        $('#insertmethod-container').hide();
     }
 });
 ", LSYii_ClientScript::POS_POSTSCRIPT);
