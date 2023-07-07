@@ -8,7 +8,7 @@ use Exception;
  * Fix organizer link : icon and survey activated
  * @package LimeSurvey\Helpers\Update
  */
-class Update_607 extends DatabaseUpdateBase
+class Update_608 extends DatabaseUpdateBase
 {
     /**
      * @inheritDoc
