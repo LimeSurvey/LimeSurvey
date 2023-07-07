@@ -186,9 +186,9 @@ class UserGroup extends LSActiveRecord
 
     /**
      * Works as permission check on db level for editing user groups.
-     * The usergroup needs to exist, and if the user is not a superadmin,
+     * The user group needs to exist, and if the user is not a superadmin,
      * user also has to be the owner of that group.
-     * If successful, the usergroup is returned.
+     * If successful, the user group is returned.
      *
      * @param integer $ugId
      * @param integer $ownerId
@@ -358,7 +358,6 @@ class UserGroup extends LSActiveRecord
             'url'              => Yii::app()->createUrl("userGroup/mailToAllUsersInGroup/ugid/$this->ugid"),
             'enabledCondition' => $permissionUsergroupsEdit
         ];
-
         $deletePostData = json_encode(['ugid' => $this->ugid]);
         $dropdownItems[] = [
             'title'            => gT('Delete user group'),
@@ -368,7 +367,7 @@ class UserGroup extends LSActiveRecord
                 'data-bs-toggle' => "modal",
                 'data-post-url'  => App()->createUrl("userGroup/deleteGroup"),
                 'data-post-datas' => $deletePostData,
-                'data-message'   => sprintf(gt("Are you sure you want to delete user group '%s'?"), $this->name),
+                'data-message'   => sprintf(gt("Are you sure you want to delete user group '%s'?"), CHtml::encode($this->name)),
                 'data-bs-target' => "#confirmation-modal",
                 'data-btnclass'  => 'btn-danger',
                 'data-btntext'   => gt('Delete'),
@@ -437,9 +436,9 @@ class UserGroup extends LSActiveRecord
 
 
     /**
-     * This function search usergroups for a user
-     * If $isMine = true then usergroups are those that have been created by the current user
-     * else this function provides usergroups which contain the current user
+     * This function searches user groups for a user
+     * If $isMine = true then user groups are those that have been created by the current user
+     * else this function provides s which contain the current user
      *
      * The object \CActiveDataProvider returned is used to generate the view in application/views/admin/usergroup/usergroups_view.php
      *

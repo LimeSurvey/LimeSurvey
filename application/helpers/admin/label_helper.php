@@ -176,6 +176,7 @@ function modlabelsetanswers($lid)
             }
         }
         if (count($aErrors)) {
+            // TODO: Show an actual error message
             Yii::app()->session['flashmessage'] = gT("Not all labels were updated successfully.");
         } else {
             Yii::app()->session['flashmessage'] = gT("Labels successfully updated");

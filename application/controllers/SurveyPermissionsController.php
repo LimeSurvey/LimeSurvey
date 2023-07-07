@@ -205,7 +205,7 @@ class SurveyPermissionsController extends LSBaseController
         if ($isUserGroup) {
             $oUserGroup = UserGroup::model()->findByPk($id);
             if (!isset($oUserGroup)) {
-                Yii::app()->user->setFlash('error', gT("Unknown usergroup."));
+                Yii::app()->user->setFlash('error', gT("Unknown user group."));
                 $this->redirect(Yii::app()->request->urlReferrer);
             }
             $name = $oUserGroup->name;
@@ -250,7 +250,7 @@ class SurveyPermissionsController extends LSBaseController
     }
 
     /**
-     * Save permissions for a user or a usergroup
+     * Save permissions for a user or a user group
      *
      * @param $surveyid
      * @return void
@@ -289,9 +289,9 @@ class SurveyPermissionsController extends LSBaseController
                 }
                 $success = $oSurveyPermissions->saveUserGroupPermissions($userGroupId, $setOfPermissions['Survey']);
                 if ($success) {
-                    Yii::app()->user->setFlash('success', gT("Successfully saved permissions for usergroup."));
+                    Yii::app()->user->setFlash('success', gT("Successfully saved permissions for user group."));
                 } else {
-                    Yii::app()->user->setFlash('error', gT("Error saving permissions for usergroup."));
+                    Yii::app()->user->setFlash('error', gT("Error saving permissions for user group."));
                 }
                 break;
             default: //error here unknown action
