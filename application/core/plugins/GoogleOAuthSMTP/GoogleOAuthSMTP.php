@@ -54,11 +54,6 @@ class GoogleOAuthSMTP extends SmtpOAuthPluginBase
         $settings['clientId']['label'] = gT("Client ID");
         $settings['clientSecret']['label'] = gT("Client Secret");
 
-        $currentEmailSetting = $this->getCurrentEmailSetting();
-        if (!empty($currentEmailSetting)) {
-            $settings['currentEmail'] = $currentEmailSetting;
-        }
-
         return $settings;
     }
 
