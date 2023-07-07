@@ -87,10 +87,12 @@ echo viewHelper::getViewTestTag('templateOptions');
                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                <p><?= gT('The theme is not compatible with your version of LimeSurvey.') ?></p>
-                                                                <a href="https://manual.limesurvey.org/Extension_compatibility" target="_blank">
-                                                                    <?= gT('For more information consult our manual.') ?>
-                                                                </a>
+                                                                <p><?= gT('The theme is not compatible with your version of LimeSurvey.') ?><br>
+                                                                    <a href="https://manual.limesurvey.org/Extension_compatibility" target="_blank">
+                                                                        <?= gT('For more information consult our manual.') ?>
+                                                                    </a>
+                                                                </p>
+                                                                <p><?= gT('Custom theme options set for this theme have been reset to the default.') ?></p>
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><?= gT('Close') ?></button>
