@@ -7,11 +7,11 @@
     <ul class="list-group list-group-flush">
         <!-- Base language -->
         <li class="list-group-item p-0 border-0" id="adminsidepanel__surveysummary--mainLanguageLink">
-            <div class="ls-flex-row col-12 gap-2">
+            <div class="ls-flex-row col-12">
                 <div class="col-4 card-label">
                     {{ getLanguageNameFromCode(oSurvey.language, false)}} ({{ gT("Base language") }}):
                 </div>
-                <div class="col-8">
+                <div class="col-8 ls-card-grid__description">
                     {% if oSurvey.sid %} {# pseudo condition due to reverse parsing problems while generating twig admin cache via console.php twig generateAdminCache #}
                         {% set tmp_url = surveyUrls[oSurvey.language] %}
                     {% endif %}
@@ -22,11 +22,11 @@
         <!-- Additional languages  -->
         {% for langname in aAdditionalLanguages %}
         <li class="list-group-item p-0 border-0">
-            <div class="ls-flex-row col-12 gap-2">
+            <div class="ls-flex-row col-12">
                <div class="col-4 card-label">
                     {{ getLanguageNameFromCode(langname, false) ~ ":" }}
                 </div>
-                <div class="col-8">
+                <div class="col-8 ls-card-grid__description">
                     {% if oSurvey.sid %} {# pseudo condition due to reverse parsing problems while generating twig admin cache via console.php twig generateAdminCache #}
                         {% set tmp_url = surveyUrls[langname] %}
                     {% endif %}
@@ -38,22 +38,22 @@
 
         <!-- End URL -->
         <li class="list-group-item p-0 border-0">
-            <div class="ls-flex-row col-12 gap-2">
+            <div class="ls-flex-row col-12">
                <div class="col-4 card-label">
                     {{ gT("End URL:") }}
                 </div>
-                <div class="col-8">
+                <div class="col-8 ls-card-grid__description">
                         {{endurl}}
                 </div>
             </div>
         </li>
         <!-- Number of questions/groups -->
         <li class="list-group-item p-0 border-0">
-            <div class="ls-flex-row col-12 gap-2">
+            <div class="ls-flex-row col-12">
                <div class="col-4 card-label">
                     {{ gT("Number of questions/groups:") }}
                 </div>
-                <div class="col-8">
+                <div class="col-8 ls-card-grid__description">
                     {{ sumcount3 ~ "/" ~ sumcount2 }}
                 </div>
             </div>
@@ -61,11 +61,11 @@
         <!-- Sharing panel -->
         {% if oSurvey.active == 'Y' %}
             <li class="list-group-item p-0 border-0">
-                <div class="ls-flex-row col-12 gap-2">
+                <div class="ls-flex-row col-12">
                    <div class="col-4 card-label">
                         {{ gT("Sharing panel:") }}
                     </div>
-                    <div class="col-8">
+                    <div class="col-8 ls-card-grid__description">
                         <a href="#sharingdialog" class="btn btn-outline-secondary selector_openSharePanel" data-bs-toggle="modal" id="sharePanelButton_{{oSurvey.sid}}" data-surveyid="{{oSurvey.sid}}">
                             {{ gT("Open sharing panel") }}
                         </a>
@@ -95,7 +95,7 @@
                                     {% set tmp_url = createAbsoluteUrl("survey/index", { "sid" : oSurvey.sid, "lang" : oSurvey.language}) %}
                                 {% endif %}
                                  <li class="list-group-item p-0 border-0 mb-2">
-                                    <div class="ls-flex-row col-12 gap-2 align-items-center">
+                                    <div class="ls-flex-row col-12 align-items-center">
                                         <div class="col-4">
                                             {{ getLanguageNameFromCode(oSurvey.language, false)}}
                                         </div>
@@ -112,7 +112,7 @@
                                         {% set tmp_url = createAbsoluteUrl("survey/index", { "sid" : oSurvey.sid, "lang" : langname}) %}
                                     {% endif %}
                                     <li class="list-group-item p-0 border-0{% if not loop.last %} mb-2{% endif %}">
-                                        <div class="ls-flex-row col-12 gap-2 align-items-center">
+                                        <div class="ls-flex-row col-12 align-items-center">
                                             <div class="col-4">
                                                 {{ getLanguageNameFromCode(langname, false)}}
                                             </div>
@@ -142,7 +142,7 @@
                                     {% set tmp_url = createAbsoluteUrl("survey/index", { "sid" : oSurvey.sid, "lang" : oSurvey.language}) %}
                                 {% endif %}
                                     <li class="list-group-item p-0 border-0 mb-2">
-                                    <div class="ls-flex-row col-12 gap-2 align-items-center">
+                                    <div class="ls-flex-row col-12 align-items-center">
                                         <div class="col-4">
                                             {{ getLanguageNameFromCode(oSurvey.language, false)}}
                                         </div>
@@ -157,7 +157,7 @@
                                         {% set tmp_url = createAbsoluteUrl("survey/index", { "sid" : oSurvey.sid, "lang" : langname}) %}
                                     {% endif %}
                                     <li class="list-group-item p-0 border-0{% if not loop.last %} mb-2{% endif %}">
-                                        <div class="ls-flex-row col-12 gap-2 align-items-center">
+                                        <div class="ls-flex-row col-12 align-items-center">
                                             <div class="col-4">
                                                 {{ getLanguageNameFromCode(langname, false)}}
                                             </div>
@@ -183,7 +183,7 @@
                                     {% set tmp_url = createAbsoluteUrl("survey/index", { "sid" : oSurvey.sid, "lang" : oSurvey.language}) %}
                                 {% endif %}
                                 <li class="list-group-item p-0 border-0 mb-2">
-                                    <div class="ls-flex-row col-12 gap-2 align-items-center">
+                                    <div class="ls-flex-row col-12 align-items-center">
                                         <div class="col-4">
                                             {{ getLanguageNameFromCode(oSurvey.language, false)}}
                                         </div>
@@ -199,7 +199,7 @@
                                         {% set tmp_url = createAbsoluteUrl("survey/index", { "sid" : oSurvey.sid, "lang" : langname}) %}
                                     {% endif %}
                                     <li class="list-group-item p-0 border-0{% if not loop.last %} mb-2{% endif %}">
-                                        <div class="ls-flex-row col-12 gap-2 align-items-center">
+                                        <div class="ls-flex-row col-12 align-items-center">
                                             <div class="col-4">
                                                 {{ getLanguageNameFromCode(langname, false)}}
                                             </div>

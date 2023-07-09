@@ -1090,6 +1090,7 @@ function XMLImportLabelsets($sFullFilePath, $options)
         // Insert the new question
         $arLabelset = new LabelSet();
         $arLabelset->setAttributes($insertdata);
+        $arLabelset->setAttribute('owner_id', App()->user->getId());
         $arLabelset->save();
         $aLSIDReplacements[$iOldLabelSetID] = $arLabelset->lid; // add old and new lsid to the mapping array
         $results['labelsets']++;

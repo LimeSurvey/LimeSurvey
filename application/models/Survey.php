@@ -1161,8 +1161,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
             // If it's active, then we check if not expired
             // Time adjust
             $sNow    = date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
-            $sStop   = ($this->expires != '') ? date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime($this->expires))) : '';
-            $sStart  = ($this->startdate != '') ? date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime($this->startdate))) : $sNow;
+            $sStop   = ($this->expires != '') ? date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime($this->expires))) : null;
+            $sStart  = ($this->startdate != '') ? date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime($this->startdate))) : null;
 
             // Time comparaison
             $oNow   = new DateTime($sNow);
@@ -1176,8 +1176,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
             $sStart = convertToGlobalSettingFormat($sStart);
 
             // Icon generaton (for CGridView)
-            $sIconRunNoEx = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . gT('End: Never') . '"><i class="ri-play-fill text-secondary me-1"></i>' . gT('End: Never') . '</a>';
-            $sIconRunning = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . sprintf(gT('End: %s'), $sStop) . '"><i class="ri-play-fill text-secondary me-1"></i>' . sprintf(gT('End: %s'), $sStop) . '</a>';
+            $sIconRunNoEx = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . gT('End: Never') . '"><i class="ri-play-fill text-primary me-1"></i>' . gT('End: Never') . '</a>';
+            $sIconRunning = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . sprintf(gT('End: %s'), $sStop) . '"><i class="ri-play-fill text-primary me-1"></i>' . sprintf(gT('End: %s'), $sStop) . '</a>';
             $sIconExpired = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . sprintf(gT('Expired: %s'), $sStop) . '"><i class="ri-skip-forward-fill text-secondary me-1"></i>' . sprintf(gT('Expired: %s'), $sStop) . '</a>';
             $sIconFuture  = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . sprintf(gT('Start: %s'), $sStart) . '"><i class="ri-time-line text-secondary me-1"></i>' . sprintf(gT('Start: %s'), $sStart) . '</a>';
 

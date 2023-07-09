@@ -34,6 +34,29 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.1.5 (build 230626) to 6.1.6 (build 230703) July 3, 2023
+-Fixed issue CR-1206: Token field in responses table not actionable (#3230) (Tim Willig)
+-Fixed issue CR-1205: Request-URI Too Large on Responses page (#3235) (Tim Willig)
+-Fixed issue #18915: [security] Non-superadmin Admin user is able to edit groups not owned (#3248) (Tim Willig)
+-Fixed issue #18918: [security] Wwnership permissions update (#3251) (Patrick Teichmann)
+-Fixed issue #18917: [security] Stored XSS in the user group deletion confirmation popup (#3249) (Patrick Teichmann)
+-Fixed issue #18913: [security] Incorrect permissions for useraction (#3253) (Patrick Teichmann)
+-Fixed issue #18630: Survey list showing wrong icon for surveys. (#3232) (Gabriel Jenik)
+-Fixed issue #18356: [security] User with only user update allowed can set/remove any role to any user (#2625) (Gabriel Jenik)
+-Fixed issue CR-1234: Show more is inconsistent in Survey settings overview - Text elements card (tiborpacalat)
+-Fixed issue CR-1232: Survey settings overview - Vertical spacing between items is not equal (#3236) (tiborpacalat)
+#Updated translation: Thai by tomzt
+#Updated translation: Spanish (Spain) by ireneoh
+#Updated translation: Slovak by jelen1
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Greek by dfragkos
+#Updated translation: German by c_schmitz, eddylackmann
+#Updated translation: German (Informal) by c_schmitz, richterd
+#Updated translation: French (France) by AlainR, arnaud21, brunofr9316, c_schmitz, DenisChenu
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1, slansky, VBraun
+
+
 Changes from 6.1.4 (build 230620) to 6.1.5 (build 230626) June 26, 2023
 -Fixed issue: SQL error on import if quota member code is too long (Carsten Schmitz)
 -Fixed issue: Disable system information in demo mode (Carsten Schmitz)

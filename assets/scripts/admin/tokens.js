@@ -113,7 +113,6 @@ function submitEditToken(){
     var $datas      = $form.serialize();
     var $actionUrl  = $form.attr('action');
     var $modal      = $('#editTokenModal');
-    const modal = new bootstrap.Modal(document.getElementById('editTokenModal'));
     var $gridId     = '';
 
     if (!$form[0].reportValidity()) {
@@ -305,7 +304,11 @@ $(document).on('ready pjax:scriptcomplete', function(){
         })
     });
 
-    $(document).off('submit.edittoken', '#edittoken').on('submit.edittoken', '#edittoken', function(event, params){
+    $(document).off('click.edittoken', '.edit-token').on('click.edittoken', '.edit-token', function (event) {
+        startEditToken(event, $(this));
+    });
+
+    $(document).off('submit.edittoken', '#edittoken').on('submit.edittoken', '#edittoken', function (event, params) {
         var eventParams = params || {};
         // When saving from the Edit Participant modal, handle the event in submitEditToken().
         if($('#editTokenModal').length > 0 ){
@@ -565,8 +568,11 @@ function centerInfoDialog() {
     infoDialog.css({ 'left': Math.round((dialogparent.width() - infoDialog.width()) / 2)+'px' });
 }
 
-function onUpdateTokenGrid(){
+function onUpdateTokenGrid() {
     reinstallParticipantsFilterDatePicker();
+    ('.edit-token').off('click.edittoken').on('click.edittoken', function () {
+        startEditToken(event, $(this));
+    });
 }
 
 /**
