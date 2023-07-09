@@ -20,7 +20,7 @@
                        role="button"
                         <?php if (isset($dropdownItem['linkAttributes']) && is_array($dropdownItem['linkAttributes'])) : ?>
                             <?php foreach ($dropdownItem['linkAttributes'] as $attribute => $value) : ?>
-                                <?= $attribute . '=' . $value ?>
+                                <?= "$attribute='$value'" ?>
                             <?php endforeach; ?>
                         <?php endif; ?>>
                         <?php if (isset($dropdownItem['iconClass'])) : ?>

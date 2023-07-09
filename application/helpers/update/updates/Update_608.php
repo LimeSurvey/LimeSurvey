@@ -9,6 +9,7 @@ class Update_608 extends DatabaseUpdateBase
      */
     public function up()
     {
+
         $this->db->createCommand()->update(
             '{{surveymenu_entries}}',
             [

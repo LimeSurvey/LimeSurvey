@@ -80,7 +80,12 @@ class CLSGridView extends TbGridView
         }
     }
 
-    protected function rowLink()
+    /**
+     * Adds the data-rowlink attribute to $this->rowHtmlOptionsExpression to be used by the rowLink.js
+     * The JS adds a link to every td element of the row
+     * @return void
+     */
+    protected function rowLink(): void
     {
         if (!empty($this->rowLink) && empty($this->rowHtmlOptionsExpression)) {
             $this->rowHtmlOptionsExpression = function ($row, $data, $grid) {
@@ -127,6 +132,14 @@ class CLSGridView extends TbGridView
             'updateSelector' => $this->updateSelector,
             'filterSelector' => $this->filterSelector
         );
+        if ($this->ajaxType !== null) {
+            $options['ajaxType'] = strtoupper($this->ajaxType);
+            $request = Yii::app()->getRequest();
+            if ($options['ajaxType'] == 'POST' && $request->enableCsrfValidation) {
+                $options['csrfTokenName'] = $request->csrfTokenName;
+                $options['csrfToken'] = $request->getCsrfToken();
+            }
+        }
 
         $options = CJavaScript::encode($options);
 
