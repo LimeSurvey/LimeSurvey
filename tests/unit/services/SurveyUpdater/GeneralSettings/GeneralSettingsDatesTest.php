@@ -4,6 +4,9 @@ namespace ls\tests\unit\services\SurveyUpdater\GeneralSettings;
 
 use ls\tests\TestBaseClass;
 
+/**
+ * @group services
+ */
 class GeneralSettingsDatesTest extends TestBaseClass
 {
     public function testUpdateStartDate()
