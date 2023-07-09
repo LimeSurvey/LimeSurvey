@@ -128,10 +128,10 @@ class QuestionEditorQuestion
      */
     private function storeNewQuestionData($data = null, $subQuestion = false)
     {
-        $surveyId = $data['sid'];
+        $surveyId = $data['sid'] ?? 0;
         $survey = $this->modelSurvey
             ->findByPk($surveyId);
-        $questionGroupId = (int) $data['gid'];
+        $questionGroupId = (int) $data['gid'] ?? 0;
         $type = $this->proxySettingsUser->getUserSettingValue(
             'preselectquestiontype',
             null,

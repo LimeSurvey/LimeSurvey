@@ -37,8 +37,8 @@ class QuestionMockSetFactory
             ? $init->modelSurvey
             : $this->getMockModelSurvey();
 
-        $mockSet->modelCondition = ($init && isset($init->modelSurvey))
-            ? $init->modelSurvey
+        $mockSet->modelCondition = ($init && isset($init->modelCondition))
+            ? $init->modelCondition
             : $this->getMockModelCondition();
 
         $mockSet->questionEditorL10n = ($init && isset($init->questionEditorL10n))

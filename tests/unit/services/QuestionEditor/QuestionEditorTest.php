@@ -15,6 +15,9 @@ use LimeSurvey\Models\Services\Exception\{
  */
 class QuestionEditorTest extends TestBaseClass
 {
+    /**
+     * @testdox save() throws PermissionDeniedException
+     */
     public function testThrowsExceptionPermissionDenied()
     {
         $this->expectException(
