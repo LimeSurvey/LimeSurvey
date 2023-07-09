@@ -59,7 +59,7 @@ class QuestionEditorMockSetFactory
 
         $mockSet->modelPermission = ($init && isset($init->modelPermission))
             ? $init->modelPermission
-            : $this->getMockModelModelPermission();
+            : $this->getMockModelPermission();
 
         $mockSet->proxyExpressionManager = ($init && isset($init->proxyExpressionManager))
             ? $init->proxyExpressionManager
@@ -107,7 +107,7 @@ class QuestionEditorMockSetFactory
             ->makePartial();
     }
 
-    private function getMockModelModelPermission(): Permission
+    private function getMockModelPermission(): Permission
     {
         return Mockery::mock(Permission::class)
             ->makePartial();

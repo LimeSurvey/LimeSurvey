@@ -12,11 +12,12 @@ use Mockery;
 use Permission;
 
 use LimeSurvey\Models\Services\Exception\{
-    PersistErrorException,
-    NotFoundException,
     PermissionDeniedException
 };
 
+/**
+ * @group services
+ */
 class QuestionEditorExceptionsTest extends TestBaseClass
 {
     /**
