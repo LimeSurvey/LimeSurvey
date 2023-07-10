@@ -39,17 +39,14 @@ class QuestionEditorQuestionTest extends TestBaseClass
         $question->shouldReceive('save')
             ->andReturn(false);
 
-        DI::getContainer()->set(Question::class, function () use ($question) {
-            return $question;
-        });
-
-        $modelQuestion = Mockery::mock(Question::class)
-            ->makePartial();
-        $modelQuestion->shouldReceive('findByPk')
-            ->andReturn($question);
+        DI::getContainer()->set(
+            Question::class,
+            function () use ($question) {
+                return $question;
+            }
+        );
 
         $mockSet = (new QuestionMockSetFactory)->make();
-
         $questionEditor = (new QuestionFactory)->make($mockSet);
 
         $questionEditor->save([
