@@ -7,6 +7,8 @@ use Survey;
 use Condition;
 use LSYii_Application;
 
+use LimeSurvey\DI;
+
 use LimeSurvey\Models\Services\QuestionEditor\{
     QuestionEditorL10n
 };
@@ -94,17 +96,17 @@ class QuestionEditorQuestion
         $data['question']['sid']  = $data['question']['sid'] ?? ($input['sid'] ?? null);
         $data['question']['qid']  = $data['question']['qid'] ?? null;
 
-        $question = $this->modelQuestion
-            ->findByPk((int) $data['question']['qid']);
-
+        // Store changes to the actual question data,
+        // by either creating it, or updating an existing one
         if (empty($data['question']['qid'])) {
             $data['question']['qid'] = null;
             $question = $this->storeNewQuestionData(
                 $data['question']
             );
         } else {
-            // Store changes to the actual question data,
-            // by either storing it, or updating an old one
+            $question = $this->modelQuestion
+                ->findByPk((int) $data['question']['qid']);
+
             $question = $this->updateQuestionData(
                 $question,
                 $data['question']
@@ -128,10 +130,11 @@ class QuestionEditorQuestion
      */
     private function storeNewQuestionData($data = null, $subQuestion = false)
     {
+        $data = $data ?? [];
         $surveyId = $data['sid'] ?? 0;
         $survey = $this->modelSurvey
             ->findByPk($surveyId);
-        $questionGroupId = (int) $data['gid'] ?? 0;
+        $questionGroupId = $data['gid'] ?? 0;
         $type = $this->proxySettingsUser->getUserSettingValue(
             'preselectquestiontype',
             null,
@@ -178,7 +181,11 @@ class QuestionEditorQuestion
                 ->getMaxQuestionOrder($questionGroupId);
         }
 
-        $question = new Question();
+        // We use the container to create a model instance
+        // allowing us to mock the model instance via
+        // container configuration in unit tests
+        $question = DI::getContainer()
+            ->make(Question::class);
         $question->setAttributes(
             $data,
             false
