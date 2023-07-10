@@ -3536,7 +3536,7 @@ class remotecontrol_handle
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID ID of the Survey
      * @param string $sDocumentType pdf, csv, xls, doc, json
-     * @param string $sToken The token for which responses needed
+     * @param array|string $aTokens The tokens (or single token) for which responses needed
      * @param string $sLanguageCode The language to be used
      * @param string $sCompletionStatus Optional 'complete','incomplete' or 'all' - defaults to 'all'
      * @param string $sHeadingType 'code','full' or 'abbreviated' Optional defaults to 'code'
@@ -3545,11 +3545,10 @@ class remotecontrol_handle
      * @return array|string On success: Requested file as base 64-encoded string. On failure array with error information
      *
      */
-    public function export_responses_by_token($sSessionKey, $iSurveyID, $sDocumentType, $sToken, $sLanguageCode = null, $sCompletionStatus = 'all', $sHeadingType = 'code', $sResponseType = 'short', $aFields = null)
+    public function export_responses_by_token($sSessionKey, $iSurveyID, $sDocumentType, $aTokens, $sLanguageCode = null, $sCompletionStatus = 'all', $sHeadingType = 'code', $sResponseType = 'short', $aFields = null)
     {
         $iSurveyID = (int) $iSurveyID;
         $survey = Survey::model()->findByPk($iSurveyID);
-
         if (!$this->_checkSessionKey($sSessionKey)) {
             return array('status' => self::INVALID_SESSION_KEY);
         }
@@ -3563,9 +3562,21 @@ class remotecontrol_handle
         if (!empty($sLanguageCode) && !in_array($sLanguageCode, $survey->getAllLanguages())) {
             return array('status' => 'Language code not found for this survey.');
         }
-
-        if (!SurveyDynamic::model($iSurveyID)->findByAttributes(array('token' => $sToken))) {
-            return array('status' => 'No Response found for Token');
+        if (is_array($aTokens)) {
+            if (count($aTokens) == 0) {
+                return array('status' => 'No Data, empty tokens array parameter');
+            } else {
+                $aTokensQuoted = Array();
+                foreach ($aTokens as $token) {
+                    array_push($aTokensQuoted, App()->db->quoteValue("$token"));
+                }
+                $tokenFilter = " IN (" . implode(",", $aTokensQuoted) . ")";
+            }
+        } else {
+            if (!SurveyDynamic::model($iSurveyID)->findByAttributes(array('token' => $sToken))) {
+                return array('status' => 'No Response found for Token');
+            }
+            $tokenFilter = "=" . App()->db->quoteValue("$aTokens");
         }
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export')) {
             return array('status' => 'No permission');
@@ -3576,22 +3587,17 @@ class remotecontrol_handle
         if (is_null($aFields)) {
             $aFields = array_keys(createFieldMap($survey, 'full', true, false, $sLanguageCode));
         }
-
         $oFormattingOptions = new FormattingOptions();
         $oFormattingOptions->responseMinRecord = 1;
         $oFormattingOptions->responseMaxRecord = $maxId;
-
         $oFormattingOptions->selectedColumns = $aFields;
         $oFormattingOptions->responseCompletionState = $sCompletionStatus;
         $oFormattingOptions->headingFormat = $sHeadingType;
         $oFormattingOptions->answerFormat = $sResponseType;
         $oFormattingOptions->output = 'file';
-
         $oExport = new ExportSurveyResultsService();
-
         $sTableName = Yii::app()->db->tablePrefix . 'survey_' . $iSurveyID;
-
-        $sTempFile = $oExport->exportResponses($iSurveyID, $sLanguageCode, $sDocumentType, $oFormattingOptions, "{$sTableName}.token=" . App()->db->quoteValue("$sToken"));
+        $sTempFile = $oExport->exportResponses($iSurveyID, $sLanguageCode, $sDocumentType, $oFormattingOptions, "{$sTableName}.token" . $tokenFilter);
         return new BigFile($sTempFile, true, 'base64');
     }
 
