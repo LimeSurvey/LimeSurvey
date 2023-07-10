@@ -242,6 +242,10 @@ class UserRoleController extends LSBaseController
      */
     public function actionRunExport($ptid)
     {
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+            Yii::app()->session['flashmessage'] = gT('You have no access to the role management!');
+            $this->redirect(['/admin']);
+        }
         $oModel = $this->loadModel($ptid);
         $oXML = $oModel->compileExportXML();
         $filename = preg_replace("/[^a-zA-Z0-9-_]*/", '', (string) $oModel->name);
