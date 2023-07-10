@@ -29,7 +29,7 @@ class PermissionTest extends TestBaseClass
         );
 
         $permissions = array(
-            'users' => array(
+            'surveys' => array(
                 'read' => false
             )
         );
