@@ -110,7 +110,7 @@ class Plugin extends LSActiveRecord
         } else {
             throw new \Exception(
                 sprintf(
-                    'Missing configuration file for plugin %s, looked in "%s" in the "%s" type plugins folder.',
+                    'Missing configuration file for plugin %s, looked in "%s", inside the folder related to "%s" plugin type.',
                     $this->name,
                     $this->name . DIRECTORY_SEPARATOR . 'config.xml',
                     $this->plugin_type
