@@ -822,7 +822,7 @@ class TokenDynamic extends LSActiveRecord
                 'data-toggle' => "tooltip",
                 'title' => gT("Preview the survey with this participant")
             ),
-            'visible' => $baseView . ' && !$data->survey->isActive && !empty($data->token) && ( $data->completed == "N" || empty($data->completed) || $data->survey->alloweditaftercompletion == "Y")'
+            'visible' => $baseView . ' && !$data->survey->isActive && !empty($data->token) && ( $data->completed == "N" || empty($data->completed) || $data->survey->oOptions->alloweditaftercompletion == "Y")'
         );
         $gridButtons['launchsurvey'] = array(
             'label' => '<span class="sr-only">' . gT("Launch the survey with this participant") . '</span><span class="fa fa-play" aria-hidden="true"></span>',
@@ -834,7 +834,7 @@ class TokenDynamic extends LSActiveRecord
                 'data-toggle' => "tooltip",
                 'title' => gT("Launch the survey with this participant")
             ),
-            'visible' => $baseView . ' && $data->survey->isActive && !empty($data->token) && ( $data->completed == "N" || empty($data->completed) || $data->survey->alloweditaftercompletion == "Y")'
+            'visible' => $baseView . ' && $data->survey->isActive && !empty($data->token) && ( $data->completed == "N" || empty($data->completed) || $data->survey->oOptions->alloweditaftercompletion == "Y")'
         );
         $gridButtons['previewsurveyspacer'] = array(
             'label' => '<span class="fa fa-eye  text-muted" aria-hidden="true"></span>',
@@ -845,7 +845,7 @@ class TokenDynamic extends LSActiveRecord
                 'disabled' => 'disabled',
                 'title' => ''
             ),
-            'visible' => $baseView . ' && (empty($data->token) || !( $data->completed == "N" || empty($data->completed) || $data->survey->alloweditaftercompletion == "Y"))',
+            'visible' => $baseView . ' && (empty($data->token) || !( $data->completed == "N" || empty($data->completed) || $data->survey->oOptions->alloweditaftercompletion == "Y"))',
             'click' => 'function(event){ window.LS.gridButton.noGridAction(event,$(this)); }',
         );
         /* mail button */
@@ -860,7 +860,7 @@ class TokenDynamic extends LSActiveRecord
                 'data-toggle' => "tooltip",
                 'title' => gT("Send email invitation")
             ),
-            'visible' => $baseView . ' && !empty($data->token) && ($data->sent== "N" || empty($data->sent)) && $data->emailstatus == "OK" && $data->email && $data->completed == "N" && ($data->usesleft > 0 || $data->survey->alloweditaftercompletion == "Y")',
+            'visible' => $baseView . ' && !empty($data->token) && ($data->sent== "N" || empty($data->sent)) && $data->emailstatus == "OK" && $data->email && $data->completed == "N" && ($data->usesleft > 0 || $data->survey->oOptions->alloweditaftercompletion == "Y")',
         );
         /* mailing remind button */
         $gridButtons['remind'] = array(
@@ -872,7 +872,7 @@ class TokenDynamic extends LSActiveRecord
                 'data-toggle' => "tooltip",
                 'title' => gT("Send email reminder")
             ),
-            'visible' => $baseView . ' && !empty($data->token) && !($data->sent== "N" || empty($data->sent)) && $data->emailstatus == "OK" && $data->email && $data->completed == "N" && ($data->usesleft > 0 || $data->survey->alloweditaftercompletion == "Y")',
+            'visible' => $baseView . ' && !empty($data->token) && !($data->sent== "N" || empty($data->sent)) && $data->emailstatus == "OK" && $data->email && $data->completed == "N" && ($data->usesleft > 0 || $data->survey->oOptions->alloweditaftercompletion == "Y")',
         );
         $gridButtons['mailspacer'] = array(
             'label' => '<span class="fa fa-envelope-o text-muted" aria-hidden="true"></span>',
@@ -883,7 +883,7 @@ class TokenDynamic extends LSActiveRecord
                 'disabled' => 'disabled',
                 'title' => ''
             ),
-            'visible' => $baseView . ' && (empty($data->token) || ($data->emailstatus != "OK" || empty($data->email) || $data->completed != "N" || ($data->usesleft <= 0 && $data->survey->alloweditaftercompletion != "Y")))',
+            'visible' => $baseView . ' && (empty($data->token) || ($data->emailstatus != "OK" || empty($data->email) || $data->completed != "N" || ($data->usesleft <= 0 && $data->survey->oOptions->alloweditaftercompletion != "Y")))',
         );
         /* edit button button */
         $gridButtons['edit'] = array(
