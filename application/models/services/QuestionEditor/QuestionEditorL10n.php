@@ -4,6 +4,8 @@ namespace LimeSurvey\Models\Services\QuestionEditor;
 
 use QuestionL10n;
 
+use LimeSurvey\DI;
+
 use LimeSurvey\Models\Services\Exception\{
     PersistErrorException,
     NotFoundException
@@ -55,7 +57,8 @@ class QuestionEditorL10n
                 ]);
             if (empty($l10n)) {
                 if ($createIfNotExists) {
-                    $l10n = new QuestionL10n();
+                    $l10n = DI::getContainer()
+                        ->make(QuestionL10n::class);
                     $l10n->qid = $questionId;
                     $l10n->language = $language;
                 } else {

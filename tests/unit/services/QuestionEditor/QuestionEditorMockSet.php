@@ -4,6 +4,7 @@ namespace ls\tests\unit\services\QuestionEditor;
 
 use Permission;
 use Question;
+use QuestionL10n;
 use CDbConnection;
 
 use LimeSurvey\Models\Services\QuestionEditor\{
@@ -24,6 +25,7 @@ class QuestionEditorMockSet
     public QuestionEditorAnswers $questionEditorAnswers;
     public QuestionEditorSubQuestions $questionEditorSubQuestions;
     public Question $modelQuestion;
+    public QuestionL10n $modelQuestionL10n;
     public Permission $modelPermission;
     public ProxyExpressionManager $proxyExpressionManager;
     public CDbConnection $yiiDb;

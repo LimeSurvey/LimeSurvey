@@ -3,6 +3,7 @@
 namespace ls\tests\unit\services\QuestionEditor\Question;
 
 use Question;
+use QuestionL10n;
 use Survey;
 use Condition;
 use LSYii_Application;
@@ -41,6 +42,10 @@ class QuestionMockSetFactory
             ? $init->modelCondition
             : $this->getMockModelCondition();
 
+        $mockSet->modelQuestionL10n = ($init && isset($init->modelQuestionL10n))
+            ? $init->modelQuestionL10n
+            : $this->getMockQuestionL10n();
+
         $mockSet->questionEditorL10n = ($init && isset($init->questionEditorL10n))
             ? $init->questionEditorL10n
             : $this->getMockQuestionEditorL10n();
@@ -58,6 +63,12 @@ class QuestionMockSetFactory
             : $this->getMockYiiApp();
 
         return $mockSet;
+    }
+
+    private function getMockQuestionL10n(): QuestionL10n
+    {
+        return Mockery::mock(QuestionL10n::class)
+            ->makePartial();
     }
 
     private function getMockQuestionEditorL10n(): QuestionEditorL10n

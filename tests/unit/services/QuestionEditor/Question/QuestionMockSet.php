@@ -3,6 +3,7 @@
 namespace ls\tests\unit\services\QuestionEditor\Question;
 
 use Question;
+use QuestionL10n;
 use Survey;
 use Condition;
 use LSYii_Application;
@@ -17,6 +18,7 @@ use LimeSurvey\Models\Services\Proxy\{
 class QuestionMockSet
 {
     public Question $modelQuestion;
+    public QuestionL10n $modelQuestionL10n;
     public Survey $modelSurvey;
     public Condition $modelCondition;
     public QuestionEditorL10n $questionEditorL10n;

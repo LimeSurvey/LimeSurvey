@@ -202,14 +202,7 @@ class QuestionEditor
             $this->proxyExpressionManager->setDirtyFlag();
         } catch (\Exception $e) {
             $transaction->rollback();
-
-            throw new PersistErrorException(
-                sprintf(
-                    'Failed saving question for survey #%s "%s"',
-                    $surveyId,
-                    $e->getMessage()
-                )
-            );
+            throw $e;
         }
 
         return $question;
