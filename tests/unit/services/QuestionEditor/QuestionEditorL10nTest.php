@@ -18,7 +18,8 @@ use ls\tests\unit\services\QuestionEditor\Question\{
 };
 
 use LimeSurvey\Models\Services\Exception\{
-    PersistErrorException
+    PersistErrorException,
+    NotFoundException
 };
 
 /**
@@ -88,5 +89,31 @@ class QuestionEditorL10nTest extends TestBaseClass
         $questionEditorL10n->save(1, [
             'en' => []
         ]);
+    }
+
+
+    /**
+     * @testdox save() throws NotFoundException
+     */
+    public function testThrowsExceptionNotFound()
+    {
+        $this->expectException(
+            NotFoundException::class
+        );
+
+        $modelQuestionL10n = Mockery::mock(QuestionL10n::class)
+            ->makePartial();
+        $modelQuestionL10n->shouldReceive('findByAttributes')
+            ->andReturn(false);
+
+        $questionEditorL10n = new QuestionEditorL10n(
+            $modelQuestionL10n
+        );
+
+        $questionEditorL10n->save(
+            1,
+            ['en' => []],
+            false
+        );
     }
 }
