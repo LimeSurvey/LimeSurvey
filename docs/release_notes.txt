@@ -34,6 +34,25 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.6.29 (build 230704) to 5.6.30 (build 230711) July 10, 2023
+-Fixed issue: Auto-translate was broken (Olle Haerstedt)
+-Fixed issue: #18823 STATA Export fails with certain question types. (#3225) (Gabriel Jenik)
+-Fixed issue #18923: [security] Admin notification permissions updated (Patrick Teichmann)
+-Fixed issue #18669: XSS simple admin via Google key (#3222) (Gabriel Jenik)
+-Fixed issue #18356: [security] User with only user update allowed can set/remove any role to any user (#3268) (Gabriel Jenik)
+#Updated translation: Valencian by vbraque
+#Updated translation: Thai by tomzt
+#Updated translation: Slovak by jelen1
+#Updated translation: Italian by lfanfoni, seccanj
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Hebrew by idan1798
+#Updated translation: German by c_schmitz, quasar_
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 5.6.28 (build 230627) to 5.6.29 (build 230704) July 3, 2023
 -Fixed issue 18915: [security] Non-superadmin Admin user is able to edit groups not owned (#3258) (Tim Willig)
 -Fixed issue #18918: [security] Ownership permission update (Patrick Teichmann)
