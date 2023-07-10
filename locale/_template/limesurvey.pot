@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2023-07-03 08:11:25+00:00\n"
+"POT-Creation-Date: 2023-07-10 09:50:13+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1289,7 +1289,7 @@ msgid "Access denied! You don't have permission to copy a question"
 msgstr ""
 
 #: application/controllers/QuestionAdministrationController.php:1625
-#: application/libraries/PluginManager/LimesurveyApi.php:647
+#: application/libraries/PluginManager/LimesurveyApi.php:651
 msgid "Question does not exist."
 msgstr ""
 
@@ -3529,7 +3529,7 @@ msgid "We are sorry but there was a system error and your file was not saved. An
 msgstr ""
 
 #: application/controllers/UploaderController.php:288
-#: application/views/admin/super/admin_notifications.php:86
+#: application/views/admin/super/admin_notifications.php:93
 msgid "An unknown error occurred"
 msgstr ""
 
@@ -5335,13 +5335,15 @@ msgid "Label set successfully updated"
 msgstr ""
 
 #: application/controllers/admin/NotificationController.php:35
-#: application/controllers/admin/NotificationController.php:56
+msgid "Invalid notification id"
+msgstr ""
+
+#: application/controllers/admin/NotificationController.php:102
 msgid "Notification %s not found"
 msgstr ""
 
-#: application/controllers/admin/NotificationController.php:52
-#: application/controllers/admin/NotificationController.php:60
-msgid "Invalid notification id"
+#: application/controllers/admin/NotificationController.php:105
+msgid "You do not have permission to access this page/function."
 msgstr ""
 
 #: application/controllers/admin/ParticipantsAction.php:253
@@ -9917,7 +9919,7 @@ msgid "Start HTML editor in a popup window"
 msgstr ""
 
 #: application/helpers/admin/htmleditor_helper.php:280
-#: tmp/runtime/twig_cache/08/08bbe91bfcdb766417118917bc27436256c9860a1d843b94cabf785a4c0067a4.php:123
+#: tmp/runtime/twig_cache/1c/1c2c54d940bda01992d0f626affc62c06ea8f2053bc3bf0cef34aa8feede3263.php:123
 msgid "Open editor"
 msgstr ""
 
@@ -10143,15 +10145,15 @@ msgstr ""
 msgid "Inserting the label set failed."
 msgstr ""
 
-#: application/helpers/admin/label_helper.php:179
+#: application/helpers/admin/label_helper.php:180
 msgid "Not all labels were updated successfully."
 msgstr ""
 
-#: application/helpers/admin/label_helper.php:181
+#: application/helpers/admin/label_helper.php:182
 msgid "Labels successfully updated"
 msgstr ""
 
-#: application/helpers/admin/label_helper.php:184
+#: application/helpers/admin/label_helper.php:185
 msgid "Can't update labels because you are using duplicated codes"
 msgstr ""
 
@@ -14366,6 +14368,10 @@ msgstr ""
 #: application/models/LSActiveRecord.php:504
 #: application/views/responses/partial/responseListTable.php:202
 msgid "This field is encrypted and can only be searched by exact match. Please enter the exact value you are looking for."
+msgstr ""
+
+#: application/models/Label.php:73
+msgid "Label codes may only contain alphanumeric characters."
 msgstr ""
 
 #: application/models/LabelSet.php:139
@@ -19506,15 +19512,15 @@ msgstr ""
 msgid "Create tutorial"
 msgstr ""
 
-#: application/views/admin/super/admin_notifications.php:75
+#: application/views/admin/super/admin_notifications.php:82
 msgid "Delete all notifications"
 msgstr ""
 
-#: application/views/admin/super/admin_notifications.php:84
+#: application/views/admin/super/admin_notifications.php:91
 msgid "Error : %s"
 msgstr ""
 
-#: application/views/admin/super/admin_notifications.php:85
+#: application/views/admin/super/admin_notifications.php:92
 msgid "unknown"
 msgstr ""
 
@@ -25064,20 +25070,20 @@ msgstr ""
 msgid "There is 1 question in this survey."
 msgstr ""
 
-#: tmp/runtime/twig_cache/08/08bbe91bfcdb766417118917bc27436256c9860a1d843b94cabf785a4c0067a4.php:132
-msgid "Add label"
-msgstr ""
-
-#: tmp/runtime/twig_cache/08/08bbe91bfcdb766417118917bc27436256c9860a1d843b94cabf785a4c0067a4.php:138
-msgid "Delete label"
-msgstr ""
-
 #: tmp/runtime/twig_cache/0c/0c7eab8595e09c2d60178321aef9aed091c1ce81936e5bce0ff63406120f018c.php:67
 msgid "This action need to be confirmed."
 msgstr ""
 
 #: tmp/runtime/twig_cache/14/146c682c16b9c1d4f227331706d606d99a9577508d0c79d6441f50a575212780.php:40
 msgid "Group 1: The first lot of questions"
+msgstr ""
+
+#: tmp/runtime/twig_cache/1c/1c2c54d940bda01992d0f626affc62c06ea8f2053bc3bf0cef34aa8feede3263.php:132
+msgid "Add label"
+msgstr ""
+
+#: tmp/runtime/twig_cache/1c/1c2c54d940bda01992d0f626affc62c06ea8f2053bc3bf0cef34aa8feede3263.php:138
+msgid "Delete label"
 msgstr ""
 
 #: tmp/runtime/twig_cache/1f/1f5a24fe0904fc595c96958e89df559dd1f49e37316791c74fe6900e43b24a1c.php:43
