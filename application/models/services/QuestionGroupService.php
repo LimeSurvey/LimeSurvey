@@ -159,15 +159,12 @@ class QuestionGroupService
     /**
      * Returns question group data for dataprovider of gridview in "Overview question and groups".
      * pageSize and search input parameters are taken into account.
-     * @param int $surveyId
-     * @param Survey | null $survey
+     * @param Survey $survey
      * @return QuestionGroup
      * @throws Exception
      */
-    public function getGroupData($surveyId, $survey = null)
+    public function getGroupData(Survey $survey)
     {
-        $survey = $survey === null ? $this->getSurvey($surveyId) : $survey;
-
         $questionGroup = new QuestionGroup('search');
 
         $questionGroupArray = $this->modelRequest->getParam('QuestionGroup', []);

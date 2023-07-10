@@ -336,7 +336,7 @@ class QuestionAdministrationController extends LSBaseController
         $questionGroupService = $diContainer->get(
             LimeSurvey\Models\Services\QuestionGroupService::class
         );
-        $aData['groupModel'] = $questionGroupService->getGroupData($iSurveyID, $aData['oSurvey']);
+        $aData['groupModel'] = $questionGroupService->getGroupData($aData['oSurvey']);
         $aData['aGroupsAndQuestions'] = $this->getReorderData($oSurvey);
         $aData['surveyActivated'] = $oSurvey->getIsActive();
         $this->aData = $aData;
