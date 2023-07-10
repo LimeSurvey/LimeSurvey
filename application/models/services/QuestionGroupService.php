@@ -115,7 +115,7 @@ class QuestionGroupService
      *
      * @param int $questionGroupId the question group id
      * @param int $surveyId the survey id
-     * @return int number of deleted rows
+     * @return int|null number of deleted rows
      * @throws CHttpException
      */
     public function deleteGroup($questionGroupId, $surveyId)
