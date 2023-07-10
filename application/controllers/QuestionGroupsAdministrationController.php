@@ -1,5 +1,7 @@
 <?php
 
+use LimeSurvey\Models\Services\QuestionGroupService;
+
 class QuestionGroupsAdministrationController extends LSBaseController
 {
     /**
@@ -54,8 +56,9 @@ class QuestionGroupsAdministrationController extends LSBaseController
         }
 
         if (isset($this->aData['surveyid'])) {
-            $this->aData['oSurvey'] = Survey::model()->findByPk($this->aData['surveyid']);
-
+            if (!array_key_exists('oSurvey', $this->aData)) {
+                $this->aData['oSurvey'] = Survey::model()->findByPk($this->aData['surveyid']);
+            }
             // Needed to evaluate EM expressions in question summary
             // See bug #11845
             LimeExpressionManager::SetSurveyId($this->aData['surveyid']);
@@ -88,7 +91,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
         }
         if ($mode != 'overview' && SettingsUser::getUserSettingValue('noViewMode', App()->user->id)) {
             $this->redirect(
-                Yii::app()->createUrl(
+                App()->createUrl(
                     'questionGroupsAdministration/edit/',
                     [
                         'surveyid' => $surveyid,
@@ -100,47 +103,31 @@ class QuestionGroupsAdministrationController extends LSBaseController
         }
 
         if (!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'read')) {
-                App()->user->setFlash('error', gT("Access denied"));
-                $this->redirect(App()->request->urlReferrer);
+            App()->user->setFlash('error', gT("Access denied"));
+            $this->redirect(App()->request->urlReferrer);
         }
-
+        $aData = $this->setSurveyIdAndObject([], $surveyid);
+        $aData['gid'] = $gid;
+        $aData['condarray'] = getGroupDepsForConditions($surveyid, "all", $gid, "by-targgid");
         //check if group with the gid exists
-        $questionGroup = QuestionGroup::model()->findByPk($gid);
-        if ($questionGroup === null) { //group does not exists ...
+        try {
+            $questionGroupService = $this->getQuestionGroupServiceClass();
+            $aData['oQuestionGroup'] = $oQuestionGroup = $questionGroupService->getQuestionGroupObject($surveyid, $gid);
+        } catch (Exception $e) {
             App()->user->setFlash('error', gT("Question group does not exists"));
             $this->redirect(App()->request->urlReferrer);
         }
-
-        $aData = array();
-        $aData['surveyid'] = $iSurveyID = $surveyid;
-        $survey = Survey::model()->findByPk($iSurveyID);
-        $aData['oSurvey'] = $survey;
-        $aData['gid'] = $gid;
-        $baselang = $survey->language;
-        if ($gid !== null) {
-            $condarray = getGroupDepsForConditions($surveyid, "all", $gid, "by-targgid");
-        }
-        $aData['condarray'] = $condarray;
-
-        $oQuestionGroup = $this->getQuestionGroupObject($iSurveyID, $gid);
-        $grow           = $oQuestionGroup->attributes;
-        $grow['group_name'] = $oQuestionGroup->questiongroupl10ns[$baselang]->group_name ?? '';
-        $grow['description'] = $oQuestionGroup->questiongroupl10ns[$baselang]->description ?? '';
-
-        $grow = array_map('flattenText', $grow);
-
-        $aData['oQuestionGroup'] = $oQuestionGroup;
-        $aData['grow'] = $grow;
-
-        $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title
-            . " (" . gT("ID") . ":" . $iSurveyID . ")";
-
-        $topbarData = TopbarConfiguration::getGroupTopbarData($iSurveyID);
-
-        $surveyTopbarData = TopbarConfiguration::getSurveyTopbarData($iSurveyID);
-        $topbarData = array_merge($topbarData, $surveyTopbarData);
-
-        $topbarData = array_merge($topbarData, $aData);
+        $grow = $oQuestionGroup->attributes;
+        $grow['group_name'] = $oQuestionGroup->questiongroupl10ns[$aData['oSurvey']->language]->group_name ?? '';
+        $grow['description'] = $oQuestionGroup->questiongroupl10ns[$aData['oSurvey']->language]->description ?? '';
+        $aData['grow'] = array_map('flattenText', $grow);
+        $aData['title_bar']['title'] = $aData['oSurvey']->currentLanguageSettings->surveyls_title
+            . " (" . gT("ID") . ":" . $surveyid . ")";
+        $topbarData = array_merge(
+            TopbarConfiguration::getGroupTopbarData($surveyid),
+            TopbarConfiguration::getSurveyTopbarData($surveyid),
+            $aData
+        );
         $aData['topbar']['middleButtons'] = $this->renderPartial(
             'partial/topbarBtns/groupTopbarLeft_view',
             $topbarData,
@@ -151,17 +138,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
             $topbarData,
             true
         );
-
-        ///////////
-        // sidemenu
-        $aData['sidemenu']['state'] = true;
-        $aData['sidemenu']['questiongroups'] = true;
-        $aData['sidemenu']['group_name'] = $oQuestionGroup->questiongroupl10ns[$baselang]->group_name ?? '';
-        $aData['sidemenu']['explorer']['state'] = true;
-        $aData['sidemenu']['explorer']['gid'] = $gid ?? false;
-        $aData['sidemenu']['explorer']['qid'] = false;
-        $aData['sidemenu']['landOnSideMenuTab'] = $landOnSideMenuTab;
-
+        $aData = $this->setSidemenuData($aData, $oQuestionGroup, $landOnSideMenuTab);
         $this->aData = $aData;
 
         $this->render('group_view', $this->aData);
@@ -178,75 +155,26 @@ class QuestionGroupsAdministrationController extends LSBaseController
      */
     public function actionEdit(int $surveyid, $gid, $landOnSideMenuTab = 'structure')
     {
-        //check permission for edit groups ...
         if (!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update')) {
-                App()->user->setFlash('error', gT("Access denied"));
-                $this->redirect(App()->request->urlReferrer);
+            App()->user->setFlash('error', gT("Access denied"));
+            $this->redirect(App()->request->urlReferrer);
         }
-
-        $oSurvey = Survey::model()->findByPk($surveyid);
-        $aData = array();
-
-        Yii::app()->session['FileManagerContext'] = "edit:group:{$surveyid}";
-
-        Yii::app()->loadHelper('admin/htmleditor');
-        Yii::app()->loadHelper('surveytranslator');
-
-        $sBaseLanguage = $oSurvey->language;
+        $aData = $this->setSurveyIdAndObject([], $surveyid);
+        App()->session['FileManagerContext'] = "edit:group:{$surveyid}";
+        App()->loadHelper('admin/htmleditor');
+        App()->loadHelper('surveytranslator');
 
         //todo: this action should not be used for new groups, use actionAdd instead
-        //DO NOT accept any other values for gid
-        if ($gid === null || $gid === '') {
-            //this means new group
-            $gid = null;
-        } else {
-            $gid = (int)($gid);
-        }
-        $oQuestionGroup = $this->getQuestionGroupObject($surveyid, $gid);
-        $aData['oQuestionGroup'] = $oQuestionGroup;
-
-        $aAdditionalLanguages = $oSurvey->additionalLanguages;
-        $aLanguages = array_merge(array($sBaseLanguage), $aAdditionalLanguages);
-
-        /**
-         *  TODO: check integrity of the group languages?
-         *
-         *  In LS3, group languages are checked here to make sure they match the survey languages:
-         *  If language exists in group but not in survey, remove from group.
-         *  If language exists in survey but not in group, create based on survey's base language.
-         *
-         *  Reference: https://github.com/LimeSurvey/LimeSurvey/blob/85cc864e2624b5c9c6daecce3c75af3c8701a237/application/controllers/admin/questiongroups.php#L349
-         *
-         *  It doesn't seem necessary here. And, if it's needed, it probably better in the Model.
-         *
-         */
-
-         // Load question group data for each language
-        foreach ($aLanguages as $sLanguage) {
-            if (isset($oQuestionGroup->questiongroupl10ns[$sLanguage])) {
-                $aGroupData = $oQuestionGroup->questiongroupl10ns[$sLanguage];
-                $aData['aGroupData'][$sLanguage] = $aGroupData->attributes;
-                $aTabTitles[$sLanguage] = getLanguageNameFromCode($sLanguage, false);
-                if ($sLanguage == $sBaseLanguage) {
-                    $aTabTitles[$sLanguage] .= ' (' . gT("Base language") . ')';
-                }
-            }
-        }
-
-        $aData['surveyid'] = $surveyid;
-        $aData['gid'] = $gid;
-        $aData['tabtitles'] = $aTabTitles;
+        $aData['gid'] =  $gid = ($gid === null || $gid === '') ? null : (int)$gid;
+        $questionGroupService = $this->getQuestionGroupServiceClass();
+        $aData['oQuestionGroup'] = $oQuestionGroup = $questionGroupService->getQuestionGroupObject($surveyid, $gid);
+        $aData = $this->setLanguageData($aData);
         $aData['action'] = $aData['display']['menu_bars']['gid_action'] = 'editgroup';
-        $aData['oSurvey'] = $oSurvey;
         if ($gid !== null) {
-            $condarray = getGroupDepsForConditions($surveyid, "all", $gid, "by-targgid");
+            $aData['condarray'] = getGroupDepsForConditions($surveyid, "all", $gid, "by-targgid");
         }
-        $aData['condarray'] = $condarray;
-
-        $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title
+        $aData['title_bar']['title'] = $aData['oSurvey']->currentLanguageSettings->surveyls_title
             . " (" . gT("ID") . ":" . $surveyid . ")";
-
-        // White Close Button
         $aData['showWhiteCloseButton'] = true;
         $aData['closeUrl'] = $this->createUrl(
             'questionGroupsAdministration/view',
@@ -258,7 +186,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
             ]
         );
 
-        $topbarData = TopbarConfiguration::getGroupTopbarData($oSurvey->sid);
+        $topbarData = TopbarConfiguration::getGroupTopbarData($aData['oSurvey']->sid);
         $topbarData = array_merge($topbarData, $aData);
         $aData['topbar']['middleButtons'] = $this->renderPartial(
             'partial/topbarBtns/editGroupTopbarLeft_view',
@@ -270,18 +198,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
             $topbarData,
             true
         );
-
-        ///////////
-        // sidemenu
-        $aData['sidemenu']['state'] = true;
-        $aData['sidemenu']['questiongroups'] = true;
-        $aData['sidemenu']['group_name'] = $oQuestionGroup->questiongroupl10ns[$sBaseLanguage]->group_name ?? '';
-        $aData['sidemenu']['explorer']['state'] = true;
-        $aData['sidemenu']['explorer']['gid'] = $gid ?? false;
-        $aData['sidemenu']['explorer']['qid'] = false;
-        $aData['sidemenu']['landOnSideMenuTab'] = $landOnSideMenuTab;
-
-
+        $aData = $this->setSideMenuData($aData, $oQuestionGroup, $landOnSideMenuTab);
         $this->aData = $aData;
 
         $this->render('editGroup_view', $this->aData);
@@ -297,33 +214,28 @@ class QuestionGroupsAdministrationController extends LSBaseController
      */
     public function actionAdd(int $surveyid, string $landOnSideMenuTab = 'structure')
     {
-        //check permission to create groups ...
         if (!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'create')) {
-                App()->user->setFlash('error', gT("Access denied"));
-                $this->redirect(App()->request->urlReferrer);
+            App()->user->setFlash('error', gT("Access denied"));
+            $this->redirect(App()->request->urlReferrer);
         }
 
-        $oSurvey = Survey::model()->findByPk($surveyid);
-        $aData = array();
+        $aData = $this->setSurveyIdAndObject([], $surveyid);
 
-        Yii::app()->session['FileManagerContext'] = "create:group:{$surveyid}";
+        App()->session['FileManagerContext'] = "create:group:{$surveyid}";
+        App()->loadHelper('admin/htmleditor');
+        App()->loadHelper('surveytranslator');
 
-        Yii::app()->loadHelper('admin/htmleditor');
-        Yii::app()->loadHelper('surveytranslator');
-
-        $sBaseLanguage = $oSurvey->language;
-        $aSurveyLanguages = $oSurvey->additionalLanguages;
-        $aSurveyLanguages[] = $sBaseLanguage;
+        $aSurveyLanguages = $aData['oSurvey']->additionalLanguages;
+        $aSurveyLanguages[] = $aData['oSurvey']->language;
         $aSurveyLanguages = array_reverse($aSurveyLanguages);
 
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'questiongroup.js');
 
         $aData['action'] = $aData['display']['menu_bars']['gid_action'] = 'addgroup';
-        $aData['surveyid'] = $surveyid;
         $aData['grplangs'] = $aSurveyLanguages;
-        $aData['baselang'] = $sBaseLanguage;
+        $aData['baselang'] = $aData['oSurvey']->language;
 
-        $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title
+        $aData['title_bar']['title'] = $aData['oSurvey']->currentLanguageSettings->surveyls_title
             . " (" . gT("ID") . ":" . $surveyid . ")";
 
         $aData['backUrl'] = $this->createUrl(
@@ -344,90 +256,12 @@ class QuestionGroupsAdministrationController extends LSBaseController
             $topbarData,
             true
         );
-
-        ///////////
-        // sidemenu
         $aData['sidemenu']['state'] = false;
         $aData['sidemenu']['landOnSideMenuTab'] = $landOnSideMenuTab;
-
 
         $this->aData = $aData;
 
         $this->render('addGroup_view', $this->aData);
-    }
-
-    /**
-     * Load list question groups view for a specified by $iSurveyID
-     *
-     * (this action comes from old surveyadmin controller ...)
-     *
-     * @param int $surveyid The survey ID
-     *
-     * @return void
-     *
-     * @access public
-     */
-    public function actionListquestiongroups($surveyid)
-    {
-        $iSurveyID = sanitize_int($surveyid);
-
-        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'read')) {
-            App()->user->setFlash('error', gT("Access denied"));
-            $this->redirect(App()->request->urlReferrer);
-        }
-
-        $survey = Survey::model()->findByPk($iSurveyID);
-
-        // Reinit LEMlang and LEMsid: ensure LEMlang are set to default lang, surveyid are set to this survey id
-        // Ensure Last GetLastPrettyPrintExpression get info from this sid and default lang
-        LimeExpressionManager::SetEMLanguage(Survey::model()->findByPk($iSurveyID)->language);
-        LimeExpressionManager::SetSurveyId($iSurveyID);
-        LimeExpressionManager::StartProcessingPage(false, true);
-
-        $aData = array();
-
-        $aData['surveyid']                                   = $iSurveyID;
-        $aData['sid'] = $iSurveyID; // important for renderfunctions ...
-        $aData['sidemenu']['questiongroups']                 = true;
-        $aData['sidemenu']['listquestiongroups']             = true;
-        $aData['title_bar']['title']                         =
-            $survey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyID . ")";
-        $aData['topbar']['middleButtons'] = $this->renderPartial(
-            'partial/topbarBtns/listquestiongroupsTopbarLeft_view',
-            [
-                'oSurvey' => $survey,
-                'hasSurveyContentCreatePermission' => Permission::model()->hasSurveyPermission(
-                    $iSurveyID,
-                    'surveycontent',
-                    'create'
-                ),
-            ],
-            true
-        );
-
-        $aData['subaction'] = gT("Question groups in this survey");
-
-        $baselang = $survey->language;
-        $model    = new QuestionGroup('search');
-
-        if (isset($_GET['QuestionGroup']['group_name'])) {
-            $model->group_name = $_GET['QuestionGroup']['group_name'];
-        }
-
-        if (isset($_GET['pageSize'])) {
-            Yii::app()->user->setState('pageSize', (int) $_GET['pageSize']);
-        }
-
-        $model['sid']      = $iSurveyID;
-        $model['language'] = $baselang;
-
-        $this->aData = $aData;
-        $this->render('listquestiongroups', [
-            'model' => $model,
-            'surveyid' => $iSurveyID,
-            'surveybar' => [],
-            'oSurvey'   => $survey,
-        ]);
     }
 
     /**
@@ -438,80 +272,29 @@ class QuestionGroupsAdministrationController extends LSBaseController
      */
     public function actionImport()
     {
-        $action = $_POST['action'];
-        $iSurveyID = $surveyid = $aData['surveyid'] = (int) $_POST['sid'];
-        $survey = Survey::model()->findByPk($iSurveyID);
+        $action = App()->request->getPost('action', '');
+        $aData = $this->setSurveyIdAndObject([], (int) App()->request->getPost('sid', null));
 
-        if (!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'import')) {
+        if (!Permission::model()->hasSurveyPermission($aData['surveyid'], 'surveycontent', 'import')) {
             App()->user->setFlash('error', gT("Access denied"));
-            $this->redirect(array('questionGroupsAdministration/listquestiongroups/surveyid/' . $surveyid));
+            $this->redirect(array('questionAdministration/listQuestions/surveyid/' . $aData['surveyid']));
         }
 
         if ($action == 'importgroup') {
-            $importgroup = "\n";
-            $importgroup .= "\n";
-
-            $sFullFilepath = App()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(20);
-            $aPathInfo = pathinfo((string) $_FILES['the_file']['name']);
-            $sExtension = $aPathInfo['extension'];
-
-            if ($_FILES['the_file']['error'] == 1 || $_FILES['the_file']['error'] == 2) {
-                $fatalerror = sprintf(
-                    gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."),
-                    getMaximumFileUploadSize() / 1024 / 1024
-                )
-                    . '<br>';
-            } elseif (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath)) {
-                $fatalerror = gT(
-                    "An error occurred uploading your file.
-                     This may be caused by incorrect permissions for the application /tmp folder."
-                );
-            }
-
-            // validate that we have a SID
-            if (!returnGlobal('sid')) { //todo: use Yii::getParam ...
-                $fatalerror .= gT("No SID (Survey) has been provided. Cannot import question.");
-            }
-
-            if (isset($fatalerror)) {
-                @unlink($sFullFilepath);
-                App()->user->setFlash('error', $fatalerror);
-                $this->redirect(array('questionGroupsAdministration/importview/surveyid/' . $surveyid));
-            }
-
-            App()->loadHelper('admin/import');
-
-            // IF WE GOT THIS FAR, THEN THE FILE HAS BEEN UPLOADED SUCCESFULLY
-            if (strtolower($sExtension) == 'lsg') {
-                $aImportResults = XMLImportGroup(
-                    $sFullFilepath,
-                    $iSurveyID,
-                    (App()->request->getPost('translinksfields') == '1')
-                );
-            } else {
-                App()->user->setFlash('error', gT("Unknown file extension"));
-                $this->redirect(array('questionGroupsAdministration/importview/surveyid/' . $surveyid));
-            }
-            LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
-            fixLanguageConsistency($iSurveyID);
+            $questionGroupService = $this->getQuestionGroupServiceClass();
+            $aImportResults = $questionGroupService->importQuestionGroup($aData['surveyid'], App()->getConfig('tempdir'));
 
             if (isset($aImportResults['fatalerror'])) {
-                unlink($sFullFilepath);
                 App()->user->setFlash('error', $aImportResults['fatalerror']);
-                $this->redirect(array('questionGroupsAdministration/importview/surveyid/' . $surveyid));
+                $this->redirect(array('questionGroupsAdministration/importview/surveyid/' . $aData['surveyid']));
             }
 
-            unlink($sFullFilepath);
-
-            $aData['display'] = $importgroup;
-            $aData['surveyid'] = $iSurveyID;
-            $aData['sid'] = $aData['surveyid']; //frontend needs this to render topbar in getAjaxMenuArray
             $aData['aImportResults'] = $aImportResults;
-            $aData['sExtension'] = $sExtension;
+            $aData['sExtension'] = $aImportResults['extension'];
             $aData['sidemenu']['state'] = false;
 
-            $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title
-                . " (" . gT("ID") . ":" . $iSurveyID . ")";
+            $aData['title_bar']['title'] = $aData['oSurvey']->currentLanguageSettings->surveyls_title
+                . " (" . gT("ID") . ":" . $aData['surveyid'] . ")";
 
             $this->aData = $aData;
             $this->render('/questionAdministration/import', [
@@ -532,31 +315,29 @@ class QuestionGroupsAdministrationController extends LSBaseController
      */
     public function actionImportView(int $surveyid, $landOnSideMenuTab = 'structure')
     {
-        $iSurveyID = $surveyid = sanitize_int($surveyid);
-        $survey = Survey::model()->findByPk($iSurveyID);
+        $aData = $this->setSurveyIdAndObject([], sanitize_int($surveyid));
 
-        if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'import')) {
+        if (Permission::model()->hasSurveyPermission($aData['surveyid'], 'surveycontent', 'import')) {
             $aData['action'] = $aData['display']['menu_bars']['gid_action'] = 'addgroup';
             $aData['display']['menu_bars']['surveysummary'] = 'addgroup';
             $aData['sidemenu']['state'] = false;
             $aData['sidemenu']['questiongroups'] = true;
             $aData['sidemenu']['landOnSideMenuTab'] = $landOnSideMenuTab;
 
-            $aData['surveyid'] = $surveyid;
             $aData['topbar']['rightButtons'] = $this->renderPartial(
                 'partial/topbarBtns/importGroupTopbarRight_view',
                 [],
                 true
             );
 
-            $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title
-                . " (" . gT("ID") . ":" . $iSurveyID . ")";
+            $aData['title_bar']['title'] = $aData['oSurvey']->currentLanguageSettings->surveyls_title
+                . " (" . gT("ID") . ":" . $aData['surveyid'] . ")";
 
             $this->aData = $aData;
             $this->render('importGroup_view', $aData);
         } else {
             App()->user->setFlash('error', gT("Access denied"));
-            $this->redirect(array('questionGroupsAdministration/listquestiongroups/surveyid/' . $surveyid));
+            $this->redirect(array('questionAdministration/listQuestions/surveyid/' . $aData['surveyid']));
         }
     }
 
@@ -584,10 +365,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
         $iGroupId = sanitize_int($iGroupId);
         $oQuestionGroup = QuestionGroup::model()->find("gid = :gid", array(":gid" => $iGroupId));
         $iSurveyId = $oQuestionGroup->sid;
-        $diContainer = \LimeSurvey\DI::getContainer();
-        $questionGroupService = $diContainer->get(
-            LimeSurvey\Models\Services\QuestionGroupService::class
-        );
+        $questionGroupService = $this->getQuestionGroupServiceClass();
         $iGroupsDeleted = $questionGroupService->deleteGroup($iGroupId, $iSurveyId);
 
         //this is only important for massaction ... (do we have massaction for survey groups?)
@@ -599,8 +377,8 @@ class QuestionGroupsAdministrationController extends LSBaseController
                     'deletedGroups' => $iGroupsDeleted,
                     'message' => ($success ? gT('The question group was deleted.') : gT('Group could not be deleted')),
                     'redirect' => $this->createUrl(
-                        'questionGroupsAdministration/listquestiongroups/',
-                        ['surveyid' => $iSurveyId]
+                        'questionAdministration/listQuestions/',
+                        ['surveyid' => $iSurveyId, 'activeTab' => 'groups']
                     )
 
                 ]
@@ -617,10 +395,10 @@ class QuestionGroupsAdministrationController extends LSBaseController
         $survey = Survey::model()->findByPk($iSurveyId);
         // Make sure we have the latest groups data
         $survey->refresh();
-        $landOnSideMenuTab = Yii::app()->request->getPost('landOnSideMenuTab');
+        $landOnSideMenuTab = App()->request->getPost('landOnSideMenuTab');
         if ($landOnSideMenuTab == 'structure' && !empty($survey->groups)) {
             $this->redirect(
-                Yii::app()->createUrl(
+                App()->createUrl(
                     'questionGroupsAdministration/view/',
                     [
                         'surveyid' => $iSurveyId,
@@ -732,6 +510,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
 
     /**
      * Ajax request
+     * todo: is this function still in use?
      *
      * Returns all questions that belong to the group.
      *
@@ -789,10 +568,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
             $this->redirect(App()->request->urlReferrer);
         }
 
-        $diContainer = \LimeSurvey\DI::getContainer();
-        $questionGroupService = $diContainer->get(
-            LimeSurvey\Models\Services\QuestionGroupService::class
-        );
+        $questionGroupService = $this->getQuestionGroupServiceClass();
         if ($oQuestionGroup == null) {
             $isNewGroup = true;
             $oQuestionGroup = $questionGroupService->createGroup($iSurveyId, $wholeQuestionGroupDataset);
@@ -815,7 +591,6 @@ class QuestionGroupsAdministrationController extends LSBaseController
         switch ($sScenario) {
             case 'save-and-new-question':
                 $sRedirectUrl = $this->createUrl(
-                    // TODO: Double check
                     'questionAdministration/create/',
                     [
                         'surveyid' => $iSurveyId,
@@ -853,31 +628,13 @@ class QuestionGroupsAdministrationController extends LSBaseController
                 );
         }
 
-        $aQuestionGroup = $oQuestionGroup->attributes;
-        LimeExpressionManager::ProcessString('{' . $aQuestionGroup['grelevance'] . '}');
-        $aQuestionGroup['grelevance_expression'] = viewHelper::stripTagsEM(
-            LimeExpressionManager::GetLastPrettyPrintExpression()
-        );
-
-        /*$this->renderJSON(
-            [
-                'success' => $success,
-                'message' => gT('Question group successfully stored'),
-                'questionGroupId' => $oQuestionGroup->gid,
-                'questiongroupData' => $aQuestionGroup,
-                'redirect' => $sRedirectUrl,
-                'transfer' => [$questionGroup, $questionGroupI10N],
-            ]
-        );
-        App()->close();*/
-        Yii::app()->setFlashMessage(gT("Question group successfully stored"));
+        App()->setFlashMessage(gT("Question group successfully stored"));
 
         $this->redirect($sRedirectUrl);
     }
 
     /**
-     * Reorder the questiongroups based on the new order in the adminsidepanel
-     *
+     * Reorder the questiongroups based on the new order in the adminsidepanel (structure tab).
      * @param integer $surveyid
      *
      * @return false|null|string|string[]
@@ -885,10 +642,6 @@ class QuestionGroupsAdministrationController extends LSBaseController
      */
     public function actionUpdateOrder(int $surveyid)
     {
-        $oSurvey = Survey::model()->findByPk($surveyid);
-        $success = true;
-        $grouparray  = [];
-
         //permission check
         if (!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update')) {
             return $this->renderPartial(
@@ -896,109 +649,122 @@ class QuestionGroupsAdministrationController extends LSBaseController
                 array(
                     'data' => [
                         'success' => false,
-                        'message' => gT("You can't reorder in an active survey"),
-                        'DEBUG' => ['POST' => $_POST, 'grouparray' => $grouparray]
+                        'message' => gT("Access denied"),
+                        'DEBUG'   => ['POST' => $_POST, 'grouparray' => []]
                     ],
                 ),
-                false,
-                false
             );
         }
 
-        if (!$oSurvey->isActive) {
-            $grouparray = App()->request->getPost('grouparray', []);
-            if (!empty($grouparray)) {
-                foreach ($grouparray as $aQuestiongroup) {
-                    //first set up the ordering for questiongroups
-                    $oQuestiongroups = QuestionGroup::model()->findAll(
-                        "gid=:gid AND sid=:sid",
-                        [':gid' => $aQuestiongroup['gid'], ':sid' => $surveyid]
-                    );
-                    array_map(
-                        function ($oQuestiongroup) use ($aQuestiongroup, $success) {
-                            $oQuestiongroup->group_order = $aQuestiongroup['group_order'];
-                            // TODO: unused variable $success
-                            $success = $success && $oQuestiongroup->save();
-                        },
-                        $oQuestiongroups
-                    );
-
-                    $aQuestiongroup['questions'] = $aQuestiongroup['questions'] ?? [];
-
-                    foreach ($aQuestiongroup['questions'] as $aQuestion) {
-                        $aQuestions = Question::model()->findAll(
-                            "qid=:qid AND sid=:sid",
-                            [':qid' => $aQuestion['qid'], ':sid' => $surveyid]
-                        );
-                        array_walk(
-                            $aQuestions,
-                            function ($oQuestion) use ($aQuestion, $success) {
-                                $oQuestion->question_order = $aQuestion['question_order'];
-                                $oQuestion->gid = $aQuestion['gid'];
-                                if (safecount($oQuestion->subquestions) > 0) {
-                                    $aSubquestions = $oQuestion->subquestions;
-                                    array_walk(
-                                        $aSubquestions,
-                                        function ($oSubQuestion) use ($aQuestion, $success) {
-                                            $oSubQuestion->gid = $aQuestion['gid'];
-                                            $success = $success && $oSubQuestion->save(true);
-                                        }
-                                    );
-                                }
-                                $success = $success && $oQuestion->save(true);
-                            }
-                        );
-                    }
-                }
-            }
-
-            QuestionGroup::model()->cleanOrder($surveyid);
-
+        $questionGroupService = $this->getQuestionGroupServiceClass();
+        $aResult = $questionGroupService->reorderQuestionGroups($surveyid);
+        if ($aResult['success']) {
             return $this->renderPartial(
                 '/admin/super/_renderJson',
                 array(
                     'data' => [
-                        'success' => $success,
-                        'DEBUG' => ['POST' => $_POST, 'grouparray' => $grouparray]
+                        'success' => true,
+                        'DEBUG'   => ['POST' => $_POST, 'grouparray' => $aResult['grouparray']]
                     ],
                 ),
-                false,
-                false
+            );
+        } else {
+            return $this->renderPartial(
+                '/admin/super/_renderJson',
+                array(
+                    'data' => [
+                        'success' => false,
+                        'message' => $aResult['message'],
+                        'DEBUG'   => ['POST' => $_POST, 'grouparray' => $aResult['grouparray']]
+                    ],
+                ),
             );
         }
-        return $this->renderPartial(
-            '/admin/super/_renderJson',
-            array(
-                'data' => [
-                    'success' => false,
-                    'message' => gT("You can't reorder in an active survey"),
-                    'DEBUG' => ['POST' => $_POST, 'grouparray' => $grouparray]
-                ],
-            ),
-            false,
-            false
+    }
+
+    /**
+     * Returns the QuestionGroupService class which is created with dependency injection
+     * @return QuestionGroupService
+     * @throws \DI\DependencyException
+     * @throws \DI\NotFoundException
+     */
+    private function getQuestionGroupServiceClass()
+    {
+        $diContainer = \LimeSurvey\DI::getContainer();
+
+        return $diContainer->get(
+            LimeSurvey\Models\Services\QuestionGroupService::class
         );
     }
 
-    /** ++++++++++++  the following functions should be moved to model or a service class ++++++++++++++++++++++++++ */
-
     /**
-     * Returns the QuestionGroup (existing one or new created one)
-     *
-     * @param int $iSurveyId
-     * @param int | null $iQuestionGroupId ID of group
-     *
-     * @return QuestionGroup
+     * Sets survey id and object into passed array
+     * @param array $aData
+     * @return array
      */
-    private function getQuestionGroupObject($iSurveyId, $iQuestionGroupId = null)
+    private function setSurveyIdAndObject(array $aData, $surveyId)
     {
-        $oQuestionGroup =  QuestionGroup::model()->findByPk($iQuestionGroupId);
-        if ($oQuestionGroup == null) {
-            $oQuestionGroup = new QuestionGroup();
-            $oQuestionGroup->sid = $iSurveyId;
-        }
+        $aData['surveyid'] = $aData['sid'] = $surveyId;
+        $aData['oSurvey'] = Survey::model()->findByPk($surveyId);
 
-        return $oQuestionGroup;
+        return $aData;
     }
 
+    /**
+     * Sets sidemenu parameters to aData array before returning it.
+     * @param array $aData
+     * @param QuestionGroup $questionGroup
+     * @param string $landOnSideMenuTab
+     * @return array
+     */
+    private function setSidemenuData(array $aData, QuestionGroup $questionGroup, string $landOnSideMenuTab)
+    {
+        $survey = $aData['oSurvey'];
+        $baselang = $survey->language;
+        $aData['sidemenu']['state'] = true;
+        $aData['sidemenu']['questiongroups'] = true;
+        $aData['sidemenu']['group_name'] = $questionGroup->questiongroupl10ns[$baselang]->group_name ?? '';
+        $aData['sidemenu']['explorer']['state'] = true;
+        $aData['sidemenu']['explorer']['gid'] = $aData['gid'] ?? false;
+        $aData['sidemenu']['explorer']['qid'] = false;
+        $aData['sidemenu']['landOnSideMenuTab'] = $landOnSideMenuTab;
+
+        return $aData;
+    }
+
+    /**
+     * Sets language related data of question group into passed array before returning it.
+     * @param array $aData
+     * @return array
+     */
+    private function setLanguageData(array $aData)
+    {
+        /**
+         *  TODO: check integrity of the group languages?
+         *
+         *  In LS3, group languages are checked here to make sure they match the survey languages:
+         *  If language exists in group but not in survey, remove from group.
+         *  If language exists in survey but not in group, create based on survey's base language.
+         *
+         *  Reference: https://github.com/LimeSurvey/LimeSurvey/blob/85cc864e2624b5c9c6daecce3c75af3c8701a237/application/controllers/admin/questiongroups.php#L349
+         *
+         *  It doesn't seem necessary here. And, if it's needed, it probably better in the Model.
+         *
+         */
+        $additionalLanguages = $aData['oSurvey']->additionalLanguages;
+        $languages = array_merge(array($aData['oSurvey']->language), $additionalLanguages);
+        foreach ($languages as $sLanguage) {
+            if (isset($aData['oQuestionGroup']->questiongroupl10ns[$sLanguage])) {
+                $aGroupData = $aData['oQuestionGroup']->questiongroupl10ns[$sLanguage];
+                $aData['aGroupData'][$sLanguage] = $aGroupData->attributes;
+                $aTabTitles[$sLanguage] = getLanguageNameFromCode($sLanguage, false);
+                if ($sLanguage == $aData['oSurvey']->language) {
+                    $aTabTitles[$sLanguage] .= ' (' . gT("Base language") . ')';
+                }
+            }
+        }
+        $aData['tabtitles'] = $aTabTitles;
+
+        return $aData;
+    }
 }

@@ -1,10 +1,10 @@
 <?php
-
 namespace LimeSurvey\Models\Services;
 
 use CHttpRequest;
 use CWebUser;
 use LimeExpressionManager;
+use LSYii_Application;
 use Survey;
 use Permission;
 use QuestionGroup;
@@ -135,6 +135,100 @@ class QuestionGroupService
     }
 
     /**
+     * Returns a QuestionGroup (existing one or new created one)
+     *
+     * @param int $surveyId
+     * @param int | null $iQuestionGroupId ID of group
+     *
+     * @return QuestionGroup
+     */
+    public function getQuestionGroupObject($surveyId, $questionGroupId = null)
+    {
+        $oQuestionGroup = QuestionGroup::model()->findByPk($questionGroupId);
+        if (is_int($questionGroupId) && $oQuestionGroup === null) {
+            throw new CHttpException(403, gT("Invalid ID"));
+        } elseif ($oQuestionGroup == null) {
+            $oQuestionGroup = new QuestionGroup();
+            $oQuestionGroup->sid = $surveyId;
+        }
+
+        return $oQuestionGroup;
+    }
+
+    /**
+     * Returns question group data for dataprovider of gridview in "Overview question and groups".
+     * pageSize and search input parameters are taken into account.
+     * @param int $surveyId
+     * @param Survey | null $survey
+     * @return QuestionGroup
+     * @throws Exception
+     */
+    public function getGroupData($surveyId, $survey = null)
+    {
+        $survey = $survey === null ? $this->getSurvey($surveyId) : $survey;
+
+        $questionGroup = new QuestionGroup('search');
+
+        $questionGroupArray = $this->modelRequest->getParam('QuestionGroup', []);
+        if (array_key_exists('group_name', $questionGroupArray)) {
+            $questionGroup->group_name = $questionGroupArray['group_name'];
+        }
+
+        $pageSize = $this->modelRequest->getParam('pageSize', false);
+        if ($pageSize) {
+            $this->modelUser->setState('pageSize', (int)$pageSize);
+        }
+        $questionGroup->sid = $survey->primaryKey;
+        $questionGroup->language = $survey->language;
+
+        return $questionGroup;
+    }
+
+    /**
+     * imports an uploaded question group. Returns array of import results.
+     * @param int $surveyId
+     * @param string $tmpDir
+     * @return array
+     */
+    public function importQuestionGroup(int $surveyId, string $tmpDir)
+    {
+        $importResults = [];
+        $sFullFilepath = $tmpDir . DIRECTORY_SEPARATOR . randomChars(20);
+        $aPathInfo = pathinfo((string)$_FILES['the_file']['name']);
+        $sExtension = $aPathInfo['extension'];
+
+        if (strtolower($sExtension) !== 'lsg') {
+            $fatalerror = gT("Unknown file extension");
+        } elseif ($_FILES['the_file']['error'] == 1 || $_FILES['the_file']['error'] == 2) {
+            $fatalerror = sprintf(gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."), getMaximumFileUploadSize() / 1024 / 1024);
+        } elseif (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath)) {
+            $fatalerror = gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder.");
+        }
+
+        if (isset($fatalerror)) {
+            $importResults['fatalerror'] = $fatalerror;
+        } else {
+            try {
+                App()->loadHelper('admin/import'); // I don't get App() to be injected without an Exception
+                $importResults = XMLImportGroup(
+                    $sFullFilepath,
+                    $surveyId,
+                    $this->modelRequest->getPost('translinksfields') == '1'
+                );
+            } catch (Exception $e) {
+                $importResults['fatalerror'] = print_r($e->getMessage(), true);
+            }
+
+            LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
+            fixLanguageConsistency($surveyId);
+        }
+        $importResults['extension'] = $sExtension;
+        unlink($sFullFilepath);
+
+        return $importResults;
+    }
+
+    /**
      * Stores questiongroup languages.
      *
      * @param QuestionGroup $oQuestionGroup
@@ -157,6 +251,73 @@ class QuestionGroupService
         }
 
         return $storeValid;
+    }
+
+    /**
+     * Reorders question groups.
+     * Returns array containing success (boolean), message (string) and the unchanged grouparray from POST request.
+     * @param int $surveyId
+     * @return array
+     * @throws Exception
+     */
+    public function reorderQuestionGroups(int $surveyId)
+    {
+        $survey = $this->getSurvey($surveyId);
+        $groupArray = [];
+        $success = true;
+        $message = '';
+        if (!$survey->isActive) {
+            $groupArray = $this->modelRequest->getPost('grouparray', []);
+            if (!empty($groupArray)) {
+                foreach ($groupArray as $aQuestionGroup) {
+                    //first set up the ordering for questiongroups
+                    $oQuestionGroups = QuestionGroup::model()->findAll(
+                        "gid=:gid AND sid=:sid",
+                        [':gid' => $aQuestionGroup['gid'], ':sid' => $surveyId]
+                    );
+                    array_map(
+                        function ($oQuestionGroup) use ($aQuestionGroup, &$success) {
+                            $oQuestionGroup->group_order = $aQuestionGroup['group_order'];
+                            $success = $success && $oQuestionGroup->save();
+                        },
+                        $oQuestionGroups
+                    );
+
+                    $aQuestionGroup['questions'] = $aQuestionGroup['questions'] ?? [];
+
+                    foreach ($aQuestionGroup['questions'] as $aQuestion) {
+                        $aQuestions = \Question::model()->findAll(
+                            "qid=:qid AND sid=:sid",
+                            [':qid' => $aQuestion['qid'], ':sid' => $surveyId]
+                        );
+                        array_walk(
+                            $aQuestions,
+                            function ($oQuestion) use ($aQuestion, &$success) {
+                                $oQuestion->question_order = $aQuestion['question_order'];
+                                $oQuestion->gid = $aQuestion['gid'];
+                                if (safecount($oQuestion->subquestions) > 0) {
+                                    $aSubquestions = $oQuestion->subquestions;
+                                    array_walk(
+                                        $aSubquestions,
+                                        function ($oSubQuestion) use ($aQuestion, &$success) {
+                                            $oSubQuestion->gid = $aQuestion['gid'];
+                                            $success = $success && $oSubQuestion->save(true);
+                                        }
+                                    );
+                                }
+                                $success = $success && $oQuestion->save(true);
+                            }
+                        );
+                    }
+                }
+            }
+            QuestionGroup::model()->cleanOrder($surveyId);
+        } else {
+            $message = gT("You can't reorder in an active survey");
+        }
+        return [
+            'success' => $success, 'message' => $message, 'grouparray' => $groupArray
+        ];
     }
 
     /**
@@ -231,31 +392,6 @@ class QuestionGroupService
         }
 
         return $oQuestionGroup;
-    }
-
-    /**
-     * @param int $surveyId
-     * @return QuestionGroup
-     */
-    public function getGroupData($surveyId)
-    {
-        $survey = $this->getSurvey($surveyId);
-
-        $questionGroup = new QuestionGroup('search');
-
-        $questionGroupArray = $this->modelRequest->getParam('QuestionGroup', []);
-        if (array_key_exists('group_name', $questionGroupArray)) {
-            $questionGroup->group_name = $questionGroupArray['group_name'];
-        }
-
-        $pageSize = $this->modelRequest->getParam('pageSize', false);
-        if ($pageSize) {
-            $this->modelUser->setState('pageSize', (int)$pageSize);
-        }
-        $questionGroup->sid = $survey->primaryKey;
-        $questionGroup->language = $survey->language;
-
-        return $questionGroup;
     }
 
     /**
