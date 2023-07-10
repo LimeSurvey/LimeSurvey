@@ -82,22 +82,22 @@ class NotificationController extends SurveyCommonAction
             if (App()->user->isGuest) {
                 throw new CHttpException(401);
             }
-        Notification::model()->deleteAll(
-            'entity = :entity AND entity_id = :entity_id',
+            Notification::model()->deleteAll(
+                'entity = :entity AND entity_id = :entity_id',
                 [":entity" => 'user', ":entity_id" => App()->user->id]
-        );
+            );
             if (is_null($surveyId)) {
                 $surveyId = App()->request->getPost('surveyId');
             }
             if (!is_null($surveyId)) {
                 $surveyId = (int)$surveyId;
                 if (Permission::model()->hasSurveyPermission($surveyId, 'survey', 'update')) {
-            Notification::model()->deleteAll(
-                'entity = :entity AND entity_id = :entity_id',
+                    Notification::model()->deleteAll(
+                        'entity = :entity AND entity_id = :entity_id',
                         [":entity" => 'survey', ":entity_id" => $surveyId]
-            );
-        }
-    }
+                    );
+                }
+            }
         }
     }
 
