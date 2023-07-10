@@ -11,12 +11,6 @@ use ls\tests\TestBaseClass;
 
 use LimeSurvey\Models\Services\QuestionEditor\QuestionEditorL10n;
 
-use ls\tests\unit\services\QuestionEditor\Question\{
-    QuestionMockSet,
-    QuestionMockSetFactory,
-    QuestionFactory
-};
-
 use LimeSurvey\Models\Services\Exception\{
     PersistErrorException,
     NotFoundException
