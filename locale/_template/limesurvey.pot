@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2023-06-23 09:59:57+00:00\n"
+"POT-Creation-Date: 2023-07-10 09:50:43+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1692,8 +1692,8 @@ msgstr ""
 #: application/helpers/SurveyRuntimeHelper.php:1052
 #: application/views/admin/dataentry/import.php:29
 #: application/views/admin/dataentry/vvimport_result.php:22
-#: application/views/admin/survey/Question/question_view.php:105
-#: application/views/admin/survey/Question/question_view.php:121
+#: application/views/admin/survey/Question/question_view.php:112
+#: application/views/admin/survey/Question/question_view.php:128
 #: application/views/admin/survey/activateSurvey_view.php:78
 #: application/views/admin/survey/deleteSurvey_view.php:15
 #: application/views/admin/survey/subview/accordion/_notification_panel.php:54
@@ -1846,8 +1846,8 @@ msgstr ""
 #: application/models/ParticipantShare.php:139
 #: application/models/ParticipantShare.php:144
 #: application/models/ParticipantShare.php:252
-#: application/models/Question.php:865 application/models/Survey.php:1108
-#: application/models/Survey.php:1116
+#: application/models/Question.php:865 application/models/Survey.php:1115
+#: application/models/Survey.php:1123
 #: application/views/admin/conditions/deleteAllConditions.php:17
 #: application/views/admin/conditions/includes/conditions_edit.php:8
 #: application/views/admin/dataentry/content_view.php:642
@@ -1878,8 +1878,8 @@ msgstr ""
 #: application/views/admin/survey/Question/editQuestion_view.php:159
 #: application/views/admin/survey/Question/editQuestion_view.php:171
 #: application/views/admin/survey/Question/editQuestion_view.php:183
-#: application/views/admin/survey/Question/question_view.php:141
-#: application/views/admin/survey/Question/question_view.php:159
+#: application/views/admin/survey/Question/question_view.php:148
+#: application/views/admin/survey/Question/question_view.php:166
 #: application/views/admin/survey/Question/yesNo_defaultvalue_widget.php:63
 #: application/views/admin/survey/activateSurvey_view.php:98
 #: application/views/admin/survey/activateSurvey_view.php:117
@@ -2003,8 +2003,8 @@ msgstr ""
 #: application/models/ParticipantShare.php:139
 #: application/models/ParticipantShare.php:144
 #: application/models/ParticipantShare.php:252
-#: application/models/Question.php:865 application/models/Survey.php:1108
-#: application/models/Survey.php:1116
+#: application/models/Question.php:865 application/models/Survey.php:1115
+#: application/models/Survey.php:1123
 #: application/views/admin/conditions/includes/conditions_edit.php:8
 #: application/views/admin/dataentry/content_view.php:643
 #: application/views/admin/dataentry/content_view.php:712
@@ -2034,8 +2034,8 @@ msgstr ""
 #: application/views/admin/survey/Question/editQuestion_view.php:160
 #: application/views/admin/survey/Question/editQuestion_view.php:172
 #: application/views/admin/survey/Question/editQuestion_view.php:184
-#: application/views/admin/survey/Question/question_view.php:143
-#: application/views/admin/survey/Question/question_view.php:161
+#: application/views/admin/survey/Question/question_view.php:150
+#: application/views/admin/survey/Question/question_view.php:168
 #: application/views/admin/survey/Question/yesNo_defaultvalue_widget.php:62
 #: application/views/admin/survey/activateSurvey_view.php:103
 #: application/views/admin/survey/activateSurvey_view.php:121
@@ -4237,7 +4237,7 @@ msgstr ""
 #: application/helpers/questionHelper.php:433
 #: application/helpers/questionHelper.php:822
 #: application/helpers/userstatistics_helper.php:2676
-#: application/models/Permission.php:102 application/models/Survey.php:1545
+#: application/models/Permission.php:102 application/models/Survey.php:1552
 #: application/views/admin/export/statistics_subviews/_statistics_header.php:3
 #: application/views/admin/export/statistics_user_view.php:17
 #: application/views/admin/export/statistics_view.php:18
@@ -7905,7 +7905,7 @@ msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/searchBox.php:40
 #: application/helpers/common_helper.php:235 application/models/Quota.php:101
-#: application/models/Survey.php:1210
+#: application/models/Survey.php:1217
 msgid "Active"
 msgstr ""
 
@@ -7914,7 +7914,7 @@ msgid "Active and running"
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/searchBox.php:42
-#: application/helpers/common_helper.php:243 application/models/Survey.php:1175
+#: application/helpers/common_helper.php:243 application/models/Survey.php:1182
 msgid "Inactive"
 msgstr ""
 
@@ -9707,7 +9707,7 @@ msgstr ""
 #: application/views/admin/survey/Question/question_subviews/_tabs.php:91
 #: application/views/admin/survey/Question/question_subviews/_tabs.php:113
 #: application/views/admin/survey/Question/question_subviews/_tabs.php:117
-#: application/views/admin/survey/Question/question_view.php:57
+#: application/views/admin/survey/Question/question_view.php:64
 msgid "Help:"
 msgstr ""
 
@@ -12183,7 +12183,7 @@ msgstr ""
 #: application/libraries/PluginManager/Question/QuestionBase.php:123
 #: application/views/admin/survey/Question/editQuestion_view.php:332
 #: application/views/admin/survey/Question/question_subviews/_accordion_container.php:111
-#: application/views/admin/survey/Question/question_view.php:170
+#: application/views/admin/survey/Question/question_view.php:177
 #: application/views/admin/survey/QuestionGroups/addGroup_view.php:77
 #: application/views/admin/survey/QuestionGroups/editGroup_view.php:61
 msgid "Relevance equation:"
@@ -12813,8 +12813,8 @@ msgid "Can't delete question group when the survey is active"
 msgstr ""
 
 #: application/models/QuestionGroup.php:314
-#: application/views/admin/survey/Question/question_view.php:239
-#: application/views/admin/survey/Question/question_view.php:244
+#: application/views/admin/survey/Question/question_view.php:246
+#: application/views/admin/survey/Question/question_view.php:251
 #: application/views/admin/survey/QuestionGroups/group_view.php:79
 #: application/views/admin/survey/QuestionGroups/group_view.php:84
 msgid "Add new question to group"
@@ -12903,23 +12903,27 @@ msgstr ""
 msgid "running"
 msgstr ""
 
-#: application/models/Survey.php:1196
+#: application/models/Survey.php:525
+msgid "Google Analytics Tracking ID may only contain alphanumeric characters and hyphens."
+msgstr ""
+
+#: application/models/Survey.php:1203
 msgid "End: %s"
 msgstr ""
 
-#: application/models/Survey.php:1197
+#: application/models/Survey.php:1204
 msgid "Expired: %s"
 msgstr ""
 
-#: application/models/Survey.php:1198
+#: application/models/Survey.php:1205
 msgid "Start: %s"
 msgstr ""
 
-#: application/models/Survey.php:1541
+#: application/models/Survey.php:1548
 msgid "General settings & texts"
 msgstr ""
 
-#: application/models/Survey.php:1552
+#: application/models/Survey.php:1559
 #: application/views/admin/survey/subview/_survey_quickaction.php:125
 #: application/views/admin/survey/subview/_survey_quickaction.php:131
 #: application/views/admin/survey/subview/_survey_quickaction.php:179
@@ -12931,7 +12935,7 @@ msgstr ""
 msgid "Add new question"
 msgstr ""
 
-#: application/models/Survey.php:1554
+#: application/models/Survey.php:1561
 #: application/views/admin/survey/subview/_survey_quickaction.php:105
 #: application/views/admin/survey/subview/_survey_quickaction.php:109
 #: application/views/admin/survey/subview/_survey_quickaction.php:152
@@ -12941,11 +12945,11 @@ msgstr ""
 msgid "Add new group"
 msgstr ""
 
-#: application/models/Survey.php:2015
+#: application/models/Survey.php:2022
 msgid "Show policy"
 msgstr ""
 
-#: application/models/Survey.php:2050
+#: application/models/Survey.php:2057
 #: application/views/admin/survey/subview/accordion/_publication_panel.php:20
 msgid "Expiration date can't be earlier than the start date"
 msgstr ""
@@ -17507,14 +17511,14 @@ msgstr ""
 #: application/views/admin/survey/Question/editQuestion_view.php:287
 #: application/views/admin/survey/Question/massive_actions/_set_questions_other.php:8
 #: application/views/admin/survey/Question/question_subviews/_accordion_container.php:101
-#: application/views/admin/survey/Question/question_view.php:136
+#: application/views/admin/survey/Question/question_view.php:143
 msgid "Option 'Other':"
 msgstr ""
 
 #: application/views/admin/survey/Question/editQuestion_view.php:309
 #: application/views/admin/survey/Question/massive_actions/_set_questions_mandatory.php:9
 #: application/views/admin/survey/Question/question_subviews/_accordion_container.php:106
-#: application/views/admin/survey/Question/question_view.php:154
+#: application/views/admin/survey/Question/question_view.php:161
 msgid "Mandatory:"
 msgstr ""
 
@@ -17530,7 +17534,7 @@ msgstr ""
 
 #: application/views/admin/survey/Question/editQuestion_view.php:348
 #: application/views/admin/survey/Question/question_subviews/_accordion_container.php:116
-#: application/views/admin/survey/Question/question_view.php:77
+#: application/views/admin/survey/Question/question_view.php:84
 msgid "Validation:"
 msgstr ""
 
@@ -17760,31 +17764,35 @@ msgstr ""
 msgid "Optional Question"
 msgstr ""
 
-#: application/views/admin/survey/Question/question_view.php:90
+#: application/views/admin/survey/Question/question_view.php:52
+msgid "The question text is too long to be displayed. It has been truncated."
+msgstr ""
+
+#: application/views/admin/survey/Question/question_view.php:97
 msgid "Type:"
 msgstr ""
 
-#: application/views/admin/survey/Question/question_view.php:107
+#: application/views/admin/survey/Question/question_view.php:114
 msgid "You need to add answer options to this question"
 msgstr ""
 
-#: application/views/admin/survey/Question/question_view.php:108
+#: application/views/admin/survey/Question/question_view.php:115
 msgid "Edit answer options for this question"
 msgstr ""
 
-#: application/views/admin/survey/Question/question_view.php:123
+#: application/views/admin/survey/Question/question_view.php:130
 msgid "You need to add subquestions to this question"
 msgstr ""
 
-#: application/views/admin/survey/Question/question_view.php:124
+#: application/views/admin/survey/Question/question_view.php:131
 msgid "Edit subquestions for this question"
 msgstr ""
 
-#: application/views/admin/survey/Question/question_view.php:186
+#: application/views/admin/survey/Question/question_view.php:193
 msgid "Group relevance:"
 msgstr ""
 
-#: application/views/admin/survey/Question/question_view.php:231
+#: application/views/admin/survey/Question/question_view.php:238
 msgid "Question quick actions"
 msgstr ""
 
