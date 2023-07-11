@@ -65,7 +65,7 @@
                             'renumber' => gT("Renumber the new record."),
                             'replace' => gT("Replace the existing record."),
                             'replaceanswers' => gT("Replace answers in file in the existing record."),
-                            ),array('disabled'=>'disabled','class'=>'form-control'));
+                            ),array('class'=>'form-control'));
                      ?>
                 </div>
             </div>
@@ -160,7 +160,6 @@
 </div></div></div>
 <?php
 $excludeRecordActive = <<<JAVASCRIPT
-
 $('#noid_1').on('change', function (evt) {
     $('#insertmethod-container').addClass('d-none');
     $('#insertmethod').attr('disabled','disabled');
@@ -171,7 +170,6 @@ $('#noid_2').on('change', function (evt) {
     $('#insertmethod').removeAttr('disabled');
 });
 JAVASCRIPT;
-
 
 App()->getClientScript()->registerScript('VVImportBS5Switcher', $excludeRecordActive, LSYii_ClientScript::POS_POSTSCRIPT);
 ?>

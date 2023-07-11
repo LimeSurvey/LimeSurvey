@@ -336,7 +336,7 @@ class SurveysGroupsController extends SurveyCommonAction
         $aData['partial'] = $sPartial;
 
         $surveySettingsPermission = $model->hasPermission('surveysettings', 'update');
-        $aData['topbar']['title'] = gT('Survey settings for group: ') . $model->title;
+        $aData['topbar']['title'] = gT('Survey settings for group: ') . CHtml::encode($model->title);
         $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
             '/layouts/partial_topbar/right_close_saveclose_save',
             [

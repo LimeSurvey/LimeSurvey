@@ -61,7 +61,7 @@
                 <select name="gsid" id='Survey_gsid' class="form-select activate-search">
                     <option value=""><?= gT('(Any group)') ?></option>
                     <?php foreach (SurveysGroups::getSurveyGroupsList() as $gsid => $group_title) : ?>
-                        <option value="<?= $gsid ?>" <?= ($gsid === $this->model->gsid) ? "selected" : "" ?>><?= flattenText($group_title) ?></option>
+                        <option value="<?= $gsid ?>" <?= ($gsid === $this->model->gsid) ? "selected" : "" ?>><?= CHtml::encode($group_title) ?></option>
                     <?php endforeach; ?>
                 </select>
             </div>

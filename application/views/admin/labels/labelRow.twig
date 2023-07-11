@@ -13,7 +13,7 @@
 #}
 <tr class="labelDatas" style='white-space: nowrap;' id='row_{{ language }}_{{ rowId }}'>
     {% if not first %}
-        <td>{{ code }}</td>
+        <td>{{ code|escape }}</td>
         <td>{{ assessmentValue }}</td>
     {% else %}
         <td>
@@ -21,8 +21,8 @@
         </td>
 
         <td>
-            <input type='hidden' class='hiddencode' value='{{ code }}'/>
-            <input type='text' class='codeval  form-control  ' id='code_{{ rowId }}' name='code_{{ rowId }}' maxlength='20' size='20' value='{{ code }}'/>
+            <input type='hidden' class='hiddencode' value='{{ code|escape }}'/>
+            <input type='text' class='codeval  form-control  ' id='code_{{ rowId }}' name='code_{{ rowId }}' maxlength='20' size='20' value='{{ code|escape }}'/>
         </td>
 
         <td>
