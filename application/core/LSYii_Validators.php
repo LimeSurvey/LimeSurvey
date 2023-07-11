@@ -70,7 +70,9 @@ class LSYii_Validators extends CValidator
         if ($this->xssfilter) {
             $object->$attribute = $this->xssFilter($object->$attribute);
             if ($this->isUrl) {
-                $object->$attribute = str_replace('javascript:', '', $object->$attribute);
+                if (self::isXssUrl($object->$attribute)) {
+                    $object->$attribute = "";
+                }
             }
         }
         // Note that URL checking only checks basic URL properties. As a URL can contain EM expression there needs to be a lot of freedom.
@@ -183,5 +185,63 @@ class LSYii_Validators extends CValidator
         $aValue = explode(" ", trim($value));
         $aValue = array_map("sanitize_languagecode", $aValue);
         return implode(" ", $aValue);
+    }
+
+    /**
+     * Checks whether an URL seems unsafe in terms of XSS.
+     * @param string $url
+     * @return boolean Returns true if the URL is unsafe.
+     */
+    public static function isXssUrl($url)
+    {
+        $decodedUrl = self::treatSpecialChars($url);
+        $clean = self::removeInvisibleChars($decodedUrl);
+
+        // Remove javascript:
+        if (self::hasUnsafeScheme($clean)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Removes invisible characters from a string.
+     * @param string $string
+     * @return string
+     */
+    public static function removeInvisibleChars($string)
+    {
+        // Remove invisible characters
+        $prevString = '';
+        while ($prevString != $string) {
+            $prevString = $string;
+            $string = preg_replace('/\p{C}/u', '', $string);
+        };
+
+        return $string;
+    }
+
+    /**
+     * Checks if URL contains an unsafe scheme.
+     * It currently checks for "javascript:" only.
+     * Note: URL should be previously decoded.
+     * @param string $url
+     * @return boolean
+     */
+    public static function hasUnsafeScheme($url)
+    {
+        // TODO: Check for other schemes? FTP? vbscript?
+        return stripos($url, "javascript:") !== false;
+    }
+
+    /**
+     * Decodes URL encoded characters and html entities.
+     * @param string $string
+     * @return string
+     */
+    public static function treatSpecialChars($string)
+    {
+        // TODO: Recurse?
+        return urldecode(html_entity_decode($string));
     }
 }
