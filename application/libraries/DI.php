@@ -3,6 +3,10 @@
 namespace LimeSurvey;
 
 use CActiveRecord;
+use LSYii_Application;
+use PluginManager;
+use CHttpSession;
+
 
 /**
  * Dependency Injection
@@ -44,9 +48,21 @@ class DI
         // - on this, so instead we configure the container to return the correct
         // - object based on the call time class name, whenever we type hint on
         // - CActiveRecord or anything that extends CActiveRecord
-        $container->set('CActiveRecord', function (CActiveRecord $entry) {
+        $container->set(CActiveRecord::class, function (CActiveRecord $entry) {
             $class = $entry->getName();
             return $class::model();
+        });
+
+        $container->set(LSYii_Application::class, function () {
+            return App();
+        });
+
+        $container->set(PluginManager::class, function () {
+            return App()->getPluginManager();
+        });
+
+        $container->set(CHttpSession::class, function () {
+            return App()->session;
         });
 
         return $container;
