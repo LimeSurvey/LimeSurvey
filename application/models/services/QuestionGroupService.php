@@ -3,6 +3,7 @@
 namespace LimeSurvey\Models\Services;
 
 use LimeExpressionManager;
+use Limesurvey\DI;
 use LSYii_Application;
 use Survey;
 use Permission;
@@ -141,7 +142,7 @@ class QuestionGroupService
      * Returns a QuestionGroup (existing one or new created one)
      *
      * @param int $surveyId
-     * @param int | null $iQuestionGroupId ID of group
+     * @param int | null $questionGroupId ID of group
      *
      * @return QuestionGroup
      */
@@ -151,7 +152,7 @@ class QuestionGroupService
         if (is_int($questionGroupId) && $oQuestionGroup === null) {
             throw new CHttpException(403, gT("Invalid ID"));
         } elseif ($oQuestionGroup == null) {
-            $oQuestionGroup = new QuestionGroup();
+            $oQuestionGroup = DI::getContainer()->make(QuestionGroup::class);
             $oQuestionGroup->sid = $surveyId;
         }
 
@@ -168,12 +169,10 @@ class QuestionGroupService
      */
     public function getGroupData(Survey $survey, array $questionGroupArray)
     {
-        $questionGroup = new QuestionGroup('search');
-
+        $questionGroup = DI::getContainer()->make(QuestionGroup::class, ['scenario' => 'search']);
         if (array_key_exists('group_name', $questionGroupArray)) {
             $questionGroup->group_name = $questionGroupArray['group_name'];
         }
-
         $questionGroup->sid = $survey->primaryKey;
         $questionGroup->language = $survey->language;
 
@@ -360,7 +359,7 @@ class QuestionGroupService
         ], $aQuestionGroupData);
         unset($aQuestionGroupData['gid']);
 
-        $oQuestionGroup = new QuestionGroup();
+        $oQuestionGroup = DI::getContainer()->make(QuestionGroup::class);
         $oQuestionGroup->setAttributes($aQuestionGroupData, false);
 
         if ($oQuestionGroup == null) {
@@ -378,7 +377,7 @@ class QuestionGroupService
 
         $i10N = [];
         foreach ($survey->allLanguages as $sLanguage) {
-            $i10N[$sLanguage] = new QuestionGroupL10n();
+            $i10N[$sLanguage] = DI::getContainer()->make(QuestionGroupL10n::class);
             $i10N[$sLanguage]->setAttributes([
                 'gid'         => $oQuestionGroup->gid,
                 'language'    => $sLanguage,
