@@ -2,8 +2,8 @@
 
 namespace LimeSurvey\Models\Services;
 
-use LimeExpressionManager;
 use Limesurvey\DI;
+use LimeSurvey\Models\Services\Proxy\ProxyExpressionManager;
 use LSYii_Application;
 use Survey;
 use Permission;
@@ -21,6 +21,7 @@ class QuestionGroupService
     private Question $modelQuestion;
     private QuestionGroup $modelQuestionGroup;
     private QuestionGroupL10n $modelQuestionGroupL10n;
+    private ProxyExpressionManager $proxyExpressionManager;
 
     /**
      *
@@ -30,13 +31,15 @@ class QuestionGroupService
         Survey $modelSurvey,
         Question $modelQuestion,
         QuestionGroup $modelQuestionGroup,
-        QuestionGroupL10n $modelQuestionGroupL10n
+        QuestionGroupL10n $modelQuestionGroupL10n,
+        ProxyExpressionManager $proxyExpressionManager
     ) {
         $this->modelPermission = $modelPermission;
         $this->modelSurvey = $modelSurvey;
         $this->modelQuestion = $modelQuestion;
         $this->modelQuestionGroup = $modelQuestionGroup;
         $this->modelQuestionGroupL10n = $modelQuestionGroupL10n;
+        $this->proxyExpressionManager = $proxyExpressionManager;
     }
 
     /**
@@ -127,13 +130,13 @@ class QuestionGroupService
             throw new CHttpException(403, gT("You are not authorized to delete questions."));
         }
 
-        LimeExpressionManager::RevertUpgradeConditionsToRelevance($surveyId);
+        $this->proxyExpressionManager->revertUpgradeConditionsToRelevance($surveyId);
 
         $deletedGroups = QuestionGroup::deleteWithDependency($questionGroupId, $surveyId);
         if ($deletedGroups > 0) {
             $this->modelQuestionGroup->updateGroupOrder($surveyId);
         }
-        LimeExpressionManager::UpgradeConditionsToRelevance($surveyId);
+        $this->proxyExpressionManager->upgradeConditionsToRelevance($surveyId);
 
         return $deletedGroups;
     }
@@ -214,8 +217,7 @@ class QuestionGroupService
             } catch (Exception $e) {
                 $importResults['fatalerror'] = print_r($e->getMessage(), true);
             }
-
-            LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
+            $this->proxyExpressionManager->setDirtyFlag(); // so refreshes syntax highlighting
             fixLanguageConsistency($surveyId);
         }
         $importResults['extension'] = $sExtension;
