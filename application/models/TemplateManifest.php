@@ -702,6 +702,7 @@ class TemplateManifest extends TemplateConfiguration
         $aDatas['version']          = (string) $oTemplate->config->metadata->version;
         $aDatas['license']          = (string) $oTemplate->config->metadata->license;
         $aDatas['description']      = (string) $oTemplate->config->metadata->description;
+        $aDatas['title']            = (string) $oTemplate->config->metadata->title;
 
         // Engine, files, and options can be inherited from a moter template
         // It means that the while field should always be inherited, not a subfield (eg: all files, not only css add)

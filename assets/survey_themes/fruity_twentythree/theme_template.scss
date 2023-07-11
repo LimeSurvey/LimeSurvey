@@ -26,7 +26,7 @@
     see: https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity
 
 */
-// Custom Bootstrap 5 implementation for ls6_surveytheme
+// Custom Bootstrap 5 implementation for fruity_twentythree
 // do not modify or remove this line, it will be read for theme generation
 $base-color: #ffffff;
 
@@ -34,8 +34,8 @@ $base-color: #ffffff;
 @import "node_modules/bootstrap/scss/functions.scss";
 
 // 2. Include any default variable overrides here
-@import "ls6_theme_variables";
-@import "ls6_color_variables.scss";
+@import "theme_variables";
+@import "theme_color_variables";
 
 // 3. Include remainder of required Bootstrap stylesheets
 @import "node_modules/bootstrap/scss/variables";
@@ -84,13 +84,13 @@ $base-color: #ffffff;
 
 // 6. Add additional custom code here
 @import "old_fruity.scss";
-@import "ls6_theme_variables.scss";
+@import "theme_variables";
 @import "src/colors.scss";
 @import "src/definitions.scss";
 @import "src/extensions.scss";
 
 // 6.1 Components
-@import "core/template_core_class.scss";
+@import "core/old_template_core_class";
 @import "navbar/navbar.scss";
 @import "navbar/navbar_colors.scss";
 @import "buttons/buttons.scss";

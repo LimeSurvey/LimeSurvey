@@ -1022,10 +1022,9 @@ class LsDefaultDataSets
             'packages_ltr'      => null,
             'packages_rtl'      => null
         ];
-        //todo this element needs to be adjusted after task "bootstrap twice"
-        //the data here has been taken according to the xml-file themes/survey/ls6_surveytheme/config.xml
+        //the data here has been taken according to the xml-file themes/survey/fruity_twentythree/config.xml
         $returnArray[] = [
-            'template_name'     =>  'ls6_surveytheme',
+            'template_name'     =>  'fruity_twentythree',
             'sid'               =>  null,
             'gsid'              =>  null,
             'uid'               =>  null,
@@ -1077,7 +1076,7 @@ class LsDefaultDataSets
         $returnArray[] = [
             'name'          => 'vanilla',
             'folder'        => 'vanilla',
-            'title'         => 'Vanilla Theme',
+            'title'         => 'Bootstrap Vanilla',
             'creation_date' => date('Y-m-d H:i:s'),
             'author'        => 'LimeSurvey GmbH',
             'author_email'  => 'info@limesurvey.org',
@@ -1088,7 +1087,7 @@ class LsDefaultDataSets
             'api_version'   => '3.0',
             'view_folder'   => 'views',
             'files_folder'  => 'files',
-            'description'   => '<strong>LimeSurvey Bootstrap Vanilla Survey Theme</strong><br>A clean and simple base that can be used by developers to create their own Bootstrap based theme.',
+            'description'   => gT("A clean and simple base that can be used by developers to create their own Bootstrap based theme."),
             'last_update'   => null,
             'owner_id'      => 1,
             'extends'       => '',
@@ -1096,7 +1095,7 @@ class LsDefaultDataSets
         $returnArray[] = [
             'name'          => 'fruity',
             'folder'        => 'fruity',
-            'title'         => 'Fruity Theme',
+            'title'         => 'Fruity',
             'creation_date' => date('Y-m-d H:i:s'),
             'author'        => 'LimeSurvey GmbH',
             'author_email'  => 'info@limesurvey.org',
@@ -1107,7 +1106,7 @@ class LsDefaultDataSets
             'api_version'   => '3.0',
             'view_folder'   => 'views',
             'files_folder'  => 'files',
-            'description'   => '<strong>LimeSurvey Fruity Theme</strong><br>A fruity theme for a flexible use. This theme offers monochromes variations and many options for easy customizations.',
+            'description'   => gT("A fruity theme for a flexible use. This theme offers monochromes variations and many options for easy customizations."),
             'last_update'   => null,
             'owner_id'      => 1,
             'extends'       => 'vanilla',
@@ -1115,7 +1114,7 @@ class LsDefaultDataSets
         $returnArray[] = [
             'name'          => 'bootswatch',
             'folder'        => 'bootswatch',
-            'title'         => 'Bootswatch Theme',
+            'title'         => 'Bootswatch',
             'creation_date' => date('Y-m-d H:i:s'),
             'author'        => 'LimeSurvey GmbH',
             'author_email'  => 'info@limesurvey.org',
@@ -1126,15 +1125,15 @@ class LsDefaultDataSets
             'api_version'   => '3.0',
             'view_folder'   => 'views',
             'files_folder'  => 'files',
-            'description'   => '<strong>LimeSurvey Bootwatch Theme</strong><br>Based on BootsWatch Themes: <a href="https://bootswatch.com/3/"">Visit BootsWatch page</a> ',
+            'description'   => gT("Based on BootsWatch Themes:") . "<br><a href='https://bootswatch.com/3/'>" . gT("Visit Bootswatch page") . "</a>",
             'last_update'   => null,
             'owner_id'      => 1,
             'extends'       => 'vanilla',
         ];
         $returnArray[] = [
-            'name'          => 'ls6_surveytheme',
-            'folder'        => 'ls6_surveytheme',
-            'title'         => 'ls6_surveytheme',
+            'name'          => 'fruity_twentythree',
+            'folder'        => 'fruity_twentythree',
+            'title'         => 'Fruity TwentyThree',
             'creation_date' => date('Y-m-d H:i:s'),
             'author'        => 'LimeSurvey GmbH',
             'author_email'  => 'info@limesurvey.org',
@@ -1145,7 +1144,7 @@ class LsDefaultDataSets
             'api_version'   => '3.0',
             'view_folder'   => 'views',
             'files_folder'  => 'files',
-            'description'   => '<strong>LimeSurvey6  Theme</strong><br>',
+            'description'   => gT("Our default theme for a fruity and flexible use. This theme offers single color variations"),
             'last_update'   => null,
             'owner_id'      => 1,
             'extends'       => '',

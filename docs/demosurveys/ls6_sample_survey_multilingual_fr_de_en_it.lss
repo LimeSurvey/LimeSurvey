@@ -17753,7 +17753,7 @@ Le seguenti risposte sono state date dal partecipante:<br />
  <themes>
   <theme>
    <sid>734181</sid>
-   <template_name>ls6_surveytheme</template_name>
+   <template_name>fruity_twentythree</template_name>
    <config>
     <options>inherit</options>
    </config>
@@ -17769,7 +17769,7 @@ Le seguenti risposte sono state date dal partecipante:<br />
  <themes_inherited>
   <theme>
    <sid>734181</sid>
-   <template_name>ls6_surveytheme</template_name>
+   <template_name>fruity_twentythree</template_name>
    <config>
     <options>
      <container>on</container>

@@ -1,4 +1,4 @@
-import TemplateCoreClass from './template_core_class.js';
+import TemplateCoreClass from './old_template_core_class.js';
 
 /**
  * The general Template closure.
@@ -147,7 +147,7 @@ export var ThemeScripts = function () {
             });
 
             // Bind language changer onclick event.
-            // This function is defined in assets/survey_themes/ls6_surveytheme/core/template_core_pre.js
+            // This function is defined in assets/survey_themes/fruity_twentythree/core/old_template_core_pre.js
             // eslint-disable-next-line no-undef
             activateLanguageChanger();
 

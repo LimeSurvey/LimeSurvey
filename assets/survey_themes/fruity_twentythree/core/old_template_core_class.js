@@ -14,7 +14,7 @@ import {
     updateMandatoryErrorClass,
     activateSoftMandatory,
     resetQuestionTimers
-} from './template_core_pre.js';
+} from './old_template_core_pre.js';
 
 /**
  * @file Default template functionnality
@@ -90,7 +90,7 @@ export var TemplateCoreClass = function () {
 
         /**
          * Update some class when em-tips is success/error
-         * @see assets/survey_themes/ls6_surveytheme/core/template_core_pre.js:triggerEmClassChange
+         * @see assets/survey_themes/fruity_twentythree/core/old_template_core_pre.js:triggerEmClassChange
          */
         triggerEmClassChangeTemplate: function () {
             $('.ls-em-tip').each(function () {
@@ -124,7 +124,7 @@ export var TemplateCoreClass = function () {
         },
         /**
          * Hide/show question if all subquestions is hidden
-         * @see assets/survey_themes/ls6_surveytheme/core/template_core_pre.js:triggerEmRelevanceSubQuestion
+         * @see assets/survey_themes/fruity_twentythree/core/old_template_core_pre.js:triggerEmRelevanceSubQuestion
          * @see https://bugs.limesurvey.org/view.php?id=10055 (partial)
          * Must be before ready (event happen before ready)
          */
@@ -154,7 +154,7 @@ export var TemplateCoreClass = function () {
         },
         /**
          * Hide/show parent multiple list
-         * @see assets/survey_themes/ls6_surveytheme/core/template_core_pre.js:triggerEmRelevanceSubQuestion
+         * @see assets/survey_themes/fruity_twentythree/core/old_template_core_pre.js:triggerEmRelevanceSubQuestion
          * @see https://bugs.limesurvey.org/view.php?id=11787
          * Must be before ready (event happen before ready)
          */

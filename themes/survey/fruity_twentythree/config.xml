@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    (¯`·._.·(¯`·._.· LS6 Surveytheme Theme Manifest  ·._.·´¯)·._.·´¯)
+    (¯`·._.·(¯`·._.· Fruity TwentyThree Surveytheme Manifest  ·._.·´¯)·._.·´¯)
 
-    Base configuration for LS6 Surveytheme Theme.
+    Base configuration for Fruity TwentyThree Surveytheme.
     The content of this file is imported into DB when you install the template.
 
 -->
 <config>
     <!-- Those metadata are displayed in the theme configuration page.  -->
     <metadata>
-        <name>ls6_surveytheme</name>
-        <title>ls6_surveytheme</title>
+        <name>fruity_twentythree</name>
+        <title>Fruity TwentyThree</title>
         <type>theme</type>
         <creationDate>03/15/2023</creationDate>
         <author>LimeSurvey GmbH</author>
@@ -21,8 +21,7 @@
         <license>GNU General Public License version 2 or later</license>
         <version>1.0.0</version>
         <apiVersion>3.0</apiVersion>
-        <description twig="on">
-            <![CDATA[<strong>{{gT("LimeSurvey LS6 Theme")}}</strong><br>{{gT("The latest and freshest theme to offer a flexible use. It is based on the classic fruity theme.")}}]]></description>
+        <description twig="on"><![CDATA[{{gT("Our default theme for a fruity and flexible use. This theme offers single color variations")}}]]></description>
         <lastUpdate>2023-03-15 12:00:00</lastUpdate>
     </metadata>
 

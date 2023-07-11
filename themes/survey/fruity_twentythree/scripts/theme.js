@@ -44,7 +44,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.ThemeScripts = void 0;
-var _template_core_class = _interopRequireDefault(require("./template_core_class.js"));
+var _old_template_core_class = _interopRequireDefault(require("./old_template_core_class.js"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 /**
  * The general Template closure.
@@ -186,7 +186,7 @@ var ThemeScripts = function ThemeScripts() {
       });
 
       // Bind language changer onclick event.
-      // This function is defined in assets/survey_themes/ls6_surveytheme/core/template_core_pre.js
+      // This function is defined in assets/survey_themes/fruity_twentythree/core/old_template_core_pre.js
       // eslint-disable-next-line no-undef
       activateLanguageChanger();
 
@@ -269,14 +269,14 @@ var ThemeScripts = function ThemeScripts() {
 exports.ThemeScripts = ThemeScripts;
 window.ThemeScripts = ThemeScripts;
 
-},{"./template_core_class.js":3}],3:[function(require,module,exports){
+},{"./old_template_core_class.js":3}],3:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.TemplateCoreClass = void 0;
-var _template_core_pre = require("./template_core_pre.js");
+var _old_template_core_pre = require("./old_template_core_pre.js");
 /**
  * @file Default template functionnality
  * @copyright LimeSurvey <http://www.limesurvey.org>
@@ -349,7 +349,7 @@ var TemplateCoreClass = function TemplateCoreClass() {
     },
     /**
      * Update some class when em-tips is success/error
-     * @see assets/survey_themes/ls6_surveytheme/core/template_core_pre.js:triggerEmClassChange
+     * @see assets/survey_themes/fruity_twentythree/core/old_template_core_pre.js:triggerEmClassChange
      */
     triggerEmClassChangeTemplate: function triggerEmClassChangeTemplate() {
       $('.ls-em-tip').each(function () {
@@ -380,7 +380,7 @@ var TemplateCoreClass = function TemplateCoreClass() {
     },
     /**
      * Hide/show question if all subquestions is hidden
-     * @see assets/survey_themes/ls6_surveytheme/core/template_core_pre.js:triggerEmRelevanceSubQuestion
+     * @see assets/survey_themes/fruity_twentythree/core/old_template_core_pre.js:triggerEmRelevanceSubQuestion
      * @see https://bugs.limesurvey.org/view.php?id=10055 (partial)
      * Must be before ready (event happen before ready)
      */
@@ -410,7 +410,7 @@ var TemplateCoreClass = function TemplateCoreClass() {
     },
     /**
      * Hide/show parent multiple list
-     * @see assets/survey_themes/ls6_surveytheme/core/template_core_pre.js:triggerEmRelevanceSubQuestion
+     * @see assets/survey_themes/fruity_twentythree/core/old_template_core_pre.js:triggerEmRelevanceSubQuestion
      * @see https://bugs.limesurvey.org/view.php?id=11787
      * Must be before ready (event happen before ready)
      */
@@ -452,7 +452,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
   window.templateCore.triggerEmClassChangeTemplate();
 });
 
-},{"./template_core_pre.js":4}],4:[function(require,module,exports){
+},{"./old_template_core_pre.js":4}],4:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -953,51 +953,6 @@ window.activateSoftMandatory = activateSoftMandatory;
 window.resetQuestionTimers = resetQuestionTimers;
 
 },{}],5:[function(require,module,exports){
-/*
-    LimeSurvey
-    Copyright (C) 2007-2023
-    The LimeSurvey Project Team / Patrick Teichmann
-    All rights reserved.
-    License: GNU/GPL License v3 or later, see LICENSE.php
-    LimeSurvey is free software. This version may have been modified pursuant
-    to the GNU General Public License, and as distributed it includes or
-    is derivative of works licensed under the GNU General Public License or
-    other free or open source software licenses.
-
-
-    (¯`·._.·(¯`·._.·  Theme main JavaScript   ·._.·´¯)·._.·´¯)
-
-     Javascript file for this template.
-
-     You'd rather not touch it. This file can be overwritten by an update.
-
-
-     ██████╗  ██████╗     ███╗   ██╗ ██████╗ ████████╗    ████████╗ ██████╗ ██╗   ██╗ ██████╗██╗  ██╗    ██╗
-     ██╔══██╗██╔═══██╗    ████╗  ██║██╔═══██╗╚══██╔══╝    ╚══██╔══╝██╔═══██╗██║   ██║██╔════╝██║  ██║    ██║
-     ██║  ██║██║   ██║    ██╔██╗ ██║██║   ██║   ██║          ██║   ██║   ██║██║   ██║██║     ███████║    ██║
-     ██║  ██║██║   ██║    ██║╚██╗██║██║   ██║   ██║          ██║   ██║   ██║██║   ██║██║     ██╔══██║    ╚═╝
-     ██████╔╝╚██████╔╝    ██║ ╚████║╚██████╔╝   ██║          ██║   ╚██████╔╝╚██████╔╝╚██████╗██║  ██║    ██╗
-     ╚═════╝  ╚═════╝     ╚═╝  ╚═══╝ ╚═════╝    ╚═╝          ╚═╝    ╚═════╝  ╚═════╝  ╚═════╝╚═╝  ╚═╝    ╚═╝
-
-     Please, use custom.js
-
-*/
-"use strict";
-
-},{}],6:[function(require,module,exports){
-"use strict";
-
-function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
-var Disclaimer = _interopRequireWildcard(require("./ls6_javascript_disclaimer.js"));
-var Bootstrap = _interopRequireWildcard(require("../../../assets/bootstrap_5/js/bootstrap_5.js"));
-var _ls6_core_theme = _interopRequireDefault(require("./core/ls6_core_theme.js"));
-var _array = _interopRequireDefault(require("./questiontypes/array/array.js"));
-var _navbar = _interopRequireDefault(require("./navbar/navbar.js"));
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
-function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-},{"../../../assets/bootstrap_5/js/bootstrap_5.js":1,"./core/ls6_core_theme.js":2,"./ls6_javascript_disclaimer.js":5,"./navbar/navbar.js":7,"./questiontypes/array/array.js":8}],7:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1033,7 +988,7 @@ var NavbarScripts = function NavbarScripts() {
 exports.NavbarScripts = NavbarScripts;
 window.NavbarScripts = NavbarScripts;
 
-},{}],8:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1065,7 +1020,52 @@ var ArrayScripts = function ArrayScripts() {
 exports.ArrayScripts = ArrayScripts;
 window.ArrayScripts = ArrayScripts;
 
-},{}],9:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
+/*
+    LimeSurvey
+    Copyright (C) 2007-2023
+    The LimeSurvey Project Team / Patrick Teichmann
+    All rights reserved.
+    License: GNU/GPL License v3 or later, see LICENSE.php
+    LimeSurvey is free software. This version may have been modified pursuant
+    to the GNU General Public License, and as distributed it includes or
+    is derivative of works licensed under the GNU General Public License or
+    other free or open source software licenses.
+
+
+    (¯`·._.·(¯`·._.·  Theme main JavaScript   ·._.·´¯)·._.·´¯)
+
+     Javascript file for this template.
+
+     You'd rather not touch it. This file can be overwritten by an update.
+
+
+     ██████╗  ██████╗     ███╗   ██╗ ██████╗ ████████╗    ████████╗ ██████╗ ██╗   ██╗ ██████╗██╗  ██╗    ██╗
+     ██╔══██╗██╔═══██╗    ████╗  ██║██╔═══██╗╚══██╔══╝    ╚══██╔══╝██╔═══██╗██║   ██║██╔════╝██║  ██║    ██║
+     ██║  ██║██║   ██║    ██╔██╗ ██║██║   ██║   ██║          ██║   ██║   ██║██║   ██║██║     ███████║    ██║
+     ██║  ██║██║   ██║    ██║╚██╗██║██║   ██║   ██║          ██║   ██║   ██║██║   ██║██║     ██╔══██║    ╚═╝
+     ██████╔╝╚██████╔╝    ██║ ╚████║╚██████╔╝   ██║          ██║   ╚██████╔╝╚██████╔╝╚██████╗██║  ██║    ██╗
+     ╚═════╝  ╚═════╝     ╚═╝  ╚═══╝ ╚═════╝    ╚═╝          ╚═╝    ╚═════╝  ╚═════╝  ╚═════╝╚═╝  ╚═╝    ╚═╝
+
+     Please, use custom.js
+
+*/
+"use strict";
+
+},{}],8:[function(require,module,exports){
+"use strict";
+
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+var Disclaimer = _interopRequireWildcard(require("./theme_js_disclaimer.js"));
+var Bootstrap = _interopRequireWildcard(require("../../../assets/bootstrap_5/js/bootstrap_5.js"));
+var _old_core_theme = _interopRequireDefault(require("./core/old_core_theme.js"));
+var _array = _interopRequireDefault(require("./questiontypes/array/array.js"));
+var _navbar = _interopRequireDefault(require("./navbar/navbar.js"));
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+},{"../../../assets/bootstrap_5/js/bootstrap_5.js":1,"./core/old_core_theme.js":2,"./navbar/navbar.js":5,"./questiontypes/array/array.js":6,"./theme_js_disclaimer.js":7}],9:[function(require,module,exports){
 /**
  * @popperjs/core v2.11.8 - MIT License
  */
@@ -7412,4 +7412,4 @@ enableDismissTrigger(Toast);
 
 defineJQueryPlugin(Toast);
 
-},{"@popperjs/core":9}]},{},[6]);
+},{"@popperjs/core":9}]},{},[8]);
