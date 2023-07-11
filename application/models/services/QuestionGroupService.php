@@ -23,9 +23,6 @@ class QuestionGroupService
     private QuestionGroupL10n $modelQuestionGroupL10n;
     private ProxyExpressionManager $proxyExpressionManager;
 
-    /**
-     *
-     */
     public function __construct(
         Permission $modelPermission,
         Survey $modelSurvey,
@@ -61,7 +58,7 @@ class QuestionGroupService
      *                         [...]    //more languages
      * @return QuestionGroup
      */
-    public function updateGroup($surveyId, $questionGroupId, $input)
+    public function updateGroup(int $surveyId, int $questionGroupId, array $input)
     {
         $survey = $this->getSurvey($surveyId);
 
@@ -102,7 +99,7 @@ class QuestionGroupService
      *                         [...]    //more languages
      * @return QuestionGroup
      */
-    public function createGroup($surveyId, $input)
+    public function createGroup(int $surveyId, array $input)
     {
         if (!$this->modelPermission->hasSurveyPermission($surveyId, 'surveycontent', 'update')) {
             throw new Exception(
@@ -124,7 +121,7 @@ class QuestionGroupService
      * @return int|null number of deleted rows
      * @throws CHttpException
      */
-    public function deleteGroup($questionGroupId, $surveyId)
+    public function deleteGroup(int $questionGroupId, int $surveyId)
     {
         if (!$this->modelPermission->hasSurveyPermission($surveyId, 'surveycontent', 'delete')) {
             throw new CHttpException(403, gT("You are not authorized to delete questions."));
@@ -149,7 +146,7 @@ class QuestionGroupService
      *
      * @return QuestionGroup
      */
-    public function getQuestionGroupObject($surveyId, $questionGroupId = null)
+    public function getQuestionGroupObject(int $surveyId, ?int $questionGroupId = null)
     {
         $oQuestionGroup = $this->modelQuestionGroup->findByPk($questionGroupId);
         if (is_int($questionGroupId) && $oQuestionGroup === null) {
@@ -231,9 +228,9 @@ class QuestionGroupService
      *
      * @param QuestionGroup $oQuestionGroup
      * @param array $dataSet array with languages
-     * @return bool true if ALL languages could be safed, false otherwise
+     * @return bool true if ALL languages could be saved, false otherwise
      */
-    private function updateQuestionGroupLanguages($oQuestionGroup, $dataSet)
+    private function updateQuestionGroupLanguages(QuestionGroup $oQuestionGroup, array $dataSet)
     {
         $storeValid = true;
 
@@ -328,7 +325,7 @@ class QuestionGroupService
      *
      * @throws CException
      */
-    private function updateQuestionGroup($oQuestionGroup, $aQuestionGroupData)
+    private function updateQuestionGroup(QuestionGroup $oQuestionGroup, array $aQuestionGroupData)
     {
         $oQuestionGroup->setAttributes($aQuestionGroupData, false);
         if ($oQuestionGroup == null) {
@@ -353,7 +350,7 @@ class QuestionGroupService
      * @return QuestionGroup
      * @throws CException
      */
-    private function newQuestionGroup($surveyId, $aQuestionGroupData = null)
+    private function newQuestionGroup(int $surveyId, array $aQuestionGroupData = null)
     {
         $survey = $this->getSurvey($surveyId);
         $aQuestionGroupData = array_merge([
@@ -396,7 +393,7 @@ class QuestionGroupService
      * @param int $surveyId
      * @return Survey
      */
-    private function getSurvey($surveyId)
+    private function getSurvey(int $surveyId)
     {
         $survey = $this->modelSurvey->findByPk($surveyId);
         if (!$survey) {
