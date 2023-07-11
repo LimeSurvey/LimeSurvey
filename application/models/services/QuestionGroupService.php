@@ -2,7 +2,6 @@
 
 namespace LimeSurvey\Models\Services;
 
-use CHttpRequest;
 use CWebUser;
 use LimeExpressionManager;
 use LSYii_Application;
@@ -23,7 +22,6 @@ class QuestionGroupService
     private QuestionGroup $modelQuestionGroup;
     private QuestionGroupL10n $modelQuestionGroupL10n;
     private CWebUser $yiiUser;
-    private CHttpRequest $yiiRequest;
 
     /**
      *
@@ -35,7 +33,6 @@ class QuestionGroupService
         QuestionGroup $modelQuestionGroup,
         QuestionGroupL10n $modelQuestionGroupL10n,
         CWebUser $yiiUser,
-        CHttpRequest $yiiRequest
     ) {
         $this->modelPermission = $modelPermission;
         $this->modelSurvey = $modelSurvey;
@@ -43,7 +40,6 @@ class QuestionGroupService
         $this->modelQuestionGroup = $modelQuestionGroup;
         $this->modelQuestionGroupL10n = $modelQuestionGroupL10n;
         $this->yiiUser = $yiiUser;
-        $this->yiiRequest = $yiiRequest;
     }
 
     /**
@@ -170,22 +166,18 @@ class QuestionGroupService
      * Returns question group data for dataprovider of gridview in "Overview question and groups".
      * pageSize and search input parameters are taken into account.
      * @param Survey $survey
+     * @param array $questionGroupArray
      * @return QuestionGroup
      * @throws Exception
      */
-    public function getGroupData(Survey $survey)
+    public function getGroupData(Survey $survey, array $questionGroupArray)
     {
         $questionGroup = new QuestionGroup('search');
 
-        $questionGroupArray = $this->yiiRequest->getParam('QuestionGroup', []);
         if (array_key_exists('group_name', $questionGroupArray)) {
             $questionGroup->group_name = $questionGroupArray['group_name'];
         }
 
-        $pageSize = $this->yiiRequest->getParam('pageSize', false);
-        if ($pageSize) {
-            $this->yiiUser->setState('pageSize', (int)$pageSize);
-        }
         $questionGroup->sid = $survey->primaryKey;
         $questionGroup->language = $survey->language;
 
@@ -196,9 +188,10 @@ class QuestionGroupService
      * imports an uploaded question group. Returns array of import results.
      * @param int $surveyId
      * @param string $tmpDir
+     * @param string $transLinksFields
      * @return array
      */
-    public function importQuestionGroup(int $surveyId, string $tmpDir)
+    public function importQuestionGroup(int $surveyId, string $tmpDir, string $transLinksFields)
     {
         $importResults = [];
         $sFullFilepath = $tmpDir . DIRECTORY_SEPARATOR . randomChars(20);
@@ -221,7 +214,7 @@ class QuestionGroupService
                 $importResults = XMLImportGroup(
                     $sFullFilepath,
                     $surveyId,
-                    $this->yiiRequest->getPost('translinksfields') == '1'
+                    $transLinksFields == '1'
                 );
             } catch (Exception $e) {
                 $importResults['fatalerror'] = print_r($e->getMessage(), true);
@@ -262,20 +255,19 @@ class QuestionGroupService
     }
 
     /**
-     * Reorders question groups.
-     * Returns array containing success (boolean), message (string) and the unchanged grouparray from POST request.
+     * Reorders question groups based on the group array.
+     * Returns array containing success (boolean), message (string).
      * @param int $surveyId
+     * @param array $groupArray
      * @return array
      * @throws Exception
      */
-    public function reorderQuestionGroups(int $surveyId)
+    public function reorderQuestionGroups(int $surveyId, array $groupArray)
     {
         $survey = $this->getSurvey($surveyId);
-        $groupArray = [];
         $success = true;
         $message = '';
         if (!$survey->isActive) {
-            $groupArray = $this->yiiRequest->getPost('grouparray', []);
             if (!empty($groupArray)) {
                 foreach ($groupArray as $aQuestionGroup) {
                     //first set up the ordering for questiongroups
@@ -324,7 +316,8 @@ class QuestionGroupService
             $message = gT("You can't reorder in an active survey");
         }
         return [
-            'success' => $success, 'message' => $message, 'grouparray' => $groupArray
+            'success' => $success,
+            'message' => $message
         ];
     }
 

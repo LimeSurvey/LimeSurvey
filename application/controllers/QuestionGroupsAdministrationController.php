@@ -282,7 +282,11 @@ class QuestionGroupsAdministrationController extends LSBaseController
 
         if ($action == 'importgroup') {
             $questionGroupService = $this->getQuestionGroupServiceClass();
-            $aImportResults = $questionGroupService->importQuestionGroup($aData['surveyid'], App()->getConfig('tempdir'));
+            $aImportResults = $questionGroupService->importQuestionGroup(
+                $aData['surveyid'],
+                App()->getConfig('tempdir'),
+                App()->request->getPost('translinksfields', '')
+            );
 
             if (isset($aImportResults['fatalerror'])) {
                 App()->user->setFlash('error', $aImportResults['fatalerror']);
@@ -655,16 +659,16 @@ class QuestionGroupsAdministrationController extends LSBaseController
                 ),
             );
         }
-
+        $groupArray = App()->request->getPost('grouparray', []);
         $questionGroupService = $this->getQuestionGroupServiceClass();
-        $aResult = $questionGroupService->reorderQuestionGroups($surveyid);
+        $aResult = $questionGroupService->reorderQuestionGroups($surveyid, $groupArray);
         if ($aResult['success']) {
             return $this->renderPartial(
                 '/admin/super/_renderJson',
                 array(
                     'data' => [
                         'success' => true,
-                        'DEBUG'   => ['POST' => $_POST, 'grouparray' => $aResult['grouparray']]
+                        'DEBUG'   => ['POST' => $_POST, 'grouparray' => $groupArray]
                     ],
                 ),
             );
@@ -675,7 +679,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
                     'data' => [
                         'success' => false,
                         'message' => $aResult['message'],
-                        'DEBUG'   => ['POST' => $_POST, 'grouparray' => $aResult['grouparray']]
+                        'DEBUG'   => ['POST' => $_POST, 'grouparray' => $groupArray]
                     ],
                 ),
             );
