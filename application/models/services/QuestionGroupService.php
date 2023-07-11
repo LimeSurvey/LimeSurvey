@@ -8,6 +8,7 @@ use LimeExpressionManager;
 use LSYii_Application;
 use Survey;
 use Permission;
+use Question;
 use QuestionGroup;
 use QuestionGroupL10n;
 use Exception;
@@ -18,8 +19,11 @@ class QuestionGroupService
 {
     private Permission $modelPermission;
     private Survey $modelSurvey;
-    private CWebUser $modelUser;
-    private CHttpRequest $modelRequest;
+    private Question $modelQuestion;
+    private QuestionGroup $modelQuestionGroup;
+    private QuestionGroupL10n $modelQuestionGroupL10n;
+    private CWebUser $yiiUser;
+    private CHttpRequest $yiiRequest;
 
     /**
      *
@@ -27,13 +31,19 @@ class QuestionGroupService
     public function __construct(
         Permission $modelPermission,
         Survey $modelSurvey,
-        CWebUser $modelUser,
-        CHttpRequest $modelRequest
+        Question $modelQuestion,
+        QuestionGroup $modelQuestionGroup,
+        QuestionGroupL10n $modelQuestionGroupL10n,
+        CWebUser $yiiUser,
+        CHttpRequest $yiiRequest
     ) {
         $this->modelPermission = $modelPermission;
         $this->modelSurvey = $modelSurvey;
-        $this->modelUser = $modelUser;
-        $this->modelRequest = $modelRequest;
+        $this->modelQuestion = $modelQuestion;
+        $this->modelQuestionGroup = $modelQuestionGroup;
+        $this->modelQuestionGroupL10n = $modelQuestionGroupL10n;
+        $this->yiiUser = $yiiUser;
+        $this->yiiRequest = $yiiRequest;
     }
 
     /**
@@ -65,7 +75,7 @@ class QuestionGroupService
             );
         }
 
-        $questionGroup = QuestionGroup::model()->findByPk($questionGroupId);
+        $questionGroup = $this->modelQuestionGroup->findByPk($questionGroupId);
         if (!$questionGroup) {
             throw new Exception(
                 'Group not found'
@@ -120,7 +130,7 @@ class QuestionGroupService
      */
     public function deleteGroup($questionGroupId, $surveyId)
     {
-        if (!Permission::model()->hasSurveyPermission($surveyId, 'surveycontent', 'delete')) {
+        if (!$this->modelPermission->hasSurveyPermission($surveyId, 'surveycontent', 'delete')) {
             throw new CHttpException(403, gT("You are not authorized to delete questions."));
         }
 
@@ -128,7 +138,7 @@ class QuestionGroupService
 
         $deletedGroups = QuestionGroup::deleteWithDependency($questionGroupId, $surveyId);
         if ($deletedGroups > 0) {
-            QuestionGroup::model()->updateGroupOrder($surveyId);
+            $this->modelQuestionGroup->updateGroupOrder($surveyId);
         }
         LimeExpressionManager::UpgradeConditionsToRelevance($surveyId);
 
@@ -145,7 +155,7 @@ class QuestionGroupService
      */
     public function getQuestionGroupObject($surveyId, $questionGroupId = null)
     {
-        $oQuestionGroup = QuestionGroup::model()->findByPk($questionGroupId);
+        $oQuestionGroup = $this->modelQuestionGroup->findByPk($questionGroupId);
         if (is_int($questionGroupId) && $oQuestionGroup === null) {
             throw new CHttpException(403, gT("Invalid ID"));
         } elseif ($oQuestionGroup == null) {
@@ -167,14 +177,14 @@ class QuestionGroupService
     {
         $questionGroup = new QuestionGroup('search');
 
-        $questionGroupArray = $this->modelRequest->getParam('QuestionGroup', []);
+        $questionGroupArray = $this->yiiRequest->getParam('QuestionGroup', []);
         if (array_key_exists('group_name', $questionGroupArray)) {
             $questionGroup->group_name = $questionGroupArray['group_name'];
         }
 
-        $pageSize = $this->modelRequest->getParam('pageSize', false);
+        $pageSize = $this->yiiRequest->getParam('pageSize', false);
         if ($pageSize) {
-            $this->modelUser->setState('pageSize', (int)$pageSize);
+            $this->yiiUser->setState('pageSize', (int)$pageSize);
         }
         $questionGroup->sid = $survey->primaryKey;
         $questionGroup->language = $survey->language;
@@ -211,7 +221,7 @@ class QuestionGroupService
                 $importResults = XMLImportGroup(
                     $sFullFilepath,
                     $surveyId,
-                    $this->modelRequest->getPost('translinksfields') == '1'
+                    $this->yiiRequest->getPost('translinksfields') == '1'
                 );
             } catch (Exception $e) {
                 $importResults['fatalerror'] = print_r($e->getMessage(), true);
@@ -238,7 +248,7 @@ class QuestionGroupService
         $storeValid = true;
 
         foreach ($dataSet as $sLanguage => $aI10NBlock) {
-            $i10N = QuestionGroupL10n::model()->findByAttributes(
+            $i10N = $this->modelQuestionGroupL10n->findByAttributes(
                 ['gid' => $oQuestionGroup->gid, 'language' => $sLanguage]
             );
             $i10N->setAttributes([
@@ -265,11 +275,11 @@ class QuestionGroupService
         $success = true;
         $message = '';
         if (!$survey->isActive) {
-            $groupArray = $this->modelRequest->getPost('grouparray', []);
+            $groupArray = $this->yiiRequest->getPost('grouparray', []);
             if (!empty($groupArray)) {
                 foreach ($groupArray as $aQuestionGroup) {
                     //first set up the ordering for questiongroups
-                    $oQuestionGroups = QuestionGroup::model()->findAll(
+                    $oQuestionGroups = $this->modelQuestionGroup->findAll(
                         "gid=:gid AND sid=:sid",
                         [':gid' => $aQuestionGroup['gid'], ':sid' => $surveyId]
                     );
@@ -284,7 +294,7 @@ class QuestionGroupService
                     $aQuestionGroup['questions'] = $aQuestionGroup['questions'] ?? [];
 
                     foreach ($aQuestionGroup['questions'] as $aQuestion) {
-                        $aQuestions = \Question::model()->findAll(
+                        $aQuestions = $this->modelQuestion->findAll(
                             "qid=:qid AND sid=:sid",
                             [':qid' => $aQuestion['qid'], ':sid' => $surveyId]
                         );
@@ -309,7 +319,7 @@ class QuestionGroupService
                     }
                 }
             }
-            QuestionGroup::model()->cleanOrder($surveyId);
+            $this->modelQuestionGroup->cleanOrder($surveyId);
         } else {
             $message = gT("You can't reorder in an active survey");
         }
