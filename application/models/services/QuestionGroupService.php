@@ -2,7 +2,7 @@
 
 namespace LimeSurvey\Models\Services;
 
-use Limesurvey\DI;
+use LimeSurvey\DI;
 use LimeSurvey\Models\Services\Proxy\ProxyExpressionManager;
 use LSYii_Application;
 use Survey;
