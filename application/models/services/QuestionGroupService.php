@@ -2,7 +2,6 @@
 
 namespace LimeSurvey\Models\Services;
 
-use CWebUser;
 use LimeExpressionManager;
 use LSYii_Application;
 use Survey;
@@ -21,7 +20,6 @@ class QuestionGroupService
     private Question $modelQuestion;
     private QuestionGroup $modelQuestionGroup;
     private QuestionGroupL10n $modelQuestionGroupL10n;
-    private CWebUser $yiiUser;
 
     /**
      *
@@ -31,15 +29,13 @@ class QuestionGroupService
         Survey $modelSurvey,
         Question $modelQuestion,
         QuestionGroup $modelQuestionGroup,
-        QuestionGroupL10n $modelQuestionGroupL10n,
-        CWebUser $yiiUser,
+        QuestionGroupL10n $modelQuestionGroupL10n
     ) {
         $this->modelPermission = $modelPermission;
         $this->modelSurvey = $modelSurvey;
         $this->modelQuestion = $modelQuestion;
         $this->modelQuestionGroup = $modelQuestionGroup;
         $this->modelQuestionGroupL10n = $modelQuestionGroupL10n;
-        $this->yiiUser = $yiiUser;
     }
 
     /**
