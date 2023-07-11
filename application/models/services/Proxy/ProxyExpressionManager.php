@@ -75,7 +75,7 @@ class ProxyExpressionManager
     }
 
     /**
-     * See RevertUpgradeConditionsToRelevance
+     * @see \LimeExpressionManager::RevertUpgradeConditionsToRelevance
      * @param int $surveyId
      * @param int|null $qid
      * @return void
@@ -86,7 +86,7 @@ class ProxyExpressionManager
     }
 
     /**
-     * See \LimeExpressionManager::UpgradeConditionsToRelevance
+     * @see \LimeExpressionManager::UpgradeConditionsToRelevance
      * @param int $surveyId
      * @param int|null $qid
      * @return void
@@ -97,7 +97,7 @@ class ProxyExpressionManager
     }
 
     /**
-     * See \LimeExpressionManager::SetDirtyFlag
+     * @see \LimeExpressionManager::SetDirtyFlag
      * @return void
      */
     public function setDirtyFlag()

@@ -4,6 +4,7 @@ namespace LimeSurvey\Models\Services;
 
 use LimeSurvey\DI;
 use LimeSurvey\Models\Services\Proxy\ProxyExpressionManager;
+use LimeSurvey\Models\Services\Proxy\ProxyQuestionGroup;
 use LSYii_Application;
 use Survey;
 use Permission;
@@ -22,6 +23,7 @@ class QuestionGroupService
     private QuestionGroup $modelQuestionGroup;
     private QuestionGroupL10n $modelQuestionGroupL10n;
     private ProxyExpressionManager $proxyExpressionManager;
+    private ProxyQuestionGroup $proxyQuestionGroup;
 
     public function __construct(
         Permission $modelPermission,
@@ -29,7 +31,8 @@ class QuestionGroupService
         Question $modelQuestion,
         QuestionGroup $modelQuestionGroup,
         QuestionGroupL10n $modelQuestionGroupL10n,
-        ProxyExpressionManager $proxyExpressionManager
+        ProxyExpressionManager $proxyExpressionManager,
+        ProxyQuestionGroup $proxyQuestionGroup
     ) {
         $this->modelPermission = $modelPermission;
         $this->modelSurvey = $modelSurvey;
@@ -37,6 +40,7 @@ class QuestionGroupService
         $this->modelQuestionGroup = $modelQuestionGroup;
         $this->modelQuestionGroupL10n = $modelQuestionGroupL10n;
         $this->proxyExpressionManager = $proxyExpressionManager;
+        $this->proxyQuestionGroup = $proxyQuestionGroup;
     }
 
     /**
@@ -129,7 +133,7 @@ class QuestionGroupService
 
         $this->proxyExpressionManager->revertUpgradeConditionsToRelevance($surveyId);
 
-        $deletedGroups = QuestionGroup::deleteWithDependency($questionGroupId, $surveyId);
+        $deletedGroups = $this->proxyQuestionGroup->deleteQuestionGroupWithDependency($questionGroupId, $surveyId);
         if ($deletedGroups > 0) {
             $this->modelQuestionGroup->updateGroupOrder($surveyId);
         }
