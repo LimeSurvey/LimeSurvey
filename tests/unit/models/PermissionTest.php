@@ -6,14 +6,42 @@ use Permission;
 use SurveysGroups;
 use PHPUnit\Framework\TestCase;
 
-class PermissionTest extends BaseModelTestCase
+class PermissionTest extends TestBaseClass
 {
     protected $modelClassName = Permission::class;
+    private static $user;
 
     public static function setupBeforeClass(): void
     {
         \Yii::import('application.helpers.common_helper', true);
         \Yii::import('application.helpers.globalsettings_helper', true);
+
+        // Create user
+        $userName = \Yii::app()->securityManager->generateRandomString(8);
+        $password = createPassword();
+
+        $userData = array(
+            'users_name' => $userName,
+            'full_name' => $userName,
+            'email' => $userName . '@example.com',
+            'lang' => 'auto',
+            'password' => $password
+        );
+
+        $permissions = array(
+            'surveys' => array(
+                'read' => false
+            )
+        );
+
+        $user = self::createUserWithPermissions($userData, $permissions);
+
+        self::$user = $user;
+    }
+
+    public static function tearDownAfterClass(): void
+    {
+        self::$user->delete();
     }
 
     /**
@@ -52,7 +80,7 @@ class PermissionTest extends BaseModelTestCase
     public function testOwnershipSuccess()
     {
         // NB: Not 1 (superadmin).
-        $userId = 2;
+        $userId = self::$user->uid;
         $surveysGroupGid = 999;
 
         $surveysGroup = $this
@@ -83,7 +111,7 @@ class PermissionTest extends BaseModelTestCase
     public function testOwnershipFailure()
     {
         // NB: Not 1 (superadmin).
-        $userId = 2;
+        $userId = self::$user->uid;
         $surveysGroupGid = 999;
 
         $surveysGroup = $this
