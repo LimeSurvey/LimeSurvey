@@ -170,6 +170,8 @@ class TestBaseClass extends TestCase
             $plugin->active = 1;
             $plugin->save();
         }
+
+        return $plugin;
     }
 
     /**

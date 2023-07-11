@@ -13,6 +13,8 @@
 *
 */
 
+use LimeSurvey\Models\Services\UserManager;
+
 /**
  * Class User
  *
@@ -115,6 +117,7 @@ class User extends LSActiveRecord
             array('templateeditormode', 'in', 'range' => array('default', 'full', 'none'), 'allowEmpty' => true),
             array('dateformat', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
             array('expires', 'date','format' => ['yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m'],'allowEmpty' => true),
+            array('users_name', 'unsafe' , 'on' => ['update']),
 
             // created as datetime default current date in create scenario ?
             // modifier as datetime default current date ?
@@ -567,7 +570,7 @@ class User extends LSActiveRecord
                 'data-bs-target' => '#confirmation-modal',
                 'data-url'       => $changeOwnershipUrl,
                 'data-userid'    => $this->uid,
-                'data-user'      => $this->full_name,
+                'data-user'      => CHtml::encode($this->full_name),
                 'data-action'    => 'deluser',
                 'data-onclick'   => "LS.UserManagement.triggerRunAction(\"#UserManagement--takeown-$this->uid\")",
                 'data-message'   => gT('Do you want to take ownerschip of this user?'),
@@ -951,9 +954,9 @@ class User extends LSActiveRecord
                 'data-post-url'  => App()->createUrl("userGroup/deleteUserFromGroup"),
                 'data-post-datas' => json_encode(['ugid' => $userGroupId, 'uid' => $currentUserId]),
                 'data-message'   => sprintf(
-                    gT("Are you sure you want to delete user '%s' from usergroup '%s'?"),
-                    $this->users_name,
-                    $userGroup->name
+                    gT("Are you sure you want to delete user '%s' from user group '%s'?"),
+                    CHtml::encode($this->users_name),
+                    CHtml::encode($userGroup->name)
                 ),
                 'data-bs-target' => "#confirmation-modal"
             ]
