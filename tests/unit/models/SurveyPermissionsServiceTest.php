@@ -281,35 +281,14 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
      */
     public function testReadPermissionNotInGroupSameGroupPolicy()
     {
-        // Create user.
-        $userName = \Yii::app()->securityManager->generateRandomString(8);
-        $password = createPassword();
+        $usersReadPermission = true;
+        $inGroup = false;
+        $sameGroupPolicy = true;
 
-        $userData = array(
-            'users_name' => $userName,
-            'full_name' => $userName,
-            'email' => $userName . '@example.com',
-            'lang' => 'auto',
-            'password' => $password
-        );
-
-        $permissions = array(
-            'users' => array(
-                'read' => true
-            )
-        );
-
-        $user = self::createUserWithPermissions($userData, $permissions);
-
-        // Login
-        $sessionUidTmp = \Yii::app()->session['loginID'];
-        $userIdTmp = \Yii::app()->user->id;
-
-        \Yii::app()->session['loginID'] = $user->uid;
-        \Yii::app()->user->id = $user->uid;
+        $contextData = $this->setContext($usersReadPermission, $inGroup, $sameGroupPolicy);
 
         // List users without permissions for this survey
-        $surveyPermissions = new SurveyPermissions(self::$testSurvey, true);
+        $surveyPermissions = $contextData['surveyPermissions'];
         $usersWithoutPermissions = $surveyPermissions->getSurveyUserList();
         $this->assertCount(4, $usersWithoutPermissions, 'The number of users which still not have survey permissions is incorrect.');
 
@@ -330,12 +309,11 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
         $managePermissions = $surveyPermissions->canManageSurveyPermissionsForUser(self::$userIds[0]);
         $this->assertTrue($managePermissions, 'The user should be able to manage permissions for a user in the same group in this context.');
 
-        // Restore login data
-        \Yii::app()->session['loginID'] = $sessionUidTmp;
-        \Yii::app()->user->id = $userIdTmp;
+        // Test if the list of user groups will need filtering before viewing.
+        $shouldFilterUserGroupList = shouldFilterUserGroupList();
+        $this->assertFalse($shouldFilterUserGroupList, 'User group list should not be filtered in this context.');
 
-        //Delete user
-        $user->delete();
+        $this->restoreContext($contextData);
     }
 
     /**
@@ -347,35 +325,14 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
      */
     public function testReadPermissionNotInGroupNoSameGroupPolicy()
     {
-        // Create user.
-        $userName = \Yii::app()->securityManager->generateRandomString(8);
-        $password = createPassword();
+        $usersReadPermission = true;
+        $inGroup = false;
+        $sameGroupPolicy = false;
 
-        $userData = array(
-            'users_name' => $userName,
-            'full_name' => $userName,
-            'email' => $userName . '@example.com',
-            'lang' => 'auto',
-            'password' => $password
-        );
-
-        $permissions = array(
-            'users' => array(
-                'read' => true
-            )
-        );
-
-        $user = self::createUserWithPermissions($userData, $permissions);
-
-        // Login
-        $sessionUidTmp = \Yii::app()->session['loginID'];
-        $userIdTmp = \Yii::app()->user->id;
-
-        \Yii::app()->session['loginID'] = $user->uid;
-        \Yii::app()->user->id = $user->uid;
+        $contextData = $this->setContext($usersReadPermission, $inGroup, $sameGroupPolicy);
 
         // List users without permissions for this survey
-        $surveyPermissions = new SurveyPermissions(self::$testSurvey, false);
+        $surveyPermissions = $contextData['surveyPermissions'];
         $users = $surveyPermissions->getSurveyUserList();
         $this->assertCount(4, $users, 'The number of users which still not have survey permissions is incorrect.');
 
@@ -396,12 +353,11 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
         $managePermissions = $surveyPermissions->canManageSurveyPermissionsForUser(self::$userIds[0]);
         $this->assertTrue($managePermissions, 'The user should be able to manage permissions for a user in the same group in this context.');
 
-        // Restore login data
-        \Yii::app()->session['loginID'] = $sessionUidTmp;
-        \Yii::app()->user->id = $userIdTmp;
+        // Test if the list of user groups will need filtering before viewing.
+        $shouldFilterUserGroupList = shouldFilterUserGroupList();
+        $this->assertFalse($shouldFilterUserGroupList, 'User group list should not be filtered in this context.');
 
-        //Delete user
-        $user->delete();
+        $this->restoreContext($contextData);
     }
 
     /**
@@ -413,40 +369,14 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
      */
     public function testReadPermissionInGroupSameGroupPolicy()
     {
-        // Create user
-        $userName = \Yii::app()->securityManager->generateRandomString(8);
-        $password = createPassword();
+        $usersReadPermission = true;
+        $inGroup = true;
+        $sameGroupPolicy = true;
 
-        $userData = array(
-            'users_name' => $userName,
-            'full_name' => $userName,
-            'email' => $userName . '@example.com',
-            'lang' => 'auto',
-            'password' => $password
-        );
-
-        $permissions = array(
-            'users' => array(
-                'read' => true
-            )
-        );
-
-        $user = self::createUserWithPermissions($userData, $permissions);
-
-        $userInGroup = new \UserInGroup();
-        $userInGroup->ugid = self::$userGroupId;
-        $userInGroup->uid = $user->uid;
-        $userInGroup->save();
-
-        // Login
-        $sessionUidTmp = \Yii::app()->session['loginID'];
-        $userIdTmp = \Yii::app()->user->id;
-
-        \Yii::app()->session['loginID'] = $user->uid;
-        \Yii::app()->user->id = $user->uid;
+        $contextData = $this->setContext($usersReadPermission, $inGroup, $sameGroupPolicy);
 
         // List users without permissions for this survey
-        $surveyPermissions = new SurveyPermissions(self::$testSurvey, true);
+        $surveyPermissions = $contextData['surveyPermissions'];
         $users = $surveyPermissions->getSurveyUserList();
         $this->assertCount(4, $users, 'The number of users which still not have survey permissions is incorrect.');
 
@@ -467,12 +397,11 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
         $managePermissions = $surveyPermissions->canManageSurveyPermissionsForUser(self::$userIds[0]);
         $this->assertTrue($managePermissions, 'The user should be able to manage permissions for a user in the same group in this context.');
 
-        // Restore login data
-        \Yii::app()->session['loginID'] = $sessionUidTmp;
-        \Yii::app()->user->id = $userIdTmp;
+        // Test if the list of user groups will need filtering before viewing.
+        $shouldFilterUserGroupList = shouldFilterUserGroupList();
+        $this->assertFalse($shouldFilterUserGroupList, 'User group list should not be filtered in this context.');
 
-        //Delete user
-        $user->delete();
+        $this->restoreContext($contextData);
     }
 
     /**
@@ -484,40 +413,14 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
      */
     public function testReadPermissionInGroupNoSameGroupPolicy()
     {
-        // Create user
-        $userName = \Yii::app()->securityManager->generateRandomString(8);
-        $password = createPassword();
+        $usersReadPermission = true;
+        $inGroup = true;
+        $sameGroupPolicy = false;
 
-        $userData = array(
-            'users_name' => $userName,
-            'full_name' => $userName,
-            'email' => $userName . '@example.com',
-            'lang' => 'auto',
-            'password' => $password
-        );
-
-        $permissions = array(
-            'users' => array(
-                'read' => true
-            )
-        );
-
-        $user = self::createUserWithPermissions($userData, $permissions);
-
-        $userInGroup = new \UserInGroup();
-        $userInGroup->ugid = self::$userGroupId;
-        $userInGroup->uid = $user->uid;
-        $userInGroup->save();
-
-        // Login
-        $sessionUidTmp = \Yii::app()->session['loginID'];
-        $userIdTmp = \Yii::app()->user->id;
-
-        \Yii::app()->session['loginID'] = $user->uid;
-        \Yii::app()->user->id = $user->uid;
+        $contextData = $this->setContext($usersReadPermission, $inGroup, $sameGroupPolicy);
 
         // List users without permissions for this survey
-        $surveyPermissions = new SurveyPermissions(self::$testSurvey, false);
+        $surveyPermissions = $contextData['surveyPermissions'];
         $users = $surveyPermissions->getSurveyUserList();
         $this->assertCount(4, $users, 'The number of users which still not have survey permissions is incorrect.');
 
@@ -538,12 +441,11 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
         $managePermissions = $surveyPermissions->canManageSurveyPermissionsForUser(self::$userIds[0]);
         $this->assertTrue($managePermissions, 'The user should be able to manage permissions for a user in the same group in this context.');
 
-        // Restore login data
-        \Yii::app()->session['loginID'] = $sessionUidTmp;
-        \Yii::app()->user->id = $userIdTmp;
+        // Test if the list of user groups will need filtering before viewing.
+        $shouldFilterUserGroupList = shouldFilterUserGroupList();
+        $this->assertFalse($shouldFilterUserGroupList, 'User group list should not be filtered in this context.');
 
-        //Delete user
-        $user->delete();
+        $this->restoreContext($contextData);
     }
 
     /**
@@ -555,35 +457,14 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
      */
     public function testNoReadPermissionNotInGroupSameGroupPolicy()
     {
-        // Create user
-        $userName = \Yii::app()->securityManager->generateRandomString(8);
-        $password = createPassword();
+        $usersReadPermission = false;
+        $inGroup = false;
+        $sameGroupPolicy = true;
 
-        $userData = array(
-            'users_name' => $userName,
-            'full_name' => $userName,
-            'email' => $userName . '@example.com',
-            'lang' => 'auto',
-            'password' => $password
-        );
-
-        $permissions = array(
-            'users' => array(
-                'read' => false
-            )
-        );
-
-        $user = self::createUserWithPermissions($userData, $permissions);
-
-        // Login
-        $sessionUidTmp = \Yii::app()->session['loginID'];
-        $userIdTmp = \Yii::app()->user->id;
-
-        \Yii::app()->session['loginID'] = $user->uid;
-        \Yii::app()->user->id = $user->uid;
+        $contextData = $this->setContext($usersReadPermission, $inGroup, $sameGroupPolicy);
 
         // List users without permissions for this survey
-        $surveyPermissions = new SurveyPermissions(self::$testSurvey, true);
+        $surveyPermissions = $contextData['surveyPermissions'];
         $users = $surveyPermissions->getSurveyUserList();
         $this->assertCount(1, $users, 'The number of users which still not have survey permissions is incorrect.');
 
@@ -600,12 +481,11 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
         $managePermissions = $surveyPermissions->canManageSurveyPermissionsForUser(self::$userIds[3]);
         $this->assertFalse($managePermissions, 'The user should not be able to manage permissions for a normal user in this context.');
 
-        // Restore login data
-        \Yii::app()->session['loginID'] = $sessionUidTmp;
-        \Yii::app()->user->id = $userIdTmp;
+        // Test if the list of user groups will need filtering before viewing.
+        $shouldFilterUserGroupList = shouldFilterUserGroupList();
+        $this->assertTrue($shouldFilterUserGroupList, 'User group list should be filtered in this context.');
 
-        //Delete user
-        $user->delete();
+        $this->restoreContext($contextData);
     }
 
     /**
@@ -617,35 +497,14 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
      */
     public function testNoReadPermissionNotInGroupNoSameGroupPolicy()
     {
-        // Create user
-        $userName = \Yii::app()->securityManager->generateRandomString(8);
-        $password = createPassword();
+        $usersReadPermission = false;
+        $inGroup = false;
+        $sameGroupPolicy = false;
 
-        $userData = array(
-            'users_name' => $userName,
-            'full_name' => $userName,
-            'email' => $userName . '@example.com',
-            'lang' => 'auto',
-            'password' => $password
-        );
-
-        $permissions = array(
-            'users' => array(
-                'read' => false
-            )
-        );
-
-        $user = self::createUserWithPermissions($userData, $permissions);
-
-        // Login
-        $sessionUidTmp = \Yii::app()->session['loginID'];
-        $userIdTmp = \Yii::app()->user->id;
-
-        \Yii::app()->session['loginID'] = $user->uid;
-        \Yii::app()->user->id = $user->uid;
+        $contextData = $this->setContext($usersReadPermission, $inGroup, $sameGroupPolicy);
 
         // List users without permissions for this survey
-        $surveyPermissions = new SurveyPermissions(self::$testSurvey, false);
+        $surveyPermissions = $contextData['surveyPermissions'];
         $users = $surveyPermissions->getSurveyUserList();
         $this->assertEmpty($users, 'The number of users which still not have survey permissions is incorrect.');
 
@@ -662,12 +521,11 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
         $managePermissions = $surveyPermissions->canManageSurveyPermissionsForUser(self::$userIds[3]);
         $this->assertFalse($managePermissions, 'The user should not be able to manage permissions for a normal user in this context.');
 
-        // Restore login data
-        \Yii::app()->session['loginID'] = $sessionUidTmp;
-        \Yii::app()->user->id = $userIdTmp;
+        // Test if the list of user groups will need filtering before viewing.
+        $shouldFilterUserGroupList = shouldFilterUserGroupList();
+        $this->assertFalse($shouldFilterUserGroupList, 'User group list should not be filtered in this context.');
 
-        //Delete user
-        $user->delete();
+        $this->restoreContext($contextData);
     }
 
     /**
@@ -679,40 +537,14 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
      */
     public function testNoReadPermissionUserInGroupSameGroupPolicy()
     {
-        // Create user
-        $userName = \Yii::app()->securityManager->generateRandomString(8);
-        $password = createPassword();
+        $usersReadPermission = false;
+        $inGroup = true;
+        $sameGroupPolicy = true;
 
-        $userData = array(
-            'users_name' => $userName,
-            'full_name' => $userName,
-            'email' => $userName . '@example.com',
-            'lang' => 'auto',
-            'password' => $password
-        );
-
-        $permissions = array(
-            'users' => array(
-                'read' => false
-            )
-        );
-
-        $user = self::createUserWithPermissions($userData, $permissions);
-
-        $userInGroup = new \UserInGroup();
-        $userInGroup->ugid = self::$userGroupId;
-        $userInGroup->uid = $user->uid;
-        $userInGroup->save();
-
-        // Login
-        $sessionUidTmp = \Yii::app()->session['loginID'];
-        $userIdTmp = \Yii::app()->user->id;
-
-        \Yii::app()->session['loginID'] = $user->uid;
-        \Yii::app()->user->id = $user->uid;
+        $contextData = $this->setContext($usersReadPermission, $inGroup, $sameGroupPolicy);
 
         // List users without permissions for this survey
-        $surveyPermissions = new SurveyPermissions(self::$testSurvey, true);
+        $surveyPermissions = $contextData['surveyPermissions'];
         $users = $surveyPermissions->getSurveyUserList();
         $this->assertCount(2, $users, 'The number of users which still not have survey permissions is incorrect.');
 
@@ -733,12 +565,11 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
         $managePermissions = $surveyPermissions->canManageSurveyPermissionsForUser(self::$userIds[0]);
         $this->assertTrue($managePermissions, 'The user should be able to manage permissions for a user in the same group in this context.');
 
-        // Restore login data
-        \Yii::app()->session['loginID'] = $sessionUidTmp;
-        \Yii::app()->user->id = $userIdTmp;
+        // Test if the list of user groups will need filtering before viewing.
+        $shouldFilterUserGroupList = shouldFilterUserGroupList();
+        $this->assertTrue($shouldFilterUserGroupList, 'User group list should be filtered in this context.');
 
-        //Delete user
-        $user->delete();
+        $this->restoreContext($contextData);
     }
 
     /**
@@ -750,40 +581,14 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
      */
     public function testNoReadPermissionUserInGroupNoSameGroupPolicy()
     {
-        // Create user
-        $userName = \Yii::app()->securityManager->generateRandomString(8);
-        $password = createPassword();
+        $usersReadPermission = false;
+        $inGroup = true;
+        $sameGroupPolicy = false;
 
-        $userData = array(
-            'users_name' => $userName,
-            'full_name' => $userName,
-            'email' => $userName . '@example.com',
-            'lang' => 'auto',
-            'password' => $password
-        );
-
-        $permissions = array(
-            'users' => array(
-                'read' => false
-            )
-        );
-
-        $user = self::createUserWithPermissions($userData, $permissions);
-
-        $userInGroup = new \UserInGroup();
-        $userInGroup->ugid = self::$userGroupId;
-        $userInGroup->uid = $user->uid;
-        $userInGroup->save();
-
-        // Login
-        $sessionUidTmp = \Yii::app()->session['loginID'];
-        $userIdTmp = \Yii::app()->user->id;
-
-        \Yii::app()->session['loginID'] = $user->uid;
-        \Yii::app()->user->id = $user->uid;
+        $contextData = $this->setContext($usersReadPermission, $inGroup, $sameGroupPolicy);
 
         // List users without permissions for this survey
-        $surveyPermissions = new SurveyPermissions(self::$testSurvey, false);
+        $surveyPermissions = $contextData['surveyPermissions'];
         $users = $surveyPermissions->getSurveyUserList();
         $this->assertEmpty($users, 'The number of users which still not have survey permissions is incorrect.');
 
@@ -804,12 +609,70 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
         $managePermissions = $surveyPermissions->canManageSurveyPermissionsForUser(self::$userIds[0]);
         $this->assertFalse($managePermissions, 'The user should not be able to manage permissions for a user in the same group in this context.');
 
-        // Restore login data
-        \Yii::app()->session['loginID'] = $sessionUidTmp;
-        \Yii::app()->user->id = $userIdTmp;
+        // Test if the list of user groups will need filtering before viewing.
+        $shouldFilterUserGroupList = shouldFilterUserGroupList();
+        $this->assertFalse($shouldFilterUserGroupList, 'User group list should not be filtered in this context.');
+
+        $this->restoreContext($contextData);
+    }
+
+    private function setContext($usersReadPermission, $inGroup, $sameGroupPolicy)
+    {
+        $contextData = array();
+
+        // Create user
+        $userName = \Yii::app()->securityManager->generateRandomString(8);
+        $password = createPassword();
+
+        $userData = array(
+            'users_name' => $userName,
+            'full_name' => $userName,
+            'email' => $userName . '@example.com',
+            'lang' => 'auto',
+            'password' => $password
+        );
+
+        $permissions = array(
+            'users' => array(
+                'read' => $usersReadPermission
+            )
+        );
+
+        $user = self::createUserWithPermissions($userData, $permissions);
+
+        if ($inGroup) {
+            $userInGroup = new \UserInGroup();
+            $userInGroup->ugid = self::$userGroupId;
+            $userInGroup->uid = $user->uid;
+            $userInGroup->save();
+        }
+
+        // Login
+        $contextData['restore']['sessionUidTmp'] = \Yii::app()->session['loginID'];
+        $contextData['restore']['userIdTmp'] = \Yii::app()->user->id;
+
+        \Yii::app()->session['loginID'] = $user->uid;
+        \Yii::app()->user->id = $user->uid;
+
+        $contextData['surveyPermissions'] = new SurveyPermissions(self::$testSurvey, $sameGroupPolicy);
+        $contextData['restore']['userControlSameGroupPolicyTmp'] = App()->getConfig('usercontrolSameGroupPolicy', true);
+        App()->setConfig('usercontrolSameGroupPolicy', $sameGroupPolicy);
+
+        $contextData['restore']['user'] = $user;
+
+        return $contextData;
+    }
+
+    private function restoreContext($contextData)
+    {
+        // Restore data
+        \Yii::app()->session['loginID'] = $contextData['restore']['sessionUidTmp'];
+        \Yii::app()->user->id = $contextData['restore']['userIdTmp'];
+
+        App()->setConfig('usercontrolSameGroupPolicy', $contextData['restore']['userControlSameGroupPolicyTmp']);
 
         //Delete user
-        $user->delete();
+        $contextData['restore']['user']->delete();
     }
 
     public static function tearDownAfterClass(): void
