@@ -102,6 +102,6 @@ $('#" . $entryData['name'] . "').on('submit.editLocalsettings', function(e){
 ",
     LSYii_ClientScript::POS_POSTSCRIPT
 );
-App()->getClientScript()->registerScriptFile('/application/views/surveyAdministration/javascript/text-option-inherit.js', LSYii_ClientScript::POS_END)
+App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'text-option-inherit.js', LSYii_ClientScript::POS_END)
 
 ?>
