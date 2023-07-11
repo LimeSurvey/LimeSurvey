@@ -313,6 +313,18 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
         $shouldFilterUserGroupList = shouldFilterUserGroupList();
         $this->assertFalse($shouldFilterUserGroupList, 'User group list should not be filtered in this context.');
 
+        // Test if all user groups are returned or if they are filtered by usercontrolSameGroupPolicy
+        $userGroup = new \UserGroup();
+        $userGroup->name = 'TestUserGroup2';
+        $userGroup->description = 'some nice description';
+        $userGroup->owner_id = 1; //admin owns this group
+        $userGroup->save();
+
+        $userGroupList = getUserGroupList();
+        $this->assertCount(2, $userGroupList, 'User group list should not be filtered in this context.');
+
+        $userGroup->delete();
+
         $this->restoreContext($contextData);
     }
 
@@ -356,6 +368,18 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
         // Test if the list of user groups will need filtering before viewing.
         $shouldFilterUserGroupList = shouldFilterUserGroupList();
         $this->assertFalse($shouldFilterUserGroupList, 'User group list should not be filtered in this context.');
+
+        // Test if all user groups are returned or if they are filtered by usercontrolSameGroupPolicy
+        $userGroup = new \UserGroup();
+        $userGroup->name = 'TestUserGroup2';
+        $userGroup->description = 'some nice description';
+        $userGroup->owner_id = 1; //admin owns this group
+        $userGroup->save();
+
+        $userGroupList = getUserGroupList();
+        $this->assertCount(2, $userGroupList, 'User group list should not be filtered in this context.');
+
+        $userGroup->delete();
 
         $this->restoreContext($contextData);
     }
@@ -401,6 +425,18 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
         $shouldFilterUserGroupList = shouldFilterUserGroupList();
         $this->assertFalse($shouldFilterUserGroupList, 'User group list should not be filtered in this context.');
 
+        // Test if all user groups are returned or if they are filtered by usercontrolSameGroupPolicy
+        $userGroup = new \UserGroup();
+        $userGroup->name = 'TestUserGroup2';
+        $userGroup->description = 'some nice description';
+        $userGroup->owner_id = 1; //admin owns this group
+        $userGroup->save();
+
+        $userGroupList = getUserGroupList();
+        $this->assertCount(2, $userGroupList, 'User group list should not be filtered in this context.');
+
+        $userGroup->delete();
+
         $this->restoreContext($contextData);
     }
 
@@ -445,6 +481,18 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
         $shouldFilterUserGroupList = shouldFilterUserGroupList();
         $this->assertFalse($shouldFilterUserGroupList, 'User group list should not be filtered in this context.');
 
+        // Test if all user groups are returned or if they are filtered by usercontrolSameGroupPolicy
+        $userGroup = new \UserGroup();
+        $userGroup->name = 'TestUserGroup2';
+        $userGroup->description = 'some nice description';
+        $userGroup->owner_id = 1; //admin owns this group
+        $userGroup->save();
+
+        $userGroupList = getUserGroupList();
+        $this->assertCount(2, $userGroupList, 'User group list should not be filtered in this context.');
+
+        $userGroup->delete();
+
         $this->restoreContext($contextData);
     }
 
@@ -485,6 +533,18 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
         $shouldFilterUserGroupList = shouldFilterUserGroupList();
         $this->assertTrue($shouldFilterUserGroupList, 'User group list should be filtered in this context.');
 
+        // Test if all user groups are returned or if they are filtered by usercontrolSameGroupPolicy
+        $userGroup = new \UserGroup();
+        $userGroup->name = 'TestUserGroup2';
+        $userGroup->description = 'some nice description';
+        $userGroup->owner_id = 1; //admin owns this group
+        $userGroup->save();
+
+        $userGroupList = getUserGroupList();
+        $this->assertCount(0, $userGroupList, 'User group list should be filtered in this context.');
+
+        $userGroup->delete();
+
         $this->restoreContext($contextData);
     }
 
@@ -524,6 +584,18 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
         // Test if the list of user groups will need filtering before viewing.
         $shouldFilterUserGroupList = shouldFilterUserGroupList();
         $this->assertFalse($shouldFilterUserGroupList, 'User group list should not be filtered in this context.');
+
+        // Test if all user groups are returned or if they are filtered by usercontrolSameGroupPolicy
+        $userGroup = new \UserGroup();
+        $userGroup->name = 'TestUserGroup2';
+        $userGroup->description = 'some nice description';
+        $userGroup->owner_id = 1; //admin owns this group
+        $userGroup->save();
+
+        $userGroupList = getUserGroupList();
+        $this->assertCount(2, $userGroupList, 'User group list should  not be filtered in this context.');
+
+        $userGroup->delete();
 
         $this->restoreContext($contextData);
     }
@@ -569,6 +641,18 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
         $shouldFilterUserGroupList = shouldFilterUserGroupList();
         $this->assertTrue($shouldFilterUserGroupList, 'User group list should be filtered in this context.');
 
+        // Test if all user groups are returned or if they are filtered by usercontrolSameGroupPolicy
+        $userGroup = new \UserGroup();
+        $userGroup->name = 'TestUserGroup2';
+        $userGroup->description = 'some nice description';
+        $userGroup->owner_id = 1; //admin owns this group
+        $userGroup->save();
+
+        $userGroupList = getUserGroupList();
+        $this->assertCount(1, $userGroupList, 'User group list should be filtered in this context.');
+
+        $userGroup->delete();
+
         $this->restoreContext($contextData);
     }
 
@@ -612,6 +696,18 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
         // Test if the list of user groups will need filtering before viewing.
         $shouldFilterUserGroupList = shouldFilterUserGroupList();
         $this->assertFalse($shouldFilterUserGroupList, 'User group list should not be filtered in this context.');
+
+        // Test if all user groups are returned or if they are filtered by usercontrolSameGroupPolicy
+        $userGroup = new \UserGroup();
+        $userGroup->name = 'TestUserGroup2';
+        $userGroup->description = 'some nice description';
+        $userGroup->owner_id = 1; //admin owns this group
+        $userGroup->save();
+
+        $userGroupList = getUserGroupList();
+        $this->assertCount(2, $userGroupList, 'User group list should not be filtered in this context.');
+
+        $userGroup->delete();
 
         $this->restoreContext($contextData);
     }
