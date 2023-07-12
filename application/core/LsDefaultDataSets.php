@@ -1035,7 +1035,7 @@ class LsDefaultDataSets
                                      "brandlogo":"off","brandlogofile":"image::theme::files\/logo.png","font":"ibm-sans",
                                      "cssframework":{"@attributes":{"type":"dropdown","category":"Simple options",
                                      "width":"12","title":"Variations","parent":"cssframework"}}}',
-            'cssframework_name' => 'bootstrap',
+            'cssframework_name' => '',
             'cssframework_css'  => '',
             'cssframework_js'   => '',
             'packages_to_load'  => '{"add":["pjax","moment","font-ibm-sans","font-ibm-serif"]}',
