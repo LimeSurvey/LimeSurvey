@@ -24,6 +24,11 @@ class LSActiveRecord extends CActiveRecord
 
     public $bEncryption = false;
 
+    /** @var integer[] to keep during same process**/
+    public static $maxIds = [];
+    /** @var integer[] to keep during same process**/
+    public static $minIds = [];
+
     /**
      * Lists the behaviors of this model
      *
@@ -119,8 +124,10 @@ class LSActiveRecord extends CActiveRecord
      */
     public function getMaxId($field = null, $forceRefresh = false)
     {
-        static $maxIds = [];
-
+        $dynamicId = $this->getDynamicId();
+        if (!isset(self::$maxIds[$dynamicId])) {
+            self::$maxIds[$dynamicId] = [];
+        }
         if (is_null($field)) {
             $primaryKey = $this->getMetaData()->tableSchema->primaryKey;
             if (is_string($primaryKey)) {
@@ -130,18 +137,14 @@ class LSActiveRecord extends CActiveRecord
                 throw new Exception(sprintf('Table %s has a composite primary key, please explicitly state what field you need the max value for.', $this->tableName()));
             }
         }
-
-        if ($forceRefresh || !array_key_exists($field, $maxIds)) {
+        if ($forceRefresh || !array_key_exists($field, self::$maxIds[$dynamicId])) {
             $maxId = $this->dbConnection->createCommand()
                 ->select('MAX(' . $this->dbConnection->quoteColumnName($field) . ')')
                 ->from($this->tableName())
                 ->queryScalar();
-
-            // Save so we can reuse in the same request
-            $maxIds[$field] = $maxId;
+            self::$maxIds[$dynamicId][$field] = $maxId;
         }
-
-        return $maxIds[$field];
+        return self::$maxIds[$dynamicId][$field];
     }
 
     /**
@@ -157,8 +160,10 @@ class LSActiveRecord extends CActiveRecord
      */
     public function getMinId($field = null, $forceRefresh = false)
     {
-        static $minIds = [];
-
+        $dynamicId = $this->getDynamicId();
+        if (!isset(self::$minIds[$dynamicId])) {
+            self::$minIds[$dynamicId] = [];
+        }
         if (is_null($field)) {
             $primaryKey = $this->getMetaData()->tableSchema->primaryKey;
             if (is_string($primaryKey)) {
@@ -169,17 +174,17 @@ class LSActiveRecord extends CActiveRecord
             }
         }
 
-        if ($forceRefresh || !array_key_exists($field, $minIds)) {
+        if ($forceRefresh || !array_key_exists($field, self::$minIds[$dynamicId])) {
             $minId = $this->dbConnection->createCommand()
                 ->select('MIN(' . $this->dbConnection->quoteColumnName($field) . ')')
                 ->from($this->tableName())
                 ->queryScalar();
 
             // Save so we can reuse in the same request
-            $minIds[$field] = $minId;
+            self::$minIds[$dynamicId][$field] = $minId;
         }
 
-        return $minIds[$field];
+        return self::$minIds[$dynamicId][$field];
     }
 
     /**
@@ -507,5 +512,14 @@ class LSActiveRecord extends CActiveRecord
                 return ' <span  data-toggle="tooltip" title="' . $encryptionNotice . '" class="fa fa-key text-success"></span>';
             }
         }
+    }
+
+    /**
+     * Return the related dynamic id if exist
+     * @return integer
+     */
+    public function getDynamicId()
+    {
+        return 0;
     }
 }
