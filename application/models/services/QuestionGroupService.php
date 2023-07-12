@@ -2,6 +2,7 @@
 
 namespace LimeSurvey\Models\Services;
 
+use DI\DependencyException;
 use LimeSurvey\DI;
 use LimeSurvey\Models\Services\Proxy\ProxyExpressionManager;
 use LimeSurvey\Models\Services\Proxy\ProxyQuestionGroup;
@@ -12,8 +13,11 @@ use Question;
 use QuestionGroup;
 use QuestionGroupL10n;
 use Exception;
-use CException;
-use CHttpException;
+use LimeSurvey\Models\Services\Exception\{
+    PersistErrorException,
+    NotFoundException,
+    PermissionDeniedException
+};
 
 class QuestionGroupService
 {
@@ -64,20 +68,23 @@ class QuestionGroupService
      *                            [description]
      *                         [...]    //more languages
      * @return QuestionGroup
+     * @throws NotFoundException
+     * @throws PermissionDeniedException
+     * @throws PersistErrorException
      */
     public function updateGroup(int $surveyId, int $questionGroupId, array $input)
     {
         $survey = $this->getSurvey($surveyId);
 
         if (!$this->modelPermission->hasSurveyPermission($survey->sid, 'surveycontent', 'update')) {
-            throw new Exception(
+            throw new PermissionDeniedException(
                 'Permission denied'
             );
         }
 
         $questionGroup = $this->modelQuestionGroup->findByPk($questionGroupId);
         if (!$questionGroup) {
-            throw new Exception(
+            throw new NotFoundException(
                 'Group not found'
             );
         }
@@ -105,11 +112,16 @@ class QuestionGroupService
      *                            [description]
      *                         [...]    //more languages
      * @return QuestionGroup
+     * @throws DependencyException
+     * @throws NotFoundException
+     * @throws PermissionDeniedException
+     * @throws PersistErrorException
+     * @throws \DI\NotFoundException
      */
     public function createGroup(int $surveyId, array $input)
     {
         if (!$this->modelPermission->hasSurveyPermission($surveyId, 'surveycontent', 'update')) {
-            throw new Exception(
+            throw new PermissionDeniedException(
                 'Permission denied'
             );
         }
@@ -126,12 +138,14 @@ class QuestionGroupService
      * @param int $questionGroupId the question group id
      * @param int $surveyId the survey id
      * @return int|null number of deleted rows
-     * @throws CHttpException
+     * @throws PermissionDeniedException
      */
     public function deleteGroup(int $questionGroupId, int $surveyId)
     {
         if (!$this->modelPermission->hasSurveyPermission($surveyId, 'surveycontent', 'delete')) {
-            throw new CHttpException(403, gT("You are not authorized to delete questions."));
+            throw new PermissionDeniedException(
+                gT("You are not authorized to delete questions.")
+            );
         }
 
         $this->proxyExpressionManager->revertUpgradeConditionsToRelevance($surveyId);
@@ -152,12 +166,14 @@ class QuestionGroupService
      * @param int | null $questionGroupId ID of group
      *
      * @return QuestionGroup
+     * @throws \DI\DependencyException
+     * @throws \DI\NotFoundException|NotFoundException
      */
     public function getQuestionGroupObject(int $surveyId, ?int $questionGroupId = null)
     {
         $oQuestionGroup = $this->modelQuestionGroup->findByPk($questionGroupId);
         if (is_int($questionGroupId) && $oQuestionGroup === null) {
-            throw new CHttpException(403, gT("Invalid ID"));
+            throw new NotFoundException(gT("Invalid ID"));
         } elseif ($oQuestionGroup == null) {
             $oQuestionGroup = DI::getContainer()->make(QuestionGroup::class);
             $oQuestionGroup->sid = $surveyId;
@@ -168,11 +184,12 @@ class QuestionGroupService
 
     /**
      * Returns question group data for dataprovider of gridview in "Overview question and groups".
-     * pageSize and search input parameters are taken into account.
+     * search input parameter is taken into account.
      * @param Survey $survey
      * @param array $questionGroupArray
      * @return QuestionGroup
-     * @throws Exception
+     * @throws DependencyException
+     * @throws \DI\NotFoundException
      */
     public function getGroupData(Survey $survey, array $questionGroupArray)
     {
@@ -203,9 +220,14 @@ class QuestionGroupService
         if (strtolower($sExtension) !== 'lsg') {
             $fatalerror = gT("Unknown file extension");
         } elseif ($_FILES['the_file']['error'] == 1 || $_FILES['the_file']['error'] == 2) {
-            $fatalerror = sprintf(gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."), getMaximumFileUploadSize() / 1024 / 1024);
+            $fatalerror = sprintf(
+                gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."),
+                getMaximumFileUploadSize() / 1024 / 1024
+            );
         } elseif (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath)) {
-            $fatalerror = gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder.");
+            $fatalerror = gT(
+                "An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."
+            );
         }
 
         if (isset($fatalerror)) {
@@ -261,7 +283,7 @@ class QuestionGroupService
      * @param int $surveyId
      * @param array $groupArray
      * @return array
-     * @throws Exception
+     * @throws NotFoundException
      */
     public function reorderQuestionGroups(int $surveyId, array $groupArray)
     {
@@ -329,19 +351,18 @@ class QuestionGroupService
      * @param array $aQuestionGroupData
      *
      * @return QuestionGroup
-     *
-     * @throws CException
+     * @throws PersistErrorException
      */
     private function updateQuestionGroup(QuestionGroup $oQuestionGroup, array $aQuestionGroupData)
     {
         $oQuestionGroup->setAttributes($aQuestionGroupData, false);
         if ($oQuestionGroup == null) {
-            throw new CException("Object update failed, input array malformed or invalid");
+            throw new PersistErrorException("Object update failed, input array malformed or invalid");
         }
 
         $saved = $oQuestionGroup->save();
         if (!$saved) {
-            throw new CException(
+            throw new PersistErrorException(
                 "Saved question group failed, object may be inconsistent"
             );
         }
@@ -352,10 +373,13 @@ class QuestionGroupService
      * Method to store and filter questionData for a new question
      *
      * @param int $surveyId
-     * @param array $aQuestionGroupData
+     * @param array|null $aQuestionGroupData
      *
      * @return QuestionGroup
-     * @throws CException
+     * @throws NotFoundException
+     * @throws PersistErrorException
+     * @throws DependencyException
+     * @throws \DI\NotFoundException
      */
     private function newQuestionGroup(int $surveyId, array $aQuestionGroupData = null)
     {
@@ -369,13 +393,13 @@ class QuestionGroupService
         $oQuestionGroup->setAttributes($aQuestionGroupData, false);
 
         if ($oQuestionGroup == null) {
-            throw new CException("Object creation failed, input array malformed or invalid");
+            throw new PersistErrorException("Object creation failed, input array malformed or invalid");
         }
         // Always add at the end
         $oQuestionGroup->group_order = safecount($survey->groups) + 1;
         $saved = $oQuestionGroup->save();
-        if ($saved == false) {
-            throw new CException(
+        if (!$saved) {
+            throw new PersistErrorException(
                 "Object creation failed, couldn't save.\n ERRORS:"
                 . print_r($oQuestionGroup->getErrors(), true)
             );
@@ -399,12 +423,13 @@ class QuestionGroupService
     /**
      * @param int $surveyId
      * @return Survey
+     * @throws NotFoundException
      */
     private function getSurvey(int $surveyId)
     {
         $survey = $this->modelSurvey->findByPk($surveyId);
         if (!$survey) {
-            throw new Exception(
+            throw new NotFoundException(
                 'Survey does not exist',
             );
         }
