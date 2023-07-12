@@ -126,6 +126,7 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
     {
         foreach (self::$userIds as $uid) {
             \User::model()->findByPk($uid)->delete();
+            \Permission::model()->deleteAll('uid = :userId', array(':userId' => $uid));
         }
     }
 
@@ -275,6 +276,10 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
     /**
      * Testing methods in the following context:
      *
+     * Users prviously created for this test: 5
+     * Users added to group: 3
+     * Users given permissions: 2
+     *
      * Users / read permission: Yes
      * User in group: No
      * Same group policy: Yes
@@ -288,11 +293,13 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
         $contextData = $this->setContext($usersReadPermission, $inGroup, $sameGroupPolicy);
 
         // List users without permissions for this survey
+        // Four users are expected since getSurveyUserList additionally returns the current logged in user.
         $surveyPermissions = $contextData['surveyPermissions'];
         $usersWithoutPermissions = $surveyPermissions->getSurveyUserList();
         $this->assertCount(4, $usersWithoutPermissions, 'The number of users which still not have survey permissions is incorrect.');
 
         // List permissions for this survey
+        // Three permission objects are expected since getUserPermissionCriteria additionally returns criteria for user 1.
         $permissionCriteria = $surveyPermissions->getUserPermissionCriteria();
         $usersWithPermissions = \Permission::model()->findAll($permissionCriteria);
         $this->assertCount(3, $usersWithPermissions, 'The number of users with permissions for the current survey is incorrect.');
@@ -325,11 +332,19 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
 
         $userGroup->delete();
 
+        // Test if one user is returned (The current logged in user since it is not in a group and same group policy is set to true.)
+        $userList = getUserList();
+        $this->assertCount(1, $userList, 'The user does not belong to a group, just one user should have been returned.');
+
         $this->restoreContext($contextData);
     }
 
     /**
      * Testing methods in the following context:
+     *
+     * Users prviously created for this test: 5
+     * Users added to group: 3
+     * Users given permissions: 2
      *
      * Users / read permission: Yes
      * User in group: No
@@ -344,11 +359,13 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
         $contextData = $this->setContext($usersReadPermission, $inGroup, $sameGroupPolicy);
 
         // List users without permissions for this survey
+        // Four users are expected since getSurveyUserList additionally returns the current logged in user.
         $surveyPermissions = $contextData['surveyPermissions'];
         $users = $surveyPermissions->getSurveyUserList();
         $this->assertCount(4, $users, 'The number of users which still not have survey permissions is incorrect.');
 
         // List permissions for this survey
+        // Three permission objects are expected since getUserPermissionCriteria additionally returns criteria for user 1.
         $permissionCriteria = $surveyPermissions->getUserPermissionCriteria();
         $usersWithPermissions = \Permission::model()->findAll($permissionCriteria);
         $this->assertCount(3, $usersWithPermissions, 'The number of users with permissions for the current survey is incorrect.');
@@ -381,11 +398,20 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
 
         $userGroup->delete();
 
+        // Test if an array with seven users is returned
+        // since the current logged in user is not in a group and same group policy is set to false.
+        $userList = getUserList();
+        $this->assertCount(7, $userList, 'The user does not belong to a group, just one user should have been returned.');
+
         $this->restoreContext($contextData);
     }
 
     /**
      * Testing methods in the following context:
+     *
+     * Users prviously created for this test: 5
+     * Users added to group: 3
+     * Users given permissions: 2
      *
      * Users / read permission: Yes
      * User in group: Yes
@@ -400,11 +426,13 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
         $contextData = $this->setContext($usersReadPermission, $inGroup, $sameGroupPolicy);
 
         // List users without permissions for this survey
+        // Four users are expected since getSurveyUserList additionally returns the current logged in user.
         $surveyPermissions = $contextData['surveyPermissions'];
         $users = $surveyPermissions->getSurveyUserList();
         $this->assertCount(4, $users, 'The number of users which still not have survey permissions is incorrect.');
 
         // List permissions for this survey
+        // Three permission objects are expected since getUserPermissionCriteria additionally returns criteria for user 1.
         $permissionCriteria = $surveyPermissions->getUserPermissionCriteria();
         $usersWithPermissions = \Permission::model()->findAll($permissionCriteria);
         $this->assertCount(3, $usersWithPermissions, 'The number of users with permissions for the current survey is incorrect.');
@@ -437,11 +465,20 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
 
         $userGroup->delete();
 
+        // Test if an array with four users is returned
+        // since the current logged in user is in a group and same group policy is set to true.
+        $userList = getUserList();
+        $this->assertCount(4, $userList, 'The user does not belong to a group, just one user should have been returned.');
+
         $this->restoreContext($contextData);
     }
 
     /**
      * Testing methods in the following context:
+     *
+     * Users prviously created for this test: 5
+     * Users added to group: 3
+     * Users given permissions: 2
      *
      * Users / read permission: Yes
      * User in group: Yes
@@ -456,11 +493,13 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
         $contextData = $this->setContext($usersReadPermission, $inGroup, $sameGroupPolicy);
 
         // List users without permissions for this survey
+        // Four users are expected since getSurveyUserList additionally returns the current logged in user.
         $surveyPermissions = $contextData['surveyPermissions'];
         $users = $surveyPermissions->getSurveyUserList();
         $this->assertCount(4, $users, 'The number of users which still not have survey permissions is incorrect.');
 
         // List permissions for this survey
+        // Three permission objects are expected since getUserPermissionCriteria additionally returns criteria for user 1.
         $permissionCriteria = $surveyPermissions->getUserPermissionCriteria();
         $usersWithPermissions = \Permission::model()->findAll($permissionCriteria);
         $this->assertCount(3, $usersWithPermissions, 'The number of users with permissions for the current survey is incorrect.');
@@ -493,11 +532,20 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
 
         $userGroup->delete();
 
+        // Test if an array with seven users is returned
+        // since the current logged in user is in a group and same group policy is set to false.
+        $userList = getUserList();
+        $this->assertCount(7, $userList, 'The user does not belong to a group, just one user should have been returned.');
+
         $this->restoreContext($contextData);
     }
 
     /**
      * Testing methods in the following context:
+     *
+     * Users prviously created for this test: 5
+     * Users added to group: 3
+     * Users given permissions: 2
      *
      * Users / read permission: No
      * User in group: No
@@ -512,6 +560,7 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
         $contextData = $this->setContext($usersReadPermission, $inGroup, $sameGroupPolicy);
 
         // List users without permissions for this survey
+        // Just the current logged in user is expected in this context.
         $surveyPermissions = $contextData['surveyPermissions'];
         $users = $surveyPermissions->getSurveyUserList();
         $this->assertCount(1, $users, 'The number of users which still not have survey permissions is incorrect.');
@@ -545,11 +594,19 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
 
         $userGroup->delete();
 
+        // Test if one user is returned (The current logged in user since it is not in a group and same group policy is set to true.)
+        $userList = getUserList();
+        $this->assertCount(1, $userList, 'The user does not belong to a group, just one user should have been returned.');
+
         $this->restoreContext($contextData);
     }
 
     /**
      * Testing methods in the following context:
+     *
+     * Users prviously created for this test: 5
+     * Users added to group: 3
+     * Users given permissions: 2
      *
      * Users / read permission: No
      * User in group: No
@@ -564,11 +621,13 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
         $contextData = $this->setContext($usersReadPermission, $inGroup, $sameGroupPolicy);
 
         // List users without permissions for this survey
+        // No users expected in this context.
         $surveyPermissions = $contextData['surveyPermissions'];
         $users = $surveyPermissions->getSurveyUserList();
         $this->assertEmpty($users, 'The number of users which still not have survey permissions is incorrect.');
 
         // List permissions for this survey
+        // Three permission objects are expected since getUserPermissionCriteria additionally returns criteria for user 1.
         $permissionCriteria = $surveyPermissions->getUserPermissionCriteria();
         $usersWithPermissions = \Permission::model()->findAll($permissionCriteria);
         $this->assertCount(3, $usersWithPermissions, 'The number of users with permissions for the current survey is incorrect.');
@@ -597,11 +656,22 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
 
         $userGroup->delete();
 
+        // Test if an array with seven users is returned
+        // since the current logged in user is not in a group and same group policy is set to false.
+        $userList = getUserList();
+        $this->assertCount(7, $userList, 'The user does not belong to a group, just one user should have been returned.');
+
         $this->restoreContext($contextData);
     }
 
     /**
      * Testing methods in the following context:
+     *
+     * Users prviously created for this test: 5
+     * Users added to group: 3
+     * Users given permissions: 2
+     * Users in group: 3
+     * Users from group given permission: 1
      *
      * Users / read permission: No
      * User in group: Yes
@@ -616,11 +686,13 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
         $contextData = $this->setContext($usersReadPermission, $inGroup, $sameGroupPolicy);
 
         // List users without permissions for this survey
+        // Two users are expected since getSurveyUserList additionally returns the current logged in user.
         $surveyPermissions = $contextData['surveyPermissions'];
         $users = $surveyPermissions->getSurveyUserList();
         $this->assertCount(2, $users, 'The number of users which still not have survey permissions is incorrect.');
 
         // List permissions for this survey
+        // Two permission objects are expected (For the users in the group).
         $permissionCriteria = $surveyPermissions->getUserPermissionCriteria();
         $usersWithPermissions = \Permission::model()->findAll($permissionCriteria);
         $this->assertCount(2, $usersWithPermissions, 'The number of users in this group with permissions for the current survey is incorrect.');
@@ -651,6 +723,11 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
         $userGroupList = getUserGroupList();
         $this->assertCount(1, $userGroupList, 'User group list should be filtered in this context.');
 
+        // Test if an array with four users is returned
+        // since the current logged in user is in a group and same group policy is set to true.
+        $userList = getUserList();
+        $this->assertCount(4, $userList, 'The user does not belong to a group, just one user should have been returned.');
+
         $userGroup->delete();
 
         $this->restoreContext($contextData);
@@ -658,6 +735,10 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
 
     /**
      * Testing methods in the following context:
+     *
+     * Users prviously created for this test: 5
+     * Users added to group: 3
+     * Users given permissions: 2
      *
      * Users / read permission: No
      * User in group: Yes
@@ -672,11 +753,13 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
         $contextData = $this->setContext($usersReadPermission, $inGroup, $sameGroupPolicy);
 
         // List users without permissions for this survey
+        // No users expected in this context
         $surveyPermissions = $contextData['surveyPermissions'];
         $users = $surveyPermissions->getSurveyUserList();
         $this->assertEmpty($users, 'The number of users which still not have survey permissions is incorrect.');
 
         // List permissions for this survey
+        // Three permission objects are expected since getUserPermissionCriteria additionally returns criteria for user 1.
         $permissionCriteria = $surveyPermissions->getUserPermissionCriteria();
         $usersWithPermissions = \Permission::model()->findAll($permissionCriteria);
         $this->assertCount(3, $usersWithPermissions, 'The number of users with permissions for the current survey is incorrect.');
@@ -708,6 +791,11 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
         $this->assertCount(2, $userGroupList, 'User group list should not be filtered in this context.');
 
         $userGroup->delete();
+
+        // Test if an array with seven users is returned
+        // since the current logged in user is in a group and same group policy is set to false.
+        $userList = getUserList();
+        $this->assertCount(7, $userList, 'The user does not belong to a group, just one user should have been returned.');
 
         $this->restoreContext($contextData);
     }
@@ -766,6 +854,9 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
         \Yii::app()->user->id = $contextData['restore']['userIdTmp'];
 
         App()->setConfig('usercontrolSameGroupPolicy', $contextData['restore']['userControlSameGroupPolicyTmp']);
+
+        //Delete permissions
+        \Permission::model()->deleteAll('uid = :userId', array(':userId' => $contextData['restore']['user']->uid));
 
         //Delete user
         $contextData['restore']['user']->delete();
