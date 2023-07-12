@@ -70,13 +70,12 @@ class CLSGridView extends TbGridView
             foreach ($this->lsAfterAjaxUpdate as $jsCode) {
                 $this->afterAjaxUpdate .= $jsCode;
             }
-            $this->afterAjaxUpdate .= 'LS.actionDropdown.create();';
-            $this->afterAjaxUpdate .= 'if (typeof LS.actionDropdown.create() !== "undefined"){ LS.actionDropdown.create();}';
+            $this->afterAjaxUpdate .= 'if (typeof LS.actionDropdown.create !== "undefined"){ LS.actionDropdown.create();}';
             $this->afterAjaxUpdate .= '}';
         } else {
             // trigger action_dropdown() as a default although no lsAfterAjaxUpdate param passed.
             // this method is useful for preventing action dropdown cut off && overlapped in other browsers like firefox
-            $this->afterAjaxUpdate = 'function(){ LS.actionDropdown.create(); }';
+            $this->afterAjaxUpdate = 'function(){ if (typeof LS.actionDropdown.create !== "undefined"){ LS.actionDropdown.create(); } }';
         }
     }
 
