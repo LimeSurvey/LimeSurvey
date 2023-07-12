@@ -15,7 +15,6 @@ use Exception;
 use CException;
 use CHttpException;
 
-
 class QuestionGroupService
 {
     private Permission $modelPermission;
