@@ -83,6 +83,15 @@ class OperationResult
     }
 
     /**
+     * @param string $message
+     * @param string $type
+     */
+    public function addMessage($message, $type)
+    {
+        $this->appendMessage(new TypedMessage($message, $type));
+    }
+
+    /**
      * Sets messages from an array of strings
      * @param string[] $messages
      */
