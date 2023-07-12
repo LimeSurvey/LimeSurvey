@@ -822,7 +822,7 @@ class TokenDynamic extends LSActiveRecord
                 'data-toggle' => "tooltip",
                 'title' => gT("Preview the survey with this participant")
             ),
-            'visible' => $baseView . ' && !$data->survey->isActive && !empty($data->token) && ( $data->completed == "N" || empty($data->completed) || $data->survey->oOptions->alloweditaftercompletion == "Y")'
+            'visible' => $baseView . ' && !$data->survey->isActive && !empty($data->token) && $data->canBeUsed()'
         );
         $gridButtons['launchsurvey'] = array(
             'label' => '<span class="sr-only">' . gT("Launch the survey with this participant") . '</span><span class="fa fa-play" aria-hidden="true"></span>',
@@ -834,7 +834,7 @@ class TokenDynamic extends LSActiveRecord
                 'data-toggle' => "tooltip",
                 'title' => gT("Launch the survey with this participant")
             ),
-            'visible' => $baseView . ' && $data->survey->isActive && !empty($data->token) && ( $data->completed == "N" || empty($data->completed) || $data->survey->oOptions->alloweditaftercompletion == "Y")'
+            'visible' => $baseView . ' && $data->survey->isActive && !empty($data->token) && $data->canBeUsed()'
         );
         $gridButtons['previewsurveyspacer'] = array(
             'label' => '<span class="fa fa-eye  text-muted" aria-hidden="true"></span>',
@@ -845,7 +845,7 @@ class TokenDynamic extends LSActiveRecord
                 'disabled' => 'disabled',
                 'title' => ''
             ),
-            'visible' => $baseView . ' && (empty($data->token) || !( $data->completed == "N" || empty($data->completed) || $data->survey->oOptions->alloweditaftercompletion == "Y"))',
+            'visible' => $baseView . ' && (empty($data->token) || !$data->canBeUsed())',
             'click' => 'function(event){ window.LS.gridButton.noGridAction(event,$(this)); }',
         );
         /* mail button */
@@ -1104,5 +1104,14 @@ class TokenDynamic extends LSActiveRecord
     public function getSurveyId()
     {
         return self::$sid;
+    }
+
+    /**
+     * Returns true if the token can be used
+     * @return bool
+     */
+    public function canBeUsed()
+    {
+        return $this->completed == "N" || empty($this->completed) || $this->survey->oOptions->alloweditaftercompletion == "Y";
     }
 }
