@@ -15,6 +15,7 @@ use Exception;
 use CException;
 use CHttpException;
 
+
 class QuestionGroupService
 {
     private Permission $modelPermission;
@@ -24,6 +25,7 @@ class QuestionGroupService
     private QuestionGroupL10n $modelQuestionGroupL10n;
     private ProxyExpressionManager $proxyExpressionManager;
     private ProxyQuestionGroup $proxyQuestionGroup;
+    private LSYii_Application $yiiApp;
 
     public function __construct(
         Permission $modelPermission,
@@ -32,7 +34,8 @@ class QuestionGroupService
         QuestionGroup $modelQuestionGroup,
         QuestionGroupL10n $modelQuestionGroupL10n,
         ProxyExpressionManager $proxyExpressionManager,
-        ProxyQuestionGroup $proxyQuestionGroup
+        ProxyQuestionGroup $proxyQuestionGroup,
+        LSYii_Application $yiiApp
     ) {
         $this->modelPermission = $modelPermission;
         $this->modelSurvey = $modelSurvey;
@@ -41,6 +44,7 @@ class QuestionGroupService
         $this->modelQuestionGroupL10n = $modelQuestionGroupL10n;
         $this->proxyExpressionManager = $proxyExpressionManager;
         $this->proxyQuestionGroup = $proxyQuestionGroup;
+        $this->yiiApp = $yiiApp;
     }
 
     /**
@@ -209,7 +213,7 @@ class QuestionGroupService
             $importResults['fatalerror'] = $fatalerror;
         } else {
             try {
-                App()->loadHelper('admin/import'); // I don't get App() to be injected without an Exception
+                $this->yiiApp->loadHelper('admin/import');
                 $importResults = XMLImportGroup(
                     $sFullFilepath,
                     $surveyId,
