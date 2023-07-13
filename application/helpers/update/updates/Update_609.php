@@ -91,8 +91,8 @@ class Update_609 extends DatabaseUpdateBase
                 $this->db->createCommand()->update(
                     "{{template_configuration}}",
                     $this->fruityTwentyThreeUpdateConfigData(),
-                    "name = :name",
-                    [':name' => $fruityTwentyThreeConfiguration['name']]
+                    "template_name = :template_name",
+                    [':template_name' => $fruityTwentyThreeConfiguration['template_name']]
                 );
             }
         }
