@@ -1,6 +1,5 @@
 <?php
 
-use LimeSurvey\Models\Services\UserManagementHelper;
 use LimeSurvey\Models\Services\UserManager;
 
 //LSYii_Controller
@@ -406,8 +405,8 @@ class UserManagementController extends LSBaseController
             }
         }
 
-        $userManagementHelper = new UserManagementHelper();
-        $result = $userManagementHelper->deleteUser($userId);
+        $userManager = new UserManager();
+        $result = $userManager->deleteUser($userId);
         $messages = array_merge($messages, $result->getRawMessages());
 
         return App()->getController()->renderPartial('/admin/super/_renderJson', [
