@@ -60,6 +60,7 @@ class FixedFunctionExpressionPluginTest extends TestBaseClassWeb
                 WebDriverExpectedCondition::invisibilityOfElementLocated(WebDriverBy::id('question' . $questions['Q01']->qid)),
                 "Q01 is not hidden by relevance"
             );
+            sleep(1);
             $sgqa = self::$surveyId."X".$questions['Q00']->gid."X".$questions['Q00']->qid;
             $Input = self::$webDriver->findElement(WebDriverBy::id('answer' . $sgqa ));
             $Input->sendKeys('10');
