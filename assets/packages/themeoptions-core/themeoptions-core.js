@@ -186,7 +186,7 @@ var ThemeOptions = function () {
 
     var prepareFontField = function () {
         var currentPackageObject = 'inherit';
-        if ($('body').hasClass('ls6_surveytheme')) {
+        if ($('body').hasClass('fruity_twentythree')) {
             optionObject.font = optionObject.font || (inheritPossible ? 'inherit' : 'ibm-sans');
         } else {
             optionObject.font = optionObject.font || (inheritPossible ? 'inherit' : 'roboto');
@@ -197,7 +197,7 @@ var ThemeOptions = function () {
         }
         updateFieldSettings();
     };
-// @TODO adjust for ls6 theme????
+
     var prepareFruityThemeField = function () {
         var currentThemeObject = 'inherit';
         if ($('#TemplateConfiguration_files_css').val() !== 'inherit' && $('body').hasClass('fruity')) {

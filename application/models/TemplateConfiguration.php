@@ -501,7 +501,12 @@ class TemplateConfiguration extends TemplateConfig
         }
 
         $criteria->compare('id', $this->id);
-        $criteria->compare('template_name', $this->template_name, true);
+        if (!empty($this->template_name)) {
+            $templateNameEscaped = strtr($this->template_name, ['%' => '\%', '_' => '\_', '\\' => '\\\\']);
+            $criteria->addCondition('template.name LIKE :templatename1 OR template.title LIKE :templatename2');
+            $criteria->params[':templatename1'] = '%' . $templateNameEscaped . '%';
+            $criteria->params[':templatename2'] = '%' . $templateNameEscaped . '%';
+        }
         $criteria->compare('files_css', $this->files_css, true);
         $criteria->compare('files_js', $this->files_js, true);
         $criteria->compare('files_print_css', $this->files_print_css, true);
@@ -1739,7 +1744,7 @@ class TemplateConfiguration extends TemplateConfig
               $aJsFiles  = $this->changeMotherConfiguration('js', $aJsFiles);
         }
 
-        //For new LS6 surveytheme we completely replace the variation theme css file:
+        //For fruity_twentythree surveytheme we completely replace the variation theme css file:
         $aCssFiles = $this->replaceVariationFilesWithRtl($aCssFiles);
 
         $this->sPackageName = 'survey-template-' . $this->sTemplateName;

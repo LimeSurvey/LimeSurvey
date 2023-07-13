@@ -188,12 +188,12 @@ function survey_theme_ls6() {
     let variationsFiles = variations.map(variation => {
         let variationName = variation[0];
         let variationColor = variation[1];
-        return src(['assets/survey_themes/ls6_surveytheme/ls6_theme_template.scss'])
+        return src(['assets/survey_themes/fruity_twentythree/theme_template.scss'])
             .pipe(replace('$base-color: #ffffff;', '$base-color: ' + variationColor + ';'))
             .pipe(sass())
             .pipe(gulppostcss(plugins))
             .pipe(rename('theme_' + variationName + '.css'))
-            .pipe(dest('themes/survey/ls6_surveytheme/css/variations'));
+            .pipe(dest('themes/survey/fruity_twentythree/css/variations'));
     });
     return merge(variationsFiles);
 }
@@ -213,13 +213,13 @@ function survey_theme_ls6_rtl() {
     let variationsFiles = variations.map(variation => {
         let variationName = variation[0];
         let variationColor = variation[1];
-        return src(['assets/survey_themes/ls6_surveytheme/ls6_theme_template.scss'])
+        return src(['assets/survey_themes/fruity_twentythree/theme_template.scss'])
             .pipe(replace('$base-color: #ffffff;', '$base-color: ' + variationColor + ';'))
             .pipe(sass())
             .pipe(rtlcss())
             .pipe(gulppostcss(plugins))
             .pipe(rename('theme_' + variationName + '-rtl.css'))
-            .pipe(dest('themes/survey/ls6_surveytheme/css/variations'));
+            .pipe(dest('themes/survey/fruity_twentythree/css/variations'));
     });
     return merge(variationsFiles);
 }
@@ -227,7 +227,7 @@ function survey_theme_ls6_rtl() {
 function survey_theme_ls6_js() {
     // browserify package handler
     return browserify({
-        entries: ['assets/survey_themes/ls6_surveytheme/ls6_javascript_modules.js']
+        entries: ['assets/survey_themes/fruity_twentythree/theme_js_modules.js']
     })
         // transform babelify ES6 to ES5 [@babel/preset-env]
         .transform(babelify, {
@@ -239,14 +239,14 @@ function survey_theme_ls6_js() {
         // bundle the transformed code
         .bundle()
         // sourcemap
-        .pipe(source('assets/survey_themes/ls6_surveytheme/ls6_javascript_modules.js'))
+        .pipe(source('assets/survey_themes/fruity_twentythree/theme_js_modules.js'))
         // rename
         .pipe(rename('theme.js'))
         // buffer
         .pipe(buffer())
         // distination
-        .pipe(header(fs.readFileSync('assets/survey_themes/ls6_surveytheme/ls6_javascript_disclaimer.js')))
-        .pipe(dest('themes/survey/ls6_surveytheme/scripts/'));
+        .pipe(header(fs.readFileSync('assets/survey_themes/fruity_twentythree/theme_js_disclaimer.js')))
+        .pipe(dest('themes/survey/fruity_twentythree/scripts/'));
 }
 
 exports.build_survey_theme_ls6 = parallel(
@@ -256,7 +256,7 @@ exports.build_survey_theme_ls6 = parallel(
 );
 
 exports.watch_survey_theme_ls6 = function () {
-    watch('assets/survey_themes/ls6_surveytheme/**/*.scss', survey_theme_ls6);
-    watch('assets/survey_themes/ls6_surveytheme/**/*.scss', survey_theme_ls6_rtl);
-    watch('assets/survey_themes/ls6_surveytheme/**/*.js', survey_theme_ls6_js);
+    watch('assets/survey_themes/fruity_twentythree/**/*.scss', survey_theme_ls6);
+    watch('assets/survey_themes/fruity_twentythree/**/*.scss', survey_theme_ls6_rtl);
+    watch('assets/survey_themes/fruity_twentythree/**/*.js', survey_theme_ls6_js);
 };
