@@ -822,7 +822,7 @@ class TokenDynamic extends LSActiveRecord
                 'data-toggle' => "tooltip",
                 'title' => gT("Preview the survey with this participant")
             ),
-            'visible' => $baseView . ' && !$data->survey->isActive && !empty($data->token) && $data->canBeUsed()'
+            'visible' => $baseView . ' && !$data->survey->isActive && $data->canBeUsed()'
         );
         $gridButtons['launchsurvey'] = array(
             'label' => '<span class="sr-only">' . gT("Launch the survey with this participant") . '</span><span class="fa fa-play" aria-hidden="true"></span>',
@@ -834,7 +834,7 @@ class TokenDynamic extends LSActiveRecord
                 'data-toggle' => "tooltip",
                 'title' => gT("Launch the survey with this participant")
             ),
-            'visible' => $baseView . ' && $data->survey->isActive && !empty($data->token) && $data->canBeUsed()'
+            'visible' => $baseView . ' && $data->survey->isActive && $data->canBeUsed()'
         );
         $gridButtons['previewsurveyspacer'] = array(
             'label' => '<span class="fa fa-eye  text-muted" aria-hidden="true"></span>',
@@ -845,7 +845,7 @@ class TokenDynamic extends LSActiveRecord
                 'disabled' => 'disabled',
                 'title' => ''
             ),
-            'visible' => $baseView . ' && (empty($data->token) || !$data->canBeUsed())',
+            'visible' => $baseView . ' && !$data->canBeUsed()',
             'click' => 'function(event){ window.LS.gridButton.noGridAction(event,$(this)); }',
         );
         /* mail button */
@@ -860,7 +860,7 @@ class TokenDynamic extends LSActiveRecord
                 'data-toggle' => "tooltip",
                 'title' => gT("Send email invitation")
             ),
-            'visible' => $baseView . ' && !empty($data->token) && ($data->sent== "N" || empty($data->sent)) && $data->emailstatus == "OK" && $data->email && $data->completed == "N" && ($data->usesleft > 0 || $data->survey->oOptions->alloweditaftercompletion == "Y")',
+            'visible' => $baseView . ' && ($data->sent== "N" || empty($data->sent)) && $data->canBeMailed()',
         );
         /* mailing remind button */
         $gridButtons['remind'] = array(
@@ -872,7 +872,7 @@ class TokenDynamic extends LSActiveRecord
                 'data-toggle' => "tooltip",
                 'title' => gT("Send email reminder")
             ),
-            'visible' => $baseView . ' && !empty($data->token) && !($data->sent== "N" || empty($data->sent)) && $data->emailstatus == "OK" && $data->email && $data->completed == "N" && ($data->usesleft > 0 || $data->survey->oOptions->alloweditaftercompletion == "Y")',
+            'visible' => $baseView . ' && !($data->sent== "N" || empty($data->sent)) && $data->canBeMailed()',
         );
         $gridButtons['mailspacer'] = array(
             'label' => '<span class="fa fa-envelope-o text-muted" aria-hidden="true"></span>',
@@ -1112,6 +1112,23 @@ class TokenDynamic extends LSActiveRecord
      */
     public function canBeUsed()
     {
-        return $this->completed == "N" || empty($this->completed) || $this->survey->oOptions->alloweditaftercompletion == "Y";
+        return !empty($this->token)
+            && (
+                $this->completed == "N"
+                || empty($this->completed)
+                || $this->survey->oOptions->alloweditaftercompletion == "Y"
+            );
+    }
+
+    public function canBeEmailed()
+    {
+        return !empty($this->token)
+            && $this->emailstatus == "OK"
+            && $this->email
+            && $this->completed == "N"
+            && (
+                $this->usesleft > 0
+                || $this->survey->oOptions->alloweditaftercompletion == "Y"
+            );
     }
 }
