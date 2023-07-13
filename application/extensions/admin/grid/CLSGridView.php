@@ -71,7 +71,6 @@ class CLSGridView extends TbGridView
                 $this->afterAjaxUpdate .= $jsCode;
             }
             $this->afterAjaxUpdate .= 'LS.actionDropdown.create();';
-            $this->afterAjaxUpdate .= 'if (typeof LS.actionDropdown.create() !== "undefined"){ LS.actionDropdown.create();}';
             $this->afterAjaxUpdate .= '}';
         } else {
             // trigger action_dropdown() as a default although no lsAfterAjaxUpdate param passed.
