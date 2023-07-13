@@ -3,6 +3,7 @@
 namespace ls\tests;
 
 use Facebook\WebDriver\WebDriverBy;
+use Facebook\WebDriver\WebDriverExpectedCondition;
 
 /**
  * @since 2019-08-05
@@ -55,8 +56,10 @@ class FixedFunctionExpressionPluginTest extends TestBaseClassWeb
             $textToCompare = self::$webDriver->findElement(WebDriverBy::id('statCountIfQ00'))->getText();
             $this->assertEquals($textToCompare, "0", 'statCountIfQ00(self.sgqa,"NOT") usage broken : «' . $textToCompare ."» vs «0»");
             /** Relevance (and update) check **/
-            $this->assertFalse(
-                self::$webDriver->findElement(WebDriverBy::id('question'.$questions['Q01']->qid))->isDisplayed(),
+            $this->assertTrue(
+                self::$webDriver->wait(5)->until(
+                    WebDriverExpectedCondition::invisibilityOfElementLocated(WebDriverBy::id('question' . $questions['Q01']->qid))
+                ),
                 "Q01 is not hidden by relevance"
             );
             $sgqa = self::$surveyId."X".$questions['Q00']->gid."X".$questions['Q00']->qid;
