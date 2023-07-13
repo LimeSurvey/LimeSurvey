@@ -41,9 +41,9 @@ class FixedFunctionExpressionPluginTest extends TestBaseClassWeb
             ]
         );
         try {
-            self::$webDriver->get($url);            
+            self::$webDriver->get($url);
             sleep(1); // Page did not load properly
-            
+
             /* 1st page */
             $submit = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
             $submit->click();
@@ -56,10 +56,8 @@ class FixedFunctionExpressionPluginTest extends TestBaseClassWeb
             $textToCompare = self::$webDriver->findElement(WebDriverBy::id('statCountIfQ00'))->getText();
             $this->assertEquals($textToCompare, "0", 'statCountIfQ00(self.sgqa,"NOT") usage broken : «' . $textToCompare ."» vs «0»");
             /** Relevance (and update) check **/
-            $this->assertTrue(
-                self::$webDriver->wait(5)->until(
-                    WebDriverExpectedCondition::invisibilityOfElementLocated(WebDriverBy::id('question' . $questions['Q01']->qid))
-                ),
+            self::$webDriver->wait(5)->until(
+                WebDriverExpectedCondition::invisibilityOfElementLocated(WebDriverBy::id('question' . $questions['Q01']->qid)),
                 "Q01 is not hidden by relevance"
             );
             $sgqa = self::$surveyId."X".$questions['Q00']->gid."X".$questions['Q00']->qid;
