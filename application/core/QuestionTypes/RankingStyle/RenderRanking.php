@@ -76,9 +76,10 @@ class RenderRanking extends QuestionBaseRenderer
                     'optiontext' => gT('Please choose...'),
                 );
             }
-    
+
+            $this->aDisplayAnswers = [];
             foreach ($this->aAnswerOptions[0] as $oAnswer) {
-                $this->aDisplayAnswers[$oAnswer->aid] = array_merge($oAnswer->attributes, $oAnswer->answerl10ns[$this->sLanguage]->attributes);
+                $this->aDisplayAnswers[] = array_merge($oAnswer->attributes, $oAnswer->answerl10ns[$this->sLanguage]->attributes);
                 $mSessionValue = $this->setDefaultIfEmpty($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname], false);
 
                 if ($mSessionValue == $oAnswer->code) {
