@@ -33326,9 +33326,11 @@
       $('#notification-inner-li').css('height', height - 60 + 'px');
     },
         deleteAllNotifications = function deleteAllNotifications(url, updateUrl) {
+      var data = document.querySelector('#notification-clear-all > a').getAttribute('data-params');
       return $.ajax({
         url: url,
-        method: 'GET',
+        data: data,
+        method: 'POST',
         success: function success(response) {
           adminCoreLSConsole.log('response', response);
         }

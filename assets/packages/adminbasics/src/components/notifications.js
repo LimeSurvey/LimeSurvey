@@ -144,9 +144,11 @@ const NotifcationSystem  = function (){
     },
 
     deleteAllNotifications = (url, updateUrl) => {
+        let data = document.querySelector('#notification-clear-all > a').getAttribute('data-params');
         return $.ajax({
             url: url,
-            method: 'GET',
+            data: data,
+            method: 'POST',
             success: (response) => {
                LOG.log('response', response);
             }
