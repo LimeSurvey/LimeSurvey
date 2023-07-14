@@ -88,7 +88,7 @@
                                   options="top|bottom" optionlabels="Top|Bottom">top
         </questionhelptextposition>
         <fixnumauto type="buttons" category="Simple options" width="4" title="Fix automatically numeric value"
-                    options="enable|partial|disable" optionlabels="Yes|For expression|No">disable
+                    options="enable|partial|disable" optionlabels="Yes|For expression|No">enable
         </fixnumauto>
         <!-- images -->
         <backgroundimage type="buttons" category="Images" width="4" title="Background image" options="on|off"
