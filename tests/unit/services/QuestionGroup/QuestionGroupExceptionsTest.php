@@ -69,7 +69,7 @@ class QuestionGroupExceptionsTest extends TestBaseClass
         );
 
         $questionGroupService = $this->getMockedServiceForSurveyNotFoundException();
-        $questionGroupService->createGroup(1, 1, []);
+        $questionGroupService->createGroup(1, []);
     }
 
     private function getMockedServiceForPermissionDeniedException(): QuestionGroupService
