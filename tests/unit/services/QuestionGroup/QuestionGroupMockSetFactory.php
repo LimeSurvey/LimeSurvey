@@ -152,20 +152,20 @@ class QuestionGroupMockSetFactory
         return $modelQuestionGroup;
     }
 
-    private function getMockQuestionGroup(): Survey
+    private function getMockQuestionGroup(): QuestionGroup
     {
-        $survey = Mockery::mock(Survey::class)
+        $questionGroup = Mockery::mock(QuestionGroup::class)
             ->makePartial();
-        $survey->shouldReceive('save')
+        $questionGroup->shouldReceive('save')
             ->andReturn(true);
-        $survey->shouldReceive('setAttributes')
+        $questionGroup->shouldReceive('setAttributes')
             ->passthru();
-        $survey->setAttributes([]);
-        $survey->shouldReceive('getAttributes')
+        $questionGroup->setAttributes([]);
+        $questionGroup->shouldReceive('getAttributes')
             ->passthru();
-        $survey->getAttributes([]);
+        $questionGroup->getAttributes([]);
 
-        return $survey;
+        return $questionGroup;
     }
 
     private function getMockModelQuestionGroupL10n(QuestionGroup $modelQuestionGroup): QuestionGroupL10n
