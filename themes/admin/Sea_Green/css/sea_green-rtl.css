@@ -18452,12 +18452,6 @@ table .ls-sticky-column:last-child {
   left: -1px;
   box-shadow: inset -15px 0 15px -15px rgba(0, 0, 0, 0.05);
 }
-table .ls-sticky-column:has(.dropdown-menu.show) {
-  z-index: 1020;
-}
-table .ls-sticky-column.has-dropdown {
-  z-index: 1020;
-}
 table [class^=ri-], table [class*=" ri-"] {
   vertical-align: -0.2em;
 }
