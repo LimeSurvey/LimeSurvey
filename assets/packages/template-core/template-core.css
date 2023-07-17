@@ -131,9 +131,7 @@ table.ls-answers {
 
 /* class replace multiple tag */
 /* Basic alignment base horizontal due to no-more-table*/
-.ls-answers tbody td {
-    text-align: center
-}
+
 
 .ls-answers td .form-control {
     margin-left: auto;
