@@ -862,7 +862,7 @@
           }
         }
 
-        var previewDeleteBlock = $('<div class="mb-3"></div>').append($('<a class="btn btn-danger"></a>').html('<span class="fa fa-trash"></span>&nbsp;' + options.uploadLang.deleteFile).on('click', function () {
+        var previewDeleteBlock = $('<div class="mb-3"></div>').append($('<a class="btn btn-danger"></a>').html('<span class="fa fa-trash ri-delete-bin-fill"></span>&nbsp;' + options.uploadLang.deleteFile).on('click', function () {
           deletefile(fieldname, i);
         }).wrap('<div class="input-container text-center"></div>'));
         $('<fieldset></fieldset>').append(previewTitleContainer).append(previewCommentContainer).append(previewDeleteBlock).wrap('<div class="file-info"></div>').appendTo(previewContainer);
@@ -924,7 +924,7 @@
              * do not upload the file and display an error message ! */
 
             if (filecount >= maxfiles) {
-              $('#notice').html('<p class="alert alert-danger"><span class="fa fa-exclamation-circle"></span>&nbsp;' + uploadLang.errorNoMoreFiles + '</p>');
+              $('#notice').html('<p class="alert alert-danger"><span class="fa fa-exclamation-circle ri-error-warning-fill"></span>&nbsp;' + uploadLang.errorNoMoreFiles + '</p>');
               return false;
             }
             /* If the file being uploaded is not allowed,
@@ -939,7 +939,7 @@
             }
 
             if (allowSubmit == false) {
-              $('#notice').html('<p class="alert alert-danger"><span class="fa fa-exclamation-circle"></span>&nbsp;' + uploadLang.errorOnlyAllowed.replace('%s', $('#' + fieldname + '_allowed_filetypes').val()) + '</p>');
+              $('#notice').html('<p class="alert alert-danger"><span class="fa fa-exclamation-circle ri-error-warning-fill"></span>&nbsp;' + uploadLang.errorOnlyAllowed.replace('%s', $('#' + fieldname + '_allowed_filetypes').val()) + '</p>');
               return false;
             } // change button text, when user selects file
 
@@ -948,7 +948,7 @@
             // you can disable upload button
 
             this.disable();
-            button.append('<i id="loading-icon-fielupload" class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>');
+            button.append('<i id="loading-icon-fielupload" class="fa fa-spinner fa-pulse fa-3x fa-fw ri-loader-fill remix-pulse ri-3x"></i>');
           },
           onComplete: function (file, response) {
             button.text(uploadLang.selectfile);
@@ -970,7 +970,7 @@
             $('#' + fieldname + '_licount').val(count);
 
             if (metadata.success) {
-              $('#notice').html('<p class="alert alert-success"><span class="fa fa-success"></span>&nbsp;' + metadata.msg + '</p>');
+              $('#notice').html('<p class="alert alert-success"><span class="fa fa-check ri-check-fill"></span>&nbsp;' + metadata.msg + '</p>');
 
               if ($('#field' + fieldname + '_listfiles').length == 0) {
                 $("<ul id='field" + fieldname + "_listfiles' class='files-list' />").insertAfter("#uploadstatus_" + options.qid);
@@ -983,9 +983,9 @@
               var maxfiles = parseInt($('#' + fieldname + '_maxfiles').val());
               $('#java' + fieldname + '_filecount').val(filecount);
               if (filecount < minfiles) $('#uploadstatus').html(options.uploadLang.errorNeedMore.replace('%s', minfiles - filecount));else if (filecount < maxfiles) $('#uploadstatus').html(options.uploadLang.errorMoreAllowed.replace('%s', maxfiles - filecount));else $('#uploadstatus').html(options.uploadLang.errorMaxReached);
-              if (filecount >= maxfiles) $('#notice').html('<p class="alert alert-success"><span class="fa fa-check"></span>&nbsp;' + options.uploadLang.errorTooMuch + '</p>');
+              if (filecount >= maxfiles) $('#notice').html('<p class="alert alert-success"><span class="fa fa-check ri-check-fill"></span>&nbsp;' + options.uploadLang.errorTooMuch + '</p>');
             } else {
-              $('#notice').html('<p class="alert alert-danger"><span class="fa fa-exclamation-circle"></span>&nbsp;' + metadata.msg + '</p>');
+              $('#notice').html('<p class="alert alert-danger"><span class="fa fa-exclamation-circle ri-error-warning-fill"></span>&nbsp;' + metadata.msg + '</p>');
             }
           }
         });
@@ -1064,7 +1064,7 @@
             YII_CSRF_TOKEN: options.csrfToken
           }
         }).done(function (msg) {
-          $('#notice').html('<p class="alert alert-success"><span class="fa fa-check"></span>&nbsp;' + msg + '</p>');
+          $('#notice').html('<p class="alert alert-success"><span class="fa fa-check ri-check-fill"></span>&nbsp;' + msg + '</p>');
           setTimeout(function () {
             $(".success").remove();
           }, 5000);

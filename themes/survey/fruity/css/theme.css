@@ -143,7 +143,6 @@ element.style {
   position: relative;
 }
 
-.ls-question-help,
 .ls-questionhelp{
   margin-bottom:5px;
 }
@@ -300,6 +299,7 @@ element.style {
 }
 
 .slider-item {
+    margin-bottom: 20px;
     min-height: 50px;
 }
 
@@ -601,7 +601,6 @@ div.yes-no .btn-group label {
     //padding-bottom:0.5em;
   }
 
-  .ls-question-help,
   .ls-questionhelp{
     font-size:14px;
   }

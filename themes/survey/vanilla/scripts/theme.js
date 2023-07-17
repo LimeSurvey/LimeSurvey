@@ -53,24 +53,7 @@ var ThemeScripts = function () {
      */
     var fixBodyPadding = function fixBodyPadding() {
         /* The 60 px is fixed in template.css */
-        $('body').css('padding-top', Math.round($('.navbar-fixed-top').height()) + 'px');
-    };
-    /**
-     * Set suffix/prefix clone for little screen (at top)
-     */
-    var sliderSuffixClone = function sliderSuffixClone() {
-        $('.numeric-multi .slider-item .slider-right').each(function () {
-            var colWidth = '12';
-
-            if ($(this).closest('.slider-item').find('.slider-left').length) {
-                colWidth = '6';
-            }
-
-            $(this).clone().addClass('d-block d-md-none col-' + colWidth).prop('aria-hidden', true).insertBefore($(this).prev('.slider-container'));
-            $(this).addClass('d-none d-md-block');
-            $(this).closest('.slider-item').find('.slider-left');
-        });
-
+        $('body').css('padding-top', Math.round($('#survey-nav').height()) + 'px');
     };
 
     /**
@@ -161,7 +144,7 @@ var ThemeScripts = function () {
             //Survey list container
             if ($('#surveys-list-container').length > 0) {
                 var footerHeight = $('#surveyListFooter').outerHeight();
-                var headerHeight = 2 * $('#navbar').outerHeight();
+                var headerHeight = 2 * $('#survey-nav').outerHeight();
                 var bodyHeight = $(document).height() - (footerHeight + headerHeight);
                 logObject.log({
                     footerHeight: footerHeight,
@@ -246,12 +229,10 @@ var ThemeScripts = function () {
     };
 
     var initUserForms = function () {
-        sliderSuffixClone();
         fixBodyPadding();
         hideEmptyPart();
     };
     var initGlobal = function () {
-        sliderSuffixClone();
         fixBodyPadding();
         if (jQuery.isFunction(window.templateCore.hideQuestionWithRelevanceSubQuestion)) {
             window.templateCore.hideQuestionWithRelevanceSubQuestion();
@@ -272,7 +253,6 @@ var ThemeScripts = function () {
         initGlobal: initGlobal,
         initWelcomePage: initWelcomePage,
         focusFirst: focusFirst,
-        sliderSuffixClone: sliderSuffixClone,
         fixBodyPadding: fixBodyPadding,
         hideQuestionWithRelevanceSubQuestion: window.templateCore.hideQuestionWithRelevanceSubQuestion,
         hideEmptyPart: hideEmptyPart,

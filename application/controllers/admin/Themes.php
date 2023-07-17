@@ -44,7 +44,7 @@ class Themes extends SurveyCommonAction
      */
     public function templatezip($templatename)
     {
-        $oEditedTemplate = Template::getInstance($templatename);
+        $oEditedTemplate = Template::getInstance($templatename, null, null, true);
 
         if (Permission::model()->hasGlobalPermission('templates', 'export')) {
             $templatedir = $oEditedTemplate->path;
@@ -538,11 +538,11 @@ class Themes extends SurveyCommonAction
     public function index(string $editfile = '', string $screenname = 'welcome', string $templatename = '')
     {
         if ($templatename == '') {
-            // @todo getGlobalSetting is deprecated!
-            $templatename = getGlobalSetting('defaulttheme');
+            $templatename = App()->getConfig('defaulttheme');
         }
 
         // This can happen if the global default template is deleted
+        // TODO: check if we can load template without needing the model, only from xml, so we can load the theme editor even when it is not installed
         if (!Template::checkIfTemplateExists($templatename)) {
             // Redirect to the default template
             Yii::app()->setFlashMessage(sprintf(gT('Theme %s does not exist.'), htmlspecialchars((string) $templatename, ENT_QUOTES)), 'error');
@@ -754,11 +754,12 @@ JAVASCRIPT
     }
 
     /**
-     * Function responsible to delete a template.
+     * Function responsible to delete a template while inside the theme editor
      *
      * @access public
-     * @param string $templatename
      * @return void
+     * @throws CDbException
+     * @throws CException
      */
     public function delete()
     {
@@ -828,27 +829,34 @@ JAVASCRIPT
     }
 
 
+    /**
+     * Deletes a survey theme from the "Available survey themes", after it has been uninstalled TemplateConfig::uninstall.
+     * This will delete all local files.
+     * @return void
+     * @throws CException
+     * @throws CHttpException
+     */
     public function deleteAvailableTheme()
     {
-        $templatename = trim(Yii::app()->request->getPost('templatename', ''));
+        $templatename = trim(App()->request->getPost('templatename', ''));
 
         if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
-            $completeFileName = realpath(Yii::app()->getConfig('userthemerootdir') . "/" . $templatename);
+            $completeFileName = realpath(App()->getConfig('userthemerootdir') . "/" . $templatename);
             /* If retuirn false, not a dir or not inside userthemerootdir: try to hack : throw a 403 for security */
-            if (!is_dir($completeFileName) || substr($completeFileName, 0, strlen((string) Yii::app()->getConfig('userthemerootdir'))) !== Yii::app()->getConfig('userthemerootdir')) {
+            if (!is_dir($completeFileName) || strpos($completeFileName, App()->getConfig('userthemerootdir')) !== 0) {
                 throw new CHttpException(403, "Disable for security reasons.");
             }
             // CheckIfTemplateExists check if the template is installed....
                 Yii::import('application.helpers.SurveyThemeHelper');
             if (! Template::checkIfTemplateExists($templatename) && !SurveyThemeHelper::isStandardTemplate($templatename)) {
-                if (rmdirr(Yii::app()->getConfig('userthemerootdir') . "/" . $templatename)) {
-                    Yii::app()->setFlashMessage(sprintf(gT("Theme '%s' was successfully deleted."), $templatename));
+                if (rmdirr(App()->getConfig('userthemerootdir') . "/" . $templatename)) {
+                    App()->setFlashMessage(sprintf(gT("Theme '%s' was successfully deleted."), $templatename));
                 } else {
-                    Yii::app()->setFlashMessage(sprintf(gT("There was a problem deleting the template '%s'. Please check your directory/file permissions."), $templatename), 'error');
+                    App()->setFlashMessage(sprintf(gT("There was a problem deleting the template '%s'. Please check your directory/file permissions."), $templatename), 'error');
                 }
             } else {
                 // This should never happen... trying to submit the form via a script? so no translation
-                Yii::app()->setFlashMessage("You're trying to delete a theme that is installed. Please, uninstall it first", 'error');
+                App()->setFlashMessage("You're trying to delete a theme that is installed. Please, uninstall it first", 'error');
             }
         }
 

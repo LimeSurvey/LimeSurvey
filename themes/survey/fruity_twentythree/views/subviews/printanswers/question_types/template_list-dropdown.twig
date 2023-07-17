@@ -1,0 +1,17 @@
+ {% extends "./subviews/printanswers/printanswers_question.twig" %}
+ {% block question_answer %}
+ <div class="col-lg-8">
+    <div class="row">
+        <div class="col-lg-4 text-end">
+        </div>
+        <div class="col-lg-8 text-start">
+            {{question.answervalue}} -
+            {% if question.answercode == '-oth-' %}
+                {{question.answeroption.answer|escape}}
+            {% else %}
+                {{question.answeroption.answer}}
+            {%endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

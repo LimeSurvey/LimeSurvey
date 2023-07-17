@@ -1,0 +1,63 @@
+
+{#
+    LimeSurvey
+    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    All rights reserved.
+    License: GNU/GPL License v2 or later, see LICENSE.php
+    LimeSurvey is free software. This version may have been modified pursuant
+    to the GNU General Public License, and as distributed it includes or
+    is derivative of works licensed under the GNU General Public License or
+    other free or open source software licenses.
+    See COPYRIGHT.php for copyright notices and details.
+
+    (¯`·._.·(¯`·._.· Registration form._.·´¯)·._.·´¯)
+
+    This is the head for the printanswers table.
+    It is used for the rendering of the responses at the end of the survey.
+
+#}
+
+{% if (aSurveyInfo.printPdf == 1) %} 
+{{ include('./subviews/printanswers/printanswers_style.twig') }}
+<style> 
+    body{ 
+        font-size: 11pt;
+        line-height: 80%; 
+    } 
+    div{
+        margin: 0;
+        padding: 0;
+    }
+    .question-container-printanswers{
+        line-height: 125%;
+    }
+</style> 
+{% endif %}
+{# {{dump(aSurveyInfo.groupArray)}} #}
+<div class="printanswers-container container">
+    {% if (aSurveyInfo.printPdf != 1) %} 
+        <div class="row">
+            <div class="col-sm-6">
+                {{ C.Html.form(aSurveyInfo.printAnswersHeadFormUrl, 'post') }}
+                 <span>
+                    {{ gT("Export these responses as PDF:") }}
+                 </span>
+                 <button class="btn btn-outline-secondary" type="submit">{{ gT("PDF export") }}</button>
+                {{ C.Html.endForm }}
+            </div>
+            <div class="col-sm-6">
+                {{ C.Html.form(aSurveyInfo.printAnswersHeadFormQueXMLUrl, 'post') }}
+                <span>
+                   {{ gT("Export these responses as queXML PDF:") }}
+                </span>
+                <button class="btn btn-outline-secondary" type="submit">{{ gT("queXML PDF export") }}</button>
+                {{ C.Html.endForm }}
+            </div>
+        </div>
+        <div class="row">
+        <br/>
+        </div>
+    {% endif %}
+
+
+
