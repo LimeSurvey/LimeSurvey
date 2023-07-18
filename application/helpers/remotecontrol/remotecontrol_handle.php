@@ -3573,7 +3573,7 @@ class remotecontrol_handle
                 $tokenFilter = " IN (" . implode(",", $aTokensQuoted) . ")";
             }
         } else {
-            if (!SurveyDynamic::model($iSurveyID)->findByAttributes(array('token' => $sToken))) {
+            if (!SurveyDynamic::model($iSurveyID)->findByAttributes(array('token' => $aTokens))) {
                 return array('status' => 'No Response found for Token');
             }
             $tokenFilter = "=" . App()->db->quoteValue("$aTokens");
