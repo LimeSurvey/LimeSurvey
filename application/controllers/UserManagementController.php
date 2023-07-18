@@ -405,11 +405,18 @@ class UserManagementController extends LSBaseController
             }
         }
 
+        $siteAdminName = User::model()->findByPk(1)->users_name;
+
+        // Transfer any User Groups owned by this user to site's admin
+        $userGroupsTranferred = UserGroup::model()->updateAll(['owner_id' => 1], 'owner_id = :owner_id', [':owner_id' => $userId]);
+        if ($userGroupsTranferred) {
+            $message .= sprintf(gT("All of the user's user groups were transferred to %s."), $siteAdminName) . " ";
+        }
+
         // Transfer any Participants owned by this user to site's admin
         $participantsTranferred = Participant::model()->updateAll(['owner_uid' => 1], 'owner_uid = :owner_uid', [':owner_uid' => $userId]);
         if ($participantsTranferred) {
-            $transferredToName = User::model()->findByPk(1)->users_name;
-            $message .= sprintf(gT("All participants owned by this user were transferred to %s."), $transferredToName) . " ";
+            $message .= sprintf(gT("All participants owned by this user were transferred to %s."), $siteAdminName) . " ";
         }
 
         //todo REFACTORING user permissions should be deleted also ... (in table permissions)
