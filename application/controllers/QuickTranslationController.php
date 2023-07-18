@@ -289,7 +289,7 @@ class QuickTranslationController extends LSBaseController
                 $textform_length = strlen(trim($textfrom));
                 $textfrom2_length = $associated ? strlen(trim((string) $textfrom2)) : 0;
 
-                $singleTabData['all_fields_empty'] = empty($resultbase);
+                $singleTabFieldsData['all_fields_empty'] = empty($resultbase);
 
                 $singleTabFieldsData['fieldData'] = array(
                     'textfrom' => $this->cleanup($textfrom),
