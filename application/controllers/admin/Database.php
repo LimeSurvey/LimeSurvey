@@ -735,19 +735,11 @@ class Database extends SurveyCommonAction
             $oSurvey->publicstatistics = $this->filterEmptyFields($oSurvey, 'publicstatistics');
             $oSurvey->autoredirect = $this->filterEmptyFields($oSurvey, 'autoredirect');
 
-            // save into the database only if global settings are off
-            //if (getGlobalSetting('showxquestions') === 'choose'){
-                $oSurvey->showxquestions = $this->filterEmptyFields($oSurvey, 'showxquestions');
-            //}
-            //if (getGlobalSetting('showgroupinfo') === 'choose'){
-                $oSurvey->showgroupinfo = $this->filterEmptyFields($oSurvey, 'showgroupinfo');
-            //}
-            //if (getGlobalSetting('showqnumcode') === 'choose'){
-                $oSurvey->showqnumcode = $this->filterEmptyFields($oSurvey, 'showqnumcode');
-            //}
-            //if (getGlobalSetting('shownoanswer') == 2){  // Don't do exact comparison because the value could be from global settings table (string) or from config (integer)
-                $oSurvey->shownoanswer = $this->filterEmptyFields($oSurvey, 'shownoanswer');
-            //}
+            $oSurvey->shownoanswer = $this->filterEmptyFields($oSurvey, 'shownoanswer');
+            $oSurvey->showxquestions = $this->filterEmptyFields($oSurvey, 'showxquestions');
+            $oSurvey->showgroupinfo = $this->filterEmptyFields($oSurvey, 'showgroupinfo');
+            $oSurvey->showqnumcode = $this->filterEmptyFields($oSurvey, 'showqnumcode');
+
             $oSurvey->showwelcome = $this->filterEmptyFields($oSurvey, 'showwelcome');
             $oSurvey->showsurveypolicynotice = $this->filterEmptyFields($oSurvey, 'showsurveypolicynotice');
             $oSurvey->allowprev = $this->filterEmptyFields($oSurvey, 'allowprev');

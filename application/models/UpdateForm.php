@@ -581,8 +581,7 @@ class UpdateForm extends CFormModel
                             if ($update->security_update) {
                                 $security_update_available = true;
                             }
-
-                            if ($update->branch != 'master') {
+                            if (!in_array($update->branch, ['master','5.x','3.x-LTS'])) {
                                 $unstable_update_available = true;
                             }
                         }

@@ -4358,6 +4358,81 @@ html[dir="rtl"] th {
     }
 }
 
+/** Styles for Data Entry screen */
+#responsedetail {
+    .checkbox {
+        input[type="checkbox"] {
+            margin-left: 0;
+        }
+        label {
+            padding-left: 0px;
+        }
+    }
+
+    .answer-item {
+        display:flex;
+        gap:1em;
+        margin-bottom: 1em;
+    }
+
+    .checkbox.unseen-checkbox {
+        margin-top: 0;
+        min-width: 6em;
+    }
+
+    .checkbox:not(.unseen-checkbox) {
+        margin-top: 0;
+    }
+
+    tr.multiple-opt-comments {
+        input[type="text"] {
+            width: 100%;
+        }
+        .checkbox {
+            margin-bottom: 0;
+        }
+        .answer-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .5em;
+        }
+    }
+
+    tr.array-5-pt,
+    tr.array-10-pt,
+    tr.array-yes-uncertain-no,
+    tr.array-increase-same-decrease,
+    tr.array-flexible-row,
+    tr.array-flexible-column,
+    tr.array-flexible-dual-scale {
+        .answer-wrapper {
+            display: flex;
+            gap: 1em;
+        }
+        .answer-wrapper > span {
+            flex: 1;
+        }
+        .answer-wrapper > span:first-of-type {
+            text-align: end;
+        }
+    }
+
+    tr.array-multi-flexi,
+    tr.array-multi-flexi-text {
+        .answer-wrapper {
+            display: flex;
+            gap: 1em;
+        }
+        .answer-wrapper > span {
+            flex: 1;
+        }
+    }
+
+    .answer-wrapper {
+        flex-grow: 1;
+    }
+}
+
 /** Make modals full width */
 @media screen and (min-width: 768px) {
   .dialog-fullwidth {

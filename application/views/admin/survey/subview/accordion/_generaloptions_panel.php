@@ -303,8 +303,8 @@
                 ));?>
             </div>
         </div>
-        <!-- Template -->
-
+        
+        <!-- Theme -->
         <div class="form-group">
             <label class=" control-label" for='template'><?php  eT("Theme:"); ?></label>
             <div class="">

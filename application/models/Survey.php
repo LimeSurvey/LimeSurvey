@@ -552,6 +552,11 @@ class Survey extends LSActiveRecord implements PermissionInterface
             array('startdate', 'date','format' => ['yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m'],'allowEmpty' => true),
             array('datecreated', 'date','format' => ['yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m'],'allowEmpty' => true),
             array('expires', 'checkExpireAfterStart'),
+            // The Google Analytics Tracking ID is inserted in a JS script. If the following rule is changed, make sure
+            // that it doesn't render it vulnerable to XSS attacks.
+            array('googleanalyticsapikey', 'match', 'pattern' => '/^[a-zA-Z\-\d]*$/',
+                'message' => gT('Google Analytics Tracking ID may only contain alphanumeric characters and hyphens.'),
+            ),
         );
     }
 
@@ -843,11 +848,13 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function getGoogleanalyticsapikey()
     {
+        $key = null;
         if ($this->googleanalyticsapikey === "9999useGlobal9999") {
-            return trim(Yii::app()->getConfig('googleanalyticsapikey'));
+            $key = trim(Yii::app()->getConfig('googleanalyticsapikey'));
         } else {
-            return trim($this->googleanalyticsapikey);
+            $key = trim($this->googleanalyticsapikey);
         }
+        return sanitize_alphanumeric($key);
     }
 
     /**
@@ -2357,13 +2364,14 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 }
 
                 // Create the URL according to the configured format
+                $baseUrl = App()->getPublicBaseUrl(true);
                 $urlManager = Yii::app()->getUrlManager();
                 $urlFormat = $urlManager->getUrlFormat();
                 if ($urlFormat == CUrlManager::GET_FORMAT) {
-                    $url = Yii::app()->getBaseUrl(true);
+                    $url = $baseUrl;
                     $params = [$urlManager->routeVar => $alias] + $params;
                 } else {
-                    $url = Yii::app()->getBaseUrl(true) . '/' . $alias;
+                    $url = $baseUrl . '/' . $alias;
                 }
                 $query = $urlManager->createPathInfo($params, '=', '&');
                 if (!empty($query)) {
@@ -2375,7 +2383,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
         // If short url is not preferred or no alias is found, return a traditional URL
         $urlParams = array_merge($params, ['sid' => $this->sid, 'lang' => $language]);
-        $url = Yii::app()->createAbsoluteUrl('survey/index', $urlParams);
+        $url = App()->createPublicUrl('survey/index', $urlParams);
+
         return $url;
     }
 
