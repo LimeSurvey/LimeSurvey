@@ -115,7 +115,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
                 //var t = $(ui.item).parent('.tokenatt-container');  // Does not work.
                 var t = $(ui.item).parent('div').parent('div');  // TODO: Bad, should not rely on DOM structure
                 t = t.find('.token-attribute .card-body');
-                t.append('<span class="fa fa-arrows-h tokenatt-arrow"></span>');
+                t.append('<span class="ri-arrow-left-right-fill tokenatt-arrow"></span>');
             }
         }
     });
