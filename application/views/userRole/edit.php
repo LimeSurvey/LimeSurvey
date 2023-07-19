@@ -9,7 +9,7 @@
             <?php if($model->isNewRecord) {
                 echo gT('Create permission roles');
             } else {
-                echo sprintf(gT('Update permission roles %s'), $model->name);
+                echo sprintf(gT('Update permission roles %s'), CHtml::encode($model->name));
             }?>
         </div>
 		<div class="col-12 ls-space margin top-15">
