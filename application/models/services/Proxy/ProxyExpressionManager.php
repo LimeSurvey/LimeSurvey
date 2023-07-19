@@ -73,6 +73,7 @@ class ProxyExpressionManager
         EmCacheHelper::init(['sid' => $surveyId, 'active' => 'Y']);
         EmCacheHelper::flush();
     }
+
     /**
      * Set Dirty flag
      *

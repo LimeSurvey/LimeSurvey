@@ -8,7 +8,6 @@ use PluginManager;
 use CHttpSession;
 use CDbConnection;
 
-
 /**
  * Dependency Injection
  *

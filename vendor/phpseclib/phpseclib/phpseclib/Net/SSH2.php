@@ -553,7 +553,7 @@ class SSH2
      * @var array
      * @access private
      */
-    private $message_numbers = [];
+    private static $message_numbers = [];
 
     /**
      * Disconnection Message 'reason codes' defined in RFC4253
@@ -562,7 +562,7 @@ class SSH2
      * @var array
      * @access private
      */
-    private $disconnect_reasons = [];
+    private static $disconnect_reasons = [];
 
     /**
      * SSH_MSG_CHANNEL_OPEN_FAILURE 'reason codes', defined in RFC4254
@@ -571,7 +571,7 @@ class SSH2
      * @var array
      * @access private
      */
-    private $channel_open_failure_reasons = [];
+    private static $channel_open_failure_reasons = [];
 
     /**
      * Terminal Modes
@@ -581,7 +581,7 @@ class SSH2
      * @var array
      * @access private
      */
-    private $terminal_modes = [];
+    private static $terminal_modes = [];
 
     /**
      * SSH_MSG_CHANNEL_EXTENDED_DATA's data_type_codes
@@ -591,7 +591,7 @@ class SSH2
      * @var array
      * @access private
      */
-    private $channel_extended_data_type_codes = [];
+    private static $channel_extended_data_type_codes = [];
 
     /**
      * Send Sequence Number
@@ -645,6 +645,14 @@ class SSH2
      * @var array
      */
     protected $channel_status = [];
+
+    /**
+     * The identifier of the interactive channel which was opened most recently
+     *
+     * @see self::getInteractiveChannelId()
+     * @var int
+     */
+    private $channel_id_last_interactive = 0;
 
     /**
      * Packet Size
@@ -836,20 +844,6 @@ class SSH2
      * @see self::enablePTY()
      */
     private $request_pty = false;
-
-    /**
-     * Flag set while exec() is running when using enablePTY()
-     *
-     * @var bool
-     */
-    private $in_request_pty_exec = false;
-
-    /**
-     * Flag set after startSubsystem() is called
-     *
-     * @var bool
-     */
-    private $in_subsystem;
 
     /**
      * Contents of stdError
@@ -1094,6 +1088,21 @@ class SSH2
     private $smartMFA = true;
 
     /**
+     * How many channels are currently opened
+     *
+     * @var int
+     */
+    private $channelCount = 0;
+
+    /**
+     * Does the server support multiple channels? If not then error out
+     * when multiple channels are attempted to be opened
+     *
+     * @var bool
+     */
+    private $errorOnMultipleChannels;
+
+    /**
      * Default Constructor.
      *
      * $host can either be a string, representing the host, or a stream resource.
@@ -1105,84 +1114,86 @@ class SSH2
      */
     public function __construct($host, $port = 22, $timeout = 10)
     {
-        $this->message_numbers = [
-            1 => 'NET_SSH2_MSG_DISCONNECT',
-            2 => 'NET_SSH2_MSG_IGNORE',
-            3 => 'NET_SSH2_MSG_UNIMPLEMENTED',
-            4 => 'NET_SSH2_MSG_DEBUG',
-            5 => 'NET_SSH2_MSG_SERVICE_REQUEST',
-            6 => 'NET_SSH2_MSG_SERVICE_ACCEPT',
-            20 => 'NET_SSH2_MSG_KEXINIT',
-            21 => 'NET_SSH2_MSG_NEWKEYS',
-            30 => 'NET_SSH2_MSG_KEXDH_INIT',
-            31 => 'NET_SSH2_MSG_KEXDH_REPLY',
-            50 => 'NET_SSH2_MSG_USERAUTH_REQUEST',
-            51 => 'NET_SSH2_MSG_USERAUTH_FAILURE',
-            52 => 'NET_SSH2_MSG_USERAUTH_SUCCESS',
-            53 => 'NET_SSH2_MSG_USERAUTH_BANNER',
+        if (empty(self::$message_numbers)) {
+            self::$message_numbers = [
+                1 => 'NET_SSH2_MSG_DISCONNECT',
+                2 => 'NET_SSH2_MSG_IGNORE',
+                3 => 'NET_SSH2_MSG_UNIMPLEMENTED',
+                4 => 'NET_SSH2_MSG_DEBUG',
+                5 => 'NET_SSH2_MSG_SERVICE_REQUEST',
+                6 => 'NET_SSH2_MSG_SERVICE_ACCEPT',
+                20 => 'NET_SSH2_MSG_KEXINIT',
+                21 => 'NET_SSH2_MSG_NEWKEYS',
+                30 => 'NET_SSH2_MSG_KEXDH_INIT',
+                31 => 'NET_SSH2_MSG_KEXDH_REPLY',
+                50 => 'NET_SSH2_MSG_USERAUTH_REQUEST',
+                51 => 'NET_SSH2_MSG_USERAUTH_FAILURE',
+                52 => 'NET_SSH2_MSG_USERAUTH_SUCCESS',
+                53 => 'NET_SSH2_MSG_USERAUTH_BANNER',
 
-            80 => 'NET_SSH2_MSG_GLOBAL_REQUEST',
-            81 => 'NET_SSH2_MSG_REQUEST_SUCCESS',
-            82 => 'NET_SSH2_MSG_REQUEST_FAILURE',
-            90 => 'NET_SSH2_MSG_CHANNEL_OPEN',
-            91 => 'NET_SSH2_MSG_CHANNEL_OPEN_CONFIRMATION',
-            92 => 'NET_SSH2_MSG_CHANNEL_OPEN_FAILURE',
-            93 => 'NET_SSH2_MSG_CHANNEL_WINDOW_ADJUST',
-            94 => 'NET_SSH2_MSG_CHANNEL_DATA',
-            95 => 'NET_SSH2_MSG_CHANNEL_EXTENDED_DATA',
-            96 => 'NET_SSH2_MSG_CHANNEL_EOF',
-            97 => 'NET_SSH2_MSG_CHANNEL_CLOSE',
-            98 => 'NET_SSH2_MSG_CHANNEL_REQUEST',
-            99 => 'NET_SSH2_MSG_CHANNEL_SUCCESS',
-            100 => 'NET_SSH2_MSG_CHANNEL_FAILURE'
-        ];
-        $this->disconnect_reasons = [
-            1 => 'NET_SSH2_DISCONNECT_HOST_NOT_ALLOWED_TO_CONNECT',
-            2 => 'NET_SSH2_DISCONNECT_PROTOCOL_ERROR',
-            3 => 'NET_SSH2_DISCONNECT_KEY_EXCHANGE_FAILED',
-            4 => 'NET_SSH2_DISCONNECT_RESERVED',
-            5 => 'NET_SSH2_DISCONNECT_MAC_ERROR',
-            6 => 'NET_SSH2_DISCONNECT_COMPRESSION_ERROR',
-            7 => 'NET_SSH2_DISCONNECT_SERVICE_NOT_AVAILABLE',
-            8 => 'NET_SSH2_DISCONNECT_PROTOCOL_VERSION_NOT_SUPPORTED',
-            9 => 'NET_SSH2_DISCONNECT_HOST_KEY_NOT_VERIFIABLE',
-            10 => 'NET_SSH2_DISCONNECT_CONNECTION_LOST',
-            11 => 'NET_SSH2_DISCONNECT_BY_APPLICATION',
-            12 => 'NET_SSH2_DISCONNECT_TOO_MANY_CONNECTIONS',
-            13 => 'NET_SSH2_DISCONNECT_AUTH_CANCELLED_BY_USER',
-            14 => 'NET_SSH2_DISCONNECT_NO_MORE_AUTH_METHODS_AVAILABLE',
-            15 => 'NET_SSH2_DISCONNECT_ILLEGAL_USER_NAME'
-        ];
-        $this->channel_open_failure_reasons = [
-            1 => 'NET_SSH2_OPEN_ADMINISTRATIVELY_PROHIBITED'
-        ];
-        $this->terminal_modes = [
-            0 => 'NET_SSH2_TTY_OP_END'
-        ];
-        $this->channel_extended_data_type_codes = [
-            1 => 'NET_SSH2_EXTENDED_DATA_STDERR'
-        ];
+                80 => 'NET_SSH2_MSG_GLOBAL_REQUEST',
+                81 => 'NET_SSH2_MSG_REQUEST_SUCCESS',
+                82 => 'NET_SSH2_MSG_REQUEST_FAILURE',
+                90 => 'NET_SSH2_MSG_CHANNEL_OPEN',
+                91 => 'NET_SSH2_MSG_CHANNEL_OPEN_CONFIRMATION',
+                92 => 'NET_SSH2_MSG_CHANNEL_OPEN_FAILURE',
+                93 => 'NET_SSH2_MSG_CHANNEL_WINDOW_ADJUST',
+                94 => 'NET_SSH2_MSG_CHANNEL_DATA',
+                95 => 'NET_SSH2_MSG_CHANNEL_EXTENDED_DATA',
+                96 => 'NET_SSH2_MSG_CHANNEL_EOF',
+                97 => 'NET_SSH2_MSG_CHANNEL_CLOSE',
+                98 => 'NET_SSH2_MSG_CHANNEL_REQUEST',
+                99 => 'NET_SSH2_MSG_CHANNEL_SUCCESS',
+                100 => 'NET_SSH2_MSG_CHANNEL_FAILURE'
+            ];
+            self::$disconnect_reasons = [
+                1 => 'NET_SSH2_DISCONNECT_HOST_NOT_ALLOWED_TO_CONNECT',
+                2 => 'NET_SSH2_DISCONNECT_PROTOCOL_ERROR',
+                3 => 'NET_SSH2_DISCONNECT_KEY_EXCHANGE_FAILED',
+                4 => 'NET_SSH2_DISCONNECT_RESERVED',
+                5 => 'NET_SSH2_DISCONNECT_MAC_ERROR',
+                6 => 'NET_SSH2_DISCONNECT_COMPRESSION_ERROR',
+                7 => 'NET_SSH2_DISCONNECT_SERVICE_NOT_AVAILABLE',
+                8 => 'NET_SSH2_DISCONNECT_PROTOCOL_VERSION_NOT_SUPPORTED',
+                9 => 'NET_SSH2_DISCONNECT_HOST_KEY_NOT_VERIFIABLE',
+                10 => 'NET_SSH2_DISCONNECT_CONNECTION_LOST',
+                11 => 'NET_SSH2_DISCONNECT_BY_APPLICATION',
+                12 => 'NET_SSH2_DISCONNECT_TOO_MANY_CONNECTIONS',
+                13 => 'NET_SSH2_DISCONNECT_AUTH_CANCELLED_BY_USER',
+                14 => 'NET_SSH2_DISCONNECT_NO_MORE_AUTH_METHODS_AVAILABLE',
+                15 => 'NET_SSH2_DISCONNECT_ILLEGAL_USER_NAME'
+            ];
+            self::$channel_open_failure_reasons = [
+                1 => 'NET_SSH2_OPEN_ADMINISTRATIVELY_PROHIBITED'
+            ];
+            self::$terminal_modes = [
+                0 => 'NET_SSH2_TTY_OP_END'
+            ];
+            self::$channel_extended_data_type_codes = [
+                1 => 'NET_SSH2_EXTENDED_DATA_STDERR'
+            ];
 
-        $this->define_array(
-            $this->message_numbers,
-            $this->disconnect_reasons,
-            $this->channel_open_failure_reasons,
-            $this->terminal_modes,
-            $this->channel_extended_data_type_codes,
-            [60 => 'NET_SSH2_MSG_USERAUTH_PASSWD_CHANGEREQ'],
-            [60 => 'NET_SSH2_MSG_USERAUTH_PK_OK'],
-            [60 => 'NET_SSH2_MSG_USERAUTH_INFO_REQUEST',
-                  61 => 'NET_SSH2_MSG_USERAUTH_INFO_RESPONSE'],
-            // RFC 4419 - diffie-hellman-group-exchange-sha{1,256}
-            [30 => 'NET_SSH2_MSG_KEXDH_GEX_REQUEST_OLD',
-                  31 => 'NET_SSH2_MSG_KEXDH_GEX_GROUP',
-                  32 => 'NET_SSH2_MSG_KEXDH_GEX_INIT',
-                  33 => 'NET_SSH2_MSG_KEXDH_GEX_REPLY',
-                  34 => 'NET_SSH2_MSG_KEXDH_GEX_REQUEST'],
-            // RFC 5656 - Elliptic Curves (for curve25519-sha256@libssh.org)
-            [30 => 'NET_SSH2_MSG_KEX_ECDH_INIT',
-                  31 => 'NET_SSH2_MSG_KEX_ECDH_REPLY']
-        );
+            self::define_array(
+                self::$message_numbers,
+                self::$disconnect_reasons,
+                self::$channel_open_failure_reasons,
+                self::$terminal_modes,
+                self::$channel_extended_data_type_codes,
+                [60 => 'NET_SSH2_MSG_USERAUTH_PASSWD_CHANGEREQ'],
+                [60 => 'NET_SSH2_MSG_USERAUTH_PK_OK'],
+                [60 => 'NET_SSH2_MSG_USERAUTH_INFO_REQUEST',
+                      61 => 'NET_SSH2_MSG_USERAUTH_INFO_RESPONSE'],
+                // RFC 4419 - diffie-hellman-group-exchange-sha{1,256}
+                [30 => 'NET_SSH2_MSG_KEXDH_GEX_REQUEST_OLD',
+                      31 => 'NET_SSH2_MSG_KEXDH_GEX_GROUP',
+                      32 => 'NET_SSH2_MSG_KEXDH_GEX_INIT',
+                      33 => 'NET_SSH2_MSG_KEXDH_GEX_REPLY',
+                      34 => 'NET_SSH2_MSG_KEXDH_GEX_REQUEST'],
+                // RFC 5656 - Elliptic Curves (for curve25519-sha256@libssh.org)
+                [30 => 'NET_SSH2_MSG_KEX_ECDH_INIT',
+                      31 => 'NET_SSH2_MSG_KEX_ECDH_REPLY']
+            );
+        }
 
         /**
          * Typehint is required due to a bug in Psalm: https://github.com/vimeo/psalm/issues/7508
@@ -1270,6 +1281,32 @@ class SSH2
     }
 
     /**
+     * stream_select wrapper
+     *
+     * Quoting https://stackoverflow.com/a/14262151/569976,
+     * "The general approach to `EINTR` is to simply handle the error and retry the operation again"
+     *
+     * This wrapper does that loop
+     */
+    private static function stream_select(&$read, &$write, &$except, $seconds, $microseconds = null)
+    {
+        $remaining = $seconds + $microseconds / 1000000;
+        $start = microtime(true);
+        while (true) {
+            $result = @stream_select($read, $write, $except, $seconds, $microseconds);
+            if ($result !== false) {
+                return $result;
+            }
+            $elapsed = microtime(true) - $start;
+            $seconds = (int) ($remaining - floor($elapsed));
+            $microseconds = (int) (1000000 * ($remaining - $seconds));
+            if ($elapsed >= $remaining) {
+                return false;
+            }
+        }
+    }
+
+    /**
      * Connect to an SSHv2 server
      *
      * @throws \UnexpectedValueException on receipt of unexpected packets
@@ -1333,7 +1370,7 @@ class SSH2
                     $start = microtime(true);
                     $sec = (int) floor($this->curTimeout);
                     $usec = (int) (1000000 * ($this->curTimeout - $sec));
-                    if (@stream_select($read, $write, $except, $sec, $usec) === false) {
+                    if (static::stream_select($read, $write, $except, $sec, $usec) === false) {
                         throw new \RuntimeException('Connection timed out whilst receiving server identification string');
                     }
                     $elapsed = microtime(true) - $start;
@@ -1387,6 +1424,18 @@ class SSH2
             $this->bitmap = 0;
             throw new UnableToConnectException("Cannot connect to SSH $matches[3] servers");
         }
+
+        // Ubuntu's OpenSSH from 5.8 to 6.9 didn't work with multiple channels. see
+        // https://bugs.launchpad.net/ubuntu/+source/openssh/+bug/1334916 for more info.
+        // https://lists.ubuntu.com/archives/oneiric-changes/2011-July/005772.html discusses
+        // when consolekit was incorporated.
+        // https://marc.info/?l=openssh-unix-dev&m=163409903417589&w=2 discusses some of the
+        // issues with how Ubuntu incorporated consolekit
+        $pattern = '#^SSH-2\.0-OpenSSH_([\d.]+)[^ ]* Ubuntu-.*$#';
+        $match = preg_match($pattern, $this->server_identifier, $matches);
+        $match = $match && version_compare('5.8', $matches[1], '<=');
+        $match = $match && version_compare('6.9', $matches[1], '>=');
+        $this->errorOnMultipleChannels = $match;
 
         if (!$this->send_id_string_first) {
             fputs($this->fsock, $this->identifier . "\r\n");
@@ -2121,7 +2170,7 @@ class SSH2
      * The $password parameter can be a plaintext password, a \phpseclib3\Crypt\RSA|EC|DSA object, a \phpseclib3\System\SSH\Agent object or an array
      *
      * @param string $username
-     * @param string|AsymmetricKey|array[]|Agent|null ...$args
+     * @param string|PrivateKey|array[]|Agent|null ...$args
      * @return bool
      * @see self::_login()
      */
@@ -2146,7 +2195,7 @@ class SSH2
      * Login Helper
      *
      * @param string $username
-     * @param string ...$args
+     * @param string|PrivateKey|array[]|Agent|null ...$args
      * @return bool
      * @see self::_login_helper()
      */
@@ -2729,32 +2778,11 @@ class SSH2
             return false;
         }
 
-        if ($this->in_request_pty_exec) {
-            throw new \RuntimeException('If you want to run multiple exec()\'s you will need to disable (and re-enable if appropriate) a PTY for each one.');
-        }
+        //if ($this->isPTYOpen()) {
+        //    throw new \RuntimeException('If you want to run multiple exec()\'s you will need to disable (and re-enable if appropriate) a PTY for each one.');
+        //}
 
-        // RFC4254 defines the (client) window size as "bytes the other party can send before it must wait for the window to
-        // be adjusted".  0x7FFFFFFF is, at 2GB, the max size.  technically, it should probably be decremented, but,
-        // honestly, if you're transferring more than 2GB, you probably shouldn't be using phpseclib, anyway.
-        // see http://tools.ietf.org/html/rfc4254#section-5.2 for more info
-        $this->window_size_server_to_client[self::CHANNEL_EXEC] = $this->window_size;
-        // 0x8000 is the maximum max packet size, per http://tools.ietf.org/html/rfc4253#section-6.1, although since PuTTy
-        // uses 0x4000, that's what will be used here, as well.
-        $packet_size = 0x4000;
-
-        $packet = Strings::packSSH2(
-            'CsN3',
-            NET_SSH2_MSG_CHANNEL_OPEN,
-            'session',
-            self::CHANNEL_EXEC,
-            $this->window_size_server_to_client[self::CHANNEL_EXEC],
-            $packet_size
-        );
-        $this->send_binary_packet($packet);
-
-        $this->channel_status[self::CHANNEL_EXEC] = NET_SSH2_MSG_CHANNEL_OPEN;
-
-        $this->get_channel_packet(self::CHANNEL_EXEC);
+        $this->openChannel(self::CHANNEL_EXEC);
 
         if ($this->request_pty === true) {
             $terminal_modes = pack('C', NET_SSH2_TTY_OP_END);
@@ -2779,8 +2807,6 @@ class SSH2
                 $this->disconnect_helper(NET_SSH2_DISCONNECT_BY_APPLICATION);
                 throw new \RuntimeException('Unable to request pseudo-terminal');
             }
-
-            $this->in_request_pty_exec = true;
         }
 
         // sending a pty-req SSH_MSG_CHANNEL_REQUEST message is unnecessary and, in fact, in most cases, slows things
@@ -2810,7 +2836,8 @@ class SSH2
 
         $this->channel_status[self::CHANNEL_EXEC] = NET_SSH2_MSG_CHANNEL_DATA;
 
-        if ($this->in_request_pty_exec) {
+        if ($this->request_pty === true) {
+            $this->channel_id_last_interactive = self::CHANNEL_EXEC;
             return true;
         }
 
@@ -2836,37 +2863,80 @@ class SSH2
     }
 
     /**
-     * Creates an interactive shell
+     * How many channels are currently open?
      *
-     * @see self::read()
-     * @see self::write()
-     * @return bool
-     * @throws \UnexpectedValueException on receipt of unexpected packets
-     * @throws \RuntimeException on other errors
+     * @return int
      */
-    private function initShell()
+    public function getOpenChannelCount()
     {
-        if ($this->in_request_pty_exec === true) {
-            return true;
+        return $this->channelCount;
+    }
+
+    /**
+     * Opens a channel
+     *
+     * @param string $channel
+     * @param bool $skip_extended
+     * @return bool
+     */
+    protected function openChannel($channel, $skip_extended = false)
+    {
+        if (isset($this->channel_status[$channel]) && $this->channel_status[$channel] != NET_SSH2_MSG_CHANNEL_CLOSE) {
+            throw new \RuntimeException('Please close the channel (' . $channel . ') before trying to open it again');
         }
 
-        $this->window_size_server_to_client[self::CHANNEL_SHELL] = $this->window_size;
+        $this->channelCount++;
+
+        if ($this->channelCount > 1 && $this->errorOnMultipleChannels) {
+            throw new \RuntimeException("Ubuntu's OpenSSH from 5.8 to 6.9 doesn't work with multiple channels");
+        }
+
+        // RFC4254 defines the (client) window size as "bytes the other party can send before it must wait for the window to
+        // be adjusted".  0x7FFFFFFF is, at 2GB, the max size.  technically, it should probably be decremented, but,
+        // honestly, if you're transferring more than 2GB, you probably shouldn't be using phpseclib, anyway.
+        // see http://tools.ietf.org/html/rfc4254#section-5.2 for more info
+        $this->window_size_server_to_client[$channel] = $this->window_size;
+        // 0x8000 is the maximum max packet size, per http://tools.ietf.org/html/rfc4253#section-6.1, although since PuTTy
+        // uses 0x4000, that's what will be used here, as well.
         $packet_size = 0x4000;
 
         $packet = Strings::packSSH2(
             'CsN3',
             NET_SSH2_MSG_CHANNEL_OPEN,
             'session',
-            self::CHANNEL_SHELL,
-            $this->window_size_server_to_client[self::CHANNEL_SHELL],
+            $channel,
+            $this->window_size_server_to_client[$channel],
             $packet_size
         );
 
         $this->send_binary_packet($packet);
 
-        $this->channel_status[self::CHANNEL_SHELL] = NET_SSH2_MSG_CHANNEL_OPEN;
+        $this->channel_status[$channel] = NET_SSH2_MSG_CHANNEL_OPEN;
 
-        $this->get_channel_packet(self::CHANNEL_SHELL);
+        return $this->get_channel_packet($channel, $skip_extended);
+    }
+
+    /**
+     * Creates an interactive shell
+     *
+     * Returns bool(true) if the shell was opened.
+     * Returns bool(false) if the shell was already open.
+     *
+     * @see self::isShellOpen()
+     * @see self::read()
+     * @see self::write()
+     * @return bool
+     * @throws InsufficientSetupException if not authenticated
+     * @throws \UnexpectedValueException on receipt of unexpected packets
+     * @throws \RuntimeException on other errors
+     */
+    public function openShell()
+    {
+        if (!$this->isAuthenticated()) {
+            throw new InsufficientSetupException('Operation disallowed prior to login()');
+        }
+
+        $this->openChannel(self::CHANNEL_SHELL);
 
         $terminal_modes = pack('C', NET_SSH2_TTY_OP_END);
         $packet = Strings::packSSH2(
@@ -2907,14 +2977,18 @@ class SSH2
 
         $this->channel_status[self::CHANNEL_SHELL] = NET_SSH2_MSG_CHANNEL_DATA;
 
+        $this->channel_id_last_interactive = self::CHANNEL_SHELL;
+
         $this->bitmap |= self::MASK_SHELL;
 
         return true;
     }
 
     /**
-     * Return the channel to be used with read() / write()
-     *
+     * Return the channel to be used with read(), write(), and reset(), if none were specified
+     * @deprecated for lack of transparency in intended channel target, to be potentially replaced
+     *             with method which guarantees open-ness of all yielded channels and throws
+     *             error for multiple open channels
      * @see self::read()
      * @see self::write()
      * @return int
@@ -2922,13 +2996,24 @@ class SSH2
     private function get_interactive_channel()
     {
         switch (true) {
-            case $this->in_subsystem:
+            case $this->is_channel_status_data(self::CHANNEL_SUBSYSTEM):
                 return self::CHANNEL_SUBSYSTEM;
-            case $this->in_request_pty_exec:
+            case $this->is_channel_status_data(self::CHANNEL_EXEC):
                 return self::CHANNEL_EXEC;
             default:
                 return self::CHANNEL_SHELL;
         }
+    }
+
+    /**
+     * Indicates the DATA status on the given channel
+     *
+     * @param int $channel The channel number to evaluate
+     * @return bool
+     */
+    private function is_channel_status_data($channel)
+    {
+        return isset($this->channel_status[$channel]) && $this->channel_status[$channel] == NET_SSH2_MSG_CHANNEL_DATA;
     }
 
     /**
@@ -2987,26 +3072,41 @@ class SSH2
      * Returns when there's a match for $expect, which can take the form of a string literal or,
      * if $mode == self::READ_REGEX, a regular expression.
      *
+     * If not specifying a channel, an open interactive channel will be selected, or, if there are
+     * no open channels, an interactive shell will be created. If there are multiple open
+     * interactive channels, a legacy behavior will apply in which channel selection prioritizes
+     * an active subsystem, the exec pty, and, lastly, the shell. If using multiple interactive
+     * channels, callers are discouraged from relying on this legacy behavior and should specify
+     * the intended channel.
+     *
      * @see self::write()
      * @param string $expect
-     * @param int $mode
+     * @param int $mode One of the self::READ_* constants
+     * @param int|null $channel Channel id returned by self::getInteractiveChannelId()
      * @return string|bool|null
      * @throws \RuntimeException on connection error
+     * @throws InsufficientSetupException on unexpected channel status, possibly due to closure
      */
-    public function read($expect = '', $mode = self::READ_SIMPLE)
+    public function read($expect = '', $mode = self::READ_SIMPLE, $channel = null)
     {
-        $this->curTimeout = $this->timeout;
-        $this->is_timeout = false;
-
         if (!$this->isAuthenticated()) {
             throw new InsufficientSetupException('Operation disallowed prior to login()');
         }
 
-        if (!($this->bitmap & self::MASK_SHELL) && !$this->initShell()) {
-            throw new \RuntimeException('Unable to initiate an interactive shell session');
+        $this->curTimeout = $this->timeout;
+        $this->is_timeout = false;
+
+        if ($channel === null) {
+            $channel = $this->get_interactive_channel();
         }
 
-        $channel = $this->get_interactive_channel();
+        if (!$this->is_channel_status_data($channel) && empty($this->channel_buffers[$channel])) {
+            if ($channel != self::CHANNEL_SHELL) {
+                throw new InsufficientSetupException('Data is not available on channel');
+            } elseif (!$this->openShell()) {
+                throw new \RuntimeException('Unable to initiate an interactive shell session');
+            }
+        }
 
         if ($mode == self::READ_NEXT) {
             return $this->get_channel_packet($channel);
@@ -3024,7 +3124,6 @@ class SSH2
             }
             $response = $this->get_channel_packet($channel);
             if ($response === true) {
-                $this->in_request_pty_exec = false;
                 return Strings::shift($this->interactiveBuffer, strlen($this->interactiveBuffer));
             }
 
@@ -3035,22 +3134,39 @@ class SSH2
     /**
      * Inputs a command into an interactive shell.
      *
+     * If not specifying a channel, an open interactive channel will be selected, or, if there are
+     * no open channels, an interactive shell will be created. If there are multiple open
+     * interactive channels, a legacy behavior will apply in which channel selection prioritizes
+     * an active subsystem, the exec pty, and, lastly, the shell. If using multiple interactive
+     * channels, callers are discouraged from relying on this legacy behavior and should specify
+     * the intended channel.
+     *
      * @see SSH2::read()
      * @param string $cmd
+     * @param int|null $channel Channel id returned by self::getInteractiveChannelId()
      * @return void
      * @throws \RuntimeException on connection error
+     * @throws InsufficientSetupException on unexpected channel status, possibly due to closure
      */
-    public function write($cmd)
+    public function write($cmd, $channel = null)
     {
         if (!$this->isAuthenticated()) {
             throw new InsufficientSetupException('Operation disallowed prior to login()');
         }
 
-        if (!($this->bitmap & self::MASK_SHELL) && !$this->initShell()) {
-            throw new \RuntimeException('Unable to initiate an interactive shell session');
+        if ($channel === null) {
+            $channel = $this->get_interactive_channel();
         }
 
-        $this->send_channel_packet($this->get_interactive_channel(), $cmd);
+        if (!$this->is_channel_status_data($channel)) {
+            if ($channel != self::CHANNEL_SHELL) {
+                throw new InsufficientSetupException('Data is not available on channel');
+            } elseif (!$this->openShell()) {
+                throw new \RuntimeException('Unable to initiate an interactive shell session');
+            }
+        }
+
+        $this->send_channel_packet($channel, $cmd);
     }
 
     /**
@@ -3068,22 +3184,7 @@ class SSH2
      */
     public function startSubsystem($subsystem)
     {
-        $this->window_size_server_to_client[self::CHANNEL_SUBSYSTEM] = $this->window_size;
-
-        $packet = Strings::packSSH2(
-            'CsN3',
-            NET_SSH2_MSG_CHANNEL_OPEN,
-            'session',
-            self::CHANNEL_SUBSYSTEM,
-            $this->window_size,
-            0x4000
-        );
-
-        $this->send_binary_packet($packet);
-
-        $this->channel_status[self::CHANNEL_SUBSYSTEM] = NET_SSH2_MSG_CHANNEL_OPEN;
-
-        $this->get_channel_packet(self::CHANNEL_SUBSYSTEM);
+        $this->openChannel(self::CHANNEL_SUBSYSTEM);
 
         $packet = Strings::packSSH2(
             'CNsCs',
@@ -3103,8 +3204,7 @@ class SSH2
 
         $this->channel_status[self::CHANNEL_SUBSYSTEM] = NET_SSH2_MSG_CHANNEL_DATA;
 
-        $this->bitmap |= self::MASK_SHELL;
-        $this->in_subsystem = true;
+        $this->channel_id_last_interactive = self::CHANNEL_SUBSYSTEM;
 
         return true;
     }
@@ -3117,8 +3217,9 @@ class SSH2
      */
     public function stopSubsystem()
     {
-        $this->in_subsystem = false;
-        $this->close_channel(self::CHANNEL_SUBSYSTEM);
+        if ($this->isInteractiveChannelOpen(self::CHANNEL_SUBSYSTEM)) {
+            $this->close_channel(self::CHANNEL_SUBSYSTEM);
+        }
         return true;
     }
 
@@ -3127,10 +3228,23 @@ class SSH2
      *
      * If read() timed out you might want to just close the channel and have it auto-restart on the next read() call
      *
+     * If not specifying a channel, an open interactive channel will be selected. If there are
+     * multiple open interactive channels, a legacy behavior will apply in which channel selection
+     * prioritizes an active subsystem, the exec pty, and, lastly, the shell. If using multiple
+     * interactive channels, callers are discouraged from relying on this legacy behavior and
+     * should specify the intended channel.
+     *
+     * @param int|null $channel Channel id returned by self::getInteractiveChannelId()
+     * @return void
      */
-    public function reset()
+    public function reset($channel = null)
     {
-        $this->close_channel($this->get_interactive_channel());
+        if ($channel === null) {
+            $channel = $this->get_interactive_channel();
+        }
+        if ($this->isInteractiveChannelOpen($channel)) {
+            $this->close_channel($channel);
+        }
     }
 
     /**
@@ -3176,7 +3290,7 @@ class SSH2
      */
     public function isConnected()
     {
-        return (bool) ($this->bitmap & self::MASK_CONNECTED);
+        return ($this->bitmap & self::MASK_CONNECTED) && is_resource($this->fsock) && !feof($this->fsock);
     }
 
     /**
@@ -3187,6 +3301,49 @@ class SSH2
     public function isAuthenticated()
     {
         return (bool) ($this->bitmap & self::MASK_LOGIN);
+    }
+
+    /**
+     * Is the interactive shell active?
+     *
+     * @return bool
+     */
+    public function isShellOpen()
+    {
+        return $this->isInteractiveChannelOpen(self::CHANNEL_SHELL);
+    }
+
+    /**
+     * Is the exec pty active?
+     *
+     * @return bool
+     */
+    public function isPTYOpen()
+    {
+        return $this->isInteractiveChannelOpen(self::CHANNEL_EXEC);
+    }
+
+    /**
+     * Is the given interactive channel active?
+     *
+     * @param int $channel Channel id returned by self::getInteractiveChannelId()
+     * @return bool
+     */
+    public function isInteractiveChannelOpen($channel)
+    {
+        return $this->isAuthenticated() && $this->is_channel_status_data($channel);
+    }
+
+    /**
+     * Returns a channel identifier, presently of the last interactive channel opened, regardless of current status.
+     * Returns 0 if no interactive channel has been opened.
+     *
+     * @see self::isInteractiveChannelOpen()
+     * @return int
+     */
+    public function getInteractiveChannelId()
+    {
+        return $this->channel_id_last_interactive;
     }
 
     /**
@@ -3205,23 +3362,8 @@ class SSH2
             return false;
         }
 
-        $this->window_size_server_to_client[self::CHANNEL_KEEP_ALIVE] = $this->window_size;
-        $packet_size = 0x4000;
-        $packet = Strings::packSSH2(
-            'CsN3',
-            NET_SSH2_MSG_CHANNEL_OPEN,
-            'session',
-            self::CHANNEL_KEEP_ALIVE,
-            $this->window_size_server_to_client[self::CHANNEL_KEEP_ALIVE],
-            $packet_size
-        );
-
         try {
-            $this->send_binary_packet($packet);
-
-            $this->channel_status[self::CHANNEL_KEEP_ALIVE] = NET_SSH2_MSG_CHANNEL_OPEN;
-
-            $response = $this->get_channel_packet(self::CHANNEL_KEEP_ALIVE);
+            $this->openChannel(self::CHANNEL_KEEP_ALIVE);
         } catch (\RuntimeException $e) {
             return $this->reconnect();
         }
@@ -3283,9 +3425,9 @@ class SSH2
 
             if (!$this->curTimeout) {
                 if ($this->keepAlive <= 0) {
-                    @stream_select($read, $write, $except, null);
+                    static::stream_select($read, $write, $except, null);
                 } else {
-                    if (!@stream_select($read, $write, $except, $this->keepAlive)) {
+                    if (!static::stream_select($read, $write, $except, $this->keepAlive)) {
                         $this->send_binary_packet(pack('CN', NET_SSH2_MSG_IGNORE, 0));
                         return $this->get_binary_packet(true);
                     }
@@ -3299,7 +3441,7 @@ class SSH2
                 $start = microtime(true);
 
                 if ($this->keepAlive > 0 && $this->keepAlive < $this->curTimeout) {
-                    if (!@stream_select($read, $write, $except, $this->keepAlive)) {
+                    if (!static::stream_select($read, $write, $except, $this->keepAlive)) {
                         $this->send_binary_packet(pack('CN', NET_SSH2_MSG_IGNORE, 0));
                         $elapsed = microtime(true) - $start;
                         $this->curTimeout -= $elapsed;
@@ -3313,7 +3455,7 @@ class SSH2
                 $usec = (int) (1000000 * ($this->curTimeout - $sec));
 
                 // this can return a "stream_select(): unable to select [4]: Interrupted system call" error
-                if (!@stream_select($read, $write, $except, $sec, $usec)) {
+                if (!static::stream_select($read, $write, $except, $sec, $usec)) {
                     $this->is_timeout = true;
                     return true;
                 }
@@ -3504,7 +3646,7 @@ class SSH2
 
         if (defined('NET_SSH2_LOGGING')) {
             $current = microtime(true);
-            $message_number = isset($this->message_numbers[ord($payload[0])]) ? $this->message_numbers[ord($payload[0])] : 'UNKNOWN (' . ord($payload[0]) . ')';
+            $message_number = isset(self::$message_numbers[ord($payload[0])]) ? self::$message_numbers[ord($payload[0])] : 'UNKNOWN (' . ord($payload[0]) . ')';
             $message_number = '<- ' . $message_number .
                               ' (since last: ' . round($current - $this->last_packet, 4) . ', network: ' . round($stop - $start, 4) . 's)';
             $this->append_log($message_number, $payload);
@@ -3586,7 +3728,7 @@ class SSH2
             case NET_SSH2_MSG_DISCONNECT:
                 Strings::shift($payload, 1);
                 list($reason_code, $message) = Strings::unpackSSH2('Ns', $payload);
-                $this->errors[] = 'SSH_MSG_DISCONNECT: ' . $this->disconnect_reasons[$reason_code] . "\r\n$message";
+                $this->errors[] = 'SSH_MSG_DISCONNECT: ' . static::$disconnect_reasons[$reason_code] . "\r\n$message";
                 $this->bitmap = 0;
                 return false;
             case NET_SSH2_MSG_IGNORE:
@@ -3773,9 +3915,8 @@ class SSH2
      */
     public function disablePTY()
     {
-        if ($this->in_request_pty_exec) {
+        if ($this->isPTYOpen()) {
             $this->close_channel(self::CHANNEL_EXEC);
-            $this->in_request_pty_exec = false;
         }
         $this->request_pty = false;
     }
@@ -3801,6 +3942,7 @@ class SSH2
      * - if the connection times out
      * - if the channel status is CHANNEL_OPEN and the response was CHANNEL_OPEN_CONFIRMATION
      * - if the channel status is CHANNEL_REQUEST and the response was CHANNEL_SUCCESS
+     * - if the channel status is CHANNEL_CLOSE and the response was CHANNEL_CLOSE
      *
      * bool(false) is returned if:
      *
@@ -3968,7 +4110,10 @@ class SSH2
                                 throw new \RuntimeException('Unable to fulfill channel request');
                         }
                     case NET_SSH2_MSG_CHANNEL_CLOSE:
-                        return $type == NET_SSH2_MSG_CHANNEL_CLOSE ? true : $this->get_channel_packet($client_channel, $skip_extended);
+                        if ($client_channel == $channel && $type == NET_SSH2_MSG_CHANNEL_CLOSE) {
+                            return true;
+                        }
+                        return $this->get_channel_packet($client_channel, $skip_extended);
                 }
             }
 
@@ -4003,14 +4148,15 @@ class SSH2
                 case NET_SSH2_MSG_CHANNEL_CLOSE:
                     $this->curTimeout = 5;
 
-                    if ($this->bitmap & self::MASK_SHELL) {
-                        $this->bitmap &= ~self::MASK_SHELL;
-                    }
+                    $this->close_channel_bitmap($channel);
+
                     if ($this->channel_status[$channel] != NET_SSH2_MSG_CHANNEL_EOF) {
                         $this->send_binary_packet(pack('CN', NET_SSH2_MSG_CHANNEL_CLOSE, $this->server_channels[$channel]));
                     }
 
                     $this->channel_status[$channel] = NET_SSH2_MSG_CHANNEL_CLOSE;
+                    $this->channelCount--;
+
                     if ($client_channel == $channel) {
                         return true;
                     }
@@ -4157,7 +4303,7 @@ class SSH2
 
         if (defined('NET_SSH2_LOGGING')) {
             $current = microtime(true);
-            $message_number = isset($this->message_numbers[ord($logged[0])]) ? $this->message_numbers[ord($logged[0])] : 'UNKNOWN (' . ord($logged[0]) . ')';
+            $message_number = isset(self::$message_numbers[ord($logged[0])]) ? self::$message_numbers[ord($logged[0])] : 'UNKNOWN (' . ord($logged[0]) . ')';
             $message_number = '-> ' . $message_number .
                               ' (since last: ' . round($current - $this->last_packet, 4) . ', network: ' . round($stop - $start, 4) . 's)';
             $this->append_log($message_number, $logged);
@@ -4166,7 +4312,10 @@ class SSH2
 
         if (strlen($packet) != $sent) {
             $this->bitmap = 0;
-            throw new \RuntimeException("Only $sent of " . strlen($packet) . " bytes were sent");
+            $message = $sent === false ?
+                'Unable to write ' . strlen($packet) . ' bytes' :
+                "Only $sent of " . strlen($packet) . " bytes were sent";
+            throw new \RuntimeException($message);
         }
     }
 
@@ -4342,22 +4491,36 @@ class SSH2
         }
 
         $this->channel_status[$client_channel] = NET_SSH2_MSG_CHANNEL_CLOSE;
+        $this->channelCount--;
 
         $this->curTimeout = 5;
 
         while (!is_bool($this->get_channel_packet($client_channel))) {
         }
 
-        if ($this->is_timeout) {
-            $this->disconnect();
-        }
-
         if ($want_reply) {
             $this->send_binary_packet(pack('CN', NET_SSH2_MSG_CHANNEL_CLOSE, $this->server_channels[$client_channel]));
         }
 
-        if ($this->bitmap & self::MASK_SHELL) {
-            $this->bitmap &= ~self::MASK_SHELL;
+        $this->close_channel_bitmap($client_channel);
+    }
+
+    /**
+     * Maintains execution state bitmap in response to channel closure
+     *
+     * @param int $client_channel The channel number to maintain closure status of
+     * @return void
+     */
+    private function close_channel_bitmap($client_channel)
+    {
+        switch ($client_channel) {
+            case self::CHANNEL_SHELL:
+                // Shell status has been maintained in the bitmap for backwards
+                //  compatibility sake, but can be removed going forward
+                if ($this->bitmap & self::MASK_SHELL) {
+                    $this->bitmap &= ~self::MASK_SHELL;
+                }
+                break;
         }
     }
 
@@ -4395,7 +4558,7 @@ class SSH2
      * @param mixed[] ...$args
      * @access protected
      */
-    protected function define_array(...$args)
+    protected static function define_array(...$args)
     {
         foreach ($args as $arg) {
             foreach ($arg as $key => $value) {
@@ -4798,6 +4961,14 @@ class SSH2
                 'comp' => $compression_map[$this->decompress],
             ]
         ];
+    }
+
+    /**
+     * Force multiple channels (even if phpseclib has decided to disable them)
+     */
+    public function forceMultipleChannels()
+    {
+        $this->errorOnMultipleChannels = false;
     }
 
     /**

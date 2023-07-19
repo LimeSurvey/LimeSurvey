@@ -123,6 +123,7 @@ class RenderRanking extends QuestionBaseRenderer
         }
         
         $rankingTranslation = 'LSvar.lang.rankhelp="' . gT("Double-click or drag-and-drop items in the left list to move them to the right - your highest ranking item should be on the top right, moving through to your lowest ranking item.", 'js') . '";';
+        $rankingTranslation .= 'LSvar.lang.rankadvancedhelp="' . gT("Drag oder double-click images into order.", 'js') . '";';
         $this->addScript("rankingTranslation", $rankingTranslation, CClientScript::POS_BEGIN);
         //$this->applyScripts();
         

@@ -105,6 +105,12 @@ class OLE extends PEAR
     var $bigBlockSize;
 
     /**
+    * The big block threshhold.
+    * @var int
+    */
+    var $bigBlockThreshold;
+
+    /**
     * Size of small blocks. This is usually 64.
     * @var  int  number of octets per block
     */
@@ -561,12 +567,12 @@ class OLE extends PEAR
         $res = '';
 
         for ($i = 0; $i < 4; $i++) {
-            $hex = $low_part % 0x100;
+            $hex = (int) $low_part % 0x100;
             $res .= pack('c', $hex);
             $low_part /= 0x100;
         }
         for ($i = 0; $i < 4; $i++) {
-            $hex = $high_part % 0x100;
+            $hex = (int) $high_part % 0x100;
             $res .= pack('c', $hex);
             $high_part /= 0x100;
         }

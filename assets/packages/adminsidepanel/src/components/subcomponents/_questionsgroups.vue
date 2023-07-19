@@ -313,7 +313,7 @@ export default {
                     v-if="( createQuestionGroupLink!=undefined && createQuestionGroupLink.length>1 )"
                     :href="createQuestionGroupLink" class="btn btn-secondary pjax"
                 >
-                    <!-- <i class="fa fa-plus"></i> -->
+                    <!-- <i class="ri-add-line"></i> -->
                     {{"createPage"|translate}}
                 </a>
              

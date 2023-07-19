@@ -192,7 +192,8 @@ class Permissiontemplates extends CActiveRecord
             'enabledCondition' => $permissionSuperAdminRead,
             'linkClass'        => 'RoleControl--action--openmodal RoleControl--action--permissions',
             'linkAttributes'   => [
-                'data-href' => $setPermissionsUrl
+                'data-href' => $setPermissionsUrl,
+                'data-modalSize' => 'modal-lg',
             ]
         ];
 

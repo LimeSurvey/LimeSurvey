@@ -234,6 +234,7 @@ class TemplateConfig extends CActiveRecord
     /**
      * Get the depends package
      * @uses self::@package
+     * TODO: unused variable
      * @param TemplateConfiguration $oTemplate
      * @return string[]
      */
@@ -254,7 +255,7 @@ class TemplateConfig extends CActiveRecord
             }
 
             // Rtl version of bootstrap
-            if ($dir === "rtl") {
+            if ($dir === "rtl" && (string)$this->cssFramework->name === "bootstrap") {
                 $packages[] = 'bootstrap-rtl';
             }
 
@@ -299,9 +300,9 @@ class TemplateConfig extends CActiveRecord
 
 
     /**
-     * @todo document me
-     * @todo missing return value (php warning)
-     * @return boolean|null
+     * Check if this template is a standard template and save it in current model $this->isStandard
+     * @return void
+     * @throws CException
      */
     protected function setIsStandard()
     {
@@ -547,9 +548,9 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['attr']['completedwrapper'] = $aClassAndAttributes['attr']['completedtext'] = $aClassAndAttributes['attr']['quotamessage'] = $aClassAndAttributes['attr']['navigator'] = $aClassAndAttributes['attr']['navigatorcoll'] = $aClassAndAttributes['attr']['navigatorcolr'] = $aClassAndAttributes['attr']['completedquotaurl'] = '';
 
         // Register
-        $aClassAndAttributes['class']['register']                 = '  ';
-        $aClassAndAttributes['class']['registerrow']              = '  ';
-        $aClassAndAttributes['class']['registerrowjumbotron']     = ' card bg-light p-6 mb-3';
+        $aClassAndAttributes['class']['register']                 = ' register-container';
+        $aClassAndAttributes['class']['registerrow']              = ' register-row';
+        $aClassAndAttributes['class']['registerrowjumbotron']     = ' register-jumbotron card bg-light p-6 mb-3';
         $aClassAndAttributes['class']['registerrowjumbotrondiv']  = 'card-body';
 
         $aClassAndAttributes['class']['registerform']             = ' register-form  ';
@@ -613,14 +614,17 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['required']     = '  ';
         $aClassAndAttributes['class']['requiredspan'] = '  ';
         $aClassAndAttributes['attr']['required']      = ' aria-hidden="true" ';
-        $aClassAndAttributes['class']['required']     = '';
+        $aClassAndAttributes['attr']['requiredspan']     = '';
 
         // Progress bar
         $aClassAndAttributes['class']['topcontainer'] = ' top-container ';
         $aClassAndAttributes['class']['topcontent']   = ' top-content ';
         $aClassAndAttributes['class']['progress']     = ' progress ';
         $aClassAndAttributes['class']['progressbar']  = ' progress-bar ';
-        $aClassAndAttributes['attr']['progressbar']   = $aClassAndAttributes['attr']['topcontainer'] = $aClassAndAttributes['class']['topcontent'] = $aClassAndAttributes['attr']['progressbar'] = $aClassAndAttributes['attr']['progress'] = ' ';
+        $aClassAndAttributes['attr']['topcontainer'] = '';
+        $aClassAndAttributes['attr']['topcontent'] = '';
+        $aClassAndAttributes['attr']['progress'] = '';
+        $aClassAndAttributes['attr']['progressbar']   = '';
 
         // No JS alert
         $aClassAndAttributes['class']['nojs'] = ' ls-js-hidden warningjs ';
@@ -711,7 +715,7 @@ class TemplateConfig extends CActiveRecord
         // Privacy
         $aClassAndAttributes['class']['privacycontainer'] = ' privacy ';
         $aClassAndAttributes['class']['privacycol']       = ' ';
-        $aClassAndAttributes['class']['privacyhead']      = ' ';
+        $aClassAndAttributes['class']['privacyhead']      = 'ls-privacy-head';
         $aClassAndAttributes['class']['privacybody']      = ' ls-privacy-body ';
 
         $aClassAndAttributes['class']['privacydatasecmodalbody'] = '';
@@ -795,6 +799,10 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['previewsubmittext']  = ' completed-text  ';
         $aClassAndAttributes['class']['submitwrapper']      = ' completed-wrapper  ';
         $aClassAndAttributes['class']['submitwrappertext']  = ' completed-text  ';
+        // class name for last message elements
+        $aClassAndAttributes['class']['submitwrappertextHeading']  = ' completed-heading ';
+        $aClassAndAttributes['class']['submitwrappertextContent']  = ' completed-Content ';
+        // ===
         $aClassAndAttributes['class']['submitwrapperdiva']  = ' url-wrapper url-wrapper-survey-print ';
         $aClassAndAttributes['class']['submitwrapperdivaa'] = ' ls-print ';
         $aClassAndAttributes['class']['submitwrapperdivb']  = ' url-wrapper url-wrapper-survey-print ';
@@ -859,24 +867,93 @@ class TemplateConfig extends CActiveRecord
     }
 
     /**
-     * @todo document me
+     * Uninstalls the selected surveytheme and deletes database entry and configuration
      * @param string $templatename Name of Template
      * @return bool|int
+     * @throws CDbException
      */
     public static function uninstall($templatename)
     {
         if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
-            $oTemplate = Template::model()->findByAttributes(array('name' => $templatename));
+            $oTemplate = Template::model()->findByAttributes(['name' => $templatename]);
             if ($oTemplate) {
                 if ($oTemplate->delete()) {
                     return TemplateConfiguration::model()->deleteAll(
                         'template_name=:templateName',
-                        array(':templateName' => $templatename)
+                        [':templateName' => $templatename]
                     );
                 }
             }
         }
         return false;
+    }
+
+    /**
+     * Uninstalls all surveythemes that are being extended from the supplied surveytheme name
+     * @param $templateName
+     * @return void
+     * @throws CDbException
+     */
+    public static function uninstallThemesRecursive($templateName): void
+    {
+        $extendedTemplates = Template::model()->findAll('extends=:templateName', [':templateName' => $templateName]);
+        if (!empty($extendedTemplates)) {
+            foreach ($extendedTemplates as $extendedTemplate) {
+                self::uninstallThemesRecursive($extendedTemplate->name);
+            }
+        }
+        self::uninstall($templateName);
+    }
+
+    /**
+     * Checks if a theme is valid
+     * Can be extended with more checks in the future if needed
+     * @param $themeName
+     * @param $themePath
+     * @param bool $redirect
+     * @return bool
+     * @throws CDbException
+     */
+    public static function validateTheme($themeName, $themePath, bool $redirect = true): bool
+    {
+        // check compatability with current limesurvey version
+        $isCompatible = TemplateConfig::isCompatible($themePath);
+        if (!$isCompatible) {
+            self::uninstallThemesRecursive($themeName);
+            if ($redirect) {
+                App()->setFlashMessage(
+                    sprintf(
+                        gT("Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey version."),
+                        $themeName
+                    ),
+                    'error'
+                );
+                App()->getController()->redirect(["themeOptions/index", "#" => "surveythemes"]);
+                App()->end();
+            }
+        }
+        // add more tests here
+
+        // all checks succeeded, continue loading the theme
+        return true;
+    }
+
+    /**
+     * Checks if theme is compatible with the current limesurvey version
+     * @param $themePath
+     * @param bool $redirect
+     * @return bool
+     */
+    public static function isCompatible($themePath): bool
+    {
+        $extensionConfig = ExtensionConfig::loadFromFile($themePath);
+        if ($extensionConfig === null) {
+            return false;
+        }
+        if (!$extensionConfig->isCompatible()) {
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -895,7 +972,7 @@ class TemplateConfig extends CActiveRecord
         $oNewTemplate                   = new Template();
         $oNewTemplate->name             = $sTemplateName;
         $oNewTemplate->folder           = $sTemplateName;
-        $oNewTemplate->title            = $sTemplateName; // For now, when created via template editor => name == folder == title. If you change it, please, also update TemplateManifest::getTemplateURL
+        $oNewTemplate->title            = $aDatas['title']; // For now, when created via template editor => name == folder == title. If you change it, please, also update TemplateManifest::getTemplateURL
         $oNewTemplate->creation_date    = date("Y-m-d H:i:s");
         $oNewTemplate->author           = App()->user->name;
         $oNewTemplate->author_email     = ''; // privacy
@@ -909,7 +986,6 @@ class TemplateConfig extends CActiveRecord
 
         if ($oNewTemplate->save()) {
             $oNewTemplateConfiguration                  = new TemplateConfiguration();
-            $oNewTemplateConfiguration->template_name   = $sTemplateName;
             $oNewTemplateConfiguration->template_name   = $sTemplateName;
 
             // Those ones are only filled when importing manifest from upload directory
@@ -952,6 +1028,12 @@ class TemplateConfig extends CActiveRecord
      */
     public static function formatToJsonArray($oFiled, $bConvertEmptyToString = false)
     {
+        if ($bConvertEmptyToString) {
+            foreach ($oFiled as $option => $optionValue) {
+                // clean every value from newlines, tabs and blank spaces for options
+                $oFiled->$option = trim(preg_replace('/[ \t]+/', ' ', preg_replace('/\s*$^\s*/m', "", $optionValue)));
+            }
+        }
         // encode then decode will convert the SimpleXML to a normal object
         $jFiled = json_encode($oFiled);
         $oFiled = json_decode($jFiled);
@@ -974,7 +1056,7 @@ class TemplateConfig extends CActiveRecord
     }
 
     /**
-     * @todo document me
+     * Returns an array of all unique template folders that are registered in the database
      * @return array|null
      */
     public function getAllDbTemplateFolders()
@@ -996,10 +1078,10 @@ class TemplateConfig extends CActiveRecord
     }
 
     /**
-     * @todo document me
-     * @return array|null
+     * Returns an array with uninstalled and/or incompatible survey themes
+     * @return TemplateConfiguration[]
      */
-    public function getTemplatesWithNoDb()
+    public function getTemplatesWithNoDb(): array
     {
         if (empty(self::$aTemplatesWithoutDB)) {
             $aTemplatesDirectories = Template::getAllTemplatesDirectories();
@@ -1008,7 +1090,8 @@ class TemplateConfig extends CActiveRecord
 
             foreach ($aTemplatesDirectories as $sName => $sPath) {
                 if (!in_array($sName, $aTemplatesInDb)) {
-                    $aTemplatesWithoutDB[$sName] = Template::getTemplateConfiguration($sName, null, null, true); // Get the manifest
+                    // Get the manifest
+                    $aTemplatesWithoutDB[$sName] = Template::getTemplateConfiguration($sName, null, null, true);
                 }
             }
             self::$aTemplatesWithoutDB = $aTemplatesWithoutDB;
@@ -1025,7 +1108,6 @@ class TemplateConfig extends CActiveRecord
      */
     protected function getFilesToLoad($oTemplate, $sType)
     {
-        $aFiles        = array();
         $aFiles        = $this->getFilesTo($oTemplate, $sType, 'add');
         $aReplaceFiles = $this->getFilesTo($oTemplate, $sType, 'replace');
         $aFiles        = array_merge($aFiles, $aReplaceFiles);

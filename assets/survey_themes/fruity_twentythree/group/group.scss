@@ -1,0 +1,13 @@
+.group-container {
+    // Design inspired by the welcome page
+    .group-title {
+        @include largeheading;
+        margin-top: 1em;
+        margin-bottom: 10px;
+    }
+    .group-description {
+        font-size   : 18px;
+        font-weight : $font-weight-normal;
+        line-height : 24px;
+    }
+}

@@ -131,6 +131,8 @@ class SurveyNavigationTest extends TestBaseClassWeb
             $groupTitle = $groupTitleDiv->getText();
             $this->assertEquals("First group", $groupTitle);
 
+            // Click on index menu
+            $web->findElement(WebDriverBy::cssSelector('#navbar-toggler'))->click();
             // Click "Resume later"
             $resumeLater = $web->findByLinkText('Resume later');
             $resumeLater->click();

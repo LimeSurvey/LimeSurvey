@@ -57,7 +57,7 @@
             {{ C.Html.textField(myfname2,value,({
                 'id' : "answer"~myfname2,
                 'aria-labelledby' : "answertext" ~ basename ~ "_" ~ dataCode,
-                'class' : "multiflexitext form-control "~answertypeclass~" text-end ",
+                'class' : "multiflexitext form-control "~answertypeclass~" ",
                 'title' : gT('Only numbers may be entered in this field.'),
                 'size' : (inputsize ? inputsize : null),
                 'maxlength' : (maxlength ? maxlength : null),

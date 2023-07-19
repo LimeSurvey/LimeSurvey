@@ -15,18 +15,18 @@
     <!-- Yes -->
     <input type="radio" class="btn-check ls-button-radio" name="{{ name }}" id="answer{{ name }}Y" value="Y" {{ yChecked }}>
     <label class="btn btn-primary mb-3 answer-item ls-button-label" id="javatbd{{ name }}Y" for="answer{{ name }}Y">
-        <span class="fa fa-check ls-icon" aria-hidden="true"></span> {{ gT('Yes') }}
+        <span class="fa fa-check ls-icon ri-checkbox-circle-line" aria-hidden="true"></span> {{ gT('Yes') }}
     </label>
     <!-- No -->
     <input type="radio" class="btn-check ls-button-radio" name="{{ name }}" id="answer{{ name }}N" value="N" {{ nChecked }}>
     <label class="btn btn-primary mb-3 answer-item ls-button-label" id="javatbd{{ name }}N" for="answer{{ name }}N">
-        <span class="fa fa-ban ls-icon" aria-hidden="true"></span> {{ gT('No') }}
+        <span class="fa fa-ban ri-close-circle-line ls-icon" aria-hidden="true"></span> {{ gT('No') }}
     </label>
     <!-- No answer -->
     {% if noAnswer %}
         <input type="radio" class="btn-check ls-button-radio" name="{{ name }}" id="answer{{ name }}" value="" {{ naChecked }}>
         <label class="btn btn-primary mb-3 answer-item ls-button-label" id="javatbd{{ name }}" for="answer{{ name }}">
-            <span class="fa fa-circle-thin ls-icon" aria-hidden="true"></span> {{ gT('No answer') }}
+            <span class="fa fa-circle-thin ri-checkbox-blank-circle-line ls-icon" aria-hidden="true"></span> {{ gT('No answer') }}
         </label>
     {% endif %}
 </div>
