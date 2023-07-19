@@ -1011,7 +1011,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['sah']['radixpoint'] = 1;
     $supportedLanguages['sah']['momentjs'] = 'null';
 
-    // Zulu
+    // Yoruba
     $supportedLanguages['yor']['description'] = gT('Yoruba');
     $supportedLanguages['yor']['nativedescription'] = '&#xC8;d&#xE8; Yor&#xF9;b&#xE1;';
     $supportedLanguages['yor']['rtl'] = false;
