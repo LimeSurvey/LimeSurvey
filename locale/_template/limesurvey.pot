@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2023-07-10 09:50:28+00:00\n"
+"POT-Creation-Date: 2023-07-17 08:05:01+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1397,7 +1397,7 @@ msgstr ""
 
 #: application/controllers/QuestionGroupsAdministrationController.php:424
 #: application/controllers/SurveyAdministrationController.php:2101
-#: application/controllers/UserRoleController.php:305
+#: application/controllers/UserRoleController.php:309
 #: application/libraries/ExtensionInstaller/FileFetcherUploadZip.php:198
 #: application/models/UserParser.php:27
 #: application/models/services/UploadValidator.php:59
@@ -2069,7 +2069,7 @@ msgstr ""
 #: application/controllers/SurveyAdministrationController.php:651
 #: application/controllers/SurveyAdministrationController.php:1357
 #: application/controllers/SurveyAdministrationController.php:2107
-#: application/controllers/UserRoleController.php:317
+#: application/controllers/UserRoleController.php:321
 #: application/controllers/admin/DataEntry.php:191
 #: application/controllers/admin/Labels.php:102
 #: application/controllers/admin/Labels.php:141
@@ -3340,7 +3340,7 @@ msgstr ""
 
 #: application/controllers/UploaderController.php:250
 #: application/controllers/UploaderController.php:278
-#: application/helpers/remotecontrol/remotecontrol_handle.php:3178
+#: application/helpers/remotecontrol/remotecontrol_handle.php:3174
 msgid "The file has been successfully uploaded."
 msgstr ""
 
@@ -3776,10 +3776,11 @@ msgstr ""
 #: application/controllers/UserRoleController.php:78
 #: application/controllers/UserRoleController.php:97
 #: application/controllers/UserRoleController.php:216
-#: application/controllers/UserRoleController.php:254
-#: application/controllers/UserRoleController.php:279
-#: application/controllers/UserRoleController.php:359
-#: application/controllers/UserRoleController.php:388
+#: application/controllers/UserRoleController.php:237
+#: application/controllers/UserRoleController.php:258
+#: application/controllers/UserRoleController.php:283
+#: application/controllers/UserRoleController.php:363
+#: application/controllers/UserRoleController.php:392
 msgid "You have no access to the role management!"
 msgstr ""
 
@@ -3797,27 +3798,27 @@ msgstr ""
 msgid "Failed saving the role"
 msgstr ""
 
-#: application/controllers/UserRoleController.php:260
+#: application/controllers/UserRoleController.php:264
 msgid "Role was successfully deleted."
 msgstr ""
 
-#: application/controllers/UserRoleController.php:262
+#: application/controllers/UserRoleController.php:266
 msgid "Role could not be deleted."
 msgstr ""
 
-#: application/controllers/UserRoleController.php:309
+#: application/controllers/UserRoleController.php:313
 msgid "This is not a .xml file."
 msgstr ""
 
-#: application/controllers/UserRoleController.php:334
+#: application/controllers/UserRoleController.php:338
 msgid "Error creating role"
 msgstr ""
 
-#: application/controllers/UserRoleController.php:342
+#: application/controllers/UserRoleController.php:346
 msgid "Role was successfully imported."
 msgstr ""
 
-#: application/controllers/UserRoleController.php:372
+#: application/controllers/UserRoleController.php:376
 msgid "Roles successfully deleted"
 msgstr ""
 
@@ -15134,35 +15135,35 @@ msgstr ""
 msgid "Modified"
 msgstr ""
 
-#: application/models/Plugin.php:130
+#: application/models/Plugin.php:131
 msgid "Plugin load error"
 msgstr ""
 
-#: application/models/Plugin.php:186
+#: application/models/Plugin.php:187
 msgid "Error: Could not get plugin description: %s"
 msgstr ""
 
-#: application/models/Plugin.php:208
+#: application/models/Plugin.php:209
 msgid "Attempt plugin reload"
 msgstr ""
 
-#: application/models/Plugin.php:244
+#: application/models/Plugin.php:245
 msgid "Activate plugin"
 msgstr ""
 
-#: application/models/Plugin.php:272
+#: application/models/Plugin.php:273
 msgid "Are you sure you want to deactivate this plugin?"
 msgstr ""
 
-#: application/models/Plugin.php:272
+#: application/models/Plugin.php:273
 msgid "Deactivate plugin"
 msgstr ""
 
-#: application/models/Plugin.php:301
+#: application/models/Plugin.php:302
 msgid "Are you sure you want to uninstall this plugin?"
 msgstr ""
 
-#: application/models/Plugin.php:301
+#: application/models/Plugin.php:302
 msgid "Uninstall plugin"
 msgstr ""
 
