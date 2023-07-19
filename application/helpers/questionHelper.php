@@ -1072,7 +1072,7 @@ class questionHelper
         );
 
         self::$attributes["text_input_width"] = array(
-        "types" => Question::QT_K_MULTIPLE_NUMERICAL . Question::QT_N_NUMERICAL . Question::QT_S_SHORT_FREE_TEXT . Question::QT_T_LONG_FREE_TEXT . Question::QT_U_HUGE_FREE_TEXT . Question::QT_SEMICOLON_ARRAY_TEXT,
+        "types" => Question::QT_N_NUMERICAL . Question::QT_S_SHORT_FREE_TEXT . Question::QT_T_LONG_FREE_TEXT . Question::QT_U_HUGE_FREE_TEXT . Question::QT_SEMICOLON_ARRAY_TEXT,
         'category' => gT('Display'),
         'sortorder' => 100,
         'inputtype' => 'singleselect',
@@ -1095,9 +1095,8 @@ class questionHelper
         "help" => gT('Relative width of the text input wrapper element'),
         "caption" => gT('Text input box width'));
 
-        /* Do EXACTLY the same than text_input_width for K(multinum): must move K here and rename in a DB update and remove it + fix when import*/
         self::$attributes["text_input_columns"] = array(
-        "types" => Question::QT_Q_MULTIPLE_SHORT_TEXT . Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS,
+        "types" => Question::QT_K_MULTIPLE_NUMERICAL . Question::QT_Q_MULTIPLE_SHORT_TEXT . Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS,
         'category' => gT('Display'),
         'sortorder' => 90,
         'inputtype' => 'singleselect',

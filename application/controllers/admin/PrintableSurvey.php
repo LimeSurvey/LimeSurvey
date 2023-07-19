@@ -756,7 +756,7 @@ class PrintableSurvey extends SurveyCommonAction
                             $height = (isset($qidattributes['display_rows']) && $qidattributes['display_rows']) ? $qidattributes['display_rows'] : null;
 
                             if (!isset($aWidth)) {
-                                $aWidth = $this->getColumnWidth($qidattributes['label_input_columns'], $qidattributes['text_input_width']);
+                                $aWidth = $this->getColumnWidth($qidattributes['label_input_columns'], $qidattributes['text_input_columns']);
                             }
 
                             $question['type_help'] .= CHtml::tag("div", array("class" => "tip-help"), gT("Please write your answer(s) here:"));
