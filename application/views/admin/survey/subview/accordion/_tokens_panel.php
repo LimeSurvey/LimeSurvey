@@ -50,52 +50,63 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
     (function(){
         let showInherited = " . $bShowInherited . ";
         let inheritedAnonymizedOption = '" . $oSurvey->oOptions->anonymized . "';
-        let inheritedPersistenceOption = '" . $oSurvey->oOptions->tokenanswerspersistence . "'
+        let inheritedPersistenceOption = '" . $oSurvey->oOptions->tokenanswerspersistence . "';
+        let inheritedAllowAfterCompletionOption = '" . $oSurvey->oOptions->alloweditaftercompletion . "';
         let multipleResponsesText = '" . gT('Allow multiple responses with the same access code') . "';
         let updateResponsesText = '" . gT('Allow to update the responses using the access code') . "';
 
         $(document).ready(function(){
-            let persistenceOption = $('input[name=\"tokenanswerspersistence\"]:checked').val();
-            let anonymizedOption = $('input[name=\"anonymized\"]:checked').val();
             
-            changeAllowEditLabel(anonymizedOption, persistenceOption);
-            console.log('Selected on document ready.');
+            changeAllowEditLabel();
             
             $('input[name=\"anonymized\"]').change(function(){
 
-                let anonymizedOption = $(this).val();
-                let persistenceOption = $('input[name=\"tokenanswerspersistence\"]:checked').val();
-
-                changeAllowEditLabel(anonymizedOption, persistenceOption);
-                console.log('Selected on anonymized option changed.');
+                changeAllowEditLabel();
     
             });
 
             $('input[name=\"tokenanswerspersistence\"]').change(function(){
-                let persistenceOption = $(this).val();
-                let anonymizedOption = $('input[name=\"anonymized\"]:checked').val();
                 
-                changeAllowEditLabel(anonymizedOption, persistenceOption);
-                console.log('Selected on token persistence option changed');
+                changeAllowEditLabel();
+        
+            });
+
+            $('input[name=\"alloweditaftercompletion\"]').change(function(){
+                
+                changeAllowEditLabel();
         
             });
         });
 
-        function changeAllowEditLabel( anonymizedOption, persistenceOption )
+        function changeAllowEditLabel()
         {
-            if( showInherited === 1 && anonymizedOption === 'I' ) {
+            let anonymizedOption = $('input[name=\"anonymized\"]:checked').val();
+            let persistenceOption = $('input[name=\"tokenanswerspersistence\"]:checked').val();
+            let allowAfterCompletion = $('input[name=\"alloweditaftercompletion\"]:checked').val();
+
+            // Handle inheritance.
+            if ( showInherited === 1 && anonymizedOption === 'I' ) {
                 anonymizedOption = inheritedAnonymizedOption;
             }
-            if( showInherited === 1 && persistenceOption === 'I' ) {
+            if ( showInherited === 1 && persistenceOption === 'I' ) {
                 persistenceOption = inheritedPersistenceOption;
             }
-            if( anonymizedOption === 'Y' ) {
+            if ( showInherited === 1 && allowAfterCompletion === 'I' ) {
+                allowAfterCompletion = inheritedAllowAfterCompletionOption;
+            }
+            
+            let multipleResponsesSameToken = anonymizedOption === 'N' && persistenceOption === 'N' && allowAfterCompletion === 'Y';
+
+            // Update alloweditaftercompletion
+            if ( anonymizedOption === 'Y' ) {
                 $('label[for=\"alloweditaftercompletion\"]').text(multipleResponsesText);
             } else if( persistenceOption === 'N' ) {
                 $('label[for=\"alloweditaftercompletion\"]').text(multipleResponsesText);
             } else if( persistenceOption === 'Y' ) {
                 $('label[for=\"alloweditaftercompletion\"]').text(updateResponsesText);
             }
+            
+            $('#multiResponseHint').toggle(multipleResponsesSameToken );
         }
     })();
     
@@ -161,6 +172,7 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
                             : $optionsOnOff
                     ]); ?>
                 </div>
+                <span id="multiResponseHint" class="hint" style="display:none;">Participants will be able to enter as many responses as they want, despite what Uses Left token attribute is set to.</span>
             </div>
 
             <!--  Set token length to -->
