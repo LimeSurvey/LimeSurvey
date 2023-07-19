@@ -860,7 +860,7 @@ class TokenDynamic extends LSActiveRecord
                 'data-toggle' => "tooltip",
                 'title' => gT("Send email invitation")
             ),
-            'visible' => $baseView . ' && ($data->sent== "N" || empty($data->sent)) && $data->canBeMailed()',
+            'visible' => $baseView . ' && ($data->sent== "N" || empty($data->sent)) && $data->canBeEmailed()',
         );
         /* mailing remind button */
         $gridButtons['remind'] = array(
