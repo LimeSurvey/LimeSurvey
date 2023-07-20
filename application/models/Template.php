@@ -330,11 +330,11 @@ class Template extends LSActiveRecord
      * If it's not the case (template probably doesn't exist), it will load the default template configuration
      * TODO : more tests should be done, with a call to private function _is_valid_template(), testing not only if it has a config.xml, but also id this file is correct, if the files refered in css exist, etc.
      *
-     * @param string $sTemplateName     the name of the template to load. The string come from the template selector in survey settings
-     * @param integer $iSurveyId        the id of the survey.
-     * @param integer $iSurveyId        the id of the survey.
-     * @param boolean $bForceXML        the id of the survey.
-     * @return TemplateConfiguration
+     * @param string $sTemplateName the name of the template to load. The string come from the template selector in survey settings
+     * @param integer $iSurveyId the id of the survey.
+     * @param integer $iSurveyId the id of the survey.
+     * @param boolean $bForceXML the id of the survey.
+     * @return TemplateConfiguration|TemplateManifest
      */
     public static function getTemplateConfiguration($sTemplateName = null, $iSurveyId = null, $iSurveyGroupId = null, $bForceXML = false, $abstractInstance = false)
     {
