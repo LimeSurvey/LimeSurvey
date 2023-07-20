@@ -35,7 +35,6 @@ class QuestionEditorAnswersTest extends TestBaseClass
         $modelQuestionAttribute = Mockery::mock(QuestionAttribute::class)
             ->makePartial();
 
-
         $question = Mockery::mock(Question::class)
             ->makePartial();
         $question->shouldReceive('settAttributes')
@@ -85,7 +84,6 @@ class QuestionEditorAnswersTest extends TestBaseClass
 
         $modelQuestionAttribute = Mockery::mock(QuestionAttribute::class)
             ->makePartial();
-
 
         $question = Mockery::mock(Question::class)
             ->makePartial();
