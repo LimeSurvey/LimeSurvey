@@ -59,23 +59,12 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
             
             changeAllowEditLabel();
             
-            $('input[name=\"anonymized\"]').change(function(){
+            $('input[name=\"anonymized\"]').change(changeAllowEditLabel);
 
-                changeAllowEditLabel();
-    
-            });
+            $('input[name=\"tokenanswerspersistence\"]').change(changeAllowEditLabel);
 
-            $('input[name=\"tokenanswerspersistence\"]').change(function(){
-                
-                changeAllowEditLabel();
-        
-            });
-
-            $('input[name=\"alloweditaftercompletion\"]').change(function(){
-                
-                changeAllowEditLabel();
-        
-            });
+            $('input[name=\"alloweditaftercompletion\"]').change(changeAllowEditLabel);
+            
         });
 
         function changeAllowEditLabel()
@@ -172,7 +161,7 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
                             : $optionsOnOff
                     ]); ?>
                 </div>
-                <span id="multiResponseHint" class="hint" style="display:none;">Participants will be able to enter as many responses as they want, despite what Uses Left token attribute is set to.</span>
+                <span id="multiResponseHint" class="hint" style="display:none;"><?php eT("Participants will be able to enter as many responses as they want, despite what Uses Left token attribute is set to."); ?></span>
             </div>
 
             <!--  Set token length to -->
