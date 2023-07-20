@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2023-07-17 08:04:47+00:00\n"
+"POT-Creation-Date: 2023-07-20 22:09:16+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -66,7 +66,7 @@ msgstr ""
 #: application/views/admin/labels/importlabelresources_view.php:28
 #: application/views/admin/participants/participantsPanel_view.php:20
 #: application/views/admin/participants/uploadSummary_view.php:92
-#: application/views/admin/super/footer.php:185
+#: application/views/admin/super/footer.php:181
 #: application/views/admin/survey/copySurvey_view.php:12
 #: application/views/admin/themes/importuploaded_view.php:17
 #: application/views/admin/token/import.php:14
@@ -105,6 +105,7 @@ msgstr ""
 #: application/views/userGroup/partial/topbarBtns_manageGroup/rightSideButtons.php:8
 #: application/views/userManagement/partial/topbarBtns/rightSideButtons.php:7
 #: application/views/userRole/partials/topbarBtns/rightSideButtons.php:8
+#: tmp/runtime/twig_cache/42/42b114b79d8e7d5cd4f2e47bc62dbe2fb1974ead951c301f20e44b7380249d3f.php:42
 msgid "Back"
 msgstr ""
 
@@ -128,7 +129,7 @@ msgstr ""
 
 #: application/controllers/AdminController.php:498
 #: application/extensions/AdminFooter/AdminFooter.php:30
-#: application/helpers/LayoutHelper.php:326
+#: application/helpers/LayoutHelper.php:328
 msgid "Version"
 msgstr ""
 
@@ -285,9 +286,9 @@ msgstr ""
 #: application/controllers/admin/Tokens.php:2776
 #: application/controllers/admin/index.php:35
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_action_results.php:10
-#: application/helpers/admin/statistics_helper.php:2394
-#: application/helpers/admin/statistics_helper.php:2404
-#: application/helpers/admin/statistics_helper.php:2444
+#: application/helpers/admin/statistics_helper.php:2348
+#: application/helpers/admin/statistics_helper.php:2358
+#: application/helpers/admin/statistics_helper.php:2398
 #: application/helpers/userstatistics_helper.php:1602
 #: application/helpers/userstatistics_helper.php:1614
 #: application/helpers/userstatistics_helper.php:1656
@@ -366,14 +367,14 @@ msgid "Question group"
 msgstr ""
 
 #: application/controllers/AssessmentController.php:306
-#: application/helpers/admin/statistics_helper.php:992
+#: application/helpers/admin/statistics_helper.php:994
 #: application/helpers/userstatistics_helper.php:962
 #: application/models/Assessment.php:84
 msgid "Minimum"
 msgstr ""
 
 #: application/controllers/AssessmentController.php:306
-#: application/helpers/admin/statistics_helper.php:1021
+#: application/helpers/admin/statistics_helper.php:1023
 #: application/helpers/userstatistics_helper.php:991
 #: application/models/Assessment.php:85
 msgid "Maximum"
@@ -405,11 +406,11 @@ msgstr ""
 
 #: application/controllers/AssessmentController.php:422
 #: application/controllers/UploaderController.php:332
-#: application/models/Assessment.php:106 application/models/Box.php:145
+#: application/models/Assessment.php:106 application/models/Box.php:146
 #: application/views/questionAdministration/partial/topbarBtns/questionTopbarRight_view.php:17
 #: application/views/questionGroupsAdministration/partial/topbarBtns/groupTopbarRight_view.php:9
-#: tmp/runtime/twig_cache/be/bee6848bdc49d16becf948b499992da8ef26d1fb275ae18d41dba009ec27526e.php:215
-#: tmp/runtime/twig_cache/be/bee6848bdc49d16becf948b499992da8ef26d1fb275ae18d41dba009ec27526e.php:337
+#: tmp/runtime/twig_cache/a4/a485c32f005b9d1c5f50f25b3017771893990277eab5d1cf3cb7b3a151700be9.php:215
+#: tmp/runtime/twig_cache/a4/a485c32f005b9d1c5f50f25b3017771893990277eab5d1cf3cb7b3a151700be9.php:337
 msgid "Edit"
 msgstr ""
 
@@ -441,7 +442,7 @@ msgstr ""
 #: application/controllers/admin/Statistics.php:666
 #: application/core/SurveyCommonAction.php:687
 #: application/core/SurveyCommonAction.php:898
-#: application/helpers/LayoutHelper.php:385
+#: application/helpers/LayoutHelper.php:387
 msgid "Invalid survey ID"
 msgstr ""
 
@@ -938,7 +939,7 @@ msgstr ""
 #: application/views/userManagement/partial/editpermissions.php:18
 #: application/views/userRole/massiveAction/_updatepermissions.php:31
 #: application/views/userRole/partials/_permissions.php:28
-#: modules/admin/globalsettings/views/globalSettings_view.php:23
+#: modules/admin/globalsettings/views/globalSettings_view.php:22
 msgid "General"
 msgstr ""
 
@@ -1175,8 +1176,8 @@ msgstr ""
 #: application/controllers/admin/Themes.php:658
 #: application/controllers/admin/Themes.php:699
 #: application/controllers/admin/Themes.php:751
-#: application/controllers/admin/Themes.php:802
-#: application/controllers/admin/Themes.php:942
+#: application/controllers/admin/Themes.php:803
+#: application/controllers/admin/Themes.php:950
 #: application/controllers/admin/Tokens.php:171
 #: application/controllers/admin/Tokens.php:586
 #: application/controllers/survey/index.php:101
@@ -1279,7 +1280,7 @@ msgstr ""
 #: application/controllers/UserManagementController.php:987
 #: application/controllers/UserManagementController.php:996
 #: application/extensions/admin/grid/MassiveActionsWidget/views/_selected_items.php:31
-#: application/views/themeOptions/index.php:196
+#: application/views/themeOptions/index.php:256
 msgid "Selected"
 msgstr ""
 
@@ -1624,6 +1625,7 @@ msgstr ""
 #: application/models/SurveyLink.php:233 application/models/Token.php:96
 #: application/models/TokenDynamic.php:666
 #: application/views/admin/dataentry/caption_view.php:31
+#: tmp/runtime/twig_cache/c6/c63426ef58e5f79120f6ef707a61dc2b960f9717376f0e51b3f15a5c7b3e30cb.php:113
 msgid "Access code"
 msgstr ""
 
@@ -1637,6 +1639,7 @@ msgstr ""
 #: application/views/admin/token/dummytokenform.php:42
 #: application/views/responses/partial/responseListTable.php:155
 #: application/views/responses/partial/responseListTable.php:165
+#: tmp/runtime/twig_cache/d8/d8143f0896d60084f9ea22714412b525a119654cbb5f345ae298449c957f15fd.php:83
 msgid "First name"
 msgstr ""
 
@@ -1650,6 +1653,7 @@ msgstr ""
 #: application/views/admin/token/dummytokenform.php:50
 #: application/views/responses/partial/responseListTable.php:169
 #: application/views/responses/partial/responseListTable.php:179
+#: tmp/runtime/twig_cache/d8/d8143f0896d60084f9ea22714412b525a119654cbb5f345ae298449c957f15fd.php:106
 msgid "Last name"
 msgstr ""
 
@@ -1690,8 +1694,8 @@ msgstr ""
 #: application/views/admin/notification/index.php:26
 #: application/views/homepageSettings/index.php:60
 #: application/views/questionGroupsAdministration/group_view.php:14
-#: tmp/runtime/twig_cache/be/bee6848bdc49d16becf948b499992da8ef26d1fb275ae18d41dba009ec27526e.php:113
-#: tmp/runtime/twig_cache/be/bee6848bdc49d16becf948b499992da8ef26d1fb275ae18d41dba009ec27526e.php:199
+#: tmp/runtime/twig_cache/a4/a485c32f005b9d1c5f50f25b3017771893990277eab5d1cf3cb7b3a151700be9.php:113
+#: tmp/runtime/twig_cache/a4/a485c32f005b9d1c5f50f25b3017771893990277eab5d1cf3cb7b3a151700be9.php:199
 msgid "Title"
 msgstr ""
 
@@ -1704,8 +1708,8 @@ msgstr ""
 #: application/helpers/update/updatedb_helper.php:648
 #: application/helpers/update/updatedb_helper.php:904
 #: application/views/admin/dataentry/content_view.php:210
-#: tmp/runtime/twig_cache/be/bee6848bdc49d16becf948b499992da8ef26d1fb275ae18d41dba009ec27526e.php:122
-#: tmp/runtime/twig_cache/be/bee6848bdc49d16becf948b499992da8ef26d1fb275ae18d41dba009ec27526e.php:203
+#: tmp/runtime/twig_cache/a4/a485c32f005b9d1c5f50f25b3017771893990277eab5d1cf3cb7b3a151700be9.php:122
+#: tmp/runtime/twig_cache/a4/a485c32f005b9d1c5f50f25b3017771893990277eab5d1cf3cb7b3a151700be9.php:203
 msgid "Comment"
 msgstr ""
 
@@ -1713,8 +1717,8 @@ msgstr ""
 #: application/controllers/UploaderController.php:321
 #: application/controllers/admin/DataEntry.php:1014
 #: application/views/admin/emailtemplates/email_language_template_tab.php:87
-#: tmp/runtime/twig_cache/be/bee6848bdc49d16becf948b499992da8ef26d1fb275ae18d41dba009ec27526e.php:128
-#: tmp/runtime/twig_cache/be/bee6848bdc49d16becf948b499992da8ef26d1fb275ae18d41dba009ec27526e.php:207
+#: tmp/runtime/twig_cache/a4/a485c32f005b9d1c5f50f25b3017771893990277eab5d1cf3cb7b3a151700be9.php:128
+#: tmp/runtime/twig_cache/a4/a485c32f005b9d1c5f50f25b3017771893990277eab5d1cf3cb7b3a151700be9.php:207
 msgid "File name"
 msgstr ""
 
@@ -1804,7 +1808,7 @@ msgid "Group: "
 msgstr ""
 
 #: application/controllers/ResponsesController.php:894
-#: application/helpers/admin/statistics_helper.php:4282
+#: application/helpers/admin/statistics_helper.php:4236
 #: application/models/Question.php:1052
 #: application/models/TemplateManifest.php:165
 #: application/views/admin/conditions/includes/form_editconditions_header.php:66
@@ -2144,7 +2148,7 @@ msgstr ""
 #: application/controllers/SurveyAdministrationController.php:1505
 #: application/controllers/admin/Labels.php:68
 #: application/controllers/admin/PluginManagerController.php:698
-#: application/controllers/admin/Themes.php:1399
+#: application/controllers/admin/Themes.php:1407
 msgid "Incorrect permissions in your %s folder."
 msgstr ""
 
@@ -2187,7 +2191,7 @@ msgstr ""
 #: application/views/admin/dataentry/vvimport_result.php:10
 #: application/views/admin/labels/importlabelresources_view.php:3
 #: application/views/admin/labels/importlabelresources_view.php:9
-#: application/views/admin/super/footer.php:204
+#: application/views/admin/super/footer.php:200
 #: application/views/admin/survey/copySurvey_view.php:23
 #: application/views/admin/themes/importuploaded_view.php:6
 #: application/views/admin/token/addtokenpost.php:15
@@ -2229,8 +2233,9 @@ msgstr ""
 #: application/views/surveyAdministration/partial/topbar/surveyTopbarRight_view.php:136
 #: application/views/surveyAdministration/partial/topbar_tokens/leftSideButtons.php:49
 #: application/views/themeOptions/index.php:108
-#: application/views/themeOptions/index.php:143
-#: application/views/themeOptions/index.php:159
+#: application/views/themeOptions/index.php:167
+#: application/views/themeOptions/index.php:202
+#: application/views/themeOptions/index.php:217
 #: application/views/userManagement/massiveAction/_updatepermissions.php:35
 #: application/views/userManagement/partial/editpermissions.php:24
 #: application/views/userManagement/partial/topbarBtns/leftSideButtons.php:61
@@ -2259,7 +2264,7 @@ msgstr ""
 #: application/extensions/UserPermissionsWidget/views/table.php:16
 #: application/extensions/admin/survey/LanguagesWidget/LanguagesWidget.php:21
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:25
-#: application/models/Assessment.php:117 application/models/Box.php:161
+#: application/models/Assessment.php:117 application/models/Box.php:162
 #: application/models/FailedEmail.php:243 application/models/LabelSet.php:150
 #: application/models/ParticipantAttributeName.php:123
 #: application/models/Permission.php:665 application/models/Permission.php:674
@@ -2270,9 +2275,9 @@ msgstr ""
 #: application/models/SurveyDynamic.php:342
 #: application/models/SurveyDynamic.php:358
 #: application/models/SurveyURLParameter.php:189
-#: application/models/TemplateManifest.php:682
-#: application/models/TemplateManifest.php:684
+#: application/models/TemplateManifest.php:685
 #: application/models/TemplateManifest.php:687
+#: application/models/TemplateManifest.php:690
 #: application/models/TokenDynamic.php:897 application/models/User.php:927
 #: application/models/User.php:933 application/models/UserGroup.php:374
 #: application/views/SurveysGroupsPermission/subviews/currentUsersList.php:39
@@ -2308,6 +2313,9 @@ msgstr ""
 #: application/views/themeOptions/index.php:118
 #: application/views/themeOptions/index.php:119
 #: application/views/themeOptions/index.php:122
+#: application/views/themeOptions/index.php:177
+#: application/views/themeOptions/index.php:178
+#: application/views/themeOptions/index.php:181
 #: application/views/userGroup/partial/topbarBtns_manageGroup/leftSideButtons.php:54
 #: application/views/userManagement/massiveAction/_selector.php:18
 #: application/views/userManagement/massiveAction/_updatepermissions.php:33
@@ -2316,7 +2324,7 @@ msgstr ""
 #: application/views/userRole/massiveAction/_selector.php:17
 #: application/views/userRole/massiveAction/_updatepermissions.php:35
 #: application/views/userRole/partials/_permissions.php:36
-#: tmp/runtime/twig_cache/be/bee6848bdc49d16becf948b499992da8ef26d1fb275ae18d41dba009ec27526e.php:211
+#: tmp/runtime/twig_cache/a4/a485c32f005b9d1c5f50f25b3017771893990277eab5d1cf3cb7b3a151700be9.php:211
 msgid "Delete"
 msgstr ""
 
@@ -2621,8 +2629,8 @@ msgstr ""
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/yes-no-lg.php:52
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/yes-no.php:52
 #: application/helpers/SurveyRuntimeHelper.php:552
-#: application/helpers/admin/statistics_helper.php:1216
-#: application/helpers/admin/statistics_helper.php:1330
+#: application/helpers/admin/statistics_helper.php:1218
+#: application/helpers/admin/statistics_helper.php:1332
 #: application/helpers/common_helper.php:1050
 #: application/helpers/common_helper.php:1074
 #: application/helpers/export_helper.php:377
@@ -2735,7 +2743,6 @@ msgstr ""
 #: application/views/questionAdministration/summary.php:190
 #: application/views/quotas/_form.php:53 application/views/quotas/_form.php:69
 #: application/views/responses/partial/responseListTable.php:134
-#: application/views/survey/frontpage/clearallForm/form.php:25
 #: application/views/surveyAdministration/activateSurvey_view.php:141
 #: application/views/surveyAdministration/activateSurvey_view.php:160
 #: application/views/surveyAdministration/activateSurvey_view.php:182
@@ -2773,8 +2780,8 @@ msgstr ""
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/yes-no-lg.php:43
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/yes-no.php:43
 #: application/helpers/SurveyRuntimeHelper.php:552
-#: application/helpers/admin/statistics_helper.php:1215
-#: application/helpers/admin/statistics_helper.php:1329
+#: application/helpers/admin/statistics_helper.php:1217
+#: application/helpers/admin/statistics_helper.php:1331
 #: application/helpers/common_helper.php:1040
 #: application/helpers/common_helper.php:1047
 #: application/helpers/common_helper.php:1071
@@ -2891,7 +2898,6 @@ msgstr ""
 #: application/views/questionAdministration/summary.php:188
 #: application/views/quotas/_form.php:52 application/views/quotas/_form.php:68
 #: application/views/responses/partial/responseListTable.php:134
-#: application/views/survey/frontpage/clearallForm/form.php:16
 #: application/views/surveyAdministration/activateSurvey_view.php:136
 #: application/views/surveyAdministration/activateSurvey_view.php:156
 #: application/views/surveyAdministration/activateSurvey_view.php:179
@@ -2921,7 +2927,7 @@ msgstr ""
 #: application/controllers/SurveyAdministrationController.php:3071
 #: application/controllers/admin/SurveysGroupsController.php:301
 #: application/core/plugins/expressionFixedDbVar/expressionFixedDbVar.php:168
-#: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:325
+#: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:327
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:236
 #: application/views/themeOptions/options_core.php:6
 #: application/views/themeOptions/options_core.php:181
@@ -2959,10 +2965,10 @@ msgstr ""
 #: application/views/homepageSettings/index.php:73
 #: application/views/questionGroupsAdministration/listquestiongroups.php:107
 #: application/views/themeOptions/availablethemelist.php:18
-#: application/views/themeOptions/index.php:51
-#: application/views/themeOptions/index.php:182
+#: application/views/themeOptions/index.php:55
+#: application/views/themeOptions/index.php:240
 #: application/views/themeOptions/installedthemelist.php:52
-#: application/views/themeOptions/surveythemelist.php:54
+#: application/views/themeOptions/surveythemelist.php:59
 msgid "Description"
 msgstr ""
 
@@ -3105,12 +3111,12 @@ msgstr ""
 #: application/extensions/admin/survey/LanguagesWidget/LanguagesWidget.php:22
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_export_archive_results.php:44
 #: application/helpers/SurveyRuntimeHelper.php:1447
-#: application/models/Box.php:160 application/models/Question.php:745
+#: application/models/Box.php:161 application/models/Question.php:745
 #: application/models/SurveyURLParameter.php:188
-#: application/models/TemplateConfiguration.php:770
-#: application/models/TemplateConfiguration.php:794
-#: application/models/TemplateConfiguration.php:812
-#: application/models/TemplateManifest.php:681
+#: application/models/TemplateConfiguration.php:775
+#: application/models/TemplateConfiguration.php:799
+#: application/models/TemplateConfiguration.php:817
+#: application/models/TemplateManifest.php:684
 #: application/views/admin/conditions/conditionshead_view.php:64
 #: application/views/admin/conditions/deleteAllConditions.php:23
 #: application/views/admin/conditions/includes/conditions_edit.php:8
@@ -3129,7 +3135,7 @@ msgstr ""
 #: application/views/admin/participants/modal_subviews/_exportCSV.php:36
 #: application/views/admin/participants/modal_subviews/_shareParticipant.php:68
 #: application/views/admin/participants/participantsPanel_view.php:22
-#: application/views/admin/super/footer.php:167
+#: application/views/admin/super/footer.php:163
 #: application/views/admin/survey/Question/_subQuestionsAndAnwsersJsVariables.php:11
 #: application/views/admin/survey/Question/massive_actions/_selector.php:69
 #: application/views/admin/survey/subview/import_ressources_modal.php:27
@@ -3177,6 +3183,7 @@ msgstr ""
 #: application/views/surveyAdministration/partial/topbar_tokens/rightSideButtons.php:89
 #: application/views/themeOptions/import_modal.php:47
 #: application/views/themeOptions/index.php:117
+#: application/views/themeOptions/index.php:176
 #: application/views/userManagement/partial/adddummyuser.php:32
 #: application/views/userManagement/partial/addedituser.php:141
 #: application/views/userManagement/partial/addrole.php:49
@@ -3187,6 +3194,7 @@ msgstr ""
 #: application/views/userRole/partials/_form.php:55
 #: application/views/userRole/partials/_import.php:26
 #: application/views/userRole/partials/_permissions.php:115
+#: tmp/runtime/twig_cache/40/40406d772224ffe374af1acb4afe386a7c1aed18da0c12d99779c88170537788.php:185
 msgid "Cancel"
 msgstr ""
 
@@ -3293,67 +3301,67 @@ msgstr ""
 msgid "Survey permissions deleted."
 msgstr ""
 
-#: application/controllers/SurveysController.php:120
+#: application/controllers/SurveysController.php:123
 msgid "If you think this is a server error, please contact %s."
 msgstr ""
 
-#: application/controllers/SurveysController.php:124
+#: application/controllers/SurveysController.php:127
 msgid "400: Bad Request"
 msgstr ""
 
-#: application/controllers/SurveysController.php:125
+#: application/controllers/SurveysController.php:128
 msgid "The request could not be understood by the server due to malformed syntax."
 msgstr ""
 
-#: application/controllers/SurveysController.php:126
+#: application/controllers/SurveysController.php:129
 msgid "Please do not repeat the request without modifications."
 msgstr ""
 
-#: application/controllers/SurveysController.php:129
+#: application/controllers/SurveysController.php:132
 msgid "401: Unauthorized"
 msgstr ""
 
-#: application/controllers/SurveysController.php:130
+#: application/controllers/SurveysController.php:133
 msgid "You must be logged in to access to this page."
 msgstr ""
 
-#: application/controllers/SurveysController.php:136
+#: application/controllers/SurveysController.php:139
 msgid "403: Forbidden"
 msgstr ""
 
-#: application/controllers/SurveysController.php:137
+#: application/controllers/SurveysController.php:140
 msgid "You do not have the permission to access this page."
 msgstr ""
 
-#: application/controllers/SurveysController.php:140
+#: application/controllers/SurveysController.php:143
 msgid "404: Not Found"
 msgstr ""
 
-#: application/controllers/SurveysController.php:141
+#: application/controllers/SurveysController.php:144
 msgid "The requested URL was not found on this server."
 msgstr ""
 
-#: application/controllers/SurveysController.php:142
+#: application/controllers/SurveysController.php:145
 msgid "If you entered the URL manually please check your spelling and try again."
 msgstr ""
 
-#: application/controllers/SurveysController.php:145
+#: application/controllers/SurveysController.php:148
 msgid "500: Internal Server Error"
 msgstr ""
 
-#: application/controllers/SurveysController.php:146
+#: application/controllers/SurveysController.php:149
 msgid "An internal error occurred while the Web server was processing your request."
 msgstr ""
 
-#: application/controllers/SurveysController.php:147
+#: application/controllers/SurveysController.php:150
 msgid "Please contact %s to report this problem."
 msgstr ""
 
-#: application/controllers/SurveysController.php:150
+#: application/controllers/SurveysController.php:153
 msgid "Error %s"
 msgstr ""
 
-#: application/controllers/SurveysController.php:151
+#: application/controllers/SurveysController.php:154
 msgid "The above error occurred when the Web server was processing your request."
 msgstr ""
 
@@ -3592,7 +3600,7 @@ msgstr ""
 #: application/helpers/common_helper.php:651
 #: application/helpers/qanda_helper.php:723
 #: application/helpers/qanda_helper.php:1318
-#: application/helpers/qanda_helper.php:3823
+#: application/helpers/qanda_helper.php:3488
 #: application/views/admin/dataentry/content_view.php:138
 #: application/views/admin/dataentry/content_view.php:149
 #: application/views/admin/super/permissions/addGroupForm.php:12
@@ -3785,7 +3793,7 @@ msgstr ""
 #: application/controllers/UserManagementController.php:1091
 #: application/controllers/UserManagementController.php:1146
 #: application/controllers/UserManagementController.php:1192
-#: application/core/LsDefaultDataSets.php:2847
+#: application/core/LsDefaultDataSets.php:2886
 #: application/core/plugins/AuthLDAP/AuthLDAP.php:378
 #: application/core/plugins/Authdb/Authdb.php:135
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:110
@@ -3929,7 +3937,7 @@ msgstr ""
 
 #: application/controllers/UserRoleController.php:384
 #: application/controllers/admin/DataEntry.php:1921
-#: application/libraries/Save.php:220 application/models/Assessment.php:83
+#: application/libraries/Save.php:216 application/models/Assessment.php:83
 #: application/models/ParticipantAttributeName.php:254
 #: application/models/Permissiontemplates.php:248
 #: application/models/Surveymenu.php:344
@@ -3937,10 +3945,11 @@ msgstr ""
 #: application/models/UserGroup.php:293 application/models/UserGroup.php:401
 #: application/models/UserInPermissionrole.php:57
 #: application/views/admin/labels/labelsets_view.php:42
-#: application/views/themeOptions/index.php:87
-#: application/views/themeOptions/index.php:142
+#: application/views/themeOptions/index.php:146
+#: application/views/themeOptions/index.php:201
 #: application/views/themeOptions/installedthemelist.php:44
-#: application/views/themeOptions/surveythemelist.php:47
+#: application/views/themeOptions/surveythemelist.php:51
+#: tmp/runtime/twig_cache/e8/e883c9625cb5a32d8af3953f1317a9f481a2adb319d1bbdf94e6153ba500df0c.php:200
 msgid "Name"
 msgstr ""
 
@@ -4318,34 +4327,34 @@ msgstr ""
 #: application/core/QuestionTypes/ListDropdown/RenderListDropdown.php:206
 #: application/core/QuestionTypes/ListWithComment/RenderListComment.php:62
 #: application/core/QuestionTypes/ListWithComment/RenderListComment.php:117
-#: application/helpers/admin/statistics_helper.php:671
-#: application/helpers/admin/statistics_helper.php:708
-#: application/helpers/admin/statistics_helper.php:1439
-#: application/helpers/admin/statistics_helper.php:1604
-#: application/helpers/admin/statistics_helper.php:2371
-#: application/helpers/admin/statistics_helper.php:3286
-#: application/helpers/admin/statistics_helper.php:3293
+#: application/helpers/admin/statistics_helper.php:673
+#: application/helpers/admin/statistics_helper.php:710
+#: application/helpers/admin/statistics_helper.php:1441
+#: application/helpers/admin/statistics_helper.php:1574
+#: application/helpers/admin/statistics_helper.php:2325
+#: application/helpers/admin/statistics_helper.php:3240
+#: application/helpers/admin/statistics_helper.php:3247
 #: application/helpers/common_helper.php:1053
 #: application/helpers/common_helper.php:1065
 #: application/helpers/qanda_helper.php:828
 #: application/helpers/qanda_helper.php:1161
 #: application/helpers/qanda_helper.php:1219
-#: application/helpers/qanda_helper.php:3054
-#: application/helpers/qanda_helper.php:3113
-#: application/helpers/qanda_helper.php:3234
-#: application/helpers/qanda_helper.php:3286
-#: application/helpers/qanda_helper.php:3648
-#: application/helpers/qanda_helper.php:3700
-#: application/helpers/qanda_helper.php:3840
-#: application/helpers/qanda_helper.php:4678
-#: application/helpers/qanda_helper.php:4679
+#: application/helpers/qanda_helper.php:2719
+#: application/helpers/qanda_helper.php:2778
+#: application/helpers/qanda_helper.php:2899
+#: application/helpers/qanda_helper.php:2951
+#: application/helpers/qanda_helper.php:3313
+#: application/helpers/qanda_helper.php:3365
+#: application/helpers/qanda_helper.php:3505
+#: application/helpers/qanda_helper.php:4343
+#: application/helpers/qanda_helper.php:4344
 #: application/helpers/userstatistics_helper.php:641
 #: application/helpers/userstatistics_helper.php:676
 #: application/helpers/userstatistics_helper.php:1356
 #: application/helpers/userstatistics_helper.php:1579
 #: application/views/admin/dataentry/content_view.php:51
 #: tmp/runtime/twig_cache/1b/1b0a028feb6415624125c536fd62b9df51551363e9b68efc16d03aebb3347687.php:142
-#: tmp/runtime/twig_cache/24/24dfb9ba0b21d6f44b057e5fcd2a6802f32b8c10df71950b8938e6b6c9746420.php:109
+#: tmp/runtime/twig_cache/7e/7eb68cb73a9bfa3522e20964ca74e63ae67613e44d07e414b62dfa325a0d0537.php:109
 msgid "No answer"
 msgstr ""
 
@@ -4438,7 +4447,7 @@ msgstr ""
 #: application/controllers/admin/PrintableSurvey.php:927
 #: application/core/plugins/ExportSPSSsav/SPSSWriter.php:217
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:245
-#: application/helpers/admin/statistics_helper.php:1217
+#: application/helpers/admin/statistics_helper.php:1219
 #: application/helpers/common_helper.php:1077
 #: application/helpers/export_helper.php:382
 #: application/helpers/export_helper.php:1941
@@ -4456,7 +4465,7 @@ msgstr ""
 #: application/controllers/admin/PrintableSurvey.php:956
 #: application/core/plugins/ExportSPSSsav/SPSSWriter.php:222
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:250
-#: application/helpers/admin/statistics_helper.php:1233
+#: application/helpers/admin/statistics_helper.php:1235
 #: application/helpers/common_helper.php:1084
 #: application/helpers/export_helper.php:385
 #: application/helpers/export_helper.php:1946
@@ -4474,7 +4483,7 @@ msgstr ""
 #: application/controllers/admin/PrintableSurvey.php:957
 #: application/core/plugins/ExportSPSSsav/SPSSWriter.php:226
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:254
-#: application/helpers/admin/statistics_helper.php:1234
+#: application/helpers/admin/statistics_helper.php:1236
 #: application/helpers/common_helper.php:1090
 #: application/helpers/export_helper.php:386
 #: application/helpers/export_helper.php:1946
@@ -4492,7 +4501,7 @@ msgstr ""
 #: application/controllers/admin/PrintableSurvey.php:958
 #: application/core/plugins/ExportSPSSsav/SPSSWriter.php:230
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:258
-#: application/helpers/admin/statistics_helper.php:1235
+#: application/helpers/admin/statistics_helper.php:1237
 #: application/helpers/common_helper.php:1087
 #: application/helpers/export_helper.php:387
 #: application/helpers/export_helper.php:1946
@@ -4537,7 +4546,7 @@ msgstr ""
 #: application/controllers/admin/PrintableSurvey.php:577
 #: application/core/plugins/ExportSPSSsav/SPSSWriter.php:191
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:219
-#: application/helpers/admin/statistics_helper.php:1322
+#: application/helpers/admin/statistics_helper.php:1324
 #: application/helpers/common_helper.php:1062
 #: application/helpers/export_helper.php:372
 #: application/helpers/export_helper.php:1925
@@ -4547,7 +4556,7 @@ msgstr ""
 #: application/views/admin/dataentry/content_view.php:90
 #: application/views/admin/export/statistics_subviews/_question.php:349
 #: tmp/runtime/twig_cache/1b/1b0a028feb6415624125c536fd62b9df51551363e9b68efc16d03aebb3347687.php:74
-#: tmp/runtime/twig_cache/24/24dfb9ba0b21d6f44b057e5fcd2a6802f32b8c10df71950b8938e6b6c9746420.php:64
+#: tmp/runtime/twig_cache/7e/7eb68cb73a9bfa3522e20964ca74e63ae67613e44d07e414b62dfa325a0d0537.php:64
 msgid "Female"
 msgstr ""
 
@@ -4557,7 +4566,7 @@ msgstr ""
 #: application/controllers/admin/PrintableSurvey.php:578
 #: application/core/plugins/ExportSPSSsav/SPSSWriter.php:195
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:223
-#: application/helpers/admin/statistics_helper.php:1323
+#: application/helpers/admin/statistics_helper.php:1325
 #: application/helpers/common_helper.php:1059
 #: application/helpers/export_helper.php:373
 #: application/helpers/export_helper.php:1925
@@ -4567,7 +4576,7 @@ msgstr ""
 #: application/views/admin/dataentry/content_view.php:91
 #: application/views/admin/export/statistics_subviews/_question.php:355
 #: tmp/runtime/twig_cache/1b/1b0a028feb6415624125c536fd62b9df51551363e9b68efc16d03aebb3347687.php:107
-#: tmp/runtime/twig_cache/24/24dfb9ba0b21d6f44b057e5fcd2a6802f32b8c10df71950b8938e6b6c9746420.php:85
+#: tmp/runtime/twig_cache/7e/7eb68cb73a9bfa3522e20964ca74e63ae67613e44d07e414b62dfa325a0d0537.php:85
 msgid "Male"
 msgstr ""
 
@@ -4577,12 +4586,12 @@ msgstr ""
 #: application/controllers/admin/PrintableSurvey.php:640
 #: application/core/QuestionTypes/MultipleChoiceWithComments/RenderMultipleChoiceWithComments.php:191
 #: application/extensions/GeneralOptionWidget/settings/OtherGeneralOption.php:15
-#: application/helpers/admin/statistics_helper.php:649
-#: application/helpers/admin/statistics_helper.php:1429
-#: application/helpers/admin/statistics_helper.php:1486
-#: application/helpers/admin/statistics_helper.php:1609
-#: application/helpers/admin/statistics_helper.php:2258
-#: application/helpers/admin/statistics_helper.php:2376
+#: application/helpers/admin/statistics_helper.php:651
+#: application/helpers/admin/statistics_helper.php:1431
+#: application/helpers/admin/statistics_helper.php:1478
+#: application/helpers/admin/statistics_helper.php:1579
+#: application/helpers/admin/statistics_helper.php:2210
+#: application/helpers/admin/statistics_helper.php:2330
 #: application/helpers/common_helper.php:1033
 #: application/helpers/common_helper.php:1104
 #: application/helpers/common_helper.php:1550
@@ -4778,7 +4787,7 @@ msgid "Your choices"
 msgstr ""
 
 #: application/controllers/admin/DataEntry.php:918
-#: application/core/QuestionTypes/RankingStyle/RenderRanking.php:138
+#: application/core/QuestionTypes/RankingStyle/RenderRanking.php:139
 #: application/helpers/qanda_helper.php:1363
 #: application/helpers/questionHelper.php:1244
 #: application/views/admin/dataentry/content_view.php:264
@@ -4816,17 +4825,17 @@ msgid "The response record %s was updated."
 msgstr ""
 
 #: application/controllers/admin/DataEntry.php:1740
-#: application/libraries/Save.php:132
+#: application/libraries/Save.php:128
 msgid "You must supply a name for this saved session."
 msgstr ""
 
 #: application/controllers/admin/DataEntry.php:1743
-#: application/libraries/Save.php:135
+#: application/libraries/Save.php:131
 msgid "You must supply a password for this saved session."
 msgstr ""
 
 #: application/controllers/admin/DataEntry.php:1746
-#: application/libraries/Save.php:138
+#: application/libraries/Save.php:134
 msgid "Your passwords do not match."
 msgstr ""
 
@@ -4839,7 +4848,7 @@ msgid "A survey participant entry for the saved survey has been created, too."
 msgstr ""
 
 #: application/controllers/admin/DataEntry.php:1918
-#: application/libraries/Save.php:217
+#: application/libraries/Save.php:213
 msgid "Saved Survey Details"
 msgstr ""
 
@@ -4848,7 +4857,7 @@ msgid "Thank you for saving your survey in progress. The following details can b
 msgstr ""
 
 #: application/controllers/admin/DataEntry.php:1922
-#: application/libraries/Save.php:222
+#: application/libraries/Save.php:218
 msgid "Reload your survey by clicking on the following link (or pasting it into your browser):"
 msgstr ""
 
@@ -5121,6 +5130,7 @@ msgstr ""
 #: application/views/admin/survey/queXMLSurvey_view.php:4
 #: application/views/admin/survey/queXMLSurvey_view.php:6
 #: application/views/admin/survey/surveybar_displayexport.php:75
+#: tmp/runtime/twig_cache/03/03195fe36e2eff142969b4cb23332543d33eaf80f04937bd67f393f5ac6aae5c.php:106
 #: tmp/runtime/twig_cache/3a/3a810f31336cd5f0617612c23735712a0e645b6f09f7caba8c48c09307a3a1f3.php:98
 msgid "queXML PDF export"
 msgstr ""
@@ -5641,8 +5651,8 @@ msgstr ""
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/yes-no.php:62
 #: application/helpers/replacements_helper.php:323
 #: application/helpers/replacements_helper.php:436
-#: application/models/TemplateConfig.php:607
 #: application/models/TemplateConfig.php:608
+#: application/models/TemplateConfig.php:609
 #: application/views/admin/emailtemplates/email_language_template_tab.php:135
 #: application/views/admin/emailtemplates/emailtemplates_view.php:104
 #: application/views/admin/globalsettings/_emailTestConfirmation.php:16
@@ -5655,10 +5665,10 @@ msgstr ""
 #: application/views/admin/participants/modal_subviews/_exportCSV.php:68
 #: application/views/admin/participants/modal_subviews/_showParticipantSurveys.php:33
 #: application/views/admin/pluginmanager/uploadModal.php:39
-#: application/views/admin/super/footer.php:172
-#: application/views/admin/super/footer.php:192
-#: application/views/admin/super/footer.php:211
-#: application/views/admin/super/footer.php:231
+#: application/views/admin/super/footer.php:168
+#: application/views/admin/super/footer.php:188
+#: application/views/admin/super/footer.php:207
+#: application/views/admin/super/footer.php:227
 #: application/views/admin/super/fullpagebar_view.php:51
 #: application/views/admin/super/fullpagebar_view.php:123
 #: application/views/admin/super/welcome.php:108
@@ -5685,6 +5695,8 @@ msgstr ""
 #: application/views/surveyAdministration/partial/topbarBtns_create_survey/rightSideButtons.php:9
 #: application/views/surveyAdministration/partial/topbar_statistics/rightSideButtons.php:68
 #: application/views/surveyAdministration/tabImport_view.php:59
+#: application/views/themeOptions/index.php:98
+#: application/views/themeOptions/index.php:282
 #: application/views/userManagement/partial/createdrandoms.php:49
 #: application/views/userManagement/partial/error.php:38
 #: application/views/userManagement/partial/permissionsuccess.php:51
@@ -5693,6 +5705,9 @@ msgstr ""
 #: application/views/userRole/partials/_view.php:37
 #: application/views/userRole/partials/error.php:37
 #: application/views/userRole/partials/success.php:32
+#: tmp/runtime/twig_cache/1a/1a05d1464cfc1cf728b5397e24e7a7733da6e8e51f498484b7aab8acd6b7d582.php:133
+#: tmp/runtime/twig_cache/40/40406d772224ffe374af1acb4afe386a7c1aed18da0c12d99779c88170537788.php:153
+#: tmp/runtime/twig_cache/5e/5e6ab757026cb792f8d3f8a0a1d153c2b0a2f30b74eb8306e87111e241b9011f.php:71
 #: tmp/runtime/twig_cache/80/8024810791e88861194cbe75b2e5f64ae5cc6f142d04063f1fc7702087b9fbfe.php:71
 #: tmp/runtime/twig_cache/81/814deb1b5bd95e4b93b32455894c2929f6666fffddd321d9daa52d3b017bea69.php:558
 #: tmp/runtime/twig_cache/8d/8dda4672a6daa8876ee5819d137a9b890c445522f0ed3e68067d5165ca043b10.php:153
@@ -5790,7 +5805,7 @@ msgid "Plugin upload is disabled"
 msgstr ""
 
 #: application/controllers/admin/PrintableSurvey.php:77
-#: application/controllers/admin/Themes.php:1220
+#: application/controllers/admin/Themes.php:1228
 msgid "Please submit by %s"
 msgstr ""
 
@@ -5803,12 +5818,12 @@ msgid "table"
 msgstr ""
 
 #: application/controllers/admin/PrintableSurvey.php:126
-#: application/controllers/admin/Themes.php:1218
+#: application/controllers/admin/Themes.php:1226
 msgid "Submit your survey."
 msgstr ""
 
 #: application/controllers/admin/PrintableSurvey.php:129
-#: application/controllers/admin/Themes.php:1221
+#: application/controllers/admin/Themes.php:1229
 msgid "Thank you for completing this survey."
 msgstr ""
 
@@ -5872,8 +5887,8 @@ msgid "is matched (regexp)"
 msgstr ""
 
 #: application/controllers/admin/PrintableSurvey.php:407
-#: application/helpers/admin/statistics_helper.php:1378
-#: application/helpers/admin/statistics_helper.php:1398
+#: application/helpers/admin/statistics_helper.php:1380
+#: application/helpers/admin/statistics_helper.php:1400
 #: application/helpers/userstatistics_helper.php:1304
 #: application/helpers/userstatistics_helper.php:1320
 #: application/views/admin/dataentry/content_view.php:124
@@ -5904,7 +5919,7 @@ msgid "Question code:"
 msgstr ""
 
 #: application/controllers/admin/PrintableSurvey.php:534
-#: application/controllers/admin/Themes.php:1195
+#: application/controllers/admin/Themes.php:1203
 msgid "*"
 msgstr ""
 
@@ -5913,7 +5928,7 @@ msgstr ""
 #: application/controllers/admin/PrintableSurvey.php:592
 #: application/controllers/admin/PrintableSurvey.php:651
 #: application/controllers/admin/PrintableSurvey.php:827
-#: application/controllers/admin/Themes.php:1199
+#: application/controllers/admin/Themes.php:1207
 msgid "Please choose *only one* of the following:"
 msgstr ""
 
@@ -5982,6 +5997,7 @@ msgstr ""
 
 #: application/controllers/admin/PrintableSurvey.php:1286
 #: tmp/runtime/twig_cache/06/0681fd5ce7c191b3f29a4c83005234bd72a47992124e1b84f75c1eef73c5c390.php:125
+#: tmp/runtime/twig_cache/15/15d05251a66df9f35bba6567765f97d538fb376bdd2fb64664edf050f48b80f9.php:124
 msgid "There are %s questions in this survey."
 msgstr ""
 
@@ -6239,100 +6255,100 @@ msgstr ""
 msgid "Please check the directory permissions."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:791
+#: application/controllers/admin/Themes.php:792
 msgid "Template '%s' was successfully deleted."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:793
-#: application/controllers/admin/Themes.php:847
+#: application/controllers/admin/Themes.php:794
+#: application/controllers/admin/Themes.php:855
 msgid "There was a problem deleting the template '%s'. Please check your directory/file permissions."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:796
+#: application/controllers/admin/Themes.php:797
 msgid "You can't delete template '%s' because one or more templates inherit from it."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:799
+#: application/controllers/admin/Themes.php:800
 msgid "Theme '%s' does not exist."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:820
-#: application/controllers/admin/Themes.php:845
+#: application/controllers/admin/Themes.php:821
+#: application/controllers/admin/Themes.php:853
 msgid "Theme '%s' was successfully deleted."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:823
+#: application/controllers/admin/Themes.php:824
 msgid "Not a broken theme!"
 msgstr ""
 
-#: application/controllers/admin/Themes.php:902
+#: application/controllers/admin/Themes.php:910
 msgid "Invalid theme name"
 msgstr ""
 
-#: application/controllers/admin/Themes.php:915
+#: application/controllers/admin/Themes.php:923
 msgid "Could not open file "
 msgstr ""
 
-#: application/controllers/admin/Themes.php:920
+#: application/controllers/admin/Themes.php:928
 msgid "Could not write file "
 msgstr ""
 
-#: application/controllers/admin/Themes.php:923
+#: application/controllers/admin/Themes.php:931
 msgid "Changes saved successfully."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:1112
+#: application/controllers/admin/Themes.php:1120
 msgid "Invalid screen name"
 msgstr ""
 
-#: application/controllers/admin/Themes.php:1159
+#: application/controllers/admin/Themes.php:1167
 #: tmp/runtime/twig_cache/80/8069f07c1abb85c76bf1c4ab30408ceeaa4d11748d462b858d550c1a6f8094a8.php:40
 msgid "How many roads must a man walk down?"
 msgstr ""
 
-#: application/controllers/admin/Themes.php:1161
+#: application/controllers/admin/Themes.php:1169
 #: application/models/TemplateManifest.php:392
 #: application/models/TemplateManifest.php:402
 msgid "This is some helpful text."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:1170
+#: application/controllers/admin/Themes.php:1178
 msgid "Hint when response is valid"
 msgstr ""
 
-#: application/controllers/admin/Themes.php:1206
+#: application/controllers/admin/Themes.php:1214
 msgid "This is a sample question text. The user was asked to pick an entry."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:1207
+#: application/controllers/admin/Themes.php:1215
 msgid "This is some help text for this question."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:1222
+#: application/controllers/admin/Themes.php:1230
 msgid "This is the survey end message."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:1244
+#: application/controllers/admin/Themes.php:1252
 msgid "Question group name"
 msgstr ""
 
-#: application/controllers/admin/Themes.php:1245
+#: application/controllers/admin/Themes.php:1253
 msgid "Question group description"
 msgstr ""
 
-#: application/controllers/admin/Themes.php:1333
+#: application/controllers/admin/Themes.php:1341
 msgid "LimeSurvey theme editor"
 msgstr ""
 
-#: application/controllers/admin/Themes.php:1337
+#: application/controllers/admin/Themes.php:1345
 msgid "Welcome to the theme editor of LimeSurvey. To get an overview of new functionality and possibilities, please visit the %s LimeSurvey manual %s. For further questions and information, feel free to post your questions on the %s LimeSurvey forums %s."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:1366
+#: application/controllers/admin/Themes.php:1374
 msgid "Demo mode: Uploading templates is disabled."
 msgstr ""
 
-#: application/controllers/admin/Themes.php:1404
+#: application/controllers/admin/Themes.php:1412
 msgid "Template '%s' does already exist."
 msgstr ""
 
@@ -6785,12 +6801,11 @@ msgstr ""
 #: application/views/admin/update/updater/welcome/_welcome.php:111
 #: application/views/quotas/newanswererror_view.php:11
 #: application/views/quotas/newanswertwo_view.php:18
-#: application/views/survey/frontpage/captchaForm/form.php:39
-#: application/views/survey/frontpage/registerForm/form.php:56
-#: application/views/survey/frontpage/tokenForm/form.php:57
 #: tmp/runtime/twig_cache/28/28c7fbde3c2c0cdc5a723627b689deb07c867387802a9c8fa2ceeb07cf17eb79.php:246
 #: tmp/runtime/twig_cache/77/77a988d404a66c96ff9a7eeb1e8eb4cf283ea21862899195d3fd73a4742d6cb6.php:299
 #: tmp/runtime/twig_cache/c6/c61fc24ad04ac0b6c2026a9b5a98dbdd133bfc88917f7c662b7a16f4d47f1807.php:281
+#: tmp/runtime/twig_cache/c6/c63426ef58e5f79120f6ef707a61dc2b960f9717376f0e51b3f15a5c7b3e30cb.php:268
+#: tmp/runtime/twig_cache/dc/dc0d81d8276748df90eb81bf39856a3eaf6f75f95997f3d1f72835fbaf63288b.php:248
 msgid "Continue"
 msgstr ""
 
@@ -7044,7 +7059,7 @@ msgid "You did not answer to the security question."
 msgstr ""
 
 #: application/controllers/survey/index.php:434
-#: application/libraries/Save.php:158
+#: application/libraries/Save.php:154
 msgid "The answer to the security question is incorrect."
 msgstr ""
 
@@ -7162,10 +7177,6 @@ msgid "The survey alias matches an existing URL and cannot be used."
 msgstr ""
 
 #: application/core/LS_Twig_Extension.php:246
-#: application/views/survey/frontpage/captchaForm/form.php:17
-#: application/views/survey/frontpage/registerForm/form.php:39
-#: application/views/survey/frontpage/tokenForm/form.php:34
-#: application/views/survey/system/formItem/captcha.php:17
 msgid "Reload image"
 msgstr ""
 
@@ -7190,7 +7201,7 @@ msgstr ""
 #: application/views/admin/globalsettings/_storage_ajax.php:10
 #: application/views/admin/globalsettings/globalSettings_view.php:17
 #: application/views/admin/pluginmanager/configure.php:15
-#: modules/admin/globalsettings/views/globalSettings_view.php:22
+#: modules/admin/globalsettings/views/globalSettings_view.php:21
 msgid "Overview"
 msgstr ""
 
@@ -7227,6 +7238,7 @@ msgid "Privacy policy settings"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:109
+#: tmp/runtime/twig_cache/1a/1a05d1464cfc1cf728b5397e24e7a7733da6e8e51f498484b7aab8acd6b7d582.php:110
 #: tmp/runtime/twig_cache/f5/f5a008e014fbd7a199d4ac03dad9fcca899080d6b68c91c5267e6275f2bfe11b.php:95
 msgid "Privacy policy"
 msgstr ""
@@ -7237,7 +7249,7 @@ msgstr ""
 
 #: application/core/LsDefaultDataSets.php:136
 #: application/core/LsDefaultDataSets.php:137
-#: application/models/TemplateConfiguration.php:752
+#: application/models/TemplateConfiguration.php:757
 msgid "Theme options"
 msgstr ""
 
@@ -7251,7 +7263,7 @@ msgstr ""
 
 #: application/core/LsDefaultDataSets.php:165
 #: application/views/admin/globalsettings/globalSettings_view.php:23
-#: modules/admin/globalsettings/views/globalSettings_view.php:28
+#: modules/admin/globalsettings/views/globalSettings_view.php:27
 msgid "Presentation"
 msgstr ""
 
@@ -7688,768 +7700,799 @@ msgstr ""
 msgid "Edit themes"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1122
+#: application/core/LsDefaultDataSets.php:1090
+#: application/helpers/update/updates/Update_609.php:28
+#: tmp/runtime/twig_cache/7d/7db0a9ee602df672470bce15a9b8bd293c72d2f7ae6b69954fdbe32248e40a6e.php:39
+msgid "A clean and simple base that can be used by developers to create their own Bootstrap based theme."
+msgstr ""
+
+#: application/core/LsDefaultDataSets.php:1109
+#: application/helpers/update/updates/Update_609.php:37
+#: tmp/runtime/twig_cache/4a/4a8615f2b696e9e8e7dbe88a2477c6533f8bd830abaf25960fe80dad07dd2541.php:39
+msgid "A fruity theme for a flexible use. This theme offers monochromes variations and many options for easy customizations."
+msgstr ""
+
+#: application/core/LsDefaultDataSets.php:1128
+#: application/helpers/update/updates/Update_609.php:46
+msgid "Based on BootsWatch Themes:"
+msgstr ""
+
+#: application/core/LsDefaultDataSets.php:1128
+#: application/helpers/update/updates/Update_609.php:46
+msgid "Visit Bootswatch page"
+msgstr ""
+
+#: application/core/LsDefaultDataSets.php:1147
+#: application/helpers/update/updates/Update_609.php:117
+#: tmp/runtime/twig_cache/e4/e40f9f3887bf1d808310f8fc9f4fc493dc7740a3fade474ba1f99fefa2c2e780.php:39
+msgid "Our default theme for a fruity and flexible use. This theme offers single color variations"
+msgstr ""
+
+#: application/core/LsDefaultDataSets.php:1161
 msgid "Beginner tour"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1132
+#: application/core/LsDefaultDataSets.php:1171
 msgid "End tour"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1138
+#: application/core/LsDefaultDataSets.php:1177
 #: application/views/installer/dbconfig_view.php:111
 #: application/views/installer/license_view.php:16
 #: application/views/installer/populatedb_view.php:20
 #: application/views/installer/precheck_view.php:154
 #: application/views/survey/system/actionButton/movePrevious.php:11
 #: tmp/runtime/twig_cache/0e/0ee7ecc4fb3071a426f49ee0e719b6dbbdedcdec9d0bf99399d6e98d53844ae9.php:137
+#: tmp/runtime/twig_cache/6a/6a25de61ac809352ecc1d14d448ed9c5b338bfb5fa8726c63332ca7f54d50818.php:79
+#: tmp/runtime/twig_cache/d4/d44a8f1d9c837d007af67cbd0b721909e950b0ac9ffced615d377d7b594f6978.php:137
 #: tmp/runtime/twig_cache/ef/ef35bf71739933903af20a5520d35cce5ed7f98814473758c745060e2608865c.php:79
 msgid "Previous"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1139
+#: application/core/LsDefaultDataSets.php:1178
 #: application/views/installer/dbconfig_view.php:116
 #: application/views/installer/optconfig_view.php:88
 #: application/views/installer/precheck_view.php:162
 #: application/views/quotas/newanswer_view.php:34
 #: application/views/quotas/newanswertwo_view.php:51
 #: application/views/survey/system/actionButton/moveNext.php:11
+#: tmp/runtime/twig_cache/6a/6a25de61ac809352ecc1d14d448ed9c5b338bfb5fa8726c63332ca7f54d50818.php:150
 #: tmp/runtime/twig_cache/ef/ef35bf71739933903af20a5520d35cce5ed7f98814473758c745060e2608865c.php:150
 msgid "Next"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1162
+#: application/core/LsDefaultDataSets.php:1201
 msgid "Welcome to LimeSurvey!"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1163
+#: application/core/LsDefaultDataSets.php:1202
 msgid "This tour will help you to easily get a basic understanding of LimeSurvey."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1164
+#: application/core/LsDefaultDataSets.php:1203
 msgid "We would like to help you with a quick tour of the most essential functions and features."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1179
+#: application/core/LsDefaultDataSets.php:1218
 msgid "The basic functions"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1180
+#: application/core/LsDefaultDataSets.php:1219
 msgid "The three top boxes are the most basic functions of LimeSurvey."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1181
+#: application/core/LsDefaultDataSets.php:1220
 msgid "From left to right it should be 'Create survey', 'List surveys' and 'Global settings'. Best we start by creating a survey."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1182
+#: application/core/LsDefaultDataSets.php:1221
 msgid "Click on the 'Create survey' box - or 'Next' in this tutorial"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1194
+#: application/core/LsDefaultDataSets.php:1233
 msgid "The survey title"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1195
+#: application/core/LsDefaultDataSets.php:1234
 msgid "This is the title of your survey."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1196
+#: application/core/LsDefaultDataSets.php:1235
 msgid "Your participants will see this title in the browser's title bar and on the welcome screen."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1197
+#: application/core/LsDefaultDataSets.php:1236
 msgid "You have to put in at least a title for the survey to be saved."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1217
+#: application/core/LsDefaultDataSets.php:1256
 msgid "The survey description"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1218
+#: application/core/LsDefaultDataSets.php:1257
 msgid "In this field you may type a short description of your survey."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1219
+#: application/core/LsDefaultDataSets.php:1258
 msgid "The text inserted here will be displayed on the welcome screen, which is the first thing that your respondents will see when they access your survey.."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1220
+#: application/core/LsDefaultDataSets.php:1259
 msgid "Describe your survey, but do not ask any question yet."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1231
+#: application/core/LsDefaultDataSets.php:1270
 msgid "Create a sample question and question group"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1232
+#: application/core/LsDefaultDataSets.php:1271
 msgid "We will be creating a question group and a question in this tutorial. There is need to automatically create them."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1242
+#: application/core/LsDefaultDataSets.php:1281
 msgid "The welcome message"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1243
+#: application/core/LsDefaultDataSets.php:1282
 msgid "This message is shown directly below the survey description on the welcome page. You may leave this blank for now but it is a good way to introduce your participants to the survey."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1254
+#: application/core/LsDefaultDataSets.php:1293
 msgid "The end message"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1255
+#: application/core/LsDefaultDataSets.php:1294
 msgid "This message is shown at the end of your survey to every participant. It's a great way to say thank you or give some links or hints where to go next."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1266
+#: application/core/LsDefaultDataSets.php:1305
 msgid "Now save your survey"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1267
+#: application/core/LsDefaultDataSets.php:1306
 msgid "You may play around with more settings, but let's save and start adding questions to your survey now. Just click on 'Save'."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1285
+#: application/core/LsDefaultDataSets.php:1324
 msgid "The sidebar"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1286
+#: application/core/LsDefaultDataSets.php:1325
 msgid "This is the sidebar."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1287
+#: application/core/LsDefaultDataSets.php:1326
 msgid "All important settings can be reached in this sidebar."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1288
+#: application/core/LsDefaultDataSets.php:1327
 msgid "The most important settings of your survey can be reached from this sidebar: the survey settings menu and the survey structure menu. You may resize it to fit your screen to easily navigate through the available options. If the size of the sidebar is too small, the options get collapsed and the quick-menu is displayed. If you wish to work from the quick-menu, either click on the arrow button or drag it to the left."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1304
+#: application/core/LsDefaultDataSets.php:1343
 msgid "The settings tab with the survey menu"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1305
+#: application/core/LsDefaultDataSets.php:1344
 msgid "If you click on this tab, the survey settings menu will be displayed. The most important settings of your survey are accessible from this menu."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1306
+#: application/core/LsDefaultDataSets.php:1345
 msgid "If you want to know more about them, check our manual."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1317
+#: application/core/LsDefaultDataSets.php:1356
 msgid "The top bar"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1318
+#: application/core/LsDefaultDataSets.php:1357
 msgid "This is the top bar."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1319
+#: application/core/LsDefaultDataSets.php:1358
 msgid "This bar will change as you move through the functionalities. The current bar corresponds to the \"overview\" tab. It contains the most important LimeSurvey functionalities such as preview and activate survey."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1330
+#: application/core/LsDefaultDataSets.php:1369
 msgid "The survey structure"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1331
+#: application/core/LsDefaultDataSets.php:1370
 msgid "This is the structure view of your survey. Here you can see all your groups and questions."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1345
+#: application/core/LsDefaultDataSets.php:1384
 msgid "Let's add a question group"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1346
+#: application/core/LsDefaultDataSets.php:1385
 msgid "What good would your survey be without questions?"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1347
+#: application/core/LsDefaultDataSets.php:1386
 msgid "In LimeSurvey a survey is organized in groups and questions. To begin creating questions, we first need a question group."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1348
+#: application/core/LsDefaultDataSets.php:1387
 msgid "Click on the 'Add group' button"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1365
+#: application/core/LsDefaultDataSets.php:1404
 msgid "Enter a title for your first question group"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1366
+#: application/core/LsDefaultDataSets.php:1405
 msgid "The title of the question group is visible to your survey participants (this setting can be changed later and it cannot be empty). Question groups are important because they allow the survey administrators to logically group the questions. By default, each question group (including its questions) is shown on its own page (this setting can be changed later)."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1382
+#: application/core/LsDefaultDataSets.php:1421
 msgid "A description for your question group"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1383
+#: application/core/LsDefaultDataSets.php:1422
 msgid "This description is also visible to your participants."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1384
+#: application/core/LsDefaultDataSets.php:1423
 msgid "You do not need to add a description to your question group, but sometimes it makes sense to add a little extra information for your participants."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1395
+#: application/core/LsDefaultDataSets.php:1434
 msgid "Advanced settings"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1396
+#: application/core/LsDefaultDataSets.php:1435
 msgid "For now it's best to leave these additional settings as they are. If you want to know more about randomization and relevance settings, have a look at our manual."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1407
+#: application/core/LsDefaultDataSets.php:1446
 msgid "Save and add a new question"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1408
+#: application/core/LsDefaultDataSets.php:1447
 msgid "Now when you are finished click on 'Save and add question'."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1409
+#: application/core/LsDefaultDataSets.php:1448
 msgid "This will directly add a question to the current question group."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1410
+#: application/core/LsDefaultDataSets.php:1449
 msgid "Now click on 'Save and add question'."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1427
+#: application/core/LsDefaultDataSets.php:1466
 msgid "Set your question type."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1428
+#: application/core/LsDefaultDataSets.php:1467
 msgid "LimeSurvey offers you a lot of different question types."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1429
+#: application/core/LsDefaultDataSets.php:1468
 msgid "As you can see, the preselected question type is the 'Long free text' one. We will use in this example the 'Array' question type."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1430
+#: application/core/LsDefaultDataSets.php:1469
 msgid "This type of question allows you to add multiple subquestions and a set of answers."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1431
+#: application/core/LsDefaultDataSets.php:1470
 msgid "Please select the 'Array'-type."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1447
+#: application/core/LsDefaultDataSets.php:1486
 msgid "The title of your question"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1449
+#: application/core/LsDefaultDataSets.php:1488
 msgid "This code is normally not shown to your participants, still it is necessary and has to be unique for the survey."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1450
+#: application/core/LsDefaultDataSets.php:1489
 msgid "This code is also the name of the variable that will be exported to SPSS or Excel."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1451
+#: application/core/LsDefaultDataSets.php:1490
 msgid "Please type in a code that consists only of letters and numbers, and doesn't start with a number."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1463
+#: application/core/LsDefaultDataSets.php:1502
 msgid "The actual question text"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1464
+#: application/core/LsDefaultDataSets.php:1503
 msgid "The content of this box is the actual question text shown to your participants. It may be empty, but that is not recommended. You may use all the power of our WYSIWYG editor to make your question shine."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1475
+#: application/core/LsDefaultDataSets.php:1514
 msgid "An additional help text for your question"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1476
+#: application/core/LsDefaultDataSets.php:1515
 msgid "You can add some additional help text to your question. If you decide not to offer any additional question hints, then no help text will be displayed to your respondents."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1487
+#: application/core/LsDefaultDataSets.php:1526
 msgid "Now save the created question"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1488
+#: application/core/LsDefaultDataSets.php:1527
 msgid "Next, we will create subquestions and answer options."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1489
+#: application/core/LsDefaultDataSets.php:1528
 msgid "Please remember that in order to have a valid code, it must contain only letters and numbers, also please check that it starts with a letter."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1507
+#: application/core/LsDefaultDataSets.php:1546
 msgid "The question bar"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1508
+#: application/core/LsDefaultDataSets.php:1547
 msgid "This is the question bar."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1509
+#: application/core/LsDefaultDataSets.php:1548
 msgid "The most important question-related options are displayed here."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1510
+#: application/core/LsDefaultDataSets.php:1549
 msgid "The availability of options is related to the type of question you previously chose."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1523
+#: application/core/LsDefaultDataSets.php:1562
 msgid "Add some subquestions to your question"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1524
+#: application/core/LsDefaultDataSets.php:1563
 msgid "The array question is a type that creates a matrix for the participant."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1525
+#: application/core/LsDefaultDataSets.php:1564
 msgid "To fully use it, you have to add subquestions as well as answer options."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1526
+#: application/core/LsDefaultDataSets.php:1565
 msgid "Let's start with subquestions."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1527
+#: application/core/LsDefaultDataSets.php:1566
 msgid "Click on the 'Edit subquestions' button."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1549
+#: application/core/LsDefaultDataSets.php:1588
 msgid "Edit subquestions"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1550
+#: application/core/LsDefaultDataSets.php:1589
 msgid "You should add some subquestions for your question here."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1551
+#: application/core/LsDefaultDataSets.php:1590
 msgid "Every row is one subquestion. We recommend the usage of logical or numerical codes for subquestions. Your participants cannot see the subquestion code, only the subquestion text itself."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1552
+#: application/core/LsDefaultDataSets.php:1591
 msgid "Pro tip: The subquestion may even contain HTML code."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1565
+#: application/core/LsDefaultDataSets.php:1604
 msgid "Add subquestion row"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1566
+#: application/core/LsDefaultDataSets.php:1605
 msgid "Click on the plus sign %s to add another subquestion to your question."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1567
+#: application/core/LsDefaultDataSets.php:1606
 msgid "Please add at least two subquestions"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1578
+#: application/core/LsDefaultDataSets.php:1617
 msgid "Now save the subquestions"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1579
+#: application/core/LsDefaultDataSets.php:1618
 msgid "You may save empty subquestions, but that would be pointless."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1580
+#: application/core/LsDefaultDataSets.php:1619
 msgid "Save and close now and let's edit the answer options."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1597
+#: application/core/LsDefaultDataSets.php:1636
 msgid "Add some answer options to your question"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1598
+#: application/core/LsDefaultDataSets.php:1637
 msgid "Now that we've got some subquestions, we have to add answer options as well."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1599
+#: application/core/LsDefaultDataSets.php:1638
 msgid "The answer options will be shown for each subquestion."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1600
+#: application/core/LsDefaultDataSets.php:1639
 msgid "Click on the 'Edit answer options' button."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1622
+#: application/core/LsDefaultDataSets.php:1661
 msgid "Edit answer options"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1623
+#: application/core/LsDefaultDataSets.php:1662
 msgid "As you can see, editing answer options is quite similar to editing subquestions."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1624
+#: application/core/LsDefaultDataSets.php:1663
 msgid "Remember the plus button"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1625
+#: application/core/LsDefaultDataSets.php:1664
 msgid "Please add at least two answer options to proceed."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1638
+#: application/core/LsDefaultDataSets.php:1677
 msgid "Now save the answer options"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1639
+#: application/core/LsDefaultDataSets.php:1678
 msgid "Click on 'Save and close' or 'Next' to proceed."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1656
+#: application/core/LsDefaultDataSets.php:1695
 #: application/core/SurveyCommonAction.php:725
 #: application/core/TopbarConfiguration.php:180
 #: application/views/surveyAdministration/partial/topbar/previewOrRunButton_view.php:39
 msgid "Preview survey"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1657
+#: application/core/LsDefaultDataSets.php:1696
 msgid "Let's have a look at your first survey."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1658
+#: application/core/LsDefaultDataSets.php:1697
 msgid "Just click on this button and a new window will open, where you can test run your survey."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1659
+#: application/core/LsDefaultDataSets.php:1698
 msgid "Please be aware that your answers will not be saved, because the survey isn't active yet."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1660
+#: application/core/LsDefaultDataSets.php:1699
 msgid "Click on 'Preview survey' and return to this window when you are done testing."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1676
+#: application/core/LsDefaultDataSets.php:1715
 msgid "Easy navigation with the \"breadcrumbs\""
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1677
+#: application/core/LsDefaultDataSets.php:1716
 msgid "You can see the \"breadcrumbs\" In the top bar of the admin interface."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1678
+#: application/core/LsDefaultDataSets.php:1717
 msgid "They represent an easy way to get back to any previous setting, and provide a general overview of where you are."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1679
+#: application/core/LsDefaultDataSets.php:1718
 msgid "Click on the name of your survey to get back to the survey settings overview."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1696
+#: application/core/LsDefaultDataSets.php:1735
 msgid "Finally, activate your survey"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1697
+#: application/core/LsDefaultDataSets.php:1736
 msgid "Now, activate your survey."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1698
+#: application/core/LsDefaultDataSets.php:1737
 msgid "You can create as many surveys as you like."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1699
+#: application/core/LsDefaultDataSets.php:1738
 msgid "Click on 'Activate this survey'"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1718
+#: application/core/LsDefaultDataSets.php:1757
 msgid "Activation settings"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1719
+#: application/core/LsDefaultDataSets.php:1758
 msgid "These settings cannot be changed once the survey is online."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1720
+#: application/core/LsDefaultDataSets.php:1759
 msgid "For this simple survey the default settings are ok, but read the disclaimer carefully when you activate your own surveys."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1721
+#: application/core/LsDefaultDataSets.php:1760
 msgid "For more information consult our manual, or our forums."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1722
+#: application/core/LsDefaultDataSets.php:1761
 msgid "Now click on \"Save & activate survey\""
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1744
+#: application/core/LsDefaultDataSets.php:1783
 msgid "Activate survey participants table"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1745
+#: application/core/LsDefaultDataSets.php:1784
 msgid "Here you can select to start your survey in closed access mode."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1746
+#: application/core/LsDefaultDataSets.php:1785
 msgid "For our simple survey it is better to start in open access mode."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1747
+#: application/core/LsDefaultDataSets.php:1786
 msgid "The closed access mode needs a participant list, which you may create by clicking on the menu entry 'Participants'."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1748
+#: application/core/LsDefaultDataSets.php:1787
 msgid "For more information please consult our manual or our forum."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1749
+#: application/core/LsDefaultDataSets.php:1788
 msgid "Click on 'No, thanks'"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1771
+#: application/core/LsDefaultDataSets.php:1810
 msgid "Share this link"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1772
+#: application/core/LsDefaultDataSets.php:1811
 msgid "Just share this link with some of your friends and of course, test it yourself."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1773
+#: application/core/LsDefaultDataSets.php:1812
 msgid "Thank you for taking the tour!"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1858
-#: application/core/LsDefaultDataSets.php:1865
+#: application/core/LsDefaultDataSets.php:1897
+#: application/core/LsDefaultDataSets.php:1904
 msgid "Strongly disagree"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1859
-#: application/core/LsDefaultDataSets.php:1866
+#: application/core/LsDefaultDataSets.php:1898
+#: application/core/LsDefaultDataSets.php:1905
 msgid "Disagree"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1860
+#: application/core/LsDefaultDataSets.php:1899
 msgid "Neither agree nor disagree"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1861
-#: application/core/LsDefaultDataSets.php:1867
+#: application/core/LsDefaultDataSets.php:1900
+#: application/core/LsDefaultDataSets.php:1906
 msgid "Agree"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1862
-#: application/core/LsDefaultDataSets.php:1868
+#: application/core/LsDefaultDataSets.php:1901
+#: application/core/LsDefaultDataSets.php:1907
 msgid "Strongly agree"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2781
+#: application/core/LsDefaultDataSets.php:2820
 msgid "Bootstrap dropdown"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2782
+#: application/core/LsDefaultDataSets.php:2821
 msgid "Bootstrap buttons"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2783
+#: application/core/LsDefaultDataSets.php:2822
 msgid "Image select list (Radio)"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2784
+#: application/core/LsDefaultDataSets.php:2823
 msgid "Image select multiple choice"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2785
+#: application/core/LsDefaultDataSets.php:2824
 msgid "Browser detection"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2786
+#: application/core/LsDefaultDataSets.php:2825
 msgid "Input on demand"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2787
+#: application/core/LsDefaultDataSets.php:2826
 msgid "Ranking advanced"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2789
+#: application/core/LsDefaultDataSets.php:2828
 msgid "Survey container"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2790
-#: application/core/LsDefaultDataSets.php:2806
+#: application/core/LsDefaultDataSets.php:2829
+#: application/core/LsDefaultDataSets.php:2845
 msgid "Hide privacy info"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2791
+#: application/core/LsDefaultDataSets.php:2830
 msgid "Show popups"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2792
+#: application/core/LsDefaultDataSets.php:2831
 #: application/views/admin/globalsettings/_general.php:234
 msgid "Popup"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2793
+#: application/core/LsDefaultDataSets.php:2832
 msgid "On page"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2794
+#: application/core/LsDefaultDataSets.php:2833
 msgid "Fix automatically numeric value"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2795
+#: application/core/LsDefaultDataSets.php:2834
 msgid "For expression"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2796
+#: application/core/LsDefaultDataSets.php:2835
 msgid "Brandlogo"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2797
+#: application/core/LsDefaultDataSets.php:2836
 msgid "Brandlogo file"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2798
+#: application/core/LsDefaultDataSets.php:2837
 #: application/views/themeOptions/options_core.php:217
 msgid "Preview image"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2799
+#: application/core/LsDefaultDataSets.php:2838
 msgid "Bootstrap theme"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2800
+#: application/core/LsDefaultDataSets.php:2839
 msgid "Bootswatch theme"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2801
+#: application/core/LsDefaultDataSets.php:2840
 msgid "Question borders"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2802
+#: application/core/LsDefaultDataSets.php:2841
 msgid "Question shadow"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2803
+#: application/core/LsDefaultDataSets.php:2842
 msgid "Zebra-striped questions"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2804
+#: application/core/LsDefaultDataSets.php:2843
 msgid "Sticky array headers"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2805
+#: application/core/LsDefaultDataSets.php:2844
 msgid "Dim answered array rows"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2807
+#: application/core/LsDefaultDataSets.php:2846
 msgid "Cross-hover in matrix questions"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2808
+#: application/core/LsDefaultDataSets.php:2847
 msgid "Background color"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2809
+#: application/core/LsDefaultDataSets.php:2848
 msgid "Font color"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2810
+#: application/core/LsDefaultDataSets.php:2849
 msgid "Question background color"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2811
+#: application/core/LsDefaultDataSets.php:2850
 msgid "Check icon"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2812
+#: application/core/LsDefaultDataSets.php:2851
 msgid "Background image"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2813
+#: application/core/LsDefaultDataSets.php:2852
 msgid "Background image file"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2814
+#: application/core/LsDefaultDataSets.php:2853
 msgid "Logo"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2815
+#: application/core/LsDefaultDataSets.php:2854
 msgid "Logo file"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2816
+#: application/core/LsDefaultDataSets.php:2855
 msgid "Animate body"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2817
+#: application/core/LsDefaultDataSets.php:2856
 msgid "Body animation"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2818
+#: application/core/LsDefaultDataSets.php:2857
 msgid "Duration"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2819
+#: application/core/LsDefaultDataSets.php:2858
 msgid "Animate question"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2820
+#: application/core/LsDefaultDataSets.php:2859
 msgid "Question animation"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2821
+#: application/core/LsDefaultDataSets.php:2860
 msgid "Animate alert"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2822
-#: application/core/LsDefaultDataSets.php:2824
+#: application/core/LsDefaultDataSets.php:2861
+#: application/core/LsDefaultDataSets.php:2863
 msgid "Alert animation"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2823
+#: application/core/LsDefaultDataSets.php:2862
 msgid "Animate checkbox"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2825
+#: application/core/LsDefaultDataSets.php:2864
 msgid "Animate radio buttons"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2826
+#: application/core/LsDefaultDataSets.php:2865
 msgid "Radio button animation"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2827
+#: application/core/LsDefaultDataSets.php:2866
 msgid "Select font:"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2828
+#: application/core/LsDefaultDataSets.php:2867
 msgid "Select variation:"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2829
+#: application/core/LsDefaultDataSets.php:2868
 msgid "Fruity fonts"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2830
+#: application/core/LsDefaultDataSets.php:2869
 msgid "Fruity variations"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2844
+#: application/core/LsDefaultDataSets.php:2883
 msgid "Hello"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2845
+#: application/core/LsDefaultDataSets.php:2884
 msgid "This is an automated email notification that a user has been created for you on the website %s."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2846
+#: application/core/LsDefaultDataSets.php:2885
 msgid "You can use now the following credentials to log in:"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2850
+#: application/core/LsDefaultDataSets.php:2889
 msgid "Click here to set your password"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2851
+#: application/core/LsDefaultDataSets.php:2890
 msgid "If you have any questions regarding this email, please do not hesitate to contact the site administrator at"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2852
+#: application/core/LsDefaultDataSets.php:2891
 msgid "Thank you"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2855
+#: application/core/LsDefaultDataSets.php:2894
 msgid "User registration at '%s'"
 msgstr ""
 
@@ -8556,8 +8599,7 @@ msgstr ""
 msgid "Please enter your comment here"
 msgstr ""
 
-#: application/core/QuestionTypes/MultipleNumericalQuestion/RenderMultipleNumerical.php:307
-#: application/helpers/qanda_helper.php:2277
+#: application/core/QuestionTypes/MultipleNumericalQuestion/RenderMultipleNumerical.php:299
 msgid "Please click and drag the slider handles to enter your answer."
 msgstr ""
 
@@ -8568,11 +8610,15 @@ msgstr ""
 
 #: application/core/QuestionTypes/RankingStyle/RenderRanking.php:125
 #: application/helpers/qanda_helper.php:1352
-#: tmp/runtime/twig_cache/dd/dd1bf8e2c98efebd57554961cca31e7427fb053a4b4289212a22351d2ea05494.php:163
+#: tmp/runtime/twig_cache/aa/aa3a576136bdf83320aaedd293a176b7158fafa70d01eaadb399c3c96f87a6a3.php:172
 msgid "Double-click or drag-and-drop items in the left list to move them to the right - your highest ranking item should be on the top right, moving through to your lowest ranking item."
 msgstr ""
 
-#: application/core/QuestionTypes/RankingStyle/RenderRanking.php:132
+#: application/core/QuestionTypes/RankingStyle/RenderRanking.php:126
+msgid "Drag oder double-click images into order."
+msgstr ""
+
+#: application/core/QuestionTypes/RankingStyle/RenderRanking.php:133
 #: application/helpers/qanda_helper.php:1358
 #: application/helpers/questionHelper.php:1232
 #: application/views/admin/dataentry/content_view.php:263
@@ -8677,10 +8723,12 @@ msgstr ""
 
 #: application/core/plugins/AuthLDAP/AuthLDAP.php:379
 #: application/core/plugins/Authdb/Authdb.php:136
-#: application/libraries/Save.php:221 application/models/User.php:135
+#: application/libraries/Save.php:217 application/models/User.php:135
 #: application/views/admin/authentication/newPassword.php:35
 #: application/views/admin/user/modifyuser.php:55
 #: application/views/userManagement/partial/createdrandoms.php:30
+#: tmp/runtime/twig_cache/93/93c6e8188aafe2eb96e66fc89f5deb3691141d3c9117a598dcfb5addf6d8d224.php:215
+#: tmp/runtime/twig_cache/e8/e883c9625cb5a32d8af3953f1317a9f481a2adb319d1bbdf94e6153ba500df0c.php:254
 msgid "Password"
 msgstr ""
 
@@ -9015,7 +9063,7 @@ msgstr ""
 #: application/views/responses/partial/responseListTable.php:270
 #: application/views/surveyAdministration/listSurveys_view.php:39
 #: application/views/themeOptions/installedthemelist.php:27
-#: application/views/themeOptions/surveythemelist.php:23
+#: application/views/themeOptions/surveythemelist.php:27
 #: application/views/userGroup/usergroups_view.php:30
 #: application/views/userGroup/usergroups_view.php:64
 #: application/views/userGroup/viewUserGroup_view.php:59
@@ -9052,7 +9100,7 @@ msgstr ""
 #: application/views/responses/partial/responseListTable.php:271
 #: application/views/surveyAdministration/listSurveys_view.php:41
 #: application/views/themeOptions/installedthemelist.php:28
-#: application/views/themeOptions/surveythemelist.php:23
+#: application/views/themeOptions/surveythemelist.php:27
 #: application/views/userGroup/usergroups_view.php:31
 #: application/views/userGroup/usergroups_view.php:65
 #: application/views/userGroup/viewUserGroup_view.php:60
@@ -9215,7 +9263,7 @@ msgid "Support this project - Donate to "
 msgstr ""
 
 #: application/extensions/AdminFooter/views/footer.php:8
-#: application/views/admin/super/footer.php:55
+#: application/views/admin/super/footer.php:56
 msgid "Visit our website!"
 msgstr ""
 
@@ -9340,12 +9388,21 @@ msgstr ""
 #: tmp/runtime/twig_cache/24/24a051e6afdd1d6b6fe8a42047f6ae58830861b091aaafd29efd57cbfcd04938.php:180
 #: tmp/runtime/twig_cache/24/24a051e6afdd1d6b6fe8a42047f6ae58830861b091aaafd29efd57cbfcd04938.php:229
 #: tmp/runtime/twig_cache/28/28c7fbde3c2c0cdc5a723627b689deb07c867387802a9c8fa2ceeb07cf17eb79.php:189
+#: tmp/runtime/twig_cache/82/82e331ca65d763b01954c4a19caff88f108892537280e8f13d6f84c02d721313.php:50
+#: tmp/runtime/twig_cache/93/93c6e8188aafe2eb96e66fc89f5deb3691141d3c9117a598dcfb5addf6d8d224.php:178
+#: tmp/runtime/twig_cache/93/93c6e8188aafe2eb96e66fc89f5deb3691141d3c9117a598dcfb5addf6d8d224.php:227
 #: tmp/runtime/twig_cache/c6/c61fc24ad04ac0b6c2026a9b5a98dbdd133bfc88917f7c662b7a16f4d47f1807.php:132
 #: tmp/runtime/twig_cache/c6/c61fc24ad04ac0b6c2026a9b5a98dbdd133bfc88917f7c662b7a16f4d47f1807.php:214
+#: tmp/runtime/twig_cache/c6/c63426ef58e5f79120f6ef707a61dc2b960f9717376f0e51b3f15a5c7b3e30cb.php:127
+#: tmp/runtime/twig_cache/c6/c63426ef58e5f79120f6ef707a61dc2b960f9717376f0e51b3f15a5c7b3e30cb.php:203
 #: tmp/runtime/twig_cache/c9/c9250ff57dbf95973a5f4688ca09a4cf7d60b1e12131be1a2f1a1ace13c46e3e.php:214
 #: tmp/runtime/twig_cache/c9/c9250ff57dbf95973a5f4688ca09a4cf7d60b1e12131be1a2f1a1ace13c46e3e.php:269
 #: tmp/runtime/twig_cache/c9/c9250ff57dbf95973a5f4688ca09a4cf7d60b1e12131be1a2f1a1ace13c46e3e.php:323
 #: tmp/runtime/twig_cache/d4/d4c6e6676dfc4f70557f0bceffef107f5e3dbff2ee8992e94603a80429df8206.php:50
+#: tmp/runtime/twig_cache/dc/dc0d81d8276748df90eb81bf39856a3eaf6f75f95997f3d1f72835fbaf63288b.php:186
+#: tmp/runtime/twig_cache/e8/e883c9625cb5a32d8af3953f1317a9f481a2adb319d1bbdf94e6153ba500df0c.php:212
+#: tmp/runtime/twig_cache/e8/e883c9625cb5a32d8af3953f1317a9f481a2adb319d1bbdf94e6153ba500df0c.php:266
+#: tmp/runtime/twig_cache/e8/e883c9625cb5a32d8af3953f1317a9f481a2adb319d1bbdf94e6153ba500df0c.php:318
 msgid "Mandatory"
 msgstr ""
 
@@ -9540,10 +9597,10 @@ msgid "Full"
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:113
-#: application/helpers/qanda_helper.php:3960
-#: application/helpers/qanda_helper.php:3993
-#: application/helpers/qanda_helper.php:4031
-#: application/helpers/qanda_helper.php:4036
+#: application/helpers/qanda_helper.php:3625
+#: application/helpers/qanda_helper.php:3658
+#: application/helpers/qanda_helper.php:3696
+#: application/helpers/qanda_helper.php:3701
 #: application/models/Assessment.php:145
 #: application/views/admin/export/generatestats/_statisticsoutput_answer.php:55
 #: application/views/admin/export/generatestats/_statisticsoutput_gross_total.php:27
@@ -9713,8 +9770,8 @@ msgid "Search"
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/searchBox.php:74
-#: application/models/TemplateConfiguration.php:804
-#: application/models/TemplateConfiguration.php:813
+#: application/models/TemplateConfiguration.php:809
+#: application/models/TemplateConfiguration.php:818
 #: application/views/admin/export/exportresult_panels/_single-value.php:28
 #: application/views/admin/participants/attributeMapCSV_view.php:79
 #: application/views/admin/participants/attributeMapToken_view.php:99
@@ -9737,7 +9794,7 @@ msgstr ""
 #: application/extensions/admin/survey/question/PositionWidget/views/form_group.php:12
 #: application/extensions/admin/survey/question/PositionWidget/views/no_group.php:2
 #: application/extensions/admin/survey/question/PositionWidget/views/unknown_view.php:2
-#: application/models/Box.php:55
+#: application/models/Box.php:56
 msgid "Position:"
 msgstr ""
 
@@ -9764,6 +9821,8 @@ msgstr ""
 
 #: application/helpers/SurveyRuntimeHelper.php:333
 #: tmp/runtime/twig_cache/7a/7a172dfeab2bb541820bbe0b0d3dbd9a71cd49126fd742fce5134293d9407030.php:59
+#: tmp/runtime/twig_cache/96/9614683a86c756adf0d31df18c06b8917996019b28e3d10f81b645ee16152b95.php:61
+#: tmp/runtime/twig_cache/96/9614683a86c756adf0d31df18c06b8917996019b28e3d10f81b645ee16152b95.php:65
 msgid "You have completed %s%% of this survey"
 msgstr ""
 
@@ -9792,6 +9851,7 @@ msgid "Saving responses is disabled if survey is not activated."
 msgstr ""
 
 #: application/helpers/SurveyRuntimeHelper.php:1278
+#: tmp/runtime/twig_cache/2a/2ad56055e546c26e6813b9542b79173b03ee8092b20a3589d1eeaeb5c2edf903.php:188
 #: tmp/runtime/twig_cache/43/43e7b9f54fd0379e11857303d3cb3051d1d209fc8eaaa7fc7c469c522b21bb3e.php:184
 msgid "Print your answers."
 msgstr ""
@@ -9802,6 +9862,7 @@ msgid "Note: This link only works if the survey is activated."
 msgstr ""
 
 #: application/helpers/SurveyRuntimeHelper.php:1286
+#: tmp/runtime/twig_cache/2a/2ad56055e546c26e6813b9542b79173b03ee8092b20a3589d1eeaeb5c2edf903.php:227
 #: tmp/runtime/twig_cache/43/43e7b9f54fd0379e11857303d3cb3051d1d209fc8eaaa7fc7c469c522b21bb3e.php:223
 msgid "View the statistics for this survey."
 msgstr ""
@@ -9864,8 +9925,8 @@ msgid "Theme"
 msgstr ""
 
 #: application/helpers/SurveyThemeHelper.php:228
-#: application/helpers/admin/statistics_helper.php:3978
-#: application/helpers/admin/statistics_helper.php:4083
+#: application/helpers/admin/statistics_helper.php:3932
+#: application/helpers/admin/statistics_helper.php:4037
 #: application/helpers/userstatistics_helper.php:2584
 #: application/helpers/userstatistics_helper.php:2687
 #: application/helpers/userstatistics_helper.php:2788
@@ -10181,25 +10242,25 @@ msgid "Sorry, but this question has no responses yet so a graph cannot be shown.
 msgstr ""
 
 #: application/helpers/admin/statistics_helper.php:208
-#: application/helpers/admin/statistics_helper.php:1433
-#: application/helpers/admin/statistics_helper.php:1609
-#: application/helpers/admin/statistics_helper.php:2376
+#: application/helpers/admin/statistics_helper.php:1435
+#: application/helpers/admin/statistics_helper.php:1579
+#: application/helpers/admin/statistics_helper.php:2330
 #: application/helpers/userstatistics_helper.php:209
 #: application/helpers/userstatistics_helper.php:1350
 #: application/helpers/userstatistics_helper.php:1584
 msgid "Comments"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:670
-#: application/helpers/admin/statistics_helper.php:707
-#: application/helpers/admin/statistics_helper.php:1636
+#: application/helpers/admin/statistics_helper.php:672
+#: application/helpers/admin/statistics_helper.php:709
+#: application/helpers/admin/statistics_helper.php:1606
+#: application/helpers/admin/statistics_helper.php:2378
+#: application/helpers/admin/statistics_helper.php:2416
 #: application/helpers/admin/statistics_helper.php:2424
-#: application/helpers/admin/statistics_helper.php:2462
-#: application/helpers/admin/statistics_helper.php:2470
-#: application/helpers/admin/statistics_helper.php:2489
-#: application/helpers/admin/statistics_helper.php:2496
-#: application/helpers/admin/statistics_helper.php:2524
-#: application/helpers/admin/statistics_helper.php:2531
+#: application/helpers/admin/statistics_helper.php:2443
+#: application/helpers/admin/statistics_helper.php:2450
+#: application/helpers/admin/statistics_helper.php:2478
+#: application/helpers/admin/statistics_helper.php:2485
 #: application/helpers/userstatistics_helper.php:640
 #: application/helpers/userstatistics_helper.php:675
 #: application/helpers/userstatistics_helper.php:1634
@@ -10219,44 +10280,44 @@ msgstr ""
 msgid "Answer"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:728
+#: application/helpers/admin/statistics_helper.php:730
 #: application/helpers/userstatistics_helper.php:694
 #: application/models/QuestionType.php:348
 msgid "Ranking"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:776
+#: application/helpers/admin/statistics_helper.php:778
 #: application/helpers/userstatistics_helper.php:744
 msgid "Total number of files"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:777
+#: application/helpers/admin/statistics_helper.php:779
 #: application/helpers/userstatistics_helper.php:745
 msgid "Average no. of files per respondent"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:797
+#: application/helpers/admin/statistics_helper.php:799
 #: application/helpers/userstatistics_helper.php:765
 msgid "Total size of files"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:798
+#: application/helpers/admin/statistics_helper.php:800
 #: application/helpers/userstatistics_helper.php:766
 msgid "Average file size"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:799
+#: application/helpers/admin/statistics_helper.php:801
 #: application/helpers/userstatistics_helper.php:767
 msgid "Average size per respondent"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:817
-#: application/helpers/admin/statistics_helper.php:838
-#: application/helpers/admin/statistics_helper.php:888
-#: application/helpers/admin/statistics_helper.php:907
-#: application/helpers/admin/statistics_helper.php:915
-#: application/helpers/admin/statistics_helper.php:2195
-#: application/helpers/admin/statistics_helper.php:2210
+#: application/helpers/admin/statistics_helper.php:819
+#: application/helpers/admin/statistics_helper.php:840
+#: application/helpers/admin/statistics_helper.php:890
+#: application/helpers/admin/statistics_helper.php:909
+#: application/helpers/admin/statistics_helper.php:917
+#: application/helpers/admin/statistics_helper.php:2165
+#: application/helpers/admin/statistics_helper.php:2180
 #: application/helpers/userstatistics_helper.php:785
 #: application/helpers/userstatistics_helper.php:806
 #: application/helpers/userstatistics_helper.php:855
@@ -10269,12 +10330,12 @@ msgstr ""
 msgid "Summary for %s"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:826
-#: application/helpers/admin/statistics_helper.php:832
-#: application/helpers/admin/statistics_helper.php:842
-#: application/helpers/admin/statistics_helper.php:898
-#: application/helpers/admin/statistics_helper.php:910
-#: application/helpers/admin/statistics_helper.php:919
+#: application/helpers/admin/statistics_helper.php:828
+#: application/helpers/admin/statistics_helper.php:834
+#: application/helpers/admin/statistics_helper.php:844
+#: application/helpers/admin/statistics_helper.php:900
+#: application/helpers/admin/statistics_helper.php:912
+#: application/helpers/admin/statistics_helper.php:921
 #: application/helpers/userstatistics_helper.php:794
 #: application/helpers/userstatistics_helper.php:800
 #: application/helpers/userstatistics_helper.php:810
@@ -10284,12 +10345,12 @@ msgstr ""
 msgid "Calculation"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:827
-#: application/helpers/admin/statistics_helper.php:832
-#: application/helpers/admin/statistics_helper.php:844
-#: application/helpers/admin/statistics_helper.php:899
-#: application/helpers/admin/statistics_helper.php:910
-#: application/helpers/admin/statistics_helper.php:921
+#: application/helpers/admin/statistics_helper.php:829
+#: application/helpers/admin/statistics_helper.php:834
+#: application/helpers/admin/statistics_helper.php:846
+#: application/helpers/admin/statistics_helper.php:901
+#: application/helpers/admin/statistics_helper.php:912
+#: application/helpers/admin/statistics_helper.php:923
 #: application/helpers/userstatistics_helper.php:795
 #: application/helpers/userstatistics_helper.php:800
 #: application/helpers/userstatistics_helper.php:812
@@ -10299,12 +10360,12 @@ msgstr ""
 msgid "Result"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:989
-#: application/helpers/admin/statistics_helper.php:2465
-#: application/helpers/admin/statistics_helper.php:2470
-#: application/helpers/admin/statistics_helper.php:2969
-#: application/helpers/admin/statistics_helper.php:2973
-#: application/helpers/admin/statistics_helper.php:2984
+#: application/helpers/admin/statistics_helper.php:991
+#: application/helpers/admin/statistics_helper.php:2419
+#: application/helpers/admin/statistics_helper.php:2424
+#: application/helpers/admin/statistics_helper.php:2923
+#: application/helpers/admin/statistics_helper.php:2927
+#: application/helpers/admin/statistics_helper.php:2938
 #: application/helpers/userstatistics_helper.php:959
 #: application/helpers/userstatistics_helper.php:1677
 #: application/helpers/userstatistics_helper.php:1682
@@ -10316,9 +10377,9 @@ msgstr ""
 msgid "Sum"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:990
-#: application/helpers/admin/statistics_helper.php:3169
-#: application/helpers/admin/statistics_helper.php:3175
+#: application/helpers/admin/statistics_helper.php:992
+#: application/helpers/admin/statistics_helper.php:3123
+#: application/helpers/admin/statistics_helper.php:3129
 #: application/helpers/userstatistics_helper.php:960
 #: application/helpers/userstatistics_helper.php:2276
 #: application/helpers/userstatistics_helper.php:2282
@@ -10328,20 +10389,20 @@ msgstr ""
 msgid "Standard deviation"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:991
+#: application/helpers/admin/statistics_helper.php:993
 #: application/helpers/userstatistics_helper.php:961
 msgid "Average"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:1006
-#: application/helpers/admin/statistics_helper.php:1636
+#: application/helpers/admin/statistics_helper.php:1008
+#: application/helpers/admin/statistics_helper.php:1606
+#: application/helpers/admin/statistics_helper.php:2378
+#: application/helpers/admin/statistics_helper.php:2417
 #: application/helpers/admin/statistics_helper.php:2424
-#: application/helpers/admin/statistics_helper.php:2463
-#: application/helpers/admin/statistics_helper.php:2470
-#: application/helpers/admin/statistics_helper.php:2490
-#: application/helpers/admin/statistics_helper.php:2496
-#: application/helpers/admin/statistics_helper.php:2525
-#: application/helpers/admin/statistics_helper.php:2531
+#: application/helpers/admin/statistics_helper.php:2444
+#: application/helpers/admin/statistics_helper.php:2450
+#: application/helpers/admin/statistics_helper.php:2479
+#: application/helpers/admin/statistics_helper.php:2485
 #: application/helpers/userstatistics_helper.php:976
 #: application/helpers/userstatistics_helper.php:1634
 #: application/helpers/userstatistics_helper.php:1649
@@ -10358,25 +10419,25 @@ msgstr ""
 msgid "Count"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:1013
+#: application/helpers/admin/statistics_helper.php:1015
 #: application/helpers/userstatistics_helper.php:983
 msgid "1st quartile (Q1)"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:1016
+#: application/helpers/admin/statistics_helper.php:1018
 #: application/helpers/userstatistics_helper.php:986
 msgid "2nd quartile (Median)"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:1019
+#: application/helpers/admin/statistics_helper.php:1021
 #: application/helpers/userstatistics_helper.php:989
 msgid "3rd quartile (Q3)"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:1050
-#: application/helpers/admin/statistics_helper.php:1054
-#: application/helpers/admin/statistics_helper.php:1059
-#: application/helpers/admin/statistics_helper.php:1074
+#: application/helpers/admin/statistics_helper.php:1052
+#: application/helpers/admin/statistics_helper.php:1056
+#: application/helpers/admin/statistics_helper.php:1061
+#: application/helpers/admin/statistics_helper.php:1076
 #: application/helpers/userstatistics_helper.php:1017
 #: application/helpers/userstatistics_helper.php:1021
 #: application/helpers/userstatistics_helper.php:1025
@@ -10384,10 +10445,10 @@ msgstr ""
 msgid "Null values are ignored in calculations"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:1052
-#: application/helpers/admin/statistics_helper.php:1055
-#: application/helpers/admin/statistics_helper.php:1060
-#: application/helpers/admin/statistics_helper.php:1075
+#: application/helpers/admin/statistics_helper.php:1054
+#: application/helpers/admin/statistics_helper.php:1057
+#: application/helpers/admin/statistics_helper.php:1062
+#: application/helpers/admin/statistics_helper.php:1077
 #: application/helpers/userstatistics_helper.php:1019
 #: application/helpers/userstatistics_helper.php:1022
 #: application/helpers/userstatistics_helper.php:1026
@@ -10395,10 +10456,10 @@ msgstr ""
 msgid "Q1 and Q3 calculated using %s"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:1052
-#: application/helpers/admin/statistics_helper.php:1055
-#: application/helpers/admin/statistics_helper.php:1060
-#: application/helpers/admin/statistics_helper.php:1075
+#: application/helpers/admin/statistics_helper.php:1054
+#: application/helpers/admin/statistics_helper.php:1057
+#: application/helpers/admin/statistics_helper.php:1062
+#: application/helpers/admin/statistics_helper.php:1077
 #: application/helpers/userstatistics_helper.php:1019
 #: application/helpers/userstatistics_helper.php:1022
 #: application/helpers/userstatistics_helper.php:1026
@@ -10406,12 +10467,12 @@ msgstr ""
 msgid "minitab method"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:1083
-#: application/helpers/admin/statistics_helper.php:1622
-#: application/helpers/admin/statistics_helper.php:1643
-#: application/helpers/admin/statistics_helper.php:2389
-#: application/helpers/admin/statistics_helper.php:2431
-#: application/helpers/admin/statistics_helper.php:4017
+#: application/helpers/admin/statistics_helper.php:1085
+#: application/helpers/admin/statistics_helper.php:1592
+#: application/helpers/admin/statistics_helper.php:1613
+#: application/helpers/admin/statistics_helper.php:2343
+#: application/helpers/admin/statistics_helper.php:2385
+#: application/helpers/admin/statistics_helper.php:3971
 #: application/helpers/userstatistics_helper.php:1048
 #: application/helpers/userstatistics_helper.php:1597
 #: application/helpers/userstatistics_helper.php:1641
@@ -10420,23 +10481,23 @@ msgstr ""
 msgid "Browse"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:1103
-#: application/helpers/admin/statistics_helper.php:1108
-#: application/helpers/admin/statistics_helper.php:1117
+#: application/helpers/admin/statistics_helper.php:1105
+#: application/helpers/admin/statistics_helper.php:1110
+#: application/helpers/admin/statistics_helper.php:1119
 #: application/helpers/userstatistics_helper.php:1066
 #: application/helpers/userstatistics_helper.php:1071
 #: application/helpers/userstatistics_helper.php:1081
 msgid "Not enough values for calculation"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:1636
+#: application/helpers/admin/statistics_helper.php:1606
+#: application/helpers/admin/statistics_helper.php:2378
+#: application/helpers/admin/statistics_helper.php:2418
 #: application/helpers/admin/statistics_helper.php:2424
-#: application/helpers/admin/statistics_helper.php:2464
-#: application/helpers/admin/statistics_helper.php:2470
-#: application/helpers/admin/statistics_helper.php:2491
-#: application/helpers/admin/statistics_helper.php:2496
-#: application/helpers/admin/statistics_helper.php:2526
-#: application/helpers/admin/statistics_helper.php:2531
+#: application/helpers/admin/statistics_helper.php:2445
+#: application/helpers/admin/statistics_helper.php:2450
+#: application/helpers/admin/statistics_helper.php:2480
+#: application/helpers/admin/statistics_helper.php:2485
 #: application/helpers/userstatistics_helper.php:1634
 #: application/helpers/userstatistics_helper.php:1651
 #: application/helpers/userstatistics_helper.php:1676
@@ -10451,39 +10512,39 @@ msgstr ""
 msgid "Percentage"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:1779
-#: application/helpers/admin/statistics_helper.php:2664
-#: application/helpers/admin/statistics_helper.php:2691
-#: application/helpers/admin/statistics_helper.php:2743
-#: application/helpers/admin/statistics_helper.php:3417
+#: application/helpers/admin/statistics_helper.php:1749
+#: application/helpers/admin/statistics_helper.php:2618
+#: application/helpers/admin/statistics_helper.php:2645
+#: application/helpers/admin/statistics_helper.php:2697
+#: application/helpers/admin/statistics_helper.php:3371
 #: application/helpers/userstatistics_helper.php:1844
 #: application/helpers/userstatistics_helper.php:1871
 #: application/helpers/userstatistics_helper.php:1909
 msgid "Not completed or Not displayed"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:1781
-#: application/helpers/admin/statistics_helper.php:2666
-#: application/helpers/admin/statistics_helper.php:2700
-#: application/helpers/admin/statistics_helper.php:2745
+#: application/helpers/admin/statistics_helper.php:1751
+#: application/helpers/admin/statistics_helper.php:2620
+#: application/helpers/admin/statistics_helper.php:2654
+#: application/helpers/admin/statistics_helper.php:2699
 #: application/helpers/userstatistics_helper.php:1846
 #: application/helpers/userstatistics_helper.php:1873
 #: application/helpers/userstatistics_helper.php:1911
 msgid "Not displayed"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:2394
-#: application/helpers/admin/statistics_helper.php:2404
-#: application/helpers/admin/statistics_helper.php:2444
+#: application/helpers/admin/statistics_helper.php:2348
+#: application/helpers/admin/statistics_helper.php:2358
+#: application/helpers/admin/statistics_helper.php:2398
 #: application/helpers/userstatistics_helper.php:1602
 #: application/helpers/userstatistics_helper.php:1614
 #: application/helpers/userstatistics_helper.php:1656
 msgid "Response"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:2969
-#: application/helpers/admin/statistics_helper.php:2973
-#: application/helpers/admin/statistics_helper.php:2984
+#: application/helpers/admin/statistics_helper.php:2923
+#: application/helpers/admin/statistics_helper.php:2927
+#: application/helpers/admin/statistics_helper.php:2938
 #: application/helpers/userstatistics_helper.php:2120
 #: application/helpers/userstatistics_helper.php:2124
 #: application/helpers/userstatistics_helper.php:2135
@@ -10494,9 +10555,9 @@ msgstr ""
 msgid "Answers"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:2970
-#: application/helpers/admin/statistics_helper.php:2978
-#: application/helpers/admin/statistics_helper.php:2985
+#: application/helpers/admin/statistics_helper.php:2924
+#: application/helpers/admin/statistics_helper.php:2932
+#: application/helpers/admin/statistics_helper.php:2939
 #: application/helpers/userstatistics_helper.php:2121
 #: application/helpers/userstatistics_helper.php:2129
 #: application/helpers/userstatistics_helper.php:2136
@@ -10504,8 +10565,8 @@ msgstr ""
 msgid "Number of cases"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3166
-#: application/helpers/admin/statistics_helper.php:3174
+#: application/helpers/admin/statistics_helper.php:3120
+#: application/helpers/admin/statistics_helper.php:3128
 #: application/helpers/userstatistics_helper.php:2273
 #: application/helpers/userstatistics_helper.php:2281
 #: application/helpers/userstatistics_helper.php:2287
@@ -10514,9 +10575,9 @@ msgstr ""
 msgid "Arithmetic mean"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3953
-#: application/helpers/admin/statistics_helper.php:3970
-#: application/helpers/admin/statistics_helper.php:3985
+#: application/helpers/admin/statistics_helper.php:3907
+#: application/helpers/admin/statistics_helper.php:3924
+#: application/helpers/admin/statistics_helper.php:3939
 #: application/helpers/userstatistics_helper.php:2663
 #: application/helpers/userstatistics_helper.php:2679
 #: application/helpers/userstatistics_helper.php:2694
@@ -10524,9 +10585,9 @@ msgstr ""
 msgid "Number of records in this query:"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3956
-#: application/helpers/admin/statistics_helper.php:3971
-#: application/helpers/admin/statistics_helper.php:3986
+#: application/helpers/admin/statistics_helper.php:3910
+#: application/helpers/admin/statistics_helper.php:3925
+#: application/helpers/admin/statistics_helper.php:3940
 #: application/helpers/userstatistics_helper.php:2666
 #: application/helpers/userstatistics_helper.php:2680
 #: application/helpers/userstatistics_helper.php:2696
@@ -10534,9 +10595,9 @@ msgstr ""
 msgid "Total records in survey:"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3961
-#: application/helpers/admin/statistics_helper.php:3974
-#: application/helpers/admin/statistics_helper.php:3990
+#: application/helpers/admin/statistics_helper.php:3915
+#: application/helpers/admin/statistics_helper.php:3928
+#: application/helpers/admin/statistics_helper.php:3944
 #: application/helpers/userstatistics_helper.php:2671
 #: application/helpers/userstatistics_helper.php:2683
 #: application/helpers/userstatistics_helper.php:2702
@@ -10544,9 +10605,9 @@ msgstr ""
 msgid "Percentage of total:"
 msgstr ""
 
-#: application/helpers/admin/statistics_helper.php:3977
-#: application/helpers/admin/statistics_helper.php:3978
-#: application/helpers/admin/statistics_helper.php:3984
+#: application/helpers/admin/statistics_helper.php:3931
+#: application/helpers/admin/statistics_helper.php:3932
+#: application/helpers/admin/statistics_helper.php:3938
 #: application/helpers/userstatistics_helper.php:2686
 #: application/helpers/userstatistics_helper.php:2687
 #: application/helpers/userstatistics_helper.php:2693
@@ -11244,6 +11305,7 @@ msgid "Choose your language"
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:2901
+#: tmp/runtime/twig_cache/23/231b345ff67411720f7e620178f9e2414a1c2bea3c6e0427d1e735a6f4d811ba.php:42
 #: tmp/runtime/twig_cache/dc/dc3f6f9d31a061bbe5dc35e558472b2157de0c5a0157c99902312d1a4353c34b.php:40
 msgid "Choose one of the following answers"
 msgstr ""
@@ -11519,7 +11581,7 @@ msgid "Logic File for Survey # "
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:9023
-#: application/models/Box.php:59
+#: application/models/Box.php:60
 #: application/models/services/QuickTranslation.php:499
 #: application/views/admin/pluginmanager/overview.php:18
 #: application/views/admin/pluginmanager/uploadConfirm.php:44
@@ -11777,6 +11839,7 @@ msgstr ""
 
 #: application/helpers/frontend_helper.php:1434
 #: tmp/runtime/twig_cache/06/0681fd5ce7c191b3f29a4c83005234bd72a47992124e1b84f75c1eef73c5c390.php:112
+#: tmp/runtime/twig_cache/15/15d05251a66df9f35bba6567765f97d538fb376bdd2fb64664edf050f48b80f9.php:111
 msgid "There are no questions in this survey."
 msgstr ""
 
@@ -11841,77 +11904,77 @@ msgid "Your time to answer this question has nearly expired. You have {TIME} rem
 msgstr ""
 
 #: application/helpers/qanda_helper.php:1791
-#: tmp/runtime/twig_cache/be/bee6848bdc49d16becf948b499992da8ef26d1fb275ae18d41dba009ec27526e.php:151
+#: tmp/runtime/twig_cache/a4/a485c32f005b9d1c5f50f25b3017771893990277eab5d1cf3cb7b3a151700be9.php:151
 msgid "Upload file|Upload files"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:2542
+#: application/helpers/qanda_helper.php:2207
 msgid "Drag and drop the pin to the desired location. You may also right click on the map to move the pin."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:2606
+#: application/helpers/qanda_helper.php:2271
 msgid "Click to set the location or drag and drop the pin. You may may also enter coordinates"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:3559
+#: application/helpers/qanda_helper.php:3224
 msgid "A table with a subquestion on each row. You have to select your answer."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:3563
+#: application/helpers/qanda_helper.php:3228
 msgid "A table with a subquestion on each row. The answer options are contained in the table header."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:3617
+#: application/helpers/qanda_helper.php:3282
 msgid "After the answer options a cell does give some information."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:3889
+#: application/helpers/qanda_helper.php:3554
 msgid "A table of subquestions on each cell. The subquestion texts are in the column header and relate the particular row header."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:3948
+#: application/helpers/qanda_helper.php:3613
 msgid "Each answer may only be a number."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:3967
-#: application/helpers/qanda_helper.php:4005
+#: application/helpers/qanda_helper.php:3632
+#: application/helpers/qanda_helper.php:3670
 msgid "Grand total"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:3981
+#: application/helpers/qanda_helper.php:3646
 msgid "The last row shows the total for the column."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4014
+#: application/helpers/qanda_helper.php:3679
 msgid "The last column shows the total for the row."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4053
+#: application/helpers/qanda_helper.php:3718
 msgid "The last row shows the total for the column and the last column shows the total for the row."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4288
+#: application/helpers/qanda_helper.php:3953
 msgid "A table of subquestions on each cell. The subquestion texts are in the colum header and concern the row header."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4347
+#: application/helpers/qanda_helper.php:4012
 msgid "Please check the matching combinations."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4358
+#: application/helpers/qanda_helper.php:4023
 msgid "Please enter only numbers."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4365
+#: application/helpers/qanda_helper.php:4030
 msgid "Please select an answer for each combination."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4786
+#: application/helpers/qanda_helper.php:4451
 msgid "Error: There are no answers defined for this question."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4790
-#: application/helpers/qanda_helper.php:5171
+#: application/helpers/qanda_helper.php:4455
+#: application/helpers/qanda_helper.php:4836
 msgid "Error: There are no answer options for this question and/or they don't exist in this language."
 msgstr ""
 
@@ -13269,11 +13332,13 @@ msgstr ""
 
 #: application/helpers/replacements_helper.php:279
 #: tmp/runtime/twig_cache/6a/6a64696ffe91b1ddc4a6d281c1415b97be807b2518a3dd534d2975d9d1053ebb.php:54
+#: tmp/runtime/twig_cache/83/836d6b227099ab59a03d6f4ed69786ae5ac2083fc76455c8016455cc8015ee8d.php:54
 msgid "Answers cleared"
 msgstr ""
 
 #: application/helpers/replacements_helper.php:280
 #: tmp/runtime/twig_cache/0b/0b45512ec0a09cbfc1c61a81a8b0ca5456ee67a344e73d9802ad648b4a976221.php:65
+#: tmp/runtime/twig_cache/fa/fabad00c02974f68507d83d5a5a2dd35626d20974b76f91535f527c552658217.php:65
 msgid "Your assessment"
 msgstr ""
 
@@ -13794,14 +13859,18 @@ msgid "Yakut"
 msgstr ""
 
 #: application/helpers/surveytranslator_helper.php:1015
+msgid "Yoruba"
+msgstr ""
+
+#: application/helpers/surveytranslator_helper.php:1023
 msgid "Zulu"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:1045
+#: application/helpers/surveytranslator_helper.php:1053
 msgid "Dot (.)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:1046
+#: application/helpers/surveytranslator_helper.php:1054
 msgid "Comma (,)"
 msgstr ""
 
@@ -14104,31 +14173,31 @@ msgstr ""
 msgid "Extension \"%s\" is already installed."
 msgstr ""
 
-#: application/libraries/Save.php:146
+#: application/libraries/Save.php:142
 msgid "You may not use slashes or ampersands in your name or password."
 msgstr ""
 
-#: application/libraries/Save.php:148
+#: application/libraries/Save.php:144
 msgid "This name has already been used for this survey. You must use a unique save name."
 msgstr ""
 
-#: application/libraries/Save.php:218
+#: application/libraries/Save.php:214
 msgid "Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please make sure to remember your password - we cannot retrieve it for you."
 msgstr ""
 
-#: application/libraries/Save.php:231
+#: application/libraries/Save.php:227
 msgid "Error: Email failed, this may indicate a PHP Mail Setup problem on the server. Your survey details have still been saved, however you will not get an email with the details. You should note the \"name\" and \"password\" you just used for future reference."
 msgstr ""
 
-#: application/libraries/Save.php:233
+#: application/libraries/Save.php:229
 msgid "Email error message %s"
 msgstr ""
 
-#: application/libraries/Save.php:235
+#: application/libraries/Save.php:231
 msgid "(Reason: Administrator email address empty)"
 msgstr ""
 
-#: application/libraries/Save.php:240
+#: application/libraries/Save.php:236
 msgid "Your survey was successfully saved."
 msgstr ""
 
@@ -14136,7 +14205,7 @@ msgstr ""
 msgid "Section"
 msgstr ""
 
-#: application/models/AdminTheme.php:381
+#: application/models/AdminTheme.php:383
 msgid "This is the LimeSurvey admin interface. Start to build your survey from here."
 msgstr ""
 
@@ -14167,7 +14236,7 @@ msgstr ""
 #: application/views/admin/authentication/login.php:95
 #: application/views/admin/globalsettings/globalSettings_view.php:24
 #: application/views/admin/token/dummytokenform.php:67
-#: modules/admin/globalsettings/views/globalSettings_view.php:29
+#: modules/admin/globalsettings/views/globalSettings_view.php:28
 msgid "Language"
 msgstr ""
 
@@ -14179,56 +14248,60 @@ msgstr ""
 msgid "Delete this assessment rule"
 msgstr ""
 
-#: application/models/Box.php:34
+#: application/models/Box.php:33
+msgid "Position {value} already exists."
+msgstr ""
+
+#: application/models/Box.php:35
 msgid "Icon name must be a simple class name (alphanumeric, space, minus and underscore)."
 msgstr ""
 
-#: application/models/Box.php:56
+#: application/models/Box.php:57
 msgid "Destination URL:"
 msgstr ""
 
-#: application/models/Box.php:57
+#: application/models/Box.php:58
 #: application/views/questionGroupsAdministration/addGroup_view.php:54
 #: application/views/questionGroupsAdministration/editGroup_view.php:37
 msgid "Title:"
 msgstr ""
 
-#: application/models/Box.php:58
+#: application/models/Box.php:59
 msgid "Icon:"
 msgstr ""
 
-#: application/models/Box.php:60
+#: application/models/Box.php:61
 msgid "Name of the page where the box should be shown"
 msgstr ""
 
-#: application/models/Box.php:61
+#: application/models/Box.php:62
 msgid "Display this box to:"
 msgstr ""
 
-#: application/models/Box.php:118
+#: application/models/Box.php:119
 msgid "Only Superadmin"
 msgstr ""
 
-#: application/models/Box.php:120 application/models/ParticipantShare.php:106
+#: application/models/Box.php:121 application/models/ParticipantShare.php:106
 #: application/models/ParticipantShare.php:126
 #: application/views/homepageSettings/_form.php:116
 msgid "Everybody"
 msgstr ""
 
-#: application/models/Box.php:122
+#: application/models/Box.php:123
 #: application/views/homepageSettings/_form.php:118
 msgid "Nobody"
 msgstr ""
 
-#: application/models/Box.php:128
+#: application/models/Box.php:129
 msgid "Can't find user group!"
 msgstr ""
 
-#: application/models/Box.php:152
+#: application/models/Box.php:153
 msgid "Delete box"
 msgstr ""
 
-#: application/models/Box.php:164
+#: application/models/Box.php:165
 msgid "Are you sure you want to delete this box?"
 msgstr ""
 
@@ -14240,11 +14313,11 @@ msgstr ""
 msgid "Missing tag %s in %s in extension config.xml"
 msgstr ""
 
-#: application/models/ExtensionConfig.php:222
+#: application/models/ExtensionConfig.php:223
 msgid "Extension %s has no updater defined in config.xml"
 msgstr ""
 
-#: application/models/ExtensionConfig.php:258
+#: application/models/ExtensionConfig.php:259
 msgid "No XML config loaded"
 msgstr ""
 
@@ -14268,7 +14341,7 @@ msgstr ""
 #: application/models/FailedEmail.php:82 application/models/FailedEmail.php:233
 #: application/views/failedEmail/partials/modal/email_error.php:6
 #: application/views/themeOptions/availablethemelist.php:48
-#: application/views/themeOptions/index.php:88
+#: application/views/themeOptions/index.php:147
 msgid "Error message"
 msgstr ""
 
@@ -14668,55 +14741,55 @@ msgstr ""
 msgid "Modified"
 msgstr ""
 
-#: application/models/Plugin.php:130
+#: application/models/Plugin.php:131
 msgid "Plugin load error"
 msgstr ""
 
-#: application/models/Plugin.php:186
+#: application/models/Plugin.php:187
 msgid "Error: Could not get plugin description: %s"
 msgstr ""
 
-#: application/models/Plugin.php:208
+#: application/models/Plugin.php:209
 msgid "Attempt plugin reload"
 msgstr ""
 
-#: application/models/Plugin.php:244 application/models/Plugin.php:343
+#: application/models/Plugin.php:245 application/models/Plugin.php:344
 msgid "Activate plugin"
 msgstr ""
 
-#: application/models/Plugin.php:273 application/models/Plugin.php:362
+#: application/models/Plugin.php:274 application/models/Plugin.php:363
 msgid "Are you sure you want to deactivate this plugin?"
 msgstr ""
 
-#: application/models/Plugin.php:273 application/models/Plugin.php:361
+#: application/models/Plugin.php:274 application/models/Plugin.php:362
 msgid "Deactivate plugin"
 msgstr ""
 
-#: application/models/Plugin.php:302 application/models/Plugin.php:380
+#: application/models/Plugin.php:303 application/models/Plugin.php:381
 msgid "Are you sure you want to uninstall this plugin?"
 msgstr ""
 
-#: application/models/Plugin.php:302 application/models/Plugin.php:379
+#: application/models/Plugin.php:303 application/models/Plugin.php:380
 msgid "Uninstall plugin"
 msgstr ""
 
-#: application/models/Plugin.php:333 application/models/Plugin.php:342
+#: application/models/Plugin.php:334 application/models/Plugin.php:343
 #: application/views/quotas/viewquotas_massive_selector.php:20
 msgid "Activate"
 msgstr ""
 
-#: application/models/Plugin.php:344
+#: application/models/Plugin.php:345
 msgid "Are you sure you want to activate this plugin?"
 msgstr ""
 
-#: application/models/Plugin.php:351 application/models/Plugin.php:360
+#: application/models/Plugin.php:352 application/models/Plugin.php:361
 #: application/views/quotas/viewquotas_massive_selector.php:36
 msgid "Deactivate"
 msgstr ""
 
-#: application/models/Plugin.php:369 application/models/Plugin.php:378
-#: application/models/TemplateConfiguration.php:785
-#: application/models/TemplateConfiguration.php:795
+#: application/models/Plugin.php:370 application/models/Plugin.php:379
+#: application/models/TemplateConfiguration.php:790
+#: application/models/TemplateConfiguration.php:800
 #: application/views/themeOptions/_selector.php:47
 msgid "Uninstall"
 msgstr ""
@@ -14853,7 +14926,7 @@ msgid "Question ID '%s' is already in use for language '%s'."
 msgstr ""
 
 #: application/models/QuestionTheme.php:236
-#: application/models/TemplateManifest.php:667
+#: application/models/TemplateManifest.php:670
 #: application/views/admin/pluginmanager/scanFilesResult.php:24
 #: application/views/admin/pluginmanager/uploadConfirm.php:77
 #: application/views/admin/pluginmanager/uploadModal.php:45
@@ -15346,7 +15419,7 @@ msgstr ""
 
 #: application/models/Surveymenu.php:341
 #: application/models/SurveymenuEntries.php:184
-#: application/models/TemplateManifest.php:1468
+#: application/models/TemplateManifest.php:1473
 #: application/views/admin/super/permissions/addUserForm.php:4
 #: application/views/surveyPermissions/index.php:26
 msgid "User"
@@ -15512,8 +15585,8 @@ msgid "Delete survey group"
 msgstr ""
 
 #: application/models/SurveysGroups.php:335
-#: application/models/TemplateConfiguration.php:797
-#: application/models/TemplateConfiguration.php:814
+#: application/models/TemplateConfiguration.php:802
+#: application/models/TemplateConfiguration.php:819
 msgid "Do you want to continue?"
 msgstr ""
 
@@ -15595,8 +15668,13 @@ msgstr ""
 msgid "Permission to access surveys in this group. To see a survey in the list the read/view permission must be given."
 msgstr ""
 
-#: application/models/Template.php:177
+#: application/models/Template.php:178
 msgid "Default survey theme %s is not installed. Now %s is the new default survey theme"
+msgstr ""
+
+#: application/models/TemplateConfig.php:926
+#: application/models/TemplateConfiguration.php:1214
+msgid "Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey version."
 msgstr ""
 
 #: application/models/TemplateConfiguration.php:158
@@ -15635,58 +15713,54 @@ msgstr ""
 msgid "Packages to load"
 msgstr ""
 
-#: application/models/TemplateConfiguration.php:691
+#: application/models/TemplateConfiguration.php:696
 msgid "Core theme"
 msgstr ""
 
-#: application/models/TemplateConfiguration.php:692
+#: application/models/TemplateConfiguration.php:697
 msgid "User theme"
 msgstr ""
 
-#: application/models/TemplateConfiguration.php:742
-#: application/models/TemplateManifest.php:647
+#: application/models/TemplateConfiguration.php:747
+#: application/models/TemplateManifest.php:650
 msgid "Theme editor"
 msgstr ""
 
-#: application/models/TemplateConfiguration.php:762
-#: application/models/TemplateConfiguration.php:771
+#: application/models/TemplateConfiguration.php:767
+#: application/models/TemplateConfiguration.php:776
 #: application/views/admin/themes/partial/topbarBtns/leftSideButtons.php:36
 msgid "Extend"
 msgstr ""
 
-#: application/models/TemplateConfiguration.php:769
+#: application/models/TemplateConfiguration.php:774
 msgid "Type in the new name to extend %s"
 msgstr ""
 
-#: application/models/TemplateConfiguration.php:772
+#: application/models/TemplateConfiguration.php:777
 msgid "Please type in the new theme name above."
 msgstr ""
 
-#: application/models/TemplateConfiguration.php:793
+#: application/models/TemplateConfiguration.php:798
 msgid "Uninstall this theme"
 msgstr ""
 
-#: application/models/TemplateConfiguration.php:796
+#: application/models/TemplateConfiguration.php:801
 msgid "This will reset all the specific configurations of this theme."
 msgstr ""
 
-#: application/models/TemplateConfiguration.php:811
+#: application/models/TemplateConfiguration.php:816
 msgid "Reset this theme"
 msgstr ""
 
-#: application/models/TemplateConfiguration.php:814
+#: application/models/TemplateConfiguration.php:819
 msgid "This will reload the configuration file of this theme."
 msgstr ""
 
-#: application/models/TemplateConfiguration.php:1139
+#: application/models/TemplateConfiguration.php:1143
 msgid "Error: Malformed JSON - field %s must be either a JSON array or the string \"inherit\". Found \"null\"."
 msgstr ""
 
-#: application/models/TemplateConfiguration.php:1210
-msgid "Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey version."
-msgstr ""
-
-#: application/models/TemplateConfiguration.php:1645
+#: application/models/TemplateConfiguration.php:1647
 msgid "No preview available"
 msgstr ""
 
@@ -15701,6 +15775,7 @@ msgid "Load"
 msgstr ""
 
 #: application/models/TemplateManifest.php:174
+#: tmp/runtime/twig_cache/06/066fd00904aa99b0ac1e4a775ed2e963f5b2544de4eabf14d427d39a258f016d.php:42
 #: tmp/runtime/twig_cache/7b/7b1b01353d7b2b75ca0aa7036a0b1a1d969a5bddfad1d8b7f75b84a0da0d99a2.php:40
 msgid "Print answers"
 msgstr ""
@@ -15745,6 +15820,7 @@ msgid "Welcome to the Assessment"
 msgstr ""
 
 #: application/models/TemplateManifest.php:425
+#: tmp/runtime/twig_cache/2c/2ccedc516881f2e40c5f98ca72bfa70a5c4467777cf278a7d031d47fc646d71a.php:42
 #: tmp/runtime/twig_cache/c1/c1c9550415cd56c36df603fe73688e5701cc7e5a34e1901d1fb991acb76d9235.php:40
 msgid "You got {TOTAL} points out of 3 possible points."
 msgstr ""
@@ -15756,21 +15832,25 @@ msgstr ""
 
 #: application/models/TemplateManifest.php:438
 #: tmp/runtime/twig_cache/62/62bfcdb3f014e72015ae64c4ddd0c60ec6d32717fd324afbbd39fe59295ad3bd.php:40
+#: tmp/runtime/twig_cache/8f/8fa587db4ad6125cebf2603750ce172b5c1faf12ceff475818944990e332dafd.php:42
 msgid "This is a sample survey description. It could be quite long."
 msgstr ""
 
 #: application/models/TemplateManifest.php:439
 #: tmp/runtime/twig_cache/62/62bfcdb3f014e72015ae64c4ddd0c60ec6d32717fd324afbbd39fe59295ad3bd.php:42
+#: tmp/runtime/twig_cache/8f/8fa587db4ad6125cebf2603750ce172b5c1faf12ceff475818944990e332dafd.php:44
 msgid "But this one isn't."
 msgstr ""
 
 #: application/models/TemplateManifest.php:441
 #: tmp/runtime/twig_cache/18/18ec59b8111290077f53404103eca02bc782c8482d41e641a073fa07074f7c87.php:40
+#: tmp/runtime/twig_cache/dd/ddc24e950b6998b95da681a397faa30a5faa2f519c61aaf7791cc5fc8a2b6eef.php:42
 msgid "Welcome to this sample survey"
 msgstr ""
 
 #: application/models/TemplateManifest.php:442
 #: tmp/runtime/twig_cache/18/18ec59b8111290077f53404103eca02bc782c8482d41e641a073fa07074f7c87.php:42
+#: tmp/runtime/twig_cache/dd/ddc24e950b6998b95da681a397faa30a5faa2f519c61aaf7791cc5fc8a2b6eef.php:44
 msgid "You should have a great time doing this"
 msgstr ""
 
@@ -15778,25 +15858,25 @@ msgstr ""
 msgid "Some URL description"
 msgstr ""
 
-#: application/models/TemplateManifest.php:680
+#: application/models/TemplateManifest.php:683
 msgid "Are you sure you want to delete this theme? "
 msgstr ""
 
-#: application/models/TemplateManifest.php:706
+#: application/models/TemplateManifest.php:710
 msgid "You can't import the theme '%s' because '%s'  is not installed."
 msgstr ""
 
-#: application/models/TemplateManifest.php:1406
+#: application/models/TemplateManifest.php:1411
 #: application/views/themeOptions/update.php:48
 msgid "Simple options"
 msgstr ""
 
-#: application/models/TemplateManifest.php:1455
-#: application/models/TemplateManifest.php:1468
+#: application/models/TemplateManifest.php:1460
+#: application/models/TemplateManifest.php:1473
 msgid "Local Server"
 msgstr ""
 
-#: application/models/TemplateManifest.php:1455
+#: application/models/TemplateManifest.php:1460
 msgid "Core"
 msgstr ""
 
@@ -16271,6 +16351,7 @@ msgid "Answer options"
 msgstr ""
 
 #: application/models/services/Quotas.php:280
+#: tmp/runtime/twig_cache/15/154b2dcf14377db044d40bc982a064e04e557e8d049660a0c725722cad4959c5.php:42
 #: tmp/runtime/twig_cache/a4/a4b297300a7f3193cc43df9df7a62592cdca3d4965cbb206c3925e525f50e89d.php:40
 msgid "Sorry your responses have exceeded a quota on this survey."
 msgstr ""
@@ -16398,6 +16479,7 @@ msgid "Set password"
 msgstr ""
 
 #: application/views/admin/authentication/newPassword.php:41
+#: tmp/runtime/twig_cache/e8/e883c9625cb5a32d8af3953f1317a9f481a2adb319d1bbdf94e6153ba500df0c.php:306
 msgid "Repeat password"
 msgstr ""
 
@@ -16782,6 +16864,7 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_general_filters.php:15
 #: application/views/admin/export/statistics_subviews/_response_filters.php:33
 #: application/views/surveyAdministration/partial/topbar_statistics/rightSideButtons.php:53
+#: tmp/runtime/twig_cache/40/40406d772224ffe374af1acb4afe386a7c1aed18da0c12d99779c88170537788.php:189
 msgid "Clear"
 msgstr ""
 
@@ -16928,8 +17011,6 @@ msgstr ""
 #: application/views/admin/globalsettings/_bounce.php:52
 #: application/views/admin/token/bounce.php:84
 #: application/views/installer/success_view.php:15
-#: application/views/survey/frontpage/loadForm/form.php:15
-#: application/views/survey/frontpage/saveForm/form.php:22
 #: tmp/runtime/twig_cache/24/24a051e6afdd1d6b6fe8a42047f6ae58830861b091aaafd29efd57cbfcd04938.php:215
 #: tmp/runtime/twig_cache/c9/c9250ff57dbf95973a5f4688ca09a4cf7d60b1e12131be1a2f1a1ace13c46e3e.php:255
 msgid "Password:"
@@ -16956,6 +17037,7 @@ msgstr ""
 #: application/views/admin/update/manage/subscribe.php:47
 #: application/views/admin/update/updater/welcome/_subscribe.php:44
 #: application/views/survey/system/actionButton/moveSubmit.php:11
+#: tmp/runtime/twig_cache/6a/6a25de61ac809352ecc1d14d448ed9c5b338bfb5fa8726c63332ca7f54d50818.php:133
 #: tmp/runtime/twig_cache/ef/ef35bf71739933903af20a5520d35cce5ed7f98814473758c745060e2608865c.php:133
 msgid "Submit"
 msgstr ""
@@ -17527,8 +17609,6 @@ msgstr ""
 
 #: application/views/admin/export/statistics_subviews/_general_filters.php:14
 #: application/views/admin/export/statistics_subviews/_response_filters.php:32
-#: application/views/admin/themes/templateeditor_surveylist_view.php:38
-#: application/views/admin/themes/templateeditor_surveylist_view.php:42
 #: application/views/surveyAdministration/partial/topbar_statistics/rightSideButtons.php:40
 msgid "View statistics"
 msgstr ""
@@ -17675,7 +17755,7 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_statistics_output.php:15
 #: application/views/admin/globalsettings/_email.php:125
 #: application/views/admin/participants/modal_subviews/_exportCSV.php:46
-#: application/views/admin/super/footer.php:154
+#: application/views/admin/super/footer.php:150
 #: application/views/admin/token/browse.php:93
 #: application/views/admin/token/surveyParticipantView.php:169
 #: application/views/admin/update/updater/_right_container.php:10
@@ -18344,34 +18424,34 @@ msgid "You can't remove the default language."
 msgstr ""
 
 #: application/views/admin/globalsettings/globalSettings_view.php:19
-#: modules/admin/globalsettings/views/globalSettings_view.php:24
+#: modules/admin/globalsettings/views/globalSettings_view.php:23
 msgid "Email settings"
 msgstr ""
 
 #: application/views/admin/globalsettings/globalSettings_view.php:20
 #: application/views/admin/token/bounce.php:2
 #: application/views/surveyAdministration/partial/topbar_tokens/tokensInvRemDropdownItems.php:65
-#: modules/admin/globalsettings/views/globalSettings_view.php:25
+#: modules/admin/globalsettings/views/globalSettings_view.php:24
 msgid "Bounce settings"
 msgstr ""
 
 #: application/views/admin/globalsettings/globalSettings_view.php:21
-#: modules/admin/globalsettings/views/globalSettings_view.php:26
+#: modules/admin/globalsettings/views/globalSettings_view.php:25
 msgid "Security"
 msgstr ""
 
 #: application/views/admin/globalsettings/globalSettings_view.php:22
-#: modules/admin/globalsettings/views/globalSettings_view.php:27
+#: modules/admin/globalsettings/views/globalSettings_view.php:26
 msgid "User administration"
 msgstr ""
 
 #: application/views/admin/globalsettings/globalSettings_view.php:25
-#: modules/admin/globalsettings/views/globalSettings_view.php:30
+#: modules/admin/globalsettings/views/globalSettings_view.php:29
 msgid "Interfaces"
 msgstr ""
 
 #: application/views/admin/globalsettings/globalSettings_view.php:26
-#: modules/admin/globalsettings/views/globalSettings_view.php:31
+#: modules/admin/globalsettings/views/globalSettings_view.php:30
 msgid "Storage"
 msgstr ""
 
@@ -18384,8 +18464,8 @@ msgid "Editor"
 msgstr ""
 
 #: application/views/admin/htmleditor/modal_editor_partial.php:16
-#: application/views/admin/super/footer.php:147
-#: application/views/admin/super/footer.php:168
+#: application/views/admin/super/footer.php:143
+#: application/views/admin/super/footer.php:164
 msgid "Confirm"
 msgstr ""
 
@@ -18639,7 +18719,7 @@ msgid "Do you really want to delete this label set?"
 msgstr ""
 
 #: application/views/admin/notification/index.php:7
-#: application/views/admin/super/footer.php:224
+#: application/views/admin/super/footer.php:220
 msgid "Notifications"
 msgstr ""
 
@@ -18870,7 +18950,7 @@ msgstr ""
 #: application/views/admin/token/ldapform.php:83
 #: application/views/themeOptions/advanced.php:25
 #: application/views/themeOptions/options_core.php:245
-#: tmp/runtime/twig_cache/be/bee6848bdc49d16becf948b499992da8ef26d1fb275ae18d41dba009ec27526e.php:164
+#: tmp/runtime/twig_cache/a4/a485c32f005b9d1c5f50f25b3017771893990277eab5d1cf3cb7b3a151700be9.php:164
 msgid "Upload"
 msgstr ""
 
@@ -19059,7 +19139,6 @@ msgstr ""
 #: application/views/admin/participants/modal_subviews/_editParticipant.php:38
 #: application/views/admin/token/massive_actions/_update.php:122
 #: application/views/admin/token/tokenform.php:161
-#: application/views/survey/frontpage/registerForm/form.php:4
 #: tmp/runtime/twig_cache/77/77a988d404a66c96ff9a7eeb1e8eb4cf283ea21862899195d3fd73a4742d6cb6.php:82
 msgid "First name:"
 msgstr ""
@@ -19067,7 +19146,6 @@ msgstr ""
 #: application/views/admin/participants/modal_subviews/_editParticipant.php:44
 #: application/views/admin/token/massive_actions/_update.php:135
 #: application/views/admin/token/tokenform.php:175
-#: application/views/survey/frontpage/registerForm/form.php:11
 #: tmp/runtime/twig_cache/77/77a988d404a66c96ff9a7eeb1e8eb4cf283ea21862899195d3fd73a4742d6cb6.php:105
 msgid "Last name:"
 msgstr ""
@@ -19582,35 +19660,35 @@ msgstr ""
 msgid "Database server version"
 msgstr ""
 
-#: application/views/admin/super/footer.php:57
+#: application/views/admin/super/footer.php:58
 msgid "Get system information"
 msgstr ""
 
-#: application/views/admin/super/footer.php:69
+#: application/views/admin/super/footer.php:70
 msgid "Donate"
 msgstr ""
 
-#: application/views/admin/super/footer.php:76
+#: application/views/admin/super/footer.php:77
 msgid "Support this project - Donate to %s!"
 msgstr ""
 
-#: application/views/admin/super/footer.php:101
+#: application/views/admin/super/footer.php:97
 msgid "System information"
 msgstr ""
 
-#: application/views/admin/super/footer.php:106
+#: application/views/admin/super/footer.php:102
 msgid "Your system configuration:"
 msgstr ""
 
-#: application/views/admin/super/footer.php:118
+#: application/views/admin/super/footer.php:114
 msgid "We are sorry but this information is only available to superadministrators."
 msgstr ""
 
-#: application/views/admin/super/footer.php:151
+#: application/views/admin/super/footer.php:147
 msgid "Are you sure?"
 msgstr ""
 
-#: application/views/admin/super/footer.php:189
+#: application/views/admin/super/footer.php:185
 msgid "An error occurred."
 msgstr ""
 
@@ -19819,7 +19897,7 @@ msgid "Error: You are trying to use duplicate subquestion codes."
 msgstr ""
 
 #: application/views/admin/survey/Question/_subQuestionsAndAnwsersJsVariables.php:30
-#: tmp/runtime/twig_cache/9b/9ba54255ff6e7f2b42f6ac5821e2920ce6c846500115d88c24df1196e869a911.php:235
+#: tmp/runtime/twig_cache/87/872689c07e01e3f7706fa32544800cc73a45d31a25e94db00230884b64aefb87.php:235
 msgid "Click to expand"
 msgstr ""
 
@@ -20208,7 +20286,7 @@ msgstr ""
 #: application/views/admin/survey/subview/_template_carousel.php:41
 #: application/views/installer/dbconfig_view.php:69
 #: application/views/responses/modal_subviews/filterColumns.php:54
-#: application/views/themeOptions/index.php:205
+#: application/views/themeOptions/index.php:260
 msgid "Select"
 msgstr ""
 
@@ -20408,6 +20486,7 @@ msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:305
 #: tmp/runtime/twig_cache/0e/0eb700353363485c925a06f81825cb4b3779a9887f0d09f1adba53f80c807497.php:40
+#: tmp/runtime/twig_cache/43/438ec55ff1bef7bfbec88e577785eb0dd69beff8cd538efe51e788a82cd423e0.php:42
 msgid "Public statistics"
 msgstr ""
 
@@ -21099,6 +21178,7 @@ msgstr ""
 
 #: application/views/admin/themes/partial/topbarBtns/leftSideButtons.php:83
 #: application/views/themeOptions/index.php:116
+#: application/views/themeOptions/index.php:175
 msgid "Are you sure you want to delete this theme?"
 msgstr ""
 
@@ -21120,6 +21200,7 @@ msgid "Thank you!"
 msgstr ""
 
 #: application/views/admin/themes/templateeditor_completed_view.php:4
+#: tmp/runtime/twig_cache/2a/2ad56055e546c26e6813b9542b79173b03ee8092b20a3589d1eeaeb5c2edf903.php:126
 #: tmp/runtime/twig_cache/43/43e7b9f54fd0379e11857303d3cb3051d1d209fc8eaaa7fc7c469c522b21bb3e.php:122
 msgid "Your survey responses have been recorded."
 msgstr ""
@@ -21166,25 +21247,6 @@ msgstr ""
 
 #: application/views/admin/themes/templateeditor_question_answertext_view.php:11
 msgid "Some text in this answer"
-msgstr ""
-
-#: application/views/admin/themes/templateeditor_surveylist_view.php:33
-#: application/views/admin/themes/templateeditor_surveylist_view.php:77
-#: tmp/runtime/twig_cache/20/200b8fb57848a7c1e8a0ed9fa11d6fa455d3a7fc35e2851e482be9a715ddbda1.php:285
-msgid "Start survey"
-msgstr ""
-
-#: application/views/admin/themes/templateeditor_surveylist_view.php:57
-msgid "Following survey(s) are not yet active but you can register for them."
-msgstr ""
-
-#: application/views/admin/themes/templateeditor_surveylist_view.php:92
-#: tmp/runtime/twig_cache/20/200b8fb57848a7c1e8a0ed9fa11d6fa455d3a7fc35e2851e482be9a715ddbda1.php:239
-msgid "The following surveys are available:"
-msgstr ""
-
-#: application/views/admin/themes/templateeditor_surveylist_view.php:96
-msgid "No available surveys"
 msgstr ""
 
 #: application/views/admin/themes/templateeditorbar_view.php:86
@@ -21496,7 +21558,6 @@ msgstr ""
 
 #: application/views/admin/token/dummytokenform.php:59
 #: application/views/admin/user/personalsettings.php:130
-#: application/views/survey/frontpage/registerForm/form.php:17
 #: tmp/runtime/twig_cache/77/77a988d404a66c96ff9a7eeb1e8eb4cf283ea21862899195d3fd73a4742d6cb6.php:131
 msgid "Email address:"
 msgstr ""
@@ -21509,8 +21570,8 @@ msgstr ""
 
 #: application/views/admin/token/dummytokenform.php:111
 #: application/views/admin/token/dummytokenform.php:134
-#: tmp/runtime/twig_cache/36/365fb08cc4e307938ce410e99249d5c3653d4a9d53c544dc30071e16d7cfc514.php:87
-#: tmp/runtime/twig_cache/3a/3a28fef050946acf7f19c749ba7bf55ab273d62d8f371c768db2cb4da05a0c5c.php:92
+#: tmp/runtime/twig_cache/35/35bcb08f5232c97c45aae977a2e872d9024477266a873ebd699976a0ce40994a.php:87
+#: tmp/runtime/twig_cache/76/760e7d0ddd5468738cc8b324f39d40c1d6f8e2a4a672b57939b91223557476d5.php:92
 msgid "Format: %s"
 msgstr ""
 
@@ -21808,7 +21869,6 @@ msgid "Participant expiration date can't be lower than the \"Valid from\" date"
 msgstr ""
 
 #: application/views/admin/token/tokenform.php:191
-#: application/views/survey/frontpage/tokenForm/form.php:9
 #: tmp/runtime/twig_cache/c6/c61fc24ad04ac0b6c2026a9b5a98dbdd133bfc88917f7c662b7a16f4d47f1807.php:121
 msgid "Access code:"
 msgstr ""
@@ -23790,157 +23850,8 @@ msgstr ""
 
 #: application/views/statistics_user_view.php:11
 #: tmp/runtime/twig_cache/36/36f28a6586d4a7b2e916b8ae93473c8ee2a083946ead27205caade56a956db61.php:54
+#: tmp/runtime/twig_cache/d9/d95e718309bd8aee8ed54df6a425525372c9ba5740c9c9dd6109859bd9dee718.php:54
 msgid "Total records in survey"
-msgstr ""
-
-#: application/views/survey/frontpage/captchaForm/form.php:10
-#: application/views/survey/frontpage/registerForm/form.php:32
-#: application/views/survey/frontpage/tokenForm/form.php:27
-#: application/views/survey/system/formItem/captcha.php:10
-#: tmp/runtime/twig_cache/28/28c7fbde3c2c0cdc5a723627b689deb07c867387802a9c8fa2ceeb07cf17eb79.php:173
-#: tmp/runtime/twig_cache/77/77a988d404a66c96ff9a7eeb1e8eb4cf283ea21862899195d3fd73a4742d6cb6.php:227
-#: tmp/runtime/twig_cache/c6/c61fc24ad04ac0b6c2026a9b5a98dbdd133bfc88917f7c662b7a16f4d47f1807.php:196
-msgid "Please solve the following equation:"
-msgstr ""
-
-#: application/views/survey/frontpage/captchaForm/heading.php:7
-#: tmp/runtime/twig_cache/28/28c7fbde3c2c0cdc5a723627b689deb07c867387802a9c8fa2ceeb07cf17eb79.php:137
-msgid "Before you start, please prove you are human."
-msgstr ""
-
-#: application/views/survey/frontpage/clearallForm/form.php:9
-#: application/views/survey/frontpage/clearallForm/message.php:7
-#: application/views/survey/system/actionButton/clearAll.php:14
-#: application/views/survey/system/actionLink/clearAll.php:10
-#: tmp/runtime/twig_cache/0c/0c7eab8595e09c2d60178321aef9aed091c1ce81936e5bce0ff63406120f018c.php:58
-#: tmp/runtime/twig_cache/28/282c793274f5b2f9cf84eae9e61dd4a88c70c8eabc9c2db9dc89ccaab6a9b5a0.php:58
-msgid "Please confirm you want to clear your response?"
-msgstr ""
-
-#: application/views/survey/frontpage/clearallForm/heading.php:7
-#: application/views/survey/system/actionButton/clearAll.php:16
-#: application/views/survey/system/actionLink/clearAll.php:11
-#: tmp/runtime/twig_cache/0c/0c7eab8595e09c2d60178321aef9aed091c1ce81936e5bce0ff63406120f018c.php:69
-#: tmp/runtime/twig_cache/28/282c793274f5b2f9cf84eae9e61dd4a88c70c8eabc9c2db9dc89ccaab6a9b5a0.php:62
-msgid "Exit and clear survey"
-msgstr ""
-
-#: application/views/survey/frontpage/loadForm/form.php:9
-#: application/views/survey/frontpage/saveForm/form.php:9
-#: tmp/runtime/twig_cache/24/24a051e6afdd1d6b6fe8a42047f6ae58830861b091aaafd29efd57cbfcd04938.php:166
-msgid "Saved name:"
-msgstr ""
-
-#: application/views/survey/frontpage/loadForm/form.php:22
-#: application/views/survey/frontpage/saveForm/form.php:59
-#: tmp/runtime/twig_cache/24/24a051e6afdd1d6b6fe8a42047f6ae58830861b091aaafd29efd57cbfcd04938.php:263
-#: tmp/runtime/twig_cache/c9/c9250ff57dbf95973a5f4688ca09a4cf7d60b1e12131be1a2f1a1ace13c46e3e.php:406
-msgid "Security question:"
-msgstr ""
-
-#: application/views/survey/frontpage/loadForm/form.php:35
-#: tmp/runtime/twig_cache/24/24a051e6afdd1d6b6fe8a42047f6ae58830861b091aaafd29efd57cbfcd04938.php:327
-msgid "Load now"
-msgstr ""
-
-#: application/views/survey/frontpage/loadForm/heading.php:7
-#: application/views/survey/system/actionButton/saveLoad.php:11
-#: application/views/survey/system/actionLink/saveLoad.php:11
-#: tmp/runtime/twig_cache/24/24a051e6afdd1d6b6fe8a42047f6ae58830861b091aaafd29efd57cbfcd04938.php:58
-#: tmp/runtime/twig_cache/2c/2c78aff0dbe7383a51fa1c636618e18929c6490613518189d6ec2d36e39e28e9.php:46
-#: tmp/runtime/twig_cache/79/79af08b61c1de8b778c87668f897caea1d2321b40875b9cf4f3bb52ca72be8f6.php:50
-msgid "Load unfinished survey"
-msgstr ""
-
-#: application/views/survey/frontpage/loadForm/message.php:7
-#: tmp/runtime/twig_cache/24/24a051e6afdd1d6b6fe8a42047f6ae58830861b091aaafd29efd57cbfcd04938.php:70
-msgid "You can load a survey that you have previously saved from this screen."
-msgstr ""
-
-#: application/views/survey/frontpage/loadForm/message.php:8
-#: tmp/runtime/twig_cache/24/24a051e6afdd1d6b6fe8a42047f6ae58830861b091aaafd29efd57cbfcd04938.php:76
-msgid "Type in the 'name' you used to save the survey, and the password."
-msgstr ""
-
-#: application/views/survey/frontpage/registerForm/form.php:50
-msgid "Fields marked with an asterisk (%s) are mandatory."
-msgstr ""
-
-#: application/views/survey/frontpage/registerForm/heading.php:7
-msgid "You must be registered to complete this survey"
-msgstr ""
-
-#: application/views/survey/frontpage/registerForm/message.php:8
-msgid "You may register for this survey but you have to wait for the %s before starting the survey."
-msgstr ""
-
-#: application/views/survey/frontpage/registerForm/message.php:10
-#: tmp/runtime/twig_cache/4c/4c37b88fbc76d9838f13e55dac9077593c0683d77c67ecd8c850e49263619366.php:66
-msgid "You may register for this survey if you wish to take part."
-msgstr ""
-
-#: application/views/survey/frontpage/registerForm/message.php:12
-#: tmp/runtime/twig_cache/4c/4c37b88fbc76d9838f13e55dac9077593c0683d77c67ecd8c850e49263619366.php:74
-msgid "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
-msgstr ""
-
-#: application/views/survey/frontpage/saveForm/anonymized.php:7
-#: tmp/runtime/twig_cache/c9/c9250ff57dbf95973a5f4688ca09a4cf7d60b1e12131be1a2f1a1ace13c46e3e.php:110
-msgid "To remain anonymous please use a pseudonym as your username, also an email address is not required."
-msgstr ""
-
-#: application/views/survey/frontpage/saveForm/form.php:35
-#: tmp/runtime/twig_cache/c9/c9250ff57dbf95973a5f4688ca09a4cf7d60b1e12131be1a2f1a1ace13c46e3e.php:309
-msgid "Repeat password:"
-msgstr ""
-
-#: application/views/survey/frontpage/saveForm/form.php:47
-#: tmp/runtime/twig_cache/c9/c9250ff57dbf95973a5f4688ca09a4cf7d60b1e12131be1a2f1a1ace13c46e3e.php:362
-msgid "Your email address:"
-msgstr ""
-
-#: application/views/survey/frontpage/saveForm/form.php:72
-#: application/views/surveyPermissions/settingsPermission.php:35
-#: tmp/runtime/twig_cache/c9/c9250ff57dbf95973a5f4688ca09a4cf7d60b1e12131be1a2f1a1ace13c46e3e.php:468
-msgid "Save Now"
-msgstr ""
-
-#: application/views/survey/frontpage/saveForm/heading.php:7
-#: tmp/runtime/twig_cache/c9/c9250ff57dbf95973a5f4688ca09a4cf7d60b1e12131be1a2f1a1ace13c46e3e.php:67
-msgid "Save your unfinished survey"
-msgstr ""
-
-#: application/views/survey/frontpage/saveForm/message.php:7
-#: tmp/runtime/twig_cache/c9/c9250ff57dbf95973a5f4688ca09a4cf7d60b1e12131be1a2f1a1ace13c46e3e.php:79
-msgid "Enter a name and password for this survey and click save below."
-msgstr ""
-
-#: application/views/survey/frontpage/saveForm/message.php:8
-#: tmp/runtime/twig_cache/c9/c9250ff57dbf95973a5f4688ca09a4cf7d60b1e12131be1a2f1a1ace13c46e3e.php:85
-msgid "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password."
-msgstr ""
-
-#: application/views/survey/frontpage/saveForm/message.php:9
-#: tmp/runtime/twig_cache/c9/c9250ff57dbf95973a5f4688ca09a4cf7d60b1e12131be1a2f1a1ace13c46e3e.php:93
-msgid "If you give an email address, an email containing the details will be sent to you."
-msgstr ""
-
-#: application/views/survey/frontpage/saveForm/message.php:10
-#: tmp/runtime/twig_cache/c9/c9250ff57dbf95973a5f4688ca09a4cf7d60b1e12131be1a2f1a1ace13c46e3e.php:99
-msgid "After having clicked the save button you can either close this browser window or continue filling out the survey."
-msgstr ""
-
-#: application/views/survey/frontpage/tokenForm/heading.php:7
-#: tmp/runtime/twig_cache/c6/c61fc24ad04ac0b6c2026a9b5a98dbdd133bfc88917f7c662b7a16f4d47f1807.php:55
-msgid "To participate in this restricted survey, you need a valid access code."
-msgstr ""
-
-#: application/views/survey/frontpage/tokenForm/message.php:9
-msgid "If you have been issued an access code, please enter it in the box below and click 'Continue'."
-msgstr ""
-
-#: application/views/survey/frontpage/tokenForm/message.php:11
-msgid "Please confirm the access code by answering the security question below and click 'Continue'."
 msgstr ""
 
 #: application/views/survey/questions/answer/file_upload/modal-container.php:18
@@ -23948,21 +23859,12 @@ msgid "You can upload %s under %s KB each."
 msgstr ""
 
 #: application/views/survey/system/LanguageChanger/LanguageChanger.php:24
+#: tmp/runtime/twig_cache/3b/3b12b08a1edb4341090ca3ea8c5649fcf41b25395cb69979b2e4b8cb556a5ad3.php:78
 msgid "Change language"
 msgstr ""
 
-#: application/views/survey/system/actionButton/clearAll.php:23
-msgid "This action need confirmation."
-msgstr ""
-
-#: application/views/survey/system/actionButton/saveSave.php:11
-#: application/views/survey/system/actionLink/saveSave.php:11
-#: tmp/runtime/twig_cache/2c/2c78aff0dbe7383a51fa1c636618e18929c6490613518189d6ec2d36e39e28e9.php:60
-#: tmp/runtime/twig_cache/79/79af08b61c1de8b778c87668f897caea1d2321b40875b9cf4f3bb52ca72be8f6.php:67
-msgid "Resume later"
-msgstr ""
-
 #: application/views/survey/system/no-javascript.php:7
+#: tmp/runtime/twig_cache/bc/bc18accbfa90bff49f6a7dabe592e94ae9444fb72e05f8a726aac5f21b3cdc6e.php:50
 #: tmp/runtime/twig_cache/f2/f25cd9eec0b0268c80d8160b02e6dc891cb0696c6b2623f16b111f7f091995b6.php:50
 msgid "Caution: JavaScript execution is disabled in your browser or for this website. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
 msgstr ""
@@ -23974,22 +23876,14 @@ msgstr ""
 
 #: application/views/survey/system/privacy/message.php:6
 #: tmp/runtime/twig_cache/68/681beb7ec6ad741a479468cc81304335be2043a59e98bd578d43a178f3a9e892.php:101
+#: tmp/runtime/twig_cache/e5/e5e56b4bdb840521b3977d85dc86b8cc4d7d37a3cb1db8d3ab80ff51a2aae598.php:103
 msgid "The record of your survey responses does not contain any identifying information about you, unless a specific survey question explicitly asked for it."
 msgstr ""
 
 #: application/views/survey/system/privacy/message.php:7
 #: tmp/runtime/twig_cache/68/681beb7ec6ad741a479468cc81304335be2043a59e98bd578d43a178f3a9e892.php:111
+#: tmp/runtime/twig_cache/e5/e5e56b4bdb840521b3977d85dc86b8cc4d7d37a3cb1db8d3ab80ff51a2aae598.php:112
 msgid "If you used an identifying access code to access this survey, please rest assured that this code will not be stored together with your responses. It is managed in a separate database and will only be updated to indicate whether you did (or did not) complete this survey. There is no way of matching identification access codes with survey responses."
-msgstr ""
-
-#: application/views/survey/system/surveyIndex/groupIndex.php:10
-#: application/views/survey/system/surveyIndex/groupIndexMenuLink.php:10
-#: application/views/survey/system/surveyIndex/questionIndex.php:10
-#: application/views/survey/system/surveyIndex/questionIndexMenuLink.php:10
-#: tmp/runtime/twig_cache/00/00b5a505834af8e80a9ae86c82fb7eabe3b6b2b313a92be080bf0ebb32bbcf37.php:61
-#: tmp/runtime/twig_cache/00/00b5a505834af8e80a9ae86c82fb7eabe3b6b2b313a92be080bf0ebb32bbcf37.php:150
-#: tmp/runtime/twig_cache/a6/a6a5161f5c8e427f7dd932e7877304acf9369c637db83e4a99e32f74df879285.php:43
-msgid "Question index"
 msgstr ""
 
 #: application/views/surveyAdministration/_activation_error.php:10
@@ -24067,8 +23961,10 @@ msgstr ""
 
 #: application/views/surveyAdministration/activateSurvey_view.php:43
 #: tmp/runtime/twig_cache/24/24a051e6afdd1d6b6fe8a42047f6ae58830861b091aaafd29efd57cbfcd04938.php:355
-#: tmp/runtime/twig_cache/be/bee6848bdc49d16becf948b499992da8ef26d1fb275ae18d41dba009ec27526e.php:195
+#: tmp/runtime/twig_cache/93/93c6e8188aafe2eb96e66fc89f5deb3691141d3c9117a598dcfb5addf6d8d224.php:329
+#: tmp/runtime/twig_cache/a4/a485c32f005b9d1c5f50f25b3017771893990277eab5d1cf3cb7b3a151700be9.php:195
 #: tmp/runtime/twig_cache/c9/c9250ff57dbf95973a5f4688ca09a4cf7d60b1e12131be1a2f1a1ace13c46e3e.php:494
+#: tmp/runtime/twig_cache/e8/e883c9625cb5a32d8af3953f1317a9f481a2adb319d1bbdf94e6153ba500df0c.php:464
 msgid "Return to survey"
 msgstr ""
 
@@ -24531,6 +24427,12 @@ msgstr ""
 msgid "Edit survey permissions for user %s"
 msgstr ""
 
+#: application/views/surveyPermissions/settingsPermission.php:35
+#: tmp/runtime/twig_cache/c9/c9250ff57dbf95973a5f4688ca09a4cf7d60b1e12131be1a2f1a1ace13c46e3e.php:468
+#: tmp/runtime/twig_cache/e8/e883c9625cb5a32d8af3953f1317a9f481a2adb319d1bbdf94e6153ba500df0c.php:489
+msgid "Save Now"
+msgstr ""
+
 #: application/views/themeOptions/_selector.php:16
 msgid "Selected theme(s)..."
 msgstr ""
@@ -24561,35 +24463,35 @@ msgid "Available question themes:"
 msgstr ""
 
 #: application/views/themeOptions/availablethemelist.php:16
-#: application/views/themeOptions/index.php:49
-#: application/views/themeOptions/index.php:180
-#: application/views/themeOptions/surveythemelist.php:38
+#: application/views/themeOptions/index.php:53
+#: application/views/themeOptions/index.php:238
+#: application/views/themeOptions/surveythemelist.php:42
 msgid "Preview"
 msgstr ""
 
 #: application/views/themeOptions/availablethemelist.php:17
-#: application/views/themeOptions/index.php:50
-#: application/views/themeOptions/index.php:181
+#: application/views/themeOptions/index.php:54
+#: application/views/themeOptions/index.php:239
 msgid "Folder"
 msgstr ""
 
 #: application/views/themeOptions/availablethemelist.php:19
-#: application/views/themeOptions/index.php:52
-#: application/views/themeOptions/index.php:183
+#: application/views/themeOptions/index.php:56
+#: application/views/themeOptions/index.php:241
 #: application/views/themeOptions/installedthemelist.php:60
-#: application/views/themeOptions/surveythemelist.php:62
+#: application/views/themeOptions/surveythemelist.php:67
 msgid "Type"
 msgstr ""
 
 #: application/views/themeOptions/availablethemelist.php:20
-#: application/views/themeOptions/index.php:53
+#: application/views/themeOptions/index.php:57
 #: application/views/themeOptions/installedthemelist.php:69
-#: application/views/themeOptions/surveythemelist.php:71
+#: application/views/themeOptions/surveythemelist.php:76
 msgid "Extends"
 msgstr ""
 
 #: application/views/themeOptions/availablethemelist.php:31
-#: application/views/themeOptions/index.php:65
+#: application/views/themeOptions/index.php:70
 msgid "XML themes"
 msgstr ""
 
@@ -24609,43 +24511,67 @@ msgstr ""
 msgid "Select theme ZIP file:"
 msgstr ""
 
-#: application/views/themeOptions/index.php:20
+#: application/views/themeOptions/index.php:22
 msgid "Survey themes"
 msgstr ""
 
-#: application/views/themeOptions/index.php:25
+#: application/views/themeOptions/index.php:27
 msgid "Admin themes"
 msgstr ""
 
-#: application/views/themeOptions/index.php:30
+#: application/views/themeOptions/index.php:32
 msgid "Question themes"
 msgstr ""
 
-#: application/views/themeOptions/index.php:37
+#: application/views/themeOptions/index.php:39
 msgid "Installed survey themes:"
 msgstr ""
 
-#: application/views/themeOptions/index.php:44
+#: application/views/themeOptions/index.php:48
 msgid "Available survey themes:"
 msgstr ""
 
-#: application/views/themeOptions/index.php:80
+#: application/views/themeOptions/index.php:79
+#: application/views/themeOptions/index.php:265
+msgid "Show errors"
+msgstr ""
+
+#: application/views/themeOptions/index.php:86
+#: application/views/themeOptions/index.php:272
+msgid "Errors"
+msgstr ""
+
+#: application/views/themeOptions/index.php:90
+#: application/views/themeOptions/index.php:276
+msgid "The theme is not compatible with your version of LimeSurvey."
+msgstr ""
+
+#: application/views/themeOptions/index.php:92
+#: application/views/themeOptions/index.php:278
+msgid "For more information consult our manual."
+msgstr ""
+
+#: application/views/themeOptions/index.php:95
+msgid "Custom theme options set for this theme have been reset to the default."
+msgstr ""
+
+#: application/views/themeOptions/index.php:139
 msgid "Broken survey themes"
 msgstr ""
 
-#: application/views/themeOptions/index.php:137
+#: application/views/themeOptions/index.php:196
 msgid "Deprecated survey themes:"
 msgstr ""
 
-#: application/views/themeOptions/index.php:175
+#: application/views/themeOptions/index.php:233
 msgid "Available admin themes:"
 msgstr ""
 
-#: application/views/themeOptions/index.php:193
+#: application/views/themeOptions/index.php:252
 msgid "Core admin theme"
 msgstr ""
 
-#: application/views/themeOptions/index.php:218
+#: application/views/themeOptions/index.php:299
 msgid "Question themes:"
 msgstr ""
 
@@ -25067,23 +24993,69 @@ msgid "Test"
 msgstr ""
 
 #: tmp/runtime/twig_cache/00/0036b18238fcedeaa060bfede2c9a5daccc6e801ac02ccde383c579874fd82b4.php:44
+#: tmp/runtime/twig_cache/a7/a75d9f52718dc62142b9a408e967b0bef248292b252309635bffcb3609da7659.php:42
 msgid "(This question is mandatory)"
 msgstr ""
 
+#: tmp/runtime/twig_cache/00/00b5a505834af8e80a9ae86c82fb7eabe3b6b2b313a92be080bf0ebb32bbcf37.php:61
+#: tmp/runtime/twig_cache/00/00b5a505834af8e80a9ae86c82fb7eabe3b6b2b313a92be080bf0ebb32bbcf37.php:150
+#: tmp/runtime/twig_cache/7a/7aa25c974cefef0149de9a98f076c944475d4e8acf4f95e525a6409f1dcd7813.php:43
+#: tmp/runtime/twig_cache/a6/a6a5161f5c8e427f7dd932e7877304acf9369c637db83e4a99e32f74df879285.php:43
+#: tmp/runtime/twig_cache/b6/b6e00eae0e3d2d9d6d130fbfd0faa1fc4bbe8a9ce50f3f18af021ddc08ea0fa8.php:61
+#: tmp/runtime/twig_cache/b6/b6e00eae0e3d2d9d6d130fbfd0faa1fc4bbe8a9ce50f3f18af021ddc08ea0fa8.php:153
+msgid "Question index"
+msgstr ""
+
 #: tmp/runtime/twig_cache/00/00b5a505834af8e80a9ae86c82fb7eabe3b6b2b313a92be080bf0ebb32bbcf37.php:247
+#: tmp/runtime/twig_cache/b6/b6e00eae0e3d2d9d6d130fbfd0faa1fc4bbe8a9ce50f3f18af021ddc08ea0fa8.php:248
 msgid "Question by question mode not yet supported."
 msgstr ""
 
+#: tmp/runtime/twig_cache/03/03195fe36e2eff142969b4cb23332543d33eaf80f04937bd67f393f5ac6aae5c.php:81
+#: tmp/runtime/twig_cache/3a/3a810f31336cd5f0617612c23735712a0e645b6f09f7caba8c48c09307a3a1f3.php:80
+msgid "Export these responses as PDF:"
+msgstr ""
+
+#: tmp/runtime/twig_cache/03/03195fe36e2eff142969b4cb23332543d33eaf80f04937bd67f393f5ac6aae5c.php:86
+#: tmp/runtime/twig_cache/3a/3a810f31336cd5f0617612c23735712a0e645b6f09f7caba8c48c09307a3a1f3.php:82
+msgid "PDF export"
+msgstr ""
+
+#: tmp/runtime/twig_cache/03/03195fe36e2eff142969b4cb23332543d33eaf80f04937bd67f393f5ac6aae5c.php:101
+#: tmp/runtime/twig_cache/3a/3a810f31336cd5f0617612c23735712a0e645b6f09f7caba8c48c09307a3a1f3.php:96
+msgid "Export these responses as queXML PDF:"
+msgstr ""
+
 #: tmp/runtime/twig_cache/06/0681fd5ce7c191b3f29a4c83005234bd72a47992124e1b84f75c1eef73c5c390.php:119
+#: tmp/runtime/twig_cache/15/15d05251a66df9f35bba6567765f97d538fb376bdd2fb64664edf050f48b80f9.php:118
 msgid "There is 1 question in this survey."
+msgstr ""
+
+#: tmp/runtime/twig_cache/0c/0c7eab8595e09c2d60178321aef9aed091c1ce81936e5bce0ff63406120f018c.php:58
+#: tmp/runtime/twig_cache/28/282c793274f5b2f9cf84eae9e61dd4a88c70c8eabc9c2db9dc89ccaab6a9b5a0.php:58
+#: tmp/runtime/twig_cache/40/40406d772224ffe374af1acb4afe386a7c1aed18da0c12d99779c88170537788.php:179
+msgid "Please confirm you want to clear your response?"
 msgstr ""
 
 #: tmp/runtime/twig_cache/0c/0c7eab8595e09c2d60178321aef9aed091c1ce81936e5bce0ff63406120f018c.php:67
 msgid "This action need to be confirmed."
 msgstr ""
 
+#: tmp/runtime/twig_cache/0c/0c7eab8595e09c2d60178321aef9aed091c1ce81936e5bce0ff63406120f018c.php:69
+#: tmp/runtime/twig_cache/28/282c793274f5b2f9cf84eae9e61dd4a88c70c8eabc9c2db9dc89ccaab6a9b5a0.php:62
+#: tmp/runtime/twig_cache/2d/2d8e6cfc216af17710aa58c4cc907300e77eb78c4ba99b2de0ef9cbbae9452c1.php:60
+#: tmp/runtime/twig_cache/40/40406d772224ffe374af1acb4afe386a7c1aed18da0c12d99779c88170537788.php:172
+#: tmp/runtime/twig_cache/5e/5e5ddb46913772ea4f975d638bdd0aa0e242aa596d16dc98955c757f00b123dc.php:54
+msgid "Exit and clear survey"
+msgstr ""
+
 #: tmp/runtime/twig_cache/14/146c682c16b9c1d4f227331706d606d99a9577508d0c79d6441f50a575212780.php:40
 msgid "Group 1: The first lot of questions"
+msgstr ""
+
+#: tmp/runtime/twig_cache/1a/1a05d1464cfc1cf728b5397e24e7a7733da6e8e51f498484b7aab8acd6b7d582.php:127
+#: tmp/runtime/twig_cache/f5/f5a008e014fbd7a199d4ac03dad9fcca899080d6b68c91c5267e6275f2bfe11b.php:111
+msgid "Accept"
 msgstr ""
 
 #: tmp/runtime/twig_cache/1c/1c2c54d940bda01992d0f626affc62c06ea8f2053bc3bf0cef34aa8feede3263.php:132
@@ -25116,9 +25088,64 @@ msgstr ""
 msgid "No info or no data found"
 msgstr ""
 
+#: tmp/runtime/twig_cache/20/200b8fb57848a7c1e8a0ed9fa11d6fa455d3a7fc35e2851e482be9a715ddbda1.php:239
+msgid "The following surveys are available:"
+msgstr ""
+
+#: tmp/runtime/twig_cache/20/200b8fb57848a7c1e8a0ed9fa11d6fa455d3a7fc35e2851e482be9a715ddbda1.php:285
+msgid "Start survey"
+msgstr ""
+
+#: tmp/runtime/twig_cache/24/24a051e6afdd1d6b6fe8a42047f6ae58830861b091aaafd29efd57cbfcd04938.php:58
+#: tmp/runtime/twig_cache/2c/2c78aff0dbe7383a51fa1c636618e18929c6490613518189d6ec2d36e39e28e9.php:46
+#: tmp/runtime/twig_cache/70/706b1ac8f5f0ce2877073e465b4438bf443287aae39b655c5901150eeb649141.php:48
+#: tmp/runtime/twig_cache/79/79af08b61c1de8b778c87668f897caea1d2321b40875b9cf4f3bb52ca72be8f6.php:50
+#: tmp/runtime/twig_cache/93/93c6e8188aafe2eb96e66fc89f5deb3691141d3c9117a598dcfb5addf6d8d224.php:58
+#: tmp/runtime/twig_cache/f9/f910cb0d5209a0090cd8507289d297670b3163d1896b925a5406cf4612c70cea.php:50
+msgid "Load unfinished survey"
+msgstr ""
+
+#: tmp/runtime/twig_cache/24/24a051e6afdd1d6b6fe8a42047f6ae58830861b091aaafd29efd57cbfcd04938.php:70
+#: tmp/runtime/twig_cache/93/93c6e8188aafe2eb96e66fc89f5deb3691141d3c9117a598dcfb5addf6d8d224.php:70
+msgid "You can load a survey that you have previously saved from this screen."
+msgstr ""
+
+#: tmp/runtime/twig_cache/24/24a051e6afdd1d6b6fe8a42047f6ae58830861b091aaafd29efd57cbfcd04938.php:76
+#: tmp/runtime/twig_cache/93/93c6e8188aafe2eb96e66fc89f5deb3691141d3c9117a598dcfb5addf6d8d224.php:76
+msgid "Type in the 'name' you used to save the survey, and the password."
+msgstr ""
+
+#: tmp/runtime/twig_cache/24/24a051e6afdd1d6b6fe8a42047f6ae58830861b091aaafd29efd57cbfcd04938.php:166
+msgid "Saved name:"
+msgstr ""
+
+#: tmp/runtime/twig_cache/24/24a051e6afdd1d6b6fe8a42047f6ae58830861b091aaafd29efd57cbfcd04938.php:263
+#: tmp/runtime/twig_cache/c9/c9250ff57dbf95973a5f4688ca09a4cf7d60b1e12131be1a2f1a1ace13c46e3e.php:406
+msgid "Security question:"
+msgstr ""
+
+#: tmp/runtime/twig_cache/24/24a051e6afdd1d6b6fe8a42047f6ae58830861b091aaafd29efd57cbfcd04938.php:327
+#: tmp/runtime/twig_cache/93/93c6e8188aafe2eb96e66fc89f5deb3691141d3c9117a598dcfb5addf6d8d224.php:354
+msgid "Load now"
+msgstr ""
+
+#: tmp/runtime/twig_cache/28/28c7fbde3c2c0cdc5a723627b689deb07c867387802a9c8fa2ceeb07cf17eb79.php:137
+#: tmp/runtime/twig_cache/dc/dc0d81d8276748df90eb81bf39856a3eaf6f75f95997f3d1f72835fbaf63288b.php:137
+msgid "Before you start, please prove you are human."
+msgstr ""
+
+#: tmp/runtime/twig_cache/28/28c7fbde3c2c0cdc5a723627b689deb07c867387802a9c8fa2ceeb07cf17eb79.php:173
+#: tmp/runtime/twig_cache/77/77a988d404a66c96ff9a7eeb1e8eb4cf283ea21862899195d3fd73a4742d6cb6.php:227
+#: tmp/runtime/twig_cache/c6/c61fc24ad04ac0b6c2026a9b5a98dbdd133bfc88917f7c662b7a16f4d47f1807.php:196
+msgid "Please solve the following equation:"
+msgstr ""
+
 #: tmp/runtime/twig_cache/28/28c7fbde3c2c0cdc5a723627b689deb07c867387802a9c8fa2ceeb07cf17eb79.php:207
 #: tmp/runtime/twig_cache/77/77a988d404a66c96ff9a7eeb1e8eb4cf283ea21862899195d3fd73a4742d6cb6.php:254
 #: tmp/runtime/twig_cache/c6/c61fc24ad04ac0b6c2026a9b5a98dbdd133bfc88917f7c662b7a16f4d47f1807.php:229
+#: tmp/runtime/twig_cache/c6/c63426ef58e5f79120f6ef707a61dc2b960f9717376f0e51b3f15a5c7b3e30cb.php:216
+#: tmp/runtime/twig_cache/d8/d8143f0896d60084f9ea22714412b525a119654cbb5f345ae298449c957f15fd.php:248
+#: tmp/runtime/twig_cache/dc/dc0d81d8276748df90eb81bf39856a3eaf6f75f95997f3d1f72835fbaf63288b.php:205
 msgid "Reload captcha"
 msgstr ""
 
@@ -25132,6 +25159,17 @@ msgstr ""
 
 #: tmp/runtime/twig_cache/29/29eb195f386ebef4c9fcccf7e6c031a7b9340d338f868bff580de778ede56253.php:198
 msgid "Privacy policy label text:"
+msgstr ""
+
+#: tmp/runtime/twig_cache/2a/2ad56055e546c26e6813b9542b79173b03ee8092b20a3589d1eeaeb5c2edf903.php:118
+msgid "Thank you."
+msgstr ""
+
+#: tmp/runtime/twig_cache/2c/2c78aff0dbe7383a51fa1c636618e18929c6490613518189d6ec2d36e39e28e9.php:60
+#: tmp/runtime/twig_cache/70/706b1ac8f5f0ce2877073e465b4438bf443287aae39b655c5901150eeb649141.php:65
+#: tmp/runtime/twig_cache/79/79af08b61c1de8b778c87668f897caea1d2321b40875b9cf4f3bb52ca72be8f6.php:67
+#: tmp/runtime/twig_cache/f9/f910cb0d5209a0090cd8507289d297670b3163d1896b925a5406cf4612c70cea.php:67
+msgid "Resume later"
 msgstr ""
 
 #: tmp/runtime/twig_cache/33/334f67bd8a1669929018e039777ce03729e48deb1d412da8658b682035b81dd7.php:43
@@ -25150,35 +25188,37 @@ msgstr ""
 msgid "Error: Theme \"%s\" is not installed."
 msgstr ""
 
-#: tmp/runtime/twig_cache/36/365fb08cc4e307938ce410e99249d5c3653d4a9d53c544dc30071e16d7cfc514.php:54
+#: tmp/runtime/twig_cache/35/35bcb08f5232c97c45aae977a2e872d9024477266a873ebd699976a0ce40994a.php:54
 msgid "Date format: %s"
 msgstr ""
 
-#: tmp/runtime/twig_cache/36/365fb08cc4e307938ce410e99249d5c3653d4a9d53c544dc30071e16d7cfc514.php:76
+#: tmp/runtime/twig_cache/35/35bcb08f5232c97c45aae977a2e872d9024477266a873ebd699976a0ce40994a.php:76
 msgid "Open date/time selector"
 msgstr ""
 
-#: tmp/runtime/twig_cache/39/39905c79ee8ac162ff6cfd4bbb806cca6d18f9fa9cd393dea4600873c94a0035.php:111
+#: tmp/runtime/twig_cache/39/39905c79ee8ac162ff6cfd4bbb806cca6d18f9fa9cd393dea4600873c94a0035.php:123
 msgid "Total:"
 msgstr ""
 
-#: tmp/runtime/twig_cache/3a/3a28fef050946acf7f19c749ba7bf55ab273d62d8f371c768db2cb4da05a0c5c.php:70
-msgid "Date in the format: %s"
+#: tmp/runtime/twig_cache/3b/3b12b08a1edb4341090ca3ea8c5649fcf41b25395cb69979b2e4b8cb556a5ad3.php:127
+#: tmp/runtime/twig_cache/b0/b01ecd7475f9408be62906cee2d8f3e8eb1574e4663d894cc3c330e61922a46e.php:96
+msgid "Change the language"
 msgstr ""
 
-#: tmp/runtime/twig_cache/3a/3a810f31336cd5f0617612c23735712a0e645b6f09f7caba8c48c09307a3a1f3.php:80
-msgid "Export these responses as PDF:"
+#: tmp/runtime/twig_cache/40/40406d772224ffe374af1acb4afe386a7c1aed18da0c12d99779c88170537788.php:128
+#: tmp/runtime/twig_cache/6a/6a25de61ac809352ecc1d14d448ed9c5b338bfb5fa8726c63332ca7f54d50818.php:116
+#: tmp/runtime/twig_cache/8d/8dda4672a6daa8876ee5819d137a9b890c445522f0ed3e68067d5165ca043b10.php:128
+#: tmp/runtime/twig_cache/ef/ef35bf71739933903af20a5520d35cce5ed7f98814473758c745060e2608865c.php:116
+msgid "Continue without answering"
 msgstr ""
 
-#: tmp/runtime/twig_cache/3a/3a810f31336cd5f0617612c23735712a0e645b6f09f7caba8c48c09307a3a1f3.php:82
-msgid "PDF export"
-msgstr ""
-
-#: tmp/runtime/twig_cache/3a/3a810f31336cd5f0617612c23735712a0e645b6f09f7caba8c48c09307a3a1f3.php:96
-msgid "Export these responses as queXML PDF:"
+#: tmp/runtime/twig_cache/40/40406d772224ffe374af1acb4afe386a7c1aed18da0c12d99779c88170537788.php:136
+#: tmp/runtime/twig_cache/8d/8dda4672a6daa8876ee5819d137a9b890c445522f0ed3e68067d5165ca043b10.php:136
+msgid "Answer question"
 msgstr ""
 
 #: tmp/runtime/twig_cache/46/46354df0dabd19254348edd24ff20d01483fa1a659e8884d0d662fa5b6aa0708.php:48
+#: tmp/runtime/twig_cache/ef/ef8e0b457e745af9f86ad18ef1e2c923a6f444cccb71bd7ec2ee1f820040830e.php:48
 msgid "Survey name (ID):"
 msgstr ""
 
@@ -25187,31 +25227,63 @@ msgid "Thank you for registering. You will receive an email shortly."
 msgstr ""
 
 #: tmp/runtime/twig_cache/4c/4c37b88fbc76d9838f13e55dac9077593c0683d77c67ecd8c850e49263619366.php:58
+#: tmp/runtime/twig_cache/ac/ac93c4ed2a3aabefc58dff5a1dec5963105e29bfb8ca85a396fbca3faf773e02.php:69
 msgid "You may register for this survey but you have to wait for the {{sStartDate}} before starting the survey."
 msgstr ""
 
+#: tmp/runtime/twig_cache/4c/4c37b88fbc76d9838f13e55dac9077593c0683d77c67ecd8c850e49263619366.php:66
+msgid "You may register for this survey if you wish to take part."
+msgstr ""
+
+#: tmp/runtime/twig_cache/4c/4c37b88fbc76d9838f13e55dac9077593c0683d77c67ecd8c850e49263619366.php:74
+msgid "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
+msgstr ""
+
 #: tmp/runtime/twig_cache/50/50309dcc1561c3cbcf03cb1f443af4cd8adc9b9c623b75f03ed34d5363cc732f.php:89
+#: tmp/runtime/twig_cache/e5/e5f1828172974472eafd05dbbbb459bb894e76fb77a1bfd858bc3626ecd66f65.php:89
 msgid "default"
 msgstr ""
 
-#: tmp/runtime/twig_cache/56/56f8be91a9d413294f468738ceab95cc02dfba1c7ca086bd56f268683dcca064.php:40
-msgid "LimeSurvey Fruity Theme"
+#: tmp/runtime/twig_cache/5b/5b7b98c093679edcd384125406416caaff8ba2a1ceb6cf2aafe046317ad02760.php:59
+#: tmp/runtime/twig_cache/d6/d6f26731e4b2ddbb43b76caa60a02411d72afa5d1262ead6234ee2551ede9036.php:59
+msgid "This survey is currently not active. You will not be able to save your responses."
 msgstr ""
 
-#: tmp/runtime/twig_cache/56/56f8be91a9d413294f468738ceab95cc02dfba1c7ca086bd56f268683dcca064.php:42
-msgid "A fruity theme for a flexible use. This theme offers monochromes variations and many options for easy customizations."
+#: tmp/runtime/twig_cache/5e/5e23a839a12a26aa9e355ee2c564db05188310912568a18fbc50b611e72cc4c4.php:42
+#: tmp/runtime/twig_cache/c6/c6c8a266cb8127cae8c305a71ffbaf1297edf11509250242210ecf5ef1a7f5b8.php:40
+msgid "Quotas exceeded"
 msgstr ""
 
 #: tmp/runtime/twig_cache/65/659ce82d31bb83e39f5ae4e9e426401c3cfc58733ca94918d2115c64c961b1ca.php:152
+#: tmp/runtime/twig_cache/db/db62192cfcd8589af524a1f27b14487fc616fb889043146b412f85ce5821f417.php:147
 msgid "For further information please contact %s:"
 msgstr ""
 
 #: tmp/runtime/twig_cache/6a/6a64696ffe91b1ddc4a6d281c1415b97be807b2518a3dd534d2975d9d1053ebb.php:64
+#: tmp/runtime/twig_cache/83/836d6b227099ab59a03d6f4ed69786ae5ac2083fc76455c8016455cc8015ee8d.php:64
 msgid "Restart this survey"
 msgstr ""
 
+#: tmp/runtime/twig_cache/76/760e7d0ddd5468738cc8b324f39d40c1d6f8e2a4a672b57939b91223557476d5.php:70
+msgid "Date in the format: %s"
+msgstr ""
+
 #: tmp/runtime/twig_cache/77/77a988d404a66c96ff9a7eeb1e8eb4cf283ea21862899195d3fd73a4742d6cb6.php:280
+#: tmp/runtime/twig_cache/d8/d8143f0896d60084f9ea22714412b525a119654cbb5f345ae298449c957f15fd.php:276
 msgid "Fields marked with an asterisk are mandatory."
+msgstr ""
+
+#: tmp/runtime/twig_cache/7e/7e4866016703be320f2311e3c8a46411f00249d5331025b4b334cbcd3b611f4b.php:153
+msgid "Add line"
+msgstr ""
+
+#: tmp/runtime/twig_cache/7f/7fec10dd821e838f6c85c83f8a751b33270b0fdca1c02abfbb85ce616b376c81.php:83
+msgid "SURVEY OPTIONS"
+msgstr ""
+
+#: tmp/runtime/twig_cache/80/80ae05e95bc57b24c948fd3454460b1f5129aab4fd5f984dc126659d61d5d7f1.php:42
+#: tmp/runtime/twig_cache/b0/b0c85cf0452d1d43034f316a69804053bed3ec7ed005be6d03d23435d73d393c.php:40
+msgid "Hint when response is not valid"
 msgstr ""
 
 #: tmp/runtime/twig_cache/81/814deb1b5bd95e4b93b32455894c2929f6666fffddd321d9daa52d3b017bea69.php:44
@@ -25262,20 +25334,55 @@ msgstr ""
 msgid "Tweet it"
 msgstr ""
 
-#: tmp/runtime/twig_cache/8d/8dda4672a6daa8876ee5819d137a9b890c445522f0ed3e68067d5165ca043b10.php:128
-#: tmp/runtime/twig_cache/ef/ef35bf71739933903af20a5520d35cce5ed7f98814473758c745060e2608865c.php:116
-msgid "Continue without answering"
+#: tmp/runtime/twig_cache/87/872689c07e01e3f7706fa32544800cc73a45d31a25e94db00230884b64aefb87.php:212
+msgid "Some example subquestion"
 msgstr ""
 
-#: tmp/runtime/twig_cache/8d/8dda4672a6daa8876ee5819d137a9b890c445522f0ed3e68067d5165ca043b10.php:136
-msgid "Answer question"
+#: tmp/runtime/twig_cache/87/872689c07e01e3f7706fa32544800cc73a45d31a25e94db00230884b64aefb87.php:222
+msgid "Subquestion:"
+msgstr ""
+
+#: tmp/runtime/twig_cache/87/872689c07e01e3f7706fa32544800cc73a45d31a25e94db00230884b64aefb87.php:279
+msgid "Insert a new subquestion after this one"
+msgstr ""
+
+#: tmp/runtime/twig_cache/87/872689c07e01e3f7706fa32544800cc73a45d31a25e94db00230884b64aefb87.php:283
+msgid "Delete this subquestion"
 msgstr ""
 
 #: tmp/runtime/twig_cache/8e/8ea9cd83e526d99adccf6baceebb2316d7d256d2d98faba9d49e8215328cb27d.php:40
+#: tmp/runtime/twig_cache/dd/dd6e0d762c016de6919d49c59800e5c3a09cc1c77209f045ea561a909ef1abe1.php:42
 msgid "Your privacy policy text is shown here."
 msgstr ""
 
+#: tmp/runtime/twig_cache/93/93c6e8188aafe2eb96e66fc89f5deb3691141d3c9117a598dcfb5addf6d8d224.php:166
+msgid "Saved name"
+msgstr ""
+
+#: tmp/runtime/twig_cache/93/93c6e8188aafe2eb96e66fc89f5deb3691141d3c9117a598dcfb5addf6d8d224.php:195
+#: tmp/runtime/twig_cache/e8/e883c9625cb5a32d8af3953f1317a9f481a2adb319d1bbdf94e6153ba500df0c.php:224
+msgid "enter your name"
+msgstr ""
+
+#: tmp/runtime/twig_cache/93/93c6e8188aafe2eb96e66fc89f5deb3691141d3c9117a598dcfb5addf6d8d224.php:239
+msgid "enter your password"
+msgstr ""
+
+#: tmp/runtime/twig_cache/93/93c6e8188aafe2eb96e66fc89f5deb3691141d3c9117a598dcfb5addf6d8d224.php:263
+#: tmp/runtime/twig_cache/e8/e883c9625cb5a32d8af3953f1317a9f481a2adb319d1bbdf94e6153ba500df0c.php:402
+msgid "Security question"
+msgstr ""
+
+#: tmp/runtime/twig_cache/93/93c6e8188aafe2eb96e66fc89f5deb3691141d3c9117a598dcfb5addf6d8d224.php:299
+#: tmp/runtime/twig_cache/c6/c63426ef58e5f79120f6ef707a61dc2b960f9717376f0e51b3f15a5c7b3e30cb.php:232
+#: tmp/runtime/twig_cache/d8/d8143f0896d60084f9ea22714412b525a119654cbb5f345ae298449c957f15fd.php:258
+#: tmp/runtime/twig_cache/dc/dc0d81d8276748df90eb81bf39856a3eaf6f75f95997f3d1f72835fbaf63288b.php:221
+#: tmp/runtime/twig_cache/e8/e883c9625cb5a32d8af3953f1317a9f481a2adb319d1bbdf94e6153ba500df0c.php:436
+msgid "enter result here - numbers only"
+msgstr ""
+
 #: tmp/runtime/twig_cache/94/941bc4e8524782a0768b1201bb583e2a59b90535997fc37db0d5ca8747f3d5aa.php:40
+#: tmp/runtime/twig_cache/d6/d63258f6fa5808dbf763096e9f93f45b20b97625a8a2e2aa700283346592e9f7.php:42
 msgid "This group description is fairly vacuous, but quite important."
 msgstr ""
 
@@ -25283,60 +25390,140 @@ msgstr ""
 msgid "Hints and warnings"
 msgstr ""
 
-#: tmp/runtime/twig_cache/9b/9ba54255ff6e7f2b42f6ac5821e2920ce6c846500115d88c24df1196e869a911.php:212
-msgid "Some example subquestion"
-msgstr ""
-
-#: tmp/runtime/twig_cache/9b/9ba54255ff6e7f2b42f6ac5821e2920ce6c846500115d88c24df1196e869a911.php:222
-msgid "Subquestion:"
-msgstr ""
-
-#: tmp/runtime/twig_cache/9b/9ba54255ff6e7f2b42f6ac5821e2920ce6c846500115d88c24df1196e869a911.php:279
-msgid "Insert a new subquestion after this one"
-msgstr ""
-
-#: tmp/runtime/twig_cache/9b/9ba54255ff6e7f2b42f6ac5821e2920ce6c846500115d88c24df1196e869a911.php:283
-msgid "Delete this subquestion"
-msgstr ""
-
-#: tmp/runtime/twig_cache/b0/b01ecd7475f9408be62906cee2d8f3e8eb1574e4663d894cc3c330e61922a46e.php:96
-msgid "Change the language"
-msgstr ""
-
-#: tmp/runtime/twig_cache/b0/b0c85cf0452d1d43034f316a69804053bed3ec7ed005be6d03d23435d73d393c.php:40
-msgid "Hint when response is not valid"
-msgstr ""
-
-#: tmp/runtime/twig_cache/b5/b53dd68f3d9ef5ee936c6db791f9e26c460fd96cb05eb3507e2b30863219a070.php:40
-msgid "Show privacy policy"
-msgstr ""
-
-#: tmp/runtime/twig_cache/be/bee6848bdc49d16becf948b499992da8ef26d1fb275ae18d41dba009ec27526e.php:171
+#: tmp/runtime/twig_cache/a4/a485c32f005b9d1c5f50f25b3017771893990277eab5d1cf3cb7b3a151700be9.php:171
 msgid "Save changes"
 msgstr ""
 
-#: tmp/runtime/twig_cache/be/bee6848bdc49d16becf948b499992da8ef26d1fb275ae18d41dba009ec27526e.php:191
+#: tmp/runtime/twig_cache/a4/a485c32f005b9d1c5f50f25b3017771893990277eab5d1cf3cb7b3a151700be9.php:191
 msgid "Upload your files"
 msgstr ""
 
+#: tmp/runtime/twig_cache/ac/ac93c4ed2a3aabefc58dff5a1dec5963105e29bfb8ca85a396fbca3faf773e02.php:49
+msgid "Thank you for registering."
+msgstr ""
+
+#: tmp/runtime/twig_cache/ac/ac93c4ed2a3aabefc58dff5a1dec5963105e29bfb8ca85a396fbca3faf773e02.php:54
+msgid "You will receive an email shortly."
+msgstr ""
+
+#: tmp/runtime/twig_cache/ac/ac93c4ed2a3aabefc58dff5a1dec5963105e29bfb8ca85a396fbca3faf773e02.php:75
+msgid "You may have to register to take part in this survey."
+msgstr ""
+
+#: tmp/runtime/twig_cache/ac/ac93c4ed2a3aabefc58dff5a1dec5963105e29bfb8ca85a396fbca3faf773e02.php:81
+msgid "Please fill in the information and we’ll send you a link immediately."
+msgstr ""
+
+#: tmp/runtime/twig_cache/b5/b53dd68f3d9ef5ee936c6db791f9e26c460fd96cb05eb3507e2b30863219a070.php:40
+#: tmp/runtime/twig_cache/e2/e26e5d203aa0e1a6e2b83f44008c0ae1e2869dbed777a62bb058fcdd4e3d0280.php:42
+msgid "Show privacy policy"
+msgstr ""
+
+#: tmp/runtime/twig_cache/c6/c61fc24ad04ac0b6c2026a9b5a98dbdd133bfc88917f7c662b7a16f4d47f1807.php:55
+msgid "To participate in this restricted survey, you need a valid access code."
+msgstr ""
+
 #: tmp/runtime/twig_cache/c6/c61fc24ad04ac0b6c2026a9b5a98dbdd133bfc88917f7c662b7a16f4d47f1807.php:77
+#: tmp/runtime/twig_cache/c6/c63426ef58e5f79120f6ef707a61dc2b960f9717376f0e51b3f15a5c7b3e30cb.php:77
 msgid "If you have been issued an access code, please enter it in the box below and click continue."
 msgstr ""
 
 #: tmp/runtime/twig_cache/c6/c61fc24ad04ac0b6c2026a9b5a98dbdd133bfc88917f7c662b7a16f4d47f1807.php:83
+#: tmp/runtime/twig_cache/c6/c63426ef58e5f79120f6ef707a61dc2b960f9717376f0e51b3f15a5c7b3e30cb.php:83
 msgid "Please confirm the access code by answering the security question below and click continue."
 msgstr ""
 
-#: tmp/runtime/twig_cache/c6/c6c8a266cb8127cae8c305a71ffbaf1297edf11509250242210ecf5ef1a7f5b8.php:40
-msgid "Quotas exceeded"
+#: tmp/runtime/twig_cache/c6/c63426ef58e5f79120f6ef707a61dc2b960f9717376f0e51b3f15a5c7b3e30cb.php:55
+msgid "Please enter your access code to participate in this survey."
 msgstr ""
 
-#: tmp/runtime/twig_cache/ce/ce76afa55557317957e494d2138a3641df57791388d6bac7dfecd19dc57dce77.php:115
-msgid "Add line"
+#: tmp/runtime/twig_cache/c6/c63426ef58e5f79120f6ef707a61dc2b960f9717376f0e51b3f15a5c7b3e30cb.php:147
+msgid "enter access code"
 msgstr ""
 
-#: tmp/runtime/twig_cache/d6/d6f26731e4b2ddbb43b76caa60a02411d72afa5d1262ead6234ee2551ede9036.php:59
-msgid "This survey is currently not active. You will not be able to save your responses."
+#: tmp/runtime/twig_cache/c6/c63426ef58e5f79120f6ef707a61dc2b960f9717376f0e51b3f15a5c7b3e30cb.php:189
+#: tmp/runtime/twig_cache/d8/d8143f0896d60084f9ea22714412b525a119654cbb5f345ae298449c957f15fd.php:228
+#: tmp/runtime/twig_cache/dc/dc0d81d8276748df90eb81bf39856a3eaf6f75f95997f3d1f72835fbaf63288b.php:172
+msgid "Please solve the following equation"
+msgstr ""
+
+#: tmp/runtime/twig_cache/c9/c9250ff57dbf95973a5f4688ca09a4cf7d60b1e12131be1a2f1a1ace13c46e3e.php:67
+#: tmp/runtime/twig_cache/e8/e883c9625cb5a32d8af3953f1317a9f481a2adb319d1bbdf94e6153ba500df0c.php:67
+msgid "Save your unfinished survey"
+msgstr ""
+
+#: tmp/runtime/twig_cache/c9/c9250ff57dbf95973a5f4688ca09a4cf7d60b1e12131be1a2f1a1ace13c46e3e.php:79
+#: tmp/runtime/twig_cache/e8/e883c9625cb5a32d8af3953f1317a9f481a2adb319d1bbdf94e6153ba500df0c.php:79
+msgid "Enter a name and password for this survey and click save below."
+msgstr ""
+
+#: tmp/runtime/twig_cache/c9/c9250ff57dbf95973a5f4688ca09a4cf7d60b1e12131be1a2f1a1ace13c46e3e.php:85
+#: tmp/runtime/twig_cache/e8/e883c9625cb5a32d8af3953f1317a9f481a2adb319d1bbdf94e6153ba500df0c.php:85
+msgid "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password."
+msgstr ""
+
+#: tmp/runtime/twig_cache/c9/c9250ff57dbf95973a5f4688ca09a4cf7d60b1e12131be1a2f1a1ace13c46e3e.php:93
+#: tmp/runtime/twig_cache/e8/e883c9625cb5a32d8af3953f1317a9f481a2adb319d1bbdf94e6153ba500df0c.php:93
+msgid "If you give an email address, an email containing the details will be sent to you."
+msgstr ""
+
+#: tmp/runtime/twig_cache/c9/c9250ff57dbf95973a5f4688ca09a4cf7d60b1e12131be1a2f1a1ace13c46e3e.php:99
+#: tmp/runtime/twig_cache/e8/e883c9625cb5a32d8af3953f1317a9f481a2adb319d1bbdf94e6153ba500df0c.php:99
+msgid "After having clicked the save button you can either close this browser window or continue filling out the survey."
+msgstr ""
+
+#: tmp/runtime/twig_cache/c9/c9250ff57dbf95973a5f4688ca09a4cf7d60b1e12131be1a2f1a1ace13c46e3e.php:110
+#: tmp/runtime/twig_cache/e8/e883c9625cb5a32d8af3953f1317a9f481a2adb319d1bbdf94e6153ba500df0c.php:110
+msgid "To remain anonymous please use a pseudonym as your username, also an email address is not required."
+msgstr ""
+
+#: tmp/runtime/twig_cache/c9/c9250ff57dbf95973a5f4688ca09a4cf7d60b1e12131be1a2f1a1ace13c46e3e.php:309
+msgid "Repeat password:"
+msgstr ""
+
+#: tmp/runtime/twig_cache/c9/c9250ff57dbf95973a5f4688ca09a4cf7d60b1e12131be1a2f1a1ace13c46e3e.php:362
+msgid "Your email address:"
+msgstr ""
+
+#: tmp/runtime/twig_cache/d8/d8143f0896d60084f9ea22714412b525a119654cbb5f345ae298449c957f15fd.php:88
+msgid "enter your first name"
+msgstr ""
+
+#: tmp/runtime/twig_cache/d8/d8143f0896d60084f9ea22714412b525a119654cbb5f345ae298449c957f15fd.php:114
+msgid "enter your last name"
+msgstr ""
+
+#: tmp/runtime/twig_cache/d8/d8143f0896d60084f9ea22714412b525a119654cbb5f345ae298449c957f15fd.php:132
+msgid "E-mail"
+msgstr ""
+
+#: tmp/runtime/twig_cache/d8/d8143f0896d60084f9ea22714412b525a119654cbb5f345ae298449c957f15fd.php:142
+#: tmp/runtime/twig_cache/e8/e883c9625cb5a32d8af3953f1317a9f481a2adb319d1bbdf94e6153ba500df0c.php:370
+msgid "enter e-mail address"
+msgstr ""
+
+#: tmp/runtime/twig_cache/d8/d8143f0896d60084f9ea22714412b525a119654cbb5f345ae298449c957f15fd.php:295
+msgid "Register now"
+msgstr ""
+
+#: tmp/runtime/twig_cache/e5/e5e56b4bdb840521b3977d85dc86b8cc4d7d37a3cb1db8d3ab80ff51a2aae598.php:91
+msgid "This survey is anonymous"
+msgstr ""
+
+#: tmp/runtime/twig_cache/e8/e883c9625cb5a32d8af3953f1317a9f481a2adb319d1bbdf94e6153ba500df0c.php:279
+msgid "enter a password"
+msgstr ""
+
+#: tmp/runtime/twig_cache/e8/e883c9625cb5a32d8af3953f1317a9f481a2adb319d1bbdf94e6153ba500df0c.php:330
+msgid "repeat password"
+msgstr ""
+
+#: tmp/runtime/twig_cache/e8/e883c9625cb5a32d8af3953f1317a9f481a2adb319d1bbdf94e6153ba500df0c.php:358
+msgid "Your e-mail address"
+msgstr ""
+
+#: tmp/runtime/twig_cache/f3/f3bc55169ca374f3849030b7936072d5c7ec09262d365605a994d179d1114c5b.php:54
+msgid "SELECT LANGUAGE"
 msgstr ""
 
 #: tmp/runtime/twig_cache/f4/f41fa7a7b5746a0f674783def4292e293aae564db17e4c8280c36b7b108d1e12.php:43
@@ -25353,10 +25540,6 @@ msgstr ""
 
 #: tmp/runtime/twig_cache/f4/f41fa7a7b5746a0f674783def4292e293aae564db17e4c8280c36b7b108d1e12.php:95
 msgid "Listed publicly:"
-msgstr ""
-
-#: tmp/runtime/twig_cache/f5/f5a008e014fbd7a199d4ac03dad9fcca899080d6b68c91c5267e6275f2bfe11b.php:111
-msgid "Accept"
 msgstr ""
 
 #: tmp/runtime/twig_cache/f7/f75140c03972202c28579359649ac51ae64cd87889821bc64b729dc0af458c10.php:40
