@@ -17886,7 +17886,7 @@
 	  //Current options object
 	  const options = _parseOptions(e);
 	  //Set the message if available
-	  $(this).find('.modal-body-text').html(options.message);
+	  $(this).find('.modal-body-text').text(options.message);
 	  //first remove both classes
 	  $(this).find('.btn-ok').removeClass("btn-primary btn-danger");
 	  if (options.btnclass !== null) {
