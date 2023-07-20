@@ -6,6 +6,8 @@ use Question;
 use Answer;
 use AnswerL10n;
 
+use LimeSurvey\DI;
+
 use LimeSurvey\Models\Services\Exception\{
     PersistErrorException,
     NotFoundException,
@@ -25,31 +27,7 @@ class QuestionEditorAnswers
      * Based on QuestionAdministrationController::actionSaveQuestionData()
      *
      * @param Question $question
-     * @param array{
-     *  ?logic: array{
-     *      ?min_answers: int,
-     *      ?max_answers: int,
-     *      ?array_filter_style: int,
-     *      ?array_filter: string,
-     *      ?array_filter_exclude: string,
-     *      ?exclude_all_others: int,
-     *      ?random_group: string,
-     *      ?em_validation_q: string,
-     *      ?em_validation_q_tip: array{
-     *          ?en: string,
-     *          ?de: string,
-     *          ...<array-key, mixed>
-     *      },
-     *          ...<array-key, mixed>
-     * },
-     * ?display: array{
-     *      ...<array-key, mixed>
-     *  },
-     *  ?statistics: array{
-     *      ...<array-key, mixed>
-     *  },
-     *  ...<array-key, mixed>
-     * } $input
+     * @param $answerOptions
      * @return void
      * @throws PersistErrorException
      * @throws NotFoundException
@@ -89,7 +67,6 @@ class QuestionEditorAnswers
                 $count
             );
         }
-        return true;
     }
 
     /**
@@ -106,27 +83,36 @@ class QuestionEditorAnswers
     {
         foreach ($optionArray as $scaleId => $data) {
             if (!isset($data['code'])) {
-                throw new Exception(
+                throw new \Exception(
                     'code is not set in data: ' . json_encode($data)
                 );
             }
-            $answer = new Answer();
-            $answer->qid = $question->qid;
-            $answer->code = $data['code'];
-            $answer->sortorder = $count;
+
+            // We use the container to create a model instance
+            // allowing us to mock the model instance via
+            // container configuration in unit tests
+            $answer = DI::getContainer()
+                ->make(Answer::class);
+            $answer->setAttributes([
+                'qid' => $question->qid,
+                'code' => $data['code'],
+                'sortorder' => $count,
+                'assessment_value' =>
+                    isset($data['assessment'])
+                    ? $data['assessment']
+                    : 0,
+                'scaleid' => $scaleId
+            ]);
             $count++;
-            if (isset($data['assessment'])) {
-                $answer->assessment_value = $data['assessment'];
-            } else {
-                $answer->assessment_value = 0;
-            }
-            $answer->scale_id = $scaleId;
+
             if (!$answer->save()) {
                 throw new PersistErrorException(
                     gT('Could not save answer')
                 );
             }
+
             $answer->refresh();
+
             foreach (
                 $data['answeroptionl10n']
                 as $language => $answerOptionText
@@ -151,10 +137,14 @@ class QuestionEditorAnswers
      */
     private function storeAnswerL10n(Answer $answer, $language, $text)
     {
-        $l10n = new AnswerL10n();
-        $l10n->aid = $answer->aid;
-        $l10n->language = $language;
-        $l10n->answer = $text;
+        $l10n = DI::getContainer()
+            ->make(AnswerL10n::class);
+        $l10n->setAttributes([
+            'aid' => $answer->aid,
+            'language' => $language,
+            'answer' => $text
+        ]);
+
         if (!$l10n->save()) {
             throw new PersistErrorException(
                 gT('Could not save answer option')
