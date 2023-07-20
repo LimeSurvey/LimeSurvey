@@ -9,6 +9,7 @@ use AnswerL10n;
 use LimeSurvey\DI;
 
 use LimeSurvey\Models\Services\Exception\{
+    BadRequestException,
     PersistErrorException,
     NotFoundException,
     PermissionDeniedException
@@ -83,8 +84,9 @@ class QuestionEditorAnswers
     {
         foreach ($optionArray as $scaleId => $data) {
             if (!isset($data['code'])) {
-                throw new \Exception(
-                    'code is not set in data: ' . json_encode($data)
+                throw new BadRequestException(
+                    '"code" is not set in attribute data: '
+                    . json_encode($data)
                 );
             }
 

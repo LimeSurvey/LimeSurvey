@@ -15,7 +15,8 @@ use ls\tests\TestBaseClass;
 use LimeSurvey\Models\Services\QuestionEditor\QuestionEditorAnswers;
 
 use LimeSurvey\Models\Services\Exception\{
-    PersistErrorException
+    PersistErrorException,
+    BadRequestException
 };
 
 /**
@@ -23,6 +24,44 @@ use LimeSurvey\Models\Services\Exception\{
  */
 class QuestionEditorAnswersTest extends TestBaseClass
 {
+    /**
+     * @testdox save() throws BadRequestException missing code
+     */
+    public function testSaveThrowsExceptionBadRequestOnMissingCode()
+    {
+        $this->expectException(
+            BadRequestException::class
+        );
+
+        $modelQuestionAttribute = Mockery::mock(QuestionAttribute::class)
+            ->makePartial();
+
+        $question = Mockery::mock(Question::class)
+            ->makePartial();
+        $question->shouldReceive('settAttributes')
+            ->passthru();
+        $question->setAttributes(['qid' => 1], false);
+        $question->shouldReceive('addRelatedRecord')
+            ->passthru();
+        $question->addRelatedRecord(
+            'questionType',
+            (object)(['answerscales' => 100]),
+            false
+        );
+        $question->shouldReceive('deleteAllAnswers')->once();
+
+
+        $questionEditorAnswers = new QuestionEditorAnswers(
+            $modelQuestionAttribute
+        );
+
+        $questionEditorAnswers->save($question, [
+            [
+                123 => ['not-code' => 'ABC123']
+            ]
+        ]);
+    }
+
     /**
      * @testdox save() throws PersistErrorException on save answer failure
      */
