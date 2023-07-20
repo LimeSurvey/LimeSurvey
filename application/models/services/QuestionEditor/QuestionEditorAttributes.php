@@ -78,7 +78,20 @@ class QuestionEditorAttributes
      *
      * @param Question $question
      * @param array{
-     *  ...<array-key, mixed>
+     *      ?min_answers: int,
+     *      ?max_answers: int,
+     *      ?array_filter_style: int,
+     *      ?array_filter: string,
+     *      ?array_filter_exclude: string,
+     *      ?exclude_all_others: int,
+     *      ?random_group: string,
+     *      ?em_validation_q: string,
+     *      ?em_validation_q_tip: array{
+     *          ?en: string,
+     *          de: string,
+     *          ...<array-key, mixed>
+     *      },
+     *      ...<array-key, mixed>
      * } $dataSet
      * @return void
      * @throws PersistErrorException
