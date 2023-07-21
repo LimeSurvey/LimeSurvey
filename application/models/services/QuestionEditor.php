@@ -133,36 +133,15 @@ class QuestionEditor
      */
     public function save($input)
     {
-        $input  = $input ?? [];
-        $surveyId = (int) ($input['sid'] ?? 0);
-
-        $data = [];
-        $data['question']         = $input['question'] ?? [];
-        $data['question']['sid']  = $surveyId;
-        $data['question']['qid']  = $data['question']['qid'] ?? null;
-        $data['questionL10n']     = $input['questionL10n'] ?? [];
-        $data['advancedSettings'] = $input['advancedSettings'] ?? [];
-        $data['answeroptions']    = $input['answeroptions'] ?? null;
-        $data['subquestions']     = $input['subquestions'] ?? null;
+        $data = $this->normaliseInput($input);
 
         $question = $this->modelQuestion
             ->findByPk((int) $data['question']['qid']);
-
-        $surveyId = $question ? $question->sid : $surveyId;
-
-        // Different permission check when sid vs qid is given.
-        // This double permission check is needed if user manipulates the post data.
-        if (
-            !$this->modelPermission->hasSurveyPermission(
-            $surveyId,
-            'surveycontent',
-            'update'
-            )
-        ) {
-            throw new PermissionDeniedException(
-                'Access denied'
-            );
+        if ($question) {
+            $data['question']['sid'] = $$question->sid;
         }
+
+        $this->checkPermissions($data['question']['sid']);
 
         // Rollback at failure.
         $transaction = $this->yiiDb->beginTransaction();
@@ -202,7 +181,6 @@ class QuestionEditor
             }
 
             $transaction->commit();
-
             // All done, redirect to edit form.
             $question->refresh();
             $this->proxyExpressionManager->setDirtyFlag();
@@ -210,7 +188,50 @@ class QuestionEditor
             $transaction->rollback();
             throw $e;
         }
-
         return $question;
+    }
+
+    /**
+     * Normalise input
+     *
+     * @param array
+     * @return array
+     */
+    private function normaliseInput($input)
+    {
+        $input  = $input ?? [];
+
+        $data = [];
+        $data['question']         = $input['question'] ?? [];
+        $data['question']['sid']  = $input['sid'] ?? 0;
+        $data['question']['qid']  = $data['question']['qid'] ?? null;
+        $data['questionL10n']     = $input['questionL10n'] ?? [];
+        $data['advancedSettings'] = $input['advancedSettings'] ?? [];
+        $data['answeroptions']    = $input['answeroptions'] ?? null;
+        $data['subquestions']     = $input['subquestions'] ?? null;
+
+        return $data;
+    }
+
+    /**
+     * Check permissions
+     *
+     * @param int $surveyId
+     */
+    private function checkPermissions($surveyId)
+    {
+        // Different permission check when sid vs qid is given.
+        // This double permission check is needed if user manipulates the post data.
+        if (
+            !$this->modelPermission->hasSurveyPermission(
+            $surveyId,
+            'surveycontent',
+            'update'
+            )
+        ) {
+            throw new PermissionDeniedException(
+                'Access denied'
+            );
+        }
     }
 }
