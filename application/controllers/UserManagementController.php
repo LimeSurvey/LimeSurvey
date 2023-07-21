@@ -445,10 +445,8 @@ class UserManagementController extends LSBaseController
             );
         }
         $userId = Yii::app()->request->getParam('userid');
-        $sUserName = flattenText(Yii::app()->request->getParam("user"));
 
         $aData['userId'] = $userId;
-        $aData['sUserName'] = $sUserName;
 
         return $this->renderPartial('partial/confirmuserdelete', $aData);
     }
