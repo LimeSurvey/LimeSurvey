@@ -2,6 +2,7 @@
 
 namespace LimeSurvey\Models\Services\QuestionEditor;
 
+use Question;
 use QuestionAttribute;
 
 use LimeSurvey\Models\Services\Exception\PersistErrorException;
