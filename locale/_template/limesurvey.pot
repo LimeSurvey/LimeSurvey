@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2023-07-21 12:44:30+00:00\n"
+"POT-Creation-Date: 2023-07-21 14:45:55+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -8603,7 +8603,7 @@ msgid "Double-click or drag-and-drop items in the left list to move them to the 
 msgstr ""
 
 #: application/core/QuestionTypes/RankingStyle/RenderRanking.php:126
-msgid "Drag oder double-click images into order."
+msgid "Drag or double-click images into order."
 msgstr ""
 
 #: application/core/QuestionTypes/RankingStyle/RenderRanking.php:133
@@ -23880,6 +23880,7 @@ msgstr ""
 
 #: application/views/survey/system/privacy/heading.php:7
 #: tmp/runtime/twig_cache/68/681beb7ec6ad741a479468cc81304335be2043a59e98bd578d43a178f3a9e892.php:89
+#: tmp/runtime/twig_cache/e5/e5e56b4bdb840521b3977d85dc86b8cc4d7d37a3cb1db8d3ab80ff51a2aae598.php:91
 msgid "This survey is anonymous."
 msgstr ""
 
@@ -25146,6 +25147,9 @@ msgstr ""
 #: tmp/runtime/twig_cache/28/28c7fbde3c2c0cdc5a723627b689deb07c867387802a9c8fa2ceeb07cf17eb79.php:173
 #: tmp/runtime/twig_cache/77/77a988d404a66c96ff9a7eeb1e8eb4cf283ea21862899195d3fd73a4742d6cb6.php:227
 #: tmp/runtime/twig_cache/c6/c61fc24ad04ac0b6c2026a9b5a98dbdd133bfc88917f7c662b7a16f4d47f1807.php:196
+#: tmp/runtime/twig_cache/c6/c63426ef58e5f79120f6ef707a61dc2b960f9717376f0e51b3f15a5c7b3e30cb.php:189
+#: tmp/runtime/twig_cache/d8/d8143f0896d60084f9ea22714412b525a119654cbb5f345ae298449c957f15fd.php:228
+#: tmp/runtime/twig_cache/dc/dc0d81d8276748df90eb81bf39856a3eaf6f75f95997f3d1f72835fbaf63288b.php:172
 msgid "Please solve the following equation:"
 msgstr ""
 
@@ -25287,7 +25291,7 @@ msgid "Add line"
 msgstr ""
 
 #: tmp/runtime/twig_cache/7f/7fec10dd821e838f6c85c83f8a751b33270b0fdca1c02abfbb85ce616b376c81.php:83
-msgid "SURVEY OPTIONS"
+msgid "Survey options"
 msgstr ""
 
 #: tmp/runtime/twig_cache/80/80ae05e95bc57b24c948fd3454460b1f5129aab4fd5f984dc126659d61d5d7f1.php:42
@@ -25370,11 +25374,11 @@ msgstr ""
 
 #: tmp/runtime/twig_cache/93/93c6e8188aafe2eb96e66fc89f5deb3691141d3c9117a598dcfb5addf6d8d224.php:195
 #: tmp/runtime/twig_cache/e8/e883c9625cb5a32d8af3953f1317a9f481a2adb319d1bbdf94e6153ba500df0c.php:224
-msgid "enter your name"
+msgid "Enter your name"
 msgstr ""
 
 #: tmp/runtime/twig_cache/93/93c6e8188aafe2eb96e66fc89f5deb3691141d3c9117a598dcfb5addf6d8d224.php:239
-msgid "enter your password"
+msgid "Enter your password"
 msgstr ""
 
 #: tmp/runtime/twig_cache/93/93c6e8188aafe2eb96e66fc89f5deb3691141d3c9117a598dcfb5addf6d8d224.php:263
@@ -25387,7 +25391,7 @@ msgstr ""
 #: tmp/runtime/twig_cache/d8/d8143f0896d60084f9ea22714412b525a119654cbb5f345ae298449c957f15fd.php:258
 #: tmp/runtime/twig_cache/dc/dc0d81d8276748df90eb81bf39856a3eaf6f75f95997f3d1f72835fbaf63288b.php:221
 #: tmp/runtime/twig_cache/e8/e883c9625cb5a32d8af3953f1317a9f481a2adb319d1bbdf94e6153ba500df0c.php:436
-msgid "enter result here - numbers only"
+msgid "Enter result here - numbers only"
 msgstr ""
 
 #: tmp/runtime/twig_cache/94/941bc4e8524782a0768b1201bb583e2a59b90535997fc37db0d5ca8747f3d5aa.php:40
@@ -25447,13 +25451,7 @@ msgid "Please enter your access code to participate in this survey."
 msgstr ""
 
 #: tmp/runtime/twig_cache/c6/c63426ef58e5f79120f6ef707a61dc2b960f9717376f0e51b3f15a5c7b3e30cb.php:147
-msgid "enter access code"
-msgstr ""
-
-#: tmp/runtime/twig_cache/c6/c63426ef58e5f79120f6ef707a61dc2b960f9717376f0e51b3f15a5c7b3e30cb.php:189
-#: tmp/runtime/twig_cache/d8/d8143f0896d60084f9ea22714412b525a119654cbb5f345ae298449c957f15fd.php:228
-#: tmp/runtime/twig_cache/dc/dc0d81d8276748df90eb81bf39856a3eaf6f75f95997f3d1f72835fbaf63288b.php:172
-msgid "Please solve the following equation"
+msgid "Enter access code"
 msgstr ""
 
 #: tmp/runtime/twig_cache/c9/c9250ff57dbf95973a5f4688ca09a4cf7d60b1e12131be1a2f1a1ace13c46e3e.php:67
@@ -25495,11 +25493,11 @@ msgid "Your email address:"
 msgstr ""
 
 #: tmp/runtime/twig_cache/d8/d8143f0896d60084f9ea22714412b525a119654cbb5f345ae298449c957f15fd.php:88
-msgid "enter your first name"
+msgid "Enter your first name"
 msgstr ""
 
 #: tmp/runtime/twig_cache/d8/d8143f0896d60084f9ea22714412b525a119654cbb5f345ae298449c957f15fd.php:114
-msgid "enter your last name"
+msgid "Enter your last name"
 msgstr ""
 
 #: tmp/runtime/twig_cache/d8/d8143f0896d60084f9ea22714412b525a119654cbb5f345ae298449c957f15fd.php:132
@@ -25508,19 +25506,15 @@ msgstr ""
 
 #: tmp/runtime/twig_cache/d8/d8143f0896d60084f9ea22714412b525a119654cbb5f345ae298449c957f15fd.php:142
 #: tmp/runtime/twig_cache/e8/e883c9625cb5a32d8af3953f1317a9f481a2adb319d1bbdf94e6153ba500df0c.php:370
-msgid "enter e-mail address"
+msgid "Enter e-mail address"
 msgstr ""
 
 #: tmp/runtime/twig_cache/d8/d8143f0896d60084f9ea22714412b525a119654cbb5f345ae298449c957f15fd.php:295
 msgid "Register now"
 msgstr ""
 
-#: tmp/runtime/twig_cache/e5/e5e56b4bdb840521b3977d85dc86b8cc4d7d37a3cb1db8d3ab80ff51a2aae598.php:91
-msgid "This survey is anonymous"
-msgstr ""
-
 #: tmp/runtime/twig_cache/e8/e883c9625cb5a32d8af3953f1317a9f481a2adb319d1bbdf94e6153ba500df0c.php:279
-msgid "enter a password"
+msgid "Enter password"
 msgstr ""
 
 #: tmp/runtime/twig_cache/e8/e883c9625cb5a32d8af3953f1317a9f481a2adb319d1bbdf94e6153ba500df0c.php:358
@@ -25528,7 +25522,7 @@ msgid "Your e-mail address"
 msgstr ""
 
 #: tmp/runtime/twig_cache/f3/f3bc55169ca374f3849030b7936072d5c7ec09262d365605a994d179d1114c5b.php:54
-msgid "SELECT LANGUAGE"
+msgid "Select language"
 msgstr ""
 
 #: tmp/runtime/twig_cache/f4/f41fa7a7b5746a0f674783def4292e293aae564db17e4c8280c36b7b108d1e12.php:43
