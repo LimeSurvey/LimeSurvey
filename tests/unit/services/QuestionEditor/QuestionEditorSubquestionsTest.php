@@ -16,7 +16,8 @@ use LimeSurvey\Models\Services\QuestionEditor\{
 
 use LimeSurvey\Models\Services\Exception\{
     PersistErrorException,
-    BadRequestException
+    BadRequestException,
+    NotFoundException
 };
 
 /**
@@ -99,11 +100,75 @@ class QuestionEditorSubquestionsTest extends TestBaseClass
         );
     }
 
-
     /**
      * @testdox save() throws PersistErrorException on update failure
      */
     public function testSaveThrowsExceptionPersistErrorOnUpdateFailure()
+    {
+        $this->expectException(
+            NotFoundException::class
+        );
+
+        // Model question is a required dependency
+        // but is not relevant to this test
+        $questionEditorL10n = Mockery::mock(
+            QuestionEditorL10n::class
+        )->makePartial();
+
+        // The code under test updates a Question.
+        // Configure mock model question to return false
+        // to simulate subquestion not found
+        $modelQuestion = Mockery::mock(Question::class)
+            ->makePartial();
+        $modelQuestion
+            ->shouldReceive('findByAttributes')
+            ->andReturn(false);
+
+        // Create a mock of the question we are editing
+        $question = Mockery::mock(Question::class)
+            ->makePartial();
+        // Question id (qid) must be set
+        $question->shouldReceive('settAttributes')
+            ->passthru();
+        $question->setAttributes(['qid' => 1], false);
+        $question->shouldReceive('addRelatedRecord')
+            ->passthru();
+        // $question->survey->active must be Y
+        $question->addRelatedRecord(
+            'survey',
+            (object)(['active' => 'Y']),
+            false
+        );
+        // $question->questionType->subquestions must be > 0
+        $question->addRelatedRecord(
+            'questionType',
+            (object)(['subquestions' => 1]),
+            false
+        );
+
+        $questionEditorSubquestions = new QuestionEditorSubquestions(
+            $questionEditorL10n,
+            $modelQuestion
+        );
+
+        $subquestions = [
+            [
+                123 => [
+                    'code' => 'ABC123',
+                    'relevance' => 1
+                ]
+            ]
+        ];
+        $questionEditorSubquestions->save(
+            $question,
+            $subquestions
+        );
+    }
+
+    /**
+     * @testdox save() throws NotFoundException on subquestion not found
+     */
+    public function testSaveThrowsNotFoundExceptionOnSubquestionNotFound()
     {
         $this->expectException(
             PersistErrorException::class
