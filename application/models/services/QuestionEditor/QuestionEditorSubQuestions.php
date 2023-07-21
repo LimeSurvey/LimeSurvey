@@ -4,6 +4,8 @@ namespace LimeSurvey\Models\Services\QuestionEditor;
 
 use Question;
 
+use LimeSurvey\DI;
+
 use LimeSurvey\Models\Services\QuestionEditor\{
     QuestionEditorL10n
 };
@@ -25,11 +27,14 @@ use LimeSurvey\Models\Services\Exception\{
 class QuestionEditorSubQuestions
 {
     private QuestionEditorL10n $questionEditorL10n;
+    private Question $modelQuestion;
 
     public function __construct(
-        QuestionEditorL10n $questionEditorL10n
+        QuestionEditorL10n $questionEditorL10n,
+        Question $modelQuestion
     ) {
         $this->questionEditorL10n = $questionEditorL10n;
+        $this->modelQuestion = $modelQuestion;
     }
 
     /**
@@ -38,10 +43,10 @@ class QuestionEditorSubQuestions
      * @param array{
      *  ...<array-key, mixed>
      * } $subquestions
+     * @return void
      * @throws PersistErrorException
      * @throws NotFoundException
      * @throws PermissionDeniedException
-     * @return void
      */
     public function save(Question $question, $subquestions)
     {
@@ -81,9 +86,10 @@ class QuestionEditorSubQuestions
         $questionOrder = 0;
         foreach ($subquestionsArray as $subquestionArray) {
             foreach ($subquestionArray as $scaleId => $data) {
-                $subquestion             = new Question();
-                $subquestion->sid        = $question->sid;
-                $subquestion->gid        = $question->gid;
+                $subquestion = DI::getContainer()
+                    ->make(Question::class);
+                $subquestion->sid = $question->sid;
+                $subquestion->gid = $question->gid;
                 $subquestion->parent_qid = $question->qid;
                 $subquestion->question_order = $questionOrder;
                 $questionOrder++;
@@ -100,7 +106,7 @@ class QuestionEditorSubQuestions
                 $subquestion->scale_id = $scaleId;
                 if (!$subquestion->save()) {
                     throw new PersistErrorException(
-                        gT('Could not save subquestion')
+                        'Could not save subquestion'
                     );
                 }
                 $subquestion->refresh();
@@ -127,7 +133,7 @@ class QuestionEditorSubQuestions
         $questionOrder = 0;
         foreach ($subquestionsArray as $subquestionArray) {
             foreach ($subquestionArray as $scaleId => $data) {
-                $subquestion = Question::model()->findByAttributes(
+                $subquestion = $this->modelQuestion->findByAttributes(
                     [
                         'parent_qid' => $question->qid,
                         'title'      => $data['code'],
@@ -136,28 +142,28 @@ class QuestionEditorSubQuestions
                 );
                 if (empty($subquestion)) {
                     throw new NotFoundException(
-                        'Found no subquestion with code ' . $data['code']
+                        'Subquestion with code "'
+                        . $data['code'] . '" not found'
                     );
                 }
-                $subquestion->sid        = $question->sid;
-                $subquestion->gid        = $question->gid;
+                $subquestion->sid = $question->sid;
+                $subquestion->gid = $question->gid;
                 $subquestion->parent_qid = $question->qid;
                 $subquestion->question_order = $questionOrder;
                 $questionOrder++;
                 if (!isset($data['code'])) {
                     throw new BadRequestException(
-                        'Internal error: '
-                        . 'Missing mandatory field "code" for question'
+                        'Missing mandatory field "code" for question'
                     );
                 }
-                $subquestion->title      = $data['code'];
+                $subquestion->title = $data['code'];
                 if ($scaleId === 0) {
-                    $subquestion->relevance  = $data['relevance'];
+                    $subquestion->relevance = $data['relevance'];
                 }
-                $subquestion->scale_id   = $scaleId;
+                $subquestion->scale_id = $scaleId;
                 if (!$subquestion->update()) {
                     throw new PersistErrorException(
-                        gT('Could not save subquestion')
+                        'Could not save subquestion'
                     );
                 }
                 $subquestion->refresh();
