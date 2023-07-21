@@ -138,10 +138,12 @@ class QuestionEditor
 
         $data = [];
         $data['question']         = $input['question'] ?? [];
-        $data['questionL10n']     = $input['questionL10n'] ?? [];
-        $data['advancedSettings'] = $input['advancedSettings'] ?? [];
         $data['question']['sid']  = $surveyId;
         $data['question']['qid']  = $data['question']['qid'] ?? null;
+        $data['questionL10n']     = $input['questionL10n'] ?? [];
+        $data['advancedSettings'] = $input['advancedSettings'] ?? [];
+        $data['answeroptions']    = $input['answeroptions'] ?? null;
+        $data['subquestions']     = $input['subquestions'] ?? null;
 
         $question = $this->modelQuestion
             ->findByPk((int) $data['question']['qid']);
@@ -185,15 +187,19 @@ class QuestionEditor
                     $data['question']
                 );
 
-            $this->questionEditorAnswers->save(
-                $question,
-                $input['answeroptions']
-            );
+            if (isset($input['answeroptions'])) {
+                $this->questionEditorAnswers->save(
+                    $question,
+                    $input['answeroptions']
+                );
+            }
 
-            $this->questionEditorSubQuestions->save(
-                $question,
-                $input['subquestions']
-            );
+            if (isset($input['subquestions'])) {
+                $this->questionEditorSubQuestions->save(
+                    $question,
+                    $input['subquestions']
+                );
+            }
 
             $transaction->commit();
 
