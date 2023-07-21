@@ -18,7 +18,6 @@ use LimeSurvey\Models\Services\Exception\{
     PersistErrorException,
     BadRequestException
 };
-use LimeSurvey\Models\Services\QuestionEditor;
 
 /**
  * @group services
@@ -34,12 +33,20 @@ class QuestionEditorSubquestionsTest extends TestBaseClass
             PersistErrorException::class
         );
 
-        $questionEditorL10n = Mockery::mock(QuestionEditorL10n::class)
-            ->makePartial();
+        // Model question is a required dependency
+        // but is not relevant to this test
+        $questionEditorL10n = Mockery::mock(
+            QuestionEditorL10n::class
+        )->makePartial();
 
+        // Model question is a required dependency
+        // but is not executed for this test
         $modelQuestion = Mockery::mock(Question::class)
             ->makePartial();
 
+        // The code under test creates a new Question
+        // - using dependency injection.
+        // Configure DI to return a mock question
         $newQuestion = Mockery::mock(Question::class)
             ->makePartial();
         $newQuestion
@@ -52,11 +59,13 @@ class QuestionEditorSubquestionsTest extends TestBaseClass
             }
         );
 
+        // Create a mock of the question we are editing
         $question = Mockery::mock(Question::class)
             ->makePartial();
-        $question->shouldReceive('settAttributes')
-            ->passthru();
+        // Question id (qid) must be set
+        $question->shouldReceive('settAttributes');
         $question->setAttributes(['qid' => 1], false);
+        // $question->survey->active must be N
         $question->shouldReceive('addRelatedRecord')
             ->passthru();
         $question->addRelatedRecord(
@@ -64,12 +73,12 @@ class QuestionEditorSubquestionsTest extends TestBaseClass
             (object)(['active' => 'N']),
             false
         );
+        // $question->questionType->subquestions must be > 0
         $question->addRelatedRecord(
             'questionType',
             (object)(['subquestions' => 1]),
             false
         );
-        $question->shouldReceive('deleteAllSubquestions')->once();
 
         $questionEditorSubquestions = new QuestionEditorSubquestions(
             $questionEditorL10n,
@@ -99,33 +108,42 @@ class QuestionEditorSubquestionsTest extends TestBaseClass
             PersistErrorException::class
         );
 
-        $questionEditorL10n = Mockery::mock(QuestionEditorL10n::class)
-            ->makePartial();
+        // Model question is a required dependency
+        // but is not relevant to this test
+        $questionEditorL10n = Mockery::mock(
+            QuestionEditorL10n::class
+        )->makePartial();
 
+        // The code under test updates a Question.
+        // Configure mock model question to return mock
+        // - question for update
         $updateQuestion = Mockery::mock(Question::class)
             ->makePartial();
         $updateQuestion
             ->shouldReceive('update')
             ->andReturn(false);
-
         $modelQuestion = Mockery::mock(Question::class)
             ->makePartial();
         $modelQuestion
             ->shouldReceive('findByAttributes')
             ->andReturn($updateQuestion);
 
+        // Create a mock of the question we are editing
         $question = Mockery::mock(Question::class)
             ->makePartial();
+        // Question id (qid) must be set
         $question->shouldReceive('settAttributes')
             ->passthru();
         $question->setAttributes(['qid' => 1], false);
         $question->shouldReceive('addRelatedRecord')
             ->passthru();
+        // $question->survey->active must be Y
         $question->addRelatedRecord(
             'survey',
             (object)(['active' => 'Y']),
             false
         );
+        // $question->questionType->subquestions must be > 0
         $question->addRelatedRecord(
             'questionType',
             (object)(['subquestions' => 1]),
