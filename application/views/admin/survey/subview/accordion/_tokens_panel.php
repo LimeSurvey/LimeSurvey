@@ -52,8 +52,6 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
         let inheritedAnonymizedOption = '" . $oSurvey->oOptions->anonymized . "';
         let inheritedPersistenceOption = '" . $oSurvey->oOptions->tokenanswerspersistence . "';
         let inheritedAllowAfterCompletionOption = '" . $oSurvey->oOptions->alloweditaftercompletion . "';
-        let multipleResponsesText = '" . gT('Allow multiple responses with the same access code') . "';
-        let updateResponsesText = '" . gT('Allow to update the responses using the access code') . "';
 
         $(document).ready(function(){
             
@@ -88,14 +86,17 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
 
             // Update alloweditaftercompletion
             if ( anonymizedOption === 'Y' ) {
-                $('label[for=\"alloweditaftercompletion\"]').text(multipleResponsesText);
+                $('#alloweditaftercompletion-update').toggleClass('hidden', true);
+                $('#alloweditaftercompletion-multiple').toggleClass('hidden', false);
             } else if( persistenceOption === 'N' ) {
-                $('label[for=\"alloweditaftercompletion\"]').text(multipleResponsesText);
+                $('#alloweditaftercompletion-update').toggleClass('hidden', true);
+                $('#alloweditaftercompletion-multiple').toggleClass('hidden', false);
             } else if( persistenceOption === 'Y' ) {
-                $('label[for=\"alloweditaftercompletion\"]').text(updateResponsesText);
+                $('#alloweditaftercompletion-update').toggleClass('hidden', false);
+                $('#alloweditaftercompletion-multiple').toggleClass('hidden', true);
             }
             
-            $('#multiResponseHint').toggle(multipleResponsesSameToken );
+            $('#multiResponseHint').toggleClass('hidden', ! multipleResponsesSameToken );
         }
     })();
     
@@ -150,7 +151,8 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
             <!-- Allow multiple responses or update responses with one token -->
             <div class="mb-3">
                 <label class=" form-label" for='alloweditaftercompletion' title='<?php  eT("If participant-based response persistence is enabled a participant can update his response after completion, otherwise a participant can add new responses without restriction."); ?>'>
-                    <?php  eT("Allow multiple responses or update responses with one access code:"); ?>
+                    <div id="alloweditaftercompletion-update" class="hidden"><?php eT('Allow to update the responses using the access code'); ?></div>
+                    <div id="alloweditaftercompletion-multiple" class="hidden"><?php eT('Allow multiple responses with the same access code'); ?></div>
                 </label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
@@ -161,7 +163,7 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
                             : $optionsOnOff
                     ]); ?>
                 </div>
-                <span id="multiResponseHint" class="hint" style="display:none;"><?php eT("Participants will be able to enter as many responses as they want, despite what Uses Left token attribute is set to."); ?></span>
+                <span id="multiResponseHint" class="hint"><?php eT("Participants will be able to enter as many responses as they want, despite what Uses Left token attribute is set to."); ?></span>
             </div>
 
             <!--  Set token length to -->
