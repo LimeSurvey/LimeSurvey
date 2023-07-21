@@ -133,6 +133,11 @@ class QuestionEditorSubQuestions
         $questionOrder = 0;
         foreach ($subquestionsArray as $subquestionArray) {
             foreach ($subquestionArray as $scaleId => $data) {
+                if (!isset($data['code'])) {
+                    throw new BadRequestException(
+                        'Missing mandatory field "code" for question'
+                    );
+                }
                 $subquestion = $this->modelQuestion->findByAttributes(
                     [
                         'parent_qid' => $question->qid,
@@ -151,11 +156,6 @@ class QuestionEditorSubQuestions
                 $subquestion->parent_qid = $question->qid;
                 $subquestion->question_order = $questionOrder;
                 $questionOrder++;
-                if (!isset($data['code'])) {
-                    throw new BadRequestException(
-                        'Missing mandatory field "code" for question'
-                    );
-                }
                 $subquestion->title = $data['code'];
                 if ($scaleId === 0) {
                     $subquestion->relevance = $data['relevance'];
