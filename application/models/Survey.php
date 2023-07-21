@@ -1106,8 +1106,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
             // Time comparison
             $oNow   = new DateTime($sNow);
-            $oStop  = new DateTime($sStop);
-            $oStart = new DateTime($sStart);
+            $oStop  = empty($sStop) ? null : new DateTime($sStop);
+            $oStart = empty($sStart) ? null : new DateTime($sStart);
 
             $bExpired = (!is_null($sStop) && $oStop < $oNow);
             $bWillRun = (!is_null($sStart) && $oStart > $oNow);
