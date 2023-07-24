@@ -121,8 +121,6 @@ class QuestionEditorQuestion
     /**
      * Method to store and filter data for a new question
      *
-     * todo: move to model or service class
-     *
      * @param array $data
      * @param boolean $subQuestion
      * @return Question
@@ -151,7 +149,6 @@ class QuestionEditorQuestion
                 $data['same_default'] = 1;
             }
         }
-
         if (!isset($data['same_script'])) {
             $data['same_script'] = 0;
         }
@@ -181,6 +178,22 @@ class QuestionEditorQuestion
                 ->getMaxQuestionOrder($questionGroupId);
         }
 
+        $question = $this->saveQuestionData($data,$questionGroupId);
+
+        $this->initL10n($survey,$question->qid);
+
+        return $question;
+    }
+
+    /**
+     * Save question data
+     *
+     * @param array $data
+     * @param int $questionGroupId
+     * @return Question
+     */
+    private function saveQuestionData($data, $questionGroupId)
+    {
         // We use the container to create a model instance
         // allowing us to mock the model instance via
         // container configuration in unit tests
@@ -211,10 +224,21 @@ class QuestionEditorQuestion
             );
         }
 
-        // Init empty L10n records
+        return $question;
+    }
+
+    /**
+     * Init L10n for a question
+     *
+     * @param Survey $survey
+     * @param int $questionId
+     * @return void
+     */
+    private function initL10n($survey, $questionId)
+    {
         foreach ($survey->allLanguages as $language) {
             $this->questionEditorL10n->save(
-                $question->qid,
+                $questionId,
                 array(
                     [
                         'language' => $language,
@@ -225,8 +249,6 @@ class QuestionEditorQuestion
                 )
             );
         }
-
-        return $question;
     }
 
     /**
