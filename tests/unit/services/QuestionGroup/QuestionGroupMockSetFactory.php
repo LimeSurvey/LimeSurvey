@@ -95,6 +95,16 @@ class QuestionGroupMockSetFactory
         return $modelQuestionGroup;
     }
 
+    public function getMockModelForQuestionGroupPersistError(): QuestionGroup
+    {
+        $modelQuestionGroup = Mockery::mock(QuestionGroup::class)
+            ->makePartial();
+        $modelQuestionGroup->shouldReceive('save')
+            ->andReturn(false);
+
+        return $modelQuestionGroup;
+    }
+
     private function getMockModelPermission(): Permission
     {
         $modelPermission = Mockery::mock(Permission::class)

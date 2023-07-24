@@ -4,6 +4,7 @@ namespace ls\tests\unit\services\QuestionGroup;
 
 use LimeSurvey\Models\Services\Exception\NotFoundException;
 use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
+use LimeSurvey\Models\Services\Exception\PersistErrorException;
 use LimeSurvey\Models\Services\QuestionGroupService;
 use ls\tests\TestBaseClass;
 use Mockery;
@@ -72,6 +73,16 @@ class QuestionGroupExceptionsTest extends TestBaseClass
         $questionGroupService->createGroup(1, []);
     }
 
+    public function testUpdateThrowsExceptionPersistError()
+    {
+        $this->expectException(
+            PersistErrorException::class
+        );
+
+        $questionGroupService = $this->getMockedServiceForQuestionGroupPersistError();
+        $questionGroupService->updateGroup(1, 1, []);
+    }
+
     private function getMockedServiceForPermissionDeniedException(): QuestionGroupService
     {
         $mockSetFactory = new QuestionGroupMockSetFactory();
@@ -98,6 +109,16 @@ class QuestionGroupExceptionsTest extends TestBaseClass
 
         $mockSet = $mockSetFactory->make();
         $mockSet->modelQuestionGroup = $mockSetFactory->getMockModelForQuestionGroupNotFound();
+
+        return (new QuestionGroupFactory())->make($mockSet);
+    }
+
+    private function getMockedServiceForQuestionGroupPersistError(): QuestionGroupService
+    {
+        $mockSetFactory = new QuestionGroupMockSetFactory();
+
+        $mockSet = $mockSetFactory->make();
+        $mockSet->modelQuestionGroup = $mockSetFactory->getMockModelForQuestionGroupPersistError();
 
         return (new QuestionGroupFactory())->make($mockSet);
     }
