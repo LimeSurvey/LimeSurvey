@@ -17,14 +17,8 @@
                 </div>
                 <div class="col-8 ls-card-grid__description">
                         {% if surveyTextContent.surveyls_description != '' %}
-                            <span id="description" class="line-clamp-3">
-                                {{getExpressionManagerOutput(surveyTextContent.surveyls_description)}}
-                            </span>
-                            {% if surveyTextContent.surveyls_description|length > 50  %}
-                                {{getTextDisplayWidget(surveyTextContent.surveyls_description, "description_text")}}
-                            {% endif %}
+                            {{getTextDisplayWidget(surveyTextContent.surveyls_description, "description_text")}}
                         {% endif %}
-
                 </div>
             </div>
         </li>

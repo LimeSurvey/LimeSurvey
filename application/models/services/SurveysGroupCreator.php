@@ -22,7 +22,7 @@ class SurveysGroupCreator
     /** @var SurveysGroups */
     private $surveysGroup;
 
-    /** @var $surveysGroupsettings */
+    /** @var SurveysGroupsettings */
     private $surveysGroupsettings;
 
     /**

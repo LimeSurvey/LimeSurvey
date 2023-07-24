@@ -34,6 +34,20 @@ $route['admin/labels/<_action:\w+>/<_lid:\d+>'] = "admin/labels/index/<_action>/
 //ExpressionScript Engine tests
 $route['admin/expressions'] = "admin/expressions/index";
 
+// REST
+// - Resource index
+// - Resource index with id
+$route['rest/<_api_version:\w+>/<_entity>/<_id>'] = array(
+    'rest',
+    'verb' => 'GET, PUT, PATCH, POST, DELETE',
+    'matchValue' => false
+);
+$route['rest/<_api_version:\w+>/<_entity>'] = array(
+    'rest',
+    'verb' => 'GET, PUT, PATCH, POST, DELETE',
+    'matchValue' => false
+);
+
 //optout - optin
 $route['optout/<_sid:\d+>/(:any)/(:any)'] = "optout/index/<_sid>/$2/$3";
 $route['optout/tokens/<surveyid:\d+>'] = array('optout/tokens', 'matchValue'=>true);
@@ -43,6 +57,6 @@ $route['optin/participants/<surveyid:\d+>'] = array('optin/participants', 'match
 $route['statistics_user/<surveyid:\d+>'] = array('StatisticsUser/action', 'matchValue'=>true);
 $route['statistics_user/action'] = 'StatisticsUser/action';
 
-$route['<_controller:\w+>/<_action:\w+>'] = '<_controller>/<_action>';
+//$route['<_controller:\w+>/<_action:\w+>'] = '<_controller>/<_action>';
 
 return $route;

@@ -51,6 +51,14 @@ class IpAddressAnonymizeTest extends TestBaseClassWeb
         $overview = self::$webDriver->findElement(WebDriverBy::id('ls-activate-survey'));
         $overview->click();
 
+        sleep(1);
+
+        //activate survey in open-access mode
+        //modal has been opend, activate survey in open-access mode
+        $overview = self::$webDriver->findElement(WebDriverBy::id('saveactivateBtn'));
+        $overview->click();
+
+        /**
 
         // Confirm.
         $overview = self::$webDriver->wait(5)->until(
@@ -67,7 +75,10 @@ class IpAddressAnonymizeTest extends TestBaseClassWeb
             )
         );
         $overview->click();
+         *
+         * */
 
+        sleep(1);
         // Click "Run survey".
         $exceuteBtn = self::$webDriver->wait(20)->until(
             WebDriverExpectedCondition::presenceOfElementLocated(
@@ -131,6 +142,11 @@ class IpAddressAnonymizeTest extends TestBaseClassWeb
         );
         $overview->click();
 
+        //modal has been opend, activate survey in open-access mode
+        $overview = self::$webDriver->findElement(WebDriverBy::id('saveactivateBtn'));
+        $overview->click();
+
+        /**
         // Confirm.
         $overview = self::$webDriver->wait(10)->until(
             WebDriverExpectedCondition::presenceOfElementLocated(
@@ -146,7 +162,10 @@ class IpAddressAnonymizeTest extends TestBaseClassWeb
             )
         );
         $overview->click();
+         *
+         * */
 
+        sleep(1);
         // Click "Run survey".
         $exceuteBtn = self::$webDriver->wait(5)->until(
             WebDriverExpectedCondition::presenceOfElementLocated(
@@ -174,8 +193,6 @@ class IpAddressAnonymizeTest extends TestBaseClassWeb
 
         sleep(2);
 
-        //now check if ip was anonymized (ipv4, last digit should be 0)
-        //get ipadr from table survey_573837 ...
         $models = \Response::model(self::$surveyId)->findAll();
 
         $this->assertTrue((isset($models[0]->ipaddr)) && ($models[0]->ipaddr==='127.0.0.1'));

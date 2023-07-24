@@ -1090,6 +1090,7 @@ function XMLImportLabelsets($sFullFilePath, $options)
         // Insert the new question
         $arLabelset = new LabelSet();
         $arLabelset->setAttributes($insertdata);
+        $arLabelset->setAttribute('owner_id', App()->user->getId());
         $arLabelset->save();
         $aLSIDReplacements[$iOldLabelSetID] = $arLabelset->lid; // add old and new lsid to the mapping array
         $results['labelsets']++;
@@ -2153,6 +2154,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 
     // Import assessments --------------------------------------------------------
     if (isset($xml->assessments)) {
+        $aASIDReplacements = [];
         foreach ($xml->assessments->rows->row as $row) {
             $insertdata = array();
             foreach ($row as $key => $value) {
