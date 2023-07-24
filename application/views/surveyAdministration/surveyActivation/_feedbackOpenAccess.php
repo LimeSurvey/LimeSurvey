@@ -13,7 +13,7 @@
             <div class="card-body d-flex">
                 <ul class="list-unstyled">
                     <li>
-                <?php et('Statistics and responses are now active. '); ?>
+                <?php et('Statistics and responses are now accessible.'); ?>
                 <a href="<?= Yii::app()->createUrl('responses/browse', ['surveyId' => $surveyId])?>"><?= gt('See all responses and statistics')?></a>
                     </li>
                 <?php
