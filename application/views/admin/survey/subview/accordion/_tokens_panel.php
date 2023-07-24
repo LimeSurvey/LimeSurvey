@@ -163,7 +163,7 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
                             : $optionsOnOff
                     ]); ?>
                 </div>
-                <span id="multiResponseHint" class="hint"><?php eT("Participants will be able to enter as many responses as they want, despite what Uses Left token attribute is set to."); ?></span>
+                <div id="multiResponseHint" class="form-text hint hidden"><?php eT("Participants will be able to enter as many responses as they want, despite what Uses Left token attribute is set to."); ?></div>
             </div>
 
             <!--  Set token length to -->
