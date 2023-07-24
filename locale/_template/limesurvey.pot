@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2023-07-24 12:33:20+00:00\n"
+"POT-Creation-Date: 2023-07-24 13:16:20+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -7245,11 +7245,8 @@ msgstr ""
 
 #: application/core/LsDefaultDataSets.php:304
 #: application/core/LsDefaultDataSets.php:305
-msgid "Overview question & groups"
-msgstr ""
-
 #: application/core/LsDefaultDataSets.php:306
-msgid "Overview question and groups"
+msgid "Overview questions & groups"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:335
@@ -9491,7 +9488,7 @@ msgid "Owner"
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:94
-#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:44
+#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:43
 msgid "Anonymized responses"
 msgstr ""
 
@@ -24021,7 +24018,7 @@ msgid "Apply and go to survey"
 msgstr ""
 
 #: application/views/surveyAdministration/partial/_modalActivateSuccess.php:16
-msgid "Congrats! Your survey has been activated"
+msgid "Congrats! Your survey has been activated."
 msgstr ""
 
 #: application/views/surveyAdministration/partial/_modalActivateSuccess.php:22
@@ -24175,7 +24172,7 @@ msgid "%sQuestions%s, %sgroups%s and %sparameters%s can be %sedited%s again."
 msgstr ""
 
 #: application/views/surveyAdministration/stopSurvey_view.php:76
-msgid "Important: export your responses before deactivating your survey."
+msgid "Important: Export your responses before deactivating your survey."
 msgstr ""
 
 #: application/views/surveyAdministration/stopSurvey_view.php:78
@@ -24211,75 +24208,73 @@ msgid "Once a survey has been activated you can no longer add or delete question
 msgstr ""
 
 #: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:13
-msgid ""
-"Editing questions, question groups or subquestions is still possible. The following settings cannot\n"
-"    be changed once a survey has been activated"
+msgid "Editing questions, question groups or subquestions is still possible. The following settings cannot be changed once a survey has been activated."
 msgstr ""
 
-#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:24
+#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:23
 msgid ""
 "Note: This survey has a past expiration date configured and is currently not available to participants. Please remember to update/remove the\n"
 "                expiration date in the survey settings after activation."
 msgstr ""
 
-#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:47
+#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:46
 msgid "If enabled, responses will be anonymized - there will be no way to connect responses and participants."
 msgstr ""
 
-#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:64
+#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:63
 msgid "Date stamp"
 msgstr ""
 
-#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:67
+#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:66
 msgid "If enabled, the submission time of a response will be recorded."
 msgstr ""
 
-#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:85
+#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:84
 msgid "Save IP address"
 msgstr ""
 
-#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:88
+#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:87
 msgid "If enabled, the IP address of the survey respondent will be stored together with the response."
 msgstr ""
 
-#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:103
+#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:102
 msgid "Anonymize IP address"
 msgstr ""
 
-#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:106
+#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:105
 msgid "If enabled, the IP address of the respondent is not recorded."
 msgstr ""
 
-#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:124
+#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:123
 msgid "Save timings"
 msgstr ""
 
-#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:127
+#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:126
 msgid "If enabled, the time spent on each page of the survey by each survey participant is recorded."
 msgstr ""
 
-#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:142
+#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:141
 msgid "Save referrer URL"
 msgstr ""
 
-#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:145
+#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:144
 msgid "If enabled, the referrer URL will be stored together with the response."
 msgstr ""
 
-#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:167
-msgid "Do you want your survey to be public for everyone (open-access mode) or invite only (closed-access mode)"
+#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:166
+msgid "Do you want your survey to be public for everyone (open-access mode) or invite only (closed-access mode)?"
 msgstr ""
 
-#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:174
+#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:173
 msgid "Open-access mode"
 msgstr ""
 
-#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:174
+#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:173
 msgid "Closed-access mode"
 msgstr ""
 
 #: application/views/surveyAdministration/surveyActivation/_activated_closedAccess.php:12
-msgid "Congrats! Your survey has been activated successfully in closed access mode"
+msgid "Congrats! Your survey has been activated successfully in closed-access mode."
 msgstr ""
 
 #: application/views/surveyAdministration/surveyActivation/_activated_closedAccess.php:17
@@ -24295,7 +24290,7 @@ msgid "You can switch back to open-access mode at any time. Click on the red \"D
 msgstr ""
 
 #: application/views/surveyAdministration/surveyActivation/_activated_closedAccess.php:20
-msgid "Participant table "
+msgid "Participants table "
 msgstr ""
 
 #: application/views/surveyAdministration/surveyActivation/_activation_error.php:10
@@ -24343,7 +24338,7 @@ msgid "Back to survey home"
 msgstr ""
 
 #: application/views/surveyAdministration/surveyActivation/_feedbackOpenAccess.php:10
-msgid "Congrats! Your survey has been activated successfully in open-access mode"
+msgid "Congrats! Your survey has been activated successfully in open-access mode."
 msgstr ""
 
 #: application/views/surveyAdministration/surveyActivation/_feedbackOpenAccess.php:16
