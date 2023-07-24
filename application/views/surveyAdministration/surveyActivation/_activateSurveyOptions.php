@@ -10,8 +10,7 @@ $optionsOnOff = ['Y' => gt('On'), 'N' => gt('Off')];
         <h2><?php eT("Please keep in mind:"); ?></h2>
         <h2><?php eT("Once a survey has been activated you can no longer add or delete questions, question groups or subquestions.") ?> </h2>
         <p>
-            <?php eT("Editing questions, question groups or subquestions is still possible. The following settings cannot
-    be changed once a survey has been activated", 'unescaped'); ?>
+            <?php eT("Editing questions, question groups or subquestions is still possible. The following settings cannot be changed once a survey has been activated.", 'unescaped'); ?>
         </p>
     </div>
 </div>
@@ -164,7 +163,7 @@ if (!$closeAccessMode) {
         <div class="col-12 mt-5 mb-3">
             <div class="sub_footer_border"></div>
         </div>
-        <h3><?php eT("Do you want your survey to be public for everyone (open-access mode) or invite only (closed-access mode)"); ?></h3>
+        <h3><?php eT("Do you want your survey to be public for everyone (open-access mode) or invite only (closed-access mode)?"); ?></h3>
         <div class='col-md-10'>
             <div class="mb-5">
                 <?php

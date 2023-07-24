@@ -13,9 +13,9 @@ class Update_611 extends DatabaseUpdateBase
         $this->db->createCommand()->update(
             '{{surveymenu_entries}}',
             [
-                "title" => "Overview question & groups",
-                "menu_title" => "Overview question & groups",
-                "menu_description" => "Overview question and groups",
+                "title" => "Overview questions & groups",
+                "menu_title" => "Overview questions & groups",
+                "menu_description" => "Overview questions & groups",
             ],
             'name=:name',
             [':name' => 'listQuestions']

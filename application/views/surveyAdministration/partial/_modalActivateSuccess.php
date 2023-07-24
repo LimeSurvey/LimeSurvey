@@ -13,7 +13,7 @@
             <?php
             App()->getController()->renderPartial(
                 '/layouts/partial_modals/modal_header',
-                ['modalTitle' => gt('Congrats! Your survey has been activated')]
+                ['modalTitle' => gt('Congrats! Your survey has been activated.')]
             );
             ?>
 

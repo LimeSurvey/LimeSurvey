@@ -7,7 +7,7 @@
         <div class="card card-primary border-left-success h-100">
             <div class="card-header">
                 <h5 class="card-title">
-                    <?php et('Congrats! Your survey has been activated successfully in open-access mode');?>
+                    <?php et('Congrats! Your survey has been activated successfully in open-access mode.');?>
                 </h5>
             </div>
             <div class="card-body d-flex">

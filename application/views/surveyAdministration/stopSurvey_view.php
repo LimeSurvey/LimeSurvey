@@ -73,7 +73,7 @@
                                 '<b>', '</b>','<b>', '</b>', '<b>', '</b>', '<b>', '</b>'
                             ); ?></li>
                         <p class="mt-4">
-                            <?php et('Important: export your responses before deactivating your survey.') ?>
+                            <?php et('Important: Export your responses before deactivating your survey.') ?>
                             <a href='<?php echo $this->createUrl('admin/export/sa/exportresults/surveyid/' . $surveyid) ?>'>
                                 <?php eT("See details.") ?>
                             </a>
