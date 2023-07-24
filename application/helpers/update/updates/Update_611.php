@@ -15,7 +15,7 @@ class Update_611 extends DatabaseUpdateBase
             [
                 "title" => "Overview questions & groups",
                 "menu_title" => "Overview questions & groups",
-                "menu_description" => "Overview questions & groups",
+                "menu_description" => "Overview of questions and groups where you can add, edit and reorder them",
             ],
             'name=:name',
             [':name' => 'listQuestions']
