@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2023-07-24 13:16:20+00:00\n"
+"POT-Creation-Date: 2023-07-24 13:38:10+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -23864,7 +23864,7 @@ msgid "Target (sub-)question:"
 msgstr ""
 
 #: application/views/surveyAdministration/afterDeactivateSurvey_view.php:13
-msgid "Your survey(%d) was deactivated."
+msgid "Your survey (%d) was deactivated."
 msgstr ""
 
 #: application/views/surveyAdministration/afterDeactivateSurvey_view.php:18
@@ -24030,7 +24030,8 @@ msgid "Sharing options "
 msgstr ""
 
 #: application/views/surveyAdministration/partial/_modalActivateSuccess.php:28
-msgid "Statistics and responses are now active."
+#: application/views/surveyAdministration/surveyActivation/_feedbackOpenAccess.php:16
+msgid "Statistics and responses are now accessible."
 msgstr ""
 
 #: application/views/surveyAdministration/partial/_modalActivateSuccess.php:30
@@ -24039,7 +24040,7 @@ msgid "See all responses and statistics"
 msgstr ""
 
 #: application/views/surveyAdministration/partial/_modalActivateSuccess.php:34
-msgid "By default, surveys are activated in open-access mode and participants do not need an inviation code."
+msgid "By default, surveys are activated in open-access mode and participants do not need an invitaion code."
 msgstr ""
 
 #: application/views/surveyAdministration/partial/topbar/_modalSurveyActivation.php:29
@@ -24339,10 +24340,6 @@ msgstr ""
 
 #: application/views/surveyAdministration/surveyActivation/_feedbackOpenAccess.php:10
 msgid "Congrats! Your survey has been activated successfully in open-access mode."
-msgstr ""
-
-#: application/views/surveyAdministration/surveyActivation/_feedbackOpenAccess.php:16
-msgid "Statistics and responses are now active. "
 msgstr ""
 
 #: application/views/surveyAdministration/surveyActivation/_feedbackOpenAccess.php:20
