@@ -473,11 +473,20 @@ class QuestionAdministrationController extends LSBaseController
             }
 
             if ($question->survey->active == 'N') {
-                // Clean subquestions before save.
-                $question->deleteAllSubquestions();
                 // If question type has subquestions, save them.
                 if ($question->questionType->subquestions > 0) {
-                    $this->storeSubquestions(
+                    // Delete subquestions that do not appear in submit
+                    $this->deleteMissingSubquestions(
+                        $question,
+                        $request->getPost('subquestions')
+                    );
+                    // Add any new subquestions
+                    $this->addNewSubquestions(
+                        $question,
+                        $request->getPost('subquestions')
+                    );
+                    // Update existing subquestions based on ID
+                    $this->updateSubquestions(
                         $question,
                         $request->getPost('subquestions')
                     );
@@ -2785,7 +2794,7 @@ class QuestionAdministrationController extends LSBaseController
     }
 
     /**
-     * Save subquestion.
+     * Delete sub questions that no longer appear in the post request.
      * Used when survey is *not* activated.
      *
      * @param Question $question
@@ -2793,42 +2802,65 @@ class QuestionAdministrationController extends LSBaseController
      * @return void
      * @throws CHttpException
      */
-    private function storeSubquestions($question, $subquestionsArray)
+    private function deleteMissingSubquestions($question, $subquestionsArray)
+    {
+        foreach ($question->subquestions as $subquestion) {
+            if (!isset($subquestionsArray[$subquestion->qid])) {
+                if (!$subquestion->delete()) {
+                    throw (new LSUserException(500, gT("Could not delete subquestion")))
+                        ->setDetailedErrorsFromModel($subquestion);
+                }
+            }
+        }
+    }
+
+   /**
+     * Add new subquestions.
+     * Used when survey is *not* activated.
+     *
+     * @param Question $question
+     * @param array $subquestionsArray Data from request.
+     * @return void
+     * @throws CHttpException
+    */
+    private function addNewSubquestions($question, $subquestionsArray)
     {
         $questionOrder = 0;
         $errorQuestions = [];
         foreach ($subquestionsArray as $subquestionId => $subquestionArray) {
-            foreach ($subquestionArray as $scaleId => $data) {
-                $subquestion = new Question();
-                $subquestion->sid        = $question->sid;
-                $subquestion->gid        = $question->gid;
-                $subquestion->parent_qid = $question->qid;
-                $subquestion->question_order = $questionOrder;
-                $questionOrder++;
-                if (!isset($data['code'])) {
-                    throw new CHttpException(
-                        500,
-                        'Internal error: Missing mandatory field code for question: ' . json_encode($data)
-                    );
-                }
-                $subquestion->title      = $data['code'];
-                if ($scaleId === 0) {
-                    $subquestion->relevance  = $data['relevance'];
-                }
-                $subquestion->scale_id   = $scaleId;
-                if (!$subquestion->save()) {
-                    array_push($errorQuestions, $subquestion);
-                    continue;
-                }
-                $subquestion->refresh();
-                foreach ($data['subquestionl10n'] as $lang => $questionText) {
-                    $l10n = new QuestionL10n();
-                    $l10n->qid = $subquestion->qid;
-                    $l10n->language = $lang;
-                    $l10n->question = $questionText;
-                    if (!$l10n->save()) {
-                        throw (new LSUserException(500, gT("Could not save subquestion")))
-                            ->setDetailedErrorsFromModel($l10n);
+            if (substr($subquestionId, 0, 3) === 'new') {
+                foreach ($subquestionArray as $scaleId => $data) {
+                    $subquestion = new Question();
+                    $subquestion->sid        = $question->sid;
+                    $subquestion->gid        = $question->gid;
+                    $subquestion->parent_qid = $question->qid;
+                    $subquestion->question_order = $questionOrder;
+                    $questionOrder++;
+                    if (!isset($data['code'])) {
+                        throw new CHttpException(
+                            500,
+                            'Internal error: Missing mandatory field code for question: ' . json_encode($data)
+                        );
+                    }
+                    $subquestion->title      = $data['code'];
+                    if ($scaleId === 0) {
+                        $subquestion->relevance  = $data['relevance'];
+                    }
+                    $subquestion->scale_id   = $scaleId;
+                    if (!$subquestion->save()) {
+                        array_push($errorQuestions, $subquestion);
+                        continue;
+                    }
+                    $subquestion->refresh();
+                    foreach ($data['subquestionl10n'] as $lang => $questionText) {
+                        $l10n = new QuestionL10n();
+                        $l10n->qid = $subquestion->qid;
+                        $l10n->language = $lang;
+                        $l10n->question = $questionText;
+                        if (!$l10n->save()) {
+                            throw (new LSUserException(500, gT("Could not save subquestion")))
+                                ->setDetailedErrorsFromModel($l10n);
+                        }
                     }
                 }
             }
@@ -2840,8 +2872,9 @@ class QuestionAdministrationController extends LSBaseController
     }
 
     /**
-     * Save subquestion.
-     * Used when survey *is* activated.
+     * Update subquestions.
+     * Used when survey is activated or not, but will only process existing
+     * questions.
      *
      * @param Question $question
      * @param array $subquestionsArray Data from request.
@@ -2852,54 +2885,50 @@ class QuestionAdministrationController extends LSBaseController
     {
         $questionOrder = 0;
         foreach ($subquestionsArray as $subquestionId => $subquestionArray) {
-            foreach ($subquestionArray as $scaleId => $data) {
-                $subquestion = Question::model()->findByAttributes(
-                    [
-                        'parent_qid' => $question->qid,
-                        'title'      => $data['code'],
-                        'scale_id'   => $scaleId
-                    ]
-                );
-                if (empty($subquestion)) {
-                    throw new Exception('Found no subquestion with code ' . $data['code']);
-                }
-                $subquestion->sid        = $question->sid;
-                $subquestion->gid        = $question->gid;
-                $subquestion->parent_qid = $question->qid;
-                $subquestion->question_order = $questionOrder;
-                $questionOrder++;
-                if (!isset($data['code'])) {
-                    throw new CHttpException(
-                        500,
-                        'Internal error: Missing mandatory field code for question: ' . json_encode($data)
-                    );
-                }
-                $subquestion->title      = $data['code'];
-                if ($scaleId === 0) {
-                    $subquestion->relevance  = $data['relevance'];
-                }
-                $subquestion->scale_id   = $scaleId;
-                if (!$subquestion->update()) {
-                    throw (new LSUserException(500, gT("Could not save subquestion")))
-                        ->setDetailedErrorsFromModel($subquestion);
-                }
-                $subquestion->refresh();
-                foreach ($data['subquestionl10n'] as $lang => $questionText) {
-                    $l10n = QuestionL10n::model()->findByAttributes(
-                        [
-                            'qid' => $subquestion->qid,
-                            'language' => $lang
-                        ]
-                    );
-                    if (empty($l10n)) {
-                        $l10n = new QuestionL10n();
+            if (substr($subquestionId, 0, 3) !== "new") {
+                foreach ($subquestionArray as $scaleId => $data) {
+                    $subquestion = Question::model()->findByPk($subquestionId);
+                    if (empty($subquestion)) {
+                        throw new Exception('Found no subquestion with code ' . $subquestionId);
                     }
-                    $l10n->qid = $subquestion->qid;
-                    $l10n->language = $lang;
-                    $l10n->question = $questionText;
-                    if (!$l10n->save()) {
+                    $subquestion->sid        = $question->sid;
+                    $subquestion->gid        = $question->gid;
+                    $subquestion->parent_qid = $question->qid;
+                    $subquestion->question_order = $questionOrder;
+                    $questionOrder++;
+                    if (!isset($data['code'])) {
+                        throw new CHttpException(
+                            500,
+                            'Internal error: Missing mandatory field code for question: ' . json_encode($data)
+                        );
+                    }
+                    $subquestion->title      = $data['code'];
+                    if ($scaleId === 0) {
+                        $subquestion->relevance  = $data['relevance'];
+                    }
+                    $subquestion->scale_id   = $scaleId;
+                    if (!$subquestion->update()) {
                         throw (new LSUserException(500, gT("Could not save subquestion")))
-                            ->setDetailedErrorsFromModel($l10n);
+                            ->setDetailedErrorsFromModel($subquestion);
+                    }
+                    $subquestion->refresh();
+                    foreach ($data['subquestionl10n'] as $lang => $questionText) {
+                        $l10n = QuestionL10n::model()->findByAttributes(
+                            [
+                                'qid' => $subquestion->qid,
+                                'language' => $lang
+                            ]
+                        );
+                        if (empty($l10n)) {
+                            $l10n = new QuestionL10n();
+                        }
+                        $l10n->qid = $subquestion->qid;
+                        $l10n->language = $lang;
+                        $l10n->question = $questionText;
+                        if (!$l10n->save()) {
+                            throw (new LSUserException(500, gT("Could not save subquestion")))
+                                ->setDetailedErrorsFromModel($l10n);
+                        }
                     }
                 }
             }
