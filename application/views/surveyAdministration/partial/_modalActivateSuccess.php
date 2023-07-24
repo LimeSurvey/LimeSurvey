@@ -31,7 +31,7 @@
                     </a>
                 </div>
                 <div class="row">
-                    <p><?php et('By default, surveys are activated in open-access mode and participants do not need an inviation code.');?></p>
+                    <p><?php et('By default, surveys are activated in open-access mode and participants do not need an invitaion code.');?></p>
                 </div>
             </div>
 
