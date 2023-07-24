@@ -97,8 +97,11 @@ class QuestionGroupMockSetFactory
 
     public function getMockModelForQuestionGroupPersistError(): QuestionGroup
     {
+        $questionGroup = Mockery::mock(QuestionGroup::class)->makePartial();
         $modelQuestionGroup = Mockery::mock(QuestionGroup::class)
             ->makePartial();
+        $modelQuestionGroup->shouldReceive('findByPk')
+            ->andReturn($questionGroup);
         $modelQuestionGroup->shouldReceive('save')
             ->andReturn(false);
 
