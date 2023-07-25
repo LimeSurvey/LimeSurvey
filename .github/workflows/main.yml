@@ -294,3 +294,6 @@ jobs:
       - name: Run syntax check, CodeSniffer, MessDetector, ...
         run: composer test
 
+      - name: Run Psalm on application/ folder with low strictness
+        run: |
+          ./vendor/bin/psalm -c psalm-all.xml

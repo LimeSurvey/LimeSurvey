@@ -46,26 +46,6 @@ if (!empty($showSaveAndCloseButton)) {
 }
 ?>
 
-
-<!-- Return -->
-<?php
-if (!empty($showBackButton)) {
-    $this->widget(
-        'ext.ButtonWidget.ButtonWidget',
-        [
-            'name' => '',
-            'text' => gT('Back'),
-            'icon' => 'ri-rewind-fill',
-            'link' => $returnUrl,
-            'htmlOptions' => [
-                'class' => 'btn btn-outline-secondary',
-                'role' => 'button',
-            ],
-        ]
-    );
-}
-?>
-
 <!-- Green Save and Close -->
 <?php
 if (!empty($showGreenSaveAndCloseButton)) {

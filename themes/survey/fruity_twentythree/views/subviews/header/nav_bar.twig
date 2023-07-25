@@ -42,7 +42,7 @@ For the survey navigator ("Next", "Back", etc.), see: navigation/navigator.twig
                         ((aSurveyInfo.bShowClearAll == true or aSurveyInfo.bShowClearAll == null) and
                         aSurveyInfo.options.showclearall == 'on') or
                         aSurveyInfo.aQuestionIndex.bShow == true) %}
-                        <li class="dropdown-header">{{ gT("SURVEY OPTIONS") }}</li>
+                        <li class="dropdown-header text-uppercase">{{ gT("Survey options") }}</li>
                     {% endif %}
                     {{ include('./subviews/navigation/save_links.twig') }}
                     {{ include('./subviews/navigation/question_index_menu.twig') }}

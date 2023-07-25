@@ -51,7 +51,6 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
             'controlOptions' => array(
                 'class' => "col-md-offset-4 col-md-6"
             ),
-            'type' => 'info',
         ),
         'surveySaveActive' => array(
             'type' => 'boolean',

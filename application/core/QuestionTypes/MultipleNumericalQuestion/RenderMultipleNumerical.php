@@ -215,7 +215,7 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
                     $sliderleft  = $aAnswer[1] ?? null;
                     $sliderright = $aAnswer[2] ?? null;
                 } else {
-                    $theanswer = $sQuestionText;
+                    $theanswer = $sSubquestionText;
                     $sliders   = false;
                 }
 

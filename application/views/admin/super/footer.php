@@ -51,7 +51,7 @@ foreach ($systemInfos as $key => $systemInfo) {
 $questionEditor = $questionEditor ?? false;
 ?>
 <!-- Footer -->
-<footer class="container-fluid footer d-flex flex-grow-1 flex-column justify-content-end text-end">
+<footer class="container-fluid footer d-flex flex-grow-1 flex-column justify-content-end text-end py-3 mt-5">
     <div>
         <a data-bs-toggle="tooltip" title='<?php eT("Visit our website!"); ?>' href='https://community.limesurvey.org' target='_blank'>LimeSurvey Community Edition</a>
         <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')) { ?>
@@ -209,6 +209,11 @@ $questionEditor = $questionEditor ?? false;
         </div>
     </div>
 </div>
+
+<?php
+//modal for survey activation
+App()->getController()->renderPartial('/surveyAdministration/partial/topbar/_modalSurveyActivation');
+?>
 
 <!-- Modal for admin notifications -->
 <div id="admin-notification-modal" class="modal fade" role="dialog">

@@ -199,20 +199,20 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
             return;
         }
 
-        $this->_createNewUser(flattenText(Yii::app()->request->getPost('new_user'), false, true));
+        $oEvent = $this->getEvent();
+        $this->_createNewUser($oEvent, flattenText(Yii::app()->request->getPost('new_user'), false, true));
     }
 
     /**
      * Create a LDAP user
      *
+     * @param Event $oEvent Either CreateNewUser event or dummy event.
      * @param string $new_user
      * @param string $password
      * @return null|integer New user ID
      */
-    private function _createNewUser($new_user, $password = null)
+    private function _createNewUser($oEvent, $new_user, $password = null)
     {
-        $oEvent = $this->getEvent();
-
         // Get configuration settings:
         $ldapmode = $this->get('ldapmode');
         $searchuserattribute = $this->get('searchuserattribute');
@@ -559,7 +559,17 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
 
         // Finally, if user didn't exist and auto creation (i.e. autoCreateFlag == true) is enabled, we create it
         if ($autoCreateFlag) {
-            if (($iNewUID = $this->_createNewUser($username, $password)) && $this->get('automaticsurveycreation', null, null, false)) {
+            // This event can be cast to string in auth failure message to give more info.
+            $dummyEvent = new class() {
+                public $warnings;
+                public function set($a, $b) {
+                    $this->warnings[$a] = $b;
+                }
+                public function __toString() {
+                    return json_encode($this->warnings);
+                }
+            };
+            if (($iNewUID = $this->_createNewUser($dummyEvent, $username, $password)) && $this->get('automaticsurveycreation', null, null, false)) {
                 Permission::model()->setGlobalPermission($iNewUID, 'surveys', array('create_p'));
             }
             $user = $this->api->getUserByName($username);

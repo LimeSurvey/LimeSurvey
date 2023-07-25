@@ -5,9 +5,6 @@
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('globalsettings');
-
-App()->getClientScript()->registerScript('GlobalSettingsBSSwitcher', "LS.renderBootstrapSwitch();", LSYii_ClientScript::POS_POSTSCRIPT);
-
 ?>
 <script type="text/javascript">
     var msgCantRemoveDefaultLanguage = '<?php eT("You can't remove the default language.", 'js'); ?>';
