@@ -334,6 +334,7 @@ class QuestionAdministrationController extends LSBaseController
         // for newly combined groups and reorder parts
         $aData['groupModel'] = $this->getGroupData($oSurvey);
         $aData['aGroupsAndQuestions'] = $this->getReorderData($oSurvey);
+        $aData['surveyActivated'] = $oSurvey->getIsActive();
 
         $this->aData = $aData;
 
