@@ -195,7 +195,7 @@ class EndpointFactory
      */
     protected function getAuthBearerToken()
     {
-        $headers = $this->getAllHeaders();
+        $headers = getAllHeaders();
 
         $token = null;
         if (
@@ -209,45 +209,5 @@ class EndpointFactory
         }
 
         return $token;
-    }
-
-
-    /**
-     * Get all HTTP header key/values as an associative array for the current request.
-     *
-     * @source https://github.com/ralouphie/getallheaders
-     * @return array The HTTP header key/value pairs.
-     */
-    protected function getAllHeaders()
-    {
-        $headers = array();
-
-        $copy_server = array(
-            'CONTENT_TYPE'   => 'Content-Type',
-            'CONTENT_LENGTH' => 'Content-Length',
-            'CONTENT_MD5'    => 'Content-Md5',
-        );
-
-        foreach ($_SERVER as $key => $value) {
-            if (substr($key, 0, 5) === 'HTTP_') {
-                $key = substr($key, 5);
-                if (!isset($copy_server[$key]) || !isset($_SERVER[$key])) {
-                    $key = str_replace(
-                        ' ',
-                        '-',
-                        ucwords(
-                            strtolower(
-                                str_replace('_', ' ', $key)
-                            )
-                        )
-                    );
-                    $headers[$key] = $value;
-                }
-            } elseif (isset($copy_server[$key])) {
-                $headers[$copy_server[$key]] = $value;
-            }
-        }
-
-        return $headers;
     }
 }

@@ -10,8 +10,8 @@
 <config>
     <!-- Those metadata are displayed in the theme configuration page.  -->
     <metadata>
-        <name>Fruity</name>
-        <title>Fruity Theme</title>
+        <name>fruity</name>
+        <title>Fruity</title>
         <type>theme</type>
         <creationDate>08/01/2016</creationDate>
         <author>LimeSurvey GmbH</author>
@@ -21,10 +21,14 @@
         <license>GNU General Public License version 2 or later</license>
         <version>3.0.1</version>
         <apiVersion>3</apiVersion>
-        <description  twig="on"><![CDATA[<strong>{{gT("LimeSurvey Fruity Theme")}}</strong><br>{{gT("A fruity theme for a flexible use. This theme offers monochromes variations and many options for easy customizations.")}}]]></description>
+        <description twig="on"><![CDATA[{{gT("A fruity theme for a flexible use. This theme offers monochromes variations and many options for easy customizations.")}}]]></description>
         <lastUpdate>2019-10-24 12:00:00</lastUpdate>
         <extends>vanilla</extends>
     </metadata>
+
+    <compatibility>
+        <version>6.0</version>
+    </compatibility>
 
     <!--
         Here the list of the css/js files to add to the template package.

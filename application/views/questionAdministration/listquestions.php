@@ -42,9 +42,8 @@ $baseLanguage = $oSurvey->language;
         <div id="reorder" class="tab-pane row">
             <?php $this->renderPartial('/admin/survey/organizeGroupsAndQuestions_view',[
                 'surveyid' => $surveyid,
-                'aGroupsAndQuestions' => $aGroupsAndQuestions,
                 'surveyActivated' => $surveyActivated,
-
+                'aGroupsAndQuestions' => $aGroupsAndQuestions,
             ]) ?>
         </div>
     </div>

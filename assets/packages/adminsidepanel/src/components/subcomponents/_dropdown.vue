@@ -62,7 +62,7 @@ export default {
             <!-- Printable version -->
             <li>
                 <a target="_blank" href="/index.php/admin/printablesurvey/sa/index/surveyid/229189">
-                    <span class="fa fa-print"></span>
+                    <span class="ri-printer-line"></span>
                     Printable survey </a>
             </li>
         </ul>

@@ -4,6 +4,8 @@
 // gulp build_theme / gulp watch_theme
 // for survey_theme_fruity:
 // gulp build_survey_theme_fruity / gulp watch_survey_theme_fruity
+// for survey_theme_ls6:
+// gulp build_survey_theme_ls6 / gulp watch_survey_theme_ls6
 
 const {watch, series, parallel} = require('gulp');
 const {src, dest} = require('gulp');
@@ -19,10 +21,36 @@ const gulpIf = require('gulp-if');
 const useref = require('gulp-useref');
 const replace = require('gulp-replace');
 const merge = require('merge-stream');
+const sourcemaps = require('gulp-sourcemaps');
+const babelify = require('babelify');
+const source = require('vinyl-source-stream');
+const buffer = require('vinyl-buffer');
+const browserify = require('browserify');
+const header = require('gulp-header');
+const fs = require('fs');
 
 function js_minify() {
-    return src(['node_modules/bootstrap/dist/js/bootstrap.bundle.js', 'assets/bootstrap_5/js/bootstrap_5.js'])
-        .pipe(concat('bootstrap_5.js'))
+    // browserify package handler
+    return browserify({
+        entries: ['assets/bootstrap_5/js/bootstrap_5.js']
+    })
+        // transform babelify ES6 to ES5 [@babel/preset-env]
+        .transform(babelify, {
+            presets: ['@babel/preset-env'],
+            retainLines: false,
+            compact: false,
+            global: true
+
+        })
+        // bundle the transformed code
+        .bundle()
+        // sourcemap
+        .pipe(source('assets/bootstrap_5/js/bootstrap_5.js'))
+        // rename
+        .pipe(rename('bootstrap_5.js'))
+        // buffer
+        .pipe(buffer())
+        // distination
         .pipe(dest('assets/bootstrap_5/build/js/'))
         .pipe(uglify())
         .pipe(rename({extname: '.min.js'}))
@@ -143,4 +171,92 @@ exports.build_survey_theme_fruity = parallel(
 
 exports.watch_survey_theme_fruity = function () {
     watch('assets/survey_themes/fruity/src/**/*.scss', survey_theme_fruity);
+};
+
+function survey_theme_ls6() {
+    let variations = [
+        ["apple", "#14AE5C"],
+        ["blueberry", "#5076FF"],
+        ["grape", "#8146F6"],
+        ["mango", "#ED5046"],
+    ];
+    let plugins = [
+        autoprefixer(),
+        // cssnano()
+    ];
+
+    let variationsFiles = variations.map(variation => {
+        let variationName = variation[0];
+        let variationColor = variation[1];
+        return src(['assets/survey_themes/fruity_twentythree/theme_template.scss'])
+            .pipe(replace('$base-color: #ffffff;', '$base-color: ' + variationColor + ';'))
+            .pipe(sass())
+            .pipe(gulppostcss(plugins))
+            .pipe(rename('theme_' + variationName + '.css'))
+            .pipe(dest('themes/survey/fruity_twentythree/css/variations'));
+    });
+    return merge(variationsFiles);
+}
+
+function survey_theme_ls6_rtl() {
+    let variations = [
+        ["apple", "#14AE5C"],
+        ["blueberry", "#5076FF"],
+        ["grape", "#8146F6"],
+        ["mango", "#ED5046"],
+    ];
+    let plugins = [
+        autoprefixer(),
+        // cssnano()
+    ];
+
+    let variationsFiles = variations.map(variation => {
+        let variationName = variation[0];
+        let variationColor = variation[1];
+        return src(['assets/survey_themes/fruity_twentythree/theme_template.scss'])
+            .pipe(replace('$base-color: #ffffff;', '$base-color: ' + variationColor + ';'))
+            .pipe(sass())
+            .pipe(rtlcss())
+            .pipe(gulppostcss(plugins))
+            .pipe(rename('theme_' + variationName + '-rtl.css'))
+            .pipe(dest('themes/survey/fruity_twentythree/css/variations'));
+    });
+    return merge(variationsFiles);
+}
+
+function survey_theme_ls6_js() {
+    // browserify package handler
+    return browserify({
+        entries: ['assets/survey_themes/fruity_twentythree/theme_js_modules.js']
+    })
+        // transform babelify ES6 to ES5 [@babel/preset-env]
+        .transform(babelify, {
+            presets: ['@babel/preset-env'],
+            retainLines: false,
+            compact: false,
+            global: true
+        })
+        // bundle the transformed code
+        .bundle()
+        // sourcemap
+        .pipe(source('assets/survey_themes/fruity_twentythree/theme_js_modules.js'))
+        // rename
+        .pipe(rename('theme.js'))
+        // buffer
+        .pipe(buffer())
+        // distination
+        .pipe(header(fs.readFileSync('assets/survey_themes/fruity_twentythree/theme_js_disclaimer.js')))
+        .pipe(dest('themes/survey/fruity_twentythree/scripts/'));
+}
+
+exports.build_survey_theme_ls6 = parallel(
+    survey_theme_ls6,
+    survey_theme_ls6_rtl,
+    survey_theme_ls6_js
+);
+
+exports.watch_survey_theme_ls6 = function () {
+    watch('assets/survey_themes/fruity_twentythree/**/*.scss', survey_theme_ls6);
+    watch('assets/survey_themes/fruity_twentythree/**/*.scss', survey_theme_ls6_rtl);
+    watch('assets/survey_themes/fruity_twentythree/**/*.js', survey_theme_ls6_js);
 };

@@ -38,3 +38,24 @@ tbody, td, tfoot, th, thead, tr {
     border: 1px solid;
     border-color: inherit;
 }
+
+/** On smaller screens - handle input on demand label alignment **/
+@media (max-width: 768px) {
+    .form-horizontal .control-label.col-12 {
+        text-align: left;
+    }
+
+    .dir-rtl .form-horizontal .control-label.col-12 {
+        text-align: right;
+    }
+}
+/** On larger screens - handle input on demand label alignment **/
+@media (min-width: 769px) {
+    .form-horizontal .control-label.col-12 {
+        text-align: right;
+    }
+
+    .dir-rtl .form-horizontal .control-label.col-12 {
+        text-align: left;
+    }
+}

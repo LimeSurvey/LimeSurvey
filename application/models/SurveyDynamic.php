@@ -796,7 +796,7 @@ class SurveyDynamic extends LSActiveRecord
 
         if (
             !(LimeExpressionManager::QuestionIsRelevant($oQuestion->qid) && $bHonorConditions == true)
-            || $attributes['hidden'] === 1
+            || (is_array($attributes) && $attributes['hidden'] === 1)
         ) {
             return false;
         }
@@ -930,7 +930,7 @@ class SurveyDynamic extends LSActiveRecord
             $aQuestionAttributes['fileinfo'] = json_decode((string) $aQuestionAttributes['answervalue'], true);
         }
 
-        if ($oQuestion->parent_qid != 0 && $oQuestion->parent['type'] === "1") {
+        if ($oQuestion->parent_qid != 0 && isset($oQuestion->parent['type']) && $oQuestion->parent['type'] === "1") {
             $aAnswers = (
                 $oQuestion->parent != null
                 ? $oQuestion->parent->answers
@@ -984,7 +984,7 @@ class SurveyDynamic extends LSActiveRecord
         }
 
         /* Second (X) scale for array text and array number */
-        if ($oQuestion->parent_qid != 0 && in_array($oQuestion->parent['type'], [";", ":"])) {
+        if ($oQuestion->parent_qid != 0 && isset($oQuestion->parent['type']) && in_array($oQuestion->parent['type'], [";", ":"])) {
             $oScaleXSubquestions = Question::model()->with('questionl10ns')->findAll(array(
                 'condition' => "parent_qid = :parent_qid and scale_id = :scale_id",
                 'order' => "question_order ASC",
@@ -998,7 +998,7 @@ class SurveyDynamic extends LSActiveRecord
             }
         }
 
-        if ($oQuestion->type == 'N' || ($oQuestion->parent_qid != 0 && $oQuestion->parent['type'] === "K")) {
+        if ($oQuestion->type == 'N' || ($oQuestion->parent_qid != 0 && isset($oQuestion->parent['type']) && $oQuestion->parent['type'] === "K")) {
             if (strpos((string) $aQuestionAttributes['answervalue'], ".") !== false) { // Remove last 0 and last . ALWAYS (see \SurveyObj\getShortAnswer)
                 $aQuestionAttributes['answervalue'] = rtrim(rtrim((string) $aQuestionAttributes['answervalue'], "0"), ".");
             }
