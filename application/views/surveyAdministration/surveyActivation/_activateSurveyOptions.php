@@ -20,8 +20,7 @@ $optionsOnOff = ['Y' => gt('On'), 'N' => gt('Off')];
         <div class='col-md-12'>
             <?php
             $this->widget('ext.AlertWidget.AlertWidget', [
-                'text' => gT('Note: This survey has a past expiration date configured and is currently not available to participants. Please remember to update/remove the
-                expiration date in the survey settings after activation.'),
+                'text' => gT('Note: This survey has a past expiration date configured and is currently not available to participants. Please remember to update/remove the expiration date in the survey settings after activation.'),
                 'type' => 'info',
                 'htmlOptions' => ['class' => 'controls']
             ]);
