@@ -83,6 +83,16 @@ class QuestionGroupExceptionsTest extends TestBaseClass
         $questionGroupService->updateGroup(1, 1, ['questionGroup' => []]);
     }
 
+    public function testCreateThrowsExceptionPersistError()
+    {
+        $this->expectException(
+            PersistErrorException::class
+        );
+
+        $questionGroupService = $this->getMockedServiceForQuestionGroupPersistError();
+        $questionGroupService->createGroup(1, ['questionGroup' => []]);
+    }
+
     private function getMockedServiceForPermissionDeniedException(): QuestionGroupService
     {
         $mockSetFactory = new QuestionGroupMockSetFactory();
