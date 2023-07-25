@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2023-07-24 14:04:46+00:00\n"
+"POT-Creation-Date: 2023-07-25 12:40:30+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -9491,7 +9491,7 @@ msgid "Owner"
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:94
-#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:43
+#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:42
 msgid "Anonymized responses"
 msgstr ""
 
@@ -24144,7 +24144,7 @@ msgid "%sCannot%s be %saccessed%s by %sparticipants%s anymore."
 msgstr ""
 
 #: application/views/surveyAdministration/stopSurvey_view.php:39
-msgid "The %sability%s to %schange questions%s, groups and parameters is %slimited%s. A message will be displayed stating that the survey has expired."
+msgid "The %sability%s to %schange questions%s, groups and settings is %slimited%s. A message will be displayed stating that the survey has expired."
 msgstr ""
 
 #: application/views/surveyAdministration/stopSurvey_view.php:41
@@ -24172,7 +24172,7 @@ msgid "%sCannot%s be %saccessed%s by %sparticipants%s. A message will be display
 msgstr ""
 
 #: application/views/surveyAdministration/stopSurvey_view.php:71
-msgid "%sQuestions%s, %sgroups%s and %sparameters%s can be %sedited%s again."
+msgid "%sQuestions%s, %sgroups%s and %ssettings%s can be %sedited%s again."
 msgstr ""
 
 #: application/views/surveyAdministration/stopSurvey_view.php:76
@@ -24216,85 +24216,63 @@ msgid "Editing questions, question groups or subquestions is still possible. The
 msgstr ""
 
 #: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:23
-msgid ""
-"Note: This survey has a past expiration date configured and is currently not available to participants. Please remember to update/remove the\n"
-"                expiration date in the survey settings after activation."
+msgid "Note: This survey has a past expiration date configured and is currently not available to participants. Please remember to update/remove the expiration date in the survey settings after activation."
 msgstr ""
 
-#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:46
+#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:45
 msgid "If enabled, responses will be anonymized - there will be no way to connect responses and participants."
 msgstr ""
 
-#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:63
+#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:62
 msgid "Date stamp"
 msgstr ""
 
-#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:66
+#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:65
 msgid "If enabled, the submission time of a response will be recorded."
 msgstr ""
 
-#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:84
+#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:83
 msgid "Save IP address"
 msgstr ""
 
-#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:87
+#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:86
 msgid "If enabled, the IP address of the survey respondent will be stored together with the response."
 msgstr ""
 
-#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:102
+#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:101
 msgid "Anonymize IP address"
 msgstr ""
 
-#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:105
+#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:104
 msgid "If enabled, the IP address of the respondent is not recorded."
 msgstr ""
 
-#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:123
+#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:122
 msgid "Save timings"
 msgstr ""
 
-#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:126
+#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:125
 msgid "If enabled, the time spent on each page of the survey by each survey participant is recorded."
 msgstr ""
 
-#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:141
+#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:140
 msgid "Save referrer URL"
 msgstr ""
 
-#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:144
+#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:143
 msgid "If enabled, the referrer URL will be stored together with the response."
 msgstr ""
 
-#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:166
+#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:165
 msgid "Do you want your survey to be public for everyone (open-access mode) or invite only (closed-access mode)?"
 msgstr ""
 
-#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:173
+#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:172
 msgid "Open-access mode"
 msgstr ""
 
-#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:173
+#: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:172
 msgid "Closed-access mode"
-msgstr ""
-
-#: application/views/surveyAdministration/surveyActivation/_activated_closedAccess.php:12
-msgid "Congrats! Your survey has been activated successfully in closed-access mode."
-msgstr ""
-
-#: application/views/surveyAdministration/surveyActivation/_activated_closedAccess.php:17
-msgid "This survey is now only accessible to users who got an access code either manually or by URL. "
-msgstr ""
-
-#: application/views/surveyAdministration/surveyActivation/_activated_closedAccess.php:18
-msgid "To create an access code for your participants, click on \"Generate access code\" in the top bar. "
-msgstr ""
-
-#: application/views/surveyAdministration/surveyActivation/_activated_closedAccess.php:19
-msgid "You can switch back to open-access mode at any time. Click on the red \"Delete participants table\" button in the top bar. "
-msgstr ""
-
-#: application/views/surveyAdministration/surveyActivation/_activated_closedAccess.php:20
-msgid "Participants table "
 msgstr ""
 
 #: application/views/surveyAdministration/surveyActivation/_activation_error.php:10
