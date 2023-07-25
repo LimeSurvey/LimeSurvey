@@ -883,7 +883,7 @@ class TokenDynamic extends LSActiveRecord
                 'disabled' => 'disabled',
                 'title' => ''
             ),
-            'visible' => $baseView . ' && (empty($data->token) || ($data->emailstatus != "OK" || empty($data->email) || $data->completed != "N" || ($data->usesleft <= 0 && $data->survey->oOptions->alloweditaftercompletion != "Y")))',
+            'visible' => $baseView . ' && (empty($data->token) || ($data->emailstatus != "OK" || empty($data->email) || $data->completed != "N" || ($data->usesleft <= 0 && !$data->survey->isAllowEditAfterCompletion)))',
         );
         /* edit button button */
         $gridButtons['edit'] = array(
@@ -1116,7 +1116,7 @@ class TokenDynamic extends LSActiveRecord
             && (
                 $this->completed == "N"
                 || empty($this->completed)
-                || $this->survey->oOptions->alloweditaftercompletion == "Y"
+                || $this->survey->isAllowEditAfterCompletion
             );
     }
 
@@ -1128,7 +1128,7 @@ class TokenDynamic extends LSActiveRecord
             && $this->completed == "N"
             && (
                 $this->usesleft > 0
-                || $this->survey->oOptions->alloweditaftercompletion == "Y"
+                || $this->survey->isAllowEditAfterCompletion
             );
     }
 }
