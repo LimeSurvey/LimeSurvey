@@ -59,20 +59,19 @@
             </div>
         </li>
         <!-- Sharing panel -->
-        {% if oSurvey.active == 'Y' %}
-            <li class="list-group-item p-0 border-0">
-                <div class="ls-flex-row col-12">
-                   <div class="col-4 card-label">
-                        {{ gT("Sharing panel:") }}
-                    </div>
-                    <div class="col-8 ls-card-grid__description">
-                        <a href="#sharingdialog" class="btn btn-outline-secondary selector_openSharePanel" data-bs-toggle="modal" id="sharePanelButton_{{oSurvey.sid}}" data-surveyid="{{oSurvey.sid}}">
-                            {{ gT("Open sharing panel") }}
-                        </a>
-                    </div>
+        <li class="list-group-item p-0 border-0">
+            <div class="ls-flex-row col-12">
+                <div class="col-4 card-label">
+                    {{ gT("Sharing panel:") }}
                 </div>
-            </li>
-        {% endif %}
+                <div class="col-8 ls-card-grid__description">
+                    <a href="#sharingdialog" class="btn btn-outline-secondary selector_openSharePanel {{ oSurvey.active == 'Y' ? '' : 'disabled' }}" data-bs-toggle="modal"
+                       id="sharePanelButton_{{ oSurvey.sid }}" data-surveyid="{{ oSurvey.sid }}">
+                        {{ gT("Open sharing panel") }}
+                    </a>
+                </div>
+            </div>
+        </li>
     </ul>
 </div>
 
