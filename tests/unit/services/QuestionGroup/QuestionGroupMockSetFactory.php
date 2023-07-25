@@ -105,6 +105,8 @@ class QuestionGroupMockSetFactory
             ->makePartial();
         $modelQuestionGroup->shouldReceive('findByPk')
             ->andReturn($questionGroup);
+        $modelQuestionGroup->shouldReceive('save')
+            ->andReturn(false);
 
         return $modelQuestionGroup;
     }

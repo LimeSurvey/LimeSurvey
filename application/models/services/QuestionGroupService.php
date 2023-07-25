@@ -125,7 +125,7 @@ class QuestionGroupService
                 'Permission denied'
             );
         }
-
+        $questionGroup = DI::getContainer()->make(QuestionGroup::class);
         $questionGroup = $this->newQuestionGroup($surveyId, $input['questionGroup']);
         $this->updateQuestionGroupLanguages($questionGroup, $input['questionGroupI10N']);
 
@@ -389,7 +389,7 @@ class QuestionGroupService
         ], $aQuestionGroupData);
         unset($aQuestionGroupData['gid']);
 
-        $oQuestionGroup = DI::getContainer()->make(QuestionGroup::class);
+        $oQuestionGroup = $this->modelQuestionGroup;
         $oQuestionGroup->setAttributes($aQuestionGroupData, false);
 
         if ($oQuestionGroup == null) {
