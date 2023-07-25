@@ -2,6 +2,7 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
+use LimeSurvey\Libraries\ObjectPatch\OpHandler\OpHandlerSurveyUpdate;
 use Survey;
 use SurveyLanguageSetting;
 use Answer;
@@ -50,7 +51,7 @@ class PatcherSurvey extends Patcher
     private function addOpHandlerSurvey(FactoryInterface $diFactory, ContainerInterface $diContainer): void
     {
         $this->addOpHandler($diFactory->make(
-            OpHandlerActiveRecordUpdate::class,
+            OpHandlerSurveyUpdate::class,
             [
                 'entity' => 'survey',
                 'model' => Survey::model(),
