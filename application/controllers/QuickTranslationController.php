@@ -437,6 +437,8 @@ class QuickTranslationController extends LSBaseController
         try {
             require_once(APPPATH . '/../vendor/gtranslate-api/GTranslate.php');
             $gtranslate = new Gtranslate();
+            // use curl because http with fopen is disabled
+            $gtranslate->setRequestType('curl');
             $objGt = $gtranslate;
 
             // Gtranslate requires you to run function named XXLANG_to_XXLANG

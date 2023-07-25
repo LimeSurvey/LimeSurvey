@@ -1011,6 +1011,14 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['sah']['radixpoint'] = 1;
     $supportedLanguages['sah']['momentjs'] = 'null';
 
+    // Yoruba
+    $supportedLanguages['yor']['description'] = gT('Yoruba');
+    $supportedLanguages['yor']['nativedescription'] = '&#xC8;d&#xE8; Yor&#xF9;b&#xE1;';
+    $supportedLanguages['yor']['rtl'] = false;
+    $supportedLanguages['yor']['dateformat'] = 5;
+    $supportedLanguages['yor']['radixpoint'] = 1;
+    $supportedLanguages['yor']['momentjs'] = null;
+
     // Zulu
     $supportedLanguages['zu']['description'] = gT('Zulu');
     $supportedLanguages['zu']['nativedescription'] = 'isiZulu';
