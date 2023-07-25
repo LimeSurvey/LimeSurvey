@@ -1,13 +1,13 @@
 <?php
 
-namespace LimeSurvey\Api\Command\V1\SurveyPatch;
+namespace LimeSurvey\ObjectPatch\OpHandler;
 
 use LimeSurvey\ObjectPatch\Op\OpInterface;
-use LimeSurvey\ObjectPatch\OpHandler\OpHandlerException;
+//use LimeSurvey\Libraries\ObjectPatch\OpHandler\OpHandlerException;
 use LimeSurvey\ObjectPatch\OpType\OpTypeUpdate;
 use Survey;
 
-class OpHandlerSurveyUpdate implements \LimeSurvey\ObjectPatch\OpHandler\OpHandlerInterface
+class OpHandlerSurveyUpdate implements OpHandlerInterface
 {
     /**@var Survey */
     protected $survey = null;
