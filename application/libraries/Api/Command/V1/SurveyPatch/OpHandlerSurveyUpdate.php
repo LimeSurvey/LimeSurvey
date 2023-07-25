@@ -1,31 +1,35 @@
 <?php
 
-namespace LimeSurvey\ObjectPatch\OpHandler;
+namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
+use CModel;
+use LimeSurvey\Api\Transformer\TransformerInterface;
 use LimeSurvey\ObjectPatch\Op\OpInterface;
-//use LimeSurvey\Libraries\ObjectPatch\OpHandler\OpHandlerException;
+use LimeSurvey\ObjectPatch\OpHandler\OpHandlerException;
+use LimeSurvey\ObjectPatch\OpHandler\OpHandlerInterface;
 use LimeSurvey\ObjectPatch\OpType\OpTypeUpdate;
 use Survey;
 
 class OpHandlerSurveyUpdate implements OpHandlerInterface
 {
-    /**@var Survey */
-    protected $survey = null;
 
-    public function __construct(OpInterface $op)
+    protected $transformer = null;
+    protected $entity = null;
+    protected $model = null;
+
+    public function __construct($entity, CModel $model, TransformerInterface $transformer = null)
     {
-        $this->survey = Survey::model()->findByPk($op->getEntityId());
+        $this->entity = $entity;
+        $this->model = $model;
+        $this->transformer = $transformer;
     }
 
     public function canHandle(OpInterface $op): bool
     {
-        // the operation should be update. where do i get this info from?
         $isUpdateOperation = $op->getType()->getId() === OpTypeUpdate::ID;
-
-        // the entity should be survey
         $isSurveyEntity = $op->getEntityType() ==='survey';
 
-        return $isUpdateOperation && $isSurveyEntity && $this->survey!== null;
+        return $isUpdateOperation && $isSurveyEntity;
     }
     /**
      * Saves the changes to the database.
@@ -35,8 +39,13 @@ class OpHandlerSurveyUpdate implements OpHandlerInterface
      */
     public function handle(OpInterface $op)
     {
+        $survey = $this->model->findByPk($op->getEntityId());
         //here we should get the props from the op
-        $props =$op->getProps();
+        $props = $this->transformer
+            ? $this->transformer->transform(
+                $op->getProps()
+            )
+            : $op->getProps();
         if ($props === null) {
             throw new OpHandlerException(
                 printf(
@@ -45,8 +54,8 @@ class OpHandlerSurveyUpdate implements OpHandlerInterface
                 )
             );
         }
-        $this->survey->setAttributes($props);
-        if (!$this->survey->save()) {
+        $survey->setAttributes($props);
+        if (!$survey->save()) {
             throw new OpHandlerException(
                 printf(
                     'Could not update survey (id: %s)',

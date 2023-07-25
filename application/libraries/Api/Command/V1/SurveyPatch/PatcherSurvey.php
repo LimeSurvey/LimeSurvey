@@ -2,7 +2,8 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
-use LimeSurvey\ObjectPatch\OpHandler\OpHandlerSurveyUpdate;
+
+use LimeSurvey\ObjectPatch\OpHandler\OpHandlerActiveRecordUpdate;
 use LimeSurvey\ObjectPatch\Patcher;
 use Survey;
 use SurveyLanguageSetting;
@@ -22,7 +23,6 @@ use LimeSurvey\Api\Command\V1\Transformer\Input\{
     TransformerInputQuestionAttribute,
     TransformerInputSurveyLanguageSettings
 };
-use LimeSurvey\Libraries\ObjectPatch\{OpHandler\OpHandlerActiveRecordUpdate};
 use DI\FactoryInterface;
 use Psr\Container\ContainerInterface;
 
