@@ -1271,11 +1271,9 @@ class UserManagementController extends LSBaseController
             return false;
         }
 
-        // Transfer any Participants owned by this user to site's admin
-        Participant::model()->updateAll(['owner_uid' => 1], 'owner_uid = :owner_uid', [':owner_uid' => $userId]);
-
-        //todo REFACTORING user permissions should be deleted also ... (in table permissions)
-        return $oUser->delete();
+        $userManager = new UserManager();
+        $result = $userManager->deleteUser($userId);
+        return $result->isSuccess();
     }
 
     /**
