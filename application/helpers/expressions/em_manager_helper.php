@@ -5152,7 +5152,7 @@ class LimeExpressionManager
                     LimeExpressionManager::addFrontendFlashMessage('error', $message, $this->sid);
                     return;
                 }
-                if ($oResponse->submitdate == null || Survey::model()->findByPk($this->sid)->alloweditaftercompletion == 'Y') {
+                if ($oResponse->submitdate == null || Survey::model()->findByPk($this->sid)->isAllowEditAfterCompletion) {
                     try {
                         $oResponse->setAllAttributes($aResponseAttributes, false);
                     } catch (Exception $ex) {
@@ -5201,7 +5201,7 @@ class LimeExpressionManager
                 if ($aQuotas && !empty($aQuotas)) {
                     checkCompletedQuota($this->sid);  // will create a page and quit: why not use it directly ?
                 } else {
-                    if ($finished && ($oResponse->submitdate == null || Survey::model()->findByPk($this->sid)->alloweditaftercompletion == 'Y')) {
+                    if ($finished && ($oResponse->submitdate == null || Survey::model()->findByPk($this->sid)->isAllowEditAfterCompletion)) {
                         /* Less update : just do what you need to to */
                         if ($this->surveyOptions['datestamp']) {
                             $submitdate = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
