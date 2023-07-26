@@ -6,14 +6,14 @@
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
     <h4 class="modal-title" id="modalTitle-addedit">
-        <?=sprintf(gT('Permission role %s'), $oModel->name);?>
+        <?=sprintf(gT('Permission role %s'), CHtml::encode($oModel->name));?>
     </h4>
 </div>
 <div class="modal-body">
     <div class="container-center">
         <div class="row">
             <div class="col-xs-12 well">
-                <?=$oModel->description?>
+                <?=CHtml::encode($oModel->description)?>
             </div>
         </div>
         <div class="row">
