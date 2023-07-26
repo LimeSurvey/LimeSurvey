@@ -30,6 +30,7 @@ class Box extends CActiveRecord
             array('url, title, ico, position, desc, page', 'required'),
             array('url', 'match', 'pattern' => '/(http:\/\/)?[a-zA-Z]([a-zA-Z0-9-_?&"\'=]\/?)*/'),
             array('position', 'numerical', 'integerOnly' => true),
+            array('position', 'unique', 'message' => gT('Position {value} already exists.')),
             array('usergroup', 'numerical', 'integerOnly' => true, 'min' => -3),
             array('ico', 'match', 'pattern' => '/^[A-Za-z0-9_ \-]+$/u','message' => gT('Icon name must be a simple class name (alphanumeric, space, minus and underscore).')),
             // The following rule is used by search().
