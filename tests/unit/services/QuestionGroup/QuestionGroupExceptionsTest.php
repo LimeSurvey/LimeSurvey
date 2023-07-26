@@ -25,6 +25,9 @@ class QuestionGroupExceptionsTest extends TestBaseClass
         $questionGroupService->updateGroup(1, 1, []);
     }
 
+    /**
+     * @testdox createGroup() throws PermissionDeniedException
+     */
     public function testCreateThrowsExceptionPermissionDenied()
     {
         $this->expectException(
@@ -34,6 +37,9 @@ class QuestionGroupExceptionsTest extends TestBaseClass
         $questionGroupService->createGroup(1, []);
     }
 
+    /**
+     * @testdox deleteGroup() throws PermissionDeniedException
+     */
     public function testDeleteThrowsExceptionPermissionDenied()
     {
         $this->expectException(
@@ -43,6 +49,9 @@ class QuestionGroupExceptionsTest extends TestBaseClass
         $questionGroupService->deleteGroup(1, 1);
     }
 
+    /**
+     * @testdox updateGroup() throws NotFoundException
+     */
     public function testUpdateThrowsExceptionNotFound()
     {
         $this->expectException(
@@ -53,6 +62,9 @@ class QuestionGroupExceptionsTest extends TestBaseClass
         $questionGroupService->updateGroup(1, 1, []);
     }
 
+    /**
+     * @testdox getQuestionGroupObject() throws NotFoundException
+     */
     public function testGetQuestionGroupObjectThrowsExceptionNotFound()
     {
         $this->expectException(
@@ -63,6 +75,9 @@ class QuestionGroupExceptionsTest extends TestBaseClass
         $questionGroupService->getQuestionGroupObject(1, 1);
     }
 
+    /**
+     * @testdox createGroup() throws NotFoundException
+     */
     public function testCreateThrowsExceptionNotFound()
     {
         $this->expectException(
@@ -73,6 +88,9 @@ class QuestionGroupExceptionsTest extends TestBaseClass
         $questionGroupService->createGroup(1, []);
     }
 
+    /**
+     * @testdox updateGroup() throws PersistErrorException
+     */
     public function testUpdateThrowsExceptionPersistError()
     {
         $this->expectException(
@@ -83,6 +101,9 @@ class QuestionGroupExceptionsTest extends TestBaseClass
         $questionGroupService->updateGroup(1, 1, ['questionGroup' => []]);
     }
 
+    /**
+     * @testdox createGroup() throws PersistErrorException
+     */
     public function testCreateThrowsExceptionPersistError()
     {
         $this->expectException(
@@ -93,6 +114,10 @@ class QuestionGroupExceptionsTest extends TestBaseClass
         $questionGroupService->createGroup(1, ['questionGroup' => []]);
     }
 
+    /**
+     * Returns QuestionGroupService with mocked data especially for permission denied exception
+     * @return QuestionGroupService
+     */
     private function getMockedServiceForPermissionDeniedException(): QuestionGroupService
     {
         $mockSetFactory = new QuestionGroupMockSetFactory();
@@ -103,6 +128,10 @@ class QuestionGroupExceptionsTest extends TestBaseClass
         return (new QuestionGroupFactory())->make($mockSet);
     }
 
+    /**
+     * Returns QuestionGroupService with mocked data especially for survey not found exception
+     * @return QuestionGroupService
+     */
     private function getMockedServiceForSurveyNotFoundException(): QuestionGroupService
     {
         $mockSetFactory = new QuestionGroupMockSetFactory();
@@ -113,6 +142,10 @@ class QuestionGroupExceptionsTest extends TestBaseClass
         return (new QuestionGroupFactory())->make($mockSet);
     }
 
+    /**
+     * Returns QuestionGroupService with mocked data especially for question group not found exception
+     * @return QuestionGroupService
+     */
     private function getMockedServiceForQuestionGroupNotFoundException(): QuestionGroupService
     {
         $mockSetFactory = new QuestionGroupMockSetFactory();
@@ -123,6 +156,10 @@ class QuestionGroupExceptionsTest extends TestBaseClass
         return (new QuestionGroupFactory())->make($mockSet);
     }
 
+    /**
+     * Returns QuestionGroupService with mocked data especially for question group persist error
+     * @return QuestionGroupService
+     */
     private function getMockedServiceForQuestionGroupPersistError(): QuestionGroupService
     {
         $mockSetFactory = new QuestionGroupMockSetFactory();

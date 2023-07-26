@@ -2,8 +2,6 @@
 
 namespace LimeSurvey\Models\Services;
 
-use DI\DependencyException;
-use LimeSurvey\DI;
 use LimeSurvey\Models\Services\Proxy\ProxyExpressionManager;
 use LimeSurvey\Models\Services\Proxy\ProxyQuestionGroup;
 use LSYii_Application;
@@ -112,11 +110,9 @@ class QuestionGroupService
      *                            [description]
      *                         [...]    //more languages
      * @return QuestionGroup
-     * @throws DependencyException
      * @throws NotFoundException
      * @throws PermissionDeniedException
      * @throws PersistErrorException
-     * @throws \DI\NotFoundException
      */
     public function createGroup(int $surveyId, array $input)
     {
@@ -125,7 +121,6 @@ class QuestionGroupService
                 'Permission denied'
             );
         }
-        $questionGroup = DI::getContainer()->make(QuestionGroup::class);
         $questionGroup = $this->newQuestionGroup($surveyId, $input['questionGroup']);
         $this->updateQuestionGroupLanguages($questionGroup, $input['questionGroupI10N']);
 
@@ -166,8 +161,7 @@ class QuestionGroupService
      * @param int | null $questionGroupId ID of group
      *
      * @return QuestionGroup
-     * @throws \DI\DependencyException
-     * @throws \DI\NotFoundException|NotFoundException
+     * @throws NotFoundException
      */
     public function getQuestionGroupObject(int $surveyId, ?int $questionGroupId = null)
     {
@@ -175,7 +169,7 @@ class QuestionGroupService
         if (is_int($questionGroupId) && $oQuestionGroup === null) {
             throw new NotFoundException(gT("Invalid ID"));
         } elseif ($oQuestionGroup == null) {
-            $oQuestionGroup = DI::getContainer()->make(QuestionGroup::class);
+            $oQuestionGroup = $this->modelQuestionGroup;
             $oQuestionGroup->sid = $surveyId;
         }
 
@@ -188,12 +182,11 @@ class QuestionGroupService
      * @param Survey $survey
      * @param array $questionGroupArray
      * @return QuestionGroup
-     * @throws DependencyException
-     * @throws \DI\NotFoundException
      */
     public function getGroupData(Survey $survey, array $questionGroupArray)
     {
-        $questionGroup = DI::getContainer()->make(QuestionGroup::class, ['scenario' => 'search']);
+        $questionGroup = $this->modelQuestionGroup;
+        $questionGroup->setScenario('search');
         if (array_key_exists('group_name', $questionGroupArray)) {
             $questionGroup->group_name = $questionGroupArray['group_name'];
         }
@@ -378,8 +371,6 @@ class QuestionGroupService
      * @return QuestionGroup
      * @throws NotFoundException
      * @throws PersistErrorException
-     * @throws DependencyException
-     * @throws \DI\NotFoundException
      */
     private function newQuestionGroup(int $surveyId, array $aQuestionGroupData = null)
     {
@@ -407,7 +398,7 @@ class QuestionGroupService
 
         $i10N = [];
         foreach ($survey->allLanguages as $sLanguage) {
-            $i10N[$sLanguage] = DI::getContainer()->make(QuestionGroupL10n::class);
+            $i10N[$sLanguage] = clone $this->modelQuestionGroupL10n;
             $i10N[$sLanguage]->setAttributes([
                 'gid'         => $oQuestionGroup->gid,
                 'language'    => $sLanguage,
