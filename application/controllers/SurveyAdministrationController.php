@@ -2167,8 +2167,11 @@ class SurveyAdministrationController extends LSBaseController
             // Save the new ordering.
             $orgdata = $this->getOrgdata();
 
-            $groupHelper = new LimeSurvey\Models\Services\GroupHelper();
-            $result = $groupHelper->reorderGroup($iSurveyID, $orgdata);
+            $diContainer = \LimeSurvey\DI::getContainer();
+            $questionGroupService = $diContainer->get(
+                LimeSurvey\Models\Services\QuestionGroupService::class
+            );
+            $result = $questionGroupService->reorderGroup($iSurveyID, $orgdata);
 
             if ($result['type'] === 'success') {
                 App()->setFlashMessage(gT("The new question group/question order was successfully saved."));
