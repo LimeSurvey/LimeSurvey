@@ -732,15 +732,17 @@ class UserManagementController extends LSBaseController
                 ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
             );
         }
-
-        $importNote = sprintf(gT("Please make sure that your CSV contains the fields '%s', '%s', '%s', '%s', and '%s'"), '<b>users_name</b>', '<b>full_name</b>', '<b>email</b>', '<b>lang</b>', '<b>password</b>');
-        $allowFileType = ".csv";
-
-        if ($importFormat == 'json') {
-            $importNote = sprintf(gT("Please make sure that your JSON arrays contain the fields '%s', '%s', '%s', '%s', and '%s'"), '<b>users_name</b>', '<b>full_name</b>', '<b>email</b>', '<b>lang</b>', '<b>password</b>');
-            $allowFileType = ".json,application/json";
+        switch ($importFormat) {
+            case "json":
+                $importNote = sprintf(gT("Please make sure that your JSON arrays contain the fields '%s', '%s', '%s', '%s', and '%s'"), '<b>users_name</b>', '<b>full_name</b>', '<b>email</b>', '<b>lang</b>', '<b>password</b>');
+                $allowFileType = ".json,application/json";
+                break;
+            case "csv":
+            default:
+                $importNote = sprintf(gT("Please make sure that your CSV contains the fields '%s', '%s', '%s', '%s', and '%s'"), '<b>users_name</b>', '<b>full_name</b>', '<b>email</b>', '<b>lang</b>', '<b>password</b>');
+                $allowFileType = ".csv";
+                $importFormat = 'csv'; /* Fix usage of importFormat in view */
         }
-
         return $this->renderPartial('partial/importuser', [
             "note"         => $importNote,
             "importFormat" => $importFormat,
@@ -772,7 +774,8 @@ class UserManagementController extends LSBaseController
                 break;
             case "csv":
             default:
-                $aNewUsers = UserParser::getDataFromCSV($_FILES); //importFormat default is csv ...
+                $aNewUsers = UserParser::getDataFromCSV($_FILES);
+                $importFormat = 'csv'; /* Fix usage of importFormat in view */
         }
         if (empty($aNewUsers)) {
             Yii::app()->setFlashMessage(gT("No user definition found in file."), 'error');
