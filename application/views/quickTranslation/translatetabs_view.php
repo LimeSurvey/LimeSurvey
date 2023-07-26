@@ -69,7 +69,7 @@ extract($tabData);
     <?php
     if (isset($singleTabFieldsData)) {
         if ($allFieldsEmpty) : ?>
-            <p><?php eT("Nothing to translate on this page.."); ?></p><br/>
+            <p><?php eT("Nothing to translate on this page"); ?></p><br/>
         <?php endif; ?>
         <input type='hidden' name='<?php echo $type; ?>_size' value='<?php echo count($singleTabFieldsData) - 1; ?>'/>
         <?php if ($singleTabFieldsData[0]['fieldData']['associated']) : ?>
