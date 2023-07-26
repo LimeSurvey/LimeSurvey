@@ -299,6 +299,9 @@ class UserRoleController extends LSBaseController
      */
     public function actionImportXML()
     {
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
         $sRandomFileName = randomChars(20);
         $sFilePath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $sRandomFileName;
         $aPathinfo = pathinfo($_FILES['the_file']['name']);
