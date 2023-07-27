@@ -834,12 +834,7 @@ class TokenDynamic extends LSActiveRecord
             'iconClass'        => 'ri-mail-send-fill',
             'enabledCondition' => $permission_tokens_update
                 && ($this->sent === "N" || empty($this->sent))
-                && $this->survey->isActive
                 && $this->canBeEmailed()
-                && ($this->completed === "N"
-                    || empty($this->completed)
-                    || $this->survey->isAllowEditAfterCompletion
-                )
         ];
         $dropdownItems[] = [
             'title'            => gT('Send email reminder'),
