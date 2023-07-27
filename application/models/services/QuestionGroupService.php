@@ -18,7 +18,7 @@ use LimeSurvey\Models\Services\Exception\{
 };
 
 /**
- * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ * @SupressWarnings(PHPMD.ExcessiveClassComplexity  )
  */
 class QuestionGroupService
 {
