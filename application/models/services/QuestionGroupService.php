@@ -17,6 +17,11 @@ use LimeSurvey\Models\Services\Exception\{
     PermissionDeniedException
 };
 
+/**
+ * @TODO There is a separate service GroupHelper.php whose function(s)
+ * @TODO should be moved here in the future
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ */
 class QuestionGroupService
 {
     private Permission $modelPermission;
