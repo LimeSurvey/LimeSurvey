@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2023-07-25 13:07:55+00:00\n"
+"POT-Creation-Date: 2023-07-27 07:56:26+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -168,6 +168,7 @@ msgstr ""
 #: application/controllers/UserManagementController.php:1329
 #: application/controllers/UserRoleController.php:146
 #: application/controllers/UserRoleController.php:193
+#: application/controllers/UserRoleController.php:310
 #: application/controllers/admin/CheckIntegrity.php:36
 #: application/controllers/admin/DataEntry.php:109
 #: application/controllers/admin/DataEntry.php:517
@@ -1190,7 +1191,7 @@ msgstr ""
 #: application/controllers/QuestionAdministrationController.php:1372
 #: application/controllers/SurveyAdministrationController.php:265
 #: application/controllers/UserManagementController.php:946
-#: application/controllers/UserRoleController.php:388
+#: application/controllers/UserRoleController.php:391
 msgid "Deleted"
 msgstr ""
 
@@ -1236,7 +1237,7 @@ msgstr ""
 #: application/controllers/UserManagementController.php:1077
 #: application/controllers/UserManagementController.php:1132
 #: application/controllers/UserManagementController.php:1178
-#: application/controllers/UserRoleController.php:382
+#: application/controllers/UserRoleController.php:385
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:58
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_action_results.php:10
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_export_archive_results.php:14
@@ -1383,7 +1384,7 @@ msgstr ""
 #: application/views/assessment/assessments_edit.php:87
 #: application/views/questionGroupsAdministration/addGroup_view.php:30
 #: application/views/quotas/_form_langsettings.php:16
-#: tmp/runtime/twig_cache/45/45fb375bf6391f50bc08f52dcd00fd583769b0ae93227bb7bd1e88f3321ddd4b.php:57
+#: tmp/runtime/twig_cache/1d/1defbbd233f905e3b6cd66a65ca58ee6407738450985b52a28a20efd397fc7c1.php:57
 msgid "Base language"
 msgstr ""
 
@@ -1393,7 +1394,7 @@ msgstr ""
 
 #: application/controllers/QuestionGroupsAdministrationController.php:460
 #: application/controllers/SurveyAdministrationController.php:2292
-#: application/controllers/UserRoleController.php:316
+#: application/controllers/UserRoleController.php:319
 #: application/libraries/ExtensionInstaller/FileFetcherUploadZip.php:198
 #: application/models/UserParser.php:27
 #: application/models/services/UploadValidator.php:59
@@ -2147,7 +2148,7 @@ msgstr ""
 #: application/controllers/SurveyAdministrationController.php:653
 #: application/controllers/SurveyAdministrationController.php:1528
 #: application/controllers/SurveyAdministrationController.php:2298
-#: application/controllers/UserRoleController.php:328
+#: application/controllers/UserRoleController.php:331
 #: application/controllers/admin/DataEntry.php:198
 #: application/controllers/admin/Labels.php:97
 #: application/controllers/admin/Labels.php:135
@@ -3849,8 +3850,8 @@ msgstr ""
 #: application/controllers/UserRoleController.php:244
 #: application/controllers/UserRoleController.php:265
 #: application/controllers/UserRoleController.php:290
-#: application/controllers/UserRoleController.php:370
-#: application/controllers/UserRoleController.php:403
+#: application/controllers/UserRoleController.php:373
+#: application/controllers/UserRoleController.php:406
 msgid "You have no access to the role management!"
 msgstr ""
 
@@ -3876,23 +3877,23 @@ msgstr ""
 msgid "Role could not be deleted."
 msgstr ""
 
-#: application/controllers/UserRoleController.php:320
+#: application/controllers/UserRoleController.php:323
 msgid "This is not a .xml file."
 msgstr ""
 
-#: application/controllers/UserRoleController.php:345
+#: application/controllers/UserRoleController.php:348
 msgid "Error creating role"
 msgstr ""
 
-#: application/controllers/UserRoleController.php:353
+#: application/controllers/UserRoleController.php:356
 msgid "Role was successfully imported."
 msgstr ""
 
-#: application/controllers/UserRoleController.php:382
+#: application/controllers/UserRoleController.php:385
 msgid "Role ID"
 msgstr ""
 
-#: application/controllers/UserRoleController.php:382
+#: application/controllers/UserRoleController.php:385
 #: application/controllers/admin/DataEntry.php:1921
 #: application/libraries/Save.php:216 application/models/Assessment.php:83
 #: application/models/ParticipantAttributeName.php:254
@@ -5633,10 +5634,10 @@ msgstr ""
 #: application/views/userRole/partials/_view.php:37
 #: application/views/userRole/partials/error.php:37
 #: application/views/userRole/partials/success.php:32
+#: tmp/runtime/twig_cache/1d/1defbbd233f905e3b6cd66a65ca58ee6407738450985b52a28a20efd397fc7c1.php:555
 #: tmp/runtime/twig_cache/22/2233993ae2363c294b2ea1095be4c3b034968c0aa7248ffac961b6df8d5ac2de.php:71
 #: tmp/runtime/twig_cache/32/329210cb9fd62b65df80feee0eacbd862a4dca819694bda3bde69bfe583a4d93.php:153
 #: tmp/runtime/twig_cache/3e/3e91d3fa5e0377cc5e2df3c41bccb9a3c2af506e761de22c508d3dacd48e19b5.php:71
-#: tmp/runtime/twig_cache/45/45fb375bf6391f50bc08f52dcd00fd583769b0ae93227bb7bd1e88f3321ddd4b.php:558
 #: tmp/runtime/twig_cache/63/63afbdb21f4fc7ef702a4971f97bdbab455c572c9ce6a09eca2587588e127a29.php:120
 #: tmp/runtime/twig_cache/c5/c52ac5a5cfa30353e32d20bab8d195d815a556240c1572c3b0501c12a59e876b.php:133
 #: tmp/runtime/twig_cache/cb/cb7bc4ecc8a244c5c1ffb399b8e0eb85d2b77f82465dd422aa77bf25d0acefc9.php:153
@@ -11533,7 +11534,7 @@ msgstr ""
 #: application/helpers/expressions/em_manager_helper.php:9056
 #: application/views/admin/survey/editLocalSettings_view.php:162
 #: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:230
-#: tmp/runtime/twig_cache/45/45fb375bf6391f50bc08f52dcd00fd583769b0ae93227bb7bd1e88f3321ddd4b.php:128
+#: tmp/runtime/twig_cache/1d/1defbbd233f905e3b6cd66a65ca58ee6407738450985b52a28a20efd397fc7c1.php:128
 msgid "End URL:"
 msgstr ""
 
@@ -12021,8 +12022,8 @@ msgstr ""
 #: application/helpers/questionHelper.php:128
 #: application/models/SurveysGroupsettings.php:409
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:32
-#: tmp/runtime/twig_cache/45/45fb375bf6391f50bc08f52dcd00fd583769b0ae93227bb7bd1e88f3321ddd4b.php:357
-#: tmp/runtime/twig_cache/45/45fb375bf6391f50bc08f52dcd00fd583769b0ae93227bb7bd1e88f3321ddd4b.php:410
+#: tmp/runtime/twig_cache/1d/1defbbd233f905e3b6cd66a65ca58ee6407738450985b52a28a20efd397fc7c1.php:354
+#: tmp/runtime/twig_cache/1d/1defbbd233f905e3b6cd66a65ca58ee6407738450985b52a28a20efd397fc7c1.php:407
 msgid "Disabled"
 msgstr ""
 
@@ -25116,6 +25117,54 @@ msgstr ""
 msgid "Exit and clear survey"
 msgstr ""
 
+#: tmp/runtime/twig_cache/1d/1defbbd233f905e3b6cd66a65ca58ee6407738450985b52a28a20efd397fc7c1.php:44
+#: tmp/runtime/twig_cache/1d/1defbbd233f905e3b6cd66a65ca58ee6407738450985b52a28a20efd397fc7c1.php:197
+msgid "Share survey"
+msgstr ""
+
+#: tmp/runtime/twig_cache/1d/1defbbd233f905e3b6cd66a65ca58ee6407738450985b52a28a20efd397fc7c1.php:145
+msgid "Number of questions/groups:"
+msgstr ""
+
+#: tmp/runtime/twig_cache/1d/1defbbd233f905e3b6cd66a65ca58ee6407738450985b52a28a20efd397fc7c1.php:162
+msgid "Sharing panel:"
+msgstr ""
+
+#: tmp/runtime/twig_cache/1d/1defbbd233f905e3b6cd66a65ca58ee6407738450985b52a28a20efd397fc7c1.php:178
+msgid "Open sharing panel"
+msgstr ""
+
+#: tmp/runtime/twig_cache/1d/1defbbd233f905e3b6cd66a65ca58ee6407738450985b52a28a20efd397fc7c1.php:206
+msgid "Share QR-code:"
+msgstr ""
+
+#: tmp/runtime/twig_cache/1d/1defbbd233f905e3b6cd66a65ca58ee6407738450985b52a28a20efd397fc7c1.php:234
+#: tmp/runtime/twig_cache/1d/1defbbd233f905e3b6cd66a65ca58ee6407738450985b52a28a20efd397fc7c1.php:289
+msgid "Generate QR-Code"
+msgstr ""
+
+#: tmp/runtime/twig_cache/1d/1defbbd233f905e3b6cd66a65ca58ee6407738450985b52a28a20efd397fc7c1.php:321
+msgid "Share on Facebook:"
+msgstr ""
+
+#: tmp/runtime/twig_cache/1d/1defbbd233f905e3b6cd66a65ca58ee6407738450985b52a28a20efd397fc7c1.php:327
+msgid "Enable"
+msgstr ""
+
+#: tmp/runtime/twig_cache/1d/1defbbd233f905e3b6cd66a65ca58ee6407738450985b52a28a20efd397fc7c1.php:438
+msgid "Share on Twitter:"
+msgstr ""
+
+#: tmp/runtime/twig_cache/1d/1defbbd233f905e3b6cd66a65ca58ee6407738450985b52a28a20efd397fc7c1.php:466
+#: tmp/runtime/twig_cache/1d/1defbbd233f905e3b6cd66a65ca58ee6407738450985b52a28a20efd397fc7c1.php:522
+msgid "Thanks for taking this survey!"
+msgstr ""
+
+#: tmp/runtime/twig_cache/1d/1defbbd233f905e3b6cd66a65ca58ee6407738450985b52a28a20efd397fc7c1.php:472
+#: tmp/runtime/twig_cache/1d/1defbbd233f905e3b6cd66a65ca58ee6407738450985b52a28a20efd397fc7c1.php:528
+msgid "Tweet it"
+msgstr ""
+
 #: tmp/runtime/twig_cache/22/2201609b4ee0e13a071801ff8898953b0ca63212f96c64f11ae06b7ba6b29119.php:44
 #: tmp/runtime/twig_cache/7b/7b8a48ed6de26cc0834a31ab77b072ee87aa86b726c27522e88c31a5f789cbbf.php:42
 msgid "(This question is mandatory)"
@@ -25206,54 +25255,6 @@ msgstr ""
 #: tmp/runtime/twig_cache/45/45a5058c6d461432729b3549daab5d5d212cdc5dd319744df4bd1a0b834742e1.php:327
 #: tmp/runtime/twig_cache/71/717312b3cc52d55b39dc9e7bc336f9f0419677ee4f9f988dfaeaef2157dce8d1.php:354
 msgid "Load now"
-msgstr ""
-
-#: tmp/runtime/twig_cache/45/45fb375bf6391f50bc08f52dcd00fd583769b0ae93227bb7bd1e88f3321ddd4b.php:44
-#: tmp/runtime/twig_cache/45/45fb375bf6391f50bc08f52dcd00fd583769b0ae93227bb7bd1e88f3321ddd4b.php:200
-msgid "Share survey"
-msgstr ""
-
-#: tmp/runtime/twig_cache/45/45fb375bf6391f50bc08f52dcd00fd583769b0ae93227bb7bd1e88f3321ddd4b.php:145
-msgid "Number of questions/groups:"
-msgstr ""
-
-#: tmp/runtime/twig_cache/45/45fb375bf6391f50bc08f52dcd00fd583769b0ae93227bb7bd1e88f3321ddd4b.php:166
-msgid "Sharing panel:"
-msgstr ""
-
-#: tmp/runtime/twig_cache/45/45fb375bf6391f50bc08f52dcd00fd583769b0ae93227bb7bd1e88f3321ddd4b.php:178
-msgid "Open sharing panel"
-msgstr ""
-
-#: tmp/runtime/twig_cache/45/45fb375bf6391f50bc08f52dcd00fd583769b0ae93227bb7bd1e88f3321ddd4b.php:209
-msgid "Share QR-code:"
-msgstr ""
-
-#: tmp/runtime/twig_cache/45/45fb375bf6391f50bc08f52dcd00fd583769b0ae93227bb7bd1e88f3321ddd4b.php:237
-#: tmp/runtime/twig_cache/45/45fb375bf6391f50bc08f52dcd00fd583769b0ae93227bb7bd1e88f3321ddd4b.php:292
-msgid "Generate QR-Code"
-msgstr ""
-
-#: tmp/runtime/twig_cache/45/45fb375bf6391f50bc08f52dcd00fd583769b0ae93227bb7bd1e88f3321ddd4b.php:324
-msgid "Share on Facebook:"
-msgstr ""
-
-#: tmp/runtime/twig_cache/45/45fb375bf6391f50bc08f52dcd00fd583769b0ae93227bb7bd1e88f3321ddd4b.php:330
-msgid "Enable"
-msgstr ""
-
-#: tmp/runtime/twig_cache/45/45fb375bf6391f50bc08f52dcd00fd583769b0ae93227bb7bd1e88f3321ddd4b.php:441
-msgid "Share on Twitter:"
-msgstr ""
-
-#: tmp/runtime/twig_cache/45/45fb375bf6391f50bc08f52dcd00fd583769b0ae93227bb7bd1e88f3321ddd4b.php:469
-#: tmp/runtime/twig_cache/45/45fb375bf6391f50bc08f52dcd00fd583769b0ae93227bb7bd1e88f3321ddd4b.php:525
-msgid "Thanks for taking this survey!"
-msgstr ""
-
-#: tmp/runtime/twig_cache/45/45fb375bf6391f50bc08f52dcd00fd583769b0ae93227bb7bd1e88f3321ddd4b.php:475
-#: tmp/runtime/twig_cache/45/45fb375bf6391f50bc08f52dcd00fd583769b0ae93227bb7bd1e88f3321ddd4b.php:531
-msgid "Tweet it"
 msgstr ""
 
 #: tmp/runtime/twig_cache/47/47a38095ee078e384cd748d0bd6a52e3db8bfa51dfe8de9d296f1ba49bc1e984.php:127
