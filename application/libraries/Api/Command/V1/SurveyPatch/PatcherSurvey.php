@@ -2,7 +2,6 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
-
 use LimeSurvey\ObjectPatch\OpHandler\OpHandlerActiveRecordUpdate;
 use LimeSurvey\ObjectPatch\Patcher;
 use Survey;

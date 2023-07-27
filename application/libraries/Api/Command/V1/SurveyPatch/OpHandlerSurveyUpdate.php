@@ -12,7 +12,6 @@ use Survey;
 
 class OpHandlerSurveyUpdate implements OpHandlerInterface
 {
-
     protected $transformer = null;
     protected $entity = null;
     protected $model = null;
@@ -27,7 +26,7 @@ class OpHandlerSurveyUpdate implements OpHandlerInterface
     public function canHandle(OpInterface $op): bool
     {
         $isUpdateOperation = $op->getType()->getId() === OpTypeUpdate::ID;
-        $isSurveyEntity = $op->getEntityType() ==='survey';
+        $isSurveyEntity = $op->getEntityType() === 'survey';
 
         return $isUpdateOperation && $isSurveyEntity;
     }
