@@ -1,15 +1,8 @@
 <?php
 
-namespace ls\tests\unit\services\QuestionGroup;
+namespace ls\tests;
 
-use LimeSurvey\Models\Services\QuestionGroupService;
-use ls\tests\DummyController;
-use ls\tests\TestBaseClass;
-
-/**
- * Moved from GroupHelperTest.php (now deleted)
- */
-class QuestionGroupOrderingTest extends TestBaseClass
+class GroupHelperTest extends TestBaseClass
 {
     public static function setUpBeforeClass(): void
     {
@@ -30,11 +23,11 @@ class QuestionGroupOrderingTest extends TestBaseClass
     {
         // Check the original order (Use sql to avoid cache).
         $currentOrder = \Yii::app()->db->createCommand()->select(['gid', 'group_order'])
-            ->from('{{groups}}')
-            ->where('sid=' . self::$surveyId)
-            ->order('group_order ASC')
-            ->query()
-            ->readAll();
+                            ->from('{{groups}}')
+                            ->where('sid=' . self::$surveyId)
+                            ->order('group_order ASC')
+                            ->query()
+                            ->readAll();
 
         // Checking gid
         $this->assertEquals(self::$testSurvey->groups[0]->gid, $currentOrder[0]['gid'], 'Group found with an unexpected id');
@@ -54,16 +47,16 @@ class QuestionGroupOrderingTest extends TestBaseClass
 
         $orgdata = $this->getOrgData($groups, self::$testSurvey->questions);
 
-        $questionGroupService = $this->getMockedQuestionGroupService();
-        $result = $questionGroupService->reorderGroup(self::$surveyId, $orgdata);
+        $groupHelper = new \LimeSurvey\Models\Services\GroupHelper();
+        $result = $groupHelper->reorderGroup(self::$surveyId, $orgdata);
 
         // Check the new order (Use sql to avoid cache).
         $changedOrder = \Yii::app()->db->createCommand()->select(['gid', 'group_order'])
-            ->from('{{groups}}')
-            ->where('sid=' . self::$surveyId)
-            ->order('group_order ASC')
-            ->query()
-            ->readAll();
+                            ->from('{{groups}}')
+                            ->where('sid=' . self::$surveyId)
+                            ->order('group_order ASC')
+                            ->query()
+                            ->readAll();
 
         // Checking gid
         $this->assertNotEquals(self::$testSurvey->groups[0]->gid, $changedOrder[0]['gid'], 'Group found with an unexpected id');
@@ -95,11 +88,11 @@ class QuestionGroupOrderingTest extends TestBaseClass
 
         // Check the original order (Use sql to avoid cache).
         $currentOrder = \Yii::app()->db->createCommand()->select(['qid', 'question_order'])
-            ->from('{{questions}}')
-            ->where('gid=' . $gid)
-            ->order('question_order ASC')
-            ->query()
-            ->readAll();
+                            ->from('{{questions}}')
+                            ->where('gid=' . $gid)
+                            ->order('question_order ASC')
+                            ->query()
+                            ->readAll();
 
         // Checking qid.
         $this->assertEquals($firstGroupQuestions[0]->qid, $currentOrder[0]['qid'], 'Question found with an unexpected id.');
@@ -120,16 +113,16 @@ class QuestionGroupOrderingTest extends TestBaseClass
 
         $orgdata = $this->getOrgData(self::$testSurvey->groups, $questions);
 
-        $questionGroupService = $this->getMockedQuestionGroupService();
-        $result = $questionGroupService->reorderGroup(self::$surveyId, $orgdata);
+        $groupHelper = new \LimeSurvey\Models\Services\GroupHelper();
+        $result = $groupHelper->reorderGroup(self::$surveyId, $orgdata);
 
         // Check the new order (Use sql to avoid cache).
         $newOrder = \Yii::app()->db->createCommand()->select(['qid', 'question_order'])
-            ->from('{{questions}}')
-            ->where('gid=' . $gid)
-            ->order('question_order ASC')
-            ->query()
-            ->readAll();
+                            ->from('{{questions}}')
+                            ->where('gid=' . $gid)
+                            ->order('question_order ASC')
+                            ->query()
+                            ->readAll();
 
         // Checking qid.
         $this->assertNotEquals($firstGroupQuestions[0]->qid, $newOrder[0]['qid'], 'Question found with an unexpected id.');
@@ -154,11 +147,11 @@ class QuestionGroupOrderingTest extends TestBaseClass
 
         // Check the original order (Use sql to avoid cache).
         $currentOrder = \Yii::app()->db->createCommand()->select('title')
-            ->from('{{questions}}')
-            ->where('gid=' . $gid)
-            ->order('question_order, title ASC')
-            ->query()
-            ->readAll();
+                            ->from('{{questions}}')
+                            ->where('gid=' . $gid)
+                            ->order('question_order, title ASC')
+                            ->query()
+                            ->readAll();
 
         // Checking initial order (Q05 Q06) and number of questions in the group.
         $this->assertCount(2, $currentOrder, 'The number of questions in the group is not as expected.');
@@ -170,24 +163,24 @@ class QuestionGroupOrderingTest extends TestBaseClass
 
         // Changing Q03 to another group.
         $qid = \Yii::app()->db->createCommand()->select('qid')
-            ->from('{{questions}}')
-            ->where('title = "Q03"')
-            ->andWhere('sid=' . self::$surveyId)
-            ->query()
-            ->readAll()[0]['qid'];
+                            ->from('{{questions}}')
+                            ->where('title = "Q03"')
+                            ->andWhere('sid=' . self::$surveyId)
+                            ->query()
+                            ->readAll()[0]['qid'];
 
         $orgdata['q' . $qid] = 'g' . self::$testSurvey->groups[2]->gid;
 
-        $questionGroupService = $this->getMockedQuestionGroupService();
-        $result = $questionGroupService->reorderGroup(self::$surveyId, $orgdata);
+        $groupHelper = new \LimeSurvey\Models\Services\GroupHelper();
+        $result = $groupHelper->reorderGroup(self::$surveyId, $orgdata);
 
         // Check the new order (Use sql to avoid cache).
         $currentOrder = \Yii::app()->db->createCommand()->select('title')
-            ->from('{{questions}}')
-            ->where('gid=' . $gid)
-            ->order('question_order, title ASC')
-            ->query()
-            ->readAll();
+                            ->from('{{questions}}')
+                            ->where('gid=' . $gid)
+                            ->order('question_order, title ASC')
+                            ->query()
+                            ->readAll();
 
         // Checking new order (Q03 Q05 Q06) and number of questions in the group.
         $this->assertCount(3, $currentOrder, 'The number of questions in the group is not as expected.');
@@ -211,8 +204,8 @@ class QuestionGroupOrderingTest extends TestBaseClass
 
         $orgdata = $this->getOrgData(self::$testSurvey->groups, self::$testSurvey->questions);
 
-        $questionGroupService = $this->getMockedQuestionGroupService();
-        $result = $questionGroupService->reorderGroup(self::$surveyId, $orgdata);
+        $groupHelper = new \LimeSurvey\Models\Services\GroupHelper();
+        $result = $groupHelper->reorderGroup(self::$surveyId, $orgdata);
 
         // Asserting Q03 could not be moved back to group two.
         $this->assertArrayHasKey('type', $result, 'There is no type key in the response');
@@ -233,17 +226,5 @@ class QuestionGroupOrderingTest extends TestBaseClass
         }
 
         return $orgdata;
-    }
-
-    /**
-     * Returns QuestionGroupService class with mocked dependencies.
-     * @return QuestionGroupService
-     */
-    private function getMockedQuestionGroupService(): QuestionGroupService
-    {
-        $mockSetFactory = new QuestionGroupMockSetFactory();
-        $mockSet = $mockSetFactory->make();
-
-        return (new QuestionGroupFactory())->make($mockSet);
     }
 }
