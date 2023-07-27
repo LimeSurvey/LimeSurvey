@@ -20,6 +20,7 @@ class QuestionGroupMockSet
     public QuestionGroup $modelQuestionGroup;
     public QuestionGroup $questionGroup;
     public QuestionGroupL10n $modelQuestionGroupL10n;
+    public QuestionGroupL10n $questionGroupL10n;
     public ProxyExpressionManager $proxyExpressionManager;
     public ProxyQuestionGroup $proxyQuestionGroup;
     public LSYii_Application $yiiApp;

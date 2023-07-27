@@ -46,9 +46,13 @@ class QuestionGroupMockSetFactory
             ? $init->modelQuestionGroup
             : $this->getMockModelQuestionGroup($mockSet->questionGroup);
 
+        $mockSet->questionGroupL10n = ($init && isset($init->questionGroupL10n))
+            ? $init->questionGroupL10n
+            : $this->getMockQuestionGroupL10n();
+
         $mockSet->modelQuestionGroupL10n = ($init && isset($init->modelQuestionGroupL10n))
             ? $init->modelQuestionGroupL10n
-            : $this->getMockModelQuestionGroupL10n($mockSet->modelQuestionGroup);
+            : $this->getMockModelQuestionGroupL10n($mockSet->questionGroupL10n);
 
         $mockSet->proxyExpressionManager = ($init && isset($init->proxyExpressionManager))
             ? $init->proxyExpressionManager
@@ -151,8 +155,8 @@ class QuestionGroupMockSetFactory
     {
         $modelQuestion = Mockery::mock(Question::class)
             ->makePartial();
-
-        //functions?
+        $modelQuestion->shouldReceive('findAll')
+            ->andReturn([]);
 
         return $modelQuestion;
     }
@@ -164,6 +168,15 @@ class QuestionGroupMockSetFactory
 
         $modelQuestionGroup->shouldReceive('findByPk')
             ->andReturn($questionGroup);
+        $modelQuestionGroup->shouldReceive('findAll')
+            ->andReturn($questionGroup);
+        $modelQuestionGroup->shouldReceive('setAttributes')
+            ->passthru();
+        $modelQuestionGroup->setAttributes([]);
+        $modelQuestionGroup->shouldReceive('save')
+            ->andReturn(true);
+        $modelQuestionGroup->shouldReceive('cleanOrder')
+            ->andReturn(null);
 
         return $modelQuestionGroup;
     }
@@ -184,14 +197,35 @@ class QuestionGroupMockSetFactory
         return $questionGroup;
     }
 
-    private function getMockModelQuestionGroupL10n(QuestionGroup $modelQuestionGroup): QuestionGroupL10n
+    private function getMockModelQuestionGroupL10n(QuestionGroupL10n $questionGroupL10n): QuestionGroupL10n
     {
         $modelQuestionGroupL10n = Mockery::mock(QuestionGroupL10n::class)
             ->makePartial();
-
-        //functions?
+        $modelQuestionGroupL10n->shouldReceive('findByAttributes')
+            ->andReturn($questionGroupL10n);
+        $modelQuestionGroupL10n->shouldReceive('save')
+            ->andReturn(true);
+        $modelQuestionGroupL10n->shouldReceive('setAttributes')
+            ->passthru();
+        $modelQuestionGroupL10n->setAttributes([]);
 
         return $modelQuestionGroupL10n;
+    }
+
+    private function getMockQuestionGroupL10n(): QuestionGroupL10n
+    {
+        $questionGroupL10n = Mockery::mock(QuestionGroupL10n::class)
+            ->makePartial();
+        $questionGroupL10n->shouldReceive('save')
+            ->andReturn(true);
+        $questionGroupL10n->shouldReceive('setAttributes')
+            ->passthru();
+        $questionGroupL10n->setAttributes([]);
+        $questionGroupL10n->shouldReceive('getAttributes')
+            ->passthru();
+        $questionGroupL10n->getAttributes([]);
+
+        return $questionGroupL10n;
     }
 
     private function getMockProxyExpressionManager(): ProxyExpressionManager

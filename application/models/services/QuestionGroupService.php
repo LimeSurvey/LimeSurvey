@@ -257,7 +257,7 @@ class QuestionGroupService
      * @param array $dataSet array with languages
      * @return bool true if ALL languages could be saved, false otherwise
      */
-    private function updateQuestionGroupLanguages(QuestionGroup $oQuestionGroup, array $dataSet)
+    public function updateQuestionGroupLanguages(QuestionGroup $oQuestionGroup, array $dataSet)
     {
         $storeValid = true;
 
@@ -351,7 +351,7 @@ class QuestionGroupService
      * @return QuestionGroup
      * @throws PersistErrorException
      */
-    private function updateQuestionGroup(QuestionGroup $oQuestionGroup, array $aQuestionGroupData)
+    public function updateQuestionGroup(QuestionGroup $oQuestionGroup, array $aQuestionGroupData)
     {
         $oQuestionGroup->setAttributes($aQuestionGroupData, false);
         if ($oQuestionGroup == null) {
@@ -377,7 +377,7 @@ class QuestionGroupService
      * @throws NotFoundException
      * @throws PersistErrorException
      */
-    private function newQuestionGroup(int $surveyId, array $aQuestionGroupData = null)
+    public function newQuestionGroup(int $surveyId, array $aQuestionGroupData = null)
     {
         $survey = $this->getSurvey($surveyId);
         $aQuestionGroupData = array_merge([
