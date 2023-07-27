@@ -136,7 +136,7 @@
         <cssframework type="dropdown" category="Simple options" width="12" title="Variations" parent="cssframework">
             Apple
             <dropdownoptions>
-                <optgroup label="User browser">
+                <optgroup>
                     <option data-value="css/variations/theme_apple.css" value="apple">Apple</option>
                     <option data-value="css/variations/theme_blueberry.css" value="blueberry">Blueberry</option>
                     <option data-value="css/variations/theme_grape.css" value="grape">Grape</option>
