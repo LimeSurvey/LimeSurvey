@@ -17,9 +17,6 @@ use LimeSurvey\Models\Services\Exception\{
     PermissionDeniedException
 };
 
-/**
- * @SupressWarnings(PHPMD.ExcessiveClassComplexity  )
- */
 class QuestionGroupService
 {
     private Permission $modelPermission;
