@@ -172,7 +172,6 @@ class QuestionGroupMockSetFactory
             ->andReturn($questionGroup);
         $modelQuestionGroup->shouldReceive('setAttributes')
             ->passthru();
-        $modelQuestionGroup->setAttributes([]);
         $modelQuestionGroup->shouldReceive('save')
             ->andReturn(true);
         $modelQuestionGroup->shouldReceive('cleanOrder')
