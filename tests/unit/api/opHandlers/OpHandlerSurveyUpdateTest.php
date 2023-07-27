@@ -5,6 +5,8 @@ namespace ls\tests\unit\api\opHandlers;
 use DI\FactoryInterface;
 use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerSurveyUpdate;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputSurvey;
+use LimeSurvey\ObjectPatch\Op\OpInterface;
+use LimeSurvey\ObjectPatch\Op\OpStandard;
 use ls\tests\TestBaseClass;
 use Psr\Container\ContainerInterface;
 use Survey;
@@ -15,9 +17,12 @@ class OpHandlerSurveyUpdateTest extends TestBaseClass
 protected FactoryInterface $diFactory;
 protected ContainerInterface $diContainer;
 
+protected OpInterface $op;
+
     public function testSurveyUpdate()
     {
-        // Import survey
+        $this->initializePatcher();
+        // Import survey (it doesn't matter which survey)
         $surveyFile = self::$surveysFolder . '/limesurvey_survey_QuestionAttributeTestSurvey.lss';
         self::importSurvey($surveyFile);
 
@@ -26,7 +31,19 @@ protected ContainerInterface $diContainer;
             Survey::model(),
             $this->diContainer->get(TransformerInputSurvey::class)
         );
+        self::assertTrue($opHandler->canHandle($this->op));
+    }
 
-        self::assertTrue($opHandler->canHandle());
+    private function initializePatcher()
+    {
+        $this->op = OpStandard::factory(
+            'survey',
+            'update',
+            self::$testSurvey->sid,
+            [
+                'title' => 'Hogwarts',
+                'description' => 'Home of Harry Potter and the Sorcerer\'s Stone',
+            ]
+        );
     }
 }
