@@ -64,6 +64,7 @@ class QuestionGroupDataTest extends TestBaseClass
     {
         $mockSet = (new QuestionGroupMockSetFactory())->make();
         $questionGroupService = (new QuestionGroupFactory())->make($mockSet);
+        $mockSet->survey->setAttributes(['sid' => 123456]);
         $returnedGroup = $questionGroupService->newQuestionGroup(123456, ['gid' => 12]);
 
         $this->assertEquals(123456, $returnedGroup->sid);
