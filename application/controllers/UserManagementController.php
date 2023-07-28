@@ -777,7 +777,6 @@ class UserManagementController extends LSBaseController
             case "csv":
             default:
                 $aNewUsers = UserParser::getDataFromCSV($_FILES);
-                $importFormat = 'csv'; /* Fix usage of importFormat in view */
         }
         if (empty($aNewUsers)) {
             Yii::app()->setFlashMessage(gT("No user definition found in file."), 'error');
