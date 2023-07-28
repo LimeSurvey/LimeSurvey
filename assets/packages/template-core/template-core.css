@@ -372,7 +372,3 @@ only screen and (max-width: 760px),
     cursor: pointer;
     text-decoration: none;
 }
-
-.dir-rtl .uploadedfiles tbody tr td {
-    text-align: right;
-}
