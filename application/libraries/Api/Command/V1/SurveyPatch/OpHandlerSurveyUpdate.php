@@ -40,11 +40,7 @@ class OpHandlerSurveyUpdate implements OpHandlerInterface
     {
         $survey = $this->model->findByPk($op->getEntityId());
         //here we should get the props from the op
-        $props = $this->transformer
-            ? $this->transformer->transform(
-                $op->getProps()
-            )
-            : $op->getProps();
+        $props = $op ->getProps();
         if ($props === null) {
             throw new OpHandlerException(
                 printf(
